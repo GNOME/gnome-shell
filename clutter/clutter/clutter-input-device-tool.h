@@ -61,6 +61,9 @@ guint64                    clutter_input_device_tool_get_serial    (ClutterInput
 CLUTTER_AVAILABLE_IN_ALL
 ClutterInputDeviceToolType clutter_input_device_tool_get_tool_type (ClutterInputDeviceTool *tool);
 
+CLUTTER_AVAILABLE_IN_ALL
+guint64                    clutter_input_device_tool_get_id        (ClutterInputDeviceTool *tool);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_INPUT_DEVICE_TOOL_H__ */

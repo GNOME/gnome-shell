@@ -34,12 +34,14 @@ struct _ClutterInputDeviceToolPrivate
 {
   ClutterInputDeviceToolType type;
   guint64 serial;
+  guint64 id;
 };
 
 enum {
   PROP_0,
   PROP_TYPE,
   PROP_SERIAL,
+  PROP_ID,
   PROP_LAST
 };
 
@@ -66,6 +68,9 @@ clutter_input_device_tool_set_property (GObject      *object,
     case PROP_SERIAL:
       priv->serial = g_value_get_uint64 (value);
       break;
+    case PROP_ID:
+      priv->id = g_value_get_uint64 (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -89,6 +94,9 @@ clutter_input_device_tool_get_property (GObject    *object,
       break;
     case PROP_SERIAL:
       g_value_set_uint64 (value, priv->serial);
+      break;
+    case PROP_ID:
+      g_value_set_uint64 (value, priv->id);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -114,6 +122,12 @@ clutter_input_device_tool_class_init (ClutterInputDeviceToolClass *klass)
     g_param_spec_uint64 ("serial",
                          P_("Tool serial"),
                          P_("Tool serial"),
+                         0, G_MAXUINT64, 0,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+  props[PROP_ID] =
+    g_param_spec_uint64 ("id",
+                         P_("Tool ID"),
+                         P_("Tool ID"),
                          0, G_MAXUINT64, 0,
                          CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
@@ -169,4 +183,25 @@ clutter_input_device_tool_get_tool_type (ClutterInputDeviceTool *tool)
   priv = clutter_input_device_tool_get_instance_private (tool);
 
   return priv->type;
+}
+
+/**
+ * clutter_input_device_tool_get_id:
+ * @tool: a #ClutterInputDeviceTool
+ *
+ * Gets the ID of this tool, this value can be used to identify a
+ * physical tool (eg. a tablet pen) across program executions.
+ *
+ * Returns: The tool ID for this tool
+ **/
+guint64
+clutter_input_device_tool_get_id (ClutterInputDeviceTool *tool)
+{
+  ClutterInputDeviceToolPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE_TOOL (tool), 0);
+
+  priv = clutter_input_device_tool_get_instance_private (tool);
+
+  return priv->id;
 }
