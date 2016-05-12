@@ -219,6 +219,7 @@ meta_display_handle_event (MetaDisplay        *display,
                                        clutter_input_device_get_device_id (source));
     }
 
+#ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor () && event->type == CLUTTER_MOTION)
     {
       MetaWaylandCompositor *compositor;
@@ -237,6 +238,7 @@ meta_display_handle_event (MetaDisplay        *display,
 
       display->monitor_cache_invalidated = TRUE;
     }
+#endif
 
   handle_idletime_for_event (event);
 
