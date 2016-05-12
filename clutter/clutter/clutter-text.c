@@ -4044,6 +4044,10 @@ clutter_text_class_init (ClutterTextClass *klass)
                                        CLUTTER_KEY_a, CLUTTER_CONTROL_MASK,
                                        G_CALLBACK (clutter_text_real_select_all),
                                        NULL, NULL);
+  clutter_binding_pool_install_action (binding_pool, "select-all",
+                                       CLUTTER_KEY_A, CLUTTER_CONTROL_MASK,
+                                       G_CALLBACK (clutter_text_real_select_all),
+                                       NULL, NULL);
 
   clutter_binding_pool_install_action (binding_pool, "delete-next",
                                        CLUTTER_KEY_Delete, 0,
