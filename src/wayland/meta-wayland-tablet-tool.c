@@ -42,9 +42,6 @@
 #endif
 
 #define TABLET_AXIS_MAX 65535
-#define DEGREES_PRECISION 100 /* wl_tablet_tool.tilt and .rotation define
-                               * angles in hundreths of a degree
-                               */
 
 static void
 unbind_resource (struct wl_resource *resource)
@@ -739,8 +736,8 @@ broadcast_tilt (MetaWaylandTabletTool *tool,
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
       zwp_tablet_tool_v2_send_tilt (resource,
-                                    (int32_t) (xtilt * DEGREES_PRECISION),
-                                    (int32_t) (ytilt * DEGREES_PRECISION));
+                                    wl_fixed_from_double (xtilt),
+                                    wl_fixed_from_double (ytilt));
     }
 }
 
@@ -762,7 +759,7 @@ broadcast_rotation (MetaWaylandTabletTool *tool,
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
       zwp_tablet_tool_v2_send_rotation (resource,
-                                        (int32_t) rotation * DEGREES_PRECISION);
+                                        wl_fixed_from_double (rotation));
     }
 }
 
