@@ -213,6 +213,7 @@ nodist_gnome_shell_extension_prefs_SOURCES = \
 	$(NULL)
 gnome_shell_extension_prefs_CPPFLAGS = $(gnome_shell_cflags)
 gnome_shell_extension_prefs_LDADD = libgnome-shell-js.la $(GNOME_SHELL_LIBS)
+gnome_shell_extension_prefs_LDFLAGS = -rpath $(MUTTER_TYPELIB_DIR)
 
 if HAVE_NETWORKMANAGER
 
@@ -226,6 +227,7 @@ nodist_gnome_shell_portal_helper_SOURCES = \
 	$(NULL)
 gnome_shell_portal_helper_CPPFLAGS = $(gnome_shell_cflags)
 gnome_shell_portal_helper_LDADD = libgnome-shell-js.la $(GNOME_SHELL_LIBS)
+gnome_shell_portal_helper_LDFLAGS = -rpath $(MUTTER_TYPELIB_DIR)
 
 endif
 
@@ -280,7 +282,7 @@ noinst_PROGRAMS += run-js-test
 
 run_js_test_CPPFLAGS = $(MUTTER_CFLAGS) $(gnome_shell_cflags)
 run_js_test_LDADD = libgnome-shell.la $(GNOME_SHELL_JS_LIBS) $(MUTTER_LIBS)
-run_js_test_LDFLAGS = -export-dynamic
+run_js_test_LDFLAGS = -export-dynamic -rpath $(MUTTER_TYPELIB_DIR)
 
 run_js_test_SOURCES =			\
 	run-js-test.c
