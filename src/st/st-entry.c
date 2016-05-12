@@ -608,6 +608,8 @@ st_entry_key_press_event (ClutterActor    *actor,
   /* paste */
   if (((event->modifier_state & CLUTTER_CONTROL_MASK)
        && event->keyval == CLUTTER_KEY_v) ||
+      ((event->modifier_state & CLUTTER_CONTROL_MASK)
+       && event->keyval == CLUTTER_KEY_V) ||
       ((event->modifier_state & CLUTTER_SHIFT_MASK)
        && event->keyval == CLUTTER_KEY_Insert))
     {
@@ -625,7 +627,7 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* copy */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_KEY_c &&
+      && (event->keyval == CLUTTER_KEY_c || event->keyval == CLUTTER_KEY_C) &&
       clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
@@ -646,7 +648,7 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* cut */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_KEY_x &&
+      && (event->keyval == CLUTTER_KEY_x || event->keyval == CLUTTER_KEY_X) &&
       clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
@@ -671,8 +673,8 @@ st_entry_key_press_event (ClutterActor    *actor,
 
 
   /* delete to beginning of line */
-  if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_KEY_u)
+  if ((event->modifier_state & CLUTTER_CONTROL_MASK) &&
+      (event->keyval == CLUTTER_KEY_u || event->keyval == CLUTTER_KEY_U))
     {
       int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
       clutter_text_delete_text ((ClutterText *)priv->entry, 0, pos);
@@ -682,8 +684,8 @@ st_entry_key_press_event (ClutterActor    *actor,
 
 
   /* delete to end of line */
-  if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_KEY_k)
+  if ((event->modifier_state & CLUTTER_CONTROL_MASK) &&
+      (event->keyval == CLUTTER_KEY_k || event->keyval == CLUTTER_KEY_K))
     {
       ClutterTextBuffer *buffer = clutter_text_get_buffer ((ClutterText *)priv->entry);
       int pos = clutter_text_get_cursor_position ((ClutterText *)priv->entry);
