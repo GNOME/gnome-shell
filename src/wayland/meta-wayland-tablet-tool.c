@@ -29,7 +29,7 @@
 #include <clutter/evdev/clutter-evdev.h>
 
 #include <wayland-server.h>
-#include "tablet-unstable-v1-server-protocol.h"
+#include "tablet-unstable-v2-server-protocol.h"
 #include "meta-wayland-private.h"
 #include "meta-wayland-surface-role-cursor.h"
 #include "meta-surface-actor-wayland.h"
@@ -138,23 +138,23 @@ input_device_get_capabilities (ClutterInputDevice *device)
       switch (axis)
         {
         case CLUTTER_INPUT_AXIS_PRESSURE:
-          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE;
+          capabilities |= 1 << ZWP_TABLET_TOOL_V2_CAPABILITY_PRESSURE;
           break;
         case CLUTTER_INPUT_AXIS_DISTANCE:
-          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE;
+          capabilities |= 1 << ZWP_TABLET_TOOL_V2_CAPABILITY_DISTANCE;
           break;
         case CLUTTER_INPUT_AXIS_XTILT:
         case CLUTTER_INPUT_AXIS_YTILT:
-          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_TILT;
+          capabilities |= 1 << ZWP_TABLET_TOOL_V2_CAPABILITY_TILT;
           break;
         case CLUTTER_INPUT_AXIS_ROTATION:
-          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION;
+          capabilities |= 1 << ZWP_TABLET_TOOL_V2_CAPABILITY_ROTATION;
           break;
         case CLUTTER_INPUT_AXIS_WHEEL:
-          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_WHEEL;
+          capabilities |= 1 << ZWP_TABLET_TOOL_V2_CAPABILITY_WHEEL;
           break;
         case CLUTTER_INPUT_AXIS_SLIDER:
-          capabilities |= 1 << ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER;
+          capabilities |= 1 << ZWP_TABLET_TOOL_V2_CAPABILITY_SLIDER;
           break;
         default:
           break;
@@ -164,7 +164,7 @@ input_device_get_capabilities (ClutterInputDevice *device)
   return capabilities;
 }
 
-static enum zwp_tablet_tool_v1_type
+static enum zwp_tablet_tool_v2_type
 input_device_tool_get_type (ClutterInputDeviceTool *device_tool)
 {
   ClutterInputDeviceToolType tool_type;
@@ -175,19 +175,19 @@ input_device_tool_get_type (ClutterInputDeviceTool *device_tool)
     {
     case CLUTTER_INPUT_DEVICE_TOOL_NONE:
     case CLUTTER_INPUT_DEVICE_TOOL_PEN:
-      return ZWP_TABLET_TOOL_V1_TYPE_PEN;
+      return ZWP_TABLET_TOOL_V2_TYPE_PEN;
     case CLUTTER_INPUT_DEVICE_TOOL_ERASER:
-      return ZWP_TABLET_TOOL_V1_TYPE_ERASER;
+      return ZWP_TABLET_TOOL_V2_TYPE_ERASER;
     case CLUTTER_INPUT_DEVICE_TOOL_BRUSH:
-      return ZWP_TABLET_TOOL_V1_TYPE_BRUSH;
+      return ZWP_TABLET_TOOL_V2_TYPE_BRUSH;
     case CLUTTER_INPUT_DEVICE_TOOL_PENCIL:
-      return ZWP_TABLET_TOOL_V1_TYPE_PENCIL;
+      return ZWP_TABLET_TOOL_V2_TYPE_PENCIL;
     case CLUTTER_INPUT_DEVICE_TOOL_AIRBRUSH:
-      return ZWP_TABLET_TOOL_V1_TYPE_AIRBRUSH;
+      return ZWP_TABLET_TOOL_V2_TYPE_AIRBRUSH;
     case CLUTTER_INPUT_DEVICE_TOOL_MOUSE:
-      return ZWP_TABLET_TOOL_V1_TYPE_MOUSE;
+      return ZWP_TABLET_TOOL_V2_TYPE_MOUSE;
     case CLUTTER_INPUT_DEVICE_TOOL_LENS:
-      return ZWP_TABLET_TOOL_V1_TYPE_LENS;
+      return ZWP_TABLET_TOOL_V2_TYPE_LENS;
     }
 
   g_assert_not_reached ();
@@ -202,24 +202,24 @@ meta_wayland_tablet_tool_notify_capabilities (MetaWaylandTabletTool *tool,
 
   capabilities = input_device_get_capabilities (tool->device);
 
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE))
-    zwp_tablet_tool_v1_send_capability (resource,
-                                        ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE))
-    zwp_tablet_tool_v1_send_capability (resource,
-                                        ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_TILT))
-    zwp_tablet_tool_v1_send_capability (resource,
-                                        ZWP_TABLET_TOOL_V1_CAPABILITY_TILT);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION))
-    zwp_tablet_tool_v1_send_capability (resource,
-                                        ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER))
-    zwp_tablet_tool_v1_send_capability (resource,
-                                        ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_WHEEL))
-    zwp_tablet_tool_v1_send_capability (resource,
-                                        ZWP_TABLET_TOOL_V1_CAPABILITY_WHEEL);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_PRESSURE))
+    zwp_tablet_tool_v2_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V2_CAPABILITY_PRESSURE);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_DISTANCE))
+    zwp_tablet_tool_v2_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V2_CAPABILITY_DISTANCE);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_TILT))
+    zwp_tablet_tool_v2_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V2_CAPABILITY_TILT);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_ROTATION))
+    zwp_tablet_tool_v2_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V2_CAPABILITY_ROTATION);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_SLIDER))
+    zwp_tablet_tool_v2_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V2_CAPABILITY_SLIDER);
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_WHEEL))
+    zwp_tablet_tool_v2_send_capability (resource,
+                                        ZWP_TABLET_TOOL_V2_CAPABILITY_WHEEL);
 }
 
 static void
@@ -228,18 +228,18 @@ meta_wayland_tablet_tool_notify_details (MetaWaylandTabletTool *tool,
 {
   guint64 serial;
 
-  zwp_tablet_tool_v1_send_type (resource,
+  zwp_tablet_tool_v2_send_type (resource,
                                 input_device_tool_get_type (tool->device_tool));
 
   serial = (guint64) clutter_input_device_tool_get_serial (tool->device_tool);
-  zwp_tablet_tool_v1_send_hardware_serial (resource, (uint32_t) (serial >> 32),
+  zwp_tablet_tool_v2_send_hardware_serial (resource, (uint32_t) (serial >> 32),
                                            (uint32_t) (serial & G_MAXUINT32));
 
   meta_wayland_tablet_tool_notify_capabilities (tool, resource);
 
-  /* FIXME: zwp_tablet_tool_v1.hardware_id_wacom missing */
+  /* FIXME: zwp_tablet_tool_v2.hardware_id_wacom missing */
 
-  zwp_tablet_tool_v1_send_done (resource);
+  zwp_tablet_tool_v2_send_done (resource);
 }
 
 static void
@@ -274,7 +274,7 @@ broadcast_proximity_in (MetaWaylandTabletTool *tool)
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_proximity_in (resource, tool->proximity_serial,
+      zwp_tablet_tool_v2_send_proximity_in (resource, tool->proximity_serial,
                                             tablet_resource,
                                             tool->focus_surface->resource);
     }
@@ -287,7 +287,7 @@ broadcast_proximity_out (MetaWaylandTabletTool *tool)
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_proximity_out (resource);
+      zwp_tablet_tool_v2_send_proximity_out (resource);
     }
 }
 
@@ -300,7 +300,7 @@ broadcast_frame (MetaWaylandTabletTool *tool,
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_frame (resource, _time);
+      zwp_tablet_tool_v2_send_frame (resource, _time);
     }
 }
 
@@ -410,7 +410,7 @@ meta_wayland_tablet_tool_free (MetaWaylandTabletTool *tool)
 
   wl_resource_for_each_safe (resource, next, &tool->resource_list)
     {
-      zwp_tablet_tool_v1_send_removed (resource);
+      zwp_tablet_tool_v2_send_removed (resource);
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
@@ -471,7 +471,7 @@ tool_destroy (struct wl_client   *client,
   wl_resource_destroy (resource);
 }
 
-static const struct zwp_tablet_tool_v1_interface tool_interface = {
+static const struct zwp_tablet_tool_v2_interface tool_interface = {
   tool_set_cursor,
   tool_destroy
 };
@@ -490,7 +490,7 @@ emit_proximity_in (MetaWaylandTabletTool *tool,
   tablet_resource = meta_wayland_tablet_lookup_resource (tool->current_tablet,
                                                          client);
 
-  zwp_tablet_tool_v1_send_proximity_in (resource, tool->proximity_serial,
+  zwp_tablet_tool_v2_send_proximity_in (resource, tool->proximity_serial,
                                         tablet_resource, tool->focus_surface->resource);
 }
 
@@ -502,7 +502,7 @@ meta_wayland_tablet_tool_create_new_resource (MetaWaylandTabletTool *tool,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &zwp_tablet_tool_v1_interface,
+  resource = wl_resource_create (client, &zwp_tablet_tool_v2_interface,
                                  wl_resource_get_version (seat_resource), id);
   wl_resource_set_implementation (resource, &tool_interface,
                                   tool, unbind_resource);
@@ -622,7 +622,7 @@ broadcast_motion (MetaWaylandTabletTool *tool,
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_motion (resource, sx, sy);
+      zwp_tablet_tool_v2_send_motion (resource, sx, sy);
     }
 }
 
@@ -636,7 +636,7 @@ broadcast_down (MetaWaylandTabletTool *tool,
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_down (resource, tool->down_serial);
+      zwp_tablet_tool_v2_send_down (resource, tool->down_serial);
     }
 }
 
@@ -648,7 +648,7 @@ broadcast_up (MetaWaylandTabletTool *tool,
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_up (resource);
+      zwp_tablet_tool_v2_send_up (resource);
     }
 }
 
@@ -677,10 +677,10 @@ broadcast_button (MetaWaylandTabletTool *tool,
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_button (resource, tool->button_serial, button,
+      zwp_tablet_tool_v2_send_button (resource, tool->button_serial, button,
                                       event->type == CLUTTER_BUTTON_PRESS ?
-                                      ZWP_TABLET_TOOL_V1_BUTTON_STATE_PRESSED :
-                                      ZWP_TABLET_TOOL_V1_BUTTON_STATE_RELEASED);
+                                      ZWP_TABLET_TOOL_V2_BUTTON_STATE_PRESSED :
+                                      ZWP_TABLET_TOOL_V2_BUTTON_STATE_RELEASED);
     }
 }
 
@@ -706,13 +706,13 @@ broadcast_axis (MetaWaylandTabletTool *tool,
       switch (axis)
         {
         case CLUTTER_INPUT_AXIS_PRESSURE:
-          zwp_tablet_tool_v1_send_pressure (resource, value);
+          zwp_tablet_tool_v2_send_pressure (resource, value);
           break;
         case CLUTTER_INPUT_AXIS_DISTANCE:
-          zwp_tablet_tool_v1_send_distance (resource, value);
+          zwp_tablet_tool_v2_send_distance (resource, value);
           break;
         case CLUTTER_INPUT_AXIS_SLIDER:
-          zwp_tablet_tool_v1_send_slider (resource, value);
+          zwp_tablet_tool_v2_send_slider (resource, value);
           break;
         default:
           break;
@@ -738,7 +738,7 @@ broadcast_tilt (MetaWaylandTabletTool *tool,
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_tilt (resource,
+      zwp_tablet_tool_v2_send_tilt (resource,
                                     (int32_t) (xtilt * DEGREES_PRECISION),
                                     (int32_t) (ytilt * DEGREES_PRECISION));
     }
@@ -761,7 +761,7 @@ broadcast_rotation (MetaWaylandTabletTool *tool,
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
-      zwp_tablet_tool_v1_send_rotation (resource,
+      zwp_tablet_tool_v2_send_rotation (resource,
                                         (int32_t) rotation * DEGREES_PRECISION);
     }
 }
@@ -779,15 +779,15 @@ broadcast_axes (MetaWaylandTabletTool *tool,
   device = clutter_event_get_source_device (event);
   capabilities = input_device_get_capabilities (device);
 
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_PRESSURE))
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_PRESSURE))
     broadcast_axis (tool, event, CLUTTER_INPUT_AXIS_PRESSURE);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_DISTANCE))
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_DISTANCE))
     broadcast_axis (tool, event, CLUTTER_INPUT_AXIS_DISTANCE);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_TILT))
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_TILT))
     broadcast_tilt (tool, event);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_ROTATION))
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_ROTATION))
     broadcast_rotation (tool, event);
-  if (capabilities & (1 << ZWP_TABLET_TOOL_V1_CAPABILITY_SLIDER))
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_SLIDER))
     broadcast_axis (tool, event, CLUTTER_INPUT_AXIS_SLIDER);
 
   /* FIXME: Missing wp_tablet_tool.wheel */

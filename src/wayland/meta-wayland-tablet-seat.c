@@ -28,7 +28,7 @@
 #include <glib.h>
 
 #include <wayland-server.h>
-#include "tablet-unstable-v1-server-protocol.h"
+#include "tablet-unstable-v2-server-protocol.h"
 
 #include "meta-wayland-private.h"
 #include "meta-wayland-tablet-seat.h"
@@ -55,7 +55,7 @@ notify_tool_added (MetaWaylandTabletSeat *tablet_seat,
   if (!tool_resource)
     return;
 
-  zwp_tablet_seat_v1_send_tool_added (client_resource, tool_resource);
+  zwp_tablet_seat_v2_send_tool_added (client_resource, tool_resource);
 }
 
 static void
@@ -82,7 +82,7 @@ notify_tablet_added (MetaWaylandTabletSeat *tablet_seat,
   if (!resource)
     return;
 
-  zwp_tablet_seat_v1_send_tablet_added (client_resource, resource);
+  zwp_tablet_seat_v2_send_tablet_added (client_resource, resource);
   meta_wayland_tablet_notify (tablet, resource);
 }
 
@@ -155,7 +155,7 @@ tablet_seat_destroy (struct wl_client   *client,
   wl_resource_destroy (resource);
 }
 
-static const struct zwp_tablet_seat_v1_interface tablet_seat_interface = {
+static const struct zwp_tablet_seat_v2_interface tablet_seat_interface = {
   tablet_seat_destroy
 };
 
@@ -215,7 +215,7 @@ meta_wayland_tablet_seat_create_new_resource (MetaWaylandTabletSeat *tablet_seat
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &zwp_tablet_seat_v1_interface,
+  resource = wl_resource_create (client, &zwp_tablet_seat_v2_interface,
                                  wl_resource_get_version (manager_resource),
                                  id);
   wl_resource_set_implementation (resource, &tablet_seat_interface,

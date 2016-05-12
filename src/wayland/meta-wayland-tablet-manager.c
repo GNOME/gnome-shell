@@ -28,7 +28,7 @@
 #include <glib.h>
 
 #include <wayland-server.h>
-#include "tablet-unstable-v1-server-protocol.h"
+#include "tablet-unstable-v2-server-protocol.h"
 
 #include "meta-wayland-private.h"
 #include "meta-wayland-tablet-manager.h"
@@ -79,7 +79,7 @@ tablet_manager_destroy (struct wl_client   *client,
   wl_resource_destroy (resource);
 }
 
-static const struct zwp_tablet_manager_v1_interface tablet_manager_interface = {
+static const struct zwp_tablet_manager_v2_interface tablet_manager_interface = {
   tablet_manager_get_tablet_seat,
   tablet_manager_destroy
 };
@@ -94,7 +94,7 @@ bind_tablet_manager (struct wl_client *client,
   MetaWaylandTabletManager *tablet_manager = compositor->tablet_manager;
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &zwp_tablet_manager_v1_interface,
+  resource = wl_resource_create (client, &zwp_tablet_manager_v2_interface,
                                  MIN (version, 1), id);
   wl_resource_set_implementation (resource, &tablet_manager_interface,
                                   tablet_manager, unbind_resource);
@@ -116,7 +116,7 @@ meta_wayland_tablet_manager_new (MetaWaylandCompositor *compositor)
   wl_list_init (&tablet_manager->resource_list);
 
   wl_global_create (tablet_manager->wl_display,
-                    &zwp_tablet_manager_v1_interface, 1,
+                    &zwp_tablet_manager_v2_interface, 1,
                     compositor, bind_tablet_manager);
 
   return tablet_manager;

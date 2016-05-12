@@ -28,7 +28,7 @@
 #include <glib.h>
 
 #include <wayland-server.h>
-#include "tablet-unstable-v1-server-protocol.h"
+#include "tablet-unstable-v2-server-protocol.h"
 
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-private.h"
@@ -61,7 +61,7 @@ meta_wayland_tablet_free (MetaWaylandTablet *tablet)
 
   wl_resource_for_each_safe (resource, next, &tablet->resource_list)
     {
-      zwp_tablet_v1_send_removed (resource);
+      zwp_tablet_v2_send_removed (resource);
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
@@ -76,7 +76,7 @@ tablet_destroy (struct wl_client   *client,
   wl_resource_destroy (resource);
 }
 
-static const struct zwp_tablet_v1_interface tablet_interface = {
+static const struct zwp_tablet_v2_interface tablet_interface = {
   tablet_destroy
 };
 
@@ -87,15 +87,15 @@ meta_wayland_tablet_notify (MetaWaylandTablet  *tablet,
   ClutterInputDevice *device = tablet->device;
   guint vid, pid;
 
-  zwp_tablet_v1_send_name (resource, clutter_input_device_get_device_name (device));
+  zwp_tablet_v2_send_name (resource, clutter_input_device_get_device_name (device));
 
   if (sscanf (clutter_input_device_get_vendor_id (device), "%x", &vid) == 1 &&
       sscanf (clutter_input_device_get_product_id (device), "%x", &pid) == 1)
-    zwp_tablet_v1_send_id (resource, vid, pid);
+    zwp_tablet_v2_send_id (resource, vid, pid);
 
-  /* FIXME: zwp_tablet_v1.path missing */
+  /* FIXME: zwp_tablet_v2.path missing */
 
-  zwp_tablet_v1_send_done (resource);
+  zwp_tablet_v2_send_done (resource);
 }
 
 struct wl_resource *
@@ -106,7 +106,7 @@ meta_wayland_tablet_create_new_resource (MetaWaylandTablet  *tablet,
 {
   struct wl_resource *resource;
 
-  resource = wl_resource_create (client, &zwp_tablet_v1_interface,
+  resource = wl_resource_create (client, &zwp_tablet_v2_interface,
                                  wl_resource_get_version (seat_resource), id);
   wl_resource_set_implementation (resource, &tablet_interface,
                                   tablet, unbind_resource);
