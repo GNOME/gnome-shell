@@ -223,18 +223,20 @@ static void
 meta_wayland_tablet_tool_notify_details (MetaWaylandTabletTool *tool,
                                          struct wl_resource    *resource)
 {
-  guint64 serial;
+  guint64 serial, id;
 
   zwp_tablet_tool_v2_send_type (resource,
                                 input_device_tool_get_type (tool->device_tool));
 
-  serial = (guint64) clutter_input_device_tool_get_serial (tool->device_tool);
+  serial = clutter_input_device_tool_get_serial (tool->device_tool);
   zwp_tablet_tool_v2_send_hardware_serial (resource, (uint32_t) (serial >> 32),
                                            (uint32_t) (serial & G_MAXUINT32));
 
-  meta_wayland_tablet_tool_notify_capabilities (tool, resource);
+  id = clutter_input_device_tool_get_id (tool->device_tool);
+  zwp_tablet_tool_v2_send_hardware_id_wacom (resource, (uint32_t) (id >> 32),
+                                             (uint32_t) (id & G_MAXUINT32));
 
-  /* FIXME: zwp_tablet_tool_v2.hardware_id_wacom missing */
+  meta_wayland_tablet_tool_notify_capabilities (tool, resource);
 
   zwp_tablet_tool_v2_send_done (resource);
 }
