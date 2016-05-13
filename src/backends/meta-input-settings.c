@@ -837,15 +837,22 @@ monitors_changed_cb (MetaMonitorManager *monitor_manager,
 {
   MetaInputSettingsPrivate *priv;
   ClutterInputDevice *device;
-  GSettings *settings;
+  DeviceMappingInfo *info;
   GHashTableIter iter;
 
   priv = meta_input_settings_get_instance_private (input_settings);
   g_hash_table_iter_init (&iter, priv->mappable_devices);
 
   while (g_hash_table_iter_next (&iter, (gpointer *) &device,
-                                 (gpointer *) &settings))
-    update_device_display (input_settings, settings, device);
+                                 (gpointer *) &info))
+    update_device_display (input_settings, info->settings, device);
+}
+
+static void
+device_mapping_info_free (DeviceMappingInfo *info)
+{
+  g_object_unref (info->settings);
+  g_slice_free (DeviceMappingInfo, info);
 }
 
 static gboolean
@@ -863,16 +870,15 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
 
   priv = meta_input_settings_get_instance_private (input_settings);
 
-  info = g_new0 (DeviceMappingInfo, 1);
+  info = g_slice_new0 (DeviceMappingInfo);
   info->input_settings = input_settings;
   info->device = device;
   info->settings = settings;
 
-  g_signal_connect_data (settings, "changed",
-                         G_CALLBACK (mapped_device_changed_cb),
-                         info, (GClosureNotify) g_free, 0);
+  g_signal_connect (settings, "changed",
+                    G_CALLBACK (mapped_device_changed_cb), info);
 
-  g_hash_table_insert (priv->mappable_devices, device, settings);
+  g_hash_table_insert (priv->mappable_devices, device, info);
 
   apply_mappable_device_settings (input_settings, info);
 
@@ -989,7 +995,7 @@ meta_input_settings_init (MetaInputSettings *settings)
                     G_CALLBACK (meta_input_settings_changed_cb), settings);
 
   priv->mappable_devices =
-    g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) g_object_unref);
+    g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) device_mapping_info_free);
 
   priv->monitor_manager = g_object_ref (meta_monitor_manager_get ());
   g_signal_connect (priv->monitor_manager, "monitors-changed",
