@@ -27,6 +27,10 @@
 
 #include <clutter/clutter.h>
 
+#ifdef HAVE_LIBWACOM
+#include <libwacom/libwacom.h>
+#endif
+
 #define META_TYPE_INPUT_SETTINGS             (meta_input_settings_get_type ())
 #define META_INPUT_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_INPUT_SETTINGS, MetaInputSettings))
 #define META_INPUT_SETTINGS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_INPUT_SETTINGS, MetaInputSettingsClass))
@@ -101,5 +105,10 @@ MetaInputSettings * meta_input_settings_create (void);
 
 GDesktopTabletMapping meta_input_settings_get_tablet_mapping (MetaInputSettings  *settings,
                                                               ClutterInputDevice *device);
+
+#ifdef HAVE_LIBWACOM
+WacomDevice * meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
+                                                           ClutterInputDevice *device);
+#endif
 
 #endif /* META_INPUT_SETTINGS_PRIVATE_H */

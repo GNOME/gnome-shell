@@ -48,6 +48,9 @@ struct _DeviceMappingInfo
   MetaInputSettings *input_settings;
   ClutterInputDevice *device;
   GSettings *settings;
+#ifdef HAVE_LIBWACOM
+  WacomDevice *wacom_device;
+#endif
 };
 
 struct _MetaInputSettingsPrivate
@@ -62,6 +65,10 @@ struct _MetaInputSettingsPrivate
   GSettings *keyboard_settings;
 
   GHashTable *mappable_devices;
+
+#ifdef HAVE_LIBWACOM
+  WacomDeviceDatabase *wacom_db;
+#endif
 };
 
 typedef void (*ConfigBoolFunc)   (MetaInputSettings  *input_settings,
@@ -121,6 +128,9 @@ meta_input_settings_dispose (GObject *object)
     }
 
   g_clear_object (&priv->monitor_manager);
+
+  if (priv->wacom_db)
+    libwacom_database_destroy (priv->wacom_db);
 
   G_OBJECT_CLASS (meta_input_settings_parent_class)->dispose (object);
 }
@@ -851,6 +861,10 @@ monitors_changed_cb (MetaMonitorManager *monitor_manager,
 static void
 device_mapping_info_free (DeviceMappingInfo *info)
 {
+#ifdef HAVE_LIBWACOM
+  if (info->wacom_device)
+    libwacom_destroy (info->wacom_device);
+#endif
   g_object_unref (info->settings);
   g_slice_free (DeviceMappingInfo, info);
 }
@@ -874,6 +888,26 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
   info->input_settings = input_settings;
   info->device = device;
   info->settings = settings;
+
+#ifdef HAVE_LIBWACOM
+  if (clutter_input_device_get_device_type (device) == CLUTTER_TABLET_DEVICE ||
+      clutter_input_device_get_device_type (device) == CLUTTER_PAD_DEVICE)
+    {
+      WacomError *error = libwacom_error_new ();
+
+      info->wacom_device = libwacom_new_from_path (priv->wacom_db,
+                                                   clutter_input_device_get_device_node (device),
+                                                   WFALLBACK_NONE, error);
+      if (!info->wacom_device)
+        {
+          g_warning ("Could not get tablet information for '%s': %s",
+                     clutter_input_device_get_device_name (device),
+                     libwacom_error_get_message (error));
+        }
+
+      libwacom_error_free (&error);
+    }
+#endif
 
   g_signal_connect (settings, "changed",
                     G_CALLBACK (mapped_device_changed_cb), info);
@@ -1000,6 +1034,13 @@ meta_input_settings_init (MetaInputSettings *settings)
   priv->monitor_manager = g_object_ref (meta_monitor_manager_get ());
   g_signal_connect (priv->monitor_manager, "monitors-changed",
                     G_CALLBACK (monitors_changed_cb), settings);
+
+  priv->wacom_db = libwacom_database_new ();
+  if (!priv->wacom_db)
+    {
+      g_warning ("Could not create database of Wacom devices, "
+                 "expect tablets to misbehave");
+    }
 }
 
 MetaInputSettings *
@@ -1037,3 +1078,22 @@ meta_input_settings_get_tablet_mapping (MetaInputSettings  *settings,
 
   return g_settings_get_enum (info->settings, "mapping");
 }
+
+#ifdef HAVE_LIBWACOM
+WacomDevice *
+meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
+                                             ClutterInputDevice *device)
+{
+  MetaInputSettingsPrivate *priv;
+  DeviceMappingInfo *info;
+
+  g_return_val_if_fail (META_IS_INPUT_SETTINGS (settings), NULL);
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  priv = meta_input_settings_get_instance_private (settings);
+  info = g_hash_table_lookup (priv->mappable_devices, device);
+  g_return_val_if_fail (info != NULL, NULL);
+
+  return info->wacom_device;
+}
+#endif /* HAVE_LIBWACOM */
