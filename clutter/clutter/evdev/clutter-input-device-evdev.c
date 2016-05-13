@@ -142,12 +142,14 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
   ClutterDeviceManagerEvdev *manager_evdev;
   gchar *vendor, *product;
   gint device_id, n_rings = 0, n_strips = 0, n_groups = 1;
+  gchar *node_path;
 
   type = _clutter_input_device_evdev_determine_type (libinput_device);
   vendor = g_strdup_printf ("%.4x", libinput_device_get_id_vendor (libinput_device));
   product = g_strdup_printf ("%.4x", libinput_device_get_id_product (libinput_device));
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (manager);
   device_id = _clutter_device_manager_evdev_acquire_device_id (manager_evdev);
+  node_path = g_strdup_printf ("/dev/input/%s", libinput_device_get_sysname (libinput_device));
 
   if (libinput_device_has_capability (libinput_device,
                                       LIBINPUT_DEVICE_CAP_TABLET_PAD))
@@ -169,6 +171,7 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
                          "n-rings", n_rings,
                          "n-strips", n_strips,
                          "n-mode-groups", n_groups,
+                         "device-node", node_path,
                          NULL);
 
   device->seat = seat;
