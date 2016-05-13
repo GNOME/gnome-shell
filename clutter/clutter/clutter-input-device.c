@@ -74,6 +74,7 @@ enum
   PROP_N_RINGS,
   PROP_N_MODE_GROUPS,
   PROP_DEVICE_NODE,
+  PROP_MAPPING_MODE,
 
   PROP_LAST
 };
@@ -216,6 +217,10 @@ clutter_input_device_set_property (GObject      *gobject,
       self->node_path = g_value_dup_string (value);
       break;
 
+    case PROP_MAPPING_MODE:
+      self->mapping_mode = g_value_get_enum (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -290,6 +295,10 @@ clutter_input_device_get_property (GObject    *gobject,
 
     case PROP_DEVICE_NODE:
       g_value_set_string (value, self->node_path);
+      break;
+
+    case PROP_MAPPING_MODE:
+      g_value_set_enum (value, self->mapping_mode);
       break;
 
     default:
@@ -496,6 +505,14 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                          P_("Device node path"),
                          NULL,
                          CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_MAPPING_MODE] =
+    g_param_spec_enum ("mapping-mode",
+                       P_("Device mapping mode"),
+                       P_("Device mapping mode"),
+                       CLUTTER_TYPE_INPUT_DEVICE_MAPPING,
+                       CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE,
+                       CLUTTER_PARAM_READWRITE);
 
   gobject_class->dispose = clutter_input_device_dispose;
   gobject_class->set_property = clutter_input_device_set_property;
@@ -2164,4 +2181,31 @@ clutter_input_device_get_device_node (ClutterInputDevice *device)
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
 
   return device->node_path;
+}
+
+ClutterInputDeviceMapping
+clutter_input_device_get_mapping_mode (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device),
+                        CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE);
+  g_return_val_if_fail (clutter_input_device_get_device_type (device) ==
+                        CLUTTER_TABLET_DEVICE,
+                        CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE);
+
+  return device->mapping_mode;
+}
+
+void
+clutter_input_device_set_mapping_mode (ClutterInputDevice        *device,
+                                       ClutterInputDeviceMapping  mapping)
+{
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (clutter_input_device_get_device_type (device) ==
+                    CLUTTER_TABLET_DEVICE);
+
+  if (device->mapping_mode == mapping)
+    return;
+
+  device->mapping_mode = mapping;
+  g_object_notify (G_OBJECT (device), "mapping-mode");
 }

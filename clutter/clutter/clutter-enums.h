@@ -1531,6 +1531,11 @@ typedef enum {
   CLUTTER_INPUT_DEVICE_PAD_SOURCE_FINGER,
 } ClutterInputDevicePadSource;
 
+typedef enum {
+  CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE,
+  CLUTTER_INPUT_DEVICE_MAPPING_RELATIVE,
+} ClutterInputDeviceMapping;
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ENUMS_H__ */

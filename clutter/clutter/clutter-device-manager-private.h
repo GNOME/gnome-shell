@@ -139,6 +139,8 @@ struct _ClutterInputDevice
   gint n_strips;
   gint n_mode_groups;
 
+  ClutterInputDeviceMapping mapping_mode;
+
   guint has_cursor : 1;
   guint is_enabled : 1;
 };

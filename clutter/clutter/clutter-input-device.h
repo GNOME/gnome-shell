@@ -150,6 +150,13 @@ gint                    clutter_input_device_get_n_mode_groups  (ClutterInputDev
 CLUTTER_AVAILABLE_IN_ALL
 const gchar *           clutter_input_device_get_device_node    (ClutterInputDevice *device);
 
+CLUTTER_AVAILABLE_IN_ALL
+ClutterInputDeviceMapping clutter_input_device_get_mapping_mode (ClutterInputDevice *device);
+
+CLUTTER_AVAILABLE_IN_ALL
+void                      clutter_input_device_set_mapping_mode (ClutterInputDevice        *device,
+                                                                 ClutterInputDeviceMapping  mapping);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_INPUT_DEVICE_H__ */
