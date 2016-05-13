@@ -246,6 +246,16 @@ meta_input_settings_native_set_tablet_mapping (MetaInputSettings     *settings,
                                                ClutterInputDevice    *device,
                                                GDesktopTabletMapping  mapping)
 {
+  ClutterInputDeviceMapping dev_mapping;
+
+  if (mapping == G_DESKTOP_TABLET_MAPPING_ABSOLUTE)
+    dev_mapping = CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE;
+  else if (mapping == G_DESKTOP_TABLET_MAPPING_RELATIVE)
+    dev_mapping = CLUTTER_INPUT_DEVICE_MAPPING_RELATIVE;
+  else
+    return;
+
+  clutter_input_device_set_mapping_mode (device, dev_mapping);
 }
 
 static void
