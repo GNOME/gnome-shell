@@ -596,6 +596,26 @@ meta_input_settings_find_output (MetaInputSettings  *input_settings,
 }
 
 static void
+update_tablet_keep_aspect (MetaInputSettings  *input_settings,
+                           GSettings          *settings,
+                           ClutterInputDevice *device)
+{
+  MetaInputSettingsClass *input_settings_class;
+  MetaOutput *output = NULL;
+  gboolean keep_aspect;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+    return;
+
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  keep_aspect = g_settings_get_boolean (settings, "keep-aspect");
+  output = meta_input_settings_find_output (input_settings, settings, device);
+
+  input_settings_class->set_tablet_keep_aspect (input_settings, device,
+                                                output, keep_aspect);
+}
+
+static void
 update_device_display (MetaInputSettings  *input_settings,
                        GSettings          *settings,
                        ClutterInputDevice *device)
@@ -604,6 +624,10 @@ update_device_display (MetaInputSettings  *input_settings,
   MetaInputSettingsPrivate *priv;
   gfloat matrix[6] = { 1, 0, 0, 0, 1, 0 };
   MetaOutput *output;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_TOUCHSCREEN_DEVICE)
+    return;
 
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
@@ -614,6 +638,78 @@ update_device_display (MetaInputSettings  *input_settings,
                                              output, matrix);
 
   input_settings_class->set_matrix (input_settings, device, matrix);
+
+  /* Ensure the keep-aspect mapping is updated */
+  update_tablet_keep_aspect (input_settings, settings, device);
+}
+
+static void
+update_tablet_mapping (MetaInputSettings  *input_settings,
+                       GSettings          *settings,
+                       ClutterInputDevice *device)
+{
+  MetaInputSettingsClass *input_settings_class;
+  GDesktopTabletMapping mapping;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+    return;
+
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  mapping = g_settings_get_enum (settings, "mapping");
+
+  settings_device_set_uint_setting (input_settings, device,
+                                    input_settings_class->set_tablet_mapping,
+                                    mapping);
+
+  /* Relative mapping disables keep-aspect/display */
+  update_tablet_keep_aspect (input_settings, settings, device);
+  update_device_display (input_settings, settings, device);
+}
+
+static void
+update_tablet_area (MetaInputSettings  *input_settings,
+                    GSettings          *settings,
+                    ClutterInputDevice *device)
+{
+  MetaInputSettingsClass *input_settings_class;
+  GVariant *variant;
+  const gdouble *area;
+  gsize n_elems;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+    return;
+
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  variant = g_settings_get_value (settings, "area");
+
+  area = g_variant_get_fixed_array (variant, &n_elems, sizeof (gdouble));
+  if (n_elems == 4)
+    {
+      input_settings_class->set_tablet_area (input_settings, device,
+                                             area[0], area[1],
+                                             area[2], area[3]);
+    }
+
+  g_variant_unref (variant);
+}
+
+static void
+update_tablet_left_handed (MetaInputSettings  *input_settings,
+                           GSettings          *settings,
+                           ClutterInputDevice *device)
+{
+  MetaInputSettingsClass *input_settings_class;
+  gboolean enabled;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+    return;
+
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  enabled = g_settings_get_boolean (settings, "left-handed");
+
+  settings_device_set_bool_setting (input_settings, device,
+                                    input_settings_class->set_left_handed,
+                                    enabled);
 }
 
 static void
@@ -671,6 +767,30 @@ mapped_device_changed_cb (GSettings         *settings,
 {
   if (strcmp (key, "display") == 0)
     update_device_display (info->input_settings, settings, info->device);
+  else if (strcmp (key, "mapping") == 0)
+    update_tablet_mapping (info->input_settings, settings, info->device);
+  else if (strcmp (key, "area") == 0)
+    update_tablet_area (info->input_settings, settings, info->device);
+  else if (strcmp (key, "keep-aspect") == 0)
+    update_tablet_keep_aspect (info->input_settings, settings, info->device);
+  else if (strcmp (key, "left-handed") == 0)
+    update_tablet_left_handed (info->input_settings, settings, info->device);
+}
+
+static void
+apply_mappable_device_settings (MetaInputSettings *input_settings,
+                                DeviceMappingInfo *info)
+{
+  update_device_display (input_settings, info->settings, info->device);
+
+  if (clutter_input_device_get_device_type (info->device) == CLUTTER_TABLET_DEVICE ||
+      clutter_input_device_get_device_type (info->device) == CLUTTER_PAD_DEVICE)
+    {
+      update_tablet_mapping (input_settings, info->settings, info->device);
+      update_tablet_area (input_settings, info->settings, info->device);
+      update_tablet_keep_aspect (input_settings, info->settings, info->device);
+      update_tablet_left_handed (input_settings, info->settings, info->device);
+    }
 }
 
 static GSettings *
@@ -691,7 +811,8 @@ lookup_device_settings (ClutterInputDevice *device)
   else if (type == CLUTTER_TABLET_DEVICE ||
            type == CLUTTER_PEN_DEVICE ||
            type == CLUTTER_ERASER_DEVICE ||
-           type == CLUTTER_CURSOR_DEVICE)
+           type == CLUTTER_CURSOR_DEVICE ||
+           type == CLUTTER_PAD_DEVICE)
     {
       group = "tablets";
       schema = "org.gnome.desktop.peripherals.tablet";
@@ -753,7 +874,7 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
 
   g_hash_table_insert (priv->mappable_devices, device, settings);
 
-  update_device_display (input_settings, settings, device);
+  apply_mappable_device_settings (input_settings, info);
 
   return TRUE;
 }
