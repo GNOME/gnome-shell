@@ -88,12 +88,11 @@ meta_wayland_tablet_notify (MetaWaylandTablet  *tablet,
   guint vid, pid;
 
   zwp_tablet_v2_send_name (resource, clutter_input_device_get_device_name (device));
+  zwp_tablet_v2_send_path (resource, clutter_input_device_get_device_node (device));
 
   if (sscanf (clutter_input_device_get_vendor_id (device), "%x", &vid) == 1 &&
       sscanf (clutter_input_device_get_product_id (device), "%x", &pid) == 1)
     zwp_tablet_v2_send_id (resource, vid, pid);
-
-  /* FIXME: zwp_tablet_v2.path missing */
 
   zwp_tablet_v2_send_done (resource);
 }
