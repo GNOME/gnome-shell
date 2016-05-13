@@ -40,6 +40,8 @@ const NMAccessPointSecurity = {
     WPA2_ENT: 6
 };
 
+const MAX_DEVICE_ITEMS = 4;
+
 // small optimization, to avoid using [] all the time
 const NM80211Mode = NetworkManager['80211Mode'];
 const NM80211ApFlags = NetworkManager['80211ApFlags'];
@@ -1562,6 +1564,73 @@ const NMVPNSection = new Lang.Class({
 });
 Signals.addSignalMethods(NMVPNSection.prototype);
 
+const DeviceCategory = new Lang.Class({
+    Name: 'DeviceCategory',
+    Extends: PopupMenu.PopupMenuSection,
+
+    _init: function(category) {
+        this.parent();
+
+        this._category = category;
+
+        this.devices = [];
+
+        this.section = new PopupMenu.PopupMenuSection();
+        this.section.box.connect('actor-added', Lang.bind(this, this._sync));
+        this.section.box.connect('actor-removed', Lang.bind(this, this._sync));
+        this.addMenuItem(this.section);
+
+        this._summaryItem = new PopupMenu.PopupSubMenuMenuItem('', true);
+        this._summaryItem.icon.icon_name = this._getSummaryIcon();
+        this.addMenuItem(this._summaryItem);
+
+        this._summaryItem.menu.addSettingsAction(_('Network Settings'),
+                                                 'gnome-network-panel.desktop');
+        this._summaryItem.actor.hide();
+
+    },
+
+    _sync: function() {
+        let nDevices = this.section.box.get_children().reduce(
+            function(prev, child) {
+                return prev + (child.visible ? 1 : 0);
+            }, 0);
+        this._summaryItem.label.text = this._getSummaryLabel(nDevices);
+        let shouldSummarize = nDevices > MAX_DEVICE_ITEMS;
+        this._summaryItem.actor.visible = shouldSummarize;
+        this.section.actor.visible = !shouldSummarize;
+    },
+
+    _getSummaryIcon: function() {
+        switch(this._category) {
+            case NMConnectionCategory.WIRED:
+                return 'network-wired-symbolic';
+            case NMConnectionCategory.WIRELESS:
+            case NMConnectionCategory.WWAN:
+                return 'network-wireless-symbolic';
+        }
+        return '';
+    },
+
+    _getSummaryLabel: function(nDevices) {
+        switch(this._category) {
+            case NMConnectionCategory.WIRED:
+                return ngettext("%s Wired Connection",
+                                "%s Wired Connections",
+                                nDevices).format(nDevices);
+            case NMConnectionCategory.WIRELESS:
+                return ngettext("%s Wi-Fi Connection",
+                                "%s Wi-Fi Connections",
+                                nDevices).format(nDevices);
+            case NMConnectionCategory.WWAN:
+                return ngettext("%s Modem Connection",
+                                "%s Modem Connections",
+                                nDevices).format(nDevices);
+        }
+        return '';
+    }
+});
+
 const NMApplet = new Lang.Class({
     Name: 'NMApplet',
     Extends: PanelMenu.SystemIndicator,
@@ -1605,15 +1674,6 @@ const NMApplet = new Lang.Class({
         this._tryLateInit();
     },
 
-    _createDeviceCategory: function() {
-        let category = {
-            section: new PopupMenu.PopupMenuSection(),
-            devices: [ ],
-        };
-        this.menu.addMenuItem(category.section);
-        return category;
-    },
-
     _tryLateInit: function() {
         if (!this._client || !this._settings)
             return;
@@ -1630,9 +1690,13 @@ const NMApplet = new Lang.Class({
         this._nmDevices = [];
         this._devices = { };
 
-        this._devices.wired = this._createDeviceCategory();
-        this._devices.wireless = this._createDeviceCategory();
-        this._devices.wwan = this._createDeviceCategory();
+        let categories = [NMConnectionCategory.WIRED,
+                          NMConnectionCategory.WIRELESS,
+                          NMConnectionCategory.WWAN];
+        for (let category of categories) {
+            this._devices[category] = new DeviceCategory(category);
+            this.menu.addMenuItem(this._devices[category]);
+        }
 
         this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
