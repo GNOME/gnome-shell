@@ -99,4 +99,7 @@ GType meta_input_settings_get_type (void) G_GNUC_CONST;
 
 MetaInputSettings * meta_input_settings_create (void);
 
+GDesktopTabletMapping meta_input_settings_get_tablet_mapping (MetaInputSettings  *settings,
+                                                              ClutterInputDevice *device);
+
 #endif /* META_INPUT_SETTINGS_PRIVATE_H */
