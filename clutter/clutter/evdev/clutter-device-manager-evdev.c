@@ -550,6 +550,24 @@ notify_relative_motion (ClutterInputDevice *input_device,
   queue_event (event);
 }
 
+static void
+notify_relative_tool_motion (ClutterInputDevice *input_device,
+                             guint64             time_us,
+                             gfloat              dx,
+                             gfloat              dy,
+                             gdouble            *axes)
+{
+  ClutterEvent *event;
+  gfloat x, y;
+
+  x = input_device->current_x + dx;
+  y = input_device->current_y + dy;
+  event = new_absolute_motion_event (input_device, time_us, x, y, axes);
+  _clutter_evdev_event_set_relative_motion (event, dx, dy, 0, 0);
+
+  queue_event (event);
+}
+
 static ClutterScrollDirection
 discrete_to_direction (gdouble discrete_x,
                        gdouble discrete_y)
@@ -2137,12 +2155,15 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
     case LIBINPUT_EVENT_TABLET_TOOL_AXIS:
       {
         guint64 time;
-        double x, y, *axes;
+        double x, y, dx, dy, *axes;
         gfloat stage_width, stage_height;
         ClutterStage *stage;
         struct libinput_event_tablet_tool *tablet_event =
           libinput_event_get_tablet_tool_event (event);
+        ClutterInputDeviceEvdev *evdev_device;
+
         device = libinput_device_get_user_data (libinput_device);
+        evdev_device = CLUTTER_INPUT_DEVICE_EVDEV (device);
 
         stage = _clutter_input_device_get_stage (device);
         if (!stage)
@@ -2156,10 +2177,22 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         stage_height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
 
         time = libinput_event_tablet_tool_get_time_usec (tablet_event);
-        x = libinput_event_tablet_tool_get_x_transformed (tablet_event, stage_width);
-        y = libinput_event_tablet_tool_get_y_transformed (tablet_event, stage_height);
 
-        notify_absolute_motion (device, time, x, y, axes);
+        if (clutter_input_device_get_mapping_mode (device) == CLUTTER_INPUT_DEVICE_MAPPING_RELATIVE ||
+            clutter_input_device_tool_get_tool_type (evdev_device->last_tool) == CLUTTER_INPUT_DEVICE_TOOL_MOUSE ||
+            clutter_input_device_tool_get_tool_type (evdev_device->last_tool) == CLUTTER_INPUT_DEVICE_TOOL_LENS)
+          {
+            dx = libinput_event_tablet_tool_get_dx (tablet_event);
+            dy = libinput_event_tablet_tool_get_dy (tablet_event);
+            notify_relative_tool_motion (device, time, dx, dy, axes);
+          }
+        else
+          {
+            x = libinput_event_tablet_tool_get_x_transformed (tablet_event, stage_width);
+            y = libinput_event_tablet_tool_get_y_transformed (tablet_event, stage_height);
+            notify_absolute_motion (device, time, x, y, axes);
+          }
+
         break;
       }
     case LIBINPUT_EVENT_TABLET_TOOL_PROXIMITY:
