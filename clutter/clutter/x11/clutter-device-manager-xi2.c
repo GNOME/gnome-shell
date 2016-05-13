@@ -321,6 +321,42 @@ get_device_ids (ClutterBackendX11  *backend_x11,
   return TRUE;
 }
 
+static gchar *
+get_device_node_path (ClutterBackendX11  *backend_x11,
+                      XIDeviceInfo       *info)
+{
+  gulong nitems, bytes_after;
+  guchar *data;
+  int rc, format;
+  Atom prop, type;
+  gchar *node_path;
+
+  prop = XInternAtom (backend_x11->xdpy, "Device Node", False);
+  if (prop == None)
+    return NULL;
+
+  clutter_x11_trap_x_errors ();
+
+  rc = XIGetProperty (backend_x11->xdpy,
+                      info->deviceid, prop, 0, 1024, False,
+                      XA_STRING, &type, &format, &nitems, &bytes_after,
+                      (guchar **) &data);
+
+  if (clutter_x11_untrap_x_errors ())
+    return NULL;
+
+  if (rc != Success || type != XA_STRING || format != 8)
+    {
+      XFree (data);
+      return FALSE;
+    }
+
+  node_path = g_strdup ((char *) data);
+  XFree (data);
+
+  return node_path;
+}
+
 static ClutterInputDevice *
 create_device (ClutterDeviceManagerXI2 *manager_xi2,
                ClutterBackendX11       *backend_x11,
@@ -331,7 +367,7 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
   ClutterInputMode mode;
   gboolean is_enabled;
   guint num_touches = 0;
-  gchar *vendor_id = NULL, *product_id = NULL;
+  gchar *vendor_id = NULL, *product_id = NULL, *node_path = NULL;
 
   if (info->use == XIMasterKeyboard || info->use == XISlaveKeyboard)
     {
@@ -391,7 +427,10 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
 
   if (info->use != XIMasterKeyboard &&
       info->use != XIMasterPointer)
-    get_device_ids (backend_x11, info, &vendor_id, &product_id);
+    {
+      get_device_ids (backend_x11, info, &vendor_id, &product_id);
+      node_path = get_device_node_path (backend_x11, info);
+    }
 
   retval = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_XI2,
                          "name", info->name,
@@ -404,6 +443,7 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
                          "enabled", is_enabled,
                          "vendor-id", vendor_id,
                          "product-id", product_id,
+                         "device-node", node_path,
                          NULL);
 
   translate_device_classes (backend_x11->xdpy, retval,
