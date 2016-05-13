@@ -147,6 +147,9 @@ gint                    clutter_input_device_get_n_strips       (ClutterInputDev
 CLUTTER_AVAILABLE_IN_ALL
 gint                    clutter_input_device_get_n_mode_groups  (ClutterInputDevice *device);
 
+CLUTTER_AVAILABLE_IN_ALL
+const gchar *           clutter_input_device_get_device_node    (ClutterInputDevice *device);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_INPUT_DEVICE_H__ */

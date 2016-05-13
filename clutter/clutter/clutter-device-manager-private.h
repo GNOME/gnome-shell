@@ -131,6 +131,7 @@ struct _ClutterInputDevice
 
   gchar *vendor_id;
   gchar *product_id;
+  gchar *node_path;
 
   GPtrArray *tools;
 

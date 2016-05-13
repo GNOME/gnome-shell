@@ -73,6 +73,7 @@ enum
   PROP_N_STRIPS,
   PROP_N_RINGS,
   PROP_N_MODE_GROUPS,
+  PROP_DEVICE_NODE,
 
   PROP_LAST
 };
@@ -211,6 +212,10 @@ clutter_input_device_set_property (GObject      *gobject,
       self->n_mode_groups = g_value_get_int (value);
       break;
 
+    case PROP_DEVICE_NODE:
+      self->node_path = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -281,6 +286,10 @@ clutter_input_device_get_property (GObject    *gobject,
 
     case PROP_N_MODE_GROUPS:
       g_value_set_int (value, self->n_mode_groups);
+      break;
+
+    case PROP_DEVICE_NODE:
+      g_value_set_string (value, self->node_path);
       break;
 
     default:
@@ -480,6 +489,13 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
                       P_("Number of mode groups"),
                       0, G_MAXINT, 0,
                       CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
+
+  obj_props[PROP_DEVICE_NODE] =
+    g_param_spec_string ("device-node",
+                         P_("Device node path"),
+                         P_("Device node path"),
+                         NULL,
+                         CLUTTER_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   gobject_class->dispose = clutter_input_device_dispose;
   gobject_class->set_property = clutter_input_device_set_property;
@@ -2140,4 +2156,12 @@ clutter_input_device_get_n_mode_groups (ClutterInputDevice *device)
                         CLUTTER_PAD_DEVICE, 0);
 
   return device->n_mode_groups;
+}
+
+const gchar *
+clutter_input_device_get_device_node (ClutterInputDevice *device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  return device->node_path;
 }
