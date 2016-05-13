@@ -34,6 +34,7 @@
 #include <meta/meta-idle-monitor.h>
 #include "meta-cursor-renderer.h"
 #include "meta-monitor-manager-private.h"
+#include "meta-input-settings-private.h"
 #include "backends/meta-pointer-constraint.h"
 #include "backends/meta-renderer.h"
 #include "core/util-private.h"
@@ -145,5 +146,7 @@ ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 void meta_backend_monitors_changed (MetaBackend *backend);
 
 gboolean meta_is_stage_views_enabled (void);
+
+MetaInputSettings *meta_backend_get_input_settings (MetaBackend *backend);
 
 #endif /* META_BACKEND_PRIVATE_H */

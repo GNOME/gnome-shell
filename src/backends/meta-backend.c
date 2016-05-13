@@ -764,3 +764,11 @@ meta_is_stage_views_enabled (void)
 
   return strcmp (mutter_stage_views, "1") == 0;
 }
+
+MetaInputSettings *
+meta_backend_get_input_settings (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->input_settings;
+}
