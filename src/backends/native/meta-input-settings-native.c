@@ -242,6 +242,33 @@ meta_input_settings_native_set_keyboard_repeat (MetaInputSettings *settings,
 }
 
 static void
+meta_input_settings_native_set_tablet_mapping (MetaInputSettings     *settings,
+                                               ClutterInputDevice    *device,
+                                               GDesktopTabletMapping  mapping)
+{
+}
+
+static void
+meta_input_settings_native_set_tablet_keep_aspect (MetaInputSettings  *settings,
+                                                   ClutterInputDevice *device,
+                                                   MetaOutput         *output,
+                                                   gboolean            keep_aspect)
+{
+  /* FIXME: Implement */
+}
+
+static void
+meta_input_settings_native_set_tablet_area (MetaInputSettings  *settings,
+                                            ClutterInputDevice *device,
+                                            gdouble             padding_left,
+                                            gdouble             padding_right,
+                                            gdouble             padding_top,
+                                            gdouble             padding_bottom)
+{
+  /* FIXME: Implement */
+}
+
+static void
 meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
 {
   MetaInputSettingsClass *input_settings_class = META_INPUT_SETTINGS_CLASS (klass);
@@ -256,6 +283,10 @@ meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
   input_settings_class->set_scroll_button = meta_input_settings_native_set_scroll_button;
   input_settings_class->set_click_method = meta_input_settings_native_set_click_method;
   input_settings_class->set_keyboard_repeat = meta_input_settings_native_set_keyboard_repeat;
+
+  input_settings_class->set_tablet_mapping = meta_input_settings_native_set_tablet_mapping;
+  input_settings_class->set_tablet_keep_aspect = meta_input_settings_native_set_tablet_keep_aspect;
+  input_settings_class->set_tablet_area = meta_input_settings_native_set_tablet_area;
 }
 
 static void

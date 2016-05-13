@@ -23,6 +23,7 @@
 #define META_INPUT_SETTINGS_PRIVATE_H
 
 #include "display-private.h"
+#include "meta-monitor-manager-private.h"
 
 #include <clutter/clutter.h>
 
@@ -78,6 +79,20 @@ struct _MetaInputSettingsClass
                                 gboolean           repeat,
                                 guint              delay,
                                 guint              interval);
+
+  void (* set_tablet_mapping)        (MetaInputSettings      *settings,
+                                      ClutterInputDevice     *device,
+                                      GDesktopTabletMapping   mapping);
+  void (* set_tablet_keep_aspect)    (MetaInputSettings      *settings,
+                                      ClutterInputDevice     *device,
+                                      MetaOutput             *output,
+                                      gboolean                keep_aspect);
+  void (* set_tablet_area)           (MetaInputSettings      *settings,
+                                      ClutterInputDevice     *device,
+                                      gdouble                 padding_left,
+                                      gdouble                 padding_right,
+                                      gdouble                 padding_top,
+                                      gdouble                 padding_bottom);
 };
 
 GType meta_input_settings_get_type (void) G_GNUC_CONST;
