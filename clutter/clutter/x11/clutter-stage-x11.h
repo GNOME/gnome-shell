@@ -85,9 +85,6 @@ void  _clutter_stage_x11_events_device_changed (ClutterStageX11 *stage_x11,
 /* Private to subclasses */
 void            _clutter_stage_x11_set_user_time                (ClutterStageX11 *stage_x11,
                                                                  guint32          user_time);
-gboolean        _clutter_stage_x11_get_root_coords              (ClutterStageX11 *stage_x11,
-                                                                 gint            *root_x,
-                                                                 gint            *root_y);
 
 G_END_DECLS
 

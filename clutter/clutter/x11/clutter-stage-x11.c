@@ -1531,29 +1531,3 @@ _clutter_stage_x11_set_user_time (ClutterStageX11 *stage_x11,
 
   set_user_time (backend_x11, stage_x11, user_time);
 }
-
-gboolean
-_clutter_stage_x11_get_root_coords (ClutterStageX11 *stage_x11,
-                                    gint            *root_x,
-                                    gint            *root_y)
-{
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_x11);
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (stage_cogl->backend);
-  gint return_val;
-  Window child;
-  gint tx, ty;
-
-  return_val = XTranslateCoordinates (backend_x11->xdpy,
-                                      stage_x11->xwin,
-                                      backend_x11->xwin_root,
-                                      0, 0, &tx, &ty,
-                                      &child);
-
-  if (root_x)
-    *root_x = tx;
-
-  if (root_y)
-    *root_y = ty;
-
-  return (return_val == 0);
-}
