@@ -71,6 +71,19 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageX11,
 #define _NET_WM_STATE_ADD           1    /* add/set property */
 #define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
 
+#define CLUTTER_STAGE_X11_EVENT_MASK \
+  StructureNotifyMask | \
+  FocusChangeMask | \
+  ExposureMask | \
+  PropertyChangeMask | \
+  EnterWindowMask | \
+  LeaveWindowMask | \
+  KeyPressMask | \
+  KeyReleaseMask | \
+  ButtonPressMask | \
+  ButtonReleaseMask | \
+  PointerMotionMask
+
 static void
 send_wmspec_change_state (ClutterBackendX11 *backend_x11,
                           Window             window,

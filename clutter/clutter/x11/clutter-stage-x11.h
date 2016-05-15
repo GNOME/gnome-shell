@@ -76,19 +76,6 @@ struct _ClutterStageX11Class
   ClutterStageCoglClass parent_class;
 };
 
-#define CLUTTER_STAGE_X11_EVENT_MASK \
-  StructureNotifyMask | \
-  FocusChangeMask | \
-  ExposureMask | \
-  PropertyChangeMask | \
-  EnterWindowMask | \
-  LeaveWindowMask | \
-  KeyPressMask | \
-  KeyReleaseMask | \
-  ButtonPressMask | \
-  ButtonReleaseMask | \
-  PointerMotionMask
-
 GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 
 void  _clutter_stage_x11_events_device_changed (ClutterStageX11 *stage_x11,
