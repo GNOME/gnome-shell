@@ -432,7 +432,7 @@ clutter_stage_x11_unrealize (ClutterStageWindow *stage_window)
   clutter_stage_window_parent_iface->unrealize (stage_window);
 }
 
-void
+static void
 _clutter_stage_x11_update_foreign_event_mask (CoglOnscreen *onscreen,
                                               guint32 event_mask,
                                               void *user_data)
