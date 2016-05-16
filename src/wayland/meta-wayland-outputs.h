@@ -41,10 +41,11 @@ struct _MetaWaylandOutput
 {
   GObject                   parent;
 
-  MetaMonitorInfo          *monitor_info;
   struct wl_global         *global;
-  int                       x, y;
+  MetaMonitorInfo          *monitor_info;
   enum wl_output_transform  transform;
+  guint                     mode_flags;
+  gint                      scale;
 
   GList                    *resources;
 };
