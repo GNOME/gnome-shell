@@ -2224,6 +2224,7 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
   int max_borders[4];
   int center_radius, corner_id;
   CoglHandle buffer, offscreen = COGL_INVALID_HANDLE;
+  CoglError *error = NULL;
 
   /* Get infos from the node */
   if (state->alloc_width < node->box_shadow_min_width ||
@@ -2264,10 +2265,12 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
                                        state->box_shadow_height,
                                        COGL_TEXTURE_NO_SLICING,
                                        COGL_PIXEL_FORMAT_ANY);
-  if (buffer != COGL_INVALID_HANDLE)
-    offscreen = cogl_offscreen_new_with_texture (buffer);
+  if (buffer == NULL)
+    return;
 
-  if (offscreen != COGL_INVALID_HANDLE)
+  offscreen = cogl_offscreen_new_with_texture (buffer);
+
+  if (cogl_framebuffer_allocate (COGL_FRAMEBUFFER (offscreen), &error))
     {
       ClutterActorBox box = { 0, 0, state->box_shadow_width, state->box_shadow_height};
 
@@ -2277,14 +2280,17 @@ st_theme_node_prerender_shadow (StThemeNodePaintState *state)
       cogl_framebuffer_clear4f (offscreen, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 0);
 
       st_theme_node_paint_borders (state, offscreen, &box, 0xFF);
-      cogl_handle_unref (offscreen);
 
       state->box_shadow_pipeline = _st_create_shadow_pipeline (st_theme_node_get_box_shadow (node),
                                                                buffer);
     }
+  else
+    {
+      cogl_error_free (error);
+    }
 
-  if (buffer != COGL_INVALID_HANDLE)
-    cogl_handle_unref (buffer);
+  cogl_handle_unref (offscreen);
+  cogl_handle_unref (buffer);
 }
 
 static void

@@ -241,6 +241,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
 {
   StThemeNodeTransitionPrivate *priv = transition->priv;
   guint width, height;
+  CoglError *catch_error = NULL;
 
   /* template material to avoid unnecessary shader compilation */
   static CoglHandle material_template = COGL_INVALID_HANDLE;
@@ -263,19 +264,33 @@ setup_framebuffers (StThemeNodeTransition *transition,
                                                   COGL_TEXTURE_NO_SLICING,
                                                   COGL_PIXEL_FORMAT_ANY);
 
-  g_return_val_if_fail (priv->old_texture != COGL_INVALID_HANDLE, FALSE);
-  g_return_val_if_fail (priv->new_texture != COGL_INVALID_HANDLE, FALSE);
+  if (priv->old_texture == COGL_INVALID_HANDLE)
+    return FALSE;
+
+  if (priv->new_texture == COGL_INVALID_HANDLE)
+    return FALSE;
 
   if (priv->old_offscreen)
     cogl_handle_unref (priv->old_offscreen);
   priv->old_offscreen = cogl_offscreen_new_with_texture (priv->old_texture);
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (priv->old_offscreen), &catch_error))
+    {
+      cogl_object_unref (priv->old_offscreen);
+      cogl_error_free (catch_error);
+      priv->old_offscreen = COGL_INVALID_HANDLE;
+      return FALSE;
+    }
 
   if (priv->new_offscreen)
     cogl_handle_unref (priv->new_offscreen);
   priv->new_offscreen = cogl_offscreen_new_with_texture (priv->new_texture);
-
-  g_return_val_if_fail (priv->old_offscreen != COGL_INVALID_HANDLE, FALSE);
-  g_return_val_if_fail (priv->new_offscreen != COGL_INVALID_HANDLE, FALSE);
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (priv->new_offscreen), &catch_error))
+    {
+      cogl_object_unref (priv->new_offscreen);
+      cogl_error_free (catch_error);
+      priv->new_offscreen = COGL_INVALID_HANDLE;
+      return FALSE;
+    }
 
   if (priv->material == NULL)
     {
