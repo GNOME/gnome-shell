@@ -62,8 +62,8 @@ var AgentIface = '<node> \
   </interface> \
 </node>';
 
-var XdgAppIface = '<node> \
-  <interface name="org.freedesktop.XdgApp.PermissionStore"> \
+var PermissionStoreIface = '<node> \
+  <interface name="org.freedesktop.impl.portal.PermissionStore"> \
     <method name="Lookup"> \
       <arg name="table" type="s" direction="in"/> \
       <arg name="id" type="s" direction="in"/> \
@@ -80,7 +80,7 @@ var XdgAppIface = '<node> \
   </interface> \
 </node>';
 
-const PermissionStore = Gio.DBusProxy.makeProxyWrapper(XdgAppIface);
+const PermissionStore = Gio.DBusProxy.makeProxyWrapper(PermissionStoreIface);
 
 const Indicator = new Lang.Class({
     Name: 'LocationIndicator',
@@ -254,8 +254,8 @@ const Indicator = new Lang.Class({
     _connectToPermissionStore: function() {
         this._permStoreProxy = null;
         new PermissionStore(Gio.DBus.session,
-                           'org.freedesktop.XdgApp',
-                           '/org/freedesktop/XdgApp/PermissionStore',
+                           'org.freedesktop.impl.portal.PermissionStore',
+                           '/org/freedesktop/impl/portal/PermissionStore',
                            Lang.bind(this, this._onPermStoreProxyReady));
     },
 
