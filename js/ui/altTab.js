@@ -354,6 +354,59 @@ const AppSwitcherPopup = new Lang.Class({
     }
 });
 
+const CyclerPopup = new Lang.Class({
+    Name: 'CyclerPopup',
+    Extends: SwitcherPopup.SwitcherPopup,
+    Abstract: true,
+
+    _init : function() {
+        this.parent();
+
+        this._items = this._getWindows();
+
+        if (this._items.length == 0)
+            return;
+
+        // We don't show an actual popup, so just provide what SwitcherPopup
+        // expects instead of inheriting from SwitcherList
+        this._switcherList = { actor: new St.Widget(),
+                               highlight: Lang.bind(this, this._highlightItem),
+                               connect: function() {} };
+    },
+
+    _highlightItem: function(index, justOutline) {
+        Main.activateWindow(this._items[index]);
+    },
+
+    _finish: function() {
+        this._highlightItem(this._selectedIndex);
+
+        this.parent();
+    }
+});
+
+
+const GroupCyclerPopup = new Lang.Class({
+    Name: 'GroupCyclerPopup',
+    Extends: CyclerPopup,
+
+    _getWindows: function() {
+        let app = Shell.WindowTracker.get_default().focus_app;
+        return app ? app.get_windows() : [];
+    },
+
+    _keyPressHandler: function(keysym, action) {
+        if (action == Meta.KeyBindingAction.CYCLE_GROUP)
+            this._select(this._next());
+        else if (action == Meta.KeyBindingAction.CYCLE_GROUP_BACKWARD)
+            this._select(this._previous());
+        else
+            return Clutter.EVENT_PROPAGATE;
+
+        return Clutter.EVENT_STOP;
+    }
+});
+
 const WindowSwitcherPopup = new Lang.Class({
     Name: 'WindowSwitcherPopup',
     Extends: SwitcherPopup.SwitcherPopup,
@@ -398,6 +451,32 @@ const WindowSwitcherPopup = new Lang.Class({
         Main.activateWindow(this._items[this._selectedIndex].window);
 
         this.parent();
+    }
+});
+
+const WindowCyclerPopup = new Lang.Class({
+    Name: 'WindowCyclerPopup',
+    Extends: CyclerPopup,
+
+    _init: function() {
+        this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell.window-switcher' });
+        this.parent();
+    },
+
+    _getWindows: function() {
+        let workspace = this._settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
+        return global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
+    },
+
+    _keyPressHandler: function(keysym, action) {
+        if (action == Meta.KeyBindingAction.CYCLE_WINDOWS)
+            this._select(this._next());
+        else if (action == Meta.KeyBindingAction.CYCLE_WINDOWS_BACKWARD)
+            this._select(this._previous());
+        else
+            return Clutter.EVENT_PROPAGATE;
+
+        return Clutter.EVENT_STOP;
     }
 });
 
