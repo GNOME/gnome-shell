@@ -2020,13 +2020,24 @@ const NMApplet = new Lang.Class({
     },
 
     _updateIcon: function() {
-        if (!this._client.networking_enabled || !this._mainConnection) {
+        if (!this._client.networking_enabled) {
             this._primaryIndicator.visible = false;
         } else {
-            let dev = this._mainConnection._primaryDevice;
-            this._primaryIndicator.visible = (dev != null);
-            if (dev)
+            let dev = null;
+            if (this._mainConnection)
+                dev = this._mainConnection._primaryDevice;
+
+            let state = this._client.get_state();
+            let connected = state == NetworkManager.State.CONNECTED_GLOBAL;
+            this._primaryIndicator.visible = (dev != null) || connected;
+            if (dev) {
                 this._primaryIndicator.icon_name = dev.getIndicatorIcon();
+            } else if (connected) {
+                if (this._client.connectivity == NetworkManager.ConnectivityState.FULL)
+                    this._primaryIndicator.icon_name = 'network-wired-symbolic';
+                else
+                    this._primaryIndicator.icon_name = 'network-wired-no-route-symbolic';
+            }
         }
 
         this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
