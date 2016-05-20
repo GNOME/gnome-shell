@@ -28,11 +28,21 @@
 
 struct _MetaStageNative
 {
-  ClutterStageEglNative parent;
+  ClutterStageCogl parent;
 };
 
-G_DEFINE_TYPE (MetaStageNative, meta_stage_native,
-               CLUTTER_TYPE_STAGE_EGL_NATIVE)
+static void
+clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaStageNative, meta_stage_native,
+                         CLUTTER_TYPE_STAGE_COGL,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
+                                                clutter_stage_window_iface_init))
+static gboolean
+meta_stage_native_can_clip_redraws (ClutterStageWindow *stage_window)
+{
+  return TRUE;
+}
 
 static void
 meta_stage_native_init (MetaStageNative *stage_native)
@@ -42,4 +52,10 @@ meta_stage_native_init (MetaStageNative *stage_native)
 static void
 meta_stage_native_class_init (MetaStageNativeClass *klass)
 {
+}
+
+static void
+clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
+{
+  iface->can_clip_redraws = meta_stage_native_can_clip_redraws;
 }

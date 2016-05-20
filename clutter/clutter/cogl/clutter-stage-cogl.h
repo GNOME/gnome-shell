@@ -23,6 +23,8 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageCogl         ClutterStageCogl;
 typedef struct _ClutterStageCoglClass    ClutterStageCoglClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ClutterStageCogl, g_object_unref)
+
 struct _ClutterStageCogl
 {
   GObject parent_instance;
@@ -70,6 +72,7 @@ struct _ClutterStageCoglClass
   GObjectClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_MUTTER
 GType _clutter_stage_cogl_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

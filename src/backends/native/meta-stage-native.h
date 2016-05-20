@@ -29,6 +29,6 @@
 
 #define META_TYPE_STAGE_NATIVE (meta_stage_native_get_type ())
 G_DECLARE_FINAL_TYPE (MetaStageNative, meta_stage_native,
-                      META, STAGE_NATIVE, ClutterStageEglNative)
+                      META, STAGE_NATIVE, ClutterStageCogl)
 
 #endif /* META_STAGE_NATIVE_H */

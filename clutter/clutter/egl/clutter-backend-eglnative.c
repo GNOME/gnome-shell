@@ -53,8 +53,6 @@
 #include "clutter-egl.h"
 #endif
 
-#include "clutter-stage-eglnative.h"
-
 G_DEFINE_TYPE (ClutterBackendEglNative, clutter_backend_egl_native, CLUTTER_TYPE_BACKEND);
 
 static void

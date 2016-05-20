@@ -27,7 +27,7 @@
 
 #include "clutter-backend.h"
 #include "clutter-macros.h"
-#include "egl/clutter-stage-eglnative.h"
+#include "cogl/clutter-stage-cogl.h"
 #include "x11/clutter-stage-x11.h"
 
 CLUTTER_AVAILABLE_IN_MUTTER

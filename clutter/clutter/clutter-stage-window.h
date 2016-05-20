@@ -90,6 +90,7 @@ struct _ClutterStageWindowIface
   int               (* get_scale_factor)        (ClutterStageWindow *stage_window);
 };
 
+CLUTTER_AVAILABLE_IN_MUTTER
 GType _clutter_stage_window_get_type (void) G_GNUC_CONST;
 
 ClutterActor *    _clutter_stage_window_get_wrapper        (ClutterStageWindow *window);

@@ -487,8 +487,8 @@ egl_source_h = \
 	egl/clutter-egl.h		\
 	$(NULL)
 
-egl_source_h_priv = egl/clutter-backend-eglnative.h egl/clutter-stage-eglnative.h
-egl_source_c = egl/clutter-backend-eglnative.c egl/clutter-stage-eglnative.c
+egl_source_h_priv = egl/clutter-backend-eglnative.h
+egl_source_c = egl/clutter-backend-eglnative.c
 
 wayland_compositor_source_h = \
 	wayland/clutter-wayland-compositor.h		\
