@@ -40,6 +40,8 @@
 typedef struct _ClutterStageEglNative         ClutterStageEglNative;
 typedef struct _ClutterStageEglNativeClass    ClutterStageEglNativeClass;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ClutterStageEglNative, g_object_unref)
+
 struct _ClutterStageEglNative
 {
   ClutterStageCogl parent_instance;
@@ -50,6 +52,7 @@ struct _ClutterStageEglNativeClass
   ClutterStageCoglClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_MUTTER
 GType _clutter_stage_eglnative_get_type (void) G_GNUC_CONST;
 
 #endif /* __CLUTTER_STAGE_EGL_NATIVE_H__ */

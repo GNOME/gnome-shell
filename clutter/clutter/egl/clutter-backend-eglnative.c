@@ -75,11 +75,8 @@ static void
 clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
 
   gobject_class->dispose = clutter_backend_egl_native_dispose;
-
-  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_EGL_NATIVE;
 }
 
 static void

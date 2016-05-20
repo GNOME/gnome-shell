@@ -29,6 +29,7 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-renderer.h"
 #include "backends/native/meta-clutter-backend-native.h"
+#include "backends/native/meta-stage-native.h"
 #include "clutter/clutter.h"
 #include "meta/meta-backend.h"
 
@@ -50,6 +51,17 @@ meta_clutter_backend_native_get_renderer (ClutterBackend  *clutter_backend,
   return meta_renderer_create_cogl_renderer (renderer);
 }
 
+static ClutterStageWindow *
+meta_clutter_backend_native_create_stage (ClutterBackend  *backend,
+                                          ClutterStage    *wrapper,
+                                          GError         **error)
+{
+  return g_object_new (META_TYPE_STAGE_NATIVE,
+                       "backend", backend,
+                       "wrapper", wrapper,
+                       NULL);
+}
+
 static void
 meta_clutter_backend_native_init (MetaClutterBackendNative *clutter_backend_nativen)
 {
@@ -61,4 +73,5 @@ meta_clutter_backend_native_class_init (MetaClutterBackendNativeClass *klass)
   ClutterBackendClass *clutter_backend_class = CLUTTER_BACKEND_CLASS (klass);
 
   clutter_backend_class->get_renderer = meta_clutter_backend_native_get_renderer;
+  clutter_backend_class->create_stage = meta_clutter_backend_native_create_stage;
 }

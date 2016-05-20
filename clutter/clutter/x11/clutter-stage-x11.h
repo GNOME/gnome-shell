@@ -42,6 +42,8 @@ G_BEGIN_DECLS
 typedef struct _ClutterStageX11         ClutterStageX11;
 typedef struct _ClutterStageX11Class    ClutterStageX11Class;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (ClutterStageX11, g_object_unref)
+
 typedef enum
 {
   STAGE_X11_WITHDRAWN = 1 << 1
@@ -76,6 +78,7 @@ struct _ClutterStageX11Class
   ClutterStageCoglClass parent_class;
 };
 
+CLUTTER_AVAILABLE_IN_MUTTER
 GType _clutter_stage_x11_get_type (void) G_GNUC_CONST;
 
 void  _clutter_stage_x11_events_device_changed (ClutterStageX11 *stage_x11,

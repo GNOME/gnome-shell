@@ -27,6 +27,8 @@
 
 #include "clutter-backend.h"
 #include "clutter-macros.h"
+#include "egl/clutter-stage-eglnative.h"
+#include "x11/clutter-stage-x11.h"
 
 CLUTTER_AVAILABLE_IN_MUTTER
 void clutter_set_custom_backend_func (ClutterBackend *(* func) (void));

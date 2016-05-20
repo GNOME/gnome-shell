@@ -467,37 +467,6 @@ clutter_backend_real_get_features (ClutterBackend *backend)
   return flags;
 }
 
-static ClutterStageWindow *
-clutter_backend_real_create_stage (ClutterBackend  *backend,
-                                   ClutterStage    *wrapper,
-                                   GError         **error)
-{
-  ClutterBackendClass *klass;
-
-  if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_MULTIPLE))
-    {
-      ClutterStageManager *manager = clutter_stage_manager_get_default ();
-
-      if (clutter_stage_manager_get_default_stage (manager) != NULL)
-        {
-          g_set_error (error, CLUTTER_INIT_ERROR,
-                       CLUTTER_INIT_ERROR_BACKEND,
-                       _("The backend of type '%s' does not support "
-                         "creating multiple stages"),
-                       G_OBJECT_TYPE_NAME (backend));
-          return NULL;
-        }
-    }
-
-  klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  g_assert (klass->stage_window_type != G_TYPE_INVALID);
-
-  return g_object_new (klass->stage_window_type,
-                       "backend", backend,
-                       "wrapper", wrapper,
-                       NULL);
-}
-
 static const char *allowed_backends;
 
 static ClutterBackend * (* custom_backend_func) (void);
@@ -667,8 +636,6 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   gobject_class->dispose = clutter_backend_dispose;
   gobject_class->finalize = clutter_backend_finalize;
 
-  klass->stage_window_type = G_TYPE_INVALID;
-
   /**
    * ClutterBackend::resolution-changed:
    * @backend: the #ClutterBackend that emitted the signal
@@ -732,7 +699,6 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   klass->create_context = clutter_backend_real_create_context;
   klass->ensure_context = clutter_backend_real_ensure_context;
   klass->get_features = clutter_backend_real_get_features;
-  klass->create_stage = clutter_backend_real_create_stage;
 }
 
 static void

@@ -65,8 +65,6 @@ struct _ClutterBackendClass
   /*< private >*/
   GObjectClass parent_class;
 
-  GType stage_window_type;
-
   /* vfuncs */
   gboolean              (* pre_parse)          (ClutterBackend  *backend,
                                                 GError         **error);
@@ -138,8 +136,11 @@ void                    _clutter_backend_free_event_data                (Clutter
 gboolean                _clutter_backend_translate_event                (ClutterBackend         *backend,
                                                                          gpointer                native,
                                                                          ClutterEvent           *event);
+
+CLUTTER_AVAILABLE_IN_MUTTER
 void                    _clutter_backend_add_event_translator           (ClutterBackend         *backend,
                                                                          ClutterEventTranslator *translator);
+
 void                    _clutter_backend_remove_event_translator        (ClutterBackend         *backend,
                                                                          ClutterEventTranslator *translator);
 

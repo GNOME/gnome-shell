@@ -127,6 +127,8 @@ libmutter_la_SOURCES =				\
 	backends/x11/meta-monitor-manager-xrandr.h	\
 	backends/x11/meta-renderer-x11.c		\
 	backends/x11/meta-renderer-x11.h		\
+	backends/x11/meta-stage-x11-nested.c		\
+	backends/x11/meta-stage-x11-nested.h		\
 	core/meta-accel-parse.c			\
 	core/meta-accel-parse.h			\
 	meta/barrier.h				\
@@ -351,6 +353,8 @@ libmutter_la_SOURCES +=					\
 	backends/native/meta-launcher.h			\
 	backends/native/meta-renderer-native.c		\
 	backends/native/meta-renderer-native.h		\
+	backends/native/meta-stage-native.c		\
+	backends/native/meta-stage-native.h		\
 	backends/native/dbus-utils.c			\
 	backends/native/dbus-utils.h			\
 	$(NULL)

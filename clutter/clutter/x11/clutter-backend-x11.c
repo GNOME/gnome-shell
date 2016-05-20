@@ -829,7 +829,7 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
   gobject_class->dispose = clutter_backend_x11_dispose;
   gobject_class->finalize = clutter_backend_x11_finalize;
 
-  backend_class->stage_window_type = CLUTTER_TYPE_STAGE_X11;
+  backend_class->create_stage = clutter_backend_x11_create_stage;
 
   backend_class->pre_parse = clutter_backend_x11_pre_parse;
   backend_class->post_parse = clutter_backend_x11_post_parse;
@@ -840,7 +840,6 @@ clutter_backend_x11_class_init (ClutterBackendX11Class *klass)
 
   backend_class->get_renderer = clutter_backend_x11_get_renderer;
   backend_class->get_display = clutter_backend_x11_get_display;
-  backend_class->create_stage = clutter_backend_x11_create_stage;
 
   backend_class->get_keymap_direction = clutter_backend_x11_get_keymap_direction;
 }

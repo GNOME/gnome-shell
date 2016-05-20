@@ -29,7 +29,9 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-renderer.h"
 #include "backends/x11/meta-clutter-backend-x11.h"
+#include "backends/x11/meta-stage-x11-nested.h"
 #include "clutter/clutter.h"
+#include "clutter/clutter-mutter.h"
 #include "meta/meta-backend.h"
 
 struct _MetaClutterBackendX11
@@ -50,6 +52,32 @@ meta_clutter_backend_x11_get_renderer (ClutterBackend  *clutter_backend,
   return meta_renderer_create_cogl_renderer (renderer);
 }
 
+static ClutterStageWindow *
+meta_clutter_backend_x11_create_stage (ClutterBackend  *backend,
+                                       ClutterStage    *wrapper,
+                                       GError         **error)
+{
+  ClutterEventTranslator *translator;
+  ClutterStageWindow *stage;
+  GType stage_type;
+
+  if (meta_is_wayland_compositor ())
+    stage_type = META_TYPE_STAGE_X11_NESTED;
+  else
+    stage_type  = CLUTTER_TYPE_STAGE_X11;
+
+  stage = g_object_new (stage_type,
+			"backend", backend,
+			"wrapper", wrapper,
+			NULL);
+
+  /* the X11 stage does event translation */
+  translator = CLUTTER_EVENT_TRANSLATOR (stage);
+  _clutter_backend_add_event_translator (backend, translator);
+
+  return stage;
+}
+
 static void
 meta_clutter_backend_x11_init (MetaClutterBackendX11 *clutter_backend_x11)
 {
@@ -61,4 +89,5 @@ meta_clutter_backend_x11_class_init (MetaClutterBackendX11Class *klass)
   ClutterBackendClass *clutter_backend_class = CLUTTER_BACKEND_CLASS (klass);
 
   clutter_backend_class->get_renderer = meta_clutter_backend_x11_get_renderer;
+  clutter_backend_class->create_stage = meta_clutter_backend_x11_create_stage;
 }
