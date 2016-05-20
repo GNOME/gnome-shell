@@ -347,15 +347,6 @@ meta_backend_real_ungrab_device (MetaBackend *backend,
 }
 
 static void
-meta_backend_real_update_screen_size (MetaBackend *backend,
-                                      int width, int height)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  clutter_actor_set_size (priv->stage, width, height);
-}
-
-static void
 meta_backend_real_select_stage_events (MetaBackend *backend)
 {
   /* Do nothing */
@@ -393,7 +384,6 @@ meta_backend_class_init (MetaBackendClass *klass)
   klass->create_cursor_renderer = meta_backend_real_create_cursor_renderer;
   klass->grab_device = meta_backend_real_grab_device;
   klass->ungrab_device = meta_backend_real_ungrab_device;
-  klass->update_screen_size = meta_backend_real_update_screen_size;
   klass->select_stage_events = meta_backend_real_select_stage_events;
   klass->get_relative_motion_deltas = meta_backend_real_get_relative_motion_deltas;
 

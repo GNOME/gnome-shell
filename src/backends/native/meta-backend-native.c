@@ -380,6 +380,15 @@ meta_backend_native_get_relative_motion_deltas (MetaBackend *backend,
 }
 
 static void
+meta_backend_native_update_screen_size (MetaBackend *backend,
+                                        int width, int height)
+{
+  ClutterActor *stage = meta_backend_get_stage (backend);
+
+  clutter_actor_set_size (stage, width, height);
+}
+
+static void
 meta_backend_native_class_init (MetaBackendNativeClass *klass)
 {
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
@@ -401,6 +410,7 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->get_keymap = meta_backend_native_get_keymap;
   backend_class->lock_layout_group = meta_backend_native_lock_layout_group;
   backend_class->get_relative_motion_deltas = meta_backend_native_get_relative_motion_deltas;
+  backend_class->update_screen_size = meta_backend_native_update_screen_size;
 }
 
 static void

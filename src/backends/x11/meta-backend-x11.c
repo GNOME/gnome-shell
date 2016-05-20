@@ -813,10 +813,9 @@ meta_backend_x11_update_screen_size (MetaBackend *backend,
 
   if (priv->mode == META_BACKEND_X11_MODE_NESTED)
     {
-      /* For a nested wayland session, we want to go through Clutter to update the
-       * toplevel window size, rather than doing it directly.
-       */
-      META_BACKEND_CLASS (meta_backend_x11_parent_class)->update_screen_size (backend, width, height);
+      ClutterActor *stage = meta_backend_get_stage (backend);
+
+      clutter_actor_set_size (stage, width, height);
     }
   else
     {
