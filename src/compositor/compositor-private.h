@@ -31,6 +31,7 @@ struct _MetaCompositor
 
   CoglOnscreen          *onscreen;
   CoglFrameClosure      *frame_closure;
+  CoglContext           *context;
 
   /* Used for unredirecting fullscreen windows */
   guint                  disable_unredirect_count;

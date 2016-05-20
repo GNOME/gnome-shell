@@ -1021,8 +1021,7 @@ frame_callback (CoglOnscreen  *onscreen,
            * is fairly fast, so calling it twice and subtracting to get a
            * nearly-zero number is acceptable, if a litle ugly.
            */
-          CoglContext *context = cogl_framebuffer_get_context (COGL_FRAMEBUFFER (onscreen));
-          gint64 current_cogl_time = cogl_get_clock_time (context);
+          gint64 current_cogl_time = cogl_get_clock_time (compositor->context);
           gint64 current_monotonic_time = g_get_monotonic_time ();
 
           presentation_time =
@@ -1052,6 +1051,7 @@ meta_pre_paint_func (gpointer data)
                                                                     frame_callback,
                                                                     compositor,
                                                                     NULL);
+      compositor->context = cogl_framebuffer_get_context (COGL_FRAMEBUFFER (compositor->onscreen));
     }
 
   if (compositor->windows == NULL)
@@ -1105,6 +1105,7 @@ static gboolean
 meta_post_paint_func (gpointer data)
 {
   MetaCompositor *compositor = data;
+  CoglGraphicsResetStatus status;
 
   if (compositor->frame_has_updated_xsurfaces)
     {
@@ -1112,6 +1113,29 @@ meta_post_paint_func (gpointer data)
         compositor->have_x11_sync_object = meta_sync_ring_after_frame ();
 
       compositor->frame_has_updated_xsurfaces = FALSE;
+    }
+
+  status = cogl_get_graphics_reset_status (compositor->context);
+  switch (status)
+    {
+    case COGL_GRAPHICS_RESET_STATUS_NO_ERROR:
+      break;
+
+    case COGL_GRAPHICS_RESET_STATUS_PURGED_CONTEXT_RESET:
+      g_signal_emit_by_name (compositor->display, "gl-video-memory-purged");
+      clutter_actor_queue_redraw (CLUTTER_ACTOR (compositor->stage));
+      break;
+
+    default:
+      /* The ARB_robustness spec says that, on error, the application
+         should destroy the old context and create a new one. Since we
+         don't have the necessary plumbing to do this we'll simply
+         restart the process. Obviously we can't do this when we are
+         a wayland compositor but in that case we shouldn't get here
+         since we don't enable robustness in that case. */
+      g_assert (!meta_is_wayland_compositor ());
+      meta_restart (NULL);
+      break;
     }
 
   return TRUE;

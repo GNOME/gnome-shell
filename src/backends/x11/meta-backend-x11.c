@@ -884,6 +884,8 @@ meta_backend_x11_init (MetaBackendX11 *x11)
 {
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
 
+  clutter_x11_request_reset_on_video_memory_purge ();
+
   /* We do X11 event retrieval ourselves */
   clutter_x11_disable_event_retrieval ();
 
