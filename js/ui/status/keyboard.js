@@ -159,6 +159,14 @@ const InputSourceSettings = new Lang.Class({
         return [];
     },
 
+    get mruSources() {
+        return [];
+    },
+
+    set mruSources(sourcesList) {
+        // do nothing
+    },
+
     get keyboardOptions() {
         return [];
     },
@@ -251,6 +259,7 @@ const InputSourceSessionSettings = new Lang.Class({
 
     _DESKTOP_INPUT_SOURCES_SCHEMA: 'org.gnome.desktop.input-sources',
     _KEY_INPUT_SOURCES: 'sources',
+    _KEY_MRU_SOURCES: 'mru-sources',
     _KEY_KEYBOARD_OPTIONS: 'xkb-options',
     _KEY_PER_WINDOW: 'per-window',
 
@@ -275,6 +284,15 @@ const InputSourceSessionSettings = new Lang.Class({
 
     get inputSources() {
         return this._getSourcesList(this._KEY_INPUT_SOURCES);
+    },
+
+    get mruSources() {
+        return this._getSourcesList(this._KEY_MRU_SOURCES);
+    },
+
+    set mruSources(sourcesList) {
+        let sources = GLib.Variant.new('a(ss)', sourcesList);
+        this._settings.set_value(this._KEY_MRU_SOURCES, sources);
     },
 
     get keyboardOptions() {
@@ -404,6 +422,25 @@ const InputSourceManager = new Lang.Class({
         this._keyboardManager.reapply();
     },
 
+    _updateMruSettings: function() {
+        // If IBus is not ready we don't have a full picture of all
+        // the available sources, so don't update the setting
+        if (!this._ibusReady)
+            return;
+
+        // If IBus is temporarily disabled, don't update the setting
+        if (this._disableIBus)
+            return;
+
+        let sourcesList = [];
+        for (let i = 0; i < this._mruSources.length; ++i) {
+            let source = this._mruSources[i];
+            sourcesList.push([source.type, source.id]);
+        }
+
+        this._settings.mruSources = sourcesList;
+    },
+
     _currentInputSourceChanged: function(newSource) {
         let oldSource;
         [oldSource, this._currentSource] = [this._currentSource, newSource];
@@ -438,6 +475,9 @@ const InputSourceManager = new Lang.Class({
 
         this._ibusManager.setEngine(engine, KeyboardManager.releaseKeyboard);
         this._currentInputSourceChanged(is);
+
+        if (interactive)
+            this._updateMruSettings();
     },
 
     _updateMruSources: function() {
@@ -450,6 +490,27 @@ const InputSourceManager = new Lang.Class({
         if (!this._disableIBus && this._mruSourcesBackup) {
             this._mruSources = this._mruSourcesBackup;
             this._mruSourcesBackup = null;
+        }
+
+        // Initialize from settings when we have no MRU sources list
+        if (this._mruSources.length == 0) {
+            let mruSettings = this._settings.mruSources;
+            for (let i = 0; i < mruSettings.length; i++) {
+                let mruSettingSource = mruSettings[i];
+                let mruSource = null;
+
+                for (let j = 0; j < sourcesList.length; j++) {
+                    let source = sourcesList[j];
+                    if (source.type == mruSettingSource.type &&
+                        source.id == mruSettingSource.id) {
+                        mruSource = source;
+                        break;
+                    }
+                }
+
+                if (mruSource)
+                    this._mruSources.push(mruSource);
+            }
         }
 
         let mruSources = [];
