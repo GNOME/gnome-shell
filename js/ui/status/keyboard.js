@@ -261,9 +261,9 @@ const InputSourceSessionSettings = new Lang.Class({
         this._settings.connect('changed::' + this._KEY_PER_WINDOW, Lang.bind(this, this._emitPerWindowChanged));
     },
 
-    get inputSources() {
+    _getSourcesList: function(key) {
         let sourcesList = [];
-        let sources = this._settings.get_value(this._KEY_INPUT_SOURCES);
+        let sources = this._settings.get_value(key);
         let nSources = sources.n_children();
 
         for (let i = 0; i < nSources; i++) {
@@ -271,6 +271,10 @@ const InputSourceSessionSettings = new Lang.Class({
             sourcesList.push({ type: type, id: id });
         }
         return sourcesList;
+    },
+
+    get inputSources() {
+        return this._getSourcesList(this._KEY_INPUT_SOURCES);
     },
 
     get keyboardOptions() {
