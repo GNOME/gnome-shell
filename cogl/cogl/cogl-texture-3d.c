@@ -361,7 +361,6 @@ allocate_with_size (CoglTexture3D *tex_3d,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-  GLenum gl_error;
   GLenum gl_texture;
 
   internal_format =
@@ -387,8 +386,7 @@ allocate_with_size (CoglTexture3D *tex_3d,
                                    gl_texture,
                                    FALSE);
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glTexImage3D (GL_TEXTURE_3D, 0, gl_intformat,
                      width, height, depth,

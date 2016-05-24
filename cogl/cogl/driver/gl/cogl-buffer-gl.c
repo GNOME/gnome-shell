@@ -142,7 +142,6 @@ recreate_store (CoglBuffer *buffer,
   CoglContext *ctx = buffer->context;
   GLenum gl_target;
   GLenum gl_enum;
-  GLenum gl_error;
 
   /* This assumes the buffer is already bound */
 
@@ -150,8 +149,7 @@ recreate_store (CoglBuffer *buffer,
   gl_enum = update_hints_to_gl_enum (buffer);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glBufferData (gl_target,
                      buffer->size,
@@ -216,7 +214,6 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
   CoglBufferBindTarget target;
   GLenum gl_target;
   CoglContext *ctx = buffer->context;
-  GLenum gl_error;
 
   if (((access & COGL_BUFFER_ACCESS_READ) &&
        !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_READ)) ||
@@ -282,8 +279,7 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
         }
 
       /* Clear any GL errors */
-      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-        ;
+      _cogl_gl_util_clear_gl_errors (ctx);
 
       data = ctx->glMapBufferRange (gl_target,
                                     offset,
@@ -314,8 +310,7 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
         }
 
       /* Clear any GL errors */
-      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-        ;
+      _cogl_gl_util_clear_gl_errors (ctx);
 
       data = ctx->glMapBuffer (gl_target,
                                _cogl_buffer_access_to_gl_enum (access));
@@ -363,7 +358,6 @@ _cogl_buffer_gl_set_data (CoglBuffer *buffer,
   CoglBufferBindTarget target;
   GLenum gl_target;
   CoglContext *ctx = buffer->context;
-  GLenum gl_error;
   CoglBool status = TRUE;
   CoglError *internal_error = NULL;
 
@@ -384,8 +378,7 @@ _cogl_buffer_gl_set_data (CoglBuffer *buffer,
   gl_target = convert_bind_target_to_gl_target (target);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glBufferSubData (gl_target, offset, size, data);
 

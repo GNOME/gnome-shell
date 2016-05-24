@@ -837,7 +837,6 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
 
   if (shader_state->source)
     {
-      GLenum gl_error;
       COGL_STATIC_COUNTER (fragend_arbfp_compile_counter,
                            "arbfp compile counter",
                            "Increments each time a new ARBfp "
@@ -857,14 +856,13 @@ _cogl_pipeline_fragend_arbfp_end (CoglPipeline *pipeline,
 
       GE (ctx, glBindProgram (GL_FRAGMENT_PROGRAM_ARB,
                               shader_state->gl_program));
+      _cogl_gl_util_clear_gl_errors (ctx);
 
-      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-        ;
       ctx->glProgramString (GL_FRAGMENT_PROGRAM_ARB,
                             GL_PROGRAM_FORMAT_ASCII_ARB,
                             shader_state->source->len,
                             shader_state->source->str);
-      if (ctx->glGetError () != GL_NO_ERROR)
+      if (_cogl_gl_util_get_error (ctx) != GL_NO_ERROR)
         {
           g_warning ("\n%s\n%s",
                      shader_state->source->str,

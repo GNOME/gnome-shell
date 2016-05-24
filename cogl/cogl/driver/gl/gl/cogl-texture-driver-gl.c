@@ -207,7 +207,6 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
-  GLenum gl_error;
   CoglBool status = TRUE;
   CoglError *internal_error = NULL;
   int level_width;
@@ -237,8 +236,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   _cogl_texture_get_level_size (texture,
                                 level,
@@ -315,7 +313,6 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
   uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
-  GLenum gl_error;
   CoglBool status = TRUE;
   CoglError *internal_error = NULL;
 
@@ -341,8 +338,7 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glTexImage2D (gl_target, 0,
                      internal_gl_format,
@@ -377,7 +373,6 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
   uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
-  GLenum gl_error;
   CoglBool status = TRUE;
 
   data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0, error);
@@ -394,8 +389,7 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glTexImage3D (gl_target,
                      0, /* level */

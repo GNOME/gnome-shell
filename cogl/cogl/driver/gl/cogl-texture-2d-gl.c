@@ -116,7 +116,6 @@ allocate_with_size (CoglTexture2D *tex_2d,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-  GLenum gl_error;
   GLenum gl_texture;
 
   internal_format =
@@ -149,8 +148,7 @@ allocate_with_size (CoglTexture2D *tex_2d,
                                    tex_2d->is_foreign);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
                      width, height, 0, gl_format, gl_type, NULL);
@@ -286,18 +284,16 @@ allocate_from_egl_image (CoglTexture2D *tex_2d,
   CoglTexture *tex = COGL_TEXTURE (tex_2d);
   CoglContext *ctx = tex->context;
   CoglPixelFormat internal_format = loader->src.egl_image.format;
-  GLenum gl_error;
 
   tex_2d->gl_texture =
     ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, internal_format);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    FALSE);
+  _cogl_gl_util_clear_gl_errors (ctx);
 
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
   ctx->glEGLImageTargetTexture2D (GL_TEXTURE_2D, loader->src.egl_image.image);
-  if (ctx->glGetError () != GL_NO_ERROR)
+  if (_cogl_gl_util_get_error (ctx) != GL_NO_ERROR)
     {
       _cogl_set_error (error,
                        COGL_TEXTURE_ERROR,
@@ -327,7 +323,6 @@ allocate_from_gl_foreign (CoglTexture2D *tex_2d,
   CoglTexture *tex = COGL_TEXTURE (tex_2d);
   CoglContext *ctx = tex->context;
   CoglPixelFormat format = loader->src.gl_foreign.format;
-  GLenum gl_error = 0;
   GLint gl_compressed = GL_FALSE;
   GLenum gl_int_format = 0;
 
@@ -342,12 +337,11 @@ allocate_from_gl_foreign (CoglTexture2D *tex_2d,
     }
 
   /* Make sure binding succeeds */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    loader->src.gl_foreign.gl_handle, TRUE);
-  if (ctx->glGetError () != GL_NO_ERROR)
+  if (_cogl_gl_util_get_error (ctx) != GL_NO_ERROR)
     {
       _cogl_set_error (error,
                        COGL_SYSTEM_ERROR,

@@ -253,12 +253,9 @@ set_glsl_program (GLuint gl_program)
 
   if (ctx->current_gl_program != gl_program)
     {
-      GLenum gl_error;
-
-      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-        ;
+      _cogl_gl_util_clear_gl_errors (ctx);
       ctx->glUseProgram (gl_program);
-      if (ctx->glGetError () == GL_NO_ERROR)
+      if (_cogl_gl_util_get_error (ctx) == GL_NO_ERROR)
         ctx->current_gl_program = gl_program;
       else
         {

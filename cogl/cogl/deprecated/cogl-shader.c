@@ -213,15 +213,14 @@ _cogl_shader_compile_real (CoglHandle handle,
         g_message ("user ARBfp program:\n%s", shader->source);
 
 #ifdef COGL_GL_DEBUG
-      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-        ;
+      _cogl_gl_util_clear_gl_errors (ctx);
 #endif
       ctx->glProgramString (GL_FRAGMENT_PROGRAM_ARB,
                             GL_PROGRAM_FORMAT_ASCII_ARB,
                             strlen (shader->source),
                             shader->source);
 #ifdef COGL_GL_DEBUG
-      gl_error = ctx->glGetError ();
+      gl_error = _cogl_gl_util_get_error (ctx);
       if (gl_error != GL_NO_ERROR)
         {
           g_warning ("%s: GL error (%d): Failed to compile ARBfp:\n%s\n%s",

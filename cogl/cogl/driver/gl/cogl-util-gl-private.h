@@ -45,7 +45,7 @@ _cogl_gl_error_to_string (GLenum error_code);
 #define GE(ctx, x)                      G_STMT_START {  \
   GLenum __err;                                         \
   (ctx)->x;                                             \
-  while ((__err = (ctx)->glGetError ()) != GL_NO_ERROR) \
+  while ((__err = (ctx)->glGetError ()) != GL_NO_ERROR && __err != GL_CONTEXT_LOST) \
     {                                                   \
       g_warning ("%s: GL error (%d): %s\n",             \
                  G_STRLOC,                              \
@@ -56,7 +56,7 @@ _cogl_gl_error_to_string (GLenum error_code);
 #define GE_RET(ret, ctx, x)             G_STMT_START {  \
   GLenum __err;                                         \
   ret = (ctx)->x;                                       \
-  while ((__err = (ctx)->glGetError ()) != GL_NO_ERROR) \
+  while ((__err = (ctx)->glGetError ()) != GL_NO_ERROR && __err != GL_CONTEXT_LOST) \
     {                                                   \
       g_warning ("%s: GL error (%d): %s\n",             \
                  G_STRLOC,                              \
@@ -70,6 +70,12 @@ _cogl_gl_error_to_string (GLenum error_code);
 #define GE_RET(ret, ctx, x) (ret = ((ctx)->x))
 
 #endif /* COGL_GL_DEBUG */
+
+GLenum
+_cogl_gl_util_get_error (CoglContext *ctx);
+
+void
+_cogl_gl_util_clear_gl_errors (CoglContext *ctx);
 
 CoglBool
 _cogl_gl_util_catch_out_of_memory (CoglContext *ctx, CoglError **error);

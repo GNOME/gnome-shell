@@ -228,7 +228,6 @@ allocate_with_size (CoglTextureRectangle *tex_rect,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-  GLenum gl_error;
   GLenum gl_texture;
 
   internal_format =
@@ -256,8 +255,7 @@ allocate_with_size (CoglTextureRectangle *tex_rect,
                                    tex_rect->is_foreign);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0, gl_intformat,
                      width, height, 0, gl_format, gl_type, NULL);
@@ -361,7 +359,6 @@ allocate_from_gl_foreign (CoglTextureRectangle *tex_rect,
   CoglTexture *tex = COGL_TEXTURE (tex_rect);
   CoglContext *ctx = tex->context;
   CoglPixelFormat format = loader->src.gl_foreign.format;
-  GLenum gl_error = 0;
   GLint gl_compressed = GL_FALSE;
   GLenum gl_int_format = 0;
 
@@ -377,12 +374,11 @@ allocate_from_gl_foreign (CoglTextureRectangle *tex_rect,
     }
 
   /* Make sure binding succeeds */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                    loader->src.gl_foreign.gl_handle, TRUE);
-  if (ctx->glGetError () != GL_NO_ERROR)
+  if (_cogl_gl_util_get_error (ctx) != GL_NO_ERROR)
     {
       _cogl_set_error (error,
                        COGL_SYSTEM_ERROR,

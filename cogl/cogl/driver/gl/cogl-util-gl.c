@@ -77,13 +77,33 @@ _cogl_gl_error_to_string (GLenum error_code)
 }
 #endif /* COGL_GL_DEBUG */
 
+GLenum
+_cogl_gl_util_get_error (CoglContext *ctx)
+{
+  GLenum gl_error = ctx->glGetError ();
+
+  if (gl_error != GL_NO_ERROR && gl_error != GL_CONTEXT_LOST)
+    return gl_error;
+  else
+    return GL_NO_ERROR;
+}
+
+void
+_cogl_gl_util_clear_gl_errors (CoglContext *ctx)
+{
+  GLenum gl_error;
+
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR && gl_error != GL_CONTEXT_LOST)
+    ;
+}
+
 CoglBool
 _cogl_gl_util_catch_out_of_memory (CoglContext *ctx, CoglError **error)
 {
   GLenum gl_error;
   CoglBool out_of_memory = FALSE;
 
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR && gl_error != GL_CONTEXT_LOST)
     {
       if (gl_error == GL_OUT_OF_MEMORY)
         out_of_memory = TRUE;

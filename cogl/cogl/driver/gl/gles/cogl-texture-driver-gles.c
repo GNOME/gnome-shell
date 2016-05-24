@@ -201,7 +201,6 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   CoglBitmap *slice_bmp;
   int rowstride;
-  GLenum gl_error;
   CoglBool status = TRUE;
   CoglError *internal_error = NULL;
   int level_width;
@@ -265,8 +264,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   _cogl_texture_get_level_size (texture,
                                 level,
@@ -348,7 +346,6 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
   int bmp_height = cogl_bitmap_get_height (source_bmp);
   CoglBitmap *bmp;
   uint8_t *data;
-  GLenum gl_error;
   CoglError *internal_error = NULL;
   CoglBool status = TRUE;
 
@@ -379,8 +376,7 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
     }
 
   /* Clear any GL errors */
-  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-    ;
+  _cogl_gl_util_clear_gl_errors (ctx);
 
   ctx->glTexImage2D (gl_target, 0,
                      internal_gl_format,
@@ -419,7 +415,6 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
   int bmp_width = cogl_bitmap_get_width (source_bmp);
   int bmp_height = cogl_bitmap_get_height (source_bmp);
   uint8_t *data;
-  GLenum gl_error;
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
@@ -440,8 +435,7 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
          image with a sub-region update */
 
       /* Clear any GL errors */
-      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-        ;
+      _cogl_gl_util_clear_gl_errors (ctx);
 
       ctx->glTexImage3D (gl_target,
                          0, /* level */
@@ -488,8 +482,7 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
             }
 
           /* Clear any GL errors */
-          while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-            ;
+          _cogl_gl_util_clear_gl_errors (ctx);
 
           ctx->glTexSubImage3D (gl_target,
                                 0, /* level */
@@ -524,8 +517,7 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
       _cogl_texture_driver_prep_gl_for_pixels_upload (ctx, rowstride, bpp);
 
       /* Clear any GL errors */
-      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
-        ;
+      _cogl_gl_util_clear_gl_errors (ctx);
 
       ctx->glTexImage3D (gl_target,
                          0, /* level */
