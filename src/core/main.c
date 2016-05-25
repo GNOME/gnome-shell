@@ -167,6 +167,7 @@ static gchar    *opt_client_id;
 static gboolean  opt_replace_wm;
 static gboolean  opt_disable_sm;
 static gboolean  opt_sync;
+static gboolean  opt_x11;
 #ifdef HAVE_WAYLAND
 static gboolean  opt_wayland;
 static gboolean  opt_nested;
@@ -209,6 +210,12 @@ static GOptionEntry meta_options[] = {
     "sync", 0, 0, G_OPTION_ARG_NONE,
     &opt_sync,
     N_("Make X calls synchronous"),
+    NULL
+  },
+  {
+    "x11", 0, 0, G_OPTION_ARG_NONE,
+    &opt_x11,
+    N_("Run as a X11 compositing manager"),
     NULL
   },
 #ifdef HAVE_WAYLAND
@@ -376,20 +383,34 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
                                     MetaBackendType    *backend_type)
 {
 #ifdef HAVE_WAYLAND
-  gboolean run_as_wayland_compositor = opt_wayland;
+  gboolean run_as_wayland_compositor;
+
+  if (opt_x11 && opt_nested)
+    {
+      meta_warning ("Can't run both as a Wayland compositor and a X11 compositing manager\n");
+      meta_exit (META_EXIT_ERROR);
+    }
+
+  run_as_wayland_compositor = opt_wayland || !opt_x11;
 
 #ifdef HAVE_NATIVE_BACKEND
+  if (opt_x11 && opt_display_server)
+    {
+      meta_warning ("Can't run both as a Wayland compositor and a X11 compositing manager\n");
+      meta_exit (META_EXIT_ERROR);
+    }
+
   if (opt_nested && opt_display_server)
     {
       meta_warning ("Can't run both as nested and as a display server\n");
       meta_exit (META_EXIT_ERROR);
     }
 
-  if (!run_as_wayland_compositor)
+  if (!run_as_wayland_compositor && !opt_x11)
     run_as_wayland_compositor = check_for_wayland_session_type ();
 
 #ifdef CLUTTER_WINDOWING_EGL
-  if (opt_display_server || (run_as_wayland_compositor && !opt_nested))
+  if (opt_display_server || (run_as_wayland_compositor && !opt_nested && !opt_x11))
     *backend_type = META_BACKEND_TYPE_NATIVE;
   else
 #endif
