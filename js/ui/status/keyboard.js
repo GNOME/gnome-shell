@@ -440,6 +440,30 @@ const InputSourceManager = new Lang.Class({
         this._currentInputSourceChanged(is);
     },
 
+    _updateMruSources: function() {
+        let sourcesList = [];
+        for (let i in this._inputSources)
+            sourcesList.push(this._inputSources[i]);
+
+        this._keyboardManager.setUserLayouts(sourcesList.map(function(x) { return x.xkbId; }));
+
+        if (!this._disableIBus && this._mruSourcesBackup) {
+            this._mruSources = this._mruSourcesBackup;
+            this._mruSourcesBackup = null;
+        }
+
+        let mruSources = [];
+        for (let i = 0; i < this._mruSources.length; i++) {
+            for (let j = 0; j < sourcesList.length; j++)
+                if (this._mruSources[i].type == sourcesList[j].type &&
+                    this._mruSources[i].id == sourcesList[j].id) {
+                    mruSources = mruSources.concat(sourcesList.splice(j, 1));
+                    break;
+                }
+        }
+        this._mruSources = mruSources.concat(sourcesList);
+    },
+
     _inputSourcesChanged: function() {
         let sources = this._settings.inputSources;
         let nSources = sources.length;
@@ -514,27 +538,7 @@ const InputSourceManager = new Lang.Class({
 
         this.emit('sources-changed');
 
-        let sourcesList = [];
-        for (let i in this._inputSources)
-            sourcesList.push(this._inputSources[i]);
-
-        this._keyboardManager.setUserLayouts(sourcesList.map(function(x) { return x.xkbId; }));
-
-        if (!this._disableIBus && this._mruSourcesBackup) {
-            this._mruSources = this._mruSourcesBackup;
-            this._mruSourcesBackup = null;
-        }
-
-        let mruSources = [];
-        for (let i = 0; i < this._mruSources.length; i++) {
-            for (let j = 0; j < sourcesList.length; j++)
-                if (this._mruSources[i].type == sourcesList[j].type &&
-                    this._mruSources[i].id == sourcesList[j].id) {
-                    mruSources = mruSources.concat(sourcesList.splice(j, 1));
-                    break;
-                }
-        }
-        this._mruSources = mruSources.concat(sourcesList);
+        this._updateMruSources();
 
         if (this._mruSources.length > 0)
             this._mruSources[0].activate();
