@@ -33,6 +33,9 @@
 CLUTTER_AVAILABLE_IN_MUTTER
 void clutter_set_custom_backend_func (ClutterBackend *(* func) (void));
 
+CLUTTER_AVAILABLE_IN_MUTTER
+gboolean        _clutter_get_sync_to_vblank     (void);
+
 #undef __CLUTTER_H_INSIDE__
 
 #endif /* __CLUTTER_MUTTER_H__ */

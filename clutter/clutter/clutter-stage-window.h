@@ -86,6 +86,13 @@ struct _ClutterStageWindowIface
   void              (* set_scale_factor)        (ClutterStageWindow *stage_window,
                                                  int                 factor);
   int               (* get_scale_factor)        (ClutterStageWindow *stage_window);
+  CoglFramebuffer  *(* get_legacy_onscreen)     (ClutterStageWindow *stage_window);
+  CoglFrameClosure *(* set_frame_callback)      (ClutterStageWindow *stage_window,
+                                                 CoglFrameCallback   callback,
+                                                 gpointer            user_data);
+  void              (* remove_frame_callback)   (ClutterStageWindow *stage_window,
+                                                 CoglFrameClosure   *closure);
+  int64_t           (* get_frame_counter)       (ClutterStageWindow *stage_window);
 };
 
 CLUTTER_AVAILABLE_IN_MUTTER
@@ -141,6 +148,17 @@ gboolean          _clutter_stage_window_can_clip_redraws        (ClutterStageWin
 void              _clutter_stage_window_set_scale_factor        (ClutterStageWindow *window,
                                                                  int                 factor);
 int               _clutter_stage_window_get_scale_factor        (ClutterStageWindow *window);
+
+CoglFramebuffer  *_clutter_stage_window_get_legacy_onscreen     (ClutterStageWindow *stage_window);
+
+CoglFrameClosure *_clutter_stage_window_set_frame_callback      (ClutterStageWindow *window,
+                                                                 CoglFrameCallback   callback,
+                                                                 gpointer            user_data);
+
+void              _clutter_stage_window_remove_frame_callback   (ClutterStageWindow *stage_winow,
+                                                                 CoglFrameClosure   *closure);
+
+int64_t           _clutter_stage_window_get_frame_counter       (ClutterStageWindow *window);
 
 G_END_DECLS
 

@@ -210,7 +210,6 @@ void            _clutter_id_to_color            (guint         id,
                                                  ClutterColor *col);
 
 void            _clutter_set_sync_to_vblank     (gboolean      sync_to_vblank);
-gboolean        _clutter_get_sync_to_vblank     (void);
 
 /* use this function as the accumulator if you have a signal with
  * a G_TYPE_BOOLEAN return value; this will stop the emission as

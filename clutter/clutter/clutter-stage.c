@@ -69,6 +69,7 @@
 #include "clutter-main.h"
 #include "clutter-marshal.h"
 #include "clutter-master-clock.h"
+#include "clutter-mutter.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-stage-manager-private.h"

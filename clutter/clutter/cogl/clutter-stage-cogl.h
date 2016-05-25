@@ -35,8 +35,6 @@ struct _ClutterStageCogl
   /* back pointer to the backend */
   ClutterBackend *backend;
 
-  CoglOnscreen *onscreen;
-
   float refresh_rate;
   int pending_swaps;
 

@@ -68,14 +68,11 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
 
   CLUTTER_NOTE (BACKEND, "Unrealizing Cogl stage [%p]", stage_cogl);
 
-  if (stage_cogl->onscreen != NULL)
+  if (stage_cogl->frame_closure != NULL)
     {
-      cogl_onscreen_remove_frame_callback (stage_cogl->onscreen,
-                                           stage_cogl->frame_closure);
+      _clutter_stage_window_remove_frame_callback (stage_window,
+                                                   stage_cogl->frame_closure);
       stage_cogl->frame_closure = NULL;
-
-      cogl_object_unref (stage_cogl->onscreen);
-      stage_cogl->onscreen = NULL;
     }
 
   stage_cogl->pending_swaps = 0;
@@ -126,10 +123,6 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
   ClutterBackend *backend;
-  CoglFramebuffer *framebuffer;
-  GError *error = NULL;
-  gfloat width = 800;
-  gfloat height = 600;
 
   CLUTTER_NOTE (BACKEND, "Realizing stage '%s' [%p]",
                 G_OBJECT_TYPE_NAME (stage_cogl),
@@ -143,34 +136,10 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
       return FALSE;
     }
 
-  if (stage_cogl->onscreen == NULL)
-    {
-      stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
-						width, height);
-    }
-
-  cogl_onscreen_set_swap_throttled (stage_cogl->onscreen,
-                                    _clutter_get_sync_to_vblank ());
-
-  framebuffer = COGL_FRAMEBUFFER (stage_cogl->onscreen);
-  if (!cogl_framebuffer_allocate (framebuffer, &error))
-    {
-      g_warning ("Failed to allocate stage: %s", error->message);
-      g_error_free (error);
-      cogl_object_unref (stage_cogl->onscreen);
-      stage_cogl->onscreen = NULL;
-      return FALSE;
-    }
-
-  /* FIXME: for fullscreen Cogl platforms then the size we gave
-   * will be ignored, so we need to make sure the stage size is
-   * updated to this size. */
-
   stage_cogl->frame_closure =
-    cogl_onscreen_add_frame_callback (stage_cogl->onscreen,
-                                      frame_cb,
-                                      stage_cogl,
-                                      NULL);
+    _clutter_stage_window_set_frame_callback (stage_window,
+                                              frame_cb, stage_window);
+
   return TRUE;
 }
 
@@ -260,36 +229,6 @@ clutter_stage_cogl_hide (ClutterStageWindow *stage_window)
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
   clutter_actor_unmap (CLUTTER_ACTOR (stage_cogl->wrapper));
-}
-
-static void
-clutter_stage_cogl_get_geometry (ClutterStageWindow    *stage_window,
-                                 cairo_rectangle_int_t *geometry)
-{
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  int window_scale;
-
-  window_scale = _clutter_stage_window_get_scale_factor (stage_window);
-
-  if (geometry != NULL)
-    {
-      if (stage_cogl->onscreen)
-        {
-          CoglFramebuffer *framebuffer =
-            COGL_FRAMEBUFFER (stage_cogl->onscreen);
-
-          geometry->x = geometry->y = 0;
-
-          geometry->width = cogl_framebuffer_get_width (framebuffer) / window_scale;
-          geometry->height = cogl_framebuffer_get_height (framebuffer) / window_scale;
-        }
-      else
-        {
-          geometry->x = geometry->y = 0;
-          geometry->width = 800;
-          geometry->height = 600;
-        }
-    }
 }
 
 static void
@@ -414,6 +353,7 @@ static void
 clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  CoglOnscreen *onscreen;
   cairo_rectangle_int_t geom;
   gboolean have_clip;
   gboolean may_use_clipped_redraw;
@@ -428,7 +368,8 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
 
-  if (!stage_cogl->onscreen)
+  onscreen = _clutter_stage_window_get_legacy_onscreen (stage_window);
+  if (!onscreen)
     return;
 
   can_blit_sub_buffer =
@@ -476,7 +417,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
       if (use_clipped_redraw)
 	{
-	  int age = cogl_onscreen_get_buffer_age (stage_cogl->onscreen), i;
+	  int age = cogl_onscreen_get_buffer_age (onscreen), i;
 
 	  *current_damage = *clip_region;
 
@@ -512,7 +453,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 
   if (use_clipped_redraw)
     {
-      CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
 
       CLUTTER_NOTE (CLIPPING,
                     "Stage clip pushed: x=%d, y=%d, width=%d, height=%d\n",
@@ -551,7 +492,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   if (may_use_clipped_redraw &&
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
-      CoglFramebuffer *fb = COGL_FRAMEBUFFER (stage_cogl->onscreen);
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
       CoglContext *ctx = cogl_framebuffer_get_context (fb);
       static CoglPipeline *outline = NULL;
       cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
@@ -584,7 +525,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       cogl_matrix_init_identity (&modelview);
       _clutter_actor_apply_modelview_transform (actor, &modelview);
       cogl_framebuffer_set_modelview_matrix (fb, &modelview);
-      cogl_framebuffer_draw_primitive (COGL_FRAMEBUFFER (stage_cogl->onscreen),
+      cogl_framebuffer_draw_primitive (COGL_FRAMEBUFFER (onscreen),
                                        outline,
                                        prim);
       cogl_framebuffer_pop_matrix (fb);
@@ -619,16 +560,16 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
                     "cogl_onscreen_swap_region (onscreen: %p, "
                                                 "x: %d, y: %d, "
                                                 "width: %d, height: %d)",
-                    stage_cogl->onscreen,
+                    onscreen,
                     damage[0], damage[1], damage[2], damage[3]);
 
-      cogl_onscreen_swap_region (stage_cogl->onscreen,
+      cogl_onscreen_swap_region (onscreen,
 				 damage, ndamage);
     }
   else
     {
       CLUTTER_NOTE (BACKEND, "cogl_onscreen_swap_buffers (onscreen: %p)",
-                    stage_cogl->onscreen);
+                    onscreen);
 
       /* If we have swap buffer events then cogl_onscreen_swap_buffers
        * will return immediately and we need to track that there is a
@@ -636,7 +577,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_cogl->pending_swaps++;
 
-      cogl_onscreen_swap_buffers_with_damage (stage_cogl->onscreen,
+      cogl_onscreen_swap_buffers_with_damage (onscreen,
 					      damage, ndamage);
     }
 
@@ -649,9 +590,10 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
 static CoglFramebuffer *
 clutter_stage_cogl_get_active_framebuffer (ClutterStageWindow *stage_window)
 {
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  CoglOnscreen *onscreen =
+    _clutter_stage_window_get_legacy_onscreen (stage_window);
 
-  return COGL_FRAMEBUFFER (stage_cogl->onscreen);
+  return COGL_FRAMEBUFFER (onscreen);
 }
 
 static void
@@ -683,7 +625,6 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->realize = clutter_stage_cogl_realize;
   iface->unrealize = clutter_stage_cogl_unrealize;
   iface->get_wrapper = clutter_stage_cogl_get_wrapper;
-  iface->get_geometry = clutter_stage_cogl_get_geometry;
   iface->resize = clutter_stage_cogl_resize;
   iface->show = clutter_stage_cogl_show;
   iface->hide = clutter_stage_cogl_hide;

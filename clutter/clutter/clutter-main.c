@@ -62,6 +62,7 @@
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-master-clock.h"
+#include "clutter-mutter.h"
 #include "clutter-private.h"
 #include "clutter-settings-private.h"
 #include "clutter-stage-manager.h"

@@ -348,3 +348,41 @@ _clutter_stage_window_get_scale_factor (ClutterStageWindow *window)
 
   return 1;
 }
+
+CoglFramebuffer  *
+_clutter_stage_window_get_legacy_onscreen (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  return iface->get_legacy_onscreen (window);
+}
+
+CoglFrameClosure *
+_clutter_stage_window_set_frame_callback (ClutterStageWindow *window,
+                                          CoglFrameCallback   callback,
+                                          gpointer            user_data)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  return iface->set_frame_callback (window, callback, user_data);
+}
+
+void
+_clutter_stage_window_remove_frame_callback (ClutterStageWindow *window,
+                                             CoglFrameClosure   *closure)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  iface->remove_frame_callback (window, closure);
+}
+
+int64_t
+_clutter_stage_window_get_frame_counter (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  if (iface->get_frame_counter)
+    return iface->get_frame_counter (window);
+  else
+    return 0;
+}

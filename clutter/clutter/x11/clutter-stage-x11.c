@@ -42,6 +42,7 @@
 #include "clutter-event-private.h"
 #include "clutter-feature.h"
 #include "clutter-main.h"
+#include "clutter-mutter.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
@@ -439,10 +440,12 @@ clutter_stage_x11_unrealize (ClutterStageWindow *stage_window)
    * 1x1 one if we're unrealizing the current one, so Cogl doesn't
    * keep any reference to the foreign window.
    */
-  if (cogl_get_draw_framebuffer () == COGL_FRAMEBUFFER (stage_cogl->onscreen))
+  if (cogl_get_draw_framebuffer () == COGL_FRAMEBUFFER (stage_x11->onscreen))
     _clutter_backend_reset_cogl_framebuffer (stage_cogl->backend);
 
   clutter_stage_window_parent_iface->unrealize (stage_window);
+
+  g_clear_pointer (&stage_x11->onscreen, cogl_object_unref);
 }
 
 static void
@@ -608,6 +611,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
   ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterDeviceManager *device_manager;
   gfloat width, height;
+  GError *error = NULL;
 
   clutter_actor_get_size (CLUTTER_ACTOR (stage_cogl->wrapper), &width, &height);
 
@@ -620,7 +624,7 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
                 width, height,
                 stage_x11->scale_factor);
 
-  stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context, width, height);
+  stage_x11->onscreen = cogl_onscreen_new (backend->cogl_context, width, height);
 
   /* We just created a window of the size of the actor. No need to fix
      the size of the stage, just update it. */
@@ -629,21 +633,26 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
 
   if (stage_x11->xwin != None)
     {
-      cogl_x11_onscreen_set_foreign_window_xid (stage_cogl->onscreen,
+      cogl_x11_onscreen_set_foreign_window_xid (stage_x11->onscreen,
                                                 stage_x11->xwin,
                                                 _clutter_stage_x11_update_foreign_event_mask,
                                                 stage_x11);
 
     }
 
-  /* Chain to the parent class now. ClutterStageCogl will call cogl_framebuffer_allocate,
-     which will create the X Window we need */
+  if (!cogl_framebuffer_allocate (stage_x11->onscreen, &error))
+    {
+      g_warning ("Failed to allocate stage: %s", error->message);
+      g_error_free (error);
+      cogl_object_unref (stage_x11->onscreen);
+      abort();
+    }
 
   if (!(clutter_stage_window_parent_iface->realize (stage_window)))
     return FALSE;
 
   if (stage_x11->xwin == None)
-    stage_x11->xwin = cogl_x11_onscreen_get_window_xid (stage_cogl->onscreen);
+    stage_x11->xwin = cogl_x11_onscreen_get_window_xid (stage_x11->onscreen);
 
   if (clutter_stages_by_xid == NULL)
     clutter_stages_by_xid = g_hash_table_new (NULL, NULL);
@@ -883,6 +892,47 @@ clutter_stage_x11_get_scale_factor (ClutterStageWindow *stage_window)
   return stage_x11->scale_factor;
 }
 
+static CoglFramebuffer *
+clutter_stage_x11_get_legacy_onscreen (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  return stage_x11->onscreen;
+}
+
+static CoglFrameClosure *
+clutter_stage_x11_set_frame_callback (ClutterStageWindow *stage_window,
+                                      CoglFrameCallback   callback,
+                                      gpointer            user_data)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  cogl_onscreen_set_swap_throttled (stage_x11->onscreen,
+                                    _clutter_get_sync_to_vblank ());
+
+  return cogl_onscreen_add_frame_callback (stage_x11->onscreen,
+                                           callback,
+                                           user_data,
+                                           NULL);
+}
+
+static void
+clutter_stage_x11_remove_frame_callback (ClutterStageWindow *stage_window,
+                                         CoglFrameClosure   *closure)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  cogl_onscreen_remove_frame_callback (stage_x11->onscreen, closure);
+}
+
+static int64_t
+clutter_stage_x11_get_frame_counter (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+
+  return cogl_onscreen_get_frame_counter (stage_x11->onscreen);
+}
+
 static void
 clutter_stage_x11_finalize (GObject *gobject)
 {
@@ -957,6 +1007,10 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->can_clip_redraws = clutter_stage_x11_can_clip_redraws;
   iface->set_scale_factor = clutter_stage_x11_set_scale_factor;
   iface->get_scale_factor = clutter_stage_x11_get_scale_factor;
+  iface->get_legacy_onscreen = clutter_stage_x11_get_legacy_onscreen;
+  iface->set_frame_callback = clutter_stage_x11_set_frame_callback;
+  iface->remove_frame_callback = clutter_stage_x11_remove_frame_callback;
+  iface->get_frame_counter = clutter_stage_x11_get_frame_counter;
 }
 
 static inline void

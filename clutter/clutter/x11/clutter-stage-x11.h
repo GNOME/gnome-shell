@@ -53,6 +53,7 @@ struct _ClutterStageX11
 {
   ClutterStageCogl parent_instance;
 
+  CoglOnscreen *onscreen;
   Window xwin;
   gint xwin_width;
   gint xwin_height; /* FIXME target_width / height */
