@@ -61,8 +61,8 @@ const InputSource = new Lang.Class({
         this.emit('changed');
     },
 
-    activate: function() {
-        this.emit('activate');
+    activate: function(interactive) {
+        this.emit('activate', !!interactive);
     },
 
     _getXkbId: function() {
@@ -109,7 +109,7 @@ const InputSourcePopup = new Lang.Class({
     _finish : function() {
         this.parent();
 
-        this._items[this._selectedIndex].activate();
+        this._items[this._selectedIndex].activate(true);
     },
 });
 
@@ -376,7 +376,7 @@ const InputSourceManager = new Lang.Class({
         while (!(is = this._inputSources[nextIndex]))
             nextIndex += 1;
 
-        is.activate();
+        is.activate(true);
         return true;
     },
 
@@ -420,7 +420,7 @@ const InputSourceManager = new Lang.Class({
         this._changePerWindowSource();
     },
 
-    _activateInputSource: function(is) {
+    _activateInputSource: function(is, interactive) {
         KeyboardManager.holdKeyboard();
         this._keyboardManager.apply(is.xkbId);
 
@@ -541,7 +541,7 @@ const InputSourceManager = new Lang.Class({
         this._updateMruSources();
 
         if (this._mruSources.length > 0)
-            this._mruSources[0].activate();
+            this._mruSources[0].activate(false);
 
         // All ibus engines are preloaded here to reduce the launching time
         // when users switch the input sources.
@@ -650,7 +650,7 @@ const InputSourceManager = new Lang.Class({
         }
 
         if (window._currentSource)
-            window._currentSource.activate();
+            window._currentSource.activate(false);
     },
 
     _sourcesPerWindowChanged: function() {
@@ -771,7 +771,10 @@ const InputSourceIndicator = new Lang.Class({
             let is = this._inputSourceManager.inputSources[i];
 
             let menuItem = new LayoutMenuItem(is.displayName, is.shortName);
-            menuItem.connect('activate', Lang.bind(is, is.activate));
+            menuItem.connect('activate', function() {
+                is.activate(true);
+            });
+
             let indicatorLabel = new St.Label({ text: is.shortName,
                                                 visible: false });
 
