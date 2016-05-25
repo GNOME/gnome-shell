@@ -29,7 +29,6 @@ struct _MetaCompositor
   GList                 *windows;
   Window                 output;
 
-  CoglOnscreen          *onscreen;
   CoglFrameClosure      *frame_closure;
   CoglContext           *context;
 

@@ -23,6 +23,7 @@
 #include <meta/meta-enum-types.h>
 #include <meta/meta-shadow-factory.h>
 
+#include "clutter/clutter-mutter.h"
 #include "compositor-private.h"
 #include "meta-shaped-texture-private.h"
 #include "meta-window-actor-private.h"
@@ -659,6 +660,8 @@ static void
 assign_frame_counter_to_frames (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
+  MetaCompositor *compositor = priv->compositor;
+  ClutterStage *stage = CLUTTER_STAGE (compositor->stage);
   GList *l;
 
   /* If the window is obscured, then we're expecting to deal with sending
@@ -672,10 +675,7 @@ assign_frame_counter_to_frames (MetaWindowActor *self)
       FrameData *frame = l->data;
 
       if (frame->frame_counter == -1)
-        {
-          CoglOnscreen *onscreen = COGL_ONSCREEN (cogl_get_draw_framebuffer());
-          frame->frame_counter = cogl_onscreen_get_frame_counter (onscreen);
-        }
+        frame->frame_counter = clutter_stage_get_frame_counter (stage);
     }
 }
 

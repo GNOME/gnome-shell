@@ -4510,3 +4510,25 @@ _clutter_stage_set_scale_factor (ClutterStage *stage,
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
+
+CoglFrameClosure *
+clutter_stage_add_frame_callback (ClutterStage          *stage,
+                                  CoglFrameCallback      callback,
+                                  gpointer               user_data)
+{
+  ClutterStageWindow *stage_window;
+
+  stage_window = _clutter_stage_get_window (stage);
+  return _clutter_stage_window_set_frame_callback (stage_window,
+                                                   callback,
+                                                   user_data);
+}
+
+int64_t
+clutter_stage_get_frame_counter (ClutterStage          *stage)
+{
+  ClutterStageWindow *stage_window;
+
+  stage_window = _clutter_stage_get_window (stage);
+  return _clutter_stage_window_get_frame_counter (stage_window);
+}

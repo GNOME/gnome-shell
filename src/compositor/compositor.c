@@ -77,6 +77,7 @@
 #include "meta-sync-ring.h"
 
 #include "backends/x11/meta-backend-x11.h"
+#include "clutter/clutter-mutter.h"
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland-private.h"
@@ -1044,13 +1045,12 @@ meta_pre_paint_func (gpointer data)
   MetaWindowActor *top_window;
   MetaCompositor *compositor = data;
 
-  if (compositor->onscreen == NULL)
+  if (!compositor->frame_closure)
     {
-      compositor->onscreen = COGL_ONSCREEN (cogl_get_draw_framebuffer ());
-      compositor->frame_closure = cogl_onscreen_add_frame_callback (compositor->onscreen,
-                                                                    frame_callback,
-                                                                    compositor,
-                                                                    NULL);
+      compositor->frame_closure =
+        clutter_stage_add_frame_callback (CLUTTER_STAGE (compositor->stage),
+                                          frame_callback,
+                                          compositor);
     }
 
   if (compositor->windows == NULL)

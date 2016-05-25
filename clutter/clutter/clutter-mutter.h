@@ -36,6 +36,14 @@ void clutter_set_custom_backend_func (ClutterBackend *(* func) (void));
 CLUTTER_AVAILABLE_IN_MUTTER
 gboolean        _clutter_get_sync_to_vblank     (void);
 
+CLUTTER_AVAILABLE_IN_MUTTER
+CoglFrameClosure *clutter_stage_add_frame_callback (ClutterStage     *stage,
+                                                    CoglFrameCallback callback,
+                                                    gpointer          user_data);
+
+CLUTTER_AVAILABLE_IN_MUTTER
+int64_t clutter_stage_get_frame_counter (ClutterStage *stage);
+
 #undef __CLUTTER_H_INSIDE__
 
 #endif /* __CLUTTER_MUTTER_H__ */
