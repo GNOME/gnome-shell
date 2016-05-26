@@ -674,6 +674,11 @@ const WorkspacesDisplay = new Lang.Class({
     _onScrollEvent: function(actor, event) {
         if (!this.actor.mapped)
             return Clutter.EVENT_PROPAGATE;
+
+        if (this._workspacesOnlyOnPrimary &&
+            this._getMonitorIndexForEvent(event) != this._primaryIndex)
+            return Clutter.EVENT_PROPAGATE;
+
         let activeWs = global.screen.get_active_workspace();
         let ws;
         switch (event.get_scroll_direction()) {
