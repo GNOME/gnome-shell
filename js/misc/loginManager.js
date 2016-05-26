@@ -134,10 +134,13 @@ const LoginManagerSystemd = new Lang.Class({
 
     canSuspend: function(asyncCallback) {
         this._proxy.CanSuspendRemote(function(result, error) {
-            if (error)
-                asyncCallback(false);
-            else
-                asyncCallback(result[0] != 'no' && result[0] != 'na');
+            if (error) {
+                asyncCallback(false, false);
+            } else {
+                let needsAuth = result[0] == 'challenge';
+                let canSuspend = needsAuth || result[0] == 'yes';
+                asyncCallback(canSuspend, needsAuth);
+            }
         });
     },
 
@@ -190,7 +193,7 @@ const LoginManagerDummy = new Lang.Class({
     },
 
     canSuspend: function(asyncCallback) {
-        asyncCallback(false);
+        asyncCallback(false, false);
     },
 
     listSessions: function(asyncCallback) {
