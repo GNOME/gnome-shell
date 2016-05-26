@@ -421,7 +421,6 @@ const ControlsManager = new Lang.Class({
 
         let layout = new ControlsLayout();
         this.actor = new St.Widget({ layout_manager: layout,
-                                     reactive: true,
                                      x_expand: true, y_expand: true,
                                      clip_to_allocation: true });
         this._group = new St.BoxLayout({ name: 'overview-group',

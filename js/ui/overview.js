@@ -111,7 +111,6 @@ const Overview = new Lang.Class({
            activities. See also note for "Activities" string. */
         this._overview = new St.BoxLayout({ name: 'overview',
                                             accessible_name: _("Overview"),
-                                            reactive: true,
                                             vertical: true });
         this._overview.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
         this._overview._delegate = this;
@@ -121,9 +120,12 @@ const Overview = new Lang.Class({
         // one. Instances of this class share a single CoglTexture behind the
         // scenes which allows us to show the background with different
         // rendering options without duplicating the texture data.
-        this._backgroundGroup = new Meta.BackgroundGroup();
+        this._backgroundGroup = new Meta.BackgroundGroup({ reactive: true });
         Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
         this._bgManagers = [];
+
+        this._backgroundGroup.connect('scroll-event',
+                                      Lang.bind(this, this._onScrollEvent));
 
         this._desktopFade = new St.Widget();
         Main.layoutManager.overviewGroup.add_child(this._desktopFade);
@@ -249,7 +251,6 @@ const Overview = new Lang.Class({
 
         // Add our same-line elements after the search entry
         this._overview.add(this._controls.actor, { y_fill: true, expand: true });
-        this._controls.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
@@ -366,7 +367,7 @@ const Overview = new Lang.Class({
         if (this.isDummy)
             return;
 
-        this._overview.add_action(action);
+        this._backgroundGroup.add_action(action);
     },
 
     _getDesktopClone: function() {
