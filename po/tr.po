@@ -6,22 +6,22 @@
 # Baris Cicek <baris@teamforce.name.tr>, 2004, 2005, 2008, 2009.
 # İlker DAĞLI <ilker@ilkerdagli.info>, 2011.
 # Muhammed EKEN <gnome@m-eken.com>, 2011.
-# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015.
+# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-21 23:08+0000\n"
-"PO-Revision-Date: 2015-03-22 15:57+0200\n"
+"POT-Creation-Date: 2016-05-10 20:26+0000\n"
+"PO-Revision-Date: 2016-05-26 22:25+0300\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.8.6\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
@@ -73,12 +73,10 @@ msgid "Move window one monitor to the right"
 msgstr "Pencereyi sağdaki monitöre taşı"
 
 #: ../data/50-mutter-navigation.xml.in.h:13
-#| msgid "Move window one workspace up"
 msgid "Move window one monitor up"
 msgstr "Pencereyi üstteki monitöre taşı"
 
 #: ../data/50-mutter-navigation.xml.in.h:14
-#| msgid "Move window one workspace down"
 msgid "Move window one monitor down"
 msgstr "Pencereyi alttaki monitöre taşı"
 
@@ -99,12 +97,10 @@ msgid "Switch to previous window"
 msgstr "Önceki pencereye geç"
 
 #: ../data/50-mutter-navigation.xml.in.h:19
-#| msgid "Move between windows of an application immediately"
 msgid "Switch windows of an application"
 msgstr "Uygulamanın pencereleri arasında geçiş yap"
 
 #: ../data/50-mutter-navigation.xml.in.h:20
-#| msgid "Move between windows of an application immediately"
 msgid "Switch to previous window of an application"
 msgstr "Uygulamanın bir önceki penceresine geç"
 
@@ -125,7 +121,6 @@ msgid "Switch directly to previous window"
 msgstr "Önceki pencereye doğrudan geç"
 
 #: ../data/50-mutter-navigation.xml.in.h:25
-#| msgid "Move between windows of an application immediately"
 msgid "Switch windows of an app directly"
 msgstr "Uygulamanın pencereleri arasında anında geçiş yap"
 
@@ -142,7 +137,6 @@ msgid "Switch directly to previous system control"
 msgstr "Önceki sistem denetimine doğrudan geç"
 
 #: ../data/50-mutter-navigation.xml.in.h:29
-#| msgid "Hide all normal windows and set focus to the desktop"
 msgid "Hide all normal windows"
 msgstr "Tüm normal pencereleri gizle"
 
@@ -163,27 +157,22 @@ msgid "Switch to workspace 4"
 msgstr "Çalışma alanı 4'e geç"
 
 #: ../data/50-mutter-navigation.xml.in.h:34
-#| msgid "Switch to workspace 1"
 msgid "Switch to last workspace"
 msgstr "Son çalışma alanına geç"
 
 #: ../data/50-mutter-navigation.xml.in.h:35
-#| msgid "Move to Workspace _Left"
 msgid "Move to workspace left"
 msgstr "Soldaki çalışma alanına taşı"
 
 #: ../data/50-mutter-navigation.xml.in.h:36
-#| msgid "Move to Workspace R_ight"
 msgid "Move to workspace right"
 msgstr "Sağdaki çalışma alanına taşı"
 
 #: ../data/50-mutter-navigation.xml.in.h:37
-#| msgid "Move to Workspace _Left"
 msgid "Move to workspace above"
 msgstr "Üstteki çalışma alanına taşı"
 
 #: ../data/50-mutter-navigation.xml.in.h:38
-#| msgid "Move to Workspace _Down"
 msgid "Move to workspace below"
 msgstr "Alttaki çalışma alanına taşı"
 
@@ -192,7 +181,6 @@ msgid "System"
 msgstr "Sistem"
 
 #: ../data/50-mutter-system.xml.in.h:2
-#| msgid "Show the panel's main menu"
 msgid "Show the run command prompt"
 msgstr "Komut çalıştırma istemini göster"
 
@@ -245,14 +233,12 @@ msgid "Resize window"
 msgstr "Pencereyi yeniden boyutlandır"
 
 #: ../data/50-mutter-windows.xml.in.h:12
-#| msgid "Toggle whether window is on all workspaces or just one"
 msgid "Toggle window on all workspaces or one"
 msgstr ""
 "Pencerenin tüm çalışma alanlarında veya sadece bir tanesi üzerinde olmasını "
 "seç"
 
 #: ../data/50-mutter-windows.xml.in.h:13
-#| msgid "Raise window if it's covered by another window, otherwise lower it"
 msgid "Raise window if covered, otherwise lower it"
 msgstr ""
 "Pencere eğer başkası tarafından kapatılmışsa yukarı çıkar, yoksa aşağıya it"
@@ -374,11 +360,6 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Odak değişikliklerini işaretçi hareketi durana kadar ertele"
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:14
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focused window will be automatically raised after a delay specified "
-#| "by the auto_raise_delay key. This is not related to clicking on a window "
-#| "to raise it, nor to entering a window during drag-and-drop."
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focus will not be changed immediately when entering a window, but only "
@@ -433,81 +414,69 @@ msgid "Cancel tab popup"
 msgstr "Sekmeyi yeni pencerede açmayı iptal et"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 1"
 msgstr "VT 1'e geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
-#| msgid "Switch to workspace 2"
 msgid "Switch to VT 2"
 msgstr "VT 2'ye geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
-#| msgid "Switch to workspace 3"
 msgid "Switch to VT 3"
 msgstr "VT 3'e geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
-#| msgid "Switch to workspace 4"
 msgid "Switch to VT 4"
 msgstr "VT 4'e geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
-#| msgid "Switch to workspace 5"
 msgid "Switch to VT 5"
 msgstr "VT 5'e geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
-#| msgid "Switch to workspace 6"
 msgid "Switch to VT 6"
 msgstr "VT 6'ya geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
-#| msgid "Switch to workspace 7"
 msgid "Switch to VT 7"
 msgstr "VT 7'ye geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 8"
 msgstr "VT 8'e geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 9"
 msgstr "VT 9'a geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 10"
 msgstr "VT 10'a geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 11"
 msgstr "VT 11'e geç"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
-#| msgid "Switch to workspace 1"
 msgid "Switch to VT 12"
 msgstr "VT 12'ye geç"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: ../src/backends/meta-monitor-manager.c:515
 msgid "Built-in display"
 msgstr "Yerleşik ekran"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: ../src/backends/meta-monitor-manager.c:538
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: ../src/backends/meta-monitor-manager.c:540
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: ../src/backends/meta-monitor-manager.c:548
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -523,7 +492,7 @@ msgstr ""
 "\"%2$s\" monitöründeki %1$i ekranında zaten başka bir birleştirme yöneticisi "
 "çalışıyor."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:194
 msgid "Bell event"
 msgstr "Etkinlik zili"
 
@@ -552,40 +521,44 @@ msgstr "_Bekle"
 msgid "_Force Quit"
 msgstr "_Sonlandır"
 
-#: ../src/core/display.c:562
+#: ../src/core/display.c:555
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X Pencere Sistemi '%s' ekranı açılamadı\n"
 
-#: ../src/core/main.c:176
+#: ../src/core/main.c:181
 msgid "Disable connection to session manager"
 msgstr "Ortam yöneticisine olan bağlantıyı kapat"
 
-#: ../src/core/main.c:182
+#: ../src/core/main.c:187
 msgid "Replace the running window manager"
 msgstr "Çalışan pencere yöneticisinin yerini al"
 
-#: ../src/core/main.c:188
+#: ../src/core/main.c:193
 msgid "Specify session management ID"
 msgstr "Ortam yönetim ID'sini belirtin"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:198
 msgid "X Display to use"
 msgstr "Kullanılacak X Ekranı"
 
-#: ../src/core/main.c:199
+#: ../src/core/main.c:204
 msgid "Initialize session from savefile"
 msgstr "Ortamı kayıtlı dosyadan başlat"
 
-#: ../src/core/main.c:205
+#: ../src/core/main.c:210
 msgid "Make X calls synchronous"
 msgstr "X çağrılarını eşazamanlı yap"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:217
 msgid "Run as a wayland compositor"
 msgstr "Bir wayland dizgicisi olarak çalıştır"
 
-#: ../src/core/main.c:220
+#: ../src/core/main.c:223
+msgid "Run as a nested compositor"
+msgstr "Yuvalanmış dizgici olarak çalıştır"
+
+#: ../src/core/main.c:231
 msgid "Run as a full display server, rather than nested"
 msgstr "İç içe değil tam ekran sunucusu olarak çalıştır"
 
@@ -611,16 +584,13 @@ msgstr "Sürümü yazdır"
 msgid "Mutter plugin to use"
 msgstr "Kullanılacak Mutter eklentisi"
 
-#: ../src/core/prefs.c:2004
+#: ../src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Çalışma Alanı %d"
 
-#: ../src/core/screen.c:525
+#: ../src/core/screen.c:521
 #, c-format
-#| msgid ""
-#| "Screen %d on display \"%s\" already has a window manager; try using the --"
-#| "replace option to replace the current window manager.\n"
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
 "to replace the current window manager."
@@ -629,12 +599,12 @@ msgstr ""
 "yöneticisinin yerine bir başkasını koymak için --replace seçeneğini "
 "kullanmayı deneyin."
 
-#: ../src/core/screen.c:607
+#: ../src/core/screen.c:603
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "'%2$s' X oturumundaki ekran %1$d geçersiz\n"
 
-#: ../src/core/util.c:118
+#: ../src/core/util.c:121
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter, ayrıntılı kip desteği olmadan derlenmiş\n"
 
