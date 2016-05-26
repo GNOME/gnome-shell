@@ -177,6 +177,33 @@ verify_redraw (Data *data, int expected_paint_count)
 }
 
 static gboolean
+verify_redraws (gpointer user_data)
+{
+  Data *data = user_data;
+
+  /* Queueing a redraw on the actor should cause a redraw */
+  clutter_actor_queue_redraw (data->container);
+  verify_redraw (data, 1);
+
+  /* Queueing a redraw on a child should cause a redraw */
+  clutter_actor_queue_redraw (data->child);
+  verify_redraw (data, 1);
+
+  /* Modifying the transformation on the parent should cause a
+     redraw */
+  clutter_actor_set_anchor_point (data->parent_container, 0, 1);
+  verify_redraw (data, 1);
+
+  /* Redrawing an unrelated actor shouldn't cause a redraw */
+  clutter_actor_set_position (data->unrelated_actor, 0, 1);
+  verify_redraw (data, 0);
+
+  data->was_painted = TRUE;
+
+  return G_SOURCE_REMOVE;
+}
+
+static gboolean
 run_verify (gpointer user_data)
 {
   Data *data = user_data;
@@ -273,24 +300,8 @@ run_verify (gpointer user_data)
                   0,
                   255);
 
-  /* Queueing a redraw on the actor should cause a redraw */
-  clutter_actor_queue_redraw (data->container);
-  verify_redraw (data, 1);
-
-  /* Queueing a redraw on a child should cause a redraw */
-  clutter_actor_queue_redraw (data->child);
-  verify_redraw (data, 1);
-
-  /* Modifying the transformation on the parent should cause a
-     redraw */
-  clutter_actor_set_anchor_point (data->parent_container, 0, 1);
-  verify_redraw (data, 1);
-
-  /* Redrawing an unrelated actor shouldn't cause a redraw */
-  clutter_actor_set_position (data->unrelated_actor, 0, 1);
-  verify_redraw (data, 0);
-
-  data->was_painted = TRUE;
+  /* Check redraws */
+  g_idle_add (verify_redraws, data);
 
   return G_SOURCE_REMOVE;
 }
@@ -298,7 +309,7 @@ run_verify (gpointer user_data)
 static void
 actor_offscreen_redirect (void)
 {
-  Data data;
+  Data data = { 0 };
 
   if (!cogl_features_available (COGL_FEATURE_OFFSCREEN))
     return;
