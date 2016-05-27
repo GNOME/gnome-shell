@@ -114,6 +114,7 @@ source_h =					\
 	clutter-snap-constraint.h	\
 	clutter-stage.h 		\
 	clutter-stage-manager.h	\
+	clutter-stage-view.h		\
 	clutter-tap-action.h		\
 	clutter-test-utils.h		\
 	clutter-texture.h 		\
@@ -197,6 +198,7 @@ source_c = \
 	clutter-snap-constraint.c	\
 	clutter-stage.c		\
 	clutter-stage-manager.c	\
+	clutter-stage-view.c	\
 	clutter-stage-window.c	\
 	clutter-tap-action.c		\
 	clutter-test-utils.c		\

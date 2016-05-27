@@ -3,6 +3,7 @@
 
 #include <cogl/cogl.h>
 #include <clutter/clutter-types.h>
+#include "clutter/clutter-stage-view.h"
 
 G_BEGIN_DECLS
 
@@ -77,22 +78,22 @@ struct _ClutterStageWindowIface
   void              (* redraw)                  (ClutterStageWindow *stage_window);
 
   void              (* get_dirty_pixel)         (ClutterStageWindow *stage_window,
+                                                 ClutterStageView   *view,
                                                  int *x, int *y);
-
-  CoglFramebuffer  *(* get_active_framebuffer)  (ClutterStageWindow *stage_window);
 
   gboolean          (* can_clip_redraws)        (ClutterStageWindow *stage_window);
 
   void              (* set_scale_factor)        (ClutterStageWindow *stage_window,
                                                  int                 factor);
   int               (* get_scale_factor)        (ClutterStageWindow *stage_window);
-  CoglFramebuffer  *(* get_legacy_onscreen)     (ClutterStageWindow *stage_window);
+  GList            *(* get_views)               (ClutterStageWindow *stage_window);
   CoglFrameClosure *(* set_frame_callback)      (ClutterStageWindow *stage_window,
                                                  CoglFrameCallback   callback,
                                                  gpointer            user_data);
   void              (* remove_frame_callback)   (ClutterStageWindow *stage_window,
                                                  CoglFrameClosure   *closure);
   int64_t           (* get_frame_counter)       (ClutterStageWindow *stage_window);
+  void              (* finish_frame)            (ClutterStageWindow *stage_window);
 };
 
 CLUTTER_AVAILABLE_IN_MUTTER
@@ -139,9 +140,8 @@ void              _clutter_stage_window_set_accept_focus        (ClutterStageWin
 void              _clutter_stage_window_redraw                  (ClutterStageWindow *window);
 
 void              _clutter_stage_window_get_dirty_pixel         (ClutterStageWindow *window,
+                                                                 ClutterStageView   *view,
                                                                  int *x, int *y);
-
-CoglFramebuffer  *_clutter_stage_window_get_active_framebuffer  (ClutterStageWindow *window);
 
 gboolean          _clutter_stage_window_can_clip_redraws        (ClutterStageWindow *window);
 
@@ -149,7 +149,7 @@ void              _clutter_stage_window_set_scale_factor        (ClutterStageWin
                                                                  int                 factor);
 int               _clutter_stage_window_get_scale_factor        (ClutterStageWindow *window);
 
-CoglFramebuffer  *_clutter_stage_window_get_legacy_onscreen     (ClutterStageWindow *stage_window);
+GList *           _clutter_stage_window_get_views               (ClutterStageWindow *window);
 
 CoglFrameClosure *_clutter_stage_window_set_frame_callback      (ClutterStageWindow *window,
                                                                  CoglFrameCallback   callback,
@@ -157,6 +157,8 @@ CoglFrameClosure *_clutter_stage_window_set_frame_callback      (ClutterStageWin
 
 void              _clutter_stage_window_remove_frame_callback   (ClutterStageWindow *stage_winow,
                                                                  CoglFrameClosure   *closure);
+
+void              _clutter_stage_window_finish_frame            (ClutterStageWindow *window);
 
 int64_t           _clutter_stage_window_get_frame_counter       (ClutterStageWindow *window);
 

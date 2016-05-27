@@ -31,8 +31,12 @@
 #include "cogl/cogl-xlib.h"
 #include "cogl/winsys/cogl-winsys-glx-private.h"
 #include "cogl/winsys/cogl-winsys-egl-x11-private.h"
+#include "backends/meta-backend-private.h"
 #include "backends/meta-renderer.h"
+#include "backends/meta-renderer-view.h"
 #include "backends/x11/meta-renderer-x11.h"
+#include "core/boxes-private.h"
+#include "meta/meta-backend.h"
 #include "meta/util.h"
 
 struct _MetaRendererX11
@@ -64,6 +68,32 @@ meta_renderer_x11_create_cogl_renderer (MetaRenderer *renderer)
   return cogl_renderer;
 }
 
+static MetaRendererView *
+meta_renderer_x11_create_view (MetaRenderer    *renderer,
+                               MetaMonitorInfo *monitor_info)
+{
+  MetaBackend *backend = meta_get_backend ();
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  int width, height;
+  cairo_rectangle_int_t view_layout;
+  CoglTexture2D *texture_2d;
+  CoglOffscreen *offscreen;
+
+  g_assert (meta_is_wayland_compositor ());
+
+  width = monitor_info->rect.width;
+  height = monitor_info->rect.height;
+  texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
+  offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
+  view_layout = meta_rectangle_to_cairo_rectangle (&monitor_info->rect);
+
+  return g_object_new (META_TYPE_RENDERER_VIEW,
+                       "layout", &view_layout,
+                       "framebuffer", COGL_FRAMEBUFFER (offscreen),
+                       NULL);
+}
+
 static void
 meta_renderer_x11_init (MetaRendererX11 *renderer_x11)
 {
@@ -75,4 +105,5 @@ meta_renderer_x11_class_init (MetaRendererX11Class *klass)
   MetaRendererClass *renderer_class = META_RENDERER_CLASS (klass);
 
   renderer_class->create_cogl_renderer = meta_renderer_x11_create_cogl_renderer;
+  renderer_class->create_view = meta_renderer_x11_create_view;
 }

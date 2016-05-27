@@ -36,6 +36,8 @@
 
 #include "clutter-stage-cogl.h"
 
+#include <stdlib.h>
+
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
 #include "clutter-debug.h"
@@ -45,6 +47,18 @@
 #include "clutter-main.h"
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
+
+typedef struct _ClutterStageViewCoglPrivate
+{
+  /* Stores a list of previous damaged areas in the stage coordinate space */
+#define DAMAGE_HISTORY_MAX 16
+#define DAMAGE_HISTORY(x) ((x) & (DAMAGE_HISTORY_MAX - 1))
+  cairo_rectangle_int_t damage_history[DAMAGE_HISTORY_MAX];
+  unsigned int damage_index;
+} ClutterStageViewCoglPrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE (ClutterStageViewCogl, clutter_stage_view_cogl,
+                            CLUTTER_TYPE_STAGE_VIEW)
 
 static void clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
 
@@ -74,8 +88,6 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
                                                    stage_cogl->frame_closure);
       stage_cogl->frame_closure = NULL;
     }
-
-  stage_cogl->pending_swaps = 0;
 }
 
 static void
@@ -340,51 +352,156 @@ clutter_stage_cogl_get_redraw_clip_bounds (ClutterStageWindow    *stage_window,
 }
 
 static inline gboolean
-valid_buffer_age (ClutterStageCogl *stage_cogl, int age)
+valid_buffer_age (ClutterStageViewCogl *view_cogl,
+                  int                   age)
 {
+  ClutterStageViewCoglPrivate *view_priv =
+    clutter_stage_view_cogl_get_instance_private (view_cogl);
+
   if (age <= 0)
     return FALSE;
 
-  return age < MIN (stage_cogl->damage_index, DAMAGE_HISTORY_MAX);
+  return age < MIN (view_priv->damage_index, DAMAGE_HISTORY_MAX);
 }
 
-/* XXX: This is basically identical to clutter_stage_glx_redraw */
+static gboolean
+swap_framebuffer (ClutterStageWindow    *stage_window,
+                  ClutterStageView      *view,
+                  cairo_rectangle_int_t *swap_region,
+                  gboolean               swap_with_damage)
+{
+  CoglFramebuffer *framebuffer = clutter_stage_view_get_framebuffer (view);
+  int damage[4], ndamage;
+
+  damage[0] = swap_region->x;
+  damage[1] = swap_region->y;
+  damage[2] = swap_region->width;
+  damage[3] = swap_region->height;
+
+  if (swap_region->width != 0)
+    ndamage = 1;
+  else
+    ndamage = 0;
+
+  if (cogl_is_onscreen (framebuffer))
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+
+      /* push on the screen */
+      if (ndamage == 1 && !swap_with_damage)
+        {
+          CLUTTER_NOTE (BACKEND,
+                        "cogl_onscreen_swap_region (onscreen: %p, "
+                        "x: %d, y: %d, "
+                        "width: %d, height: %d)",
+                        onscreen,
+                        damage[0], damage[1], damage[2], damage[3]);
+
+          cogl_onscreen_swap_region (onscreen,
+                                     damage, ndamage);
+
+          return FALSE;
+        }
+      else
+        {
+          CLUTTER_NOTE (BACKEND, "cogl_onscreen_swap_buffers (onscreen: %p)",
+                        onscreen);
+
+          cogl_onscreen_swap_buffers_with_damage (onscreen,
+                                                  damage, ndamage);
+
+          return TRUE;
+        }
+    }
+  else
+    {
+      CLUTTER_NOTE (BACKEND, "cogl_framebuffer_finish (framebuffer: %p)",
+                    framebuffer);
+      cogl_framebuffer_finish (framebuffer);
+
+      return FALSE;
+    }
+}
+
 static void
-clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
+paint_stage (ClutterStageCogl            *stage_cogl,
+             ClutterStageView            *view,
+             const cairo_rectangle_int_t *clip)
+{
+  ClutterStage *stage = stage_cogl->wrapper;
+
+  _clutter_stage_maybe_setup_viewport (stage, view);
+  _clutter_stage_paint_view (stage, view, clip);
+}
+
+static void
+fill_current_damage_history_and_step (ClutterStageView *view)
+{
+  ClutterStageViewCogl *view_cogl = CLUTTER_STAGE_VIEW_COGL (view);
+  ClutterStageViewCoglPrivate *view_priv =
+    clutter_stage_view_cogl_get_instance_private (view_cogl);
+  cairo_rectangle_int_t view_rect;
+  cairo_rectangle_int_t *current_damage;
+
+  current_damage =
+    &view_priv->damage_history[DAMAGE_HISTORY (view_priv->damage_index)];
+  clutter_stage_view_get_layout (view, &view_rect);
+
+  *current_damage = view_rect;
+  view_priv->damage_index++;
+}
+
+static gboolean
+clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
+                                ClutterStageView   *view)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  CoglOnscreen *onscreen;
-  cairo_rectangle_int_t geom;
+  ClutterStageViewCogl *view_cogl = CLUTTER_STAGE_VIEW_COGL (view);
+  ClutterStageViewCoglPrivate *view_priv =
+    clutter_stage_view_cogl_get_instance_private (view_cogl);
+  CoglFramebuffer *fb = clutter_stage_view_get_framebuffer (view);
+  cairo_rectangle_int_t view_rect;
   gboolean have_clip;
   gboolean may_use_clipped_redraw;
   gboolean use_clipped_redraw;
   gboolean can_blit_sub_buffer;
   gboolean has_buffer_age;
+  gboolean do_swap_buffer;
+  gboolean swap_with_damage;
   ClutterActor *wrapper;
-  cairo_rectangle_int_t *clip_region;
-  int damage[4], ndamage;
-  gboolean force_swap;
+  cairo_rectangle_int_t redraw_clip;
+  cairo_rectangle_int_t swap_region;
+  cairo_rectangle_int_t clip_region;
+  gboolean clip_region_empty;
   int window_scale;
 
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
 
-  onscreen = _clutter_stage_window_get_legacy_onscreen (stage_window);
-  if (!onscreen)
-    return;
+  clutter_stage_view_get_layout (view, &view_rect);
 
   can_blit_sub_buffer =
+    cogl_is_onscreen (fb) &&
     cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_REGION);
 
-  has_buffer_age = cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
-
-  _clutter_stage_window_get_geometry (stage_window, &geom);
+  has_buffer_age =
+    cogl_is_onscreen (fb) &&
+    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
 
   /* NB: a zero width redraw clip == full stage redraw */
-  have_clip = (stage_cogl->bounding_redraw_clip.width != 0 &&
-	       !(stage_cogl->bounding_redraw_clip.x == 0 &&
-		 stage_cogl->bounding_redraw_clip.y == 0 &&
-		 stage_cogl->bounding_redraw_clip.width == geom.width &&
-		 stage_cogl->bounding_redraw_clip.height == geom.height));
+  if (stage_cogl->bounding_redraw_clip.width == 0)
+    have_clip = FALSE;
+  else
+    {
+      redraw_clip = stage_cogl->bounding_redraw_clip;
+      _clutter_util_rectangle_intersection (&redraw_clip,
+                                            &view_rect,
+                                            &redraw_clip);
+
+      have_clip = !(redraw_clip.x == view_rect.x &&
+                    redraw_clip.y == view_rect.y &&
+                    redraw_clip.width == view_rect.width &&
+                    redraw_clip.height == view_rect.height);
+    }
 
   may_use_clipped_redraw = FALSE;
   if (_clutter_stage_window_can_clip_redraws (stage_window) &&
@@ -392,13 +509,15 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       have_clip &&
       /* some drivers struggle to get going and produce some junk
        * frames when starting up... */
-      stage_cogl->frame_count > 3)
+      cogl_onscreen_get_frame_counter (COGL_ONSCREEN (fb)) > 3)
     {
       may_use_clipped_redraw = TRUE;
-      clip_region = &stage_cogl->bounding_redraw_clip;
+      clip_region = redraw_clip;
     }
   else
-    clip_region = NULL;
+    {
+      clip_region = (cairo_rectangle_int_t){ 0 };
+    }
 
   if (may_use_clipped_redraw &&
       G_LIKELY (!(clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS)))
@@ -406,70 +525,87 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   else
     use_clipped_redraw = FALSE;
 
-  force_swap = FALSE;
+  clip_region_empty = may_use_clipped_redraw && clip_region.width == 0;
 
   window_scale = _clutter_stage_window_get_scale_factor (stage_window);
 
+  swap_with_damage = FALSE;
   if (has_buffer_age)
     {
-      cairo_rectangle_int_t *current_damage =
-	&stage_cogl->damage_history[DAMAGE_HISTORY (stage_cogl->damage_index++)];
+      if (use_clipped_redraw && !clip_region_empty)
+        {
+          int age, i;
+          cairo_rectangle_int_t *current_damage =
+            &view_priv->damage_history[DAMAGE_HISTORY (view_priv->damage_index++)];
 
-      if (use_clipped_redraw)
-	{
-	  int age = cogl_onscreen_get_buffer_age (onscreen), i;
+          age = cogl_onscreen_get_buffer_age (COGL_ONSCREEN (fb));
 
-	  *current_damage = *clip_region;
+          if (valid_buffer_age (view_cogl, age))
+            {
+              *current_damage = clip_region;
 
-	  if (valid_buffer_age (stage_cogl, age))
-	    {
-	      for (i = 1; i <= age; i++)
-		_clutter_util_rectangle_union (clip_region,
-					       &stage_cogl->damage_history[DAMAGE_HISTORY (stage_cogl->damage_index - i - 1)],
-					       clip_region);
+              for (i = 1; i <= age; i++)
+                {
+                  cairo_rectangle_int_t *damage =
+                    &view_priv->damage_history[DAMAGE_HISTORY (view_priv->damage_index - i - 1)];
 
-	      CLUTTER_NOTE (CLIPPING, "Reusing back buffer(age=%d) - repairing region: x=%d, y=%d, width=%d, height=%d\n",
-			    age,
-			    clip_region->x,
-			    clip_region->y,
-			    clip_region->width,
-			    clip_region->height);
-	      force_swap = TRUE;
-	    }
-	  else
-	    {
-	      CLUTTER_NOTE (CLIPPING, "Invalid back buffer(age=%d): forcing full redraw\n", age);
-	      use_clipped_redraw = FALSE;
-	    }
-	}
-      else
-	{
-	  current_damage->x = 0;
-	  current_damage->y = 0;
-	  current_damage->width  = geom.width;
-	  current_damage->height = geom.height;
-	}
+                  _clutter_util_rectangle_union (&clip_region, damage, &clip_region);
+                }
+
+              /* Update the bounding redraw clip state with the extra damage. */
+              _clutter_util_rectangle_union (&stage_cogl->bounding_redraw_clip,
+                                             &clip_region,
+                                             &stage_cogl->bounding_redraw_clip);
+
+              CLUTTER_NOTE (CLIPPING, "Reusing back buffer(age=%d) - repairing region: x=%d, y=%d, width=%d, height=%d\n",
+                            age,
+                            clip_region.x,
+                            clip_region.y,
+                            clip_region.width,
+                            clip_region.height);
+
+              swap_with_damage = TRUE;
+            }
+          else
+            {
+              CLUTTER_NOTE (CLIPPING, "Invalid back buffer(age=%d): forcing full redraw\n", age);
+              use_clipped_redraw = FALSE;
+              *current_damage = view_rect;
+            }
+        }
+      else if (!use_clipped_redraw)
+        {
+          fill_current_damage_history_and_step (view);
+        }
     }
 
-  if (use_clipped_redraw)
+  cogl_push_framebuffer (fb);
+  if (use_clipped_redraw && clip_region_empty)
     {
-      CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
+      CLUTTER_NOTE (CLIPPING, "Empty stage output paint\n");
+    }
+  else if (use_clipped_redraw)
+    {
+      int scissor_x;
+      int scissor_y;
 
       CLUTTER_NOTE (CLIPPING,
                     "Stage clip pushed: x=%d, y=%d, width=%d, height=%d\n",
-                    clip_region->x,
-                    clip_region->y,
-                    clip_region->width,
-                    clip_region->height);
+                    clip_region.x,
+                    clip_region.y,
+                    clip_region.width,
+                    clip_region.height);
 
       stage_cogl->using_clipped_redraw = TRUE;
 
+      scissor_x = (clip_region.x - view_rect.x) * window_scale;
+      scissor_y = (clip_region.y - view_rect.y) * window_scale;
       cogl_framebuffer_push_scissor_clip (fb,
-                                          clip_region->x * window_scale,
-                                          clip_region->y * window_scale,
-                                          clip_region->width * window_scale,
-                                          clip_region->height * window_scale);
-      _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), clip_region);
+                                          scissor_x,
+                                          scissor_y,
+                                          clip_region.width * window_scale,
+                                          clip_region.height * window_scale);
+      paint_stage (stage_cogl, view, &clip_region);
       cogl_framebuffer_pop_clip (fb);
 
       stage_cogl->using_clipped_redraw = FALSE;
@@ -481,26 +617,37 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       /* If we are trying to debug redraw issues then we want to pass
        * the bounding_redraw_clip so it can be visualized */
       if (G_UNLIKELY (clutter_paint_debug_flags & CLUTTER_DEBUG_DISABLE_CLIPPED_REDRAWS) &&
-          may_use_clipped_redraw)
+          may_use_clipped_redraw &&
+          !clip_region_empty)
         {
-          _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), clip_region);
+          int scissor_x;
+          int scissor_y;
+
+          scissor_x = (clip_region.x - view_rect.x) * window_scale;;
+          scissor_y = (clip_region.y - view_rect.y) * window_scale;
+          cogl_framebuffer_push_scissor_clip (fb,
+                                              scissor_x,
+                                              scissor_y,
+                                              clip_region.width * window_scale,
+                                              clip_region.height * window_scale);
+          paint_stage (stage_cogl, view, &clip_region);
+          cogl_framebuffer_pop_clip (fb);
         }
       else
-        _clutter_stage_do_paint (CLUTTER_STAGE (wrapper), NULL);
+        paint_stage (stage_cogl, view, &view_rect);
     }
+  cogl_pop_framebuffer ();
 
   if (may_use_clipped_redraw &&
       G_UNLIKELY ((clutter_paint_debug_flags & CLUTTER_DEBUG_REDRAWS)))
     {
-      CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
       CoglContext *ctx = cogl_framebuffer_get_context (fb);
       static CoglPipeline *outline = NULL;
-      cairo_rectangle_int_t *clip = &stage_cogl->bounding_redraw_clip;
       ClutterActor *actor = CLUTTER_ACTOR (wrapper);
-      float x_1 = clip->x * window_scale;
-      float x_2 = clip->x + clip->width * window_scale;
-      float y_1 = clip->y * window_scale;
-      float y_2 = clip->y + clip->height * window_scale;
+      float x_1 = redraw_clip.x;
+      float x_2 = redraw_clip.x + redraw_clip.width;
+      float y_1 = redraw_clip.y;
+      float y_2 = redraw_clip.y + redraw_clip.height;
       CoglVertexP2 quad[4] = {
         { x_1, y_1 },
         { x_2, y_1 },
@@ -525,9 +672,7 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
       cogl_matrix_init_identity (&modelview);
       _clutter_actor_apply_modelview_transform (actor, &modelview);
       cogl_framebuffer_set_modelview_matrix (fb, &modelview);
-      cogl_framebuffer_draw_primitive (COGL_FRAMEBUFFER (onscreen),
-                                       outline,
-                                       prim);
+      cogl_framebuffer_draw_primitive (fb, outline, prim);
       cogl_framebuffer_pop_matrix (fb);
       cogl_object_unref (prim);
     }
@@ -540,45 +685,77 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
    * the resize anyway so it should only exhibit temporary
    * artefacts.
    */
-  if (use_clipped_redraw || force_swap)
+  if (use_clipped_redraw)
     {
-      damage[0] = clip_region->x * window_scale;
-      damage[1] = clip_region->y * window_scale;
-      damage[2] = clip_region->width * window_scale;
-      damage[3] = clip_region->height * window_scale;
-      ndamage = 1;
+      if (use_clipped_redraw && clip_region_empty)
+        {
+          do_swap_buffer = FALSE;
+        }
+      else if (use_clipped_redraw)
+        {
+          swap_region = (cairo_rectangle_int_t) {
+            .x = (clip_region.x - view_rect.x) * window_scale,
+            .y = (clip_region.y - view_rect.y) * window_scale,
+            .width = clip_region.width * window_scale,
+            .height = clip_region.height * window_scale,
+          };
+          g_assert (swap_region.width > 0);
+          do_swap_buffer = TRUE;
+        }
+      else
+        {
+          swap_region = (cairo_rectangle_int_t) {
+            .x = 0,
+            .y = 0,
+            .width = view_rect.width * window_scale,
+            .height = view_rect.height * window_scale,
+          };
+          do_swap_buffer = TRUE;
+        }
     }
   else
     {
-      ndamage = 0;
+      swap_region = (cairo_rectangle_int_t) { 0 };
+      do_swap_buffer = TRUE;
     }
 
-  /* push on the screen */
-  if (use_clipped_redraw && !force_swap)
+  if (do_swap_buffer)
     {
-      CLUTTER_NOTE (BACKEND,
-                    "cogl_onscreen_swap_region (onscreen: %p, "
-                                                "x: %d, y: %d, "
-                                                "width: %d, height: %d)",
-                    onscreen,
-                    damage[0], damage[1], damage[2], damage[3]);
-
-      cogl_onscreen_swap_region (onscreen,
-				 damage, ndamage);
+      return swap_framebuffer (stage_window,
+                               view,
+                               &swap_region,
+                               swap_with_damage);
     }
   else
     {
-      CLUTTER_NOTE (BACKEND, "cogl_onscreen_swap_buffers (onscreen: %p)",
-                    onscreen);
+      return FALSE;
+    }
+}
 
+static void
+clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  gboolean swap_event = FALSE;
+  GList *l;
+
+  for (l = _clutter_stage_window_get_views (stage_window); l; l = l->next)
+    {
+      ClutterStageView *view = l->data;
+
+      swap_event =
+        clutter_stage_cogl_redraw_view (stage_window, view) || swap_event;
+    }
+
+  _clutter_stage_window_finish_frame (stage_window);
+
+  if (swap_event)
+    {
       /* If we have swap buffer events then cogl_onscreen_swap_buffers
        * will return immediately and we need to track that there is a
        * swap in progress... */
       if (clutter_feature_available (CLUTTER_FEATURE_SWAP_EVENTS))
         stage_cogl->pending_swaps++;
-
-      cogl_onscreen_swap_buffers_with_damage (onscreen,
-					      damage, ndamage);
     }
 
   /* reset the redraw clipping for the next paint... */
@@ -587,22 +764,15 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   stage_cogl->frame_count++;
 }
 
-static CoglFramebuffer *
-clutter_stage_cogl_get_active_framebuffer (ClutterStageWindow *stage_window)
-{
-  CoglOnscreen *onscreen =
-    _clutter_stage_window_get_legacy_onscreen (stage_window);
-
-  return COGL_FRAMEBUFFER (onscreen);
-}
-
 static void
 clutter_stage_cogl_get_dirty_pixel (ClutterStageWindow *stage_window,
+                                    ClutterStageView   *view,
                                     int                *x,
                                     int                *y)
 {
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  gboolean has_buffer_age = cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
+  gboolean has_buffer_age =
+    cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
+  cairo_rectangle_int_t *rect;
 
   if (!has_buffer_age)
     {
@@ -611,9 +781,11 @@ clutter_stage_cogl_get_dirty_pixel (ClutterStageWindow *stage_window,
     }
   else
     {
-      cairo_rectangle_int_t *rect;
+      ClutterStageViewCogl *view_cogl = CLUTTER_STAGE_VIEW_COGL (view);
+      ClutterStageViewCoglPrivate *view_priv =
+        clutter_stage_view_cogl_get_instance_private (view_cogl);
 
-      rect = &stage_cogl->damage_history[DAMAGE_HISTORY (stage_cogl->damage_index-1)];
+      rect = &view_priv->damage_history[DAMAGE_HISTORY (view_priv->damage_index - 1)];
       *x = rect->x;
       *y = rect->y;
     }
@@ -636,7 +808,6 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->ignoring_redraw_clips = clutter_stage_cogl_ignoring_redraw_clips;
   iface->get_redraw_clip_bounds = clutter_stage_cogl_get_redraw_clip_bounds;
   iface->redraw = clutter_stage_cogl_redraw;
-  iface->get_active_framebuffer = clutter_stage_cogl_get_active_framebuffer;
   iface->get_dirty_pixel = clutter_stage_cogl_get_dirty_pixel;
 }
 
@@ -682,4 +853,14 @@ _clutter_stage_cogl_init (ClutterStageCogl *stage)
   stage->refresh_rate = 0.0;
 
   stage->update_time = -1;
+}
+
+static void
+clutter_stage_view_cogl_init (ClutterStageViewCogl *view_cogl)
+{
+}
+
+static void
+clutter_stage_view_cogl_class_init (ClutterStageViewCoglClass *klass)
+{
 }

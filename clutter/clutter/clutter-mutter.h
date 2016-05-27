@@ -27,6 +27,7 @@
 
 #include "clutter-backend.h"
 #include "clutter-macros.h"
+#include "clutter-stage-view.h"
 #include "cogl/clutter-stage-cogl.h"
 #include "x11/clutter-stage-x11.h"
 

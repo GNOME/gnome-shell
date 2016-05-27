@@ -36,7 +36,8 @@ typedef struct _ClutterStageQueueRedrawEntry ClutterStageQueueRedrawEntry;
 /* stage */
 ClutterStageWindow *_clutter_stage_get_default_window    (void);
 
-void                _clutter_stage_do_paint              (ClutterStage                *stage,
+void                _clutter_stage_paint_view            (ClutterStage                *stage,
+                                                          ClutterStageView            *view,
                                                           const cairo_rectangle_int_t *clip);
 
 void                _clutter_stage_set_window            (ClutterStage          *stage,
@@ -56,7 +57,8 @@ void                _clutter_stage_get_viewport          (ClutterStage          
                                                           float                 *width,
                                                           float                 *height);
 void                _clutter_stage_dirty_viewport        (ClutterStage          *stage);
-void                _clutter_stage_maybe_setup_viewport  (ClutterStage          *stage);
+void                _clutter_stage_maybe_setup_viewport  (ClutterStage          *stage,
+                                                          ClutterStageView      *view);
 void                _clutter_stage_maybe_relayout        (ClutterActor          *stage);
 gboolean            _clutter_stage_needs_update          (ClutterStage          *stage);
 gboolean            _clutter_stage_do_update             (ClutterStage          *stage);

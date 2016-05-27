@@ -274,6 +274,7 @@ _clutter_stage_window_redraw (ClutterStageWindow *window)
 
 void
 _clutter_stage_window_get_dirty_pixel (ClutterStageWindow *window,
+                                       ClutterStageView   *view,
                                        int *x, int *y)
 {
   ClutterStageWindowIface *iface;
@@ -285,27 +286,7 @@ _clutter_stage_window_get_dirty_pixel (ClutterStageWindow *window,
 
   iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
   if (iface->get_dirty_pixel)
-    iface->get_dirty_pixel (window, x, y);
-}
-
-/* NB: The presumption shouldn't be that a stage can't be comprised of
- * multiple internal framebuffers, so instead of simply naming this
- * function _clutter_stage_window_get_framebuffer(), the "active"
- * infix is intended to clarify that it gets the framebuffer that is
- * currently in use/being painted.
- */
-CoglFramebuffer *
-_clutter_stage_window_get_active_framebuffer (ClutterStageWindow *window)
-{
-  ClutterStageWindowIface *iface;
-
-  g_return_val_if_fail (CLUTTER_IS_STAGE_WINDOW (window), NULL);
-
-  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
-  if (iface->get_active_framebuffer)
-    return iface->get_active_framebuffer (window);
-  else
-    return NULL;
+    iface->get_dirty_pixel (window, view, x, y);
 }
 
 gboolean
@@ -349,12 +330,12 @@ _clutter_stage_window_get_scale_factor (ClutterStageWindow *window)
   return 1;
 }
 
-CoglFramebuffer  *
-_clutter_stage_window_get_legacy_onscreen (ClutterStageWindow *window)
+GList *
+_clutter_stage_window_get_views (ClutterStageWindow *window)
 {
   ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
 
-  return iface->get_legacy_onscreen (window);
+  return iface->get_views (window);
 }
 
 CoglFrameClosure *
@@ -374,6 +355,15 @@ _clutter_stage_window_remove_frame_callback (ClutterStageWindow *window,
   ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
 
   iface->remove_frame_callback (window, closure);
+}
+
+void
+_clutter_stage_window_finish_frame (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+
+  if (iface->finish_frame)
+    iface->finish_frame (window);
 }
 
 int64_t

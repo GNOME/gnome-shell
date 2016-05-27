@@ -25,7 +25,10 @@
 #include "meta-stage.h"
 
 #include <meta/meta-backend.h>
+#include <meta/meta-monitor-manager.h>
 #include <meta/util.h>
+#include "backends/meta-backend-private.h"
+#include "clutter/clutter-mutter.h"
 
 struct _MetaOverlay {
   gboolean enabled;

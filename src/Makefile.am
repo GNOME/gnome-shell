@@ -107,6 +107,8 @@ libmutter_la_SOURCES =				\
 	backends/meta-stage.c			\
 	backends/meta-renderer.c		\
 	backends/meta-renderer.h		\
+	backends/meta-renderer-view.c		\
+	backends/meta-renderer-view.h		\
 	backends/edid-parse.c			\
 	backends/edid.h				\
 	backends/x11/meta-backend-x11.c			\

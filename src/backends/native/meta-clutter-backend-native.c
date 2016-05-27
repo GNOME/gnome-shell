@@ -36,10 +36,21 @@
 struct _MetaClutterBackendNative
 {
   ClutterBackendEglNative parent;
+
+  MetaStageNative *stage_native;
 };
 
 G_DEFINE_TYPE (MetaClutterBackendNative, meta_clutter_backend_native,
                CLUTTER_TYPE_BACKEND_EGL_NATIVE)
+
+MetaStageNative *
+meta_clutter_backend_native_get_stage_native (ClutterBackend *backend)
+{
+  MetaClutterBackendNative *clutter_backend_native =
+    META_CLUTTER_BACKEND_NATIVE (backend);
+
+  return clutter_backend_native->stage_native;
+}
 
 static CoglRenderer *
 meta_clutter_backend_native_get_renderer (ClutterBackend  *clutter_backend,
@@ -56,10 +67,16 @@ meta_clutter_backend_native_create_stage (ClutterBackend  *backend,
                                           ClutterStage    *wrapper,
                                           GError         **error)
 {
-  return g_object_new (META_TYPE_STAGE_NATIVE,
-                       "backend", backend,
-                       "wrapper", wrapper,
-                       NULL);
+  MetaClutterBackendNative *clutter_backend_native =
+    META_CLUTTER_BACKEND_NATIVE (backend);
+
+  g_assert (!clutter_backend_native->stage_native);
+
+  clutter_backend_native->stage_native = g_object_new (META_TYPE_STAGE_NATIVE,
+                                                       "backend", backend,
+                                                       "wrapper", wrapper,
+                                                       NULL);
+  return CLUTTER_STAGE_WINDOW (clutter_backend_native->stage_native);
 }
 
 static void

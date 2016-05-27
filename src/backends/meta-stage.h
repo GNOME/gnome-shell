@@ -63,6 +63,9 @@ void              meta_stage_update_cursor_overlay   (MetaStage     *stage,
 
 void meta_stage_set_active (MetaStage *stage,
                             gboolean   is_active);
+
+void meta_stage_update_view_layout (MetaStage *stage);
+
 G_END_DECLS
 
 #endif /* META_STAGE_H */

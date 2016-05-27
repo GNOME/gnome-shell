@@ -38,8 +38,10 @@
 #include "meta-launcher.h"
 #include "backends/meta-cursor-tracker-private.h"
 #include "backends/meta-pointer-constraint.h"
+#include "backends/meta-stage.h"
 #include "backends/native/meta-clutter-backend-native.h"
 #include "backends/native/meta-renderer-native.h"
+#include "backends/native/meta-stage-native.h"
 
 #include <stdlib.h>
 
@@ -383,7 +385,12 @@ static void
 meta_backend_native_update_screen_size (MetaBackend *backend,
                                         int width, int height)
 {
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  MetaStageNative *stage_native;
   ClutterActor *stage = meta_backend_get_stage (backend);
+
+  stage_native = meta_clutter_backend_native_get_stage_native (clutter_backend);
+  meta_stage_native_legacy_set_size (stage_native, width, height);
 
   clutter_actor_set_size (stage, width, height);
 }

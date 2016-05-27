@@ -41,6 +41,7 @@
 #include "meta-idle-monitor-xsync.h"
 #include "meta-monitor-manager-xrandr.h"
 #include "backends/meta-monitor-manager-dummy.h"
+#include "backends/meta-stage.h"
 #include "backends/x11/nested/meta-cursor-renderer-x11-nested.h"
 #include "backends/x11/meta-clutter-backend-x11.h"
 #include "backends/x11/meta-renderer-x11.h"
@@ -814,7 +815,9 @@ meta_backend_x11_update_screen_size (MetaBackend *backend,
   if (priv->mode == META_BACKEND_X11_MODE_NESTED)
     {
       ClutterActor *stage = meta_backend_get_stage (backend);
+      MetaRenderer *renderer = meta_backend_get_renderer (backend);
 
+      meta_renderer_rebuild_views (renderer);
       clutter_actor_set_size (stage, width, height);
     }
   else

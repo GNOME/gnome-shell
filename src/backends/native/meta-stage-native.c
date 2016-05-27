@@ -35,7 +35,7 @@ struct _MetaStageNative
 {
   ClutterStageCogl parent;
 
-  CoglOnscreen *onscreen;
+  CoglOnscreen *pending_onscreen;
 };
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
@@ -47,19 +47,79 @@ G_DEFINE_TYPE_WITH_CODE (MetaStageNative, meta_stage_native,
                          CLUTTER_TYPE_STAGE_COGL,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init))
+
+static MetaRendererView *
+get_legacy_view (MetaRenderer *renderer)
+{
+  GList *views;
+
+  views = meta_renderer_get_views (renderer);
+  g_assert (g_list_length (views) <= 1);
+
+  if (views)
+    return views->data;
+  else
+    return NULL;
+}
+
+static CoglOnscreen *
+get_legacy_onscreen (MetaStageNative *stage_native)
+{
+  if (stage_native->pending_onscreen)
+    {
+      return stage_native->pending_onscreen;
+    }
+  else
+    {
+      MetaBackend *backend = meta_get_backend ();
+      MetaRenderer *renderer = meta_backend_get_renderer (backend);
+      ClutterStageView *stage_view;
+      CoglFramebuffer *framebuffer;
+
+      stage_view = CLUTTER_STAGE_VIEW (get_legacy_view (renderer));
+      framebuffer = clutter_stage_view_get_framebuffer (stage_view);
+
+      return COGL_ONSCREEN (framebuffer);
+    }
+}
+
+void
+meta_stage_native_legacy_set_size (MetaStageNative *stage_native,
+                                   int              width,
+                                   int              height)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererView *legacy_view;
+  cairo_rectangle_int_t view_layout;
+
+  legacy_view = get_legacy_view (renderer);
+  if (!legacy_view)
+    return;
+
+  view_layout = (cairo_rectangle_int_t) {
+    .width = width,
+    .height = height
+  };
+  g_object_set (G_OBJECT (legacy_view),
+                "layout", &view_layout,
+                NULL);
+}
+
 static gboolean
 meta_stage_native_realize (ClutterStageWindow *stage_window)
 {
   MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-  ClutterBackend *clutter_backend = CLUTTER_BACKEND (stage_cogl->backend);
+  MetaBackend *backend = meta_get_backend ();
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglFramebuffer *framebuffer;
   GError *error = NULL;
 
-  stage_native->onscreen = cogl_onscreen_new (clutter_backend->cogl_context,
-                                              1, 1);
+  stage_native->pending_onscreen =
+    cogl_onscreen_new (clutter_backend->cogl_context, 1, 1);
 
-  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (stage_native->onscreen),
-                                  &error))
+  framebuffer = COGL_FRAMEBUFFER (stage_native->pending_onscreen);
+  if (!cogl_framebuffer_allocate (framebuffer, &error))
     meta_fatal ("Failed to allocate onscreen framebuffer: %s\n",
                 error->message);
 
@@ -76,7 +136,7 @@ meta_stage_native_unrealize (ClutterStageWindow *stage_window)
 
   clutter_stage_window_parent_iface->unrealize (stage_window);
 
-  g_clear_pointer (&stage_native->onscreen, cogl_object_unref);
+  g_clear_pointer (&stage_native->pending_onscreen, cogl_object_unref);
 }
 
 static gboolean
@@ -89,15 +149,15 @@ static void
 meta_stage_native_get_geometry (ClutterStageWindow    *stage_window,
                                 cairo_rectangle_int_t *geometry)
 {
-  MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
-  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (stage_native->onscreen);
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererView *legacy_view;
 
-  if (framebuffer)
+  legacy_view = get_legacy_view (renderer);
+  if (legacy_view)
     {
-      *geometry = (cairo_rectangle_int_t) {
-        .width = cogl_framebuffer_get_width (framebuffer),
-        .height = cogl_framebuffer_get_height (framebuffer)
-      };
+      clutter_stage_view_get_layout (CLUTTER_STAGE_VIEW (legacy_view),
+                                     geometry);
     }
   else
     {
@@ -108,12 +168,44 @@ meta_stage_native_get_geometry (ClutterStageWindow    *stage_window,
     }
 }
 
-static CoglFramebuffer *
-meta_stage_native_get_legacy_onscreen (ClutterStageWindow *stage_window)
+static void
+ensure_legacy_view (ClutterStageWindow *stage_window)
 {
   MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaRendererView *legacy_view;
+  cairo_rectangle_int_t view_layout = { 0 };
+  CoglFramebuffer *framebuffer;
 
-  return COGL_FRAMEBUFFER (stage_native->onscreen);
+  legacy_view = get_legacy_view (renderer);
+  if (legacy_view)
+    return;
+
+  if (!monitor_manager)
+    return;
+
+  meta_monitor_manager_get_screen_size (monitor_manager,
+                                        &view_layout.width,
+                                        &view_layout.height);
+  framebuffer = g_steal_pointer (&stage_native->pending_onscreen);
+  legacy_view = g_object_new (META_TYPE_RENDERER_VIEW,
+                              "layout", &view_layout,
+                              "framebuffer", framebuffer,
+                              NULL);
+  meta_renderer_set_legacy_view (renderer, legacy_view);
+}
+
+static GList *
+meta_stage_native_get_views (ClutterStageWindow *stage_window)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+
+  ensure_legacy_view (stage_window);
+  return meta_renderer_get_views (renderer);
 }
 
 static CoglClosure *
@@ -122,11 +214,13 @@ meta_stage_native_set_frame_callback (ClutterStageWindow *stage_window,
                                       gpointer            user_data)
 {
   MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
+  CoglOnscreen *legacy_onscreen;
 
-  cogl_onscreen_set_swap_throttled (stage_native->onscreen,
+  legacy_onscreen = get_legacy_onscreen (stage_native);
+  cogl_onscreen_set_swap_throttled (legacy_onscreen,
                                     _clutter_get_sync_to_vblank ());
 
-  return cogl_onscreen_add_frame_callback (stage_native->onscreen,
+  return cogl_onscreen_add_frame_callback (legacy_onscreen,
                                            callback,
                                            user_data,
                                            NULL);
@@ -137,16 +231,22 @@ meta_stage_native_remove_frame_callback (ClutterStageWindow *stage_window,
                                          CoglFrameClosure   *closure)
 {
   MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
+  CoglOnscreen *legacy_onscreen;
 
-  cogl_onscreen_remove_frame_callback (stage_native->onscreen, closure);
+  legacy_onscreen = get_legacy_onscreen (stage_native);
+
+  cogl_onscreen_remove_frame_callback (legacy_onscreen, closure);
 }
 
 static int64_t
 meta_stage_native_get_frame_counter (ClutterStageWindow *stage_window)
 {
   MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
+  CoglOnscreen *legacy_onscreen;
 
-  return cogl_onscreen_get_frame_counter (stage_native->onscreen);
+  legacy_onscreen = get_legacy_onscreen (stage_native);
+
+  return cogl_onscreen_get_frame_counter (legacy_onscreen);
 }
 
 static void
@@ -168,7 +268,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->unrealize = meta_stage_native_unrealize;
   iface->can_clip_redraws = meta_stage_native_can_clip_redraws;
   iface->get_geometry = meta_stage_native_get_geometry;
-  iface->get_legacy_onscreen = meta_stage_native_get_legacy_onscreen;
+  iface->get_views = meta_stage_native_get_views;
   iface->set_frame_callback = meta_stage_native_set_frame_callback;
   iface->remove_frame_callback = meta_stage_native_remove_frame_callback;
   iface->get_frame_counter = meta_stage_native_get_frame_counter;

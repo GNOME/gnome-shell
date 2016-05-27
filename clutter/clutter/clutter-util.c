@@ -161,6 +161,39 @@ _clutter_util_rectangle_union (const cairo_rectangle_int_t *src1,
   dest->y = dest_y;
 }
 
+gboolean
+_clutter_util_rectangle_intersection (const cairo_rectangle_int_t *src1,
+                                      const cairo_rectangle_int_t *src2,
+                                      cairo_rectangle_int_t       *dest)
+{
+  int x1, y1, x2, y2;
+
+  x1 = MAX (src1->x, src2->x);
+  y1 = MAX (src1->y, src2->y);
+
+  x2 = MIN (src1->x + (int) src1->width,  src2->x + (int) src2->width);
+  y2 = MIN (src1->y + (int) src1->height, src2->y + (int) src2->height);
+
+  if (x1 >= x2 || y1 >= y2)
+    {
+      dest->x = 0;
+      dest->y = 0;
+      dest->width  = 0;
+      dest->height = 0;
+
+      return FALSE;
+    }
+  else
+    {
+      dest->x = x1;
+      dest->y = y1;
+      dest->width  = x2 - x1;
+      dest->height = y2 - y1;
+
+      return TRUE;
+    }
+}
+
 float
 _clutter_util_matrix_determinant (const ClutterMatrix *matrix)
 {

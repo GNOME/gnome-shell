@@ -31,4 +31,8 @@
 G_DECLARE_FINAL_TYPE (MetaStageNative, meta_stage_native,
                       META, STAGE_NATIVE, ClutterStageCogl)
 
+void meta_stage_native_legacy_set_size (MetaStageNative *stage_native,
+                                        int              width,
+                                        int              height);
+
 #endif /* META_STAGE_NATIVE_H */

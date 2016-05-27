@@ -106,6 +106,8 @@ struct _MetaBackendClass
 
 void meta_init_backend (MetaBackendType backend_type);
 
+ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
+
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
                                                  int          device_id);
 MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);

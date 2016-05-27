@@ -445,6 +445,8 @@ clutter_stage_x11_unrealize (ClutterStageWindow *stage_window)
 
   clutter_stage_window_parent_iface->unrealize (stage_window);
 
+  g_list_free (stage_x11->legacy_views);
+  g_clear_object (&stage_x11->legacy_view);
   g_clear_pointer (&stage_x11->onscreen, cogl_object_unref);
 }
 
@@ -625,6 +627,11 @@ clutter_stage_x11_realize (ClutterStageWindow *stage_window)
                 stage_x11->scale_factor);
 
   stage_x11->onscreen = cogl_onscreen_new (backend->cogl_context, width, height);
+
+  if (stage_x11->legacy_view)
+    g_object_set (G_OBJECT (stage_x11->legacy_view),
+                  "framebuffer", stage_x11->onscreen,
+                  NULL);
 
   /* We just created a window of the size of the actor. No need to fix
      the size of the stage, just update it. */
@@ -892,12 +899,34 @@ clutter_stage_x11_get_scale_factor (ClutterStageWindow *stage_window)
   return stage_x11->scale_factor;
 }
 
-static CoglFramebuffer *
-clutter_stage_x11_get_legacy_onscreen (ClutterStageWindow *stage_window)
+static void
+ensure_legacy_view (ClutterStageWindow *stage_window)
+{
+  ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
+  cairo_rectangle_int_t view_layout;
+  CoglFramebuffer *framebuffer;
+
+  if (stage_x11->legacy_view)
+    return;
+
+  _clutter_stage_window_get_geometry (stage_window, &view_layout);
+  framebuffer = COGL_FRAMEBUFFER (stage_x11->onscreen);
+  stage_x11->legacy_view = g_object_new (CLUTTER_TYPE_STAGE_VIEW_COGL,
+                                         "layout", &view_layout,
+                                         "framebuffer", framebuffer,
+                                         NULL);
+  stage_x11->legacy_views = g_list_append (stage_x11->legacy_views,
+                                           stage_x11->legacy_view);
+}
+
+static GList *
+clutter_stage_x11_get_views (ClutterStageWindow *stage_window)
 {
   ClutterStageX11 *stage_x11 = CLUTTER_STAGE_X11 (stage_window);
 
-  return stage_x11->onscreen;
+  ensure_legacy_view (stage_window);
+
+  return stage_x11->legacy_views;
 }
 
 static CoglFrameClosure *
@@ -1007,7 +1036,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->can_clip_redraws = clutter_stage_x11_can_clip_redraws;
   iface->set_scale_factor = clutter_stage_x11_set_scale_factor;
   iface->get_scale_factor = clutter_stage_x11_get_scale_factor;
-  iface->get_legacy_onscreen = clutter_stage_x11_get_legacy_onscreen;
+  iface->get_views = clutter_stage_x11_get_views;
   iface->set_frame_callback = clutter_stage_x11_set_frame_callback;
   iface->remove_frame_callback = clutter_stage_x11_remove_frame_callback;
   iface->get_frame_counter = clutter_stage_x11_get_frame_counter;
@@ -1112,6 +1141,8 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
       if (!stage_x11->is_foreign_xwin)
         {
           gboolean size_changed = FALSE;
+          int stage_width;
+          int stage_height;
 
           CLUTTER_NOTE (BACKEND, "ConfigureNotify[%x] (%d, %d)",
                         (unsigned int) stage_x11->xwin,
@@ -1131,9 +1162,9 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
               stage_x11->xwin_height = xevent->xconfigure.height;
             }
 
-          clutter_actor_set_size (CLUTTER_ACTOR (stage),
-                                  xevent->xconfigure.width / stage_x11->scale_factor,
-                                  xevent->xconfigure.height / stage_x11->scale_factor);
+          stage_width = xevent->xconfigure.width / stage_x11->scale_factor;
+          stage_height = xevent->xconfigure.height / stage_x11->scale_factor;
+          clutter_actor_set_size (CLUTTER_ACTOR (stage), stage_width, stage_height);
 
           if (size_changed)
             {
@@ -1194,6 +1225,22 @@ clutter_stage_x11_translate_event (ClutterEventTranslator *translator,
                * to set up the GL viewport with the new size
                */
               clutter_stage_ensure_viewport (stage);
+
+              /* If this was a result of the Xrandr change when running as a
+               * X11 compositing manager, we need to reset the legacy
+               * stage view, now that it has a new size.
+               */
+              if (stage_x11->legacy_view)
+                {
+                  cairo_rectangle_int_t view_layout = {
+                    .width = stage_width,
+                    .height = stage_height
+                  };
+
+                  g_object_set (G_OBJECT (stage_x11->legacy_view),
+                                "layout", &view_layout,
+                                NULL);
+                }
             }
         }
       break;
@@ -1463,12 +1510,6 @@ set_foreign_window_callback (ClutterActor *actor,
   g_hash_table_insert (clutter_stages_by_xid,
                        GINT_TO_POINTER (fwd->stage_x11->xwin),
                        fwd->stage_x11);
-
-  /* calling this with the stage unrealized will unset the stage
-   * from the GL context; once the stage is realized the GL context
-   * will be set again
-   */
-  clutter_stage_ensure_current (CLUTTER_STAGE (actor));
 }
 
 /**

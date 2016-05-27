@@ -58,6 +58,9 @@ struct _ClutterStageX11
   gint xwin_width;
   gint xwin_height; /* FIXME target_width / height */
 
+  ClutterStageView *legacy_view;
+  GList *legacy_views;
+
   gchar *title;
 
   guint clipped_redraws_cool_off;

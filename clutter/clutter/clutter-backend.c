@@ -413,27 +413,6 @@ clutter_backend_real_create_context (ClutterBackend  *backend,
   return TRUE;
 }
 
-static void
-clutter_backend_real_ensure_context (ClutterBackend *backend,
-                                     ClutterStage   *stage)
-{
-  ClutterStageWindow *stage_impl;
-  CoglFramebuffer *framebuffer;
-
-  if (stage == NULL)
-    return;
-
-  stage_impl = _clutter_stage_get_window (stage);
-  if (stage_impl == NULL)
-    return;
-
-  framebuffer = _clutter_stage_window_get_active_framebuffer (stage_impl);
-  if (framebuffer == NULL)
-    return;
-
-  cogl_set_framebuffer (framebuffer);
-}
-
 static ClutterFeatureFlags
 clutter_backend_real_get_features (ClutterBackend *backend)
 {
@@ -697,7 +676,6 @@ clutter_backend_class_init (ClutterBackendClass *klass)
   klass->get_device_manager = clutter_backend_real_get_device_manager;
   klass->translate_event = clutter_backend_real_translate_event;
   klass->create_context = clutter_backend_real_create_context;
-  klass->ensure_context = clutter_backend_real_ensure_context;
   klass->get_features = clutter_backend_real_get_features;
 }
 
@@ -788,87 +766,6 @@ _clutter_backend_create_context (ClutterBackend  *backend,
 
   return klass->create_context (backend, error);
 }
-
-void
-_clutter_backend_ensure_context_internal (ClutterBackend  *backend,
-                                          ClutterStage    *stage)
-{
-  ClutterBackendClass *klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (G_LIKELY (klass->ensure_context))
-    klass->ensure_context (backend, stage);
-}
-
-void
-_clutter_backend_ensure_context (ClutterBackend *backend,
-                                 ClutterStage   *stage)
-{
-  static ClutterStage *current_context_stage = NULL;
-
-  g_assert (CLUTTER_IS_BACKEND (backend));
-  g_assert (CLUTTER_IS_STAGE (stage));
-
-  if (current_context_stage != stage ||
-      !clutter_actor_is_realized (CLUTTER_ACTOR (stage)))
-    {
-      ClutterStage *new_stage = NULL;
-
-      if (!clutter_actor_is_realized (CLUTTER_ACTOR (stage)))
-        {
-          new_stage = NULL;
-
-          CLUTTER_NOTE (BACKEND,
-                        "Stage [%p] is not realized, unsetting the stage",
-                        stage);
-        }
-      else
-        {
-          new_stage = stage;
-
-          CLUTTER_NOTE (BACKEND,
-                        "Setting the new stage [%p]",
-                        new_stage);
-        }
-
-      /* XXX: Until Cogl becomes fully responsible for backend windows
-       * Clutter need to manually keep it informed of the current window size
-       *
-       * NB: This must be done after we ensure_context above because Cogl
-       * always assumes there is a current GL context.
-       */
-      if (new_stage != NULL)
-        {
-          float width, height;
-
-          _clutter_backend_ensure_context_internal (backend, new_stage);
-
-          clutter_actor_get_size (CLUTTER_ACTOR (stage), &width, &height);
-
-          cogl_onscreen_clutter_backend_set_size (width, height);
-
-          /* Eventually we will have a separate CoglFramebuffer for
-           * each stage and each one will track private projection
-           * matrix and viewport state, but until then we need to make
-           * sure we update the projection and viewport whenever we
-           * switch between stages.
-           *
-           * This dirty mechanism will ensure they are asserted before
-           * the next paint...
-           */
-          _clutter_stage_dirty_viewport (stage);
-          _clutter_stage_dirty_projection (stage);
-        }
-
-      /* FIXME: With a NULL stage and thus no active context it may make more
-       * sense to clean the context but then re call with the default stage 
-       * so at least there is some kind of context in place (as to avoid
-       * potential issue of GL calls with no context).
-       */
-      current_context_stage = new_stage;
-    }
-  else
-    CLUTTER_NOTE (BACKEND, "Stage is the same");
-}
-
 
 ClutterFeatureFlags
 _clutter_backend_get_features (ClutterBackend *backend)

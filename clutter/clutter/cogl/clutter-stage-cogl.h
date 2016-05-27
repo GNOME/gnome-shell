@@ -11,6 +11,8 @@
 #include <X11/Xutil.h>
 #endif
 
+#include "clutter/clutter-stage-window.h"
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_STAGE_COGL                  (_clutter_stage_cogl_get_type ())
@@ -24,6 +26,17 @@ typedef struct _ClutterStageCogl         ClutterStageCogl;
 typedef struct _ClutterStageCoglClass    ClutterStageCoglClass;
 
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (ClutterStageCogl, g_object_unref)
+
+#define CLUTTER_TYPE_STAGE_VIEW_COGL (clutter_stage_view_cogl_get_type ())
+CLUTTER_AVAILABLE_IN_MUTTER
+G_DECLARE_DERIVABLE_TYPE (ClutterStageViewCogl, clutter_stage_view_cogl,
+                          CLUTTER, STAGE_VIEW_COGL,
+                          ClutterStageView)
+
+struct _ClutterStageViewCoglClass
+{
+  ClutterStageViewClass parent_class;
+};
 
 struct _ClutterStageCogl
 {
@@ -49,12 +62,6 @@ struct _ClutterStageCogl
   unsigned int frame_count;
 
   cairo_rectangle_int_t bounding_redraw_clip;
-
-  /* Stores a list of previous damaged areas */
-#define DAMAGE_HISTORY_MAX 16
-#define DAMAGE_HISTORY(x) ((x) & (DAMAGE_HISTORY_MAX - 1))
-  cairo_rectangle_int_t damage_history[DAMAGE_HISTORY_MAX];
-  unsigned int damage_index;
 
   guint initialized_redraw_clip : 1;
 

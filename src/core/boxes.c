@@ -2013,3 +2013,14 @@ meta_rectangle_find_nonintersected_monitor_edges (
 
   return ret;
 }
+
+cairo_rectangle_int_t
+meta_rectangle_to_cairo_rectangle (MetaRectangle *rect)
+{
+  return (cairo_rectangle_int_t) {
+    .x = rect->x,
+    .y = rect->y,
+    .width = rect->width,
+    .height = rect->height
+  };
+}

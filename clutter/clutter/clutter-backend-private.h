@@ -86,8 +86,6 @@ struct _ClutterBackendClass
                                                 GError         **error);
   gboolean              (* create_context)     (ClutterBackend  *backend,
                                                 GError         **error);
-  void                  (* ensure_context)     (ClutterBackend  *backend,
-                                                ClutterStage    *stage);
   ClutterDeviceManager *(* get_device_manager) (ClutterBackend  *backend);
 
   void                  (* copy_event_data)    (ClutterBackend     *backend,
@@ -113,10 +111,6 @@ ClutterBackend *        _clutter_create_backend                         (void);
 ClutterStageWindow *    _clutter_backend_create_stage                   (ClutterBackend         *backend,
                                                                          ClutterStage           *wrapper,
                                                                          GError                **error);
-void                    _clutter_backend_ensure_context                 (ClutterBackend         *backend,
-                                                                         ClutterStage           *stage);
-void                    _clutter_backend_ensure_context_internal        (ClutterBackend         *backend,
-                                                                         ClutterStage           *stage);
 gboolean                _clutter_backend_create_context                 (ClutterBackend         *backend,
                                                                          GError                **error);
 
@@ -152,6 +146,7 @@ gint32                  _clutter_backend_get_units_serial               (Clutter
 
 PangoDirection          _clutter_backend_get_keymap_direction           (ClutterBackend         *backend);
 
+CLUTTER_AVAILABLE_IN_MUTTER
 void                    _clutter_backend_reset_cogl_framebuffer         (ClutterBackend         *backend);
 
 void                    clutter_set_allowed_drivers                     (const char             *drivers);
