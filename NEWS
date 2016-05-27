@@ -1,3 +1,18 @@
+3.21.2
+======
+* Clean up surface <-> shell interaction [Jonas; #763431]
+* Fix grabbing random keys for disabled shortcuts [Rui; #766270]
+* Fix stacking of hidden windows on wayland [Rui; #764844]
+* Misc. bug fixes [Victor, Florian, Marek, Rui; #766306, #766326, #751847,
+  #763832, #766528]
+
+Contributors:
+  Jonas Ådahl, Emmanuele Bassi, Marek Chalupa, Matthias Clasen,
+  Carlos Garnacho, Rui Matos, Florian Müllner, Victor Toso
+
+Translations:
+  Tiago Santos [pt], Cédric Valmary [oc], Muhammet Kara [tr]
+
 3.21.1
 ======
 * Notify clients of pending modifier state changes [Rui; #748526]
