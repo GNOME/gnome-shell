@@ -1,5 +1,5 @@
 AC_PREREQ(2.63)
-AC_INIT([gnome-shell],[3.21.1],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
+AC_INIT([gnome-shell],[3.21.2],[https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell],[gnome-shell])
 AX_IS_RELEASE([git-directory])
 
 AC_CONFIG_HEADERS([config.h])
@@ -77,7 +77,7 @@ AC_MSG_RESULT($enable_systemd)
 CLUTTER_MIN_VERSION=1.21.5
 GOBJECT_INTROSPECTION_MIN_VERSION=1.45.4
 GJS_MIN_VERSION=1.39.0
-MUTTER_MIN_VERSION=3.21.1
+MUTTER_MIN_VERSION=3.21.2
 GTK_MIN_VERSION=3.15.0
 GIO_MIN_VERSION=2.45.3
 LIBECAL_MIN_VERSION=3.5.3

@@ -1,3 +1,21 @@
+3.21.2
+======
+* Fix sorting of hidden apps in app switcher [Florian; #766238]
+* Set logind's LockedHint property when locked [Victor; #764773]
+* Allocate framebuffers early to fix a crash on NVIDIA [Martin; #764898]
+* Fix cycle-windows/cycle-group keybindings [Florian; #730739]
+* Switch to shared desktop schema for calendar settings [Iain; #766318]
+* Misc. bug fixes [Florian, Cosimo, Michele; #766325, #758471, #757556,
+  #757019, #766598]
+
+Contributors:
+  Cosimo Cecchi, Michele Gaio, Iain Lane, Florian Müllner, Martin Szulecki,
+  Victor Toso
+
+Translations:
+  Tiago Santos [pt], Kjartan Maraas [nb], Jiro Matsuzawa [ja],
+  Cédric Valmary [oc], Sveinn í Felli [is]
+
 3.21.1
 ======
 * Save screencasts in HOME if XDG_VIDEO_DIR doesn't exist [Florian; #765015]
