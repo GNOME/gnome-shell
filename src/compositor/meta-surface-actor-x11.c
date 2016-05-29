@@ -420,6 +420,22 @@ window_decorated_notify (MetaWindow *window,
   create_damage (self);
 }
 
+static void
+reset_texture (MetaSurfaceActorX11 *self)
+{
+  MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
+  MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
+
+  if (!priv->texture)
+    return;
+
+  /* Setting the texture to NULL will cause all the FBO's cached by the
+   * shaped texture's MetaTextureTower to be discarded and recreated.
+   */
+  meta_shaped_texture_set_texture (stex, NULL);
+  meta_shaped_texture_set_texture (stex, priv->texture);
+}
+
 MetaSurfaceActor *
 meta_surface_actor_x11_new (MetaWindow *window)
 {
@@ -431,6 +447,9 @@ meta_surface_actor_x11_new (MetaWindow *window)
 
   priv->window = window;
   priv->display = display;
+
+  g_signal_connect_object (priv->display, "gl-video-memory-purged",
+                           G_CALLBACK (reset_texture), self, G_CONNECT_SWAPPED);
 
   create_damage (self);
   g_signal_connect_object (priv->window, "notify::decorated",
