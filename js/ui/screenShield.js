@@ -349,7 +349,6 @@ const Arrow = new Lang.Class({
     _init: function(params) {
         this.parent(params);
         this.x_fill = this.y_fill = true;
-        this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._drawingArea = new St.DrawingArea();
         this._drawingArea.connect('repaint', Lang.bind(this, this._drawArrow));
