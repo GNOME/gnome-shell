@@ -318,6 +318,18 @@ meta_background_finalize (GObject *object)
 }
 
 static void
+meta_background_constructed (GObject *object)
+{
+  MetaBackground        *self = META_BACKGROUND (object);
+  MetaBackgroundPrivate *priv = self->priv;
+
+  G_OBJECT_CLASS (meta_background_parent_class)->constructed (object);
+
+  g_signal_connect_object (meta_screen_get_display (priv->screen), "gl-video-memory-purged",
+                           G_CALLBACK (mark_changed), object, G_CONNECT_SWAPPED);
+}
+
+static void
 meta_background_class_init (MetaBackgroundClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -327,6 +339,7 @@ meta_background_class_init (MetaBackgroundClass *klass)
 
   object_class->dispose = meta_background_dispose;
   object_class->finalize = meta_background_finalize;
+  object_class->constructed = meta_background_constructed;
   object_class->set_property = meta_background_set_property;
   object_class->get_property = meta_background_get_property;
 
