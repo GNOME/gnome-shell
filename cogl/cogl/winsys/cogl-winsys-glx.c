@@ -71,6 +71,11 @@
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 
+/* This is a relatively new extension */
+#ifndef GLX_GENERATE_RESET_ON_VIDEO_MEMORY_PURGE_NV
+#define GLX_GENERATE_RESET_ON_VIDEO_MEMORY_PURGE_NV 0x20F7
+#endif
+
 #define COGL_ONSCREEN_X11_EVENT_MASK (StructureNotifyMask | ExposureMask)
 #define MAX_GLX_CONFIG_ATTRIBS 30
 
@@ -1025,11 +1030,49 @@ create_gl3_context (CoglDisplay *display,
       GLX_CONTEXT_FLAGS_ARB,         GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
       None
     };
+  /* NV_robustness_video_memory_purge relies on GLX_ARB_create_context
+     and in part on ARB_robustness. Namely, it needs the notification
+     strategy to be set to GLX_LOSE_CONTEXT_ON_RESET_ARB and that the
+     driver exposes the GetGraphicsResetStatusARB function. This means
+     we don't actually enable robust buffer access. */
+  static const int attrib_list_reset_on_purge[] =
+    {
+      GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
+      GLX_CONTEXT_MINOR_VERSION_ARB, 1,
+      GLX_CONTEXT_PROFILE_MASK_ARB,  GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+      GLX_CONTEXT_FLAGS_ARB,         GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+      GLX_GENERATE_RESET_ON_VIDEO_MEMORY_PURGE_NV,
+                                     GL_TRUE,
+      GLX_CONTEXT_RESET_NOTIFICATION_STRATEGY_ARB,
+                                     GLX_LOSE_CONTEXT_ON_RESET_ARB,
+      None
+    };
 
   /* Make sure that the display supports the GLX_ARB_create_context
      extension */
   if (glx_renderer->glXCreateContextAttribs == NULL)
     return NULL;
+
+  /* We can't check the presence of this extension with the usual
+     COGL_WINSYS_FEATURE machinery because that only gets initialized
+     later when the CoglContext is created. */
+  if (display->renderer->xlib_want_reset_on_video_memory_purge &&
+      strstr (glx_renderer->glXQueryExtensionsString (xlib_renderer->xdpy,
+                                                      DefaultScreen (xlib_renderer->xdpy)),
+              "GLX_NV_robustness_video_memory_purge"))
+    {
+      CoglXlibTrapState old_state;
+      GLXContext ctx;
+
+      _cogl_xlib_renderer_trap_errors (display->renderer, &old_state);
+      ctx = glx_renderer->glXCreateContextAttribs (xlib_renderer->xdpy,
+                                                   fb_config,
+                                                   NULL /* share_context */,
+                                                   True, /* direct */
+                                                   attrib_list_reset_on_purge);
+      if (!_cogl_xlib_renderer_untrap_errors (display->renderer, &old_state) && ctx)
+        return ctx;
+    }
 
   return glx_renderer->glXCreateContextAttribs (xlib_renderer->xdpy,
                                                 fb_config,

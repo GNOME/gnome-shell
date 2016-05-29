@@ -173,6 +173,47 @@ cogl_xlib_renderer_get_display (CoglRenderer *renderer);
 XVisualInfo *
 cogl_xlib_renderer_get_visual_info (CoglRenderer *renderer);
 
+/**
+ * cogl_xlib_renderer_request_reset_on_video_memory_purge:
+ * @renderer: a #CoglRenderer
+ * @enable: The new value
+ *
+ * Sets whether Cogl should make use of the
+ * NV_robustness_video_memory_purge extension, if exposed by the
+ * driver, by initializing the GLX context appropriately.
+ *
+ * The extension is only useful when running on certain versions of
+ * the NVIDIA driver. Quoting from the spec:
+ *
+ * "The NVIDIA OpenGL driver architecture on Linux has a limitation:
+ *  resources located in video memory are not persistent across certain
+ *  events. VT switches, suspend/resume events, and mode switching
+ *  events may erase the contents of video memory. Any resource that
+ *  is located exclusively in video memory, such as framebuffer objects
+ *  (FBOs), will be lost."
+ *
+ * "This extension provides a way for applications to discover when video
+ *  memory content has been lost, so that the application can re-populate
+ *  the video memory content as necessary."
+ *
+ * "Any driver that exposes this extension is a driver that considers
+ *  video memory to be volatile. Once the driver stack has been
+ *  improved, the extension will no longer be exposed."
+ *
+ * cogl_get_graphics_reset_status() needs to be called at least once
+ * every frame to find out if video memory was purged.
+ *
+ * Note that this doesn't cause Cogl to enable robust buffer access
+ * but other context reset errors may still happen and be reported via
+ * cogl_get_graphics_reset_status() if external factors cause the
+ * driver to trigger them.
+ *
+ * This defaults to %FALSE and is effective only if called before
+ * cogl_display_setup() .
+ */
+void
+cogl_xlib_renderer_request_reset_on_video_memory_purge (CoglRenderer *renderer,
+                                                        CoglBool enable);
 COGL_END_DECLS
 
 /* The gobject introspection scanner seems to parse public headers in

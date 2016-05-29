@@ -286,6 +286,16 @@ cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
 
   renderer->xlib_enable_event_retrieval = enable;
 }
+
+void
+cogl_xlib_renderer_request_reset_on_video_memory_purge (CoglRenderer *renderer,
+                                                        CoglBool enable)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+
+  renderer->xlib_want_reset_on_video_memory_purge = enable;
+}
 #endif /* COGL_HAS_XLIB_SUPPORT */
 
 CoglBool

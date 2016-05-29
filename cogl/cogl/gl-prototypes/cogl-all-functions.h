@@ -326,3 +326,11 @@ COGL_EXT_BEGIN (draw_buffers, 2, 0,
 COGL_EXT_FUNCTION (void, glDrawBuffers,
                    (GLsizei n, const GLenum *bufs))
 COGL_EXT_END ()
+
+COGL_EXT_BEGIN (robustness, 255, 255,
+                0,
+                "ARB\0",
+                "robustness\0")
+COGL_EXT_FUNCTION (GLenum, glGetGraphicsResetStatus,
+                   (void))
+COGL_EXT_END ()
