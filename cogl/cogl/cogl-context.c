@@ -76,6 +76,11 @@
 #define GL_NUM_EXTENSIONS 0x821D
 #endif
 
+/* This is a relatively new extension */
+#ifndef GL_PURGED_CONTEXT_RESET_NV
+#define GL_PURGED_CONTEXT_RESET_NV 0x92BB
+#endif
+
 static void _cogl_context_free (CoglContext *context);
 
 COGL_OBJECT_DEFINE (Context, context);
@@ -783,4 +788,29 @@ cogl_get_clock_time (CoglContext *context)
     return winsys->context_get_clock_time (context);
   else
     return 0;
+}
+
+CoglGraphicsResetStatus
+cogl_get_graphics_reset_status (CoglContext *context)
+{
+  if (!context->glGetGraphicsResetStatus)
+    return COGL_GRAPHICS_RESET_STATUS_NO_ERROR;
+
+  switch (context->glGetGraphicsResetStatus ())
+    {
+    case GL_GUILTY_CONTEXT_RESET_ARB:
+      return COGL_GRAPHICS_RESET_STATUS_GUILTY_CONTEXT_RESET;
+
+    case GL_INNOCENT_CONTEXT_RESET_ARB:
+      return COGL_GRAPHICS_RESET_STATUS_INNOCENT_CONTEXT_RESET;
+
+    case GL_UNKNOWN_CONTEXT_RESET_ARB:
+      return COGL_GRAPHICS_RESET_STATUS_UNKNOWN_CONTEXT_RESET;
+
+    case GL_PURGED_CONTEXT_RESET_NV:
+      return COGL_GRAPHICS_RESET_STATUS_PURGED_CONTEXT_RESET;
+
+    default:
+      return COGL_GRAPHICS_RESET_STATUS_NO_ERROR;
+    }
 }

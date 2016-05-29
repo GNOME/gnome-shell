@@ -373,6 +373,48 @@ cogl_foreach_feature (CoglContext *context,
 int64_t
 cogl_get_clock_time (CoglContext *context);
 
+/**
+ * CoglGraphicsResetStatus:
+ * @COGL_GRAPHICS_RESET_STATUS_NO_ERROR:
+ * @COGL_GRAPHICS_RESET_STATUS_GUILTY_CONTEXT_RESET:
+ * @COGL_GRAPHICS_RESET_STATUS_INNOCENT_CONTEXT_RESET:
+ * @COGL_GRAPHICS_RESET_STATUS_UNKNOWN_CONTEXT_RESET:
+ * @COGL_GRAPHICS_RESET_STATUS_PURGED_CONTEXT_RESET:
+ *
+ * All the error values that might be returned by
+ * cogl_get_graphics_reset_status(). Each value's meaning corresponds
+ * to the similarly named value defined in the ARB_robustness and
+ * NV_robustness_video_memory_purge extensions.
+ */
+typedef enum _CoglGraphicsResetStatus
+{
+  COGL_GRAPHICS_RESET_STATUS_NO_ERROR,
+  COGL_GRAPHICS_RESET_STATUS_GUILTY_CONTEXT_RESET,
+  COGL_GRAPHICS_RESET_STATUS_INNOCENT_CONTEXT_RESET,
+  COGL_GRAPHICS_RESET_STATUS_UNKNOWN_CONTEXT_RESET,
+  COGL_GRAPHICS_RESET_STATUS_PURGED_CONTEXT_RESET,
+} CoglGraphicsResetStatus;
+
+/**
+ * cogl_get_graphics_reset_status:
+ * @context: a #CoglContext pointer
+ *
+ * Returns the graphics reset status as reported by
+ * GetGraphicsResetStatusARB defined in the ARB_robustness extension.
+ *
+ * Note that Cogl doesn't normally enable the ARB_robustness
+ * extension in which case this will only ever return
+ * #COGL_GRAPHICS_RESET_STATUS_NO_ERROR.
+ *
+ * Applications must explicitly use a backend specific method to
+ * request that errors get reported such as X11's
+ * cogl_xlib_renderer_request_reset_on_video_memory_purge().
+ *
+ * Return value: a #CoglGraphicsResetStatus
+ */
+CoglGraphicsResetStatus
+cogl_get_graphics_reset_status (CoglContext *context);
+
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 COGL_END_DECLS

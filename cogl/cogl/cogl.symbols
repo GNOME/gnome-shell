@@ -330,6 +330,7 @@ cogl_get_clock_time
 cogl_get_depth_test_enabled
 cogl_get_draw_framebuffer
 cogl_get_features
+cogl_get_graphics_reset_status
 cogl_get_modelview_matrix
 cogl_get_option_group
 cogl_get_proc_address
