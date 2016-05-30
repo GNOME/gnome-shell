@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-04-29 09:47+0000\n"
+"POT-Creation-Date: 2016-05-21 00:29+0000\n"
 "PO-Revision-Date: 2016-02-27 19:47+0200\n"
 "Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
 "Language-Team: Tot En Òc\n"
@@ -241,8 +241,8 @@ msgstr "Combinason de tòcas per donar lo focus a la notificacion activa."
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
-"Combinason de tòcas per arrestar e tampar totas las transicions amb una "
-"tòca de desbugatge"
+"Combinason de tòcas per arrestar e tampar totas las transicions amb una tòca "
+"de desbugatge"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Which keyboard to use"
@@ -697,7 +697,7 @@ msgstr "Senhal :"
 
 #: ../js/ui/components/keyring.js:153
 msgid "Type again:"
-msgstr "Picatz tornarmai :"
+msgstr "Picatz tornamai :"
 
 #: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:269
 #: ../js/ui/status/network.js:352 ../js/ui/status/network.js:919
@@ -807,7 +807,7 @@ msgstr "S'autentificar"
 #. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
-msgstr "Fracàs de l'autentificacion. Ensajatz tornarmai."
+msgstr "Fracàs de l'autentificacion. Ensajatz tornamai."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1162,7 +1162,7 @@ msgstr[1] "%d notificacions novèlas"
 msgid "Lock"
 msgstr "Verrolhar"
 
-#: ../js/ui/screenShield.js:684
+#: ../js/ui/screenShield.js:687
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME a besonh de verrolhar l'ecran"
 
@@ -1173,11 +1173,11 @@ msgstr "GNOME a besonh de verrolhar l'ecran"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:808 ../js/ui/screenShield.js:1274
 msgid "Unable to lock"
 msgstr "Impossible de verrolhar"
 
-#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:809 ../js/ui/screenShield.js:1275
 msgid "Lock was blocked by an application"
 msgstr "Lo verrolhatge es estat blocat per una aplicacion"
 
@@ -1612,7 +1612,7 @@ msgstr "Aplicacions"
 msgid "Search"
 msgstr "Recèrca"
 
-#: ../js/ui/windowAtencionHandler.js:20
+#: ../js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
 msgstr "« %s » es prêt"
@@ -2227,9 +2227,9 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 #~ "so won't remove already saved data."
 #~ msgstr ""
 #~ "Normalament GNOME Shell survelha las aplicacions activas per fin de "
-#~ "determinar las mai utilizadas (per ex. pels aviadors). Quitament se aquestas "
-#~ "donadas son gardadas secretas, de motius de confidencialitat vos pòdon "
-#~ "butar a desactivar aquesta foncionalitat. Remarcatz qu'aquesta "
+#~ "determinar las mai utilizadas (per ex. pels aviadors). Quitament se "
+#~ "aquestas donadas son gardadas secretas, de motius de confidencialitat vos "
+#~ "pòdon butar a desactivar aquesta foncionalitat. Remarcatz qu'aquesta "
 #~ "desactivacion suprimís pas d'eventualas donadas ja enregistradas."
 
 #~ msgid ""
@@ -2253,19 +2253,19 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 
 #~ msgid "Keybinding to start/stop the builtin screen recorder."
 #~ msgstr ""
-#~ "Combinason de tòcas per aviar/arrestar l'enregistrador d'ecran "
-#~ "integrat."
+#~ "Combinason de tòcas per aviar/arrestar l'enregistrador d'ecran integrat."
 
 #~ msgid "Framerate used for recording screencasts."
 #~ msgstr ""
-#~ "Nombre d'imatges per segonda per l'enregistrament de las animacions d'ecran."
+#~ "Nombre d'imatges per segonda per l'enregistrament de las animacions "
+#~ "d'ecran."
 
 #~ msgid ""
 #~ "The framerate of the resulting screencast recordered by GNOME Shell's "
 #~ "screencast recorder in frames-per-second."
 #~ msgstr ""
-#~ "Lo nombre d'imatges per segonda de las animacions d'ecran enregistradas per "
-#~ "l'aisina idònia de GNOME Shell."
+#~ "Lo nombre d'imatges per segonda de las animacions d'ecran enregistradas "
+#~ "per l'aisina idònia de GNOME Shell."
 
 #~ msgid "The gstreamer pipeline used to encode the screencast"
 #~ msgstr "Lo pipeline GStreamer utilizat per encodar l'animacion d'ecran"
@@ -2283,23 +2283,22 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 #~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
 #~ "optimal thread count on the system."
 #~ msgstr ""
-#~ "Definicion del pipeline GStreamer utilizat per encodar los enregistraments "
-#~ "vidèo. La sintaxi es identica a la de gst-launch. Lo connectador "
-#~ "d'entrada (sink pad) del pipeline deuriá èsser non connectat là où la vidèo "
-#~ "es enregistrada. Lo connectador font deuriá normalement èsser non "
-#~ "connectat ; la sortida de ce connectador es escrita dins lo fichièr de "
-#~ "sortida. Pasmens, lo pipeline pòt tanben se cargar de sa pròpria sortida, "
-#~ "per exemple per diriger la sortida cap a un servidor icecast via "
-#~ "shout2send o autre. Se aquesta clau es pas definida o se es voida, "
-#~ "es lo pipeline per defaut qu'es utilizat. Aqueste es actualament « "
+#~ "Definicion del pipeline GStreamer utilizat per encodar los "
+#~ "enregistraments vidèo. La sintaxi es identica a la de gst-launch. Lo "
+#~ "connectador d'entrada (sink pad) del pipeline deuriá èsser non connectat "
+#~ "là où la vidèo es enregistrada. Lo connectador font deuriá normalement "
+#~ "èsser non connectat ; la sortida de ce connectador es escrita dins lo "
+#~ "fichièr de sortida. Pasmens, lo pipeline pòt tanben se cargar de sa "
+#~ "pròpria sortida, per exemple per diriger la sortida cap a un servidor "
+#~ "icecast via shout2send o autre. Se aquesta clau es pas definida o se es "
+#~ "voida, es lo pipeline per defaut qu'es utilizat. Aqueste es actualament « "
 #~ "vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
 #~ "threads=%T ! queue ! webmmux' » e l'enregistrament utiliza lo format WEBM "
-#~ "e lo codec VP8. %T es utilizat coma paramètre per una suposicion quant "
-#~ "al nombre optimal de threads d'utilizar sul sistèma."
+#~ "e lo codec VP8. %T es utilizat coma paramètre per una suposicion quant al "
+#~ "nombre optimal de threads d'utilizar sul sistèma."
 
 #~ msgid "File extension used for storing the screencast"
-#~ msgstr ""
-#~ "Extension de fichièr d'utilizar per enregistrar l'animacion d'ecran"
+#~ msgstr "Extension de fichièr d'utilizar per enregistrar l'animacion d'ecran"
 
 #~ msgid ""
 #~ "The filename for recorded screencasts will be a unique filename based on "
@@ -2324,8 +2323,8 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 
 #~ msgid "Click Log Out to quit these applications and log out of the system."
 #~ msgstr ""
-#~ "Clicatz sus « Tampar la session » per quitar aquestas aplicacions e fermer "
-#~ "la session."
+#~ "Clicatz sus « Tampar la session » per quitar aquestas aplicacions e "
+#~ "fermer la session."
 
 #~ msgid "Logging out of the system."
 #~ msgstr "Desconnexion del sistèma."
@@ -2494,8 +2493,7 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 #~ "sachent qu'il se pòt que vous ne voyez pas leurs messages."
 
 #~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr ""
-#~ "L'extinction pourrait lor far pèrdre lor travaux non enregistrats."
+#~ msgstr "L'extinction pourrait lor far pèrdre lor travaux non enregistrats."
 
 #~ msgctxt "title"
 #~ msgid "Sign In"
@@ -2547,8 +2545,7 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 #~ msgstr "Error en percorrent lo periferic"
 
 #~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr ""
-#~ "Lo periferic demandat pòt pas èsser percorrut, l'error es « %s »"
+#~ msgstr "Lo periferic demandat pòt pas èsser percorrut, l'error es « %s »"
 
 #~ msgid "More..."
 #~ msgstr "Mai..."
@@ -2596,9 +2593,9 @@ msgstr "La fenèstra d'autentificacion es estada escartada per l'utilizaire"
 #~ "aplicacions son autorizadas a veire. Las opcions validas son « off "
 #~ "» (desactivar lo seguiment de l'emplaçament), « country » (país), « city "
 #~ "» (vila), « neighborhood » (quartièr), « street » (carrièra) e « exact "
-#~ "» (emplaçament exacte, necessita generalament un receptor GPS). "
-#~ "Gardatz en cap qu'aqueste paramètre contraròtla unicament çò que GeoClue "
-#~ "autorizarà las aplicacions a veire mas que demòran pr'aquò "
-#~ "capablas de determinar l'emplaçament de l'utilizaire d'ela-meteissa en "
-#~ "utilizant las ressorsas ret (amb al pus melhor un nivèl de precision "
-#~ "limitat a la carrièra)."
+#~ "» (emplaçament exacte, necessita generalament un receptor GPS). Gardatz "
+#~ "en cap qu'aqueste paramètre contraròtla unicament çò que GeoClue "
+#~ "autorizarà las aplicacions a veire mas que demòran pr'aquò capablas de "
+#~ "determinar l'emplaçament de l'utilizaire d'ela-meteissa en utilizant las "
+#~ "ressorsas ret (amb al pus melhor un nivèl de precision limitat a la "
+#~ "carrièra)."
