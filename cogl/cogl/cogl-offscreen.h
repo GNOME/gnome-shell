@@ -167,6 +167,12 @@ COGL_DEPRECATED_FOR (cogl_object_unref)
 void
 cogl_offscreen_unref (void *offscreen);
 
+/**
+ * cogl_offscreen_get_texture: (skip)
+ */
+CoglTexture *
+cogl_offscreen_get_texture (CoglOffscreen *offscreen);
+
 COGL_END_DECLS
 
 #endif /* __COGL_OFFSCREEN_H__ */

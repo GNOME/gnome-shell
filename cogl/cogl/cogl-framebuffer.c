@@ -705,6 +705,12 @@ cogl_offscreen_new_with_texture (CoglTexture *texture)
   return _cogl_offscreen_new_with_texture_full (texture, 0, 0);
 }
 
+CoglTexture *
+cogl_offscreen_get_texture (CoglOffscreen *offscreen)
+{
+  return offscreen->texture;
+}
+
 static void
 _cogl_offscreen_free (CoglOffscreen *offscreen)
 {
