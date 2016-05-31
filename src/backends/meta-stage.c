@@ -47,7 +47,7 @@ typedef struct _MetaStagePrivate MetaStagePrivate;
 G_DEFINE_TYPE_WITH_PRIVATE (MetaStage, meta_stage, CLUTTER_TYPE_STAGE);
 
 static MetaOverlay *
-meta_overlay_new ()
+meta_overlay_new (void)
 {
   MetaOverlay *overlay;
   CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
