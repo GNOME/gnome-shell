@@ -101,9 +101,9 @@ static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 static const CoglWinsysVtable *parent_vtable;
 
 static void
-meta_renderer_native_disconnect (CoglRenderer *renderer)
+meta_renderer_native_disconnect (CoglRenderer *cogl_renderer)
 {
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
 
   if (egl_renderer->edpy != EGL_NO_DISPLAY)
     eglTerminate (egl_renderer->edpy);
@@ -140,8 +140,8 @@ flush_pending_swap_notify_cb (void *data,
 static void
 flush_pending_swap_notify_idle (void *user_data)
 {
-  CoglContext *context = user_data;
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+  CoglContext *cogl_context = user_data;
+  CoglRendererEGL *egl_renderer = cogl_context->display->renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
   /* This needs to be disconnected before invoking the callbacks in
@@ -149,7 +149,7 @@ flush_pending_swap_notify_idle (void *user_data)
   _cogl_closure_disconnect (renderer_native->swap_notify_idle);
   renderer_native->swap_notify_idle = NULL;
 
-  g_list_foreach (context->framebuffers,
+  g_list_foreach (cogl_context->framebuffers,
                   flush_pending_swap_notify_cb,
                   NULL);
 }
@@ -159,9 +159,9 @@ free_current_bo (CoglOnscreen *onscreen)
 {
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglContext *cogl_context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *cogl_renderer = cogl_context->display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
   if (onscreen_native->current_fb_id)
@@ -183,9 +183,9 @@ queue_swap_notify_for_onscreen (CoglOnscreen *onscreen)
 {
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglContext *cogl_context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *cogl_renderer = cogl_context->display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
   /* We only want to notify that the swap is complete when the
@@ -194,9 +194,9 @@ queue_swap_notify_for_onscreen (CoglOnscreen *onscreen)
   if (!renderer_native->swap_notify_idle)
     {
       renderer_native->swap_notify_idle =
-        _cogl_poll_renderer_add_idle (renderer,
+        _cogl_poll_renderer_add_idle (cogl_renderer,
                                       flush_pending_swap_notify_idle,
-                                      context,
+                                      cogl_context,
                                       NULL);
     }
 
@@ -249,7 +249,7 @@ fail:
 }
 
 static void
-setup_crtc_modes (CoglDisplay *display, int fb_id)
+setup_crtc_modes (CoglDisplay *cogl_display, int fb_id)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
@@ -261,11 +261,11 @@ setup_crtc_modes (CoglDisplay *display, int fb_id)
 }
 
 static CoglBool
-meta_renderer_native_setup_egl_display (CoglDisplay *display,
+meta_renderer_native_setup_egl_display (CoglDisplay *cogl_display,
                                         CoglError  **error)
 {
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+  CoglDisplayEGL *egl_display = cogl_display->winsys;
+  CoglRendererEGL *egl_renderer = cogl_display->renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
   egl_display->platform = renderer_native;
@@ -279,17 +279,17 @@ meta_renderer_native_setup_egl_display (CoglDisplay *display,
 }
 
 static void
-meta_renderer_native_destroy_egl_display (CoglDisplay *display)
+meta_renderer_native_destroy_egl_display (CoglDisplay *cogl_display)
 {
 }
 
 static CoglBool
-meta_renderer_native_egl_context_created (CoglDisplay *display,
+meta_renderer_native_egl_context_created (CoglDisplay *cogl_display,
                                           CoglError  **error)
 {
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglRenderer *renderer = display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglDisplayEGL *egl_display = cogl_display->winsys;
+  CoglRenderer *cogl_renderer = cogl_display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
   if ((egl_renderer->private_features &
@@ -323,7 +323,7 @@ meta_renderer_native_egl_context_created (CoglDisplay *display,
         }
     }
 
-  if (!_cogl_winsys_egl_make_current (display,
+  if (!_cogl_winsys_egl_make_current (cogl_display,
                                       egl_display->dummy_surface,
                                       egl_display->dummy_surface,
                                       egl_display->egl_context))
@@ -338,11 +338,11 @@ meta_renderer_native_egl_context_created (CoglDisplay *display,
 }
 
 static void
-meta_renderer_native_egl_cleanup_context (CoglDisplay *display)
+meta_renderer_native_egl_cleanup_context (CoglDisplay *cogl_display)
 {
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglRenderer *renderer = display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglDisplayEGL *egl_display = cogl_display->winsys;
+  CoglRenderer *cogl_renderer = cogl_display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
 
   if (egl_display->dummy_surface != EGL_NO_SURFACE)
     {
@@ -381,9 +381,9 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerKms *monitor_manager_kms =
     META_MONITOR_MANAGER_KMS (monitor_manager);
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglContext *cogl_context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *cogl_renderer = cogl_context->display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
@@ -406,7 +406,7 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
       _cogl_framebuffer_winsys_update_size (fb,
                                             renderer_native->width,
                                             renderer_native->height);
-      context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_BIND;
+      cogl_context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_BIND;
     }
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
@@ -448,7 +448,7 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
    * crtc modes, else we flip from the previous buffer */
   if (renderer_native->pending_set_crtc)
     {
-      setup_crtc_modes (context->display, onscreen_native->next_fb_id);
+      setup_crtc_modes (cogl_context->display, onscreen_native->next_fb_id);
       renderer_native->pending_set_crtc = FALSE;
     }
 
@@ -477,16 +477,16 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
 }
 
 static CoglBool
-meta_renderer_native_init_egl_context (CoglContext *context,
+meta_renderer_native_init_egl_context (CoglContext *cogl_context,
                                        CoglError  **error)
 {
-  COGL_FLAGS_SET (context->features,
+  COGL_FLAGS_SET (cogl_context->features,
                   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT, TRUE);
   /* TODO: remove this deprecated feature */
-  COGL_FLAGS_SET (context->winsys_features,
+  COGL_FLAGS_SET (cogl_context->winsys_features,
                   COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT,
                   TRUE);
-  COGL_FLAGS_SET (context->winsys_features,
+  COGL_FLAGS_SET (cogl_context->winsys_features,
                   COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT,
                   TRUE);
 
@@ -498,11 +498,11 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
                                     CoglError   **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-  CoglContext *context = framebuffer->context;
-  CoglDisplay *display = context->display;
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglRenderer *renderer = display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglContext *cogl_context = framebuffer->context;
+  CoglDisplay *cogl_display = cogl_context->display;
+  CoglDisplayEGL *egl_display = cogl_display->winsys;
+  CoglRenderer *cogl_renderer = cogl_display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen;
   MetaOnscreenNative *onscreen_native;
@@ -574,12 +574,12 @@ static void
 meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-  CoglContext *context = framebuffer->context;
-  CoglDisplay *display = context->display;
-  CoglDisplayEGL *egl_display = display->winsys;
+  CoglContext *cogl_context = framebuffer->context;
+  CoglDisplay *cogl_display = cogl_context->display;
+  CoglDisplayEGL *egl_display = cogl_display->winsys;
   MetaRendererNative *renderer_native = egl_display->platform;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRenderer *cogl_renderer = cogl_context->display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   MetaOnscreenNative *onscreen_native;
 
@@ -651,8 +651,8 @@ meta_renderer_native_set_layout (MetaRendererNative *renderer_native,
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
   CoglDisplayEGL *egl_display = cogl_display->winsys;
-  CoglRenderer *renderer = cogl_display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRenderer *cogl_renderer = cogl_display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
 
   if ((width != renderer_native->width ||
        height != renderer_native->height) &&
