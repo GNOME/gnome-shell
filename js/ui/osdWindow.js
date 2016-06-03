@@ -27,6 +27,8 @@ const LevelBar = new Lang.Class({
         this._bar = new St.Widget({ style_class: 'level-bar' });
 
         this.actor.set_child(this._bar);
+
+        this.actor.connect('notify::width', () => { this.level = this.level; });
     },
 
     get level() {
@@ -34,14 +36,12 @@ const LevelBar = new Lang.Class({
     },
 
     set level(value) {
-        let newValue = Math.max(0, Math.min(value, 100));
-        if (newValue == this._level)
-            return;
-        this._level = newValue;
+        this._level = Math.max(0, Math.min(value, 100));
 
-        let width = this.actor.width;
-        width *= (this._level / 100.);
-        this._bar.width = width;
+        let alloc = this.actor.get_allocation_box();
+        let newWidth = (alloc.x2 - alloc.x1) * this._level / 100;
+        if (newWidth != this._bar.width)
+            this._bar.width = newWidth;
     }
 });
 
