@@ -796,10 +796,18 @@ const NetworkAgent = new Lang.Class({
                         path = GLib.build_filenamev([Config.LIBEXECDIR, path]);
                     }
 
-                    if (GLib.file_test(path, GLib.FileTest.IS_EXECUTABLE))
+                    if (GLib.file_test(path, GLib.FileTest.IS_EXECUTABLE)) {
                         this._vpnBinaries[service] = { fileName: path, externalUIMode: externalUIMode, supportsHints: hints };
-                    else
+                        try {
+                            let aliases = keyfile.get_string_list('VPN Connection', 'aliases');
+
+                            for (let alias of aliases) {
+                                this._vpnBinaries[alias] = { fileName: path, externalUIMode: externalUIMode, supportsHints: hints };
+                            }
+                        } catch(e) { } // ignore errors if key does not exist
+                    } else {
                         throw new Error('VPN plugin at %s is not executable'.format(path));
+                    }
                 } catch(e) {
                     log('Error \'%s\' while processing VPN keyfile \'%s\''.
                         format(e.message, dir.get_child(name).get_path()));
