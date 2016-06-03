@@ -191,6 +191,8 @@ function _initializeUI() {
         return true;
     });
 
+    global.display.connect('gl-video-memory-purged', loadTheme);
+
     // Provide the bus object for gnome-session to
     // initiate logouts.
     EndSessionDialog.init();
