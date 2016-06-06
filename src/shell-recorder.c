@@ -107,6 +107,8 @@ static void recorder_set_draw_cursor (ShellRecorder *recorder,
 static void recorder_pipeline_set_caps (RecorderPipeline *pipeline);
 static void recorder_pipeline_closed   (RecorderPipeline *pipeline);
 
+static void recorder_remove_redraw_timeout (ShellRecorder *recorder);
+
 enum {
   PROP_0,
   PROP_SCREEN,
@@ -234,6 +236,8 @@ shell_recorder_finalize (GObject  *object)
   recorder_set_stage (recorder, NULL);
   recorder_set_pipeline (recorder, NULL);
   recorder_set_file_template (recorder, NULL);
+
+  recorder_remove_redraw_timeout (recorder);
 
   g_clear_object (&recorder->a11y_settings);
 
