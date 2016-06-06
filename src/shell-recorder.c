@@ -321,6 +321,9 @@ recorder_fetch_cursor_image (ShellRecorder *recorder)
   guint8 *data;
 
   texture = meta_cursor_tracker_get_sprite (recorder->cursor_tracker);
+  if (!texture)
+    return;
+
   width = cogl_texture_get_width (texture);
   height = cogl_texture_get_height (texture);
   stride = 4 * width;
