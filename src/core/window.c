@@ -761,12 +761,18 @@ sync_client_window_mapped (MetaWindow *window)
 static void
 meta_window_update_desc (MetaWindow *window)
 {
+  g_autofree gchar *title = NULL;
+
   g_clear_pointer (&window->desc, g_free);
+
+  if (window->title)
+    title = g_utf8_substring (window->title, 0,
+                              MIN (10, g_utf8_strlen (window->title, -1)));
 
   if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
     {
-      if (window->title)
-        window->desc = g_strdup_printf ("0x%lx (%.10s)", window->xwindow, window->title);
+      if (title)
+        window->desc = g_strdup_printf ("0x%lx (%s)", window->xwindow, title);
       else
         window->desc = g_strdup_printf ("0x%lx", window->xwindow);
     }
@@ -774,8 +780,8 @@ meta_window_update_desc (MetaWindow *window)
     {
       guint64 small_stamp = window->stamp - G_GUINT64_CONSTANT(0x100000000);
 
-      if (window->title)
-        window->desc = g_strdup_printf ("W%" G_GUINT64_FORMAT " (%.10s)", small_stamp, window->title);
+      if (title)
+        window->desc = g_strdup_printf ("W%" G_GUINT64_FORMAT " (%s)", small_stamp, title);
       else
         window->desc = g_strdup_printf ("W%" G_GUINT64_FORMAT , small_stamp);
     }
