@@ -136,6 +136,9 @@ xdg_surface_set_title (struct wl_client   *client,
 {
   MetaWaylandSurface *surface = surface_from_xdg_surface_resource (resource);
 
+  if (!g_utf8_validate (title, -1, NULL))
+    title = "";
+
   meta_window_set_title (surface->window, title);
 }
 
@@ -145,6 +148,9 @@ xdg_surface_set_app_id (struct wl_client   *client,
                         const char         *app_id)
 {
   MetaWaylandSurface *surface = surface_from_xdg_surface_resource (resource);
+
+  if (!g_utf8_validate (app_id, -1, NULL))
+    app_id = "";
 
   meta_window_set_wm_class (surface->window, app_id, app_id);
 }

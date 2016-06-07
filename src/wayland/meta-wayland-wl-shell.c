@@ -400,6 +400,10 @@ wl_shell_surface_set_title (struct wl_client   *client,
     surface_from_wl_shell_surface_resource (resource);
 
   g_clear_pointer (&wl_shell_surface->title, g_free);
+
+  if (!g_utf8_validate (title, -1, NULL))
+    title = "";
+
   wl_shell_surface->title = g_strdup (title);
 
   if (surface->window)
@@ -417,6 +421,10 @@ wl_shell_surface_set_class (struct wl_client *client,
     surface_from_wl_shell_surface_resource (resource);
 
   g_clear_pointer (&wl_shell_surface->wm_class, g_free);
+
+  if (!g_utf8_validate (class_, -1, NULL))
+    class_ = "";
+
   wl_shell_surface->wm_class = g_strdup (class_);
 
   if (surface->window)
