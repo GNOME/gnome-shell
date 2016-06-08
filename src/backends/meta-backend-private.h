@@ -144,4 +144,6 @@ ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
 void meta_backend_monitors_changed (MetaBackend *backend);
 
+gboolean meta_is_stage_views_enabled (void);
+
 #endif /* META_BACKEND_PRIVATE_H */

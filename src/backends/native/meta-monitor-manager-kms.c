@@ -78,14 +78,6 @@ typedef struct {
 
 typedef struct
 {
-  int pending;
-
-  MetaKmsFlipCallback callback;
-  void *user_data;
-} MetaKmsFlipClosure;
-
-typedef struct
-{
   GSource source;
 
   gpointer fd_tag;
@@ -1065,12 +1057,8 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
                                               unsigned int         n_outputs)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  MetaBackend *backend;
-  MetaRenderer *renderer;
   unsigned i;
   int screen_width, screen_height;
-  gboolean ok;
-  GError *error;
 
   screen_width = 0; screen_height = 0;
   for (i = 0; i < n_crtcs; i++)
@@ -1154,20 +1142,6 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
       crtc->rect.width = 0;
       crtc->rect.height = 0;
       crtc->current_mode = NULL;
-    }
-
-  backend = meta_get_backend ();
-  renderer = meta_backend_get_renderer (backend);
-
-  error = NULL;
-  ok = meta_renderer_native_set_layout (META_RENDERER_NATIVE (renderer),
-                                        screen_width, screen_height,
-                                        &error);
-  if (!ok)
-    {
-      meta_warning ("Applying display configuration failed: %s\n", error->message);
-      g_error_free (error);
-      return;
     }
 
   for (i = 0; i < n_outputs; i++)
@@ -1344,79 +1318,95 @@ get_crtc_connectors (MetaMonitorManager *manager,
 }
 
 void
-meta_monitor_manager_kms_apply_crtc_modes (MetaMonitorManagerKms *manager_kms,
-                                           uint32_t               fb_id)
+meta_monitor_manager_kms_apply_crtc_mode (MetaMonitorManagerKms *manager_kms,
+                                          MetaCRTC              *crtc,
+                                          int                    x,
+                                          int                    y,
+                                          uint32_t               fb_id)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
-  unsigned int i;
+  uint32_t *connectors;
+  unsigned int n_connectors;
+  drmModeModeInfo *mode;
 
-  for (i = 0; i < manager->n_crtcs; i++)
-    {
-      MetaCRTC *crtc = &manager->crtcs[i];
-      uint32_t *connectors;
-      unsigned int n_connectors;
-      drmModeModeInfo *mode;
+  get_crtc_connectors (manager, crtc, &connectors, &n_connectors);
 
-      get_crtc_connectors (manager, crtc, &connectors, &n_connectors);
+  if (connectors)
+    mode = crtc->current_mode->driver_private;
+  else
+    mode = NULL;
 
-      if (connectors)
-        mode = crtc->current_mode->driver_private;
-      else
-        mode = NULL;
+  if (drmModeSetCrtc (manager_kms->fd,
+                      crtc->crtc_id,
+                      fb_id,
+                      x, y,
+                      connectors, n_connectors,
+                      mode) != 0)
+    g_warning ("Failed to set CRTC mode %s: %m", crtc->current_mode->name);
 
-      if (drmModeSetCrtc (manager_kms->fd,
-                          crtc->crtc_id,
-                          fb_id,
-                          crtc->rect.x, crtc->rect.y,
-                          connectors, n_connectors,
-                          mode) != 0)
-        g_warning ("Failed to set CRTC mode %s: %m", crtc->current_mode->name);
+  g_free (connectors);
+}
 
-      g_free (connectors);
-    }
+static void
+invoke_flip_closure (GClosure *flip_closure)
+{
+  GValue param = G_VALUE_INIT;
+
+  g_value_init (&param, G_TYPE_POINTER);
+  g_value_set_pointer (&param, flip_closure);
+  g_closure_invoke (flip_closure, NULL, 1, &param, NULL);
+  g_closure_unref (flip_closure);
 }
 
 gboolean
-meta_monitor_manager_kms_flip_all_crtcs (MetaMonitorManagerKms *manager_kms,
-                                         uint32_t               fb_id,
-                                         MetaKmsFlipCallback    flip_callback,
-                                         void                  *user_data)
+meta_monitor_manager_kms_is_crtc_active (MetaMonitorManagerKms *manager_kms,
+                                         MetaCRTC              *crtc)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
-  MetaKmsFlipClosure *flip_closure = NULL;
   unsigned int i;
-  gboolean fb_in_use = FALSE;
+  gboolean connected_crtc_found;
 
   if (manager->power_save_mode != META_POWER_SAVE_ON)
     return FALSE;
 
-  for (i = 0; i < manager->n_crtcs; i++)
+  connected_crtc_found = FALSE;
+  for (i = 0; i < manager->n_outputs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[i];
-      uint32_t *connectors;
-      unsigned int n_connectors;
-      int ret;
+      MetaOutput *output = &manager->outputs[i];
 
-      get_crtc_connectors (manager, crtc, &connectors, &n_connectors);
-
-      if (n_connectors == 0)
-        continue;
-
-      fb_in_use = TRUE;
-
-      if (manager_kms->page_flips_not_supported)
-        continue;
-
-      if (!flip_closure)
+      if (output->crtc == crtc)
         {
-          flip_closure = g_new0 (MetaKmsFlipClosure, 1);
-          *flip_closure = (MetaKmsFlipClosure) {
-              .pending = 0,
-              .callback = flip_callback,
-              .user_data = user_data
-          };
+          connected_crtc_found = TRUE;
+          break;
         }
+    }
 
+  if (!connected_crtc_found)
+    return FALSE;
+
+  return TRUE;
+}
+
+gboolean
+meta_monitor_manager_kms_flip_crtc (MetaMonitorManagerKms *manager_kms,
+                                    MetaCRTC              *crtc,
+                                    int                    x,
+                                    int                    y,
+                                    uint32_t               fb_id,
+                                    GClosure              *flip_closure)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+  uint32_t *connectors;
+  unsigned int n_connectors;
+  int ret = -1;
+
+  g_assert (manager->power_save_mode == META_POWER_SAVE_ON);
+
+  get_crtc_connectors (manager, crtc, &connectors, &n_connectors);
+  g_assert (n_connectors > 0);
+
+  if (!manager_kms->page_flips_not_supported)
+    {
       ret = drmModePageFlip (manager_kms->fd,
                              crtc->crtc_id,
                              fb_id,
@@ -1426,24 +1416,21 @@ meta_monitor_manager_kms_flip_all_crtcs (MetaMonitorManagerKms *manager_kms,
         {
           g_warning ("Failed to flip: %s", strerror (-ret));
           manager_kms->page_flips_not_supported = TRUE;
-          break;
         }
-
-      if (ret == 0)
-        flip_closure->pending++;
     }
 
-  if (manager_kms->page_flips_not_supported && fb_in_use)
-    {
-      /* If the driver doesn't support page flipping, just set the mode directly
-       * with the new framebuffer.
-       */
-      meta_monitor_manager_kms_apply_crtc_modes (manager_kms, fb_id);
-      flip_callback (user_data);
-      g_free (flip_closure);
-    }
+  if (manager_kms->page_flips_not_supported)
+    meta_monitor_manager_kms_apply_crtc_mode (manager_kms,
+                                              crtc,
+                                              x, y,
+                                              fb_id);
 
-  return fb_in_use;
+  if (ret != 0)
+    return FALSE;
+
+  g_closure_ref (flip_closure);
+
+  return TRUE;
 }
 
 static void
@@ -1453,11 +1440,9 @@ page_flip_handler (int fd,
                    unsigned int usec,
                    void *data)
 {
-  MetaKmsFlipClosure *flip_closure = data;
+  GClosure *flip_closure = data;
 
-  flip_closure->pending--;
-  if (flip_closure->pending == 0)
-    flip_closure->callback (flip_closure->user_data);
+  invoke_flip_closure (flip_closure);
 }
 
 void

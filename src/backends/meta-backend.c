@@ -748,3 +748,19 @@ meta_clutter_init (void)
 
   meta_backend_post_init (_backend);
 }
+
+gboolean
+meta_is_stage_views_enabled (void)
+{
+  const gchar *mutter_stage_views;
+
+  if (!meta_is_wayland_compositor ())
+    return FALSE;
+
+  mutter_stage_views = g_getenv ("MUTTER_STAGE_VIEWS");
+
+  if (!mutter_stage_views)
+    return FALSE;
+
+  return strcmp (mutter_stage_views, "1") == 0;
+}

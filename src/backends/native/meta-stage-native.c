@@ -27,9 +27,12 @@
 #include "backends/native/meta-stage-native.h"
 
 #include "backends/meta-backend-private.h"
+#include "backends/native/meta-renderer-native.h"
 #include "meta/meta-backend.h"
 #include "meta/meta-monitor-manager.h"
 #include "meta/util.h"
+
+static GQuark quark_view_frame_closure  = 0;
 
 struct _MetaStageNative
 {
@@ -37,6 +40,9 @@ struct _MetaStageNative
 
   CoglOnscreen *pending_onscreen;
   CoglClosure *frame_closure;
+
+  int64_t presented_frame_counter_sync;
+  int64_t presented_frame_counter_complete;
 };
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
@@ -63,25 +69,94 @@ get_legacy_view (MetaRenderer *renderer)
     return NULL;
 }
 
-static CoglOnscreen *
-get_legacy_onscreen (MetaStageNative *stage_native)
+static void
+frame_cb (CoglOnscreen  *onscreen,
+          CoglFrameEvent frame_event,
+          CoglFrameInfo *frame_info,
+          void          *user_data)
+
 {
-  if (stage_native->pending_onscreen)
-    {
-      return stage_native->pending_onscreen;
-    }
-  else
-    {
-      MetaBackend *backend = meta_get_backend ();
-      MetaRenderer *renderer = meta_backend_get_renderer (backend);
-      ClutterStageView *stage_view;
-      CoglFramebuffer *framebuffer;
+  MetaStageNative *stage_native = user_data;
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_native);
+  int64_t global_frame_counter;
+  int64_t presented_frame_counter;
+  ClutterFrameInfo clutter_frame_info;
 
-      stage_view = CLUTTER_STAGE_VIEW (get_legacy_view (renderer));
-      framebuffer = clutter_stage_view_get_framebuffer (stage_view);
+  global_frame_counter = cogl_frame_info_get_global_frame_counter (frame_info);
 
-      return COGL_ONSCREEN (framebuffer);
+  switch (frame_event)
+    {
+    case COGL_FRAME_EVENT_SYNC:
+      presented_frame_counter = stage_native->presented_frame_counter_sync;
+      stage_native->presented_frame_counter_sync = global_frame_counter;
+      break;
+    case COGL_FRAME_EVENT_COMPLETE:
+      presented_frame_counter = stage_native->presented_frame_counter_complete;
+      stage_native->presented_frame_counter_complete = global_frame_counter;
+      break;
+    default:
+      g_assert_not_reached ();
     }
+
+  if (global_frame_counter <= presented_frame_counter)
+    return;
+
+  clutter_frame_info = (ClutterFrameInfo) {
+    .frame_counter = global_frame_counter,
+    .refresh_rate = cogl_frame_info_get_refresh_rate (frame_info),
+    .presentation_time = cogl_frame_info_get_presentation_time (frame_info)
+  };
+
+  _clutter_stage_cogl_presented (stage_cogl, frame_event, &clutter_frame_info);
+}
+
+static void
+ensure_frame_callback (MetaStageNative  *stage_native,
+                       ClutterStageView *stage_view)
+{
+  CoglFramebuffer *framebuffer;
+  CoglOnscreen *onscreen;
+  CoglClosure *closure;
+
+  closure = g_object_get_qdata (G_OBJECT (stage_view),
+                                quark_view_frame_closure);
+  if (closure)
+    return;
+
+  framebuffer = clutter_stage_view_get_framebuffer (stage_view);
+  onscreen = COGL_ONSCREEN (framebuffer);
+  closure = cogl_onscreen_add_frame_callback (onscreen,
+                                              frame_cb,
+                                              stage_native,
+                                              NULL);
+  g_object_set_qdata (G_OBJECT (stage_view),
+                      quark_view_frame_closure,
+                      closure);
+}
+
+static void
+ensure_frame_callbacks (MetaStageNative *stage_native)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  GList *l;
+
+  for (l = meta_renderer_get_views (renderer); l; l = l->next)
+    {
+      ClutterStageView *stage_view = l->data;
+
+      ensure_frame_callback (stage_native, stage_view);
+    }
+}
+
+void
+meta_stage_native_rebuild_views (MetaStageNative *stage_native)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+
+  meta_renderer_rebuild_views (renderer);
+  ensure_frame_callbacks (stage_native);
 }
 
 void
@@ -91,12 +166,25 @@ meta_stage_native_legacy_set_size (MetaStageNative *stage_native,
 {
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
   MetaRendererView *legacy_view;
+  GError *error = NULL;
   cairo_rectangle_int_t view_layout;
 
   legacy_view = get_legacy_view (renderer);
   if (!legacy_view)
     return;
+
+  if (!meta_renderer_native_set_legacy_view_size (renderer_native,
+                                                  legacy_view,
+                                                  width, height,
+                                                  &error))
+    {
+      meta_warning ("Applying display configuration failed: %s\n",
+                    error->message);
+      g_error_free (error);
+      return;
+    }
 
   view_layout = (cairo_rectangle_int_t) {
     .width = width,
@@ -107,45 +195,12 @@ meta_stage_native_legacy_set_size (MetaStageNative *stage_native,
                 NULL);
 }
 
-static gboolean
-meta_stage_native_realize (ClutterStageWindow *stage_window)
-{
-  MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
-  MetaBackend *backend = meta_get_backend ();
-  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
-  CoglFramebuffer *framebuffer;
-  GError *error = NULL;
-
-  stage_native->pending_onscreen =
-    cogl_onscreen_new (clutter_backend->cogl_context, 1, 1);
-
-  framebuffer = COGL_FRAMEBUFFER (stage_native->pending_onscreen);
-  if (!cogl_framebuffer_allocate (framebuffer, &error))
-    meta_fatal ("Failed to allocate onscreen framebuffer: %s\n",
-                error->message);
-
-  if (!(clutter_stage_window_parent_iface->realize (stage_window)))
-    meta_fatal ("Failed to realize native stage window");
-
-  return TRUE;
-}
-
 static void
 meta_stage_native_unrealize (ClutterStageWindow *stage_window)
 {
   MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
 
   clutter_stage_window_parent_iface->unrealize (stage_window);
-
-  if (stage_native->frame_closure)
-    {
-      CoglOnscreen *onscreen;
-
-      onscreen = get_legacy_onscreen (stage_native);
-      cogl_onscreen_remove_frame_callback (onscreen,
-                                           stage_native->frame_closure);
-      stage_native->frame_closure = NULL;
-    }
 
   g_clear_pointer (&stage_native->pending_onscreen, cogl_object_unref);
 }
@@ -161,14 +216,18 @@ meta_stage_native_get_geometry (ClutterStageWindow    *stage_window,
                                 cairo_rectangle_int_t *geometry)
 {
   MetaBackend *backend = meta_get_backend ();
-  MetaRenderer *renderer = meta_backend_get_renderer (backend);
-  MetaRendererView *legacy_view;
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
 
-  legacy_view = get_legacy_view (renderer);
-  if (legacy_view)
+  if (monitor_manager)
     {
-      clutter_stage_view_get_layout (CLUTTER_STAGE_VIEW (legacy_view),
-                                     geometry);
+      int width, height;
+
+      meta_monitor_manager_get_screen_size (monitor_manager, &width, &height);
+      *geometry = (cairo_rectangle_int_t) {
+        .width = width,
+        .height = height,
+      };
     }
   else
     {
@@ -180,61 +239,25 @@ meta_stage_native_get_geometry (ClutterStageWindow    *stage_window,
 }
 
 static void
-frame_cb (CoglOnscreen  *onscreen,
-          CoglFrameEvent frame_event,
-          CoglFrameInfo *frame_info,
-          void          *user_data)
-{
-  MetaStageNative *stage_native = user_data;
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_native);
-  ClutterFrameInfo clutter_frame_info = {
-    .frame_counter = cogl_frame_info_get_frame_counter (frame_info),
-    .refresh_rate = cogl_frame_info_get_refresh_rate (frame_info),
-    .presentation_time = cogl_frame_info_get_presentation_time (frame_info)
-  };
-
-  _clutter_stage_cogl_presented (stage_cogl, frame_event, &clutter_frame_info);
-}
-
-static void
 ensure_legacy_view (ClutterStageWindow *stage_window)
 {
   MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
   MetaRendererView *legacy_view;
-  cairo_rectangle_int_t view_layout = { 0 };
-  CoglFramebuffer *framebuffer;
-  CoglOnscreen *onscreen;
 
   legacy_view = get_legacy_view (renderer);
   if (legacy_view)
     return;
 
-  if (!monitor_manager)
+  legacy_view = meta_renderer_native_create_legacy_view (renderer_native);
+  if (!legacy_view)
     return;
 
-  meta_monitor_manager_get_screen_size (monitor_manager,
-                                        &view_layout.width,
-                                        &view_layout.height);
-  framebuffer = g_steal_pointer (&stage_native->pending_onscreen);
-  legacy_view = g_object_new (META_TYPE_RENDERER_VIEW,
-                              "layout", &view_layout,
-                              "framebuffer", framebuffer,
-                              NULL);
   meta_renderer_set_legacy_view (renderer, legacy_view);
 
-  onscreen = COGL_ONSCREEN (framebuffer);
-  cogl_onscreen_set_swap_throttled (onscreen,
-                                    _clutter_get_sync_to_vblank ());
-
-  stage_native->frame_closure =
-    cogl_onscreen_add_frame_callback (onscreen,
-                                      frame_cb,
-                                      stage_native,
-                                      NULL);
+  ensure_frame_callback (stage_native, CLUTTER_STAGE_VIEW (legacy_view));
 }
 
 static GList *
@@ -243,29 +266,43 @@ meta_stage_native_get_views (ClutterStageWindow *stage_window)
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
 
-  ensure_legacy_view (stage_window);
+  if (!meta_is_stage_views_enabled ())
+    ensure_legacy_view (stage_window);
+
   return meta_renderer_get_views (renderer);
 }
 
 static int64_t
 meta_stage_native_get_frame_counter (ClutterStageWindow *stage_window)
 {
-  MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
-  CoglOnscreen *legacy_onscreen;
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
 
-  legacy_onscreen = get_legacy_onscreen (stage_native);
+  return meta_renderer_native_get_frame_counter (renderer_native);
+}
 
-  return cogl_onscreen_get_frame_counter (legacy_onscreen);
+static void
+meta_stage_native_finish_frame (ClutterStageWindow *stage_window)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+
+  meta_renderer_native_finish_frame (META_RENDERER_NATIVE (renderer));
 }
 
 static void
 meta_stage_native_init (MetaStageNative *stage_native)
 {
+  stage_native->presented_frame_counter_sync = -1;
+  stage_native->presented_frame_counter_complete = -1;
 }
 
 static void
 meta_stage_native_class_init (MetaStageNativeClass *klass)
 {
+  quark_view_frame_closure =
+    g_quark_from_static_string ("-meta-native-stage-view-frame-closure");
 }
 
 static void
@@ -273,10 +310,10 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
   clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
 
-  iface->realize = meta_stage_native_realize;
   iface->unrealize = meta_stage_native_unrealize;
   iface->can_clip_redraws = meta_stage_native_can_clip_redraws;
   iface->get_geometry = meta_stage_native_get_geometry;
   iface->get_views = meta_stage_native_get_views;
   iface->get_frame_counter = meta_stage_native_get_frame_counter;
+  iface->finish_frame = meta_stage_native_finish_frame;
 }

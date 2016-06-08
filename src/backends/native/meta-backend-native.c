@@ -390,7 +390,10 @@ meta_backend_native_update_screen_size (MetaBackend *backend,
   ClutterActor *stage = meta_backend_get_stage (backend);
 
   stage_native = meta_clutter_backend_native_get_stage_native (clutter_backend);
-  meta_stage_native_legacy_set_size (stage_native, width, height);
+  if (meta_is_stage_views_enabled ())
+    meta_stage_native_rebuild_views (stage_native);
+  else
+    meta_stage_native_legacy_set_size (stage_native, width, height);
 
   clutter_actor_set_size (stage, width, height);
 }

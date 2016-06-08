@@ -26,4 +26,6 @@ G_DECLARE_FINAL_TYPE (MetaRendererView, meta_renderer_view,
                       META, RENDERER_VIEW,
                       ClutterStageViewCogl)
 
+MetaMonitorInfo *meta_renderer_view_get_monitor_info (MetaRendererView *view);
+
 #endif /* META_RENDERER_VIEW_H */
