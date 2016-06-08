@@ -61,6 +61,8 @@ struct _ClutterStageX11
   ClutterStageView *legacy_view;
   GList *legacy_views;
 
+  CoglFrameClosure *frame_closure;
+
   gchar *title;
 
   guint clipped_redraws_cool_off;

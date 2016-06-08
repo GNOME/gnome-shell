@@ -37,6 +37,7 @@
 #include <cogl/cogl-texture.h>
 #include <cogl/cogl-meta-texture.h>
 #include <cogl/cogl-error-private.h>
+#include <cogl/cogl-frame-info-private.h>
 #include <cogl/cogl-renderer-private.h>
 #include <cogl/winsys/cogl-winsys-egl-private.h>
 #include <cogl/winsys/cogl-winsys-private.h>

@@ -79,3 +79,9 @@ cogl_frame_info_get_output (CoglFrameInfo *info)
 {
   return info->output;
 }
+
+int64_t
+cogl_frame_info_get_global_frame_counter (CoglFrameInfo *info)
+{
+  return info->global_frame_counter;
+}

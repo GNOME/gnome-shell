@@ -87,11 +87,6 @@ struct _ClutterStageWindowIface
                                                  int                 factor);
   int               (* get_scale_factor)        (ClutterStageWindow *stage_window);
   GList            *(* get_views)               (ClutterStageWindow *stage_window);
-  CoglFrameClosure *(* set_frame_callback)      (ClutterStageWindow *stage_window,
-                                                 CoglFrameCallback   callback,
-                                                 gpointer            user_data);
-  void              (* remove_frame_callback)   (ClutterStageWindow *stage_window,
-                                                 CoglFrameClosure   *closure);
   int64_t           (* get_frame_counter)       (ClutterStageWindow *stage_window);
   void              (* finish_frame)            (ClutterStageWindow *stage_window);
 };
@@ -150,13 +145,6 @@ void              _clutter_stage_window_set_scale_factor        (ClutterStageWin
 int               _clutter_stage_window_get_scale_factor        (ClutterStageWindow *window);
 
 GList *           _clutter_stage_window_get_views               (ClutterStageWindow *window);
-
-CoglFrameClosure *_clutter_stage_window_set_frame_callback      (ClutterStageWindow *window,
-                                                                 CoglFrameCallback   callback,
-                                                                 gpointer            user_data);
-
-void              _clutter_stage_window_remove_frame_callback   (ClutterStageWindow *stage_winow,
-                                                                 CoglFrameClosure   *closure);
 
 void              _clutter_stage_window_finish_frame            (ClutterStageWindow *window);
 

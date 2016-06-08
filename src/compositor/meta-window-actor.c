@@ -2029,13 +2029,13 @@ do_send_frame_timings (MetaWindowActor  *self,
 static void
 send_frame_timings (MetaWindowActor  *self,
                     FrameData        *frame,
-                    CoglFrameInfo    *frame_info,
+                    ClutterFrameInfo *frame_info,
                     gint64            presentation_time)
 {
   float refresh_rate;
   int refresh_interval;
 
-  refresh_rate = cogl_frame_info_get_refresh_rate (frame_info);
+  refresh_rate = frame_info->refresh_rate;
   /* 0.0 is a flag for not known, but sanity-check against other odd numbers */
   if (refresh_rate >= 1.0)
     refresh_interval = (int) (0.5 + 1000000 / refresh_rate);
@@ -2046,9 +2046,9 @@ send_frame_timings (MetaWindowActor  *self,
 }
 
 void
-meta_window_actor_frame_complete (MetaWindowActor *self,
-                                  CoglFrameInfo   *frame_info,
-                                  gint64           presentation_time)
+meta_window_actor_frame_complete (MetaWindowActor  *self,
+                                  ClutterFrameInfo *frame_info,
+                                  gint64            presentation_time)
 {
   MetaWindowActorPrivate *priv = self->priv;
   GList *l;
@@ -2060,7 +2060,7 @@ meta_window_actor_frame_complete (MetaWindowActor *self,
     {
       GList *l_next = l->next;
       FrameData *frame = l->data;
-      gint64 frame_counter = cogl_frame_info_get_frame_counter (frame_info);
+      gint64 frame_counter = frame_info->frame_counter;
 
       if (frame->frame_counter != -1 && frame->frame_counter <= frame_counter)
         {

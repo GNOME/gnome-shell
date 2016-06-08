@@ -83,6 +83,12 @@
 #include "wayland/meta-wayland-private.h"
 #endif
 
+static void
+on_presented (ClutterStage     *stage,
+              CoglFrameEvent    event,
+              ClutterFrameInfo *frame_info,
+              MetaCompositor   *compositor);
+
 static gboolean
 is_modal (MetaDisplay *display)
 {
@@ -474,6 +480,10 @@ meta_compositor_manage (MetaCompositor *compositor)
   meta_screen_set_cm_selection (display->screen);
 
   compositor->stage = meta_backend_get_stage (backend);
+
+  g_signal_connect (compositor->stage, "presented",
+                    G_CALLBACK (on_presented),
+                    compositor);
 
   /* We use connect_after() here to accomodate code in GNOME Shell that,
    * when benchmarking drawing performance, connects to ::after-paint
@@ -998,17 +1008,16 @@ meta_compositor_sync_window_geometry (MetaCompositor *compositor,
 }
 
 static void
-frame_callback (CoglOnscreen  *onscreen,
-                CoglFrameEvent event,
-                CoglFrameInfo *frame_info,
-                void          *user_data)
+on_presented (ClutterStage     *stage,
+              CoglFrameEvent    event,
+              ClutterFrameInfo *frame_info,
+              MetaCompositor   *compositor)
 {
-  MetaCompositor *compositor = user_data;
   GList *l;
 
   if (event == COGL_FRAME_EVENT_COMPLETE)
     {
-      gint64 presentation_time_cogl = cogl_frame_info_get_presentation_time (frame_info);
+      gint64 presentation_time_cogl = frame_info->presentation_time;
       gint64 presentation_time;
 
       if (presentation_time_cogl != 0)
@@ -1044,14 +1053,6 @@ meta_pre_paint_func (gpointer data)
   GList *l;
   MetaWindowActor *top_window;
   MetaCompositor *compositor = data;
-
-  if (!compositor->frame_closure)
-    {
-      compositor->frame_closure =
-        clutter_stage_add_frame_callback (CLUTTER_STAGE (compositor->stage),
-                                          frame_callback,
-                                          compositor);
-    }
 
   if (compositor->windows == NULL)
     return TRUE;

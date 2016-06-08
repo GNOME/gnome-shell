@@ -338,25 +338,6 @@ _clutter_stage_window_get_views (ClutterStageWindow *window)
   return iface->get_views (window);
 }
 
-CoglFrameClosure *
-_clutter_stage_window_set_frame_callback (ClutterStageWindow *window,
-                                          CoglFrameCallback   callback,
-                                          gpointer            user_data)
-{
-  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
-
-  return iface->set_frame_callback (window, callback, user_data);
-}
-
-void
-_clutter_stage_window_remove_frame_callback (ClutterStageWindow *window,
-                                             CoglFrameClosure   *closure)
-{
-  ClutterStageWindowIface *iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
-
-  iface->remove_frame_callback (window, closure);
-}
-
 void
 _clutter_stage_window_finish_frame (ClutterStageWindow *window)
 {

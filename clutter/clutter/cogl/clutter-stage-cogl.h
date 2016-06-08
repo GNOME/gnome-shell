@@ -51,8 +51,6 @@ struct _ClutterStageCogl
   float refresh_rate;
   int pending_swaps;
 
-  CoglFrameClosure *frame_closure;
-
   gint64 last_presentation_time;
   gint64 update_time;
 
@@ -77,6 +75,11 @@ struct _ClutterStageCoglClass
 
 CLUTTER_AVAILABLE_IN_MUTTER
 GType _clutter_stage_cogl_get_type (void) G_GNUC_CONST;
+
+CLUTTER_AVAILABLE_IN_MUTTER
+void _clutter_stage_cogl_presented (ClutterStageCogl *stage_cogl,
+                                    CoglFrameEvent    frame_event,
+                                    ClutterFrameInfo *frame_info);
 
 G_END_DECLS
 

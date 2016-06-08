@@ -125,6 +125,10 @@ gboolean                _clutter_stage_update_state     (ClutterStage      *stag
 void                    _clutter_stage_set_scale_factor (ClutterStage      *stage,
                                                          int                factor);
 
+void            _clutter_stage_presented                (ClutterStage      *stage,
+                                                         CoglFrameEvent     frame_event,
+                                                         ClutterFrameInfo  *frame_info);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_PRIVATE_H__ */

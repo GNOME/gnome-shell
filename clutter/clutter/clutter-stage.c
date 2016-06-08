@@ -190,6 +190,7 @@ enum
   DEACTIVATE,
   DELETE_EVENT,
   AFTER_PAINT,
+  PRESENTED,
 
   LAST_SIGNAL
 };
@@ -2166,6 +2167,21 @@ clutter_stage_class_init (ClutterStageClass *klass)
                   0, /* no corresponding vfunc */
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+
+  /**
+   * ClutterStage::presented: (skip)
+   * @stage: the stage that received the event
+   * @frame_event: a #CoglFrameEvent
+   * @frame_info: a #ClutterFrameInfo
+   */
+  stage_signals[PRESENTED] =
+    g_signal_new (I_("presented"),
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_INT, G_TYPE_POINTER);
 
   klass->fullscreen = clutter_stage_real_fullscreen;
   klass->activate = clutter_stage_real_activate;
@@ -4628,19 +4644,6 @@ _clutter_stage_set_scale_factor (ClutterStage *stage,
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
-CoglFrameClosure *
-clutter_stage_add_frame_callback (ClutterStage          *stage,
-                                  CoglFrameCallback      callback,
-                                  gpointer               user_data)
-{
-  ClutterStageWindow *stage_window;
-
-  stage_window = _clutter_stage_get_window (stage);
-  return _clutter_stage_window_set_frame_callback (stage_window,
-                                                   callback,
-                                                   user_data);
-}
-
 int64_t
 clutter_stage_get_frame_counter (ClutterStage          *stage)
 {
@@ -4648,4 +4651,13 @@ clutter_stage_get_frame_counter (ClutterStage          *stage)
 
   stage_window = _clutter_stage_get_window (stage);
   return _clutter_stage_window_get_frame_counter (stage_window);
+}
+
+void
+_clutter_stage_presented (ClutterStage     *stage,
+                          CoglFrameEvent    frame_event,
+                          ClutterFrameInfo *frame_info)
+{
+  g_signal_emit (stage, stage_signals[PRESENTED], 0,
+                 (int) frame_event, frame_info);
 }

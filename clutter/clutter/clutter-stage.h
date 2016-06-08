@@ -135,6 +135,16 @@ struct _ClutterFog
   gfloat z_far;
 };
 
+/**
+ * ClutterFrameInfo: (skip)
+ */
+struct _ClutterFrameInfo
+{
+  int64_t frame_counter;
+  int64_t presentation_time;
+  float refresh_rate;
+};
+
 CLUTTER_AVAILABLE_IN_ALL
 GType clutter_perspective_get_type (void) G_GNUC_CONST;
 CLUTTER_DEPRECATED_IN_1_10

@@ -81,24 +81,15 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
   CLUTTER_NOTE (BACKEND, "Unrealizing Cogl stage [%p]", stage_cogl);
-
-  if (stage_cogl->frame_closure != NULL)
-    {
-      _clutter_stage_window_remove_frame_callback (stage_window,
-                                                   stage_cogl->frame_closure);
-      stage_cogl->frame_closure = NULL;
-    }
 }
 
-static void
-frame_cb (CoglOnscreen  *onscreen,
-          CoglFrameEvent event,
-          CoglFrameInfo *info,
-          void          *user_data)
+void
+_clutter_stage_cogl_presented (ClutterStageCogl *stage_cogl,
+                               CoglFrameEvent    frame_event,
+                               ClutterFrameInfo *frame_info)
 {
-  ClutterStageCogl *stage_cogl = user_data;
 
-  if (event == COGL_FRAME_EVENT_SYNC)
+  if (frame_event == COGL_FRAME_EVENT_SYNC)
     {
       /* Early versions of the swap_event implementation in Mesa
        * deliver BufferSwapComplete event when not selected for,
@@ -112,13 +103,14 @@ frame_cb (CoglOnscreen  *onscreen,
       if (stage_cogl->pending_swaps > 0)
         stage_cogl->pending_swaps--;
     }
-  else if (event == COGL_FRAME_EVENT_COMPLETE)
+  else if (frame_event == COGL_FRAME_EVENT_COMPLETE)
     {
-      gint64 presentation_time_cogl = cogl_frame_info_get_presentation_time (info);
+      gint64 presentation_time_cogl = frame_info->presentation_time;
 
       if (presentation_time_cogl != 0)
         {
-          CoglContext *context = cogl_framebuffer_get_context (COGL_FRAMEBUFFER (onscreen));
+          ClutterBackend *backend = stage_cogl->backend;
+          CoglContext *context = clutter_backend_get_cogl_context (backend);
           gint64 current_time_cogl = cogl_get_clock_time (context);
           gint64 now = g_get_monotonic_time ();
 
@@ -126,8 +118,10 @@ frame_cb (CoglOnscreen  *onscreen,
             now + (presentation_time_cogl - current_time_cogl) / 1000;
         }
 
-      stage_cogl->refresh_rate = cogl_frame_info_get_refresh_rate (info);
+      stage_cogl->refresh_rate = frame_info->refresh_rate;
     }
+
+  _clutter_stage_presented (stage_cogl->wrapper, frame_event, frame_info);
 }
 
 static gboolean
@@ -147,10 +141,6 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
       g_warning ("Failed to realize stage: missing Cogl context");
       return FALSE;
     }
-
-  stage_cogl->frame_closure =
-    _clutter_stage_window_set_frame_callback (stage_window,
-                                              frame_cb, stage_window);
 
   return TRUE;
 }
