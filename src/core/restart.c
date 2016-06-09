@@ -103,7 +103,7 @@ restart_message_painted (gpointer data)
 
 /**
  * meta_restart:
- * @message: message to display to the user.
+ * @message: (allow-none): message to display to the user, or %NULL
  *
  * Starts the process of restarting the compositor. Note that Mutter's
  * involvement here is to make the restart visually smooth for the
@@ -126,7 +126,7 @@ meta_restart (const char *message)
     MUTTER_LIBEXECDIR "/mutter-restart-helper", NULL
   };
 
-  if (meta_display_show_restart_message (display, message))
+  if (message && meta_display_show_restart_message (display, message))
     {
       /* Wait until the stage was painted */
       clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
