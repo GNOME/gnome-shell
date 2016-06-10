@@ -696,6 +696,7 @@ const BackgroundManager = new Lang.Class({
                            time: FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: function() {
+                               oldBackgroundActor.background.run_dispose();
                                oldBackgroundActor.destroy();
                            }
                          });
