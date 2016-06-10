@@ -27,6 +27,8 @@
 #include "meta-window-wayland.h"
 
 #include <meta/errors.h>
+#include <errno.h>
+#include <string.h> /* for strerror () */
 #include "window-private.h"
 #include "boxes-private.h"
 #include "stack-tracker.h"
@@ -102,6 +104,24 @@ meta_window_wayland_kill (MetaWindow *window)
 {
   MetaWaylandSurface *surface = window->surface;
   struct wl_resource *resource = surface->resource;
+  pid_t pid;
+  uid_t uid;
+  gid_t gid;
+
+  wl_client_get_credentials (wl_resource_get_client (resource), &pid, &uid, &gid);
+  if (pid > 0)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Killing %s with kill()\n",
+                  window->desc);
+
+      if (kill (pid, 9) == 0)
+        return;
+
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Failed to signal %s: %s\n",
+                  window->desc, strerror (errno));
+    }
 
   /* Send the client an unrecoverable error to kill the client. */
   wl_resource_post_error (resource,
