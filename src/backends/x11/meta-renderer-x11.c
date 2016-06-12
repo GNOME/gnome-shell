@@ -76,7 +76,6 @@ meta_renderer_x11_create_view (MetaRenderer    *renderer,
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   int width, height;
-  cairo_rectangle_int_t view_layout;
   CoglTexture2D *texture_2d;
   CoglOffscreen *offscreen;
 
@@ -86,10 +85,9 @@ meta_renderer_x11_create_view (MetaRenderer    *renderer,
   height = monitor_info->rect.height;
   texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
   offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
-  view_layout = meta_rectangle_to_cairo_rectangle (&monitor_info->rect);
 
   return g_object_new (META_TYPE_RENDERER_VIEW,
-                       "layout", &view_layout,
+                       "layout", &monitor_info->rect,
                        "framebuffer", COGL_FRAMEBUFFER (offscreen),
                        NULL);
 }

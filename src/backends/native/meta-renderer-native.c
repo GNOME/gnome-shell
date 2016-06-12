@@ -1037,14 +1037,12 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   CoglOnscreen *onscreen;
   CoglFramebuffer *framebuffer;
-  cairo_rectangle_int_t view_layout;
   MetaRendererView *view;
   GError *error = NULL;
 
-  view_layout = meta_rectangle_to_cairo_rectangle (&monitor_info->rect);
   onscreen = cogl_onscreen_new (cogl_context,
-                                view_layout.width,
-                                view_layout.height);
+                                monitor_info->rect.width,
+                                monitor_info->rect.height);
   cogl_onscreen_set_swap_throttled (onscreen,
                                     _clutter_get_sync_to_vblank ());
 
@@ -1054,7 +1052,7 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
                 error->message);
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
-                       "layout", &view_layout,
+                       "layout", &monitor_info->rect,
                        "framebuffer", framebuffer,
                        "monitor-info", monitor_info,
                        NULL);

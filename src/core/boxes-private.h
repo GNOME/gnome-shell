@@ -215,6 +215,4 @@ GList* meta_rectangle_find_nonintersected_monitor_edges (
                                            const GList         *monitor_rects,
                                            const GSList        *all_struts);
 
-cairo_rectangle_int_t meta_rectangle_to_cairo_rectangle (MetaRectangle *rect);
-
 #endif /* META_BOXES_PRIVATE_H */
