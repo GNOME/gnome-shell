@@ -23,6 +23,8 @@
  *  Damien Lespiau <damien.lespiau@intel.com>
  */
 
+#include "clutter-build-config.h"
+
 #include "clutter-keysyms.h"
 #include "clutter-event-private.h"
 #include "clutter-xkb-utils.h"
