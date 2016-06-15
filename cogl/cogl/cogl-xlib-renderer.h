@@ -57,8 +57,8 @@
 
 COGL_BEGIN_DECLS
 
-/*
- * cogl_xlib_renderer_handle_event:
+/**
+ * cogl_xlib_renderer_handle_event: (skip)
  * @renderer: a #CoglRenderer
  * @event: pointer to an XEvent structure
  *
@@ -89,8 +89,8 @@ cogl_xlib_renderer_handle_event (CoglRenderer *renderer,
 typedef CoglFilterReturn (* CoglXlibFilterFunc) (XEvent *event,
                                                  void *data);
 
-/*
- * cogl_xlib_renderer_add_filter:
+/**
+ * cogl_xlib_renderer_add_filter: (skip)
  * @renderer: a #CoglRenderer
  * @func: the callback function
  * @data: user data passed to @func when called
@@ -104,8 +104,8 @@ cogl_xlib_renderer_add_filter (CoglRenderer *renderer,
                                CoglXlibFilterFunc func,
                                void *data);
 
-/*
- * cogl_xlib_renderer_remove_filter:
+/**
+ * cogl_xlib_renderer_remove_filter: (skip)
  * @renderer: a #CoglRenderer
  * @func: the callback function
  * @data: user data given when the callback was installed
@@ -118,8 +118,8 @@ cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
                                   CoglXlibFilterFunc func,
                                   void *data);
 
-/*
- * cogl_xlib_renderer_get_foreign_display:
+/**
+ * cogl_xlib_renderer_get_foreign_display: (skip)
  * @renderer: a #CoglRenderer
  *
  * Return value: the foreign Xlib display that will be used by any Xlib based
@@ -129,8 +129,8 @@ cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
 Display *
 cogl_xlib_renderer_get_foreign_display (CoglRenderer *renderer);
 
-/*
- * cogl_xlib_renderer_set_foreign_display:
+/**
+ * cogl_xlib_renderer_set_foreign_display: (skip)
  * @renderer: a #CoglRenderer
  *
  * Sets a foreign Xlib display that Cogl will use for and Xlib based winsys
@@ -167,9 +167,15 @@ void
 cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
                                                 CoglBool enable);
 
+/**
+ * cogl_xlib_renderer_get_display: (skip)
+ */
 Display *
 cogl_xlib_renderer_get_display (CoglRenderer *renderer);
 
+/**
+ * cogl_xlib_renderer_get_visual_info: (skip)
+ */
 XVisualInfo *
 cogl_xlib_renderer_get_visual_info (CoglRenderer *renderer);
 

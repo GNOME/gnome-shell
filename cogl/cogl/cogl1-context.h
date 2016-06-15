@@ -92,7 +92,7 @@ CoglBool
 cogl_features_available (CoglFeatureFlags features);
 
 /**
- * cogl_get_proc_address:
+ * cogl_get_proc_address: (skip)
  * @name: the name of the function.
  *
  * Gets a pointer to a given GL or GL ES extension function. This acts

@@ -222,7 +222,7 @@ int
 cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer);
 
 /**
- * cogl_renderer_check_onscreen_template:
+ * cogl_renderer_check_onscreen_template: (skip)
  * @renderer: A #CoglRenderer
  * @onscreen_template: A #CoglOnscreenTemplate
  * @error: A pointer to a #CoglError for reporting exceptions

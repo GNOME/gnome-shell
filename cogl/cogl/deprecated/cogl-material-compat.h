@@ -40,6 +40,7 @@
 #include <cogl/cogl-depth-state.h>
 #include <cogl/cogl-error.h>
 #include <cogl/cogl-macros.h>
+#include <cogl/cogl-object.h>
 
 G_BEGIN_DECLS
 
@@ -55,6 +56,9 @@ G_BEGIN_DECLS
 
 typedef struct _CoglMaterial	      CoglMaterial;
 typedef struct _CoglMaterialLayer     CoglMaterialLayer;
+
+#define COGL_TYPE_MATERIAL (cogl_material_get_type ())
+GType cogl_material_get_type (void);
 
 #define COGL_MATERIAL(OBJECT) ((CoglMaterial *)OBJECT)
 

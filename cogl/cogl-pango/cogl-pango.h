@@ -51,6 +51,7 @@
 #include <cogl/cogl.h>
 #else
 #include "cogl/cogl-context.h"
+#include "cogl/cogl-macros.h"
 #endif
 
 COGL_BEGIN_DECLS

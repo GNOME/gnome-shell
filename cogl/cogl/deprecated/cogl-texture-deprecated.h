@@ -31,6 +31,8 @@
 #ifndef __COGL_TEXTURE_DEPRECATED_H__
 #define __COGL_TEXTURE_DEPRECATED_H__
 
+#include <cogl/cogl-texture.h>
+
 /**
  * cogl_texture_get_format:
  * @texture: a #CoglTexture pointer.

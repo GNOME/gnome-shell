@@ -471,7 +471,7 @@ COGL_BEGIN_DECLS
  *
  * Computes the sine of @angle.
  *
- * Return value: the sine of the passed angle, in fixed point notation
+ * Return value: (transfer none): the sine of the passed angle, in fixed point notation
  *
  * Since: 1.0
  */
@@ -484,7 +484,7 @@ cogl_fixed_sin (CoglFixed angle);
  *
  * Computes the tangent of @angle.
  *
- * Return value: the tangent of the passed angle, in fixed point notation
+ * Return value: (transfer none): the tangent of the passed angle, in fixed point notation
  *
  * Since: 1.0
  */
@@ -497,7 +497,7 @@ cogl_fixed_tan (CoglFixed angle);
  *
  * Computes the cosine of @angle.
  *
- * Return value: the cosine of the passed angle, in fixed point notation
+ * Return value: (transfer none): the cosine of the passed angle, in fixed point notation
  *
  * Since: 1.0
  */
@@ -509,7 +509,7 @@ CoglFixed cogl_fixed_cos (CoglFixed angle);
  *
  * Computes the arc tangent of @a.
  *
- * Return value: the arc tangent of the passed value, in fixed point notation
+ * Return value: (transfer none): the arc tangent of the passed value, in fixed point notation
  *
  * Since: 1.0
  */
@@ -524,8 +524,8 @@ cogl_fixed_atan (CoglFixed a);
  * Computes the arc tangent of @a / @b but uses the sign of both
  * arguments to return the angle in right quadrant.
  *
- * Return value: the arc tangent of the passed fraction, in fixed point
- *   notation
+ * Return value: (transfer none): the arc tangent of the passed fraction, in
+ *     fixed point notation
  *
  * Since: 1.0
  */
@@ -536,14 +536,24 @@ cogl_fixed_atan2 (CoglFixed a,
 /*< public >*/
 
 /* Fixed point math routines */
+
+/**
+ * cogl_fixed_mul: (skip)
+ */
 G_INLINE_FUNC CoglFixed
 cogl_fixed_mul (CoglFixed a,
                 CoglFixed b);
 
+/**
+ * cogl_fixed_div: (skip)
+ */
 G_INLINE_FUNC CoglFixed
 cogl_fixed_div (CoglFixed a,
                 CoglFixed b);
 
+/**
+ * cogl_fixed_mul_div: (skip)
+ */
 G_INLINE_FUNC CoglFixed
 cogl_fixed_mul_div (CoglFixed a,
                     CoglFixed b,
@@ -596,8 +606,8 @@ cogl_fixed_mul_div (CoglFixed a,
  *
  * Computes the square root of @x.
  *
- * Return value: the square root of the passed value, in floating point
- *   notation
+ * Return value: (transfer none): the square root of the passed value, in
+ *     floating point notation
  *
  * Since: 1.0
  */
@@ -613,7 +623,7 @@ cogl_fixed_sqrt (CoglFixed x);
  * This function is some 2.5 times faster on x86, and over 12 times faster on
  * fpu-less arm, than using libc log().
  *
- * Return value: base 2 logarithm.
+ * Return value: (transfer none): base 2 logarithm.
  *
  * Since: 1.0
  */
@@ -717,7 +727,7 @@ cogl_sqrti (int x);
  *
  * Computes the sine of @angle
  *
- * Return value: the sine of the passed angle
+ * Return value: (transfer none): the sine of the passed angle
  *
  * Since: 1.0
  */
@@ -730,7 +740,7 @@ cogl_angle_sin (CoglAngle angle);
  *
  * Computes the tangent of @angle
  *
- * Return value: the tangent of the passed angle
+ * Return value: (transfer none): the tangent of the passed angle
  *
  * Since: 1.0
  */
@@ -743,7 +753,7 @@ cogl_angle_tan (CoglAngle angle);
  *
  * Computes the cosine of @angle
  *
- * Return value: the cosine of the passed angle
+ * Return value: (transfer none): the cosine of the passed angle
  *
  * Since: 1.0
  */
@@ -797,6 +807,14 @@ cogl_fixed_mul_div (CoglFixed a,
 }
 #endif
 
+/**
+ * cogl_double_to_fixed:
+ * @value: value to be converted
+ *
+ * A fast conversion from double precision floating to fixed point
+ *
+ * Return value: (transfer none): Fixed point representation of the value
+ */
 CoglFixed
 cogl_double_to_fixed (double value);
 

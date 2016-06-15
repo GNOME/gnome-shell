@@ -40,6 +40,9 @@
 #include <cogl-matrix.h>
 #include <cogl-context-private.h>
 
+G_DEFINE_BOXED_TYPE (CoglMaterial, cogl_material,
+                     cogl_object_ref, cogl_object_unref)
+
 CoglMaterial *
 cogl_material_new (void)
 {

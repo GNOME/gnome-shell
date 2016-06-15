@@ -329,14 +329,6 @@ static const double _magic = 68719476736.0 * 1.5;
 #define COGL_NO_FAST_CONVERSIONS
 #endif /* HAVE_FLOAT_WORD_ORDER */
 
-/*
- * cogl_double_to_fixed :
- * @value: value to be converted
- *
- * A fast conversion from double precision floating to fixed point
- *
- * Return value: Fixed point representation of the value
- */
 CoglFixed
 cogl_double_to_fixed (double val)
 {

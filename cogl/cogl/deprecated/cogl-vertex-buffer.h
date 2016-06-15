@@ -283,7 +283,7 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
 		         int              count);
 
 /**
- * cogl_vertex_buffer_indices_new:
+ * cogl_vertex_buffer_indices_new: (skip)
  * @indices_type: a #CoglIndicesType specifying the data type used for
  *    the indices.
  * @indices_array: (array length=indices_len): Specifies the address of

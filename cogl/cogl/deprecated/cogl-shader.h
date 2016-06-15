@@ -391,7 +391,6 @@ cogl_create_program (void);
  * Deprecated: 1.0: Please use cogl_object_ref() instead.
  *
  * Returns: @handle
- * Deprecated: 1.16: Use #CoglSnippet api
  */
 COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 CoglHandle
@@ -404,7 +403,7 @@ cogl_program_ref (CoglHandle handle);
  * Removes a reference to a program. If it was the last reference the
  * program object will be destroyed.
  *
- * Deprecated: 1.16: Use #CoglSnippet api
+ * Deprecated: 1.0: Please use cogl_object_unref() instead.
  */
 COGL_DEPRECATED_IN_1_16_FOR (cogl_snippet_)
 void

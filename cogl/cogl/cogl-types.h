@@ -40,9 +40,8 @@
 
 #include <cogl/cogl-defines.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
+#include <glib.h>
 #include <glib-object.h>
-#endif /* COGL_HAS_GTYPE_SUPPORT */
 
 /* Guard C code in headers, while including them from C++ */
 #ifdef  __cplusplus
@@ -73,32 +72,6 @@ COGL_BEGIN_DECLS
  * Stability: stable
  */
 typedef int CoglBool;
-
-/**
- * TRUE:
- *
- * A constant to be used with #CoglBool types to indicate a boolean in
- * the "true" state.
- *
- * Since: 2.0
- * Stability: stable
- */
-#ifndef TRUE
-#define TRUE 1
-#endif
-
-/**
- * FALSE:
- *
- * A constant to be used with #CoglBool types to indicate a boolean in
- * the "false" state.
- *
- * Since: 2.0
- * Stability: stable
- */
-#ifndef FALSE
-#define FALSE 0
-#endif
 
 #if __GNUC__ >= 4
 #define COGL_GNUC_NULL_TERMINATED __attribute__((__sentinel__))
@@ -150,13 +123,9 @@ typedef void * CoglHandle;
  */
 #define COGL_INVALID_HANDLE NULL
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
-
 #define COGL_TYPE_HANDLE        (cogl_handle_get_type ())
 GType
 cogl_handle_get_type (void) G_GNUC_CONST;
-
-#endif /* COGL_HAS_GTYPE_SUPPORT */
 
 /**
  * cogl_handle_ref:
