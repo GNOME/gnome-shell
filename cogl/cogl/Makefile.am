@@ -49,7 +49,6 @@ pkgconfig_DATA = $(pc_files)
 DISTCLEANFILES += $(pc_files)
 
 cogl_deprecated_h = \
-	deprecated/cogl-clip-state.h 		\
 	deprecated/cogl-material-compat.h 	\
 	deprecated/cogl-vertex-buffer.h 	\
 	deprecated/cogl-shader.h 		\
@@ -382,7 +381,6 @@ cogl_sources_c = \
 	cogl-closure-list.c			\
 	cogl-fence.c				\
 	cogl-fence-private.h			\
-	deprecated/cogl-clip-state.c			\
 	deprecated/cogl-vertex-buffer-private.h	\
 	deprecated/cogl-vertex-buffer.c		\
 	deprecated/cogl-material-compat.c		\
