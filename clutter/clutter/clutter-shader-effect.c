@@ -115,10 +115,6 @@
 #include "clutter-build-config.h"
 #endif
 
-/* XXX: This file depends on the cogl_program_ api with has been
- * removed for Cogl 2.0 so we undef COGL_ENABLE_EXPERIMENTAL_2_0_API
- * for this file for now */
-#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include "cogl/cogl.h"
 
 #include "clutter-shader-effect.h"

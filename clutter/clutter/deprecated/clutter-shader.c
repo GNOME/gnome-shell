@@ -56,10 +56,6 @@
 
 #include <glib.h>
 
-/* This file depends on the cogl 1.x api which isn't exposed when
- * COGL_ENABLE_EXPERIMENTAL_2_0_API is defined...
- */
-#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
 
 #include "clutter-shader.h"

@@ -82,7 +82,6 @@
 #include <cogl/cogl-enum-types.h>
 #include <cogl/deprecated/cogl-vertex-buffer.h>
 #include <cogl/deprecated/cogl-material-compat.h>
-#include <cogl/deprecated/cogl-shader.h>
 #endif
 
 /* It would be good to move these casts up into 1.x only api if we can
@@ -92,6 +91,7 @@
 
 #include <cogl/deprecated/cogl-framebuffer-deprecated.h>
 #include <cogl/deprecated/cogl-auto-texture.h>
+#include <cogl/deprecated/cogl-shader.h>
 
 #ifdef COGL_ENABLE_MUTTER_API
 #include <cogl/cogl-mutter.h>
