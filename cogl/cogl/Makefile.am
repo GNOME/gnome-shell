@@ -55,7 +55,6 @@ cogl_deprecated_h = \
 	deprecated/cogl-clutter.h       	\
 	deprecated/cogl-type-casts.h       	\
 	deprecated/cogl-framebuffer-deprecated.h \
-	deprecated/cogl-texture-deprecated.h	\
 	deprecated/cogl-auto-texture.h	\
 	$(NULL)
 
@@ -391,7 +390,6 @@ cogl_sources_c = \
 	deprecated/cogl-shader.c			\
 	deprecated/cogl-clutter.c       		\
 	deprecated/cogl-framebuffer-deprecated.c      \
-	deprecated/cogl-texture-deprecated.c       	\
 	$(NULL)
 
 cogl_experimental_h += cogl-glib-source.h
