@@ -21,6 +21,8 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "clutter-build-config.h"
+
 #include <glib.h>
 #include <string.h>
 #include "clutter-bezier.h"
@@ -56,6 +58,10 @@
 #define CBZ_T_SAMPLES 128
 #define CBZ_T_STEP (CBZ_T_ONE / CBZ_T_SAMPLES)
 #define CBZ_L_STEP (CBZ_T_ONE / CBZ_T_SAMPLES)
+
+#define FIXED_BITS (32)
+#define FIXED_Q (FIXED_BITS - 16)
+#define FIXED_FROM_INT(x) ((x) << FIXED_Q)
 
 typedef gint32 _FixedT;
 
@@ -186,6 +192,90 @@ _clutter_bezier_advance (const ClutterBezier *b, gint L, ClutterKnot * knot)
                 knot->x, knot->y);
 }
 
+static int
+sqrti (int number)
+{
+#if defined __SSE2__
+    /* The GCC built-in with SSE2 (sqrtsd) is up to twice as fast as
+     * the pure integer code below. It is also more accurate.
+     */
+    return __builtin_sqrt (number);
+#else
+    /* This is a fixed point implementation of the Quake III sqrt algorithm,
+     * described, for example, at
+     *   http://www.codemaestro.com/reviews/review00000105.html
+     *
+     * While the original QIII is extremely fast, the use of floating division
+     * and multiplication makes it perform very on arm processors without FPU.
+     *
+     * The key to successfully replacing the floating point operations with
+     * fixed point is in the choice of the fixed point format. The QIII
+     * algorithm does not calculate the square root, but its reciprocal ('y'
+     * below), which is only at the end turned to the inverse value. In order
+     * for the algorithm to produce satisfactory results, the reciprocal value
+     * must be represented with sufficient precission; the 16.16 we use
+     * elsewhere in clutter is not good enough, and 10.22 is used instead.
+     */
+    _FixedT x;
+    uint32_t y_1;        /* 10.22 fixed point */
+    uint32_t f = 0x600000; /* '1.5' as 10.22 fixed */
+
+    union
+    {
+	float f;
+	uint32_t i;
+    } flt, flt2;
+
+    flt.f = number;
+
+    x = FIXED_FROM_INT (number) / 2;
+
+    /* The QIII initial estimate */
+    flt.i = 0x5f3759df - ( flt.i >> 1 );
+
+    /* Now, we convert the float to 10.22 fixed. We exploit the mechanism
+     * described at http://www.d6.com/users/checker/pdfs/gdmfp.pdf.
+     *
+     * We want 22 bit fraction; a single precission float uses 23 bit
+     * mantisa, so we only need to add 2^(23-22) (no need for the 1.5
+     * multiplier as we are only dealing with positive numbers).
+     *
+     * Note: we have to use two separate variables here -- for some reason,
+     * if we try to use just the flt variable, gcc on ARM optimises the whole
+     * addition out, and it all goes pear shape, since without it, the bits
+     * in the float will not be correctly aligned.
+     */
+    flt2.f = flt.f + 2.0;
+    flt2.i &= 0x7FFFFF;
+
+    /* Now we correct the estimate */
+    y_1 = (flt2.i >> 11) * (flt2.i >> 11);
+    y_1 = (y_1 >> 8) * (x >> 8);
+
+    y_1 = f - y_1;
+    flt2.i = (flt2.i >> 11) * (y_1 >> 11);
+
+    /* If the original argument is less than 342, we do another
+     * iteration to improve precission (for arguments >= 342, the single
+     * iteration produces generally better results).
+     */
+    if (x < 171)
+      {
+	y_1 = (flt2.i >> 11) * (flt2.i >> 11);
+	y_1 = (y_1 >> 8) * (x >> 8);
+
+	y_1 = f - y_1;
+	flt2.i = (flt2.i >> 11) * (y_1 >> 11);
+      }
+
+    /* Invert, round and convert from 10.22 to an integer
+     * 0x1e3c68 is a magical rounding constant that produces slightly
+     * better results than 0x200000.
+     */
+    return (number * flt2.i + 0x1e3c68) >> 22;
+#endif
+}
+
 void
 _clutter_bezier_init (ClutterBezier *b,
 		     gint x_0, gint y_0,
@@ -250,7 +340,7 @@ _clutter_bezier_init (ClutterBezier *b,
       int x = _clutter_bezier_t2x (b, t);
       int y = _clutter_bezier_t2y (b, t);
 	
-      guint l = cogl_sqrti ((y - yp)*(y - yp) + (x - xp)*(x - xp));
+      guint l = sqrti ((y - yp)*(y - yp) + (x - xp)*(x - xp));
 
       l += length[i-1];
 
