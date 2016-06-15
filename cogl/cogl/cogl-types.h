@@ -170,17 +170,6 @@ typedef struct _CoglQuaternion CoglQuaternion;
 typedef struct _CoglEuler CoglEuler;
 
 /**
- * CoglFixed:
- *
- * Fixed point number using a (16.16) notation.
- */
-typedef int32_t CoglFixed;
-
-#define COGL_TYPE_FIXED         (cogl_fixed_get_type ())
-GType
-cogl_fixed_get_type (void) G_GNUC_CONST;
-
-/**
  * CoglAngle:
  *
  * Integer representation of an angle such that 1024 corresponds to

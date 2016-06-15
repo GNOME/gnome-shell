@@ -82,7 +82,6 @@
 #include <cogl/cogl-enum-types.h>
 #include <cogl/deprecated/cogl-clip-state.h>
 #include <cogl/deprecated/cogl-vertex-buffer.h>
-#include <cogl/deprecated/cogl-fixed.h>
 #include <cogl/deprecated/cogl-material-compat.h>
 #include <cogl/deprecated/cogl-shader.h>
 #include <cogl/deprecated/cogl-texture-deprecated.h>
