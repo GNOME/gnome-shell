@@ -29,7 +29,8 @@
 #include <glib-object.h>
 #include <libinput.h>
 
-#include <clutter/clutter-input-device.h>
+#include "clutter/clutter-device-manager-private.h"
+#include "evdev/clutter-seat-evdev.h"
 
 G_BEGIN_DECLS
 
@@ -56,7 +57,6 @@ G_BEGIN_DECLS
   CLUTTER_TYPE_INPUT_DEVICE_EVDEV, ClutterInputDeviceEvdevClass))
 
 typedef struct _ClutterInputDeviceEvdev ClutterInputDeviceEvdev;
-typedef struct _ClutterSeatEvdev ClutterSeatEvdev;
 typedef struct _ClutterEventEvdev ClutterEventEvdev;
 
 struct _ClutterInputDeviceEvdev

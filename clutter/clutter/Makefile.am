@@ -468,6 +468,7 @@ backend_source_c += $(glx_source_c)
 evdev_c_priv = \
 	evdev/clutter-device-manager-evdev.c	\
 	evdev/clutter-input-device-evdev.c	\
+	evdev/clutter-seat-evdev.c		\
 	evdev/clutter-virtual-input-device-evdev.c	\
 	evdev/clutter-event-evdev.c		\
 	evdev/clutter-input-device-tool-evdev.c	\
@@ -475,6 +476,7 @@ evdev_c_priv = \
 evdev_h_priv = \
 	evdev/clutter-device-manager-evdev.h	\
 	evdev/clutter-input-device-evdev.h	\
+	evdev/clutter-seat-evdev.h		\
 	evdev/clutter-input-device-tool-evdev.h	\
 	evdev/clutter-virtual-input-device-evdev.h	\
 	$(NULL)

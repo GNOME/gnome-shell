@@ -46,6 +46,7 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-event-private.h"
 #include "clutter-input-device-evdev.h"
+#include "clutter-seat-evdev.h"
 #include "clutter-virtual-input-device-evdev.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
@@ -62,10 +63,6 @@
 
 #define AUTOREPEAT_VALUE 2
 
-/* Try to keep the pointer inside the stage. Hopefully no one is using
- * this backend with stages smaller than this. */
-#define INITIAL_POINTER_X 16
-#define INITIAL_POINTER_Y 16
 
 /*
  * Clutter makes the assumption that two core devices have ID's 2 and 3 (core
@@ -77,49 +74,7 @@
  */
 #define INITIAL_DEVICE_ID 2
 
-typedef struct _ClutterTouchState ClutterTouchState;
 typedef struct _ClutterEventFilter ClutterEventFilter;
-
-struct _ClutterTouchState
-{
-  guint32 id;
-  ClutterPoint coords;
-};
-
-struct _ClutterSeatEvdev
-{
-  struct libinput_seat *libinput_seat;
-  ClutterDeviceManagerEvdev *manager_evdev;
-
-  GSList *devices;
-
-  ClutterInputDevice *core_pointer;
-  ClutterInputDevice *core_keyboard;
-
-  GHashTable *touches;
-
-  struct xkb_state *xkb;
-  xkb_led_index_t caps_lock_led;
-  xkb_led_index_t num_lock_led;
-  xkb_led_index_t scroll_lock_led;
-  uint32_t button_state;
-
-  /* keyboard repeat */
-  gboolean repeat;
-  guint32 repeat_delay;
-  guint32 repeat_interval;
-  guint32 repeat_key;
-  guint32 repeat_count;
-  guint32 repeat_timer;
-  ClutterInputDevice *repeat_device;
-
-  gfloat pointer_x;
-  gfloat pointer_y;
-
-  /* Emulation of discrete scroll events out of smooth ones */
-  gfloat accum_scroll_dx;
-  gfloat accum_scroll_dy;
-};
 
 struct _ClutterEventFilter
 {
@@ -300,22 +255,8 @@ queue_event (ClutterEvent *event)
   _clutter_event_push (event, FALSE);
 }
 
-static void
-clear_repeat_timer (ClutterSeatEvdev *seat)
-{
-  if (seat->repeat_timer)
-    {
-      g_source_remove (seat->repeat_timer);
-      seat->repeat_timer = 0;
-      g_clear_object (&seat->repeat_device);
-    }
-}
-
 static gboolean
 keyboard_repeat (gpointer data);
-
-static void
-clutter_seat_evdev_sync_leds (ClutterSeatEvdev *seat);
 
 static void
 notify_key_device (ClutterInputDevice *input_device,
@@ -336,7 +277,7 @@ notify_key_device (ClutterInputDevice *input_device,
   stage = _clutter_input_device_get_stage (input_device);
   if (stage == NULL)
     {
-      clear_repeat_timer (seat);
+      clutter_seat_evdev_clear_repeat_timer (seat);
       return;
     }
 
@@ -371,7 +312,7 @@ notify_key_device (ClutterInputDevice *input_device,
       !seat->repeat ||
       !xkb_keymap_key_repeats (xkb_state_get_keymap (seat->xkb), event->key.hardware_keycode))
     {
-      clear_repeat_timer (seat);
+      clutter_seat_evdev_clear_repeat_timer (seat);
       return;
     }
 
@@ -388,7 +329,7 @@ notify_key_device (ClutterInputDevice *input_device,
       {
         guint32 interval;
 
-        clear_repeat_timer (seat);
+        clutter_seat_evdev_clear_repeat_timer (seat);
         seat->repeat_device = g_object_ref (input_device);
 
         if (seat->repeat_count == 1)
@@ -1207,128 +1148,6 @@ clutter_event_source_free (ClutterEventSource *source)
 }
 
 static void
-clutter_touch_state_free (ClutterTouchState *touch_state)
-{
-  g_slice_free (ClutterTouchState, touch_state);
-}
-
-static void
-clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev *seat,
-                                      struct libinput_seat *libinput_seat)
-{
-  g_assert (seat->libinput_seat == NULL);
-
-  libinput_seat_ref (libinput_seat);
-  libinput_seat_set_user_data (libinput_seat, seat);
-  seat->libinput_seat = libinput_seat;
-}
-
-static ClutterSeatEvdev *
-clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev)
-{
-  ClutterDeviceManager *manager = CLUTTER_DEVICE_MANAGER (manager_evdev);
-  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
-  ClutterSeatEvdev *seat;
-  ClutterInputDevice *device;
-  struct xkb_context *ctx;
-  struct xkb_rule_names names;
-  struct xkb_keymap *keymap;
-
-  seat = g_new0 (ClutterSeatEvdev, 1);
-  if (!seat)
-    return NULL;
-
-  device = _clutter_input_device_evdev_new_virtual (
-    manager, seat, CLUTTER_POINTER_DEVICE);
-  _clutter_input_device_set_stage (device, priv->stage);
-  seat->pointer_x = INITIAL_POINTER_X;
-  seat->pointer_y = INITIAL_POINTER_Y;
-  _clutter_input_device_set_coords (device, NULL,
-                                    seat->pointer_x, seat->pointer_y,
-                                    NULL);
-  _clutter_device_manager_add_device (manager, device);
-  seat->core_pointer = device;
-
-  device = _clutter_input_device_evdev_new_virtual (
-    manager, seat, CLUTTER_KEYBOARD_DEVICE);
-  _clutter_input_device_set_stage (device, priv->stage);
-  _clutter_device_manager_add_device (manager, device);
-  seat->core_keyboard = device;
-
-  seat->touches = g_hash_table_new_full (NULL, NULL, NULL,
-                                         (GDestroyNotify) clutter_touch_state_free);
-
-  ctx = xkb_context_new(0);
-  g_assert (ctx);
-
-  names.rules = "evdev";
-  names.model = "pc105";
-  names.layout = option_xkb_layout;
-  names.variant = option_xkb_variant;
-  names.options = option_xkb_options;
-
-  keymap = xkb_keymap_new_from_names (ctx, &names, 0);
-  xkb_context_unref(ctx);
-  if (keymap)
-    {
-      seat->xkb = xkb_state_new (keymap);
-
-      seat->caps_lock_led =
-        xkb_keymap_led_get_index (keymap, XKB_LED_NAME_CAPS);
-      seat->num_lock_led =
-        xkb_keymap_led_get_index (keymap, XKB_LED_NAME_NUM);
-      seat->scroll_lock_led =
-        xkb_keymap_led_get_index (keymap, XKB_LED_NAME_SCROLL);
-
-      priv->keymap = keymap;
-    }
-
-  seat->repeat = TRUE;
-  seat->repeat_delay = 250;     /* ms */
-  seat->repeat_interval = 33;   /* ms */
-
-  priv->seats = g_slist_append (priv->seats, seat);
-  return seat;
-}
-
-static void
-clutter_seat_evdev_free (ClutterSeatEvdev *seat)
-{
-  GSList *iter;
-
-  for (iter = seat->devices; iter; iter = g_slist_next (iter))
-    {
-      ClutterInputDevice *device = iter->data;
-
-      g_object_unref (device);
-    }
-  g_slist_free (seat->devices);
-  g_hash_table_unref (seat->touches);
-
-  xkb_state_unref (seat->xkb);
-
-  clear_repeat_timer (seat);
-
-  if (seat->libinput_seat)
-    libinput_seat_unref (seat->libinput_seat);
-
-  g_free (seat);
-}
-
-static void
-clutter_seat_evdev_set_stage (ClutterSeatEvdev *seat, ClutterStage *stage)
-{
-  GSList *l;
-
-  for (l = seat->devices; l; l = l->next)
-    {
-      ClutterInputDevice *device = l->data;
-
-      _clutter_input_device_set_stage (device, stage);
-    }
-}
-
-static void
 evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
                   struct libinput_device    *libinput_device)
 {
@@ -1352,6 +1171,7 @@ evdev_add_device (ClutterDeviceManagerEvdev *manager_evdev,
         seat = clutter_seat_evdev_new (manager_evdev);
 
       clutter_seat_evdev_set_libinput_seat (seat, libinput_seat);
+      priv->seats = g_slist_append (priv->seats, seat);
     }
 
   device = _clutter_input_device_evdev_new (manager, seat, libinput_device);
@@ -1430,7 +1250,7 @@ clutter_device_manager_evdev_remove_device (ClutterDeviceManager *manager,
   priv->devices = g_slist_remove (priv->devices, device);
 
   if (seat->repeat_timer && seat->repeat_device == device)
-    clear_repeat_timer (seat);
+    clutter_seat_evdev_clear_repeat_timer (seat);
 
   g_object_unref (device);
 }
@@ -1496,32 +1316,6 @@ clutter_device_manager_evdev_get_device (ClutterDeviceManager *manager,
 }
 
 static void
-clutter_seat_evdev_sync_leds (ClutterSeatEvdev *seat)
-{
-  GSList *iter;
-  ClutterInputDeviceEvdev *device_evdev;
-  int caps_lock, num_lock, scroll_lock;
-  enum libinput_led leds = 0;
-
-  caps_lock = xkb_state_led_index_is_active (seat->xkb, seat->caps_lock_led);
-  num_lock = xkb_state_led_index_is_active (seat->xkb, seat->num_lock_led);
-  scroll_lock = xkb_state_led_index_is_active (seat->xkb, seat->scroll_lock_led);
-
-  if (caps_lock)
-    leds |= LIBINPUT_LED_CAPS_LOCK;
-  if (num_lock)
-    leds |= LIBINPUT_LED_NUM_LOCK;
-  if (scroll_lock)
-    leds |= LIBINPUT_LED_SCROLL_LOCK;
-
-  for (iter = seat->devices; iter; iter = iter->next)
-    {
-      device_evdev = iter->data;
-      _clutter_input_device_evdev_update_leds (device_evdev, leds);
-    }
-}
-
-static void
 flush_event_queue (void)
 {
   ClutterEvent *event;
@@ -1567,45 +1361,6 @@ process_base_event (ClutterDeviceManagerEvdev *manager_evdev,
     }
 
   return handled;
-}
-
-static ClutterTouchState *
-_device_seat_add_touch (ClutterInputDevice *input_device,
-                        guint32             id)
-{
-  ClutterInputDeviceEvdev *device_evdev =
-    CLUTTER_INPUT_DEVICE_EVDEV (input_device);
-  ClutterSeatEvdev *seat = _clutter_input_device_evdev_get_seat (device_evdev);
-  ClutterTouchState *touch;
-
-  touch = g_slice_new0 (ClutterTouchState);
-  touch->id = id;
-
-  g_hash_table_insert (seat->touches, GUINT_TO_POINTER (id), touch);
-
-  return touch;
-}
-
-static void
-_device_seat_remove_touch (ClutterInputDevice *input_device,
-                           guint32             id)
-{
-  ClutterInputDeviceEvdev *device_evdev =
-    CLUTTER_INPUT_DEVICE_EVDEV (input_device);
-  ClutterSeatEvdev *seat = _clutter_input_device_evdev_get_seat (device_evdev);
-
-  g_hash_table_remove (seat->touches, GUINT_TO_POINTER (id));
-}
-
-static ClutterTouchState *
-_device_seat_get_touch (ClutterInputDevice *input_device,
-                        guint32             id)
-{
-  ClutterInputDeviceEvdev *device_evdev =
-    CLUTTER_INPUT_DEVICE_EVDEV (input_device);
-  ClutterSeatEvdev *seat = _clutter_input_device_evdev_get_seat (device_evdev);
-
-  return g_hash_table_lookup (seat->touches, GUINT_TO_POINTER (id));
 }
 
 static void
@@ -1967,11 +1722,14 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         guint64 time_us;
         double x, y;
         gfloat stage_width, stage_height;
+        ClutterSeatEvdev *seat;
         ClutterStage *stage;
         ClutterTouchState *touch_state;
         struct libinput_event_touch *touch_event =
           libinput_event_get_touch_event (event);
+
         device = libinput_device_get_user_data (libinput_device);
+        seat = _clutter_input_device_evdev_get_seat (CLUTTER_INPUT_DEVICE_EVDEV (device));
 
         stage = _clutter_input_device_get_stage (device);
         if (stage == NULL)
@@ -1987,7 +1745,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         y = libinput_event_touch_get_y_transformed (touch_event,
                                                     stage_height);
 
-        touch_state = _device_seat_add_touch (device, slot);
+        touch_state = clutter_seat_evdev_add_touch (seat, slot);
         touch_state->coords.x = x;
         touch_state->coords.y = y;
 
@@ -2000,18 +1758,21 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
       {
         gint32 slot;
         guint64 time_us;
+        ClutterSeatEvdev *seat;
         ClutterTouchState *touch_state;
         struct libinput_event_touch *touch_event =
           libinput_event_get_touch_event (event);
+
         device = libinput_device_get_user_data (libinput_device);
+        seat = _clutter_input_device_evdev_get_seat (CLUTTER_INPUT_DEVICE_EVDEV (device));
 
         slot = libinput_event_touch_get_slot (touch_event);
         time_us = libinput_event_touch_get_time_usec (touch_event);
-        touch_state = _device_seat_get_touch (device, slot);
+        touch_state = clutter_seat_evdev_get_touch (seat, slot);
 
         notify_touch_event (device, CLUTTER_TOUCH_END, time_us, slot,
 			    touch_state->coords.x, touch_state->coords.y);
-        _device_seat_remove_touch (device, slot);
+        clutter_seat_evdev_remove_touch (seat, slot);
 
         break;
       }
@@ -2022,11 +1783,14 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         guint64 time_us;
         double x, y;
         gfloat stage_width, stage_height;
+        ClutterSeatEvdev *seat;
         ClutterStage *stage;
         ClutterTouchState *touch_state;
         struct libinput_event_touch *touch_event =
           libinput_event_get_touch_event (event);
+
         device = libinput_device_get_user_data (libinput_device);
+        seat = _clutter_input_device_evdev_get_seat (CLUTTER_INPUT_DEVICE_EVDEV (device));
 
         stage = _clutter_input_device_get_stage (device);
         if (stage == NULL)
@@ -2042,7 +1806,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         y = libinput_event_touch_get_y_transformed (touch_event,
                                                     stage_height);
 
-        touch_state = _device_seat_get_touch (device, slot);
+        touch_state = clutter_seat_evdev_get_touch (seat, slot);
         touch_state->coords.x = x;
         touch_state->coords.y = y;
 
@@ -2432,6 +2196,8 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
   ClutterDeviceManagerEvdevPrivate *priv;
   ClutterEventSource *source;
   struct udev *udev;
+  struct xkb_context *ctx;
+  struct xkb_rule_names names;
 
   udev = udev_new ();
   if (G_UNLIKELY (udev == NULL))
@@ -2461,6 +2227,17 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
     }
 
   udev_unref (udev);
+
+  names.rules = "evdev";
+  names.model = "pc105";
+  names.layout = option_xkb_layout;
+  names.variant = option_xkb_variant;
+  names.options = option_xkb_options;
+
+  ctx = xkb_context_new (0);
+  g_assert (ctx);
+  priv->keymap = xkb_keymap_new_from_names (ctx, &names, 0);
+  xkb_context_unref (ctx);
 
   priv->main_seat = clutter_seat_evdev_new (manager_evdev);
 
@@ -2691,6 +2468,22 @@ _clutter_device_manager_evdev_release_device_id (ClutterDeviceManagerEvdev *mana
   priv->free_device_ids = g_list_insert_sorted (priv->free_device_ids,
                                                 GINT_TO_POINTER (device_id),
                                                 compare_ids);
+}
+
+struct xkb_keymap *
+_clutter_device_manager_evdev_get_keymap (ClutterDeviceManagerEvdev *manager_evdev)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
+
+  return priv->keymap;
+}
+
+ClutterStage *
+_clutter_device_manager_evdev_get_stage (ClutterDeviceManagerEvdev *manager_evdev)
+{
+  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
+
+  return priv->stage;
 }
 
 /**

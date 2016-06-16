@@ -24,6 +24,7 @@
 #ifndef __CLUTTER_DEVICE_MANAGER_EVDEV_H__
 #define __CLUTTER_DEVICE_MANAGER_EVDEV_H__
 
+#include <clutter/clutter-backend.h>
 #include <clutter/clutter-device-manager.h>
 
 G_BEGIN_DECLS
@@ -38,6 +39,8 @@ G_BEGIN_DECLS
 typedef struct _ClutterDeviceManagerEvdev         ClutterDeviceManagerEvdev;
 typedef struct _ClutterDeviceManagerEvdevClass    ClutterDeviceManagerEvdevClass;
 typedef struct _ClutterDeviceManagerEvdevPrivate  ClutterDeviceManagerEvdevPrivate;
+
+typedef struct _ClutterSeatEvdev ClutterSeatEvdev;
 
 struct _ClutterDeviceManagerEvdev
 {
@@ -60,6 +63,10 @@ gint  _clutter_device_manager_evdev_acquire_device_id (ClutterDeviceManagerEvdev
 
 void  _clutter_device_manager_evdev_release_device_id (ClutterDeviceManagerEvdev *manager_evdev,
                                                        ClutterInputDevice        *device);
+
+struct xkb_keymap * _clutter_device_manager_evdev_get_keymap (ClutterDeviceManagerEvdev *manager_evdev);
+
+ClutterStage * _clutter_device_manager_evdev_get_stage (ClutterDeviceManagerEvdev *manager_evdev);
 
 G_END_DECLS
 
