@@ -27,6 +27,8 @@
 #include <glib-object.h>
 #include <stdint.h>
 
+#include "clutter-device-manager.h"
+
 #define CLUTTER_TYPE_VIRTUAL_INPUT_DEVICE (clutter_virtual_input_device_get_type ())
 G_DECLARE_DERIVABLE_TYPE (ClutterVirtualInputDevice,
                           clutter_virtual_input_device,
@@ -89,5 +91,7 @@ void clutter_virtual_input_device_notify_key (ClutterVirtualInputDevice *virtual
                                               uint64_t                   time_us,
                                               uint32_t                   key,
                                               ClutterKeyState            key_state);
+
+ClutterDeviceManager * clutter_virtual_input_device_get_manager (ClutterVirtualInputDevice *virtual_device);
 
 #endif /* __CLUTTER_VIRTUAL_INPUT_DEVICE_H__ */
