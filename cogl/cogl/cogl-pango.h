@@ -30,11 +30,7 @@
 #ifndef __COGL_PANGO_H_COMPAT__
 #define __COGL_PANGO_H_COMPAT__
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#error "#include <cogl/cogl-pango.h> is unsupported; please #include <cogl-pango/cogl-pango.h>"
-#else
 #warning "#include <cogl/cogl-pango.h> is deprecated; please #include <cogl-pango/cogl-pango.h>"
 #include <cogl-pango/cogl-pango.h>
-#endif
 
 #endif /* __COGL_PANGO_H_COMPAT__ */

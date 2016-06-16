@@ -42,12 +42,6 @@
 #define __COGL_MUST_UNDEF_COGL_H_INSIDE__
 #endif
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#ifndef COGL_ENABLE_EXPERIMENTAL_API
-#define COGL_ENABLE_EXPERIMENTAL_API
-#endif
-#endif
-
 /* We currently keep gtype integration delimited in case we eventually
  * want to split it out into a separate utility library when Cogl
  * becomes a standalone project. (like cairo-gobject.so)
@@ -78,10 +72,10 @@
 /*
  * 1.x only api...
  */
+#if 0
 #ifndef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl-enum-types.h>
-#include <cogl/deprecated/cogl-vertex-buffer.h>
-#include <cogl/deprecated/cogl-material-compat.h>
+#warning
+#endif
 #endif
 
 /* It would be good to move these casts up into 1.x only api if we can
@@ -92,15 +86,13 @@
 #include <cogl/deprecated/cogl-framebuffer-deprecated.h>
 #include <cogl/deprecated/cogl-auto-texture.h>
 #include <cogl/deprecated/cogl-shader.h>
+#include <cogl/deprecated/cogl-material-compat.h>
+#include <cogl/deprecated/cogl-vertex-buffer.h>
 
 #ifdef COGL_ENABLE_MUTTER_API
 #include <cogl/cogl-mutter.h>
 #endif
 
-/*
- * 2.0 api that's compatible with the 1.x api...
- */
-#if defined (COGL_ENABLE_EXPERIMENTAL_API)
 #include <cogl/cogl-swap-chain.h>
 #include <cogl/cogl-renderer.h>
 #include <cogl/cogl-output.h>
@@ -135,13 +127,10 @@
 #include <cogl/cogl-frame-info.h>
 #include <cogl/cogl-poll.h>
 #include <cogl/cogl-fence.h>
-#ifdef COGL_HAS_GLIB_SUPPORT
 #include <cogl/cogl-glib-source.h>
-#endif
 /* XXX: This will definitly go away once all the Clutter winsys
  * code has been migrated down into Cogl! */
 #include <cogl/deprecated/cogl-clutter.h>
-#endif
 
 /*
  * API deprecations

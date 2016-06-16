@@ -1306,8 +1306,6 @@ COGL_DEPRECATED_IN_1_16_FOR (cogl_pipeline_layer_get_wrap_mode_p)
 CoglMaterialWrapMode
 cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-
 /**
  * cogl_material_set_depth_state:
  * @material: A #CoglMaterial object
@@ -1387,8 +1385,6 @@ void
 cogl_material_foreach_layer (CoglMaterial *material,
                              CoglMaterialLayerCallback callback,
                              void *user_data);
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 G_END_DECLS
 

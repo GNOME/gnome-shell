@@ -207,8 +207,6 @@ void *
 cogl_object_get_user_data (CoglObject *object,
                            CoglUserDataKey *key);
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-
 /**
  * cogl_debug_object_foreach_type:
  * @func: (scope call): A callback function for each type
@@ -239,8 +237,6 @@ cogl_debug_object_foreach_type (CoglDebugObjectForeachTypeCallback func,
  */
 void
 cogl_debug_object_print_instances (void);
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 COGL_END_DECLS
 

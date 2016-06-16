@@ -1,5 +1,5 @@
 #include <glib.h>
-#include <cogl/cogl2-experimental.h>
+#include <cogl/cogl.h>
 #include <math.h>
 
 #include "cogl/cogl-profile.h"

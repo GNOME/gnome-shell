@@ -57,12 +57,7 @@
 #endif
 
 #include <cogl-path/cogl-path-types.h>
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl-path/cogl2-path-functions.h>
-#else
-#include <cogl-path/cogl1-path-functions.h>
-#endif
+#include <cogl-path/cogl-path-functions.h>
 
 #endif /* __COGL_PATH_H__ */
 

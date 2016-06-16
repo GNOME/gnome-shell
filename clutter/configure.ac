@@ -250,12 +250,6 @@ AS_IF([test "x$enable_wayland_egl_server" = "xyes"],
 
 AM_CONDITIONAL(SUPPORT_WAYLAND, [test "x$enable_wayland_egl_server" = "xyes"])
 
-dnl Instead of using AM_CFLAGS to ensure
-dnl COGL_ENABLE_EXPERIMENTAL_2_0_API is defined while compiling clutter
-dnl and cogl code we use a define in config.h instead. This helps ensure
-dnl other tools such as glib-mkenums and gir-scanner don't end up
-dnl using the define also.
-AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1], [Can use Cogl 2.0 API internally])
 AC_DEFINE_UNQUOTED([CLUTTER_DRIVERS], ["*"], [List of Cogl drivers])
 
 dnl strip leading spaces

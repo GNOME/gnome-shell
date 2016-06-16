@@ -2,7 +2,6 @@
 #include <gmodule.h>
 #include <stdlib.h>
 
-#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
 #include <clutter/clutter.h>
 

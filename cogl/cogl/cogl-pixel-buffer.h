@@ -54,6 +54,10 @@ COGL_BEGIN_DECLS
 
 #define COGL_PIXEL_BUFFER(buffer) ((CoglPixelBuffer *)(buffer))
 
+/**
+ * CoglPixelBuffer: (skip)
+ */
+
 #ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_pixel_buffer_get_gtype:

@@ -3,7 +3,7 @@
  *
  * A Low Level GPU Graphics and Utilities API
  *
- * Copyright (C) 2008,2009,2012 Intel Corporation.
+ * Copyright (C) 2008,2009,2013 Intel Corporation.
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -35,113 +35,71 @@
 #ifndef __COGL_PATH_FUNCTIONS_H__
 #define __COGL_PATH_FUNCTIONS_H__
 
-/* The functions are declared separately because cogl-path.c needs to
-   get the function declarations from the old 1.0 API without
-   colliding with the enum declarations from the 2.0 API */
-
 #include <cogl/cogl-types.h>
+#ifdef COGL_COMPILATION
+#include "cogl-context.h"
+#else
+#include <cogl/cogl.h>
+#endif
+#include <glib-object.h>
 
 COGL_BEGIN_DECLS
 
 /**
- * cogl_is_path:
- * @handle: A CoglHandle
+ * cogl_path_get_gtype:
  *
- * Gets whether the given handle references an existing path object.
- *
- * Return value: %TRUE if the handle references a #CoglPath,
- *   %FALSE otherwise
+ * Returns: a #GType that can be used with the GLib type system.
  */
-CoglBool
-cogl_is_path (CoglHandle handle);
+GType cogl_path_get_gtype (void);
 
-/**
- * cogl_path_set_fill_rule:
- * @fill_rule: The new fill rule.
- *
- * Sets the fill rule of the current path to @fill_rule. This will
- * affect how the path is filled when cogl_path_fill() is later
- * called. Note that the fill rule state is attached to the path so
- * calling cogl_get_path() will preserve the fill rule and calling
- * cogl_path_new() will reset the fill rule back to the default.
- *
- * Since: 1.4
- */
-void
-cogl_path_set_fill_rule (CoglPathFillRule fill_rule);
-
-/**
- * cogl_path_get_fill_rule:
- *
- * Retrieves the fill rule set using cogl_path_set_fill_rule().
- *
- * Return value: the fill rule that is used for the current path.
- *
- * Since: 1.4
- */
-CoglPathFillRule
-cogl_path_get_fill_rule (void);
-
-/**
- * cogl_path_fill:
- *
- * Fills the interior of the constructed shape using the current
- * drawing color. The current path is then cleared. To use the path
- * again, call cogl_path_fill_preserve() instead.
- *
- * The interior of the shape is determined using the fill rule of the
- * path. See %CoglPathFillRule for details.
- **/
-void
-cogl_path_fill (void);
-
-/**
- * cogl_path_fill_preserve:
- *
- * Fills the interior of the constructed shape using the current
- * drawing color and preserves the path to be used again. See
- * cogl_path_fill() for a description what is considered the interior
- * of the shape.
- *
- * Since: 1.0
- **/
-void
-cogl_path_fill_preserve (void);
-
-/**
- * cogl_path_stroke:
- *
- * Strokes the constructed shape using the current drawing color and a
- * width of 1 pixel (regardless of the current transformation
- * matrix). To current path is then cleared. To use the path again,
- * call cogl_path_stroke_preserve() instead.
- **/
-void
-cogl_path_stroke (void);
-
-/**
- * cogl_path_stroke_preserve:
- *
- * Strokes the constructed shape using the current drawing color and
- * preserves the path to be used again.
- *
- * Since: 1.0
- **/
-void
-cogl_path_stroke_preserve (void);
-
+#define cogl_path_new cogl2_path_new
 /**
  * cogl_path_new:
  *
- * Clears the current path and starts a new one. Creating a new path
- * also resets the fill rule to the default which is
+ * Creates a new, empty path object. The default fill rule is
  * %COGL_PATH_FILL_RULE_EVEN_ODD.
  *
- * Since: 1.0
+ * Return value: A pointer to a newly allocated #CoglPath, which can
+ * be freed using cogl_object_unref().
+ *
+ * Since: 2.0
  */
-void
+CoglPath *
 cogl_path_new (void);
 
+/**
+ * cogl_path_copy:
+ * @path: A #CoglPath object
+ *
+ * Returns a new copy of the path in @path. The new path has a
+ * reference count of 1 so you should unref it with
+ * cogl_object_unref() if you no longer need it.
+ *
+ * Internally the path will share the data until one of the paths is
+ * modified so copying paths should be relatively cheap.
+ *
+ * Return value: (transfer full): a copy of the path in @path.
+ *
+ * Since: 2.0
+ */
+CoglPath *
+cogl_path_copy (CoglPath *path);
+
+/**
+ * cogl_is_path:
+ * @object: A #CoglObject
+ *
+ * Gets whether the given object references an existing path object.
+ *
+ * Return value: %TRUE if the object references a #CoglPath,
+ *   %FALSE otherwise.
+ *
+ * Since: 2.0
+ */
+CoglBool
+cogl_is_path (void *object);
+
+#define cogl_path_move_to cogl2_path_move_to
 /**
  * cogl_path_move_to:
  * @x: X coordinate of the pen location to move to.
@@ -149,12 +107,15 @@ cogl_path_new (void);
  *
  * Moves the pen to the given location. If there is an existing path
  * this will start a new disjoint subpath.
-  **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_move_to (float x,
+cogl_path_move_to (CoglPath *path,
+                   float x,
                    float y);
 
-
+#define cogl_path_rel_move_to cogl2_path_rel_move_to
 /**
  * cogl_path_rel_move_to:
  * @x: X offset from the current pen location to move the pen to.
@@ -163,11 +124,15 @@ cogl_path_move_to (float x,
  * Moves the pen to the given offset relative to the current pen
  * location. If there is an existing path this will start a new
  * disjoint subpath.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_rel_move_to (float x,
+cogl_path_rel_move_to (CoglPath *path,
+                       float x,
                        float y);
 
+#define cogl_path_line_to cogl2_path_line_to
 /**
  * cogl_path_line_to:
  * @x: X coordinate of the end line vertex
@@ -175,11 +140,15 @@ cogl_path_rel_move_to (float x,
  *
  * Adds a straight line segment to the current path that ends at the
  * given coordinates.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_line_to (float x,
+cogl_path_line_to (CoglPath *path,
+                   float x,
                    float y);
 
+#define cogl_path_rel_line_to cogl2_path_rel_line_to
 /**
  * cogl_path_rel_line_to:
  * @x: X offset from the current pen location of the end line vertex
@@ -187,12 +156,15 @@ cogl_path_line_to (float x,
  *
  * Adds a straight line segment to the current path that ends at the
  * given coordinates relative to the current pen location.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_rel_line_to (float x,
+cogl_path_rel_line_to (CoglPath *path,
+                       float x,
                        float y);
 
-
+#define cogl_path_arc cogl2_path_arc
 /**
  * cogl_path_arc:
  * @center_x: X coordinate of the elliptical arc center
@@ -212,15 +184,19 @@ cogl_path_rel_line_to (float x,
  * axis. The angle of the arc begins at @angle_1 and heads towards
  * @angle_2 (so if @angle_2 is less than @angle_1 it will decrease,
  * otherwise it will increase).
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_arc (float center_x,
+cogl_path_arc (CoglPath *path,
+               float center_x,
                float center_y,
                float radius_x,
                float radius_y,
                float angle_1,
                float angle_2);
 
+#define cogl_path_curve_to cogl2_path_curve_to
 /**
  * cogl_path_curve_to:
  * @x_1: X coordinate of the second bezier control point
@@ -233,15 +209,19 @@ cogl_path_arc (float center_x,
  * Adds a cubic bezier curve segment to the current path with the given
  * second, third and fourth control points and using current pen location
  * as the first control point.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_curve_to (float x_1,
+cogl_path_curve_to (CoglPath *path,
+                    float x_1,
                     float y_1,
                     float x_2,
                     float y_2,
                     float x_3,
                     float y_3);
 
+#define cogl_path_rel_curve_to cogl2_path_rel_curve_to
 /**
  * cogl_path_rel_curve_to:
  * @x_1: X coordinate of the second bezier control point
@@ -255,24 +235,31 @@ cogl_path_curve_to (float x_1,
  * second, third and fourth control points and using current pen location
  * as the first control point. The given coordinates are relative to the
  * current pen location.
+ *
+ * Since: 2.0
  */
 void
-cogl_path_rel_curve_to (float x_1,
+cogl_path_rel_curve_to (CoglPath *path,
+                        float x_1,
                         float y_1,
                         float x_2,
                         float y_2,
                         float x_3,
                         float y_3);
 
+#define cogl_path_close cogl2_path_close
 /**
  * cogl_path_close:
  *
  * Closes the path being constructed by adding a straight line segment
  * to it that ends at the first vertex of the path.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_close (void);
+cogl_path_close (CoglPath *path);
 
+#define cogl_path_line cogl2_path_line
 /**
  * cogl_path_line:
  * @x_1: X coordinate of the start line vertex
@@ -283,13 +270,17 @@ cogl_path_close (void);
  * Constructs a straight line shape starting and ending at the given
  * coordinates. If there is an existing path this will start a new
  * disjoint sub-path.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_line (float x_1,
+cogl_path_line (CoglPath *path,
+                float x_1,
                 float y_1,
                 float x_2,
                 float y_2);
 
+#define cogl_path_polyline cogl2_path_polyline
 /**
  * cogl_path_polyline:
  * @coords: (in) (array) (transfer none): A pointer to the first element of an
@@ -307,12 +298,15 @@ cogl_path_line (float x_1,
  * represents the Y coordinate of the first vertex, continuing in the same
  * fashion for the rest of the vertices. (num_points - 1) segments will
  * be constructed.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_polyline (const float *coords,
-                    int          num_points);
+cogl_path_polyline (CoglPath *path,
+                    const float *coords,
+                    int num_points);
 
-
+#define cogl_path_polygon cogl2_path_polygon
 /**
  * cogl_path_polygon:
  * @coords: (in) (array) (transfer none): A pointer to the first element of
@@ -326,12 +320,15 @@ cogl_path_polyline (const float *coords,
  * represents the X coordinate of the first vertex, the second value
  * represents the Y coordinate of the first vertex, continuing in the same
  * fashion for the rest of the vertices.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_polygon (const float *coords,
-                   int          num_points);
+cogl_path_polygon (CoglPath *path,
+                   const float *coords,
+                   int num_points);
 
-
+#define cogl_path_rectangle cogl2_path_rectangle
 /**
  * cogl_path_rectangle:
  * @x_1: X coordinate of the top-left corner.
@@ -341,13 +338,17 @@ cogl_path_polygon (const float *coords,
  *
  * Constructs a rectangular shape at the given coordinates. If there
  * is an existing path this will start a new disjoint sub-path.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_rectangle (float x_1,
+cogl_path_rectangle (CoglPath *path,
+                     float x_1,
                      float y_1,
                      float x_2,
                      float y_2);
 
+#define cogl_path_ellipse cogl2_path_ellipse
 /**
  * cogl_path_ellipse:
  * @center_x: X coordinate of the ellipse center
@@ -357,13 +358,17 @@ cogl_path_rectangle (float x_1,
  *
  * Constructs an ellipse shape. If there is an existing path this will
  * start a new disjoint sub-path.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_ellipse (float center_x,
+cogl_path_ellipse (CoglPath *path,
+                   float center_x,
                    float center_y,
                    float radius_x,
                    float radius_y);
 
+#define cogl_path_round_rectangle cogl2_path_round_rectangle
 /**
  * cogl_path_round_rectangle:
  * @x_1: X coordinate of the top-left corner.
@@ -376,90 +381,159 @@ cogl_path_ellipse (float center_x,
  *
  * Constructs a rectangular shape with rounded corners. If there is an
  * existing path this will start a new disjoint sub-path.
- **/
+ *
+ * Since: 2.0
+ */
 void
-cogl_path_round_rectangle (float x_1,
+cogl_path_round_rectangle (CoglPath *path,
+                           float x_1,
                            float y_1,
                            float x_2,
                            float y_2,
                            float radius,
                            float arc_step);
 
+#define cogl_path_set_fill_rule cogl2_path_set_fill_rule
 /**
- * cogl_get_path: (skip)
+ * cogl_path_set_fill_rule:
+ * @fill_rule: The new fill rule.
  *
- * Gets a pointer to the current path. The path can later be used
- * again by calling cogl_path_set(). Note that the path isn't copied
- * so if you later call any functions to add to the path it will
- * affect the returned object too. No reference is taken on the path
- * so if you want to retain it you should take your own reference with
- * cogl_object_ref().
+ * Sets the fill rule of the current path to @fill_rule. This will
+ * affect how the path is filled when cogl_path_fill() is later
+ * called. Note that the fill rule state is attached to the path so
+ * calling cogl_get_path() will preserve the fill rule and calling
+ * cogl_path_new() will reset the fill rule back to the default.
  *
- * Return value: a pointer to the current path.
- *
- * Since: 1.4
- */
-CoglPath *
-cogl_get_path (void);
-
-/**
- * cogl_set_path: (skip)
- * @path: A #CoglPath object
- *
- * Replaces the current path with @path. A reference is taken on the
- * object so if you no longer need the path you should unref with
- * cogl_object_unref().
- *
- * Since: 1.4
+ * Since: 2.0
  */
 void
-cogl_set_path (CoglPath *path);
+cogl_path_set_fill_rule (CoglPath *path, CoglPathFillRule fill_rule);
 
+#define cogl_path_get_fill_rule cogl2_path_get_fill_rule
 /**
- * cogl_path_copy: (skip)
- * @path: A #CoglPath object
+ * cogl_path_get_fill_rule:
  *
- * Returns a new copy of the path in @path. The new path has a
- * reference count of 1 so you should unref it with
- * cogl_object_unref() if you no longer need it.
+ * Retrieves the fill rule set using cogl_path_set_fill_rule().
  *
- * Internally the path will share the data until one of the paths is
- * modified so copying paths should be relatively cheap.
+ * Return value: the fill rule that is used for the current path.
  *
- * Return value: (transfer full): a copy of the path in @path.
+ * Since: 2.0
  */
-CoglPath *
-cogl_path_copy (CoglPath *path);
+CoglPathFillRule
+cogl_path_get_fill_rule (CoglPath *path);
+
+#define cogl_path_fill cogl2_path_fill
+/**
+ * cogl_path_fill:
+ *
+ * Fills the interior of the constructed shape using the current
+ * drawing color.
+ *
+ * The interior of the shape is determined using the fill rule of the
+ * path. See %CoglPathFillRule for details.
+ *
+ * <note>The result of referencing sliced textures in your current
+ * pipeline when filling a path are undefined. You should pass
+ * the %COGL_TEXTURE_NO_SLICING flag when loading any texture you will
+ * use while filling a path.</note>
+ *
+ * Since: 2.0
+ */
+void
+cogl_path_fill (CoglPath *path);
 
 /**
- * cogl_clip_push_from_path_preserve:
+ * cogl_framebuffer_fill_path:
+ * @framebuffer: A #CoglFramebuffer
+ * @pipeline: A #CoglPipeline to render with
+ * @path: The #CoglPath to fill
  *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
+ * Fills the interior of the path using the fragment operations
+ * defined by the pipeline.
+ *
+ * The interior of the shape is determined using the fill rule of the
+ * path. See %CoglPathFillRule for details.
+ *
+ * <note>The result of referencing sliced textures in your current
+ * pipeline when filling a path are undefined. You should pass
+ * the %COGL_TEXTURE_NO_SLICING flag when loading any texture you will
+ * use while filling a path.</note>
+ *
+ * Stability: unstable
+ * Deprecated: 1.16: Use cogl_path_fill() instead
+ */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_path_fill)
+void
+cogl_framebuffer_fill_path (CoglFramebuffer *framebuffer,
+                            CoglPipeline *pipeline,
+                            CoglPath *path);
+
+#define cogl_path_stroke cogl2_path_stroke
+/**
+ * cogl_path_stroke:
+ *
+ * Strokes the constructed shape using the current drawing color and a
+ * width of 1 pixel (regardless of the current transformation
+ * matrix).
+ *
+ * Since: 2.0
+ */
+void
+cogl_path_stroke (CoglPath *path);
+
+/**
+ * cogl_framebuffer_stroke_path:
+ * @framebuffer: A #CoglFramebuffer
+ * @pipeline: A #CoglPipeline to render with
+ * @path: The #CoglPath to stroke
+ *
+ * Strokes the edge of the path using the fragment operations defined
+ * by the pipeline. The stroke line will have a width of 1 pixel
+ * regardless of the current transformation matrix.
+ *
+ * Stability: unstable
+ * Deprecated: 1.16: Use cogl_path_stroke() instead
+ */
+COGL_DEPRECATED_IN_1_16_FOR (cogl_path_stroke)
+void
+cogl_framebuffer_stroke_path (CoglFramebuffer *framebuffer,
+                              CoglPipeline *pipeline,
+                              CoglPath *path);
+
+/**
+ * cogl_framebuffer_push_path_clip:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @path: The path to clip with.
+ *
+ * Sets a new clipping area using the silhouette of the specified,
+ * filled @path.  The clipping area is intersected with the previous
  * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
+ * cogl_framebuffer_pop_clip().
  *
  * Since: 1.0
- * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
+ * Stability: unstable
  */
-COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip)
 void
-cogl_clip_push_from_path_preserve (void);
+cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
+                                 CoglPath *path);
 
+#define cogl_clip_push_from_path cogl2_clip_push_from_path
 /**
  * cogl_clip_push_from_path:
+ * @path: The path to clip with.
  *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
+ * Sets a new clipping area using the silhouette of the specified,
+ * filled @path.  The clipping area is intersected with the previous
  * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
+ * call cogl_clip_pop().
  *
- * Since: 1.0
+ * Since: 1.8
+ * Stability: Unstable
  * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
  */
 COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip)
 void
-cogl_clip_push_from_path (void);
+cogl_clip_push_from_path (CoglPath *path);
 
 COGL_END_DECLS
 

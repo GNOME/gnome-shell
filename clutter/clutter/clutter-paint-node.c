@@ -884,7 +884,7 @@ clutter_paint_node_add_texture_rectangle (ClutterPaintNode      *node,
 }
 
 /**
- * clutter_paint_node_add_path:
+ * clutter_paint_node_add_path: (skip)
  * @node: a #ClutterPaintNode
  * @path: a Cogl path
  *
@@ -912,7 +912,7 @@ clutter_paint_node_add_path (ClutterPaintNode *node,
 }
 
 /**
- * clutter_paint_node_add_primitive:
+ * clutter_paint_node_add_primitive: (skip)
  * @node: a #ClutterPaintNode
  * @primitive: a Cogl primitive
  *

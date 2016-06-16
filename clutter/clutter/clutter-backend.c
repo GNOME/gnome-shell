@@ -1214,7 +1214,7 @@ _clutter_backend_remove_event_translator (ClutterBackend         *backend,
 }
 
 /**
- * clutter_backend_get_cogl_context:
+ * clutter_backend_get_cogl_context: (skip)
  * @backend: a #ClutterBackend
  *
  * Retrieves the #CoglContext associated with the given clutter

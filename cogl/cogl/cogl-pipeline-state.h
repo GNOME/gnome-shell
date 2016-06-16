@@ -41,8 +41,6 @@
 
 COGL_BEGIN_DECLS
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-
 /**
  * cogl_pipeline_set_color:
  * @pipeline: A #CoglPipeline object
@@ -972,8 +970,6 @@ cogl_pipeline_set_uniform_matrix (CoglPipeline *pipeline,
 void
 cogl_pipeline_add_snippet (CoglPipeline *pipeline,
                            CoglSnippet *snippet);
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 COGL_END_DECLS
 

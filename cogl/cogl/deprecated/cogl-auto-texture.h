@@ -33,6 +33,8 @@
 
 COGL_BEGIN_DECLS
 
+#include <cogl/cogl-texture.h>
+
 /**
  * cogl_texture_new_with_size:
  * @width: width of texture in pixels.

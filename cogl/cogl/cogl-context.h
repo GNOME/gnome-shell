@@ -94,8 +94,6 @@ COGL_BEGIN_DECLS
  * context.</para></note>
  */
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-
 #define COGL_CONTEXT(OBJECT) ((CoglContext *)OBJECT)
 
 #ifdef COGL_HAS_GTYPE_SUPPORT
@@ -174,8 +172,6 @@ cogl_context_get_renderer (CoglContext *context);
  */
 CoglBool
 cogl_is_context (void *object);
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API */
 
 /* XXX: not guarded by the EXPERIMENTAL_API defines to avoid
  * upsetting glib-mkenums, but this can still be considered implicitly
@@ -275,8 +271,6 @@ typedef enum _CoglFeatureID
   _COGL_N_FEATURE_IDS   /*< skip >*/
 } CoglFeatureID;
 
-
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 
 /**
  * cogl_has_feature:
@@ -414,8 +408,6 @@ typedef enum _CoglGraphicsResetStatus
  */
 CoglGraphicsResetStatus
 cogl_get_graphics_reset_status (CoglContext *context);
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 COGL_END_DECLS
 

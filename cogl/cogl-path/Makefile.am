@@ -39,7 +39,6 @@ cogl_tesselator_sources = \
 source_c = \
 	$(cogl_tesselator_sources) \
 	cogl-path-private.h \
-	cogl1-path.c \
 	cogl-path.c \
 	$(NULL)
 
@@ -51,13 +50,12 @@ EXTRA_DIST += \
 
 source_1_x_h = \
 	cogl-path-types.h \
-	cogl1-path-functions.h \
 	$(NULL)
 
 source_h = \
 	cogl-path.h \
 	$(source_1_x_h) \
-	cogl2-path-functions.h \
+	cogl-path-functions.h \
 	$(NULL)
 
 # glib-mkenums rules

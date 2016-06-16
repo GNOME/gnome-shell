@@ -1,4 +1,4 @@
-#include <cogl/cogl2-experimental.h>
+#include <cogl/cogl.h>
 #include <string.h>
 
 #include "test-utils.h"

@@ -856,8 +856,6 @@ CLUTTER_AVAILABLE_IN_1_10
 void                            clutter_actor_remove_all_transitions            (ClutterActor               *self);
 
 
-/* Experimental API */
-#ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
 CLUTTER_AVAILABLE_IN_1_16
 gboolean                        clutter_actor_has_mapped_clones                 (ClutterActor *self);
 CLUTTER_AVAILABLE_IN_1_22
@@ -865,7 +863,6 @@ void                            clutter_actor_set_opacity_override              
                                                                                  gint                        opacity);
 CLUTTER_AVAILABLE_IN_1_22
 gint                            clutter_actor_get_opacity_override              (ClutterActor               *self);
-#endif
 
 /**
  * ClutterActorCreateChildFunc:

@@ -31,12 +31,13 @@
 #ifndef __COGL_FRAMEBUFFER_DEPRECATED_H__
 #define __COGL_FRAMEBUFFER_DEPRECATED_H__
 
+#include <cogl/cogl-framebuffer.h>
 #include <cogl/cogl-macros.h>
 
 COGL_BEGIN_DECLS
 
 /**
- * cogl_set_framebuffer:
+ * cogl_set_framebuffer: (skip)
  * @buffer: A #CoglFramebuffer object, either onscreen or offscreen.
  *
  * This redirects all subsequent drawing to the specified framebuffer. This can
@@ -53,7 +54,7 @@ void
 cogl_set_framebuffer (CoglFramebuffer *buffer);
 
 /**
- * cogl_push_framebuffer:
+ * cogl_push_framebuffer: (skip)
  * @buffer: A #CoglFramebuffer object, either onscreen or offscreen.
  *
  * Redirects all subsequent drawing to the specified framebuffer. This can
@@ -138,7 +139,7 @@ void
 cogl_push_framebuffer (CoglFramebuffer *buffer);
 
 /**
- * cogl_pop_framebuffer:
+ * cogl_pop_framebuffer: (skip)
  *
  * Restores the framebuffer that was previously at the top of the stack.
  * All subsequent drawing will be redirected to this framebuffer.
@@ -237,7 +238,7 @@ cogl_read_pixels (int x,
 /* XXX: Since this api was marked unstable, maybe we can just
  * remove this api if we can't find anyone is using it. */
 /**
- * cogl_framebuffer_get_color_format:
+ * cogl_framebuffer_get_color_format: (skip)
  * @framebuffer: A #CoglFramebuffer framebuffer
  *
  * Queries the common #CoglPixelFormat of all color buffers attached

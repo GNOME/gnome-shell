@@ -31,9 +31,7 @@
 #include <cairo.h>
 #include <pango/pango.h>
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
 #include <cogl/cogl.h>
-#endif
 
 #include <clutter/clutter-config.h>
 #include <clutter/clutter-types.h>
@@ -73,10 +71,8 @@ void                            clutter_backend_set_font_options        (Clutter
 CLUTTER_AVAILABLE_IN_ALL
 const cairo_font_options_t *    clutter_backend_get_font_options        (ClutterBackend             *backend);
 
-#if defined (COGL_ENABLE_EXPERIMENTAL_API) && defined (CLUTTER_ENABLE_EXPERIMENTAL_API)
 CLUTTER_AVAILABLE_IN_1_8
 CoglContext *                   clutter_backend_get_cogl_context        (ClutterBackend             *backend);
-#endif
 
 G_END_DECLS
 

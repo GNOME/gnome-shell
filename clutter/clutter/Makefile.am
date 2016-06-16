@@ -16,7 +16,6 @@ AM_CPPFLAGS = \
 	-DCLUTTER_LOCALEDIR=\""$(localedir)"\"	\
 	-DCLUTTER_SYSCONFDIR=\""$(sysconfdir)"\" \
 	-DCLUTTER_COMPILATION=1			\
-	-DCOGL_ENABLE_EXPERIMENTAL_API		\
 	-DCOGL_DISABLE_DEPRECATION_WARNINGS	\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
 	-I$(top_srcdir) 			\
@@ -62,7 +61,6 @@ source_h =					\
 	clutter-canvas.h		\
 	clutter-child-meta.h		\
 	clutter-click-action.h	\
-	clutter-cogl-compat.h 	\
 	clutter-clone.h		\
 	clutter-color-static.h	\
 	clutter-color.h		\

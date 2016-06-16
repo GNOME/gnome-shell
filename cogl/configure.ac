@@ -930,11 +930,6 @@ done;
 AC_SUBST(COGL_GL_HEADER_INCLUDES)
 AM_SUBST_NOTMAKE(COGL_GL_HEADER_INCLUDES)
 
-AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
-          [Can use Cogl 2.0 API internally])
-AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_API], [1],
-          [Can use experimental API internally])
-
 AC_SUBST(COGL_DEP_CFLAGS)
 AC_SUBST(COGL_DEP_LIBS)
 AC_SUBST(COGL_PANGO_DEP_CFLAGS)
@@ -1019,17 +1014,3 @@ echo "        Build introspection data: ${enable_introspection}"
 echo "        Build unit tests: ${enable_unit_tests}"
 
 echo ""
-
-# General warning about experimental features
-if test "x$EXPERIMENTAL_CONFIG" = "xyes"; then
-echo ""
-echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
-echo " *WARNING*"
-echo ""
-echo "  The stability of your build might be affected by one or more"
-echo "  experimental configuration options."
-echo
-echo "  experimental options: $EXPERIMENTAL_OPTIONS"
-echo "☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠"
-echo ""
-fi

@@ -50,8 +50,6 @@ typedef struct _CoglPipeline CoglPipeline;
 
 COGL_BEGIN_DECLS
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-
 /**
  * SECTION:cogl-pipeline
  * @short_description: Functions for creating and manipulating the GPU
@@ -185,9 +183,6 @@ cogl_pipeline_foreach_layer (CoglPipeline *pipeline,
 int
 cogl_pipeline_get_uniform_location (CoglPipeline *pipeline,
                                     const char *uniform_name);
-
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 COGL_END_DECLS
 

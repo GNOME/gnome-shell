@@ -54,8 +54,11 @@ cogl_deprecated_h = \
 	deprecated/cogl-shader.h 		\
 	deprecated/cogl-clutter.h       	\
 	deprecated/cogl-type-casts.h       	\
-	deprecated/cogl-framebuffer-deprecated.h \
 	deprecated/cogl-auto-texture.h	\
+	$(NULL)
+
+cogl_deprecated_nonintrospected_h = \
+	deprecated/cogl-framebuffer-deprecated.h \
 	$(NULL)
 
 # public 1.x api headers
@@ -72,9 +75,7 @@ cogl_1_public_h = \
 	cogl.h			\
 	$(NULL)
 
-# experimental 2.0 api headers
-# Note: we don't run glib-mkenums over these headers
-cogl_experimental_h = \
+cogl_nonintrospected_h = \
 	cogl-object.h 		\
 	cogl-renderer.h 		\
 	cogl-swap-chain.h 		\
@@ -113,14 +114,10 @@ cogl_experimental_h = \
 	cogl-depth-state.h 		\
 	cogl-buffer.h 		\
 	cogl-pixel-buffer.h		\
-	cogl2-experimental.h		\
 	cogl-macros.h			\
 	cogl-fence.h       		\
 	cogl-version.h		\
 	cogl-error.h			\
-	$(NULL)
-
-cogl_additional_experimental_h = \
 	cogl-bitmap.h			\
 	cogl-color.h			\
 	cogl-matrix.h			\
@@ -129,7 +126,7 @@ cogl_additional_experimental_h = \
 	cogl-gtype-private.h		\
 	$(NULL)
 
-cogl_nodist_experimental_h = \
+cogl_nodist_h = \
 	$(NULL)
 
 # nop driver
@@ -392,14 +389,14 @@ cogl_sources_c = \
 	deprecated/cogl-framebuffer-deprecated.c      \
 	$(NULL)
 
-cogl_experimental_h += cogl-glib-source.h
+cogl_nonintrospected_h += cogl-glib-source.h
 cogl_sources_c += cogl-glib-source.c
 
 if SUPPORT_XLIB
-cogl_deprecated_h += deprecated/cogl-clutter-xlib.h
+cogl_deprecated_nonintrospected_h += deprecated/cogl-clutter-xlib.h
 cogl_1_public_h += cogl-xlib-renderer.h
 
-cogl_experimental_h += \
+cogl_nonintrospected_h += \
 	winsys/cogl-texture-pixmap-x11.h \
 	cogl-xlib.h
 
@@ -413,7 +410,7 @@ cogl_sources_c += \
 	winsys/cogl-texture-pixmap-x11-private.h
 endif
 if SUPPORT_GLX
-cogl_experimental_h += cogl-glx.h
+cogl_nonintrospected_h += cogl-glx.h
 cogl_sources_c += \
 	cogl-glx-renderer-private.h \
 	cogl-glx-display-private.h \
@@ -422,7 +419,7 @@ cogl_sources_c += \
 	winsys/cogl-winsys-glx.c
 endif
 if SUPPORT_WAYLAND_EGL_SERVER
-cogl_experimental_h += cogl-wayland-server.h
+cogl_nonintrospected_h += cogl-wayland-server.h
 endif
 if SUPPORT_EGL_PLATFORM_XLIB
 cogl_sources_c += \
@@ -430,8 +427,8 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-x11-private.h
 endif
 if SUPPORT_EGL
-cogl_experimental_h += cogl-egl.h
-cogl_nodist_experimental_h += cogl-egl-defines.h
+cogl_nonintrospected_h += cogl-egl.h
+cogl_nodist_h += cogl-egl-defines.h
 
 cogl_sources_c += \
 	cogl-egl-private.h \
@@ -439,12 +436,6 @@ cogl_sources_c += \
 	winsys/cogl-winsys-egl-feature-functions.h \
 	winsys/cogl-winsys-egl-private.h
 endif
-
-# glib-mkenums rules
-glib_enum_h = cogl-enum-types.h
-glib_enum_c = cogl-enum-types.c
-glib_enum_headers = $(cogl_1_public_h)
-include $(top_srcdir)/build/autotools/Makefile.am.enums
 
 mutterlibdir = $(libdir)/mutter
 mutterlib_LTLIBRARIES = libmutter-cogl.la
@@ -474,11 +465,11 @@ cogl_headers = \
 
 cogl_base_includedir = $(includedir)/mutter
 cogldeprecatedincludedir = $(cogl_base_includedir)/cogl/cogl/deprecated
-cogldeprecatedinclude_HEADERS = $(cogl_deprecated_h)
+cogldeprecatedinclude_HEADERS = $(cogl_deprecated_h) $(cogl_deprecated_nonintrospected_h)
 
 coglincludedir = $(cogl_base_includedir)/cogl/cogl
-coglinclude_HEADERS = $(cogl_headers) $(cogl_experimental_h)
-nodist_coglinclude_HEADERS = $(cogl_nodist_experimental_h) cogl-defines.h cogl-enum-types.h
+coglinclude_HEADERS = $(cogl_headers) $(cogl_nonintrospected_h)
+nodist_coglinclude_HEADERS = $(cogl_nodist_h) cogl-defines.h
 
 cogl_proto_includedir = $(cogl_base_includedir)/cogl/cogl/gl-prototypes
 cogl_proto_include_HEADERS = $(cogl_gl_prototypes_h)
@@ -499,29 +490,14 @@ Cogl_1_0_gir_LIBS = libmutter-cogl.la
 if UNIT_TESTS
 Cogl_1_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
-Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
+Cogl_1_0_gir_FILES = $(cogl_1_public_h)
 
-Cogl-2.0.gir: libmutter-cogl.la Makefile
-
-Cogl_2_0_gir_NAMESPACE = Cogl
-Cogl_2_0_gir_VERSION = 2.0
-Cogl_2_0_gir_LIBS = libmutter-cogl.la
-if UNIT_TESTS
-Cogl_2_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
-endif
-Cogl_2_0_gir_FILES = $(cogl_experimental_h) $(cogl_additional_experimental_h) cogl-enum-types.h
-
-Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__ -D__COGL_EGL_H_INSIDE__ -D__COGL_GLX_H_INSIDE__ -DCOGL_GIR_SCANNING
+Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__ -D__COGL_EGL_H_INSIDE__ -D__COGL_GLX_H_INSIDE__ -DCOGL_GIR_SCANNING
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = mutter-cogl-1.0
 Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
 
-Cogl_2_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -DCOGL_ENABLE_EXPERIMENTAL_API=1 -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__ -DCOGL_GIR_SCANNING
-Cogl_2_0_gir_INCLUDES = GL-1.0 GObject-2.0
-Cogl_2_0_gir_EXPORT_PACKAGES = mutter-cogl-2.0-experimental
-Cogl_2_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h' --symbol-prefix=cogl --symbol-prefix=cogl2
-
-INTROSPECTION_GIRS += Cogl-1.0.gir Cogl-2.0.gir
+INTROSPECTION_GIRS += Cogl-1.0.gir
 
 girdir = $(mutterlibdir)
 gir_DATA = $(INTROSPECTION_GIRS)

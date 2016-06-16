@@ -1,9 +1,5 @@
 #include <cogl/cogl.h>
 
-/* These will be redefined in config.h */
-#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#undef COGL_ENABLE_EXPERIMENTAL_API
-
 #include "test-utils.h"
 #include "cogl-config.h"
 

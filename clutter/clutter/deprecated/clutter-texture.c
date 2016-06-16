@@ -50,16 +50,7 @@
 /* sadly, we are still using ClutterShader internally */
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
 
-/* This file depends on the glib enum types which aren't exposed
- * by cogl.h when COGL_ENABLE_EXPERIMENTAL_2_0_API is defined.
- *
- * Undefining COGL_ENABLE_EXPERIMENTAL_2_0_API will still expose
- * us experimental api but will also expose Cogl 1.x api too...
- */
-#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
-
-#define CLUTTER_ENABLE_EXPERIMENTAL_API
 
 #include "clutter-texture.h"
 
@@ -73,6 +64,7 @@
 #include "clutter-private.h"
 #include "clutter-scriptable.h"
 #include "clutter-stage-private.h"
+#include "clutter-backend.h"
 
 #include "deprecated/clutter-shader.h"
 #include "deprecated/clutter-texture.h"

@@ -51,9 +51,7 @@ typedef struct _CoglTexture CoglTexture;
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-macros.h>
 #include <cogl/cogl-defines.h>
-#if defined (COGL_ENABLE_EXPERIMENTAL_API)
 #include <cogl/cogl-pixel-buffer.h>
-#endif
 #include <cogl/cogl-bitmap.h>
 
 #ifdef COGL_HAS_GTYPE_SUPPORT
@@ -399,8 +397,6 @@ cogl_texture_set_region (CoglTexture *texture,
                          unsigned int rowstride,
                          const uint8_t *data);
 
-#if defined (COGL_ENABLE_EXPERIMENTAL_API)
-
 /**
  * cogl_texture_set_data:
  * @texture a #CoglTexture.
@@ -495,7 +491,6 @@ cogl_texture_set_region_from_bitmap (CoglTexture *texture,
                                      unsigned int dst_width,
                                      unsigned int dst_height,
                                      CoglBitmap *bitmap);
-#endif
 
 /**
  * cogl_texture_allocate:

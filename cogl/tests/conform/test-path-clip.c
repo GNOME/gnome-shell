@@ -1,4 +1,3 @@
-#define COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
 #include <cogl-path/cogl-path.h>
 

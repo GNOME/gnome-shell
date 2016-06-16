@@ -1,11 +1,10 @@
 NULL =
 
 AM_CPPFLAGS = \
-	-I$(top_srcdir)
+	-I$(top_srcdir) \
+	-DCOGL_DISABLE_DEPRECATED
 
 test_conformance_CPPFLAGS = \
-	-DCOGL_ENABLE_EXPERIMENTAL_API \
-	-DCOGL_DISABLE_DEPRECATED \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
 
 

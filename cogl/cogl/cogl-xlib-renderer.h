@@ -147,7 +147,7 @@ cogl_xlib_renderer_set_foreign_display (CoglRenderer *renderer,
                                         Display *display);
 
 /**
- * cogl_xlib_renderer_set_event_retrieval_enabled:
+ * cogl_xlib_renderer_set_event_retrieval_enabled: (skip)
  * @renderer: a #CoglRenderer
  * @enable: The new value
  *

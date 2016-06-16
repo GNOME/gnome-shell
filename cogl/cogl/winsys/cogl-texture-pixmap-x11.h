@@ -56,8 +56,6 @@
 
 COGL_BEGIN_DECLS
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_API
-
 /**
  * SECTION:cogl-texture-pixmap-x11
  * @short_description: Functions for creating and manipulating 2D meta
@@ -273,8 +271,6 @@ cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *texture,
  */
 CoglBool
 cogl_is_texture_pixmap_x11 (void *object);
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 COGL_END_DECLS
 

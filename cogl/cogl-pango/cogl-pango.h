@@ -174,7 +174,7 @@ PangoRenderer *
 cogl_pango_font_map_get_renderer (CoglPangoFontMap *font_map);
 
 /**
- * cogl_pango_show_layout:
+ * cogl_pango_show_layout: (skip)
  * @framebuffer: A #CoglFramebuffer to draw too.
  * @layout: a #PangoLayout
  * @x: X coordinate to render the layout at
@@ -195,7 +195,7 @@ cogl_pango_show_layout (CoglFramebuffer *framebuffer,
                         const CoglColor *color);
 
 /**
- * cogl_pango_show_layout_line:
+ * cogl_pango_show_layout_line: (skip)
  * @framebuffer: A #CoglFramebuffer to draw too.
  * @line: a #PangoLayoutLine
  * @x: X coordinate to render the line at

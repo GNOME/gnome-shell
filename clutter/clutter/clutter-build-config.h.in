@@ -6,9 +6,6 @@
 /* Use Generic EGL backend */
 #undef CLUTTER_EGL_BACKEND_GENERIC
 
-/* Can use Cogl 2.0 API internally */
-#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
-
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 

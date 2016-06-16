@@ -66,8 +66,6 @@
 #include "clutter-build-config.h"
 #endif
 
-#define CLUTTER_ENABLE_EXPERIMENTAL_API
-
 #include "clutter-offscreen-effect.h"
 
 #include "cogl/cogl.h"
@@ -520,7 +518,7 @@ clutter_offscreen_effect_get_texture (ClutterOffscreenEffect *effect)
 }
 
 /**
- * clutter_offscreen_effect_get_target:
+ * clutter_offscreen_effect_get_target: (skip)
  * @effect: a #ClutterOffscreenEffect
  *
  * Retrieves the material used as a render target for the offscreen

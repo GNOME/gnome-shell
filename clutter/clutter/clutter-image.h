@@ -131,10 +131,8 @@ gboolean                clutter_image_set_bytes         (ClutterImage           
                                                          guint                         row_stride,
                                                          GError                      **error);
 
-#if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
 CLUTTER_AVAILABLE_IN_1_10
 CoglTexture *           clutter_image_get_texture       (ClutterImage                 *image);
-#endif
 
 G_END_DECLS
 

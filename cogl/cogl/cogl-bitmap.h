@@ -87,10 +87,8 @@ CoglBitmap *
 cogl_bitmap_new_from_file (const char *filename,
                            CoglError **error);
 
-#if defined (COGL_ENABLE_EXPERIMENTAL_API)
-
 /**
- * cogl_bitmap_new_from_buffer:
+ * cogl_bitmap_new_from_buffer: (skip)
  * @buffer: A #CoglBuffer containing image data
  * @format: The #CoglPixelFormat defining the format of the image data
  *          in the given @buffer.
@@ -117,7 +115,7 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
                              int offset);
 
 /**
- * cogl_bitmap_new_with_size:
+ * cogl_bitmap_new_with_size: (skip)
  * @context: A #CoglContext
  * @width: width of the bitmap in pixels
  * @height: height of the bitmap in pixels
@@ -152,7 +150,7 @@ cogl_bitmap_new_with_size (CoglContext *context,
                            CoglPixelFormat format);
 
 /**
- * cogl_bitmap_new_for_data:
+ * cogl_bitmap_new_for_data: (skip)
  * @context: A #CoglContext
  * @width: The width of the bitmap.
  * @height: The height of the bitmap.
@@ -226,7 +224,7 @@ int
 cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
 
 /**
- * cogl_bitmap_get_buffer:
+ * cogl_bitmap_get_buffer: (skip)
  * @bitmap: A #CoglBitmap
  *
  * Return value: (transfer none): the #CoglPixelBuffer that this
@@ -238,8 +236,6 @@ cogl_bitmap_get_rowstride (CoglBitmap *bitmap);
  */
 CoglPixelBuffer *
 cogl_bitmap_get_buffer (CoglBitmap *bitmap);
-
-#endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 /**
  * cogl_bitmap_get_size_from_file:
