@@ -43,23 +43,19 @@
 #include <cogl/cogl-frame-info.h>
 #include <cogl/cogl-object.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
 typedef struct _CoglOnscreen CoglOnscreen;
 #define COGL_ONSCREEN(X) ((CoglOnscreen *)(X))
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_onscreen_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_onscreen_get_gtype (void);
-#endif
 
 /**
  * cogl_onscreen_new: (constructor)
@@ -469,14 +465,12 @@ typedef void (*CoglFrameCallback) (CoglOnscreen *onscreen,
  */
 typedef struct _CoglClosure CoglFrameClosure;
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_frame_closure_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_frame_closure_get_gtype (void);
-#endif
 
 /**
  * cogl_onscreen_add_frame_callback:
@@ -696,14 +690,12 @@ typedef void (*CoglOnscreenResizeCallback) (CoglOnscreen *onscreen,
  */
 typedef struct _CoglClosure CoglOnscreenResizeClosure;
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_onscreen_resize_closure_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_onscreen_resize_closure_get_gtype (void);
-#endif
 
 /**
  * cogl_onscreen_add_resize_callback:
@@ -812,14 +804,12 @@ typedef void (*CoglOnscreenDirtyCallback) (CoglOnscreen *onscreen,
  */
 typedef struct _CoglClosure CoglOnscreenDirtyClosure;
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_onscreen_dirty_closure_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_onscreen_dirty_closure_get_gtype (void);
-#endif
 
 /**
  * cogl_onscreen_add_dirty_callback:

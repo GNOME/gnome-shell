@@ -2304,10 +2304,8 @@ cogl_matrix_transpose (CoglMatrix *matrix)
   cogl_matrix_init_from_array (matrix, new_values);
 }
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 GType
 cogl_gtype_matrix_get_type (void)
 {
   return cogl_matrix_get_gtype ();
 }
-#endif

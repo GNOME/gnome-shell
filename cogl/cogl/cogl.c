@@ -757,7 +757,7 @@ _cogl_init (void)
 
   if (initialized == FALSE)
     {
-#if defined(COGL_HAS_GTYPE_SUPPORT) && !GLIB_CHECK_VERSION (2, 36, 0)
+#if !GLIB_CHECK_VERSION (2, 36, 0)
       g_type_init ();
 #endif
 

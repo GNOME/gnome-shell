@@ -59,9 +59,7 @@ COGL_BEGIN_DECLS
 #include <cogl/cogl-vector.h>
 #include <cogl/cogl-euler.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 /**
  * CoglQuaternion:
@@ -147,14 +145,12 @@ struct _CoglQuaternion
 };
 COGL_STRUCT_SIZE_ASSERT (CoglQuaternion, 32);
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_quaternion_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_quaternion_get_gtype (void);
-#endif
 
 /**
  * cogl_quaternion_init:

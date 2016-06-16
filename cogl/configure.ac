@@ -375,8 +375,6 @@ AM_PATH_GLIB_2_0([glib_req_version],
                  [AC_MSG_ERROR([glib-2.0 is required])],
                  [gobject gthread gmodule-no-export])
 
-COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
-COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GTYPE_SUPPORT"
 COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
 
 dnl     ============================================================

@@ -120,16 +120,9 @@ _cogl_propagate_error (CoglError **dest,
     *dest = src;
 }
 
-/* This function is only used from the gdk-pixbuf image backend so it
- * should only be called if we are using the system GLib. It would be
- * difficult to get this to work without the system glib because we
- * would need to somehow call the same g_error_free function that
- * gdk-pixbuf is using */
-#ifdef COGL_HAS_GLIB_SUPPORT
 void
 _cogl_propagate_gerror (CoglError **dest,
                         GError *src)
 {
   _cogl_propagate_error (dest, (CoglError *) src);
 }
-#endif /* COGL_HAS_GLIB_SUPPORT */

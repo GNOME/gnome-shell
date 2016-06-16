@@ -57,9 +57,7 @@ typedef void (*CoglUserDataDestroyInternalCallback) (void *user_data,
 
 typedef struct _CoglObjectClass
 {
-#ifdef COGL_HAS_GTYPE_SUPPORT
   GTypeClass base_class;
-#endif
   const char *name;
   void *virt_free;
   void *virt_unref;
@@ -127,13 +125,9 @@ struct _CoglObject
 
 #endif /* COGL_OBJECT_DEBUG */
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #define _COGL_GTYPE_INIT_CLASS(type_name) do {                                   \
   _cogl_##type_name##_class.base_class.g_type = cogl_##type_name##_get_gtype (); \
 } while (0)
-#else
-#define _COGL_GTYPE_INIT_CLASS(type_name)
-#endif
 
 #define COGL_OBJECT_COMMON_DEFINE_WITH_CODE(TypeName, type_name, code)  \
                                                                         \

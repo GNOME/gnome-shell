@@ -40,9 +40,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-output.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 #include <glib.h>
 
 G_BEGIN_DECLS
@@ -50,14 +48,12 @@ G_BEGIN_DECLS
 typedef struct _CoglFrameInfo CoglFrameInfo;
 #define COGL_FRAME_INFO(X) ((CoglFrameInfo *)(X))
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_frame_info_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_frame_info_get_gtype (void);
-#endif
 
 /**
  * cogl_is_frame_info:

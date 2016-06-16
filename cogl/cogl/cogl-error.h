@@ -111,21 +111,7 @@ COGL_BEGIN_DECLS
  * if an error is thrown.</note>
  */
 
-#ifdef COGL_HAS_GLIB_SUPPORT
 #define CoglError GError
-#else
-/**
- * CoglError:
- * @domain: A high-level domain identifier for the error
- * @code: A specific error code within a specified domain
- * @message: A human readable error message
- */
-typedef struct _CoglError {
-  uint32_t domain;
-  int code;
-  char *message;
-} CoglError;
-#endif /* COGL_HAS_GLIB_SUPPORT */
 
 /**
  * cogl_error_free:
@@ -176,9 +162,7 @@ cogl_error_matches (CoglError *error,
  * that a CoglError is a GError and can be used directly with the
  * GError api.
  */
-#ifdef COGL_HAS_GLIB_SUPPORT
 #define COGL_GLIB_ERROR(COGL_ERROR) ((CoglError *)COGL_ERROR)
-#endif
 
 COGL_END_DECLS
 

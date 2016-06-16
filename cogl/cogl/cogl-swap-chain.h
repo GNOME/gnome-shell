@@ -35,22 +35,18 @@
 
 #include <cogl/cogl-types.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
 typedef struct _CoglSwapChain CoglSwapChain;
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_swap_chain_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_swap_chain_get_gtype (void);
-#endif
 
 CoglSwapChain *
 cogl_swap_chain_new (void);

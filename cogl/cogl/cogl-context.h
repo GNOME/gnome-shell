@@ -46,9 +46,7 @@ typedef struct _CoglContext CoglContext;
 #include <cogl/cogl-display.h>
 #include <cogl/cogl-primitive.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
@@ -96,14 +94,12 @@ COGL_BEGIN_DECLS
 
 #define COGL_CONTEXT(OBJECT) ((CoglContext *)OBJECT)
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_context_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_context_get_gtype (void);
-#endif
 
 /**
  * cogl_context_new: (constructor)

@@ -47,9 +47,7 @@ typedef struct _CoglPrimitive CoglPrimitive;
 #include <cogl/cogl-attribute.h>
 #include <cogl/cogl-framebuffer.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 

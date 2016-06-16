@@ -40,9 +40,7 @@
 #include <cogl/cogl-renderer.h>
 #include <cogl/cogl-onscreen-template.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
@@ -72,14 +70,12 @@ typedef struct _CoglDisplay	      CoglDisplay;
 
 #define COGL_DISPLAY(OBJECT) ((CoglDisplay *)OBJECT)
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_display_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_display_get_gtype (void);
-#endif
 
 /**
  * cogl_display_new:

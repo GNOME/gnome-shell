@@ -45,9 +45,7 @@ typedef struct _CoglIndices CoglIndices;
 
 #include <cogl/cogl-index-buffer.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
@@ -109,14 +107,12 @@ COGL_BEGIN_DECLS
  * for drawing quads as above.
  */
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_indices_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_indices_get_gtype (void);
-#endif
 
 CoglIndices *
 cogl_indices_new (CoglContext *context,

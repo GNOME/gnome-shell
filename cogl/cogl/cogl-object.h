@@ -33,9 +33,7 @@
 
 #include <cogl/cogl-types.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
@@ -49,14 +47,12 @@ typedef struct _CoglObject      CoglObject;
  *     (get-value-func cogl_object_get_object)
  */
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_object_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_object_get_gtype (void);
-#endif
 
 /**
  * cogl_object_ref: (skip)
@@ -128,11 +124,7 @@ typedef struct {
  *
  * Since: 1.4
  */
-#ifdef COGL_HAS_GTYPE_SUPPORT
 typedef GDestroyNotify CoglUserDataDestroyCallback;
-#else
-typedef void (*CoglUserDataDestroyCallback) (void *user_data);
-#endif
 
 /**
  * CoglDebugObjectTypeInfo:

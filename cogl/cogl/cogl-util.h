@@ -37,9 +37,7 @@
 #include <cogl/cogl-defines.h>
 #include "cogl-types.h"
 
-#ifndef COGL_HAS_GLIB_SUPPORT
 #include <stdio.h>
-#endif
 
 /* Double check that config.h has been included */
 #if (!defined (PACKAGE_NAME) && \

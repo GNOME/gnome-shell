@@ -53,9 +53,7 @@ typedef struct _CoglFramebuffer CoglFramebuffer;
 #include <cogl/cogl-quaternion.h>
 #include <cogl/cogl-euler.h>
 #include <cogl/cogl-texture.h>
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 

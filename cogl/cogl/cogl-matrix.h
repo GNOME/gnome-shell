@@ -36,17 +36,13 @@
 
 #include <cogl/cogl-defines.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif /* COGL_HAS_GTYPE_SUPPORT */
 
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-macros.h>
 
 #include <cogl/cogl-quaternion.h>
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
@@ -777,8 +773,6 @@ cogl_matrix_transpose (CoglMatrix *matrix);
 void
 cogl_debug_matrix_print (const CoglMatrix *matrix);
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
-
 #define COGL_GTYPE_TYPE_MATRIX (cogl_matrix_get_gtype ())
 
 /**
@@ -799,8 +793,6 @@ GType cogl_matrix_get_gtype (void);
  */
 GType
 cogl_gtype_matrix_get_type (void);
-
-#endif /* COGL_HAS_GTYPE_SUPPORT*/
 
 COGL_END_DECLS
 

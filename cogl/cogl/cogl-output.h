@@ -39,9 +39,7 @@
 
 #include <cogl/cogl-types.h>
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
-#endif
 
 COGL_BEGIN_DECLS
 
@@ -70,14 +68,12 @@ COGL_BEGIN_DECLS
 typedef struct _CoglOutput CoglOutput;
 #define COGL_OUTPUT(X) ((CoglOutput *)(X))
 
-#ifdef COGL_HAS_GTYPE_SUPPORT
 /**
  * cogl_output_get_gtype:
  *
  * Returns: a #GType that can be used with the GLib type system.
  */
 GType cogl_output_get_gtype (void);
-#endif
 
 /**
  * CoglSubpixelOrder:
