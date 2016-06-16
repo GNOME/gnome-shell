@@ -66,7 +66,8 @@ COGL_BEGIN_DECLS
  * without blocking other Cogl operations.
  */
 
-#ifdef __COGL_H_INSIDE__
+#if defined(__COGL_H_INSIDE__) && !defined(COGL_ENABLE_MUTTER_API) && \
+  !defined(COGL_GIR_SCANNING)
 /* For the public C api we typedef interface types as void to avoid needing
  * lots of casting in code and instead we will rely on runtime type checking
  * for these objects. */
