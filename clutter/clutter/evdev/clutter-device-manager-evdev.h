@@ -68,6 +68,32 @@ struct xkb_keymap * _clutter_device_manager_evdev_get_keymap (ClutterDeviceManag
 
 ClutterStage * _clutter_device_manager_evdev_get_stage (ClutterDeviceManagerEvdev *manager_evdev);
 
+void _clutter_device_manager_evdev_constrain_pointer (ClutterDeviceManagerEvdev *manager_evdev,
+                                                      ClutterInputDevice        *core_pointer,
+                                                      uint64_t                   time_us,
+                                                      float                      x,
+                                                      float                      y,
+                                                      float                     *new_x,
+                                                      float                     *new_y);
+
+static inline guint64
+us (guint64 us)
+{
+  return us;
+}
+
+static inline guint64
+ms2us (guint64 ms)
+{
+  return us (ms * 1000);
+}
+
+static inline guint32
+us2ms (guint64 us)
+{
+  return (guint32) (us / 1000);
+}
+
 G_END_DECLS
 
 #endif /* __CLUTTER_DEVICE_MANAGER_EVDEV_H__ */

@@ -61,8 +61,6 @@
 
 #define DISCRETE_SCROLL_STEP 10.0
 
-#define AUTOREPEAT_VALUE 2
-
 
 /*
  * Clutter makes the assumption that two core devices have ID's 2 and 3 (core
@@ -154,24 +152,6 @@ static const char *option_xkb_layout = "us";
 static const char *option_xkb_variant = "";
 static const char *option_xkb_options = "";
 
-static inline guint64
-us (guint64 us)
-{
-  return us;
-}
-
-static inline guint64
-ms2us (guint64 ms)
-{
-  return us (ms * 1000);
-}
-
-static inline guint32
-us2ms (guint64 us)
-{
-  return (guint32) (us / 1000);
-}
-
 static void
 clutter_device_manager_evdev_copy_event_data (ClutterEventExtender *event_extender,
                                               const ClutterEvent   *src,
@@ -255,120 +235,34 @@ queue_event (ClutterEvent *event)
   _clutter_event_push (event, FALSE);
 }
 
-static gboolean
-keyboard_repeat (gpointer data);
-
-static void
-notify_key_device (ClutterInputDevice *input_device,
-		   guint64             time_us,
-		   guint32             key,
-		   guint32             state,
-		   gboolean            update_keys)
+void
+_clutter_device_manager_evdev_constrain_pointer (ClutterDeviceManagerEvdev *manager_evdev,
+                                                 ClutterInputDevice        *core_pointer,
+                                                 uint64_t                   time_us,
+                                                 float                      x,
+                                                 float                      y,
+                                                 float                     *new_x,
+                                                 float                     *new_y)
 {
-  ClutterInputDeviceEvdev *device_evdev =
-    CLUTTER_INPUT_DEVICE_EVDEV (input_device);
-  ClutterSeatEvdev *seat = _clutter_input_device_evdev_get_seat (device_evdev);
-  ClutterStage *stage;
-  ClutterEvent *event = NULL;
-  enum xkb_state_component changed_state;
-
-  /* We can drop the event on the floor if no stage has been
-   * associated with the device yet. */
-  stage = _clutter_input_device_get_stage (input_device);
-  if (stage == NULL)
+  if (manager_evdev->priv->constrain_callback)
     {
-      clutter_seat_evdev_clear_repeat_timer (seat);
-      return;
-    }
-
-  event = _clutter_key_event_new_from_evdev (input_device,
-					     seat->core_keyboard,
-					     stage,
-					     seat->xkb,
-					     seat->button_state,
-					     us2ms (time_us), key, state);
-  _clutter_evdev_event_set_event_code (event, key);
-
-  /* We must be careful and not pass multiple releases to xkb, otherwise it gets
-     confused and locks the modifiers */
-  if (state != AUTOREPEAT_VALUE)
-    {
-      changed_state = xkb_state_update_key (seat->xkb,
-                                            event->key.hardware_keycode,
-                                            state ? XKB_KEY_DOWN : XKB_KEY_UP);
+      manager_evdev->priv->constrain_callback (core_pointer,
+                                               us2ms (time_us),
+                                               x, y,
+                                               new_x, new_y,
+					       manager_evdev->priv->constrain_data);
     }
   else
     {
-      changed_state = 0;
-      clutter_event_set_flags (event, CLUTTER_EVENT_FLAG_SYNTHETIC);
-    }
+      ClutterActor *stage = CLUTTER_ACTOR (manager_evdev->priv->stage);
+      float stage_width = clutter_actor_get_width (stage);
+      float stage_height = clutter_actor_get_height (stage);
 
-  queue_event (event);
-
-  if (update_keys && (changed_state & XKB_STATE_LEDS))
-    clutter_seat_evdev_sync_leds (seat);
-
-  if (state == 0 ||             /* key release */
-      !seat->repeat ||
-      !xkb_keymap_key_repeats (xkb_state_get_keymap (seat->xkb), event->key.hardware_keycode))
-    {
-      clutter_seat_evdev_clear_repeat_timer (seat);
-      return;
-    }
-
-  if (state == 1)               /* key press */
-    seat->repeat_count = 0;
-
-  seat->repeat_count += 1;
-  seat->repeat_key = key;
-
-  switch (seat->repeat_count)
-    {
-    case 1:
-    case 2:
-      {
-        guint32 interval;
-
-        clutter_seat_evdev_clear_repeat_timer (seat);
-        seat->repeat_device = g_object_ref (input_device);
-
-        if (seat->repeat_count == 1)
-          interval = seat->repeat_delay;
-        else
-          interval = seat->repeat_interval;
-
-        seat->repeat_timer =
-          clutter_threads_add_timeout_full (CLUTTER_PRIORITY_EVENTS,
-                                            interval,
-                                            keyboard_repeat,
-                                            seat,
-                                            NULL);
-        return;
-      }
-    default:
-      return;
+      x = CLAMP (x, 0.f, stage_width - 1);
+      y = CLAMP (y, 0.f, stage_height - 1);
     }
 }
 
-static gboolean
-keyboard_repeat (gpointer data)
-{
-  ClutterSeatEvdev *seat = data;
-  GSource *source;
-  guint32 time_ms;
-
-  g_return_val_if_fail (seat->repeat_device != NULL, G_SOURCE_REMOVE);
-  source = g_main_context_find_source_by_id (NULL, seat->repeat_timer);
-  time_ms = g_source_get_time (source) / 1000;
-
-  notify_key_device (seat->repeat_device,
-                     ms2us (time_ms),
-                     seat->repeat_key,
-                     AUTOREPEAT_VALUE,
-                     FALSE);
-
-  return G_SOURCE_CONTINUE;
-}
 
 static ClutterEvent *
 new_absolute_motion_event (ClutterInputDevice *input_device,
@@ -449,45 +343,6 @@ notify_absolute_motion (ClutterInputDevice *input_device,
   ClutterEvent *event;
 
   event = new_absolute_motion_event (input_device, time_us, x, y, axes);
-
-  queue_event (event);
-}
-
-static void
-notify_relative_motion (ClutterInputDevice *input_device,
-                        struct libinput_event_pointer *pointer_event)
-{
-  guint64 time_us;
-  double dx;
-  double dy;
-  double dx_unaccel;
-  double dy_unaccel;
-  gfloat new_x, new_y;
-  ClutterInputDeviceEvdev *device_evdev;
-  ClutterSeatEvdev *seat;
-  ClutterEvent *event;
-
-  /* We can drop the event on the floor if no stage has been
-   * associated with the device yet. */
-  if (!_clutter_input_device_get_stage (input_device))
-    return;
-
-  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
-  seat = _clutter_input_device_evdev_get_seat (device_evdev);
-
-  dx = libinput_event_pointer_get_dx (pointer_event);
-  dy = libinput_event_pointer_get_dy (pointer_event);
-  new_x = seat->pointer_x + dx;
-  new_y = seat->pointer_y + dy;
-
-  time_us = libinput_event_pointer_get_time_usec (pointer_event);
-  event = new_absolute_motion_event (input_device, time_us, new_x, new_y, NULL);
-
-  dx_unaccel = libinput_event_pointer_get_dx_unaccelerated (pointer_event);
-  dy_unaccel = libinput_event_pointer_get_dy_unaccelerated (pointer_event);
-  _clutter_evdev_event_set_relative_motion (event,
-                                            dx, dy,
-                                            dx_unaccel, dy_unaccel);
 
   queue_event (event);
 }
@@ -620,118 +475,6 @@ notify_scroll (ClutterInputDevice       *input_device,
   event->scroll.finish_flags = flags;
 
   _clutter_event_set_pointer_emulated (event, emulated);
-
-  queue_event (event);
-}
-
-static void
-notify_button (ClutterInputDevice *input_device,
-               guint64             time_us,
-               guint32             button,
-               guint32             state)
-{
-  ClutterInputDeviceEvdev *device_evdev;
-  ClutterSeatEvdev *seat;
-  ClutterStage *stage;
-  ClutterEvent *event = NULL;
-  gint button_nr;
-  static gint maskmap[8] =
-    {
-      CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON3_MASK, CLUTTER_BUTTON2_MASK,
-      CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK, 0, 0, 0
-    };
-
-  /* We can drop the event on the floor if no stage has been
-   * associated with the device yet. */
-  stage = _clutter_input_device_get_stage (input_device);
-  if (stage == NULL)
-    return;
-
-  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
-  seat = _clutter_input_device_evdev_get_seat (device_evdev);
-
-  /* The evdev button numbers don't map sequentially to clutter button
-   * numbers (the right and middle mouse buttons are in the opposite
-   * order) so we'll map them directly with a switch statement */
-  switch (button)
-    {
-    case BTN_LEFT:
-    case BTN_TOUCH:
-      button_nr = CLUTTER_BUTTON_PRIMARY;
-      break;
-
-    case BTN_RIGHT:
-    case BTN_STYLUS:
-      button_nr = CLUTTER_BUTTON_SECONDARY;
-      break;
-
-    case BTN_MIDDLE:
-    case BTN_STYLUS2:
-      button_nr = CLUTTER_BUTTON_MIDDLE;
-      break;
-
-    default:
-      /* For compatibility reasons, all additional buttons go after the old 4-7 scroll ones */
-      if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
-        button_nr = button - BTN_TOOL_PEN + 4;
-      else
-        button_nr = button - (BTN_LEFT - 1) + 4;
-      break;
-    }
-
-  if (button_nr < 1 || button_nr > 12)
-    {
-      g_warning ("Unhandled button event 0x%x", button);
-      return;
-    }
-
-  if (state)
-    event = clutter_event_new (CLUTTER_BUTTON_PRESS);
-  else
-    event = clutter_event_new (CLUTTER_BUTTON_RELEASE);
-
-  if (button_nr < G_N_ELEMENTS (maskmap))
-    {
-      /* Update the modifiers */
-      if (state)
-        seat->button_state |= maskmap[button_nr - 1];
-      else
-        seat->button_state &= ~maskmap[button_nr - 1];
-    }
-
-  _clutter_evdev_event_set_time_usec (event, time_us);
-  event->button.time = us2ms (time_us);
-  event->button.stage = CLUTTER_STAGE (stage);
-  _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
-  event->button.button = button_nr;
-
-  if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
-    {
-      ClutterPoint point;
-
-      clutter_input_device_get_coords (input_device, NULL, &point);
-      event->button.x = point.x;
-      event->button.y = point.y;
-    }
-  else
-    {
-      event->button.x = seat->pointer_x;
-      event->button.y = seat->pointer_y;
-    }
-
-  clutter_event_set_source_device (event, input_device);
-
-  _clutter_evdev_event_set_event_code (event, button);
-
-  if (clutter_input_device_get_device_type (input_device) == CLUTTER_TABLET_DEVICE)
-    {
-      clutter_event_set_device_tool (event, device_evdev->last_tool);
-      clutter_event_set_device (event, input_device);
-    }
-  else
-    clutter_event_set_device (event, seat->core_pointer);
-
-  _clutter_input_device_set_stage (seat->core_pointer, stage);
 
   queue_event (event);
 }
@@ -1529,6 +1272,14 @@ translate_tablet_axes (struct libinput_event_tablet_tool *tablet_event)
     return (gdouble *) g_array_free (axes, FALSE);
 }
 
+static ClutterSeatEvdev *
+seat_from_device (ClutterInputDevice *device)
+{
+  ClutterInputDeviceEvdev *device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
+
+  return _clutter_input_device_evdev_get_seat (device_evdev);
+}
+
 static gboolean
 process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                       struct libinput_event *event)
@@ -1545,8 +1296,8 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         guint64 time_us;
         struct libinput_event_keyboard *key_event =
           libinput_event_get_keyboard_event (event);
-        device = libinput_device_get_user_data (libinput_device);
 
+        device = libinput_device_get_user_data (libinput_device);
         time_us = libinput_event_keyboard_get_time_usec (key_event);
         key = libinput_event_keyboard_get_key (key_event);
         key_state = libinput_event_keyboard_get_key_state (key_event) ==
@@ -1561,18 +1312,35 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 	     seat_key_count != 0))
           break;
 
-        notify_key_device (device, time_us, key, key_state, TRUE);
+        clutter_seat_evdev_notify_key (seat_from_device (device),
+                                       device,
+                                       time_us, key, key_state, TRUE);
 
         break;
       }
 
     case LIBINPUT_EVENT_POINTER_MOTION:
       {
-        struct libinput_event_pointer *motion_event =
+        struct libinput_event_pointer *pointer_event =
           libinput_event_get_pointer_event (event);
-        device = libinput_device_get_user_data (libinput_device);
+        uint64_t time_us;
+        double dx;
+        double dy;
+        double dx_unaccel;
+        double dy_unaccel;
 
-        notify_relative_motion (device, motion_event);
+        device = libinput_device_get_user_data (libinput_device);
+        time_us = libinput_event_pointer_get_time_usec (pointer_event);
+        dx = libinput_event_pointer_get_dx (pointer_event);
+        dy = libinput_event_pointer_get_dy (pointer_event);
+        dx_unaccel = libinput_event_pointer_get_dx_unaccelerated (pointer_event);
+        dy_unaccel = libinput_event_pointer_get_dy_unaccelerated (pointer_event);
+
+        clutter_seat_evdev_notify_relative_motion (seat_from_device (device),
+                                                   device,
+                                                   time_us,
+                                                   dx, dy,
+                                                   dx_unaccel, dy_unaccel);
 
         break;
       }
@@ -1599,7 +1367,12 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                                                                stage_width);
         y = libinput_event_pointer_get_absolute_y_transformed (motion_event,
                                                                stage_height);
-        notify_absolute_motion (device, time_us, x, y, NULL);
+
+        clutter_seat_evdev_notify_absolute_motion (seat_from_device (device),
+                                                   device,
+                                                   time_us,
+                                                   x, y,
+                                                   NULL);
 
         break;
       }
@@ -1626,8 +1399,8 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
              seat_button_count != 0))
           break;
 
-        notify_button (device, time_us, button, button_state);
-
+        clutter_seat_evdev_notify_button (seat_from_device (device), device,
+                                          time_us, button, button_state);
         break;
       }
 
@@ -1980,34 +1753,38 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
       }
     case LIBINPUT_EVENT_TABLET_TOOL_BUTTON:
       {
-        guint64 time;
+        guint64 time_us;
         guint32 button_state;
         struct libinput_event_tablet_tool *tablet_event =
           libinput_event_get_tablet_tool_event (event);
         guint tablet_button;
 
         device = libinput_device_get_user_data (libinput_device);
-        time = libinput_event_tablet_tool_get_time_usec (tablet_event);
+        time_us = libinput_event_tablet_tool_get_time_usec (tablet_event);
         tablet_button = libinput_event_tablet_tool_get_button (tablet_event);
 
         button_state = libinput_event_tablet_tool_get_button_state (tablet_event) ==
                        LIBINPUT_BUTTON_STATE_PRESSED;
-        notify_button (device, time, tablet_button, button_state);
+
+        clutter_seat_evdev_notify_button (seat_from_device (device), device,
+                                          time_us, tablet_button, button_state);
         break;
       }
     case LIBINPUT_EVENT_TABLET_TOOL_TIP:
       {
-        guint64 time;
+        guint64 time_us;
         guint32 button_state;
         struct libinput_event_tablet_tool *tablet_event =
           libinput_event_get_tablet_tool_event (event);
 
         device = libinput_device_get_user_data (libinput_device);
-        time = libinput_event_tablet_tool_get_time_usec (tablet_event);
+        time_us = libinput_event_tablet_tool_get_time_usec (tablet_event);
 
         button_state = libinput_event_tablet_tool_get_tip_state (tablet_event) ==
                        LIBINPUT_TABLET_TOOL_TIP_DOWN;
-        notify_button (device, time, BTN_TOUCH, button_state);
+
+        clutter_seat_evdev_notify_button (seat_from_device (device), device,
+                                          time_us, BTN_TOUCH, button_state);
         break;
       }
     case LIBINPUT_EVENT_TABLET_PAD_BUTTON:

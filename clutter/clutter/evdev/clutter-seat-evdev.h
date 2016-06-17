@@ -76,6 +76,34 @@ struct _ClutterSeatEvdev
   gfloat accum_scroll_dy;
 };
 
+void clutter_seat_evdev_notify_key (ClutterSeatEvdev   *seat,
+                                    ClutterInputDevice *device,
+                                    uint64_t            time_us,
+                                    uint32_t            key,
+                                    uint32_t            state,
+                                    gboolean            update_keys);
+
+void clutter_seat_evdev_notify_relative_motion (ClutterSeatEvdev   *seat_evdev,
+                                                ClutterInputDevice *input_device,
+                                                uint64_t            time_us,
+                                                float               dx,
+                                                float               dy,
+                                                float               dx_unaccel,
+                                                float               dy_unaccel);
+
+void clutter_seat_evdev_notify_absolute_motion (ClutterSeatEvdev   *seat_evdev,
+                                                ClutterInputDevice *input_device,
+                                                uint64_t            time_us,
+                                                float               x,
+                                                float               y,
+                                                double             *axes);
+
+void clutter_seat_evdev_notify_button (ClutterSeatEvdev   *seat,
+                                       ClutterInputDevice *input_device,
+                                       uint64_t            time_us,
+                                       uint32_t            button,
+                                       uint32_t            state);
+
 void clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev     *seat,
                                            struct libinput_seat *libinput_seat);
 
