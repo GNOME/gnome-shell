@@ -33,7 +33,6 @@ var DIM_BRIGHTNESS = -0.3;
 var DIM_TIME = 0.500;
 var UNDIM_TIME = 0.250;
 
-var DISPLAY_REVERT_TIMEOUT = 20; // in seconds - keep in sync with mutter
 var ONE_SECOND = 1000; // in ms
 
 const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
@@ -64,7 +63,7 @@ var DisplayChangeDialog = new Lang.Class({
 
         this._wm = wm;
 
-        this._countDown = DISPLAY_REVERT_TIMEOUT;
+        this._countDown = Meta.MonitorManager.get_display_configuration_timeout();
 
         let iconName = 'preferences-desktop-display-symbolic';
         let icon = new Gio.ThemedIcon({ name: iconName });
