@@ -64,6 +64,7 @@
  * @META_PREF_DRAGGABLE_BORDER_WIDTH: draggable border width
  * @META_PREF_AUTO_MAXIMIZE: auto-maximize
  * @META_PREF_CENTER_NEW_WINDOWS: center new windows
+ * @META_PREF_DRAG_THRESHOLD: drag threshold
  */
 
 /* Keep in sync with GSettings schemas! */

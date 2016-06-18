@@ -1844,7 +1844,7 @@ meta_preference_to_string (MetaPreference pref)
       return "DRAGGABLE_BORDER_WIDTH";
 
     case META_PREF_DRAG_THRESHOLD:
-      return "DRAG_TRHESHOLD";
+      return "DRAG_THRESHOLD";
 
     case META_PREF_DYNAMIC_WORKSPACES:
       return "DYNAMIC_WORKSPACES";
