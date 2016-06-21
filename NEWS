@@ -1,3 +1,18 @@
+3.21.3
+======
+* Don't create invalid UTF-8 window description strings [Rui; #765535]
+* Convert window titles and wm_class to UTF-8 [Rui; #752788]
+* Communicate tiled state to GTK+ on wayland [Olivier; #766860]
+* Use kill() to force-quit unresponsive wayland clients [Olivier; #767464]
+* Fix window position when unmaximizing via DND on wayland [Olivier; #764180]
+* Avoid full window redraws when using extended frame sync [Florian; #767798]
+
+Contributors:
+  Olivier Fourdan, Rui Matos, Florian Müllner
+
+Translations:
+  Cédric Valmary [oc]
+
 3.21.2
 ======
 * Clean up surface <-> shell interaction [Jonas; #763431]
