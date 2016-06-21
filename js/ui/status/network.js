@@ -5,6 +5,7 @@ const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const NetworkManager = imports.gi.NetworkManager;
 const NMClient = imports.gi.NMClient;
 const NMGtk = imports.gi.NMGtk;
@@ -752,10 +753,9 @@ const NMWirelessDialog = new Lang.Class({
         this._updateSensitivity();
         this._syncView();
 
-        if (accessPoints.length == 0) {
-            /* If there are no visible access points, request a scan */
-            this._device.request_scan_simple(null);
-        }
+        this._scanTimeoutId = Mainloop.timeout_add_seconds(15, Lang.bind(this, this._onScanTimeout));
+        GLib.Source.set_name_by_id(this._scanTimeoutId, '[gnome-shell] this._onScanTimeout');
+        this._onScanTimeout();
     },
 
     destroy: function() {
@@ -780,7 +780,17 @@ const NMWirelessDialog = new Lang.Class({
             this._airplaneModeChangedId = 0;
         }
 
+        if (this._scanTimeoutId) {
+            Mainloop.source_remove(this._scanTimeoutId);
+            this._scanTimeoutId = 0;
+        }
+
         this.parent();
+    },
+
+    _onScanTimeout: function() {
+        this._device.request_scan_simple(null);
+        return GLib.SOURCE_CONTINUE;
     },
 
     _activeApChanged: function() {
