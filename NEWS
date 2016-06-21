@@ -1,3 +1,17 @@
+3.21.3
+======
+ * Do not disable suspend action when locked [Florian; #725960]
+ * Remember input sources MRU list [Cosimo; #766826]
+ * networkAgent: Handle VPN service aliases [David; #658484]
+ * Plug a memory leak [Hans; #710230]
+
+Contributors:
+  Cosimo Cecchi, Florian Müllner, Hans Petter Jansson, David Woodhouse
+
+Translations:
+  Tiago Santos [pt], Cédric Valmary [oc], Muhammet Kara [tr],
+  Daniel Mustieles [es], Rafael Fontenelle [pt_BR]
+
 3.21.2
 ======
 * Fix sorting of hidden apps in app switcher [Florian; #766238]
