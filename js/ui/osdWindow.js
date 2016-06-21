@@ -45,11 +45,42 @@ const LevelBar = new Lang.Class({
     }
 });
 
+const OsdWindowConstraint = new Lang.Class({
+    Name: 'OsdWindowConstraint',
+    Extends: Clutter.Constraint,
+
+    _init: function(props) {
+        this._minSize = 0;
+        this.parent(props);
+    },
+
+    set minSize(v) {
+        this._minSize = v;
+        if (this.actor)
+            this.actor.queue_relayout();
+    },
+
+    vfunc_update_allocation: function(actor, actorBox) {
+        // Clutter will adjust the allocation for margins,
+        // so add it to our minimum size
+        let minSize = this._minSize + actor.margin_top + actor.margin_bottom;
+        let [width, height] = actorBox.get_size();
+
+        // Enforce a ratio of 1
+        let size = Math.ceil(Math.max(minSize, height));
+        actorBox.set_size(size, size);
+
+        // Recenter
+        let [x, y] = actorBox.get_origin();
+        actorBox.set_origin(Math.floor(x + width / 2 - size / 2),
+                            Math.floor(y + height / 2 - size / 2));
+    }
+});
+
 const OsdWindow = new Lang.Class({
     Name: 'OsdWindow',
 
     _init: function(monitorIndex) {
-        this._popupSize = 0;
         this.actor = new St.Widget({ x_expand: true,
                                      y_expand: true,
                                      x_align: Clutter.ActorAlign.CENTER,
@@ -59,18 +90,11 @@ const OsdWindow = new Lang.Class({
         let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
         this.actor.add_constraint(constraint);
 
+        this._boxConstraint = new OsdWindowConstraint();
         this._box = new St.BoxLayout({ style_class: 'osd-window',
                                        vertical: true });
+        this._box.add_constraint(this._boxConstraint);
         this.actor.add_actor(this._box);
-
-        this._box.connect('style-changed', Lang.bind(this, this._onStyleChanged));
-        this._box.connect('notify::height', Lang.bind(this,
-            function() {
-                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
-                    function() {
-                        this._box.width = this._box.height;
-                    }));
-            }));
 
         this._icon = new St.Icon();
         this._box.add(this._icon, { expand: true });
@@ -173,30 +197,12 @@ const OsdWindow = new Lang.Class({
         let scalew = monitor.width / 640.0;
         let scaleh = monitor.height / 480.0;
         let scale = Math.min(scalew, scaleh);
-        this._popupSize = 110 * Math.max(1, scale);
+        let popupSize = 110 * Math.max(1, scale);
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._icon.icon_size = this._popupSize / (2 * scaleFactor);
+        this._icon.icon_size = popupSize / (2 * scaleFactor);
         this._box.translation_y = monitor.height / 4;
-        this._box.style_changed();
-    },
-
-    _onStyleChanged: function() {
-        let themeNode = this._box.get_theme_node();
-        let horizontalPadding = themeNode.get_horizontal_padding();
-        let verticalPadding = themeNode.get_vertical_padding();
-        let topBorder = themeNode.get_border_width(St.Side.TOP);
-        let bottomBorder = themeNode.get_border_width(St.Side.BOTTOM);
-        let leftBorder = themeNode.get_border_width(St.Side.LEFT);
-        let rightBorder = themeNode.get_border_width(St.Side.RIGHT);
-
-        let minWidth = this._popupSize - verticalPadding - leftBorder - rightBorder;
-        let minHeight = this._popupSize - horizontalPadding - topBorder - bottomBorder;
-
-        // minWidth/minHeight here are in real pixels,
-        // but the theme takes measures in unscaled dimensions
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._box.style = 'min-height: %dpx;'.format(Math.max(minWidth, minHeight) / scaleFactor);
+        this._boxConstraint.minSize = popupSize;
     }
 });
 
