@@ -711,7 +711,7 @@ const ScreenShield = new Lang.Class({
         let unitaryDelay = ARROW_ANIMATION_TIME / (arrows.length + 1);
         let maxOpacity = 255 * ARROW_ANIMATION_PEAK_OPACITY;
         for (let i = 0; i < arrows.length; i++) {
-            arrows.opacity = 0;
+            arrows[i].opacity = 0;
             Tweener.addTween(arrows[i],
                              { opacity: 0,
                                delay: unitaryDelay * (N_ARROWS - (i + 1)),
