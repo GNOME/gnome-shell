@@ -287,13 +287,8 @@ st_shadow_helper_paint (StShadowHelper  *helper,
                         ClutterActorBox *actor_box,
                         guint8           paint_opacity)
 {
-  ClutterActorBox allocation;
-  float width, height;
-
-  clutter_actor_box_get_size (actor_box, &width, &height);
-
   _st_paint_shadow_with_opacity (helper->shadow,
                                  helper->pipeline,
-                                 &allocation,
+                                 actor_box,
                                  paint_opacity);
 }
