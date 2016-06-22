@@ -123,6 +123,9 @@ gboolean                   meta_input_settings_handle_pad_button         (MetaIn
                                                                           ClutterInputDevice *pad,
                                                                           gboolean            is_press,
                                                                           guint               button);
+gchar *                    meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_settings,
+                                                                            ClutterInputDevice *pad,
+                                                                            guint               button);
 
 #ifdef HAVE_LIBWACOM
 WacomDevice * meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,

@@ -38,6 +38,7 @@
 #include "native/meta-input-settings-native.h"
 #endif
 
+#include <glib/gi18n-lib.h>
 #include <meta/util.h>
 
 static GQuark quark_tool_settings = 0;
@@ -1439,5 +1440,42 @@ meta_input_settings_handle_pad_button (MetaInputSettings  *input_settings,
     case G_DESKTOP_PAD_BUTTON_ACTION_NONE:
     default:
       return FALSE;
+    }
+}
+
+gchar *
+meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_settings,
+                                                 ClutterInputDevice *pad,
+                                                 guint               button)
+{
+  GDesktopPadButtonAction action;
+
+  g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings), NULL);
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (pad), NULL);
+  g_return_val_if_fail (clutter_input_device_get_device_type (pad) ==
+                        CLUTTER_PAD_DEVICE, NULL);
+
+  action = meta_input_settings_get_pad_button_action (input_settings, pad, button);
+
+  switch (action)
+    {
+    case G_DESKTOP_PAD_BUTTON_ACTION_KEYBINDING:
+      {
+        GSettings *settings;
+        gchar *accel;
+
+        settings = lookup_pad_button_settings (pad, button);
+        accel = g_settings_get_string (settings, "keybinding");
+        g_object_unref (settings);
+
+        return accel;
+      }
+    case G_DESKTOP_PAD_BUTTON_ACTION_SWITCH_MONITOR:
+      return g_strdup (_("Switch monitor"));
+    case G_DESKTOP_PAD_BUTTON_ACTION_HELP:
+      return g_strdup (_("Show on-screen help"));
+    case G_DESKTOP_PAD_BUTTON_ACTION_NONE:
+    default:
+      return NULL;
     }
 }
