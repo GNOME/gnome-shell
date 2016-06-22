@@ -1359,6 +1359,87 @@ meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
 }
 #endif /* HAVE_LIBWACOM */
 
+static gboolean
+cycle_outputs (MetaInputSettings  *settings,
+               MetaOutput         *current_output,
+               MetaOutput        **next_output)
+{
+  MetaInputSettingsPrivate *priv;
+  MetaOutput *next, *outputs;
+  guint n_outputs, current, i;
+
+  priv = meta_input_settings_get_instance_private (settings);
+  outputs = meta_monitor_manager_get_outputs (priv->monitor_manager,
+                                              &n_outputs);
+  if (n_outputs <= 1)
+    return FALSE;
+
+  /* We cycle between:
+   * - the span of all monitors (current_output = NULL)
+   * - each monitor individually.
+   */
+  if (!current_output)
+    {
+      next = &outputs[0];
+    }
+  else
+    {
+      for (i = 0; i < n_outputs; i++)
+        {
+          if (current_output != &outputs[i])
+            continue;
+          current = i;
+          break;
+        }
+
+      g_assert (i < n_outputs);
+
+      if (current == n_outputs - 1)
+        next = NULL;
+      else
+        next = &outputs[current + 1];
+    }
+
+  *next_output = next;
+  return TRUE;
+}
+
+static void
+meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
+                                         ClutterInputDevice *device)
+{
+  MetaInputSettingsPrivate *priv;
+  DeviceMappingInfo *info;
+  MetaOutput *output;
+  const gchar *edid[4] = { 0 };
+
+  g_return_if_fail (META_IS_INPUT_SETTINGS (input_settings));
+  g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
+  g_return_if_fail (clutter_input_device_get_device_type (device) == CLUTTER_TABLET_DEVICE ||
+                    clutter_input_device_get_device_type (device) == CLUTTER_PAD_DEVICE);
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  info = g_hash_table_lookup (priv->mappable_devices, device);
+  g_return_if_fail (info != NULL);
+
+#ifdef HAVE_LIBWACOM
+  /* Output rotation only makes sense on external tablets */
+  if (info->wacom_device &&
+      (libwacom_get_integration_flags (info->wacom_device) != WACOM_DEVICE_INTEGRATED_NONE))
+    return;
+#endif
+
+  output = meta_input_settings_find_output (input_settings,
+                                            info->settings, device);
+  if (!cycle_outputs (input_settings, output, &output))
+    return;
+
+  edid[0] = output ? output->vendor : "";
+  edid[1] = output ? output->product : "";
+  edid[2] = output ? output->serial : "";
+  g_settings_set_strv (info->settings, "display", edid);
+}
+
 static gdouble
 calculate_bezier_position (gdouble pos,
                            gdouble x1,
@@ -1435,6 +1516,9 @@ meta_input_settings_handle_pad_button (MetaInputSettings  *input_settings,
   switch (action)
     {
     case G_DESKTOP_PAD_BUTTON_ACTION_SWITCH_MONITOR:
+      if (is_press)
+        meta_input_settings_cycle_tablet_output (input_settings, pad);
+      return TRUE;
     case G_DESKTOP_PAD_BUTTON_ACTION_KEYBINDING:
     case G_DESKTOP_PAD_BUTTON_ACTION_HELP:
     case G_DESKTOP_PAD_BUTTON_ACTION_NONE:
