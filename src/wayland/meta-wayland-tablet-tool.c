@@ -36,9 +36,11 @@
 #include "meta-wayland-tablet.h"
 #include "meta-wayland-tablet-seat.h"
 #include "meta-wayland-tablet-tool.h"
+#include "backends/meta-input-settings-private.h"
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
+#include <linux/input-event-codes.h>
 #endif
 
 #define TABLET_AXIS_MAX 65535
@@ -651,6 +653,63 @@ broadcast_up (MetaWaylandTabletTool *tool,
     }
 }
 
+static guint32
+translate_button_action (MetaWaylandTabletTool *tool,
+                         const ClutterEvent    *event)
+{
+  MetaInputSettings *input_settings;
+  GDesktopStylusButtonAction action;
+  MetaBackend *backend;
+
+  backend = meta_get_backend ();
+  input_settings = meta_backend_get_input_settings (backend);
+
+  if (input_settings)
+    {
+      ClutterInputDevice *device;
+
+      device = clutter_event_get_source_device (event);
+      action = meta_input_settings_get_stylus_button_action (input_settings,
+                                                             tool->device_tool,
+                                                             device,
+                                                             event->button.button);
+    }
+  else
+    {
+      action = G_DESKTOP_STYLUS_BUTTON_ACTION_DEFAULT;
+    }
+
+  switch (action)
+    {
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_MIDDLE:
+      return BTN_STYLUS;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_RIGHT:
+      return BTN_STYLUS2;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_BACK:
+      return BTN_BACK;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_FORWARD:
+      return BTN_FORWARD;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_DEFAULT:
+    default:
+      {
+#ifdef HAVE_NATIVE_BACKEND
+        MetaBackend *backend = meta_get_backend ();
+        if (META_IS_BACKEND_NATIVE (backend))
+          {
+            return clutter_evdev_event_get_event_code (event);
+          }
+        else
+#endif
+          {
+            /* We can't do much better here, there's several
+             * different BTN_ ranges to cover.
+             */
+            return event->button.button;
+          }
+      }
+    }
+}
+
 static void
 broadcast_button (MetaWaylandTabletTool *tool,
                   const ClutterEvent    *event)
@@ -658,21 +717,8 @@ broadcast_button (MetaWaylandTabletTool *tool,
   struct wl_resource *resource;
   guint32 button;
 
+  button = translate_button_action (tool, event);
   tool->button_serial = wl_display_next_serial (tool->seat->manager->wl_display);
-
-#ifdef HAVE_NATIVE_BACKEND
-  MetaBackend *backend = meta_get_backend ();
-  if (META_IS_BACKEND_NATIVE (backend))
-    button = clutter_evdev_event_get_event_code (event);
-  else
-#endif
-    {
-      /* We can't do much better here, there's several
-       * different BTN_ ranges to cover.
-       */
-      button = event->button.button;
-    }
-
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
     {
