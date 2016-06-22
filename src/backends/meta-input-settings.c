@@ -618,8 +618,17 @@ update_tablet_keep_aspect (MetaInputSettings  *input_settings,
     return;
 
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
-  keep_aspect = g_settings_get_boolean (settings, "keep-aspect");
-  output = meta_input_settings_find_output (input_settings, settings, device);
+
+  if (clutter_input_device_get_mapping_mode (device) ==
+      CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE)
+    {
+      keep_aspect = g_settings_get_boolean (settings, "keep-aspect");
+      output = meta_input_settings_find_output (input_settings, settings, device);
+    }
+  else
+    {
+      keep_aspect = FALSE;
+    }
 
   input_settings_class->set_tablet_keep_aspect (input_settings, device,
                                                 output, keep_aspect);
@@ -641,7 +650,14 @@ update_device_display (MetaInputSettings  *input_settings,
 
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
-  output = meta_input_settings_find_output (input_settings, settings, device);
+
+  /* If mapping is relative, the device can move on all displays */
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE ||
+      clutter_input_device_get_mapping_mode (device) ==
+      CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE)
+    output = meta_input_settings_find_output (input_settings, settings, device);
+  else
+    output = NULL;
 
   if (output)
     meta_monitor_manager_get_monitor_matrix (priv->monitor_manager,
