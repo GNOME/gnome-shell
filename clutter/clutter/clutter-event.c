@@ -819,9 +819,15 @@ clutter_event_get_button (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
   g_return_val_if_fail (event->type == CLUTTER_BUTTON_PRESS ||
-                        event->type == CLUTTER_BUTTON_RELEASE, 0);
+                        event->type == CLUTTER_BUTTON_RELEASE ||
+			event->type == CLUTTER_PAD_BUTTON_PRESS ||
+			event->type == CLUTTER_PAD_BUTTON_RELEASE, 0);
 
-  return event->button.button;
+  if (event->type == CLUTTER_BUTTON_PRESS ||
+      event->type == CLUTTER_BUTTON_RELEASE)
+    return event->button.button;
+  else
+    return event->pad_button.button;
 }
 
 /**
