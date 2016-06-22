@@ -377,6 +377,22 @@ const Arrow = new Lang.Class({
         cr.$dispose();
     },
 
+    vfunc_get_paint_volume: function(volume) {
+        if (!this.parent(volume))
+            return false;
+
+        if (!this._shadow)
+            return true;
+
+        let shadow_box = new Clutter.ActorBox();
+        this._shadow.get_box(this._drawingArea.get_allocation_box(), shadow_box);
+
+        volume.set_width(Math.max(shadow_box.x2 - shadow_box.x1, volume.get_width()));
+        volume.set_height(Math.max(shadow_box.y2 - shadow_box.y1, volume.get_height()));
+
+        return true;
+    },
+
     vfunc_style_changed: function() {
         let node = this.get_theme_node();
         this._shadow = node.get_shadow('-arrow-shadow');
