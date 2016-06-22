@@ -62,6 +62,14 @@ clutter_virtual_input_device_evdev_notify_relative_motion (ClutterVirtualInputDe
                                                            double                     dx,
                                                            double                     dy)
 {
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+
+  clutter_seat_evdev_notify_relative_motion (virtual_evdev->seat,
+                                             virtual_evdev->device,
+                                             time_us,
+                                             dx, dy,
+                                             dx, dy);
 }
 
 static void
@@ -70,6 +78,14 @@ clutter_virtual_input_device_evdev_notify_absolute_motion (ClutterVirtualInputDe
                                                            double                     x,
                                                            double                     y)
 {
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+
+  clutter_seat_evdev_notify_absolute_motion (virtual_evdev->seat,
+                                             virtual_evdev->device,
+                                             time_us,
+                                             x, y,
+                                             NULL);
 }
 
 static void
