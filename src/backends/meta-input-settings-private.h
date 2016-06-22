@@ -110,6 +110,11 @@ GDesktopStylusButtonAction meta_input_settings_get_stylus_button_action (MetaInp
                                                                          ClutterInputDeviceTool *tool,
                                                                          ClutterInputDevice     *current_device,
                                                                          guint                   button);
+gdouble                    meta_input_settings_translate_tablet_tool_pressure (MetaInputSettings      *input_settings,
+                                                                               ClutterInputDeviceTool *tool,
+                                                                               ClutterInputDevice     *current_tablet,
+                                                                               gdouble                 pressure);
+
 #ifdef HAVE_LIBWACOM
 WacomDevice * meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
                                                            ClutterInputDevice *device);
