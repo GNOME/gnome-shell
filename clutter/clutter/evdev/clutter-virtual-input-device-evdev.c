@@ -27,12 +27,27 @@
 
 #include <glib-object.h>
 
+#include "clutter-private.h"
 #include "clutter-virtual-input-device.h"
+#include "evdev/clutter-seat-evdev.h"
 #include "evdev/clutter-virtual-input-device-evdev.h"
+
+enum
+{
+  PROP_0,
+
+  PROP_SEAT,
+
+  PROP_LAST
+};
+
+static GParamSpec *obj_props[PROP_LAST];
 
 struct _ClutterVirtualInputDeviceEvdev
 {
   ClutterVirtualInputDevice parent;
+
+  ClutterSeatEvdev *seat;
 };
 
 G_DEFINE_TYPE (ClutterVirtualInputDeviceEvdev,
@@ -72,6 +87,46 @@ clutter_virtual_input_device_evdev_notify_key (ClutterVirtualInputDevice *virtua
 }
 
 static void
+clutter_virtual_input_device_evdev_get_property (GObject    *object,
+                                                 guint       prop_id,
+                                                 GValue     *value,
+                                                 GParamSpec *pspec)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (object);
+
+  switch (prop_id)
+    {
+    case PROP_SEAT:
+      g_value_set_pointer (value, virtual_evdev->seat);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_virtual_input_device_evdev_set_property (GObject      *object,
+                                                 guint         prop_id,
+                                                 const GValue *value,
+                                                 GParamSpec   *pspec)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (object);
+
+  switch (prop_id)
+    {
+    case PROP_SEAT:
+      virtual_evdev->seat = g_value_get_pointer (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_virtual_input_device_evdev_init (ClutterVirtualInputDeviceEvdev *virtual_device_evdev)
 {
 }
@@ -79,11 +134,22 @@ clutter_virtual_input_device_evdev_init (ClutterVirtualInputDeviceEvdev *virtual
 static void
 clutter_virtual_input_device_evdev_class_init (ClutterVirtualInputDeviceEvdevClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterVirtualInputDeviceClass *virtual_input_device_class =
     CLUTTER_VIRTUAL_INPUT_DEVICE_CLASS (klass);
+
+  object_class->get_property = clutter_virtual_input_device_evdev_get_property;
+  object_class->set_property = clutter_virtual_input_device_evdev_set_property;
 
   virtual_input_device_class->notify_relative_motion = clutter_virtual_input_device_evdev_notify_relative_motion;
   virtual_input_device_class->notify_absolute_motion = clutter_virtual_input_device_evdev_notify_absolute_motion;
   virtual_input_device_class->notify_button = clutter_virtual_input_device_evdev_notify_button;
   virtual_input_device_class->notify_key = clutter_virtual_input_device_evdev_notify_key;
+
+  obj_props[PROP_SEAT] = g_param_spec_pointer ("seat",
+                                               P_("ClutterSeatEvdev"),
+                                               P_("ClutterSeatEvdev"),
+                                               CLUTTER_PARAM_READWRITE |
+                                               G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 }

@@ -1959,8 +1959,13 @@ static ClutterVirtualInputDevice *
 clutter_device_manager_evdev_create_virtual_device (ClutterDeviceManager  *manager,
                                                     ClutterInputDeviceType device_type)
 {
+  ClutterDeviceManagerEvdev *manager_evdev =
+    CLUTTER_DEVICE_MANAGER_EVDEV (manager);
+  ClutterDeviceManagerEvdevPrivate *priv = manager_evdev->priv;
+
   return g_object_new (CLUTTER_TYPE_VIRTUAL_INPUT_DEVICE_EVDEV,
                        "device-manager", manager,
+                       "seat", priv->main_seat,
                        "device-type", device_type,
                        NULL);
 }
