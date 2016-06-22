@@ -53,6 +53,7 @@
 #include "backends/native/meta-backend-native.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "backends/meta-stage.h"
+#include "backends/meta-input-settings-private.h"
 #include <clutter/x11/clutter-x11.h>
 
 #ifdef HAVE_RANDR
@@ -75,6 +76,8 @@
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-xwayland-private.h"
+#include "wayland/meta-wayland-tablet-seat.h"
+#include "wayland/meta-wayland-tablet-pad.h"
 #endif
 
 /*
@@ -3069,4 +3072,51 @@ meta_display_set_alarm_filter (MetaDisplay    *display,
 
   display->alarm_filter = filter;
   display->alarm_filter_data = data;
+}
+
+gchar *
+meta_display_get_pad_action_label (MetaDisplay        *display,
+                                   ClutterInputDevice *pad,
+                                   MetaPadActionType   action_type,
+                                   guint               action_number)
+{
+  gchar *label;
+
+  /* First, lookup the action, as imposed by settings */
+  if (action_type == META_PAD_ACTION_BUTTON)
+    {
+      MetaInputSettings *settings;
+
+      settings = meta_backend_get_input_settings (meta_get_backend ());
+      label = meta_input_settings_get_pad_button_action_label (settings, pad, action_number);
+      if (label)
+        return label;
+    }
+
+#ifdef HAVE_WAYLAND
+  /* Second, if this wayland, lookup the actions set by the clients */
+  if (meta_is_wayland_compositor ())
+    {
+      MetaWaylandCompositor *compositor;
+      MetaWaylandTabletSeat *tablet_seat;
+      MetaWaylandTabletPad *tablet_pad = NULL;
+
+      compositor = meta_wayland_compositor_get_default ();
+      tablet_seat = meta_wayland_tablet_manager_ensure_seat (compositor->tablet_manager,
+                                                             compositor->seat);
+      if (tablet_seat)
+        tablet_pad = meta_wayland_tablet_seat_lookup_pad (tablet_seat, pad);
+
+      if (tablet_pad)
+        {
+          label = meta_wayland_tablet_pad_get_label (tablet_pad, action_type,
+                                                     action_number);
+        }
+
+      if (label)
+        return label;
+    }
+#endif
+
+  return NULL;
 }
