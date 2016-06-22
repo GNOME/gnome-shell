@@ -115,6 +115,15 @@ gdouble                    meta_input_settings_translate_tablet_tool_pressure (M
                                                                                ClutterInputDevice     *current_tablet,
                                                                                gdouble                 pressure);
 
+gboolean                   meta_input_settings_is_pad_button_grabbed     (MetaInputSettings  *input_settings,
+                                                                          ClutterInputDevice *pad,
+                                                                          guint               button);
+
+gboolean                   meta_input_settings_handle_pad_button         (MetaInputSettings  *input_settings,
+                                                                          ClutterInputDevice *pad,
+                                                                          gboolean            is_press,
+                                                                          guint               button);
+
 #ifdef HAVE_LIBWACOM
 WacomDevice * meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
                                                            ClutterInputDevice *device);

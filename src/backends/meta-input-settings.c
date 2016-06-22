@@ -1036,6 +1036,25 @@ lookup_tool_settings (ClutterInputDeviceTool *tool,
   return tool_settings;
 }
 
+static GSettings *
+lookup_pad_button_settings (ClutterInputDevice *device,
+                            guint               button)
+{
+  const gchar *vendor, *product;
+  GSettings *settings;
+  gchar *path;
+
+  vendor = clutter_input_device_get_vendor_id (device);
+  product = clutter_input_device_get_product_id (device);
+  path = g_strdup_printf ("/org/gnome/desktop/peripherals/tablets/%s:%s/button%c/",
+                          vendor, product, 'A' + button);
+  settings = g_settings_new_with_path ("org.gnome.desktop.peripherals.tablet.pad-button",
+                                       path);
+  g_free (path);
+
+  return settings;
+}
+
 static void
 monitors_changed_cb (MetaMonitorManager *monitor_manager,
                      MetaInputSettings  *input_settings)
@@ -1300,6 +1319,26 @@ meta_input_settings_get_stylus_button_action (MetaInputSettings      *input_sett
     return G_DESKTOP_STYLUS_BUTTON_ACTION_DEFAULT;
 }
 
+static GDesktopPadButtonAction
+meta_input_settings_get_pad_button_action (MetaInputSettings   *input_settings,
+                                           ClutterInputDevice  *pad,
+                                           guint                button)
+{
+  GDesktopPadButtonAction action;
+  GSettings *settings;
+
+  g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings),
+                        G_DESKTOP_PAD_BUTTON_ACTION_NONE);
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (pad),
+                        G_DESKTOP_PAD_BUTTON_ACTION_NONE);
+
+  settings = lookup_pad_button_settings (pad, button);
+  action = g_settings_get_enum (settings, "action");
+  g_object_unref (settings);
+
+  return action;
+}
+
 #ifdef HAVE_LIBWACOM
 WacomDevice *
 meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
@@ -1361,4 +1400,44 @@ meta_input_settings_translate_tablet_tool_pressure (MetaInputSettings      *inpu
                                         tool_settings->curve[2],
                                         tool_settings->curve[3]);
   return pressure;
+}
+
+gboolean
+meta_input_settings_is_pad_button_grabbed (MetaInputSettings  *input_settings,
+                                           ClutterInputDevice *pad,
+                                           guint               button)
+{
+  g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (pad), FALSE);
+  g_return_val_if_fail (clutter_input_device_get_device_type (pad) ==
+                        CLUTTER_PAD_DEVICE, FALSE);
+
+  return (meta_input_settings_get_pad_button_action (input_settings, pad, button) !=
+          G_DESKTOP_PAD_BUTTON_ACTION_NONE);
+}
+
+gboolean
+meta_input_settings_handle_pad_button (MetaInputSettings  *input_settings,
+                                       ClutterInputDevice *pad,
+                                       gboolean            is_press,
+                                       guint               button)
+{
+  GDesktopPadButtonAction action;
+
+  g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (pad), FALSE);
+  g_return_val_if_fail (clutter_input_device_get_device_type (pad) ==
+                        CLUTTER_PAD_DEVICE, FALSE);
+
+  action = meta_input_settings_get_pad_button_action (input_settings, pad, button);
+
+  switch (action)
+    {
+    case G_DESKTOP_PAD_BUTTON_ACTION_SWITCH_MONITOR:
+    case G_DESKTOP_PAD_BUTTON_ACTION_KEYBINDING:
+    case G_DESKTOP_PAD_BUTTON_ACTION_HELP:
+    case G_DESKTOP_PAD_BUTTON_ACTION_NONE:
+    default:
+      return FALSE;
+    }
 }
