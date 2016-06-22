@@ -94,4 +94,6 @@ void clutter_virtual_input_device_notify_key (ClutterVirtualInputDevice *virtual
 
 ClutterDeviceManager * clutter_virtual_input_device_get_manager (ClutterVirtualInputDevice *virtual_device);
 
+int clutter_virtual_input_device_get_device_type (ClutterVirtualInputDevice *virtual_device);
+
 #endif /* __CLUTTER_VIRTUAL_INPUT_DEVICE_H__ */
