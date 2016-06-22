@@ -744,6 +744,24 @@ broadcast_axis (MetaWaylandTabletTool *tool,
   if (!clutter_input_device_get_axis_value (source, event->motion.axes, axis, &val))
     return;
 
+  if (axis == CLUTTER_INPUT_AXIS_PRESSURE)
+    {
+      MetaInputSettings *input_settings;
+      ClutterInputDevice *device;
+      MetaBackend *backend;
+
+      backend = meta_get_backend ();
+      input_settings = meta_backend_get_input_settings (backend);
+      device = clutter_event_get_source_device (event);
+
+      if (input_settings)
+        {
+          val = meta_input_settings_translate_tablet_tool_pressure (input_settings,
+                                                                    tool->device_tool,
+                                                                    device, val);
+        }
+    }
+
   value = val * TABLET_AXIS_MAX;
 
   wl_resource_for_each (resource, &tool->focus_resource_list)
