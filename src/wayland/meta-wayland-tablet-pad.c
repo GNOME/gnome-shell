@@ -29,6 +29,7 @@
 
 #include <wayland-server.h>
 #include "tablet-unstable-v2-server-protocol.h"
+#include "backends/meta-input-settings-private.h"
 
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-private.h"
@@ -233,6 +234,44 @@ handle_pad_button_event (MetaWaylandTabletPad *pad,
   return TRUE;
 }
 
+static void
+meta_wayland_tablet_pad_update_action (MetaWaylandTabletPad *pad,
+                                       const ClutterEvent   *event)
+{
+  MetaInputSettings *input_settings;
+  ClutterInputDevice *device;
+  guint button;
+
+  button = event->pad_button.button;
+  device = clutter_event_get_source_device (event);
+  input_settings = meta_backend_get_input_settings (meta_get_backend ());
+
+  if (!input_settings)
+    return;
+
+  meta_input_settings_handle_pad_button (input_settings, device,
+                                         event->type == CLUTTER_PAD_BUTTON_PRESS,
+                                         button);
+}
+
+static gboolean
+meta_wayland_tablet_pad_handle_event_action (MetaWaylandTabletPad *pad,
+                                             const ClutterEvent   *event)
+{
+  MetaInputSettings *input_settings;
+  ClutterInputDevice *device;
+
+  device = clutter_event_get_source_device (event);
+  input_settings = meta_backend_get_input_settings (meta_get_backend ());
+
+  if (input_settings &&
+      meta_input_settings_is_pad_button_grabbed (input_settings, device,
+                                                 event->pad_button.button))
+    return TRUE;
+
+  return FALSE;
+}
+
 gboolean
 meta_wayland_tablet_pad_handle_event (MetaWaylandTabletPad *pad,
                                       const ClutterEvent   *event)
@@ -250,6 +289,8 @@ meta_wayland_tablet_pad_handle_event (MetaWaylandTabletPad *pad,
     case CLUTTER_PAD_BUTTON_RELEASE:
       if (group)
         handled |= meta_wayland_tablet_pad_group_handle_event (group, event);
+
+      handled |= meta_wayland_tablet_pad_handle_event_action (pad, event);
 
       if (handled)
         return TRUE;
@@ -406,6 +447,8 @@ meta_wayland_tablet_pad_update (MetaWaylandTabletPad *pad,
     {
     case CLUTTER_PAD_BUTTON_PRESS:
     case CLUTTER_PAD_BUTTON_RELEASE:
+      meta_wayland_tablet_pad_update_action (pad, event);
+      break;
     case CLUTTER_PAD_RING:
     case CLUTTER_PAD_STRIP:
     default:
