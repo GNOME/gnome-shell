@@ -26,6 +26,7 @@ const ModalDialog = imports.ui.modalDialog;
 const OsdWindow = imports.ui.osdWindow;
 const OsdMonitorLabeler = imports.ui.osdMonitorLabeler;
 const Overview = imports.ui.overview;
+const PadOsd = imports.ui.padOsd;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const RunDialog = imports.ui.runDialog;
@@ -61,6 +62,7 @@ let screenShield = null;
 let notificationDaemon = null;
 let windowAttentionHandler = null;
 let ctrlAltTabManager = null;
+let padOsdService = null;
 let osdWindowManager = null;
 let osdMonitorLabeler = null;
 let sessionMode = null;
@@ -155,6 +157,7 @@ function _initializeUI() {
     // working until it's updated.
     uiGroup = layoutManager.uiGroup;
 
+    padOsdService = new PadOsd.PadOsdService();
     screencastService = new Screencast.ScreencastService();
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();

@@ -38,6 +38,7 @@ endif
 
 introspectiondir = $(datadir)/dbus-1/interfaces
 introspection_DATA =				\
+	org.gnome.Shell.PadOsd.xml		\
 	org.gnome.Shell.Screencast.xml		\
 	org.gnome.Shell.Screenshot.xml		\
 	org.gnome.ShellSearchProvider.xml	\
@@ -115,6 +116,7 @@ EXTRA_DIST =						\
 	$(convert_DATA)					\
 	$(keys_DATA)					\
 	$(dist_theme_files)				\
+	pad-osd.css					\
 	perf-background.xml.in				\
 	org.gnome.Shell.PortalHelper.desktop.in.in	\
 	org.gnome.Shell.PortalHelper.service.in		\

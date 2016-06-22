@@ -39,6 +39,7 @@ js/ui/mpris.js
 js/ui/notificationDaemon.js
 js/ui/overviewControls.js
 js/ui/overview.js
+js/ui/padOsd.js
 js/ui/panel.js
 js/ui/popupMenu.js
 js/ui/runDialog.js

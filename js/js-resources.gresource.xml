@@ -72,6 +72,7 @@
     <file>ui/osdMonitorLabeler.js</file>
     <file>ui/overview.js</file>
     <file>ui/overviewControls.js</file>
+    <file>ui/padOsd.js</file>
     <file>ui/panel.js</file>
     <file>ui/panelMenu.js</file>
     <file>ui/pointerWatcher.js</file>

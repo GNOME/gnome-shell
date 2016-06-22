@@ -17,6 +17,7 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
+const PadOsd = imports.ui.padOsd;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
@@ -917,6 +918,7 @@ const WindowManager = new Lang.Class({
                            Lang.bind(this, this._toggleCalendar));
 
         global.display.connect('show-resize-popup', Lang.bind(this, this._showResizePopup));
+        global.display.connect('show-pad-osd', Lang.bind(this, this._showPadOsd));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -946,7 +948,13 @@ const WindowManager = new Lang.Class({
         gesture = new AppSwitchAction();
         gesture.connect('activated', Lang.bind(this, this._switchApp));
         global.stage.add_action(gesture);
+    },
 
+    _showPadOsd: function (display, device, settings, imagePath, editionMode, monitorIndex) {
+        this._currentPadOsd = new PadOsd.PadOsd(device, settings, imagePath, editionMode, monitorIndex);
+        this._currentPadOsd.connect('closed', Lang.bind(this, function() { this._currentPadOsd = null }));
+
+        return this._currentPadOsd.actor;
     },
 
     _actionSwitchWorkspace: function(action, direction) {
