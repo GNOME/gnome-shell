@@ -106,6 +106,10 @@ MetaInputSettings * meta_input_settings_create (void);
 GDesktopTabletMapping meta_input_settings_get_tablet_mapping (MetaInputSettings  *settings,
                                                               ClutterInputDevice *device);
 
+GDesktopStylusButtonAction meta_input_settings_get_stylus_button_action (MetaInputSettings      *settings,
+                                                                         ClutterInputDeviceTool *tool,
+                                                                         ClutterInputDevice     *current_device,
+                                                                         guint                   button);
 #ifdef HAVE_LIBWACOM
 WacomDevice * meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
                                                            ClutterInputDevice *device);
