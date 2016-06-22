@@ -277,6 +277,8 @@ struct _MetaDisplay
   int xinput_event_base;
   int xinput_opcode;
 
+  ClutterActor *current_pad_osd;
+
   MetaStartupNotification *startup_notification;
 
   int xsync_event_base;

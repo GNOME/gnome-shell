@@ -188,6 +188,9 @@ void meta_display_unfreeze_keyboard (MetaDisplay *display,
 gboolean meta_display_is_pointer_emulating_sequence (MetaDisplay          *display,
                                                      ClutterEventSequence *sequence);
 
+void    meta_display_request_pad_osd      (MetaDisplay        *display,
+                                           ClutterInputDevice *pad,
+                                           gboolean            edition_mode);
 gchar * meta_display_get_pad_action_label (MetaDisplay        *display,
                                            ClutterInputDevice *pad,
                                            MetaPadActionType   action_type,
