@@ -129,6 +129,7 @@ enum
   RESTART,
   SHOW_RESIZE_POPUP,
   GL_VIDEO_MEMORY_PURGED,
+  SHOW_PAD_OSD,
   LAST_SIGNAL
 };
 
@@ -353,6 +354,25 @@ meta_display_class_init (MetaDisplayClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+
+  /**
+   * MetaDisplay::show-pad-osd:
+   * @display: the #MetaDisplay instance
+   * @pad: the pad device
+   * @settings: the pad device settings
+   * @edition_mode: Whether the OSD should be shown in edition mode
+   *
+   * Requests the pad button mapping OSD to be shown.
+   *
+   * Returns: (transfer none) (nullable): The OSD actor
+   */
+  display_signals[SHOW_PAD_OSD] =
+    g_signal_new ("show-pad-osd",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  CLUTTER_TYPE_ACTOR, 3, CLUTTER_TYPE_INPUT_DEVICE,
+                  G_TYPE_SETTINGS, G_TYPE_BOOLEAN);
 
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
