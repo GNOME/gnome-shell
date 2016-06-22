@@ -28,6 +28,7 @@
 #define __CLUTTER_SEAT_EVDEV_H__
 
 #include <libinput.h>
+#include <linux/input.h>
 
 #include "clutter-input-device.h"
 #include "clutter-device-manager-evdev.h"
@@ -58,6 +59,7 @@ struct _ClutterSeatEvdev
   xkb_led_index_t num_lock_led;
   xkb_led_index_t scroll_lock_led;
   uint32_t button_state;
+  int button_count[KEY_CNT];
 
   /* keyboard repeat */
   gboolean repeat;

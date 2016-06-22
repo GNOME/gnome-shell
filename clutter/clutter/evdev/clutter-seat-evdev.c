@@ -205,6 +205,25 @@ queue_event (ClutterEvent *event)
   _clutter_event_push (event, FALSE);
 }
 
+static int
+update_button_count (ClutterSeatEvdev *seat,
+                     uint32_t          button,
+                     uint32_t          state)
+{
+  if (state)
+    {
+      return ++seat->button_count[button];
+    }
+  else
+    {
+      /* Handle cases where we newer saw the initial pressed event. */
+      if (seat->button_count[button] == 0)
+        return 0;
+
+      return --seat->button_count[button];
+    }
+}
+
 void
 clutter_seat_evdev_notify_key (ClutterSeatEvdev   *seat,
                                ClutterInputDevice *device,
@@ -216,6 +235,16 @@ clutter_seat_evdev_notify_key (ClutterSeatEvdev   *seat,
   ClutterStage *stage;
   ClutterEvent *event = NULL;
   enum xkb_state_component changed_state;
+
+  if (state != AUTOREPEAT_VALUE)
+    {
+      /* Drop any repeated button press (for example from virtual devices. */
+      int count = update_button_count (seat, key, state);
+      if (state && count > 1)
+        return;
+      if (!state && count != 0)
+        return;
+    }
 
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
@@ -410,6 +439,14 @@ clutter_seat_evdev_notify_button (ClutterSeatEvdev   *seat,
       CLUTTER_BUTTON1_MASK, CLUTTER_BUTTON3_MASK, CLUTTER_BUTTON2_MASK,
       CLUTTER_BUTTON4_MASK, CLUTTER_BUTTON5_MASK, 0, 0, 0
     };
+  int button_count;
+
+  /* Drop any repeated button press (for example from virtual devices. */
+  button_count = update_button_count (seat, button, state);
+  if (state && button_count > 1)
+    return;
+  if (!state && button_count != 0)
+    return;
 
   /* We can drop the event on the floor if no stage has been
    * associated with the device yet. */
