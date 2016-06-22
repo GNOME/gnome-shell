@@ -29,6 +29,7 @@
 
 #include "clutter-private.h"
 #include "clutter-virtual-input-device.h"
+#include "evdev/clutter-input-device-evdev.h"
 #include "evdev/clutter-seat-evdev.h"
 #include "evdev/clutter-virtual-input-device-evdev.h"
 
@@ -47,6 +48,7 @@ struct _ClutterVirtualInputDeviceEvdev
 {
   ClutterVirtualInputDevice parent;
 
+  ClutterInputDevice *device;
   ClutterSeatEvdev *seat;
 };
 
@@ -127,6 +129,45 @@ clutter_virtual_input_device_evdev_set_property (GObject      *object,
 }
 
 static void
+clutter_virtual_input_device_evdev_constructed (GObject *object)
+{
+  ClutterVirtualInputDevice *virtual_device =
+    CLUTTER_VIRTUAL_INPUT_DEVICE (object);
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (object);
+  ClutterDeviceManager *manager;
+  ClutterInputDeviceType device_type;
+  ClutterStage *stage;
+
+  manager = clutter_virtual_input_device_get_manager (virtual_device);
+  device_type = clutter_virtual_input_device_get_device_type (virtual_device);
+
+  virtual_evdev->device =
+    _clutter_input_device_evdev_new_virtual (manager,
+                                             virtual_evdev->seat,
+                                             device_type);
+
+  stage = _clutter_device_manager_evdev_get_stage (CLUTTER_DEVICE_MANAGER_EVDEV (manager));
+  _clutter_input_device_set_stage (virtual_evdev->device, stage);
+}
+
+static void
+clutter_virtual_input_device_evdev_finalize (GObject *object)
+{
+  ClutterVirtualInputDevice *virtual_device =
+    CLUTTER_VIRTUAL_INPUT_DEVICE (object);
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (object);
+  GObjectClass *object_class;
+
+  g_clear_object (&virtual_evdev->device);
+
+  object_class =
+    G_OBJECT_CLASS (clutter_virtual_input_device_evdev_parent_class);
+  object_class->finalize (object);
+}
+
+static void
 clutter_virtual_input_device_evdev_init (ClutterVirtualInputDeviceEvdev *virtual_device_evdev)
 {
 }
@@ -140,6 +181,8 @@ clutter_virtual_input_device_evdev_class_init (ClutterVirtualInputDeviceEvdevCla
 
   object_class->get_property = clutter_virtual_input_device_evdev_get_property;
   object_class->set_property = clutter_virtual_input_device_evdev_set_property;
+  object_class->constructed = clutter_virtual_input_device_evdev_constructed;
+  object_class->finalize = clutter_virtual_input_device_evdev_finalize;
 
   virtual_input_device_class->notify_relative_motion = clutter_virtual_input_device_evdev_notify_relative_motion;
   virtual_input_device_class->notify_absolute_motion = clutter_virtual_input_device_evdev_notify_absolute_motion;
