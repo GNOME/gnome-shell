@@ -73,4 +73,8 @@ gboolean     meta_wayland_tablet_pad_handle_event        (MetaWaylandTabletPad *
 void         meta_wayland_tablet_pad_set_focus           (MetaWaylandTabletPad *pad,
                                                           MetaWaylandSurface   *surface);
 
+gchar *      meta_wayland_tablet_pad_get_label           (MetaWaylandTabletPad *pad,
+							  MetaPadActionType     type,
+							  guint                 action);
+
 #endif /* META_WAYLAND_TABLET_PAD_H */

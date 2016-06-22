@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <glib/gi18n-lib.h>
 
 #include <wayland-server.h>
 #include "tablet-unstable-v2-server-protocol.h"
@@ -454,4 +455,72 @@ meta_wayland_tablet_pad_update (MetaWaylandTabletPad *pad,
     default:
       break;
     }
+}
+
+static gchar *
+meta_wayland_tablet_pad_label_mode_switch_button (MetaWaylandTabletPad *pad,
+                                                  guint                 button)
+{
+  MetaWaylandTabletPadGroup *group;
+  GList *l;
+
+  for (l = pad->groups; l; l = l->next)
+    {
+      group = l->data;
+
+      if (meta_wayland_tablet_pad_group_is_mode_switch_button (group, button))
+        return g_strdup_printf (_("Mode Switch: Mode %d"), group->current_mode + 1);
+    }
+
+  return NULL;
+}
+
+gchar *
+meta_wayland_tablet_pad_get_label (MetaWaylandTabletPad *pad,
+				   MetaPadActionType     type,
+				   guint                 action)
+{
+  const gchar *label = NULL;
+  gchar *mode_label;
+
+  switch (type)
+    {
+    case META_PAD_ACTION_BUTTON:
+      mode_label = meta_wayland_tablet_pad_label_mode_switch_button (pad, action);
+      if (mode_label)
+        return mode_label;
+
+      label = g_hash_table_lookup (pad->feedback, GUINT_TO_POINTER (action));
+      break;
+    case META_PAD_ACTION_RING:
+      {
+        MetaWaylandTabletPadGroup *group;
+        MetaWaylandTabletPadRing *ring;
+
+        /* FIXME: Assuming each group gets 1 */
+        group = g_list_nth_data (pad->groups, action);
+        if (!group)
+          break;
+        ring = g_list_nth_data (group->rings, 0);
+        if (ring)
+          label = ring->feedback;
+        break;
+      }
+    case META_PAD_ACTION_STRIP:
+      {
+        MetaWaylandTabletPadGroup *group;
+        MetaWaylandTabletPadStrip *strip;
+
+        /* FIXME: Assuming each group gets 1 */
+        group = g_list_nth_data (pad->groups, action);
+        if (!group)
+          break;
+        strip = g_list_nth_data (group->strips, 0);
+        if (strip)
+          label = strip->feedback;
+        break;
+      }
+    }
+
+  return g_strdup (label);
 }
