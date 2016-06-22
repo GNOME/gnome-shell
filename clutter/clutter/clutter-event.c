@@ -2108,3 +2108,24 @@ clutter_event_get_scroll_finish_flags (const ClutterEvent *event)
 
   return event->scroll.finish_flags;
 }
+
+guint
+clutter_event_get_mode_group (const ClutterEvent *event)
+{
+  g_return_val_if_fail (event->type == CLUTTER_PAD_BUTTON_PRESS ||
+                        event->type == CLUTTER_PAD_BUTTON_RELEASE ||
+                        event->type == CLUTTER_PAD_RING ||
+                        event->type == CLUTTER_PAD_STRIP, 0);
+  switch (event->type)
+    {
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+      return event->pad_button.group;
+    case CLUTTER_PAD_RING:
+      return event->pad_ring.group;
+    case CLUTTER_PAD_STRIP:
+      return event->pad_strip.group;
+    default:
+      return 0;
+    }
+}

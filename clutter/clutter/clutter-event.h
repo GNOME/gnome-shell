@@ -771,6 +771,10 @@ void                    clutter_event_get_gesture_motion_delta       (const Clut
 ClutterScrollSource      clutter_event_get_scroll_source             (const ClutterEvent     *event);
 ClutterScrollFinishFlags clutter_event_get_scroll_finish_flags       (const ClutterEvent     *event);
 
+CLUTTER_AVAILABLE_IN_ALL
+guint                    clutter_event_get_mode_group                (const ClutterEvent     *event);
+
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVENT_H__ */
