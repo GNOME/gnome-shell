@@ -387,15 +387,9 @@ meta_wayland_tablet_seat_update (MetaWaylandTabletSeat *tablet_seat,
   ClutterInputDevice *device;
   ClutterInputDeviceTool *device_tool;
   MetaWaylandTabletTool *tool = NULL;
+  MetaWaylandTabletPad *pad = NULL;
 
   device = clutter_event_get_source_device (event);
-  device_tool = clutter_event_get_device_tool (event);
-
-  if (device && device_tool)
-    tool = meta_wayland_tablet_seat_ensure_tool (tablet_seat, device, device_tool);
-
-  if (!tool)
-    return;
 
   switch (event->type)
     {
@@ -404,8 +398,25 @@ meta_wayland_tablet_seat_update (MetaWaylandTabletSeat *tablet_seat,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_MOTION:
+      device_tool = clutter_event_get_device_tool (event);
+
+      if (device && device_tool)
+        tool = meta_wayland_tablet_seat_ensure_tool (tablet_seat, device, device_tool);
+
+      if (!tool)
+        return;
+
       meta_wayland_tablet_tool_update (tool, event);
       break;
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_RING:
+    case CLUTTER_PAD_STRIP:
+      pad = g_hash_table_lookup (tablet_seat->pads, device);
+      if (!pad)
+        return;
+
+      return meta_wayland_tablet_pad_update (pad, event);
     default:
       break;
     }

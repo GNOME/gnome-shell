@@ -65,6 +65,8 @@ struct wl_resource *
 void         meta_wayland_tablet_pad_notify              (MetaWaylandTabletPad *pad,
                                                           struct wl_resource   *resource);
 
+void         meta_wayland_tablet_pad_update              (MetaWaylandTabletPad *pad,
+                                                          const ClutterEvent   *event);
 gboolean     meta_wayland_tablet_pad_handle_event        (MetaWaylandTabletPad *pad,
                                                           const ClutterEvent   *event);
 

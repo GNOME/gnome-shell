@@ -388,3 +388,27 @@ meta_wayland_tablet_pad_set_focus (MetaWaylandTabletPad *pad,
 
   meta_wayland_tablet_pad_update_groups_focus (pad);
 }
+
+void
+meta_wayland_tablet_pad_update (MetaWaylandTabletPad *pad,
+                                const ClutterEvent   *event)
+{
+  MetaWaylandTabletPadGroup *group;
+  guint n_group;
+
+  n_group = clutter_event_get_mode_group (event);
+  group = g_list_nth_data (pad->groups, n_group);
+
+  if (group)
+    meta_wayland_tablet_pad_group_update (group, event);
+
+  switch (event->type)
+    {
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+    case CLUTTER_PAD_RING:
+    case CLUTTER_PAD_STRIP:
+    default:
+      break;
+    }
+}
