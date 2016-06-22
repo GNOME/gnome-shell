@@ -53,6 +53,13 @@ typedef enum
   META_TAB_SHOW_INSTANTLY  /* Alt-Esc mode */
 } MetaTabShowType;
 
+typedef enum
+{
+  META_PAD_ACTION_BUTTON, /* Action is a button */
+  META_PAD_ACTION_RING,   /* Action is a ring */
+  META_PAD_ACTION_STRIP,  /* Action is a strip */
+} MetaPadActionType;
+
 typedef struct _MetaDisplayClass MetaDisplayClass;
 
 #define META_TYPE_DISPLAY              (meta_display_get_type ())
