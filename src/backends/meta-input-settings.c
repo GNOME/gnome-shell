@@ -617,6 +617,19 @@ update_tablet_keep_aspect (MetaInputSettings  *input_settings,
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
     return;
 
+#ifdef HAVE_LIBWACOM
+  {
+    WacomDevice *wacom_device;
+
+    wacom_device = meta_input_settings_get_tablet_wacom_device (input_settings,
+                                                                device);
+    /* Keep aspect only makes sense in external tablets */
+    if (wacom_device &&
+        libwacom_get_integration_flags (wacom_device) != WACOM_DEVICE_INTEGRATED_NONE)
+      return;
+  }
+#endif
+
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
 
   if (clutter_input_device_get_mapping_mode (device) ==
@@ -680,6 +693,19 @@ update_tablet_mapping (MetaInputSettings  *input_settings,
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
     return;
 
+#ifdef HAVE_LIBWACOM
+  {
+    WacomDevice *wacom_device;
+
+    wacom_device = meta_input_settings_get_tablet_wacom_device (input_settings,
+                                                                device);
+    /* Tablet mapping only makes sense on external tablets */
+    if (wacom_device &&
+        (libwacom_get_integration_flags (wacom_device) != WACOM_DEVICE_INTEGRATED_NONE))
+      return;
+  }
+#endif
+
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   mapping = g_settings_get_enum (settings, "mapping");
 
@@ -705,6 +731,20 @@ update_tablet_area (MetaInputSettings  *input_settings,
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
     return;
 
+#ifdef HAVE_LIBWACOM
+  {
+    WacomDevice *wacom_device;
+
+    wacom_device = meta_input_settings_get_tablet_wacom_device (input_settings,
+                                                                device);
+    /* Tablet area only makes sense on system/display integrated tablets */
+    if (wacom_device &&
+        (libwacom_get_integration_flags (wacom_device) &
+         (WACOM_DEVICE_INTEGRATED_SYSTEM | WACOM_DEVICE_INTEGRATED_DISPLAY)) == 0)
+      return;
+  }
+#endif
+
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   variant = g_settings_get_value (settings, "area");
 
@@ -729,6 +769,19 @@ update_tablet_left_handed (MetaInputSettings  *input_settings,
 
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
     return;
+
+#ifdef HAVE_LIBWACOM
+  {
+    WacomDevice *wacom_device;
+
+    wacom_device = meta_input_settings_get_tablet_wacom_device (input_settings,
+                                                                device);
+    /* Left handed mode only makes sense on external tablets */
+    if (wacom_device &&
+        (libwacom_get_integration_flags (wacom_device) != WACOM_DEVICE_INTEGRATED_NONE))
+      return;
+  }
+#endif
 
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   enabled = g_settings_get_boolean (settings, "left-handed");
