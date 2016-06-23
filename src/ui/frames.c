@@ -1114,6 +1114,7 @@ handle_button_release_event (MetaUIFrame *frame,
 {
   Display *display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
+  frame->frames->current_grab_op = META_GRAB_OP_NONE;
   meta_core_end_grab_op (display, event->time);
 
   /* We only handle the releases we handled the presses for (things
