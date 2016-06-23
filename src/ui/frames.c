@@ -1403,6 +1403,13 @@ meta_frames_draw (GtkWidget *widget,
   gdk_cairo_region (cr, region);
   cairo_clip (cr);
 
+  /* The target may be cleared to black or transparent, depending
+   * on the frame's visual; we don't want decorations to appear
+   * differently when the theme's decorations aren't fully opaque,
+   * so clear to black first
+   */
+  cairo_paint (cr);
+
   meta_ui_frame_paint (frame, cr);
   cairo_region_destroy (region);
 
