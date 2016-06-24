@@ -107,18 +107,13 @@ const Overview = new Lang.Class({
 
         this._overviewCreated = true;
 
-        let layout = new Clutter.BinLayout();
-        this._stack = new Clutter.Actor({ layout_manager: layout });
-        this._stack.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
-
         /* Translators: This is the main view to select
            activities. See also note for "Activities" string. */
         this._overview = new St.BoxLayout({ name: 'overview',
                                             accessible_name: _("Overview"),
                                             reactive: true,
-                                            vertical: true,
-                                            x_expand: true,
-                                            y_expand: true });
+                                            vertical: true });
+        this._overview.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
         this._overview._delegate = this;
 
         // The main Background actors are inside global.window_group which are
@@ -149,8 +144,7 @@ const Overview = new Lang.Class({
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return Clutter.EVENT_STOP; }));
 
-        this._stack.add_actor(this._overview);
-        Main.layoutManager.overviewGroup.add_child(this._stack);
+        Main.layoutManager.overviewGroup.add_child(this._overview);
 
         this._coverPane.hide();
 
@@ -552,8 +546,8 @@ const Overview = new Lang.Class({
         Meta.disable_unredirect_for_screen(global.screen);
         this.viewSelector.show();
 
-        this._stack.opacity = 0;
-        Tweener.addTween(this._stack,
+        this._overview.opacity = 0;
+        Tweener.addTween(this._overview,
                          { opacity: 255,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
@@ -618,7 +612,7 @@ const Overview = new Lang.Class({
         this.viewSelector.animateFromOverview();
 
         // Make other elements fade out.
-        Tweener.addTween(this._stack,
+        Tweener.addTween(this._overview,
                          { opacity: 0,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
