@@ -7502,6 +7502,9 @@ mouse_mode_focus (MetaWindow  *window,
 {
   MetaDisplay *display = window->display;
 
+  if (window->override_redirect)
+    return;
+
   if (window->type != META_WINDOW_DESKTOP)
     {
       meta_topic (META_DEBUG_FOCUS,
