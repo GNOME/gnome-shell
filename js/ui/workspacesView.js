@@ -374,6 +374,10 @@ const ExtraWorkspaceView = new Lang.Class({
         this._workspace.setActualGeometry(this._actualGeometry);
     },
 
+    getActiveWorkspace: function() {
+        return this._workspace;
+    },
+
     animateToOverview: function(animationType) {
         if (animationType == AnimationType.ZOOM)
             this._workspace.zoomToOverview();
@@ -421,8 +425,10 @@ const WorkspacesDisplay = new Lang.Class({
             // Only switch to the workspace when there's no application
             // windows open. The problem is that it's too easy to miss
             // an app window and get the wrong one focused.
+            let event = Clutter.get_current_event();
+            let index = this._getMonitorIndexForEvent(event);
             if ((action.get_button() == 1 || action.get_button() == 0) &&
-                this._getPrimaryView().getActiveWorkspace().isEmpty())
+                this._workspacesViews[index].getActiveWorkspace().isEmpty())
                 Main.overview.hide();
         }));
         Main.overview.addAction(clickAction);
@@ -580,6 +586,12 @@ const WorkspacesDisplay = new Lang.Class({
             // values map directly
             adjustment.value = this._scrollAdjustment.value;
         }
+    },
+
+    _getMonitorIndexForEvent: function(event) {
+        let [x, y] = event.get_coords();
+        let rect = new Meta.Rectangle({ x: x, y: y, width: 1, height: 1 });
+        return global.screen.get_monitor_index_for_rect(rect);
     },
 
     _getPrimaryView: function() {
