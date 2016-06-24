@@ -437,6 +437,12 @@ const WorkspacesDisplay = new Lang.Class({
         let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
         panAction.connect('pan', Lang.bind(this, this._onPan));
         panAction.connect('gesture-begin', Lang.bind(this, function() {
+            if (this._workspacesOnlyOnPrimary) {
+                let event = Clutter.get_current_event();
+                if (this._getMonitorIndexForEvent(event) != this._primaryIndex)
+                    return false;
+            }
+
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].startSwipeScroll();
             return true;
