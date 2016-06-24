@@ -436,6 +436,7 @@ const WorkspacesDisplay = new Lang.Class({
             return true;
         }));
         panAction.connect('gesture-cancel', Lang.bind(this, function() {
+            clickAction.release();
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].endSwipeScroll();
         }));
