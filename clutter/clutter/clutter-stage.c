@@ -4661,3 +4661,100 @@ _clutter_stage_presented (ClutterStage     *stage,
   g_signal_emit (stage, stage_signals[PRESENTED], 0,
                  (int) frame_event, frame_info);
 }
+
+static void
+capture_view (ClutterStage          *stage,
+              gboolean               paint,
+              ClutterStageView      *view,
+              cairo_rectangle_int_t *rect,
+              ClutterCapture        *capture)
+{
+  CoglFramebuffer *framebuffer;
+  ClutterBackend *backend;
+  CoglContext *context;
+  cairo_surface_t *image;
+  uint8_t *data;
+  int stride;
+  CoglBitmap *bitmap;
+
+  framebuffer = clutter_stage_view_get_framebuffer (view);
+
+  if (paint)
+    {
+      _clutter_stage_maybe_setup_viewport (stage, view);
+      cogl_push_framebuffer (framebuffer);
+      clutter_stage_do_paint_view (stage, view, rect);
+    }
+
+  image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                      rect->width, rect->height);
+
+  data = cairo_image_surface_get_data (image);
+  stride = cairo_image_surface_get_stride (image);
+
+  backend = clutter_get_default_backend ();
+  context = clutter_backend_get_cogl_context (backend);
+  bitmap = cogl_bitmap_new_for_data (context,
+                                     rect->width, rect->height,
+                                     CLUTTER_CAIRO_FORMAT_ARGB32,
+                                     stride,
+                                     data);
+
+  cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                            rect->x, rect->y,
+                                            COGL_READ_PIXELS_COLOR_BUFFER,
+                                            bitmap);
+
+  if (paint)
+    cogl_pop_framebuffer ();
+
+  capture->rect = *rect;
+  capture->image = image;
+
+  cairo_surface_mark_dirty (capture->image);
+  cogl_object_unref (bitmap);
+}
+
+gboolean
+clutter_stage_capture (ClutterStage          *stage,
+                       gboolean               paint,
+                       cairo_rectangle_int_t *rect,
+                       ClutterCapture       **out_captures,
+                       int                   *out_n_captures)
+{
+  ClutterStagePrivate *priv = stage->priv;
+  GList *views = _clutter_stage_window_get_views (priv->impl);
+  GList *l;
+  ClutterCapture *captures;
+  int n_captures;
+
+  captures = g_new0 (ClutterCapture, g_list_length (views));
+  n_captures = 0;
+
+  for (l = views; l; l = l->next)
+    {
+      ClutterStageView *view = l->data;
+      cairo_rectangle_int_t view_layout;
+      cairo_region_t *region;
+      cairo_rectangle_int_t view_capture_rect;
+
+      clutter_stage_view_get_layout (view, &view_layout);
+      region = cairo_region_create_rectangle (&view_layout);
+      cairo_region_intersect_rectangle (region, rect);
+      cairo_region_get_extents (region, &view_capture_rect);
+      cairo_region_destroy (region);
+
+      if (view_capture_rect.width == 0 || view_capture_rect.height == 0)
+        continue;
+
+      capture_view (stage, paint, view, &view_capture_rect,
+                    &captures[n_captures]);
+
+      n_captures++;
+    }
+
+  *out_captures = captures;
+  *out_n_captures = n_captures;
+
+  return TRUE;
+}

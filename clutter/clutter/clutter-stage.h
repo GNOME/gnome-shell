@@ -145,6 +145,12 @@ struct _ClutterFrameInfo
   float refresh_rate;
 };
 
+typedef struct _ClutterCapture
+{
+  cairo_surface_t *image;
+  cairo_rectangle_int_t rect;
+} ClutterCapture;
+
 CLUTTER_AVAILABLE_IN_ALL
 GType clutter_perspective_get_type (void) G_GNUC_CONST;
 CLUTTER_DEPRECATED_IN_1_10
@@ -251,6 +257,13 @@ void            clutter_stage_set_sync_delay                    (ClutterStage   
 CLUTTER_AVAILABLE_IN_1_14
 void            clutter_stage_skip_sync_delay                   (ClutterStage          *stage);
 #endif
+
+CLUTTER_AVAILABLE_IN_MUTTER
+gboolean clutter_stage_capture (ClutterStage          *stage,
+                                gboolean               paint,
+                                cairo_rectangle_int_t *rect,
+                                ClutterCapture       **captures,
+                                int                   *n_captures);
 
 G_END_DECLS
 
