@@ -1577,7 +1577,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
                              gdk_x11_get_xatom_by_name ("TARGETS"),
                              gdk_x11_get_xatom_by_name ("_META_SELECTION"),
                              selection->window,
-                             selection->timestamp);
+                             CurrentTime);
           XFlush (xdisplay);
         }
     }
