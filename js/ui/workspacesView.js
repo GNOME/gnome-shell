@@ -103,7 +103,7 @@ const WorkspacesView = new Lang.Class({
                                                     page_increment: 1,
                                                     page_size: 1,
                                                     step_increment: 0,
-                                                    upper: 0 });
+                                                    upper: global.screen.n_workspaces });
         this.scrollAdjustment.connect('notify::value',
                                       Lang.bind(this, this._onScroll));
 
