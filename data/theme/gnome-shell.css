@@ -562,6 +562,10 @@ StScrollBar {
     background-color: #eeeeec;
     border-radius: 0.3em; }
 
+.pad-osd-window {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
 /* App Switcher */
 .switcher-popup {
   padding: 8px;
