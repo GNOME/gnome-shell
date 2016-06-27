@@ -210,41 +210,40 @@ write_screenshot_thread (GTask        *result,
 
 static void
 do_grab_screenshot (ShellScreenshot *screenshot,
+                    ClutterStage    *stage,
                     int               x,
                     int               y,
                     int               width,
                     int               height)
 {
-  CoglBitmap *bitmap;
-  ClutterBackend *backend;
-  CoglContext *context;
-  int stride;
-  guchar *data;
   ShellScreenshotPrivate *priv = screenshot->priv;
+  ClutterCapture *captures;
+  int n_captures;
+  int i;
 
-  backend = clutter_get_default_backend ();
-  context = clutter_backend_get_cogl_context (backend);
+  clutter_stage_capture (stage, FALSE,
+                         &(cairo_rectangle_int_t) {
+                           .x = x,
+                           .y = y,
+                           .width = width,
+                           .height = height
+                         },
+                         &captures,
+                         &n_captures);
 
-  priv->image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                            width, height);
+  if (n_captures == 0)
+    return;
 
+  /*
+   * TODO: Deal with each capture region separately, instead of dropping
+   * anything except the first one.
+   */
+  priv->image = captures[0].image;
 
-  data = cairo_image_surface_get_data (priv->image);
-  stride = cairo_image_surface_get_stride (priv->image);
+  for (i = 1; i < n_captures; i++)
+    cairo_surface_destroy (captures[i].image);
 
-  bitmap = cogl_bitmap_new_for_data (context,
-                                     width,
-                                     height,
-                                     CLUTTER_CAIRO_FORMAT_ARGB32,
-                                     stride,
-                                     data);
-  cogl_framebuffer_read_pixels_into_bitmap (cogl_get_draw_framebuffer (),
-                                            x, y,
-                                            COGL_READ_PIXELS_COLOR_BUFFER,
-                                            bitmap);
-
-  cairo_surface_mark_dirty (priv->image);
-  cogl_object_unref (bitmap);
+  g_free (captures);
 }
 
 static void
@@ -312,7 +311,7 @@ grab_screenshot (ClutterActor *stage,
   screen = shell_global_get_screen (priv->global);
   meta_screen_get_size (screen, &width, &height);
 
-  do_grab_screenshot (screenshot, 0, 0, width, height);
+  do_grab_screenshot (screenshot, CLUTTER_STAGE (stage), 0, 0, width, height);
 
   if (meta_screen_get_n_monitors (screen) > 1)
     {
@@ -381,6 +380,7 @@ grab_area_screenshot (ClutterActor *stage,
   ShellScreenshotPrivate *priv = screenshot->priv;
 
   do_grab_screenshot (screenshot,
+                      CLUTTER_STAGE (stage),
                       priv->screenshot_area.x,
                       priv->screenshot_area.y,
                       priv->screenshot_area.width,

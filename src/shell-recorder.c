@@ -389,11 +389,17 @@ recorder_draw_cursor (ShellRecorder *recorder,
 /* Retrieve a frame and feed it into the pipeline
  */
 static void
-recorder_record_frame (ShellRecorder *recorder)
+recorder_record_frame (ShellRecorder *recorder,
+                       gboolean       paint)
 {
   GstBuffer *buffer;
-  guint8 *data;
+  ClutterCapture *captures;
+  int n_captures;
+  cairo_surface_t *image;
   guint size;
+  uint8_t *data;
+  GstMemory *memory;
+  int i;
   GstClock *clock;
   GstClockTime now, base_time;
 
@@ -425,21 +431,31 @@ recorder_record_frame (ShellRecorder *recorder)
     return;
   recorder->last_frame_time = now;
 
-  size = recorder->area.width * recorder->area.height * 4;
+  clutter_stage_capture (recorder->stage, paint, &recorder->area,
+                         &captures, &n_captures);
 
-  data = g_malloc (size);
-  cogl_framebuffer_read_pixels (cogl_get_draw_framebuffer (),
-                                recorder->area.x,
-                                recorder->area.y,
-                                recorder->area.width,
-                                recorder->area.height,
-                                CLUTTER_CAIRO_FORMAT_ARGB32,
-                                data);
+  if (n_captures == 0)
+    return;
+
+  /*
+   * TODO: Deal with each capture region separately, instead of dropping
+   * anything except the first one.
+   */
+
+  image = captures[0].image;
+  data = cairo_image_surface_get_data (image);
+  size = captures[0].rect.width * captures[0].rect.height * 4;
+
+  /* TODO: Capture more than the first framebuffer. */
+  for (i = 1; i < n_captures; i++)
+    cairo_surface_destroy (captures[i].image);
+  g_free (captures);
 
   buffer = gst_buffer_new();
-  gst_buffer_insert_memory (buffer, -1,
-                            gst_memory_new_wrapped (0, data, size, 0,
-                                                    size, data, g_free));
+  memory = gst_memory_new_wrapped (0, data, size, 0, size,
+                                   image,
+                                   (GDestroyNotify) cairo_surface_destroy);
+  gst_buffer_insert_memory (buffer, -1, memory);
 
   GST_BUFFER_PTS(buffer) = now;
 
@@ -463,7 +479,7 @@ recorder_on_stage_paint (ClutterActor  *actor,
                          ShellRecorder *recorder)
 {
   if (recorder->state == RECORDER_STATE_RECORDING)
-    recorder_record_frame (recorder);
+    recorder_record_frame (recorder, FALSE);
 }
 
 static void
@@ -1561,7 +1577,7 @@ shell_recorder_close (ShellRecorder *recorder)
   /* We want to record one more frame since some time may have
    * elapsed since the last frame
    */
-  clutter_actor_paint (CLUTTER_ACTOR (recorder->stage));
+  recorder_record_frame (recorder, TRUE);
 
   recorder_remove_update_pointer_timeout (recorder);
   recorder_close_pipeline (recorder);
