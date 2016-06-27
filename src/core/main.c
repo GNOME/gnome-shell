@@ -304,50 +304,75 @@ on_sigterm (gpointer user_data)
 }
 
 #if defined(HAVE_WAYLAND) && defined(HAVE_NATIVE_BACKEND)
-static char *
-find_logind_session_type (void)
+static gboolean
+session_type_is_supported (const char *session_type)
 {
-  char **sessions;
+   return (g_strcmp0 (session_type, "x11") == 0) ||
+          (g_strcmp0 (session_type, "wayland") == 0);
+}
+
+static char *
+find_session_type (void)
+{
+  char **sessions = NULL;
   char *session_id;
   char *session_type;
+  const char *session_type_env;
+  gboolean is_tty = FALSE;
   int ret, i;
 
   ret = sd_pid_get_session (0, &session_id);
-
   if (ret == 0 && session_id != NULL)
     {
       ret = sd_session_get_type (session_id, &session_type);
       free (session_id);
 
-      if (ret < 0)
-        session_type = NULL;
+      if (ret == 0)
+        {
+          if (session_type_is_supported (session_type))
+            goto out;
+          else
+            is_tty = g_strcmp0 (session_type, "tty") == 0;
+          free (session_type);
+        }
+    }
+  else if (sd_uid_get_sessions (getuid (), 1, &sessions) > 0)
+    {
+      for (i = 0; sessions[i] != NULL; i++)
+        {
+          ret = sd_session_get_type (sessions[i], &session_type);
 
+          if (ret < 0)
+            continue;
+
+          if (session_type_is_supported (session_type))
+            {
+              g_strfreev (sessions);
+              goto out;
+            }
+
+          free (session_type);
+        }
+    }
+  g_strfreev (sessions);
+
+  session_type_env = g_getenv ("XDG_SESSION_TYPE");
+  if (session_type_is_supported (session_type_env))
+    {
+      /* The string should be freeable */
+      session_type = strdup (session_type_env);
       goto out;
     }
-  session_type = NULL;
 
-  ret = sd_uid_get_sessions (getuid (), TRUE, &sessions);
-
-  if (ret < 0 || sessions == NULL)
-    goto out;
-
-  for (i = 0; sessions[i] != NULL; i++)
+  /* Legacy support for starting through xinit */
+  if (is_tty && (g_getenv ("MUTTER_DISPLAY") || g_getenv ("DISPLAY")))
     {
-      ret = sd_session_get_type (sessions[i], &session_type);
-
-      if (ret < 0)
-        continue;
-
-      if (g_strcmp0 (session_type, "x11") == 0||
-          g_strcmp0 (session_type, "wayland") == 0)
-        break;
-
-      g_clear_pointer (&session_type, (GDestroyNotify) free);
+      session_type = strdup ("x11");
+      goto out;
     }
 
-  for (i = 0; sessions[i] != NULL; i++)
-    free (sessions[i]);
-  free (sessions);
+  meta_warning ("Unsupported session type\n");
+  meta_exit (META_EXIT_ERROR);
 
 out:
   return session_type;
@@ -356,16 +381,12 @@ out:
 static gboolean
 check_for_wayland_session_type (void)
 {
-  char *session_type = NULL;
-  gboolean is_wayland = FALSE;
+  char *session_type;
+  gboolean is_wayland;
 
-  session_type = find_logind_session_type ();
-
-  if (session_type != NULL)
-    {
-      is_wayland = g_strcmp0 (session_type, "wayland") == 0;
-      free (session_type);
-    }
+  session_type = find_session_type ();
+  is_wayland = g_strcmp0 (session_type, "wayland") == 0;
+  free (session_type);
 
   return is_wayland;
 }
