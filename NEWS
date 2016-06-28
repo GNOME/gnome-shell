@@ -1,3 +1,19 @@
+3.20.3
+======
+* Fix sorting of hidden apps in app switcher [Florian; #766238]
+* Allocate framebuffers early to fix a crash on NVIDIA [Martin; #764898]
+* Fix cycle-windows/cycle-group keybindings [Florian; #730739]
+* networkAgent: Handle VPN service aliases [David; #658484]
+* Fix crash when using screen recorder under wayland [Rui; #767001]
+* Plug a memory leak [Hans; #710230]
+
+Contributors:
+  Rui Matos, Florian Müllner, Hans Petter Jansson, Martin Szulecki,
+  David Woodhouse
+
+Translations:
+  Sveinn í Felli [is], Andika Triwidada [id]
+
 3.20.2
 ======
 * Save screencasts in HOME if XDG_VIDEO_DIR doesn't exist [Florian; #765015]
