@@ -40,6 +40,7 @@ typedef struct _MetaWaylandGtkSurface
   struct wl_resource *resource;
   MetaWaylandSurface *surface;
   gboolean is_modal;
+  gulong configure_handler_id;
 } MetaWaylandGtkSurface;
 
 static void
@@ -48,8 +49,12 @@ gtk_surface_destructor (struct wl_resource *resource)
   MetaWaylandGtkSurface *gtk_surface = wl_resource_get_user_data (resource);
 
   if (gtk_surface->surface)
-    g_object_steal_qdata (G_OBJECT (gtk_surface->surface),
-                          quark_gtk_surface_data);
+    {
+      g_object_steal_qdata (G_OBJECT (gtk_surface->surface),
+                            quark_gtk_surface_data);
+      g_signal_handler_disconnect (gtk_surface->surface,
+                                   gtk_surface->configure_handler_id);
+    }
 
   g_free (gtk_surface);
 }
@@ -143,6 +148,34 @@ gtk_surface_surface_destroyed (MetaWaylandGtkSurface *gtk_surface)
 }
 
 static void
+fill_states (struct wl_array *states,
+             MetaWindow      *window)
+{
+  uint32_t *s;
+
+  if (window->tile_mode == META_TILE_LEFT ||
+      window->tile_mode == META_TILE_RIGHT)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_STATE_TILED;
+    }
+}
+
+static void
+on_configure (MetaWaylandSurface    *surface,
+              MetaWaylandGtkSurface *gtk_surface)
+{
+  struct wl_array states;
+
+  wl_array_init (&states);
+  fill_states (&states, surface->window);
+
+  gtk_surface1_send_configure (gtk_surface->resource, &states);
+
+  wl_array_release (&states);
+}
+
+static void
 gtk_shell_get_gtk_surface (struct wl_client   *client,
                            struct wl_resource *resource,
                            guint32             id,
@@ -169,6 +202,11 @@ gtk_shell_get_gtk_surface (struct wl_client   *client,
   wl_resource_set_implementation (gtk_surface->resource,
                                   &meta_wayland_gtk_surface_interface,
                                   gtk_surface, gtk_surface_destructor);
+
+  gtk_surface->configure_handler_id = g_signal_connect (surface,
+                                                        "configure",
+                                                        G_CALLBACK (on_configure),
+                                                        gtk_surface);
 
   g_object_set_qdata_full (G_OBJECT (surface),
                            quark_gtk_surface_data,
