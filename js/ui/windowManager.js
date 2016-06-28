@@ -850,34 +850,34 @@ const WindowManager = new Lang.Class({
                                         Lang.bind(this, this._showWorkspaceSwitcher));
         this.setCustomKeybindingHandler('switch-applications',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startAppSwitcher));
         this.setCustomKeybindingHandler('switch-group',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startAppSwitcher));
         this.setCustomKeybindingHandler('switch-applications-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startAppSwitcher));
         this.setCustomKeybindingHandler('switch-group-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startAppSwitcher));
         this.setCustomKeybindingHandler('switch-windows',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startWindowSwitcher));
         this.setCustomKeybindingHandler('switch-windows-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startWindowSwitcher));
         this.setCustomKeybindingHandler('cycle-windows',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startWindowCycler));
         this.setCustomKeybindingHandler('cycle-windows-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startWindowCycler));
         this.setCustomKeybindingHandler('cycle-group',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startGroupCycler));
         this.setCustomKeybindingHandler('cycle-group-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        Lang.bind(this, this._startGroupCycler));
         this.setCustomKeybindingHandler('switch-panels',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW |
@@ -1756,37 +1756,45 @@ const WindowManager = new Lang.Class({
         this._windowMenuManager.showWindowMenuForWindow(window, menu, rect);
     },
 
-    _startSwitcher: function(display, screen, window, binding) {
-        let constructor = null;
-        switch (binding.get_name()) {
-            case 'switch-applications':
-            case 'switch-applications-backward':
-            case 'switch-group':
-            case 'switch-group-backward':
-                constructor = AltTab.AppSwitcherPopup;
-                break;
-            case 'switch-windows':
-            case 'switch-windows-backward':
-                constructor = AltTab.WindowSwitcherPopup;
-                break;
-            case 'cycle-windows':
-            case 'cycle-windows-backward':
-                constructor = AltTab.WindowCyclerPopup;
-                break;
-            case 'cycle-group':
-            case 'cycle-group-backward':
-                constructor = AltTab.GroupCyclerPopup;
-                break;
-        }
-
-        if (!constructor)
-            return;
-
+    _startAppSwitcher : function(display, screen, window, binding) {
         /* prevent a corner case where both popups show up at once */
         if (this._workspaceSwitcherPopup != null)
             this._workspaceSwitcherPopup.destroy();
 
-        let tabPopup = new constructor();
+        let tabPopup = new AltTab.AppSwitcherPopup();
+
+        if (!tabPopup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
+            tabPopup.destroy();
+    },
+
+    _startWindowSwitcher : function(display, screen, window, binding) {
+        /* prevent a corner case where both popups show up at once */
+        if (this._workspaceSwitcherPopup != null)
+            this._workspaceSwitcherPopup.destroy();
+
+        let tabPopup = new AltTab.WindowSwitcherPopup();
+
+        if (!tabPopup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
+            tabPopup.destroy();
+    },
+
+    _startWindowCycler : function(display, screen, window, binding) {
+        /* prevent a corner case where both popups show up at once */
+        if (this._workspaceSwitcherPopup != null)
+            this._workspaceSwitcherPopup.destroy();
+
+        let tabPopup = new AltTab.WindowCyclerPopup();
+
+        if (!tabPopup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
+            tabPopup.destroy();
+    },
+
+    _startGroupCycler : function(display, screen, window, binding) {
+        /* prevent a corner case where both popups show up at once */
+        if (this._workspaceSwitcherPopup != null)
+            this._workspaceSwitcherPopup.destroy();
+
+        let tabPopup = new AltTab.GroupCyclerPopup();
 
         if (!tabPopup.show(binding.is_reversed(), binding.get_name(), binding.get_mask()))
             tabPopup.destroy();
