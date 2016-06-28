@@ -1244,8 +1244,6 @@ wl_surface_destructor (struct wl_resource *resource)
 
   if (surface->wl_subsurface)
     wl_resource_destroy (surface->wl_subsurface);
-  if (surface->gtk_surface)
-    wl_resource_destroy (surface->gtk_surface);
 
   g_object_unref (surface);
 

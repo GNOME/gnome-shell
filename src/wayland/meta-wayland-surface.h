@@ -203,11 +203,7 @@ struct _MetaWaylandSurface
   MetaWaylandPendingState *pending;
 
   /* Extension resources. */
-  struct wl_resource *gtk_surface;
   struct wl_resource *wl_subsurface;
-
-  /* gtk_surface stuff */
-  gboolean is_modal;
 
   /* wl_subsurface stuff. */
   struct {

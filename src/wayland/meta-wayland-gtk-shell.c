@@ -33,12 +33,25 @@
 
 #include "gtk-shell-server-protocol.h"
 
+static GQuark quark_gtk_surface_data = 0;
+
+typedef struct _MetaWaylandGtkSurface
+{
+  struct wl_resource *resource;
+  MetaWaylandSurface *surface;
+  gboolean is_modal;
+} MetaWaylandGtkSurface;
+
 static void
 gtk_surface_destructor (struct wl_resource *resource)
 {
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  MetaWaylandGtkSurface *gtk_surface = wl_resource_get_user_data (resource);
 
-  surface->gtk_surface = NULL;
+  if (gtk_surface->surface)
+    g_object_steal_qdata (G_OBJECT (gtk_surface->surface),
+                          quark_gtk_surface_data);
+
+  g_free (gtk_surface);
 }
 
 static void
@@ -51,7 +64,8 @@ gtk_surface_set_dbus_properties (struct wl_client   *client,
                                  const char         *application_object_path,
                                  const char         *unique_bus_name)
 {
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  MetaWaylandGtkSurface *gtk_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = gtk_surface->surface;
 
   /* Broken client, let it die instead of us */
   if (!surface->window)
@@ -73,12 +87,13 @@ static void
 gtk_surface_set_modal (struct wl_client   *client,
                        struct wl_resource *resource)
 {
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  MetaWaylandGtkSurface *gtk_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = gtk_surface->surface;
 
-  if (surface->is_modal)
+  if (gtk_surface->is_modal)
     return;
 
-  surface->is_modal = TRUE;
+  gtk_surface->is_modal = TRUE;
   meta_window_set_type (surface->window, META_WINDOW_MODAL_DIALOG);
 }
 
@@ -86,12 +101,13 @@ static void
 gtk_surface_unset_modal (struct wl_client   *client,
                          struct wl_resource *resource)
 {
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  MetaWaylandGtkSurface *gtk_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = gtk_surface->surface;
 
-  if (!surface->is_modal)
+  if (!gtk_surface->is_modal)
     return;
 
-  surface->is_modal = FALSE;
+  gtk_surface->is_modal = FALSE;
   meta_window_set_type (surface->window, META_WINDOW_NORMAL);
 }
 
@@ -100,7 +116,8 @@ gtk_surface_present (struct wl_client   *client,
                      struct wl_resource *resource,
                      uint32_t            timestamp)
 {
-  MetaWaylandSurface *surface = wl_resource_get_user_data (resource);
+  MetaWaylandGtkSurface *gtk_surface = wl_resource_get_user_data (resource);
+  MetaWaylandSurface *surface = gtk_surface->surface;
   MetaWindow *window = surface->window;
 
   if (!window)
@@ -118,14 +135,24 @@ static const struct gtk_surface1_interface meta_wayland_gtk_surface_interface = 
 };
 
 static void
+gtk_surface_surface_destroyed (MetaWaylandGtkSurface *gtk_surface)
+{
+  wl_resource_set_implementation (gtk_surface->resource,
+                                  NULL, NULL, NULL);
+  gtk_surface->surface = NULL;
+}
+
+static void
 gtk_shell_get_gtk_surface (struct wl_client   *client,
                            struct wl_resource *resource,
                            guint32             id,
                            struct wl_resource *surface_resource)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  MetaWaylandGtkSurface *gtk_surface;
 
-  if (surface->gtk_surface != NULL)
+  gtk_surface = g_object_get_qdata (G_OBJECT (surface), quark_gtk_surface_data);
+  if (gtk_surface)
     {
       wl_resource_post_error (surface_resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
@@ -133,13 +160,20 @@ gtk_shell_get_gtk_surface (struct wl_client   *client,
       return;
     }
 
-  surface->gtk_surface = wl_resource_create (client,
-                                             &gtk_surface1_interface,
-                                             wl_resource_get_version (resource),
-                                             id);
-  wl_resource_set_implementation (surface->gtk_surface,
+  gtk_surface = g_new0 (MetaWaylandGtkSurface, 1);
+  gtk_surface->surface = surface;
+  gtk_surface->resource = wl_resource_create (client,
+                                              &gtk_surface1_interface,
+                                              wl_resource_get_version (resource),
+                                              id);
+  wl_resource_set_implementation (gtk_surface->resource,
                                   &meta_wayland_gtk_surface_interface,
-                                  surface, gtk_surface_destructor);
+                                  gtk_surface, gtk_surface_destructor);
+
+  g_object_set_qdata_full (G_OBJECT (surface),
+                           quark_gtk_surface_data,
+                           gtk_surface,
+                           (GDestroyNotify) gtk_surface_surface_destroyed);
 }
 
 static void
@@ -163,8 +197,9 @@ gtk_shell_system_bell (struct wl_client   *client,
 
   if (gtk_surface_resource)
     {
-      MetaWaylandSurface *surface =
+      MetaWaylandGtkSurface *gtk_surface =
         wl_resource_get_user_data (gtk_surface_resource);
+      MetaWaylandSurface *surface = gtk_surface->surface;
 
       if (!surface->window)
         return;
@@ -205,6 +240,9 @@ bind_gtk_shell (struct wl_client *client,
 void
 meta_wayland_gtk_shell_init (MetaWaylandCompositor *compositor)
 {
+  quark_gtk_surface_data =
+    g_quark_from_static_string ("-meta-wayland-gtk-shell-surface-data");
+
   if (wl_global_create (compositor->wayland_display,
                         &gtk_shell1_interface,
                         META_GTK_SHELL1_VERSION,
