@@ -901,6 +901,7 @@ update_winsys_features (CoglContext *context, CoglError **error)
     {
       CoglGpuInfo *info = &context->gpu;
       if (glx_display->have_vblank_counter &&
+	  context->display->renderer->xlib_enable_threaded_swap_wait &&
 	  info->vendor == COGL_GPU_INFO_VENDOR_NVIDIA)
         {
           COGL_FLAGS_SET (context->winsys_features,
