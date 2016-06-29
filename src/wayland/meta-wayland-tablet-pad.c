@@ -217,6 +217,23 @@ meta_wayland_tablet_pad_free (MetaWaylandTabletPad *pad)
   g_slice_free (MetaWaylandTabletPad, pad);
 }
 
+static MetaWaylandTabletPadGroup *
+tablet_pad_lookup_button_group (MetaWaylandTabletPad *pad,
+                                guint                 button)
+{
+  GList *l;
+
+  for (l = pad->groups; l; l = l->next)
+    {
+      MetaWaylandTabletPadGroup *group = l->data;
+
+      if (meta_wayland_tablet_pad_group_has_button (group, button))
+        return group;
+    }
+
+  return NULL;
+}
+
 static void
 tablet_pad_set_feedback (struct wl_client   *client,
                          struct wl_resource *resource,
@@ -225,8 +242,20 @@ tablet_pad_set_feedback (struct wl_client   *client,
                          uint32_t            serial)
 {
   MetaWaylandTabletPad *pad = wl_resource_get_user_data (resource);
+  MetaWaylandTabletPadGroup *group = tablet_pad_lookup_button_group (pad, button);
+  MetaInputSettings *input_settings;
 
-  /* FIXME: check serial */
+  if (!group || group->mode_switch_serial != serial)
+    return;
+
+  input_settings = meta_backend_get_input_settings (meta_get_backend ());
+
+  if (input_settings &&
+      meta_input_settings_is_pad_button_grabbed (input_settings, pad->device, button))
+    return;
+
+  if (meta_wayland_tablet_pad_group_is_mode_switch_button (group, button))
+    return;
 
   g_hash_table_insert (pad->feedback, GUINT_TO_POINTER (button), g_strdup (str));
 }
