@@ -1559,8 +1559,11 @@ meta_input_settings_handle_pad_button (MetaInputSettings  *input_settings,
       if (is_press)
         meta_input_settings_cycle_tablet_output (input_settings, pad);
       return TRUE;
-    case G_DESKTOP_PAD_BUTTON_ACTION_KEYBINDING:
     case G_DESKTOP_PAD_BUTTON_ACTION_HELP:
+      if (is_press)
+        meta_display_request_pad_osd (meta_get_display (), pad, FALSE);
+      return TRUE;
+    case G_DESKTOP_PAD_BUTTON_ACTION_KEYBINDING:
     case G_DESKTOP_PAD_BUTTON_ACTION_NONE:
     default:
       return FALSE;
