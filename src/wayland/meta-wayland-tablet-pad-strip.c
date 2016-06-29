@@ -79,7 +79,8 @@ tablet_pad_strip_set_feedback (struct wl_client   *client,
 {
   MetaWaylandTabletPadStrip *strip = wl_resource_get_user_data (resource);
 
-  /* FIXME: check serial */
+  if (strip->group->mode_switch_serial != serial)
+    return;
 
   strip->feedback = g_strdup (str);
 }
