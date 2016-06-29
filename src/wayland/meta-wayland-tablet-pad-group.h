@@ -66,6 +66,8 @@ gboolean     meta_wayland_tablet_pad_group_handle_event        (MetaWaylandTable
 
 void         meta_wayland_tablet_pad_group_sync_focus          (MetaWaylandTabletPadGroup *group);
 
+gboolean     meta_wayland_tablet_pad_group_has_button            (MetaWaylandTabletPadGroup *group,
+                                                                  guint                      button);
 gboolean     meta_wayland_tablet_pad_group_is_mode_switch_button (MetaWaylandTabletPadGroup *group,
                                                                   guint                      button);
 

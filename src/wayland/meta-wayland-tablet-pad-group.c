@@ -165,9 +165,9 @@ tablet_pad_group_get_n_modes (MetaWaylandTabletPadGroup *group)
   return n_modes;
 }
 
-static gboolean
-tablet_pad_group_has_button (MetaWaylandTabletPadGroup *group,
-                             guint                      button)
+gboolean
+meta_wayland_tablet_pad_group_has_button (MetaWaylandTabletPadGroup *group,
+                                          guint                      button)
 {
   MetaBackend *backend = meta_get_backend ();
 
@@ -207,7 +207,7 @@ meta_wayland_tablet_pad_group_notify (MetaWaylandTabletPadGroup *group,
     {
       uint32_t *pos;
 
-      if (!tablet_pad_group_has_button (group, i))
+      if (!meta_wayland_tablet_pad_group_has_button (group, i))
         continue;
 
       pos = wl_array_add (&buttons, sizeof (*pos));
