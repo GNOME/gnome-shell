@@ -79,7 +79,8 @@ tablet_pad_ring_set_feedback (struct wl_client   *client,
 {
   MetaWaylandTabletPadRing *ring = wl_resource_get_user_data (resource);
 
-  /* FIXME: check serial */
+  if (ring->group->mode_switch_serial != serial)
+    return;
 
   ring->feedback = g_strdup (str);
 }
