@@ -299,6 +299,12 @@ meta_display_handle_event (MetaDisplay        *display,
       goto out;
     }
 
+  if (display->current_pad_osd)
+    {
+      bypass_wayland = TRUE;
+      goto out;
+    }
+
   if (window)
     {
       /* Events that are likely to trigger compositor gestures should
