@@ -1278,6 +1278,22 @@ meta_input_settings_create (void)
   return NULL;
 }
 
+GSettings *
+meta_input_settings_get_tablet_settings (MetaInputSettings  *settings,
+                                         ClutterInputDevice *device)
+{
+  MetaInputSettingsPrivate *priv;
+  DeviceMappingInfo *info;
+
+  g_return_val_if_fail (META_IS_INPUT_SETTINGS (settings), NULL);
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
+
+  priv = meta_input_settings_get_instance_private (settings);
+  info = g_hash_table_lookup (priv->mappable_devices, device);
+
+  return info ? g_object_ref (info->settings) : NULL;
+}
+
 GDesktopTabletMapping
 meta_input_settings_get_tablet_mapping (MetaInputSettings  *settings,
                                         ClutterInputDevice *device)

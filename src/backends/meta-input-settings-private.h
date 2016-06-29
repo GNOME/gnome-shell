@@ -103,6 +103,8 @@ GType meta_input_settings_get_type (void) G_GNUC_CONST;
 
 MetaInputSettings * meta_input_settings_create (void);
 
+GSettings *           meta_input_settings_get_tablet_settings (MetaInputSettings  *settings,
+                                                               ClutterInputDevice *device);
 GDesktopTabletMapping meta_input_settings_get_tablet_mapping (MetaInputSettings  *settings,
                                                               ClutterInputDevice *device);
 
