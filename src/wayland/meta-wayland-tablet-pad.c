@@ -588,28 +588,18 @@ meta_wayland_tablet_pad_get_label (MetaWaylandTabletPad *pad,
       break;
     case META_PAD_ACTION_RING:
       {
-        MetaWaylandTabletPadGroup *group;
         MetaWaylandTabletPadRing *ring;
 
-        /* FIXME: Assuming each group gets 1 */
-        group = g_list_nth_data (pad->groups, action);
-        if (!group)
-          break;
-        ring = g_list_nth_data (group->rings, 0);
+        ring = g_list_nth_data (pad->rings, action);
         if (ring)
           label = ring->feedback;
         break;
       }
     case META_PAD_ACTION_STRIP:
       {
-        MetaWaylandTabletPadGroup *group;
         MetaWaylandTabletPadStrip *strip;
 
-        /* FIXME: Assuming each group gets 1 */
-        group = g_list_nth_data (pad->groups, action);
-        if (!group)
-          break;
-        strip = g_list_nth_data (group->strips, 0);
+        strip = g_list_nth_data (pad->strips, action);
         if (strip)
           label = strip->feedback;
         break;
