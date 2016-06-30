@@ -32,6 +32,7 @@
 struct _MetaWaylandTabletPadStrip
 {
   MetaWaylandTabletPad *pad;
+  MetaWaylandTabletPadGroup *group;
 
   struct wl_list resource_list;
   struct wl_list focus_resource_list;
@@ -41,6 +42,9 @@ struct _MetaWaylandTabletPadStrip
 
 MetaWaylandTabletPadStrip * meta_wayland_tablet_pad_strip_new  (MetaWaylandTabletPad      *pad);
 void                        meta_wayland_tablet_pad_strip_free (MetaWaylandTabletPadStrip *strip);
+
+void                        meta_wayland_tablet_pad_strip_set_group (MetaWaylandTabletPadStrip *strip,
+                                                                     MetaWaylandTabletPadGroup *group);
 
 struct wl_resource *
              meta_wayland_tablet_pad_strip_create_new_resource (MetaWaylandTabletPadStrip *strip,

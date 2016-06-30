@@ -33,6 +33,7 @@
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-private.h"
 #include "meta-wayland-tablet-pad.h"
+#include "meta-wayland-tablet-pad-group.h"
 #include "meta-wayland-tablet-pad-strip.h"
 
 static void
@@ -191,4 +192,15 @@ meta_wayland_tablet_pad_strip_sync_focus (MetaWaylandTabletPadStrip *strip)
                                  &strip->resource_list,
                                  wl_resource_get_client (strip->pad->focus_surface->resource));
     }
+}
+
+void
+meta_wayland_tablet_pad_strip_set_group (MetaWaylandTabletPadStrip *strip,
+                                         MetaWaylandTabletPadGroup *group)
+{
+  /* Group is static, can only be set once */
+  g_assert (strip->group == NULL);
+
+  strip->group = group;
+  group->strips = g_list_append (group->strips, strip);
 }
