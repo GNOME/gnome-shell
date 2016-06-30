@@ -43,6 +43,8 @@ struct _MetaWaylandTabletPad
 
   uint32_t n_buttons;
   GList *groups;
+  GList *rings;
+  GList *strips;
 
   GHashTable *feedback;
 

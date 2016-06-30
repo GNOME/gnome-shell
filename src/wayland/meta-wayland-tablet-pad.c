@@ -61,13 +61,81 @@ pad_handle_focus_surface_destroy (struct wl_listener *listener,
   meta_wayland_tablet_pad_set_focus (pad, NULL);
 }
 
+static void
+group_rings_strips (MetaWaylandTabletPad *pad)
+{
+  gint n_group, n_elem;
+  GList *g, *l;
+#ifdef HAVE_NATIVE_BACKEND
+  MetaBackend *backend = meta_get_backend ();
+  struct libinput_device *libinput_device = NULL;
+
+  if (META_IS_BACKEND_NATIVE (backend))
+    libinput_device = clutter_evdev_input_device_get_libinput_device (pad->device);
+#endif
+
+  for (n_group = 0, g = pad->groups; g; g = g->next)
+    {
+      MetaWaylandTabletPadGroup *group = g->data;
+#ifdef HAVE_NATIVE_BACKEND
+      struct libinput_tablet_pad_mode_group *mode_group = NULL;
+
+      if (libinput_device)
+        mode_group = libinput_device_tablet_pad_get_mode_group (libinput_device, n_group);
+#endif
+
+      for (n_elem = 0, l = pad->rings; l; l = l->next)
+        {
+          MetaWaylandTabletPadRing *ring = l->data;
+
+#ifdef HAVE_NATIVE_BACKEND
+          if (mode_group)
+            {
+              if (libinput_tablet_pad_mode_group_has_ring (mode_group, n_elem))
+                meta_wayland_tablet_pad_ring_set_group (ring, group);
+            }
+          else
+#endif
+            {
+              /* Assign everything to the first group */
+              if (n_group == 0)
+                meta_wayland_tablet_pad_ring_set_group (ring, group);
+            }
+          n_elem++;
+        }
+
+      for (n_elem = 0, l = pad->strips; l; l = l->next)
+        {
+          MetaWaylandTabletPadStrip *strip = l->data;
+
+#ifdef HAVE_NATIVE_BACKEND
+          if (mode_group)
+            {
+              if (libinput_tablet_pad_mode_group_has_strip (mode_group, n_elem))
+                meta_wayland_tablet_pad_strip_set_group (strip, group);
+            }
+          else
+#endif
+            {
+              /* Assign everything to the first group */
+              if (n_group == 0)
+                meta_wayland_tablet_pad_strip_set_group (strip, group);
+            }
+
+          n_elem++;
+        }
+
+      n_group++;
+    }
+}
+
 MetaWaylandTabletPad *
 meta_wayland_tablet_pad_new (ClutterInputDevice    *device,
                              MetaWaylandTabletSeat *tablet_seat)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaWaylandTabletPad *pad;
-  guint n_mode_groups, i;
+  guint n_elems, i;
 
   pad = g_slice_new0 (MetaWaylandTabletPad);
   wl_list_init (&pad->resource_list);
@@ -90,13 +158,35 @@ meta_wayland_tablet_pad_new (ClutterInputDevice    *device,
     }
 #endif
 
-  n_mode_groups = clutter_input_device_get_n_mode_groups (pad->device);
+  n_elems = clutter_input_device_get_n_mode_groups (pad->device);
 
-  for (i = 0; i < n_mode_groups; i++)
+  for (i = 0; i < n_elems; i++)
     {
       pad->groups = g_list_prepend (pad->groups,
                                     meta_wayland_tablet_pad_group_new (pad));
     }
+
+  n_elems = clutter_input_device_get_n_rings (pad->device);
+
+  for (i = 0; i < n_elems; i++)
+    {
+      MetaWaylandTabletPadRing *ring;
+
+      ring = meta_wayland_tablet_pad_ring_new (pad);
+      pad->rings = g_list_prepend (pad->rings, ring);
+    }
+
+  n_elems = clutter_input_device_get_n_strips (pad->device);
+
+  for (i = 0; i < n_elems; i++)
+    {
+      MetaWaylandTabletPadStrip *strip;
+
+      strip = meta_wayland_tablet_pad_strip_new (pad);
+      pad->strips = g_list_prepend (pad->strips, strip);
+    }
+
+  group_rings_strips (pad);
 
   return pad;
 }
@@ -117,6 +207,10 @@ meta_wayland_tablet_pad_free (MetaWaylandTabletPad *pad)
 
   g_list_free_full (pad->groups,
                     (GDestroyNotify) meta_wayland_tablet_pad_group_free);
+  g_list_free_full (pad->rings,
+                    (GDestroyNotify) meta_wayland_tablet_pad_ring_free);
+  g_list_free_full (pad->strips,
+                    (GDestroyNotify) meta_wayland_tablet_pad_strip_free);
 
   g_hash_table_destroy (pad->feedback);
 

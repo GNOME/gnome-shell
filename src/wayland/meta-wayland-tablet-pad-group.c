@@ -50,28 +50,11 @@ MetaWaylandTabletPadGroup *
 meta_wayland_tablet_pad_group_new (MetaWaylandTabletPad *pad)
 {
   MetaWaylandTabletPadGroup *group;
-  guint n_elems, i;
 
   group = g_slice_new0 (MetaWaylandTabletPadGroup);
   wl_list_init (&group->resource_list);
   wl_list_init (&group->focus_resource_list);
   group->pad = pad;
-
-  n_elems = clutter_input_device_get_n_rings (pad->device);
-
-  for (i = 0; i < n_elems; i++)
-    {
-      group->rings = g_list_prepend (group->rings,
-                                     meta_wayland_tablet_pad_ring_new (pad));
-    }
-
-  n_elems = clutter_input_device_get_n_strips (pad->device);
-
-  for (i = 0; i < n_elems; i++)
-    {
-      group->strips = g_list_prepend (group->strips,
-                                      meta_wayland_tablet_pad_strip_new (pad));
-    }
 
   return group;
 }
@@ -80,18 +63,12 @@ void
 meta_wayland_tablet_pad_group_free (MetaWaylandTabletPadGroup *group)
 {
   struct wl_resource *resource, *next;
-  GList *l;
 
   wl_resource_for_each_safe (resource, next, &group->resource_list)
     {
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
-
-  for (l = group->rings; l; l = l->next)
-    meta_wayland_tablet_pad_ring_free (l->data);
-  for (l = group->strips; l; l = l->next)
-    meta_wayland_tablet_pad_strip_free (l->data);
 
   g_list_free (group->rings);
   g_list_free (group->strips);
