@@ -71,6 +71,9 @@ struct _MetaInputSettingsClass
   void (* set_edge_scroll)   (MetaInputSettings  *settings,
                               ClutterInputDevice *device,
                               gboolean            enabled);
+  void (* set_two_finger_scroll) (MetaInputSettings  *settings,
+                                  ClutterInputDevice *device,
+                                  gboolean            enabled);
   void (* set_scroll_button) (MetaInputSettings  *settings,
                               ClutterInputDevice *device,
                               guint               button);

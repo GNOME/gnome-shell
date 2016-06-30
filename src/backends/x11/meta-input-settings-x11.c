@@ -204,30 +204,77 @@ meta_input_settings_x11_set_edge_scroll (MetaInputSettings            *settings,
                                          gboolean                      edge_scroll_enabled)
 {
   guchar values[3] = { 0 }; /* 2fg, edge, button. The last value is unused */
+  guchar *defaults;
   guchar *available;
 
   available = get_property (device, "libinput Scroll Methods Available",
                             XA_INTEGER, 8, 3);
-  if (!available)
-    return;
+  defaults = get_property (device, "libinput Scroll Method Enabled",
+                           XA_INTEGER, 8, 3);
+  if (!available || !defaults)
+    goto out;
+
+  memcpy (values, defaults, 3);
+
+  /* Don't set edge scrolling if two-finger scrolling is enabled and available */
+  if (available[1] && !(available[0] && values[0]))
+    {
+      values[1] = !!edge_scroll_enabled;
+      change_property (device, "libinput Scroll Method Enabled",
+                       XA_INTEGER, 8, &values, 3);
+    }
+
+out:
+  if (available)
+    meta_XFree (available);
+  if (defaults)
+    meta_XFree (defaults);
+}
+
+static void
+meta_input_settings_x11_set_two_finger_scroll (MetaInputSettings            *settings,
+                                               ClutterInputDevice           *device,
+                                               gboolean                      two_finger_scroll_enabled)
+{
+  guchar values[3] = { 0 }; /* 2fg, edge, button. The last value is unused */
+  guchar *defaults;
+  guchar *available;
+  gboolean changed;
+
+  available = get_property (device, "libinput Scroll Methods Available",
+                            XA_INTEGER, 8, 3);
+  defaults = get_property (device, "libinput Scroll Method Enabled",
+                           XA_INTEGER, 8, 3);
+  if (!available || !defaults)
+    goto out;
+
+  memcpy (values, defaults, 3);
+  changed = FALSE;
 
   if (available[0])
     {
-      values[0] = 1;
-    }
-  else if (available[1] && edge_scroll_enabled)
-    {
-      values[1] = 1;
-    }
-  else
-    {
-      /* Disabled */
+      values[0] = !!two_finger_scroll_enabled;
+      changed = TRUE;
     }
 
-  change_property (device, "libinput Scroll Method Enabled",
-                   XA_INTEGER, 8, &values, 3);
+  /* Disable edge scrolling when two-finger scrolling is enabled */
+  if (values[0] && values[1])
+    {
+      values[1] = 0;
+      changed = TRUE;
+    }
 
-  meta_XFree (available);
+  if (changed)
+    {
+      change_property (device, "libinput Scroll Method Enabled",
+                       XA_INTEGER, 8, &values, 3);
+    }
+
+out:
+  if (available)
+    meta_XFree (available);
+  if (defaults)
+    meta_XFree (defaults);
 }
 
 static void
@@ -342,6 +389,7 @@ meta_input_settings_x11_class_init (MetaInputSettingsX11Class *klass)
   input_settings_class->set_tap_enabled = meta_input_settings_x11_set_tap_enabled;
   input_settings_class->set_invert_scroll = meta_input_settings_x11_set_invert_scroll;
   input_settings_class->set_edge_scroll = meta_input_settings_x11_set_edge_scroll;
+  input_settings_class->set_two_finger_scroll = meta_input_settings_x11_set_two_finger_scroll;
   input_settings_class->set_scroll_button = meta_input_settings_x11_set_scroll_button;
   input_settings_class->set_click_method = meta_input_settings_x11_set_click_method;
   input_settings_class->set_keyboard_repeat = meta_input_settings_x11_set_keyboard_repeat;

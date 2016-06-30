@@ -161,16 +161,18 @@ meta_input_settings_native_set_edge_scroll (MetaInputSettings            *settin
   enum libinput_config_scroll_method scroll_method = 0;
   struct libinput_device *libinput_device;
   enum libinput_config_scroll_method supported;
+  enum libinput_config_scroll_method current;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
   supported = libinput_device_config_scroll_get_methods (libinput_device);
+  current = libinput_device_config_scroll_get_method (libinput_device);
 
-  if (supported & LIBINPUT_CONFIG_SCROLL_2FG)
-    {
-      scroll_method = LIBINPUT_CONFIG_SCROLL_2FG;
-    }
-  else if (supported & LIBINPUT_CONFIG_SCROLL_EDGE &&
-           edge_scrolling_enabled)
+  /* Don't set edge scrolling if two-finger scrolling is enabled and available */
+  if (current == LIBINPUT_CONFIG_SCROLL_2FG)
+    return;
+
+  if (supported & LIBINPUT_CONFIG_SCROLL_EDGE &&
+      edge_scrolling_enabled)
     {
       scroll_method = LIBINPUT_CONFIG_SCROLL_EDGE;
     }
@@ -178,6 +180,38 @@ meta_input_settings_native_set_edge_scroll (MetaInputSettings            *settin
     {
       scroll_method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
     }
+
+  device_set_scroll_method (libinput_device, scroll_method);
+}
+
+static void
+meta_input_settings_native_set_two_finger_scroll (MetaInputSettings            *settings,
+                                                  ClutterInputDevice           *device,
+                                                  gboolean                      two_finger_scroll_enabled)
+{
+  enum libinput_config_scroll_method scroll_method = 0;
+  struct libinput_device *libinput_device;
+  enum libinput_config_scroll_method supported;
+  enum libinput_config_scroll_method current;
+
+  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  supported = libinput_device_config_scroll_get_methods (libinput_device);
+  current = libinput_device_config_scroll_get_method (libinput_device);
+
+  if (two_finger_scroll_enabled &&
+      !(supported & LIBINPUT_CONFIG_SCROLL_2FG))
+    return;
+
+  if (two_finger_scroll_enabled)
+    {
+      scroll_method = LIBINPUT_CONFIG_SCROLL_2FG;
+    }
+  else if (current != LIBINPUT_CONFIG_SCROLL_EDGE)
+    {
+      scroll_method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
+    }
+  else
+    return;
 
   device_set_scroll_method (libinput_device, scroll_method);
 }
@@ -290,6 +324,7 @@ meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
   input_settings_class->set_tap_enabled = meta_input_settings_native_set_tap_enabled;
   input_settings_class->set_invert_scroll = meta_input_settings_native_set_invert_scroll;
   input_settings_class->set_edge_scroll = meta_input_settings_native_set_edge_scroll;
+  input_settings_class->set_two_finger_scroll = meta_input_settings_native_set_two_finger_scroll;
   input_settings_class->set_scroll_button = meta_input_settings_native_set_scroll_button;
   input_settings_class->set_click_method = meta_input_settings_native_set_click_method;
   input_settings_class->set_keyboard_repeat = meta_input_settings_native_set_keyboard_repeat;
