@@ -33,6 +33,7 @@
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-private.h"
 #include "meta-wayland-tablet-pad.h"
+#include "meta-wayland-tablet-pad-group.h"
 #include "meta-wayland-tablet-pad-ring.h"
 
 static void
@@ -192,4 +193,15 @@ meta_wayland_tablet_pad_ring_sync_focus (MetaWaylandTabletPadRing *ring)
                                  &ring->resource_list,
                                  wl_resource_get_client (ring->pad->focus_surface->resource));
     }
+}
+
+void
+meta_wayland_tablet_pad_ring_set_group (MetaWaylandTabletPadRing  *ring,
+					MetaWaylandTabletPadGroup *group)
+{
+  /* Group is static, can only be set once */
+  g_assert (ring->group == NULL);
+
+  ring->group = group;
+  group->rings = g_list_append (group->rings, ring);
 }

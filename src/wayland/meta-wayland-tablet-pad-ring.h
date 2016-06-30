@@ -32,6 +32,7 @@
 struct _MetaWaylandTabletPadRing
 {
   MetaWaylandTabletPad *pad;
+  MetaWaylandTabletPadGroup *group;
 
   struct wl_list resource_list;
   struct wl_list focus_resource_list;
@@ -42,6 +43,8 @@ struct _MetaWaylandTabletPadRing
 MetaWaylandTabletPadRing * meta_wayland_tablet_pad_ring_new  (MetaWaylandTabletPad *pad);
 void                       meta_wayland_tablet_pad_ring_free (MetaWaylandTabletPadRing *ring);
 
+void                       meta_wayland_tablet_pad_ring_set_group (MetaWaylandTabletPadRing  *ring,
+								   MetaWaylandTabletPadGroup *group);
 struct wl_resource *
              meta_wayland_tablet_pad_ring_create_new_resource (MetaWaylandTabletPadRing *ring,
                                                                struct wl_client         *client,
