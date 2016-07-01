@@ -280,6 +280,8 @@ meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
                            first_property_name, var_args);
       va_end (var_args);
 
+      meta_wayland_surface_role_assigned (surface->role);
+
       return TRUE;
     }
 }
