@@ -39,7 +39,7 @@ const LevelBar = new Lang.Class({
         this._level = Math.max(0, Math.min(value, 100));
 
         let alloc = this.actor.get_allocation_box();
-        let newWidth = (alloc.x2 - alloc.x1) * this._level / 100;
+        let newWidth = Math.round((alloc.x2 - alloc.x1) * this._level / 100);
         if (newWidth != this._bar.width)
             this._bar.width = newWidth;
     }
