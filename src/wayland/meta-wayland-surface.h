@@ -301,9 +301,6 @@ MetaWaylandSurface * meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRo
 
 cairo_region_t *    meta_wayland_surface_calculate_input_region (MetaWaylandSurface *surface);
 
-void                meta_wayland_surface_apply_window_state (MetaWaylandSurface      *surface,
-                                                             MetaWaylandPendingState *pending);
-
 void                meta_wayland_surface_calculate_window_geometry (MetaWaylandSurface *surface,
                                                                     MetaRectangle      *total_geometry,
                                                                     float               parent_x,

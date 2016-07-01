@@ -432,8 +432,6 @@ xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
   if (!window)
     return;
 
-  meta_wayland_surface_apply_window_state (surface, pending);
-
   if (pending->has_new_geometry)
     {
       /* If we have new geometry, use it. */
@@ -606,7 +604,6 @@ xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
   if (!window)
     return;
 
-  meta_wayland_surface_apply_window_state (surface, pending);
   meta_wayland_surface_calculate_window_geometry (surface, &geom, 0, 0);
   meta_window_wayland_move_resize (window,
                                    NULL,

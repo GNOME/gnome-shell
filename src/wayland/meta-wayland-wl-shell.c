@@ -595,7 +595,6 @@ wl_shell_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
   if (!pending->newly_attached)
     return;
 
-  meta_wayland_surface_apply_window_state (surface, pending);
   meta_wayland_surface_calculate_window_geometry (surface, &geom, 0, 0);
   meta_window_wayland_move_resize (window,
                                    NULL,

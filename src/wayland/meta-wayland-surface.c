@@ -453,22 +453,6 @@ queue_surface_actor_frame_callbacks (MetaWaylandSurface      *surface,
   wl_list_init (&pending->frame_callback_list);
 }
 
-void
-meta_wayland_surface_apply_window_state (MetaWaylandSurface      *surface,
-                                         MetaWaylandPendingState *pending)
-{
-  MetaSurfaceActorWayland *actor =
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
-  MetaWindow *window = surface->window;
-  MetaWaylandBuffer *buffer = surface->buffer_ref.buffer;
-  CoglTexture *texture = buffer->texture;
-  double scale;
-
-  scale = meta_surface_actor_wayland_get_scale (actor);
-  window->buffer_rect.width = cogl_texture_get_width (texture) * scale;
-  window->buffer_rect.height = cogl_texture_get_height (texture) * scale;
-}
-
 static void
 pending_buffer_resource_destroyed (MetaWaylandBuffer       *buffer,
                                    MetaWaylandPendingState *pending)
@@ -2036,6 +2020,34 @@ meta_wayland_surface_role_actor_surface_class_init (MetaWaylandSurfaceRoleActorS
 }
 
 static void
+shell_surface_role_surface_commit (MetaWaylandSurfaceRole  *surface_role,
+                                   MetaWaylandPendingState *pending)
+{
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandSurfaceRoleClass *surface_role_class;
+  MetaWindow *window = surface->window;
+  MetaWaylandBuffer *buffer;
+  CoglTexture *texture;
+  MetaSurfaceActorWayland *actor;
+  double scale;
+
+  surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_shell_surface_parent_class);
+  surface_role_class->commit (surface_role, pending);
+
+  buffer = surface->buffer_ref.buffer;
+  if (!buffer)
+    return;
+
+  actor = META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
+  scale = meta_surface_actor_wayland_get_scale (actor);
+  texture = buffer->texture;
+  window->buffer_rect.width = cogl_texture_get_width (texture) * scale;
+  window->buffer_rect.height = cogl_texture_get_height (texture) * scale;
+}
+
+static void
 meta_wayland_surface_role_shell_surface_init (MetaWaylandSurfaceRoleShellSurface *role)
 {
 }
@@ -2043,6 +2055,10 @@ meta_wayland_surface_role_shell_surface_init (MetaWaylandSurfaceRoleShellSurface
 static void
 meta_wayland_surface_role_shell_surface_class_init (MetaWaylandSurfaceRoleShellSurfaceClass *klass)
 {
+  MetaWaylandSurfaceRoleClass *surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_CLASS (klass);
+
+  surface_role_class->commit = shell_surface_role_surface_commit;
 }
 
 static void
