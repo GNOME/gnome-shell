@@ -61,8 +61,8 @@ mutter_built_sources += \
 	gtk-shell-server-protocol.h		\
 	gtk-primary-selection-protocol.c				\
 	gtk-primary-selection-server-protocol.h				\
-	xdg-shell-unstable-v5-protocol.c				\
-	xdg-shell-unstable-v5-server-protocol.h				\
+	xdg-shell-unstable-v6-protocol.c				\
+	xdg-shell-unstable-v6-server-protocol.h				\
 	relative-pointer-unstable-v1-protocol.c				\
 	relative-pointer-unstable-v1-server-protocol.h			\
 	pointer-constraints-unstable-v1-protocol.c			\
