@@ -46,6 +46,8 @@ struct _MetaWindowWayland
   int pending_move_x;
   int pending_move_y;
 
+  int last_sent_x;
+  int last_sent_y;
   int last_sent_width;
   int last_sent_height;
 };
@@ -149,6 +151,8 @@ surface_state_changed (MetaWindow *window)
     return;
 
   meta_wayland_surface_configure_notify (window->surface,
+                                         wl_window->last_sent_x,
+                                         wl_window->last_sent_y,
                                          wl_window->last_sent_width,
                                          wl_window->last_sent_height,
                                          &wl_window->pending_configure_serial);
@@ -184,6 +188,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   gboolean can_move_now;
+  int configured_x;
+  int configured_y;
   int configured_width;
   int configured_height;
   int monitor_scale;
@@ -193,6 +199,9 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
   /* don't do anything if we're dropping the window, see #751847 */
   if (window->unmanaging)
     return;
+
+  configured_x = constrained_rect.x;
+  configured_y = constrained_rect.y;
 
   /* The scale the window is drawn in might change depending on what monitor it
    * is mainly on. Scale the configured rectangle to be in logical pixel
@@ -256,6 +265,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
             return;
 
           meta_wayland_surface_configure_notify (window->surface,
+                                                 configured_x,
+                                                 configured_y,
                                                  configured_width,
                                                  configured_height,
                                                  &wl_window->pending_configure_serial);
@@ -271,6 +282,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
         }
     }
 
+  wl_window->last_sent_x = configured_x;
+  wl_window->last_sent_y = configured_y;
   wl_window->last_sent_width = configured_width;
   wl_window->last_sent_height = configured_height;
 

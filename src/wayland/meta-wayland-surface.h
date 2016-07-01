@@ -92,6 +92,8 @@ struct _MetaWaylandSurfaceRoleShellSurfaceClass
   MetaWaylandSurfaceRoleActorSurfaceClass parent_class;
 
   void (*configure) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                     int                                 new_x,
+                     int                                 new_y,
                      int                                 new_width,
                      int                                 new_height,
                      MetaWaylandSerial                  *sent_serial);
@@ -253,6 +255,8 @@ void                meta_wayland_surface_set_window (MetaWaylandSurface *surface
                                                      MetaWindow         *window);
 
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
+                                                           int                 new_x,
+                                                           int                 new_y,
                                                            int                 width,
                                                            int                 height,
                                                            MetaWaylandSerial  *sent_serial);

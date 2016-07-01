@@ -154,6 +154,8 @@ meta_wayland_surface_role_get_toplevel (MetaWaylandSurfaceRole *surface_role);
 
 static void
 meta_wayland_surface_role_shell_surface_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                                                   int                                 new_x,
+                                                   int                                 new_y,
                                                    int                                 new_width,
                                                    int                                 new_height,
                                                    MetaWaylandSerial                  *sent_serial);
@@ -1577,6 +1579,8 @@ meta_wayland_shell_init (MetaWaylandCompositor *compositor)
 
 void
 meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
+                                       int                 new_x,
+                                       int                 new_y,
                                        int                 new_width,
                                        int                 new_height,
                                        MetaWaylandSerial  *sent_serial)
@@ -1587,6 +1591,7 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
   g_signal_emit (surface, surface_signals[SURFACE_CONFIGURE], 0);
 
   meta_wayland_surface_role_shell_surface_configure (shell_surface_role,
+                                                     new_x, new_y,
                                                      new_width, new_height,
                                                      sent_serial);
 }
@@ -1923,6 +1928,8 @@ meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role)
 
 static void
 meta_wayland_surface_role_shell_surface_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                                                   int                                 new_x,
+                                                   int                                 new_y,
                                                    int                                 new_width,
                                                    int                                 new_height,
                                                    MetaWaylandSerial                  *sent_serial)
@@ -1931,6 +1938,8 @@ meta_wayland_surface_role_shell_surface_configure (MetaWaylandSurfaceRoleShellSu
     META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
 
   shell_surface_role_class->configure (shell_surface_role,
+                                       new_x,
+                                       new_y,
                                        new_width,
                                        new_height,
                                        sent_serial);

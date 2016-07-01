@@ -617,6 +617,8 @@ wl_shell_surface_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 
 static void
 wl_shell_surface_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
+                                 int                                 new_x,
+                                 int                                 new_y,
                                  int                                 new_width,
                                  int                                 new_height,
                                  MetaWaylandSerial                  *sent_serial)
