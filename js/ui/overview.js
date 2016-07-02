@@ -124,9 +124,6 @@ const Overview = new Lang.Class({
         Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
         this._bgManagers = [];
 
-        this._backgroundGroup.connect('scroll-event',
-                                      Lang.bind(this, this._onScrollEvent));
-
         this._desktopFade = new St.Widget();
         Main.layoutManager.overviewGroup.add_child(this._desktopFade);
 
@@ -155,6 +152,9 @@ const Overview = new Lang.Class({
             dragMotion: Lang.bind(this, this._onDragMotion)
         };
 
+
+        Main.layoutManager.overviewGroup.connect('scroll-event',
+                                                 Lang.bind(this, this._onScrollEvent));
         Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
 

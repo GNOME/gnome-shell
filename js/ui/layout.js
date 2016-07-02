@@ -220,7 +220,8 @@ const LayoutManager = new Lang.Class({
         global.stage.add_child(this.uiGroup);
 
         this.overviewGroup = new St.Widget({ name: 'overviewGroup',
-                                             visible: false });
+                                             visible: false,
+                                             reactive: true });
         this.addChrome(this.overviewGroup);
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
