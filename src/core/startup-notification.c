@@ -418,7 +418,7 @@ collect_timed_out_foreach (void *element,
   elapsed = ctod->now - timestamp;
 
   meta_topic (META_DEBUG_STARTUP,
-              "Sequence used %ld ms vs. %d max: %s\n",
+              "Sequence used %" G_GINT64_FORMAT " ms vs. %d max: %s\n",
               elapsed, STARTUP_TIMEOUT,
               meta_startup_notification_sequence_get_id (sequence));
 
