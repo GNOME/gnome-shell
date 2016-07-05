@@ -3180,7 +3180,6 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
       window->fullscreen = TRUE;
 
       meta_stack_freeze (window->screen->stack);
-      meta_window_update_layer (window);
 
       meta_window_raise (window);
       meta_stack_thaw (window->screen->stack);
@@ -3265,7 +3264,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
                                           window, META_SIZE_CHANGE_UNFULLSCREEN,
                                           &old_frame_rect, &old_buffer_rect);
 
-      meta_window_update_layer (window);
+      meta_screen_queue_check_fullscreen (window->screen);
 
       g_object_notify_by_pspec (G_OBJECT (window), obj_props[PROP_FULLSCREEN]);
     }

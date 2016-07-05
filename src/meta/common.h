@@ -519,7 +519,6 @@ void meta_frame_borders_clear (MetaFrameBorders *self);
  * @META_LAYER_NORMAL: Normal layer
  * @META_LAYER_TOP: Top layer
  * @META_LAYER_DOCK: Dock layer
- * @META_LAYER_FULLSCREEN: Fullscreen layer
  * @META_LAYER_OVERRIDE_REDIRECT: Override-redirect layer
  * @META_LAYER_LAST: Marks the end of the #MetaStackLayer enumeration
  *
@@ -533,7 +532,6 @@ typedef enum
   META_LAYER_NORMAL	       = 2,
   META_LAYER_TOP	       = 4, /* Same as DOCK; see EWMH and bug 330717 */
   META_LAYER_DOCK	       = 4,
-  META_LAYER_FULLSCREEN	       = 5,
   META_LAYER_OVERRIDE_REDIRECT = 7,
   META_LAYER_LAST	       = 8
 } MetaStackLayer;
