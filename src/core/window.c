@@ -4782,9 +4782,6 @@ meta_window_set_focused_internal (MetaWindow *window,
       if (window->frame)
         meta_frame_queue_draw (window->frame);
 
-      /* move into FOCUSED_WINDOW layer */
-      meta_window_update_layer (window);
-
       /* Ungrab click to focus button since the sync grab can interfere
        * with some things you might do inside the focused window, by
        * causing the client to get funky enter/leave events.
@@ -4819,9 +4816,6 @@ meta_window_set_focused_internal (MetaWindow *window,
 
       if (!window->attached_focus_window)
         meta_window_appears_focused_changed (window);
-
-      /* move out of FOCUSED_WINDOW layer */
-      meta_window_update_layer (window);
 
       /* Re-grab for click to focus and raise-on-click, if necessary */
       if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK ||
