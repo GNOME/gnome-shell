@@ -138,4 +138,6 @@ gboolean meta_backend_get_relative_motion_deltas (MetaBackend *backend,
 void meta_backend_set_client_pointer_constraint (MetaBackend *backend,
                                                  MetaPointerConstraint *constraint);
 
+ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
+
 #endif /* META_BACKEND_PRIVATE_H */

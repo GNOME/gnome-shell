@@ -1051,7 +1051,6 @@ meta_pre_paint_func (gpointer data)
                                                                     frame_callback,
                                                                     compositor,
                                                                     NULL);
-      compositor->context = cogl_framebuffer_get_context (COGL_FRAMEBUFFER (compositor->onscreen));
     }
 
   if (compositor->windows == NULL)
@@ -1159,10 +1158,13 @@ on_shadow_factory_changed (MetaShadowFactory *factory,
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
-  MetaCompositor        *compositor;
+  MetaBackend *backend = meta_get_backend ();
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  MetaCompositor *compositor;
 
   compositor = g_new0 (MetaCompositor, 1);
   compositor->display = display;
+  compositor->context = clutter_backend->cogl_context;
 
   if (g_getenv("META_DISABLE_MIPMAPS"))
     compositor->no_mipmaps = TRUE;

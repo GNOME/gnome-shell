@@ -671,7 +671,7 @@ static GSourceFuncs event_funcs = {
   event_dispatch
 };
 
-static ClutterBackend *
+ClutterBackend *
 meta_backend_get_clutter_backend (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
