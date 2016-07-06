@@ -116,11 +116,11 @@ center_pointer (MetaBackend *backend)
                              primary->rect.y + primary->rect.height / 2);
 }
 
-static void
-on_monitors_changed (MetaMonitorManager *monitors,
-                     gpointer user_data)
+void
+meta_backend_monitors_changed (MetaBackend *backend)
 {
-  MetaBackend *backend = META_BACKEND (user_data);
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
   ClutterInputDevice *device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
   ClutterPoint point;
@@ -130,7 +130,8 @@ on_monitors_changed (MetaMonitorManager *monitors,
   if (clutter_input_device_get_coords (device, NULL, &point))
     {
       /* If we're outside all monitors, warp the pointer back inside */
-      if (meta_monitor_manager_get_monitor_at_point (monitors, point.x, point.y) < 0)
+      if (meta_monitor_manager_get_monitor_at_point (monitor_manager,
+                                                     point.x, point.y) < 0)
         center_pointer (backend);
     }
 }
@@ -278,8 +279,6 @@ meta_backend_real_post_init (MetaBackend *backend)
 
   priv->monitor_manager = create_monitor_manager (backend);
 
-  g_signal_connect (priv->monitor_manager, "monitors-changed",
-                    G_CALLBACK (on_monitors_changed), backend);
   meta_backend_sync_screen_size (backend);
 
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);

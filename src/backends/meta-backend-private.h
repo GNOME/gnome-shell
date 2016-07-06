@@ -142,4 +142,6 @@ void meta_backend_set_client_pointer_constraint (MetaBackend *backend,
 
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
+void meta_backend_monitors_changed (MetaBackend *backend);
+
 #endif /* META_BACKEND_PRIVATE_H */

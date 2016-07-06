@@ -1379,6 +1379,7 @@ meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
   MetaMonitorInfo *old_monitor_infos;
   unsigned old_n_monitor_infos;
@@ -1408,6 +1409,13 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
             manager_class->delete_monitor (manager, old_monitor_infos[i].monitor_winsys_xid);
         }
     }
+
+  /* Tell the backend about that the monitors changed before emitting the
+   * signal, so that the backend can prepare itself before all the signal
+   * consumers.
+   */
+  meta_backend_monitors_changed (backend);
+
   g_signal_emit_by_name (manager, "monitors-changed");
 
   g_free (old_monitor_infos);
