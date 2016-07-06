@@ -43,6 +43,10 @@ struct _MetaStageNative
 
   int64_t presented_frame_counter_sync;
   int64_t presented_frame_counter_complete;
+
+  gboolean pending_resize;
+  int pending_width;
+  int pending_height;
 };
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
@@ -164,35 +168,9 @@ meta_stage_native_legacy_set_size (MetaStageNative *stage_native,
                                    int              width,
                                    int              height)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaRenderer *renderer = meta_backend_get_renderer (backend);
-  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
-  MetaRendererView *legacy_view;
-  GError *error = NULL;
-  cairo_rectangle_int_t view_layout;
-
-  legacy_view = get_legacy_view (renderer);
-  if (!legacy_view)
-    return;
-
-  if (!meta_renderer_native_set_legacy_view_size (renderer_native,
-                                                  legacy_view,
-                                                  width, height,
-                                                  &error))
-    {
-      meta_warning ("Applying display configuration failed: %s\n",
-                    error->message);
-      g_error_free (error);
-      return;
-    }
-
-  view_layout = (cairo_rectangle_int_t) {
-    .width = width,
-    .height = height
-  };
-  g_object_set (G_OBJECT (legacy_view),
-                "layout", &view_layout,
-                NULL);
+  stage_native->pending_resize = TRUE;
+  stage_native->pending_width = width;
+  stage_native->pending_height = height;
 }
 
 static void
@@ -283,6 +261,56 @@ meta_stage_native_get_frame_counter (ClutterStageWindow *stage_window)
 }
 
 static void
+maybe_resize_legacy_view (MetaStageNative *stage_native)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+  MetaRendererView *legacy_view;
+  int width = stage_native->pending_width;
+  int height = stage_native->pending_height;
+  GError *error = NULL;
+  cairo_rectangle_int_t view_layout;
+
+  if (!stage_native->pending_resize)
+    return;
+  stage_native->pending_resize = FALSE;
+
+  legacy_view = get_legacy_view (renderer);
+  if (!legacy_view)
+    return;
+
+  if (!meta_renderer_native_set_legacy_view_size (renderer_native,
+                                                  legacy_view,
+                                                  width, height,
+                                                  &error))
+    {
+      meta_warning ("Applying display configuration failed: %s\n",
+                    error->message);
+      g_error_free (error);
+      return;
+    }
+
+  view_layout = (cairo_rectangle_int_t) {
+    .width = width,
+    .height = height
+  };
+  g_object_set (G_OBJECT (legacy_view),
+                "layout", &view_layout,
+                NULL);
+}
+
+static void
+meta_stage_native_redraw (ClutterStageWindow *stage_window)
+{
+  MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
+
+  maybe_resize_legacy_view (stage_native);
+
+  clutter_stage_window_parent_iface->redraw (stage_window);
+}
+
+static void
 meta_stage_native_finish_frame (ClutterStageWindow *stage_window)
 {
   MetaBackend *backend = meta_get_backend ();
@@ -315,5 +343,6 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_geometry = meta_stage_native_get_geometry;
   iface->get_views = meta_stage_native_get_views;
   iface->get_frame_counter = meta_stage_native_get_frame_counter;
+  iface->redraw = meta_stage_native_redraw;
   iface->finish_frame = meta_stage_native_finish_frame;
 }
