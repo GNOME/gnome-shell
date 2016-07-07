@@ -311,9 +311,13 @@ const DBusEventSource = new Lang.Class({
     },
 
     ignoreEvent: function(event) {
+        if (this._ignoredEvents.get(event.id))
+            return;
+
         this._ignoredEvents.set(event.id, true);
         let savedState = new GLib.Variant('as', [...this._ignoredEvents.keys()]);
         global.set_persistent_state('ignored_events', savedState);
+        this.emit('changed');
     },
 
     requestRange: function(begin, end) {
