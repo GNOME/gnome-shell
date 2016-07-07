@@ -377,10 +377,11 @@ calendar_appointment_free (CalendarAppointment *appointment)
 static void
 calendar_appointment_init (CalendarAppointment  *appointment,
                            icalcomponent        *ical,
-                           ECalClient           *cal,
-                           icaltimezone         *default_zone)
+                           ECalClient           *cal)
 {
-  const char *source_uid;
+  icaltimezone *default_zone;
+
+  default_zone = e_cal_client_get_default_timezone (cal);
 
   appointment->uid          = get_ical_uid (ical);
   appointment->rid          = get_ical_rid (ical);
@@ -443,12 +444,14 @@ calendar_appointment_generate_occurrences (CalendarAppointment *appointment,
                                            icalcomponent       *ical,
                                            ECalClient          *cal,
                                            time_t               start,
-                                           time_t               end,
-                                           icaltimezone        *default_zone)
+                                           time_t               end)
 {
   ECalComponent *ecal;
+  icaltimezone *default_zone;
 
   g_assert (appointment->occurrences == NULL);
+
+  default_zone = e_cal_client_get_default_timezone (cal);
 
   ecal = e_cal_component_new ();
   e_cal_component_set_icalcomponent (ecal,
@@ -470,17 +473,13 @@ calendar_appointment_generate_occurrences (CalendarAppointment *appointment,
 
 static CalendarAppointment *
 calendar_appointment_new (icalcomponent        *ical,
-                          ECalClient           *cal,
-                          icaltimezone         *default_zone)
+                          ECalClient           *cal)
 {
   CalendarAppointment *appointment;
 
   appointment = g_new0 (CalendarAppointment, 1);
 
-  calendar_appointment_init (appointment,
-                             ical,
-                             cal,
-                             default_zone);
+  calendar_appointment_init (appointment, ical, cal);
   return appointment;
 }
 
@@ -696,13 +695,12 @@ app_load_events (App *app)
           icalcomponent *ical = j->data;
           CalendarAppointment *appointment;
 
-          appointment = calendar_appointment_new (ical, cal, app->zone);
+          appointment = calendar_appointment_new (ical, cal);
           calendar_appointment_generate_occurrences (appointment,
                                                      ical,
                                                      cal,
                                                      app->since,
-                                                     app->until,
-                                                     app->zone);
+                                                     app->until);
           g_hash_table_insert (app->appointments, g_strdup (appointment->uid), appointment);
         }
 
