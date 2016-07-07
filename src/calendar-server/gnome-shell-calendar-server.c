@@ -95,6 +95,12 @@ typedef struct
   GSList *occurrences;
 } CalendarAppointment;
 
+typedef struct
+{
+  ECalClient *client;
+  GHashTable *appointments;
+} CollectAppointmentsData;
+
 static time_t
 get_time_from_property (icalcomponent         *ical,
                         icalproperty_kind      prop_kind,
@@ -396,67 +402,6 @@ resolve_timezone_id (const char *tzid,
   return retval;
 }
 
-static gboolean
-calendar_appointment_collect_occurrence (ECalComponent  *component,
-                                         time_t          occurrence_start,
-                                         time_t          occurrence_end,
-                                         gpointer        data)
-{
-  CalendarOccurrence *occurrence;
-  GSList **collect_loc = data;
-  char *rid;
-
-  /* HACK: component is the primary event, so we don't have access
-   *       to the actual recur ID; fake one if the event has any
-   *       recurrences
-   */
-  if (e_cal_component_has_recurrences (component))
-    rid = ctime (&occurrence_start);
-  else
-    rid = "";
-
-  occurrence             = g_new0 (CalendarOccurrence, 1);
-  occurrence->start_time = occurrence_start;
-  occurrence->end_time   = occurrence_end;
-  occurrence->rid        = g_strdup (rid);
-
-  *collect_loc = g_slist_prepend (*collect_loc, occurrence);
-
-  return TRUE;
-}
-
-static void
-calendar_appointment_generate_occurrences (CalendarAppointment *appointment,
-                                           icalcomponent       *ical,
-                                           ECalClient          *cal,
-                                           time_t               start,
-                                           time_t               end)
-{
-  ECalComponent *ecal;
-  icaltimezone *default_zone;
-
-  g_assert (appointment->occurrences == NULL);
-
-  default_zone = e_cal_client_get_default_timezone (cal);
-
-  ecal = e_cal_component_new ();
-  e_cal_component_set_icalcomponent (ecal,
-                                     icalcomponent_new_clone (ical));
-
-  e_cal_recur_generate_instances (ecal,
-                                  start,
-                                  end,
-                                  calendar_appointment_collect_occurrence,
-                                  &appointment->occurrences,
-                                  (ECalRecurResolveTimezoneFn) resolve_timezone_id,
-                                  cal,
-                                  default_zone);
-
-  g_object_unref (ecal);
-
-  appointment->occurrences = g_slist_reverse (appointment->occurrences);
-}
-
 static CalendarAppointment *
 calendar_appointment_new (icalcomponent        *ical,
                           ECalClient           *cal)
@@ -468,6 +413,38 @@ calendar_appointment_new (icalcomponent        *ical,
   calendar_appointment_init (appointment, ical, cal);
   return appointment;
 }
+
+static gboolean
+generate_instances_cb (ECalComponent *comp,
+                       time_t         start,
+                       time_t         end,
+                       gpointer       data)
+{
+  ECalClient *cal = ((CollectAppointmentsData *)data)->client;
+  GHashTable *appointments = ((CollectAppointmentsData *)data)->appointments;
+  CalendarAppointment *appointment;
+  CalendarOccurrence *occurrence;
+  const char *uid;
+
+  e_cal_component_get_uid (comp, &uid);
+  appointment = g_hash_table_lookup (appointments, uid);
+
+  if (appointment == NULL)
+    {
+      icalcomponent *ical = e_cal_component_get_icalcomponent (comp);
+
+      appointment = calendar_appointment_new (ical, cal);
+      g_hash_table_insert (appointments, g_strdup (uid), appointment);
+    }
+
+  occurrence             = g_new0 (CalendarOccurrence, 1);
+  occurrence->start_time = start;
+  occurrence->end_time   = end;
+  occurrence->rid        = e_cal_component_get_recurid_as_string (comp);
+
+  appointment->occurrences = g_slist_append (appointment->occurrences, occurrence);
+}
+
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -647,6 +624,7 @@ app_load_events (App *app)
       GError *error;
       GSList *objects, *j;
       ECalClientView *view;
+      CollectAppointmentsData data;
 
       e_cal_client_set_default_timezone (cal, app->zone);
 
@@ -660,37 +638,13 @@ app_load_events (App *app)
           continue;
         }
 
-      error = NULL;
-      objects = NULL;
-      if (!e_cal_client_get_object_list_sync (cal,
-					      query,
-					      &objects,
-					      NULL, /* cancellable */
-					      &error))
-        {
-          ESource *source = e_client_get_source (E_CLIENT (cal));
-          g_warning ("Error querying calendar %s: %s\n",
-		     e_source_get_uid (source), error->message);
-          g_error_free (error);
-          g_free (query);
-          continue;
-        }
-
-      for (j = objects; j != NULL; j = j->next)
-        {
-          icalcomponent *ical = j->data;
-          CalendarAppointment *appointment;
-
-          appointment = calendar_appointment_new (ical, cal);
-          calendar_appointment_generate_occurrences (appointment,
-                                                     ical,
-                                                     cal,
-                                                     app->since,
-                                                     app->until);
-          g_hash_table_insert (app->appointments, g_strdup (appointment->uid), appointment);
-        }
-
-      e_cal_client_free_icalcomp_slist (objects);
+      data.client = cal;
+      data.appointments = app->appointments;
+      e_cal_client_generate_instances_sync (cal,
+                                            app->since,
+                                            app->until,
+                                            generate_instances_cb,
+                                            &data);
 
       error = NULL;
       if (!e_cal_client_get_view_sync (cal,
@@ -922,7 +876,7 @@ handle_method_call (GDBusConnection       *connection,
                   char *id = g_strdup_printf ("%s\n%s\n%s",
                                               a->source_id,
                                               a->uid,
-                                              o->rid);
+                                              o->rid ? o->rid : "");
 
                   g_variant_builder_init (&extras_builder, G_VARIANT_TYPE ("a{sv}"));
                   g_variant_builder_add (&builder,
