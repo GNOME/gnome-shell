@@ -120,6 +120,9 @@ const EmptyEventSource = new Lang.Class({
     destroy: function() {
     },
 
+    ignoreEvent: function(event) {
+    },
+
     requestRange: function(begin, end) {
     },
 
@@ -183,6 +186,15 @@ const DBusEventSource = new Lang.Class({
         this._resetCache();
         this.isLoading = false;
         this.isDummy = false;
+
+        this._ignoredEvents = new Map();
+
+        let savedState = global.get_persistent_state('as', 'ignored_events');
+        if (savedState)
+            savedState.deep_unpack().forEach(Lang.bind(this,
+                function(eventId) {
+                    this._ignoredEvents.set(eventId, true);
+                }));
 
         this._initialized = false;
         this._dbusProxy = new CalendarServer();
@@ -298,6 +310,12 @@ const DBusEventSource = new Lang.Class({
         }
     },
 
+    ignoreEvent: function(event) {
+        this._ignoredEvents.set(event.id, true);
+        let savedState = new GLib.Variant('as', [...this._ignoredEvents.keys()]);
+        global.set_persistent_state('ignored_events', savedState);
+    },
+
     requestRange: function(begin, end) {
         if (!(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
             this.isLoading = true;
@@ -313,6 +331,10 @@ const DBusEventSource = new Lang.Class({
         let result = [];
         for(let n = 0; n < this._events.length; n++) {
             let event = this._events[n];
+
+            if (this._ignoredEvents.has(event.id))
+                continue;
+
             if (_dateIntervalsOverlap (event.date, event.end, begin, end)) {
                 result.push(event);
             }
@@ -785,15 +807,6 @@ const EventsSection = new Lang.Class({
         this._desktopSettings.connect('changed', Lang.bind(this, this._reloadEvents));
         this._eventSource = new EmptyEventSource();
 
-        this._ignoredEvents = new Map();
-
-        let savedState = global.get_persistent_state('as', 'ignored_events');
-        if (savedState)
-            savedState.deep_unpack().forEach(Lang.bind(this,
-                function(eventId) {
-                    this._ignoredEvents.set(eventId, true);
-                }));
-
         this.parent('');
 
         Shell.AppSystem.get_default().connect('installed-changed',
@@ -802,9 +815,7 @@ const EventsSection = new Lang.Class({
     },
 
     _ignoreEvent: function(event) {
-        this._ignoredEvents.set(event.id, true);
-        let savedState = new GLib.Variant('as', [...this._ignoredEvents.keys()]);
-        global.set_persistent_state('ignored_events', savedState);
+        this._eventSource.ignoreEvent(event);
     },
 
     setEventSource: function(eventSource) {
@@ -849,9 +860,6 @@ const EventsSection = new Lang.Class({
 
         for (let i = 0; i < events.length; i++) {
             let event = events[i];
-
-            if (this._ignoredEvents.has(event.id))
-                continue;
 
             let message = new EventMessage(event, this._date);
             message.connect('close', Lang.bind(this, function() {
