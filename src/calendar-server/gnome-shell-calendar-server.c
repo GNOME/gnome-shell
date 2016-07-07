@@ -74,15 +74,15 @@ static App *_global_app = NULL;
 
 typedef struct
 {
+  char *rid;
   time_t start_time;
   time_t end_time;
 } CalendarOccurrence;
 
 typedef struct
 {
-  char   *id;
   char   *uid;
-  char   *rid;
+  char   *source_id;
   char   *backend_name;
   char   *summary;
   char   *description;
@@ -127,22 +127,6 @@ static char *
 get_ical_uid (icalcomponent *ical)
 {
   return g_strdup (icalcomponent_get_uid (ical));
-}
-
-static char *
-get_ical_rid (icalcomponent *ical)
-{
-  icalproperty        *prop;
-  struct icaltimetype  ical_time;
-
-  prop = icalcomponent_get_first_property (ical, ICAL_RECURRENCEID_PROPERTY);
-  if (!prop)
-    return NULL;
-
-  ical_time = icalproperty_get_recurrenceid (prop);
-
-  return icaltime_is_valid_time (ical_time) && !icaltime_is_null_time (ical_time) ?
-    g_strdup (icaltime_as_ical_string (ical_time)) : NULL;
 }
 
 static char *
@@ -324,12 +308,14 @@ calendar_appointment_equal (CalendarAppointment *a,
       CalendarOccurrence *ob = lb->data;
 
       if (oa->start_time != ob->start_time ||
-          oa->end_time   != ob->end_time)
+          oa->end_time   != ob->end_time ||
+          null_safe_strcmp (oa->rid, ob->rid) != 0)
         return FALSE;
     }
 
   return
     null_safe_strcmp (a->uid,          b->uid)          == 0 &&
+    null_safe_strcmp (a->source_id,    b->source_id)    == 0 &&
     null_safe_strcmp (a->backend_name, b->backend_name) == 0 &&
     null_safe_strcmp (a->summary,      b->summary)      == 0 &&
     null_safe_strcmp (a->description,  b->description)  == 0 &&
@@ -345,18 +331,15 @@ calendar_appointment_free (CalendarAppointment *appointment)
   GSList *l;
 
   for (l = appointment->occurrences; l; l = l->next)
-    g_free (l->data);
-  g_slist_free (appointment->occurrences);
+    g_free (((CalendarOccurrence *)l->data)->rid);
+  g_slist_free_full (appointment->occurrences, g_free);
   appointment->occurrences = NULL;
-
-  g_free (appointment->id);
-  appointment->id = NULL;
 
   g_free (appointment->uid);
   appointment->uid = NULL;
 
-  g_free (appointment->rid);
-  appointment->rid = NULL;
+  g_free (appointment->source_id);
+  appointment->source_id = NULL;
 
   g_free (appointment->backend_name);
   appointment->backend_name = NULL;
@@ -380,11 +363,13 @@ calendar_appointment_init (CalendarAppointment  *appointment,
                            ECalClient           *cal)
 {
   icaltimezone *default_zone;
+  const char *source_id;
 
+  source_id = e_source_get_uid (e_client_get_source (E_CLIENT (cal)));
   default_zone = e_cal_client_get_default_timezone (cal);
 
   appointment->uid          = get_ical_uid (ical);
-  appointment->rid          = get_ical_rid (ical);
+  appointment->source_id    = g_strdup (source_id);
   appointment->backend_name = get_source_backend_name (cal);
   appointment->summary      = get_ical_summary (ical);
   appointment->description  = get_ical_description (ical);
@@ -394,16 +379,6 @@ calendar_appointment_init (CalendarAppointment  *appointment,
   appointment->is_all_day   = get_ical_is_all_day (ical,
                                                    appointment->start_time,
                                                    default_zone);
-
-  /* While the UID is usually enough to identify an event, only the triple
-   * of (source,UID,RID) is fully unambiguous; neither may contain '\n',
-   * so we can safely use it to create a unique ID from the triple
-   */
-  source_uid = e_source_get_uid (e_client_get_source (E_CLIENT (cal)));
-  appointment->id = g_strdup_printf ("%s\n%s\n%s",
-                                     source_uid,
-                                     appointment->uid,
-                                     appointment->rid ? appointment->rid : "");
 }
 
 static icaltimezone *
@@ -429,10 +404,21 @@ calendar_appointment_collect_occurrence (ECalComponent  *component,
 {
   CalendarOccurrence *occurrence;
   GSList **collect_loc = data;
+  char *rid;
+
+  /* HACK: component is the primary event, so we don't have access
+   *       to the actual recur ID; fake one if the event has any
+   *       recurrences
+   */
+  if (e_cal_component_has_recurrences (component))
+    rid = ctime (&occurrence_start);
+  else
+    rid = "";
 
   occurrence             = g_new0 (CalendarOccurrence, 1);
   occurrence->start_time = occurrence_start;
   occurrence->end_time   = occurrence_end;
+  occurrence->rid        = g_strdup (rid);
 
   *collect_loc = g_slist_prepend (*collect_loc, occurrence);
 
@@ -928,16 +914,27 @@ handle_method_call (GDBusConnection       *connection,
                   (start_time <= app->since &&
                   (end_time - 1) > app->since))
                 {
+                  /* While the UID is usually enough to identify an event,
+                   * only the triple of (source,UID,RID) is fully unambiguous;
+                   * neither may contain '\n', so we can safely use it to
+                   * create a unique ID from the triple
+                   */
+                  char *id = g_strdup_printf ("%s\n%s\n%s",
+                                              a->source_id,
+                                              a->uid,
+                                              o->rid);
+
                   g_variant_builder_init (&extras_builder, G_VARIANT_TYPE ("a{sv}"));
                   g_variant_builder_add (&builder,
                                          "(sssbxxa{sv})",
-                                         a->id,
+                                         id,
                                          a->summary != NULL ? a->summary : "",
                                          a->description != NULL ? a->description : "",
                                          (gboolean) a->is_all_day,
                                          (gint64) start_time,
                                          (gint64) end_time,
                                          extras_builder);
+                  g_free (id);
                 }
             }
         }
