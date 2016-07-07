@@ -619,6 +619,7 @@ app_load_events (App *app)
   GList *ll;
   gchar *since_iso8601;
   gchar *until_iso8601;
+  gchar *query;
 
   /* out with the old */
   g_hash_table_remove_all (app->appointments);
@@ -645,12 +646,16 @@ app_load_events (App *app)
                since_iso8601,
                until_iso8601);
 
+  query = g_strdup_printf ("occur-in-time-range? (make-time \"%s\") "
+                           "(make-time \"%s\")",
+                           since_iso8601,
+                           until_iso8601);
+
   clients = calendar_sources_get_appointment_clients (app->sources);
   for (l = clients; l != NULL; l = l->next)
     {
       ECalClient *cal = E_CAL_CLIENT (l->data);
       GError *error;
-      gchar *query;
       GSList *objects, *j;
       ECalClientView *view;
 
@@ -666,10 +671,6 @@ app_load_events (App *app)
           continue;
         }
 
-      query = g_strdup_printf ("occur-in-time-range? (make-time \"%s\") "
-                               "(make-time \"%s\")",
-                               since_iso8601,
-                               until_iso8601);
       error = NULL;
       objects = NULL;
       if (!e_cal_client_get_object_list_sync (cal,
@@ -730,12 +731,11 @@ app_load_events (App *app)
           e_cal_client_view_start (view, NULL);
           app->live_views = g_list_prepend (app->live_views, view);
         }
-
-      g_free (query);
     }
   g_list_free (clients);
   g_free (since_iso8601);
   g_free (until_iso8601);
+  g_free (query);
   app->cache_invalid = FALSE;
 }
 
