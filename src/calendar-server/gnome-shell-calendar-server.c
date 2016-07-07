@@ -692,9 +692,6 @@ app_load_events (App *app)
           CalendarAppointment *appointment;
 
           appointment = calendar_appointment_new (ical, cal, app->zone);
-          if (appointment == NULL)
-            continue;
-
           calendar_appointment_generate_occurrences (appointment,
                                                      ical,
                                                      cal,
