@@ -526,6 +526,10 @@ app_update_timezone (App *app)
       app->timezone_location = location;
       print_debug ("Using timezone %s", app->timezone_location);
     }
+  else
+    {
+      g_free (location);
+    }
 }
 
 static gboolean
