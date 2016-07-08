@@ -769,7 +769,7 @@ StScrollBar {
   border-radius: 1.4em; }
   .calendar-day-base:hover, .calendar-day-base:focus {
     background-color: #454c4c; }
-  .calendar-day-base:active {
+  .calendar-day-base:active, .calendar-day-base:selected {
     color: white;
     background-color: #215d9c;
     border-color: transparent; }

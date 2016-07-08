@@ -686,12 +686,12 @@ const Calendar = new Lang.Class({
 
         this._buttons.forEach(Lang.bind(this, function(button) {
             if (sameDay(button._date, this._selectedDate)) {
-                button.add_style_pseudo_class('active');
+                button.add_style_pseudo_class('selected');
                 if (this._shouldDateGrabFocus)
                     button.grab_key_focus();
             }
             else
-                button.remove_style_pseudo_class('active');
+                button.remove_style_pseudo_class('selected');
         }));
     }
 });
