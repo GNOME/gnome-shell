@@ -127,7 +127,8 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev)
 
   seat->manager_evdev = manager_evdev;
   device = _clutter_input_device_evdev_new_virtual (
-    manager, seat, CLUTTER_POINTER_DEVICE);
+      manager, seat, CLUTTER_POINTER_DEVICE,
+      CLUTTER_INPUT_MODE_MASTER);
   stage = _clutter_device_manager_evdev_get_stage (manager_evdev);
   _clutter_input_device_set_stage (device, stage);
   seat->pointer_x = INITIAL_POINTER_X;
@@ -139,7 +140,8 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev)
   seat->core_pointer = device;
 
   device = _clutter_input_device_evdev_new_virtual (
-    manager, seat, CLUTTER_KEYBOARD_DEVICE);
+      manager, seat, CLUTTER_KEYBOARD_DEVICE,
+      CLUTTER_INPUT_MODE_MASTER);
   _clutter_input_device_set_stage (device, stage);
   _clutter_device_manager_add_device (manager, device);
   seat->core_keyboard = device;

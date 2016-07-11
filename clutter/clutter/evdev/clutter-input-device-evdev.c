@@ -196,7 +196,8 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
 ClutterInputDevice *
 _clutter_input_device_evdev_new_virtual (ClutterDeviceManager *manager,
                                          ClutterSeatEvdev *seat,
-                                         ClutterInputDeviceType type)
+                                         ClutterInputDeviceType type,
+                                         ClutterInputMode mode)
 {
   ClutterInputDeviceEvdev *device;
   ClutterDeviceManagerEvdev *manager_evdev;
@@ -223,7 +224,7 @@ _clutter_input_device_evdev_new_virtual (ClutterDeviceManager *manager,
                          "name", name,
                          "device-manager", manager,
                          "device-type", type,
-                         "device-mode", CLUTTER_INPUT_MODE_MASTER,
+                         "device-mode", mode,
                          "enabled", TRUE,
                          NULL);
 

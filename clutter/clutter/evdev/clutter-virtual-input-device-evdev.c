@@ -302,7 +302,8 @@ clutter_virtual_input_device_evdev_constructed (GObject *object)
   virtual_evdev->device =
     _clutter_input_device_evdev_new_virtual (manager,
                                              virtual_evdev->seat,
-                                             device_type);
+                                             device_type,
+                                             CLUTTER_INPUT_MODE_SLAVE);
 
   stage = _clutter_device_manager_evdev_get_stage (CLUTTER_DEVICE_MANAGER_EVDEV (manager));
   _clutter_input_device_set_stage (virtual_evdev->device, stage);

@@ -76,7 +76,8 @@ ClutterInputDevice *      _clutter_input_device_evdev_new             (ClutterDe
 
 ClutterInputDevice *      _clutter_input_device_evdev_new_virtual     (ClutterDeviceManager    *manager,
                                                                        ClutterSeatEvdev        *seat,
-                                                                       ClutterInputDeviceType   type);
+                                                                       ClutterInputDeviceType   type,
+                                                                       ClutterInputMode         mode);
 
 ClutterSeatEvdev *        _clutter_input_device_evdev_get_seat        (ClutterInputDeviceEvdev *device);
 
