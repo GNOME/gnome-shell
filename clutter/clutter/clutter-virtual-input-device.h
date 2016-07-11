@@ -30,6 +30,8 @@
 #include "clutter-device-manager.h"
 
 #define CLUTTER_TYPE_VIRTUAL_INPUT_DEVICE (clutter_virtual_input_device_get_type ())
+
+CLUTTER_AVAILABLE_IN_ALL
 G_DECLARE_DERIVABLE_TYPE (ClutterVirtualInputDevice,
                           clutter_virtual_input_device,
                           CLUTTER, VIRTUAL_INPUT_DEVICE,
@@ -72,26 +74,31 @@ struct _ClutterVirtualInputDeviceClass
                       ClutterKeyState            key_state);
 };
 
+CLUTTER_AVAILABLE_IN_ALL
 void clutter_virtual_input_device_notify_relative_motion (ClutterVirtualInputDevice *virtual_device,
                                                           uint64_t                   time_us,
                                                           double                     dx,
                                                           double                     dy);
 
+CLUTTER_AVAILABLE_IN_ALL
 void clutter_virtual_input_device_notify_absolute_motion (ClutterVirtualInputDevice *virtual_device,
                                                           uint64_t                   time_us,
                                                           double                     x,
                                                           double                     y);
 
+CLUTTER_AVAILABLE_IN_ALL
 void clutter_virtual_input_device_notify_button (ClutterVirtualInputDevice *virtual_device,
                                                  uint64_t                   time_us,
                                                  uint32_t                   button,
                                                  ClutterButtonState         button_state);
 
+CLUTTER_AVAILABLE_IN_ALL
 void clutter_virtual_input_device_notify_key (ClutterVirtualInputDevice *virtual_device,
                                               uint64_t                   time_us,
                                               uint32_t                   key,
                                               ClutterKeyState            key_state);
 
+CLUTTER_AVAILABLE_IN_ALL
 ClutterDeviceManager * clutter_virtual_input_device_get_manager (ClutterVirtualInputDevice *virtual_device);
 
 int clutter_virtual_input_device_get_device_type (ClutterVirtualInputDevice *virtual_device);

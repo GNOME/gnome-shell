@@ -123,6 +123,7 @@ source_h =					\
 	clutter-transition.h		\
 	clutter-types.h		\
 	clutter-units.h 		\
+	clutter-virtual-input-device.h	\
 	clutter-zoom-action.h		\
 	$(NULL)
 
@@ -240,7 +241,6 @@ source_h_priv = \
 	clutter-stage-manager-private.h		\
 	clutter-stage-private.h			\
 	clutter-stage-window.h			\
-	clutter-virtual-input-device.h		\
 	$(NULL)
 
 # private source code; these should not be introspected

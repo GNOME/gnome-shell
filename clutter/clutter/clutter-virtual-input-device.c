@@ -103,6 +103,14 @@ clutter_virtual_input_device_notify_key (ClutterVirtualInputDevice *virtual_devi
   klass->notify_key (virtual_device, time_us, key, key_state);
 }
 
+/**
+ * clutter_virtual_input_device_get_manager:
+ * @virtual_device: a virtual device
+ *
+ * Gets the device manager of this virtual device.
+ *
+ * Returns: (transfer none): The #ClutterDeviceManager of this virtual device
+ **/
 ClutterDeviceManager *
 clutter_virtual_input_device_get_manager (ClutterVirtualInputDevice *virtual_device)
 {

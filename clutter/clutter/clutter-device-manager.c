@@ -437,9 +437,18 @@ _clutter_device_manager_get_backend (ClutterDeviceManager *manager)
   return manager->priv->backend;
 }
 
+/**
+ * clutter_device_manager_create_virtual_device:
+ * @device_manager: a #ClutterDeviceManager
+ * @device_type: the type of the virtual device
+ *
+ * Creates a virtual input device.
+ *
+ * Returns: (transfer full): a newly created virtual device
+ **/
 ClutterVirtualInputDevice *
-clutter_device_manager_create_virtual_device (ClutterDeviceManager  *device_manager,
-                                              ClutterInputDeviceType device_type)
+clutter_device_manager_create_virtual_device (ClutterDeviceManager   *device_manager,
+                                              ClutterInputDeviceType  device_type)
 {
   ClutterDeviceManagerClass *manager_class;
 
