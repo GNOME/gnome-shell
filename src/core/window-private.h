@@ -35,6 +35,7 @@
 #include <config.h>
 #include <meta/compositor.h>
 #include <meta/window.h>
+#include <meta/meta-close-dialog.h>
 #include "screen-private.h"
 #include <meta/util.h>
 #include "stack.h"
@@ -479,7 +480,7 @@ struct _MetaWindow
   int stack_position; /* see comment in stack.h */
 
   /* Managed by delete.c */
-  int dialog_pid;
+  MetaCloseDialog *close_dialog;
 
   /* maintained by group.c */
   MetaGroup *group;

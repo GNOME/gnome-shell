@@ -878,8 +878,6 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->constructing = TRUE;
 
-  window->dialog_pid = -1;
-
   window->client_type = client_type;
   window->surface = surface;
   window->xwindow = xwindow;
