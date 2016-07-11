@@ -222,6 +222,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	core/constraints.c			\
 	core/constraints.h			\
 	core/core.c				\
+	core/meta-close-dialog.c		\
+	meta/meta-close-dialog.h		\
 	core/delete.c				\
 	core/display.c				\
 	core/display-private.h			\
@@ -435,6 +437,7 @@ libmutterinclude_headers =			\
 	meta/meta-background-actor.h		\
 	meta/meta-background-image.h		\
 	meta/meta-background-group.h		\
+	meta/meta-close-dialog.h		\
 	meta/meta-cursor-tracker.h		\
 	meta/meta-dnd.h			\
 	meta/meta-idle-monitor.h		\
