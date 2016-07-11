@@ -54,6 +54,8 @@ meta_input_settings_native_set_send_events (MetaInputSettings        *settings,
     }
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
   libinput_device_config_send_events_set_mode (libinput_device, libinput_mode);
 }
 
@@ -65,6 +67,8 @@ meta_input_settings_native_set_matrix (MetaInputSettings  *settings,
   struct libinput_device *libinput_device;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
 
   if (libinput_device_config_calibration_has_matrix (libinput_device) > 0)
     libinput_device_config_calibration_set_matrix (libinput_device, matrix);
@@ -78,6 +82,8 @@ meta_input_settings_native_set_speed (MetaInputSettings  *settings,
   struct libinput_device *libinput_device;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
   libinput_device_config_accel_set_speed (libinput_device,
                                           CLAMP (speed, -1, 1));
 }
@@ -90,6 +96,8 @@ meta_input_settings_native_set_left_handed (MetaInputSettings  *settings,
   struct libinput_device *libinput_device;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
 
   if (libinput_device_config_left_handed_is_available (libinput_device))
     libinput_device_config_left_handed_set (libinput_device, enabled);
@@ -103,6 +111,8 @@ meta_input_settings_native_set_tap_enabled (MetaInputSettings  *settings,
   struct libinput_device *libinput_device;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
 
   if (libinput_device_config_tap_get_finger_count (libinput_device) > 0)
     libinput_device_config_tap_set_enabled (libinput_device,
@@ -119,6 +129,8 @@ meta_input_settings_native_set_invert_scroll (MetaInputSettings  *settings,
   struct libinput_device *libinput_device;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
 
   if (libinput_device_config_scroll_has_natural_scroll (libinput_device))
     libinput_device_config_scroll_set_natural_scroll_enabled (libinput_device,
@@ -164,6 +176,8 @@ meta_input_settings_native_set_edge_scroll (MetaInputSettings            *settin
   enum libinput_config_scroll_method current;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
   supported = libinput_device_config_scroll_get_methods (libinput_device);
   current = libinput_device_config_scroll_get_method (libinput_device);
 
@@ -224,6 +238,8 @@ meta_input_settings_native_set_scroll_button (MetaInputSettings  *settings,
   struct libinput_device *libinput_device;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
 
   if (!device_set_scroll_method (libinput_device,
                                  LIBINPUT_CONFIG_SCROLL_ON_BUTTON_DOWN))
@@ -241,6 +257,8 @@ meta_input_settings_native_set_click_method (MetaInputSettings           *settin
   struct libinput_device *libinput_device;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
 
   switch (mode)
     {
