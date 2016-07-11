@@ -224,6 +224,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	core/core.c				\
 	core/meta-close-dialog.c		\
 	meta/meta-close-dialog.h		\
+	core/meta-close-dialog-default.c	\
+	core/meta-close-dialog-default-private.h	\
 	core/delete.c				\
 	core/display.c				\
 	core/display-private.h			\
