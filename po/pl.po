@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-10 17:25+0100\n"
-"PO-Revision-Date: 2016-03-10 17:27+0100\n"
+"POT-Creation-Date: 2016-07-12 21:20+0200\n"
+"PO-Revision-Date: 2016-07-12 21:21+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -325,13 +325,13 @@ msgstr ""
 msgid "Network Login"
 msgstr "Logowanie do sieci"
 
-#: ../js/extensionPrefs/main.js:121
+#: ../js/extensionPrefs/main.js:117
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
 "Wystąpił błąd podczas wczytywania okna preferencji dla rozszerzenia „%s”:"
 
-#: ../js/extensionPrefs/main.js:153
+#: ../js/extensionPrefs/main.js:149
 msgid "GNOME Shell Extensions"
 msgstr "Rozszerzenia powłoki GNOME"
 
@@ -558,7 +558,7 @@ msgstr "Zmień tło…"
 msgid "Display Settings"
 msgstr "Ustawienia ekranu"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:371
 msgid "Settings"
 msgstr "Ustawienia"
 
@@ -800,7 +800,7 @@ msgstr "To nie zadziałało. Proszę spróbować ponownie."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Użytkownik %s jest teraz znany jako %s"
@@ -1025,7 +1025,7 @@ msgstr "Włączone"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Wyłączone"
 
@@ -1115,7 +1115,7 @@ msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:71
 msgid "Enter a Command"
-msgstr "Proszę wprowadzić polecenie"
+msgstr "Proszę wprowadzić polecenie:"
 
 #: ../js/ui/runDialog.js:111 ../js/ui/windowMenu.js:162
 msgid "Close"
@@ -1147,7 +1147,7 @@ msgstr[0] "%d nowe powiadomienie"
 msgstr[1] "%d nowe powiadomienia"
 msgstr[2] "%d nowych powiadomień"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:379
 msgid "Lock"
 msgstr "Zablokuj ekran"
 
@@ -1555,27 +1555,27 @@ msgstr "%d%%"
 msgid "Airplane Mode On"
 msgstr "Włączono tryb samolotowy"
 
-#: ../js/ui/status/system.js:343
+#: ../js/ui/status/system.js:348
 msgid "Switch User"
 msgstr "Przełącz użytkownika"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:353
 msgid "Log Out"
 msgstr "Wyloguj się"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:358
 msgid "Account Settings"
 msgstr "Ustawienia konta"
 
-#: ../js/ui/status/system.js:370
+#: ../js/ui/status/system.js:375
 msgid "Orientation Lock"
 msgstr "Blokada orientacji"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:383
 msgid "Suspend"
 msgstr "Uśpij"
 
-#: ../js/ui/status/system.js:381
+#: ../js/ui/status/system.js:386
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
@@ -1708,7 +1708,7 @@ msgstr "Kalendarz programu Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1835
+#: ../src/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1718,7 +1718,7 @@ msgstr[2] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1845
+#: ../src/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1726,7 +1726,7 @@ msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
 msgstr[2] "%u wejść"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Dźwięki systemowe"
 
@@ -1767,3 +1767,16 @@ msgstr "Hasło nie może być puste"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Okno dialogowe uwierzytelnienia zostało odrzucone przez użytkownika"
+
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Ponowne uruchomienie i instalacja aktualizacji"
+
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a "
+"long time: ensure that you have backed up and that the computer is "
+"plugged in."
+msgstr ""
+"System %s %s zostanie zainstalowany po ponownym uruchomieniu. Instalacja "
+"aktualizacji może zająć dużo czasu. Proszę się upewnić, że wykonano kopię "
+"zapasową danych i podłączono komputer do prądu."
