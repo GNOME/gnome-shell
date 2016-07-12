@@ -31,6 +31,7 @@
 
     <file>portalHelper/main.js</file>
 
+    <file>ui/accessDialog.js</file>
     <file>ui/altTab.js</file>
     <file>ui/animation.js</file>
     <file>ui/appDisplay.js</file>

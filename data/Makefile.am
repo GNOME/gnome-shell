@@ -7,6 +7,9 @@ desktop_DATA = org.gnome.Shell.desktop gnome-shell-extension-prefs.desktop
 if HAVE_NETWORKMANAGER
 desktop_DATA += org.gnome.Shell.PortalHelper.desktop
 
+portaldir = $(datadir)/xdg-desktop-portal/portals
+portal_DATA = gnome-shell.portal
+
 servicedir = $(datadir)/dbus-1/services
 service_DATA = org.gnome.Shell.PortalHelper.service
 

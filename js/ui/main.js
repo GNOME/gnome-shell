@@ -11,6 +11,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const AccessDialog = imports.ui.accessDialog;
 const AudioDeviceSelection = imports.ui.audioDeviceSelection;
 const Components = imports.ui.components;
 const CtrlAltTab = imports.ui.ctrlAltTab;
@@ -63,6 +64,7 @@ let ctrlAltTabManager = null;
 let osdWindowManager = null;
 let osdMonitorLabeler = null;
 let sessionMode = null;
+let shellAccessDialogDBusService = null;
 let shellAudioSelectionDBusService = null;
 let shellDBusService = null;
 let shellMountOpDBusService = null;
@@ -122,6 +124,7 @@ function start() {
                                        _loadDefaultStylesheet);
     _initializeUI();
 
+    shellAccessDialogDBusService = new AccessDialog.AccessDialogDBus();
     shellAudioSelectionDBusService = new AudioDeviceSelection.AudioDeviceSelectionDBus();
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
