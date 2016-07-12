@@ -4,16 +4,16 @@
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Piotr Drąg <piotrdrag@gmail.com>, 2009-2015.
+# Piotr Drąg <piotrdrag@gmail.com>, 2009-2016.
 # Tomasz Dominikowski <dominikowski@gmail.com>, 2009.
 # Wojciech Szczęsny <wszczesny@aviary.pl>, 2013.
-# Aviary.pl <gnomepl@aviary.pl>, 2009-2015.
+# Aviary.pl <gnomepl@aviary.pl>, 2009-2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-29 00:50+0200\n"
-"PO-Revision-Date: 2015-09-29 00:52+0200\n"
+"POT-Creation-Date: 2016-07-12 21:23+0200\n"
+"PO-Revision-Date: 2016-07-12 21:24+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -330,35 +330,35 @@ msgstr "Rozszerzenia powłoki GNOME"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:215
-#: ../js/gdm/authPrompt.js:447
+#: ../js/gdm/authPrompt.js:169 ../js/gdm/authPrompt.js:216
+#: ../js/gdm/authPrompt.js:448
 msgid "Next"
 msgstr "Dalej"
 
-#: ../js/gdm/authPrompt.js:211 ../js/ui/shellMountOperation.js:403
+#: ../js/gdm/authPrompt.js:212 ../js/ui/shellMountOperation.js:403
 #: ../js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Odblokuj"
 
-#: ../js/gdm/authPrompt.js:213
+#: ../js/gdm/authPrompt.js:214
 msgctxt "button"
 msgid "Sign In"
 msgstr "Zaloguj"
 
-#: ../js/gdm/loginDialog.js:281
+#: ../js/gdm/loginDialog.js:285
 msgid "Choose Session"
 msgstr "Wybór sesji"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:431
+#: ../js/gdm/loginDialog.js:435
 msgid "Not listed?"
 msgstr "Inny użytkownik?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:850
+#: ../js/gdm/loginDialog.js:854
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(np. użytkownik lub %s)"
@@ -366,12 +366,12 @@ msgstr "(np. użytkownik lub %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:855 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nazwa użytkownika: "
 
-#: ../js/gdm/loginDialog.js:1184
+#: ../js/gdm/loginDialog.js:1196
 msgid "Login Window"
 msgstr "Okno logowania"
 
@@ -639,7 +639,7 @@ msgstr "Podłączono dysk zewnętrzny"
 msgid "External drive disconnected"
 msgstr "Odłączono dysk zewnętrzny"
 
-#: ../js/ui/components/autorunManager.js:354
+#: ../js/ui/components/autorunManager.js:351
 #, javascript-format
 msgid "Open with %s"
 msgstr "Otwórz za pomocą „%s”"
@@ -765,7 +765,7 @@ msgstr "To nie zadziałało. Proszę spróbować ponownie."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:759
+#: ../js/ui/components/telepathyClient.js:760
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Użytkownik %s jest teraz znany jako %s"
@@ -990,7 +990,7 @@ msgstr "Włączone"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Wyłączone"
 
@@ -1034,22 +1034,22 @@ msgstr "Podgląd"
 msgid "Type to search…"
 msgstr "Wyszukiwanie…"
 
-#: ../js/ui/panel.js:352
+#: ../js/ui/panel.js:358
 msgid "Quit"
 msgstr "Zakończ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:404
+#: ../js/ui/panel.js:414
 msgid "Activities"
 msgstr "Podgląd"
 
-#: ../js/ui/panel.js:650
+#: ../js/ui/panel.js:695
 msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Menu systemowe"
 
-#: ../js/ui/panel.js:754
+#: ../js/ui/panel.js:807
 msgid "Top Bar"
 msgstr "Górny pasek"
 
@@ -1064,7 +1064,7 @@ msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:70
 msgid "Enter a Command"
-msgstr "Proszę wprowadzić polecenie"
+msgstr "Proszę wprowadzić polecenie:"
 
 #: ../js/ui/runDialog.js:110 ../js/ui/windowMenu.js:162
 msgid "Close"
@@ -1629,7 +1629,7 @@ msgstr "Kalendarz programu Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1835
+#: ../src/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1639,7 +1639,7 @@ msgstr[2] "%u wyjść"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1845
+#: ../src/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1647,7 +1647,7 @@ msgstr[0] "%u wejście"
 msgstr[1] "%u wejścia"
 msgstr[2] "%u wejść"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Dźwięki systemowe"
 
@@ -1667,12 +1667,12 @@ msgstr "Używa podanego trybu, np. „gdm” dla ekranu logowania"
 msgid "List possible modes"
 msgstr "Wyświetla listę możliwych trybów"
 
-#: ../src/shell-app.c:239
+#: ../src/shell-app.c:246
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: ../src/shell-app.c:480
+#: ../src/shell-app.c:487
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Uruchomienie „%s” się nie powiodło"
@@ -1688,3 +1688,16 @@ msgstr "Hasło nie może być puste"
 #: ../src/shell-polkit-authentication-agent.c:346
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Okno dialogowe uwierzytelnienia zostało odrzucone przez użytkownika"
+
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Ponowne uruchomienie i instalacja aktualizacji"
+
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a "
+"long time: ensure that you have backed up and that the computer is "
+"plugged in."
+msgstr ""
+"System %s %s zostanie zainstalowany po ponownym uruchomieniu. Instalacja "
+"aktualizacji może zająć dużo czasu. Proszę się upewnić, że wykonano kopię "
+"zapasową danych i podłączono komputer do prądu."
