@@ -19,6 +19,7 @@ stamp-marshal
 tags
 /ChangeLog*
 clutter-build-config.h
+clutter-build-config.h.in
 clutter-config.h
 clutter-enum-types.[ch]
 clutter-marshal.[ch]
