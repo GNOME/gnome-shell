@@ -751,13 +751,13 @@ xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
   if (xdg_popup->setup.parent_surface)
     finish_popup_setup (xdg_popup);
 
-  /* If the window disappeared the surface is not coming back. */
-  if (!surface->window)
-    return;
-
   surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_xdg_popup_parent_class);
   surface_role_class->commit (surface_role, pending);
+
+  /* If the window disappeared the surface is not coming back. */
+  if (!surface->window)
+    return;
 
   if (!pending->newly_attached)
     return;

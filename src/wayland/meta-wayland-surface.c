@@ -1997,10 +1997,13 @@ actor_surface_commit (MetaWaylandSurfaceRole  *surface_role,
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
 
+  queue_surface_actor_frame_callbacks (surface, pending);
+
+  if (!surface->window)
+    return;
+
   meta_surface_actor_wayland_sync_state (
     META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
-
-  queue_surface_actor_frame_callbacks (surface, pending);
 }
 
 static void
@@ -2026,7 +2029,7 @@ shell_surface_role_surface_commit (MetaWaylandSurfaceRole  *surface_role,
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWaylandSurfaceRoleClass *surface_role_class;
-  MetaWindow *window = surface->window;
+  MetaWindow *window;
   MetaWaylandBuffer *buffer;
   CoglTexture *texture;
   MetaSurfaceActorWayland *actor;
@@ -2040,9 +2043,14 @@ shell_surface_role_surface_commit (MetaWaylandSurfaceRole  *surface_role,
   if (!buffer)
     return;
 
+  window = surface->window;
+  if (!window)
+    return;
+
   actor = META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
   scale = meta_surface_actor_wayland_get_scale (actor);
   texture = buffer->texture;
+
   window->buffer_rect.width = cogl_texture_get_width (texture) * scale;
   window->buffer_rect.height = cogl_texture_get_height (texture) * scale;
 }
