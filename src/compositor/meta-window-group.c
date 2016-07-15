@@ -79,11 +79,22 @@ meta_window_group_paint (ClutterActor *actor)
    * painting currently, and never worry about how actors are positioned
    * on the stage.
    */
-  if (!meta_actor_painting_untransformed (screen_width, screen_height, &paint_x_origin, &paint_y_origin) ||
-      !meta_actor_is_untransformed (actor, NULL, NULL))
+  if (clutter_actor_is_in_clone_paint (actor))
     {
-      CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
-      return;
+      if (!meta_actor_painting_untransformed (screen_width,
+                                              screen_height,
+                                              &paint_x_origin,
+                                              &paint_y_origin) ||
+          !meta_actor_is_untransformed (actor, NULL, NULL))
+        {
+          CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
+          return;
+        }
+    }
+  else
+    {
+      paint_x_origin = 0;
+      paint_y_origin = 0;
     }
 
   visible_rect.x = visible_rect.y = 0;
