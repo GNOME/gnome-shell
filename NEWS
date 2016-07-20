@@ -1,3 +1,26 @@
+3.21.4
+======
+* overview: Fix switching workspaces when scrolling on non-primary monitors
+  [Florian; #766883, #768316]
+* Fix crash when using screen recorder under wayland [Rui; #767001]
+* Update theme on video memory purge errors [Rui; #739178]
+* Free old backgrounds immediately [Hyungwon; #766353]
+* Add support for system upgrades to end session dialog [Kalev; #763611]
+* Fix maximized windows flickering to the wrong size on restart [Owen; #761566]
+* Hide ignored events in calendar as well [Florian; #768538]
+* calendar: Only hide dismissed occurrence of recurring event [Florian; #748226]
+* Provide org.freedesktop.impl.portal.access implementation [Florian; #768669]
+* Misc. bug fixes and cleanups [Rui, Florian, Marinus, Jonas; #767954, #768317,
+  #746867, #762206, #768956, #768979]
+
+Contributors:
+  Jonas Ådahl, Piotr Drąg, Hyungwon Hwang, Kalev Lember, Rui Matos,
+  Florian Müllner, Marinus Schraal, Owen W. Taylor
+
+Translations:
+  Andika Triwidada [id], Daniel Mustieles [es], Bruce Cowan [en_GB],
+  Dušan Kazik [sk], Piotr Drąg [pl], Chao-Hsiung Liao [zh_HK]
+
 3.21.3
 ======
  * Do not disable suspend action when locked [Florian; #725960]
