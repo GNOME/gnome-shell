@@ -78,9 +78,7 @@ enum {
 static void
 clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
 {
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
-
-  CLUTTER_NOTE (BACKEND, "Unrealizing Cogl stage [%p]", stage_cogl);
+  CLUTTER_NOTE (BACKEND, "Unrealizing Cogl stage [%p]", stage_window);
 }
 
 void
@@ -127,12 +125,11 @@ _clutter_stage_cogl_presented (ClutterStageCogl *stage_cogl,
 static gboolean
 clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
 {
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
   ClutterBackend *backend;
 
   CLUTTER_NOTE (BACKEND, "Realizing stage '%s' [%p]",
-                G_OBJECT_TYPE_NAME (stage_cogl),
-                stage_cogl);
+                G_OBJECT_TYPE_NAME (stage_window),
+                stage_window);
 
   backend = clutter_get_default_backend ();
 
