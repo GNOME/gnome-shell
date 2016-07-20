@@ -245,6 +245,143 @@ clutter_virtual_input_device_evdev_notify_key (ClutterVirtualInputDevice *virtua
                                  TRUE);
 }
 
+static gboolean
+pick_keycode_for_keyval_in_current_group (ClutterVirtualInputDevice *virtual_device,
+                                          guint                      keyval,
+                                          guint                     *keycode_out,
+                                          guint                     *level_out)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+  ClutterDeviceManager *manager;
+  struct xkb_keymap *xkb_keymap;
+  struct xkb_state  *state;
+  guint keycode, layout;
+  xkb_keycode_t min_keycode, max_keycode;
+
+  manager = clutter_virtual_input_device_get_manager (virtual_device);
+  xkb_keymap = _clutter_device_manager_evdev_get_keymap (CLUTTER_DEVICE_MANAGER_EVDEV (manager));
+  state = virtual_evdev->seat->xkb;
+
+  layout = xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_EFFECTIVE);
+  min_keycode = xkb_keymap_min_keycode (xkb_keymap);
+  max_keycode = xkb_keymap_max_keycode (xkb_keymap);
+  for (keycode = min_keycode; keycode < max_keycode; keycode++)
+    {
+      gint num_levels, level;
+      num_levels = xkb_keymap_num_levels_for_key (xkb_keymap, keycode, layout);
+      for (level = 0; level < num_levels; level++)
+        {
+          const xkb_keysym_t *syms;
+          gint num_syms, sym;
+          num_syms = xkb_keymap_key_get_syms_by_level (xkb_keymap, keycode, layout, level, &syms);
+          for (sym = 0; sym < num_syms; sym++)
+            {
+              if (syms[sym] == keyval)
+                {
+                  *keycode_out = keycode;
+                  if (level_out)
+                    *level_out = level;
+                  return TRUE;
+                }
+            }
+        }
+    }
+
+  return FALSE;
+}
+
+static void
+apply_level_modifiers (ClutterVirtualInputDevice *virtual_device,
+                       uint64_t                   time_us,
+                       uint32_t                   level,
+                       uint32_t                   key_state)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+  guint keysym, keycode, evcode;
+
+  if (level == 0)
+    return;
+
+  if (level == 1)
+    {
+      keysym = XKB_KEY_Shift_L;
+    }
+  else if (level == 2)
+    {
+      keysym = XKB_KEY_ISO_Level3_Shift;
+    }
+  else
+    {
+      g_warning ("Unhandled level: %d\n", level);
+      return;
+    }
+
+  if (!pick_keycode_for_keyval_in_current_group (virtual_device, keysym,
+                                                 &keycode, NULL))
+    return;
+
+  clutter_input_device_keycode_to_evdev (virtual_evdev->device,
+                                         keycode, &evcode);
+  clutter_seat_evdev_notify_key (virtual_evdev->seat,
+                                 virtual_evdev->device,
+                                 time_us,
+                                 evcode,
+                                 key_state,
+                                 TRUE);
+}
+
+static void
+clutter_virtual_input_device_evdev_notify_keyval (ClutterVirtualInputDevice *virtual_device,
+                                                  uint64_t                   time_us,
+                                                  uint32_t                   keyval,
+                                                  ClutterKeyState            key_state)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+  int key_count;
+  guint keycode = 0, level = 0, evcode = 0;
+
+  if (!pick_keycode_for_keyval_in_current_group (virtual_device,
+                                                 keyval, &keycode, &level))
+    {
+      g_warning ("No keycode found for keyval %x in current group", keyval);
+      return;
+    }
+
+  clutter_input_device_keycode_to_evdev (virtual_evdev->device,
+                                         keycode, &evcode);
+
+  if (get_button_type (evcode) != EVDEV_BUTTON_TYPE_KEY)
+    {
+      g_warning ("Unknown/invalid virtual device key 0x%x pressed\n", evcode);
+      return;
+    }
+
+  key_count = update_button_count (virtual_evdev, evcode, key_state);
+  if (key_count < 0 || key_count > 1)
+    {
+      g_warning ("Received multiple virtual 0x%x key %s (ignoring)", keycode,
+		 key_state == CLUTTER_KEY_STATE_PRESSED ? "presses" : "releases");
+      update_button_count (virtual_evdev, evcode, 1 - key_state);
+      return;
+    }
+
+  if (key_state)
+    apply_level_modifiers (virtual_device, time_us, level, key_state);
+
+  clutter_seat_evdev_notify_key (virtual_evdev->seat,
+                                 virtual_evdev->device,
+                                 time_us,
+                                 evcode,
+                                 key_state,
+                                 TRUE);
+
+  if (!key_state)
+    apply_level_modifiers (virtual_device, time_us, level, key_state);
+}
+
 static void
 clutter_virtual_input_device_evdev_get_property (GObject    *object,
                                                  guint       prop_id,
@@ -347,6 +484,7 @@ clutter_virtual_input_device_evdev_class_init (ClutterVirtualInputDeviceEvdevCla
   virtual_input_device_class->notify_absolute_motion = clutter_virtual_input_device_evdev_notify_absolute_motion;
   virtual_input_device_class->notify_button = clutter_virtual_input_device_evdev_notify_button;
   virtual_input_device_class->notify_key = clutter_virtual_input_device_evdev_notify_key;
+  virtual_input_device_class->notify_keyval = clutter_virtual_input_device_evdev_notify_keyval;
 
   obj_props[PROP_SEAT] = g_param_spec_pointer ("seat",
                                                P_("ClutterSeatEvdev"),
