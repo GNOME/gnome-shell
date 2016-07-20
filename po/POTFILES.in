@@ -12,6 +12,7 @@ js/gdm/loginDialog.js
 js/gdm/util.js
 js/misc/util.js
 js/portalHelper/main.js
+js/ui/accessDialog.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
 js/ui/audioDeviceSelection.js
