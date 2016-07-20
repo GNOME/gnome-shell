@@ -10,6 +10,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const InputSourceManager = imports.ui.status.keyboard;
 
 const BoxPointer = imports.ui.boxpointer;
 const Layout = imports.ui.layout;
@@ -757,19 +758,48 @@ const ShellWaylandAdapter = new Lang.Class({
     Name: 'ShellWaylandAdapter',
     Extends: Caribou.XAdapter,
 
+    _init: function () {
+        this.parent();
+        let deviceManager = Clutter.DeviceManager.get_default();
+        this._virtualDevice = deviceManager.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
+
+        this._inputSourceManager = InputSourceManager.getInputSourceManager();
+        this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
+                                                                 Lang.bind(this, this._onSourceChanged));
+        this._sourcesModifiedId = this._inputSourceManager.connect ('sources-changed',
+                                                                    Lang.bind(this, this._onSourcesModified));
+    },
+
+    _onSourcesModified: function () {
+        this.emit('config-changed');
+    },
+
+    _onSourceChanged: function (inputSourceManager, oldSource) {
+        let source = inputSourceManager.currentSource;
+        this.emit('group-changed', source.index, source.id, '');
+    },
+
+    vfunc_get_groups: function () {
+        let inputSources = this._inputSourceManager.inputSources;
+        let groups = []
+        let variants = [];
+
+        for (let i in inputSources) {
+            let is = inputSources[i];
+            groups[is.index] = is.id;
+            variants[is.index] = '';
+        }
+
+        return [groups, groups.length, variants, variants.length];
+    },
+
     vfunc_keyval_press: function(keyval) {
-        let focus = global.stage.get_key_focus();
-        if (focus instanceof Clutter.Text)
-            Shell.util_text_insert_keyval(focus, keyval);
-        else
-            this.parent(keyval);
+        this._virtualDevice.notify_keyval(Clutter.get_current_event_time(),
+                                          keyval, Clutter.KeyState.PRESSED);
     },
 
     vfunc_keyval_release: function(keyval) {
-        let focus = global.stage.get_key_focus();
-        if (focus instanceof Clutter.Text)
-            return;             // do nothing
-        else
-            this.parent(keyval);
+        this._virtualDevice.notify_keyval(Clutter.get_current_event_time(),
+                                          keyval, Clutter.KeyState.RELEASED);
     },
 });
