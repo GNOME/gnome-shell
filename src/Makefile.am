@@ -27,8 +27,10 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/cogl						\
 	-I$(top_srcdir)/cogl/cogl					\
 	-I$(top_srcdir)/cogl/cogl/winsys				\
+	-I$(top_builddir)/cogl/cogl					\
 	-I$(top_builddir)/cogl						\
 	-I$(top_srcdir)/clutter						\
+	-I$(top_srcdir)/clutter/clutter					\
 	-I$(top_builddir)/clutter					\
 	-I$(top_builddir)/clutter/clutter				\
 	-DMUTTER_LIBEXECDIR=\"$(libexecdir)\"				\
