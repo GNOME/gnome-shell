@@ -1022,6 +1022,7 @@ meta_renderer_native_create_legacy_view (MetaRendererNative *renderer_native)
                        "layout", &view_layout,
                        "framebuffer", framebuffer,
                        NULL);
+  cogl_object_unref (framebuffer);
 
   meta_onscreen_native_set_view (onscreen, view);
 
@@ -1056,6 +1057,7 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
                        "framebuffer", framebuffer,
                        "monitor-info", monitor_info,
                        NULL);
+  cogl_object_unref (framebuffer);
 
   meta_onscreen_native_set_view (onscreen, view);
 
