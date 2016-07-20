@@ -1,3 +1,23 @@
+3.21.4
+======
+* Fix missing frame border around GTK+ dialogs [Florian; #745060]
+* Improve X11 <-> wayland copy and paste interaction [Carlos; #768007]
+* Add support for NV_robustness_video_memory_purge extension [Rui; #739178]
+* Fix restoring the old focused window on restart [Owen; #766243]
+* Fix fullscreen windows on other monitors stealing focus after closing
+  a window [Rui; #768221]
+* Draw monitor content to individual framebuffer [Jonas; #768976]
+* Provide screen capture API [Jonas; #768978]
+* Misc. bug fixes and cleanups [Rui, Owen, Luca, Olivier, Jonas, Carlos;
+  #767969, #768243, #762407, #767997, #768039, #768977, #768977]
+
+Contributors:
+  Jonas Ådahl, Luca Bruno, Olivier Fourdan, Carlos Garnacho, Rui Matos,
+  Florian Müllner, Owen W. Taylor
+
+Translations:
+  Andika Triwidada [id]
+
 3.21.3
 ======
 * Don't create invalid UTF-8 window description strings [Rui; #765535]
