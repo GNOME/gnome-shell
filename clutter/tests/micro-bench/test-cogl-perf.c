@@ -1,4 +1,4 @@
-#include <config.h>
+#include <clutter-build-config.h>
 #include <glib.h>
 #include <gmodule.h>
 #include <stdlib.h>
