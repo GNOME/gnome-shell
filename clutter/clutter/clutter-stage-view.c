@@ -139,7 +139,7 @@ clutter_stage_view_set_property (GObject      *object,
       priv->layout = *layout;
       break;
     case PROP_FRAMEBUFFER:
-      priv->framebuffer = g_value_get_boxed (value);
+      priv->framebuffer = g_value_dup_boxed (value);
       break;
     }
 }
