@@ -62,9 +62,6 @@
 #include "clutter-scriptable.h"
 #include "clutter-script-private.h"
 
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
-#include "deprecated/clutter-fixed.h"
-
 enum
 {
   PROP_0,
@@ -109,25 +106,6 @@ clutter_interval_real_validate (ClutterInterval *interval,
                                 GParamSpec      *pspec)
 {
   GType pspec_gtype = G_PARAM_SPEC_VALUE_TYPE (pspec);
-
-G_GNUC_BEGIN_IGNORE_DEPRECATIONS;
-
-  /* check the GTypes we provide first */
-  if (pspec_gtype == COGL_TYPE_FIXED)
-    {
-      ClutterParamSpecFixed *pspec_fixed = CLUTTER_PARAM_SPEC_FIXED (pspec);
-      CoglFixed a, b;
-
-      a = b = 0;
-      clutter_interval_get_interval (interval, &a, &b);
-      if ((a >= pspec_fixed->minimum && a <= pspec_fixed->maximum) &&
-          (b >= pspec_fixed->minimum && b <= pspec_fixed->maximum))
-        return TRUE;
-      else
-        return FALSE;
-    }
-
-G_GNUC_END_IGNORE_DEPRECATIONS;
 
   /* then check the fundamental types */
   switch (G_TYPE_FUNDAMENTAL (pspec_gtype))
