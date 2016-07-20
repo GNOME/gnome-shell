@@ -15,7 +15,6 @@ UNIT_TESTS = \
 	test-state-animator.c \
 	test-fbo.c \
 	test-multistage.c \
-	test-cogl-primitives.c \
 	test-cogl-tex-tile.c \
 	test-cogl-tex-convert.c \
 	test-cogl-tex-foreign.c \
@@ -24,7 +23,6 @@ UNIT_TESTS = \
 	test-cogl-tex-polygon.c \
 	test-cogl-multitexture.c \
 	test-stage-read-pixels.c \
-	test-clip.c \
 	test-paint-wrapper.c \
 	test-texture-quality.c \
 	test-layout.c \
