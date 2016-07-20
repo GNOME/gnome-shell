@@ -18,7 +18,6 @@ UNIT_TESTS = \
 	test-cogl-tex-tile.c \
 	test-cogl-tex-convert.c \
 	test-cogl-tex-foreign.c \
-	test-cogl-tex-getset.c \
 	test-cogl-offscreen.c \
 	test-cogl-tex-polygon.c \
 	test-cogl-multitexture.c \
