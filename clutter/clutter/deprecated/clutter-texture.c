@@ -145,7 +145,6 @@ enum
   PROP_0,
   PROP_NO_SLICE,
   PROP_MAX_TILE_WASTE,
-  PROP_PIXEL_FORMAT,
   PROP_SYNC_SIZE,
   PROP_REPEAT_Y,
   PROP_REPEAT_X,
@@ -911,10 +910,6 @@ clutter_texture_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_PIXEL_FORMAT:
-      g_value_set_enum (value, clutter_texture_get_pixel_format (texture));
-      break;
-
     case PROP_MAX_TILE_WASTE:
       g_value_set_int (value, clutter_texture_get_max_tile_waste (texture));
       break;
@@ -1039,15 +1034,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
                              G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE);
   obj_props[PROP_FILTER_QUALITY] = pspec;
   g_object_class_install_property (gobject_class, PROP_FILTER_QUALITY, pspec);
-
-  pspec = g_param_spec_enum ("pixel-format",
-                             P_("Pixel Format"),
-                             P_("The Cogl pixel format to use"),
-                             COGL_TYPE_PIXEL_FORMAT,
-                             COGL_PIXEL_FORMAT_RGBA_8888,
-                             CLUTTER_PARAM_READABLE);
-  obj_props[PROP_PIXEL_FORMAT] = pspec;
-  g_object_class_install_property (gobject_class, PROP_PIXEL_FORMAT, pspec);
 
   pspec = g_param_spec_boxed ("cogl-texture",
                               P_("Cogl Texture"),
@@ -2869,40 +2855,6 @@ clutter_texture_get_repeat (ClutterTexture *texture,
 
   if (repeat_y != NULL)
     *repeat_y = texture->priv->repeat_y;
-}
-
-/**
- * clutter_texture_get_pixel_format:
- * @texture: a #ClutterTexture
- *
- * Retrieves the pixel format used by @texture. This is
- * equivalent to:
- *
- * |[
- *   handle = clutter_texture_get_pixel_format (texture);
- *
- *   if (handle != COGL_INVALID_HANDLE)
- *     format = cogl_texture_get_format (handle);
- * ]|
- *
- * Return value: a #CoglPixelFormat value
- *
- * Since: 1.0
- *
- * Deprecated: 1.12: There is no direct replacement for this function
- */
-CoglPixelFormat
-clutter_texture_get_pixel_format (ClutterTexture *texture)
-{
-  CoglHandle cogl_texture;
-
-  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), COGL_PIXEL_FORMAT_ANY);
-
-  cogl_texture = clutter_texture_get_cogl_texture (texture);
-  if (cogl_texture == NULL)
-    return COGL_PIXEL_FORMAT_ANY;
-
-  return cogl_texture_get_format (cogl_texture);
 }
 
 /**

@@ -98,8 +98,6 @@ void                    clutter_texture_get_repeat              (ClutterTexture 
                                                                  gboolean               *repeat_x,
                                                                  gboolean               *repeat_y);
 CLUTTER_DEPRECATED_IN_1_12
-CoglPixelFormat         clutter_texture_get_pixel_format        (ClutterTexture         *texture);
-CLUTTER_DEPRECATED_IN_1_12
 gint                    clutter_texture_get_max_tile_waste      (ClutterTexture         *texture);
 CLUTTER_DEPRECATED_IN_1_12_FOR(ClutterImage and clutter_actor_set_content_gravity)
 void                    clutter_texture_set_keep_aspect_ratio   (ClutterTexture         *texture,
