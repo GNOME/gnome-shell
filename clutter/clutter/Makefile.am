@@ -560,7 +560,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
 DISTCLEANFILES += $(pc_files)
 
-clutter_include_HEADERS = $(source_h) clutter.h clutter-version.h clutter-autocleanups.h
+clutter_include_HEADERS = $(source_h) clutter.h clutter-version.h clutter-autocleanups.h clutter-mutter.h
 nodist_clutter_include_HEADERS = clutter-config.h $(built_source_h)
 
 clutter_deprecated_HEADERS = $(deprecated_h)

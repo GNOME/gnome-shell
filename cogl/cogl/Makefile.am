@@ -124,6 +124,7 @@ cogl_nonintrospected_h = \
 	cogl-texture.h		\
 	cogl-types.h			\
 	cogl-gtype-private.h		\
+	cogl-mutter.h			\
 	$(NULL)
 
 cogl_nodist_h = \
