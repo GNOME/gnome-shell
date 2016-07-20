@@ -109,6 +109,7 @@ convert_DATA = gnome-shell-overrides.convert
 EXTRA_DIST =						\
 	org.gnome.Shell.desktop.in.in			\
 	gnome-shell-extension-prefs.desktop.in.in	\
+	$(portal_DATA)					\
 	$(introspection_DATA)				\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
