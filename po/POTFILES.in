@@ -1,11 +1,10 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-[encoding: UTF-8]
-data/50-gnome-shell-system.xml.in
+data/50-gnome-shell-system.xml
 data/gnome-shell-extension-prefs.desktop.in.in
 data/org.gnome.Shell.desktop.in.in
-data/org.gnome.shell.gschema.xml.in.in
-data/org.gnome.Shell.PortalHelper.desktop.in
+data/org.gnome.shell.gschema.xml.in
+data/org.gnome.Shell.PortalHelper.desktop.in.in
 js/extensionPrefs/main.js
 js/gdm/authPrompt.js
 js/gdm/loginDialog.js
@@ -62,7 +61,7 @@ js/ui/viewSelector.js
 js/ui/windowAttentionHandler.js
 js/ui/windowManager.js
 js/ui/windowMenu.js
-src/calendar-server/evolution-calendar.desktop.in.in
+src/calendar-server/evolution-calendar.desktop.in
 # Please do not remove this file from POTFILES.in. Run "git submodule init && git submodule update" to get it.
 src/gvc/gvc-mixer-control.c
 src/main.c

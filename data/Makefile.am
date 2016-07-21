@@ -14,8 +14,9 @@ servicedir = $(datadir)/dbus-1/services
 service_DATA = org.gnome.Shell.PortalHelper.service
 
 CLEANFILES += \
-	org.gnome.Shell.PortalHelper.service \
-	org.gnome.Shell.PortalHelper.desktop \
+	org.gnome.Shell.PortalHelper.service 	\
+	org.gnome.Shell.PortalHelper.desktop 	\
+	org.gnome.Shell.PortalHelper.desktop.in \
 	$(NULL)
 
 endif
@@ -31,7 +32,9 @@ endif
 	    -e "s|@VERSION[@]|$(VERSION)|" \
 	    $< > $@ || rm $@
 
-@INTLTOOL_DESKTOP_RULE@
+%.desktop:%.desktop.in
+	$(AM_V_GEN) $(MSGFMT) --desktop --template $(builddir)/$< \
+	                      -d $(top_srcdir)/po -o $@
 
 introspectiondir = $(datadir)/dbus-1/interfaces
 introspection_DATA =				\
@@ -83,14 +86,11 @@ perf-background.xml: perf-background.xml.in
 	    $< > $@ || rm $@
 
 keysdir = @GNOME_KEYBINDINGS_KEYSDIR@
-keys_in_files = 50-gnome-shell-system.xml.in
-keys_DATA = $(keys_in_files:.xml.in=.xml)
+keys_DATA = 50-gnome-shell-system.xml
 
 gsettings_SCHEMAS = org.gnome.shell.gschema.xml
 
-@INTLTOOL_XML_NOMERGE_RULE@
-
-%.gschema.xml.in: %.gschema.xml.in.in Makefile
+%.gschema.xml: %.gschema.xml.in Makefile
 	$(AM_V_GEN) sed -e 's|@GETTEXT_PACKAGE[@]|$(GETTEXT_PACKAGE)|g' \
 	$< > $@ || rm $@
 
@@ -113,12 +113,12 @@ EXTRA_DIST =						\
 	$(introspection_DATA)				\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
-	$(keys_in_files)				\
+	$(keys_DATA)					\
 	$(dist_theme_files)				\
 	perf-background.xml.in				\
-	org.gnome.Shell.PortalHelper.desktop.in		\
+	org.gnome.Shell.PortalHelper.desktop.in.in	\
 	org.gnome.Shell.PortalHelper.service.in		\
-	org.gnome.shell.gschema.xml.in.in		\
+	org.gnome.shell.gschema.xml.in			\
 	gnome-shell-theme.gresource.xml 		\
 	$(resource_files)				\
 	$(NULL)
@@ -127,11 +127,9 @@ CLEANFILES +=						\
 	org.gnome.Shell.desktop.in			\
 	gnome-shell-extension-prefs.in			\
 	$(desktop_DATA)					\
-	$(keys_DATA)					\
 	$(gsettings_SCHEMAS)				\
 	perf-background.xml				\
 	gschemas.compiled				\
 	org.gnome.shell.gschema.valid			\
-	org.gnome.shell.gschema.xml.in			\
 	gnome-shell-theme.gresource			\
 	$(NULL)

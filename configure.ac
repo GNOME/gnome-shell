@@ -24,12 +24,13 @@ LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
 
 # i18n
-IT_PROG_INTLTOOL([0.40])
-
 GETTEXT_PACKAGE=gnome-shell
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
+
+AM_GNU_GETTEXT_VERSION([0.19.6])
+AM_GNU_GETTEXT([external])
 
 PKG_PROG_PKG_CONFIG([0.22])
 
@@ -254,7 +255,6 @@ AC_CONFIG_FILES([
   docs/reference/st/Makefile
   docs/reference/st/st-docs.sgml
   js/Makefile
-  src/calendar-server/evolution-calendar.desktop.in
   src/Makefile
   src/gvc/Makefile
   browser-plugin/Makefile

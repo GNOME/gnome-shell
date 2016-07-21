@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-_Name=GNOME Shell
-_Comment=Window management and application launching
+Name=GNOME Shell
+Comment=Window management and application launching
 Exec=@bindir@/gnome-shell
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-Bugzilla-Product=gnome-shell

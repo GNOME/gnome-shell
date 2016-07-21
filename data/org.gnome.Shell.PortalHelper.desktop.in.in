@@ -1,5 +1,5 @@
 [Desktop Entry]
-_Name=Network Login
+Name=Network Login
 Type=Application
 Exec=gapplication launch org.gnome.Shell.PortalHelper
 DBusActivatable=true

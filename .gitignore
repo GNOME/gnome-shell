@@ -16,7 +16,6 @@ config.log
 config.status
 config
 configure
-data/50-gnome-shell-*.xml
 data/org.gnome.Shell.desktop
 data/org.gnome.Shell.desktop.in
 data/gnome-shell-extension-prefs.desktop
@@ -26,8 +25,6 @@ data/gschemas.compiled
 data/perf-background.xml
 data/org.gnome.shell.gschema.xml
 data/org.gnome.shell.gschema.valid
-data/org.gnome.shell.evolution.calendar.gschema.xml
-data/org.gnome.shell.evolution.calendar.gschema.valid
 data/org.gnome.Shell.PortalHelper.desktop
 data/org.gnome.Shell.PortalHelper.service
 data/theme/.sass-cache
@@ -74,7 +71,6 @@ src/*-marshal.[ch]
 src/Makefile
 src/Makefile.in
 src/calendar-server/evolution-calendar.desktop
-src/calendar-server/evolution-calendar.desktop.in
 src/calendar-server/org.gnome.Shell.CalendarServer.service
 src/gnome-shell
 src/gnome-shell-calendar-server

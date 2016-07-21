@@ -1,5 +1,5 @@
 [Desktop Entry]
-_Name=Evolution Calendar
+Name=Evolution Calendar
 Exec=evolution -c calendar
 Icon=evolution
 NoDisplay=true

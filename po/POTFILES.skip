@@ -1,4 +1,0 @@
-data/org.gnome.shell.evolution.calendar.gschema.xml.in
-src/calendar-server/evolution-calendar.desktop.in
-# Meh, autofools :-(
-sub/src/calendar-server/evolution-calendar.desktop.in

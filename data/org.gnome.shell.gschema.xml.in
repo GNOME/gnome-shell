@@ -3,84 +3,84 @@
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="development-tools" type="b">
       <default>true</default>
-      <_summary>
+      <summary>
         Enable internal tools useful for developers and testers from Alt-F2
-      </_summary>
-      <_description>
+      </summary>
+      <description>
         Allows access to internal debugging and monitoring tools
         using the Alt-F2 dialog.
-      </_description>
+      </description>
     </key>
     <key name="enabled-extensions" type="as">
       <default>[]</default>
-      <_summary>UUIDs of extensions to enable</_summary>
-      <_description>
+      <summary>UUIDs of extensions to enable</summary>
+      <description>
         GNOME Shell extensions have a UUID property; this key lists extensions
         which should be loaded. Any extension that wants to be loaded needs
         to be in this list. You can also manipulate this list with the
         EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell.
-      </_description>
+      </description>
     </key>
     <key name="disable-extension-version-validation" type="b">
       <default>false</default>
-      <_summary>Disables the validation of extension version compatibility</_summary>
-      <_description>
+      <summary>Disables the validation of extension version compatibility</summary>
+      <description>
         GNOME Shell will only load extensions that claim to support the current
         running version. Enabling this option will disable this check and try to
         load all extensions regardless of the versions they claim to support.
-      </_description>
+      </description>
     </key>
     <key name="favorite-apps" type="as">
       <default>[ 'epiphany.desktop', 'evolution.desktop', 'rhythmbox.desktop', 'shotwell.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop' ]</default>
-      <_summary>List of desktop file IDs for favorite applications</_summary>
-      <_description>
+      <summary>List of desktop file IDs for favorite applications</summary>
+      <description>
         The applications corresponding to these identifiers
         will be displayed in the favorites area.
-      </_description>
+      </description>
     </key>
     <key name="app-picker-view" type="u">
       <default>0</default>
-      <_summary>App Picker View</_summary>
-      <_description>
+      <summary>App Picker View</summary>
+      <description>
         Index of the currently selected view in the application picker.
-      </_description>
+      </description>
     </key>
     <key name="command-history" type="as">
       <default>[]</default>
-      <_summary>History for command (Alt-F2) dialog</_summary>
+      <summary>History for command (Alt-F2) dialog</summary>
     </key>
     <key name="looking-glass-history" type="as">
       <default>[]</default>
       <!-- Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass -->
-      <_summary>History for the looking glass dialog</_summary>
+      <summary>History for the looking glass dialog</summary>
     </key>
     <key name="always-show-log-out" type="b">
       <default>false</default>
-      <_summary>Always show the 'Log out' menu item in the user menu.</_summary>
-      <_description>
+      <summary>Always show the 'Log out' menu item in the user menu.</summary>
+      <description>
         This key overrides the automatic hiding of the 'Log out'
         menu item in single-user, single-session situations.
-      </_description>
+      </description>
     </key>
     <key name="remember-mount-password" type="b">
       <default>false</default>
-      <_summary>Whether to remember password for mounting encrypted or remote filesystems</_summary>
-      <_description>
+      <summary>Whether to remember password for mounting encrypted or remote filesystems</summary>
+      <description>
         The shell will request a password when an encrypted device or a
         remote filesystem is mounted.  If the password can be saved for
         future use a 'Remember Password' checkbox will be present.
         This key sets the default state of the checkbox.
-      </_description>
+      </description>
     </key>
     <key name="had-bluetooth-devices-setup" type="b">
       <default>false</default>
-      <_summary>Whether the default Bluetooth adapter had set up devices associated to it</_summary>
-      <_description>
+      <summary>Whether the default Bluetooth adapter had set up devices associated to it</summary>
+      <description>
         The shell will only show a Bluetooth menu item if a Bluetooth
         adapter is powered, or if there were devices set up associated
         with the default adapter. This will be reset if the default
         adapter is ever seen not to have devices associated to it.
-      </_description>
+      </description>
     </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
     <child name="keyboard" schema="org.gnome.shell.keyboard"/>
@@ -90,44 +90,44 @@
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="open-application-menu" type="as">
       <default>["&lt;Super&gt;F10"]</default>
-      <_summary>Keybinding to open the application menu</_summary>
-      <_description>
+      <summary>Keybinding to open the application menu</summary>
+      <description>
         Keybinding to open the application menu.
-      </_description>
+      </description>
     </key>
     <key name="toggle-application-view" type="as">
       <default>["&lt;Super&gt;a"]</default>
-      <_summary>Keybinding to open the "Show Applications" view</_summary>
-      <_description>
+      <summary>Keybinding to open the "Show Applications" view</summary>
+      <description>
         Keybinding to open the "Show Applications" view of the Activities
         Overview.
-      </_description>
+      </description>
     </key>
     <key name="toggle-overview" type="as">
       <default>["&lt;Super&gt;s"]</default>
-      <_summary>Keybinding to open the overview</_summary>
-      <_description>
+      <summary>Keybinding to open the overview</summary>
+      <description>
         Keybinding to open the Activities Overview.
-      </_description>
+      </description>
     </key>
     <key name="toggle-message-tray" type="as">
       <default>["&lt;Super&gt;v","&lt;Super&gt;m"]</default>
-      <_summary>Keybinding to toggle the visibility of the notification list</_summary>
-      <_description>
+      <summary>Keybinding to toggle the visibility of the notification list</summary>
+      <description>
         Keybinding to toggle the visibility of the notification list.
-      </_description>
+      </description>
     </key>
     <key name="focus-active-notification" type="as">
       <default>["&lt;Super&gt;n"]</default>
-      <_summary>Keybinding to focus the active notification</_summary>
-      <_description>
+      <summary>Keybinding to focus the active notification</summary>
+      <description>
         Keybinding to focus the active notification.
-      </_description>
+      </description>
     </key>
     <key name="pause-resume-tweens" type="as">
       <default>[]</default>
-      <_summary>Keybinding that pauses and resumes all running tweens, for debugging purposes</_summary>
-      <_description></_description>
+      <summary>Keybinding that pauses and resumes all running tweens, for debugging purposes</summary>
+      <description></description>
     </key>
   </schema>
 
@@ -135,10 +135,10 @@
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="keyboard-type" type="s">
       <default>'touch'</default>
-      <_summary>Which keyboard to use</_summary>
-      <_description>
+      <summary>Which keyboard to use</summary>
+      <description>
         The type of keyboard to use.
-      </_description>
+      </description>
     </key>
   </schema>
 
@@ -147,11 +147,11 @@
           gettext-domain="@GETTEXT_PACKAGE@">
     <key type="b" name="current-workspace-only">
       <default>false</default>
-      <_summary>Limit switcher to current workspace.</_summary>
-      <_description>
+      <summary>Limit switcher to current workspace.</summary>
+      <description>
 	If true, only applications that have windows on the current workspace are shown in the switcher.
 	Otherwise, all applications are included.
-      </_description>
+      </description>
     </key>
   </schema>
 
@@ -165,20 +165,20 @@
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="app-icon-mode" enum="org.gnome.shell.window-switcher.AppIconMode">
       <default>'both'</default>
-      <_summary>The application icon mode.</_summary>
-      <_description>
+      <summary>The application icon mode.</summary>
+      <description>
 	Configures how the windows are shown in the switcher. Valid possibilities
 	are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only'
 	(shows only the application icon) or 'both'.
-      </_description>
+      </description>
     </key>
     <key type="b" name="current-workspace-only">
       <default>true</default>
-      <_summary>Limit switcher to current workspace.</_summary>
-      <_description>
+      <summary>Limit switcher to current workspace.</summary>
+      <description>
 	If true, only windows from the current workspace are shown in the switcher.
 	Otherwise, all windows are included.
-      </_description>
+      </description>
     </key>
   </schema>
 
@@ -186,43 +186,43 @@
 	  gettext-domain="@GETTEXT_PACKAGE@">
     <key name="attach-modal-dialogs" type="b">
       <default>true</default>
-      <_summary>Attach modal dialog to the parent window</_summary>
-      <_description>
+      <summary>Attach modal dialog to the parent window</summary>
+      <description>
         This key overrides the key in org.gnome.mutter when running
         GNOME Shell.
-      </_description>
+      </description>
     </key>
 
     <key name="edge-tiling" type="b">
       <default>true</default>
-      <_summary>Enable edge tiling when dropping windows on screen edges</_summary>
-      <_description>
+      <summary>Enable edge tiling when dropping windows on screen edges</summary>
+      <description>
         This key overrides the key in org.gnome.mutter when running GNOME Shell.
-      </_description>
+      </description>
     </key>
 
     <key name="dynamic-workspaces" type="b">
       <default>true</default>
-      <_summary>Workspaces are managed dynamically</_summary>
-      <_description>
+      <summary>Workspaces are managed dynamically</summary>
+      <description>
         This key overrides the key in org.gnome.mutter when running GNOME Shell.
-      </_description>
+      </description>
     </key>
 
     <key name="workspaces-only-on-primary" type="b">
       <default>true</default>
-      <_summary>Workspaces only on primary monitor</_summary>
-      <_description>
+      <summary>Workspaces only on primary monitor</summary>
+      <description>
         This key overrides the key in org.gnome.mutter when running GNOME Shell.
-      </_description>
+      </description>
     </key>
 
     <key name="focus-change-on-pointer-rest" type="b">
       <default>true</default>
-      <_summary>Delay focus changes in mouse mode until the pointer stops moving</_summary>
-      <_description>
+      <summary>Delay focus changes in mouse mode until the pointer stops moving</summary>
+      <description>
         This key overrides the key in org.gnome.mutter when running GNOME Shell.
-      </_description>
+      </description>
     </key>
   </schema>
 </schemalist>
