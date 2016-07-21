@@ -563,8 +563,7 @@ parent_surface_state_applied (gpointer data, gpointer user_data)
       MetaWaylandSurface *parent = surface->sub.parent;
       ClutterActor *parent_actor =
         clutter_actor_get_parent (CLUTTER_ACTOR (parent->surface_actor));
-      ClutterActor *surface_actor =
-        surface_actor = CLUTTER_ACTOR (surface->surface_actor);
+      ClutterActor *surface_actor = CLUTTER_ACTOR (surface->surface_actor);
 
       for (it = surface->sub.pending_placement_ops; it; it = it->next)
         {
