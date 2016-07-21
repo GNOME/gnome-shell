@@ -34,7 +34,6 @@
 struct _MetaUI
 {
   Display *xdisplay;
-  Screen *xscreen;
   MetaFrames *frames;
 
   /* For double-click tracking */
@@ -81,20 +80,18 @@ meta_ui_get_screen_number (void)
 }
 
 MetaUI*
-meta_ui_new (Display *xdisplay,
-             Screen  *screen)
+meta_ui_new (Display *xdisplay)
 {
   GdkDisplay *gdisplay;
   MetaUI *ui;
 
   ui = g_new0 (MetaUI, 1);
   ui->xdisplay = xdisplay;
-  ui->xscreen = screen;
 
   gdisplay = gdk_x11_lookup_xdisplay (xdisplay);
   g_assert (gdisplay == gdk_display_get_default ());
 
-  ui->frames = meta_frames_new (XScreenNumberOfScreen (screen));
+  ui->frames = meta_frames_new ();
   /* GTK+ needs the frame-sync protocol to work in order to properly
    * handle style changes. This means that the dummy widget we create
    * to get the style for title bars actually needs to be mapped
@@ -141,15 +138,16 @@ meta_ui_create_frame (MetaUI *ui,
                       gint y,
                       gint width,
                       gint height,
-                      gint screen_no,
                       gulong *create_serial)
 {
   GdkDisplay *display = gdk_x11_lookup_xdisplay (xdisplay);
-  GdkScreen *screen = gdk_display_get_screen (display, screen_no);
+  GdkScreen *screen;
   GdkWindowAttr attrs;
   gint attributes_mask;
   GdkWindow *window;
   GdkVisual *visual;
+
+  screen = gdk_display_get_default_screen (display);
 
   /* Default depth/visual handles clients with weird visuals; they can
    * always be children of the root depth/visual obviously, but
@@ -251,14 +249,16 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
                                  MetaFrameFlags     flags,
                                  MetaFrameBorders  *borders)
 {
+  GdkDisplay *display;
+  GdkScreen *screen;
   int text_height;
   MetaStyleInfo *style_info = NULL;
   PangoContext *context;
   const PangoFontDescription *font_desc;
   PangoFontDescription *free_font_desc = NULL;
 
-  GdkDisplay *display = gdk_x11_lookup_xdisplay (ui->xdisplay);
-  GdkScreen *screen = gdk_display_get_screen (display, XScreenNumberOfScreen (ui->xscreen));
+  display = gdk_x11_lookup_xdisplay (ui->xdisplay);
+  screen = gdk_display_get_default_screen (display);
 
   style_info = meta_theme_create_style_info (screen, NULL);
 

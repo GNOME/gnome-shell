@@ -675,7 +675,7 @@ meta_startup_notification_constructed (GObject *object)
                                    sn_error_trap_pop);
   sn->sn_context =
     sn_monitor_context_new (sn->sn_display,
-                            sn->display->screen->number,
+                            meta_ui_get_screen_number (),
                             meta_startup_notification_sn_event,
                             sn,
                             NULL);

@@ -237,7 +237,7 @@ meta_stack_tracker_dump (MetaStackTracker *tracker)
 {
   GList *l;
 
-  meta_topic (META_DEBUG_STACK, "MetaStackTracker state (screen=%d)\n", tracker->screen->number);
+  meta_topic (META_DEBUG_STACK, "MetaStackTracker state\n");
   meta_push_no_msg_prefix ();
   meta_topic (META_DEBUG_STACK, "  xserver_serial: %ld\n", tracker->xserver_serial);
   meta_topic (META_DEBUG_STACK, "  verified_stack: ");

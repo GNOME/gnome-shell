@@ -648,7 +648,7 @@ meta_spew_event (MetaDisplay *display,
     meta_spew_core_event (display, event, &name, &extra);
 
   if (event->xany.window == screen->xroot)
-    winname = g_strdup_printf ("root %d", screen->number);
+    winname = g_strdup_printf ("root");
   else
     winname = g_strdup_printf ("0x%lx", event->xany.window);
 
@@ -1154,8 +1154,8 @@ process_selection_clear (MetaDisplay   *display,
       return FALSE;
     }
 
-  meta_verbose ("Got selection clear for screen %d on display %s\n",
-                screen->number, display->name);
+  meta_verbose ("Got selection clear for on display %s\n",
+                display->name);
 
   meta_display_unmanage_screen (display, display->screen,
                                 event->xselectionclear.time);

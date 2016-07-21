@@ -69,7 +69,6 @@ meta_window_ensure_frame (MetaWindow *window)
                                           frame->rect.y,
                                           frame->rect.width,
                                           frame->rect.height,
-                                          frame->window->screen->number,
                                           &create_serial);
   frame->xwindow = frame->ui_frame->xwindow;
 

@@ -920,11 +920,10 @@ meta_display_open (void)
   display->compositor = NULL;
 
   /* Mutter used to manage all X screens of the display in a single process, but
-   * now it always manages exactly one screen as specified by the DISPLAY
-   * environment variable.
+   * now it always manages exactly one screen - the default screen retrieved
+   * from GDK.
    */
-  i = meta_ui_get_screen_number ();
-  screen = meta_screen_new (display, i, timestamp);
+  screen = meta_screen_new (display, timestamp);
 
   if (!screen)
     {
@@ -2640,7 +2639,7 @@ meta_display_unmanage_screen (MetaDisplay *display,
                               guint32      timestamp)
 {
   meta_verbose ("Unmanaging screen %d on display %s\n",
-                screen->number, display->name);
+                meta_ui_get_screen_number (), display->name);
   meta_display_close (display, timestamp);
 }
 

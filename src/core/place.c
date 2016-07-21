@@ -756,8 +756,8 @@ meta_window_place (MetaWindow        *window,
       x += xi->rect.x;
       y += xi->rect.y;
 
-      meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen %d monitor %d\n",
-                  window->desc, window->screen->number, xi->number);
+      meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on monitor %d\n",
+                  window->desc, xi->number);
 
       goto done_check_denied_focus;
     }

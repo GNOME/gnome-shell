@@ -109,7 +109,7 @@ struct _MetaFramesClass
 
 GType        meta_frames_get_type               (void) G_GNUC_CONST;
 
-MetaFrames *meta_frames_new (int screen_number);
+MetaFrames *meta_frames_new (void);
 
 MetaUIFrame * meta_frames_manage_window (MetaFrames *frames,
                                          MetaWindow *meta_window,

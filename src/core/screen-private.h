@@ -48,9 +48,7 @@ struct _MetaScreen
   GObject parent_instance;
 
   MetaDisplay *display;
-  int number;
   char *screen_name;
-  Screen *xscreen;
   Window xroot;
   int default_depth;
   Visual *default_xvisual;
@@ -119,7 +117,6 @@ struct _MetaScreenClass
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
-                                               int                         number,
                                                guint32                     timestamp);
 void          meta_screen_free                (MetaScreen                 *screen,
                                                guint32                     timestamp);

@@ -569,10 +569,11 @@ take_manager_selection (MetaDisplay *display,
 
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
-                 int          number,
                  guint32      timestamp)
 {
   MetaScreen *screen;
+  int number;
+  Screen *xscreen;
   Window xroot;
   Display *xdisplay;
   Window new_wm_sn_owner;
@@ -582,6 +583,8 @@ meta_screen_new (MetaDisplay *display,
   MetaMonitorManager *manager;
 
   replace_current_wm = meta_get_replace_current_wm ();
+
+  number = meta_ui_get_screen_number ();
 
   /* Only display->name, display->xdisplay, and display->error_traps
    * can really be used in this function, since normally screens are
@@ -642,9 +645,7 @@ meta_screen_new (MetaDisplay *display,
   screen->closing = 0;
 
   screen->display = display;
-  screen->number = number;
   screen->screen_name = get_screen_name (display, number);
-  screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;
   screen->rect.x = screen->rect.y = 0;
 
@@ -655,10 +656,10 @@ meta_screen_new (MetaDisplay *display,
   meta_monitor_manager_get_screen_size (manager,
                                         &screen->rect.width,
                                         &screen->rect.height);
-
+  xscreen = ScreenOfDisplay (xdisplay, number);
   screen->current_cursor = -1; /* invalid/unset */
-  screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
-  screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
+  screen->default_xvisual = DefaultVisualOfScreen (xscreen);
+  screen->default_depth = DefaultDepthOfScreen (xscreen);
 
   screen->wm_sn_selection_window = new_wm_sn_owner;
   screen->wm_sn_atom = wm_sn_atom;
@@ -715,8 +716,7 @@ meta_screen_new (MetaDisplay *display,
   screen->keys_grabbed = FALSE;
   meta_screen_grab_keys (screen);
 
-  screen->ui = meta_ui_new (screen->display->xdisplay,
-                            screen->xscreen);
+  screen->ui = meta_ui_new (screen->display->xdisplay);
 
   screen->tile_preview_timeout_id = 0;
 
@@ -726,7 +726,7 @@ meta_screen_new (MetaDisplay *display,
   meta_prefs_add_listener (prefs_changed_callback, screen);
 
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
-                screen->number, screen->screen_name, screen->xroot);
+                number, screen->screen_name, screen->xroot);
 
   return screen;
 }
@@ -793,7 +793,7 @@ meta_screen_free (MetaScreen *screen,
   XSelectInput (screen->display->xdisplay, screen->xroot, 0);
   if (meta_error_trap_pop_with_return (screen->display) != Success)
     meta_warning ("Could not release screen %d on display \"%s\"\n",
-                  screen->number, screen->display->name);
+                  meta_ui_get_screen_number (), screen->display->name);
 
   unset_wm_check_hint (screen);
 
@@ -1956,8 +1956,7 @@ meta_screen_update_workspace_names (MetaScreen *screen)
                                 screen->display->atom__NET_DESKTOP_NAMES,
                                 &names, &n_names))
     {
-      meta_verbose ("Failed to get workspace names from root window %d\n",
-                    screen->number);
+      meta_verbose ("Failed to get workspace names from root window\n");
       return;
     }
 
@@ -2656,7 +2655,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
 int
 meta_screen_get_screen_number (MetaScreen *screen)
 {
-  return screen->number;
+  return meta_ui_get_screen_number ();
 }
 
 /**
@@ -2712,7 +2711,8 @@ meta_screen_set_cm_selection (MetaScreen *screen)
   guint32 timestamp;
 
   timestamp = meta_display_get_current_time_roundtrip (screen->display);
-  g_snprintf (selection, sizeof (selection), "_NET_WM_CM_S%d", screen->number);
+  g_snprintf (selection, sizeof (selection), "_NET_WM_CM_S%d",
+              meta_ui_get_screen_number ());
   a = XInternAtom (screen->display->xdisplay, selection, False);
   screen->wm_cm_selection_window = take_manager_selection (screen->display, screen->xroot, a, timestamp, TRUE);
 }
