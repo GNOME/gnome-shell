@@ -56,7 +56,7 @@ CLUTTER_AVAILABLE_IN_ALL
 GType                      clutter_input_device_tool_get_type (void) G_GNUC_CONST;
 
 CLUTTER_AVAILABLE_IN_ALL
-guint                      clutter_input_device_tool_get_serial    (ClutterInputDeviceTool *tool);
+guint64                    clutter_input_device_tool_get_serial    (ClutterInputDeviceTool *tool);
 
 CLUTTER_AVAILABLE_IN_ALL
 ClutterInputDeviceToolType clutter_input_device_tool_get_tool_type (ClutterInputDeviceTool *tool);

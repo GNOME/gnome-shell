@@ -136,7 +136,7 @@ clutter_input_device_tool_init (ClutterInputDeviceTool *tool)
  *
  * Since: 1.28
  **/
-guint
+guint64
 clutter_input_device_tool_get_serial (ClutterInputDeviceTool *tool)
 {
   ClutterInputDeviceToolPrivate *priv;
