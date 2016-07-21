@@ -441,8 +441,10 @@ meta_init (void)
 
   calculate_compositor_configuration (&compositor_type, &backend_type);
 
+#ifdef HAVE_WAYLAND
   if (compositor_type == META_COMPOSITOR_TYPE_WAYLAND)
     meta_set_is_wayland_compositor (TRUE);
+#endif
 
   if (g_get_home_dir ())
     if (chdir (g_get_home_dir ()) < 0)
