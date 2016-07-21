@@ -615,7 +615,7 @@ void
 meta_backend_set_client_pointer_constraint (MetaBackend           *backend,
                                             MetaPointerConstraint *constraint)
 {
-  g_assert (!constraint || (constraint && !backend->client_pointer_constraint));
+  g_assert (!constraint || !backend->client_pointer_constraint);
 
   g_clear_object (&backend->client_pointer_constraint);
   if (constraint)
