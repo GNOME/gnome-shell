@@ -936,7 +936,7 @@ _cogl_pipeline_layer_needs_combine_separate
         }
     }
 
-   return FALSE;
+  return FALSE;
 }
 
 

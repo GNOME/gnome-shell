@@ -298,7 +298,7 @@ _cogl_winsys_egl_make_current (CoglDisplay *display,
   if (egl_display->current_draw_surface == draw &&
       egl_display->current_read_surface == read &&
       egl_display->current_context == context)
-  return EGL_TRUE;
+    return EGL_TRUE;
 
   ret = eglMakeCurrent (egl_renderer->edpy,
                         draw,
