@@ -485,7 +485,7 @@ lookup_grouped_devices (ClutterInputDevice     *device,
   MetaBackend *backend = meta_get_backend ();
 
 #ifdef HAVE_NATIVE_BACKEND
-  struct libinput_device *dev, *libinput_device;
+  struct libinput_device *dev = NULL, *libinput_device;
 
   if (META_IS_BACKEND_NATIVE (backend))
     dev = clutter_evdev_input_device_get_libinput_device (device);
