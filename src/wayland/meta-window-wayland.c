@@ -459,33 +459,22 @@ MetaWindow *
 meta_window_wayland_new (MetaDisplay        *display,
                          MetaWaylandSurface *surface)
 {
-  XWindowAttributes attrs;
+  XWindowAttributes attrs = { 0 };
   MetaScreen *scr = display->screen;
   MetaWindow *window;
 
+  /*
+   * Set attributes used by _meta_window_shared_new, don't bother trying to fake
+   * X11 window attributes with the rest, since they'll be ignored anyway.
+   */
   attrs.x = 0;
   attrs.y = 0;
   attrs.width = 0;
   attrs.height = 0;
-  attrs.border_width = 0;
   attrs.depth = 24;
   attrs.visual = NULL;
-  attrs.root = scr->xroot;
-  attrs.class = InputOutput;
-  attrs.bit_gravity = NorthWestGravity;
-  attrs.win_gravity = NorthWestGravity;
-  attrs.backing_store = 0;
-  attrs.backing_planes = ~0;
-  attrs.backing_pixel = 0;
-  attrs.save_under = 0;
-  attrs.colormap = 0;
-  attrs.map_installed = 1;
   attrs.map_state = IsUnmapped;
-  attrs.all_event_masks = ~0;
-  attrs.your_event_mask = 0;
-  attrs.do_not_propagate_mask = 0;
-  attrs.override_redirect = 0;
-  attrs.screen = scr->xscreen;
+  attrs.override_redirect = False;
 
   /* XXX: Note: In the Wayland case we currently still trap X errors while
    * creating a MetaWindow because we will still be making various redundant
