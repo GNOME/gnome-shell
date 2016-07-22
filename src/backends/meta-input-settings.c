@@ -142,8 +142,10 @@ meta_input_settings_dispose (GObject *object)
 
   g_clear_object (&priv->monitor_manager);
 
+#ifdef HAVE_LIBWACOM
   if (priv->wacom_db)
     libwacom_database_destroy (priv->wacom_db);
+#endif
 
   G_OBJECT_CLASS (meta_input_settings_parent_class)->dispose (object);
 }
@@ -1253,12 +1255,14 @@ meta_input_settings_init (MetaInputSettings *settings)
   g_signal_connect (priv->monitor_manager, "monitors-changed",
                     G_CALLBACK (monitors_changed_cb), settings);
 
+#ifdef HAVE_LIBWACOM
   priv->wacom_db = libwacom_database_new ();
   if (!priv->wacom_db)
     {
       g_warning ("Could not create database of Wacom devices, "
                  "expect tablets to misbehave");
     }
+#endif
 }
 
 MetaInputSettings *
