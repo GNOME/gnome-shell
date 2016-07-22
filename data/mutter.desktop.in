@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-_Name=Mutter
+Name=Mutter
 Exec=mutter
 NoDisplay=true
 # name of loadable control center module

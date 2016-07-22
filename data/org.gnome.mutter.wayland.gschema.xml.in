@@ -3,51 +3,51 @@
 	  gettext-domain="@GETTEXT_DOMAIN@">
     <key name="switch-to-session-1" type="as">
       <default><![CDATA[['<Primary><Alt>F1']]]></default>
-      <_summary>Switch to VT 1</_summary>
+      <summary>Switch to VT 1</summary>
     </key>
     <key name="switch-to-session-2" type="as">
       <default><![CDATA[['<Primary><Alt>F2']]]></default>
-      <_summary>Switch to VT 2</_summary>
+      <summary>Switch to VT 2</summary>
     </key>
     <key name="switch-to-session-3" type="as">
       <default><![CDATA[['<Primary><Alt>F3']]]></default>
-      <_summary>Switch to VT 3</_summary>
+      <summary>Switch to VT 3</summary>
     </key>
     <key name="switch-to-session-4" type="as">
       <default><![CDATA[['<Primary><Alt>F4']]]></default>
-      <_summary>Switch to VT 4</_summary>
+      <summary>Switch to VT 4</summary>
     </key>
     <key name="switch-to-session-5" type="as">
       <default><![CDATA[['<Primary><Alt>F5']]]></default>
-      <_summary>Switch to VT 5</_summary>
+      <summary>Switch to VT 5</summary>
     </key>
     <key name="switch-to-session-6" type="as">
       <default><![CDATA[['<Primary><Alt>F6']]]></default>
-      <_summary>Switch to VT 6</_summary>
+      <summary>Switch to VT 6</summary>
     </key>
     <key name="switch-to-session-7" type="as">
       <default><![CDATA[['<Primary><Alt>F7']]]></default>
-      <_summary>Switch to VT 7</_summary>
+      <summary>Switch to VT 7</summary>
     </key>
     <key name="switch-to-session-8" type="as">
       <default><![CDATA[['<Primary><Alt>F8']]]></default>
-      <_summary>Switch to VT 8</_summary>
+      <summary>Switch to VT 8</summary>
     </key>
     <key name="switch-to-session-9" type="as">
       <default><![CDATA[['<Primary><Alt>F9']]]></default>
-      <_summary>Switch to VT 9</_summary>
+      <summary>Switch to VT 9</summary>
     </key>
     <key name="switch-to-session-10" type="as">
       <default><![CDATA[['<Primary><Alt>F10']]]></default>
-      <_summary>Switch to VT 10</_summary>
+      <summary>Switch to VT 10</summary>
     </key>
     <key name="switch-to-session-11" type="as">
       <default><![CDATA[['<Primary><Alt>F11']]]></default>
-      <_summary>Switch to VT 11</_summary>
+      <summary>Switch to VT 11</summary>
     </key>
     <key name="switch-to-session-12" type="as">
       <default><![CDATA[['<Primary><Alt>F12']]]></default>
-      <_summary>Switch to VT 12</_summary>
+      <summary>Switch to VT 12</summary>
     </key>
   </schema>
 </schemalist>

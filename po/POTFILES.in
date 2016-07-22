@@ -1,8 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/50-mutter-navigation.xml.in
-data/50-mutter-system.xml.in
-data/50-mutter-windows.xml.in
+data/50-mutter-navigation.xml
+data/50-mutter-system.xml
+data/50-mutter-windows.xml
 data/mutter.desktop.in
 data/org.gnome.mutter.gschema.xml.in
 data/org.gnome.mutter.wayland.gschema.xml.in

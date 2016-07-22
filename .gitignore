@@ -41,8 +41,14 @@ stamp-h1
 *~
 stamp-it
 .intltool-merge-cache
+ABOUT-NLS
 POTFILES
+Makevars.template
+po/*.header
 po/*.pot
+po/*.sed
+po/*.sin
+Rules-quot
 libmutter.pc
 mutter
 mutter-restart-helper

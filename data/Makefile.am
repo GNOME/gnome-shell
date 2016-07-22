@@ -3,21 +3,24 @@ desktopfiles_in_files = \
 desktopfilesdir = $(datadir)/applications
 desktopfiles_DATA = $(desktopfiles_in_files:.desktop.in=.desktop)
 
-@INTLTOOL_DESKTOP_RULE@
+%.desktop:%.desktop.in
+	$(AM_V_GET) $(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
 
-xml_in_files = \
-        50-mutter-navigation.xml.in \
-        50-mutter-system.xml.in \
-        50-mutter-windows.xml.in
 xmldir = $(GNOME_KEYBINDINGS_KEYSDIR)
-xml_DATA = $(xml_in_files:.xml.in=.xml)
+xml_DATA = \
+        50-mutter-navigation.xml \
+        50-mutter-system.xml \
+        50-mutter-windows.xml
 
 gschema_in_files = \
 	org.gnome.mutter.gschema.xml.in	\
 	org.gnome.mutter.wayland.gschema.xml.in
 gsettings_SCHEMAS = $(gschema_in_files:.xml.in=.xml)
 
-@INTLTOOL_XML_NOMERGE_RULE@
+%.gschema.xml: %.gschema.xml.in Makefile
+	$(AM_V_GEN) sed -e 's|@GETTEXT_DOMAIN[@]|$(GETTEXT_DOMAIN)|g' \
+	$< > $@ || rm $@
+
 @GSETTINGS_RULES@
 
 convertdir = $(datadir)/GConf/gsettings
@@ -25,11 +28,10 @@ convert_DATA = mutter-schemas.convert
 
 CLEANFILES = \
 	$(desktopfiles_DATA) \
-	$(gsettings_SCHEMAS) \
-	$(xml_DATA)
+	$(gsettings_SCHEMAS)
 
 EXTRA_DIST = \
 	$(convert_DATA) \
 	$(desktopfiles_in_files) \
 	$(gschema_in_files) \
-	$(xml_in_files)
+	$(xml_DATA)

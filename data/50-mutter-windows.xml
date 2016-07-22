@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.desktop.wm.keybindings"
+                group="system"
+                name="Windows"
+                wm_name="Mutter"
+                package="mutter">
+
+	<KeyListEntry name="activate-window-menu" description="Activate the window menu"/>
+
+	<KeyListEntry name="toggle-fullscreen" description="Toggle fullscreen mode"/>
+
+	<KeyListEntry name="toggle-maximized" description="Toggle maximization state"/>
+
+	<KeyListEntry name="maximize" description="Maximize window"/>
+
+	<KeyListEntry name="unmaximize" description="Restore window"/>
+
+	<KeyListEntry name="toggle-shaded" description="Toggle shaded state"/>
+
+	<KeyListEntry name="close" description="Close window"/>
+
+	<KeyListEntry name="minimize" description="Hide window"/>
+
+	<KeyListEntry name="begin-move" description="Move window"/>
+
+	<KeyListEntry name="begin-resize" description="Resize window"/>
+
+	<KeyListEntry name="toggle-on-all-workspaces"
+	              description="Toggle window on all workspaces or one"/>
+
+	<KeyListEntry name="raise-or-lower" description="Raise window if covered, otherwise lower it"/>
+
+	<KeyListEntry name="raise" description="Raise window above other windows"/>
+
+	<KeyListEntry name="lower" description="Lower window below other windows"/>
+
+	<KeyListEntry name="maximize-vertically" description="Maximize window vertically"/>
+
+	<KeyListEntry name="maximize-horizontally" description="Maximize window horizontally"/>
+
+	<KeyListEntry name="toggle-tiled-left"
+                      schema="org.gnome.mutter.keybindings"
+                      description="View split on left"/>
+
+	<KeyListEntry name="toggle-tiled-right"
+                      schema="org.gnome.mutter.keybindings"
+                      description="View split on right"/>
+
+</KeyListEntries>
+

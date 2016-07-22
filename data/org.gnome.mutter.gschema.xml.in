@@ -4,102 +4,102 @@
 
     <key name="overlay-key" type="s">
       <default>'Super_L'</default>
-      <_summary>Modifier to use for extended window management operations</_summary>
-      <_description>
+      <summary>Modifier to use for extended window management operations</summary>
+      <description>
         This key will initiate the "overlay", which is a combination window
         overview and application launching system.  The default is intended
         to be the "Windows key" on PC hardware.
 
         It's expected that this binding either the default or set to
         the empty string.
-      </_description>
+      </description>
     </key>
 
     <key name="attach-modal-dialogs" type="b">
       <default>false</default>
-      <_summary>Attach modal dialogs</_summary>
-      <_description>
+      <summary>Attach modal dialogs</summary>
+      <description>
         When true, instead of having independent titlebars, modal dialogs
         appear attached to the titlebar of the parent window and are moved
         together with the parent window.
-      </_description>
+      </description>
     </key>
 
     <key name="edge-tiling" type="b">
       <default>false</default>
-      <_summary>Enable edge tiling when dropping windows on screen edges</_summary>
-      <_description>
+      <summary>Enable edge tiling when dropping windows on screen edges</summary>
+      <description>
         If enabled, dropping windows on vertical screen edges maximizes them
         vertically and resizes them horizontally to cover half of the available
         area. Dropping windows on the top screen edge maximizes them completely.
-      </_description>
+      </description>
     </key>
 
     <key name="dynamic-workspaces" type="b">
       <default>false</default>
-      <_summary>Workspaces are managed dynamically</_summary>
-      <_description>
+      <summary>Workspaces are managed dynamically</summary>
+      <description>
         Determines whether workspaces are managed dynamically or
         whether there's a static number of workspaces (determined
         by the num-workspaces key in org.gnome.desktop.wm.preferences).
-      </_description>
+      </description>
     </key>
 
     <key name="workspaces-only-on-primary" type="b">
       <default>false</default>
-      <_summary>Workspaces only on primary</_summary>
-      <_description>
+      <summary>Workspaces only on primary</summary>
+      <description>
         Determines whether workspace switching should happen for windows
         on all monitors or only for windows on the primary monitor.
-      </_description>
+      </description>
     </key>
 
     <key name="no-tab-popup" type="b">
       <default>false</default>
-      <_summary>No tab popup</_summary>
-      <_description>
+      <summary>No tab popup</summary>
+      <description>
         Determines whether the use of popup and highlight frame should
         be disabled for window cycling.
-      </_description>
+      </description>
     </key>
 
     <key name="focus-change-on-pointer-rest" type="b">
       <default>false</default>
-      <_summary>Delay focus changes until the pointer stops moving</_summary>
-      <_description>
+      <summary>Delay focus changes until the pointer stops moving</summary>
+      <description>
         If set to true, and the focus mode is either "sloppy" or "mouse"
         then the focus will not be changed immediately when entering a
         window, but only after the pointer stops moving.
-      </_description>
+      </description>
     </key>
 
     <key name="draggable-border-width" type="i">
       <default>10</default>
       <range min="0" max="64"/>
-      <_summary>Draggable border width</_summary>
-      <_description>
+      <summary>Draggable border width</summary>
+      <description>
           The amount of total draggable borders. If the theme's visible
           borders are not enough, invisible borders will be added to meet
           this value.
-      </_description>
+      </description>
     </key>
 
     <key name="auto-maximize" type="b">
       <default>true</default>
-      <_summary>Auto maximize nearly monitor sized windows</_summary>
-      <_description>
+      <summary>Auto maximize nearly monitor sized windows</summary>
+      <description>
         If enabled, new windows that are initially the size of the monitor
         automatically get maximized.
-      </_description>
+      </description>
     </key>
 
     <key name="center-new-windows" type="b">
       <default>false</default>
-      <_summary>Place new windows in the center</_summary>
-      <_description>
+      <summary>Place new windows in the center</summary>
+      <description>
         When true, the new windows will always be put in the center of the
         active screen of the monitor.
-      </_description>
+      </description>
     </key>
 
     <child name="keybindings" schema="org.gnome.mutter.keybindings"/>
@@ -117,12 +117,12 @@
 
     <key name="tab-popup-select" type="as">
       <default>[]</default>
-      <_summary>Select window from tab popup</_summary>
+      <summary>Select window from tab popup</summary>
     </key>
 
     <key name="tab-popup-cancel" type="as">
       <default>[]</default>
-      <_summary>Cancel tab popup</_summary>
+      <summary>Cancel tab popup</summary>
     </key>
 
   </schema>
