@@ -28,6 +28,7 @@
 
 #include <clutter/clutter-mutter.h>
 #include <meta/meta-backend.h>
+#include <meta/main.h>
 #include "meta-backend-private.h"
 #include "meta-input-settings-private.h"
 
@@ -72,7 +73,13 @@ struct _MetaBackendPrivate
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
-G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (MetaBackend, meta_backend, G_TYPE_OBJECT);
+static void
+initable_iface_init (GInitableIface *initable_iface);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaBackend, meta_backend, G_TYPE_OBJECT,
+                                  G_ADD_PRIVATE (MetaBackend)
+                                  G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                         initable_iface_init));
 
 static void
 meta_backend_finalize (GObject *object)
@@ -363,20 +370,10 @@ meta_backend_real_get_relative_motion_deltas (MetaBackend *backend,
 }
 
 static void
-meta_backend_constructed (GObject *object)
-{
-  MetaBackend *backend = META_BACKEND (object);
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  priv->renderer = META_BACKEND_GET_CLASS (backend)->create_renderer (backend);
-}
-
-static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructed = meta_backend_constructed;
   object_class->finalize = meta_backend_finalize;
 
   klass->post_init = meta_backend_real_post_init;
@@ -404,6 +401,32 @@ meta_backend_class_init (MetaBackendClass *klass)
                 0,
                 NULL, NULL, NULL,
                 G_TYPE_NONE, 1, G_TYPE_INT);
+}
+
+static gboolean
+meta_backend_initable_init (GInitable     *initable,
+                            GCancellable  *cancellable,
+                            GError       **error)
+{
+  MetaBackend *backend = META_BACKEND (initable);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  priv->renderer = META_BACKEND_GET_CLASS (backend)->create_renderer (backend);
+  if (!priv->renderer)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Failed to create MetaRenderer");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static void
+initable_iface_init (GInitableIface *initable_iface)
+{
+  initable_iface->init = meta_backend_initable_init;
 }
 
 static void
@@ -696,6 +719,8 @@ void
 meta_init_backend (MetaBackendType backend_type)
 {
   GType type;
+  MetaBackend *backend;
+  GError *error = NULL;
 
   switch (backend_type)
     {
@@ -715,7 +740,12 @@ meta_init_backend (MetaBackendType backend_type)
 
   /* meta_backend_init() above install the backend globally so
    * so meta_get_backend() works even during initialization. */
-  g_object_new (type, NULL);
+  backend = g_object_new (type, NULL);
+  if (!g_initable_init (G_INITABLE (backend), NULL, &error))
+    {
+      g_warning ("Failed to create backend: %s", error->message);
+      meta_exit (META_EXIT_ERROR);
+    }
 }
 
 /**
