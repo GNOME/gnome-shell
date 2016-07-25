@@ -35,7 +35,7 @@ static GParamSpec *obj_props[PROP_LAST];
 
 struct _MetaRendererView
 {
-  ClutterStageView parent;
+  ClutterStageViewCogl parent;
 
   MetaMonitorInfo *monitor_info;
 };
