@@ -78,6 +78,7 @@ meta_renderer_x11_create_view (MetaRenderer    *renderer,
   int width, height;
   CoglTexture2D *texture_2d;
   CoglOffscreen *offscreen;
+  GError *error = NULL;
 
   g_assert (meta_is_wayland_compositor ());
 
@@ -85,6 +86,9 @@ meta_renderer_x11_create_view (MetaRenderer    *renderer,
   height = monitor_info->rect.height;
   texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
   offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
+
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (offscreen), &error))
+    meta_fatal ("Couldn't allocate framebuffer: %s", error->message);
 
   return g_object_new (META_TYPE_RENDERER_VIEW,
                        "layout", &monitor_info->rect,
