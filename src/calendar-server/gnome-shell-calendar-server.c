@@ -443,6 +443,8 @@ generate_instances_cb (ECalComponent *comp,
   occurrence->rid        = e_cal_component_get_recurid_as_string (comp);
 
   appointment->occurrences = g_slist_append (appointment->occurrences, occurrence);
+
+  return TRUE;
 }
 
 
