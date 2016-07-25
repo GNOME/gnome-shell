@@ -157,6 +157,11 @@ clutter_stage_view_dispose (GObject *object)
 static void
 clutter_stage_view_init (ClutterStageView *view)
 {
+  ClutterStageViewPrivate *priv =
+    clutter_stage_view_get_instance_private (view);
+
+  priv->dirty_viewport = TRUE;
+  priv->dirty_projection = TRUE;
 }
 
 static void
