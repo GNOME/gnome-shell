@@ -66,7 +66,10 @@ meta_stage_x11_nested_get_views (ClutterStageWindow *stage_window)
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
 
-  return meta_renderer_get_views (renderer);
+  if (meta_is_stage_views_enabled ())
+    return meta_renderer_get_views (renderer);
+  else
+    return clutter_stage_window_parent_iface->get_views (stage_window);
 }
 
 static void
@@ -79,6 +82,12 @@ meta_stage_x11_nested_finish_frame (ClutterStageWindow *stage_window)
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglFramebuffer *onscreen = COGL_FRAMEBUFFER (stage_x11->onscreen);
   GList *l;
+
+  /*
+   * If we are in legacy mode, the stage is already on the onscreen.
+   */
+  if (!meta_is_stage_views_enabled ())
+    return;
 
   if (!stage_nested->pipeline)
     stage_nested->pipeline = cogl_pipeline_new (clutter_backend->cogl_context);
