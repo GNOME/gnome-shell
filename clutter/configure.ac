@@ -116,7 +116,7 @@ m4_define([pango_req_version],          [1.30])
 m4_define([gi_req_version],             [1.39.0])
 m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
-m4_define([libinput_req_version],       [0.19.0])
+m4_define([libinput_req_version],       [1.4.0])
 m4_define([libudev_req_version],        [136])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
