@@ -1583,7 +1583,7 @@ shell_global_get_current_time (ShellGlobal *global)
  */
 GAppLaunchContext *
 shell_global_create_app_launch_context (ShellGlobal *global,
-                                        int          timestamp,
+                                        guint32      timestamp,
                                         int          workspace)
 {
   GdkAppLaunchContext *context;
