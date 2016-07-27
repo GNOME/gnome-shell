@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: 3.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-27 14:08+0000\n"
-"PO-Revision-Date: 2016-05-30 15:30+0100\n"
+"POT-Creation-Date: 2016-07-20 22:51+0000\n"
+"PO-Revision-Date: 2016-07-27 08:41+0100\n"
 "Last-Translator: Tiago Santos <tiagofsantos81@sapo.pt>\n"
 "Language-Team: Português <>\n"
 "Language: pt\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Project-Style: gnome\n"
 "X-Language: pt_PT\n"
 "X-Source-Language: C\n"
@@ -137,7 +137,7 @@ msgstr "Índice da vista atualmente selecionada na escolha de aplicações."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Histórico do diálogo de comando (Alt-F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "History for the looking glass dialog"
 msgstr "Histórico do diálogo de pesquisa"
@@ -328,7 +328,7 @@ msgstr "Extensões da interface do GNOME"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
 #: ../js/ui/components/networkAgent.js:145
-#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:483
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
@@ -483,6 +483,16 @@ msgstr "%B %d %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Autenticação Web redirecionada"
 
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Negar acesso"
+
+#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Conceder acesso"
+
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "As aplicações frequentemente utilizadas aparecem aqui"
@@ -549,7 +559,7 @@ msgstr "Alterar o fundo…"
 msgid "Display Settings"
 msgstr "Definições de ecrã"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:371
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:374
 msgid "Settings"
 msgstr "Definições"
 
@@ -605,55 +615,55 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:416
+#: ../js/ui/calendar.js:442
 msgid "Previous month"
 msgstr "Mês anterior"
 
-#: ../js/ui/calendar.js:426
+#: ../js/ui/calendar.js:452
 msgid "Next month"
 msgstr "Mês seguinte"
 
-#: ../js/ui/calendar.js:579
+#: ../js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:634
+#: ../js/ui/calendar.js:660
 msgid "Week %V"
 msgstr "Semana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:695
+#: ../js/ui/calendar.js:721
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dia completo"
 
-#: ../js/ui/calendar.js:821
+#: ../js/ui/calendar.js:836
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:830
+#: ../js/ui/calendar.js:845
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/calendar.js:834
+#: ../js/ui/calendar.js:849
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:919
+#: ../js/ui/calendar.js:931
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/calendar.js:1070
+#: ../js/ui/calendar.js:1082
 msgid "No Notifications"
 msgstr "Sem notificações"
 
-#: ../js/ui/calendar.js:1073
+#: ../js/ui/calendar.js:1085
 msgid "No Events"
 msgstr "Sem eventos"
 
@@ -910,7 +920,7 @@ msgstr[1] "O sistema reiniciar-se-á automaticamente dentro de %d segundos."
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
 msgid "Restart & Install Updates"
-msgstr "Reiniciar & instalar atualizações"
+msgstr "Reiniciar e instalar atualizações"
 
 #: ../js/ui/endSessionDialog.js:121
 #, javascript-format
@@ -924,7 +934,7 @@ msgstr[1] ""
 "O sistema reiniciar-se-á automaticamente e instalar atualizações dentro de "
 "%d segundos."
 
-#: ../js/ui/endSessionDialog.js:127
+#: ../js/ui/endSessionDialog.js:127 ../js/ui/endSessionDialog.js:147
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Reiniciar &amp; Instalar"
@@ -939,28 +949,46 @@ msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Desligar depois das atualizações serem instaladas"
 
-#: ../js/ui/endSessionDialog.js:338
+#: ../js/ui/endSessionDialog.js:137
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Reiniciar e instalar novas versões"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: ../js/ui/endSessionDialog.js:142
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s será instalado após o reiniciar. Atualizar instalação pode demorar "
+"muito tempo: assegure-se que criou cópias de segurança e que o seu "
+"computador está ligado à corrente."
+
+#: ../js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "A funcionar com bateria: por favor, ligue à corrente antes de instalar "
 "atualizações."
 
-#: ../js/ui/endSessionDialog.js:355
+#: ../js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
 msgstr "Algumas aplicações estão ocupadas ou têm trabalho não gravado."
 
-#: ../js/ui/endSessionDialog.js:362
+#: ../js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
 msgstr "Existem outros utilizadores com sessões ativas."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:640
+#: ../js/ui/endSessionDialog.js:671
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:643
+#: ../js/ui/endSessionDialog.js:674
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (consola)"
@@ -974,7 +1002,7 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Transferir e instalar \"%s\" de extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
+#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -1059,7 +1087,7 @@ msgstr "Média"
 msgid "Undo"
 msgstr "Desfazer"
 
-#: ../js/ui/overview.js:117
+#: ../js/ui/overview.js:113
 msgid "Overview"
 msgstr "Visão geral"
 
@@ -1067,7 +1095,7 @@ msgstr "Visão geral"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:244
+#: ../js/ui/overview.js:240
 msgid "Type to search…"
 msgstr "Escreva para procurar…"
 
@@ -1131,11 +1159,11 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d nova notificação"
 msgstr[1] "%d novas notificações"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:379
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:382
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/screenShield.js:687
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "O GNOME precisa de bloquear o ecrã"
 
@@ -1146,11 +1174,11 @@ msgstr "O GNOME precisa de bloquear o ecrã"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:808 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:825 ../js/ui/screenShield.js:1291
 msgid "Unable to lock"
 msgstr "Impossível bloquear"
 
-#: ../js/ui/screenShield.js:809 ../js/ui/screenShield.js:1275
+#: ../js/ui/screenShield.js:826 ../js/ui/screenShield.js:1292
 msgid "Lock was blocked by an application"
 msgstr "Bloquear foi bloqueado por uma aplicação"
 
@@ -1269,7 +1297,7 @@ msgstr "Desligar"
 msgid "Brightness"
 msgstr "Luminosidade"
 
-#: ../js/ui/status/keyboard.js:736
+#: ../js/ui/status/keyboard.js:805
 msgid "Show Keyboard Layout"
 msgstr "Mostrar a disposição de teclado"
 
@@ -1296,14 +1324,6 @@ msgstr "Localização desativada"
 #: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Ativar"
-
-#: ../js/ui/status/location.js:426
-msgid "Deny Access"
-msgstr "Negar acesso"
-
-#: ../js/ui/status/location.js:429
-msgid "Grant Access"
-msgstr "Conceder acesso"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:435
@@ -1539,27 +1559,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "Modo Avião ligado"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:351
 msgid "Switch User"
 msgstr "Alternar utilizador"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:356
 msgid "Log Out"
 msgstr "Terminar sessão"
 
-#: ../js/ui/status/system.js:358
+#: ../js/ui/status/system.js:361
 msgid "Account Settings"
 msgstr "Definições de conta"
 
-#: ../js/ui/status/system.js:375
+#: ../js/ui/status/system.js:378
 msgid "Orientation Lock"
 msgstr "Orientação de bloqueio"
 
-#: ../js/ui/status/system.js:383
+#: ../js/ui/status/system.js:386
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/ui/status/system.js:386
+#: ../js/ui/status/system.js:389
 msgid "Power Off"
 msgstr "Desligar"
 
@@ -1728,12 +1748,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Listar modos possíveis"
 
-#: ../src/shell-app.c:246
+#: ../src/shell-app.c:270
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconhecida"
 
-#: ../src/shell-app.c:487
+#: ../src/shell-app.c:511
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Falha ao iniciar “%s”"
