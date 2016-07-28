@@ -273,6 +273,8 @@ meta_monitor_config_finalize (GObject *object)
   MetaMonitorConfig *self = META_MONITOR_CONFIG (object);
 
   g_hash_table_destroy (self->configs);
+
+  G_OBJECT_CLASS (meta_monitor_config_parent_class)->finalize (object);
 }
 
 static void
