@@ -1233,10 +1233,16 @@ static void
 apply_device_settings (MetaInputSettings  *input_settings,
                        ClutterInputDevice *device)
 {
+  MetaInputSettingsPrivate *priv =
+    meta_input_settings_get_instance_private (input_settings);
+
   update_device_speed (input_settings, device);
   update_device_natural_scroll (input_settings, device);
 
   update_mouse_left_handed (input_settings, device);
+  update_pointer_accel_profile (input_settings,
+                                priv->mouse_settings,
+                                device);
 
   update_touchpad_left_handed (input_settings, device);
   update_touchpad_tap_enabled (input_settings, device);
@@ -1246,6 +1252,9 @@ apply_device_settings (MetaInputSettings  *input_settings,
   update_touchpad_click_method (input_settings, device);
 
   update_trackball_scroll_button (input_settings, device);
+  update_pointer_accel_profile (input_settings,
+                                priv->trackball_settings,
+                                device);
 }
 
 static void
