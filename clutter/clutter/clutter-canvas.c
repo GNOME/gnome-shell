@@ -401,7 +401,7 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
   gboolean res;
   cairo_t *cr;
 
-  g_assert (priv->width > 0 && priv->width > 0);
+  g_assert (priv->height > 0 && priv->width > 0);
 
   priv->dirty = TRUE;
 
