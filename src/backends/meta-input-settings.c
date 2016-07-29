@@ -1233,13 +1233,12 @@ static void
 apply_device_settings (MetaInputSettings  *input_settings,
                        ClutterInputDevice *device)
 {
-  update_mouse_left_handed (input_settings, device);
   update_device_speed (input_settings, device);
   update_device_natural_scroll (input_settings, device);
 
+  update_mouse_left_handed (input_settings, device);
+
   update_touchpad_left_handed (input_settings, device);
-  update_device_speed (input_settings, device);
-  update_device_natural_scroll (input_settings, device);
   update_touchpad_tap_enabled (input_settings, device);
   update_touchpad_send_events (input_settings, device);
   update_touchpad_edge_scroll (input_settings, device);
