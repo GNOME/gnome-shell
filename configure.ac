@@ -243,6 +243,7 @@ AC_ARG_ENABLE(native-backend,
   AS_HELP_STRING([--disable-native-backend], [disable mutter native (KMS) backend]),,
   enable_native_backend=auto
 )
+have_native_backend="no"
 AS_IF([test "$enable_native_backend" = "yes"], [have_native_backend=yes],
       [test "$enable_native_backend" = "auto"], PKG_CHECK_EXISTS([$MUTTER_NATIVE_BACKEND_MODULES], [have_native_backend=yes]))
 
