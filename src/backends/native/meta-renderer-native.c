@@ -751,17 +751,11 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
   if (width == 0 || height == 0)
     return TRUE;
 
-  if (!meta_renderer_native_create_surface (renderer_native,
-                                            width, height,
-                                            &onscreen_native->surface,
-                                            &egl_onscreen->egl_surface,
-                                            error))
-    return FALSE;
-
-
-  _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
-
-  return TRUE;
+  return meta_renderer_native_create_surface (renderer_native,
+                                              width, height,
+                                              &onscreen_native->surface,
+                                              &egl_onscreen->egl_surface,
+                                              error);
 }
 
 static void
