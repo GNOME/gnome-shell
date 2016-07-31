@@ -868,6 +868,7 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
       CoglDisplayEGL *egl_display = cogl_display->winsys;
       struct gbm_surface *new_surface;
       EGLSurface new_egl_surface;
+      cairo_rectangle_int_t view_layout;
 
       /*
        * Ensure we don't have any pending flips that will want
@@ -913,6 +914,14 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
                                      egl_onscreen->egl_surface,
                                      egl_onscreen->egl_surface,
                                      egl_display->egl_context);
+
+      view_layout = (cairo_rectangle_int_t) {
+        .width = width,
+        .height = height
+      };
+      g_object_set (G_OBJECT (view),
+                    "layout", &view_layout,
+                    NULL);
 
       _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
     }

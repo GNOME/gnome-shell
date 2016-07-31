@@ -270,7 +270,6 @@ maybe_resize_legacy_view (MetaStageNative *stage_native)
   int width = stage_native->pending_width;
   int height = stage_native->pending_height;
   GError *error = NULL;
-  cairo_rectangle_int_t view_layout;
 
   if (!stage_native->pending_resize)
     return;
@@ -288,16 +287,7 @@ maybe_resize_legacy_view (MetaStageNative *stage_native)
       meta_warning ("Applying display configuration failed: %s\n",
                     error->message);
       g_error_free (error);
-      return;
     }
-
-  view_layout = (cairo_rectangle_int_t) {
-    .width = width,
-    .height = height
-  };
-  g_object_set (G_OBJECT (legacy_view),
-                "layout", &view_layout,
-                NULL);
 }
 
 static void
