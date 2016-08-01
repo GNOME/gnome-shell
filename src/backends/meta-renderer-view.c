@@ -105,6 +105,7 @@ meta_renderer_view_class_init (MetaRendererViewClass *klass)
                           "MetaMonitorInfo",
                           "The monitor info of the view",
                           G_PARAM_READWRITE |
+                          G_PARAM_STATIC_STRINGS |
                           G_PARAM_CONSTRUCT_ONLY);
 
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
