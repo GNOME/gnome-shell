@@ -837,6 +837,22 @@ meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native)
     }
 }
 
+static MetaMonitorTransform
+meta_renderer_native_get_monitor_info_transform (MetaRenderer    *renderer,
+                                                 MetaMonitorInfo *monitor_info)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (monitor_manager);
+
+  g_assert (monitor_info->n_outputs > 0);
+
+  return meta_monitor_manager_kms_get_view_transform (monitor_manager_kms,
+                                                      monitor_info->outputs[0]->crtc);
+}
+
 gboolean
 meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
                                            MetaRendererView   *view,
@@ -1039,11 +1055,14 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
   MetaBackend *backend = meta_get_backend ();
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  MetaMonitorTransform transform;
   CoglOnscreen *onscreen;
   CoglFramebuffer *framebuffer;
   MetaRendererView *view;
   GError *error = NULL;
 
+  transform = meta_renderer_native_get_monitor_info_transform (renderer,
+                                                               monitor_info);
   onscreen = cogl_onscreen_new (cogl_context,
                                 monitor_info->rect.width,
                                 monitor_info->rect.height);
@@ -1059,6 +1078,7 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
                        "layout", &monitor_info->rect,
                        "framebuffer", framebuffer,
                        "monitor-info", monitor_info,
+                       "transform", transform,
                        NULL);
   cogl_object_unref (framebuffer);
 
