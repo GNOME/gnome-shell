@@ -589,8 +589,6 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
   CoglFrameInfo *frame_info;
-  MetaRendererView *view;
-  cairo_rectangle_int_t view_layout;
   uint32_t handle, stride;
 
   frame_info = g_queue_peek_tail (&onscreen->pending_frame_infos);
@@ -599,9 +597,6 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   /* If we already have a pending swap then block until it completes */
   while (onscreen_native->next_fb_id != 0)
     meta_monitor_manager_kms_wait_for_flip (monitor_manager_kms);
-
-  view = onscreen_native->view;
-  clutter_stage_view_get_layout (CLUTTER_STAGE_VIEW (view), &view_layout);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
@@ -615,8 +610,8 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   handle = gbm_bo_get_handle (onscreen_native->next_bo).u32;
 
   if (drmModeAddFB (renderer_native->kms_fd,
-                    view_layout.width,
-                    view_layout.height,
+                    cogl_framebuffer_get_width (COGL_FRAMEBUFFER (onscreen)),
+                    cogl_framebuffer_get_height (COGL_FRAMEBUFFER (onscreen)),
                     24, /* depth */
                     32, /* bpp */
                     stride,
