@@ -46,6 +46,7 @@
 #include <gudev/gudev.h>
 
 #define ALL_TRANSFORMS (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)
+#define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
 
 typedef struct {
   drmModeConnector *connector;
@@ -626,8 +627,8 @@ init_crtc (MetaCRTC           *crtc,
   crtc->rect.height = drm_crtc->height;
   crtc->is_dirty = FALSE;
   crtc->transform = META_MONITOR_TRANSFORM_NORMAL;
-  /* FIXME: implement! */
-  crtc->all_transforms = 1 << META_MONITOR_TRANSFORM_NORMAL;
+  crtc->all_transforms = meta_is_stage_views_enabled () ?
+    ALL_TRANSFORMS_MASK : META_MONITOR_TRANSFORM_NORMAL;
 
   if (drm_crtc->mode_valid)
     {
