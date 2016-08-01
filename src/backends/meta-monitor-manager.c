@@ -270,11 +270,10 @@ make_logical_config (MetaMonitorManager *manager)
       info->outputs[0] = output;
       info->n_outputs = 1;
 
+      info->scale = output->scale;
+
       if (output->is_primary || info->winsys_id == 0)
-        {
-          info->scale = output->scale;
-          info->winsys_id = output->winsys_id;
-        }
+        info->winsys_id = output->winsys_id;
 
       if (info->is_primary)
         manager->primary_monitor_index = info->number;
