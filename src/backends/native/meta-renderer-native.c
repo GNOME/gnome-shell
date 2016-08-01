@@ -848,6 +848,43 @@ meta_renderer_native_get_monitor_info_transform (MetaRenderer    *renderer,
                                                       monitor_info->outputs[0]->crtc);
 }
 
+static CoglOnscreen *
+meta_renderer_native_create_onscreen (MetaRendererNative    *renderer,
+                                      CoglContext           *context,
+                                      MetaMonitorTransform   transform,
+                                      gint                   view_width,
+                                      gint                   view_height)
+{
+  CoglOnscreen *onscreen;
+  gint width, height;
+  GError *error = NULL;
+
+  if (meta_monitor_transform_is_rotated (transform))
+    {
+      width = view_height;
+      height = view_width;
+    }
+  else
+    {
+      width = view_width;
+      height = view_height;
+    }
+
+  onscreen = cogl_onscreen_new (context, width, height);
+  cogl_onscreen_set_swap_throttled (onscreen,
+                                    _clutter_get_sync_to_vblank ());
+
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), &error))
+    {
+      g_warning ("Could not create onscreen: %s", error->message);
+      cogl_object_unref (onscreen);
+      g_error_free (error);
+      return NULL;
+    }
+
+  return onscreen;
+}
+
 gboolean
 meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
                                            MetaRendererView   *view,
@@ -1006,13 +1043,11 @@ meta_renderer_native_create_legacy_view (MetaRendererNative *renderer_native)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  CoglOnscreen *onscreen;
-  CoglFramebuffer *framebuffer;
+  CoglOnscreen *onscreen = NULL;
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   cairo_rectangle_int_t view_layout = { 0 };
   MetaRendererView *view;
-  GError *error = NULL;
 
   if (!monitor_manager)
     return NULL;
@@ -1021,22 +1056,20 @@ meta_renderer_native_create_legacy_view (MetaRendererNative *renderer_native)
                                         &view_layout.width,
                                         &view_layout.height);
 
-  onscreen = cogl_onscreen_new (cogl_context,
-                                view_layout.width,
-                                view_layout.height);
-  cogl_onscreen_set_swap_throttled (onscreen,
-                                    _clutter_get_sync_to_vblank ());
+  onscreen = meta_renderer_native_create_onscreen (renderer_native,
+                                                   cogl_context,
+                                                   META_MONITOR_TRANSFORM_NORMAL,
+                                                   view_layout.width,
+                                                   view_layout.height);
 
-  framebuffer = COGL_FRAMEBUFFER (onscreen);
-  if (!cogl_framebuffer_allocate (framebuffer, &error))
-    meta_fatal ("Failed to allocate onscreen framebuffer: %s\n",
-                error->message);
+  if (!onscreen)
+    meta_fatal ("Failed to allocate onscreen framebuffer\n");
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
                        "layout", &view_layout,
-                       "framebuffer", framebuffer,
+                       "framebuffer", onscreen,
                        NULL);
-  cogl_object_unref (framebuffer);
+  cogl_object_unref (onscreen);
 
   meta_onscreen_native_set_view (onscreen, view);
 
@@ -1051,31 +1084,27 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   MetaMonitorTransform transform;
-  CoglOnscreen *onscreen;
-  CoglFramebuffer *framebuffer;
+  CoglOnscreen *onscreen = NULL;
   MetaRendererView *view;
-  GError *error = NULL;
 
   transform = meta_renderer_native_get_monitor_info_transform (renderer,
                                                                monitor_info);
-  onscreen = cogl_onscreen_new (cogl_context,
-                                monitor_info->rect.width,
-                                monitor_info->rect.height);
-  cogl_onscreen_set_swap_throttled (onscreen,
-                                    _clutter_get_sync_to_vblank ());
 
-  framebuffer = COGL_FRAMEBUFFER (onscreen);
-  if (!cogl_framebuffer_allocate (framebuffer, &error))
-    meta_fatal ("Failed to allocate onscreen framebuffer: %s\n",
-                error->message);
+  onscreen = meta_renderer_native_create_onscreen (META_RENDERER_NATIVE (renderer),
+                                                   cogl_context,
+                                                   transform,
+                                                   monitor_info->rect.width,
+                                                   monitor_info->rect.height);
+  if (!onscreen)
+    meta_fatal ("Failed to allocate onscreen framebuffer\n");
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
                        "layout", &monitor_info->rect,
-                       "framebuffer", framebuffer,
+                       "framebuffer", onscreen,
                        "monitor-info", monitor_info,
                        "transform", transform,
                        NULL);
-  cogl_object_unref (framebuffer);
+  cogl_object_unref (onscreen);
 
   meta_onscreen_native_set_view (onscreen, view);
 
