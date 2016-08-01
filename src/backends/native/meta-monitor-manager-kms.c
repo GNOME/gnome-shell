@@ -54,7 +54,10 @@ typedef struct {
   drmModeEncoderPtr *encoders;
   drmModeEncoderPtr  current_encoder;
 
-  /* bitmasks of encoder position in the resources array */
+  /*
+   * Bitmasks of encoder position in the resources array (used during clone
+   * setup).
+   */
   uint32_t encoder_mask;
   uint32_t enc_clone_mask;
 
@@ -369,6 +372,33 @@ find_meta_mode (MetaMonitorManager    *manager,
   return NULL;
 }
 
+static void
+init_mode (MetaMonitorMode *mode,
+           drmModeModeInfo *drm_mode,
+           long             mode_id)
+{
+  mode->mode_id = mode_id;
+  mode->name = g_strndup (drm_mode->name, DRM_DISPLAY_MODE_LEN);
+  mode->width = drm_mode->hdisplay;
+  mode->height = drm_mode->vdisplay;
+  mode->flags = drm_mode->flags;
+
+  /* Calculate refresh rate in milliHz first for extra precision. */
+  mode->refresh_rate = (drm_mode->clock * 1000000LL) / drm_mode->htotal;
+  mode->refresh_rate += (drm_mode->vtotal / 2);
+  mode->refresh_rate /= drm_mode->vtotal;
+  if (drm_mode->flags & DRM_MODE_FLAG_INTERLACE)
+    mode->refresh_rate *= 2;
+  if (drm_mode->flags & DRM_MODE_FLAG_DBLSCAN)
+    mode->refresh_rate /= 2;
+  if (drm_mode->vscan > 1)
+    mode->refresh_rate /= drm_mode->vscan;
+  mode->refresh_rate /= 1000.0;
+
+  mode->driver_private = g_slice_dup (drmModeModeInfo, drm_mode);
+  mode->driver_notify = (GDestroyNotify)meta_monitor_mode_destroy_notify;
+}
+
 static MetaOutput *
 find_output_by_id (MetaOutput *outputs,
                    unsigned    n_outputs,
@@ -580,342 +610,250 @@ init_crtc_rotations (MetaMonitorManager *manager,
 }
 
 static void
-meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
+init_crtc (MetaCRTC           *crtc,
+           MetaMonitorManager *manager,
+           drmModeCrtc        *drm_crtc)
+{
+  unsigned int i;
+
+  crtc->crtc_id = drm_crtc->crtc_id;
+  crtc->rect.x = drm_crtc->x;
+  crtc->rect.y = drm_crtc->y;
+  crtc->rect.width = drm_crtc->width;
+  crtc->rect.height = drm_crtc->height;
+  crtc->is_dirty = FALSE;
+  crtc->transform = META_MONITOR_TRANSFORM_NORMAL;
+  /* FIXME: implement! */
+  crtc->all_transforms = 1 << META_MONITOR_TRANSFORM_NORMAL;
+
+  if (drm_crtc->mode_valid)
+    {
+      for (i = 0; i < manager->n_modes; i++)
+        {
+          if (drm_mode_equal (&drm_crtc->mode, manager->modes[i].driver_private))
+            {
+              crtc->current_mode = &manager->modes[i];
+              break;
+            }
+        }
+    }
+
+  crtc->driver_private = g_new0 (MetaCRTCKms, 1);
+  crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
+}
+
+static void
+init_output (MetaOutput         *output,
+             MetaMonitorManager *manager,
+             drmModeConnector   *connector,
+             MetaOutput         *old_output)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  drmModeRes *resources;
-  drmModeEncoder **encoders;
-  GHashTable *modes;
-  GHashTableIter iter;
-  drmModeModeInfo *mode;
-  unsigned int i, j, k;
-  unsigned int n_actual_outputs;
-  int width, height;
-  MetaOutput *old_outputs;
-  unsigned int n_old_outputs;
+  MetaOutputKms *output_kms;
+  GArray *crtcs;
+  GBytes *edid;
+  unsigned int i;
+  unsigned int crtc_mask;
 
-  resources = drmModeGetResources(manager_kms->fd);
-  modes = g_hash_table_new (drm_mode_hash, drm_mode_equal);
+  output_kms = g_slice_new0 (MetaOutputKms);
+  output->driver_private = output_kms;
+  output->driver_notify = (GDestroyNotify)meta_output_destroy_notify;
 
-  manager->max_screen_width = resources->max_width;
-  manager->max_screen_height = resources->max_height;
+  output->winsys_id = connector->connector_id;
+  output->name = make_output_name (connector);
+  output->width_mm = connector->mmWidth;
+  output->height_mm = connector->mmHeight;
 
-  manager->power_save_mode = META_POWER_SAVE_ON;
-
-  old_outputs = manager->outputs;
-  n_old_outputs = manager->n_outputs;
-
-  /* Note: we must not free the public structures (output, crtc, monitor
-     mode and monitor info) here, they must be kept alive until the API
-     users are done with them after we emit monitors-changed, and thus
-     are freed by the platform-independent layer. */
-  free_resources (manager_kms);
-
-  manager_kms->n_connectors = resources->count_connectors;
-  manager_kms->connectors = g_new (drmModeConnector *, manager_kms->n_connectors);
-  for (i = 0; i < manager_kms->n_connectors; i++)
+  switch (connector->subpixel)
     {
-      drmModeConnector *connector;
+    case DRM_MODE_SUBPIXEL_NONE:
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_NONE;
+      break;
+    case DRM_MODE_SUBPIXEL_HORIZONTAL_RGB:
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_HORIZONTAL_RGB;
+      break;
+    case DRM_MODE_SUBPIXEL_HORIZONTAL_BGR:
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_HORIZONTAL_BGR;
+      break;
+    case DRM_MODE_SUBPIXEL_VERTICAL_RGB:
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_VERTICAL_RGB;
+      break;
+    case DRM_MODE_SUBPIXEL_VERTICAL_BGR:
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_VERTICAL_BGR;
+      break;
+    case DRM_MODE_SUBPIXEL_UNKNOWN:
+    default:
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+      break;
+    }
 
-      connector = drmModeGetConnector (manager_kms->fd, resources->connectors[i]);
-      manager_kms->connectors[i] = connector;
+  output->preferred_mode = NULL;
+  output->n_modes = connector->count_modes;
+  output->modes = g_new0 (MetaMonitorMode *, output->n_modes);
+  for (i = 0; i < output->n_modes; i++) {
+      output->modes[i] = find_meta_mode (manager, &connector->modes[i]);
+      if (connector->modes[i].type & DRM_MODE_TYPE_PREFERRED)
+        output->preferred_mode = output->modes[i];
+  }
 
-      if (connector && connector->connection == DRM_MODE_CONNECTED)
+  if (!output->preferred_mode)
+    output->preferred_mode = output->modes[0];
+
+  output_kms->connector = connector;
+  output_kms->n_encoders = connector->count_encoders;
+  output_kms->encoders = g_new0 (drmModeEncoderPtr, output_kms->n_encoders);
+
+  crtc_mask = ~(unsigned int) 0;
+  for (i = 0; i < output_kms->n_encoders; i++)
+    {
+      output_kms->encoders[i] = drmModeGetEncoder (manager_kms->fd,
+                                                   connector->encoders[i]);
+      if (!output_kms->encoders[i])
+        continue;
+
+      /* We only list CRTCs as supported if they are supported by all encoders
+         for this connectors.
+
+         This is what xf86-video-modesetting does (see drmmode_output_init())
+         */
+      crtc_mask &= output_kms->encoders[i]->possible_crtcs;
+
+      if (output_kms->encoders[i]->encoder_id == connector->encoder_id)
+        output_kms->current_encoder = output_kms->encoders[i];
+    }
+
+  crtcs = g_array_new (FALSE, FALSE, sizeof (MetaCRTC*));
+
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      if (crtc_mask & (1 << i))
         {
-          /* Collect all modes for this connector */
-          for (j = 0; j < (unsigned)connector->count_modes; j++)
-            g_hash_table_add (modes, &connector->modes[j]);
+          MetaCRTC *crtc = &manager->crtcs[i];
+          g_array_append_val (crtcs, crtc);
         }
     }
 
-  encoders = g_new (drmModeEncoder *, resources->count_encoders);
-  for (i = 0; i < (unsigned)resources->count_encoders; i++)
+  output->n_possible_crtcs = crtcs->len;
+  output->possible_crtcs = (void*)g_array_free (crtcs, FALSE);
+
+  if (output_kms->current_encoder && output_kms->current_encoder->crtc_id != 0)
+    {
+      for (i = 0; i < manager->n_crtcs; i++)
+        {
+          if (manager->crtcs[i].crtc_id == output_kms->current_encoder->crtc_id)
+            {
+              output->crtc = &manager->crtcs[i];
+              break;
+            }
+        }
+    }
+  else
+    {
+      output->crtc = NULL;
+    }
+
+  if (old_output)
+    {
+      output->is_primary = old_output->is_primary;
+      output->is_presentation = old_output->is_presentation;
+    }
+  else
+    {
+      output->is_primary = FALSE;
+      output->is_presentation = FALSE;
+    }
+
+  find_connector_properties (manager_kms, output_kms);
+  output->suggested_x = output_kms->suggested_x;
+  output->suggested_y = output_kms->suggested_y;
+  output->hotplug_mode_update = output_kms->hotplug_mode_update;
+
+  edid = read_output_edid (manager_kms, output);
+  meta_output_parse_edid (output, edid);
+  g_bytes_unref (edid);
+
+  /* MetaConnectorType matches DRM's connector types */
+  output->connector_type = (MetaConnectorType) connector->connector_type;
+
+  output->scale = get_output_scale (manager, output);
+
+  output_get_tile_info (manager_kms, output);
+
+  /* FIXME: backlight is a very driver specific thing unfortunately,
+     every DDX does its own thing, and the dumb KMS API does not include it.
+
+     For example, xf86-video-intel has a list of paths to probe in /sys/class/backlight
+     (one for each major HW maker, and then some).
+     We can't do the same because we're not root.
+     It might be best to leave backlight out of the story and rely on the setuid
+     helper in gnome-settings-daemon.
+     */
+  output->backlight_min = 0;
+  output->backlight_max = 0;
+  output->backlight = -1;
+}
+
+static void
+detect_and_setup_output_clones (MetaMonitorManager *manager,
+                                drmModeRes         *resources)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  drmModeEncoder **encoders;
+  unsigned int i, n_encoders;
+
+  n_encoders = (unsigned int) resources->count_encoders;
+  encoders = g_new (drmModeEncoder *, n_encoders);
+  for (i = 0; i < n_encoders; i++)
     encoders[i] = drmModeGetEncoder (manager_kms->fd, resources->encoders[i]);
 
-  manager->n_modes = g_hash_table_size (modes);
-  manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
-  g_hash_table_iter_init (&iter, modes);
-  i = 0;
-  while (g_hash_table_iter_next (&iter, NULL, (gpointer)&mode))
-    {
-      MetaMonitorMode *meta_mode;
-
-      meta_mode = &manager->modes[i];
-
-      meta_mode->mode_id = i;
-      meta_mode->name = g_strndup (mode->name, DRM_DISPLAY_MODE_LEN);
-      meta_mode->width = mode->hdisplay;
-      meta_mode->height = mode->vdisplay;
-      meta_mode->flags = mode->flags;
-
-      /* Calculate refresh rate in milliHz first for extra precision. */
-      meta_mode->refresh_rate = (mode->clock * 1000000LL) / mode->htotal;
-      meta_mode->refresh_rate += (mode->vtotal / 2);
-      meta_mode->refresh_rate /= mode->vtotal;
-      if (mode->flags & DRM_MODE_FLAG_INTERLACE)
-	meta_mode->refresh_rate *= 2;
-      if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
-        meta_mode->refresh_rate /= 2;
-      if (mode->vscan > 1)
-        meta_mode->refresh_rate /= mode->vscan;
-      meta_mode->refresh_rate /= 1000.0;
-
-      meta_mode->driver_private = g_slice_dup (drmModeModeInfo, mode);
-      meta_mode->driver_notify = (GDestroyNotify)meta_monitor_mode_destroy_notify;
-
-      i++;
-    }
-  g_hash_table_destroy (modes);
-
-  manager->n_crtcs = resources->count_crtcs;
-  manager->crtcs = g_new0 (MetaCRTC, manager->n_crtcs);
-  width = 0; height = 0;
-  for (i = 0; i < (unsigned)resources->count_crtcs; i++)
-    {
-      drmModeCrtc *crtc;
-      MetaCRTC *meta_crtc;
-
-      crtc = drmModeGetCrtc (manager_kms->fd, resources->crtcs[i]);
-
-      meta_crtc = &manager->crtcs[i];
-
-      meta_crtc->crtc_id = crtc->crtc_id;
-      meta_crtc->rect.x = crtc->x;
-      meta_crtc->rect.y = crtc->y;
-      meta_crtc->rect.width = crtc->width;
-      meta_crtc->rect.height = crtc->height;
-      meta_crtc->is_dirty = FALSE;
-      meta_crtc->transform = META_MONITOR_TRANSFORM_NORMAL;
-      /* FIXME: implement! */
-      meta_crtc->all_transforms = 1 << META_MONITOR_TRANSFORM_NORMAL;
-
-      if (crtc->mode_valid)
-        {
-          for (j = 0; j < manager->n_modes; j++)
-            {
-              if (drm_mode_equal (&crtc->mode, manager->modes[j].driver_private))
-                {
-                  meta_crtc->current_mode = &manager->modes[j];
-                  break;
-                }
-            }
-
-          width = MAX (width, meta_crtc->rect.x + meta_crtc->rect.width);
-          height = MAX (height, meta_crtc->rect.y + meta_crtc->rect.height);
-        }
-
-      meta_crtc->driver_private = g_new0 (MetaCRTCKms, 1);
-      meta_crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
-      find_crtc_properties (manager_kms, meta_crtc);
-      init_crtc_rotations (manager, meta_crtc, i);
-
-      drmModeFreeCrtc (crtc);
-    }
-
-  manager->screen_width = width;
-  manager->screen_height = height;
-
-  manager->outputs = g_new0 (MetaOutput, manager_kms->n_connectors);
-  n_actual_outputs = 0;
-
-  for (i = 0; i < manager_kms->n_connectors; i++)
-    {
-      MetaOutput *meta_output, *old_output;
-      MetaOutputKms *output_kms;
-      drmModeConnector *connector;
-      GArray *crtcs;
-      unsigned int crtc_mask;
-      GBytes *edid;
-
-      connector = manager_kms->connectors[i];
-      meta_output = &manager->outputs[n_actual_outputs];
-
-      if (connector && connector->connection == DRM_MODE_CONNECTED)
-	{
-          meta_output->driver_private = output_kms = g_slice_new0 (MetaOutputKms);
-          meta_output->driver_notify = (GDestroyNotify)meta_output_destroy_notify;
-
-	  meta_output->winsys_id = connector->connector_id;
-	  meta_output->name = make_output_name (connector);
-	  meta_output->width_mm = connector->mmWidth;
-	  meta_output->height_mm = connector->mmHeight;
-
-          switch (connector->subpixel)
-            {
-            case DRM_MODE_SUBPIXEL_NONE:
-              meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_NONE;
-              break;
-            case DRM_MODE_SUBPIXEL_HORIZONTAL_RGB:
-              meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_HORIZONTAL_RGB;
-              break;
-            case DRM_MODE_SUBPIXEL_HORIZONTAL_BGR:
-              meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_HORIZONTAL_BGR;
-              break;
-            case DRM_MODE_SUBPIXEL_VERTICAL_RGB:
-              meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_VERTICAL_RGB;
-              break;
-            case DRM_MODE_SUBPIXEL_VERTICAL_BGR:
-              meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_VERTICAL_BGR;
-              break;
-            case DRM_MODE_SUBPIXEL_UNKNOWN:
-            default:
-              meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-              break;
-            }
-
-	  meta_output->preferred_mode = NULL;
-	  meta_output->n_modes = connector->count_modes;
-	  meta_output->modes = g_new0 (MetaMonitorMode *, meta_output->n_modes);
-	  for (j = 0; j < meta_output->n_modes; j++) {
-            meta_output->modes[j] = find_meta_mode (manager, &connector->modes[j]);
-            if (connector->modes[j].type & DRM_MODE_TYPE_PREFERRED)
-              meta_output->preferred_mode = meta_output->modes[j];
-          }
-
-          if (!meta_output->preferred_mode)
-            meta_output->preferred_mode = meta_output->modes[0];
-
-          output_kms->connector = connector;
-          output_kms->n_encoders = connector->count_encoders;
-          output_kms->encoders = g_new0 (drmModeEncoderPtr, output_kms->n_encoders);
-
-          crtc_mask = ~(unsigned int)0;
-	  for (j = 0; j < output_kms->n_encoders; j++)
-	    {
-              output_kms->encoders[j] = drmModeGetEncoder (manager_kms->fd, connector->encoders[j]);
-              if (!output_kms->encoders[j])
-                continue;
-
-              /* We only list CRTCs as supported if they are supported by all encoders
-                 for this connectors.
-
-                 This is what xf86-video-modesetting does (see drmmode_output_init())
-              */
-              crtc_mask &= output_kms->encoders[j]->possible_crtcs;
-
-              if (output_kms->encoders[j]->encoder_id == connector->encoder_id)
-                output_kms->current_encoder = output_kms->encoders[j];
-            }
-
-          crtcs = g_array_new (FALSE, FALSE, sizeof (MetaCRTC*));
-
-          for (j = 0; j < manager->n_crtcs; j++)
-            {
-              if (crtc_mask & (1 << j))
-                {
-                  MetaCRTC *crtc = &manager->crtcs[j];
-                  g_array_append_val (crtcs, crtc);
-		}
-	    }
-
-	  meta_output->n_possible_crtcs = crtcs->len;
-	  meta_output->possible_crtcs = (void*)g_array_free (crtcs, FALSE);
-
-          if (output_kms->current_encoder && output_kms->current_encoder->crtc_id != 0)
-            {
-              for (j = 0; j < manager->n_crtcs; j++)
-                {
-                  if (manager->crtcs[j].crtc_id == output_kms->current_encoder->crtc_id)
-                    {
-                      meta_output->crtc = &manager->crtcs[j];
-                      break;
-                    }
-                }
-            }
-          else
-            meta_output->crtc = NULL;
-
-          old_output = find_output_by_id (old_outputs, n_old_outputs,
-                                          meta_output->winsys_id);
-          if (old_output)
-            {
-              meta_output->is_primary = old_output->is_primary;
-              meta_output->is_presentation = old_output->is_presentation;
-            }
-          else
-            {
-              meta_output->is_primary = FALSE;
-              meta_output->is_presentation = FALSE;
-            }
-
-          find_connector_properties (manager_kms, output_kms);
-          meta_output->suggested_x = output_kms->suggested_x;
-          meta_output->suggested_y = output_kms->suggested_y;
-          meta_output->hotplug_mode_update = output_kms->hotplug_mode_update;
-          
-          edid = read_output_edid (manager_kms, meta_output);
-          meta_output_parse_edid (meta_output, edid);
-          g_bytes_unref (edid);
-
-          /* MetaConnectorType matches DRM's connector types */
-          meta_output->connector_type = (MetaConnectorType) connector->connector_type;
-
-          meta_output->scale = get_output_scale (manager, meta_output);
-
-          output_get_tile_info (manager_kms, meta_output);
-
-          /* FIXME: backlight is a very driver specific thing unfortunately,
-             every DDX does its own thing, and the dumb KMS API does not include it.
-
-             For example, xf86-video-intel has a list of paths to probe in /sys/class/backlight
-             (one for each major HW maker, and then some).
-             We can't do the same because we're not root.
-             It might be best to leave backlight out of the story and rely on the setuid
-             helper in gnome-settings-daemon.
-          */
-	  meta_output->backlight_min = 0;
-          meta_output->backlight_max = 0;
-          meta_output->backlight = -1;
-
-	  n_actual_outputs++;
-	}
-    }
-
-  manager->n_outputs = n_actual_outputs;
-  manager->outputs = g_renew (MetaOutput, manager->outputs, manager->n_outputs);
-
-  /* Sort the outputs for easier handling in MetaMonitorConfig */
-  qsort (manager->outputs, manager->n_outputs, sizeof (MetaOutput), compare_outputs);
-
-  /* Now fix the clones.
-     Code mostly inspired by xf86-video-modesetting. */
-
-  /* XXX: intel hardware doesn't usually have clones, but I only have laptops with
-     intel cards, so this code was never tested! */
+  /*
+   * Setup encoder position mask and encoder clone mask.
+   */
   for (i = 0; i < manager->n_outputs; i++)
     {
-      MetaOutput *meta_output;
+      MetaOutput *output;
       MetaOutputKms *output_kms;
+      unsigned int j;
 
-      meta_output = &manager->outputs[i];
-      output_kms = meta_output->driver_private;
+      output = &manager->outputs[i];
+      output_kms = output->driver_private;
 
       output_kms->enc_clone_mask = 0xff;
       output_kms->encoder_mask = 0;
 
       for (j = 0; j < output_kms->n_encoders; j++)
-	{
-	  for (k = 0; k < (unsigned)resources->count_encoders; k++)
-	    {
+        {
+          unsigned int k;
+
+          for (k = 0; k < n_encoders; k++)
+            {
               if (output_kms->encoders[j] && encoders[k] &&
                   output_kms->encoders[j]->encoder_id == encoders[k]->encoder_id)
-		{
+                {
                   output_kms->encoder_mask |= (1 << k);
-		  break;
-		}
-	    }
+                  break;
+                }
+            }
 
           output_kms->enc_clone_mask &= output_kms->encoders[j]->possible_clones;
-	}
+        }
     }
 
+  for (i = 0; i < (unsigned)resources->count_encoders; i++)
+    drmModeFreeEncoder (encoders[i]);
+  g_free (encoders);
+
+  /*
+   * Setup MetaOutput <-> MetaOutput clone associations.
+   */
   for (i = 0; i < manager->n_outputs; i++)
     {
-      MetaOutput *meta_output;
+      MetaOutput *output;
       MetaOutputKms *output_kms;
+      unsigned int j;
 
-      meta_output = &manager->outputs[i];
-      output_kms = meta_output->driver_private;
+      output = &manager->outputs[i];
+      output_kms = output->driver_private;
 
       if (output_kms->enc_clone_mask == 0)
         continue;
@@ -928,7 +866,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
           meta_clone = &manager->outputs[i];
           clone_kms = meta_clone->driver_private;
 
-          if (meta_clone == meta_output)
+          if (meta_clone == output)
             continue;
 
           if (clone_kms->encoder_mask == 0)
@@ -936,18 +874,198 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 
           if (clone_kms->encoder_mask == output_kms->enc_clone_mask)
             {
-              meta_output->n_possible_clones++;
-              meta_output->possible_clones = g_renew (MetaOutput *,
-                                                      meta_output->possible_clones,
-                                                      meta_output->n_possible_clones);
-              meta_output->possible_clones[meta_output->n_possible_clones - 1] = meta_clone;
+              output->n_possible_clones++;
+              output->possible_clones = g_renew (MetaOutput *,
+                                                 output->possible_clones,
+                                                 output->n_possible_clones);
+              output->possible_clones[output->n_possible_clones - 1] = meta_clone;
             }
         }
     }
+}
 
-  for (i = 0; i < (unsigned)resources->count_encoders; i++)
-    drmModeFreeEncoder (encoders[i]);
-  g_free (encoders);
+static void
+init_connectors (MetaMonitorManager *manager,
+                 drmModeRes         *resources)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  unsigned int i;
+
+  manager_kms->n_connectors = resources->count_connectors;
+  manager_kms->connectors = g_new (drmModeConnector *, manager_kms->n_connectors);
+  for (i = 0; i < manager_kms->n_connectors; i++)
+    {
+      drmModeConnector *drm_connector;
+
+      drm_connector = drmModeGetConnector (manager_kms->fd,
+                                           resources->connectors[i]);
+      manager_kms->connectors[i] = drm_connector;
+    }
+}
+
+static void
+init_modes (MetaMonitorManager *manager,
+            drmModeRes         *resources)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  GHashTable *modes;
+  GHashTableIter iter;
+  drmModeModeInfo *drm_mode;
+  unsigned int i;
+  long mode_id;
+
+  /*
+   * Gather all modes on all connected connectors.
+   */
+  modes = g_hash_table_new (drm_mode_hash, drm_mode_equal);
+  for (i = 0; i < manager_kms->n_connectors; i++)
+    {
+      drmModeConnector *drm_connector;
+
+      drm_connector = manager_kms->connectors[i];
+      if (drm_connector && drm_connector->connection == DRM_MODE_CONNECTED)
+        {
+          unsigned int j;
+
+          for (j = 0; j < (unsigned int) drm_connector->count_modes; j++)
+            g_hash_table_add (modes, &drm_connector->modes[j]);
+        }
+    }
+
+  manager->n_modes = g_hash_table_size (modes);
+  manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
+
+  g_hash_table_iter_init (&iter, modes);
+  mode_id = 0;
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &drm_mode))
+    {
+      MetaMonitorMode *mode;
+
+      mode = &manager->modes[mode_id];
+      init_mode (mode, drm_mode, (long) mode_id);
+
+      mode_id++;
+    }
+
+  g_hash_table_destroy (modes);
+}
+
+static void
+init_crtcs (MetaMonitorManager *manager,
+            drmModeRes         *resources)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  unsigned int i;
+
+  manager->n_crtcs = resources->count_crtcs;
+  manager->crtcs = g_new0 (MetaCRTC, manager->n_crtcs);
+
+  for (i = 0; i < (unsigned)resources->count_crtcs; i++)
+    {
+      drmModeCrtc *drm_crtc;
+      MetaCRTC *crtc;
+
+      drm_crtc = drmModeGetCrtc (manager_kms->fd, resources->crtcs[i]);
+
+      crtc = &manager->crtcs[i];
+
+      init_crtc (crtc, manager, drm_crtc);
+      find_crtc_properties (manager_kms, crtc);
+      init_crtc_rotations (manager, crtc, i);
+
+      drmModeFreeCrtc (drm_crtc);
+    }
+}
+
+static void
+init_outputs (MetaMonitorManager *manager,
+              drmModeRes         *resources)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  MetaOutput *old_outputs;
+  unsigned int n_old_outputs;
+  unsigned int n_actual_outputs;
+  unsigned int i;
+
+  old_outputs = manager->outputs;
+  n_old_outputs = manager->n_outputs;
+
+  manager->outputs = g_new0 (MetaOutput, manager_kms->n_connectors);
+  n_actual_outputs = 0;
+
+  for (i = 0; i < manager_kms->n_connectors; i++)
+    {
+      drmModeConnector *connector;
+      MetaOutput *output;
+
+      connector = manager_kms->connectors[i];
+      output = &manager->outputs[n_actual_outputs];
+
+      if (connector && connector->connection == DRM_MODE_CONNECTED)
+        {
+          MetaOutput *old_output;
+
+          old_output = find_output_by_id (old_outputs, n_old_outputs,
+                                          output->winsys_id);
+          init_output (output, manager, connector, old_output);
+          n_actual_outputs++;
+        }
+    }
+
+  manager->n_outputs = n_actual_outputs;
+  manager->outputs = g_renew (MetaOutput, manager->outputs, manager->n_outputs);
+
+  /* Sort the outputs for easier handling in MetaMonitorConfig */
+  qsort (manager->outputs, manager->n_outputs, sizeof (MetaOutput),
+         compare_outputs);
+
+  detect_and_setup_output_clones (manager, resources);
+}
+
+static void
+calculate_screen_size (MetaMonitorManager *manager)
+{
+  unsigned int i;
+  int width = 0, height = 0;
+
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCRTC *crtc = &manager->crtcs[i];
+
+      width = MAX (width, crtc->rect.x + crtc->rect.width);
+      height = MAX (height, crtc->rect.y + crtc->rect.height);
+    }
+
+  manager->screen_width = width;
+  manager->screen_height = height;
+}
+
+static void
+meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  drmModeRes *resources;
+
+  resources = drmModeGetResources(manager_kms->fd);
+
+  /* TODO: max screen width only matters for stage views is not enabled. */
+  manager->max_screen_width = resources->max_width;
+  manager->max_screen_height = resources->max_height;
+
+  manager->power_save_mode = META_POWER_SAVE_ON;
+
+  /* Note: we must not free the public structures (output, crtc, monitor
+     mode and monitor info) here, they must be kept alive until the API
+     users are done with them after we emit monitors-changed, and thus
+     are freed by the platform-independent layer. */
+  free_resources (manager_kms);
+
+  init_connectors (manager, resources);
+  init_modes (manager, resources);
+  init_crtcs (manager, resources);
+  init_outputs (manager, resources);
+
+  calculate_screen_size (manager);
 
   drmModeFreeResources (resources);
 }
