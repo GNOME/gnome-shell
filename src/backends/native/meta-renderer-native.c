@@ -379,7 +379,7 @@ on_crtc_flipped (GClosure         *closure,
 {
   ClutterStageView *stage_view = CLUTTER_STAGE_VIEW (view);
   CoglFramebuffer *framebuffer =
-    clutter_stage_view_get_framebuffer (stage_view);
+    clutter_stage_view_get_onscreen (stage_view);
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   CoglOnscreenEGL *egl_onscreen =  onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
@@ -397,7 +397,7 @@ flip_closure_destroyed (MetaRendererView *view)
 {
   ClutterStageView *stage_view = CLUTTER_STAGE_VIEW (view);
   CoglFramebuffer *framebuffer =
-    clutter_stage_view_get_framebuffer (stage_view);
+    clutter_stage_view_get_onscreen (stage_view);
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   CoglOnscreenEGL *egl_onscreen =  onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
@@ -828,7 +828,7 @@ meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native)
     {
       ClutterStageView *stage_view = l->data;
       CoglFramebuffer *framebuffer =
-        clutter_stage_view_get_framebuffer (stage_view);
+        clutter_stage_view_get_onscreen (stage_view);
       CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
       CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
       MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
@@ -861,7 +861,7 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
       MetaMonitorManagerKms *monitor_manager_kms =
         META_MONITOR_MANAGER_KMS (monitor_manager);
       CoglFramebuffer *framebuffer =
-        clutter_stage_view_get_framebuffer (stage_view);
+        clutter_stage_view_get_onscreen (stage_view);
       CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
       CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
       MetaOnscreenNative *onscreen_native = egl_onscreen->platform;

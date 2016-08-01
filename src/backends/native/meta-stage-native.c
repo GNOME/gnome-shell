@@ -127,7 +127,7 @@ ensure_frame_callback (MetaStageNative  *stage_native,
   if (closure)
     return;
 
-  framebuffer = clutter_stage_view_get_framebuffer (stage_view);
+  framebuffer = clutter_stage_view_get_onscreen (stage_view);
   onscreen = COGL_ONSCREEN (framebuffer);
   closure = cogl_onscreen_add_frame_callback (onscreen,
                                               frame_cb,

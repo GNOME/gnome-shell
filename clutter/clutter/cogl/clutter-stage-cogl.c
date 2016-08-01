@@ -357,7 +357,7 @@ swap_framebuffer (ClutterStageWindow    *stage_window,
                   cairo_rectangle_int_t *swap_region,
                   gboolean               swap_with_damage)
 {
-  CoglFramebuffer *framebuffer = clutter_stage_view_get_framebuffer (view);
+  CoglFramebuffer *framebuffer = clutter_stage_view_get_onscreen (view);
   int damage[4], ndamage;
 
   damage[0] = swap_region->x;

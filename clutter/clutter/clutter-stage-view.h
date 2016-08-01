@@ -33,6 +33,12 @@ G_DECLARE_DERIVABLE_TYPE (ClutterStageView, clutter_stage_view,
 struct _ClutterStageViewClass
 {
   GObjectClass parent_class;
+
+  void (* setup_offscreen_blit_pipeline) (ClutterStageView *view,
+                                          CoglPipeline     *pipeline);
+
+  void (* get_offscreen_transformation_matrix) (ClutterStageView *view,
+                                                CoglMatrix       *matrix);
 };
 
 CLUTTER_AVAILABLE_IN_MUTTER
@@ -41,6 +47,18 @@ void clutter_stage_view_get_layout (ClutterStageView      *view,
 
 CLUTTER_AVAILABLE_IN_MUTTER
 CoglFramebuffer *clutter_stage_view_get_framebuffer (ClutterStageView *view);
+CLUTTER_AVAILABLE_IN_MUTTER
+CoglFramebuffer *clutter_stage_view_get_onscreen (ClutterStageView *view);
+CLUTTER_AVAILABLE_IN_MUTTER
+void             clutter_stage_view_invalidate_offscreen_blit_pipeline (ClutterStageView *view);
+
+CLUTTER_AVAILABLE_IN_MUTTER
+void             clutter_stage_view_transform_to_onscreen (ClutterStageView *view,
+                                                           gfloat           *x,
+                                                           gfloat           *y);
+
+void clutter_stage_view_blit_offscreen (ClutterStageView            *view,
+					const cairo_rectangle_int_t *clip);
 
 gboolean clutter_stage_view_is_dirty_viewport (ClutterStageView *view);
 
