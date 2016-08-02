@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-06-30 09:43+0000\n"
+"POT-Creation-Date: 2016-07-20 22:51+0000\n"
 "PO-Revision-Date: 2016-06-30 15:58+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
@@ -74,7 +74,7 @@ msgid ""
 "dialog."
 msgstr ""
 "Permitir acceder a las herramientas internas de depuración  monitorización "
-"usando el diálogo Alt+F2"
+"usando el diálogo Alt+F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "UUIDs of extensions to enable"
@@ -133,7 +133,7 @@ msgstr ""
 msgid "History for command (Alt-F2) dialog"
 msgstr "Histórico del diálogo de comandos (Alt+F2)"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "History for the looking glass dialog"
 msgstr "Histórico del diálogo de «looking glass»"
@@ -214,7 +214,7 @@ msgstr "Asociación de teclas para la vista general"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to open the Activities Overview."
-msgstr "Asociación de teclas para abrir la Vista de actividades"
+msgstr "Asociación de teclas para abrir la Vista de actividades."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the notification list"
@@ -485,6 +485,16 @@ msgstr "%d de %B de %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Redirección para autenticación web"
 
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Denegar acceso"
+
+#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Conceder acceso"
+
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "Las aplicaciones usadas frecuentemente aparecerán aquí"
@@ -607,55 +617,55 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: ../js/ui/calendar.js:416
+#: ../js/ui/calendar.js:442
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: ../js/ui/calendar.js:426
+#: ../js/ui/calendar.js:452
 msgid "Next month"
 msgstr "Siguiente mes"
 
-#: ../js/ui/calendar.js:579
+#: ../js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:634
+#: ../js/ui/calendar.js:660
 msgid "Week %V"
 msgstr "Semana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:695
+#: ../js/ui/calendar.js:721
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo el día"
 
-#: ../js/ui/calendar.js:821
+#: ../js/ui/calendar.js:836
 msgid "Events"
 msgstr "Eventos"
 
-#: ../js/ui/calendar.js:830
+#: ../js/ui/calendar.js:845
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:834
+#: ../js/ui/calendar.js:849
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:919
+#: ../js/ui/calendar.js:931
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/calendar.js:1070
+#: ../js/ui/calendar.js:1082
 msgid "No Notifications"
 msgstr "No hay notificaciones"
 
-#: ../js/ui/calendar.js:1073
+#: ../js/ui/calendar.js:1085
 msgid "No Events"
 msgstr "No hay eventos"
 
@@ -733,7 +743,7 @@ msgstr "Autenticación 802.1X cableada"
 
 #: ../js/ui/components/networkAgent.js:327
 msgid "Network name: "
-msgstr "Nombre de la red"
+msgstr "Nombre de la red: "
 
 #: ../js/ui/components/networkAgent.js:332
 #: ../js/ui/components/networkAgent.js:666
@@ -789,7 +799,7 @@ msgstr "Autenticar"
 #. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
-msgstr "Inténtelo de nuevo,"
+msgstr "Inténtelo de nuevo."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -942,8 +952,6 @@ msgid "Power off after updates are installed"
 msgstr "Apagar después de instalar las actualizaciones"
 
 #: ../js/ui/endSessionDialog.js:137
-#| msgctxt "title"
-#| msgid "Restart & Install Updates"
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Reiniciar e instalar actualizaciones"
@@ -972,7 +980,7 @@ msgstr "Algunas aplicaciones están ocupadas o tienen trabajo sin guardar."
 
 #: ../js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
-msgstr "Hay otros usuarios con la sesión iniciada"
+msgstr "Hay otros usuarios con la sesión iniciada."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/endSessionDialog.js:671
@@ -1317,14 +1325,6 @@ msgstr "Ubicación desactivada"
 #: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Activar"
-
-#: ../js/ui/status/location.js:426
-msgid "Deny Access"
-msgstr "Denegar acceso"
-
-#: ../js/ui/status/location.js:429
-msgid "Grant Access"
-msgstr "Conceder acceso"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:435
@@ -1750,12 +1750,12 @@ msgstr ""
 msgid "List possible modes"
 msgstr "Listar los modos posibles"
 
-#: ../src/shell-app.c:246
+#: ../src/shell-app.c:270
 msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../src/shell-app.c:487
+#: ../src/shell-app.c:511
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Falló al lanzar «%s»"
