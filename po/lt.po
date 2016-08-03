@@ -6,15 +6,15 @@
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Žygimantas Beručka <zygis@gnome.org>, 2004-2007.
 # Gintautas Miliauskas <gintautas@miliauskas.lt>, 2007-2009, 2010.
-# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014, 2015.
+# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014, 2015, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-26 09:54+0000\n"
-"PO-Revision-Date: 2016-02-25 15:18+0200\n"
+"POT-Creation-Date: 2016-07-22 13:03+0000\n"
+"PO-Revision-Date: 2016-08-03 22:14+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -457,36 +457,45 @@ msgstr "Persijungti į VT 11"
 msgid "Switch to VT 12"
 msgstr "Persijungti į VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:518
+#: ../src/backends/meta-input-settings.c:1601
+#| msgid "Switch system controls"
+msgid "Switch monitor"
+msgstr "Perjungti monitorių"
+
+#: ../src/backends/meta-input-settings.c:1603
+msgid "Show on-screen help"
+msgstr "Rodyti pagalbą ekrane"
+
+#: ../src/backends/meta-monitor-manager.c:515
 msgid "Built-in display"
 msgstr "Integruotas vaizduoklis"
 
-#: ../src/backends/meta-monitor-manager.c:544
+#: ../src/backends/meta-monitor-manager.c:538
 msgid "Unknown"
 msgstr "Nežinomas"
 
-#: ../src/backends/meta-monitor-manager.c:546
+#: ../src/backends/meta-monitor-manager.c:540
 msgid "Unknown Display"
 msgstr "Nežinomas vaizduoklis"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:554
+#: ../src/backends/meta-monitor-manager.c:548
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: ../src/compositor/compositor.c:463
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "Kita kompozicijos tvarkytuvė jau veikia ekrane %i vaizduoklyje „%s“."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:194
 msgid "Bell event"
 msgstr "Skambučio įvykis"
 
@@ -513,44 +522,44 @@ msgstr "_Laukti"
 msgid "_Force Quit"
 msgstr "_Priverstinai išeiti"
 
-#: ../src/core/display.c:555
+#: ../src/core/display.c:590
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano „%s“\n"
 
-#: ../src/core/main.c:181
+#: ../src/core/main.c:182
 msgid "Disable connection to session manager"
 msgstr "Išjungti susijungimą su sesijos tvarkytuve"
 
-#: ../src/core/main.c:187
+#: ../src/core/main.c:188
 msgid "Replace the running window manager"
 msgstr "Pakeisti veikiančią langų tvarkytuvę"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:194
 msgid "Specify session management ID"
 msgstr "Nurodyti sesijos tvarkymo ID"
 
-#: ../src/core/main.c:198
+#: ../src/core/main.c:199
 msgid "X Display to use"
 msgstr "Naudotinas X ekranas"
 
-#: ../src/core/main.c:204
+#: ../src/core/main.c:205
 msgid "Initialize session from savefile"
 msgstr "Inicializuoti sesiją iš išsaugojimo failo"
 
-#: ../src/core/main.c:210
+#: ../src/core/main.c:211
 msgid "Make X calls synchronous"
 msgstr "Sinchronizuoti X iškvietimus"
 
-#: ../src/core/main.c:217
+#: ../src/core/main.c:218
 msgid "Run as a wayland compositor"
 msgstr "Vykdyti kaip wayland kompozitorių"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:224
 msgid "Run as a nested compositor"
 msgstr "Vykdyti kaip įdėtinį kompozitorių"
 
-#: ../src/core/main.c:231
+#: ../src/core/main.c:232
 msgid "Run as a full display server, rather than nested"
 msgstr "Vykdyti kaip visą vaizduoklio serverį, o ne įdėtinį"
 
@@ -598,9 +607,14 @@ msgstr ""
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ netinkamas\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter buvo sukompiliuota be išsamaus veikimo veiksenos\n"
+
+#: ../src/wayland/meta-wayland-tablet-pad.c:595
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr "Veiksenos perjungimas: veiksena %d"
 
 #: ../src/x11/session.c:1815
 msgid ""
@@ -610,7 +624,7 @@ msgstr ""
 "Šie langai nepalaiko &quot;išsaugoti esamus nustatymus&quot; komandos ir "
 "turi būti paleisti rankiniu būdu, kai prisijungsite kitą kartą."
 
-#: ../src/x11/window-props.c:549
+#: ../src/x11/window-props.c:548
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (kompiuteryje %s)"
