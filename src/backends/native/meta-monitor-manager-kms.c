@@ -1203,14 +1203,6 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
 
           mode = crtc_info->mode;
 
-          for (j = 0; j < crtc_info->outputs->len; j++)
-            {
-              MetaOutput *output = g_ptr_array_index (crtc_info->outputs, j);
-
-              output->is_dirty = TRUE;
-              output->crtc = crtc;
-            }
-
           if (meta_monitor_transform_is_rotated (crtc_info->transform))
             {
               width = mode->height;
@@ -1231,6 +1223,15 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
           crtc->rect.height = height;
           crtc->current_mode = mode;
           crtc->transform = crtc_info->transform;
+
+          for (j = 0; j < crtc_info->outputs->len; j++)
+            {
+              MetaOutput *output = g_ptr_array_index (crtc_info->outputs, j);
+
+              output->is_dirty = TRUE;
+              output->crtc = crtc;
+              output->scale = get_output_scale (manager, output);
+            }
         }
 
       if (crtc->all_transforms & (1 << crtc->transform))
