@@ -180,7 +180,7 @@ XVisualInfo *
 cogl_xlib_renderer_get_visual_info (CoglRenderer *renderer);
 
 /**
- * cogl_xlib_renderer_request_reset_on_video_memory_purge:
+ * cogl_xlib_renderer_request_reset_on_video_memory_purge: (skip)
  * @renderer: a #CoglRenderer
  * @enable: The new value
  *

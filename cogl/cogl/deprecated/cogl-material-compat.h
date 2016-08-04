@@ -1307,7 +1307,7 @@ CoglMaterialWrapMode
 cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
 
 /**
- * cogl_material_set_depth_state:
+ * cogl_material_set_depth_state: (skip)
  * @material: A #CoglMaterial object
  * @state: A #CoglDepthState struct
  * @error: A #CoglError to report failures to setup the given @state.
@@ -1334,7 +1334,7 @@ cogl_material_set_depth_state (CoglMaterial *material,
                                CoglError **error);
 
 /**
- * cogl_material_get_depth_state:
+ * cogl_material_get_depth_state: (skip)
  * @material: A #CoglMaterial object
  * @state_out: A destination #CoglDepthState struct
  *
@@ -1370,8 +1370,8 @@ typedef CoglBool (*CoglMaterialLayerCallback) (CoglMaterial *material,
 /**
  * cogl_material_foreach_layer:
  * @material: A #CoglMaterial object
- * @callback: A #CoglMaterialLayerCallback to be called for each layer
- *            index
+ * @callback: (scope call): A #CoglMaterialLayerCallback to be called for each
+ *            layer index
  * @user_data: Private data that will be passed to the callback
  *
  * Iterates all the layer indices of the given @material.
