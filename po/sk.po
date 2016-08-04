@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-01 13:42+0000\n"
-"PO-Revision-Date: 2016-03-01 20:40+0100\n"
+"POT-Creation-Date: 2016-07-22 13:03+0000\n"
+"PO-Revision-Date: 2016-08-04 15:28+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -242,7 +242,7 @@ msgstr "Aktivovať ponuku okna"
 # description
 #: ../data/50-mutter-windows.xml.in.h:3
 msgid "Toggle fullscreen mode"
-msgstr "Prepnúť celoobrazovkový režim"
+msgstr "Prepnúť režim na celú obrazovku"
 
 # description
 #: ../data/50-mutter-windows.xml.in.h:4
@@ -542,29 +542,39 @@ msgstr "Prepnúť na VT č. 11"
 msgid "Switch to VT 12"
 msgstr "Prepnúť na VT č. 12"
 
-#: ../src/backends/meta-monitor-manager.c:518
+# PK: predpokladam ze to prepisane medzi tlacidlami
+# description
+#: ../src/backends/meta-input-settings.c:1601
+msgid "Switch monitor"
+msgstr "Prepnúť monitor"
+
+#: ../src/backends/meta-input-settings.c:1603
+msgid "Show on-screen help"
+msgstr "Zobraziť pomocníka na obrazovke"
+
+#: ../src/backends/meta-monitor-manager.c:515
 msgid "Built-in display"
 msgstr "Vstavaný displej"
 
-#: ../src/backends/meta-monitor-manager.c:544
+#: ../src/backends/meta-monitor-manager.c:538
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: ../src/backends/meta-monitor-manager.c:546
+#: ../src/backends/meta-monitor-manager.c:540
 msgid "Unknown Display"
 msgstr "Neznámy displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:554
+#: ../src/backends/meta-monitor-manager.c:548
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: ../src/compositor/compositor.c:463
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -572,7 +582,7 @@ msgid ""
 msgstr ""
 "Pre obrazovku č. %i na displeji „%s“ je spustený už iný správca rozloženia."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:194
 msgid "Bell event"
 msgstr "Udalosť zvončeka"
 
@@ -602,51 +612,51 @@ msgid "_Force Quit"
 msgstr "_Vynútiť ukončenie"
 
 # X window system preloz, napr. system na spravu okien X
-#: ../src/core/display.c:555
+#: ../src/core/display.c:590
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Zlyhalo otvorenie displeja systému na správu okien X „%s“\n"
 
 # cmd desc
-#: ../src/core/main.c:181
+#: ../src/core/main.c:182
 msgid "Disable connection to session manager"
 msgstr "Zakáže pripojenia k správcovi relácií"
 
 # cmd desc
-#: ../src/core/main.c:187
+#: ../src/core/main.c:188
 msgid "Replace the running window manager"
 msgstr "Nahradí bežiaceho správcu okien"
 
 # cmd desc
-#: ../src/core/main.c:193
+#: ../src/core/main.c:194
 msgid "Specify session management ID"
 msgstr "Zadá identifikátor správy relácií"
 
-#: ../src/core/main.c:198
+#: ../src/core/main.c:199
 msgid "X Display to use"
 msgstr "X displej, ktorý bude použitý"
 
 # cmd desc
-#: ../src/core/main.c:204
+#: ../src/core/main.c:205
 msgid "Initialize session from savefile"
 msgstr "Inicializuje reláciu z uloženého súboru"
 
 # cmd desc
-#: ../src/core/main.c:210
+#: ../src/core/main.c:211
 msgid "Make X calls synchronous"
 msgstr "Použije synchrónne volania X"
 
 # cmd desc
-#: ../src/core/main.c:217
+#: ../src/core/main.c:218
 msgid "Run as a wayland compositor"
 msgstr "Spustí ako kompozitor protokolu wayland"
 
 # cmd desc
-#: ../src/core/main.c:223
+#: ../src/core/main.c:224
 msgid "Run as a nested compositor"
 msgstr "Spustí ako kompozitor s vnoreným režimom"
 
-#: ../src/core/main.c:231
+#: ../src/core/main.c:232
 msgid "Run as a full display server, rather than nested"
 msgstr "Spustí ako plnohodnotný zobrazovací server, namiesto vnoreného režimu"
 
@@ -694,9 +704,14 @@ msgstr ""
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka č. %d na displeji „%s“ nie je platná\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter bol skompilovaný bez výpisu podrobností pri behu\n"
+
+#: ../src/wayland/meta-wayland-tablet-pad.c:595
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr "Prepínač režimu: Režim č. %d"
 
 #: ../src/x11/session.c:1815
 msgid ""
@@ -707,7 +722,7 @@ msgstr ""
 "prihlásení ich budete musieť znovu spustiť ručne."
 
 # window title; wm_client_machine
-#: ../src/x11/window-props.c:549
+#: ../src/x11/window-props.c:548
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
