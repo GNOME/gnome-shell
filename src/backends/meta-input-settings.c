@@ -1247,8 +1247,8 @@ apply_device_settings (MetaInputSettings  *input_settings,
   update_touchpad_left_handed (input_settings, device);
   update_touchpad_tap_enabled (input_settings, device);
   update_touchpad_send_events (input_settings, device);
-  update_touchpad_edge_scroll (input_settings, device);
   update_touchpad_two_finger_scroll (input_settings, device);
+  update_touchpad_edge_scroll (input_settings, device);
   update_touchpad_click_method (input_settings, device);
 
   update_trackball_scroll_button (input_settings, device);
