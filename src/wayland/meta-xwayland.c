@@ -426,7 +426,7 @@ choose_xdisplay (MetaXWaylandManager *manager)
         }
 
       manager->unix_fd = bind_to_unix_socket (display);
-      if (manager->abstract_fd < 0)
+      if (manager->unix_fd < 0)
         {
           unlink (lock_file);
           close (manager->abstract_fd);
