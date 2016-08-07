@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-03 14:39+0200\n"
-"PO-Revision-Date: 2016-03-03 14:40+0200\n"
+"POT-Creation-Date: 2016-08-07 15:11+0300\n"
+"PO-Revision-Date: 2016-08-07 15:12+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -453,36 +453,44 @@ msgstr "מעבר ל־VT ‏11"
 msgid "Switch to VT 12"
 msgstr "מעבר ל־VT ‏12"
 
-#: ../src/backends/meta-monitor-manager.c:518
+#: ../src/backends/meta-input-settings.c:1707
+msgid "Switch monitor"
+msgstr "החלפה בין צגים"
+
+#: ../src/backends/meta-input-settings.c:1709
+msgid "Show on-screen help"
+msgstr "הצגת עזרה על המסך"
+
+#: ../src/backends/meta-monitor-manager.c:515
 msgid "Built-in display"
 msgstr "תצוגה מובנית"
 
-#: ../src/backends/meta-monitor-manager.c:544
+#: ../src/backends/meta-monitor-manager.c:538
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../src/backends/meta-monitor-manager.c:546
+#: ../src/backends/meta-monitor-manager.c:540
 msgid "Unknown Display"
 msgstr "תצוגה לא ידועה"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:554
+#: ../src/backends/meta-monitor-manager.c:548
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: ../src/compositor/compositor.c:463
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "מנהל תצוגת חלונות אחר כבר פועל במסך %i בתצוגה „%s“."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:194
 msgid "Bell event"
 msgstr "אירוע פעמון"
 
@@ -510,44 +518,44 @@ msgstr "ה_מתנה"
 msgid "_Force Quit"
 msgstr "_אילוץ סגירה"
 
-#: ../src/core/display.c:555
+#: ../src/core/display.c:590
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
 
-#: ../src/core/main.c:181
+#: ../src/core/main.c:182
 msgid "Disable connection to session manager"
 msgstr "Disable connection to session manager"
 
-#: ../src/core/main.c:187
+#: ../src/core/main.c:188
 msgid "Replace the running window manager"
 msgstr "Replace the running window manager"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:194
 msgid "Specify session management ID"
 msgstr "Specify session management ID"
 
-#: ../src/core/main.c:198
+#: ../src/core/main.c:199
 msgid "X Display to use"
 msgstr "X Display to use"
 
-#: ../src/core/main.c:204
+#: ../src/core/main.c:205
 msgid "Initialize session from savefile"
 msgstr "Initialize session from savefile"
 
-#: ../src/core/main.c:210
+#: ../src/core/main.c:211
 msgid "Make X calls synchronous"
 msgstr "Make X calls synchronous"
 
-#: ../src/core/main.c:217
+#: ../src/core/main.c:218
 msgid "Run as a wayland compositor"
 msgstr "Run as a wayland compositor"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:224
 msgid "Run as a nested compositor"
 msgstr "Run as a nested compositor"
 
-#: ../src/core/main.c:231
+#: ../src/core/main.c:232
 msgid "Run as a full display server, rather than nested"
 msgstr "Run as a full display server, rather than nested"
 
@@ -587,14 +595,19 @@ msgstr ""
 "Display \"%s\" already has a window manager; try using the --replace option "
 "to replace the current window manager."
 
-#: ../src/core/screen.c:603
+#: ../src/core/screen.c:606
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Screen %d on display '%s' is invalid\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter הודר ללא תמיכה במצב פירוט\n"
+
+#: ../src/wayland/meta-wayland-tablet-pad.c:595
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr "מצב העברה: מצב %d"
 
 #: ../src/x11/session.c:1815
 msgid ""
@@ -604,7 +617,7 @@ msgstr ""
 "חלונות אלו אינם תומכים ב&quot;שמירת ההגדרות הנוכחיות&quot;, ויהיה צורך "
 "באתחול ידני בכניסה הבאה שלך."
 
-#: ../src/x11/window-props.c:549
+#: ../src/x11/window-props.c:548
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (מעל %s)"
