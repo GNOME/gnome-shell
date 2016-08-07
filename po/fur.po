@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-07-22 13:03+0000\n"
-"PO-Revision-Date: 2016-08-04 17:51+0200\n"
+"PO-Revision-Date: 2016-08-07 12:38+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -392,14 +392,16 @@ msgid ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
 msgstr ""
+"Se metût a VÊR, i gnûfs barcons a vegnaran plaçâts simpri tal mieç dal "
+"schermi atîf dal visôr."
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:21
 msgid "Select window from tab popup"
-msgstr ""
+msgstr "Selezione barcon dal tab popup"
 
 #: ../data/org.gnome.mutter.gschema.xml.in.h:22
 msgid "Cancel tab popup"
-msgstr ""
+msgstr "Anule tab popup"
 
 #: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
 msgid "Switch to VT 1"
@@ -450,14 +452,12 @@ msgid "Switch to VT 12"
 msgstr "Passe al VT 12"
 
 #: ../src/backends/meta-input-settings.c:1601
-#, fuzzy
-#| msgid "Switch system controls"
 msgid "Switch monitor"
-msgstr "Passâ di un control di sisteme in chel altri"
+msgstr "Cambie visôr"
 
 #: ../src/backends/meta-input-settings.c:1603
 msgid "Show on-screen help"
-msgstr ""
+msgstr "Mostre jutori a schermi"
 
 #: ../src/backends/meta-monitor-manager.c:515
 msgid "Built-in display"
@@ -508,6 +508,8 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
+"Al è pussibil sielzi di spietâ un pôc lassant che la aplicazion e continui o "
+"sfuarçâ la aplicazion par sierâle dal dut."
 
 #: ../src/core/delete.c:141
 msgid "_Wait"
@@ -524,7 +526,7 @@ msgstr "Impussibil vierzi il display '%s' di X Window System\n"
 
 #: ../src/core/main.c:182
 msgid "Disable connection to session manager"
-msgstr ""
+msgstr "Disabilite la conession al gjestôr de session"
 
 #: ../src/core/main.c:188
 msgid "Replace the running window manager"
@@ -532,7 +534,7 @@ msgstr "Rimplace il window manager in vore"
 
 #: ../src/core/main.c:194
 msgid "Specify session management ID"
-msgstr ""
+msgstr "Specifiche il ID di gjestion session"
 
 #: ../src/core/main.c:199
 msgid "X Display to use"
@@ -607,7 +609,7 @@ msgstr "Mutter al è stât compilât cence supuart pe modalitât fetose\n"
 #: ../src/wayland/meta-wayland-tablet-pad.c:595
 #, c-format
 msgid "Mode Switch: Mode %d"
-msgstr ""
+msgstr "Cambie mût: mût %d"
 
 #: ../src/x11/session.c:1815
 msgid ""
