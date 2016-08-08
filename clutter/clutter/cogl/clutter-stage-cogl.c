@@ -37,6 +37,7 @@
 #include "clutter-stage-cogl.h"
 
 #include <stdlib.h>
+#include <math.h>
 
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
@@ -444,6 +445,42 @@ fill_current_damage_history_and_step (ClutterStageView *view)
   view_priv->damage_index++;
 }
 
+static void
+transform_swap_region_to_onscreen (ClutterStageView      *view,
+                                   cairo_rectangle_int_t *swap_region)
+{
+  CoglFramebuffer *framebuffer;
+  cairo_rectangle_int_t layout;
+  gfloat x1, y1, x2, y2;
+  gint width, height;
+
+  framebuffer = clutter_stage_view_get_onscreen (view);
+  clutter_stage_view_get_layout (view, &layout);
+
+  x1 = (float) swap_region->x / layout.width;
+  y1 = (float) swap_region->y / layout.height;
+  x2 = (float) (swap_region->x + swap_region->width) / layout.width;
+  y2 = (float) (swap_region->y + swap_region->height) / layout.height;
+
+  clutter_stage_view_transform_to_onscreen (view, &x1, &y1);
+  clutter_stage_view_transform_to_onscreen (view, &x2, &y2);
+
+  width = cogl_framebuffer_get_width (framebuffer);
+  height = cogl_framebuffer_get_height (framebuffer);
+
+  x1 = floor (x1 * width);
+  y1 = floor (height - (y1 * height));
+  x2 = ceil (x2 * width);
+  y2 = ceil (height - (y2 * height));
+
+  *swap_region = (cairo_rectangle_int_t) {
+    .x = x1,
+    .y = y1,
+    .width = x2 - x1,
+    .height = y2 - y1
+  };
+}
+
 static gboolean
 clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
                                 ClutterStageView   *view)
@@ -714,6 +751,12 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
 
   if (do_swap_buffer)
     {
+      if (clutter_stage_view_get_onscreen (view) !=
+          clutter_stage_view_get_framebuffer (view))
+        {
+          transform_swap_region_to_onscreen (view, &swap_region);
+        }
+
       return swap_framebuffer (stage_window,
                                view,
                                &swap_region,
