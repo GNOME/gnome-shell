@@ -48,9 +48,6 @@ void    shell_util_cursor_tracker_to_clutter (MetaCursorTracker *tracker,
 
 gboolean shell_util_need_background_refresh (void);
 
-void shell_util_text_insert_keyval (ClutterActor *actor,
-                                    guint         keyval);
-
 ClutterContent * shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
                                                           MetaRectangle   *window_rect);
 
