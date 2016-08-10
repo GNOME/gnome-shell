@@ -1,13 +1,12 @@
 # List of source files that should NOT be translated.
 # Please keep this file sorted alphabetically.
-
-clutter/clutter/clutter-actor-meta.c
 clutter/clutter/clutter-actor.c
+clutter/clutter/clutter-actor-meta.c
 clutter/clutter/clutter-align-constraint.c
 clutter/clutter/clutter-backend.c
-clutter/clutter/clutter-bin-layout.c
 clutter/clutter/clutter-bind-constraint.c
 clutter/clutter/clutter-binding-pool.c
+clutter/clutter/clutter-bin-layout.c
 clutter/clutter/clutter-box-layout.c
 clutter/clutter/clutter-brightness-contrast-effect.c
 clutter/clutter/clutter-canvas.c
@@ -52,17 +51,18 @@ clutter/clutter/clutter-text.c
 clutter/clutter/clutter-timeline.c
 clutter/clutter/clutter-transition.c
 clutter/clutter/clutter-units.c
+clutter/clutter/clutter-virtual-input-device.c
 clutter/clutter/clutter-zoom-action.c
 clutter/clutter/deprecated/clutter-alpha.c
 clutter/clutter/deprecated/clutter-animation.c
 clutter/clutter/deprecated/clutter-animator.c
+clutter/clutter/deprecated/clutter-behaviour.c
 clutter/clutter/deprecated/clutter-behaviour-depth.c
 clutter/clutter/deprecated/clutter-behaviour-ellipse.c
 clutter/clutter/deprecated/clutter-behaviour-opacity.c
 clutter/clutter/deprecated/clutter-behaviour-path.c
 clutter/clutter/deprecated/clutter-behaviour-rotate.c
 clutter/clutter/deprecated/clutter-behaviour-scale.c
-clutter/clutter/deprecated/clutter-behaviour.c
 clutter/clutter/deprecated/clutter-box.c
 clutter/clutter/deprecated/clutter-cairo-texture.c
 clutter/clutter/deprecated/clutter-fixed.c
@@ -72,9 +72,10 @@ clutter/clutter/deprecated/clutter-shader.c
 clutter/clutter/deprecated/clutter-state.c
 clutter/clutter/deprecated/clutter-table-layout.c
 clutter/clutter/deprecated/clutter-texture.c
+clutter/clutter/evdev/clutter-virtual-input-device-evdev.c
 clutter/clutter/wayland/clutter-wayland-surface.c
 clutter/clutter/x11/clutter-backend-x11.c
 clutter/clutter/x11/clutter-keymap-x11.c
 clutter/clutter/x11/clutter-x11-texture-pixmap.c
-cogl/cogl/cogl-debug-options.h
 cogl/cogl/cogl-debug.c
+cogl/cogl/cogl-debug-options.h
