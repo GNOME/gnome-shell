@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-27 14:08+0000\n"
-"PO-Revision-Date: 2016-06-05 00:12+0300\n"
+"POT-Creation-Date: 2016-07-20 22:51+0000\n"
+"PO-Revision-Date: 2016-08-16 07:01+0300\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -134,7 +134,7 @@ msgstr "Uygulama seçicide şu anda seçili olan görünümün dizini."
 msgid "History for command (Alt-F2) dialog"
 msgstr "Komut kutucuğu (Alt-F2) geçmişi"
 
-#. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
+#. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "History for the looking glass dialog"
 msgstr "Ayna iletişim penceresinin geçmişi"
@@ -326,7 +326,7 @@ msgstr "GNOME Kabuğu Uzantıları"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
 #: ../js/ui/components/networkAgent.js:145
-#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:483
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
@@ -481,6 +481,16 @@ msgstr "%d %B %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Web Kimlik Doğrulama Yönlendirmesi"
 
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Erişimi Reddet"
+
+#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Erişime İzin Ver"
+
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "Sık kullanılan uygulamalar burada yer alacak"
@@ -547,7 +557,7 @@ msgstr "Arkaplanı Değiştir…"
 msgid "Display Settings"
 msgstr "Görüntü Ayarları"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:371
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:374
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -603,55 +613,55 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "C"
 
-#: ../js/ui/calendar.js:416
+#: ../js/ui/calendar.js:442
 msgid "Previous month"
 msgstr "Önceki ay"
 
-#: ../js/ui/calendar.js:426
+#: ../js/ui/calendar.js:452
 msgid "Next month"
 msgstr "Gelecek ay"
 
-#: ../js/ui/calendar.js:579
+#: ../js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:634
+#: ../js/ui/calendar.js:660
 msgid "Week %V"
 msgstr "%V. Hafta"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:695
+#: ../js/ui/calendar.js:721
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tüm Gün"
 
-#: ../js/ui/calendar.js:821
+#: ../js/ui/calendar.js:836
 msgid "Events"
 msgstr "Olaylar"
 
-#: ../js/ui/calendar.js:830
+#: ../js/ui/calendar.js:845
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/calendar.js:834
+#: ../js/ui/calendar.js:849
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
 
-#: ../js/ui/calendar.js:919
+#: ../js/ui/calendar.js:931
 msgid "Notifications"
 msgstr "Bildirimler"
 
-#: ../js/ui/calendar.js:1070
+#: ../js/ui/calendar.js:1082
 msgid "No Notifications"
 msgstr "Bildirim Yok"
 
-#: ../js/ui/calendar.js:1073
+#: ../js/ui/calendar.js:1085
 msgid "No Events"
 msgstr "Olay Yok"
 
@@ -915,7 +925,7 @@ msgstr[0] ""
 "Sistem %d saniye içinde kendiliğinden yeniden başlayacak ve "
 "güncelleştirmeleri kuracak."
 
-#: ../js/ui/endSessionDialog.js:127
+#: ../js/ui/endSessionDialog.js:127 ../js/ui/endSessionDialog.js:147
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Yeniden Başlat ve Kur"
@@ -930,27 +940,47 @@ msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Güncelleştirmeler kurulduktan sonra kapat"
 
-#: ../js/ui/endSessionDialog.js:338
+#: ../js/ui/endSessionDialog.js:137
+#| msgctxt "title"
+#| msgid "Restart & Install Updates"
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Yeniden Başlat ve Yükseltmeyi Kur"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: ../js/ui/endSessionDialog.js:142
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"Bilgisayarınız yeniden başladıktan sonra %s %s kurulacak. Yükseltme kurulumu "
+"uzun sürebilir: verilerinizi yedeklediğinizden ve bilgisayarınızın prize "
+"takılı olduğundan emin olun."
+
+#: ../js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
 "Pil gücünde çalışıyor: Lütfen güncelleştirmeleri kurmadan önce fişi takın."
 
-#: ../js/ui/endSessionDialog.js:355
+#: ../js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
 msgstr "Bazı uygulamalar meşgul ya da kaydedilmemiş verilere sahip."
 
-#: ../js/ui/endSessionDialog.js:362
+#: ../js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
 msgstr "Diğer kullanıcılar oturum açmış"
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:640
+#: ../js/ui/endSessionDialog.js:671
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (uzak)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:643
+#: ../js/ui/endSessionDialog.js:674
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (uçbirim)"
@@ -964,7 +994,7 @@ msgstr "Kur"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org adresinden “%s” indirilip kurulsun mu?"
 
-#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
+#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Klavye"
 
@@ -1049,7 +1079,7 @@ msgstr "Ortam"
 msgid "Undo"
 msgstr "Geri Al"
 
-#: ../js/ui/overview.js:117
+#: ../js/ui/overview.js:113
 msgid "Overview"
 msgstr "Genel Görünüm"
 
@@ -1057,7 +1087,7 @@ msgstr "Genel Görünüm"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:244
+#: ../js/ui/overview.js:240
 msgid "Type to search…"
 msgstr "Aramak için buraya yazın..."
 
@@ -1119,11 +1149,11 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d yeni bildirim"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:379
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:382
 msgid "Lock"
 msgstr "Kilitle"
 
-#: ../js/ui/screenShield.js:687
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME'un ekranı kilitlemesi gerekiyor"
 
@@ -1134,11 +1164,11 @@ msgstr "GNOME'un ekranı kilitlemesi gerekiyor"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:808 ../js/ui/screenShield.js:1274
+#: ../js/ui/screenShield.js:825 ../js/ui/screenShield.js:1291
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: ../js/ui/screenShield.js:809 ../js/ui/screenShield.js:1275
+#: ../js/ui/screenShield.js:826 ../js/ui/screenShield.js:1292
 msgid "Lock was blocked by an application"
 msgstr "Kilitleme bir uygulama tarafından engellendi"
 
@@ -1256,7 +1286,7 @@ msgstr "Kapat"
 msgid "Brightness"
 msgstr "Parlaklık"
 
-#: ../js/ui/status/keyboard.js:736
+#: ../js/ui/status/keyboard.js:805
 msgid "Show Keyboard Layout"
 msgstr "Klavye Düzenini Göster"
 
@@ -1283,14 +1313,6 @@ msgstr "Konum Devre Dışı"
 #: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Etkinleştir"
-
-#: ../js/ui/status/location.js:426
-msgid "Deny Access"
-msgstr "Erişimi Reddet"
-
-#: ../js/ui/status/location.js:429
-msgid "Grant Access"
-msgstr "Erişime İzin Ver"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:435
@@ -1524,27 +1546,27 @@ msgstr "%% %d"
 msgid "Airplane Mode On"
 msgstr "Uçak Kipi Açık"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:351
 msgid "Switch User"
 msgstr "Kullanıcı Değiştir"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:356
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: ../js/ui/status/system.js:358
+#: ../js/ui/status/system.js:361
 msgid "Account Settings"
 msgstr "Hesap Ayarları"
 
-#: ../js/ui/status/system.js:375
+#: ../js/ui/status/system.js:378
 msgid "Orientation Lock"
 msgstr "Yönelim Kilidi"
 
-#: ../js/ui/status/system.js:383
+#: ../js/ui/status/system.js:386
 msgid "Suspend"
 msgstr "Beklet"
 
-#: ../js/ui/status/system.js:386
+#: ../js/ui/status/system.js:389
 msgid "Power Off"
 msgstr "Kapat"
 
@@ -1709,12 +1731,12 @@ msgstr "Oturum açma için -\"gdm\" gibi- özel bir kip kullan"
 msgid "List possible modes"
 msgstr "Mevcut kipleri listele"
 
-#: ../src/shell-app.c:246
+#: ../src/shell-app.c:270
 msgctxt "program"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: ../src/shell-app.c:487
+#: ../src/shell-app.c:511
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” başlatılamadı"
