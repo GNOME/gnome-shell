@@ -299,7 +299,7 @@ struct _MetaPluginVersion
   GType meta_plugin_register_type (GTypeModule *type_module);           \
                                                                         \
   GType                                                                 \
-  object_name##_get_type ()                                             \
+  object_name##_get_type (void)                                         \
   {                                                                     \
     return g_define_type_id;                                            \
   }                                                                     \
