@@ -27,6 +27,7 @@
 #include "meta-wayland-buffer.h"
 #include "meta-xwayland.h"
 #include "screen-private.h"
+#include "meta-wayland-private.h"
 
 typedef struct _MetaWaylandSurfaceRoleCursorPrivate MetaWaylandSurfaceRoleCursorPrivate;
 
@@ -37,6 +38,8 @@ struct _MetaWaylandSurfaceRoleCursorPrivate
   MetaCursorSprite *cursor_sprite;
   MetaCursorRenderer *cursor_renderer;
   MetaWaylandBuffer *buffer;
+  struct wl_list frame_callbacks;
+  gulong cursor_painted_handler_id;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandSurfaceRoleCursor,
@@ -124,7 +127,9 @@ cursor_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
       meta_wayland_surface_ref_buffer_use_count (surface);
     }
 
-  meta_wayland_surface_queue_pending_frame_callbacks (surface);
+  wl_list_insert_list (&priv->frame_callbacks,
+                       &surface->pending_frame_callback_list);
+  wl_list_init (&surface->pending_frame_callback_list);
 }
 
 static void
@@ -164,7 +169,9 @@ cursor_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
         meta_wayland_surface_ref_buffer_use_count (surface);
     }
 
-  meta_wayland_surface_queue_pending_state_frame_callbacks (surface, pending);
+  wl_list_insert_list (&priv->frame_callbacks,
+                       &pending->frame_callback_list);
+  wl_list_init (&pending->frame_callback_list);
 
   if (pending->newly_attached)
     update_cursor_sprite_texture (META_WAYLAND_SURFACE_ROLE_CURSOR (surface_role));
@@ -196,6 +203,10 @@ cursor_surface_role_dispose (GObject *object)
     meta_wayland_surface_role_cursor_get_instance_private (cursor_role);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (META_WAYLAND_SURFACE_ROLE (object));
+  MetaWaylandFrameCallback *cb, *next;
+
+  wl_list_for_each_safe (cb, next, &priv->frame_callbacks, link)
+    wl_resource_destroy (cb->resource);
 
   g_signal_handlers_disconnect_by_func (priv->cursor_sprite,
                                         cursor_sprite_prepare_at, cursor_role);
@@ -224,6 +235,7 @@ meta_wayland_surface_role_cursor_init (MetaWaylandSurfaceRoleCursor *role)
                            G_CALLBACK (cursor_sprite_prepare_at),
                            role,
                            0);
+  wl_list_init (&priv->frame_callbacks);
 }
 
 static void
@@ -281,6 +293,28 @@ meta_wayland_surface_role_cursor_get_hotspot (MetaWaylandSurfaceRoleCursor *curs
     *hotspot_y = priv->hot_y;
 }
 
+static void
+on_cursor_painted (MetaCursorRenderer           *renderer,
+                   MetaCursorSprite             *displayed_sprite,
+                   MetaWaylandSurfaceRoleCursor *cursor_role)
+{
+  MetaWaylandSurfaceRoleCursorPrivate *priv =
+    meta_wayland_surface_role_cursor_get_instance_private (cursor_role);
+  guint32 time = (guint32) (g_get_monotonic_time () / 1000);
+
+  if (displayed_sprite != priv->cursor_sprite)
+    return;
+
+  while (!wl_list_empty (&priv->frame_callbacks))
+    {
+      MetaWaylandFrameCallback *callback =
+        wl_container_of (priv->frame_callbacks.next, callback, link);
+
+      wl_callback_send_done (callback->resource, time);
+      wl_resource_destroy (callback->resource);
+    }
+}
+
 void
 meta_wayland_surface_role_cursor_set_renderer (MetaWaylandSurfaceRoleCursor *cursor_role,
                                                MetaCursorRenderer           *renderer)
@@ -291,10 +325,20 @@ meta_wayland_surface_role_cursor_set_renderer (MetaWaylandSurfaceRoleCursor *cur
   if (priv->cursor_renderer == renderer)
     return;
 
-  if (renderer)
-    g_object_ref (renderer);
   if (priv->cursor_renderer)
-    g_object_unref (priv->cursor_renderer);
+    {
+      g_signal_handler_disconnect (priv->cursor_renderer,
+                                   priv->cursor_painted_handler_id);
+      priv->cursor_painted_handler_id = 0;
+      g_object_unref (priv->cursor_renderer);
+    }
+  if (renderer)
+    {
+      priv->cursor_painted_handler_id =
+        g_signal_connect_object (renderer, "cursor-painted",
+                                 G_CALLBACK (on_cursor_painted), cursor_role, 0);
+      g_object_ref (renderer);
+    }
 
   priv->cursor_renderer = renderer;
   update_cursor_sprite_texture (cursor_role);
