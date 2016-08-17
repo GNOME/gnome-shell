@@ -6,22 +6,23 @@
 # Petr Tomeš <ptomes@gmail.com>, 2006.
 # Jakub Friedl <jfriedl@suse.cz>, 2006, 2007.
 # Petr Kovar <pknbe@volny.cz>, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
-# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014.
+# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-02-27 13:36+0000\n"
-"PO-Revision-Date: 2014-09-22 15:01+0200\n"
-"Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
-"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"POT-Creation-Date: 2016-08-16 12:01+0000\n"
+"PO-Revision-Date: 2016-08-17 13:15+0200\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
@@ -456,36 +457,45 @@ msgstr "Přepnout na VT 11"
 msgid "Switch to VT 12"
 msgstr "Přepnout na VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:518
+#: ../src/backends/meta-input-settings.c:1707
+#| msgid "Switch system controls"
+msgid "Switch monitor"
+msgstr "Přepnout monitor"
+
+#: ../src/backends/meta-input-settings.c:1709
+msgid "Show on-screen help"
+msgstr "Zobrazit nápovědu na obrazovce"
+
+#: ../src/backends/meta-monitor-manager.c:514
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: ../src/backends/meta-monitor-manager.c:544
+#: ../src/backends/meta-monitor-manager.c:537
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: ../src/backends/meta-monitor-manager.c:546
+#: ../src/backends/meta-monitor-manager.c:539
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:554
+#: ../src/backends/meta-monitor-manager.c:547
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: ../src/compositor/compositor.c:463
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "Jiný kompozitní správce již běží na obrazovce %i displeje „%s“."
 
-#: ../src/core/bell.c:185
+#: ../src/core/bell.c:194
 msgid "Bell event"
 msgstr "Událost zvonku"
 
@@ -514,44 +524,44 @@ msgstr "_Počkat"
 msgid "_Force Quit"
 msgstr "_Vynutit ukončení"
 
-#: ../src/core/display.c:555
+#: ../src/core/display.c:590
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nelze otevřít displej X Window System „%s“\n"
 
-#: ../src/core/main.c:181
+#: ../src/core/main.c:182
 msgid "Disable connection to session manager"
 msgstr "Zakáže připojení ke správci sezení"
 
-#: ../src/core/main.c:187
+#: ../src/core/main.c:188
 msgid "Replace the running window manager"
 msgstr "Nahradí běžícího správce oken"
 
-#: ../src/core/main.c:193
+#: ../src/core/main.c:194
 msgid "Specify session management ID"
 msgstr "Určení ID správy sezení"
 
-#: ../src/core/main.c:198
+#: ../src/core/main.c:199
 msgid "X Display to use"
 msgstr "Displej X, který použije"
 
-#: ../src/core/main.c:204
+#: ../src/core/main.c:205
 msgid "Initialize session from savefile"
 msgstr "Spustí sezení z uloženého souboru"
 
-#: ../src/core/main.c:210
+#: ../src/core/main.c:211
 msgid "Make X calls synchronous"
 msgstr "Provede volání X synchronně"
 
-#: ../src/core/main.c:217
+#: ../src/core/main.c:218
 msgid "Run as a wayland compositor"
 msgstr "Spustit jako kompozitor protokolu Wayland"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:224
 msgid "Run as a nested compositor"
 msgstr "Spustit jako podkladový kompozitor"
 
-#: ../src/core/main.c:231
+#: ../src/core/main.c:232
 msgid "Run as a full display server, rather than nested"
 msgstr "Spustit jako plnohodnotný server displeje, nikoliv vnořeně"
 
@@ -573,7 +583,7 @@ msgstr ""
 
 #: ../src/core/mutter.c:53
 msgid "Print version"
-msgstr "Vypíše verzi"
+msgstr "Vypsat verzi"
 
 #: ../src/core/mutter.c:59
 msgid "Mutter plugin to use"
@@ -593,14 +603,19 @@ msgstr ""
 "Displej „%s“ již správce oken má; zkuste prosím nahradit aktuálního správce "
 "oken pomocí přepínače --replace."
 
-#: ../src/core/screen.c:603
+#: ../src/core/screen.c:606
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji „%s“ je neplatná\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter bylo přeloženo bez podpory podrobného režimu\n"
+
+#: ../src/wayland/meta-wayland-tablet-pad.c:595
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr "Přepínač režimu: režim %d"
 
 #: ../src/x11/session.c:1815
 msgid ""
@@ -610,7 +625,7 @@ msgstr ""
 "Tato okna nepodporují &quot;ukládání aktuálního nastavení&quot; a po vašem "
 "příštím přihlášení je budete muset spustit ručně."
 
-#: ../src/x11/window-props.c:549
+#: ../src/x11/window-props.c:548
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
@@ -1274,4 +1289,3 @@ msgstr "%s (na %s)"
 
 #~ msgid "Move to Another _Workspace"
 #~ msgstr "Přes_unout na jinou plochu"
-
