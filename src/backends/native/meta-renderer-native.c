@@ -1235,11 +1235,9 @@ meta_renderer_native_finalize (GObject *object)
 }
 
 static gboolean
-meta_renderer_native_initable_init (GInitable     *initable,
-                                    GCancellable  *cancellable,
-                                    GError       **error)
+init_gbm (MetaRendererNative *renderer_native,
+          GError            **error)
 {
-  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (initable);
   MetaBackend *backend = meta_get_backend ();
   MetaEgl *egl = meta_backend_get_egl (backend);
   struct gbm_device *gbm_device;
@@ -1266,6 +1264,16 @@ meta_renderer_native_initable_init (GInitable     *initable,
   renderer_native->gbm.device = gbm_device;
 
   return TRUE;
+}
+
+static gboolean
+meta_renderer_native_initable_init (GInitable     *initable,
+                                    GCancellable  *cancellable,
+                                    GError       **error)
+{
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (initable);
+
+  return init_gbm (renderer_native, error);
 }
 
 static void
