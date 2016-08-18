@@ -82,6 +82,9 @@ struct _MetaRendererNative
   MetaRenderer parent;
 
   int kms_fd;
+
+  EGLDisplay egl_display;
+
   struct gbm_device *gbm;
   CoglClosure *swap_notify_idle;
 
@@ -236,25 +239,7 @@ meta_renderer_native_connect (CoglRenderer *cogl_renderer,
 
   egl_renderer->platform_vtable = &_cogl_winsys_egl_vtable;
   egl_renderer->platform = renderer_native;
-  egl_renderer->edpy = EGL_NO_DISPLAY;
-
-  if (renderer_native->gbm == NULL)
-    {
-      _cogl_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "Couldn't create gbm device");
-      goto fail;
-    }
-
-  egl_renderer->edpy =
-    eglGetDisplay ((EGLNativeDisplayType) renderer_native->gbm);
-  if (egl_renderer->edpy == EGL_NO_DISPLAY)
-    {
-      _cogl_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "Couldn't get eglDisplay");
-      goto fail;
-    }
+  egl_renderer->edpy = renderer_native->egl_display;
 
   if (!_cogl_winsys_egl_renderer_connect_common (cogl_renderer, error))
     goto fail;
@@ -1241,15 +1226,30 @@ meta_renderer_native_initable_init (GInitable     *initable,
                                     GError       **error)
 {
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (initable);
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  struct gbm_device *gbm_device;
+  EGLDisplay egl_display;
 
-  renderer_native->gbm = gbm_create_device (renderer_native->kms_fd);
-  if (!renderer_native->gbm)
+  gbm_device = gbm_create_device (renderer_native->kms_fd);
+  if (!gbm_device)
     {
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_FAILED,
                    "Failed to create gbm device");
       return FALSE;
     }
+
+  egl_display = meta_egl_get_display (egl, (EGLNativeDisplayType) gbm_device,
+                                      error);
+  if (egl_display == EGL_NO_DISPLAY)
+    {
+      gbm_device_destroy (gbm_device);
+      return FALSE;
+    }
+
+  renderer_native->egl_display = egl_display;
+  renderer_native->gbm = gbm_device;
 
   return TRUE;
 }
