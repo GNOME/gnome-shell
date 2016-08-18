@@ -109,6 +109,76 @@ set_egl_error (GError **error)
                error_str);
 }
 
+static gboolean
+extensions_string_has_extensions_valist (const char *extensions_str,
+                                         char     ***missing_extensions,
+                                         char       *first_extension,
+                                         va_list     var_args)
+{
+  char **extensions;
+  char *extension;
+  size_t num_missing_extensions = 0;
+
+  if (missing_extensions)
+    *missing_extensions = NULL;
+
+  extensions = g_strsplit (extensions_str, " ", -1);
+
+  extension = first_extension;
+  while (extension)
+    {
+      if (!g_strv_contains ((const char * const *) extensions, extension))
+        {
+          num_missing_extensions++;
+          if (missing_extensions)
+            {
+              *missing_extensions = g_realloc_n (*missing_extensions,
+                                                 num_missing_extensions + 1,
+                                                 sizeof (const char *));
+              (*missing_extensions)[num_missing_extensions - 1] = extension;
+              (*missing_extensions)[num_missing_extensions] = NULL;
+            }
+          else
+            {
+              break;
+            }
+        }
+      extension = va_arg (var_args, char *);
+    }
+
+  g_strfreev (extensions);
+
+  return num_missing_extensions == 0;
+}
+
+gboolean
+meta_egl_has_extensions (MetaEgl   *egl,
+                         EGLDisplay display,
+                         char    ***missing_extensions,
+                         char      *first_extension,
+                         ...)
+{
+  va_list var_args;
+  const char *extensions_str;
+  gboolean has_extensions;
+
+  extensions_str = (const char *) eglQueryString (display, EGL_EXTENSIONS);
+  if (!extensions_str)
+    {
+      g_warning ("Failed to query string: %s", get_egl_error_str ());
+      return FALSE;
+    }
+
+  va_start (var_args, first_extension);
+  has_extensions = extensions_string_has_extensions_valist (extensions_str,
+                                                            missing_extensions,
+                                                            first_extension,
+                                                            var_args);
+  va_end (var_args);
+
+  return has_extensions;
+}
+
 EGLDisplay
 meta_egl_get_display (MetaEgl             *egl,
                       EGLNativeDisplayType display_id,
@@ -126,6 +196,23 @@ meta_egl_get_display (MetaEgl             *egl,
   return display;
 }
 
+#define GET_EGL_PROC_ADDR(proc) \
+  egl->proc = (void *) eglGetProcAddress (#proc);
+
+#define GET_EGL_PROC_ADDR_REQUIRED(proc) \
+  GET_EGL_PROC_ADDR(proc) \
+  if (!egl->proc) \
+    { \
+      meta_fatal ("Failed to get proc address for '%s'\n", #proc); \
+    }
+
+static void
+meta_egl_constructed (GObject *object)
+{
+}
+
+#undef GET_EGL_PROC_ADDR
+
 static void
 meta_egl_init (MetaEgl *egl)
 {
@@ -134,4 +221,7 @@ meta_egl_init (MetaEgl *egl)
 static void
 meta_egl_class_init (MetaEglClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->constructed = meta_egl_constructed;
 }

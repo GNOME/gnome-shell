@@ -26,10 +26,17 @@
 #define META_EGL_H
 
 #include <EGL/egl.h>
+#include <EGL/eglext.h>
 #include <glib-object.h>
 
 #define META_TYPE_EGL (meta_egl_get_type ())
 G_DECLARE_FINAL_TYPE (MetaEgl, meta_egl, META, EGL, GObject)
+
+gboolean meta_egl_has_extensions (MetaEgl   *egl,
+                                  EGLDisplay display,
+                                  char    ***missing_extensions,
+                                  char      *first_extension,
+                                  ...);
 
 EGLDisplay meta_egl_get_display (MetaEgl             *egl,
                                  EGLNativeDisplayType display_id,
