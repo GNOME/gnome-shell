@@ -60,4 +60,77 @@ EGLDisplay meta_egl_get_platform_display (MetaEgl      *egl,
                                           const EGLint *attrib_list,
                                           GError      **error);
 
+gboolean meta_egl_query_devices (MetaEgl      *egl,
+                                 EGLint        max_devices,
+                                 EGLDeviceEXT *devices,
+                                 EGLint       *num_devices,
+                                 GError      **error);
+
+const char * meta_egl_query_device_string (MetaEgl     *egl,
+                                           EGLDeviceEXT device,
+                                           EGLint       name,
+                                           GError     **error);
+
+gboolean meta_egl_egl_device_has_extensions (MetaEgl      *egl,
+                                             EGLDeviceEXT device,
+                                             char      ***missing_extensions,
+                                             char        *first_extension,
+                                             ...);
+
+gboolean meta_egl_get_output_layers (MetaEgl           *egl,
+                                     EGLDisplay         display,
+                                     const EGLAttrib   *attrib_list,
+                                     EGLOutputLayerEXT *layers,
+                                     EGLint             max_layers,
+                                     EGLint            *num_layers,
+                                     GError           **error);
+
+gboolean meta_egl_query_output_layer_attrib (MetaEgl          *egl,
+                                             EGLDisplay        display,
+                                             EGLOutputLayerEXT layer,
+                                             EGLint            attribute,
+                                             EGLAttrib        *value,
+                                             GError          **error);
+
+EGLStreamKHR meta_egl_create_stream (MetaEgl      *egl,
+                                     EGLDisplay    display,
+                                     const EGLint *attrib_list,
+                                     GError      **error);
+
+gboolean meta_egl_destroy_stream (MetaEgl     *egl,
+                                  EGLDisplay   display,
+                                  EGLStreamKHR stream,
+                                  GError      **error);
+
+gboolean meta_egl_query_stream (MetaEgl     *egl,
+                                EGLDisplay   display,
+                                EGLStreamKHR stream,
+                                EGLenum      attribute,
+                                EGLint      *value,
+                                GError     **error);
+
+EGLSurface meta_egl_create_stream_producer_surface (MetaEgl     *egl,
+                                                    EGLDisplay   display,
+                                                    EGLConfig    config,
+                                                    EGLStreamKHR stream,
+                                                    const EGLint *attrib_list,
+                                                    GError      **error);
+
+gboolean meta_egl_stream_consumer_output (MetaEgl          *egl,
+                                          EGLDisplay        display,
+                                          EGLStreamKHR      stream,
+                                          EGLOutputLayerEXT layer,
+                                          GError          **error);
+
+gboolean meta_egl_stream_consumer_acquire_attrib (MetaEgl     *egl,
+                                                  EGLDisplay   display,
+                                                  EGLStreamKHR stream,
+                                                  EGLAttrib   *attrib_list,
+                                                  GError     **error);
+
+gboolean meta_egl_stream_consumer_gl_texture_external (MetaEgl     *egl,
+                                                       EGLDisplay   display,
+                                                       EGLStreamKHR stream,
+                                                       GError     **error);
+
 #endif /* META_EGL_H */

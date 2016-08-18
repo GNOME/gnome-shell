@@ -26,6 +26,7 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-egl.h"
+#include "backends/meta-egl-ext.h"
 #include "meta/util.h"
 
 #include <EGL/egl.h>
@@ -39,6 +40,24 @@ struct _MetaEgl
   GObject parent;
 
   PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT;
+
+  PFNEGLQUERYDEVICESEXTPROC eglQueryDevicesEXT;
+  PFNEGLQUERYDEVICESTRINGEXTPROC eglQueryDeviceStringEXT;
+
+  PFNEGLGETOUTPUTLAYERSEXTPROC eglGetOutputLayersEXT;
+  PFNEGLQUERYOUTPUTLAYERATTRIBEXTPROC eglQueryOutputLayerAttribEXT;
+
+  PFNEGLCREATESTREAMKHRPROC eglCreateStreamKHR;
+  PFNEGLDESTROYSTREAMKHRPROC eglDestroyStreamKHR;
+  PFNEGLQUERYSTREAMKHRPROC eglQueryStreamKHR;
+
+  PFNEGLCREATESTREAMPRODUCERSURFACEKHRPROC eglCreateStreamProducerSurfaceKHR;
+
+  PFNEGLSTREAMCONSUMEROUTPUTEXTPROC eglStreamConsumerOutputEXT;
+
+  PFNEGLSTREAMCONSUMERACQUIREATTRIBEXTPROC eglStreamConsumerAcquireAttribEXT;
+
+  PFNEGLSTREAMCONSUMERGLTEXTUREEXTERNALKHRPROC eglStreamConsumerGLTextureExternalKHR;
 };
 
 G_DEFINE_TYPE (MetaEgl, meta_egl, G_TYPE_OBJECT)
@@ -305,6 +324,266 @@ meta_egl_get_platform_display (MetaEgl      *egl,
   return display;
 }
 
+gboolean
+meta_egl_query_devices (MetaEgl      *egl,
+                        EGLint        max_devices,
+                        EGLDeviceEXT *devices,
+                        EGLint       *num_devices,
+                        GError      **error)
+{
+  if (!is_egl_proc_valid (egl->eglQueryDevicesEXT, error))
+    return FALSE;
+
+  if (!egl->eglQueryDevicesEXT (max_devices,
+                                devices,
+                                num_devices))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+const char *
+meta_egl_query_device_string (MetaEgl     *egl,
+                              EGLDeviceEXT device,
+                              EGLint       name,
+                              GError     **error)
+{
+  const char *device_string;
+
+  if (!is_egl_proc_valid (egl->eglQueryDeviceStringEXT, error))
+    return NULL;
+
+  device_string = egl->eglQueryDeviceStringEXT (device, name);
+  if (!device_string)
+    {
+      set_egl_error (error);
+      return NULL;
+    }
+
+  return device_string;
+}
+
+gboolean
+meta_egl_egl_device_has_extensions (MetaEgl     *egl,
+                                    EGLDeviceEXT device,
+                                    char      ***missing_extensions,
+                                    char        *first_extension,
+                                    ...)
+{
+  va_list var_args;
+  const char *extensions_str;
+  gboolean has_extensions;
+  GError *error = NULL;
+
+  extensions_str = meta_egl_query_device_string (egl, device, EGL_EXTENSIONS,
+                                                 &error);
+  if (!extensions_str)
+    {
+      g_warning ("Failed to query device string: %s", error->message);
+      g_error_free (error);
+      return FALSE;
+    }
+
+  va_start (var_args, first_extension);
+  has_extensions = extensions_string_has_extensions_valist (extensions_str,
+                                                            missing_extensions,
+                                                            first_extension,
+                                                            var_args);
+  va_end (var_args);
+
+  return has_extensions;
+}
+
+gboolean
+meta_egl_get_output_layers (MetaEgl           *egl,
+                            EGLDisplay         display,
+                            const EGLAttrib   *attrib_list,
+                            EGLOutputLayerEXT *layers,
+                            EGLint             max_layers,
+                            EGLint            *num_layers,
+                            GError           **error)
+{
+  if (!is_egl_proc_valid (egl->eglGetOutputLayersEXT, error))
+    return FALSE;
+
+  if (!egl->eglGetOutputLayersEXT (display,
+                                   attrib_list,
+                                   layers,
+                                   max_layers,
+                                   num_layers))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_egl_query_output_layer_attrib (MetaEgl          *egl,
+                                    EGLDisplay        display,
+                                    EGLOutputLayerEXT layer,
+                                    EGLint            attribute,
+                                    EGLAttrib        *value,
+                                    GError          **error)
+{
+  if (!is_egl_proc_valid (egl->eglQueryOutputLayerAttribEXT, error))
+    return FALSE;
+
+  if (!egl->eglQueryOutputLayerAttribEXT (display, layer,
+                                          attribute, value))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+EGLStreamKHR
+meta_egl_create_stream (MetaEgl      *egl,
+                        EGLDisplay    display,
+                        const EGLint *attrib_list,
+                        GError      **error)
+{
+  EGLStreamKHR stream;
+
+  if (!is_egl_proc_valid (egl->eglCreateStreamKHR, error))
+    return EGL_NO_STREAM_KHR;
+
+  stream = egl->eglCreateStreamKHR (display, attrib_list);
+  if (stream == EGL_NO_STREAM_KHR)
+    {
+      set_egl_error (error);
+      return EGL_NO_STREAM_KHR;
+    }
+
+  return stream;
+}
+
+gboolean
+meta_egl_destroy_stream (MetaEgl     *egl,
+                         EGLDisplay   display,
+                         EGLStreamKHR stream,
+                         GError     **error)
+{
+  if (!is_egl_proc_valid (egl->eglDestroyStreamKHR, error))
+    return FALSE;
+
+  if (!egl->eglDestroyStreamKHR (display, stream))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_egl_query_stream (MetaEgl     *egl,
+                       EGLDisplay   display,
+                       EGLStreamKHR stream,
+                       EGLenum      attribute,
+                       EGLint      *value,
+                       GError     **error)
+{
+  if (!is_egl_proc_valid (egl->eglQueryStreamKHR, error))
+    return FALSE;
+
+  if (!egl->eglQueryStreamKHR (display, stream, attribute, value))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+EGLSurface
+meta_egl_create_stream_producer_surface (MetaEgl     *egl,
+                                         EGLDisplay   display,
+                                         EGLConfig    config,
+                                         EGLStreamKHR stream,
+                                         const EGLint *attrib_list,
+                                         GError      **error)
+{
+  EGLSurface surface;
+
+  if (!is_egl_proc_valid (egl->eglCreateStreamProducerSurfaceKHR, error))
+    return EGL_NO_SURFACE;
+
+  surface = egl->eglCreateStreamProducerSurfaceKHR (display,
+                                                    config,
+                                                    stream,
+                                                    attrib_list);
+  if (surface == EGL_NO_SURFACE)
+    {
+      set_egl_error (error);
+      return EGL_NO_SURFACE;
+    }
+
+  return surface;
+}
+
+gboolean
+meta_egl_stream_consumer_output (MetaEgl          *egl,
+                                 EGLDisplay        display,
+                                 EGLStreamKHR      stream,
+                                 EGLOutputLayerEXT layer,
+                                 GError          **error)
+{
+  if (!is_egl_proc_valid (egl->eglStreamConsumerOutputEXT, error))
+    return FALSE;
+
+  if (!egl->eglStreamConsumerOutputEXT (display, stream, layer))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_egl_stream_consumer_acquire_attrib (MetaEgl     *egl,
+                                         EGLDisplay   display,
+                                         EGLStreamKHR stream,
+                                         EGLAttrib   *attrib_list,
+                                         GError     **error)
+{
+  if (!is_egl_proc_valid (egl->eglStreamConsumerAcquireAttribEXT, error))
+    return FALSE;
+
+  if (!egl->eglStreamConsumerAcquireAttribEXT (display, stream, attrib_list))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_egl_stream_consumer_gl_texture_external (MetaEgl     *egl,
+                                              EGLDisplay   display,
+                                              EGLStreamKHR stream,
+                                              GError     **error)
+{
+  if (!is_egl_proc_valid (egl->eglStreamConsumerGLTextureExternalKHR, error))
+    return FALSE;
+
+  if (!egl->eglStreamConsumerGLTextureExternalKHR (display, stream))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 #define GET_EGL_PROC_ADDR(proc) \
   egl->proc = (void *) eglGetProcAddress (#proc);
 
@@ -321,6 +600,24 @@ meta_egl_constructed (GObject *object)
   MetaEgl *egl = META_EGL (object);
 
   GET_EGL_PROC_ADDR_REQUIRED (eglGetPlatformDisplayEXT);
+
+  GET_EGL_PROC_ADDR (eglQueryDevicesEXT);
+  GET_EGL_PROC_ADDR (eglQueryDeviceStringEXT);
+
+  GET_EGL_PROC_ADDR (eglGetOutputLayersEXT);
+  GET_EGL_PROC_ADDR (eglQueryOutputLayerAttribEXT);
+
+  GET_EGL_PROC_ADDR (eglCreateStreamKHR);
+  GET_EGL_PROC_ADDR (eglDestroyStreamKHR);
+  GET_EGL_PROC_ADDR (eglQueryStreamKHR);
+
+  GET_EGL_PROC_ADDR (eglCreateStreamProducerSurfaceKHR);
+
+  GET_EGL_PROC_ADDR (eglStreamConsumerOutputEXT);
+
+  GET_EGL_PROC_ADDR (eglStreamConsumerAcquireAttribEXT);
+
+  GET_EGL_PROC_ADDR (eglStreamConsumerGLTextureExternalKHR);
 }
 
 #undef GET_EGL_PROC_ADDR
