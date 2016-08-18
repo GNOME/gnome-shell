@@ -35,9 +35,19 @@ G_DECLARE_FINAL_TYPE (MetaRendererNative, meta_renderer_native,
                       META, RENDERER_NATIVE,
                       MetaRenderer)
 
+typedef enum _MetaRendererNativeMode
+{
+  META_RENDERER_NATIVE_MODE_GBM,
+#ifdef HAVE_EGL_DEVICE
+  META_RENDERER_NATIVE_MODE_EGL_DEVICE
+#endif
+} MetaRendererNativeMode;
+
 MetaRendererNative *meta_renderer_native_new (int         kms_fd,
                                               const char *kms_file_path,
                                               GError    **error);
+
+MetaRendererNativeMode meta_renderer_native_get_mode (MetaRendererNative *renderer_native);
 
 struct gbm_device * meta_renderer_native_get_gbm (MetaRendererNative *renderer_native);
 

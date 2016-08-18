@@ -43,15 +43,22 @@
 #include <glib-object.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/mman.h>
 #include <unistd.h>
 #include <xf86drm.h>
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-egl.h"
+#include "backends/meta-egl-ext.h"
 #include "backends/meta-renderer-view.h"
 #include "backends/native/meta-monitor-manager-kms.h"
 #include "backends/native/meta-renderer-native.h"
 #include "cogl/cogl.h"
 #include "core/boxes-private.h"
+
+#ifndef EGL_DRM_MASTER_FD_EXT
+#define EGL_DRM_MASTER_FD_EXT 0x333C
+#endif
 
 enum
 {
@@ -73,6 +80,19 @@ typedef struct _MetaOnscreenNative
     struct gbm_bo *next_bo;
   } gbm;
 
+#ifdef HAVE_EGL_DEVICE
+  struct {
+    EGLStreamKHR stream;
+
+    struct {
+      uint32_t fb_id;
+      uint32_t handle;
+      void *map;
+      uint64_t map_size;
+    } dumb_fb;
+  } egl;
+#endif
+
   gboolean pending_queue_swap_notify;
   gboolean pending_swap_notify;
 
@@ -89,15 +109,27 @@ struct _MetaRendererNative
   int kms_fd;
   char *kms_file_path;
 
+  MetaRendererNativeMode mode;
+
   EGLDisplay egl_display;
 
   struct {
     struct gbm_device *device;
   } gbm;
 
+#ifdef HAVE_EGL_DEVICE
+  struct {
+    EGLDeviceEXT device;
+
+    gboolean no_egl_output_drm_flip_event;
+  } egl;
+#endif
+
   CoglClosure *swap_notify_idle;
 
   int64_t frame_counter;
+
+  gboolean no_add_fb2;
 };
 
 static void
@@ -264,10 +296,23 @@ meta_renderer_native_add_egl_config_attributes (CoglDisplay           *cogl_disp
                                                 CoglFramebufferConfig *config,
                                                 EGLint                *attributes)
 {
+  CoglRendererEGL *egl_renderer = cogl_display->renderer->winsys;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
   int i = 0;
 
-  attributes[i++] = EGL_SURFACE_TYPE;
-  attributes[i++] = EGL_WINDOW_BIT;
+  switch (renderer_native->mode)
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      attributes[i++] = EGL_SURFACE_TYPE;
+      attributes[i++] = EGL_WINDOW_BIT;
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      attributes[i++] = EGL_SURFACE_TYPE;
+      attributes[i++] = EGL_STREAM_BIT_KHR;
+      break;
+#endif
+    }
 
   return i;
 }
@@ -396,6 +441,9 @@ on_crtc_flipped (GClosure         *closure,
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   CoglOnscreenEGL *egl_onscreen =  onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
 
   onscreen_native->pending_flips--;
   if (onscreen_native->pending_flips == 0)
@@ -403,7 +451,17 @@ on_crtc_flipped (GClosure         *closure,
       onscreen_native->pending_queue_swap_notify = FALSE;
 
       meta_onscreen_native_queue_swap_notify (onscreen);
-      meta_onscreen_native_swap_drm_fb (onscreen);
+
+      switch (renderer_native->mode)
+        {
+        case META_RENDERER_NATIVE_MODE_GBM:
+          meta_onscreen_native_swap_drm_fb (onscreen);
+          break;
+#ifdef HAVE_EGL_DEVICE
+        case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+          break;
+#endif
+        }
     }
 }
 
@@ -416,18 +474,27 @@ flip_closure_destroyed (MetaRendererView *view)
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   CoglOnscreenEGL *egl_onscreen =  onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
 
-  if (onscreen_native->gbm.next_fb_id)
+  switch (renderer_native->mode)
     {
-      MetaBackend *backend = meta_get_backend ();
-      MetaRenderer *renderer = meta_backend_get_renderer (backend);
-      MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+    case META_RENDERER_NATIVE_MODE_GBM:
+      if (onscreen_native->gbm.next_fb_id)
+        {
+          drmModeRmFB (renderer_native->kms_fd, onscreen_native->gbm.next_fb_id);
+          gbm_surface_release_buffer (onscreen_native->gbm.surface,
+                                      onscreen_native->gbm.next_bo);
+          onscreen_native->gbm.next_bo = NULL;
+          onscreen_native->gbm.next_fb_id = 0;
+        }
 
-      drmModeRmFB (renderer_native->kms_fd, onscreen_native->gbm.next_fb_id);
-      gbm_surface_release_buffer (onscreen_native->gbm.surface,
-                                  onscreen_native->gbm.next_bo);
-      onscreen_native->gbm.next_bo = NULL;
-      onscreen_native->gbm.next_fb_id = 0;
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      break;
+#endif
     }
 
   if (onscreen_native->pending_queue_swap_notify)
@@ -439,6 +506,49 @@ flip_closure_destroyed (MetaRendererView *view)
   g_object_unref (view);
 }
 
+#ifdef HAVE_EGL_DEVICE
+static void
+flip_egl_stream (MetaRendererNative *renderer_native,
+                 MetaOnscreenNative *onscreen_native,
+                 GClosure           *flip_closure)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context =
+    clutter_backend_get_cogl_context (clutter_backend);
+  CoglDisplay *cogl_display = cogl_context->display;
+  CoglRendererEGL *egl_renderer = cogl_display->renderer->winsys;
+  EGLAttrib *acquire_attribs;
+  GError *error = NULL;
+
+  if (renderer_native->egl.no_egl_output_drm_flip_event)
+    return;
+
+  acquire_attribs = (EGLAttrib[]) {
+    EGL_DRM_FLIP_EVENT_DATA_NV,
+    (EGLAttrib) flip_closure,
+    EGL_NONE
+  };
+  if (!meta_egl_stream_consumer_acquire_attrib (egl,
+                                                egl_renderer->edpy,
+                                                onscreen_native->egl.stream,
+                                                acquire_attribs,
+                                                &error))
+    {
+      g_warning ("Failed to flip EGL stream (%s), relying on clock from now on",
+                 error->message);
+      g_error_free (error);
+      renderer_native->egl.no_egl_output_drm_flip_event = TRUE;
+      return;
+    }
+
+  g_closure_ref (flip_closure);
+
+  return;
+}
+#endif /* HAVE_EGL_DEVICE */
+
 static void
 meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
                                 GClosure           *flip_closure,
@@ -448,6 +558,8 @@ meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
                                 gboolean           *fb_in_use)
 {
   MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerKms *monitor_manager_kms =
@@ -460,26 +572,54 @@ meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
       return;
     }
 
-  if (meta_monitor_manager_kms_flip_crtc (monitor_manager_kms,
-                                          crtc,
-                                          x, y,
-                                          onscreen_native->gbm.next_fb_id,
-                                          flip_closure,
-                                          fb_in_use))
-    onscreen_native->pending_flips++;
+  switch (renderer_native->mode)
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      if (meta_monitor_manager_kms_flip_crtc (monitor_manager_kms,
+                                              crtc,
+                                              x, y,
+                                              onscreen_native->gbm.next_fb_id,
+                                              flip_closure,
+                                              fb_in_use))
+        onscreen_native->pending_flips++;
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      flip_egl_stream (renderer_native, onscreen_native, flip_closure);
+      onscreen_native->pending_flips++;
+      *fb_in_use = TRUE;
+      break;
+#endif
+    }
 }
 
 static void
 meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
 {
   MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerKms *monitor_manager_kms =
     META_MONITOR_MANAGER_KMS (monitor_manager);
   MetaRendererView *view = onscreen_native->view;
-  uint32_t next_fb_id = onscreen_native->gbm.next_fb_id;
+  uint32_t fb_id = 0;
   MetaMonitorInfo *monitor_info;
+
+  switch (renderer_native->mode)
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      fb_id = onscreen_native->gbm.next_fb_id;
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      fb_id = onscreen_native->egl.dumb_fb.fb_id;
+      break;
+#endif
+    }
+
+  g_assert (fb_id != 0);
 
   monitor_info = meta_renderer_view_get_monitor_info (view);
   if (monitor_info)
@@ -498,7 +638,7 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
           meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
                                                     crtc,
                                                     x, y,
-                                                    next_fb_id);
+                                                    fb_id);
         }
     }
   else
@@ -512,7 +652,7 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
           meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
                                                     crtc,
                                                     crtc->rect.x, crtc->rect.y,
-                                                    next_fb_id);
+                                                    fb_id);
         }
     }
 }
@@ -589,8 +729,21 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
    */
   if (fb_in_use && onscreen_native->pending_flips == 0)
     {
+      MetaRenderer *renderer = meta_backend_get_renderer (backend);
+      MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+
       meta_onscreen_native_queue_swap_notify (onscreen);
-      meta_onscreen_native_swap_drm_fb (onscreen);
+
+      switch (renderer_native->mode)
+        {
+        case META_RENDERER_NATIVE_MODE_GBM:
+          meta_onscreen_native_swap_drm_fb (onscreen);
+          break;
+#ifdef HAVE_EGL_DEVICE
+        case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+          break;
+#endif
+        }
     }
 
   onscreen_native->pending_queue_swap_notify = TRUE;
@@ -660,10 +813,23 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                     rectangles,
                                                     n_rectangles);
 
-  if (!gbm_get_next_fb_id (onscreen,
-                           &onscreen_native->gbm.next_bo,
-                           &onscreen_native->gbm.next_fb_id))
-    return;
+  switch (renderer_native->mode)
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      g_warn_if_fail (onscreen_native->gbm.next_bo == NULL &&
+                      onscreen_native->gbm.next_fb_id == 0);
+
+      if (!gbm_get_next_fb_id (onscreen,
+                               &onscreen_native->gbm.next_bo,
+                               &onscreen_native->gbm.next_fb_id))
+        return;
+
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      break;
+#endif
+    }
 
   /* If this is the first framebuffer to be presented then we now setup the
    * crtc modes, else we flip from the previous buffer */
@@ -749,6 +915,232 @@ meta_renderer_native_create_surface_gbm (MetaRendererNative  *renderer_native,
   return TRUE;
 }
 
+#ifdef HAVE_EGL_DEVICE
+static gboolean
+meta_renderer_native_create_surface_egl_device (MetaRendererNative *renderer_native,
+                                                MetaMonitorInfo    *monitor_info,
+                                                int                 width,
+                                                int                 height,
+                                                EGLStreamKHR       *out_egl_stream,
+                                                EGLSurface         *out_egl_surface,
+                                                GError            **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  CoglDisplay *cogl_display = cogl_context_get_display (cogl_context);
+  CoglDisplayEGL *cogl_egl_display = cogl_display->winsys;
+  CoglRenderer *cogl_renderer = cogl_display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
+  EGLDisplay egl_display = egl_renderer->edpy;
+  EGLConfig egl_config;
+  EGLStreamKHR egl_stream;
+  EGLSurface egl_surface;
+  EGLint num_layers;
+  EGLOutputLayerEXT output_layer;
+  EGLAttrib output_attribs[] = {
+    /*
+     * An "monitor_info" may have multiple outputs/crtcs in case its tiled,
+     * but as far as I can tell, EGL only allows you to pass one crtc_id, so
+     * lets pass the first one.
+     */
+    EGL_DRM_CRTC_EXT, monitor_info->outputs[0]->crtc->crtc_id,
+    EGL_NONE,
+  };
+  EGLint stream_attribs[] = {
+    EGL_STREAM_FIFO_LENGTH_KHR, 1,
+#ifdef EGL_EXT_stream_acquire_mode
+    EGL_CONSUMER_AUTO_ACQUIRE_EXT, EGL_FALSE,
+#endif
+    EGL_NONE
+  };
+  EGLint stream_producer_attribs[] = {
+    EGL_WIDTH, width,
+    EGL_HEIGHT, height,
+    EGL_NONE
+  };
+
+  egl_stream = meta_egl_create_stream (egl, egl_display, stream_attribs, error);
+  if (egl_stream == EGL_NO_STREAM_KHR)
+    return FALSE;
+
+  if (!meta_egl_get_output_layers (egl, egl_display,
+                                   output_attribs,
+                                   &output_layer, 1, &num_layers,
+                                   error))
+    {
+      meta_egl_destroy_stream (egl, egl_display, egl_stream, NULL);
+      return FALSE;
+    }
+
+  if (num_layers < 1)
+    {
+      meta_egl_destroy_stream (egl, egl_display, egl_stream, NULL);
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Unable to find output layers.");
+      return FALSE;
+    }
+
+  if (!meta_egl_stream_consumer_output (egl, egl_display,
+                                        egl_stream, output_layer,
+                                        error))
+    {
+      meta_egl_destroy_stream (egl, egl_display, egl_stream, NULL);
+      return FALSE;
+    }
+
+  egl_config = cogl_egl_display->egl_config;
+  egl_surface = meta_egl_create_stream_producer_surface (egl,
+                                                         egl_display,
+                                                         egl_config,
+                                                         egl_stream,
+                                                         stream_producer_attribs,
+                                                         error);
+  if (egl_surface == EGL_NO_SURFACE)
+    {
+      meta_egl_destroy_stream (egl, egl_display, egl_stream, NULL);
+      return FALSE;
+    }
+
+  *out_egl_stream = egl_stream;
+  *out_egl_surface = egl_surface;
+
+  return TRUE;
+}
+
+static gboolean
+init_dumb_fb (MetaRendererNative *renderer_native,
+              MetaOnscreenNative *onscreen_native,
+              int                 width,
+              int                 height,
+              GError            **error)
+{
+  struct drm_mode_create_dumb create_arg;
+  struct drm_mode_destroy_dumb destroy_arg;
+  struct drm_mode_map_dumb map_arg;
+  uint32_t fb_id = 0;
+  void *map;
+
+  create_arg = (struct drm_mode_create_dumb) {
+    .bpp = 32, /* RGBX8888 */
+    .width = width,
+    .height = height
+  };
+  if (drmIoctl (renderer_native->kms_fd, DRM_IOCTL_MODE_CREATE_DUMB,
+                &create_arg) != 0)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Failed to create dumb drm buffer: %s",
+                   g_strerror (errno));
+      goto err_ioctl;
+    }
+
+  if (!renderer_native->no_add_fb2)
+    {
+      uint32_t handles[4] = { create_arg.handle, };
+      uint32_t pitches[4] = { create_arg.pitch, };
+      uint32_t offsets[4] = { 0 };
+
+      if (drmModeAddFB2 (renderer_native->kms_fd, width, height,
+                         GBM_FORMAT_XRGB8888,
+                         handles, pitches, offsets,
+                         &fb_id, 0) != 0)
+        {
+          g_warning ("drmModeAddFB2 failed (%s), falling back to drmModeAddFB",
+                     g_strerror (errno));
+          renderer_native->no_add_fb2 = TRUE;
+        }
+    }
+
+  if (renderer_native->no_add_fb2)
+    {
+      if (drmModeAddFB (renderer_native->kms_fd, width, height,
+                        24 /* depth of RGBX8888 */,
+                        32 /* bpp of RGBX8888 */,
+                        create_arg.pitch,
+                        create_arg.handle,
+                        &fb_id) != 0)
+        {
+          g_set_error (error, G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       "drmModeAddFB failed: %s",
+                       g_strerror (errno));
+          goto err_add_fb;
+        }
+    }
+
+  map_arg = (struct drm_mode_map_dumb) {
+    .handle = create_arg.handle
+  };
+  if (drmIoctl (renderer_native->kms_fd, DRM_IOCTL_MODE_MAP_DUMB,
+                &map_arg) != 0)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Failed to map dumb drm buffer: %s",
+                   g_strerror (errno));
+      goto err_map_dumb;
+    }
+
+  map = mmap (NULL, create_arg.size, PROT_WRITE, MAP_SHARED,
+              renderer_native->kms_fd,
+              map_arg.offset);
+  if (map == MAP_FAILED)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Failed to mmap dumb drm buffer memory: %s",
+                   g_strerror (errno));
+      goto err_mmap;
+    }
+
+  onscreen_native->egl.dumb_fb.fb_id = fb_id;
+  onscreen_native->egl.dumb_fb.handle = create_arg.handle;
+  onscreen_native->egl.dumb_fb.map = map;
+  onscreen_native->egl.dumb_fb.map_size = create_arg.size;
+
+  return TRUE;
+
+err_mmap:
+err_map_dumb:
+  drmModeRmFB (renderer_native->kms_fd, fb_id);
+
+err_add_fb:
+  destroy_arg = (struct drm_mode_destroy_dumb) {
+    .handle = create_arg.handle
+  };
+  drmIoctl (renderer_native->kms_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &destroy_arg);
+
+err_ioctl:
+  return FALSE;
+}
+
+static void
+release_dumb_fb (MetaRendererNative *renderer_native,
+                 MetaOnscreenNative *onscreen_native)
+{
+  struct drm_mode_destroy_dumb destroy_arg;
+
+  if (!onscreen_native->egl.dumb_fb.map)
+    return;
+
+  munmap (onscreen_native->egl.dumb_fb.map,
+          onscreen_native->egl.dumb_fb.map_size);
+  onscreen_native->egl.dumb_fb.map = NULL;
+
+  drmModeRmFB (renderer_native->kms_fd,
+               onscreen_native->egl.dumb_fb.fb_id);
+
+  destroy_arg = (struct drm_mode_destroy_dumb) {
+    .handle = onscreen_native->egl.dumb_fb.handle
+  };
+  drmIoctl (renderer_native->kms_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &destroy_arg);
+}
+#endif /* HAVE_EGL_DEVICE */
+
 static gboolean
 meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
                                     GError      **error)
@@ -797,6 +1189,11 @@ meta_onscreen_native_allocate (CoglOnscreen *onscreen,
   EGLSurface egl_surface;
   int width;
   int height;
+#ifdef HAVE_EGL_DEVICE
+  MetaRendererView *view;
+  MetaMonitorInfo *monitor_info;
+  EGLStreamKHR egl_stream;
+#endif
 
   onscreen_native->pending_set_crtc = TRUE;
 
@@ -810,15 +1207,40 @@ meta_onscreen_native_allocate (CoglOnscreen *onscreen,
   if (width == 0 || height == 0)
     return TRUE;
 
-  if (!meta_renderer_native_create_surface_gbm (renderer_native,
-                                                width, height,
-                                                &gbm_surface,
-                                                &egl_surface,
-                                                error))
-    return FALSE;
+  switch (renderer_native->mode)
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      if (!meta_renderer_native_create_surface_gbm (renderer_native,
+                                                    width, height,
+                                                    &gbm_surface,
+                                                    &egl_surface,
+                                                    error))
+        return FALSE;
 
-  onscreen_native->gbm.surface = gbm_surface;
-  egl_onscreen->egl_surface = egl_surface;
+      onscreen_native->gbm.surface = gbm_surface;
+      egl_onscreen->egl_surface = egl_surface;
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      if (!init_dumb_fb (renderer_native, onscreen_native,
+                         width, height, error))
+        return FALSE;
+
+      view = onscreen_native->view;
+      monitor_info = meta_renderer_view_get_monitor_info (view);
+      if (!meta_renderer_native_create_surface_egl_device (renderer_native,
+                                                           monitor_info,
+                                                           width, height,
+                                                           &egl_stream,
+                                                           &egl_surface,
+                                                           error))
+        return FALSE;
+
+      onscreen_native->egl.stream = egl_stream;
+      egl_onscreen->egl_surface = egl_surface;
+      break;
+#endif /* HAVE_EGL_DEVICE */
+    }
 
   return TRUE;
 }
@@ -831,6 +1253,7 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
   CoglRenderer *cogl_renderer = cogl_context->display->renderer;
   CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
   MetaOnscreenNative *onscreen_native;
 
   /* If we never successfully allocated then there's nothing to do */
@@ -839,22 +1262,43 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
 
   onscreen_native = egl_onscreen->platform;
 
-  /* flip state takes a reference on the onscreen so there should
-   * never be outstanding flips when we reach here. */
-  g_return_if_fail (onscreen_native->gbm.next_fb_id == 0);
-
-  free_current_bo (onscreen);
-
   if (egl_onscreen->egl_surface != EGL_NO_SURFACE)
     {
       eglDestroySurface (egl_renderer->edpy, egl_onscreen->egl_surface);
       egl_onscreen->egl_surface = EGL_NO_SURFACE;
     }
 
-  if (onscreen_native->gbm.surface)
+  switch (renderer_native->mode)
     {
-      gbm_surface_destroy (onscreen_native->gbm.surface);
-      onscreen_native->gbm.surface = NULL;
+    case META_RENDERER_NATIVE_MODE_GBM:
+      /* flip state takes a reference on the onscreen so there should
+       * never be outstanding flips when we reach here. */
+      g_return_if_fail (onscreen_native->gbm.next_fb_id == 0);
+
+      free_current_bo (onscreen);
+
+      if (onscreen_native->gbm.surface)
+        {
+          gbm_surface_destroy (onscreen_native->gbm.surface);
+          onscreen_native->gbm.surface = NULL;
+        }
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      release_dumb_fb (renderer_native, onscreen_native);
+      if (onscreen_native->egl.stream != EGL_NO_STREAM_KHR)
+        {
+          MetaBackend *backend = meta_get_backend ();
+          MetaEgl *egl = meta_backend_get_egl (backend);
+
+          meta_egl_destroy_stream (egl,
+                                   egl_renderer->edpy,
+                                   onscreen_native->egl.stream,
+                                   NULL);
+          onscreen_native->egl.stream = EGL_NO_STREAM_KHR;
+        }
+      break;
+#endif /* HAVE_EGL_DEVICE */
     }
 
   g_slice_free (MetaOnscreenNative, onscreen_native);
@@ -871,6 +1315,12 @@ _cogl_winsys_egl_vtable = {
   .cleanup_context = meta_renderer_native_egl_cleanup_context,
   .context_init = meta_renderer_native_init_egl_context
 };
+
+MetaRendererNativeMode
+meta_renderer_native_get_mode (MetaRendererNative *renderer_native)
+{
+  return renderer_native->mode;
+}
 
 struct gbm_device *
 meta_renderer_native_get_gbm (MetaRendererNative *renderer_native)
@@ -1368,9 +1818,183 @@ init_gbm (MetaRendererNative *renderer_native,
 
   renderer_native->egl_display = egl_display;
   renderer_native->gbm.device = gbm_device;
+  renderer_native->mode = META_RENDERER_NATIVE_MODE_GBM;
 
   return TRUE;
 }
+
+#ifdef HAVE_EGL_DEVICE
+static const char *
+get_drm_device_file (MetaEgl     *egl,
+                     EGLDeviceEXT device,
+                     GError     **error)
+{
+  if (!meta_egl_egl_device_has_extensions (egl, device,
+                                           NULL,
+                                           "EGL_EXT_device_drm",
+                                           NULL))
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Missing required EGLDevice extension EGL_EXT_device_drm");
+      return NULL;
+    }
+
+  return meta_egl_query_device_string (egl, device,
+                                       EGL_DRM_DEVICE_FILE_EXT,
+                                       error);
+}
+
+static EGLDeviceEXT
+find_egl_device (MetaRendererNative *renderer_native,
+                 GError            **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  char **missing_extensions;
+  EGLint num_devices;
+  EGLDeviceEXT *devices;
+  EGLDeviceEXT device;
+  EGLint i;
+
+  if (!meta_egl_has_extensions (egl,
+                                EGL_NO_DISPLAY,
+                                &missing_extensions,
+                                "EGL_EXT_device_base",
+                                NULL))
+    {
+      char *missing_extensions_str;
+
+      missing_extensions_str = g_strjoinv (", ", missing_extensions);
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Missing EGL extensions required for EGLDevice renderer: %s",
+                   missing_extensions_str);
+      g_free (missing_extensions_str);
+      g_free (missing_extensions);
+      return EGL_NO_DEVICE_EXT;
+    }
+
+  if (!meta_egl_query_devices (egl, 0, NULL, &num_devices, error))
+    return EGL_NO_DEVICE_EXT;
+
+  devices = g_new0 (EGLDeviceEXT, num_devices);
+  if (!meta_egl_query_devices (egl, num_devices, devices, &num_devices,
+                               error))
+    {
+      g_free (devices);
+      return EGL_NO_DEVICE_EXT;
+    }
+
+  device = EGL_NO_DEVICE_EXT;
+  for (i = 0; i < num_devices; i++)
+    {
+      const char *egl_device_drm_path;
+
+      g_clear_error (error);
+
+      egl_device_drm_path = get_drm_device_file (egl, devices[i], error);
+      if (!egl_device_drm_path)
+        continue;
+
+      if (g_str_equal (egl_device_drm_path, renderer_native->kms_file_path))
+        {
+          device = devices[i];
+          break;
+        }
+    }
+  g_free (devices);
+
+  if (device == EGL_NO_DEVICE_EXT)
+    {
+      if (!*error)
+        g_set_error (error, G_IO_ERROR,
+                     G_IO_ERROR_FAILED,
+                     "Failed to find matching EGLDeviceEXT");
+      return EGL_NO_DEVICE_EXT;
+    }
+
+  return device;
+}
+
+static EGLDisplay
+get_egl_device_display (MetaRendererNative *renderer_native,
+                        EGLDeviceEXT        egl_device,
+                        GError            **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  EGLint platform_attribs[] = {
+    EGL_DRM_MASTER_FD_EXT, renderer_native->kms_fd,
+    EGL_NONE
+  };
+
+  return meta_egl_get_platform_display (egl, EGL_PLATFORM_DEVICE_EXT,
+                                        (void *) egl_device,
+                                        platform_attribs,
+                                        error);
+}
+
+static gboolean
+init_egl_device (MetaRendererNative *renderer_native,
+                 GError            **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  char **missing_extensions;
+  EGLDeviceEXT egl_device;
+  EGLDisplay egl_display;
+
+  if (!meta_is_stage_views_enabled())
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "EGLDevice requires stage views enabled");
+      return FALSE;
+    }
+
+  egl_device = find_egl_device (renderer_native, error);
+  if (egl_device == EGL_NO_DEVICE_EXT)
+    return FALSE;
+
+  egl_display = get_egl_device_display (renderer_native, egl_device, error);
+  if (egl_display == EGL_NO_DISPLAY)
+    return FALSE;
+
+  if (!meta_egl_initialize (egl, egl_display, error))
+    return FALSE;
+
+  if (!meta_egl_has_extensions (egl,
+                                egl_display,
+                                &missing_extensions,
+                                "EGL_NV_output_drm_flip_event",
+                                "EGL_EXT_output_base",
+                                "EGL_EXT_output_drm",
+                                "EGL_KHR_stream",
+                                "EGL_KHR_stream_producer_eglsurface",
+                                "EGL_EXT_stream_consumer_egloutput",
+                                "EGL_EXT_stream_acquire_mode",
+                                NULL))
+    {
+      char *missing_extensions_str;
+
+      missing_extensions_str = g_strjoinv (", ", missing_extensions);
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Missing EGL extensions required for EGLDevice renderer: %s",
+                   missing_extensions_str);
+      g_free (missing_extensions_str);
+      g_free (missing_extensions);
+      return FALSE;
+    }
+
+  renderer_native->egl_display = egl_display;
+  renderer_native->egl.device = egl_device;
+  renderer_native->mode = META_RENDERER_NATIVE_MODE_EGL_DEVICE;
+
+  return TRUE;
+}
+#endif /* HAVE_EGL_DEVICE */
 
 static gboolean
 meta_renderer_native_initable_init (GInitable     *initable,
@@ -1378,8 +2002,41 @@ meta_renderer_native_initable_init (GInitable     *initable,
                                     GError       **error)
 {
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (initable);
+  GError *gbm_error = NULL;
+#ifdef HAVE_EGL_DEVICE
+  GError *egl_device_error = NULL;
+#endif
 
-  return init_gbm (renderer_native, error);
+  if (init_gbm (renderer_native, &gbm_error))
+    return TRUE;
+
+#ifdef HAVE_EGL_DEVICE
+  if (init_egl_device (renderer_native, &egl_device_error))
+    {
+      g_error_free (gbm_error);
+      return TRUE;
+    }
+#endif
+
+  g_set_error (error, G_IO_ERROR,
+               G_IO_ERROR_FAILED,
+               "Failed to initialize renderer: "
+               "%s"
+#ifdef HAVE_EGL_DEVICE
+               ", %s"
+#endif
+               , gbm_error->message
+#ifdef HAVE_EGL_DEVICE
+               , egl_device_error->message
+#endif
+  );
+
+  g_error_free (gbm_error);
+#ifdef HAVE_EGL_DEVICE
+  g_error_free (egl_device_error);
+#endif
+
+  return FALSE;
 }
 
 static void
