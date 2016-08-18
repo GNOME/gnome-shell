@@ -257,6 +257,15 @@ AS_IF([test "$have_native_backend" = "yes"], [
 ])
 AM_CONDITIONAL([HAVE_NATIVE_BACKEND],[test "$have_native_backend" = "yes"])
 
+AC_ARG_ENABLE(egl-device,
+  AS_HELP_STRING([--enable-egl-device], [enable support for EGLDevice on top of KMS]),
+  enable_egl_device=yes,
+  enable_egl_device=no
+)
+AS_IF([test "$enable_egl_device" = "yes"], [
+  AC_DEFINE([HAVE_EGL_DEVICE],[1], [Defined if EGLDevice support is enabled])
+])
+
 MUTTER_WAYLAND_MODULES="wayland-server >= 1.6.90"
 
 AC_ARG_ENABLE(wayland,
@@ -484,6 +493,7 @@ mutter-$VERSION
 	Session management:       ${found_sm}
 	Wayland:                  ${have_wayland}
 	Native (KMS) backend:     ${have_native_backend}
+	EGLDevice:                ${enable_egl_device}
 "
 
 
