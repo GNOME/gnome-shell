@@ -64,11 +64,14 @@ enum
 
 typedef struct _MetaOnscreenNative
 {
-  struct gbm_surface *surface;
-  uint32_t current_fb_id;
-  uint32_t next_fb_id;
-  struct gbm_bo *current_bo;
-  struct gbm_bo *next_bo;
+  struct {
+    struct gbm_surface *surface;
+    uint32_t current_fb_id;
+    uint32_t next_fb_id;
+    struct gbm_bo *current_bo;
+    struct gbm_bo *next_bo;
+  } gbm;
+
   gboolean pending_swap_notify;
 
   gboolean pending_set_crtc;
@@ -85,7 +88,10 @@ struct _MetaRendererNative
 
   EGLDisplay egl_display;
 
-  struct gbm_device *gbm;
+  struct {
+    struct gbm_device *device;
+  } gbm;
+
   CoglClosure *swap_notify_idle;
 
   int64_t frame_counter;
@@ -176,17 +182,17 @@ free_current_bo (CoglOnscreen *onscreen)
   CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
-  if (onscreen_native->current_fb_id)
+  if (onscreen_native->gbm.current_fb_id)
     {
       drmModeRmFB (renderer_native->kms_fd,
-                   onscreen_native->current_fb_id);
-      onscreen_native->current_fb_id = 0;
+                   onscreen_native->gbm.current_fb_id);
+      onscreen_native->gbm.current_fb_id = 0;
     }
-  if (onscreen_native->current_bo)
+  if (onscreen_native->gbm.current_bo)
     {
-      gbm_surface_release_buffer (onscreen_native->surface,
-                                  onscreen_native->current_bo);
-      onscreen_native->current_bo = NULL;
+      gbm_surface_release_buffer (onscreen_native->gbm.surface,
+                                  onscreen_native->gbm.current_bo);
+      onscreen_native->gbm.current_bo = NULL;
     }
 }
 
@@ -288,7 +294,7 @@ meta_renderer_native_egl_context_created (CoglDisplay *cogl_display,
        COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) == 0)
     {
       renderer_native->dummy_gbm_surface =
-        gbm_surface_create (renderer_native->gbm,
+        gbm_surface_create (renderer_native->gbm.device,
                             16, 16,
                             GBM_FORMAT_XRGB8888,
                             GBM_BO_USE_RENDERING);
@@ -351,11 +357,11 @@ meta_onscreen_native_swap_drm_fb (CoglOnscreen *onscreen)
 
   free_current_bo (onscreen);
 
-  onscreen_native->current_fb_id = onscreen_native->next_fb_id;
-  onscreen_native->next_fb_id = 0;
+  onscreen_native->gbm.current_fb_id = onscreen_native->gbm.next_fb_id;
+  onscreen_native->gbm.next_fb_id = 0;
 
-  onscreen_native->current_bo = onscreen_native->next_bo;
-  onscreen_native->next_bo = NULL;
+  onscreen_native->gbm.current_bo = onscreen_native->gbm.next_bo;
+  onscreen_native->gbm.next_bo = NULL;
 }
 
 static void
@@ -387,17 +393,17 @@ flip_closure_destroyed (MetaRendererView *view)
   CoglOnscreenEGL *egl_onscreen =  onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
 
-  if (onscreen_native->next_fb_id)
+  if (onscreen_native->gbm.next_fb_id)
     {
       MetaBackend *backend = meta_get_backend ();
       MetaRenderer *renderer = meta_backend_get_renderer (backend);
       MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
 
-      drmModeRmFB (renderer_native->kms_fd, onscreen_native->next_fb_id);
-      gbm_surface_release_buffer (onscreen_native->surface,
-                                  onscreen_native->next_bo);
-      onscreen_native->next_bo = NULL;
-      onscreen_native->next_fb_id = 0;
+      drmModeRmFB (renderer_native->kms_fd, onscreen_native->gbm.next_fb_id);
+      gbm_surface_release_buffer (onscreen_native->gbm.surface,
+                                  onscreen_native->gbm.next_bo);
+      onscreen_native->gbm.next_bo = NULL;
+      onscreen_native->gbm.next_fb_id = 0;
 
       meta_onscreen_native_queue_swap_notify (onscreen);
     }
@@ -429,7 +435,7 @@ meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
   if (meta_monitor_manager_kms_flip_crtc (monitor_manager_kms,
                                           crtc,
                                           x, y,
-                                          onscreen_native->next_fb_id,
+                                          onscreen_native->gbm.next_fb_id,
                                           flip_closure))
     onscreen_native->pending_flips++;
 
@@ -445,7 +451,7 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
   MetaMonitorManagerKms *monitor_manager_kms =
     META_MONITOR_MANAGER_KMS (monitor_manager);
   MetaRendererView *view = onscreen_native->view;
-  uint32_t next_fb_id = onscreen_native->next_fb_id;
+  uint32_t next_fb_id = onscreen_native->gbm.next_fb_id;
   MetaMonitorInfo *monitor_info;
 
   monitor_info = meta_renderer_view_get_monitor_info (view);
@@ -586,7 +592,7 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   frame_info->global_frame_counter = renderer_native->frame_counter;
 
   /* If we already have a pending swap then block until it completes */
-  while (onscreen_native->next_fb_id != 0)
+  while (onscreen_native->gbm.next_fb_id != 0)
     meta_monitor_manager_kms_wait_for_flip (monitor_manager_kms);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
@@ -594,11 +600,11 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                     n_rectangles);
 
   /* Now we need to set the CRTC to whatever is the front buffer */
-  onscreen_native->next_bo =
-    gbm_surface_lock_front_buffer (onscreen_native->surface);
+  onscreen_native->gbm.next_bo =
+    gbm_surface_lock_front_buffer (onscreen_native->gbm.surface);
 
-  stride = gbm_bo_get_stride (onscreen_native->next_bo);
-  handle = gbm_bo_get_handle (onscreen_native->next_bo).u32;
+  stride = gbm_bo_get_stride (onscreen_native->gbm.next_bo);
+  handle = gbm_bo_get_handle (onscreen_native->gbm.next_bo).u32;
 
   if (drmModeAddFB (renderer_native->kms_fd,
                     cogl_framebuffer_get_width (COGL_FRAMEBUFFER (onscreen)),
@@ -607,13 +613,13 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
                     32, /* bpp */
                     stride,
                     handle,
-                    &onscreen_native->next_fb_id))
+                    &onscreen_native->gbm.next_fb_id))
     {
       g_warning ("Failed to create new back buffer handle: %m");
-      gbm_surface_release_buffer (onscreen_native->surface,
-                                  onscreen_native->next_bo);
-      onscreen_native->next_bo = NULL;
-      onscreen_native->next_fb_id = 0;
+      gbm_surface_release_buffer (onscreen_native->gbm.surface,
+                                  onscreen_native->gbm.next_bo);
+      onscreen_native->gbm.next_bo = NULL;
+      onscreen_native->gbm.next_fb_id = 0;
       return;
     }
 
@@ -649,12 +655,12 @@ meta_renderer_native_init_egl_context (CoglContext *cogl_context,
 }
 
 static gboolean
-meta_renderer_native_create_surface (MetaRendererNative  *renderer_native,
-                                     int                  width,
-                                     int                  height,
-                                     struct gbm_surface **gbm_surface,
-                                     EGLSurface          *egl_surface,
-                                     GError             **error)
+meta_renderer_native_create_surface_gbm (MetaRendererNative  *renderer_native,
+                                         int                  width,
+                                         int                  height,
+                                         struct gbm_surface **gbm_surface,
+                                         EGLSurface          *egl_surface,
+                                         GError             **error)
 {
   MetaBackend *backend = meta_get_backend ();
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
@@ -667,7 +673,7 @@ meta_renderer_native_create_surface (MetaRendererNative  *renderer_native,
   EGLNativeWindowType egl_native_window;
   EGLSurface new_egl_surface;
 
-  new_gbm_surface = gbm_surface_create (renderer_native->gbm,
+  new_gbm_surface = gbm_surface_create (renderer_native->gbm.device,
                                         width, height,
                                         GBM_FORMAT_XRGB8888,
                                         GBM_BO_USE_SCANOUT |
@@ -714,6 +720,8 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
   MetaRendererNative *renderer_native = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen;
   MetaOnscreenNative *onscreen_native;
+  struct gbm_surface *gbm_surface;
+  EGLSurface egl_surface;
   int width;
   int height;
 
@@ -737,11 +745,17 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
   if (width == 0 || height == 0)
     return TRUE;
 
-  return meta_renderer_native_create_surface (renderer_native,
-                                              width, height,
-                                              &onscreen_native->surface,
-                                              &egl_onscreen->egl_surface,
-                                              error);
+  if (!meta_renderer_native_create_surface_gbm (renderer_native,
+                                                width, height,
+                                                &gbm_surface,
+                                                &egl_surface,
+                                                error))
+    return FALSE;
+
+  onscreen_native->gbm.surface = gbm_surface;
+  egl_onscreen->egl_surface = egl_surface;
+
+  return TRUE;
 }
 
 static void
@@ -762,7 +776,7 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
 
   /* flip state takes a reference on the onscreen so there should
    * never be outstanding flips when we reach here. */
-  g_return_if_fail (onscreen_native->next_fb_id == 0);
+  g_return_if_fail (onscreen_native->gbm.next_fb_id == 0);
 
   free_current_bo (onscreen);
 
@@ -772,10 +786,10 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
       egl_onscreen->egl_surface = EGL_NO_SURFACE;
     }
 
-  if (onscreen_native->surface)
+  if (onscreen_native->gbm.surface)
     {
-      gbm_surface_destroy (onscreen_native->surface);
-      onscreen_native->surface = NULL;
+      gbm_surface_destroy (onscreen_native->gbm.surface);
+      onscreen_native->gbm.surface = NULL;
     }
 
   g_slice_free (MetaOnscreenNative, onscreen_native);
@@ -795,7 +809,7 @@ _cogl_winsys_egl_vtable = {
 struct gbm_device *
 meta_renderer_native_get_gbm (MetaRendererNative *renderer_native)
 {
-  return renderer_native->gbm;
+  return renderer_native->gbm.device;
 }
 
 int
@@ -946,16 +960,16 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
        * Ensure we don't have any pending flips that will want
        * to swap the current buffer.
        */
-      while (onscreen_native->next_fb_id != 0)
+      while (onscreen_native->gbm.next_fb_id != 0)
         meta_monitor_manager_kms_wait_for_flip (monitor_manager_kms);
 
       /* Need to drop the GBM surface and create a new one */
 
-      if (!meta_renderer_native_create_surface (renderer_native,
-                                                width, height,
-                                                &new_surface,
-                                                &new_egl_surface,
-                                                error))
+      if (!meta_renderer_native_create_surface_gbm (renderer_native,
+                                                    width, height,
+                                                    &new_surface,
+                                                    &new_egl_surface,
+                                                    error))
         return FALSE;
 
       if (egl_onscreen->egl_surface)
@@ -974,13 +988,13 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
        * longer used.
        */
       free_current_bo (onscreen);
-      g_clear_pointer (&onscreen_native->surface, gbm_surface_destroy);
+      g_clear_pointer (&onscreen_native->gbm.surface, gbm_surface_destroy);
 
       /*
        * Update the active gbm and egl surfaces and make sure they they are
        * used for drawing the coming frame.
        */
-      onscreen_native->surface = new_surface;
+      onscreen_native->gbm.surface = new_surface;
       egl_onscreen->egl_surface = new_egl_surface;
       _cogl_winsys_egl_make_current (cogl_display,
                                      egl_onscreen->egl_surface,
@@ -1215,7 +1229,7 @@ meta_renderer_native_finalize (GObject *object)
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
 
   g_clear_pointer (&renderer_native->dummy_gbm_surface, gbm_surface_destroy);
-  g_clear_pointer (&renderer_native->gbm, gbm_device_destroy);
+  g_clear_pointer (&renderer_native->gbm.device, gbm_device_destroy);
 
   G_OBJECT_CLASS (meta_renderer_native_parent_class)->finalize (object);
 }
@@ -1249,7 +1263,7 @@ meta_renderer_native_initable_init (GInitable     *initable,
     }
 
   renderer_native->egl_display = egl_display;
-  renderer_native->gbm = gbm_device;
+  renderer_native->gbm.device = gbm_device;
 
   return TRUE;
 }
