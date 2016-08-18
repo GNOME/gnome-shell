@@ -36,4 +36,6 @@ gboolean          meta_launcher_activate_vt             (MetaLauncher  *self,
 
 int               meta_launcher_get_kms_fd              (MetaLauncher  *self);
 
+const char *      meta_launcher_get_kms_file_path       (MetaLauncher *self);
+
 #endif /* META_LAUNCHER_H */

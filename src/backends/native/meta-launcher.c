@@ -61,6 +61,7 @@ struct _MetaLauncher
   gboolean session_active;
 
   int kms_fd;
+  char *kms_file_path;
 };
 
 static Login1Session *
@@ -435,6 +436,7 @@ static gboolean
 get_kms_fd (Login1Session *session_proxy,
             const gchar   *seat_id,
             int           *fd_out,
+            char         **kms_file_path_out,
             GError       **error)
 {
   int major, minor;
@@ -466,6 +468,7 @@ get_kms_fd (Login1Session *session_proxy,
     }
 
   *fd_out = fd;
+  *kms_file_path_out = g_steal_pointer (&path);
 
   return TRUE;
 }
@@ -509,6 +512,7 @@ meta_launcher_new (GError **error)
   g_autofree char *seat_id = NULL;
   gboolean have_control = FALSE;
   int kms_fd;
+  char *kms_file_path;
 
   session_proxy = get_session_proxy (NULL, error);
   if (!session_proxy)
@@ -530,7 +534,7 @@ meta_launcher_new (GError **error)
   if (!seat_proxy)
     goto fail;
 
-  if (!get_kms_fd (session_proxy, seat_id, &kms_fd, error))
+  if (!get_kms_fd (session_proxy, seat_id, &kms_fd, &kms_file_path, error))
     goto fail;
 
   self = g_slice_new0 (MetaLauncher);
@@ -539,6 +543,7 @@ meta_launcher_new (GError **error)
 
   self->session_active = TRUE;
   self->kms_fd = kms_fd;
+  self->kms_file_path = kms_file_path;
 
   clutter_evdev_set_device_callbacks (on_evdev_device_open,
                                       on_evdev_device_close,
@@ -558,6 +563,7 @@ meta_launcher_free (MetaLauncher *self)
 {
   g_object_unref (self->seat_proxy);
   g_object_unref (self->session_proxy);
+  g_free (self->kms_file_path);
   g_slice_free (MetaLauncher, self);
 }
 
@@ -584,4 +590,10 @@ int
 meta_launcher_get_kms_fd (MetaLauncher *self)
 {
   return self->kms_fd;
+}
+
+const char *
+meta_launcher_get_kms_file_path (MetaLauncher *self)
+{
+  return self->kms_file_path;
 }
