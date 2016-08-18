@@ -222,9 +222,9 @@ meta_onscreen_native_queue_swap_notify (CoglOnscreen *onscreen)
   onscreen_native->pending_swap_notify = TRUE;
 }
 
-static CoglBool
+static gboolean
 meta_renderer_native_connect (CoglRenderer *cogl_renderer,
-                              CoglError   **error)
+                              GError      **error)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
@@ -267,9 +267,9 @@ fail:
   return FALSE;
 }
 
-static CoglBool
+static gboolean
 meta_renderer_native_setup_egl_display (CoglDisplay *cogl_display,
-                                        CoglError  **error)
+                                        GError     **error)
 {
   CoglDisplayEGL *egl_display = cogl_display->winsys;
   CoglRendererEGL *egl_renderer = cogl_display->renderer->winsys;
@@ -290,9 +290,9 @@ meta_renderer_native_destroy_egl_display (CoglDisplay *cogl_display)
 {
 }
 
-static CoglBool
+static gboolean
 meta_renderer_native_egl_context_created (CoglDisplay *cogl_display,
-                                          CoglError  **error)
+                                          GError     **error)
 {
   CoglDisplayEGL *egl_display = cogl_display->winsys;
   CoglRenderer *cogl_renderer = cogl_display->renderer;
@@ -643,9 +643,9 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   meta_onscreen_native_flip_crtcs (onscreen);
 }
 
-static CoglBool
+static gboolean
 meta_renderer_native_init_egl_context (CoglContext *cogl_context,
-                                       CoglError  **error)
+                                       GError     **error)
 {
   COGL_FLAGS_SET (cogl_context->features,
                   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT, TRUE);
@@ -716,9 +716,9 @@ meta_renderer_native_create_surface (MetaRendererNative  *renderer_native,
   return TRUE;
 }
 
-static CoglBool
+static gboolean
 meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
-                                    CoglError   **error)
+                                    GError      **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *cogl_context = framebuffer->context;
@@ -1021,7 +1021,7 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
 static const CoglWinsysVtable *
 get_native_cogl_winsys_vtable (void)
 {
-  static CoglBool vtable_inited = FALSE;
+  static gboolean vtable_inited = FALSE;
   static CoglWinsysVtable vtable;
 
   if (!vtable_inited)
