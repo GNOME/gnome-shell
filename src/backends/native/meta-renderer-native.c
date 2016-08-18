@@ -58,6 +58,7 @@ enum
   PROP_0,
 
   PROP_KMS_FD,
+  PROP_KMS_FILE_PATH,
 
   PROP_LAST
 };
@@ -85,6 +86,7 @@ struct _MetaRendererNative
   MetaRenderer parent;
 
   int kms_fd;
+  char *kms_file_path;
 
   EGLDisplay egl_display;
 
@@ -1204,6 +1206,9 @@ meta_renderer_native_get_property (GObject    *object,
     case PROP_KMS_FD:
       g_value_set_int (value, renderer_native->kms_fd);
       break;
+    case PROP_KMS_FILE_PATH:
+      g_value_set_string (value, renderer_native->kms_file_path);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1223,6 +1228,9 @@ meta_renderer_native_set_property (GObject      *object,
     case PROP_KMS_FD:
       renderer_native->kms_fd = g_value_get_int (value);
       break;
+    case PROP_KMS_FILE_PATH:
+      renderer_native->kms_file_path = g_strdup (g_value_get_string (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1235,6 +1243,8 @@ meta_renderer_native_finalize (GObject *object)
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
 
   g_clear_pointer (&renderer_native->gbm.device, gbm_device_destroy);
+
+  g_free (renderer_native->kms_file_path);
 
   G_OBJECT_CLASS (meta_renderer_native_parent_class)->finalize (object);
 }
@@ -1313,16 +1323,26 @@ meta_renderer_native_class_init (MetaRendererNativeClass *klass)
                                                      0, G_MAXINT, 0,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (object_class,
+                                   PROP_KMS_FILE_PATH,
+                                   g_param_spec_string ("kms-file-path",
+                                                        "KMS file path",
+                                                        "The KMS file path",
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY));
 }
 
 MetaRendererNative *
-meta_renderer_native_new (int      kms_fd,
-                          GError **error)
+meta_renderer_native_new (int         kms_fd,
+                          const char *kms_file_path,
+                          GError    **error)
 {
   MetaRendererNative *renderer_native;
 
   renderer_native = g_object_new (META_TYPE_RENDERER_NATIVE,
                                   "kms-fd", kms_fd,
+                                  "kms-file-path", kms_file_path,
                                   NULL);
   if (!g_initable_init (G_INITABLE (renderer_native), NULL, error))
     {

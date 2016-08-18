@@ -290,11 +290,13 @@ meta_backend_native_create_renderer (MetaBackend *backend)
   MetaBackendNativePrivate *priv =
     meta_backend_native_get_instance_private (native);
   int kms_fd;
+  const char *kms_file_path;
   GError *error = NULL;
   MetaRendererNative *renderer_native;
 
   kms_fd = meta_launcher_get_kms_fd (priv->launcher);
-  renderer_native = meta_renderer_native_new (kms_fd, &error);
+  kms_file_path = meta_launcher_get_kms_file_path (priv->launcher);
+  renderer_native = meta_renderer_native_new (kms_fd, kms_file_path, &error);
   if (!renderer_native)
     {
       meta_warning ("Failed to create renderer: %s\n", error->message);
