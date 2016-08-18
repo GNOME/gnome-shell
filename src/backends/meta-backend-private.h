@@ -35,6 +35,7 @@
 #include "meta-cursor-renderer.h"
 #include "meta-monitor-manager-private.h"
 #include "meta-input-settings-private.h"
+#include "backends/meta-egl.h"
 #include "backends/meta-pointer-constraint.h"
 #include "backends/meta-renderer.h"
 #include "core/util-private.h"
@@ -117,6 +118,7 @@ MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
 MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
 MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
 MetaRenderer * meta_backend_get_renderer (MetaBackend *backend);
+MetaEgl * meta_backend_get_egl (MetaBackend *backend);
 
 gboolean meta_backend_grab_device (MetaBackend *backend,
                                    int          device_id,

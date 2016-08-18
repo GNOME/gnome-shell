@@ -65,6 +65,7 @@ struct _MetaBackendPrivate
   MetaCursorRenderer *cursor_renderer;
   MetaInputSettings *input_settings;
   MetaRenderer *renderer;
+  MetaEgl *egl;
 
   ClutterBackend *clutter_backend;
   ClutterActor *stage;
@@ -411,6 +412,8 @@ meta_backend_initable_init (GInitable     *initable,
   MetaBackend *backend = META_BACKEND (initable);
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
+  priv->egl = g_object_new (META_TYPE_EGL, NULL);
+
   priv->renderer = META_BACKEND_GET_CLASS (backend)->create_renderer (backend);
   if (!priv->renderer)
     {
@@ -481,6 +484,16 @@ MetaRenderer * meta_backend_get_renderer (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->renderer;
+}
+
+/**
+ * meta_backend_get_egl: (skip)
+ */
+MetaEgl * meta_backend_get_egl (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->egl;
 }
 
 /**
