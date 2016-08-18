@@ -120,6 +120,7 @@ G_DEFINE_TYPE (MetaWaylandSurfaceRoleDND,
 
 enum {
   SURFACE_DESTROY,
+  SURFACE_UNMAPPED,
   N_SURFACE_SIGNALS
 };
 
@@ -1100,9 +1101,14 @@ void
 meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                  MetaWindow         *window)
 {
+  gboolean was_unmapped = surface->window && !window;
+
   surface->window = window;
   sync_reactive (surface);
   sync_drag_dest_funcs (surface);
+
+  if (was_unmapped)
+    g_signal_emit (surface, surface_signals[SURFACE_UNMAPPED], 0);
 }
 
 static void
@@ -1850,6 +1856,14 @@ meta_wayland_surface_class_init (MetaWaylandSurfaceClass *klass)
 
   surface_signals[SURFACE_DESTROY] =
     g_signal_new ("destroy",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  surface_signals[SURFACE_UNMAPPED] =
+    g_signal_new ("unmapped",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
