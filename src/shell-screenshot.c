@@ -10,6 +10,7 @@
 
 #include "shell-global.h"
 #include "shell-screenshot.h"
+#include "shell-util.h"
 
 #define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
 #define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
@@ -233,14 +234,15 @@ do_grab_screenshot (ShellScreenshot *screenshot,
 
   if (n_captures == 0)
     return;
+  else if (n_captures == 1)
+    priv->image = cairo_surface_reference (captures[0].image);
+  else
+    priv->image = shell_util_composite_capture_images (captures,
+                                                       n_captures,
+                                                       x, y,
+                                                       width, height);
 
-  /*
-   * TODO: Deal with each capture region separately, instead of dropping
-   * anything except the first one.
-   */
-  priv->image = captures[0].image;
-
-  for (i = 1; i < n_captures; i++)
+  for (i = 0; i < n_captures; i++)
     cairo_surface_destroy (captures[i].image);
 
   g_free (captures);

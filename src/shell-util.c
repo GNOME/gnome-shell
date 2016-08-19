@@ -446,3 +446,49 @@ shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
 
   return content;
 }
+
+cairo_surface_t *
+shell_util_composite_capture_images (ClutterCapture  *captures,
+                                     int              n_captures,
+                                     int              x,
+                                     int              y,
+                                     int              width,
+                                     int              height)
+{
+  int i;
+  cairo_format_t format;
+  cairo_surface_t *image;
+  cairo_t *cr;
+
+  format = cairo_image_surface_get_format (captures[0].image);
+  image = cairo_image_surface_create (format, width, height);
+
+  cr = cairo_create (image);
+
+  for (i = 0; i < n_captures; i++)
+    {
+      ClutterCapture *capture = &captures[i];
+      double capture_scale = 1.0;
+
+      /*
+       * Ignore capture regions with scale other than 1 for now; mutter can't
+       * produce them yet, so there is no way to test them.
+       */
+      cairo_surface_get_device_scale (capture->image, &capture_scale, NULL);
+      if ((int) capture_scale != 1)
+        continue;
+
+      cairo_save (cr);
+
+      cairo_translate (cr,
+                       capture->rect.x - x,
+                       capture->rect.y - y);
+      cairo_set_source_surface (cr, capture->image, 0, 0);
+      cairo_paint (cr);
+
+      cairo_restore (cr);
+    }
+  cairo_destroy (cr);
+
+  return image;
+}

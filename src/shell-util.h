@@ -51,6 +51,13 @@ gboolean shell_util_need_background_refresh (void);
 ClutterContent * shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
                                                           MetaRectangle   *window_rect);
 
+cairo_surface_t * shell_util_composite_capture_images (ClutterCapture  *captures,
+                                                       int              n_captures,
+                                                       int              x,
+                                                       int              y,
+                                                       int              width,
+                                                       int              height);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
