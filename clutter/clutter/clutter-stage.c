@@ -4676,6 +4676,7 @@ capture_view (ClutterStage          *stage,
   uint8_t *data;
   int stride;
   CoglBitmap *bitmap;
+  cairo_rectangle_int_t view_layout;
 
   framebuffer = clutter_stage_view_get_framebuffer (view);
 
@@ -4700,8 +4701,11 @@ capture_view (ClutterStage          *stage,
                                      stride,
                                      data);
 
+  clutter_stage_view_get_layout (view, &view_layout);
+
   cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
-                                            rect->x, rect->y,
+                                            view_layout.x - rect->x,
+                                            view_layout.y - rect->y,
                                             COGL_READ_PIXELS_COLOR_BUFFER,
                                             bitmap);
 
