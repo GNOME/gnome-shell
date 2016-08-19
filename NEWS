@@ -1,3 +1,24 @@
+3.21.90
+=======
+* Consider XDG_SESSION_TYPE when determining session type [Jouke; #759388]
+* Re-add support for edge scrolling on some touchpads [Bastien; #768245]
+* Support mouse and trackball acceleration profile [Jonas; #769179]
+* Draw monitor contentn to individual framebuffer [Jonas; #768976]
+* Support virtual input devices [Jonas, Carlos; #765009]
+* Set correct output scale on hotplug [Jonas; #769505]
+* Misc. bug fixes and cleanups [Florian, Jonas, Thomas, Bastien, Carlos;
+  #769014, #769024, #769054, #769070, #769036, #769305, #769578, #769800,
+  #769073]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Thomas Hindoe Paaboel Andersen, Simon McVittie,
+  Alberts Muktupāvels, Florian Müllner, Bastien Nocera, Jouke Witteveen
+
+Translations:
+  Daniel Mustieles [es], Aurimas Černius [lt], Dušan Kazik [sk],
+  Fabio Tomat [fur], Balázs Úr [hu], Yosef Or Boczko [he], Marek Černocký [cs],
+  Matej Urbančič [sl]
+
 3.21.4
 ======
 * Fix missing frame border around GTK+ dialogs [Florian; #745060]
