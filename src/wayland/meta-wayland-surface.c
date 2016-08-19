@@ -574,12 +574,15 @@ static void
 subsurface_role_commit (MetaWaylandSurfaceRole  *surface_role,
                         MetaWaylandPendingState *pending)
 {
+  MetaWaylandSurfaceRoleClass *surface_role_class;
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
   MetaSurfaceActorWayland *surface_actor =
     META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
 
-  queue_surface_actor_frame_callbacks (surface, pending);
+  surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_subsurface_parent_class);
+  surface_role_class->commit (surface_role, pending);
 
   if (surface->buffer_ref.buffer != NULL)
     clutter_actor_show (CLUTTER_ACTOR (surface_actor));
