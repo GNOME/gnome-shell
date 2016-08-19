@@ -1999,10 +1999,12 @@ actor_surface_commit (MetaWaylandSurfaceRole  *surface_role,
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandSurface *toplevel_surface;
 
   queue_surface_actor_frame_callbacks (surface, pending);
 
-  if (!surface->window)
+  toplevel_surface = meta_wayland_surface_get_toplevel (surface);
+  if (!toplevel_surface || !toplevel_surface->window)
     return;
 
   meta_surface_actor_wayland_sync_state (
