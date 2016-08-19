@@ -1,3 +1,15 @@
+3.20.4
+======
+* Free old backgrounds immediately [Hyungwon; #766353]
+* Adjust to flatpak PermissionStore API changes [Florian; #766598]
+* calendar: Only hide dismissed occurrence of recurring event [Florian; #748226]
+
+Contributors:
+  Hyungwon Hwang, Florian Müllner
+
+Translations:
+  Bruce Cowan [en_GB], Piotr Drąg [pl]
+
 3.20.3
 ======
 * Fix sorting of hidden apps in app switcher [Florian; #766238]
