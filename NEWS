@@ -1,3 +1,17 @@
+3.21.90
+=======
+* Improve on-screen keyboard on wayland [Carlos; #765009]
+* Misc. bug fixes [Florian; #769156, #769216, #769074]
+
+Contributors:
+  Carlos Garnacho, Florian Müllner
+
+Translations:
+  Fabio Tomat [fur], Tiago Santos [pt], Daniel Mustieles [es],
+  Bernd Homuth [de], Aurimas Černius [lt], Balázs Úr [hu],
+  Yosef Or Boczko [he], Jiri Grönroos [fi], Marek Cernocky [cs],
+  Muhammet Kara [tr], Enrico Nicoletto [pt_BR], Andika Triwidada [id]
+
 3.21.4
 ======
 * overview: Fix switching workspaces when scrolling on non-primary monitors
