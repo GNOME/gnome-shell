@@ -109,7 +109,7 @@ G_DEFINE_TYPE (MetaWaylandPendingState,
 
 struct _MetaWaylandSurfaceRoleSubsurface
 {
-  MetaWaylandSurfaceRole parent;
+  MetaWaylandSurfaceRoleActorSurface parent;
 };
 
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleSubsurface,
