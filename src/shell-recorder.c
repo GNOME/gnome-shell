@@ -1075,7 +1075,7 @@ recorder_open_outfile (ShellRecorder  *recorder,
 
       if (outfile == -1 && errno != EEXIST)
         {
-          g_warning ("Cannot open output file '%s': %s", filename->str, g_strerror (errno));
+          g_warning ("Cannot open output file '%s': %s", path, g_strerror (errno));
           g_string_free (filename, TRUE);
           g_free (path);
           goto out;
