@@ -22,6 +22,7 @@
 #include "shell-global.h"
 #include "shell-recorder-src.h"
 #include "shell-recorder.h"
+#include "shell-util.h"
 
 #define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
 #define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
@@ -437,17 +438,21 @@ recorder_record_frame (ShellRecorder *recorder,
   if (n_captures == 0)
     return;
 
-  /*
-   * TODO: Deal with each capture region separately, instead of dropping
-   * anything except the first one.
-   */
+  if (n_captures == 1)
+    image = cairo_surface_reference (captures[0].image);
+  else
+    image = shell_util_composite_capture_images (captures,
+                                                 n_captures,
+                                                 recorder->area.x,
+                                                 recorder->area.y,
+                                                 recorder->area.width,
+                                                 recorder->area.height);
 
-  image = captures[0].image;
   data = cairo_image_surface_get_data (image);
-  size = captures[0].rect.width * captures[0].rect.height * 4;
+  size = (cairo_image_surface_get_height (image) *
+          cairo_image_surface_get_stride (image));
 
-  /* TODO: Capture more than the first framebuffer. */
-  for (i = 1; i < n_captures; i++)
+  for (i = 0; i < n_captures; i++)
     cairo_surface_destroy (captures[i].image);
   g_free (captures);
 
