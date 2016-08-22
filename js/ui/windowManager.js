@@ -1349,9 +1349,13 @@ const WindowManager = new Lang.Class({
     _hasAttachedDialogs: function(window, ignoreWindow) {
         var count = 0;
         window.foreach_transient(function(win) {
-            if (win != ignoreWindow && win.is_attached_dialog())
+            if (win != ignoreWindow &&
+                win.is_attached_dialog() &&
+                win.get_transient_for() == window) {
                 count++;
-            return false;
+                return false;
+            }
+            return true;
         });
         return count != 0;
     },
