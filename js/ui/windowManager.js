@@ -1424,6 +1424,11 @@ const WindowManager = new Lang.Class({
 
             actor._windowType = type;
         }));
+        actor.meta_window.connect('unmanaged', Lang.bind(this, function(window) {
+                let parent = window.get_transient_for();
+                if (parent)
+                    this._checkDimming(parent);
+        }));
 
         if (actor.meta_window.is_attached_dialog())
             this._checkDimming(actor.get_meta_window().get_transient_for());
