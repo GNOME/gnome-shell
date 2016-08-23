@@ -106,6 +106,21 @@ void clutter_seat_evdev_notify_button (ClutterSeatEvdev   *seat,
                                        uint32_t            button,
                                        uint32_t            state);
 
+void clutter_seat_evdev_notify_scroll_continuous (ClutterSeatEvdev         *seat,
+                                                  ClutterInputDevice       *input_device,
+                                                  uint64_t                  time_us,
+                                                  double                    dx,
+                                                  double                    dy,
+                                                  ClutterScrollSource       source,
+                                                  ClutterScrollFinishFlags  flags);
+
+void clutter_seat_evdev_notify_discrete_scroll (ClutterSeatEvdev    *seat,
+                                                ClutterInputDevice  *input_device,
+                                                uint64_t             time_us,
+                                                double               discrete_dx,
+                                                double               discrete_dy,
+                                                ClutterScrollSource  source);
+
 void clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev     *seat,
                                            struct libinput_seat *libinput_seat);
 

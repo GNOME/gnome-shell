@@ -29,6 +29,7 @@
 #include "clutter-seat-evdev.h"
 
 #include <linux/input.h>
+#include <math.h>
 
 #include "clutter-event-private.h"
 #include "clutter-input-device-evdev.h"
@@ -41,6 +42,8 @@
 #define INITIAL_POINTER_Y 16
 
 #define AUTOREPEAT_VALUE 2
+
+#define DISCRETE_SCROLL_STEP 10.0
 
 void
 clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev     *seat,
@@ -567,6 +570,194 @@ clutter_seat_evdev_notify_button (ClutterSeatEvdev   *seat,
   _clutter_input_device_set_stage (seat->core_pointer, stage);
 
   queue_event (event);
+}
+
+static void
+notify_scroll (ClutterInputDevice       *input_device,
+               guint64                   time_us,
+               gdouble                   dx,
+               gdouble                   dy,
+               ClutterScrollSource       scroll_source,
+               ClutterScrollFinishFlags  flags,
+               gboolean                  emulated)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event = NULL;
+  gdouble scroll_factor;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (stage == NULL)
+    return;
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  event = clutter_event_new (CLUTTER_SCROLL);
+
+  _clutter_evdev_event_set_time_usec (event, time_us);
+  event->scroll.time = us2ms (time_us);
+  event->scroll.stage = CLUTTER_STAGE (stage);
+  event->scroll.device = seat->core_pointer;
+  _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
+
+  /* libinput pointer axis events are in pointer motion coordinate space.
+   * To convert to Xi2 discrete step coordinate space, multiply the factor
+   * 1/10. */
+  event->scroll.direction = CLUTTER_SCROLL_SMOOTH;
+  scroll_factor = 1.0 / DISCRETE_SCROLL_STEP;
+  clutter_event_set_scroll_delta (event,
+                                  scroll_factor * dx,
+                                  scroll_factor * dy);
+
+  event->scroll.x = seat->pointer_x;
+  event->scroll.y = seat->pointer_y;
+  clutter_event_set_device (event, seat->core_pointer);
+  clutter_event_set_source_device (event, input_device);
+  event->scroll.scroll_source = scroll_source;
+  event->scroll.finish_flags = flags;
+
+  _clutter_event_set_pointer_emulated (event, emulated);
+
+  queue_event (event);
+}
+
+static void
+notify_discrete_scroll (ClutterInputDevice     *input_device,
+                        uint64_t                time_us,
+                        ClutterScrollDirection  direction,
+                        ClutterScrollSource     scroll_source,
+                        gboolean                emulated)
+{
+  ClutterInputDeviceEvdev *device_evdev;
+  ClutterSeatEvdev *seat;
+  ClutterStage *stage;
+  ClutterEvent *event = NULL;
+
+  if (direction == CLUTTER_SCROLL_SMOOTH)
+    return;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (stage == NULL)
+    return;
+
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
+
+  event = clutter_event_new (CLUTTER_SCROLL);
+
+  _clutter_evdev_event_set_time_usec (event, time_us);
+  event->scroll.time = us2ms (time_us);
+  event->scroll.stage = CLUTTER_STAGE (stage);
+  event->scroll.device = seat->core_pointer;
+  _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
+
+  event->scroll.direction = direction;
+
+  event->scroll.x = seat->pointer_x;
+  event->scroll.y = seat->pointer_y;
+  clutter_event_set_device (event, seat->core_pointer);
+  clutter_event_set_source_device (event, input_device);
+  event->scroll.scroll_source = scroll_source;
+
+  _clutter_event_set_pointer_emulated (event, emulated);
+
+  queue_event (event);
+}
+
+static void
+check_notify_discrete_scroll (ClutterSeatEvdev   *seat,
+                              ClutterInputDevice *device,
+                              uint64_t            time_us,
+                              ClutterScrollSource scroll_source)
+{
+  int i, n_xscrolls, n_yscrolls;
+
+  n_xscrolls = floor (fabs (seat->accum_scroll_dx) / DISCRETE_SCROLL_STEP);
+  n_yscrolls = floor (fabs (seat->accum_scroll_dy) / DISCRETE_SCROLL_STEP);
+
+  for (i = 0; i < n_xscrolls; i++)
+    {
+      notify_discrete_scroll (device, time_us,
+                              seat->accum_scroll_dx > 0 ?
+                              CLUTTER_SCROLL_RIGHT : CLUTTER_SCROLL_LEFT,
+                              scroll_source, TRUE);
+    }
+
+  for (i = 0; i < n_yscrolls; i++)
+    {
+      notify_discrete_scroll (device, time_us,
+                              seat->accum_scroll_dy > 0 ?
+                              CLUTTER_SCROLL_DOWN : CLUTTER_SCROLL_UP,
+                              scroll_source, TRUE);
+    }
+
+  seat->accum_scroll_dx = fmodf (seat->accum_scroll_dx, DISCRETE_SCROLL_STEP);
+  seat->accum_scroll_dy = fmodf (seat->accum_scroll_dy, DISCRETE_SCROLL_STEP);
+}
+
+void
+clutter_seat_evdev_notify_scroll_continuous (ClutterSeatEvdev         *seat,
+                                             ClutterInputDevice       *input_device,
+                                             uint64_t                  time_us,
+                                             double                    dx,
+                                             double                    dy,
+                                             ClutterScrollSource       scroll_source,
+                                             ClutterScrollFinishFlags  finish_flags)
+{
+  if (finish_flags & CLUTTER_SCROLL_FINISHED_HORIZONTAL)
+    seat->accum_scroll_dx = 0;
+  else
+    seat->accum_scroll_dx += dx;
+
+  if (finish_flags & CLUTTER_SCROLL_FINISHED_VERTICAL)
+    seat->accum_scroll_dy = 0;
+  else
+    seat->accum_scroll_dy += dy;
+
+  notify_scroll (input_device, time_us, dx, dy, scroll_source,
+                 finish_flags, FALSE);
+  check_notify_discrete_scroll (seat, input_device, time_us, scroll_source);
+}
+
+static ClutterScrollDirection
+discrete_to_direction (double discrete_dx,
+                       double discrete_dy)
+{
+  if (discrete_dx > 0)
+    return CLUTTER_SCROLL_RIGHT;
+  else if (discrete_dx < 0)
+    return CLUTTER_SCROLL_LEFT;
+  else if (discrete_dy > 0)
+    return CLUTTER_SCROLL_DOWN;
+  else if (discrete_dy < 0)
+    return CLUTTER_SCROLL_UP;
+  else
+    g_assert_not_reached ();
+}
+
+void
+clutter_seat_evdev_notify_discrete_scroll (ClutterSeatEvdev    *seat,
+                                           ClutterInputDevice  *input_device,
+                                           uint64_t             time_us,
+                                           double               discrete_dx,
+                                           double               discrete_dy,
+                                           ClutterScrollSource  scroll_source)
+{
+  notify_scroll (input_device, time_us,
+                 discrete_dx * DISCRETE_SCROLL_STEP,
+                 discrete_dy * DISCRETE_SCROLL_STEP,
+                 scroll_source, CLUTTER_SCROLL_FINISHED_NONE,
+                 TRUE);
+  notify_discrete_scroll (input_device, time_us,
+                          discrete_to_direction (discrete_dx, discrete_dy),
+                          scroll_source, FALSE);
+
 }
 
 void
