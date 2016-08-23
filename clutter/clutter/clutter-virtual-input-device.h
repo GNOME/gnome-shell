@@ -76,6 +76,11 @@ struct _ClutterVirtualInputDeviceClass
                          uint64_t                   time_us,
                          uint32_t                   keyval,
                          ClutterKeyState            key_state);
+
+  void (*notify_discrete_scroll) (ClutterVirtualInputDevice *virtual_device,
+                                  uint64_t                   time_us,
+                                  ClutterScrollDirection     direction,
+                                  ClutterScrollSource        scroll_source);
 };
 
 CLUTTER_AVAILABLE_IN_ALL
@@ -107,6 +112,13 @@ void clutter_virtual_input_device_notify_keyval (ClutterVirtualInputDevice *virt
                                                  uint64_t                   time_us,
                                                  uint32_t                   keyval,
                                                  ClutterKeyState            key_state);
+
+CLUTTER_AVAILABLE_IN_ALL
+void clutter_virtual_input_device_notify_discrete_scroll (ClutterVirtualInputDevice *virtual_device,
+                                                          uint64_t                   time_us,
+                                                          ClutterScrollDirection     direction,
+                                                          ClutterScrollSource        scroll_source);
+
 
 CLUTTER_AVAILABLE_IN_ALL
 ClutterDeviceManager * clutter_virtual_input_device_get_manager (ClutterVirtualInputDevice *virtual_device);

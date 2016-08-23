@@ -115,6 +115,19 @@ clutter_virtual_input_device_notify_keyval (ClutterVirtualInputDevice *virtual_d
   klass->notify_keyval (virtual_device, time_us, keyval, key_state);
 }
 
+void
+clutter_virtual_input_device_notify_discrete_scroll (ClutterVirtualInputDevice *virtual_device,
+                                                     uint64_t                   time_us,
+                                                     ClutterScrollDirection     direction,
+                                                     ClutterScrollSource        scroll_source)
+{
+  ClutterVirtualInputDeviceClass *klass =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_GET_CLASS (virtual_device);
+
+  klass->notify_discrete_scroll (virtual_device, time_us,
+                                 direction, scroll_source);
+}
+
 /**
  * clutter_virtual_input_device_get_manager:
  * @virtual_device: a virtual device

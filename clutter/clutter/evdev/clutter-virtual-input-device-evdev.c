@@ -398,6 +398,57 @@ clutter_virtual_input_device_evdev_notify_keyval (ClutterVirtualInputDevice *vir
 }
 
 static void
+direction_to_discrete (ClutterScrollDirection direction,
+                       double                *discrete_dx,
+                       double                *discrete_dy)
+{
+  switch (direction)
+    {
+    case CLUTTER_SCROLL_UP:
+      *discrete_dx = 0.0;
+      *discrete_dy = -1.0;
+      break;
+    case CLUTTER_SCROLL_DOWN:
+      *discrete_dx = 0.0;
+      *discrete_dy = 1.0;
+      break;
+    case CLUTTER_SCROLL_LEFT:
+      *discrete_dx = -1.0;
+      *discrete_dy = 0.0;
+      break;
+    case CLUTTER_SCROLL_RIGHT:
+      *discrete_dx = 1.0;
+      *discrete_dy = 0.0;
+      break;
+    case CLUTTER_SCROLL_SMOOTH:
+      g_assert_not_reached ();
+      break;
+    }
+}
+
+static void
+clutter_virtual_input_device_evdev_notify_discrete_scroll (ClutterVirtualInputDevice *virtual_device,
+                                                           uint64_t                   time_us,
+                                                           ClutterScrollDirection     direction,
+                                                           ClutterScrollSource        scroll_source)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+  double discrete_dx = 0.0, discrete_dy = 0.0;
+
+  if (time_us == CLUTTER_CURRENT_TIME)
+    time_us = g_get_monotonic_time ();
+
+  direction_to_discrete (direction, &discrete_dx, &discrete_dy);
+
+  clutter_seat_evdev_notify_discrete_scroll (virtual_evdev->seat,
+                                             virtual_evdev->device,
+                                             time_us,
+                                             discrete_dx, discrete_dy,
+                                             scroll_source);
+}
+
+static void
 clutter_virtual_input_device_evdev_get_property (GObject    *object,
                                                  guint       prop_id,
                                                  GValue     *value,
@@ -500,6 +551,7 @@ clutter_virtual_input_device_evdev_class_init (ClutterVirtualInputDeviceEvdevCla
   virtual_input_device_class->notify_button = clutter_virtual_input_device_evdev_notify_button;
   virtual_input_device_class->notify_key = clutter_virtual_input_device_evdev_notify_key;
   virtual_input_device_class->notify_keyval = clutter_virtual_input_device_evdev_notify_keyval;
+  virtual_input_device_class->notify_discrete_scroll = clutter_virtual_input_device_evdev_notify_discrete_scroll;
 
   obj_props[PROP_SEAT] = g_param_spec_pointer ("seat",
                                                P_("ClutterSeatEvdev"),
