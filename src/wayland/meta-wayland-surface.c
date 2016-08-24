@@ -594,7 +594,10 @@ subsurface_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWaylandSurface *parent = surface->sub.parent;
 
-  return meta_wayland_surface_role_get_toplevel (parent->role);
+  if (parent->role)
+    return meta_wayland_surface_role_get_toplevel (parent->role);
+  else
+    return NULL;
 }
 
 /* A non-subsurface is always desynchronized.
