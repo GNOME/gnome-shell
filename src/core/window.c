@@ -7415,23 +7415,26 @@ meta_window_set_transient_for (MetaWindow *window,
 
   /* may now be a dialog */
   if (window->client_type == META_WINDOW_CLIENT_TYPE_X11)
-    meta_window_x11_recalc_window_type (window);
-
-  if (!window->constructing)
     {
-      /* If the window attaches, detaches, or changes attached
-       * parents, we need to destroy the MetaWindow and let a new one
-       * be created (which happens as a side effect of
-       * meta_window_unmanage()). The condition below is correct
-       * because we know window->transient_for has changed.
-       */
-      if (window->attached || meta_window_should_attach_to_parent (window))
-        {
-          guint32 timestamp;
+      meta_window_x11_recalc_window_type (window);
 
-          timestamp = meta_display_get_current_time_roundtrip (window->display);
-          meta_window_unmanage (window, timestamp);
-          return;
+      if (!window->constructing)
+        {
+          /* If the window attaches, detaches, or changes attached
+           * parents, we need to destroy the MetaWindow and let a new one
+           * be created (which happens as a side effect of
+           * meta_window_unmanage()). The condition below is correct
+           * because we know window->transient_for has changed.
+           */
+          if (window->attached || meta_window_should_attach_to_parent (window))
+            {
+              guint32 timestamp;
+
+              timestamp =
+                meta_display_get_current_time_roundtrip (window->display);
+              meta_window_unmanage (window, timestamp);
+              return;
+            }
         }
     }
 
