@@ -155,14 +155,15 @@ make_output_name (drmModeConnector *connector)
     "Virtual",
     "DSI",
   };
-  const char *connector_type_name;
 
   if (connector->connector_type < G_N_ELEMENTS (connector_type_names))
-    connector_type_name = connector_type_names[connector->connector_type];
+    return g_strdup_printf ("%s-%d",
+                            connector_type_names[connector->connector_type],
+                            connector->connector_type_id);
   else
-    connector_type_name = "unknown";
-
-  return g_strdup_printf ("%s%d", connector_type_name, connector->connector_id);
+    return g_strdup_printf ("Unknown%d-%d",
+                            connector->connector_type,
+                            connector->connector_type_id);
 }
 
 static void
