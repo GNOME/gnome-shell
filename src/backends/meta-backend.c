@@ -790,9 +790,9 @@ meta_is_stage_views_enabled (void)
   mutter_stage_views = g_getenv ("MUTTER_STAGE_VIEWS");
 
   if (!mutter_stage_views)
-    return FALSE;
+    return TRUE;
 
-  return strcmp (mutter_stage_views, "1") == 0;
+  return !g_str_equal (mutter_stage_views, "0");
 }
 
 MetaInputSettings *
