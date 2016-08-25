@@ -113,19 +113,8 @@ cursor_sprite_prepare_at (MetaCursorSprite             *cursor_sprite,
 static void
 cursor_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
 {
-  MetaWaylandSurfaceRoleCursor *cursor_role =
-    META_WAYLAND_SURFACE_ROLE_CURSOR (surface_role);
-  MetaWaylandSurfaceRoleCursorPrivate *priv =
-    meta_wayland_surface_role_cursor_get_instance_private (cursor_role);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
-  MetaWaylandBuffer *buffer = meta_wayland_surface_get_buffer (surface);
-
-  if (buffer)
-    {
-      g_set_object (&priv->buffer, buffer);
-      meta_wayland_surface_ref_buffer_use_count (surface);
-    }
 
   wl_list_insert_list (&priv->frame_callbacks,
                        &surface->pending_frame_callback_list);
@@ -224,6 +213,28 @@ cursor_surface_role_dispose (GObject *object)
 }
 
 static void
+cursor_surface_role_constructed (GObject *object)
+{
+  MetaWaylandSurfaceRoleCursor *cursor_role =
+    META_WAYLAND_SURFACE_ROLE_CURSOR (object);
+  MetaWaylandSurfaceRoleCursorPrivate *priv =
+    meta_wayland_surface_role_cursor_get_instance_private (cursor_role);
+  MetaWaylandSurfaceRole *surface_role =
+    META_WAYLAND_SURFACE_ROLE (cursor_role);
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandBuffer *buffer;
+
+  buffer = meta_wayland_surface_get_buffer (surface);
+  if (buffer)
+    {
+      g_assert (buffer->resource);
+      g_set_object (&priv->buffer, buffer);
+      meta_wayland_surface_ref_buffer_use_count (surface);
+    }
+}
+
+static void
 meta_wayland_surface_role_cursor_init (MetaWaylandSurfaceRoleCursor *role)
 {
   MetaWaylandSurfaceRoleCursorPrivate *priv =
@@ -250,6 +261,7 @@ meta_wayland_surface_role_cursor_class_init (MetaWaylandSurfaceRoleCursorClass *
   surface_role_class->commit = cursor_surface_role_commit;
   surface_role_class->is_on_output = cursor_surface_role_is_on_output;
 
+  object_class->constructed = cursor_surface_role_constructed;
   object_class->dispose = cursor_surface_role_dispose;
 }
 
