@@ -735,6 +735,14 @@ apply_pending_state (MetaWaylandSurface      *surface,
           CoglTexture *texture;
 
           texture = meta_wayland_buffer_ensure_texture (pending->buffer);
+          if (!texture)
+            {
+              wl_resource_post_error (surface->resource, WL_DISPLAY_ERROR_NO_MEMORY,
+                              "Failed to create a texture for surface %i",
+                              wl_resource_get_id (surface->resource));
+
+              goto cleanup;
+            }
           meta_surface_actor_wayland_set_texture (surface_actor_wayland,
                                                   texture);
         }
@@ -804,6 +812,7 @@ apply_pending_state (MetaWaylandSurface      *surface,
         }
     }
 
+cleanup:
   /* If we have a buffer that we are not using, decrease the use count so it may
    * be released if no-one else has a use-reference to it.
    */

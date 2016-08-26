@@ -106,8 +106,10 @@ meta_wayland_buffer_ensure_texture (MetaWaylandBuffer *buffer)
 
   if (!texture)
     {
+      meta_warning ("Could not import pending buffer, ignoring commit: %s\n",
+                    catch_error->message);
       cogl_error_free (catch_error);
-      meta_fatal ("Could not import pending buffer, ignoring commit\n");
+      goto out;
     }
 
   buffer->texture = texture;
