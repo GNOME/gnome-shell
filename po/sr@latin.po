@@ -1,8 +1,7 @@
 # Serbian translation of mutter.
 # Courtesy of Prevod.org team (http://prevod.org/) -- 2003—2016.
 # This file is distributed under the same license as the mutter package.
-#
-# Translators: 
+# Translators:
 # Goran Rakić <grakic@devbase.net>
 # Danilo Šegan <danilo@prevod.org>, 2005.
 # Miloš Popović <gpopac@gmail.com>, 2010.
@@ -12,11 +11,11 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&"
 "keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-09 01:41+0000\n"
-"PO-Revision-Date: 2016-03-09 09:52+0200\n"
+"POT-Creation-Date: 2016-08-19 21:04+0000\n"
+"PO-Revision-Date: 2016-08-28 11:11+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <(nothing)>\n"
-"Language: sr@latin\n"
+"Language-Team: srpski <gnome-sr@googlegroups.org>\n"
+"Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,255 +23,15 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../data/50-mutter-navigation.xml.in.h:1
-msgid "Navigation"
-msgstr "Navigacija"
-
-#: ../data/50-mutter-navigation.xml.in.h:2
-msgid "Move window to workspace 1"
-msgstr "Premešta prozor na radni prostor broj 1"
-
-#: ../data/50-mutter-navigation.xml.in.h:3
-msgid "Move window to workspace 2"
-msgstr "Premešta prozor na radni prostor broj 2"
-
-#: ../data/50-mutter-navigation.xml.in.h:4
-msgid "Move window to workspace 3"
-msgstr "Premešta prozor na radni prostor broj 3"
-
-#: ../data/50-mutter-navigation.xml.in.h:5
-msgid "Move window to workspace 4"
-msgstr "Premešta prozor na radni prostor broj 4"
-
-#: ../data/50-mutter-navigation.xml.in.h:6
-msgid "Move window to last workspace"
-msgstr "Premešta prozor na poslednji radni prostor"
-
-#: ../data/50-mutter-navigation.xml.in.h:7
-msgid "Move window one workspace to the left"
-msgstr "Premešta prozor jedan radni prostor na levo"
-
-#: ../data/50-mutter-navigation.xml.in.h:8
-msgid "Move window one workspace to the right"
-msgstr "Premešta prozor jedan radni prostor na desno"
-
-#: ../data/50-mutter-navigation.xml.in.h:9
-msgid "Move window one workspace up"
-msgstr "Premešta prozor jedan radni prostor na gore"
-
-#: ../data/50-mutter-navigation.xml.in.h:10
-msgid "Move window one workspace down"
-msgstr "Premešta prozor jedan radni prostor na dole"
-
-#: ../data/50-mutter-navigation.xml.in.h:11
-msgid "Move window one monitor to the left"
-msgstr "Premešta prozor jedan monitor na levo"
-
-#: ../data/50-mutter-navigation.xml.in.h:12
-msgid "Move window one monitor to the right"
-msgstr "Premešta prozor jedan monitor na desno"
-
-#: ../data/50-mutter-navigation.xml.in.h:13
-msgid "Move window one monitor up"
-msgstr "Premešta prozor jedan monitor na gore"
-
-#: ../data/50-mutter-navigation.xml.in.h:14
-msgid "Move window one monitor down"
-msgstr "Premešta prozor jedan monitor na dole"
-
-#: ../data/50-mutter-navigation.xml.in.h:15
-msgid "Switch applications"
-msgstr "Prebacuje programe"
-
-#: ../data/50-mutter-navigation.xml.in.h:16
-msgid "Switch to previous application"
-msgstr "Prebacuje na prethodni program"
-
-#: ../data/50-mutter-navigation.xml.in.h:17
-msgid "Switch windows"
-msgstr "Prebacuje prozore"
-
-#: ../data/50-mutter-navigation.xml.in.h:18
-msgid "Switch to previous window"
-msgstr "Prebacuje na prethodni prozor"
-
-#: ../data/50-mutter-navigation.xml.in.h:19
-msgid "Switch windows of an application"
-msgstr "Prebacuje prozore programa"
-
-#: ../data/50-mutter-navigation.xml.in.h:20
-msgid "Switch to previous window of an application"
-msgstr "Prebacuje na prethodni prozor programa"
-
-#: ../data/50-mutter-navigation.xml.in.h:21
-msgid "Switch system controls"
-msgstr "Prebacuje kontrole sistema"
-
-#: ../data/50-mutter-navigation.xml.in.h:22
-msgid "Switch to previous system control"
-msgstr "Prebacuje na prethodnu kontrolu sistema"
-
-#: ../data/50-mutter-navigation.xml.in.h:23
-msgid "Switch windows directly"
-msgstr "Prebacuje prozore direktno"
-
-#: ../data/50-mutter-navigation.xml.in.h:24
-msgid "Switch directly to previous window"
-msgstr "Prebacuje neposredno na prethodni prozor"
-
-#: ../data/50-mutter-navigation.xml.in.h:25
-msgid "Switch windows of an app directly"
-msgstr "Prebacuje prozore programa direktno"
-
-#: ../data/50-mutter-navigation.xml.in.h:26
-msgid "Switch directly to previous window of an app"
-msgstr "Prebacuje neposredno na prethodni prozor programa"
-
-#: ../data/50-mutter-navigation.xml.in.h:27
-msgid "Switch system controls directly"
-msgstr "Prebacuje kontrole sistema direktno"
-
-#: ../data/50-mutter-navigation.xml.in.h:28
-msgid "Switch directly to previous system control"
-msgstr "Prebacuje neposredno na prethodnu kontrolu sistema"
-
-#: ../data/50-mutter-navigation.xml.in.h:29
-msgid "Hide all normal windows"
-msgstr "Skriva sve obične prozore"
-
-#: ../data/50-mutter-navigation.xml.in.h:30
-msgid "Switch to workspace 1"
-msgstr "Prebacuje se na radni prostor 1"
-
-#: ../data/50-mutter-navigation.xml.in.h:31
-msgid "Switch to workspace 2"
-msgstr "Prebacuje se na radni prostor 2"
-
-#: ../data/50-mutter-navigation.xml.in.h:32
-msgid "Switch to workspace 3"
-msgstr "Prebacuje se na radni prostor 3"
-
-#: ../data/50-mutter-navigation.xml.in.h:33
-msgid "Switch to workspace 4"
-msgstr "Prebacuje se na radni prostor 4"
-
-#: ../data/50-mutter-navigation.xml.in.h:34
-msgid "Switch to last workspace"
-msgstr "Prebacuje se na poslednji radni prostor"
-
-#: ../data/50-mutter-navigation.xml.in.h:35
-msgid "Move to workspace left"
-msgstr "Premešta na radni prostor levo"
-
-#: ../data/50-mutter-navigation.xml.in.h:36
-msgid "Move to workspace right"
-msgstr "Premešta na radni prostor desno"
-
-#: ../data/50-mutter-navigation.xml.in.h:37
-msgid "Move to workspace above"
-msgstr "Premešta na radni prostor iznad"
-
-#: ../data/50-mutter-navigation.xml.in.h:38
-msgid "Move to workspace below"
-msgstr "Premešta na radni prostor ispod"
-
-#: ../data/50-mutter-system.xml.in.h:1
-msgid "System"
-msgstr "Sistem"
-
-#: ../data/50-mutter-system.xml.in.h:2
-msgid "Show the run command prompt"
-msgstr "Prikazuje prompt za pokretanje naredbe"
-
-#: ../data/50-mutter-system.xml.in.h:3
-msgid "Show the activities overview"
-msgstr "Prikazuje pregled aktivnosti"
-
-#: ../data/50-mutter-windows.xml.in.h:1
-msgid "Windows"
-msgstr "Prozori"
-
-#: ../data/50-mutter-windows.xml.in.h:2
-msgid "Activate the window menu"
-msgstr "Aktivira meni prozora"
-
-#: ../data/50-mutter-windows.xml.in.h:3
-msgid "Toggle fullscreen mode"
-msgstr "Isključuje/uključuje prikaz preko celog ekrana"
-
-#: ../data/50-mutter-windows.xml.in.h:4
-msgid "Toggle maximization state"
-msgstr "Isključuje/uključuje stanje uvećanja"
-
-#: ../data/50-mutter-windows.xml.in.h:5
-msgid "Maximize window"
-msgstr "Uvećava prozor"
-
-#: ../data/50-mutter-windows.xml.in.h:6
-msgid "Restore window"
-msgstr "Vraća veličinu prozora"
-
-#: ../data/50-mutter-windows.xml.in.h:7
-msgid "Toggle shaded state"
-msgstr "Isključuje/uključuje stanje zasenčenosti"
-
-#: ../data/50-mutter-windows.xml.in.h:8
-msgid "Close window"
-msgstr "Zatvara prozor"
-
-#: ../data/50-mutter-windows.xml.in.h:9
-msgid "Hide window"
-msgstr "Skriva prozor"
-
-#: ../data/50-mutter-windows.xml.in.h:10
-msgid "Move window"
-msgstr "Premešta prozor"
-
-#: ../data/50-mutter-windows.xml.in.h:11
-msgid "Resize window"
-msgstr "Menja veličinu prozora"
-
-#: ../data/50-mutter-windows.xml.in.h:12
-msgid "Toggle window on all workspaces or one"
-msgstr "Prikazuje prozor na svim radnim prostorima ili samo na jednom"
-
-#: ../data/50-mutter-windows.xml.in.h:13
-msgid "Raise window if covered, otherwise lower it"
-msgstr "Izdiže prozor ukoliko ga drugi prozor zaklanja, u protivnom ga spušta"
-
-#: ../data/50-mutter-windows.xml.in.h:14
-msgid "Raise window above other windows"
-msgstr "Izdiže prozor iznad ostalih prozora"
-
-#: ../data/50-mutter-windows.xml.in.h:15
-msgid "Lower window below other windows"
-msgstr "Spušta prozor ispod ostalih prozora"
-
-#: ../data/50-mutter-windows.xml.in.h:16
-msgid "Maximize window vertically"
-msgstr "Uvećava prozor vertikalno"
-
-#: ../data/50-mutter-windows.xml.in.h:17
-msgid "Maximize window horizontally"
-msgstr "Uvećava prozor horizontalno"
-
-#: ../data/50-mutter-windows.xml.in.h:18
-msgid "View split on left"
-msgstr "Prikažite podelu na levo"
-
-#: ../data/50-mutter-windows.xml.in.h:19
-msgid "View split on right"
-msgstr "Prikažite podelu na desno"
-
-#: ../data/mutter.desktop.in.h:1
+#: data/mutter.desktop.in:4
 msgid "Mutter"
 msgstr "Mater"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+#: data/org.gnome.mutter.gschema.xml.in:7
 msgid "Modifier to use for extended window management operations"
 msgstr "Taster koji se koristi za proširene radnje upravnika prozorima"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+#: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -284,11 +43,11 @@ msgstr ""
 "za komponente računara. Očekuje se da ovo vezuje ili podrazumevani ili niz "
 "praznih znakova."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+#: data/org.gnome.mutter.gschema.xml.in:20
 msgid "Attach modal dialogs"
 msgstr "Prilaganje modalnih prozorčića"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+#: data/org.gnome.mutter.gschema.xml.in:21
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -298,12 +57,12 @@ msgstr ""
 "pojavljuju priloženi na traku alata matičnog prozora i bivaju premeštani "
 "zajedno sa matičnim prozorom."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+#: data/org.gnome.mutter.gschema.xml.in:30
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Uključuje popločavanje ivice prilikom otpuštanja prozora na ivicama ekrana"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+#: data/org.gnome.mutter.gschema.xml.in:31
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
@@ -313,11 +72,11 @@ msgstr ""
 "uspravno i menja im veličinu vodoravno da prekriju polovinu dostupne oblasti. "
 "Otpuštanje prozora na gornjoj ivici ekrana uvećava ih u potpunosti."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+#: data/org.gnome.mutter.gschema.xml.in:40
 msgid "Workspaces are managed dynamically"
 msgstr "Radnim prostorima se upravlja dinamički"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+#: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
@@ -327,11 +86,11 @@ msgstr ""
 "stalni broj radnih prostora (određen brojem radnih prostora u „org.gnome."
 "desktop.wm.preferences“)."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+#: data/org.gnome.mutter.gschema.xml.in:50
 msgid "Workspaces only on primary"
 msgstr "Radni prostori samo na primarne"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+#: data/org.gnome.mutter.gschema.xml.in:51
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -339,11 +98,11 @@ msgstr ""
 "Određuje da li prebacivanje radnog prostora treba da se desi za prozore na "
 "svim monitorima ili samo za prozore na glavnom monitoru."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+#: data/org.gnome.mutter.gschema.xml.in:59
 msgid "No tab popup"
 msgstr "Bez iskakanja jezička"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+#: data/org.gnome.mutter.gschema.xml.in:60
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -351,11 +110,11 @@ msgstr ""
 "Određuje da li će upotreba okvira iskakanja i isticanja biti prikazana za "
 "kretanje po prozorima."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+#: data/org.gnome.mutter.gschema.xml.in:68
 msgid "Delay focus changes until the pointer stops moving"
 msgstr "Zastoj prvog plana se menja dok se pokazivač ne zaustavi"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+#: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focus will not be changed immediately when entering a window, but only "
@@ -365,11 +124,11 @@ msgstr ""
 "plan neće biti menjan odmah po ulasku u prozor, već samo nakon što pokazivač "
 "prestane da se pomera."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+#: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
 msgstr "Širina ivice za prevlačenje"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+#: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -377,11 +136,11 @@ msgstr ""
 "Iznos ukupne ivice za prevlačenje. Ako vidljive ivice teme nisu dovoljne, biće "
 "dodate nevidljive ivice za dostizanje ove vrednosti."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+#: data/org.gnome.mutter.gschema.xml.in:89
 msgid "Auto maximize nearly monitor sized windows"
 msgstr "Sam uvećava povećane prozore najbližeg monitora"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+#: data/org.gnome.mutter.gschema.xml.in:90
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
@@ -389,11 +148,11 @@ msgstr ""
 "Ako je uključeno, novi prozori koji su početno veličine monitora samostalno "
 "bivaju uvećani."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+#: data/org.gnome.mutter.gschema.xml.in:98
 msgid "Place new windows in the center"
 msgstr "Novi prozor u središte"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+#: data/org.gnome.mutter.gschema.xml.in:99
 msgid ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
@@ -401,85 +160,94 @@ msgstr ""
 "Ako je izabrano, novi prozori će uvek biti postavljeni na sredinu radnog "
 "ekrana monitora."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+#: data/org.gnome.mutter.gschema.xml.in:120
 msgid "Select window from tab popup"
 msgstr "Bira prozor iz jezička iskakanja"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+#: data/org.gnome.mutter.gschema.xml.in:125
 msgid "Cancel tab popup"
 msgstr "Otkazivanje jezička iskakanja"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+#: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
 msgstr "Prelazak na VT 1"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+#: data/org.gnome.mutter.wayland.gschema.xml.in:10
 msgid "Switch to VT 2"
 msgstr "Prelazak na VT 2"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+#: data/org.gnome.mutter.wayland.gschema.xml.in:14
 msgid "Switch to VT 3"
 msgstr "Prelazak na VT 3"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+#: data/org.gnome.mutter.wayland.gschema.xml.in:18
 msgid "Switch to VT 4"
 msgstr "Prelazak na VT 4"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+#: data/org.gnome.mutter.wayland.gschema.xml.in:22
 msgid "Switch to VT 5"
 msgstr "Prelazak na VT 5"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+#: data/org.gnome.mutter.wayland.gschema.xml.in:26
 msgid "Switch to VT 6"
 msgstr "Prelazak na VT 6"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+#: data/org.gnome.mutter.wayland.gschema.xml.in:30
 msgid "Switch to VT 7"
 msgstr "Prelazak na VT 7"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+#: data/org.gnome.mutter.wayland.gschema.xml.in:34
 msgid "Switch to VT 8"
 msgstr "Prelazak na VT 8"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+#: data/org.gnome.mutter.wayland.gschema.xml.in:38
 msgid "Switch to VT 9"
 msgstr "Prelazak na VT 9"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+#: data/org.gnome.mutter.wayland.gschema.xml.in:42
 msgid "Switch to VT 10"
 msgstr "Prelazak na VT 10"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+#: data/org.gnome.mutter.wayland.gschema.xml.in:46
 msgid "Switch to VT 11"
 msgstr "Prelazak na VT 11"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+#: data/org.gnome.mutter.wayland.gschema.xml.in:50
 msgid "Switch to VT 12"
 msgstr "Prelazak na VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:518
+#: src/backends/meta-input-settings.c:1707
+#| msgid "Switch system controls"
+msgid "Switch monitor"
+msgstr "Promeni monitor"
+
+#: src/backends/meta-input-settings.c:1709
+msgid "Show on-screen help"
+msgstr "Prikaži pomoć na ekranu"
+
+#: src/backends/meta-monitor-manager.c:514
 msgid "Built-in display"
 msgstr "Ugrađeni displej"
 
-#: ../src/backends/meta-monitor-manager.c:544
+#: src/backends/meta-monitor-manager.c:537
 msgid "Unknown"
 msgstr "Nepoznato"
 
-#: ../src/backends/meta-monitor-manager.c:546
+#: src/backends/meta-monitor-manager.c:539
 msgid "Unknown Display"
 msgstr "Nepoznat displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:554
+#: src/backends/meta-monitor-manager.c:547
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: src/compositor/compositor.c:463
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -487,20 +255,20 @@ msgid ""
 msgstr ""
 "Neki drugi kompozitni upravnik je već pokrenut na prikazu %i erkana „%s“."
 
-#: ../src/core/bell.c:185
+#: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Zvonca"
 
-#: ../src/core/delete.c:127
+#: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
 msgstr "„%s“ ne daje odziv."
 
-#: ../src/core/delete.c:129
+#: src/core/delete.c:129
 msgid "Application is not responding."
 msgstr "Program ne daje odziv."
 
-#: ../src/core/delete.c:134
+#: src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -508,57 +276,56 @@ msgstr ""
 "Možete malo sačekati dok se program ne sabere ili primorati program da "
 "kompletno prekine sa radom."
 
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Wait"
 msgstr "_Sačekaj"
 
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Primoraj izlaz"
 
-#: ../src/core/display.c:555
+#: src/core/display.c:590
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nisam uspeo da otvorim ekran „%s“ Iks sistema prozora\n"
 
-#: ../src/core/main.c:181
+#: src/core/main.c:182
 msgid "Disable connection to session manager"
 msgstr "Isključuje vezu sa upravnikom sesije"
 
-#: ../src/core/main.c:187
+#: src/core/main.c:188
 msgid "Replace the running window manager"
 msgstr "Menja tekućeg upravnika prozorima"
 
-#: ../src/core/main.c:193
+#: src/core/main.c:194
 msgid "Specify session management ID"
 msgstr "Navodi IB upravnika sesije"
 
-#: ../src/core/main.c:198
+#: src/core/main.c:199
 msgid "X Display to use"
 msgstr "Iks ekran koji će biti korišćen"
 
-#: ../src/core/main.c:204
+#: src/core/main.c:205
 msgid "Initialize session from savefile"
 msgstr "Pokreće sesiju iz datoteke čuvanja"
 
-#: ../src/core/main.c:210
+#: src/core/main.c:211
 msgid "Make X calls synchronous"
 msgstr "Čini Iks pozive usklađenim"
 
-#: ../src/core/main.c:217
+#: src/core/main.c:218
 msgid "Run as a wayland compositor"
 msgstr "Radi kao vajlandov sastavnik"
 
-#: ../src/core/main.c:223
-#| msgid "Run as a wayland compositor"
+#: src/core/main.c:224
 msgid "Run as a nested compositor"
 msgstr "Radi kao ugneždeni sastavnik"
 
-#: ../src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a full display server, rather than nested"
 msgstr "Radi kao puni server prikaza, umesto kao ugneždeni"
 
-#: ../src/core/mutter.c:39
+#: src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -573,20 +340,20 @@ msgstr ""
 "NE postoji nikakva garancija; čak ni garancija o TRŽIŠNOJ VREDNOSTI ili "
 "PRILAGOĐENOSTI ODREĐENOJ NAMENI.\n"
 
-#: ../src/core/mutter.c:53
+#: src/core/mutter.c:53
 msgid "Print version"
 msgstr "Ispisuje izdanje"
 
-#: ../src/core/mutter.c:59
+#: src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Priključci Matera za korišćenje"
 
-#: ../src/core/prefs.c:1997
+#: src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. radni prostor"
 
-#: ../src/core/screen.c:521
+#: src/core/screen.c:521
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -595,16 +362,21 @@ msgstr ""
 "Prikaz „%s“ već ima upravnika prozora; probajte da koristite opciju „--"
 "replace“ da zamenite trenutnog upravnika prozora."
 
-#: ../src/core/screen.c:603
+#: src/core/screen.c:606
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Prikaz „%d“ na ekranu „%s“ nije ispravan\n"
 
-#: ../src/core/util.c:121
+#: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mater je preveden bez podrške za opširan režim\n"
 
-#: ../src/x11/session.c:1815
+#: src/wayland/meta-wayland-tablet-pad.c:595
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr "Režim prekidača: Režim %d"
+
+#: src/x11/session.c:1815
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -612,10 +384,188 @@ msgstr ""
 "Ovi prozori ne podržavaju mogućnost „sačuvaj trenutna podešavanja“ pa ćete "
 "morati ručno da ih ponovo pokrenete kada se sledeći put prijavite."
 
-#: ../src/x11/window-props.c:549
+#: src/x11/window-props.c:548
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
+
+#~ msgid "Navigation"
+#~ msgstr "Navigacija"
+
+#~ msgid "Move window to workspace 1"
+#~ msgstr "Premešta prozor na radni prostor broj 1"
+
+#~ msgid "Move window to workspace 2"
+#~ msgstr "Premešta prozor na radni prostor broj 2"
+
+#~ msgid "Move window to workspace 3"
+#~ msgstr "Premešta prozor na radni prostor broj 3"
+
+#~ msgid "Move window to workspace 4"
+#~ msgstr "Premešta prozor na radni prostor broj 4"
+
+#~ msgid "Move window to last workspace"
+#~ msgstr "Premešta prozor na poslednji radni prostor"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Premešta prozor jedan radni prostor na levo"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Premešta prozor jedan radni prostor na desno"
+
+#~ msgid "Move window one workspace up"
+#~ msgstr "Premešta prozor jedan radni prostor na gore"
+
+#~ msgid "Move window one workspace down"
+#~ msgstr "Premešta prozor jedan radni prostor na dole"
+
+#~ msgid "Move window one monitor to the left"
+#~ msgstr "Premešta prozor jedan monitor na levo"
+
+#~ msgid "Move window one monitor to the right"
+#~ msgstr "Premešta prozor jedan monitor na desno"
+
+#~ msgid "Move window one monitor up"
+#~ msgstr "Premešta prozor jedan monitor na gore"
+
+#~ msgid "Move window one monitor down"
+#~ msgstr "Premešta prozor jedan monitor na dole"
+
+#~ msgid "Switch applications"
+#~ msgstr "Prebacuje programe"
+
+#~ msgid "Switch to previous application"
+#~ msgstr "Prebacuje na prethodni program"
+
+#~ msgid "Switch windows"
+#~ msgstr "Prebacuje prozore"
+
+#~ msgid "Switch to previous window"
+#~ msgstr "Prebacuje na prethodni prozor"
+
+#~ msgid "Switch windows of an application"
+#~ msgstr "Prebacuje prozore programa"
+
+#~ msgid "Switch to previous window of an application"
+#~ msgstr "Prebacuje na prethodni prozor programa"
+
+#~ msgid "Switch to previous system control"
+#~ msgstr "Prebacuje na prethodnu kontrolu sistema"
+
+#~ msgid "Switch windows directly"
+#~ msgstr "Prebacuje prozore direktno"
+
+#~ msgid "Switch directly to previous window"
+#~ msgstr "Prebacuje neposredno na prethodni prozor"
+
+#~ msgid "Switch windows of an app directly"
+#~ msgstr "Prebacuje prozore programa direktno"
+
+#~ msgid "Switch directly to previous window of an app"
+#~ msgstr "Prebacuje neposredno na prethodni prozor programa"
+
+#~ msgid "Switch system controls directly"
+#~ msgstr "Prebacuje kontrole sistema direktno"
+
+#~ msgid "Switch directly to previous system control"
+#~ msgstr "Prebacuje neposredno na prethodnu kontrolu sistema"
+
+#~ msgid "Hide all normal windows"
+#~ msgstr "Skriva sve obične prozore"
+
+#~ msgid "Switch to workspace 1"
+#~ msgstr "Prebacuje se na radni prostor 1"
+
+#~ msgid "Switch to workspace 2"
+#~ msgstr "Prebacuje se na radni prostor 2"
+
+#~ msgid "Switch to workspace 3"
+#~ msgstr "Prebacuje se na radni prostor 3"
+
+#~ msgid "Switch to workspace 4"
+#~ msgstr "Prebacuje se na radni prostor 4"
+
+#~ msgid "Switch to last workspace"
+#~ msgstr "Prebacuje se na poslednji radni prostor"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "Premešta na radni prostor levo"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "Premešta na radni prostor desno"
+
+#~ msgid "Move to workspace above"
+#~ msgstr "Premešta na radni prostor iznad"
+
+#~ msgid "Move to workspace below"
+#~ msgstr "Premešta na radni prostor ispod"
+
+#~ msgid "System"
+#~ msgstr "Sistem"
+
+#~ msgid "Show the run command prompt"
+#~ msgstr "Prikazuje prompt za pokretanje naredbe"
+
+#~ msgid "Show the activities overview"
+#~ msgstr "Prikazuje pregled aktivnosti"
+
+#~ msgid "Windows"
+#~ msgstr "Prozori"
+
+#~ msgid "Activate the window menu"
+#~ msgstr "Aktivira meni prozora"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Isključuje/uključuje prikaz preko celog ekrana"
+
+#~ msgid "Toggle maximization state"
+#~ msgstr "Isključuje/uključuje stanje uvećanja"
+
+#~ msgid "Maximize window"
+#~ msgstr "Uvećava prozor"
+
+#~ msgid "Restore window"
+#~ msgstr "Vraća veličinu prozora"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "Isključuje/uključuje stanje zasenčenosti"
+
+#~ msgid "Close window"
+#~ msgstr "Zatvara prozor"
+
+#~ msgid "Hide window"
+#~ msgstr "Skriva prozor"
+
+#~ msgid "Move window"
+#~ msgstr "Premešta prozor"
+
+#~ msgid "Resize window"
+#~ msgstr "Menja veličinu prozora"
+
+#~ msgid "Toggle window on all workspaces or one"
+#~ msgstr "Prikazuje prozor na svim radnim prostorima ili samo na jednom"
+
+#~ msgid "Raise window if covered, otherwise lower it"
+#~ msgstr ""
+#~ "Izdiže prozor ukoliko ga drugi prozor zaklanja, u protivnom ga spušta"
+
+#~ msgid "Raise window above other windows"
+#~ msgstr "Izdiže prozor iznad ostalih prozora"
+
+#~ msgid "Lower window below other windows"
+#~ msgstr "Spušta prozor ispod ostalih prozora"
+
+#~ msgid "Maximize window vertically"
+#~ msgstr "Uvećava prozor vertikalno"
+
+#~ msgid "Maximize window horizontally"
+#~ msgstr "Uvećava prozor horizontalno"
+
+#~ msgid "View split on left"
+#~ msgstr "Prikažite podelu na levo"
+
+#~ msgid "View split on right"
+#~ msgstr "Prikažite podelu na desno"
 
 #~ msgid "Failed to scan themes directory: %s\n"
 #~ msgstr "Nisam uspeo da pročitam direktorijum tema: %s\n"
