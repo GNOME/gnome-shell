@@ -421,7 +421,7 @@ void clutter_seat_evdev_notify_absolute_motion (ClutterSeatEvdev   *seat,
 {
   ClutterEvent *event;
 
-  event = new_absolute_motion_event (seat, input_device, time_us, x, x, axes);
+  event = new_absolute_motion_event (seat, input_device, time_us, x, y, axes);
 
   queue_event (event);
 }
