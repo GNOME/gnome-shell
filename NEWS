@@ -1,3 +1,22 @@
+3.21.91
+=======
+* Add support for xdg-foreign protocol [Jonas; #769786]
+* Support monitor rotation on wayland [Carlos; #745079]
+* Port xdg-shell implementation to unstable v6 [Jonas; #769936]
+* Handle unsupported buffer sizes more gracefully [Olivier; #770387]
+* Use the same output naming logic as the X server on wayland [Rui; #770338]
+* Fix replies in gnome-shell's chat notifications on wayland [Florian; #758167]
+* Misc. bug fixes and cleanups [Bastien, Sjoerd, Jonas; #769276, #769636,
+  #770131, #770324, #769731]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, Rui Matos, Florian Müllner,
+  Bastien Nocera, Sjoerd Simons
+
+Translations:
+  Piotr Drąg [pl], Mario Blättermann [de], Andika Triwidada [id],
+  Enrico Nicoletto [pt_BR], Мирослав Николић [sr, sr@latin]
+
 3.21.90
 =======
 * Consider XDG_SESSION_TYPE when determining session type [Jouke; #759388]
