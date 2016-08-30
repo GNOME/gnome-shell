@@ -44,6 +44,7 @@
 #include "meta-wayland-dma-buf.h"
 #include "meta-wayland-inhibit-shortcuts.h"
 #include "meta-wayland-inhibit-shortcuts-dialog.h"
+#include "meta-xwayland-grab-keyboard.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
 static char *_display_name_override;
@@ -322,6 +323,23 @@ meta_wayland_pre_clutter_init (void)
   clutter_wayland_set_compositor_display (compositor->wayland_display);
 }
 
+static bool
+meta_xwayland_global_filter (const struct wl_client *client,
+                             const struct wl_global *global,
+                             void                   *data)
+{
+  MetaWaylandCompositor *compositor = (MetaWaylandCompositor *) data;
+  MetaXWaylandManager *xwayland_manager = &compositor->xwayland_manager;
+
+  /* Keyboard grabbing protocol is for Xwayland only */
+  if (client != xwayland_manager->client)
+    return (wl_global_get_interface (global) !=
+            &zwp_xwayland_keyboard_grab_manager_v1_interface);
+
+  /* All others are visible to all clients */
+  return true;
+}
+
 void
 meta_wayland_override_display_name (char *display_name)
 {
@@ -366,6 +384,12 @@ meta_wayland_init (void)
   meta_wayland_dma_buf_init (compositor);
   meta_wayland_keyboard_shortcuts_inhibit_init (compositor);
   meta_wayland_surface_inhibit_shortcuts_dialog_init ();
+
+  /* Xwayland specific protocol, needs to be filtered out for all other clients */
+  if (meta_xwayland_grab_keyboard_init (compositor))
+    wl_display_set_global_filter (compositor->wayland_display,
+                                  meta_xwayland_global_filter,
+                                  compositor);
 
   if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
     g_error ("Failed to start X Wayland");
