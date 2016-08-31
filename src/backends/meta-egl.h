@@ -42,6 +42,18 @@ EGLDisplay meta_egl_get_display (MetaEgl             *egl,
                                  EGLNativeDisplayType display_id,
                                  GError             **error);
 
+gboolean meta_egl_choose_config (MetaEgl      *egl,
+                                 EGLDisplay    display,
+                                 const EGLint *attrib_list,
+                                 EGLConfig    *chosen_config,
+                                 GError      **error);
+
+EGLSurface meta_egl_create_pbuffer_surface (MetaEgl      *egl,
+                                            EGLDisplay    display,
+                                            EGLConfig     config,
+                                            const EGLint *attrib_list,
+                                            GError      **error);
+
 EGLDisplay meta_egl_get_platform_display (MetaEgl      *egl,
                                           EGLenum       platform,
                                           void         *native_display,

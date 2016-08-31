@@ -95,8 +95,6 @@ struct _MetaRendererNative
   CoglClosure *swap_notify_idle;
 
   int64_t frame_counter;
-
-  struct gbm_surface *dummy_gbm_surface;
 };
 
 static void
@@ -281,6 +279,37 @@ meta_renderer_native_destroy_egl_display (CoglDisplay *cogl_display)
 {
 }
 
+static EGLSurface
+create_dummy_pbuffer_surface (EGLDisplay egl_display,
+                              GError   **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  EGLConfig pbuffer_config;
+  static const EGLint pbuffer_config_attribs[] = {
+    EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
+    EGL_RED_SIZE, 1,
+    EGL_GREEN_SIZE, 1,
+    EGL_BLUE_SIZE, 1,
+    EGL_ALPHA_SIZE, 0,
+    EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+    EGL_NONE
+  };
+  static const EGLint pbuffer_attribs[] = {
+    EGL_WIDTH, 16,
+    EGL_HEIGHT, 16,
+    EGL_NONE
+  };
+
+  if (!meta_egl_choose_config (egl, egl_display, pbuffer_config_attribs,
+                               &pbuffer_config, error))
+    return EGL_NO_SURFACE;
+
+  return meta_egl_create_pbuffer_surface (egl, egl_display,
+                                          pbuffer_config, pbuffer_attribs,
+                                          error);
+}
+
 static gboolean
 meta_renderer_native_egl_context_created (CoglDisplay *cogl_display,
                                           GError     **error)
@@ -288,37 +317,14 @@ meta_renderer_native_egl_context_created (CoglDisplay *cogl_display,
   CoglDisplayEGL *egl_display = cogl_display->winsys;
   CoglRenderer *cogl_renderer = cogl_display->renderer;
   CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
-  MetaRendererNative *renderer_native = egl_renderer->platform;
 
   if ((egl_renderer->private_features &
        COGL_EGL_WINSYS_FEATURE_SURFACELESS_CONTEXT) == 0)
     {
-      renderer_native->dummy_gbm_surface =
-        gbm_surface_create (renderer_native->gbm.device,
-                            16, 16,
-                            GBM_FORMAT_XRGB8888,
-                            GBM_BO_USE_RENDERING);
-      if (!renderer_native->dummy_gbm_surface)
-        {
-          _cogl_set_error (error, COGL_WINSYS_ERROR,
-                           COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                           "Failed to create dummy GBM surface");
-          return FALSE;
-        }
-
       egl_display->dummy_surface =
-        eglCreateWindowSurface (egl_renderer->edpy,
-                                egl_display->egl_config,
-                                (EGLNativeWindowType)
-                                renderer_native->dummy_gbm_surface,
-                                NULL);
+        create_dummy_pbuffer_surface (egl_renderer->edpy, error);
       if (egl_display->dummy_surface == EGL_NO_SURFACE)
-        {
-          _cogl_set_error (error, COGL_WINSYS_ERROR,
-                           COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                           "Failed to create dummy EGL surface");
-          return FALSE;
-        }
+        return FALSE;
     }
 
   if (!_cogl_winsys_egl_make_current (cogl_display,
@@ -1228,7 +1234,6 @@ meta_renderer_native_finalize (GObject *object)
 {
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
 
-  g_clear_pointer (&renderer_native->dummy_gbm_surface, gbm_surface_destroy);
   g_clear_pointer (&renderer_native->gbm.device, gbm_device_destroy);
 
   G_OBJECT_CLASS (meta_renderer_native_parent_class)->finalize (object);

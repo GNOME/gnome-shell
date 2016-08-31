@@ -200,6 +200,69 @@ meta_egl_get_display (MetaEgl             *egl,
   return display;
 }
 
+gboolean
+meta_egl_choose_config (MetaEgl      *egl,
+                        EGLDisplay    display,
+                        const EGLint *attrib_list,
+                        EGLConfig    *chosen_config,
+                        GError      **error)
+{
+  EGLint num_configs;
+  EGLConfig *configs;
+  EGLint num_matches;
+
+  if (!eglGetConfigs (display, NULL, 0, &num_configs))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  if (num_configs < 1)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "No EGL configurations available");
+      return FALSE;
+    }
+
+  configs = g_new0 (EGLConfig, num_configs);
+
+  if (!eglChooseConfig (display, attrib_list, configs, num_configs, &num_matches))
+    {
+      g_free (configs);
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  /*
+   * We don't have any preference specified yet, so lets choose the first one.
+   */
+  *chosen_config = configs[0];
+
+  g_free (configs);
+
+  return TRUE;
+}
+
+EGLSurface
+meta_egl_create_pbuffer_surface (MetaEgl      *egl,
+                                 EGLDisplay    display,
+                                 EGLConfig     config,
+                                 const EGLint *attrib_list,
+                                 GError      **error)
+{
+  EGLSurface surface;
+
+  surface = eglCreatePbufferSurface (display, config, attrib_list);
+  if (surface == EGL_NO_SURFACE)
+    {
+      set_egl_error (error);
+      return EGL_NO_SURFACE;
+    }
+
+  return surface;
+}
+
 static gboolean
 is_egl_proc_valid_real (void       *proc,
                         const char *proc_name,
