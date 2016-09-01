@@ -4253,6 +4253,17 @@ get_modal_transient (MetaWindow *window)
   return modal_transient;
 }
 
+static gboolean
+meta_window_transient_can_focus (MetaWindow *window)
+{
+#ifdef HAVE_WAYLAND
+  if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+    return meta_wayland_surface_get_buffer (window->surface) != NULL;
+#endif
+
+  return TRUE;
+}
+
 /* XXX META_EFFECT_FOCUS */
 void
 meta_window_focus (MetaWindow  *window,
@@ -4278,7 +4289,8 @@ meta_window_focus (MetaWindow  *window,
 
   modal_transient = get_modal_transient (window);
   if (modal_transient != NULL &&
-      !modal_transient->unmanaging)
+      !modal_transient->unmanaging &&
+      meta_window_transient_can_focus (modal_transient))
     {
       meta_topic (META_DEBUG_FOCUS,
                   "%s has %s as a modal transient, so focusing it instead.\n",
