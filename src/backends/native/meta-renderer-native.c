@@ -1258,6 +1258,16 @@ init_gbm (MetaRendererNative *renderer_native,
   struct gbm_device *gbm_device;
   EGLDisplay egl_display;
 
+  if (!meta_egl_has_extensions (egl, EGL_NO_DISPLAY, NULL,
+                                "EGL_MESA_platform_gbm",
+                                NULL))
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Missing extension for GBM renderer: EGL_KHR_platform_gbm");
+      return FALSE;
+    }
+
   gbm_device = gbm_create_device (renderer_native->kms_fd);
   if (!gbm_device)
     {
@@ -1267,8 +1277,9 @@ init_gbm (MetaRendererNative *renderer_native,
       return FALSE;
     }
 
-  egl_display = meta_egl_get_display (egl, (EGLNativeDisplayType) gbm_device,
-                                      error);
+  egl_display = meta_egl_get_platform_display (egl,
+                                               EGL_PLATFORM_GBM_KHR,
+                                               gbm_device, NULL, error);
   if (egl_display == EGL_NO_DISPLAY)
     {
       gbm_device_destroy (gbm_device);

@@ -24,6 +24,7 @@
 
 #include "config.h"
 
+#include "backends/meta-backend-private.h"
 #include "backends/meta-egl.h"
 #include "meta/util.h"
 
@@ -181,23 +182,6 @@ meta_egl_has_extensions (MetaEgl   *egl,
   va_end (var_args);
 
   return has_extensions;
-}
-
-EGLDisplay
-meta_egl_get_display (MetaEgl             *egl,
-                      EGLNativeDisplayType display_id,
-                      GError             **error)
-{
-  EGLDisplay display;
-
-  display = eglGetDisplay (display_id);
-  if (display == EGL_NO_DISPLAY)
-    {
-      set_egl_error (error);
-      return EGL_NO_DISPLAY;
-    }
-
-  return display;
 }
 
 gboolean
