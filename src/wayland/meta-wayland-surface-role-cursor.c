@@ -115,6 +115,10 @@ cursor_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandSurfaceRoleCursor *cursor_role =
+    META_WAYLAND_SURFACE_ROLE_CURSOR (surface_role);
+  MetaWaylandSurfaceRoleCursorPrivate *priv =
+    meta_wayland_surface_role_cursor_get_instance_private (cursor_role);
 
   wl_list_insert_list (&priv->frame_callbacks,
                        &surface->pending_frame_callback_list);
