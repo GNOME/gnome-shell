@@ -305,18 +305,21 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_SCROLL:
-      meta_wayland_pointer_update (&seat->pointer, event);
+      if (seat->capabilities & WL_SEAT_CAPABILITY_POINTER)
+        meta_wayland_pointer_update (&seat->pointer, event);
       break;
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      meta_wayland_keyboard_update (&seat->keyboard, (const ClutterKeyEvent *) event);
+      if (seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
+        meta_wayland_keyboard_update (&seat->keyboard, (const ClutterKeyEvent *) event);
       break;
 
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
-      meta_wayland_touch_update (&seat->touch, event);
+      if (seat->capabilities & WL_SEAT_CAPABILITY_TOUCH)
+        meta_wayland_touch_update (&seat->touch, event);
       break;
 
     default:
@@ -339,16 +342,19 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
     case CLUTTER_SCROLL:
     case CLUTTER_TOUCHPAD_SWIPE:
     case CLUTTER_TOUCHPAD_PINCH:
-      return meta_wayland_pointer_handle_event (&seat->pointer, event);
+      if (seat->capabilities & WL_SEAT_CAPABILITY_POINTER)
+        return meta_wayland_pointer_handle_event (&seat->pointer, event);
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      return meta_wayland_keyboard_handle_event (&seat->keyboard,
-                                                 (const ClutterKeyEvent *) event);
+      if (seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
+        return meta_wayland_keyboard_handle_event (&seat->keyboard,
+                                                   (const ClutterKeyEvent *) event);
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
-      return meta_wayland_touch_handle_event (&seat->touch, event);
+      if (seat->capabilities & WL_SEAT_CAPABILITY_TOUCH)
+        return meta_wayland_touch_handle_event (&seat->touch, event);
 
     default:
       break;
