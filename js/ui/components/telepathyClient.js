@@ -475,6 +475,11 @@ const ChatSource = new Lang.Class({
             this._channel.close_async(function(channel, result) {
                 channel.close_finish(result);
             });
+        } else {
+            // Don't indicate any unread messages when the notification
+            // that represents them has been destroyed.
+            this._pendingMessages = [];
+            this.countUpdated();
         }
 
         // Keep source alive while the channel is open
