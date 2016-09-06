@@ -58,6 +58,7 @@ struct _MetaWaylandPointerConstraint
   MetaWaylandPointerGrab grab;
   MetaWaylandSeat *seat;
   enum zwp_pointer_constraints_v1_lifetime lifetime;
+  gulong pointer_focus_surface_handler_id;
 
   gboolean hint_set;
   wl_fixed_t x_hint;
@@ -277,6 +278,13 @@ surface_remove_pointer_constraints (MetaWaylandSurface           *surface,
     }
 }
 
+static void
+pointer_focus_surface_changed (MetaWaylandPointer           *pointer,
+                               MetaWaylandPointerConstraint *constraint)
+{
+  meta_wayland_pointer_constraint_maybe_enable (constraint);
+}
+
 static MetaWaylandPointerConstraint *
 meta_wayland_pointer_constraint_new (MetaWaylandSurface                      *surface,
                                      MetaWaylandSeat                         *seat,
@@ -306,6 +314,11 @@ meta_wayland_pointer_constraint_new (MetaWaylandSurface                      *su
     {
       constraint->region = NULL;
     }
+
+  constraint->pointer_focus_surface_handler_id =
+    g_signal_connect (seat->pointer, "focus-surface-changed",
+                      G_CALLBACK (pointer_focus_surface_changed),
+                      constraint);
 
   return constraint;
 }
@@ -1056,6 +1069,18 @@ bind_pointer_constraints (struct wl_client *client,
                                   NULL);
 }
 
+static void
+meta_wayland_pointer_constraint_finalize (GObject *object)
+{
+  MetaWaylandPointerConstraint *constraint =
+    META_WAYLAND_POINTER_CONSTRAINT (object);
+
+  g_signal_handler_disconnect (constraint->seat->pointer,
+                               constraint->pointer_focus_surface_handler_id);
+
+  G_OBJECT_CLASS (meta_wayland_pointer_constraint_parent_class)->finalize (object);
+}
+
 void
 meta_wayland_pointer_constraints_init (MetaWaylandCompositor *compositor)
 {
@@ -1073,6 +1098,11 @@ meta_wayland_pointer_constraint_init (MetaWaylandPointerConstraint *constraint)
 static void
 meta_wayland_pointer_constraint_class_init (MetaWaylandPointerConstraintClass *klass)
 {
+  GObjectClass *object_class;
+
+  object_class = G_OBJECT_CLASS (klass);
+  object_class->finalize = meta_wayland_pointer_constraint_finalize;
+
   quark_pending_constraint_state =
     g_quark_from_static_string ("-meta-wayland-pointer-constraint-pending_state");
   quark_surface_pointer_constraints_data =
