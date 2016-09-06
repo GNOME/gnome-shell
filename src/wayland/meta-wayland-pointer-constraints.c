@@ -815,6 +815,7 @@ locked_pointer_grab_pointer_motion (MetaWaylandPointerGrab *grab,
                                     const ClutterEvent     *event)
 {
   meta_wayland_pointer_send_relative_motion (grab->pointer, event);
+  meta_wayland_pointer_broadcast_frame (grab->pointer);
 }
 
 static void

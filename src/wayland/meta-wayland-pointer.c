@@ -244,7 +244,7 @@ meta_wayland_pointer_send_frame (MetaWaylandPointer *pointer,
     wl_pointer_send_frame (resource);
 }
 
-static void
+void
 meta_wayland_pointer_broadcast_frame (MetaWaylandPointer *pointer)
 {
   struct wl_resource *resource;

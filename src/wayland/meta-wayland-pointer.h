@@ -104,6 +104,8 @@ void meta_wayland_pointer_send_relative_motion (MetaWaylandPointer *pointer,
 void meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
                                        const ClutterEvent *event);
 
+void meta_wayland_pointer_broadcast_frame (MetaWaylandPointer *pointer);
+
 void meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                      MetaWaylandSurface *surface);
 
