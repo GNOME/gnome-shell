@@ -1216,6 +1216,8 @@ wl_surface_destructor (struct wl_resource *resource)
   MetaWaylandCompositor *compositor = surface->compositor;
   MetaWaylandFrameCallback *cb, *next;
 
+  g_signal_emit (surface, surface_signals[SURFACE_DESTROY], 0);
+
   g_clear_object (&surface->role);
 
   /* If we still have a window at the time of destruction, that means that
@@ -1759,20 +1761,6 @@ meta_wayland_surface_get_absolute_coordinates (MetaWaylandSurface *surface,
 }
 
 static void
-meta_wayland_surface_dispose (GObject *object)
-{
-  MetaWaylandSurface *surface = META_WAYLAND_SURFACE (object);
-
-  if (!surface->destroying)
-    {
-      g_signal_emit (object, surface_signals[SURFACE_DESTROY], 0);
-      surface->destroying = TRUE;
-    }
-
-  G_OBJECT_CLASS (meta_wayland_surface_parent_class)->dispose (object);
-}
-
-static void
 meta_wayland_surface_init (MetaWaylandSurface *surface)
 {
   surface->pending = g_object_new (META_TYPE_WAYLAND_PENDING_STATE, NULL);
@@ -1782,8 +1770,6 @@ static void
 meta_wayland_surface_class_init (MetaWaylandSurfaceClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-  object_class->dispose = meta_wayland_surface_dispose;
 
   surface_signals[SURFACE_DESTROY] =
     g_signal_new ("destroy",

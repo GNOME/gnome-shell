@@ -184,7 +184,6 @@ struct _MetaWaylandSurface
   int32_t offset_x, offset_y;
   GList *subsurfaces;
   GHashTable *outputs_to_destroy_notify_id;
-  gboolean destroying;
 
   /* Buffer reference state. */
   struct {
