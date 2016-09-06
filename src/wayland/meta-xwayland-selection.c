@@ -33,7 +33,9 @@
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 #include <X11/extensions/Xfixes.h>
+
 #include <meta/errors.h>
+#include "meta-xwayland.h"
 #include "meta-xwayland-private.h"
 #include "meta-xwayland-selection-private.h"
 #include "meta-wayland-data-device.h"
@@ -1584,14 +1586,14 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
     {
       MetaWaylandDataDevice *data_device = &compositor->seat->data_device;
       MetaXWaylandSelection *selection_data = compositor->xwayland_manager.selection_data;
+      MetaWaylandSurface *focus;
 
       selection->owner = event->owner;
+      focus = compositor->seat->pointer->focus_surface;
 
-      if (event->owner != None && event->owner != selection->window)
+      if (event->owner != None && event->owner != selection->window &&
+          focus && meta_xwayland_is_xwayland_surface (focus))
         {
-          MetaWaylandSurface *focus;
-
-          focus = compositor->seat->pointer->focus_surface;
           selection->source = meta_wayland_data_source_xwayland_new (selection);
           meta_wayland_data_device_set_dnd_source (&compositor->seat->data_device,
                                                    selection->source);
