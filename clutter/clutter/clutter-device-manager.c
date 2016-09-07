@@ -458,3 +458,20 @@ clutter_device_manager_create_virtual_device (ClutterDeviceManager   *device_man
   return manager_class->create_virtual_device (device_manager,
                                                device_type);
 }
+
+void
+_clutter_device_manager_compress_motion (ClutterDeviceManager *device_manager,
+                                         ClutterEvent         *event,
+                                         const ClutterEvent   *to_discard)
+{
+  ClutterDeviceManagerClass *manager_class;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
+
+
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  if (!manager_class->compress_motion)
+    return;
+
+  manager_class->compress_motion (device_manager, event, to_discard);
+}

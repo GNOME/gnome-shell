@@ -188,6 +188,10 @@ void            _clutter_device_manager_select_stage_events     (ClutterDeviceMa
                                                                  ClutterStage         *stage);
 ClutterBackend *_clutter_device_manager_get_backend             (ClutterDeviceManager *device_manager);
 
+void            _clutter_device_manager_compress_motion         (ClutterDeviceManager *device_manger,
+                                                                 ClutterEvent         *event,
+                                                                 const ClutterEvent   *to_discard);
+
 /* input device */
 gboolean        _clutter_input_device_has_sequence              (ClutterInputDevice   *device,
                                                                  ClutterEventSequence *sequence);

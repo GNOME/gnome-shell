@@ -1970,6 +1970,31 @@ clutter_device_manager_evdev_create_virtual_device (ClutterDeviceManager  *manag
                        NULL);
 }
 
+static void
+clutter_device_manager_evdev_compress_motion (ClutterDeviceManager *device_manger,
+                                              ClutterEvent         *event,
+                                              const ClutterEvent   *to_discard)
+{
+  double dx, dy;
+  double dx_unaccel, dy_unaccel;
+  double dst_dx = 0.0, dst_dy = 0.0;
+  double dst_dx_unaccel = 0.0, dst_dy_unaccel = 0.0;
+
+  if (!clutter_evdev_event_get_relative_motion (to_discard,
+                                                &dx, &dy,
+                                                &dx_unaccel, &dy_unaccel))
+    return;
+
+  clutter_evdev_event_get_relative_motion (event,
+                                           &dst_dx, &dst_dy,
+                                           &dst_dx_unaccel, &dst_dy_unaccel);
+  _clutter_evdev_event_set_relative_motion (event,
+                                            dx + dst_dx,
+                                            dy + dst_dy,
+                                            dx_unaccel + dst_dx_unaccel,
+                                            dy_unaccel + dst_dy_unaccel);
+}
+
 /*
  * GObject implementation
  */
@@ -2110,6 +2135,7 @@ clutter_device_manager_evdev_class_init (ClutterDeviceManagerEvdevClass *klass)
   manager_class->get_core_device = clutter_device_manager_evdev_get_core_device;
   manager_class->get_device = clutter_device_manager_evdev_get_device;
   manager_class->create_virtual_device = clutter_device_manager_evdev_create_virtual_device;
+  manager_class->compress_motion = clutter_device_manager_evdev_compress_motion;
 }
 
 static void

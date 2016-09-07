@@ -998,6 +998,16 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
                             "Omitting motion event at %d, %d",
                             (int) event->motion.x,
                             (int) event->motion.y);
+
+              if (next_event->type == CLUTTER_MOTION)
+                {
+                  ClutterDeviceManager *device_manager =
+                    clutter_device_manager_get_default ();
+
+                  _clutter_device_manager_compress_motion (device_manager,
+                                                           next_event, event);
+                }
+
               goto next_event;
             }
           else if (event->type == CLUTTER_TOUCH_UPDATE &&

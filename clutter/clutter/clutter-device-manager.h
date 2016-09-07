@@ -85,9 +85,12 @@ struct _ClutterDeviceManagerClass
                                                ClutterStage       *stage);
   ClutterVirtualInputDevice *(* create_virtual_device) (ClutterDeviceManager  *manager,
                                                         ClutterInputDeviceType device_type);
+  void                (* compress_motion) (ClutterDeviceManager *device_manger,
+                                           ClutterEvent         *event,
+                                           const ClutterEvent   *to_discard);
 
   /* padding */
-  gpointer _padding[7];
+  gpointer _padding[6];
 };
 
 CLUTTER_AVAILABLE_IN_1_2
