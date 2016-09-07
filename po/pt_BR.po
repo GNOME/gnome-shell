@@ -16,22 +16,268 @@
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2013, 2014.
 # Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
 # Enrico Nicoletto <liverig@gmail.com>, 2012, 2014, 2016.
-#
+# Rafael Fontenelle <rafaelff@gnome.org>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-19 21:04+0000\n"
-"PO-Revision-Date: 2016-08-22 18:04-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&"
+"keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-09-07 09:27+0000\n"
+"PO-Revision-Date: 2016-09-07 08:16-0200\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
+
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "Navegação"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "Mover a janela para o espaço de trabalho 1"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "Mover a janela para o espaço de trabalho 2"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "Mover a janela para o espaço de trabalho 3"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "Mover a janela para o espaço de trabalho 4"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "Mover a janela para o último espaço de trabalho"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "Mover a janela um espaço de trabalho à esquerda"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "Mover a janela um espaço de trabalho à direita"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "Mover a janela um espaço de trabalho acima"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "Mover a janela um espaço de trabalho abaixo"
+
+# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "Mover janela para o monitor da esquerda"
+
+# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "Mover janela para o monitor da direita"
+
+# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "Mover janela para o monitor acima"
+
+# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "Mover janela para o monitor abaixo"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "Alternar aplicativos"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "Alternar para o aplicativo anterior"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "Alternar janelas"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "Alternar para a janela anterior"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "Alternar as janelas de um aplicativo"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "Alternar para a janela anterior de um aplicativo"
+
+#: data/50-mutter-navigation.xml:76
+#| msgid "Switch system controls directly"
+msgid "Switch system controls"
+msgstr "Alternar controles do sistema"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "Alternar para o controle de sistema anterior"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "Alternar as janelas diretamente"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "Alternar diretamente para a janela anterior"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "Alternar as janelas de um aplicativo diretamente"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr "Alternar diretamente para a janela anterior de um aplicativo"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "Alternar os controles de sistema diretamente"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "Alternar diretamente para o controle de sistema anterior"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "Ocultar todas as janelas normais"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "Trocar para o espaço de trabalho 1"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "Trocar para o espaço de trabalho 2"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "Trocar para o espaço de trabalho 3"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "Trocar para o espaço de trabalho 4"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "Trocar para o último espaço de trabalho"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "Move para o espaço de trabalho à esquerda"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "Move para o espaço de trabalho à direita"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "Mover para o espaço de trabalho acima"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "Mover para o espaço de trabalho abaixo"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "Sistema"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "Mostrar o prompt de comando de execução"
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "Mostrar o panorama de atividades"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "Janelas"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "Ativar o menu da janela"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "Alternar modo de tela inteira"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "Alternar estado de maximização"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "Maximizar a janela"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "Restaurar janela"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "Alternar estado sombreado"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "Fechar janela"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "Ocultar janela"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "Mover janela"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "Redimensionar janela"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr "Alternar a janela em todos os espaços de trabalho ou em apenas um"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Elevar a janela se estiver coberta; caso contrário, a abaixa"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "Elevar a janela para frente das outras"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "Colocar a janela atrás das outras"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "Maximizar a janela verticalmente"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "Maximizar a janela horizontalmente"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "Visualizar divisão à esquerda"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "Visualizar divisão à direita"
 
 #: data/mutter.desktop.in:4
 msgid "Mutter"
@@ -402,187 +648,6 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (em %s)"
-
-#~ msgid "Navigation"
-#~ msgstr "Navegação"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Mover a janela para o espaço de trabalho 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Mover a janela para o espaço de trabalho 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Mover a janela para o espaço de trabalho 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Mover a janela para o espaço de trabalho 4"
-
-#~ msgid "Move window to last workspace"
-#~ msgstr "Mover a janela para o último espaço de trabalho"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Mover a janela um espaço de trabalho à esquerda"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Mover a janela um espaço de trabalho à direita"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Mover a janela um espaço de trabalho acima"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Mover a janela um espaço de trabalho abaixo"
-
-# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#~ msgid "Move window one monitor to the left"
-#~ msgstr "Mover janela para o monitor da esquerda"
-
-# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#~ msgid "Move window one monitor to the right"
-#~ msgstr "Mover janela para o monitor da direita"
-
-# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#~ msgid "Move window one monitor up"
-#~ msgstr "Mover janela para o monitor acima"
-
-# Em conformidade com a tradução do gsettings-desktop-schemas --Enrico
-#~ msgid "Move window one monitor down"
-#~ msgstr "Mover janela para o monitor abaixo"
-
-#~ msgid "Switch applications"
-#~ msgstr "Alternar aplicativos"
-
-#~ msgid "Switch to previous application"
-#~ msgstr "Alternar para o aplicativo anterior"
-
-#~ msgid "Switch windows"
-#~ msgstr "Alternar janelas"
-
-#~ msgid "Switch to previous window"
-#~ msgstr "Alternar para a janela anterior"
-
-#~ msgid "Switch windows of an application"
-#~ msgstr "Alternar as janelas de um aplicativo"
-
-#~ msgid "Switch to previous window of an application"
-#~ msgstr "Alternar para a janela anterior de um aplicativo"
-
-#~ msgid "Switch to previous system control"
-#~ msgstr "Alternar para o controle de sistema anterior"
-
-#~ msgid "Switch windows directly"
-#~ msgstr "Alternar as janelas diretamente"
-
-#~ msgid "Switch directly to previous window"
-#~ msgstr "Alternar diretamente para a janela anterior"
-
-#~ msgid "Switch windows of an app directly"
-#~ msgstr "Alternar as janelas de um aplicativo diretamente"
-
-#~ msgid "Switch directly to previous window of an app"
-#~ msgstr "Alternar diretamente para a janela anterior de um aplicativo"
-
-#~ msgid "Switch system controls directly"
-#~ msgstr "Alternar os controles de sistema diretamente"
-
-#~ msgid "Switch directly to previous system control"
-#~ msgstr "Alternar diretamente para o controle de sistema anterior"
-
-#~ msgid "Hide all normal windows"
-#~ msgstr "Ocultar todas as janelas normais"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Trocar para o espaço de trabalho 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Trocar para o espaço de trabalho 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Trocar para o espaço de trabalho 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Trocar para o espaço de trabalho 4"
-
-#~ msgid "Switch to last workspace"
-#~ msgstr "Trocar para o último espaço de trabalho"
-
-#~ msgid "Move to workspace left"
-#~ msgstr "Move para o espaço de trabalho à esquerda"
-
-#~ msgid "Move to workspace right"
-#~ msgstr "Move para o espaço de trabalho à direita"
-
-#~ msgid "Move to workspace above"
-#~ msgstr "Mover para o espaço de trabalho acima"
-
-#~ msgid "Move to workspace below"
-#~ msgstr "Mover para o espaço de trabalho abaixo"
-
-#~ msgid "System"
-#~ msgstr "Sistema"
-
-#~ msgid "Show the run command prompt"
-#~ msgstr "Mostrar o prompt de comando de execução"
-
-#~ msgid "Show the activities overview"
-#~ msgstr "Mostrar o panorama de atividades"
-
-#~ msgid "Windows"
-#~ msgstr "Janelas"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "Ativar o menu da janela"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Alternar modo de tela inteira"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Alternar estado de maximização"
-
-#~ msgid "Maximize window"
-#~ msgstr "Maximizar a janela"
-
-#~ msgid "Restore window"
-#~ msgstr "Restaurar janela"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Alternar estado sombreado"
-
-#~ msgid "Close window"
-#~ msgstr "Fechar janela"
-
-#~ msgid "Hide window"
-#~ msgstr "Ocultar janela"
-
-#~ msgid "Move window"
-#~ msgstr "Mover janela"
-
-#~ msgid "Resize window"
-#~ msgstr "Redimensionar janela"
-
-#~ msgid "Toggle window on all workspaces or one"
-#~ msgstr "Alternar a janela em todos os espaços de trabalho ou em apenas um"
-
-#~ msgid "Raise window if covered, otherwise lower it"
-#~ msgstr "Elevar a janela se estiver coberta; caso contrário, a abaixa"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Elevar a janela para frente das outras"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Colocar a janela atrás das outras"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximizar a janela verticalmente"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximizar a janela horizontalmente"
-
-#~ msgid "View split on left"
-#~ msgstr "Visualizar divisão à esquerda"
-
-#~ msgid "View split on right"
-#~ msgstr "Visualizar divisão à direita"
 
 #~ msgid "background texture could not be created from file"
 #~ msgstr "textura de plano de fundo não pôde ser criado de arquivo"
