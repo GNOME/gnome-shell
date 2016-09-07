@@ -204,6 +204,12 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   gdk_error_trap_push ();
 
   remote_window = gtk_socket_get_plug_window (GTK_SOCKET (icon->priv->socket));
+  if (remote_window == NULL)
+    {
+      g_warning ("shell tray: plug window is gone");
+      gdk_error_trap_pop_ignored ();
+      return;
+    }
   xwindow = GDK_WINDOW_XID (remote_window);
   xdisplay = GDK_WINDOW_XDISPLAY (remote_window);
   screen = gdk_window_get_screen (remote_window);
