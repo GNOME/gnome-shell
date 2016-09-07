@@ -89,7 +89,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandDataSource, meta_wayland_data_source,
 G_DEFINE_TYPE (MetaWaylandDataSourceWayland, meta_wayland_data_source_wayland,
                META_TYPE_WAYLAND_DATA_SOURCE);
 G_DEFINE_TYPE (MetaWaylandDataSourcePrimary, meta_wayland_data_source_primary,
-               META_TYPE_WAYLAND_DATA_SOURCE);
+               META_TYPE_WAYLAND_DATA_SOURCE_WAYLAND);
 
 static MetaWaylandDataSource *
 meta_wayland_data_source_wayland_new (struct wl_resource *resource);
