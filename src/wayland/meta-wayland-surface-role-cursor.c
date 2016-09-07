@@ -230,9 +230,11 @@ cursor_surface_role_constructed (GObject *object)
   MetaWaylandBuffer *buffer;
 
   buffer = meta_wayland_surface_get_buffer (surface);
-  if (buffer)
+
+  g_warn_if_fail (!buffer || buffer->resource);
+
+  if (buffer && buffer->resource)
     {
-      g_assert (buffer->resource);
       g_set_object (&priv->buffer, buffer);
       meta_wayland_surface_ref_buffer_use_count (surface);
     }
