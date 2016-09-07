@@ -350,6 +350,21 @@ meta_window_actor_freeze (MetaWindowActor *self)
 }
 
 static void
+meta_window_actor_sync_thawed_state (MetaWindowActor *self)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+
+  if (priv->first_frame_state == INITIALLY_FROZEN)
+    priv->first_frame_state = DRAWING_FIRST_FRAME;
+
+  if (priv->surface)
+    meta_surface_actor_set_frozen (priv->surface, FALSE);
+
+  /* We sometimes ignore moves and resizes on frozen windows */
+  meta_window_actor_sync_actor_geometry (self, FALSE);
+}
+
+static void
 meta_window_actor_thaw (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
@@ -361,14 +376,11 @@ meta_window_actor_thaw (MetaWindowActor *self)
   if (priv->freeze_count > 0)
     return;
 
-  if (priv->first_frame_state == INITIALLY_FROZEN)
-    priv->first_frame_state = DRAWING_FIRST_FRAME;
+  /* We still might be frozen due to lack of a MetaSurfaceActor */
+  if (is_frozen (self))
+    return;
 
-  if (priv->surface)
-    meta_surface_actor_set_frozen (priv->surface, FALSE);
-
-  /* We sometimes ignore moves and resizes on frozen windows */
-  meta_window_actor_sync_actor_geometry (self, FALSE);
+  meta_window_actor_sync_thawed_state (self);
 
   /* We do this now since we might be going right back into the
    * frozen state */
@@ -401,14 +413,12 @@ set_surface (MetaWindowActor  *self,
                                                 G_CALLBACK (surface_size_changed), self);
       clutter_actor_add_child (CLUTTER_ACTOR (self), CLUTTER_ACTOR (priv->surface));
 
-      /* If the previous surface actor was frozen, start out
-       * frozen as well... */
-      meta_surface_actor_set_frozen (priv->surface, priv->freeze_count > 0);
-
-      if (!is_frozen (self) && priv->first_frame_state == INITIALLY_FROZEN)
-        priv->first_frame_state = DRAWING_FIRST_FRAME;
-
       meta_window_actor_update_shape (self);
+
+      if (is_frozen (self))
+        meta_surface_actor_set_frozen (priv->surface, TRUE);
+      else
+        meta_window_actor_sync_thawed_state (self);
     }
 }
 
