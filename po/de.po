@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-19 21:04+0000\n"
-"PO-Revision-Date: 2016-08-21 11:45+0200\n"
+"POT-Creation-Date: 2016-09-07 09:27+0000\n"
+"PO-Revision-Date: 2016-09-07 18:55+0200\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -22,7 +22,248 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.9\n"
+
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "Navigation"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "Fenster auf Arbeitsfläche 1 verschieben"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "Fenster auf Arbeitsfläche 2 verschieben"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "Fenster auf Arbeitsfläche 3 verschieben"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "Fenster auf Arbeitsfläche 4 verschieben"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "Fenster auf letzte Arbeitsfläche verschieben"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "Fenster eine Arbeitsfläche nach links verschieben"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "Fenster eine Arbeitsfläche nach rechts verschieben"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "Fenster eine Arbeitsfläche nach oben verschieben"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "Fenster eine Arbeitsfläche nach unten verschieben"
+
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "Fenster einen Bildschirm nach links verschieben"
+
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "Fenster einen Bildschirm nach rechts verschieben"
+
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "Fenster einen Bildschirm nach oben verschieben"
+
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "Fenster einen Bildschirm nach unten verschieben"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "Anwendungen wechseln"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "Zur vorherigen Anwendung wechseln"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "Fenster wechseln"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "Zum vorherigen Fenster wechseln"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "Zwischen den Fenstern einer Anwendung wechseln"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "Zum vorherigen Fenster einer Anwendung wechseln"
+
+#: data/50-mutter-navigation.xml:76
+msgid "Switch system controls"
+msgstr "Systemsteuerungen umschalten"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "Zur vorherigen Systemsteuerungen wechseln"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "Fenster sofort wechseln"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "Direkt zum vorherigen Fenster wechseln"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "Sofort zwischen den Fenstern einer Anwendung wechseln"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr "Direkt zum vorherigen Fenster einer Anwendung wechseln"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "Systemsteuerungen sofort umschalten"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "Direkt zur vorherigen Systemsteuerungen wechselen"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "Alle normalen Fenster verbergen"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "Zur Arbeitsfläche 1 wechseln"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "Zur Arbeitsfläche 2 wechseln"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "Zur Arbeitsfläche 3 wechseln"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "Zur Arbeitsfläche 4 wechseln"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "Zur letzten Arbeitsfläche wechseln"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "Auf Arbeitsfläche links verschieben"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "Auf Arbeitsfläche rechts verschieben"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "Auf Arbeitsfläche darüber verschieben"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "Auf Arbeitsfläche darunter verschieben"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "System"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "Den »Befehl ausführen«-Dialog anzeigen"
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "Aktivitäten-Übersicht anzeigen"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "Fenster"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "Das Fenstermenü aktivieren"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "Vollbildmodus ein-/ausschalten"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "Maximierungszustand ein-/ausschalten"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "Fenster maximieren"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "Fenstergröße wiederherstellen"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "Fenster ein-/ausrollen"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "Fenster schließen"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "Fenster verbergen"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "Fenster verschieben"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "Fenstergröße ändern"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr ""
+"Festlegen, ob das Fenster auf allen oder nur einer Arbeitsfläche sichtbar ist"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Fenster anheben, falls es verdeckt ist, andernfalls absenken"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "Fenster vor die anderen Fenster anheben"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "Fenster hinter die anderen Fenster absenken"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "Fenster vertikal maximieren"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "Fenster horizontal maximieren"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "Ansicht links teilen"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "Ansicht rechts teilen"
 
 #: data/mutter.desktop.in:4
 msgid "Mutter"
@@ -397,185 +638,6 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (auf %s)"
-
-#~ msgid "Navigation"
-#~ msgstr "Navigation"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Fenster auf Arbeitsfläche 1 verschieben"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Fenster auf Arbeitsfläche 2 verschieben"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Fenster auf Arbeitsfläche 3 verschieben"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Fenster auf Arbeitsfläche 4 verschieben"
-
-#~ msgid "Move window to last workspace"
-#~ msgstr "Fenster auf letzte Arbeitsfläche verschieben"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Fenster eine Arbeitsfläche nach links verschieben"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Fenster eine Arbeitsfläche nach rechts verschieben"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Fenster eine Arbeitsfläche nach oben verschieben"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Fenster eine Arbeitsfläche nach unten verschieben"
-
-#~ msgid "Move window one monitor to the left"
-#~ msgstr "Fenster einen Bildschirm nach links verschieben"
-
-#~ msgid "Move window one monitor to the right"
-#~ msgstr "Fenster einen Bildschirm nach rechts verschieben"
-
-#~ msgid "Move window one monitor up"
-#~ msgstr "Fenster einen Bildschirm nach oben verschieben"
-
-#~ msgid "Move window one monitor down"
-#~ msgstr "Fenster einen Bildschirm nach unten verschieben"
-
-#~ msgid "Switch applications"
-#~ msgstr "Anwendungen wechseln"
-
-#~ msgid "Switch to previous application"
-#~ msgstr "Zur vorherigen Anwendung wechseln"
-
-#~ msgid "Switch windows"
-#~ msgstr "Fenster wechseln"
-
-#~ msgid "Switch to previous window"
-#~ msgstr "Zum vorherigen Fenster wechseln"
-
-#~ msgid "Switch windows of an application"
-#~ msgstr "Zwischen den Fenstern einer Anwendung wechseln"
-
-#~ msgid "Switch to previous window of an application"
-#~ msgstr "Zum vorherigen Fenster einer Anwendung wechseln"
-
-#~ msgid "Switch to previous system control"
-#~ msgstr "Zur vorherigen Systemsteuerungen wechseln"
-
-#~ msgid "Switch windows directly"
-#~ msgstr "Fenster sofort wechseln"
-
-#~ msgid "Switch directly to previous window"
-#~ msgstr "Direkt zum vorherigen Fenster wechseln"
-
-#~ msgid "Switch windows of an app directly"
-#~ msgstr "Sofort zwischen den Fenstern einer Anwendung wechseln"
-
-#~ msgid "Switch directly to previous window of an app"
-#~ msgstr "Direkt zum vorherigen Fenster einer Anwendung wechseln"
-
-#~ msgid "Switch system controls directly"
-#~ msgstr "Systemsteuerungen sofort umschalten"
-
-#~ msgid "Switch directly to previous system control"
-#~ msgstr "Direkt zur vorherigen Systemsteuerungen wechselen"
-
-#~ msgid "Hide all normal windows"
-#~ msgstr "Alle normalen Fenster verbergen"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Zur Arbeitsfläche 1 wechseln"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Zur Arbeitsfläche 2 wechseln"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Zur Arbeitsfläche 3 wechseln"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Zur Arbeitsfläche 4 wechseln"
-
-#~ msgid "Switch to last workspace"
-#~ msgstr "Zur letzten Arbeitsfläche wechseln"
-
-#~ msgid "Move to workspace left"
-#~ msgstr "Auf Arbeitsfläche links verschieben"
-
-#~ msgid "Move to workspace right"
-#~ msgstr "Auf Arbeitsfläche rechts verschieben"
-
-#~ msgid "Move to workspace above"
-#~ msgstr "Auf Arbeitsfläche darüber verschieben"
-
-#~ msgid "Move to workspace below"
-#~ msgstr "Auf Arbeitsfläche darunter verschieben"
-
-#~ msgid "System"
-#~ msgstr "System"
-
-#~ msgid "Show the run command prompt"
-#~ msgstr "Den »Befehl ausführen«-Dialog anzeigen"
-
-#~ msgid "Show the activities overview"
-#~ msgstr "Aktivitäten-Übersicht anzeigen"
-
-#~ msgid "Windows"
-#~ msgstr "Fenster"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "Das Fenstermenü aktivieren"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Vollbildmodus ein-/ausschalten"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Maximierungszustand ein-/ausschalten"
-
-#~ msgid "Maximize window"
-#~ msgstr "Fenster maximieren"
-
-#~ msgid "Restore window"
-#~ msgstr "Fenstergröße wiederherstellen"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Fenster ein-/ausrollen"
-
-#~ msgid "Close window"
-#~ msgstr "Fenster schließen"
-
-#~ msgid "Hide window"
-#~ msgstr "Fenster verbergen"
-
-#~ msgid "Move window"
-#~ msgstr "Fenster verschieben"
-
-#~ msgid "Resize window"
-#~ msgstr "Fenstergröße ändern"
-
-#~ msgid "Toggle window on all workspaces or one"
-#~ msgstr ""
-#~ "Festlegen, ob das Fenster auf allen oder nur einer Arbeitsfläche sichtbar "
-#~ "ist"
-
-#~ msgid "Raise window if covered, otherwise lower it"
-#~ msgstr "Fenster anheben, falls es verdeckt ist, andernfalls absenken"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Fenster vor die anderen Fenster anheben"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Fenster hinter die anderen Fenster absenken"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Fenster vertikal maximieren"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Fenster horizontal maximieren"
-
-#~ msgid "View split on left"
-#~ msgstr "Ansicht links teilen"
-
-#~ msgid "View split on right"
-#~ msgstr "Ansicht rechts teilen"
 
 #~ msgid "Failed to scan themes directory: %s\n"
 #~ msgstr "Der Themenordner konnte nicht eingelesen werden: %s\n"
