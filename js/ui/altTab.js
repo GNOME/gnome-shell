@@ -354,6 +354,67 @@ const AppSwitcherPopup = new Lang.Class({
     }
 });
 
+const CyclerHighlight = new Lang.Class({
+    Name: 'CyclerHighlight',
+
+    _init: function() {
+        this._window = null;
+
+        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+
+        this._clone = new Clutter.Clone();
+        this.actor.add_actor(this._clone);
+
+        this._highlight = new St.Widget({ style_class: 'cycler-highlight' });
+        this.actor.add_actor(this._highlight);
+
+        let coordinate = Clutter.BindCoordinate.ALL;
+        let constraint = new Clutter.BindConstraint({ coordinate: coordinate });
+        this._clone.bind_property('source', constraint, 'source', 0);
+
+        this.actor.add_constraint(constraint);
+
+        this.actor.connect('notify::allocation',
+                           Lang.bind(this, this._onAllocationChanged));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    set window(w) {
+        if (this._window == w)
+            return;
+
+        this._window = w;
+
+        if (this._clone.source)
+            this._clone.source.show();
+
+        let windowActor = this._window ? this._window.get_compositor_private()
+                                       : null;
+
+        if (windowActor)
+            windowActor.hide();
+
+        this._clone.source = windowActor;
+    },
+
+    _onAllocationChanged: function() {
+        if (!this._window) {
+            this._highlight.set_size(0, 0);
+            this._highlight.hide();
+        } else {
+            let [x, y] = this.actor.allocation.get_origin();
+            let rect = this._window.get_frame_rect();
+            this._highlight.set_size(rect.width, rect.height);
+            this._highlight.set_position(rect.x - x, rect.y - y);
+            this._highlight.show();
+        }
+    },
+
+    _onDestroy: function() {
+        this.window = null;
+    }
+});
+
 const CyclerPopup = new Lang.Class({
     Name: 'CyclerPopup',
     Extends: SwitcherPopup.SwitcherPopup,
@@ -367,6 +428,9 @@ const CyclerPopup = new Lang.Class({
         if (this._items.length == 0)
             return;
 
+        this._highlight = new CyclerHighlight();
+        global.window_group.add_actor(this._highlight.actor);
+
         // We don't show an actual popup, so just provide what SwitcherPopup
         // expects instead of inheriting from SwitcherList
         this._switcherList = { actor: new St.Widget(),
@@ -375,11 +439,18 @@ const CyclerPopup = new Lang.Class({
     },
 
     _highlightItem: function(index, justOutline) {
-        Main.activateWindow(this._items[index]);
+        this._highlight.window = this._items[index];
+        global.window_group.set_child_above_sibling(this._highlight.actor, null);
     },
 
     _finish: function() {
-        this._highlightItem(this._selectedIndex);
+        Main.activateWindow(this._items[this._selectedIndex]);
+
+        this.parent();
+    },
+
+    _onDestroy: function() {
+        this._highlight.actor.destroy();
 
         this.parent();
     }
