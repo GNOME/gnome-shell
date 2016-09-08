@@ -11,269 +11,269 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: lv\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-03 13:37+0000\n"
-"PO-Revision-Date: 2016-03-03 22:19+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-09-07 09:27+0000\n"
+"PO-Revision-Date: 2016-09-08 21:31+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
-"2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 :"
+" 2);\n"
 "X-Generator: Lokalize 2.0\n"
 
-#: ../data/50-mutter-navigation.xml.in.h:1
+#: data/50-mutter-navigation.xml:6
 msgid "Navigation"
 msgstr "Navigācija"
 
-#: ../data/50-mutter-navigation.xml.in.h:2
+#: data/50-mutter-navigation.xml:9
 msgid "Move window to workspace 1"
 msgstr "Pārvietot logu uz 1. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:3
+#: data/50-mutter-navigation.xml:12
 msgid "Move window to workspace 2"
 msgstr "Pārvietot logu uz 2. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:4
+#: data/50-mutter-navigation.xml:15
 msgid "Move window to workspace 3"
 msgstr "Pārvietot logu uz 3. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:5
+#: data/50-mutter-navigation.xml:18
 msgid "Move window to workspace 4"
 msgstr "Pārvietot logu uz 4. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:6
+#: data/50-mutter-navigation.xml:21
 msgid "Move window to last workspace"
 msgstr "Pārvietot logu uz pēdējo darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:7
+#: data/50-mutter-navigation.xml:24
 msgid "Move window one workspace to the left"
 msgstr "Pārvietot logu uz darbvietu pa kreisi"
 
-#: ../data/50-mutter-navigation.xml.in.h:8
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace to the right"
 msgstr "Pārvietot logu uz darbvietu pa labi"
 
-#: ../data/50-mutter-navigation.xml.in.h:9
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Pārvietot logu uz darbvietu augšup"
 
-#: ../data/50-mutter-navigation.xml.in.h:10
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one workspace down"
 msgstr "Pārvietot logu uz darbvietu lejup"
 
-#: ../data/50-mutter-navigation.xml.in.h:11
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor to the left"
 msgstr "Pārvietot logu uz monitoru pa kreisi"
 
-#: ../data/50-mutter-navigation.xml.in.h:12
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor to the right"
 msgstr "Pārvietot logu uz monitoru pa labi"
 
-#: ../data/50-mutter-navigation.xml.in.h:13
+#: data/50-mutter-navigation.xml:42
 msgid "Move window one monitor up"
 msgstr "Pārvietot logu uz monitoru augšup"
 
-#: ../data/50-mutter-navigation.xml.in.h:14
+#: data/50-mutter-navigation.xml:45
 msgid "Move window one monitor down"
 msgstr "Pārvietot logu uz monitoru lejup"
 
-#: ../data/50-mutter-navigation.xml.in.h:15
+#: data/50-mutter-navigation.xml:49
 msgid "Switch applications"
 msgstr "Pārslēgt lietotnes"
 
-#: ../data/50-mutter-navigation.xml.in.h:16
+#: data/50-mutter-navigation.xml:54
 msgid "Switch to previous application"
 msgstr "Pārslēgties uz iepriekšējo lietotni"
 
-#: ../data/50-mutter-navigation.xml.in.h:17
+#: data/50-mutter-navigation.xml:58
 msgid "Switch windows"
 msgstr "Pārslēgt logus"
 
-#: ../data/50-mutter-navigation.xml.in.h:18
+#: data/50-mutter-navigation.xml:63
 msgid "Switch to previous window"
 msgstr "Pārslēgties uz iepriekšējo logu"
 
-#: ../data/50-mutter-navigation.xml.in.h:19
+#: data/50-mutter-navigation.xml:67
 msgid "Switch windows of an application"
 msgstr "Pārslēgt vienas lietotnes logus"
 
-#: ../data/50-mutter-navigation.xml.in.h:20
+#: data/50-mutter-navigation.xml:72
 msgid "Switch to previous window of an application"
 msgstr "Pārslēgties uz lietotnes iepriekšējo logu"
 
-#: ../data/50-mutter-navigation.xml.in.h:21
+#: data/50-mutter-navigation.xml:76
 msgid "Switch system controls"
 msgstr "Pārslēgt sistēmas vadīklas"
 
-#: ../data/50-mutter-navigation.xml.in.h:22
+#: data/50-mutter-navigation.xml:81
 msgid "Switch to previous system control"
 msgstr "Pārslēgties uz iepriekšējo sistēmas vadīklu"
 
-#: ../data/50-mutter-navigation.xml.in.h:23
+#: data/50-mutter-navigation.xml:85
 msgid "Switch windows directly"
 msgstr "Pārslēgties starp logiem tieši"
 
-#: ../data/50-mutter-navigation.xml.in.h:24
+#: data/50-mutter-navigation.xml:90
 msgid "Switch directly to previous window"
 msgstr "Pārslēgties tieši uz iepriekšējo logu"
 
-#: ../data/50-mutter-navigation.xml.in.h:25
+#: data/50-mutter-navigation.xml:94
 msgid "Switch windows of an app directly"
 msgstr "Pārslēgties starp lietotnes logiem tieši"
 
-#: ../data/50-mutter-navigation.xml.in.h:26
+#: data/50-mutter-navigation.xml:99
 msgid "Switch directly to previous window of an app"
 msgstr "Pārslēgties tieši uz iepriekšējo lietotnes logu"
 
-#: ../data/50-mutter-navigation.xml.in.h:27
+#: data/50-mutter-navigation.xml:103
 msgid "Switch system controls directly"
 msgstr "Pārslēgt sistēmas vadīklas tieši"
 
-#: ../data/50-mutter-navigation.xml.in.h:28
+#: data/50-mutter-navigation.xml:108
 msgid "Switch directly to previous system control"
 msgstr "Pārslēgties tieši uz iepriekšējo sistēmas vadīklu"
 
-#: ../data/50-mutter-navigation.xml.in.h:29
+#: data/50-mutter-navigation.xml:111
 msgid "Hide all normal windows"
 msgstr "Slēpt visus parastos logus"
 
-#: ../data/50-mutter-navigation.xml.in.h:30
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 1"
 msgstr "Pārslēgties uz 1. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:31
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 2"
 msgstr "Pārslēgties uz 2. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:32
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to workspace 3"
 msgstr "Pārslēgties uz 3. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:33
+#: data/50-mutter-navigation.xml:123
 msgid "Switch to workspace 4"
 msgstr "Pārslēgties uz 4. darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:34
+#: data/50-mutter-navigation.xml:126
 msgid "Switch to last workspace"
 msgstr "Pārslēgties uz pēdējo darbvietu"
 
-#: ../data/50-mutter-navigation.xml.in.h:35
+#: data/50-mutter-navigation.xml:129
 msgid "Move to workspace left"
 msgstr "Pāriet uz darbvietu pa kreisi"
 
-#: ../data/50-mutter-navigation.xml.in.h:36
+#: data/50-mutter-navigation.xml:132
 msgid "Move to workspace right"
 msgstr "Pāriet uz darbvietu pa labi"
 
-#: ../data/50-mutter-navigation.xml.in.h:37
+#: data/50-mutter-navigation.xml:135
 msgid "Move to workspace above"
 msgstr "Pāriet uz darbvietu augšup"
 
-#: ../data/50-mutter-navigation.xml.in.h:38
+#: data/50-mutter-navigation.xml:138
 msgid "Move to workspace below"
 msgstr "Pāriet uz darbvietu lejup"
 
-#: ../data/50-mutter-system.xml.in.h:1
+#: data/50-mutter-system.xml:6
 msgid "System"
 msgstr "Sistēma"
 
-#: ../data/50-mutter-system.xml.in.h:2
+#: data/50-mutter-system.xml:8
 msgid "Show the run command prompt"
 msgstr "Rādīt palaišanas komandrindu"
 
-#: ../data/50-mutter-system.xml.in.h:3
+#: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Rādīt aktivitāšu pārskatu"
 
-#: ../data/50-mutter-windows.xml.in.h:1
+#: data/50-mutter-windows.xml:6
 msgid "Windows"
 msgstr "Logi"
 
-#: ../data/50-mutter-windows.xml.in.h:2
+#: data/50-mutter-windows.xml:8
 msgid "Activate the window menu"
 msgstr "Aktivizēt loga izvēlni"
 
-#: ../data/50-mutter-windows.xml.in.h:3
+#: data/50-mutter-windows.xml:10
 msgid "Toggle fullscreen mode"
 msgstr "Pārslēgt pilnekrāna režīmu"
 
-#: ../data/50-mutter-windows.xml.in.h:4
+#: data/50-mutter-windows.xml:12
 msgid "Toggle maximization state"
 msgstr "Pārslēgt maksimizācijas stāvokli"
 
-#: ../data/50-mutter-windows.xml.in.h:5
+#: data/50-mutter-windows.xml:14
 msgid "Maximize window"
 msgstr "Maksimizēt logu"
 
-#: ../data/50-mutter-windows.xml.in.h:6
+#: data/50-mutter-windows.xml:16
 msgid "Restore window"
 msgstr "Atjaunot loga izmēru"
 
-#: ../data/50-mutter-windows.xml.in.h:7
+#: data/50-mutter-windows.xml:18
 msgid "Toggle shaded state"
 msgstr "Pārslēgt ēnoto stāvokli"
 
-#: ../data/50-mutter-windows.xml.in.h:8
+#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Aizvērt logu"
 
-#: ../data/50-mutter-windows.xml.in.h:9
+#: data/50-mutter-windows.xml:22
 msgid "Hide window"
 msgstr "Paslēpt logu"
 
-#: ../data/50-mutter-windows.xml.in.h:10
+#: data/50-mutter-windows.xml:24
 msgid "Move window"
 msgstr "Pārvietot logu"
 
-#: ../data/50-mutter-windows.xml.in.h:11
+#: data/50-mutter-windows.xml:26
 msgid "Resize window"
 msgstr "Mainīt loga izmēru"
 
-#: ../data/50-mutter-windows.xml.in.h:12
+#: data/50-mutter-windows.xml:29
 msgid "Toggle window on all workspaces or one"
 msgstr "Pārslēgt, vai logam jābūt visās darbvietās vai vienā"
 
-#: ../data/50-mutter-windows.xml.in.h:13
+#: data/50-mutter-windows.xml:31
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Pacelt logu, ja to aizsedz, citādi pazemināt"
 
-#: ../data/50-mutter-windows.xml.in.h:14
+#: data/50-mutter-windows.xml:33
 msgid "Raise window above other windows"
 msgstr "Pacelt logu virs citiem logiem"
 
-#: ../data/50-mutter-windows.xml.in.h:15
+#: data/50-mutter-windows.xml:35
 msgid "Lower window below other windows"
 msgstr "Pazemināt logu zem citiem logiem"
 
-#: ../data/50-mutter-windows.xml.in.h:16
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window vertically"
 msgstr "Maksimizēt logu vertikāli"
 
-#: ../data/50-mutter-windows.xml.in.h:17
+#: data/50-mutter-windows.xml:39
 msgid "Maximize window horizontally"
 msgstr "Maksimizēt logu horizontāli"
 
-#: ../data/50-mutter-windows.xml.in.h:18
+#: data/50-mutter-windows.xml:43
 msgid "View split on left"
 msgstr "Izvietot kreisajā ekrāna pusē"
 
-#: ../data/50-mutter-windows.xml.in.h:19
+#: data/50-mutter-windows.xml:47
 msgid "View split on right"
 msgstr "Izvietot labajā ekrāna pusē"
 
-#: ../data/mutter.desktop.in.h:1
+#: data/mutter.desktop.in:4
 msgid "Mutter"
 msgstr "Mutter"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+#: data/org.gnome.mutter.gschema.xml.in:7
 msgid "Modifier to use for extended window management operations"
 msgstr "Modifikators, kuru lietot paplašinātām loga pārvaldības darbībām"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+#: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -285,11 +285,11 @@ msgstr ""
 "PC aparatūras. Tiek sagaidīts, ka šī sasaite ir vai nu noklusējuma, vai "
 "tukša virkne."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+#: data/org.gnome.mutter.gschema.xml.in:20
 msgid "Attach modal dialogs"
 msgstr "Piesaistīt modālos dialogus"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+#: data/org.gnome.mutter.gschema.xml.in:21
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -299,11 +299,11 @@ msgstr ""
 "dialogs būs piesaistīts virsraksta joslai vecāka logam un tiks pārvietots "
 "kopā ar vecāka logu."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+#: data/org.gnome.mutter.gschema.xml.in:30
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Aktivēt logu sānisko izklāšanu, kad to nomet uz ekrāna malas"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+#: data/org.gnome.mutter.gschema.xml.in:31
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
@@ -313,11 +313,11 @@ msgstr ""
 "izklāti pa visu ekrāna augstumu pusē no pieejamā platuma, bet tie, kas "
 "nomesti uz augšējās malas, tiks izklāti pa visu ekrānu."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+#: data/org.gnome.mutter.gschema.xml.in:40
 msgid "Workspaces are managed dynamically"
 msgstr "Darbvirsmas tiek pārvaldītas dinamiski"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+#: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
@@ -327,11 +327,11 @@ msgstr ""
 "darbvirsmu skaits (ko nosaka num-workspaces atslēga laukā org.gnome.desktop."
 "wm.preferences)."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+#: data/org.gnome.mutter.gschema.xml.in:50
 msgid "Workspaces only on primary"
 msgstr "Darbvietas tikai uz galvenā"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+#: data/org.gnome.mutter.gschema.xml.in:51
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -339,11 +339,11 @@ msgstr ""
 "Nosaka, vai darbvietu pārslēgšanai vajadzētu notikt visiem logiem visos "
 "monitoros, vai tikai logiem galvenajā monitorā."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+#: data/org.gnome.mutter.gschema.xml.in:59
 msgid "No tab popup"
 msgstr "Nerādīt logus pārslēgšanās laikā"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+#: data/org.gnome.mutter.gschema.xml.in:60
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -351,11 +351,11 @@ msgstr ""
 "Nosaka, vai atslēgt uzlecošo izvēlni ar logu attēliem un izvēles rāmi, kad "
 "notiek pārslēgšanās starp logiem ar tabulatora vai tildes taustiņiem."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+#: data/org.gnome.mutter.gschema.xml.in:68
 msgid "Delay focus changes until the pointer stops moving"
 msgstr "Aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj kustēties"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+#: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focus will not be changed immediately when entering a window, but only "
@@ -365,11 +365,11 @@ msgstr ""
 "\" (pele), tad fokuss nemainīsies uzreiz pēc ieiešanas logā, bet tikai pēc "
 "tam, kad rādītājs beidzis kustēties."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+#: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
 msgstr "Velkams malas platums"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+#: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -377,11 +377,11 @@ msgstr ""
 "Kopējo velkamo malu apjoms. Ja motīva redzamās robežas nav pietiekamas, tiks "
 "pievienotas neredzamas robežas, lai iegūtu šo vērtību."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+#: data/org.gnome.mutter.gschema.xml.in:89
 msgid "Auto maximize nearly monitor sized windows"
 msgstr "Automātiski maksimizēt logus, kas ir gandrīz ar monitora izmēru"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+#: data/org.gnome.mutter.gschema.xml.in:90
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
@@ -389,116 +389,125 @@ msgstr ""
 "Ja aktivizēts, jauni logi, kuru izmērs ir gandrīz tāds pats, kā monitoram, "
 "tiks maksimizēti."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+#: data/org.gnome.mutter.gschema.xml.in:98
 msgid "Place new windows in the center"
 msgstr "Novietot logu vidū"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+#: data/org.gnome.mutter.gschema.xml.in:99
 msgid ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
 msgstr ""
 "Ja patiess, jaunie logi vienmēr tiks novietoti monitora aktīvā ekrāna vidū."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+#: data/org.gnome.mutter.gschema.xml.in:120
 msgid "Select window from tab popup"
 msgstr "Izvēlēties logu no tabulatora izvēlnes"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+#: data/org.gnome.mutter.gschema.xml.in:125
 msgid "Cancel tab popup"
 msgstr "Atcelt logu rādīšanu"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+#: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
 msgstr "Pārslēgties uz VT 1"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+#: data/org.gnome.mutter.wayland.gschema.xml.in:10
 msgid "Switch to VT 2"
 msgstr "Pārslēgties uz VT 2"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+#: data/org.gnome.mutter.wayland.gschema.xml.in:14
 msgid "Switch to VT 3"
 msgstr "Pārslēgties uz VT 3"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+#: data/org.gnome.mutter.wayland.gschema.xml.in:18
 msgid "Switch to VT 4"
 msgstr "Pārslēgties uz VT 4"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+#: data/org.gnome.mutter.wayland.gschema.xml.in:22
 msgid "Switch to VT 5"
 msgstr "Pārslēgties uz VT 5"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+#: data/org.gnome.mutter.wayland.gschema.xml.in:26
 msgid "Switch to VT 6"
 msgstr "Pārslēgties uz VT 6"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+#: data/org.gnome.mutter.wayland.gschema.xml.in:30
 msgid "Switch to VT 7"
 msgstr "Pārslēgties uz VT 7"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+#: data/org.gnome.mutter.wayland.gschema.xml.in:34
 msgid "Switch to VT 8"
 msgstr "Pārslēgties uz VT 8"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+#: data/org.gnome.mutter.wayland.gschema.xml.in:38
 msgid "Switch to VT 9"
 msgstr "Pārslēgties uz VT 9"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+#: data/org.gnome.mutter.wayland.gschema.xml.in:42
 msgid "Switch to VT 10"
 msgstr "Pārslēgties uz VT 10"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+#: data/org.gnome.mutter.wayland.gschema.xml.in:46
 msgid "Switch to VT 11"
 msgstr "Pārslēgties uz VT 11"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+#: data/org.gnome.mutter.wayland.gschema.xml.in:50
 msgid "Switch to VT 12"
 msgstr "Pārslēgties uz VT 12"
 
-#: ../src/backends/meta-monitor-manager.c:518
+#: src/backends/meta-input-settings.c:1707
+#| msgid "Switch system controls"
+msgid "Switch monitor"
+msgstr "Pārslēgt monitoru"
+
+#: src/backends/meta-input-settings.c:1709
+msgid "Show on-screen help"
+msgstr "Rādīt palīdzību uz ekrāna"
+
+#: src/backends/meta-monitor-manager.c:514
 msgid "Built-in display"
 msgstr "Iebūvēts displejs"
 
-#: ../src/backends/meta-monitor-manager.c:544
+#: src/backends/meta-monitor-manager.c:537
 msgid "Unknown"
 msgstr "Nezināms"
 
-#: ../src/backends/meta-monitor-manager.c:546
+#: src/backends/meta-monitor-manager.c:539
 msgid "Unknown Display"
 msgstr "Nezināms displejs"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:554
+#: src/backends/meta-monitor-manager.c:547
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: src/compositor/compositor.c:463
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "Cits kompozīcijas pārvaldnieks jau darbojas ekrānā %d displejā “%s”."
 
-#: ../src/core/bell.c:185
+#: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Zvana notikums"
 
-#: ../src/core/delete.c:127
+#: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
 msgstr "“%s” nereaģē."
 
-#: ../src/core/delete.c:129
+#: src/core/delete.c:129
 msgid "Application is not responding."
 msgstr "Lietotne nereaģē."
 
-#: ../src/core/delete.c:134
+#: src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -506,57 +515,56 @@ msgstr ""
 "Var uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to piespiedu "
 "kārtā."
 
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Wait"
 msgstr "_Gaidīt"
 
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "Aizvērt _piespiedu kārtā"
 
-#: ../src/core/display.c:555
+#: src/core/display.c:590
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Neizdevās atvērt X logu sistēmas displeju “%s”\n"
 
-#: ../src/core/main.c:181
+#: src/core/main.c:182
 msgid "Disable connection to session manager"
 msgstr "Deaktivēt savienojumu ar sesiju pārvaldnieku"
 
-#: ../src/core/main.c:187
+#: src/core/main.c:188
 msgid "Replace the running window manager"
 msgstr "Aizvietot darbojošos logu pārvaldnieku"
 
-#: ../src/core/main.c:193
+#: src/core/main.c:194
 msgid "Specify session management ID"
 msgstr "Norādiet sesiju pārvaldības ID"
 
-#: ../src/core/main.c:198
+#: src/core/main.c:199
 msgid "X Display to use"
 msgstr "Lietojamais X displejs"
 
-#: ../src/core/main.c:204
+#: src/core/main.c:205
 msgid "Initialize session from savefile"
 msgstr "Inicializēt sesiju no saglabātās datnes"
 
-#: ../src/core/main.c:210
+#: src/core/main.c:211
 msgid "Make X calls synchronous"
 msgstr "Padarīt X izsaukumus sinhronus"
 
-#: ../src/core/main.c:217
+#: src/core/main.c:218
 msgid "Run as a wayland compositor"
 msgstr "Palaist kā wayland kompozitoru"
 
-#: ../src/core/main.c:223
-#| msgid "Run as a wayland compositor"
+#: src/core/main.c:224
 msgid "Run as a nested compositor"
 msgstr "Palaist kā ligzdotu kompozitoru"
 
-#: ../src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a full display server, rather than nested"
 msgstr "Palaist kā pilnu attēlošanas serveri, nevis iegultu"
 
-#: ../src/core/mutter.c:39
+#: src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -571,20 +579,20 @@ msgstr ""
 "Netiek dota NEKĀDA garantija; pat ne KOMERCIĀLAS VĒRTĪBAS vai DERĪGUMA "
 "NOTEIKTAM NOLŪKAM.\n"
 
-#: ../src/core/mutter.c:53
+#: src/core/mutter.c:53
 msgid "Print version"
 msgstr "Parādīt versiju"
 
-#: ../src/core/mutter.c:59
+#: src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Izmantojamais mutter spraudnis"
 
-#: ../src/core/prefs.c:1997
+#: src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbvieta %d"
 
-#: ../src/core/screen.c:521
+#: src/core/screen.c:521
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -593,16 +601,21 @@ msgstr ""
 "Displejam “%s” jau ir logu pārvaldnieks; mēģiniet lietot --replace iespēju, "
 "lai aizvietotu pašreizējo logu pārvaldnieku."
 
-#: ../src/core/screen.c:603
+#: src/core/screen.c:606
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekrāna %d displejs “%s“ nav derīgs\n"
 
-#: ../src/core/util.c:121
+#: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter tika kompilēts bez detalizētas izvades režīma atbalsta\n"
 
-#: ../src/x11/session.c:1815
+#: src/wayland/meta-wayland-tablet-pad.c:595
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr "Režīma slēdzis: režīms %d"
+
+#: src/x11/session.c:1815
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
@@ -610,7 +623,7 @@ msgstr ""
 "Šie logi neatbalsta “saglabāt pašreizējos iestatījumus” un būs jāpārstartē "
 "pašrocīgi nākamreiz, kad ierakstīsities."
 
-#: ../src/x11/window-props.c:549
+#: src/x11/window-props.c:548
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (uz %s)"
