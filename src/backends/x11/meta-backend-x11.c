@@ -806,6 +806,14 @@ meta_backend_x11_lock_layout_group (MetaBackend *backend,
 }
 
 static void
+meta_backend_x11_set_numlock (MetaBackend *backend,
+                              gboolean     numlock_state)
+{
+  /* TODO: Currently handled by gnome-settings-deamon */
+}
+
+
+static void
 meta_backend_x11_update_screen_size (MetaBackend *backend,
                                      int width, int height)
 {
@@ -897,6 +905,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->lock_layout_group = meta_backend_x11_lock_layout_group;
   backend_class->update_screen_size = meta_backend_x11_update_screen_size;
   backend_class->select_stage_events = meta_backend_x11_select_stage_events;
+  backend_class->set_numlock = meta_backend_x11_set_numlock;
 }
 
 static void

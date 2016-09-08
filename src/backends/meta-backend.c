@@ -542,6 +542,14 @@ meta_backend_lock_layout_group (MetaBackend *backend,
   META_BACKEND_GET_CLASS (backend)->lock_layout_group (backend, idx);
 }
 
+void
+meta_backend_set_numlock (MetaBackend *backend,
+                          gboolean     numlock_state)
+{
+  META_BACKEND_GET_CLASS (backend)->set_numlock (backend, numlock_state);
+}
+
+
 /**
  * meta_backend_get_stage:
  * @backend: A #MetaBackend

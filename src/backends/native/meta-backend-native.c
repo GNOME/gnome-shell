@@ -368,6 +368,14 @@ meta_backend_native_lock_layout_group (MetaBackend *backend,
   g_signal_emit_by_name (backend, "keymap-layout-group-changed", idx, 0);
 }
 
+static void
+meta_backend_native_set_numlock (MetaBackend *backend,
+                                 gboolean     numlock_state)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  clutter_evdev_set_keyboard_numlock (manager, numlock_state);
+}
+
 static gboolean
 meta_backend_native_get_relative_motion_deltas (MetaBackend *backend,
                                                 const        ClutterEvent *event,
@@ -421,6 +429,7 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->lock_layout_group = meta_backend_native_lock_layout_group;
   backend_class->get_relative_motion_deltas = meta_backend_native_get_relative_motion_deltas;
   backend_class->update_screen_size = meta_backend_native_update_screen_size;
+  backend_class->set_numlock = meta_backend_native_set_numlock;
 }
 
 static void

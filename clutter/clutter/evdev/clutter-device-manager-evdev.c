@@ -2531,6 +2531,60 @@ clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
 }
 
 /**
+ * clutter_evdev_set_keyboard_numlock: (skip)
+ * @evdev: the #ClutterDeviceManager created by the evdev backend
+ * @numlock_set: TRUE to set NumLock ON, FALSE otherwise.
+ *
+ * Sets the NumLock state on the backend's #xkb_state .
+ *
+ * Stability: unstable
+ */
+void
+clutter_evdev_set_keyboard_numlock (ClutterDeviceManager *evdev,
+                                    gboolean              numlock_state)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  ClutterDeviceManagerEvdevPrivate *priv;
+  GSList *iter;
+  xkb_mod_mask_t numlock;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
+  priv = manager_evdev->priv;
+  numlock = (1 << xkb_keymap_mod_get_index(priv->keymap, "Mod2"));
+
+  for (iter = priv->seats; iter; iter = iter->next)
+    {
+      ClutterSeatEvdev *seat = iter->data;
+      xkb_mod_mask_t depressed_mods;
+      xkb_mod_mask_t latched_mods;
+      xkb_mod_mask_t locked_mods;
+      xkb_mod_mask_t group_mods;
+
+      depressed_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_DEPRESSED);
+      latched_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_LATCHED);
+      locked_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_LOCKED);
+      group_mods = xkb_state_serialize_layout (seat->xkb, XKB_STATE_LAYOUT_EFFECTIVE);
+
+      if (numlock_state)
+        locked_mods |= numlock;
+      else
+        locked_mods &= ~numlock;
+
+      xkb_state_update_mask (seat->xkb,
+                             depressed_mods,
+                             latched_mods,
+                             locked_mods,
+                             0, 0,
+                             group_mods);
+
+      clutter_seat_evdev_sync_leds (seat);
+    }
+}
+
+
+/**
  * clutter_evdev_set_pointer_constrain_callback:
  * @evdev: the #ClutterDeviceManager created by the evdev backend
  * @callback: the callback

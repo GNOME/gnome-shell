@@ -103,6 +103,9 @@ struct _MetaBackendClass
                                            double       *dy,
                                            double       *dx_unaccel,
                                            double       *dy_unaccel);
+  void (* set_numlock) (MetaBackend *backend,
+                        gboolean     numlock_state);
+
 };
 
 void meta_init_backend (MetaBackendType backend_type);

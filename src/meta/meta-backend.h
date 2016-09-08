@@ -44,6 +44,9 @@ void meta_backend_set_keymap (MetaBackend *backend,
 void meta_backend_lock_layout_group (MetaBackend *backend,
                                      guint        idx);
 
+void meta_backend_set_numlock (MetaBackend *backend,
+                               gboolean     numlock_state);
+
 ClutterActor *meta_backend_get_stage (MetaBackend *backend);
 
 void meta_clutter_init (void);

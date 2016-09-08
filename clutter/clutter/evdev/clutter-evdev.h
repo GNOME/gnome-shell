@@ -105,6 +105,10 @@ CLUTTER_AVAILABLE_IN_1_20
 void clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
                                               xkb_layout_index_t    idx);
 
+CLUTTER_AVAILABLE_IN_1_26
+void clutter_evdev_set_keyboard_numlock (ClutterDeviceManager *evdev,
+                                         gboolean              numlock_state);
+
 CLUTTER_AVAILABLE_IN_1_18
 void clutter_evdev_set_keyboard_repeat (ClutterDeviceManager *evdev,
                                         gboolean              repeat,
