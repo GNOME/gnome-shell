@@ -1456,10 +1456,10 @@ _clutter_stage_do_pick_on_view (ClutterStage     *stage,
      used. The format is requested as pre-multiplied because Cogl
      assumes that all pixels in the framebuffer are premultiplied so
      it avoids a conversion. */
-  cogl_read_pixels (read_x, read_y, 1, 1,
-                    COGL_READ_PIXELS_COLOR_BUFFER,
-                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                    pixel);
+  cogl_framebuffer_read_pixels (fb,
+                                read_x, read_y, 1, 1,
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                pixel);
 
   if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS))
     {
