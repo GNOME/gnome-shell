@@ -53,13 +53,6 @@ output_resource_destroy (struct wl_resource *res)
   wayland_output->resources = g_list_remove (wayland_output->resources, res);
 }
 
-static inline enum wl_output_transform
-wl_output_transform_from_meta_monitor_transform (MetaMonitorTransform transform)
-{
-  /* The enums are the same. */
-  return (enum wl_output_transform) transform;
-}
-
 static void
 send_output_events (struct wl_resource *resource,
                     MetaWaylandOutput  *wayland_output,
@@ -69,11 +62,9 @@ send_output_events (struct wl_resource *resource,
   int version = wl_resource_get_version (resource);
 
   MetaOutput *output = monitor_info->outputs[0];
-  enum wl_output_transform transform = wl_output_transform_from_meta_monitor_transform (output->crtc->transform);
   guint mode_flags = WL_OUTPUT_MODE_CURRENT;
 
   MetaMonitorInfo *old_monitor_info = wayland_output->monitor_info;
-  enum wl_output_transform old_transform = wayland_output->transform;
   guint old_mode_flags = wayland_output->mode_flags;
   gint old_scale = wayland_output->scale;
 
@@ -81,9 +72,14 @@ send_output_events (struct wl_resource *resource,
 
   if (need_all_events ||
       old_monitor_info->rect.x != monitor_info->rect.x ||
-      old_monitor_info->rect.y != monitor_info->rect.y ||
-      old_transform != transform)
+      old_monitor_info->rect.y != monitor_info->rect.y)
     {
+      /*
+       * TODO: When we support wl_surface.set_buffer_transform, pass along
+       * the correct transform here instead of always pretending its 'normal'.
+       * The reason for this is to try stopping clients from setting any buffer
+       * transform other than 'normal'.
+       */
       wl_output_send_geometry (resource,
                                (int)monitor_info->rect.x,
                                (int)monitor_info->rect.y,
@@ -92,7 +88,7 @@ send_output_events (struct wl_resource *resource,
                                output->subpixel_order,
                                output->vendor,
                                output->product,
-                               transform);
+                               WL_OUTPUT_TRANSFORM_NORMAL);
       need_done = TRUE;
     }
 
@@ -167,10 +163,8 @@ wayland_output_set_monitor_info (MetaWaylandOutput *wayland_output,
                                  MetaMonitorInfo   *monitor_info)
 {
   MetaOutput *output = monitor_info->outputs[0];
-  enum wl_output_transform transform = wl_output_transform_from_meta_monitor_transform (output->crtc->transform);
 
   wayland_output->monitor_info = monitor_info;
-  wayland_output->transform = transform;
   wayland_output->mode_flags = WL_OUTPUT_MODE_CURRENT;
   if (output->crtc->current_mode == output->preferred_mode)
     wayland_output->mode_flags |= WL_OUTPUT_MODE_PREFERRED;

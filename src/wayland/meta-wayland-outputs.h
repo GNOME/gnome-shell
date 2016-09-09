@@ -43,7 +43,6 @@ struct _MetaWaylandOutput
 
   struct wl_global         *global;
   MetaMonitorInfo          *monitor_info;
-  enum wl_output_transform  transform;
   guint                     mode_flags;
   gint                      scale;
 
