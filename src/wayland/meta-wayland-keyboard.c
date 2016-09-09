@@ -413,7 +413,7 @@ static void
 maybe_save_numlock_state (MetaWaylandKeyboard *keyboard)
 {
   MetaWaylandXkbInfo *xkb_info = &keyboard->xkb_info;
-  GDesktopKeyboardNumLockState numlock_state;
+  GsdKeyboardNumLockState numlock_state;
   int numlock_active;
 
   if (!META_IS_BACKEND_NATIVE (meta_get_backend ()))
