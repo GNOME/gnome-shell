@@ -115,36 +115,12 @@ clutter_stage_view_invalidate_offscreen_blit_pipeline (ClutterStageView *view)
   g_clear_pointer (&priv->pipeline, cogl_object_unref);
 }
 
-static void
-transform_rect_to_onscreen (ClutterStageView        *view,
-                            const cairo_rectangle_t *rect,
-                            cairo_rectangle_t       *rect_out)
-{
-  float x1, y1, x2, y2;
-
-  x1 = rect->x;
-  y1 = rect->y;
-  clutter_stage_view_transform_to_onscreen (view, &x1, &y1);
-
-  x2 = rect->x + rect->width;
-  y2 = rect->y + rect->height;
-  clutter_stage_view_transform_to_onscreen (view, &x2, &y2);
-
-  *rect_out = (cairo_rectangle_t) {
-    .x = MIN (x1, x2),
-    .y = MIN (y1, y2),
-    .width = ABS (x2 - x1),
-    .height = ABS (y2 - y1)
-  };
-}
-
 void
 clutter_stage_view_blit_offscreen (ClutterStageView            *view,
                                    const cairo_rectangle_int_t *rect)
 {
   ClutterStageViewPrivate *priv =
     clutter_stage_view_get_instance_private (view);
-  cairo_rectangle_t texture_rect, onscreen_rect;
   CoglMatrix matrix;
 
   clutter_stage_view_ensure_offscreen_blit_pipeline (view);
@@ -158,25 +134,9 @@ clutter_stage_view_blit_offscreen (ClutterStageView            *view,
   cogl_matrix_scale (&matrix, 2, -2, 0);
   cogl_framebuffer_set_projection_matrix (priv->framebuffer, &matrix);
 
-  texture_rect = (cairo_rectangle_t) {
-    .x = (double) rect->x / cogl_framebuffer_get_width (priv->offscreen),
-    .y = (double) rect->y / cogl_framebuffer_get_height (priv->offscreen),
-    .width = (double) rect->width / cogl_framebuffer_get_width (priv->offscreen),
-    .height = (double) rect->height / cogl_framebuffer_get_height (priv->offscreen)
-  };
-
-  transform_rect_to_onscreen (view, &texture_rect, &onscreen_rect);
-
-  cogl_framebuffer_draw_textured_rectangle (priv->framebuffer,
-                                            priv->pipeline,
-                                            onscreen_rect.x,
-                                            onscreen_rect.y,
-                                            onscreen_rect.x + onscreen_rect.width,
-                                            onscreen_rect.y + onscreen_rect.height,
-                                            texture_rect.x,
-                                            texture_rect.y,
-                                            texture_rect.x + texture_rect.width,
-                                            texture_rect.y + texture_rect.height);
+  cogl_framebuffer_draw_rectangle (priv->framebuffer,
+                                   priv->pipeline,
+                                   0, 0, 1, 1);
 
   cogl_framebuffer_pop_matrix (priv->framebuffer);
 }
