@@ -804,6 +804,11 @@ const LoginDialog = new Lang.Class({
 
         this._user = null;
 
+        if (this._nextSignalId) {
+            this._authPrompt.disconnect(this._nextSignalId);
+            this._nextSignalId = 0;
+        }
+
         if (beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
             if (!this._disableUserList)
                 this._showUserList();
