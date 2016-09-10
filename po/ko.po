@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-19 21:04+0000\n"
-"PO-Revision-Date: 2016-09-03 20:28+0900\n"
+"POT-Creation-Date: 2016-09-07 09:27+0000\n"
+"PO-Revision-Date: 2016-09-10 00:38+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -27,6 +27,246 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "조종"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "창을 작업 공간 1로 옮기기"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "창을 작업 공간 2로 옮기기"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "창을 작업 공간 3으로 옮기기"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "창을 작업 공간 4로 옮기기"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "창을 최근 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "창을 한칸 왼쪽 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "창을 한칸 오른쪽 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "창을 한칸 위 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "창을 한칸 아래 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "창을 한칸 왼쪽 모니터로 옮기기"
+
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "창을 한칸 오른쪽 모니터로 옮기기"
+
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "창을 한칸 위 모니터로 옮기기"
+
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "창을 한칸 아래 모니터로 옮기기"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "앱 전환"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "이전 앱으로 전환"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "창 전환"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "이전 창으로 전환"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "한 앱의 창 전환"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "한 앱의 이전 창으로 전환"
+
+#: data/50-mutter-navigation.xml:76
+msgid "Switch system controls"
+msgstr "시스템 조작 전환"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "이전 시스템 조작으로 전환"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "직접 창 전환"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "직접 이전 창으로 전환"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "직접 한 앱의 창 전환"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr "직접 한 앱의 이전 창으로 전환"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "직접 시스템 조작 전환"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "직접 이전 시스템 조작으로 전환"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "모든 일반 창 감추기"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "작업 공간 1로 이동"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "작업 공간 2로 이동"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "작업 공간 3으로 이동"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "작업 공간 4로 이동"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "최근 작업 공간으로 이동"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "왼쪽 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "오른쪽 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "위 작업 공간으로 옮기기"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "아래 작업 공간으로 옮기기"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "시스템"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "실행 명령 프롬프트 보이기"
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "현재 활동 보이기"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "창"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "창 메뉴 활성화"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "전체 화면 모드 토글"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "최대화 상태 토글"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "창 최대화"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "창 복구"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "그림자 상태 토글"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "창 닫기"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "창 감추기"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "창 옮기기"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "창 크기 조정"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr "창을 모든/하나의 작업 공간에 두기 토글"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "창이 가려 있으면 올리고 아니면 내리기"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "창을 다른 창 위로 올리기"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "창을 다른 창 아래로 내리기"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "창을 세로 방향으로 최대화"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "창을 가로 방향으로 최대화"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "왼쪽 나눔창 보기"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "오른쪽 나눔창 보기"
 
 #: data/mutter.desktop.in:4
 msgid "Mutter"
