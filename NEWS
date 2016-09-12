@@ -1,3 +1,25 @@
+3.21.92
+=======
+* Fix absolute pointer motion events on wayland [Jonas; #770557]
+* Default to using stage views [Jonas; #770366]
+* Fix animated cursors on wayland [Rui; #749913]
+* Fix various crashes on wayland [Jonas; #757568, #770727, #770992]
+* Fix screen capture for stage views not at (0, 0) [Jonas; #770127]
+* Compress motion events instead of discarding them [Jonas; #771049]
+* Fix XWayland pointer warp emulation [Jonas; #771050]
+* Add common monitor modes in KMS backend [Rui; #744544]
+* Temporarily use g-s-d schemas for tablet configuration [Carlos; #771315]
+* Misc. bug fixes [Jonas, Carlos; #770402, #770647, #770991, #770994, #770929]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, Rui Matos, Florian Müllner
+
+Translations:
+  Changwoo Ryu [ko], Baurzhan Muftakhidinov [kk], Anders Jonsson [sv],
+  Tiago Santos [pt], Rafael Fontenelle [pt_BR], Mario Blättermann [de],
+  Alexander Shopov [bg], Rūdolfs Mazurs [lv], Fran Dieguez [gl],
+  Trần Ngọc Quân [vi], Piotr Drąg [pl], Мирослав Николић [sr, sr@latin]
+
 3.21.91
 =======
 * Add support for xdg-foreign protocol [Jonas; #769786]
