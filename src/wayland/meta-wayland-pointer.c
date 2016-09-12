@@ -469,10 +469,6 @@ meta_wayland_pointer_enable (MetaWaylandPointer *pointer)
 
   pointer->cursor_surface = NULL;
 
-  pointer->default_grab.interface = &default_pointer_grab_interface;
-  pointer->default_grab.pointer = pointer;
-  pointer->grab = &pointer->default_grab;
-
   manager = clutter_device_manager_get_default ();
   pointer->device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
 
@@ -497,7 +493,7 @@ meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
                                    pointer->cursor_surface_destroy_id);
     }
 
-  meta_wayland_pointer_set_focus (pointer, NULL);
+  meta_wayland_pointer_end_grab (pointer);
 
   g_clear_pointer (&pointer->pointer_clients, g_hash_table_unref);
   pointer->cursor_surface = NULL;
@@ -1216,6 +1212,9 @@ meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 static void
 meta_wayland_pointer_init (MetaWaylandPointer *pointer)
 {
+  pointer->default_grab.interface = &default_pointer_grab_interface;
+  pointer->default_grab.pointer = pointer;
+  pointer->grab = &pointer->default_grab;
 }
 
 static void
