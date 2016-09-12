@@ -784,10 +784,6 @@ constrain_custom_rule (MetaWindow         *window,
   if (!placement_rule)
     return TRUE;
 
-  if (!meta_rectangle_could_fit_rect (&info->work_area_monitor,
-                                      &info->current))
-    return TRUE;
-
   meta_rectangle_intersect (&info->current, &info->work_area_monitor,
                             &intersection);
 
