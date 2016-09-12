@@ -73,7 +73,8 @@ typedef enum
   GSD_KEYBOARD_NUM_LOCK_STATE_OFF
 } GsdKeyboardNumLockState;
 
-G_DEFINE_TYPE (MetaWaylandKeyboard, meta_wayland_keyboard, G_TYPE_OBJECT);
+G_DEFINE_TYPE (MetaWaylandKeyboard, meta_wayland_keyboard,
+               META_TYPE_WAYLAND_INPUT_DEVICE)
 
 static void meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard);
 static void meta_wayland_keyboard_set_numlock (MetaWaylandKeyboard *keyboard,

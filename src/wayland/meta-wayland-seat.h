@@ -26,6 +26,7 @@
 #include <clutter/clutter.h>
 
 #include "meta-wayland-types.h"
+#include "meta-wayland-input-device.h"
 #include "meta-wayland-pointer.h"
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-touch.h"

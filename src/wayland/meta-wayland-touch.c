@@ -34,7 +34,8 @@
 #include "backends/native/meta-backend-native.h"
 #endif
 
-G_DEFINE_TYPE (MetaWaylandTouch, meta_wayland_touch, G_TYPE_OBJECT);
+G_DEFINE_TYPE (MetaWaylandTouch, meta_wayland_touch,
+               META_TYPE_WAYLAND_INPUT_DEVICE)
 
 struct _MetaWaylandTouchSurface
 {

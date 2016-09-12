@@ -34,7 +34,8 @@
 
 #define META_TYPE_WAYLAND_POINTER (meta_wayland_pointer_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandPointer, meta_wayland_pointer,
-                      META, WAYLAND_POINTER, GObject);
+                      META, WAYLAND_POINTER,
+                      MetaWaylandInputDevice)
 
 struct _MetaWaylandPointerGrabInterface
 {
@@ -62,7 +63,7 @@ struct _MetaWaylandPointerClient
 
 struct _MetaWaylandPointer
 {
-  GObject parent;
+  MetaWaylandInputDevice parent;
 
   MetaWaylandSeat *seat;
 

@@ -31,15 +31,14 @@
 #define META_TYPE_WAYLAND_TOUCH (meta_wayland_touch_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandTouch, meta_wayland_touch,
                       META, WAYLAND_TOUCH,
-                      GObject);
-
+                      MetaWaylandInputDevice)
 
 typedef struct _MetaWaylandTouchSurface MetaWaylandTouchSurface;
 typedef struct _MetaWaylandTouchInfo MetaWaylandTouchInfo;
 
 struct _MetaWaylandTouch
 {
-  GObject parent;
+  MetaWaylandInputDevice parent;
 
   MetaWaylandSeat *seat;
 

@@ -54,7 +54,7 @@
 #define META_TYPE_WAYLAND_KEYBOARD (meta_wayland_keyboard_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandKeyboard, meta_wayland_keyboard,
                       META, WAYLAND_KEYBOARD,
-                      GObject);
+                      MetaWaylandInputDevice)
 
 struct _MetaWaylandKeyboardGrabInterface
 {
@@ -81,7 +81,7 @@ typedef struct
 
 struct _MetaWaylandKeyboard
 {
-  GObject parent;
+  MetaWaylandInputDevice parent;
 
   MetaWaylandSeat *seat;
 

@@ -83,7 +83,8 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
-G_DEFINE_TYPE (MetaWaylandPointer, meta_wayland_pointer, G_TYPE_OBJECT);
+G_DEFINE_TYPE (MetaWaylandPointer, meta_wayland_pointer,
+               META_TYPE_WAYLAND_INPUT_DEVICE)
 
 static MetaWaylandPointerClient *
 meta_wayland_pointer_client_new (void)
