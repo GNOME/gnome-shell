@@ -1704,6 +1704,9 @@ meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_setti
         return accel;
       }
     case G_DESKTOP_PAD_BUTTON_ACTION_SWITCH_MONITOR:
+      /* TRANSLATORS: This string refers to an action, cycles drawing tablets'
+       * mapping through the available outputs.
+       */
       return g_strdup (_("Switch monitor"));
     case G_DESKTOP_PAD_BUTTON_ACTION_HELP:
       return g_strdup (_("Show on-screen help"));
