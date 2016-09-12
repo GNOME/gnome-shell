@@ -445,3 +445,21 @@ meta_wayland_seat_can_popup (MetaWaylandSeat *seat,
           meta_wayland_keyboard_can_popup (seat->keyboard, serial) ||
           meta_wayland_touch_can_popup (seat->touch, serial));
 }
+
+gboolean
+meta_wayland_seat_has_keyboard (MetaWaylandSeat *seat)
+{
+  return (seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD) != 0;
+}
+
+gboolean
+meta_wayland_seat_has_pointer (MetaWaylandSeat *seat)
+{
+  return (seat->capabilities & WL_SEAT_CAPABILITY_POINTER) != 0;
+}
+
+gboolean
+meta_wayland_seat_has_touch (MetaWaylandSeat *seat)
+{
+  return (seat->capabilities & WL_SEAT_CAPABILITY_TOUCH) != 0;
+}
