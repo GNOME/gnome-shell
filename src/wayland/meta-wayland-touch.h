@@ -40,8 +40,6 @@ struct _MetaWaylandTouch
 {
   MetaWaylandInputDevice parent;
 
-  MetaWaylandSeat *seat;
-
   struct wl_list resource_list;
 
   GHashTable *touch_surfaces; /* HT of MetaWaylandSurface->MetaWaylandTouchSurface */
@@ -51,8 +49,7 @@ struct _MetaWaylandTouch
   guint64 frame_slots;
 };
 
-void meta_wayland_touch_enable (MetaWaylandTouch *touch,
-                                MetaWaylandSeat  *seat);
+void meta_wayland_touch_enable (MetaWaylandTouch *touch);
 
 void meta_wayland_touch_disable (MetaWaylandTouch *touch);
 

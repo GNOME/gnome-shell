@@ -25,6 +25,7 @@
 #include <glib.h>
 
 #include "meta-wayland-types.h"
+#include "meta-wayland-seat.h"
 #include "meta-wayland-pointer-gesture-swipe.h"
 #include "meta-wayland-pointer-gesture-pinch.h"
 #include "meta-wayland-surface.h"
@@ -65,8 +66,6 @@ struct _MetaWaylandPointer
 {
   MetaWaylandInputDevice parent;
 
-  MetaWaylandSeat *seat;
-
   MetaWaylandPointerClient *focus_client;
   GHashTable *pointer_clients;
 
@@ -91,8 +90,7 @@ struct _MetaWaylandPointer
   guint32 button_count;
 };
 
-void meta_wayland_pointer_enable (MetaWaylandPointer *pointer,
-                                  MetaWaylandSeat    *seat);
+void meta_wayland_pointer_enable (MetaWaylandPointer *pointer);
 
 void meta_wayland_pointer_disable (MetaWaylandPointer *pointer);
 

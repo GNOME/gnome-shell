@@ -456,13 +456,10 @@ meta_wayland_pointer_on_cursor_changed (MetaCursorTracker *cursor_tracker,
 }
 
 void
-meta_wayland_pointer_enable (MetaWaylandPointer *pointer,
-                             MetaWaylandSeat    *seat)
+meta_wayland_pointer_enable (MetaWaylandPointer *pointer)
 {
   MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
   ClutterDeviceManager *manager;
-
-  pointer->seat = seat;
 
   pointer->pointer_clients =
     g_hash_table_new_full (NULL, NULL, NULL,
@@ -503,7 +500,6 @@ meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
   meta_wayland_pointer_set_focus (pointer, NULL);
 
   g_clear_pointer (&pointer->pointer_clients, g_hash_table_unref);
-  pointer->seat = NULL;
   pointer->cursor_surface = NULL;
 }
 
@@ -589,7 +585,11 @@ handle_button_event (MetaWaylandPointer *pointer,
   pointer->grab->interface->button (pointer->grab, event);
 
   if (implicit_grab)
-    pointer->grab_serial = wl_display_get_serial (pointer->seat->wl_display);
+    {
+      MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
+
+      pointer->grab_serial = wl_display_get_serial (seat->wl_display);
+    }
 }
 
 static void
@@ -796,7 +796,9 @@ void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
 {
-  if (pointer->seat == NULL)
+  MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
+
+  if (!meta_wayland_seat_has_pointer (seat))
     return;
 
   if (pointer->focus_surface == surface)
@@ -1206,7 +1208,9 @@ meta_wayland_relative_pointer_init (MetaWaylandCompositor *compositor)
 MetaWaylandSeat *
 meta_wayland_pointer_get_seat (MetaWaylandPointer *pointer)
 {
-  return pointer->seat;
+  MetaWaylandInputDevice *input_device = META_WAYLAND_INPUT_DEVICE (pointer);
+
+  return meta_wayland_input_device_get_seat (input_device);
 }
 
 static void

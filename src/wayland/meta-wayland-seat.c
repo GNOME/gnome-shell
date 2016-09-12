@@ -157,7 +157,7 @@ meta_wayland_seat_set_capabilities (MetaWaylandSeat *seat,
   seat->capabilities = flags;
 
   if (CAPABILITY_ENABLED (prev_flags, flags, WL_SEAT_CAPABILITY_POINTER))
-    meta_wayland_pointer_enable (seat->pointer, seat);
+    meta_wayland_pointer_enable (seat->pointer);
   else if (CAPABILITY_DISABLED (prev_flags, flags, WL_SEAT_CAPABILITY_POINTER))
     meta_wayland_pointer_disable (seat->pointer);
 
@@ -165,7 +165,7 @@ meta_wayland_seat_set_capabilities (MetaWaylandSeat *seat,
     {
       MetaDisplay *display;
 
-      meta_wayland_keyboard_enable (seat->keyboard, seat);
+      meta_wayland_keyboard_enable (seat->keyboard);
       display = meta_get_display ();
 
       /* Post-initialization, ensure the input focus is in sync */
@@ -176,7 +176,7 @@ meta_wayland_seat_set_capabilities (MetaWaylandSeat *seat,
     meta_wayland_keyboard_disable (seat->keyboard);
 
   if (CAPABILITY_ENABLED (prev_flags, flags, WL_SEAT_CAPABILITY_TOUCH))
-    meta_wayland_touch_enable (seat->touch, seat);
+    meta_wayland_touch_enable (seat->touch);
   else if (CAPABILITY_DISABLED (prev_flags, flags, WL_SEAT_CAPABILITY_TOUCH))
     meta_wayland_touch_disable (seat->touch);
 
@@ -215,9 +215,15 @@ meta_wayland_seat_new (MetaWaylandCompositor *compositor,
   wl_list_init (&seat->base_resource_list);
   seat->wl_display = display;
 
-  seat->pointer = g_object_new (META_TYPE_WAYLAND_POINTER, NULL);
-  seat->keyboard = g_object_new (META_TYPE_WAYLAND_KEYBOARD, NULL);
-  seat->touch = g_object_new (META_TYPE_WAYLAND_TOUCH, NULL);
+  seat->pointer = g_object_new (META_TYPE_WAYLAND_POINTER,
+                                "seat", seat,
+                                NULL);
+  seat->keyboard = g_object_new (META_TYPE_WAYLAND_KEYBOARD,
+                                 "seat", seat,
+                                 NULL);
+  seat->touch = g_object_new (META_TYPE_WAYLAND_TOUCH,
+                              "seat", seat,
+                              NULL);
 
   meta_wayland_data_device_init (&seat->data_device);
 

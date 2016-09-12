@@ -36,11 +36,13 @@ handle_swipe_begin (MetaWaylandPointer *pointer,
                     const ClutterEvent *event)
 {
   MetaWaylandPointerClient *pointer_client;
+  MetaWaylandSeat *seat;
   struct wl_resource *resource;
   uint32_t serial, fingers;
 
   pointer_client = pointer->focus_client;
-  serial = wl_display_next_serial (pointer->seat->wl_display);
+  seat = meta_wayland_pointer_get_seat (pointer);
+  serial = wl_display_next_serial (seat->wl_display);
   fingers = clutter_event_get_gesture_swipe_finger_count (event);
 
   wl_resource_for_each (resource, &pointer_client->swipe_gesture_resources)
@@ -77,12 +79,14 @@ handle_swipe_end (MetaWaylandPointer *pointer,
                   const ClutterEvent *event)
 {
   MetaWaylandPointerClient *pointer_client;
+  MetaWaylandSeat *seat;
   struct wl_resource *resource;
   gboolean cancelled = FALSE;
   uint32_t serial;
 
   pointer_client = pointer->focus_client;
-  serial = wl_display_next_serial (pointer->seat->wl_display);
+  seat = meta_wayland_pointer_get_seat (pointer);
+  serial = wl_display_next_serial (seat->wl_display);
 
   if (event->touchpad_swipe.phase == CLUTTER_TOUCHPAD_GESTURE_PHASE_CANCEL)
     cancelled = TRUE;

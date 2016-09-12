@@ -26,9 +26,72 @@
 
 #include "wayland/meta-wayland-input-device.h"
 
-G_DEFINE_TYPE (MetaWaylandInputDevice,
-               meta_wayland_input_device,
-               G_TYPE_OBJECT)
+enum
+{
+  PROP_0,
+
+  PROP_SEAT
+};
+
+typedef struct _MetaWaylandInputDevicePrivate
+{
+  MetaWaylandSeat *seat;
+} MetaWaylandInputDevicePrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandInputDevice,
+                            meta_wayland_input_device,
+                            G_TYPE_OBJECT)
+
+MetaWaylandSeat *
+meta_wayland_input_device_get_seat (MetaWaylandInputDevice *input_device)
+{
+  MetaWaylandInputDevicePrivate *priv =
+    meta_wayland_input_device_get_instance_private (input_device);
+
+  return priv->seat;
+}
+
+static void
+meta_wayland_input_device_set_property (GObject      *object,
+                                        guint         prop_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
+{
+  MetaWaylandInputDevice *input_device = META_WAYLAND_INPUT_DEVICE (object);
+  MetaWaylandInputDevicePrivate *priv =
+    meta_wayland_input_device_get_instance_private (input_device);
+
+  switch (prop_id)
+    {
+    case PROP_SEAT:
+      priv->seat = g_value_get_pointer (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+meta_wayland_input_device_get_property (GObject      *object,
+                                        guint       prop_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
+{
+  MetaWaylandInputDevice *input_device = META_WAYLAND_INPUT_DEVICE (object);
+  MetaWaylandInputDevicePrivate *priv =
+    meta_wayland_input_device_get_instance_private (input_device);
+
+  switch (prop_id)
+    {
+    case PROP_SEAT:
+      g_value_set_pointer (value, priv->seat);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
 
 static void
 meta_wayland_input_device_init (MetaWaylandInputDevice *input_device)
@@ -38,4 +101,17 @@ meta_wayland_input_device_init (MetaWaylandInputDevice *input_device)
 static void
 meta_wayland_input_device_class_init (MetaWaylandInputDeviceClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  GParamSpec *pspec;
+
+  object_class->set_property = meta_wayland_input_device_set_property;
+  object_class->get_property = meta_wayland_input_device_get_property;
+
+  pspec = g_param_spec_pointer ("seat",
+                                "MetaWaylandSeat",
+                                "The seat",
+                                G_PARAM_READWRITE |
+                                G_PARAM_STATIC_STRINGS |
+                                G_PARAM_CONSTRUCT_ONLY);
+  g_object_class_install_property (object_class, PROP_SEAT, pspec);
 }

@@ -27,6 +27,8 @@
 
 #include <glib-object.h>
 
+#include "wayland/meta-wayland-types.h"
+
 #define META_TYPE_WAYLAND_INPUT_DEVICE (meta_wayland_input_device_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaWaylandInputDevice,
                           meta_wayland_input_device,
@@ -37,5 +39,7 @@ struct _MetaWaylandInputDeviceClass
 {
   GObjectClass parent_class;
 };
+
+MetaWaylandSeat * meta_wayland_input_device_get_seat (MetaWaylandInputDevice *input_device);
 
 #endif /* META_WAYLAND_INPUT_DEVICE_H */
