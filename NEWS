@@ -1,3 +1,22 @@
+3.21.92
+=======
+* Adjust screen capture to work with multiple stage views [Jonas; #770128]
+* Improve handling of cycle shortcuts [Florian; #771063]
+* Fix windows not getting undimmed in some cases [Rui; #770163, #752524]
+* Disable extension version check by default [Florian; #770887]
+* Misc. bug fixes [Rui, Florian, Michael; #770382, #770888, #770328]
+
+Contributors:
+  Jonas Ådahl, Michael Catanzaro, Fran Dieguez, Olivier Fourdan, Rui Matos,
+  Florian Müllner
+
+Translations:
+  Changwoo Ryu [ko], Baurzhan Muftakhidinov [kk], Aurimas Černius [lt],
+  Muhammet Kara [tr], Trần Ngọc Quân [vi], A S Alam [pa], Yosef Or Boczko [he],
+  Anders Jonsson [sv], Tiago Santos [pt], Hannie Dumoleyn [nl],
+  Rūdolfs Mazurs [lv], Claude Paroz [fr], Arash Mousavi [fa],
+  Fran Dieguez [gl], Stas Solovey [ru], Tom Tryfonidis [el]
+
 3.21.91
 =======
 Translations:
