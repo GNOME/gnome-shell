@@ -4,7 +4,7 @@
 #
 # Kenneth Nielsen <k.nielsen81@gmail.com>, 2012.
 # Kris Thomsen <mail@kristhomsen.dk>, 2009-2014, 2016.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2014, 2015.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2014-2016.
 #
 # Konventioner:
 #
@@ -19,9 +19,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-20 23:45+0100\n"
-"PO-Revision-Date: 2016-03-20 03:13+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-09-13 01:57+0200\n"
+"PO-Revision-Date: 2016-09-13 01:30+0200\n"
 "Last-Translator: Kris Thomsen\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -29,300 +30,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: ../data/50-gnome-shell-system.xml.in.h:1
-msgid "System"
-msgstr "System"
-
-#: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the notification list"
-msgstr "Vis påmindelseslisten"
-
-#: ../data/50-gnome-shell-system.xml.in.h:3
-msgid "Focus the active notification"
-msgstr "Fokusér på den aktive påmindelse"
-
-#: ../data/50-gnome-shell-system.xml.in.h:4
-msgid "Show the overview"
-msgstr "Vis overblikket"
-
-#: ../data/50-gnome-shell-system.xml.in.h:5
-msgid "Show all applications"
-msgstr "Vis alle programmer"
-
-#: ../data/50-gnome-shell-system.xml.in.h:6
-msgid "Open the application menu"
-msgstr "Åbn program-menuen"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-msgid "GNOME Shell Extension Preferences"
-msgstr "Udvidelsesmodulindstillinger for GNOME Shell"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
-msgid "Configure GNOME Shell Extensions"
-msgstr "Konfigurér udvidelsesmoduler til GNOME Shell"
-
-#: ../data/org.gnome.Shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "GNOME Shell"
-
-#: ../data/org.gnome.Shell.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Vindueshåndtering og åbning af programmer"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Aktivér interne værktøjer, som er nyttige for udviklere og testere fra Alt-F2"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-"Tillad adgang til interne fejlsøgnings- og overvågningsværktøjer med brug af "
-"dialogen Alt-F2."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-msgid "UUIDs of extensions to enable"
-msgstr "Uuid'er for udvidelser, der aktiveres"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"Udvidelser til GNOME-Shell har en uuid-indstilling; denne nøgle oplister "
-"udvidelser som skal indlæses. Alle udvidelser som ønsker at blive indlæst "
-"skal være i denne liste. Du kan også redigere denne liste med D-Bus-"
-"metoderne EnableExtension og DisableExtension ved org.shell.Shell."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "Disables the validation of extension version compatibility"
-msgstr "Deaktiverer godkendelsen af udvidelsesversionskompatibilitet"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"GNOME Shell will only load extensions that claim to support the current "
-"running version. Enabling this option will disable this check and try to "
-"load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell vil kun indlæse udvidelser, som påstår at understøtte den i "
-"øjeblikket kørende version. Dette tilvalg vil deaktivere denne kontrol, og "
-"forsøge at indlæse alle udvidelser uanset hvilken version, de påstår at "
-"understøtte."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
-msgid "List of desktop file IDs for favorite applications"
-msgstr "Liste over skrivebordsfil-id'er til favoritprogrammer"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Programmerne som passer til disse identifikatorer vil blive vist i "
-"favoritområdet."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
-msgid "App Picker View"
-msgstr "Programvælger-visning"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
-msgid "Index of the currently selected view in the application picker."
-msgstr "Indeks for den valgte visning i programvælgeren."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "History for command (Alt-F2) dialog"
-msgstr "Historik for kommandodialogen (Alt-F2)"
-
-#. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-msgid "History for the looking glass dialog"
-msgstr "Historik for looking glass-dialogen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid "Always show the 'Log out' menu item in the user menu."
-msgstr "Vis altid \"Log ud\"-menupunktet i brugermenuen."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid ""
-"This key overrides the automatic hiding of the 'Log out' menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Denne nøgle overstyrer den automatiske skjulning af menupunktet \"Log ud\" i "
-"enkelt bruger, enkelt session-situationer."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid ""
-"Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Om adgangskoder skal huskes for montering af krypterede eller fjern-"
-"filsystemer"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
-msgid ""
-"The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a "
-"'Remember Password' checkbox will be present. This key sets the default "
-"state of the checkbox."
-msgstr ""
-"Shell'en vil spørge efter en adgangskode når en krypteret enhed eller et "
-"fjern-filsystem bliver monteret. Hvis adgangskoden kan gemmes til fremtidig "
-"brug, vil en \"Husk adgangskode\"-tjekboks være synlig. Denne nøgle angiver "
-"standard-værdien af denne tjekboks."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr ""
-"Om standard Bluetooth-adapteren er indstillet til at have enheder tilknyttet"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-"Shell'en vil kun vise menupunktet Bluetooth, hvis en Bluetooth-adapter er "
-"tændt, eller hvis der er enheder tilknyttet standard adapteren. Dette vil "
-"kun blive nulstillet hvis standard adapteren på et tidspunkt, ikke længere "
-"har enheder tilknyttet."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
-msgid "Show the week date in the calendar"
-msgstr "Vis ugenummer i kalenderen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Hvis sand vises ISO-ugenummeret i kalenderen."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-msgid "Keybinding to open the application menu"
-msgstr "Genvejstast til at åbne program-menuen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-msgid "Keybinding to open the application menu."
-msgstr "Genvejstast til at åbne program-menuen."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-msgid "Keybinding to open the \"Show Applications\" view"
-msgstr "Genvejstast til at åbne \"Vis programmer\"-visningen"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid ""
-"Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr ""
-"Genvejstast til at åbne \"Vis programmer\"-visningen i Aktivitets-"
-"overblikket."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to open the overview"
-msgstr "Genvejstast til at åbne overblikket"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-msgid "Keybinding to open the Activities Overview."
-msgstr "Genvejstast til at åbne Aktivitetsoverblikket."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
-msgid "Keybinding to toggle the visibility of the notification list"
-msgstr "Genvejstast til at slå synligheden af påmindelseslisten til eller fra"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "Keybinding to toggle the visibility of the notification list."
-msgstr "Genvejstast til at slå synligheden af påmindelseslisten til eller fra."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "Keybinding to focus the active notification"
-msgstr "Genvejstast til at fokusere på den aktive påmindelse"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
-msgid "Keybinding to focus the active notification."
-msgstr "Genvejstast til at fokusere på den aktive påmindelse."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
-msgid ""
-"Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr ""
-"Genvejstast, som pauser og genstarter alle kørende animationer, til "
-"fejlsøgningsformål"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
-msgid "Which keyboard to use"
-msgstr "Hvilket tastatur bruges"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid "The type of keyboard to use."
-msgstr "Tastaturtypen som bruges."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "Limit switcher to current workspace."
-msgstr "Begræns skifteren til det nuværende arbejdsområde."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid ""
-"If true, only applications that have windows on the current workspace are "
-"shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Hvis sand, vises kun programmer, som har vinduer på det nuværende "
-"arbejdsområde, i skifteren. Ellers er alle programmer inkluderet."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
-msgid "The application icon mode."
-msgstr "Ikon-tilstanden for programmet."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
-msgstr ""
-"Konfigurerer hvordan vinduer bliver vist i omskifteren. Gyldige muligheder "
-"er \"thumbnail-only\" (viser forhåndsvisning af vinduet), \"app-icon-only"
-"\" (viser kun programikonet) eller \"both\" (begge)."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid ""
-"If true, only windows from the current workspace are shown in the switcher. "
-"Otherwise, all windows are included."
-msgstr ""
-"Hvis sand, vises kun vinduer fra det nuværende arbejdsområde i skifteren. "
-"Ellers er alle programmer inkluderet."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
-msgid "Attach modal dialog to the parent window"
-msgstr "Hæft modal dialog til overliggende vindue"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Denne nøgle overstyrer nøglen i org.gnome.mutter, når du kører GNOME Shell."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Aktivér kant-fliselægning, når vinduer placeres ved skærmkanter"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
-msgid "Workspaces are managed dynamically"
-msgstr "Arbejdsområder er håndteret dynamisk"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
-msgid "Workspaces only on primary monitor"
-msgstr "Arbejdsområder kun på den primære skærm"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
-msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr ""
-"Forsink fokusændringer i musetilstand indtil pegeren holder op med at bevæge "
-"sig"
-
-#: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Network Login"
-msgstr "Netværksindlogning"
 
 #: ../js/extensionPrefs/main.js:117
 #, javascript-format
@@ -335,7 +42,7 @@ msgstr "Udvidelsesmoduler til GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
 #: ../js/ui/components/networkAgent.js:145
-#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:483
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
@@ -369,7 +76,7 @@ msgstr "Ikke listet?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:854
+#: ../js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruger eller %s)"
@@ -377,12 +84,12 @@ msgstr "(f.eks. bruger eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:864 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Brugernavn: "
 
-#: ../js/gdm/loginDialog.js:1196
+#: ../js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Indlogningsvindue"
 
@@ -490,6 +197,16 @@ msgstr "%d. %B %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Omdirigering af webgodkendelse"
 
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Forbyd adgang"
+
+#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Giv adgang"
+
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "Ofte brugte programmer vil blive vist her"
@@ -556,7 +273,7 @@ msgstr "Skift baggrund…"
 msgid "Display Settings"
 msgstr "Skærmindstillinger"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:374
 msgid "Settings"
 msgstr "Indstillinger"
 
@@ -612,55 +329,55 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
 
-#: ../js/ui/calendar.js:416
+#: ../js/ui/calendar.js:442
 msgid "Previous month"
 msgstr "Forrige måned"
 
-#: ../js/ui/calendar.js:426
+#: ../js/ui/calendar.js:452
 msgid "Next month"
 msgstr "Næste måned"
 
-#: ../js/ui/calendar.js:579
+#: ../js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:634
+#: ../js/ui/calendar.js:660
 msgid "Week %V"
 msgstr "Uge %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:695
+#: ../js/ui/calendar.js:721
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
-#: ../js/ui/calendar.js:821
+#: ../js/ui/calendar.js:836
 msgid "Events"
 msgstr "Begivenheder"
 
-#: ../js/ui/calendar.js:830
+#: ../js/ui/calendar.js:845
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/calendar.js:834
+#: ../js/ui/calendar.js:849
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y"
 
-#: ../js/ui/calendar.js:919
+#: ../js/ui/calendar.js:931
 msgid "Notifications"
 msgstr "Beskeder"
 
-#: ../js/ui/calendar.js:1070
+#: ../js/ui/calendar.js:1082
 msgid "No Notifications"
 msgstr "Ingen påmindelser"
 
-#: ../js/ui/calendar.js:1073
+#: ../js/ui/calendar.js:1085
 msgid "No Events"
 msgstr "Ingen begivenheder"
 
@@ -798,7 +515,7 @@ msgstr "Beklager, godkendelse mislykkedes. Prøv igen."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:760
+#: ../js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s kalder sig nu %s"
@@ -929,7 +646,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Systemet vil genstarte og installere opdateringer automatisk om %d sekunder."
 
-#: ../js/ui/endSessionDialog.js:127
+#: ../js/ui/endSessionDialog.js:127 ../js/ui/endSessionDialog.js:147
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Genstart og installér"
@@ -944,27 +661,45 @@ msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Sluk efter opdateringerne er installeret"
 
-#: ../js/ui/endSessionDialog.js:338
+#: ../js/ui/endSessionDialog.js:137
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Genstart og installér opgradering"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: ../js/ui/endSessionDialog.js:142
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s vil blive installeret efter genstart. Installering af opgradering kan "
+"vare længe: Sikr dig, at du har sikkerhedskopier, og at computeren er "
+"tilsluttet elnettet."
+
+#: ../js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
 msgstr "Kører på batteridrift: tilslut strøm før installation af opdateringer."
 
-#: ../js/ui/endSessionDialog.js:355
+#: ../js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
 "Nogen programmer er optagede eller indeholder arbejde, der ikke er gemt."
 
-#: ../js/ui/endSessionDialog.js:362
+#: ../js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
 msgstr "Andre brugere er logget ind."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:640
+#: ../js/ui/endSessionDialog.js:671
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (fjern)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:643
+#: ../js/ui/endSessionDialog.js:674
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (konsol)"
@@ -978,7 +713,7 @@ msgstr "Installér"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Hent og installér “%s” fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
+#: ../js/ui/keyboard.js:742 ../js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1015,7 +750,7 @@ msgstr "Aktiveret"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Deaktiveret"
 
@@ -1063,7 +798,7 @@ msgstr "Medier"
 msgid "Undo"
 msgstr "Fortryd"
 
-#: ../js/ui/overview.js:117
+#: ../js/ui/overview.js:113
 msgid "Overview"
 msgstr "Oversigt"
 
@@ -1071,7 +806,7 @@ msgstr "Oversigt"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:244
+#: ../js/ui/overview.js:240
 msgid "Type to search…"
 msgstr "Skriv for at søge…"
 
@@ -1135,11 +870,11 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d ny påmindelse"
 msgstr[1] "%d nye påmindelser"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:382
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/screenShield.js:684
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME er nødt til at låse skærmen"
 
@@ -1150,11 +885,11 @@ msgstr "GNOME er nødt til at låse skærmen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:825 ../js/ui/screenShield.js:1291
 msgid "Unable to lock"
 msgstr "Kunne ikke låse"
 
-#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:826 ../js/ui/screenShield.js:1292
 msgid "Lock was blocked by an application"
 msgstr "Lås blev blokeret af et program"
 
@@ -1238,7 +973,7 @@ msgstr "Stor tekst"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:56
+#: ../js/ui/status/bluetooth.js:56 ../js/ui/status/network.js:624
 msgid "Bluetooth Settings"
 msgstr "Indstillinger for Bluetooth"
 
@@ -1273,7 +1008,7 @@ msgstr "Sluk"
 msgid "Brightness"
 msgstr "Lysstyrke"
 
-#: ../js/ui/status/keyboard.js:736
+#: ../js/ui/status/keyboard.js:805
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturlayout"
 
@@ -1300,14 +1035,6 @@ msgstr "Placering deaktiveret"
 #: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Slå til"
-
-#: ../js/ui/status/location.js:426
-msgid "Deny Access"
-msgstr "Forbyd adgang"
-
-#: ../js/ui/status/location.js:429
-msgid "Grant Access"
-msgstr "Giv adgang"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:435
@@ -1386,7 +1113,7 @@ msgstr "Forbindelse til %s mislykkedes"
 msgid "Wired Settings"
 msgstr "Indstillinger for trådet netværk"
 
-#: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
+#: ../js/ui/status/network.js:545
 msgid "Mobile Broadband Settings"
 msgstr "Indstillinger for mobilbredbånd"
 
@@ -1404,8 +1131,8 @@ msgid "%s Disabled"
 msgstr "%s er deaktiveret"
 
 #: ../js/ui/status/network.js:632
-msgid "Use as Internet connection"
-msgstr "Brug som internetforbindelse"
+msgid "Connect to Internet"
+msgstr "Forbind til internet"
 
 #: ../js/ui/status/network.js:813
 msgid "Airplane Mode is On"
@@ -1542,27 +1269,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "Flytilstand er slået til"
 
-#: ../js/ui/status/system.js:343
+#: ../js/ui/status/system.js:351
 msgid "Switch User"
 msgstr "Skift bruger"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:356
 msgid "Log Out"
 msgstr "Log ud"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:361
 msgid "Account Settings"
 msgstr "Indstillinger for konti"
 
-#: ../js/ui/status/system.js:370
+#: ../js/ui/status/system.js:378
 msgid "Orientation Lock"
 msgstr "Orienteringslås"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:386
 msgid "Suspend"
 msgstr "Hviletilstand"
 
-#: ../js/ui/status/system.js:381
+#: ../js/ui/status/system.js:389
 msgid "Power Off"
 msgstr "Sluk"
 
@@ -1688,13 +1415,9 @@ msgstr "Flyt til venstre skærm"
 msgid "Move to Monitor Right"
 msgstr "Flyt til højre skærm"
 
-#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-msgid "Evolution Calendar"
-msgstr "Evolution kalender"
-
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1835
+#: ../src/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1703,14 +1426,14 @@ msgstr[1] "%u outputs"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1845
+#: ../src/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u input"
 msgstr[1] "%u inputs"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Systemlyde"
 
@@ -1730,12 +1453,12 @@ msgstr "Brug en specifik tilstand, f.eks. \"gdm\" til logind-skærm"
 msgid "List possible modes"
 msgstr "Vis mulige tilstande"
 
-#: ../src/shell-app.c:246
+#: ../src/shell-app.c:270
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: ../src/shell-app.c:487
+#: ../src/shell-app.c:511
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Kunne ikke køre “%s”"
@@ -1751,6 +1474,263 @@ msgstr "Adgangskode må ikke være tom"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
+
+#~ msgid "System"
+#~ msgstr "System"
+
+#~ msgid "Show the notification list"
+#~ msgstr "Vis påmindelseslisten"
+
+#~ msgid "Focus the active notification"
+#~ msgstr "Fokusér på den aktive påmindelse"
+
+#~ msgid "Show the overview"
+#~ msgstr "Vis overblikket"
+
+#~ msgid "Show all applications"
+#~ msgstr "Vis alle programmer"
+
+#~ msgid "Open the application menu"
+#~ msgstr "Åbn program-menuen"
+
+#~ msgid "GNOME Shell Extension Preferences"
+#~ msgstr "Udvidelsesmodulindstillinger for GNOME Shell"
+
+#~ msgid "Configure GNOME Shell Extensions"
+#~ msgstr "Konfigurér udvidelsesmoduler til GNOME Shell"
+
+#~ msgid "GNOME Shell"
+#~ msgstr "GNOME Shell"
+
+#~ msgid "Window management and application launching"
+#~ msgstr "Vindueshåndtering og åbning af programmer"
+
+#~ msgid "Enable internal tools useful for developers and testers from Alt-F2"
+#~ msgstr ""
+#~ "Aktivér interne værktøjer, som er nyttige for udviklere og testere fra "
+#~ "Alt-F2"
+
+#~ msgid ""
+#~ "Allows access to internal debugging and monitoring tools using the Alt-F2 "
+#~ "dialog."
+#~ msgstr ""
+#~ "Tillad adgang til interne fejlsøgnings- og overvågningsværktøjer med brug "
+#~ "af dialogen Alt-F2."
+
+#~ msgid "UUIDs of extensions to enable"
+#~ msgstr "Uuid'er for udvidelser, der aktiveres"
+
+#~ msgid ""
+#~ "GNOME Shell extensions have a UUID property; this key lists extensions "
+#~ "which should be loaded. Any extension that wants to be loaded needs to be "
+#~ "in this list. You can also manipulate this list with the EnableExtension "
+#~ "and DisableExtension D-Bus methods on org.gnome.Shell."
+#~ msgstr ""
+#~ "Udvidelser til GNOME-Shell har en uuid-indstilling; denne nøgle oplister "
+#~ "udvidelser som skal indlæses. Alle udvidelser som ønsker at blive indlæst "
+#~ "skal være i denne liste. Du kan også redigere denne liste med D-Bus-"
+#~ "metoderne EnableExtension og DisableExtension ved org.shell.Shell."
+
+#~ msgid "Disables the validation of extension version compatibility"
+#~ msgstr "Deaktiverer godkendelsen af udvidelsesversionskompatibilitet"
+
+#~ msgid ""
+#~ "GNOME Shell will only load extensions that claim to support the current "
+#~ "running version. Enabling this option will disable this check and try to "
+#~ "load all extensions regardless of the versions they claim to support."
+#~ msgstr ""
+#~ "GNOME Shell vil kun indlæse udvidelser, som påstår at understøtte den i "
+#~ "øjeblikket kørende version. Dette tilvalg vil deaktivere denne kontrol, "
+#~ "og forsøge at indlæse alle udvidelser uanset hvilken version, de påstår "
+#~ "at understøtte."
+
+#~ msgid "List of desktop file IDs for favorite applications"
+#~ msgstr "Liste over skrivebordsfil-id'er til favoritprogrammer"
+
+#~ msgid ""
+#~ "The applications corresponding to these identifiers will be displayed in "
+#~ "the favorites area."
+#~ msgstr ""
+#~ "Programmerne som passer til disse identifikatorer vil blive vist i "
+#~ "favoritområdet."
+
+#~ msgid "App Picker View"
+#~ msgstr "Programvælger-visning"
+
+#~ msgid "Index of the currently selected view in the application picker."
+#~ msgstr "Indeks for den valgte visning i programvælgeren."
+
+#~ msgid "History for command (Alt-F2) dialog"
+#~ msgstr "Historik for kommandodialogen (Alt-F2)"
+
+#~ msgid "History for the looking glass dialog"
+#~ msgstr "Historik for looking glass-dialogen"
+
+#~ msgid "Always show the 'Log out' menu item in the user menu."
+#~ msgstr "Vis altid \"Log ud\"-menupunktet i brugermenuen."
+
+#~ msgid ""
+#~ "This key overrides the automatic hiding of the 'Log out' menu item in "
+#~ "single-user, single-session situations."
+#~ msgstr ""
+#~ "Denne nøgle overstyrer den automatiske skjulning af menupunktet \"Log ud"
+#~ "\" i enkelt bruger, enkelt session-situationer."
+
+#~ msgid ""
+#~ "Whether to remember password for mounting encrypted or remote filesystems"
+#~ msgstr ""
+#~ "Om adgangskoder skal huskes for montering af krypterede eller fjern-"
+#~ "filsystemer"
+
+#~ msgid ""
+#~ "The shell will request a password when an encrypted device or a remote "
+#~ "filesystem is mounted. If the password can be saved for future use a "
+#~ "'Remember Password' checkbox will be present. This key sets the default "
+#~ "state of the checkbox."
+#~ msgstr ""
+#~ "Shell'en vil spørge efter en adgangskode når en krypteret enhed eller et "
+#~ "fjern-filsystem bliver monteret. Hvis adgangskoden kan gemmes til "
+#~ "fremtidig brug, vil en \"Husk adgangskode\"-tjekboks være synlig. Denne "
+#~ "nøgle angiver standard-værdien af denne tjekboks."
+
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr ""
+#~ "Om standard Bluetooth-adapteren er indstillet til at have enheder "
+#~ "tilknyttet"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+#~ msgstr ""
+#~ "Shell'en vil kun vise menupunktet Bluetooth, hvis en Bluetooth-adapter er "
+#~ "tændt, eller hvis der er enheder tilknyttet standard adapteren. Dette vil "
+#~ "kun blive nulstillet hvis standard adapteren på et tidspunkt, ikke "
+#~ "længere har enheder tilknyttet."
+
+#~ msgid "Keybinding to open the application menu"
+#~ msgstr "Genvejstast til at åbne program-menuen"
+
+#~ msgid "Keybinding to open the application menu."
+#~ msgstr "Genvejstast til at åbne program-menuen."
+
+#~ msgid "Keybinding to open the \"Show Applications\" view"
+#~ msgstr "Genvejstast til at åbne \"Vis programmer\"-visningen"
+
+#~ msgid ""
+#~ "Keybinding to open the \"Show Applications\" view of the Activities "
+#~ "Overview."
+#~ msgstr ""
+#~ "Genvejstast til at åbne \"Vis programmer\"-visningen i Aktivitets-"
+#~ "overblikket."
+
+#~ msgid "Keybinding to open the overview"
+#~ msgstr "Genvejstast til at åbne overblikket"
+
+#~ msgid "Keybinding to open the Activities Overview."
+#~ msgstr "Genvejstast til at åbne Aktivitetsoverblikket."
+
+#~ msgid "Keybinding to toggle the visibility of the notification list"
+#~ msgstr ""
+#~ "Genvejstast til at slå synligheden af påmindelseslisten til eller fra"
+
+#~ msgid "Keybinding to toggle the visibility of the notification list."
+#~ msgstr ""
+#~ "Genvejstast til at slå synligheden af påmindelseslisten til eller fra."
+
+#~ msgid "Keybinding to focus the active notification"
+#~ msgstr "Genvejstast til at fokusere på den aktive påmindelse"
+
+#~ msgid "Keybinding to focus the active notification."
+#~ msgstr "Genvejstast til at fokusere på den aktive påmindelse."
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
+#~ msgstr ""
+#~ "Genvejstast, som pauser og genstarter alle kørende animationer, til "
+#~ "fejlsøgningsformål"
+
+#~ msgid "Which keyboard to use"
+#~ msgstr "Hvilket tastatur bruges"
+
+#~ msgid "The type of keyboard to use."
+#~ msgstr "Tastaturtypen som bruges."
+
+#~ msgid "Limit switcher to current workspace."
+#~ msgstr "Begræns skifteren til det nuværende arbejdsområde."
+
+#~ msgid ""
+#~ "If true, only applications that have windows on the current workspace are "
+#~ "shown in the switcher. Otherwise, all applications are included."
+#~ msgstr ""
+#~ "Hvis sand, vises kun programmer, som har vinduer på det nuværende "
+#~ "arbejdsområde, i skifteren. Ellers er alle programmer inkluderet."
+
+#~ msgid "The application icon mode."
+#~ msgstr "Ikon-tilstanden for programmet."
+
+#~ msgid ""
+#~ "Configures how the windows are shown in the switcher. Valid possibilities "
+#~ "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+#~ "only' (shows only the application icon) or 'both'."
+#~ msgstr ""
+#~ "Konfigurerer hvordan vinduer bliver vist i omskifteren. Gyldige "
+#~ "muligheder er \"thumbnail-only\" (viser forhåndsvisning af vinduet), "
+#~ "\"app-icon-only\" (viser kun programikonet) eller \"both\" (begge)."
+
+#~ msgid ""
+#~ "If true, only windows from the current workspace are shown in the "
+#~ "switcher. Otherwise, all windows are included."
+#~ msgstr ""
+#~ "Hvis sand, vises kun vinduer fra det nuværende arbejdsområde i skifteren. "
+#~ "Ellers er alle programmer inkluderet."
+
+#~ msgid "Attach modal dialog to the parent window"
+#~ msgstr "Hæft modal dialog til overliggende vindue"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+#~ msgstr ""
+#~ "Denne nøgle overstyrer nøglen i org.gnome.mutter, når du kører GNOME "
+#~ "Shell."
+
+#~ msgid "Enable edge tiling when dropping windows on screen edges"
+#~ msgstr "Aktivér kant-fliselægning, når vinduer placeres ved skærmkanter"
+
+#~ msgid "Workspaces are managed dynamically"
+#~ msgstr "Arbejdsområder er håndteret dynamisk"
+
+#~ msgid "Workspaces only on primary monitor"
+#~ msgstr "Arbejdsområder kun på den primære skærm"
+
+#~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
+#~ msgstr ""
+#~ "Forsink fokusændringer i musetilstand indtil pegeren holder op med at "
+#~ "bevæge sig"
+
+#~ msgid "Network Login"
+#~ msgstr "Netværksindlogning"
+
+#~ msgid "network-workgroup"
+#~ msgstr "network-workgroup"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Evolution kalender"
+
+#~ msgid "evolution"
+#~ msgstr "evolution"
+
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "Vis ugenummer i kalenderen"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "Hvis sand vises ISO-ugenummeret i kalenderen."
+
+#~ msgid "Use as Internet connection"
+#~ msgstr "Brug som internetforbindelse"
 
 #~ msgid "%s is requesting access to your location."
 #~ msgstr "%s spørger efter adgang til din placering."
@@ -2422,9 +2402,6 @@ msgstr "Godkendelsesdialogen blev afvist af brugeren"
 
 #~ msgid "Subscription request"
 #~ msgstr "Godkendelsesforespørgsel"
-
-#~ msgid "Connection error"
-#~ msgstr "Forbindelsesfejl"
 
 #~ msgid "Sent at <b>%X</b> on <b>%A</b>"
 #~ msgstr "Sendt <b>%A</b> kl. <b>%H:%M</b>"
