@@ -131,9 +131,6 @@ appears_focused_changed (MetaWindow *window,
   meta_wayland_pointer_constraint_maybe_remove_for_seat (wayland_compositor->seat,
                                                          window);
 
-  if (window->unmanaging)
-    return;
-
   meta_wayland_pointer_constraint_maybe_enable_for_window (window);
 }
 
@@ -444,6 +441,7 @@ is_within_constraint_region (MetaWaylandPointerConstraint *constraint,
 static void
 meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint)
 {
+  MetaWindow *window;
   wl_fixed_t sx, sy;
 
   if (constraint->is_enabled)
@@ -452,7 +450,8 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
   if (constraint->seat->pointer->focus_surface != constraint->surface)
     return;
 
-  if (!constraint->surface->window)
+  window = constraint->surface->window;
+  if (!window)
     {
       /*
        * Locks from Xwayland may come before we have had the opportunity to
@@ -461,6 +460,9 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
       g_warn_if_fail (meta_xwayland_is_xwayland_surface (constraint->surface));
       return;
     }
+
+  if (window->unmanaging)
+    return;
 
   if (meta_xwayland_is_xwayland_surface (constraint->surface))
     {
@@ -486,7 +488,7 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
     }
   else
     {
-      if (!meta_window_appears_focused (constraint->surface->window))
+      if (!meta_window_appears_focused (window))
         return;
     }
 
