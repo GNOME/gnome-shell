@@ -386,7 +386,7 @@ const CyclerHighlight = new Lang.Class({
         this._window = w;
 
         if (this._clone.source)
-            this._clone.source.show();
+            this._clone.source.sync_visibility();
 
         let windowActor = this._window ? this._window.get_compositor_private()
                                        : null;
