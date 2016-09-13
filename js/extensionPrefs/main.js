@@ -152,6 +152,7 @@ const Application = new Lang.Class({
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER,
                                               shadow_type: Gtk.ShadowType.IN,
                                               halign: Gtk.Align.CENTER,
+                                              propagate_natural_width: true,
                                               margin: 18 });
         this._window.add(scroll);
 
