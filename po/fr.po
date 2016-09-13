@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-19 21:36+0000\n"
-"PO-Revision-Date: 2016-08-03 19:56+0200\n"
+"POT-Creation-Date: 2016-09-13 09:48+0000\n"
+"PO-Revision-Date: 2016-09-13 12:19+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -29,6 +29,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Système"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Afficher la liste des notifications"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Donner le focus à la notification active"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Afficher la vue d'ensemble"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Afficher toutes les applications"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Ouvrir le menu de l'application"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 msgid "GNOME Shell Extension Preferences"
@@ -361,7 +385,7 @@ msgstr "Absent de la liste ?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:854
+#: js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(par ex. utilisateur ou %s)"
@@ -369,12 +393,12 @@ msgstr "(par ex. utilisateur ou %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
 #: js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nom d'utilisateur : "
 
-#: js/gdm/loginDialog.js:1196
+#: js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Fenêtre de connexion"
 
@@ -804,7 +828,7 @@ msgstr "Échec de l'authentification. Essayez à nouveau."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:760
+#: js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s est maintenant connu sous le nom de %s"
@@ -974,9 +998,9 @@ msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
-"%s %s sera installé après le redémarrage. L'installation d'une mise à "
-"niveau peut prendre beaucoup de temps : vérifiez que vous disposez de "
-"sauvegardes et que l'ordinateur est branché sur le secteur."
+"%s %s sera installé après le redémarrage. L'installation d'une mise à niveau "
+"peut prendre beaucoup de temps : vérifiez que vous disposez de sauvegardes "
+"et que l'ordinateur est branché sur le secteur."
 
 #: js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
@@ -987,7 +1011,8 @@ msgstr ""
 #: js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
-"Certaines applications sont occupées ou des documents ne sont pas enregistrés."
+"Certaines applications sont occupées ou des documents ne sont pas "
+"enregistrés."
 
 #: js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
@@ -1679,7 +1704,7 @@ msgstr "Déplacer la barre de titre sur l'écran"
 
 #: js/ui/windowMenu.js:70
 msgid "Always on Top"
-msgstr "Toujours en haut"
+msgstr "Toujours au premier plan"
 
 #: js/ui/windowMenu.js:89
 msgid "Always on Visible Workspace"
@@ -1786,24 +1811,6 @@ msgstr "Le mot de passe ne peut pas être vide"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "La fenêtre d'authentification a été écartée par l'utilisateur"
-
-#~ msgid "System"
-#~ msgstr "Système"
-
-#~ msgid "Show the notification list"
-#~ msgstr "Afficher la liste des notifications"
-
-#~ msgid "Focus the active notification"
-#~ msgstr "Donner le focus à la notification active"
-
-#~ msgid "Show the overview"
-#~ msgstr "Afficher la vue d'ensemble"
-
-#~ msgid "Show all applications"
-#~ msgstr "Afficher toutes les applications"
-
-#~ msgid "Open the application menu"
-#~ msgstr "Ouvrir le menu de l'application"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Afficher la numérotation des semaines dans le calendrier"
