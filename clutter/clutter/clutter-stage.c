@@ -1404,8 +1404,6 @@ _clutter_stage_do_pick_on_view (ClutterStage     *stage,
                                       view_layout.height);
 
   _clutter_stage_window_get_dirty_pixel (priv->impl, view, &dirty_x, &dirty_y);
-  dirty_x -= view_layout.x;
-  dirty_y -= view_layout.y;
 
   if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     {
