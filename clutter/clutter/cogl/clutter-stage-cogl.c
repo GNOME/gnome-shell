@@ -806,7 +806,9 @@ clutter_stage_cogl_get_dirty_pixel (ClutterStageWindow *stage_window,
                                     int                *x,
                                     int                *y)
 {
+  CoglFramebuffer *framebuffer = clutter_stage_view_get_framebuffer (view);
   gboolean has_buffer_age =
+    cogl_is_onscreen (framebuffer) &&
     cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE);
   cairo_rectangle_int_t *rect;
 
