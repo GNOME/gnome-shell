@@ -279,6 +279,15 @@ static void
 pointer_focus_surface_changed (MetaWaylandPointer           *pointer,
                                MetaWaylandPointerConstraint *constraint)
 {
+  MetaWindow *window = constraint->surface->window;
+
+  if (window)
+    {
+      MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
+
+      meta_wayland_pointer_constraint_maybe_remove_for_seat (seat, window);
+    }
+
   meta_wayland_pointer_constraint_maybe_enable (constraint);
 }
 
