@@ -444,7 +444,21 @@ const CyclerPopup = new Lang.Class({
     },
 
     _finish: function() {
-        Main.activateWindow(this._items[this._selectedIndex]);
+        let window = this._items[this._selectedIndex];
+        let ws = window.get_workspace();
+        let activeWs = global.screen.get_active_workspace();
+
+        if (activeWs == ws) {
+            Main.activateWindow(window);
+        } else {
+            // If the selected window is on a different workspace, we don't
+            // want it to disappear, then slide in with the workspace; instead,
+            // always activate it on the active workspace ...
+            activeWs.activate_with_focus(window, global.get_current_time());
+
+            // ... then slide it over to the original workspace if necessary
+            Main.wm.actionMoveWindow(window, ws);
+        }
 
         this.parent();
     },
