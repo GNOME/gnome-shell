@@ -683,6 +683,8 @@ const WindowManager = new Lang.Class({
 
         this._dimmedWindows = [];
 
+        this._skippedActors = [];
+
         this._allowedKeybindings = {};
 
         this._isWorkspacePrepended = false;
@@ -1035,6 +1037,10 @@ const WindowManager = new Lang.Class({
         this._workspaceTracker.keepWorkspaceAlive(workspace, duration);
     },
 
+    skipNextEffect: function(actor) {
+        this._skippedActors.push(actor);
+    },
+
     setCustomKeybindingHandler: function(name, modes, handler) {
         if (Meta.keybindings_set_custom_handler(name, handler))
             this.allowKeybinding(name, modes);
@@ -1061,6 +1067,9 @@ const WindowManager = new Lang.Class({
     },
 
     _shouldAnimateActor: function(actor, types) {
+        if (this._removeEffect(this._skippedActors, actor))
+            return false;
+
         if (!this._shouldAnimate())
             return false;
 

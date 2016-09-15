@@ -448,6 +448,11 @@ const CyclerPopup = new Lang.Class({
         let ws = window.get_workspace();
         let activeWs = global.screen.get_active_workspace();
 
+        if (window.minimized) {
+            Main.wm.skipNextEffect(window.get_compositor_private());
+            window.unminimize();
+        }
+
         if (activeWs == ws) {
             Main.activateWindow(window);
         } else {
