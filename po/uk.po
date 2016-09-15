@@ -6,9 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-22 22:29+0200\n"
-"PO-Revision-Date: 2016-03-22 22:30+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-09-15 17:49+0300\n"
+"PO-Revision-Date: 2016-09-15 18:04+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -19,293 +20,6 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
-
-#: ../data/50-gnome-shell-system.xml.in.h:1
-msgid "System"
-msgstr "Система"
-
-#: ../data/50-gnome-shell-system.xml.in.h:2
-msgid "Show the notification list"
-msgstr "Показувати перелік сповіщень"
-
-#: ../data/50-gnome-shell-system.xml.in.h:3
-msgid "Focus the active notification"
-msgstr "Перейти до активних сповіщень"
-
-#: ../data/50-gnome-shell-system.xml.in.h:4
-msgid "Show the overview"
-msgstr "Показати огляд"
-
-#: ../data/50-gnome-shell-system.xml.in.h:5
-msgid "Show all applications"
-msgstr "Показати всі програми"
-
-#: ../data/50-gnome-shell-system.xml.in.h:6
-msgid "Open the application menu"
-msgstr "Відкрити меню програм"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-msgid "GNOME Shell Extension Preferences"
-msgstr "Параметри розширень GNOME Shell"
-
-#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
-msgid "Configure GNOME Shell Extensions"
-msgstr "Налаштувати розширення GNOME Shell"
-
-#: ../data/org.gnome.Shell.desktop.in.in.h:1
-msgid "GNOME Shell"
-msgstr "GNOME Shell"
-
-#: ../data/org.gnome.Shell.desktop.in.in.h:2
-msgid "Window management and application launching"
-msgstr "Керування вікнами та запуск програм"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
-msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
-"Увімкнути внутрішні засоби, які будуть корисними для розробників і "
-"випробування при натисненні Alt-F2"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid ""
-"Allows access to internal debugging and monitoring tools using the Alt-F2 "
-"dialog."
-msgstr ""
-"Надає доступ до внутрішніх засобів зневаджування та спостереження через Alt-"
-"F2."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
-msgid "UUIDs of extensions to enable"
-msgstr "Увімкнути розширення UUID"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-msgid ""
-"GNOME Shell extensions have a UUID property; this key lists extensions which "
-"should be loaded. Any extension that wants to be loaded needs to be in this "
-"list. You can also manipulate this list with the EnableExtension and "
-"DisableExtension D-Bus methods on org.gnome.Shell."
-msgstr ""
-"Розширення GNOME Shell мають властивості «UUID»; цей ключ перелічує "
-"розширення, які потрібно завантажувати. Вимкнення розширень ігноруватиме ці "
-"налаштування для розширень, які з'являються в обох переліках. Також можете "
-"орудувати цим переліком через способи EnableExtension і DisableExtension "
-"DBus DisableExtension DBus на org.gnome.Shell."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "Disables the validation of extension version compatibility"
-msgstr "Вимикає перевіряння сумісності версії розширення"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"GNOME Shell will only load extensions that claim to support the current "
-"running version. Enabling this option will disable this check and try to "
-"load all extensions regardless of the versions they claim to support."
-msgstr ""
-"GNOME Shell завантажуватиме тільки розширення, які вимагають поточну версію. "
-"Увімкнення цього параметра вимкне це перевіряння і спробує завантажувати всі "
-"розширення, попри розходження у версії."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
-msgid "List of desktop file IDs for favorite applications"
-msgstr "Перелічити ідентифікатори файла стільниці для улюблених програм"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid ""
-"The applications corresponding to these identifiers will be displayed in the "
-"favorites area."
-msgstr ""
-"Програми, які відповідають цьому ідентифікатору, буде показано в ділянці "
-"улюбленого."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
-msgid "App Picker View"
-msgstr "Огляд вибору програми"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
-msgid "Index of the currently selected view in the application picker."
-msgstr "Індекс поточного розміщення вибору в огляді списку програм."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "History for command (Alt-F2) dialog"
-msgstr "Історія для команд (Alt-F2)"
-
-#. Translators: looking glass is a debugger and inspector tool, see https://live.gnome.org/GnomeShell/LookingGlass
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-msgid "History for the looking glass dialog"
-msgstr "Історія для пошуку дзеркальних діалогів"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid "Always show the 'Log out' menu item in the user menu."
-msgstr "Завжди показувати пункт меню «Вийти» у меню користувача."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid ""
-"This key overrides the automatic hiding of the 'Log out' menu item in single-"
-"user, single-session situations."
-msgstr ""
-"Цей ключ нехтує автоматичним хованням пункту меню «Вийти» за умови, що "
-"користувач єдиний або сеанс тільки один. "
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid ""
-"Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"Чи запам'ятовувати пароль для монтування шифрованих або віддалених файлових "
-"систем"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
-msgid ""
-"The shell will request a password when an encrypted device or a remote "
-"filesystem is mounted. If the password can be saved for future use a "
-"'Remember Password' checkbox will be present. This key sets the default "
-"state of the checkbox."
-msgstr ""
-"Середовище вимагає пароль, коли шифрований пристрій або віддалену файлову "
-"систему змонтовано."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-msgid ""
-"Whether the default Bluetooth adapter had set up devices associated to it"
-msgstr "Чи типовий адаптер Bluetooth зв'язаний з якимось пристроєм"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-msgid ""
-"The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
-"powered, or if there were devices set up associated with the default "
-"adapter. This will be reset if the default adapter is ever seen not to have "
-"devices associated to it."
-msgstr ""
-"Оболонка покаже меню Bluetooth лише, коли адаптер Bluetooth увімкнено або "
-"пристрій зв'язано з типовим адаптером. Якщо типовий адаптер ніколи не був "
-"зв'язаний з жодним пристроєм, то його буде скинуто. "
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
-msgid "Show the week date in the calendar"
-msgstr "Показати дні тижня в календарі"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-msgid "If true, display the ISO week date in the calendar."
-msgstr "Якщо це так, буде показано дні тижня у календарі згідно з ISO."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-msgid "Keybinding to open the application menu"
-msgstr "Комбінація клавіш, щоб відкрити меню програм"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-msgid "Keybinding to open the application menu."
-msgstr "Комбінація клавіш, щоб відкрити меню програм."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-msgid "Keybinding to open the \"Show Applications\" view"
-msgstr "Комбінація клавіш, щоб «Показати програми»"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-msgid ""
-"Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr "Комбінація клавіш, щоб «Показати програми» огляду діяльності."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-msgid "Keybinding to open the overview"
-msgstr "Комбінація клавіш, щоб відкрити огляд"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-msgid "Keybinding to open the Activities Overview."
-msgstr "Комбінація клавіш, щоб відкрити огляд діяльності."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
-msgid "Keybinding to toggle the visibility of the notification list"
-msgstr "Комбінація клавіш, щоб змінювати видимість переліку сповіщень"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "Keybinding to toggle the visibility of the notification list."
-msgstr "Комбінація клавіш, щоб змінювати видимість переліку сповіщень."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "Keybinding to focus the active notification"
-msgstr "Комбінація клавіш, щоб перейти до активних сповіщень"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
-msgid "Keybinding to focus the active notification."
-msgstr "Комбінація клавіш, щоб перейти до активних сповіщень."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
-msgid ""
-"Keybinding that pauses and resumes all running tweens, for debugging purposes"
-msgstr ""
-"Скорочення, що призупиняє й відновлює всіх запущених посередників, зі "
-"зневаджувальною метою"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
-msgid "Which keyboard to use"
-msgstr "Яку клавіатуру використовувати"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
-msgid "The type of keyboard to use."
-msgstr "Тип клавіатури."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-msgid "Limit switcher to current workspace."
-msgstr "Обмежити перемикач на поточний робочий простір."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
-msgid ""
-"If true, only applications that have windows on the current workspace are "
-"shown in the switcher. Otherwise, all applications are included."
-msgstr ""
-"Якщо це вказано, то тільки ті програми, які мають вікна на поточному "
-"робочому просторі, показано в перемикачі. Інакше всі програми будуть "
-"враховуватись."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
-msgid "The application icon mode."
-msgstr "Режим піктограм для програм."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
-msgid ""
-"Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
-msgstr ""
-"Налаштовує яким способом вікна показуються в перемикачі. Допустимі значення: "
-"«thumbnail-only» (показує мініатюру вікна), «app-icon-only» (показує тільки "
-"піктограми програм) або «both» (обидва)."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
-msgid ""
-"If true, only windows from the current workspace are shown in the switcher. "
-"Otherwise, all windows are included."
-msgstr ""
-"Якщо це вказано, то тільки ті вікна, які мають вікна на поточному робочому "
-"просторі, показано в перемикачі. Інакше всі вікна будуть враховуватись."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
-msgid "Attach modal dialog to the parent window"
-msgstr "Приєднати модальне вікно до батьківського вікна"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
-msgid ""
-"This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "Цей ключ нехтує ключем у org.gnome.mutter, коли запущено GNOME Shell."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
-msgid "Workspaces are managed dynamically"
-msgstr "Робочі простори організовуються динамічно"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
-msgid "Workspaces only on primary monitor"
-msgstr "Робочий простір лише на основному моніторі"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
-msgid "Delay focus changes in mouse mode until the pointer stops moving"
-msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
-
-#: ../data/org.gnome.Shell.PortalHelper.desktop.in.h:1
-msgid "Network Login"
-msgstr "Мережевий вхід"
 
 #: ../js/extensionPrefs/main.js:117
 #, javascript-format
@@ -318,7 +32,7 @@ msgstr "Розширення GNOME Shell"
 
 #: ../js/gdm/authPrompt.js:147 ../js/ui/audioDeviceSelection.js:71
 #: ../js/ui/components/networkAgent.js:145
-#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:452
+#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:483
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/network.js:916
 msgid "Cancel"
@@ -352,7 +66,7 @@ msgstr "Немає в переліку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:854
+#: ../js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(наприклад, користувач або %s)"
@@ -360,12 +74,12 @@ msgstr "(наприклад, користувач або %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:864 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Користувач:"
 
-#: ../js/gdm/loginDialog.js:1196
+#: ../js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Вікно входу"
 
@@ -473,6 +187,16 @@ msgstr "%d %B %Y, %l∶%M %p"
 msgid "Web Authentication Redirect"
 msgstr "Переадресування інтернетного засвідчення"
 
+#. No support for non-modal system dialogs, so ignore the option
+#. let modal = options['modal'] || true;
+#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:426
+msgid "Deny Access"
+msgstr "Відкинути доступ"
+
+#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:429
+msgid "Grant Access"
+msgstr "Надати доступ"
+
 #: ../js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
 msgstr "Часто використовувані програми будуть з'являтись тут"
@@ -539,7 +263,7 @@ msgstr "Змінити тло…"
 msgid "Display Settings"
 msgstr "Параметри екрана"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:374
 msgid "Settings"
 msgstr "Параметри"
 
@@ -595,55 +319,55 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "С"
 
-#: ../js/ui/calendar.js:416
+#: ../js/ui/calendar.js:442
 msgid "Previous month"
 msgstr "Попередній місяць"
 
-#: ../js/ui/calendar.js:426
+#: ../js/ui/calendar.js:452
 msgid "Next month"
 msgstr "Наступний місяць"
 
-#: ../js/ui/calendar.js:579
+#: ../js/ui/calendar.js:605
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: ../js/ui/calendar.js:634
+#: ../js/ui/calendar.js:660
 msgid "Week %V"
 msgstr "Тиждень %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:695
+#: ../js/ui/calendar.js:721
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Увесь день"
 
-#: ../js/ui/calendar.js:821
+#: ../js/ui/calendar.js:836
 msgid "Events"
 msgstr "Події"
 
-#: ../js/ui/calendar.js:830
+#: ../js/ui/calendar.js:845
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/calendar.js:834
+#: ../js/ui/calendar.js:849
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:919
+#: ../js/ui/calendar.js:931
 msgid "Notifications"
 msgstr "Сповіщення"
 
-#: ../js/ui/calendar.js:1070
+#: ../js/ui/calendar.js:1082
 msgid "No Notifications"
 msgstr "Немає сповіщень"
 
-#: ../js/ui/calendar.js:1073
+#: ../js/ui/calendar.js:1085
 msgid "No Events"
 msgstr "Немає подій"
 
@@ -779,7 +503,7 @@ msgstr "Вибачте, це не працює. Спробуйте ще."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:760
+#: ../js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s тепер відомий як %s"
@@ -916,7 +640,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Система автоматично перезапуститься та встановить оновлення через %d секунд."
 
-#: ../js/ui/endSessionDialog.js:127
+#: ../js/ui/endSessionDialog.js:127 ../js/ui/endSessionDialog.js:147
 msgctxt "button"
 msgid "Restart &amp; Install"
 msgstr "Перезапустити та встановити"
@@ -931,26 +655,44 @@ msgctxt "checkbox"
 msgid "Power off after updates are installed"
 msgstr "Вимкнути після встановлення оновлень"
 
-#: ../js/ui/endSessionDialog.js:338
+#: ../js/ui/endSessionDialog.js:137
+msgctxt "title"
+msgid "Restart & Install Upgrade"
+msgstr "Перезапустити і встановити оновлення"
+
+#. Translators: This is the text displayed for system upgrades in the
+#. shut down dialog. First %s gets replaced with the distro name and
+#. second %s with the distro version to upgrade to
+#: ../js/ui/endSessionDialog.js:142
+#, javascript-format
+msgid ""
+"%s %s will be installed after restart. Upgrade installation can take a long "
+"time: ensure that you have backed up and that the computer is plugged in."
+msgstr ""
+"%s %s буде встановлено після перезапуску. Оновлення може забрати трохи часу: "
+"переконайтесь, що ви зробили резервні копії та комп'ютер під'єднано до "
+"живлення."
+
+#: ../js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
 msgstr "Працює від заряду батареї: під'єднайте перед установлення оновлень."
 
-#: ../js/ui/endSessionDialog.js:355
+#: ../js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
 msgstr "Деякі програми зайняті або мають незбережені дані."
 
-#: ../js/ui/endSessionDialog.js:362
+#: ../js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
 msgstr "Інші користувачі є в сеансі."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:640
+#: ../js/ui/endSessionDialog.js:671
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (віддалено)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:643
+#: ../js/ui/endSessionDialog.js:674
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
@@ -964,7 +706,7 @@ msgstr "Встановити"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Звантажити і встановити «%s» з extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:741 ../js/ui/status/keyboard.js:713
+#: ../js/ui/keyboard.js:742 ../js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Клавіатура"
 
@@ -1049,7 +791,7 @@ msgstr "Носій"
 msgid "Undo"
 msgstr "Повернути"
 
-#: ../js/ui/overview.js:117
+#: ../js/ui/overview.js:113
 msgid "Overview"
 msgstr "Огляд"
 
@@ -1057,7 +799,7 @@ msgstr "Огляд"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:244
+#: ../js/ui/overview.js:240
 msgid "Type to search…"
 msgstr "Введіть для пошуку…"
 
@@ -1123,11 +865,11 @@ msgstr[0] "%d нове сповіщення"
 msgstr[1] "%d нових сповіщення"
 msgstr[2] "%d нових сповіщень"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:382
 msgid "Lock"
 msgstr "Заблокувати"
 
-#: ../js/ui/screenShield.js:684
+#: ../js/ui/screenShield.js:704
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME потребує заблокувати екран"
 
@@ -1138,11 +880,11 @@ msgstr "GNOME потребує заблокувати екран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:805 ../js/ui/screenShield.js:1271
+#: ../js/ui/screenShield.js:825 ../js/ui/screenShield.js:1291
 msgid "Unable to lock"
 msgstr "Неможливо заблокувати"
 
-#: ../js/ui/screenShield.js:806 ../js/ui/screenShield.js:1272
+#: ../js/ui/screenShield.js:826 ../js/ui/screenShield.js:1292
 msgid "Lock was blocked by an application"
 msgstr "Блокування заборонено програмою"
 
@@ -1226,7 +968,7 @@ msgstr "Більший текст"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:56
+#: ../js/ui/status/bluetooth.js:56 ../js/ui/status/network.js:624
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
@@ -1262,7 +1004,7 @@ msgstr "Вимкнути"
 msgid "Brightness"
 msgstr "Яскравість"
 
-#: ../js/ui/status/keyboard.js:736
+#: ../js/ui/status/keyboard.js:805
 msgid "Show Keyboard Layout"
 msgstr "Показати розкладку клавіатури"
 
@@ -1289,14 +1031,6 @@ msgstr "Місцевість вимкнено"
 #: ../js/ui/status/location.js:219
 msgid "Enable"
 msgstr "Увімкнути"
-
-#: ../js/ui/status/location.js:426
-msgid "Deny Access"
-msgstr "Відкинути доступ"
-
-#: ../js/ui/status/location.js:429
-msgid "Grant Access"
-msgstr "Надати доступ"
 
 #. Translators: %s is an application name
 #: ../js/ui/status/location.js:435
@@ -1376,7 +1110,7 @@ msgstr "%s під'єднано невдало"
 msgid "Wired Settings"
 msgstr "Параметри мережі"
 
-#: ../js/ui/status/network.js:545 ../js/ui/status/network.js:624
+#: ../js/ui/status/network.js:545
 msgid "Mobile Broadband Settings"
 msgstr "параметри мобільної радіомережі"
 
@@ -1394,8 +1128,8 @@ msgid "%s Disabled"
 msgstr "%s вимкнено"
 
 #: ../js/ui/status/network.js:632
-msgid "Use as Internet connection"
-msgstr "Використовувати як інтернетне з'єднання"
+msgid "Connect to Internet"
+msgstr "Під'єднатись до інтернету"
 
 #: ../js/ui/status/network.js:813
 msgid "Airplane Mode is On"
@@ -1532,27 +1266,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "Режим «у літаку» ввімкнено"
 
-#: ../js/ui/status/system.js:343
+#: ../js/ui/status/system.js:351
 msgid "Switch User"
 msgstr "Змінити користувача"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:356
 msgid "Log Out"
 msgstr "Вийти"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:361
 msgid "Account Settings"
 msgstr "Параметри облікових записів"
 
-#: ../js/ui/status/system.js:370
+#: ../js/ui/status/system.js:378
 msgid "Orientation Lock"
 msgstr "Напрямлене блокування"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:386
 msgid "Suspend"
 msgstr "Призупинити"
 
-#: ../js/ui/status/system.js:381
+#: ../js/ui/status/system.js:389
 msgid "Power Off"
 msgstr "Вимкнути"
 
@@ -1679,10 +1413,6 @@ msgstr "Перемістити до монітору ліворуч"
 msgid "Move to Monitor Right"
 msgstr "Перемістити до монітору праворуч"
 
-#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-msgid "Evolution Calendar"
-msgstr "Календар Evolution"
-
 #. translators:
 #. * The number of sound outputs on a particular device
 #: ../src/gvc/gvc-mixer-control.c:1837
@@ -1723,12 +1453,12 @@ msgstr "Використовувати вказаний режим, прикла
 msgid "List possible modes"
 msgstr "Перелік можливих режимів"
 
-#: ../src/shell-app.c:246
+#: ../src/shell-app.c:270
 msgctxt "program"
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: ../src/shell-app.c:487
+#: ../src/shell-app.c:511
 #, c-format
 msgid "Failed to launch “%s”"
 msgstr "Не вдалося запустити «%s»"
@@ -1744,6 +1474,247 @@ msgstr "Пароль не може бути порожнім"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Вікно авторизації відхилено користувачем"
+
+#~ msgid "System"
+#~ msgstr "Система"
+
+#~ msgid "Show the notification list"
+#~ msgstr "Показувати перелік сповіщень"
+
+#~ msgid "Focus the active notification"
+#~ msgstr "Перейти до активних сповіщень"
+
+#~ msgid "Show the overview"
+#~ msgstr "Показати огляд"
+
+#~ msgid "Show all applications"
+#~ msgstr "Показати всі програми"
+
+#~ msgid "Open the application menu"
+#~ msgstr "Відкрити меню програм"
+
+#~ msgid "GNOME Shell Extension Preferences"
+#~ msgstr "Параметри розширень GNOME Shell"
+
+#~ msgid "Configure GNOME Shell Extensions"
+#~ msgstr "Налаштувати розширення GNOME Shell"
+
+#~ msgid "GNOME Shell"
+#~ msgstr "GNOME Shell"
+
+#~ msgid "Window management and application launching"
+#~ msgstr "Керування вікнами та запуск програм"
+
+#~ msgid "Enable internal tools useful for developers and testers from Alt-F2"
+#~ msgstr ""
+#~ "Увімкнути внутрішні засоби, які будуть корисними для розробників і "
+#~ "випробування при натисненні Alt-F2"
+
+#~ msgid ""
+#~ "Allows access to internal debugging and monitoring tools using the Alt-F2 "
+#~ "dialog."
+#~ msgstr ""
+#~ "Надає доступ до внутрішніх засобів зневаджування та спостереження через "
+#~ "Alt-F2."
+
+#~ msgid "UUIDs of extensions to enable"
+#~ msgstr "Увімкнути розширення UUID"
+
+#~ msgid ""
+#~ "GNOME Shell extensions have a UUID property; this key lists extensions "
+#~ "which should be loaded. Any extension that wants to be loaded needs to be "
+#~ "in this list. You can also manipulate this list with the EnableExtension "
+#~ "and DisableExtension D-Bus methods on org.gnome.Shell."
+#~ msgstr ""
+#~ "Розширення GNOME Shell мають властивості «UUID»; цей ключ перелічує "
+#~ "розширення, які потрібно завантажувати. Вимкнення розширень ігноруватиме "
+#~ "ці налаштування для розширень, які з'являються в обох переліках. Також "
+#~ "можете орудувати цим переліком через способи EnableExtension і "
+#~ "DisableExtension DBus DisableExtension DBus на org.gnome.Shell."
+
+#~ msgid "Disables the validation of extension version compatibility"
+#~ msgstr "Вимикає перевіряння сумісності версії розширення"
+
+#~ msgid ""
+#~ "GNOME Shell will only load extensions that claim to support the current "
+#~ "running version. Enabling this option will disable this check and try to "
+#~ "load all extensions regardless of the versions they claim to support."
+#~ msgstr ""
+#~ "GNOME Shell завантажуватиме тільки розширення, які вимагають поточну "
+#~ "версію. Увімкнення цього параметра вимкне це перевіряння і спробує "
+#~ "завантажувати всі розширення, попри розходження у версії."
+
+#~ msgid "List of desktop file IDs for favorite applications"
+#~ msgstr "Перелічити ідентифікатори файла стільниці для улюблених програм"
+
+#~ msgid ""
+#~ "The applications corresponding to these identifiers will be displayed in "
+#~ "the favorites area."
+#~ msgstr ""
+#~ "Програми, які відповідають цьому ідентифікатору, буде показано в ділянці "
+#~ "улюбленого."
+
+#~ msgid "App Picker View"
+#~ msgstr "Огляд вибору програми"
+
+#~ msgid "Index of the currently selected view in the application picker."
+#~ msgstr "Індекс поточного розміщення вибору в огляді списку програм."
+
+#~ msgid "History for command (Alt-F2) dialog"
+#~ msgstr "Історія для команд (Alt-F2)"
+
+#~ msgid "History for the looking glass dialog"
+#~ msgstr "Історія для пошуку дзеркальних діалогів"
+
+#~ msgid "Always show the 'Log out' menu item in the user menu."
+#~ msgstr "Завжди показувати пункт меню «Вийти» у меню користувача."
+
+#~ msgid ""
+#~ "This key overrides the automatic hiding of the 'Log out' menu item in "
+#~ "single-user, single-session situations."
+#~ msgstr ""
+#~ "Цей ключ нехтує автоматичним хованням пункту меню «Вийти» за умови, що "
+#~ "користувач єдиний або сеанс тільки один. "
+
+#~ msgid ""
+#~ "Whether to remember password for mounting encrypted or remote filesystems"
+#~ msgstr ""
+#~ "Чи запам'ятовувати пароль для монтування шифрованих або віддалених "
+#~ "файлових систем"
+
+#~ msgid ""
+#~ "The shell will request a password when an encrypted device or a remote "
+#~ "filesystem is mounted. If the password can be saved for future use a "
+#~ "'Remember Password' checkbox will be present. This key sets the default "
+#~ "state of the checkbox."
+#~ msgstr ""
+#~ "Середовище вимагає пароль, коли шифрований пристрій або віддалену файлову "
+#~ "систему змонтовано."
+
+#~ msgid ""
+#~ "Whether the default Bluetooth adapter had set up devices associated to it"
+#~ msgstr "Чи типовий адаптер Bluetooth зв'язаний з якимось пристроєм"
+
+#~ msgid ""
+#~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
+#~ "powered, or if there were devices set up associated with the default "
+#~ "adapter. This will be reset if the default adapter is ever seen not to "
+#~ "have devices associated to it."
+#~ msgstr ""
+#~ "Оболонка покаже меню Bluetooth лише, коли адаптер Bluetooth увімкнено або "
+#~ "пристрій зв'язано з типовим адаптером. Якщо типовий адаптер ніколи не був "
+#~ "зв'язаний з жодним пристроєм, то його буде скинуто. "
+
+#~ msgid "Show the week date in the calendar"
+#~ msgstr "Показати дні тижня в календарі"
+
+#~ msgid "If true, display the ISO week date in the calendar."
+#~ msgstr "Якщо це так, буде показано дні тижня у календарі згідно з ISO."
+
+#~ msgid "Keybinding to open the application menu"
+#~ msgstr "Комбінація клавіш, щоб відкрити меню програм"
+
+#~ msgid "Keybinding to open the application menu."
+#~ msgstr "Комбінація клавіш, щоб відкрити меню програм."
+
+#~ msgid "Keybinding to open the \"Show Applications\" view"
+#~ msgstr "Комбінація клавіш, щоб «Показати програми»"
+
+#~ msgid ""
+#~ "Keybinding to open the \"Show Applications\" view of the Activities "
+#~ "Overview."
+#~ msgstr "Комбінація клавіш, щоб «Показати програми» огляду діяльності."
+
+#~ msgid "Keybinding to open the overview"
+#~ msgstr "Комбінація клавіш, щоб відкрити огляд"
+
+#~ msgid "Keybinding to open the Activities Overview."
+#~ msgstr "Комбінація клавіш, щоб відкрити огляд діяльності."
+
+#~ msgid "Keybinding to toggle the visibility of the notification list"
+#~ msgstr "Комбінація клавіш, щоб змінювати видимість переліку сповіщень"
+
+#~ msgid "Keybinding to toggle the visibility of the notification list."
+#~ msgstr "Комбінація клавіш, щоб змінювати видимість переліку сповіщень."
+
+#~ msgid "Keybinding to focus the active notification"
+#~ msgstr "Комбінація клавіш, щоб перейти до активних сповіщень"
+
+#~ msgid "Keybinding to focus the active notification."
+#~ msgstr "Комбінація клавіш, щоб перейти до активних сповіщень."
+
+#~ msgid ""
+#~ "Keybinding that pauses and resumes all running tweens, for debugging "
+#~ "purposes"
+#~ msgstr ""
+#~ "Скорочення, що призупиняє й відновлює всіх запущених посередників, зі "
+#~ "зневаджувальною метою"
+
+#~ msgid "Which keyboard to use"
+#~ msgstr "Яку клавіатуру використовувати"
+
+#~ msgid "The type of keyboard to use."
+#~ msgstr "Тип клавіатури."
+
+#~ msgid "Limit switcher to current workspace."
+#~ msgstr "Обмежити перемикач на поточний робочий простір."
+
+#~ msgid ""
+#~ "If true, only applications that have windows on the current workspace are "
+#~ "shown in the switcher. Otherwise, all applications are included."
+#~ msgstr ""
+#~ "Якщо це вказано, то тільки ті програми, які мають вікна на поточному "
+#~ "робочому просторі, показано в перемикачі. Інакше всі програми будуть "
+#~ "враховуватись."
+
+#~ msgid "The application icon mode."
+#~ msgstr "Режим піктограм для програм."
+
+#~ msgid ""
+#~ "Configures how the windows are shown in the switcher. Valid possibilities "
+#~ "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+#~ "only' (shows only the application icon) or 'both'."
+#~ msgstr ""
+#~ "Налаштовує яким способом вікна показуються в перемикачі. Допустимі "
+#~ "значення: «thumbnail-only» (показує мініатюру вікна), «app-icon-"
+#~ "only» (показує тільки піктограми програм) або «both» (обидва)."
+
+#~ msgid ""
+#~ "If true, only windows from the current workspace are shown in the "
+#~ "switcher. Otherwise, all windows are included."
+#~ msgstr ""
+#~ "Якщо це вказано, то тільки ті вікна, які мають вікна на поточному "
+#~ "робочому просторі, показано в перемикачі. Інакше всі вікна будуть "
+#~ "враховуватись."
+
+#~ msgid "Attach modal dialog to the parent window"
+#~ msgstr "Приєднати модальне вікно до батьківського вікна"
+
+#~ msgid ""
+#~ "This key overrides the key in org.gnome.mutter when running GNOME Shell."
+#~ msgstr ""
+#~ "Цей ключ нехтує ключем у org.gnome.mutter, коли запущено GNOME Shell."
+
+#~ msgid "Enable edge tiling when dropping windows on screen edges"
+#~ msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
+
+#~ msgid "Workspaces are managed dynamically"
+#~ msgstr "Робочі простори організовуються динамічно"
+
+#~ msgid "Workspaces only on primary monitor"
+#~ msgstr "Робочий простір лише на основному моніторі"
+
+#~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
+#~ msgstr "Затримувати зміни фокусу миші, поки вказівник не перестане рухатись"
+
+#~ msgid "Network Login"
+#~ msgstr "Мережевий вхід"
+
+#~ msgid "Use as Internet connection"
+#~ msgstr "Використовувати як інтернетне з'єднання"
+
+#~ msgid "Evolution Calendar"
+#~ msgstr "Календар Evolution"
 
 #~ msgid "%s is requesting access to your location."
 #~ msgstr "%s вимагає доступ до вашого розміщення."
@@ -2410,9 +2381,6 @@ msgstr "Вікно авторизації відхилено користува�
 
 #~ msgid "Subscription request"
 #~ msgstr "Заявка на підписку"
-
-#~ msgid "Connection error"
-#~ msgstr "помилка з'єднання"
 
 #~ msgid "Sent at <b>%X</b> on <b>%A</b>"
 #~ msgstr "Надіслано о <b>%X</b>, <b>%A</b>"
