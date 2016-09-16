@@ -719,14 +719,8 @@ clutter_get_text_direction (void)
     }
   else
     {
-      /* Translators: Leave this UNTRANSLATED if your language is
-       * left-to-right.  If your language is right-to-left
-       * (e.g. Hebrew, Arabic), translate it to "default:RTL".
-       *
-       * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
-       * it isn't default:LTR or default:RTL it will not work.
-       */
-      char *e = _("default:LTR");
+      /* Re-use GTK+'s LTR/RTL handling */
+      const char *e = g_dgettext ("gtk30", "default:LTR");
 
       if (strcmp (e, "default:RTL") == 0)
         dir = CLUTTER_TEXT_DIRECTION_RTL;
