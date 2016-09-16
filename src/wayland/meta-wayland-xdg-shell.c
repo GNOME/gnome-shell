@@ -856,7 +856,10 @@ xdg_popup_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 {
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (surface_role);
 
-  return meta_wayland_surface_get_toplevel (xdg_popup->parent_surface);
+  if (xdg_popup->parent_surface)
+    return meta_wayland_surface_get_toplevel (xdg_popup->parent_surface);
+  else
+    return NULL;
 }
 
 static void
