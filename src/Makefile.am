@@ -104,7 +104,6 @@ shell_public_headers_h =		\
 	shell-perf-log.h		\
 	shell-screenshot.h		\
 	shell-stack.h			\
-	shell-tp-client.h		\
 	shell-tray-icon.h		\
 	shell-tray-manager.h		\
 	shell-util.h			\
@@ -148,7 +147,6 @@ libgnome_shell_base_la_SOURCES = 	\
 	shell-secure-text-buffer.c	\
 	shell-secure-text-buffer.h	\
 	shell-stack.c			\
-	shell-tp-client.c		\
 	$(NULL)
 
 if HAVE_NETWORKMANAGER
@@ -335,7 +333,7 @@ INTROSPECTION_GIRS += ShellMenu-0.1.gir
 CLEANFILES += ShellMenu-0.1.gir
 
 Shell-0.1.gir: gnome-shell St-1.0.gir ShellMenu-0.1.gir
-Shell_0_1_gir_INCLUDES = Clutter-$(LIBMUTTER_API_VERSION) ClutterX11-$(LIBMUTTER_API_VERSION) Meta-$(LIBMUTTER_API_VERSION) TelepathyGLib-0.12 Soup-2.4
+Shell_0_1_gir_INCLUDES = Clutter-$(LIBMUTTER_API_VERSION) ClutterX11-$(LIBMUTTER_API_VERSION) Meta-$(LIBMUTTER_API_VERSION) Soup-2.4
 if HAVE_NETWORKMANAGER
 Shell_0_1_gir_INCLUDES += NetworkManager-1.0 NMClient-1.0
 endif
