@@ -1052,7 +1052,7 @@ static gchar *
 get_tablet_settings_id (ClutterInputDevice *device,
                         DeviceMappingInfo  *info)
 {
-  gchar *id, *machine_id;
+  gchar *id = NULL, *machine_id;
   gsize length;
 
   if (!g_file_get_contents ("/etc/machine-id", &machine_id, &length, NULL))
@@ -1060,12 +1060,14 @@ get_tablet_settings_id (ClutterInputDevice *device,
 
   machine_id = g_strstrip (machine_id);
 #ifdef HAVE_LIBWACOM
-  id = g_strdup_printf ("%s-%s", machine_id, libwacom_get_match (info->wacom_device));
-#else
-  id = g_strdup_printf ("%s-%s:%s", machine_id,
-                        clutter_input_device_get_vendor_id (device),
-                        clutter_input_device_get_product_id (device));
+  if (info->wacom_device)
+    id = g_strdup_printf ("%s-%s", machine_id, libwacom_get_match (info->wacom_device));
 #endif
+
+  if (!id)
+    id = g_strdup_printf ("%s-%s:%s", machine_id,
+                          clutter_input_device_get_vendor_id (device),
+                          clutter_input_device_get_product_id (device));
 
   g_free (machine_id);
 
