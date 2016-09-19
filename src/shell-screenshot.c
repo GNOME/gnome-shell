@@ -263,6 +263,10 @@ _draw_cursor_image (MetaCursorTracker     *tracker,
   int x, y;
   int xhot, yhot;
 
+  texture = meta_cursor_tracker_get_sprite (tracker);
+  if (!texture)
+    return;
+
   screenshot_region = cairo_region_create_rectangle (&area);
   meta_cursor_tracker_get_pointer (tracker, &x, &y, NULL);
 
@@ -272,7 +276,6 @@ _draw_cursor_image (MetaCursorTracker     *tracker,
       return;
     }
 
-  texture = meta_cursor_tracker_get_sprite (tracker);
   meta_cursor_tracker_get_hot (tracker, &xhot, &yhot);
   width = cogl_texture_get_width (texture);
   height = cogl_texture_get_height (texture);
