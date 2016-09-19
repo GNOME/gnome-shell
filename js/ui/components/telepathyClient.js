@@ -6,7 +6,6 @@ const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
-const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const Tpl = imports.gi.TelepathyLogger;
@@ -73,6 +72,7 @@ function makeMessageFromTplEvent(event) {
 
 const TelepathyClient = new Lang.Class({
     Name: 'TelepathyClient',
+    Extends: Tp.BaseClient,
 
     _init: function() {
         // channel path -> ChatSource
@@ -97,25 +97,29 @@ const TelepathyClient = new Lang.Class({
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
-        this._tpClient = new Shell.TpClient({ name: 'GnomeShell',
-                                              account_manager: this._accountManager,
-                                              uniquify_name: true });
-        this._tpClient.set_observe_channels_func(
-            Lang.bind(this, this._observeChannels));
-        this._tpClient.set_approve_channels_func(
-            Lang.bind(this, this._approveChannels));
-        this._tpClient.set_handle_channels_func(
-            Lang.bind(this, this._handleChannels));
+        this.parent({ name: 'GnomeShell',
+                      account_manager: this._accountManager,
+                      uniquify_name: true });
+
+        // We only care about single-user text-based chats
+        let filter = {};
+        filter[Tp.PROP_CHANNEL_CHANNEL_TYPE] = Tp.IFACE_CHANNEL_TYPE_TEXT;
+        filter[Tp.PROP_CHANNEL_TARGET_HANDLE_TYPE] = Tp.HandleType.CONTACT;
+
+        this.set_observer_recover(true);
+        this.add_observer_filter(filter);
+        this.add_approver_filter(filter);
+        this.add_handler_filter(filter);
 
         // Allow other clients (such as Empathy) to pre-empt our channels if
         // needed
-        this._tpClient.set_delegated_channels_callback(
+        this.set_delegated_channels_callback(
             Lang.bind(this, this._delegatedChannelsCb));
     },
 
     enable: function() {
         try {
-            this._tpClient.register();
+            this.register();
         } catch (e) {
             throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
         }
@@ -125,11 +129,11 @@ const TelepathyClient = new Lang.Class({
     },
 
     disable: function() {
-        this._tpClient.unregister();
+        this.unregister();
     },
 
-    _observeChannels: function(observer, account, conn, channels,
-                               dispatchOp, requests, context) {
+    vfunc_observe_channels: function(account, conn, channels,
+                                     dispatchOp, requests, context) {
         let len = channels.length;
         for (let i = 0; i < len; i++) {
             let channel = channels[i];
@@ -153,7 +157,7 @@ const TelepathyClient = new Lang.Class({
         if (this._chatSources[channel.get_object_path()])
             return;
 
-        let source = new ChatSource(account, conn, channel, contact, this._tpClient);
+        let source = new ChatSource(account, conn, channel, contact, this);
 
         this._chatSources[channel.get_object_path()] = source;
         source.connect('destroy', Lang.bind(this,
@@ -162,8 +166,8 @@ const TelepathyClient = new Lang.Class({
                        }));
     },
 
-    _handleChannels: function(handler, account, conn, channels,
-                              requests, user_action_time, context) {
+    vfunc_handle_channels: function(account, conn, channels, requests,
+                                    user_action_time, context) {
         this._handlingChannels(account, conn, channels, true);
         context.accept();
     },
@@ -193,7 +197,7 @@ const TelepathyClient = new Lang.Class({
             // Telepathy spec states that handlers must foreground channels
             // in HandleChannels calls which are already being handled.
 
-            if (notify && this._tpClient.is_handling_channel(channel)) {
+            if (notify && this.is_handling_channel(channel)) {
                 // We are already handling the channel, display the source
                 let source = this._chatSources[channel.get_object_path()];
                 if (source)
@@ -202,8 +206,8 @@ const TelepathyClient = new Lang.Class({
         }
     },
 
-    _approveChannels: function(approver, account, conn, channels,
-                               dispatchOp, context) {
+    vfunc_add_dispatch_operation: function(account, conn, channels,
+                                           dispatchOp, context) {
         let channel = channels[0];
         let chanType = channel.get_channel_type();
 
@@ -230,7 +234,7 @@ const TelepathyClient = new Lang.Class({
         }
 
         // Approve private text channels right away as we are going to handle it
-        dispatchOp.claim_with_async(this._tpClient, Lang.bind(this, function(dispatchOp, result) {
+        dispatchOp.claim_with_async(this, Lang.bind(this, function(dispatchOp, result) {
             try {
                 dispatchOp.claim_with_finish(result);
                 this._handlingChannels(account, conn, [channel], false);
