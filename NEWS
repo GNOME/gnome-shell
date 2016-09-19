@@ -1,3 +1,17 @@
+3.22.0
+======
+* Fix wayland crashes [Jonas; #771305, #771345, #770940, #771495]
+* Fix display rotation on wayland [Jonas; #770672]
+* Fix framebuffer capture origin offset [Rui; #771502]
+* Misc. bug fixes [Jonas, Florian, Carlos; #770937, #771536, #771628, #771549]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Rui Matos, Florian Müllner
+
+Translations:
+  Ask Hjorth Larsen [da], Charles Monzat [fr], Stas Solovey [ru],
+  Tom Tryfonidis [el], David King [en_GB]
+
 3.21.92
 =======
 * Fix absolute pointer motion events on wayland [Jonas; #770557]
