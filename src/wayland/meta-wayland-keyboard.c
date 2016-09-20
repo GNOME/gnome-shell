@@ -269,10 +269,11 @@ meta_wayland_keyboard_broadcast_key (MetaWaylandKeyboard *keyboard,
   l = &keyboard->focus_resource_list;
   if (!wl_list_empty (l))
     {
-      struct wl_client *client = wl_resource_get_client (keyboard->focus_surface->resource);
-      struct wl_display *display = wl_client_get_display (client);
+      MetaWaylandInputDevice *input_device =
+        META_WAYLAND_INPUT_DEVICE (keyboard);
 
-      keyboard->key_serial = wl_display_next_serial (display);
+      keyboard->key_serial =
+        meta_wayland_input_device_next_serial (input_device);
 
       wl_resource_for_each (resource, l)
         {
@@ -356,10 +357,9 @@ meta_wayland_keyboard_broadcast_modifiers (MetaWaylandKeyboard *keyboard)
     {
       MetaWaylandInputDevice *input_device =
         META_WAYLAND_INPUT_DEVICE (keyboard);
-      MetaWaylandSeat *seat = meta_wayland_input_device_get_seat (input_device);
       uint32_t serial;
 
-      serial = wl_display_next_serial (seat->wl_display);
+      serial = meta_wayland_input_device_next_serial (input_device);
 
       wl_resource_for_each (resource, l)
         keyboard_send_modifiers (keyboard, resource, serial);
@@ -842,9 +842,9 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
       l = &keyboard->focus_resource_list;
       if (!wl_list_empty (l))
         {
-          struct wl_client *client = wl_resource_get_client (keyboard->focus_surface->resource);
-          struct wl_display *display = wl_client_get_display (client);
-          uint32_t serial = wl_display_next_serial (display);
+          uint32_t serial;
+
+          serial = meta_wayland_input_device_next_serial (input_device);
 
           wl_resource_for_each (resource, l)
             {
@@ -873,9 +873,8 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
       l = &keyboard->focus_resource_list;
       if (!wl_list_empty (l))
         {
-          struct wl_client *client = wl_resource_get_client (keyboard->focus_surface->resource);
-          struct wl_display *display = wl_client_get_display (client);
-          keyboard->focus_serial = wl_display_next_serial (display);
+          keyboard->focus_serial =
+            meta_wayland_input_device_next_serial (input_device);
 
           wl_resource_for_each (resource, l)
             {
