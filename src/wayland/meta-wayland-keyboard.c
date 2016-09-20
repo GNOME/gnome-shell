@@ -832,10 +832,9 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 
   if (keyboard->focus_surface != NULL)
     {
-      struct wl_resource *resource;
-
       if (!wl_list_empty (&keyboard->focus_resource_list))
         {
+          struct wl_resource *resource;
           uint32_t serial;
 
           serial = meta_wayland_input_device_next_serial (input_device);
@@ -854,7 +853,7 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 
   if (surface != NULL)
     {
-      struct wl_resource *resource;
+      struct wl_resource *focus_surface_resource;
 
       keyboard->focus_surface = surface;
       wl_resource_add_destroy_listener (keyboard->focus_surface->resource, &keyboard->focus_surface_listener);
@@ -865,6 +864,8 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
 
       if (!wl_list_empty (&keyboard->focus_resource_list))
         {
+          struct wl_resource *resource;
+
           keyboard->focus_serial =
             meta_wayland_input_device_next_serial (input_device);
 
