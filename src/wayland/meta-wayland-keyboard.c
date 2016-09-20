@@ -264,10 +264,8 @@ meta_wayland_keyboard_broadcast_key (MetaWaylandKeyboard *keyboard,
                                      uint32_t             state)
 {
   struct wl_resource *resource;
-  struct wl_list *l;
 
-  l = &keyboard->focus_resource_list;
-  if (!wl_list_empty (l))
+  if (!wl_list_empty (&keyboard->focus_resource_list))
     {
       MetaWaylandInputDevice *input_device =
         META_WAYLAND_INPUT_DEVICE (keyboard);
@@ -275,7 +273,7 @@ meta_wayland_keyboard_broadcast_key (MetaWaylandKeyboard *keyboard,
       keyboard->key_serial =
         meta_wayland_input_device_next_serial (input_device);
 
-      wl_resource_for_each (resource, l)
+      wl_resource_for_each (resource, &keyboard->focus_resource_list)
         {
           wl_keyboard_send_key (resource, keyboard->key_serial, time, key, state);
         }
@@ -350,10 +348,8 @@ static void
 meta_wayland_keyboard_broadcast_modifiers (MetaWaylandKeyboard *keyboard)
 {
   struct wl_resource *resource;
-  struct wl_list *l;
 
-  l = &keyboard->focus_resource_list;
-  if (!wl_list_empty (l))
+  if (!wl_list_empty (&keyboard->focus_resource_list))
     {
       MetaWaylandInputDevice *input_device =
         META_WAYLAND_INPUT_DEVICE (keyboard);
@@ -361,7 +357,7 @@ meta_wayland_keyboard_broadcast_modifiers (MetaWaylandKeyboard *keyboard)
 
       serial = meta_wayland_input_device_next_serial (input_device);
 
-      wl_resource_for_each (resource, l)
+      wl_resource_for_each (resource, &keyboard->focus_resource_list)
         keyboard_send_modifiers (keyboard, resource, serial);
     }
 }
@@ -837,16 +833,14 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
   if (keyboard->focus_surface != NULL)
     {
       struct wl_resource *resource;
-      struct wl_list *l;
 
-      l = &keyboard->focus_resource_list;
-      if (!wl_list_empty (l))
+      if (!wl_list_empty (&keyboard->focus_resource_list))
         {
           uint32_t serial;
 
           serial = meta_wayland_input_device_next_serial (input_device);
 
-          wl_resource_for_each (resource, l)
+          wl_resource_for_each (resource, &keyboard->focus_resource_list)
             {
               wl_keyboard_send_leave (resource, serial, keyboard->focus_surface->resource);
             }
@@ -861,7 +855,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
   if (surface != NULL)
     {
       struct wl_resource *resource;
-      struct wl_list *l;
 
       keyboard->focus_surface = surface;
       wl_resource_add_destroy_listener (keyboard->focus_surface->resource, &keyboard->focus_surface_listener);
@@ -870,13 +863,12 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                  &keyboard->resource_list,
                                  wl_resource_get_client (keyboard->focus_surface->resource));
 
-      l = &keyboard->focus_resource_list;
-      if (!wl_list_empty (l))
+      if (!wl_list_empty (&keyboard->focus_resource_list))
         {
           keyboard->focus_serial =
             meta_wayland_input_device_next_serial (input_device);
 
-          wl_resource_for_each (resource, l)
+          wl_resource_for_each (resource, &keyboard->focus_resource_list)
             {
               broadcast_focus (keyboard, resource);
             }
