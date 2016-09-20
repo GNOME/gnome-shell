@@ -611,12 +611,8 @@ meta_wayland_keyboard_enable (MetaWaylandKeyboard *keyboard)
   wl_list_init (&keyboard->resource_list);
   wl_list_init (&keyboard->focus_resource_list);
 
-  keyboard->focus_surface_listener.notify = keyboard_handle_focus_surface_destroy;
-
   keyboard->xkb_info.keymap_fd = -1;
 
-  keyboard->default_grab.interface = &default_keyboard_grab_interface;
-  keyboard->default_grab.keyboard = keyboard;
   keyboard->grab = &keyboard->default_grab;
 
   keyboard->settings = g_settings_new ("org.gnome.desktop.peripherals.keyboard");
@@ -961,6 +957,11 @@ meta_wayland_keyboard_end_grab (MetaWaylandKeyboard *keyboard)
 static void
 meta_wayland_keyboard_init (MetaWaylandKeyboard *keyboard)
 {
+  keyboard->default_grab.interface = &default_keyboard_grab_interface;
+  keyboard->default_grab.keyboard = keyboard;
+
+  keyboard->focus_surface_listener.notify =
+    keyboard_handle_focus_surface_destroy;
 }
 
 static void
