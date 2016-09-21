@@ -447,17 +447,10 @@ is_within_constraint_region (MetaWaylandPointerConstraint *constraint,
   return is_within;
 }
 
-static void
-meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint)
+static gboolean
+should_constraint_be_enabled (MetaWaylandPointerConstraint *constraint)
 {
   MetaWindow *window;
-  wl_fixed_t sx, sy;
-
-  if (constraint->is_enabled)
-    return;
-
-  if (constraint->seat->pointer->focus_surface != constraint->surface)
-    return;
 
   window = constraint->surface->window;
   if (!window)
@@ -467,11 +460,14 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
        * associate the X11 Window with the wl_surface.
        */
       g_warn_if_fail (meta_xwayland_is_xwayland_surface (constraint->surface));
-      return;
+      return FALSE;
     }
 
   if (window->unmanaging)
-    return;
+    return FALSE;
+
+  if (constraint->seat->pointer->focus_surface != constraint->surface)
+    return FALSE;
 
   if (meta_xwayland_is_xwayland_surface (constraint->surface))
     {
@@ -493,13 +489,29 @@ meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *cons
 
       if (display->focus_window &&
           display->focus_window->client_type != META_WINDOW_CLIENT_TYPE_X11)
-        return;
+        return FALSE;
     }
   else
     {
+      MetaWindow *window = constraint->surface->window;
+
       if (!meta_window_appears_focused (window))
-        return;
+        return FALSE;
     }
+
+  return TRUE;
+}
+
+static void
+meta_wayland_pointer_constraint_maybe_enable (MetaWaylandPointerConstraint *constraint)
+{
+  wl_fixed_t sx, sy;
+
+  if (constraint->is_enabled)
+    return;
+
+  if (!should_constraint_be_enabled (constraint))
+    return;
 
   meta_wayland_pointer_get_relative_coordinates (constraint->seat->pointer,
                                                  constraint->surface,
@@ -550,11 +562,7 @@ meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,
 
   constraint = wl_container_of (pointer->grab, constraint, grab);
 
-  if (constraint->surface != window->surface)
-    return;
-
-  if (meta_window_appears_focused (window) &&
-      pointer->focus_surface == window->surface)
+  if (should_constraint_be_enabled (constraint))
     return;
 
   meta_wayland_pointer_constraint_deactivate (constraint);
