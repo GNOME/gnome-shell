@@ -45,7 +45,7 @@ seat_get_pointer (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
   MetaWaylandPointer *pointer = seat->pointer;
 
-  if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) != 0)
+  if (meta_wayland_seat_has_pointer (seat))
     meta_wayland_pointer_create_new_resource (pointer, client, resource, id);
 }
 
@@ -57,7 +57,7 @@ seat_get_keyboard (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
   MetaWaylandKeyboard *keyboard = seat->keyboard;
 
-  if ((seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD) != 0)
+  if (meta_wayland_seat_has_keyboard (seat))
     meta_wayland_keyboard_create_new_resource (keyboard, client, resource, id);
 }
 
@@ -69,7 +69,7 @@ seat_get_touch (struct wl_client *client,
   MetaWaylandSeat *seat = wl_resource_get_user_data (resource);
   MetaWaylandTouch *touch = seat->touch;
 
-  if ((seat->capabilities & WL_SEAT_CAPABILITY_TOUCH) != 0)
+  if (meta_wayland_seat_has_touch (seat))
     meta_wayland_touch_create_new_resource (touch, client, resource, id);
 }
 
@@ -319,20 +319,20 @@ meta_wayland_seat_update (MetaWaylandSeat    *seat,
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_SCROLL:
-      if (seat->capabilities & WL_SEAT_CAPABILITY_POINTER)
+      if (meta_wayland_seat_has_pointer (seat))
         meta_wayland_pointer_update (seat->pointer, event);
       break;
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      if (seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
+      if (meta_wayland_seat_has_keyboard (seat))
         meta_wayland_keyboard_update (seat->keyboard, (const ClutterKeyEvent *) event);
       break;
 
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
-      if (seat->capabilities & WL_SEAT_CAPABILITY_TOUCH)
+      if (meta_wayland_seat_has_touch (seat))
         meta_wayland_touch_update (seat->touch, event);
       break;
 
@@ -356,18 +356,18 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
     case CLUTTER_SCROLL:
     case CLUTTER_TOUCHPAD_SWIPE:
     case CLUTTER_TOUCHPAD_PINCH:
-      if (seat->capabilities & WL_SEAT_CAPABILITY_POINTER)
+      if (meta_wayland_seat_has_pointer (seat))
         return meta_wayland_pointer_handle_event (seat->pointer, event);
 
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      if (seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
+      if (meta_wayland_seat_has_keyboard (seat))
         return meta_wayland_keyboard_handle_event (seat->keyboard,
                                                    (const ClutterKeyEvent *) event);
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
-      if (seat->capabilities & WL_SEAT_CAPABILITY_TOUCH)
+      if (meta_wayland_seat_has_touch (seat))
         return meta_wayland_touch_handle_event (seat->touch, event);
 
     default:
@@ -380,7 +380,7 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
 void
 meta_wayland_seat_repick (MetaWaylandSeat *seat)
 {
-  if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) == 0)
+  if (!meta_wayland_seat_has_pointer (seat))
     return;
 
   meta_wayland_pointer_repick (seat->pointer);
@@ -393,7 +393,7 @@ meta_wayland_seat_set_input_focus (MetaWaylandSeat    *seat,
   MetaWaylandTabletSeat *tablet_seat;
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
 
-  if ((seat->capabilities & WL_SEAT_CAPABILITY_KEYBOARD) != 0)
+  if (meta_wayland_seat_has_keyboard (seat))
     {
       meta_wayland_keyboard_set_focus (seat->keyboard, surface);
       meta_wayland_data_device_set_keyboard_focus (&seat->data_device);
@@ -414,7 +414,7 @@ meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
   ClutterEventSequence *sequence = NULL;
   gboolean can_grab_surface = FALSE;
 
-  if ((seat->capabilities & WL_SEAT_CAPABILITY_TOUCH) != 0)
+  if (meta_wayland_seat_has_touch (seat))
     sequence = meta_wayland_touch_find_grab_sequence (seat->touch,
                                                       surface,
                                                       serial);
@@ -425,7 +425,7 @@ meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
     }
   else
     {
-      if ((seat->capabilities & WL_SEAT_CAPABILITY_POINTER) != 0 &&
+      if (meta_wayland_seat_has_pointer (seat) &&
           (!require_pressed || seat->pointer->button_count > 0))
         can_grab_surface = meta_wayland_pointer_can_grab_surface (seat->pointer,
                                                                   surface,
