@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-07 09:41+0000\n"
-"PO-Revision-Date: 2016-09-16 21:26+0200\n"
+"POT-Creation-Date: 2016-09-16 19:30+0000\n"
+"PO-Revision-Date: 2016-09-21 14:51+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -323,7 +323,7 @@ msgstr "غير مدرج؟"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:854
+#: js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(مثلا مستخدم أو %s)"
@@ -331,12 +331,12 @@ msgstr "(مثلا مستخدم أو %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
 #: js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "اسم المستخدم: "
 
-#: js/gdm/loginDialog.js:1196
+#: js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "نافذة الولوج"
 
@@ -749,7 +749,7 @@ msgstr "للأسف لم يُفلح هذا. أعِد المحاولة."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:760
+#: js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "غيّر %s اسمه إلى %s"
@@ -914,8 +914,6 @@ msgid "Power off after updates are installed"
 msgstr "أطفئ بعد تثبيت التحديثات"
 
 #: js/ui/endSessionDialog.js:137
-#| msgctxt "title"
-#| msgid "Restart & Install Updates"
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "أعد التشغيل و ثبّت الترقية"
@@ -1394,7 +1392,6 @@ msgid "%s Disabled"
 msgstr "‏%s معطّل"
 
 #: js/ui/status/network.js:632
-#, fuzzy
 #| msgid "Connection error"
 msgid "Connect to Internet"
 msgstr "اتصل بالإنترنت"
