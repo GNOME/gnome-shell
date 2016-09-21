@@ -277,6 +277,7 @@ shell_global_init (ShellGlobal *global)
                           XDisplayName (NULL));
   (void) g_mkdir_with_parents (path, 0700);
   global->runtime_state_path = g_file_new_for_path (path);
+  g_free (path);
 
   global->settings = g_settings_new ("org.gnome.shell");
 
