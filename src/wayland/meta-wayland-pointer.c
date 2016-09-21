@@ -358,8 +358,8 @@ meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
   if (pointer->focus_client &&
       !wl_list_empty (&pointer->focus_client->pointer_resources))
     {
-      struct wl_client *client = wl_resource_get_client (pointer->focus_surface->resource);
-      struct wl_display *display = wl_client_get_display (client);
+      MetaWaylandInputDevice *input_device =
+        META_WAYLAND_INPUT_DEVICE (pointer);
       uint32_t time;
       uint32_t button;
       uint32_t serial;
@@ -395,7 +395,7 @@ meta_wayland_pointer_send_button (MetaWaylandPointer *pointer,
         }
 
       time = clutter_event_get_time (event);
-      serial = wl_display_next_serial (display);
+      serial = meta_wayland_input_device_next_serial (input_device);
 
       wl_resource_for_each (resource, &pointer->focus_client->pointer_resources)
         {
@@ -793,6 +793,7 @@ void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
 {
+  MetaWaylandInputDevice *input_device = META_WAYLAND_INPUT_DEVICE (pointer);
   MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
 
   if (!meta_wayland_seat_has_pointer (seat))
@@ -803,12 +804,9 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
 
   if (pointer->focus_surface != NULL)
     {
-      struct wl_client *client =
-        wl_resource_get_client (pointer->focus_surface->resource);
-      struct wl_display *display = wl_client_get_display (client);
       uint32_t serial;
 
-      serial = wl_display_next_serial (display);
+      serial = meta_wayland_input_device_next_serial (input_device);
 
       if (pointer->focus_client)
         {
@@ -825,7 +823,6 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
   if (surface != NULL)
     {
       struct wl_client *client = wl_resource_get_client (surface->resource);
-      struct wl_display *display = wl_client_get_display (client);
       ClutterPoint pos;
 
       pointer->focus_surface = surface;
@@ -843,7 +840,8 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
         meta_wayland_pointer_get_pointer_client (pointer, client);
       if (pointer->focus_client)
         {
-          pointer->focus_serial = wl_display_next_serial (display);
+          pointer->focus_serial =
+            meta_wayland_input_device_next_serial (input_device);
           meta_wayland_pointer_broadcast_enter (pointer,
                                                 pointer->focus_serial,
                                                 pointer->focus_surface);
