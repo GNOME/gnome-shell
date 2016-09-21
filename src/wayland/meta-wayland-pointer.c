@@ -536,7 +536,8 @@ repick_for_event (MetaWaylandPointer *pointer,
     actor = clutter_input_device_get_pointer_actor (pointer->device);
 
   if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
-    pointer->current = meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
+    pointer->current =
+      meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
   else
     pointer->current = NULL;
 
@@ -824,7 +825,8 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
       ClutterPoint pos;
 
       pointer->focus_surface = surface;
-      wl_resource_add_destroy_listener (pointer->focus_surface->resource, &pointer->focus_surface_listener);
+      wl_resource_add_destroy_listener (pointer->focus_surface->resource,
+                                        &pointer->focus_surface_listener);
 
       clutter_input_device_get_coords (pointer->device, NULL, &pos);
 
@@ -1055,24 +1057,25 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
                                           struct wl_resource *seat_resource,
                                           uint32_t id)
 {
-  struct wl_resource *cr;
+  struct wl_resource *resource;
   MetaWaylandPointerClient *pointer_client;
 
-  cr = wl_resource_create (client, &wl_pointer_interface, wl_resource_get_version (seat_resource), id);
-  wl_resource_set_implementation (cr, &pointer_interface, pointer,
+  resource = wl_resource_create (client, &wl_pointer_interface,
+                                 wl_resource_get_version (seat_resource), id);
+  wl_resource_set_implementation (resource, &pointer_interface, pointer,
                                   meta_wayland_pointer_unbind_pointer_client_resource);
 
   pointer_client = meta_wayland_pointer_ensure_pointer_client (pointer, client);
 
   wl_list_insert (&pointer_client->pointer_resources,
-                  wl_resource_get_link (cr));
+                  wl_resource_get_link (resource));
 
   if (pointer->focus_client == pointer_client)
     {
-      meta_wayland_pointer_send_enter (pointer, cr,
+      meta_wayland_pointer_send_enter (pointer, resource,
                                        pointer->focus_serial,
                                        pointer->focus_surface);
-      meta_wayland_pointer_send_frame (pointer, cr);
+      meta_wayland_pointer_send_frame (pointer, resource);
     }
 }
 
@@ -1123,30 +1126,31 @@ relative_pointer_manager_destroy (struct wl_client *client,
 
 static void
 relative_pointer_manager_get_relative_pointer (struct wl_client   *client,
-                                               struct wl_resource *resource,
+                                               struct wl_resource *manager_resource,
                                                uint32_t            id,
                                                struct wl_resource *pointer_resource)
 {
   MetaWaylandPointer *pointer = wl_resource_get_user_data (pointer_resource);
-  struct wl_resource *cr;
+  struct wl_resource *resource;
   MetaWaylandPointerClient *pointer_client;
 
-  cr = wl_resource_create (client, &zwp_relative_pointer_v1_interface,
-                           wl_resource_get_version (resource), id);
-  if (cr == NULL)
+  resource = wl_resource_create (client, &zwp_relative_pointer_v1_interface,
+                                 wl_resource_get_version (manager_resource),
+                                 id);
+  if (!resource)
     {
       wl_client_post_no_memory (client);
       return;
     }
 
-  wl_resource_set_implementation (cr, &relative_pointer_interface,
+  wl_resource_set_implementation (resource, &relative_pointer_interface,
                                   pointer,
                                   meta_wayland_pointer_unbind_pointer_client_resource);
 
   pointer_client = meta_wayland_pointer_ensure_pointer_client (pointer, client);
 
   wl_list_insert (&pointer_client->relative_pointer_resources,
-                  wl_resource_get_link (cr));
+                  wl_resource_get_link (resource));
 }
 
 static const struct zwp_relative_pointer_manager_v1_interface relative_pointer_manager = {
