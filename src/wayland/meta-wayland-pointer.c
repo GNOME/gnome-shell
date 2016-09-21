@@ -86,6 +86,9 @@ static guint signals[LAST_SIGNAL];
 G_DEFINE_TYPE (MetaWaylandPointer, meta_wayland_pointer,
                META_TYPE_WAYLAND_INPUT_DEVICE)
 
+static void
+meta_wayland_pointer_reset_grab (MetaWaylandPointer *pointer);
+
 static MetaWaylandPointerClient *
 meta_wayland_pointer_client_new (void)
 {
@@ -495,7 +498,7 @@ meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
                                    pointer->cursor_surface_destroy_id);
     }
 
-  meta_wayland_pointer_end_grab (pointer);
+  meta_wayland_pointer_reset_grab (pointer);
   meta_wayland_pointer_set_focus (pointer, NULL);
 
   g_clear_pointer (&pointer->pointer_clients, g_hash_table_unref);
@@ -864,6 +867,12 @@ meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
   grab->pointer = pointer;
 
   interface->focus (pointer->grab, pointer->current);
+}
+
+static void
+meta_wayland_pointer_reset_grab (MetaWaylandPointer *pointer)
+{
+  pointer->grab = &pointer->default_grab;
 }
 
 void
