@@ -1195,9 +1195,12 @@ data_device_start_drag (struct wl_client *client,
                                        &drag_grab_interface,
                                        surface, drag_source, icon_surface);
 
-  meta_wayland_keyboard_set_focus (seat->keyboard, NULL);
-  meta_wayland_keyboard_start_grab (seat->keyboard,
-                                    &seat->data_device.current_grab->keyboard_grab);
+  if (meta_wayland_seat_has_keyboard (seat))
+    {
+      meta_wayland_keyboard_set_focus (seat->keyboard, NULL);
+      meta_wayland_keyboard_start_grab (seat->keyboard,
+                                        &seat->data_device.current_grab->keyboard_grab);
+    }
 }
 
 static void

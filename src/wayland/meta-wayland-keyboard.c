@@ -825,10 +825,6 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
                                  MetaWaylandSurface *surface)
 {
   MetaWaylandInputDevice *input_device = META_WAYLAND_INPUT_DEVICE (keyboard);
-  MetaWaylandSeat *seat = meta_wayland_input_device_get_seat (input_device);
-
-  if (!meta_wayland_seat_has_keyboard (seat))
-    return;
 
   if (keyboard->focus_surface == surface)
     return;
