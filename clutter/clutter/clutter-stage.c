@@ -4712,8 +4712,8 @@ capture_view (ClutterStage          *stage,
   clutter_stage_view_get_layout (view, &view_layout);
 
   cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
-                                            view_layout.x + rect->x,
-                                            view_layout.y + rect->y,
+                                            rect->x - view_layout.x,
+                                            rect->y - view_layout.y,
                                             COGL_READ_PIXELS_COLOR_BUFFER,
                                             bitmap);
 
