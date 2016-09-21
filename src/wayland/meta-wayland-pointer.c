@@ -494,6 +494,7 @@ meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
     }
 
   meta_wayland_pointer_end_grab (pointer);
+  meta_wayland_pointer_set_focus (pointer, NULL);
 
   g_clear_pointer (&pointer->pointer_clients, g_hash_table_unref);
   pointer->cursor_surface = NULL;
