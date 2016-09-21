@@ -89,6 +89,9 @@ G_DEFINE_TYPE (MetaWaylandPointer, meta_wayland_pointer,
 static void
 meta_wayland_pointer_reset_grab (MetaWaylandPointer *pointer);
 
+static void
+meta_wayland_pointer_cancel_grab (MetaWaylandPointer *pointer);
+
 static MetaWaylandPointerClient *
 meta_wayland_pointer_client_new (void)
 {
@@ -226,6 +229,8 @@ sync_focus_surface (MetaWaylandPointer *pointer)
     case META_EVENT_ROUTE_COMPOSITOR_GRAB:
     case META_EVENT_ROUTE_FRAME_BUTTON:
       /* The compositor has a grab, so remove our focus... */
+      meta_wayland_pointer_cancel_grab (pointer);
+      meta_wayland_pointer_reset_grab (pointer);
       meta_wayland_pointer_set_focus (pointer, NULL);
       break;
 
@@ -498,6 +503,7 @@ meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
                                    pointer->cursor_surface_destroy_id);
     }
 
+  meta_wayland_pointer_cancel_grab (pointer);
   meta_wayland_pointer_reset_grab (pointer);
   meta_wayland_pointer_set_focus (pointer, NULL);
 
@@ -862,6 +868,8 @@ meta_wayland_pointer_start_grab (MetaWaylandPointer *pointer,
 {
   const MetaWaylandPointerGrabInterface *interface;
 
+  meta_wayland_pointer_cancel_grab (pointer);
+
   pointer->grab = grab;
   interface = pointer->grab->interface;
   grab->pointer = pointer;
@@ -885,6 +893,13 @@ meta_wayland_pointer_end_grab (MetaWaylandPointer *pointer)
   interface->focus (pointer->grab, pointer->current);
 
   meta_wayland_pointer_update_cursor_surface (pointer);
+}
+
+static void
+meta_wayland_pointer_cancel_grab (MetaWaylandPointer *pointer)
+{
+  if (pointer->grab->interface->cancel)
+    pointer->grab->interface->cancel (pointer->grab);
 }
 
 void

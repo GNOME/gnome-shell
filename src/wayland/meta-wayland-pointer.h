@@ -46,6 +46,7 @@ struct _MetaWaylandPointerGrabInterface
 		  const ClutterEvent     *event);
   void (*button) (MetaWaylandPointerGrab *grab,
 		  const ClutterEvent     *event);
+  void (*cancel) (MetaWaylandPointerGrab *grab);
 };
 
 struct _MetaWaylandPointerGrab
