@@ -141,10 +141,17 @@ popup_grab_button (MetaWaylandPointerGrab *grab,
     meta_wayland_pointer_end_popup_grab (grab->pointer);
 }
 
+static void
+popup_grab_cancel (MetaWaylandPointerGrab *grab)
+{
+  meta_wayland_pointer_end_popup_grab (grab->pointer);
+}
+
 static MetaWaylandPointerGrabInterface popup_grab_interface = {
   popup_grab_focus,
   popup_grab_motion,
-  popup_grab_button
+  popup_grab_button,
+  popup_grab_cancel
 };
 
 MetaWaylandPopupGrab *
