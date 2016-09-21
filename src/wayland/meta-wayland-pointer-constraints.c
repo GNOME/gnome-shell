@@ -519,6 +519,24 @@ meta_wayland_pointer_constraint_remove (MetaWaylandPointerConstraint *constraint
   meta_wayland_pointer_constraint_destroy (constraint);
 }
 
+static void
+meta_wayland_pointer_constraint_deactivate (MetaWaylandPointerConstraint *constraint)
+{
+  switch (constraint->lifetime)
+    {
+    case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_ONESHOT:
+      meta_wayland_pointer_constraint_remove (constraint);
+      break;
+
+    case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_PERSISTENT:
+      meta_wayland_pointer_constraint_disable (constraint);
+      break;
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 void
 meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,
                                                        MetaWindow      *window)
@@ -539,19 +557,7 @@ meta_wayland_pointer_constraint_maybe_remove_for_seat (MetaWaylandSeat *seat,
       pointer->focus_surface == window->surface)
     return;
 
-  switch (constraint->lifetime)
-    {
-    case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_ONESHOT:
-      meta_wayland_pointer_constraint_remove (constraint);
-      break;
-
-    case ZWP_POINTER_CONSTRAINTS_V1_LIFETIME_PERSISTENT:
-      meta_wayland_pointer_constraint_disable (constraint);
-      break;
-
-    default:
-      g_assert_not_reached ();
-    }
+  meta_wayland_pointer_constraint_deactivate (constraint);
 }
 
 static void
@@ -938,10 +944,20 @@ locked_pointer_grab_pointer_button (MetaWaylandPointerGrab *grab,
   meta_wayland_pointer_send_button (grab->pointer, event);
 }
 
+static void
+locked_pointer_grab_pointer_cancel (MetaWaylandPointerGrab *grab)
+{
+  MetaWaylandPointerConstraint *constraint =
+    wl_container_of (grab, constraint, grab);
+
+  meta_wayland_pointer_constraint_deactivate (constraint);
+}
+
 static const MetaWaylandPointerGrabInterface locked_pointer_grab_interface = {
   locked_pointer_grab_pointer_focus,
   locked_pointer_grab_pointer_motion,
   locked_pointer_grab_pointer_button,
+  locked_pointer_grab_pointer_cancel,
 };
 
 static void
@@ -999,10 +1015,20 @@ confined_pointer_grab_pointer_button (MetaWaylandPointerGrab *grab,
   meta_wayland_pointer_send_button (grab->pointer, event);
 }
 
+static void
+confined_pointer_grab_pointer_cancel (MetaWaylandPointerGrab *grab)
+{
+  MetaWaylandPointerConstraint *constraint =
+    wl_container_of (grab, constraint, grab);
+
+  meta_wayland_pointer_constraint_deactivate (constraint);
+}
+
 static const MetaWaylandPointerGrabInterface confined_pointer_grab_interface = {
   confined_pointer_grab_pointer_focus,
   confined_pointer_grab_pointer_motion,
   confined_pointer_grab_pointer_button,
+  confined_pointer_grab_pointer_cancel,
 };
 
 static void
