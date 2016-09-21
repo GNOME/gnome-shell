@@ -90,7 +90,6 @@ GTK_MIN_VERSION=3.15.0
 GIO_MIN_VERSION=2.45.3
 LIBECAL_MIN_VERSION=3.5.3
 LIBEDATASERVER_MIN_VERSION=3.17.2
-TELEPATHY_GLIB_MIN_VERSION=0.17.5
 POLKIT_MIN_VERSION=0.100
 STARTUP_NOTIFICATION_MIN_VERSION=0.11
 GCR_MIN_VERSION=3.7.5
@@ -111,7 +110,6 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
             gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
             libcanberra libcanberra-gtk3
-            telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
             polkit-agent-1 >= $POLKIT_MIN_VERSION
             gcr-base-3 >= $GCR_MIN_VERSION"
 if test x$have_systemd = xyes; then

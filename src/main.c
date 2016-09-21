@@ -20,8 +20,6 @@
 #include <meta/meta-plugin.h>
 #include <meta/prefs.h>
 #include <atk-bridge.h>
-#include <telepathy-glib/debug.h>
-#include <telepathy-glib/debug-sender.h>
 
 #include "shell-global.h"
 #include "shell-global-private.h"
@@ -297,17 +295,10 @@ default_log_handler (const char     *log_domain,
                      const char     *message,
                      gpointer        data)
 {
-  TpDebugSender *sender = data;
   GTimeVal now;
 
   g_get_current_time (&now);
 
-  /* Send telepathy debug through DBus */
-  if (log_domain != NULL && g_str_has_prefix (log_domain, "tp-glib"))
-    tp_debug_sender_add_message (sender, &now, log_domain, log_level, message);
-
-  /* Filter out telepathy-glib logs, we don't want to flood Shell's output
-   * with those. */
   if (!log_domain || !g_str_has_prefix (log_domain, "tp-glib"))
     g_log_default_handler (log_domain, log_level, message, data);
 
@@ -408,7 +399,6 @@ main (int argc, char **argv)
   GOptionContext *ctx;
   GError *error = NULL;
   int ecode;
-  TpDebugSender *sender;
 
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -451,14 +441,7 @@ main (int argc, char **argv)
   shell_introspection_init ();
   shell_fonts_init ();
 
-  /* Turn on telepathy-glib debugging but filter it out in
-   * default_log_handler. This handler also exposes all the logs over D-Bus
-   * using TpDebugSender. */
-  tp_debug_set_flags ("all");
-
-  sender = tp_debug_sender_dup ();
-
-  g_log_set_default_handler (default_log_handler, sender);
+  g_log_set_default_handler (default_log_handler, NULL);
 
   /* Initialize the global object */
   if (session_mode == NULL)
@@ -473,7 +456,6 @@ main (int argc, char **argv)
   g_debug ("Doing final cleanup");
   _shell_global_destroy_gjs_context (shell_global_get ());
   g_object_unref (shell_global_get ());
-  g_object_unref (sender);
 
   return ecode;
 }
