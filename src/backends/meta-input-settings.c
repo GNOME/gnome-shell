@@ -1242,7 +1242,7 @@ lookup_tool_settings (ClutterInputDeviceTool *tool,
 
   tool_id = clutter_input_device_tool_get_id (tool);
   device_id = get_tablet_settings_id (device, lookup_mapping_info (device));
-  path = g_strdup_printf ("/org/gnome/settings-daemon/peripherals/wacom/%s/%lx/",
+  path = g_strdup_printf ("/org/gnome/settings-daemon/peripherals/wacom/%s/%" G_GUINT64_FORMAT "/",
                           device_id, tool_id);
   tool_settings = tool_settings_new (tool, path);
   g_object_set_qdata_full (G_OBJECT (tool), quark_tool_settings, tool_settings,
