@@ -202,17 +202,10 @@ touch_get_relative_coordinates (MetaWaylandTouch   *touch,
 
   clutter_event_get_coords (event, &event_x, &event_y);
 
-  if (surface->surface_actor)
-    {
-      clutter_actor_transform_stage_point (CLUTTER_ACTOR (surface->surface_actor),
-                                           event_x, event_y,
-                                           &event_x, &event_y);
-    }
-
-  *x = event_x / surface->scale;
-  *y = event_y / surface->scale;
+  return meta_wayland_surface_get_relative_coordinates (surface,
+                                                        event_x, event_y,
+                                                        x, y);
 }
-
 
 void
 meta_wayland_touch_update (MetaWaylandTouch   *touch,
