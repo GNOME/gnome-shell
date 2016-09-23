@@ -874,6 +874,7 @@ xdg_popup_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface_role);
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_popup);
   MetaWindow *parent_window = xdg_popup->parent_surface->window;
+  int monitor_scale;
   int x, y;
 
   /* If the parent surface was destroyed, its window will be destroyed
@@ -887,8 +888,9 @@ xdg_popup_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role
   if (!parent_window)
     return;
 
-  x = new_x - parent_window->rect.x;
-  y = new_y - parent_window->rect.y;
+  monitor_scale = meta_window_wayland_get_main_monitor_scale (parent_window);
+  x = (new_x - parent_window->rect.x) / monitor_scale;
+  y = (new_y - parent_window->rect.y) / monitor_scale;
   zxdg_popup_v6_send_configure (xdg_popup->resource,
                                 x, y, new_width, new_height);
   meta_wayland_xdg_surface_send_configure (xdg_surface);
