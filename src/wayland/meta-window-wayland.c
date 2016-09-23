@@ -348,17 +348,16 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   toplevel_window = meta_wayland_surface_get_toplevel_window (window->surface);
   if (toplevel_window != window)
     {
-      to = toplevel_window->monitor;
+      window->monitor = toplevel_window->monitor;
+      return;
     }
-  else
-    {
-      /* Require both the current and the new monitor would be the new main monitor,
-       * even given the resulting scale the window would end up having. This is
-       * needed to avoid jumping back and forth between the new and the old, since
-       * changing main monitor may cause the window to be resized so that it no
-       * longer have that same new main monitor. */
-      to = meta_screen_calculate_monitor_for_window (window->screen, window);
-    }
+
+  /* Require both the current and the new monitor would be the new main monitor,
+   * even given the resulting scale the window would end up having. This is
+   * needed to avoid jumping back and forth between the new and the old, since
+   * changing main monitor may cause the window to be resized so that it no
+   * longer have that same new main monitor. */
+  to = meta_screen_calculate_monitor_for_window (window->screen, window);
 
   if (from == to)
     return;
