@@ -41,6 +41,7 @@
 #include "backends/meta-backend-private.h"
 #include "backends/native/meta-backend-native.h"
 #include "backends/meta-pointer-constraint.h"
+#include "core/frame.h"
 
 #include "pointer-constraints-unstable-v1-server-protocol.h"
 
@@ -603,10 +604,31 @@ cairo_region_t *
 meta_wayland_pointer_constraint_calculate_effective_region (MetaWaylandPointerConstraint *constraint)
 {
   cairo_region_t *region;
+  MetaWindow *window;
 
   region = meta_wayland_surface_calculate_input_region (constraint->surface);
   if (constraint->region)
     cairo_region_intersect (region, constraint->region);
+
+  window = constraint->surface->window;
+  if (window && window->frame)
+    {
+      MetaFrame *frame = window->frame;
+      int actual_width, actual_height;
+
+      g_assert (meta_xwayland_is_xwayland_surface (constraint->surface));
+
+      actual_width = window->buffer_rect.width - (frame->child_x +
+                                                  frame->right_width);
+      actual_height = window->buffer_rect.height - (frame->child_y +
+                                                    frame->bottom_height);
+      cairo_region_intersect_rectangle (region, &(cairo_rectangle_int_t) {
+                                          .x = frame->child_x,
+                                          .y = frame->child_y,
+                                          .width = actual_width,
+                                          .height = actual_height
+                                        });
+    }
 
   return region;
 }
