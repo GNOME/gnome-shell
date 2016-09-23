@@ -794,8 +794,9 @@ finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
                                     &xdg_popup->parent_destroy_listener);
 
   window = meta_window_wayland_new (display, surface);
-  meta_window_place_with_placement_rule (window, &placement_rule);
   meta_wayland_surface_set_window (surface, window);
+  meta_window_update_monitor (window, FALSE);
+  meta_window_place_with_placement_rule (window, &placement_rule);
 
   if (seat)
     {
