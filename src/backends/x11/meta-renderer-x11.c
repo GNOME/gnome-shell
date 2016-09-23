@@ -48,12 +48,25 @@ struct _MetaRendererX11
 G_DEFINE_TYPE (MetaRendererX11, meta_renderer_x11, META_TYPE_RENDERER)
 
 static const CoglWinsysVtable *
-get_x11_cogl_winsys_vtable (void)
+get_x11_cogl_winsys_vtable (CoglRenderer *renderer)
 {
   if (meta_is_wayland_compositor ())
     return _cogl_winsys_egl_xlib_get_vtable ();
-  else
-    return _cogl_winsys_glx_get_vtable ();
+
+  switch (renderer->driver)
+    {
+    case COGL_DRIVER_GLES1:
+    case COGL_DRIVER_GLES2:
+      return _cogl_winsys_egl_xlib_get_vtable ();
+    case COGL_DRIVER_GL:
+    case COGL_DRIVER_GL3:
+      return _cogl_winsys_glx_get_vtable ();
+    case COGL_DRIVER_ANY:
+    case COGL_DRIVER_NOP:
+    case COGL_DRIVER_WEBGL:
+      break;
+    }
+  g_assert_not_reached ();
 }
 
 static CoglRenderer *

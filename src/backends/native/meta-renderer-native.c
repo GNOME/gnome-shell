@@ -1563,7 +1563,7 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
 }
 
 static const CoglWinsysVtable *
-get_native_cogl_winsys_vtable (void)
+get_native_cogl_winsys_vtable (CoglRenderer *cogl_renderer)
 {
   static gboolean vtable_inited = FALSE;
   static CoglWinsysVtable vtable;

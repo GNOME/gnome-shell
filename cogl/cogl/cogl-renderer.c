@@ -565,8 +565,8 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 /* Final connection API */
 
 void
-cogl_renderer_set_custom_winsys (CoglRenderer          *renderer,
-                                 CoglWinsysVtableGetter winsys_vtable_getter)
+cogl_renderer_set_custom_winsys (CoglRenderer                *renderer,
+                                 CoglCustomWinsysVtableGetter winsys_vtable_getter)
 {
   renderer->custom_winsys_vtable_getter = winsys_vtable_getter;
 }
@@ -575,10 +575,11 @@ static CoglBool
 connect_custom_winsys (CoglRenderer *renderer,
                        CoglError   **error)
 {
-  const CoglWinsysVtable *winsys = renderer->custom_winsys_vtable_getter();
+  const CoglWinsysVtable *winsys;
   CoglError *tmp_error = NULL;
   GString *error_message;
 
+  winsys = renderer->custom_winsys_vtable_getter (renderer);
   renderer->winsys_vtable = winsys;
 
   error_message = g_string_new ("");
