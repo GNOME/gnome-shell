@@ -801,9 +801,11 @@ const Panel = new Lang.Class({
 
         Main.overview.connect('showing', Lang.bind(this, function () {
             this.actor.add_style_pseudo_class('overview');
+            this._updateSolidStyle();
         }));
         Main.overview.connect('hiding', Lang.bind(this, function () {
             this.actor.remove_style_pseudo_class('overview');
+            this._updateSolidStyle();
         }));
 
         Main.layoutManager.panelBox.add(this.actor);
@@ -811,7 +813,24 @@ const Panel = new Lang.Class({
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._updatePanel));
+
+        this._trackedWindows = new Map();
+        global.window_group.connect('actor-added', Lang.bind(this, this._onWindowActorAdded));
+        global.window_group.connect('actor-removed', Lang.bind(this, this._onWindowActorRemoved));
+        global.window_manager.connect('switch-workspace', Lang.bind(this, this._updateSolidStyle));
+
         this._updatePanel();
+    },
+
+    _onWindowActorAdded: function(container, metaWindowActor) {
+        let signalId = metaWindowActor.connect('allocation-changed', Lang.bind(this, this._updateSolidStyle));
+        this._trackedWindows.set(metaWindowActor, signalId);
+    },
+
+    _onWindowActorRemoved: function(container, metaWindowActor) {
+        metaWindowActor.disconnect(this._trackedWindows.get(metaWindowActor));
+        this._trackedWindows.delete(metaWindowActor);
+        this._updateSolidStyle();
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -1010,6 +1029,36 @@ const Panel = new Lang.Class({
             this._leftCorner.setStyleParent(this._leftBox);
             this._rightCorner.setStyleParent(this._rightBox);
         }
+    },
+
+    _updateSolidStyle: function() {
+        if (this.actor.has_style_pseudo_class('overview') || !Main.sessionMode.hasWindows) {
+            this._removeStyleClassName('solid');
+            return;
+        }
+
+        /* Get all the windows in the active workspace that are in the primary monitor and visible */
+        let activeWorkspace = global.screen.get_active_workspace();
+        let windows = activeWorkspace.list_windows().filter(function(metaWindow) {
+            return metaWindow.is_on_primary_monitor() &&
+                   metaWindow.showing_on_its_workspace() &&
+                   metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
+        });
+
+        /* Check if at least one window is near enough to the panel */
+        let [, panelTop] = this.actor.get_transformed_position();
+        let panelBottom = panelTop + this.actor.get_height();
+        let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let isNearEnough = windows.some(Lang.bind(this, function(metaWindow) {
+            let verticalPosition = metaWindow.get_frame_rect().y;
+            return verticalPosition < panelBottom + 5 * scale;
+        }));
+
+        if (isNearEnough)
+            this._addStyleClassName('solid');
+        else
+            this._removeStyleClassName('solid');
+
     },
 
     _hideIndicators: function() {

@@ -669,7 +669,9 @@ StScrollBar {
 
 /* TOP BAR */
 #panel {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.2);
+  /* transition from solid to transparent */
+  transition-duration: 500ms;
   font-weight: bold;
   height: 1.86em; }
   #panel.unlock-screen, #panel.login-screen, #panel.lock-screen {
@@ -678,7 +680,7 @@ StScrollBar {
     spacing: 4px; }
   #panel .panel-corner {
     -panel-corner-radius: 6px;
-    -panel-corner-background-color: black;
+    -panel-corner-background-color: rgba(0, 0, 0, 0.2);
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent; }
     #panel .panel-corner:active, #panel .panel-corner:overview, #panel .panel-corner:focus {
@@ -691,14 +693,24 @@ StScrollBar {
     -natural-hpadding: 12px;
     -minimum-hpadding: 6px;
     font-weight: bold;
-    color: #ccc;
+    color: #eee;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.9);
     transition-duration: 100ms; }
     #panel .panel-button .app-menu-icon {
       -st-icon-style: symbolic;
       margin-left: 4px;
       margin-right: 4px; }
+    #panel .panel-button .system-status-icon,
+    #panel .panel-button .app-menu-icon > StIcon,
+    #panel .panel-button .popup-menu-arrow {
+      icon-shadow: 0px 0px 2px rgba(0, 0, 0, 0.9); }
     #panel .panel-button:hover {
-      color: white; }
+      color: white;
+      text-shadow: 0px 0px 8px black; }
+      #panel .panel-button:hover .system-status-icon,
+      #panel .panel-button:hover .app-menu-icon > StIcon,
+      #panel .panel-button:hover .popup-menu-arrow {
+        icon-shadow: 0px 0px 8px black; }
     #panel .panel-button:active, #panel .panel-button:overview, #panel .panel-button:focus, #panel .panel-button:checked {
       background-color: rgba(0, 0, 0, 0.01);
       box-shadow: inset 0 -2px 0px #256ab1;
@@ -719,6 +731,21 @@ StScrollBar {
     spacing: 0; }
   #panel .screencast-indicator {
     color: #f57900; }
+  #panel.solid {
+    background-color: black;
+    /* transition from transparent to solid */
+    transition-duration: 300ms; }
+    #panel.solid .panel-corner {
+      -panel-corner-background-color: black; }
+    #panel.solid .panel-button {
+      color: #ccc;
+      text-shadow: none; }
+      #panel.solid .panel-button:hover {
+        color: white; }
+    #panel.solid .system-status-icon,
+    #panel.solid .app-menu-icon > StIcon,
+    #panel.solid .popup-menu-arrow {
+      icon-shadow: none; }
 
 #calendarArea {
   padding: 0.75em 1.0em; }
