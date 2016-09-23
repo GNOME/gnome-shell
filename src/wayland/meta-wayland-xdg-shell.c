@@ -1464,6 +1464,7 @@ xdg_surface_constructor_get_toplevel (struct wl_client   *client,
 
   window = meta_window_wayland_new (meta_get_display (), surface);
   meta_wayland_surface_set_window (surface, window);
+  meta_window_update_monitor (window, FALSE);
 }
 
 static void
