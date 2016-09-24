@@ -2890,6 +2890,7 @@ void
 meta_window_tile (MetaWindow *window)
 {
   MetaMaximizeFlags directions;
+  MetaRectangle old_frame_rect, old_buffer_rect;
 
   /* Don't do anything if no tiling is requested */
   if (window->tile_mode == META_TILE_NONE)
@@ -2902,6 +2903,13 @@ meta_window_tile (MetaWindow *window)
 
   meta_window_maximize_internal (window, directions, NULL);
   meta_screen_update_tile_preview (window->screen, FALSE);
+
+  meta_window_get_frame_rect (window, &old_frame_rect);
+  meta_window_get_buffer_rect (window, &old_buffer_rect);
+
+  meta_compositor_size_change_window (window->display->compositor, window,
+                                      META_SIZE_CHANGE_MAXIMIZE,
+                                      &old_frame_rect, &old_buffer_rect);
 
   meta_window_move_resize_now (window);
 
