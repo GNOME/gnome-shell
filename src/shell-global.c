@@ -1258,7 +1258,7 @@ shell_global_reexec_self (ShellGlobal *global)
   GPtrArray *arr;
   gsize len;
 
-#if defined __linux__
+#if defined __linux__ || defined __sun
   char *buf;
   char *buf_p;
   char *buf_end;
