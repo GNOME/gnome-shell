@@ -312,7 +312,6 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
 
       if (new_x != window->rect.x || new_y != window->rect.y)
         {
-          *result |= META_MOVE_RESIZE_RESULT_MOVED;
           wl_window->has_pending_move = TRUE;
           wl_window->pending_move_x = new_x;
           wl_window->pending_move_y = new_y;
