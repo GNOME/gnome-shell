@@ -27,7 +27,7 @@ shell_js_add_extension_importer (const char  *target_object_script,
                                  const char  *directory,
                                  GError     **error)
 {
-  jsval target_object;
+  JS::Value target_object;
   GList *contexts;
   JSContext *context;
   char *search_path[2] = { 0, 0 };
@@ -46,7 +46,7 @@ shell_js_add_extension_importer (const char  *target_object_script,
    * object directly into this function, but introspection doesn't
    * support that at the moment.  Instead evaluate a string to get it. */
   if (!JS_EvaluateScript(context,
-                         JS_GetGlobalObject(context),
+                         gjs_get_global_object (context),
                          target_object_script,
                          strlen (target_object_script),
                          "<target_object_script>",
@@ -61,14 +61,15 @@ shell_js_add_extension_importer (const char  *target_object_script,
       goto out;
     }
 
-  if (!JSVAL_IS_OBJECT (target_object))
+  if (!target_object.isObject ())
     {
       g_error ("shell_js_add_extension_importer: invalid target object");
       goto out;
     }
 
   search_path[0] = (char*)directory;
-  gjs_define_importer (context, JSVAL_TO_OBJECT (target_object), target_property, (const char **)search_path, FALSE);
+  gjs_define_importer (context, &target_object.toObject (), target_property,
+                       (const char **)search_path, FALSE);
   ret = TRUE;
 
  out:
