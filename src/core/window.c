@@ -2741,23 +2741,21 @@ meta_window_maximize (MetaWindow        *window,
                                      directions,
                                      saved_rect);
 
-      MetaRectangle old_frame_rect, old_buffer_rect, new_rect;
+      MetaRectangle old_frame_rect, old_buffer_rect;
 
       meta_window_get_frame_rect (window, &old_frame_rect);
       meta_window_get_buffer_rect (window, &old_buffer_rect);
 
-      meta_window_move_resize_internal (window,
-                                        (META_MOVE_RESIZE_MOVE_ACTION |
-                                         META_MOVE_RESIZE_RESIZE_ACTION |
-                                         META_MOVE_RESIZE_STATE_CHANGED |
-                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
-                                        NorthWestGravity,
-                                        window->unconstrained_rect);
-      meta_window_get_frame_rect (window, &new_rect);
-
       meta_compositor_size_change_window (window->display->compositor, window,
                                           META_SIZE_CHANGE_MAXIMIZE,
                                           &old_frame_rect, &old_buffer_rect);
+
+      meta_window_move_resize_internal (window,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED),
+                                        NorthWestGravity,
+                                        window->unconstrained_rect);
     }
 }
 
@@ -3004,7 +3002,6 @@ meta_window_unmaximize (MetaWindow        *window,
                         MetaMaximizeFlags  directions)
 {
   gboolean unmaximize_horizontally, unmaximize_vertically;
-  MetaRectangle new_rect;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -3095,18 +3092,16 @@ meta_window_unmaximize (MetaWindow        *window,
       ensure_size_hints_satisfied (&target_rect, &window->size_hints);
       meta_window_client_rect_to_frame_rect (window, &target_rect, &target_rect);
 
-      meta_window_move_resize_internal (window,
-                                        (META_MOVE_RESIZE_MOVE_ACTION |
-                                         META_MOVE_RESIZE_RESIZE_ACTION |
-                                         META_MOVE_RESIZE_STATE_CHANGED |
-                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
-                                        NorthWestGravity,
-                                        target_rect);
-
-      meta_window_get_frame_rect (window, &new_rect);
       meta_compositor_size_change_window (window->display->compositor, window,
                                           META_SIZE_CHANGE_UNMAXIMIZE,
                                           &old_frame_rect, &old_buffer_rect);
+
+      meta_window_move_resize_internal (window,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED),
+                                        NorthWestGravity,
+                                        target_rect);
 
       /* When we unmaximize, if we're doing a mouse move also we could
        * get the window suddenly jumping to the upper left corner of
@@ -3215,18 +3210,17 @@ meta_window_make_fullscreen (MetaWindow  *window)
       meta_window_get_frame_rect (window, &old_frame_rect);
       meta_window_get_buffer_rect (window, &old_buffer_rect);
 
+      meta_compositor_size_change_window (window->display->compositor,
+                                          window, META_SIZE_CHANGE_FULLSCREEN,
+                                          &old_frame_rect, &old_buffer_rect);
+
       meta_window_make_fullscreen_internal (window);
       meta_window_move_resize_internal (window,
                                         (META_MOVE_RESIZE_MOVE_ACTION |
                                          META_MOVE_RESIZE_RESIZE_ACTION |
-                                         META_MOVE_RESIZE_STATE_CHANGED |
-                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
+                                         META_MOVE_RESIZE_STATE_CHANGED),
                                         NorthWestGravity,
                                         window->unconstrained_rect);
-
-      meta_compositor_size_change_window (window->display->compositor,
-                                          window, META_SIZE_CHANGE_FULLSCREEN,
-                                          &old_frame_rect, &old_buffer_rect);
     }
 }
 
@@ -3261,17 +3255,16 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       meta_window_recalc_features (window);
       set_net_wm_state (window);
 
-      meta_window_move_resize_internal (window,
-                                        (META_MOVE_RESIZE_MOVE_ACTION |
-                                         META_MOVE_RESIZE_RESIZE_ACTION |
-                                         META_MOVE_RESIZE_STATE_CHANGED |
-                                         META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR),
-                                        NorthWestGravity,
-                                        target_rect);
-
       meta_compositor_size_change_window (window->display->compositor,
                                           window, META_SIZE_CHANGE_UNFULLSCREEN,
                                           &old_frame_rect, &old_buffer_rect);
+
+      meta_window_move_resize_internal (window,
+                                        (META_MOVE_RESIZE_MOVE_ACTION |
+                                         META_MOVE_RESIZE_RESIZE_ACTION |
+                                         META_MOVE_RESIZE_STATE_CHANGED),
+                                        NorthWestGravity,
+                                        target_rect);
 
       meta_screen_queue_check_fullscreen (window->screen);
 
@@ -3731,7 +3724,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
     {
       window->unconstrained_rect = unconstrained_rect;
 
-      if (window->known_to_compositor && !(flags & META_MOVE_RESIZE_DONT_SYNC_COMPOSITOR))
+      if (window->known_to_compositor)
         meta_compositor_sync_window_geometry (window->display->compositor,
                                               window,
                                               did_placement);

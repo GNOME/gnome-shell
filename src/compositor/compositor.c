@@ -1013,6 +1013,7 @@ meta_compositor_sync_window_geometry (MetaCompositor *compositor,
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
   meta_window_actor_sync_actor_geometry (window_actor, did_placement);
+  meta_plugin_manager_event_size_changed (compositor->plugin_mgr, window_actor);
 }
 
 static void
