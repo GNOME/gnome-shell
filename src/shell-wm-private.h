@@ -12,6 +12,8 @@ void _shell_wm_minimize   (ShellWM         *wm,
                            MetaWindowActor *actor);
 void _shell_wm_unminimize (ShellWM         *wm,
                            MetaWindowActor *actor);
+void _shell_wm_size_changed(ShellWM         *wm,
+                            MetaWindowActor *actor);
 void _shell_wm_size_change(ShellWM         *wm,
                            MetaWindowActor *actor,
                            MetaSizeChange   which_change,

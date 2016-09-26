@@ -21,6 +21,7 @@ enum
 {
   MINIMIZE,
   UNMINIMIZE,
+  SIZE_CHANGED,
   SIZE_CHANGE,
   MAP,
   DESTROY,
@@ -68,6 +69,14 @@ shell_wm_class_init (ShellWMClass *klass)
                   META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[UNMINIMIZE] =
     g_signal_new ("unminimize",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  META_TYPE_WINDOW_ACTOR);
+  shell_wm_signals[SIZE_CHANGED] =
+    g_signal_new ("size-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
@@ -327,6 +336,13 @@ _shell_wm_unminimize (ShellWM         *wm,
                       MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[UNMINIMIZE], 0, actor);
+}
+
+void
+_shell_wm_size_changed (ShellWM         *wm,
+                        MetaWindowActor *actor)
+{
+  g_signal_emit (wm, shell_wm_signals[SIZE_CHANGED], 0, actor);
 }
 
 void
