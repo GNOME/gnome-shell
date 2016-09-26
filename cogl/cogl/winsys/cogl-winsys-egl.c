@@ -233,11 +233,11 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
   CoglRendererEGL *egl_renderer = renderer->winsys;
   int i = 0;
 
-  /* Let the platform add attributes first */
-  if (egl_renderer->platform_vtable->add_config_attributes)
-    i = egl_renderer->platform_vtable->add_config_attributes (display,
-                                                              config,
-                                                              attributes);
+  /* Let the platform add attributes first, including setting the
+   * EGL_SURFACE_TYPE */
+  i = egl_renderer->platform_vtable->add_config_attributes (display,
+                                                            config,
+                                                            attributes);
 
   if (config->need_stencil)
     {
@@ -268,9 +268,6 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
                      renderer->driver == COGL_DRIVER_GLES1 ?
                      EGL_OPENGL_ES_BIT :
                      EGL_OPENGL_ES2_BIT);
-
-  attributes[i++] = EGL_SURFACE_TYPE;
-  attributes[i++] = EGL_WINDOW_BIT;
 
   if (config->samples_per_pixel)
     {

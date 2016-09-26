@@ -290,6 +290,19 @@ error:
   return FALSE;
 }
 
+static int
+_cogl_winsys_egl_add_config_attributes (CoglDisplay *display,
+                                        CoglFramebufferConfig *config,
+                                        EGLint *attributes)
+{
+  int i = 0;
+
+  attributes[i++] = EGL_SURFACE_TYPE;
+  attributes[i++] = EGL_WINDOW_BIT;
+
+  return i;
+}
+
 static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
                                 CoglError **error)
@@ -794,6 +807,7 @@ _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap,
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
+    .add_config_attributes = _cogl_winsys_egl_add_config_attributes,
     .display_setup = _cogl_winsys_egl_display_setup,
     .display_destroy = _cogl_winsys_egl_display_destroy,
     .context_created = _cogl_winsys_egl_context_created,

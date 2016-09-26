@@ -258,6 +258,19 @@ fail:
   return FALSE;
 }
 
+static int
+meta_renderer_native_add_egl_config_attributes (CoglDisplay           *cogl_display,
+                                                CoglFramebufferConfig *config,
+                                                EGLint                *attributes)
+{
+  int i = 0;
+
+  attributes[i++] = EGL_SURFACE_TYPE;
+  attributes[i++] = EGL_WINDOW_BIT;
+
+  return i;
+}
+
 static gboolean
 meta_renderer_native_setup_egl_display (CoglDisplay *cogl_display,
                                         GError     **error)
@@ -807,6 +820,7 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
 
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable = {
+  .add_config_attributes = meta_renderer_native_add_egl_config_attributes,
   .display_setup = meta_renderer_native_setup_egl_display,
   .display_destroy = meta_renderer_native_destroy_egl_display,
   .context_created = meta_renderer_native_egl_context_created,
