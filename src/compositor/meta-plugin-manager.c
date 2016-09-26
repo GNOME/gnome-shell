@@ -202,6 +202,17 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
   return retval;
 }
 
+void
+meta_plugin_manager_event_size_changed (MetaPluginManager *plugin_mgr,
+                                        MetaWindowActor   *actor)
+{
+  MetaPlugin *plugin = plugin_mgr->plugin;
+  MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
+
+  if (klass->size_changed)
+    klass->size_changed (plugin, actor);
+}
+
 gboolean
 meta_plugin_manager_event_size_change (MetaPluginManager *plugin_mgr,
                                        MetaWindowActor   *actor,

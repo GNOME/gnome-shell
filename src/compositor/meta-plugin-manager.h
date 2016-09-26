@@ -50,6 +50,9 @@ gboolean meta_plugin_manager_event_simple (MetaPluginManager *mgr,
                                            MetaWindowActor   *actor,
                                            MetaPluginEffect   event);
 
+void     meta_plugin_manager_event_size_changed   (MetaPluginManager *mgr,
+                                                   MetaWindowActor   *actor);
+
 gboolean meta_plugin_manager_event_size_change    (MetaPluginManager *mgr,
                                                    MetaWindowActor   *actor,
                                                    MetaSizeChange     which_change,

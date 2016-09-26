@@ -102,6 +102,9 @@ struct _MetaPluginClass
   void (*unminimize)       (MetaPlugin         *plugin,
                             MetaWindowActor    *actor);
 
+  void (*size_changed)     (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor);
+
   void (*size_change)      (MetaPlugin         *plugin,
                             MetaWindowActor    *actor,
                             MetaSizeChange      which_change,
