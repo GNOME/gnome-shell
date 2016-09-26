@@ -706,6 +706,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
         this._shellwm.connect('unminimize', Lang.bind(this, this._unminimizeWindow));
         this._shellwm.connect('size-change', Lang.bind(this, this._sizeChangeWindow));
+        this._shellwm.connect('size-changed', Lang.bind(this, this._sizeChangedWindow));
         this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
         this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
@@ -1255,37 +1256,16 @@ const WindowManager = new Lang.Class({
             return;
         }
 
-        if (whichChange == Meta.SizeChange.FULLSCREEN)
-            this._fullscreenWindow(shellwm, actor, oldFrameRect, oldBufferRect);
-        else if (whichChange == Meta.SizeChange.UNFULLSCREEN)
-            this._unfullscreenWindow(shellwm, actor, oldFrameRect, oldBufferRect);
+        if (whichChange == Meta.SizeChange.FULLSCREEN ||
+            whichChange == Meta.SizeChange.UNFULLSCREEN)
+            this._fullscreenAnimation(shellwm, actor, oldFrameRect, whichChange);
         else
             shellwm.completed_size_change(actor);
     },
 
-    _fullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
-        let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
-        actor.translation_x = oldFrameRect.x - monitor.x;
-        actor.translation_y = oldFrameRect.y - monitor.y;
-        this._fullscreenAnimation(shellwm, actor, oldFrameRect);
-    },
-
-    _unfullscreenWindow: function(shellwm, actor, oldFrameRect, oldBufferRect) {
-        let targetRect = actor.meta_window.get_frame_rect();
-        let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
-        actor.translation_x = -(targetRect.x - monitor.x);
-        actor.translation_y = -(targetRect.y - monitor.y);
-        this._fullscreenAnimation(shellwm, actor, oldFrameRect);
-    },
-
-    _fullscreenAnimation: function(shellwm, actor, oldFrameRect) {
-        this._resizing.push(actor);
-
+    _fullscreenAnimation: function(shellwm, actor, oldFrameRect, change) {
         // Position a clone of the window on top of the old position,
         // while actor updates are frozen.
-        // Note that the MetaWindow has up to date sizing information for
-        // the new geometry already.
-        let targetRect = actor.meta_window.get_frame_rect();
         let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
         let actorClone = new St.Widget({ content: actorContent });
         actorClone.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
@@ -1293,10 +1273,26 @@ const WindowManager = new Lang.Class({
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
         Main.uiGroup.add_actor(actorClone);
 
-        actor.__fullscreenClone = actorClone;
+        let rect = change == Meta.SizeChange.FULLSCREEN ? oldFrameRect : null;
 
-        let scaleX = targetRect.width / oldFrameRect.width;
-        let scaleY = targetRect.height / oldFrameRect.height;
+        if (this._clearFullscreenInfo(actor))
+            this._shellwm.completed_size_change(actor);
+
+        actor.__fullscreenInfo = { clone: actorClone,
+                                   oldRect: rect };
+    },
+
+    _sizeChangedWindow: function(shellwm, actor) {
+        if (!actor.__fullscreenInfo)
+            return;
+
+        let actorClone = actor.__fullscreenInfo.clone;
+        let targetRect = actor.meta_window.get_frame_rect();
+
+        let scaleX = targetRect.width / actorClone.width;
+        let scaleY = targetRect.height / actorClone.height;
+
+        this._resizing.push(actor);
 
         // Now scale and fade out the clone
         Tweener.addTween(actorClone,
@@ -1309,9 +1305,17 @@ const WindowManager = new Lang.Class({
                            transition: 'easeOutQuad'
                          });
 
+        let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+        let oldRect = actor.__fullscreenInfo.oldRect;
+        if (oldRect) {
+            actor.translation_x = oldRect.x - monitor.x;
+            actor.translation_y = oldRect.y - monitor.y;
+        } else {
+            actor.translation_x = -(targetRect.x - monitor.x);
+            actor.translation_y = -(targetRect.y - monitor.y);
+        }
+
         // Now set scale the actor to size it as the clone.
-        // Note that the caller of this function already set a translation
-        // on the actor.
         actor.scale_x = 1 / scaleX;
         actor.scale_y = 1 / scaleY;
 
@@ -1337,6 +1341,15 @@ const WindowManager = new Lang.Class({
         shellwm.completed_size_change(actor);
     },
 
+    _clearFullscreenInfo: function(actor) {
+        if (actor.__fullscreenInfo) {
+            actor.__fullscreenInfo.clone.destroy();
+            delete actor.__fullscreenInfo;
+            return true;
+        }
+        return false;
+    },
+
     _sizeChangeWindowDone: function(shellwm, actor) {
         if (this._removeEffect(this._resizing, actor)) {
             Tweener.removeTweens(actor);
@@ -1344,23 +1357,13 @@ const WindowManager = new Lang.Class({
             actor.scale_y = 1.0;
             actor.translation_x = 0;
             actor.translation_y = 0;
-
-            let actorClone = actor.__fullscreenClone;
-            if (actorClone) {
-                actorClone.destroy();
-                delete actor.__fullscreenClone;
-            }
+            this._clearFullscreenInfo(actor);
         }
     },
 
     _sizeChangeWindowOverwritten: function(shellwm, actor) {
-        if (this._removeEffect(this._resizing, actor)) {
-            let actorClone = actor.__fullscreenClone;
-            if (actorClone) {
-                actorClone.destroy();
-                delete actor.__fullscreenClone;
-            }
-        }
+        if (this._removeEffect(this._resizing, actor))
+            this._clearFullscreenInfo(actor);
     },
 
     _hasAttachedDialogs: function(window, ignoreWindow) {
