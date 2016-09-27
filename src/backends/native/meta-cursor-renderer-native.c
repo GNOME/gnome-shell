@@ -527,6 +527,9 @@ meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer *r
   CoglTexture *texture;
   uint width, height;
 
+  if (!priv->gbm)
+    return;
+
   /* Destroy any previous pending cursor buffer; we'll always either fail (which
    * should unset, or succeed, which will set new buffer.
    */
@@ -614,6 +617,11 @@ meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer *ren
                                                          XcursorImage *xc_image)
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
+  MetaCursorRendererNativePrivate *priv =
+	  meta_cursor_renderer_native_get_instance_private (native);
+
+  if (!priv->gbm)
+    return;
 
   invalidate_pending_cursor_sprite_gbm_bo (cursor_sprite);
 
