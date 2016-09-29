@@ -603,11 +603,6 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                const int    *rectangles,
                                                int           n_rectangles)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
   CoglContext *cogl_context = COGL_FRAMEBUFFER (onscreen)->context;
   CoglRenderer *cogl_renderer = cogl_context->display->renderer;
   CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
@@ -620,9 +615,7 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   frame_info = g_queue_peek_tail (&onscreen->pending_frame_infos);
   frame_info->global_frame_counter = renderer_native->frame_counter;
 
-  /* If we already have a pending swap then block until it completes */
-  while (onscreen_native->gbm.next_fb_id != 0)
-    meta_monitor_manager_kms_wait_for_flip (monitor_manager_kms);
+  g_warn_if_fail (!onscreen_native->pending_queue_swap_notify);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
