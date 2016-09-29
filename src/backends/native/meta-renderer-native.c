@@ -757,15 +757,8 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
   CoglContext *cogl_context = framebuffer->context;
   CoglDisplay *cogl_display = cogl_context->display;
   CoglDisplayEGL *egl_display = cogl_display->winsys;
-  CoglRenderer *cogl_renderer = cogl_display->renderer;
-  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
-  MetaRendererNative *renderer_native = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen;
   MetaOnscreenNative *onscreen_native;
-  struct gbm_surface *gbm_surface;
-  EGLSurface egl_surface;
-  int width;
-  int height;
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
@@ -774,6 +767,36 @@ meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
 
   onscreen_native = g_slice_new0 (MetaOnscreenNative);
   egl_onscreen->platform = onscreen_native;
+
+  /*
+   * Don't actually initialize anything here, since we may not have the
+   * information available yet, and there is no way to pass it at this stage.
+   * To properly allocate a MetaOnscreenNative, the caller must call
+   * meta_onscreen_native_allocate() after cogl_framebuffer_allocate().
+   *
+   * TODO: Turn CoglFramebuffer/CoglOnscreen into GObjects, so it's possible
+   * to add backend specific properties.
+   */
+
+  return TRUE;
+}
+
+static gboolean
+meta_onscreen_native_allocate (CoglOnscreen *onscreen,
+                               GError      **error)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *cogl_context = framebuffer->context;
+  CoglDisplay *cogl_display = cogl_context->display;
+  CoglRenderer *cogl_renderer = cogl_display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
+  struct gbm_surface *gbm_surface;
+  EGLSurface egl_surface;
+  int width;
+  int height;
 
   onscreen_native->pending_set_crtc = TRUE;
 
@@ -1129,6 +1152,7 @@ meta_renderer_native_create_legacy_view (MetaRendererNative *renderer_native)
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   cairo_rectangle_int_t view_layout = { 0 };
   MetaRendererView *view;
+  GError *error = NULL;
 
   if (!monitor_manager)
     return NULL;
@@ -1150,9 +1174,19 @@ meta_renderer_native_create_legacy_view (MetaRendererNative *renderer_native)
                        "layout", &view_layout,
                        "framebuffer", onscreen,
                        NULL);
-  cogl_object_unref (onscreen);
 
   meta_onscreen_native_set_view (onscreen, view);
+
+  if (!meta_onscreen_native_allocate (onscreen, &error))
+    {
+      g_warning ("Could not create onscreen: %s", error->message);
+      cogl_object_unref (onscreen);
+      g_object_unref (view);
+      g_error_free (error);
+      return NULL;
+    }
+
+  cogl_object_unref (onscreen);
 
   return view;
 }
@@ -1171,6 +1205,7 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
   CoglOnscreen *onscreen = NULL;
   CoglOffscreen *offscreen = NULL;
   MetaRendererView *view;
+  GError *error = NULL;
 
   transform = meta_renderer_native_get_monitor_info_transform (renderer,
                                                                monitor_info);
@@ -1182,13 +1217,6 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
                                                    monitor_info->rect.height);
   if (!onscreen)
     meta_fatal ("Failed to allocate onscreen framebuffer\n");
-
-  /* Ensure we don't point to stale surfaces when creating the offscreen */
-  egl_onscreen = onscreen->winsys;
-  _cogl_winsys_egl_make_current (cogl_display,
-                                 egl_onscreen->egl_surface,
-                                 egl_onscreen->egl_surface,
-                                 egl_display->egl_context);
 
   if (transform != META_MONITOR_TRANSFORM_NORMAL)
     {
@@ -1208,10 +1236,27 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
                        "monitor-info", monitor_info,
                        "transform", transform,
                        NULL);
-  cogl_object_unref (onscreen);
   g_clear_pointer (&offscreen, cogl_object_unref);
 
   meta_onscreen_native_set_view (onscreen, view);
+
+  if (!meta_onscreen_native_allocate (onscreen, &error))
+    {
+      g_warning ("Could not create onscreen: %s", error->message);
+      cogl_object_unref (onscreen);
+      g_object_unref (view);
+      g_error_free (error);
+      return NULL;
+    }
+
+  cogl_object_unref (onscreen);
+
+  /* Ensure we don't point to stale surfaces when creating the offscreen */
+  egl_onscreen = onscreen->winsys;
+  _cogl_winsys_egl_make_current (cogl_display,
+                                 egl_onscreen->egl_surface,
+                                 egl_onscreen->egl_surface,
+                                 egl_display->egl_context);
 
   return view;
 }
