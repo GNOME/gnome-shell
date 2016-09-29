@@ -598,6 +598,46 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
   g_closure_unref (flip_closure);
 }
 
+static gboolean
+gbm_get_next_fb_id (CoglOnscreen   *onscreen,
+                    struct gbm_bo **out_next_bo,
+                    uint32_t       *out_next_fb_id)
+{
+  CoglContext *cogl_context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *cogl_renderer = cogl_context->display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
+  uint32_t handle, stride;
+  struct gbm_bo *next_bo;
+  uint32_t next_fb_id;
+
+  /* Now we need to set the CRTC to whatever is the front buffer */
+  next_bo = gbm_surface_lock_front_buffer (onscreen_native->gbm.surface);
+
+  stride = gbm_bo_get_stride (next_bo);
+  handle = gbm_bo_get_handle (next_bo).u32;
+
+  if (drmModeAddFB (renderer_native->kms_fd,
+                    cogl_framebuffer_get_width (COGL_FRAMEBUFFER (onscreen)),
+                    cogl_framebuffer_get_height (COGL_FRAMEBUFFER (onscreen)),
+                    24, /* depth */
+                    32, /* bpp */
+                    stride,
+                    handle,
+                    &next_fb_id))
+    {
+      g_warning ("Failed to create new back buffer handle: %m");
+      gbm_surface_release_buffer (onscreen_native->gbm.surface, next_bo);
+      return FALSE;
+    }
+
+  *out_next_bo = next_bo;
+  *out_next_fb_id = next_fb_id;
+  return TRUE;
+}
+
 static void
 meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                const int    *rectangles,
@@ -610,7 +650,6 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   MetaOnscreenNative *onscreen_native = egl_onscreen->platform;
   CoglFrameInfo *frame_info;
-  uint32_t handle, stride;
 
   frame_info = g_queue_peek_tail (&onscreen->pending_frame_infos);
   frame_info->global_frame_counter = renderer_native->frame_counter;
@@ -621,29 +660,10 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
                                                     rectangles,
                                                     n_rectangles);
 
-  /* Now we need to set the CRTC to whatever is the front buffer */
-  onscreen_native->gbm.next_bo =
-    gbm_surface_lock_front_buffer (onscreen_native->gbm.surface);
-
-  stride = gbm_bo_get_stride (onscreen_native->gbm.next_bo);
-  handle = gbm_bo_get_handle (onscreen_native->gbm.next_bo).u32;
-
-  if (drmModeAddFB (renderer_native->kms_fd,
-                    cogl_framebuffer_get_width (COGL_FRAMEBUFFER (onscreen)),
-                    cogl_framebuffer_get_height (COGL_FRAMEBUFFER (onscreen)),
-                    24, /* depth */
-                    32, /* bpp */
-                    stride,
-                    handle,
-                    &onscreen_native->gbm.next_fb_id))
-    {
-      g_warning ("Failed to create new back buffer handle: %m");
-      gbm_surface_release_buffer (onscreen_native->gbm.surface,
-                                  onscreen_native->gbm.next_bo);
-      onscreen_native->gbm.next_bo = NULL;
-      onscreen_native->gbm.next_fb_id = 0;
-      return;
-    }
+  if (!gbm_get_next_fb_id (onscreen,
+                           &onscreen_native->gbm.next_bo,
+                           &onscreen_native->gbm.next_fb_id))
+    return;
 
   /* If this is the first framebuffer to be presented then we now setup the
    * crtc modes, else we flip from the previous buffer */
