@@ -1812,7 +1812,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   g_slist_free (lame);
 
   pid = meta_show_dialog("--list",
-                         _("These windows do not support &quot;save current setup&quot; "
+                         _("These windows do not support “save current setup” "
                            "and will have to be restarted manually next time "
                            "you log in."),
                          "240",

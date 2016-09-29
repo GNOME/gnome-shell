@@ -6,11 +6,11 @@
       <default>'Super_L'</default>
       <summary>Modifier to use for extended window management operations</summary>
       <description>
-        This key will initiate the "overlay", which is a combination window
+        This key will initiate the “overlay”, which is a combination window
         overview and application launching system.  The default is intended
-        to be the "Windows key" on PC hardware.
+        to be the “Windows key” on PC hardware.
 
-        It's expected that this binding either the default or set to
+        It’s expected that this binding either the default or set to
         the empty string.
       </description>
     </key>
@@ -40,7 +40,7 @@
       <summary>Workspaces are managed dynamically</summary>
       <description>
         Determines whether workspaces are managed dynamically or
-        whether there's a static number of workspaces (determined
+        whether there’s a static number of workspaces (determined
         by the num-workspaces key in org.gnome.desktop.wm.preferences).
       </description>
     </key>
@@ -67,7 +67,7 @@
       <default>false</default>
       <summary>Delay focus changes until the pointer stops moving</summary>
       <description>
-        If set to true, and the focus mode is either "sloppy" or "mouse"
+        If set to true, and the focus mode is either “sloppy” or “mouse”
         then the focus will not be changed immediately when entering a
         window, but only after the pointer stops moving.
       </description>
@@ -78,7 +78,7 @@
       <range min="0" max="64"/>
       <summary>Draggable border width</summary>
       <description>
-          The amount of total draggable borders. If the theme's visible
+          The amount of total draggable borders. If the theme’s visible
           borders are not enough, invisible borders will be added to meet
           this value.
       </description>

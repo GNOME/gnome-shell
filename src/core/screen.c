@@ -577,7 +577,7 @@ take_manager_selection (MetaDisplay *display,
         }
       else
         {
-          meta_warning (_("Display \"%s\" already has a window manager; try using the --replace option to replace the current window manager."),
+          meta_warning (_("Display “%s” already has a window manager; try using the --replace option to replace the current window manager."),
                         display->name);
           return None;
         }
@@ -662,7 +662,7 @@ meta_screen_new (MetaDisplay *display,
    */
   if (xroot == None)
     {
-      meta_warning (_("Screen %d on display '%s' is invalid\n"),
+      meta_warning (_("Screen %d on display “%s” is invalid\n"),
                     number, display->name);
       return NULL;
     }

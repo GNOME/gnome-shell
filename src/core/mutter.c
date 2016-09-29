@@ -37,7 +37,7 @@ print_version (const gchar    *option_name,
   const int latest_year = 2011;
 
   g_print (_("mutter %s\n"
-             "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+             "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
              "This is free software; see the source for copying conditions.\n"
              "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
            VERSION, latest_year);

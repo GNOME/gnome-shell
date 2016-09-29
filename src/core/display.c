@@ -605,7 +605,7 @@ meta_display_open (void)
 
   if (xdisplay == NULL)
     {
-      meta_warning (_("Failed to open X Window System display '%s'\n"),
+      meta_warning (_("Failed to open X Window System display “%s”\n"),
 		    XDisplayName (NULL));
       return FALSE;
     }
