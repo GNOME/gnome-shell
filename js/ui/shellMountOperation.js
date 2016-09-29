@@ -380,7 +380,7 @@ const ShellMountPasswordDialog = new Lang.Class({
         this.setInitialKeyFocus(this._passwordEntry);
 
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label',
-                                                 text: _("Sorry, that didn\'t work. Please try again.") });
+                                                 text: _("Sorry, that didn’t work. Please try again.") });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
         this._errorMessageLabel.hide();

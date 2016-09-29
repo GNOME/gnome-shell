@@ -1431,7 +1431,7 @@ const NMVPNConnectionItem = new Lang.Class({
         case NetworkManager.VPNConnectionState.PREPARE:
         case NetworkManager.VPNConnectionState.CONNECT:
         case NetworkManager.VPNConnectionState.IP_CONFIG_GET:
-            return _("connecting...");
+            return _("connecting…");
         case NetworkManager.VPNConnectionState.NEED_AUTH:
             /* Translators: this is for network connections that require some kind of key or password */
             return _("authentication required");

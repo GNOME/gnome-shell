@@ -390,7 +390,7 @@ GOptionEntry gnome_shell_options[] = {
   {
     "mode", 0, 0, G_OPTION_ARG_STRING,
     &session_mode,
-    N_("Use a specific mode, e.g. \"gdm\" for login screen"),
+    N_("Use a specific mode, e.g. “gdm” for login screen"),
     "MODE"
   },
   {

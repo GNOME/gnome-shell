@@ -26,7 +26,7 @@
       <summary>Disable user extensions</summary>
       <description>
         Disable all extensions the user has enabled without affecting
-        the 'enabled-extension' setting.
+        the “enabled-extension” setting.
       </description>
     </key>
     <key name="disable-extension-version-validation" type="b">
@@ -64,9 +64,9 @@
     </key>
     <key name="always-show-log-out" type="b">
       <default>false</default>
-      <summary>Always show the 'Log out' menu item in the user menu.</summary>
+      <summary>Always show the “Log out” menu item in the user menu.</summary>
       <description>
-        This key overrides the automatic hiding of the 'Log out'
+        This key overrides the automatic hiding of the “Log out”
         menu item in single-user, single-session situations.
       </description>
     </key>
@@ -76,7 +76,7 @@
       <description>
         The shell will request a password when an encrypted device or a
         remote filesystem is mounted.  If the password can be saved for
-        future use a 'Remember Password' checkbox will be present.
+        future use a “Remember Password” checkbox will be present.
         This key sets the default state of the checkbox.
       </description>
     </key>
@@ -105,9 +105,9 @@
     </key>
     <key name="toggle-application-view" type="as">
       <default>["&lt;Super&gt;a"]</default>
-      <summary>Keybinding to open the "Show Applications" view</summary>
+      <summary>Keybinding to open the “Show Applications” view</summary>
       <description>
-        Keybinding to open the "Show Applications" view of the Activities
+        Keybinding to open the “Show Applications” view of the Activities
         Overview.
       </description>
     </key>
@@ -176,8 +176,8 @@
       <summary>The application icon mode.</summary>
       <description>
 	Configures how the windows are shown in the switcher. Valid possibilities
-	are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only'
-	(shows only the application icon) or 'both'.
+	are “thumbnail-only” (shows a thumbnail of the window), “app-icon-only”
+	(shows only the application icon) or “both”.
       </description>
     </key>
     <key type="b" name="current-workspace-only">

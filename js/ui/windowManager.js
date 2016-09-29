@@ -675,7 +675,7 @@ const ResizePopup = new Lang.Class({
     set: function(rect, displayW, displayH) {
         /* Translators: This represents the size of a window. The first number is
          * the width of the window and the second is the height. */
-        let text = _("%d x %d").format(displayW, displayH);
+        let text = _("%d × %d").format(displayW, displayH);
         this._label.set_text(text);
 
         this._widget.set_position(rect.x, rect.y);
