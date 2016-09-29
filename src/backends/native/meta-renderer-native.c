@@ -73,6 +73,7 @@ typedef struct _MetaOnscreenNative
     struct gbm_bo *next_bo;
   } gbm;
 
+  gboolean pending_queue_swap_notify;
   gboolean pending_swap_notify;
 
   gboolean pending_set_crtc;
@@ -399,6 +400,8 @@ on_crtc_flipped (GClosure         *closure,
   onscreen_native->pending_flips--;
   if (onscreen_native->pending_flips == 0)
     {
+      onscreen_native->pending_queue_swap_notify = FALSE;
+
       meta_onscreen_native_queue_swap_notify (onscreen);
       meta_onscreen_native_swap_drm_fb (onscreen);
     }
@@ -425,8 +428,12 @@ flip_closure_destroyed (MetaRendererView *view)
                                   onscreen_native->gbm.next_bo);
       onscreen_native->gbm.next_bo = NULL;
       onscreen_native->gbm.next_fb_id = 0;
+    }
 
+  if (onscreen_native->pending_queue_swap_notify)
+    {
       meta_onscreen_native_queue_swap_notify (onscreen);
+      onscreen_native->pending_queue_swap_notify = FALSE;
     }
 
   g_object_unref (view);
@@ -585,6 +592,8 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
       meta_onscreen_native_queue_swap_notify (onscreen);
       meta_onscreen_native_swap_drm_fb (onscreen);
     }
+
+  onscreen_native->pending_queue_swap_notify = TRUE;
 
   g_closure_unref (flip_closure);
 }
