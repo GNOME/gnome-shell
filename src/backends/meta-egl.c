@@ -185,6 +185,20 @@ meta_egl_has_extensions (MetaEgl   *egl,
 }
 
 gboolean
+meta_egl_initialize (MetaEgl   *egl,
+                     EGLDisplay display,
+                     GError   **error)
+{
+  if (!eglInitialize (display, NULL, NULL))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
 meta_egl_choose_config (MetaEgl      *egl,
                         EGLDisplay    display,
                         const EGLint *attrib_list,

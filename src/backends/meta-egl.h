@@ -38,6 +38,10 @@ gboolean meta_egl_has_extensions (MetaEgl   *egl,
                                   char      *first_extension,
                                   ...);
 
+gboolean meta_egl_initialize (MetaEgl   *egl,
+                              EGLDisplay display,
+                              GError   **error);
+
 gboolean meta_egl_choose_config (MetaEgl      *egl,
                                  EGLDisplay    display,
                                  const EGLint *attrib_list,
