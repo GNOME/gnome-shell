@@ -61,10 +61,19 @@ function _patchLayoutClass(layoutClass, styleProps) {
     };
 }
 
-function _makeLoggingFunc(func) {
-    return function() {
-        return func([].join.call(arguments, ', '));
-    };
+function _loggingFunc() {
+    let fields = {'MESSAGE': [].join.call(arguments, ', ')};
+    let domain = "GNOME Shell";
+
+    // If the caller is an extension, add it as metadata
+    let extension = imports.misc.extensionUtils.getCurrentExtension();
+    if (extension != null) {
+        domain = extension.metadata.name;
+        fields['GNOME_SHELL_EXTENSION_UUID'] = extension.uuid;
+        fields['GNOME_SHELL_EXTENSION_NAME'] = extension.metadata.name;
+    }
+
+    GLib.log_structured(domain, GLib.LogLevelFlags.LEVEL_MESSAGE, fields);
 }
 
 function init() {
@@ -72,7 +81,7 @@ function init() {
     // browser convention of having that namespace be called 'window'.)
     window.global = Shell.Global.get();
 
-    window.log = _makeLoggingFunc(window.log);
+    window.log = _loggingFunc;
 
     window._ = Gettext.gettext;
     window.C_ = Gettext.pgettext;
