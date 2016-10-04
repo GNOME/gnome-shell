@@ -262,6 +262,39 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
 
+static EGLDisplay
+_cogl_winsys_egl_get_display (void *native)
+{
+  EGLDisplay dpy = NULL;
+  const char *client_exts = eglQueryString (NULL, EGL_EXTENSIONS);
+
+  if (g_strstr_len (client_exts, -1, "EGL_KHR_platform_base"))
+    {
+      PFNEGLGETPLATFORMDISPLAYEXTPROC get_platform_display =
+	(void *) eglGetProcAddress ("eglGetPlatformDisplay");
+
+      if (get_platform_display)
+	dpy = get_platform_display (EGL_PLATFORM_X11_KHR, native, NULL);
+
+      if (dpy)
+	return dpy;
+    }
+
+  if (g_strstr_len (client_exts, -1, "EGL_EXT_platform_base"))
+    {
+      PFNEGLGETPLATFORMDISPLAYEXTPROC get_platform_display =
+	(void *) eglGetProcAddress ("eglGetPlatformDisplayEXT");
+
+      if (get_platform_display)
+	dpy = get_platform_display (EGL_PLATFORM_X11_KHR, native, NULL);
+
+      if (dpy)
+	return dpy;
+    }
+
+  return eglGetDisplay ((EGLNativeDisplayType) native);
+}
+
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                CoglError **error)
@@ -278,8 +311,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (!_cogl_xlib_renderer_connect (renderer, error))
     goto error;
 
-  egl_renderer->edpy =
-    eglGetDisplay ((EGLNativeDisplayType) xlib_renderer->xdpy);
+  egl_renderer->edpy = _cogl_winsys_egl_get_display (xlib_renderer->xdpy);
 
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto error;
