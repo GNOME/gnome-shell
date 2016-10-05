@@ -25,7 +25,6 @@
 
 #include "shell-global.h"
 #include "shell-global-private.h"
-#include "shell-js.h"
 #include "shell-perf-log.h"
 #include "st.h"
 
@@ -479,18 +478,4 @@ main (int argc, char **argv)
   g_object_unref (sender);
 
   return ecode;
-}
-
-/* HACK:
-   Add a dummy function that calls into libgnome-shell-js.so to ensure it's
-   linked to /usr/bin/gnome-shell even when linking with --as-needed.
-   This function is never actually called.
-   https://bugzilla.gnome.org/show_bug.cgi?id=670477
-*/
-void _shell_link_to_shell_js (void);
-
-void
-_shell_link_to_shell_js (void)
-{
-  shell_js_add_extension_importer (NULL, NULL, NULL, NULL);
 }

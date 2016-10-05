@@ -6,9 +6,7 @@
 const Lang = imports.lang;
 const Signals = imports.signals;
 
-const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
-const ShellJS = imports.gi.ShellJS;
 
 const Config = imports.misc.config;
 const FileUtils = imports.misc.fileUtils;
@@ -151,12 +149,13 @@ function createExtensionObject(uuid, dir, type) {
     return extension;
 }
 
-var _extension = null;
-
 function installImporter(extension) {
-    _extension = extension;
-    ShellJS.add_extension_importer('imports.misc.extensionUtils._extension', 'imports', extension.path);
-    _extension = null;
+    let oldSearchPath = imports.searchPath.slice();  // make a copy
+    imports.searchPath = [extension.path];
+    // importing a "subdir" creates a new importer object that doesn't affect
+    // the global one
+    extension.imports = imports['.'];
+    imports.searchPath = oldSearchPath;
 }
 
 const ExtensionFinder = new Lang.Class({

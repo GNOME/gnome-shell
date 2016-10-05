@@ -78,7 +78,7 @@ gnome_shell_cflags =				\
 	-DGNOME_SHELL_PKGLIBDIR=\"$(pkglibdir)\"
 
 privlibdir = $(pkglibdir)
-privlib_LTLIBRARIES = libgnome-shell-js.la libgnome-shell-menu.la libgnome-shell.la
+privlib_LTLIBRARIES = libgnome-shell-menu.la libgnome-shell.la
 noinst_LTLIBRARIES += libgnome-shell-base.la
 
 shell_built_sources = \
@@ -200,7 +200,7 @@ gnome_shell_CPPFLAGS = \
 
 # Here, and after, we repeat mutter and bluetooth libraries just for the rpath
 # The dependency is already pulled in by libtool
-gnome_shell_LDADD = libgnome-shell.la libgnome-shell-js.la $(GNOME_SHELL_LIBS) $(MUTTER_LIBS)
+gnome_shell_LDADD = libgnome-shell.la $(GNOME_SHELL_LIBS) $(MUTTER_LIBS)
 gnome_shell_LDFLAGS = -rpath $(MUTTER_TYPELIB_DIR)
 gnome_shell_DEPENDENCIES = libgnome-shell.la
 
@@ -212,7 +212,7 @@ nodist_gnome_shell_extension_prefs_SOURCES = \
 	$(top_builddir)/js/js-resources.h		\
 	$(NULL)
 gnome_shell_extension_prefs_CPPFLAGS = $(gnome_shell_cflags)
-gnome_shell_extension_prefs_LDADD = libgnome-shell-js.la $(GNOME_SHELL_LIBS)
+gnome_shell_extension_prefs_LDADD = $(GNOME_SHELL_LIBS)
 gnome_shell_extension_prefs_LDFLAGS = -rpath $(MUTTER_TYPELIB_DIR)
 
 if HAVE_NETWORKMANAGER
@@ -226,27 +226,10 @@ nodist_gnome_shell_portal_helper_SOURCES = \
 	$(top_builddir)/js/js-resources.h		\
 	$(NULL)
 gnome_shell_portal_helper_CPPFLAGS = $(gnome_shell_cflags)
-gnome_shell_portal_helper_LDADD = libgnome-shell-js.la $(GNOME_SHELL_LIBS)
+gnome_shell_portal_helper_LDADD = $(GNOME_SHELL_LIBS)
 gnome_shell_portal_helper_LDFLAGS = -rpath $(MUTTER_TYPELIB_DIR)
 
 endif
-
-########################################
-
-libgnome_shell_js_la_SOURCES =		\
-	shell-js.h			\
-	shell-js.cpp			\
-	$(NULL)
-
-libgnome_shell_js_la_LIBADD =		\
-	$(GNOME_SHELL_JS_LIBS)		\
-	$(NULL)
-
-libgnome_shell_js_la_LDFLAGS =		\
-	-avoid-version
-
-libgnome_shell_js_la_CPPFLAGS =		\
-	$(GNOME_SHELL_JS_CFLAGS)
 
 ########################################
 
@@ -365,13 +348,6 @@ Shell_0_1_gir_SCANNERFLAGS =	\
 	--add-include-path=$(MUTTER_GIR_DIR)
 INTROSPECTION_GIRS += Shell-0.1.gir
 CLEANFILES += Shell-0.1.gir
-
-ShellJS-0.1.gir: libgnome-shell-js.la
-ShellJS_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
-ShellJS_0_1_gir_LIBS = libgnome-shell-js.la
-ShellJS_0_1_gir_FILES = $(libgnome_shell_js_la_SOURCES)
-INTROSPECTION_GIRS += ShellJS-0.1.gir
-CLEANFILES += ShellJS-0.1.gir
 
 St-1.0.gir: libst-1.0.la
 St_1_0_gir_INCLUDES = Clutter-1.0 Gtk-3.0
