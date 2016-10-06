@@ -401,9 +401,6 @@ drm_mode_vrefresh (const drmModeModeInfo *mode)
 {
   float refresh = 0.0;
 
-  if (mode->vrefresh > 0.0)
-    return mode->vrefresh;
-
   if (mode->htotal > 0 && mode->vtotal > 0)
     {
       /* Calculate refresh rate in milliHz first for extra precision. */
