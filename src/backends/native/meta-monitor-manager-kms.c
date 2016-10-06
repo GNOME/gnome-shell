@@ -410,10 +410,6 @@ drm_mode_vrefresh (const drmModeModeInfo *mode)
       refresh = (mode->clock * 1000000LL) / mode->htotal;
       refresh += (mode->vtotal / 2);
       refresh /= mode->vtotal;
-      if (mode->flags & DRM_MODE_FLAG_INTERLACE)
-        refresh *= 2;
-      if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
-        refresh /= 2;
       if (mode->vscan > 1)
         refresh /= mode->vscan;
       refresh /= 1000.0;
