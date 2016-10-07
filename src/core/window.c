@@ -293,6 +293,7 @@ meta_window_finalize (GObject *object)
   g_free (window->res_name);
   g_free (window->title);
   g_free (window->desc);
+  g_free (window->flatpak_id);
   g_free (window->gtk_theme_variant);
   g_free (window->gtk_application_id);
   g_free (window->gtk_unique_bus_name);
@@ -765,6 +766,27 @@ sync_client_window_mapped (MetaWindow *window)
 }
 
 static void
+meta_window_update_flatpak_id (MetaWindow *window)
+{
+  uint32_t pid = meta_window_get_client_pid (window);
+  g_autoptr(GKeyFile) key_file = NULL;
+  g_autofree char *info_filename = NULL;
+
+  g_clear_pointer (&window->flatpak_id, g_free);
+
+  if (pid == 0)
+    return;
+
+  key_file = g_key_file_new ();
+  info_filename = g_strdup_printf ("/proc/%u/root/.flatpak-info", pid);
+
+  if (!g_key_file_load_from_file (key_file, info_filename, G_KEY_FILE_NONE, NULL))
+    return;
+
+  window->flatpak_id = g_key_file_get_string (key_file, "Application", "name", NULL);
+}
+
+static void
 meta_window_update_desc (MetaWindow *window)
 {
   g_autofree gchar *title = NULL;
@@ -863,6 +885,7 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->screen = screen;
 
+  meta_window_update_flatpak_id (window);
   meta_window_update_desc (window);
 
   window->override_redirect = attrs->override_redirect;
@@ -6895,6 +6918,18 @@ meta_window_get_wm_class_instance (MetaWindow *window)
     return NULL;
 
   return window->res_name;
+}
+
+/**
+ * meta_window_get_flatpak_id:
+ * @window: a #MetaWindow
+ *
+ * Return value: (transfer none): the Flatpak application ID or %NULL
+ **/
+const char *
+meta_window_get_flatpak_id (MetaWindow *window)
+{
+  return window->flatpak_id;
 }
 
 /**
