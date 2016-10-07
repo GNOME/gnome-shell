@@ -46,7 +46,7 @@ const ObjectManager = new Lang.Class({
                                                  g_interface_info: ObjectManagerInfo,
                                                  g_name: this._serviceName,
                                                  g_object_path: this._managerPath,
-                                                 g_flags: Gio.DBusProxyFlags.NONE });
+                                                 g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START });
 
         this._interfaceInfos = {};
         this._objects = {};
@@ -65,6 +65,9 @@ const ObjectManager = new Lang.Class({
     },
 
     _tryToCompleteLoad: function() {
+        if (this._numLoadInhibitors == 0)
+            return;
+
         this._numLoadInhibitors--;
         if (this._numLoadInhibitors == 0) {
             if (this._onLoaded)
@@ -86,7 +89,7 @@ const ObjectManager = new Lang.Class({
                                        g_object_path: objectPath,
                                        g_interface_name: interfaceName,
                                        g_interface_info: info,
-                                       g_flags: Gio.DBusProxyFlags.NONE });
+                                       g_flags: Gio.DBusProxyFlags.DO_NOT_AUTO_START });
 
         proxy.init_async(GLib.PRIORITY_DEFAULT,
                          this._cancellable,
@@ -181,6 +184,18 @@ const ObjectManager = new Lang.Class({
             return;
         }
 
+        this._managerProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
+            if (this._managerProxy.g_name_owner)
+                this._onNameAppeared();
+            else
+                this._onNameVanished();
+        }));
+
+        if (this._managerProxy.g_name_owner)
+            this._onNameAppeared();
+    },
+
+    _onNameAppeared: function() {
         this._managerProxy.GetManagedObjectsRemote(Lang.bind(this, function(result, error) {
             if (!result) {
                 if (error) {
@@ -216,6 +231,21 @@ const ObjectManager = new Lang.Class({
             }
             this._tryToCompleteLoad();
         }));
+    },
+
+    _onNameVanished: function() {
+        let objectPaths = Object.keys(this._objects);
+        for (let i = 0; i < objectPaths.length; i++) {
+            let object = this._objects[objectPaths];
+
+            let interfaceNames = Object.keys(object);
+            for (let j = 0; i < interfaceNames.length; i++) {
+                let interfaceName = interfaceNames[i];
+
+                if (object[interfaceName])
+                    this._removeInterface(objectPath, interfaceName);
+            }
+        }
     },
 
     _registerInterfaces: function(interfaces) {
