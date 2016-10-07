@@ -1129,6 +1129,9 @@ meta_xwayland_selection_handle_selection_notify (MetaWaylandCompositor *composit
   if (!selection)
     return FALSE;
 
+  if (selection->window != event->requestor)
+    return FALSE;
+
   /* convert selection failed */
   if (event->property == None)
     {
@@ -1259,6 +1262,9 @@ meta_xwayland_selection_handle_selection_request (MetaWaylandCompositor *composi
   selection = atom_to_selection_bridge (compositor, event->selection);
 
   if (!selection)
+    return FALSE;
+
+  if (selection->window != event->owner)
     return FALSE;
 
   /* We must fetch from the currently active source, not the Xwayland one */
