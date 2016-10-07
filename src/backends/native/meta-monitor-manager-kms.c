@@ -1357,11 +1357,19 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
       else
         hw_transform = META_MONITOR_TRANSFORM_NORMAL;
 
-      drmModeObjectSetProperty (manager_kms->fd,
-                                crtc_kms->primary_plane_id,
-                                DRM_MODE_OBJECT_PLANE,
-                                crtc_kms->rotation_prop_id,
-                                crtc_kms->rotation_map[hw_transform]);
+      if (drmModeObjectSetProperty (manager_kms->fd,
+                                    crtc_kms->primary_plane_id,
+                                    DRM_MODE_OBJECT_PLANE,
+                                    crtc_kms->rotation_prop_id,
+                                    crtc_kms->rotation_map[hw_transform]) != 0)
+        {
+          g_warning ("Failed to apply DRM plane transform: %m", hw_transform);
+
+          /* Blacklist this HW transform, we want to fallback to our
+           * fallbacks in this case.
+           */
+          crtc_kms->all_hw_transforms &= ~(1 << hw_transform);
+        }
     }
   /* Disable CRTCs not mentioned in the list (they have is_dirty == FALSE,
      because they weren't seen in the first loop) */
