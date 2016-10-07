@@ -524,6 +524,7 @@ struct _MetaWindowClass
   gboolean (*update_icon)        (MetaWindow       *window,
                                   cairo_surface_t **icon,
                                   cairo_surface_t **mini_icon);
+  uint32_t (*get_client_pid)     (MetaWindow *window);
   void (*update_main_monitor)    (MetaWindow *window);
   void (*main_monitor_changed)   (MetaWindow *window,
                                   const MetaMonitorInfo *old);
@@ -704,6 +705,8 @@ void meta_window_handle_leave (MetaWindow  *window);
 
 void meta_window_handle_ungrabbed_event (MetaWindow         *window,
                                          const ClutterEvent *event);
+
+uint32_t meta_window_get_client_pid (MetaWindow *window);
 
 void meta_window_get_client_area_rect (const MetaWindow      *window,
                                        cairo_rectangle_int_t *rect);

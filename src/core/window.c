@@ -253,6 +253,12 @@ meta_window_real_update_icon (MetaWindow       *window,
   return FALSE;
 }
 
+static uint32_t
+meta_window_real_get_client_pid (MetaWindow *window)
+{
+  return 0;
+}
+
 static void
 meta_window_finalize (GObject *object)
 {
@@ -420,6 +426,7 @@ meta_window_class_init (MetaWindowClass *klass)
   klass->update_struts = meta_window_real_update_struts;
   klass->get_default_skip_hints = meta_window_real_get_default_skip_hints;
   klass->update_icon = meta_window_real_update_icon;
+  klass->get_client_pid = meta_window_real_get_client_pid;
 
   obj_props[PROP_TITLE] =
     g_param_spec_string ("title",
@@ -7053,6 +7060,21 @@ meta_window_get_transient_for (MetaWindow *window)
                                          window->xtransient_for);
   else
     return NULL;
+}
+
+/**
+ * meta_window_get_client_pid:
+ * @window: a #MetaWindow
+ *
+ * Returns the pid of the process that created this window, if available
+ * to the windowing system.
+ *
+ * Return value: the pid, or 0 if not known.
+ */
+uint32_t
+meta_window_get_client_pid (MetaWindow *window)
+{
+  return META_WINDOW_GET_CLASS (window)->get_client_pid (window);
 }
 
 /**

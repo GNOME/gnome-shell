@@ -85,6 +85,7 @@ MUTTER_PC_MODULES="
    xrender
    x11-xcb
    xcb-randr
+   xcb-res
 "
 
 GLIB_GSETTINGS

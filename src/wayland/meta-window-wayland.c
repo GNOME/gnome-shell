@@ -453,6 +453,17 @@ meta_window_wayland_main_monitor_changed (MetaWindow *window,
   meta_window_emit_size_changed (window);
 }
 
+static uint32_t
+meta_window_wayland_get_client_pid (MetaWindow *window)
+{
+  MetaWaylandSurface *surface = window->surface;
+  struct wl_resource *resource = surface->resource;
+  pid_t pid;
+
+  wl_client_get_credentials (wl_resource_get_client (resource), &pid, NULL, NULL);
+  return (uint32_t)pid;
+}
+
 static void
 appears_focused_changed (GObject    *object,
                          GParamSpec *pspec,
@@ -487,6 +498,7 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->move_resize_internal = meta_window_wayland_move_resize_internal;
   window_class->update_main_monitor = meta_window_wayland_update_main_monitor;
   window_class->main_monitor_changed = meta_window_wayland_main_monitor_changed;
+  window_class->get_client_pid = meta_window_wayland_get_client_pid;
 }
 
 MetaWindow *

@@ -28,6 +28,9 @@
 #include <string.h>
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h> /* For display->resource_mask */
+#include <X11/Xlib-xcb.h>
+
+#include <xcb/res.h>
 
 #include <X11/extensions/shape.h>
 
@@ -1481,6 +1484,42 @@ meta_window_x11_main_monitor_changed (MetaWindow *window,
 {
 }
 
+static uint32_t
+meta_window_x11_get_client_pid (MetaWindow *window)
+{
+  xcb_connection_t *xcb = XGetXCBConnection (window->display->xdisplay);
+  xcb_res_client_id_spec_t spec = { 0 };
+  xcb_res_query_client_ids_cookie_t cookie;
+  xcb_res_query_client_ids_reply_t *reply = NULL;
+
+  spec.client = window->xwindow;
+  spec.mask = XCB_RES_CLIENT_ID_MASK_LOCAL_CLIENT_PID;
+
+  cookie = xcb_res_query_client_ids (xcb, 1, &spec);
+  reply = xcb_res_query_client_ids_reply (xcb, cookie, NULL);
+
+  if (reply == NULL)
+    return 0;
+
+  uint32_t pid = 0, *value;
+  xcb_res_client_id_value_iterator_t it;
+  for (it = xcb_res_query_client_ids_ids_iterator (reply);
+       it.rem;
+       xcb_res_client_id_value_next (&it))
+    {
+      spec = it.data->spec;
+      if (spec.mask & XCB_RES_CLIENT_ID_MASK_LOCAL_CLIENT_PID)
+        {
+          value = xcb_res_client_id_value_value (it.data);
+          pid = *value;
+          break;
+        }
+    }
+
+  free (reply);
+  return pid;
+}
+
 static void
 meta_window_x11_class_init (MetaWindowX11Class *klass)
 {
@@ -1501,6 +1540,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->update_icon = meta_window_x11_update_icon;
   window_class->update_main_monitor = meta_window_x11_update_main_monitor;
   window_class->main_monitor_changed = meta_window_x11_main_monitor_changed;
+  window_class->get_client_pid = meta_window_x11_get_client_pid;
 }
 
 void
