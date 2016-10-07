@@ -117,6 +117,7 @@ st_clipboard_provider (GdkXEvent *xevent_p,
   GdkDisplay *display = gdk_display_get_default ();
 
   if (xev->type != SelectionRequest ||
+      xev->xany.window != clipboard->priv->clipboard_window ||
       !clipboard->priv->clipboard_text)
     return GDK_FILTER_CONTINUE;
 
@@ -233,13 +234,15 @@ st_clipboard_x11_event_filter (GdkXEvent *xevent_p,
 {
   XEvent *xev = (XEvent *) xevent_p;
   EventFilterData *filter_data = user_data;
+  StClipboardPrivate *priv = filter_data->clipboard->priv;
   Atom actual_type;
   int actual_format, result;
   unsigned long nitems, bytes_after;
   unsigned char *data = NULL;
   GdkDisplay *display = gdk_display_get_default ();
 
-  if(xev->type != SelectionNotify)
+  if(xev->type != SelectionNotify ||
+     xev->xany.window != priv->clipboard_window)
     return GDK_FILTER_CONTINUE;
 
   if (xev->xselection.property == None)
