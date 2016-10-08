@@ -17,7 +17,7 @@ except ImportError:
         print('The Python simplejson module is required')
         sys.exit(1)
 
-from gi.repository import Gio
+from gi.repository import Gio, GLib
 
 SAMPLE_EXTENSION_FILES = {
     "extension.js": """
@@ -172,6 +172,30 @@ def disable_extension(uuid):
     settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
     print("%r is now disabled." % (uuid,), file=sys.stderr)
 
+def reload_extension(uuid):
+    settings = Gio.Settings(schema='org.gnome.shell')
+    extensions = settings.get_strv(ENABLED_EXTENSIONS_KEY)
+
+    if uuid not in extensions:
+        print("%r is not enabled or installed." % (uuid,), file=sys.stderr)
+        sys.exit(1)
+
+    proxy = Gio.DBusProxy.new_sync(Gio.bus_get_sync(Gio.BusType.SESSION, None),
+                                   Gio.DBusProxyFlags.NONE,
+                                   None,
+                                   'org.gnome.Shell',
+                                   '/org/gnome/Shell',
+                                   'org.gnome.Shell.Extensions',
+                                   None)
+    proxy.call_sync('ReloadExtension',
+                    GLib.Variant('(s)', (uuid,)),
+                    Gio.DBusCallFlags.NONE,
+                    -1,
+                    None)
+
+    print("%r reloaded." % (uuid,), file=sys.stderr)
+
+
 def main():
     parser = optparse.OptionParser()
     parser.add_option("-d", "--disable-extension", dest="disable",
@@ -180,6 +204,8 @@ def main():
                       help="Enable a GNOME Shell extension")
     parser.add_option("-c", "--create-extension", dest="create", action="store_true",
                       help="Create a new GNOME Shell extension")
+    parser.add_option("-r", "--reload-extension", dest="reload",
+                      help="Reload a GNOME Shell extension")
     options, args = parser.parse_args()
 
     if args:
@@ -194,6 +220,9 @@ def main():
 
     elif options.create:
         create_extension()
+
+    elif options.reload:
+        reload_extension(options.reload)
 
     else:
         parser.print_usage()
