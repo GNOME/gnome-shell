@@ -1363,7 +1363,7 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
                                     crtc_kms->rotation_prop_id,
                                     crtc_kms->rotation_map[hw_transform]) != 0)
         {
-          g_warning ("Failed to apply DRM plane transform: %m", hw_transform);
+          g_warning ("Failed to apply DRM plane transform %d: %m", hw_transform);
 
           /* Blacklist this HW transform, we want to fallback to our
            * fallbacks in this case.
