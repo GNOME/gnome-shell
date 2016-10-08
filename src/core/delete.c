@@ -185,6 +185,22 @@ meta_window_delete (MetaWindow  *window,
 void
 meta_window_kill (MetaWindow *window)
 {
+  pid_t pid = meta_window_get_client_pid (window);
+
+  if (pid > 0)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Killing %s with kill()\n",
+                  window->desc);
+
+      if (kill (pid, 9) == 0)
+        return;
+
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Failed to signal %s: %s\n",
+                  window->desc, strerror (errno));
+    }
+
   META_WINDOW_GET_CLASS (window)->kill (window);
 }
 

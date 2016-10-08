@@ -705,23 +705,6 @@ static void
 meta_window_x11_kill (MetaWindow *window)
 {
   meta_topic (META_DEBUG_WINDOW_OPS,
-              "Killing %s brutally\n",
-              window->desc);
-
-  if (!meta_window_is_remote (window) &&
-      window->net_wm_pid > 0)
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Killing %s with kill()\n",
-                  window->desc);
-
-      if (kill (window->net_wm_pid, 9) < 0)
-        meta_topic (META_DEBUG_WINDOW_OPS,
-                    "Failed to signal %s: %s\n",
-                    window->desc, strerror (errno));
-    }
-
-  meta_topic (META_DEBUG_WINDOW_OPS,
               "Disconnecting %s with XKillClient()\n",
               window->desc);
 
