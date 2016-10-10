@@ -1,3 +1,18 @@
+3.22.1
+======
+* Fix hidden network indicator on startup [Florian; #772249]
+* Fix order of windows with modal dialogs in window switcher [Florian; #747153]
+* Fix feedback loop between StClipboard and X11 bridge [Carlos; #760745]
+* Reliably match windows from Flatpak apps [Florian; #772615]
+* Misc. bug fixes [Philip; #742249]
+
+Contributors:
+  Philip Chimento, Carlos Garnacho, Florian Müllner
+
+Translations:
+  Inaki Larranaga Murgoitio [eu], Khaled Hosny [ar], BM [uz@cyrillic],
+  Milo Casagrande [it], Cheng-Chia Tseng [zh_TW], gogo [hr]
+
 3.22.0
 ======
 * Misc. bug fixes [Florian, Rui; #771391, #771536] #771656]
