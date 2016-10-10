@@ -1,3 +1,17 @@
+3.22.1
+======
+* Fix feedback loop between StClipboard and X11 bridge [Carlos; #760745]
+* Fall back gracefully if DRM plane rotation fails [Carlos; #772512]
+* Approximate native monitor backend behavior to X [Rui; #772176]
+* Fix crash on VT switch on wayland [Jonas; #771646]
+* Expose Flatpak ID for application matching [Florian; #772613, #772614]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Rui Matos, Florian Müllner, Olav Vitters
+
+Translations:
+  Inaki Larranaga Murgoitio [eu], Milo Casagrande [it]
+
 3.22.0
 ======
 * Fix wayland crashes [Jonas; #771305, #771345, #770940, #771495]
