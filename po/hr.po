@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2016-10-09 14:14+0000\n"
-"PO-Revision-Date: 2016-10-09 21:22+0200\n"
+"PO-Revision-Date: 2016-10-10 20:03+0200\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.9\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -491,11 +491,11 @@ msgstr "Dopusti pristup"
 
 #: js/ui/appDisplay.js:794
 msgid "Frequently used applications will appear here"
-msgstr "Učestalo korištene aplikacije će se pojaviti ovdje"
+msgstr "Najčešće korištene aplikacije će se pojaviti ovdje"
 
 #: js/ui/appDisplay.js:914
 msgid "Frequent"
-msgstr "Učestalo"
+msgstr "Najčešće"
 
 #: js/ui/appDisplay.js:921
 msgid "All"
@@ -699,7 +699,7 @@ msgstr "Lozinka:"
 #. static WEP
 #: js/ui/components/networkAgent.js:238
 msgid "Key: "
-msgstr "Tipka:"
+msgstr "Ključ:"
 
 #: js/ui/components/networkAgent.js:277
 msgid "Identity: "
@@ -751,7 +751,7 @@ msgstr "PIN:"
 
 #: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
 msgid "Mobile broadband network password"
-msgstr "Lozinka mreže mobilne interneta"
+msgstr "Lozinka mreže mobilnog interneta"
 
 #: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
 #: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
@@ -831,7 +831,7 @@ msgstr "Svjetski satovi"
 #, javascript-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "Odjavi %s"
+msgstr "Odjavi se %s"
 
 #: js/ui/endSessionDialog.js:65
 msgctxt "title"
@@ -890,7 +890,7 @@ msgstr "Ponovno pokreni"
 #: js/ui/endSessionDialog.js:96
 msgctxt "button"
 msgid "Power Off"
-msgstr "Isključivanje"
+msgstr "Isključi"
 
 #: js/ui/endSessionDialog.js:103
 msgctxt "title"
@@ -966,7 +966,7 @@ msgstr ""
 
 #: js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
-msgstr "Neke aplikacije su zauzete ili imaju nespremljen rad."
+msgstr "Neke aplikacije su zauzete ili imaju nespremljeni rad."
 
 #: js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
@@ -1056,7 +1056,7 @@ msgstr "Web stranica"
 
 #: js/ui/messageList.js:543
 msgid "Clear section"
-msgstr "Obriši odkeljak"
+msgstr "Obriši odjeljak"
 
 #: js/ui/messageTray.js:1486
 msgid "System Information"
@@ -1338,13 +1338,13 @@ msgstr "<nepoznato>"
 #: js/ui/status/network.js:451 js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Off"
-msgstr "%s isključen"
+msgstr "%s isključena"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:454
 #, javascript-format
 msgid "%s Connected"
-msgstr "%s povezan"
+msgstr "%s povezana"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
@@ -1352,7 +1352,7 @@ msgstr "%s povezan"
 #: js/ui/status/network.js:459
 #, javascript-format
 msgid "%s Unmanaged"
-msgstr "%s neupravljan"
+msgstr "%s neupravljana"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:462
@@ -1384,7 +1384,7 @@ msgstr "Nedostaje firmver za %s"
 #: js/ui/status/network.js:484
 #, javascript-format
 msgid "%s Unavailable"
-msgstr "%s nedostupan"
+msgstr "%s nedostupna"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:487
@@ -1394,7 +1394,7 @@ msgstr "%s neuspješno povezivanje"
 
 #: js/ui/status/network.js:503
 msgid "Wired Settings"
-msgstr "Žične postavke"
+msgstr "Postavke žične mreže"
 
 #: js/ui/status/network.js:545
 msgid "Mobile Broadband Settings"
@@ -1404,14 +1404,14 @@ msgstr "Mobilni internet"
 #: js/ui/status/network.js:588 js/ui/status/network.js:1305
 #, javascript-format
 msgid "%s Hardware Disabled"
-msgstr "%s hardverski onemogućen"
+msgstr "%s hardverski onemogućena"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: js/ui/status/network.js:592
 #, javascript-format
 msgid "%s Disabled"
-msgstr "%s onemogućen"
+msgstr "%s onemogućeno"
 
 #: js/ui/status/network.js:632
 msgid "Connect to Internet"
@@ -1475,7 +1475,7 @@ msgstr "%s pristupna točka aktivna"
 #: js/ui/status/network.js:1311
 #, javascript-format
 msgid "%s Not Connected"
-msgstr "%s nije povezan"
+msgstr "%s nije povezana"
 
 #: js/ui/status/network.js:1411
 msgid "connecting..."
@@ -1684,24 +1684,20 @@ msgid "Move to Workspace Down"
 msgstr "Premjesti na donji radni prostor"
 
 #: js/ui/windowMenu.js:136
-#, fuzzy
 msgid "Move to Monitor Up"
-msgstr "Pomakni za jedan _gore"
+msgstr "Premjesti na gornji zaslon"
 
 #: js/ui/windowMenu.js:142
-#, fuzzy
 msgid "Move to Monitor Down"
-msgstr "Pomakni ulazni izvor dolje"
+msgstr "Premjesti na donji zaslon"
 
 #: js/ui/windowMenu.js:148
-#, fuzzy
 msgid "Move to Monitor Left"
-msgstr "Premjesti prozor jednu radnu provršinu nalijevo"
+msgstr "Premjesti na lijevi zaslon"
 
 #: js/ui/windowMenu.js:154
-#, fuzzy
 msgid "Move to Monitor Right"
-msgstr "Premjesti prozor jednu radnu površinu udesno"
+msgstr "Premjesti na desni zaslon"
 
 #: src/calendar-server/evolution-calendar.desktop.in:3
 msgid "Evolution Calendar"
