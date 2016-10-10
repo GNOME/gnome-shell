@@ -72,8 +72,8 @@ const OsdWindowConstraint = new Lang.Class({
 
         // Recenter
         let [x, y] = actorBox.get_origin();
-        actorBox.set_origin(Math.floor(x + width / 2 - size / 2),
-                            Math.floor(y + height / 2 - size / 2));
+        actorBox.set_origin(Math.ceil(x + width / 2 - size / 2),
+                            Math.ceil(y + height / 2 - size / 2));
     }
 });
 
