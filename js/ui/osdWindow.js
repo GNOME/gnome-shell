@@ -109,8 +109,11 @@ const OsdWindow = new Lang.Class({
         this._reset();
 
         Main.layoutManager.connect('monitors-changed',
-                                   Lang.bind(this, this._monitorsChanged));
-        this._monitorsChanged();
+                                   Lang.bind(this, this._relayout));
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        themeContext.connect('notify::scale-factor',
+                             Lang.bind(this, this._relayout));
+        this._relayout();
         Main.uiGroup.add_child(this.actor);
     },
 
@@ -188,7 +191,7 @@ const OsdWindow = new Lang.Class({
         this.setLevel(null);
     },
 
-    _monitorsChanged: function() {
+    _relayout: function() {
         /* assume 110x110 on a 640x480 display and scale from there */
         let monitor = Main.layoutManager.monitors[this._monitorIndex];
         if (!monitor)
