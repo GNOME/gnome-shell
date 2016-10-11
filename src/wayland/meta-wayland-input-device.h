@@ -26,6 +26,7 @@
 #define META_WAYLAND_INPUT_DEVICE_H
 
 #include <glib-object.h>
+#include <stdint.h>
 
 #include "wayland/meta-wayland-types.h"
 
@@ -41,5 +42,7 @@ struct _MetaWaylandInputDeviceClass
 };
 
 MetaWaylandSeat * meta_wayland_input_device_get_seat (MetaWaylandInputDevice *input_device);
+
+uint32_t meta_wayland_input_device_next_serial (MetaWaylandInputDevice *input_device);
 
 #endif /* META_WAYLAND_INPUT_DEVICE_H */

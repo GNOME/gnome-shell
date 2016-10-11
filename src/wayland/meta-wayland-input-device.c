@@ -26,6 +26,10 @@
 
 #include "wayland/meta-wayland-input-device.h"
 
+#include <wayland-server.h>
+
+#include "wayland/meta-wayland-seat.h"
+
 enum
 {
   PROP_0,
@@ -49,6 +53,14 @@ meta_wayland_input_device_get_seat (MetaWaylandInputDevice *input_device)
     meta_wayland_input_device_get_instance_private (input_device);
 
   return priv->seat;
+}
+
+uint32_t
+meta_wayland_input_device_next_serial (MetaWaylandInputDevice *input_device)
+{
+  MetaWaylandSeat *seat = meta_wayland_input_device_get_seat (input_device);
+
+  return wl_display_next_serial (seat->wl_display);
 }
 
 static void
