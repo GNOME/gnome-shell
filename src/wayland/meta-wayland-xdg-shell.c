@@ -617,6 +617,12 @@ xdg_toplevel_role_commit (MetaWaylandSurfaceRole  *surface_role,
       return;
     }
 
+  window_geometry = meta_wayland_xdg_surface_get_window_geometry (xdg_surface);
+  meta_window_wayland_move_resize (window,
+                                   &xdg_surface_priv->acked_configure_serial,
+                                   window_geometry,
+                                   pending->dx, pending->dy);
+
   /* When we get to this point, we ought to have valid size hints */
   if (pending->has_new_min_size || pending->has_new_max_size)
     {
@@ -639,11 +645,6 @@ xdg_toplevel_role_commit (MetaWaylandSurfaceRole  *surface_role,
         }
     }
 
-  window_geometry = meta_wayland_xdg_surface_get_window_geometry (xdg_surface);
-  meta_window_wayland_move_resize (window,
-                                   &xdg_surface_priv->acked_configure_serial,
-                                   window_geometry,
-                                   pending->dx, pending->dy);
   xdg_surface_priv->acked_configure_serial.set = FALSE;
 }
 
