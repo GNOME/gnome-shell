@@ -249,11 +249,10 @@ meta_wayland_touch_update (MetaWaylandTouch   *touch,
   if (event->type == CLUTTER_TOUCH_BEGIN ||
       event->type == CLUTTER_TOUCH_END)
     {
-      MetaWaylandSurface *surface = touch_info->touch_surface->surface;
-      struct wl_client *client = wl_resource_get_client (surface->resource);
-      struct wl_display *display = wl_client_get_display (client);
+      MetaWaylandInputDevice *input_device = META_WAYLAND_INPUT_DEVICE (touch);
 
-      touch_info->slot_serial = wl_display_get_serial (display);
+      touch_info->slot_serial =
+        meta_wayland_input_device_next_serial (input_device);
     }
 
   touch_get_relative_coordinates (touch, touch_info->touch_surface->surface,
