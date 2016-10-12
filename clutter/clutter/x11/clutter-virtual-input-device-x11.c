@@ -27,6 +27,9 @@
 
 #include <glib-object.h>
 
+#include "clutter-x11.h"
+#include "X11/extensions/XTest.h"
+
 #include "clutter-virtual-input-device.h"
 #include "x11/clutter-virtual-input-device-x11.h"
 
@@ -61,6 +64,8 @@ clutter_virtual_input_device_x11_notify_button (ClutterVirtualInputDevice *virtu
                                                 uint32_t                   button,
                                                 ClutterButtonState         button_state)
 {
+  XTestFakeButtonEvent (clutter_x11_get_default_display (),
+                        button, button_state == CLUTTER_BUTTON_STATE_PRESSED, 0);
 }
 
 static void
@@ -69,6 +74,21 @@ clutter_virtual_input_device_x11_notify_key (ClutterVirtualInputDevice *virtual_
                                              uint32_t                   key,
                                              ClutterKeyState            key_state)
 {
+  XTestFakeKeyEvent (clutter_x11_get_default_display (),
+                     key, key_state == CLUTTER_KEY_STATE_PRESSED, 0);
+}
+
+static void
+clutter_virtual_input_device_x11_notify_keyval (ClutterVirtualInputDevice *virtual_device,
+						uint64_t                   time_us,
+						uint32_t                   keyval,
+						ClutterKeyState            key_state)
+{
+  KeyCode keycode;
+
+  keycode = XKeysymToKeycode (clutter_x11_get_default_display (), keyval);
+  XTestFakeKeyEvent (clutter_x11_get_default_display (),
+                     keycode, key_state == CLUTTER_KEY_STATE_PRESSED, 0);
 }
 
 static void
@@ -86,4 +106,5 @@ clutter_virtual_input_device_x11_class_init (ClutterVirtualInputDeviceX11Class *
   virtual_input_device_class->notify_absolute_motion = clutter_virtual_input_device_x11_notify_absolute_motion;
   virtual_input_device_class->notify_button = clutter_virtual_input_device_x11_notify_button;
   virtual_input_device_class->notify_key = clutter_virtual_input_device_x11_notify_key;
+  virtual_input_device_class->notify_keyval = clutter_virtual_input_device_x11_notify_keyval;
 }

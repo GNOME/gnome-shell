@@ -29,6 +29,7 @@
 
 #include "clutter-backend-x11.h"
 #include "clutter-input-device-xi2.h"
+#include "clutter-virtual-input-device-x11.h"
 #include "clutter-stage-x11.h"
 
 #include "clutter-backend.h"
@@ -1678,6 +1679,16 @@ clutter_device_manager_xi2_set_property (GObject      *gobject,
     }
 }
 
+static ClutterVirtualInputDevice *
+clutter_device_manager_xi2_create_virtual_device (ClutterDeviceManager   *manager,
+                                                  ClutterInputDeviceType  device_type)
+{
+  return g_object_new (CLUTTER_TYPE_VIRTUAL_INPUT_DEVICE_X11,
+                       "device-manager", manager,
+                       "device-type", device_type,
+                       NULL);
+}
+
 static void
 clutter_device_manager_xi2_class_init (ClutterDeviceManagerXI2Class *klass)
 {
@@ -1705,6 +1716,7 @@ clutter_device_manager_xi2_class_init (ClutterDeviceManagerXI2Class *klass)
   manager_class->get_core_device = clutter_device_manager_xi2_get_core_device;
   manager_class->get_device = clutter_device_manager_xi2_get_device;
   manager_class->select_stage_events = clutter_device_manager_xi2_select_stage_events;
+  manager_class->create_virtual_device = clutter_device_manager_xi2_create_virtual_device;
 }
 
 static void

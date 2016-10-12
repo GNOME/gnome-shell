@@ -382,6 +382,22 @@ AS_IF([test "x$SUPPORT_X11" = "x1"],
               [AC_MSG_ERROR([not found])]
         )
 
+        # XTEST (required)
+        AC_MSG_CHECKING([for XTest extension])
+        PKG_CHECK_EXISTS([xtst], [have_xtest=yes], [have_xtest=no])
+        AS_IF([test "x$have_xtest" = "xyes"],
+              [
+                AC_DEFINE(HAVE_XTEST, [1], [Define to 1 if we have the XTest X extension])
+
+                X11_LIBS="$X11_LIBS -lXtst"
+                X11_PC_FILES="$X11_PC_FILES xtst"
+                X11_EXTS="$X11_EXTS xtst"
+
+                AC_MSG_RESULT([found])
+              ],
+              [AC_MSG_ERROR([Not found])]
+        )
+
         # X Generic Extensions (optional)
         clutter_save_CPPFLAGS="$CPPFLAGS"
         CPPFLAGS="$CPPFLAGS $X11_CFLAGS"
