@@ -137,7 +137,7 @@ const Indicator = new Lang.Class({
         else if (nConnectedDevices == -1)
             this._item.label.text = _("Off");
         else
-            this._item.label.text = _("Not In Use");
+            this._item.label.text = _("On");
 
         this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _("Turn On") : _("Turn Off");
     },
