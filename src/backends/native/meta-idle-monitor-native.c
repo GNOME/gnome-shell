@@ -162,6 +162,7 @@ meta_idle_monitor_native_init (MetaIdleMonitorNative *monitor_native)
   MetaIdleMonitor *monitor = META_IDLE_MONITOR (monitor_native);
 
   monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
+  monitor_native->last_event_time = g_get_monotonic_time ();
 }
 
 void
