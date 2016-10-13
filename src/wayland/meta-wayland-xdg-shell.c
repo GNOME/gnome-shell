@@ -109,6 +109,11 @@ struct _MetaWaylandXdgPopup
 
   struct {
     MetaWaylandSurface *parent_surface;
+
+    /*
+     * The coordinates/dimensions in the placement rule are in logical pixel
+     * coordinate space, i.e. not scaled given what monitor the popup is on.
+     */
     MetaPlacementRule placement_rule;
 
     MetaWaylandSeat *grab_seat;
@@ -759,20 +764,35 @@ meta_wayland_xdg_toplevel_class_init (MetaWaylandXdgToplevelClass *klass)
 }
 
 static void
+scale_placement_rule (MetaPlacementRule  *placement_rule,
+                      MetaWaylandSurface *surface)
+{
+  int monitor_scale = surface->window->monitor->scale;
+
+  placement_rule->anchor_rect.x *= monitor_scale;
+  placement_rule->anchor_rect.y *= monitor_scale;
+  placement_rule->anchor_rect.width *= monitor_scale;
+  placement_rule->anchor_rect.height *= monitor_scale;
+  placement_rule->offset_x *= monitor_scale;
+  placement_rule->offset_y *= monitor_scale;
+  placement_rule->width *= monitor_scale;
+  placement_rule->height *= monitor_scale;
+}
+
+static void
 finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
 {
   MetaWaylandSurfaceRole *surface_role = META_WAYLAND_SURFACE_ROLE (xdg_popup);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWaylandSurface *parent_surface;
-  MetaPlacementRule placement_rule;
+  MetaPlacementRule scaled_placement_rule;
   MetaWaylandSeat *seat;
   uint32_t serial;
   MetaDisplay *display = meta_get_display ();
   MetaWindow *window;
 
   parent_surface = xdg_popup->setup.parent_surface;
-  placement_rule = xdg_popup->setup.placement_rule;
   seat = xdg_popup->setup.grab_seat;
   serial = xdg_popup->setup.grab_serial;
 
@@ -796,7 +816,10 @@ finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
   window = meta_window_wayland_new (display, surface);
   meta_wayland_surface_set_window (surface, window);
   meta_window_update_monitor (window, FALSE);
-  meta_window_place_with_placement_rule (window, &placement_rule);
+
+  scaled_placement_rule = xdg_popup->setup.placement_rule;
+  scale_placement_rule (&scaled_placement_rule, surface);
+  meta_window_place_with_placement_rule (window, &scaled_placement_rule);
 
   if (seat)
     {
