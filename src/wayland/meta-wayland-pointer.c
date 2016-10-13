@@ -425,9 +425,23 @@ default_grab_focus (MetaWaylandPointerGrab *grab,
 {
   MetaWaylandPointer *pointer = grab->pointer;
   MetaWaylandSeat *seat = meta_wayland_pointer_get_seat (pointer);
+  MetaDisplay *display = meta_get_display ();
 
   if (pointer->button_count > 0)
     return;
+
+  switch (display->event_route)
+    {
+    case META_EVENT_ROUTE_WINDOW_OP:
+    case META_EVENT_ROUTE_COMPOSITOR_GRAB:
+    case META_EVENT_ROUTE_FRAME_BUTTON:
+      return;
+      break;
+
+    case META_EVENT_ROUTE_NORMAL:
+    case META_EVENT_ROUTE_WAYLAND_POPUP:
+      break;
+    }
 
   if (meta_wayland_seat_has_pointer (seat))
     meta_wayland_pointer_set_focus (pointer, surface);
