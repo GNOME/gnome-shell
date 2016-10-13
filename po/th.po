@@ -1,11 +1,11 @@
 # Thai translation for mutter.
-# Copyright (C) 2003-2015 Free Software Foundation, Inc.
+# Copyright (C) 2003-2016 Free Software Foundation, Inc.
 # This file is distributed under the same license as the mutter package.
 #
 # Phakhinee Thangnithirat <sc442535@angsila.compsci.buu.ac.th>, 2003
 # Chanchai Junlouchai <taz@opentle.org>, 2003
 # Paisa Seeluangsawat <paisa@users.sf.net>, 2004.
-# Theppitak Karoonboonyanan <theppitak@gmail.com>, 2004-2012.
+# Theppitak Karoonboonyanan <theppitak@gmail.com>, 2004-2012, 2016.
 # Akom Chotiphantawanon <knight2000@gmail.com>, 2015.
 #
 msgid ""
@@ -14,8 +14,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2015-07-18 22:50+0000\n"
-"PO-Revision-Date: 2015-08-01 17:29+0700\n"
-"Last-Translator: Akom Chotiphantawanon <knight2000@gmail.com>\n"
+"PO-Revision-Date: 2016-10-13 11:22+0700\n"
+"Last-Translator: Theppitak Karoonboonyanan <theppitak@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
@@ -170,7 +170,7 @@ msgstr "ย้ายไปพื้นที่ทำงานขวา"
 
 #: ../data/50-mutter-navigation.xml.in.h:37
 msgid "Move to workspace above"
-msgstr "ย้ายไปพื้นที่ทำงานซ้าย"
+msgstr "ย้ายไปพื้นที่ทำงานบน"
 
 #: ../data/50-mutter-navigation.xml.in.h:38
 msgid "Move to workspace below"
