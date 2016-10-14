@@ -1235,7 +1235,6 @@ meta_renderer_native_initable_init (GInitable     *initable,
                                     GError       **error)
 {
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (initable);
-  drmModeRes *resources;
 
   renderer_native->gbm = gbm_create_device (renderer_native->kms_fd);
   if (!renderer_native->gbm)
@@ -1243,25 +1242,10 @@ meta_renderer_native_initable_init (GInitable     *initable,
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_FAILED,
                    "Failed to create gbm device");
-      goto err;
-    }
-
-  resources = drmModeGetResources (renderer_native->kms_fd);
-  if (!resources)
-    {
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   "drmModeGetResources failed");
-      goto err_resources;
+      return FALSE;
     }
 
   return TRUE;
-
-err_resources:
-  g_clear_pointer (&renderer_native->gbm, gbm_device_destroy);
-
-err:
-  return FALSE;
 }
 
 static void
