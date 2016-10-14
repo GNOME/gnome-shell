@@ -1531,31 +1531,19 @@ get_crtc_connectors (MetaMonitorManager *manager,
                      uint32_t          **connectors,
                      unsigned int       *n_connectors)
 {
-  GArray *connectors_array = NULL;
   unsigned int i;
+  GArray *connectors_array = g_array_new (FALSE, FALSE, sizeof (uint32_t));
 
   for (i = 0; i < manager->n_outputs; i++)
     {
       MetaOutput *output = &manager->outputs[i];
 
       if (output->crtc == crtc)
-        {
-          if (!connectors_array)
-            connectors_array = g_array_new (FALSE, FALSE, sizeof (uint32_t));
-          g_array_append_val (connectors_array, output->winsys_id);
-        }
+        g_array_append_val (connectors_array, output->winsys_id);
     }
 
-  if (connectors_array)
-    {
-      *connectors = (uint32_t *) connectors_array->data;
-      *n_connectors = connectors_array->len;
-    }
-  else
-    {
-      *connectors = NULL;
-      *n_connectors = 0;
-    }
+  *n_connectors = connectors_array->len;
+  *connectors = (uint32_t *) g_array_free (connectors_array, FALSE);
 }
 
 void
