@@ -3110,13 +3110,14 @@ meta_display_request_pad_osd (MetaDisplay        *display,
   WacomDevice *wacom_device;
 #endif
 
-  input_settings = meta_backend_get_input_settings (meta_get_backend ());
-
+  /* Avoid emitting the signal while there is an OSD being currently
+   * displayed, the first OSD will have to be dismissed before showing
+   * any other one.
+   */
   if (display->current_pad_osd)
-    {
-      clutter_actor_destroy (display->current_pad_osd);
-      display->current_pad_osd = NULL;
-    }
+    return;
+
+  input_settings = meta_backend_get_input_settings (meta_get_backend ());
 
   if (input_settings)
     {
