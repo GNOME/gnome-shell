@@ -79,6 +79,8 @@ struct _MetaInputSettingsPrivate
 
   GHashTable *mappable_devices;
 
+  ClutterVirtualInputDevice *virtual_pad_keyboard;
+
 #ifdef HAVE_LIBWACOM
   WacomDeviceDatabase *wacom_db;
 #endif
@@ -126,6 +128,8 @@ meta_input_settings_dispose (GObject *object)
 {
   MetaInputSettings *settings = META_INPUT_SETTINGS (object);
   MetaInputSettingsPrivate *priv = meta_input_settings_get_instance_private (settings);
+
+  g_clear_object (&priv->virtual_pad_keyboard);
 
   g_clear_object (&priv->mouse_settings);
   g_clear_object (&priv->touchpad_settings);
@@ -1600,6 +1604,74 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
   g_settings_set_strv (info->settings, "display", edid);
 }
 
+static void
+emulate_modifiers (ClutterVirtualInputDevice *device,
+                   ClutterModifierType        mods,
+                   ClutterKeyState            state)
+{
+  guint i;
+  struct {
+    ClutterModifierType mod;
+    guint keyval;
+  } mod_map[] = {
+    { CLUTTER_SHIFT_MASK, CLUTTER_KEY_Shift_L },
+    { CLUTTER_CONTROL_MASK, CLUTTER_KEY_Control_L },
+    { CLUTTER_MOD1_MASK, CLUTTER_KEY_Meta_L }
+  };
+
+  for (i = 0; i < G_N_ELEMENTS (mod_map); i++)
+    {
+      if ((mods & mod_map[i].mod) == 0)
+        continue;
+
+      clutter_virtual_input_device_notify_keyval (device,
+                                                  clutter_get_current_event_time (),
+                                                  mod_map[i].keyval, state);
+    }
+}
+
+static void
+meta_input_settings_emulate_keybinding (MetaInputSettings  *input_settings,
+                                        ClutterInputDevice *pad,
+                                        guint               button,
+                                        gboolean            is_press)
+{
+  MetaInputSettingsPrivate *priv;
+  ClutterKeyState state;
+  GSettings *settings;
+  guint key, mods;
+  gchar *accel;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  settings = lookup_pad_button_settings (pad, button);
+  accel = g_settings_get_string (settings, "keybinding");
+  g_object_unref (settings);
+
+  /* FIXME: This is appalling */
+  gtk_accelerator_parse (accel, &key, &mods);
+  g_free (accel);
+
+  if (!priv->virtual_pad_keyboard)
+    {
+      ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+
+      priv->virtual_pad_keyboard =
+        clutter_device_manager_create_virtual_device (manager,
+                                                      CLUTTER_KEYBOARD_DEVICE);
+    }
+
+  state = is_press ? CLUTTER_KEY_STATE_PRESSED : CLUTTER_KEY_STATE_RELEASED;
+
+  if (is_press)
+    emulate_modifiers (priv->virtual_pad_keyboard, mods, state);
+
+  clutter_virtual_input_device_notify_keyval (priv->virtual_pad_keyboard,
+                                              clutter_get_current_event_time (),
+                                              key, state);
+  if (!is_press)
+    emulate_modifiers (priv->virtual_pad_keyboard, mods, state);
+}
+
 static gdouble
 calculate_bezier_position (gdouble pos,
                            gdouble x1,
@@ -1684,6 +1756,9 @@ meta_input_settings_handle_pad_button (MetaInputSettings  *input_settings,
         meta_display_request_pad_osd (meta_get_display (), pad, FALSE);
       return TRUE;
     case G_DESKTOP_PAD_BUTTON_ACTION_KEYBINDING:
+      meta_input_settings_emulate_keybinding (input_settings, pad,
+                                              button, is_press);
+      return TRUE;
     case G_DESKTOP_PAD_BUTTON_ACTION_NONE:
     default:
       return FALSE;
