@@ -4,13 +4,14 @@
 # Reinout van Schouwen <reinouts@gnome.org>, 2003–2007, 2013, 2016 (nalezen).
 # Michiel Sikkes <michiels@gnome.org>, 2005.
 # Wouter Bolsterlee <wbolster@gnome.org>, 2006–2012.
+# Hannie Dumoleyn <hannie@ubuntu-nl.org>, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-23 22:41+0100\n"
-"PO-Revision-Date: 2015-06-20 14:14+0100\n"
-"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
+"PO-Revision-Date: 2016-10-17 18:24+0200\n"
+"Last-Translator: Hannie Dumoleyn <hannie@ubuntu-nl.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Project-Style: gnome\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: ../data/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
@@ -42,7 +43,7 @@ msgstr "Venster verplaatsen naar werkblad 4"
 
 #: ../data/50-mutter-navigation.xml.in.h:6
 msgid "Move window to last workspace"
-msgstr "Venster verplaatsen naar laatst gebruikte werkblad"
+msgstr "Venster verplaatsen naar laatste werkblad"
 
 #: ../data/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the left"
@@ -154,7 +155,7 @@ msgstr "Schakelen naar werkblad 4"
 
 #: ../data/50-mutter-navigation.xml.in.h:34
 msgid "Switch to last workspace"
-msgstr "Schakelen naar laatst gebruikte werkblad"
+msgstr "Overschakelen naar laatste werkblad"
 
 #: ../data/50-mutter-navigation.xml.in.h:35
 msgid "Move to workspace left"
