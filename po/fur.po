@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-20 08:27+0000\n"
-"PO-Revision-Date: 2016-08-22 22:52+0200\n"
+"POT-Creation-Date: 2016-10-11 08:09+0000\n"
+"PO-Revision-Date: 2016-10-17 12:13+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -18,6 +18,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Sisteme"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Mostre la liste des notifichis"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Met il focus ae notifiche ative"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Mostre la panoramiche"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Mostre dutis lis aplicazions"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Vierç il menù aplicazions"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 msgid "GNOME Shell Extension Preferences"
@@ -339,7 +363,7 @@ msgstr "No in liste?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:854
+#: js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(p.e., utent o %s)"
@@ -347,12 +371,12 @@ msgstr "(p.e., utent o %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
 #: js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Non utent:"
 
-#: js/gdm/loginDialog.js:1196
+#: js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Barcon di acès"
 
@@ -741,7 +765,7 @@ msgstr "Passowrd rêt mobil a bande largje"
 msgid "A password is required to connect to “%s”."
 msgstr "A covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1658
+#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1660
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
@@ -767,7 +791,7 @@ msgstr "Mi displâs, no je lade drete. Prove di gnûf"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:760
+#: js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "L'utent %s al è cognossût cumò come %s"
@@ -1479,11 +1503,11 @@ msgstr "VPN"
 msgid "VPN Off"
 msgstr "VPN distudât"
 
-#: js/ui/status/network.js:1697
+#: js/ui/status/network.js:1699
 msgid "Connection failed"
 msgstr "Conession falide"
 
-#: js/ui/status/network.js:1698
+#: js/ui/status/network.js:1700
 msgid "Activation of network connection failed"
 msgstr "Ativazion de conession di rêt falide"
 
@@ -1511,7 +1535,7 @@ msgstr "A restin %d∶%02d (%d%%)"
 #: js/ui/status/power.js:103
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d par sedi plene (%d%%)"
+msgstr "%d∶%02d par jessi plene (%d%%)"
 
 #: js/ui/status/power.js:131 js/ui/status/power.js:133
 #, javascript-format
@@ -1741,24 +1765,6 @@ msgstr "La password no pues sedi vueide"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialic di autenticazion anulât dal utent"
-
-#~ msgid "System"
-#~ msgstr "Sisteme"
-
-#~ msgid "Show the notification list"
-#~ msgstr "Mostre la liste des notifichis"
-
-#~ msgid "Focus the active notification"
-#~ msgstr "Met il focus ae notifiche ative"
-
-#~ msgid "Show the overview"
-#~ msgstr "Mostre la panoramiche"
-
-#~ msgid "Show all applications"
-#~ msgstr "Mostre dutis lis aplicazions"
-
-#~ msgid "Open the application menu"
-#~ msgstr "Vierç il menù aplicazions"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Mostre il dì de setemane tal calendari"
