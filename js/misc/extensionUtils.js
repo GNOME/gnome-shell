@@ -151,10 +151,10 @@ function createExtensionObject(uuid, dir, type) {
 
 function installImporter(extension) {
     let oldSearchPath = imports.searchPath.slice();  // make a copy
-    imports.searchPath = [extension.path];
+    imports.searchPath = [extension.dir.get_parent().get_path()];
     // importing a "subdir" creates a new importer object that doesn't affect
     // the global one
-    extension.imports = imports['.'];
+    extension.imports = imports[extension.uuid];
     imports.searchPath = oldSearchPath;
 }
 
