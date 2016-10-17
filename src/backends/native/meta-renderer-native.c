@@ -466,16 +466,19 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
   monitor_info = meta_renderer_view_get_monitor_info (view);
   if (monitor_info)
     {
-      int i;
+      unsigned int i;
 
-      for (i = 0; i < monitor_info->n_outputs; i++)
+      for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
-          MetaOutput *output = monitor_info->outputs[i];
-          int x = output->crtc->rect.x - monitor_info->rect.x;
-          int y = output->crtc->rect.y - monitor_info->rect.y;
+          MetaCRTC *crtc = &monitor_manager->crtcs[i];
+          int x = crtc->rect.x - monitor_info->rect.x;
+          int y = crtc->rect.y - monitor_info->rect.y;
+
+          if (crtc->logical_monitor != monitor_info)
+            continue;
 
           meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
-                                                    output->crtc,
+                                                    crtc,
                                                     x, y,
                                                     next_fb_id);
         }
@@ -530,16 +533,19 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
   monitor_info = meta_renderer_view_get_monitor_info (view);
   if (monitor_info)
     {
-      int i;
+      unsigned int i;
 
-      for (i = 0; i < monitor_info->n_outputs; i++)
+      for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
-          MetaOutput *output = monitor_info->outputs[i];
-          int x = output->crtc->rect.x - monitor_info->rect.x;
-          int y = output->crtc->rect.y - monitor_info->rect.y;
+          MetaCRTC *crtc = &monitor_manager->crtcs[i];
+          int x = crtc->rect.x - monitor_info->rect.x;
+          int y = crtc->rect.y - monitor_info->rect.y;
+
+          if (crtc->logical_monitor != monitor_info)
+            continue;
 
           meta_onscreen_native_flip_crtc (onscreen_native, flip_closure,
-                                          output->crtc, x, y,
+                                          crtc, x, y,
                                           &fb_in_use);
         }
     }
