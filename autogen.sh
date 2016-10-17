@@ -11,6 +11,8 @@ test -z "$srcdir" && srcdir=.
     exit 1
 }
 
+pushd $srcdir
+
 # Fetch submodules if needed
 if test ! -f src/gvc/Makefile.am || test ! -f data/theme/gnome-shell-sass/COPYING;
 then
@@ -18,6 +20,8 @@ then
   git submodule init
 fi
 git submodule update
+
+popd
 
 which gnome-autogen.sh || {
     echo "You need to install gnome-common from GNOME Git (or from"
