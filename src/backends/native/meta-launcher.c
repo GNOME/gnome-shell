@@ -284,6 +284,53 @@ on_active_changed (Login1Session *session,
   sync_active (self);
 }
 
+static guint
+count_devices_with_connectors (const gchar *seat_name,
+                               GList       *devices)
+{
+  g_autoptr (GHashTable) cards = NULL;
+  GList *tmp;
+
+  cards = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_object_unref);
+  for (tmp = devices; tmp != NULL; tmp = tmp->next)
+    {
+      GUdevDevice *device = tmp->data;
+      g_autoptr (GUdevDevice) parent_device = NULL;
+      const gchar *parent_device_type = NULL;
+      const gchar *card_seat;
+
+      /* filter out the real card devices, we only care about the connectors */
+      if (g_udev_device_get_device_type (device) != G_UDEV_DEVICE_TYPE_NONE)
+        continue;
+
+      /* only connectors have a modes attribute */
+      if (!g_udev_device_has_sysfs_attr (device, "modes"))
+        continue;
+
+      parent_device = g_udev_device_get_parent (device);
+
+      if (g_udev_device_get_device_type (parent_device) == G_UDEV_DEVICE_TYPE_CHAR)
+        parent_device_type = g_udev_device_get_property (parent_device, "DEVTYPE");
+
+      if (g_strcmp0 (parent_device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
+        continue;
+
+      card_seat = g_udev_device_get_property (parent_device, "ID_SEAT");
+
+      if (!card_seat)
+        card_seat = "seat0";
+
+      if (g_strcmp0 (seat_name, card_seat) != 0)
+        continue;
+
+      g_hash_table_insert (cards,
+                           (gpointer) g_udev_device_get_name (parent_device),
+                           g_steal_pointer (&parent_device));
+    }
+
+  return g_hash_table_size (cards);
+}
+
 static gchar *
 get_primary_gpu_path (const gchar *seat_name)
 {
@@ -305,6 +352,20 @@ get_primary_gpu_path (const gchar *seat_name)
   devices = g_udev_enumerator_execute (enumerator);
   if (!devices)
     goto out;
+
+  /* For now, fail on systems where some of the connectors
+   * are connected to secondary gpus.
+   *
+   * https://bugzilla.gnome.org/show_bug.cgi?id=771442
+   */
+  if (g_getenv ("MUTTER_ALLOW_HYBRID_GPUS") == NULL)
+    {
+      guint num_devices;
+
+      num_devices = count_devices_with_connectors (seat_name, devices);
+      if (num_devices != 1)
+        goto out;
+    }
 
   for (tmp = devices; tmp != NULL; tmp = tmp->next)
     {
@@ -362,9 +423,9 @@ get_primary_gpu_path (const gchar *seat_name)
         }
     }
 
+out:
   g_list_free_full (devices, g_object_unref);
 
-out:
   return path;
 }
 
