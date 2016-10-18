@@ -295,6 +295,11 @@ get_primary_gpu_path (const gchar *seat_name)
   g_udev_enumerator_add_match_name (enumerator, "card*");
   g_udev_enumerator_add_match_tag (enumerator, "seat");
 
+  /* We need to explicitly match the subsystem for now.
+   * https://bugzilla.gnome.org/show_bug.cgi?id=773224
+   */
+  g_udev_enumerator_add_match_subsystem (enumerator, "drm");
+
   devices = g_udev_enumerator_execute (enumerator);
   if (!devices)
     goto out;
