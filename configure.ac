@@ -96,7 +96,7 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             libxml-2.0
             gtk+-3.0 >= $GTK_MIN_VERSION
             atk-bridge-2.0
-            gjs-internals-1.0 >= $GJS_MIN_VERSION
+            gjs-1.0 >= $GJS_MIN_VERSION
             $recorder_modules
             gdk-x11-3.0 libsoup-2.4
             mutter-clutter-1.0 >= $CLUTTER_MIN_VERSION
@@ -114,7 +114,7 @@ fi
 PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
 PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
 
-PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
+PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-1.0 >= $GJS_MIN_VERSION)
 PKG_CHECK_MODULES(ST, mutter-clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
 PKG_CHECK_MODULES(SHELL_HOTPLUG_SNIFFER, gio-2.0 gdk-pixbuf-2.0)
