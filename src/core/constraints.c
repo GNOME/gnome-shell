@@ -465,7 +465,12 @@ place_window_if_needed(MetaWindow     *window,
       MetaWorkspace *cur_workspace;
       const MetaMonitorInfo *monitor_info;
 
-      meta_window_get_frame_rect (window, &placed_rect);
+      placed_rect = (MetaRectangle) {
+        .x = window->rect.x,
+        .y = window->rect.y,
+        .width = info->current.width,
+        .height = info->current.height
+      };
 
       orig_rect = info->orig;
 
