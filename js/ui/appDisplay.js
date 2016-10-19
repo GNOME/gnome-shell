@@ -60,6 +60,18 @@ const PAGE_SWITCH_TIME = 0.3;
 const VIEWS_SWITCH_TIME = 0.4;
 const VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
 
+const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
+const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
+
+const SwitcherooProxyInterface = '<node> \
+<interface name="net.hadess.SwitcherooControl"> \
+  <property name="HasDualGpu" type="b" access="read"/> \
+</interface> \
+</node>';
+
+const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
+let discreteGpuAvailable = false;
+
 function _getCategories(info) {
     let categoriesStr = info.get_categories();
     if (!categoriesStr)
@@ -969,6 +981,32 @@ const AppDisplay = new Lang.Class({
             initialView = Views.ALL;
         this._showView(initialView);
         this._updateFrequentVisibility();
+
+        Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
+                                   Gio.BusNameWatcherFlags.NONE,
+                                   Lang.bind(this, this._switcherooProxyAppeared),
+                                   Lang.bind(this, function() {
+                                       this._switcherooProxy = null;
+                                       this._updateDiscreteGpuAvailable();
+                                   }));
+    },
+
+    _updateDiscreteGpuAvailable: function() {
+        if (!this._switcherooProxy)
+            discreteGpuAvailable = false;
+        else
+            discreteGpuAvailable = this._switcherooProxy.HasDualGpu;
+    },
+
+    _switcherooProxyAppeared: function() {
+        this._switcherooProxy = new SwitcherooProxy(Gio.DBus.system, SWITCHEROO_BUS_NAME, SWITCHEROO_OBJECT_PATH,
+            Lang.bind(this, function(proxy, error) {
+                if (error) {
+                    log(error.message);
+                    return;
+                }
+                this._updateDiscreteGpuAvailable();
+            }));
     },
 
     animate: function(animationDirection, onComplete) {
@@ -1859,6 +1897,19 @@ const AppIconMenu = new Lang.Class({
                     this.emit('activate-window', null);
                 }));
                 this._appendSeparator();
+            }
+
+            if (discreteGpuAvailable &&
+                this._source.app.state == Shell.AppState.STOPPED &&
+                actions.indexOf('activate-discrete-gpu') == -1) {
+                this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
+                this._onDiscreteGpuMenuItem.connect('activate', Lang.bind(this, function() {
+                    if (this._source.app.state == Shell.AppState.STOPPED)
+                        this._source.animateLaunch();
+
+                    this._source.app.launch(0, -1, true);
+                    this.emit('activate-window', null);
+                }));
             }
 
             for (let i = 0; i < actions.length; i++) {
