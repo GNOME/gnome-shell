@@ -297,6 +297,7 @@ count_devices_with_connectors (const gchar *seat_name,
       GUdevDevice *device = tmp->data;
       g_autoptr (GUdevDevice) parent_device = NULL;
       const gchar *parent_device_type = NULL;
+      const gchar *parent_device_name = NULL;
       const gchar *card_seat;
 
       /* filter out the real card devices, we only care about the connectors */
@@ -323,8 +324,9 @@ count_devices_with_connectors (const gchar *seat_name,
       if (g_strcmp0 (seat_name, card_seat) != 0)
         continue;
 
+      parent_device_name = g_udev_device_get_name (parent_device);
       g_hash_table_insert (cards,
-                           (gpointer) g_udev_device_get_name (parent_device),
+                           (gpointer) parent_device_name ,
                            g_steal_pointer (&parent_device));
     }
 
