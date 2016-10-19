@@ -1501,7 +1501,7 @@ const NMVPNSection = new Lang.Class({
         if (nItems > 1) {
             let appSys = Shell.AppSystem.get_default();
             let app = appSys.lookup_app('gnome-network-panel.desktop');
-            app.launch(0, -1);
+            app.launch(0, -1, false);
         } else {
             let connection = this._connections[0];
             Util.spawnApp(['gnome-control-center', 'network', 'show-device',

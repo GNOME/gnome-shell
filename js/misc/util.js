@@ -94,7 +94,7 @@ function spawnApp(argv) {
                                                       Gio.AppInfoCreateFlags.SUPPORTS_STARTUP_NOTIFICATION);
 
         let context = global.create_app_launch_context(0, -1);
-        app.launch([], context);
+        app.launch([], context, false);
     } catch(err) {
         _handleSpawnError(argv[0], err);
     }
