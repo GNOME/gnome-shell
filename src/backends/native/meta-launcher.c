@@ -47,6 +47,8 @@
 #include "meta-idle-monitor-native.h"
 #include "meta-renderer-native.h"
 
+#define DRM_CARD_UDEV_DEVICE_TYPE "drm_minor"
+
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevDevice, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevClient, g_object_unref)
 G_DEFINE_AUTOPTR_CLEANUP_FUNC(GUdevEnumerator, g_object_unref)
@@ -310,10 +312,15 @@ get_primary_gpu_path (const gchar *seat_name)
       g_autoptr (GUdevDevice) pci_device = NULL;
       GUdevDevice *dev = tmp->data;
       gint boot_vga;
+      const gchar *device_type;
       const gchar *device_seat;
 
       /* filter out devices that are not character device, like card0-VGA-1 */
       if (g_udev_device_get_device_type (dev) != G_UDEV_DEVICE_TYPE_CHAR)
+        continue;
+
+      device_type = g_udev_device_get_property (dev, "DEVTYPE");
+      if (g_strcmp0 (device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
         continue;
 
       device_seat = g_udev_device_get_property (dev, "ID_SEAT");
