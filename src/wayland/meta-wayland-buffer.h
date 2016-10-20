@@ -46,7 +46,9 @@ G_DECLARE_FINAL_TYPE (MetaWaylandBuffer, meta_wayland_buffer,
                       META, WAYLAND_BUFFER, GObject);
 
 MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resource    *resource);
-CoglTexture *           meta_wayland_buffer_ensure_texture      (MetaWaylandBuffer     *buffer);
+gboolean                meta_wayland_buffer_attach              (MetaWaylandBuffer     *buffer,
+                                                                 GError               **error);
+CoglTexture *           meta_wayland_buffer_get_texture         (MetaWaylandBuffer     *buffer);
 void                    meta_wayland_buffer_process_damage      (MetaWaylandBuffer     *buffer,
                                                                  cairo_region_t        *region);
 

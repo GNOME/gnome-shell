@@ -27,8 +27,10 @@
 #include "meta-wayland-buffer.h"
 
 #include <clutter/clutter.h>
-#include <cogl/cogl-wayland-server.h>
+#include <cogl/cogl-egl.h>
 #include <meta/util.h>
+
+#include "backends/meta-backend-private.h"
 
 enum
 {
@@ -79,79 +81,301 @@ meta_wayland_buffer_from_resource (struct wl_resource *resource)
   return buffer;
 }
 
-CoglTexture *
-meta_wayland_buffer_ensure_texture (MetaWaylandBuffer *buffer)
+typedef enum _MetaWaylandBufferType
 {
-  CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-  CoglError *catch_error = NULL;
-  CoglTexture *texture;
-  struct wl_shm_buffer *shm_buffer;
+  META_WAYLAND_BUFFER_TYPE_UNKNOWN,
+  META_WAYLAND_BUFFER_TYPE_SHM,
+  META_WAYLAND_BUFFER_TYPE_EGL_IMAGE,
+} MetaWaylandBufferType;
 
-  g_return_val_if_fail (buffer->resource, NULL);
+static MetaWaylandBufferType
+determine_buffer_type (MetaWaylandBuffer *buffer)
+{
+  EGLint format;
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  EGLDisplay egl_display = cogl_egl_context_get_egl_display (cogl_context);
+
+  if (wl_shm_buffer_get (buffer->resource) != NULL)
+    return META_WAYLAND_BUFFER_TYPE_SHM;
+
+
+  if (meta_egl_query_wayland_buffer (egl, egl_display, buffer->resource,
+                                     EGL_TEXTURE_FORMAT, &format,
+                                     NULL))
+    return META_WAYLAND_BUFFER_TYPE_EGL_IMAGE;
+
+  return META_WAYLAND_BUFFER_TYPE_UNKNOWN;
+}
+
+static void
+shm_buffer_get_cogl_pixel_format (struct wl_shm_buffer  *shm_buffer,
+                                  CoglPixelFormat       *format_out,
+                                  CoglTextureComponents *components_out)
+{
+  CoglPixelFormat format;
+  CoglTextureComponents components = COGL_TEXTURE_COMPONENTS_RGBA;
+
+  switch (wl_shm_buffer_get_format (shm_buffer))
+    {
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+    case WL_SHM_FORMAT_ARGB8888:
+      format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
+      break;
+    case WL_SHM_FORMAT_XRGB8888:
+      format = COGL_PIXEL_FORMAT_ARGB_8888;
+      components = COGL_TEXTURE_COMPONENTS_RGB;
+      break;
+#elif G_BYTE_ORDER == G_LITTLE_ENDIAN
+    case WL_SHM_FORMAT_ARGB8888:
+      format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+      break;
+    case WL_SHM_FORMAT_XRGB8888:
+      format = COGL_PIXEL_FORMAT_BGRA_8888;
+      components = COGL_TEXTURE_COMPONENTS_RGB;
+      break;
+#endif
+    default:
+      g_warn_if_reached ();
+      format = COGL_PIXEL_FORMAT_ARGB_8888;
+    }
+
+  if (format_out)
+    *format_out = format;
+  if (components_out)
+    *components_out = components;
+}
+
+static gboolean
+shm_buffer_attach (MetaWaylandBuffer *buffer,
+                   GError           **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  struct wl_shm_buffer *shm_buffer;
+  int stride, width, height;
+  CoglPixelFormat format;
+  CoglTextureComponents components;
+  CoglBitmap *bitmap;
+  CoglTexture *texture;
 
   if (buffer->texture)
-    goto out;
+    return TRUE;
 
   shm_buffer = wl_shm_buffer_get (buffer->resource);
+  stride = wl_shm_buffer_get_stride (shm_buffer);
+  width = wl_shm_buffer_get_width (shm_buffer);
+  height = wl_shm_buffer_get_height (shm_buffer);
 
-  if (shm_buffer)
-    wl_shm_buffer_begin_access (shm_buffer);
+  wl_shm_buffer_begin_access (shm_buffer);
 
-  texture = COGL_TEXTURE (cogl_wayland_texture_2d_new_from_buffer (ctx,
-                                                                   buffer->resource,
-                                                                   &catch_error));
+  shm_buffer_get_cogl_pixel_format (shm_buffer, &format, &components);
 
-  if (shm_buffer)
-    wl_shm_buffer_end_access (shm_buffer);
+  bitmap = cogl_bitmap_new_for_data (cogl_context,
+                                     width, height,
+                                     format,
+                                     stride,
+                                     wl_shm_buffer_get_data (shm_buffer));
 
-  if (!texture)
-    {
-      meta_warning ("Could not import pending buffer, ignoring commit: %s\n",
-                    catch_error->message);
-      cogl_error_free (catch_error);
-      goto out;
-    }
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_bitmap (bitmap));
+  cogl_texture_set_components (COGL_TEXTURE (texture), components);
+
+  cogl_object_unref (bitmap);
+
+  if (!cogl_texture_allocate (COGL_TEXTURE (texture), error))
+    g_clear_pointer (&texture, cogl_object_unref);
+
+  wl_shm_buffer_end_access (shm_buffer);
 
   buffer->texture = texture;
 
- out:
+  if (!buffer->texture)
+    return FALSE;
+
+  return TRUE;
+}
+
+static gboolean
+egl_image_buffer_attach (MetaWaylandBuffer *buffer,
+                         GError           **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  EGLDisplay egl_display = cogl_egl_context_get_egl_display (cogl_context);
+  EGLContext egl_context = cogl_egl_context_get_egl_context (cogl_context);
+  int format, width, height;
+  CoglPixelFormat cogl_format;
+  EGLImageKHR egl_image;
+  CoglTexture2D *texture;
+
+  if (buffer->texture)
+    return TRUE;
+
+  if (!meta_egl_query_wayland_buffer (egl, egl_display, buffer->resource,
+                                      EGL_TEXTURE_FORMAT, &format,
+                                      error))
+    return FALSE;
+
+  if (!meta_egl_query_wayland_buffer (egl, egl_display, buffer->resource,
+                                      EGL_WIDTH, &width,
+                                      error))
+    return FALSE;
+
+  if (!meta_egl_query_wayland_buffer (egl, egl_display, buffer->resource,
+                                      EGL_HEIGHT, &height,
+                                      error))
+    return FALSE;
+
+  switch (format)
+    {
+    case EGL_TEXTURE_RGB:
+      cogl_format = COGL_PIXEL_FORMAT_RGB_888;
+      break;
+    case EGL_TEXTURE_RGBA:
+      cogl_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
+      break;
+    default:
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Unsupported buffer format %d", format);
+      return FALSE;
+    }
+
+  egl_image = meta_egl_create_image (egl, egl_display, egl_context,
+                                     EGL_WAYLAND_BUFFER_WL, buffer->resource,
+                                     NULL,
+                                     error);
+  if (egl_image == EGL_NO_IMAGE_KHR)
+    return FALSE;
+
+  texture = cogl_egl_texture_2d_new_from_image (cogl_context,
+                                                width, height,
+                                                cogl_format,
+                                                egl_image,
+                                                error);
+
+  meta_egl_destroy_image (egl, egl_display, egl_image, NULL);
+
+  if (!texture)
+    return FALSE;
+
+  buffer->texture = COGL_TEXTURE (texture);
+
+  return TRUE;
+}
+
+gboolean
+meta_wayland_buffer_attach (MetaWaylandBuffer *buffer,
+                            GError           **error)
+{
+  MetaWaylandBufferType buffer_type;
+
+  g_return_val_if_fail (buffer->resource, FALSE);
+
+  buffer_type = determine_buffer_type (buffer);
+
+  switch (buffer_type)
+    {
+    case META_WAYLAND_BUFFER_TYPE_SHM:
+      return shm_buffer_attach (buffer, error);
+    case META_WAYLAND_BUFFER_TYPE_EGL_IMAGE:
+      return egl_image_buffer_attach (buffer, error);
+    case META_WAYLAND_BUFFER_TYPE_UNKNOWN:
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Unknown buffer type");
+      return FALSE;
+    }
+
+  g_assert_not_reached ();
+}
+
+CoglTexture *
+meta_wayland_buffer_get_texture (MetaWaylandBuffer *buffer)
+{
   return buffer->texture;
+}
+
+static gboolean
+process_shm_buffer_damage (MetaWaylandBuffer *buffer,
+                           cairo_region_t    *region,
+                           GError           **error)
+{
+  struct wl_shm_buffer *shm_buffer;
+  int i, n_rectangles;
+  gboolean set_texture_failed = FALSE;
+
+  n_rectangles = cairo_region_num_rectangles (region);
+
+  shm_buffer = wl_shm_buffer_get (buffer->resource);
+  wl_shm_buffer_begin_access (shm_buffer);
+
+  for (i = 0; i < n_rectangles; i++)
+    {
+      const uint8_t *data = wl_shm_buffer_get_data (shm_buffer);
+      int32_t stride = wl_shm_buffer_get_stride (shm_buffer);
+      CoglPixelFormat format;
+      int bpp;
+      cairo_rectangle_int_t rect;
+
+      shm_buffer_get_cogl_pixel_format (shm_buffer, &format, NULL);
+      bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
+      cairo_region_get_rectangle (region, i, &rect);
+
+      if (!_cogl_texture_set_region (buffer->texture,
+                                     rect.width, rect.height,
+                                     format,
+                                     stride,
+                                     data + rect.x * bpp + rect.y * stride,
+                                     rect.x, rect.y,
+                                     0,
+                                     error))
+        {
+          set_texture_failed = TRUE;
+          break;
+        }
+    }
+
+  wl_shm_buffer_end_access (shm_buffer);
+
+  return !set_texture_failed;
 }
 
 void
 meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
                                     cairo_region_t    *region)
 {
-  struct wl_shm_buffer *shm_buffer;
+  MetaWaylandBufferType buffer_type;
+  gboolean res = FALSE;
+  GError *error = NULL;
 
-  shm_buffer = wl_shm_buffer_get (buffer->resource);
+  g_return_if_fail (buffer->resource);
 
-  if (shm_buffer)
+  buffer_type = determine_buffer_type (buffer);
+
+  switch (buffer_type)
     {
-      int i, n_rectangles;
+    case META_WAYLAND_BUFFER_TYPE_SHM:
+      res = process_shm_buffer_damage (buffer, region, &error);
+    case META_WAYLAND_BUFFER_TYPE_EGL_IMAGE:
+      res = TRUE;
+      break;
+    case META_WAYLAND_BUFFER_TYPE_UNKNOWN:
+      g_set_error (&error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "Unknown buffer type");
+      res = FALSE;
+    }
 
-      n_rectangles = cairo_region_num_rectangles (region);
-
-      wl_shm_buffer_begin_access (shm_buffer);
-
-      for (i = 0; i < n_rectangles; i++)
-        {
-          CoglError *error = NULL;
-          cairo_rectangle_int_t rect;
-          cairo_region_get_rectangle (region, i, &rect);
-          cogl_wayland_texture_set_region_from_shm_buffer (buffer->texture,
-                                                           rect.x, rect.y, rect.width, rect.height,
-                                                           shm_buffer,
-                                                           rect.x, rect.y, 0, &error);
-
-          if (error)
-            {
-              meta_warning ("Failed to set texture region: %s\n", error->message);
-              cogl_error_free (error);
-            }
-        }
-
-      wl_shm_buffer_end_access (shm_buffer);
+  if (!res)
+    {
+      g_warning ("Failed to process Wayland buffer damage: %s", error->message);
+      g_error_free (error);
     }
 }
 

@@ -738,21 +738,29 @@ apply_pending_state (MetaWaylandSurface      *surface,
       if (pending->buffer)
         meta_wayland_surface_ref_buffer_use_count (surface);
 
-      if (switched_buffer && pending->buffer)
+      if (pending->buffer)
         {
-          CoglTexture *texture;
+          GError *error = NULL;
 
-          texture = meta_wayland_buffer_ensure_texture (pending->buffer);
-          if (!texture)
+          if (!meta_wayland_buffer_attach (pending->buffer, &error))
             {
+              g_warning ("Could not import pending buffer: %s", error->message);
               wl_resource_post_error (surface->resource, WL_DISPLAY_ERROR_NO_MEMORY,
-                              "Failed to create a texture for surface %i",
-                              wl_resource_get_id (surface->resource));
-
+                                      "Failed to create a texture for surface %i: %s",
+                                      wl_resource_get_id (surface->resource),
+                                      error->message);
+              g_error_free (error);
               goto cleanup;
             }
-          meta_surface_actor_wayland_set_texture (surface_actor_wayland,
-                                                  texture);
+
+          if (switched_buffer)
+            {
+              CoglTexture *texture;
+
+              texture = meta_wayland_buffer_get_texture (pending->buffer);
+              meta_surface_actor_wayland_set_texture (surface_actor_wayland,
+                                                      texture);
+            }
         }
 
       /* If the newly attached buffer is going to be accessed directly without
