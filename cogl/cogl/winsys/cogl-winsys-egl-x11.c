@@ -48,6 +48,7 @@
 
 #include "cogl-texture-pixmap-x11-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-texture-2d.h"
 #include "cogl-error-private.h"
 #include "cogl-poll-private.h"
 
@@ -741,12 +742,12 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
                     COGL_PIXEL_FORMAT_RGB_888);
 
   egl_tex_pixmap->texture = COGL_TEXTURE (
-    _cogl_egl_texture_2d_new_from_image (ctx,
-                                         tex->width,
-                                         tex->height,
-                                         texture_format,
-                                         egl_tex_pixmap->image,
-                                         NULL));
+    cogl_egl_texture_2d_new_from_image (ctx,
+                                        tex->width,
+                                        tex->height,
+                                        texture_format,
+                                        egl_tex_pixmap->image,
+                                        NULL));
 
   tex_pixmap->winsys = egl_tex_pixmap;
 

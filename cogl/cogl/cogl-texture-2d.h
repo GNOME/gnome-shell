@@ -40,6 +40,10 @@
 #include "cogl-context.h"
 #include "cogl-bitmap.h"
 
+#ifdef COGL_HAS_EGL_SUPPORT
+#include "cogl-egl-defines.h"
+#endif
+
 COGL_BEGIN_DECLS
 
 /**
@@ -226,6 +230,19 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
  */
 CoglTexture2D *
 cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap);
+
+#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
+/* NB: The reason we require the width, height and format to be passed
+ * even though they may seem redundant is because GLES 1/2 don't
+ * provide a way to query these properties. */
+CoglTexture2D *
+cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
+                                    int width,
+                                    int height,
+                                    CoglPixelFormat format,
+                                    EGLImageKHR image,
+                                    CoglError **error);
+#endif
 
 COGL_END_DECLS
 
