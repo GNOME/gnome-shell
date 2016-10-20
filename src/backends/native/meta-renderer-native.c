@@ -846,6 +846,12 @@ static gboolean
 meta_renderer_native_init_egl_context (CoglContext *cogl_context,
                                        GError     **error)
 {
+#ifdef HAVE_EGL_DEVICE
+  CoglRenderer *cogl_renderer = cogl_context->display->renderer;
+  CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
+  MetaRendererNative *renderer_native = egl_renderer->platform;
+#endif
+
   COGL_FLAGS_SET (cogl_context->features,
                   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT, TRUE);
   /* TODO: remove this deprecated feature */
@@ -858,6 +864,12 @@ meta_renderer_native_init_egl_context (CoglContext *cogl_context,
   COGL_FLAGS_SET (cogl_context->winsys_features,
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
+
+#ifdef HAVE_EGL_DEVICE
+  if (renderer_native->mode == META_RENDERER_NATIVE_MODE_EGL_DEVICE)
+    COGL_FLAGS_SET (cogl_context->features,
+                    COGL_FEATURE_ID_TEXTURE_EGL_IMAGE_EXTERNAL, TRUE);
+#endif
 
   return TRUE;
 }

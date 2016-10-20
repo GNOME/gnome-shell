@@ -86,6 +86,7 @@ typedef enum _MetaWaylandBufferType
   META_WAYLAND_BUFFER_TYPE_UNKNOWN,
   META_WAYLAND_BUFFER_TYPE_SHM,
   META_WAYLAND_BUFFER_TYPE_EGL_IMAGE,
+  META_WAYLAND_BUFFER_TYPE_EGL_STREAM,
 } MetaWaylandBufferType;
 
 static MetaWaylandBufferType
@@ -106,6 +107,9 @@ determine_buffer_type (MetaWaylandBuffer *buffer)
                                      EGL_TEXTURE_FORMAT, &format,
                                      NULL))
     return META_WAYLAND_BUFFER_TYPE_EGL_IMAGE;
+
+  if (meta_wayland_is_egl_stream_buffer (buffer))
+    return META_WAYLAND_BUFFER_TYPE_EGL_STREAM;
 
   return META_WAYLAND_BUFFER_TYPE_UNKNOWN;
 }
@@ -276,6 +280,39 @@ egl_image_buffer_attach (MetaWaylandBuffer *buffer,
   return TRUE;
 }
 
+static gboolean
+egl_stream_buffer_attach (MetaWaylandBuffer  *buffer,
+                          GError            **error)
+{
+  MetaWaylandEglStream *stream;
+
+  stream = buffer->egl_stream.stream;
+  if (!stream)
+    stream = meta_wayland_egl_stream_new (buffer, error);
+
+  if (!stream)
+    return FALSE;
+
+  buffer->egl_stream.stream = stream;
+
+  if (!buffer->texture)
+    {
+      CoglTexture2D *texture;
+
+      texture = meta_wayland_egl_stream_create_texture (stream, error);
+      if (!texture)
+        return FALSE;
+
+      buffer->texture = COGL_TEXTURE (texture);
+      buffer->is_y_inverted = meta_wayland_egl_stream_is_y_inverted (stream);
+    }
+
+  if (!meta_wayland_egl_stream_attach (stream, error))
+    return FALSE;
+
+  return TRUE;
+}
+
 gboolean
 meta_wayland_buffer_attach (MetaWaylandBuffer *buffer,
                             GError           **error)
@@ -292,6 +329,9 @@ meta_wayland_buffer_attach (MetaWaylandBuffer *buffer,
       return shm_buffer_attach (buffer, error);
     case META_WAYLAND_BUFFER_TYPE_EGL_IMAGE:
       return egl_image_buffer_attach (buffer, error);
+    case META_WAYLAND_BUFFER_TYPE_EGL_STREAM:
+      return egl_stream_buffer_attach (buffer, error);
+      break;
     case META_WAYLAND_BUFFER_TYPE_UNKNOWN:
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_FAILED,
@@ -306,6 +346,15 @@ CoglTexture *
 meta_wayland_buffer_get_texture (MetaWaylandBuffer *buffer)
 {
   return buffer->texture;
+}
+
+CoglSnippet *
+meta_wayland_buffer_create_snippet (MetaWaylandBuffer *buffer)
+{
+  if (!buffer->egl_stream.stream)
+    return NULL;
+
+  return meta_wayland_egl_stream_create_snippet ();
 }
 
 gboolean
@@ -376,6 +425,7 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
     case META_WAYLAND_BUFFER_TYPE_SHM:
       res = process_shm_buffer_damage (buffer, region, &error);
     case META_WAYLAND_BUFFER_TYPE_EGL_IMAGE:
+    case META_WAYLAND_BUFFER_TYPE_EGL_STREAM:
       res = TRUE;
       break;
     case META_WAYLAND_BUFFER_TYPE_UNKNOWN:
@@ -398,6 +448,7 @@ meta_wayland_buffer_finalize (GObject *object)
   MetaWaylandBuffer *buffer = META_WAYLAND_BUFFER (object);
 
   g_clear_pointer (&buffer->texture, cogl_object_unref);
+  g_clear_object (&buffer->egl_stream.stream);
 
   G_OBJECT_CLASS (meta_wayland_buffer_parent_class)->finalize (object);
 }

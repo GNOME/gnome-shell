@@ -293,6 +293,8 @@ libmutter_la_SOURCES +=				\
 	wayland/meta-wayland-data-device.c      \
 	wayland/meta-wayland-data-device.h      \
 	wayland/meta-wayland-data-device-private.h	\
+	wayland/meta-wayland-egl-stream.c	\
+	wayland/meta-wayland-egl-stream.h	\
 	wayland/meta-wayland-input-device.c	\
 	wayland/meta-wayland-input-device.h	\
 	wayland/meta-wayland-pointer-gestures.c	\
