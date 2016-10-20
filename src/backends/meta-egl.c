@@ -63,6 +63,10 @@ struct _MetaEgl
   PFNEGLSTREAMCONSUMERACQUIREATTRIBEXTPROC eglStreamConsumerAcquireAttribEXT;
 
   PFNEGLSTREAMCONSUMERGLTEXTUREEXTERNALKHRPROC eglStreamConsumerGLTextureExternalKHR;
+
+  PFNEGLSTREAMCONSUMERACQUIREKHRPROC eglStreamConsumerAcquireKHR;
+
+  PFNEGLCREATESTREAMFROMFILEDESCRIPTORKHRPROC eglCreateStreamFromFileDescriptorKHR;
 };
 
 G_DEFINE_TYPE (MetaEgl, meta_egl, G_TYPE_OBJECT)
@@ -655,6 +659,45 @@ meta_egl_stream_consumer_gl_texture_external (MetaEgl     *egl,
   return TRUE;
 }
 
+gboolean
+meta_egl_stream_consumer_acquire (MetaEgl     *egl,
+                                  EGLDisplay   display,
+                                  EGLStreamKHR stream,
+                                  GError     **error)
+{
+  if (!is_egl_proc_valid (egl->eglStreamConsumerAcquireKHR, error))
+    return FALSE;
+
+  if (!egl->eglStreamConsumerAcquireKHR (display, stream))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+EGLStreamKHR
+meta_egl_create_stream_from_file_descriptor (MetaEgl                   *egl,
+                                             EGLDisplay                 display,
+                                             EGLNativeFileDescriptorKHR file_descriptor,
+                                             GError                   **error)
+{
+  EGLStreamKHR stream;
+
+  if (!is_egl_proc_valid (egl->eglCreateStreamFromFileDescriptorKHR, error))
+    return EGL_NO_STREAM_KHR;
+
+  stream = egl->eglCreateStreamFromFileDescriptorKHR (display, file_descriptor);
+  if (stream == EGL_NO_STREAM_KHR)
+    {
+      set_egl_error (error);
+      return EGL_NO_STREAM_KHR;
+    }
+
+  return stream;
+}
+
 #define GET_EGL_PROC_ADDR(proc) \
   egl->proc = (void *) eglGetProcAddress (#proc);
 
@@ -694,6 +737,10 @@ meta_egl_constructed (GObject *object)
   GET_EGL_PROC_ADDR (eglStreamConsumerAcquireAttribEXT);
 
   GET_EGL_PROC_ADDR (eglStreamConsumerGLTextureExternalKHR);
+
+  GET_EGL_PROC_ADDR (eglStreamConsumerAcquireKHR);
+
+  GET_EGL_PROC_ADDR (eglCreateStreamFromFileDescriptorKHR);
 }
 
 #undef GET_EGL_PROC_ADDR
