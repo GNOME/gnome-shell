@@ -41,6 +41,11 @@ struct _MetaEgl
 
   PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT;
 
+  PFNEGLCREATEIMAGEKHRPROC eglCreateImageKHR;
+  PFNEGLDESTROYIMAGEKHRPROC eglDestroyImageKHR;
+
+  PFNEGLQUERYWAYLANDBUFFERWL eglQueryWaylandBufferWL;
+
   PFNEGLQUERYDEVICESEXTPROC eglQueryDevicesEXT;
   PFNEGLQUERYDEVICESTRINGEXTPROC eglQueryDeviceStringEXT;
 
@@ -327,6 +332,69 @@ meta_egl_get_platform_display (MetaEgl      *egl,
   return display;
 }
 
+EGLImageKHR
+meta_egl_create_image (MetaEgl        *egl,
+                       EGLDisplay      display,
+                       EGLContext      context,
+                       EGLenum         target,
+                       EGLClientBuffer buffer,
+                       const EGLint   *attrib_list,
+                       GError        **error)
+{
+  EGLImageKHR image;
+
+  if (!is_egl_proc_valid (egl->eglCreateImageKHR, error))
+    return EGL_NO_IMAGE_KHR;
+
+  image = egl->eglCreateImageKHR (display, context,
+                                  target, buffer, attrib_list);
+  if (image == EGL_NO_IMAGE_KHR)
+    {
+      set_egl_error (error);
+      return EGL_NO_IMAGE_KHR;
+    }
+
+  return image;
+}
+
+gboolean
+meta_egl_destroy_image (MetaEgl    *egl,
+                        EGLDisplay  display,
+                        EGLImageKHR image,
+                        GError    **error)
+{
+  if (!is_egl_proc_valid (egl->eglDestroyImageKHR, error))
+    return FALSE;
+
+  if (!egl->eglDestroyImageKHR (display, image))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_egl_query_wayland_buffer (MetaEgl            *egl,
+                               EGLDisplay          display,
+                               struct wl_resource *buffer,
+                               EGLint              attribute,
+                               EGLint             *value,
+                               GError            **error)
+{
+  if (!is_egl_proc_valid (egl->eglQueryWaylandBufferWL, error))
+   return FALSE;
+
+  if (!egl->eglQueryWaylandBufferWL (display, buffer, attribute, value))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 gboolean
 meta_egl_query_devices (MetaEgl      *egl,
                         EGLint        max_devices,
@@ -603,6 +671,11 @@ meta_egl_constructed (GObject *object)
   MetaEgl *egl = META_EGL (object);
 
   GET_EGL_PROC_ADDR_REQUIRED (eglGetPlatformDisplayEXT);
+
+  GET_EGL_PROC_ADDR (eglCreateImageKHR);
+  GET_EGL_PROC_ADDR (eglDestroyImageKHR);
+
+  GET_EGL_PROC_ADDR (eglQueryWaylandBufferWL);
 
   GET_EGL_PROC_ADDR (eglQueryDevicesEXT);
   GET_EGL_PROC_ADDR (eglQueryDeviceStringEXT);

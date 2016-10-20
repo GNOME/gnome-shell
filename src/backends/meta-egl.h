@@ -48,6 +48,19 @@ gboolean meta_egl_choose_config (MetaEgl      *egl,
                                  EGLConfig    *chosen_config,
                                  GError      **error);
 
+EGLImageKHR meta_egl_create_image (MetaEgl        *egl,
+                                   EGLDisplay      display,
+                                   EGLContext      context,
+                                   EGLenum         target,
+                                   EGLClientBuffer buffer,
+                                   const EGLint   *attrib_list,
+                                   GError        **error);
+
+gboolean meta_egl_destroy_image (MetaEgl    *egl,
+                                 EGLDisplay  display,
+                                 EGLImageKHR image,
+                                 GError    **error);
+
 EGLSurface meta_egl_create_pbuffer_surface (MetaEgl      *egl,
                                             EGLDisplay    display,
                                             EGLConfig     config,
@@ -59,6 +72,13 @@ EGLDisplay meta_egl_get_platform_display (MetaEgl      *egl,
                                           void         *native_display,
                                           const EGLint *attrib_list,
                                           GError      **error);
+
+gboolean meta_egl_query_wayland_buffer (MetaEgl            *egl,
+                                        EGLDisplay          display,
+                                        struct wl_resource *buffer,
+                                        EGLint              attribute,
+                                        EGLint             *value,
+                                        GError            **error);
 
 gboolean meta_egl_query_devices (MetaEgl      *egl,
                                  EGLint        max_devices,
