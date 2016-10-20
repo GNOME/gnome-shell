@@ -39,6 +39,7 @@ struct _MetaWaylandBuffer
   struct wl_listener destroy_listener;
 
   CoglTexture *texture;
+  gboolean is_y_inverted;
 };
 
 #define META_TYPE_WAYLAND_BUFFER (meta_wayland_buffer_get_type ())
@@ -49,6 +50,7 @@ MetaWaylandBuffer *     meta_wayland_buffer_from_resource       (struct wl_resou
 gboolean                meta_wayland_buffer_attach              (MetaWaylandBuffer     *buffer,
                                                                  GError               **error);
 CoglTexture *           meta_wayland_buffer_get_texture         (MetaWaylandBuffer     *buffer);
+gboolean                meta_wayland_buffer_is_y_inverted       (MetaWaylandBuffer     *buffer);
 void                    meta_wayland_buffer_process_damage      (MetaWaylandBuffer     *buffer,
                                                                  cairo_region_t        *region);
 

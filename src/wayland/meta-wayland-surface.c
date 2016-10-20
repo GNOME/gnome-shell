@@ -51,6 +51,7 @@
 #include "meta-window-wayland.h"
 
 #include "compositor/region-utils.h"
+#include "compositor/meta-shaped-texture-private.h"
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-wayland.h"
@@ -701,9 +702,6 @@ static void
 apply_pending_state (MetaWaylandSurface      *surface,
                      MetaWaylandPendingState *pending)
 {
-  MetaSurfaceActorWayland *surface_actor_wayland =
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
-
   if (surface->role)
     {
       meta_wayland_surface_role_pre_commit (surface->role, pending);
@@ -755,11 +753,16 @@ apply_pending_state (MetaWaylandSurface      *surface,
 
           if (switched_buffer)
             {
+              MetaShapedTexture *stex;
               CoglTexture *texture;
+              gboolean is_y_inverted;
 
+              stex = meta_surface_actor_get_texture (surface->surface_actor);
               texture = meta_wayland_buffer_get_texture (pending->buffer);
-              meta_surface_actor_wayland_set_texture (surface_actor_wayland,
-                                                      texture);
+              is_y_inverted = meta_wayland_buffer_is_y_inverted (pending->buffer);
+
+              meta_shaped_texture_set_texture (stex, texture);
+              meta_shaped_texture_set_is_y_inverted (stex, is_y_inverted);
             }
         }
 

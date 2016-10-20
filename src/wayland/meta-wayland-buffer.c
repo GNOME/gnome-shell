@@ -191,6 +191,7 @@ shm_buffer_attach (MetaWaylandBuffer *buffer,
   wl_shm_buffer_end_access (shm_buffer);
 
   buffer->texture = texture;
+  buffer->is_y_inverted = TRUE;
 
   if (!buffer->texture)
     return FALSE;
@@ -208,7 +209,7 @@ egl_image_buffer_attach (MetaWaylandBuffer *buffer,
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   EGLDisplay egl_display = cogl_egl_context_get_egl_display (cogl_context);
   EGLContext egl_context = cogl_egl_context_get_egl_context (cogl_context);
-  int format, width, height;
+  int format, width, height, y_inverted;
   CoglPixelFormat cogl_format;
   EGLImageKHR egl_image;
   CoglTexture2D *texture;
@@ -230,6 +231,11 @@ egl_image_buffer_attach (MetaWaylandBuffer *buffer,
                                       EGL_HEIGHT, &height,
                                       error))
     return FALSE;
+
+  if (!meta_egl_query_wayland_buffer (egl, egl_display, buffer->resource,
+                                      EGL_WAYLAND_Y_INVERTED_WL, &y_inverted,
+                                      NULL))
+    y_inverted = EGL_TRUE;
 
   switch (format)
     {
@@ -265,6 +271,7 @@ egl_image_buffer_attach (MetaWaylandBuffer *buffer,
     return FALSE;
 
   buffer->texture = COGL_TEXTURE (texture);
+  buffer->is_y_inverted = !!y_inverted;
 
   return TRUE;
 }
@@ -299,6 +306,12 @@ CoglTexture *
 meta_wayland_buffer_get_texture (MetaWaylandBuffer *buffer)
 {
   return buffer->texture;
+}
+
+gboolean
+meta_wayland_buffer_is_y_inverted (MetaWaylandBuffer *buffer)
+{
+  return buffer->is_y_inverted;
 }
 
 static gboolean
