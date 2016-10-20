@@ -127,6 +127,9 @@ set_egl_error (GError **error)
 {
   const char *error_str;
 
+  if (!error)
+    return;
+
   error_str = get_egl_error_str ();
   g_set_error (error, G_IO_ERROR,
                G_IO_ERROR_FAILED,
