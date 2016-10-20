@@ -55,11 +55,17 @@ struct _CoglTexture2D
   GLenum gl_internal_format;
   /* The texture object number */
   GLuint gl_texture;
+  GLenum gl_target;
   GLenum gl_legacy_texobj_min_filter;
   GLenum gl_legacy_texobj_mag_filter;
   GLint gl_legacy_texobj_wrap_mode_s;
   GLint gl_legacy_texobj_wrap_mode_t;
   CoglTexturePixel first_pixel;
+
+  struct {
+    void *user_data;
+    GDestroyNotify destroy;
+  } egl_image_external;
 };
 
 CoglTexture2D *

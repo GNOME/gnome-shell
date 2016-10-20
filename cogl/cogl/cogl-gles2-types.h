@@ -152,6 +152,7 @@ typedef long             GLsizeiptr;
 #define GL_POLYGON_OFFSET_FILL            0x8037
 #define GL_SAMPLE_ALPHA_TO_COVERAGE       0x809E
 #define GL_SAMPLE_COVERAGE                0x80A0
+#define GL_TEXTURE_EXTERNAL_OES           0x8D65
 
 /* ErrorCode */
 #define GL_NO_ERROR                       0

@@ -242,6 +242,27 @@ cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                                     CoglPixelFormat format,
                                     EGLImageKHR image,
                                     CoglError **error);
+
+typedef gboolean (*CoglTexture2DEGLImageExternalAlloc) (CoglTexture2D *tex_2d,
+                                                        gpointer user_data,
+                                                        GError **error);
+
+CoglTexture2D *
+cogl_texture_2d_new_from_egl_image_external (CoglContext *ctx,
+                                             int width,
+                                             int height,
+                                             CoglTexture2DEGLImageExternalAlloc alloc,
+                                             gpointer user_data,
+                                             GDestroyNotify destroy,
+                                             CoglError **error);
+
+void
+cogl_texture_2d_egl_image_external_bind (CoglTexture2D *tex_2d);
+
+void
+cogl_texture_2d_egl_image_external_alloc_finish (CoglTexture2D *tex_2d,
+						 void *user_data,
+						 GDestroyNotify destroy);
 #endif
 
 COGL_END_DECLS

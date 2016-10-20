@@ -46,11 +46,21 @@
 #include "cogl-error-private.h"
 #include "cogl-util-gl-private.h"
 
+#if defined (COGL_HAS_EGL_SUPPORT)
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#endif
+
 void
 _cogl_texture_2d_gl_free (CoglTexture2D *tex_2d)
 {
   if (!tex_2d->is_foreign && tex_2d->gl_texture)
     _cogl_delete_gl_texture (tex_2d->gl_texture);
+
+#if defined (COGL_HAS_EGL_SUPPORT)
+  g_clear_pointer (&tex_2d->egl_image_external.user_data,
+                   tex_2d->egl_image_external.destroy);
+#endif
 }
 
 CoglBool
@@ -101,6 +111,9 @@ _cogl_texture_2d_gl_init (CoglTexture2D *tex_2d)
   /* Wrap mode not yet set */
   tex_2d->gl_legacy_texobj_wrap_mode_s = GL_FALSE;
   tex_2d->gl_legacy_texobj_wrap_mode_t = GL_FALSE;
+
+  tex_2d->egl_image_external.user_data = NULL;
+  tex_2d->egl_image_external.destroy = NULL;
 }
 
 static CoglBool
@@ -439,6 +452,96 @@ allocate_from_gl_foreign (CoglTexture2D *tex_2d,
   return TRUE;
 }
 
+#if defined (COGL_HAS_EGL_SUPPORT)
+static CoglBool
+allocate_custom_egl_image_external (CoglTexture2D *tex_2d,
+                                    CoglTextureLoader *loader,
+                                    CoglError **error)
+{
+  CoglTexture *tex = COGL_TEXTURE (tex_2d);
+  CoglContext *ctx = tex->context;
+  CoglPixelFormat internal_format = loader->src.egl_image_external.format;
+
+  _cogl_gl_util_clear_gl_errors (ctx);
+
+  GE (ctx, glActiveTexture (GL_TEXTURE0));
+  GE (ctx, glGenTextures (1, &tex_2d->gl_texture));
+
+  GE (ctx, glBindTexture (GL_TEXTURE_EXTERNAL_OES,
+                          tex_2d->gl_texture));
+
+  if (_cogl_gl_util_get_error (ctx) != GL_NO_ERROR)
+    {
+      _cogl_set_error (error,
+                       COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_BAD_PARAMETER,
+                       "Could not create a CoglTexture2D from a given "
+                       "EGLImage");
+      GE( ctx, glDeleteTextures (1, &tex_2d->gl_texture) );
+      return FALSE;
+    }
+
+  GE (ctx, glTexParameteri(GL_TEXTURE_EXTERNAL_OES,
+                           GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+  GE (ctx, glTexParameteri(GL_TEXTURE_EXTERNAL_OES,
+                           GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+
+  if (!loader->src.egl_image_external.alloc (tex_2d,
+                                             tex_2d->egl_image_external.user_data,
+                                             error))
+    {
+      GE (ctx, glBindTexture (GL_TEXTURE_EXTERNAL_OES, 0));
+      GE (ctx, glDeleteTextures (1, &tex_2d->gl_texture));
+      return FALSE;
+    }
+
+  GE (ctx, glBindTexture (GL_TEXTURE_EXTERNAL_OES, 0));
+
+  tex_2d->internal_format = internal_format;
+  tex_2d->gl_target = GL_TEXTURE_EXTERNAL_OES;
+
+  return TRUE;
+}
+
+CoglTexture2D *
+cogl_texture_2d_new_from_egl_image_external (CoglContext *ctx,
+                                             int width,
+                                             int height,
+                                             CoglTexture2DEGLImageExternalAlloc alloc,
+                                             gpointer user_data,
+                                             GDestroyNotify destroy,
+                                             CoglError **error)
+{
+  CoglTextureLoader *loader;
+  CoglTexture2D *tex_2d;
+  CoglPixelFormat internal_format = COGL_PIXEL_FORMAT_ANY;
+
+  _COGL_RETURN_VAL_IF_FAIL (_cogl_context_get_winsys (ctx)->constraints &
+                            COGL_RENDERER_CONSTRAINT_USES_EGL,
+                            NULL);
+
+  _COGL_RETURN_VAL_IF_FAIL (cogl_has_feature (ctx,
+                                              COGL_FEATURE_ID_TEXTURE_EGL_IMAGE_EXTERNAL),
+                            NULL);
+
+  loader = _cogl_texture_create_loader ();
+  loader->src_type = COGL_TEXTURE_SOURCE_TYPE_EGL_IMAGE_EXTERNAL;
+  loader->src.egl_image_external.width = width;
+  loader->src.egl_image_external.height = height;
+  loader->src.egl_image_external.alloc = alloc;
+  loader->src.egl_image_external.format = internal_format;
+
+  tex_2d = _cogl_texture_2d_create_base (ctx, width, height,
+                                         internal_format, loader);
+
+
+  tex_2d->egl_image_external.user_data = user_data;
+  tex_2d->egl_image_external.destroy = destroy;
+
+  return tex_2d;
+}
+#endif /* defined (COGL_HAS_EGL_SUPPORT) */
+
 CoglBool
 _cogl_texture_2d_gl_allocate (CoglTexture *tex,
                               CoglError **error)
@@ -462,6 +565,8 @@ _cogl_texture_2d_gl_allocate (CoglTexture *tex,
 #endif
     case COGL_TEXTURE_SOURCE_TYPE_GL_FOREIGN:
       return allocate_from_gl_foreign (tex_2d, loader, error);
+    case COGL_TEXTURE_SOURCE_TYPE_EGL_IMAGE_EXTERNAL:
+      return allocate_custom_egl_image_external (tex_2d, loader, error);
     }
 
   g_return_val_if_reached (FALSE);

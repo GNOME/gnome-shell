@@ -110,6 +110,8 @@ _cogl_texture_2d_create_base (CoglContext *ctx,
   tex_2d->mipmaps_dirty = TRUE;
   tex_2d->auto_mipmap = TRUE;
 
+  tex_2d->gl_target = GL_TEXTURE_2D;
+
   tex_2d->is_foreign = FALSE;
 
   ctx->driver_vtable->texture_2d_init (tex_2d);
@@ -557,7 +559,7 @@ _cogl_texture_2d_get_gl_texture (CoglTexture *tex,
       GLuint handle;
 
       if (out_gl_target)
-        *out_gl_target = GL_TEXTURE_2D;
+        *out_gl_target = tex_2d->gl_target;
 
       handle = ctx->driver_vtable->texture_2d_get_gl_handle (tex_2d);
 
