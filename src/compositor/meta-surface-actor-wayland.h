@@ -62,9 +62,6 @@ MetaSurfaceActor * meta_surface_actor_wayland_new (MetaWaylandSurface *surface);
 MetaWaylandSurface * meta_surface_actor_wayland_get_surface (MetaSurfaceActorWayland *self);
 void meta_surface_actor_wayland_surface_destroyed (MetaSurfaceActorWayland *self);
 
-void meta_surface_actor_wayland_set_texture (MetaSurfaceActorWayland *self,
-                                             CoglTexture *texture);
-
 double meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor);
 
 void meta_surface_actor_wayland_get_subsurface_rect (MetaSurfaceActorWayland *self,

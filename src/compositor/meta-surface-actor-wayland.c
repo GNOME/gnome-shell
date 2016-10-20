@@ -405,8 +405,10 @@ meta_surface_actor_wayland_dispose (GObject *object)
   MetaSurfaceActorWaylandPrivate *priv =
     meta_surface_actor_wayland_get_instance_private (self);
   MetaWaylandFrameCallback *cb, *next;
+  MetaShapedTexture *stex =
+    meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
 
-  meta_surface_actor_wayland_set_texture (self, NULL);
+  meta_shaped_texture_set_texture (stex, NULL);
   if (priv->surface)
     {
       g_object_remove_weak_pointer (G_OBJECT (priv->surface),
@@ -470,14 +472,6 @@ meta_surface_actor_wayland_new (MetaWaylandSurface *surface)
                              (gpointer *) &priv->surface);
 
   return META_SURFACE_ACTOR (self);
-}
-
-void
-meta_surface_actor_wayland_set_texture (MetaSurfaceActorWayland *self,
-                                        CoglTexture *texture)
-{
-  MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
-  meta_shaped_texture_set_texture (stex, texture);
 }
 
 MetaWaylandSurface *
