@@ -34,6 +34,8 @@ void meta_shaped_texture_set_texture (MetaShapedTexture *stex,
                                       CoglTexture       *texture);
 void meta_shaped_texture_set_is_y_inverted (MetaShapedTexture *stex,
                                             gboolean           is_y_inverted);
+void meta_shaped_texture_set_snippet (MetaShapedTexture *stex,
+                                      CoglSnippet       *snippet);
 void meta_shaped_texture_set_fallback_size (MetaShapedTexture *stex,
                                             guint              fallback_width,
                                             guint              fallback_height);

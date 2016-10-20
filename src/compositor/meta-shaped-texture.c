@@ -77,6 +77,7 @@ struct _MetaShapedTexturePrivate
 
   CoglTexture *texture;
   CoglTexture *mask_texture;
+  CoglSnippet *snippet;
 
   CoglPipeline *base_pipeline;
   CoglPipeline *masked_pipeline;
@@ -202,6 +203,8 @@ meta_shaped_texture_dispose (GObject *object)
 
   meta_shaped_texture_reset_pipelines (self);
 
+  g_clear_pointer (&priv->snippet, cogl_object_unref);
+
   G_OBJECT_CLASS (meta_shaped_texture_parent_class)->dispose (object);
 }
 
@@ -233,6 +236,9 @@ get_base_pipeline (MetaShapedTexture *stex,
       cogl_matrix_translate (&matrix, 0, -1, 0);
       cogl_pipeline_set_layer_matrix (pipeline, 0, &matrix);
     }
+
+  if (priv->snippet)
+    cogl_pipeline_add_layer_snippet (pipeline, 0, priv->snippet);
 
   priv->base_pipeline = pipeline;
 
@@ -810,6 +816,25 @@ meta_shaped_texture_set_is_y_inverted (MetaShapedTexture *stex,
   meta_shaped_texture_reset_pipelines (stex);
 
   priv->is_y_inverted = is_y_inverted;
+}
+
+/**
+ * meta_shaped_texture_set_snippet: (skip)
+ */
+void
+meta_shaped_texture_set_snippet (MetaShapedTexture *stex,
+                                 CoglSnippet       *snippet)
+{
+  MetaShapedTexturePrivate *priv = stex->priv;
+
+  if (priv->snippet == snippet)
+    return;
+
+  meta_shaped_texture_reset_pipelines (stex);
+
+  g_clear_pointer (&priv->snippet, cogl_object_unref);
+  if (snippet)
+    priv->snippet = cogl_object_ref (snippet);
 }
 
 /**
