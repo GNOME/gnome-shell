@@ -102,6 +102,7 @@ const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 
+const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -254,6 +255,13 @@ const Background = new Lang.Class({
                     this._loadAnimation(this._animation.file);
             }));
 
+        LoginManager.getLoginManager().connect('prepare-for-sleep',
+            (lm, aboutToSuspend) => {
+                if (aboutToSuspend)
+                    return;
+                this._refreshAnimation();
+            });
+
         this._settingsChangedSignalId = this._settings.connect('changed', Lang.bind(this, function() {
                                             this.emit('changed');
                                         }));
@@ -282,10 +290,16 @@ const Background = new Lang.Class({
     },
 
     updateResolution: function() {
-        if (this._animation) {
-            this._removeAnimationTimeout();
-            this._updateAnimation();
-        }
+        if (this._animation)
+            this._refreshAnimation();
+    },
+
+    _refreshAnimation: function() {
+        if (!this._animation)
+            return;
+
+        this._removeAnimationTimeout();
+        this._updateAnimation();
     },
 
     _setLoaded: function() {
