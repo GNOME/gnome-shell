@@ -665,7 +665,10 @@ const ScreenShield = new Lang.Class({
         let isEnter = (symbol == Clutter.KEY_Return ||
                        symbol == Clutter.KEY_KP_Enter ||
                        symbol == Clutter.KEY_ISO_Enter);
-        if (!isEnter && !(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
+        let isEscape = (symbol == Clutter.KEY_Escape);
+        let isLiftChar = (GLib.unichar_isprint(unichar) &&
+                          (this._isLocked || !GLib.unichar_isgraph(unichar)));
+        if (!isEnter && !isEscape && !isLiftChar)
             return Clutter.EVENT_PROPAGATE;
 
         if (this._isLocked &&
