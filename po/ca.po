@@ -1133,7 +1133,7 @@ msgstr "El mode d'avió és actiu"
 
 #: ../js/ui/status/network.js:814
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Quan el mode d'avió és actiu es desactiva la xarxa sense fils."
+msgstr "Quan el mode d'avió és actiu es desactiva la xarxa sense fil."
 
 #: ../js/ui/status/network.js:815
 msgid "Turn Off Airplane Mode"
@@ -1145,11 +1145,11 @@ msgstr "La xarxa sense fil està desactivada"
 
 #: ../js/ui/status/network.js:825
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "S'ha d'activar la xarxa sense fils per poder-se connectar a una xarxa."
+msgstr "S'ha d'activar la xarxa sense fil per poder-se connectar a una xarxa."
 
 #: ../js/ui/status/network.js:826
 msgid "Turn On Wi-Fi"
-msgstr "Activa la xarxa sense fils"
+msgstr "Activa la xarxa sense fil"
 
 #: ../js/ui/status/network.js:851
 msgid "Wi-Fi Networks"
