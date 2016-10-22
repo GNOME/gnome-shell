@@ -9,9 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-20 10:20+0200\n"
-"PO-Revision-Date: 2016-08-20 10:22+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-10-11 08:09+0000\n"
+"PO-Revision-Date: 2016-10-22 16:08+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -365,7 +366,7 @@ msgstr "Inny użytkownik?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:854
+#: js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(np. użytkownik lub %s)"
@@ -373,12 +374,12 @@ msgstr "(np. użytkownik lub %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
 #: js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Nazwa użytkownika: "
 
-#: js/gdm/loginDialog.js:1196
+#: js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Okno logowania"
 
@@ -767,7 +768,7 @@ msgstr "Hasło sieci komórkowej"
 msgid "A password is required to connect to “%s”."
 msgstr "Do połączenia z siecią „%s” wymagane jest hasło."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1658
+#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1660
 msgid "Network Manager"
 msgstr "Menedżer sieci"
 
@@ -793,7 +794,7 @@ msgstr "To nie zadziałało. Proszę spróbować ponownie."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:760
+#: js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Użytkownik %s jest teraz znany jako %s"
@@ -1512,11 +1513,11 @@ msgstr "VPN"
 msgid "VPN Off"
 msgstr "Wyłączono sieć VPN"
 
-#: js/ui/status/network.js:1697
+#: js/ui/status/network.js:1699
 msgid "Connection failed"
 msgstr "Połączenie się nie powiodło"
 
-#: js/ui/status/network.js:1698
+#: js/ui/status/network.js:1700
 msgid "Activation of network connection failed"
 msgstr "Aktywacja połączenia sieciowego się nie powiodła"
 
@@ -1775,3 +1776,6 @@ msgstr "Hasło nie może być puste"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Okno dialogowe uwierzytelnienia zostało odrzucone przez użytkownika"
+
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Uruchom za pomocą dedykowanej karty graficznej"
