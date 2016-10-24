@@ -20,6 +20,8 @@ const PortalHelperResult = {
 };
 
 const INACTIVITY_TIMEOUT = 30000; //ms
+const CONNECTIVITY_CHECK_HOST = 'nmcheck.gnome.org';
+const CONNECTIVITY_CHECK_URI = 'http://' + CONNECTIVITY_CHECK_HOST;
 const CONNECTIVITY_RECHECK_RATELIMIT_TIMEOUT = 30 * GLib.USEC_PER_SEC;
 
 const HelperDBusInterface = '<node> \
@@ -50,7 +52,7 @@ const PortalWindow = new Lang.Class({
         this.parent({ application: application });
 
         if (!url) {
-            url = 'http://nmcheck.gnome.org';
+            url = CONNECTIVITY_CHECK_URI;
             this._originalUrlWasGnome = true;
         } else {
             this._originalUrlWasGnome = false;
@@ -112,12 +114,12 @@ const PortalWindow = new Lang.Class({
         let uri = new Soup.URI(request.get_uri());
 
         if (!uri.host_equal(this._uri) && this._originalUrlWasGnome) {
-            if (uri.get_host() == 'nmcheck.gnome.org' && this._everSeenRedirect) {
+            if (uri.get_host() == CONNECTIVITY_CHECK_HOST && this._everSeenRedirect) {
                 // Yay, we got to gnome!
                 decision.ignore();
                 this._doneCallback(PortalHelperResult.COMPLETED);
                 return true;
-            } else if (uri.get_host() != 'nmcheck.gnome.org') {
+            } else if (uri.get_host() != CONNECTIVITY_CHECK_HOST) {
                 this._everSeenRedirect = true;
             }
         }
