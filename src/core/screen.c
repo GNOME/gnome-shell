@@ -2888,7 +2888,15 @@ check_fullscreen_func (gpointer data)
   g_slist_free (fullscreen_monitors);
 
   if (in_fullscreen_changed)
-    g_signal_emit (screen, screen_signals[IN_FULLSCREEN_CHANGED], 0, NULL);
+    {
+      /* DOCK window stacking depends on the monitor's fullscreen
+         status so we need to trigger a re-layering. */
+      MetaWindow *window = meta_stack_get_top (screen->stack);
+      if (window)
+        meta_stack_update_layer (screen->stack, window);
+
+      g_signal_emit (screen, screen_signals[IN_FULLSCREEN_CHANGED], 0, NULL);
+    }
 
   return FALSE;
 }
