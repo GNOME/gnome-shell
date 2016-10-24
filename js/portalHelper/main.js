@@ -50,7 +50,7 @@ const PortalWindow = new Lang.Class({
         this.parent({ application: application });
 
         if (!url) {
-            url = 'http://www.gnome.org';
+            url = 'http://nmcheck.gnome.org';
             this._originalUrlWasGnome = true;
         } else {
             this._originalUrlWasGnome = false;
@@ -112,12 +112,12 @@ const PortalWindow = new Lang.Class({
         let uri = new Soup.URI(request.get_uri());
 
         if (!uri.host_equal(this._uri) && this._originalUrlWasGnome) {
-            if (uri.get_host() == 'www.gnome.org' && this._everSeenRedirect) {
+            if (uri.get_host() == 'nmcheck.gnome.org' && this._everSeenRedirect) {
                 // Yay, we got to gnome!
                 decision.ignore();
                 this._doneCallback(PortalHelperResult.COMPLETED);
                 return true;
-            } else if (uri.get_host() != 'www.gnome.org') {
+            } else if (uri.get_host() != 'nmcheck.gnome.org') {
                 this._everSeenRedirect = true;
             }
         }
