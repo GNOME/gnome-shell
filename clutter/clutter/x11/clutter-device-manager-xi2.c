@@ -395,6 +395,8 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
         source = CLUTTER_ERASER_DEVICE;
       else if (strstr (name, "cursor") != NULL)
         source = CLUTTER_CURSOR_DEVICE;
+      else if (strstr (name, " pad") != NULL)
+        source = CLUTTER_PAD_DEVICE;
       else if (strstr (name, "wacom") != NULL || strstr (name, "pen") != NULL)
         source = CLUTTER_PEN_DEVICE;
       else if (strstr (name, "touchpad") != NULL)
@@ -461,6 +463,46 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
   return retval;
 }
 
+static void
+pad_passive_button_grab (ClutterInputDevice *device)
+{
+  XIGrabModifiers xi_grab_mods = { XIAnyModifier, };
+  XIEventMask xi_event_mask;
+  gint device_id, rc;
+
+  device_id = clutter_input_device_get_device_id (device);
+
+  xi_event_mask.deviceid = device_id;
+  xi_event_mask.mask_len = XIMaskLen (XI_LASTEVENT);
+  xi_event_mask.mask = g_new0 (unsigned char, xi_event_mask.mask_len);
+
+  XISetMask (xi_event_mask.mask, XI_Motion);
+  XISetMask (xi_event_mask.mask, XI_ButtonPress);
+  XISetMask (xi_event_mask.mask, XI_ButtonRelease);
+
+  clutter_x11_trap_x_errors ();
+  rc = XIGrabButton (clutter_x11_get_default_display (),
+                     device_id, XIAnyButton,
+                     clutter_x11_get_root_window (), None,
+                     XIGrabModeSync, XIGrabModeSync,
+                     True, &xi_event_mask, 1, &xi_grab_mods);
+  if (rc != 0)
+    {
+      g_warning ("Could not passively grab pad device: %s",
+                 clutter_input_device_get_device_name (device));
+    }
+  else
+    {
+      XIAllowEvents (clutter_x11_get_default_display (),
+                     device_id, XIAsyncDevice,
+                     CLUTTER_CURRENT_TIME);
+    }
+
+  clutter_x11_untrap_x_errors ();
+
+  g_free (xi_event_mask.mask);
+}
+
 static ClutterInputDevice *
 add_device (ClutterDeviceManagerXI2 *manager_xi2,
             ClutterBackendX11       *backend_x11,
@@ -494,6 +536,9 @@ add_device (ClutterDeviceManagerXI2 *manager_xi2,
   else
     g_warning ("Unhandled device: %s",
                clutter_input_device_get_device_name (device));
+
+  if (clutter_input_device_get_device_type (device) == CLUTTER_PAD_DEVICE)
+    pad_passive_button_grab (device);
 
   /* relationships between devices and signal emissions are not
    * necessary while we're constructing the device manager instance
@@ -1078,6 +1123,50 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             clutter_input_device_get_pointer_stage (device) == NULL &&
             stage != NULL)
           _clutter_input_device_set_stage (device, stage);
+
+	if (clutter_input_device_get_device_type (source_device) == CLUTTER_PAD_DEVICE)
+          {
+            /* We got these events because of the passive button grab */
+            XIAllowEvents (clutter_x11_get_default_display (),
+                           xev->sourceid,
+                           XIAsyncDevice,
+                           xev->time);
+
+	    /* Ignore 4-7 buttons */
+            if (xev->detail >= 4 && xev->detail <= 7)
+              return CLUTTER_TRANSLATE_REMOVE;
+
+            event->pad_button.type =
+              (xi_event->evtype == XI_ButtonPress) ? CLUTTER_PAD_BUTTON_PRESS
+                                                   : CLUTTER_PAD_BUTTON_RELEASE;
+            event->pad_button.time = xev->time;
+            event->pad_button.stage = stage;
+
+            /* The 4-7 button range is taken as non-existent on pad devices,
+             * let the buttons above that take over this range.
+             */
+            if (xev->detail > 7)
+              xev->detail -= 4;
+
+            /* Pad buttons are 0-indexed */
+            event->pad_button.button = xev->detail - 1;
+            clutter_event_set_source_device (event, source_device);
+
+            CLUTTER_NOTE (EVENT,
+                          "%s: win:0x%x, device:%d '%s', time:%d "
+                          "(button:%d)",
+                          event->any.type == CLUTTER_BUTTON_PRESS
+                            ? "pad button press  "
+                            : "pad button release",
+                          (unsigned int) stage_x11->xwin,
+                          device->id,
+                          device->device_name,
+                          event->any.time,
+                          event->pad_button.button);
+
+            retval = CLUTTER_TRANSLATE_QUEUE;
+            break;
+          }
 
         switch (xev->detail)
           {
