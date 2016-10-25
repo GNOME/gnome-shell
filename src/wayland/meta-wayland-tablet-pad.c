@@ -358,26 +358,6 @@ handle_pad_button_event (MetaWaylandTabletPad *pad,
   return TRUE;
 }
 
-static void
-meta_wayland_tablet_pad_update_action (MetaWaylandTabletPad *pad,
-                                       const ClutterEvent   *event)
-{
-  MetaInputSettings *input_settings;
-  ClutterInputDevice *device;
-  guint button;
-
-  button = event->pad_button.button;
-  device = clutter_event_get_source_device (event);
-  input_settings = meta_backend_get_input_settings (meta_get_backend ());
-
-  if (!input_settings)
-    return;
-
-  meta_input_settings_handle_pad_button (input_settings, device,
-                                         event->type == CLUTTER_PAD_BUTTON_PRESS,
-                                         button);
-}
-
 static gboolean
 meta_wayland_tablet_pad_handle_event_action (MetaWaylandTabletPad *pad,
                                              const ClutterEvent   *event)
@@ -566,18 +546,6 @@ meta_wayland_tablet_pad_update (MetaWaylandTabletPad *pad,
 
   if (group)
     meta_wayland_tablet_pad_group_update (group, event);
-
-  switch (event->type)
-    {
-    case CLUTTER_PAD_BUTTON_PRESS:
-    case CLUTTER_PAD_BUTTON_RELEASE:
-      meta_wayland_tablet_pad_update_action (pad, event);
-      break;
-    case CLUTTER_PAD_RING:
-    case CLUTTER_PAD_STRIP:
-    default:
-      break;
-    }
 }
 
 static gchar *

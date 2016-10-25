@@ -217,6 +217,22 @@ meta_display_handle_event (MetaDisplay        *display,
     }
 #endif
 
+  if (!display->current_pad_osd &&
+      (event->type == CLUTTER_PAD_BUTTON_PRESS ||
+       event->type == CLUTTER_PAD_BUTTON_RELEASE))
+    {
+      MetaBackend *backend = meta_get_backend ();
+
+      if (meta_input_settings_handle_pad_button (meta_backend_get_input_settings (backend),
+                                                 clutter_event_get_source_device (event),
+                                                 event->type == CLUTTER_PAD_BUTTON_PRESS,
+                                                 event->pad_button.button))
+        {
+          bypass_wayland = bypass_clutter = TRUE;
+          goto out;
+        }
+    }
+
   source = clutter_event_get_source_device (event);
 
   if (source)
