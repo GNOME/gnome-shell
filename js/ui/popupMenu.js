@@ -783,6 +783,16 @@ const PopupMenu = new Lang.Class({
                 break;
         }
 
+        let state = event.get_state();
+
+        // if user has a modifier down (except capslock)
+        // then don't handle the key press here
+        state &= ~Clutter.ModifierType.LOCK_MASK;
+        state &= Clutter.ModifierType.MODIFIER_MASK;
+
+        if (state)
+            return Clutter.EVENT_PROPAGATE;
+
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
             this.toggle();
