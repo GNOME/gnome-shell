@@ -141,28 +141,18 @@ static gboolean
 device_set_scroll_method (struct libinput_device             *libinput_device,
                           enum libinput_config_scroll_method  method)
 {
-  enum libinput_config_scroll_method supported;
-
-  supported = libinput_device_config_scroll_get_methods (libinput_device);
-
-  if (method & supported)
+  enum libinput_config_status status =
     libinput_device_config_scroll_set_method (libinput_device, method);
-
-  return (method & supported) != 0;
+  return status == LIBINPUT_CONFIG_STATUS_SUCCESS;
 }
 
 static gboolean
 device_set_click_method (struct libinput_device            *libinput_device,
                          enum libinput_config_click_method  method)
 {
-  enum libinput_config_click_method supported;
-
-  supported = libinput_device_config_click_get_methods (libinput_device);
-
-  if (method & supported)
+  enum libinput_config_status status =
     libinput_device_config_click_set_method (libinput_device, method);
-
-  return (method & supported) != 0;
+  return status == LIBINPUT_CONFIG_STATUS_SUCCESS;
 }
 
 static void
