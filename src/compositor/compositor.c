@@ -352,6 +352,14 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
    */
   MetaDisplay *display = compositor->display;
 
+#ifdef HAVE_WAYLAND
+  if (display->grab_op == META_GRAB_OP_WAYLAND_POPUP)
+    {
+      MetaWaylandSeat *seat = meta_wayland_compositor_get_default ()->seat;
+      meta_wayland_pointer_end_popup_grab (seat->pointer);
+    }
+#endif
+
   if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
 
