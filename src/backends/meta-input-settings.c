@@ -483,6 +483,7 @@ update_touchpad_edge_scroll (MetaInputSettings *input_settings,
 {
   MetaInputSettingsClass *input_settings_class;
   gboolean edge_scroll_enabled;
+  gboolean two_finger_scroll_enabled;
   MetaInputSettingsPrivate *priv;
 
   if (device &&
@@ -492,6 +493,11 @@ update_touchpad_edge_scroll (MetaInputSettings *input_settings,
   priv = meta_input_settings_get_instance_private (input_settings);
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   edge_scroll_enabled = g_settings_get_boolean (priv->touchpad_settings, "edge-scrolling-enabled");
+  two_finger_scroll_enabled = g_settings_get_boolean (priv->touchpad_settings, "two-finger-scrolling-enabled");
+
+  /* If both are enabled we prefer two finger. */
+  if (edge_scroll_enabled && two_finger_scroll_enabled)
+    edge_scroll_enabled = FALSE;
 
   if (device)
     {
@@ -523,6 +529,10 @@ update_touchpad_two_finger_scroll (MetaInputSettings *input_settings,
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   two_finger_scroll_enabled = g_settings_get_boolean (priv->touchpad_settings, "two-finger-scrolling-enabled");
 
+  /* Disable edge since they can't both be set. */
+  if (two_finger_scroll_enabled)
+    update_touchpad_edge_scroll (input_settings, device);
+
   if (device)
     {
       settings_device_set_bool_setting (input_settings, device,
@@ -535,6 +545,10 @@ update_touchpad_two_finger_scroll (MetaInputSettings *input_settings,
                                  (ConfigBoolFunc) input_settings_class->set_two_finger_scroll,
                                  two_finger_scroll_enabled);
     }
+
+  /* Edge might have been disabled because two finger was on. */
+  if (!two_finger_scroll_enabled)
+    update_touchpad_edge_scroll (input_settings, device);
 }
 
 static void

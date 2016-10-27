@@ -160,32 +160,16 @@ meta_input_settings_native_set_edge_scroll (MetaInputSettings            *settin
                                             ClutterInputDevice           *device,
                                             gboolean                      edge_scrolling_enabled)
 {
-  enum libinput_config_scroll_method scroll_method = 0;
   struct libinput_device *libinput_device;
-  enum libinput_config_scroll_method supported;
-  enum libinput_config_scroll_method current;
+  enum libinput_config_scroll_method current, method;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
-  if (!libinput_device)
-    return;
-  supported = libinput_device_config_scroll_get_methods (libinput_device);
+
+  method = edge_scrolling_enabled ? LIBINPUT_CONFIG_SCROLL_EDGE : LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
   current = libinput_device_config_scroll_get_method (libinput_device);
+  current &= ~LIBINPUT_CONFIG_SCROLL_EDGE;
 
-  /* Don't set edge scrolling if two-finger scrolling is enabled and available */
-  if (current == LIBINPUT_CONFIG_SCROLL_2FG)
-    return;
-
-  if (supported & LIBINPUT_CONFIG_SCROLL_EDGE &&
-      edge_scrolling_enabled)
-    {
-      scroll_method = LIBINPUT_CONFIG_SCROLL_EDGE;
-    }
-  else
-    {
-      scroll_method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
-    }
-
-  device_set_scroll_method (libinput_device, scroll_method);
+  device_set_scroll_method (libinput_device, current | method);
 }
 
 static void
@@ -193,31 +177,16 @@ meta_input_settings_native_set_two_finger_scroll (MetaInputSettings            *
                                                   ClutterInputDevice           *device,
                                                   gboolean                      two_finger_scroll_enabled)
 {
-  enum libinput_config_scroll_method scroll_method = 0;
   struct libinput_device *libinput_device;
-  enum libinput_config_scroll_method supported;
-  enum libinput_config_scroll_method current;
+  enum libinput_config_scroll_method current, method;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
-  supported = libinput_device_config_scroll_get_methods (libinput_device);
+
+  method = two_finger_scroll_enabled ? LIBINPUT_CONFIG_SCROLL_2FG : LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
   current = libinput_device_config_scroll_get_method (libinput_device);
+  current &= ~LIBINPUT_CONFIG_SCROLL_2FG;
 
-  if (two_finger_scroll_enabled &&
-      !(supported & LIBINPUT_CONFIG_SCROLL_2FG))
-    return;
-
-  if (two_finger_scroll_enabled)
-    {
-      scroll_method = LIBINPUT_CONFIG_SCROLL_2FG;
-    }
-  else if (current != LIBINPUT_CONFIG_SCROLL_EDGE)
-    {
-      scroll_method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
-    }
-  else
-    return;
-
-  device_set_scroll_method (libinput_device, scroll_method);
+  device_set_scroll_method (libinput_device, current | method);
 }
 
 static void
