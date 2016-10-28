@@ -1029,6 +1029,7 @@ NPP_GetValue(NPP          instance,
     if (!instance->pdata)
       return NPERR_INVALID_INSTANCE_ERROR;
 
+    funcs.retainobject (instance->pdata);
     *(NPObject**)value = instance->pdata;
     break;
 
