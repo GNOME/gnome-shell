@@ -42,4 +42,10 @@ EGLDisplay meta_egl_get_display (MetaEgl             *egl,
                                  EGLNativeDisplayType display_id,
                                  GError             **error);
 
+EGLDisplay meta_egl_get_platform_display (MetaEgl      *egl,
+                                          EGLenum       platform,
+                                          void         *native_display,
+                                          const EGLint *attrib_list,
+                                          GError      **error);
+
 #endif /* META_EGL_H */

@@ -25,8 +25,10 @@
 #include "config.h"
 
 #include "backends/meta-egl.h"
+#include "meta/util.h"
 
 #include <EGL/egl.h>
+#include <EGL/eglext.h>
 #include <gio/gio.h>
 #include <glib.h>
 #include <glib-object.h>
@@ -34,6 +36,8 @@
 struct _MetaEgl
 {
   GObject parent;
+
+  PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT;
 };
 
 G_DEFINE_TYPE (MetaEgl, meta_egl, G_TYPE_OBJECT)
@@ -196,6 +200,50 @@ meta_egl_get_display (MetaEgl             *egl,
   return display;
 }
 
+static gboolean
+is_egl_proc_valid_real (void       *proc,
+                        const char *proc_name,
+                        GError    **error)
+{
+  if (!proc)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "EGL proc '%s' not resolved",
+                   proc_name);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+#define is_egl_proc_valid(proc, error) \
+  is_egl_proc_valid_real (proc, #proc, error)
+
+EGLDisplay
+meta_egl_get_platform_display (MetaEgl      *egl,
+                               EGLenum       platform,
+                               void         *native_display,
+                               const EGLint *attrib_list,
+                               GError      **error)
+{
+  EGLDisplay display;
+
+  if (!is_egl_proc_valid (egl->eglGetPlatformDisplayEXT, error))
+    return EGL_NO_DISPLAY;
+
+  display = egl->eglGetPlatformDisplayEXT (platform,
+                                           native_display,
+                                           attrib_list);
+  if (display == EGL_NO_DISPLAY)
+    {
+      set_egl_error (error);
+      return EGL_NO_DISPLAY;
+    }
+
+  return display;
+}
+
 #define GET_EGL_PROC_ADDR(proc) \
   egl->proc = (void *) eglGetProcAddress (#proc);
 
@@ -209,6 +257,9 @@ meta_egl_get_display (MetaEgl             *egl,
 static void
 meta_egl_constructed (GObject *object)
 {
+  MetaEgl *egl = META_EGL (object);
+
+  GET_EGL_PROC_ADDR_REQUIRED (eglGetPlatformDisplayEXT);
 }
 
 #undef GET_EGL_PROC_ADDR
