@@ -1263,7 +1263,7 @@ init_gbm (MetaRendererNative *renderer_native,
     {
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_FAILED,
-                   "Failed to create gbm device");
+                   "Failed to create gbm device: %s", g_strerror (errno));
       return FALSE;
     }
 
