@@ -1,3 +1,24 @@
+3.23.1
+======
+* Fix handling of Escape shortcut in force-quit dialog [Landry; #737109]
+* Improve pointer constraints support [Jonas; #771859]
+* Really fix framebuffer capture origin offset [Rui; #771502]
+* Fix session going into idle mode immediately on startup [Rui; #772839]
+* Fix mirror mode with stage views [Rui; #773115]
+* Fall back to X with connectors spread across multiple GPUs [Ray; #771442]
+* Fix various crashes on wayland [Jonas, Carlos; #771646, #771858, #772929]
+* Fix various placement issues on wayland [Olivier, Jonas, Sjoerd; #772729,
+  #768039, #771841, #771841, #773141]
+* Misc. bug fixes [Rui, Jonas, Olivier; #771019, #773116, #772914, #773210]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, Rui Matos, Landry MINOZA,
+  Sjoerd Simons, Ray Strode
+
+Translations:
+  Theppitak Karoonboonyanan [th], Kjartan Maraas [nb], Hannie Dumoleyn [nl],
+  liushuyu [zh_CN]
+
 3.22.1
 ======
 * Fix feedback loop between StClipboard and X11 bridge [Carlos; #760745]
