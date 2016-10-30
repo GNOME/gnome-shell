@@ -1,3 +1,24 @@
+3.23.1
+======
+* Request periodic scans while WiFi list is open [Dan; #767918]
+* Include extension UUID in structured log metadata [Jonh; #770717]
+* Line-wrap PAM messages on login screen [Tao; #764445]
+* Add a way to launch an app on the discrete GPU [Bastien; #773117]
+* Only allow graphs to lift screen shield when locked [Florian; #773328]
+* Add reload option to gnome-shell-extension-tool [Jonh; #772593]
+* Update background animations when resuming from suspend [Florian; #773265]
+* Misc. bug fixes [Cosimo, Bastien, Florian, Philip, Carlos; #772723, #772287,
+  #756432, #772386, #772386, #773085, #773634]
+
+Contributors:
+  Cosimo Cecchi, Philip Chimento, Carlos Garcia Campos, Florian Müllner,
+  Bastien Nocera, Jonh Wendell, Dan Williams, Tao Yang
+
+Translations:
+  Fabio Tomat [fur], Philip Chimento [zh_CN], YunQiang Su [zh_CN],
+  Jordi Mas [ca], Piotr Drąg [pl], Muhammet Kara [tr], Marek Černocký [cs],
+  Daniel Korostil [uk], Dušan Kazik [sk]
+
 3.22.1
 ======
 * Fix hidden network indicator on startup [Florian; #772249]
