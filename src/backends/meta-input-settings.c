@@ -1276,6 +1276,77 @@ apply_device_settings (MetaInputSettings  *input_settings,
 }
 
 static void
+update_stylus_pressure (MetaInputSettings      *input_settings,
+                        ClutterInputDevice     *device,
+                        ClutterInputDeviceTool *tool)
+{
+  MetaInputSettingsClass *input_settings_class;
+  ToolSettings *tool_settings;
+  const gint32 *curve;
+  GVariant *variant;
+  gsize n_elems;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_ERASER_DEVICE)
+    return;
+
+  if (!tool)
+    return;
+
+  tool_settings = lookup_tool_settings (tool, device);
+
+  if (clutter_input_device_tool_get_tool_type (tool) ==
+      CLUTTER_INPUT_DEVICE_TOOL_ERASER)
+    variant = g_settings_get_value (tool_settings->settings, "eraser-pressure-curve");
+  else
+    variant = g_settings_get_value (tool_settings->settings, "pressure-curve");
+
+  curve = g_variant_get_fixed_array (variant, &n_elems, sizeof (gint32));
+  if (n_elems != 4)
+    return;
+
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  input_settings_class->set_stylus_pressure (input_settings, device, tool, curve);
+}
+
+static void
+update_stylus_buttonmap (MetaInputSettings      *input_settings,
+                         ClutterInputDevice     *device,
+                         ClutterInputDeviceTool *tool)
+{
+  MetaInputSettingsClass *input_settings_class;
+  GDesktopStylusButtonAction primary, secondary;
+  ToolSettings *tool_settings;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_ERASER_DEVICE)
+    return;
+
+  if (!tool)
+    return;
+
+  tool_settings = lookup_tool_settings (tool, device);
+
+  primary = g_settings_get_enum (tool_settings->settings, "button-action");
+  secondary = g_settings_get_enum (tool_settings->settings, "secondary-button-action");
+
+  input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  input_settings_class->set_stylus_button_map (input_settings, device, tool,
+                                               primary, secondary);
+}
+
+static void
+apply_stylus_settings (MetaInputSettings      *input_settings,
+                       ClutterInputDevice     *device,
+                       ClutterInputDeviceTool *tool)
+{
+  update_stylus_pressure (input_settings, device, tool);
+  update_stylus_buttonmap (input_settings, device, tool);
+}
+
+static void
 meta_input_settings_device_added (ClutterDeviceManager *device_manager,
                                   ClutterInputDevice   *device,
                                   MetaInputSettings    *input_settings)
@@ -1296,6 +1367,18 @@ meta_input_settings_device_removed (ClutterDeviceManager *device_manager,
 
   priv = meta_input_settings_get_instance_private (input_settings);
   g_hash_table_remove (priv->mappable_devices, device);
+}
+
+static void
+meta_input_settings_tool_changed (ClutterDeviceManager   *device_manager,
+                                  ClutterInputDevice     *device,
+                                  ClutterInputDeviceTool *tool,
+                                  MetaInputSettings      *input_settings)
+{
+  if (!tool)
+    return;
+
+  apply_stylus_settings (input_settings, device, tool);
 }
 
 static void
@@ -1351,6 +1434,8 @@ meta_input_settings_init (MetaInputSettings *settings)
                     G_CALLBACK (meta_input_settings_device_added), settings);
   g_signal_connect (priv->device_manager, "device-removed",
                     G_CALLBACK (meta_input_settings_device_removed), settings);
+  g_signal_connect (priv->device_manager, "tool-changed",
+                    G_CALLBACK (meta_input_settings_tool_changed), settings);
 
   priv->mouse_settings = g_settings_new ("org.gnome.desktop.peripherals.mouse");
   g_signal_connect (priv->mouse_settings, "changed",
@@ -1459,29 +1544,6 @@ meta_input_settings_get_tablet_mapping (MetaInputSettings  *settings,
   g_return_val_if_fail (info != NULL, G_DESKTOP_TABLET_MAPPING_ABSOLUTE);
 
   return g_settings_get_enum (info->settings, "mapping");
-}
-
-GDesktopStylusButtonAction
-meta_input_settings_get_stylus_button_action (MetaInputSettings      *input_settings,
-                                              ClutterInputDeviceTool *tool,
-                                              ClutterInputDevice     *current_tablet,
-                                              guint                   button)
-{
-  ToolSettings *tool_settings;
-
-  g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings),
-                        G_DESKTOP_STYLUS_BUTTON_ACTION_DEFAULT);
-  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE_TOOL (tool),
-                        G_DESKTOP_STYLUS_BUTTON_ACTION_DEFAULT);
-
-  tool_settings = lookup_tool_settings (tool, current_tablet);
-
-  if (button == 2)
-    return tool_settings->button_action;
-  else if (button == 3)
-    return tool_settings->secondary_button_action;
-  else
-    return G_DESKTOP_STYLUS_BUTTON_ACTION_DEFAULT;
 }
 
 static GDesktopPadButtonAction
@@ -1670,50 +1732,6 @@ meta_input_settings_emulate_keybinding (MetaInputSettings  *input_settings,
                                               key, state);
   if (!is_press)
     emulate_modifiers (priv->virtual_pad_keyboard, mods, state);
-}
-
-static gdouble
-calculate_bezier_position (gdouble pos,
-                           gdouble x1,
-                           gdouble y1,
-                           gdouble x2,
-                           gdouble y2)
-{
-  gdouble int1_y, int2_y;
-
-  pos = CLAMP (pos, 0, 1);
-
-  /* Intersection between 0,0 and x1,y1 */
-  int1_y = pos * y1;
-
-  /* Intersection between x2,y2 and 1,1 */
-  int2_y = (pos * (1 - y2)) + y2;
-
-  /* Find the new position in the line traced by the previous points */
-  return (pos * (int2_y - int1_y)) + int1_y;
-}
-
-gdouble
-meta_input_settings_translate_tablet_tool_pressure (MetaInputSettings      *input_settings,
-                                                    ClutterInputDeviceTool *tool,
-                                                    ClutterInputDevice     *current_tablet,
-                                                    gdouble                 pressure)
-{
-  ToolSettings *tool_settings;
-
-  pressure = CLAMP (pressure, 0, 1);
-
-  g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings), pressure);
-  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE_TOOL (tool), pressure);
-  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (current_tablet), pressure);
-
-  tool_settings = lookup_tool_settings (tool, current_tablet);
-  pressure = calculate_bezier_position (pressure,
-                                        tool_settings->curve[0],
-                                        tool_settings->curve[1],
-                                        tool_settings->curve[2],
-                                        tool_settings->curve[3]);
-  return pressure;
 }
 
 gboolean

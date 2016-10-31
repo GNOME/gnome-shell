@@ -1219,7 +1219,8 @@ input_device_update_tool (ClutterInputDevice          *input_device,
 }
 
 static gdouble *
-translate_tablet_axes (struct libinput_event_tablet_tool *tablet_event)
+translate_tablet_axes (struct libinput_event_tablet_tool *tablet_event,
+                       ClutterInputDeviceTool            *tool)
 {
   GArray *axes = g_array_new (FALSE, FALSE, sizeof (gdouble));
   struct libinput_tablet_tool *libinput_tool;
@@ -1241,6 +1242,7 @@ translate_tablet_axes (struct libinput_event_tablet_tool *tablet_event)
   if (libinput_tablet_tool_has_pressure (libinput_tool))
     {
       value = libinput_event_tablet_tool_get_pressure (tablet_event);
+      value = clutter_input_device_tool_evdev_translate_pressure (tool, value);
       g_array_append_val (axes, value);
     }
 
@@ -1718,7 +1720,8 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         if (!stage)
           break;
 
-        axes = translate_tablet_axes (tablet_event);
+        axes = translate_tablet_axes (tablet_event,
+                                      evdev_device->last_tool);
         if (!axes)
           break;
 

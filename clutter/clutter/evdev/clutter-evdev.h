@@ -150,6 +150,14 @@ gboolean clutter_evdev_event_get_relative_motion (const ClutterEvent *event,
                                                   double             *dx_unaccel,
                                                   double             *dy_unaccel);
 
+CLUTTER_AVAILABLE_IN_ALL
+void clutter_evdev_input_device_tool_set_pressure_curve (ClutterInputDeviceTool *tool,
+                                                         gdouble                 curve[4]);
+CLUTTER_AVAILABLE_IN_ALL
+void clutter_evdev_input_device_tool_set_button_code    (ClutterInputDeviceTool *tool,
+                                                         guint                   button,
+                                                         guint                   evcode);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_EVDEV_H__ */

@@ -24,6 +24,7 @@
 #include "config.h"
 
 #include <clutter/evdev/clutter-evdev.h>
+#include <linux/input-event-codes.h>
 #include <libinput.h>
 
 #include "meta-input-settings-native.h"
@@ -396,6 +397,54 @@ meta_input_settings_native_set_tablet_area (MetaInputSettings  *settings,
 }
 
 static void
+meta_input_settings_native_set_stylus_pressure (MetaInputSettings      *settings,
+                                                ClutterInputDevice     *device,
+                                                ClutterInputDeviceTool *tool,
+                                                const gint              curve[4])
+{
+  gdouble pressure_curve[4];
+
+  pressure_curve[0] = (gdouble) curve[0] / 100;
+  pressure_curve[1] = (gdouble) curve[1] / 100;
+  pressure_curve[2] = (gdouble) curve[2] / 100;
+  pressure_curve[3] = (gdouble) curve[3] / 100;
+
+  clutter_evdev_input_device_tool_set_pressure_curve (tool, pressure_curve);
+}
+
+static guint
+action_to_evcode (GDesktopStylusButtonAction action)
+{
+  switch (action)
+    {
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_MIDDLE:
+      return BTN_STYLUS;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_RIGHT:
+      return BTN_STYLUS2;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_BACK:
+      return BTN_BACK;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_FORWARD:
+      return BTN_FORWARD;
+    case G_DESKTOP_STYLUS_BUTTON_ACTION_DEFAULT:
+    default:
+      return 0;
+    }
+}
+
+static void
+meta_input_settings_native_set_stylus_button_map (MetaInputSettings          *settings,
+                                                  ClutterInputDevice         *device,
+                                                  ClutterInputDeviceTool     *tool,
+                                                  GDesktopStylusButtonAction  primary,
+                                                  GDesktopStylusButtonAction  secondary)
+{
+  clutter_evdev_input_device_tool_set_button_code (tool, CLUTTER_BUTTON_MIDDLE,
+                                                   action_to_evcode (primary));
+  clutter_evdev_input_device_tool_set_button_code (tool, CLUTTER_BUTTON_SECONDARY,
+                                                   action_to_evcode (secondary));
+}
+
+static void
 meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
 {
   MetaInputSettingsClass *input_settings_class = META_INPUT_SETTINGS_CLASS (klass);
@@ -418,6 +467,9 @@ meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
 
   input_settings_class->set_mouse_accel_profile = meta_input_settings_native_set_mouse_accel_profile;
   input_settings_class->set_trackball_accel_profile = meta_input_settings_native_set_trackball_accel_profile;
+
+  input_settings_class->set_stylus_pressure = meta_input_settings_native_set_stylus_pressure;
+  input_settings_class->set_stylus_button_map = meta_input_settings_native_set_stylus_button_map;
 }
 
 static void
