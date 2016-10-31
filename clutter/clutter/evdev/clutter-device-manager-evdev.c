@@ -1210,7 +1210,12 @@ input_device_update_tool (ClutterInputDevice          *input_device,
         }
     }
 
-  evdev_device->last_tool = tool;
+  if (evdev_device->last_tool != tool)
+    {
+      evdev_device->last_tool = tool;
+      g_signal_emit_by_name (clutter_device_manager_get_default (),
+                             "tool-changed", input_device, tool);
+    }
 }
 
 static gdouble *
@@ -1753,8 +1758,11 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 
         libinput_tool = libinput_event_tablet_tool_get_tool (tablet_event);
 
-        input_device_update_tool (device, libinput_tool);
+        if (state == LIBINPUT_TABLET_TOOL_PROXIMITY_STATE_IN)
+          input_device_update_tool (device, libinput_tool);
         notify_proximity (device, time, state == LIBINPUT_TABLET_TOOL_PROXIMITY_STATE_IN);
+        if (state == LIBINPUT_TABLET_TOOL_PROXIMITY_STATE_OUT)
+          input_device_update_tool (device, NULL);
         break;
       }
     case LIBINPUT_EVENT_TABLET_TOOL_BUTTON:
