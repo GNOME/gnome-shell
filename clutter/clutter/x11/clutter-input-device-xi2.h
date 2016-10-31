@@ -41,6 +41,9 @@ void  _clutter_input_device_xi2_translate_state (ClutterEvent    *event,
 						 XIModifierState *modifiers_state,
 						 XIButtonState   *buttons_state,
 						 XIGroupState    *group_state);
+void  clutter_input_device_xi2_update_tool      (ClutterInputDevice     *device,
+                                                 ClutterInputDeviceTool *tool);
+ClutterInputDeviceTool * clutter_input_device_xi2_get_current_tool (ClutterInputDevice *device);
 
 G_END_DECLS
 

@@ -43,6 +43,7 @@ struct _ClutterDeviceManagerXI2
   ClutterDeviceManager parent_instance;
 
   GHashTable *devices_by_id;
+  GHashTable *tools_by_serial;
 
   GSList *all_devices;
 

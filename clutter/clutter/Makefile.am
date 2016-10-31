@@ -413,11 +413,13 @@ x11_source_c_priv = \
 x11_source_c += \
 	x11/clutter-device-manager-xi2.c	\
 	x11/clutter-input-device-xi2.c	\
+	x11/clutter-input-device-tool-xi2.c \
 	$(NULL)
 
 x11_source_h_priv += \
 	x11/clutter-device-manager-xi2.h	\
 	x11/clutter-input-device-xi2.h	\
+	x11/clutter-input-device-tool-xi2.h \
 	$(NULL)
 
 x11_source_c += \

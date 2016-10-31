@@ -29,6 +29,7 @@
 
 #include "clutter-backend-x11.h"
 #include "clutter-input-device-xi2.h"
+#include "clutter-input-device-tool-xi2.h"
 #include "clutter-virtual-input-device-x11.h"
 #include "clutter-stage-x11.h"
 
@@ -952,6 +953,78 @@ clutter_device_manager_xi2_select_stage_events (ClutterDeviceManager *manager,
   g_free (mask);
 }
 
+static guint
+device_get_tool_serial (ClutterBackendX11  *backend_x11,
+                        ClutterInputDevice *device)
+{
+  gulong nitems, bytes_after;
+  guint32 *data = NULL;
+  guint serial_id = 0;
+  int rc, format;
+  Atom type;
+  Atom prop;
+
+  prop = XInternAtom (backend_x11->xdpy, "Wacom Serial IDs", True);
+  if (prop == None)
+    return 0;
+
+  clutter_x11_trap_x_errors ();
+  rc = XIGetProperty (backend_x11->xdpy,
+                      clutter_input_device_get_device_id (device),
+                      prop, 0, 4, FALSE, XA_INTEGER, &type, &format, &nitems, &bytes_after,
+                      (guchar **) &data);
+  clutter_x11_untrap_x_errors ();
+
+  if (rc == Success && type == XA_INTEGER && format == 32 && nitems >= 4)
+    serial_id = data[3];
+
+  XFree (data);
+
+  return serial_id;
+}
+
+static void
+handle_property_event (ClutterDeviceManagerXI2 *manager_xi2,
+                       XIEvent                 *event)
+{
+  XIPropertyEvent *xev = (XIPropertyEvent *) event;
+  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (clutter_get_default_backend ());
+  Atom serial_ids_prop = XInternAtom (backend_x11->xdpy, "Wacom Serial IDs", True);
+  ClutterInputDevice *device;
+
+  device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                GINT_TO_POINTER (xev->deviceid));
+  if (!device)
+    return;
+
+  if (xev->property == serial_ids_prop)
+    {
+      ClutterInputDeviceTool *tool = NULL;
+      ClutterInputDeviceToolType type;
+      guint serial_id;
+
+      serial_id = device_get_tool_serial (backend_x11, device);
+
+      if (serial_id != 0)
+        {
+          tool = g_hash_table_lookup (manager_xi2->tools_by_serial,
+                                      GUINT_TO_POINTER (serial_id));
+          if (!tool)
+            {
+              type = clutter_input_device_get_device_type (device) == CLUTTER_ERASER_DEVICE ?
+                CLUTTER_INPUT_DEVICE_TOOL_ERASER : CLUTTER_INPUT_DEVICE_TOOL_PEN;
+              tool = clutter_input_device_tool_xi2_new (serial_id, type);
+              g_hash_table_insert (manager_xi2->tools_by_serial,
+                                   GUINT_TO_POINTER (serial_id),
+                                   tool);
+            }
+        }
+
+      clutter_input_device_xi2_update_tool (device, tool);
+      g_signal_emit_by_name (manager_xi2, "tool-changed", device, tool);
+    }
+}
+
 static ClutterTranslateReturn
 clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                             gpointer                native,
@@ -983,7 +1056,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
     return CLUTTER_TRANSLATE_REMOVE;
 
   if (!(xi_event->evtype == XI_HierarchyChanged ||
-        xi_event->evtype == XI_DeviceChanged))
+        xi_event->evtype == XI_DeviceChanged ||
+        xi_event->evtype == XI_PropertyEvent))
     {
       stage = get_event_stage (translator, xi_event);
       if (stage == NULL || CLUTTER_ACTOR_IN_DESTRUCTION (stage))
@@ -1247,6 +1321,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
             clutter_event_set_source_device (event, source_device);
             clutter_event_set_device (event, device);
+            clutter_event_set_device_tool (event,
+                                           clutter_input_device_xi2_get_current_tool (source_device));
 
             event->button.axes = translate_axes (event->button.device,
                                                  event->button.x,
@@ -1355,6 +1431,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
         clutter_event_set_source_device (event, source_device);
         clutter_event_set_device (event, device);
+        clutter_event_set_device_tool (event,
+                                       clutter_input_device_xi2_get_current_tool (source_device));
 
         event->motion.axes = translate_axes (event->motion.device,
                                              event->motion.x,
@@ -1556,6 +1634,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
     case XI_FocusOut:
       retval = CLUTTER_TRANSLATE_CONTINUE;
       break;
+    case XI_PropertyEvent:
+      handle_property_event (manager_xi2, xi_event);
+      retval = CLUTTER_TRANSLATE_CONTINUE;
+      break;
     }
 
   return retval;
@@ -1733,6 +1815,7 @@ clutter_device_manager_xi2_constructed (GObject *gobject)
 
   XISetMask (mask, XI_HierarchyChanged);
   XISetMask (mask, XI_DeviceChanged);
+  XISetMask (mask, XI_PropertyEvent);
 
   event_mask.deviceid = XIAllDevices;
   event_mask.mask_len = sizeof (mask);
@@ -1814,4 +1897,6 @@ clutter_device_manager_xi2_init (ClutterDeviceManagerXI2 *self)
   self->devices_by_id = g_hash_table_new_full (NULL, NULL,
                                                NULL,
                                                (GDestroyNotify) g_object_unref);
+  self->tools_by_serial = g_hash_table_new_full (NULL, NULL, NULL,
+                                                 (GDestroyNotify) g_object_unref);
 }
