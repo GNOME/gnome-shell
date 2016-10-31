@@ -724,7 +724,9 @@ update_tablet_keep_aspect (MetaInputSettings  *input_settings,
   MetaOutput *output = NULL;
   gboolean keep_aspect;
 
-  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_ERASER_DEVICE)
     return;
 
 #ifdef HAVE_LIBWACOM
@@ -768,6 +770,8 @@ update_device_display (MetaInputSettings  *input_settings,
   MetaOutput *output;
 
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_ERASER_DEVICE &&
       clutter_input_device_get_device_type (device) != CLUTTER_TOUCHSCREEN_DEVICE)
     return;
 
@@ -800,7 +804,9 @@ update_tablet_mapping (MetaInputSettings  *input_settings,
   MetaInputSettingsClass *input_settings_class;
   GDesktopTabletMapping mapping;
 
-  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_ERASER_DEVICE)
     return;
 
 #ifdef HAVE_LIBWACOM
@@ -838,7 +844,9 @@ update_tablet_area (MetaInputSettings  *input_settings,
   const gdouble *area;
   gsize n_elems;
 
-  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_ERASER_DEVICE)
     return;
 
 #ifdef HAVE_LIBWACOM
@@ -877,7 +885,10 @@ update_tablet_left_handed (MetaInputSettings  *input_settings,
   MetaInputSettingsClass *input_settings_class;
   gboolean enabled;
 
-  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE)
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_ERASER_DEVICE &&
+      clutter_input_device_get_device_type (device) != CLUTTER_PAD_DEVICE)
     return;
 
 #ifdef HAVE_LIBWACOM
