@@ -45,7 +45,6 @@ static GQuark quark_tool_settings = 0;
 
 typedef struct _MetaInputSettingsPrivate MetaInputSettingsPrivate;
 typedef struct _DeviceMappingInfo DeviceMappingInfo;
-typedef struct _ToolSettings ToolSettings;
 
 struct _DeviceMappingInfo
 {
@@ -55,15 +54,6 @@ struct _DeviceMappingInfo
 #ifdef HAVE_LIBWACOM
   WacomDevice *wacom_device;
 #endif
-};
-
-struct _ToolSettings
-{
-  GSettings *settings;
-  ClutterInputDeviceTool *tool;
-  GDesktopStylusButtonAction button_action;
-  GDesktopStylusButtonAction secondary_button_action;
-  gdouble curve[4];
 };
 
 struct _MetaInputSettingsPrivate
@@ -1036,92 +1026,11 @@ lookup_device_settings (ClutterInputDevice *device)
   return settings;
 }
 
-static void
-tool_settings_cache_pressure_curve (ToolSettings *tool_settings)
-{
-  GVariant *variant;
-  const gint32 *curve;
-  gsize n_elems;
-
-  if (clutter_input_device_tool_get_tool_type (tool_settings->tool) ==
-      CLUTTER_INPUT_DEVICE_TOOL_ERASER)
-    variant = g_settings_get_value (tool_settings->settings, "eraser-pressure-curve");
-  else
-    variant = g_settings_get_value (tool_settings->settings, "pressure-curve");
-
-  curve = g_variant_get_fixed_array (variant, &n_elems, sizeof (gint32));
-  if (n_elems == 4)
-    {
-      tool_settings->curve[0] = (gdouble) curve[0] / 100;
-      tool_settings->curve[1] = (gdouble) curve[1] / 100;
-      tool_settings->curve[2] = (gdouble) curve[2] / 100;
-      tool_settings->curve[3] = (gdouble) curve[3] / 100;
-    }
-  else
-    {
-      tool_settings->curve[0] = tool_settings->curve[1] = 0;
-      tool_settings->curve[2] = tool_settings->curve[3] = 1;
-    }
-
-  g_variant_unref (variant);
-}
-
-static void
-tool_settings_changed_cb (GSettings    *settings,
-                          const gchar  *key,
-                          ToolSettings *tool_settings)
-{
-  if (strcmp (key, "button-action") == 0)
-    tool_settings->button_action = g_settings_get_enum (settings, "button-action");
-  else if (strcmp (key, "secondary-button-action") == 0)
-    tool_settings->secondary_button_action = g_settings_get_enum (settings, "secondary-button-action");
-  else if (strcmp (key, "pressure-curve") == 0 &&
-           clutter_input_device_tool_get_tool_type (tool_settings->tool) !=
-           CLUTTER_INPUT_DEVICE_TOOL_ERASER)
-    tool_settings_cache_pressure_curve (tool_settings);
-  else if (strcmp (key, "eraser-pressure-curve") == 0 &&
-           clutter_input_device_tool_get_tool_type (tool_settings->tool) ==
-           CLUTTER_INPUT_DEVICE_TOOL_ERASER)
-    tool_settings_cache_pressure_curve (tool_settings);
-}
-
-static ToolSettings *
-tool_settings_new (ClutterInputDeviceTool *tool,
-                   const gchar            *schema_path)
-{
-  ToolSettings *tool_settings;
-
-  tool_settings = g_new0 (ToolSettings, 1);
-  tool_settings->tool = tool;
-  tool_settings->settings =
-    g_settings_new_with_path ("org.gnome.desktop.peripherals.tablet.stylus",
-                              schema_path);
-
-  g_signal_connect (tool_settings->settings, "changed",
-                    G_CALLBACK (tool_settings_changed_cb), tool_settings);
-
-  /* Initialize values */
-  tool_settings->button_action =
-    g_settings_get_enum (tool_settings->settings, "button-action");
-  tool_settings->secondary_button_action =
-    g_settings_get_enum (tool_settings->settings, "secondary-button-action");
-  tool_settings_cache_pressure_curve (tool_settings);
-
-  return tool_settings;
-}
-
-static void
-tool_settings_free (ToolSettings *tool_settings)
-{
-  g_object_unref (tool_settings->settings);
-  g_free (tool_settings);
-}
-
-static ToolSettings *
+static GSettings *
 lookup_tool_settings (ClutterInputDeviceTool *tool,
                       ClutterInputDevice     *device)
 {
-  ToolSettings *tool_settings;
+  GSettings *tool_settings;
   guint64 serial;
   gchar *path;
 
@@ -1142,9 +1051,11 @@ lookup_tool_settings (ClutterInputDeviceTool *tool,
       path = g_strdup_printf ("/org/gnome/desktop/peripherals/stylus/%lx/", serial);
     }
 
-  tool_settings = tool_settings_new (tool, path);
+  tool_settings =
+    g_settings_new_with_path ("org.gnome.desktop.peripherals.tablet.stylus",
+                              path);
   g_object_set_qdata_full (G_OBJECT (tool), quark_tool_settings, tool_settings,
-                           (GDestroyNotify) tool_settings_free);
+                           (GDestroyNotify) g_object_unref);
   g_free (path);
 
   return tool_settings;
@@ -1281,7 +1192,7 @@ update_stylus_pressure (MetaInputSettings      *input_settings,
                         ClutterInputDeviceTool *tool)
 {
   MetaInputSettingsClass *input_settings_class;
-  ToolSettings *tool_settings;
+  GSettings *tool_settings;
   const gint32 *curve;
   GVariant *variant;
   gsize n_elems;
@@ -1298,9 +1209,9 @@ update_stylus_pressure (MetaInputSettings      *input_settings,
 
   if (clutter_input_device_tool_get_tool_type (tool) ==
       CLUTTER_INPUT_DEVICE_TOOL_ERASER)
-    variant = g_settings_get_value (tool_settings->settings, "eraser-pressure-curve");
+    variant = g_settings_get_value (tool_settings, "eraser-pressure-curve");
   else
-    variant = g_settings_get_value (tool_settings->settings, "pressure-curve");
+    variant = g_settings_get_value (tool_settings, "pressure-curve");
 
   curve = g_variant_get_fixed_array (variant, &n_elems, sizeof (gint32));
   if (n_elems != 4)
@@ -1317,7 +1228,7 @@ update_stylus_buttonmap (MetaInputSettings      *input_settings,
 {
   MetaInputSettingsClass *input_settings_class;
   GDesktopStylusButtonAction primary, secondary;
-  ToolSettings *tool_settings;
+  GSettings *tool_settings;
 
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
       clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
@@ -1329,8 +1240,8 @@ update_stylus_buttonmap (MetaInputSettings      *input_settings,
 
   tool_settings = lookup_tool_settings (tool, device);
 
-  primary = g_settings_get_enum (tool_settings->settings, "button-action");
-  secondary = g_settings_get_enum (tool_settings->settings, "secondary-button-action");
+  primary = g_settings_get_enum (tool_settings, "button-action");
+  secondary = g_settings_get_enum (tool_settings, "secondary-button-action");
 
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   input_settings_class->set_stylus_button_map (input_settings, device, tool,
