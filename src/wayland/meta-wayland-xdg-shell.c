@@ -28,6 +28,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "core/window-private.h"
 #include "wayland/meta-wayland.h"
+#include "wayland/meta-wayland-outputs.h"
 #include "wayland/meta-wayland-popup.h"
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-wayland-seat.h"
@@ -365,6 +366,13 @@ xdg_toplevel_set_fullscreen (struct wl_client   *client,
                              struct wl_resource *output_resource)
 {
   MetaWaylandSurface *surface = surface_from_xdg_toplevel_resource (resource);
+
+  if (output_resource)
+    {
+      MetaWaylandOutput *output = wl_resource_get_user_data (output_resource);
+      if (output)
+        meta_window_move_to_monitor (surface->window, output->logical_monitor->number);
+    }
 
   meta_window_make_fullscreen (surface->window);
 }
