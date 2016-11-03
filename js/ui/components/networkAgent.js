@@ -615,6 +615,14 @@ const NetworkAgent = new Lang.Class({
         this._vpnRequests = { };
         this._notifications = { };
 
+        this._pluginDir = Gio.file_new_for_path(GLib.build_filenamev([Config.SYSCONFDIR, 'NetworkManager/VPN']));
+        try {
+            let monitor = this._pluginDir.monitor(Gio.FileMonitorFlags.NONE, null);
+            monitor.connect('changed', () => { this._vpnCacheBuilt = false; });
+        } catch(e) {
+            log('Failed to create monitor for VPN plugin dir: ' + e.message);
+        }
+
         this._native.connect('new-request', Lang.bind(this, this._newRequest));
         this._native.connect('cancel-request', Lang.bind(this, this._cancelRequest));
 
@@ -765,9 +773,8 @@ const NetworkAgent = new Lang.Class({
         this._vpnCacheBuilt = true;
         this._vpnBinaries = { };
 
-        let dir = Gio.file_new_for_path(GLib.build_filenamev([Config.SYSCONFDIR, 'NetworkManager/VPN']));
         try {
-            let fileEnum = dir.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
+            let fileEnum = this._pluginDir.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
             let info;
 
             while ((info = fileEnum.next_file(null))) {
@@ -777,7 +784,7 @@ const NetworkAgent = new Lang.Class({
 
                 try {
                     let keyfile = new GLib.KeyFile();
-                    keyfile.load_from_file(dir.get_child(name).get_path(), GLib.KeyFileFlags.NONE);
+                    keyfile.load_from_file(this._pluginDir.get_child(name).get_path(), GLib.KeyFileFlags.NONE);
                     let service = keyfile.get_string('VPN Connection', 'service');
                     let binary = keyfile.get_string('GNOME', 'auth-dialog');
                     let externalUIMode = false;
@@ -810,7 +817,7 @@ const NetworkAgent = new Lang.Class({
                     }
                 } catch(e) {
                     log('Error \'%s\' while processing VPN keyfile \'%s\''.
-                        format(e.message, dir.get_child(name).get_path()));
+                        format(e.message, this._pluginDir.get_child(name).get_path()));
                     continue;
                 }
             }
