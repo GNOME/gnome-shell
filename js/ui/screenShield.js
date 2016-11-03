@@ -850,6 +850,7 @@ const ScreenShield = new Lang.Class({
     },
 
     _activateFade: function(lightbox, time) {
+        Main.uiGroup.set_child_above_sibling(lightbox.actor, null);
         lightbox.show(time);
 
         if (this._becameActiveId == 0)
