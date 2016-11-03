@@ -765,57 +765,29 @@ var NetworkAgent = new Lang.Class({
         this._vpnCacheBuilt = true;
         this._vpnBinaries = { };
 
-        try {
-            let fileEnum = this._pluginDir.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
-            let info;
+        NM.VpnPluginInfo.list_load().forEach(plugin => {
+            let service = plugin.get_service();
+            let fileName = plugin.get_auth_dialog();
+            let supportsHints = plugin.supports_hints();
+            let externalUIMode = false;
 
-            while ((info = fileEnum.next_file(null))) {
-                let name = info.get_name();
-                if (name.substr(-5) != '.name')
-                    continue;
-
-                try {
-                    let keyfile = new GLib.KeyFile();
-                    keyfile.load_from_file(this._pluginDir.get_child(name).get_path(), GLib.KeyFileFlags.NONE);
-                    let service = keyfile.get_string('VPN Connection', 'service');
-                    let binary = keyfile.get_string('GNOME', 'auth-dialog');
-                    let externalUIMode = false;
-                    let hints = false;
-
-                    try {
-                        externalUIMode = keyfile.get_boolean('GNOME', 'supports-external-ui-mode');
-                    } catch(e) { } // ignore errors if key does not exist
-
-                    try {
-                        hints = keyfile.get_boolean('GNOME', 'supports-hints');
-                    } catch(e) { } // ignore errors if key does not exist
-
-                    let path = binary;
-                    if (!GLib.path_is_absolute(path)) {
-                        path = GLib.build_filenamev([Config.LIBEXECDIR, path]);
-                    }
-
-                    if (GLib.file_test(path, GLib.FileTest.IS_EXECUTABLE)) {
-                        this._vpnBinaries[service] = { fileName: path, externalUIMode: externalUIMode, supportsHints: hints };
-                        try {
-                            let aliases = keyfile.get_string_list('VPN Connection', 'aliases');
-
-                            for (let alias of aliases) {
-                                this._vpnBinaries[alias] = { fileName: path, externalUIMode: externalUIMode, supportsHints: hints };
-                            }
-                        } catch(e) { } // ignore errors if key does not exist
-                    } else {
-                        throw new Error('VPN plugin at %s is not executable'.format(path));
-                    }
-                } catch(e) {
-                    log('Error \'%s\' while processing VPN keyfile \'%s\''.
-                        format(e.message, this._pluginDir.get_child(name).get_path()));
-                    continue;
-                }
+            let prop = plugin.lookup_property('GNOME', 'supports-external-ui-mode');
+            if (prop) {
+                prop = prop.trim().toLowerCase();
+                externalUIMode = ['true', 'yes', 'on', '1'].includes(prop);
             }
-        } catch(e) {
-            logError(e, 'error while enumerating VPN auth helpers');
-        }
+
+            if (GLib.file_test(fileName, GLib.FileTest.IS_EXECUTABLE)) {
+                let binary = { fileName, externalUIMode, supportsHints };
+                this._vpnBinaries[service] = binary;
+
+                plugin.get_aliases().forEach(alias => {
+                    this._vpnBinaries[alias] = binary;
+                });
+            } else {
+                log('VPN plugin at %s is not executable'.format(fileName));
+            }
+        });
     }
 });
 var Component = NetworkAgent;
