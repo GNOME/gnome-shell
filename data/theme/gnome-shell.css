@@ -912,6 +912,8 @@ StScrollBar {
     padding-right: 18px; }
   .message-media-control:last-child:rtl {
     padding-left: 18px; }
+  .message-media-control:insensitive {
+    color: #8e8e80; }
 
 .media-message-cover-icon {
   icon-size: 48px !important; }
