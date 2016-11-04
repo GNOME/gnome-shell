@@ -564,13 +564,11 @@ StScrollBar {
 
 /* Pad OSD */
 .pad-osd-window {
-    padding: 32px;
-    background-color: rgba(0, 0, 0, 0.8);
-}
+  padding: 32px;
+  background-color: rgba(0, 0, 0, 0.8); }
 
 .combo-box-label {
-    width: 15em;
-}
+  width: 15em; }
 
 /* App Switcher */
 .switcher-popup {
