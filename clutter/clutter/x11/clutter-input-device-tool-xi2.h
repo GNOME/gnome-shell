@@ -64,7 +64,7 @@ struct _ClutterInputDeviceToolXI2Class
   ClutterInputDeviceToolClass parent_class;
 };
 
-GType                    clutter_input_device_xi2_evdev_get_type (void) G_GNUC_CONST;
+GType                    clutter_input_device_tool_xi2_get_type  (void) G_GNUC_CONST;
 
 ClutterInputDeviceTool * clutter_input_device_tool_xi2_new       (guint                        serial,
                                                                   ClutterInputDeviceToolType   type);
