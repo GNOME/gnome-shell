@@ -65,14 +65,11 @@ meta_input_settings_native_set_matrix (MetaInputSettings  *settings,
                                        ClutterInputDevice *device,
                                        gfloat              matrix[6])
 {
-  struct libinput_device *libinput_device;
+  cairo_matrix_t dev_matrix;
 
-  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
-  if (!libinput_device)
-    return;
-
-  if (libinput_device_config_calibration_has_matrix (libinput_device) > 0)
-    libinput_device_config_calibration_set_matrix (libinput_device, matrix);
+  cairo_matrix_init (&dev_matrix, matrix[0], matrix[3], matrix[1],
+                     matrix[4], matrix[2], matrix[5]);
+  g_object_set (device, "device-matrix", &dev_matrix, NULL);
 }
 
 static void
