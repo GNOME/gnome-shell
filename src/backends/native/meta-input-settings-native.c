@@ -27,6 +27,7 @@
 #include <linux/input-event-codes.h>
 #include <libinput.h>
 
+#include "meta-backend-native.h"
 #include "meta-input-settings-native.h"
 
 G_DEFINE_TYPE (MetaInputSettingsNative, meta_input_settings_native, META_TYPE_INPUT_SETTINGS)
@@ -379,7 +380,33 @@ meta_input_settings_native_set_tablet_keep_aspect (MetaInputSettings  *settings,
                                                    MetaOutput         *output,
                                                    gboolean            keep_aspect)
 {
-  /* FIXME: Implement */
+  gdouble output_aspect = 0;
+
+  if (keep_aspect)
+    {
+      gint output_width, output_height;
+
+      if (output && output->crtc)
+        {
+          output_width = output->crtc->rect.width;
+          output_height = output->crtc->rect.height;
+        }
+      else
+        {
+          MetaMonitorManager *monitor_manager;
+          MetaBackend *backend;
+
+          backend = meta_get_backend ();
+          monitor_manager = meta_backend_get_monitor_manager (backend);
+          meta_monitor_manager_get_screen_limits (monitor_manager,
+                                                  &output_width,
+                                                  &output_height);
+        }
+
+      output_aspect = (gdouble) output_width / output_height;
+    }
+
+  g_object_set (device, "output-aspect-ratio", output_aspect, NULL);
 }
 
 static void
