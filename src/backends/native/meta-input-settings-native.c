@@ -390,7 +390,16 @@ meta_input_settings_native_set_tablet_area (MetaInputSettings  *settings,
                                             gdouble             padding_top,
                                             gdouble             padding_bottom)
 {
-  /* FIXME: Implement */
+  struct libinput_device *libinput_device;
+  gfloat matrix[6] = { 1. - (padding_left + padding_right), 0., padding_left,
+                       0., 1. - (padding_top + padding_bottom), padding_top };
+
+  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device ||
+      !libinput_device_config_calibration_has_matrix (libinput_device))
+    return;
+
+  libinput_device_config_calibration_set_matrix (libinput_device, matrix);
 }
 
 static void
