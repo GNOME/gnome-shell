@@ -35,6 +35,8 @@
 #include "clutter-input-device-evdev.h"
 #include "clutter-device-manager-evdev.h"
 
+#include "cairo-gobject.h"
+
 typedef struct _ClutterInputDeviceClass        ClutterInputDeviceEvdevClass;
 
 #define clutter_input_device_evdev_get_type _clutter_input_device_evdev_get_type
@@ -42,6 +44,14 @@ typedef struct _ClutterInputDeviceClass        ClutterInputDeviceEvdevClass;
 G_DEFINE_TYPE (ClutterInputDeviceEvdev,
                clutter_input_device_evdev,
                CLUTTER_TYPE_INPUT_DEVICE)
+
+enum {
+  PROP_0,
+  PROP_DEVICE_MATRIX,
+  N_PROPS
+};
+
+static GParamSpec *obj_props[N_PROPS] = { 0 };
 
 static void
 clutter_input_device_evdev_finalize (GObject *object)
@@ -57,6 +67,47 @@ clutter_input_device_evdev_finalize (GObject *object)
   _clutter_device_manager_evdev_release_device_id (manager_evdev, device);
 
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
+}
+
+static void
+clutter_input_device_evdev_set_property (GObject      *object,
+                                         guint         prop_id,
+                                         const GValue *value,
+                                         GParamSpec   *pspec)
+{
+  ClutterInputDeviceEvdev *device = CLUTTER_INPUT_DEVICE_EVDEV (object);
+
+  switch (prop_id)
+    {
+    case PROP_DEVICE_MATRIX:
+      {
+        const cairo_matrix_t *matrix = g_value_get_boxed (value);
+        cairo_matrix_init_identity (&device->device_matrix);
+        cairo_matrix_multiply (&device->device_matrix,
+                               &device->device_matrix, matrix);
+        break;
+      }
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+clutter_input_device_evdev_get_property (GObject    *object,
+                                         guint       prop_id,
+                                         GValue     *value,
+                                         GParamSpec *pspec)
+{
+  ClutterInputDeviceEvdev *device = CLUTTER_INPUT_DEVICE_EVDEV (object);
+
+  switch (prop_id)
+    {
+    case PROP_DEVICE_MATRIX:
+      g_value_set_boxed (value, &device->device_matrix);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
 }
 
 static gboolean
@@ -114,13 +165,26 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = clutter_input_device_evdev_finalize;
+  object_class->set_property = clutter_input_device_evdev_set_property;
+  object_class->get_property = clutter_input_device_evdev_get_property;
+
   klass->keycode_to_evdev = clutter_input_device_evdev_keycode_to_evdev;
   klass->update_from_tool = clutter_input_device_evdev_update_from_tool;
+
+  obj_props[PROP_DEVICE_MATRIX] =
+    g_param_spec_boxed ("device-matrix",
+			P_("Device input matrix"),
+			P_("Device input matrix"),
+			CAIRO_GOBJECT_TYPE_MATRIX,
+			CLUTTER_PARAM_READWRITE);
+
+  g_object_class_install_properties (object_class, N_PROPS, obj_props);
 }
 
 static void
 clutter_input_device_evdev_init (ClutterInputDeviceEvdev *self)
 {
+  cairo_matrix_init_identity (&self->device_matrix);
 }
 
 /*
@@ -312,4 +376,28 @@ clutter_evdev_event_sequence_get_slot (const ClutterEventSequence *sequence)
     return -1;
 
   return GPOINTER_TO_INT (sequence) - 1;
+}
+
+void
+clutter_input_device_evdev_translate_coordinates (ClutterInputDevice *device,
+                                                  ClutterStage       *stage,
+                                                  gfloat             *x,
+                                                  gfloat             *y)
+{
+  ClutterInputDeviceEvdev *device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
+  double min_x = 0, min_y = 0, max_x = 1, max_y = 1;
+  gdouble stage_width, stage_height;
+  double x_d, y_d;
+
+  stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
+  stage_height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
+  x_d = *x / stage_width;
+  y_d = *y / stage_height;
+
+  cairo_matrix_transform_point (&device_evdev->device_matrix, &min_x, &min_y);
+  cairo_matrix_transform_point (&device_evdev->device_matrix, &max_x, &max_y);
+  cairo_matrix_transform_point (&device_evdev->device_matrix, &x_d, &y_d);
+
+  *x = CLAMP (x_d, MIN (min_x, max_x), MAX (min_x, max_x)) * stage_width;
+  *y = CLAMP (y_d, MIN (min_y, max_y), MAX (min_y, max_y)) * stage_height;
 }

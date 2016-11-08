@@ -312,6 +312,9 @@ new_absolute_motion_event (ClutterInputDevice *input_device,
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
   event->motion.x = x;
   event->motion.y = y;
+  clutter_input_device_evdev_translate_coordinates (input_device, stage,
+                                                    &event->motion.x,
+                                                    &event->motion.y);
   event->motion.axes = axes;
   clutter_event_set_source_device (event, input_device);
 
@@ -510,6 +513,10 @@ notify_touch_event (ClutterInputDevice *input_device,
   event->touch.device = seat->core_pointer;
   event->touch.x = x;
   event->touch.y = y;
+  clutter_input_device_evdev_translate_coordinates (input_device, stage,
+                                                    &event->touch.x,
+                                                    &event->touch.y);
+
   /* "NULL" sequences are special cased in clutter */
   event->touch.sequence = GINT_TO_POINTER (slot + 1);
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);

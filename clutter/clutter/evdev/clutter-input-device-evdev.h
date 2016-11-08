@@ -66,6 +66,8 @@ struct _ClutterInputDeviceEvdev
   struct libinput_device *libinput_device;
   ClutterSeatEvdev *seat;
   ClutterInputDeviceTool *last_tool;
+
+  cairo_matrix_t device_matrix;
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;
@@ -101,6 +103,11 @@ void  			  _clutter_evdev_event_set_relative_motion (ClutterEvent *event,
 								    double        dy,
 								    double        dx_unaccel,
 								    double        dy_unaccel);
+
+void                      clutter_input_device_evdev_translate_coordinates (ClutterInputDevice *device,
+                                                                            ClutterStage       *stage,
+                                                                            gfloat             *x,
+                                                                            gfloat             *y);
 
 G_END_DECLS
 
