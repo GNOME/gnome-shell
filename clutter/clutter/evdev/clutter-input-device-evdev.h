@@ -68,6 +68,8 @@ struct _ClutterInputDeviceEvdev
   ClutterInputDeviceTool *last_tool;
 
   cairo_matrix_t device_matrix;
+  gdouble device_aspect_ratio; /* w:h */
+  gdouble output_ratio;        /* w:h */
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;

@@ -48,6 +48,7 @@ G_DEFINE_TYPE (ClutterInputDeviceEvdev,
 enum {
   PROP_0,
   PROP_DEVICE_MATRIX,
+  PROP_OUTPUT_ASPECT_RATIO,
   N_PROPS
 };
 
@@ -87,6 +88,9 @@ clutter_input_device_evdev_set_property (GObject      *object,
                                &device->device_matrix, matrix);
         break;
       }
+    case PROP_OUTPUT_ASPECT_RATIO:
+      device->output_ratio = g_value_get_double (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -104,6 +108,9 @@ clutter_input_device_evdev_get_property (GObject    *object,
     {
     case PROP_DEVICE_MATRIX:
       g_value_set_boxed (value, &device->device_matrix);
+      break;
+    case PROP_OUTPUT_ASPECT_RATIO:
+      g_value_set_double (value, device->output_ratio);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -177,6 +184,12 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 			P_("Device input matrix"),
 			CAIRO_GOBJECT_TYPE_MATRIX,
 			CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_OUTPUT_ASPECT_RATIO] =
+    g_param_spec_double ("output-aspect-ratio",
+                         P_("Output aspect ratio"),
+                         P_("Output aspect ratio"),
+                         0, G_MAXDOUBLE, 0,
+                         CLUTTER_PARAM_READWRITE);
 
   g_object_class_install_properties (object_class, N_PROPS, obj_props);
 }
@@ -185,6 +198,8 @@ static void
 clutter_input_device_evdev_init (ClutterInputDeviceEvdev *self)
 {
   cairo_matrix_init_identity (&self->device_matrix);
+  self->device_aspect_ratio = 0;
+  self->output_ratio = 0;
 }
 
 /*
@@ -207,6 +222,7 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
   gchar *vendor, *product;
   gint device_id, n_rings = 0, n_strips = 0, n_groups = 1;
   gchar *node_path;
+  gdouble width, height;
 
   type = _clutter_input_device_evdev_determine_type (libinput_device);
   vendor = g_strdup_printf ("%.4x", libinput_device_get_id_vendor (libinput_device));
@@ -245,6 +261,9 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
   libinput_device_ref (libinput_device);
   g_free (vendor);
   g_free (product);
+
+  if (libinput_device_get_size (libinput_device, &width, &height) == 0)
+    device->device_aspect_ratio = width / height;
 
   return CLUTTER_INPUT_DEVICE (device);
 }
@@ -393,6 +412,18 @@ clutter_input_device_evdev_translate_coordinates (ClutterInputDevice *device,
   stage_height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
   x_d = *x / stage_width;
   y_d = *y / stage_height;
+
+  /* Apply aspect ratio */
+  if (device_evdev->output_ratio > 0 &&
+      device_evdev->device_aspect_ratio > 0)
+    {
+      gdouble ratio = device_evdev->device_aspect_ratio / device_evdev->output_ratio;
+
+      if (ratio > 1)
+        x_d *= ratio;
+      else if (ratio < 1)
+        y_d *= 1 / ratio;
+    }
 
   cairo_matrix_transform_point (&device_evdev->device_matrix, &min_x, &min_y);
   cairo_matrix_transform_point (&device_evdev->device_matrix, &max_x, &max_y);
