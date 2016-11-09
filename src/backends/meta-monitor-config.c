@@ -454,7 +454,7 @@ handle_end_element (GMarkupParseContext  *context,
       {
         if (strcmp (element_name, "configuration") == 0 && parser->unknown_count == 0)
           {
-            MetaConfiguration *config = g_slice_new (MetaConfiguration);
+            MetaConfiguration *config = config_new ();
 
             g_assert (parser->key_array->len == parser->output_array->len);
 
