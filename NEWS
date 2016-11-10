@@ -1,3 +1,17 @@
+3.22.2
+======
+* Fix OSD popup glitches [Cosimo; #772723, #772287]
+* Request periodic scans while WiFi list is open [Dan; #767918]
+* Always show primary network icon when connected [Florian; #773890]
+* Misc. bug fixes [Carlos, Florian, Ray; #773875, #740043, #773893]
+
+Contributors:
+  Cosimo Cecchi, Carlos Garcia Campos, Florian Müllner, Ray Strode, Dan Williams
+
+Translations:
+  Kjartan Maraas [nb], Fabio Tomat [fur], Philip Chimento [zh_CN],
+  YunQiang Su [zh_CN], Piotr Drąg [pl], Stas Solovey [ru]
+
 3.22.1
 ======
 * Fix hidden network indicator on startup [Florian; #772249]
