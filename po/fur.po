@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-04 15:16+0000\n"
-"PO-Revision-Date: 2016-11-04 21:02+0100\n"
+"POT-Creation-Date: 2016-11-10 15:39+0000\n"
+"PO-Revision-Date: 2016-11-10 21:33+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -332,7 +332,7 @@ msgstr "Estensions di GNOME Shell"
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:926
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:928
 msgid "Cancel"
 msgstr "Anule"
 
@@ -693,8 +693,8 @@ msgstr "Password:"
 msgid "Type again:"
 msgstr "Scîf di gnûf:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:270
-#: js/ui/status/network.js:353 js/ui/status/network.js:929
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:272
+#: js/ui/status/network.js:355 js/ui/status/network.js:931
 msgid "Connect"
 msgstr "Conet"
 
@@ -722,11 +722,11 @@ msgstr "Password di clâf privade:"
 msgid "Service: "
 msgstr "Servizi:"
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:658
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:666
 msgid "Authentication required by wireless network"
 msgstr "La rêt cence fîl e domande autenticazion"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:667
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -735,7 +735,7 @@ msgstr ""
 "Si scugne meti une password o une clâf di cifradure par jentrâ te rêt cence "
 "fîl \"%s\"."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:662
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:670
 msgid "Wired 802.1X authentication"
 msgstr "Autenticazion vie fîl 802.1X"
 
@@ -743,15 +743,15 @@ msgstr "Autenticazion vie fîl 802.1X"
 msgid "Network name: "
 msgstr "Non rêt:"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:666
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:674
 msgid "DSL authentication"
 msgstr "Autenticazion DSL"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:680
 msgid "PIN code required"
 msgstr "Si pretint un codiç PIN"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Si scugne meti un codiç PIN pal dispositîf a bande largje mobil"
 
@@ -759,17 +759,17 @@ msgstr "Si scugne meti un codiç PIN pal dispositîf a bande largje mobil"
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
 msgid "Mobile broadband network password"
 msgstr "Passowrd rêt mobil a bande largje"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
-#: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "A covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1670
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1734
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
@@ -800,7 +800,7 @@ msgstr "Mi displâs, no je lade drete. Prove di gnûf"
 msgid "%s is now known as %s"
 msgstr "L'utent %s al è cognossût cumò come %s"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:155
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "Barcons"
 
@@ -1301,7 +1301,7 @@ msgstr "Test Larc"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Impostazions Bluetooth"
 
@@ -1321,13 +1321,13 @@ msgstr "Distudât"
 msgid "On"
 msgstr "Impiât"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1289
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1291
 msgid "Turn On"
 msgstr "Impie"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:179
-#: js/ui/status/network.js:354 js/ui/status/network.js:1289
-#: js/ui/status/network.js:1404 js/ui/status/rfkill.js:90
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
+#: js/ui/status/network.js:356 js/ui/status/network.js:1291
+#: js/ui/status/network.js:1406 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Distude"
@@ -1376,18 +1376,18 @@ msgstr ""
 "L'acès ae posizion al pues jessi cambiât cuant che tu vuelis su impostazions "
 "privacy."
 
-#: js/ui/status/network.js:102
+#: js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<no cognossût>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452 js/ui/status/network.js:1318
+#: js/ui/status/network.js:454 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Off"
 msgstr "%s distudât"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s tacât"
@@ -1395,168 +1395,190 @@ msgstr "%s tacât"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:460
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s no ministrât"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:463
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s daûr a disconeti"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:470 js/ui/status/network.js:1310
+#: js/ui/status/network.js:472 js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s in conession"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:473
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s al à dibisugne di autenticazion"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:481
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Al mancje il firmware par %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:485
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s no disponibil"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:488
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Conession falide su %s"
 
-#: js/ui/status/network.js:504
+#: js/ui/status/network.js:506
 msgid "Wired Settings"
 msgstr "Impostazions rêt vie fîl"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:548
 msgid "Mobile Broadband Settings"
 msgstr "Impostazions bande largje mobil"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1315
+#: js/ui/status/network.js:591 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s disabilitât vie hardware "
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
+#: js/ui/status/network.js:595
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s disabilitât"
 
-#: js/ui/status/network.js:633
+#: js/ui/status/network.js:635
 msgid "Connect to Internet"
 msgstr "Conet a internet"
 
-#: js/ui/status/network.js:823
+#: js/ui/status/network.js:825
 msgid "Airplane Mode is On"
 msgstr "Modalitât avion piade"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:826
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Il Wi-Fi al è disabilitât cuant che la modalitât avion e je impiade."
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:827
 msgid "Turn Off Airplane Mode"
 msgstr "Distude modalitât avion"
 
-#: js/ui/status/network.js:834
+#: js/ui/status/network.js:836
 msgid "Wi-Fi is Off"
 msgstr "Il Wi-Fi al è distudât"
 
-#: js/ui/status/network.js:835
+#: js/ui/status/network.js:837
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Il Wi-Fi al scugne jessi impiât par podêsi tacâ a une rêt."
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:838
 msgid "Turn On Wi-Fi"
 msgstr "Impie il Wi-Fi"
 
-#: js/ui/status/network.js:861
+#: js/ui/status/network.js:863
 msgid "Wi-Fi Networks"
 msgstr "Rêts Wi-Fi"
 
-#: js/ui/status/network.js:863
+#: js/ui/status/network.js:865
 msgid "Select a network"
 msgstr "Selezione une rêt"
 
-#: js/ui/status/network.js:893
+#: js/ui/status/network.js:895
 msgid "No Networks"
 msgstr "Nissune rêt"
 
-#: js/ui/status/network.js:914 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:916 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Dopre interutôr fisic par distudâ"
 
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1183
 msgid "Select Network"
 msgstr "Selezione rêt"
 
-#: js/ui/status/network.js:1187
+#: js/ui/status/network.js:1189
 msgid "Wi-Fi Settings"
 msgstr "Impostazions Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1306
+#: js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Hotspot %s atîf"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s distacât"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1423
 msgid "connecting..."
 msgstr "Daûr a coneti..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1424
+#: js/ui/status/network.js:1426
 msgid "authentication required"
 msgstr "autenticazion necessarie"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1428
 msgid "connection failed"
 msgstr "conession falide"
 
-#: js/ui/status/network.js:1492 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1587
+#: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Impostazions rêt"
 
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1496
 msgid "VPN Settings"
 msgstr "Impostazions VPN"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1515
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1525
 msgid "VPN Off"
 msgstr "VPN distudât"
 
-#: js/ui/status/network.js:1709
+#: js/ui/status/network.js:1618
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s conession cablade"
+msgstr[1] "%s conessions cabladis"
+
+#: js/ui/status/network.js:1622
+#, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s conession cence fîi"
+msgstr[1] "%s conessions cence fîi"
+
+#: js/ui/status/network.js:1626
+#, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s conession modem"
+msgstr[1] "%s conessions modem"
+
+#: js/ui/status/network.js:1773
 msgid "Connection failed"
 msgstr "Conession falide"
 
-#: js/ui/status/network.js:1710
+#: js/ui/status/network.js:1774
 msgid "Activation of network connection failed"
 msgstr "Ativazion de conession di rêt falide"
 
@@ -1638,11 +1660,11 @@ msgstr "Jentre come altri utent"
 msgid "Unlock Window"
 msgstr "Sbloche barcon"
 
-#: js/ui/viewSelector.js:159
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "Aplicazions"
 
-#: js/ui/viewSelector.js:163
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "Cîr"
 
