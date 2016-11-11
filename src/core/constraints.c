@@ -340,6 +340,11 @@ setup_constraint_info (ConstraintInfo      *info,
   info->orig    = *orig;
   info->current = *new;
 
+  if (info->current.width < 1)
+    info->current.width = 1;
+  if (info->current.height < 1)
+    info->current.height = 1;
+
   if (flags & META_MOVE_RESIZE_MOVE_ACTION && flags & META_MOVE_RESIZE_RESIZE_ACTION)
     info->action_type = ACTION_MOVE_AND_RESIZE;
   else if (flags & META_MOVE_RESIZE_RESIZE_ACTION)
