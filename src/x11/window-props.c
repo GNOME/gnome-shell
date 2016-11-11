@@ -460,6 +460,8 @@ reload_net_wm_user_time_window (MetaWindow    *window,
 {
   if (value->type != META_PROP_VALUE_INVALID)
     {
+      MetaWindow *prev_owner;
+
       /* Unregister old NET_WM_USER_TIME_WINDOW */
       if (window->user_time_window != None)
         {
@@ -472,6 +474,15 @@ reload_net_wm_user_time_window (MetaWindow    *window,
                         NoEventMask);
         }
 
+      /* Ensure the new user time window is not used on another MetaWindow,
+       * and unset its user time window if that is the case.
+       */
+      prev_owner = meta_display_lookup_x_window (window->display, value->v.xwindow);
+      if (prev_owner && prev_owner->user_time_window == value->v.xwindow)
+        {
+          meta_display_unregister_x_window (window->display, value->v.xwindow);
+          prev_owner->user_time_window = None;
+        }
 
       /* Obtain the new NET_WM_USER_TIME_WINDOW and register it */
       window->user_time_window = value->v.xwindow;
