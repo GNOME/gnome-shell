@@ -232,19 +232,27 @@ meta_input_settings_x11_set_edge_scroll (MetaInputSettings            *settings,
                                          gboolean                      edge_scroll_enabled)
 {
   guchar values[SCROLL_METHOD_NUM_FIELDS] = { 0 }; /* 2fg, edge, button. The last value is unused */
-  guchar *current;
+  guchar *current = NULL;
+  guchar *available = NULL;
+
+  available = get_property (device, "libinput Scroll Methods Available",
+                            XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
+  if (!available || !available[SCROLL_METHOD_FIELD_EDGE])
+    goto out;
 
   current = get_property (device, "libinput Scroll Method Enabled",
                           XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
   if (!current)
-    return;
+    goto out;
 
   memcpy (values, current, SCROLL_METHOD_NUM_FIELDS);
 
   values[SCROLL_METHOD_FIELD_EDGE] = !!edge_scroll_enabled;
   change_property (device, "libinput Scroll Method Enabled",
                    XA_INTEGER, 8, &values, SCROLL_METHOD_NUM_FIELDS);
+ out:
   meta_XFree (current);
+  meta_XFree (available);
 }
 
 static void
@@ -253,19 +261,27 @@ meta_input_settings_x11_set_two_finger_scroll (MetaInputSettings            *set
                                                gboolean                      two_finger_scroll_enabled)
 {
   guchar values[SCROLL_METHOD_NUM_FIELDS] = { 0 }; /* 2fg, edge, button. The last value is unused */
-  guchar *current;
+  guchar *current = NULL;
+  guchar *available = NULL;
+
+  available = get_property (device, "libinput Scroll Methods Available",
+                            XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
+  if (!available || !available[SCROLL_METHOD_FIELD_2FG])
+    goto out;
 
   current = get_property (device, "libinput Scroll Method Enabled",
                           XA_INTEGER, 8, SCROLL_METHOD_NUM_FIELDS);
   if (!current)
-    return;
+    goto out;
 
   memcpy (values, current, SCROLL_METHOD_NUM_FIELDS);
 
   values[SCROLL_METHOD_FIELD_2FG] = !!two_finger_scroll_enabled;
   change_property (device, "libinput Scroll Method Enabled",
                    XA_INTEGER, 8, &values, SCROLL_METHOD_NUM_FIELDS);
+ out:
   meta_XFree (current);
+  meta_XFree (available);
 }
 
 static void
