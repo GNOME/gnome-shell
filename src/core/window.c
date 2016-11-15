@@ -3790,10 +3790,17 @@ meta_window_move_between_rects (MetaWindow  *window,
   int rel_x, rel_y;
   double scale_x, scale_y;
 
-  rel_x = window->unconstrained_rect.x - old_area->x;
-  rel_y = window->unconstrained_rect.y - old_area->y;
-  scale_x = (double)new_area->width / old_area->width;
-  scale_y = (double)new_area->height / old_area->height;
+  if (old_area)
+    {
+      rel_x = window->unconstrained_rect.x - old_area->x;
+      rel_y = window->unconstrained_rect.y - old_area->y;
+      scale_x = (double)new_area->width / old_area->width;
+      scale_y = (double)new_area->height / old_area->height;
+    }
+  else
+    {
+      rel_x = rel_y = scale_x = scale_y = 0;
+    }
 
   window->unconstrained_rect.x = new_area->x + rel_x * scale_x;
   window->unconstrained_rect.y = new_area->y + rel_y * scale_y;
@@ -3847,9 +3854,6 @@ meta_window_move_to_monitor (MetaWindow  *window,
 {
   MetaRectangle old_area, new_area;
 
-  if (monitor == window->monitor->number)
-    return;
-
   meta_window_get_work_area_for_monitor (window,
                                          window->monitor->number,
                                          &old_area);
@@ -3857,10 +3861,23 @@ meta_window_move_to_monitor (MetaWindow  *window,
                                          monitor,
                                          &new_area);
 
+  if (window->unconstrained_rect.width == 0 ||
+      window->unconstrained_rect.height == 0 ||
+      !meta_rectangle_overlap (&window->unconstrained_rect, &old_area))
+    {
+      meta_window_move_between_rects (window, NULL, &new_area);
+    }
+  else
+    {
+      if (monitor == window->monitor->number)
+        return;
+
+      meta_window_move_between_rects (window, &old_area, &new_area);
+    }
+
   if (window->tile_mode != META_TILE_NONE)
     window->tile_monitor_number = monitor;
 
-  meta_window_move_between_rects (window, &old_area, &new_area);
   window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   if (window->fullscreen || window->override_redirect)
