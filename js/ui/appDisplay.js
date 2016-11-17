@@ -1010,7 +1010,7 @@ const AppDisplay = new Lang.Class({
     },
 
     animate: function(animationDirection, onComplete) {
-        let currentView = this._views[global.settings.get_uint('app-picker-view')].view;
+        let currentView = this._views.filter(v => v.control.has_style_pseudo_class('checked')).pop().view;
 
         // Animate controls opacity using iconGrid animation time, since
         // it will be the time the AllView or FrequentView takes to show
