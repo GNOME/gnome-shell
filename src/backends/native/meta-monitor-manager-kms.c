@@ -1546,7 +1546,7 @@ get_crtc_connectors (MetaMonitorManager *manager,
   *connectors = (uint32_t *) g_array_free (connectors_array, FALSE);
 }
 
-void
+gboolean
 meta_monitor_manager_kms_apply_crtc_mode (MetaMonitorManagerKms *manager_kms,
                                           MetaCRTC              *crtc,
                                           int                    x,
@@ -1571,9 +1571,14 @@ meta_monitor_manager_kms_apply_crtc_mode (MetaMonitorManagerKms *manager_kms,
                       x, y,
                       connectors, n_connectors,
                       mode) != 0)
-    g_warning ("Failed to set CRTC mode %s: %m", crtc->current_mode->name);
+    {
+      g_warning ("Failed to set CRTC mode %s: %m", crtc->current_mode->name);
+      return FALSE;
+    }
 
   g_free (connectors);
+
+  return TRUE;
 }
 
 static void
@@ -1622,7 +1627,8 @@ meta_monitor_manager_kms_flip_crtc (MetaMonitorManagerKms *manager_kms,
                                     int                    x,
                                     int                    y,
                                     uint32_t               fb_id,
-                                    GClosure              *flip_closure)
+                                    GClosure              *flip_closure,
+                                    gboolean              *fb_in_use)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
   uint32_t *connectors;
@@ -1649,14 +1655,21 @@ meta_monitor_manager_kms_flip_crtc (MetaMonitorManagerKms *manager_kms,
     }
 
   if (manager_kms->page_flips_not_supported)
-    meta_monitor_manager_kms_apply_crtc_mode (manager_kms,
-                                              crtc,
-                                              x, y,
-                                              fb_id);
+    {
+      if (meta_monitor_manager_kms_apply_crtc_mode (manager_kms,
+                                                    crtc,
+                                                    x, y,
+                                                    fb_id))
+        {
+          *fb_in_use = TRUE;
+          return FALSE;
+        }
+    }
 
   if (ret != 0)
     return FALSE;
 
+  *fb_in_use = TRUE;
   g_closure_ref (flip_closure);
 
   return TRUE;

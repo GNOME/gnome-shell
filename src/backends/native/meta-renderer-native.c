@@ -457,10 +457,9 @@ meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
                                           crtc,
                                           x, y,
                                           onscreen_native->gbm.next_fb_id,
-                                          flip_closure))
+                                          flip_closure,
+                                          fb_in_use))
     onscreen_native->pending_flips++;
-
-  *fb_in_use = TRUE;
 }
 
 static void
