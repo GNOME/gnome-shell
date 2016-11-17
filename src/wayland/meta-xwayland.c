@@ -224,6 +224,7 @@ try_display (int    display,
       close (fd);
       fd = -1;
 
+      pid[10] = '\0';
       other = strtol (pid, &end, 0);
       if (end != pid + 10)
         {
@@ -277,7 +278,7 @@ create_lock_file (int display, int *display_out)
   char *filename;
   int fd;
 
-  char pid[11];
+  char pid[12];
   int size;
   int number_of_tries = 0;
 
@@ -293,8 +294,10 @@ create_lock_file (int display, int *display_out)
     }
 
   /* Subtle detail: we use the pid of the wayland compositor, not the xserver
-   * in the lock file. */
-  size = snprintf (pid, 11, "%10d\n", getpid ());
+   * in the lock file. Another subtlety: snprintf returns the number of bytes
+   * it _would've_ written without either the NUL or the size clamping, hence
+   * the disparity in size. */
+  size = snprintf (pid, 12, "%10d\n", getpid ());
   if (size != 11 || write (fd, pid, 11) != 11)
     {
       unlink (filename);
