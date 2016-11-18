@@ -210,6 +210,14 @@ const BaseAppView = new Lang.Class({
     },
 
     animate: function(animationDirection, onComplete) {
+        if (onComplete) {
+            let animationDoneId = this._grid.connect('animation-done', Lang.bind(this,
+                function () {
+                    this._grid.disconnect(animationDoneId);
+                    onComplete();
+            }));
+        }
+
         if (animationDirection == IconGrid.AnimationDirection.IN) {
             let toAnimate = this._grid.actor.connect('notify::allocation', Lang.bind(this,
                 function() {
@@ -224,14 +232,6 @@ const BaseAppView = new Lang.Class({
                 }));
         } else {
             this._doSpringAnimation(animationDirection);
-        }
-
-        if (onComplete) {
-            let animationDoneId = this._grid.connect('animation-done', Lang.bind(this,
-                function () {
-                    this._grid.disconnect(animationDoneId);
-                    onComplete();
-            }));
         }
     },
 
