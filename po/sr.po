@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-19 21:36+0000\n"
-"PO-Revision-Date: 2016-08-28 09:15+0200\n"
+"POT-Creation-Date: 2016-11-17 23:00+0000\n"
+"PO-Revision-Date: 2016-11-18 09:07+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
@@ -22,6 +22,30 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Систем"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Прикажите списак обавештења"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Поставите у жижу активно обавештење"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Прикажи преглед"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Прикажи све програме"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Отворите изборник програма"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 msgid "GNOME Shell Extension Preferences"
@@ -301,7 +325,7 @@ msgstr "Проширења Гномове шкољке"
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:916
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:926
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -332,7 +356,7 @@ msgstr "Није на списку?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:854
+#: js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(нпр., корисник или %s)"
@@ -340,12 +364,12 @@ msgstr "(нпр., корисник или %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
 #: js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Корисник: "
 
-#: js/gdm/loginDialog.js:1196
+#: js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Прозор за пријављивање"
 
@@ -658,8 +682,8 @@ msgstr "Лозинка:"
 msgid "Type again:"
 msgstr "Упишите поново:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:269
-#: js/ui/status/network.js:352 js/ui/status/network.js:919
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:270
+#: js/ui/status/network.js:353 js/ui/status/network.js:929
 msgid "Connect"
 msgstr "Повежи се"
 
@@ -687,11 +711,11 @@ msgstr "Лозинка приватног кључа: "
 msgid "Service: "
 msgstr "Услуга: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:658
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:666
 msgid "Authentication required by wireless network"
 msgstr "Бежична мрежа захтева потврђивање идентитета"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:667
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -699,7 +723,7 @@ msgid ""
 msgstr ""
 "Потребне су лозинке или кључеви шифровања за приступ бежичној мрежи „%s“."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:662
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:670
 msgid "Wired 802.1X authentication"
 msgstr "Потврђивање идентитета за жичану 802.1X везу"
 
@@ -707,15 +731,15 @@ msgstr "Потврђивање идентитета за жичану 802.1X в�
 msgid "Network name: "
 msgstr "Назив мреже: "
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:666
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:674
 msgid "DSL authentication"
 msgstr "Потврђивање идентитета ДСЛ-а"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:680
 msgid "PIN code required"
 msgstr "Потребан је ПИН кôд"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Потребан је ПИН код за повезивање мобилног широкопојасног уређаја"
 
@@ -723,17 +747,17 @@ msgstr "Потребан је ПИН код за повезивање мобил
 msgid "PIN: "
 msgstr "ПИН: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
 msgid "Mobile broadband network password"
 msgstr "Лозинка мобилне широкопојасне мреже"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
-#: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Потребна је лозинка за повезивање на „%s“."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1658
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1670
 msgid "Network Manager"
 msgstr "Управник мреже"
 
@@ -759,7 +783,7 @@ msgstr "Погрешили сте! Покушајте поново."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:760
+#: js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "„%s“ је сада познат као „%s“"
@@ -918,8 +942,6 @@ msgid "Power off after updates are installed"
 msgstr "Искључи након инсталирања освежења"
 
 #: js/ui/endSessionDialog.js:137
-#| msgctxt "title"
-#| msgid "Restart & Install Updates"
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Поново покрени и инсталирај надоградњу"
@@ -1104,6 +1126,11 @@ msgstr "Унесите наредбу"
 msgid "Close"
 msgstr "Затвори"
 
+#: js/ui/runDialog.js:277
+#| msgid "Encryption is not available"
+msgid "Restart is not available on Wayland"
+msgstr "Поновно покретање није доступно на Вејленду"
+
 #: js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Поновно покрећем…"
@@ -1147,11 +1174,11 @@ msgstr "Гном мора да закључа екран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:825 js/ui/screenShield.js:1291
+#: js/ui/screenShield.js:825 js/ui/screenShield.js:1292
 msgid "Unable to lock"
 msgstr "Не могу да закључам"
 
-#: js/ui/screenShield.js:826 js/ui/screenShield.js:1292
+#: js/ui/screenShield.js:826 js/ui/screenShield.js:1293
 msgid "Lock was blocked by an application"
 msgstr "Неки програм је блокирао закључавање"
 
@@ -1235,7 +1262,7 @@ msgstr "Велики текст"
 msgid "Bluetooth"
 msgstr "Блутут"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:624
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:625
 msgid "Bluetooth Settings"
 msgstr "Подешавања Блутута"
 
@@ -1257,13 +1284,13 @@ msgstr "Искљ."
 msgid "Not In Use"
 msgstr "Није у употреби"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1279
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1289
 msgid "Turn On"
 msgstr "Укључи"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:178
-#: js/ui/status/network.js:353 js/ui/status/network.js:1279
-#: js/ui/status/network.js:1394 js/ui/status/rfkill.js:90
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:179
+#: js/ui/status/network.js:354 js/ui/status/network.js:1289
+#: js/ui/status/network.js:1404 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Искључи"
@@ -1312,18 +1339,18 @@ msgstr ""
 "Приступ месту можете да измените у било које време у подешавањима "
 "приватности."
 
-#: js/ui/status/network.js:101
+#: js/ui/status/network.js:102
 msgid "<unknown>"
 msgstr "<непознато>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:451 js/ui/status/network.js:1308
+#: js/ui/status/network.js:452 js/ui/status/network.js:1318
 #, javascript-format
 msgid "%s Off"
 msgstr "%s искључено"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:454
+#: js/ui/status/network.js:455
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s повезано"
@@ -1331,168 +1358,168 @@ msgstr "%s повезано"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:459
+#: js/ui/status/network.js:460
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s неуправљано"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:463
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s прекидање везе у току"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:469 js/ui/status/network.js:1300
+#: js/ui/status/network.js:470 js/ui/status/network.js:1310
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s повезивање у току"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:472
+#: js/ui/status/network.js:473
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s захтева пријаву"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:480
+#: js/ui/status/network.js:481
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Недостаје фирмвер за %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:484
+#: js/ui/status/network.js:485
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s недоступно"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:487
+#: js/ui/status/network.js:488
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s повезивање неуспешно"
 
-#: js/ui/status/network.js:503
+#: js/ui/status/network.js:504
 msgid "Wired Settings"
 msgstr "Подешавања жичане везе"
 
-#: js/ui/status/network.js:545
+#: js/ui/status/network.js:546
 msgid "Mobile Broadband Settings"
 msgstr "Подешавања мобилне широкопојасне везе"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:588 js/ui/status/network.js:1305
+#: js/ui/status/network.js:589 js/ui/status/network.js:1315
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s уређај искључен"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:592
+#: js/ui/status/network.js:593
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s искључено"
 
-#: js/ui/status/network.js:632
+#: js/ui/status/network.js:633
 msgid "Connect to Internet"
 msgstr "Повежи се на Интернет"
 
-#: js/ui/status/network.js:813
+#: js/ui/status/network.js:823
 msgid "Airplane Mode is On"
 msgstr "Авионски режим рада је укључен"
 
-#: js/ui/status/network.js:814
+#: js/ui/status/network.js:824
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Бежична веза је искључена када је укључен авионски режим рада."
 
-#: js/ui/status/network.js:815
+#: js/ui/status/network.js:825
 msgid "Turn Off Airplane Mode"
 msgstr "Искључи авионски режим рада"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:834
 msgid "Wi-Fi is Off"
 msgstr "Бежична веза је искључена"
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:835
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Бежична веза треба бити укључена да бисте се повезали на мрежу."
 
-#: js/ui/status/network.js:826
+#: js/ui/status/network.js:836
 msgid "Turn On Wi-Fi"
 msgstr "Укључи бежичну везу"
 
-#: js/ui/status/network.js:851
+#: js/ui/status/network.js:861
 msgid "Wi-Fi Networks"
 msgstr "Бежичне мреже"
 
-#: js/ui/status/network.js:853
+#: js/ui/status/network.js:863
 msgid "Select a network"
 msgstr "Изаберите мрежу"
 
-#: js/ui/status/network.js:883
+#: js/ui/status/network.js:893
 msgid "No Networks"
 msgstr "Нема мрежа"
 
-#: js/ui/status/network.js:904 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:914 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Користи физички прекидач за искључивање"
 
-#: js/ui/status/network.js:1171
+#: js/ui/status/network.js:1181
 msgid "Select Network"
 msgstr "Изабери мрежу"
 
-#: js/ui/status/network.js:1177
+#: js/ui/status/network.js:1187
 msgid "Wi-Fi Settings"
 msgstr "Подешавања бежичне везе"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1296
+#: js/ui/status/network.js:1306
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s хотспот укључен"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1311
+#: js/ui/status/network.js:1321
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s неповезано"
 
-#: js/ui/status/network.js:1411
+#: js/ui/status/network.js:1421
 msgid "connecting..."
 msgstr "повезујем се..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1414
+#: js/ui/status/network.js:1424
 msgid "authentication required"
 msgstr "потребна је пријава"
 
-#: js/ui/status/network.js:1416
+#: js/ui/status/network.js:1426
 msgid "connection failed"
 msgstr "повезивање није успело"
 
-#: js/ui/status/network.js:1482 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1492 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Подешавања мреже"
 
-#: js/ui/status/network.js:1484
+#: js/ui/status/network.js:1494
 msgid "VPN Settings"
 msgstr "ВПН подешавања"
 
-#: js/ui/status/network.js:1503
+#: js/ui/status/network.js:1513
 msgid "VPN"
 msgstr "ВПН"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1523
 msgid "VPN Off"
 msgstr "Искључи ВПН"
 
-#: js/ui/status/network.js:1697
+#: js/ui/status/network.js:1709
 msgid "Connection failed"
 msgstr "Повезивање није успело"
 
-#: js/ui/status/network.js:1698
+#: js/ui/status/network.js:1710
 msgid "Activation of network connection failed"
 msgstr "Активирање мрежне везе није успело"
 
@@ -1755,24 +1782,6 @@ msgstr "Лозинка не може бити празна"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Корисник је одбацио прозорче за потврђивање идентитета"
 
-#~ msgid "System"
-#~ msgstr "Систем"
-
-#~ msgid "Show the notification list"
-#~ msgstr "Прикажите списак обавештења"
-
-#~ msgid "Focus the active notification"
-#~ msgstr "Поставите у жижу активно обавештење"
-
-#~ msgid "Show the overview"
-#~ msgstr "Прикажи преглед"
-
-#~ msgid "Show all applications"
-#~ msgstr "Прикажи све програме"
-
-#~ msgid "Open the application menu"
-#~ msgstr "Отворите изборник програма"
-
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Приказује дан у недељи у календару"
 
@@ -1947,9 +1956,6 @@ msgstr "Корисник је одбацио прозорче за потврђ�
 
 #~ msgid "Status is set to offline"
 #~ msgstr "Стање је постављено на „неповезан“"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "Шифровање није доступно"
 
 #~ msgid "Certificate is invalid"
 #~ msgstr "Уверење није исправно"
