@@ -670,7 +670,7 @@ const FdoApplicationIface = '<node> \
 const FdoApplicationProxy = Gio.DBusProxy.makeProxyWrapper(FdoApplicationIface);
 
 function objectPathFromAppId(appId) {
-    return '/' + appId.replace(/\./g, '/');
+    return '/' + appId.replace(/\./g, '/').replace(/-/g, '_');
 }
 
 function getPlatformData() {
