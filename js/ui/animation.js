@@ -67,7 +67,7 @@ const Animation = new Lang.Class({
     },
 
     _animationsLoaded: function() {
-        this._isLoaded = true;
+        this._isLoaded = this._animations.get_n_children() > 0;
 
         if (this._isPlaying)
             this.play();
