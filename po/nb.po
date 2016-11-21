@@ -5,8 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.23.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-15 17:12+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-11-21 08:47+0100\n"
 "PO-Revision-Date: 2016-10-15 17:12+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
@@ -18,11 +19,11 @@ msgstr ""
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: ../src/backends/meta-input-settings.c:1847
+#: ../src/backends/meta-input-settings.c:1739
 msgid "Switch monitor"
 msgstr "Bytt skjerm"
 
-#: ../src/backends/meta-input-settings.c:1849
+#: ../src/backends/meta-input-settings.c:1741
 msgid "Show on-screen help"
 msgstr "Vis hjelp på skjermen"
 
@@ -48,7 +49,7 @@ msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:463
+#: ../src/compositor/compositor.c:471
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -170,7 +171,7 @@ msgstr "Skjerm %d på display «%s» er ugyldig\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter er kompilert uten støtte for «verbose» modus\n"
 
-#: ../src/wayland/meta-wayland-tablet-pad.c:595
+#: ../src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Modusbytte: Modus %d"
@@ -183,7 +184,7 @@ msgstr ""
 "Disse vinduene støtter ikke &quot;lagre aktiv konfigurasjon&quot;og vil "
 "måtte startes på nytt manuelt neste gang du logger inn."
 
-#: ../src/x11/window-props.c:548
+#: ../src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
