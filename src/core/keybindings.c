@@ -1041,7 +1041,6 @@ update_window_grab_modifiers (MetaKeyBindingManager *keys)
   keys->window_grab_modifiers = mods;
 }
 
-/* Grab buttons we only grab while unfocused in click-to-focus mode */
 void
 meta_display_grab_focus_window_button (MetaDisplay *display,
                                        MetaWindow  *window)
@@ -1050,21 +1049,6 @@ meta_display_grab_focus_window_button (MetaDisplay *display,
 
   /* Grab button 1 for activating unfocused windows */
   meta_verbose ("Grabbing unfocused window buttons for %s\n", window->desc);
-
-#if 0
-  /* FIXME:115072 */
-  /* Don't grab at all unless in click to focus mode. In click to
-   * focus, we may sometimes be clever about intercepting and eating
-   * the focus click. But in mouse focus, we never do that since the
-   * focus window may not be raised, and who wants to think about
-   * mouse focus anyway.
-   */
-  if (meta_prefs_get_focus_mode () != G_DESKTOP_FOCUS_MODE_CLICK)
-    {
-      meta_verbose (" (well, not grabbing since not in click to focus mode)\n");
-      return;
-    }
-#endif
 
   if (window->have_focus_click_grab)
     {

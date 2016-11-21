@@ -2719,22 +2719,7 @@ prefs_changed_callback (MetaPreference pref,
 {
   MetaDisplay *display = data;
 
-  if (pref == META_PREF_FOCUS_MODE)
-    {
-      GSList *windows, *l;
-      windows = meta_display_list_windows (display, META_LIST_DEFAULT);
-
-      for (l = windows; l; l = l->next)
-        {
-          MetaWindow *w = l->data;
-          meta_display_ungrab_focus_window_button (display, w);
-          if (w->type != META_WINDOW_DOCK)
-            meta_display_grab_focus_window_button (display, w);
-        }
-
-      g_slist_free (windows);
-    }
-  else if (pref == META_PREF_AUDIBLE_BELL)
+  if (pref == META_PREF_AUDIBLE_BELL)
     {
       meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
     }
