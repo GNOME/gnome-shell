@@ -83,7 +83,7 @@ struct _ClutterDeviceManagerClass
                                            ClutterInputDevice     *device);
   void                (* select_stage_events) (ClutterDeviceManager *manager,
                                                ClutterStage       *stage);
-  ClutterVirtualInputDevice *(* create_virtual_device) (ClutterDeviceManager  *manager,
+  ClutterVirtualInputDevice *(* create_virtual_device) (ClutterDeviceManager  *device_manager,
                                                         ClutterInputDeviceType device_type);
   void                (* compress_motion) (ClutterDeviceManager *device_manger,
                                            ClutterEvent         *event,

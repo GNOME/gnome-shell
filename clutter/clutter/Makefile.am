@@ -112,7 +112,6 @@ source_h =					\
 	clutter-snap-constraint.h	\
 	clutter-stage.h 		\
 	clutter-stage-manager.h	\
-	clutter-stage-view.h		\
 	clutter-tap-action.h		\
 	clutter-test-utils.h		\
 	clutter-texture.h 		\
@@ -198,7 +197,6 @@ source_c = \
 	clutter-snap-constraint.c	\
 	clutter-stage.c		\
 	clutter-stage-manager.c	\
-	clutter-stage-view.c	\
 	clutter-stage-window.c	\
 	clutter-tap-action.c		\
 	clutter-test-utils.c		\
@@ -240,6 +238,7 @@ source_h_priv = \
 	clutter-settings-private.h		\
 	clutter-stage-manager-private.h		\
 	clutter-stage-private.h			\
+	clutter-stage-view.h			\
 	clutter-stage-window.h			\
 	$(NULL)
 
@@ -248,6 +247,7 @@ source_c_priv = \
 	clutter-easing.c		\
 	clutter-event-translator.c	\
 	clutter-id-pool.c 		\
+	clutter-stage-view.c		\
 	$(NULL)
 
 # deprecated installed headers
