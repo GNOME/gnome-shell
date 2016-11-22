@@ -28,7 +28,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include "cogl/cogl/cogl.h"
+#include "cogl/cogl.h"
 #include "wayland/meta-wayland-types.h"
 
 #define META_TYPE_WAYLAND_EGL_STREAM (meta_wayland_egl_stream_get_type ())
