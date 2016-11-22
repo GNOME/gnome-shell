@@ -7,6 +7,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/src						\
 	-I$(top_srcdir)/cogl						\
 	-I$(top_builddir)/cogl						\
+	-I$(top_builddir)/cogl/cogl					\
 	-I$(top_srcdir)/clutter						\
 	-I$(top_builddir)/clutter					\
 	-I$(top_builddir)/clutter/clutter				\

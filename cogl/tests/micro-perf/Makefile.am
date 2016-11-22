@@ -2,6 +2,7 @@ NULL =
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir) \
+	-I$(top_builddir)/cogl \
 	-DCOGL_DISABLE_DEPRECATED
 
 test_conformance_CPPFLAGS = \

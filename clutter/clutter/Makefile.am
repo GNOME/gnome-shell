@@ -25,6 +25,7 @@ AM_CPPFLAGS = \
 	-I$(top_builddir)/clutter		\
 	-I$(top_srcdir)/../cogl			\
 	-I$(top_builddir)/../cogl		\
+	-I$(top_builddir)/../cogl/cogl		\
 	$(CLUTTER_DEPRECATED_CFLAGS)		\
 	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(CLUTTER_HIDDEN_VISIBILITY_CFLAGS)	\
