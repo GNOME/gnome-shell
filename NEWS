@@ -1,3 +1,23 @@
+3.23.2
+======
+* Stack docks below other windows on fullscreen monitors [Rui; #772937]
+* Fix popup grabs blocking screen lock on wayland [Rui; #771235]
+* Handle touchpad pinch gestures with more than two fingers [Carlos; #765937]
+* Implement drawing tablet support on X11 [Carlos; #773779]
+* Fix some Wine games starting minimized [Carlos; #774333]
+* Fix switching between two finger- and edge scrolling on wayland [Rui; #771744]
+* Implement support for EGLStream/EGLDevice [Jonas; #773629]
+* Add size_changed vfunc to handle async client size changes [Rui; #770345]
+* Change focus window on clicks with any modifiers [Rui; #746642]
+* Misc. bug fixes and cleanups [Carlos, Daniel, Jonas, Rui; #771067, #774330, #774613,
+  #771297, #774135, #774827, #774923]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Rui Matos, Florian Müllner, Daniel Stone
+
+Translations:
+  Kjartan Maraas [nb]
+
 3.23.1
 ======
 * Fix handling of Escape shortcut in force-quit dialog [Landry; #737109]
