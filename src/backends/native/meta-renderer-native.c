@@ -242,6 +242,9 @@ meta_onscreen_native_queue_swap_notify (CoglOnscreen *onscreen)
   CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
 
+  if (onscreen_native->pending_swap_notify)
+    return;
+
   /* We only want to notify that the swap is complete when the
    * application calls cogl_context_dispatch so instead of
    * immediately notifying we queue an idle callback */
