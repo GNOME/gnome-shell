@@ -93,6 +93,7 @@ libmutter_la_SOURCES =				\
 	backends/meta-cursor-renderer.h		\
 	backends/meta-egl.c			\
 	backends/meta-egl.h			\
+	backends/meta-egl-ext.h			\
 	backends/meta-display-config-shared.h	\
 	backends/meta-idle-monitor.c		\
 	backends/meta-idle-monitor-private.h	\
