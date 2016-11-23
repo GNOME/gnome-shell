@@ -1,3 +1,24 @@
+3.23.2
+======
+* Implement Pad configuration OSD [Carlos; #771067]
+* Show overview on three-finger touchpad pinch [Carlos; #765937]
+* Summarize network sections with too many devices [Florian; #773892]
+* Always show primary network icon when connected [Florian; #773890]
+* Fix fullscreen transitions on wayland [Rui; #770345]
+* Work around portal failures by using a URL without HTPPS redirect [Debarshi; #769940]
+* Fix app view hiding when no usage data is available [Florian, Xiaoguang; #774381]
+* Misc. bug fixes [Florian, Ray; #773875, #740043, #773893, #774643, #774805]
+
+Contributors:
+  Carlos Garnacho, Rui Matos, Florian Müllner, Debarshi Ray, Ray Strode,
+  Xiaoguang Wang
+
+Translations:
+  Balázs Meskó [hu], Fabio Tomat [fur], Marek Cernocky [cs], Stas Solovey [ru],
+  Daniel Mustieles [es], Marek Černocký [cs], Piotr Drąg [pl],
+  Rafael Fontenelle [pt_BR], Baurzhan Muftakhidinov [kk], Jiri Grönroos [fi],
+  Kjartan Maraas [nb]
+
 3.23.1
 ======
 * Request periodic scans while WiFi list is open [Dan; #767918]
