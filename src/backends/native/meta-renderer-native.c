@@ -732,8 +732,6 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
       MetaRenderer *renderer = meta_backend_get_renderer (backend);
       MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
 
-      meta_onscreen_native_queue_swap_notify (onscreen);
-
       switch (renderer_native->mode)
         {
         case META_RENDERER_NATIVE_MODE_GBM:
