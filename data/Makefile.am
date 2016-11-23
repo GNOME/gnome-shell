@@ -64,6 +64,7 @@ dist_theme_files =						\
 	theme/gnome-shell-sass/NEWS				\
 	theme/gnome-shell-sass/README				\
 	theme/gnome-shell-sass/gnome-shell-sass.doap		\
+	theme/pad-osd.css						\
 	theme/parse-sass.sh					\
 	$(NULL)
 
@@ -116,7 +117,6 @@ EXTRA_DIST =						\
 	$(convert_DATA)					\
 	$(keys_DATA)					\
 	$(dist_theme_files)				\
-	pad-osd.css					\
 	perf-background.xml.in				\
 	org.gnome.Shell.PortalHelper.desktop.in.in	\
 	org.gnome.Shell.PortalHelper.service.in		\
