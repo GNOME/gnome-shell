@@ -368,9 +368,13 @@ output_get_tile_info (MetaMonitorManagerKms *manager_kms,
                     &output->tile_info.loc_v_tile,
                     &output->tile_info.tile_w,
                     &output->tile_info.tile_h);
+      drmModeFreePropertyBlob (tile_blob);
 
       if (ret != 8)
-        return FALSE;
+        {
+          meta_warning ("Couldn't understand output tile property blob\n");
+          return FALSE;
+        }
       return TRUE;
     }
   else
