@@ -76,6 +76,8 @@ void _clutter_device_manager_evdev_constrain_pointer (ClutterDeviceManagerEvdev 
                                                       float                     *new_x,
                                                       float                     *new_y);
 
+void _clutter_device_manager_evdev_dispatch (ClutterDeviceManagerEvdev *manager_evdev);
+
 static inline guint64
 us (guint64 us)
 {

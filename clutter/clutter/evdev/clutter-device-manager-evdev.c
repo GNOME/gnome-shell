@@ -2278,6 +2278,12 @@ _clutter_device_manager_evdev_acquire_device_id (ClutterDeviceManagerEvdev *mana
   return next_id;
 }
 
+void
+_clutter_device_manager_evdev_dispatch (ClutterDeviceManagerEvdev *manager_evdev)
+{
+  dispatch_libinput (manager_evdev);
+}
+
 static int
 compare_ids (gconstpointer a,
              gconstpointer b)

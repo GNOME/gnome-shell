@@ -187,6 +187,12 @@ keyboard_repeat (gpointer data)
   ClutterSeatEvdev *seat = data;
   GSource *source;
 
+  /* There might be events queued in libinput that could cancel the
+     repeat timer. */
+  _clutter_device_manager_evdev_dispatch (seat->manager_evdev);
+  if (!seat->repeat_timer)
+    return G_SOURCE_REMOVE;
+
   g_return_val_if_fail (seat->repeat_device != NULL, G_SOURCE_REMOVE);
   source = g_main_context_find_source_by_id (NULL, seat->repeat_timer);
 
