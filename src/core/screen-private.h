@@ -153,9 +153,6 @@ const MetaMonitorInfo* meta_screen_get_monitor_for_point (MetaScreen    *screen,
 const MetaMonitorInfo* meta_screen_get_monitor_neighbor (MetaScreen *screen,
                                                          int         which_monitor,
                                                          MetaScreenDirection dir);
-void          meta_screen_get_natural_monitor_list (MetaScreen *screen,
-                                                    int**       monitors_list,
-                                                    int*        n_monitors);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);
