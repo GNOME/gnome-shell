@@ -177,8 +177,8 @@ cursor_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 static gboolean
-cursor_surface_role_is_on_output (MetaWaylandSurfaceRole *role,
-                                  MetaLogicalMonitor     *logical_monitor)
+cursor_surface_role_is_on_logical_monitor (MetaWaylandSurfaceRole *role,
+                                           MetaLogicalMonitor     *logical_monitor)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (role);
@@ -271,7 +271,7 @@ meta_wayland_surface_role_cursor_class_init (MetaWaylandSurfaceRoleCursorClass *
   surface_role_class->assigned = cursor_surface_role_assigned;
   surface_role_class->pre_commit = cursor_surface_role_pre_commit;
   surface_role_class->commit = cursor_surface_role_commit;
-  surface_role_class->is_on_output = cursor_surface_role_is_on_output;
+  surface_role_class->is_on_logical_monitor = cursor_surface_role_is_on_logical_monitor;
 
   object_class->constructed = cursor_surface_role_constructed;
   object_class->dispose = cursor_surface_role_dispose;

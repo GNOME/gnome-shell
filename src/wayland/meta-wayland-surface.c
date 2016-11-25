@@ -147,8 +147,8 @@ meta_wayland_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
                                   MetaWaylandPendingState *pending);
 
 static gboolean
-meta_wayland_surface_role_is_on_output (MetaWaylandSurfaceRole *surface_role,
-                                        MetaLogicalMonitor     *logical_monitor);
+meta_wayland_surface_role_is_on_logical_monitor (MetaWaylandSurfaceRole *surface_role,
+                                                 MetaLogicalMonitor     *logical_monitor);
 
 static MetaWaylandSurface *
 meta_wayland_surface_role_get_toplevel (MetaWaylandSurfaceRole *surface_role);
@@ -1170,8 +1170,8 @@ set_surface_is_on_output (MetaWaylandSurface *surface,
 }
 
 static gboolean
-actor_surface_is_on_output (MetaWaylandSurfaceRole *surface_role,
-                            MetaLogicalMonitor     *logical_monitor)
+actor_surface_is_on_logical_monitor (MetaWaylandSurfaceRole *surface_role,
+                                     MetaLogicalMonitor     *logical_monitor)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
@@ -1187,7 +1187,7 @@ update_surface_output_state (gpointer key, gpointer value, gpointer user_data)
   MetaWaylandOutput *wayland_output = value;
   MetaWaylandSurface *surface = user_data;
   MetaLogicalMonitor *logical_monitor;
-  gboolean is_on_output;
+  gboolean is_on_logical_monitor;
 
   g_assert (surface->role);
 
@@ -1198,8 +1198,10 @@ update_surface_output_state (gpointer key, gpointer value, gpointer user_data)
       return;
     }
 
-  is_on_output = meta_wayland_surface_role_is_on_output (surface->role, logical_monitor);
-  set_surface_is_on_output (surface, wayland_output, is_on_output);
+  is_on_logical_monitor =
+    meta_wayland_surface_role_is_on_logical_monitor (surface->role,
+                                                     logical_monitor);
+  set_surface_is_on_output (surface, wayland_output, is_on_logical_monitor);
 }
 
 static void
@@ -1924,14 +1926,14 @@ meta_wayland_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 static gboolean
-meta_wayland_surface_role_is_on_output (MetaWaylandSurfaceRole *surface_role,
-                                        MetaLogicalMonitor     *logical_monitor)
+meta_wayland_surface_role_is_on_logical_monitor (MetaWaylandSurfaceRole *surface_role,
+                                                 MetaLogicalMonitor     *logical_monitor)
 {
   MetaWaylandSurfaceRoleClass *klass;
 
   klass = META_WAYLAND_SURFACE_ROLE_GET_CLASS (surface_role);
-  if (klass->is_on_output)
-    return klass->is_on_output (surface_role, logical_monitor);
+  if (klass->is_on_logical_monitor)
+    return klass->is_on_logical_monitor (surface_role, logical_monitor);
   else
     return FALSE;
 }
@@ -2066,7 +2068,7 @@ meta_wayland_surface_role_actor_surface_class_init (MetaWaylandSurfaceRoleActorS
 
   surface_role_class->assigned = actor_surface_assigned;
   surface_role_class->commit = actor_surface_commit;
-  surface_role_class->is_on_output = actor_surface_is_on_output;
+  surface_role_class->is_on_logical_monitor = actor_surface_is_on_logical_monitor;
 }
 
 static void
