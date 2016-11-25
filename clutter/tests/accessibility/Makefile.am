@@ -1,5 +1,5 @@
 common_ldadd = \
-	$(top_builddir)/clutter/libmutter-clutter-@CLUTTER_API_VERSION@.la
+	$(top_builddir)/clutter/libmutter-clutter-@LIBMUTTER_API_VERSION@.la
 
 common_sources = \
 	cally-examples-util.c	\

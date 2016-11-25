@@ -37,7 +37,7 @@ AM_CFLAGS = $(CLUTTER_CFLAGS) $(MAINTAINER_CFLAGS)
 INTROSPECTION_GIRS =
 
 # the base include path for headers
-clutter_base_includedir = $(includedir)/mutter/clutter-$(CLUTTER_API_VERSION)
+clutter_base_includedir = $(includedir)/mutter/clutter-$(LIBMUTTER_API_VERSION)
 clutter_includedir = $(clutter_base_includedir)/clutter
 clutter_deprecateddir = $(clutter_base_includedir)/clutter/deprecated
 
@@ -356,7 +356,7 @@ EXTRA_DIST += clutter-version.h.in clutter-version.h
 # key symbol update script
 EXTRA_DIST += clutter-keysyms-update.pl
 
-pc_files += mutter-clutter-$(CLUTTER_API_VERSION).pc
+pc_files += mutter-clutter-$(LIBMUTTER_API_VERSION).pc
 
 # in order to be compatible with Clutter < 1.10, when we shipped a single
 # shared library whose name was determined by the single backend it
@@ -442,10 +442,10 @@ x11_introspection = $(x11_source_c) $(x11_source_h)
 clutterx11_includedir = $(clutter_includedir)/x11
 clutterx11_include_HEADERS = $(x11_source_h)
 
-mutter-clutter-x11-$(CLUTTER_API_VERSION).pc: mutter-clutter-$(CLUTTER_API_VERSION).pc
+mutter-clutter-x11-@LIBMUTTER_API_VERSION@.pc: mutter-clutter-$(LIBMUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
-pc_files += mutter-clutter-x11-$(CLUTTER_API_VERSION).pc
+pc_files += mutter-clutter-x11-$(LIBMUTTER_API_VERSION).pc
 
 # Shared cogl backend files
 cogl_source_h =
@@ -583,17 +583,17 @@ nodist_clutter_include_HEADERS = clutter-config.h $(built_source_h)
 clutter_deprecated_HEADERS = $(deprecated_h)
 
 mutterlibdir = $(libdir)/mutter
-mutterlib_LTLIBRARIES = libmutter-clutter-@CLUTTER_API_VERSION@.la
+mutterlib_LTLIBRARIES = libmutter-clutter-@LIBMUTTER_API_VERSION@.la
 
-libmutter_clutter_@CLUTTER_API_VERSION@_la_LIBADD = \
+libmutter_clutter_@LIBMUTTER_API_VERSION@_la_LIBADD = \
 	$(LIBM) \
 	$(CLUTTER_LIBS) \
-	$(top_builddir)/../cogl/cogl/libmutter-cogl.la \
-	$(top_builddir)/../cogl/cogl-pango/libmutter-cogl-pango.la \
-	$(top_builddir)/../cogl/cogl-path/libmutter-cogl-path.la \
+	$(top_builddir)/../cogl/cogl/libmutter-cogl-$(LIBMUTTER_API_VERSION).la \
+	$(top_builddir)/../cogl/cogl-pango/libmutter-cogl-pango-$(LIBMUTTER_API_VERSION).la \
+	$(top_builddir)/../cogl/cogl-path/libmutter-cogl-path-$(LIBMUTTER_API_VERSION).la \
 	$(NULL)
 
-libmutter_clutter_@CLUTTER_API_VERSION@_la_SOURCES = \
+libmutter_clutter_@LIBMUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_c) \
 	$(backend_source_h) \
 	$(backend_source_c_priv) \
@@ -611,12 +611,12 @@ libmutter_clutter_@CLUTTER_API_VERSION@_la_SOURCES = \
 	$(cally_sources_private) \
 	$(NULL)
 
-nodist_libmutter_clutter_@CLUTTER_API_VERSION@_la_SOURCES = \
+nodist_libmutter_clutter_@LIBMUTTER_API_VERSION@_la_SOURCES = \
 	$(backend_source_built) \
 	$(built_source_c) \
 	$(built_source_h)
 
-libmutter_clutter_@CLUTTER_API_VERSION@_la_LDFLAGS = \
+libmutter_clutter_@LIBMUTTER_API_VERSION@_la_LDFLAGS = \
 	$(CLUTTER_LINK_FLAGS) \
 	$(CLUTTER_LT_LDFLAGS) \
 	-export-dynamic \
@@ -630,13 +630,13 @@ install-exec-local:
 	    rm -f $$lib.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION); \
 	  ) ; \
 	  (cd $(DESTDIR)$(mutterlibdir) && \
-	    { ln -s -f libmutter-clutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0 || \
-	      { rm -f $$lib.0 && ln -s libmutter-clutter-1.0.so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0; }; \
+	    { ln -s -f libmutter-clutter-$(LIBMUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0 || \
+	      { rm -f $$lib.0 && ln -s libmutter-clutter-$(LIBMUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0; }; \
 	    } \
 	  ) ; \
 	  (cd $(DESTDIR)$(mutterlibdir) && \
-	    { ln -s -f libmutter-clutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib || \
-	      { rm -f $$lib && ln -s libmutter-clutter-1.0.so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib; }; \
+	    { ln -s -f libmutter-clutter-$(LIBMUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib || \
+	      { rm -f $$lib && ln -s libmutter-clutter-$(LIBMUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib; }; \
 	    } \
 	  ) ; \
 	done
@@ -644,59 +644,65 @@ install-exec-local:
 # gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
 
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(top_builddir)/../cogl/cogl --add-include-path=$(top_builddir)/../cogl/cogl-pango
-INTROSPECTION_COMPILER_ARGS = --includedir=$(top_builddir)/../cogl/cogl --includedir=$(top_builddir)/../cogl/cogl-pango
+INTROSPECTION_SCANNER_ARGS = \
+	--add-include-path=$(top_builddir)/../cogl/cogl \
+	--add-include-path=$(top_builddir)/../cogl/cogl-pango
+INTROSPECTION_COMPILER_ARGS = \
+	--includedir=$(top_builddir)/../cogl/cogl \
+	--includedir=$(top_builddir)/../cogl/cogl-pango
+INTROSPECTION_SCANNER_ENV = \
+	PKG_CONFIG_PATH=$(top_builddir)/../cogl/cogl/:$(top_builddir)/../cogl/cogl-pango/:$${PKG_CONFIG_PATH}
 
-Clutter-@CLUTTER_API_VERSION@.gir: libmutter-clutter-@CLUTTER_API_VERSION@.la Makefile
+Clutter-@LIBMUTTER_API_VERSION@.gir: libmutter-clutter-@LIBMUTTER_API_VERSION@.la Makefile
 
-Clutter_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Clutter
-Clutter_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
-Clutter_@CLUTTER_API_VERSION_AM@_gir_LIBS = libmutter-clutter-@CLUTTER_API_VERSION@.la
-Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = \
+Clutter_@LIBMUTTER_API_VERSION@_gir_NAMESPACE = Clutter
+Clutter_@LIBMUTTER_API_VERSION@_gir_VERSION = @LIBMUTTER_API_VERSION@
+Clutter_@LIBMUTTER_API_VERSION@_gir_LIBS = libmutter-clutter-@LIBMUTTER_API_VERSION@.la
+Clutter_@LIBMUTTER_API_VERSION@_gir_FILES = \
 	$(clutter_include_HEADERS) \
 	$(clutter_deprecated_HEADERS) \
 	$(nodist_clutter_include_HEADERS) \
 	$(source_c) \
 	$(deprecated_c) \
 	$(built_source_c)
-Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
-Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cogl-1.0 CoglPango-1.0 Atk-1.0 Json-1.0
-Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+Clutter_@LIBMUTTER_API_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
+Clutter_@LIBMUTTER_API_VERSION@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cogl-@LIBMUTTER_API_VERSION@ CoglPango-@LIBMUTTER_API_VERSION@ Atk-1.0 Json-1.0
+Clutter_@LIBMUTTER_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/clutter.h' \
-	--pkg-export=mutter-clutter-@CLUTTER_API_VERSION@
+	--pkg-export=mutter-clutter-@LIBMUTTER_API_VERSION@
 
-INTROSPECTION_GIRS += Clutter-@CLUTTER_API_VERSION@.gir
+INTROSPECTION_GIRS += Clutter-@LIBMUTTER_API_VERSION@.gir
 
-Cally-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
+Cally-@LIBMUTTER_API_VERSION@.gir: Makefile Clutter-@LIBMUTTER_API_VERSION@.gir
 
-Cally_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cally
-Cally_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
-Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libmutter-clutter-@CLUTTER_API_VERSION@.la
-Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
-Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
-Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+Cally_@LIBMUTTER_API_VERSION@_gir_NAMESPACE = Cally
+Cally_@LIBMUTTER_API_VERSION@_gir_VERSION = @LIBMUTTER_API_VERSION@
+Cally_@LIBMUTTER_API_VERSION@_gir_LIBS = libmutter-clutter-@LIBMUTTER_API_VERSION@.la
+Cally_@LIBMUTTER_API_VERSION@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
+Cally_@LIBMUTTER_API_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
+Cally_@LIBMUTTER_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='cally/cally.h' \
-	--pkg-export=mutter-cally-@CLUTTER_API_VERSION@ \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+	--pkg-export=mutter-cally-@LIBMUTTER_API_VERSION@ \
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@LIBMUTTER_API_VERSION@.gir
 
-INTROSPECTION_GIRS += Cally-@CLUTTER_API_VERSION@.gir
+INTROSPECTION_GIRS += Cally-@LIBMUTTER_API_VERSION@.gir
 
-ClutterX11-@CLUTTER_API_VERSION@.gir: Makefile Clutter-@CLUTTER_API_VERSION@.gir
+ClutterX11-@LIBMUTTER_API_VERSION@.gir: Makefile Clutter-@LIBMUTTER_API_VERSION@.gir
 
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = ClutterX11
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libmutter-clutter-@CLUTTER_API_VERSION@.la
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_introspection)
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
+ClutterX11_@LIBMUTTER_API_VERSION@_gir_NAMESPACE = ClutterX11
+ClutterX11_@LIBMUTTER_API_VERSION@_gir_INCLUDES = xlib-2.0
+ClutterX11_@LIBMUTTER_API_VERSION@_gir_LIBS = libmutter-clutter-@LIBMUTTER_API_VERSION@.la
+ClutterX11_@LIBMUTTER_API_VERSION@_gir_FILES = $(x11_introspection)
+ClutterX11_@LIBMUTTER_API_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
+ClutterX11_@LIBMUTTER_API_VERSION@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--c-include='clutter/x11/clutter-x11.h' \
-	--pkg-export=mutter-clutter-x11-@CLUTTER_API_VERSION@ \
-	--include-uninstalled=$(top_builddir)/clutter/Clutter-@CLUTTER_API_VERSION@.gir
+	--pkg-export=mutter-clutter-x11-@LIBMUTTER_API_VERSION@ \
+	--include-uninstalled=$(top_builddir)/clutter/Clutter-@LIBMUTTER_API_VERSION@.gir
 
-INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
+INTROSPECTION_GIRS += ClutterX11-@LIBMUTTER_API_VERSION@.gir
 
 # INTROSPECTION_GIRDIR/INTROSPECTION_TYPELIBDIR aren't the right place to
 # install anything - we need to install inside our prefix.

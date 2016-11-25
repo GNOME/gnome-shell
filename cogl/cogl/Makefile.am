@@ -41,7 +41,7 @@ BUILT_SOURCES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
 DISTCLEANFILES += cogl-defines.h cogl-egl-defines.h cogl-gl-header.h
 EXTRA_DIST += cogl-defines.h.in cogl-egl-defines.h.in cogl-gl-header.h.in
 
-pc_files = mutter-cogl-1.0.pc
+pc_files = mutter-cogl-$(LIBMUTTER_API_VERSION).pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
@@ -439,23 +439,23 @@ cogl_sources_c += \
 endif
 
 mutterlibdir = $(libdir)/mutter
-mutterlib_LTLIBRARIES = libmutter-cogl.la
+mutterlib_LTLIBRARIES = libmutter-cogl-@LIBMUTTER_API_VERSION@.la
 
-libmutter_cogl_la_LIBADD = $(LIBM) $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
+libmutter_cogl_@LIBMUTTER_API_VERSION@_la_LIBADD = $(LIBM) $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 if UNIT_TESTS
-libmutter_cogl_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
+libmutter_cogl_@LIBMUTTER_API_VERSION@_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
-libmutter_cogl_la_LDFLAGS = \
+libmutter_cogl_@LIBMUTTER_API_VERSION@_la_LDFLAGS = \
 	-no-undefined \
 	-avoid-version \
 	-export-dynamic \
 	-rpath $(mutterlibdir) \
 	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_get_format|_cogl_texture_foreach_sub_texture_in_region|_cogl_texture_set_region|_cogl_profile_trace_message|_cogl_context_get_default|_cogl_framebuffer_get_stencil_bits|_cogl_clip_stack_push_rectangle|_cogl_framebuffer_get_modelview_stack|_cogl_object_default_unref|_cogl_pipeline_foreach_layer_internal|_cogl_clip_stack_push_primitive|_cogl_buffer_unmap_for_fill_or_fallback|_cogl_framebuffer_draw_primitive|_cogl_debug_instances|_cogl_framebuffer_get_projection_stack|_cogl_pipeline_layer_get_texture|_cogl_buffer_map_for_fill_or_fallback|_cogl_texture_can_hardware_repeat|_cogl_pipeline_prune_to_n_layers|_cogl_primitive_draw|test_|unit_test_|_cogl_winsys_glx_get_vtable|_cogl_winsys_egl_xlib_get_vtable|_cogl_winsys_egl_get_vtable|_cogl_closure_disconnect|_cogl_onscreen_notify_complete|_cogl_onscreen_notify_frame_sync|_cogl_winsys_egl_renderer_connect_common|_cogl_winsys_error_quark|_cogl_set_error|_cogl_poll_renderer_add_fd|_cogl_poll_renderer_add_idle|_cogl_framebuffer_winsys_update_size|_cogl_winsys_egl_make_current|_cogl_pixel_format_get_bytes_per_pixel).*"
 
-libmutter_cogl_la_SOURCES = $(cogl_sources_c)
-nodist_libmutter_cogl_la_SOURCES = $(BUILT_SOURCES)
+libmutter_cogl_@LIBMUTTER_API_VERSION@_la_SOURCES = $(cogl_sources_c)
+nodist_libmutter_cogl_@LIBMUTTER_API_VERSION@_la_SOURCES = $(BUILT_SOURCES)
 
 # Cogl installed headers
 cogl_headers = \
@@ -483,22 +483,22 @@ EXTRA_DIST += \
 INTROSPECTION_GIRS =
 
 if HAVE_INTROSPECTION
-Cogl-1.0.gir: libmutter-cogl.la Makefile
+Cogl-@LIBMUTTER_API_VERSION@.gir: libmutter-cogl-$(LIBMUTTER_API_VERSION).la Makefile
 
-Cogl_1_0_gir_NAMESPACE = Cogl
-Cogl_1_0_gir_VERSION = 1.0
-Cogl_1_0_gir_LIBS = libmutter-cogl.la
+Cogl_@LIBMUTTER_API_VERSION@_gir_NAMESPACE = Cogl
+Cogl_@LIBMUTTER_API_VERSION@_gir_VERSION = $(LIBMUTTER_API_VERSION)
+Cogl_@LIBMUTTER_API_VERSION@_gir_LIBS = libmutter-cogl-$(LIBMUTTER_API_VERSION).la
 if UNIT_TESTS
-Cogl_1_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
+Cogl_@LIBMUTTER_API_VERSION@_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
-Cogl_1_0_gir_FILES = $(cogl_1_public_h)
+Cogl_@LIBMUTTER_API_VERSION@_gir_FILES = $(cogl_1_public_h)
 
-Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__ -D__COGL_EGL_H_INSIDE__ -D__COGL_GLX_H_INSIDE__ -DCOGL_GIR_SCANNING
-Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
-Cogl_1_0_gir_EXPORT_PACKAGES = mutter-cogl-1.0
-Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
+Cogl_@LIBMUTTER_API_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_COMPILATION -D__COGL_H_INSIDE__ -D__COGL_XLIB_H_INSIDE__ -D__COGL_EGL_H_INSIDE__ -D__COGL_GLX_H_INSIDE__ -DCOGL_GIR_SCANNING
+Cogl_@LIBMUTTER_API_VERSION@_gir_INCLUDES = GL-1.0 GObject-2.0
+Cogl_@LIBMUTTER_API_VERSION@_gir_EXPORT_PACKAGES = mutter-cogl-@LIBMUTTER_API_VERSION@
+Cogl_@LIBMUTTER_API_VERSION@_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
 
-INTROSPECTION_GIRS += Cogl-1.0.gir
+INTROSPECTION_GIRS += Cogl-@LIBMUTTER_API_VERSION@.gir
 
 girdir = $(mutterlibdir)
 gir_DATA = $(INTROSPECTION_GIRS)

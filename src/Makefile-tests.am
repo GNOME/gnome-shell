@@ -27,10 +27,10 @@ endif
 EXTRA_DIST += tests/mutter-all.test.in
 
 mutter_test_client_SOURCES = tests/test-client.c
-mutter_test_client_LDADD = $(MUTTER_LIBS) libmutter.la
+mutter_test_client_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
 
 mutter_test_runner_SOURCES = tests/test-runner.c
-mutter_test_runner_LDADD = $(MUTTER_LIBS) libmutter.la
+mutter_test_runner_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
 
 mutter_test_unit_tests_SOURCES = \
 	tests/unit-tests.c \
@@ -45,7 +45,7 @@ mutter_test_unit_tests_SOURCES = \
 	tests/monitor-unit-tests.c \
 	tests/monitor-unit-tests.h \
 	$(NULL)
-mutter_test_unit_tests_LDADD = $(MUTTER_LIBS) libmutter.la
+mutter_test_unit_tests_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
 
 .PHONY: run-tests run-test-runner-tests run-unit-tests
 
@@ -62,6 +62,6 @@ endif
 # Some random test programs for bits of the code
 
 testboxes_SOURCES = core/testboxes.c
-testboxes_LDADD = $(MUTTER_LIBS) libmutter.la
+testboxes_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
 
 noinst_PROGRAMS += testboxes

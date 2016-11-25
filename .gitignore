@@ -86,6 +86,7 @@ src/pointer-constraints-unstable-v*-server-protocol.h
 src/xdg-foreign-unstable-v*-protocol.c
 src/xdg-foreign-unstable-v*-server-protocol.h
 src/meta/meta-version.h
+src/libmutter-*.pc
 doc/reference/*.args
 doc/reference/*.bak
 doc/reference/*.hierarchy

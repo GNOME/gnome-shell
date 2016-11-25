@@ -21,7 +21,7 @@ all_examples += \
 	image-content
 endif
 
-LDADD = $(top_builddir)/clutter/libmutter-clutter-@CLUTTER_API_VERSION@.la $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(LIBM)
+LDADD = $(top_builddir)/clutter/libmutter-clutter-@LIBMUTTER_API_VERSION@.la $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(LIBM)
 AM_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS) $(MAINTAINER_CFLAGS)
 AM_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \

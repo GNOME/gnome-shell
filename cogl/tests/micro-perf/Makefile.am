@@ -17,7 +17,7 @@ AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 
 common_ldadd = \
 	$(COGL_DEP_LIBS) \
-	$(top_builddir)/cogl/libmutter-cogl.la \
+	$(top_builddir)/cogl/libmutter-cogl-$(LIBMUTTER_API_VERSION).la \
 	$(LIBM)
 
 test_journal_SOURCES = test-journal.c

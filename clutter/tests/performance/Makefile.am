@@ -7,7 +7,7 @@ check_PROGRAMS = \
 	test-state-mini \
 	test-state-pick
 
-common_ldadd = $(top_builddir)/clutter/libmutter-clutter-@CLUTTER_API_VERSION@.la
+common_ldadd = $(top_builddir)/clutter/libmutter-clutter-@LIBMUTTER_API_VERSION@.la
 
 LDADD = $(common_ldadd) $(CLUTTER_LIBS) $(LIBM)
 

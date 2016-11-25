@@ -4,10 +4,11 @@ libdir=@libdir@
 includedir=@includedir@
 girdir=@libdir@/mutter
 typelibdir=@libdir@/mutter
+apiversion=@LIBMUTTER_API_VERSION@
 
 Name: libmutter
 Description: Mutter window manager library
-Requires: gsettings-desktop-schemas gtk+-3.0 mutter-clutter-1.0 x11
+Requires: gsettings-desktop-schemas gtk+-3.0 mutter-clutter-@LIBMUTTER_API_VERSION@ x11
 Version: @VERSION@
-Libs: -L${libdir} -lmutter
+Libs: -L${libdir} -lmutter-@LIBMUTTER_API_VERSION@
 Cflags: -I${includedir}/mutter

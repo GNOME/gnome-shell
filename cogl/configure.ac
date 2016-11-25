@@ -84,6 +84,16 @@ AC_CONFIG_HEADERS(cogl-mutter-config.h)
 AC_GNU_SOURCE
 
 dnl ================================================================
+dnl Check that we are configured by mutter
+dnl ================================================================
+
+AC_ARG_VAR([MUTTER_VERSION])
+AC_ARG_VAR([LIBMUTTER_API_VERSION])
+
+AS_IF([test "x$MUTTER_VERSION" = "x"],
+      [AC_MSG_ERROR([Clutter can only be configured by mutter])],)
+
+dnl ================================================================
 dnl Required versions for dependencies
 dnl ================================================================
 m4_define([glib_req_version],           [2.32.0])
@@ -945,16 +955,16 @@ AC_OUTPUT(
 Makefile
 test-fixtures/Makefile
 cogl/Makefile
-cogl/mutter-cogl-1.0.pc
+cogl/mutter-cogl-$LIBMUTTER_API_VERSION.pc:cogl/mutter-cogl.pc.in
 cogl/cogl-defines.h
 cogl/cogl-gl-header.h
 cogl/cogl-egl-defines.h
 cogl-pango/Makefile
-cogl-pango/mutter-cogl-pango-1.0.pc
+cogl-pango/mutter-cogl-pango-$LIBMUTTER_API_VERSION.pc:cogl-pango/mutter-cogl-pango.pc.in
 cogl-path/Makefile
-cogl-path/mutter-cogl-path-1.0.pc
+cogl-path/mutter-cogl-path-$LIBMUTTER_API_VERSION.pc:cogl-path/mutter-cogl-path.pc.in
 cogl-gles2/Makefile
-cogl-gles2/mutter-cogl-gles2-1.0.pc
+cogl-gles2/mutter-cogl-gles2-$LIBMUTTER_API_VERSION.pc:cogl-gles2/mutter-cogl-gles2.pc.in
 tests/Makefile
 tests/config.env
 tests/conform/Makefile

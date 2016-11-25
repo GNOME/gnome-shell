@@ -9,6 +9,8 @@ m4_define([mutter_version],
 
 m4_define([mutter_plugin_api_version], [3])
 
+m4_define([libmutter_api_version], [0])
+
 AC_INIT([mutter], [mutter_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=mutter])
 
@@ -27,11 +29,18 @@ AC_GNU_SOURCE
 MUTTER_MAJOR_VERSION=mutter_major_version
 MUTTER_MINOR_VERSION=mutter_minor_version
 MUTTER_MICRO_VERSION=mutter_micro_version
+MUTTER_VERSION=mutter_version
 MUTTER_PLUGIN_API_VERSION=mutter_plugin_api_version
+LIBMUTTER_API_VERSION=libmutter_api_version
 AC_SUBST(MUTTER_MAJOR_VERSION)
 AC_SUBST(MUTTER_MINOR_VERSION)
 AC_SUBST(MUTTER_MICRO_VERSION)
 AC_SUBST(MUTTER_PLUGIN_API_VERSION)
+AC_SUBST(MUTTER_VERSION)
+AC_SUBST(LIBMUTTER_API_VERSION)
+
+# Make the mutter versions visible to the cogl and clutter subdirs
+export LIBMUTTER_API_VERSION MUTTER_VERSION
 
 MUTTER_PLUGIN_DIR="$libdir/$PACKAGE/plugins"
 AC_SUBST(MUTTER_PLUGIN_DIR)
@@ -228,13 +237,6 @@ GOBJECT_INTROSPECTION_CHECK([$INTROSPECTION_VERSION])
 if test x$found_introspection != xno; then
   AC_DEFINE(HAVE_INTROSPECTION, 1, [Define if GObject introspection is available])
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES gobject-introspection-1.0"
-  # Since we don't make any guarantees about stability and we don't support
-  # parallel install, there's no real reason to change directories, filenames,
-  # etc. as we change the Mutter tarball version. Note that this must match
-  # api_version in src/Makefile.am
-  META_GIR=Meta_3_0_gir
-  # META_GIR=[Meta_]mutter_major_version[_]mutter_minor_version[_gir]
-  AC_SUBST(META_GIR)
 fi
 
 AC_SUBST(XWAYLAND_PATH)
@@ -461,13 +463,23 @@ data/Makefile
 doc/Makefile
 doc/man/Makefile
 src/Makefile
-src/libmutter.pc
+src/libmutter-$LIBMUTTER_API_VERSION.pc:src/libmutter.pc.in
 src/compositor/plugins/Makefile
 src/meta/meta-version.h
 po/Makefile.in
 ])
 
 AC_OUTPUT
+
+# Check that cogl and clutter have their .pc files regenerated with the correct version
+
+COGL_PC_VERSION=$(grep Version: cogl/cogl/mutter-cogl-$LIBMUTTER_API_VERSION.pc|awk '{ print $2; }')
+AS_IF([test "x$COGL_PC_VERSION" != "x$MUTTER_VERSION"],
+      [AC_MSG_ERROR([mutter-cogl pkg-config file not updated, rerun ./configure])])
+
+CLUTTER_PC_VERSION=$(grep Version: clutter/clutter/mutter-clutter-$LIBMUTTER_API_VERSION.pc|awk '{ print $2; }')
+AS_IF([test "x$CLUTTER_PC_VERSION" != "x$MUTTER_VERSION"],
+      [AC_MSG_ERROR([mutter-clutter pkg-config file not updated, rerun ./configure])])
 
 if test x$enable_verbose_mode = xno; then
         echo "*** WARNING WARNING WARNING WARNING WARNING"

@@ -42,9 +42,6 @@ m4_define([clutter_release_status],
 
 m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutter_micro_version])
 
-# change this only when breaking the API
-m4_define([clutter_api_version], [1.0])
-
 AC_PREREQ([2.63])
 
 AC_INIT([clutter],
@@ -61,12 +58,18 @@ AC_CONFIG_MACRO_DIR([build/autotools])
 AM_INIT_AUTOMAKE([1.11 foreign -Wno-portability no-define no-dist-gzip dist-xz tar-ustar])
 AM_SILENT_RULES([yes])
 
+dnl = Check that we are configured by mutter ==============================
+
+AC_ARG_VAR([MUTTER_VERSION])
+AC_ARG_VAR([LIBMUTTER_API_VERSION])
+
+AS_IF([test "x$MUTTER_VERSION" = "x"],
+      [AC_MSG_ERROR([Clutter can only be configured by mutter])],)
+
 AC_SUBST([CLUTTER_MAJOR_VERSION],  [clutter_major_version])
 AC_SUBST([CLUTTER_MINOR_VERSION],  [clutter_minor_version])
 AC_SUBST([CLUTTER_MICRO_VERSION],  [clutter_micro_version])
 AC_SUBST([CLUTTER_VERSION],        [clutter_version])
-AC_SUBST([CLUTTER_API_VERSION],    [clutter_api_version])
-AC_SUBST([CLUTTER_API_VERSION_AM], [$CLUTTER_MAJOR_VERSION\_0])
 AC_SUBST([CLUTTER_RELEASE_STATUS], [clutter_release_status])
 
 m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
@@ -781,7 +784,7 @@ AC_CONFIG_FILES([
 	clutter/Makefile
         clutter/clutter-config.h
 	clutter/clutter-version.h
-	clutter/mutter-clutter-$CLUTTER_API_VERSION.pc:clutter/mutter-clutter.pc.in
+	clutter/mutter-clutter-$LIBMUTTER_API_VERSION.pc:clutter/mutter-clutter.pc.in
 
 	tests/Makefile
 	tests/accessibility/Makefile

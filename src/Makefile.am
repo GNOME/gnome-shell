@@ -1,7 +1,7 @@
 # Flag build for parallelism; see https://savannah.gnu.org/patch/?6905
 .AUTOPARALLEL:
 
-lib_LTLIBRARIES = libmutter.la
+lib_LTLIBRARIES = libmutter-@LIBMUTTER_API_VERSION@.la
 
 SUBDIRS=compositor/plugins
 
@@ -79,7 +79,7 @@ wayland_protocols =				\
 	wayland/protocol/gtk-primary-selection.xml	\
 	$(NULL)
 
-libmutter_la_SOURCES =				\
+libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-backend.c			\
 	meta/meta-backend.h			\
 	backends/meta-backend-private.h		\
@@ -285,7 +285,7 @@ libmutter_la_SOURCES =				\
 	$(NULL)
 
 if HAVE_WAYLAND
-libmutter_la_SOURCES +=				\
+libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	compositor/meta-surface-actor-wayland.c	\
 	compositor/meta-surface-actor-wayland.h	\
 	wayland/meta-wayland.c			\
@@ -369,7 +369,7 @@ libmutter_la_SOURCES +=				\
 endif
 
 if HAVE_NATIVE_BACKEND
-libmutter_la_SOURCES +=					\
+libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
 	backends/native/meta-backend-native.c		\
 	backends/native/meta-backend-native.h		\
 	backends/native/meta-backend-native-private.h	\
@@ -397,13 +397,14 @@ libmutter_la_SOURCES +=					\
 	$(NULL)
 endif
 
-nodist_libmutter_la_SOURCES = $(mutter_built_sources)
+nodist_libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES = $(mutter_built_sources)
 
-libmutter_la_LDFLAGS = -no-undefined -export-symbols-regex "^(meta|ag)_.*"
-libmutter_la_LIBADD  = \
+libmutter_@LIBMUTTER_API_VERSION@_la_LDFLAGS = \
+	-no-undefined -export-symbols-regex "^(meta|ag)_.*"
+libmutter_@LIBMUTTER_API_VERSION@_la_LIBADD  = \
 	$(MUTTER_LIBS) \
 	$(MUTTER_NATIVE_BACKEND_LIBS)	\
-	$(top_builddir)/clutter/clutter/libmutter-clutter-1.0.la \
+	$(top_builddir)/clutter/clutter/libmutter-clutter-$(LIBMUTTER_API_VERSION).la \
 	$(NULL)
 
 # Headers installed for plugins; introspected information will
@@ -462,7 +463,7 @@ bin_PROGRAMS=mutter
 noinst_PROGRAMS=
 
 mutter_SOURCES = core/mutter.c
-mutter_LDADD = $(MUTTER_LIBS) libmutter.la
+mutter_LDADD = $(MUTTER_LIBS) libmutter-@LIBMUTTER_API_VERSION@.la
 
 libexec_PROGRAMS = mutter-restart-helper
 mutter_restart_helper_SOURCES = core/restart-helper.c
@@ -471,36 +472,51 @@ mutter_restart_helper_LDADD = $(MUTTER_LIBS)
 include Makefile-tests.am
 
 if HAVE_INTROSPECTION
-include $(INTROSPECTION_MAKEFILE)
 
-# Since we don't make any guarantees about stability and we don't support
-# parallel install, there's no real reason to change directories, filenames,
-# etc. as we change the Mutter tarball version.
-#api_version = $(MUTTER_MAJOR_VERSION).$(MUTTER_MINOR_VERSION)
-api_version = 3.0
+include $(INTROSPECTION_MAKEFILE)
 
 # These files are in package-private directories, even though they may be used
 # by plugins.  If you're writing a plugin, use g-ir-compiler --add-include-path
 # and g-ir-compiler --includedir.
 girdir = $(pkglibdir)
-gir_DATA = Meta-$(api_version).gir
+gir_DATA = Meta-$(LIBMUTTER_API_VERSION).gir
 
 typelibdir = $(pkglibdir)
-typelib_DATA = Meta-$(api_version).typelib
+typelib_DATA = Meta-$(LIBMUTTER_API_VERSION).typelib
 
-INTROSPECTION_GIRS = Meta-$(api_version).gir
-INTROSPECTION_SCANNER_ARGS = --add-include-path=$(top_builddir)/clutter/clutter --add-include-path=$(top_builddir)/cogl/cogl --add-include-path=$(top_builddir)/cogl/cogl-pango
-INTROSPECTION_COMPILER_ARGS = --includedir=$(top_builddir)/clutter/clutter --includedir=$(top_builddir)/cogl/cogl --includedir=$(top_builddir)/cogl/cogl-pango
+INTROSPECTION_GIRS = Meta-$(LIBMUTTER_API_VERSION).gir
+INTROSPECTION_SCANNER_ARGS =					\
+	--add-include-path=$(top_builddir)/clutter/clutter	\
+	--add-include-path=$(top_builddir)/cogl/cogl		\
+	--add-include-path=$(top_builddir)/cogl/cogl-pango	\
+	$(NULL)
+INTROSPECTION_COMPILER_ARGS =					\
+	--includedir=$(top_builddir)/clutter/clutter		\
+	--includedir=$(top_builddir)/cogl/cogl			\
+	--includedir=$(top_builddir)/cogl/cogl-pango		\
+	$(NULL)
+INTROSPECTION_SCANNER_ENV = \
+	PKG_CONFIG_PATH=$(top_builddir)/clutter/clutter/:$(top_builddir)/cogl/cogl/:$(top_builddir)/cogl/cogl-pango/:$${PKG_CONFIG_PATH}
 
-Meta-$(api_version).gir: libmutter.la
-@META_GIR@_INCLUDES = GObject-2.0 GDesktopEnums-3.0 Gdk-3.0 Gtk-3.0 Clutter-1.0 xlib-2.0 xfixes-4.0 Cogl-1.0
-@META_GIR@_EXPORT_PACKAGES = libmutter
-@META_GIR@_CFLAGS = $(AM_CPPFLAGS)
-@META_GIR@_LIBS = libmutter.la
-@META_GIR@_FILES =				\
-	$(libmutterinclude_base_headers)	\
-	$(filter %.c,$(libmutter_la_SOURCES) $(nodist_libmutter_la_SOURCES))
-@META_GIR@_SCANNERFLAGS = --warn-all --warn-error
+Meta-@LIBMUTTER_API_VERSION@.gir: libmutter-$(LIBMUTTER_API_VERSION).la
+Meta_@LIBMUTTER_API_VERSION@_gir_VERSION = $(LIBMUTTER_API_VERSION)
+Meta_@LIBMUTTER_API_VERSION@_gir_INCLUDES =	\
+	GObject-2.0				\
+	GDesktopEnums-3.0			\
+	Gdk-3.0					\
+	Gtk-3.0					\
+	Cogl-$(LIBMUTTER_API_VERSION)		\
+	Clutter-$(LIBMUTTER_API_VERSION)	\
+	xlib-2.0				\
+	xfixes-4.0				\
+	$(NULL)
+Meta_@LIBMUTTER_API_VERSION@_gir_EXPORT_PACKAGES = libmutter-$(LIBMUTTER_API_VERSION)
+Meta_@LIBMUTTER_API_VERSION@_gir_CFLAGS = $(AM_CPPFLAGS)
+Meta_@LIBMUTTER_API_VERSION@_gir_LIBS = libmutter-$(LIBMUTTER_API_VERSION).la
+Meta_@LIBMUTTER_API_VERSION@_gir_FILES =			\
+	$(libmutterinclude_base_headers)			\
+	$(filter %.c,$(libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES) $(nodist_libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES))
+Meta_@LIBMUTTER_API_VERSION@_SCANNERFLAGS = --warn-all --warn-error
 
 endif
 
@@ -515,7 +531,7 @@ DISTCLEANFILES = 				\
 	$(libmutterinclude_built_headers)
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libmutter.pc
+pkgconfig_DATA = libmutter-$(LIBMUTTER_API_VERSION).pc
 
 EXTRA_DIST +=					\
 	$(wayland_protocols)			\

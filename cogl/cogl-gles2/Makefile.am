@@ -3,7 +3,7 @@
 NULL =
 
 mutterlibdir = $(libdir)/mutter
-mutterlib_LTLIBRARIES = libmutter-cogl-gles2.la
+mutterlib_LTLIBRARIES = libmutter-cogl-gles2-@LIBMUTTER_API_VERSION@.la
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir) \
@@ -11,8 +11,8 @@ AM_CPPFLAGS = \
 
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
 
-libmutter_cogl_gles2_la_SOURCES = cogl-gles2-api.c
-libmutter_cogl_gles2_la_LDFLAGS = \
+libmutter_cogl_gles2_@LIBMUTTER_API_VERSION@_la_SOURCES = cogl-gles2-api.c
+libmutter_cogl_gles2_@LIBMUTTER_API_VERSION@_la_LDFLAGS = \
 	-no-undefined \
 	-rpath $(mutterlibdir) \
 	-avoid-version \
@@ -25,7 +25,7 @@ coglgles2include_HEADERS = \
 	GLES2/gl2ext.h \
 	GLES2/gl2platform.h
 
-pc_files = mutter-cogl-gles2-1.0.pc
+pc_files = mutter-cogl-gles2-$(LIBMUTTER_API_VERSION).pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)

@@ -110,8 +110,8 @@ clean-wrappers:
 .PHONY: wrappers clean-wrappers
 
 common_ldadd = \
-  $(top_builddir)/clutter/libmutter-clutter-@CLUTTER_API_VERSION@.la \
-  $(top_builddir)/../cogl/cogl/libmutter-cogl.la
+  $(top_builddir)/clutter/libmutter-clutter-@LIBMUTTER_API_VERSION@.la \
+  $(top_builddir)/../cogl/cogl/libmutter-cogl-@LIBMUTTER_API_VERSION@.la
 
 check_PROGRAMS = test-interactive
 check_SCRIPTS = wrappers
