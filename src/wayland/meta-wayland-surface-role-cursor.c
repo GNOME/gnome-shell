@@ -98,14 +98,20 @@ cursor_sprite_prepare_at (MetaCursorSprite             *cursor_sprite,
   MetaWaylandSurface *surface = meta_wayland_surface_role_get_surface (role);
   MetaDisplay *display = meta_get_display ();
   MetaScreen *screen = display->screen;
-  const MetaMonitorInfo *monitor;
 
   if (!meta_xwayland_is_xwayland_surface (surface))
     {
-      monitor = meta_screen_get_monitor_for_point (screen, x, y);
-      if (monitor)
-        meta_cursor_sprite_set_texture_scale (cursor_sprite,
-                                              (float) monitor->scale / surface->scale);
+      const MetaLogicalMonitor *logical_monitor;
+
+      logical_monitor = meta_screen_get_logical_monitor_for_point (screen,
+                                                                   x, y);
+      if (logical_monitor)
+        {
+          float texture_scale;
+
+          texture_scale = (float) logical_monitor->scale / surface->scale;
+          meta_cursor_sprite_set_texture_scale (cursor_sprite, texture_scale);
+        }
     }
   meta_wayland_surface_update_outputs (surface);
 }
@@ -172,7 +178,7 @@ cursor_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
 
 static gboolean
 cursor_surface_role_is_on_output (MetaWaylandSurfaceRole *role,
-                                  MetaMonitorInfo        *monitor)
+                                  MetaLogicalMonitor     *logical_monitor)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (role);
@@ -184,7 +190,7 @@ cursor_surface_role_is_on_output (MetaWaylandSurfaceRole *role,
 
   rect = meta_cursor_renderer_calculate_rect (priv->cursor_renderer,
                                               priv->cursor_sprite);
-  return meta_rectangle_overlap (&rect, &monitor->rect);
+  return meta_rectangle_overlap (&rect, &logical_monitor->rect);
 }
 
 static void

@@ -617,7 +617,7 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
     META_MONITOR_MANAGER_KMS (monitor_manager);
   MetaRendererView *view = onscreen_native->view;
   uint32_t fb_id = 0;
-  MetaMonitorInfo *monitor_info;
+  MetaLogicalMonitor *logical_monitor;
 
   switch (renderer_native->mode)
     {
@@ -633,18 +633,18 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
 
   g_assert (fb_id != 0);
 
-  monitor_info = meta_renderer_view_get_monitor_info (view);
-  if (monitor_info)
+  logical_monitor = meta_renderer_view_get_logical_monitor (view);
+  if (logical_monitor)
     {
       unsigned int i;
 
       for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
           MetaCRTC *crtc = &monitor_manager->crtcs[i];
-          int x = crtc->rect.x - monitor_info->rect.x;
-          int y = crtc->rect.y - monitor_info->rect.y;
+          int x = crtc->rect.x - logical_monitor->rect.x;
+          int y = crtc->rect.y - logical_monitor->rect.y;
 
-          if (crtc->logical_monitor != monitor_info)
+          if (crtc->logical_monitor != logical_monitor)
             continue;
 
           meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
@@ -679,7 +679,7 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
     meta_backend_get_monitor_manager (backend);
   MetaRendererView *view = onscreen_native->view;
   GClosure *flip_closure;
-  MetaMonitorInfo *monitor_info;
+  MetaLogicalMonitor *logical_monitor;
   gboolean fb_in_use = FALSE;
 
   /*
@@ -700,18 +700,18 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
   /* Either flip the CRTC's of the monitor info, if we are drawing just part
    * of the stage, or all of the CRTC's if we are drawing the whole stage.
    */
-  monitor_info = meta_renderer_view_get_monitor_info (view);
-  if (monitor_info)
+  logical_monitor = meta_renderer_view_get_logical_monitor (view);
+  if (logical_monitor)
     {
       unsigned int i;
 
       for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
           MetaCRTC *crtc = &monitor_manager->crtcs[i];
-          int x = crtc->rect.x - monitor_info->rect.x;
-          int y = crtc->rect.y - monitor_info->rect.y;
+          int x = crtc->rect.x - logical_monitor->rect.x;
+          int y = crtc->rect.y - logical_monitor->rect.y;
 
-          if (crtc->logical_monitor != monitor_info)
+          if (crtc->logical_monitor != logical_monitor)
             continue;
 
           meta_onscreen_native_flip_crtc (onscreen_native, flip_closure,
@@ -951,7 +951,7 @@ meta_renderer_native_create_surface_gbm (MetaRendererNative  *renderer_native,
 #ifdef HAVE_EGL_DEVICE
 static gboolean
 meta_renderer_native_create_surface_egl_device (MetaRendererNative *renderer_native,
-                                                MetaMonitorInfo    *monitor_info,
+                                                MetaLogicalMonitor *logical_monitor,
                                                 int                 width,
                                                 int                 height,
                                                 EGLStreamKHR       *out_egl_stream,
@@ -974,11 +974,11 @@ meta_renderer_native_create_surface_egl_device (MetaRendererNative *renderer_nat
   EGLOutputLayerEXT output_layer;
   EGLAttrib output_attribs[] = {
     /*
-     * An "monitor_info" may have multiple outputs/crtcs in case its tiled,
+     * An "logical_monitor" may have multiple outputs/crtcs in case its tiled,
      * but as far as I can tell, EGL only allows you to pass one crtc_id, so
      * lets pass the first one.
      */
-    EGL_DRM_CRTC_EXT, monitor_info->outputs[0]->crtc->crtc_id,
+    EGL_DRM_CRTC_EXT, logical_monitor->outputs[0]->crtc->crtc_id,
     EGL_NONE,
   };
   EGLint stream_attribs[] = {
@@ -1222,7 +1222,7 @@ meta_onscreen_native_allocate (CoglOnscreen *onscreen,
   int height;
 #ifdef HAVE_EGL_DEVICE
   MetaRendererView *view;
-  MetaMonitorInfo *monitor_info;
+  MetaLogicalMonitor *logical_monitor;
   EGLStreamKHR egl_stream;
 #endif
 
@@ -1258,9 +1258,9 @@ meta_onscreen_native_allocate (CoglOnscreen *onscreen,
         return FALSE;
 
       view = onscreen_native->view;
-      monitor_info = meta_renderer_view_get_monitor_info (view);
+      logical_monitor = meta_renderer_view_get_logical_monitor (view);
       if (!meta_renderer_native_create_surface_egl_device (renderer_native,
-                                                           monitor_info,
+                                                           logical_monitor,
                                                            width, height,
                                                            &egl_stream,
                                                            &egl_surface,
@@ -1385,8 +1385,8 @@ meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native)
 }
 
 static MetaMonitorTransform
-meta_renderer_native_get_monitor_info_transform (MetaRenderer    *renderer,
-                                                 MetaMonitorInfo *monitor_info)
+meta_renderer_native_get_logical_monitor_transform (MetaRenderer       *renderer,
+                                                    MetaLogicalMonitor *logical_monitor)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
@@ -1394,10 +1394,10 @@ meta_renderer_native_get_monitor_info_transform (MetaRenderer    *renderer,
   MetaMonitorManagerKms *monitor_manager_kms =
     META_MONITOR_MANAGER_KMS (monitor_manager);
 
-  g_assert (monitor_info->n_outputs > 0);
+  g_assert (logical_monitor->n_outputs > 0);
 
   return meta_monitor_manager_kms_get_view_transform (monitor_manager_kms,
-                                                      monitor_info->outputs[0]->crtc);
+                                                      logical_monitor->outputs[0]->crtc);
 }
 
 static CoglOnscreen *
@@ -1673,8 +1673,8 @@ meta_renderer_native_create_legacy_view (MetaRendererNative *renderer_native)
 }
 
 static MetaRendererView *
-meta_renderer_native_create_view (MetaRenderer    *renderer,
-                                  MetaMonitorInfo *monitor_info)
+meta_renderer_native_create_view (MetaRenderer       *renderer,
+                                  MetaLogicalMonitor *logical_monitor)
 {
   MetaBackend *backend = meta_get_backend ();
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
@@ -1688,14 +1688,14 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
   MetaRendererView *view;
   GError *error = NULL;
 
-  transform = meta_renderer_native_get_monitor_info_transform (renderer,
-                                                               monitor_info);
+  transform = meta_renderer_native_get_logical_monitor_transform (renderer,
+                                                                  logical_monitor);
 
   onscreen = meta_renderer_native_create_onscreen (META_RENDERER_NATIVE (renderer),
                                                    cogl_context,
                                                    transform,
-                                                   monitor_info->rect.width,
-                                                   monitor_info->rect.height);
+                                                   logical_monitor->rect.width,
+                                                   logical_monitor->rect.height);
   if (!onscreen)
     meta_fatal ("Failed to allocate onscreen framebuffer\n");
 
@@ -1704,17 +1704,17 @@ meta_renderer_native_create_view (MetaRenderer    *renderer,
       offscreen = meta_renderer_native_create_offscreen (META_RENDERER_NATIVE (renderer),
                                                          cogl_context,
                                                          transform,
-                                                         monitor_info->rect.width,
-                                                         monitor_info->rect.height);
+                                                         logical_monitor->rect.width,
+                                                         logical_monitor->rect.height);
       if (!offscreen)
         meta_fatal ("Failed to allocate back buffer texture\n");
     }
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
-                       "layout", &monitor_info->rect,
+                       "layout", &logical_monitor->rect,
                        "framebuffer", onscreen,
                        "offscreen", offscreen,
-                       "monitor-info", monitor_info,
+                       "logical-monitor", logical_monitor,
                        "transform", transform,
                        NULL);
   g_clear_pointer (&offscreen, cogl_object_unref);

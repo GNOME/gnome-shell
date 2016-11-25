@@ -75,8 +75,8 @@ struct _MetaScreen
   Atom wm_sn_atom;
   guint32 wm_sn_timestamp;
 
-  MetaMonitorInfo *monitor_infos;
-  int n_monitor_infos;
+  MetaLogicalMonitor *logical_monitors;
+  int n_logical_monitors;
   int primary_monitor_index;
   gboolean has_xinerama_indices;
 
@@ -136,23 +136,22 @@ void          meta_screen_hide_tile_preview            (MetaScreen    *screen);
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);
 
-const MetaMonitorInfo* meta_screen_get_current_monitor_info   (MetaScreen    *screen);
-const MetaMonitorInfo* meta_screen_get_current_monitor_info_for_pos   (MetaScreen    *screen,
-                                                                       int x,
-                                                                       int y);
-const MetaMonitorInfo* meta_screen_get_monitor_for_rect   (MetaScreen    *screen,
-                                                           MetaRectangle *rect);
-const MetaMonitorInfo* meta_screen_calculate_monitor_for_window (MetaScreen    *screen,
-                                                                 MetaWindow    *window);
+const MetaLogicalMonitor * meta_screen_get_current_logical_monitor (MetaScreen    *screen);
+const MetaLogicalMonitor * meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
+                                                                            int         x,
+                                                                            int         y);
+const MetaLogicalMonitor * meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
+                                                                     MetaRectangle *rect);
+const MetaLogicalMonitor * meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
+                                                                             MetaWindow *window);
 
-const MetaMonitorInfo* meta_screen_get_monitor_for_point (MetaScreen    *screen,
-                                                          int            x,
-                                                          int            y);
+const MetaLogicalMonitor * meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
+                                                                      int         x,
+                                                                      int         y);
 
-
-const MetaMonitorInfo* meta_screen_get_monitor_neighbor (MetaScreen *screen,
-                                                         int         which_monitor,
-                                                         MetaScreenDirection dir);
+const MetaLogicalMonitor * meta_screen_get_monitor_neighbor (MetaScreen         *screen,
+                                                             int                 which_monitor,
+                                                             MetaScreenDirection dir);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);

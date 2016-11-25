@@ -69,8 +69,8 @@ meta_renderer_x11_create_cogl_renderer (MetaRenderer *renderer)
 }
 
 static MetaRendererView *
-meta_renderer_x11_create_view (MetaRenderer    *renderer,
-                               MetaMonitorInfo *monitor_info)
+meta_renderer_x11_create_view (MetaRenderer       *renderer,
+                               MetaLogicalMonitor *logical_monitor)
 {
   MetaBackend *backend = meta_get_backend ();
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
@@ -82,8 +82,8 @@ meta_renderer_x11_create_view (MetaRenderer    *renderer,
 
   g_assert (meta_is_wayland_compositor ());
 
-  width = monitor_info->rect.width;
-  height = monitor_info->rect.height;
+  width = logical_monitor->rect.width;
+  height = logical_monitor->rect.height;
   texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
   offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
 
@@ -91,7 +91,7 @@ meta_renderer_x11_create_view (MetaRenderer    *renderer,
     meta_fatal ("Couldn't allocate framebuffer: %s", error->message);
 
   return g_object_new (META_TYPE_RENDERER_VIEW,
-                       "layout", &monitor_info->rect,
+                       "layout", &logical_monitor->rect,
                        "framebuffer", COGL_FRAMEBUFFER (offscreen),
                        NULL);
 }

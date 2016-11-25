@@ -1332,8 +1332,8 @@ meta_monitor_manager_xrandr_set_crtc_gamma (MetaMonitorManager *manager,
 
 #ifdef HAVE_XRANDR15
 static void
-meta_monitor_manager_xrandr_add_monitor(MetaMonitorManager *manager,
-                                        MetaMonitorInfo *monitor)
+meta_monitor_manager_xrandr_add_monitor (MetaMonitorManager *manager,
+                                         MetaLogicalMonitor *logical_monitor)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
   XRRMonitorInfo *m;
@@ -1344,25 +1344,29 @@ meta_monitor_manager_xrandr_add_monitor(MetaMonitorManager *manager,
   if (manager_xrandr->has_randr15 == FALSE)
     return;
 
-  if (monitor->n_outputs <= 1)
+  if (logical_monitor->n_outputs <= 1)
     return;
 
-  if (monitor->outputs[0]->product)
-    snprintf (name_buf, 40, "%s-%d", monitor->outputs[0]->product, monitor->outputs[0]->tile_info.group_id);
+  if (logical_monitor->outputs[0]->product)
+    snprintf (name_buf, 40, "%s-%d",
+              logical_monitor->outputs[0]->product,
+              logical_monitor->outputs[0]->tile_info.group_id);
   else
-    snprintf (name_buf, 40, "Tiled-%d", monitor->outputs[0]->tile_info.group_id);
+    snprintf (name_buf, 40, "Tiled-%d",
+              logical_monitor->outputs[0]->tile_info.group_id);
 
   name = XInternAtom (manager_xrandr->xdisplay, name_buf, False);
-  monitor->monitor_winsys_xid = name;
-  m = XRRAllocateMonitor (manager_xrandr->xdisplay, monitor->n_outputs);
+  logical_monitor->monitor_winsys_xid = name;
+  m = XRRAllocateMonitor (manager_xrandr->xdisplay,
+                          logical_monitor->n_outputs);
   if (!m)
     return;
   m->name = name;
-  m->primary = monitor->is_primary;
+  m->primary = logical_monitor->is_primary;
   m->automatic = True;
 
-  for (o = 0; o < monitor->n_outputs; o++) {
-    MetaOutput *output = monitor->outputs[o];
+  for (o = 0; o < logical_monitor->n_outputs; o++) {
+    MetaOutput *output = logical_monitor->outputs[o];
     m->outputs[o] = output->winsys_id;
   }
   XRRSetMonitor (manager_xrandr->xdisplay,
@@ -1372,8 +1376,8 @@ meta_monitor_manager_xrandr_add_monitor(MetaMonitorManager *manager,
 }
 
 static void
-meta_monitor_manager_xrandr_delete_monitor(MetaMonitorManager *manager,
-                                           int monitor_winsys_xid)
+meta_monitor_manager_xrandr_delete_monitor (MetaMonitorManager *manager,
+                                            int monitor_winsys_xid)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
 
@@ -1385,7 +1389,7 @@ meta_monitor_manager_xrandr_delete_monitor(MetaMonitorManager *manager,
 }
 
 static void
-meta_monitor_manager_xrandr_init_monitors(MetaMonitorManagerXrandr *manager_xrandr)
+meta_monitor_manager_xrandr_init_monitors (MetaMonitorManagerXrandr *manager_xrandr)
 {
   XRRMonitorInfo *m;
   int n, i;

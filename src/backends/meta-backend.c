@@ -114,11 +114,17 @@ static void
 center_pointer (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-  MetaMonitorInfo *monitors, *primary;
-  guint n_monitors;
+  MetaMonitorManager *monitor_manager = priv->monitor_manager;
+  MetaLogicalMonitor *logical_monitors, *primary;
+  unsigned int n_logical_monitors;
+  int primary_monitor_index;
 
-  monitors = meta_monitor_manager_get_monitor_infos (priv->monitor_manager, &n_monitors);
-  primary = &monitors[meta_monitor_manager_get_primary_index (priv->monitor_manager)];
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager,
+                                               &n_logical_monitors);
+  primary_monitor_index =
+    meta_monitor_manager_get_primary_index (monitor_manager);
+  primary = &logical_monitors[primary_monitor_index];
   meta_backend_warp_pointer (backend,
                              primary->rect.x + primary->rect.width / 2,
                              primary->rect.y + primary->rect.height / 2);

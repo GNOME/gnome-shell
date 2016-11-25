@@ -135,7 +135,7 @@ struct _MetaWindow
   MetaDisplay *display;
   MetaScreen *screen;
   guint64 stamp;
-  const MetaMonitorInfo *monitor;
+  const MetaLogicalMonitor *monitor;
   MetaWorkspace *workspace;
   MetaWindowClientType client_type;
   MetaWaylandSurface *surface;
@@ -527,7 +527,7 @@ struct _MetaWindowClass
   uint32_t (*get_client_pid)     (MetaWindow *window);
   void (*update_main_monitor)    (MetaWindow *window);
   void (*main_monitor_changed)   (MetaWindow *window,
-                                  const MetaMonitorInfo *old);
+                                  const MetaLogicalMonitor *old);
 };
 
 /* These differ from window->has_foo_func in that they consider

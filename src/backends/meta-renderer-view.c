@@ -39,16 +39,16 @@ struct _MetaRendererView
   ClutterStageViewCogl parent;
 
   MetaMonitorTransform transform;
-  MetaMonitorInfo *monitor_info;
+  MetaLogicalMonitor *logical_monitor;
 };
 
 G_DEFINE_TYPE (MetaRendererView, meta_renderer_view,
                CLUTTER_TYPE_STAGE_VIEW_COGL)
 
-MetaMonitorInfo *
-meta_renderer_view_get_monitor_info (MetaRendererView *view)
+MetaLogicalMonitor *
+meta_renderer_view_get_logical_monitor (MetaRendererView *view)
 {
-  return view->monitor_info;
+  return view->logical_monitor;
 }
 
 static void
@@ -128,7 +128,7 @@ meta_renderer_view_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_MONITOR_INFO:
-      g_value_set_pointer (value, view->monitor_info);
+      g_value_set_pointer (value, view->logical_monitor);
       break;
     case PROP_TRANSFORM:
       g_value_set_uint (value, view->transform);
@@ -150,7 +150,7 @@ meta_renderer_view_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_MONITOR_INFO:
-      view->monitor_info = g_value_get_pointer (value);
+      view->logical_monitor = g_value_get_pointer (value);
       break;
     case PROP_TRANSFORM:
       meta_renderer_view_set_transform (view, g_value_get_uint (value));
@@ -181,9 +181,9 @@ meta_renderer_view_class_init (MetaRendererViewClass *klass)
   object_class->set_property = meta_renderer_view_set_property;
 
   obj_props[PROP_MONITOR_INFO] =
-    g_param_spec_pointer ("monitor-info",
-                          "MetaMonitorInfo",
-                          "The monitor info of the view",
+    g_param_spec_pointer ("logical-monitor",
+                          "MetaLogicalMonitor",
+                          "The logical monitor of the view",
                           G_PARAM_READWRITE |
                           G_PARAM_STATIC_STRINGS |
                           G_PARAM_CONSTRUCT_ONLY);

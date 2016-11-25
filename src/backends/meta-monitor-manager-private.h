@@ -50,10 +50,11 @@
 typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
 typedef struct _MetaMonitorConfig         MetaMonitorConfig;
 
+typedef struct _MetaLogicalMonitor MetaLogicalMonitor;
+
 typedef struct _MetaCRTC MetaCRTC;
 typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaMonitorMode MetaMonitorMode;
-typedef struct _MetaMonitorInfo MetaMonitorInfo;
 typedef struct _MetaCRTCInfo MetaCRTCInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
 typedef struct _MetaTileInfo MetaTileInfo;
@@ -136,7 +137,7 @@ struct _MetaOutput
   gboolean is_dirty;
 
   /* The low-level bits used to build the high-level info
-     in MetaMonitorInfo
+     in MetaLogicalMonitor
 
      XXX: flags maybe?
      There is a lot of code that uses MonitorInfo->is_primary,
@@ -169,7 +170,7 @@ struct _MetaCRTC
   /* Only used to build the logical configuration
      from the HW one
   */
-  MetaMonitorInfo *logical_monitor;
+  MetaLogicalMonitor *logical_monitor;
 
   /* Used when changing configuration */
   gboolean is_dirty;
@@ -198,16 +199,14 @@ struct _MetaMonitorMode
 
 #define META_MAX_OUTPUTS_PER_MONITOR 4
 /**
- * MetaMonitorInfo:
+ * MetaLogicalMonitor:
  *
- * A structure with high-level information about monitors.
- * This corresponds to a subset of the compositor coordinate space.
- * Clones are only reported once, irrespective of the way
- * they're implemented (two CRTCs configured for the same
- * coordinates or one CRTCs driving two outputs). Inactive CRTCs
- * are ignored, and so are disabled outputs.
+ * A structure with high-level information about regions of the whole screen
+ * output. It corresponds to a subset of the compositor coordinate space, and
+ * may have one or more actual monitors associated with it. No two logical
+ * monitors will cover the same screen output.
  */
-struct _MetaMonitorInfo
+struct _MetaLogicalMonitor
 {
   int number;
   int xinerama_index;
@@ -294,7 +293,7 @@ struct _MetaMonitorManager
   /* Outputs refer to physical screens,
      CRTCs refer to stuff that can drive outputs
      (like encoders, but less tied to the HW),
-     while monitor_infos refer to logical ones.
+     while logical_monitors refer to logical ones.
   */
   MetaOutput *outputs;
   unsigned int n_outputs;
@@ -305,8 +304,8 @@ struct _MetaMonitorManager
   MetaCRTC *crtcs;
   unsigned int n_crtcs;
 
-  MetaMonitorInfo *monitor_infos;
-  unsigned int n_monitor_infos;
+  MetaLogicalMonitor *logical_monitors;
+  unsigned int n_logical_monitors;
   int primary_monitor_index;
 
   int dbus_name_id;
@@ -355,7 +354,7 @@ struct _MetaMonitorManagerClass
                           unsigned short     *);
 
   void (*add_monitor) (MetaMonitorManager *,
-                       MetaMonitorInfo *);
+                       MetaLogicalMonitor *);
 
   void (*delete_monitor) (MetaMonitorManager *,
                           int monitor_winsys_xid);
@@ -364,8 +363,8 @@ struct _MetaMonitorManagerClass
 
 void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);
 
-MetaMonitorInfo    *meta_monitor_manager_get_monitor_infos (MetaMonitorManager *manager,
-							    unsigned int       *n_infos);
+MetaLogicalMonitor *meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
+                                                               unsigned int       *n_logical_monitors);
 
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
 							    unsigned int       *n_outputs);

@@ -267,7 +267,7 @@ meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self)
 
 gboolean
 meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
-                                          MetaMonitorInfo         *monitor)
+                                          MetaLogicalMonitor      *logical_monitor)
 {
   float x, y, width, height;
   cairo_rectangle_int_t actor_rect;
@@ -287,10 +287,10 @@ meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
 
   cairo_region_intersect_rectangle (region,
 				    &((cairo_rectangle_int_t) {
-				      .x = monitor->rect.x,
-				      .y = monitor->rect.y,
-				      .width = monitor->rect.width,
-				      .height = monitor->rect.height,
+				      .x = logical_monitor->rect.x,
+				      .y = logical_monitor->rect.y,
+				      .width = logical_monitor->rect.width,
+				      .height = logical_monitor->rect.height,
 				    }));
 
   is_on_monitor = !cairo_region_is_empty (region);

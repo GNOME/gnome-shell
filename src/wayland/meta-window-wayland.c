@@ -335,9 +335,9 @@ static void
 meta_window_wayland_update_main_monitor (MetaWindow *window)
 {
   MetaWindow *toplevel_window;
-  const MetaMonitorInfo *from;
-  const MetaMonitorInfo *to;
-  const MetaMonitorInfo *scaled_new;
+  const MetaLogicalMonitor *from;
+  const MetaLogicalMonitor *to;
+  const MetaLogicalMonitor *scaled_new;
   float scale;
   MetaRectangle rect;
 
@@ -357,7 +357,7 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
    * needed to avoid jumping back and forth between the new and the old, since
    * changing main monitor may cause the window to be resized so that it no
    * longer have that same new main monitor. */
-  to = meta_screen_calculate_monitor_for_window (window->screen, window);
+  to = meta_screen_calculate_logical_monitor_for_window (window->screen, window);
 
   if (from == to)
     return;
@@ -376,7 +376,7 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   scale = (float)to->scale / from->scale;
   rect = window->rect;
   scale_rect_size (&rect, scale);
-  scaled_new = meta_screen_get_monitor_for_rect (window->screen, &rect);
+  scaled_new = meta_screen_get_logical_monitor_for_rect (window->screen, &rect);
   if (to != scaled_new)
     return;
 
@@ -384,8 +384,8 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
 }
 
 static void
-meta_window_wayland_main_monitor_changed (MetaWindow *window,
-                                          const MetaMonitorInfo *old)
+meta_window_wayland_main_monitor_changed (MetaWindow               *window,
+                                          const MetaLogicalMonitor *old)
 {
   float scale_factor;
   MetaWaylandSurface *surface;

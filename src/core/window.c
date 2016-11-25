@@ -816,8 +816,8 @@ meta_window_update_desc (MetaWindow *window)
 }
 
 static void
-meta_window_main_monitor_changed (MetaWindow *window,
-                                  const MetaMonitorInfo *old)
+meta_window_main_monitor_changed (MetaWindow               *window,
+                                  const MetaLogicalMonitor *old)
 {
   META_WINDOW_GET_CLASS (window)->main_monitor_changed (window, old);
 
@@ -1027,8 +1027,8 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->compositor_private = NULL;
 
-  window->monitor = meta_screen_calculate_monitor_for_window (window->screen,
-                                                              window);
+  window->monitor =
+    meta_screen_calculate_logical_monitor_for_window (window->screen, window);
   window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   window->tile_match = NULL;
@@ -1437,7 +1437,7 @@ meta_window_unmanage (MetaWindow  *window,
 
   if (window->monitor)
     {
-      const MetaMonitorInfo *old = window->monitor;
+      const MetaLogicalMonitor *old = window->monitor;
 
       window->monitor = NULL;
       meta_window_main_monitor_changed (window, old);
@@ -2805,9 +2805,9 @@ meta_window_get_all_monitors (MetaWindow *window, gsize *length)
   monitors = g_array_new (FALSE, FALSE, sizeof (int));
   meta_window_get_frame_rect (window, &window_rect);
 
-  for (i = 0; i < window->screen->n_monitor_infos; i++)
+  for (i = 0; i < window->screen->n_logical_monitors; i++)
     {
-      MetaRectangle *monitor_rect = &window->screen->monitor_infos[i].rect;
+      MetaRectangle *monitor_rect = &window->screen->logical_monitors[i].rect;
 
       if (meta_rectangle_overlap (&window_rect, monitor_rect))
         g_array_append_val (monitors, i);
@@ -3277,10 +3277,10 @@ meta_window_update_fullscreen_monitors (MetaWindow    *window,
                                         unsigned long  left,
                                         unsigned long  right)
 {
-  if ((int)top < window->screen->n_monitor_infos &&
-      (int)bottom < window->screen->n_monitor_infos &&
-      (int)left < window->screen->n_monitor_infos &&
-      (int)right < window->screen->n_monitor_infos)
+  if ((int) top < window->screen->n_logical_monitors &&
+      (int) bottom < window->screen->n_logical_monitors &&
+      (int) left < window->screen->n_logical_monitors &&
+      (int) right < window->screen->n_logical_monitors)
     {
       window->fullscreen_monitors[0] = top;
       window->fullscreen_monitors[1] = bottom;
@@ -3516,18 +3516,18 @@ meta_window_get_monitor (MetaWindow *window)
   return window->monitor->number;
 }
 
-static MetaMonitorInfo *
+static MetaLogicalMonitor *
 find_monitor_by_winsys_id (MetaWindow *window,
                            guint       winsys_id)
 {
   int i;
 
-  for (i = 0; i < window->screen->n_monitor_infos; i++)
+  for (i = 0; i < window->screen->n_logical_monitors; i++)
     {
-      MetaMonitorInfo *info = &window->screen->monitor_infos[i];
+      MetaLogicalMonitor *logical_monitor = &window->screen->logical_monitors[i];
 
-      if (info->winsys_id == winsys_id)
-        return info;
+      if (logical_monitor->winsys_id == winsys_id)
+        return logical_monitor;
     }
 
   return NULL;
@@ -3538,7 +3538,7 @@ find_monitor_by_winsys_id (MetaWindow *window,
 void
 meta_window_update_for_monitors_changed (MetaWindow *window)
 {
-  const MetaMonitorInfo *old, *new;
+  const MetaLogicalMonitor *old, *new;
 
   if (window->override_redirect || window->type == META_WINDOW_DESKTOP)
     {
@@ -3557,14 +3557,14 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
 
   /* Fall back to primary if everything else failed */
   if (!new)
-    new = &window->screen->monitor_infos[window->screen->primary_monitor_index];
+    new = &window->screen->logical_monitors[window->screen->primary_monitor_index];
 
   if (window->tile_mode != META_TILE_NONE)
     window->tile_monitor_number = new->number;
 
   /* This will eventually reach meta_window_update_monitor that
    * will send leave/enter-monitor events. The old != new monitor
-   * check will always fail (due to the new monitor_infos set) so
+   * check will always fail (due to the new logical_monitors set) so
    * we will always send the events, even if the new and old monitor
    * index is the same. That is right, since the enumeration of the
    * monitors changed and the same index could be refereing
@@ -3578,7 +3578,7 @@ void
 meta_window_update_monitor (MetaWindow *window,
                             gboolean    user_op)
 {
-  const MetaMonitorInfo *old;
+  const MetaLogicalMonitor *old;
 
   old = window->monitor;
   META_WINDOW_GET_CLASS (window)->update_main_monitor (window);
@@ -5598,7 +5598,7 @@ update_move (MetaWindow  *window,
            !META_WINDOW_MAXIMIZED (window) &&
            !META_WINDOW_TILED_SIDE_BY_SIDE (window))
     {
-      const MetaMonitorInfo *monitor;
+      const MetaLogicalMonitor *monitor;
       MetaRectangle work_area;
 
       /* For side-by-side tiling we are interested in the inside vertical
@@ -5614,7 +5614,8 @@ update_move (MetaWindow  *window,
        * refers to the monitor which contains the largest part of the window,
        * the latter to the one where the pointer is located.
        */
-      monitor = meta_screen_get_current_monitor_info_for_pos (window->screen, x, y);
+      monitor = meta_screen_get_current_logical_monitor_for_pos (window->screen,
+                                                                 x, y);
       meta_window_get_work_area_for_monitor (window,
                                              monitor->number,
                                              &work_area);
@@ -5686,14 +5687,14 @@ update_move (MetaWindow  *window,
   else if ((window->shaken_loose || META_WINDOW_MAXIMIZED (window)) &&
            window->tile_mode != META_TILE_LEFT && window->tile_mode != META_TILE_RIGHT)
     {
-      const MetaMonitorInfo *wmonitor;
+      const MetaLogicalMonitor *wmonitor;
       MetaRectangle work_area;
       int monitor;
 
       window->tile_mode = META_TILE_NONE;
       wmonitor = window->monitor;
 
-      for (monitor = 0; monitor < window->screen->n_monitor_infos; monitor++)
+      for (monitor = 0; monitor < window->screen->n_logical_monitors; monitor++)
         {
           meta_window_get_work_area_for_monitor (window, monitor, &work_area);
 
@@ -6068,7 +6069,7 @@ get_work_area_monitor (MetaWindow    *window,
   g_assert (which_monitor >= 0);
 
   /* Initialize to the whole monitor */
-  *area = window->screen->monitor_infos[which_monitor].rect;
+  *area = window->screen->logical_monitors[which_monitor].rect;
 
   tmp = meta_window_get_workspaces (window);
   while (tmp != NULL)

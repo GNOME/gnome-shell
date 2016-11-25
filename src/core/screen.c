@@ -358,15 +358,15 @@ meta_screen_ensure_xinerama_indices (MetaScreen *screen)
       return;
     }
 
-  for (i = 0; i < screen->n_monitor_infos; ++i)
+  for (i = 0; i < screen->n_logical_monitors; ++i)
     {
       for (j = 0; j < n_infos; ++j)
         {
-          if (screen->monitor_infos[i].rect.x == infos[j].x_org &&
-	      screen->monitor_infos[i].rect.y == infos[j].y_org &&
-	      screen->monitor_infos[i].rect.width == infos[j].width &&
-	      screen->monitor_infos[i].rect.height == infos[j].height)
-            screen->monitor_infos[i].xinerama_index = j;
+          if (screen->logical_monitors[i].rect.x == infos[j].x_org &&
+              screen->logical_monitors[i].rect.y == infos[j].y_org &&
+              screen->logical_monitors[i].rect.width == infos[j].width &&
+              screen->logical_monitors[i].rect.height == infos[j].height)
+            screen->logical_monitors[i].xinerama_index = j;
         }
     }
 
@@ -377,11 +377,11 @@ int
 meta_screen_monitor_index_to_xinerama_index (MetaScreen *screen,
                                              int         index)
 {
-  g_return_val_if_fail (index >= 0 && index < screen->n_monitor_infos, -1);
+  g_return_val_if_fail (index >= 0 && index < screen->n_logical_monitors, -1);
 
   meta_screen_ensure_xinerama_indices (screen);
 
-  return screen->monitor_infos[index].xinerama_index;
+  return screen->logical_monitors[index].xinerama_index;
 }
 
 int
@@ -392,18 +392,19 @@ meta_screen_xinerama_index_to_monitor_index (MetaScreen *screen,
 
   meta_screen_ensure_xinerama_indices (screen);
 
-  for (i = 0; i < screen->n_monitor_infos; i++)
-    if (screen->monitor_infos[i].xinerama_index == index)
+  for (i = 0; i < screen->n_logical_monitors; i++)
+    if (screen->logical_monitors[i].xinerama_index == index)
       return i;
 
   return -1;
 }
 
 static void
-reload_monitor_infos (MetaScreen *screen)
+reload_logical_monitors (MetaScreen *screen)
 {
   GList *l;
   MetaMonitorManager *manager;
+  unsigned int n_logical_monitors;
 
   for (l = screen->workspaces; l != NULL; l = l->next)
     {
@@ -411,7 +412,7 @@ reload_monitor_infos (MetaScreen *screen)
       meta_workspace_invalidate_work_area (space);
     }
 
-  /* Any previous screen->monitor_infos or screen->outputs is freed by the caller */
+  /* Any previous screen->logical_monitors or screen->outputs is freed by the caller */
 
   screen->last_monitor_index = 0;
   screen->has_xinerama_indices = FALSE;
@@ -419,8 +420,9 @@ reload_monitor_infos (MetaScreen *screen)
 
   manager = meta_monitor_manager_get ();
 
-  screen->monitor_infos = meta_monitor_manager_get_monitor_infos (manager,
-                                                                  (unsigned*)&screen->n_monitor_infos);
+  screen->logical_monitors =
+    meta_monitor_manager_get_logical_monitors (manager, &n_logical_monitors);
+  screen->n_logical_monitors = (unsigned int) n_logical_monitors;
   screen->primary_monitor_index = meta_monitor_manager_get_primary_index (manager);
 }
 
@@ -684,7 +686,7 @@ meta_screen_new (MetaDisplay *display,
    * can close the helper that is holding on to it */
   meta_restart_finish ();
 
-  reload_monitor_infos (screen);
+  reload_logical_monitors (screen);
 
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
 
@@ -805,7 +807,7 @@ meta_screen_free (MetaScreen *screen,
   if (screen->check_fullscreen_later != 0)
     meta_later_remove (screen->check_fullscreen_later);
 
-  g_free (screen->monitor_infos);
+  g_free (screen->logical_monitors);
 
   if (screen->tile_preview_timeout_id)
     g_source_remove (screen->tile_preview_timeout_id);
@@ -1228,13 +1230,13 @@ root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
                         int y,
                         MetaScreen *screen)
 {
-  const MetaMonitorInfo *monitor;
+  const MetaLogicalMonitor *logical_monitor;
 
-  monitor = meta_screen_get_monitor_for_point (screen, x, y);
+  logical_monitor = meta_screen_get_logical_monitor_for_point (screen, x, y);
 
   /* Reload the cursor texture if the scale has changed. */
-  if (monitor)
-    meta_cursor_sprite_set_theme_scale (cursor_sprite, monitor->scale);
+  if (logical_monitor)
+    meta_cursor_sprite_set_theme_scale (cursor_sprite, logical_monitor->scale);
 }
 
 static void
@@ -1388,21 +1390,21 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
   return window;
 }
 
-const MetaMonitorInfo*
-meta_screen_get_monitor_for_rect (MetaScreen    *screen,
-                                  MetaRectangle *rect)
+const MetaLogicalMonitor *
+meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
+                                          MetaRectangle *rect)
 {
   int i;
   int best_monitor, monitor_score, rect_area;
 
-  if (screen->n_monitor_infos == 1)
-    return &screen->monitor_infos[0];
+  if (screen->n_logical_monitors == 1)
+    return &screen->logical_monitors[0];
 
   best_monitor = 0;
   monitor_score = -1;
 
   rect_area = meta_rectangle_area (rect);
-  for (i = 0; i < screen->n_monitor_infos; i++)
+  for (i = 0; i < screen->n_logical_monitors; i++)
     {
       gboolean result;
       int cur;
@@ -1410,14 +1412,14 @@ meta_screen_get_monitor_for_rect (MetaScreen    *screen,
       if (rect_area > 0)
         {
           MetaRectangle dest;
-          result = meta_rectangle_intersect (&screen->monitor_infos[i].rect,
+          result = meta_rectangle_intersect (&screen->logical_monitors[i].rect,
                                              rect,
                                              &dest);
           cur = meta_rectangle_area (&dest);
         }
       else
         {
-          result = meta_rectangle_contains_rect (&screen->monitor_infos[i].rect,
+          result = meta_rectangle_contains_rect (&screen->logical_monitors[i].rect,
                                                  rect);
           cur = rect_area;
         }
@@ -1429,59 +1431,61 @@ meta_screen_get_monitor_for_rect (MetaScreen    *screen,
         }
     }
 
-  return &screen->monitor_infos[best_monitor];
+  return &screen->logical_monitors[best_monitor];
 }
 
-const MetaMonitorInfo*
-meta_screen_calculate_monitor_for_window (MetaScreen *screen,
-                                          MetaWindow *window)
+const MetaLogicalMonitor *
+meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
+                                                  MetaWindow *window)
 {
   MetaRectangle window_rect;
 
   meta_window_get_frame_rect (window, &window_rect);
 
-  return meta_screen_get_monitor_for_rect (screen, &window_rect);
+  return meta_screen_get_logical_monitor_for_rect (screen, &window_rect);
 }
 
 int
 meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
                                         MetaRectangle *rect)
 {
-  const MetaMonitorInfo *monitor = meta_screen_get_monitor_for_rect (screen, rect);
+  const MetaLogicalMonitor *monitor;
+
+  monitor = meta_screen_get_logical_monitor_for_rect (screen, rect);
   return monitor->number;
 }
 
-const MetaMonitorInfo *
-meta_screen_get_monitor_for_point (MetaScreen *screen,
-                                   int         x,
-                                   int         y)
+const MetaLogicalMonitor *
+meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
+                                           int         x,
+                                           int         y)
 {
   int i;
 
-  if (screen->n_monitor_infos == 1)
-    return &screen->monitor_infos[0];
+  if (screen->n_logical_monitors == 1)
+    return &screen->logical_monitors[0];
 
-  for (i = 0; i < screen->n_monitor_infos; i++)
+  for (i = 0; i < screen->n_logical_monitors; i++)
     {
-      if (POINT_IN_RECT (x, y, screen->monitor_infos[i].rect))
-        return &screen->monitor_infos[i];
+      if (POINT_IN_RECT (x, y, screen->logical_monitors[i].rect))
+        return &screen->logical_monitors[i];
     }
 
   return NULL;
 }
 
-const MetaMonitorInfo*
+const MetaLogicalMonitor *
 meta_screen_get_monitor_neighbor (MetaScreen         *screen,
                                   int                 which_monitor,
                                   MetaScreenDirection direction)
 {
-  MetaMonitorInfo* input = screen->monitor_infos + which_monitor;
-  MetaMonitorInfo* current;
+  MetaLogicalMonitor *input = screen->logical_monitors + which_monitor;
+  MetaLogicalMonitor *current;
   int i;
 
-  for (i = 0; i < screen->n_monitor_infos; i++)
+  for (i = 0; i < screen->n_logical_monitors; i++)
     {
-      current = screen->monitor_infos + i;
+      current = screen->logical_monitors + i;
 
       if ((direction == META_SCREEN_RIGHT &&
            current->rect.x == input->rect.x + input->rect.width &&
@@ -1508,27 +1512,32 @@ meta_screen_get_monitor_neighbor_index (MetaScreen         *screen,
                                         int                 which_monitor,
                                         MetaScreenDirection direction)
 {
-  const MetaMonitorInfo *monitor;
-  monitor = meta_screen_get_monitor_neighbor (screen, which_monitor, direction);
-  return monitor ? monitor->number : -1;
+  const MetaLogicalMonitor *logical_monitor;
+
+  logical_monitor = meta_screen_get_monitor_neighbor (screen,
+                                                      which_monitor,
+                                                      direction);
+  return logical_monitor ? logical_monitor->number : -1;
 }
 
-const MetaMonitorInfo*
-meta_screen_get_current_monitor_info (MetaScreen *screen)
+const MetaLogicalMonitor *
+meta_screen_get_current_logical_monitor (MetaScreen *screen)
 {
     int monitor_index;
+
     monitor_index = meta_screen_get_current_monitor (screen);
-    return &screen->monitor_infos[monitor_index];
+    return &screen->logical_monitors[monitor_index];
 }
 
-const MetaMonitorInfo*
-meta_screen_get_current_monitor_info_for_pos (MetaScreen *screen,
-                                              int x,
-                                              int y)
+const MetaLogicalMonitor *
+meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
+                                                 int         x,
+                                                 int         y)
 {
     int monitor_index;
+
     monitor_index = meta_screen_get_current_monitor_for_pos (screen, x, y);
-    return &screen->monitor_infos[monitor_index];
+    return &screen->logical_monitors[monitor_index];
 }
 
 
@@ -1547,7 +1556,7 @@ meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
                                          int x,
                                          int y)
 {
-  if (screen->n_monitor_infos == 1)
+  if (screen->n_logical_monitors == 1)
     return 0;
   else if (screen->display->monitor_cache_invalidated)
     {
@@ -1560,9 +1569,9 @@ meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
       screen->display->monitor_cache_invalidated = FALSE;
       screen->last_monitor_index = 0;
 
-      for (i = 0; i < screen->n_monitor_infos; i++)
+      for (i = 0; i < screen->n_logical_monitors; i++)
         {
-          if (meta_rectangle_contains_rect (&screen->monitor_infos[i].rect,
+          if (meta_rectangle_contains_rect (&screen->logical_monitors[i].rect,
                                             &pointer_position))
             {
               screen->last_monitor_index = i;
@@ -1593,7 +1602,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
 {
   MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
 
-  if (screen->n_monitor_infos == 1)
+  if (screen->n_logical_monitors == 1)
     return 0;
 
   /* Sadly, we have to do it this way. Yuck.
@@ -1623,7 +1632,7 @@ meta_screen_get_n_monitors (MetaScreen *screen)
 {
   g_return_val_if_fail (META_IS_SCREEN (screen), 0);
 
-  return screen->n_monitor_infos;
+  return screen->n_logical_monitors;
 }
 
 /**
@@ -1656,10 +1665,10 @@ meta_screen_get_monitor_geometry (MetaScreen    *screen,
                                   MetaRectangle *geometry)
 {
   g_return_if_fail (META_IS_SCREEN (screen));
-  g_return_if_fail (monitor >= 0 && monitor < screen->n_monitor_infos);
+  g_return_if_fail (monitor >= 0 && monitor < screen->n_logical_monitors);
   g_return_if_fail (geometry != NULL);
 
-  *geometry = screen->monitor_infos[monitor].rect;
+  *geometry = screen->logical_monitors[monitor].rect;
 }
 
 #define _NET_WM_ORIENTATION_HORZ 0
@@ -2286,7 +2295,7 @@ on_monitors_changed (MetaMonitorManager *manager,
                                         &screen->rect.width,
                                         &screen->rect.height);
 
-  reload_monitor_infos (screen);
+  reload_logical_monitors (screen);
   set_desktop_geometry_hint (screen);
 
   /* Resize the guard window to fill the screen again. */
@@ -2779,13 +2788,13 @@ check_fullscreen_func (gpointer data)
 
   g_slist_free (obscured_monitors);
 
-  for (i = 0; i < screen->n_monitor_infos; i++)
+  for (i = 0; i < screen->n_logical_monitors; i++)
     {
-      MetaMonitorInfo *info = &screen->monitor_infos[i];
+      MetaLogicalMonitor *logical_monitor = &screen->logical_monitors[i];
       gboolean in_fullscreen = g_slist_find (fullscreen_monitors, GINT_TO_POINTER (i + 1)) != NULL;
-      if (in_fullscreen != info->in_fullscreen)
+      if (in_fullscreen != logical_monitor->in_fullscreen)
         {
-          info->in_fullscreen = in_fullscreen;
+          logical_monitor->in_fullscreen = in_fullscreen;
           in_fullscreen_changed = TRUE;
         }
     }
@@ -2834,10 +2843,11 @@ meta_screen_get_monitor_in_fullscreen (MetaScreen  *screen,
                                        int          monitor)
 {
   g_return_val_if_fail (META_IS_SCREEN (screen), FALSE);
-  g_return_val_if_fail (monitor >= 0 && monitor < screen->n_monitor_infos, FALSE);
+  g_return_val_if_fail (monitor >= 0 &&
+                        monitor < screen->n_logical_monitors, FALSE);
 
   /* We use -1 as a flag to mean "not known yet" for notification purposes */
-  return screen->monitor_infos[monitor].in_fullscreen == TRUE;
+  return screen->logical_monitors[monitor].in_fullscreen == TRUE;
 }
 
 gboolean

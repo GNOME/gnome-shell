@@ -3155,7 +3155,7 @@ handle_move_to_monitor (MetaDisplay    *display,
                         gpointer        dummy)
 {
   gint which = binding->handler->data;
-  const MetaMonitorInfo *current, *new;
+  const MetaLogicalMonitor *current, *new;
 
   current = window->monitor;
   new = meta_screen_get_monitor_neighbor (screen, current->number, which);

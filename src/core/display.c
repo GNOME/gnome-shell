@@ -3088,7 +3088,7 @@ meta_display_request_pad_osd (MetaDisplay        *display,
   MetaInputSettings *input_settings;
   const gchar *layout_path = NULL;
   ClutterActor *osd;
-  MetaMonitorInfo *monitor;
+  MetaLogicalMonitor *logical_monitor;
   gint monitor_idx;
   GSettings *settings;
 #ifdef HAVE_LIBWACOM
@@ -3107,7 +3107,8 @@ meta_display_request_pad_osd (MetaDisplay        *display,
   if (input_settings)
     {
       settings = meta_input_settings_get_tablet_settings (input_settings, pad);
-      monitor = meta_input_settings_get_tablet_monitor_info (input_settings, pad);
+      logical_monitor =
+        meta_input_settings_get_tablet_logical_monitor (input_settings, pad);
 #ifdef HAVE_LIBWACOM
       wacom_device = meta_input_settings_get_tablet_wacom_device (input_settings,
                                                                   pad);
@@ -3118,10 +3119,11 @@ meta_display_request_pad_osd (MetaDisplay        *display,
   if (!layout_path || !settings)
     return;
 
-  if (monitor)
+  if (logical_monitor)
     {
-      monitor_idx = meta_screen_get_monitor_index_for_rect (display->screen,
-                                                            &monitor->rect);
+      monitor_idx =
+        meta_screen_get_monitor_index_for_rect (display->screen,
+                                                &logical_monitor->rect);
     }
   else
     {

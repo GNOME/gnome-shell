@@ -40,8 +40,8 @@ struct _MetaRendererClass
   GObjectClass parent_class;
 
   CoglRenderer * (* create_cogl_renderer) (MetaRenderer *renderer);
-  MetaRendererView * (* create_view) (MetaRenderer    *renderer,
-                                      MetaMonitorInfo *monitor_info);
+  MetaRendererView * (* create_view) (MetaRenderer       *renderer,
+                                      MetaLogicalMonitor *logical_monitor);
 };
 
 CoglRenderer * meta_renderer_create_cogl_renderer (MetaRenderer *renderer);

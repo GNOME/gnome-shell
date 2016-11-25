@@ -1457,13 +1457,13 @@ meta_window_x11_update_icon (MetaWindow       *window,
 static void
 meta_window_x11_update_main_monitor (MetaWindow *window)
 {
-  window->monitor = meta_screen_calculate_monitor_for_window (window->screen,
-                                                              window);
+  window->monitor =
+    meta_screen_calculate_logical_monitor_for_window (window->screen, window);
 }
 
 static void
-meta_window_x11_main_monitor_changed (MetaWindow *window,
-                                      const MetaMonitorInfo *old)
+meta_window_x11_main_monitor_changed (MetaWindow               *window,
+                                      const MetaLogicalMonitor *old)
 {
 }
 

@@ -1425,9 +1425,9 @@ meta_input_settings_get_tablet_settings (MetaInputSettings  *settings,
   return info ? g_object_ref (info->settings) : NULL;
 }
 
-MetaMonitorInfo *
-meta_input_settings_get_tablet_monitor_info (MetaInputSettings  *settings,
-                                             ClutterInputDevice *device)
+MetaLogicalMonitor *
+meta_input_settings_get_tablet_logical_monitor (MetaInputSettings  *settings,
+                                                ClutterInputDevice *device)
 {
   MetaInputSettingsPrivate *priv;
   DeviceMappingInfo *info;

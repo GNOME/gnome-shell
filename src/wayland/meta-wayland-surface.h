@@ -61,7 +61,7 @@ struct _MetaWaylandSurfaceRoleClass
   void (*commit) (MetaWaylandSurfaceRole  *surface_role,
                   MetaWaylandPendingState *pending);
   gboolean (*is_on_output) (MetaWaylandSurfaceRole *surface_role,
-                            MetaMonitorInfo        *monitor);
+                            MetaLogicalMonitor     *logical_monitor);
   MetaWaylandSurface * (*get_toplevel) (MetaWaylandSurfaceRole *surface_role);
 };
 

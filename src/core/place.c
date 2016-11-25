@@ -517,7 +517,7 @@ find_first_fit (MetaWindow *window,
 #ifdef WITH_VERBOSE_MODE
   {
     char monitor_location_string[RECT_LENGTH];
-    meta_rectangle_to_string (&window->screen->monitor_infos[monitor].rect,
+    meta_rectangle_to_string (&window->screen->logical_monitors[monitor].rect,
                               monitor_location_string);
     meta_topic (META_DEBUG_XINERAMA,
                 "Natural monitor is %s\n",
@@ -661,7 +661,7 @@ meta_window_place (MetaWindow        *window,
                    int               *new_y)
 {
   GList *windows = NULL;
-  const MetaMonitorInfo *xi;
+  const MetaLogicalMonitor *logical_monitor;
 
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
 
@@ -810,19 +810,19 @@ meta_window_place (MetaWindow        *window,
       meta_window_get_frame_rect (window, &frame_rect);
 
       /* Warning, this function is a round trip! */
-      xi = meta_screen_get_current_monitor_info (window->screen);
+      logical_monitor = meta_screen_get_current_logical_monitor (window->screen);
 
-      w = xi->rect.width;
-      h = xi->rect.height;
+      w = logical_monitor->rect.width;
+      h = logical_monitor->rect.height;
 
       x = (w - frame_rect.width) / 2;
       y = (h - frame_rect.height) / 2;
 
-      x += xi->rect.x;
-      y += xi->rect.y;
+      x += logical_monitor->rect.x;
+      y += logical_monitor->rect.y;
 
       meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on monitor %d\n",
-                  window->desc, xi->number);
+                  window->desc, logical_monitor->number);
 
       goto done_check_denied_focus;
     }
@@ -855,7 +855,7 @@ meta_window_place (MetaWindow        *window,
   }
 
   /* Warning, this is a round trip! */
-  xi = meta_screen_get_current_monitor_info (window->screen);
+  logical_monitor = meta_screen_get_current_logical_monitor (window->screen);
 
   /* Maximize windows if they are too big for their work area (bit of
    * a hack here). Assume undecorated windows probably don't intend to
@@ -868,7 +868,7 @@ meta_window_place (MetaWindow        *window,
       MetaRectangle frame_rect;
 
       meta_window_get_work_area_for_monitor (window,
-                                             xi->number,
+                                             logical_monitor->number,
                                              &workarea);
       meta_window_get_frame_rect (window, &frame_rect);
 
@@ -883,11 +883,11 @@ meta_window_place (MetaWindow        *window,
     }
 
   /* "Origin" placement algorithm */
-  x = xi->rect.x;
-  y = xi->rect.y;
+  x = logical_monitor->rect.x;
+  y = logical_monitor->rect.y;
 
   if (find_first_fit (window, windows,
-                      xi->number,
+                      logical_monitor->number,
                       x, y, &x, &y))
     goto done_check_denied_focus;
 
@@ -920,11 +920,11 @@ meta_window_place (MetaWindow        *window,
           focus_window_list = g_list_prepend (NULL, focus_window);
 
           /* Reset x and y ("origin" placement algorithm) */
-          x = xi->rect.x;
-          y = xi->rect.y;
+          x = logical_monitor->rect.x;
+          y = logical_monitor->rect.y;
 
           found_fit = find_first_fit (window, focus_window_list,
-                                      xi->number,
+                                      logical_monitor->number,
                                       x, y, &x, &y);
           g_list_free (focus_window_list);
 	}
