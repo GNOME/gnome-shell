@@ -1226,9 +1226,9 @@ update_num_workspaces (MetaScreen *screen,
 
 static void
 root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
-                        int x,
-                        int y,
-                        MetaScreen *screen)
+                        int               x,
+                        int               y,
+                        MetaScreen       *screen)
 {
   const MetaLogicalMonitor *logical_monitor;
 
@@ -1240,7 +1240,7 @@ root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
 }
 
 static void
-manage_root_cursor_sprite_scale (MetaScreen *screen,
+manage_root_cursor_sprite_scale (MetaScreen       *screen,
                                  MetaCursorSprite *cursor_sprite)
 {
   g_signal_connect_object (cursor_sprite,
