@@ -690,6 +690,7 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
             throw new InvalidAppError();
 
         this._notifications = {};
+        this._notificationPending = false;
 
         this.parent(this._app.get_name());
     },
@@ -723,6 +724,8 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
     },
 
     addNotification: function(notificationId, notificationParams, showBanner) {
+        this._notificationPending = true;
+
         if (this._notifications[notificationId])
             this._notifications[notificationId].destroy();
 
@@ -736,6 +739,14 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
             this.notify(notification);
         else
             this.pushNotification(notification);
+
+        this._notificationPending = false;
+    },
+
+    destroy: function(reason) {
+        if (this._notificationPending)
+            return;
+        this.parent(reason);
     },
 
     removeNotification: function(notificationId) {
