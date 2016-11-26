@@ -702,22 +702,28 @@ const GtkNotificationDaemonAppSource = new Lang.Class({
         return new MessageTray.NotificationApplicationPolicy(this._appId);
     },
 
-    _createApp: function() {
-        return new FdoApplicationProxy(Gio.DBus.session, this._appId, this._objectPath);
+    _createApp: function(callback) {
+        return new FdoApplicationProxy(Gio.DBus.session, this._appId, this._objectPath, callback);
     },
 
     activateAction: function(actionId, target) {
-        let app = this._createApp();
-        app.ActivateActionRemote(actionId, target ? [target] : [], getPlatformData());
-
+        this._createApp(function (app, error) {
+            if (error == null)
+                app.ActivateActionRemote(actionId, target ? [target] : [], getPlatformData());
+            else
+                logError(error, 'Failed to activate application proxy');
+        });
         Main.overview.hide();
         Main.panel.closeCalendar();
     },
 
     open: function() {
-        let app = this._createApp();
-        app.ActivateRemote(getPlatformData());
-
+        this._createApp(function (app, error) {
+            if (error == null)
+                app.ActivateRemote(getPlatformData());
+            else
+                logError(error, 'Failed to open application proxy');
+        });
         Main.overview.hide();
         Main.panel.closeCalendar();
     },
