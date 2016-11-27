@@ -1,15 +1,15 @@
 # Kazakh translation for gnome-shell.
 # Copyright (C) 2015 The gnome-shell authors.
 # This file is distributed under the same license as the gnome-shell package.
-# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012-2015.
+# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012-2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-17 23:00+0000\n"
-"PO-Revision-Date: 2016-11-18 16:15+0500\n"
+"POT-Creation-Date: 2016-11-23 20:38+0000\n"
+"PO-Revision-Date: 2016-11-27 20:37+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -327,23 +327,23 @@ msgstr "%s үшін баптаулар сұхбатын жүктеу кезін�
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell кеңейтулері"
 
-#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
+#: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:926
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:928
 msgid "Cancel"
 msgstr "Бас тарту"
 
-#: js/gdm/authPrompt.js:169 js/gdm/authPrompt.js:216 js/gdm/authPrompt.js:448
+#: js/gdm/authPrompt.js:171 js/gdm/authPrompt.js:218 js/gdm/authPrompt.js:450
 msgid "Next"
 msgstr "Келесі"
 
-#: js/gdm/authPrompt.js:212 js/ui/shellMountOperation.js:403
+#: js/gdm/authPrompt.js:214 js/ui/shellMountOperation.js:403
 #: js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Босату"
 
-#: js/gdm/authPrompt.js:214
+#: js/gdm/authPrompt.js:216
 msgctxt "button"
 msgid "Sign In"
 msgstr "Кіру"
@@ -478,7 +478,7 @@ msgstr "%B %d %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
 #. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:85
+#: js/portalHelper/main.js:87
 msgid "Web Authentication Redirect"
 msgstr "Веб аутентификацияның қайта бағдарлауы"
 
@@ -492,31 +492,35 @@ msgstr "Тыйым салу"
 msgid "Grant Access"
 msgstr "Рұқсат ету"
 
-#: js/ui/appDisplay.js:794
+#: js/ui/appDisplay.js:806
 msgid "Frequently used applications will appear here"
 msgstr "Жиі қолданылатын қолданбалар осында көрінеді"
 
-#: js/ui/appDisplay.js:914
+#: js/ui/appDisplay.js:926
 msgid "Frequent"
 msgstr "Жиі қолданылатын"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:933
 msgid "All"
 msgstr "Барлығы"
 
-#: js/ui/appDisplay.js:1853
+#: js/ui/appDisplay.js:1891
 msgid "New Window"
 msgstr "Жаңа терезе"
 
-#: js/ui/appDisplay.js:1881 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1905
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Бөлек графикалық картаны пайдаланып жөнелту"
+
+#: js/ui/appDisplay.js:1932 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Таңдамалылардан өшіру"
 
-#: js/ui/appDisplay.js:1887
+#: js/ui/appDisplay.js:1938
 msgid "Add to Favorites"
 msgstr "Таңдамалыларға қосу"
 
-#: js/ui/appDisplay.js:1897
+#: js/ui/appDisplay.js:1948
 msgid "Show Details"
 msgstr "Деректерді көрсету"
 
@@ -674,7 +678,7 @@ msgstr "Сыртқы диск қосылды"
 msgid "External drive disconnected"
 msgstr "Сыртқы диск алынды"
 
-#: js/ui/components/autorunManager.js:355
+#: js/ui/components/autorunManager.js:356
 #, javascript-format
 msgid "Open with %s"
 msgstr "%s көмегімен ашу"
@@ -687,8 +691,8 @@ msgstr "Пароль:"
 msgid "Type again:"
 msgstr "Қайтадан енгізіңіз:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:270
-#: js/ui/status/network.js:353 js/ui/status/network.js:929
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:272
+#: js/ui/status/network.js:355 js/ui/status/network.js:931
 msgid "Connect"
 msgstr "Байланысу"
 
@@ -762,7 +766,7 @@ msgstr "Сымсыз кеңжолақты желісінің паролі"
 msgid "A password is required to connect to “%s”."
 msgstr "\"%s\" үшін байланысты орнату үшін пароль керек."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1670
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1734
 msgid "Network Manager"
 msgstr "Желілер басқарушысы"
 
@@ -793,7 +797,7 @@ msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көрің
 msgid "%s is now known as %s"
 msgstr "%s енді %s ретінде белгілі"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:155
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "Терезелер"
 
@@ -1079,6 +1083,50 @@ msgstr "Шолу"
 msgid "Type to search…"
 msgstr "Іздеу үшін теріңіз..."
 
+#: js/ui/padOsd.js:37
+msgid "New shortcut…"
+msgstr "Жаңа жарлық…"
+
+#: js/ui/padOsd.js:86
+msgid "Application defined"
+msgstr "Тағайындалған қолданбалар"
+
+#: js/ui/padOsd.js:87
+msgid "Show on-screen help"
+msgstr "Экрандағы көмекті көрсету"
+
+#: js/ui/padOsd.js:88
+msgid "Switch monitor"
+msgstr "Мониторды ауыстыру"
+
+#: js/ui/padOsd.js:89
+msgid "Assign keystroke"
+msgstr "Пернелер жарлығын тағайындау"
+
+#: js/ui/padOsd.js:143
+msgid "Done"
+msgstr "Дайын"
+
+#: js/ui/padOsd.js:597
+msgid "Edit…"
+msgstr "Түзету…"
+
+#: js/ui/padOsd.js:610 js/ui/padOsd.js:665
+msgid "None"
+msgstr "Ешнәрсе"
+
+#: js/ui/padOsd.js:648
+msgid "Press a button to configure"
+msgstr "Баптау үшін батырманы басыңыз"
+
+#: js/ui/padOsd.js:649
+msgid "Press Esc to exit"
+msgstr "Шығу үшін Esc басыңыз"
+
+#: js/ui/padOsd.js:652
+msgid "Press any key to exit"
+msgstr "Шығу үшін кез-келген батырманы басыңыз"
+
 #: js/ui/panel.js:358
 msgid "Quit"
 msgstr "Шығу"
@@ -1145,7 +1193,7 @@ msgstr[0] "%d жаңа ескерту"
 msgid "Lock"
 msgstr "Блоктау"
 
-#: js/ui/screenShield.js:704
+#: js/ui/screenShield.js:707
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME экранды блоктау керек"
 
@@ -1156,11 +1204,11 @@ msgstr "GNOME экранды блоктау керек"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:825 js/ui/screenShield.js:1292
+#: js/ui/screenShield.js:828 js/ui/screenShield.js:1295
 msgid "Unable to lock"
 msgstr "Блоктау мүмкін емес"
 
-#: js/ui/screenShield.js:826 js/ui/screenShield.js:1293
+#: js/ui/screenShield.js:829 js/ui/screenShield.js:1296
 msgid "Lock was blocked by an application"
 msgstr "Блоктауды басқа қолданба болдырмады"
 
@@ -1244,7 +1292,7 @@ msgstr "Үлкен мәтін"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Bluetooth баптаулары"
 
@@ -1260,16 +1308,16 @@ msgid "Off"
 msgstr "Сөнд."
 
 #: js/ui/status/bluetooth.js:140
-msgid "Not In Use"
-msgstr "Қолданылуда емес"
+msgid "On"
+msgstr "Іске қос."
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1289
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1291
 msgid "Turn On"
 msgstr "Іске қосу"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:179
-#: js/ui/status/network.js:354 js/ui/status/network.js:1289
-#: js/ui/status/network.js:1404 js/ui/status/rfkill.js:90
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
+#: js/ui/status/network.js:356 js/ui/status/network.js:1291
+#: js/ui/status/network.js:1406 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Сөндіру"
@@ -1318,18 +1366,18 @@ msgstr ""
 "Орналасуыңызға қатынауды кез-кезген кезде жекелік баптауларының ішінен "
 "өзгертуге болады."
 
-#: js/ui/status/network.js:102
+#: js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<белгісіз>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452 js/ui/status/network.js:1318
+#: js/ui/status/network.js:454 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Off"
 msgstr "%s сөндірулі"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s байланысқан"
@@ -1337,168 +1385,190 @@ msgstr "%s байланысқан"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:460
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s басқарылмайтын"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:463
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s  байланысты үзуде"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:470 js/ui/status/network.js:1310
+#: js/ui/status/network.js:472 js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s байланысуда"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:473
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s аутентификацияны талап етеді"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:481
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "%s үшін бинарлы кодтары жоқ"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:485
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s қолжетерсіз"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:488
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s байланысын орнату сәтсіз"
 
-#: js/ui/status/network.js:504
+#: js/ui/status/network.js:506
 msgid "Wired Settings"
 msgstr "Сымды желі баптаулары"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:548
 msgid "Mobile Broadband Settings"
 msgstr "Сымсыз кеңжолақты желісінің баптаулары"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1315
+#: js/ui/status/network.js:591 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s құрылғылық түрде сөндірулі тұр"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
+#: js/ui/status/network.js:595
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s сөндірулі тұр"
 
-#: js/ui/status/network.js:633
+#: js/ui/status/network.js:635
 msgid "Connect to Internet"
 msgstr "Интернетке байланысу"
 
-#: js/ui/status/network.js:823
+#: js/ui/status/network.js:825
 msgid "Airplane Mode is On"
 msgstr "Ұшақтағы режим іске қосылған"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:826
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi ұшақтағы режимі кезінде сөндірілген болады."
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:827
 msgid "Turn Off Airplane Mode"
 msgstr "Ұшақтағы режимді сөндіру"
 
-#: js/ui/status/network.js:834
+#: js/ui/status/network.js:836
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi сөндірілген"
 
-#: js/ui/status/network.js:835
+#: js/ui/status/network.js:837
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Желіге байланысты орнату үшін Wi-Fi іске қосылған болуы тиіс."
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:838
 msgid "Turn On Wi-Fi"
 msgstr "Wi-Fi іске қосу"
 
-#: js/ui/status/network.js:861
+#: js/ui/status/network.js:863
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi желілері"
 
-#: js/ui/status/network.js:863
+#: js/ui/status/network.js:865
 msgid "Select a network"
 msgstr "Желіні таңдау"
 
-#: js/ui/status/network.js:893
+#: js/ui/status/network.js:895
 msgid "No Networks"
 msgstr "Желілер жоқ"
 
-#: js/ui/status/network.js:914 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:916 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Сөндіру үшін құрылғылық қосқышты қолданыңыз"
 
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1183
 msgid "Select Network"
 msgstr "Желіні таңдау"
 
-#: js/ui/status/network.js:1187
+#: js/ui/status/network.js:1189
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi баптаулары"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1306
+#: js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s қатынау нүктесі белсенді"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s байланыспаған"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1423
 msgid "connecting..."
 msgstr "байланысты орнату..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1424
+#: js/ui/status/network.js:1426
 msgid "authentication required"
 msgstr "аутентификация керек"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1428
 msgid "connection failed"
 msgstr "байланысты орнату сәтсіз"
 
-#: js/ui/status/network.js:1492 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1587
+#: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Желі баптаулары"
 
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1496
 msgid "VPN Settings"
 msgstr "VPN баптаулары"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1515
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1525
 msgid "VPN Off"
 msgstr "VPN сөндірілген"
 
-#: js/ui/status/network.js:1709
+#: js/ui/status/network.js:1618
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s сымды желі байланысы"
+
+#: js/ui/status/network.js:1622
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s Wi-Fi желі байланысы"
+
+#: js/ui/status/network.js:1626
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s модем желі байланысы"
+
+#: js/ui/status/network.js:1773
 msgid "Connection failed"
 msgstr "Байланыс орнату сәтсіз"
 
-#: js/ui/status/network.js:1710
+#: js/ui/status/network.js:1774
 msgid "Activation of network connection failed"
 msgstr "Желілік байланысты белсендіру сәтсіз"
 
@@ -1580,11 +1650,11 @@ msgstr "Басқа пайдаланушы ретінде жүйеге кіру"
 msgid "Unlock Window"
 msgstr "Блоктауды алу терезесі"
 
-#: js/ui/viewSelector.js:159
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "Қолданбалар"
 
-#: js/ui/viewSelector.js:163
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "Іздеу"
 
@@ -1593,22 +1663,22 @@ msgstr "Іздеу"
 msgid "“%s” is ready"
 msgstr "\"%s\" дайын"
 
-#: js/ui/windowManager.js:63
+#: js/ui/windowManager.js:64
 msgid "Do you want to keep these display settings?"
 msgstr "Экранның бұл баптауларын сақтауды қалайсыз ба?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:82
+#: js/ui/windowManager.js:83
 msgid "Revert Settings"
 msgstr "Баптауларды қалпына келтіру"
 
-#: js/ui/windowManager.js:85
+#: js/ui/windowManager.js:86
 msgid "Keep Changes"
 msgstr "Өзгерістерді сақтау"
 
-#: js/ui/windowManager.js:103
+#: js/ui/windowManager.js:104
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1616,7 +1686,7 @@ msgstr[0] "Өзгертілген баптаулар %d секундтан ке�
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:658
+#: js/ui/windowManager.js:659
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1714,19 +1784,19 @@ msgstr[0] "%u кірісі"
 msgid "System Sounds"
 msgstr "Жүйелік дыбыстар"
 
-#: src/main.c:381
+#: src/main.c:380
 msgid "Print version"
 msgstr "Баспа нұсқасы"
 
-#: src/main.c:387
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "GDM жүйеге кіру экраны үшін қолданатын режимі"
 
-#: src/main.c:393
+#: src/main.c:392
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Жүйеге кіру экраны үшін арнайы режимді, мыс. \"gdm\", қолдану"
 
-#: src/main.c:399
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Қолжетерлік режимдерді тізіп шығу"
 
@@ -1751,6 +1821,9 @@ msgstr "Пароль бос болуы мүмкін емес"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация терезесін пайдаланушы тайдырды"
+
+#~ msgid "Not In Use"
+#~ msgstr "Қолданылуда емес"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Күнтізбеде апта күнін көрсету"
@@ -1782,9 +1855,6 @@ msgstr "Аутентификация терезесін пайдаланушы �
 
 #~ msgid "Airplane Mode"
 #~ msgstr "Ұшақтағы режим"
-
-#~ msgid "On"
-#~ msgstr "Іске қос."
 
 #~ msgctxt "event list time"
 #~ msgid "%H∶%M"
