@@ -41,6 +41,15 @@ GLIB_GSETTINGS
 AM_PATH_PYTHON([3])
 AC_SUBST(PYTHON)
 
+# We depend on a specific version of the libmutter API. The mutter variants of
+# the Cogl and Clutter libraries also use this API version.
+LIBMUTTER_API_VERSION=0
+
+LIBMUTTER=libmutter-$LIBMUTTER_API_VERSION
+LIBMUTTER_COGL=mutter-cogl-$LIBMUTTER_API_VERSION
+LIBMUTTER_COGL_PANGO=mutter-cogl-pango-$LIBMUTTER_API_VERSION
+LIBMUTTER_CLUTTER=mutter-clutter-$LIBMUTTER_API_VERSION
+
 # We need at least this, since gst_plugin_register_static() was added
 # in 0.10.16, but nothing older than 0.10.21 has been tested.
 GSTREAMER_MIN_VERSION=0.11.92
@@ -52,7 +61,7 @@ if $PKG_CONFIG --exists gstreamer-1.0 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
    recorder_modules="gstreamer-1.0 gstreamer-base-1.0 x11 gtk+-3.0"
-   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules mutter-clutter-1.0)
+   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules $LIBMUTTER_CLUTTER)
 else
    AC_MSG_RESULT(no)
 fi
@@ -74,7 +83,6 @@ AS_IF([test x$enable_systemd != xno], [
 
 AC_MSG_RESULT($enable_systemd)
 
-CLUTTER_MIN_VERSION=1.21.5
 GOBJECT_INTROSPECTION_MIN_VERSION=1.49.1
 GJS_MIN_VERSION=1.47.0
 MUTTER_MIN_VERSION=3.23.3
@@ -98,8 +106,8 @@ SHARED_PCS="gio-unix-2.0 >= $GIO_MIN_VERSION
             gjs-1.0 >= $GJS_MIN_VERSION
             $recorder_modules
             gdk-x11-3.0 libsoup-2.4
-            mutter-clutter-1.0 >= $CLUTTER_MIN_VERSION
-            mutter-cogl-pango-1.0
+            $LIBMUTTER_CLUTTER >= $MUTTER_MIN_VERSION
+            $LIBMUTTER_COGL_PANGO
             libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
             gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
             libcanberra libcanberra-gtk3
@@ -111,15 +119,17 @@ if test x$have_systemd = xyes; then
 fi
 
 PKG_CHECK_MODULES(GNOME_SHELL, $SHARED_PCS)
-PKG_CHECK_MODULES(MUTTER, libmutter >= $MUTTER_MIN_VERSION)
+PKG_CHECK_MODULES(MUTTER, $LIBMUTTER >= $MUTTER_MIN_VERSION)
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-1.0 >= $GJS_MIN_VERSION)
-PKG_CHECK_MODULES(ST, mutter-clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
+PKG_CHECK_MODULES(ST, $LIBMUTTER_CLUTTER gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
 PKG_CHECK_MODULES(SHELL_HOTPLUG_SNIFFER, gio-2.0 gdk-pixbuf-2.0)
-PKG_CHECK_MODULES(TRAY, mutter-clutter-1.0 gtk+-3.0)
+PKG_CHECK_MODULES(TRAY, $LIBMUTTER_CLUTTER gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse >= $PULSE_MIN_VERS libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.21.3)
+
+AC_SUBST(LIBMUTTER_API_VERSION)
 
 AC_ARG_ENABLE(browser-plugin,
               [AS_HELP_STRING([--enable-browser-plugin],
@@ -145,10 +155,10 @@ AC_SUBST([GNOME_KEYBINDINGS_KEYSDIR])
 
 GOBJECT_INTROSPECTION_CHECK([$GOBJECT_INTROSPECTION_MIN_VERSION])
 
-MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
+MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir $LIBMUTTER`
 AC_SUBST(MUTTER_GIR_DIR)
 
-MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
+MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir $LIBMUTTER`
 AC_SUBST(MUTTER_TYPELIB_DIR)
 
 GJS_CONSOLE=`$PKG_CONFIG --variable=gjs_console gjs-1.0`
