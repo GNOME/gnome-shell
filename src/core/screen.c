@@ -1248,7 +1248,7 @@ root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
                         int               y,
                         MetaScreen       *screen)
 {
-  const MetaLogicalMonitor *logical_monitor;
+  MetaLogicalMonitor *logical_monitor;
 
   logical_monitor = meta_screen_get_logical_monitor_for_point (screen, x, y);
 
@@ -1408,7 +1408,7 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
   return window;
 }
 
-const MetaLogicalMonitor *
+MetaLogicalMonitor *
 meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
                                           MetaRectangle *rect)
 {
@@ -1461,7 +1461,7 @@ meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
   return &logical_monitors[best_monitor];
 }
 
-const MetaLogicalMonitor *
+MetaLogicalMonitor *
 meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
                                                   MetaWindow *window)
 {
@@ -1476,13 +1476,13 @@ int
 meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
                                         MetaRectangle *rect)
 {
-  const MetaLogicalMonitor *monitor;
+  MetaLogicalMonitor *monitor;
 
   monitor = meta_screen_get_logical_monitor_for_rect (screen, rect);
   return monitor->number;
 }
 
-const MetaLogicalMonitor *
+MetaLogicalMonitor *
 meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
                                            int         x,
                                            int         y)
@@ -1510,7 +1510,7 @@ meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
   return NULL;
 }
 
-const MetaLogicalMonitor *
+MetaLogicalMonitor *
 meta_screen_get_monitor_neighbor (MetaScreen         *screen,
                                   int                 which_monitor,
                                   MetaScreenDirection direction)
@@ -1558,7 +1558,7 @@ meta_screen_get_monitor_neighbor_index (MetaScreen         *screen,
                                         int                 which_monitor,
                                         MetaScreenDirection direction)
 {
-  const MetaLogicalMonitor *logical_monitor;
+  MetaLogicalMonitor *logical_monitor;
 
   logical_monitor = meta_screen_get_monitor_neighbor (screen,
                                                       which_monitor,
@@ -1566,7 +1566,7 @@ meta_screen_get_monitor_neighbor_index (MetaScreen         *screen,
   return logical_monitor ? logical_monitor->number : -1;
 }
 
-const MetaLogicalMonitor *
+MetaLogicalMonitor *
 meta_screen_get_current_logical_monitor (MetaScreen *screen)
 {
   MetaBackend *backend = meta_get_backend ();
@@ -1584,7 +1584,7 @@ meta_screen_get_current_logical_monitor (MetaScreen *screen)
   return &logical_monitors[monitor_index];
 }
 
-const MetaLogicalMonitor *
+MetaLogicalMonitor *
 meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
                                                  int         x,
                                                  int         y)

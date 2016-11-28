@@ -133,22 +133,22 @@ void          meta_screen_hide_tile_preview            (MetaScreen    *screen);
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);
 
-const MetaLogicalMonitor * meta_screen_get_current_logical_monitor (MetaScreen    *screen);
-const MetaLogicalMonitor * meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
-                                                                            int         x,
-                                                                            int         y);
-const MetaLogicalMonitor * meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
-                                                                     MetaRectangle *rect);
-const MetaLogicalMonitor * meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
-                                                                             MetaWindow *window);
-
-const MetaLogicalMonitor * meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
+MetaLogicalMonitor * meta_screen_get_current_logical_monitor (MetaScreen    *screen);
+MetaLogicalMonitor * meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
                                                                       int         x,
                                                                       int         y);
+MetaLogicalMonitor * meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
+                                                               MetaRectangle *rect);
+MetaLogicalMonitor * meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
+                                                                       MetaWindow *window);
 
-const MetaLogicalMonitor * meta_screen_get_monitor_neighbor (MetaScreen         *screen,
-                                                             int                 which_monitor,
-                                                             MetaScreenDirection dir);
+MetaLogicalMonitor * meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
+                                                                int         x,
+                                                                int         y);
+
+MetaLogicalMonitor * meta_screen_get_monitor_neighbor (MetaScreen         *screen,
+                                                       int                 which_monitor,
+                                                       MetaScreenDirection dir);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);

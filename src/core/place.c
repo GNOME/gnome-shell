@@ -671,7 +671,7 @@ meta_window_place (MetaWindow        *window,
                    int               *new_y)
 {
   GList *windows = NULL;
-  const MetaLogicalMonitor *logical_monitor;
+  MetaLogicalMonitor *logical_monitor;
 
   meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);
 
