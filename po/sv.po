@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-19 21:36+0000\n"
-"PO-Revision-Date: 2016-08-21 18:11+0200\n"
+"POT-Creation-Date: 2016-11-23 20:37+0000\n"
+"PO-Revision-Date: 2016-11-28 14:59+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: svenska <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -21,7 +21,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.11\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "System"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Visa aviseringslistan"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Fokusera den aktiva aviseringen"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Visa översiktsvyn"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Visa alla program"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Öppna programmenyn"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 msgid "GNOME Shell Extension Preferences"
@@ -302,7 +326,7 @@ msgstr "Tillägg för GNOME-skal"
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:916
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:926
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -333,7 +357,7 @@ msgstr "Inte listad?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:854
+#: js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(till exempel användare eller %s)"
@@ -341,12 +365,12 @@ msgstr "(till exempel användare eller %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
 #: js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Användarnamn: "
 
-#: js/gdm/loginDialog.js:1196
+#: js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Inloggningsfönster"
 
@@ -659,8 +683,8 @@ msgstr "Lösenord:"
 msgid "Type again:"
 msgstr "Skriv igen:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:269
-#: js/ui/status/network.js:352 js/ui/status/network.js:919
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:270
+#: js/ui/status/network.js:353 js/ui/status/network.js:929
 msgid "Connect"
 msgstr "Anslut"
 
@@ -688,11 +712,11 @@ msgstr "Lösenord för privat nyckel: "
 msgid "Service: "
 msgstr "Tjänst: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:658
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:666
 msgid "Authentication required by wireless network"
 msgstr "Autentisering krävs av trådlöst nätverk"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:667
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -701,7 +725,7 @@ msgstr ""
 "Lösenord eller krypteringsnycklar krävs för att komma åt det trådlösa "
 "nätverket ”%s”."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:662
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:670
 msgid "Wired 802.1X authentication"
 msgstr "Trådbunden 802.1X-autentisering"
 
@@ -709,15 +733,15 @@ msgstr "Trådbunden 802.1X-autentisering"
 msgid "Network name: "
 msgstr "Nätverksnamn: "
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:666
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:674
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:680
 msgid "PIN code required"
 msgstr "PIN-kod krävs"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-koden krävs för den mobila bredbandsenheten"
 
@@ -725,17 +749,17 @@ msgstr "PIN-koden krävs för den mobila bredbandsenheten"
 msgid "PIN: "
 msgstr "PIN-kod: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
 msgid "Mobile broadband network password"
 msgstr "Lösenord för mobilt bredbandsnätverk"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
-#: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Ett lösenord krävs för att ansluta till ”%s”."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1658
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1670
 msgid "Network Manager"
 msgstr "Nätverkshanterare"
 
@@ -761,7 +785,7 @@ msgstr "Tyvärr, det fungerade inte. Försök igen."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:760
+#: js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s är nu känd som %s"
@@ -1095,6 +1119,10 @@ msgstr "Ange ett kommando"
 msgid "Close"
 msgstr "Stäng"
 
+#: js/ui/runDialog.js:277
+msgid "Restart is not available on Wayland"
+msgstr "Omstart är inte tillgänglig i Wayland"
+
 #: js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Startar om…"
@@ -1134,11 +1162,11 @@ msgstr "GNOME behöver låsa skärmen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:825 js/ui/screenShield.js:1291
+#: js/ui/screenShield.js:825 js/ui/screenShield.js:1292
 msgid "Unable to lock"
 msgstr "Kunde inte låsa"
 
-#: js/ui/screenShield.js:826 js/ui/screenShield.js:1292
+#: js/ui/screenShield.js:826 js/ui/screenShield.js:1293
 msgid "Lock was blocked by an application"
 msgstr "Låsning hindrades av ett program"
 
@@ -1222,7 +1250,7 @@ msgstr "Stor text"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:624
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:625
 msgid "Bluetooth Settings"
 msgstr "Inställningar för Bluetooth"
 
@@ -1242,13 +1270,13 @@ msgstr "Frånkopplad"
 msgid "Not In Use"
 msgstr "Används inte"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1279
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1289
 msgid "Turn On"
 msgstr "Slå på"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:178
-#: js/ui/status/network.js:353 js/ui/status/network.js:1279
-#: js/ui/status/network.js:1394 js/ui/status/rfkill.js:90
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:179
+#: js/ui/status/network.js:354 js/ui/status/network.js:1289
+#: js/ui/status/network.js:1404 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Stäng av"
@@ -1295,18 +1323,18 @@ msgstr "Ge %s åtkomst till din plats?"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Platsåtkomst kan ändras när som helst från sekretessinställningarna."
 
-#: js/ui/status/network.js:101
+#: js/ui/status/network.js:102
 msgid "<unknown>"
 msgstr "<okänd>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:451 js/ui/status/network.js:1308
+#: js/ui/status/network.js:452 js/ui/status/network.js:1318
 #, javascript-format
 msgid "%s Off"
 msgstr "%s avslagen"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:454
+#: js/ui/status/network.js:455
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s ansluten"
@@ -1314,169 +1342,169 @@ msgstr "%s ansluten"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:459
+#: js/ui/status/network.js:460
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s ohanterad"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:463
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s kopplar från"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:469 js/ui/status/network.js:1300
+#: js/ui/status/network.js:470 js/ui/status/network.js:1310
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s ansluter"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:472
+#: js/ui/status/network.js:473
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s kräver autentisering"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:480
+#: js/ui/status/network.js:481
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Fast programvara saknas för %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:484
+#: js/ui/status/network.js:485
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s ej tillgänglig"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:487
+#: js/ui/status/network.js:488
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Anslutning till %s misslyckades"
 
-#: js/ui/status/network.js:503
+#: js/ui/status/network.js:504
 msgid "Wired Settings"
 msgstr "Trådbundna inställningar"
 
-#: js/ui/status/network.js:545
+#: js/ui/status/network.js:546
 msgid "Mobile Broadband Settings"
 msgstr "Inställningar för mobilt bredband"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:588 js/ui/status/network.js:1305
+#: js/ui/status/network.js:589 js/ui/status/network.js:1315
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Hårdvara för %s inaktiverad"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:592
+#: js/ui/status/network.js:593
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s inaktiverad"
 
-#: js/ui/status/network.js:632
+#: js/ui/status/network.js:633
 msgid "Connect to Internet"
 msgstr "Anslut till internet"
 
-#: js/ui/status/network.js:813
+#: js/ui/status/network.js:823
 msgid "Airplane Mode is On"
 msgstr "Flygplansläge är på"
 
-#: js/ui/status/network.js:814
+#: js/ui/status/network.js:824
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Trådlöst nätverk är avslaget när flygplansläge är på."
 
-#: js/ui/status/network.js:815
+#: js/ui/status/network.js:825
 msgid "Turn Off Airplane Mode"
 msgstr "Slå av flygplansläge"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:834
 msgid "Wi-Fi is Off"
 msgstr "Trådlöst nätverk är av"
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:835
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr ""
 "Trådlöst nätverk behöver slås på för att kunna ansluta till ett nätverk."
 
-#: js/ui/status/network.js:826
+#: js/ui/status/network.js:836
 msgid "Turn On Wi-Fi"
 msgstr "Slå på trådlöst nätverk"
 
-#: js/ui/status/network.js:851
+#: js/ui/status/network.js:861
 msgid "Wi-Fi Networks"
 msgstr "Trådlösa nätverk"
 
-#: js/ui/status/network.js:853
+#: js/ui/status/network.js:863
 msgid "Select a network"
 msgstr "Välj ett nätverk"
 
-#: js/ui/status/network.js:883
+#: js/ui/status/network.js:893
 msgid "No Networks"
 msgstr "Inga nätverk"
 
-#: js/ui/status/network.js:904 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:914 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Använd hårdvarubrytare för att slå av"
 
-#: js/ui/status/network.js:1171
+#: js/ui/status/network.js:1181
 msgid "Select Network"
 msgstr "Välj nätverk"
 
-#: js/ui/status/network.js:1177
+#: js/ui/status/network.js:1187
 msgid "Wi-Fi Settings"
 msgstr "Inställningar för trådlösa nätverk"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1296
+#: js/ui/status/network.js:1306
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Surfzon för %s aktiv"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1311
+#: js/ui/status/network.js:1321
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s ej ansluten"
 
-#: js/ui/status/network.js:1411
+#: js/ui/status/network.js:1421
 msgid "connecting..."
 msgstr "ansluter..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1414
+#: js/ui/status/network.js:1424
 msgid "authentication required"
 msgstr "autentisering krävs"
 
-#: js/ui/status/network.js:1416
+#: js/ui/status/network.js:1426
 msgid "connection failed"
 msgstr "anslutningen misslyckades"
 
-#: js/ui/status/network.js:1482 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1492 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Nätverksinställningar"
 
-#: js/ui/status/network.js:1484
+#: js/ui/status/network.js:1494
 msgid "VPN Settings"
 msgstr "VPN-inställningar"
 
-#: js/ui/status/network.js:1503
+#: js/ui/status/network.js:1513
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1523
 msgid "VPN Off"
 msgstr "VPN avslaget"
 
-#: js/ui/status/network.js:1697
+#: js/ui/status/network.js:1709
 msgid "Connection failed"
 msgstr "Anslutningen misslyckades"
 
-#: js/ui/status/network.js:1698
+#: js/ui/status/network.js:1710
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nätverksanslutning misslyckades"
 
@@ -1732,24 +1760,6 @@ msgstr "Lösenordet får inte vara blankt"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Autentiseringsdialogen stängdes av användaren"
-
-#~ msgid "System"
-#~ msgstr "System"
-
-#~ msgid "Show the notification list"
-#~ msgstr "Visa aviseringslistan"
-
-#~ msgid "Focus the active notification"
-#~ msgstr "Fokusera den aktiva aviseringen"
-
-#~ msgid "Show the overview"
-#~ msgstr "Visa översiktsvyn"
-
-#~ msgid "Show all applications"
-#~ msgstr "Visa alla program"
-
-#~ msgid "Open the application menu"
-#~ msgstr "Öppna programmenyn"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Visa veckonummer i kalendern"
