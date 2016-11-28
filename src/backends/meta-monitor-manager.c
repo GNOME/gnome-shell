@@ -247,6 +247,7 @@ make_logical_config (MetaMonitorManager *manager)
   /* Now walk the list of outputs applying extended properties (primary
      and presentation)
   */
+  manager->primary_logical_monitor = NULL;
   for (i = 0; i < manager->n_outputs; i++)
     {
       MetaOutput *output;
@@ -283,11 +284,19 @@ make_logical_config (MetaMonitorManager *manager)
         logical_monitor->winsys_id = output->winsys_id;
 
       if (logical_monitor->is_primary)
-        manager->primary_monitor_index = logical_monitor->number;
+        manager->primary_logical_monitor = logical_monitor;
     }
 
   manager->n_logical_monitors = logical_monitors->len;
   manager->logical_monitors = (void*)g_array_free (logical_monitors, FALSE);
+
+  /*
+   * If no monitor was marked as primary, fall back on marking the first
+   * logical monitor the primary one.
+   */
+  if (!manager->primary_logical_monitor &&
+      manager->n_logical_monitors > 0)
+    manager->primary_logical_monitor = &manager->logical_monitors[0];
 
   if (manager_class->add_monitor)
     for (i = 0; i < manager->n_logical_monitors; i++)
@@ -1305,6 +1314,12 @@ meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
   return manager->logical_monitors;
 }
 
+MetaLogicalMonitor *
+meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager)
+{
+  return manager->primary_logical_monitor;
+}
+
 MetaOutput *
 meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
                                   unsigned int       *n_outputs)
@@ -1337,12 +1352,6 @@ meta_monitor_manager_get_resources (MetaMonitorManager  *manager,
       *outputs = manager->outputs;
       *n_outputs = manager->n_outputs;
     }
-}
-
-int
-meta_monitor_manager_get_primary_index (MetaMonitorManager *manager)
-{
-  return manager->primary_monitor_index;
 }
 
 void

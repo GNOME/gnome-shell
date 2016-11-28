@@ -115,16 +115,11 @@ center_pointer (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   MetaMonitorManager *monitor_manager = priv->monitor_manager;
-  MetaLogicalMonitor *logical_monitors, *primary;
-  unsigned int n_logical_monitors;
-  int primary_monitor_index;
+  MetaLogicalMonitor *primary;
 
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-  primary_monitor_index =
-    meta_monitor_manager_get_primary_index (monitor_manager);
-  primary = &logical_monitors[primary_monitor_index];
+  primary =
+    meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
+
   meta_backend_warp_pointer (backend,
                              primary->rect.x + primary->rect.width / 2,
                              primary->rect.y + primary->rect.height / 2);

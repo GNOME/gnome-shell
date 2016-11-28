@@ -1732,10 +1732,16 @@ meta_screen_get_primary_monitor (MetaScreen *screen)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
 
   g_return_val_if_fail (META_IS_SCREEN (screen), 0);
 
-  return meta_monitor_manager_get_primary_index (monitor_manager);
+  logical_monitor =
+    meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
+  if (logical_monitor)
+    return logical_monitor->number;
+  else
+    return 0;
 }
 
 /**

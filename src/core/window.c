@@ -3565,9 +3565,6 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  int primary_monitor_index;
   const MetaLogicalMonitor *old, *new;
 
   if (window->fullscreen_monitors[0] != -1)
@@ -3588,15 +3585,9 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
   if (!new)
     new = find_monitor_by_winsys_id (window, old->winsys_id);
 
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-  primary_monitor_index =
-    meta_monitor_manager_get_primary_index (monitor_manager);
-
   /* Fall back to primary if everything else failed */
   if (!new)
-    new = &logical_monitors[primary_monitor_index];
+    new = meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
 
   if (window->tile_mode != META_TILE_NONE)
     window->tile_monitor_number = new->number;

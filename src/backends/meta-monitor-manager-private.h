@@ -306,7 +306,7 @@ struct _MetaMonitorManager
 
   MetaLogicalMonitor *logical_monitors;
   unsigned int n_logical_monitors;
-  int primary_monitor_index;
+  MetaLogicalMonitor *primary_logical_monitor;
 
   int dbus_name_id;
 
@@ -368,6 +368,8 @@ int                 meta_monitor_manager_get_num_logical_monitors (MetaMonitorMa
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
                                                                unsigned int       *n_logical_monitors);
 
+MetaLogicalMonitor *meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager);
+
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
 							    unsigned int       *n_outputs);
 
@@ -378,8 +380,6 @@ void                meta_monitor_manager_get_resources     (MetaMonitorManager  
                                                             unsigned int        *n_crtcs,
                                                             MetaOutput         **outputs,
                                                             unsigned int        *n_outputs);
-
-int                 meta_monitor_manager_get_primary_index (MetaMonitorManager *manager);
 
 void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
                                                             int                *width,
