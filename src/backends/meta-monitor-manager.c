@@ -1290,11 +1290,18 @@ meta_monitor_manager_get (void)
   return meta_backend_get_monitor_manager (backend);
 }
 
+int
+meta_monitor_manager_get_num_logical_monitors (MetaMonitorManager *manager)
+{
+  return (int) manager->n_logical_monitors;
+}
+
 MetaLogicalMonitor *
 meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
                                            unsigned int       *n_logical_monitors)
 {
-  *n_logical_monitors = manager->n_logical_monitors;
+  if (n_logical_monitors)
+    *n_logical_monitors = manager->n_logical_monitors;
   return manager->logical_monitors;
 }
 

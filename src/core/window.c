@@ -2798,16 +2798,25 @@ meta_window_is_fullscreen (MetaWindow *window)
 gint *
 meta_window_get_all_monitors (MetaWindow *window, gsize *length)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitors;
+  unsigned int n_logical_monitors;
+  unsigned int i;
   GArray *monitors;
   MetaRectangle window_rect;
-  int i;
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager,
+                                               &n_logical_monitors);
 
   monitors = g_array_new (FALSE, FALSE, sizeof (int));
   meta_window_get_frame_rect (window, &window_rect);
 
-  for (i = 0; i < window->screen->n_logical_monitors; i++)
+  for (i = 0; i < n_logical_monitors; i++)
     {
-      MetaRectangle *monitor_rect = &window->screen->logical_monitors[i].rect;
+      MetaRectangle *monitor_rect = &logical_monitors[i].rect;
 
       if (meta_rectangle_overlap (&window_rect, monitor_rect))
         g_array_append_val (monitors, i);
@@ -3277,10 +3286,16 @@ meta_window_update_fullscreen_monitors (MetaWindow    *window,
                                         unsigned long  left,
                                         unsigned long  right)
 {
-  if ((int) top < window->screen->n_logical_monitors &&
-      (int) bottom < window->screen->n_logical_monitors &&
-      (int) left < window->screen->n_logical_monitors &&
-      (int) right < window->screen->n_logical_monitors)
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  int n_logical_monitors =
+    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+
+  if ((int) top < n_logical_monitors &&
+      (int) bottom < n_logical_monitors &&
+      (int) left < n_logical_monitors &&
+      (int) right < n_logical_monitors)
     {
       window->fullscreen_monitors[0] = top;
       window->fullscreen_monitors[1] = bottom;
@@ -3520,11 +3535,20 @@ static MetaLogicalMonitor *
 find_monitor_by_winsys_id (MetaWindow *window,
                            guint       winsys_id)
 {
-  int i;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitors;
+  unsigned int n_logical_monitors;
+  unsigned int i;
 
-  for (i = 0; i < window->screen->n_logical_monitors; i++)
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager,
+                                               &n_logical_monitors);
+
+  for (i = 0; i < n_logical_monitors; i++)
     {
-      MetaLogicalMonitor *logical_monitor = &window->screen->logical_monitors[i];
+      MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
 
       if (logical_monitor->winsys_id == winsys_id)
         return logical_monitor;
@@ -3538,6 +3562,12 @@ find_monitor_by_winsys_id (MetaWindow *window,
 void
 meta_window_update_for_monitors_changed (MetaWindow *window)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitors;
+  unsigned int n_logical_monitors;
+  int primary_monitor_index;
   const MetaLogicalMonitor *old, *new;
 
   if (window->fullscreen_monitors[0] != -1)
@@ -3558,9 +3588,15 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
   if (!new)
     new = find_monitor_by_winsys_id (window, old->winsys_id);
 
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager,
+                                               &n_logical_monitors);
+  primary_monitor_index =
+    meta_monitor_manager_get_primary_index (monitor_manager);
+
   /* Fall back to primary if everything else failed */
   if (!new)
-    new = &window->screen->logical_monitors[window->screen->primary_monitor_index];
+    new = &logical_monitors[primary_monitor_index];
 
   if (window->tile_mode != META_TILE_NONE)
     window->tile_monitor_number = new->number;
@@ -5690,14 +5726,20 @@ update_move (MetaWindow  *window,
   else if ((window->shaken_loose || META_WINDOW_MAXIMIZED (window)) &&
            window->tile_mode != META_TILE_LEFT && window->tile_mode != META_TILE_RIGHT)
     {
+      MetaBackend *backend = meta_get_backend ();
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
+      int n_logical_monitors;
       const MetaLogicalMonitor *wmonitor;
       MetaRectangle work_area;
       int monitor;
 
       window->tile_mode = META_TILE_NONE;
       wmonitor = window->monitor;
+      n_logical_monitors =
+        meta_monitor_manager_get_num_logical_monitors (monitor_manager);
 
-      for (monitor = 0; monitor < window->screen->n_logical_monitors; monitor++)
+      for (monitor = 0; monitor < n_logical_monitors; monitor++)
         {
           meta_window_get_work_area_for_monitor (window, monitor, &work_area);
 
@@ -6067,12 +6109,19 @@ get_work_area_monitor (MetaWindow    *window,
                        MetaRectangle *area,
                        int            which_monitor)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitors;
   GList *tmp;
 
   g_assert (which_monitor >= 0);
 
+  logical_monitors = meta_monitor_manager_get_logical_monitors (monitor_manager,
+                                                                NULL);
+
   /* Initialize to the whole monitor */
-  *area = window->screen->logical_monitors[which_monitor].rect;
+  *area = logical_monitors[which_monitor].rect;
 
   tmp = meta_window_get_workspaces (window);
   while (tmp != NULL)

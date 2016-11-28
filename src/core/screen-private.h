@@ -75,9 +75,6 @@ struct _MetaScreen
   Atom wm_sn_atom;
   guint32 wm_sn_timestamp;
 
-  MetaLogicalMonitor *logical_monitors;
-  int n_logical_monitors;
-  int primary_monitor_index;
   gboolean has_xinerama_indices;
 
   /* Cache the current monitor */

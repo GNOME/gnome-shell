@@ -27,6 +27,8 @@
 #include "workspace-private.h"
 #include "place.h"
 #include <meta/prefs.h>
+#include "backends/meta-backend-private.h"
+#include "backends/meta-monitor-manager-private.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -388,17 +390,23 @@ setup_constraint_info (ConstraintInfo      *info,
     }
   else
     {
+      MetaBackend *backend = meta_get_backend ();
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
+      MetaLogicalMonitor *logical_monitors;
       int i = 0;
       long monitor;
 
+      logical_monitors =
+        meta_monitor_manager_get_logical_monitors (monitor_manager, NULL);
+
       monitor = window->fullscreen_monitors[i];
-      info->entire_monitor =
-        window->screen->logical_monitors[monitor].rect;
+      info->entire_monitor = logical_monitors[monitor].rect;
       for (i = 1; i <= 3; i++)
         {
           monitor = window->fullscreen_monitors[i];
           meta_rectangle_union (&info->entire_monitor,
-                                &window->screen->logical_monitors[monitor].rect,
+                                &logical_monitors[monitor].rect,
                                 &info->entire_monitor);
         }
     }
@@ -1441,6 +1449,10 @@ constrain_to_single_monitor (MetaWindow         *window,
                              ConstraintPriority  priority,
                              gboolean            check_only)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+
   if (priority > PRIORITY_ENTIRELY_VISIBLE_ON_SINGLE_MONITOR)
     return TRUE;
 
@@ -1451,7 +1463,7 @@ constrain_to_single_monitor (MetaWindow         *window,
    */
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK ||
-      window->screen->n_logical_monitors == 1 ||
+      meta_monitor_manager_get_num_logical_monitors (monitor_manager) == 1 ||
       !window->require_on_single_monitor ||
       !window->frame ||
       info->is_user_action ||

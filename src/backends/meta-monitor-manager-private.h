@@ -363,6 +363,8 @@ struct _MetaMonitorManagerClass
 
 void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);
 
+int                 meta_monitor_manager_get_num_logical_monitors (MetaMonitorManager *manager);
+
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
                                                                unsigned int       *n_logical_monitors);
 

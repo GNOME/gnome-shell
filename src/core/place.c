@@ -26,6 +26,8 @@
 
 #include "boxes-private.h"
 #include "place.h"
+#include "backends/meta-backend-private.h"
+#include <meta/meta-backend.h>
 #include <meta/workspace.h>
 #include <meta/prefs.h>
 #include <gdk/gdk.h>
@@ -516,8 +518,16 @@ find_first_fit (MetaWindow *window,
 
 #ifdef WITH_VERBOSE_MODE
   {
+    MetaBackend *backend = meta_get_backend ();
+    MetaMonitorManager *monitor_manager =
+      meta_backend_get_monitor_manager (backend);
+    MetaLogicalMonitor *logical_monitors;
     char monitor_location_string[RECT_LENGTH];
-    meta_rectangle_to_string (&window->screen->logical_monitors[monitor].rect,
+
+    logical_monitors =
+      meta_monitor_manager_get_logical_monitors (monitor_manager, NULL);
+
+    meta_rectangle_to_string (&logical_monitors[monitor].rect,
                               monitor_location_string);
     meta_topic (META_DEBUG_XINERAMA,
                 "Natural monitor is %s\n",
