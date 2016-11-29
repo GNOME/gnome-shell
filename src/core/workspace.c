@@ -1006,6 +1006,16 @@ meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
   meta_workspace_invalidate_work_area (workspace);
 }
 
+void
+meta_workspace_get_work_area_for_logical_monitor (MetaWorkspace      *workspace,
+                                                  MetaLogicalMonitor *logical_monitor,
+                                                  MetaRectangle      *area)
+{
+  meta_workspace_get_work_area_for_monitor (workspace,
+                                            logical_monitor->number,
+                                            area);
+}
+
 /**
  * meta_workspace_get_work_area_for_monitor:
  * @workspace: a #MetaWorkspace

@@ -630,6 +630,10 @@ gboolean meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
 
 GList* meta_window_get_workspaces (MetaWindow *window);
 
+void meta_window_get_work_area_for_logical_monitor (MetaWindow         *window,
+                                                    MetaLogicalMonitor *logical_monitor,
+                                                    MetaRectangle      *area);
+
 int meta_window_get_current_tile_monitor_number (MetaWindow *window);
 void meta_window_get_current_tile_area         (MetaWindow    *window,
                                                 MetaRectangle *tile_area);

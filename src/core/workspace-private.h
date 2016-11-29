@@ -82,6 +82,10 @@ void           meta_workspace_remove_window (MetaWorkspace *workspace,
 void           meta_workspace_relocate_windows (MetaWorkspace *workspace,
                                                 MetaWorkspace *new_home);
 
+void meta_workspace_get_work_area_for_logical_monitor (MetaWorkspace      *workspace,
+                                                       MetaLogicalMonitor *logical_monitor,
+                                                       MetaRectangle      *area);
+
 void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
 
 GList* meta_workspace_get_onscreen_region       (MetaWorkspace *workspace);

@@ -6095,32 +6095,25 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
     }
 }
 
-static void
-get_work_area_monitor (MetaWindow    *window,
-                       MetaRectangle *area,
-                       int            which_monitor)
+void
+meta_window_get_work_area_for_logical_monitor (MetaWindow         *window,
+                                               MetaLogicalMonitor *logical_monitor,
+                                               MetaRectangle      *area)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
   GList *tmp;
 
-  g_assert (which_monitor >= 0);
-
-  logical_monitors = meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                                                NULL);
+  g_assert (logical_monitor);
 
   /* Initialize to the whole monitor */
-  *area = logical_monitors[which_monitor].rect;
+  *area = logical_monitor->rect;
 
   tmp = meta_window_get_workspaces (window);
   while (tmp != NULL)
     {
       MetaRectangle workspace_work_area;
-      meta_workspace_get_work_area_for_monitor (tmp->data,
-                                                which_monitor,
-                                                &workspace_work_area);
+      meta_workspace_get_work_area_for_logical_monitor (tmp->data,
+                                                        logical_monitor,
+                                                        &workspace_work_area);
       meta_rectangle_intersect (area,
                                 &workspace_work_area,
                                 area);
@@ -6129,7 +6122,7 @@ get_work_area_monitor (MetaWindow    *window,
 
   meta_topic (META_DEBUG_WORKAREA,
               "Window %s monitor %d has work area %d,%d %d x %d\n",
-              window->desc, which_monitor,
+              window->desc, logical_monitor->number,
               area->x, area->y, area->width, area->height);
 }
 
@@ -6163,11 +6156,17 @@ meta_window_get_work_area_for_monitor (MetaWindow    *window,
                                        int            which_monitor,
                                        MetaRectangle *area)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager = meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+
   g_return_if_fail (which_monitor >= 0);
 
-  get_work_area_monitor (window,
-                         area,
-                         which_monitor);
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          which_monitor);
+
+  meta_window_get_work_area_for_logical_monitor (window, logical_monitor, area);
 }
 
 /**
