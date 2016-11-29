@@ -384,31 +384,19 @@ meta_screen_ensure_xinerama_indices (MetaScreen *screen)
 }
 
 int
-meta_screen_monitor_index_to_xinerama_index (MetaScreen *screen,
-                                             int         index)
+meta_screen_logical_monitor_to_xinerama_index (MetaScreen         *screen,
+                                               MetaLogicalMonitor *logical_monitor)
 {
-#ifndef G_DISABLE_CHECKS
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-#endif
-
-  g_return_val_if_fail (index >= 0 && index < (int) n_logical_monitors, -1);
+  g_return_val_if_fail (logical_monitor, -1);
 
   meta_screen_ensure_xinerama_indices (screen);
 
-  return logical_monitors[index].xinerama_index;
+  return logical_monitor->xinerama_index;
 }
 
-int
-meta_screen_xinerama_index_to_monitor_index (MetaScreen *screen,
-                                             int         index)
+MetaLogicalMonitor *
+meta_screen_xinerama_index_to_logical_monitor (MetaScreen *screen,
+                                               int         xinerama_index)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
@@ -424,10 +412,10 @@ meta_screen_xinerama_index_to_monitor_index (MetaScreen *screen,
                                                &n_logical_monitors);
 
   for (i = 0; i < n_logical_monitors; i++)
-    if (logical_monitors[i].xinerama_index == index)
-      return i;
+    if (logical_monitors[i].xinerama_index == xinerama_index)
+      return &logical_monitors[i];
 
-  return -1;
+  return NULL;
 }
 
 static void

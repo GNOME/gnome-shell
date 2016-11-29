@@ -927,7 +927,6 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->maximize_vertically_after_placement = FALSE;
   window->minimize_after_placement = FALSE;
   window->fullscreen = FALSE;
-  window->fullscreen_monitors[0] = -1;
   window->require_fully_onscreen = TRUE;
   window->require_on_single_monitor = TRUE;
   window->require_titlebar_visible = TRUE;
@@ -3279,38 +3278,44 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
     }
 }
 
-void
-meta_window_update_fullscreen_monitors (MetaWindow    *window,
-                                        unsigned long  top,
-                                        unsigned long  bottom,
-                                        unsigned long  left,
-                                        unsigned long  right)
+static void
+meta_window_clear_fullscreen_monitors (MetaWindow *window)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  int n_logical_monitors =
-    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+  window->fullscreen_monitors.top = NULL;
+  window->fullscreen_monitors.bottom = NULL;
+  window->fullscreen_monitors.left = NULL;
+  window->fullscreen_monitors.right = NULL;
+}
 
-  if ((int) top < n_logical_monitors &&
-      (int) bottom < n_logical_monitors &&
-      (int) left < n_logical_monitors &&
-      (int) right < n_logical_monitors)
+void
+meta_window_update_fullscreen_monitors (MetaWindow         *window,
+                                        MetaLogicalMonitor *top,
+                                        MetaLogicalMonitor *bottom,
+                                        MetaLogicalMonitor *left,
+                                        MetaLogicalMonitor *right)
+{
+  if (top && bottom && left && right)
     {
-      window->fullscreen_monitors[0] = top;
-      window->fullscreen_monitors[1] = bottom;
-      window->fullscreen_monitors[2] = left;
-      window->fullscreen_monitors[3] = right;
+      window->fullscreen_monitors.top = top;
+      window->fullscreen_monitors.bottom = bottom;
+      window->fullscreen_monitors.left = left;
+      window->fullscreen_monitors.right = right;
     }
   else
     {
-      window->fullscreen_monitors[0] = -1;
+      meta_window_clear_fullscreen_monitors (window);
     }
 
   if (window->fullscreen)
     {
       meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
+}
+
+gboolean
+meta_window_has_fullscreen_monitors (MetaWindow *window)
+{
+  return window->fullscreen_monitors.top != NULL;
 }
 
 void
@@ -3567,8 +3572,8 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
     meta_backend_get_monitor_manager (backend);
   const MetaLogicalMonitor *old, *new;
 
-  if (window->fullscreen_monitors[0] != -1)
-    window->fullscreen_monitors[0] = -1;
+  if (meta_window_has_fullscreen_monitors (window))
+    meta_window_clear_fullscreen_monitors (window);
 
   if (window->override_redirect || window->type == META_WINDOW_DESKTOP)
     {

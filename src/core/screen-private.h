@@ -205,9 +205,10 @@ void meta_screen_create_guard_window (MetaScreen *screen);
 gboolean meta_screen_handle_xevent (MetaScreen *screen,
                                     XEvent     *xevent);
 
-int meta_screen_xinerama_index_to_monitor_index (MetaScreen *screen,
-                                                 int         index);
-int meta_screen_monitor_index_to_xinerama_index (MetaScreen *screen,
-                                                 int         index);
+MetaLogicalMonitor * meta_screen_xinerama_index_to_logical_monitor (MetaScreen *screen,
+                                                                    int         index);
+
+int meta_screen_logical_monitor_to_xinerama_index (MetaScreen         *screen,
+                                                   MetaLogicalMonitor *logical_monitor);
 
 #endif

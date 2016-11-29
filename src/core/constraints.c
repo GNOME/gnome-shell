@@ -384,31 +384,22 @@ setup_constraint_info (ConstraintInfo      *info,
                                          logical_monitor->number,
                                          &info->work_area_monitor);
 
-  if (!window->fullscreen || window->fullscreen_monitors[0] == -1)
+  if (!window->fullscreen || !meta_window_has_fullscreen_monitors (window))
     {
       info->entire_monitor = logical_monitor->rect;
     }
   else
     {
-      MetaBackend *backend = meta_get_backend ();
-      MetaMonitorManager *monitor_manager =
-        meta_backend_get_monitor_manager (backend);
-      MetaLogicalMonitor *logical_monitors;
-      int i = 0;
-      long monitor;
-
-      logical_monitors =
-        meta_monitor_manager_get_logical_monitors (monitor_manager, NULL);
-
-      monitor = window->fullscreen_monitors[i];
-      info->entire_monitor = logical_monitors[monitor].rect;
-      for (i = 1; i <= 3; i++)
-        {
-          monitor = window->fullscreen_monitors[i];
-          meta_rectangle_union (&info->entire_monitor,
-                                &logical_monitors[monitor].rect,
-                                &info->entire_monitor);
-        }
+      info->entire_monitor = window->fullscreen_monitors.top->rect;
+      meta_rectangle_union (&info->entire_monitor,
+                            &window->fullscreen_monitors.bottom->rect,
+                            &info->entire_monitor);
+      meta_rectangle_union (&info->entire_monitor,
+                            &window->fullscreen_monitors.left->rect,
+                            &info->entire_monitor);
+      meta_rectangle_union (&info->entire_monitor,
+                            &window->fullscreen_monitors.right->rect,
+                            &info->entire_monitor);
     }
 
   cur_workspace = window->screen->active_workspace;

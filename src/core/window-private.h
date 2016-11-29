@@ -221,7 +221,12 @@ struct _MetaWindow
    * been overridden (via a client message), the window will cover the union of
    * these monitors.  If not, this is the single monitor which the window's
    * origin is on. */
-  gint fullscreen_monitors[4];
+  struct {
+    MetaLogicalMonitor *top;
+    MetaLogicalMonitor *bottom;
+    MetaLogicalMonitor *left;
+    MetaLogicalMonitor *right;
+  } fullscreen_monitors;
 
   /* Whether we're trying to constrain the window to be fully onscreen */
   guint require_fully_onscreen : 1;
@@ -574,11 +579,13 @@ void        meta_window_maximize_internal  (MetaWindow        *window,
                                             MetaRectangle     *saved_rect);
 
 void        meta_window_make_fullscreen_internal (MetaWindow    *window);
-void        meta_window_update_fullscreen_monitors (MetaWindow    *window,
-                                                    unsigned long  top,
-                                                    unsigned long  bottom,
-                                                    unsigned long  left,
-                                                    unsigned long  right);
+void        meta_window_update_fullscreen_monitors (MetaWindow         *window,
+                                                    MetaLogicalMonitor *top,
+                                                    MetaLogicalMonitor *bottom,
+                                                    MetaLogicalMonitor *left,
+                                                    MetaLogicalMonitor *right);
+
+gboolean    meta_window_has_fullscreen_monitors (MetaWindow *window);
 
 void        meta_window_resize_frame_with_gravity (MetaWindow  *window,
                                                    gboolean     user_op,
