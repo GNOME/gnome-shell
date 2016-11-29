@@ -1263,14 +1263,15 @@ meta_screen_update_cursor (MetaScreen *screen)
   MetaCursor cursor = screen->current_cursor;
   Cursor xcursor;
   MetaCursorSprite *cursor_sprite;
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
 
   cursor_sprite = meta_cursor_sprite_from_theme (cursor);
 
   if (meta_is_wayland_compositor ())
     manage_root_cursor_sprite_scale (screen, cursor_sprite);
 
-  meta_cursor_tracker_set_root_cursor (tracker, cursor_sprite);
+  meta_cursor_tracker_set_root_cursor (cursor_tracker, cursor_sprite);
   g_object_unref (cursor_sprite);
 
   /* Set a cursor for X11 applications that don't specify their own */
@@ -1378,7 +1379,8 @@ MetaWindow*
 meta_screen_get_mouse_window (MetaScreen  *screen,
                               MetaWindow  *not_this_one)
 {
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
   MetaWindow *window;
   int x, y;
 
@@ -1386,7 +1388,7 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
     meta_topic (META_DEBUG_FOCUS,
                 "Focusing mouse window excluding %s\n", not_this_one->desc);
 
-  meta_cursor_tracker_get_pointer (tracker, &x, &y, NULL);
+  meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
 
   window = meta_stack_get_default_focus_window_at_point (screen->stack,
                                                          screen->active_workspace,
@@ -1665,7 +1667,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
   int n_logical_monitors =
     meta_monitor_manager_get_num_logical_monitors (monitor_manager);
 
@@ -1679,7 +1681,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
     {
       int x, y;
 
-      meta_cursor_tracker_get_pointer (tracker, &x, &y, NULL);
+      meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
       meta_screen_get_current_monitor_for_pos (screen, x, y);
     }
 
@@ -2968,9 +2970,10 @@ gboolean
 meta_screen_handle_xevent (MetaScreen *screen,
                            XEvent     *xevent)
 {
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (screen);
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
 
-  if (meta_cursor_tracker_handle_xevent (tracker, xevent))
+  if (meta_cursor_tracker_handle_xevent (cursor_tracker, xevent))
     return TRUE;
 
   return FALSE;

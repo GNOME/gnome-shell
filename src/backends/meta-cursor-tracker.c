@@ -130,14 +130,6 @@ meta_cursor_tracker_class_init (MetaCursorTrackerClass *klass)
                                           G_TYPE_NONE, 0);
 }
 
-static MetaCursorTracker *
-meta_cursor_tracker_new (void)
-{
-  return g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
-}
-
-static MetaCursorTracker *_cursor_tracker;
-
 /**
  * meta_cursor_tracker_get_for_screen:
  * @screen: the #MetaScreen
@@ -149,10 +141,12 @@ static MetaCursorTracker *_cursor_tracker;
 MetaCursorTracker *
 meta_cursor_tracker_get_for_screen (MetaScreen *screen)
 {
-  if (!_cursor_tracker)
-    _cursor_tracker = meta_cursor_tracker_new ();
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *tracker = meta_backend_get_cursor_tracker (backend);
 
-  return _cursor_tracker;
+  g_assert (tracker);
+
+  return tracker;
 }
 
 static void

@@ -62,6 +62,7 @@ meta_get_backend (void)
 struct _MetaBackendPrivate
 {
   MetaMonitorManager *monitor_manager;
+  MetaCursorTracker *cursor_tracker;
   MetaCursorRenderer *cursor_renderer;
   MetaInputSettings *input_settings;
   MetaRenderer *renderer;
@@ -246,7 +247,8 @@ on_device_removed (ClutterDeviceManager *device_manager,
    */
   if (backend->current_device_id == device_id)
     {
-      MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+      MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+      MetaCursorTracker *cursor_tracker = priv->cursor_tracker;
       gboolean has_touchscreen, has_pointing_device;
       ClutterInputDeviceType device_type;
 
@@ -319,7 +321,7 @@ meta_backend_real_post_init (MetaBackend *backend)
         has_touchscreen |= device_is_slave_touchscreen (device);
       }
 
-    cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+    cursor_tracker = priv->cursor_tracker;
     meta_cursor_tracker_set_pointer_visible (cursor_tracker, !has_touchscreen);
 
     g_slist_free (devices);
@@ -424,6 +426,8 @@ meta_backend_initable_init (GInitable     *initable,
       return FALSE;
     }
 
+  priv->cursor_tracker = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
+
   return TRUE;
 }
 
@@ -464,6 +468,14 @@ meta_backend_get_monitor_manager (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->monitor_manager;
+}
+
+MetaCursorTracker *
+meta_backend_get_cursor_tracker (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->cursor_tracker;
 }
 
 /**
@@ -582,8 +594,8 @@ meta_backend_get_stage (MetaBackend *backend)
 static gboolean
 update_last_device (MetaBackend *backend)
 {
-  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  MetaCursorTracker *cursor_tracker = priv->cursor_tracker;
   ClutterInputDeviceType device_type;
   ClutterDeviceManager *manager;
   ClutterInputDevice *device;

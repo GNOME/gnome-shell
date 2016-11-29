@@ -318,7 +318,7 @@ meta_backend_native_warp_pointer (MetaBackend *backend,
 {
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
   ClutterInputDevice *device = clutter_device_manager_get_core_device (manager, CLUTTER_POINTER_DEVICE);
-  MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
 
   /* XXX */
   guint32 time_ = 0;
@@ -327,7 +327,7 @@ meta_backend_native_warp_pointer (MetaBackend *backend,
   clutter_evdev_warp_pointer (device, time_, x, y);
 
   /* Warp displayed pointer cursor. */
-  meta_cursor_tracker_update_position (tracker, x, y);
+  meta_cursor_tracker_update_position (cursor_tracker, x, y);
 }
 
 static void

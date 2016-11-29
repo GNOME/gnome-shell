@@ -116,6 +116,7 @@ ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
                                                  int          device_id);
 MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
+MetaCursorTracker * meta_backend_get_cursor_tracker (MetaBackend *backend);
 MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
 MetaRenderer * meta_backend_get_renderer (MetaBackend *backend);
 MetaEgl * meta_backend_get_egl (MetaBackend *backend);

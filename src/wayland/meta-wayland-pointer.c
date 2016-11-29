@@ -480,7 +480,8 @@ meta_wayland_pointer_on_cursor_changed (MetaCursorTracker *cursor_tracker,
 void
 meta_wayland_pointer_enable (MetaWaylandPointer *pointer)
 {
-  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
   ClutterDeviceManager *manager;
 
   pointer->pointer_clients =
@@ -503,7 +504,8 @@ meta_wayland_pointer_enable (MetaWaylandPointer *pointer)
 void
 meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
 {
-  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
 
   g_signal_handlers_disconnect_by_func (cursor_tracker,
                                         (gpointer) meta_wayland_pointer_on_cursor_changed,
@@ -965,7 +967,8 @@ meta_wayland_pointer_get_relative_coordinates (MetaWaylandPointer *pointer,
 void
 meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 {
-  MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
 
   if (pointer->current)
     {
