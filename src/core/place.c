@@ -90,7 +90,7 @@ find_next_cascade (MetaWindow *window,
   int window_width, window_height;
   int cascade_stage;
   MetaRectangle work_area;
-  int current;
+  MetaLogicalMonitor *current;
 
   sorted = g_list_copy (windows);
   sorted = g_list_sort (sorted, northwestcmp);
@@ -114,8 +114,8 @@ find_next_cascade (MetaWindow *window,
    * of NW corner of window frame.
    */
 
-  current = meta_screen_get_current_monitor (window->screen);
-  meta_window_get_work_area_for_monitor (window, current, &work_area);
+  current = meta_screen_get_current_logical_monitor (window->screen);
+  meta_window_get_work_area_for_logical_monitor (window, current, &work_area);
 
   cascade_x = MAX (0, work_area.x);
   cascade_y = MAX (0, work_area.y);
@@ -479,14 +479,14 @@ center_tile_rect_in_area (MetaRectangle *rect,
  * don't want to create a 1x1 Emacs.
  */
 static gboolean
-find_first_fit (MetaWindow *window,
+find_first_fit (MetaWindow         *window,
                 /* visible windows on relevant workspaces */
-                GList      *windows,
-		int         monitor,
-                int         x,
-                int         y,
-                int        *new_x,
-                int        *new_y)
+                GList              *windows,
+                MetaLogicalMonitor *logical_monitor,
+                int                 x,
+                int                 y,
+                int                *new_x,
+                int                *new_y)
 {
   /* This algorithm is limited - it just brute-force tries
    * to fit the window in a small number of locations that are aligned
@@ -518,16 +518,9 @@ find_first_fit (MetaWindow *window,
 
 #ifdef WITH_VERBOSE_MODE
   {
-    MetaBackend *backend = meta_get_backend ();
-    MetaMonitorManager *monitor_manager =
-      meta_backend_get_monitor_manager (backend);
-    MetaLogicalMonitor *logical_monitors;
     char monitor_location_string[RECT_LENGTH];
 
-    logical_monitors =
-      meta_monitor_manager_get_logical_monitors (monitor_manager, NULL);
-
-    meta_rectangle_to_string (&logical_monitors[monitor].rect,
+    meta_rectangle_to_string (&logical_monitor->rect,
                               monitor_location_string);
     meta_topic (META_DEBUG_XINERAMA,
                 "Natural monitor is %s\n",
@@ -535,7 +528,9 @@ find_first_fit (MetaWindow *window,
   }
 #endif
 
-  meta_window_get_work_area_for_monitor (window, monitor, &work_area);
+  meta_window_get_work_area_for_logical_monitor (window,
+                                                 logical_monitor,
+                                                 &work_area);
 
   center_tile_rect_in_area (&rect, &work_area);
 
@@ -877,9 +872,9 @@ meta_window_place (MetaWindow        *window,
       MetaRectangle workarea;
       MetaRectangle frame_rect;
 
-      meta_window_get_work_area_for_monitor (window,
-                                             logical_monitor->number,
-                                             &workarea);
+      meta_window_get_work_area_for_logical_monitor (window,
+                                                     logical_monitor,
+                                                     &workarea);
       meta_window_get_frame_rect (window, &frame_rect);
 
       /* If the window is bigger than the screen, then automaximize.  Do NOT
@@ -897,7 +892,7 @@ meta_window_place (MetaWindow        *window,
   y = logical_monitor->rect.y;
 
   if (find_first_fit (window, windows,
-                      logical_monitor->number,
+                      logical_monitor,
                       x, y, &x, &y))
     goto done_check_denied_focus;
 
@@ -934,7 +929,7 @@ meta_window_place (MetaWindow        *window,
           y = logical_monitor->rect.y;
 
           found_fit = find_first_fit (window, focus_window_list,
-                                      logical_monitor->number,
+                                      logical_monitor,
                                       x, y, &x, &y);
           g_list_free (focus_window_list);
 	}
