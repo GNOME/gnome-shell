@@ -178,6 +178,7 @@ static gboolean
 meta_display_handle_event (MetaDisplay        *display,
                            const ClutterEvent *event)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaWindow *window;
   gboolean bypass_clutter = FALSE;
   G_GNUC_UNUSED gboolean bypass_wayland = FALSE;
@@ -221,8 +222,6 @@ meta_display_handle_event (MetaDisplay        *display,
       (event->type == CLUTTER_PAD_BUTTON_PRESS ||
        event->type == CLUTTER_PAD_BUTTON_RELEASE))
     {
-      MetaBackend *backend = meta_get_backend ();
-
       if (meta_input_settings_handle_pad_button (meta_backend_get_input_settings (backend),
                                                  clutter_event_get_source_device (event),
                                                  event->type == CLUTTER_PAD_BUTTON_PRESS,
@@ -237,7 +236,7 @@ meta_display_handle_event (MetaDisplay        *display,
 
   if (source)
     {
-      meta_backend_update_last_device (meta_get_backend (),
+      meta_backend_update_last_device (backend,
                                        clutter_input_device_get_device_id (source));
     }
 
@@ -375,7 +374,6 @@ meta_display_handle_event (MetaDisplay        *display,
            * have the synchronous grab. */
           if (event->type == CLUTTER_BUTTON_PRESS)
             {
-              MetaBackend *backend = meta_get_backend ();
               if (META_IS_BACKEND_X11 (backend))
                 {
                   Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
