@@ -3540,6 +3540,9 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
 {
   const MetaLogicalMonitor *old, *new;
 
+  if (window->fullscreen_monitors[0] != -1)
+    window->fullscreen_monitors[0] = -1;
+
   if (window->override_redirect || window->type == META_WINDOW_DESKTOP)
     {
       meta_window_update_monitor (window, FALSE);
