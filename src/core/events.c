@@ -181,7 +181,7 @@ meta_display_handle_event (MetaDisplay        *display,
   MetaWindow *window;
   gboolean bypass_clutter = FALSE;
   G_GNUC_UNUSED gboolean bypass_wayland = FALSE;
-  MetaGestureTracker *tracker;
+  MetaGestureTracker *gesture_tracker;
   ClutterEventSequence *sequence;
   ClutterInputDevice *source;
 
@@ -254,8 +254,11 @@ meta_display_handle_event (MetaDisplay        *display,
         }
       else
         {
-          MetaCursorTracker *tracker = meta_cursor_tracker_get_for_screen (NULL);
-          meta_cursor_tracker_update_position (tracker, event->motion.x, event->motion.y);
+          MetaCursorTracker *cursor_tracker = meta_cursor_tracker_get_for_screen (NULL);
+
+          meta_cursor_tracker_update_position (cursor_tracker,
+                                               event->motion.x,
+                                               event->motion.y);
         }
 
       display->monitor_cache_invalidated = TRUE;
@@ -290,9 +293,9 @@ meta_display_handle_event (MetaDisplay        *display,
         }
     }
 
-  tracker = meta_display_get_gesture_tracker (display);
+  gesture_tracker = meta_display_get_gesture_tracker (display);
 
-  if (meta_gesture_tracker_handle_event (tracker, event))
+  if (meta_gesture_tracker_handle_event (gesture_tracker, event))
     {
       bypass_wayland = bypass_clutter = TRUE;
       goto out;
