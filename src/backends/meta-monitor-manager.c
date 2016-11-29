@@ -1315,6 +1315,15 @@ meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
 }
 
 MetaLogicalMonitor *
+meta_monitor_manager_get_logical_monitor_from_number (MetaMonitorManager *manager,
+                                                      int                 number)
+{
+  g_assert (number < (int) manager->n_logical_monitors);
+
+  return &manager->logical_monitors[number];
+}
+
+MetaLogicalMonitor *
 meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager)
 {
   return manager->primary_logical_monitor;

@@ -368,6 +368,9 @@ int                 meta_monitor_manager_get_num_logical_monitors (MetaMonitorMa
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
                                                                unsigned int       *n_logical_monitors);
 
+MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_from_number (MetaMonitorManager *manager,
+                                                                          int                 number);
+
 MetaLogicalMonitor *meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager);
 
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
