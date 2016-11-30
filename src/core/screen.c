@@ -1236,9 +1236,13 @@ root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
                         int               y,
                         MetaScreen       *screen)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
   MetaLogicalMonitor *logical_monitor;
 
-  logical_monitor = meta_screen_get_logical_monitor_for_point (screen, x, y);
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
 
   /* Reload the cursor texture if the scale has changed. */
   if (logical_monitor)
@@ -1470,34 +1474,6 @@ meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
 
   monitor = meta_screen_get_logical_monitor_for_rect (screen, rect);
   return monitor->number;
-}
-
-MetaLogicalMonitor *
-meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
-                                           int         x,
-                                           int         y)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-
-  if (n_logical_monitors == 1)
-    return &logical_monitors[0];
-
-  for (i = 0; i < n_logical_monitors; i++)
-    {
-      if (POINT_IN_RECT (x, y, logical_monitors[i].rect))
-        return &logical_monitors[i];
-    }
-
-  return NULL;
 }
 
 MetaLogicalMonitor *

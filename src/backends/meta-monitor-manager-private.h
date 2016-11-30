@@ -373,6 +373,10 @@ MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_from_number (MetaMo
 
 MetaLogicalMonitor *meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager);
 
+MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
+                                                                 int                 x,
+                                                                 int                 y);
+
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
 							    unsigned int       *n_outputs);
 

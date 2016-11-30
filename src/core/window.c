@@ -5633,6 +5633,9 @@ update_move (MetaWindow  *window,
            !META_WINDOW_MAXIMIZED (window) &&
            !META_WINDOW_TILED_SIDE_BY_SIDE (window))
     {
+      MetaBackend *backend = meta_get_backend ();
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
       const MetaLogicalMonitor *monitor;
       MetaRectangle work_area;
 
@@ -5649,8 +5652,8 @@ update_move (MetaWindow  *window,
        * refers to the monitor which contains the largest part of the window,
        * the latter to the one where the pointer is located.
        */
-      monitor = meta_screen_get_current_logical_monitor_for_pos (window->screen,
-                                                                 x, y);
+      monitor = meta_monitor_manager_get_logical_monitor_at (monitor_manager,
+                                                             x, y);
       meta_window_get_work_area_for_monitor (window,
                                              monitor->number,
                                              &work_area);

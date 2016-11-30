@@ -28,6 +28,7 @@
 #include "meta-xwayland.h"
 #include "screen-private.h"
 #include "meta-wayland-private.h"
+#include "backends/meta-backend-private.h"
 
 typedef struct _MetaWaylandSurfaceRoleCursorPrivate MetaWaylandSurfaceRoleCursorPrivate;
 
@@ -96,15 +97,16 @@ cursor_sprite_prepare_at (MetaCursorSprite             *cursor_sprite,
 {
   MetaWaylandSurfaceRole *role = META_WAYLAND_SURFACE_ROLE (cursor_role);
   MetaWaylandSurface *surface = meta_wayland_surface_role_get_surface (role);
-  MetaDisplay *display = meta_get_display ();
-  MetaScreen *screen = display->screen;
 
   if (!meta_xwayland_is_xwayland_surface (surface))
     {
+      MetaBackend *backend = meta_get_backend ();
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
       const MetaLogicalMonitor *logical_monitor;
 
-      logical_monitor = meta_screen_get_logical_monitor_for_point (screen,
-                                                                   x, y);
+      logical_monitor =
+        meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
       if (logical_monitor)
         {
           float texture_scale;

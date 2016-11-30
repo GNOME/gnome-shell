@@ -142,10 +142,6 @@ MetaLogicalMonitor * meta_screen_get_logical_monitor_for_rect (MetaScreen    *sc
 MetaLogicalMonitor * meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
                                                                        MetaWindow *window);
 
-MetaLogicalMonitor * meta_screen_get_logical_monitor_for_point (MetaScreen *screen,
-                                                                int         x,
-                                                                int         y);
-
 MetaLogicalMonitor * meta_screen_get_monitor_neighbor (MetaScreen         *screen,
                                                        int                 which_monitor,
                                                        MetaScreenDirection dir);

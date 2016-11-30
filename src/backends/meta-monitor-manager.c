@@ -1329,6 +1329,22 @@ meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager)
   return manager->primary_logical_monitor;
 }
 
+MetaLogicalMonitor *
+meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
+                                             int                 x,
+                                             int                 y)
+{
+  unsigned int i;
+
+  for (i = 0; i < manager->n_logical_monitors; i++)
+    {
+      if (POINT_IN_RECT (x, y, manager->logical_monitors[i].rect))
+        return &manager->logical_monitors[i];
+    }
+
+  return NULL;
+}
+
 MetaOutput *
 meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
                                   unsigned int       *n_outputs)
