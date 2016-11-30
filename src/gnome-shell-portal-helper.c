@@ -30,6 +30,7 @@ main (int argc, char *argv[])
     {
       g_message("Failed to define ARGV: %s", error->message);
       g_error_free (error);
+      g_object_unref (context);
 
       return 1;
     }
@@ -44,9 +45,11 @@ main (int argc, char *argv[])
     {
       g_message ("Execution of main.js threw exception: %s", error->message);
       g_error_free (error);
+      g_object_unref (context);
 
       return status;
     }
 
+  g_object_unref (context);
   return 0;
 }
