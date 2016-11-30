@@ -45,6 +45,11 @@
 
 #include <stdlib.h>
 
+struct _MetaBackendNative
+{
+  MetaBackend parent;
+};
+
 struct _MetaBackendNativePrivate
 {
   MetaLauncher *launcher;

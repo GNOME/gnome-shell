@@ -54,6 +54,11 @@
 #include "display-private.h"
 #include "compositor/compositor-private.h"
 
+struct _MetaBackendX11
+{
+  MetaBackend parent;
+};
+
 typedef enum {
   /* We're a traditional CM running under the host. */
   META_BACKEND_X11_MODE_COMPOSITOR,

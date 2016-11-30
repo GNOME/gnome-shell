@@ -31,27 +31,9 @@
 
 #include "backends/x11/meta-clutter-backend-x11.h"
 
-#define META_TYPE_BACKEND_X11             (meta_backend_x11_get_type ())
-#define META_BACKEND_X11(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_BACKEND_X11, MetaBackendX11))
-#define META_BACKEND_X11_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_BACKEND_X11, MetaBackendX11Class))
-#define META_IS_BACKEND_X11(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_BACKEND_X11))
-#define META_IS_BACKEND_X11_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_BACKEND_X11))
-#define META_BACKEND_X11_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_BACKEND_X11, MetaBackendX11Class))
-
-typedef struct _MetaBackendX11        MetaBackendX11;
-typedef struct _MetaBackendX11Class   MetaBackendX11Class;
-
-struct _MetaBackendX11
-{
-  MetaBackend parent;
-};
-
-struct _MetaBackendX11Class
-{
-  MetaBackendClass parent_class;
-};
-
-GType meta_backend_x11_get_type (void) G_GNUC_CONST;
+#define META_TYPE_BACKEND_X11 (meta_backend_x11_get_type ())
+G_DECLARE_FINAL_TYPE (MetaBackendX11, meta_backend_x11,
+                      META, BACKEND_X11, MetaBackend)
 
 Display * meta_backend_x11_get_xdisplay (MetaBackendX11 *backend);
 
