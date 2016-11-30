@@ -1574,6 +1574,11 @@ meta_screen_get_current_logical_monitor (MetaScreen *screen)
   return &logical_monitors[monitor_index];
 }
 
+static int
+meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
+                                         int         x,
+                                         int         y);
+
 MetaLogicalMonitor *
 meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
                                                  int         x,
@@ -1594,18 +1599,7 @@ meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
   return &logical_monitors[monitor_index];
 }
 
-
-/**
- * meta_screen_get_current_monitor_for_pos:
- * @screen: a #MetaScreen
- * @x: The x coordinate
- * @y: The y coordinate
- *
- * Gets the index of the monitor that contains the passed coordinates.
- *
- * Return value: a monitor index
- */
-int
+static int
 meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
                                          int x,
                                          int y)
