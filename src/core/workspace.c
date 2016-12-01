@@ -955,13 +955,22 @@ void
 meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                    GSList        *struts)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
   MetaScreen *screen = workspace->screen;
   GSList *l;
 
   for (l = struts; l; l = l->next)
     {
       MetaStrut *strut = l->data;
-      int idx = meta_screen_get_monitor_index_for_rect (screen, &strut->rect);
+      MetaLogicalMonitor *logical_monitor;
+      int idx;
+
+      logical_monitor =
+        meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager,
+                                                            &strut->rect);
+      idx = logical_monitor->number;
 
       switch (strut->side)
         {

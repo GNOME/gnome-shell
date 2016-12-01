@@ -35,6 +35,7 @@
 #include "meta-wayland-private.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-xdg-shell.h"
+#include "backends/meta-backend-private.h"
 #include "compositor/meta-surface-actor-wayland.h"
 
 struct _MetaWindowWayland
@@ -334,6 +335,9 @@ scale_rect_size (MetaRectangle *rect,
 static void
 meta_window_wayland_update_main_monitor (MetaWindow *window)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
   MetaWindow *toplevel_window;
   const MetaLogicalMonitor *from;
   const MetaLogicalMonitor *to;
@@ -376,7 +380,8 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   scale = (float)to->scale / from->scale;
   rect = window->rect;
   scale_rect_size (&rect, scale);
-  scaled_new = meta_screen_get_logical_monitor_for_rect (window->screen, &rect);
+  scaled_new =
+    meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager, &rect);
   if (to != scaled_new)
     return;
 

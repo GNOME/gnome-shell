@@ -330,7 +330,10 @@ setup_constraint_info (ConstraintInfo      *info,
                        const MetaRectangle *orig,
                        MetaRectangle       *new)
 {
-  const MetaLogicalMonitor *logical_monitor;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
   MetaWorkspace *cur_workspace;
 
   info->orig    = *orig;
@@ -379,10 +382,11 @@ setup_constraint_info (ConstraintInfo      *info,
     info->fixed_directions = FIXED_DIRECTION_NONE;
 
   logical_monitor =
-    meta_screen_get_logical_monitor_for_rect (window->screen, &info->current);
-  meta_window_get_work_area_for_monitor (window,
-                                         logical_monitor->number,
-                                         &info->work_area_monitor);
+    meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager,
+                                                        &info->current);
+  meta_window_get_work_area_for_logical_monitor (window,
+                                                 logical_monitor,
+                                                 &info->work_area_monitor);
 
   if (!window->fullscreen || !meta_window_has_fullscreen_monitors (window))
     {
@@ -459,10 +463,13 @@ place_window_if_needed(MetaWindow     *window,
       !window->minimized &&
       !window->fullscreen)
     {
+      MetaBackend *backend = meta_get_backend ();
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
       MetaRectangle orig_rect;
       MetaRectangle placed_rect;
       MetaWorkspace *cur_workspace;
-      const MetaLogicalMonitor *logical_monitor;
+      MetaLogicalMonitor *logical_monitor;
 
       placed_rect = (MetaRectangle) {
         .x = window->rect.x,
@@ -481,11 +488,12 @@ place_window_if_needed(MetaWindow     *window,
        * new monitor and update the ConstraintInfo
        */
       logical_monitor =
-        meta_screen_get_logical_monitor_for_rect (window->screen, &placed_rect);
+        meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager,
+                                                            &placed_rect);
       info->entire_monitor = logical_monitor->rect;
-      meta_window_get_work_area_for_monitor (window,
-                                             logical_monitor->number,
-                                             &info->work_area_monitor);
+      meta_window_get_work_area_for_logical_monitor (window,
+                                                     logical_monitor,
+                                                     &info->work_area_monitor);
       cur_workspace = window->screen->active_workspace;
       info->usable_monitor_region =
         meta_workspace_get_onmonitor_region (cur_workspace,

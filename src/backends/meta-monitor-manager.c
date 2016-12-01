@@ -1345,6 +1345,47 @@ meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
   return NULL;
 }
 
+MetaLogicalMonitor *
+meta_monitor_manager_get_logical_monitor_from_rect (MetaMonitorManager *manager,
+                                                    MetaRectangle      *rect)
+{
+  MetaLogicalMonitor *best_logical_monitor;
+  int best_logical_monitor_area;
+  unsigned int i;
+
+  best_logical_monitor = NULL;
+  best_logical_monitor_area = 0;
+
+  for (i = 0; i < manager->n_logical_monitors; i++)
+    {
+      MetaLogicalMonitor *logical_monitor = &manager->logical_monitors[i];
+      MetaRectangle intersection;
+      int intersection_area;
+
+      if (!meta_rectangle_intersect (&logical_monitor->rect,
+                                     rect,
+                                     &intersection))
+        continue;
+
+      intersection_area = meta_rectangle_area (&intersection);
+
+      if (intersection_area > best_logical_monitor_area)
+        {
+          best_logical_monitor = logical_monitor;
+          best_logical_monitor_area = intersection_area;
+        }
+    }
+
+  if (!best_logical_monitor && (rect->width == 0 || rect->height == 0))
+    best_logical_monitor =
+      meta_monitor_manager_get_logical_monitor_at (manager, rect->x, rect->y);
+
+  if (!best_logical_monitor)
+    best_logical_monitor = manager->primary_logical_monitor;
+
+  return best_logical_monitor;
+}
+
 MetaOutput *
 meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
                                   unsigned int       *n_outputs)

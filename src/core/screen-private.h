@@ -137,8 +137,6 @@ MetaLogicalMonitor * meta_screen_get_current_logical_monitor (MetaScreen    *scr
 MetaLogicalMonitor * meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
                                                                       int         x,
                                                                       int         y);
-MetaLogicalMonitor * meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
-                                                               MetaRectangle *rect);
 MetaLogicalMonitor * meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
                                                                        MetaWindow *window);
 

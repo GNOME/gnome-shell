@@ -44,6 +44,7 @@
 #include "core.h"
 #include "meta-cursor-tracker-private.h"
 #include "boxes-private.h"
+#include "backends/meta-backend-private.h"
 
 #include <X11/extensions/Xinerama.h>
 #include <X11/extensions/Xcomposite.h>
@@ -1403,77 +1404,32 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
 }
 
 MetaLogicalMonitor *
-meta_screen_get_logical_monitor_for_rect (MetaScreen    *screen,
-                                          MetaRectangle *rect)
+meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
+                                                  MetaWindow *window)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i, best_monitor;
-  int monitor_score, rect_area;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-
-  if (n_logical_monitors == 1)
-    return &logical_monitors[0];
-
-  best_monitor = 0;
-  monitor_score = -1;
-
-  rect_area = meta_rectangle_area (rect);
-  for (i = 0; i < n_logical_monitors; i++)
-    {
-      gboolean result;
-      int cur;
-
-      if (rect_area > 0)
-        {
-          MetaRectangle dest;
-          result = meta_rectangle_intersect (&logical_monitors[i].rect,
-                                             rect,
-                                             &dest);
-          cur = meta_rectangle_area (&dest);
-        }
-      else
-        {
-          result = meta_rectangle_contains_rect (&logical_monitors[i].rect,
-                                                 rect);
-          cur = rect_area;
-        }
-
-      if (result && cur > monitor_score)
-        {
-          monitor_score = cur;
-          best_monitor = i;
-        }
-    }
-
-  return &logical_monitors[best_monitor];
-}
-
-MetaLogicalMonitor *
-meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
-                                                  MetaWindow *window)
-{
   MetaRectangle window_rect;
 
   meta_window_get_frame_rect (window, &window_rect);
 
-  return meta_screen_get_logical_monitor_for_rect (screen, &window_rect);
+  return meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager,
+                                                             &window_rect);
 }
 
 int
 meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
                                         MetaRectangle *rect)
 {
-  MetaLogicalMonitor *monitor;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
 
-  monitor = meta_screen_get_logical_monitor_for_rect (screen, rect);
-  return monitor->number;
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager, rect);
+  return logical_monitor->number;
 }
 
 MetaLogicalMonitor *
