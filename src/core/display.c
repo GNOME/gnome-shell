@@ -3089,7 +3089,6 @@ meta_display_request_pad_osd (MetaDisplay        *display,
   const gchar *layout_path = NULL;
   ClutterActor *osd;
   MetaLogicalMonitor *logical_monitor;
-  gint monitor_idx;
   GSettings *settings;
 #ifdef HAVE_LIBWACOM
   WacomDevice *wacom_device;
@@ -3119,20 +3118,12 @@ meta_display_request_pad_osd (MetaDisplay        *display,
   if (!layout_path || !settings)
     return;
 
-  if (logical_monitor)
-    {
-      monitor_idx =
-        meta_screen_get_monitor_index_for_rect (display->screen,
-                                                &logical_monitor->rect);
-    }
-  else
-    {
-      monitor_idx = meta_screen_get_current_monitor (display->screen);
-    }
+  if (!logical_monitor)
+    logical_monitor = meta_screen_get_current_logical_monitor (display->screen);
 
   g_signal_emit (display, display_signals[SHOW_PAD_OSD], 0,
                  pad, settings, layout_path,
-                 edition_mode, monitor_idx, &osd);
+                 edition_mode, logical_monitor->number, &osd);
 
   if (osd)
     {
