@@ -374,8 +374,8 @@ MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_from_number (MetaMo
 MetaLogicalMonitor *meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager);
 
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
-                                                                 int                 x,
-                                                                 int                 y);
+                                                                 float               x,
+                                                                 float               y);
 
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_from_rect (MetaMonitorManager *manager,
                                                                         MetaRectangle      *rect);
@@ -426,10 +426,6 @@ void               meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
 gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
                                                             MetaOutput         *output,
                                                             gfloat              matrix[6]);
-
-gint               meta_monitor_manager_get_monitor_at_point (MetaMonitorManager *manager,
-                                                              gfloat              x,
-                                                              gfloat              y);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaMonitorMode *mode);

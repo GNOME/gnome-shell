@@ -146,8 +146,8 @@ meta_backend_monitors_changed (MetaBackend *backend)
   if (clutter_input_device_get_coords (device, NULL, &point))
     {
       /* If we're outside all monitors, warp the pointer back inside */
-      if (meta_monitor_manager_get_monitor_at_point (monitor_manager,
-                                                     point.x, point.y) < 0)
+      if (!meta_monitor_manager_get_logical_monitor_at (monitor_manager,
+                                                        point.x, point.y))
         center_pointer (backend);
     }
 }

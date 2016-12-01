@@ -247,7 +247,8 @@ pointer_constrain_callback (ClutterInputDevice *device,
                                                &n_logical_monitors);
 
   /* if we're moving inside a monitor, we're fine */
-  if (meta_monitor_manager_get_monitor_at_point (monitor_manager, *new_x, *new_y) >= 0)
+  if (meta_monitor_manager_get_logical_monitor_at (monitor_manager,
+                                                   *new_x, *new_y))
     return;
 
   /* if we're trying to escape, clamp to the CRTC we're coming from */

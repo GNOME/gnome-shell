@@ -1331,8 +1331,8 @@ meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager)
 
 MetaLogicalMonitor *
 meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
-                                             int                 x,
-                                             int                 y)
+                                             float               x,
+                                             float               y)
 {
   unsigned int i;
 
@@ -1722,30 +1722,6 @@ meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
     if (meta_rectangle_contains_rect (&manager->logical_monitors[i].rect,
                                       &output->crtc->rect))
       return i;
-
-  return -1;
-}
-
-gint
-meta_monitor_manager_get_monitor_at_point (MetaMonitorManager *manager,
-                                           gfloat              x,
-                                           gfloat              y)
-{
-  unsigned int i;
-
-  for (i = 0; i < manager->n_logical_monitors; i++)
-    {
-      MetaLogicalMonitor *logical_monitor = &manager->logical_monitors[i];
-      int left, right, top, bottom;
-
-      left = logical_monitor->rect.x;
-      right = left + logical_monitor->rect.width;
-      top = logical_monitor->rect.y;
-      bottom = top + logical_monitor->rect.height;
-
-      if ((x >= left) && (x < right) && (y >= top) && (y < bottom))
-	return i;
-    }
 
   return -1;
 }
