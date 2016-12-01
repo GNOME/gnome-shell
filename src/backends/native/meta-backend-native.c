@@ -154,7 +154,8 @@ constrain_to_client_constraint (ClutterInputDevice *device,
                                 float              *y)
 {
   MetaBackend *backend = meta_get_backend ();
-  MetaPointerConstraint *constraint = backend->client_pointer_constraint;
+  MetaPointerConstraint *constraint =
+    meta_backend_get_client_pointer_constraint (backend);
 
   if (!constraint)
     return;

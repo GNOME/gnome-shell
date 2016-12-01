@@ -72,6 +72,12 @@ struct _MetaBackendPrivate
   ClutterActor *stage;
 
   guint device_update_idle_id;
+
+  GHashTable *device_monitors;
+
+  int current_device_id;
+
+  MetaPointerConstraint *client_pointer_constraint;
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
@@ -95,7 +101,7 @@ meta_backend_finalize (GObject *object)
   if (priv->device_update_idle_id)
     g_source_remove (priv->device_update_idle_id);
 
-  g_hash_table_destroy (backend->device_monitors);
+  g_hash_table_destroy (priv->device_monitors);
 
   G_OBJECT_CLASS (meta_backend_parent_class)->finalize (object);
 }
@@ -146,6 +152,24 @@ meta_backend_monitors_changed (MetaBackend *backend)
     }
 }
 
+void
+meta_backend_foreach_device_monitor (MetaBackend *backend,
+                                     GFunc        func,
+                                     gpointer     user_data)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  GHashTableIter iter;
+  gpointer value;
+
+  g_hash_table_iter_init (&iter, priv->device_monitors);
+  while (g_hash_table_iter_next (&iter, NULL, &value))
+    {
+      MetaIdleMonitor *device_monitor = META_IDLE_MONITOR (value);
+
+      func (device_monitor, user_data);
+    }
+}
+
 static MetaIdleMonitor *
 meta_backend_create_idle_monitor (MetaBackend *backend,
                                   int          device_id)
@@ -157,19 +181,22 @@ static void
 create_device_monitor (MetaBackend *backend,
                        int          device_id)
 {
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   MetaIdleMonitor *idle_monitor;
 
-  g_assert (g_hash_table_lookup (backend->device_monitors, &device_id) == NULL);
+  g_assert (g_hash_table_lookup (priv->device_monitors, &device_id) == NULL);
 
   idle_monitor = meta_backend_create_idle_monitor (backend, device_id);
-  g_hash_table_insert (backend->device_monitors, &idle_monitor->device_id, idle_monitor);
+  g_hash_table_insert (priv->device_monitors, &idle_monitor->device_id, idle_monitor);
 }
 
 static void
 destroy_device_monitor (MetaBackend *backend,
                         int          device_id)
 {
-  g_hash_table_remove (backend->device_monitors, &device_id);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  g_hash_table_remove (priv->device_monitors, &device_id);
 }
 
 static void
@@ -238,6 +265,7 @@ on_device_removed (ClutterDeviceManager *device_manager,
                    gpointer              user_data)
 {
   MetaBackend *backend = META_BACKEND (user_data);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   int device_id = clutter_input_device_get_device_id (device);
 
   destroy_device_monitor (backend, device_id);
@@ -245,9 +273,8 @@ on_device_removed (ClutterDeviceManager *device_manager,
   /* If the device the user last interacted goes away, check again pointer
    * visibility.
    */
-  if (backend->current_device_id == device_id)
+  if (priv->current_device_id == device_id)
     {
-      MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
       MetaCursorTracker *cursor_tracker = priv->cursor_tracker;
       gboolean has_touchscreen, has_pointing_device;
       ClutterInputDeviceType device_type;
@@ -294,8 +321,9 @@ meta_backend_real_post_init (MetaBackend *backend)
 
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
 
-  backend->device_monitors = g_hash_table_new_full (g_int_hash, g_int_equal,
-                                                    NULL, (GDestroyNotify) g_object_unref);
+  priv->device_monitors =
+    g_hash_table_new_full (g_int_hash, g_int_equal,
+                           NULL, (GDestroyNotify) g_object_unref);
 
   {
     MetaCursorTracker *cursor_tracker;
@@ -456,7 +484,9 @@ MetaIdleMonitor *
 meta_backend_get_idle_monitor (MetaBackend *backend,
                                int          device_id)
 {
-  return g_hash_table_lookup (backend->device_monitors, &device_id);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return g_hash_table_lookup (priv->device_monitors, &device_id);
 }
 
 /**
@@ -603,11 +633,11 @@ update_last_device (MetaBackend *backend)
   priv->device_update_idle_id = 0;
   manager = clutter_device_manager_get_default ();
   device = clutter_device_manager_get_device (manager,
-                                              backend->current_device_id);
+                                              priv->current_device_id);
   device_type = clutter_input_device_get_device_type (device);
 
   g_signal_emit_by_name (backend, "last-device-changed",
-                         backend->current_device_id);
+                         priv->current_device_id);
 
   switch (device_type)
     {
@@ -632,7 +662,7 @@ meta_backend_update_last_device (MetaBackend *backend,
   ClutterDeviceManager *manager;
   ClutterInputDevice *device;
 
-  if (backend->current_device_id == device_id)
+  if (priv->current_device_id == device_id)
     return;
 
   manager = clutter_device_manager_get_default ();
@@ -642,7 +672,7 @@ meta_backend_update_last_device (MetaBackend *backend,
       clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER)
     return;
 
-  backend->current_device_id = device_id;
+  priv->current_device_id = device_id;
 
   if (priv->device_update_idle_id == 0)
     {
@@ -668,15 +698,25 @@ meta_backend_get_relative_motion_deltas (MetaBackend *backend,
                                             dx_unaccel, dy_unaccel);
 }
 
+MetaPointerConstraint *
+meta_backend_get_client_pointer_constraint (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->client_pointer_constraint;
+}
+
 void
 meta_backend_set_client_pointer_constraint (MetaBackend           *backend,
                                             MetaPointerConstraint *constraint)
 {
-  g_assert (!constraint || !backend->client_pointer_constraint);
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
-  g_clear_object (&backend->client_pointer_constraint);
+  g_assert (!constraint || !priv->client_pointer_constraint);
+
+  g_clear_object (&priv->client_pointer_constraint);
   if (constraint)
-    backend->client_pointer_constraint = g_object_ref (constraint);
+    priv->client_pointer_constraint = g_object_ref (constraint);
 }
 
 /* Mutter is responsible for pulling events off the X queue, so Clutter

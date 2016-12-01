@@ -98,15 +98,9 @@ static void
 handle_alarm_notify (MetaBackend *backend,
                      XEvent      *event)
 {
-  GHashTableIter iter;
-  gpointer value;
-
-  g_hash_table_iter_init (&iter, backend->device_monitors);
-  while (g_hash_table_iter_next (&iter, NULL, &value))
-    {
-      MetaIdleMonitor *device_monitor = META_IDLE_MONITOR (value);
-      meta_idle_monitor_xsync_handle_xevent (device_monitor, (XSyncAlarmNotifyEvent*) event);
-    }
+  meta_backend_foreach_device_monitor (backend,
+                                       (GFunc) meta_idle_monitor_xsync_handle_xevent,
+                                       event);
 }
 
 static void

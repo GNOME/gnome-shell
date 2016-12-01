@@ -53,11 +53,6 @@
 struct _MetaBackend
 {
   GObject parent;
-
-  GHashTable *device_monitors;
-  gint current_device_id;
-
-  MetaPointerConstraint *client_pointer_constraint;
 };
 
 struct _MetaBackendClass
@@ -115,6 +110,10 @@ ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
                                                  int          device_id);
+void meta_backend_foreach_device_monitor (MetaBackend *backend,
+                                          GFunc        func,
+                                          gpointer     user_data);
+
 MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
 MetaCursorTracker * meta_backend_get_cursor_tracker (MetaBackend *backend);
 MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
@@ -144,6 +143,7 @@ gboolean meta_backend_get_relative_motion_deltas (MetaBackend *backend,
                                                   double       *dx_unaccel,
                                                   double       *dy_unaccel);
 
+MetaPointerConstraint * meta_backend_get_client_pointer_constraint (MetaBackend *backend);
 void meta_backend_set_client_pointer_constraint (MetaBackend *backend,
                                                  MetaPointerConstraint *constraint);
 
