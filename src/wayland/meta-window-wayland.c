@@ -339,9 +339,9 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
   MetaWindow *toplevel_window;
-  const MetaLogicalMonitor *from;
-  const MetaLogicalMonitor *to;
-  const MetaLogicalMonitor *scaled_new;
+  MetaLogicalMonitor *from;
+  MetaLogicalMonitor *to;
+  MetaLogicalMonitor *scaled_new;
   float scale;
   MetaRectangle rect;
 

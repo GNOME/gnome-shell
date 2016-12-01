@@ -1415,60 +1415,24 @@ meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
   return logical_monitor->number;
 }
 
-MetaLogicalMonitor *
-meta_screen_get_monitor_neighbor (MetaScreen         *screen,
-                                  int                 which_monitor,
-                                  MetaScreenDirection direction)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
-  MetaLogicalMonitor *input;
-  MetaLogicalMonitor *current;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-  input = &logical_monitors[which_monitor];
-
-  for (i = 0; i < n_logical_monitors; i++)
-    {
-      current = &logical_monitors[i];
-
-      if ((direction == META_SCREEN_RIGHT &&
-           current->rect.x == input->rect.x + input->rect.width &&
-           meta_rectangle_vert_overlap(&current->rect, &input->rect)) ||
-          (direction == META_SCREEN_LEFT &&
-           input->rect.x == current->rect.x + current->rect.width &&
-           meta_rectangle_vert_overlap(&current->rect, &input->rect)) ||
-          (direction == META_SCREEN_UP &&
-           input->rect.y == current->rect.y + current->rect.height &&
-           meta_rectangle_horiz_overlap(&current->rect, &input->rect)) ||
-          (direction == META_SCREEN_DOWN &&
-           current->rect.y == input->rect.y + input->rect.height &&
-           meta_rectangle_horiz_overlap(&current->rect, &input->rect)))
-        {
-          return current;
-        }
-    }
-
-  return NULL;
-}
-
 int
 meta_screen_get_monitor_neighbor_index (MetaScreen         *screen,
                                         int                 which_monitor,
                                         MetaScreenDirection direction)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
   MetaLogicalMonitor *logical_monitor;
+  MetaLogicalMonitor *neighbor;
 
-  logical_monitor = meta_screen_get_monitor_neighbor (screen,
-                                                      which_monitor,
-                                                      direction);
-  return logical_monitor ? logical_monitor->number : -1;
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          which_monitor);
+  neighbor = meta_monitor_manager_get_logical_monitor_neighbor (monitor_manager,
+                                                                logical_monitor,
+                                                                direction);
+  return neighbor ? neighbor->number : -1;
 }
 
 /**

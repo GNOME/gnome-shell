@@ -130,10 +130,6 @@ void          meta_screen_hide_tile_preview            (MetaScreen    *screen);
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);
 
-MetaLogicalMonitor * meta_screen_get_monitor_neighbor (MetaScreen         *screen,
-                                                       int                 which_monitor,
-                                                       MetaScreenDirection dir);
-
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);
 void          meta_screen_queue_workarea_recalc   (MetaScreen             *screen);

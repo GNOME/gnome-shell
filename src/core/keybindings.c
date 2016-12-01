@@ -3154,11 +3154,15 @@ handle_move_to_monitor (MetaDisplay    *display,
                         MetaKeyBinding *binding,
                         gpointer        dummy)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
   gint which = binding->handler->data;
-  const MetaLogicalMonitor *current, *new;
+  MetaLogicalMonitor *current, *new;
 
   current = window->monitor;
-  new = meta_screen_get_monitor_neighbor (screen, current->number, which);
+  new = meta_monitor_manager_get_logical_monitor_neighbor (monitor_manager,
+                                                           current, which);
 
   if (new == NULL)
     return;

@@ -1386,6 +1386,53 @@ meta_monitor_manager_get_logical_monitor_from_rect (MetaMonitorManager *manager,
   return best_logical_monitor;
 }
 
+MetaLogicalMonitor *
+meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager *manager,
+                                                   MetaLogicalMonitor *logical_monitor,
+                                                   MetaScreenDirection direction)
+{
+  unsigned int i;
+
+  for (i = 0; i < manager->n_logical_monitors; i++)
+    {
+      MetaLogicalMonitor *other = &manager->logical_monitors[i];
+
+      switch (direction)
+        {
+        case META_SCREEN_RIGHT:
+           if (other->rect.x == (logical_monitor->rect.x +
+                                 logical_monitor->rect.width) &&
+               meta_rectangle_vert_overlap (&other->rect,
+                                            &logical_monitor->rect))
+             return other;
+           break;
+        case META_SCREEN_LEFT:
+           if (logical_monitor->rect.x == (other->rect.x +
+                                           other->rect.width) &&
+               meta_rectangle_vert_overlap (&other->rect,
+                                            &logical_monitor->rect))
+             return other;
+           break;
+        case META_SCREEN_UP:
+           if (logical_monitor->rect.y == (other->rect.y +
+                                           other->rect.height) &&
+               meta_rectangle_horiz_overlap (&other->rect,
+                                             &logical_monitor->rect))
+             return other;
+           break;
+        case META_SCREEN_DOWN:
+           if (other->rect.y == (logical_monitor->rect.y +
+                                 logical_monitor->rect.height) &&
+               meta_rectangle_horiz_overlap (&other->rect,
+                                             &logical_monitor->rect))
+             return other;
+           break;
+        }
+    }
+
+  return NULL;
+}
+
 MetaOutput *
 meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
                                   unsigned int       *n_outputs)
