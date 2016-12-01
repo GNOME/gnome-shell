@@ -1286,6 +1286,14 @@ surface_actor_painting (MetaSurfaceActorWayland *surface_actor,
   meta_wayland_surface_update_outputs (surface);
 }
 
+static void
+surface_actor_mapped_notify (MetaSurfaceActorWayland *surface_actor,
+                             GParamSpec              *pspec,
+                             MetaWaylandSurface      *surface)
+{
+  meta_wayland_surface_update_outputs (surface);
+}
+
 MetaWaylandSurface *
 meta_wayland_surface_create (MetaWaylandCompositor *compositor,
                              struct wl_client      *client,
@@ -1309,6 +1317,10 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
                            G_CALLBACK (surface_actor_painting),
                            surface,
                            0);
+  g_signal_connect_object (surface->surface_actor,
+                           "notify::mapped",
+                           G_CALLBACK (surface_actor_mapped_notify),
+                           surface, 0);
 
   sync_drag_dest_funcs (surface);
 
