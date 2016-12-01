@@ -361,7 +361,7 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
    * needed to avoid jumping back and forth between the new and the old, since
    * changing main monitor may cause the window to be resized so that it no
    * longer have that same new main monitor. */
-  to = meta_screen_calculate_logical_monitor_for_window (window->screen, window);
+  to = meta_window_calculate_main_logical_monitor (window);
 
   if (from == to)
     return;

@@ -829,6 +829,19 @@ meta_window_main_monitor_changed (MetaWindow               *window,
                            window->monitor->number, window);
 }
 
+MetaLogicalMonitor *
+meta_window_calculate_main_logical_monitor (MetaWindow *window)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaRectangle window_rect;
+
+  meta_window_get_frame_rect (window, &window_rect);
+  return meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager,
+                                                             &window_rect);
+}
+
 MetaWindow *
 _meta_window_shared_new (MetaDisplay         *display,
                          MetaScreen          *screen,
@@ -1026,8 +1039,7 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->compositor_private = NULL;
 
-  window->monitor =
-    meta_screen_calculate_logical_monitor_for_window (window->screen, window);
+  window->monitor = meta_window_calculate_main_logical_monitor (window);
   window->preferred_output_winsys_id = window->monitor->winsys_id;
 
   window->tile_match = NULL;

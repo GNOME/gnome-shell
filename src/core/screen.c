@@ -1401,21 +1401,6 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
   return window;
 }
 
-MetaLogicalMonitor *
-meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
-                                                  MetaWindow *window)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaRectangle window_rect;
-
-  meta_window_get_frame_rect (window, &window_rect);
-
-  return meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager,
-                                                             &window_rect);
-}
-
 int
 meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
                                         MetaRectangle *rect)
