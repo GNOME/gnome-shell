@@ -39,4 +39,7 @@ Display * meta_backend_x11_get_xdisplay (MetaBackendX11 *backend);
 
 Window meta_backend_x11_get_xwindow (MetaBackendX11 *backend);
 
+void meta_backend_x11_handle_event (MetaBackendX11 *x11,
+                                    XEvent         *xevent);
+
 #endif /* META_BACKEND_X11_H */

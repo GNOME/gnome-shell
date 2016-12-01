@@ -81,6 +81,7 @@ find_next_cascade (MetaWindow *window,
                    int        *new_x,
                    int        *new_y)
 {
+  MetaBackend *backend = meta_get_backend ();
   GList *tmp;
   GList *sorted;
   int cascade_x, cascade_y;
@@ -114,7 +115,7 @@ find_next_cascade (MetaWindow *window,
    * of NW corner of window frame.
    */
 
-  current = meta_screen_get_current_logical_monitor (window->screen);
+  current = meta_backend_get_current_logical_monitor (backend);
   meta_window_get_work_area_for_logical_monitor (window, current, &work_area);
 
   cascade_x = MAX (0, work_area.x);
@@ -665,6 +666,7 @@ meta_window_place (MetaWindow        *window,
                    int               *new_x,
                    int               *new_y)
 {
+  MetaBackend *backend = meta_get_backend ();
   GList *windows = NULL;
   MetaLogicalMonitor *logical_monitor;
 
@@ -815,7 +817,7 @@ meta_window_place (MetaWindow        *window,
       meta_window_get_frame_rect (window, &frame_rect);
 
       /* Warning, this function is a round trip! */
-      logical_monitor = meta_screen_get_current_logical_monitor (window->screen);
+      logical_monitor = meta_backend_get_current_logical_monitor (backend);
 
       w = logical_monitor->rect.width;
       h = logical_monitor->rect.height;
@@ -859,8 +861,8 @@ meta_window_place (MetaWindow        *window,
     g_slist_free (all_windows);
   }
 
-  /* Warning, this is a round trip! */
-  logical_monitor = meta_screen_get_current_logical_monitor (window->screen);
+  /* Warning, on X11 this might be a round trip! */
+  logical_monitor = meta_backend_get_current_logical_monitor (backend);
 
   /* Maximize windows if they are too big for their work area (bit of
    * a hack here). Assume undecorated windows probably don't intend to

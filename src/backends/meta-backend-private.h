@@ -71,6 +71,8 @@ struct _MetaBackendClass
                          int          x,
                          int          y);
 
+  MetaLogicalMonitor * (* get_current_logical_monitor) (MetaBackend *backend);
+
   void (* set_keymap) (MetaBackend *backend,
                        const char  *layouts,
                        const char  *variants,
@@ -121,6 +123,8 @@ gboolean meta_backend_ungrab_device (MetaBackend *backend,
 void meta_backend_warp_pointer (MetaBackend *backend,
                                 int          x,
                                 int          y);
+
+MetaLogicalMonitor * meta_backend_get_current_logical_monitor (MetaBackend *backend);
 
 struct xkb_keymap * meta_backend_get_keymap (MetaBackend *backend);
 

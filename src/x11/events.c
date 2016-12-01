@@ -28,11 +28,12 @@
 #include <X11/extensions/shape.h>
 
 #include <meta/errors.h>
+#include "meta/meta-backend.h"
 #include "bell.h"
 #include "display-private.h"
 #include "window-private.h"
 #include "workspace-private.h"
-
+#include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
 #include "x11/xprops.h"
 
@@ -1697,6 +1698,7 @@ static gboolean
 meta_display_handle_xevent (MetaDisplay *display,
                             XEvent      *event)
 {
+  MetaBackend *backend = meta_get_backend ();
   Window modified;
   gboolean bypass_compositor = FALSE, bypass_gtk = FALSE;
   XIEvent *input_event;
@@ -1722,7 +1724,9 @@ meta_display_handle_xevent (MetaDisplay *display,
 #endif
 
   display->current_time = event_get_time (display, event);
-  display->monitor_cache_invalidated = TRUE;
+
+  if (META_IS_BACKEND_X11 (backend))
+    meta_backend_x11_handle_event (META_BACKEND_X11 (backend), event);
 
   if (display->focused_by_us &&
       event->xany.serial > display->focus_serial &&

@@ -651,8 +651,6 @@ meta_display_open (void)
   display->leader_window = None;
   display->timestamp_pinging_window = None;
 
-  display->monitor_cache_invalidated = TRUE;
-
   display->groups_by_leader = NULL;
 
   display->screen = NULL;
@@ -3085,6 +3083,7 @@ meta_display_request_pad_osd (MetaDisplay        *display,
                               ClutterInputDevice *pad,
                               gboolean            edition_mode)
 {
+  MetaBackend *backend = meta_get_backend ();
   MetaInputSettings *input_settings;
   const gchar *layout_path = NULL;
   ClutterActor *osd;
@@ -3119,7 +3118,7 @@ meta_display_request_pad_osd (MetaDisplay        *display,
     return;
 
   if (!logical_monitor)
-    logical_monitor = meta_screen_get_current_logical_monitor (display->screen);
+    logical_monitor = meta_backend_get_current_logical_monitor (backend);
 
   g_signal_emit (display, display_signals[SHOW_PAD_OSD], 0,
                  pad, settings, layout_path,

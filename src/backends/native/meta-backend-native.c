@@ -37,6 +37,7 @@
 #include "meta-cursor-renderer-native.h"
 #include "meta-launcher.h"
 #include "backends/meta-cursor-tracker-private.h"
+#include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-pointer-constraint.h"
 #include "backends/meta-stage.h"
 #include "backends/native/meta-clutter-backend-native.h"
@@ -336,6 +337,18 @@ meta_backend_native_warp_pointer (MetaBackend *backend,
   meta_cursor_tracker_update_position (cursor_tracker, x, y);
 }
 
+static MetaLogicalMonitor *
+meta_backend_native_get_current_logical_monitor (MetaBackend *backend)
+{
+  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  int x, y;
+
+  meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
+  return meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
+}
+
 static void
 meta_backend_native_set_keymap (MetaBackend *backend,
                                 const char  *layouts,
@@ -436,6 +449,9 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->create_renderer = meta_backend_native_create_renderer;
 
   backend_class->warp_pointer = meta_backend_native_warp_pointer;
+
+  backend_class->get_current_logical_monitor = meta_backend_native_get_current_logical_monitor;
+
   backend_class->set_keymap = meta_backend_native_set_keymap;
   backend_class->get_keymap = meta_backend_native_get_keymap;
   backend_class->lock_layout_group = meta_backend_native_lock_layout_group;

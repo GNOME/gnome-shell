@@ -729,6 +729,8 @@ void meta_window_activate_full (MetaWindow     *window,
                                 MetaClientType  source_indication,
                                 MetaWorkspace  *workspace);
 
+MetaLogicalMonitor * meta_window_calculate_main_logical_monitor (MetaWindow *window);
+
 void meta_window_update_monitor (MetaWindow *window,
                                  gboolean    user_op);
 

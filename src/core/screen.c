@@ -430,9 +430,7 @@ reload_logical_monitors (MetaScreen *screen)
       meta_workspace_invalidate_work_area (space);
     }
 
-  screen->last_monitor_index = 0;
   screen->has_xinerama_indices = FALSE;
-  screen->display->monitor_cache_invalidated = TRUE;
 }
 
 /* The guard window allows us to leave minimized windows mapped so
@@ -1488,97 +1486,6 @@ meta_screen_get_monitor_neighbor_index (MetaScreen         *screen,
   return logical_monitor ? logical_monitor->number : -1;
 }
 
-MetaLogicalMonitor *
-meta_screen_get_current_logical_monitor (MetaScreen *screen)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  int monitor_index;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-  monitor_index = meta_screen_get_current_monitor (screen);
-
-  return &logical_monitors[monitor_index];
-}
-
-static int
-meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
-                                         int         x,
-                                         int         y);
-
-MetaLogicalMonitor *
-meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
-                                                 int         x,
-                                                 int         y)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  int monitor_index;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-  monitor_index = meta_screen_get_current_monitor_for_pos (screen, x, y);
-
-  return &logical_monitors[monitor_index];
-}
-
-static int
-meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
-                                         int x,
-                                         int y)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-
-  if (n_logical_monitors == 1)
-    return 0;
-  else if (screen->display->monitor_cache_invalidated)
-    {
-      unsigned int i;
-      MetaRectangle pointer_position;
-      pointer_position.x = x;
-      pointer_position.y = y;
-      pointer_position.width = pointer_position.height = 1;
-
-      screen->display->monitor_cache_invalidated = FALSE;
-      screen->last_monitor_index = 0;
-
-      for (i = 0; i < n_logical_monitors; i++)
-        {
-          if (meta_rectangle_contains_rect (&logical_monitors[i].rect,
-                                            &pointer_position))
-            {
-              screen->last_monitor_index = i;
-              break;
-            }
-        }
-
-      meta_topic (META_DEBUG_XINERAMA,
-                  "Rechecked current monitor, now %d\n",
-                  screen->last_monitor_index);
-
-    }
-
-    return screen->last_monitor_index;
-}
-
-
 /**
  * meta_screen_get_current_monitor:
  * @screen: a #MetaScreen
@@ -1591,27 +1498,15 @@ int
 meta_screen_get_current_monitor (MetaScreen *screen)
 {
   MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
-  int n_logical_monitors =
-    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+  MetaLogicalMonitor *logical_monitor;
 
-  if (n_logical_monitors == 1)
+  logical_monitor = meta_backend_get_current_logical_monitor (backend);
+
+  /* Pretend its the first when there is no actual current monitor. */
+  if (!logical_monitor)
     return 0;
 
-  /* Sadly, we have to do it this way. Yuck.
-   */
-
-  if (screen->display->monitor_cache_invalidated)
-    {
-      int x, y;
-
-      meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
-      meta_screen_get_current_monitor_for_pos (screen, x, y);
-    }
-
-  return screen->last_monitor_index;
+  return logical_monitor->number;
 }
 
 /**

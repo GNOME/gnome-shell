@@ -77,9 +77,6 @@ struct _MetaScreen
 
   gboolean has_xinerama_indices;
 
-  /* Cache the current monitor */
-  int last_monitor_index;
-
   GSList *startup_sequences;
 
   Window wm_cm_selection_window;
@@ -133,10 +130,6 @@ void          meta_screen_hide_tile_preview            (MetaScreen    *screen);
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);
 
-MetaLogicalMonitor * meta_screen_get_current_logical_monitor (MetaScreen    *screen);
-MetaLogicalMonitor * meta_screen_get_current_logical_monitor_for_pos (MetaScreen *screen,
-                                                                      int         x,
-                                                                      int         y);
 MetaLogicalMonitor * meta_screen_calculate_logical_monitor_for_window (MetaScreen *screen,
                                                                        MetaWindow *window);
 

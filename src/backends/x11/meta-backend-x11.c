@@ -45,6 +45,7 @@
 #include "backends/x11/nested/meta-cursor-renderer-x11-nested.h"
 #include "backends/x11/meta-clutter-backend-x11.h"
 #include "backends/x11/meta-renderer-x11.h"
+#include "meta/meta-cursor-tracker.h"
 #include "meta-cursor-renderer-x11.h"
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland.h"
@@ -92,6 +93,8 @@ struct _MetaBackendX11Private
   gchar *keymap_variants;
   gchar *keymap_options;
   int locked_group;
+
+  MetaLogicalMonitor *cached_current_logical_monitor;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
 
@@ -448,10 +451,21 @@ on_device_added (ClutterDeviceManager *device_manager,
 }
 
 static void
+on_monitors_changed (MetaMonitorManager *manager,
+                     MetaBackend        *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  priv->cached_current_logical_monitor = NULL;
+}
+
+static void
 meta_backend_x11_post_init (MetaBackend *backend)
 {
   MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  MetaMonitorManager *monitor_manager;
   int major, minor;
   gboolean has_xi = FALSE;
 
@@ -500,6 +514,10 @@ meta_backend_x11_post_init (MetaBackend *backend)
                            G_CALLBACK (on_device_added), backend, 0);
 
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
+
+  monitor_manager = meta_backend_get_monitor_manager (backend);
+  g_signal_connect (monitor_manager, "monitors-changed",
+                    G_CALLBACK (on_monitors_changed), backend);
 }
 
 static ClutterBackend *
@@ -620,6 +638,29 @@ meta_backend_x11_warp_pointer (MetaBackend *backend,
                  meta_backend_x11_get_xwindow (x11),
                  0, 0, 0, 0,
                  x, y);
+}
+
+static MetaLogicalMonitor *
+meta_backend_x11_get_current_logical_monitor (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  MetaCursorTracker *cursor_tracker;
+  int x, y;
+  MetaMonitorManager *monitor_manager;
+  MetaLogicalMonitor *logical_monitor;
+
+  if (priv->cached_current_logical_monitor)
+    return priv->cached_current_logical_monitor;
+
+  cursor_tracker = meta_backend_get_cursor_tracker (backend);
+  meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
+  monitor_manager = meta_backend_get_monitor_manager (backend);
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
+
+  priv->cached_current_logical_monitor = logical_monitor;
+  return priv->cached_current_logical_monitor;
 }
 
 static void
@@ -811,6 +852,14 @@ meta_backend_x11_set_numlock (MetaBackend *backend,
   /* TODO: Currently handled by gnome-settings-deamon */
 }
 
+void
+meta_backend_x11_handle_event (MetaBackendX11 *x11,
+                               XEvent      *xevent)
+{
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  priv->cached_current_logical_monitor = NULL;
+}
 
 static void
 meta_backend_x11_update_screen_size (MetaBackend *backend,
@@ -899,6 +948,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;
+  backend_class->get_current_logical_monitor = meta_backend_x11_get_current_logical_monitor;
   backend_class->set_keymap = meta_backend_x11_set_keymap;
   backend_class->get_keymap = meta_backend_x11_get_keymap;
   backend_class->lock_layout_group = meta_backend_x11_lock_layout_group;

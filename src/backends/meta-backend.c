@@ -572,6 +572,12 @@ meta_backend_warp_pointer (MetaBackend *backend,
   META_BACKEND_GET_CLASS (backend)->warp_pointer (backend, x, y);
 }
 
+MetaLogicalMonitor *
+meta_backend_get_current_logical_monitor (MetaBackend *backend)
+{
+  return META_BACKEND_GET_CLASS (backend)->get_current_logical_monitor (backend);
+}
+
 void
 meta_backend_set_keymap (MetaBackend *backend,
                          const char  *layouts,
