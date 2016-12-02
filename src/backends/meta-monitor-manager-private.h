@@ -59,6 +59,11 @@ typedef struct _MetaCRTCInfo MetaCRTCInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
 typedef struct _MetaTileInfo MetaTileInfo;
 
+#define META_TYPE_LOGICAL_MONITOR (meta_logical_monitor_get_type ())
+G_DECLARE_FINAL_TYPE (MetaLogicalMonitor, meta_logical_monitor,
+                      META, LOGICAL_MONITOR,
+                      GObject)
+
 typedef enum {
   META_MONITOR_TRANSFORM_NORMAL,
   META_MONITOR_TRANSFORM_90,
@@ -208,6 +213,8 @@ struct _MetaMonitorMode
  */
 struct _MetaLogicalMonitor
 {
+  GObject parent;
+
   int number;
   int xinerama_index;
   MetaRectangle rect;

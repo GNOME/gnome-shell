@@ -40,6 +40,8 @@
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
 
+G_DEFINE_TYPE (MetaLogicalMonitor, meta_logical_monitor, G_TYPE_OBJECT)
+
 enum {
   CONFIRM_DISPLAY_CHANGE,
   SIGNALS_LAST
@@ -138,7 +140,7 @@ construct_tile_monitor (MetaMonitorManager *manager,
 {
   MetaLogicalMonitor *logical_monitor = NULL;
 
-  logical_monitor = g_new0 (MetaLogicalMonitor, 1);
+  logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
 
   logical_monitor->tile_group_id = output->tile_info.group_id;
   logical_monitor->refresh_rate = output->crtc->current_mode->refresh_rate;
@@ -226,7 +228,9 @@ make_logical_config (MetaMonitorManager *manager)
 
       if (crtc->logical_monitor == NULL)
         {
-          MetaLogicalMonitor *logical_monitor = g_new0 (MetaLogicalMonitor, 1);
+          MetaLogicalMonitor *logical_monitor;
+
+          logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
 
           logical_monitor->number = monitor_number;
           logical_monitor->rect = crtc->rect;
@@ -452,7 +456,7 @@ meta_monitor_manager_finalize (GObject *object)
   meta_monitor_manager_free_output_array (manager->outputs, manager->n_outputs);
   meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
   meta_monitor_manager_free_crtc_array (manager->crtcs, manager->n_crtcs);
-  g_list_free_full (manager->logical_monitors, g_free);
+  g_list_free_full (manager->logical_monitors, g_object_unref);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->finalize (object);
 }
@@ -1573,7 +1577,7 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 
   g_signal_emit_by_name (manager, "monitors-changed");
 
-  g_list_free_full (old_logical_monitors, g_free);
+  g_list_free_full (old_logical_monitors, g_object_unref);
 }
 
 void
@@ -1750,4 +1754,14 @@ meta_monitor_manager_get_is_builtin_display_on (MetaMonitorManager *manager)
   g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), FALSE);
 
   return meta_monitor_config_get_is_builtin_display_on (manager->config);
+}
+
+static void
+meta_logical_monitor_init (MetaLogicalMonitor *logical_monitor)
+{
+}
+
+static void
+meta_logical_monitor_class_init (MetaLogicalMonitorClass *klass)
+{
 }
