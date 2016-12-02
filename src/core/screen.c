@@ -100,6 +100,13 @@ static guint screen_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (MetaScreen, meta_screen, G_TYPE_OBJECT);
 
+static GQuark quark_screen_x11_logical_monitor_data = 0;
+
+typedef struct _MetaScreenX11LogicalMonitorData
+{
+  int xinerama_index;
+} MetaScreenX11LogicalMonitorData;
+
 static void
 meta_screen_set_property (GObject      *object,
                           guint         prop_id,
@@ -254,6 +261,9 @@ meta_screen_class_init (MetaScreenClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_N_WORKSPACES,
                                    pspec);
+
+  quark_screen_x11_logical_monitor_data =
+    g_quark_from_static_string ("-meta-screen-logical-monitor-x11-data");
 }
 
 static void
@@ -338,6 +348,31 @@ set_wm_icon_size_hint (MetaScreen *screen)
 #undef N_VALS
 }
 
+static MetaScreenX11LogicalMonitorData *
+get_screen_x11_logical_monitor_data (MetaLogicalMonitor *logical_monitor)
+{
+  return g_object_get_qdata (G_OBJECT (logical_monitor),
+                             quark_screen_x11_logical_monitor_data);
+}
+
+static MetaScreenX11LogicalMonitorData *
+ensure_screen_x11_logical_monitor_data (MetaLogicalMonitor *logical_monitor)
+{
+  MetaScreenX11LogicalMonitorData *data;
+
+  data = get_screen_x11_logical_monitor_data (logical_monitor);
+  if (data)
+    return data;
+
+  data = g_new0 (MetaScreenX11LogicalMonitorData, 1);
+  g_object_set_qdata_full (G_OBJECT (logical_monitor),
+                           quark_screen_x11_logical_monitor_data,
+                           data,
+                           g_free);
+
+  return data;
+}
+
 static void
 meta_screen_ensure_xinerama_indices (MetaScreen *screen)
 {
@@ -376,7 +411,13 @@ meta_screen_ensure_xinerama_indices (MetaScreen *screen)
               logical_monitor->rect.y == infos[j].y_org &&
               logical_monitor->rect.width == infos[j].width &&
               logical_monitor->rect.height == infos[j].height)
-            logical_monitor->xinerama_index = j;
+            {
+              MetaScreenX11LogicalMonitorData *logical_monitor_data;
+
+              logical_monitor_data =
+                ensure_screen_x11_logical_monitor_data (logical_monitor);
+              logical_monitor_data->xinerama_index = j;
+            }
         }
     }
 
@@ -387,11 +428,15 @@ int
 meta_screen_logical_monitor_to_xinerama_index (MetaScreen         *screen,
                                                MetaLogicalMonitor *logical_monitor)
 {
+  MetaScreenX11LogicalMonitorData *logical_monitor_data;
+
   g_return_val_if_fail (logical_monitor, -1);
 
   meta_screen_ensure_xinerama_indices (screen);
 
-  return logical_monitor->xinerama_index;
+  logical_monitor_data = get_screen_x11_logical_monitor_data (logical_monitor);
+
+  return logical_monitor_data->xinerama_index;
 }
 
 MetaLogicalMonitor *
@@ -411,8 +456,12 @@ meta_screen_xinerama_index_to_logical_monitor (MetaScreen *screen,
   for (l = logical_monitors; l; l = l->next)
     {
       MetaLogicalMonitor *logical_monitor = l->data;
+      MetaScreenX11LogicalMonitorData *logical_monitor_data;
 
-      if (logical_monitor->xinerama_index == xinerama_index)
+      logical_monitor_data =
+        ensure_screen_x11_logical_monitor_data (logical_monitor);
+
+      if (logical_monitor_data->xinerama_index == xinerama_index)
         return logical_monitor;
     }
 

@@ -216,7 +216,6 @@ struct _MetaLogicalMonitor
   GObject parent;
 
   int number;
-  int xinerama_index;
   MetaRectangle rect;
   /* for tiled monitors these are calculated, from untiled just copied */
   float refresh_rate;
