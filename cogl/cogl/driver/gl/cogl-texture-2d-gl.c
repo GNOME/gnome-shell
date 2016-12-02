@@ -47,8 +47,13 @@
 #include "cogl-util-gl-private.h"
 
 #if defined (COGL_HAS_EGL_SUPPORT)
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
+#include "cogl-egl-defines.h"
+#  ifndef COGL_HAS_GLES2
+/* We need this define from GLES2, but can't include the header
+   as its type definitions may conflict with the GL ones
+ */
+#  define GL_TEXTURE_EXTERNAL_OES           0x8D65
+#  endif
 #endif
 
 void
