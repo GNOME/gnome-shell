@@ -78,6 +78,59 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
+typedef struct _MetaWorkspaceLogicalMonitorData
+{
+  GList *logical_monitor_region;
+  MetaRectangle logical_monitor_work_area;
+} MetaWorkspaceLogicalMonitorData;
+
+static MetaWorkspaceLogicalMonitorData *
+meta_workspace_get_logical_monitor_data (MetaWorkspace      *workspace,
+                                         MetaLogicalMonitor *logical_monitor)
+{
+  if (!workspace->logical_monitor_data)
+    return NULL;
+  return g_hash_table_lookup (workspace->logical_monitor_data, logical_monitor);
+}
+
+static void
+workspace_logical_monitor_data_free (MetaWorkspaceLogicalMonitorData *data)
+{
+  g_clear_pointer (&data->logical_monitor_region,
+                   meta_rectangle_free_list_and_elements);
+}
+
+static MetaWorkspaceLogicalMonitorData *
+meta_workspace_ensure_logical_monitor_data (MetaWorkspace      *workspace,
+                                            MetaLogicalMonitor *logical_monitor)
+{
+  MetaWorkspaceLogicalMonitorData *data;
+
+  data = meta_workspace_get_logical_monitor_data (workspace, logical_monitor);
+  if (data)
+    return data;
+
+  if (!workspace->logical_monitor_data)
+    {
+      workspace->logical_monitor_data =
+        g_hash_table_new_full (g_direct_hash,
+                               g_direct_equal,
+                               NULL,
+                               (GDestroyNotify) workspace_logical_monitor_data_free);
+    }
+
+  data = g_new0 (MetaWorkspaceLogicalMonitorData, 1);
+  g_hash_table_insert (workspace->logical_monitor_data, logical_monitor, data);
+
+  return data;
+}
+
+static void
+meta_workspace_clear_logical_monitor_data (MetaWorkspace *workspace)
+{
+  g_clear_pointer (&workspace->logical_monitor_data, g_hash_table_destroy);
+}
+
 static void
 meta_workspace_finalize (GObject *object)
 {
@@ -182,14 +235,12 @@ meta_workspace_new (MetaScreen *screen)
   workspace->mru_list = NULL;
 
   workspace->work_areas_invalid = TRUE;
-  workspace->work_area_monitor = NULL;
   workspace->work_area_screen.x = 0;
   workspace->work_area_screen.y = 0;
   workspace->work_area_screen.width = 0;
   workspace->work_area_screen.height = 0;
 
   workspace->screen_region = NULL;
-  workspace->monitor_region = NULL;
   workspace->screen_edges = NULL;
   workspace->monitor_edges = NULL;
   workspace->list_containing_self = g_list_prepend (NULL, workspace);
@@ -273,7 +324,7 @@ meta_workspace_remove (MetaWorkspace *workspace)
   workspace->screen->workspaces =
     g_list_remove (workspace->screen->workspaces, workspace);
 
-  g_free (workspace->work_area_monitor);
+  meta_workspace_clear_logical_monitor_data (workspace);
 
   g_list_free (workspace->mru_list);
   g_list_free (workspace->list_containing_self);
@@ -289,12 +340,7 @@ meta_workspace_remove (MetaWorkspace *workspace)
 
   if (!workspace->work_areas_invalid)
     {
-      int i;
-
       workspace_free_all_struts (workspace);
-      for (i = 0; i < workspace->n_monitor_regions; i++)
-        meta_rectangle_free_list_and_elements (workspace->monitor_region[i]);
-      g_free (workspace->monitor_region);
       meta_rectangle_free_list_and_elements (workspace->screen_region);
       meta_rectangle_free_list_and_elements (workspace->screen_edges);
       meta_rectangle_free_list_and_elements (workspace->monitor_edges);
@@ -677,7 +723,6 @@ meta_workspace_list_windows (MetaWorkspace *workspace)
 void
 meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 {
-  int i;
   GList *windows, *l;
 
   if (workspace->work_areas_invalid)
@@ -697,18 +742,13 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   if (workspace == workspace->screen->active_workspace)
     meta_display_cleanup_edges (workspace->screen->display);
 
-  g_free (workspace->work_area_monitor);
-  workspace->work_area_monitor = NULL;
+  meta_workspace_clear_logical_monitor_data (workspace);
 
   workspace_free_all_struts (workspace);
 
-  for (i = 0; i < workspace->n_monitor_regions; i++)
-    meta_rectangle_free_list_and_elements (workspace->monitor_region[i]);
-  g_free (workspace->monitor_region);
   meta_rectangle_free_list_and_elements (workspace->screen_region);
   meta_rectangle_free_list_and_elements (workspace->screen_edges);
   meta_rectangle_free_list_and_elements (workspace->monitor_edges);
-  workspace->monitor_region = NULL;
   workspace->screen_region = NULL;
   workspace->screen_edges = NULL;
   workspace->monitor_edges = NULL;
@@ -755,14 +795,12 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   GList *windows;
   GList *tmp;
   GList *logical_monitors, *l;
-  int i;
   MetaRectangle work_area;
 
   if (!workspace->work_areas_invalid)
     return;
 
   g_assert (workspace->all_struts == NULL);
-  g_assert (workspace->monitor_region == NULL);
   g_assert (workspace->screen_region == NULL);
   g_assert (workspace->screen_edges == NULL);
   g_assert (workspace->monitor_edges == NULL);
@@ -787,26 +825,24 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   /* STEP 2: Get the maximal/spanning rects for the onscreen and
    *         on-single-monitor regions
    */
-  g_assert (workspace->monitor_region == NULL);
   g_assert (workspace->screen_region   == NULL);
 
   logical_monitors =
     meta_monitor_manager_get_logical_monitors (monitor_manager);
-
-  workspace->n_monitor_regions =
-    (int) meta_monitor_manager_get_num_logical_monitors (monitor_manager);
-  workspace->monitor_region = g_new (GList*, workspace->n_monitor_regions);
-  i = 0;
   for (l = logical_monitors; l; l = l->next)
     {
       MetaLogicalMonitor *logical_monitor = l->data;
+      MetaWorkspaceLogicalMonitorData *data;
 
-      workspace->monitor_region[i] =
+      g_assert (!meta_workspace_get_logical_monitor_data (workspace,
+                                                          logical_monitor));
+
+      data = meta_workspace_ensure_logical_monitor_data (workspace,
+                                                         logical_monitor);
+      data->logical_monitor_region =
         meta_rectangle_get_minimal_spanning_set_for_region (
           &logical_monitor->rect,
           workspace->all_struts);
-
-      i++;
     }
 
   workspace->screen_region =
@@ -871,41 +907,36 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
               workspace->work_area_screen.height);
 
   /* Now find the work areas for each monitor */
-  g_free (workspace->work_area_monitor);
-  workspace->n_work_area_monitor =
-    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
-  workspace->work_area_monitor = g_new (MetaRectangle,
-                                        workspace->n_work_area_monitor);
-
-  i = 0;
   for (l = logical_monitors; l; l = l->next)
     {
       MetaLogicalMonitor *logical_monitor = l->data;
+      MetaWorkspaceLogicalMonitorData *data;
 
+      data = meta_workspace_get_logical_monitor_data (workspace,
+                                                      logical_monitor);
       work_area = logical_monitor->rect;
 
-      if (workspace->monitor_region[i] == NULL)
+      if (!data->logical_monitor_region)
         /* FIXME: constraints.c untested with this, but it might be nice for
          * a screen reader or magnifier.
          */
         work_area = meta_rect (work_area.x, work_area.y, -1, -1);
       else
-        meta_rectangle_clip_to_region (workspace->monitor_region[i],
+        meta_rectangle_clip_to_region (data->logical_monitor_region,
                                        FIXED_DIRECTION_NONE,
                                        &work_area);
 
-      workspace->work_area_monitor[i] = work_area;
+      data->logical_monitor_work_area = work_area;
+
       meta_topic (META_DEBUG_WORKAREA,
                   "Computed work area for workspace %d "
                   "monitor %d: %d,%d %d x %d\n",
                   meta_workspace_index (workspace),
-                  i,
-                  workspace->work_area_monitor[i].x,
-                  workspace->work_area_monitor[i].y,
-                  workspace->work_area_monitor[i].width,
-                  workspace->work_area_monitor[i].height);
-
-      i++;
+                  logical_monitor->number,
+                  data->logical_monitor_work_area.x,
+                  data->logical_monitor_work_area.y,
+                  data->logical_monitor_work_area.width,
+                  data->logical_monitor_work_area.height);
     }
 
   /* STEP 4: Make sure the screen_region is nonempty (separate from step 2
@@ -1061,20 +1092,20 @@ meta_workspace_get_work_area_for_monitor (MetaWorkspace *workspace,
                                           int            which_monitor,
                                           MetaRectangle *area)
 {
-#ifndef G_DISABLE_ASSERT
   MetaBackend *backend = meta_get_backend();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  int n_logical_monitors =
-    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
-#endif
-
-  g_assert (which_monitor >= 0);
+  MetaLogicalMonitor *logical_monitor;
+  MetaWorkspaceLogicalMonitorData *data;
 
   ensure_work_areas_validated (workspace);
-  g_assert (which_monitor < n_logical_monitors);
 
-  *area = workspace->work_area_monitor[which_monitor];
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          which_monitor);
+  data = meta_workspace_get_logical_monitor_data (workspace, logical_monitor);
+
+  *area = data->logical_monitor_work_area;
 }
 
 /**
@@ -1101,13 +1132,17 @@ meta_workspace_get_onscreen_region (MetaWorkspace *workspace)
   return workspace->screen_region;
 }
 
-GList*
-meta_workspace_get_onmonitor_region (MetaWorkspace *workspace,
-                                     int            which_monitor)
+GList *
+meta_workspace_get_onmonitor_region (MetaWorkspace      *workspace,
+                                     MetaLogicalMonitor *logical_monitor)
 {
+  MetaWorkspaceLogicalMonitorData *data;
+
   ensure_work_areas_validated (workspace);
 
-  return workspace->monitor_region[which_monitor];
+  data = meta_workspace_get_logical_monitor_data (workspace, logical_monitor);
+
+  return data->logical_monitor_region;
 }
 
 #ifdef WITH_VERBOSE_MODE

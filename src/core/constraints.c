@@ -410,8 +410,7 @@ setup_constraint_info (ConstraintInfo      *info,
   info->usable_screen_region   =
     meta_workspace_get_onscreen_region (cur_workspace);
   info->usable_monitor_region =
-    meta_workspace_get_onmonitor_region (cur_workspace,
-                                         logical_monitor->number);
+    meta_workspace_get_onmonitor_region (cur_workspace, logical_monitor);
 
   /* Log all this information for debugging */
   meta_topic (META_DEBUG_GEOMETRY,
@@ -496,8 +495,7 @@ place_window_if_needed(MetaWindow     *window,
                                                      &info->work_area_monitor);
       cur_workspace = window->screen->active_workspace;
       info->usable_monitor_region =
-        meta_workspace_get_onmonitor_region (cur_workspace,
-                                             logical_monitor->number);
+        meta_workspace_get_onmonitor_region (cur_workspace, logical_monitor);
 
       info->current.x = placed_rect.x;
       info->current.y = placed_rect.y;

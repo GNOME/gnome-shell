@@ -54,12 +54,10 @@ struct _MetaWorkspace
 
   GList  *list_containing_self;
 
+  GHashTable *logical_monitor_data;
+
   MetaRectangle work_area_screen;
-  MetaRectangle *work_area_monitor;
-  gint n_work_area_monitor;
   GList  *screen_region;
-  GList  **monitor_region;
-  gint n_monitor_regions;
   GList  *screen_edges;
   GList  *monitor_edges;
   GSList *builtin_struts;
@@ -90,8 +88,8 @@ void meta_workspace_get_work_area_for_logical_monitor (MetaWorkspace      *works
 void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
 
 GList* meta_workspace_get_onscreen_region       (MetaWorkspace *workspace);
-GList* meta_workspace_get_onmonitor_region      (MetaWorkspace *workspace,
-                                                 int            which_monitor);
+GList * meta_workspace_get_onmonitor_region (MetaWorkspace      *workspace,
+                                             MetaLogicalMonitor *logical_monitor);
 
 void meta_workspace_focus_default_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
