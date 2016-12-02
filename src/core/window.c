@@ -2799,50 +2799,6 @@ meta_window_is_fullscreen (MetaWindow *window)
 }
 
 /**
- * meta_window_get_all_monitors:
- * @window: The #MetaWindow
- * @length: (out): gint holding the length, may be %NULL to ignore
- *
- * Returns: (array length=length) (element-type gint) (transfer container):
- *           List of the monitor indices the window is on.
- */
-gint *
-meta_window_get_all_monitors (MetaWindow *window, gsize *length)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
-  GArray *monitors;
-  MetaRectangle window_rect;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-
-  monitors = g_array_new (FALSE, FALSE, sizeof (int));
-  meta_window_get_frame_rect (window, &window_rect);
-
-  for (i = 0; i < n_logical_monitors; i++)
-    {
-      MetaRectangle *monitor_rect = &logical_monitors[i].rect;
-
-      if (meta_rectangle_overlap (&window_rect, monitor_rect))
-        g_array_append_val (monitors, i);
-    }
-
-  if (length)
-    *length = monitors->len;
-
-  i = -1;
-  g_array_append_val (monitors, i);
-
-  return (gint*) g_array_free (monitors, FALSE);
-}
-
-/**
  * meta_window_is_screen_sized:
  * @window: A #MetaWindow
  *

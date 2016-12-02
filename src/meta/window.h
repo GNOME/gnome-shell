@@ -185,7 +185,6 @@ gboolean          meta_window_is_monitor_sized (MetaWindow *window);
 gboolean          meta_window_is_on_primary_monitor (MetaWindow *window);
 gboolean          meta_window_requested_bypass_compositor (MetaWindow *window);
 gboolean          meta_window_requested_dont_bypass_compositor (MetaWindow *window);
-gint             *meta_window_get_all_monitors (MetaWindow *window, gsize *length);
 
 gboolean meta_window_get_icon_geometry (MetaWindow    *window,
                                         MetaRectangle *rect);
