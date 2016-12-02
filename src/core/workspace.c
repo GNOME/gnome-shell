@@ -754,9 +754,8 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
     meta_backend_get_monitor_manager (backend);
   GList *windows;
   GList *tmp;
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
+  GList *logical_monitors, *l;
+  int i;
   MetaRectangle work_area;
 
   if (!workspace->work_areas_invalid)
@@ -792,18 +791,23 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   g_assert (workspace->screen_region   == NULL);
 
   logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
 
-  workspace->monitor_region = g_new (GList*, n_logical_monitors);
-  for (i = 0; i < n_logical_monitors; i++)
+  workspace->n_monitor_regions =
+    (int) meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+  workspace->monitor_region = g_new (GList*, workspace->n_monitor_regions);
+  i = 0;
+  for (l = logical_monitors; l; l = l->next)
     {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
       workspace->monitor_region[i] =
         meta_rectangle_get_minimal_spanning_set_for_region (
-          &logical_monitors[i].rect,
+          &logical_monitor->rect,
           workspace->all_struts);
+
+      i++;
     }
-  workspace->n_monitor_regions = (int) n_logical_monitors;
 
   workspace->screen_region =
     meta_rectangle_get_minimal_spanning_set_for_region (
@@ -868,11 +872,17 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   /* Now find the work areas for each monitor */
   g_free (workspace->work_area_monitor);
-  workspace->work_area_monitor = g_new (MetaRectangle, n_logical_monitors);
+  workspace->n_work_area_monitor =
+    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+  workspace->work_area_monitor = g_new (MetaRectangle,
+                                        workspace->n_work_area_monitor);
 
-  for (i = 0; i < n_logical_monitors; i++)
+  i = 0;
+  for (l = logical_monitors; l; l = l->next)
     {
-      work_area = logical_monitors[i].rect;
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      work_area = logical_monitor->rect;
 
       if (workspace->monitor_region[i] == NULL)
         /* FIXME: constraints.c untested with this, but it might be nice for
@@ -894,6 +904,8 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
                   workspace->work_area_monitor[i].y,
                   workspace->work_area_monitor[i].width,
                   workspace->work_area_monitor[i].height);
+
+      i++;
     }
 
   /* STEP 4: Make sure the screen_region is nonempty (separate from step 2
@@ -914,8 +926,12 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
     meta_rectangle_find_onscreen_edges (&workspace->screen->rect,
                                         workspace->all_struts);
   tmp = NULL;
-  for (i = 0; i < n_logical_monitors; i++)
-    tmp = g_list_prepend (tmp, &logical_monitors[i].rect);
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      tmp = g_list_prepend (tmp, &logical_monitor->rect);
+    }
   workspace->monitor_edges =
     meta_rectangle_find_nonintersected_monitor_edges (tmp,
                                                        workspace->all_struts);

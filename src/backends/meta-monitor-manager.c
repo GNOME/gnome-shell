@@ -169,11 +169,11 @@ static void
 make_logical_config (MetaMonitorManager *manager)
 {
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
-  GArray *logical_monitors;
-  unsigned int i, j;
+  GList *logical_monitors = NULL;
+  int monitor_number;
+  unsigned int i;
 
-  logical_monitors = g_array_sized_new (FALSE, TRUE, sizeof (MetaLogicalMonitor),
-                                        manager->n_crtcs);
+  monitor_number = 0;
 
   /* Walk the list of MetaCRTCs, and build a MetaLogicalMonitor
      for each of them, unless they reference a rectangle that
@@ -196,24 +196,26 @@ make_logical_config (MetaMonitorManager *manager)
 
           logical_monitor = construct_tile_monitor (manager,
                                                     output,
-                                                    logical_monitors->len);
+                                                    monitor_number);
 
-          g_array_append_val (logical_monitors, logical_monitor);
+          logical_monitors = g_list_append (logical_monitors, logical_monitor);
+          monitor_number++;
         }
     }
 
   for (i = 0; i < manager->n_crtcs; i++)
     {
       MetaCRTC *crtc = &manager->crtcs[i];
+      GList *l;
 
       /* Ignore CRTCs not in use */
       if (crtc->current_mode == NULL)
         continue;
 
-      for (j = 0; j < logical_monitors->len; j++)
+      for (l = logical_monitors; l; l = l->next)
         {
-          MetaLogicalMonitor *logical_monitor =
-            &g_array_index (logical_monitors, MetaLogicalMonitor, j);
+          MetaLogicalMonitor *logical_monitor = l->data;
+
           if (meta_rectangle_contains_rect (&logical_monitor->rect,
                                             &crtc->rect))
             {
@@ -224,29 +226,25 @@ make_logical_config (MetaMonitorManager *manager)
 
       if (crtc->logical_monitor == NULL)
         {
-          MetaLogicalMonitor logical_monitor;
+          MetaLogicalMonitor *logical_monitor = g_new0 (MetaLogicalMonitor, 1);
 
-          logical_monitor.number = logical_monitors->len;
-          logical_monitor.tile_group_id = 0;
-          logical_monitor.rect = crtc->rect;
-          logical_monitor.refresh_rate = crtc->current_mode->refresh_rate;
-          logical_monitor.scale = 1;
-          logical_monitor.is_primary = FALSE;
+          logical_monitor->number = monitor_number;
+          logical_monitor->rect = crtc->rect;
+          logical_monitor->refresh_rate = crtc->current_mode->refresh_rate;
+          logical_monitor->scale = 1;
+          logical_monitor->is_primary = FALSE;
           /* This starts true because we want
              is_presentation only if all outputs are
              marked as such (while for primary it's enough
              that any is marked)
           */
-          logical_monitor.is_presentation = TRUE;
-          logical_monitor.in_fullscreen = -1;
-          logical_monitor.winsys_id = 0;
-          logical_monitor.n_outputs = 0;
-          logical_monitor.monitor_winsys_xid = 0;
-          g_array_append_val (logical_monitors, logical_monitor);
+          logical_monitor->is_presentation = TRUE;
+          logical_monitor->in_fullscreen = -1;
 
-          crtc->logical_monitor = &g_array_index (logical_monitors,
-                                                  MetaLogicalMonitor,
-                                                  logical_monitor.number);
+          logical_monitors = g_list_append (logical_monitors, logical_monitor);
+          monitor_number++;
+
+          crtc->logical_monitor = logical_monitor;
         }
     }
 
@@ -293,20 +291,26 @@ make_logical_config (MetaMonitorManager *manager)
         manager->primary_logical_monitor = logical_monitor;
     }
 
-  manager->n_logical_monitors = logical_monitors->len;
-  manager->logical_monitors = (void*)g_array_free (logical_monitors, FALSE);
+  manager->logical_monitors = logical_monitors;
 
   /*
    * If no monitor was marked as primary, fall back on marking the first
    * logical monitor the primary one.
    */
-  if (!manager->primary_logical_monitor &&
-      manager->n_logical_monitors > 0)
-    manager->primary_logical_monitor = &manager->logical_monitors[0];
+  if (!manager->primary_logical_monitor && manager->logical_monitors)
+    manager->primary_logical_monitor = g_list_first (manager->logical_monitors)->data;
 
   if (manager_class->add_monitor)
-    for (i = 0; i < manager->n_logical_monitors; i++)
-      manager_class->add_monitor (manager, &manager->logical_monitors[i]);
+    {
+      GList *l;
+
+      for (l = logical_monitors; l; l = l->next)
+        {
+          MetaLogicalMonitor *logical_monitor = l->data;
+
+          manager_class->add_monitor (manager, logical_monitor);
+        }
+    }
 }
 
 static void
@@ -448,7 +452,7 @@ meta_monitor_manager_finalize (GObject *object)
   meta_monitor_manager_free_output_array (manager->outputs, manager->n_outputs);
   meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
   meta_monitor_manager_free_crtc_array (manager->crtcs, manager->n_crtcs);
-  g_free (manager->logical_monitors);
+  g_list_free_full (manager->logical_monitors, g_free);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->finalize (object);
 }
@@ -1308,15 +1312,12 @@ meta_monitor_manager_get (void)
 int
 meta_monitor_manager_get_num_logical_monitors (MetaMonitorManager *manager)
 {
-  return (int) manager->n_logical_monitors;
+  return g_list_length (manager->logical_monitors);
 }
 
-MetaLogicalMonitor *
-meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
-                                           unsigned int       *n_logical_monitors)
+GList *
+meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager)
 {
-  if (n_logical_monitors)
-    *n_logical_monitors = manager->n_logical_monitors;
   return manager->logical_monitors;
 }
 
@@ -1324,9 +1325,9 @@ MetaLogicalMonitor *
 meta_monitor_manager_get_logical_monitor_from_number (MetaMonitorManager *manager,
                                                       int                 number)
 {
-  g_assert (number < (int) manager->n_logical_monitors);
+  g_assert ((unsigned int) number < g_list_length (manager->logical_monitors));
 
-  return &manager->logical_monitors[number];
+  return g_list_nth (manager->logical_monitors, number)->data;
 }
 
 MetaLogicalMonitor *
@@ -1340,12 +1341,14 @@ meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
                                              float               x,
                                              float               y)
 {
-  unsigned int i;
+  GList *l;
 
-  for (i = 0; i < manager->n_logical_monitors; i++)
+  for (l = manager->logical_monitors; l; l = l->next)
     {
-      if (POINT_IN_RECT (x, y, manager->logical_monitors[i].rect))
-        return &manager->logical_monitors[i];
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      if (POINT_IN_RECT (x, y, logical_monitor->rect))
+        return logical_monitor;
     }
 
   return NULL;
@@ -1357,14 +1360,14 @@ meta_monitor_manager_get_logical_monitor_from_rect (MetaMonitorManager *manager,
 {
   MetaLogicalMonitor *best_logical_monitor;
   int best_logical_monitor_area;
-  unsigned int i;
+  GList *l;
 
   best_logical_monitor = NULL;
   best_logical_monitor_area = 0;
 
-  for (i = 0; i < manager->n_logical_monitors; i++)
+  for (l = manager->logical_monitors; l; l = l->next)
     {
-      MetaLogicalMonitor *logical_monitor = &manager->logical_monitors[i];
+      MetaLogicalMonitor *logical_monitor = l->data;
       MetaRectangle intersection;
       int intersection_area;
 
@@ -1397,11 +1400,11 @@ meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager *manager,
                                                    MetaLogicalMonitor *logical_monitor,
                                                    MetaScreenDirection direction)
 {
-  unsigned int i;
+  GList *l;
 
-  for (i = 0; i < manager->n_logical_monitors; i++)
+  for (l = manager->logical_monitors; l; l = l->next)
     {
-      MetaLogicalMonitor *other = &manager->logical_monitors[i];
+      MetaLogicalMonitor *other = l->data;
 
       switch (direction)
         {
@@ -1522,29 +1525,34 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
-  MetaLogicalMonitor *old_logical_monitors;
-  unsigned old_n_logical_monitors;
-  unsigned i, j;
-  old_logical_monitors = manager->logical_monitors;
-  old_n_logical_monitors = manager->n_logical_monitors;
+  GList *old_logical_monitors;
+  GList *old_l;
 
   if (manager->in_init)
     return;
+
+  old_logical_monitors = manager->logical_monitors;
 
   make_logical_config (manager);
 
   if (manager_class->delete_monitor)
     {
-      for (i = 0; i < old_n_logical_monitors; i++)
+      for (old_l = old_logical_monitors; old_l; old_l = old_l->next)
         {
-          int old_monitor_winsys_xid =
-            old_logical_monitors[i].monitor_winsys_xid;
-          gboolean delete_mon = TRUE;
+          MetaLogicalMonitor *old_logical_monitor = old_l->data;
+          int old_monitor_winsys_xid;
+          gboolean delete_mon;
+          GList *new_l;
 
-          for (j = 0; j < manager->n_logical_monitors; j++)
+          delete_mon = TRUE;
+          old_monitor_winsys_xid = old_logical_monitor->monitor_winsys_xid;
+
+          for (new_l = manager->logical_monitors; new_l; new_l = new_l->next)
             {
-              int new_monitor_winsys_xid =
-                manager->logical_monitors[j].monitor_winsys_xid;
+              MetaLogicalMonitor *new_logical_monitor = new_l->data;
+              int new_monitor_winsys_xid;
+
+              new_monitor_winsys_xid = new_logical_monitor->monitor_winsys_xid;
 
               if (new_monitor_winsys_xid == old_monitor_winsys_xid)
                 {
@@ -1565,7 +1573,7 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 
   g_signal_emit_by_name (manager, "monitors-changed");
 
-  g_free (old_logical_monitors);
+  g_list_free_full (old_logical_monitors, g_free);
 }
 
 void
@@ -1715,7 +1723,7 @@ meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
                                              guint               id)
 {
   MetaOutput *output;
-  guint i;
+  GList *l;
 
   g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), -1);
   g_return_val_if_fail (id < manager->n_outputs, -1);
@@ -1724,10 +1732,14 @@ meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
   if (!output || !output->crtc)
     return -1;
 
-  for (i = 0; i < manager->n_logical_monitors; i++)
-    if (meta_rectangle_contains_rect (&manager->logical_monitors[i].rect,
-                                      &output->crtc->rect))
-      return i;
+  for (l = manager->logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      if (meta_rectangle_contains_rect (&logical_monitor->rect,
+                                        &output->crtc->rect))
+        return logical_monitor->number;
+    }
 
   return -1;
 }

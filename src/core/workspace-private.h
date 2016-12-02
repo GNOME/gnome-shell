@@ -56,6 +56,7 @@ struct _MetaWorkspace
 
   MetaRectangle work_area_screen;
   MetaRectangle *work_area_monitor;
+  gint n_work_area_monitor;
   GList  *screen_region;
   GList  **monitor_region;
   gint n_monitor_regions;

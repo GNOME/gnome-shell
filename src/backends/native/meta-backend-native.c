@@ -181,14 +181,13 @@ constrain_to_client_constraint (ClutterInputDevice *device,
 
 static void
 constrain_all_screen_monitors (ClutterInputDevice *device,
-                               MetaLogicalMonitor *logical_monitors,
-                               unsigned int        n_logical_monitors,
+                               MetaMonitorManager *monitor_manager,
                                float              *x,
                                float              *y)
 {
   ClutterPoint current;
-  unsigned int i;
   float cx, cy;
+  GList *logical_monitors, *l;
 
   clutter_input_device_get_coords (device, NULL, &current);
 
@@ -196,9 +195,12 @@ constrain_all_screen_monitors (ClutterInputDevice *device,
   cy = current.y;
 
   /* if we're trying to escape, clamp to the CRTC we're coming from */
-  for (i = 0; i < n_logical_monitors; i++)
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+  for (l = logical_monitors; l; l = l->next)
     {
-      MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
+      MetaLogicalMonitor *logical_monitor = l->data;
       int left, right, top, bottom;
 
       left = logical_monitor->rect.x;
@@ -231,9 +233,9 @@ pointer_constrain_callback (ClutterInputDevice *device,
                             float              *new_y,
                             gpointer            user_data)
 {
-  MetaMonitorManager *monitor_manager;
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
 
   /* Constrain to barriers */
   constrain_to_barriers (device, time, new_x, new_y);
@@ -241,20 +243,13 @@ pointer_constrain_callback (ClutterInputDevice *device,
   /* Constrain to pointer lock */
   constrain_to_client_constraint (device, time, prev_x, prev_y, new_x, new_y);
 
-  monitor_manager = meta_monitor_manager_get ();
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
-
   /* if we're moving inside a monitor, we're fine */
   if (meta_monitor_manager_get_logical_monitor_at (monitor_manager,
                                                    *new_x, *new_y))
     return;
 
   /* if we're trying to escape, clamp to the CRTC we're coming from */
-  constrain_all_screen_monitors (device,
-                                 logical_monitors, n_logical_monitors,
-                                 new_x, new_y);
+  constrain_all_screen_monitors (device, monitor_manager, new_x, new_y);
 }
 
 static ClutterBackend *

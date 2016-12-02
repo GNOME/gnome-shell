@@ -304,8 +304,7 @@ struct _MetaMonitorManager
   MetaCRTC *crtcs;
   unsigned int n_crtcs;
 
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
+  GList *logical_monitors;
   MetaLogicalMonitor *primary_logical_monitor;
 
   int dbus_name_id;
@@ -365,8 +364,7 @@ void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *
 
 int                 meta_monitor_manager_get_num_logical_monitors (MetaMonitorManager *manager);
 
-MetaLogicalMonitor *meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager,
-                                                               unsigned int       *n_logical_monitors);
+GList *             meta_monitor_manager_get_logical_monitors (MetaMonitorManager *manager);
 
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_from_number (MetaMonitorManager *manager,
                                                                           int                 number);

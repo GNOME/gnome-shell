@@ -204,21 +204,19 @@ meta_wayland_output_new (MetaWaylandCompositor *compositor,
 
 static GHashTable *
 meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
-                                        MetaMonitorManager    *monitors)
+                                        MetaMonitorManager    *monitor_manager)
 {
-  unsigned int i;
   GHashTable *new_table;
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
+  GList *logical_monitors, *l;
 
-  logical_monitors = meta_monitor_manager_get_logical_monitors (monitors,
-                                                                &n_logical_monitors);
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
   new_table = g_hash_table_new_full (NULL, NULL, NULL,
                                      wayland_output_destroy_notify);
 
-  for (i = 0; i < n_logical_monitors; i++)
+  for (l = logical_monitors; l; l = l->next)
     {
-      MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
+      MetaLogicalMonitor *logical_monitor = l->data;
       MetaWaylandOutput *wayland_output;
 
       if (logical_monitor->winsys_id == 0)

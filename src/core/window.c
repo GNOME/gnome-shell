@@ -3517,17 +3517,14 @@ find_monitor_by_winsys_id (MetaWindow *window,
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
+  GList *logical_monitors, *l;
 
   logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
 
-  for (i = 0; i < n_logical_monitors; i++)
+  for (l = logical_monitors; l; l = l->next)
     {
-      MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
+      MetaLogicalMonitor *logical_monitor = l->data;
 
       if (logical_monitor->winsys_id == winsys_id)
         return logical_monitor;

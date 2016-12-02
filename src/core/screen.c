@@ -344,9 +344,7 @@ meta_screen_ensure_xinerama_indices (MetaScreen *screen)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
+  GList *logical_monitors, *l;
   XineramaScreenInfo *infos;
   int n_infos, j;
 
@@ -366,18 +364,19 @@ meta_screen_ensure_xinerama_indices (MetaScreen *screen)
     }
 
   logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
 
-  for (i = 0; i < n_logical_monitors; ++i)
+  for (l = logical_monitors; l; l = l->next)
     {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
       for (j = 0; j < n_infos; ++j)
         {
-          if (logical_monitors[i].rect.x == infos[j].x_org &&
-              logical_monitors[i].rect.y == infos[j].y_org &&
-              logical_monitors[i].rect.width == infos[j].width &&
-              logical_monitors[i].rect.height == infos[j].height)
-            logical_monitors[i].xinerama_index = j;
+          if (logical_monitor->rect.x == infos[j].x_org &&
+              logical_monitor->rect.y == infos[j].y_org &&
+              logical_monitor->rect.width == infos[j].width &&
+              logical_monitor->rect.height == infos[j].height)
+            logical_monitor->xinerama_index = j;
         }
     }
 
@@ -402,19 +401,20 @@ meta_screen_xinerama_index_to_logical_monitor (MetaScreen *screen,
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
+  GList *logical_monitors, *l;
 
   meta_screen_ensure_xinerama_indices (screen);
 
   logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
 
-  for (i = 0; i < n_logical_monitors; i++)
-    if (logical_monitors[i].xinerama_index == xinerama_index)
-      return &logical_monitors[i];
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      if (logical_monitor->xinerama_index == xinerama_index)
+        return logical_monitor;
+    }
 
   return NULL;
 }
@@ -1520,7 +1520,7 @@ meta_screen_get_monitor_geometry (MetaScreen    *screen,
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
+  MetaLogicalMonitor *logical_monitor;
 #ifndef G_DISABLE_CHECKS
   int n_logical_monitors =
     meta_monitor_manager_get_num_logical_monitors (monitor_manager);
@@ -1530,10 +1530,10 @@ meta_screen_get_monitor_geometry (MetaScreen    *screen,
   g_return_if_fail (monitor >= 0 && monitor < n_logical_monitors);
   g_return_if_fail (geometry != NULL);
 
-  logical_monitors = meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                                                NULL);
-
-  *geometry = logical_monitors[monitor].rect;
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          monitor);
+  *geometry = logical_monitor->rect;
 }
 
 #define _NET_WM_ORIENTATION_HORZ 0
@@ -2589,9 +2589,7 @@ check_fullscreen_func (gpointer data)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
-  unsigned int n_logical_monitors;
-  unsigned int i;
+  GList *logical_monitors, *l;
   MetaWindow *window;
   GSList *fullscreen_monitors = NULL;
   GSList *obscured_monitors = NULL;
@@ -2600,8 +2598,7 @@ check_fullscreen_func (gpointer data)
   screen->check_fullscreen_later = 0;
 
   logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                               &n_logical_monitors);
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
 
   /* We consider a monitor in fullscreen if it contains a fullscreen window;
    * however we make an exception for maximized windows above the fullscreen
@@ -2647,9 +2644,9 @@ check_fullscreen_func (gpointer data)
 
           meta_window_get_frame_rect (window, &window_rect);
 
-          for (i = 0; i < n_logical_monitors; i++)
+          for (l = logical_monitors; l; l = l->next)
             {
-              MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
+              MetaLogicalMonitor *logical_monitor = l->data;
 
               if (meta_rectangle_overlap (&window_rect,
                                           &logical_monitor->rect) &&
@@ -2663,9 +2660,9 @@ check_fullscreen_func (gpointer data)
 
   g_slist_free (obscured_monitors);
 
-  for (i = 0; i < n_logical_monitors; i++)
+  for (l = logical_monitors; l; l = l->next)
     {
-      MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
+      MetaLogicalMonitor *logical_monitor = l->data;
       gboolean in_fullscreen;
 
       in_fullscreen = g_slist_find (fullscreen_monitors,
@@ -2723,7 +2720,7 @@ meta_screen_get_monitor_in_fullscreen (MetaScreen  *screen,
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitors;
+  MetaLogicalMonitor *logical_monitor;
 #ifndef G_DISABLE_CHECKS
   int n_logical_monitors =
     meta_monitor_manager_get_num_logical_monitors (monitor_manager);
@@ -2733,11 +2730,12 @@ meta_screen_get_monitor_in_fullscreen (MetaScreen  *screen,
   g_return_val_if_fail (monitor >= 0 &&
                         monitor < n_logical_monitors, FALSE);
 
-  logical_monitors = meta_monitor_manager_get_logical_monitors (monitor_manager,
-                                                                NULL);
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          monitor);
 
   /* We use -1 as a flag to mean "not known yet" for notification purposes */
-  return logical_monitors[monitor].in_fullscreen == TRUE;
+  return logical_monitor->in_fullscreen == TRUE;
 }
 
 gboolean
