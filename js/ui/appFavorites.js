@@ -12,6 +12,7 @@ const RENAMED_DESKTOP_IDS = {
     'dconf-editor.desktop': 'ca.desrt.dconf-editor.desktop',
     'file-roller.desktop': 'org.gnome.FileRoller.desktop',
     'gcalctool.desktop': 'gnome-calculator.desktop',
+    'geary.desktop': 'org.gnome.Geary.desktop',
     'gedit.desktop': 'org.gnome.gedit.desktop',
     'glchess.desktop': 'gnome-chess.desktop',
     'glines.desktop': 'five-or-more.desktop',
