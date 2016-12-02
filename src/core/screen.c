@@ -2633,30 +2633,31 @@ check_fullscreen_func (gpointer data)
       else if (window->maximized_horizontally &&
                window->maximized_vertically)
         {
-          int monitor_index = meta_window_get_monitor (window);
-          /* + 1 to avoid NULL */
-          gpointer monitor_p = GINT_TO_POINTER(monitor_index + 1);
-          if (!g_slist_find (obscured_monitors, monitor_p))
-            obscured_monitors = g_slist_prepend (obscured_monitors, monitor_p);
+          MetaLogicalMonitor *logical_monitor;
+
+          logical_monitor = meta_window_get_main_logical_monitor (window);
+          if (!g_slist_find (obscured_monitors, logical_monitor))
+            obscured_monitors = g_slist_prepend (obscured_monitors,
+                                                 logical_monitor);
         }
 
       if (covers_monitors)
         {
-          int *monitors;
-          gsize n_monitors;
-          gsize j;
+          MetaRectangle window_rect;
 
-          monitors = meta_window_get_all_monitors (window, &n_monitors);
-          for (j = 0; j < n_monitors; j++)
+          meta_window_get_frame_rect (window, &window_rect);
+
+          for (i = 0; i < n_logical_monitors; i++)
             {
-              /* + 1 to avoid NULL */
-              gpointer monitor_p = GINT_TO_POINTER(monitors[j] + 1);
-              if (!g_slist_find (fullscreen_monitors, monitor_p) &&
-                  !g_slist_find (obscured_monitors, monitor_p))
-                fullscreen_monitors = g_slist_prepend (fullscreen_monitors, monitor_p);
-            }
+              MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
 
-          g_free (monitors);
+              if (meta_rectangle_overlap (&window_rect,
+                                          &logical_monitor->rect) &&
+                  !g_slist_find (fullscreen_monitors, logical_monitor) &&
+                  !g_slist_find (obscured_monitors, logical_monitor))
+                fullscreen_monitors = g_slist_prepend (fullscreen_monitors,
+                                                       logical_monitor);
+            }
         }
     }
 
@@ -2665,7 +2666,10 @@ check_fullscreen_func (gpointer data)
   for (i = 0; i < n_logical_monitors; i++)
     {
       MetaLogicalMonitor *logical_monitor = &logical_monitors[i];
-      gboolean in_fullscreen = g_slist_find (fullscreen_monitors, GINT_TO_POINTER (i + 1)) != NULL;
+      gboolean in_fullscreen;
+
+      in_fullscreen = g_slist_find (fullscreen_monitors,
+                                    logical_monitor) != NULL;
       if (in_fullscreen != logical_monitor->in_fullscreen)
         {
           logical_monitor->in_fullscreen = in_fullscreen;

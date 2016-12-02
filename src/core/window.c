@@ -3548,6 +3548,12 @@ meta_window_get_monitor (MetaWindow *window)
   return window->monitor->number;
 }
 
+MetaLogicalMonitor *
+meta_window_get_main_logical_monitor (MetaWindow *window)
+{
+  return window->monitor;
+}
+
 static MetaLogicalMonitor *
 find_monitor_by_winsys_id (MetaWindow *window,
                            guint       winsys_id)
