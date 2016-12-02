@@ -71,98 +71,91 @@ meta_monitor_manager_init (MetaMonitorManager *manager)
 {
 }
 
-/*
- * rules for constructing a tiled monitor
- * 1. find a tile_group_id
- * 2. iterate over all outputs for that tile group id
- * 3. see if output has a crtc and if it is configured for the tile size
- * 4. calculate the total tile size
- * 5. set tile finished size
- * 6. check for more tile_group_id
-*/
-static void
-construct_tile_monitor (MetaMonitorManager *manager,
-                        GArray             *logical_monitors,
-                        uint32_t            tile_group_id)
+static gboolean
+is_main_tiled_monitor_output (MetaOutput *output)
 {
-  MetaLogicalMonitor new_logical_monitor;
-  unsigned i;
+  return output->tile_info.loc_h_tile == 0 && output->tile_info.loc_v_tile == 0;
+}
 
-  for (i = 0; i < logical_monitors->len; i++)
+static void
+calculate_tiled_monitor_size (MetaMonitorManager *manager,
+                              uint32_t            tile_group_id,
+                              int                *out_width,
+                              int                *out_height)
+{
+  int width, height;
+  unsigned int i;
+
+  width = 0;
+  height = 0;
+  for (i = 0; i < manager->n_outputs; i++)
     {
-      MetaLogicalMonitor *logical_monitor = &g_array_index (logical_monitors,
-                                                            MetaLogicalMonitor,
-                                                            i);
+      MetaOutput *output = &manager->outputs[i];
 
-      if (logical_monitor->tile_group_id == tile_group_id)
-        return;
+      if (output->tile_info.group_id != tile_group_id)
+        continue;
+
+      if (output->tile_info.loc_v_tile == 0)
+        width += output->tile_info.tile_w;
+
+      if (output->tile_info.loc_h_tile == 0)
+        height += output->tile_info.tile_h;
     }
 
-  /* didn't find it */
-  new_logical_monitor.number = logical_monitors->len;
-  new_logical_monitor.tile_group_id = tile_group_id;
-  new_logical_monitor.is_presentation = FALSE;
-  new_logical_monitor.refresh_rate = 0.0;
-  new_logical_monitor.width_mm = 0;
-  new_logical_monitor.height_mm = 0;
-  new_logical_monitor.is_primary = FALSE;
-  new_logical_monitor.rect.x = INT_MAX;
-  new_logical_monitor.rect.y = INT_MAX;
-  new_logical_monitor.rect.width = 0;
-  new_logical_monitor.rect.height = 0;
-  new_logical_monitor.winsys_id = 0;
-  new_logical_monitor.n_outputs = 0;
-  new_logical_monitor.monitor_winsys_xid = 0;
+  *out_width = width;
+  *out_height = height;
+}
+
+static void
+add_tiled_monitor_outputs (MetaMonitorManager *manager,
+                           MetaLogicalMonitor *logical_monitor,
+                           uint32_t            tile_group_id)
+{
+  unsigned int i;
 
   for (i = 0; i < manager->n_outputs; i++)
     {
       MetaOutput *output = &manager->outputs[i];
 
-      if (!output->tile_info.group_id)
-        continue;
-
       if (output->tile_info.group_id != tile_group_id)
         continue;
 
-      if (!output->crtc)
-        continue;
-
-      if (output->crtc->rect.width != (int)output->tile_info.tile_w ||
-          output->crtc->rect.height != (int)output->tile_info.tile_h)
-        continue;
-
-      if (output->tile_info.loc_h_tile == 0 && output->tile_info.loc_v_tile == 0)
+      if (logical_monitor->n_outputs > META_MAX_OUTPUTS_PER_MONITOR)
         {
-          new_logical_monitor.refresh_rate = output->crtc->current_mode->refresh_rate;
-          new_logical_monitor.width_mm = output->width_mm;
-          new_logical_monitor.height_mm = output->height_mm;
-          new_logical_monitor.winsys_id = output->winsys_id;
+          g_warning ("Couldn't add all outputs to monitor");
+          return;
         }
 
-      /* hack */
-      if (output->crtc->rect.x < new_logical_monitor.rect.x)
-        new_logical_monitor.rect.x = output->crtc->rect.x;
-      if (output->crtc->rect.y < new_logical_monitor.rect.y)
-        new_logical_monitor.rect.y = output->crtc->rect.y;
-
-      if (output->tile_info.loc_h_tile == 0)
-        new_logical_monitor.rect.height += output->tile_info.tile_h;
-
-      if (output->tile_info.loc_v_tile == 0)
-        new_logical_monitor.rect.width += output->tile_info.tile_w;
-
-      if (new_logical_monitor.n_outputs > META_MAX_OUTPUTS_PER_MONITOR)
-        continue;
-
-      new_logical_monitor.outputs[new_logical_monitor.n_outputs++] = output;
+      logical_monitor->outputs[logical_monitor->n_outputs] = output;
+      logical_monitor->n_outputs++;
     }
+}
 
-  /* if we don't have a winsys id, i.e. we haven't found tile 0,0
-     don't try and add this to the monitor infos */
-  if (!new_logical_monitor.winsys_id)
-    return;
+static MetaLogicalMonitor *
+construct_tile_monitor (MetaMonitorManager *manager,
+                        MetaOutput         *output,
+                        int                 monitor_number)
+{
+  MetaLogicalMonitor *logical_monitor = NULL;
 
-  g_array_append_val (logical_monitors, new_logical_monitor);
+  logical_monitor = g_new0 (MetaLogicalMonitor, 1);
+
+  logical_monitor->tile_group_id = output->tile_info.group_id;
+  logical_monitor->refresh_rate = output->crtc->current_mode->refresh_rate;
+  logical_monitor->width_mm = output->width_mm;
+  logical_monitor->height_mm = output->height_mm;
+  logical_monitor->winsys_id = output->winsys_id;
+
+  logical_monitor->rect.x = output->crtc->rect.x;
+  logical_monitor->rect.y = output->crtc->rect.y;
+  calculate_tiled_monitor_size (manager, output->tile_info.group_id,
+                                &logical_monitor->rect.width,
+                                &logical_monitor->rect.height);
+
+  add_tiled_monitor_outputs (manager, logical_monitor,
+                             output->tile_info.group_id);
+
+  return logical_monitor;
 }
 
 /*
@@ -191,9 +184,22 @@ make_logical_config (MetaMonitorManager *manager)
     {
       MetaOutput *output = &manager->outputs[i];
 
-      if (output->tile_info.group_id)
-        construct_tile_monitor (manager, logical_monitors,
-                                output->tile_info.group_id);
+      if (!output->crtc)
+        continue;
+
+      if (!output->tile_info.group_id)
+        continue;
+
+      if (is_main_tiled_monitor_output (output))
+        {
+          MetaLogicalMonitor *logical_monitor;
+
+          logical_monitor = construct_tile_monitor (manager,
+                                                    output,
+                                                    logical_monitors->len);
+
+          g_array_append_val (logical_monitors, logical_monitor);
+        }
     }
 
   for (i = 0; i < manager->n_crtcs; i++)
