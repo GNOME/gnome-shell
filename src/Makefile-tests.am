@@ -32,7 +32,13 @@ mutter_test_client_LDADD = $(MUTTER_LIBS) libmutter.la
 mutter_test_runner_SOURCES = tests/test-runner.c
 mutter_test_runner_LDADD = $(MUTTER_LIBS) libmutter.la
 
-mutter_test_unit_tests_SOURCES = tests/unit-tests.c
+mutter_test_unit_tests_SOURCES = \
+	tests/unit-tests.c \
+	tests/meta-backend-test.c \
+	tests/meta-backend-test.h \
+	tests/meta-monitor-manager-test.c \
+	tests/meta-monitor-manager-test.h \
+	$(NULL)
 mutter_test_unit_tests_LDADD = $(MUTTER_LIBS) libmutter.la
 
 .PHONY: run-tests run-test-runner-tests run-unit-tests

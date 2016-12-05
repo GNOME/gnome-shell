@@ -17,6 +17,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <glib.h>
 #include <stdlib.h>
 
@@ -24,6 +26,8 @@
 #include <meta/util.h>
 
 #include "compositor/meta-plugin-manager.h"
+#include "core/main-private.h"
+#include "tests/meta-backend-test.h"
 
 typedef struct _MetaTestLaterOrderCallbackData
 {
@@ -213,20 +217,10 @@ main (int argc, char *argv[])
 
   g_option_context_free (ctx);
 
-  const char *fake_args[] = { NULL, "--wayland", "--nested" };
-  fake_args[0] = argv[0];
-  char **fake_argv = (char**)fake_args;
-  int fake_argc = G_N_ELEMENTS (fake_args);
-
-  ctx = meta_get_option_context ();
-  if (!g_option_context_parse (ctx, &fake_argc, &fake_argv, &error))
-    {
-      g_printerr ("mutter: %s\n", error->message);
-      exit (1);
-    }
-  g_option_context_free (ctx);
-
   meta_plugin_manager_load ("default");
+
+  meta_override_compositor_configuration (META_COMPOSITOR_TYPE_WAYLAND,
+                                          META_TYPE_BACKEND_TEST);
 
   meta_init ();
   meta_register_with_session ();
