@@ -27,6 +27,8 @@
 #include <meta/types.h>
 #include "meta-wayland-types.h"
 
+void                    meta_wayland_override_display_name (char *display_name);
+
 void                    meta_wayland_pre_clutter_init           (void);
 void                    meta_wayland_init                       (void);
 void                    meta_wayland_finalize                   (void);

@@ -43,6 +43,7 @@
 #include "meta-wayland-xdg-foreign.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
+static char *_display_name_override;
 
 MetaWaylandCompositor *
 meta_wayland_compositor_get_default (void)
@@ -308,6 +309,12 @@ meta_wayland_pre_clutter_init (void)
 }
 
 void
+meta_wayland_override_display_name (char *display_name)
+{
+  _display_name_override = g_strdup (display_name);
+}
+
+void
 meta_wayland_init (void)
 {
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
@@ -345,9 +352,23 @@ meta_wayland_init (void)
   if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
     g_error ("Failed to start X Wayland");
 
-  compositor->display_name = wl_display_add_socket_auto (compositor->wayland_display);
-  if (compositor->display_name == NULL)
-    g_error ("Failed to create socket");
+  if (_display_name_override)
+    {
+      compositor->display_name = _display_name_override;
+
+      if (wl_display_add_socket (compositor->wayland_display,
+                                 _display_name_override) != 0)
+        g_error ("Failed to create_socket");
+
+      g_clear_pointer (&_display_name_override, g_free);
+    }
+  else
+    {
+      compositor->display_name =
+        wl_display_add_socket_auto (compositor->wayland_display);
+      if (compositor->display_name == NULL)
+        g_error ("Failed to create socket");
+    }
 
   set_gnome_env ("DISPLAY", meta_wayland_get_xwayland_display_name (compositor));
   set_gnome_env ("WAYLAND_DISPLAY", meta_wayland_get_wayland_display_name (compositor));
