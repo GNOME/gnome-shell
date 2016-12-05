@@ -29,6 +29,7 @@
 #include "core/main-private.h"
 #include "tests/meta-backend-test.h"
 #include "tests/monitor-unit-tests.h"
+#include "wayland/meta-wayland.h"
 
 typedef struct _MetaTestLaterOrderCallbackData
 {
@@ -224,6 +225,7 @@ main (int argc, char *argv[])
 
   meta_override_compositor_configuration (META_COMPOSITOR_TYPE_WAYLAND,
                                           META_TYPE_BACKEND_TEST);
+  meta_wayland_override_display_name ("mutter-test-display");
 
   meta_init ();
   meta_register_with_session ();
