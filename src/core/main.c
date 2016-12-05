@@ -52,6 +52,7 @@
 #include <meta/prefs.h>
 #include <meta/compositor.h>
 #include <meta/meta-backend.h>
+#include "core/main-private.h"
 
 #include <glib-object.h>
 #include <glib-unix.h>
@@ -82,10 +83,14 @@
 # endif
 
 #include "backends/meta-backend-private.h"
+#include "backends/x11/meta-backend-x11.h"
 
-#if defined(HAVE_NATIVE_BACKEND) && defined(HAVE_WAYLAND)
+#ifdef HAVE_NATIVE_BACKEND
+#include "backends/native/meta-backend-native.h"
+#ifdef HAVE_WAYLAND
 #include <systemd/sd-login.h>
-#endif
+#endif /* HAVE_WAYLAND */
+#endif /* HAVE_NATIVE_BACKEND */
 
 /*
  * The exit code we'll return to our parent process when we eventually die.
@@ -394,7 +399,7 @@ check_for_wayland_session_type (void)
 
 static void
 calculate_compositor_configuration (MetaCompositorType *compositor_type,
-                                    MetaBackendType    *backend_type)
+                                    GType              *backend_gtype)
 {
 #ifdef HAVE_WAYLAND
   gboolean run_as_wayland_compositor = opt_wayland;
@@ -411,12 +416,12 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
 
 #ifdef CLUTTER_WINDOWING_EGL
   if (opt_display_server || (run_as_wayland_compositor && !opt_nested))
-    *backend_type = META_BACKEND_TYPE_NATIVE;
+    *backend_gtype = META_TYPE_BACKEND_NATIVE;
   else
 #endif
 #endif
 #endif
-    *backend_type = META_BACKEND_TYPE_X11;
+    *backend_gtype = META_TYPE_BACKEND_X11;
 
 #ifdef HAVE_WAYLAND
   if (run_as_wayland_compositor)
@@ -424,6 +429,19 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
   else
 #endif
     *compositor_type = META_COMPOSITOR_TYPE_X11;
+}
+
+static gboolean _compositor_configuration_overridden = FALSE;
+static MetaCompositorType _compositor_type_override;
+static GType _backend_gtype_override;
+
+void
+meta_override_compositor_configuration (MetaCompositorType compositor_type,
+                                        GType              backend_gtype)
+{
+  _compositor_configuration_overridden = TRUE;
+  _compositor_type_override = compositor_type;
+  _backend_gtype_override = backend_gtype;
 }
 
 /**
@@ -438,7 +456,7 @@ meta_init (void)
   struct sigaction act;
   sigset_t empty_mask;
   MetaCompositorType compositor_type;
-  MetaBackendType backend_type;
+  GType backend_gtype;
 
   sigemptyset (&empty_mask);
   act.sa_handler = SIG_IGN;
@@ -460,7 +478,15 @@ meta_init (void)
   if (g_getenv ("MUTTER_DEBUG"))
     meta_set_debugging (TRUE);
 
-  calculate_compositor_configuration (&compositor_type, &backend_type);
+  if (_compositor_configuration_overridden)
+    {
+      compositor_type = _compositor_type_override;
+      backend_gtype = _backend_gtype_override;
+    }
+  else
+    {
+      calculate_compositor_configuration (&compositor_type, &backend_gtype);
+    }
 
 #ifdef HAVE_WAYLAND
   if (compositor_type == META_COMPOSITOR_TYPE_WAYLAND)
@@ -488,7 +514,7 @@ meta_init (void)
   if (!meta_is_wayland_compositor ())
     meta_select_display (opt_display_name);
 
-  meta_init_backend (backend_type);
+  meta_init_backend (backend_gtype);
 
   meta_clutter_init ();
 

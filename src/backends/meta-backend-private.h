@@ -97,7 +97,7 @@ struct _MetaBackendClass
 
 };
 
-void meta_init_backend (MetaBackendType backend_type);
+void meta_init_backend (GType backend_gtype);
 
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 

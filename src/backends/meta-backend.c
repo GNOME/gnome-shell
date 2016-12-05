@@ -796,31 +796,14 @@ meta_get_clutter_backend (void)
 }
 
 void
-meta_init_backend (MetaBackendType backend_type)
+meta_init_backend (GType backend_gtype)
 {
-  GType type;
   MetaBackend *backend;
   GError *error = NULL;
 
-  switch (backend_type)
-    {
-    case META_BACKEND_TYPE_X11:
-      type = META_TYPE_BACKEND_X11;
-      break;
-
-#ifdef HAVE_NATIVE_BACKEND
-    case META_BACKEND_TYPE_NATIVE:
-      type = META_TYPE_BACKEND_NATIVE;
-      break;
-#endif
-
-    default:
-      g_assert_not_reached ();
-    }
-
   /* meta_backend_init() above install the backend globally so
    * so meta_get_backend() works even during initialization. */
-  backend = g_object_new (type, NULL);
+  backend = g_object_new (backend_gtype, NULL);
   if (!g_initable_init (G_INITABLE (backend), NULL, &error))
     {
       g_warning ("Failed to create backend: %s", error->message);
