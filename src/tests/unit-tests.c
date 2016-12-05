@@ -28,6 +28,7 @@
 #include "compositor/meta-plugin-manager.h"
 #include "core/main-private.h"
 #include "tests/meta-backend-test.h"
+#include "tests/monitor-unit-tests.h"
 
 typedef struct _MetaTestLaterOrderCallbackData
 {
@@ -198,6 +199,8 @@ init_tests (int argc, char **argv)
   g_test_add_func ("/util/meta-later/order", meta_test_util_later_order);
   g_test_add_func ("/util/meta-later/schedule-from-later",
                    meta_test_util_later_schedule_from_later);
+
+  init_monitor_tests ();
 }
 
 int
