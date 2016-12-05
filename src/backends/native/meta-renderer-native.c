@@ -98,6 +98,9 @@ typedef struct _MetaOnscreenNative
 
   gboolean pending_set_crtc;
 
+  int64_t pending_queue_swap_notify_frame_count;
+  int64_t pending_swap_notify_frame_count;
+
   MetaRendererView *view;
   int pending_flips;
 } MetaOnscreenNative;
@@ -166,16 +169,19 @@ flush_pending_swap_notify (CoglFramebuffer *framebuffer)
 
       if (onscreen_native->pending_swap_notify)
         {
-          CoglFrameInfo *info =
-            g_queue_pop_head (&onscreen->pending_frame_infos);
+          CoglFrameInfo *info;
 
-          _cogl_onscreen_notify_frame_sync (onscreen, info);
-          _cogl_onscreen_notify_complete (onscreen, info);
+          while ((info = g_queue_peek_head (&onscreen->pending_frame_infos)) &&
+                 info->global_frame_counter <= onscreen_native->pending_swap_notify_frame_count)
+            {
+              _cogl_onscreen_notify_frame_sync (onscreen, info);
+              _cogl_onscreen_notify_complete (onscreen, info);
+              cogl_object_unref (info);
+              g_queue_pop_head (&onscreen->pending_frame_infos);
+            }
 
           onscreen_native->pending_swap_notify = FALSE;
           cogl_object_unref (onscreen);
-
-          cogl_object_unref (info);
         }
     }
 }
@@ -241,6 +247,9 @@ meta_onscreen_native_queue_swap_notify (CoglOnscreen *onscreen)
   CoglRenderer *cogl_renderer = cogl_context->display->renderer;
   CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   MetaRendererNative *renderer_native = egl_renderer->platform;
+
+  onscreen_native->pending_swap_notify_frame_count =
+    onscreen_native->pending_queue_swap_notify_frame_count;
 
   if (onscreen_native->pending_swap_notify)
     return;
@@ -850,6 +859,7 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
       onscreen_native->pending_set_crtc = FALSE;
     }
 
+  onscreen_native->pending_queue_swap_notify_frame_count = renderer_native->frame_counter;
   meta_onscreen_native_flip_crtcs (onscreen);
 }
 
