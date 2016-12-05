@@ -278,6 +278,8 @@ struct _MetaOutputInfo {
 #define META_IS_MONITOR_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_MANAGER))
 #define META_MONITOR_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_MANAGER, MetaMonitorManagerClass))
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (MetaMonitorManager, g_object_unref)
+
 struct _MetaMonitorManager
 {
   MetaDBusDisplayConfigSkeleton parent_instance;

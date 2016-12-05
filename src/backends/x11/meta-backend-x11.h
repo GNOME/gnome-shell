@@ -32,8 +32,13 @@
 #include "backends/x11/meta-clutter-backend-x11.h"
 
 #define META_TYPE_BACKEND_X11 (meta_backend_x11_get_type ())
-G_DECLARE_FINAL_TYPE (MetaBackendX11, meta_backend_x11,
-                      META, BACKEND_X11, MetaBackend)
+G_DECLARE_DERIVABLE_TYPE (MetaBackendX11, meta_backend_x11,
+                          META, BACKEND_X11, MetaBackend)
+
+struct _MetaBackendX11Class
+{
+  MetaBackendClass parent_class;
+};
 
 Display * meta_backend_x11_get_xdisplay (MetaBackendX11 *backend);
 
