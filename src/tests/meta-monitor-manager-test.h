@@ -22,8 +22,20 @@
 
 #include "backends/meta-monitor-manager-private.h"
 
+typedef struct _MetaMonitorTestSetup
+{
+  MetaMonitorMode *modes;
+  int n_modes;
+  MetaOutput *outputs;
+  int n_outputs;
+  MetaCRTC *crtcs;
+  int n_crtcs;
+} MetaMonitorTestSetup;
+
 #define META_TYPE_MONITOR_MANAGER_TEST (meta_monitor_manager_test_get_type ())
 G_DECLARE_FINAL_TYPE (MetaMonitorManagerTest, meta_monitor_manager_test,
                       META, MONITOR_MANAGER_TEST, MetaMonitorManager)
+
+void meta_monitor_manager_test_init_test_setup (MetaMonitorTestSetup *test_setup);
 
 #endif /* META_MONITOR_MANAGER_TEST_H */

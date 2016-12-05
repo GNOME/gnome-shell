@@ -221,6 +221,8 @@ main (int argc, char *argv[])
 
   g_option_context_free (ctx);
 
+  init_tests (argc, argv);
+
   meta_plugin_manager_load ("default");
 
   meta_override_compositor_configuration (META_COMPOSITOR_TYPE_WAYLAND,
@@ -230,7 +232,6 @@ main (int argc, char *argv[])
   meta_init ();
   meta_register_with_session ();
 
-  init_tests (argc, argv);
   g_idle_add (run_tests, NULL);
 
   return meta_run ();

@@ -21,74 +21,42 @@
 
 #include "tests/meta-monitor-manager-test.h"
 
-#define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
-
 struct _MetaMonitorManagerTest
 {
   MetaMonitorManager parent;
+
+  MetaMonitorTestSetup *test_setup;
 };
 
 G_DEFINE_TYPE (MetaMonitorManagerTest, meta_monitor_manager_test,
                META_TYPE_MONITOR_MANAGER)
 
+static MetaMonitorTestSetup *_initial_test_setup = NULL;
+
+void
+meta_monitor_manager_test_init_test_setup (MetaMonitorTestSetup *test_setup)
+{
+  _initial_test_setup = test_setup;
+}
+
 static void
 meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 {
-  int n_monitors = 2;
-  int i;
+  MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
 
   manager->max_screen_width = 65535;
   manager->max_screen_height = 65535;
-  manager->screen_width = 1024;
-  manager->screen_height = 768;
 
-  manager->modes = g_new0 (MetaMonitorMode, 1);
-  manager->n_modes = 1;
+  g_assert (manager_test->test_setup);
 
-  manager->modes[0].mode_id = 0;
-  manager->modes[0].width = 1024;
-  manager->modes[0].height = 768;
-  manager->modes[0].refresh_rate = 60.0;
+  manager->modes = manager_test->test_setup->modes;
+  manager->n_modes = manager_test->test_setup->n_modes;
 
-  manager->crtcs = g_new0 (MetaCRTC, n_monitors);
-  manager->n_crtcs = n_monitors;
-  manager->outputs = g_new0 (MetaOutput, n_monitors);
-  manager->n_outputs = n_monitors;
+  manager->crtcs = manager_test->test_setup->crtcs;
+  manager->n_crtcs = manager_test->test_setup->n_crtcs;
 
-  for (i = 0; i < n_monitors; i++)
-    {
-      manager->crtcs[i].crtc_id = i + 1;
-      manager->crtcs[i].current_mode = &manager->modes[0];
-      manager->crtcs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
-      manager->crtcs[i].all_transforms = ALL_TRANSFORMS;
-
-
-      manager->outputs[i].crtc = &manager->crtcs[i];
-      manager->outputs[i].winsys_id = i + 1;
-      manager->outputs[i].name = g_strdup_printf ("LVDS%d", i + 1);
-      manager->outputs[i].vendor = g_strdup ("MetaProducts Inc.");
-      manager->outputs[i].product = g_strdup ("unknown");
-      manager->outputs[i].serial = g_strdup ("0xC0FFEE");
-      manager->outputs[i].suggested_x = -1;
-      manager->outputs[i].suggested_y = -1;
-      manager->outputs[i].width_mm = 222;
-      manager->outputs[i].height_mm = 125;
-      manager->outputs[i].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-      manager->outputs[i].preferred_mode = &manager->modes[0];
-      manager->outputs[i].n_modes = 1;
-      manager->outputs[i].modes = g_new0 (MetaMonitorMode *, 1);
-      manager->outputs[i].modes[0] = &manager->modes[0];
-      manager->outputs[i].n_possible_crtcs = 1;
-      manager->outputs[i].possible_crtcs = g_new0 (MetaCRTC *, 1);
-      manager->outputs[i].possible_crtcs[0] = &manager->crtcs[i];
-      manager->outputs[i].n_possible_clones = 0;
-      manager->outputs[i].possible_clones = g_new0 (MetaOutput *, 0);
-      manager->outputs[i].backlight = -1;
-      manager->outputs[i].backlight_min = 0;
-      manager->outputs[i].backlight_max = 0;
-      manager->outputs[i].connector_type = META_CONNECTOR_TYPE_LVDS;
-      manager->outputs[i].scale = 1;
-    }
+  manager->outputs = manager_test->test_setup->outputs;
+  manager->n_outputs = manager_test->test_setup->n_outputs;
 }
 
 static void
@@ -208,6 +176,9 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
 static void
 meta_monitor_manager_test_init (MetaMonitorManagerTest *manager_test)
 {
+  g_assert (_initial_test_setup);
+
+  manager_test->test_setup = _initial_test_setup;
 }
 
 static void
