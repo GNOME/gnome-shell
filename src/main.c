@@ -469,12 +469,9 @@ main (int argc, char **argv)
 
   ecode = meta_run ();
 
-  if (g_getenv ("GNOME_SHELL_ENABLE_CLEANUP"))
-    {
-      g_printerr ("Doing final cleanup...\n");
-      g_object_unref (shell_global_get ());
-    }
-
+  g_debug ("Doing final cleanup");
+  _shell_global_destroy_gjs_context (shell_global_get ());
+  g_object_unref (shell_global_get ());
   g_object_unref (sender);
 
   return ecode;

@@ -338,7 +338,7 @@ shell_global_finalize (GObject *object)
 {
   ShellGlobal *global = SHELL_GLOBAL (object);
 
-  g_object_unref (global->js_context);
+  g_clear_object (&global->js_context);
   g_object_unref (global->settings);
 
   the_object = NULL;
@@ -564,6 +564,20 @@ ShellGlobal *
 shell_global_get (void)
 {
   return the_object;
+}
+
+/**
+ * _shell_global_destroy_gjs_context: (skip)
+ * @self: global object
+ *
+ * Destroys the GjsContext held by ShellGlobal, in order to break reference
+ * counting cycles. (The GjsContext holds a reference to ShellGlobal because
+ * it's available as window.global inside JS.)
+ */
+void
+_shell_global_destroy_gjs_context (ShellGlobal *self)
+{
+  g_clear_object (&self->js_context);
 }
 
 static guint32
