@@ -67,9 +67,26 @@ typedef struct _MonitorTestCaseSetup
   int n_crtcs;
 } MonitorTestCaseSetup;
 
+typedef struct _MonitorTestCaseLogicalMonitor
+{
+  MetaRectangle layout;
+  int scale;
+} MonitorTestCaseLogicalMonitor;
+
+typedef struct _MonitorTestCaseExpect
+{
+  MonitorTestCaseLogicalMonitor logical_monitors[MAX_N_LOGICAL_MONITORS];
+  int n_logical_monitors;
+  int n_outputs;
+  int n_crtcs;
+  int screen_width;
+  int screen_height;
+} MonitorTestCaseExpect;
+
 typedef struct _MonitorTestCase
 {
   MonitorTestCaseSetup setup;
+  MonitorTestCaseExpect expect;
 } MonitorTestCase;
 
 static MonitorTestCase initial_test_case = {
@@ -114,44 +131,64 @@ static MonitorTestCase initial_test_case = {
       }
     },
     .n_crtcs = 2
+  },
+
+  .expect = {
+    .logical_monitors = {
+      {
+        .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
+        .scale = 1
+      },
+      {
+        .layout = { .x = 1024, .y = 0, .width = 1024, .height = 768 },
+        .scale = 1
+      }
+    },
+    .n_logical_monitors = 2,
+    .n_outputs = 2,
+    .n_crtcs = 2,
+    .screen_width = 1024 * 2,
+    .screen_height = 768
   }
 };
 
 static void
-meta_test_monitor_linear_config (void)
+check_monitor_configuration (MonitorTestCase *test_case)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-  GList *logical_monitors, *l;
-  int n_logical_monitors, i;
-  MetaRectangle expected_rects[] = {
-    { .x = 0, .y = 0, .width = 1024, .height = 768 },
-    { .x = 1024, .y = 0, .width = 1024, .height = 768 },
-  };
+  GList *logical_monitors;
+  int n_logical_monitors;
+  GList *l;
+  int i;
 
-  g_assert (monitor_manager->screen_width == 1024 * 2);
-  g_assert (monitor_manager->screen_height == 768);
-  g_assert (monitor_manager->n_outputs == 2);
-  g_assert (monitor_manager->n_crtcs == 2);
+  g_assert (monitor_manager->screen_width == test_case->expect.screen_width);
+  g_assert (monitor_manager->screen_height == test_case->expect.screen_height);
+  g_assert ((int) monitor_manager->n_outputs == test_case->expect.n_outputs);
+  g_assert ((int) monitor_manager->n_crtcs == test_case->expect.n_crtcs);
 
   n_logical_monitors =
     meta_monitor_manager_get_num_logical_monitors (monitor_manager);
-  g_assert (n_logical_monitors == 2);
+  g_assert (n_logical_monitors == test_case->expect.n_logical_monitors);
 
   logical_monitors =
     meta_monitor_manager_get_logical_monitors (monitor_manager);
-  i = 0;
-  for (l = logical_monitors; l; l = l->next)
+  for (l = logical_monitors, i = 0; l; l = l->next, i++)
     {
       MetaLogicalMonitor *logical_monitor = l->data;
+      MonitorTestCaseLogicalMonitor *test_logical_monitor =
+        &test_case->expect.logical_monitors[i];
 
-      g_assert (logical_monitor->rect.x == expected_rects[i].x);
-      g_assert (logical_monitor->rect.y == expected_rects[i].y);
-      g_assert (logical_monitor->rect.width == expected_rects[i].width);
-      g_assert (logical_monitor->rect.height == expected_rects[i].height);
-      i++;
+      g_assert (logical_monitor->rect.x == test_logical_monitor->layout.x);
+      g_assert (logical_monitor->rect.y == test_logical_monitor->layout.y);
+      g_assert (logical_monitor->rect.width ==
+                test_logical_monitor->layout.width);
+      g_assert (logical_monitor->rect.height ==
+                test_logical_monitor->layout.height);
+      g_assert (logical_monitor->scale == test_logical_monitor->scale);
     }
+  g_assert (n_logical_monitors == i);
 }
 
 static MetaMonitorTestSetup *
@@ -270,6 +307,12 @@ create_monitor_test_setup (MonitorTestCase *test_case)
   return test_setup;
 }
 
+static void
+meta_test_monitor_initial_linear_config (void)
+{
+  check_monitor_configuration (&initial_test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -278,6 +321,6 @@ init_monitor_tests (void)
   initial_test_setup = create_monitor_test_setup (&initial_test_case);
   meta_monitor_manager_test_init_test_setup (initial_test_setup);
 
-  g_test_add_func ("/backends/monitor/linear-config",
-                   meta_test_monitor_linear_config);
+  g_test_add_func ("/backends/monitor/initial-linear-config",
+                   meta_test_monitor_initial_linear_config);
 }
