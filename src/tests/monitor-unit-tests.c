@@ -49,6 +49,7 @@ typedef struct _MonitorTestCaseOutput
   int width_mm;
   int height_mm;
   MetaTileInfo tile_info;
+  int scale;
 } MonitorTestCaseOutput;
 
 typedef struct _MonitorTestCaseCrtc
@@ -246,6 +247,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
       int j;
       MetaCRTC **possible_crtcs;
       int n_possible_crtcs;
+      int scale;
 
       crtc_index = test_case->setup.outputs[i].crtc;
       if (crtc_index == -1)
@@ -279,6 +281,10 @@ create_monitor_test_setup (MonitorTestCase *test_case)
           possible_crtcs[j] = &test_setup->crtcs[possible_crtc_index];
         }
 
+      scale = test_case->setup.outputs[i].scale;
+      if (scale < 1)
+        scale = 1;
+
       test_setup->outputs[i] = (MetaOutput) {
         .crtc = crtc,
         .winsys_id = i + 1,
@@ -302,7 +308,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
         .backlight = -1,
         .connector_type = META_CONNECTOR_TYPE_LVDS,
         .tile_info = test_case->setup.outputs[i].tile_info,
-        .scale = 1
+        .scale = scale
       };
     }
 
@@ -563,6 +569,86 @@ meta_test_monitor_tiled_linear_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_hidpi_linear_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1280,
+          .height = 720,
+          .refresh_rate = 60.0
+        },
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.0
+        }
+      },
+      .n_modes = 2,
+      .outputs = {
+        {
+          .crtc = 0,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          /* These will result in DPI of about 216" */
+          .width_mm = 150,
+          .height_mm = 85,
+          .scale = 2,
+        },
+        {
+          .crtc = 1,
+          .modes = { 1 },
+          .n_modes = 1,
+          .preferred_mode = 1,
+          .possible_crtcs = { 1 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .scale = 1,
+        }
+      },
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .logical_monitors = {
+        {
+          .layout = { .x = 0, .y = 0, .width = 1280, .height = 720 },
+          .scale = 2
+        },
+        {
+          .layout = { .x = 1280, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+        }
+      },
+      .n_logical_monitors = 2,
+      .n_outputs = 2,
+      .n_crtcs = 2,
+      .screen_width = 1280 + 1024,
+      .screen_height = 768
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  test_setup = create_monitor_test_setup (&test_case);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -581,4 +667,6 @@ init_monitor_tests (void)
                    meta_test_monitor_preferred_linear_config);
   g_test_add_func ("/backends/monitor/tiled-linear-config",
                    meta_test_monitor_tiled_linear_config);
+  g_test_add_func ("/backends/monitor/hidpi-linear-config",
+                   meta_test_monitor_hidpi_linear_config);
 }
