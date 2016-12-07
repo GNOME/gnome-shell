@@ -39,6 +39,22 @@ meta_monitor_manager_test_init_test_setup (MetaMonitorTestSetup *test_setup)
   _initial_test_setup = test_setup;
 }
 
+void
+meta_monitor_manager_test_emulate_hotplug (MetaMonitorManagerTest *manager_test,
+                                           MetaMonitorTestSetup   *test_setup)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_test);
+  MetaMonitorTestSetup *old_test_setup;
+
+  old_test_setup = manager_test->test_setup;
+  manager_test->test_setup = test_setup;
+
+  meta_monitor_manager_read_current_config (manager);
+  meta_monitor_manager_on_hotplug (manager);
+
+  g_free (old_test_setup);
+}
+
 static void
 meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 {
@@ -174,6 +190,14 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
 }
 
 static void
+meta_monitor_manager_test_dispose (GObject *object)
+{
+  MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (object);
+
+  g_clear_pointer (&manager_test->test_setup, g_free);
+}
+
+static void
 meta_monitor_manager_test_init (MetaMonitorManagerTest *manager_test)
 {
   g_assert (_initial_test_setup);
@@ -184,7 +208,10 @@ meta_monitor_manager_test_init (MetaMonitorManagerTest *manager_test)
 static void
 meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
+
+  object_class->dispose = meta_monitor_manager_test_dispose;
 
   manager_class->read_current = meta_monitor_manager_test_read_current;
   manager_class->apply_configuration = meta_monitor_manager_test_apply_configuration;

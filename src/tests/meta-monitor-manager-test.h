@@ -38,4 +38,7 @@ G_DECLARE_FINAL_TYPE (MetaMonitorManagerTest, meta_monitor_manager_test,
 
 void meta_monitor_manager_test_init_test_setup (MetaMonitorTestSetup *test_setup);
 
+void meta_monitor_manager_test_emulate_hotplug (MetaMonitorManagerTest *manager_test,
+                                                MetaMonitorTestSetup   *test_setup);
+
 #endif /* META_MONITOR_MANAGER_TEST_H */
