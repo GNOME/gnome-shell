@@ -410,6 +410,71 @@ meta_test_monitor_one_off_linear_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_preferred_linear_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 800,
+          .height = 600,
+          .refresh_rate = 60.0
+        },
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.0
+        },
+        {
+          .width = 1280,
+          .height = 720,
+          .refresh_rate = 60.0
+        }
+      },
+      .n_modes = 3,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0, 1, 2 },
+          .n_modes = 3,
+          .preferred_mode = 1,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .logical_monitors = {
+        {
+          .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+        },
+      },
+      .n_logical_monitors = 1,
+      .n_outputs = 1,
+      .n_crtcs = 1,
+      .screen_width = 1024,
+      .screen_height = 768,
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  test_setup = create_monitor_test_setup (&test_case);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -424,4 +489,6 @@ init_monitor_tests (void)
                    meta_test_monitor_one_disconnected_linear_config);
   g_test_add_func ("/backends/monitor/one-off-linear-config",
                    meta_test_monitor_one_off_linear_config);
+  g_test_add_func ("/backends/monitor/preferred-linear-config",
+                   meta_test_monitor_preferred_linear_config);
 }
