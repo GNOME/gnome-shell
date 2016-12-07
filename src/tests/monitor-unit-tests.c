@@ -48,6 +48,7 @@ typedef struct _MonitorTestCaseOutput
   int n_possible_crtcs;
   int width_mm;
   int height_mm;
+  MetaTileInfo tile_info;
 } MonitorTestCaseOutput;
 
 typedef struct _MonitorTestCaseCrtc
@@ -300,6 +301,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
         .possible_clones = NULL,
         .backlight = -1,
         .connector_type = META_CONNECTOR_TYPE_LVDS,
+        .tile_info = test_case->setup.outputs[i].tile_info,
         .scale = 1
       };
     }
@@ -475,6 +477,92 @@ meta_test_monitor_preferred_linear_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_tiled_linear_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 400,
+          .height = 600,
+          .refresh_rate = 60.0
+        },
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 0,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        },
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 1 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 1,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        }
+      },
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .logical_monitors = {
+        {
+          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .scale = 1
+        },
+      },
+      .n_logical_monitors = 1,
+      .n_outputs = 2,
+      .n_crtcs = 2,
+      .screen_width = 800,
+      .screen_height = 600,
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  test_setup = create_monitor_test_setup (&test_case);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -491,4 +579,6 @@ init_monitor_tests (void)
                    meta_test_monitor_one_off_linear_config);
   g_test_add_func ("/backends/monitor/preferred-linear-config",
                    meta_test_monitor_preferred_linear_config);
+  g_test_add_func ("/backends/monitor/tiled-linear-config",
+                   meta_test_monitor_tiled_linear_config);
 }
