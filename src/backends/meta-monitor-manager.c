@@ -148,6 +148,7 @@ construct_tile_monitor (MetaMonitorManager *manager,
   logical_monitor->height_mm = output->height_mm;
   logical_monitor->winsys_id = output->winsys_id;
 
+  logical_monitor->scale = output->scale;
   logical_monitor->rect.x = output->crtc->rect.x;
   logical_monitor->rect.y = output->crtc->rect.y;
   calculate_tiled_monitor_size (manager, output->tile_info.group_id,
