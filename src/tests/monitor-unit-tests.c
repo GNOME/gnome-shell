@@ -313,6 +313,45 @@ meta_test_monitor_initial_linear_config (void)
   check_monitor_configuration (&initial_test_case);
 }
 
+static void
+emulate_hotplug (MetaMonitorTestSetup *test_setup)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerTest *monitor_manager_test =
+    META_MONITOR_MANAGER_TEST (monitor_manager);
+
+  meta_monitor_manager_test_emulate_hotplug (monitor_manager_test, test_setup);
+}
+
+static void
+meta_test_monitor_one_disconnected_linear_config (void)
+{
+  MonitorTestCase test_case = initial_test_case;
+  MetaMonitorTestSetup *test_setup;
+
+  test_case.setup.n_outputs = 1;
+
+  test_case.expect = (MonitorTestCaseExpect) {
+    .logical_monitors = {
+      {
+        .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
+        .scale = 1
+      },
+    },
+    .n_logical_monitors = 1,
+    .n_outputs = 1,
+    .n_crtcs = 2,
+    .screen_width = 1024,
+    .screen_height = 768
+  };
+
+  test_setup = create_monitor_test_setup (&test_case);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -323,4 +362,6 @@ init_monitor_tests (void)
 
   g_test_add_func ("/backends/monitor/initial-linear-config",
                    meta_test_monitor_initial_linear_config);
+  g_test_add_func ("/backends/monitor/one-disconnected-linear-config",
+                   meta_test_monitor_one_disconnected_linear_config);
 }
