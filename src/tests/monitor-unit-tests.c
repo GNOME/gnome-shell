@@ -352,6 +352,64 @@ meta_test_monitor_one_disconnected_linear_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_one_off_linear_config (void)
+{
+  MonitorTestCase test_case;
+  MetaMonitorTestSetup *test_setup;
+  MonitorTestCaseOutput outputs[] = {
+    {
+      .crtc = 0,
+      .modes = { 0 },
+      .n_modes = 1,
+      .preferred_mode = 0,
+      .possible_crtcs = { 0 },
+      .n_possible_crtcs = 1,
+      .width_mm = 222,
+      .height_mm = 125
+    },
+    {
+      .crtc = -1,
+      .modes = { 0 },
+      .n_modes = 1,
+      .preferred_mode = 0,
+      .possible_crtcs = { 1 },
+      .n_possible_crtcs = 1,
+      .width_mm = 222,
+      .height_mm = 125
+    }
+  };
+
+  test_case = initial_test_case;
+
+  memcpy (&test_case.setup.outputs, &outputs, sizeof (outputs));
+  test_case.setup.n_outputs = G_N_ELEMENTS (outputs);
+
+  test_case.setup.crtcs[1].current_mode = -1;
+
+  test_case.expect = (MonitorTestCaseExpect) {
+    .logical_monitors = {
+      {
+        .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
+        .scale = 1
+      },
+      {
+        .layout = { .x = 1024, .y = 0, .width = 1024, .height = 768 },
+        .scale = 1
+      },
+    },
+    .n_logical_monitors = 2,
+    .n_outputs = 2,
+    .n_crtcs = 2,
+    .screen_width = 1024 * 2,
+    .screen_height = 768
+  };
+
+  test_setup = create_monitor_test_setup (&test_case);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -364,4 +422,6 @@ init_monitor_tests (void)
                    meta_test_monitor_initial_linear_config);
   g_test_add_func ("/backends/monitor/one-disconnected-linear-config",
                    meta_test_monitor_one_disconnected_linear_config);
+  g_test_add_func ("/backends/monitor/one-off-linear-config",
+                   meta_test_monitor_one_off_linear_config);
 }
