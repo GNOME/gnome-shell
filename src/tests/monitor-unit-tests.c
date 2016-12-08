@@ -214,7 +214,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
     }
 
   test_setup->n_crtcs = test_case->setup.n_crtcs;
-  test_setup->crtcs = g_new0 (MetaCRTC, test_setup->n_crtcs);
+  test_setup->crtcs = g_new0 (MetaCrtc, test_setup->n_crtcs);
   for (i = 0; i < test_setup->n_crtcs; i++)
     {
       int current_mode_index;
@@ -226,7 +226,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
       else
         current_mode = &test_setup->modes[current_mode_index];
 
-      test_setup->crtcs[i] = (MetaCRTC) {
+      test_setup->crtcs[i] = (MetaCrtc) {
         .crtc_id = i + 1,
         .current_mode = current_mode,
         .transform = META_MONITOR_TRANSFORM_NORMAL,
@@ -239,13 +239,13 @@ create_monitor_test_setup (MonitorTestCase *test_case)
   for (i = 0; i < test_setup->n_outputs; i++)
     {
       int crtc_index;
-      MetaCRTC *crtc;
+      MetaCrtc *crtc;
       int preferred_mode_index;
       MetaMonitorMode *preferred_mode;
       MetaMonitorMode **modes;
       int n_modes;
       int j;
-      MetaCRTC **possible_crtcs;
+      MetaCrtc **possible_crtcs;
       int n_possible_crtcs;
       int scale;
 
@@ -272,7 +272,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
         }
 
       n_possible_crtcs = test_case->setup.outputs[i].n_possible_crtcs;
-      possible_crtcs = g_new0 (MetaCRTC *, n_possible_crtcs);
+      possible_crtcs = g_new0 (MetaCrtc *, n_possible_crtcs);
       for (j = 0; j < n_possible_crtcs; j++)
         {
           int possible_crtc_index;

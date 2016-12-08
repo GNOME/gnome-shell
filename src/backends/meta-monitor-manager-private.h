@@ -52,10 +52,10 @@ typedef struct _MetaMonitorConfig         MetaMonitorConfig;
 
 typedef struct _MetaLogicalMonitor MetaLogicalMonitor;
 
-typedef struct _MetaCRTC MetaCRTC;
+typedef struct _MetaCrtc MetaCrtc;
 typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaMonitorMode MetaMonitorMode;
-typedef struct _MetaCRTCInfo MetaCRTCInfo;
+typedef struct _MetaCrtcInfo MetaCrtcInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
 typedef struct _MetaTileInfo MetaTileInfo;
 
@@ -110,7 +110,7 @@ struct _MetaTileInfo {
 struct _MetaOutput
 {
   /* The CRTC driving this output, NULL if the output is not enabled */
-  MetaCRTC *crtc;
+  MetaCrtc *crtc;
   /* The low-level ID of this output, used to apply back configuration */
   glong winsys_id;
   char *name;
@@ -128,7 +128,7 @@ struct _MetaOutput
   MetaMonitorMode **modes;
   unsigned int n_modes;
 
-  MetaCRTC **possible_crtcs;
+  MetaCrtc **possible_crtcs;
   unsigned int n_possible_crtcs;
 
   MetaOutput **possible_clones;
@@ -164,7 +164,7 @@ struct _MetaOutput
   MetaTileInfo tile_info;
 };
 
-struct _MetaCRTC
+struct _MetaCrtc
 {
   glong crtc_id;
   MetaRectangle rect;
@@ -244,15 +244,15 @@ struct _MetaLogicalMonitor
 };
 
 /*
- * MetaCRTCInfo:
+ * MetaCrtcInfo:
  * This represents the writable part of a CRTC, as deserialized from DBus
  * or built by MetaMonitorConfig
  *
- * Note: differently from the other structures in this file, MetaCRTCInfo
+ * Note: differently from the other structures in this file, MetaCrtcInfo
  * is handled by pointer. This is to accomodate the usage in MetaMonitorConfig
  */
-struct _MetaCRTCInfo {
-  MetaCRTC                 *crtc;
+struct _MetaCrtcInfo {
+  MetaCrtc                 *crtc;
   MetaMonitorMode          *mode;
   int                       x;
   int                       y;
@@ -262,7 +262,7 @@ struct _MetaCRTCInfo {
 
 /*
  * MetaOutputInfo:
- * this is the same as MetaCRTCInfo, but for outputs
+ * this is the same as MetaCrtcInfo, but for outputs
  */
 struct _MetaOutputInfo {
   MetaOutput  *output;
@@ -309,7 +309,7 @@ struct _MetaMonitorManager
   MetaMonitorMode *modes;
   unsigned int n_modes;
 
-  MetaCRTC *crtcs;
+  MetaCrtc *crtcs;
   unsigned int n_crtcs;
 
   GList *logical_monitors;
@@ -335,7 +335,7 @@ struct _MetaMonitorManagerClass
                         MetaOutput         *);
 
   void (*apply_configuration) (MetaMonitorManager  *,
-                               MetaCRTCInfo       **,
+                               MetaCrtcInfo       **,
                                unsigned int         ,
                                MetaOutputInfo     **,
                                unsigned int);
@@ -348,13 +348,13 @@ struct _MetaMonitorManagerClass
                             int);
 
   void (*get_crtc_gamma) (MetaMonitorManager  *,
-                          MetaCRTC            *,
+                          MetaCrtc            *,
                           gsize               *,
                           unsigned short     **,
                           unsigned short     **,
                           unsigned short     **);
   void (*set_crtc_gamma) (MetaMonitorManager *,
-                          MetaCRTC           *,
+                          MetaCrtc           *,
                           gsize               ,
                           unsigned short     *,
                           unsigned short     *,
@@ -396,7 +396,7 @@ MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *
 void                meta_monitor_manager_get_resources     (MetaMonitorManager  *manager,
                                                             MetaMonitorMode    **modes,
                                                             unsigned int        *n_modes,
-                                                            MetaCRTC           **crtcs,
+                                                            MetaCrtc           **crtcs,
                                                             unsigned int        *n_crtcs,
                                                             MetaOutput         **outputs,
                                                             unsigned int        *n_outputs);
@@ -410,7 +410,7 @@ void                meta_monitor_manager_get_screen_limits (MetaMonitorManager *
                                                             int                *height);
 
 void                meta_monitor_manager_apply_configuration (MetaMonitorManager  *manager,
-                                                              MetaCRTCInfo       **crtcs,
+                                                              MetaCrtcInfo       **crtcs,
                                                               unsigned int         n_crtcs,
                                                               MetaOutputInfo     **outputs,
                                                               unsigned int         n_outputs);
@@ -422,7 +422,7 @@ void               meta_output_parse_edid (MetaOutput *output,
                                            GBytes     *edid);
 gboolean           meta_output_is_laptop  (MetaOutput *output);
 
-void               meta_crtc_info_free   (MetaCRTCInfo   *info);
+void               meta_crtc_info_free   (MetaCrtcInfo   *info);
 void               meta_output_info_free (MetaOutputInfo *info);
 
 gboolean           meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager);
@@ -435,7 +435,7 @@ gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaMonitorMode *mode);
-void meta_monitor_manager_clear_crtc (MetaCRTC *crtc);
+void meta_monitor_manager_clear_crtc (MetaCrtc *crtc);
 
 /* Returns true if transform causes width and height to be inverted
    This is true for the odd transforms in the enum */

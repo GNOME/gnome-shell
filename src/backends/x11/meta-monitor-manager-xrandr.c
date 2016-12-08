@@ -667,7 +667,7 @@ output_get_crtcs (MetaMonitorManager *manager,
   guint j, k;
   guint n_actual_crtcs;
 
-  meta_output->possible_crtcs = g_new0 (MetaCRTC *, output->ncrtc);
+  meta_output->possible_crtcs = g_new0 (MetaCrtc *, output->ncrtc);
 
   n_actual_crtcs = 0;
   for (j = 0; j < (unsigned)output->ncrtc; j++)
@@ -774,7 +774,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   manager->n_modes = resources->nmode;
   manager->outputs = g_new0 (MetaOutput, manager->n_outputs);
   manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
-  manager->crtcs = g_new0 (MetaCRTC, manager->n_crtcs);
+  manager->crtcs = g_new0 (MetaCrtc, manager->n_crtcs);
 
   for (i = 0; i < (unsigned)resources->nmode; i++)
     {
@@ -795,7 +795,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   for (i = 0; i < (unsigned)resources->ncrtc; i++)
     {
       XRRCrtcInfo *crtc;
-      MetaCRTC *meta_crtc;
+      MetaCrtc *meta_crtc;
 
       crtc = XRRGetCrtcInfo (manager_xrandr->xdisplay, resources, resources->crtcs[i]);
 
@@ -1047,7 +1047,7 @@ output_set_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 
 static void
 meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
-						 MetaCRTCInfo       **crtcs,
+						 MetaCrtcInfo       **crtcs,
 						 unsigned int         n_crtcs,
 						 MetaOutputInfo     **outputs,
 						 unsigned int         n_outputs)
@@ -1062,8 +1062,8 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
   width = 0; height = 0;
   for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTCInfo *crtc_info = crtcs[i];
-      MetaCRTC *crtc = crtc_info->crtc;
+      MetaCrtcInfo *crtc_info = crtcs[i];
+      MetaCrtc *crtc = crtc_info->crtc;
       crtc->is_dirty = TRUE;
 
       if (crtc_info->mode == NULL)
@@ -1088,8 +1088,8 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
   */
   for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTCInfo *crtc_info = crtcs[i];
-      MetaCRTC *crtc = crtc_info->crtc;
+      MetaCrtcInfo *crtc_info = crtcs[i];
+      MetaCrtc *crtc = crtc_info->crtc;
 
       if (crtc_info->mode == NULL ||
           crtc->rect.x + crtc->rect.width > width ||
@@ -1115,7 +1115,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
   /* Disable CRTCs not mentioned in the list */
   for (i = 0; i < manager->n_crtcs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = &manager->crtcs[i];
 
       if (crtc->is_dirty)
         {
@@ -1155,8 +1155,8 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 
   for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTCInfo *crtc_info = crtcs[i];
-      MetaCRTC *crtc = crtc_info->crtc;
+      MetaCrtcInfo *crtc_info = crtcs[i];
+      MetaCrtc *crtc = crtc_info->crtc;
 
       if (crtc_info->mode != NULL)
         {
@@ -1290,7 +1290,7 @@ meta_monitor_manager_xrandr_change_backlight (MetaMonitorManager *manager,
 
 static void
 meta_monitor_manager_xrandr_get_crtc_gamma (MetaMonitorManager  *manager,
-					    MetaCRTC            *crtc,
+					    MetaCrtc            *crtc,
 					    gsize               *size,
 					    unsigned short     **red,
 					    unsigned short     **green,
@@ -1311,7 +1311,7 @@ meta_monitor_manager_xrandr_get_crtc_gamma (MetaMonitorManager  *manager,
 
 static void
 meta_monitor_manager_xrandr_set_crtc_gamma (MetaMonitorManager *manager,
-					    MetaCRTC           *crtc,
+					    MetaCrtc           *crtc,
 					    gsize               size,
 					    unsigned short     *red,
 					    unsigned short     *green,

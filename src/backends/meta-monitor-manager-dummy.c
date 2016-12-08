@@ -121,7 +121,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   manager->modes[0].height = 768;
   manager->modes[0].refresh_rate = 60.0;
 
-  manager->crtcs = g_new0 (MetaCRTC, num_monitors);
+  manager->crtcs = g_new0 (MetaCrtc, num_monitors);
   manager->n_crtcs = num_monitors;
   manager->outputs = g_new0 (MetaOutput, num_monitors);
   manager->n_outputs = num_monitors;
@@ -157,7 +157,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
       manager->outputs[i].modes = g_new0 (MetaMonitorMode *, 1);
       manager->outputs[i].modes[0] = &manager->modes[0];
       manager->outputs[i].n_possible_crtcs = 1;
-      manager->outputs[i].possible_crtcs = g_new0 (MetaCRTC *, 1);
+      manager->outputs[i].possible_crtcs = g_new0 (MetaCrtc *, 1);
       manager->outputs[i].possible_crtcs[0] = &manager->crtcs[i];
       manager->outputs[i].n_possible_clones = 0;
       manager->outputs[i].possible_clones = g_new0 (MetaOutput *, 0);
@@ -171,7 +171,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 
 static void
 meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
-                                         MetaCRTCInfo       **crtcs,
+                                         MetaCrtcInfo       **crtcs,
                                          unsigned int         n_crtcs,
                                          MetaOutputInfo     **outputs,
                                          unsigned int         n_outputs)
@@ -181,8 +181,8 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
 
   for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTCInfo *crtc_info = crtcs[i];
-      MetaCRTC *crtc = crtc_info->crtc;
+      MetaCrtcInfo *crtc_info = crtcs[i];
+      MetaCrtc *crtc = crtc_info->crtc;
       crtc->is_dirty = TRUE;
 
       if (crtc_info->mode == NULL)
@@ -245,7 +245,7 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
   /* Disable CRTCs not mentioned in the list */
   for (i = 0; i < manager->n_crtcs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = &manager->crtcs[i];
 
       crtc->logical_monitor = NULL;
 

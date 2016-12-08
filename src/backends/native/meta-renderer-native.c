@@ -564,7 +564,7 @@ flip_egl_stream (MetaRendererNative *renderer_native,
 static void
 meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
                                 GClosure           *flip_closure,
-                                MetaCRTC           *crtc,
+                                MetaCrtc           *crtc,
                                 int                 x,
                                 int                 y,
                                 gboolean           *fb_in_use)
@@ -640,7 +640,7 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
 
       for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
-          MetaCRTC *crtc = &monitor_manager->crtcs[i];
+          MetaCrtc *crtc = &monitor_manager->crtcs[i];
           int x = crtc->rect.x - logical_monitor->rect.x;
           int y = crtc->rect.y - logical_monitor->rect.y;
 
@@ -659,7 +659,7 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
 
       for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
-          MetaCRTC *crtc = &monitor_manager->crtcs[i];
+          MetaCrtc *crtc = &monitor_manager->crtcs[i];
 
           meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
                                                     crtc,
@@ -707,7 +707,7 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
 
       for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
-          MetaCRTC *crtc = &monitor_manager->crtcs[i];
+          MetaCrtc *crtc = &monitor_manager->crtcs[i];
           int x = crtc->rect.x - logical_monitor->rect.x;
           int y = crtc->rect.y - logical_monitor->rect.y;
 
@@ -725,7 +725,7 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
 
       for (i = 0; i < monitor_manager->n_crtcs; i++)
         {
-          MetaCRTC *crtc = &monitor_manager->crtcs[i];
+          MetaCrtc *crtc = &monitor_manager->crtcs[i];
 
           meta_onscreen_native_flip_crtc (onscreen_native, flip_closure,
                                           crtc, crtc->rect.x, crtc->rect.y,

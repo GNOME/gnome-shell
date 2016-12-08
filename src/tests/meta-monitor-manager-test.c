@@ -77,7 +77,7 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 
 static void
 meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
-                                               MetaCRTCInfo      **crtcs,
+                                               MetaCrtcInfo      **crtcs,
                                                unsigned int        n_crtcs,
                                                MetaOutputInfo    **outputs,
                                                unsigned int        n_outputs)
@@ -87,8 +87,8 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
 
   for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTCInfo *crtc_info = crtcs[i];
-      MetaCRTC *crtc = crtc_info->crtc;
+      MetaCrtcInfo *crtc_info = crtcs[i];
+      MetaCrtc *crtc = crtc_info->crtc;
       crtc->is_dirty = TRUE;
 
       if (crtc_info->mode == NULL)
@@ -151,7 +151,7 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
   /* Disable CRTCs not mentioned in the list */
   for (i = 0; i < manager->n_crtcs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = &manager->crtcs[i];
 
       crtc->logical_monitor = NULL;
 

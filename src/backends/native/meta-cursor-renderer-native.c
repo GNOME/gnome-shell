@@ -158,7 +158,7 @@ set_pending_cursor_sprite_gbm_bo (MetaCursorSprite *cursor_sprite,
 
 static void
 set_crtc_cursor (MetaCursorRendererNative *native,
-                 MetaCRTC                 *crtc,
+                 MetaCrtc                 *crtc,
                  MetaCursorSprite         *cursor_sprite,
                  gboolean                  force)
 {
@@ -213,7 +213,7 @@ update_hw_cursor (MetaCursorRendererNative *native,
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
   MetaCursorRenderer *renderer = META_CURSOR_RENDERER (native);
   MetaMonitorManager *monitors;
-  MetaCRTC *crtcs;
+  MetaCrtc *crtcs;
   unsigned int i, n_crtcs;
   MetaRectangle rect;
   gboolean painted = FALSE;
@@ -285,7 +285,7 @@ cursor_over_transformed_crtc (MetaCursorRenderer *renderer,
                               MetaCursorSprite   *cursor_sprite)
 {
   MetaMonitorManager *monitors;
-  MetaCRTC *crtcs;
+  MetaCrtc *crtcs;
   unsigned int i, n_crtcs;
   MetaRectangle rect;
 

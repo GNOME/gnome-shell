@@ -898,7 +898,7 @@ apply_configuration (MetaMonitorConfig  *self,
     return FALSE;
 
   meta_monitor_manager_apply_configuration (manager,
-                                            (MetaCRTCInfo**)crtcs->pdata, crtcs->len,
+                                            (MetaCrtcInfo**)crtcs->pdata, crtcs->len,
                                             (MetaOutputInfo**)outputs->pdata, outputs->len);
 
   set_current (self, config);
@@ -1772,7 +1772,7 @@ output_can_clone (MetaOutput *output,
 }
 
 static gboolean
-can_clone (MetaCRTCInfo *info,
+can_clone (MetaCrtcInfo *info,
 	   MetaOutput   *output)
 {
   unsigned int i;
@@ -1789,7 +1789,7 @@ can_clone (MetaCRTCInfo *info,
 }
 
 static gboolean
-crtc_can_drive_output (MetaCRTC   *crtc,
+crtc_can_drive_output (MetaCrtc   *crtc,
                        MetaOutput *output)
 {
   unsigned int i;
@@ -1803,14 +1803,14 @@ crtc_can_drive_output (MetaCRTC   *crtc,
 
 static gboolean
 crtc_assignment_assign (CrtcAssignment       *assign,
-			MetaCRTC             *crtc,
+			MetaCrtc             *crtc,
 			MetaMonitorMode      *mode,
 			int                   x,
 			int                   y,
 			MetaMonitorTransform  transform,
 			MetaOutput           *output)
 {
-  MetaCRTCInfo *info = g_hash_table_lookup (assign->info, crtc);
+  MetaCrtcInfo *info = g_hash_table_lookup (assign->info, crtc);
 
   if (!crtc_can_drive_output (crtc, output))
     return FALSE;
@@ -1834,7 +1834,7 @@ crtc_assignment_assign (CrtcAssignment       *assign,
     }
   else
     {
-      info = g_slice_new0 (MetaCRTCInfo);
+      info = g_slice_new0 (MetaCrtcInfo);
 
       info->crtc = crtc;
       info->mode = mode;
@@ -1852,10 +1852,10 @@ crtc_assignment_assign (CrtcAssignment       *assign,
 
 static void
 crtc_assignment_unassign (CrtcAssignment *assign,
-                          MetaCRTC       *crtc,
+                          MetaCrtc       *crtc,
                           MetaOutput     *output)
 {
-  MetaCRTCInfo *info = g_hash_table_lookup (assign->info, crtc);
+  MetaCrtcInfo *info = g_hash_table_lookup (assign->info, crtc);
 
   if (info)
     {
@@ -1901,7 +1901,7 @@ static gboolean
 real_assign_crtcs (CrtcAssignment     *assignment,
                    unsigned int        output_num)
 {
-  MetaCRTC *crtcs;
+  MetaCrtc *crtcs;
   MetaOutput *outputs;
   unsigned int n_crtcs, n_outputs;
   MetaOutputKey *output_key;
@@ -1925,7 +1925,7 @@ real_assign_crtcs (CrtcAssignment     *assignment,
 
   for (i = 0; i < n_crtcs; i++)
     {
-      MetaCRTC *crtc = &crtcs[i];
+      MetaCrtc *crtc = &crtcs[i];
       unsigned int pass;
 
       /* Make two passes, one where frequencies must match, then
@@ -1989,8 +1989,8 @@ meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
 {
   CrtcAssignment assignment;
   GHashTableIter iter;
-  MetaCRTC *crtc;
-  MetaCRTCInfo *info;
+  MetaCrtc *crtc;
+  MetaCrtcInfo *info;
   unsigned int i;
   MetaOutput *all_outputs;
   unsigned int n_outputs;
@@ -2041,10 +2041,10 @@ meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
 }
 
 void
-meta_crtc_info_free (MetaCRTCInfo *info)
+meta_crtc_info_free (MetaCrtcInfo *info)
 {
   g_ptr_array_free (info->outputs, TRUE);
-  g_slice_free (MetaCRTCInfo, info);
+  g_slice_free (MetaCrtcInfo, info);
 }
 
 void

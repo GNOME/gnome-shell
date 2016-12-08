@@ -178,7 +178,7 @@ make_logical_config (MetaMonitorManager *manager)
 
   monitor_number = 0;
 
-  /* Walk the list of MetaCRTCs, and build a MetaLogicalMonitor
+  /* Walk the list of MetaCrtcs, and build a MetaLogicalMonitor
      for each of them, unless they reference a rectangle that
      is already there.
   */
@@ -208,7 +208,7 @@ make_logical_config (MetaMonitorManager *manager)
 
   for (i = 0; i < manager->n_crtcs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = &manager->crtcs[i];
       GList *l;
 
       /* Ignore CRTCs not in use */
@@ -429,7 +429,7 @@ meta_monitor_manager_free_mode_array (MetaMonitorMode *old_modes,
 }
 
 void
-meta_monitor_manager_clear_crtc (MetaCRTC *crtc)
+meta_monitor_manager_clear_crtc (MetaCrtc *crtc)
 {
   if (crtc->driver_notify)
     crtc->driver_notify (crtc);
@@ -438,7 +438,7 @@ meta_monitor_manager_clear_crtc (MetaCRTC *crtc)
 }
 
 static void
-meta_monitor_manager_free_crtc_array (MetaCRTC *old_crtcs,
+meta_monitor_manager_free_crtc_array (MetaCrtc *old_crtcs,
                                       int       n_old_crtcs)
 {
   int i;
@@ -624,7 +624,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
   for (i = 0; i < manager->n_crtcs; i++)
     {
-      MetaCRTC *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = &manager->crtcs[i];
       GVariantBuilder transforms;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
@@ -766,7 +766,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
 static gboolean
 output_can_config (MetaOutput      *output,
-                   MetaCRTC        *crtc,
+                   MetaCrtc        *crtc,
                    MetaMonitorMode *mode)
 {
   unsigned int i;
@@ -803,7 +803,7 @@ output_can_clone (MetaOutput *output,
 
 void
 meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
-                                          MetaCRTCInfo       **crtcs,
+                                          MetaCrtcInfo       **crtcs,
                                           unsigned int         n_crtcs,
                                           MetaOutputInfo     **outputs,
                                           unsigned int         n_outputs)
@@ -862,12 +862,12 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
                               &crtc_id, &new_mode, &x, &y, &transform,
                               &nested_outputs, NULL))
     {
-      MetaCRTCInfo *crtc_info;
+      MetaCrtcInfo *crtc_info;
       MetaOutput *first_output;
-      MetaCRTC *crtc;
+      MetaCrtc *crtc;
       MetaMonitorMode *mode;
 
-      crtc_info = g_slice_new (MetaCRTCInfo);
+      crtc_info = g_slice_new (MetaCrtcInfo);
       crtc_info->outputs = g_ptr_array_new ();
 
       if (crtc_id >= manager->n_crtcs)
@@ -1033,7 +1033,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
     }
 
   meta_monitor_manager_apply_configuration (manager,
-                                            (MetaCRTCInfo**)crtc_infos->pdata,
+                                            (MetaCrtcInfo**)crtc_infos->pdata,
                                             crtc_infos->len,
                                             (MetaOutputInfo**)output_infos->pdata,
                                             output_infos->len);
@@ -1136,7 +1136,7 @@ meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   MetaMonitorManagerClass *klass;
-  MetaCRTC *crtc;
+  MetaCrtc *crtc;
   gsize size;
   unsigned short *red;
   unsigned short *green;
@@ -1199,7 +1199,7 @@ meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   MetaMonitorManagerClass *klass;
-  MetaCRTC *crtc;
+  MetaCrtc *crtc;
   gsize size, dummy;
   unsigned short *red;
   unsigned short *green;
@@ -1459,7 +1459,7 @@ void
 meta_monitor_manager_get_resources (MetaMonitorManager  *manager,
                                     MetaMonitorMode    **modes,
                                     unsigned int        *n_modes,
-                                    MetaCRTC           **crtcs,
+                                    MetaCrtc           **crtcs,
                                     unsigned int        *n_crtcs,
                                     MetaOutput         **outputs,
                                     unsigned int        *n_outputs)
@@ -1503,7 +1503,7 @@ void
 meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 {
   MetaOutput *old_outputs;
-  MetaCRTC *old_crtcs;
+  MetaCrtc *old_crtcs;
   MetaMonitorMode *old_modes;
   unsigned int n_old_outputs, n_old_crtcs, n_old_modes;
 
