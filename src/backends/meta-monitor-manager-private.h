@@ -32,8 +32,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef META_MONITOR_PRIVATE_H
-#define META_MONITOR_PRIVATE_H
+#ifndef META_MONITOR_MANAGER_PRIVATE_H
+#define META_MONITOR_MANAGER_PRIVATE_H
 
 #include <cogl/cogl.h>
 #include <libgnome-desktop/gnome-pnp-ids.h>
@@ -445,4 +445,4 @@ meta_monitor_transform_is_rotated (MetaMonitorTransform transform)
   return (transform % 2);
 }
 
-#endif
+#endif /* META_MONITOR_MANAGER_PRIVATE_H */
