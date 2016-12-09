@@ -24,7 +24,7 @@
 
 typedef struct _MetaMonitorTestSetup
 {
-  MetaMonitorMode *modes;
+  MetaCrtcMode *modes;
   int n_modes;
   MetaOutput *outputs;
   int n_outputs;

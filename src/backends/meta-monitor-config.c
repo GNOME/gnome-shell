@@ -1804,7 +1804,7 @@ crtc_can_drive_output (MetaCrtc   *crtc,
 static gboolean
 crtc_assignment_assign (CrtcAssignment       *assign,
 			MetaCrtc             *crtc,
-			MetaMonitorMode      *mode,
+			MetaCrtcMode         *mode,
 			int                   x,
 			int                   y,
 			MetaMonitorTransform  transform,
@@ -1938,7 +1938,7 @@ real_assign_crtcs (CrtcAssignment     *assignment,
 
           for (j = 0; j < output->n_modes; j++)
 	    {
-              MetaMonitorMode *mode = output->modes[j];
+              MetaCrtcMode *mode = output->modes[j];
               int width, height;
 
               if (meta_monitor_transform_is_rotated (output_config->transform))

@@ -639,7 +639,7 @@ output_get_modes (MetaMonitorManager *manager,
   guint j, k;
   guint n_actual_modes;
 
-  meta_output->modes = g_new0 (MetaMonitorMode *, output->nmode);
+  meta_output->modes = g_new0 (MetaCrtcMode *, output->nmode);
 
   n_actual_modes = 0;
   for (j = 0; j < (guint)output->nmode; j++)
@@ -773,13 +773,13 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   manager->n_crtcs = resources->ncrtc;
   manager->n_modes = resources->nmode;
   manager->outputs = g_new0 (MetaOutput, manager->n_outputs);
-  manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
+  manager->modes = g_new0 (MetaCrtcMode, manager->n_modes);
   manager->crtcs = g_new0 (MetaCrtc, manager->n_crtcs);
 
   for (i = 0; i < (unsigned)resources->nmode; i++)
     {
       XRRModeInfo *xmode = &resources->modes[i];
-      MetaMonitorMode *mode;
+      MetaCrtcMode *mode;
 
       mode = &manager->modes[i];
 
@@ -1160,7 +1160,7 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 
       if (crtc_info->mode != NULL)
         {
-          MetaMonitorMode *mode;
+          MetaCrtcMode *mode;
           g_autofree XID *output_ids = NULL;
           unsigned int j, n_output_ids;
           Status ok;

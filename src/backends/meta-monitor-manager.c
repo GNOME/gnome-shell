@@ -406,7 +406,7 @@ meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
 }
 
 void
-meta_monitor_manager_clear_mode (MetaMonitorMode *mode)
+meta_monitor_manager_clear_mode (MetaCrtcMode *mode)
 {
   g_free (mode->name);
 
@@ -417,8 +417,8 @@ meta_monitor_manager_clear_mode (MetaMonitorMode *mode)
 }
 
 static void
-meta_monitor_manager_free_mode_array (MetaMonitorMode *old_modes,
-                                      int              n_old_modes)
+meta_monitor_manager_free_mode_array (MetaCrtcMode *old_modes,
+                                      int           n_old_modes)
 {
   int i;
 
@@ -742,7 +742,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
   for (i = 0; i < manager->n_modes; i++)
     {
-      MetaMonitorMode *mode = &manager->modes[i];
+      MetaCrtcMode *mode = &manager->modes[i];
 
       g_variant_builder_add (&mode_builder, "(uxuudu)",
                              i, /* ID */
@@ -765,9 +765,9 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 }
 
 static gboolean
-output_can_config (MetaOutput      *output,
-                   MetaCrtc        *crtc,
-                   MetaMonitorMode *mode)
+output_can_config (MetaOutput   *output,
+                   MetaCrtc     *crtc,
+                   MetaCrtcMode *mode)
 {
   unsigned int i;
   gboolean ok = FALSE;
@@ -865,7 +865,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
       MetaCrtcInfo *crtc_info;
       MetaOutput *first_output;
       MetaCrtc *crtc;
-      MetaMonitorMode *mode;
+      MetaCrtcMode *mode;
 
       crtc_info = g_slice_new (MetaCrtcInfo);
       crtc_info->outputs = g_ptr_array_new ();
@@ -1457,7 +1457,7 @@ meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
 
 void
 meta_monitor_manager_get_resources (MetaMonitorManager  *manager,
-                                    MetaMonitorMode    **modes,
+                                    MetaCrtcMode       **modes,
                                     unsigned int        *n_modes,
                                     MetaCrtc           **crtcs,
                                     unsigned int        *n_crtcs,
@@ -1504,7 +1504,7 @@ meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 {
   MetaOutput *old_outputs;
   MetaCrtc *old_crtcs;
-  MetaMonitorMode *old_modes;
+  MetaCrtcMode *old_modes;
   unsigned int n_old_outputs, n_old_crtcs, n_old_modes;
 
   /* Some implementations of read_current use the existing information

@@ -187,9 +187,9 @@ meta_output_destroy_notify (MetaOutput *output)
 }
 
 static void
-meta_monitor_mode_destroy_notify (MetaMonitorMode *output)
+meta_monitor_mode_destroy_notify (MetaCrtcMode *mode)
 {
-  g_slice_free (drmModeModeInfo, output->driver_private);
+  g_slice_free (drmModeModeInfo, mode->driver_private);
 }
 
 static void
@@ -384,7 +384,7 @@ output_get_tile_info (MetaMonitorManagerKms *manager_kms,
     }
 }
 
-static MetaMonitorMode *
+static MetaCrtcMode *
 find_meta_mode (MetaMonitorManager    *manager,
                 const drmModeModeInfo *drm_mode)
 {
@@ -419,7 +419,7 @@ drm_mode_vrefresh (const drmModeModeInfo *mode)
 }
 
 static void
-init_mode (MetaMonitorMode       *mode,
+init_mode (MetaCrtcMode          *mode,
            const drmModeModeInfo *drm_mode,
            long                   mode_id)
 {
@@ -437,8 +437,8 @@ static int
 compare_modes (const void *one,
                const void *two)
 {
-  MetaMonitorMode *a = *(MetaMonitorMode **) one;
-  MetaMonitorMode *b = *(MetaMonitorMode **) two;
+  MetaCrtcMode *a = *(MetaCrtcMode **) one;
+  MetaCrtcMode *b = *(MetaCrtcMode **) two;
 
   if (a->width != b->width)
     return a->width > b->width ? -1 : 1;
@@ -696,8 +696,10 @@ add_common_modes (MetaMonitorManager *manager,
       g_ptr_array_add (array, find_meta_mode (manager, mode));
     }
 
-  output->modes = g_renew (MetaMonitorMode *, output->modes, output->n_modes + array->len);
-  memcpy (output->modes + output->n_modes, array->pdata, array->len * sizeof (MetaMonitorMode *));
+  output->modes = g_renew (MetaCrtcMode *, output->modes,
+                           output->n_modes + array->len);
+  memcpy (output->modes + output->n_modes, array->pdata,
+          array->len * sizeof (MetaCrtcMode *));
   output->n_modes += array->len;
 
   g_ptr_array_free (array, TRUE);
@@ -783,7 +785,7 @@ init_output (MetaOutput         *output,
 
   output->preferred_mode = NULL;
   output->n_modes = connector->count_modes;
-  output->modes = g_new0 (MetaMonitorMode *, output->n_modes);
+  output->modes = g_new0 (MetaCrtcMode *, output->n_modes);
   for (i = 0; i < output->n_modes; i++) {
       output->modes[i] = find_meta_mode (manager, &connector->modes[i]);
       if (connector->modes[i].type & DRM_MODE_TYPE_PREFERRED)
@@ -803,7 +805,7 @@ init_output (MetaOutput         *output,
   if (output_kms->has_scaling)
     add_common_modes (manager, output);
 
-  qsort (output->modes, output->n_modes, sizeof (MetaMonitorMode *), compare_modes);
+  qsort (output->modes, output->n_modes, sizeof (MetaCrtcMode *), compare_modes);
 
   output_kms->n_encoders = connector->count_encoders;
   output_kms->encoders = g_new0 (drmModeEncoderPtr, output_kms->n_encoders);
@@ -1037,13 +1039,13 @@ init_modes (MetaMonitorManager *manager,
     }
 
   manager->n_modes = g_hash_table_size (modes) + G_N_ELEMENTS (meta_default_drm_mode_infos);
-  manager->modes = g_new0 (MetaMonitorMode, manager->n_modes);
+  manager->modes = g_new0 (MetaCrtcMode, manager->n_modes);
 
   g_hash_table_iter_init (&iter, modes);
   mode_id = 0;
   while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &drm_mode))
     {
-      MetaMonitorMode *mode;
+      MetaCrtcMode *mode;
 
       mode = &manager->modes[mode_id];
       init_mode (mode, drm_mode, (long) mode_id);
@@ -1055,7 +1057,7 @@ init_modes (MetaMonitorManager *manager,
 
   for (i = 0; i < G_N_ELEMENTS (meta_default_drm_mode_infos); i++)
     {
-      MetaMonitorMode *mode;
+      MetaCrtcMode *mode;
 
       mode = &manager->modes[mode_id];
       init_mode (mode, &meta_default_drm_mode_infos[i], (long) mode_id);
@@ -1312,7 +1314,7 @@ meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
         }
       else
         {
-          MetaMonitorMode *mode;
+          MetaCrtcMode *mode;
           unsigned int j;
           int width, height;
 

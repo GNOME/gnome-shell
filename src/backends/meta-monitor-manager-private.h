@@ -54,7 +54,7 @@ typedef struct _MetaLogicalMonitor MetaLogicalMonitor;
 
 typedef struct _MetaCrtc MetaCrtc;
 typedef struct _MetaOutput MetaOutput;
-typedef struct _MetaMonitorMode MetaMonitorMode;
+typedef struct _MetaCrtcMode MetaCrtcMode;
 typedef struct _MetaCrtcInfo MetaCrtcInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
 typedef struct _MetaTileInfo MetaTileInfo;
@@ -124,8 +124,8 @@ struct _MetaOutput
 
   MetaConnectorType connector_type;
 
-  MetaMonitorMode *preferred_mode;
-  MetaMonitorMode **modes;
+  MetaCrtcMode *preferred_mode;
+  MetaCrtcMode **modes;
   unsigned int n_modes;
 
   MetaCrtc **possible_crtcs;
@@ -168,7 +168,7 @@ struct _MetaCrtc
 {
   glong crtc_id;
   MetaRectangle rect;
-  MetaMonitorMode *current_mode;
+  MetaCrtcMode *current_mode;
   MetaMonitorTransform transform;
   unsigned int all_transforms;
 
@@ -187,7 +187,7 @@ struct _MetaCrtc
   GDestroyNotify driver_notify;
 };
 
-struct _MetaMonitorMode
+struct _MetaCrtcMode
 {
   /* The low-level ID of this mode, used to apply back configuration */
   glong mode_id;
@@ -253,7 +253,7 @@ struct _MetaLogicalMonitor
  */
 struct _MetaCrtcInfo {
   MetaCrtc                 *crtc;
-  MetaMonitorMode          *mode;
+  MetaCrtcMode             *mode;
   int                       x;
   int                       y;
   MetaMonitorTransform      transform;
@@ -306,7 +306,7 @@ struct _MetaMonitorManager
   MetaOutput *outputs;
   unsigned int n_outputs;
 
-  MetaMonitorMode *modes;
+  MetaCrtcMode *modes;
   unsigned int n_modes;
 
   MetaCrtc *crtcs;
@@ -394,7 +394,7 @@ MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *
 							    unsigned int       *n_outputs);
 
 void                meta_monitor_manager_get_resources     (MetaMonitorManager  *manager,
-                                                            MetaMonitorMode    **modes,
+                                                            MetaCrtcMode       **modes,
                                                             unsigned int        *n_modes,
                                                             MetaCrtc           **crtcs,
                                                             unsigned int        *n_crtcs,
@@ -434,7 +434,7 @@ gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *
                                                             gfloat              matrix[6]);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
-void meta_monitor_manager_clear_mode (MetaMonitorMode *mode);
+void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);
 void meta_monitor_manager_clear_crtc (MetaCrtc *crtc);
 
 /* Returns true if transform causes width and height to be inverted

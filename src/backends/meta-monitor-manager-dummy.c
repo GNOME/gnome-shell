@@ -113,7 +113,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   manager->screen_width = 1024 * num_monitors;
   manager->screen_height = 768;
 
-  manager->modes = g_new0 (MetaMonitorMode, 1);
+  manager->modes = g_new0 (MetaCrtcMode, 1);
   manager->n_modes = 1;
 
   manager->modes[0].mode_id = 0;
@@ -154,7 +154,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
       manager->outputs[i].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
       manager->outputs[i].preferred_mode = &manager->modes[0];
       manager->outputs[i].n_modes = 1;
-      manager->outputs[i].modes = g_new0 (MetaMonitorMode *, 1);
+      manager->outputs[i].modes = g_new0 (MetaCrtcMode *, 1);
       manager->outputs[i].modes[0] = &manager->modes[0];
       manager->outputs[i].n_possible_crtcs = 1;
       manager->outputs[i].possible_crtcs = g_new0 (MetaCrtc *, 1);
@@ -195,7 +195,7 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
         }
       else
         {
-          MetaMonitorMode *mode;
+          MetaCrtcMode *mode;
           MetaOutput *output;
           unsigned int j;
           int width, height;

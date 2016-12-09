@@ -101,7 +101,7 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
         }
       else
         {
-          MetaMonitorMode *mode;
+          MetaCrtcMode *mode;
           MetaOutput *output;
           unsigned int j;
           int width, height;
