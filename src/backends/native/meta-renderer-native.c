@@ -983,9 +983,7 @@ meta_renderer_native_create_surface_egl_device (MetaRendererNative *renderer_nat
   };
   EGLint stream_attribs[] = {
     EGL_STREAM_FIFO_LENGTH_KHR, 1,
-#ifdef EGL_EXT_stream_acquire_mode
     EGL_CONSUMER_AUTO_ACQUIRE_EXT, EGL_FALSE,
-#endif
     EGL_NONE
   };
   EGLint stream_producer_attribs[] = {
