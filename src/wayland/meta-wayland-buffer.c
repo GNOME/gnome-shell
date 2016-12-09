@@ -340,7 +340,6 @@ meta_wayland_buffer_attach (MetaWaylandBuffer *buffer,
       return egl_image_buffer_attach (buffer, error);
     case META_WAYLAND_BUFFER_TYPE_EGL_STREAM:
       return egl_stream_buffer_attach (buffer, error);
-      break;
     case META_WAYLAND_BUFFER_TYPE_UNKNOWN:
       g_assert_not_reached ();
       return FALSE;
