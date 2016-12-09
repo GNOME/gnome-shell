@@ -60,11 +60,10 @@ struct _MetaEgl
 
   PFNEGLSTREAMCONSUMEROUTPUTEXTPROC eglStreamConsumerOutputEXT;
 
-  PFNEGLSTREAMCONSUMERACQUIREATTRIBEXTPROC eglStreamConsumerAcquireAttribEXT;
-
   PFNEGLSTREAMCONSUMERGLTEXTUREEXTERNALKHRPROC eglStreamConsumerGLTextureExternalKHR;
 
   PFNEGLSTREAMCONSUMERACQUIREKHRPROC eglStreamConsumerAcquireKHR;
+  PFNEGLSTREAMCONSUMERACQUIREATTRIBNVPROC eglStreamConsumerAcquireAttribNV;
 
   PFNEGLCREATESTREAMFROMFILEDESCRIPTORKHRPROC eglCreateStreamFromFileDescriptorKHR;
 };
@@ -629,10 +628,10 @@ meta_egl_stream_consumer_acquire_attrib (MetaEgl     *egl,
                                          EGLAttrib   *attrib_list,
                                          GError     **error)
 {
-  if (!is_egl_proc_valid (egl->eglStreamConsumerAcquireAttribEXT, error))
+  if (!is_egl_proc_valid (egl->eglStreamConsumerAcquireAttribNV, error))
     return FALSE;
 
-  if (!egl->eglStreamConsumerAcquireAttribEXT (display, stream, attrib_list))
+  if (!egl->eglStreamConsumerAcquireAttribNV (display, stream, attrib_list))
     {
       set_egl_error (error);
       return FALSE;
@@ -734,11 +733,10 @@ meta_egl_constructed (GObject *object)
 
   GET_EGL_PROC_ADDR (eglStreamConsumerOutputEXT);
 
-  GET_EGL_PROC_ADDR (eglStreamConsumerAcquireAttribEXT);
-
   GET_EGL_PROC_ADDR (eglStreamConsumerGLTextureExternalKHR);
 
   GET_EGL_PROC_ADDR (eglStreamConsumerAcquireKHR);
+  GET_EGL_PROC_ADDR (eglStreamConsumerAcquireAttribNV);
 
   GET_EGL_PROC_ADDR (eglCreateStreamFromFileDescriptorKHR);
 }
