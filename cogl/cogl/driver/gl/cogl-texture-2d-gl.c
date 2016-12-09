@@ -47,14 +47,19 @@
 #include "cogl-util-gl-private.h"
 
 #if defined (COGL_HAS_EGL_SUPPORT)
-#include "cogl-egl-defines.h"
-#  ifndef COGL_HAS_GLES2
+
 /* We need this define from GLES2, but can't include the header
    as its type definitions may conflict with the GL ones
  */
-#  define GL_TEXTURE_EXTERNAL_OES           0x8D65
-#  endif
-#endif
+#ifndef GL_OES_EGL_image_external
+#define GL_OES_EGL_image_external 1
+#define GL_TEXTURE_EXTERNAL_OES           0x8D65
+#define GL_TEXTURE_BINDING_EXTERNAL_OES   0x8D67
+#define GL_REQUIRED_TEXTURE_IMAGE_UNITS_OES 0x8D68
+#define GL_SAMPLER_EXTERNAL_OES           0x8D66
+#endif /* GL_OES_EGL_image_external */
+
+#endif /* defined (COGL_HAS_EGL_SUPPORT) */
 
 void
 _cogl_texture_2d_gl_free (CoglTexture2D *tex_2d)
