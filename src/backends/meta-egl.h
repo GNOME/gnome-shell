@@ -129,6 +129,11 @@ gboolean meta_egl_query_stream (MetaEgl     *egl,
                                 EGLint      *value,
                                 GError     **error);
 
+EGLStreamKHR meta_egl_create_stream_attrib (MetaEgl         *egl,
+                                            EGLDisplay       display,
+                                            const EGLAttrib *attrib_list,
+                                            GError         **error);
+
 EGLSurface meta_egl_create_stream_producer_surface (MetaEgl     *egl,
                                                     EGLDisplay   display,
                                                     EGLConfig    config,

@@ -93,4 +93,9 @@ typedef EGLBoolean (EGLAPIENTRYP PFNEGLSTREAMCONSUMERACQUIREATTRIBNVPROC) (EGLDi
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLSTREAMCONSUMERRELEASEATTRIBNVPROC) (EGLDisplay dpy, EGLStreamKHR stream, const EGLAttrib *attrib_list);
 #endif /* EGL_NV_stream_attrib */
 
+#ifndef EGL_WL_wayland_eglstream
+#define EGL_WL_wayland_eglstream 1
+#define EGL_WAYLAND_EGLSTREAM_WL              0x334B
+#endif /* EGL_WL_wayland_eglstream */
+
 #endif /* META_EGL_EXT_H */

@@ -56,6 +56,8 @@ struct _MetaEgl
   PFNEGLDESTROYSTREAMKHRPROC eglDestroyStreamKHR;
   PFNEGLQUERYSTREAMKHRPROC eglQueryStreamKHR;
 
+  PFNEGLCREATESTREAMATTRIBNVPROC eglCreateStreamAttribNV;
+
   PFNEGLCREATESTREAMPRODUCERSURFACEKHRPROC eglCreateStreamProducerSurfaceKHR;
 
   PFNEGLSTREAMCONSUMEROUTPUTEXTPROC eglStreamConsumerOutputEXT;
@@ -576,6 +578,27 @@ meta_egl_query_stream (MetaEgl     *egl,
   return TRUE;
 }
 
+EGLStreamKHR
+meta_egl_create_stream_attrib (MetaEgl         *egl,
+                               EGLDisplay       display,
+                               const EGLAttrib *attrib_list,
+                               GError         **error)
+{
+  EGLStreamKHR stream;
+
+  if (!is_egl_proc_valid (egl->eglCreateStreamAttribNV, error))
+    return FALSE;
+
+  stream = egl->eglCreateStreamAttribNV (display, attrib_list);
+  if (stream == EGL_NO_STREAM_KHR)
+    {
+      set_egl_error (error);
+      return EGL_NO_STREAM_KHR;
+    }
+
+  return stream;
+}
+
 EGLSurface
 meta_egl_create_stream_producer_surface (MetaEgl     *egl,
                                          EGLDisplay   display,
@@ -728,6 +751,8 @@ meta_egl_constructed (GObject *object)
   GET_EGL_PROC_ADDR (eglCreateStreamKHR);
   GET_EGL_PROC_ADDR (eglDestroyStreamKHR);
   GET_EGL_PROC_ADDR (eglQueryStreamKHR);
+
+  GET_EGL_PROC_ADDR (eglCreateStreamAttribNV);
 
   GET_EGL_PROC_ADDR (eglCreateStreamProducerSurfaceKHR);
 
