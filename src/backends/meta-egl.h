@@ -163,9 +163,4 @@ gboolean meta_egl_stream_consumer_gl_texture_external (MetaEgl     *egl,
                                                        EGLStreamKHR stream,
                                                        GError     **error);
 
-EGLStreamKHR meta_egl_create_stream_from_file_descriptor (MetaEgl                   *egl,
-                                                          EGLDisplay                 display,
-                                                          EGLNativeFileDescriptorKHR file_descriptor,
-                                                          GError                   **error);
-
 #endif /* META_EGL_H */

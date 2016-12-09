@@ -66,8 +66,6 @@ struct _MetaEgl
 
   PFNEGLSTREAMCONSUMERACQUIREKHRPROC eglStreamConsumerAcquireKHR;
   PFNEGLSTREAMCONSUMERACQUIREATTRIBNVPROC eglStreamConsumerAcquireAttribNV;
-
-  PFNEGLCREATESTREAMFROMFILEDESCRIPTORKHRPROC eglCreateStreamFromFileDescriptorKHR;
 };
 
 G_DEFINE_TYPE (MetaEgl, meta_egl, G_TYPE_OBJECT)
@@ -699,27 +697,6 @@ meta_egl_stream_consumer_acquire (MetaEgl     *egl,
   return TRUE;
 }
 
-EGLStreamKHR
-meta_egl_create_stream_from_file_descriptor (MetaEgl                   *egl,
-                                             EGLDisplay                 display,
-                                             EGLNativeFileDescriptorKHR file_descriptor,
-                                             GError                   **error)
-{
-  EGLStreamKHR stream;
-
-  if (!is_egl_proc_valid (egl->eglCreateStreamFromFileDescriptorKHR, error))
-    return EGL_NO_STREAM_KHR;
-
-  stream = egl->eglCreateStreamFromFileDescriptorKHR (display, file_descriptor);
-  if (stream == EGL_NO_STREAM_KHR)
-    {
-      set_egl_error (error);
-      return EGL_NO_STREAM_KHR;
-    }
-
-  return stream;
-}
-
 #define GET_EGL_PROC_ADDR(proc) \
   egl->proc = (void *) eglGetProcAddress (#proc);
 
@@ -762,8 +739,6 @@ meta_egl_constructed (GObject *object)
 
   GET_EGL_PROC_ADDR (eglStreamConsumerAcquireKHR);
   GET_EGL_PROC_ADDR (eglStreamConsumerAcquireAttribNV);
-
-  GET_EGL_PROC_ADDR (eglCreateStreamFromFileDescriptorKHR);
 }
 
 #undef GET_EGL_PROC_ADDR

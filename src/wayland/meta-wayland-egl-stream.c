@@ -29,6 +29,7 @@
 #include "cogl/cogl-egl.h"
 #include "backends/meta-backend-private.h"
 #include "backends/meta-egl.h"
+#include "backends/meta-egl-ext.h"
 #include "meta/meta-backend.h"
 #include "wayland/meta-wayland-buffer.h"
 
@@ -54,43 +55,28 @@ meta_wayland_egl_stream_new (MetaWaylandBuffer *buffer,
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   EGLDisplay egl_display = cogl_egl_context_get_egl_display (cogl_context);
-  g_autoptr (MetaWaylandEglStream) stream = NULL;
-  int stream_fd;
+  EGLAttrib stream_attribs[] = {
+    EGL_WAYLAND_EGLSTREAM_WL, (EGLAttrib) buffer->resource,
+    EGL_NONE
+  };
   EGLStreamKHR egl_stream;
+  MetaWaylandEglStream *stream;
 
-  stream = g_object_new (META_TYPE_WAYLAND_EGL_STREAM, NULL);
-
-  /*
-   * HACK: Use a (as far as I can tell) undocumented hack by passing
-   * EGL_WAYLAND_BUFFER_WL to eglQueryWaylandBufferWL. If it happens to be a
-   * dummy EGLStream buffer, we'll get a EGLStream file descriptor.
-   *
-   * FIXME: At some point, replace this with the EGL_WL_wayland_eglstream
-   * extension.
-   */
-  if (!meta_egl_query_wayland_buffer (egl, egl_display, buffer->resource,
-                                      EGL_WAYLAND_BUFFER_WL, &stream_fd,
-                                      error))
-    return NULL;
-
-  if (stream_fd == EGL_NO_FILE_DESCRIPTOR_KHR)
+  egl_stream = meta_egl_create_stream_attrib (egl, egl_display, stream_attribs,
+                                              error);
+  if (egl_stream == EGL_NO_STREAM_KHR)
     {
       g_set_error (error, G_IO_ERROR,
                    G_IO_ERROR_FAILED,
-                   "Stream already used with other wl_buffer");
+                   "Failed to create stream from wl_buffer resource");
       return NULL;
     }
 
-  egl_stream = meta_egl_create_stream_from_file_descriptor (egl, egl_display, stream_fd,
-                                                            error);
-  close (stream_fd);
-  if (egl_stream == EGL_NO_STREAM_KHR)
-    return NULL;
-
+  stream = g_object_new (META_TYPE_WAYLAND_EGL_STREAM, NULL);
   stream->egl_stream = egl_stream;
   stream->buffer = buffer;
 
-  return g_steal_pointer (&stream);
+  return stream;
 }
 
 static void
