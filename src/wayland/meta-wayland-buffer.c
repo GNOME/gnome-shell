@@ -81,16 +81,14 @@ meta_wayland_buffer_from_resource (struct wl_resource *resource)
   return buffer;
 }
 
-typedef enum _MetaWaylandBufferType
+static gboolean
+meta_wayland_buffer_is_realized (MetaWaylandBuffer *buffer)
 {
-  META_WAYLAND_BUFFER_TYPE_UNKNOWN,
-  META_WAYLAND_BUFFER_TYPE_SHM,
-  META_WAYLAND_BUFFER_TYPE_EGL_IMAGE,
-  META_WAYLAND_BUFFER_TYPE_EGL_STREAM,
-} MetaWaylandBufferType;
+  return buffer->type != META_WAYLAND_BUFFER_TYPE_UNKNOWN;
+}
 
-static MetaWaylandBufferType
-determine_buffer_type (MetaWaylandBuffer *buffer)
+static gboolean
+meta_wayland_buffer_realize (MetaWaylandBuffer *buffer)
 {
   EGLint format;
   MetaBackend *backend = meta_get_backend ();
@@ -98,20 +96,31 @@ determine_buffer_type (MetaWaylandBuffer *buffer)
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   EGLDisplay egl_display = cogl_egl_context_get_egl_display (cogl_context);
+  MetaWaylandEglStream *stream;
 
   if (wl_shm_buffer_get (buffer->resource) != NULL)
-    return META_WAYLAND_BUFFER_TYPE_SHM;
-
+    {
+      buffer->type = META_WAYLAND_BUFFER_TYPE_SHM;
+      return TRUE;
+    }
 
   if (meta_egl_query_wayland_buffer (egl, egl_display, buffer->resource,
                                      EGL_TEXTURE_FORMAT, &format,
                                      NULL))
-    return META_WAYLAND_BUFFER_TYPE_EGL_IMAGE;
+    {
+      buffer->type = META_WAYLAND_BUFFER_TYPE_EGL_IMAGE;
+      return TRUE;
+    }
 
-  if (meta_wayland_is_egl_stream_buffer (buffer))
-    return META_WAYLAND_BUFFER_TYPE_EGL_STREAM;
+  stream = meta_wayland_egl_stream_new (buffer, NULL);
+  if (stream)
+    {
+      buffer->egl_stream.stream = stream;
+      buffer->type = META_WAYLAND_BUFFER_TYPE_EGL_STREAM;
+      return TRUE;
+    }
 
-  return META_WAYLAND_BUFFER_TYPE_UNKNOWN;
+  return FALSE;
 }
 
 static void
@@ -284,16 +293,9 @@ static gboolean
 egl_stream_buffer_attach (MetaWaylandBuffer  *buffer,
                           GError            **error)
 {
-  MetaWaylandEglStream *stream;
+  MetaWaylandEglStream *stream = buffer->egl_stream.stream;
 
-  stream = buffer->egl_stream.stream;
-  if (!stream)
-    stream = meta_wayland_egl_stream_new (buffer, error);
-
-  if (!stream)
-    return FALSE;
-
-  buffer->egl_stream.stream = stream;
+  g_assert (stream);
 
   if (!buffer->texture)
     {
@@ -317,13 +319,20 @@ gboolean
 meta_wayland_buffer_attach (MetaWaylandBuffer *buffer,
                             GError           **error)
 {
-  MetaWaylandBufferType buffer_type;
-
   g_return_val_if_fail (buffer->resource, FALSE);
 
-  buffer_type = determine_buffer_type (buffer);
+  if (!meta_wayland_buffer_is_realized (buffer))
+    {
+      if (!meta_wayland_buffer_realize (buffer))
+        {
+          g_set_error (error, G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       "Unknown buffer type");
+          return FALSE;
+        }
+    }
 
-  switch (buffer_type)
+  switch (buffer->type)
     {
     case META_WAYLAND_BUFFER_TYPE_SHM:
       return shm_buffer_attach (buffer, error);
@@ -333,9 +342,7 @@ meta_wayland_buffer_attach (MetaWaylandBuffer *buffer,
       return egl_stream_buffer_attach (buffer, error);
       break;
     case META_WAYLAND_BUFFER_TYPE_UNKNOWN:
-      g_set_error (error, G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-                   "Unknown buffer type");
+      g_assert_not_reached ();
       return FALSE;
     }
 
@@ -412,15 +419,12 @@ void
 meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
                                     cairo_region_t    *region)
 {
-  MetaWaylandBufferType buffer_type;
   gboolean res = FALSE;
   GError *error = NULL;
 
   g_return_if_fail (buffer->resource);
 
-  buffer_type = determine_buffer_type (buffer);
-
-  switch (buffer_type)
+  switch (buffer->type)
     {
     case META_WAYLAND_BUFFER_TYPE_SHM:
       res = process_shm_buffer_damage (buffer, region, &error);

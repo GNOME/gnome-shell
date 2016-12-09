@@ -32,6 +32,14 @@
 #include "meta-wayland-types.h"
 #include "meta-wayland-egl-stream.h"
 
+typedef enum _MetaWaylandBufferType
+{
+  META_WAYLAND_BUFFER_TYPE_UNKNOWN,
+  META_WAYLAND_BUFFER_TYPE_SHM,
+  META_WAYLAND_BUFFER_TYPE_EGL_IMAGE,
+  META_WAYLAND_BUFFER_TYPE_EGL_STREAM,
+} MetaWaylandBufferType;
+
 struct _MetaWaylandBuffer
 {
   GObject parent;
@@ -41,6 +49,8 @@ struct _MetaWaylandBuffer
 
   CoglTexture *texture;
   gboolean is_y_inverted;
+
+  MetaWaylandBufferType type;
 
   struct {
     MetaWaylandEglStream *stream;
