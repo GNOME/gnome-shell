@@ -10,6 +10,7 @@ const RENAMED_DESKTOP_IDS = {
     'baobab.desktop': 'org.gnome.baobab.desktop',
     'cheese.desktop': 'org.gnome.Cheese.desktop',
     'dconf-editor.desktop': 'ca.desrt.dconf-editor.desktop',
+    'epiphany.desktop': 'org.gnome.Epiphany.desktop',
     'file-roller.desktop': 'org.gnome.FileRoller.desktop',
     'gcalctool.desktop': 'gnome-calculator.desktop',
     'geary.desktop': 'org.gnome.Geary.desktop',
