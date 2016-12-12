@@ -19,6 +19,7 @@ const CandidateArea = new Lang.Class({
 
     _init: function() {
         this.actor = new St.BoxLayout({ vertical: true,
+                                        reactive: true,
                                         visible: false });
         this._candidateBoxes = [];
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
@@ -38,6 +39,19 @@ const CandidateArea = new Lang.Class({
                 return Clutter.EVENT_PROPAGATE;
             }));
         }
+
+        this.actor.connect('scroll-event', Lang.bind(this, function(actor, event) {
+            let direction = event.get_scroll_direction();
+            switch(direction) {
+            case Clutter.ScrollDirection.UP:
+                this.emit('cursor-up');
+                break;
+            case Clutter.ScrollDirection.DOWN:
+                this.emit('cursor-down');
+                break;
+            };
+            return Clutter.EVENT_PROPAGATE;
+        }));
 
         this._buttonBox = new St.BoxLayout({ style_class: 'candidate-page-button-box' });
 
@@ -144,6 +158,14 @@ const CandidatePopup = new Lang.Class({
         this._candidateArea.connect('next-page', Lang.bind(this, function() {
             this._panelService.page_down();
         }));
+
+        this._candidateArea.connect('cursor-up', Lang.bind(this, function() {
+            this._panelService.cursor_up();
+        }));
+        this._candidateArea.connect('cursor-down', Lang.bind(this, function() {
+            this._panelService.cursor_down();
+        }));
+
         this._candidateArea.connect('candidate-clicked', Lang.bind(this, function(ca, index, button, state) {
             this._panelService.candidate_clicked(index, button, state);
         }));
