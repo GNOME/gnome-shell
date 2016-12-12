@@ -839,6 +839,17 @@ finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
 
       xdg_popup->popup = popup;
     }
+  else
+    {
+      /* The keyboard focus semantics for non-grabbing zxdg_shell_v6 popups
+       * is pretty undefined. Same applies for subsurfaces, but in practice,
+       * subsurfaces never receive keyboard focus, so it makes sense to
+       * do the same for non-grabbing popups.
+       *
+       * See https://bugzilla.gnome.org/show_bug.cgi?id=771694#c24
+       */
+      window->input = FALSE;
+    }
 }
 
 static void

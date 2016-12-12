@@ -117,24 +117,11 @@ static void
 meta_window_wayland_focus (MetaWindow *window,
                            guint32     timestamp)
 {
-  MetaWaylandSurface *surface = window->surface;
-  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
-     META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
-
-  /* The keyboard focus semantics for non-grabbing zxdg_shell_v6 popups
-   * is pretty undefined. Same applies for subsurfaces, but in practice,
-   * subsurfaces never receive keyboard focus, so it makes sense to
-   * do the same for non-grabbing popups.
-   *
-   * See https://bugzilla.gnome.org/show_bug.cgi?id=771694#c24
-   */
-  if (META_IS_WAYLAND_XDG_POPUP (shell_surface_role))
-    return;
-
-  meta_display_set_input_focus_window (window->display,
-                                       window,
-                                       FALSE,
-                                       timestamp);
+  if (window->input)
+    meta_display_set_input_focus_window (window->display,
+                                         window,
+                                         FALSE,
+                                         timestamp);
 }
 
 static void
