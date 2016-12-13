@@ -968,20 +968,14 @@ meta_renderer_native_create_surface_egl_device (MetaRendererNative *renderer_nat
   CoglRenderer *cogl_renderer = cogl_display->renderer;
   CoglRendererEGL *egl_renderer = cogl_renderer->winsys;
   EGLDisplay egl_display = egl_renderer->edpy;
+  MetaMonitor *monitor;
+  MetaOutput *output;
   EGLConfig egl_config;
   EGLStreamKHR egl_stream;
   EGLSurface egl_surface;
   EGLint num_layers;
   EGLOutputLayerEXT output_layer;
-  EGLAttrib output_attribs[] = {
-    /*
-     * An "logical_monitor" may have multiple outputs/crtcs in case its tiled,
-     * but as far as I can tell, EGL only allows you to pass one crtc_id, so
-     * lets pass the first one.
-     */
-    EGL_DRM_CRTC_EXT, logical_monitor->outputs[0]->crtc->crtc_id,
-    EGL_NONE,
-  };
+  EGLAttrib output_attribs[3];
   EGLint stream_attribs[] = {
     EGL_STREAM_FIFO_LENGTH_KHR, 1,
     EGL_CONSUMER_AUTO_ACQUIRE_EXT, EGL_FALSE,
@@ -996,6 +990,18 @@ meta_renderer_native_create_surface_egl_device (MetaRendererNative *renderer_nat
   egl_stream = meta_egl_create_stream (egl, egl_display, stream_attribs, error);
   if (egl_stream == EGL_NO_STREAM_KHR)
     return FALSE;
+
+  monitor = meta_logical_monitor_get_monitors (logical_monitor)->data;
+  output = meta_monitor_get_main_output (monitor);
+
+  /*
+   * An "logical_monitor" may have multiple outputs/crtcs in case its tiled,
+   * but as far as I can tell, EGL only allows you to pass one crtc_id, so
+   * lets pass the first one.
+   */
+  output_attribs[0] = EGL_DRM_CRTC_EXT;
+  output_attribs[1] = output->crtc->crtc_id;
+  output_attribs[2] = EGL_NONE;
 
   if (!meta_egl_get_output_layers (egl, egl_display,
                                    output_attribs,
@@ -1394,11 +1400,14 @@ meta_renderer_native_get_logical_monitor_transform (MetaRenderer       *renderer
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerKms *monitor_manager_kms =
     META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaMonitor *monitor;
+  MetaOutput *output;
 
-  g_assert (logical_monitor->n_outputs > 0);
+  monitor = meta_logical_monitor_get_monitors (logical_monitor)->data;
+  output = meta_monitor_get_main_output (monitor);
 
   return meta_monitor_manager_kms_get_view_transform (monitor_manager_kms,
-                                                      logical_monitor->outputs[0]->crtc);
+                                                      output->crtc);
 }
 
 static CoglOnscreen *

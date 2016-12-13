@@ -55,9 +55,6 @@ struct _MetaLogicalMonitor
   */
   glong winsys_id;
 
-  int n_outputs;
-  MetaOutput *outputs[META_MAX_OUTPUTS_PER_MONITOR];
-
   GList *monitors;
 };
 
@@ -77,5 +74,7 @@ void meta_logical_monitor_add_monitor (MetaLogicalMonitor *logical_monitor,
 gboolean meta_logical_monitor_is_primary (MetaLogicalMonitor *logical_monitor);
 
 void meta_logical_monitor_make_primary (MetaLogicalMonitor *logical_monitor);
+
+GList * meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor);
 
 #endif /* META_LOGICAL_MONITOR_H */

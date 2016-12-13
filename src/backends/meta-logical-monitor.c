@@ -36,7 +36,6 @@ meta_logical_monitor_new (MetaMonitor *monitor,
   GList *outputs;
   GList *l;
   gboolean is_presentation;
-  int i;
 
   g_assert (meta_monitor_is_active (monitor));
 
@@ -59,20 +58,15 @@ meta_logical_monitor_new (MetaMonitor *monitor,
 
   is_presentation = TRUE;
   outputs = meta_monitor_get_outputs (monitor);
-  for (l = outputs, i = 0; l; l = l->next, i++)
+  for (l = outputs; l; l = l->next)
     {
       MetaOutput *output = l->data;
 
       output->crtc->logical_monitor = logical_monitor;
 
-      if (i <= META_MAX_OUTPUTS_PER_MONITOR)
-        logical_monitor->outputs[i] = output;
-      else
-        g_warning ("Couldn't add all outputs to monitor");
-
       is_presentation = is_presentation && output->is_presentation;
     }
-  logical_monitor->n_outputs = MIN (i, META_MAX_OUTPUTS_PER_MONITOR);
+
   logical_monitor->is_presentation = is_presentation;
 
   logical_monitor->monitors = g_list_append (logical_monitor->monitors,
@@ -85,30 +79,29 @@ void
 meta_logical_monitor_add_monitor (MetaLogicalMonitor *logical_monitor,
                                   MetaMonitor        *monitor)
 {
-  GList *outputs;
   GList *l;
   gboolean is_presentation;
-  int i;
 
   is_presentation = logical_monitor->is_presentation;
   logical_monitor->monitors = g_list_append (logical_monitor->monitors,
                                              monitor);
 
-  outputs = meta_monitor_get_outputs (monitor);
-  for (l = outputs, i = logical_monitor->n_outputs; l; l = l->next, i++)
+  for (l = logical_monitor->monitors; l; l = l->next)
     {
-      MetaOutput *output = l->data;
+      MetaMonitor *monitor = l->data;
+      GList *outputs;
+      GList *l_output;
 
-      output->crtc->logical_monitor = logical_monitor;
+      outputs = meta_monitor_get_outputs (monitor);
+      for (l_output = outputs; l_output; l_output = l_output->next)
+        {
+          MetaOutput *output = l_output->data;
 
-      if (i <= META_MAX_OUTPUTS_PER_MONITOR)
-        logical_monitor->outputs[i] = output;
-      else
-        g_warning ("Couldn't add all outputs to monitor");
-
-      is_presentation = is_presentation && output->is_presentation;
+          is_presentation = is_presentation && output->is_presentation;
+          output->crtc->logical_monitor = logical_monitor;
+        }
     }
-  logical_monitor->n_outputs = MIN (i, META_MAX_OUTPUTS_PER_MONITOR);
+
   logical_monitor->is_presentation = is_presentation;
 }
 
@@ -122,6 +115,12 @@ void
 meta_logical_monitor_make_primary (MetaLogicalMonitor *logical_monitor)
 {
   logical_monitor->is_primary = TRUE;
+}
+
+GList *
+meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor)
+{
+  return logical_monitor->monitors;
 }
 
 static void

@@ -54,6 +54,17 @@ output_resource_destroy (struct wl_resource *res)
   wayland_output->resources = g_list_remove (wayland_output->resources, res);
 }
 
+static MetaOutput *
+pick_main_output (MetaLogicalMonitor *logical_monitor)
+{
+  GList *monitors;
+  MetaMonitor *monitor;
+
+  monitors = meta_logical_monitor_get_monitors (logical_monitor);
+  monitor = g_list_first (monitors)->data;
+  return meta_monitor_get_main_output (monitor);
+}
+
 static void
 send_output_events (struct wl_resource *resource,
                     MetaWaylandOutput  *wayland_output,
@@ -61,11 +72,17 @@ send_output_events (struct wl_resource *resource,
                     gboolean            need_all_events)
 {
   int version = wl_resource_get_version (resource);
-  MetaOutput *output = logical_monitor->outputs[0];
+  MetaOutput *output;
   guint mode_flags = WL_OUTPUT_MODE_CURRENT;
-  MetaLogicalMonitor *old_logical_monitor = wayland_output->logical_monitor;
-  guint old_mode_flags = wayland_output->mode_flags;
-  gint old_scale = wayland_output->scale;
+  MetaLogicalMonitor *old_logical_monitor;
+  guint old_mode_flags;
+  gint old_scale;
+
+  old_logical_monitor = wayland_output->logical_monitor;
+  old_mode_flags = wayland_output->mode_flags;
+  old_scale = wayland_output->scale;
+
+  output = pick_main_output (logical_monitor);
 
   gboolean need_done = FALSE;
 
@@ -131,7 +148,7 @@ bind_output (struct wl_client *client,
   MetaWaylandOutput *wayland_output = data;
   MetaLogicalMonitor *logical_monitor = wayland_output->logical_monitor;
   struct wl_resource *resource;
-  MetaOutput *output = logical_monitor->outputs[0];
+  MetaOutput *output;
 
   resource = wl_resource_create (client, &wl_output_interface, version, id);
   wayland_output->resources = g_list_prepend (wayland_output->resources, resource);
@@ -139,6 +156,7 @@ bind_output (struct wl_client *client,
   wl_resource_set_user_data (resource, wayland_output);
   wl_resource_set_destructor (resource, output_resource_destroy);
 
+  output = pick_main_output (logical_monitor);
   meta_verbose ("Binding monitor %p/%s (%u, %u, %u, %u) x %f\n",
                 logical_monitor, output->name,
                 logical_monitor->rect.x, logical_monitor->rect.y,
@@ -161,10 +179,12 @@ static void
 meta_wayland_output_set_logical_monitor (MetaWaylandOutput  *wayland_output,
                                          MetaLogicalMonitor *logical_monitor)
 {
-  MetaOutput *output = logical_monitor->outputs[0];
+  MetaOutput *output;
 
   wayland_output->logical_monitor = logical_monitor;
   wayland_output->mode_flags = WL_OUTPUT_MODE_CURRENT;
+
+  output = pick_main_output (logical_monitor);
   if (output->crtc->current_mode == output->preferred_mode)
     wayland_output->mode_flags |= WL_OUTPUT_MODE_PREFERRED;
   wayland_output->scale = output->scale;
