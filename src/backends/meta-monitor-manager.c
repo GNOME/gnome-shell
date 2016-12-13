@@ -38,6 +38,7 @@
 #include "edid.h"
 #include "meta-monitor-config.h"
 #include "backends/meta-logical-monitor.h"
+#include "backends/meta-monitor.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
 
@@ -1446,6 +1447,12 @@ meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager *manager,
   return NULL;
 }
 
+GList *
+meta_monitor_manager_get_monitors (MetaMonitorManager *manager)
+{
+  return manager->monitors;
+}
+
 MetaOutput *
 meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
                                   unsigned int       *n_outputs)
@@ -1498,6 +1505,43 @@ meta_monitor_manager_get_screen_limits (MetaMonitorManager *manager,
   *height = manager->max_screen_height;
 }
 
+static void
+rebuild_monitors (MetaMonitorManager *manager)
+{
+  unsigned int i;
+
+  if (manager->monitors)
+    {
+      g_list_free_full (manager->monitors, g_object_unref);
+      manager->monitors = NULL;
+    }
+
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
+
+      if (output->tile_info.group_id)
+        {
+          if (is_main_tiled_monitor_output (output))
+            {
+              MetaMonitorTiled *monitor_tiled;
+
+              monitor_tiled = meta_monitor_tiled_new (manager, output);
+              manager->monitors = g_list_append (manager->monitors,
+                                                 monitor_tiled);
+            }
+        }
+      else
+        {
+          MetaMonitorNormal *monitor_normal;
+
+          monitor_normal = meta_monitor_normal_new (output);
+          manager->monitors = g_list_append (manager->monitors,
+                                             monitor_normal);
+        }
+    }
+}
+
 void
 meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 {
@@ -1518,6 +1562,8 @@ meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 
   manager->serial++;
   META_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
+
+  rebuild_monitors (manager);
 
   meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
   meta_monitor_manager_free_mode_array (old_modes, n_old_modes);

@@ -50,6 +50,9 @@
 typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
 typedef struct _MetaMonitorConfig         MetaMonitorConfig;
 
+typedef struct _MetaMonitor MetaMonitor;
+typedef struct _MetaMonitorNormal MetaMonitorNormal;
+typedef struct _MetaMonitorTiled MetaMonitorTiled;
 typedef struct _MetaLogicalMonitor MetaLogicalMonitor;
 
 typedef struct _MetaCrtc MetaCrtc;
@@ -266,6 +269,8 @@ struct _MetaMonitorManager
   MetaCrtc *crtcs;
   unsigned int n_crtcs;
 
+  GList *monitors;
+
   GList *logical_monitors;
   MetaLogicalMonitor *primary_logical_monitor;
 
@@ -343,6 +348,8 @@ MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_from_rect (MetaMoni
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager *manager,
                                                                        MetaLogicalMonitor *logical_monitor,
                                                                        MetaScreenDirection direction);
+
+GList *             meta_monitor_manager_get_monitors      (MetaMonitorManager *manager);
 
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
 							    unsigned int       *n_outputs);
