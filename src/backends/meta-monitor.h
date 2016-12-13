@@ -56,6 +56,10 @@ MetaMonitorNormal * meta_monitor_normal_new (MetaOutput *output);
 
 gboolean meta_monitor_is_active (MetaMonitor *monitor);
 
+MetaOutput * meta_monitor_get_main_output (MetaMonitor *monitor);
+
+gboolean meta_monitor_is_primary (MetaMonitor *monitor);
+
 GList * meta_monitor_get_outputs (MetaMonitor *monitor);
 
 void meta_monitor_get_dimensions (MetaMonitor   *monitor,

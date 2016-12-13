@@ -24,6 +24,7 @@
 
 #include <glib-object.h>
 
+#include "backends/meta-monitor.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "meta/boxes.h"
 
@@ -54,16 +55,28 @@ struct _MetaLogicalMonitor
   */
   glong winsys_id;
 
-  guint32 tile_group_id;
-
   int monitor_winsys_xid;
   int n_outputs;
   MetaOutput *outputs[META_MAX_OUTPUTS_PER_MONITOR];
+
+  GList *monitors;
 };
 
 #define META_TYPE_LOGICAL_MONITOR (meta_logical_monitor_get_type ())
 G_DECLARE_FINAL_TYPE (MetaLogicalMonitor, meta_logical_monitor,
                       META, LOGICAL_MONITOR,
                       GObject)
+
+MetaLogicalMonitor * meta_logical_monitor_new (MetaMonitor *monitor,
+                                               int          x,
+                                               int          y,
+                                               int          number);
+
+void meta_logical_monitor_add_monitor (MetaLogicalMonitor *logical_monitor,
+                                       MetaMonitor        *monitor);
+
+gboolean meta_logical_monitor_is_primary (MetaLogicalMonitor *logical_monitor);
+
+void meta_logical_monitor_make_primary (MetaLogicalMonitor *logical_monitor);
 
 #endif /* META_LOGICAL_MONITOR_H */

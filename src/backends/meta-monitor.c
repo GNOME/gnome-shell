@@ -69,7 +69,7 @@ meta_monitor_get_outputs (MetaMonitor *monitor)
   return priv->outputs;
 }
 
-static MetaOutput *
+MetaOutput *
 meta_monitor_get_main_output (MetaMonitor *monitor)
 {
   return META_MONITOR_GET_CLASS (monitor)->get_main_output (monitor);
@@ -83,6 +83,16 @@ meta_monitor_is_active (MetaMonitor *monitor)
   output = meta_monitor_get_main_output (monitor);
 
   return output->crtc && output->crtc->current_mode;
+}
+
+gboolean
+meta_monitor_is_primary (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+
+  return output->is_primary;
 }
 
 void

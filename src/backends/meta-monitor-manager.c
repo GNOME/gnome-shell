@@ -73,227 +73,94 @@ meta_monitor_manager_init (MetaMonitorManager *manager)
 {
 }
 
+static void
+meta_monitor_manager_set_primary_logical_monitor (MetaMonitorManager *manager,
+                                                  MetaLogicalMonitor *logical_monitor)
+{
+  manager->primary_logical_monitor = logical_monitor;
+  if (logical_monitor)
+    meta_logical_monitor_make_primary (logical_monitor);
+}
+
 static gboolean
 is_main_tiled_monitor_output (MetaOutput *output)
 {
   return output->tile_info.loc_h_tile == 0 && output->tile_info.loc_v_tile == 0;
 }
 
-static void
-calculate_tiled_monitor_size (MetaMonitorManager *manager,
-                              uint32_t            tile_group_id,
-                              int                *out_width,
-                              int                *out_height)
-{
-  int width, height;
-  unsigned int i;
-
-  width = 0;
-  height = 0;
-  for (i = 0; i < manager->n_outputs; i++)
-    {
-      MetaOutput *output = &manager->outputs[i];
-
-      if (output->tile_info.group_id != tile_group_id)
-        continue;
-
-      if (output->tile_info.loc_v_tile == 0)
-        width += output->tile_info.tile_w;
-
-      if (output->tile_info.loc_h_tile == 0)
-        height += output->tile_info.tile_h;
-    }
-
-  *out_width = width;
-  *out_height = height;
-}
-
-static void
-add_tiled_monitor_outputs (MetaMonitorManager *manager,
-                           MetaLogicalMonitor *logical_monitor,
-                           uint32_t            tile_group_id)
-{
-  unsigned int i;
-
-  for (i = 0; i < manager->n_outputs; i++)
-    {
-      MetaOutput *output = &manager->outputs[i];
-
-      if (output->tile_info.group_id != tile_group_id)
-        continue;
-
-      if (logical_monitor->n_outputs > META_MAX_OUTPUTS_PER_MONITOR)
-        {
-          g_warning ("Couldn't add all outputs to monitor");
-          return;
-        }
-
-      logical_monitor->outputs[logical_monitor->n_outputs] = output;
-      logical_monitor->n_outputs++;
-    }
-}
-
 static MetaLogicalMonitor *
-construct_tile_monitor (MetaMonitorManager *manager,
-                        MetaOutput         *output,
-                        int                 monitor_number)
+logical_monitor_from_layout (MetaMonitorManager *manager,
+                             GList              *logical_monitors,
+                             MetaRectangle      *layout)
 {
-  MetaLogicalMonitor *logical_monitor = NULL;
+  GList *l;
 
-  logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
 
-  logical_monitor->tile_group_id = output->tile_info.group_id;
-  logical_monitor->refresh_rate = output->crtc->current_mode->refresh_rate;
-  logical_monitor->width_mm = output->width_mm;
-  logical_monitor->height_mm = output->height_mm;
-  logical_monitor->winsys_id = output->winsys_id;
+      if (meta_rectangle_equal (layout, &logical_monitor->rect))
+        return logical_monitor;
+    }
 
-  logical_monitor->scale = output->scale;
-  logical_monitor->rect.x = output->crtc->rect.x;
-  logical_monitor->rect.y = output->crtc->rect.y;
-  calculate_tiled_monitor_size (manager, output->tile_info.group_id,
-                                &logical_monitor->rect.width,
-                                &logical_monitor->rect.height);
-
-  add_tiled_monitor_outputs (manager, logical_monitor,
-                             output->tile_info.group_id);
-
-  return logical_monitor;
+  return NULL;
 }
 
-/*
- * make_logical_config:
- *
- * Turn outputs and CRTCs into logical MetaLogicalMonitor,
- * that will be used by the core and API layer (MetaScreen
- * and friends)
- */
+static void
+derive_monitor_position (MetaMonitor *monitor,
+                         int         *x,
+                         int         *y)
+{
+  MetaOutput *main_output;
+
+  main_output = meta_monitor_get_main_output (monitor);
+
+  *x = main_output->crtc->rect.x;
+  *y = main_output->crtc->rect.y;
+}
+
 static void
 make_logical_config (MetaMonitorManager *manager)
 {
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
   GList *logical_monitors = NULL;
+  GList *l;
   int monitor_number;
-  unsigned int i;
+  MetaLogicalMonitor *primary_logical_monitor = NULL;
 
   monitor_number = 0;
 
-  /* Walk the list of MetaCrtcs, and build a MetaLogicalMonitor
-     for each of them, unless they reference a rectangle that
-     is already there.
-  */
-  /* for tiling we need to work out how many tiled outputs there are */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->monitors; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
-
-      if (!output->crtc)
-        continue;
-
-      if (!output->tile_info.group_id)
-        continue;
-
-      if (is_main_tiled_monitor_output (output))
-        {
-          MetaLogicalMonitor *logical_monitor;
-
-          logical_monitor = construct_tile_monitor (manager,
-                                                    output,
-                                                    monitor_number);
-
-          logical_monitors = g_list_append (logical_monitors, logical_monitor);
-          monitor_number++;
-        }
-    }
-
-  for (i = 0; i < manager->n_crtcs; i++)
-    {
-      MetaCrtc *crtc = &manager->crtcs[i];
-      GList *l;
-
-      /* Ignore CRTCs not in use */
-      if (crtc->current_mode == NULL)
-        continue;
-
-      for (l = logical_monitors; l; l = l->next)
-        {
-          MetaLogicalMonitor *logical_monitor = l->data;
-
-          if (meta_rectangle_contains_rect (&logical_monitor->rect,
-                                            &crtc->rect))
-            {
-              crtc->logical_monitor = logical_monitor;
-              break;
-            }
-        }
-
-      if (crtc->logical_monitor == NULL)
-        {
-          MetaLogicalMonitor *logical_monitor;
-
-          logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
-
-          logical_monitor->number = monitor_number;
-          logical_monitor->rect = crtc->rect;
-          logical_monitor->refresh_rate = crtc->current_mode->refresh_rate;
-          logical_monitor->scale = 1;
-          logical_monitor->is_primary = FALSE;
-          /* This starts true because we want
-             is_presentation only if all outputs are
-             marked as such (while for primary it's enough
-             that any is marked)
-          */
-          logical_monitor->is_presentation = TRUE;
-          logical_monitor->in_fullscreen = -1;
-
-          logical_monitors = g_list_append (logical_monitors, logical_monitor);
-          monitor_number++;
-
-          crtc->logical_monitor = logical_monitor;
-        }
-    }
-
-  /* Now walk the list of outputs applying extended properties (primary
-     and presentation)
-  */
-  manager->primary_logical_monitor = NULL;
-  for (i = 0; i < manager->n_outputs; i++)
-    {
-      MetaOutput *output;
+      MetaMonitor *monitor = l->data;
       MetaLogicalMonitor *logical_monitor;
+      MetaRectangle layout;
 
-      output = &manager->outputs[i];
-
-      /* Ignore outputs that are not active */
-      if (output->crtc == NULL)
+      if (!meta_monitor_is_active (monitor))
         continue;
 
-      if (output->tile_info.group_id)
-        continue;
+      derive_monitor_position (monitor, &layout.x, &layout.y);
+      meta_monitor_get_dimensions (monitor, &layout.width, &layout.height);
+      logical_monitor = logical_monitor_from_layout (manager, logical_monitors,
+                                                     &layout);
+      if (logical_monitor)
+        {
+          meta_logical_monitor_add_monitor (logical_monitor, monitor);
+        }
+      else
+        {
+          int x, y;
 
-      /* We must have a logical monitor on every CRTC at this point */
-      g_assert (output->crtc->logical_monitor != NULL);
+          derive_monitor_position (monitor, &x, &y);
+          logical_monitor = meta_logical_monitor_new (monitor,
+                                                      x, y,
+                                                      monitor_number);
+          logical_monitors = g_list_append (logical_monitors, logical_monitor);
+          monitor_number++;
+        }
 
-      logical_monitor = output->crtc->logical_monitor;
-
-      logical_monitor->is_primary =
-        logical_monitor->is_primary || output->is_primary;
-      logical_monitor->is_presentation =
-        logical_monitor->is_presentation && output->is_presentation;
-
-      logical_monitor->width_mm = output->width_mm;
-      logical_monitor->height_mm = output->height_mm;
-
-      logical_monitor->outputs[0] = output;
-      logical_monitor->n_outputs = 1;
-
-      logical_monitor->scale = output->scale;
-
-      if (output->is_primary || logical_monitor->winsys_id == 0)
-        logical_monitor->winsys_id = output->winsys_id;
-
-      if (logical_monitor->is_primary)
-        manager->primary_logical_monitor = logical_monitor;
+      if (meta_monitor_is_primary (monitor))
+        primary_logical_monitor = logical_monitor;
     }
 
   manager->logical_monitors = logical_monitors;
@@ -302,8 +169,11 @@ make_logical_config (MetaMonitorManager *manager)
    * If no monitor was marked as primary, fall back on marking the first
    * logical monitor the primary one.
    */
-  if (!manager->primary_logical_monitor && manager->logical_monitors)
-    manager->primary_logical_monitor = g_list_first (manager->logical_monitors)->data;
+  if (!primary_logical_monitor && manager->logical_monitors)
+    primary_logical_monitor = g_list_first (manager->logical_monitors)->data;
+
+  meta_monitor_manager_set_primary_logical_monitor (manager,
+                                                    primary_logical_monitor);
 
   if (manager_class->add_monitor)
     {
