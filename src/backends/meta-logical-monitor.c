@@ -44,8 +44,6 @@ meta_logical_monitor_new (MetaMonitor *monitor,
   main_output = meta_monitor_get_main_output (monitor);
   logical_monitor->number = number;
   logical_monitor->refresh_rate = main_output->crtc->current_mode->refresh_rate;
-  logical_monitor->width_mm = main_output->width_mm;
-  logical_monitor->height_mm = main_output->height_mm;
   logical_monitor->winsys_id = main_output->winsys_id;
   logical_monitor->scale = main_output->scale;
   logical_monitor->in_fullscreen = -1;
