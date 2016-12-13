@@ -256,6 +256,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
       MetaLogicalMonitor *logical_monitor = l->data;
       MonitorTestCaseLogicalMonitor *test_logical_monitor =
         &test_case->expect.logical_monitors[i];
+      int j;
 
       g_assert (logical_monitor->rect.x == test_logical_monitor->layout.x);
       g_assert (logical_monitor->rect.y == test_logical_monitor->layout.y);
@@ -264,6 +265,13 @@ check_monitor_configuration (MonitorTestCase *test_case)
       g_assert (logical_monitor->rect.height ==
                 test_logical_monitor->layout.height);
       g_assert (logical_monitor->scale == test_logical_monitor->scale);
+
+      for (j = 0; j < logical_monitor->n_outputs; j++)
+        {
+          MetaOutput *output = logical_monitor->outputs[j];
+
+          g_assert (output->crtc->logical_monitor == logical_monitor);
+        }
     }
   g_assert (n_logical_monitors == i);
 }
