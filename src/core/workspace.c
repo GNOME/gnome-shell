@@ -33,6 +33,7 @@
 
 #include <config.h>
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "screen-private.h"
 #include <meta/workspace.h>
 #include "workspace-private.h"

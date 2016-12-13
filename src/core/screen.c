@@ -45,6 +45,7 @@
 #include "meta-cursor-tracker-private.h"
 #include "boxes-private.h"
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 
 #include <X11/extensions/Xinerama.h>
 #include <X11/extensions/Xcomposite.h>

@@ -59,11 +59,6 @@ typedef struct _MetaCrtcInfo MetaCrtcInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
 typedef struct _MetaTileInfo MetaTileInfo;
 
-#define META_TYPE_LOGICAL_MONITOR (meta_logical_monitor_get_type ())
-G_DECLARE_FINAL_TYPE (MetaLogicalMonitor, meta_logical_monitor,
-                      META, LOGICAL_MONITOR,
-                      GObject)
-
 typedef enum {
   META_MONITOR_TRANSFORM_NORMAL,
   META_MONITOR_TRANSFORM_90,
@@ -200,47 +195,6 @@ struct _MetaCrtcMode
 
   gpointer driver_private;
   GDestroyNotify driver_notify;
-};
-
-#define META_MAX_OUTPUTS_PER_MONITOR 4
-/**
- * MetaLogicalMonitor:
- *
- * A structure with high-level information about regions of the whole screen
- * output. It corresponds to a subset of the compositor coordinate space, and
- * may have one or more actual monitors associated with it. No two logical
- * monitors will cover the same screen output.
- */
-struct _MetaLogicalMonitor
-{
-  GObject parent;
-
-  int number;
-  MetaRectangle rect;
-  /* for tiled monitors these are calculated, from untiled just copied */
-  float refresh_rate;
-  int width_mm;
-  int height_mm;
-  gboolean is_primary;
-  gboolean is_presentation; /* XXX: not yet used */
-  gboolean in_fullscreen;
-  int scale;
-
-  /* The primary or first output for this monitor, 0 if we can't figure out.
-     It can be matched to a winsys_id of a MetaOutput.
-
-     This is used as an opaque token on reconfiguration when switching from
-     clone to extened, to decide on what output the windows should go next
-     (it's an attempt to keep windows on the same monitor, and preferably on
-     the primary one).
-  */
-  glong winsys_id;
-
-  guint32 tile_group_id;
-
-  int monitor_winsys_xid;
-  int n_outputs;
-  MetaOutput *outputs[META_MAX_OUTPUTS_PER_MONITOR];
 };
 
 /*

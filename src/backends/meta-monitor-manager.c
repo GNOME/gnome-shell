@@ -37,10 +37,9 @@
 #include <meta/errors.h>
 #include "edid.h"
 #include "meta-monitor-config.h"
+#include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
-
-G_DEFINE_TYPE (MetaLogicalMonitor, meta_logical_monitor, G_TYPE_OBJECT)
 
 enum {
   CONFIRM_DISPLAY_CHANGE,
@@ -1755,14 +1754,4 @@ meta_monitor_manager_get_is_builtin_display_on (MetaMonitorManager *manager)
   g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), FALSE);
 
   return meta_monitor_config_get_is_builtin_display_on (manager->config);
-}
-
-static void
-meta_logical_monitor_init (MetaLogicalMonitor *logical_monitor)
-{
-}
-
-static void
-meta_logical_monitor_class_init (MetaLogicalMonitorClass *klass)
-{
 }

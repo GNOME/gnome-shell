@@ -25,6 +25,7 @@
 
 #include "wayland/meta-wayland-xdg-shell.h"
 
+#include "backends/meta-logical-monitor.h"
 #include "core/window-private.h"
 #include "wayland/meta-wayland.h"
 #include "wayland/meta-wayland-popup.h"

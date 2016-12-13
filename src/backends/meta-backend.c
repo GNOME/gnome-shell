@@ -41,7 +41,7 @@
 #endif
 
 #include "backends/meta-idle-monitor-private.h"
-
+#include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-dummy.h"
 
 static MetaBackend *_backend;

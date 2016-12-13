@@ -44,6 +44,7 @@
 #define KEY_GRAVE 0x29 /* assume the use of xf86-input-keyboard */
 #endif
 
+#include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
 

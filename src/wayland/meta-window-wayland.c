@@ -36,6 +36,7 @@
 #include "meta-wayland-surface.h"
 #include "meta-wayland-xdg-shell.h"
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "compositor/meta-surface-actor-wayland.h"
 
 struct _MetaWindowWayland

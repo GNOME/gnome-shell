@@ -50,6 +50,7 @@
 #include "session.h"
 #include "workspace-private.h"
 
+#include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-backend-x11.h"
 
 struct _MetaWindowX11Class

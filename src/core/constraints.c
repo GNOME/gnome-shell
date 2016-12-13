@@ -28,6 +28,7 @@
 #include "place.h"
 #include <meta/prefs.h>
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-private.h"
 
 #include <stdlib.h>

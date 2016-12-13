@@ -29,6 +29,7 @@
 #include "meta-window-actor-private.h"
 #include "meta-texture-rectangle.h"
 #include "region-utils.h"
+#include "backends/meta-logical-monitor.h"
 #include "meta-monitor-manager-private.h"
 #include "meta-cullable.h"
 

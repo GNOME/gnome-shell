@@ -42,6 +42,7 @@
 #include <meta/main.h>
 #include <meta/errors.h>
 #include "meta-monitor-config.h"
+#include "backends/meta-logical-monitor.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 

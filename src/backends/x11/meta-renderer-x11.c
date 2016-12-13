@@ -32,6 +32,7 @@
 #include "cogl/winsys/cogl-winsys-glx-private.h"
 #include "cogl/winsys/cogl-winsys-egl-x11-private.h"
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "backends/meta-renderer.h"
 #include "backends/meta-renderer-view.h"
 #include "backends/x11/meta-renderer-x11.h"

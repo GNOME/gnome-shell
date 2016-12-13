@@ -29,6 +29,7 @@
 #include "screen-private.h"
 #include "meta-wayland-private.h"
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 
 typedef struct _MetaWaylandSurfaceRoleCursorPrivate MetaWaylandSurfaceRoleCursorPrivate;
 

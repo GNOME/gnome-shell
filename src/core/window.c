@@ -63,6 +63,7 @@
 #endif
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 
 /* Windows that unmaximize to a size bigger than that fraction of the workarea
  * will be scaled down to that size (while maintaining aspect ratio).

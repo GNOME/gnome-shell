@@ -37,6 +37,7 @@
 #include "meta-cursor-renderer-native.h"
 #include "meta-launcher.h"
 #include "backends/meta-cursor-tracker-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-pointer-constraint.h"
 #include "backends/meta-stage.h"

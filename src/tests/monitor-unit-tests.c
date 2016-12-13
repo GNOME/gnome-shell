@@ -22,6 +22,7 @@
 #include "tests/monitor-unit-tests.h"
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "tests/meta-monitor-manager-test.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)

@@ -27,6 +27,7 @@
 #include "meta-wayland-outputs.h"
 
 #include "meta-wayland-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "meta-monitor-manager-private.h"
 
 #include <string.h>

@@ -33,6 +33,7 @@
 #include <meta/group.h>
 #include <meta/prefs.h>
 #include <meta/workspace.h>
+#include "backends/meta-logical-monitor.h"
 
 #include <X11/Xatom.h>
 

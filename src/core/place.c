@@ -27,6 +27,7 @@
 #include "boxes-private.h"
 #include "place.h"
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 #include <meta/meta-backend.h>
 #include <meta/workspace.h>
 #include <meta/prefs.h>
