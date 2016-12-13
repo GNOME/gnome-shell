@@ -173,6 +173,11 @@ meta_wayland_surface_role_shell_surface_managed (MetaWaylandSurfaceRoleShellSurf
                                                  MetaWindow                         *window);
 
 static void
+surface_actor_mapped_notify (MetaSurfaceActorWayland *surface_actor,
+                             GParamSpec              *pspec,
+                             MetaWaylandSurface      *surface);
+
+static void
 unset_param_value (GParameter *param)
 {
   g_value_unset (&param->value);
@@ -405,6 +410,10 @@ meta_wayland_surface_destroy_window (MetaWaylandSurface *surface)
     {
       MetaDisplay *display = meta_get_display ();
       guint32 timestamp = meta_display_get_current_time_roundtrip (display);
+
+      g_signal_handlers_disconnect_by_func (surface->surface_actor,
+                                            surface_actor_mapped_notify,
+                                            surface);
 
       meta_window_unmanage (surface->window, timestamp);
     }
