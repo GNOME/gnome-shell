@@ -23,6 +23,7 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-logical-monitor.h"
+#include "backends/meta-monitor.h"
 #include "tests/meta-monitor-manager-test.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
@@ -30,6 +31,7 @@
 #define MAX_N_MODES 10
 #define MAX_N_OUTPUTS 10
 #define MAX_N_CRTCS 10
+#define MAX_N_MONITORS 10
 #define MAX_N_LOGICAL_MONITORS 10
 
 typedef struct _MonitorTestCaseMode
@@ -70,6 +72,14 @@ typedef struct _MonitorTestCaseSetup
   int n_crtcs;
 } MonitorTestCaseSetup;
 
+typedef struct _MonitorTestCaseMonitor
+{
+  long outputs[MAX_N_OUTPUTS];
+  int n_outputs;
+  int width_mm;
+  int height_mm;
+} MonitorTestCaseMonitor;
+
 typedef struct _MonitorTestCaseLogicalMonitor
 {
   MetaRectangle layout;
@@ -78,6 +88,8 @@ typedef struct _MonitorTestCaseLogicalMonitor
 
 typedef struct _MonitorTestCaseExpect
 {
+  MonitorTestCaseMonitor monitors[MAX_N_MONITORS];
+  int n_monitors;
   MonitorTestCaseLogicalMonitor logical_monitors[MAX_N_LOGICAL_MONITORS];
   int n_logical_monitors;
   int n_outputs;
@@ -120,8 +132,8 @@ static MonitorTestCase initial_test_case = {
         .preferred_mode = 0,
         .possible_crtcs = { 1 },
         .n_possible_crtcs = 1,
-        .width_mm = 222,
-        .height_mm = 125
+        .width_mm = 220,
+        .height_mm = 124
       }
     },
     .n_outputs = 2,
@@ -137,6 +149,21 @@ static MonitorTestCase initial_test_case = {
   },
 
   .expect = {
+    .monitors = {
+      {
+        .outputs = { 0 },
+        .n_outputs = 1,
+        .width_mm = 222,
+        .height_mm = 125
+      },
+      {
+        .outputs = { 1 },
+        .n_outputs = 1,
+        .width_mm = 220,
+        .height_mm = 124
+      }
+    },
+    .n_monitors = 2,
     .logical_monitors = {
       {
         .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
@@ -155,12 +182,30 @@ static MonitorTestCase initial_test_case = {
   }
 };
 
+static MetaOutput *
+output_from_winsys_id (MetaMonitorManager *monitor_manager,
+                       long                winsys_id)
+{
+  unsigned int i;
+
+  for (i = 0; i < monitor_manager->n_outputs; i++)
+    {
+      MetaOutput *output = &monitor_manager->outputs[i];
+
+      if (output->winsys_id == winsys_id)
+        return output;
+    }
+
+  return NULL;
+}
+
 static void
 check_monitor_configuration (MonitorTestCase *test_case)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
+  GList *monitors;
   GList *logical_monitors;
   int n_logical_monitors;
   GList *l;
@@ -170,6 +215,35 @@ check_monitor_configuration (MonitorTestCase *test_case)
   g_assert (monitor_manager->screen_height == test_case->expect.screen_height);
   g_assert ((int) monitor_manager->n_outputs == test_case->expect.n_outputs);
   g_assert ((int) monitor_manager->n_crtcs == test_case->expect.n_crtcs);
+
+  monitors = meta_monitor_manager_get_monitors (monitor_manager);
+  g_assert ((int) g_list_length (monitors) == test_case->expect.n_monitors);
+  for (l = monitors, i = 0; l; l = l->next, i++)
+    {
+      MetaMonitor *monitor = l->data;
+      GList *outputs;
+      GList *l_output;
+      int j;
+      int width_mm, height_mm;
+
+      outputs = meta_monitor_get_outputs (monitor);
+
+      g_assert ((int) g_list_length (outputs) ==
+                test_case->expect.monitors[i].n_outputs);
+
+      for (l_output = outputs, j = 0; l_output; l_output = l_output->next, j++)
+        {
+          MetaOutput *output = l_output->data;
+          long winsys_id = test_case->expect.monitors[i].outputs[j];
+
+          g_assert (output == output_from_winsys_id (monitor_manager,
+                                                     winsys_id));
+        }
+
+      meta_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
+      g_assert (width_mm == test_case->expect.monitors[i].width_mm);
+      g_assert (height_mm == test_case->expect.monitors[i].height_mm);
+    }
 
   n_logical_monitors =
     meta_monitor_manager_get_num_logical_monitors (monitor_manager);
@@ -288,7 +362,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
 
       test_setup->outputs[i] = (MetaOutput) {
         .crtc = crtc,
-        .winsys_id = i + 1,
+        .winsys_id = i,
         .name = g_strdup_printf ("LVDS%d", i + 1),
         .vendor = g_strdup ("MetaProducts Inc."),
         .product = g_strdup ("unknown"),
@@ -343,6 +417,15 @@ meta_test_monitor_one_disconnected_linear_config (void)
   test_case.setup.n_outputs = 1;
 
   test_case.expect = (MonitorTestCaseExpect) {
+    .monitors = {
+      {
+        .outputs = { 0 },
+        .n_outputs = 1,
+        .width_mm = 222,
+        .height_mm = 125
+      }
+    },
+    .n_monitors = 1,
     .logical_monitors = {
       {
         .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
@@ -384,8 +467,8 @@ meta_test_monitor_one_off_linear_config (void)
       .preferred_mode = 0,
       .possible_crtcs = { 1 },
       .n_possible_crtcs = 1,
-      .width_mm = 222,
-      .height_mm = 125
+      .width_mm = 224,
+      .height_mm = 126
     }
   };
 
@@ -397,6 +480,21 @@ meta_test_monitor_one_off_linear_config (void)
   test_case.setup.crtcs[1].current_mode = -1;
 
   test_case.expect = (MonitorTestCaseExpect) {
+    .monitors = {
+      {
+        .outputs = { 0 },
+        .n_outputs = 1,
+        .width_mm = 222,
+        .height_mm = 125
+      },
+      {
+        .outputs = { 1 },
+        .n_outputs = 1,
+        .width_mm = 224,
+        .height_mm = 126
+      }
+    },
+    .n_monitors = 2,
     .logical_monitors = {
       {
         .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
@@ -464,6 +562,15 @@ meta_test_monitor_preferred_linear_config (void)
     },
 
     .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_monitors = 1,
       .logical_monitors = {
         {
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
@@ -550,6 +657,15 @@ meta_test_monitor_tiled_linear_config (void)
     },
 
     .expect = {
+      .monitors = {
+        {
+          .outputs = { 0, 1 },
+          .n_outputs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 1,
       .logical_monitors = {
         {
           .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
@@ -626,6 +742,21 @@ meta_test_monitor_hidpi_linear_config (void)
     },
 
     .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .width_mm = 150,
+          .height_mm = 85
+        },
+        {
+          .outputs = { 1 },
+          .n_outputs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_monitors = 2,
       .logical_monitors = {
         {
           .layout = { .x = 0, .y = 0, .width = 1280, .height = 720 },
