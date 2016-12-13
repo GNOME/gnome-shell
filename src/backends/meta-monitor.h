@@ -70,4 +70,8 @@ void meta_monitor_get_physical_dimensions (MetaMonitor *monitor,
                                            int         *width_mm,
                                            int         *height_mm);
 
+const char * meta_monitor_get_product (MetaMonitor *monitor);
+
+uint32_t meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled);
+
 #endif /* META_MONITOR_H */

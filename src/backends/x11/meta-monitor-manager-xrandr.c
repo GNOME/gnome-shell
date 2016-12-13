@@ -60,6 +60,10 @@ struct _MetaMonitorManagerXrandr
   int rr_event_base;
   int rr_error_base;
   gboolean has_randr15;
+
+#ifdef HAVE_XRANDR15
+  GHashTable *tiled_monitor_atoms;
+#endif /* HAVE_XRANDR15 */
 };
 
 struct _MetaMonitorManagerXrandrClass
@@ -68,6 +72,15 @@ struct _MetaMonitorManagerXrandrClass
 };
 
 G_DEFINE_TYPE (MetaMonitorManagerXrandr, meta_monitor_manager_xrandr, META_TYPE_MONITOR_MANAGER);
+
+#ifdef HAVE_XRANDR15
+typedef struct _MetaMonitorXrandrData
+{
+  Atom xrandr_name;
+} MetaMonitorXrandrData;
+
+GQuark quark_meta_monitor_xrandr_data;
+#endif /* HAVE_RANDR15 */
 
 static MetaMonitorTransform
 meta_monitor_transform_from_xrandr (Rotation rotation)
@@ -1332,61 +1345,138 @@ meta_monitor_manager_xrandr_set_crtc_gamma (MetaMonitorManager *manager,
 }
 
 #ifdef HAVE_XRANDR15
-static void
-meta_monitor_manager_xrandr_add_monitor (MetaMonitorManager *manager,
-                                         MetaLogicalMonitor *logical_monitor)
+static MetaMonitorXrandrData *
+meta_monitor_xrandr_data_from_monitor (MetaMonitor *monitor)
 {
-  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
-  XRRMonitorInfo *m;
-  int o;
-  Atom name;
-  char name_buf[40];
+  MetaMonitorXrandrData *monitor_xrandr_data;
 
-  if (manager_xrandr->has_randr15 == FALSE)
-    return;
+  monitor_xrandr_data = g_object_get_qdata (G_OBJECT (monitor),
+                                            quark_meta_monitor_xrandr_data);
+  if (monitor_xrandr_data)
+    return monitor_xrandr_data;
 
-  if (logical_monitor->n_outputs <= 1)
-    return;
+  monitor_xrandr_data = g_new0 (MetaMonitorXrandrData, 1);
+  g_object_set_qdata_full (G_OBJECT (monitor),
+                           quark_meta_monitor_xrandr_data,
+                           monitor_xrandr_data,
+                           g_free);
 
-  if (logical_monitor->outputs[0]->product)
-    snprintf (name_buf, 40, "%s-%d",
-              logical_monitor->outputs[0]->product,
-              logical_monitor->outputs[0]->tile_info.group_id);
-  else
-    snprintf (name_buf, 40, "Tiled-%d",
-              logical_monitor->outputs[0]->tile_info.group_id);
-
-  name = XInternAtom (manager_xrandr->xdisplay, name_buf, False);
-  logical_monitor->monitor_winsys_xid = name;
-  m = XRRAllocateMonitor (manager_xrandr->xdisplay,
-                          logical_monitor->n_outputs);
-  if (!m)
-    return;
-  m->name = name;
-  m->primary = logical_monitor->is_primary;
-  m->automatic = True;
-
-  for (o = 0; o < logical_monitor->n_outputs; o++) {
-    MetaOutput *output = logical_monitor->outputs[o];
-    m->outputs[o] = output->winsys_id;
-  }
-  XRRSetMonitor (manager_xrandr->xdisplay,
-                 DefaultRootWindow (manager_xrandr->xdisplay),
-                 m);
-  XRRFreeMonitors (m);
+  return monitor_xrandr_data;
 }
 
 static void
-meta_monitor_manager_xrandr_delete_monitor (MetaMonitorManager *manager,
-                                            int monitor_winsys_xid)
+meta_monitor_manager_xrandr_increase_monitor_count (MetaMonitorManagerXrandr *manager_xrandr,
+                                                    Atom                      name_atom)
+{
+  int count;
+
+  count =
+    GPOINTER_TO_INT (g_hash_table_lookup (manager_xrandr->tiled_monitor_atoms,
+                                          GSIZE_TO_POINTER (name_atom)));
+
+  count++;
+  g_hash_table_insert (manager_xrandr->tiled_monitor_atoms,
+                       GSIZE_TO_POINTER (name_atom),
+                       GINT_TO_POINTER (count));
+}
+
+static int
+meta_monitor_manager_xrandr_decrease_monitor_count (MetaMonitorManagerXrandr *manager_xrandr,
+                                                    Atom                      name_atom)
+{
+  int count;
+
+  count =
+    GPOINTER_TO_SIZE (g_hash_table_lookup (manager_xrandr->tiled_monitor_atoms,
+                                           GSIZE_TO_POINTER (name_atom)));
+  g_assert (count > 0);
+
+  count--;
+  g_hash_table_insert (manager_xrandr->tiled_monitor_atoms,
+                       GSIZE_TO_POINTER (name_atom),
+                       GINT_TO_POINTER (count));
+
+  return count;
+}
+
+static void
+meta_monitor_manager_xrandr_tiled_monitor_added (MetaMonitorManager *manager,
+                                                 MetaMonitor        *monitor)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+  MetaMonitorTiled *monitor_tiled = META_MONITOR_TILED (monitor);
+  const char *product;
+  char *name;
+  uint32_t tile_group_id;
+  MetaMonitorXrandrData *monitor_xrandr_data;
+  Atom name_atom;
+  XRRMonitorInfo *xrandr_monitor_info;
+  GList *outputs;
+  GList *l;
+  int i;
 
   if (manager_xrandr->has_randr15 == FALSE)
     return;
-  XRRDeleteMonitor (manager_xrandr->xdisplay,
-                    DefaultRootWindow (manager_xrandr->xdisplay),
-                    monitor_winsys_xid);
+
+  product = meta_monitor_get_product (monitor);
+  tile_group_id = meta_monitor_tiled_get_tile_group_id (monitor_tiled);
+
+  if (product)
+    name = g_strdup_printf ("%s-%d", product, tile_group_id);
+  else
+    name = g_strdup_printf ("Tiled-%d", tile_group_id);
+
+  name_atom = XInternAtom (manager_xrandr->xdisplay, name, False);
+  g_free (name);
+
+  monitor_xrandr_data = meta_monitor_xrandr_data_from_monitor (monitor);
+  monitor_xrandr_data->xrandr_name = name_atom;
+
+  meta_monitor_manager_xrandr_increase_monitor_count (manager_xrandr,
+                                                      name_atom);
+
+  outputs = meta_monitor_get_outputs (monitor);
+  xrandr_monitor_info = XRRAllocateMonitor (manager_xrandr->xdisplay,
+                                            g_list_length (outputs));
+  xrandr_monitor_info->name = name_atom;
+  xrandr_monitor_info->primary = meta_monitor_is_primary (monitor);
+  xrandr_monitor_info->automatic = True;
+  for (l = outputs, i = 0; l; l = l->next, i++)
+    {
+      MetaOutput *output = l->data;
+
+      xrandr_monitor_info->outputs[i] = output->winsys_id;
+    }
+
+  XRRSetMonitor (manager_xrandr->xdisplay,
+                 DefaultRootWindow (manager_xrandr->xdisplay),
+                 xrandr_monitor_info);
+  XRRFreeMonitors (xrandr_monitor_info);
+}
+
+static void
+meta_monitor_manager_xrandr_tiled_monitor_removed (MetaMonitorManager *manager,
+                                                   MetaMonitor        *monitor)
+{
+  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
+  MetaMonitorXrandrData *monitor_xrandr_data;
+  Atom monitor_name;
+
+  int monitor_count;
+
+  if (manager_xrandr->has_randr15 == FALSE)
+    return;
+
+  monitor_xrandr_data = meta_monitor_xrandr_data_from_monitor (monitor);
+  monitor_name = monitor_xrandr_data->xrandr_name;
+  monitor_count =
+    meta_monitor_manager_xrandr_decrease_monitor_count (manager_xrandr,
+                                                        monitor_name);
+
+  if (monitor_count == 0)
+    XRRDeleteMonitor (manager_xrandr->xdisplay,
+                      DefaultRootWindow (manager_xrandr->xdisplay),
+                      monitor_name);
 }
 
 static void
@@ -1448,7 +1538,10 @@ meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
       if (major_version > 1 ||
           (major_version == 1 &&
            minor_version >= 5))
-        manager_xrandr->has_randr15 = TRUE;
+        {
+          manager_xrandr->has_randr15 = TRUE;
+          manager_xrandr->tiled_monitor_atoms = g_hash_table_new (NULL, NULL);
+        }
       meta_monitor_manager_xrandr_init_monitors (manager_xrandr);
 #endif
     }
@@ -1462,6 +1555,8 @@ meta_monitor_manager_xrandr_finalize (GObject *object)
   if (manager_xrandr->resources)
     XRRFreeScreenResources (manager_xrandr->resources);
   manager_xrandr->resources = NULL;
+
+  g_hash_table_destroy (manager_xrandr->tiled_monitor_atoms);
 
   G_OBJECT_CLASS (meta_monitor_manager_xrandr_parent_class)->finalize (object);
 }
@@ -1482,9 +1577,12 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->get_crtc_gamma = meta_monitor_manager_xrandr_get_crtc_gamma;
   manager_class->set_crtc_gamma = meta_monitor_manager_xrandr_set_crtc_gamma;
 #ifdef HAVE_XRANDR15
-  manager_class->add_monitor = meta_monitor_manager_xrandr_add_monitor;
-  manager_class->delete_monitor = meta_monitor_manager_xrandr_delete_monitor;
+  manager_class->tiled_monitor_added = meta_monitor_manager_xrandr_tiled_monitor_added;
+  manager_class->tiled_monitor_removed = meta_monitor_manager_xrandr_tiled_monitor_removed;
 #endif
+
+  quark_meta_monitor_xrandr_data =
+    g_quark_from_static_string ("-meta-monitor-xrandr-data");
 }
 
 gboolean

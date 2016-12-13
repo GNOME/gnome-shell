@@ -55,7 +55,6 @@ struct _MetaLogicalMonitor
   */
   glong winsys_id;
 
-  int monitor_winsys_xid;
   int n_outputs;
   MetaOutput *outputs[META_MAX_OUTPUTS_PER_MONITOR];
 

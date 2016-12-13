@@ -122,7 +122,6 @@ derive_monitor_position (MetaMonitor *monitor,
 static void
 make_logical_config (MetaMonitorManager *manager)
 {
-  MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
   GList *logical_monitors = NULL;
   GList *l;
   int monitor_number;
@@ -174,18 +173,6 @@ make_logical_config (MetaMonitorManager *manager)
 
   meta_monitor_manager_set_primary_logical_monitor (manager,
                                                     primary_logical_monitor);
-
-  if (manager_class->add_monitor)
-    {
-      GList *l;
-
-      for (l = logical_monitors; l; l = l->next)
-        {
-          MetaLogicalMonitor *logical_monitor = l->data;
-
-          manager_class->add_monitor (manager, logical_monitor);
-        }
-    }
 }
 
 static void
@@ -1413,6 +1400,28 @@ rebuild_monitors (MetaMonitorManager *manager)
 }
 
 void
+meta_monitor_manager_tiled_monitor_added (MetaMonitorManager *manager,
+                                          MetaMonitor        *monitor)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  if (manager_class->tiled_monitor_added)
+    manager_class->tiled_monitor_added (manager, monitor);
+}
+
+void
+meta_monitor_manager_tiled_monitor_removed (MetaMonitorManager *manager,
+                                            MetaMonitor        *monitor)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  if (manager_class->tiled_monitor_removed)
+    manager_class->tiled_monitor_removed (manager, monitor);
+}
+
+void
 meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
 {
   MetaOutput *old_outputs;
@@ -1444,9 +1453,7 @@ void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
   MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (manager);
   GList *old_logical_monitors;
-  GList *old_l;
 
   if (manager->in_init)
     return;
@@ -1454,36 +1461,6 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
   old_logical_monitors = manager->logical_monitors;
 
   make_logical_config (manager);
-
-  if (manager_class->delete_monitor)
-    {
-      for (old_l = old_logical_monitors; old_l; old_l = old_l->next)
-        {
-          MetaLogicalMonitor *old_logical_monitor = old_l->data;
-          int old_monitor_winsys_xid;
-          gboolean delete_mon;
-          GList *new_l;
-
-          delete_mon = TRUE;
-          old_monitor_winsys_xid = old_logical_monitor->monitor_winsys_xid;
-
-          for (new_l = manager->logical_monitors; new_l; new_l = new_l->next)
-            {
-              MetaLogicalMonitor *new_logical_monitor = new_l->data;
-              int new_monitor_winsys_xid;
-
-              new_monitor_winsys_xid = new_logical_monitor->monitor_winsys_xid;
-
-              if (new_monitor_winsys_xid == old_monitor_winsys_xid)
-                {
-                  delete_mon = FALSE;
-                  break;
-                }
-            }
-          if (delete_mon)
-            manager_class->delete_monitor (manager, old_monitor_winsys_xid);
-        }
-    }
 
   /* Tell the backend about that the monitors changed before emitting the
    * signal, so that the backend can prepare itself before all the signal

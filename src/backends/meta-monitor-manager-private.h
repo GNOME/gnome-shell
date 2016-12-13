@@ -319,11 +319,11 @@ struct _MetaMonitorManagerClass
                           unsigned short     *,
                           unsigned short     *);
 
-  void (*add_monitor) (MetaMonitorManager *,
-                       MetaLogicalMonitor *);
+  void (*tiled_monitor_added) (MetaMonitorManager *,
+                               MetaMonitor        *);
 
-  void (*delete_monitor) (MetaMonitorManager *,
-                          int monitor_winsys_xid);
+  void (*tiled_monitor_removed) (MetaMonitorManager *,
+                                 MetaMonitor        *);
 
 };
 
@@ -393,6 +393,11 @@ void               meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
 gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
                                                             MetaOutput         *output,
                                                             gfloat              matrix[6]);
+
+void               meta_monitor_manager_tiled_monitor_added (MetaMonitorManager *manager,
+                                                             MetaMonitor        *monitor);
+void               meta_monitor_manager_tiled_monitor_removed (MetaMonitorManager *manager,
+                                                               MetaMonitor        *monitor);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);

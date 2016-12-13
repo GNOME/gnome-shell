@@ -23,6 +23,7 @@
 
 #include "backends/meta-monitor.h"
 
+#include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-manager-private.h"
 
 typedef struct _MetaMonitorPrivate
@@ -115,6 +116,15 @@ meta_monitor_get_physical_dimensions (MetaMonitor *monitor,
   *height_mm = output->height_mm;
 }
 
+const char *
+meta_monitor_get_product (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+  return output->product;
+}
+
 static void
 meta_monitor_finalize (GObject *object)
 {
@@ -188,6 +198,12 @@ meta_monitor_normal_class_init (MetaMonitorNormalClass *klass)
   monitor_class->get_dimensions = meta_monitor_normal_get_dimensions;
 }
 
+uint32_t
+meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled)
+{
+  return monitor_tiled->tile_group_id;
+}
+
 static void
 add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
                            MetaMonitorTiled   *monitor_tiled)
@@ -223,6 +239,9 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
 
   add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
   monitor_tiled->main_output = output;
+
+  meta_monitor_manager_tiled_monitor_added (monitor_manager,
+                                            META_MONITOR (monitor_tiled));
 
   return monitor_tiled;
 }
@@ -264,6 +283,18 @@ meta_monitor_tiled_get_dimensions (MetaMonitor   *monitor,
 }
 
 static void
+meta_monitor_tiled_finalize (GObject *object)
+{
+  MetaMonitorTiled *monitor_tiled = META_MONITOR_TILED (object);
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+
+  meta_monitor_manager_tiled_monitor_removed (monitor_manager,
+                                              META_MONITOR (monitor_tiled));
+}
+
+static void
 meta_monitor_tiled_init (MetaMonitorTiled *monitor)
 {
 }
@@ -271,7 +302,10 @@ meta_monitor_tiled_init (MetaMonitorTiled *monitor)
 static void
 meta_monitor_tiled_class_init (MetaMonitorTiledClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   MetaMonitorClass *monitor_class = META_MONITOR_CLASS (klass);
+
+  object_class->finalize = meta_monitor_tiled_finalize;
 
   monitor_class->get_main_output = meta_monitor_tiled_get_main_output;
   monitor_class->get_dimensions = meta_monitor_tiled_get_dimensions;
