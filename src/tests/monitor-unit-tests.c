@@ -34,6 +34,47 @@
 #define MAX_N_MONITORS 10
 #define MAX_N_LOGICAL_MONITORS 10
 
+/*
+ * The following structures are used to define test cases.
+ *
+ * Each test case consists of a test case setup and a test case expectaction.
+ * and a expected result, consisting
+ * of an array of monitors, logical monitors and a screen size.
+ *
+ * TEST CASE SETUP:
+ *
+ * A test case setup consists of an array of modes, an array of outputs and an
+ * array of CRTCs.
+ *
+ * A mode has a width and height in pixels, and a refresh rate in updates per
+ * second.
+ *
+ * An output has an array of available modes, and a preferred mode. Modes are
+ * defined as indices into the modes array of the test case setup.
+ *
+ * It also has CRTc and an array of possible CRTCs. Crtcs are defined as indices
+ * into the CRTC array. The CRTC value -1 means no CRTC.
+ *
+ * It also has various meta data, such as physical dimension, tile info and
+ * scale.
+ *
+ * A CRTC only has a current mode. A mode is defined as an index into the modes
+ * array.
+ *
+ *
+ * TEST CASE EXPECTS:
+ *
+ * A test case expects consists of an array of monitors, an array of logical
+ * monitors, a output and crtc count, and a screen width.
+ *
+ * A monitor represents a physical monitor (such as an external monitor, or a
+ * laptop panel etc). A monitor consists of an array of outputs, defined by
+ * indices into the setup output array, and the physical dimensions.
+ *
+ * A logical monitor represents a region of the total screen area. It contains
+ * the expected layout and a scale.
+ */
+
 typedef struct _MonitorTestCaseMode
 {
   int width;
