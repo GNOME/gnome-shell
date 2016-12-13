@@ -77,12 +77,16 @@ send_output_events (struct wl_resource *resource,
   MetaLogicalMonitor *old_logical_monitor;
   guint old_mode_flags;
   gint old_scale;
+  float old_refresh_rate;
+  float refresh_rate;
 
   old_logical_monitor = wayland_output->logical_monitor;
   old_mode_flags = wayland_output->mode_flags;
   old_scale = wayland_output->scale;
+  old_refresh_rate = wayland_output->refresh_rate;
 
   output = pick_main_output (logical_monitor);
+  refresh_rate = output->crtc->current_mode->refresh_rate;
 
   gboolean need_done = FALSE;
 
@@ -114,14 +118,14 @@ send_output_events (struct wl_resource *resource,
   if (need_all_events ||
       old_logical_monitor->rect.width != logical_monitor->rect.width ||
       old_logical_monitor->rect.height != logical_monitor->rect.height ||
-      old_logical_monitor->refresh_rate != logical_monitor->refresh_rate ||
+      old_refresh_rate != refresh_rate ||
       old_mode_flags != mode_flags)
     {
       wl_output_send_mode (resource,
                            mode_flags,
                            logical_monitor->rect.width,
                            logical_monitor->rect.height,
-                           (int32_t) (logical_monitor->refresh_rate * 1000));
+                           (int32_t) (refresh_rate * 1000));
       need_done = TRUE;
     }
 
@@ -161,7 +165,7 @@ bind_output (struct wl_client *client,
                 logical_monitor, output->name,
                 logical_monitor->rect.x, logical_monitor->rect.y,
                 logical_monitor->rect.width, logical_monitor->rect.height,
-                logical_monitor->refresh_rate);
+                wayland_output->refresh_rate);
 
   send_output_events (resource, wayland_output, logical_monitor, TRUE);
 }
@@ -188,6 +192,7 @@ meta_wayland_output_set_logical_monitor (MetaWaylandOutput  *wayland_output,
   if (output->crtc->current_mode == output->preferred_mode)
     wayland_output->mode_flags |= WL_OUTPUT_MODE_PREFERRED;
   wayland_output->scale = output->scale;
+  wayland_output->refresh_rate = output->crtc->current_mode->refresh_rate;
 }
 
 static void

@@ -39,6 +39,7 @@ struct _MetaWaylandOutput
   struct wl_global         *global;
   MetaLogicalMonitor       *logical_monitor;
   guint                     mode_flags;
+  float                     refresh_rate;
   gint                      scale;
 
   GList                    *resources;

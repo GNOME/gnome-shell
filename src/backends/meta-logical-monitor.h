@@ -37,7 +37,6 @@ struct _MetaLogicalMonitor
   int number;
   MetaRectangle rect;
   /* for tiled monitors these are calculated, from untiled just copied */
-  float refresh_rate;
   gboolean is_primary;
   gboolean is_presentation; /* XXX: not yet used */
   gboolean in_fullscreen;
