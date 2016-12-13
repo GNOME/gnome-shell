@@ -135,6 +135,7 @@ typedef struct _MonitorTestCaseExpect
   int n_logical_monitors;
   int n_outputs;
   int n_crtcs;
+  int n_tiled_monitors;
   int screen_width;
   int screen_height;
 } MonitorTestCaseExpect;
@@ -246,6 +247,9 @@ check_monitor_configuration (MonitorTestCase *test_case)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerTest *monitor_manager_test =
+    META_MONITOR_MANAGER_TEST (monitor_manager);
+  int tiled_monitor_count;
   GList *monitors;
   GList *logical_monitors;
   int n_logical_monitors;
@@ -256,6 +260,10 @@ check_monitor_configuration (MonitorTestCase *test_case)
   g_assert (monitor_manager->screen_height == test_case->expect.screen_height);
   g_assert ((int) monitor_manager->n_outputs == test_case->expect.n_outputs);
   g_assert ((int) monitor_manager->n_crtcs == test_case->expect.n_crtcs);
+
+  tiled_monitor_count =
+    meta_monitor_manager_test_get_tiled_monitor_count (monitor_manager_test);
+  g_assert (tiled_monitor_count == test_case->expect.n_tiled_monitors);
 
   monitors = meta_monitor_manager_get_monitors (monitor_manager);
   g_assert ((int) g_list_length (monitors) == test_case->expect.n_monitors);
@@ -724,6 +732,7 @@ meta_test_monitor_tiled_linear_config (void)
       .n_logical_monitors = 1,
       .n_outputs = 2,
       .n_crtcs = 2,
+      .n_tiled_monitors = 1,
       .screen_width = 800,
       .screen_height = 600,
     }

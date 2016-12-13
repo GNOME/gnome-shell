@@ -25,6 +25,8 @@ struct _MetaMonitorManagerTest
 {
   MetaMonitorManager parent;
 
+  int tiled_monitor_count;
+
   MetaMonitorTestSetup *test_setup;
 };
 
@@ -53,6 +55,12 @@ meta_monitor_manager_test_emulate_hotplug (MetaMonitorManagerTest *manager_test,
   meta_monitor_manager_on_hotplug (manager);
 
   g_free (old_test_setup);
+}
+
+int
+meta_monitor_manager_test_get_tiled_monitor_count (MetaMonitorManagerTest *manager_test)
+{
+  return manager_test->tiled_monitor_count;
 }
 
 static void
@@ -190,6 +198,24 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
 }
 
 static void
+meta_monitor_manager_test_tiled_monitor_added (MetaMonitorManager *manager,
+                                               MetaMonitor        *monitor)
+{
+  MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
+
+  manager_test->tiled_monitor_count++;
+}
+
+static void
+meta_monitor_manager_test_tiled_monitor_removed (MetaMonitorManager *manager,
+                                                 MetaMonitor        *monitor)
+{
+  MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
+
+  manager_test->tiled_monitor_count--;
+}
+
+static void
 meta_monitor_manager_test_dispose (GObject *object)
 {
   MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (object);
@@ -215,4 +241,6 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
 
   manager_class->read_current = meta_monitor_manager_test_read_current;
   manager_class->apply_configuration = meta_monitor_manager_test_apply_configuration;
+  manager_class->tiled_monitor_added = meta_monitor_manager_test_tiled_monitor_added;
+  manager_class->tiled_monitor_removed = meta_monitor_manager_test_tiled_monitor_removed;
 }
