@@ -113,10 +113,25 @@ typedef struct _MonitorTestCaseSetup
   int n_crtcs;
 } MonitorTestCaseSetup;
 
+typedef struct _MonitorTestCaseMonitorCrtcMode
+{
+  int output;
+  int crtc_mode;
+} MetaTestCaseMonitorCrtcMode;
+
+typedef struct _MonitorTestCaseMonitorMode
+{
+  int width;
+  int height;
+  MetaTestCaseMonitorCrtcMode crtc_modes[MAX_N_CRTCS];
+} MetaMonitorTestCaseMonitorMode;
+
 typedef struct _MonitorTestCaseMonitor
 {
   long outputs[MAX_N_OUTPUTS];
   int n_outputs;
+  MetaMonitorTestCaseMonitorMode modes[MAX_N_MODES];
+  int n_modes;
   int width_mm;
   int height_mm;
 } MonitorTestCaseMonitor;
@@ -195,12 +210,38 @@ static MonitorTestCase initial_test_case = {
       {
         .outputs = { 0 },
         .n_outputs = 1,
+        .modes = {
+          {
+            .width = 1024,
+            .height = 768,
+            .crtc_modes = {
+              {
+                .output = 0,
+                .crtc_mode = 0
+              }
+            }
+          }
+        },
+        .n_modes = 1,
         .width_mm = 222,
         .height_mm = 125
       },
       {
         .outputs = { 1 },
         .n_outputs = 1,
+        .modes = {
+          {
+            .width = 1024,
+            .height = 768,
+            .crtc_modes = {
+              {
+                .output = 1,
+                .crtc_mode = 0
+              }
+            }
+          }
+        },
+        .n_modes = 1,
         .width_mm = 220,
         .height_mm = 124
       }
@@ -241,6 +282,33 @@ output_from_winsys_id (MetaMonitorManager *monitor_manager,
   return NULL;
 }
 
+typedef struct _CheckMonitorModeData
+{
+  MetaMonitorManager *monitor_manager;
+  MetaTestCaseMonitorCrtcMode *expect_crtc_mode_iter;
+} CheckMonitorModeData;
+
+static void
+check_monitor_mode (MetaMonitor         *monitor,
+                    MetaMonitorMode     *mode,
+                    MetaMonitorCrtcMode *monitor_crtc_mode,
+                    gpointer             user_data)
+{
+  CheckMonitorModeData *data = user_data;
+  MetaMonitorManager *monitor_manager = data->monitor_manager;
+  MetaOutput *output;
+  MetaCrtcMode *crtc_mode;
+
+  output = output_from_winsys_id (monitor_manager,
+                                  data->expect_crtc_mode_iter->output);
+  crtc_mode = &monitor_manager->modes[data->expect_crtc_mode_iter->crtc_mode];
+
+  g_assert (monitor_crtc_mode->output == output);
+  g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
+
+  data->expect_crtc_mode_iter++;
+}
+
 static void
 check_monitor_configuration (MonitorTestCase *test_case)
 {
@@ -274,6 +342,8 @@ check_monitor_configuration (MonitorTestCase *test_case)
       GList *l_output;
       int j;
       int width_mm, height_mm;
+      GList *modes;
+      GList *l_mode;
 
       outputs = meta_monitor_get_outputs (monitor);
 
@@ -292,6 +362,29 @@ check_monitor_configuration (MonitorTestCase *test_case)
       meta_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
       g_assert (width_mm == test_case->expect.monitors[i].width_mm);
       g_assert (height_mm == test_case->expect.monitors[i].height_mm);
+
+      modes = meta_monitor_get_modes (monitor);
+      for (l_mode = modes, j = 0; l_mode; l_mode = l_mode->next, j++)
+        {
+          MetaMonitorMode *mode = l_mode->data;
+          int width;
+          int height;
+          CheckMonitorModeData data;
+
+          meta_monitor_mode_get_resolution (mode, &width, &height);
+
+          g_assert (width == test_case->expect.monitors[i].modes[j].width);
+          g_assert (height == test_case->expect.monitors[i].modes[j].height);
+
+          data = (CheckMonitorModeData) {
+            .monitor_manager = monitor_manager,
+            .expect_crtc_mode_iter =
+              test_case->expect.monitors[i].modes[j].crtc_modes
+          };
+          meta_monitor_mode_foreach_crtc (monitor, mode,
+                                          check_monitor_mode,
+                                          &data);
+        }
     }
 
   n_logical_monitors =
@@ -488,6 +581,19 @@ meta_test_monitor_one_disconnected_linear_config (void)
       {
         .outputs = { 0 },
         .n_outputs = 1,
+        .modes = {
+          {
+            .width = 1024,
+            .height = 768,
+            .crtc_modes = {
+              {
+                .output = 0,
+                .crtc_mode = 0
+              }
+            }
+          }
+        },
+        .n_modes = 1,
         .width_mm = 222,
         .height_mm = 125
       }
@@ -551,12 +657,38 @@ meta_test_monitor_one_off_linear_config (void)
       {
         .outputs = { 0 },
         .n_outputs = 1,
+        .modes = {
+          {
+            .width = 1024,
+            .height = 768,
+            .crtc_modes = {
+              {
+                .output = 0,
+                .crtc_mode = 0
+              }
+            }
+          }
+        },
+        .n_modes = 1,
         .width_mm = 222,
         .height_mm = 125
       },
       {
         .outputs = { 1 },
         .n_outputs = 1,
+        .modes = {
+          {
+            .width = 1024,
+            .height = 768,
+            .crtc_modes = {
+              {
+                .output = 1,
+                .crtc_mode = 0
+              }
+            }
+          }
+        },
+        .n_modes = 1,
         .width_mm = 224,
         .height_mm = 126
       }
@@ -633,6 +765,39 @@ meta_test_monitor_preferred_linear_config (void)
         {
           .outputs = { 0 },
           .n_outputs = 1,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            },
+            {
+              .width = 1024,
+              .height = 768,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 1
+                }
+              }
+            },
+            {
+              .width = 1280,
+              .height = 720,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 2
+                }
+              }
+            }
+          },
+          .n_modes = 3,
           .width_mm = 222,
           .height_mm = 125
         }
@@ -728,6 +893,23 @@ meta_test_monitor_tiled_linear_config (void)
         {
           .outputs = { 0, 1 },
           .n_outputs = 2,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                },
+                {
+                  .output = 1,
+                  .crtc_mode = 0
+                }
+              }
+            },
+          },
+          .n_modes = 1,
           .width_mm = 222,
           .height_mm = 125,
         }
@@ -814,12 +996,38 @@ meta_test_monitor_hidpi_linear_config (void)
         {
           .outputs = { 0 },
           .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1280,
+              .height = 720,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            },
+          },
+          .n_modes = 1,
           .width_mm = 150,
           .height_mm = 85
         },
         {
           .outputs = { 1 },
           .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .crtc_modes = {
+                {
+                  .output = 1,
+                  .crtc_mode = 1
+                }
+              }
+            },
+          },
+          .n_modes = 1,
           .width_mm = 222,
           .height_mm = 125
         }
