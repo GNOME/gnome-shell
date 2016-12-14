@@ -26,9 +26,18 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-manager-private.h"
 
+typedef struct _MetaMonitorMode
+{
+  int width;
+  int height;
+  float refresh_rate;
+  MetaMonitorCrtcMode *crtc_modes;
+} MetaMonitorMode;
+
 typedef struct _MetaMonitorPrivate
 {
   GList *outputs;
+  GList *modes;
 
   /*
    * The primary or first output for this monitor, 0 if we can't figure out.
@@ -61,6 +70,9 @@ struct _MetaMonitorTiled
 };
 
 G_DEFINE_TYPE (MetaMonitorTiled, meta_monitor_tiled, META_TYPE_MONITOR)
+
+static void
+meta_monitor_mode_free (MetaMonitorMode *mode);
 
 GList *
 meta_monitor_get_outputs (MetaMonitor *monitor)
@@ -131,6 +143,7 @@ meta_monitor_finalize (GObject *object)
   MetaMonitor *monitor = META_MONITOR (object);
   MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
 
+  g_list_free_full (priv->modes, (GDestroyNotify) meta_monitor_mode_free);
   g_clear_pointer (&priv->outputs, g_list_free);
 }
 
@@ -147,6 +160,37 @@ meta_monitor_class_init (MetaMonitorClass *klass)
   object_class->finalize = meta_monitor_finalize;
 }
 
+static void
+meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
+{
+  MetaMonitor *monitor = META_MONITOR (monitor_normal);
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  MetaOutput *output;
+  unsigned int i;
+
+  output = meta_monitor_get_main_output (monitor);
+  for (i = 0; i < output->n_modes; i++)
+    {
+      MetaCrtcMode *crtc_mode = output->modes[i];
+      MetaMonitorMode *mode;
+
+      mode = g_new0 (MetaMonitorMode, 1);
+      mode->width = crtc_mode->width;
+      mode->height = crtc_mode->height;
+      mode->refresh_rate = crtc_mode->refresh_rate;
+      mode->crtc_modes = g_new (MetaMonitorCrtcMode, 1);
+      mode->crtc_modes[0] = (MetaMonitorCrtcMode) {
+        .x = 0,
+        .y = 0,
+        .output = output,
+        .crtc_mode = crtc_mode
+      };
+
+      monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
+    }
+}
+
 MetaMonitorNormal *
 meta_monitor_normal_new (MetaOutput *output)
 {
@@ -159,6 +203,8 @@ meta_monitor_normal_new (MetaOutput *output)
 
   monitor_priv->outputs = g_list_append (NULL, output);
   monitor_priv->winsys_id = output->winsys_id;
+
+  meta_monitor_normal_generate_modes (monitor_normal);
 
   return monitor_normal;
 }
@@ -223,41 +269,38 @@ add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
     }
 }
 
-MetaMonitorTiled *
-meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
-                        MetaOutput         *output)
+static void
+calculate_tile_coordinate (MetaMonitor *monitor,
+                           MetaOutput  *output,
+                           int         *out_x,
+                           int         *out_y)
 {
-  MetaMonitorTiled *monitor_tiled;
-  MetaMonitorPrivate *monitor_priv;
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  GList *l;
+  int x = 0;
+  int y = 0;
 
-  monitor_tiled = g_object_new (META_TYPE_MONITOR_TILED, NULL);
-  monitor_priv =
-    meta_monitor_get_instance_private (META_MONITOR (monitor_tiled));
+  for (l = monitor_priv->outputs; l; l = l->next)
+    {
+      MetaOutput *other_output = l->data;
 
-  monitor_tiled->tile_group_id = output->tile_info.group_id;
-  monitor_priv->winsys_id = output->winsys_id;
+      if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
+          other_output->tile_info.loc_h_tile < output->tile_info.loc_h_tile)
+        x += other_output->tile_info.tile_w;
+      if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
+          other_output->tile_info.loc_v_tile < output->tile_info.loc_v_tile)
+        y += other_output->tile_info.tile_h;
+    }
 
-  add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
-  monitor_tiled->main_output = output;
-
-  meta_monitor_manager_tiled_monitor_added (monitor_manager,
-                                            META_MONITOR (monitor_tiled));
-
-  return monitor_tiled;
-}
-
-static MetaOutput *
-meta_monitor_tiled_get_main_output (MetaMonitor *monitor)
-{
-  MetaMonitorTiled *monitor_tiled = META_MONITOR_TILED (monitor);
-
-  return monitor_tiled->main_output;
+  *out_x = x;
+  *out_y = y;
 }
 
 static void
-meta_monitor_tiled_get_dimensions (MetaMonitor   *monitor,
-                                   int           *out_width,
-                                   int           *out_height)
+meta_monitor_tiled_calculate_tiled_size (MetaMonitor *monitor,
+                                         int         *out_width,
+                                         int         *out_height)
 {
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
@@ -280,6 +323,89 @@ meta_monitor_tiled_get_dimensions (MetaMonitor   *monitor,
 
   *out_width = width;
   *out_height = height;
+}
+
+static void
+meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
+{
+  MetaMonitor *monitor = META_MONITOR (monitor_tiled);
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  MetaMonitorMode *mode;
+  GList *l;
+  int i;
+
+  mode = g_new0 (MetaMonitorMode, 1);
+  meta_monitor_tiled_calculate_tiled_size (monitor,
+                                           &mode->width, &mode->height);
+  mode->crtc_modes = g_new (MetaMonitorCrtcMode,
+                            g_list_length (monitor_priv->outputs));
+  for (l = monitor_priv->outputs, i = 0; l; l = l->next, i++)
+    {
+      MetaOutput *output = l->data;
+      MetaCrtcMode *preferred_crtc_mode = output->preferred_mode;
+      int x;
+      int y;
+
+      calculate_tile_coordinate (monitor, output, &x, &y);
+
+      mode->crtc_modes[i] = (MetaMonitorCrtcMode) {
+        .x = x,
+        .y = y,
+        .output = output,
+        .crtc_mode = preferred_crtc_mode
+      };
+
+      g_warn_if_fail (mode->refresh_rate == 0.0f ||
+                      mode->refresh_rate == preferred_crtc_mode->refresh_rate);
+
+      mode->refresh_rate = preferred_crtc_mode->refresh_rate;
+    }
+
+  monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
+
+  /* TODO: Add single tile modes */
+}
+
+MetaMonitorTiled *
+meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
+                        MetaOutput         *output)
+{
+  MetaMonitorTiled *monitor_tiled;
+  MetaMonitorPrivate *monitor_priv;
+
+  monitor_tiled = g_object_new (META_TYPE_MONITOR_TILED, NULL);
+  monitor_priv =
+    meta_monitor_get_instance_private (META_MONITOR (monitor_tiled));
+
+  monitor_tiled->tile_group_id = output->tile_info.group_id;
+  monitor_priv->winsys_id = output->winsys_id;
+
+  add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
+  monitor_tiled->main_output = output;
+
+  meta_monitor_manager_tiled_monitor_added (monitor_manager,
+                                            META_MONITOR (monitor_tiled));
+
+  meta_monitor_tiled_generate_modes (monitor_tiled);
+
+  return monitor_tiled;
+}
+
+static MetaOutput *
+meta_monitor_tiled_get_main_output (MetaMonitor *monitor)
+{
+  MetaMonitorTiled *monitor_tiled = META_MONITOR_TILED (monitor);
+
+  return monitor_tiled->main_output;
+}
+
+static void
+meta_monitor_tiled_get_dimensions (MetaMonitor   *monitor,
+                                   int           *width,
+                                   int           *height)
+{
+  meta_monitor_tiled_calculate_tiled_size (monitor, width, height);
 }
 
 static void
@@ -309,4 +435,53 @@ meta_monitor_tiled_class_init (MetaMonitorTiledClass *klass)
 
   monitor_class->get_main_output = meta_monitor_tiled_get_main_output;
   monitor_class->get_dimensions = meta_monitor_tiled_get_dimensions;
+}
+
+static void
+meta_monitor_mode_free (MetaMonitorMode *monitor_mode)
+{
+  g_free (monitor_mode->crtc_modes);
+  g_free (monitor_mode);
+}
+
+GList *
+meta_monitor_get_modes (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  return priv->modes;
+}
+
+void
+meta_monitor_mode_get_resolution (MetaMonitorMode *monitor_mode,
+                                  int             *width,
+                                  int             *height)
+{
+  *width = monitor_mode->width;
+  *height = monitor_mode->height;
+}
+
+float
+meta_monitor_mode_get_refresh_rate (MetaMonitorMode *monitor_mode)
+{
+  return monitor_mode->refresh_rate;
+}
+
+void
+meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
+                                MetaMonitorMode    *mode,
+                                MetaMonitorModeFunc func,
+                                gpointer            user_data)
+{
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  GList *l;
+  int i;
+
+  for (l = monitor_priv->outputs, i = 0; l; l = l->next, i++)
+    {
+      MetaMonitorCrtcMode *monitor_crtc_mode = &mode->crtc_modes[i];
+
+      func (monitor, mode, monitor_crtc_mode, user_data);
+    }
 }

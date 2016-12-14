@@ -26,6 +26,21 @@
 
 #include "backends/meta-monitor-manager-private.h"
 
+typedef struct _MetaMonitorMode MetaMonitorMode;
+
+typedef struct _MetaMonitorCrtcMode
+{
+  int x;
+  int y;
+  MetaOutput *output;
+  MetaCrtcMode *crtc_mode;
+} MetaMonitorCrtcMode;
+
+typedef void (* MetaMonitorModeFunc) (MetaMonitor         *monitor,
+                                      MetaMonitorMode     *mode,
+                                      MetaMonitorCrtcMode *monitor_crtc_mode,
+                                      gpointer             user_data);
+
 #define META_TYPE_MONITOR (meta_monitor_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaMonitor, meta_monitor, META, MONITOR, GObject)
 
@@ -73,5 +88,18 @@ void meta_monitor_get_physical_dimensions (MetaMonitor *monitor,
 const char * meta_monitor_get_product (MetaMonitor *monitor);
 
 uint32_t meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled);
+
+GList * meta_monitor_get_modes (MetaMonitor *monitor);
+
+void meta_monitor_mode_get_resolution (MetaMonitorMode *monitor_mode,
+                                       int             *width,
+                                       int             *height);
+
+float meta_monitor_mode_get_refresh_rate (MetaMonitorMode *monitor_mode);
+
+void meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
+                                     MetaMonitorMode    *mode,
+                                     MetaMonitorModeFunc func,
+                                     gpointer            user_data);
 
 #endif /* META_MONITOR_H */
