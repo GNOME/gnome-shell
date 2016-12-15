@@ -47,7 +47,6 @@
 #include "meta-dbus-display-config.h"
 #include "meta-cursor.h"
 
-typedef struct _MetaMonitorConfigClass    MetaMonitorConfigClass;
 typedef struct _MetaMonitorConfig         MetaMonitorConfig;
 
 typedef struct _MetaMonitor MetaMonitor;

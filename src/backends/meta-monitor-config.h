@@ -25,14 +25,9 @@
 
 #include "meta-monitor-manager-private.h"
 
-#define META_TYPE_MONITOR_CONFIG            (meta_monitor_config_get_type ())
-#define META_MONITOR_CONFIG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_CONFIG, MetaMonitorConfig))
-#define META_MONITOR_CONFIG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
-#define META_IS_MONITOR_CONFIG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_CONFIG))
-#define META_IS_MONITOR_CONFIG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_CONFIG))
-#define META_MONITOR_CONFIG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_CONFIG, MetaMonitorConfigClass))
-
-GType meta_monitor_config_get_type (void) G_GNUC_CONST;
+#define META_TYPE_MONITOR_CONFIG (meta_monitor_config_get_type ())
+G_DECLARE_FINAL_TYPE (MetaMonitorConfig, meta_monitor_config,
+                      META, MONITOR_CONFIG, GObject)
 
 MetaMonitorConfig *meta_monitor_config_new (void);
 

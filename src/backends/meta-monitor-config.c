@@ -91,10 +91,6 @@ struct _MetaMonitorConfig {
   gboolean lid_is_closed;
 };
 
-struct _MetaMonitorConfigClass {
-  GObjectClass parent;
-};
-
 G_DEFINE_TYPE (MetaMonitorConfig, meta_monitor_config, G_TYPE_OBJECT);
 
 static gboolean meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
