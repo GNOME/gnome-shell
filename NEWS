@@ -1,3 +1,13 @@
+3.23.3
+======
+* Fix frequent freezes in multihead setups on wayland [Rui; #774557]
+* Preserve root window mask on XSelectionRequest [Olivier; #776128]
+* Misc. bug fixes [Carlos, Florian, Rui, Olivier; #775478, #774891, #775986,
+  #776036]
+
+Contributors:
+  Olivier Fourdan, Carlos Garnacho, Rui Matos, Florian Müllner
+
 3.23.2
 ======
 * Stack docks below other windows on fullscreen monitors [Rui; #772937]
