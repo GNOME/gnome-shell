@@ -1,3 +1,17 @@
+3.23.3
+======
+* Fix replacing of GNotifications [Florian; #775149]
+* Prepare for mozjs31 GJS [Philip; #775374]
+* Misc. bug fixes [Niels, Jonas; #775507, #776130]
+
+Contributors:
+  Jonas Ådahl, Michael Catanzaro, Philip Chimento, Niels De Graef,
+  Carlos Garnacho, Florian Müllner
+
+Translations:
+  Muhammet Kara [tr], Christian Kirbach [de], Baurzhan Muftakhidinov [kk],
+  Cheng-Chia Tseng [zh_TW], A S Alam [pa], Gianvito Cavasoli [it]
+
 3.23.2
 ======
 * Implement Pad configuration OSD [Carlos; #771067]
