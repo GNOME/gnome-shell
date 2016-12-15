@@ -66,7 +66,7 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
   Window xwindow = meta_window_get_xwindow (window);
   GdkWindow *gdk_window = gtk_widget_get_window (GTK_WIDGET (priv->window));
 
-  if (xwindow == gdk_x11_window_get_xid (gdk_window))
+  if (gdk_window && xwindow == gdk_x11_window_get_xid (gdk_window))
     {
       ClutterActor *window_actor =
         CLUTTER_ACTOR (meta_window_get_compositor_private (window));
