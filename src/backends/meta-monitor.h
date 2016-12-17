@@ -96,6 +96,8 @@ const char * meta_monitor_get_product (MetaMonitor *monitor);
 
 uint32_t meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled);
 
+MetaMonitorMode * meta_monitor_get_preferred_mode (MetaMonitor *monitor);
+
 GList * meta_monitor_get_modes (MetaMonitor *monitor);
 
 MetaMonitorModeSpec * meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode);

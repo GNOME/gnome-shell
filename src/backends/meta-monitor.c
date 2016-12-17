@@ -37,6 +37,8 @@ typedef struct _MetaMonitorPrivate
   GList *outputs;
   GList *modes;
 
+  MetaMonitorMode *preferred_mode;
+
   /*
    * The primary or first output for this monitor, 0 if we can't figure out.
    * It can be matched to a winsys_id of a MetaOutput.
@@ -186,6 +188,9 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
         .output = output,
         .crtc_mode = crtc_mode
       };
+
+      if (crtc_mode == output->preferred_mode)
+        monitor_priv->preferred_mode = mode;
 
       monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
     }
@@ -365,6 +370,7 @@ meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
     }
 
   monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
+  monitor_priv->preferred_mode = mode;
 
   /* TODO: Add single tile modes */
 }
@@ -444,6 +450,14 @@ meta_monitor_mode_free (MetaMonitorMode *monitor_mode)
 {
   g_free (monitor_mode->crtc_modes);
   g_free (monitor_mode);
+}
+
+MetaMonitorMode *
+meta_monitor_get_preferred_mode (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  return priv->preferred_mode;
 }
 
 GList *
