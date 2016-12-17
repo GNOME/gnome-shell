@@ -28,9 +28,7 @@
 
 typedef struct _MetaMonitorMode
 {
-  int width;
-  int height;
-  float refresh_rate;
+  MetaMonitorModeSpec spec;
   MetaMonitorCrtcMode *crtc_modes;
 } MetaMonitorMode;
 
@@ -176,9 +174,11 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
       MetaMonitorMode *mode;
 
       mode = g_new0 (MetaMonitorMode, 1);
-      mode->width = crtc_mode->width;
-      mode->height = crtc_mode->height;
-      mode->refresh_rate = crtc_mode->refresh_rate;
+      mode->spec = (MetaMonitorModeSpec) {
+        .width = crtc_mode->width,
+        .height = crtc_mode->height,
+        .refresh_rate = crtc_mode->refresh_rate
+      },
       mode->crtc_modes = g_new (MetaMonitorCrtcMode, 1);
       mode->crtc_modes[0] = (MetaMonitorCrtcMode) {
         .x = 0,
@@ -337,7 +337,8 @@ meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
 
   mode = g_new0 (MetaMonitorMode, 1);
   meta_monitor_tiled_calculate_tiled_size (monitor,
-                                           &mode->width, &mode->height);
+                                           &mode->spec.width,
+                                           &mode->spec.height);
   mode->crtc_modes = g_new (MetaMonitorCrtcMode,
                             g_list_length (monitor_priv->outputs));
   for (l = monitor_priv->outputs, i = 0; l; l = l->next, i++)
@@ -356,10 +357,11 @@ meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
         .crtc_mode = preferred_crtc_mode
       };
 
-      g_warn_if_fail (mode->refresh_rate == 0.0f ||
-                      mode->refresh_rate == preferred_crtc_mode->refresh_rate);
+      g_warn_if_fail (mode->spec.refresh_rate == 0.0f ||
+                      (mode->spec.refresh_rate ==
+                       preferred_crtc_mode->refresh_rate));
 
-      mode->refresh_rate = preferred_crtc_mode->refresh_rate;
+      mode->spec.refresh_rate = preferred_crtc_mode->refresh_rate;
     }
 
   monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
@@ -452,19 +454,25 @@ meta_monitor_get_modes (MetaMonitor *monitor)
   return priv->modes;
 }
 
+MetaMonitorModeSpec *
+meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode)
+{
+  return &monitor_mode->spec;
+}
+
 void
 meta_monitor_mode_get_resolution (MetaMonitorMode *monitor_mode,
                                   int             *width,
                                   int             *height)
 {
-  *width = monitor_mode->width;
-  *height = monitor_mode->height;
+  *width = monitor_mode->spec.width;
+  *height = monitor_mode->spec.height;
 }
 
 float
 meta_monitor_mode_get_refresh_rate (MetaMonitorMode *monitor_mode)
 {
-  return monitor_mode->refresh_rate;
+  return monitor_mode->spec.refresh_rate;
 }
 
 void

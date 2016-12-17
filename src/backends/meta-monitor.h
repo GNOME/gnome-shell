@@ -28,6 +28,13 @@
 
 typedef struct _MetaMonitorMode MetaMonitorMode;
 
+typedef struct _MetaMonitorModeSpec
+{
+  int width;
+  int height;
+  float refresh_rate;
+} MetaMonitorModeSpec;
+
 typedef struct _MetaMonitorCrtcMode
 {
   int x;
@@ -90,6 +97,8 @@ const char * meta_monitor_get_product (MetaMonitor *monitor);
 uint32_t meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled);
 
 GList * meta_monitor_get_modes (MetaMonitor *monitor);
+
+MetaMonitorModeSpec * meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode);
 
 void meta_monitor_mode_get_resolution (MetaMonitorMode *monitor_mode,
                                        int             *width,
