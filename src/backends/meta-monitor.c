@@ -39,6 +39,8 @@ typedef struct _MetaMonitorPrivate
 
   MetaMonitorMode *preferred_mode;
 
+  MetaMonitorSpec *spec;
+
   /*
    * The primary or first output for this monitor, 0 if we can't figure out.
    * It can be matched to a winsys_id of a MetaOutput.
@@ -73,6 +75,60 @@ G_DEFINE_TYPE (MetaMonitorTiled, meta_monitor_tiled, META_TYPE_MONITOR)
 
 static void
 meta_monitor_mode_free (MetaMonitorMode *mode);
+
+MetaMonitorSpec *
+meta_monitor_spec_clone (MetaMonitorSpec *monitor_spec)
+{
+  MetaMonitorSpec *new_monitor_spec;
+
+  new_monitor_spec = g_new0 (MetaMonitorSpec, 1);
+  *new_monitor_spec = (MetaMonitorSpec) {
+    .connector = g_strdup (monitor_spec->connector),
+    .vendor = g_strdup (monitor_spec->vendor),
+    .product = g_strdup (monitor_spec->product),
+    .serial = g_strdup (monitor_spec->serial),
+  };
+
+  return new_monitor_spec;
+}
+
+gboolean
+meta_monitor_spec_equals (MetaMonitorSpec *monitor_spec,
+                          MetaMonitorSpec *other_monitor_spec)
+{
+  return (g_str_equal (monitor_spec->connector, other_monitor_spec->connector) &&
+          g_str_equal (monitor_spec->vendor, other_monitor_spec->vendor) &&
+          g_str_equal (monitor_spec->product, other_monitor_spec->product) &&
+          g_str_equal (monitor_spec->serial, other_monitor_spec->serial));
+}
+
+void
+meta_monitor_spec_free (MetaMonitorSpec *monitor_spec)
+{
+  g_free (monitor_spec->connector);
+  g_free (monitor_spec->vendor);
+  g_free (monitor_spec->product);
+  g_free (monitor_spec->serial);
+  g_free (monitor_spec);
+}
+
+static void
+meta_monitor_generate_id (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+  MetaOutput *output = meta_monitor_get_main_output (monitor);
+  MetaMonitorSpec *monitor_spec;
+
+  monitor_spec = g_new0 (MetaMonitorSpec, 1);
+  *monitor_spec = (MetaMonitorSpec) {
+    .connector = g_strdup (output->name),
+    .vendor = g_strdup (output->vendor),
+    .product = g_strdup (output->product),
+    .serial = g_strdup (output->serial),
+  };
+
+  priv->spec = monitor_spec;
+}
 
 GList *
 meta_monitor_get_outputs (MetaMonitor *monitor)
@@ -145,6 +201,7 @@ meta_monitor_finalize (GObject *object)
 
   g_list_free_full (priv->modes, (GDestroyNotify) meta_monitor_mode_free);
   g_clear_pointer (&priv->outputs, g_list_free);
+  meta_monitor_spec_free (priv->spec);
 }
 
 static void
@@ -200,16 +257,18 @@ MetaMonitorNormal *
 meta_monitor_normal_new (MetaOutput *output)
 {
   MetaMonitorNormal *monitor_normal;
+  MetaMonitor *monitor;
   MetaMonitorPrivate *monitor_priv;
 
   monitor_normal = g_object_new (META_TYPE_MONITOR_NORMAL, NULL);
-  monitor_priv =
-    meta_monitor_get_instance_private (META_MONITOR (monitor_normal));
+  monitor = META_MONITOR (monitor_normal);
+  monitor_priv = meta_monitor_get_instance_private (monitor);
 
   monitor_priv->outputs = g_list_append (NULL, output);
   monitor_priv->winsys_id = output->winsys_id;
 
   meta_monitor_normal_generate_modes (monitor_normal);
+  meta_monitor_generate_id (monitor);
 
   return monitor_normal;
 }
@@ -380,11 +439,12 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
                         MetaOutput         *output)
 {
   MetaMonitorTiled *monitor_tiled;
+  MetaMonitor *monitor;
   MetaMonitorPrivate *monitor_priv;
 
   monitor_tiled = g_object_new (META_TYPE_MONITOR_TILED, NULL);
-  monitor_priv =
-    meta_monitor_get_instance_private (META_MONITOR (monitor_tiled));
+  monitor = META_MONITOR (monitor_tiled);
+  monitor_priv = meta_monitor_get_instance_private (monitor);
 
   monitor_tiled->tile_group_id = output->tile_info.group_id;
   monitor_priv->winsys_id = output->winsys_id;
@@ -396,6 +456,7 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
                                             META_MONITOR (monitor_tiled));
 
   meta_monitor_tiled_generate_modes (monitor_tiled);
+  meta_monitor_generate_id (monitor);
 
   return monitor_tiled;
 }
@@ -450,6 +511,14 @@ meta_monitor_mode_free (MetaMonitorMode *monitor_mode)
 {
   g_free (monitor_mode->crtc_modes);
   g_free (monitor_mode);
+}
+
+MetaMonitorSpec *
+meta_monitor_get_spec (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  return priv->spec;
 }
 
 MetaMonitorMode *

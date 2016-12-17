@@ -28,6 +28,14 @@
 
 typedef struct _MetaMonitorMode MetaMonitorMode;
 
+typedef struct _MetaMonitorSpec
+{
+  char *connector;
+  char *vendor;
+  char *product;
+  char *serial;
+} MetaMonitorSpec;
+
 typedef struct _MetaMonitorModeSpec
 {
   int width;
@@ -76,6 +84,8 @@ MetaMonitorTiled * meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
 
 MetaMonitorNormal * meta_monitor_normal_new (MetaOutput *output);
 
+MetaMonitorSpec * meta_monitor_get_spec (MetaMonitor *monitor);
+
 gboolean meta_monitor_is_active (MetaMonitor *monitor);
 
 MetaOutput * meta_monitor_get_main_output (MetaMonitor *monitor);
@@ -112,5 +122,12 @@ void meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
                                      MetaMonitorMode    *mode,
                                      MetaMonitorModeFunc func,
                                      gpointer            user_data);
+
+MetaMonitorSpec * meta_monitor_spec_clone (MetaMonitorSpec *monitor_id);
+
+gboolean meta_monitor_spec_equals (MetaMonitorSpec *monitor_id,
+                                   MetaMonitorSpec *other_monitor_id);
+
+void meta_monitor_spec_free (MetaMonitorSpec *monitor_id);
 
 #endif /* META_MONITOR_H */
