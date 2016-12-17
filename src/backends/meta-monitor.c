@@ -164,6 +164,24 @@ meta_monitor_is_primary (MetaMonitor *monitor)
   return output->is_primary;
 }
 
+gboolean
+meta_monitor_is_laptop_panel (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+
+  switch (output->connector_type)
+    {
+    case META_CONNECTOR_TYPE_eDP:
+    case META_CONNECTOR_TYPE_LVDS:
+    case META_CONNECTOR_TYPE_DSI:
+      return TRUE;
+    default:
+      return FALSE;
+    }
+}
+
 void
 meta_monitor_get_dimensions (MetaMonitor   *monitor,
                              int           *width,
