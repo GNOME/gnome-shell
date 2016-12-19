@@ -348,6 +348,8 @@ MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_neighbor (MetaMonit
                                                                        MetaLogicalMonitor *logical_monitor,
                                                                        MetaScreenDirection direction);
 
+MetaMonitor *       meta_monitor_manager_get_laptop_panel (MetaMonitorManager *manager);
+
 GList *             meta_monitor_manager_get_monitors      (MetaMonitorManager *manager);
 
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,

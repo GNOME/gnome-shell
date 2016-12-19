@@ -1198,6 +1198,31 @@ meta_monitor_manager_get_primary_logical_monitor (MetaMonitorManager *manager)
   return manager->primary_logical_monitor;
 }
 
+static MetaMonitor *
+find_monitor (MetaMonitorManager *monitor_manager,
+              gboolean (*match_func) (MetaMonitor *monitor))
+{
+  GList *monitors;
+  GList *l;
+
+  monitors = meta_monitor_manager_get_monitors (monitor_manager);
+  for (l = monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (match_func (monitor))
+        return monitor;
+    }
+
+  return NULL;
+}
+
+MetaMonitor *
+meta_monitor_manager_get_laptop_panel (MetaMonitorManager *manager)
+{
+  return find_monitor (manager, meta_monitor_is_laptop_panel);
+}
+
 MetaLogicalMonitor *
 meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
                                              float               x,
@@ -1644,7 +1669,13 @@ meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
 gboolean
 meta_monitor_manager_get_is_builtin_display_on (MetaMonitorManager *manager)
 {
+  MetaMonitor *laptop_panel;
+
   g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), FALSE);
 
-  return meta_monitor_config_get_is_builtin_display_on (manager->config);
+  laptop_panel = meta_monitor_manager_get_laptop_panel (manager);
+  if (!laptop_panel)
+    return FALSE;
+
+  return meta_monitor_is_active (laptop_panel);
 }
