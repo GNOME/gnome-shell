@@ -201,6 +201,13 @@ power_save_mode_changed (MetaMonitorManager *manager,
 }
 
 static void
+legacy_ensure_configured (MetaMonitorManager *manager)
+{
+  if (!meta_monitor_config_apply_stored (manager->legacy_config, manager))
+    meta_monitor_config_make_default (manager->legacy_config, manager);
+}
+
+static void
 meta_monitor_manager_constructed (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
@@ -210,12 +217,11 @@ meta_monitor_manager_constructed (GObject *object)
 
   manager->in_init = TRUE;
 
-  manager->config = meta_monitor_config_new ();
+  manager->legacy_config = meta_monitor_config_new ();
 
   meta_monitor_manager_read_current_config (manager);
 
-  if (!meta_monitor_config_apply_stored (manager->config, manager))
-    meta_monitor_config_make_default (manager->config, manager);
+  legacy_ensure_configured (manager);
 
   /* Under XRandR, we don't rebuild our data structures until we see
      the RRScreenNotify event, but at least at startup we want to have
@@ -670,24 +676,30 @@ meta_monitor_manager_apply_configuration (MetaMonitorManager *manager,
                                                                  outputs, n_outputs);
 }
 
+static void
+legacy_restore_previous_config (MetaMonitorManager *manager)
+{
+  meta_monitor_config_restore_previous (manager->legacy_config, manager);
+}
+
 static gboolean
 save_config_timeout (gpointer user_data)
 {
   MetaMonitorManager *manager = user_data;
 
-  meta_monitor_config_restore_previous (manager->config, manager);
+  legacy_restore_previous_config (manager);
 
   manager->persistent_timeout_id = 0;
   return G_SOURCE_REMOVE;
 }
 
 static gboolean
-meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
-                                                  GDBusMethodInvocation *invocation,
-                                                  guint                  serial,
-                                                  gboolean               persistent,
-                                                  GVariant              *crtcs,
-                                                  GVariant              *outputs)
+meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *skeleton,
+                                                         GDBusMethodInvocation *invocation,
+                                                         guint                  serial,
+                                                         gboolean               persistent,
+                                                         GVariant              *crtcs,
+                                                         GVariant              *outputs)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   GVariantIter crtc_iter, output_iter, *nested_outputs;
@@ -904,7 +916,7 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
      appropriate UI. Then wait 20 seconds and if not confirmed, revert the
      configuration.
   */
-  meta_monitor_config_update_current (manager->config, manager);
+  meta_monitor_config_update_current (manager->legacy_config, manager);
   if (persistent)
     {
       manager->persistent_timeout_id = g_timeout_add_seconds (20, save_config_timeout, manager);
@@ -914,6 +926,16 @@ meta_monitor_manager_handle_apply_configuration  (MetaDBusDisplayConfig *skeleto
 
   meta_dbus_display_config_complete_apply_configuration (skeleton, invocation);
   return TRUE;
+}
+
+static void
+legacy_confirm_configuration (MetaMonitorManager *manager,
+                              gboolean            confirmed)
+{
+  if (confirmed)
+    meta_monitor_config_make_persistent (manager->legacy_config);
+  else
+    meta_monitor_config_restore_previous (manager->legacy_config, manager);
 }
 
 void
@@ -929,10 +951,7 @@ meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
   g_source_remove (manager->persistent_timeout_id);
   manager->persistent_timeout_id = 0;
 
-  if (ok)
-    meta_monitor_config_make_persistent (manager->config);
-  else
-    meta_monitor_config_restore_previous (manager->config, manager);
+  legacy_confirm_configuration (manager, ok);
 }
 
 static gboolean
@@ -1106,7 +1125,7 @@ static void
 meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface *iface)
 {
   iface->handle_get_resources = meta_monitor_manager_handle_get_resources;
-  iface->handle_apply_configuration = meta_monitor_manager_handle_apply_configuration;
+  iface->handle_apply_configuration = meta_monitor_manager_legacy_handle_apply_configuration;
   iface->handle_change_backlight = meta_monitor_manager_handle_change_backlight;
   iface->handle_get_crtc_gamma = meta_monitor_manager_handle_get_crtc_gamma;
   iface->handle_set_crtc_gamma = meta_monitor_manager_handle_set_crtc_gamma;
@@ -1559,8 +1578,8 @@ meta_output_is_laptop (MetaOutput *output)
     }
 }
 
-void
-meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
+static void
+legacy_on_hotplug (MetaMonitorManager *manager)
 {
   gboolean applied_config = FALSE;
 
@@ -1570,13 +1589,19 @@ meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
    */
   if (!meta_monitor_manager_has_hotplug_mode_update (manager))
     {
-      if (meta_monitor_config_apply_stored (manager->config, manager))
+      if (meta_monitor_config_apply_stored (manager->legacy_config, manager))
         applied_config = TRUE;
     }
 
   /* If we haven't applied any configuration, apply the default configuration. */
   if (!applied_config)
-    meta_monitor_config_make_default (manager->config, manager);
+    meta_monitor_config_make_default (manager->legacy_config, manager);
+}
+
+void
+meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
+{
+  legacy_on_hotplug (manager);
 }
 
 static gboolean

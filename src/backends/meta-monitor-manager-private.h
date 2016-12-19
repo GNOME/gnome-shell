@@ -276,7 +276,7 @@ struct _MetaMonitorManager
   int dbus_name_id;
 
   int persistent_timeout_id;
-  MetaMonitorConfig *config;
+  MetaMonitorConfig *legacy_config;
 
   GnomePnpIds *pnp_ids;
 };
