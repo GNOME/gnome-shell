@@ -388,7 +388,7 @@ void               meta_crtc_info_free   (MetaCrtcInfo   *info);
 void               meta_output_info_free (MetaOutputInfo *info);
 
 gboolean           meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager);
-void               meta_monitor_manager_read_current_config (MetaMonitorManager *manager);
+void               meta_monitor_manager_read_current_state (MetaMonitorManager *manager);
 void               meta_monitor_manager_on_hotplug (MetaMonitorManager *manager);
 
 gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,

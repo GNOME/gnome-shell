@@ -1472,7 +1472,7 @@ on_uevent (GUdevClient *client,
   if (!g_udev_device_get_property_as_boolean (device, "HOTPLUG"))
     return;
 
-  meta_monitor_manager_read_current_config (manager);
+  meta_monitor_manager_read_current_state (manager);
 
   meta_monitor_manager_on_hotplug (manager);
 }

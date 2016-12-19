@@ -1597,7 +1597,7 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 
   XRRUpdateConfiguration (event);
 
-  meta_monitor_manager_read_current_config (manager);
+  meta_monitor_manager_read_current_state (manager);
 
   hotplug = manager_xrandr->resources->timestamp < manager_xrandr->resources->configTimestamp;
   if (hotplug)

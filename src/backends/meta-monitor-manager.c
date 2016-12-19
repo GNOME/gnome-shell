@@ -219,7 +219,7 @@ meta_monitor_manager_constructed (GObject *object)
 
   manager->legacy_config = meta_monitor_config_new ();
 
-  meta_monitor_manager_read_current_config (manager);
+  meta_monitor_manager_read_current_state (manager);
 
   legacy_ensure_configured (manager);
 
@@ -231,7 +231,7 @@ meta_monitor_manager_constructed (GObject *object)
      so this is not needed.
   */
   if (META_IS_MONITOR_MANAGER_XRANDR (manager))
-    meta_monitor_manager_read_current_config (manager);
+    meta_monitor_manager_read_current_state (manager);
 
   make_logical_config (manager);
   initialize_dbus_interface (manager);
@@ -1466,7 +1466,7 @@ meta_monitor_manager_tiled_monitor_removed (MetaMonitorManager *manager,
 }
 
 void
-meta_monitor_manager_read_current_config (MetaMonitorManager *manager)
+meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 {
   MetaOutput *old_outputs;
   MetaCrtc *old_crtcs;
