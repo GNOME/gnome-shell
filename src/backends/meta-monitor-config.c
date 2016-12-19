@@ -836,22 +836,6 @@ make_config_key (MetaConfiguration *key,
   key->n_outputs = o;
 }
 
-gboolean
-meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
-{
-  MetaOutput *outputs;
-  unsigned n_outputs;
-  unsigned int i;
-
-  outputs = meta_monitor_manager_get_outputs (manager, &n_outputs);
-
-  for (i = 0; i < n_outputs; i++)
-    if (outputs[i].hotplug_mode_update)
-      return TRUE;
-
-  return FALSE;
-}
-
 static MetaConfiguration *
 meta_monitor_config_get_stored (MetaMonitorConfig *self,
 				MetaOutput        *outputs,

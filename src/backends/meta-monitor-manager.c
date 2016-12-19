@@ -200,6 +200,22 @@ power_save_mode_changed (MetaMonitorManager *manager,
   manager->power_save_mode = mode;
 }
 
+gboolean
+meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
+{
+  unsigned int i;
+
+  for (i = 0; i < manager->n_outputs; i++)
+    {
+      MetaOutput *output = &manager->outputs[i];
+
+      if (output->hotplug_mode_update)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 legacy_ensure_configured (MetaMonitorManager *manager)
 {
