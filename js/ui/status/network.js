@@ -1543,8 +1543,10 @@ const NMVPNSection = new Lang.Class({
             item.setActiveConnection(null);
         }
         vpnConnections.forEach(Lang.bind(this, function(a) {
-            let item = this._connectionItems.get(a._connection.get_uuid());
-            item.setActiveConnection(a);
+            if (a._connection) {
+                let item = this._connectionItems.get(a._connection.get_uuid());
+                item.setActiveConnection(a);
+            }
         }));
     },
 
