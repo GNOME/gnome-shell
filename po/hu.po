@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-04 15:16+0000\n"
-"PO-Revision-Date: 2016-11-05 11:21+0100\n"
+"POT-Creation-Date: 2016-12-15 15:57+0000\n"
+"PO-Revision-Date: 2016-12-19 17:14+0100\n"
 "Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -330,7 +330,7 @@ msgstr "GNOME Shell kiterjesztések"
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:926
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:928
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -478,7 +478,7 @@ msgstr "%Y. %B %d., %l.%M  %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
 #. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:85
+#: js/portalHelper/main.js:87
 msgid "Web Authentication Redirect"
 msgstr "Web hitelesítés átirányítás"
 
@@ -524,12 +524,12 @@ msgstr "Hozzáadás a Kedvencekhez"
 msgid "Show Details"
 msgstr "Részletek megjelenítése"
 
-#: js/ui/appFavorites.js:134
+#: js/ui/appFavorites.js:137
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s felvéve a Kedvencek közé."
 
-#: js/ui/appFavorites.js:168
+#: js/ui/appFavorites.js:171
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s eltávolítva a Kedvencek közül"
@@ -691,8 +691,8 @@ msgstr "Jelszó:"
 msgid "Type again:"
 msgstr "Írja be újra:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:270
-#: js/ui/status/network.js:353 js/ui/status/network.js:929
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:272
+#: js/ui/status/network.js:355 js/ui/status/network.js:931
 msgid "Connect"
 msgstr "Kapcsolódás"
 
@@ -720,11 +720,11 @@ msgstr "Személyes kulcs jelszava: "
 msgid "Service: "
 msgstr "Szolgáltatás: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:658
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:666
 msgid "Authentication required by wireless network"
 msgstr "A vezeték nélküli hálózat hitelesítést igényel"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:667
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -733,7 +733,7 @@ msgstr ""
 "Jelszavak vagy titkosítási kulcsok szükségesek a(z) „%s” vezeték nélküli "
 "hálózat eléréséhez."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:662
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:670
 msgid "Wired 802.1X authentication"
 msgstr "Vezetékes 802.1X hitelesítés"
 
@@ -741,15 +741,15 @@ msgstr "Vezetékes 802.1X hitelesítés"
 msgid "Network name: "
 msgstr "Hálózat neve: "
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:666
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:674
 msgid "DSL authentication"
 msgstr "DSL hitelesítés"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:680
 msgid "PIN code required"
 msgstr "PIN kód szükséges"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kód szükséges a mobil széles sávú eszközhöz"
 
@@ -757,17 +757,17 @@ msgstr "PIN kód szükséges a mobil széles sávú eszközhöz"
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
 msgid "Mobile broadband network password"
 msgstr "Mobil széles sávú hálózat jelszava"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
-#: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Jelszó szükséges a kapcsolódáshoz a következőhöz: „%s”."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1670
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1734
 msgid "Network Manager"
 msgstr "Hálózatkezelő"
 
@@ -798,7 +798,7 @@ msgstr "A hitelesítés sikertelen. Próbálja újra."
 msgid "%s is now known as %s"
 msgstr "%s mostantól %s néven ismert"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:155
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "Ablakok"
 
@@ -1173,6 +1173,10 @@ msgstr "Adjon meg egy parancsot"
 msgid "Close"
 msgstr "Bezárás"
 
+#: js/ui/runDialog.js:277
+msgid "Restart is not available on Wayland"
+msgstr "Az újraindítás nem érhető el Wayland alatt"
+
 #: js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Újraindítás…"
@@ -1300,7 +1304,7 @@ msgstr "Nagy szöveg"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-beállítások"
 
@@ -1320,13 +1324,13 @@ msgstr "Ki"
 msgid "On"
 msgstr "Be"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1289
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1291
 msgid "Turn On"
 msgstr "Bekapcsolás"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:179
-#: js/ui/status/network.js:354 js/ui/status/network.js:1289
-#: js/ui/status/network.js:1404 js/ui/status/rfkill.js:90
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
+#: js/ui/status/network.js:356 js/ui/status/network.js:1291
+#: js/ui/status/network.js:1406 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Kikapcsolás"
@@ -1374,18 +1378,18 @@ msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "A hely hozzáférése bármikor megváltoztatható az adatvédelmi beállításokban."
 
-#: js/ui/status/network.js:102
+#: js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<ismeretlen>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452 js/ui/status/network.js:1318
+#: js/ui/status/network.js:454 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Off"
 msgstr "%s ki"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s kapcsolódva"
@@ -1393,168 +1397,190 @@ msgstr "%s kapcsolódva"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:460
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s felügyeletlen"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:463
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s leválasztása"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:470 js/ui/status/network.js:1310
+#: js/ui/status/network.js:472 js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s kapcsolódás"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:473
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s hitelesítést igényel"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:481
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Hiányzó firmware ennél: %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:485
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s nem érhető el"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:488
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s kapcsolódás meghiúsult"
 
-#: js/ui/status/network.js:504
+#: js/ui/status/network.js:506
 msgid "Wired Settings"
 msgstr "Vezetékes beállítások"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:548
 msgid "Mobile Broadband Settings"
 msgstr "Mobil széles sáv beállításai"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1315
+#: js/ui/status/network.js:591 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s hardver letiltva"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
+#: js/ui/status/network.js:595
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s letiltva"
 
-#: js/ui/status/network.js:633
+#: js/ui/status/network.js:635
 msgid "Connect to Internet"
 msgstr "Kapcsolódás az internetre"
 
-#: js/ui/status/network.js:823
+#: js/ui/status/network.js:825
 msgid "Airplane Mode is On"
 msgstr "Repülőgép üzemmód be"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:826
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "A Wi-Fi ki van kapcsolva repülőgép üzemmódban."
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:827
 msgid "Turn Off Airplane Mode"
 msgstr "Repülőgép üzemmód kikapcsolása"
 
-#: js/ui/status/network.js:834
+#: js/ui/status/network.js:836
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi ki"
 
-#: js/ui/status/network.js:835
+#: js/ui/status/network.js:837
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "A Wi-Fi-t be kell kapcsolni a hálózatra kapcsolódáshoz."
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:838
 msgid "Turn On Wi-Fi"
 msgstr "Wi-Fi bekapcsolása"
 
-#: js/ui/status/network.js:861
+#: js/ui/status/network.js:863
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi hálózatok"
 
-#: js/ui/status/network.js:863
+#: js/ui/status/network.js:865
 msgid "Select a network"
 msgstr "Válasszon egy hálózatot"
 
-#: js/ui/status/network.js:893
+#: js/ui/status/network.js:895
 msgid "No Networks"
 msgstr "Nincs hálózat"
 
-#: js/ui/status/network.js:914 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:916 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "A hardveres kapcsolóval kapcsolja ki"
 
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1183
 msgid "Select Network"
 msgstr "Válasszon hálózatot"
 
-#: js/ui/status/network.js:1187
+#: js/ui/status/network.js:1189
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi beállítások"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1306
+#: js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s hotspot aktív"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s nincs kapcsolódva"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1423
 msgid "connecting..."
 msgstr "kapcsolódás…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1424
+#: js/ui/status/network.js:1426
 msgid "authentication required"
 msgstr "hitelesítés szükséges"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1428
 msgid "connection failed"
 msgstr "a kapcsolódás meghiúsult"
 
-#: js/ui/status/network.js:1492 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1587
+#: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Hálózati beállítások"
 
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1496
 msgid "VPN Settings"
 msgstr "VPN beállítások"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1515
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1525
 msgid "VPN Off"
 msgstr "VPN ki"
 
-#: js/ui/status/network.js:1709
+#: js/ui/status/network.js:1618
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s vezetékes kapcsolat"
+msgstr[1] "%s vezetékes kapcsolat"
+
+#: js/ui/status/network.js:1622
+#, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s Wi-Fi kapcsolat"
+msgstr[1] "%s Wi-Fi kapcsolat"
+
+#: js/ui/status/network.js:1626
+#, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s Modem kapcsolat"
+msgstr[1] "%s Modem kapcsolat"
+
+#: js/ui/status/network.js:1773
 msgid "Connection failed"
 msgstr "Kapcsolódás meghiúsult"
 
-#: js/ui/status/network.js:1710
+#: js/ui/status/network.js:1774
 msgid "Activation of network connection failed"
 msgstr "A hálózati kapcsolat aktiválása meghiúsult"
 
@@ -1636,11 +1662,11 @@ msgstr "Bejelentkezés másik felhasználóként"
 msgid "Unlock Window"
 msgstr "Ablak feloldása"
 
-#: js/ui/viewSelector.js:159
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "Alkalmazások"
 
-#: js/ui/viewSelector.js:163
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "Oldalsáv"
 
@@ -1923,9 +1949,6 @@ msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
 #~ msgid "Status is set to offline"
 #~ msgstr "Az állapot beállítva kilépettre"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "A titkosítás nem érhető el"
 
 #~ msgid "Certificate is invalid"
 #~ msgstr "A tanúsítvány érvénytelen"
