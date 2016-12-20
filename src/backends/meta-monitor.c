@@ -576,11 +576,12 @@ meta_monitor_mode_get_refresh_rate (MetaMonitorMode *monitor_mode)
   return monitor_mode->spec.refresh_rate;
 }
 
-void
+gboolean
 meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
                                 MetaMonitorMode    *mode,
                                 MetaMonitorModeFunc func,
-                                gpointer            user_data)
+                                gpointer            user_data,
+                                GError            **error)
 {
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
@@ -591,6 +592,9 @@ meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
     {
       MetaMonitorCrtcMode *monitor_crtc_mode = &mode->crtc_modes[i];
 
-      func (monitor, mode, monitor_crtc_mode, user_data);
+      if (!func (monitor, mode, monitor_crtc_mode, user_data, error))
+        return FALSE;
     }
+
+  return TRUE;
 }

@@ -51,10 +51,11 @@ typedef struct _MetaMonitorCrtcMode
   MetaCrtcMode *crtc_mode;
 } MetaMonitorCrtcMode;
 
-typedef void (* MetaMonitorModeFunc) (MetaMonitor         *monitor,
-                                      MetaMonitorMode     *mode,
-                                      MetaMonitorCrtcMode *monitor_crtc_mode,
-                                      gpointer             user_data);
+typedef gboolean (* MetaMonitorModeFunc) (MetaMonitor         *monitor,
+                                          MetaMonitorMode     *mode,
+                                          MetaMonitorCrtcMode *monitor_crtc_mode,
+                                          gpointer             user_data,
+                                          GError             **error);
 
 #define META_TYPE_MONITOR (meta_monitor_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaMonitor, meta_monitor, META, MONITOR, GObject)
@@ -120,10 +121,11 @@ void meta_monitor_mode_get_resolution (MetaMonitorMode *monitor_mode,
 
 float meta_monitor_mode_get_refresh_rate (MetaMonitorMode *monitor_mode);
 
-void meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
-                                     MetaMonitorMode    *mode,
-                                     MetaMonitorModeFunc func,
-                                     gpointer            user_data);
+gboolean meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
+                                         MetaMonitorMode    *mode,
+                                         MetaMonitorModeFunc func,
+                                         gpointer            user_data,
+                                         GError            **error);
 
 MetaMonitorSpec * meta_monitor_spec_clone (MetaMonitorSpec *monitor_id);
 

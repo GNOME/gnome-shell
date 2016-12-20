@@ -288,11 +288,12 @@ typedef struct _CheckMonitorModeData
   MetaTestCaseMonitorCrtcMode *expect_crtc_mode_iter;
 } CheckMonitorModeData;
 
-static void
+static gboolean
 check_monitor_mode (MetaMonitor         *monitor,
                     MetaMonitorMode     *mode,
                     MetaMonitorCrtcMode *monitor_crtc_mode,
-                    gpointer             user_data)
+                    gpointer             user_data,
+                    GError             **error)
 {
   CheckMonitorModeData *data = user_data;
   MetaMonitorManager *monitor_manager = data->monitor_manager;
@@ -307,6 +308,8 @@ check_monitor_mode (MetaMonitor         *monitor,
   g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
 
   data->expect_crtc_mode_iter++;
+
+  return TRUE;
 }
 
 static void
@@ -383,7 +386,8 @@ check_monitor_configuration (MonitorTestCase *test_case)
           };
           meta_monitor_mode_foreach_crtc (monitor, mode,
                                           check_monitor_mode,
-                                          &data);
+                                          &data,
+                                          NULL);
         }
     }
 
