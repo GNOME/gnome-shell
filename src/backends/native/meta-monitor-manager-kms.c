@@ -55,7 +55,8 @@
 #define EDID_RETRY_TIMEOUT_MS 50
 #define EDID_MAX_NUM_RETRIES 10
 
-typedef struct {
+typedef struct
+{
   drmModeConnector *connector;
 
   unsigned n_encoders;
@@ -80,7 +81,8 @@ typedef struct {
   gboolean has_scaling;
 } MetaOutputKms;
 
-typedef struct {
+typedef struct
+{
   uint32_t underscan_prop_id;
   uint32_t underscan_hborder_prop_id;
   uint32_t underscan_vborder_prop_id;
@@ -1199,7 +1201,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   drmModeRes *resources;
 
-  resources = drmModeGetResources(manager_kms->fd);
+  resources = drmModeGetResources (manager_kms->fd);
 
   /* TODO: max screen width only matters for stage views is not enabled. */
   manager->max_screen_width = resources->max_width;
@@ -1274,21 +1276,21 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
 
   for (i = 0; i < manager->n_outputs; i++)
     {
-      MetaOutput *meta_output;
+      MetaOutput *output;
       MetaOutputKms *output_kms;
 
-      meta_output = &manager->outputs[i];
-      output_kms = meta_output->driver_private;
+      output = &manager->outputs[i];
+      output_kms = output->driver_private;
 
       if (output_kms->dpms_prop_id != 0)
         {
-          int ok = drmModeObjectSetProperty (manager_kms->fd, meta_output->winsys_id,
+          int ok = drmModeObjectSetProperty (manager_kms->fd, output->winsys_id,
                                              DRM_MODE_OBJECT_CONNECTOR,
                                              output_kms->dpms_prop_id, state);
 
           if (ok < 0)
             meta_warning ("Failed to set power save mode for output %s: %s\n",
-                          meta_output->name, strerror (errno));
+                          output->name, strerror (errno));
         }
     }
 }
