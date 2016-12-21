@@ -539,6 +539,35 @@ meta_monitor_get_spec (MetaMonitor *monitor)
   return priv->spec;
 }
 
+static gboolean
+meta_monitor_mode_spec_equals (MetaMonitorModeSpec *monitor_mode_spec,
+                               MetaMonitorModeSpec *other_monitor_mode_spec)
+{
+  return (monitor_mode_spec->width == other_monitor_mode_spec->width &&
+          monitor_mode_spec->height == other_monitor_mode_spec->height &&
+          (monitor_mode_spec->refresh_rate ==
+           other_monitor_mode_spec->refresh_rate));
+}
+
+MetaMonitorMode *
+meta_monitor_get_mode_from_spec (MetaMonitor         *monitor,
+                                 MetaMonitorModeSpec *monitor_mode_spec)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+  GList *l;
+
+  for (l = priv->modes; l; l = l->next)
+    {
+      MetaMonitorMode *monitor_mode = l->data;
+
+      if (meta_monitor_mode_spec_equals (monitor_mode_spec,
+                                         &monitor_mode->spec))
+        return monitor_mode;
+    }
+
+  return NULL;
+}
+
 MetaMonitorMode *
 meta_monitor_get_preferred_mode (MetaMonitor *monitor)
 {
