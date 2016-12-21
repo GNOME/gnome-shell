@@ -47,7 +47,7 @@
 #include "meta-dbus-display-config.h"
 #include "meta-cursor.h"
 
-typedef struct _MetaMonitorConfig         MetaMonitorConfig;
+typedef struct _MetaMonitorConfig MetaMonitorConfig;
 
 typedef struct _MetaMonitor MetaMonitor;
 typedef struct _MetaMonitorNormal MetaMonitorNormal;
@@ -61,7 +61,8 @@ typedef struct _MetaCrtcInfo MetaCrtcInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
 typedef struct _MetaTileInfo MetaTileInfo;
 
-typedef enum {
+typedef enum
+{
   META_MONITOR_TRANSFORM_NORMAL,
   META_MONITOR_TRANSFORM_90,
   META_MONITOR_TRANSFORM_180,
@@ -73,7 +74,8 @@ typedef enum {
 } MetaMonitorTransform;
 
 /* This matches the values in drm_mode.h */
-typedef enum {
+typedef enum
+{
   META_CONNECTOR_TYPE_Unknown = 0,
   META_CONNECTOR_TYPE_VGA = 1,
   META_CONNECTOR_TYPE_DVII = 2,
@@ -93,7 +95,8 @@ typedef enum {
   META_CONNECTOR_TYPE_DSI = 16,
 } MetaConnectorType;
 
-struct _MetaTileInfo {
+struct _MetaTileInfo
+{
   guint32 group_id;
   guint32 flags;
   guint32 max_h_tiles;
@@ -207,7 +210,8 @@ struct _MetaCrtcMode
  * Note: differently from the other structures in this file, MetaCrtcInfo
  * is handled by pointer. This is to accomodate the usage in MetaMonitorConfig
  */
-struct _MetaCrtcInfo {
+struct _MetaCrtcInfo
+{
   MetaCrtc                 *crtc;
   MetaCrtcMode             *mode;
   int                       x;
@@ -220,7 +224,8 @@ struct _MetaCrtcInfo {
  * MetaOutputInfo:
  * this is the same as MetaCrtcInfo, but for outputs
  */
-struct _MetaOutputInfo {
+struct _MetaOutputInfo
+{
   MetaOutput  *output;
   gboolean     is_primary;
   gboolean     is_presentation;
