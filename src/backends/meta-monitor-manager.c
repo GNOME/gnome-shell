@@ -1264,6 +1264,24 @@ meta_monitor_manager_get_laptop_panel (MetaMonitorManager *manager)
   return find_monitor (manager, meta_monitor_is_laptop_panel);
 }
 
+MetaMonitor *
+meta_monitor_manager_get_monitor_from_spec (MetaMonitorManager *manager,
+                                            MetaMonitorSpec    *monitor_spec)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (meta_monitor_spec_equals (meta_monitor_get_spec (monitor),
+                                    monitor_spec))
+        return monitor;
+    }
+
+  return NULL;
+}
+
 MetaLogicalMonitor *
 meta_monitor_manager_get_logical_monitor_at (MetaMonitorManager *manager,
                                              float               x,

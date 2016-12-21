@@ -52,6 +52,7 @@ typedef struct _MetaMonitorConfig MetaMonitorConfig;
 typedef struct _MetaMonitor MetaMonitor;
 typedef struct _MetaMonitorNormal MetaMonitorNormal;
 typedef struct _MetaMonitorTiled MetaMonitorTiled;
+typedef struct _MetaMonitorSpec MetaMonitorSpec;
 typedef struct _MetaLogicalMonitor MetaLogicalMonitor;
 
 typedef struct _MetaCrtc MetaCrtc;
@@ -356,6 +357,9 @@ MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_neighbor (MetaMonit
 MetaMonitor *       meta_monitor_manager_get_primary_monitor (MetaMonitorManager *manager);
 
 MetaMonitor *       meta_monitor_manager_get_laptop_panel (MetaMonitorManager *manager);
+
+MetaMonitor *       meta_monitor_manager_get_monitor_from_spec (MetaMonitorManager *manager,
+                                                                MetaMonitorSpec    *monitor_spec);
 
 GList *             meta_monitor_manager_get_monitors      (MetaMonitorManager *manager);
 
