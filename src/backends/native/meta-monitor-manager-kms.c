@@ -51,6 +51,10 @@
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
 #define SYNC_TOLERANCE 0.01    /* 1 percent */
 
+/* Try each 50 milleseconds up to half a second to get a proper EDID read */
+#define EDID_RETRY_TIMEOUT_MS 50
+#define EDID_MAX_NUM_RETRIES 10
+
 typedef struct {
   drmModeConnector *connector;
 
@@ -109,6 +113,9 @@ struct _MetaMonitorManagerKms
   GSettings *desktop_settings;
 
   gboolean page_flips_not_supported;
+
+  guint handle_hotplug_timeout;
+  int read_edid_tries;
 };
 
 struct _MetaMonitorManagerKmsClass
@@ -310,33 +317,48 @@ find_crtc_properties (MetaMonitorManagerKms *manager_kms,
     }
 }
 
-static GBytes *
-read_output_edid (MetaMonitorManagerKms *manager_kms,
-                  MetaOutput            *output)
+static drmModePropertyBlobPtr
+read_edid_blob (MetaMonitorManagerKms *manager_kms,
+                uint32_t               edid_blob_id,
+                GError               **error)
 {
-  MetaOutputKms *output_kms = output->driver_private;
   drmModePropertyBlobPtr edid_blob = NULL;
 
-  if (output_kms->edid_blob_id == 0)
-    return NULL;
-
-  edid_blob = drmModeGetPropertyBlob (manager_kms->fd, output_kms->edid_blob_id);
+  edid_blob = drmModeGetPropertyBlob (manager_kms->fd, edid_blob_id);
   if (!edid_blob)
     {
-      meta_warning ("Failed to read EDID of output %s: %s\n", output->name, strerror(errno));
+      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errno),
+                   "Failed to get EDID property blob: %s", strerror (errno));
       return NULL;
     }
 
-  if (edid_blob->length > 0)
+  return edid_blob;
+}
+
+static GBytes *
+read_output_edid (MetaMonitorManagerKms *manager_kms,
+                  MetaOutput            *output,
+                  GError               **error)
+{
+  MetaOutputKms *output_kms = output->driver_private;
+  drmModePropertyBlobPtr edid_blob;
+
+  g_assert (output_kms->edid_blob_id != 0);
+
+  edid_blob = read_edid_blob (manager_kms, output_kms->edid_blob_id, error);
+  if (!edid_blob)
+    return NULL;
+
+  if (edid_blob->length == 0)
     {
-      return g_bytes_new_with_free_func (edid_blob->data, edid_blob->length,
-                                         (GDestroyNotify)drmModeFreePropertyBlob, edid_blob);
-    }
-  else
-    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "EDID blob was empty");
       drmModeFreePropertyBlob (edid_blob);
       return NULL;
     }
+
+  return g_bytes_new_with_free_func (edid_blob->data, edid_blob->length,
+                                     (GDestroyNotify) drmModeFreePropertyBlob,
+                                     edid_blob);
 }
 
 static gboolean
@@ -874,7 +896,22 @@ init_output (MetaOutput         *output,
   output->suggested_y = output_kms->suggested_y;
   output->hotplug_mode_update = output_kms->hotplug_mode_update;
 
-  edid = read_output_edid (manager_kms, output);
+  if (output_kms->edid_blob_id != 0)
+    {
+      GError *error = NULL;
+
+      edid = read_output_edid (manager_kms, output, &error);
+      if (!edid)
+        {
+          g_warning ("Failed to read EDID: %s", error->message);
+          g_error_free (error);
+        }
+    }
+  else
+    {
+      edid = NULL;
+    }
+
   meta_output_parse_edid (output, edid);
   g_bytes_unref (edid);
 
@@ -1190,9 +1227,24 @@ static GBytes *
 meta_monitor_manager_kms_read_edid (MetaMonitorManager *manager,
                                     MetaOutput         *output)
 {
+  MetaOutputKms *output_kms = output->driver_private;
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  GError *error = NULL;
+  GBytes *edid;
 
-  return read_output_edid (manager_kms, output);
+  if (output_kms->edid_blob_id == 0)
+    return NULL;
+
+  edid = read_output_edid (manager_kms, output, &error);
+  if (!edid)
+    {
+      g_warning ("Failed to read EDID from '%s': %s",
+                 output->name, error->message);
+      g_error_free (error);
+      return NULL;
+    }
+
+  return edid;
 }
 
 static void
@@ -1460,6 +1512,114 @@ meta_monitor_manager_kms_set_crtc_gamma (MetaMonitorManager *manager,
   drmModeCrtcSetGamma (manager_kms->fd, crtc->crtc_id, size, red, green, blue);
 }
 
+static gboolean
+has_pending_edid_blob (MetaMonitorManagerKms *manager_kms)
+{
+  drmModeRes *resources;
+  int n_connectors;
+  int i, j;
+  gboolean edid_blob_pending;
+
+  resources = drmModeGetResources (manager_kms->fd);
+  n_connectors = resources->count_connectors;
+
+  edid_blob_pending = FALSE;
+  for (i = 0; i < n_connectors; i++)
+    {
+      drmModeConnector *drm_connector;
+      uint32_t edid_blob_id;
+
+      drm_connector = drmModeGetConnector (manager_kms->fd,
+                                           resources->connectors[i]);
+
+      edid_blob_id = 0;
+      for (j = 0; j < drm_connector->count_props; j++)
+        {
+          drmModePropertyPtr prop;
+
+          prop = drmModeGetProperty (manager_kms->fd, drm_connector->props[j]);
+
+          if (prop->flags & DRM_MODE_PROP_BLOB &&
+              g_str_equal (prop->name, "EDID"))
+            edid_blob_id = drm_connector->prop_values[j];
+
+          drmModeFreeProperty (prop);
+
+          if (edid_blob_id)
+            break;
+        }
+
+      drmModeFreeConnector (drm_connector);
+
+      if (edid_blob_id)
+        {
+          GError *error = NULL;
+          drmModePropertyBlobPtr edid_blob;
+
+          edid_blob = read_edid_blob (manager_kms, edid_blob_id, &error);
+          if (!edid_blob &&
+              g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
+            {
+              edid_blob_pending = TRUE;
+              g_error_free (error);
+            }
+          else if (!edid_blob)
+            {
+              g_error_free (error);
+            }
+          else
+            {
+              drmModeFreePropertyBlob (edid_blob);
+            }
+        }
+
+      if (edid_blob_pending)
+        break;
+    }
+
+  drmModeFreeResources (resources);
+
+  return edid_blob_pending;
+}
+
+static void
+handle_hotplug_event (MetaMonitorManager *manager)
+{
+  meta_monitor_manager_read_current_state (manager);
+  meta_monitor_manager_on_hotplug (manager);
+}
+
+static gboolean
+handle_hotplug_event_timeout (gpointer user_data)
+{
+  MetaMonitorManager *manager = user_data;
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (user_data);
+
+  if (!has_pending_edid_blob (manager_kms))
+    {
+      handle_hotplug_event (manager);
+
+      manager_kms->handle_hotplug_timeout = 0;
+      return G_SOURCE_REMOVE;
+    }
+
+  manager_kms->read_edid_tries++;
+
+  if (manager_kms->read_edid_tries > EDID_MAX_NUM_RETRIES)
+    {
+      g_warning ("Tried to read the EDID %d times, "
+                 "but one or more are still missing, continuing without",
+                 manager_kms->read_edid_tries);
+
+      handle_hotplug_event (manager);
+
+      manager_kms->handle_hotplug_timeout = 0;
+      return G_SOURCE_REMOVE;
+    }
+
+  return G_SOURCE_CONTINUE;
+}
+
 static void
 on_uevent (GUdevClient *client,
            const char  *action,
@@ -1472,9 +1632,29 @@ on_uevent (GUdevClient *client,
   if (!g_udev_device_get_property_as_boolean (device, "HOTPLUG"))
     return;
 
-  meta_monitor_manager_read_current_state (manager);
+  if (manager_kms->handle_hotplug_timeout)
+    {
+      g_source_remove (manager_kms->handle_hotplug_timeout);
+      manager_kms->handle_hotplug_timeout = 0;
+    }
 
-  meta_monitor_manager_on_hotplug (manager);
+  /*
+   * On a hot-plug event, the EDID of one or more connectors might not yet be
+   * ready at this point, resulting in invalid configuration potentially being
+   * applied. Avoid this by first checking whether the EDID is ready at this
+   * point, or otherwise wait a bit and try again.
+   */
+  manager_kms->read_edid_tries = 0;
+  if (has_pending_edid_blob (manager_kms))
+    {
+      manager_kms->handle_hotplug_timeout =
+        g_timeout_add (EDID_RETRY_TIMEOUT_MS,
+                       handle_hotplug_event_timeout,
+                       manager);
+      return;
+    }
+
+  handle_hotplug_event (manager);
 }
 
 static gboolean
