@@ -24,9 +24,9 @@ const XdndHandler = new Lang.Class({
         if (!Meta.is_wayland_compositor())
             global.init_xdnd();
 
-        global.connect('xdnd-enter', Lang.bind(this, this._onEnter));
-        global.connect('xdnd-position-changed', Lang.bind(this, this._onPositionChanged));
-        global.connect('xdnd-leave', Lang.bind(this, this._onLeave));
+        global.connect('dnd-enter', Lang.bind(this, this._onEnter));
+        global.connect('dnd-position-change', Lang.bind(this, this._onPositionChanged));
+        global.connect('dnd-leave', Lang.bind(this, this._onLeave));
 
         this._windowGroupVisibilityHandlerId = 0;
     },

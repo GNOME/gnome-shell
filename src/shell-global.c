@@ -360,7 +360,7 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   /* Emitted from gnome-shell-plugin.c during event handling */
   shell_global_signals[XDND_POSITION_CHANGED] =
-      g_signal_new ("xdnd-position-changed",
+      g_signal_new ("dnd-position-change",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
@@ -369,7 +369,7 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   /* Emitted from gnome-shell-plugin.c during event handling */
   shell_global_signals[XDND_LEAVE] =
-      g_signal_new ("xdnd-leave",
+      g_signal_new ("dnd-leave",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
@@ -378,7 +378,7 @@ shell_global_class_init (ShellGlobalClass *klass)
 
   /* Emitted from gnome-shell-plugin.c during event handling */
   shell_global_signals[XDND_ENTER] =
-      g_signal_new ("xdnd-enter",
+      g_signal_new ("dnd-enter",
                     G_TYPE_FROM_CLASS (klass),
                     G_SIGNAL_RUN_LAST,
                     0,
@@ -1962,7 +1962,7 @@ gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
 
       /* Store the timestamp of the xdnd position event */
       global->xdnd_timestamp = xev->xclient.data.l[3];
-      g_signal_emit_by_name (G_OBJECT (global), "xdnd-position-changed",
+      g_signal_emit_by_name (G_OBJECT (global), "dnd-position-change",
                             (int)(xev->xclient.data.l[2] >> 16), (int)(xev->xclient.data.l[2] & 0xFFFF));
       global->xdnd_timestamp = 0;
 
@@ -1970,13 +1970,13 @@ gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
     }
    else if (xev->xany.type == ClientMessage && xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndLeave"))
     {
-      g_signal_emit_by_name (G_OBJECT (global), "xdnd-leave");
+      g_signal_emit_by_name (G_OBJECT (global), "dnd-leave");
 
       return TRUE;
     }
    else if (xev->xany.type == ClientMessage && xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndEnter"))
     {
-      g_signal_emit_by_name (G_OBJECT (global), "xdnd-enter");
+      g_signal_emit_by_name (G_OBJECT (global), "dnd-enter");
 
       return TRUE;
     }
