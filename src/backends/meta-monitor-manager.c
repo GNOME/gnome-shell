@@ -1253,6 +1253,12 @@ find_monitor (MetaMonitorManager *monitor_manager,
 }
 
 MetaMonitor *
+meta_monitor_manager_get_primary_monitor (MetaMonitorManager *manager)
+{
+  return find_monitor (manager, meta_monitor_is_primary);
+}
+
+MetaMonitor *
 meta_monitor_manager_get_laptop_panel (MetaMonitorManager *manager)
 {
   return find_monitor (manager, meta_monitor_is_laptop_panel);
