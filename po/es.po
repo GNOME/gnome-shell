@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-10 13:40+0000\n"
-"PO-Revision-Date: 2016-11-10 16:34+0100\n"
+"POT-Creation-Date: 2016-12-15 15:57+0000\n"
+"PO-Revision-Date: 2016-12-20 16:50+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -489,7 +489,7 @@ msgstr "%d de %B de %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login
 #. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:85
+#: js/portalHelper/main.js:87
 msgid "Web Authentication Redirect"
 msgstr "Redirección para autenticación web"
 
@@ -535,12 +535,12 @@ msgstr "Añadir a los favoritos"
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
-#: js/ui/appFavorites.js:134
+#: js/ui/appFavorites.js:137
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Se ha añadido %s a sus favoritos."
 
-#: js/ui/appFavorites.js:168
+#: js/ui/appFavorites.js:171
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Se ha quitado %s de sus favoritos."
@@ -1106,17 +1106,14 @@ msgid "New shortcut…"
 msgstr "Atajo nuevo…"
 
 #: js/ui/padOsd.js:86
-#| msgid "Applications"
 msgid "Application defined"
 msgstr "Aplicación definida"
 
 #: js/ui/padOsd.js:87
-#| msgid "Show the onscreen keyboard"
 msgid "Show on-screen help"
 msgstr "Mostrar la ayuda en pantalla"
 
 #: js/ui/padOsd.js:88
-#| msgid "Switch User"
 msgid "Switch monitor"
 msgstr "Cambiar monitor"
 
@@ -1183,6 +1180,11 @@ msgstr "Introducir un comando"
 #: js/ui/runDialog.js:111 js/ui/windowMenu.js:162
 msgid "Close"
 msgstr "Cerrar"
+
+#: js/ui/runDialog.js:277
+#| msgid "Encryption is not available"
+msgid "Restart is not available on Wayland"
+msgstr "Reiniciar si no está disponible en Wayland"
 
 #: js/ui/runDialog.js:282
 msgid "Restarting…"
@@ -1565,7 +1567,6 @@ msgstr "VPN apagada"
 
 #: js/ui/status/network.js:1618
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conexión cableada"
@@ -1573,7 +1574,6 @@ msgstr[1] "%s conexiones cableadas"
 
 #: js/ui/status/network.js:1622
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conexión inalámbrica"
@@ -1581,7 +1581,6 @@ msgstr[1] "%s conexiones inalámbricas"
 
 #: js/ui/status/network.js:1626
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s conexión por módem"
@@ -1961,9 +1960,6 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 
 #~ msgid "Status is set to offline"
 #~ msgstr "El estado está establecido a «desconectado»"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "El cifrado no está disponible"
 
 #~ msgid "Certificate is invalid"
 #~ msgstr "El certificado no es válido"
