@@ -71,6 +71,8 @@ gboolean meta_logical_monitor_is_primary (MetaLogicalMonitor *logical_monitor);
 
 void meta_logical_monitor_make_primary (MetaLogicalMonitor *logical_monitor);
 
+int meta_logical_monitor_get_scale (MetaLogicalMonitor *logical_monitor);
+
 GList * meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor);
 
 #endif /* META_LOGICAL_MONITOR_H */

@@ -114,6 +114,12 @@ meta_logical_monitor_make_primary (MetaLogicalMonitor *logical_monitor)
   logical_monitor->is_primary = TRUE;
 }
 
+int
+meta_logical_monitor_get_scale (MetaLogicalMonitor *logical_monitor)
+{
+  return logical_monitor->scale;
+}
+
 GList *
 meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor)
 {
