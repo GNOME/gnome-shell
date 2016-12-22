@@ -202,6 +202,15 @@ meta_monitor_get_physical_dimensions (MetaMonitor *monitor,
   *height_mm = output->height_mm;
 }
 
+CoglSubpixelOrder
+meta_monitor_get_subpixel_order (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+  return output->subpixel_order;
+}
+
 const char *
 meta_monitor_get_product (MetaMonitor *monitor)
 {
@@ -347,6 +356,9 @@ add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
       if (output->tile_info.group_id != monitor_tiled->tile_group_id)
         continue;
 
+      g_warn_if_fail (output->subpixel_order ==
+                      monitor_tiled->main_output->subpixel_order);
+
       monitor_priv->outputs = g_list_append (monitor_priv->outputs, output);
     }
 }
@@ -467,8 +479,8 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
   monitor_tiled->tile_group_id = output->tile_info.group_id;
   monitor_priv->winsys_id = output->winsys_id;
 
-  add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
   monitor_tiled->main_output = output;
+  add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
 
   meta_monitor_manager_tiled_monitor_added (monitor_manager,
                                             META_MONITOR (monitor_tiled));

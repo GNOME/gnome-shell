@@ -65,6 +65,54 @@ pick_main_output (MetaLogicalMonitor *logical_monitor)
   return meta_monitor_get_main_output (monitor);
 }
 
+static enum wl_output_subpixel
+cogl_subpixel_order_to_wl_output_subpixel (CoglSubpixelOrder subpixel_order)
+{
+  switch (subpixel_order)
+    {
+    case COGL_SUBPIXEL_ORDER_UNKNOWN:
+      return WL_OUTPUT_SUBPIXEL_UNKNOWN;
+    case COGL_SUBPIXEL_ORDER_NONE:
+      return WL_OUTPUT_SUBPIXEL_NONE;
+    case COGL_SUBPIXEL_ORDER_HORIZONTAL_RGB:
+      return WL_OUTPUT_SUBPIXEL_HORIZONTAL_RGB;
+    case COGL_SUBPIXEL_ORDER_HORIZONTAL_BGR:
+      return WL_OUTPUT_SUBPIXEL_HORIZONTAL_BGR;
+    case COGL_SUBPIXEL_ORDER_VERTICAL_RGB:
+      return WL_OUTPUT_SUBPIXEL_VERTICAL_RGB;
+    case COGL_SUBPIXEL_ORDER_VERTICAL_BGR:
+      return WL_OUTPUT_SUBPIXEL_VERTICAL_BGR;
+    }
+
+  g_assert_not_reached ();
+}
+
+static enum wl_output_subpixel
+calculate_suitable_subpixel_order (MetaLogicalMonitor *logical_monitor)
+{
+  GList *monitors;
+  GList *l;
+  MetaMonitor *first_monitor;
+  CoglSubpixelOrder subpixel_order;
+
+  monitors = meta_logical_monitor_get_monitors (logical_monitor);
+  first_monitor = monitors->data;
+  subpixel_order = meta_monitor_get_subpixel_order (first_monitor);
+
+  for (l = monitors->next; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (meta_monitor_get_subpixel_order (monitor) != subpixel_order)
+        {
+          subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+          break;
+        }
+    }
+
+  return cogl_subpixel_order_to_wl_output_subpixel (subpixel_order);
+}
+
 static void
 send_output_events (struct wl_resource *resource,
                     MetaWaylandOutput  *wayland_output,
@@ -94,6 +142,10 @@ send_output_events (struct wl_resource *resource,
       old_logical_monitor->rect.x != logical_monitor->rect.x ||
       old_logical_monitor->rect.y != logical_monitor->rect.y)
     {
+      enum wl_output_subpixel subpixel_order;
+
+      subpixel_order = calculate_suitable_subpixel_order (logical_monitor);
+
       /*
        * TODO: When we support wl_surface.set_buffer_transform, pass along
        * the correct transform here instead of always pretending its 'normal'.
@@ -105,7 +157,7 @@ send_output_events (struct wl_resource *resource,
                                logical_monitor->rect.y,
                                output->width_mm,
                                output->height_mm,
-                               output->subpixel_order,
+                               subpixel_order,
                                output->vendor,
                                output->product,
                                WL_OUTPUT_TRANSFORM_NORMAL);
