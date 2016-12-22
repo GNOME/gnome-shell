@@ -107,7 +107,11 @@ void meta_monitor_get_physical_dimensions (MetaMonitor *monitor,
 
 CoglSubpixelOrder meta_monitor_get_subpixel_order (MetaMonitor *monitor);
 
+const char * meta_monitor_get_vendor (MetaMonitor *monitor);
+
 const char * meta_monitor_get_product (MetaMonitor *monitor);
+
+const char * meta_monitor_get_serial (MetaMonitor *monitor);
 
 uint32_t meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled);
 

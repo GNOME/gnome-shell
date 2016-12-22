@@ -212,12 +212,30 @@ meta_monitor_get_subpixel_order (MetaMonitor *monitor)
 }
 
 const char *
+meta_monitor_get_vendor (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+  return output->vendor;
+}
+
+const char *
 meta_monitor_get_product (MetaMonitor *monitor)
 {
   MetaOutput *output;
 
   output = meta_monitor_get_main_output (monitor);
   return output->product;
+}
+
+const char *
+meta_monitor_get_serial (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+  return output->serial;
 }
 
 static void
