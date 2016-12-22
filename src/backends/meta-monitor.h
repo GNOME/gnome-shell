@@ -120,6 +120,10 @@ MetaMonitorMode * meta_monitor_get_mode_from_spec (MetaMonitor         *monitor,
 
 MetaMonitorMode * meta_monitor_get_preferred_mode (MetaMonitor *monitor);
 
+MetaMonitorMode * meta_monitor_get_current_mode (MetaMonitor *monitor);
+
+void meta_monitor_derive_current_mode (MetaMonitor *monitor);
+
 GList * meta_monitor_get_modes (MetaMonitor *monitor);
 
 MetaMonitorModeSpec * meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode);

@@ -38,6 +38,7 @@ typedef struct _MetaMonitorPrivate
   GList *modes;
 
   MetaMonitorMode *preferred_mode;
+  MetaMonitorMode *current_mode;
 
   MetaMonitorSpec *spec;
 
@@ -293,6 +294,8 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
 
       if (crtc_mode == output->preferred_mode)
         monitor_priv->preferred_mode = mode;
+      if (output->crtc && crtc_mode == output->crtc->current_mode)
+        monitor_priv->current_mode = mode;
 
       monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
     }
@@ -444,6 +447,7 @@ meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
   MetaMonitorMode *mode;
+  gboolean preferred_mode_is_current;
   GList *l;
   int i;
 
@@ -453,6 +457,7 @@ meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
                                            &mode->spec.height);
   mode->crtc_modes = g_new (MetaMonitorCrtcMode,
                             g_list_length (monitor_priv->outputs));
+  preferred_mode_is_current = TRUE;
   for (l = monitor_priv->outputs, i = 0; l; l = l->next, i++)
     {
       MetaOutput *output = l->data;
@@ -474,10 +479,17 @@ meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
                        preferred_crtc_mode->refresh_rate));
 
       mode->spec.refresh_rate = preferred_crtc_mode->refresh_rate;
+
+      if (!output->crtc ||
+          mode->crtc_modes[i].crtc_mode != output->crtc->current_mode)
+        preferred_mode_is_current = FALSE;
     }
 
   monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
   monitor_priv->preferred_mode = mode;
+
+  if (preferred_mode_is_current)
+    monitor_priv->current_mode = mode;
 
   /* TODO: Add single tile modes */
 }
@@ -604,6 +616,56 @@ meta_monitor_get_preferred_mode (MetaMonitor *monitor)
   MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
 
   return priv->preferred_mode;
+}
+
+MetaMonitorMode *
+meta_monitor_get_current_mode (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  return priv->current_mode;
+}
+
+static gboolean
+is_monitor_mode_assigned (MetaMonitor     *monitor,
+                          MetaMonitorMode *mode)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+  GList *l;
+  int i;
+
+  for (l = priv->outputs, i = 0; l; l = l->next, i++)
+    {
+      MetaOutput *output = l->data;
+      MetaMonitorCrtcMode *monitor_crtc_mode = &mode->crtc_modes[i];
+
+      if (!output->crtc ||
+          output->crtc->current_mode != monitor_crtc_mode->crtc_mode)
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
+void
+meta_monitor_derive_current_mode (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+  MetaMonitorMode *current_mode = NULL;
+  GList *l;
+
+  for (l = priv->modes; l; l = l->next)
+    {
+      MetaMonitorMode *mode = l->data;
+
+      if (is_monitor_mode_assigned (monitor, mode))
+        {
+          current_mode = mode;
+          break;
+        }
+    }
+
+  priv->current_mode = current_mode;
 }
 
 GList *

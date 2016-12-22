@@ -1533,6 +1533,19 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
   meta_monitor_manager_free_crtc_array (old_crtcs, n_old_crtcs);
 }
 
+static void
+meta_monitor_manager_update_monitor_modes_derived (MetaMonitorManager *manager)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      meta_monitor_derive_current_mode (monitor);
+    }
+}
+
 void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
@@ -1545,6 +1558,7 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
   old_logical_monitors = manager->logical_monitors;
 
   make_logical_config (manager);
+  meta_monitor_manager_update_monitor_modes_derived (manager);
 
   /* Tell the backend about that the monitors changed before emitting the
    * signal, so that the backend can prepare itself before all the signal
