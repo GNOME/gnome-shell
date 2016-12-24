@@ -24,9 +24,10 @@ const XdndHandler = new Lang.Class({
         if (!Meta.is_wayland_compositor())
             global.init_xdnd();
 
-        global.connect('dnd-enter', Lang.bind(this, this._onEnter));
-        global.connect('dnd-position-change', Lang.bind(this, this._onPositionChanged));
-        global.connect('dnd-leave', Lang.bind(this, this._onLeave));
+        var dnd = Meta.get_backend().get_dnd();
+        dnd.connect('dnd-enter', Lang.bind(this, this._onEnter));
+        dnd.connect('dnd-position-change', Lang.bind(this, this._onPositionChanged));
+        dnd.connect('dnd-leave', Lang.bind(this, this._onLeave));
 
         this._windowGroupVisibilityHandlerId = 0;
     },

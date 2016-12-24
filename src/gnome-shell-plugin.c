@@ -369,9 +369,9 @@ static gboolean
 gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                   XEvent     *xev)
 {
+#ifdef GLX_INTEL_swap_event
   GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
 
-#ifdef GLX_INTEL_swap_event
   if (shell_plugin->have_swap_event &&
       xev->type == (shell_plugin->glx_event_base + GLX_BufferSwapComplete))
     {
@@ -395,15 +395,6 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
         }
     }
 #endif
-
-  if (meta_is_wayland_compositor ())
-    return FALSE;
-
-  /*
-   * Pass the event to shell-global for XDND
-   */
-  if (_shell_global_check_xdnd_event (shell_plugin->global, xev))
-    return TRUE;
 
   return FALSE;
 }
