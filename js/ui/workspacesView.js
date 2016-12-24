@@ -435,28 +435,14 @@ var WorkspacesDisplay = new Lang.Class({
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
-        panAction.connect('pan', Lang.bind(this, this._onPan));
-        panAction.connect('gesture-begin', Lang.bind(this, function() {
-            if (this._workspacesOnlyOnPrimary) {
-                let event = Clutter.get_current_event();
-                if (this._getMonitorIndexForEvent(event) != this._primaryIndex)
-                    return false;
-            }
-
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].startSwipeScroll();
-            return true;
+        panAction.connect('pan', Lang.bind(this, function (action) {
+            let [dist, dx, dy] = action.get_motion_delta(0);
+            this._onPan(dy);
         }));
-        panAction.connect('gesture-cancel', Lang.bind(this, function() {
-            clickAction.release();
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].endSwipeScroll();
-        }));
-        panAction.connect('gesture-end', Lang.bind(this, function() {
-            clickAction.release();
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].endSwipeScroll();
-        }));
+        //panAction.connect('pan', Lang.bind(this, this._onPan));
+        panAction.connect('gesture-begin', Lang.bind(this, this._onPanStart));
+        panAction.connect('gesture-cancel', Lang.bind(this, this._onPanCancel));
+        panAction.connect('gesture-end', Lang.bind(this, this._onPanEnd));
         Main.overview.addAction(panAction);
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
@@ -480,11 +466,34 @@ var WorkspacesDisplay = new Lang.Class({
         this._fullGeometry = null;
     },
 
-    _onPan: function(action) {
-        let [dist, dx, dy] = action.get_motion_delta(0);
+    _onPan: function(dy) {
         let adjustment = this._scrollAdjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
+    },
+
+    _onPanStart: function() {
+        if (this._workspacesOnlyOnPrimary) {
+            let event = Clutter.get_current_event();
+            if (this._getMonitorIndexForEvent(event) != this._primaryIndex)
+                return false;
+        }
+
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].startSwipeScroll();
+        return true;
+    },
+
+    _onPanCancel: function() {
+        //clickAction.release();
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].endSwipeScroll();
+    },
+
+    _onPanEnd: function() {
+        //clickAction.release();
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].endSwipeScroll();
     },
 
     navigateFocus: function(from, direction) {

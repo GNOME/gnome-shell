@@ -513,17 +513,25 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
         if (event.get_touchpad_gesture_finger_count() != 4)
             return Clutter.EVENT_PROPAGATE;
 
-        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
+        let workspacesDisplay = Main.overview.viewSelector._workspacesDisplay;
+
+        if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.BEGIN) {
+            workspacesDisplay._onPanStart();
+        } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
             let [dx, dy] = event.get_gesture_motion_delta(event);
 
             this._dx += dx;
             this._dy += dy;
+
+            workspacesDisplay._onPan(dy);
+        } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL) {
+            workspacesDisplay._onPanCancel();
         } else {
-            if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.END)
-                this._checkActivated();
+            this._checkActivated();
 
             this._dx = 0;
             this._dy = 0;
+            workspacesDisplay._onPanEnd();
         }
 
         return Clutter.EVENT_STOP;
