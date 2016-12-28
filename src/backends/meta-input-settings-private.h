@@ -135,10 +135,8 @@ gboolean                   meta_input_settings_is_pad_button_grabbed     (MetaIn
                                                                           ClutterInputDevice *pad,
                                                                           guint               button);
 
-gboolean                   meta_input_settings_handle_pad_button         (MetaInputSettings  *input_settings,
-                                                                          ClutterInputDevice *pad,
-                                                                          gboolean            is_press,
-                                                                          guint               button);
+gboolean                   meta_input_settings_handle_pad_button         (MetaInputSettings           *input_settings,
+                                                                          const ClutterPadButtonEvent *event);
 gchar *                    meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_settings,
                                                                             ClutterInputDevice *pad,
                                                                             guint               button);

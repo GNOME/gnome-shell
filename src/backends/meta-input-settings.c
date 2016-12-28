@@ -1671,17 +1671,21 @@ meta_input_settings_is_pad_button_grabbed (MetaInputSettings  *input_settings,
 }
 
 gboolean
-meta_input_settings_handle_pad_button (MetaInputSettings  *input_settings,
-                                       ClutterInputDevice *pad,
-                                       gboolean            is_press,
-                                       guint               button)
+meta_input_settings_handle_pad_button (MetaInputSettings           *input_settings,
+                                       const ClutterPadButtonEvent *event)
 {
   GDesktopPadButtonAction action;
+  ClutterInputDevice *pad;
+  gint button, group, mode;
+  gboolean is_press;
 
   g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings), FALSE);
-  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (pad), FALSE);
-  g_return_val_if_fail (clutter_input_device_get_device_type (pad) ==
-                        CLUTTER_PAD_DEVICE, FALSE);
+  g_return_val_if_fail (event->type == CLUTTER_PAD_BUTTON_PRESS ||
+                        event->type == CLUTTER_PAD_BUTTON_RELEASE, FALSE);
+
+  pad = clutter_event_get_source_device ((ClutterEvent *) event);
+  button = event->button;
+  is_press = event->type == CLUTTER_PAD_BUTTON_PRESS;
 
   action = meta_input_settings_get_pad_button_action (input_settings, pad, button);
 
