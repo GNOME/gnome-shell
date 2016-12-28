@@ -1559,7 +1559,7 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
   MetaInputSettingsPrivate *priv;
   DeviceMappingInfo *info;
   MetaOutput *output;
-  const gchar *edid[4] = { 0 };
+  const gchar *edid[4] = { 0 }, *pretty_name = NULL;
 
   g_return_if_fail (META_IS_INPUT_SETTINGS (input_settings));
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
@@ -1571,10 +1571,14 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
   g_return_if_fail (info != NULL);
 
 #ifdef HAVE_LIBWACOM
-  /* Output rotation only makes sense on external tablets */
-  if (info->wacom_device &&
-      (libwacom_get_integration_flags (info->wacom_device) != WACOM_DEVICE_INTEGRATED_NONE))
-    return;
+  if (info->wacom_device)
+    {
+      /* Output rotation only makes sense on external tablets */
+      if (libwacom_get_integration_flags (info->wacom_device) != WACOM_DEVICE_INTEGRATED_NONE)
+        return;
+
+      pretty_name = libwacom_get_name (info->wacom_device);
+    }
 #endif
 
   output = meta_input_settings_find_output (input_settings,
@@ -1586,6 +1590,9 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
   edid[1] = output ? output->product : "";
   edid[2] = output ? output->serial : "";
   g_settings_set_strv (info->settings, "display", edid);
+
+  meta_display_show_tablet_mapping_notification (meta_get_display (),
+                                                 device, pretty_name);
 }
 
 static void
