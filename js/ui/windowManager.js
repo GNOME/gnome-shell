@@ -33,6 +33,25 @@ const UNDIM_TIME = 0.250;
 const DISPLAY_REVERT_TIMEOUT = 20; // in seconds - keep in sync with mutter
 const ONE_SECOND = 1000; // in ms
 
+const GSD_WACOM_BUS_NAME = 'org.gnome.SettingsDaemon.Wacom';
+const GSD_WACOM_OBJECT_PATH = '/org/gnome/SettingsDaemon/Wacom';
+
+const GsdWacomIface = '<node name="/org/gnome/SettingsDaemon/Wacom"> \
+<interface name="org.gnome.SettingsDaemon.Wacom"> \
+  <method name="SetGroupModeLED"> \
+    <arg name="device_path" direction="in" type="s"/> \
+    <arg name="group" direction="in" type="u"/> \
+    <arg name="mode" direction="in" type="u"/> \
+  </method> \
+  <method name="SetOLEDLabels"> \
+    <arg name="device_path" direction="in" type="s"/> \
+    <arg name="labels" direction="in" type="as"/> \
+  </method> \
+  </interface> \
+</node>';
+
+const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
+
 const DisplayChangeDialog = new Lang.Class({
     Name: 'DisplayChangeDialog',
     Extends: ModalDialog.ModalDialog,
@@ -923,6 +942,30 @@ const WindowManager = new Lang.Class({
         global.display.connect('show-osd', Lang.bind(this, function (display, monitorIndex, iconName, label) {
             let icon = Gio.Icon.new_for_string(iconName);
             Main.osdWindowManager.show(monitorIndex, icon, label, null);
+        }));
+
+        this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session, GSD_WACOM_BUS_NAME,
+                                                GSD_WACOM_OBJECT_PATH,
+                                                Lang.bind(this, function(proxy, error) {
+                                                    if (error) {
+                                                        log(error.message);
+                                                        return;
+                                                    }
+                                                }));
+
+        global.display.connect('pad-mode-switch', Lang.bind(this, function (display, pad, group, mode) {
+            let labels = [];
+
+            //FIXME: Fix num buttons
+            for (let i = 0; i < 50; i++) {
+                let str = display.get_pad_action_label(pad, Meta.PadActionType.BUTTON, i);
+                labels.push(str ? str: '');
+            }
+
+            if (this._gsdWacomProxy) {
+                this._gsdWacomProxy.SetOLEDLabelsRemote(pad.get_device_node(), labels);
+                this._gsdWacomProxy.SetGroupModeLEDRemote(pad.get_device_node(), group, mode);
+            }
         }));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
