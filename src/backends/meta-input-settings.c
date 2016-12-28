@@ -1715,11 +1715,22 @@ meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_setti
                                                  guint               button)
 {
   GDesktopPadButtonAction action;
+  gint group;
 
   g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings), NULL);
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (pad), NULL);
   g_return_val_if_fail (clutter_input_device_get_device_type (pad) ==
                         CLUTTER_PAD_DEVICE, NULL);
+
+  group = clutter_input_device_get_mode_switch_button_group (pad, button);
+
+  if (group >= 0)
+    {
+      /* TRANSLATORS: This string refers to a button that switches between
+       * different modes.
+       */
+      return g_strdup_printf (_("Mode Switch (Group %d)"), group);
+    }
 
   action = meta_input_settings_get_pad_button_action (input_settings, pad, button);
 
