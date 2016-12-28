@@ -2175,6 +2175,25 @@ clutter_input_device_get_n_mode_groups (ClutterInputDevice *device)
   return device->n_mode_groups;
 }
 
+gint
+clutter_input_device_get_group_n_modes (ClutterInputDevice *device,
+                                        gint                group)
+{
+  ClutterInputDeviceClass *device_class;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), 0);
+  g_return_val_if_fail (clutter_input_device_get_device_type (device) ==
+                        CLUTTER_PAD_DEVICE, 0);
+  g_return_val_if_fail (group >= 0, 0);
+
+  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
+
+  if (device_class->get_group_n_modes)
+    return device_class->get_group_n_modes (device, group);
+
+  return 0;
+}
+
 gboolean
 clutter_input_device_is_mode_switch_button (ClutterInputDevice *device,
                                             guint               group,
