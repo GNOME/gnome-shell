@@ -119,52 +119,6 @@ meta_wayland_tablet_pad_group_lookup_resource (MetaWaylandTabletPadGroup *group,
   return resource;
 }
 
-static guint
-tablet_pad_group_get_current_mode (MetaWaylandTabletPadGroup *group)
-{
-  MetaBackend *backend = meta_get_backend ();
-
-#ifdef HAVE_NATIVE_BACKEND
-  if (META_IS_BACKEND_NATIVE (backend))
-    {
-      struct libinput_device *libinput_device;
-      struct libinput_tablet_pad_mode_group *mode_group;
-      guint n_group;
-
-      libinput_device = clutter_evdev_input_device_get_libinput_device (group->pad->device);
-      n_group = g_list_index (group->pad->groups, group);
-      mode_group = libinput_device_tablet_pad_get_mode_group (libinput_device, n_group);
-
-      return libinput_tablet_pad_mode_group_get_mode (mode_group);
-    }
-  else
-#endif
-    return 0;
-}
-
-static guint
-tablet_pad_group_get_n_modes (MetaWaylandTabletPadGroup *group)
-{
-  MetaBackend *backend = meta_get_backend ();
-  guint n_modes = 1;
-
-#ifdef HAVE_NATIVE_BACKEND
-  if (META_IS_BACKEND_NATIVE (backend))
-    {
-      struct libinput_device *libinput_device;
-      struct libinput_tablet_pad_mode_group *mode_group;
-      guint n_group;
-
-      libinput_device = clutter_evdev_input_device_get_libinput_device (group->pad->device);
-      n_group = g_list_index (group->pad->groups, group);
-      mode_group = libinput_device_tablet_pad_get_mode_group (libinput_device, n_group);
-      n_modes = libinput_tablet_pad_mode_group_get_num_modes (mode_group);
-    }
-#endif
-
-  return n_modes;
-}
-
 gboolean
 meta_wayland_tablet_pad_group_has_button (MetaWaylandTabletPadGroup *group,
                                           guint                      button)
@@ -221,7 +175,7 @@ meta_wayland_tablet_pad_group_notify (MetaWaylandTabletPadGroup *group,
 {
   struct wl_client *client = wl_resource_get_client (resource);
   struct wl_array buttons;
-  guint n_modes;
+  guint n_group, n_modes;
   GList *l;
 
   wl_array_init (&buttons);
@@ -255,7 +209,10 @@ meta_wayland_tablet_pad_group_notify (MetaWaylandTabletPadGroup *group,
       zwp_tablet_pad_group_v2_send_strip (resource, strip_resource);
     }
 
-  n_modes = tablet_pad_group_get_n_modes (group);
+  n_group = g_list_index (group->pad->groups, group);
+  n_modes = clutter_input_device_get_group_n_modes (group->pad->device,
+                                                    n_group);
+
   zwp_tablet_pad_group_v2_send_modes (resource, n_modes);
   zwp_tablet_pad_group_v2_send_done (resource);
 }
@@ -269,7 +226,7 @@ meta_wayland_tablet_pad_group_update (MetaWaylandTabletPadGroup *group,
     case CLUTTER_PAD_BUTTON_PRESS:
     case CLUTTER_PAD_BUTTON_RELEASE:
       if (meta_wayland_tablet_pad_group_is_mode_switch_button (group, event->pad_button.button))
-        group->current_mode = tablet_pad_group_get_current_mode (group);
+        group->current_mode = event->pad_button.mode;
       break;
     default:
       break;
@@ -437,22 +394,10 @@ gboolean
 meta_wayland_tablet_pad_group_is_mode_switch_button (MetaWaylandTabletPadGroup *group,
                                                      guint                      button)
 {
-  MetaBackend *backend = meta_get_backend ();
+  gint n_group = g_list_index (group->pad->groups, group);
 
-#ifdef HAVE_NATIVE_BACKEND
-  if (META_IS_BACKEND_NATIVE (backend))
-    {
-      struct libinput_device *libinput_device;
-      struct libinput_tablet_pad_mode_group *mode_group;
-      guint n_group;
+  g_assert (n_group >= 0);
 
-      libinput_device = clutter_evdev_input_device_get_libinput_device (group->pad->device);
-      n_group = g_list_index (group->pad->groups, group);
-      mode_group = libinput_device_tablet_pad_get_mode_group (libinput_device, n_group);
-
-      return libinput_tablet_pad_mode_group_button_is_toggle (mode_group, button) != 0;
-    }
-  else
-#endif
-    return FALSE;
+  return clutter_input_device_is_mode_switch_button (group->pad->device,
+                                                     n_group, button);
 }
