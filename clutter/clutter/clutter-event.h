@@ -508,6 +508,7 @@ struct _ClutterPadButtonEvent
   guint32 button;
   guint32 group;
   ClutterInputDevice *device;
+  guint32 mode;
 };
 
 struct _ClutterPadStripEvent
@@ -523,6 +524,7 @@ struct _ClutterPadStripEvent
   guint32 strip_number;
   guint32 group;
   gdouble value;
+  guint32 mode;
 };
 
 struct _ClutterPadRingEvent
@@ -538,6 +540,7 @@ struct _ClutterPadRingEvent
   guint32 ring_number;
   guint32 group;
   gdouble angle;
+  guint32 mode;
 };
 
 /**
