@@ -1692,7 +1692,27 @@ meta_input_settings_handle_pad_button (MetaInputSettings           *input_settin
 
   pad = clutter_event_get_source_device ((ClutterEvent *) event);
   button = event->button;
+  mode = event->mode;
+  group = clutter_input_device_get_mode_switch_button_group (pad, button);
   is_press = event->type == CLUTTER_PAD_BUTTON_PRESS;
+
+  if (is_press && group >= 0)
+    {
+      guint n_modes = clutter_input_device_get_group_n_modes (pad, group);
+      const gchar *pretty_name = NULL;
+#ifdef HAVE_LIBWACOM
+      MetaInputSettingsPrivate *priv;
+      DeviceMappingInfo *info;
+
+      priv = meta_input_settings_get_instance_private (input_settings);
+      info = g_hash_table_lookup (priv->mappable_devices, pad);
+
+      if (info && info->wacom_device)
+        pretty_name = libwacom_get_name (info->wacom_device);
+#endif
+      meta_display_notify_pad_group_switch (meta_get_display (), pad,
+                                            pretty_name, group, mode, n_modes);
+    }
 
   action = meta_input_settings_get_pad_button_action (input_settings, pad, button);
 

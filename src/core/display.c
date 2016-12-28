@@ -3233,3 +3233,28 @@ meta_display_show_tablet_mapping_notification (MetaDisplay        *display,
   meta_display_show_osd (display, lookup_tablet_monitor (display, pad),
                          "input-tablet-symbolic", pretty_name);
 }
+
+void
+meta_display_notify_pad_group_switch (MetaDisplay        *display,
+                                      ClutterInputDevice *pad,
+                                      const gchar        *pretty_name,
+                                      guint               n_group,
+                                      guint               n_mode,
+                                      guint               n_modes)
+{
+  GString *message;
+  guint i;
+
+  if (!pretty_name)
+    pretty_name = clutter_input_device_get_device_name (pad);
+
+  message = g_string_new (pretty_name);
+  g_string_append_c (message, '\n');
+  for (i = 0; i < n_modes; i++)
+    g_string_append (message, (i == n_mode) ? "⚫" : "⚪");
+
+  meta_display_show_osd (display, lookup_tablet_monitor (display, pad),
+                         "input-tablet-symbolic", message->str);
+
+  g_string_free (message, TRUE);
+}
