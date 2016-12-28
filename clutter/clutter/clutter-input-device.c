@@ -2175,6 +2175,44 @@ clutter_input_device_get_n_mode_groups (ClutterInputDevice *device)
   return device->n_mode_groups;
 }
 
+gboolean
+clutter_input_device_is_mode_switch_button (ClutterInputDevice *device,
+                                            guint               group,
+                                            guint               button)
+{
+  ClutterInputDeviceClass *device_class;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+  g_return_val_if_fail (clutter_input_device_get_device_type (device) ==
+                        CLUTTER_PAD_DEVICE, FALSE);
+
+  device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
+
+  if (device_class->is_mode_switch_button)
+    return device_class->is_mode_switch_button (device, group, button);
+
+  return FALSE;
+}
+
+gint
+clutter_input_device_get_mode_switch_button_group (ClutterInputDevice *device,
+                                                   guint               button)
+{
+  gint group;
+
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), -1);
+  g_return_val_if_fail (clutter_input_device_get_device_type (device) ==
+                        CLUTTER_PAD_DEVICE, -1);
+
+  for (group = 0; group < device->n_mode_groups; group++)
+    {
+      if (clutter_input_device_is_mode_switch_button (device, group, button))
+        return group;
+    }
+
+  return -1;
+}
+
 const gchar *
 clutter_input_device_get_device_node (ClutterInputDevice *device)
 {

@@ -148,6 +148,14 @@ CLUTTER_AVAILABLE_IN_ALL
 gint                    clutter_input_device_get_n_mode_groups  (ClutterInputDevice *device);
 
 CLUTTER_AVAILABLE_IN_ALL
+gboolean                clutter_input_device_is_mode_switch_button (ClutterInputDevice *device,
+                                                                    guint               group,
+								    guint               button);
+CLUTTER_AVAILABLE_IN_ALL
+gint                    clutter_input_device_get_mode_switch_button_group (ClutterInputDevice *device,
+                                                                           guint               button);
+
+CLUTTER_AVAILABLE_IN_ALL
 const gchar *           clutter_input_device_get_device_node    (ClutterInputDevice *device);
 
 CLUTTER_AVAILABLE_IN_ALL
