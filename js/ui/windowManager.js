@@ -920,6 +920,10 @@ const WindowManager = new Lang.Class({
 
         global.display.connect('show-resize-popup', Lang.bind(this, this._showResizePopup));
         global.display.connect('show-pad-osd', Lang.bind(this, this._showPadOsd));
+        global.display.connect('show-osd', Lang.bind(this, function (display, monitorIndex, iconName, label) {
+            let icon = Gio.Icon.new_for_string(iconName);
+            Main.osdWindowManager.show(monitorIndex, icon, label, null);
+        }));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
