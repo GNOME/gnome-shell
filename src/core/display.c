@@ -131,6 +131,7 @@ enum
   SHOW_RESIZE_POPUP,
   GL_VIDEO_MEMORY_PURGED,
   SHOW_PAD_OSD,
+  SHOW_OSD,
   LAST_SIGNAL
 };
 
@@ -376,6 +377,13 @@ meta_display_class_init (MetaDisplayClass *klass)
                   0, NULL, NULL, NULL,
                   CLUTTER_TYPE_ACTOR, 5, CLUTTER_TYPE_INPUT_DEVICE,
                   G_TYPE_SETTINGS, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_INT);
+
+  display_signals[SHOW_OSD] =
+    g_signal_new ("show-osd",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 3, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);
 
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
@@ -3180,4 +3188,48 @@ meta_display_get_pad_action_label (MetaDisplay        *display,
 #endif
 
   return NULL;
+}
+
+static void
+meta_display_show_osd (MetaDisplay *display,
+                       gint         monitor_idx,
+                       const gchar *icon_name,
+                       const gchar *message)
+{
+  g_signal_emit (display, display_signals[SHOW_OSD], 0,
+                 monitor_idx, icon_name, message);
+}
+
+static gint
+lookup_tablet_monitor (MetaDisplay        *display,
+                       ClutterInputDevice *device)
+{
+  MetaInputSettings *input_settings;
+  MetaLogicalMonitor *monitor;
+  gint monitor_idx = -1;
+
+  input_settings = meta_backend_get_input_settings (meta_get_backend ());
+  if (!input_settings)
+    return -1;
+
+  monitor = meta_input_settings_get_tablet_logical_monitor (input_settings, device);
+
+  if (monitor)
+    {
+      monitor_idx = meta_screen_get_monitor_index_for_rect (display->screen,
+                                                            &monitor->rect);
+    }
+
+  return monitor_idx;
+}
+
+void
+meta_display_show_tablet_mapping_notification (MetaDisplay        *display,
+                                               ClutterInputDevice *pad,
+                                               const gchar        *pretty_name)
+{
+  if (!pretty_name)
+    pretty_name = clutter_input_device_get_device_name (pad);
+  meta_display_show_osd (display, lookup_tablet_monitor (display, pad),
+                         "input-tablet-symbolic", pretty_name);
 }

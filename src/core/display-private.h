@@ -496,4 +496,15 @@ void meta_display_set_alarm_filter (MetaDisplay    *display,
                                     MetaAlarmFilter filter,
                                     gpointer        data);
 
+void meta_display_show_tablet_mapping_notification (MetaDisplay        *display,
+                                                    ClutterInputDevice *pad,
+                                                    const gchar        *pretty_name);
+
+void meta_display_notify_pad_group_switch (MetaDisplay        *display,
+                                           ClutterInputDevice *pad,
+                                           const gchar        *pretty_name,
+                                           guint               n_group,
+                                           guint               n_mode,
+                                           guint               n_modes);
+
 #endif
