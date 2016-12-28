@@ -132,6 +132,7 @@ enum
   GL_VIDEO_MEMORY_PURGED,
   SHOW_PAD_OSD,
   SHOW_OSD,
+  PAD_MODE_SWITCH,
   LAST_SIGNAL
 };
 
@@ -384,6 +385,14 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL,
                   G_TYPE_NONE, 3, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING);
+
+  display_signals[PAD_MODE_SWITCH] =
+    g_signal_new ("pad-mode-switch",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 3, CLUTTER_TYPE_INPUT_DEVICE,
+                  G_TYPE_UINT, G_TYPE_UINT);
 
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
@@ -3255,6 +3264,9 @@ meta_display_notify_pad_group_switch (MetaDisplay        *display,
 
   meta_display_show_osd (display, lookup_tablet_monitor (display, pad),
                          "input-tablet-symbolic", message->str);
+
+  g_signal_emit (display, display_signals[PAD_MODE_SWITCH], 0, pad,
+                 n_group, n_mode);
 
   g_string_free (message, TRUE);
 }
