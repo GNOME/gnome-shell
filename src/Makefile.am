@@ -174,6 +174,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	compositor/meta-background-group.c	\
 	compositor/meta-cullable.c		\
 	compositor/meta-cullable.h		\
+	compositor/meta-dnd.c		\
 	compositor/meta-dnd-actor.c		\
 	compositor/meta-dnd-actor-private.h	\
 	compositor/meta-feedback-actor.c	\
@@ -430,6 +431,7 @@ libmutterinclude_headers =			\
 	meta/meta-background-image.h		\
 	meta/meta-background-group.h		\
 	meta/meta-cursor-tracker.h		\
+	meta/meta-dnd.h			\
 	meta/meta-idle-monitor.h		\
 	meta/meta-plugin.h			\
 	meta/meta-monitor-manager.h		\

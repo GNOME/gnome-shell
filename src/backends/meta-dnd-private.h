@@ -1,7 +1,7 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
- * Copyright (C) 2008 Iain Holmes
+ * Copyright (C) 2016 Hyungwon Hwang
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,28 +17,14 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef META_TYPES_H
-#define META_TYPES_H
+#ifndef META_DND_PRIVATE__H
+#define META_DND_PRIVATE__H
 
-/**
- * MetaCompositor: (skip)
- *
- */
-typedef struct _MetaBackend     MetaBackend;
-typedef struct _MetaCompositor  MetaCompositor;
-typedef struct _MetaDisplay     MetaDisplay;
-typedef struct _MetaFrame       MetaFrame;
-typedef struct _MetaScreen      MetaScreen;
-typedef struct _MetaWindow      MetaWindow;
-typedef struct _MetaWorkspace   MetaWorkspace;
-/**
- * MetaGroup: (skip)
- *
- */
-typedef struct _MetaGroup       MetaGroup;
-typedef struct _MetaKeyBinding  MetaKeyBinding;
-typedef struct _MetaCursorTracker MetaCursorTracker;
+#include <X11/Xlib.h>
 
-typedef struct _MetaDnd         MetaDnd;
+gboolean meta_dnd_handle_xdnd_event (MetaBackend    *backend,
+                                     MetaCompositor *compositor,
+                                     MetaDisplay    *display,
+                                     XEvent         *xev);
 
-#endif
+#endif /* META_DND_PRIVATE_H */

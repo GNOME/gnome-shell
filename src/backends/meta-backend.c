@@ -78,6 +78,7 @@ struct _MetaBackendPrivate
   int current_device_id;
 
   MetaPointerConstraint *client_pointer_constraint;
+  MetaDnd *dnd;
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
@@ -456,6 +457,8 @@ meta_backend_initable_init (GInitable     *initable,
     }
 
   priv->cursor_tracker = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
+
+  priv->dnd = g_object_new (META_TYPE_DND, NULL);
 
   return TRUE;
 }
@@ -865,4 +868,20 @@ meta_backend_get_input_settings (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->input_settings;
+}
+
+/**
+ * meta_backend_get_dnd:
+ * @backend: A #MetaDnd
+ *
+ * Gets the global #MetaDnd that's managed by this backend.
+ *
+ * Returns: (transfer none): the #MetaDnd
+ */
+MetaDnd *
+meta_backend_get_dnd (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->dnd;
 }

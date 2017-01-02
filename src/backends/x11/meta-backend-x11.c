@@ -46,6 +46,7 @@
 #include <meta/util.h>
 #include "display-private.h"
 #include "compositor/compositor-private.h"
+#include "backends/meta-dnd-private.h"
 
 struct _MetaBackendX11Private
 {
@@ -254,6 +255,9 @@ handle_host_xevent (MetaBackend *backend,
       {
         MetaCompositor *compositor = display->compositor;
         if (meta_plugin_manager_xevent_filter (compositor->plugin_mgr, event))
+          bypass_clutter = TRUE;
+
+        if (meta_dnd_handle_xdnd_event (backend, compositor, display, event))
           bypass_clutter = TRUE;
       }
   }
