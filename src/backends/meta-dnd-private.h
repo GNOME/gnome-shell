@@ -27,4 +27,8 @@ gboolean meta_dnd_handle_xdnd_event (MetaBackend    *backend,
                                      MetaDisplay    *display,
                                      XEvent         *xev);
 
+#ifdef HAVE_WAYLAND
+void meta_dnd_wayland_handle_begin_modal (MetaCompositor *compositor);
+#endif
+
 #endif /* META_DND_PRIVATE_H */

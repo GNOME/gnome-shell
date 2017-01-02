@@ -816,6 +816,14 @@ meta_wayland_drag_grab_get_focus (MetaWaylandDragGrab *drag_grab)
   return drag_grab->drag_focus;
 }
 
+void
+meta_wayland_drag_grab_update_feedback_actor (MetaWaylandDragGrab *drag_grab,
+                                              ClutterEvent        *event)
+{
+  meta_feedback_actor_update (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),
+                              event);
+}
+
 static void
 drag_grab_focus (MetaWaylandPointerGrab *grab,
                  MetaWaylandSurface     *surface)
@@ -1897,6 +1905,12 @@ meta_wayland_data_device_is_dnd_surface (MetaWaylandDataDevice *data_device,
 {
   return data_device->current_grab &&
     data_device->current_grab->drag_surface == surface;
+}
+
+MetaWaylandDragGrab *
+meta_wayland_data_device_get_current_grab (MetaWaylandDataDevice *data_device)
+{
+  return data_device->current_grab;
 }
 
 gboolean

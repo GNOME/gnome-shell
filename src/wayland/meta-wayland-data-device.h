@@ -27,6 +27,7 @@
 #include <glib-object.h>
 
 #include "meta-wayland-types.h"
+#include "clutter/clutter.h"
 
 typedef struct _MetaWaylandDragGrab MetaWaylandDragGrab;
 typedef struct _MetaWaylandDataSourceFuncs MetaWaylandDataSourceFuncs;
@@ -78,6 +79,9 @@ void meta_wayland_data_device_set_keyboard_focus (MetaWaylandDataDevice *data_de
 
 gboolean meta_wayland_data_device_is_dnd_surface (MetaWaylandDataDevice *data_device,
                                                   MetaWaylandSurface    *surface);
+
+MetaWaylandDragGrab *
+     meta_wayland_data_device_get_current_grab   (MetaWaylandDataDevice *data_device);
 
 void meta_wayland_data_device_set_dnd_source     (MetaWaylandDataDevice *data_device,
                                                   MetaWaylandDataSource *source);
@@ -133,5 +137,7 @@ void     meta_wayland_drag_grab_set_focus        (MetaWaylandDragGrab           
                                                   MetaWaylandSurface              *surface);
 MetaWaylandSurface *
          meta_wayland_drag_grab_get_focus        (MetaWaylandDragGrab             *drag_grab);
+void     meta_wayland_drag_grab_update_feedback_actor (MetaWaylandDragGrab *drag_grab,
+                                                       ClutterEvent        *event);
 
 #endif /* META_WAYLAND_DATA_DEVICE_H */
