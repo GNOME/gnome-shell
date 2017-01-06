@@ -1338,6 +1338,14 @@ set_underscan (MetaMonitorManagerKms *manager_kms,
 }
 
 static void
+meta_monitor_manager_kms_ensure_initial_config (MetaMonitorManager *manager)
+{
+  meta_monitor_manager_ensure_configured (manager);
+
+  meta_monitor_manager_update_logical_state_derived (manager);
+}
+
+static void
 meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
                                               MetaCrtcInfo       **crtcs,
                                               unsigned int         n_crtcs,
@@ -1922,6 +1930,7 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
 
   manager_class->read_current = meta_monitor_manager_kms_read_current;
   manager_class->read_edid = meta_monitor_manager_kms_read_edid;
+  manager_class->ensure_initial_config = meta_monitor_manager_kms_ensure_initial_config;
   manager_class->apply_configuration = meta_monitor_manager_kms_apply_configuration;
   manager_class->set_power_save_mode = meta_monitor_manager_kms_set_power_save_mode;
   manager_class->get_crtc_gamma = meta_monitor_manager_kms_get_crtc_gamma;

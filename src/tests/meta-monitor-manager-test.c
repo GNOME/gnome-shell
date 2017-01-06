@@ -84,6 +84,14 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 }
 
 static void
+meta_monitor_manager_test_ensure_initial_config (MetaMonitorManager *manager)
+{
+  meta_monitor_manager_ensure_configured (manager);
+
+  meta_monitor_manager_update_logical_state_derived (manager);
+}
+
+static void
 meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
                                                MetaCrtcInfo      **crtcs,
                                                unsigned int        n_crtcs,
@@ -240,6 +248,7 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
   object_class->dispose = meta_monitor_manager_test_dispose;
 
   manager_class->read_current = meta_monitor_manager_test_read_current;
+  manager_class->ensure_initial_config = meta_monitor_manager_test_ensure_initial_config;
   manager_class->apply_configuration = meta_monitor_manager_test_apply_configuration;
   manager_class->tiled_monitor_added = meta_monitor_manager_test_tiled_monitor_added;
   manager_class->tiled_monitor_removed = meta_monitor_manager_test_tiled_monitor_removed;

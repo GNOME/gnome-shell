@@ -120,7 +120,7 @@ derive_monitor_position (MetaMonitor *monitor,
 }
 
 static void
-make_logical_config (MetaMonitorManager *manager)
+meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manager)
 {
   GList *logical_monitors = NULL;
   GList *l;
@@ -200,6 +200,12 @@ power_save_mode_changed (MetaMonitorManager *manager,
   manager->power_save_mode = mode;
 }
 
+static void
+meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
+{
+  META_MONITOR_MANAGER_GET_CLASS (manager)->ensure_initial_config (manager);
+}
+
 gboolean
 meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
 {
@@ -223,6 +229,12 @@ legacy_ensure_configured (MetaMonitorManager *manager)
     meta_monitor_config_make_default (manager->legacy_config, manager);
 }
 
+void
+meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
+{
+  legacy_ensure_configured (manager);
+}
+
 static void
 meta_monitor_manager_constructed (GObject *object)
 {
@@ -237,19 +249,8 @@ meta_monitor_manager_constructed (GObject *object)
 
   meta_monitor_manager_read_current_state (manager);
 
-  legacy_ensure_configured (manager);
+  meta_monitor_manager_ensure_initial_config (manager);
 
-  /* Under XRandR, we don't rebuild our data structures until we see
-     the RRScreenNotify event, but at least at startup we want to have
-     the right configuration immediately.
-
-     The other backends keep the data structures always updated,
-     so this is not needed.
-  */
-  if (META_IS_MONITOR_MANAGER_XRANDR (manager))
-    meta_monitor_manager_read_current_state (manager);
-
-  make_logical_config (manager);
   initialize_dbus_interface (manager);
 
   manager->in_init = FALSE;
@@ -1534,6 +1535,15 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 }
 
 static void
+meta_monitor_manager_notify_monitors_changed (MetaMonitorManager *manager)
+{
+  MetaBackend *backend = meta_get_backend ();
+
+  meta_backend_monitors_changed (backend);
+  g_signal_emit_by_name (manager, "monitors-changed");
+}
+
+static void
 meta_monitor_manager_update_monitor_modes_derived (MetaMonitorManager *manager)
 {
   GList *l;
@@ -1547,9 +1557,15 @@ meta_monitor_manager_update_monitor_modes_derived (MetaMonitorManager *manager)
 }
 
 void
+meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager)
+{
+  meta_monitor_manager_rebuild_logical_monitors_derived (manager);
+  meta_monitor_manager_update_monitor_modes_derived (manager);
+}
+
+void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
-  MetaBackend *backend = meta_get_backend ();
   GList *old_logical_monitors;
 
   if (manager->in_init)
@@ -1557,16 +1573,9 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 
   old_logical_monitors = manager->logical_monitors;
 
-  make_logical_config (manager);
-  meta_monitor_manager_update_monitor_modes_derived (manager);
+  meta_monitor_manager_update_logical_state_derived (manager);
 
-  /* Tell the backend about that the monitors changed before emitting the
-   * signal, so that the backend can prepare itself before all the signal
-   * consumers.
-   */
-  meta_backend_monitors_changed (backend);
-
-  g_signal_emit_by_name (manager, "monitors-changed");
+  meta_monitor_manager_notify_monitors_changed (manager);
 
   g_list_free_full (old_logical_monitors, g_object_unref);
 }

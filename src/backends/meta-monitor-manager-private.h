@@ -298,6 +298,8 @@ struct _MetaMonitorManagerClass
   GBytes* (*read_edid) (MetaMonitorManager *,
                         MetaOutput         *);
 
+  void (*ensure_initial_config) (MetaMonitorManager *);
+
   void (*apply_configuration) (MetaMonitorManager  *,
                                MetaCrtcInfo       **,
                                unsigned int         ,
@@ -410,6 +412,10 @@ void               meta_monitor_manager_tiled_monitor_added (MetaMonitorManager 
                                                              MetaMonitor        *monitor);
 void               meta_monitor_manager_tiled_monitor_removed (MetaMonitorManager *manager,
                                                                MetaMonitor        *monitor);
+
+void               meta_monitor_manager_ensure_configured (MetaMonitorManager *manager);
+
+void               meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);

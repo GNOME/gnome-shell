@@ -170,6 +170,14 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 }
 
 static void
+meta_monitor_manager_dummy_ensure_initial_config (MetaMonitorManager *manager)
+{
+  meta_monitor_manager_ensure_configured (manager);
+
+  meta_monitor_manager_update_logical_state_derived (manager);
+}
+
+static void
 meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
                                          MetaCrtcInfo       **crtcs,
                                          unsigned int         n_crtcs,
@@ -289,6 +297,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
 
   manager_class->read_current = meta_monitor_manager_dummy_read_current;
+  manager_class->ensure_initial_config = meta_monitor_manager_dummy_ensure_initial_config;
   manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
 }
 

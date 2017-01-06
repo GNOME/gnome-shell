@@ -1280,6 +1280,21 @@ meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
 }
 
 static void
+meta_monitor_manager_xrandr_ensure_initial_config (MetaMonitorManager *manager)
+{
+  meta_monitor_manager_ensure_configured (manager);
+
+  /*
+   * Normally we don't rebuild our data structures until we see the
+   * RRScreenNotify event, but at least at startup we want to have the right
+   * configuration immediately.
+   */
+  meta_monitor_manager_read_current_state (manager);
+
+  meta_monitor_manager_update_logical_state_derived (manager);
+}
+
+static void
 meta_monitor_manager_xrandr_change_backlight (MetaMonitorManager *manager,
 					      MetaOutput         *output,
 					      gint                value)
@@ -1571,6 +1586,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
 
   manager_class->read_current = meta_monitor_manager_xrandr_read_current;
   manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;
+  manager_class->ensure_initial_config = meta_monitor_manager_xrandr_ensure_initial_config;
   manager_class->apply_configuration = meta_monitor_manager_xrandr_apply_configuration;
   manager_class->set_power_save_mode = meta_monitor_manager_xrandr_set_power_save_mode;
   manager_class->change_backlight = meta_monitor_manager_xrandr_change_backlight;
