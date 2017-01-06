@@ -233,7 +233,9 @@ var InstallExtensionDialog = new Lang.Class({
         let dir = Gio.File.new_for_path(GLib.build_filenamev([global.userdatadir, 'extensions', uuid]));
         let invocation = this._invocation;
         function errback(code, message) {
-            invocation.return_dbus_error('org.gnome.Shell.' + code, message ? message.toString() : '');
+            let msg = message ? message.toString() : '';
+            log('Error while installing %s: %s (%s)'.format(uuid, code, msg));
+            invocation.return_dbus_error('org.gnome.Shell.' + code, msg);
         }
 
         function callback() {
