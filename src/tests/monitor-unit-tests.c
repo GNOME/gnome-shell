@@ -69,7 +69,9 @@
  *
  * A monitor represents a physical monitor (such as an external monitor, or a
  * laptop panel etc). A monitor consists of an array of outputs, defined by
- * indices into the setup output array, and the physical dimensions.
+ * indices into the setup output array, an array of monitor modes, and the
+ * current mode, defined by an index into the monitor modes array, and the
+ * physical dimensions.
  *
  * A logical monitor represents a region of the total screen area. It contains
  * the expected layout and a scale.
@@ -132,6 +134,7 @@ typedef struct _MonitorTestCaseMonitor
   int n_outputs;
   MetaMonitorTestCaseMonitorMode modes[MAX_N_MODES];
   int n_modes;
+  int current_mode;
   int width_mm;
   int height_mm;
 } MonitorTestCaseMonitor;
@@ -223,6 +226,7 @@ static MonitorTestCase initial_test_case = {
           }
         },
         .n_modes = 1,
+        .current_mode = 0,
         .width_mm = 222,
         .height_mm = 125
       },
@@ -242,6 +246,7 @@ static MonitorTestCase initial_test_case = {
           }
         },
         .n_modes = 1,
+        .current_mode = 0,
         .width_mm = 220,
         .height_mm = 124
       }
@@ -347,6 +352,9 @@ check_monitor_configuration (MonitorTestCase *test_case)
       int width_mm, height_mm;
       GList *modes;
       GList *l_mode;
+      MetaMonitorMode *current_mode;
+      int expected_current_mode_index;
+      MetaMonitorMode *expected_current_mode;
 
       outputs = meta_monitor_get_outputs (monitor);
 
@@ -389,6 +397,19 @@ check_monitor_configuration (MonitorTestCase *test_case)
                                           &data,
                                           NULL);
         }
+
+      current_mode = meta_monitor_get_current_mode (monitor);
+      expected_current_mode_index = test_case->expect.monitors[i].current_mode;
+      if (expected_current_mode_index == -1)
+        expected_current_mode = NULL;
+      else
+        expected_current_mode = g_list_nth (modes,
+                                            expected_current_mode_index)->data;
+
+      g_assert (current_mode == expected_current_mode);
+
+      meta_monitor_derive_current_mode (monitor);
+      g_assert (current_mode == meta_monitor_get_current_mode (monitor));
     }
 
   n_logical_monitors =
@@ -598,6 +619,7 @@ meta_test_monitor_one_disconnected_linear_config (void)
           }
         },
         .n_modes = 1,
+        .current_mode = 0,
         .width_mm = 222,
         .height_mm = 125
       }
@@ -674,6 +696,7 @@ meta_test_monitor_one_off_linear_config (void)
           }
         },
         .n_modes = 1,
+        .current_mode = 0,
         .width_mm = 222,
         .height_mm = 125
       },
@@ -693,6 +716,7 @@ meta_test_monitor_one_off_linear_config (void)
           }
         },
         .n_modes = 1,
+        .current_mode = 0,
         .width_mm = 224,
         .height_mm = 126
       }
@@ -802,6 +826,7 @@ meta_test_monitor_preferred_linear_config (void)
             }
           },
           .n_modes = 3,
+          .current_mode = 1,
           .width_mm = 222,
           .height_mm = 125
         }
@@ -914,6 +939,7 @@ meta_test_monitor_tiled_linear_config (void)
             },
           },
           .n_modes = 1,
+          .current_mode = 0,
           .width_mm = 222,
           .height_mm = 125,
         }
@@ -1013,6 +1039,7 @@ meta_test_monitor_hidpi_linear_config (void)
             },
           },
           .n_modes = 1,
+          .current_mode = 0,
           .width_mm = 150,
           .height_mm = 85
         },
@@ -1032,6 +1059,7 @@ meta_test_monitor_hidpi_linear_config (void)
             },
           },
           .n_modes = 1,
+          .current_mode = 0,
           .width_mm = 222,
           .height_mm = 125
         }
@@ -1131,6 +1159,7 @@ meta_test_monitor_suggested_config (void)
             }
           },
           .n_modes = 1,
+          .current_mode = 0,
           .width_mm = 222,
           .height_mm = 125
         },
@@ -1150,6 +1179,7 @@ meta_test_monitor_suggested_config (void)
             }
           },
           .n_modes = 1,
+          .current_mode = 0,
           .width_mm = 220,
           .height_mm = 124
         }
