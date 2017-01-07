@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-10-21 17:31+0000\n"
-"PO-Revision-Date: 2016-10-30 09:17+0100\n"
+"POT-Creation-Date: 2017-01-05 18:19+0000\n"
+"PO-Revision-Date: 2017-01-07 17:03+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -345,7 +345,7 @@ msgstr "Rozšírenia pre Shell prostredia GNOME"
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:926
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:928
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -501,7 +501,7 @@ msgstr "%d. %B %Y, %l:%M %p"
 # window, until we know the title of the actual login page
 #. TRANSLATORS: this is the title of the wifi captive portal login
 #. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:85
+#: js/portalHelper/main.js:87
 msgid "Web Authentication Redirect"
 msgstr "Presmerovanie webového overenia totožnosti"
 
@@ -547,12 +547,12 @@ msgstr "Pridať do obľúbených"
 msgid "Show Details"
 msgstr "Zobraziť podrobnosti"
 
-#: js/ui/appFavorites.js:134
+#: js/ui/appFavorites.js:137
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Program %s bol pridaný medzi obľúbené."
 
-#: js/ui/appFavorites.js:168
+#: js/ui/appFavorites.js:171
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Program %s bol odstránený z obľúbených."
@@ -718,8 +718,8 @@ msgstr "Heslo:"
 msgid "Type again:"
 msgstr "Zadajte znovu:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:270
-#: js/ui/status/network.js:353 js/ui/status/network.js:929
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:272
+#: js/ui/status/network.js:355 js/ui/status/network.js:931
 msgid "Connect"
 msgstr "Pripojiť"
 
@@ -747,11 +747,11 @@ msgstr "Heslo k súkromnému kľúču: "
 msgid "Service: "
 msgstr "Služba: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:658
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:666
 msgid "Authentication required by wireless network"
 msgstr "Bezdrôtová sieť vyžaduje overenie totožnosti"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:667
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -760,7 +760,7 @@ msgstr ""
 "Na prístup do bezdrôtovej siete „%s“ sú vyžadované heslá alebo šifrovacie "
 "kľúče."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:662
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:670
 msgid "Wired 802.1X authentication"
 msgstr "Overenie totožnosti k drôtovej sieti 802.1X"
 
@@ -768,15 +768,15 @@ msgstr "Overenie totožnosti k drôtovej sieti 802.1X"
 msgid "Network name: "
 msgstr "Názov siete: "
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:666
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:674
 msgid "DSL authentication"
 msgstr "Overenie totožnosti k DSL"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:680
 msgid "PIN code required"
 msgstr "Požaduje sa kód PIN"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Pre zariadenie mobilnej širokopásmovej siete je potrebný kód PIN"
 
@@ -784,17 +784,17 @@ msgstr "Pre zariadenie mobilnej širokopásmovej siete je potrebný kód PIN"
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
 msgid "Mobile broadband network password"
 msgstr "Heslo k mobilnej širokopásmovej sieti"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
-#: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Na pripojenie k „%s“ sa požaduje heslo."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1670
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1736
 msgid "Network Manager"
 msgstr "Správca siete"
 
@@ -826,7 +826,7 @@ msgstr "Prepáčte, ale nezabralo to. Skúste to, prosím, znova."
 msgid "%s is now known as %s"
 msgstr "Kontakt %s odteraz vystupuje ako %s"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:155
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "Okná"
 
@@ -1126,6 +1126,54 @@ msgstr "Prehľad"
 msgid "Type to search…"
 msgstr "Zadajte text na vyhľadanie…"
 
+#: js/ui/padOsd.js:37
+msgid "New shortcut…"
+msgstr "Nová skratka…"
+
+#: js/ui/padOsd.js:86
+#, fuzzy
+#| msgid "Applications"
+msgid "Application defined"
+msgstr "Aplikácie"
+
+#: js/ui/padOsd.js:87
+msgid "Show on-screen help"
+msgstr ""
+
+#: js/ui/padOsd.js:88
+#, fuzzy
+#| msgid "Switch User"
+msgid "Switch monitor"
+msgstr "Prepnúť používateľa"
+
+#: js/ui/padOsd.js:89
+msgid "Assign keystroke"
+msgstr ""
+
+#: js/ui/padOsd.js:143
+msgid "Done"
+msgstr ""
+
+#: js/ui/padOsd.js:597
+msgid "Edit…"
+msgstr ""
+
+#: js/ui/padOsd.js:610 js/ui/padOsd.js:665
+msgid "None"
+msgstr ""
+
+#: js/ui/padOsd.js:648
+msgid "Press a button to configure"
+msgstr ""
+
+#: js/ui/padOsd.js:649
+msgid "Press Esc to exit"
+msgstr ""
+
+#: js/ui/padOsd.js:652
+msgid "Press any key to exit"
+msgstr ""
+
 #: js/ui/panel.js:358
 msgid "Quit"
 msgstr "Ukončiť"
@@ -1162,6 +1210,12 @@ msgstr "Zadajte príkaz"
 msgid "Close"
 msgstr "Zavrieť"
 
+#: js/ui/runDialog.js:277
+#, fuzzy
+#| msgid "Encryption is not available"
+msgid "Restart is not available on Wayland"
+msgstr "Šifrovanie nie je dostupné"
+
 #: js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Reštartuje sa…"
@@ -1195,7 +1249,7 @@ msgstr[2] "%d nových oznámení"
 msgid "Lock"
 msgstr "Uzamknúť"
 
-#: js/ui/screenShield.js:704
+#: js/ui/screenShield.js:707
 msgid "GNOME needs to lock the screen"
 msgstr "Prostredie GNOME vyžaduje uzamknutie obrazovky"
 
@@ -1206,11 +1260,11 @@ msgstr "Prostredie GNOME vyžaduje uzamknutie obrazovky"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:825 js/ui/screenShield.js:1291
+#: js/ui/screenShield.js:828 js/ui/screenShield.js:1295
 msgid "Unable to lock"
 msgstr "Nepodarilo sa uzamknúť obrazovku"
 
-#: js/ui/screenShield.js:826 js/ui/screenShield.js:1292
+#: js/ui/screenShield.js:829 js/ui/screenShield.js:1296
 msgid "Lock was blocked by an application"
 msgstr "Uzamknutie bolo zablokované aplikáciou"
 
@@ -1297,7 +1351,7 @@ msgstr "Veľký text"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Nastavenia Bluetooth"
 
@@ -1320,13 +1374,13 @@ msgstr "Vypnuté"
 msgid "On"
 msgstr "Zapnutý"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1289
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1291
 msgid "Turn On"
 msgstr "Zapnúť"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:179
-#: js/ui/status/network.js:354 js/ui/status/network.js:1289
-#: js/ui/status/network.js:1404 js/ui/status/rfkill.js:90
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
+#: js/ui/status/network.js:356 js/ui/status/network.js:1291
+#: js/ui/status/network.js:1406 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Vypnúť"
@@ -1375,18 +1429,18 @@ msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Prístup k umiestneniu sa dá zmeniť kedykoľvek v nastaveniach súkromia."
 
 # zariadenie
-#: js/ui/status/network.js:102
+#: js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<neznáme>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452 js/ui/status/network.js:1318
+#: js/ui/status/network.js:454 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Off"
 msgstr "%s vypnuté"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s pripojené"
@@ -1394,169 +1448,194 @@ msgstr "%s pripojené"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:460
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s nespravované"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:463
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "Odpája sa %s"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:470 js/ui/status/network.js:1310
+#: js/ui/status/network.js:472 js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Connecting"
 msgstr "Pripája sa %s"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:473
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s vyžaduje overenie totožnosti"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:481
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Chýba firmvér pre %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:485
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s nedostupné"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:488
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Pripojenie %s zlyhalo"
 
-#: js/ui/status/network.js:504
+#: js/ui/status/network.js:506
 msgid "Wired Settings"
 msgstr "Nastavenia drôtovej siete"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:548
 msgid "Mobile Broadband Settings"
 msgstr "Nastavenia mobilnej širokopásmovej siete"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1315
+#: js/ui/status/network.js:591 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Hardvér %s zakázaný"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
+#: js/ui/status/network.js:595
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s zakázané"
 
-#: js/ui/status/network.js:633
+#: js/ui/status/network.js:635
 msgid "Connect to Internet"
 msgstr "Pripojiť k internetu"
 
-#: js/ui/status/network.js:823
+#: js/ui/status/network.js:825
 msgid "Airplane Mode is On"
 msgstr "Režim v lietadle je zapnutý"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:826
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Sieť Wi-Fi je zakázaná, keď je zapnutý režim v lietadle"
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:827
 msgid "Turn Off Airplane Mode"
 msgstr "Vypnúť režim v lietadle"
 
-#: js/ui/status/network.js:834
+#: js/ui/status/network.js:836
 msgid "Wi-Fi is Off"
 msgstr "Sieť Wi-Fi je vypnutá"
 
-#: js/ui/status/network.js:835
+#: js/ui/status/network.js:837
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Na pripojenie k sieti je potrebné zapnúť Wi-Fi"
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:838
 msgid "Turn On Wi-Fi"
 msgstr "Zapnúť Wi-Fi"
 
-#: js/ui/status/network.js:861
+#: js/ui/status/network.js:863
 msgid "Wi-Fi Networks"
 msgstr "Siete Wi-Fi"
 
-#: js/ui/status/network.js:863
+#: js/ui/status/network.js:865
 msgid "Select a network"
 msgstr "Vyberte sieť"
 
-#: js/ui/status/network.js:893
+#: js/ui/status/network.js:895
 msgid "No Networks"
 msgstr "Žiadne siete"
 
-#: js/ui/status/network.js:914 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:916 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Na vypnutie použite hardvérový prepínač"
 
 # item menu
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1183
 msgid "Select Network"
 msgstr "Vybrať sieť"
 
-#: js/ui/status/network.js:1187
+#: js/ui/status/network.js:1189
 msgid "Wi-Fi Settings"
 msgstr "Nastavenia siete Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1306
+#: js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Hotspot %s aktívny"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s nepripojené"
 
-#: js/ui/status/network.js:1421
+#: js/ui/status/network.js:1423
 msgid "connecting..."
 msgstr "pripája sa…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1424
+#: js/ui/status/network.js:1426
 msgid "authentication required"
 msgstr "požaduje sa overenie totožnosti"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1428
 msgid "connection failed"
 msgstr "pripojenie zlyhalo"
 
-#: js/ui/status/network.js:1492 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1589
+#: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Nastavenia siete"
 
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1496
 msgid "VPN Settings"
 msgstr "Nastavenia VPN"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1515
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1525
 msgid "VPN Off"
 msgstr "Pripojenie VPN vypnuté"
 
-#: js/ui/status/network.js:1709
+#: js/ui/status/network.js:1620
+#, javascript-format
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s drôtové pripojenie"
+msgstr[1] "%s drôtové pripojenia"
+msgstr[2] "%s drôtových pripojení"
+
+#: js/ui/status/network.js:1624
+#, javascript-format
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s pripojenie k sieti Wi-Fi"
+msgstr[1] "%s pripojenia k sieti Wi-Fi"
+msgstr[2] "%s pripojení k sieti Wi-Fi"
+
+#: js/ui/status/network.js:1628
+#, javascript-format
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s pripojenie modemom"
+msgstr[1] "%s pripojenia modemom"
+msgstr[2] "%s pripojení modemom"
+
+#: js/ui/status/network.js:1775
 msgid "Connection failed"
 msgstr "Pripojenie zlyhalo"
 
-#: js/ui/status/network.js:1710
+#: js/ui/status/network.js:1776
 msgid "Activation of network connection failed"
 msgstr "Aktivácia pripojenia k sieti zlyhala"
 
@@ -1639,11 +1718,11 @@ msgstr "Prihlásiť ako iný používateľ"
 msgid "Unlock Window"
 msgstr "Odomykacie okno"
 
-#: js/ui/viewSelector.js:159
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "Aplikácie"
 
-#: js/ui/viewSelector.js:163
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "Hľadať"
 
@@ -1654,22 +1733,22 @@ msgstr "Hľadať"
 msgid "“%s” is ready"
 msgstr "Program „%s“ je pripravený"
 
-#: js/ui/windowManager.js:63
+#: js/ui/windowManager.js:64
 msgid "Do you want to keep these display settings?"
 msgstr "Chcete ponechať tieto nastavenia displeja?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:82
+#: js/ui/windowManager.js:83
 msgid "Revert Settings"
 msgstr "Vrátiť nastavenia"
 
-#: js/ui/windowManager.js:85
+#: js/ui/windowManager.js:86
 msgid "Keep Changes"
 msgstr "Uchovať zmeny"
 
-#: js/ui/windowManager.js:103
+#: js/ui/windowManager.js:104
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1679,7 +1758,7 @@ msgstr[2] "Zmeny nastavení budú vrátené za %d sekúnd"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:658
+#: js/ui/windowManager.js:659
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1933,9 +2012,6 @@ msgstr "Dialógové okno overenia totožnosti bolo zatvorené používateľom"
 
 #~ msgid "Status is set to offline"
 #~ msgstr "Stav je nastavený na odhlásený"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "Šifrovanie nie je dostupné"
 
 #~ msgid "Certificate is invalid"
 #~ msgstr "Certifikát je neplatný"
