@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-19 10:22+0000\n"
+"POT-Creation-Date: 2016-09-10 21:51+0000\n"
 "PO-Revision-Date: 2016-03-19 20:56+0200\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
@@ -368,7 +368,7 @@ msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: ../js/gdm/loginDialog.js:854
+#: ../js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
@@ -376,12 +376,12 @@ msgstr "(örneğin, kullanıcı veya %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:859 ../js/ui/components/networkAgent.js:271
+#: ../js/gdm/loginDialog.js:864 ../js/ui/components/networkAgent.js:271
 #: ../js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Kullanıcı Adı: "
 
-#: ../js/gdm/loginDialog.js:1196
+#: ../js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -532,7 +532,6 @@ msgid "Select Audio Device"
 msgstr "Ses Aygıtı Seç"
 
 #: ../js/ui/audioDeviceSelection.js:69
-#| msgid "Account Settings"
 msgid "Sound Settings"
 msgstr "Ses Ayarları"
 
@@ -556,7 +555,7 @@ msgstr "Arkaplanı Değiştir…"
 msgid "Display Settings"
 msgstr "Görüntü Ayarları"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:366
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:371
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -1010,7 +1009,7 @@ msgstr "Etkin"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1828
+#: ../js/ui/lookingGlass.js:719 ../src/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Devre dışı"
 
@@ -1043,13 +1042,10 @@ msgid "System Information"
 msgstr "Sistem Bilgisi"
 
 #: ../js/ui/mpris.js:194
-#| msgid "Unknown reason"
 msgid "Unknown artist"
 msgstr "Bilinmeyen sanatçı"
 
 #: ../js/ui/mpris.js:195
-#| msgctxt "program"
-#| msgid "Unknown"
 msgid "Unknown title"
 msgstr "Bilinmeyen başlık"
 
@@ -1131,7 +1127,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d yeni bildirim"
 
-#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:374
+#: ../js/ui/screenShield.js:432 ../js/ui/status/system.js:379
 msgid "Lock"
 msgstr "Kilitle"
 
@@ -1536,27 +1532,27 @@ msgstr "%% %d"
 msgid "Airplane Mode On"
 msgstr "Uçak Kipi Açık"
 
-#: ../js/ui/status/system.js:343
+#: ../js/ui/status/system.js:348
 msgid "Switch User"
 msgstr "Kullanıcı Değiştir"
 
-#: ../js/ui/status/system.js:348
+#: ../js/ui/status/system.js:353
 msgid "Log Out"
 msgstr "Oturumu Kapat"
 
-#: ../js/ui/status/system.js:353
+#: ../js/ui/status/system.js:358
 msgid "Account Settings"
 msgstr "Hesap Ayarları"
 
-#: ../js/ui/status/system.js:370
+#: ../js/ui/status/system.js:375
 msgid "Orientation Lock"
 msgstr "Yönelim Kilidi"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:383
 msgid "Suspend"
 msgstr "Beklet"
 
-#: ../js/ui/status/system.js:381
+#: ../js/ui/status/system.js:386
 msgid "Power Off"
 msgstr "Kapat"
 
@@ -1627,7 +1623,7 @@ msgstr "Önceki Boyut"
 
 #: ../js/ui/windowMenu.js:45
 msgid "Maximize"
-msgstr "En üst düzeye çıkar"
+msgstr "Ekranı kapla"
 
 #: ../js/ui/windowMenu.js:52
 msgid "Move"
@@ -1687,7 +1683,7 @@ msgstr "Evolution Takvim"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1835
+#: ../src/gvc/gvc-mixer-control.c:1873
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1695,13 +1691,13 @@ msgstr[0] "%u Çıktı"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1845
+#: ../src/gvc/gvc-mixer-control.c:1883
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u Girdi"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sistem Sesleri"
 
