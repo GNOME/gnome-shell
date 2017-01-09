@@ -24,6 +24,7 @@
 #include "backends/meta-monitor-config-manager.h"
 
 #include "backends/meta-monitor-manager-private.h"
+#include "core/boxes-private.h"
 
 struct _MetaMonitorConfigManager
 {
@@ -39,6 +40,9 @@ G_DEFINE_TYPE (MetaMonitorConfigManager, meta_monitor_config_manager,
 
 G_DEFINE_TYPE (MetaMonitorsConfig, meta_monitors_config,
                G_TYPE_OBJECT)
+
+static void
+meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor_config);
 
 MetaMonitorConfigManager *
 meta_monitor_config_manager_new (MetaMonitorManager *monitor_manager)
@@ -445,6 +449,73 @@ meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_ma
   primary_logical_monitor_config->is_primary = TRUE;
   config->logical_monitor_configs =
     g_list_append (NULL, primary_logical_monitor_config);
+
+  return config;
+}
+
+MetaMonitorsConfig *
+meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_manager)
+{
+  MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
+  MetaMonitorsConfig *config;
+  MetaLogicalMonitorConfig *primary_logical_monitor_config = NULL;
+  MetaMonitor *primary_monitor;
+  GList *logical_monitor_configs;
+  GList *region;
+  GList *monitors;
+  GList *l;
+
+  primary_monitor = find_primary_monitor (monitor_manager);
+  if (!primary_monitor)
+    return NULL;
+
+  logical_monitor_configs = NULL;
+  region = NULL;
+  monitors = meta_monitor_manager_get_monitors (monitor_manager);
+  for (l = monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+      MetaLogicalMonitorConfig *logical_monitor_config;
+      int x, y;
+
+      if (!meta_monitor_get_suggested_position (monitor, &x, &y))
+        continue;
+
+      logical_monitor_config =
+        create_preferred_logical_monitor_config (monitor, x, y);
+      logical_monitor_configs = g_list_append (logical_monitor_configs,
+                                               logical_monitor_config);
+
+      if (meta_rectangle_overlaps_with_region (region,
+                                               &logical_monitor_config->layout))
+        {
+          g_warning ("Suggested monitor config has overlapping region, rejecting");
+          g_list_free (region);
+          g_list_free_full (logical_monitor_configs,
+                            (GDestroyNotify) meta_logical_monitor_config_free);
+          return NULL;
+        }
+
+      region = g_list_prepend (region, &logical_monitor_config->layout);
+
+      if (monitor == primary_monitor)
+        primary_logical_monitor_config = logical_monitor_config;
+    }
+
+  g_list_free (region);
+
+  if (!logical_monitor_configs)
+    return NULL;
+
+  if (!primary_logical_monitor_config)
+    primary_logical_monitor_config =
+      g_list_first (logical_monitor_configs)->data;
+
+  primary_logical_monitor_config->is_primary = TRUE;
+
+  config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
+
+  config->logical_monitor_configs = logical_monitor_configs;
 
   return config;
 }

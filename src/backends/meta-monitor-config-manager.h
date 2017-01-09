@@ -66,6 +66,8 @@ MetaMonitorsConfig * meta_monitor_config_manager_create_linear (MetaMonitorConfi
 
 MetaMonitorsConfig * meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_manager);
 
+MetaMonitorsConfig * meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_manager);
+
 void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_manager,
                                               MetaMonitorsConfig       *config);
 

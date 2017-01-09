@@ -332,6 +332,22 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
       return NULL;
     }
 
+  config = meta_monitor_config_manager_create_suggested (manager->config_manager);
+  if (config)
+    {
+      if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+        {
+          g_clear_object (&config);
+          g_warning ("Failed to use suggested monitor configuration: %s",
+                     error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          goto done;
+        }
+    }
+
   config = meta_monitor_config_manager_create_linear (manager->config_manager);
   if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
     {
