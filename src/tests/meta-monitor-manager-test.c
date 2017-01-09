@@ -21,6 +21,8 @@
 
 #include "tests/meta-monitor-manager-test.h"
 
+#include "backends/meta-monitor-config-manager.h"
+
 struct _MetaMonitorManagerTest
 {
   MetaMonitorManager parent;
@@ -86,20 +88,24 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 static void
 meta_monitor_manager_test_ensure_initial_config (MetaMonitorManager *manager)
 {
-  meta_monitor_manager_ensure_configured (manager);
+  MetaMonitorsConfig *config;
 
-  meta_monitor_manager_update_logical_state_derived (manager);
+  config = meta_monitor_manager_ensure_configured (manager);
+
+  if (manager->config_manager)
+    meta_monitor_manager_update_logical_state (manager, config);
+  else
+    meta_monitor_manager_update_logical_state_derived (manager);
 }
 
 static void
-meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
-                                               MetaCrtcInfo      **crtcs,
-                                               unsigned int        n_crtcs,
-                                               MetaOutputInfo    **outputs,
-                                               unsigned int        n_outputs)
+apply_crtc_assignments (MetaMonitorManager *manager,
+                        MetaCrtcInfo      **crtcs,
+                        unsigned int        n_crtcs,
+                        MetaOutputInfo    **outputs,
+                        unsigned int        n_outputs)
 {
   unsigned int i;
-  int screen_width = 0, screen_height = 0;
 
   for (i = 0; i < n_crtcs; i++)
     {
@@ -141,9 +147,6 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
           crtc->rect.height = height;
           crtc->current_mode = mode;
           crtc->transform = crtc_info->transform;
-
-          screen_width = MAX (screen_width, crtc_info->x + width);
-          screen_height = MAX (screen_height, crtc_info->y + height);
 
           for (j = 0; j < crtc_info->outputs->len; j++)
             {
@@ -198,10 +201,93 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
       output->crtc = NULL;
       output->is_primary = FALSE;
     }
+}
+
+static void
+update_screen_size (MetaMonitorManager *manager,
+                    MetaMonitorsConfig *config)
+{
+  GList *l;
+  int screen_width = 0;
+  int screen_height = 0;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+      int right_edge;
+      int bottom_edge;
+
+      right_edge = (logical_monitor_config->layout.width +
+                    logical_monitor_config->layout.x);
+      if (right_edge > screen_width)
+        screen_width = right_edge;
+
+      bottom_edge = (logical_monitor_config->layout.height +
+                     logical_monitor_config->layout.y);
+      if (bottom_edge > screen_height)
+        screen_height = bottom_edge;
+    }
 
   manager->screen_width = screen_width;
   manager->screen_height = screen_height;
+}
 
+static gboolean
+meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager *manager,
+                                                 MetaMonitorsConfig *config,
+                                                 GError            **error)
+{
+  GPtrArray *crtc_infos;
+  GPtrArray *output_infos;
+
+  if (!meta_monitor_config_manager_assign (manager, config,
+                                           &crtc_infos,
+                                           &output_infos,
+                                           error))
+    return FALSE;
+
+  apply_crtc_assignments (manager,
+                          (MetaCrtcInfo **) crtc_infos->pdata,
+                          crtc_infos->len,
+                          (MetaOutputInfo **) output_infos->pdata,
+                          output_infos->len);
+
+  g_ptr_array_free (crtc_infos, TRUE);
+  g_ptr_array_free (output_infos, TRUE);
+
+  update_screen_size (manager, config);
+  meta_monitor_manager_rebuild (manager, config);
+
+  return TRUE;
+}
+
+static void
+legacy_calculate_screen_size (MetaMonitorManager *manager)
+{
+  unsigned int i;
+  int width = 0, height = 0;
+
+  for (i = 0; i < manager->n_crtcs; i++)
+    {
+      MetaCrtc *crtc = &manager->crtcs[i];
+
+      width = MAX (width, crtc->rect.x + crtc->rect.width);
+      height = MAX (height, crtc->rect.y + crtc->rect.height);
+    }
+
+  manager->screen_width = width;
+  manager->screen_height = height;
+}
+
+static void
+meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
+                                               MetaCrtcInfo      **crtcs,
+                                               unsigned int        n_crtcs,
+                                               MetaOutputInfo    **outputs,
+                                               unsigned int        n_outputs)
+{
+  apply_crtc_assignments (manager, crtcs, n_crtcs, outputs, n_outputs);
+  legacy_calculate_screen_size (manager);
   meta_monitor_manager_rebuild_derived (manager);
 }
 
@@ -249,6 +335,7 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
 
   manager_class->read_current = meta_monitor_manager_test_read_current;
   manager_class->ensure_initial_config = meta_monitor_manager_test_ensure_initial_config;
+  manager_class->apply_monitors_config = meta_monitor_manager_test_apply_monitors_config;
   manager_class->apply_configuration = meta_monitor_manager_test_apply_configuration;
   manager_class->tiled_monitor_added = meta_monitor_manager_test_tiled_monitor_added;
   manager_class->tiled_monitor_removed = meta_monitor_manager_test_tiled_monitor_removed;

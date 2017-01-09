@@ -48,6 +48,8 @@
 #include "meta-cursor.h"
 
 typedef struct _MetaMonitorConfig MetaMonitorConfig;
+typedef struct _MetaMonitorConfigManager MetaMonitorConfigManager;
+typedef struct _MetaMonitorsConfig MetaMonitorsConfig;
 
 typedef struct _MetaMonitor MetaMonitor;
 typedef struct _MetaMonitorNormal MetaMonitorNormal;
@@ -284,6 +286,8 @@ struct _MetaMonitorManager
   int persistent_timeout_id;
   MetaMonitorConfig *legacy_config;
 
+  MetaMonitorConfigManager *config_manager;
+
   GnomePnpIds *pnp_ids;
 };
 
@@ -299,6 +303,10 @@ struct _MetaMonitorManagerClass
                         MetaOutput         *);
 
   void (*ensure_initial_config) (MetaMonitorManager *);
+
+  gboolean (*apply_monitors_config) (MetaMonitorManager *,
+                                     MetaMonitorsConfig *,
+                                     GError            **);
 
   void (*apply_configuration) (MetaMonitorManager  *,
                                MetaCrtcInfo       **,
@@ -334,6 +342,8 @@ struct _MetaMonitorManagerClass
 
 };
 
+void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
+                                                  MetaMonitorsConfig *config);
 void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);
 
 int                 meta_monitor_manager_get_num_logical_monitors (MetaMonitorManager *manager);
@@ -413,8 +423,10 @@ void               meta_monitor_manager_tiled_monitor_added (MetaMonitorManager 
 void               meta_monitor_manager_tiled_monitor_removed (MetaMonitorManager *manager,
                                                                MetaMonitor        *monitor);
 
-void               meta_monitor_manager_ensure_configured (MetaMonitorManager *manager);
+MetaMonitorsConfig * meta_monitor_manager_ensure_configured (MetaMonitorManager *manager);
 
+void               meta_monitor_manager_update_logical_state (MetaMonitorManager *manager,
+                                                              MetaMonitorsConfig *config);
 void               meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);

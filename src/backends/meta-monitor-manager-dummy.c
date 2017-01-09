@@ -30,6 +30,7 @@
 #include <stdlib.h>
 
 #include <meta/util.h>
+#include "backends/meta-monitor-config-manager.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
@@ -172,20 +173,25 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 static void
 meta_monitor_manager_dummy_ensure_initial_config (MetaMonitorManager *manager)
 {
-  meta_monitor_manager_ensure_configured (manager);
+  MetaMonitorsConfig *config;
 
-  meta_monitor_manager_update_logical_state_derived (manager);
+  config = meta_monitor_manager_ensure_configured (manager);
+
+  if (manager->config_manager)
+    meta_monitor_manager_update_logical_state (manager, config);
+  else
+    meta_monitor_manager_update_logical_state_derived (manager);
 }
 
 static void
-meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
-                                         MetaCrtcInfo       **crtcs,
-                                         unsigned int         n_crtcs,
-                                         MetaOutputInfo     **outputs,
-                                         unsigned int         n_outputs)
+apply_crtc_assignments (MetaMonitorManager *manager,
+                        MetaCrtcInfo      **crtcs,
+                        unsigned int        n_crtcs,
+                        MetaOutputInfo    **outputs,
+                        unsigned int        n_outputs)
 {
-    unsigned i;
-    int screen_width = 0, screen_height = 0;
+  unsigned i;
+  int screen_width = 0, screen_height = 0;
 
   for (i = 0; i < n_crtcs; i++)
     {
@@ -287,6 +293,43 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
 
   manager->screen_width = screen_width;
   manager->screen_height = screen_height;
+}
+
+static gboolean
+meta_monitor_manager_dummy_apply_monitors_config (MetaMonitorManager *manager,
+                                                  MetaMonitorsConfig *config,
+                                                  GError            **error)
+{
+  GPtrArray *crtc_infos;
+  GPtrArray *output_infos;
+
+  if (!meta_monitor_config_manager_assign (manager, config,
+                                           &crtc_infos, &output_infos,
+                                           error))
+    return FALSE;
+
+  apply_crtc_assignments (manager,
+                          (MetaCrtcInfo **) crtc_infos->pdata,
+                          crtc_infos->len,
+                          (MetaOutputInfo **) output_infos->pdata,
+                          output_infos->len);
+
+  g_ptr_array_free (crtc_infos, TRUE);
+  g_ptr_array_free (output_infos, TRUE);
+
+  meta_monitor_manager_rebuild (manager, config);
+
+  return TRUE;
+}
+
+static void
+meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
+                                         MetaCrtcInfo      **crtcs,
+                                         unsigned int        n_crtcs,
+                                         MetaOutputInfo    **outputs,
+                                         unsigned int        n_outputs)
+{
+  apply_crtc_assignments (manager, crtcs, n_crtcs, outputs, n_outputs);
 
   meta_monitor_manager_rebuild_derived (manager);
 }
@@ -298,6 +341,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 
   manager_class->read_current = meta_monitor_manager_dummy_read_current;
   manager_class->ensure_initial_config = meta_monitor_manager_dummy_ensure_initial_config;
+  manager_class->apply_monitors_config = meta_monitor_manager_dummy_apply_monitors_config;
   manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
 }
 

@@ -42,6 +42,7 @@
 #include <meta/main.h>
 #include <meta/errors.h>
 #include "meta-monitor-config.h"
+#include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-logical-monitor.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
@@ -1060,11 +1061,11 @@ output_set_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
 }
 
 static void
-meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
-						 MetaCrtcInfo       **crtcs,
-						 unsigned int         n_crtcs,
-						 MetaOutputInfo     **outputs,
-						 unsigned int         n_outputs)
+apply_crtc_assignments (MetaMonitorManager *manager,
+                        MetaCrtcInfo      **crtcs,
+                        unsigned int        n_crtcs,
+                        MetaOutputInfo    **outputs,
+                        unsigned int        n_outputs)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
   unsigned i;
@@ -1292,6 +1293,41 @@ meta_monitor_manager_xrandr_ensure_initial_config (MetaMonitorManager *manager)
   meta_monitor_manager_read_current_state (manager);
 
   meta_monitor_manager_update_logical_state_derived (manager);
+}
+
+static gboolean
+meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager *manager,
+                                                   MetaMonitorsConfig *config,
+                                                   GError            **error)
+{
+  GPtrArray *crtc_infos;
+  GPtrArray *output_infos;
+
+  if (!meta_monitor_config_manager_assign (manager, config,
+                                           &crtc_infos, &output_infos,
+                                           error))
+    return FALSE;
+
+  apply_crtc_assignments (manager,
+                          (MetaCrtcInfo **) crtc_infos->pdata,
+                          crtc_infos->len,
+                          (MetaOutputInfo **) output_infos->pdata,
+                          output_infos->len);
+
+  g_ptr_array_free (crtc_infos, TRUE);
+  g_ptr_array_free (output_infos, TRUE);
+
+  return TRUE;
+}
+
+static void
+meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
+						 MetaCrtcInfo      **crtcs,
+						 unsigned int        n_crtcs,
+						 MetaOutputInfo    **outputs,
+						 unsigned int        n_outputs)
+{
+  apply_crtc_assignments (manager, crtcs, n_crtcs, outputs, n_outputs);
 }
 
 static void
@@ -1587,6 +1623,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->read_current = meta_monitor_manager_xrandr_read_current;
   manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;
   manager_class->ensure_initial_config = meta_monitor_manager_xrandr_ensure_initial_config;
+  manager_class->apply_monitors_config = meta_monitor_manager_xrandr_apply_monitors_config;
   manager_class->apply_configuration = meta_monitor_manager_xrandr_apply_configuration;
   manager_class->set_power_save_mode = meta_monitor_manager_xrandr_set_power_save_mode;
   manager_class->change_backlight = meta_monitor_manager_xrandr_change_backlight;

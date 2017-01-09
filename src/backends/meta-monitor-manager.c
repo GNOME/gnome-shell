@@ -39,6 +39,7 @@
 #include "meta-monitor-config.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
+#include "backends/meta-monitor-config-manager.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
 
@@ -104,6 +105,85 @@ logical_monitor_from_layout (MetaMonitorManager *manager,
     }
 
   return NULL;
+}
+
+static MetaLogicalMonitor *
+create_logical_monitor_from_config (MetaMonitorManager       *manager,
+                                    MetaLogicalMonitorConfig *logical_monitor_config,
+                                    int                       monitor_number)
+{
+  MetaLogicalMonitor *logical_monitor;
+  GList *monitor_configs;
+  MetaMonitorConfig *first_monitor_config;
+  MetaMonitorSpec *first_monitor_spec;
+  MetaMonitor *first_monitor;
+  GList *l;
+
+  monitor_configs = logical_monitor_config->monitor_configs;
+  first_monitor_config = g_list_first (monitor_configs)->data;
+  first_monitor_spec = first_monitor_config->monitor_spec;
+  first_monitor =
+    meta_monitor_manager_get_monitor_from_spec (manager, first_monitor_spec);
+
+  /* Create logical monitor from the first monitor. */
+  logical_monitor = meta_logical_monitor_new (first_monitor,
+                                              logical_monitor_config->layout.x,
+                                              logical_monitor_config->layout.y,
+                                              monitor_number);
+
+  /* Add the other monitors. */
+  for (l = monitor_configs->next; l; l = l->next)
+    {
+      MetaMonitorConfig *monitor_config = l->data;
+      MetaMonitorSpec *monitor_spec;
+      MetaMonitor *monitor;
+
+      monitor_spec = monitor_config->monitor_spec;
+      monitor = meta_monitor_manager_get_monitor_from_spec (manager,
+                                                            monitor_spec);
+
+      meta_logical_monitor_add_monitor (logical_monitor, monitor);
+    }
+
+  return logical_monitor;
+}
+
+static void
+meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
+                                               MetaMonitorsConfig *config)
+{
+  GList *logical_monitors = NULL;
+  GList *l;
+  int monitor_number = 0;
+  MetaLogicalMonitor *primary_logical_monitor = NULL;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+      MetaLogicalMonitor *logical_monitor;
+
+      logical_monitor =
+        create_logical_monitor_from_config (manager,
+                                            logical_monitor_config,
+                                            monitor_number);
+      monitor_number++;
+
+      if (logical_monitor_config->is_primary)
+        primary_logical_monitor = logical_monitor;
+
+      logical_monitors = g_list_append (logical_monitors, logical_monitor);
+    }
+
+  /*
+   * If no monitor was marked as primary, fall back on marking the first
+   * logical monitor the primary one.
+   */
+  if (!primary_logical_monitor && logical_monitors)
+    primary_logical_monitor = g_list_first (logical_monitors)->data;
+
+  manager->logical_monitors = logical_monitors;
+  meta_monitor_manager_set_primary_logical_monitor (manager,
+                                                    primary_logical_monitor);
 }
 
 static void
@@ -206,6 +286,17 @@ meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
   META_MONITOR_MANAGER_GET_CLASS (manager)->ensure_initial_config (manager);
 }
 
+static gboolean
+meta_monitor_manager_apply_monitors_config (MetaMonitorManager *manager,
+                                            MetaMonitorsConfig *config,
+                                            GError            **error)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->apply_monitors_config (manager, config, error);
+}
+
 gboolean
 meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
 {
@@ -229,10 +320,52 @@ legacy_ensure_configured (MetaMonitorManager *manager)
     meta_monitor_config_make_default (manager->legacy_config, manager);
 }
 
-void
+MetaMonitorsConfig *
 meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
 {
-  legacy_ensure_configured (manager);
+  MetaMonitorsConfig *config = NULL;
+  GError *error = NULL;
+
+  if (!manager->config_manager)
+    {
+      legacy_ensure_configured (manager);
+      return NULL;
+    }
+
+  config = meta_monitor_config_manager_create_linear (manager->config_manager);
+  if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+    {
+      g_clear_object (&config);
+      g_warning ("Failed to use linear monitor configuration: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      goto done;
+    }
+
+  config = meta_monitor_config_manager_create_fallback (manager->config_manager);
+  if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+    {
+      g_clear_object (&config);
+      g_warning ("Failed to use fallback monitor configuration: %s",
+                 error->message);
+      g_clear_error (&error);
+    }
+  else
+    {
+      goto done;
+    }
+
+done:
+  if (!config)
+    meta_fatal ("Failed to find any working monitor configuration, giving up");
+
+  meta_monitor_config_manager_set_current (manager->config_manager, config);
+  g_object_unref (config);
+
+  return config;
 }
 
 static void
@@ -245,7 +378,10 @@ meta_monitor_manager_constructed (GObject *object)
 
   manager->in_init = TRUE;
 
-  manager->legacy_config = meta_monitor_config_new ();
+  if (g_strcmp0 (g_getenv ("MUTTER_USE_CONFIG_MANAGER"), "1") == 0)
+    manager->config_manager = meta_monitor_config_manager_new (manager);
+  else
+    manager->legacy_config = meta_monitor_config_new ();
 
   meta_monitor_manager_read_current_state (manager);
 
@@ -352,6 +488,8 @@ meta_monitor_manager_dispose (GObject *object)
       g_bus_unown_name (manager->dbus_name_id);
       manager->dbus_name_id = 0;
     }
+
+  g_clear_object (&manager->config_manager);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->dispose (object);
 }
@@ -704,7 +842,10 @@ save_config_timeout (gpointer user_data)
 {
   MetaMonitorManager *manager = user_data;
 
-  legacy_restore_previous_config (manager);
+  if (manager->config_manager)
+    g_assert (!"missing implementation");
+  else
+    legacy_restore_previous_config (manager);
 
   manager->persistent_timeout_id = 0;
   return G_SOURCE_REMOVE;
@@ -727,6 +868,14 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
   guint transform;
   guint output_index;
   GPtrArray *crtc_infos, *output_infos;
+
+  if (manager->config_manager)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Used old configuration API with new configuration system");
+      return TRUE;
+    }
 
   if (serial != manager->serial)
     {
@@ -968,7 +1117,10 @@ meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
   g_source_remove (manager->persistent_timeout_id);
   manager->persistent_timeout_id = 0;
 
-  legacy_confirm_configuration (manager, ok);
+  if (manager->config_manager)
+    g_assert (!"not implemented");
+  else
+    legacy_confirm_configuration (manager, ok);
 }
 
 static gboolean
@@ -1544,6 +1696,79 @@ meta_monitor_manager_notify_monitors_changed (MetaMonitorManager *manager)
 }
 
 static void
+set_logical_monitor_modes (MetaMonitorManager       *manager,
+                           MetaLogicalMonitorConfig *logical_monitor_config)
+{
+  GList *l;
+
+  for (l = logical_monitor_config->monitor_configs; l; l = l->next)
+    {
+      MetaMonitorConfig *monitor_config = l->data;
+      MetaMonitorSpec *monitor_spec;
+      MetaMonitor *monitor;
+      MetaMonitorModeSpec *monitor_mode_spec;
+      MetaMonitorMode *monitor_mode;
+
+      monitor_spec = monitor_config->monitor_spec;
+      monitor = meta_monitor_manager_get_monitor_from_spec (manager,
+                                                            monitor_spec);
+      monitor_mode_spec = monitor_config->mode_spec;
+      monitor_mode = meta_monitor_get_mode_from_spec (monitor,
+                                                      monitor_mode_spec);
+
+      meta_monitor_set_current_mode (monitor, monitor_mode);
+    }
+}
+
+static void
+meta_monitor_manager_update_monitor_modes (MetaMonitorManager *manager,
+                                           MetaMonitorsConfig *config)
+{
+  GList *l;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+
+      set_logical_monitor_modes (manager, logical_monitor_config);
+    }
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (!meta_monitor_get_logical_monitor (monitor))
+        meta_monitor_set_current_mode (monitor, NULL);
+    }
+}
+
+void
+meta_monitor_manager_update_logical_state (MetaMonitorManager *manager,
+                                           MetaMonitorsConfig *config)
+{
+  meta_monitor_manager_rebuild_logical_monitors (manager, config);
+  meta_monitor_manager_update_monitor_modes (manager, config);
+}
+
+void
+meta_monitor_manager_rebuild (MetaMonitorManager *manager,
+                              MetaMonitorsConfig *config)
+{
+  GList *old_logical_monitors;
+
+  if (manager->in_init)
+    return;
+
+  old_logical_monitors = manager->logical_monitors;
+
+  meta_monitor_manager_update_logical_state (manager, config);
+
+  meta_monitor_manager_notify_monitors_changed (manager);
+
+  g_list_free_full (old_logical_monitors, g_object_unref);
+}
+
+static void
 meta_monitor_manager_update_monitor_modes_derived (MetaMonitorManager *manager)
 {
   GList *l;
@@ -1664,7 +1889,13 @@ legacy_on_hotplug (MetaMonitorManager *manager)
 void
 meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
 {
-  legacy_on_hotplug (manager);
+  if (manager->legacy_config)
+    {
+      legacy_on_hotplug (manager);
+      return;
+    }
+
+  meta_monitor_manager_ensure_configured (manager);
 }
 
 static gboolean

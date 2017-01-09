@@ -581,6 +581,17 @@ meta_monitor_get_spec (MetaMonitor *monitor)
   return priv->spec;
 }
 
+MetaLogicalMonitor *
+meta_monitor_get_logical_monitor (MetaMonitor *monitor)
+{
+  MetaOutput *output = meta_monitor_get_main_output (monitor);
+
+  if (output->crtc)
+    return output->crtc->logical_monitor;
+  else
+    return NULL;
+}
+
 static gboolean
 meta_monitor_mode_spec_equals (MetaMonitorModeSpec *monitor_mode_spec,
                                MetaMonitorModeSpec *other_monitor_mode_spec)
@@ -666,6 +677,15 @@ meta_monitor_derive_current_mode (MetaMonitor *monitor)
     }
 
   priv->current_mode = current_mode;
+}
+
+void
+meta_monitor_set_current_mode (MetaMonitor     *monitor,
+                               MetaMonitorMode *mode)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  priv->current_mode = mode;
 }
 
 GList *

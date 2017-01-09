@@ -1,0 +1,74 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
+/*
+ * Copyright (C) 2016 Red Hat
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ * 02111-1307, USA.
+ */
+
+#ifndef META_MONITOR_CONFIG_MANAGER_H
+#define META_MONITOR_CONFIG_MANAGER_H
+
+#include "backends/meta-monitor.h"
+#include "backends/meta-monitor-manager-private.h"
+
+#define META_TYPE_MONITOR_CONFIG_MANAGER (meta_monitor_config_manager_get_type ())
+G_DECLARE_FINAL_TYPE (MetaMonitorConfigManager, meta_monitor_config_manager,
+                      META, MONITOR_CONFIG_MANAGER, GObject)
+
+typedef struct _MetaMonitorConfig
+{
+  MetaMonitorSpec *monitor_spec;
+  MetaMonitorModeSpec *mode_spec;
+} MetaMonitorConfig;
+
+typedef struct _MetaLogicalMonitorConfig
+{
+  MetaRectangle layout;
+  GList *monitor_configs;
+  gboolean is_primary;
+  gboolean is_presentation;
+} MetaLogicalMonitorConfig;
+
+struct _MetaMonitorsConfig
+{
+  GObject parent;
+
+  GList *logical_monitor_configs;
+};
+
+#define META_TYPE_MONITORS_CONFIG (meta_monitors_config_get_type ())
+G_DECLARE_FINAL_TYPE (MetaMonitorsConfig, meta_monitors_config,
+                      META, MONITORS_CONFIG, GObject)
+
+MetaMonitorConfigManager * meta_monitor_config_manager_new (MetaMonitorManager *monitor_manager);
+
+gboolean meta_monitor_config_manager_assign (MetaMonitorManager *manager,
+                                             MetaMonitorsConfig *config,
+                                             GPtrArray         **crtc_infos,
+                                             GPtrArray         **output_infos,
+                                             GError            **error);
+
+MetaMonitorsConfig * meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_manager);
+
+MetaMonitorsConfig * meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_manager);
+
+void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_manager,
+                                              MetaMonitorsConfig       *config);
+
+MetaMonitorsConfig * meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manager);
+
+#endif /* META_MONITOR_CONFIG_MANAGER_H */
