@@ -115,6 +115,10 @@ const char * meta_monitor_get_serial (MetaMonitor *monitor);
 
 uint32_t meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled);
 
+gboolean meta_monitor_get_suggested_position (MetaMonitor *monitor,
+                                              int         *x,
+                                              int         *y);
+
 MetaLogicalMonitor * meta_monitor_get_logical_monitor (MetaMonitor *monitor);
 
 MetaMonitorMode * meta_monitor_get_mode_from_spec (MetaMonitor         *monitor,

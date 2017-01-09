@@ -362,6 +362,23 @@ meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled)
   return monitor_tiled->tile_group_id;
 }
 
+gboolean
+meta_monitor_get_suggested_position (MetaMonitor *monitor,
+                                     int         *x,
+                                     int         *y)
+{
+  MetaOutput *main_output;
+
+  main_output = meta_monitor_get_main_output (monitor);
+  if (main_output->suggested_x < 0 && main_output->suggested_y < 0)
+    return FALSE;
+
+  *x = main_output->suggested_x;
+  *y = main_output->suggested_y;
+
+  return TRUE;
+}
+
 static void
 add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
                            MetaMonitorTiled   *monitor_tiled)
