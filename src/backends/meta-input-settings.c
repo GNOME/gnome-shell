@@ -678,6 +678,9 @@ update_keyboard_repeat (MetaInputSettings *input_settings)
   delay = g_settings_get_uint (priv->keyboard_settings, "delay");
   interval = g_settings_get_uint (priv->keyboard_settings, "repeat-interval");
 
+  delay = MAX (1, delay);
+  interval = MAX (1, interval);
+
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   input_settings_class->set_keyboard_repeat (input_settings,
                                              repeat, delay, interval);
