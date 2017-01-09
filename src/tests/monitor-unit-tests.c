@@ -1220,6 +1220,130 @@ meta_test_monitor_suggested_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_limited_crtcs (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.0
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        },
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 220,
+          .height_mm = 124
+        }
+      },
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0
+        }
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125
+        },
+        {
+          .outputs = { 1 },
+          .n_outputs = 1,
+          .modes = {
+                {
+                  .width = 1024,
+                  .height = 768,
+                  .crtc_modes = {
+                        {
+                          .output = 1,
+                          .crtc_mode = 0
+                        }
+                  }
+                }
+          },
+          .n_modes = 1,
+          .current_mode = -1,
+          .width_mm = 220,
+          .height_mm = 124
+        }
+      },
+      .n_monitors = 2,
+      .logical_monitors = {
+        {
+          .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+        },
+      },
+      .n_logical_monitors = 1,
+      .n_outputs = 2,
+      .n_crtcs = 1,
+      .n_tiled_monitors = 0,
+      .screen_width = 1024,
+      .screen_height = 768
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+
+  test_setup = create_monitor_test_setup (&test_case);
+
+  /*
+   * With the config manager, we'll get a g_warning.
+   * With the old it's just a meta_warning().
+   */
+  if (monitor_manager->config_manager)
+    {
+      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                             "Failed to use linear *");
+    }
+  emulate_hotplug (test_setup);
+  g_test_assert_expected_messages ();
+
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -1242,4 +1366,6 @@ init_monitor_tests (void)
                    meta_test_monitor_hidpi_linear_config);
   g_test_add_func ("/backends/monitor/suggested-config",
                    meta_test_monitor_suggested_config);
+  g_test_add_func ("/backends/monitor/limited-crtcs",
+                   meta_test_monitor_limited_crtcs);
 }
