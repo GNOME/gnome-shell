@@ -514,7 +514,11 @@ notify_key_repeat_for_resource (MetaWaylandKeyboard *keyboard,
           interval = g_settings_get_uint (keyboard->settings, "repeat-interval");
           /* Our setting is in the milliseconds between keys. "rate" is the number
            * of keys per second. */
-          rate = (1000 / interval);
+          if (interval > 0)
+            rate = (1000 / interval);
+          else
+            rate = 0;
+
           delay = g_settings_get_uint (keyboard->settings, "delay");
         }
       else
