@@ -291,8 +291,15 @@ meta_monitor_config_manager_assign (MetaMonitorManager *manager,
   return TRUE;
 }
 
+typedef enum _MonitorMatchRule
+{
+  MONITOR_MATCH_ALL = 0,
+  MONITOR_MATCH_EXTERNAL = (1 << 0)
+} MonitorMatchRule;
+
 static MetaMonitor *
-find_monitor_with_highest_preferred_resolution (MetaMonitorManager *monitor_manager)
+find_monitor_with_highest_preferred_resolution (MetaMonitorManager *monitor_manager,
+                                                MonitorMatchRule    match_rule)
 {
   GList *monitors;
   GList *l;
@@ -306,6 +313,12 @@ find_monitor_with_highest_preferred_resolution (MetaMonitorManager *monitor_mana
       MetaMonitorMode *mode;
       int width, height;
       int area;
+
+      if (match_rule & MONITOR_MATCH_EXTERNAL)
+        {
+          if (meta_monitor_is_laptop_panel (monitor))
+            continue;
+        }
 
       mode = meta_monitor_get_preferred_mode (monitor);
       meta_monitor_mode_get_resolution (mode, &width, &height);
@@ -322,24 +335,48 @@ find_monitor_with_highest_preferred_resolution (MetaMonitorManager *monitor_mana
 }
 
 /*
- * Tries to find the primary monitor as reported by the underlying system;
- * or failing that, a monitor looks to be the laptop panel; or failing that, the
- * monitor with the highest preferred resolution.
+ * Try to find the primary monitor. The priority of classification is:
+ *
+ * 1. Find the primary monitor as reported by the underlying system,
+ * 2. Find the laptop panel
+ * 3. Find the external monitor with highest resolution
+ *
+ * If the laptop lid is closed, exclude the laptop panel from possible
+ * alternatives, except if no other alternatives exist.
  */
 static MetaMonitor *
 find_primary_monitor (MetaMonitorManager *monitor_manager)
 {
   MetaMonitor *monitor;
 
-  monitor = meta_monitor_manager_get_primary_monitor (monitor_manager);
-  if (monitor)
-    return monitor;
+  if (meta_monitor_manager_is_lid_closed (monitor_manager))
+    {
+      monitor = meta_monitor_manager_get_primary_monitor (monitor_manager);
+      if (monitor && !meta_monitor_is_laptop_panel (monitor))
+        return monitor;
 
-  monitor = meta_monitor_manager_get_laptop_panel (monitor_manager);
-  if (monitor)
-    return monitor;
+      monitor =
+        find_monitor_with_highest_preferred_resolution (monitor_manager,
+                                                        MONITOR_MATCH_EXTERNAL);
+      if (monitor)
+        return monitor;
 
-  return find_monitor_with_highest_preferred_resolution (monitor_manager);
+      return find_monitor_with_highest_preferred_resolution (monitor_manager,
+                                                             MONITOR_MATCH_ALL);
+    }
+  else
+    {
+      monitor = meta_monitor_manager_get_primary_monitor (monitor_manager);
+      if (monitor)
+        return monitor;
+
+      monitor = meta_monitor_manager_get_laptop_panel (monitor_manager);
+      if (monitor)
+        return monitor;
+
+      return find_monitor_with_highest_preferred_resolution (monitor_manager,
+                                                             MONITOR_MATCH_ALL);
+    }
 }
 
 static MetaMonitorConfig *
@@ -419,6 +456,10 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
       MetaLogicalMonitorConfig *logical_monitor_config;
 
       if (monitor == primary_monitor)
+        continue;
+
+      if (meta_monitor_is_laptop_panel (monitor) &&
+          meta_monitor_manager_is_lid_closed (monitor_manager))
         continue;
 
       logical_monitor_config =

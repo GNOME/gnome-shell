@@ -284,6 +284,9 @@ power_save_mode_changed (MetaMonitorManager *manager,
 void
 meta_monitor_manager_lid_is_closed_changed (MetaMonitorManager *manager)
 {
+  if (manager->config_manager)
+    meta_monitor_manager_ensure_configured (manager);
+
   g_signal_emit (manager, signals[LID_IS_CLOSED_CHANGED], 0);
 }
 
