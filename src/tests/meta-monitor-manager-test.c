@@ -27,6 +27,8 @@ struct _MetaMonitorManagerTest
 {
   MetaMonitorManager parent;
 
+  gboolean is_lid_closed;
+
   int tiled_monitor_count;
 
   MetaMonitorTestSetup *test_setup;
@@ -59,6 +61,13 @@ meta_monitor_manager_test_emulate_hotplug (MetaMonitorManagerTest *manager_test,
   g_free (old_test_setup);
 }
 
+void
+meta_monitor_manager_test_set_is_lid_closed (MetaMonitorManagerTest *manager_test,
+                                             gboolean                is_lid_closed)
+{
+  manager_test->is_lid_closed = is_lid_closed;
+}
+
 int
 meta_monitor_manager_test_get_tiled_monitor_count (MetaMonitorManagerTest *manager_test)
 {
@@ -88,7 +97,9 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 static gboolean
 meta_monitor_manager_test_is_lid_closed (MetaMonitorManager *manager)
 {
-  return FALSE;
+  MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
+
+  return manager_test->is_lid_closed;
 }
 
 static void

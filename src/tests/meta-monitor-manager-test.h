@@ -41,6 +41,9 @@ void meta_monitor_manager_test_init_test_setup (MetaMonitorTestSetup *test_setup
 void meta_monitor_manager_test_emulate_hotplug (MetaMonitorManagerTest *manager_test,
                                                 MetaMonitorTestSetup   *test_setup);
 
+void meta_monitor_manager_test_set_is_lid_closed (MetaMonitorManagerTest *manager_test,
+                                                  gboolean                is_lid_closed);
+
 int meta_monitor_manager_test_get_tiled_monitor_count (MetaMonitorManagerTest *manager_test);
 
 #endif /* META_MONITOR_MANAGER_TEST_H */
