@@ -39,7 +39,6 @@
 
 #include <string.h>
 #include <clutter/clutter.h>
-#include <libupower-glib/upower.h>
 
 #include <meta/main.h>
 #include <meta/errors.h>
@@ -87,7 +86,6 @@ struct _MetaMonitorConfig {
   GFile *system_file;
   GCancellable *save_cancellable;
 
-  UpClient *up_client;
   gboolean lid_is_closed;
 };
 
@@ -98,8 +96,7 @@ static gboolean meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
                                                   GPtrArray          *crtcs,
                                                   GPtrArray          *outputs);
 
-static void     power_client_changed_cb (UpClient   *client,
-                                         GParamSpec *pspec,
+static void     power_client_changed_cb (MetaMonitorManager *manager,
                                          gpointer    user_data);
 
 static void
@@ -255,12 +252,6 @@ meta_monitor_config_init (MetaMonitorConfig *self)
         self->system_file = g_file_new_for_path (path);
       g_free (path);
     }
-
-  self->up_client = up_client_new ();
-  self->lid_is_closed = up_client_get_lid_is_closed (self->up_client);
-
-  g_signal_connect_object (self->up_client, "notify::lid-is-closed",
-                           G_CALLBACK (power_client_changed_cb), self, 0);
 }
 
 static void
@@ -796,11 +787,16 @@ meta_monitor_config_load (MetaMonitorConfig *self)
 }
 
 MetaMonitorConfig *
-meta_monitor_config_new (void)
+meta_monitor_config_new (MetaMonitorManager *manager)
 {
   MetaMonitorConfig *self;
 
   self = g_object_new (META_TYPE_MONITOR_CONFIG, NULL);
+
+  self->lid_is_closed = meta_monitor_manager_is_lid_closed (manager);
+  g_signal_connect_object (manager, "lid-is-closed-changed",
+                           G_CALLBACK (power_client_changed_cb), self, 0);
+
   meta_monitor_config_load (self);
 
   return self;
@@ -1568,15 +1564,13 @@ turn_off_laptop_display (MetaMonitorConfig  *self,
 }
 
 static void
-power_client_changed_cb (UpClient   *client,
-                         GParamSpec *pspec,
-                         gpointer    user_data)
+power_client_changed_cb (MetaMonitorManager *manager,
+                         gpointer            user_data)
 {
-  MetaMonitorManager *manager = meta_monitor_manager_get ();
   MetaMonitorConfig *self = user_data;
   gboolean is_closed;
 
-  is_closed = up_client_get_lid_is_closed (self->up_client);
+  is_closed = meta_monitor_manager_is_lid_closed (manager);
 
   if (is_closed != self->lid_is_closed)
     {

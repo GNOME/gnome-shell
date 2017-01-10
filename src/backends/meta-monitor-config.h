@@ -29,7 +29,7 @@
 G_DECLARE_FINAL_TYPE (MetaMonitorConfig, meta_monitor_config,
                       META, MONITOR_CONFIG, GObject)
 
-MetaMonitorConfig *meta_monitor_config_new (void);
+MetaMonitorConfig *meta_monitor_config_new (MetaMonitorManager *manager);
 
 gboolean           meta_monitor_config_apply_stored (MetaMonitorConfig  *config,
                                                      MetaMonitorManager *manager);

@@ -45,6 +45,7 @@
 
 enum {
   CONFIRM_DISPLAY_CHANGE,
+  LID_IS_CLOSED_CHANGED,
   SIGNALS_LAST
 };
 
@@ -280,6 +281,34 @@ power_save_mode_changed (MetaMonitorManager *manager,
   manager->power_save_mode = mode;
 }
 
+void
+meta_monitor_manager_lid_is_closed_changed (MetaMonitorManager *manager)
+{
+  g_signal_emit (manager, signals[LID_IS_CLOSED_CHANGED], 0);
+}
+
+static void
+lid_is_closed_changed (UpClient   *client,
+                       GParamSpec *pspec,
+                       gpointer    user_data)
+{
+  MetaMonitorManager *manager = user_data;
+
+  meta_monitor_manager_lid_is_closed_changed (manager);
+}
+
+static gboolean
+meta_monitor_manager_real_is_lid_closed (MetaMonitorManager *manager)
+{
+  return up_client_get_lid_is_closed (manager->up_client);
+}
+
+gboolean
+meta_monitor_manager_is_lid_closed (MetaMonitorManager *manager)
+{
+  return META_MONITOR_MANAGER_GET_CLASS (manager)->is_lid_closed (manager);
+}
+
 static void
 meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 {
@@ -388,6 +417,15 @@ static void
 meta_monitor_manager_constructed (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  if (manager_class->is_lid_closed == meta_monitor_manager_real_is_lid_closed)
+    {
+      manager->up_client = up_client_new ();
+      g_signal_connect_object (manager->up_client, "notify::lid-is-closed",
+                               G_CALLBACK (lid_is_closed_changed), manager, 0);
+    }
 
   g_signal_connect_object (manager, "notify::power-save-mode",
                            G_CALLBACK (power_save_mode_changed), manager, 0);
@@ -397,7 +435,7 @@ meta_monitor_manager_constructed (GObject *object)
   if (g_strcmp0 (g_getenv ("MUTTER_USE_CONFIG_MANAGER"), "1") == 0)
     manager->config_manager = meta_monitor_config_manager_new (manager);
   else
-    manager->legacy_config = meta_monitor_config_new ();
+    manager->legacy_config = meta_monitor_config_new (manager);
 
   meta_monitor_manager_read_current_state (manager);
 
@@ -506,6 +544,7 @@ meta_monitor_manager_dispose (GObject *object)
     }
 
   g_clear_object (&manager->config_manager);
+  g_clear_object (&manager->up_client);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->dispose (object);
 }
@@ -535,9 +574,18 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 
   klass->get_edid_file = meta_monitor_manager_real_get_edid_file;
   klass->read_edid = meta_monitor_manager_real_read_edid;
+  klass->is_lid_closed = meta_monitor_manager_real_is_lid_closed;
 
   signals[CONFIRM_DISPLAY_CHANGE] =
     g_signal_new ("confirm-display-change",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  0,
+                  NULL, NULL, NULL,
+		  G_TYPE_NONE, 0);
+
+  signals[LID_IS_CLOSED_CHANGED] =
+    g_signal_new ("lid-is-closed-changed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  0,

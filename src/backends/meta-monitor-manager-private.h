@@ -37,6 +37,7 @@
 
 #include <cogl/cogl.h>
 #include <libgnome-desktop/gnome-pnp-ids.h>
+#include <libupower-glib/upower.h>
 
 #include "display-private.h"
 #include <meta/screen.h>
@@ -289,6 +290,7 @@ struct _MetaMonitorManager
   MetaMonitorConfigManager *config_manager;
 
   GnomePnpIds *pnp_ids;
+  UpClient *up_client;
 };
 
 struct _MetaMonitorManagerClass
@@ -301,6 +303,8 @@ struct _MetaMonitorManagerClass
                           MetaOutput         *);
   GBytes* (*read_edid) (MetaMonitorManager *,
                         MetaOutput         *);
+
+  gboolean (*is_lid_closed) (MetaMonitorManager *);
 
   void (*ensure_initial_config) (MetaMonitorManager *);
 
@@ -428,6 +432,10 @@ MetaMonitorsConfig * meta_monitor_manager_ensure_configured (MetaMonitorManager 
 void               meta_monitor_manager_update_logical_state (MetaMonitorManager *manager,
                                                               MetaMonitorsConfig *config);
 void               meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager);
+
+gboolean           meta_monitor_manager_is_lid_closed (MetaMonitorManager *manager);
+
+void               meta_monitor_manager_lid_is_closed_changed (MetaMonitorManager *manager);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);
