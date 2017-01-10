@@ -85,6 +85,12 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
   manager->n_outputs = manager_test->test_setup->n_outputs;
 }
 
+static gboolean
+meta_monitor_manager_test_is_lid_closed (MetaMonitorManager *manager)
+{
+  return FALSE;
+}
+
 static void
 meta_monitor_manager_test_ensure_initial_config (MetaMonitorManager *manager)
 {
@@ -334,6 +340,7 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
   object_class->dispose = meta_monitor_manager_test_dispose;
 
   manager_class->read_current = meta_monitor_manager_test_read_current;
+  manager_class->is_lid_closed = meta_monitor_manager_test_is_lid_closed;
   manager_class->ensure_initial_config = meta_monitor_manager_test_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_test_apply_monitors_config;
   manager_class->apply_configuration = meta_monitor_manager_test_apply_configuration;
