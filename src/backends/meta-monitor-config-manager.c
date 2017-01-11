@@ -431,8 +431,8 @@ MetaMonitorsConfig *
 meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_manager)
 {
   MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
+  GList *logical_monitor_configs;
   MetaMonitor *primary_monitor;
-  MetaMonitorsConfig *config;
   MetaLogicalMonitorConfig *primary_logical_monitor_config;
   int x;
   GList *monitors;
@@ -440,13 +440,11 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
 
   primary_monitor = find_primary_monitor (monitor_manager);
 
-  config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
-
   primary_logical_monitor_config =
     create_preferred_logical_monitor_config (primary_monitor, 0, 0);
   primary_logical_monitor_config->is_primary = TRUE;
-  config->logical_monitor_configs =
-    g_list_append (NULL, primary_logical_monitor_config);
+  logical_monitor_configs = g_list_append (NULL,
+                                           primary_logical_monitor_config);
 
   x = primary_logical_monitor_config->layout.width;
   monitors = meta_monitor_manager_get_monitors (monitor_manager);
@@ -464,13 +462,13 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
 
       logical_monitor_config =
         create_preferred_logical_monitor_config (monitor, x, 0);
-      config->logical_monitor_configs =
-        g_list_append (config->logical_monitor_configs, logical_monitor_config);
+      logical_monitor_configs = g_list_append (logical_monitor_configs,
+                                               logical_monitor_config);
 
       x += logical_monitor_config->layout.width;
     }
 
-  return config;
+  return meta_monitors_config_new (logical_monitor_configs);
 }
 
 MetaMonitorsConfig *
@@ -478,27 +476,24 @@ meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_ma
 {
   MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
   MetaMonitor *primary_monitor;
-  MetaMonitorsConfig *config;
+  GList *logical_monitor_configs;
   MetaLogicalMonitorConfig *primary_logical_monitor_config;
 
   primary_monitor = find_primary_monitor (monitor_manager);
 
-  config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
-
   primary_logical_monitor_config =
     create_preferred_logical_monitor_config (primary_monitor, 0, 0);
   primary_logical_monitor_config->is_primary = TRUE;
-  config->logical_monitor_configs =
-    g_list_append (NULL, primary_logical_monitor_config);
+  logical_monitor_configs = g_list_append (NULL,
+                                           primary_logical_monitor_config);
 
-  return config;
+  return meta_monitors_config_new (logical_monitor_configs);
 }
 
 MetaMonitorsConfig *
 meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_manager)
 {
   MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
-  MetaMonitorsConfig *config;
   MetaLogicalMonitorConfig *primary_logical_monitor_config = NULL;
   MetaMonitor *primary_monitor;
   GList *logical_monitor_configs;
@@ -554,11 +549,7 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
 
   primary_logical_monitor_config->is_primary = TRUE;
 
-  config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
-
-  config->logical_monitor_configs = logical_monitor_configs;
-
-  return config;
+  return meta_monitors_config_new (logical_monitor_configs);
 }
 
 void
@@ -612,6 +603,17 @@ meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor_conf
   g_list_free_full (logical_monitor_config->monitor_configs,
                     (GDestroyNotify) meta_monitor_config_free);
   g_free (logical_monitor_config);
+}
+
+MetaMonitorsConfig *
+meta_monitors_config_new (GList *logical_monitor_configs)
+{
+  MetaMonitorsConfig *config;
+
+  config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
+  config->logical_monitor_configs = logical_monitor_configs;
+
+  return config;
 }
 
 static void

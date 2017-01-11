@@ -73,4 +73,6 @@ void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_m
 
 MetaMonitorsConfig * meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manager);
 
+MetaMonitorsConfig * meta_monitors_config_new (GList *logical_monitor_configs);
+
 #endif /* META_MONITOR_CONFIG_MANAGER_H */
