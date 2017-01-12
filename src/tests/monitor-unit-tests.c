@@ -1664,6 +1664,93 @@ meta_test_monitor_lid_opened_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_lid_closed_no_external (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.0
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = 0,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .is_laptop_panel = TRUE
+        }
+      },
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0
+        }
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+        }
+      },
+      .n_logical_monitors = 1,
+      .n_outputs = 1,
+      .n_crtcs = 1,
+      .n_tiled_monitors = 0,
+      .screen_width = 1024,
+      .screen_height = 768
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerTest *monitor_manager_test =
+    META_MONITOR_MANAGER_TEST (monitor_manager);
+
+  test_setup = create_monitor_test_setup (&test_case);
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
+
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -1692,4 +1779,6 @@ init_monitor_tests (void)
                    meta_test_monitor_lid_switch_config);
   g_test_add_func ("/backends/monitor/lid-opened-config",
                    meta_test_monitor_lid_opened_config);
+  g_test_add_func ("/backends/monitor/lid-closed-no-external",
+                   meta_test_monitor_lid_closed_no_external);
 }
