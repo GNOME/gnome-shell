@@ -207,20 +207,6 @@ init_tests (int argc, char **argv)
 int
 main (int argc, char *argv[])
 {
-  GOptionContext *ctx;
-  GError *error = NULL;
-
-  ctx = g_option_context_new (NULL);
-
-  if (!g_option_context_parse (ctx,
-                               &argc, &argv, &error))
-    {
-      g_printerr ("%s", error->message);
-      return 1;
-    }
-
-  g_option_context_free (ctx);
-
   init_tests (argc, argv);
 
   meta_plugin_manager_load ("default");
