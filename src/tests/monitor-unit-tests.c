@@ -333,17 +333,29 @@ check_monitor_configuration (MonitorTestCase *test_case)
   GList *l;
   int i;
 
-  g_assert (monitor_manager->screen_width == test_case->expect.screen_width);
-  g_assert (monitor_manager->screen_height == test_case->expect.screen_height);
-  g_assert ((int) monitor_manager->n_outputs == test_case->expect.n_outputs);
-  g_assert ((int) monitor_manager->n_crtcs == test_case->expect.n_crtcs);
+  g_assert_cmpint (monitor_manager->screen_width,
+                   ==,
+                   test_case->expect.screen_width);
+  g_assert_cmpint (monitor_manager->screen_height,
+                   ==,
+                   test_case->expect.screen_height);
+  g_assert_cmpint ((int) monitor_manager->n_outputs,
+                   ==,
+                   test_case->expect.n_outputs);
+  g_assert_cmpint ((int) monitor_manager->n_crtcs,
+                   ==,
+                   test_case->expect.n_crtcs);
 
   tiled_monitor_count =
     meta_monitor_manager_test_get_tiled_monitor_count (monitor_manager_test);
-  g_assert (tiled_monitor_count == test_case->expect.n_tiled_monitors);
+  g_assert_cmpint (tiled_monitor_count,
+                   ==,
+                   test_case->expect.n_tiled_monitors);
 
   monitors = meta_monitor_manager_get_monitors (monitor_manager);
-  g_assert ((int) g_list_length (monitors) == test_case->expect.n_monitors);
+  g_assert_cmpint ((int) g_list_length (monitors),
+                   ==,
+                   test_case->expect.n_monitors);
   for (l = monitors, i = 0; l; l = l->next, i++)
     {
       MetaMonitor *monitor = l->data;
@@ -359,8 +371,9 @@ check_monitor_configuration (MonitorTestCase *test_case)
 
       outputs = meta_monitor_get_outputs (monitor);
 
-      g_assert ((int) g_list_length (outputs) ==
-                test_case->expect.monitors[i].n_outputs);
+      g_assert_cmpint ((int) g_list_length (outputs),
+                       ==,
+                       test_case->expect.monitors[i].n_outputs);
 
       for (l_output = outputs, j = 0; l_output; l_output = l_output->next, j++)
         {
@@ -372,8 +385,12 @@ check_monitor_configuration (MonitorTestCase *test_case)
         }
 
       meta_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
-      g_assert (width_mm == test_case->expect.monitors[i].width_mm);
-      g_assert (height_mm == test_case->expect.monitors[i].height_mm);
+      g_assert_cmpint (width_mm,
+                       ==,
+                       test_case->expect.monitors[i].width_mm);
+      g_assert_cmpint (height_mm,
+                       ==,
+                       test_case->expect.monitors[i].height_mm);
 
       modes = meta_monitor_get_modes (monitor);
       for (l_mode = modes, j = 0; l_mode; l_mode = l_mode->next, j++)
@@ -385,8 +402,12 @@ check_monitor_configuration (MonitorTestCase *test_case)
 
           meta_monitor_mode_get_resolution (mode, &width, &height);
 
-          g_assert (width == test_case->expect.monitors[i].modes[j].width);
-          g_assert (height == test_case->expect.monitors[i].modes[j].height);
+          g_assert_cmpint (width,
+                           ==,
+                           test_case->expect.monitors[i].modes[j].width);
+          g_assert_cmpint (height,
+                           ==,
+                           test_case->expect.monitors[i].modes[j].height);
 
           data = (CheckMonitorModeData) {
             .monitor_manager = monitor_manager,
@@ -415,7 +436,9 @@ check_monitor_configuration (MonitorTestCase *test_case)
 
   n_logical_monitors =
     meta_monitor_manager_get_num_logical_monitors (monitor_manager);
-  g_assert (n_logical_monitors == test_case->expect.n_logical_monitors);
+  g_assert_cmpint (n_logical_monitors,
+                   ==,
+                   test_case->expect.n_logical_monitors);
 
   logical_monitors =
     meta_monitor_manager_get_logical_monitors (monitor_manager);
@@ -427,13 +450,21 @@ check_monitor_configuration (MonitorTestCase *test_case)
       GList *monitors;
       GList *l_monitor;
 
-      g_assert (logical_monitor->rect.x == test_logical_monitor->layout.x);
-      g_assert (logical_monitor->rect.y == test_logical_monitor->layout.y);
-      g_assert (logical_monitor->rect.width ==
-                test_logical_monitor->layout.width);
-      g_assert (logical_monitor->rect.height ==
-                test_logical_monitor->layout.height);
-      g_assert (logical_monitor->scale == test_logical_monitor->scale);
+      g_assert_cmpint (logical_monitor->rect.x,
+                       ==,
+                       test_logical_monitor->layout.x);
+      g_assert_cmpint (logical_monitor->rect.y,
+                       ==,
+                       test_logical_monitor->layout.y);
+      g_assert_cmpint (logical_monitor->rect.width,
+                       ==,
+                       test_logical_monitor->layout.width);
+      g_assert_cmpint (logical_monitor->rect.height,
+                       ==,
+                       test_logical_monitor->layout.height);
+      g_assert_cmpint (logical_monitor->scale,
+                       ==,
+                       test_logical_monitor->scale);
 
       monitors = meta_logical_monitor_get_monitors (logical_monitor);
       for (l_monitor = monitors; l_monitor; l_monitor = l_monitor->next)
@@ -451,7 +482,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
             }
         }
     }
-  g_assert (n_logical_monitors == i);
+  g_assert_cmpint (n_logical_monitors, ==, i);
 }
 
 static MetaMonitorTestSetup *
