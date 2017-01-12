@@ -589,9 +589,9 @@ create_monitor_test_setup (MonitorTestCase *test_case)
                                                     ++n_laptop_panels)
                                  : g_strdup_printf ("DP-%d",
                                                     ++n_normal_panels)),
-        .vendor = g_strdup ("MetaProducts Inc."),
-        .product = g_strdup ("unknown"),
-        .serial = g_strdup ("0xC0FFEE"),
+        .vendor = g_strdup ("MetaProduct's Inc."),
+        .product = g_strdup ("MetaMonitor"),
+        .serial = g_strdup ("0x123456"),
         .suggested_x = -1,
         .suggested_y = -1,
         .hotplug_mode_update = TRUE, /* Results in config being ignored */

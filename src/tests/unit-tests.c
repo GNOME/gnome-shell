@@ -29,6 +29,7 @@
 #include "core/main-private.h"
 #include "tests/meta-backend-test.h"
 #include "tests/monitor-unit-tests.h"
+#include "tests/monitor-store-unit-tests.h"
 #include "wayland/meta-wayland.h"
 
 typedef struct _MetaTestLaterOrderCallbackData
@@ -201,6 +202,7 @@ init_tests (int argc, char **argv)
   g_test_add_func ("/util/meta-later/schedule-from-later",
                    meta_test_util_later_schedule_from_later);
 
+  init_monitor_store_tests ();
   init_monitor_tests ();
 }
 
