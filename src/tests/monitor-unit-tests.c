@@ -1751,6 +1751,43 @@ meta_test_monitor_lid_closed_no_external (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_no_outputs (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .n_modes = 0,
+      .n_outputs = 0,
+      .n_crtcs = 0
+    },
+
+    .expect = {
+      .n_monitors = 0,
+      .n_logical_monitors = 0,
+      .n_outputs = 0,
+      .n_crtcs = 0,
+      .n_tiled_monitors = 0,
+      .screen_width = 1024,
+      .screen_height = 768
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+
+  if (!monitor_manager->config_manager)
+    {
+      g_test_skip ("Only the new monitor config manager handles this case.");
+      return;
+    }
+
+  test_setup = create_monitor_test_setup (&test_case);
+
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -1781,4 +1818,6 @@ init_monitor_tests (void)
                    meta_test_monitor_lid_opened_config);
   g_test_add_func ("/backends/monitor/lid-closed-no-external",
                    meta_test_monitor_lid_closed_no_external);
+  g_test_add_func ("/backends/monitor/no-outputs",
+                   meta_test_monitor_no_outputs);
 }
