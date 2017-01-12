@@ -271,9 +271,82 @@ meta_test_monitor_store_single (void)
   check_monitor_configurations (config_store, &expect);
 }
 
+static void
+meta_test_monitor_store_vertical (void)
+{
+  MetaMonitorConfigStore *config_store;
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 0,
+              .width = 1024,
+              .height = 768
+            },
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1024,
+                  .height = 768,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          },
+          {
+            .layout = {
+              .x = 0,
+              .y = 768,
+              .width = 800,
+              .height = 600
+            },
+            .monitors = {
+              {
+                .connector = "DP-2",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 800,
+                  .height = 600,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          }
+        },
+        .n_logical_monitors = 2
+      }
+    },
+    .n_configurations = 1
+  };
+
+  config_store = get_monitor_config_store ();
+  if (!config_store)
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  set_custom_test_file (config_store, "vertical.xml");
+
+  check_monitor_configurations (config_store, &expect);
+}
+
 void
 init_monitor_store_tests (void)
 {
   g_test_add_func ("/backends/monitor-store/single",
                    meta_test_monitor_store_single);
+  g_test_add_func ("/backends/monitor-store/vertical",
+                   meta_test_monitor_store_vertical);
 }
