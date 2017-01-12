@@ -103,6 +103,27 @@ meta_monitor_spec_equals (MetaMonitorSpec *monitor_spec,
           g_str_equal (monitor_spec->serial, other_monitor_spec->serial));
 }
 
+int
+meta_monitor_spec_compare (MetaMonitorSpec *monitor_spec_a,
+                           MetaMonitorSpec *monitor_spec_b)
+{
+  int ret;
+
+  ret = strcmp (monitor_spec_a->connector, monitor_spec_b->connector);
+  if (ret != 0)
+    return ret;
+
+  ret = strcmp (monitor_spec_a->vendor, monitor_spec_b->vendor);
+  if (ret != 0)
+    return ret;
+
+  ret = strcmp (monitor_spec_a->product, monitor_spec_b->product);
+  if (ret != 0)
+    return ret;
+
+  return strcmp (monitor_spec_a->serial, monitor_spec_b->serial);
+}
+
 void
 meta_monitor_spec_free (MetaMonitorSpec *monitor_spec)
 {

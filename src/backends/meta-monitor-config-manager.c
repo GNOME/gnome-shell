@@ -23,6 +23,7 @@
 
 #include "backends/meta-monitor-config-manager.h"
 
+#include "backends/meta-monitor-config-store.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "core/boxes-private.h"
 
@@ -31,6 +32,8 @@ struct _MetaMonitorConfigManager
   GObject parent;
 
   MetaMonitorManager *monitor_manager;
+
+  MetaMonitorConfigStore *config_store;
 
   MetaMonitorsConfig *current_config;
 };
@@ -41,9 +44,6 @@ G_DEFINE_TYPE (MetaMonitorConfigManager, meta_monitor_config_manager,
 G_DEFINE_TYPE (MetaMonitorsConfig, meta_monitors_config,
                G_TYPE_OBJECT)
 
-static void
-meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor_config);
-
 MetaMonitorConfigManager *
 meta_monitor_config_manager_new (MetaMonitorManager *monitor_manager)
 {
@@ -51,8 +51,16 @@ meta_monitor_config_manager_new (MetaMonitorManager *monitor_manager)
 
   config_manager = g_object_new (META_TYPE_MONITOR_CONFIG_MANAGER, NULL);
   config_manager->monitor_manager = monitor_manager;
+  config_manager->config_store = g_object_new (META_TYPE_MONITOR_CONFIG_STORE,
+                                               NULL);
 
   return config_manager;
+}
+
+MetaMonitorConfigStore *
+meta_monitor_config_manager_get_store (MetaMonitorConfigManager *config_manager)
+{
+  return config_manager->config_store;
 }
 
 static gboolean
@@ -593,7 +601,7 @@ meta_monitor_config_manager_class_init (MetaMonitorConfigManagerClass *klass)
   object_class->dispose = meta_monitor_config_manager_dispose;
 }
 
-static void
+void
 meta_monitor_config_free (MetaMonitorConfig *monitor_config)
 {
   meta_monitor_spec_free (monitor_config->monitor_spec);
@@ -601,12 +609,100 @@ meta_monitor_config_free (MetaMonitorConfig *monitor_config)
   g_free (monitor_config);
 }
 
-static void
+void
 meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor_config)
 {
   g_list_free_full (logical_monitor_config->monitor_configs,
                     (GDestroyNotify) meta_monitor_config_free);
   g_free (logical_monitor_config);
+}
+
+static MetaMonitorsConfigKey *
+meta_monitors_config_key_new (GList *logical_monitor_configs)
+{
+  MetaMonitorsConfigKey *config_key;
+  GList *monitor_specs;
+  GList *l;
+
+  monitor_specs = NULL;
+  for (l = logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+      GList *k;
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        {
+          MetaMonitorConfig *monitor_config = k->data;
+          MetaMonitorSpec *monitor_spec;
+
+          monitor_spec = meta_monitor_spec_clone (monitor_config->monitor_spec);
+          monitor_specs = g_list_prepend (monitor_specs, monitor_spec);
+        }
+    }
+
+  monitor_specs = g_list_sort (monitor_specs,
+                               (GCompareFunc) meta_monitor_spec_compare);
+
+  config_key = g_new0 (MetaMonitorsConfigKey, 1);
+  *config_key = (MetaMonitorsConfigKey) {
+    .monitor_specs = monitor_specs
+  };
+
+  return config_key;
+}
+
+void
+meta_monitors_config_key_free (MetaMonitorsConfigKey *config_key)
+{
+  g_list_free_full (config_key->monitor_specs,
+                    (GDestroyNotify) meta_monitor_spec_free);
+  g_free (config_key);
+}
+
+unsigned int
+meta_monitors_config_key_hash (gconstpointer data)
+{
+  const MetaMonitorsConfigKey *config_key = data;
+  GList *l;
+  unsigned long hash;
+
+  hash = 0;
+  for (l = config_key->monitor_specs; l; l = l->next)
+    {
+      MetaMonitorSpec *monitor_spec = l->data;
+
+      hash ^= (g_str_hash (monitor_spec->connector) ^
+               g_str_hash (monitor_spec->vendor) ^
+               g_str_hash (monitor_spec->product) ^
+               g_str_hash (monitor_spec->serial));
+    }
+
+  return hash;
+}
+
+gboolean
+meta_monitors_config_key_equal (gconstpointer data_a,
+                                gconstpointer data_b)
+{
+  const MetaMonitorsConfigKey *config_key_a = data_a;
+  const MetaMonitorsConfigKey *config_key_b = data_b;
+  GList *l_a, *l_b;
+
+  for (l_a = config_key_a->monitor_specs, l_b = config_key_b->monitor_specs;
+       l_a && l_b;
+       l_a = l_a->next, l_b = l_b->next)
+    {
+      MetaMonitorSpec *monitor_spec_a = l_a->data;
+      MetaMonitorSpec *monitor_spec_b = l_b->data;
+
+      if (!meta_monitor_spec_equals (monitor_spec_a, monitor_spec_b))
+        return FALSE;
+    }
+
+  if (l_b || l_b)
+    return FALSE;
+
+  return TRUE;
 }
 
 MetaMonitorsConfig *
@@ -616,6 +712,7 @@ meta_monitors_config_new (GList *logical_monitor_configs)
 
   config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
   config->logical_monitor_configs = logical_monitor_configs;
+  config->key = meta_monitors_config_key_new (logical_monitor_configs);
 
   return config;
 }
@@ -625,6 +722,7 @@ meta_monitors_config_finalize (GObject *object)
 {
   MetaMonitorsConfig *config = META_MONITORS_CONFIG (object);
 
+  meta_monitors_config_key_free (config->key);
   g_list_free_full (config->logical_monitor_configs,
                     (GDestroyNotify) meta_logical_monitor_config_free);
 }

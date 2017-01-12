@@ -50,6 +50,7 @@
 
 typedef struct _MetaMonitorConfig MetaMonitorConfig;
 typedef struct _MetaMonitorConfigManager MetaMonitorConfigManager;
+typedef struct _MetaMonitorConfigStore MetaMonitorConfigStore;
 typedef struct _MetaMonitorsConfig MetaMonitorsConfig;
 
 typedef struct _MetaMonitor MetaMonitor;

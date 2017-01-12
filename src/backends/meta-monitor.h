@@ -154,6 +154,9 @@ MetaMonitorSpec * meta_monitor_spec_clone (MetaMonitorSpec *monitor_id);
 gboolean meta_monitor_spec_equals (MetaMonitorSpec *monitor_id,
                                    MetaMonitorSpec *other_monitor_id);
 
+int meta_monitor_spec_compare (MetaMonitorSpec *monitor_spec_a,
+                               MetaMonitorSpec *monitor_spec_b);
+
 void meta_monitor_spec_free (MetaMonitorSpec *monitor_id);
 
 #endif /* META_MONITOR_H */

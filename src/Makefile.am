@@ -107,6 +107,8 @@ libmutter_la_SOURCES =				\
 	backends/meta-monitor-config.h		\
 	backends/meta-monitor-config-manager.c	\
 	backends/meta-monitor-config-manager.h	\
+	backends/meta-monitor-config-store.c	\
+	backends/meta-monitor-config-store.h	\
 	backends/meta-monitor.c			\
 	backends/meta-monitor.h			\
 	backends/meta-monitor-private.h		\

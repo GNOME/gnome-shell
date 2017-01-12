@@ -43,10 +43,16 @@ typedef struct _MetaLogicalMonitorConfig
   gboolean is_presentation;
 } MetaLogicalMonitorConfig;
 
+typedef struct _MetaMonitorsConfigKey
+{
+  GList *monitor_specs;
+} MetaMonitorsConfigKey;
+
 struct _MetaMonitorsConfig
 {
   GObject parent;
 
+  MetaMonitorsConfigKey *key;
   GList *logical_monitor_configs;
 };
 
@@ -55,6 +61,8 @@ G_DECLARE_FINAL_TYPE (MetaMonitorsConfig, meta_monitors_config,
                       META, MONITORS_CONFIG, GObject)
 
 MetaMonitorConfigManager * meta_monitor_config_manager_new (MetaMonitorManager *monitor_manager);
+
+MetaMonitorConfigStore * meta_monitor_config_manager_get_store (MetaMonitorConfigManager *config_manager);
 
 gboolean meta_monitor_config_manager_assign (MetaMonitorManager *manager,
                                              MetaMonitorsConfig *config,
@@ -74,5 +82,16 @@ void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_m
 MetaMonitorsConfig * meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manager);
 
 MetaMonitorsConfig * meta_monitors_config_new (GList *logical_monitor_configs);
+
+unsigned int meta_monitors_config_key_hash (gconstpointer config_key);
+
+gboolean meta_monitors_config_key_equal (gconstpointer config_key_a,
+                                         gconstpointer config_key_b);
+
+void meta_monitors_config_key_free (MetaMonitorsConfigKey *config_key);
+
+void meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor_config);
+
+void meta_monitor_config_free (MetaMonitorConfig *monitor_config);
 
 #endif /* META_MONITOR_CONFIG_MANAGER_H */
