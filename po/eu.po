@@ -315,9 +315,8 @@ msgstr "Sareko saio-hasiera"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
-#| msgid "Network error"
 msgid "network-workgroup"
-msgstr "sareko lantadea"
+msgstr "network-workgroup"
 
 #: js/extensionPrefs/main.js:117
 #, javascript-format

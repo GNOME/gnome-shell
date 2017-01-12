@@ -301,7 +301,7 @@ msgstr "Sessão na rede"
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
 msgid "network-workgroup"
-msgstr "Grupo de Trabalho na Rede"
+msgstr "network-workgroup"
 
 #: js/extensionPrefs/main.js:117
 #, javascript-format
@@ -1685,7 +1685,7 @@ msgstr "Calendário do Evolution"
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: src/calendar-server/evolution-calendar.desktop.in:6
 msgid "evolution"
-msgstr "Evolution"
+msgstr "evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device

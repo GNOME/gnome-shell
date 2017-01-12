@@ -1767,7 +1767,7 @@ msgstr "ਈਵੇਲੂਸ਼ਨ ਕੈਲੰਡਰ"
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: src/calendar-server/evolution-calendar.desktop.in:6
 msgid "evolution"
-msgstr "ਈਵੇਲੂਸ਼ਨ"
+msgstr "evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
