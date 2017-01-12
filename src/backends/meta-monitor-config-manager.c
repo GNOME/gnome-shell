@@ -439,6 +439,8 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
   GList *l;
 
   primary_monitor = find_primary_monitor (monitor_manager);
+  if (!primary_monitor)
+    return NULL;
 
   primary_logical_monitor_config =
     create_preferred_logical_monitor_config (primary_monitor, 0, 0);
@@ -480,6 +482,8 @@ meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_ma
   MetaLogicalMonitorConfig *primary_logical_monitor_config;
 
   primary_monitor = find_primary_monitor (monitor_manager);
+  if (!primary_monitor)
+    return NULL;
 
   primary_logical_monitor_config =
     create_preferred_logical_monitor_config (primary_monitor, 0, 0);

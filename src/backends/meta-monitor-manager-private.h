@@ -437,6 +437,8 @@ gboolean           meta_monitor_manager_is_lid_closed (MetaMonitorManager *manag
 
 void               meta_monitor_manager_lid_is_closed_changed (MetaMonitorManager *manager);
 
+gboolean           meta_monitor_manager_is_headless (MetaMonitorManager *manager);
+
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);
 void meta_monitor_manager_clear_crtc (MetaCrtc *crtc);

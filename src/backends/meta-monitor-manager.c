@@ -153,12 +153,14 @@ static void
 meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
                                                MetaMonitorsConfig *config)
 {
+  GList *logical_monitor_configs;
   GList *logical_monitors = NULL;
   GList *l;
   int monitor_number = 0;
   MetaLogicalMonitor *primary_logical_monitor = NULL;
 
-  for (l = config->logical_monitor_configs; l; l = l->next)
+  logical_monitor_configs = config ? config->logical_monitor_configs : NULL;
+  for (l = logical_monitor_configs; l; l = l->next)
     {
       MetaLogicalMonitorConfig *logical_monitor_config = l->data;
       MetaLogicalMonitor *logical_monitor;
@@ -312,6 +314,12 @@ meta_monitor_manager_is_lid_closed (MetaMonitorManager *manager)
   return META_MONITOR_MANAGER_GET_CLASS (manager)->is_lid_closed (manager);
 }
 
+gboolean
+meta_monitor_manager_is_headless (MetaMonitorManager *manager)
+{
+  return !manager->monitors;
+}
+
 static void
 meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 {
@@ -381,36 +389,46 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
     }
 
   config = meta_monitor_config_manager_create_linear (manager->config_manager);
-  if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+  if (config)
     {
-      g_clear_object (&config);
-      g_warning ("Failed to use linear monitor configuration: %s",
-                 error->message);
-      g_clear_error (&error);
-    }
-  else
-    {
-      goto done;
+      if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+        {
+          g_clear_object (&config);
+          g_warning ("Failed to use linear monitor configuration: %s",
+                     error->message);
+          g_clear_error (&error);
+        }
+      else
+        {
+          goto done;
+        }
     }
 
   config = meta_monitor_config_manager_create_fallback (manager->config_manager);
-  if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+  if (config)
     {
-      g_clear_object (&config);
-      g_warning ("Failed to use fallback monitor configuration: %s",
+      if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+        {
+          g_clear_object (&config);
+          g_warning ("Failed to use fallback monitor configuration: %s",
                  error->message);
-      g_clear_error (&error);
-    }
-  else
-    {
-      goto done;
+          g_clear_error (&error);
+        }
+      else
+        {
+          goto done;
+        }
     }
 
 done:
-  if (!config)
-    meta_fatal ("Failed to find any working monitor configuration, giving up");
-
   meta_monitor_config_manager_set_current (manager->config_manager, config);
+
+  if (!config)
+    {
+      meta_monitor_manager_rebuild (manager, NULL);
+      return NULL;
+    }
+
   g_object_unref (config);
 
   return config;
@@ -1791,9 +1809,11 @@ static void
 meta_monitor_manager_update_monitor_modes (MetaMonitorManager *manager,
                                            MetaMonitorsConfig *config)
 {
+  GList *logical_monitor_configs;
   GList *l;
 
-  for (l = config->logical_monitor_configs; l; l = l->next)
+  logical_monitor_configs = config ? config->logical_monitor_configs : NULL;
+  for (l = logical_monitor_configs; l; l = l->next)
     {
       MetaLogicalMonitorConfig *logical_monitor_config = l->data;
 
