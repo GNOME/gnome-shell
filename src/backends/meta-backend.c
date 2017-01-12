@@ -147,7 +147,8 @@ meta_backend_monitors_changed (MetaBackend *backend)
     {
       /* If we're outside all monitors, warp the pointer back inside */
       if (!meta_monitor_manager_get_logical_monitor_at (monitor_manager,
-                                                        point.x, point.y))
+                                                        point.x, point.y) &&
+          !meta_monitor_manager_is_headless (monitor_manager))
         center_pointer (backend);
     }
 }
