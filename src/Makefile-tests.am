@@ -40,6 +40,8 @@ mutter_test_unit_tests_SOURCES = \
 	tests/meta-monitor-manager-test.h \
 	tests/monitor-store-unit-tests.c \
 	tests/monitor-store-unit-tests.h \
+	tests/monitor-test-utils.c \
+	tests/monitor-test-utils.h \
 	tests/monitor-unit-tests.c \
 	tests/monitor-unit-tests.h \
 	$(NULL)

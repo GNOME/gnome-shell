@@ -25,6 +25,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
 #include "tests/meta-monitor-manager-test.h"
+#include "tests/monitor-test-utils.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
@@ -1364,9 +1365,6 @@ meta_test_monitor_limited_crtcs (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
 
   test_setup = create_monitor_test_setup (&test_case);
 
@@ -1374,7 +1372,7 @@ meta_test_monitor_limited_crtcs (void)
    * With the config manager, we'll get a g_warning.
    * With the old it's just a meta_warning().
    */
-  if (monitor_manager->config_manager)
+  if (is_using_monitor_config_manager ())
     {
       g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
                              "Failed to use linear *");
@@ -1642,7 +1640,7 @@ meta_test_monitor_lid_opened_config (void)
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
 
-  if (!monitor_manager->config_manager)
+  if (!is_using_monitor_config_manager ())
     {
       g_test_skip ("Only the new monitor config manager handles this case.");
       return;
@@ -1772,11 +1770,8 @@ meta_test_monitor_no_outputs (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
 
-  if (!monitor_manager->config_manager)
+  if (!is_using_monitor_config_manager ())
     {
       g_test_skip ("Only the new monitor config manager handles this case.");
       return;

@@ -25,6 +25,7 @@
 #include "backends/meta-monitor-config-store.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-monitor-manager-private.h"
+#include "tests/monitor-test-utils.h"
 
 #define MAX_N_MONITORS 10
 #define MAX_N_LOGICAL_MONITORS 10
@@ -64,44 +65,6 @@ typedef struct _MonitorStoreTestExpect
   MonitorStoreTestConfiguration configurations[MAX_N_CONFIGURATIONS];
   int n_configurations;
 } MonitorStoreTestExpect;
-
-static MetaMonitorConfigStore *
-get_monitor_config_store (void)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaMonitorConfigManager *config_manager = monitor_manager->config_manager;
-
-  if (!config_manager)
-    return NULL;
-
-  return meta_monitor_config_manager_get_store (config_manager);
-}
-
-static const char *
-get_monitor_test_file (const char *filename)
-{
-  return g_test_get_filename (G_TEST_DIST, "tests", "monitor-configs",
-                              filename, NULL);
-}
-
-static void
-set_custom_test_file (MetaMonitorConfigStore *config_store,
-                      const char             *filename)
-{
-  const char *path;
-  GError *error = NULL;
-
-  path = get_monitor_test_file (filename);
-  g_assert (path);
-
-  if (!meta_monitor_config_store_set_custom (config_store, path, &error))
-    {
-      g_error ("Failed to set custom monitors config: %s", error->message);
-      g_assert_not_reached ();
-    }
-}
 
 static MetaMonitorsConfigKey *
 create_config_key_from_expect (MonitorStoreTestConfiguration *expect_config)
@@ -209,9 +172,14 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
 }
 
 static void
-check_monitor_configurations (MetaMonitorConfigStore *config_store,
-                              MonitorStoreTestExpect *expect)
+check_monitor_configurations (MonitorStoreTestExpect *expect)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorConfigManager *config_manager = monitor_manager->config_manager;
+  MetaMonitorConfigStore *config_store =
+    meta_monitor_config_manager_get_store (config_manager);
   int i;
 
   g_assert_cmpint (meta_monitor_config_store_get_config_count (config_store),
@@ -225,7 +193,6 @@ check_monitor_configurations (MetaMonitorConfigStore *config_store,
 static void
 meta_test_monitor_store_single (void)
 {
-  MetaMonitorConfigStore *config_store;
   MonitorStoreTestExpect expect = {
     .configurations = {
       {
@@ -259,22 +226,20 @@ meta_test_monitor_store_single (void)
     .n_configurations = 1
   };
 
-  config_store = get_monitor_config_store ();
-  if (!config_store)
+  if (!is_using_monitor_config_manager ())
     {
       g_test_skip ("Not using MetaMonitorConfigManager");
       return;
     }
 
-  set_custom_test_file (config_store, "single.xml");
+  set_custom_monitor_config ("single.xml");
 
-  check_monitor_configurations (config_store, &expect);
+  check_monitor_configurations (&expect);
 }
 
 static void
 meta_test_monitor_store_vertical (void)
 {
-  MetaMonitorConfigStore *config_store;
   MonitorStoreTestExpect expect = {
     .configurations = {
       {
@@ -330,16 +295,15 @@ meta_test_monitor_store_vertical (void)
     .n_configurations = 1
   };
 
-  config_store = get_monitor_config_store ();
-  if (!config_store)
+  if (!is_using_monitor_config_manager ())
     {
       g_test_skip ("Not using MetaMonitorConfigManager");
       return;
     }
 
-  set_custom_test_file (config_store, "vertical.xml");
+  set_custom_monitor_config ("vertical.xml");
 
-  check_monitor_configurations (config_store, &expect);
+  check_monitor_configurations (&expect);
 }
 
 void
