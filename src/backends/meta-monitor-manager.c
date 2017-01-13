@@ -353,6 +353,12 @@ meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
   return FALSE;
 }
 
+static gboolean
+should_use_stored_config (MetaMonitorManager *manager)
+{
+  return !meta_monitor_manager_has_hotplug_mode_update (manager);
+}
+
 static void
 legacy_ensure_configured (MetaMonitorManager *manager)
 {
@@ -370,6 +376,27 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
     {
       legacy_ensure_configured (manager);
       return NULL;
+    }
+
+  if (should_use_stored_config (manager))
+    {
+      config = meta_monitor_config_manager_get_stored (manager->config_manager);
+      if (config)
+        {
+          if (!meta_monitor_manager_apply_monitors_config (manager, config,
+                                                           &error))
+            {
+              config = NULL;
+              g_warning ("Failed to use stored monitor configuration: %s",
+                         error->message);
+              g_clear_error (&error);
+            }
+          else
+            {
+              g_object_ref (config);
+              goto done;
+            }
+        }
     }
 
   config = meta_monitor_config_manager_create_suggested (manager->config_manager);

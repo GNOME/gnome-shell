@@ -299,6 +299,58 @@ meta_monitor_config_manager_assign (MetaMonitorManager *manager,
   return TRUE;
 }
 
+static MetaMonitorsConfigKey *
+create_key_for_current_state (MetaMonitorManager *monitor_manager)
+{
+  MetaMonitorsConfigKey *config_key;
+  GList *l;
+  GList *monitor_specs;
+
+  monitor_specs = NULL;
+  for (l = monitor_manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+      MetaMonitorSpec *monitor_spec;
+
+      if (meta_monitor_is_laptop_panel (monitor) &&
+          meta_monitor_manager_is_lid_closed (monitor_manager))
+        continue;
+
+      monitor_spec = meta_monitor_spec_clone (meta_monitor_get_spec (monitor));
+      monitor_specs = g_list_prepend (monitor_specs, monitor_spec);
+    }
+
+  if (!monitor_specs)
+    return NULL;
+
+  monitor_specs = g_list_sort (monitor_specs,
+                               (GCompareFunc) meta_monitor_spec_compare);
+
+  config_key = g_new0 (MetaMonitorsConfigKey, 1);
+  *config_key = (MetaMonitorsConfigKey) {
+    .monitor_specs = monitor_specs
+  };
+
+  return config_key;
+}
+
+MetaMonitorsConfig *
+meta_monitor_config_manager_get_stored (MetaMonitorConfigManager *config_manager)
+{
+  MetaMonitorsConfigKey *config_key;
+  MetaMonitorsConfig *config;
+
+  config_key = create_key_for_current_state (config_manager->monitor_manager);
+  if (!config_key)
+    return NULL;
+
+  config = meta_monitor_config_store_lookup (config_manager->config_store,
+                                             config_key);
+  meta_monitors_config_key_free (config_key);
+
+  return config;
+}
+
 typedef enum _MonitorMatchRule
 {
   MONITOR_MATCH_ALL = 0,

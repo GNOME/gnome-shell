@@ -70,6 +70,8 @@ gboolean meta_monitor_config_manager_assign (MetaMonitorManager *manager,
                                              GPtrArray         **output_infos,
                                              GError            **error);
 
+MetaMonitorsConfig * meta_monitor_config_manager_get_stored (MetaMonitorConfigManager *config_manager);
+
 MetaMonitorsConfig * meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_manager);
 
 MetaMonitorsConfig * meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_manager);
