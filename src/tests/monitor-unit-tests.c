@@ -78,6 +78,12 @@
  * the expected layout and a scale.
  */
 
+typedef enum _MonitorTestFlag
+{
+  MONITOR_TEST_FLAG_NONE,
+  MONITOR_TEST_FLAG_NO_STORED
+} MonitorTestFlag;
+
 typedef struct _MonitorTestCaseMode
 {
   int width;
@@ -487,12 +493,19 @@ check_monitor_configuration (MonitorTestCase *test_case)
 }
 
 static MetaMonitorTestSetup *
-create_monitor_test_setup (MonitorTestCase *test_case)
+create_monitor_test_setup (MonitorTestCase *test_case,
+                           MonitorTestFlag  flags)
 {
   MetaMonitorTestSetup *test_setup;
   int i;
   int n_laptop_panels = 0;
   int n_normal_panels = 0;
+  gboolean hotplug_mode_update;
+
+  if (flags & MONITOR_TEST_FLAG_NO_STORED)
+    hotplug_mode_update = TRUE;
+  else
+    hotplug_mode_update = FALSE;
 
   test_setup = g_new0 (MetaMonitorTestSetup, 1);
 
@@ -595,7 +608,7 @@ create_monitor_test_setup (MonitorTestCase *test_case)
         .serial = g_strdup ("0x123456"),
         .suggested_x = -1,
         .suggested_y = -1,
-        .hotplug_mode_update = TRUE, /* Results in config being ignored */
+        .hotplug_mode_update = hotplug_mode_update,
         .width_mm = test_case->setup.outputs[i].width_mm,
         .height_mm = test_case->setup.outputs[i].height_mm,
         .subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN,
@@ -680,7 +693,8 @@ meta_test_monitor_one_disconnected_linear_config (void)
     .screen_height = 768
   };
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
 }
@@ -781,7 +795,8 @@ meta_test_monitor_one_off_linear_config (void)
     .screen_height = 768
   };
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
 }
@@ -889,7 +904,8 @@ meta_test_monitor_preferred_linear_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
 }
@@ -1003,7 +1019,8 @@ meta_test_monitor_tiled_linear_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
 }
@@ -1126,7 +1143,8 @@ meta_test_monitor_hidpi_linear_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
 }
@@ -1251,7 +1269,8 @@ meta_test_monitor_suggested_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
 
   test_setup->outputs[0].suggested_x = 1024;
   test_setup->outputs[0].suggested_y = 758;
@@ -1366,7 +1385,8 @@ meta_test_monitor_limited_crtcs (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
 
   /*
    * With the config manager, we'll get a g_warning.
@@ -1500,7 +1520,8 @@ meta_test_monitor_lid_switch_config (void)
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
 
@@ -1646,7 +1667,8 @@ meta_test_monitor_lid_opened_config (void)
       return;
     }
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
 
   emulate_hotplug (test_setup);
@@ -1742,7 +1764,8 @@ meta_test_monitor_lid_closed_no_external (void)
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
   meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
 
   emulate_hotplug (test_setup);
@@ -1777,7 +1800,8 @@ meta_test_monitor_no_outputs (void)
       return;
     }
 
-  test_setup = create_monitor_test_setup (&test_case);
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
 
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
@@ -1788,7 +1812,8 @@ init_monitor_tests (void)
 {
   MetaMonitorTestSetup *initial_test_setup;
 
-  initial_test_setup = create_monitor_test_setup (&initial_test_case);
+  initial_test_setup = create_monitor_test_setup (&initial_test_case,
+                                                  MONITOR_TEST_FLAG_NO_STORED);
   meta_monitor_manager_test_init_test_setup (initial_test_setup);
 
   g_test_add_func ("/backends/monitor/initial-linear-config",
