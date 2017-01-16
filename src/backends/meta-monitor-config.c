@@ -987,8 +987,18 @@ make_laptop_lid_config (MetaConfiguration  *reference)
           break;
         }
     }
+
   if (!has_primary)
-    new->outputs[0].is_primary = TRUE;
+    {
+      for (i = 0; i < new->n_outputs; i++)
+        {
+          if (new->outputs[i].enabled)
+            {
+              new->outputs[i].is_primary = TRUE;
+              break;
+            }
+        }
+    }
 
   return new;
 }
@@ -1079,6 +1089,11 @@ find_primary_output (MetaOutput *outputs,
   best_width = 0; best_height = 0;
   for (i = 0; i < n_outputs; i++)
     {
+      if (outputs[i].tile_info.group_id &&
+          (outputs[i].tile_info.loc_h_tile != 0 ||
+           outputs[i].tile_info.loc_v_tile != 0))
+        continue;
+
       if (outputs[i].preferred_mode->width * outputs[i].preferred_mode->height >
           best_width * best_height)
         {
@@ -1211,12 +1226,12 @@ config_one_tiled_group (MetaOutput *outputs,
                   outputs[j].tile_info.loc_v_tile != vt)
                 continue;
 
-              if (ht == 0 && vt == 0 && is_primary)
-                config->outputs[j].is_primary = TRUE;
-
               init_config_from_preferred_mode (&config->outputs[j], &outputs[j]);
               config->outputs[j].rect.x = cur_x;
               config->outputs[j].rect.y = cur_y;
+
+              if (ht == 0 && vt == 0 && is_primary)
+                config->outputs[j].is_primary = TRUE;
 
               *output_configured_bitmap |= (1 << j);
               cur_y += outputs[j].tile_info.tile_h;
