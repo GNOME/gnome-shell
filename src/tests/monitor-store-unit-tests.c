@@ -45,11 +45,14 @@ typedef struct _MonitorTestCaseMonitor
   const char *product;
   const char *serial;
   MonitorTestCaseMonitorMode mode;
+  gboolean is_underscanning;
 } MonitorTestCaseMonitor;
 
 typedef struct _MonitorTestCaseLogicalMonitor
 {
   MetaRectangle layout;
+  gboolean is_primary;
+  gboolean is_presentation;
   MonitorTestCaseMonitor monitors[MAX_N_MONITORS];
   int n_monitors;
 } MonitorTestCaseLogicalMonitor;
@@ -136,6 +139,12 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
 
       g_assert (meta_rectangle_equal (&logical_monitor_config->layout,
                                       &config_expect->logical_monitors[i].layout));
+      g_assert_cmpint (logical_monitor_config->is_primary,
+                       ==,
+                       config_expect->logical_monitors[i].is_primary);
+      g_assert_cmpint (logical_monitor_config->is_presentation,
+                       ==,
+                       config_expect->logical_monitors[i].is_presentation);
 
       for (k = logical_monitor_config->monitor_configs, j = 0;
            k;
@@ -204,6 +213,8 @@ meta_test_monitor_store_single (void)
               .width = 1920,
               .height = 1080
             },
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
             .monitors = {
               {
                 .connector = "DP-1",
@@ -251,6 +262,8 @@ meta_test_monitor_store_vertical (void)
               .width = 1024,
               .height = 768
             },
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
             .monitors = {
               {
                 .connector = "DP-1",
@@ -273,6 +286,8 @@ meta_test_monitor_store_vertical (void)
               .width = 800,
               .height = 600
             },
+            .is_primary = FALSE,
+            .is_presentation = FALSE,
             .monitors = {
               {
                 .connector = "DP-2",
