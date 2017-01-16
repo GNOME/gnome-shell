@@ -247,8 +247,8 @@ const Keyboard = new Lang.Class({
                 if (caretRect.width == 0 && caretRect.height == 0)
                     caretRect = focusRect;
 
-                this.SetEntryLocation(focusRect.x, focusRect.y, focusRect.width, focusRect.height);
-                this.SetCursorLocation(caretRect.x, caretRect.y, caretRect.width, caretRect.height);
+                this.setEntryLocation(focusRect.x, focusRect.y, focusRect.width, focusRect.height);
+                this.setCursorLocation(caretRect.x, caretRect.y, caretRect.width, caretRect.height);
             } catch (e) {
                 log('Error updating caret position for OSK: ' + e.message);
             }
@@ -716,14 +716,14 @@ const Keyboard = new Lang.Class({
         this._showIdleId = 0;
     },
 
-    SetCursorLocation: function(x, y, w, h) {
+    setCursorLocation: function(x, y, w, h) {
         if (!this._enableKeyboard)
             return;
 
 //        this._setLocation(x, y);
     },
 
-    SetEntryLocation: function(x, y, w, h) {
+    setEntryLocation: function(x, y, w, h) {
         if (!this._enableKeyboard)
             return;
 
