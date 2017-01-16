@@ -159,6 +159,7 @@ typedef struct _MonitorTestCaseExpect
   int n_monitors;
   MonitorTestCaseLogicalMonitor logical_monitors[MAX_N_LOGICAL_MONITORS];
   int n_logical_monitors;
+  int primary_logical_monitor;
   int n_outputs;
   int n_crtcs;
   int n_tiled_monitors;
@@ -271,6 +272,7 @@ static MonitorTestCase initial_test_case = {
       }
     },
     .n_logical_monitors = 2,
+    .primary_logical_monitor = 0,
     .n_outputs = 2,
     .n_crtcs = 2,
     .screen_width = 1024 * 2,
@@ -449,11 +451,31 @@ check_monitor_configuration (MonitorTestCase *test_case)
 
   logical_monitors =
     meta_monitor_manager_get_logical_monitors (monitor_manager);
+
+  /*
+   * Check that we have a primary logical monitor (except for headless),
+   * and that the main output of the first monitor is the only output
+   * that is marked as primary (further below). Note: outputs being primary or
+   * not only matters on X11.
+   */
+  if (test_case->expect.primary_logical_monitor == -1)
+    {
+      g_assert_null (monitor_manager->primary_logical_monitor);
+      g_assert_null (monitor_manager->logical_monitors);
+    }
+  else
+    {
+      g_assert (g_list_nth (logical_monitors,
+                            test_case->expect.primary_logical_monitor)->data ==
+                monitor_manager->primary_logical_monitor);
+    }
+
   for (l = logical_monitors, i = 0; l; l = l->next, i++)
     {
       MetaLogicalMonitor *logical_monitor = l->data;
       MonitorTestCaseLogicalMonitor *test_logical_monitor =
         &test_case->expect.logical_monitors[i];
+      MetaOutput *primary_output;
       GList *monitors;
       GList *l_monitor;
 
@@ -473,6 +495,10 @@ check_monitor_configuration (MonitorTestCase *test_case)
                        ==,
                        test_logical_monitor->scale);
 
+      if (logical_monitor == monitor_manager->primary_logical_monitor)
+        g_assert (meta_logical_monitor_is_primary (logical_monitor));
+
+      primary_output = NULL;
       monitors = meta_logical_monitor_get_monitors (logical_monitor);
       for (l_monitor = monitors; l_monitor; l_monitor = l_monitor->next)
         {
@@ -485,9 +511,21 @@ check_monitor_configuration (MonitorTestCase *test_case)
             {
               MetaOutput *output = l_output->data;
 
+              if (output->is_primary)
+                {
+                  g_assert_null (primary_output);
+                  primary_output = output;
+                }
+
               g_assert (output->crtc->logical_monitor == logical_monitor);
+              g_assert_cmpint (logical_monitor->is_presentation,
+                               ==,
+                               output->is_presentation);
             }
         }
+
+      if (logical_monitor == monitor_manager->primary_logical_monitor)
+        g_assert_nonnull (primary_output);
     }
   g_assert_cmpint (n_logical_monitors, ==, i);
 }
@@ -687,6 +725,7 @@ meta_test_monitor_one_disconnected_linear_config (void)
       },
     },
     .n_logical_monitors = 1,
+    .primary_logical_monitor = 0,
     .n_outputs = 1,
     .n_crtcs = 2,
     .screen_width = 1024,
@@ -789,6 +828,7 @@ meta_test_monitor_one_off_linear_config (void)
       },
     },
     .n_logical_monitors = 2,
+    .primary_logical_monitor = 0,
     .n_outputs = 2,
     .n_crtcs = 2,
     .screen_width = 1024 * 2,
@@ -896,6 +936,7 @@ meta_test_monitor_preferred_linear_config (void)
         },
       },
       .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
       .n_outputs = 1,
       .n_crtcs = 1,
       .screen_width = 1024,
@@ -1010,6 +1051,7 @@ meta_test_monitor_tiled_linear_config (void)
         },
       },
       .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
       .n_outputs = 2,
       .n_crtcs = 2,
       .n_tiled_monitors = 1,
@@ -1135,6 +1177,7 @@ meta_test_monitor_hidpi_linear_config (void)
         }
       },
       .n_logical_monitors = 2,
+      .primary_logical_monitor = 0,
       .n_outputs = 2,
       .n_crtcs = 2,
       .screen_width = 1280 + 1024,
@@ -1260,6 +1303,7 @@ meta_test_monitor_suggested_config (void)
         }
       },
       .n_logical_monitors = 2,
+      .primary_logical_monitor = 1,
       .n_outputs = 2,
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
@@ -1376,6 +1420,7 @@ meta_test_monitor_limited_crtcs (void)
         },
       },
       .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
       .n_outputs = 2,
       .n_crtcs = 1,
       .n_tiled_monitors = 0,
@@ -1506,6 +1551,7 @@ meta_test_monitor_lid_switch_config (void)
         }
       },
       .n_logical_monitors = 2,
+      .primary_logical_monitor = 0,
       .n_outputs = 2,
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
@@ -1647,6 +1693,7 @@ meta_test_monitor_lid_opened_config (void)
         }
       },
       .n_logical_monitors = 1, /* Second one checked after lid opened. */
+      .primary_logical_monitor = 0,
       .n_outputs = 2,
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
@@ -1750,6 +1797,7 @@ meta_test_monitor_lid_closed_no_external (void)
         }
       },
       .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
       .n_outputs = 1,
       .n_crtcs = 1,
       .n_tiled_monitors = 0,
@@ -1785,6 +1833,7 @@ meta_test_monitor_no_outputs (void)
     .expect = {
       .n_monitors = 0,
       .n_logical_monitors = 0,
+      .primary_logical_monitor = -1,
       .n_outputs = 0,
       .n_crtcs = 0,
       .n_tiled_monitors = 0,
@@ -1914,6 +1963,7 @@ meta_test_monitor_custom_vertical_config (void)
         }
       },
       .n_logical_monitors = 2,
+      .primary_logical_monitor = 0,
       .n_outputs = 2,
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
