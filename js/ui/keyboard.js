@@ -161,8 +161,6 @@ const Keyboard = new Lang.Class({
         this._focusInTray = false;
         this._focusInExtendedKeys = false;
 
-        this._timestamp = global.display.get_current_time_roundtrip();
-
         this._focusCaretTracker = new FocusCaretTracker.FocusCaretTracker();
         this._focusCaretTracker.connect('focus-changed', Lang.bind(this, this._onFocusChanged));
         this._focusCaretTracker.connect('caret-moved', Lang.bind(this, this._onCaretMoved));
@@ -281,10 +279,10 @@ const Keyboard = new Lang.Class({
         if (focused) {
             this._currentAccessible = accessible;
             this._updateCaretPosition(accessible);
-            this.Show(this._timestamp);
+            this.show(Main.layoutManager.focusIndex);
         } else if (this._currentAccessible == accessible) {
             this._currentAccessible = null;
-            this.Hide(this._timestamp);
+            this.hide();
         }
     },
 
@@ -398,17 +396,17 @@ const Keyboard = new Lang.Class({
 
         let time = global.get_current_time();
         if (!(focus instanceof Clutter.Text)) {
-            this.Hide(time);
+            this.hide();
             return;
         }
 
         if (!this._showIdleId) {
           this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE,
                                            Lang.bind(this, function() {
-                                               this.Show(time);
+                                               this.show(Main.layoutManager.focusIndex);
                                                return GLib.SOURCE_REMOVE;
                                            }));
-          GLib.Source.set_name_by_id(this._showIdleId, '[gnome-shell] this.Show');
+          GLib.Source.set_name_by_id(this._showIdleId, '[gnome-shell] this.show');
         }
     },
 
@@ -620,6 +618,10 @@ const Keyboard = new Lang.Class({
     },
 
     show: function (monitor) {
+        if (!this._enableKeyboard)
+            return;
+
+        this._clearShowIdle();
         this._keyboardRequested = true;
 
         if (this._keyboardVisible) {
@@ -652,6 +654,10 @@ const Keyboard = new Lang.Class({
     },
 
     hide: function () {
+        if (!this._enableKeyboard)
+            return;
+
+        this._clearShowIdle();
         this._keyboardRequested = false;
 
         if (!this._keyboardVisible)
@@ -703,53 +709,11 @@ const Keyboard = new Lang.Class({
             this._moveTemporarily();
     },
 
-    // _compareTimestamp:
-    //
-    // Compare two timestamps taking into account
-    // CURRENT_TIME (0)
-    _compareTimestamp: function(one, two) {
-        if (one == two)
-            return 0;
-        if (one == Clutter.CURRENT_TIME)
-            return 1;
-        if (two == Clutter.CURRENT_TIME)
-            return -1;
-        return one - two;
-    },
-
     _clearShowIdle: function() {
         if (!this._showIdleId)
             return;
         GLib.source_remove(this._showIdleId);
         this._showIdleId = 0;
-    },
-
-    Show: function(timestamp) {
-        if (!this._enableKeyboard)
-            return;
-
-        if (this._compareTimestamp(timestamp, this._timestamp) < 0)
-            return;
-
-        this._clearShowIdle();
-
-        if (timestamp != Clutter.CURRENT_TIME)
-            this._timestamp = timestamp;
-        this.show(Main.layoutManager.focusIndex);
-    },
-
-    Hide: function(timestamp) {
-        if (!this._enableKeyboard)
-            return;
-
-        if (this._compareTimestamp(timestamp, this._timestamp) < 0)
-            return;
-
-        this._clearShowIdle();
-
-        if (timestamp != Clutter.CURRENT_TIME)
-            this._timestamp = timestamp;
-        this.hide();
     },
 
     SetCursorLocation: function(x, y, w, h) {
