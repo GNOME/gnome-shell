@@ -1,5 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const FocusCaretTracker = imports.ui.focusCaretTracker;
+const Atspi = imports.gi.Atspi;
 const Caribou = imports.gi.Caribou;
 const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
@@ -24,42 +26,6 @@ const KEYBOARD_TYPE = 'keyboard-type';
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
-
-const CARIBOU_BUS_NAME = 'org.gnome.Caribou.Daemon';
-const CARIBOU_OBJECT_PATH = '/org/gnome/Caribou/Daemon';
-
-const CaribouKeyboardIface = '<node> \
-<interface name="org.gnome.Caribou.Keyboard"> \
-<method name="Show"> \
-    <arg type="u" direction="in" /> \
-</method> \
-<method name="Hide"> \
-    <arg type="u" direction="in" /> \
-</method> \
-<method name="SetCursorLocation"> \
-    <arg type="i" direction="in" /> \
-    <arg type="i" direction="in" /> \
-    <arg type="i" direction="in" /> \
-    <arg type="i" direction="in" /> \
-</method> \
-<method name="SetEntryLocation"> \
-    <arg type="i" direction="in" /> \
-    <arg type="i" direction="in" /> \
-    <arg type="i" direction="in" /> \
-    <arg type="i" direction="in" /> \
-</method> \
-<property name="Name" access="read" type="s" /> \
-</interface> \
-</node>';
-
-const CaribouDaemonIface = '<node> \
-<interface name="org.gnome.Caribou.Daemon"> \
-<method name="Run" /> \
-<method name="Quit" /> \
-</interface> \
-</node>';
-
-const CaribouDaemonProxy = Gio.DBusProxy.makeProxyWrapper(CaribouDaemonIface);
 
 const Key = new Lang.Class({
     Name: 'Key',
@@ -188,18 +154,21 @@ const Key = new Lang.Class({
 Signals.addSignalMethods(Key.prototype);
 
 const Keyboard = new Lang.Class({
-    // HACK: we can't set Name, because it collides with Name dbus property
-    // Name: 'Keyboard',
+    Name: 'Keyboard',
 
     _init: function () {
-        this._impl = Gio.DBusExportedObject.wrapJSObject(CaribouKeyboardIface, this);
-        this._impl.export(Gio.DBus.session, '/org/gnome/Caribou/Keyboard');
-
         this.actor = null;
         this._focusInTray = false;
         this._focusInExtendedKeys = false;
 
         this._timestamp = global.display.get_current_time_roundtrip();
+
+        this._focusCaretTracker = new FocusCaretTracker.FocusCaretTracker();
+        this._focusCaretTracker.connect('focus-changed', Lang.bind(this, this._onFocusChanged));
+        this._focusCaretTracker.connect('caret-moved', Lang.bind(this, this._onCaretMoved));
+        this._currentAccessible = null;
+        this._caretTrackingEnabled = false;
+        this._updateCaretPositionId = 0;
 
         this._keyboardSettings = new Gio.Settings({ schema_id: KEYBOARD_SCHEMA });
         this._keyboardSettings.connect('changed', Lang.bind(this, this._sync));
@@ -208,9 +177,7 @@ const Keyboard = new Lang.Class({
         this._daemonProxy = null;
         this._lastDeviceId = null;
 
-        if (Meta.is_wayland_compositor() &&
-            Caribou.DisplayAdapter.set_default)
-            Caribou.DisplayAdapter.set_default(new ShellWaylandAdapter());
+        Caribou.DisplayAdapter.set_default(new LocalAdapter());
 
         Meta.get_backend().connect('last-device-changed', Lang.bind(this,
             function (backend, deviceId) {
@@ -240,6 +207,93 @@ const Keyboard = new Lang.Class({
         this._redraw();
     },
 
+    _setCaretTrackerEnabled: function (enabled) {
+        if (this._caretTrackingEnabled == enabled)
+            return;
+
+        this._caretTrackingEnabled = enabled;
+
+        if (enabled) {
+            this._focusCaretTracker.registerFocusListener();
+            this._focusCaretTracker.registerCaretListener();
+        } else {
+            this._focusCaretTracker.deregisterFocusListener();
+            this._focusCaretTracker.deregisterCaretListener();
+        }
+    },
+
+    _updateCaretPosition: function (accessible) {
+        if (this._updateCaretPositionId)
+            GLib.source_remove(this._updateCaretPositionId);
+        this._updateCaretPositionId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, Lang.bind(this, function() {
+            this._updateCaretPositionId = 0;
+
+            let currentWindow = global.screen.get_display().focus_window;
+            if (!currentWindow)
+                return GLib.SOURCE_REMOVE;
+
+            let windowRect = currentWindow.get_frame_rect();
+            let text = accessible.get_text_iface();
+            let component = accessible.get_component_iface();
+
+            try {
+                let caretOffset = text.get_caret_offset();
+                let caretRect = text.get_character_extents(caretOffset, Atspi.CoordType.WINDOW);
+                let focusRect = component.get_extents(Atspi.CoordType.WINDOW);
+
+                caretRect.x += windowRect.x;
+                caretRect.y += windowRect.y;
+                focusRect.x += windowRect.x;
+                focusRect.y += windowRect.y;
+
+                if (caretRect.width == 0 && caretRect.height == 0)
+                    caretRect = focusRect;
+
+                this.SetEntryLocation(focusRect.x, focusRect.y, focusRect.width, focusRect.height);
+                this.SetCursorLocation(caretRect.x, caretRect.y, caretRect.width, caretRect.height);
+            } catch (e) {
+                log('Error updating caret position for OSK: ' + e.message);
+            }
+
+            return GLib.SOURCE_REMOVE;
+        }));
+
+        GLib.Source.set_name_by_id(this._updateCaretPositionId, '[gnome-shell] this._updateCaretPosition');
+    },
+
+    _focusIsTextEntry: function (accessible) {
+        try {
+            let role = accessible.get_role();
+            let stateSet = accessible.get_state_set();
+            return stateSet.contains(Atspi.StateType.EDITABLE) || role == Atspi.Role.TERMINAL;
+        } catch (e) {
+            log('Error determining accessible role: ' + e.message);
+            return false;
+        }
+    },
+
+    _onFocusChanged: function (caretTracker, event) {
+        let accessible = event.source;
+        if (!this._focusIsTextEntry(accessible))
+            return;
+
+        let focused = event.detail1 != 0;
+        if (focused) {
+            this._currentAccessible = accessible;
+            this._updateCaretPosition(accessible);
+            this.Show(this._timestamp);
+        } else if (this._currentAccessible == accessible) {
+            this._currentAccessible = null;
+            this.Hide(this._timestamp);
+        }
+    },
+
+    _onCaretMoved: function (caretTracker, event) {
+        let accessible = event.source;
+        if (this._currentAccessible == accessible)
+            this._updateCaretPosition(accessible);
+    },
+
     _lastDeviceIsTouchscreen: function () {
         if (!this._lastDeviceId)
             return false;
@@ -261,6 +315,8 @@ const Keyboard = new Lang.Class({
         if (this._enableKeyboard && this._keyboard &&
             this._keyboard.keyboard_type == this._keyboardSettings.get_string(KEYBOARD_TYPE))
             return;
+
+        this._setCaretTrackerEnabled(this._enableKeyboard);
 
         if (this._keyboard)
             this._destroyKeyboard();
@@ -297,23 +353,6 @@ const Keyboard = new Lang.Class({
     },
 
     _setupKeyboard: function() {
-        if (!this._daemonProxy) {
-            this._daemonProxy = new CaribouDaemonProxy(Gio.DBus.session, CARIBOU_BUS_NAME,
-                                                       CARIBOU_OBJECT_PATH,
-                                                       Lang.bind(this, function(proxy, error) {
-                                                           if (error) {
-                                                               log(error.message);
-                                                               return;
-                                                           }
-                                                       }));
-        }
-        this._daemonProxy.RunRemote(function (result, error) {
-            if (error) {
-                log(error.message);
-                return;
-            }
-        });
-
         this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
         Main.layoutManager.keyboardBox.add_actor(this.actor);
         Main.layoutManager.trackChrome(this.actor);
@@ -685,7 +724,6 @@ const Keyboard = new Lang.Class({
         this._showIdleId = 0;
     },
 
-    // D-Bus methods
     Show: function(timestamp) {
         if (!this._enableKeyboard)
             return;
@@ -727,10 +765,6 @@ const Keyboard = new Lang.Class({
 
 //        this._setLocation(x, y);
     },
-
-    get Name() {
-        return 'gnome-shell';
-    }
 });
 
 const KeyboardSource = new Lang.Class({
@@ -754,8 +788,8 @@ const KeyboardSource = new Lang.Class({
     }
 });
 
-const ShellWaylandAdapter = new Lang.Class({
-    Name: 'ShellWaylandAdapter',
+const LocalAdapter = new Lang.Class({
+    Name: 'LocalAdapter',
     Extends: Caribou.XAdapter,
 
     _init: function () {
