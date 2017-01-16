@@ -321,6 +321,79 @@ meta_test_monitor_store_vertical (void)
   check_monitor_configurations (&expect);
 }
 
+static void
+meta_test_monitor_store_primary (void)
+{
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 0,
+              .width = 1024,
+              .height = 768
+            },
+            .is_primary = FALSE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1024,
+                  .height = 768,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          },
+          {
+            .layout = {
+              .x = 1024,
+              .y = 0,
+              .width = 800,
+              .height = 600
+            },
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-2",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 800,
+                  .height = 600,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          }
+        },
+        .n_logical_monitors = 2
+      }
+    },
+    .n_configurations = 1
+  };
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  set_custom_monitor_config ("primary.xml");
+
+  check_monitor_configurations (&expect);
+}
+
 void
 init_monitor_store_tests (void)
 {
@@ -328,4 +401,6 @@ init_monitor_store_tests (void)
                    meta_test_monitor_store_single);
   g_test_add_func ("/backends/monitor-store/vertical",
                    meta_test_monitor_store_vertical);
+  g_test_add_func ("/backends/monitor-store/primary",
+                   meta_test_monitor_store_primary);
 }
