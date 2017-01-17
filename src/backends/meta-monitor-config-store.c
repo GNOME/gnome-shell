@@ -68,6 +68,7 @@
  *           <height>1080</height>
  *           <rate>60.049972534179688</rate>
  *         </mode>
+ *         <underscanning>yes</underscanning>
  *       </monitor>
  *       <presentation>yes</presentation>
  *     </logicalmonitor>
@@ -103,6 +104,7 @@ typedef enum
   STATE_MONITOR_MODE_WIDTH,
   STATE_MONITOR_MODE_HEIGHT,
   STATE_MONITOR_MODE_RATE,
+  STATE_MONITOR_UNDERSCANNING
 } ParserState;
 
 typedef struct
@@ -252,6 +254,10 @@ handle_start_element (GMarkupParseContext  *context,
 
             parser->state = STATE_MONITOR_MODE;
           }
+        else if (g_str_equal (element_name, "underscanning"))
+          {
+            parser->state = STATE_MONITOR_UNDERSCANNING;
+          }
         else
           {
             g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
@@ -330,6 +336,13 @@ handle_start_element (GMarkupParseContext  *context,
       {
         g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
                      "Invalid mode sub element '%s'", element_name);
+        return;
+      }
+
+    case STATE_MONITOR_UNDERSCANNING:
+      {
+        g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                     "Invalid element '%s' under underscanning", element_name);
         return;
       }
     }
@@ -561,6 +574,14 @@ handle_end_element (GMarkupParseContext  *context,
         parser->current_monitor_config->mode_spec =
           parser->current_monitor_mode_spec;
         parser->current_monitor_mode_spec = NULL;
+
+        parser->state = STATE_MONITOR;
+        return;
+      }
+
+    case STATE_MONITOR_UNDERSCANNING:
+      {
+        g_assert (g_str_equal (element_name, "underscanning"));
 
         parser->state = STATE_MONITOR;
         return;
@@ -840,6 +861,14 @@ handle_text (GMarkupParseContext *context,
         read_float (text, text_len,
                     &parser->current_monitor_mode_spec->refresh_rate,
                     error);
+        return;
+      }
+
+    case STATE_MONITOR_UNDERSCANNING:
+      {
+        read_bool (text, text_len,
+                   &parser->current_monitor_config->is_underscanning,
+                   error);
         return;
       }
     }
