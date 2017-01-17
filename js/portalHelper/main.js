@@ -74,6 +74,8 @@ const PortalWindow = new Lang.Class({
         this._webView.show();
         this.maximize();
         this.present_with_time(timestamp);
+
+        this.application.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
     },
 
     _syncTitle: function() {
@@ -168,6 +170,10 @@ const WebPortalHelper = new Lang.Class({
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(HelperDBusInterface, this);
         this._queue = [];
+
+        let action = new Gio.SimpleAction({ name: 'quit' });
+        action.connect('activate', () => { this.active_window.destroy(); });
+        this.add_action(action);
     },
 
     vfunc_dbus_register: function(connection, path) {
