@@ -93,6 +93,8 @@ MetaOutput * meta_monitor_get_main_output (MetaMonitor *monitor);
 
 gboolean meta_monitor_is_primary (MetaMonitor *monitor);
 
+gboolean meta_monitor_is_underscanning (MetaMonitor *monitor);
+
 gboolean meta_monitor_is_laptop_panel (MetaMonitor *monitor);
 
 GList * meta_monitor_get_outputs (MetaMonitor *monitor);

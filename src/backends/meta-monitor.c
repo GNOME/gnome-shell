@@ -187,6 +187,16 @@ meta_monitor_is_primary (MetaMonitor *monitor)
 }
 
 gboolean
+meta_monitor_is_underscanning (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+
+  return output->is_underscanning;
+}
+
+gboolean
 meta_monitor_is_laptop_panel (MetaMonitor *monitor)
 {
   MetaOutput *output;
