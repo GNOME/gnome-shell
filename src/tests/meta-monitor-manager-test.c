@@ -182,6 +182,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
 
       output->is_primary = output_info->is_primary;
       output->is_presentation = output_info->is_presentation;
+      output->is_underscanning = output_info->is_underscanning;
     }
 
   /* Disable CRTCs not mentioned in the list */
