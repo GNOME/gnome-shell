@@ -1119,6 +1119,7 @@ init_config_from_preferred_mode (MetaOutputConfig *config,
   config->transform = META_MONITOR_TRANSFORM_NORMAL;
   config->is_primary = FALSE;
   config->is_presentation = FALSE;
+  config->is_underscanning = output->is_underscanning;
 }
 
 /* This function handles configuring the outputs when the driver provides a
