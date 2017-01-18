@@ -128,6 +128,8 @@ typedef struct _MonitorTestCaseMonitorCrtcMode
 {
   int output;
   int crtc_mode;
+  int x;
+  int y;
 } MetaTestCaseMonitorCrtcMode;
 
 typedef struct _MonitorTestCaseMonitorMode
@@ -324,6 +326,31 @@ check_monitor_mode (MetaMonitor         *monitor,
   g_assert (monitor_crtc_mode->output == output);
   g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
 
+  g_assert_cmpint (monitor_crtc_mode->x, ==, data->expect_crtc_mode_iter->x);
+  g_assert_cmpint (monitor_crtc_mode->y, ==, data->expect_crtc_mode_iter->y);
+
+  data->expect_crtc_mode_iter++;
+
+  return TRUE;
+}
+
+static gboolean
+check_current_monitor_mode (MetaMonitor         *monitor,
+                            MetaMonitorMode     *mode,
+                            MetaMonitorCrtcMode *monitor_crtc_mode,
+                            gpointer             user_data,
+                            GError             **error)
+{
+  CheckMonitorModeData *data = user_data;
+  MetaMonitorManager *monitor_manager = data->monitor_manager;
+  MetaOutput *output;
+
+  output = output_from_winsys_id (monitor_manager,
+                                  data->expect_crtc_mode_iter->output);
+
+  g_assert_nonnull (output->crtc);
+  g_assert (monitor_crtc_mode->crtc_mode == output->crtc->current_mode);
+
   data->expect_crtc_mode_iter++;
 
   return TRUE;
@@ -443,6 +470,21 @@ check_monitor_configuration (MonitorTestCase *test_case)
                                             expected_current_mode_index)->data;
 
       g_assert (current_mode == expected_current_mode);
+
+      if (current_mode)
+        {
+          CheckMonitorModeData data;
+
+          data = (CheckMonitorModeData) {
+            .monitor_manager = monitor_manager,
+            .expect_crtc_mode_iter =
+              test_case->expect.monitors[i].modes[expected_current_mode_index].crtc_modes
+          };
+          meta_monitor_mode_foreach_crtc (monitor, expected_current_mode,
+                                          check_current_monitor_mode,
+                                          &data,
+                                          NULL);
+        }
 
       meta_monitor_derive_current_mode (monitor);
       g_assert (current_mode == meta_monitor_get_current_mode (monitor));
@@ -1038,7 +1080,9 @@ meta_test_monitor_tiled_linear_config (void)
                 },
                 {
                   .output = 1,
-                  .crtc_mode = 0
+                  .crtc_mode = 0,
+                  .x = 400,
+                  .y = 0
                 }
               }
             },
