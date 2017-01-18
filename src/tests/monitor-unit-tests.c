@@ -157,6 +157,11 @@ typedef struct _MonitorTestCaseLogicalMonitor
   int scale;
 } MonitorTestCaseLogicalMonitor;
 
+typedef struct _MonitorTestCaseCrtcExpect
+{
+  int current_mode;
+} MonitorTestCaseCrtcExpect;
+
 typedef struct _MonitorTestCaseExpect
 {
   MonitorTestCaseMonitor monitors[MAX_N_MONITORS];
@@ -165,6 +170,7 @@ typedef struct _MonitorTestCaseExpect
   int n_logical_monitors;
   int primary_logical_monitor;
   int n_outputs;
+  MonitorTestCaseCrtcExpect crtcs[MAX_N_CRTCS];
   int n_crtcs;
   int n_tiled_monitors;
   int screen_width;
@@ -278,6 +284,14 @@ static MonitorTestCase initial_test_case = {
     .n_logical_monitors = 2,
     .primary_logical_monitor = 0,
     .n_outputs = 2,
+    .crtcs = {
+      {
+        .current_mode = 0,
+      },
+      {
+        .current_mode = 0,
+      }
+    },
     .n_crtcs = 2,
     .screen_width = 1024 * 2,
     .screen_height = 768
@@ -575,6 +589,22 @@ check_monitor_configuration (MonitorTestCase *test_case)
         g_assert_nonnull (primary_output);
     }
   g_assert_cmpint (n_logical_monitors, ==, i);
+
+  for (i = 0; i < test_case->expect.n_crtcs; i++)
+    {
+      if (test_case->expect.crtcs[i].current_mode == -1)
+        {
+          g_assert_null (monitor_manager->crtcs[i].current_mode);
+        }
+      else
+        {
+          MetaCrtc *crtc = &monitor_manager->crtcs[i];
+          MetaCrtcMode *expected_current_mode =
+            &monitor_manager->modes[test_case->expect.crtcs[i].current_mode];
+
+          g_assert (crtc->current_mode == expected_current_mode);
+        }
+    }
 }
 
 static MetaMonitorTestSetup *
@@ -775,6 +805,14 @@ meta_test_monitor_one_disconnected_linear_config (void)
     .n_logical_monitors = 1,
     .primary_logical_monitor = 0,
     .n_outputs = 1,
+    .crtcs = {
+      {
+        .current_mode = 0,
+      },
+      {
+        .current_mode = -1,
+      }
+    },
     .n_crtcs = 2,
     .screen_width = 1024,
     .screen_height = 768
@@ -878,6 +916,14 @@ meta_test_monitor_one_off_linear_config (void)
     .n_logical_monitors = 2,
     .primary_logical_monitor = 0,
     .n_outputs = 2,
+    .crtcs = {
+      {
+        .current_mode = 0,
+      },
+      {
+        .current_mode = 0,
+      }
+    },
     .n_crtcs = 2,
     .screen_width = 1024 * 2,
     .screen_height = 768
@@ -986,6 +1032,11 @@ meta_test_monitor_preferred_linear_config (void)
       .n_logical_monitors = 1,
       .primary_logical_monitor = 0,
       .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 1,
+        }
+      },
       .n_crtcs = 1,
       .screen_width = 1024,
       .screen_height = 768,
@@ -1103,6 +1154,14 @@ meta_test_monitor_tiled_linear_config (void)
       .n_logical_monitors = 1,
       .primary_logical_monitor = 0,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 0,
+        }
+      },
       .n_crtcs = 2,
       .n_tiled_monitors = 1,
       .screen_width = 800,
@@ -1229,6 +1288,14 @@ meta_test_monitor_hidpi_linear_config (void)
       .n_logical_monitors = 2,
       .primary_logical_monitor = 0,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 1,
+        }
+      },
       .n_crtcs = 2,
       .screen_width = 1280 + 1024,
       .screen_height = 768
@@ -1355,6 +1422,14 @@ meta_test_monitor_suggested_config (void)
       .n_logical_monitors = 2,
       .primary_logical_monitor = 1,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 1,
+        }
+      },
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
       .screen_width = 1024 + 800,
@@ -1472,6 +1547,11 @@ meta_test_monitor_limited_crtcs (void)
       .n_logical_monitors = 1,
       .primary_logical_monitor = 0,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        }
+      },
       .n_crtcs = 1,
       .n_tiled_monitors = 0,
       .screen_width = 1024,
@@ -1603,6 +1683,14 @@ meta_test_monitor_lid_switch_config (void)
       .n_logical_monitors = 2,
       .primary_logical_monitor = 0,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 0,
+        }
+      },
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
       .screen_width = 1024 * 2,
@@ -1627,6 +1715,7 @@ meta_test_monitor_lid_switch_config (void)
   test_case.expect.n_logical_monitors = 1;
   test_case.expect.screen_width = 1024;
   test_case.expect.monitors[0].current_mode = -1;
+  test_case.expect.crtcs[0].current_mode = -1;
 
   check_monitor_configuration (&test_case);
 
@@ -1636,6 +1725,9 @@ meta_test_monitor_lid_switch_config (void)
   test_case.expect.n_logical_monitors = 2;
   test_case.expect.screen_width = 1024 * 2;
   test_case.expect.monitors[0].current_mode = 0;
+
+  test_case.expect.crtcs[0].current_mode = 0;
+  test_case.expect.crtcs[1].current_mode = 0;
 
   check_monitor_configuration (&test_case);
 }
@@ -1745,6 +1837,14 @@ meta_test_monitor_lid_opened_config (void)
       .n_logical_monitors = 1, /* Second one checked after lid opened. */
       .primary_logical_monitor = 0,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = -1,
+        },
+        {
+          .current_mode = 0,
+        }
+      },
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
       .screen_width = 1024,
@@ -1777,6 +1877,8 @@ meta_test_monitor_lid_opened_config (void)
   test_case.expect.n_logical_monitors = 2;
   test_case.expect.screen_width = 1024 * 2;
   test_case.expect.monitors[0].current_mode = 0;
+  test_case.expect.crtcs[0].current_mode = 0;
+  test_case.expect.crtcs[1].current_mode = 0;
 
   check_monitor_configuration (&test_case);
 }
@@ -1849,6 +1951,11 @@ meta_test_monitor_lid_closed_no_external (void)
       .n_logical_monitors = 1,
       .primary_logical_monitor = 0,
       .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+      },
       .n_crtcs = 1,
       .n_tiled_monitors = 0,
       .screen_width = 1024,
@@ -1975,6 +2082,11 @@ meta_test_monitor_underscanning_config (void)
       .n_logical_monitors = 1,
       .primary_logical_monitor = 0,
       .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        }
+      },
       .n_crtcs = 1,
       .screen_width = 1024,
       .screen_height = 768
@@ -2097,6 +2209,14 @@ meta_test_monitor_custom_vertical_config (void)
       .n_logical_monitors = 2,
       .primary_logical_monitor = 0,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 1,
+        }
+      },
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
       .screen_width = 1024,
@@ -2228,6 +2348,14 @@ meta_test_monitor_custom_primary_config (void)
       .n_logical_monitors = 2,
       .primary_logical_monitor = 1,
       .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 1,
+        }
+      },
       .n_crtcs = 2,
       .n_tiled_monitors = 0,
       .screen_width = 1024 + 800,
@@ -2318,6 +2446,11 @@ meta_test_monitor_custom_underscanning_config (void)
       .n_logical_monitors = 1,
       .primary_logical_monitor = 0,
       .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        }
+      },
       .n_crtcs = 1,
       .n_tiled_monitors = 0,
       .screen_width = 1024,
