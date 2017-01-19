@@ -2722,6 +2722,144 @@ meta_test_monitor_custom_scale_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_custom_tiled_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 400,
+          .height = 600,
+          .refresh_rate = 60.000495910644531
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0, 1 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 0,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        },
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0, 1 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 1,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        }
+      },
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0, 1 },
+          .n_outputs = 2,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0,
+                  .x = 0,
+                  .y = 0,
+                },
+                {
+                  .output = 1,
+                  .crtc_mode = 0,
+                  .x = 400,
+                  .y = 0,
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .scale = 2
+        }
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 0,
+        }
+      },
+      .n_crtcs = 2,
+      .n_tiled_monitors = 1,
+      .screen_width = 800,
+      .screen_height = 600
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  set_custom_monitor_config ("tiled.xml");
+  emulate_hotplug (test_setup);
+
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -2766,4 +2904,6 @@ init_monitor_tests (void)
                    meta_test_monitor_custom_underscanning_config);
   g_test_add_func ("/backends/monitor/custom/scale-config",
                    meta_test_monitor_custom_scale_config);
+  g_test_add_func ("/backends/monitor/custom/tiled-config",
+                   meta_test_monitor_custom_tiled_config);
 }
