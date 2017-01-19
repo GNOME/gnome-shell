@@ -146,6 +146,10 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
                        ==,
                        config_expect->logical_monitors[i].is_presentation);
 
+      g_assert_cmpint ((int) g_list_length (logical_monitor_config->monitor_configs),
+                       ==,
+                       config_expect->logical_monitors[i].n_monitors);
+
       for (k = logical_monitor_config->monitor_configs, j = 0;
            k;
            k = k->next, j++)

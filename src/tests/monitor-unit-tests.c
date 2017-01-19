@@ -155,6 +155,8 @@ typedef struct _MonitorTestCaseLogicalMonitor
 {
   MetaRectangle layout;
   int scale;
+  int monitors[MAX_N_MONITORS];
+  int n_monitors;
 } MonitorTestCaseLogicalMonitor;
 
 typedef struct _MonitorTestCaseCrtcExpect
@@ -273,10 +275,14 @@ static MonitorTestCase initial_test_case = {
     .n_monitors = 2,
     .logical_monitors = {
       {
+        .monitors = { 0 },
+        .n_monitors = 1,
         .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
         .scale = 1
       },
       {
+        .monitors = { 1 },
+        .n_monitors = 1,
         .layout = { .x = 1024, .y = 0, .width = 1024, .height = 768 },
         .scale = 1
       }
@@ -396,6 +402,7 @@ check_logical_monitor (MonitorTestCase               *test_case,
   MetaOutput *primary_output;
   GList *monitors;
   GList *l;
+  int i;
 
   logical_monitor = logical_monitor_from_layout (monitor_manager,
                                                  &test_logical_monitor->layout);
@@ -422,6 +429,19 @@ check_logical_monitor (MonitorTestCase               *test_case,
 
   primary_output = NULL;
   monitors = meta_logical_monitor_get_monitors (logical_monitor);
+  g_assert_cmpint ((int) g_list_length (monitors),
+                   ==,
+                   test_logical_monitor->n_monitors);
+
+  for (i = 0; i < test_logical_monitor->n_monitors; i++)
+    {
+      MetaMonitor *monitor =
+        g_list_nth (monitor_manager->monitors,
+                    test_logical_monitor->monitors[i])->data;
+
+      g_assert_nonnull (g_list_find (monitors, monitor));
+    }
+
   for (l = monitors; l; l = l->next)
     {
       MetaMonitor *monitor = l->data;
@@ -829,6 +849,8 @@ meta_test_monitor_one_disconnected_linear_config (void)
     .n_monitors = 1,
     .logical_monitors = {
       {
+        .monitors = { 0 },
+        .n_monitors = 1,
         .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
         .scale = 1
       },
@@ -936,10 +958,14 @@ meta_test_monitor_one_off_linear_config (void)
     .n_monitors = 2,
     .logical_monitors = {
       {
+        .monitors = { 0 },
+        .n_monitors = 1,
         .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
         .scale = 1
       },
       {
+        .monitors = { 1 },
+        .n_monitors = 1,
         .layout = { .x = 1024, .y = 0, .width = 1024, .height = 768 },
         .scale = 1
       },
@@ -1056,6 +1082,8 @@ meta_test_monitor_preferred_linear_config (void)
       .n_monitors = 1,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         },
@@ -1178,6 +1206,8 @@ meta_test_monitor_tiled_linear_config (void)
       .n_monitors = 1,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
           .scale = 1
         },
@@ -1308,10 +1338,14 @@ meta_test_monitor_hidpi_linear_config (void)
       .n_monitors = 2,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1280, .height = 720 },
           .scale = 2
         },
         {
+          .monitors = { 1 },
+          .n_monitors = 1,
           .layout = { .x = 1280, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
@@ -1442,10 +1476,14 @@ meta_test_monitor_suggested_config (void)
        */
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 1024, .y = 758, .width = 800, .height = 600 },
           .scale = 1
         },
         {
+          .monitors = { 1 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
@@ -1571,6 +1609,8 @@ meta_test_monitor_limited_crtcs (void)
       .n_monitors = 2,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         },
@@ -1703,10 +1743,14 @@ meta_test_monitor_lid_switch_config (void)
       .n_monitors = 2,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         },
         {
+          .monitors = { 1 },
+          .n_monitors = 1,
           .layout = { .x = 1024, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
@@ -1743,6 +1787,12 @@ meta_test_monitor_lid_switch_config (void)
   meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
   meta_monitor_manager_lid_is_closed_changed (monitor_manager);
 
+  test_case.expect.logical_monitors[0] = (MonitorTestCaseLogicalMonitor) {
+    .monitors = { 1 },
+    .n_monitors = 1,
+    .layout = {.x = 0, .y = 0, .width = 1024, .height = 768 },
+    .scale = 1
+  };
   test_case.expect.n_logical_monitors = 1;
   test_case.expect.screen_width = 1024;
   test_case.expect.monitors[0].current_mode = -1;
@@ -1759,6 +1809,46 @@ meta_test_monitor_lid_switch_config (void)
 
   test_case.expect.crtcs[0].current_mode = 0;
   test_case.expect.crtcs[1].current_mode = 0;
+
+  if (!is_using_monitor_config_manager ())
+    {
+      test_case.expect.logical_monitors[0] = (MonitorTestCaseLogicalMonitor) {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = {.x = 0, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+      };
+      test_case.expect.logical_monitors[1] = (MonitorTestCaseLogicalMonitor) {
+          .monitors = { 1 },
+          .n_monitors = 1,
+          .layout = {.x = 1024, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+      };
+      test_case.expect.n_logical_monitors = 2;
+      test_case.expect.primary_logical_monitor = 0;
+    }
+  else
+    {
+      /*
+       * FIXME: The above expectation is correct, but MetaMonitorConfigManager
+       * doesn't support restoring previous configurations yet, so it'll
+       * pick keep the external monitor as primary and put it first.
+       */
+      test_case.expect.logical_monitors[0] = (MonitorTestCaseLogicalMonitor) {
+          .monitors = { 1 },
+          .n_monitors = 1,
+          .layout = {.x = 0, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+      };
+      test_case.expect.logical_monitors[1] = (MonitorTestCaseLogicalMonitor) {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = {.x = 1024, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+      };
+      test_case.expect.n_logical_monitors = 2;
+      test_case.expect.primary_logical_monitor = 0;
+    }
 
   check_monitor_configuration (&test_case);
 }
@@ -1857,10 +1947,14 @@ meta_test_monitor_lid_opened_config (void)
       .n_monitors = 2,
       .logical_monitors = {
         {
+          .monitors = { 1 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         },
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 1024, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
@@ -1975,6 +2069,8 @@ meta_test_monitor_lid_closed_no_external (void)
       .n_monitors = 1,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
@@ -2106,6 +2202,8 @@ meta_test_monitor_underscanning_config (void)
       .n_monitors = 1,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
@@ -2229,10 +2327,14 @@ meta_test_monitor_custom_vertical_config (void)
       .n_monitors = 2,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         },
         {
+          .monitors = { 1 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 768, .width = 800, .height = 600 },
           .scale = 1
         }
@@ -2368,10 +2470,14 @@ meta_test_monitor_custom_primary_config (void)
       .n_monitors = 2,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         },
         {
+          .monitors = { 1 },
+          .n_monitors = 1,
           .layout = { .x = 1024, .y = 0, .width = 800, .height = 600 },
           .scale = 1
         }
@@ -2470,6 +2576,8 @@ meta_test_monitor_custom_underscanning_config (void)
       .n_monitors = 1,
       .logical_monitors = {
         {
+          .monitors = { 0 },
+          .n_monitors = 1,
           .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
