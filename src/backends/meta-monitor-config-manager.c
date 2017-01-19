@@ -467,11 +467,14 @@ create_preferred_logical_monitor_config (MetaMonitor *monitor,
 {
   MetaMonitorMode *mode;
   int width, height;
+  int scale;
   MetaMonitorConfig *monitor_config;
   MetaLogicalMonitorConfig *logical_monitor_config;
 
   mode = meta_monitor_get_preferred_mode (monitor);
   meta_monitor_mode_get_resolution (mode, &width, &height);
+  scale = meta_monitor_get_calculated_scale (monitor);
+
   monitor_config = create_monitor_config (monitor, mode);
 
   logical_monitor_config = g_new0 (MetaLogicalMonitorConfig, 1);
@@ -482,6 +485,7 @@ create_preferred_logical_monitor_config (MetaMonitor *monitor,
       .width = width,
       .height = height
     },
+    .scale = scale,
     .monitor_configs = g_list_append (NULL, monitor_config)
   };
 

@@ -97,6 +97,8 @@ gboolean meta_monitor_is_underscanning (MetaMonitor *monitor);
 
 gboolean meta_monitor_is_laptop_panel (MetaMonitor *monitor);
 
+int meta_monitor_get_calculated_scale (MetaMonitor *monitor);
+
 GList * meta_monitor_get_outputs (MetaMonitor *monitor);
 
 void meta_monitor_get_current_resolution (MetaMonitor *monitor,

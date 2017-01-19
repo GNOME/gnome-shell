@@ -196,6 +196,16 @@ meta_monitor_is_underscanning (MetaMonitor *monitor)
   return output->is_underscanning;
 }
 
+int
+meta_monitor_get_calculated_scale (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+
+  return output->scale;
+}
+
 gboolean
 meta_monitor_is_laptop_panel (MetaMonitor *monitor)
 {

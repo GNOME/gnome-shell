@@ -40,6 +40,7 @@ typedef struct _MetaLogicalMonitorConfig
 {
   MetaRectangle layout;
   GList *monitor_configs;
+  int scale;
   gboolean is_primary;
   gboolean is_presentation;
 } MetaLogicalMonitorConfig;

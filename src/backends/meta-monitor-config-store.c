@@ -405,6 +405,14 @@ static gboolean
 verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_config,
                                GError                  **error)
 {
+  if (logical_monitor_config->scale < 1)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid logical monitor config scale %d",
+                   logical_monitor_config->scale);
+      return FALSE;
+    }
+
   if (logical_monitor_config->layout.x < 0 ||
       logical_monitor_config->layout.y < 0)
     {
@@ -613,6 +621,8 @@ handle_end_element (GMarkupParseContext  *context,
           parser->current_logical_monitor_config;
 
         g_assert (g_str_equal (element_name, "logicalmonitor"));
+
+        logical_monitor_config->scale = 1;
 
         if (!verify_logical_monitor_config (logical_monitor_config, error))
           return;
