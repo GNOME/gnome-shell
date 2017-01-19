@@ -370,6 +370,86 @@ check_current_monitor_mode (MetaMonitor         *monitor,
   return TRUE;
 }
 
+static MetaLogicalMonitor *
+logical_monitor_from_layout (MetaMonitorManager *monitor_manager,
+                             MetaRectangle      *layout)
+{
+  GList *l;
+
+  for (l = monitor_manager->logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      if (meta_rectangle_equal (layout, &logical_monitor->rect))
+        return logical_monitor;
+    }
+
+  return NULL;
+}
+
+static void
+check_logical_monitor (MonitorTestCase               *test_case,
+                       MetaMonitorManager            *monitor_manager,
+                       MonitorTestCaseLogicalMonitor *test_logical_monitor)
+{
+  MetaLogicalMonitor *logical_monitor;
+  MetaOutput *primary_output;
+  GList *monitors;
+  GList *l;
+
+  logical_monitor = logical_monitor_from_layout (monitor_manager,
+                                                 &test_logical_monitor->layout);
+  g_assert_nonnull (logical_monitor);
+
+  g_assert_cmpint (logical_monitor->rect.x,
+                   ==,
+                   test_logical_monitor->layout.x);
+  g_assert_cmpint (logical_monitor->rect.y,
+                   ==,
+                   test_logical_monitor->layout.y);
+  g_assert_cmpint (logical_monitor->rect.width,
+                   ==,
+                   test_logical_monitor->layout.width);
+  g_assert_cmpint (logical_monitor->rect.height,
+                   ==,
+                   test_logical_monitor->layout.height);
+  g_assert_cmpint (logical_monitor->scale,
+                   ==,
+                   test_logical_monitor->scale);
+
+  if (logical_monitor == monitor_manager->primary_logical_monitor)
+    g_assert (meta_logical_monitor_is_primary (logical_monitor));
+
+  primary_output = NULL;
+  monitors = meta_logical_monitor_get_monitors (logical_monitor);
+  for (l = monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+      GList *outputs;
+      GList *l_output;
+
+      outputs = meta_monitor_get_outputs (monitor);
+      for (l_output = outputs; l_output; l_output = l_output->next)
+        {
+          MetaOutput *output = l_output->data;
+
+          if (output->is_primary)
+            {
+              g_assert_null (primary_output);
+              primary_output = output;
+            }
+
+          g_assert (output->crtc->logical_monitor == logical_monitor);
+          g_assert_cmpint (logical_monitor->is_presentation,
+                           ==,
+                           output->is_presentation);
+        }
+    }
+
+  if (logical_monitor == monitor_manager->primary_logical_monitor)
+    g_assert_nonnull (primary_output);
+}
+
 static void
 check_monitor_configuration (MonitorTestCase *test_case)
 {
@@ -380,7 +460,6 @@ check_monitor_configuration (MonitorTestCase *test_case)
     META_MONITOR_MANAGER_TEST (monitor_manager);
   int tiled_monitor_count;
   GList *monitors;
-  GList *logical_monitors;
   int n_logical_monitors;
   GList *l;
   int i;
@@ -510,9 +589,6 @@ check_monitor_configuration (MonitorTestCase *test_case)
                    ==,
                    test_case->expect.n_logical_monitors);
 
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager);
-
   /*
    * Check that we have a primary logical monitor (except for headless),
    * and that the main output of the first monitor is the only output
@@ -526,67 +602,22 @@ check_monitor_configuration (MonitorTestCase *test_case)
     }
   else
     {
-      g_assert (g_list_nth (logical_monitors,
-                            test_case->expect.primary_logical_monitor)->data ==
-                monitor_manager->primary_logical_monitor);
+      MonitorTestCaseLogicalMonitor *test_logical_monitor =
+        &test_case->expect.logical_monitors[test_case->expect.primary_logical_monitor];
+      MetaLogicalMonitor *logical_monitor;
+
+      logical_monitor =
+        logical_monitor_from_layout (monitor_manager,
+                                     &test_logical_monitor->layout);
+      g_assert (logical_monitor == monitor_manager->primary_logical_monitor);
     }
 
-  for (l = logical_monitors, i = 0; l; l = l->next, i++)
+  for (i = 0; i < test_case->expect.n_logical_monitors; i++)
     {
-      MetaLogicalMonitor *logical_monitor = l->data;
       MonitorTestCaseLogicalMonitor *test_logical_monitor =
         &test_case->expect.logical_monitors[i];
-      MetaOutput *primary_output;
-      GList *monitors;
-      GList *l_monitor;
 
-      g_assert_cmpint (logical_monitor->rect.x,
-                       ==,
-                       test_logical_monitor->layout.x);
-      g_assert_cmpint (logical_monitor->rect.y,
-                       ==,
-                       test_logical_monitor->layout.y);
-      g_assert_cmpint (logical_monitor->rect.width,
-                       ==,
-                       test_logical_monitor->layout.width);
-      g_assert_cmpint (logical_monitor->rect.height,
-                       ==,
-                       test_logical_monitor->layout.height);
-      g_assert_cmpint (logical_monitor->scale,
-                       ==,
-                       test_logical_monitor->scale);
-
-      if (logical_monitor == monitor_manager->primary_logical_monitor)
-        g_assert (meta_logical_monitor_is_primary (logical_monitor));
-
-      primary_output = NULL;
-      monitors = meta_logical_monitor_get_monitors (logical_monitor);
-      for (l_monitor = monitors; l_monitor; l_monitor = l_monitor->next)
-        {
-          MetaMonitor *monitor = l_monitor->data;
-          GList *outputs;
-          GList *l_output;
-
-          outputs = meta_monitor_get_outputs (monitor);
-          for (l_output = outputs; l_output; l_output = l_output->next)
-            {
-              MetaOutput *output = l_output->data;
-
-              if (output->is_primary)
-                {
-                  g_assert_null (primary_output);
-                  primary_output = output;
-                }
-
-              g_assert (output->crtc->logical_monitor == logical_monitor);
-              g_assert_cmpint (logical_monitor->is_presentation,
-                               ==,
-                               output->is_presentation);
-            }
-        }
-
-      if (logical_monitor == monitor_manager->primary_logical_monitor)
-        g_assert_nonnull (primary_output);
+      check_logical_monitor (test_case, monitor_manager, test_logical_monitor);
     }
   g_assert_cmpint (n_logical_monitors, ==, i);
 
