@@ -47,6 +47,7 @@
     <file>ui/ctrlAltTab.js</file>
     <file>ui/dash.js</file>
     <file>ui/dateMenu.js</file>
+    <file>ui/dialog.js</file>
     <file>ui/dnd.js</file>
     <file>ui/edgeDragAction.js</file>
     <file>ui/endSessionDialog.js</file>

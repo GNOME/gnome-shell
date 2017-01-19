@@ -14,6 +14,7 @@ const Atk = imports.gi.Atk;
 
 const Params = imports.misc.params;
 
+const Dialog = imports.ui.dialog;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
@@ -61,11 +62,6 @@ const ModalDialog = new Lang.Class({
 
         this._group.connect('destroy', Lang.bind(this, this._onGroupDestroy));
 
-        this._pressedKey = null;
-        this._buttonKeys = {};
-        this._group.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
-        this._group.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
-
         this.backgroundStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._backgroundBin = new St.Bin({ child: this.backgroundStack,
                                            x_fill: true, y_fill: true });
@@ -73,17 +69,9 @@ const ModalDialog = new Lang.Class({
         this._backgroundBin.add_constraint(this._monitorConstraint);
         this._group.add_actor(this._backgroundBin);
 
-        this.dialogLayout = new St.BoxLayout({ style_class: 'modal-dialog',
-                                               x_align:      Clutter.ActorAlign.CENTER,
-                                               y_align:      Clutter.ActorAlign.CENTER,
-                                               vertical:     true });
-        // modal dialogs are fixed width and grow vertically; set the request
-        // mode accordingly so wrapped labels are handled correctly during
-        // size requests.
-        this.dialogLayout.request_mode = Clutter.RequestMode.HEIGHT_FOR_WIDTH;
-
-        if (params.styleClass != null)
-            this.dialogLayout.add_style_class_name(params.styleClass);
+        this.dialogLayout = new Dialog.Dialog(this.backgroundStack, params.styleClass);
+        this.contentLayout = this.dialogLayout.contentLayout;
+        this.buttonLayout = this.dialogLayout.buttonLayout;
 
         if (!this._shellReactive) {
             this._lightbox = new Lightbox.Lightbox(this._group,
@@ -94,22 +82,6 @@ const ModalDialog = new Lang.Class({
             this._eventBlocker = new Clutter.Actor({ reactive: true });
             this.backgroundStack.add_actor(this._eventBlocker);
         }
-        this.backgroundStack.add_actor(this.dialogLayout);
-
-
-        this.contentLayout = new St.BoxLayout({ vertical: true,
-                                                style_class: "modal-dialog-content-box" });
-        this.dialogLayout.add(this.contentLayout,
-                              { expand:  true,
-                                x_fill:  true,
-                                y_fill:  true,
-                                x_align: St.Align.MIDDLE,
-                                y_align: St.Align.START });
-
-        this.buttonLayout = new St.Widget ({ layout_manager: new Clutter.BoxLayout ({ homogeneous:true }) });
-        this.dialogLayout.add(this.buttonLayout,
-                              { x_align: St.Align.MIDDLE,
-                                y_align: St.Align.END });
 
         global.focus_manager.add_group(this.dialogLayout);
         this._initialKeyFocus = this.dialogLayout;
@@ -122,8 +94,7 @@ const ModalDialog = new Lang.Class({
     },
 
     clearButtons: function() {
-        this.buttonLayout.destroy_all_children();
-        this._buttonKeys = {};
+        this.dialogLayout.clearButtons();
     },
 
     setButtons: function(buttons) {
@@ -146,72 +117,8 @@ const ModalDialog = new Lang.Class({
         }
     },
 
-    addButton: function(buttonInfo) {
-        let label = buttonInfo['label']
-        let action = buttonInfo['action'];
-        let key = buttonInfo['key'];
-        let isDefault = buttonInfo['default'];
-
-        let keys;
-
-        if (key)
-            keys = [key];
-        else if (isDefault)
-            keys = [Clutter.KEY_Return, Clutter.KEY_KP_Enter, Clutter.KEY_ISO_Enter];
-        else
-            keys = [];
-
-        let button = new St.Button({ style_class: 'modal-dialog-linked-button',
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                     reactive:    true,
-                                     can_focus:   true,
-                                     x_expand:    true,
-                                     y_expand:    true,
-                                     label:       label });
-        button.connect('clicked', action);
-
-        buttonInfo['button'] = button;
-
-        if (isDefault)
-            button.add_style_pseudo_class('default');
-
-        if (!this._initialKeyFocusDestroyId)
-            this._initialKeyFocus = button;
-
-        for (let i in keys)
-            this._buttonKeys[keys[i]] = buttonInfo;
-
-        this.buttonLayout.add_actor(button);
-
-        return button;
-    },
-
-    _onKeyPressEvent: function(object, event) {
-        this._pressedKey = event.get_key_symbol();
-        return Clutter.EVENT_PROPAGATE;
-    },
-
-    _onKeyReleaseEvent: function(object, event) {
-        let pressedKey = this._pressedKey;
-        this._pressedKey = null;
-
-        let symbol = event.get_key_symbol();
-        if (symbol != pressedKey)
-            return Clutter.EVENT_PROPAGATE;
-
-        let buttonInfo = this._buttonKeys[symbol];
-        if (!buttonInfo)
-            return Clutter.EVENT_PROPAGATE;
-
-        let button = buttonInfo['button'];
-        let action = buttonInfo['action'];
-
-        if (action && button.reactive) {
-            action();
-            return Clutter.EVENT_STOP;
-        }
-
-        return Clutter.EVENT_PROPAGATE;
+    addButton: function (buttonInfo) {
+        return this.dialogLayout.addButton(buttonInfo);
     },
 
     _onGroupDestroy: function() {
