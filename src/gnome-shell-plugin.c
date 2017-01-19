@@ -88,6 +88,8 @@ static void gnome_shell_plugin_confirm_display_change (MetaPlugin *plugin);
 
 static const MetaPluginInfo *gnome_shell_plugin_plugin_info   (MetaPlugin *plugin);
 
+static MetaCloseDialog * gnome_shell_plugin_create_close_dialog (MetaPlugin *plugin,
+                                                              MetaWindow *window);
 
 #define GNOME_TYPE_SHELL_PLUGIN            (gnome_shell_plugin_get_type ())
 #define GNOME_SHELL_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_SHELL_PLUGIN, GnomeShellPlugin))
@@ -149,6 +151,8 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->confirm_display_change = gnome_shell_plugin_confirm_display_change;
 
   plugin_class->plugin_info       = gnome_shell_plugin_plugin_info;
+
+  plugin_class->create_close_dialog = gnome_shell_plugin_create_close_dialog;
 }
 
 static void
@@ -424,4 +428,11 @@ MetaPluginInfo *gnome_shell_plugin_plugin_info (MetaPlugin *plugin)
   };
 
   return &info;
+}
+
+static MetaCloseDialog *
+gnome_shell_plugin_create_close_dialog (MetaPlugin *plugin,
+                                        MetaWindow *window)
+{
+  return _shell_wm_create_close_dialog (get_shell_wm (), window);
 }

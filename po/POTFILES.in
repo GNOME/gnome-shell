@@ -17,6 +17,7 @@ js/ui/appFavorites.js
 js/ui/audioDeviceSelection.js
 js/ui/backgroundMenu.js
 js/ui/calendar.js
+js/ui/closeDialog.js
 js/ui/components/automountManager.js
 js/ui/components/autorunManager.js
 js/ui/components/keyring.js

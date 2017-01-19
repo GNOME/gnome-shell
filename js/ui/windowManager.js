@@ -20,6 +20,7 @@ const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
 const PadOsd = imports.ui.padOsd;
 const EdgeDragAction = imports.ui.edgeDragAction;
+const CloseDialog = imports.ui.closeDialog;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
@@ -710,6 +711,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
         this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
         this._shellwm.connect('confirm-display-change', Lang.bind(this, this._confirmDisplayChange));
+        this._shellwm.connect('create-close-dialog', Lang.bind(this, this._createCloseDialog));
         global.screen.connect('restacked', Lang.bind(this, this._syncStacking));
 
         this._workspaceSwitcherPopup = null;
@@ -1969,6 +1971,10 @@ const WindowManager = new Lang.Class({
     _confirmDisplayChange: function() {
         let dialog = new DisplayChangeDialog(this._shellwm);
         dialog.open();
+    },
+
+    _createCloseDialog: function (shellwm, window) {
+        return new CloseDialog.CloseDialog(window);
     },
 
     _showResizePopup: function(display, show, rect, displayW, displayH) {

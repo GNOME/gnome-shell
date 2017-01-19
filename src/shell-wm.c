@@ -33,6 +33,7 @@ enum
   SHOW_WINDOW_MENU,
   FILTER_KEYBINDING,
   CONFIRM_DISPLAY_CHANGE,
+  CREATE_CLOSE_DIALOG,
 
   LAST_SIGNAL
 };
@@ -168,6 +169,22 @@ shell_wm_class_init (ShellWMClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+  /**
+   * ShellWM::create-close-dialog:
+   * @wm: The WM
+   * @window: The window to create the dialog for
+   *
+   * Creates a close dialog for the given window.
+   *
+   * Returns: (transfer full): The close dialog instance.
+   */
+  shell_wm_signals[CREATE_CLOSE_DIALOG] =
+    g_signal_new ("create-close-dialog",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  META_TYPE_CLOSE_DIALOG, 1, META_TYPE_WINDOW);
 }
 
 void
@@ -384,6 +401,17 @@ void
 _shell_wm_confirm_display_change (ShellWM *wm)
 {
   g_signal_emit (wm, shell_wm_signals[CONFIRM_DISPLAY_CHANGE], 0);
+}
+
+MetaCloseDialog *
+_shell_wm_create_close_dialog (ShellWM    *wm,
+                               MetaWindow *window)
+{
+  MetaCloseDialog *dialog;
+
+  g_signal_emit (wm, shell_wm_signals[CREATE_CLOSE_DIALOG], 0, window, &dialog);
+
+  return dialog;
 }
 
 /**

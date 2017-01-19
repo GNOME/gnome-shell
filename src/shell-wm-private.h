@@ -52,6 +52,9 @@ gboolean _shell_wm_filter_keybinding (ShellWM             *wm,
 
 void _shell_wm_confirm_display_change (ShellWM            *wm);
 
+MetaCloseDialog * _shell_wm_create_close_dialog (ShellWM     *wm,
+                                                 MetaWindow  *window);
+
 G_END_DECLS
 
 #endif /* __SHELL_WM_PRIVATE_H__ */
