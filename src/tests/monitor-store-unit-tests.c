@@ -511,6 +511,66 @@ meta_test_monitor_store_scale (void)
   check_monitor_configurations (&expect);
 }
 
+static void
+meta_test_monitor_store_mirrored (void)
+{
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 0,
+              .width = 800,
+              .height = 600
+            },
+            .scale = 1,
+            .is_primary = TRUE,
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 800,
+                  .height = 600,
+                  .refresh_rate = 60.000495910644531
+                }
+              },
+              {
+                .connector = "DP-2",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 800,
+                  .height = 600,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 2,
+          }
+        },
+        .n_logical_monitors = 1
+      }
+    },
+    .n_configurations = 1
+  };
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  set_custom_monitor_config ("mirrored.xml");
+
+  check_monitor_configurations (&expect);
+}
+
 void
 init_monitor_store_tests (void)
 {
@@ -524,4 +584,6 @@ init_monitor_store_tests (void)
                    meta_test_monitor_store_underscanning);
   g_test_add_func ("/backends/monitor-store/scale",
                    meta_test_monitor_store_scale);
+  g_test_add_func ("/backends/monitor-store/mirrored",
+                   meta_test_monitor_store_mirrored);
 }
