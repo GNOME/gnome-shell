@@ -51,6 +51,7 @@ typedef struct _MonitorTestCaseMonitor
 typedef struct _MonitorTestCaseLogicalMonitor
 {
   MetaRectangle layout;
+  int scale;
   gboolean is_primary;
   gboolean is_presentation;
   MonitorTestCaseMonitor monitors[MAX_N_MONITORS];
@@ -139,6 +140,9 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
 
       g_assert (meta_rectangle_equal (&logical_monitor_config->layout,
                                       &config_expect->logical_monitors[i].layout));
+      g_assert_cmpint (logical_monitor_config->scale,
+                       ==,
+                       config_expect->logical_monitors[i].scale);
       g_assert_cmpint (logical_monitor_config->is_primary,
                        ==,
                        config_expect->logical_monitors[i].is_primary);
@@ -220,6 +224,7 @@ meta_test_monitor_store_single (void)
               .width = 1920,
               .height = 1080
             },
+            .scale = 1,
             .is_primary = TRUE,
             .is_presentation = FALSE,
             .monitors = {
@@ -269,6 +274,7 @@ meta_test_monitor_store_vertical (void)
               .width = 1024,
               .height = 768
             },
+            .scale = 1,
             .is_primary = TRUE,
             .is_presentation = FALSE,
             .monitors = {
@@ -293,6 +299,7 @@ meta_test_monitor_store_vertical (void)
               .width = 800,
               .height = 600
             },
+            .scale = 1,
             .is_primary = FALSE,
             .is_presentation = FALSE,
             .monitors = {
@@ -342,6 +349,7 @@ meta_test_monitor_store_primary (void)
               .width = 1024,
               .height = 768
             },
+            .scale = 1,
             .is_primary = FALSE,
             .is_presentation = FALSE,
             .monitors = {
@@ -366,6 +374,7 @@ meta_test_monitor_store_primary (void)
               .width = 800,
               .height = 600
             },
+            .scale = 1,
             .is_primary = TRUE,
             .is_presentation = FALSE,
             .monitors = {
@@ -415,6 +424,7 @@ meta_test_monitor_store_underscanning (void)
               .width = 1024,
               .height = 768
             },
+            .scale = 1,
             .is_primary = TRUE,
             .is_presentation = FALSE,
             .monitors = {
@@ -451,6 +461,56 @@ meta_test_monitor_store_underscanning (void)
   check_monitor_configurations (&expect);
 }
 
+static void
+meta_test_monitor_store_scale (void)
+{
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 0,
+              .width = 1920,
+              .height = 1080
+            },
+            .scale = 2,
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1920,
+                  .height = 1080,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          }
+        },
+        .n_logical_monitors = 1
+      }
+    },
+    .n_configurations = 1
+  };
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  set_custom_monitor_config ("scale.xml");
+
+  check_monitor_configurations (&expect);
+}
+
 void
 init_monitor_store_tests (void)
 {
@@ -462,4 +522,6 @@ init_monitor_store_tests (void)
                    meta_test_monitor_store_primary);
   g_test_add_func ("/backends/monitor-store/underscanning",
                    meta_test_monitor_store_underscanning);
+  g_test_add_func ("/backends/monitor-store/scale",
+                   meta_test_monitor_store_scale);
 }
