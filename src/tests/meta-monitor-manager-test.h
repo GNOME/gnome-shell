@@ -32,6 +32,11 @@ typedef struct _MetaMonitorTestSetup
   int n_crtcs;
 } MetaMonitorTestSetup;
 
+typedef struct _MetaOutputTest
+{
+  int scale;
+} MetaOutputTest;
+
 #define META_TYPE_MONITOR_MANAGER_TEST (meta_monitor_manager_test_get_type ())
 G_DECLARE_FINAL_TYPE (MetaMonitorManagerTest, meta_monitor_manager_test,
                       META, MONITOR_MANAGER_TEST, MetaMonitorManager)

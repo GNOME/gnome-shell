@@ -51,7 +51,15 @@ struct _MetaMonitorManagerDummyClass
   MetaMonitorManagerClass parent_class;
 };
 
+typedef struct _MetaOutputDummy
+{
+  int scale;
+} MetaOutputDummy;
+
 G_DEFINE_TYPE (MetaMonitorManagerDummy, meta_monitor_manager_dummy, META_TYPE_MONITOR_MANAGER);
+
+static void
+meta_output_dummy_notify_destroy (MetaOutput *output);
 
 #define array_last(a, t) \
   g_array_index (a, t, a->len - 1)
@@ -75,6 +83,7 @@ append_monitor (GArray *modes,
     }
   };
   MetaCrtc crtc;
+  MetaOutputDummy *output_dummy;
   MetaOutput output;
   unsigned int i;
 
@@ -87,6 +96,11 @@ append_monitor (GArray *modes,
     .all_transforms = ALL_TRANSFORMS,
   };
   g_array_append_val (crtcs, crtc);
+
+  output_dummy = g_new0 (MetaOutputDummy, 1);
+  *output_dummy = (MetaOutputDummy) {
+    .scale = scale
+  };
 
   output = (MetaOutput) {
     .winsys_id = outputs->len + 1,
@@ -103,7 +117,9 @@ append_monitor (GArray *modes,
     .n_possible_clones = 0,
     .backlight = -1,
     .connector_type = META_CONNECTOR_TYPE_LVDS,
-    .scale = scale,
+    .driver_private = output_dummy,
+    .driver_notify =
+      (GDestroyNotify) meta_output_dummy_notify_destroy
   };
 
   output.modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
@@ -159,8 +175,14 @@ append_tiled_monitor (GArray *modes,
   tile_group_id = outputs->len + 1;
   for (i = 0; i < G_N_ELEMENTS (crtcs_decl); i++)
     {
+      MetaOutputDummy *output_dummy;
       MetaCrtcMode *preferred_mode;
       unsigned int j;
+
+      output_dummy = g_new0 (MetaOutputDummy, 1);
+      *output_dummy = (MetaOutputDummy) {
+        .scale = scale
+      };
 
       preferred_mode = &array_last (modes, MetaCrtcMode),
       output = (MetaOutput) {
@@ -187,7 +209,9 @@ append_tiled_monitor (GArray *modes,
           .tile_w = preferred_mode->width,
           .tile_h = preferred_mode->height
         },
-        .scale = scale
+        .driver_private = output_dummy,
+        .driver_notify =
+          (GDestroyNotify) meta_output_dummy_notify_destroy
       };
 
       output.modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
@@ -204,6 +228,12 @@ append_tiled_monitor (GArray *modes,
 
       g_array_append_val (outputs, output);
     }
+}
+
+static void
+meta_output_dummy_notify_destroy (MetaOutput *output)
+{
+  g_clear_pointer (&output->driver_private, g_free);
 }
 
 static void
@@ -533,6 +563,20 @@ meta_monitor_manager_dummy_is_transform_handled (MetaMonitorManager  *manager,
   return manager_dummy->is_transform_handled;
 }
 
+static int
+meta_monitor_manager_dummy_calculate_monitor_mode_scale (MetaMonitorManager *manager,
+                                                         MetaMonitor        *monitor,
+                                                         MetaMonitorMode    *monitor_mode)
+{
+  MetaOutput *output;
+  MetaOutputDummy *output_dummy;
+
+  output = meta_monitor_get_main_output (monitor);
+  output_dummy = output->driver_private;
+
+  return output_dummy->scale;
+}
+
 static void
 meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
@@ -543,6 +587,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->apply_monitors_config = meta_monitor_manager_dummy_apply_monitors_config;
   manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
   manager_class->is_transform_handled = meta_monitor_manager_dummy_is_transform_handled;
+  manager_class->calculate_monitor_mode_scale = meta_monitor_manager_dummy_calculate_monitor_mode_scale;
 }
 
 static void

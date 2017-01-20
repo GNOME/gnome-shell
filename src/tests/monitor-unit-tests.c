@@ -658,6 +658,12 @@ check_monitor_configuration (MonitorTestCase *test_case)
     }
 }
 
+static void
+meta_output_test_destroy_notify (MetaOutput *output)
+{
+  g_clear_pointer (&output->driver_private, g_free);
+}
+
 static MetaMonitorTestSetup *
 create_monitor_test_setup (MonitorTestCase *test_case,
                            MonitorTestFlag  flags)
@@ -712,6 +718,7 @@ create_monitor_test_setup (MonitorTestCase *test_case,
   test_setup->outputs = g_new0 (MetaOutput, test_setup->n_outputs);
   for (i = 0; i < test_setup->n_outputs; i++)
     {
+      MetaOutputTest *output_test;
       int crtc_index;
       MetaCrtc *crtc;
       int preferred_mode_index;
@@ -756,9 +763,15 @@ create_monitor_test_setup (MonitorTestCase *test_case,
           possible_crtcs[j] = &test_setup->crtcs[possible_crtc_index];
         }
 
+      output_test = g_new0 (MetaOutputTest, 1);
+
       scale = test_case->setup.outputs[i].scale;
       if (scale < 1)
         scale = 1;
+
+      *output_test = (MetaOutputTest) {
+        .scale = scale
+      };
 
       is_laptop_panel = test_case->setup.outputs[i].is_laptop_panel;
 
@@ -789,8 +802,9 @@ create_monitor_test_setup (MonitorTestCase *test_case,
         .connector_type = (is_laptop_panel ? META_CONNECTOR_TYPE_eDP
                                            : META_CONNECTOR_TYPE_DisplayPort),
         .tile_info = test_case->setup.outputs[i].tile_info,
-        .scale = scale,
-        .is_underscanning = test_case->setup.outputs[i].is_underscanning
+        .is_underscanning = test_case->setup.outputs[i].is_underscanning,
+        .driver_private = output_test,
+        .driver_notify = (GDestroyNotify) meta_output_test_destroy_notify
       };
     }
 

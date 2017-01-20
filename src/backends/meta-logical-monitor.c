@@ -100,13 +100,20 @@ meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
 {
   MetaLogicalMonitor *logical_monitor;
   MetaOutput *main_output;
+  MetaMonitorMode *monitor_mode;
+  int scale;
 
   logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
+
+  monitor_mode = meta_monitor_get_current_mode (monitor);
+  scale = meta_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
+                                                             monitor,
+                                                             monitor_mode);
 
   main_output = meta_monitor_get_main_output (monitor);
   logical_monitor->number = monitor_number;
   logical_monitor->winsys_id = main_output->winsys_id;
-  logical_monitor->scale = main_output->scale;
+  logical_monitor->scale = scale;
   logical_monitor->in_fullscreen = -1;
   logical_monitor->rect = *layout;
 

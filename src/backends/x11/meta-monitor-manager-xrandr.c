@@ -1568,6 +1568,15 @@ meta_monitor_manager_xrandr_is_transform_handled (MetaMonitorManager  *manager,
   return TRUE;
 }
 
+static int
+meta_monitor_manager_xrandr_calculate_monitor_mode_scale (MetaMonitorManager *manager,
+                                                          MetaMonitor        *monitor,
+                                                          MetaMonitorMode    *monitor_mode)
+{
+  /* X11 does not support anything other than scale 1. */
+  return 1;
+}
+
 static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
@@ -1644,6 +1653,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->tiled_monitor_removed = meta_monitor_manager_xrandr_tiled_monitor_removed;
 #endif
   manager_class->is_transform_handled = meta_monitor_manager_xrandr_is_transform_handled;
+  manager_class->calculate_monitor_mode_scale = meta_monitor_manager_xrandr_calculate_monitor_mode_scale;
 
   quark_meta_monitor_xrandr_data =
     g_quark_from_static_string ("-meta-monitor-xrandr-data");

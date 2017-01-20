@@ -26,8 +26,6 @@
 
 #include "backends/meta-monitor-manager-private.h"
 
-typedef struct _MetaMonitorMode MetaMonitorMode;
-
 typedef struct _MetaMonitorSpec
 {
   char *connector;
@@ -97,8 +95,6 @@ gboolean meta_monitor_is_underscanning (MetaMonitor *monitor);
 
 gboolean meta_monitor_is_laptop_panel (MetaMonitor *monitor);
 
-int meta_monitor_get_calculated_scale (MetaMonitor *monitor);
-
 GList * meta_monitor_get_outputs (MetaMonitor *monitor);
 
 void meta_monitor_get_current_resolution (MetaMonitor *monitor,
@@ -120,6 +116,8 @@ const char * meta_monitor_get_vendor (MetaMonitor *monitor);
 const char * meta_monitor_get_product (MetaMonitor *monitor);
 
 const char * meta_monitor_get_serial (MetaMonitor *monitor);
+
+MetaConnectorType meta_monitor_get_connector_type (MetaMonitor *monitor);
 
 uint32_t meta_monitor_tiled_get_tile_group_id (MetaMonitorTiled *monitor_tiled);
 

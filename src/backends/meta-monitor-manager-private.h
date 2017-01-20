@@ -59,6 +59,8 @@ typedef struct _MetaMonitorTiled MetaMonitorTiled;
 typedef struct _MetaMonitorSpec MetaMonitorSpec;
 typedef struct _MetaLogicalMonitor MetaLogicalMonitor;
 
+typedef struct _MetaMonitorMode MetaMonitorMode;
+
 typedef struct _MetaCrtc MetaCrtc;
 typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaCrtcMode MetaCrtcMode;
@@ -125,7 +127,6 @@ struct _MetaOutput
   int width_mm;
   int height_mm;
   CoglSubpixelOrder subpixel_order;
-  int scale;
 
   MetaConnectorType connector_type;
 
@@ -348,6 +349,10 @@ struct _MetaMonitorManagerClass
   gboolean (*is_transform_handled) (MetaMonitorManager  *,
                                     MetaCrtc            *,
                                     MetaMonitorTransform);
+
+  int (*calculate_monitor_mode_scale) (MetaMonitorManager *,
+                                       MetaMonitor        *,
+                                       MetaMonitorMode    *);
 };
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
@@ -446,6 +451,10 @@ gboolean           meta_monitor_manager_is_lid_closed (MetaMonitorManager *manag
 void               meta_monitor_manager_lid_is_closed_changed (MetaMonitorManager *manager);
 
 gboolean           meta_monitor_manager_is_headless (MetaMonitorManager *manager);
+
+int                meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
+                                                                      MetaMonitor        *monitor,
+                                                                      MetaMonitorMode    *monitor_mode);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);

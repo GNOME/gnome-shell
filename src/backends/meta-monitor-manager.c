@@ -275,6 +275,19 @@ meta_monitor_manager_is_headless (MetaMonitorManager *manager)
   return !manager->monitors;
 }
 
+int
+meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
+                                                   MetaMonitor        *monitor,
+                                                   MetaMonitorMode    *monitor_mode)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->calculate_monitor_mode_scale (manager,
+                                                      monitor,
+                                                      monitor_mode);
+}
+
 static void
 meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 {

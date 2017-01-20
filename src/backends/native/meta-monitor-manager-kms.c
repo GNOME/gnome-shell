@@ -483,85 +483,6 @@ find_output_by_id (MetaOutput *outputs,
   return NULL;
 }
 
-/* The minimum resolution at which we turn on a window-scale of 2 */
-#define HIDPI_LIMIT 192
-
-/* The minimum screen height at which we turn on a window-scale of 2;
- * below this there just isn't enough vertical real estate for GNOME
- * apps to work, and it's better to just be tiny */
-#define HIDPI_MIN_HEIGHT 1200
-
-/* From http://en.wikipedia.org/wiki/4K_resolution#Resolutions_of_common_formats */
-#define SMALLEST_4K_WIDTH 3656
-
-/* Based on code from gnome-settings-daemon */
-static int
-compute_scale (MetaOutput *output)
-{
-  int scale = 1, width, height;
-
-  if (!output->crtc)
-    goto out;
-
-  width = output->crtc->rect.width;
-  height = output->crtc->rect.height;
-
-  /* Swap values on rotated transforms, so pixel and mm sizes
-   * from the same axes is compared.
-   */
-  if (meta_monitor_transform_is_rotated (output->crtc->transform))
-    {
-      int tmp = width;
-      width = height;
-      height = tmp;
-    }
-
-  /* Scaling makes no sense */
-  if (height < HIDPI_MIN_HEIGHT)
-    goto out;
-
-  /* 4K TV */
-  if (output->name != NULL && strstr(output->name, "HDMI") != NULL &&
-      width >= SMALLEST_4K_WIDTH)
-    goto out;
-
-  /* Somebody encoded the aspect ratio (16/9 or 16/10)
-   * instead of the physical size */
-  if ((output->width_mm == 160 && output->height_mm == 90) ||
-      (output->width_mm == 160 && output->height_mm == 100) ||
-      (output->width_mm == 16 && output->height_mm == 9) ||
-      (output->width_mm == 16 && output->height_mm == 10))
-    goto out;
-
-  if (output->width_mm > 0 && output->height_mm > 0)
-    {
-      double dpi_x, dpi_y;
-
-      dpi_x = (double)width / (output->width_mm / 25.4);
-      dpi_y = (double)height / (output->height_mm / 25.4);
-      /* We don't completely trust these values so both
-         must be high, and never pick higher ratio than
-         2 automatically */
-      if (dpi_x > HIDPI_LIMIT && dpi_y > HIDPI_LIMIT)
-        scale = 2;
-    }
-
-out:
-  return scale;
-}
-
-static int
-get_output_scale (MetaMonitorManager *manager,
-                  MetaOutput         *output)
-{
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  int scale = g_settings_get_uint (manager_kms->desktop_settings, "scaling-factor");
-  if (scale > 0)
-    return scale;
-  else
-    return compute_scale (output);
-}
-
 static int
 find_property_index (MetaMonitorManager         *manager,
                      drmModeObjectPropertiesPtr  props,
@@ -929,8 +850,6 @@ init_output (MetaOutput         *output,
 
   /* MetaConnectorType matches DRM's connector types */
   output->connector_type = (MetaConnectorType) connector->connector_type;
-
-  output->scale = get_output_scale (manager, output);
 
   output_get_tile_info (manager_kms, output);
 
@@ -1399,7 +1318,6 @@ apply_crtc_assignments (MetaMonitorManager *manager,
 
               output->is_dirty = TRUE;
               output->crtc = crtc;
-              output->scale = get_output_scale (manager, output);
             }
         }
 
@@ -1898,6 +1816,93 @@ meta_monitor_manager_kms_is_transform_handled (MetaMonitorManager  *manager,
     return FALSE;
 }
 
+/* The minimum resolution at which we turn on a window-scale of 2 */
+#define HIDPI_LIMIT 192
+
+/* The minimum screen height at which we turn on a window-scale of 2;
+ * below this there just isn't enough vertical real estate for GNOME
+ * apps to work, and it's better to just be tiny */
+#define HIDPI_MIN_HEIGHT 1200
+
+/* From http://en.wikipedia.org/wiki/4K_resolution#Resolutions_of_common_formats */
+#define SMALLEST_4K_WIDTH 3656
+
+static int
+compute_scale (MetaMonitor     *monitor,
+               MetaMonitorMode *monitor_mode)
+{
+  int resolution_width, resolution_height;
+  int width_mm, height_mm;
+  int scale;
+
+  scale = 1;
+
+  meta_monitor_mode_get_resolution (monitor_mode,
+                                    &resolution_width,
+                                    &resolution_height);
+
+  if (resolution_height < HIDPI_MIN_HEIGHT)
+    goto out;
+
+  /* 4K TV */
+  switch (meta_monitor_get_connector_type (monitor))
+    {
+    case META_CONNECTOR_TYPE_HDMIA:
+    case META_CONNECTOR_TYPE_HDMIB:
+      if (resolution_width >= SMALLEST_4K_WIDTH)
+        goto out;
+      break;
+    default:
+      break;
+    }
+
+  meta_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
+
+  /*
+   * Somebody encoded the aspect ratio (16/9 or 16/10) instead of the physical
+   * size.
+   */
+  if ((width_mm == 160 && height_mm == 90) ||
+      (width_mm == 160 && height_mm == 100) ||
+      (width_mm == 16 && height_mm == 9) ||
+      (width_mm == 16 && height_mm == 10))
+    goto out;
+
+  if (width_mm > 0 && height_mm > 0)
+    {
+      double dpi_x, dpi_y;
+
+      dpi_x = (double) resolution_width / (width_mm / 25.4);
+      dpi_y = (double) resolution_height / (height_mm / 25.4);
+
+      /*
+       * We don't completely trust these values so both must be high, and never
+       * pick higher ratio than 2 automatically.
+       */
+      if (dpi_x > HIDPI_LIMIT && dpi_y > HIDPI_LIMIT)
+        scale = 2;
+    }
+
+out:
+  return scale;
+}
+
+static int
+meta_monitor_manager_kms_calculate_monitor_mode_scale (MetaMonitorManager *manager,
+                                                       MetaMonitor        *monitor,
+                                                       MetaMonitorMode    *monitor_mode)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  int global_scale;
+
+  global_scale = g_settings_get_uint (manager_kms->desktop_settings,
+                                      "scaling-factor");
+  if (global_scale > 0)
+    return global_scale;
+  else
+    return compute_scale (monitor, monitor_mode);
+}
+
 static void
 meta_monitor_manager_kms_dispose (GObject *object)
 {
@@ -1938,4 +1943,5 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->get_crtc_gamma = meta_monitor_manager_kms_get_crtc_gamma;
   manager_class->set_crtc_gamma = meta_monitor_manager_kms_set_crtc_gamma;
   manager_class->is_transform_handled = meta_monitor_manager_kms_is_transform_handled;
+  manager_class->calculate_monitor_mode_scale = meta_monitor_manager_kms_calculate_monitor_mode_scale;
 }

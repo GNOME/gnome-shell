@@ -196,16 +196,6 @@ meta_monitor_is_underscanning (MetaMonitor *monitor)
   return output->is_underscanning;
 }
 
-int
-meta_monitor_get_calculated_scale (MetaMonitor *monitor)
-{
-  MetaOutput *output;
-
-  output = meta_monitor_get_main_output (monitor);
-
-  return output->scale;
-}
-
 gboolean
 meta_monitor_is_laptop_panel (MetaMonitor *monitor)
 {
@@ -289,6 +279,15 @@ meta_monitor_get_serial (MetaMonitor *monitor)
 
   output = meta_monitor_get_main_output (monitor);
   return output->serial;
+}
+
+MetaConnectorType
+meta_monitor_get_connector_type (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+  return output->connector_type;
 }
 
 static void
