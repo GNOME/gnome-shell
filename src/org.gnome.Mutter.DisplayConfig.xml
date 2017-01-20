@@ -290,5 +290,60 @@
 	The client should then call GetResources() to read the new layout.
     -->
     <signal name="MonitorsChanged" />
+
+    <!--
+	GetCurrentState:
+	@serial: configuration serial
+	@monitors: available monitors
+	@logical_monitors: current logical monitor configuration
+	@max_screen_size: the maximum screen size
+
+	@monitors represent connected physical monitors
+
+	* s connector: connector name (e.g. HDMI-1, DP-1, etc)
+	* s vendor: vendor name
+	* s product: product name
+	* s serial: product serial
+	* a(iidu) modes: available modes
+	    * i width: width in physical pixels
+	    * i height: height in physical pixels
+	    * d refresh rate: refresh rate
+	    * i preferred scale: scale preferred as per calculations
+	    * u flags: mode flags (see below)
+	* a{sv} properties: optional properties, including:
+	    - "width_mm" (i): physical width of monitor in millimeters
+	    - "height_mm" (i): physical height of monitor in millimeters
+
+        Possible mode flags:
+	  1 : preferred mode
+	  2 : current mode
+
+
+	@logical_monitors represent current logical monitor configuration
+
+	* i x: x position
+	* i y: y position
+	* i width: width
+	* i height: height
+	* a(sss) monitors: monitors displaying this logical monitor
+	    * connector: name of the connector (e.g. DP-1, eDP-1 etc)
+	    * vendor: vendor name
+	    * product: product name
+	    * serial: product serial
+	* i scale: scale
+	* b primary: true if this is the primary logical monitor
+	* a{sv} properties: possibly other properties
+
+
+	@max_screen_size represents the maximum size the screen may have, or 0x0 if no
+	such limit is known.
+
+    -->
+    <method name="GetCurrentState">
+      <arg name="serial" direction="out" type="u" />
+      <arg name="monitors" direction="out" type="a((ssss)a(iidiu)a{sv})" />
+      <arg name="logical_monitors" direction="out" type="a(iiiia(ssss)iba{sv})" />
+      <arg name="max_screen_size" direction="out" type="(ii)" />
+    </method>
   </interface>
 </node>

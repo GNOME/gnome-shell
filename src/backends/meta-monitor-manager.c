@@ -1174,6 +1174,142 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
   return TRUE;
 }
 
+#define META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED (1 << 0)
+#define META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT (1 << 1)
+
+#define MODE_FORMAT "(iidiu)"
+#define MODES_FORMAT "a" MODE_FORMAT
+#define MONITOR_SPEC_FORMAT "(ssss)"
+#define MONITOR_FORMAT "(" MONITOR_SPEC_FORMAT MODES_FORMAT "a{sv})"
+#define MONITORS_FORMAT "a" MONITOR_FORMAT
+
+#define LOGICAL_MONITOR_MONITORS_FORMAT "a" MONITOR_SPEC_FORMAT
+#define LOGICAL_MONITOR_FORMAT "(iiii" LOGICAL_MONITOR_MONITORS_FORMAT "iba{sv})"
+#define LOGICAL_MONITORS_FORMAT "a" LOGICAL_MONITOR_FORMAT
+
+static gboolean
+meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
+                                               GDBusMethodInvocation *invocation)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  GVariantBuilder monitors_builder;
+  GVariantBuilder logical_monitors_builder;
+  GVariantBuilder max_screen_size_builder;
+  GList *l;
+
+  g_variant_builder_init (&monitors_builder,
+                          G_VARIANT_TYPE (MONITORS_FORMAT));
+  g_variant_builder_init (&logical_monitors_builder,
+                          G_VARIANT_TYPE (LOGICAL_MONITORS_FORMAT));
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+      MetaMonitorSpec *monitor_spec = meta_monitor_get_spec (monitor);
+      MetaMonitorMode *current_mode;
+      MetaMonitorMode *preferred_mode;
+      GVariantBuilder modes_builder;
+      GList *k;
+
+      current_mode = meta_monitor_get_current_mode (monitor);
+      preferred_mode = meta_monitor_get_preferred_mode (monitor);
+
+      g_variant_builder_init (&modes_builder, G_VARIANT_TYPE (MODES_FORMAT));
+      for (k = meta_monitor_get_modes (monitor); k; k = k->next)
+        {
+          MetaMonitorMode *monitor_mode = k->data;
+          MetaMonitorModeSpec *monitor_mode_spec;
+          int preferred_scale;
+          uint32_t flags = 0;
+
+          monitor_mode_spec = meta_monitor_mode_get_spec (monitor_mode);
+          preferred_scale =
+            meta_monitor_manager_calculate_monitor_mode_scale (manager,
+                                                               monitor,
+                                                               monitor_mode);
+          if (monitor_mode == current_mode)
+            flags |= META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT;
+          if (monitor_mode == preferred_mode)
+            flags |= META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED;
+
+          g_variant_builder_add (&modes_builder, MODE_FORMAT,
+                                 monitor_mode_spec->width,
+                                 monitor_mode_spec->height,
+                                 monitor_mode_spec->refresh_rate,
+                                 preferred_scale,
+                                 flags);
+        }
+
+      g_variant_builder_add (&monitors_builder, MONITOR_FORMAT,
+                             monitor_spec->connector,
+                             monitor_spec->vendor,
+                             monitor_spec->product,
+                             monitor_spec->serial,
+                             &modes_builder,
+                             NULL);
+    }
+
+  for (l = manager->logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+      GVariantBuilder logical_monitor_monitors_builder;
+      GList *k;
+
+      g_variant_builder_init (&logical_monitor_monitors_builder,
+                              G_VARIANT_TYPE (LOGICAL_MONITOR_MONITORS_FORMAT));
+
+      for (k = logical_monitor->monitors; k; k = k->next)
+        {
+          MetaMonitor *monitor = k->data;
+          MetaMonitorSpec *monitor_spec = meta_monitor_get_spec (monitor);
+
+          g_variant_builder_add (&logical_monitor_monitors_builder,
+                                 MONITOR_SPEC_FORMAT,
+                                 monitor_spec->connector,
+                                 monitor_spec->vendor,
+                                 monitor_spec->product,
+                                 monitor_spec->serial);
+        }
+
+      g_variant_builder_add (&logical_monitors_builder,
+                             LOGICAL_MONITOR_FORMAT,
+                             logical_monitor->rect.x,
+                             logical_monitor->rect.y,
+                             logical_monitor->rect.width,
+                             logical_monitor->rect.height,
+                             &logical_monitor_monitors_builder,
+                             logical_monitor->scale,
+                             logical_monitor->is_primary,
+                             NULL);
+    }
+
+  g_variant_builder_init (&max_screen_size_builder,
+                          G_VARIANT_TYPE ("(ii)"));
+  g_variant_builder_add (&max_screen_size_builder, "i",
+                         manager->max_screen_width);
+  g_variant_builder_add (&max_screen_size_builder, "i",
+                         manager->max_screen_height);
+
+  meta_dbus_display_config_complete_get_current_state (
+    skeleton,
+    invocation,
+    manager->serial,
+    g_variant_builder_end (&monitors_builder),
+    g_variant_builder_end (&logical_monitors_builder),
+    g_variant_builder_end (&max_screen_size_builder));
+
+  return TRUE;
+}
+
+#undef MODE_FORMAT
+#undef MODES_FORMAT
+#undef MONITOR_SPEC_FORMAT
+#undef MONITOR_FORMAT
+#undef MONITORS_FORMAT
+#undef LOGICAL_MONITOR_MONITORS_FORMAT
+#undef LOGICAL_MONITOR_FORMAT
+#undef LOGICAL_MONITORS_FORMAT
+
 static void
 legacy_confirm_configuration (MetaMonitorManager *manager,
                               gboolean            confirmed)
@@ -1378,6 +1514,7 @@ meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface *iface)
   iface->handle_change_backlight = meta_monitor_manager_handle_change_backlight;
   iface->handle_get_crtc_gamma = meta_monitor_manager_handle_get_crtc_gamma;
   iface->handle_set_crtc_gamma = meta_monitor_manager_handle_set_crtc_gamma;
+  iface->handle_get_current_state = meta_monitor_manager_handle_get_current_state;
 }
 
 static void
