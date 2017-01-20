@@ -1303,6 +1303,12 @@ meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager *manager,
   GPtrArray *crtc_infos;
   GPtrArray *output_infos;
 
+  if (!config)
+    {
+      meta_monitor_manager_rebuild_derived (manager);
+      return TRUE;
+    }
+
   if (!meta_monitor_config_manager_assign (manager, config,
                                            &crtc_infos, &output_infos,
                                            error))

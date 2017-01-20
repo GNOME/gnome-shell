@@ -420,7 +420,7 @@ done:
 
   if (!config)
     {
-      meta_monitor_manager_rebuild (manager, NULL);
+      meta_monitor_manager_apply_monitors_config (manager, NULL, &error);
       return NULL;
     }
 

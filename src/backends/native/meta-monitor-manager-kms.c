@@ -1430,6 +1430,7 @@ meta_monitor_manager_kms_apply_monitors_config (MetaMonitorManager *manager,
     {
       manager->screen_width = 0;
       manager->screen_height = 0;
+      meta_monitor_manager_rebuild (manager, NULL);
       return TRUE;
     }
 
