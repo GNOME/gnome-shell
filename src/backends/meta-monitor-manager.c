@@ -1776,20 +1776,16 @@ meta_monitor_manager_update_monitor_modes (MetaMonitorManager *manager,
   GList *logical_monitor_configs;
   GList *l;
 
+  g_list_foreach (manager->monitors,
+                  (GFunc) meta_monitor_set_current_mode,
+                  NULL);
+
   logical_monitor_configs = config ? config->logical_monitor_configs : NULL;
   for (l = logical_monitor_configs; l; l = l->next)
     {
       MetaLogicalMonitorConfig *logical_monitor_config = l->data;
 
       set_logical_monitor_modes (manager, logical_monitor_config);
-    }
-
-  for (l = manager->monitors; l; l = l->next)
-    {
-      MetaMonitor *monitor = l->data;
-
-      if (!meta_monitor_get_logical_monitor (monitor))
-        meta_monitor_set_current_mode (monitor, NULL);
     }
 }
 
@@ -1798,7 +1794,6 @@ meta_monitor_manager_update_logical_state (MetaMonitorManager *manager,
                                            MetaMonitorsConfig *config)
 {
   meta_monitor_manager_rebuild_logical_monitors (manager, config);
-  meta_monitor_manager_update_monitor_modes (manager, config);
 }
 
 void
@@ -1806,6 +1801,8 @@ meta_monitor_manager_rebuild (MetaMonitorManager *manager,
                               MetaMonitorsConfig *config)
 {
   GList *old_logical_monitors;
+
+  meta_monitor_manager_update_monitor_modes (manager, config);
 
   if (manager->in_init)
     return;
@@ -1836,13 +1833,14 @@ void
 meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager)
 {
   meta_monitor_manager_rebuild_logical_monitors_derived (manager);
-  meta_monitor_manager_update_monitor_modes_derived (manager);
 }
 
 void
 meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 {
   GList *old_logical_monitors;
+
+  meta_monitor_manager_update_monitor_modes_derived (manager);
 
   if (manager->in_init)
     return;
