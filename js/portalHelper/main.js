@@ -12,6 +12,7 @@ const WebKit = imports.gi.WebKit2;
 const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
+const FileUtils = imports.misc.fileUtils;
 
 const PortalHelperResult = {
     CANCELLED: 0,
@@ -50,6 +51,7 @@ const PortalWindow = new Lang.Class({
 
     _init: function(application, url, timestamp, doneCallback) {
         this.parent({ application: application });
+        this.connect('delete-event', Lang.bind(this, this.destroyWindow));
 
         if (!url) {
             url = CONNECTIVITY_CHECK_URI;
@@ -63,8 +65,15 @@ const PortalWindow = new Lang.Class({
         this._doneCallback = doneCallback;
         this._lastRecheck = 0;
         this._recheckAtExit = false;
+        let cacheDir = GLib.Dir.make_tmp("gnome-shell-portal-helper-XXXXXXXX");
+        this._cacheDir = Gio.File.new_for_path(cacheDir);
 
-        this._webView = new WebKit.WebView();
+        let dataManager = new WebKit.WebsiteDataManager({ base_data_directory: cacheDir,
+                                                          base_cache_directory: cacheDir });
+        let webContext = new WebKit.WebContext({ website_data_manager: dataManager });
+        webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
+
+        this._webView = WebKit.WebView.new_with_context(webContext);
         this._webView.connect('decide-policy', Lang.bind(this, this._onDecidePolicy));
         this._webView.load_uri(url);
         this._webView.connect('notify::title', Lang.bind(this, this._syncTitle));
@@ -76,6 +85,11 @@ const PortalWindow = new Lang.Class({
         this.present_with_time(timestamp);
 
         this.application.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
+    },
+
+    destroyWindow: function() {
+        this.destroy();
+        FileUtils.recursivelyDeleteDir(this._cacheDir, true);
     },
 
     _syncTitle: function() {
@@ -172,7 +186,7 @@ const WebPortalHelper = new Lang.Class({
         this._queue = [];
 
         let action = new Gio.SimpleAction({ name: 'quit' });
-        action.connect('activate', () => { this.active_window.destroy(); });
+        action.connect('activate', () => { this.active_window.destroyWindow(); });
         this.add_action(action);
     },
 
@@ -205,7 +219,7 @@ const WebPortalHelper = new Lang.Class({
 
             if (obj.connection == connection) {
                 if (obj.window)
-                    obj.window.destroy();
+                    obj.window.destroyWindow();
                 this._queue.splice(i, 1);
                 break;
             }
