@@ -1209,6 +1209,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
       MetaMonitorMode *current_mode;
       MetaMonitorMode *preferred_mode;
       GVariantBuilder modes_builder;
+      GVariantBuilder properties_builder;
       GList *k;
 
       current_mode = meta_monitor_get_current_mode (monitor);
@@ -1240,13 +1241,23 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                  flags);
         }
 
+      g_variant_builder_init (&properties_builder, G_VARIANT_TYPE ("a{sv}"));
+      if (meta_monitor_supports_underscanning (monitor))
+        {
+          gboolean is_underscanning = meta_monitor_is_underscanning (monitor);
+
+          g_variant_builder_add (&properties_builder, "{sv}",
+                                 "is_underscanning",
+                                 g_variant_new_boolean (is_underscanning));
+        }
+
       g_variant_builder_add (&monitors_builder, MONITOR_FORMAT,
                              monitor_spec->connector,
                              monitor_spec->vendor,
                              monitor_spec->product,
                              monitor_spec->serial,
                              &modes_builder,
-                             NULL);
+                             &properties_builder);
     }
 
   for (l = manager->logical_monitors; l; l = l->next)

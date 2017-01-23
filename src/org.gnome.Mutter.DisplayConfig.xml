@@ -313,6 +313,9 @@
 	* a{sv} properties: optional properties, including:
 	    - "width_mm" (i): physical width of monitor in millimeters
 	    - "height_mm" (i): physical height of monitor in millimeters
+	    - "is_underscanning" (b): whether underscanning is enabled
+				      (absence of this means underscanning
+				      not being supported)
 
         Possible mode flags:
 	  1 : preferred mode
@@ -337,7 +340,6 @@
 
 	@max_screen_size represents the maximum size the screen may have, or 0x0 if no
 	such limit is known.
-
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />
