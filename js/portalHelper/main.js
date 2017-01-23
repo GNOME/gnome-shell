@@ -51,7 +51,13 @@ const PortalWindow = new Lang.Class({
 
     _init: function(application, url, timestamp, doneCallback) {
         this.parent({ application: application });
+
         this.connect('delete-event', Lang.bind(this, this.destroyWindow));
+        /* TRANSLATORS: this is the title of the wifi captive portal login window */
+        this._headerBar = new Gtk.HeaderBar({ title: _("Hotspot Login"),
+                                              show_close_button: true });
+        this.set_titlebar(this._headerBar);
+        this._headerBar.show();
 
         if (!url) {
             url = CONNECTIVITY_CHECK_URI;
@@ -76,8 +82,8 @@ const PortalWindow = new Lang.Class({
         this._webView = WebKit.WebView.new_with_context(webContext);
         this._webView.connect('decide-policy', Lang.bind(this, this._onDecidePolicy));
         this._webView.load_uri(url);
-        this._webView.connect('notify::title', Lang.bind(this, this._syncTitle));
-        this._syncTitle();
+        this._webView.connect('notify::uri', Lang.bind(this, this._syncUri));
+        this._syncUri();
 
         this.add(this._webView);
         this._webView.show();
@@ -93,16 +99,12 @@ const PortalWindow = new Lang.Class({
         FileUtils.recursivelyDeleteDir(this._cacheDir, true);
     },
 
-    _syncTitle: function() {
-        let title = this._webView.title;
-
-        if (title) {
-            this.title = title;
-        } else {
-            /* TRANSLATORS: this is the title of the wifi captive portal login
-             * window, until we know the title of the actual login page */
-            this.title = _("Web Authentication Redirect");
-        }
+    _syncUri: function() {
+        let uri = this._webView.uri;
+        if (uri)
+            this._headerBar.set_subtitle(GLib.uri_unescape_string(uri, null, false));
+        else
+            this._headerBar.set_subtitle(null);
     },
 
     refresh: function() {
