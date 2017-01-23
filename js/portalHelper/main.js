@@ -81,6 +81,7 @@ const PortalWindow = new Lang.Class({
 
         this.add(this._webView);
         this._webView.show();
+        this.set_size_request(600, 450);
         this.maximize();
         this.present_with_time(timestamp);
 
