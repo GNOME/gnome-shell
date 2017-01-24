@@ -498,18 +498,31 @@ find_output_by_id (MetaOutput *outputs,
 static int
 compute_scale (MetaOutput *output)
 {
-  int scale = 1;
+  int scale = 1, width, height;
 
   if (!output->crtc)
     goto out;
 
+  width = output->crtc->rect.width;
+  height = output->crtc->rect.height;
+
+  /* Swap values on rotated transforms, so pixel and mm sizes
+   * from the same axes is compared.
+   */
+  if (meta_monitor_transform_is_rotated (output->crtc->transform))
+    {
+      int tmp = width;
+      width = height;
+      height = tmp;
+    }
+
   /* Scaling makes no sense */
-  if (output->crtc->rect.width < HIDPI_MIN_HEIGHT)
+  if (height < HIDPI_MIN_HEIGHT)
     goto out;
 
   /* 4K TV */
   if (output->name != NULL && strstr(output->name, "HDMI") != NULL &&
-      output->crtc->rect.width >= SMALLEST_4K_WIDTH)
+      width >= SMALLEST_4K_WIDTH)
     goto out;
 
   /* Somebody encoded the aspect ratio (16/9 or 16/10)
@@ -523,8 +536,9 @@ compute_scale (MetaOutput *output)
   if (output->width_mm > 0 && output->height_mm > 0)
     {
       double dpi_x, dpi_y;
-      dpi_x = (double)output->crtc->rect.width / (output->width_mm / 25.4);
-      dpi_y = (double)output->crtc->rect.height / (output->height_mm / 25.4);
+
+      dpi_x = (double)width / (output->width_mm / 25.4);
+      dpi_y = (double)height / (output->height_mm / 25.4);
       /* We don't completely trust these values so both
          must be high, and never pick higher ratio than
          2 automatically */
