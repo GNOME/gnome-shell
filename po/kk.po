@@ -1,15 +1,15 @@
 # Kazakh translation for gnome-shell.
 # Copyright (C) 2015 The gnome-shell authors.
 # This file is distributed under the same license as the gnome-shell package.
-# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012-2016.
+# Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012-2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-23 20:38+0000\n"
-"PO-Revision-Date: 2016-11-27 20:37+0500\n"
+"POT-Creation-Date: 2017-01-24 12:36+0000\n"
+"PO-Revision-Date: 2017-01-25 14:01+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -476,11 +476,10 @@ msgstr "%B %d, %l∶%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%B %d %Y, %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:87
-msgid "Web Authentication Redirect"
-msgstr "Веб аутентификацияның қайта бағдарлауы"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:57
+msgid "Hotspot Login"
+msgstr "Қатынау нүктесіне кіру"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -524,12 +523,12 @@ msgstr "Таңдамалыларға қосу"
 msgid "Show Details"
 msgstr "Деректерді көрсету"
 
-#: js/ui/appFavorites.js:134
+#: js/ui/appFavorites.js:137
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s таңдамалыларыңызға қосылды."
 
-#: js/ui/appFavorites.js:168
+#: js/ui/appFavorites.js:171
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s таңдамалыларыңыздан өшірілді."
@@ -766,7 +765,7 @@ msgstr "Сымсыз кеңжолақты желісінің паролі"
 msgid "A password is required to connect to “%s”."
 msgstr "\"%s\" үшін байланысты орнату үшін пароль керек."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1734
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1736
 msgid "Network Manager"
 msgstr "Желілер басқарушысы"
 
@@ -1526,7 +1525,7 @@ msgstr "аутентификация керек"
 msgid "connection failed"
 msgstr "байланысты орнату сәтсіз"
 
-#: js/ui/status/network.js:1494 js/ui/status/network.js:1587
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1589
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Желі баптаулары"
@@ -1543,32 +1542,29 @@ msgstr "VPN"
 msgid "VPN Off"
 msgstr "VPN сөндірілген"
 
-#: js/ui/status/network.js:1618
+#: js/ui/status/network.js:1620
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s сымды желі байланысы"
 
-#: js/ui/status/network.js:1622
+#: js/ui/status/network.js:1624
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Wi-Fi желі байланысы"
 
-#: js/ui/status/network.js:1626
+#: js/ui/status/network.js:1628
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s модем желі байланысы"
 
-#: js/ui/status/network.js:1773
+#: js/ui/status/network.js:1775
 msgid "Connection failed"
 msgstr "Байланыс орнату сәтсіз"
 
-#: js/ui/status/network.js:1774
+#: js/ui/status/network.js:1776
 msgid "Activation of network connection failed"
 msgstr "Желілік байланысты белсендіру сәтсіз"
 
@@ -1821,6 +1817,9 @@ msgstr "Пароль бос болуы мүмкін емес"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация терезесін пайдаланушы тайдырды"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Веб аутентификацияның қайта бағдарлауы"
 
 #~ msgid "Not In Use"
 #~ msgstr "Қолданылуда емес"
