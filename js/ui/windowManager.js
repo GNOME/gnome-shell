@@ -1082,6 +1082,9 @@ const WindowManager = new Lang.Class({
         if (!this._shouldAnimate())
             return false;
 
+        if (!actor.get_texture())
+            return false;
+
         let type = actor.meta_window.get_window_type();
         return types.indexOf(type) >= 0;
     },
