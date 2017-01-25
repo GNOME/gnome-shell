@@ -1286,6 +1286,8 @@ const WindowManager = new Lang.Class({
     _sizeChangedWindow: function(shellwm, actor) {
         if (!actor.__fullscreenInfo)
             return;
+        if (this._resizing.indexOf(actor) != -1)
+            return;
 
         let actorClone = actor.__fullscreenInfo.clone;
         let targetRect = actor.meta_window.get_frame_rect();
