@@ -39,6 +39,11 @@
 #define MAX_CRTCS (MAX_MONITORS * 2)
 #define MAX_MODES (MAX_MONITORS * 4)
 
+static float supported_scales_dummy[] = {
+  1.0,
+  2.0
+};
+
 struct _MetaMonitorManagerDummy
 {
   MetaMonitorManager parent_instance;
@@ -586,6 +591,15 @@ meta_monitor_manager_dummy_calculate_monitor_mode_scale (MetaMonitorManager *man
 }
 
 static void
+meta_monitor_manager_dummy_get_supported_scales (MetaMonitorManager *manager,
+                                                 float             **scales,
+                                                 int                *n_scales)
+{
+  *scales = supported_scales_dummy;
+  *n_scales = G_N_ELEMENTS (supported_scales_dummy);
+}
+
+static void
 meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
@@ -596,6 +610,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
   manager_class->is_transform_handled = meta_monitor_manager_dummy_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_dummy_calculate_monitor_mode_scale;
+  manager_class->get_supported_scales = meta_monitor_manager_dummy_get_supported_scales;
 }
 
 static void

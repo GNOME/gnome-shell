@@ -23,6 +23,11 @@
 
 #include "backends/meta-monitor-config-manager.h"
 
+static float supported_scales_test[] = {
+  1.0,
+  2.0
+};
+
 struct _MetaMonitorManagerTest
 {
   MetaMonitorManager parent;
@@ -361,6 +366,15 @@ meta_monitor_manager_test_calculate_monitor_mode_scale (MetaMonitorManager *mana
 }
 
 static void
+meta_monitor_manager_test_get_supported_scales (MetaMonitorManager *manager,
+                                                float             **scales,
+                                                int                *n_scales)
+{
+  *scales = supported_scales_test;
+  *n_scales = G_N_ELEMENTS (supported_scales_test);
+}
+
+static void
 meta_monitor_manager_test_dispose (GObject *object)
 {
   MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (object);
@@ -393,4 +407,5 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
   manager_class->tiled_monitor_removed = meta_monitor_manager_test_tiled_monitor_removed;
   manager_class->is_transform_handled = meta_monitor_manager_test_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_test_calculate_monitor_mode_scale;
+  manager_class->get_supported_scales = meta_monitor_manager_test_get_supported_scales;
 }

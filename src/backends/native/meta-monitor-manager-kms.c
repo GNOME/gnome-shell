@@ -52,6 +52,11 @@
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
 #define SYNC_TOLERANCE 0.01    /* 1 percent */
 
+static float supported_scales_kms[] = {
+  1.0,
+  2.0
+};
+
 typedef struct
 {
   drmModeConnector *connector;
@@ -1905,6 +1910,15 @@ meta_monitor_manager_kms_calculate_monitor_mode_scale (MetaMonitorManager *manag
 }
 
 static void
+meta_monitor_manager_kms_get_supported_scales (MetaMonitorManager *manager,
+                                               float             **scales,
+                                               int                *n_scales)
+{
+  *scales = supported_scales_kms;
+  *n_scales = G_N_ELEMENTS (supported_scales_kms);
+}
+
+static void
 meta_monitor_manager_kms_dispose (GObject *object)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (object);
@@ -1945,4 +1959,5 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->set_crtc_gamma = meta_monitor_manager_kms_set_crtc_gamma;
   manager_class->is_transform_handled = meta_monitor_manager_kms_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_kms_calculate_monitor_mode_scale;
+  manager_class->get_supported_scales = meta_monitor_manager_kms_get_supported_scales;
 }

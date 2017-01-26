@@ -52,6 +52,10 @@
  * for the reasoning */
 #define DPI_FALLBACK 96.0
 
+static float supported_scales_xrandr[] = {
+  1.0
+};
+
 struct _MetaMonitorManagerXrandr
 {
   MetaMonitorManager parent_instance;
@@ -1584,6 +1588,15 @@ meta_monitor_manager_xrandr_calculate_monitor_mode_scale (MetaMonitorManager *ma
 }
 
 static void
+meta_monitor_manager_xrandr_get_supported_scales (MetaMonitorManager *manager,
+                                                  float             **scales,
+                                                  int                *n_scales)
+{
+  *scales = supported_scales_xrandr;
+  *n_scales = G_N_ELEMENTS (supported_scales_xrandr);
+}
+
+static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
   MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
@@ -1660,6 +1673,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
 #endif
   manager_class->is_transform_handled = meta_monitor_manager_xrandr_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_xrandr_calculate_monitor_mode_scale;
+  manager_class->get_supported_scales = meta_monitor_manager_xrandr_get_supported_scales;
 
   quark_meta_monitor_xrandr_data =
     g_quark_from_static_string ("-meta-monitor-xrandr-data");

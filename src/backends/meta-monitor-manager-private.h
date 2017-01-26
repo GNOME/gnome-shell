@@ -353,6 +353,10 @@ struct _MetaMonitorManagerClass
   int (*calculate_monitor_mode_scale) (MetaMonitorManager *,
                                        MetaMonitor        *,
                                        MetaMonitorMode    *);
+
+  void (*get_supported_scales) (MetaMonitorManager *,
+                                float             **,
+                                int                *);
 };
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
