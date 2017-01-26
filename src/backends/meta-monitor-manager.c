@@ -289,6 +289,17 @@ meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
 }
 
 static void
+meta_monitor_manager_get_supported_scales (MetaMonitorManager *manager,
+                                           float             **scales,
+                                           int                *n_scales)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  manager_class->get_supported_scales (manager, scales, n_scales);
+}
+
+static void
 meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 {
   META_MONITOR_MANAGER_GET_CLASS (manager)->ensure_initial_config (manager);
@@ -1194,8 +1205,12 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   GVariantBuilder monitors_builder;
   GVariantBuilder logical_monitors_builder;
+  GVariantBuilder supported_scales_builder;
   GVariantBuilder max_screen_size_builder;
   GList *l;
+  float *supported_scales;
+  int n_supported_scales;
+  int i;
 
   g_variant_builder_init (&monitors_builder,
                           G_VARIANT_TYPE (MONITORS_FORMAT));
@@ -1294,6 +1309,13 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              NULL);
     }
 
+  g_variant_builder_init (&supported_scales_builder, G_VARIANT_TYPE ("ad"));
+  meta_monitor_manager_get_supported_scales (manager,
+                                             &supported_scales,
+                                             &n_supported_scales);
+  for (i = 0; i < n_supported_scales; i++)
+    g_variant_builder_add (&supported_scales_builder, "d", supported_scales[i]);
+
   g_variant_builder_init (&max_screen_size_builder,
                           G_VARIANT_TYPE ("(ii)"));
   g_variant_builder_add (&max_screen_size_builder, "i",
@@ -1307,6 +1329,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
     manager->serial,
     g_variant_builder_end (&monitors_builder),
     g_variant_builder_end (&logical_monitors_builder),
+    g_variant_builder_end (&supported_scales_builder),
     g_variant_builder_end (&max_screen_size_builder));
 
   return TRUE;

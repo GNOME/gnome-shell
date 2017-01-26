@@ -296,6 +296,7 @@
 	@serial: configuration serial
 	@monitors: available monitors
 	@logical_monitors: current logical monitor configuration
+	@supported_scales: scaling factors supported by the display server
 	@max_screen_size: the maximum screen size
 
 	@monitors represent connected physical monitors
@@ -340,11 +341,16 @@
 
 	@max_screen_size represents the maximum size the screen may have, or 0x0 if no
 	such limit is known.
+
+
+	@supported_scales is an ordered list of floating point numbers representing
+	scale factors of logical monitors supported by the display server.
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />
       <arg name="monitors" direction="out" type="a((ssss)a(iiddu)a{sv})" />
       <arg name="logical_monitors" direction="out" type="a(iiiia(ssss)dba{sv})" />
+      <arg name="supported_scales" direction="out" type="ad" />
       <arg name="max_screen_size" direction="out" type="(ii)" />
     </method>
   </interface>
