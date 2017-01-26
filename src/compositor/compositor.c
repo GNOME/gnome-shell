@@ -1414,3 +1414,11 @@ meta_compositor_show_window_menu_for_rect (MetaCompositor     *compositor,
 {
   meta_plugin_manager_show_window_menu_for_rect (compositor->plugin_mgr, window, menu, rect);
 }
+
+MetaCloseDialog *
+meta_compositor_create_close_dialog (MetaCompositor *compositor,
+                                     MetaWindow     *window)
+{
+  return meta_plugin_manager_create_close_dialog (compositor->plugin_mgr,
+                                                  window);
+}

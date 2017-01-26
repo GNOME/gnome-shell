@@ -91,5 +91,7 @@ void meta_plugin_manager_show_window_menu_for_rect (MetaPluginManager  *mgr,
 						    MetaWindowMenuType  menu,
 						    MetaRectangle      *rect);
 
+MetaCloseDialog * meta_plugin_manager_create_close_dialog (MetaPluginManager *plugin_mgr,
+                                                           MetaWindow        *window);
 
 #endif

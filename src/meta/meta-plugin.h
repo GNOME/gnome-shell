@@ -26,6 +26,7 @@
 #include <meta/compositor.h>
 #include <meta/compositor-mutter.h>
 #include <meta/meta-version.h>
+#include <meta/meta-close-dialog.h>
 
 #include <clutter/clutter.h>
 #include <X11/extensions/Xfixes.h>
@@ -228,6 +229,16 @@ struct _MetaPluginClass
    */
   const MetaPluginInfo * (*plugin_info) (MetaPlugin *plugin);
 
+  /**
+   * MetaPluginClass::create_close_dialog:
+   * @plugin: a #MetaPlugin
+   * @window: a #MetaWindow
+   *
+   * Virtual function called to create a "force quit" dialog
+   * on non-responsive clients.
+   */
+  MetaCloseDialog * (* create_close_dialog) (MetaPlugin *plugin,
+                                             MetaWindow *window);
 };
 
 /**
