@@ -308,7 +308,7 @@
 	    * i width: width in physical pixels
 	    * i height: height in physical pixels
 	    * d refresh rate: refresh rate
-	    * i preferred scale: scale preferred as per calculations
+	    * d preferred scale: scale preferred as per calculations
 	    * u flags: mode flags (see below)
 	* a{sv} properties: optional properties, including:
 	    - "width_mm" (i): physical width of monitor in millimeters
@@ -333,7 +333,7 @@
 	    * vendor: vendor name
 	    * product: product name
 	    * serial: product serial
-	* i scale: scale
+	* d scale: scale
 	* b primary: true if this is the primary logical monitor
 	* a{sv} properties: possibly other properties
 
@@ -343,8 +343,8 @@
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />
-      <arg name="monitors" direction="out" type="a((ssss)a(iidiu)a{sv})" />
-      <arg name="logical_monitors" direction="out" type="a(iiiia(ssss)iba{sv})" />
+      <arg name="monitors" direction="out" type="a((ssss)a(iiddu)a{sv})" />
+      <arg name="logical_monitors" direction="out" type="a(iiiia(ssss)dba{sv})" />
       <arg name="max_screen_size" direction="out" type="(ii)" />
     </method>
   </interface>

@@ -1177,14 +1177,14 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
 #define META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED (1 << 0)
 #define META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT (1 << 1)
 
-#define MODE_FORMAT "(iidiu)"
+#define MODE_FORMAT "(iiddu)"
 #define MODES_FORMAT "a" MODE_FORMAT
 #define MONITOR_SPEC_FORMAT "(ssss)"
 #define MONITOR_FORMAT "(" MONITOR_SPEC_FORMAT MODES_FORMAT "a{sv})"
 #define MONITORS_FORMAT "a" MONITOR_FORMAT
 
 #define LOGICAL_MONITOR_MONITORS_FORMAT "a" MONITOR_SPEC_FORMAT
-#define LOGICAL_MONITOR_FORMAT "(iiii" LOGICAL_MONITOR_MONITORS_FORMAT "iba{sv})"
+#define LOGICAL_MONITOR_FORMAT "(iiii" LOGICAL_MONITOR_MONITORS_FORMAT "dba{sv})"
 #define LOGICAL_MONITORS_FORMAT "a" LOGICAL_MONITOR_FORMAT
 
 static gboolean
@@ -1237,7 +1237,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                  monitor_mode_spec->width,
                                  monitor_mode_spec->height,
                                  monitor_mode_spec->refresh_rate,
-                                 preferred_scale,
+                                 (double) preferred_scale,
                                  flags);
         }
 
@@ -1289,7 +1289,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              logical_monitor->rect.width,
                              logical_monitor->rect.height,
                              &logical_monitor_monitors_builder,
-                             logical_monitor->scale,
+                             (double) logical_monitor->scale,
                              logical_monitor->is_primary,
                              NULL);
     }
