@@ -80,10 +80,12 @@
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland.h"
+#include "backends/x11/nested/meta-backend-x11-nested.h"
 # endif
 
 #include "backends/meta-backend-private.h"
 #include "backends/x11/meta-backend-x11.h"
+#include "backends/x11/cm/meta-backend-x11-cm.h"
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
@@ -397,6 +399,26 @@ check_for_wayland_session_type (void)
 }
 #endif
 
+/*
+ * Determine the compositor configuration, i.e. whether to run as a Wayland
+ * compositor, as well as what backend to use.
+ *
+ * There are various different flags affecting this:
+ *
+ *    --nested always forces the use of the nested X11 backend
+ *    --display-server always forces the use of the native backend
+ *    --wayland always forces the compositor type to be a Wayland compositor
+ *
+ * If no flag is passed that forces the compositor type, the compositor type
+ * is determined first from the logind session type, or if that fails, from the
+ * XDG_SESSION_TYPE enviornment variable.
+ *
+ * If no flag is passed that forces the backend type, the backend type is
+ * determined given the compositor type. If the compositor is a Wayland
+ * compositor, then the native backend is used, or the nested backend, would
+ * the native backend not be enabled at build time. If the compositor is not a
+ * Wayland compositor, then the X11 Compositing Manager backend is used.
+ */
 static void
 calculate_compositor_configuration (MetaCompositorType *compositor_type,
                                     GType              *backend_gtype)
@@ -413,22 +435,48 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
 
   if (!run_as_wayland_compositor)
     run_as_wayland_compositor = check_for_wayland_session_type ();
+#endif /* HAVE_NATIVE_BACKEND */
 
-#ifdef CLUTTER_WINDOWING_EGL
-  if (opt_display_server || (run_as_wayland_compositor && !opt_nested))
-    *backend_gtype = META_TYPE_BACKEND_NATIVE;
-  else
-#endif
-#endif
-#endif
-    *backend_gtype = META_TYPE_BACKEND_X11;
-
-#ifdef HAVE_WAYLAND
   if (run_as_wayland_compositor)
     *compositor_type = META_COMPOSITOR_TYPE_WAYLAND;
   else
-#endif
+#endif /* HAVE_WAYLAND */
     *compositor_type = META_COMPOSITOR_TYPE_X11;
+
+  if (opt_nested)
+    {
+      *backend_gtype = META_TYPE_BACKEND_X11_NESTED;
+      return;
+    }
+
+#ifdef HAVE_NATIVE_BACKEND
+  if (opt_display_server)
+    {
+      *backend_gtype = META_TYPE_BACKEND_NATIVE;
+      return;
+    }
+
+#ifdef HAVE_WAYLAND
+  if (run_as_wayland_compositor)
+    {
+      *backend_gtype = META_TYPE_BACKEND_NATIVE;
+      return;
+    }
+#endif /* HAVE_WAYLAND */
+#endif /* HAVE_NATIVE_BACKEND */
+
+#ifdef HAVE_WAYLAND
+  if (run_as_wayland_compositor)
+    {
+      *backend_gtype = META_TYPE_BACKEND_X11_NESTED;
+      return;
+    }
+  else
+#endif /* HAVE_WAYLAND */
+    {
+      *backend_gtype = META_TYPE_BACKEND_X11_CM;
+      return;
+    }
 }
 
 static gboolean _compositor_configuration_overridden = FALSE;

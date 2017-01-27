@@ -38,6 +38,13 @@ G_DECLARE_DERIVABLE_TYPE (MetaBackendX11, meta_backend_x11,
 struct _MetaBackendX11Class
 {
   MetaBackendClass parent_class;
+
+  gboolean (* handle_host_xevent) (MetaBackendX11 *x11,
+                                   XEvent         *event);
+  void (* translate_device_event) (MetaBackendX11 *x11,
+                                   XIDeviceEvent  *device_event);
+  void (* translate_crossing_event) (MetaBackendX11 *x11,
+                                     XIEnterEvent   *enter_event);
 };
 
 Display * meta_backend_x11_get_xdisplay (MetaBackendX11 *backend);

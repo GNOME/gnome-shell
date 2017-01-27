@@ -135,6 +135,10 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/x11/meta-clutter-backend-x11.h		\
 	backends/x11/meta-cursor-renderer-x11.c		\
 	backends/x11/meta-cursor-renderer-x11.h		\
+	backends/x11/cm/meta-backend-x11-cm.c		\
+	backends/x11/cm/meta-backend-x11-cm.h		\
+	backends/x11/nested/meta-backend-x11-nested.c	\
+	backends/x11/nested/meta-backend-x11-nested.h	\
 	backends/x11/nested/meta-cursor-renderer-x11-nested.c		\
 	backends/x11/nested/meta-cursor-renderer-x11-nested.h		\
 	backends/x11/meta-idle-monitor-xsync.c		\
