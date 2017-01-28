@@ -122,8 +122,8 @@ show_delete_dialog (MetaWindow *window,
       window_title = NULL;
     }
 
-  /* Translators: %s is a window title */
   if (window_title)
+    /* Translators: %s is a window title */
     tmp = g_strdup_printf (_("“%s” is not responding."), window_title);
   else
     tmp = g_strdup (_("Application is not responding."));
