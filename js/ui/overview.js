@@ -107,9 +107,9 @@ const Overview = new Lang.Class({
 
         this._overviewCreated = true;
 
-        /* Translators: This is the main view to select
-           activities. See also note for "Activities" string. */
         this._overview = new St.BoxLayout({ name: 'overview',
+                                            /* Translators: This is the main view to select
+                                               activities. See also note for "Activities" string. */
                                             accessible_name: _("Overview"),
                                             vertical: true });
         this._overview.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
