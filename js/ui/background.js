@@ -142,7 +142,6 @@ const BackgroundCache = new Lang.Class({
     Name: 'BackgroundCache',
 
     _init: function() {
-        this._pendingFileLoads = [];
         this._fileMonitors = {};
         this._backgroundSources = {};
         this._animations = {};
@@ -377,11 +376,9 @@ const Background = new Lang.Class({
 
         let cache = Meta.BackgroundImageCache.get_default();
         let numPendingImages = files.length;
-        let images = [];
         for (let i = 0; i < files.length; i++) {
             this._watchFile(files[i]);
             let image = cache.load(files[i]);
-            images.push(image);
             if (image.is_loaded()) {
                 numPendingImages--;
                 if (numPendingImages == 0)
