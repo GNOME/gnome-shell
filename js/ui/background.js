@@ -254,7 +254,8 @@ const Background = new Lang.Class({
                     this._loadAnimation(this._animation.file);
             }));
 
-        LoginManager.getLoginManager().connect('prepare-for-sleep',
+        let loginManager = LoginManager.getLoginManager();
+        this._prepareForSleepId = loginManager.connect('prepare-for-sleep',
             (lm, aboutToSuspend) => {
                 if (aboutToSuspend)
                     return;
@@ -282,6 +283,10 @@ const Background = new Lang.Class({
         if (this._timezoneChangedId != 0)
             this._clock.disconnect(this._timezoneChangedId);
         this._timezoneChangedId = 0;
+
+        if (this._prepareForSleepId != 0)
+            LoginManager.getLoginManager().disconnect(this._prepareForSleepId);
+        this._prepareForSleepId = 0;
 
         if (this._settingsChangedSignalId != 0)
             this._settings.disconnect(this._settingsChangedSignalId);
