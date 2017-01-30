@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-01-18 22:04+0000\n"
-"PO-Revision-Date: 2017-01-21 20:10+0100\n"
+"POT-Creation-Date: 2017-01-24 12:36+0000\n"
+"PO-Revision-Date: 2017-01-30 03:02+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -481,11 +481,10 @@ msgstr "%d %B, %l∶%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:87
-msgid "Web Authentication Redirect"
-msgstr "Przekierowanie uwierzytelniania WWW"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:57
+msgid "Hotspot Login"
+msgstr "Logowanie do hotspotu"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
