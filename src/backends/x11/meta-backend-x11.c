@@ -34,7 +34,6 @@
 
 #include <X11/extensions/sync.h>
 #include <X11/XKBlib.h>
-#include <X11/extensions/XKBrules.h>
 #include <X11/Xlib-xcb.h>
 #include <xkbcommon/xkbcommon-x11.h>
 
@@ -67,16 +66,10 @@ struct _MetaBackendX11Private
   uint8_t xkb_error_base;
 
   struct xkb_keymap *keymap;
-  gchar *keymap_layouts;
-  gchar *keymap_variants;
-  gchar *keymap_options;
-  int locked_group;
 
   MetaLogicalMonitor *cached_current_logical_monitor;
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
-
-static void apply_keymap (MetaBackendX11 *x11);
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND);
 
@@ -283,13 +276,6 @@ handle_host_xevent (MetaBackend *backend,
             case XkbMapNotify:
               keymap_changed (backend);
               break;
-            case XkbStateNotify:
-              if (xkb_ev->state.changed & XkbGroupLockMask)
-                {
-                  if (priv->locked_group != xkb_ev->state.locked_group)
-                    XkbLockGroup (priv->xdisplay, XkbUseCoreKbd, priv->locked_group);
-                }
-              break;
             default:
               break;
             }
@@ -384,17 +370,6 @@ x_event_source_new (MetaBackend *backend)
 }
 
 static void
-on_device_added (ClutterDeviceManager *device_manager,
-                 ClutterInputDevice   *device,
-                 gpointer              user_data)
-{
-  MetaBackendX11 *x11 = META_BACKEND_X11 (user_data);
-
-  if (clutter_input_device_get_device_type (device) == CLUTTER_KEYBOARD_DEVICE)
-    apply_keymap (x11);
-}
-
-static void
 on_monitors_changed (MetaMonitorManager *manager,
                      MetaBackend        *backend)
 {
@@ -449,9 +424,6 @@ meta_backend_x11_post_init (MetaBackend *backend)
                                     &priv->xkb_error_base))
     meta_fatal ("X server doesn't have the XKB extension, version %d.%d or newer\n",
                 XKB_X11_MIN_MAJOR_XKB_VERSION, XKB_X11_MIN_MINOR_XKB_VERSION);
-
-  g_signal_connect_object (clutter_device_manager_get_default (), "device-added",
-                           G_CALLBACK (on_device_added), backend, 0);
 
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 
@@ -567,155 +539,6 @@ meta_backend_x11_get_current_logical_monitor (MetaBackend *backend)
   return priv->cached_current_logical_monitor;
 }
 
-static void
-get_xkbrf_var_defs (Display           *xdisplay,
-                    const char        *layouts,
-                    const char        *variants,
-                    const char        *options,
-                    char             **rules_p,
-                    XkbRF_VarDefsRec  *var_defs)
-{
-  char *rules = NULL;
-
-  /* Get it from the X property or fallback on defaults */
-  if (!XkbRF_GetNamesProp (xdisplay, &rules, var_defs) || !rules)
-    {
-      rules = strdup (DEFAULT_XKB_RULES_FILE);
-      var_defs->model = strdup (DEFAULT_XKB_MODEL);
-      var_defs->layout = NULL;
-      var_defs->variant = NULL;
-      var_defs->options = NULL;
-    }
-
-  /* Swap in our new options... */
-  free (var_defs->layout);
-  var_defs->layout = strdup (layouts);
-  free (var_defs->variant);
-  var_defs->variant = strdup (variants);
-  free (var_defs->options);
-  var_defs->options = strdup (options);
-
-  /* Sometimes, the property is a file path, and sometimes it's
-     not. Normalize it so it's always a file path. */
-  if (rules[0] == '/')
-    *rules_p = g_strdup (rules);
-  else
-    *rules_p = g_build_filename (XKB_BASE, "rules", rules, NULL);
-
-  free (rules);
-}
-
-static void
-free_xkbrf_var_defs (XkbRF_VarDefsRec *var_defs)
-{
-  free (var_defs->model);
-  free (var_defs->layout);
-  free (var_defs->variant);
-  free (var_defs->options);
-}
-
-static void
-free_xkb_component_names (XkbComponentNamesRec *p)
-{
-  free (p->keymap);
-  free (p->keycodes);
-  free (p->types);
-  free (p->compat);
-  free (p->symbols);
-  free (p->geometry);
-}
-
-static void
-upload_xkb_description (Display              *xdisplay,
-                        const gchar          *rules_file_path,
-                        XkbRF_VarDefsRec     *var_defs,
-                        XkbComponentNamesRec *comp_names)
-{
-  XkbDescRec *xkb_desc;
-  gchar *rules_file;
-
-  /* Upload it to the X server using the same method as setxkbmap */
-  xkb_desc = XkbGetKeyboardByName (xdisplay,
-                                   XkbUseCoreKbd,
-                                   comp_names,
-                                   XkbGBN_AllComponentsMask,
-                                   XkbGBN_AllComponentsMask &
-                                   (~XkbGBN_GeometryMask), True);
-  if (!xkb_desc)
-    {
-      g_warning ("Couldn't upload new XKB keyboard description");
-      return;
-    }
-
-  XkbFreeKeyboard (xkb_desc, 0, True);
-
-  rules_file = g_path_get_basename (rules_file_path);
-
-  if (!XkbRF_SetNamesProp (xdisplay, rules_file, var_defs))
-    g_warning ("Couldn't update the XKB root window property");
-
-  g_free (rules_file);
-}
-
-static void
-apply_keymap (MetaBackendX11 *x11)
-{
-  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
-  XkbRF_RulesRec *xkb_rules;
-  XkbRF_VarDefsRec xkb_var_defs = { 0 };
-  gchar *rules_file_path;
-
-  if (!priv->keymap_layouts ||
-      !priv->keymap_variants ||
-      !priv->keymap_options)
-    return;
-
-  get_xkbrf_var_defs (priv->xdisplay,
-                      priv->keymap_layouts,
-                      priv->keymap_variants,
-                      priv->keymap_options,
-                      &rules_file_path,
-                      &xkb_var_defs);
-
-  xkb_rules = XkbRF_Load (rules_file_path, NULL, True, True);
-  if (xkb_rules)
-    {
-      XkbComponentNamesRec xkb_comp_names = { 0 };
-
-      XkbRF_GetComponents (xkb_rules, &xkb_var_defs, &xkb_comp_names);
-      upload_xkb_description (priv->xdisplay, rules_file_path, &xkb_var_defs, &xkb_comp_names);
-
-      free_xkb_component_names (&xkb_comp_names);
-      XkbRF_Free (xkb_rules, True);
-    }
-  else
-    {
-      g_warning ("Couldn't load XKB rules");
-    }
-
-  free_xkbrf_var_defs (&xkb_var_defs);
-  g_free (rules_file_path);
-}
-
-static void
-meta_backend_x11_set_keymap (MetaBackend *backend,
-                             const char  *layouts,
-                             const char  *variants,
-                             const char  *options)
-{
-  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
-  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
-
-  g_free (priv->keymap_layouts);
-  priv->keymap_layouts = g_strdup (layouts);
-  g_free (priv->keymap_variants);
-  priv->keymap_variants = g_strdup (variants);
-  g_free (priv->keymap_options);
-  priv->keymap_options = g_strdup (options);
-
-  apply_keymap (x11);
-}
-
 static struct xkb_keymap *
 meta_backend_x11_get_keymap (MetaBackend *backend)
 {
@@ -739,17 +562,6 @@ meta_backend_x11_get_keymap (MetaBackend *backend)
 }
 
 static void
-meta_backend_x11_lock_layout_group (MetaBackend *backend,
-                                    guint        idx)
-{
-  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
-  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
-
-  priv->locked_group = idx;
-  XkbLockGroup (priv->xdisplay, XkbUseCoreKbd, idx);
-}
-
-static void
 meta_backend_x11_set_numlock (MetaBackend *backend,
                               gboolean     numlock_state)
 {
@@ -765,6 +577,14 @@ meta_backend_x11_handle_event (MetaBackendX11 *x11,
   priv->cached_current_logical_monitor = NULL;
 }
 
+uint8_t
+meta_backend_x11_get_xkb_event_base (MetaBackendX11 *x11)
+{
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  return priv->xkb_event_base;
+}
+
 static void
 meta_backend_x11_class_init (MetaBackendX11Class *klass)
 {
@@ -778,9 +598,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;
   backend_class->get_current_logical_monitor = meta_backend_x11_get_current_logical_monitor;
-  backend_class->set_keymap = meta_backend_x11_set_keymap;
   backend_class->get_keymap = meta_backend_x11_get_keymap;
-  backend_class->lock_layout_group = meta_backend_x11_lock_layout_group;
   backend_class->set_numlock = meta_backend_x11_set_numlock;
 }
 

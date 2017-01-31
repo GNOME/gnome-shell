@@ -105,6 +105,20 @@ meta_backend_x11_nested_select_stage_events (MetaBackend *backend)
                xwa.your_event_mask | FocusChangeMask | KeymapStateMask);
 }
 
+static void
+meta_backend_x11_nested_lock_layout_group (MetaBackend *backend,
+                                           guint        idx)
+{
+}
+
+static void
+meta_backend_x11_nested_set_keymap (MetaBackend *backend,
+                                    const char  *layouts,
+                                    const char  *variants,
+                                    const char  *options)
+{
+}
+
 static gboolean
 meta_backend_x11_nested_handle_host_xevent (MetaBackendX11 *x11,
                                             XEvent         *event)
@@ -162,6 +176,8 @@ meta_backend_x11_nested_class_init (MetaBackendX11NestedClass *klass)
   backend_class->create_cursor_renderer = meta_backend_x11_nested_create_cursor_renderer;
   backend_class->update_screen_size = meta_backend_x11_nested_update_screen_size;
   backend_class->select_stage_events = meta_backend_x11_nested_select_stage_events;
+  backend_class->lock_layout_group = meta_backend_x11_nested_lock_layout_group;
+  backend_class->set_keymap = meta_backend_x11_nested_set_keymap;
 
   backend_x11_class->handle_host_xevent = meta_backend_x11_nested_handle_host_xevent;
   backend_x11_class->translate_device_event = meta_backend_x11_nested_translate_device_event;
