@@ -111,7 +111,7 @@ const WindowClone = new Lang.Class({
         this.metaWindow._delegate = this;
         this._workspace = workspace;
 
-        this._windowClone = new Clutter.Clone({ source: realWindow.get_texture() });
+        this._windowClone = new Clutter.Clone({ source: realWindow });
         // We expect this.actor to be used for all interaction rather than
         // this._windowClone; as the former is reactive and the latter
         // is not, this just works for most cases. However, for DND all

@@ -378,7 +378,7 @@ const Overview = new Lang.Class({
             return null;
 
         let window = windows[0];
-        let clone = new Clutter.Clone({ source: window.get_texture(),
+        let clone = new Clutter.Clone({ source: window,
                                         x: window.x, y: window.y });
         clone.source.connect('destroy', Lang.bind(this, function() {
             clone.destroy();

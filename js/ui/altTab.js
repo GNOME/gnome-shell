@@ -33,10 +33,9 @@ const AppIconMode = {
 };
 
 function _createWindowClone(window, size) {
-    let windowTexture = window.get_texture();
-    let [width, height] = windowTexture.get_size();
+    let [width, height] = window.get_size();
     let scale = Math.min(1.0, size / width, size / height);
-    return new Clutter.Clone({ source: windowTexture,
+    return new Clutter.Clone({ source: window,
                                width: width * scale,
                                height: height * scale,
                                x_align: Clutter.ActorAlign.CENTER,
