@@ -520,7 +520,7 @@ flip_closure_destroyed (MetaRendererView *view)
 }
 
 #ifdef HAVE_EGL_DEVICE
-static void
+static gboolean
 flip_egl_stream (MetaRendererNative *renderer_native,
                  MetaOnscreenNative *onscreen_native,
                  GClosure           *flip_closure)
@@ -536,29 +536,34 @@ flip_egl_stream (MetaRendererNative *renderer_native,
   GError *error = NULL;
 
   if (renderer_native->egl.no_egl_output_drm_flip_event)
-    return;
+    return FALSE;
 
   acquire_attribs = (EGLAttrib[]) {
     EGL_DRM_FLIP_EVENT_DATA_NV,
     (EGLAttrib) flip_closure,
     EGL_NONE
   };
+
   if (!meta_egl_stream_consumer_acquire_attrib (egl,
                                                 egl_renderer->edpy,
                                                 onscreen_native->egl.stream,
                                                 acquire_attribs,
                                                 &error))
     {
-      g_warning ("Failed to flip EGL stream (%s), relying on clock from now on",
-                 error->message);
+      if (error->domain != META_EGL_ERROR ||
+          error->code != EGL_RESOURCE_BUSY_EXT)
+        {
+          g_warning ("Failed to flip EGL stream (%s), relying on clock from "
+                     "now on", error->message);
+          renderer_native->egl.no_egl_output_drm_flip_event = TRUE;
+        }
       g_error_free (error);
-      renderer_native->egl.no_egl_output_drm_flip_event = TRUE;
-      return;
+      return FALSE;
     }
 
   g_closure_ref (flip_closure);
 
-  return;
+  return TRUE;
 }
 #endif /* HAVE_EGL_DEVICE */
 
@@ -598,8 +603,10 @@ meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
       break;
 #ifdef HAVE_EGL_DEVICE
     case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
-      flip_egl_stream (renderer_native, onscreen_native, flip_closure);
-      onscreen_native->pending_flips++;
+      if (flip_egl_stream (renderer_native,
+                           onscreen_native,
+                           flip_closure))
+        onscreen_native->pending_flips++;
       *fb_in_use = TRUE;
       break;
 #endif
