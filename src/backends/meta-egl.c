@@ -122,6 +122,17 @@ get_egl_error_str (EGLint error_number)
     case EGL_CONTEXT_LOST:
       return "A power management event has occurred. The application must destroy all contexts and reinitialise OpenGL ES state and objects to continue rendering. ";
       break;
+    case EGL_BAD_STREAM_KHR:
+      return "An EGLStreamKHR argument does not name a valid EGL stream.";
+      break;
+    case EGL_BAD_STATE_KHR:
+      return "An EGLStreamKHR argument is not in a valid state";
+      break;
+    case EGL_BAD_DEVICE_EXT:
+      return "An EGLDeviceEXT argument does not name a valid EGL device.";
+      break;
+    case EGL_BAD_OUTPUT_LAYER_EXT:
+      return "An EGLOutputLayerEXT argument does not name a valid EGL output layer.";
     default:
       return "Unknown error";
       break;
