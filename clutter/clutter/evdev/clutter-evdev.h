@@ -57,6 +57,9 @@ void  clutter_evdev_set_device_callbacks (ClutterOpenDeviceCallback  open_callba
                                           ClutterCloseDeviceCallback close_callback,
                                           gpointer                   user_data);
 
+CLUTTER_AVAILABLE_IN_ALL
+void  clutter_evdev_set_seat_id (const gchar *seat_id);
+
 CLUTTER_AVAILABLE_IN_1_10
 void  clutter_evdev_release_devices (void);
 CLUTTER_AVAILABLE_IN_1_10

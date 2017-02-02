@@ -545,6 +545,8 @@ meta_launcher_new (GError **error)
   self->kms_fd = kms_fd;
   self->kms_file_path = kms_file_path;
 
+  clutter_evdev_set_seat_id (seat_id);
+
   clutter_evdev_set_device_callbacks (on_evdev_device_open,
                                       on_evdev_device_close,
                                       self);

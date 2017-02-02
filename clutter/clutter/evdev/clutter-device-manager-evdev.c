@@ -124,6 +124,7 @@ G_DEFINE_TYPE_WITH_CODE (ClutterDeviceManagerEvdev,
 static ClutterOpenDeviceCallback  device_open_callback;
 static ClutterCloseDeviceCallback device_close_callback;
 static gpointer                   device_callback_data;
+static gchar *                    evdev_seat_id;
 
 #ifdef CLUTTER_ENABLE_DEBUG
 static const char *device_type_str[] = {
@@ -2045,7 +2046,8 @@ clutter_device_manager_evdev_constructed (GObject *gobject)
       return;
     }
 
-  if (libinput_udev_assign_seat (priv->libinput, "seat0") == -1)
+  if (libinput_udev_assign_seat (priv->libinput,
+                                 evdev_seat_id ? evdev_seat_id : "seat0") == -1)
     {
       g_critical ("Failed to assign a seat to the libinput object.");
       libinput_unref (priv->libinput);
@@ -2793,4 +2795,19 @@ clutter_evdev_warp_pointer (ClutterInputDevice   *pointer_device,
                             int                   y)
 {
   notify_absolute_motion (pointer_device, ms2us(time_), x, y, NULL);
+}
+
+/**
+ * clutter_evdev_set_seat_id:
+ * @seat_id: The seat ID
+ *
+ * Sets the seat to assign to the libinput context.
+ *
+ * For reliable effects, this function must be called before clutter_init().
+ */
+void
+clutter_evdev_set_seat_id (const gchar *seat_id)
+{
+  g_free (evdev_seat_id);
+  evdev_seat_id = g_strdup (seat_id);
 }
