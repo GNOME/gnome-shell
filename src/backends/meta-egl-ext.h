@@ -66,6 +66,7 @@ typedef EGLBoolean (EGLAPIENTRYP PFNEGLQUERYWAYLANDBUFFERWL) (EGLDisplay dpy, st
 #ifndef EGL_EXT_stream_acquire_mode
 #define EGL_EXT_stream_acquire_mode 1
 #define EGL_CONSUMER_AUTO_ACQUIRE_EXT         0x332B
+#define EGL_RESOURCE_BUSY_EXT                 0x3353
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLSTREAMCONSUMERACQUIREATTRIBEXTPROC) (EGLDisplay dpy, EGLStreamKHR stream, const EGLAttrib *attrib_list);
 #ifdef EGL_EGLEXT_PROTOTYPES
 EGLAPI EGLBoolean EGLAPIENTRY eglStreamConsumerAcquireAttribEXT (EGLDisplay dpy, EGLStreamKHR stream, const EGLAttrib *attrib_list);
