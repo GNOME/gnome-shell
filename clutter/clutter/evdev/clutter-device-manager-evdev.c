@@ -377,11 +377,23 @@ notify_relative_tool_motion (ClutterInputDevice *input_device,
                              gfloat              dy,
                              gdouble            *axes)
 {
+  ClutterInputDeviceEvdev *device_evdev;
   ClutterEvent *event;
+  ClutterSeatEvdev *seat;
   gfloat x, y;
 
+  device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (input_device);
+  seat = _clutter_input_device_evdev_get_seat (device_evdev);
   x = input_device->current_x + dx;
   y = input_device->current_y + dy;
+
+  _clutter_device_manager_evdev_filter_relative_motion (seat->manager_evdev,
+                                                        input_device,
+                                                        seat->pointer_x,
+                                                        seat->pointer_y,
+                                                        &dx,
+                                                        &dy);
+
   event = new_absolute_motion_event (input_device, time_us, x, y, axes);
   _clutter_evdev_event_set_relative_motion (event, dx, dy, 0, 0);
 
