@@ -255,6 +255,25 @@ pointer_constrain_callback (ClutterInputDevice *device,
   constrain_all_screen_monitors (device, monitor_manager, new_x, new_y);
 }
 
+static void
+relative_motion_filter (ClutterInputDevice *device,
+                        float               x,
+                        float               y,
+                        float              *dx,
+                        float              *dy,
+                        gpointer            user_data)
+{
+  MetaMonitorManager *monitor_manager = user_data;
+
+  logical_monitor = meta_monitor_manager_get_logical_monitor_at (monitor_manager,
+                                                                 x, y);
+  if (!logical_monitor)
+    return;
+
+  *dx *= logical_monitor->scale;
+  *dy *= logical_monitor->scale;
+}
+
 static ClutterBackend *
 meta_backend_native_create_clutter_backend (MetaBackend *backend)
 {
@@ -270,6 +289,8 @@ meta_backend_native_post_init (MetaBackend *backend)
 
   clutter_evdev_set_pointer_constrain_callback (manager, pointer_constrain_callback,
                                                 NULL, NULL);
+  clutter_evdev_set_relative_motion_filter (manager, relative_motion_filter,
+                                            meta_backend_get_monitor_manager (backend));
 }
 
 static MetaIdleMonitor *
