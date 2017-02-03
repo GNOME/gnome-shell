@@ -857,7 +857,7 @@ st_theme_node_lookup_time (StThemeNode *node,
           if (term->type != TERM_NUMBER)
             continue;
 
-          if (term->content.num->type != NUM_TIME_S ||
+          if (term->content.num->type != NUM_TIME_S &&
               term->content.num->type != NUM_TIME_MS)
             continue;
 
