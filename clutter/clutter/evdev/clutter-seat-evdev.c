@@ -405,6 +405,13 @@ clutter_seat_evdev_notify_relative_motion (ClutterSeatEvdev   *seat,
   if (!_clutter_input_device_get_stage (input_device))
     return;
 
+  _clutter_device_manager_evdev_filter_relative_motion (seat->manager_evdev,
+                                                        input_device,
+                                                        seat->pointer_x,
+                                                        seat->pointer_y,
+                                                        &dx,
+                                                        &dy);
+
   new_x = seat->pointer_x + dx;
   new_y = seat->pointer_y + dy;
   event = new_absolute_motion_event (seat, input_device,

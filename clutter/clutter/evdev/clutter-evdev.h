@@ -97,6 +97,18 @@ void  clutter_evdev_set_pointer_constrain_callback (ClutterDeviceManager        
 						    gpointer                         user_data,
 						    GDestroyNotify                   user_data_notify);
 
+typedef void (*ClutterRelativeMotionFilter) (ClutterInputDevice *device,
+                                             float               x,
+                                             float               y,
+                                             float              *dx,
+                                             float              *dy,
+                                             gpointer            user_data);
+
+CLUTTER_AVAILABLE_IN_MUTTER
+void clutter_evdev_set_relative_motion_filter (ClutterDeviceManager       *evdev,
+                                               ClutterRelativeMotionFilter filter,
+                                               gpointer                    user_data);
+
 CLUTTER_AVAILABLE_IN_1_16
 void               clutter_evdev_set_keyboard_map   (ClutterDeviceManager *evdev,
 						     struct xkb_keymap    *keymap);
