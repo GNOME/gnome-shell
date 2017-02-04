@@ -19,15 +19,15 @@
 # Timo Jyrinki <timo.jyrinki@iki.fi>, 2009-2011.
 # Marko Myllynen <myllynen@redhat.com>, 2011.
 # Ville-Pekka Vainio <vpvainio@iki.fi>, 2011.
-# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2012, 2013, 2014, 2015, 2016.
+# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2012, 2013, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-23 20:38+0000\n"
-"PO-Revision-Date: 2016-12-16 22:28+0200\n"
+"POT-Creation-Date: 2017-02-02 13:29+0000\n"
+"PO-Revision-Date: 2017-02-04 20:29+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -491,11 +491,11 @@ msgstr "%B %d, %l∶%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%B %d %Y, %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:87
-msgid "Web Authentication Redirect"
-msgstr "Verkkotunnistautumisen uudelleenohjaus"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:57
+#| msgid "Network Login"
+msgid "Hotspot Login"
+msgstr "Tukiasemaan kirjautuminen"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -539,12 +539,12 @@ msgstr "Lisää suosikkeihin"
 msgid "Show Details"
 msgstr "Näytä tiedot"
 
-#: js/ui/appFavorites.js:134
+#: js/ui/appFavorites.js:137
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s on lisätty suosikkeihin."
 
-#: js/ui/appFavorites.js:168
+#: js/ui/appFavorites.js:171
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s on poistettu suosikeista."
@@ -780,7 +780,7 @@ msgstr "Mobiililaajakaistan verkkosalasana"
 msgid "A password is required to connect to “%s”."
 msgstr "Salasana vaaditaan kohteeseen \"%s\" yhdistämiseksi."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1734
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1736
 msgid "Network Manager"
 msgstr "Verkon hallinta"
 
@@ -1094,6 +1094,8 @@ msgstr "Media"
 msgid "Undo"
 msgstr "Kumoa"
 
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
 #: js/ui/overview.js:113
 msgid "Overview"
 msgstr "Yleisnäkymä"
@@ -1111,7 +1113,6 @@ msgid "New shortcut…"
 msgstr "Uusi pikanäppäin…"
 
 #: js/ui/padOsd.js:86
-#| msgid "Applications"
 msgid "Application defined"
 msgstr "Sovelluksen määrittämä"
 
@@ -1555,7 +1556,7 @@ msgstr "tunnistautuminen vaaditaan"
 msgid "connection failed"
 msgstr "yhteys katkesi"
 
-#: js/ui/status/network.js:1494 js/ui/status/network.js:1587
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1589
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Verkkoasetukset"
@@ -1572,35 +1573,32 @@ msgstr "VPN"
 msgid "VPN Off"
 msgstr "VPN pois"
 
-#: js/ui/status/network.js:1618
+#: js/ui/status/network.js:1620
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s kiinteä yhteys"
 msgstr[1] "%s kiinteää yhteyttä"
 
-#: js/ui/status/network.js:1622
+#: js/ui/status/network.js:1624
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s wifi-yhteys"
 msgstr[1] "%s wifi-yhteyttä"
 
-#: js/ui/status/network.js:1626
+#: js/ui/status/network.js:1628
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s modeemiyhteys"
 msgstr[1] "%s modeemiyhteyttä"
 
-#: js/ui/status/network.js:1773
+#: js/ui/status/network.js:1775
 msgid "Connection failed"
 msgstr "Yhteys epäonnistui"
 
-#: js/ui/status/network.js:1774
+#: js/ui/status/network.js:1776
 msgid "Activation of network connection failed"
 msgstr "Verkkoyhteyden aktivointi epäonnistui"
 
@@ -1856,6 +1854,9 @@ msgstr "Salasana ei voi olla tyhjä"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Käyttäjä poistui tunnistautumisvalintaikkunasta"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Verkkotunnistautumisen uudelleenohjaus"
 
 #~ msgid "Not In Use"
 #~ msgstr "Ei käytössä"
