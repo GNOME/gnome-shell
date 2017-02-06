@@ -3198,7 +3198,7 @@ handle_raise_or_lower (MetaDisplay     *display,
     {
       MetaRectangle tmp, win_rect, above_rect;
 
-      if (above->mapped)
+      if (above->mapped && meta_window_should_be_showing (above))
         {
           meta_window_get_frame_rect (window, &win_rect);
           meta_window_get_frame_rect (above, &above_rect);
