@@ -299,6 +299,15 @@ meta_monitor_manager_get_supported_scales (MetaMonitorManager *manager,
   manager_class->get_supported_scales (manager, scales, n_scales);
 }
 
+static MetaMonitorManagerCapability
+meta_monitor_manager_get_capabilities (MetaMonitorManager *manager)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->get_capabilities (manager);
+}
+
 static void
 meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 {
@@ -1207,10 +1216,12 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
   GVariantBuilder logical_monitors_builder;
   GVariantBuilder supported_scales_builder;
   GVariantBuilder max_screen_size_builder;
+  GVariantBuilder properties_builder;
   GList *l;
   float *supported_scales;
   int n_supported_scales;
   int i;
+  MetaMonitorManagerCapability capabilities;
 
   g_variant_builder_init (&monitors_builder,
                           G_VARIANT_TYPE (MONITORS_FORMAT));
@@ -1224,7 +1235,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
       MetaMonitorMode *current_mode;
       MetaMonitorMode *preferred_mode;
       GVariantBuilder modes_builder;
-      GVariantBuilder properties_builder;
+      GVariantBuilder monitor_properties_builder;
       GList *k;
 
       current_mode = meta_monitor_get_current_mode (monitor);
@@ -1256,12 +1267,13 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                  flags);
         }
 
-      g_variant_builder_init (&properties_builder, G_VARIANT_TYPE ("a{sv}"));
+      g_variant_builder_init (&monitor_properties_builder,
+                              G_VARIANT_TYPE ("a{sv}"));
       if (meta_monitor_supports_underscanning (monitor))
         {
           gboolean is_underscanning = meta_monitor_is_underscanning (monitor);
 
-          g_variant_builder_add (&properties_builder, "{sv}",
+          g_variant_builder_add (&monitor_properties_builder, "{sv}",
                                  "is_underscanning",
                                  g_variant_new_boolean (is_underscanning));
         }
@@ -1272,7 +1284,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              monitor_spec->product,
                              monitor_spec->serial,
                              &modes_builder,
-                             &properties_builder);
+                             &monitor_properties_builder);
     }
 
   for (l = manager->logical_monitors; l; l = l->next)
@@ -1323,6 +1335,15 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
   g_variant_builder_add (&max_screen_size_builder, "i",
                          manager->max_screen_height);
 
+  g_variant_builder_init (&properties_builder, G_VARIANT_TYPE ("a{sv}"));
+  capabilities = meta_monitor_manager_get_capabilities (manager);
+  if ((capabilities & META_MONITOR_MANAGER_CAPABILITY_MIRRORING) == 0)
+    {
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "supports-mirroring",
+                             g_variant_new_boolean (FALSE));
+    }
+
   meta_dbus_display_config_complete_get_current_state (
     skeleton,
     invocation,
@@ -1330,7 +1351,8 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
     g_variant_builder_end (&monitors_builder),
     g_variant_builder_end (&logical_monitors_builder),
     g_variant_builder_end (&supported_scales_builder),
-    g_variant_builder_end (&max_screen_size_builder));
+    g_variant_builder_end (&max_screen_size_builder),
+    g_variant_builder_end (&properties_builder));
 
   return TRUE;
 }
