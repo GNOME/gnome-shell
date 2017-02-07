@@ -62,7 +62,6 @@ meta_wayland_tablet_pad_ring_free (MetaWaylandTabletPadRing *ring)
 
   wl_resource_for_each_safe (resource, next, &ring->resource_list)
     {
-      zwp_tablet_tool_v2_send_removed (resource);
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
