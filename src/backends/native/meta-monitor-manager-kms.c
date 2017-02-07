@@ -1918,6 +1918,29 @@ meta_monitor_manager_kms_get_supported_scales (MetaMonitorManager *manager,
   *n_scales = G_N_ELEMENTS (supported_scales_kms);
 }
 
+static MetaMonitorManagerCapability
+meta_monitor_manager_kms_get_capabilities (MetaMonitorManager *manager)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+  MetaMonitorManagerCapability capabilities =
+    META_MONITOR_MANAGER_CAPABILITY_NONE;
+
+  switch (meta_renderer_native_get_mode (renderer_native))
+    {
+    case META_RENDERER_NATIVE_MODE_GBM:
+      capabilities |= META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
+      break;
+#ifdef HAVE_EGL_DEVICE
+    case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
+      break;
+#endif
+    }
+
+  return capabilities;
+}
+
 static void
 meta_monitor_manager_kms_dispose (GObject *object)
 {
@@ -1960,4 +1983,5 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->is_transform_handled = meta_monitor_manager_kms_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_kms_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_kms_get_supported_scales;
+  manager_class->get_capabilities = meta_monitor_manager_kms_get_capabilities;
 }

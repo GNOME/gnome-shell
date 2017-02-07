@@ -1596,6 +1596,12 @@ meta_monitor_manager_xrandr_get_supported_scales (MetaMonitorManager *manager,
   *n_scales = G_N_ELEMENTS (supported_scales_xrandr);
 }
 
+static MetaMonitorManagerCapability
+meta_monitor_manager_xrandr_get_capabilities (MetaMonitorManager *manager)
+{
+  return META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
+}
+
 static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
@@ -1674,6 +1680,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->is_transform_handled = meta_monitor_manager_xrandr_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_xrandr_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_xrandr_get_supported_scales;
+  manager_class->get_capabilities = meta_monitor_manager_xrandr_get_capabilities;
 
   quark_meta_monitor_xrandr_data =
     g_quark_from_static_string ("-meta-monitor-xrandr-data");

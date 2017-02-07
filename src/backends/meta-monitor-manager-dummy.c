@@ -599,6 +599,12 @@ meta_monitor_manager_dummy_get_supported_scales (MetaMonitorManager *manager,
   *n_scales = G_N_ELEMENTS (supported_scales_dummy);
 }
 
+static MetaMonitorManagerCapability
+meta_monitor_manager_dummy_get_capabilities (MetaMonitorManager *manager)
+{
+  return META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
+}
+
 static void
 meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
@@ -611,6 +617,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->is_transform_handled = meta_monitor_manager_dummy_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_dummy_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_dummy_get_supported_scales;
+  manager_class->get_capabilities = meta_monitor_manager_dummy_get_capabilities;
 }
 
 static void

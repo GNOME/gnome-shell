@@ -68,6 +68,12 @@ typedef struct _MetaCrtcInfo MetaCrtcInfo;
 typedef struct _MetaOutputInfo MetaOutputInfo;
 typedef struct _MetaTileInfo MetaTileInfo;
 
+typedef enum _MetaMonitorManagerCapability
+{
+  META_MONITOR_MANAGER_CAPABILITY_NONE = 0,
+  META_MONITOR_MANAGER_CAPABILITY_MIRRORING = (1 << 0)
+} MetaMonitorManagerCapability;
+
 typedef enum
 {
   META_MONITOR_TRANSFORM_NORMAL,
@@ -357,6 +363,8 @@ struct _MetaMonitorManagerClass
   void (*get_supported_scales) (MetaMonitorManager *,
                                 float             **,
                                 int                *);
+
+  MetaMonitorManagerCapability (*get_capabilities) (MetaMonitorManager *);
 };
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,

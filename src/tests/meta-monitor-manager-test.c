@@ -374,6 +374,12 @@ meta_monitor_manager_test_get_supported_scales (MetaMonitorManager *manager,
   *n_scales = G_N_ELEMENTS (supported_scales_test);
 }
 
+static MetaMonitorManagerCapability
+meta_monitor_manager_test_get_capabilities (MetaMonitorManager *manager)
+{
+  return META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
+}
+
 static void
 meta_monitor_manager_test_dispose (GObject *object)
 {
@@ -408,4 +414,5 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
   manager_class->is_transform_handled = meta_monitor_manager_test_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_test_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_test_get_supported_scales;
+  manager_class->get_capabilities = meta_monitor_manager_test_get_capabilities;
 }
