@@ -574,19 +574,6 @@ meta_ui_frame_get_borders (MetaUIFrame *frame,
                                 borders);
 }
 
-/* The client rectangle surrounds client window; it subtracts both
- * the visible and invisible borders from the frame window's size.
- */
-static void
-get_client_rect (MetaFrameGeometry     *fgeom,
-                 cairo_rectangle_int_t *rect)
-{
-  rect->x = fgeom->borders.total.left;
-  rect->y = fgeom->borders.total.top;
-  rect->width = fgeom->width - fgeom->borders.total.right - rect->x;
-  rect->height = fgeom->height - fgeom->borders.total.bottom - rect->y;
-}
-
 /* The visible frame rectangle surrounds the visible portion of the
  * frame window; it subtracts only the invisible borders from the frame
  * window's size.
@@ -1609,11 +1596,11 @@ get_control (MetaUIFrame *frame, int root_x, int root_y)
   x = root_x - win_x;
   y = root_y - win_y;
 
-  meta_ui_frame_calc_geometry (frame, &fgeom);
-  get_client_rect (&fgeom, &client);
-
+  meta_window_get_client_area_rect (frame->meta_window, &client);
   if (POINT_IN_RECT (x, y, client))
     return META_FRAME_CONTROL_CLIENT_AREA;
+
+  meta_ui_frame_calc_geometry (frame, &fgeom);
 
   if (POINT_IN_RECT (x, y, fgeom.close_rect.clickable))
     return META_FRAME_CONTROL_DELETE;
