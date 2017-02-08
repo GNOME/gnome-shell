@@ -26,6 +26,7 @@
 #include <meta/util.h>
 
 #include "compositor/meta-plugin-manager.h"
+#include "core/boxes-private.h"
 #include "core/main-private.h"
 #include "tests/meta-backend-test.h"
 #include "tests/monitor-unit-tests.h"
@@ -180,6 +181,36 @@ meta_test_util_later_schedule_from_later (void)
   g_assert_cmpint (data.state, ==, META_TEST_LATER_FINISHED);
 }
 
+static void
+meta_test_adjecent_to (void)
+{
+  MetaRectangle base = { .x = 10, .y = 10, .width = 10, .height = 10 };
+  MetaRectangle adjecent[] = {
+    { .x = 20, .y = 10, .width = 10, .height = 10 },
+    { .x = 0, .y = 10, .width = 10, .height = 10 },
+    { .x = 0, .y = 1, .width = 10, .height = 10 },
+    { .x = 20, .y = 19, .width = 10, .height = 10 },
+    { .x = 10, .y = 20, .width = 10, .height = 10 },
+    { .x = 10, .y = 0, .width = 10, .height = 10 },
+  };
+  MetaRectangle not_adjecent[] = {
+    { .x = 0, .y = 0, .width = 10, .height = 10 },
+    { .x = 20, .y = 20, .width = 10, .height = 10 },
+    { .x = 21, .y = 10, .width = 10, .height = 10 },
+    { .x = 10, .y = 21, .width = 10, .height = 10 },
+    { .x = 10, .y = 5, .width = 10, .height = 10 },
+    { .x = 11, .y = 10, .width = 10, .height = 10 },
+    { .x = 19, .y = 10, .width = 10, .height = 10 },
+  };
+  unsigned int i;
+
+  for (i = 0; i < G_N_ELEMENTS (adjecent); i++)
+    g_assert (meta_rectangle_is_adjecent_to (&base, &adjecent[i]));
+
+  for (i = 0; i < G_N_ELEMENTS (not_adjecent); i++)
+    g_assert (!meta_rectangle_is_adjecent_to (&base, &not_adjecent[i]));
+}
+
 static gboolean
 run_tests (gpointer data)
 {
@@ -201,6 +232,8 @@ init_tests (int argc, char **argv)
   g_test_add_func ("/util/meta-later/order", meta_test_util_later_order);
   g_test_add_func ("/util/meta-later/schedule-from-later",
                    meta_test_util_later_schedule_from_later);
+
+  g_test_add_func ("/core/boxes/adjecent-to", meta_test_adjecent_to);
 
   init_monitor_store_tests ();
   init_monitor_tests ();

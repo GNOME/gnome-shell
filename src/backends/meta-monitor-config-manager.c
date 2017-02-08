@@ -893,6 +893,34 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_co
   return TRUE;
 }
 
+static gboolean
+has_adjecent_neighbour (MetaMonitorsConfig       *config,
+                        MetaLogicalMonitorConfig *logical_monitor_config)
+{
+  GList *l;
+
+  if (!config->logical_monitor_configs->next)
+    {
+      g_assert (config->logical_monitor_configs->data ==
+                logical_monitor_config);
+      return TRUE;
+    }
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *other_logical_monitor_config = l->data;
+
+      if (logical_monitor_config == other_logical_monitor_config)
+        continue;
+
+      if (meta_rectangle_is_adjecent_to (&logical_monitor_config->layout,
+                                         &other_logical_monitor_config->layout))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 gboolean
 meta_verify_monitors_config (MetaMonitorsConfig *config,
                              GError            **error)
@@ -933,6 +961,13 @@ meta_verify_monitors_config (MetaMonitorsConfig *config,
       else if (logical_monitor_config->is_primary)
         {
           has_primary = TRUE;
+        }
+
+      if (!has_adjecent_neighbour (config, logical_monitor_config))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Logical monitors not adjecent");
+          return FALSE;
         }
 
       region = g_list_prepend (region, &logical_monitor_config->layout);

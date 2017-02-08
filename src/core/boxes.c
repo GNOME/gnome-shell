@@ -2013,3 +2013,26 @@ meta_rectangle_find_nonintersected_monitor_edges (
 
   return ret;
 }
+
+gboolean
+meta_rectangle_is_adjecent_to (MetaRectangle *rect,
+                               MetaRectangle *other)
+{
+  int rect_x1 = rect->x;
+  int rect_y1 = rect->y;
+  int rect_x2 = rect->x + rect->width;
+  int rect_y2 = rect->y + rect->height;
+  int other_x1 = other->x;
+  int other_y1 = other->y;
+  int other_x2 = other->x + other->width;
+  int other_y2 = other->y + other->height;
+
+  if ((rect_x1 == other_x2 || rect_x2 == other_x1) &&
+      !(rect_y2 <= other_y1 || rect_y1 >= other_y2))
+    return TRUE;
+  else if ((rect_y1 == other_y2 || rect_y2 == other_y1) &&
+           !(rect_x2 <= other_x1 || rect_x1 >= other_x2))
+    return TRUE;
+  else
+    return FALSE;
+}

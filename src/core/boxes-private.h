@@ -215,4 +215,7 @@ GList* meta_rectangle_find_nonintersected_monitor_edges (
                                            const GList         *monitor_rects,
                                            const GSList        *all_struts);
 
+gboolean meta_rectangle_is_adjecent_to (MetaRectangle *rect,
+                                        MetaRectangle *other);
+
 #endif /* META_BOXES_PRIVATE_H */
