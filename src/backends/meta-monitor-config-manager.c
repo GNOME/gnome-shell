@@ -925,6 +925,7 @@ gboolean
 meta_verify_monitors_config (MetaMonitorsConfig *config,
                              GError            **error)
 {
+  int min_x, min_y;
   gboolean has_primary;
   GList *region;
   GList *l;
@@ -936,6 +937,8 @@ meta_verify_monitors_config (MetaMonitorsConfig *config,
       return FALSE;
     }
 
+  min_x = INT_MAX;
+  min_y = INT_MAX;
   region = NULL;
   has_primary = FALSE;
   for (l = config->logical_monitor_configs; l; l = l->next)
@@ -970,10 +973,20 @@ meta_verify_monitors_config (MetaMonitorsConfig *config,
           return FALSE;
         }
 
+      min_x = MIN (logical_monitor_config->layout.x, min_x);
+      min_y = MIN (logical_monitor_config->layout.y, min_y);
+
       region = g_list_prepend (region, &logical_monitor_config->layout);
     }
 
   g_list_free (region);
+
+  if (min_x != 0 || min_y != 0)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Logical monitors positions are offset");
+      return FALSE;
+    }
 
   if (!has_primary)
     {
