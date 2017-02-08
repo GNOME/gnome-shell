@@ -27,7 +27,6 @@
 #include <string.h>
 
 #include "backends/meta-monitor-config-manager.h"
-#include "core/boxes-private.h"
 
 /*
  * Example configuration:
@@ -356,91 +355,6 @@ handle_start_element (GMarkupParseContext  *context,
 }
 
 static gboolean
-verify_monitor_spec (MetaMonitorSpec *monitor_spec,
-                     GError         **error)
-{
-  if (monitor_spec->connector &&
-      monitor_spec->vendor &&
-      monitor_spec->product &&
-      monitor_spec->serial)
-    {
-      return TRUE;
-    }
-  else
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Monitor spec incomplete");
-      return FALSE;
-    }
-}
-
-static gboolean
-verify_monitor_mode (MetaMonitorModeSpec *monitor_mode_spec,
-                     GError             **error)
-{
-  if (monitor_mode_spec->width > 0 &&
-      monitor_mode_spec->height > 0 &&
-      monitor_mode_spec->refresh_rate > 0.0f)
-    {
-      return TRUE;
-    }
-  else
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Monitor mode invalid");
-      return FALSE;
-    }
-}
-
-static gboolean
-verify_monitor_config (MetaMonitorConfig *monitor_config,
-                       GError           **error)
-{
-  if (monitor_config->monitor_spec && monitor_config->mode_spec)
-    {
-      return TRUE;
-    }
-  else
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Monitor config incomplete");
-      return FALSE;
-    }
-}
-
-static gboolean
-verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_config,
-                               GError                  **error)
-{
-  if (logical_monitor_config->scale < 1)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Invalid logical monitor config scale %d",
-                   logical_monitor_config->scale);
-      return FALSE;
-    }
-
-  if (logical_monitor_config->layout.x < 0 ||
-      logical_monitor_config->layout.y < 0)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Invalid logical monitor position (%d, %d)",
-                   logical_monitor_config->layout.x,
-                   logical_monitor_config->layout.y);
-      return FALSE;
-    }
-
-  if (!logical_monitor_config->monitor_configs)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Logical monitor is empty");
-      return FALSE;
-    }
-
-  return TRUE;
-}
-
-static gboolean
 derive_logical_monitor_layout (MetaLogicalMonitorConfig *logical_monitor_config,
                                GError                  **error)
 {
@@ -467,63 +381,6 @@ derive_logical_monitor_layout (MetaLogicalMonitorConfig *logical_monitor_config,
 
   logical_monitor_config->layout.width = mode_width;
   logical_monitor_config->layout.height = mode_height;
-
-  return TRUE;
-}
-
-static gboolean
-verify_config (MetaMonitorsConfig *config,
-               GError            **error)
-{
-  gboolean has_primary;
-  GList *region;
-  GList *l;
-
-  if (!config->logical_monitor_configs)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Monitors config incomplete");
-      return FALSE;
-    }
-
-  region = NULL;
-  has_primary = FALSE;
-  for (l = config->logical_monitor_configs; l; l = l->next)
-    {
-      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
-
-      if (meta_rectangle_overlaps_with_region (region,
-                                               &logical_monitor_config->layout))
-        {
-          g_list_free (region);
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "Logical monitors overlap");
-          return FALSE;
-        }
-
-      if (has_primary && logical_monitor_config->is_primary)
-        {
-          g_list_free (region);
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "Config contains multiple primary logical monitors");
-          return FALSE;
-        }
-      else if (logical_monitor_config->is_primary)
-        {
-          has_primary = TRUE;
-        }
-
-      region = g_list_prepend (region, &logical_monitor_config->layout);
-    }
-
-  g_list_free (region);
-
-  if (!has_primary)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Config is missing primary logical");
-      return FALSE;
-    }
 
   return TRUE;
 }
@@ -561,7 +418,7 @@ handle_end_element (GMarkupParseContext  *context,
       {
         g_assert (g_str_equal (element_name, "monitorspec"));
 
-        if (!verify_monitor_spec (parser->current_monitor_spec, error))
+        if (!meta_verify_monitor_spec (parser->current_monitor_spec, error))
           return;
 
         parser->current_monitor_config->monitor_spec =
@@ -584,7 +441,8 @@ handle_end_element (GMarkupParseContext  *context,
       {
         g_assert (g_str_equal (element_name, "mode"));
 
-        if (!verify_monitor_mode (parser->current_monitor_mode_spec, error))
+        if (!meta_verify_monitor_mode_spec (parser->current_monitor_mode_spec,
+                                            error))
           return;
 
         parser->current_monitor_config->mode_spec =
@@ -609,7 +467,7 @@ handle_end_element (GMarkupParseContext  *context,
 
         g_assert (g_str_equal (element_name, "monitor"));
 
-        if (!verify_monitor_config (parser->current_monitor_config, error))
+        if (!meta_verify_monitor_config (parser->current_monitor_config, error))
           return;
 
         logical_monitor_config = parser->current_logical_monitor_config;
@@ -633,7 +491,7 @@ handle_end_element (GMarkupParseContext  *context,
         if (logical_monitor_config->scale == 0)
           logical_monitor_config->scale = 1;
 
-        if (!verify_logical_monitor_config (logical_monitor_config, error))
+        if (!meta_verify_logical_monitor_config (logical_monitor_config, error))
           return;
 
         if (!derive_logical_monitor_layout (logical_monitor_config, error))
@@ -657,7 +515,7 @@ handle_end_element (GMarkupParseContext  *context,
         config =
           meta_monitors_config_new (parser->current_logical_monitor_configs);
 
-        if (!verify_config (config, error))
+        if (!meta_verify_monitors_config (config, error))
           {
             g_object_unref (config);
             return;

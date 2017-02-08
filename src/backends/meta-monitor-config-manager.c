@@ -807,3 +807,145 @@ meta_monitors_config_class_init (MetaMonitorsConfigClass *klass)
 
   object_class->finalize = meta_monitors_config_finalize;
 }
+
+gboolean
+meta_verify_monitor_mode_spec (MetaMonitorModeSpec *monitor_mode_spec,
+                               GError             **error)
+{
+  if (monitor_mode_spec->width > 0 &&
+      monitor_mode_spec->height > 0 &&
+      monitor_mode_spec->refresh_rate > 0.0f)
+    {
+      return TRUE;
+    }
+  else
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor mode invalid");
+      return FALSE;
+    }
+}
+
+gboolean
+meta_verify_monitor_spec (MetaMonitorSpec *monitor_spec,
+                          GError         **error)
+{
+  if (monitor_spec->connector &&
+      monitor_spec->vendor &&
+      monitor_spec->product &&
+      monitor_spec->serial)
+    {
+      return TRUE;
+    }
+  else
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor spec incomplete");
+      return FALSE;
+    }
+}
+
+gboolean
+meta_verify_monitor_config (MetaMonitorConfig *monitor_config,
+                            GError           **error)
+{
+  if (monitor_config->monitor_spec && monitor_config->mode_spec)
+    {
+      return TRUE;
+    }
+  else
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor config incomplete");
+      return FALSE;
+    }
+}
+
+gboolean
+meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_config,
+                                    GError                  **error)
+{
+  if (logical_monitor_config->scale < 1)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid logical monitor config scale %d",
+                   logical_monitor_config->scale);
+      return FALSE;
+    }
+
+  if (logical_monitor_config->layout.x < 0 ||
+      logical_monitor_config->layout.y < 0)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid logical monitor position (%d, %d)",
+                   logical_monitor_config->layout.x,
+                   logical_monitor_config->layout.y);
+      return FALSE;
+    }
+
+  if (!logical_monitor_config->monitor_configs)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Logical monitor is empty");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_verify_monitors_config (MetaMonitorsConfig *config,
+                             GError            **error)
+{
+  gboolean has_primary;
+  GList *region;
+  GList *l;
+
+  if (!config->logical_monitor_configs)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitors config incomplete");
+      return FALSE;
+    }
+
+  region = NULL;
+  has_primary = FALSE;
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+
+      if (meta_rectangle_overlaps_with_region (region,
+                                               &logical_monitor_config->layout))
+        {
+          g_list_free (region);
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Logical monitors overlap");
+          return FALSE;
+        }
+
+      if (has_primary && logical_monitor_config->is_primary)
+        {
+          g_list_free (region);
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Config contains multiple primary logical monitors");
+          return FALSE;
+        }
+      else if (logical_monitor_config->is_primary)
+        {
+          has_primary = TRUE;
+        }
+
+      region = g_list_prepend (region, &logical_monitor_config->layout);
+    }
+
+  g_list_free (region);
+
+  if (!has_primary)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Config is missing primary logical");
+      return FALSE;
+    }
+
+  return TRUE;
+}

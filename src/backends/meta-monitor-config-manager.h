@@ -98,4 +98,19 @@ void meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor
 
 void meta_monitor_config_free (MetaMonitorConfig *monitor_config);
 
+gboolean meta_verify_monitor_mode_spec (MetaMonitorModeSpec *monitor_mode_spec,
+                                        GError             **error);
+
+gboolean meta_verify_monitor_spec (MetaMonitorSpec *monitor_spec,
+                                   GError         **error);
+
+gboolean meta_verify_monitor_config (MetaMonitorConfig *monitor_config,
+                                     GError           **error);
+
+gboolean meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_config,
+                                             GError                  **error);
+
+gboolean meta_verify_monitors_config (MetaMonitorsConfig *config,
+                                      GError            **error);
+
 #endif /* META_MONITOR_CONFIG_MANAGER_H */
