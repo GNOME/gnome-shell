@@ -72,6 +72,7 @@ clutter/clutter/deprecated/clutter-shader.c
 clutter/clutter/deprecated/clutter-state.c
 clutter/clutter/deprecated/clutter-table-layout.c
 clutter/clutter/deprecated/clutter-texture.c
+clutter/clutter/evdev/clutter-input-device-evdev.c
 clutter/clutter/evdev/clutter-virtual-input-device-evdev.c
 clutter/clutter/wayland/clutter-wayland-surface.c
 clutter/clutter/x11/clutter-backend-x11.c
