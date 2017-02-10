@@ -20,6 +20,12 @@ const PortalHelperResult = {
     RECHECK: 2
 };
 
+const PortalHelperSecurityLevel = {
+    NOT_YET_DETERMINED: 0,
+    SECURE: 1,
+    INSECURE: 2
+};
+
 const INACTIVITY_TIMEOUT = 30000; //ms
 const CONNECTIVITY_CHECK_HOST = 'nmcheck.gnome.org';
 const CONNECTIVITY_CHECK_URI = 'http://' + CONNECTIVITY_CHECK_HOST;
@@ -45,6 +51,71 @@ const HelperDBusInterface = '<node> \
 </interface> \
 </node>';
 
+const PortalHeaderBar = new Lang.Class({
+    Name: 'PortalHeaderBar',
+    Extends: Gtk.HeaderBar,
+
+    _init: function() {
+        this.parent({ show_close_button: true });
+
+        // See ephy-title-box.c in epiphany for the layout
+        let vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL,
+                                 spacing: 0 });
+        this.set_custom_title(vbox);
+
+        /* TRANSLATORS: this is the title of the wifi captive portal login window */
+        let titleLabel = new Gtk.Label({ label: _("Hotspot Login"),
+                                         wrap: false,
+                                         single_line_mode: true,
+                                         ellipsize: Pango.EllipsizeMode.END });
+        titleLabel.get_style_context().add_class('title');
+        vbox.add(titleLabel);
+
+        let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
+                                 spacing: 4,
+                                 halign: Gtk.Align.CENTER,
+                                 valign: Gtk.Align.BASELINE });
+        hbox.get_style_context().add_class('subtitle');
+        vbox.add(hbox);
+
+        this._lockImage = new Gtk.Image({ icon_size: Gtk.IconSize.MENU,
+                                          valign: Gtk.Align.BASELINE });
+        hbox.add(this._lockImage);
+
+        this.subtitleLabel = new Gtk.Label({ wrap: false,
+                                             single_line_mode: true,
+                                             ellipsize: Pango.EllipsizeMode.END,
+                                             valign: Gtk.Align.BASELINE,
+                                             selectable: true});
+        this.subtitleLabel.get_style_context().add_class('subtitle');
+        hbox.add(this.subtitleLabel);
+
+        vbox.show_all();
+    },
+
+    setSubtitle: function(label) {
+        this.subtitleLabel.set_text(label);
+    },
+
+    setSecurityIcon: function(securityLevel) {
+        switch (securityLevel) {
+        case PortalHelperSecurityLevel.NOT_YET_DETERMINED:
+            this._lockImage.hide();
+            break;
+        case PortalHelperSecurityLevel.SECURE:
+            this._lockImage.show();
+            this._lockImage.set_from_icon_name("channel-secure-symbolic", Gtk.IconSize.MENU);
+            this._lockImage.set_tooltip_text(null);
+            break;
+        case PortalHelperSecurityLevel.INSECURE:
+            this._lockImage.show();
+            this._lockImage.set_from_icon_name("channel-insecure-symbolic", Gtk.IconSize.MENU);
+            this._lockImage.set_tooltip_text(_('Your connection to this hotspot login is not secure. Passwords or other information you enter on this page can be viewed by people nearby.'));
+            break;
+        }
+    },
+});
+
 const PortalWindow = new Lang.Class({
     Name: 'PortalWindow',
     Extends: Gtk.ApplicationWindow,
@@ -53,9 +124,8 @@ const PortalWindow = new Lang.Class({
         this.parent({ application: application });
 
         this.connect('delete-event', Lang.bind(this, this.destroyWindow));
-        /* TRANSLATORS: this is the title of the wifi captive portal login window */
-        this._headerBar = new Gtk.HeaderBar({ title: _("Hotspot Login"),
-                                              show_close_button: true });
+        this._headerBar = new PortalHeaderBar();
+        this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
         this.set_titlebar(this._headerBar);
         this._headerBar.show();
 
@@ -81,6 +151,8 @@ const PortalWindow = new Lang.Class({
 
         this._webView = WebKit.WebView.new_with_context(webContext);
         this._webView.connect('decide-policy', Lang.bind(this, this._onDecidePolicy));
+        this._webView.connect('load-changed', Lang.bind(this, this._onLoadChanged));
+        this._webView.connect('insecure-content-detected', Lang.bind(this, this._onInsecureContentDetected));
         this._webView.load_uri(url);
         this._webView.connect('notify::uri', Lang.bind(this, this._syncUri));
         this._syncUri();
@@ -102,9 +174,9 @@ const PortalWindow = new Lang.Class({
     _syncUri: function() {
         let uri = this._webView.uri;
         if (uri)
-            this._headerBar.set_subtitle(GLib.uri_unescape_string(uri, null, false));
+            this._headerBar.setSubtitle(GLib.uri_unescape_string(uri, null));
         else
-            this._headerBar.set_subtitle(null);
+            this._headerBar.setSubtitle(null);
     },
 
     refresh: function() {
@@ -118,6 +190,24 @@ const PortalWindow = new Lang.Class({
         else
             this._doneCallback(PortalHelperResult.CANCELLED);
         return false;
+    },
+
+    _onLoadChanged: function(loadEvent) {
+        if (loadEvent == WebKit.LOAD_STARTED) {
+            this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
+        } else if (loadEvent == WebKit.LOAD_COMMITTED) {
+            let tlsInfo = this._webView.get_tls_info();
+            let ret = tlsInfo[0];
+            let flags = tlsInfo[2];
+            if (ret && flags == 0)
+                this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.SECURE);
+            else
+                this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
+        }
+    },
+
+    _onInsecureContentDetected: function (insecureContentEvent) {
+        this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
     },
 
     _onDecidePolicy: function(view, decision, type) {
