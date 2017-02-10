@@ -98,7 +98,7 @@ meta_wayland_tablet_tool_update_cursor_surface (MetaWaylandTabletTool *tool)
         cursor = NULL;
     }
   else if (tool->current_tablet)
-    cursor = meta_cursor_sprite_from_theme (META_CURSOR_CROSSHAIR);
+    cursor = tool->default_sprite;
   else
     cursor = NULL;
 
@@ -397,6 +397,8 @@ meta_wayland_tablet_tool_new (MetaWaylandTabletSeat  *seat,
   tool->focus_surface_destroy_listener.notify = tablet_tool_handle_focus_surface_destroy;
   tool->cursor_surface_destroy_listener.notify = tablet_tool_handle_cursor_surface_destroy;
 
+  tool->default_sprite = meta_cursor_sprite_from_theme (META_CURSOR_CROSSHAIR);
+
   return tool;
 }
 
@@ -415,6 +417,8 @@ meta_wayland_tablet_tool_free (MetaWaylandTabletTool *tool)
       wl_list_remove (wl_resource_get_link (resource));
       wl_list_init (wl_resource_get_link (resource));
     }
+
+  g_object_unref (tool->default_sprite);
 
   g_slice_free (MetaWaylandTabletTool, tool);
 }
