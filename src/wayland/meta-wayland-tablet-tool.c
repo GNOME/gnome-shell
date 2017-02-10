@@ -37,6 +37,7 @@
 #include "meta-wayland-tablet-seat.h"
 #include "meta-wayland-tablet-tool.h"
 #include "backends/meta-input-settings-private.h"
+#include "backends/meta-logical-monitor.h"
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
@@ -380,6 +381,25 @@ tablet_tool_handle_cursor_surface_destroy (struct wl_listener *listener,
   meta_wayland_tablet_tool_set_cursor_surface (tool, NULL);
 }
 
+static void
+tool_cursor_prepare_at (MetaCursorSprite      *cursor_sprite,
+                        int                    x,
+                        int                    y,
+                        MetaWaylandTabletTool *tool)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
+
+  /* Reload the cursor texture if the scale has changed. */
+  if (logical_monitor)
+    meta_cursor_sprite_set_theme_scale (cursor_sprite, logical_monitor->scale);
+}
+
 MetaWaylandTabletTool *
 meta_wayland_tablet_tool_new (MetaWaylandTabletSeat  *seat,
                               ClutterInputDevice     *device,
@@ -398,6 +418,9 @@ meta_wayland_tablet_tool_new (MetaWaylandTabletSeat  *seat,
   tool->cursor_surface_destroy_listener.notify = tablet_tool_handle_cursor_surface_destroy;
 
   tool->default_sprite = meta_cursor_sprite_from_theme (META_CURSOR_CROSSHAIR);
+  tool->prepare_at_signal_id =
+    g_signal_connect (tool->default_sprite, "prepare-at",
+                      G_CALLBACK (tool_cursor_prepare_at), tool);
 
   return tool;
 }
@@ -418,6 +441,7 @@ meta_wayland_tablet_tool_free (MetaWaylandTabletTool *tool)
       wl_list_init (wl_resource_get_link (resource));
     }
 
+  g_signal_handler_disconnect (tool->default_sprite, tool->prepare_at_signal_id);
   g_object_unref (tool->default_sprite);
 
   g_slice_free (MetaWaylandTabletTool, tool);
