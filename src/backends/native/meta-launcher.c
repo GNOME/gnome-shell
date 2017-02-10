@@ -58,6 +58,7 @@ struct _MetaLauncher
   Login1Session *session_proxy;
   Login1Seat *seat_proxy;
 
+  GHashTable *sysfs_fds;
   gboolean session_active;
 
   int kms_fd;
@@ -220,6 +221,15 @@ on_evdev_device_open (const char  *path,
   int fd;
   int major, minor;
 
+  /* Allow readonly access to sysfs */
+  if (g_str_has_prefix (path, "/sys/"))
+    {
+      fd = open (path, flags);
+      if (fd >= 0)
+        g_hash_table_add (self->sysfs_fds, GINT_TO_POINTER (fd));
+      return fd;
+    }
+
   if (!get_device_info_from_path (path, &major, &minor))
     {
       g_set_error (error,
@@ -242,6 +252,14 @@ on_evdev_device_close (int      fd,
   MetaLauncher *self = user_data;
   int major, minor;
   GError *error = NULL;
+
+  if (g_hash_table_lookup (self->sysfs_fds, GINT_TO_POINTER (fd)))
+    {
+      /* /sys/ paths just need close() here */
+      g_hash_table_remove (self->sysfs_fds, GINT_TO_POINTER (fd));
+      close (fd);
+      return;
+    }
 
   if (!get_device_info_from_fd (fd, &major, &minor))
     {
@@ -540,6 +558,7 @@ meta_launcher_new (GError **error)
   self = g_slice_new0 (MetaLauncher);
   self->session_proxy = g_object_ref (session_proxy);
   self->seat_proxy = g_object_ref (seat_proxy);
+  self->sysfs_fds = g_hash_table_new (NULL, NULL);
 
   self->session_active = TRUE;
   self->kms_fd = kms_fd;
@@ -565,6 +584,7 @@ meta_launcher_free (MetaLauncher *self)
 {
   g_object_unref (self->seat_proxy);
   g_object_unref (self->session_proxy);
+  g_hash_table_destroy (self->sysfs_fds);
   g_free (self->kms_file_path);
   g_slice_free (MetaLauncher, self);
 }
