@@ -457,7 +457,6 @@ const EndSessionDialog = new Lang.Class({
         _setLabelText(this._descriptionLabel, description);
         _setLabelText(this._subjectLabel, subject);
 
-        let dialogContent = DialogContent[this._type];
         if (dialogContent.iconName) {
             this._iconBin.child = new St.Icon({ icon_name: dialogContent.iconName,
                                                 icon_size: _DIALOG_ICON_SIZE,

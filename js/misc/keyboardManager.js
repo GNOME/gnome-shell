@@ -128,7 +128,8 @@ const KeyboardManager = new Lang.Class({
         if (!found)
             [, , id] = GnomeDesktop.get_input_source_from_locale(DEFAULT_LOCALE);
 
-        let [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(id);
+        let _layout, _variant;
+        [found, , , _layout, _variant] = this._xkbInfo.get_layout_info(id);
         if (found)
             return { layout: _layout, variant: _variant };
         else
