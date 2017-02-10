@@ -239,6 +239,7 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
        * If there was a generic "hook into bug-buddy for non-C crashes"
        * infrastructure, here would be the place to put it.
        */
+      g_object_unref (gjs_context);
       exit (1);
     }
 }

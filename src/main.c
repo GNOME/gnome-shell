@@ -360,6 +360,7 @@ list_modes (const char  *option_name,
   if (!gjs_context_eval (context, script, -1, "<main>", &status, NULL))
       g_message ("Retrieving list of available modes failed.");
 
+  g_object_unref (context);
   exit (status);
 }
 
