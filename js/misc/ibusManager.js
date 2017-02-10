@@ -6,10 +6,11 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
+let IBusCandidatePopup;
 try {
     var IBus = imports.gi.IBus;
     _checkIBusVersion(1, 5, 2);
-    const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
+    IBusCandidatePopup = imports.ui.ibusCandidatePopup;
 } catch (e) {
     var IBus = null;
     log(e);
