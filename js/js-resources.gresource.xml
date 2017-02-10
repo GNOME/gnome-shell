@@ -117,6 +117,7 @@
     <file>ui/status/brightness.js</file>
     <file>ui/status/location.js</file>
     <file>ui/status/keyboard.js</file>
+    <file>ui/status/nightLight.js</file>
     <file>ui/status/network.js</file>
     <file>ui/status/power.js</file>
     <file>ui/status/rfkill.js</file>

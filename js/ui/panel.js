@@ -719,9 +719,11 @@ const AggregateMenu = new Lang.Class({
         this._system = new imports.ui.status.system.Indicator();
         this._screencast = new imports.ui.status.screencast.Indicator();
         this._location = new imports.ui.status.location.Indicator();
+        this._nightLight = new imports.ui.status.nightLight.Indicator();
 
         this._indicators.add_child(this._screencast.indicators);
         this._indicators.add_child(this._location.indicators);
+        this._indicators.add_child(this._nightLight.indicators);
         if (this._network) {
             this._indicators.add_child(this._network.indicators);
         }
@@ -745,6 +747,7 @@ const AggregateMenu = new Lang.Class({
         this.menu.addMenuItem(this._location.menu);
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
+        this.menu.addMenuItem(this._nightLight.menu);
         this.menu.addMenuItem(this._system.menu);
 
         menuLayout.addSizeChild(this._location.menu.actor);
