@@ -11,15 +11,15 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-07 09:27+0000\n"
-"PO-Revision-Date: 2016-09-07 11:54+0200\n"
+"POT-Creation-Date: 2017-02-10 22:51+0000\n"
+"PO-Revision-Date: 2017-02-11 23:25+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -453,37 +453,48 @@ msgstr "Växla till VT 11"
 msgid "Switch to VT 12"
 msgstr "Växla till VT 12"
 
-#: src/backends/meta-input-settings.c:1707
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1759
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Lägesväxel (grupp %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1781
 msgid "Switch monitor"
 msgstr "Växla skärm"
 
-#: src/backends/meta-input-settings.c:1709
+#: src/backends/meta-input-settings.c:1783
 msgid "Show on-screen help"
 msgstr "Visa hjälp på skärmen"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Inbyggd display"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Okänd"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Okänd display"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -494,6 +505,7 @@ msgstr "En annan kompositionshanterare körs redan på skärm %i på display ”
 msgid "Bell event"
 msgstr "Ljudsignalhändelse"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -512,51 +524,51 @@ msgstr ""
 "programmet att helt avslutas."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Vänta"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Tvinga avslut"
 
-#: src/core/display.c:590
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Vänta"
+
+#: src/core/display.c:608
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen ”%s”\n"
 
-#: src/core/main.c:182
+#: src/core/main.c:187
 msgid "Disable connection to session manager"
 msgstr "Inaktivera anslutning till sessionshanteraren"
 
-#: src/core/main.c:188
+#: src/core/main.c:193
 msgid "Replace the running window manager"
 msgstr "Ersätt körande fönsterhanteraren"
 
-#: src/core/main.c:194
+#: src/core/main.c:199
 msgid "Specify session management ID"
 msgstr "Ange sessionshanteringsid"
 
-#: src/core/main.c:199
+#: src/core/main.c:204
 msgid "X Display to use"
 msgstr "X-display att använda"
 
-#: src/core/main.c:205
+#: src/core/main.c:210
 msgid "Initialize session from savefile"
 msgstr "Initiera session från sparandefil"
 
-#: src/core/main.c:211
+#: src/core/main.c:216
 msgid "Make X calls synchronous"
 msgstr "Gör X-anrop synkrona"
 
-#: src/core/main.c:218
+#: src/core/main.c:223
 msgid "Run as a wayland compositor"
 msgstr "Kör som en wayland-kompositionshanterare"
 
-#: src/core/main.c:224
+#: src/core/main.c:229
 msgid "Run as a nested compositor"
 msgstr "Kör som en nästlad kompositionshanterare"
 
-#: src/core/main.c:232
+#: src/core/main.c:237
 msgid "Run as a full display server, rather than nested"
 msgstr "Kör som en full display-tjänst, i stället för nästlad"
 
@@ -588,7 +600,7 @@ msgstr "Mutter-insticksmodul att använda"
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -597,7 +609,7 @@ msgstr ""
 "Display ”%s” har redan en fönsterhanterare; försök med flaggan --replace för "
 "att ersätta den aktuella fönsterhanteraren."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display ”%s” är ogiltig\n"
@@ -606,7 +618,7 @@ msgstr "Skärm %d på display ”%s” är ogiltig\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter kompilerades utan stöd för utförligt läge\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Lägesväxel: Läge %d"
@@ -619,7 +631,7 @@ msgstr ""
 "Dessa fönster saknar stöd för &quot;spara nuvarande inställningar&quot; och "
 "kommer att behöva startas om manuellt nästa gång du loggar in."
 
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
