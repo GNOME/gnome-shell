@@ -5,15 +5,15 @@
 # Andre Klapper <ak-47@gmx.net>, 2009.
 # Petr Kovar <pknbe@volny.cz>, 2009, 2010, 2011, 2012, 2014, 2015.
 # Adam Matoušek <adamatousek@gmail.com>, 2012, 2013.
-# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015, 2016.
+# Marek Černocký <marek@manet.cz>, 2012, 2013, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-11-17 23:06+0000\n"
-"PO-Revision-Date: 2016-11-18 00:42+0100\n"
+"POT-Creation-Date: 2017-02-08 13:51+0000\n"
+"PO-Revision-Date: 2017-02-11 15:14+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -472,11 +472,10 @@ msgstr "%e. %B %l∶%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%e. %B %Y, %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:85
-msgid "Web Authentication Redirect"
-msgstr "Přesměrováno na ověření přes web"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:57
+msgid "Hotspot Login"
+msgstr "Přihlášení k přístupovému bodu"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -520,12 +519,12 @@ msgstr "Přidat mezi oblíbené"
 msgid "Show Details"
 msgstr "Zobrazit podrobnosti"
 
-#: js/ui/appFavorites.js:134
+#: js/ui/appFavorites.js:137
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s byl přidán mezi oblíbené."
 
-#: js/ui/appFavorites.js:168
+#: js/ui/appFavorites.js:171
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s byl odstraněn z oblíbených."
@@ -763,7 +762,7 @@ msgstr "Heslo k mobilní širokopásmové síti"
 msgid "A password is required to connect to “%s”."
 msgstr "Pro připojení k „%s“ je vyžadováno heslo."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1734
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1736
 msgid "Network Manager"
 msgstr "Network Manager"
 
@@ -1083,6 +1082,8 @@ msgstr "Multimédia"
 msgid "Undo"
 msgstr "Zpět"
 
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
 #: js/ui/overview.js:113
 msgid "Overview"
 msgstr "Přehled"
@@ -1544,7 +1545,7 @@ msgstr "je požadováno ověření"
 msgid "connection failed"
 msgstr "připojení selhalo"
 
-#: js/ui/status/network.js:1494 js/ui/status/network.js:1587
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1589
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Nastavení sítě"
@@ -1561,7 +1562,7 @@ msgstr "VPN"
 msgid "VPN Off"
 msgstr "VPN je vypnuta"
 
-#: js/ui/status/network.js:1618
+#: js/ui/status/network.js:1620
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -1569,7 +1570,7 @@ msgstr[0] "%s drátové připojení"
 msgstr[1] "%s drátová připojení"
 msgstr[2] "%s drátových připojení"
 
-#: js/ui/status/network.js:1622
+#: js/ui/status/network.js:1624
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -1577,7 +1578,7 @@ msgstr[0] "%s bezdrátové připojení"
 msgstr[1] "%s bezdrátová připojení"
 msgstr[2] "%s bezdrátových připojení"
 
-#: js/ui/status/network.js:1626
+#: js/ui/status/network.js:1628
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -1585,11 +1586,11 @@ msgstr[0] "%s modemové připojení"
 msgstr[1] "%s modemová připojení"
 msgstr[2] "%s modemových připojení"
 
-#: js/ui/status/network.js:1773
+#: js/ui/status/network.js:1775
 msgid "Connection failed"
 msgstr "Připojení selhalo"
 
-#: js/ui/status/network.js:1774
+#: js/ui/status/network.js:1776
 msgid "Activation of network connection failed"
 msgstr "Aktivace síťového připojení selhala"
 
@@ -1848,3 +1849,4 @@ msgstr "Heslo nemůže být prázdné."
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Dialogové okno ověření bylo uživatelem zrušeno"
+
