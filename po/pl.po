@@ -1,20 +1,21 @@
 # Polish translation for mutter.
-# Copyright © 2002-2016 the mutter authors.
+# Copyright © 2002-2017 the mutter authors.
 # This file is distributed under the same license as the mutter package.
 # Zbigniew Chyla <chyla@alice.ci.pwr.wroc.pl>, 2002-2003.
 # Artur Flinta <aflinta@at.kernel.pl>, 2003-2005.
 # Marek Stępień <marcoos@aviary.pl>, 2007.
 # Wadim Dziedzic <wdziedzic@aviary.pl>, 2007.
 # Tomasz Dominikowski <dominikowski@gmail.com>, 2008-2009.
-# Piotr Drąg <piotrdrag@gmail.com>, 2010-2016.
-# Aviary.pl <community-poland@mozilla.org>, 2007-2016.
+# Piotr Drąg <piotrdrag@gmail.com>, 2010-2017.
+# Aviary.pl <community-poland@mozilla.org>, 2007-2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-07 09:27+0000\n"
-"PO-Revision-Date: 2016-09-09 23:58+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-02-10 22:51+0000\n"
+"PO-Revision-Date: 2017-02-12 16:08+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -297,8 +298,8 @@ msgid ""
 "the parent window."
 msgstr ""
 "Jeśli wynosi wartość „true”, to modalne okna dialogowe pojawiają się "
-"dołączone do paska tytułowego okna nadrzędnego, zamiast mieć oddzielne "
-"paski tytułowe, i są przenoszone razem z nim."
+"dołączone do paska tytułowego okna nadrzędnego, zamiast mieć oddzielne paski "
+"tytułowe, i są przenoszone razem z nim."
 
 #: data/org.gnome.mutter.gschema.xml.in:30
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -464,37 +465,48 @@ msgstr "Przełączenie na 11. konsolę wirtualną"
 msgid "Switch to VT 12"
 msgstr "Przełączenie na 12. konsolę wirtualną"
 
-#: src/backends/meta-input-settings.c:1707
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1759
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Przełącznik trybu (%d. grupa)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1781
 msgid "Switch monitor"
 msgstr "Przełączenie monitora"
 
-#: src/backends/meta-input-settings.c:1709
+#: src/backends/meta-input-settings.c:1783
 msgid "Show on-screen help"
 msgstr "Wyświetlenie pomocy na ekranie"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Wbudowany ekran"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Nieznany ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -506,6 +518,7 @@ msgstr ""
 msgid "Bell event"
 msgstr "Zdarzenie sygnału dźwiękowego"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -522,51 +535,51 @@ msgid ""
 msgstr "Można poczekać chwilę dłużej lub wymusić zakończenie programu."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Czekaj"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Zakończ"
 
-#: src/core/display.c:590
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Czekaj"
+
+#: src/core/display.c:608
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Otwarcie połączenia z ekranem „%s” systemu X Window się nie powiodło\n"
 
-#: src/core/main.c:182
+#: src/core/main.c:187
 msgid "Disable connection to session manager"
 msgstr "Rozłącza połączenie z menedżerem sesji"
 
-#: src/core/main.c:188
+#: src/core/main.c:193
 msgid "Replace the running window manager"
 msgstr "Zastępuje uruchomionego menedżera okien"
 
-#: src/core/main.c:194
+#: src/core/main.c:199
 msgid "Specify session management ID"
 msgstr "Podaje identyfikator zarządzania sesją"
 
-#: src/core/main.c:199
+#: src/core/main.c:204
 msgid "X Display to use"
 msgstr "Używany ekran X"
 
-#: src/core/main.c:205
+#: src/core/main.c:210
 msgid "Initialize session from savefile"
 msgstr "Inicjuje sesję z zapisanego pliku"
 
-#: src/core/main.c:211
+#: src/core/main.c:216
 msgid "Make X calls synchronous"
 msgstr "Synchroniczne wywołania X"
 
-#: src/core/main.c:218
+#: src/core/main.c:223
 msgid "Run as a wayland compositor"
 msgstr "Uruchamia jako menedżer składania Wayland"
 
-#: src/core/main.c:224
+#: src/core/main.c:229
 msgid "Run as a nested compositor"
 msgstr "Uruchamia jako osadzony menedżer składania"
 
-#: src/core/main.c:232
+#: src/core/main.c:237
 msgid "Run as a full display server, rather than nested"
 msgstr "Uruchamia jako pełny serwer wyświetlania zamiast osadzonego"
 
@@ -599,7 +612,7 @@ msgstr "Używana wtyczka menedżera Mutter"
 msgid "Workspace %d"
 msgstr "%d. obszar roboczy"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -608,7 +621,7 @@ msgstr ""
 "Na ekranie „%s” działa już menedżer okien. Aby zastąpić działającego "
 "menedżera okien, należy użyć opcji „--replace”."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Podekran %d ekranu „%s” jest nieprawidłowy\n"
@@ -618,10 +631,10 @@ msgid "Mutter was compiled without support for verbose mode\n"
 msgstr ""
 "Menedżer Mutter został skompilowany bez obsługi trybu z obszerną informacją\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
-msgstr "Przełącznik trybu: tryb %d"
+msgstr "Przełącznik trybu: %d. tryb"
 
 #: src/x11/session.c:1815
 msgid ""
@@ -631,7 +644,7 @@ msgstr ""
 "Te okna nie obsługują opcji zapisu obecnego stanu („save current setup”), "
 "więc przy następnym zalogowaniu będą musiały zostać uruchomione ręcznie."
 
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
