@@ -192,7 +192,7 @@ const PortalWindow = new Lang.Class({
         return false;
     },
 
-    _onLoadChanged: function(loadEvent) {
+    _onLoadChanged: function(view, loadEvent) {
         if (loadEvent == WebKit.LOAD_STARTED) {
             this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
         } else if (loadEvent == WebKit.LOAD_COMMITTED) {
@@ -206,7 +206,7 @@ const PortalWindow = new Lang.Class({
         }
     },
 
-    _onInsecureContentDetected: function (insecureContentEvent) {
+    _onInsecureContentDetected: function () {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
     },
 
