@@ -566,6 +566,10 @@ StScrollBar {
 .pad-osd-window {
   padding: 32px;
   background-color: rgba(0, 0, 0, 0.8); }
+  .pad-osd-window .pad-osd-title-box {
+    spacing: 12px; }
+  .pad-osd-window .pad-osd-title-menu-box {
+    spacing: 6px; }
 
 .combo-box-label {
   width: 15em; }

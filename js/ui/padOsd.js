@@ -560,13 +560,23 @@ const PadOsd = new Lang.Class({
         let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
         this.actor.add_constraint(constraint);
 
+        this._titleBox = new St.BoxLayout({ style_class: 'pad-osd-title-box',
+                                            vertical: false,
+                                            x_expand: false,
+                                            x_align: Clutter.ActorAlign.CENTER });
+        this.actor.add_actor(this._titleBox);
+
+        let labelBox = new St.BoxLayout({ style_class: 'pad-osd-title-menu-box',
+                                          vertical: true });
+        this._titleBox.add_actor(labelBox);
+
         this._titleLabel = new St.Label({ style: 'font-side: larger; font-weight: bold;',
                                           x_align: Clutter.ActorAlign.CENTER });
         this._titleLabel.clutter_text.set_text(padDevice.get_device_name());
-        this.actor.add_actor(this._titleLabel);
+        labelBox.add_actor(this._titleLabel);
 
         this._tipLabel = new St.Label({ x_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_actor(this._tipLabel);
+        labelBox.add_actor(this._tipLabel);
 
         this._actionEditor = new ActionEditor();
         this._actionEditor.connect('done', Lang.bind(this, this._endButtonActionEdition));
