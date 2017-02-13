@@ -299,9 +299,20 @@ const NMConnectionSection = new Lang.Class({
 
         let item = this._connectionItems.get(connection.get_uuid());
         if (item)
-            item.updateForConnection(connection);
+            this._updateForConnection(item, connection);
         else
             this._addConnection(connection);
+    },
+
+    _updateForConnection: function(item, connection) {
+        let pos = this._connections.indexOf(connection);
+
+        this._connections.splice(pos, 1);
+        pos = Util.insertSorted(this._connections, connection, Lang.bind(this, this._connectionSortFunction));
+        this._labelSection.moveMenuItem(item.labelItem, pos);
+        this._radioSection.moveMenuItem(item.radioItem, pos);
+
+        item.updateForConnection(connection);
     },
 
     _addConnection: function(connection) {
