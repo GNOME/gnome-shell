@@ -599,12 +599,27 @@ const PadOsd = new Lang.Class({
         this._imagePath = imagePath;
         this._editionMode = editionMode;
         this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+        this._padChooser = null;
 
         let deviceManager = Clutter.DeviceManager.get_default();
+        this._deviceAddedId = deviceManager.connect('device-added', Lang.bind(this, function (manager, device) {
+            if (device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
+                this.padDevice.is_grouped(device)) {
+                this._groupPads.push(device);
+                this._updatePadChooser();
+            }
+        }));
         this._deviceRemovedId = deviceManager.connect('device-removed', Lang.bind(this, function (manager, device) {
             // If the device is being removed, destroy the padOsd.
-            if (device == this.padDevice)
+            if (device == this.padDevice) {
                 this.destroy();
+            } else if (this._groupPads.indexOf(device) != -1) {
+                // Or update the pad chooser if the device belongs to
+                // the same group.
+                this._groupPads.splice(this._groupPads.indexOf(device), 1);
+                this._updatePadChooser();
+
+            }
         }));
 
         deviceManager.list_devices().forEach(Lang.bind(this, function(device) {
@@ -643,6 +658,8 @@ const PadOsd = new Lang.Class({
 
         this._tipLabel = new St.Label({ x_align: Clutter.ActorAlign.CENTER });
         labelBox.add_actor(this._tipLabel);
+
+        this._updatePadChooser();
 
         this._actionEditor = new ActionEditor();
         this._actionEditor.connect('done', Lang.bind(this, this._endButtonActionEdition));
@@ -689,6 +706,33 @@ const PadOsd = new Lang.Class({
         Main.pushModal(this.actor);
     },
 
+    _updatePadChooser: function () {
+        if (this._groupPads.length > 1) {
+            if (this._padChooser == null) {
+                this._padChooser = new PadChooser(this.padDevice, this._groupPads)
+                this._padChooser.connect('pad-selected', Lang.bind(this, function (chooser, pad) {
+                    this._requestForOtherPad(pad);
+                }));
+                this._titleBox.add_child(this._padChooser.actor);
+            } else {
+                this._padChooser.update(this._groupPads);
+            }
+        } else if (this._padChooser != null) {
+            this._padChooser.destroy();
+            this._padChooser = null;
+        }
+    },
+
+    _requestForOtherPad: function (pad) {
+        if (pad == this.padDevice ||
+            this._groupPads.indexOf(pad) == -1)
+            return;
+
+        let editionMode = this._editionMode;
+        this.destroy();
+        global.display.request_pad_osd(pad, editionMode);
+    },
+
     _createLabel: function (type, number, dir) {
         let str = global.display.get_pad_action_label(this.padDevice, type, number);
         let label = new St.Label({ text: str ? str : _("None") });
@@ -713,6 +757,13 @@ const PadOsd = new Lang.Class({
                 this._endButtonActionEdition();
             else
                 this.destroy();
+            return Clutter.EVENT_STOP;
+        }
+
+        // If the event comes from another pad in the same group,
+        // show the OSD for it.
+        if (this._groupPads.indexOf(event.get_source_device()) != -1) {
+            this._requestForOtherPad(event.get_source_device());
             return Clutter.EVENT_STOP;
         }
 
@@ -784,10 +835,14 @@ const PadOsd = new Lang.Class({
         Main.popModal(this.actor);
         this._actionEditor.close();
 
+        let deviceManager = Clutter.DeviceManager.get_default();
         if (this._deviceRemovedId != 0) {
-            let deviceManager = Clutter.DeviceManager.get_default();
             deviceManager.disconnect(this._deviceRemovedId);
             this._deviceRemovedId = 0;
+        }
+        if (this._deviceAddedId != 0) {
+            deviceManager.disconnect(this._deviceAddedId);
+            this._deviceAddedId = 0;
         }
 
         if (this._capturedEventId != 0) {
