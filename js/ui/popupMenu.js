@@ -605,6 +605,24 @@ const PopupMenuBase = new Lang.Class({
         menuItem.actor.show();
     },
 
+    moveMenuItem: function(menuItem, position) {
+        let items = this._getMenuItems();
+        let i = 0;
+
+        while (i < items.length && position > 0) {
+                if (items[i] != menuItem)
+                        position--;
+                i++;
+        }
+
+        if (i < items.length) {
+                if (items[i] != menuItem)
+                        this.box.set_child_below_sibling(menuItem.actor, items[i].actor);
+        } else {
+                this.box.set_child_above_sibling(menuItem.actor, null);
+        }
+    },
+
     addMenuItem: function(menuItem, position) {
         let before_item = null;
         if (position == undefined) {
