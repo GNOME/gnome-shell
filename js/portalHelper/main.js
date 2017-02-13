@@ -146,13 +146,14 @@ const PortalWindow = new Lang.Class({
 
         let dataManager = new WebKit.WebsiteDataManager({ base_data_directory: cacheDir,
                                                           base_cache_directory: cacheDir });
-        let webContext = new WebKit.WebContext({ website_data_manager: dataManager });
-        webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
+        this._webContext = new WebKit.WebContext({ website_data_manager: dataManager });
+        this._webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
 
-        this._webView = WebKit.WebView.new_with_context(webContext);
+        this._webView = WebKit.WebView.new_with_context(this._webContext);
         this._webView.connect('decide-policy', Lang.bind(this, this._onDecidePolicy));
         this._webView.connect('load-changed', Lang.bind(this, this._onLoadChanged));
         this._webView.connect('insecure-content-detected', Lang.bind(this, this._onInsecureContentDetected));
+        this._webView.connect('load-failed-with-tls-errors', Lang.bind(this, this._onLoadFailedWithTlsErrors));
         this._webView.load_uri(url);
         this._webView.connect('notify::uri', Lang.bind(this, this._syncUri));
         this._syncUri();
@@ -208,6 +209,14 @@ const PortalWindow = new Lang.Class({
 
     _onInsecureContentDetected: function () {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
+    },
+
+    _onLoadFailedWithTlsErrors: function (view, failingURI, certificate, errors) {
+        this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
+        let uri = new Soup.URI(failingURI);
+        this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());
+        this._webView.load_uri(failingURI);
+        return true;
     },
 
     _onDecidePolicy: function(view, decision, type) {
