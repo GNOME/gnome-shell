@@ -176,7 +176,7 @@ const PortalWindow = new Lang.Class({
         if (uri)
             this._headerBar.setSubtitle(GLib.uri_unescape_string(uri, null));
         else
-            this._headerBar.setSubtitle(null);
+            this._headerBar.setSubtitle('');
     },
 
     refresh: function() {
