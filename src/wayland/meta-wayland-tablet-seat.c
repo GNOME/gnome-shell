@@ -482,14 +482,7 @@ lookup_grouped_devices (ClutterInputDevice     *device,
   ClutterDeviceManager *device_manager;
   const GSList *devices, *l;
   GList *group = NULL;
-  MetaBackend *backend = meta_get_backend ();
 
-#ifdef HAVE_NATIVE_BACKEND
-  struct libinput_device *dev = NULL, *libinput_device;
-
-  if (META_IS_BACKEND_NATIVE (backend))
-    dev = clutter_evdev_input_device_get_libinput_device (device);
-#endif
   device_manager = clutter_device_manager_get_default ();
   devices = clutter_device_manager_peek_devices (device_manager);
 
@@ -500,16 +493,8 @@ lookup_grouped_devices (ClutterInputDevice     *device,
       if (clutter_input_device_get_device_type (l->data) != type)
         continue;
 
-#ifdef HAVE_NATIVE_BACKEND
-      if (META_IS_BACKEND_NATIVE (backend))
-        {
-          libinput_device = clutter_evdev_input_device_get_libinput_device (l->data);
-
-          if (libinput_device_get_device_group (dev) !=
-              libinput_device_get_device_group (libinput_device))
-            continue;
-        }
-#endif
+      if (!clutter_input_device_is_grouped (device, l->data))
+        continue;
 
       group = g_list_prepend (group, l->data);
     }
