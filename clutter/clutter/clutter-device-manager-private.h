@@ -160,6 +160,9 @@ struct _ClutterInputDeviceClass
                                       guint               button);
   gint (* get_group_n_modes) (ClutterInputDevice *device,
                               gint                group);
+
+  gboolean (* is_grouped) (ClutterInputDevice *device,
+                           ClutterInputDevice *other_device);
 };
 
 /* Platform-dependent interface */

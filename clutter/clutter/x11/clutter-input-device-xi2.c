@@ -80,6 +80,13 @@ clutter_input_device_xi2_keycode_to_evdev (ClutterInputDevice *device,
   return TRUE;
 }
 
+static gboolean
+clutter_input_device_xi2_is_grouped (ClutterInputDevice *device,
+                                     ClutterInputDevice *other_device)
+{
+  return FALSE;
+}
+
 static void
 clutter_input_device_xi2_class_init (ClutterInputDeviceXI2Class *klass)
 {
@@ -89,6 +96,7 @@ clutter_input_device_xi2_class_init (ClutterInputDeviceXI2Class *klass)
   gobject_class->constructed = clutter_input_device_xi2_constructed;
 
   device_class->keycode_to_evdev = clutter_input_device_xi2_keycode_to_evdev;
+  device_class->is_grouped = clutter_input_device_xi2_is_grouped;
 }
 
 static void

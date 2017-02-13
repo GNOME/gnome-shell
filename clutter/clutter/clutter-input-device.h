@@ -168,6 +168,9 @@ ClutterInputDeviceMapping clutter_input_device_get_mapping_mode (ClutterInputDev
 CLUTTER_AVAILABLE_IN_ALL
 void                      clutter_input_device_set_mapping_mode (ClutterInputDevice        *device,
                                                                  ClutterInputDeviceMapping  mapping);
+CLUTTER_AVAILABLE_IN_ALL
+gboolean                  clutter_input_device_is_grouped       (ClutterInputDevice *device,
+                                                                 ClutterInputDevice *other_device);
 
 G_END_DECLS
 

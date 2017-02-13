@@ -193,6 +193,19 @@ clutter_input_device_evdev_get_group_n_modes (ClutterInputDevice *device,
   return libinput_tablet_pad_mode_group_get_num_modes (mode_group);
 }
 
+static gboolean
+clutter_input_device_evdev_is_grouped (ClutterInputDevice *device,
+                                       ClutterInputDevice *other_device)
+{
+  struct libinput_device *libinput_device, *other_libinput_device;
+
+  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  other_libinput_device = clutter_evdev_input_device_get_libinput_device (other_device);
+
+  return libinput_device_get_device_group (libinput_device) ==
+    libinput_device_get_device_group (other_libinput_device);
+}
+
 static void
 clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 {
@@ -206,6 +219,7 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
   klass->update_from_tool = clutter_input_device_evdev_update_from_tool;
   klass->is_mode_switch_button = clutter_input_device_evdev_is_mode_switch_button;
   klass->get_group_n_modes = clutter_input_device_evdev_get_group_n_modes;
+  klass->is_grouped = clutter_input_device_evdev_is_grouped;
 
   obj_props[PROP_DEVICE_MATRIX] =
     g_param_spec_boxed ("device-matrix",

@@ -2266,3 +2266,13 @@ clutter_input_device_set_mapping_mode (ClutterInputDevice        *device,
   device->mapping_mode = mapping;
   g_object_notify (G_OBJECT (device), "mapping-mode");
 }
+
+gboolean
+clutter_input_device_is_grouped (ClutterInputDevice *device,
+                                 ClutterInputDevice *other_device)
+{
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (other_device), FALSE);
+
+  return CLUTTER_INPUT_DEVICE_GET_CLASS (device)->is_grouped (device, other_device);
+}
