@@ -528,6 +528,7 @@ const PadOsd = new Lang.Class({
 
     _init: function (padDevice, settings, imagePath, editionMode, monitorIndex) {
         this.padDevice = padDevice;
+        this._groupPads = [ padDevice ];
         this._settings = settings;
         this._imagePath = imagePath;
         this._editionMode = editionMode;
@@ -538,6 +539,13 @@ const PadOsd = new Lang.Class({
             // If the device is being removed, destroy the padOsd.
             if (device == this.padDevice)
                 this.destroy();
+        }));
+
+        deviceManager.list_devices().forEach(Lang.bind(this, function(device) {
+            if (device != this.padDevice &&
+                device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
+                this.padDevice.is_grouped(device))
+                this._groupPads.push(device);
         }));
 
         this.actor = new St.BoxLayout({ style_class: 'pad-osd-window',
