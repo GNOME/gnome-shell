@@ -188,6 +188,19 @@ meta_input_settings_native_set_two_finger_scroll (MetaInputSettings            *
   device_set_scroll_method (libinput_device, current | method);
 }
 
+static gboolean
+meta_input_settings_native_has_two_finger_scroll (MetaInputSettings  *settings,
+                                                  ClutterInputDevice *device)
+{
+  struct libinput_device *libinput_device;
+
+  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return FALSE;
+
+  return libinput_device_config_scroll_get_methods (libinput_device) & LIBINPUT_CONFIG_SCROLL_2FG;
+}
+
 static void
 meta_input_settings_native_set_scroll_button (MetaInputSettings  *settings,
                                               ClutterInputDevice *device,
@@ -503,6 +516,8 @@ meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
 
   input_settings_class->set_stylus_pressure = meta_input_settings_native_set_stylus_pressure;
   input_settings_class->set_stylus_button_map = meta_input_settings_native_set_stylus_button_map;
+
+  input_settings_class->has_two_finger_scroll = meta_input_settings_native_has_two_finger_scroll;
 }
 
 static void

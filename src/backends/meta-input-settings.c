@@ -74,6 +74,8 @@ struct _MetaInputSettingsPrivate
 #ifdef HAVE_LIBWACOM
   WacomDeviceDatabase *wacom_db;
 #endif
+
+  GHashTable *two_finger_devices;
 };
 
 typedef void (*ConfigBoolFunc)   (MetaInputSettings  *input_settings,
@@ -140,6 +142,8 @@ meta_input_settings_dispose (GObject *object)
   if (priv->wacom_db)
     libwacom_database_destroy (priv->wacom_db);
 #endif
+
+  g_clear_pointer (&priv->two_finger_devices, g_hash_table_destroy);
 
   G_OBJECT_CLASS (meta_input_settings_parent_class)->dispose (object);
 }
@@ -477,6 +481,7 @@ update_touchpad_edge_scroll (MetaInputSettings *input_settings,
   MetaInputSettingsClass *input_settings_class;
   gboolean edge_scroll_enabled;
   gboolean two_finger_scroll_enabled;
+  gboolean two_finger_scroll_available;
   MetaInputSettingsPrivate *priv;
 
   if (device &&
@@ -487,9 +492,10 @@ update_touchpad_edge_scroll (MetaInputSettings *input_settings,
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   edge_scroll_enabled = g_settings_get_boolean (priv->touchpad_settings, "edge-scrolling-enabled");
   two_finger_scroll_enabled = g_settings_get_boolean (priv->touchpad_settings, "two-finger-scrolling-enabled");
+  two_finger_scroll_available = g_hash_table_size (priv->two_finger_devices) > 0;
 
   /* If both are enabled we prefer two finger. */
-  if (edge_scroll_enabled && two_finger_scroll_enabled)
+  if (edge_scroll_enabled && two_finger_scroll_enabled && two_finger_scroll_available)
     edge_scroll_enabled = FALSE;
 
   if (device)
@@ -1269,12 +1275,31 @@ apply_stylus_settings (MetaInputSettings      *input_settings,
 }
 
 static void
+evaluate_two_finger_scrolling (MetaInputSettings  *input_settings,
+                               ClutterInputDevice *device)
+{
+  MetaInputSettingsClass *klass;
+  MetaInputSettingsPrivate *priv;
+
+  if (clutter_input_device_get_device_type (device) != CLUTTER_TOUCHPAD_DEVICE)
+    return;
+
+  klass = META_INPUT_SETTINGS_GET_CLASS (input_settings);
+  priv = meta_input_settings_get_instance_private (input_settings);
+
+  if (klass->has_two_finger_scroll (input_settings, device))
+    g_hash_table_add (priv->two_finger_devices, device);
+}
+
+static void
 meta_input_settings_device_added (ClutterDeviceManager *device_manager,
                                   ClutterInputDevice   *device,
                                   MetaInputSettings    *input_settings)
 {
   if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER)
     return;
+
+  evaluate_two_finger_scrolling (input_settings, device);
 
   apply_device_settings (input_settings, device);
   check_add_mappable_device (input_settings, device);
@@ -1289,6 +1314,10 @@ meta_input_settings_device_removed (ClutterDeviceManager *device_manager,
 
   priv = meta_input_settings_get_instance_private (input_settings);
   g_hash_table_remove (priv->mappable_devices, device);
+
+  if (g_hash_table_remove (priv->two_finger_devices, device) &&
+      g_hash_table_size (priv->two_finger_devices) == 0)
+    apply_device_settings (input_settings, NULL);
 }
 
 static void
@@ -1327,6 +1356,13 @@ static void
 meta_input_settings_constructed (GObject *object)
 {
   MetaInputSettings *input_settings = META_INPUT_SETTINGS (object);
+  GSList *devices, *d;
+
+  devices = meta_input_settings_get_devices (input_settings, CLUTTER_TOUCHPAD_DEVICE);
+  for (d = devices; d; d = d->next)
+    evaluate_two_finger_scrolling (input_settings, d->data);
+
+  g_slist_free (devices);
 
   apply_device_settings (input_settings, NULL);
   update_keyboard_repeat (input_settings);
@@ -1390,6 +1426,8 @@ meta_input_settings_init (MetaInputSettings *settings)
                  "expect tablets to misbehave");
     }
 #endif
+
+  priv->two_finger_devices = g_hash_table_new (NULL, NULL);
 }
 
 MetaInputSettings *
