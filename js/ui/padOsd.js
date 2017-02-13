@@ -30,6 +30,72 @@ const CCW = 1;
 const UP = 0;
 const DOWN = 1;
 
+const PadChooser = new Lang.Class({
+    Name: 'PadChooser',
+
+    _init: function (device, groupDevices) {
+        this.actor = new St.Button({ style_class: 'pad-chooser-button',
+                                     toggle_mode: true,
+                                     x_fill: false,
+                                     y_fill: false,
+                                     x_align: St.Align.MIDDLE,
+                                     y_align: St.Align.MIDDLE });
+        this.currentDevice = device;
+        this._padChooserMenu = null;
+
+        let arrow = new St.Icon({ style_class: 'popup-menu-arrow',
+                                  icon_name: 'pan-down-symbolic',
+                                  accessible_role: Atk.Role.ARROW });
+        this.actor.set_child(arrow);
+        this._ensureMenu(groupDevices);
+
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('clicked', Lang.bind(this, function (actor) {
+            if (actor.get_checked()) {
+                if (this._padChooserMenu != null)
+                    this._padChooserMenu.open(true);
+                else
+                    this.set_checked(false);
+            } else {
+                this._padChooserMenu.close(true);
+            }
+        }));
+    },
+
+    _ensureMenu: function (devices) {
+        this._padChooserMenu =  new PopupMenu.PopupMenu(this.actor, 0.5, St.Side.TOP);
+        this._padChooserMenu.connect('menu-closed', Lang.bind(this, function() { this.actor.set_checked(false); }));
+        this._padChooserMenu.actor.hide();
+        Main.uiGroup.add_actor(this._padChooserMenu.actor);
+
+        for (let i = 0; i < devices.length; i++) {
+            let device = devices[i];
+            if (device == this.currentDevice)
+                continue;
+
+            this._padChooserMenu.addAction(device.get_device_name(), () => {
+                this.emit('pad-selected', device);
+            });
+        }
+    },
+
+    _onDestroy: function () {
+        this._padChooserMenu.destroy();
+    },
+
+    update: function (devices) {
+        if (this._padChooserMenu)
+            this._padChooserMenu.actor.destroy();
+        this.actor.set_checked(false);
+        this._ensureMenu(devices);
+    },
+
+    destroy: function () {
+        this.actor.destroy();
+    },
+});
+Signals.addSignalMethods(PadChooser.prototype);
+
 const KeybindingEntry = new Lang.Class({
     Name: 'KeybindingEntry',
 
