@@ -14,6 +14,7 @@ const DRAG_DISTANCE = 80;
 const EdgeDragAction = new Lang.Class({
     Name: 'EdgeDragAction',
     Extends: Clutter.GestureAction,
+    Signals: { 'activated': {} },
 
     _init : function(side, allowedModes) {
         this.parent();
@@ -81,4 +82,3 @@ const EdgeDragAction = new Lang.Class({
             this.emit('activated');
     }
 });
-Signals.addSignalMethods(EdgeDragAction.prototype);

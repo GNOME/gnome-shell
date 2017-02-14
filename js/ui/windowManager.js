@@ -554,6 +554,7 @@ Signals.addSignalMethods(TouchpadWorkspaceSwitchAction.prototype);
 const WorkspaceSwitchAction = new Lang.Class({
     Name: 'WorkspaceSwitchAction',
     Extends: Clutter.SwipeAction,
+    Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] } },
 
     _init : function() {
         const MOTION_THRESHOLD = 50;
@@ -591,11 +592,11 @@ const WorkspaceSwitchAction = new Lang.Class({
         this.emit('activated', dir);
     }
 });
-Signals.addSignalMethods(WorkspaceSwitchAction.prototype);
 
 const AppSwitchAction = new Lang.Class({
     Name: 'AppSwitchAction',
     Extends: Clutter.GestureAction,
+    Signals: { 'activated': {} },
 
     _init : function() {
         this.parent();
@@ -657,7 +658,6 @@ const AppSwitchAction = new Lang.Class({
         return true;
     }
 });
-Signals.addSignalMethods(AppSwitchAction.prototype);
 
 const ResizePopup = new Lang.Class({
     Name: 'ResizePopup',
