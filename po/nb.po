@@ -1,14 +1,14 @@
 # Norwegian bokmål translation of mutter.
 # Copyright © 2002-2004 Free Software Foundation, Inc.
-# Kjartan Maraas <kmaraas@gnome.org>, 2002-2016.
+# Kjartan Maraas <kmaraas@gnome.org>, 2002-2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.23.x\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-01-03 09:53+0000\n"
-"PO-Revision-Date: 2017-01-05 21:56+0100\n"
+"POT-Creation-Date: 2017-02-10 22:51+0000\n"
+"PO-Revision-Date: 2017-02-14 08:00+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -449,33 +449,41 @@ msgstr "Bytt til VT 11"
 msgid "Switch to VT 12"
 msgstr "Bytt til VT 12"
 
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1759
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Modusbytte: (Gruppe %d)"
+
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1739
+#: src/backends/meta-input-settings.c:1781
 msgid "Switch monitor"
 msgstr "Bytt skjerm"
 
-#: src/backends/meta-input-settings.c:1741
+#: src/backends/meta-input-settings.c:1783
 msgid "Show on-screen help"
 msgstr "Vis hjelp på skjermen"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Innebygget skjerm"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Ukjent skjerm"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -493,6 +501,7 @@ msgstr "En annen compositing manager kjører skjerm %i på display «%s»."
 msgid "Bell event"
 msgstr "Klokkehendelse"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -518,44 +527,44 @@ msgstr "_Tvungen nedstenging"
 msgid "_Wait"
 msgstr "_Vent"
 
-#: src/core/display.c:590
+#: src/core/display.c:608
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: src/core/main.c:182
+#: src/core/main.c:187
 msgid "Disable connection to session manager"
 msgstr "Deaktiver tilkobling til sesjonshåndtereren"
 
-#: src/core/main.c:188
+#: src/core/main.c:193
 msgid "Replace the running window manager"
 msgstr "Erstatt kjørende vindushåndterer"
 
-#: src/core/main.c:194
+#: src/core/main.c:199
 msgid "Specify session management ID"
 msgstr "Oppgi sesjonshåndterings-ID"
 
-#: src/core/main.c:199
+#: src/core/main.c:204
 msgid "X Display to use"
 msgstr "X-skjerm som skal brukes"
 
-#: src/core/main.c:205
+#: src/core/main.c:210
 msgid "Initialize session from savefile"
 msgstr "Initier sesjonen fra en lagret fil"
 
-#: src/core/main.c:211
+#: src/core/main.c:216
 msgid "Make X calls synchronous"
 msgstr "Gjør X-kall synkrone"
 
-#: src/core/main.c:218
+#: src/core/main.c:223
 msgid "Run as a wayland compositor"
 msgstr "Kjør som en wayland-kompositør"
 
-#: src/core/main.c:224
+#: src/core/main.c:229
 msgid "Run as a nested compositor"
 msgstr "Kjør som en nøstet kompositør"
 
-#: src/core/main.c:232
+#: src/core/main.c:237
 msgid "Run as a full display server, rather than nested"
 msgstr "Kjør som en full skjermtjener, heller enn nøstet"
 
@@ -586,7 +595,7 @@ msgstr "Mutter-tillegg som skal brukes"
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
 "Display \"%s\" already has a window manager; try using the --replace option "
@@ -595,7 +604,7 @@ msgstr ""
 "Skjerm «%s» har allerede en vindushåndterer; prøv å bruke flagget --replace "
 "for å erstatte aktiv vindushåndterer."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
