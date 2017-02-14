@@ -359,5 +359,42 @@
       <arg name="max_screen_size" direction="out" type="(ii)" />
       <arg name="properties" direction="out" type="a{sv}" />
     </method>
+
+    <!--
+	ApplyMonitorsConfig:
+	@serial: configuration serial
+	@method: configuration method
+	@logical_monitors: monitors configuration
+	@properties: properties
+
+	@method represents the way the configuration should be handled.
+
+	Possible methods:
+	  0: verify
+	  1: temporary
+	  2: persistent
+
+	@logical_monitors consists of a list of logical monitor configurations.
+	Each logical monitor configuration consists of:
+
+	* i: layout x position
+	* i: layout y position
+	* d: scale
+	* b primary: true if this is the primary logical monitor
+	* a(siida{sv}): a list of monitors, each consisting of:
+	    * s: connector
+	    * (iid): monitor mode spec (resolution width, resolution height,
+		     refresh rate)
+	    * a{sv}: monitor properties, including:
+	        - "enable_underscanning" (b): enable monitor underscanning;
+					      may only be set when underscanning
+					      is supported (see GetCurrentState).
+    -->
+    <method name="ApplyMonitorsConfig">
+      <arg name="serial" direction="in" type="u" />
+      <arg name="method" direction="in" type="u" />
+      <arg name="logical_monitors" direction="in" type="a(iidba(s(iid)a{sv}))" />
+      <arg name="properties" direction="in" type="a{sv}" />
+    </method>
   </interface>
 </node>

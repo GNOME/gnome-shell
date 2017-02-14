@@ -1300,9 +1300,10 @@ meta_monitor_manager_xrandr_ensure_initial_config (MetaMonitorManager *manager)
 }
 
 static gboolean
-meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager *manager,
-                                                   MetaMonitorsConfig *config,
-                                                   GError            **error)
+meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager      *manager,
+                                                   MetaMonitorsConfig      *config,
+                                                   MetaMonitorsConfigMethod method,
+                                                   GError                 **error)
 {
   GPtrArray *crtc_infos;
   GPtrArray *output_infos;
@@ -1318,11 +1319,14 @@ meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager *manager,
                                            error))
     return FALSE;
 
-  apply_crtc_assignments (manager,
-                          (MetaCrtcInfo **) crtc_infos->pdata,
-                          crtc_infos->len,
-                          (MetaOutputInfo **) output_infos->pdata,
-                          output_infos->len);
+  if (method != META_MONITORS_CONFIG_METHOD_VERIFY)
+    {
+      apply_crtc_assignments (manager,
+                              (MetaCrtcInfo **) crtc_infos->pdata,
+                              crtc_infos->len,
+                              (MetaOutputInfo **) output_infos->pdata,
+                              output_infos->len);
+    }
 
   g_ptr_array_free (crtc_infos, TRUE);
   g_ptr_array_free (output_infos, TRUE);

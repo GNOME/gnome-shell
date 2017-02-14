@@ -256,9 +256,10 @@ update_screen_size (MetaMonitorManager *manager,
 }
 
 static gboolean
-meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager *manager,
-                                                 MetaMonitorsConfig *config,
-                                                 GError            **error)
+meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manager,
+                                                 MetaMonitorsConfig      *config,
+                                                 MetaMonitorsConfigMethod method,
+                                                 GError                 **error)
 {
   GPtrArray *crtc_infos;
   GPtrArray *output_infos;
@@ -279,6 +280,13 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager *manager,
                                            &output_infos,
                                            error))
     return FALSE;
+
+  if (method == META_MONITORS_CONFIG_METHOD_VERIFY)
+    {
+      g_ptr_array_free (crtc_infos, TRUE);
+      g_ptr_array_free (output_infos, TRUE);
+      return TRUE;
+    }
 
   apply_crtc_assignments (manager,
                           (MetaCrtcInfo **) crtc_infos->pdata,

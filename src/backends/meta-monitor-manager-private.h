@@ -74,6 +74,14 @@ typedef enum _MetaMonitorManagerCapability
   META_MONITOR_MANAGER_CAPABILITY_MIRRORING = (1 << 0)
 } MetaMonitorManagerCapability;
 
+/* Equivalent to the 'method' enum in org.gnome.Mutter.DisplayConfig */
+typedef enum _MetaMonitorsConfigMethod
+{
+  META_MONITORS_CONFIG_METHOD_VERIFY = 0,
+  META_MONITORS_CONFIG_METHOD_TEMPORARY = 1,
+  META_MONITORS_CONFIG_METHOD_PERSISTENT = 2
+} MetaMonitorsConfigMethod;
+
 typedef enum
 {
   META_MONITOR_TRANSFORM_NORMAL,
@@ -316,9 +324,10 @@ struct _MetaMonitorManagerClass
 
   void (*ensure_initial_config) (MetaMonitorManager *);
 
-  gboolean (*apply_monitors_config) (MetaMonitorManager *,
-                                     MetaMonitorsConfig *,
-                                     GError            **);
+  gboolean (*apply_monitors_config) (MetaMonitorManager      *,
+                                     MetaMonitorsConfig      *,
+                                     MetaMonitorsConfigMethod ,
+                                     GError                 **);
 
   void (*apply_configuration) (MetaMonitorManager  *,
                                MetaCrtcInfo       **,

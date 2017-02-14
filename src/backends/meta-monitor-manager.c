@@ -315,14 +315,15 @@ meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 }
 
 static gboolean
-meta_monitor_manager_apply_monitors_config (MetaMonitorManager *manager,
-                                            MetaMonitorsConfig *config,
-                                            GError            **error)
+meta_monitor_manager_apply_monitors_config (MetaMonitorManager      *manager,
+                                            MetaMonitorsConfig      *config,
+                                            MetaMonitorsConfigMethod method,
+                                            GError                 **error)
 {
   MetaMonitorManagerClass *manager_class =
     META_MONITOR_MANAGER_GET_CLASS (manager);
 
-  return manager_class->apply_monitors_config (manager, config, error);
+  return manager_class->apply_monitors_config (manager, config, method, error);
 }
 
 gboolean
@@ -359,6 +360,10 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
 {
   MetaMonitorsConfig *config = NULL;
   GError *error = NULL;
+  gboolean use_stored_config;
+  MetaMonitorsConfigMethod method;
+  MetaMonitorsConfigMethod fallback_method =
+    META_MONITORS_CONFIG_METHOD_TEMPORARY;
 
   if (!manager->config_manager)
     {
@@ -366,12 +371,20 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
       return NULL;
     }
 
-  if (should_use_stored_config (manager))
+  use_stored_config = should_use_stored_config (manager);
+  if (use_stored_config)
+    method = META_MONITORS_CONFIG_METHOD_PERSISTENT;
+  else
+    method = META_MONITORS_CONFIG_METHOD_TEMPORARY;
+
+  if (use_stored_config)
     {
       config = meta_monitor_config_manager_get_stored (manager->config_manager);
       if (config)
         {
-          if (!meta_monitor_manager_apply_monitors_config (manager, config,
+          if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                           config,
+                                                           method,
                                                            &error))
             {
               config = NULL;
@@ -390,7 +403,10 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
   config = meta_monitor_config_manager_create_suggested (manager->config_manager);
   if (config)
     {
-      if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+      if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                       config,
+                                                       method,
+                                                       &error))
         {
           g_clear_object (&config);
           g_warning ("Failed to use suggested monitor configuration: %s",
@@ -406,7 +422,10 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
   config = meta_monitor_config_manager_create_linear (manager->config_manager);
   if (config)
     {
-      if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+      if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                       config,
+                                                       method,
+                                                       &error))
         {
           g_clear_object (&config);
           g_warning ("Failed to use linear monitor configuration: %s",
@@ -422,7 +441,10 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
   config = meta_monitor_config_manager_create_fallback (manager->config_manager);
   if (config)
     {
-      if (!meta_monitor_manager_apply_monitors_config (manager, config, &error))
+      if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                       config,
+                                                       fallback_method,
+                                                       &error))
         {
           g_clear_object (&config);
           g_warning ("Failed to use fallback monitor configuration: %s",
@@ -440,7 +462,10 @@ done:
 
   if (!config)
     {
-      meta_monitor_manager_apply_monitors_config (manager, NULL, &error);
+      meta_monitor_manager_apply_monitors_config (manager,
+                                                  NULL,
+                                                  fallback_method,
+                                                  &error);
       return NULL;
     }
 
@@ -1364,6 +1389,361 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
 #undef LOGICAL_MONITOR_FORMAT
 #undef LOGICAL_MONITORS_FORMAT
 
+static gboolean
+meta_monitor_manager_is_scale_supported (MetaMonitorManager *manager,
+                                         float               scale)
+{
+  float *supported_scales;
+  int n_supported_scales;
+  int i;
+
+  meta_monitor_manager_get_supported_scales (manager,
+                                             &supported_scales,
+                                             &n_supported_scales);
+  for (i = 0; i < n_supported_scales; i++)
+    {
+      if (supported_scales[i] == scale)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+meta_monitor_manager_is_config_applicable (MetaMonitorManager *manager,
+                                           MetaMonitorsConfig *config,
+                                           GError            **error)
+{
+  GList *l;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+      float scale = logical_monitor_config->scale;
+      GList *k;
+
+      if (!meta_monitor_manager_is_scale_supported (manager, scale))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Scale not supported by backend");
+          return FALSE;
+        }
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        {
+          MetaMonitorConfig *monitor_config = k->data;
+          MetaMonitorSpec *monitor_spec = monitor_config->monitor_spec;
+          MetaMonitorModeSpec *mode_spec = monitor_config->mode_spec;
+          MetaMonitor *monitor;
+          MetaMonitorMode *monitor_mode;
+
+          monitor = meta_monitor_manager_get_monitor_from_spec (manager,
+                                                                monitor_spec);
+          if (!monitor)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Specified monitor not found");
+              return FALSE;
+            }
+
+          monitor_mode = meta_monitor_get_mode_from_spec (monitor, mode_spec);
+          if (!monitor_mode)
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Specified monitor mode not available");
+              return FALSE;
+            }
+        }
+    }
+
+  return TRUE;
+}
+
+static MetaMonitorSpec *
+find_monitor_spec (MetaMonitorManager *manager,
+                   char               *connector)
+{
+  GList *monitors;
+  GList *l;
+
+  monitors = meta_monitor_manager_get_monitors (manager);
+  for (l = monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+      MetaMonitorSpec *monitor_spec = meta_monitor_get_spec (monitor);
+
+      if (g_str_equal (connector, monitor_spec->connector))
+        return meta_monitor_spec_clone (monitor_spec);
+    }
+
+  return NULL;
+}
+
+#define MONITOR_MODE_SPEC_FORMAT "(iid)"
+#define MONITOR_CONFIG_FORMAT "(s" MONITOR_MODE_SPEC_FORMAT "a{sv})"
+#define MONITOR_CONFIGS_FORMAT "a" MONITOR_CONFIG_FORMAT
+
+#define LOGICAL_MONITOR_CONFIG_FORMAT "(iidb" MONITOR_CONFIGS_FORMAT ")"
+
+static MetaMonitorConfig *
+create_monitor_config_from_variant (MetaMonitorManager *manager,
+                                    GVariant           *monitor_config_variant,
+                                    GError            **error)
+{
+
+  MetaMonitorConfig *monitor_config = NULL;
+  char *connector;
+  MetaMonitorSpec *monitor_spec;
+  MetaMonitorModeSpec *monitor_mode_spec;
+  GVariant *properties_variant = NULL;
+  gboolean enable_underscanning = FALSE;
+  int32_t mode_width;
+  int32_t mode_height;
+  double mode_refresh_rate;
+
+  monitor_spec = g_new0 (MetaMonitorSpec, 1);
+  monitor_mode_spec = g_new0 (MetaMonitorModeSpec, 1);
+
+  g_variant_get (monitor_config_variant, "(s" MONITOR_MODE_SPEC_FORMAT "@a{sv})",
+                 &connector,
+                 &mode_width,
+                 &mode_height,
+                 &mode_refresh_rate,
+                 &properties_variant);
+
+  *monitor_mode_spec = (MetaMonitorModeSpec) {
+    .width = mode_width,
+    .height = mode_height,
+    .refresh_rate = mode_refresh_rate
+  };
+
+  monitor_spec = find_monitor_spec (manager, connector);
+  if (!monitor_spec)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid connector '%s' specified", connector);
+      g_free (monitor_mode_spec);
+      return NULL;
+    }
+
+  if (!meta_verify_monitor_mode_spec (monitor_mode_spec, error))
+    {
+      g_free (monitor_mode_spec);
+      meta_monitor_spec_free (monitor_spec);
+      return NULL;
+    }
+
+  g_variant_lookup (properties_variant, "underscanning", "b", &enable_underscanning);
+
+  monitor_config = g_new0 (MetaMonitorConfig, 1);
+  *monitor_config = (MetaMonitorConfig) {
+    .monitor_spec = monitor_spec,
+    .mode_spec = monitor_mode_spec,
+    .enable_underscanning = enable_underscanning
+  };
+
+  return monitor_config;
+}
+
+static gboolean
+derive_logical_monitor_size (GList  *monitor_configs,
+                             int    *width,
+                             int    *height,
+                             GError **error)
+{
+  MetaMonitorConfig *monitor_config;
+
+  if (!monitor_configs)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Empty logical monitor");
+      return FALSE;
+    }
+
+  monitor_config = monitor_configs->data;
+  *width = monitor_config->mode_spec->width;
+  *height = monitor_config->mode_spec->height;
+
+  return TRUE;
+}
+
+static MetaLogicalMonitorConfig *
+create_logical_monitor_config_from_variant (MetaMonitorManager *manager,
+                                            GVariant           *logical_monitor_config_variant,
+                                            GError            **error)
+{
+  MetaLogicalMonitorConfig *logical_monitor_config;
+  int x, y, width, height;
+  double scale;
+  gboolean is_primary;
+  GVariantIter *monitor_configs_iter;
+  GList *monitor_configs = NULL;
+
+  g_variant_get (logical_monitor_config_variant, LOGICAL_MONITOR_CONFIG_FORMAT,
+                 &x,
+                 &y,
+                 &scale,
+                 &is_primary,
+                 &monitor_configs_iter);
+
+  while (TRUE)
+    {
+      GVariant *monitor_config_variant =
+        g_variant_iter_next_value (monitor_configs_iter);
+      MetaMonitorConfig *monitor_config;
+
+      if (!monitor_config_variant)
+        break;
+
+      monitor_config =
+        create_monitor_config_from_variant (manager,
+                                            monitor_config_variant, error);
+      if (!monitor_config)
+        goto err;
+
+      if (!meta_verify_monitor_config (monitor_config, error))
+        {
+          meta_monitor_config_free (monitor_config);
+          goto err;
+        }
+
+      monitor_configs = g_list_append (monitor_configs, monitor_config);
+    }
+  g_variant_iter_free (monitor_configs_iter);
+
+  if (!derive_logical_monitor_size (monitor_configs, &width, &height, error))
+    goto err;
+
+  logical_monitor_config = g_new0 (MetaLogicalMonitorConfig, 1);
+  *logical_monitor_config = (MetaLogicalMonitorConfig) {
+    .layout = {
+      .x = x,
+      .y = y,
+      .width = width,
+      .height = height
+    },
+    .scale = (int) scale,
+    .is_primary = is_primary,
+    .monitor_configs = monitor_configs
+  };
+
+  if (!meta_verify_logical_monitor_config (logical_monitor_config, error))
+    {
+      meta_logical_monitor_config_free (logical_monitor_config);
+      return NULL;
+    }
+
+  return logical_monitor_config;
+
+err:
+  g_list_free_full (monitor_configs, (GDestroyNotify) meta_monitor_config_free);
+  return NULL;
+}
+
+static gboolean
+meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skeleton,
+                                                   GDBusMethodInvocation *invocation,
+                                                   guint                  serial,
+                                                   guint                  method,
+                                                   GVariant              *logical_monitor_configs_variant,
+                                                   GVariant              *properties_variant)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  GVariantIter logical_monitor_configs_iter;
+  MetaMonitorsConfig *config;
+  GList *logical_monitor_configs = NULL;
+  GError *error = NULL;
+
+  if (!manager->config_manager)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_NOT_SUPPORTED,
+                                             "Used new configuration API with old configuration system");
+      return TRUE;
+    }
+
+  if (serial != manager->serial)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "The requested configuration is based on stale information");
+      return TRUE;
+    }
+
+  g_variant_iter_init (&logical_monitor_configs_iter,
+                       logical_monitor_configs_variant);
+  while (TRUE)
+    {
+      GVariant *logical_monitor_config_variant =
+        g_variant_iter_next_value (&logical_monitor_configs_iter);
+      MetaLogicalMonitorConfig *logical_monitor_config;
+
+      if (!logical_monitor_config_variant)
+        break;
+
+      logical_monitor_config =
+        create_logical_monitor_config_from_variant (manager,
+                                                    logical_monitor_config_variant,
+                                                    &error);
+      if (!logical_monitor_config)
+        {
+          g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                 G_DBUS_ERROR_INVALID_ARGS,
+                                                 error->message);
+          g_error_free (error);
+          g_list_free_full (logical_monitor_configs,
+                            (GDestroyNotify) meta_logical_monitor_config_free);
+          return TRUE;
+        }
+
+      logical_monitor_configs = g_list_append (logical_monitor_configs,
+                                               logical_monitor_config);
+    }
+
+  config = meta_monitors_config_new (logical_monitor_configs);
+  if (!meta_verify_monitors_config (config, &error))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             error->message);
+      g_error_free (error);
+      g_object_unref (config);
+      return TRUE;
+    }
+
+  if (!meta_monitor_manager_is_config_applicable (manager, config, &error))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             error->message);
+      g_error_free (error);
+      g_object_unref (config);
+      return TRUE;
+    }
+
+  if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                   config,
+                                                   method,
+                                                   &error))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             error->message);
+      g_error_free (error);
+      g_object_unref (config);
+      return TRUE;
+    }
+
+  meta_dbus_display_config_complete_apply_monitors_config (skeleton, invocation);
+
+  return TRUE;
+}
+
+#undef MONITOR_MODE_SPEC_FORMAT
+#undef MONITOR_CONFIG_FORMAT
+#undef MONITOR_CONFIGS_FORMAT
+#undef LOGICAL_MONITOR_CONFIG_FORMAT
+
 static void
 legacy_confirm_configuration (MetaMonitorManager *manager,
                               gboolean            confirmed)
@@ -1569,6 +1949,7 @@ meta_monitor_manager_display_config_init (MetaDBusDisplayConfigIface *iface)
   iface->handle_get_crtc_gamma = meta_monitor_manager_handle_get_crtc_gamma;
   iface->handle_set_crtc_gamma = meta_monitor_manager_handle_set_crtc_gamma;
   iface->handle_get_current_state = meta_monitor_manager_handle_get_current_state;
+  iface->handle_apply_monitors_config = meta_monitor_manager_handle_apply_monitors_config;
 }
 
 static void
