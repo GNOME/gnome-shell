@@ -328,8 +328,6 @@
 
 	* i x: x position
 	* i y: y position
-	* i width: width
-	* i height: height
 	* a(sss) monitors: monitors displaying this logical monitor
 	    * connector: name of the connector (e.g. DP-1, eDP-1 etc)
 	    * vendor: vendor name
@@ -356,7 +354,7 @@
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />
       <arg name="monitors" direction="out" type="a((ssss)a(iiddu)a{sv})" />
-      <arg name="logical_monitors" direction="out" type="a(iiiia(ssss)dba{sv})" />
+      <arg name="logical_monitors" direction="out" type="a(iia(ssss)dba{sv})" />
       <arg name="supported_scales" direction="out" type="ad" />
       <arg name="max_screen_size" direction="out" type="(ii)" />
       <arg name="properties" direction="out" type="a{sv}" />
