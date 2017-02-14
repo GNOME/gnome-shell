@@ -865,6 +865,10 @@ gboolean
 meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_config,
                                     GError                  **error)
 {
+  GList *l;
+  int layout_width;
+  int layout_height;
+
   if (logical_monitor_config->scale < 1)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
@@ -888,6 +892,21 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_co
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Logical monitor is empty");
       return FALSE;
+    }
+
+  layout_width = logical_monitor_config->layout.width;
+  layout_height = logical_monitor_config->layout.height;
+  for (l = logical_monitor_config->monitor_configs; l; l = l->next)
+    {
+      MetaMonitorConfig *monitor_config = l->data;
+
+      if (monitor_config->mode_spec->width != layout_width ||
+          monitor_config->mode_spec->height != layout_height)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Monitor modes in logical monitor conflict");
+          return FALSE;
+        }
     }
 
   return TRUE;
