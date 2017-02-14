@@ -184,7 +184,7 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
           g_assert_cmpfloat (monitor_config->mode_spec->refresh_rate,
                              ==,
                              test_monitor->mode.refresh_rate);
-          g_assert_cmpint (monitor_config->is_underscanning,
+          g_assert_cmpint (monitor_config->enable_underscanning,
                            ==,
                            test_monitor->is_underscanning);
         }

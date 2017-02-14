@@ -761,7 +761,7 @@ handle_text (GMarkupParseContext *context,
     case STATE_MONITOR_UNDERSCANNING:
       {
         read_bool (text, text_len,
-                   &parser->current_monitor_config->is_underscanning,
+                   &parser->current_monitor_config->enable_underscanning,
                    error);
         return;
       }

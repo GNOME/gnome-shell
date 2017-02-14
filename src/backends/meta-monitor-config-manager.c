@@ -181,7 +181,7 @@ assign_monitor_crtc (MetaMonitor         *monitor,
     .output = output,
     .is_primary = assign_output_as_primary,
     .is_presentation = assign_output_as_presentation,
-    .is_underscanning = data->monitor_config->is_underscanning
+    .is_underscanning = data->monitor_config->enable_underscanning
   };
 
   g_ptr_array_add (data->crtc_infos, crtc_info);
@@ -454,7 +454,7 @@ create_monitor_config (MetaMonitor     *monitor,
   *monitor_config = (MetaMonitorConfig) {
     .monitor_spec = meta_monitor_spec_clone (monitor_spec),
     .mode_spec = g_memdup (mode_spec, sizeof (MetaMonitorModeSpec)),
-    .is_underscanning = meta_monitor_is_underscanning (monitor)
+    .enable_underscanning = meta_monitor_is_underscanning (monitor)
   };
 
   return monitor_config;
