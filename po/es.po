@@ -4,15 +4,15 @@
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011.
 # 
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011, 2012, 2013, 2014, 2015., 2016.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011, 2012, 2013, 2014, 2015., 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-12-15 15:57+0000\n"
-"PO-Revision-Date: 2016-12-20 16:50+0100\n"
+"POT-Creation-Date: 2017-02-05 09:59+0000\n"
+"PO-Revision-Date: 2017-02-07 18:39+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -487,11 +487,11 @@ msgstr "%d de %B, %l∶%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:87
-msgid "Web Authentication Redirect"
-msgstr "Redirección para autenticación web"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:57
+#| msgid "Network Login"
+msgid "Hotspot Login"
+msgstr "Inicio de sesión en el punto de acceso"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -778,7 +778,7 @@ msgstr "Contraseña de la red de banda ancha móvil"
 msgid "A password is required to connect to “%s”."
 msgstr "Se requiere una contraseña para conectarse a «%s»."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1734
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1736
 msgid "Network Manager"
 msgstr "Gestor de la red"
 
@@ -1089,6 +1089,8 @@ msgstr "Medios"
 msgid "Undo"
 msgstr "Deshacer"
 
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
 #: js/ui/overview.js:113
 msgid "Overview"
 msgstr "Vista general"
@@ -1182,7 +1184,6 @@ msgid "Close"
 msgstr "Cerrar"
 
 #: js/ui/runDialog.js:277
-#| msgid "Encryption is not available"
 msgid "Restart is not available on Wayland"
 msgstr "Reiniciar si no está disponible en Wayland"
 
@@ -1548,7 +1549,7 @@ msgstr "se necesita autenticación"
 msgid "connection failed"
 msgstr "falló la conexión"
 
-#: js/ui/status/network.js:1494 js/ui/status/network.js:1587
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1589
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Configuración de la red"
@@ -1565,32 +1566,32 @@ msgstr "VPN"
 msgid "VPN Off"
 msgstr "VPN apagada"
 
-#: js/ui/status/network.js:1618
+#: js/ui/status/network.js:1620
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conexión cableada"
 msgstr[1] "%s conexiones cableadas"
 
-#: js/ui/status/network.js:1622
+#: js/ui/status/network.js:1624
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conexión inalámbrica"
 msgstr[1] "%s conexiones inalámbricas"
 
-#: js/ui/status/network.js:1626
+#: js/ui/status/network.js:1628
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s conexión por módem"
 msgstr[1] "%s conexiones por módem"
 
-#: js/ui/status/network.js:1773
+#: js/ui/status/network.js:1775
 msgid "Connection failed"
 msgstr "Falló la conexión"
 
-#: js/ui/status/network.js:1774
+#: js/ui/status/network.js:1776
 msgid "Activation of network connection failed"
 msgstr "Falló la activación de la conexión de red"
 
@@ -1848,6 +1849,9 @@ msgstr "La contraseña no puede estar vacía"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "El usuario rechazó el diálogo de autenticación"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Redirección para autenticación web"
 
 #~ msgid "Not In Use"
 #~ msgstr "No está en uso"
