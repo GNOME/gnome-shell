@@ -972,7 +972,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
   if (manager->config_manager)
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             G_DBUS_ERROR_NOT_SUPPORTED,
                                              "Used old configuration API with new configuration system");
       return TRUE;
     }
