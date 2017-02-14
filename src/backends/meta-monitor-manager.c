@@ -1204,7 +1204,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
 #define MONITORS_FORMAT "a" MONITOR_FORMAT
 
 #define LOGICAL_MONITOR_MONITORS_FORMAT "a" MONITOR_SPEC_FORMAT
-#define LOGICAL_MONITOR_FORMAT "(ii" LOGICAL_MONITOR_MONITORS_FORMAT "dba{sv})"
+#define LOGICAL_MONITOR_FORMAT "(iidb" LOGICAL_MONITOR_MONITORS_FORMAT "a{sv})"
 #define LOGICAL_MONITORS_FORMAT "a" LOGICAL_MONITOR_FORMAT
 
 static gboolean
@@ -1313,9 +1313,9 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              LOGICAL_MONITOR_FORMAT,
                              logical_monitor->rect.x,
                              logical_monitor->rect.y,
-                             &logical_monitor_monitors_builder,
                              (double) logical_monitor->scale,
                              logical_monitor->is_primary,
+                             &logical_monitor_monitors_builder,
                              NULL);
     }
 
