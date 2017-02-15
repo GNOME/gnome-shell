@@ -111,7 +111,6 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-monitor-config-store.h	\
 	backends/meta-monitor.c			\
 	backends/meta-monitor.h			\
-	backends/meta-monitor-private.h		\
 	backends/meta-monitor-manager.c		\
 	meta/meta-monitor-manager.h		\
 	backends/meta-monitor-manager-private.h	\
@@ -233,6 +232,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	core/meta-gesture-tracker-private.h	\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
+	core/main-private.h			\
 	core/main.c				\
 	core/place.c				\
 	core/place.h				\
