@@ -1,6 +1,9 @@
 #!/usr/bin/env gjs
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+imports.gi.versions.Gdk = '3.0';
+imports.gi.versions.Gtk = '3.0';
+
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
