@@ -1,5 +1,10 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Config = imports.misc.config;
+
+imports.gi.versions.Clutter = Config.LIBMUTTER_API_VERSION;
+imports.gi.versions.Gtk = '3.0';
+
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;

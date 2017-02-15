@@ -1,11 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const UI = imports.testcommon.ui;
+
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
 const Calendar = imports.ui.calendar;
-const UI = imports.testcommon.ui;
 
 function test() {
     let stage = new Clutter.Stage({ width: 400, height: 400 });

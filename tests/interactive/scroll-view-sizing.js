@@ -1,12 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const UI = imports.testcommon.ui;
+
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
-
-const UI = imports.testcommon.ui;
 
 // This is an interactive test of the sizing behavior of StScrollView. It
 // may be interesting in the future to split out the two classes at the

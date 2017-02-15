@@ -1,9 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const UI = imports.testcommon.ui;
+
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
-
-const UI = imports.testcommon.ui;
 
 function test() {
     let stage = new Clutter.Stage();

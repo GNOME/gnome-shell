@@ -1,12 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const UI = imports.testcommon.ui;
+
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 const Mainloop = imports.mainloop;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
-
-const UI = imports.testcommon.ui;
 
 const DELAY = 2000;
 

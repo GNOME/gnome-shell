@@ -1,10 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const UI = imports.testcommon.ui;
+
 const Cogl = imports.gi.Cogl;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
 
-const UI = imports.testcommon.ui;
 
 function test() {
     let stage = new Clutter.Stage({ user_resizable: true, width: 1024, height: 768 });
