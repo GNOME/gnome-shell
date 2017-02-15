@@ -411,9 +411,9 @@ meta_input_settings_native_set_tablet_keep_aspect (MetaInputSettings  *settings,
 
           backend = meta_get_backend ();
           monitor_manager = meta_backend_get_monitor_manager (backend);
-          meta_monitor_manager_get_screen_limits (monitor_manager,
-                                                  &output_width,
-                                                  &output_height);
+	  meta_monitor_manager_get_screen_size (monitor_manager,
+						&output_width,
+						&output_height);
         }
 
       output_aspect = (gdouble) output_width / output_height;
