@@ -252,7 +252,7 @@ const InstallExtensionDialog = new Lang.Class({
                 return;
             }
 
-            invocation.return_value(GLib.Variant.new('(s)', 'successful'));
+            invocation.return_value(GLib.Variant.new('(s)', ['successful']));
         }
 
         _httpSession.queue_message(message, Lang.bind(this, function(session, message) {
