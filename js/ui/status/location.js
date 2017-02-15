@@ -284,6 +284,7 @@ const AppAuthorizer = new Lang.Class({
         this.reqAccuracyLevel = reqAccuracyLevel;
         this._permStoreProxy = permStoreProxy;
         this._maxAccuracyLevel = maxAccuracyLevel;
+        this._permissions = {};
 
         this._accuracyLevel = GeoclueAccuracyLevel.NONE;
     },
