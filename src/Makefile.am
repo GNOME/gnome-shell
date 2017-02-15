@@ -532,7 +532,8 @@ CLEANFILES =					\
 	$(gir_DATA)
 
 DISTCLEANFILES = 				\
-	$(libmutterinclude_built_headers)
+	$(libmutterinclude_built_headers)	\
+	$(pkgconfig_DATA)
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libmutter-$(LIBMUTTER_API_VERSION).pc

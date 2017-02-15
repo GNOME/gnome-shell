@@ -2,6 +2,8 @@
 
 NULL =
 
+DISTCLEANFILES =
+
 mutterlibdir = $(libdir)/mutter
 mutterlib_LTLIBRARIES = libmutter-cogl-gles2-@LIBMUTTER_API_VERSION@.la
 
@@ -29,3 +31,5 @@ pc_files = mutter-cogl-gles2-$(LIBMUTTER_API_VERSION).pc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = $(pc_files)
+
+DISTCLEANFILES += $(pc_files)
