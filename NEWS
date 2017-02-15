@@ -1,3 +1,31 @@
+3.23.90
+=======
+* Fix window menu placement with HiDPI [Jonas; #776055]
+* Improve EGLStream support [Jonas; #773629]
+* Start moving low-level monitor configuration into mutter [Jonas; #777732]
+* Fix erroneous key event repeats [Rui; #774989]
+* Don't hardcode seat ID in ClutterDeviceManager [Carlos; #778092]
+* Fix "ghost" cursors in multi-monitor setups [Jonas; #771056]
+* Use eglGetPlatformDisplay [Adam; #772422]
+* Fix erratic raise_or_lower behavior [Jose; #705200]
+* Fix coordinate mapping of absolute devices [Carlos; #774115]
+* Show OSD on tablet mode switches [Carlos; #771098]
+* Make mutter libs parallel installable [Jonas; #777317]
+* Only apply keymap when not running nested [Jonas; #777800]
+* Set right scale for tablet tool cursors on HiDPI [Carlos; #778474]
+* Adjust server-side shadows to match Adwaita [Juraj; #744667]
+* Misc. bug fixes [Jonas, Bastien, Carlos, Peter, Lionel, Jeremy, Florian;
+  #774891, #777389, #777691, #778262, #776543, #778684, #778699, #744667]
+
+Contributors:
+  Jonas Ådahl, Jeremy Bicha, Piotr Drąg, Juraj Fiala, Carlos Garnacho,
+  Peter Hutterer, Adam Jackson, Lionel Landwerlin, Jose Marino, Rui Matos,
+  Florian Müllner, Bastien Nocera
+
+Translations:
+  Kjartan Maraas [nb], Mandy Wang [zh_CN], Marek Černocký [cs],
+  Anders Jonsson [sv], Dušan Kazik [sk], Piotr Drąg [pl], Matej Urbančič [sl]
+
 3.23.3
 ======
 * Fix frequent freezes in multihead setups on wayland [Rui; #774557]
