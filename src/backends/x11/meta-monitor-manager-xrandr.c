@@ -69,6 +69,9 @@ struct _MetaMonitorManagerXrandr
 #ifdef HAVE_XRANDR15
   GHashTable *tiled_monitor_atoms;
 #endif /* HAVE_XRANDR15 */
+
+  int max_screen_width;
+  int max_screen_height;
 };
 
 struct _MetaMonitorManagerXrandrClass
@@ -773,8 +776,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   XRRGetScreenSizeRange (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
 			 &min_width,
 			 &min_height,
-			 &manager->max_screen_width,
-			 &manager->max_screen_height);
+			 &manager_xrandr->max_screen_width,
+			 &manager_xrandr->max_screen_height);
 
   screen = ScreenOfDisplay (manager_xrandr->xdisplay,
 			    DefaultScreen (manager_xrandr->xdisplay));
@@ -1606,6 +1609,20 @@ meta_monitor_manager_xrandr_get_capabilities (MetaMonitorManager *manager)
   return META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
 }
 
+static gboolean
+meta_monitor_manager_xrandr_get_max_screen_size (MetaMonitorManager *manager,
+                                                 int                *max_width,
+                                                 int                *max_height)
+{
+  MetaMonitorManagerXrandr *manager_xrandr =
+    META_MONITOR_MANAGER_XRANDR (manager);
+
+  *max_width = manager_xrandr->max_screen_width;
+  *max_height = manager_xrandr->max_screen_height;
+
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
@@ -1685,6 +1702,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_xrandr_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_xrandr_get_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_xrandr_get_capabilities;
+  manager_class->get_max_screen_size = meta_monitor_manager_xrandr_get_max_screen_size;
 
   quark_meta_monitor_xrandr_data =
     g_quark_from_static_string ("-meta-monitor-xrandr-data");

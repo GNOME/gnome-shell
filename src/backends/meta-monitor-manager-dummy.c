@@ -30,6 +30,7 @@
 #include <stdlib.h>
 
 #include <meta/util.h>
+#include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-config-manager.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
@@ -324,9 +325,6 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   tiled_monitors_str = g_getenv ("MUTTER_DEBUG_TILED_DUMMY_MONITORS");
   tiled_monitors = g_strcmp0 (tiled_monitors_str, "1") == 0;
 
-  manager->max_screen_width = 65535;
-  manager->max_screen_height = 65535;
-
   modes = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtcMode), MAX_MODES);
   crtcs = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtc), MAX_CRTCS);
   outputs = g_array_sized_new (FALSE, TRUE, sizeof (MetaOutput), MAX_OUTPUTS);
@@ -613,6 +611,20 @@ meta_monitor_manager_dummy_get_capabilities (MetaMonitorManager *manager)
   return META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
 }
 
+static gboolean
+meta_monitor_manager_dummy_get_max_screen_size (MetaMonitorManager *manager,
+                                                int                *max_width,
+                                                int                *max_height)
+{
+  if (meta_is_stage_views_enabled ())
+    return FALSE;
+
+  *max_width = 65535;
+  *max_height = 65535;
+
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
@@ -626,6 +638,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_dummy_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_dummy_get_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_dummy_get_capabilities;
+  manager_class->get_max_screen_size = meta_monitor_manager_dummy_get_max_screen_size;
 }
 
 static void

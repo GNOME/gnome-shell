@@ -118,6 +118,9 @@ struct _MetaMonitorManagerKms
   GSettings *desktop_settings;
 
   gboolean page_flips_not_supported;
+
+  int max_buffer_width;
+  int max_buffer_height;
 };
 
 struct _MetaMonitorManagerKmsClass
@@ -1119,9 +1122,8 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 
   resources = drmModeGetResources (manager_kms->fd);
 
-  /* TODO: max screen width only matters for stage views is not enabled. */
-  manager->max_screen_width = resources->max_width;
-  manager->max_screen_height = resources->max_height;
+  manager_kms->max_buffer_width = resources->max_width;
+  manager_kms->max_buffer_height = resources->max_height;
 
   manager->power_save_mode = META_POWER_SAVE_ON;
 
@@ -1949,6 +1951,22 @@ meta_monitor_manager_kms_get_capabilities (MetaMonitorManager *manager)
   return capabilities;
 }
 
+static gboolean
+meta_monitor_manager_kms_get_max_screen_size (MetaMonitorManager *manager,
+                                              int                *max_width,
+                                              int                *max_height)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+
+  if (meta_is_stage_views_enabled ())
+    return FALSE;
+
+  *max_width = manager_kms->max_buffer_width;
+  *max_height = manager_kms->max_buffer_height;
+
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_kms_dispose (GObject *object)
 {
@@ -1992,4 +2010,5 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_kms_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_kms_get_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_kms_get_capabilities;
+  manager_class->get_max_screen_size = meta_monitor_manager_kms_get_max_screen_size;
 }

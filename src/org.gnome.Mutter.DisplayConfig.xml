@@ -297,7 +297,6 @@
 	@monitors: available monitors
 	@logical_monitors: current logical monitor configuration
 	@supported_scales: scaling factors supported by the display server
-	@max_screen_size: the maximum screen size
 	@properties: display configuration properties
 
 	@monitors represent connected physical monitors
@@ -318,6 +317,9 @@
 	    - "is_underscanning" (b): whether underscanning is enabled
 				      (absence of this means underscanning
 				      not being supported)
+	    - "max_screen_size" (ii): the maximum size a screen may have
+				      (absence of this means unlimited screen
+				      size)
 
         Possible mode flags:
 	  1 : preferred mode
@@ -338,10 +340,6 @@
 	* a{sv} properties: possibly other properties
 
 
-	@max_screen_size represents the maximum size the screen may have, or 0x0 if no
-	such limit is known.
-
-
 	@supported_scales is an ordered list of floating point numbers representing
 	scale factors of logical monitors supported by the display server.
 
@@ -356,7 +354,6 @@
       <arg name="monitors" direction="out" type="a((ssss)a(iiddu)a{sv})" />
       <arg name="logical_monitors" direction="out" type="a(iidba(ssss)a{sv})" />
       <arg name="supported_scales" direction="out" type="ad" />
-      <arg name="max_screen_size" direction="out" type="(ii)" />
       <arg name="properties" direction="out" type="a{sv}" />
     </method>
 

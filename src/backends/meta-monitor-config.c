@@ -1460,7 +1460,12 @@ meta_monitor_config_make_default (MetaMonitorConfig  *self,
   gboolean use_stored_config;
 
   outputs = meta_monitor_manager_get_outputs (manager, &n_outputs);
-  meta_monitor_manager_get_screen_limits (manager, &max_width, &max_height);
+  if (!meta_monitor_manager_get_max_screen_size (manager, &max_width, &max_height))
+    {
+      /* No max screen size, just pretend it's something large. */
+      max_width = 65535;
+      max_height = 65535;
+    }
 
   if (n_outputs == 0)
     {

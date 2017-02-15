@@ -308,6 +308,17 @@ meta_monitor_manager_get_capabilities (MetaMonitorManager *manager)
   return manager_class->get_capabilities (manager);
 }
 
+gboolean
+meta_monitor_manager_get_max_screen_size (MetaMonitorManager *manager,
+                                          int                *max_width,
+                                          int                *max_height)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->get_max_screen_size (manager, max_width, max_height);
+}
+
 static void
 meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 {
@@ -760,6 +771,8 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (skeleton);
   GVariantBuilder crtc_builder, output_builder, mode_builder;
   unsigned int i, j;
+  int max_screen_width;
+  int max_screen_height;
 
   g_variant_builder_init (&crtc_builder, G_VARIANT_TYPE ("a(uxiiiiiuaua{sv})"));
   g_variant_builder_init (&output_builder, G_VARIANT_TYPE ("a(uxiausauaua{sv})"));
@@ -896,14 +909,23 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              (guint32)mode->flags);
     }
 
+  if (!meta_monitor_manager_get_max_screen_size (manager,
+                                                 &max_screen_width,
+                                                 &max_screen_height))
+    {
+      /* No max screen size, just send something large */
+      max_screen_width = 65535;
+      max_screen_height = 65535;
+    }
+
   meta_dbus_display_config_complete_get_resources (skeleton,
                                                    invocation,
                                                    manager->serial,
                                                    g_variant_builder_end (&crtc_builder),
                                                    g_variant_builder_end (&output_builder),
                                                    g_variant_builder_end (&mode_builder),
-                                                   manager->max_screen_width,
-                                                   manager->max_screen_height);
+                                                   max_screen_width,
+                                                   max_screen_height);
   return TRUE;
 }
 
@@ -1053,6 +1075,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
       if (mode)
         {
           int width, height;
+          int max_screen_width, max_screen_height;
 
           if (meta_monitor_transform_is_rotated (transform))
             {
@@ -1065,15 +1088,26 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
               height = mode->height;
             }
 
-          if (x < 0 ||
-              x + width > manager->max_screen_width ||
-              y < 0 ||
-              y + height > manager->max_screen_height)
+          if (x < 0 || y < 0)
             {
               g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                                      G_DBUS_ERROR_INVALID_ARGS,
                                                      "Invalid CRTC geometry");
               return TRUE;
+            }
+
+          if (meta_monitor_manager_get_max_screen_size (manager,
+                                                        &max_screen_width,
+                                                        &max_screen_height))
+            {
+              if (x + width > max_screen_width ||
+                  y + height > max_screen_height)
+                {
+                  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                                         G_DBUS_ERROR_INVALID_ARGS,
+                                                         "Invalid CRTC geometry");
+                  return TRUE;
+                }
             }
 
           new_screen_width = MAX (new_screen_width, x + width);
@@ -1240,13 +1274,13 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
   GVariantBuilder monitors_builder;
   GVariantBuilder logical_monitors_builder;
   GVariantBuilder supported_scales_builder;
-  GVariantBuilder max_screen_size_builder;
   GVariantBuilder properties_builder;
   GList *l;
   float *supported_scales;
   int n_supported_scales;
   int i;
   MetaMonitorManagerCapability capabilities;
+  int max_screen_width, max_screen_height;
 
   g_variant_builder_init (&monitors_builder,
                           G_VARIANT_TYPE (MONITORS_FORMAT));
@@ -1351,13 +1385,6 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
   for (i = 0; i < n_supported_scales; i++)
     g_variant_builder_add (&supported_scales_builder, "d", supported_scales[i]);
 
-  g_variant_builder_init (&max_screen_size_builder,
-                          G_VARIANT_TYPE ("(ii)"));
-  g_variant_builder_add (&max_screen_size_builder, "i",
-                         manager->max_screen_width);
-  g_variant_builder_add (&max_screen_size_builder, "i",
-                         manager->max_screen_height);
-
   g_variant_builder_init (&properties_builder, G_VARIANT_TYPE ("a{sv}"));
   capabilities = meta_monitor_manager_get_capabilities (manager);
   if ((capabilities & META_MONITOR_MANAGER_CAPABILITY_MIRRORING) == 0)
@@ -1367,6 +1394,24 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_boolean (FALSE));
     }
 
+  if (meta_monitor_manager_get_max_screen_size (manager,
+                                                &max_screen_width,
+                                                &max_screen_height))
+    {
+      GVariantBuilder max_screen_size_builder;
+
+      g_variant_builder_init (&max_screen_size_builder,
+                              G_VARIANT_TYPE ("(ii)"));
+      g_variant_builder_add (&max_screen_size_builder, "i",
+                             max_screen_width);
+      g_variant_builder_add (&max_screen_size_builder, "i",
+                             max_screen_height);
+
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "max_screen_size",
+                             g_variant_builder_end (&max_screen_size_builder));
+    }
+
   meta_dbus_display_config_complete_get_current_state (
     skeleton,
     invocation,
@@ -1374,7 +1419,6 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
     g_variant_builder_end (&monitors_builder),
     g_variant_builder_end (&logical_monitors_builder),
     g_variant_builder_end (&supported_scales_builder),
-    g_variant_builder_end (&max_screen_size_builder),
     g_variant_builder_end (&properties_builder));
 
   return TRUE;
@@ -2211,15 +2255,6 @@ meta_monitor_manager_get_screen_size (MetaMonitorManager *manager,
 {
   *width = manager->screen_width;
   *height = manager->screen_height;
-}
-
-void
-meta_monitor_manager_get_screen_limits (MetaMonitorManager *manager,
-                                        int                *width,
-                                        int                *height)
-{
-  *width = manager->max_screen_width;
-  *height = manager->max_screen_height;
 }
 
 static void

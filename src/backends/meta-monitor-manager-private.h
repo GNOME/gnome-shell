@@ -274,8 +274,6 @@ struct _MetaMonitorManager
 
   MetaPowerSave power_save_mode;
 
-  int max_screen_width;
-  int max_screen_height;
   int screen_width;
   int screen_height;
 
@@ -374,6 +372,10 @@ struct _MetaMonitorManagerClass
                                 int                *);
 
   MetaMonitorManagerCapability (*get_capabilities) (MetaMonitorManager *);
+
+  gboolean (*get_max_screen_size) (MetaMonitorManager *,
+                                   int                *,
+                                   int                *);
 };
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
@@ -421,10 +423,6 @@ void                meta_monitor_manager_get_resources     (MetaMonitorManager  
                                                             unsigned int        *n_outputs);
 
 void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
-                                                            int                *width,
-                                                            int                *height);
-
-void                meta_monitor_manager_get_screen_limits (MetaMonitorManager *manager,
                                                             int                *width,
                                                             int                *height);
 
@@ -476,6 +474,10 @@ gboolean           meta_monitor_manager_is_headless (MetaMonitorManager *manager
 int                meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                                       MetaMonitor        *monitor,
                                                                       MetaMonitorMode    *monitor_mode);
+
+gboolean           meta_monitor_manager_get_max_screen_size (MetaMonitorManager *manager,
+                                                             int                *max_width,
+                                                             int                *max_height);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);

@@ -21,6 +21,7 @@
 
 #include "tests/meta-monitor-manager-test.h"
 
+#include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-config-manager.h"
 
 static float supported_scales_test[] = {
@@ -83,9 +84,6 @@ static void
 meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 {
   MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
-
-  manager->max_screen_width = 65535;
-  manager->max_screen_height = 65535;
 
   g_assert (manager_test->test_setup);
 
@@ -388,6 +386,20 @@ meta_monitor_manager_test_get_capabilities (MetaMonitorManager *manager)
   return META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
 }
 
+static gboolean
+meta_monitor_manager_test_get_max_screen_size (MetaMonitorManager *manager,
+                                               int                *max_width,
+                                               int                *max_height)
+{
+  if (meta_is_stage_views_enabled ())
+    return FALSE;
+
+  *max_width = 65535;
+  *max_height = 65535;
+
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_test_dispose (GObject *object)
 {
@@ -423,4 +435,5 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_test_calculate_monitor_mode_scale;
   manager_class->get_supported_scales = meta_monitor_manager_test_get_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_test_get_capabilities;
+  manager_class->get_max_screen_size = meta_monitor_manager_test_get_max_screen_size;
 }
