@@ -62,7 +62,7 @@ COGL_BEGIN_DECLS
 /**
  * CoglPrimitive: (ref-func cogl_object_ref) (unref-func cogl_object_unref)
  *     (set-value-func cogl_object_value_set_object)
- *     (get-value-func cogl_object_get_object)
+ *     (get-value-func cogl_object_value_get_object)
  */
 
 /**
