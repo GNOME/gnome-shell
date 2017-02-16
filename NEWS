@@ -1,3 +1,38 @@
+3.23.90
+=======
+* Handle Ctrl+Q and Ctrl+W in portal window [Bastien; #764133]
+* Allow to scroll through ibus candidates with mouse [Peng; #776032]
+* Reload apps on .desktop file content changes [Adrian; #773636]
+* Use private data/cache directories in portal helper [Bastien; #775639]
+* Fix subsurfaces not showing up in previews [Rui; #756715]
+* Fix theme node transitions [Florian; #778145]
+* Update pad (o)leds on mode switches [Carlos; #776543]
+* Add security indicators to defend against malicious portals [Bastien; #749197]
+* Don't allow type ahead at the login screen [Ray; #766139]
+* Don't fail to load because of TLS errors [Bastien; #778253]
+* Ensure the network lists remains sorted on rename [Benjamin; #778686]
+* Toggle power-off/suspend button on long-press [Florian; #721173]
+* Add "kill-switch" for user extensions [Florian; #778664]
+* Add night light indicator to status area [Florian; #741224]
+* Misc. bug fixes [Michael, Bastien, Carlos, Rui, Florian, Alan, Philip, Jonas;
+  #759793, #735233, #762444, #777784, #777934, #778158, #776199, #778425,
+  #771098, #778552, #777317, #778660, #778661, #745626, #778672]
+
+Contributors:
+  Jonas Ådahl, Benjamin Berg, Michael Catanzaro, Philip Chimento,
+  Alan Coopersmith, Piotr Drąg, Carlos Garnacho, Yuri Konotopov,
+  Lionel Landwerlin, Rui Matos, Florian Müllner, Bastien Nocera,
+  Adrian Perez de Castro, Robert Roth, Ray Strode, Peng Wu
+
+Translations:
+  Jiri Grönroos [fi], Balázs Meskó [hu], Gábor Kelemen [hu],
+  Daniel Mustieles [es], Dušan Kazik [sk],
+  Piotr Drąg [ar, eu, fa, hr, pa, pt, sr, sr@latin], Rafael Fontenelle [pt_BR],
+  Jordi Mas [ca], Piotr Drąg [pl], Alexandre Franke [fr],
+  Baurzhan Muftakhidinov [kk], Yuras Shumovich [be], Mandy Wang [zh_CN],
+  Marek Černocký [cs], Kukuh Syafaat [id], Kjartan Maraas [nb],
+  Daniel Korostil [uk]
+
 3.23.3
 ======
 * Fix replacing of GNotifications [Florian; #775149]
