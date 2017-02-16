@@ -3,23 +3,23 @@
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2011.
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2011, 2012, 2013, 2014, 2015, 2016.
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
 # Asier Sarasua Garmendia <asiersar@yahoo.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-sh"
-"ell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-07 09:41+0000\n"
-"PO-Revision-Date: 2016-09-18 13:43+0100\n"
-"Last-Translator: dooteo <dooteo@zundan.com>\n"
-"Language-Team: Basque <librezale@librezale.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-02-08 13:51+0000\n"
+"PO-Revision-Date: 2017-02-16 12:13+0100\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 2.0\n"
+"X-Generator: Lokalize 1.5\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -328,23 +328,23 @@ msgstr ""
 msgid "GNOME Shell Extensions"
 msgstr "GNOME Shell-eko gehigarriak"
 
-#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
+#: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:916
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:928
 msgid "Cancel"
 msgstr "Utzi"
 
-#: js/gdm/authPrompt.js:169 js/gdm/authPrompt.js:216 js/gdm/authPrompt.js:448
+#: js/gdm/authPrompt.js:171 js/gdm/authPrompt.js:218 js/gdm/authPrompt.js:450
 msgid "Next"
 msgstr "Hurrengoa"
 
-#: js/gdm/authPrompt.js:212 js/ui/shellMountOperation.js:403
+#: js/gdm/authPrompt.js:214 js/ui/shellMountOperation.js:403
 #: js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Desblokeatu"
 
-#: js/gdm/authPrompt.js:214
+#: js/gdm/authPrompt.js:216
 msgctxt "button"
 msgid "Sign In"
 msgstr "Hasi saioa"
@@ -362,7 +362,7 @@ msgstr "Ez zaude zerrendan?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:854
+#: js/gdm/loginDialog.js:859
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(adib., erabiltzailea edo %s)"
@@ -370,12 +370,12 @@ msgstr "(adib., erabiltzailea edo %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:859 js/ui/components/networkAgent.js:271
+#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
 #: js/ui/components/networkAgent.js:289
 msgid "Username: "
 msgstr "Erabiltzaile-izena: "
 
-#: js/gdm/loginDialog.js:1196
+#: js/gdm/loginDialog.js:1201
 msgid "Login Window"
 msgstr "Saio-hasierako leihoa"
 
@@ -477,11 +477,11 @@ msgstr "%B %d, %l∶%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y %B %d, %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:85
-msgid "Web Authentication Redirect"
-msgstr "Web autentifikazioaren berbideraketa"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:57
+#| msgid "Network Login"
+msgid "Hotspot Login"
+msgstr "Wifigunearen saio-hasiera"
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -493,40 +493,44 @@ msgstr "Ukatu sarbidetza"
 msgid "Grant Access"
 msgstr "Baimendu sarbidetza"
 
-#: js/ui/appDisplay.js:794
+#: js/ui/appDisplay.js:806
 msgid "Frequently used applications will appear here"
 msgstr "Maiztasunez erabilitako aplikazioak hemen agertuko dira"
 
-#: js/ui/appDisplay.js:914
+#: js/ui/appDisplay.js:926
 msgid "Frequent"
 msgstr "Askotan"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:933
 msgid "All"
 msgstr "Denak"
 
-#: js/ui/appDisplay.js:1853
+#: js/ui/appDisplay.js:1891
 msgid "New Window"
 msgstr "Leiho berria"
 
-#: js/ui/appDisplay.js:1881 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1905
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Abiarazi eskainitako txartel grafikoa erabiliz"
+
+#: js/ui/appDisplay.js:1932 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Kendu gogokoetatik"
 
-#: js/ui/appDisplay.js:1887
+#: js/ui/appDisplay.js:1938
 msgid "Add to Favorites"
 msgstr "Gehitu gogokoei"
 
-#: js/ui/appDisplay.js:1897
+#: js/ui/appDisplay.js:1948
 msgid "Show Details"
 msgstr "Erakutsi xehetasunak"
 
-#: js/ui/appFavorites.js:134
+#: js/ui/appFavorites.js:137
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s gogokoei gehitu zaie."
 
-#: js/ui/appFavorites.js:168
+#: js/ui/appFavorites.js:171
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s gogokoetatik kendu da."
@@ -675,7 +679,7 @@ msgstr "Kanpoko unitatea konektatuta"
 msgid "External drive disconnected"
 msgstr "Kanpoko unitatea deskonektatuta"
 
-#: js/ui/components/autorunManager.js:355
+#: js/ui/components/autorunManager.js:356
 #, javascript-format
 msgid "Open with %s"
 msgstr "Ireki honekin: %s"
@@ -688,8 +692,8 @@ msgstr "Pasahitza:"
 msgid "Type again:"
 msgstr "Idatzi berriro:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:269
-#: js/ui/status/network.js:352 js/ui/status/network.js:919
+#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:272
+#: js/ui/status/network.js:355 js/ui/status/network.js:931
 msgid "Connect"
 msgstr "Konektatu"
 
@@ -717,11 +721,11 @@ msgstr "Gako pribatuaren pasahitza: "
 msgid "Service: "
 msgstr "Zerbitzua: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:658
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:666
 msgid "Authentication required by wireless network"
 msgstr "Haririk gabeko sareak autentifikazioa eskatzen du"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:667
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -730,7 +734,7 @@ msgstr ""
 "Pasahitzak edo zifratze-gakoak behar dira haririk gabeko '%s' sarera "
 "sarbidetzeko."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:662
+#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:670
 msgid "Wired 802.1X authentication"
 msgstr "Haridun 802.1X autentifikazioa"
 
@@ -738,15 +742,15 @@ msgstr "Haridun 802.1X autentifikazioa"
 msgid "Network name: "
 msgstr "Sarearen izena: "
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:666
+#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:674
 msgid "DSL authentication"
 msgstr "DSL autentifikazioa"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:672
+#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:680
 msgid "PIN code required"
 msgstr "PIN kodea behar da"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:673
+#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN kodea behar da bandazabal mugikorreko gailuarentzako"
 
@@ -754,17 +758,17 @@ msgstr "PIN kodea behar da bandazabal mugikorreko gailuarentzako"
 msgid "PIN: "
 msgstr "PINa: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:679
+#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
 msgid "Mobile broadband network password"
 msgstr "Bandazabal mugikorreko sarearen pasahitza"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:663
-#: js/ui/components/networkAgent.js:667 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
+#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Pasahitza behar da '%s'(e)ra konektatzeko."
 
-#: js/ui/components/networkAgent.js:647 js/ui/status/network.js:1658
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1736
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
@@ -790,12 +794,12 @@ msgstr "Huts egin du. Saiatu berriro."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:760
+#: js/ui/components/telepathyClient.js:765
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s orain %s izenarekin ezagutzen da"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:155
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
 msgid "Windows"
 msgstr "Leihoak"
 
@@ -939,8 +943,6 @@ msgid "Power off after updates are installed"
 msgstr "Itzali eguneraketa guztiak instalatu ondoren"
 
 #: js/ui/endSessionDialog.js:137
-#| msgctxt "title"
-#| msgid "Restart & Install Updates"
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Berrabiarazi eta instalatu bertsio-berritzea"
@@ -1077,6 +1079,8 @@ msgstr "Euskarria"
 msgid "Undo"
 msgstr "Desegin"
 
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
 #: js/ui/overview.js:113
 msgid "Overview"
 msgstr "Ikuspegi orokorra"
@@ -1088,6 +1092,53 @@ msgstr "Ikuspegi orokorra"
 #: js/ui/overview.js:240
 msgid "Type to search…"
 msgstr "Idatzi bilatzeko…"
+
+#: js/ui/padOsd.js:37
+msgid "New shortcut…"
+msgstr "Lasterbide berria…"
+
+#: js/ui/padOsd.js:86
+#| msgid "Applications"
+msgid "Application defined"
+msgstr "Aplikazioan definituta"
+
+#: js/ui/padOsd.js:87
+#| msgid "Show the onscreen keyboard"
+msgid "Show on-screen help"
+msgstr "Erakutsi pantailako laguntzan"
+
+#: js/ui/padOsd.js:88
+#| msgid "Switch User"
+msgid "Switch monitor"
+msgstr "Aldatu monitorea"
+
+#: js/ui/padOsd.js:89
+msgid "Assign keystroke"
+msgstr "Esleitu tekla-sakatzea"
+
+#: js/ui/padOsd.js:143
+msgid "Done"
+msgstr "Eginda"
+
+#: js/ui/padOsd.js:597
+msgid "Edit…"
+msgstr "Editatu…"
+
+#: js/ui/padOsd.js:610 js/ui/padOsd.js:665
+msgid "None"
+msgstr "Bat ere ez"
+
+#: js/ui/padOsd.js:648
+msgid "Press a button to configure"
+msgstr "Sakatu botoi bat konfiguratzeko"
+
+#: js/ui/padOsd.js:649
+msgid "Press Esc to exit"
+msgstr "Sakatu Ihes irteteko"
+
+#: js/ui/padOsd.js:652
+msgid "Press any key to exit"
+msgstr "Sakatu edozer tekla irteteko"
 
 #: js/ui/panel.js:358
 msgid "Quit"
@@ -1125,6 +1176,11 @@ msgstr "Idatzi komandoa"
 msgid "Close"
 msgstr "Itxi"
 
+#: js/ui/runDialog.js:277
+#| msgid "Encryption is not available"
+msgid "Restart is not available on Wayland"
+msgstr "Berrabiaraztea ez dago erabilgarri Wayland-en"
+
 #: js/ui/runDialog.js:282
 msgid "Restarting…"
 msgstr "Berrabiarazten…"
@@ -1153,7 +1209,7 @@ msgstr[1] "%d jakinarazpen berri"
 msgid "Lock"
 msgstr "Blokeatu"
 
-#: js/ui/screenShield.js:704
+#: js/ui/screenShield.js:707
 msgid "GNOME needs to lock the screen"
 msgstr "GNOMEk pantaila blokeatzea behar du"
 
@@ -1164,11 +1220,11 @@ msgstr "GNOMEk pantaila blokeatzea behar du"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:825 js/ui/screenShield.js:1291
+#: js/ui/screenShield.js:828 js/ui/screenShield.js:1295
 msgid "Unable to lock"
 msgstr "Ezin da blokeatu"
 
-#: js/ui/screenShield.js:826 js/ui/screenShield.js:1292
+#: js/ui/screenShield.js:829 js/ui/screenShield.js:1296
 msgid "Lock was blocked by an application"
 msgstr "Beste aplikazio batek blokeatu du"
 
@@ -1252,7 +1308,7 @@ msgstr "Testu handia"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:624
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
@@ -1269,16 +1325,16 @@ msgid "Off"
 msgstr "Desaktibatuta"
 
 #: js/ui/status/bluetooth.js:140
-msgid "Not In Use"
-msgstr "Erabili gabe"
+msgid "On"
+msgstr "Aktibatuta"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1279
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1291
 msgid "Turn On"
 msgstr "Piztu"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:178
-#: js/ui/status/network.js:353 js/ui/status/network.js:1279
-#: js/ui/status/network.js:1394 js/ui/status/rfkill.js:90
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
+#: js/ui/status/network.js:356 js/ui/status/network.js:1291
+#: js/ui/status/network.js:1406 js/ui/status/rfkill.js:90
 #: js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Itzali"
@@ -1327,18 +1383,18 @@ msgstr ""
 "Kokalekuaren sarbidetza edozer unetan alda daiteke pribatutasunen "
 "ezarpenetatik."
 
-#: js/ui/status/network.js:101
+#: js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<ezezaguna>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:451 js/ui/status/network.js:1308
+#: js/ui/status/network.js:454 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Off"
 msgstr "'%s' itzalita"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:454
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "'%s' konektatuta"
@@ -1346,169 +1402,193 @@ msgstr "'%s' konektatuta"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:459
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "'%s' kudeatu gabea"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "'%s' deskonektatzen"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:469 js/ui/status/network.js:1300
+#: js/ui/status/network.js:472 js/ui/status/network.js:1312
 #, javascript-format
 msgid "%s Connecting"
 msgstr "'%s' konektatzen"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:472
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "'%s'(e)k autentifikazioa eskatzen du"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:480
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "'%s'(r)en firmwarea falta da"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:484
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "'%s' ez dago erabilgarri"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:487
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "'%s'(r)en konexioak huts egin du"
 
-#: js/ui/status/network.js:503
+#: js/ui/status/network.js:506
 msgid "Wired Settings"
 msgstr "Haridunaren ezarpenak"
 
-#: js/ui/status/network.js:545
+#: js/ui/status/network.js:548
 msgid "Mobile Broadband Settings"
 msgstr "Bandazabal mugikorraren ezarpenak"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:588 js/ui/status/network.js:1305
+#: js/ui/status/network.js:591 js/ui/status/network.js:1317
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "'%s' hardwarea desgaituta"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:592
+#: js/ui/status/network.js:595
 #, javascript-format
 msgid "%s Disabled"
 msgstr "'%s' desgaituta"
 
-#: js/ui/status/network.js:632
-#| msgid "Connection error"
+#: js/ui/status/network.js:635
 msgid "Connect to Internet"
 msgstr "Konektatu Internetera"
 
-#: js/ui/status/network.js:813
+#: js/ui/status/network.js:825
 msgid "Airplane Mode is On"
 msgstr "Hegazkin modua piztuta"
 
-#: js/ui/status/network.js:814
+#: js/ui/status/network.js:826
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Haririk gabekoa desgaitu egiten da hegazkin modua piztean."
 
-#: js/ui/status/network.js:815
+#: js/ui/status/network.js:827
 msgid "Turn Off Airplane Mode"
 msgstr "Itzali hegazkin modua"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:836
 msgid "Wi-Fi is Off"
 msgstr "Haririk gabekoa itzalita"
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:837
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Haririk gabekoa piztu egin behar da sare batera konektatzeko."
 
-#: js/ui/status/network.js:826
+#: js/ui/status/network.js:838
 msgid "Turn On Wi-Fi"
 msgstr "Piztu haririk gabekoa"
 
-#: js/ui/status/network.js:851
+#: js/ui/status/network.js:863
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi sareak"
 
-#: js/ui/status/network.js:853
+#: js/ui/status/network.js:865
 msgid "Select a network"
 msgstr "Hautatu sare bat"
 
-#: js/ui/status/network.js:883
+#: js/ui/status/network.js:895
 msgid "No Networks"
 msgstr "Sarerik ez"
 
-#: js/ui/status/network.js:904 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:916 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Erabili hardwarearen aldatzailea itzaltzeko"
 
-#: js/ui/status/network.js:1171
+#: js/ui/status/network.js:1183
 msgid "Select Network"
 msgstr "Hautatu sarea"
 
-#: js/ui/status/network.js:1177
+#: js/ui/status/network.js:1189
 msgid "Wi-Fi Settings"
 msgstr "Haririk gabekoaren ezarpenak"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1296
+#: js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "'%s' wifigunea aktibo"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1311
+#: js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "'%s' konektatu gabe"
 
-#: js/ui/status/network.js:1411
+#: js/ui/status/network.js:1423
 msgid "connecting..."
 msgstr "konektatzen..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1414
+#: js/ui/status/network.js:1426
 msgid "authentication required"
 msgstr "autentifikazioa behar da"
 
-#: js/ui/status/network.js:1416
+#: js/ui/status/network.js:1428
 msgid "connection failed"
 msgstr "konexioak huts egin du"
 
-#: js/ui/status/network.js:1482 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1494 js/ui/status/network.js:1589
+#: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Sarearen ezarpenak"
 
-#: js/ui/status/network.js:1484
+#: js/ui/status/network.js:1496
 msgid "VPN Settings"
 msgstr "VPNaren ezarpenak"
 
-#: js/ui/status/network.js:1503
+#: js/ui/status/network.js:1515
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1525
 msgid "VPN Off"
 msgstr "VPNa itzalita"
 
-#: js/ui/status/network.js:1697
+#: js/ui/status/network.js:1620
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s haridun konexioa"
+msgstr[1] "%s haridun konexioak"
+
+#: js/ui/status/network.js:1624
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s haririk gabeko konexioa"
+msgstr[1] "%s haririk gabeko konexioak"
+
+#: js/ui/status/network.js:1628
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s modem konexioa"
+msgstr[1] "%s modem konexioak"
+
+#: js/ui/status/network.js:1775
 msgid "Connection failed"
 msgstr "Konexioak huts egin du"
 
-#: js/ui/status/network.js:1698
+#: js/ui/status/network.js:1776
 msgid "Activation of network connection failed"
 msgstr "Sareko konexioa aktibatzeak huts egin du"
 
@@ -1590,11 +1670,11 @@ msgstr "Hasi saioa beste erabiltzaile baten gisan"
 msgid "Unlock Window"
 msgstr "Desblokeatu leihoa"
 
-#: js/ui/viewSelector.js:159
+#: js/ui/viewSelector.js:182
 msgid "Applications"
 msgstr "Aplikazioak"
 
-#: js/ui/viewSelector.js:163
+#: js/ui/viewSelector.js:186
 msgid "Search"
 msgstr "Bilatu"
 
@@ -1603,22 +1683,22 @@ msgstr "Bilatu"
 msgid "“%s” is ready"
 msgstr "'%s' prest dago"
 
-#: js/ui/windowManager.js:63
+#: js/ui/windowManager.js:64
 msgid "Do you want to keep these display settings?"
 msgstr "Pantailaren ezarpen hauek mantentzea nahi duzu?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:82
+#: js/ui/windowManager.js:83
 msgid "Revert Settings"
 msgstr "Alderantzikatu ezarpenak"
 
-#: js/ui/windowManager.js:85
+#: js/ui/windowManager.js:86
 msgid "Keep Changes"
 msgstr "Mantendu aldaketak"
 
-#: js/ui/windowManager.js:103
+#: js/ui/windowManager.js:104
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1627,7 +1707,7 @@ msgstr[1] "Ezarpenen aldaketak %d segundotan alderantzikatuko dira"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:658
+#: js/ui/windowManager.js:659
 #, javascript-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1727,19 +1807,19 @@ msgstr[1] "%u sarrera"
 msgid "System Sounds"
 msgstr "Sistemako soinuak"
 
-#: src/main.c:381
+#: src/main.c:380
 msgid "Print version"
 msgstr "Bistaratu bertsioa"
 
-#: src/main.c:387
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "GDMk erabiltzen duen modua saio-hasierako pantailarako"
 
-#: src/main.c:393
+#: src/main.c:392
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Erabili modu jakin bat, adib. 'gdm', saioa hasteko pantailarako"
 
-#: src/main.c:399
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Zerrendatu modu posibleak"
 
@@ -1764,6 +1844,12 @@ msgstr "Pasahitza ezin da hutsa izan"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Web autentifikazioaren berbideraketa"
+
+#~ msgid "Not In Use"
+#~ msgstr "Erabili gabe"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Erakutsi aste-data egutegian"
@@ -1793,9 +1879,6 @@ msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
 
 #~ msgid "Airplane Mode"
 #~ msgstr "Hegazkin modua"
-
-#~ msgid "On"
-#~ msgstr "Aktibatuta"
 
 #~ msgid "Show the message tray"
 #~ msgstr "Erakutsi mezuen erretilua"
@@ -1931,9 +2014,6 @@ msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
 
 #~ msgid "Status is set to offline"
 #~ msgstr "Egoera lineaz kanpo da"
-
-#~ msgid "Encryption is not available"
-#~ msgstr "Zifratzea ez dago eskuragarri"
 
 #~ msgid "Certificate is invalid"
 #~ msgstr "Ziurtagiria baliogabea da"
@@ -2595,9 +2675,6 @@ msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
 #~| msgid "If true, display seconds in time."
 #~ msgid "If true, display onscreen keyboard."
 #~ msgstr "Ezarrita badago, pantailako teklatua bistaratzen du."
-
-#~ msgid "Show the onscreen keyboard"
-#~ msgstr "Erakutsi pantailako teklatua"
 
 #~ msgid "Localization Settings"
 #~ msgstr "Lokalizazioaren ezarpenak"
