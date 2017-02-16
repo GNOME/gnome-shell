@@ -6,16 +6,21 @@ test -z "$srcdir" && srcdir=.
 
 REQUIRED_AUTOMAKE_VERSION=1.11
 
-(test -f $srcdir/configure.ac \
-  && test -d $srcdir/src) || {
+pushd $srcdir
+
+(test -f configure.ac \
+  && test -d src) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
-    echo " top-level metacity directory"
+    echo " top-level mutter directory"
     exit 1
 }
 
-which gnome-autogen.sh || {
-    echo "You need to install gnome-common from GNOME Subversion (or from"
-    echo "your distribution's package manager)."
-    exit 1
-}
-. gnome-autogen.sh
+aclocal --install || exit 1
+intltoolize --force --copy --automake || exit 1
+autoreconf --verbose --force --install || exit 1
+
+popd
+
+if [ "$NOCONFIGURE" = "" ]; then
+    $srcdir/configure "$@" || exit 1
+fi
