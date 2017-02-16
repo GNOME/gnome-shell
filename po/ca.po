@@ -4,14 +4,15 @@
 # Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>, 2009.
 # Jordi Serratosa <jordis@softcatala.cat>, 2012.
 # Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2013, 2014, 2016.
+# Jordi Mas i Hernàndez <jmas@softcatala.org>, 2017
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-01-15 19:40+0100\n"
-"PO-Revision-Date: 2017-01-15 19:40+0100\n"
+"POT-Creation-Date: 2017-02-16 05:51+0100\n"
+"PO-Revision-Date: 2017-02-16 06:34+0100\n"
 "Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.9\n"
 
 #: ../js/extensionPrefs/main.js:117
 #, javascript-format
@@ -27,14 +28,13 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "S'ha produït un error en carregar el diàleg de preferències de %s:"
 
 #: ../js/extensionPrefs/main.js:149
-msgid "GNOME Shell Extensions"
-msgstr "Extensions del GNOME Shell"
+msgid "Shell Extensions"
+msgstr "Extensions del Shell"
 
 #: ../js/gdm/authPrompt.js:149 ../js/ui/audioDeviceSelection.js:71
-#: ../js/ui/components/networkAgent.js:145
-#: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:483
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:928
+#: ../js/ui/components/networkAgent.js:145 ../js/ui/components/polkitAgent.js:179
+#: ../js/ui/endSessionDialog.js:482 ../js/ui/extensionDownloader.js:195
+#: ../js/ui/shellMountOperation.js:399 ../js/ui/status/network.js:939
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -181,19 +181,26 @@ msgstr "%d de %B, a les %l∶%M %p"
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, a les %l∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: ../js/portalHelper/main.js:87
-msgid "Web Authentication Redirect"
-msgstr "Redirecció per l'autenticació web"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: ../js/portalHelper/main.js:67
+msgid "Hotspot Login"
+msgstr "Inici de sessió al punt d'accés Wi-Fi"
+
+#: ../js/portalHelper/main.js:113
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
+"La connexió a aquest punt d'accés no és segura. Contrasenyes o altre "
+"informació que introduïu en aquesta pàgina pot ser vista per persones properes."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:426
+#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:427
 msgid "Deny Access"
 msgstr "Denega l'accés"
 
-#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:429
+#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:430
 msgid "Grant Access"
 msgstr "Permetre l'accés"
 
@@ -201,40 +208,40 @@ msgstr "Permetre l'accés"
 msgid "Frequently used applications will appear here"
 msgstr "Les aplicacions utilitzades freqüentment apareixeran aquí"
 
-#: ../js/ui/appDisplay.js:926
+#: ../js/ui/appDisplay.js:927
 msgid "Frequent"
 msgstr "Freqüent"
 
-#: ../js/ui/appDisplay.js:933
+#: ../js/ui/appDisplay.js:934
 msgid "All"
 msgstr "Totes"
 
-#: ../js/ui/appDisplay.js:1891
+#: ../js/ui/appDisplay.js:1892
 msgid "New Window"
 msgstr "Finestra nova"
 
-#: ../js/ui/appDisplay.js:1905
+#: ../js/ui/appDisplay.js:1906
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Inicia usant una tarja gràfica dedicada"
 
-#: ../js/ui/appDisplay.js:1932 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1933 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Suprimeix dels preferits"
 
-#: ../js/ui/appDisplay.js:1938
+#: ../js/ui/appDisplay.js:1939
 msgid "Add to Favorites"
 msgstr "Afegeix als preferits"
 
-#: ../js/ui/appDisplay.js:1948
+#: ../js/ui/appDisplay.js:1949
 msgid "Show Details"
 msgstr "Mostra els detalls"
 
-#: ../js/ui/appFavorites.js:137
+#: ../js/ui/appFavorites.js:138
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "S'ha afegit %s als preferits."
 
-#: ../js/ui/appFavorites.js:171
+#: ../js/ui/appFavorites.js:172
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "S'ha suprimit %s dels preferits."
@@ -263,11 +270,11 @@ msgstr "Micròfon"
 msgid "Change Background…"
 msgstr "Canvia el fons de l'escriptori…"
 
-#: ../js/ui/backgroundMenu.js:21
+#: ../js/ui/backgroundMenu.js:21 ../js/ui/status/nightLight.js:51
 msgid "Display Settings"
 msgstr "Paràmetres de la pantalla"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:374
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:401
 msgid "Settings"
 msgstr "Paràmetres"
 
@@ -397,7 +404,7 @@ msgid "Type again:"
 msgstr "Torneu a escriure-la:"
 
 #: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:272
-#: ../js/ui/status/network.js:355 ../js/ui/status/network.js:931
+#: ../js/ui/status/network.js:366 ../js/ui/status/network.js:942
 msgid "Connect"
 msgstr "Connecta"
 
@@ -436,8 +443,7 @@ msgstr "La xarxa sense fil requereix autenticació"
 #: ../js/ui/components/networkAgent.js:667
 #, javascript-format
 msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"“%s”."
+"Passwords or encryption keys are required to access the wireless network “%s”."
 msgstr ""
 "Per accedir a la xarxa sense fil «%s» calen les contrasenyes o les claus "
 "d'encriptació."
@@ -483,7 +489,7 @@ msgstr "Contrasenya de la xarxa de banda ampla mòbil"
 msgid "A password is required to connect to “%s”."
 msgstr "Cal introduir una contrasenya per connectar-vos a «%s»."
 
-#: ../js/ui/components/networkAgent.js:655 ../js/ui/status/network.js:1736
+#: ../js/ui/components/networkAgent.js:655 ../js/ui/status/network.js:1747
 msgid "Network Manager"
 msgstr "Gestor de connexions de xarxa"
 
@@ -504,7 +510,7 @@ msgstr "Autentica"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
-msgid "Sorry, that didn't work. Please try again."
+msgid "Sorry, that didn’t work. Please try again."
 msgstr "No ha funcionat. Torneu-ho a provar."
 
 #. Translators: this is the other person changing their old IM name to their new
@@ -636,11 +642,11 @@ msgid "The system will automatically restart and install updates in %d second."
 msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] ""
-"Es reiniciarà l'ordinador automàticament i s'instal·laran les "
-"actualitzacions d'aquí %d segon."
+"Es reiniciarà l'ordinador automàticament i s'instal·laran les actualitzacions "
+"d'aquí %d segon."
 msgstr[1] ""
-"Es reiniciarà l'ordinador automàticament i s'instal·laran les "
-"actualitzacions d'aquí %d segons."
+"Es reiniciarà l'ordinador automàticament i s'instal·laran les actualitzacions "
+"d'aquí %d segons."
 
 #: ../js/ui/endSessionDialog.js:127 ../js/ui/endSessionDialog.js:147
 msgctxt "button"
@@ -672,32 +678,32 @@ msgid ""
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
 "%s %s s'instal·larà després del reinici. Una actualització de la instal·lació "
-"pot trigar força temps. Assegureu-vos que heu fet còpia de seguretat i que l'ordinador està connectat al corrent."
+"pot trigar força temps. Assegureu-vos que heu fet còpia de seguretat i que "
+"l'ordinador està connectat al corrent."
 
 #: ../js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
-"S'està utilitzant la bateria: connecteu l'ordinador a la xarxa elèctrica "
-"abans d'instal·lar les actualitzacions."
+"S'està utilitzant la bateria: connecteu l'ordinador a la xarxa elèctrica abans "
+"d'instal·lar les actualitzacions."
 
 #: ../js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
 msgstr ""
-"Hi ha algunes aplicacions que estan ocupades o que tenen documents sense "
-"desar."
+"Hi ha algunes aplicacions que estan ocupades o que tenen documents sense desar."
 
 #: ../js/ui/endSessionDialog.js:385
 msgid "Other users are logged in."
 msgstr "Altres usuaris tenen la sessió oberta."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: ../js/ui/endSessionDialog.js:671
+#: ../js/ui/endSessionDialog.js:670
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (remot)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: ../js/ui/endSessionDialog.js:674
+#: ../js/ui/endSessionDialog.js:673
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (consola)"
@@ -796,6 +802,8 @@ msgstr "Multimèdia"
 msgid "Undo"
 msgstr "Desfés"
 
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
 #: ../js/ui/overview.js:113
 msgid "Overview"
 msgstr "Vista general"
@@ -867,7 +875,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: ../js/ui/panel.js:807
+#: ../js/ui/panel.js:810
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -916,7 +924,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificació nova"
 msgstr[1] "%d notificacions noves"
 
-#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:382
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:409
 msgid "Lock"
 msgstr "Bloqueja"
 
@@ -1019,7 +1027,7 @@ msgstr "Text gran"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:56 ../js/ui/status/network.js:627
+#: ../js/ui/status/bluetooth.js:56 ../js/ui/status/network.js:638
 msgid "Bluetooth Settings"
 msgstr "Paràmetres del Bluetooth"
 
@@ -1039,14 +1047,14 @@ msgstr "Desactivat"
 msgid "On"
 msgstr "Activat"
 
-#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1291
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1302
 msgid "Turn On"
 msgstr "Activa"
 
 #: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:181
-#: ../js/ui/status/network.js:356 ../js/ui/status/network.js:1291
-#: ../js/ui/status/network.js:1406 ../js/ui/status/rfkill.js:90
-#: ../js/ui/status/rfkill.js:117
+#: ../js/ui/status/network.js:367 ../js/ui/status/network.js:1302
+#: ../js/ui/status/network.js:1417 ../js/ui/status/nightLight.js:47
+#: ../js/ui/status/rfkill.js:90 ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Desactiva"
 
@@ -1083,29 +1091,29 @@ msgid "Enable"
 msgstr "Habilita"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:435
+#: ../js/ui/status/location.js:436
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Voleu donar a %s accés a la vostra ubicació?"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:438
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
-"Podeu canviar la configuració de l'accés a la ubicació sempre que vulgueu "
-"des de la configuració de la privacitat."
+"Podeu canviar la configuració de l'accés a la ubicació sempre que vulgueu des "
+"de la configuració de la privacitat."
 
 #: ../js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<desconegut>"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:454 ../js/ui/status/network.js:1320
+#: ../js/ui/status/network.js:465 ../js/ui/status/network.js:1331
 #, javascript-format
 msgid "%s Off"
 msgstr "%s apagat"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:457
+#: ../js/ui/status/network.js:468
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s connectat"
@@ -1113,192 +1121,208 @@ msgstr "%s connectat"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:473
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s no gestionat"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:465
+#: ../js/ui/status/network.js:476
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s s'està desconnectant"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:472 ../js/ui/status/network.js:1312
+#: ../js/ui/status/network.js:483 ../js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s s'està connectant"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: ../js/ui/status/network.js:475
+#: ../js/ui/status/network.js:486
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s requereix autenticació"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: ../js/ui/status/network.js:483
+#: ../js/ui/status/network.js:494
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Manca el microprogramari per %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: ../js/ui/status/network.js:487
+#: ../js/ui/status/network.js:498
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s no disponible"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:490
+#: ../js/ui/status/network.js:501
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s ha fallat la connexió"
 
-#: ../js/ui/status/network.js:506
+#: ../js/ui/status/network.js:517
 msgid "Wired Settings"
 msgstr "Paràmetres de la xarxa amb fils"
 
-#: ../js/ui/status/network.js:548
+#: ../js/ui/status/network.js:559
 msgid "Mobile Broadband Settings"
 msgstr "Configuració de la xarxa de banda ampla mòbil"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:591 ../js/ui/status/network.js:1317
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1328
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s maquinari inhabilitat"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: ../js/ui/status/network.js:595
+#: ../js/ui/status/network.js:606
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s Inhabilitat"
 
-#: ../js/ui/status/network.js:635
+#: ../js/ui/status/network.js:646
 msgid "Connect to Internet"
 msgstr "Connecta a l'Internet"
 
-#: ../js/ui/status/network.js:825
+#: ../js/ui/status/network.js:836
 msgid "Airplane Mode is On"
 msgstr "El mode d'avió és actiu"
 
-#: ../js/ui/status/network.js:826
+#: ../js/ui/status/network.js:837
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Quan el mode d'avió és actiu es desactiva la xarxa sense fil."
 
-#: ../js/ui/status/network.js:827
+#: ../js/ui/status/network.js:838
 msgid "Turn Off Airplane Mode"
 msgstr "Desactiva el mode d'avió"
 
-#: ../js/ui/status/network.js:836
+#: ../js/ui/status/network.js:847
 msgid "Wi-Fi is Off"
 msgstr "La xarxa sense fil està desactivada"
 
-#: ../js/ui/status/network.js:837
+#: ../js/ui/status/network.js:848
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "S'ha d'activar la xarxa sense fil per poder-se connectar a una xarxa."
 
-#: ../js/ui/status/network.js:838
+#: ../js/ui/status/network.js:849
 msgid "Turn On Wi-Fi"
 msgstr "Activa la xarxa sense fil"
 
-#: ../js/ui/status/network.js:863
+#: ../js/ui/status/network.js:874
 msgid "Wi-Fi Networks"
 msgstr "Xarxes sense fil"
 
-#: ../js/ui/status/network.js:865
+#: ../js/ui/status/network.js:876
 msgid "Select a network"
 msgstr "Trieu una xarxa"
 
-#: ../js/ui/status/network.js:895
+#: ../js/ui/status/network.js:906
 msgid "No Networks"
 msgstr "Cap xarxa"
 
-#: ../js/ui/status/network.js:916 ../js/ui/status/rfkill.js:115
+#: ../js/ui/status/network.js:927 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Utilitza l'interruptor de maquinari per desactivar-la"
 
-#: ../js/ui/status/network.js:1183
+#: ../js/ui/status/network.js:1194
 msgid "Select Network"
 msgstr "Trieu una xarxa"
 
-#: ../js/ui/status/network.js:1189
+#: ../js/ui/status/network.js:1200
 msgid "Wi-Fi Settings"
 msgstr "Paràmetres del sense fil"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1319
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Hostpot %s actiu"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:1323
+#: ../js/ui/status/network.js:1334
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s no està connectat"
 
-#: ../js/ui/status/network.js:1423
-msgid "connecting..."
+#: ../js/ui/status/network.js:1434
+msgid "connecting…"
 msgstr "s'està connectant..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:1426
+#: ../js/ui/status/network.js:1437
 msgid "authentication required"
 msgstr "cal autenticació"
 
-#: ../js/ui/status/network.js:1428
+#: ../js/ui/status/network.js:1439
 msgid "connection failed"
 msgstr "ha fallat la connexió"
 
-#: ../js/ui/status/network.js:1494 ../js/ui/status/network.js:1589
+#: ../js/ui/status/network.js:1505 ../js/ui/status/network.js:1600
 #: ../js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Paràmetres de xarxa"
 
-#: ../js/ui/status/network.js:1496
+#: ../js/ui/status/network.js:1507
 msgid "VPN Settings"
 msgstr "Paràmetres de la VPN"
 
-#: ../js/ui/status/network.js:1515
+#: ../js/ui/status/network.js:1526
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1525
+#: ../js/ui/status/network.js:1536
 msgid "VPN Off"
 msgstr "VPN apagat"
 
-#: ../js/ui/status/network.js:1620
+#: ../js/ui/status/network.js:1631
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s connexió amb fil"
 msgstr[1] "%s connexions amb fil"
 
-#: ../js/ui/status/network.js:1624
+#: ../js/ui/status/network.js:1635
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s connexió Wifi"
 msgstr[1] "%s connexions Wifi"
 
-#: ../js/ui/status/network.js:1628
+#: ../js/ui/status/network.js:1639
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s connexió mòdem"
 msgstr[1] "%s connexions mòdem"
 
-#: ../js/ui/status/network.js:1775
+#: ../js/ui/status/network.js:1786
 msgid "Connection failed"
 msgstr "Ha fallat la connexió"
 
-#: ../js/ui/status/network.js:1776
+#: ../js/ui/status/network.js:1787
 msgid "Activation of network connection failed"
 msgstr "Ha fallat l'activació de la connexió de xarxa"
+
+#: ../js/ui/status/nightLight.js:68
+msgid "Night Light Disabled"
+msgstr "Llum nocturna inhabilitada"
+
+#: ../js/ui/status/nightLight.js:69
+msgid "Night Light On"
+msgstr "Llum nocturna habilitada"
+
+#: ../js/ui/status/nightLight.js:70
+msgid "Resume"
+msgstr "Reprèn"
+
+#: ../js/ui/status/nightLight.js:71
+msgid "Disable Until Tomorrow"
+msgstr "Inhabilita fins demà"
 
 #: ../js/ui/status/power.js:61
 msgid "Power Settings"
@@ -1338,27 +1362,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "El mode d'avió és actiu"
 
-#: ../js/ui/status/system.js:351
+#: ../js/ui/status/system.js:378
 msgid "Switch User"
 msgstr "Canvia d'usuari"
 
-#: ../js/ui/status/system.js:356
+#: ../js/ui/status/system.js:383
 msgid "Log Out"
 msgstr "Surt"
 
-#: ../js/ui/status/system.js:361
+#: ../js/ui/status/system.js:388
 msgid "Account Settings"
 msgstr "Paràmetres del compte"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:405
 msgid "Orientation Lock"
 msgstr "Bloqueja l'orientació"
 
-#: ../js/ui/status/system.js:386
+#: ../js/ui/status/system.js:413
 msgid "Suspend"
 msgstr "Atura temporalment"
 
-#: ../js/ui/status/system.js:389
+#: ../js/ui/status/system.js:416
 msgid "Power Off"
 msgstr "Apaga"
 
@@ -1391,22 +1415,22 @@ msgstr "Cerca"
 msgid "“%s” is ready"
 msgstr "«%s» ja està a punt"
 
-#: ../js/ui/windowManager.js:64
+#: ../js/ui/windowManager.js:83
 msgid "Do you want to keep these display settings?"
 msgstr "Voleu mantenir aquesta configuració de la pantalla?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: ../js/ui/windowManager.js:83
+#: ../js/ui/windowManager.js:102
 msgid "Revert Settings"
 msgstr "Descarta els canvis"
 
-#: ../js/ui/windowManager.js:86
+#: ../js/ui/windowManager.js:105
 msgid "Keep Changes"
 msgstr "Mantén els canvis"
 
-#: ../js/ui/windowManager.js:104
+#: ../js/ui/windowManager.js:123
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1415,10 +1439,10 @@ msgstr[1] "Es descartaran els canvis d'aquí %d segons"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: ../js/ui/windowManager.js:659
+#: ../js/ui/windowManager.js:678
 #, javascript-format
-msgid "%d x %d"
-msgstr "%d x %d"
+msgid "%d × %d"
+msgstr "%d × %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
@@ -1506,19 +1530,19 @@ msgstr[1] "%u entrades"
 msgid "System Sounds"
 msgstr "Sons del sistema"
 
-#: ../src/main.c:380
+#: ../src/main.c:381
 msgid "Print version"
 msgstr "Mostra la versió"
 
-#: ../src/main.c:386
+#: ../src/main.c:387
 msgid "Mode used by GDM for login screen"
 msgstr "El mode que utilitzarà el GDM per a la pantalla d'entrada"
 
-#: ../src/main.c:392
-msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+#: ../src/main.c:393
+msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Utilitza un mode específic, p. ex. «gdm» per la pantalla d'entrada"
 
-#: ../src/main.c:398
+#: ../src/main.c:399
 msgid "List possible modes"
 msgstr "Llista els modes possibles"
 
@@ -1543,6 +1567,12 @@ msgstr "La contrasenya no pot ser buida"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "L'usuari ha descartat el diàleg d'autenticació"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Redirecció per l'autenticació web"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
 
 #~ msgid "Not In Use"
 #~ msgstr "No s'usa"
@@ -1579,8 +1609,8 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 
 #~ msgid "Enable internal tools useful for developers and testers from Alt-F2"
 #~ msgstr ""
-#~ "Habilita les eines internes en el diàleg de l'Alt+F2 que són útils per "
-#~ "als desenvolupadors i provadors"
+#~ "Habilita les eines internes en el diàleg de l'Alt+F2 que són útils per als "
+#~ "desenvolupadors i provadors"
 
 #~ msgid ""
 #~ "Allows access to internal debugging and monitoring tools using the Alt-F2 "
@@ -1635,8 +1665,7 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 
 #~ msgid "Index of the currently selected view in the application picker."
 #~ msgstr ""
-#~ "Índex de la vista seleccionada actualment en el seleccionador "
-#~ "d'aplicacions."
+#~ "Índex de la vista seleccionada actualment en el seleccionador d'aplicacions."
 
 #~ msgid "History for command (Alt-F2) dialog"
 #~ msgstr "Historial de les ordres utilitzades en el diàleg de l'Alt+F2"
@@ -1651,8 +1680,8 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 #~ "This key overrides the automatic hiding of the 'Log out' menu item in "
 #~ "single-user, single-session situations."
 #~ msgstr ""
-#~ "Aquesta clau sobreescriu l'ocultació automàtica de l'element de menú "
-#~ "«Surt» quan només hi ha un usuari i un sol tipus de sessió."
+#~ "Aquesta clau sobreescriu l'ocultació automàtica de l'element de menú «Surt» "
+#~ "quan només hi ha un usuari i un sol tipus de sessió."
 
 #~ msgid ""
 #~ "Whether to remember password for mounting encrypted or remote filesystems"
@@ -1667,10 +1696,10 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 #~ "state of the checkbox."
 #~ msgstr ""
 #~ "El GNOME Shell us demanarà la contrasenya quan es munti un dispositiu "
-#~ "encriptat o un sistema de fitxers remot. Si es pot desar la contrasenya "
-#~ "per utilitzar-lo en el futur, es mostrarà la casella de verificació "
-#~ "«Recorda la contrasenya». Aquesta clau estableix el valor per defecte "
-#~ "d'aquesta casella de verificació."
+#~ "encriptat o un sistema de fitxers remot. Si es pot desar la contrasenya per "
+#~ "utilitzar-lo en el futur, es mostrarà la casella de verificació «Recorda la "
+#~ "contrasenya». Aquesta clau estableix el valor per defecte d'aquesta casella "
+#~ "de verificació."
 
 #~ msgid ""
 #~ "Whether the default Bluetooth adapter had set up devices associated to it"
@@ -1681,13 +1710,13 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 #~ msgid ""
 #~ "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
 #~ "powered, or if there were devices set up associated with the default "
-#~ "adapter. This will be reset if the default adapter is ever seen not to "
-#~ "have devices associated to it."
+#~ "adapter. This will be reset if the default adapter is ever seen not to have "
+#~ "devices associated to it."
 #~ msgstr ""
 #~ "El Shell només mostrà una entrada de menú Bluetooth si un adaptador "
 #~ "Bluetooh està engegat, o si hi ha dispositius configurats associats a "
-#~ "l'adaptador predeterminat. Això es reiniciarà si l'adaptador "
-#~ "predeterminat té dispositius associats."
+#~ "l'adaptador predeterminat. Això es reiniciarà si l'adaptador predeterminat "
+#~ "té dispositius associats."
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Mostra el número de la setmana al calendari"
@@ -1708,8 +1737,8 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 #~ "Keybinding to open the \"Show Applications\" view of the Activities "
 #~ "Overview."
 #~ msgstr ""
-#~ "Vinculació per obrir la vista «Mostra les aplicacions» de les activitats "
-#~ "de la vista general."
+#~ "Vinculació per obrir la vista «Mostra les aplicacions» de les activitats de "
+#~ "la vista general."
 
 #~ msgid "Keybinding to open the overview"
 #~ msgstr "Vinculació per obrir la vista general"
@@ -1751,9 +1780,9 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 #~ "If true, only applications that have windows on the current workspace are "
 #~ "shown in the switcher. Otherwise, all applications are included."
 #~ msgstr ""
-#~ "Si és «true» (cert), només les aplicacions que tinguin finestres en "
-#~ "l'espai de treball actual es mostren en el canviador. En cas contrari es "
-#~ "mostren totes les aplicacions."
+#~ "Si és «true» (cert), només les aplicacions que tinguin finestres en l'espai "
+#~ "de treball actual es mostren en el canviador. En cas contrari es mostren "
+#~ "totes les aplicacions."
 
 #~ msgid "The application icon mode."
 #~ msgstr "El mode d'icona de les aplicacions."
@@ -1764,13 +1793,13 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 #~ "only' (shows only the application icon) or 'both'."
 #~ msgstr ""
 #~ "Configureu com es mostren les finestres en l'intercanviador. Els valors "
-#~ "possibles són: «thumbnail-only» (mostra una miniatura de la finestra), "
-#~ "«app-icon-only» (mostra la icona de l'aplicació) o «both» (ambdues coses: "
-#~ "mostra la miniatura de la finestra i la icona de l'aplicació)."
+#~ "possibles són: «thumbnail-only» (mostra una miniatura de la finestra), «app-"
+#~ "icon-only» (mostra la icona de l'aplicació) o «both» (ambdues coses: mostra "
+#~ "la miniatura de la finestra i la icona de l'aplicació)."
 
 #~ msgid ""
-#~ "If true, only windows from the current workspace are shown in the "
-#~ "switcher. Otherwise, all windows are included."
+#~ "If true, only windows from the current workspace are shown in the switcher. "
+#~ "Otherwise, all windows are included."
 #~ msgstr ""
 #~ "Si és «true» (cert), només les finestres de l'espai de treball actual es "
 #~ "mostren en el canviador. En cas contrari, es mostren totes les finestres."
@@ -1797,11 +1826,8 @@ msgstr "L'usuari ha descartat el diàleg d'autenticació"
 
 #~ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 #~ msgstr ""
-#~ "Retarda el canvi del focus, quan s'està en mode ratolí, fins que el "
-#~ "punter no estigui quiet"
-
-#~ msgid "Network Login"
-#~ msgstr "Inici de sessió de la xarxa"
+#~ "Retarda el canvi del focus, quan s'està en mode ratolí, fins que el punter "
+#~ "no estigui quiet"
 
 #~ msgid "Use as Internet connection"
 #~ msgstr "Utilitza com a connexió a Internet"
