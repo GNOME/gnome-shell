@@ -4,14 +4,14 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-(test -f $srcdir/configure.ac \
-  && test -d $srcdir/src) || {
+pushd $srcdir
+
+(test -f configure.ac \
+  && test -d src) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
     echo " top-level gnome-shell directory"
     exit 1
 }
-
-pushd $srcdir
 
 # Fetch submodules if needed
 if test ! -f src/gvc/Makefile.am || test ! -f data/theme/gnome-shell-sass/COPYING;
@@ -21,11 +21,13 @@ then
 fi
 git submodule update
 
+aclocal --install || exit 1
+gtkdocize --copy || exit 1
+intltoolize --force --copy --automake || exit 1
+autoreconf --verbose --force --install || exit 1
+
 popd
 
-which gnome-autogen.sh || {
-    echo "You need to install gnome-common from GNOME Git (or from"
-    echo "your OS vendor's package manager)."
-    exit 1
-}
-. gnome-autogen.sh
+if [ "$NOCONFIGURE" = "" ]; then
+    $srcdir/configure "$@" || exit 1
+fi
