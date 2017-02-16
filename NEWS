@@ -1,3 +1,26 @@
+3.22.3
+======
+* Work around portal failures by using a URL without HTPPS redirect
+  [Debarshi; #769940]
+* Fix replacing of GNotifications [Florian; #775149]
+* Reload apps on .desktop file content changes [Adrian; #773636]
+* Fix subsurfaces not showing up in previews [Rui; #756715]
+* Fix theme node transitions [Florian; #778145]
+* Don't allow type ahead at the login screen [Ray; #766139]
+* Misc. bug fixes [Florian, Niels, Jonas, Michael; #774643, #774805, #775507,
+  #776130, #759793, #745626]
+
+Contributors:
+  Jonas Ådahl, Michael Catanzaro, Niels De Graef, Rui Matos, Florian Müllner,
+  Adrian Perez de Castro, Debarshi Ray, Ray Strode
+
+Translations:
+  Piotr Drąg [pl], Marek Černocký [cs], Мирослав Николић [sr, sr@latin],
+  Rafael Fontenelle [pt_BR], Baurzhan Muftakhidinov [kk], Jiri Grönroos [fi],
+  Dušan Kazik [sk], Balázs Meskó [hu], Stas Solovey [ru],
+  Christian Kirbach [de], Anders Jonsson [sv], Gianvito Cavasoli [it],
+  Aurimas Černius [lt], Alexandre Franke [fr], Mandy Wang [zh_CN]
+
 3.22.2
 ======
 * Fix OSD popup glitches [Cosimo; #772723, #772287]
