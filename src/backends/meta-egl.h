@@ -29,8 +29,12 @@
 #include <EGL/eglext.h>
 #include <glib-object.h>
 
+#define META_EGL_ERROR meta_egl_error_quark ()
+
 #define META_TYPE_EGL (meta_egl_get_type ())
 G_DECLARE_FINAL_TYPE (MetaEgl, meta_egl, META, EGL, GObject)
+
+GQuark meta_egl_error_quark (void);
 
 gboolean meta_egl_has_extensions (MetaEgl   *egl,
                                   EGLDisplay display,

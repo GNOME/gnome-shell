@@ -70,13 +70,11 @@ struct _MetaEgl
 
 G_DEFINE_TYPE (MetaEgl, meta_egl, G_TYPE_OBJECT)
 
+G_DEFINE_QUARK (-meta-egl-error-quark, meta_egl_error)
+
 static const char *
-get_egl_error_str (void)
+get_egl_error_str (EGLint error_number)
 {
-  EGLint error_number;
-
-  error_number = eglGetError ();
-
   switch (error_number)
     {
     case EGL_SUCCESS:
@@ -133,14 +131,16 @@ get_egl_error_str (void)
 static void
 set_egl_error (GError **error)
 {
+  EGLint error_number;
   const char *error_str;
 
   if (!error)
     return;
 
-  error_str = get_egl_error_str ();
-  g_set_error_literal (error, G_IO_ERROR,
-                       G_IO_ERROR_FAILED,
+  error_number = eglGetError ();
+  error_str = get_egl_error_str (error_number);
+  g_set_error_literal (error, META_EGL_ERROR,
+                       error_number,
                        error_str);
 }
 
@@ -200,7 +200,8 @@ meta_egl_has_extensions (MetaEgl   *egl,
   extensions_str = (const char *) eglQueryString (display, EGL_EXTENSIONS);
   if (!extensions_str)
     {
-      g_warning ("Failed to query string: %s", get_egl_error_str ());
+      g_warning ("Failed to query string: %s",
+                 get_egl_error_str (eglGetError ()));
       return FALSE;
     }
 
