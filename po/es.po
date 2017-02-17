@@ -7,17 +7,17 @@
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>,2002,2003.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010, 2011.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-07-24 19:39+0000\n"
-"PO-Revision-Date: 2016-07-26 13:00+0200\n"
+"POT-Creation-Date: 2017-02-16 01:44+0000\n"
+"PO-Revision-Date: 2017-02-17 11:38+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,261 +25,266 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
-#: ../data/50-mutter-navigation.xml.in.h:1
+#: data/50-mutter-navigation.xml:6
 msgid "Navigation"
 msgstr "Navegación"
 
-#: ../data/50-mutter-navigation.xml.in.h:2
+#: data/50-mutter-navigation.xml:9
 msgid "Move window to workspace 1"
 msgstr "Mover la ventana al área de trabajo 1"
 
-#: ../data/50-mutter-navigation.xml.in.h:3
+#: data/50-mutter-navigation.xml:12
 msgid "Move window to workspace 2"
 msgstr "Mover la ventana al área de trabajo 2"
 
-#: ../data/50-mutter-navigation.xml.in.h:4
+#: data/50-mutter-navigation.xml:15
 msgid "Move window to workspace 3"
 msgstr "Mover la ventana al área de trabajo 3"
 
-#: ../data/50-mutter-navigation.xml.in.h:5
+#: data/50-mutter-navigation.xml:18
 msgid "Move window to workspace 4"
 msgstr "Mover la ventana al área de trabajo 4"
 
-#: ../data/50-mutter-navigation.xml.in.h:6
+#: data/50-mutter-navigation.xml:21
 msgid "Move window to last workspace"
 msgstr "Mover la ventana a la última área de trabajo"
 
-#: ../data/50-mutter-navigation.xml.in.h:7
+#: data/50-mutter-navigation.xml:24
 msgid "Move window one workspace to the left"
 msgstr "Mover la ventana un área de trabajo a la izquierda"
 
-#: ../data/50-mutter-navigation.xml.in.h:8
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace to the right"
 msgstr "Mover la ventana un área de trabajo a la derecha"
 
-#: ../data/50-mutter-navigation.xml.in.h:9
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Subir la ventana un área de trabajo"
 
-#: ../data/50-mutter-navigation.xml.in.h:10
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one workspace down"
 msgstr "Bajar la ventana un área de trabajo"
 
-#: ../data/50-mutter-navigation.xml.in.h:11
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor to the left"
 msgstr "Mover la ventana una pantalla a la izquierda"
 
-#: ../data/50-mutter-navigation.xml.in.h:12
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor to the right"
 msgstr "Mover la ventana una pantalla a la derecha"
 
-#: ../data/50-mutter-navigation.xml.in.h:13
+#: data/50-mutter-navigation.xml:42
 msgid "Move window one monitor up"
 msgstr "Subir la ventana una pantalla"
 
-#: ../data/50-mutter-navigation.xml.in.h:14
+#: data/50-mutter-navigation.xml:45
 msgid "Move window one monitor down"
 msgstr "Bajar la ventana una pantalla"
 
-#: ../data/50-mutter-navigation.xml.in.h:15
+#: data/50-mutter-navigation.xml:49
 msgid "Switch applications"
 msgstr "Cambiar entre aplicaciones"
 
-#: ../data/50-mutter-navigation.xml.in.h:16
+#: data/50-mutter-navigation.xml:54
 msgid "Switch to previous application"
 msgstr "Cambiar a la aplicación anterior"
 
-#: ../data/50-mutter-navigation.xml.in.h:17
+#: data/50-mutter-navigation.xml:58
 msgid "Switch windows"
 msgstr "Cambiar entre ventanas"
 
-#: ../data/50-mutter-navigation.xml.in.h:18
+#: data/50-mutter-navigation.xml:63
 msgid "Switch to previous window"
 msgstr "Cambiar a la ventana anterior"
 
-#: ../data/50-mutter-navigation.xml.in.h:19
+#: data/50-mutter-navigation.xml:67
 msgid "Switch windows of an application"
 msgstr "Cambiar entre ventanas de una aplicación"
 
-#: ../data/50-mutter-navigation.xml.in.h:20
+#: data/50-mutter-navigation.xml:72
 msgid "Switch to previous window of an application"
 msgstr "Cambiar a la ventana anterior de una aplicación"
 
-#: ../data/50-mutter-navigation.xml.in.h:21
+#: data/50-mutter-navigation.xml:76
 msgid "Switch system controls"
 msgstr "Cambiar entre controles del sistema"
 
-#: ../data/50-mutter-navigation.xml.in.h:22
+#: data/50-mutter-navigation.xml:81
 msgid "Switch to previous system control"
 msgstr "Cambiar al control del sistema anterior"
 
-#: ../data/50-mutter-navigation.xml.in.h:23
+#: data/50-mutter-navigation.xml:85
 msgid "Switch windows directly"
 msgstr "Cambiar entre ventanas directamente"
 
-#: ../data/50-mutter-navigation.xml.in.h:24
+#: data/50-mutter-navigation.xml:90
 msgid "Switch directly to previous window"
 msgstr "Cambiar directamente a la ventana anterior"
 
-#: ../data/50-mutter-navigation.xml.in.h:25
+#: data/50-mutter-navigation.xml:94
 msgid "Switch windows of an app directly"
 msgstr "Cambiar entre ventanas de una aplicación directamente"
 
-#: ../data/50-mutter-navigation.xml.in.h:26
+#: data/50-mutter-navigation.xml:99
 msgid "Switch directly to previous window of an app"
 msgstr "Cambiar directamente a la ventana anterior de una aplicación"
 
-#: ../data/50-mutter-navigation.xml.in.h:27
+#: data/50-mutter-navigation.xml:103
 msgid "Switch system controls directly"
 msgstr "Cambiar entre controles del sistema directamente"
 
-#: ../data/50-mutter-navigation.xml.in.h:28
+#: data/50-mutter-navigation.xml:108
 msgid "Switch directly to previous system control"
 msgstr "Cambiar directamente al control del sistema anterior"
 
-#: ../data/50-mutter-navigation.xml.in.h:29
+#: data/50-mutter-navigation.xml:111
 msgid "Hide all normal windows"
 msgstr "Ocultar todas las ventanas normales"
 
-#: ../data/50-mutter-navigation.xml.in.h:30
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 1"
 msgstr "Cambiar al área de trabajo 1"
 
-#: ../data/50-mutter-navigation.xml.in.h:31
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 2"
 msgstr "Cambiar al área de trabajo 2"
 
-#: ../data/50-mutter-navigation.xml.in.h:32
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to workspace 3"
 msgstr "Cambiar al área de trabajo 3"
 
-#: ../data/50-mutter-navigation.xml.in.h:33
+#: data/50-mutter-navigation.xml:123
 msgid "Switch to workspace 4"
 msgstr "Cambiar al área de trabajo 4"
 
-#: ../data/50-mutter-navigation.xml.in.h:34
+#: data/50-mutter-navigation.xml:126
 msgid "Switch to last workspace"
 msgstr "Cambiar a la útima área de trabajo"
 
-#: ../data/50-mutter-navigation.xml.in.h:35
+#: data/50-mutter-navigation.xml:129
 msgid "Move to workspace left"
 msgstr "Mover al área de trabajo de la izquierda"
 
-#: ../data/50-mutter-navigation.xml.in.h:36
+#: data/50-mutter-navigation.xml:132
 msgid "Move to workspace right"
 msgstr "Mover al área de trabajo de la derecha"
 
-#: ../data/50-mutter-navigation.xml.in.h:37
+#: data/50-mutter-navigation.xml:135
 msgid "Move to workspace above"
 msgstr "Mover al área de trabajo de la arriba"
 
-#: ../data/50-mutter-navigation.xml.in.h:38
+#: data/50-mutter-navigation.xml:138
 msgid "Move to workspace below"
 msgstr "Mover al área de trabajo de abajo"
 
-#: ../data/50-mutter-system.xml.in.h:1
+#: data/50-mutter-system.xml:6
 msgid "System"
 msgstr "Sistema"
 
-#: ../data/50-mutter-system.xml.in.h:2
+#: data/50-mutter-system.xml:8
 msgid "Show the run command prompt"
 msgstr "Mostrar el elemento «ejecutar comando»"
 
-#: ../data/50-mutter-system.xml.in.h:3
+#: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Mostrar la vista de actividades"
 
-#: ../data/50-mutter-windows.xml.in.h:1
+#: data/50-mutter-windows.xml:6
 msgid "Windows"
 msgstr "Ventanas"
 
-#: ../data/50-mutter-windows.xml.in.h:2
+#: data/50-mutter-windows.xml:8
 msgid "Activate the window menu"
 msgstr "Activar el menú de la ventana"
 
-#: ../data/50-mutter-windows.xml.in.h:3
+#: data/50-mutter-windows.xml:10
 msgid "Toggle fullscreen mode"
 msgstr "Cambiar el modo a pantalla completa"
 
-#: ../data/50-mutter-windows.xml.in.h:4
+#: data/50-mutter-windows.xml:12
 msgid "Toggle maximization state"
 msgstr "Cambiar el estado de maximización"
 
-#: ../data/50-mutter-windows.xml.in.h:5
+#: data/50-mutter-windows.xml:14
 msgid "Maximize window"
 msgstr "Maximizar la ventana"
 
-#: ../data/50-mutter-windows.xml.in.h:6
+#: data/50-mutter-windows.xml:16
 msgid "Restore window"
 msgstr "Restaurar la ventana"
 
-#: ../data/50-mutter-windows.xml.in.h:7
+#: data/50-mutter-windows.xml:18
 msgid "Toggle shaded state"
 msgstr "Cambiar el estado de enrollado"
 
-#: ../data/50-mutter-windows.xml.in.h:8
+#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Cerrar la ventana"
 
-#: ../data/50-mutter-windows.xml.in.h:9
+#: data/50-mutter-windows.xml:22
 msgid "Hide window"
 msgstr "Ocultar la ventana"
 
-#: ../data/50-mutter-windows.xml.in.h:10
+#: data/50-mutter-windows.xml:24
 msgid "Move window"
 msgstr "Mover la ventana"
 
-#: ../data/50-mutter-windows.xml.in.h:11
+#: data/50-mutter-windows.xml:26
 msgid "Resize window"
 msgstr "Redimensionar la ventana"
 
-#: ../data/50-mutter-windows.xml.in.h:12
+#: data/50-mutter-windows.xml:29
 msgid "Toggle window on all workspaces or one"
 msgstr "Conmutar la ventana en todas las áreas de trabajo o sólo en una"
 
-#: ../data/50-mutter-windows.xml.in.h:13
+#: data/50-mutter-windows.xml:31
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Elevar la ventana si está cubierta, de lo contrario, bajarla"
 
-#: ../data/50-mutter-windows.xml.in.h:14
+#: data/50-mutter-windows.xml:33
 msgid "Raise window above other windows"
 msgstr "Elevar la ventana sobre las otras ventanas"
 
-#: ../data/50-mutter-windows.xml.in.h:15
+#: data/50-mutter-windows.xml:35
 msgid "Lower window below other windows"
 msgstr "Bajar la ventana por debajo de otras ventanas"
 
-#: ../data/50-mutter-windows.xml.in.h:16
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window vertically"
 msgstr "Maximizar la ventana verticalmente"
 
-#: ../data/50-mutter-windows.xml.in.h:17
+#: data/50-mutter-windows.xml:39
 msgid "Maximize window horizontally"
 msgstr "Maximizar la ventana horizontalmente"
 
-#: ../data/50-mutter-windows.xml.in.h:18
+#: data/50-mutter-windows.xml:43
 msgid "View split on left"
 msgstr "Ver división a la izquierda"
 
-#: ../data/50-mutter-windows.xml.in.h:19
+#: data/50-mutter-windows.xml:47
 msgid "View split on right"
 msgstr "Ver división a la derecha"
 
-#: ../data/mutter.desktop.in.h:1
+#: data/mutter.desktop.in:4
 msgid "Mutter"
 msgstr "Mutter"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+#: data/org.gnome.mutter.gschema.xml.in:7
 msgid "Modifier to use for extended window management operations"
 msgstr ""
 "Modificador que usar para extender las operaciones de gestión sobre ventanas"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+#: data/org.gnome.mutter.gschema.xml.in:8
+#| msgid ""
+#| "This key will initiate the \"overlay\", which is a combination window "
+#| "overview and application launching system. The default is intended to be "
+#| "the \"Windows key\" on PC hardware. It's expected that this binding "
+#| "either the default or set to the empty string."
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
 "Esta clave iniciará el «revestimiento» («overlay»), que es una combinación "
 "de vista general de la ventana y el sistema de lanzamiento de aplicaciones. "
@@ -287,11 +292,11 @@ msgstr ""
 "esta combinación de tecla sea la predeterminada o se establezca a una cadena "
 "vacía."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+#: data/org.gnome.mutter.gschema.xml.in:20
 msgid "Attach modal dialogs"
 msgstr "Adjuntar diálogos modales"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+#: data/org.gnome.mutter.gschema.xml.in:21
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -301,13 +306,13 @@ msgstr ""
 "aparecen diálogos modales adjuntos a la barra de título de la ventana padre "
 "y se mueven junto con la ventana padre."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+#: data/org.gnome.mutter.gschema.xml.in:30
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Activar el mosaico en los bordes al arrastrar ventanas a los bordes de la "
 "ventana"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+#: data/org.gnome.mutter.gschema.xml.in:31
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
@@ -318,13 +323,17 @@ msgstr ""
 "mitad del área disponible. Arrastrar ventanas al borde superior de la "
 "pantalla las maximiza por completo."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+#: data/org.gnome.mutter.gschema.xml.in:40
 msgid "Workspaces are managed dynamically"
 msgstr "Las áreas de trabajo se gestionan dinámicamente"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+#: data/org.gnome.mutter.gschema.xml.in:41
+#| msgid ""
+#| "Determines whether workspaces are managed dynamically or whether there's "
+#| "a static number of workspaces (determined by the num-workspaces key in "
+#| "org.gnome.desktop.wm.preferences)."
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -332,11 +341,11 @@ msgstr ""
 "número estático de áreas de trabajo (determinado por la clave «num-"
 "workspaces» en «org.gnome.desktop.wm.preferences»)."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+#: data/org.gnome.mutter.gschema.xml.in:50
 msgid "Workspaces only on primary"
 msgstr "Áreas de trabajo sólo en el primario"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+#: data/org.gnome.mutter.gschema.xml.in:51
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -344,11 +353,11 @@ msgstr ""
 "Determina si el cambio entre áreas de trabajo debería suceder para las "
 "ventanas en todos los monitores o sólo para ventanas en el monitor primario."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+#: data/org.gnome.mutter.gschema.xml.in:59
 msgid "No tab popup"
 msgstr "No hay pestaña emergente"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+#: data/org.gnome.mutter.gschema.xml.in:60
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -356,39 +365,47 @@ msgstr ""
 "Determina si el uso de ventanas emergentes y marcos resaltados se debe "
 "desactivar al cambiar entre ventanas."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+#: data/org.gnome.mutter.gschema.xml.in:68
 msgid "Delay focus changes until the pointer stops moving"
 msgstr "Retrasar el cambio de foco hasta detener el puntero"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+#: data/org.gnome.mutter.gschema.xml.in:69
+#| msgid ""
+#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#| "the focus will not be changed immediately when entering a window, but "
+#| "only after the pointer stops moving."
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
 "Si está establecido a «true» y el modo del foco es «sloppy» o «mouse» "
 "entonces el foco no se cambiará inmediatamente al entrar en una ventana, "
 "pero sí después de dejar quieto el puntero."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+#: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
 msgstr "Anchura arrastrable del borde"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+#: data/org.gnome.mutter.gschema.xml.in:80
+#| msgid ""
+#| "The amount of total draggable borders. If the theme's visible borders are "
+#| "not enough, invisible borders will be added to meet this value."
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
-"La cantidad total de borde arrastrable. Si los bordes visibles del tema no "
-"son suficientes, se añadirán bordes invisibles para satisfacer este valor."
+"La cantidad total de borde que se puede arrastrar. Si los bordes visibles "
+"del tema no son suficientes, se añadirán bordes invisibles para satisfacer "
+"este valor."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+#: data/org.gnome.mutter.gschema.xml.in:89
 msgid "Auto maximize nearly monitor sized windows"
 msgstr ""
 "Maximizar automáticamente las ventanas que casi tengan el tamaño de la "
 "pantalla"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+#: data/org.gnome.mutter.gschema.xml.in:90
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
@@ -396,11 +413,11 @@ msgstr ""
 "Si está activada, las ventanas nuevas que inicialmente tienen el tamaño de "
 "la pantalla, se maximizan."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+#: data/org.gnome.mutter.gschema.xml.in:98
 msgid "Place new windows in the center"
 msgstr "Colocar las ventanas nuevas en el centro"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+#: data/org.gnome.mutter.gschema.xml.in:99
 msgid ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
@@ -408,116 +425,130 @@ msgstr ""
 "Cuando es cierto, las ventanas nuevas se colocarán siempre en el centro de "
 "la pantalla activa del monitor."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+#: data/org.gnome.mutter.gschema.xml.in:120
 msgid "Select window from tab popup"
 msgstr "Seleccionar ventana de la pestaña emergente"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+#: data/org.gnome.mutter.gschema.xml.in:125
 msgid "Cancel tab popup"
 msgstr "Cancelar pestaña emergente"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+#: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
 msgstr "Cambiar al VT 1"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+#: data/org.gnome.mutter.wayland.gschema.xml.in:10
 msgid "Switch to VT 2"
 msgstr "Cambiar al VT 2"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+#: data/org.gnome.mutter.wayland.gschema.xml.in:14
 msgid "Switch to VT 3"
 msgstr "Cambiar al VT 3"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+#: data/org.gnome.mutter.wayland.gschema.xml.in:18
 msgid "Switch to VT 4"
 msgstr "Cambiar al VT 4"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+#: data/org.gnome.mutter.wayland.gschema.xml.in:22
 msgid "Switch to VT 5"
 msgstr "Cambiar al VT 5"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+#: data/org.gnome.mutter.wayland.gschema.xml.in:26
 msgid "Switch to VT 6"
 msgstr "Cambiar al VT 6"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+#: data/org.gnome.mutter.wayland.gschema.xml.in:30
 msgid "Switch to VT 7"
 msgstr "Cambiar al VT 7"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+#: data/org.gnome.mutter.wayland.gschema.xml.in:34
 msgid "Switch to VT 8"
 msgstr "Cambiar al VT 8"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+#: data/org.gnome.mutter.wayland.gschema.xml.in:38
 msgid "Switch to VT 9"
 msgstr "Cambiar al VT 9"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+#: data/org.gnome.mutter.wayland.gschema.xml.in:42
 msgid "Switch to VT 10"
 msgstr "Cambiar al VT 10"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+#: data/org.gnome.mutter.wayland.gschema.xml.in:46
 msgid "Switch to VT 11"
 msgstr "Cambiar al VT 11"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+#: data/org.gnome.mutter.wayland.gschema.xml.in:50
 msgid "Switch to VT 12"
 msgstr "Cambiar al VT 12"
 
-#: ../src/backends/meta-input-settings.c:1605
-#| msgid "Switch system controls"
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1759
+#, c-format
+#| msgid "Mode Switch: Mode %d"
+msgid "Mode Switch (Group %d)"
+msgstr "Cambiar modo (grupo %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1781
 msgid "Switch monitor"
 msgstr "Cambiar monitor"
 
-#: ../src/backends/meta-input-settings.c:1607
+#: src/backends/meta-input-settings.c:1783
 msgid "Show on-screen help"
 msgstr "Mostrar la ayuda en pantalla"
 
-#: ../src/backends/meta-monitor-manager.c:515
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: ../src/backends/meta-monitor-manager.c:538
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Desconocida"
 
-#: ../src/backends/meta-monitor-manager.c:540
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Pantalla desconocida"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:548
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
+#| msgid ""
+#| "Another compositing manager is already running on screen %i on display "
+#| "\"%s\"."
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
 "Ya existe un gestor de composición ejecutándose en la monitor %i, pantalla "
 "«%s»."
 
-#: ../src/core/bell.c:194
+#: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Evento de campana"
 
-#: ../src/core/delete.c:127
+#. Translators: %s is a window title
+#: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
 msgstr "«%s» no está respondiendo."
 
-#: ../src/core/delete.c:129
+#: src/core/delete.c:129
 msgid "Application is not responding."
 msgstr "La aplicación no está respondiendo."
 
-#: ../src/core/delete.c:134
+#: src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -525,115 +556,130 @@ msgstr ""
 "Puede elegir esperar un rato para ver si continua o forzar la aplicación "
 "para cerrarla completamente."
 
-#: ../src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Esperar"
-
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Forzar la salida"
 
-#: ../src/core/display.c:590
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Esperar"
+
+#: src/core/display.c:608
 #, c-format
-msgid "Failed to open X Window System display '%s'\n"
+#| msgid "Failed to open X Window System display '%s'\n"
+msgid "Failed to open X Window System display “%s”\n"
 msgstr "Ocurrió un error al abrir la pantalla de X Window System «%s»\n"
 
-#: ../src/core/main.c:182
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Desactivar conexión al gestor de sesión"
 
-#: ../src/core/main.c:188
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Reemplazar el gestor de ventanas en ejecución"
 
-#: ../src/core/main.c:194
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Especificar el ID se gestión de sesión"
 
-#: ../src/core/main.c:199
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Pantalla X que usar"
 
-#: ../src/core/main.c:205
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde el archivo de salvaguarda"
 
-#: ../src/core/main.c:211
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Hacer que las llamadas a las X sean síncronas"
 
-#: ../src/core/main.c:218
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Ejecutar como compositor Wayland"
 
-#: ../src/core/main.c:224
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Ejecutar como compositor anidado"
 
-#: ../src/core/main.c:232
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Ejecutar como servidor completo, en lugar de anidado"
 
-#: ../src/core/mutter.c:39
+#: src/core/mutter.c:39
 #, c-format
+#| msgid ""
+#| "mutter %s\n"
+#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+#| "This is free software; see the source for copying conditions.\n"
+#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "muttery %s\n"
 "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., y otros\n"
-"Este programa es software libre; vea el código fuente para obtener las\n"
-"condiciones de copia. NO se proporciona ninguna garantía; ni de\n"
-"MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
+"Este programa es software libre; vea el código fuente para obtener las "
+"condiciones de copia.\n"
+"NO se proporciona ninguna garantía; ni de MERCANTILIDAD O DE IDONEIDAD PARA "
+"UN PROPÓSITO PARTICULAR.\n"
 
-#: ../src/core/mutter.c:53
+#: src/core/mutter.c:53
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/core/mutter.c:59
+#: src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Complemento de mutter que usar"
 
-#: ../src/core/prefs.c:1997
+#: src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
+#| msgid ""
+#| "Display \"%s\" already has a window manager; try using the --replace "
+#| "option to replace the current window manager."
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "La pantalla «%s» ya tiene un gestor de ventanas; pruebe a usar la opción «--"
 "replace» para reemplazar el gestor de ventanas activo."
 
-#: ../src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
+#| msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: ../src/core/util.c:120
+#: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter fue compilado sin soporte para modo prolijo\n"
 
-#: ../src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Cambiar modo: modo %d"
 
-#: ../src/x11/session.c:1815
+#: src/x11/session.c:1815
+#| msgid ""
+#| "These windows do not support &quot;save current setup&quot; and will have "
+#| "to be restarted manually next time you log in."
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
 "Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
 "reiniciarse manualmente la próxima vez que inicie una sesión."
 
-#: ../src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (on %s)"
