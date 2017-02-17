@@ -1129,7 +1129,9 @@ meta_display_close (MetaDisplay *display,
   meta_display_free_events_x11 (display);
   meta_display_free_events (display);
 
-  meta_screen_free (display->screen, timestamp);
+  if (display->screen)
+    meta_screen_free (display->screen, timestamp);
+  display->screen = NULL;
 
   /* Must be after all calls to meta_window_unmanage() since they
    * unregister windows
