@@ -1,5 +1,5 @@
 # French translation of mutter.
-# Copyright (C) 2002-2016 Free Software Foundation, Inc.
+# Copyright (C) 2002-2017 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 #
 # Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
@@ -11,7 +11,7 @@
 # Cyprien Le Pannérer <cyplp@free.fr>, 2006.
 # Robert-André Mauchin <zebob.m@gmail.com>, 2007.
 # Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007.
-# Claude Paroz <claude@2xlibre.net>, 2008-2016.
+# Claude Paroz <claude@2xlibre.net>, 2008-2017.
 # Bruno Brouard <annoa.b@gmail.com>, 2011-12.
 # Charles Monzat <superboa@hotmail.fr>, 2016.
 msgid ""
@@ -19,15 +19,14 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-12 23:59+0000\n"
-"PO-Revision-Date: 2016-09-13 12:13+0200\n"
-"Last-Translator: Charles Monzat <superboa@hotmail.fr>\n"
+"POT-Creation-Date: 2017-02-16 01:44+0000\n"
+"PO-Revision-Date: 2017-02-17 21:09+0100\n"
+"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.9\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -280,10 +279,10 @@ msgstr "Touche à utiliser pour les opérations étendues de gestion des fenêtr
 
 #: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
 "Cette touche initie l'« overlay », une combinaison d'aperçu des fenêtres et "
 "d'un système de lancement d'applications. La touche par défaut sur le "
@@ -325,7 +324,7 @@ msgstr "Les espaces de travail sont gérés de manière dynamique"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -364,9 +363,9 @@ msgstr "Attend l'arrêt du pointeur avant le changement de focus"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
 "Si défini à true et que le mode de focus est soit « sloppy » ou « souris », "
 "alors le focus ne sera pas changé immédiatement en passant sur une fenêtre, "
@@ -378,7 +377,7 @@ msgstr "Largeur de bordure ajustable"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "La taille totale des bordures que l'on peut déplacer. Si les bordures "
@@ -469,44 +468,51 @@ msgstr "Passer à l'émulateur de terminal 11"
 msgid "Switch to VT 12"
 msgstr "Passer à l'émulateur de terminal 12"
 
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1759
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Changement de mode (groupe %d)"
+
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1845
+#: src/backends/meta-input-settings.c:1781
 msgid "Switch monitor"
 msgstr "Changer de moniteur"
 
-#: src/backends/meta-input-settings.c:1847
+#: src/backends/meta-input-settings.c:1783
 msgid "Show on-screen help"
 msgstr "Afficher l'aide à l'écran"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Affichage intégré"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Affichage inconnu"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
 "Un autre gestionnaire de composition est déjà lancé sur l'écran %i de "
 "l'affichage « %s »."
@@ -515,6 +521,7 @@ msgstr ""
 msgid "Bell event"
 msgstr "Évènement sonore"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -533,51 +540,51 @@ msgstr ""
 "quitter définitivement."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Attendre"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Forcer à quitter"
 
-#: src/core/display.c:590
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Attendre"
+
+#: src/core/display.c:608
 #, c-format
-msgid "Failed to open X Window System display '%s'\n"
+msgid "Failed to open X Window System display “%s”\n"
 msgstr "Impossible d'ouvrir l'affichage « %s » du système X Window\n"
 
-#: src/core/main.c:182
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Désactiver la connexion au gestionnaire de sessions"
 
-#: src/core/main.c:188
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Remplacer le gestionnaire de fenêtres en cours de fonctionnement"
 
-#: src/core/main.c:194
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Indiquer l'ID de gestion de sessions"
 
-#: src/core/main.c:199
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Affichage X à utiliser"
 
-#: src/core/main.c:205
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Initialiser la session depuis le fichier de sauvegarde"
 
-#: src/core/main.c:211
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Rendre synchrones les appels à X"
 
-#: src/core/main.c:218
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Lancer comme un compositeur wayland"
 
-#: src/core/main.c:224
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Lancer comme un compositeur imbriqué"
 
-#: src/core/main.c:232
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Lancer comme un serveur d'affichage complet, plutôt qu'imbriqué"
 
@@ -585,7 +592,7 @@ msgstr "Lancer comme un serveur d'affichage complet, plutôt qu'imbriqué"
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
@@ -610,39 +617,39 @@ msgstr "Greffon de Mutter à utiliser"
 msgid "Workspace %d"
 msgstr "Espace de travail %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "L'affichage « %s » a déjà un gestionnaire de fenêtres ; essayez d'utiliser "
 "l'option --replace pour remplacer le gestionnaire de fenêtres actuel."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
 msgstr "L'écran %d sur l'affichage « %s » n'est pas valide\n"
 
 #: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter a été compilé sans la prise en charge du mode bavard\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Changement de mode : mode %d"
 
 #: src/x11/session.c:1815
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
 "Ces fenêtres ne prennent pas en charge « l'enregistrement de la "
 "configuration actuelle » et devront être redémarrées manuellement à la "
 "prochaine connexion."
 
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (sur %s)"
