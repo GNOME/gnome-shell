@@ -2066,7 +2066,7 @@ const NMApplet = new Lang.Class({
         // (but in general we should only prompt a portal if we know there is a portal)
         if (GLib.getenv('GNOME_SHELL_CONNECTIVITY_TEST') != null)
             isPortal = isPortal || this._client.connectivity < NetworkManager.ConnectivityState.FULL;
-        if (!isPortal)
+        if (!isPortal || Main.sessionMode.isGreeter)
             return;
 
         let path = this._mainConnection.get_path();
