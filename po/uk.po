@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-15 15:02+0200\n"
-"PO-Revision-Date: 2017-02-15 15:12+0300\n"
+"POT-Creation-Date: 2017-02-20 13:09+0200\n"
+"PO-Revision-Date: 2017-02-20 13:27+0300\n"
 "Last-Translator: Daniel Korostil <ted.korostiled@gmail.com>\n"
 "Language-Team: linux.org.ua\n"
 "Language: uk\n"
@@ -27,14 +27,14 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Помилка завантаження вікна параметрів для %s:"
 
 #: ../js/extensionPrefs/main.js:149
-msgid "GNOME Shell Extensions"
-msgstr "Розширення GNOME Shell"
+msgid "Shell Extensions"
+msgstr "Розширення оболонки"
 
 #: ../js/gdm/authPrompt.js:149 ../js/ui/audioDeviceSelection.js:71
 #: ../js/ui/components/networkAgent.js:145
 #: ../js/ui/components/polkitAgent.js:179 ../js/ui/endSessionDialog.js:482
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/network.js:928
+#: ../js/ui/status/network.js:939
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -196,11 +196,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:426
+#: ../js/ui/accessDialog.js:62 ../js/ui/status/location.js:427
 msgid "Deny Access"
 msgstr "Заборонити доступ"
 
-#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:429
+#: ../js/ui/accessDialog.js:63 ../js/ui/status/location.js:430
 msgid "Grant Access"
 msgstr "Надати доступ"
 
@@ -208,40 +208,40 @@ msgstr "Надати доступ"
 msgid "Frequently used applications will appear here"
 msgstr "Часто використовувані програми будуть з'являтись тут"
 
-#: ../js/ui/appDisplay.js:926
+#: ../js/ui/appDisplay.js:927
 msgid "Frequent"
 msgstr "Частовживане"
 
-#: ../js/ui/appDisplay.js:933
+#: ../js/ui/appDisplay.js:934
 msgid "All"
 msgstr "Усе"
 
-#: ../js/ui/appDisplay.js:1891
+#: ../js/ui/appDisplay.js:1892
 msgid "New Window"
 msgstr "Нове вікно"
 
-#: ../js/ui/appDisplay.js:1905
+#: ../js/ui/appDisplay.js:1906
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Запустити через відповідну графічну плату"
 
-#: ../js/ui/appDisplay.js:1932 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:1933 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Вилучити з улюбленого"
 
-#: ../js/ui/appDisplay.js:1938
+#: ../js/ui/appDisplay.js:1939
 msgid "Add to Favorites"
 msgstr "Додати до улюбленого"
 
-#: ../js/ui/appDisplay.js:1948
+#: ../js/ui/appDisplay.js:1949
 msgid "Show Details"
 msgstr "Показати подробиці"
 
-#: ../js/ui/appFavorites.js:137
+#: ../js/ui/appFavorites.js:138
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s додано до улюбленого."
 
-#: ../js/ui/appFavorites.js:171
+#: ../js/ui/appFavorites.js:172
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s вилучено з улюбленого."
@@ -270,11 +270,11 @@ msgstr "Мікрофон"
 msgid "Change Background…"
 msgstr "Змінити тло…"
 
-#: ../js/ui/backgroundMenu.js:21
+#: ../js/ui/backgroundMenu.js:21 ../js/ui/status/nightLight.js:51
 msgid "Display Settings"
 msgstr "Параметри екрана"
 
-#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:374
+#: ../js/ui/backgroundMenu.js:22 ../js/ui/status/system.js:401
 msgid "Settings"
 msgstr "Параметри"
 
@@ -404,7 +404,7 @@ msgid "Type again:"
 msgstr "Введіть знову:"
 
 #: ../js/ui/components/networkAgent.js:140 ../js/ui/status/network.js:272
-#: ../js/ui/status/network.js:355 ../js/ui/status/network.js:931
+#: ../js/ui/status/network.js:366 ../js/ui/status/network.js:942
 msgid "Connect"
 msgstr "З'єднатись"
 
@@ -488,7 +488,7 @@ msgstr "пароль до мобільної широкосмугової рад
 msgid "A password is required to connect to “%s”."
 msgstr "Пароль потрібен для з'єднання з «%s»."
 
-#: ../js/ui/components/networkAgent.js:655 ../js/ui/status/network.js:1736
+#: ../js/ui/components/networkAgent.js:655 ../js/ui/status/network.js:1747
 msgid "Network Manager"
 msgstr "Керування мережею"
 
@@ -509,8 +509,8 @@ msgstr "Аутентифікація"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: ../js/ui/components/polkitAgent.js:301 ../js/ui/shellMountOperation.js:383
-msgid "Sorry, that didn't work. Please try again."
-msgstr "Вибачте, це не працює. Спробуйте ще."
+msgid "Sorry, that didn’t work. Please try again."
+msgstr "Вибачте, це не cпрацювало. Спробуйте ще."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -875,7 +875,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Система"
 
-#: ../js/ui/panel.js:807
+#: ../js/ui/panel.js:810
 msgid "Top Bar"
 msgstr "Верхня панель"
 
@@ -926,7 +926,7 @@ msgstr[0] "%d нове сповіщення"
 msgstr[1] "%d нових сповіщення"
 msgstr[2] "%d нових сповіщень"
 
-#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:382
+#: ../js/ui/screenShield.js:449 ../js/ui/status/system.js:409
 msgid "Lock"
 msgstr "Заблокувати"
 
@@ -1029,7 +1029,7 @@ msgstr "Більший текст"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:56 ../js/ui/status/network.js:627
+#: ../js/ui/status/bluetooth.js:56 ../js/ui/status/network.js:638
 msgid "Bluetooth Settings"
 msgstr "Параметри Bluetooth"
 
@@ -1050,14 +1050,14 @@ msgstr "Вимкнено"
 msgid "On"
 msgstr "Увімкнено"
 
-#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1291
+#: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:1302
 msgid "Turn On"
 msgstr "Увімкнути"
 
 #: ../js/ui/status/bluetooth.js:142 ../js/ui/status/network.js:181
-#: ../js/ui/status/network.js:356 ../js/ui/status/network.js:1291
-#: ../js/ui/status/network.js:1406 ../js/ui/status/rfkill.js:90
-#: ../js/ui/status/rfkill.js:117
+#: ../js/ui/status/network.js:367 ../js/ui/status/network.js:1302
+#: ../js/ui/status/network.js:1417 ../js/ui/status/nightLight.js:47
+#: ../js/ui/status/rfkill.js:90 ../js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Вимкнути"
 
@@ -1094,12 +1094,12 @@ msgid "Enable"
 msgstr "Увімкнути"
 
 #. Translators: %s is an application name
-#: ../js/ui/status/location.js:435
+#: ../js/ui/status/location.js:436
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Надати %s доступ до вашого розміщення?"
 
-#: ../js/ui/status/location.js:437
+#: ../js/ui/status/location.js:438
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Доступ до місця перебування можна змінити в будь-яку мить у параметрах "
@@ -1110,13 +1110,13 @@ msgid "<unknown>"
 msgstr "<невідомо>"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:454 ../js/ui/status/network.js:1320
+#: ../js/ui/status/network.js:465 ../js/ui/status/network.js:1331
 #, javascript-format
 msgid "%s Off"
 msgstr "%s вимкнено"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:457
+#: ../js/ui/status/network.js:468
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s під'єднано"
@@ -1124,165 +1124,165 @@ msgstr "%s під'єднано"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:473
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s нескеровано"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:465
+#: ../js/ui/status/network.js:476
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s від'єднується"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:472 ../js/ui/status/network.js:1312
+#: ../js/ui/status/network.js:483 ../js/ui/status/network.js:1323
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s під'єднується"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: ../js/ui/status/network.js:475
+#: ../js/ui/status/network.js:486
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s вимагає засвідчення"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: ../js/ui/status/network.js:483
+#: ../js/ui/status/network.js:494
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Бракує мікропрограми для %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: ../js/ui/status/network.js:487
+#: ../js/ui/status/network.js:498
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s недоступний"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:490
+#: ../js/ui/status/network.js:501
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s під'єднано невдало"
 
-#: ../js/ui/status/network.js:506
+#: ../js/ui/status/network.js:517
 msgid "Wired Settings"
 msgstr "Параметри мережі"
 
-#: ../js/ui/status/network.js:548
+#: ../js/ui/status/network.js:559
 msgid "Mobile Broadband Settings"
 msgstr "параметри мобільної радіомережі"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:591 ../js/ui/status/network.js:1317
+#: ../js/ui/status/network.js:602 ../js/ui/status/network.js:1328
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s вимкнено апаратно"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: ../js/ui/status/network.js:595
+#: ../js/ui/status/network.js:606
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s вимкнено"
 
-#: ../js/ui/status/network.js:635
+#: ../js/ui/status/network.js:646
 msgid "Connect to Internet"
 msgstr "Під'єднатись до інтернету"
 
-#: ../js/ui/status/network.js:825
+#: ../js/ui/status/network.js:836
 msgid "Airplane Mode is On"
 msgstr "Режим «у літаку» ввімкнено"
 
-#: ../js/ui/status/network.js:826
+#: ../js/ui/status/network.js:837
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi вимкнено, коли режим «у літаку» ввімкнено."
 
-#: ../js/ui/status/network.js:827
+#: ../js/ui/status/network.js:838
 msgid "Turn Off Airplane Mode"
 msgstr "Вимкнути режим «у літаку»"
 
-#: ../js/ui/status/network.js:836
+#: ../js/ui/status/network.js:847
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi вимкнено"
 
-#: ../js/ui/status/network.js:837
+#: ../js/ui/status/network.js:848
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi потрібно ввімкнути, щоб з'єднатись з мережею."
 
-#: ../js/ui/status/network.js:838
+#: ../js/ui/status/network.js:849
 msgid "Turn On Wi-Fi"
 msgstr "Увімкнути Wi-Fi"
 
-#: ../js/ui/status/network.js:863
+#: ../js/ui/status/network.js:874
 msgid "Wi-Fi Networks"
 msgstr "Мережі Wi-Fi"
 
-#: ../js/ui/status/network.js:865
+#: ../js/ui/status/network.js:876
 msgid "Select a network"
 msgstr "Вибрати мережу"
 
-#: ../js/ui/status/network.js:895
+#: ../js/ui/status/network.js:906
 msgid "No Networks"
 msgstr "Немає мереж"
 
-#: ../js/ui/status/network.js:916 ../js/ui/status/rfkill.js:115
+#: ../js/ui/status/network.js:927 ../js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Натисніть апаратну кнопку, щоб вимкнути"
 
-#: ../js/ui/status/network.js:1183
+#: ../js/ui/status/network.js:1194
 msgid "Select Network"
 msgstr "Виберіть мережу"
 
-#: ../js/ui/status/network.js:1189
+#: ../js/ui/status/network.js:1200
 msgid "Wi-Fi Settings"
 msgstr "Параметри Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:1308
+#: ../js/ui/status/network.js:1319
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s точка доступу"
 
 #. Translators: %s is a network identifier
-#: ../js/ui/status/network.js:1323
+#: ../js/ui/status/network.js:1334
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s не під'єднано"
 
-#: ../js/ui/status/network.js:1423
-msgid "connecting..."
-msgstr "з'єднання…"
+#: ../js/ui/status/network.js:1434
+msgid "connecting…"
+msgstr "З'єднання…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:1426
+#: ../js/ui/status/network.js:1437
 msgid "authentication required"
 msgstr "Потрібна аутентифікація"
 
-#: ../js/ui/status/network.js:1428
+#: ../js/ui/status/network.js:1439
 msgid "connection failed"
 msgstr "не вдалось з'єднатись"
 
-#: ../js/ui/status/network.js:1494 ../js/ui/status/network.js:1589
+#: ../js/ui/status/network.js:1505 ../js/ui/status/network.js:1600
 #: ../js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Налаштування мережі"
 
-#: ../js/ui/status/network.js:1496
+#: ../js/ui/status/network.js:1507
 msgid "VPN Settings"
 msgstr "Параметри VPN"
 
-#: ../js/ui/status/network.js:1515
+#: ../js/ui/status/network.js:1526
 msgid "VPN"
 msgstr "VPN"
 
-#: ../js/ui/status/network.js:1525
+#: ../js/ui/status/network.js:1536
 msgid "VPN Off"
 msgstr "VPN вимкнено"
 
-#: ../js/ui/status/network.js:1620
+#: ../js/ui/status/network.js:1631
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -1290,7 +1290,7 @@ msgstr[0] "%s з'єднання через дріт"
 msgstr[1] "%s з'єднання через дріт"
 msgstr[2] "%s з'єднань через дріт"
 
-#: ../js/ui/status/network.js:1624
+#: ../js/ui/status/network.js:1635
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -1298,7 +1298,7 @@ msgstr[0] "%s з'єднання через Wi-Fi"
 msgstr[1] "%s з'єднання через Wi-Fi"
 msgstr[2] "%s з'єднань через Wi-Fi"
 
-#: ../js/ui/status/network.js:1628
+#: ../js/ui/status/network.js:1639
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -1306,13 +1306,29 @@ msgstr[0] "%s з'єднання через модем"
 msgstr[1] "%s з'єднання через модем"
 msgstr[2] "%s з'єднань через модем"
 
-#: ../js/ui/status/network.js:1775
+#: ../js/ui/status/network.js:1786
 msgid "Connection failed"
 msgstr "Не вдалось з'єднатись"
 
-#: ../js/ui/status/network.js:1776
+#: ../js/ui/status/network.js:1787
 msgid "Activation of network connection failed"
 msgstr "Не вдалось увімкнути мережеве з'єднання"
+
+#: ../js/ui/status/nightLight.js:68
+msgid "Night Light Disabled"
+msgstr "Нічне світло вимкнено"
+
+#: ../js/ui/status/nightLight.js:69
+msgid "Night Light On"
+msgstr "Нічне світло ввімкнено"
+
+#: ../js/ui/status/nightLight.js:70
+msgid "Resume"
+msgstr "Повторити"
+
+#: ../js/ui/status/nightLight.js:71
+msgid "Disable Until Tomorrow"
+msgstr "Вимкнути до завтра"
 
 #: ../js/ui/status/power.js:61
 msgid "Power Settings"
@@ -1352,27 +1368,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "Режим «у літаку» ввімкнено"
 
-#: ../js/ui/status/system.js:351
+#: ../js/ui/status/system.js:378
 msgid "Switch User"
 msgstr "Змінити користувача"
 
-#: ../js/ui/status/system.js:356
+#: ../js/ui/status/system.js:383
 msgid "Log Out"
 msgstr "Вийти"
 
-#: ../js/ui/status/system.js:361
+#: ../js/ui/status/system.js:388
 msgid "Account Settings"
 msgstr "Параметри облікових записів"
 
-#: ../js/ui/status/system.js:378
+#: ../js/ui/status/system.js:405
 msgid "Orientation Lock"
 msgstr "Напрямлене блокування"
 
-#: ../js/ui/status/system.js:386
+#: ../js/ui/status/system.js:413
 msgid "Suspend"
 msgstr "Призупинити"
 
-#: ../js/ui/status/system.js:389
+#: ../js/ui/status/system.js:416
 msgid "Power Off"
 msgstr "Вимкнути"
 
@@ -1432,8 +1448,8 @@ msgstr[2] "Зміни параметрів буде повернуто чере�
 #. * the width of the window and the second is the height.
 #: ../js/ui/windowManager.js:678
 #, javascript-format
-msgid "%d x %d"
-msgstr "%d x %d"
+msgid "%d × %d"
+msgstr "%d × %d"
 
 #: ../js/ui/windowMenu.js:34
 msgid "Minimize"
@@ -1532,7 +1548,7 @@ msgid "Mode used by GDM for login screen"
 msgstr "Використовуваний режим GDM для екрану входу"
 
 #: ../src/main.c:393
-msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Використовувати вказаний режим, приклад, «gdm» для вікна входу"
 
 #: ../src/main.c:399
@@ -1560,6 +1576,9 @@ msgstr "Пароль не може бути порожнім"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Вікно авторизації відхилено користувачем"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
 
 #~ msgid "System"
 #~ msgstr "Система"
@@ -2357,9 +2376,6 @@ msgstr "Вікно авторизації відхилено користува�
 
 #~ msgid "Wi-Fi"
 #~ msgstr "Wi-Fi"
-
-#~ msgid "Networking is disabled"
-#~ msgstr "Мережу вимкнено"
 
 #~ msgid "%d hour remaining"
 #~ msgid_plural "%d hours remaining"
