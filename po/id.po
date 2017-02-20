@@ -11,16 +11,256 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-08-19 21:04+0000\n"
-"PO-Revision-Date: 2016-08-22 17:38+0700\n"
+"POT-Creation-Date: 2017-02-16 01:44+0000\n"
+"PO-Revision-Date: 2017-02-20 13:44+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.6.10\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "Navigasi"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "Pindahkan jendela ke ruang kerja 1"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "Pindahkan jendela ke ruang kerja 2"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "Pindahkan jendela ke ruang kerja 3"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "Pindahkan jendela ke ruang kerja 4"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "Pindahkan jendela ke ruang kerja terakhir"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "Pindahkan jendela satu ruang kerja ke kiri"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "Pindahkan jendela satu ruang kerja ke kanan"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "Pindahkan jendela satu ruang kerja ke atas"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "Pindahkan jendela satu ruang kerja ke bawah"
+
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "Pindahkan jendela satu monitor ke kiri"
+
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "Pindahkan jendela satu monitor ke kanan"
+
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "Pindahkan jendela satu monitor ke atas"
+
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "Pindahkan jendela satu monitor ke bawah"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "Bertukar aplikasi"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "Bertukar ke aplikasi sebelumnya"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "Bertukar jendela"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "Bertukar ke jendela sebelumnya"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "Bertukar jendela dari suatu aplikasi"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "Bertukar ke jendela aplikasi sebelumnya"
+
+#: data/50-mutter-navigation.xml:76
+msgid "Switch system controls"
+msgstr "Bertukar kendali sistem"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "Bertukar ke kendali sistem sebelumnya"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "Bertukar jendela secara langsung"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "Bertukar secara langsung ke jendela sebelumnya"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "Bertukar jendela dari suatu app secara langsung"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr "Bertukar secara langsung ke jendela sebelumnya dari suatu app"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "Bertukar kendali sistem secara langsung"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "Bertukar secara langsung ke kendali sistem sebelumnya"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "Sembunyikan semua jendela normal"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "Bertukar ke ruang kerja 1"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "Bertukar ke ruang kerja 2"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "Bertukar ke ruang kerja 3"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "Bertukar ke ruang kerja 4"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "Bertukar ke ruang kerja terakhir"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "Pindahkan ke ruang kerja kiri"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "Pindahkan ke ruang kerja kanan"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "Pindahkan ke ruang kerja di atas"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "Pindahkan ke ruang kerja di bawah"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "Sistem"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "Tampilkan sapaan jalankan perintah"
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "Tampilkan ringkasan aktivitas"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "Jendela"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "Mengaktifkan menu jendela"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "Jungkitkan mode layar penuh"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "Jungkitkan keadaan termaksimalkan"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "Maksimalkan jendela"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "Pulihkan jendela"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "Jungkitkan keadaan berbayang"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "Tutup jendela"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "Sembunyikan jendela"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "Pindahkan jendela"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "Ubah ukuran jendela"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr "Jungkitkan jendela pada semua atau satu area kerja"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Naikkan jendela bila tertutup jendela lain, sebaliknya turunkan"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "Naikkan jendela di atas jendela-jendela lain"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "Turunkan jendela di bawah jendela-jendela lain"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "Maksimalkan ukuran jendela secara vertikal"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "Maksimalkan ukuran jendela secara horisontal"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "Tilik belah di kiri"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "Tilik belah di kanan"
 
 #: data/mutter.desktop.in:4
 msgid "Mutter"
@@ -32,14 +272,14 @@ msgstr "Tombol yang digunakan untuk memperluas operasi manajemen jendela"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
 "Kunci ini akan mengawali \"overlay\", yang merupakan kombinasi ringkasan "
 "jendela dan sistem peluncuran aplikasi. Nilai baku ditujukan agar menjadi "
-"\"Windows key\" pada perangkat keras PC. Diharapkan agar pengikatan ini "
+"\"tombol Windows\" pada perangkat keras PC. Diharapkan agar pengikatan ini "
 "berupa baku atau diisi dengan kalimat kosong."
 
 #: data/org.gnome.mutter.gschema.xml.in:20
@@ -76,7 +316,7 @@ msgstr "Ruang kerja dikelola secara dinamis"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -114,9 +354,9 @@ msgstr "Tunda perubahan fokus sampai penunjuk berhenti bergerak"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
 "Bila diisi dengan true, dan mode fokus adalah \"sloppy\" atau \"mouse\" maka "
 "fokus tak akan berubah seketika saat memasuki suatu jendela, tapi hanya "
@@ -128,7 +368,7 @@ msgstr "Lebar batas yang dapat diseret"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "Total banyaknya tepi yang dapat diseret. Bila tepi tema yang nampak tak "
@@ -168,87 +408,97 @@ msgstr "Batalkan popup tab"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
-msgstr "Pindah ke VT 1"
+msgstr "Bertukar ke VT 1"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:10
 msgid "Switch to VT 2"
-msgstr "Pindah ke VT 2"
+msgstr "Bertukar ke VT 2"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:14
 msgid "Switch to VT 3"
-msgstr "Pindah ke VT 3"
+msgstr "Bertukar ke VT 3"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:18
 msgid "Switch to VT 4"
-msgstr "Pindah ke VT 4"
+msgstr "Bertukar ke VT 4"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:22
 msgid "Switch to VT 5"
-msgstr "Pindah ke VT 5"
+msgstr "Bertukar ke VT 5"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:26
 msgid "Switch to VT 6"
-msgstr "Pindah ke VT 6"
+msgstr "Bertukar ke VT 6"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:30
 msgid "Switch to VT 7"
-msgstr "Pindah ke VT 7"
+msgstr "Bertukar ke VT 7"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:34
 msgid "Switch to VT 8"
-msgstr "Pindah ke VT 8"
+msgstr "Bertukar ke VT 8"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:38
 msgid "Switch to VT 9"
-msgstr "Pindah ke VT 9"
+msgstr "Bertukar ke VT 9"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:42
 msgid "Switch to VT 10"
-msgstr "Pindah ke VT 10"
+msgstr "Bertukar ke VT 10"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:46
 msgid "Switch to VT 11"
-msgstr "Pindah ke VT 11"
+msgstr "Bertukar ke VT 11"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:50
 msgid "Switch to VT 12"
-msgstr "Pindah ke VT 12"
+msgstr "Bertukar ke VT 12"
 
-#: src/backends/meta-input-settings.c:1707
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1759
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Tukar Mode: (Grup %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1781
 msgid "Switch monitor"
 msgstr "Berpindah monitor"
 
-#: src/backends/meta-input-settings.c:1709
+#: src/backends/meta-input-settings.c:1783
 msgid "Show on-screen help"
 msgstr "Tampilkan bantuan pada layar"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Tampilan bawaan"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Tak Dikenal"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Tampilan Tak Dikenal"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
 "Manajer komposit lain telah berjalan pada layar %i pada tampilan \"%s\"."
 
@@ -256,6 +506,7 @@ msgstr ""
 msgid "Bell event"
 msgstr "Bel peristiwa"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -273,51 +524,51 @@ msgstr ""
 "Anda bisa memilih untuk menunggu sebentar atau memaksa aplikasi keluar."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Tunggu"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Matikan Paksa"
 
-#: src/core/display.c:590
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "Gagal membuka tampilan X Window System '%s'\n"
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Tunggu"
 
-#: src/core/main.c:182
+#: src/core/display.c:608
+#, c-format
+msgid "Failed to open X Window System display “%s”\n"
+msgstr "Gagal membuka tampilan X Window System \"%s\"\n"
+
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Menonaktifkan koneksi ke manajer sesi"
 
-#: src/core/main.c:188
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Mengganti manajer jendela yang tengah berjalan"
 
-#: src/core/main.c:194
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Tentukan kode pengaturan sesi"
 
-#: src/core/main.c:199
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Tampilan X yang digunakna"
 
-#: src/core/main.c:205
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Aktifkan sesi dari berkas simpanan"
 
-#: src/core/main.c:211
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Buat panggilan X selaras"
 
-#: src/core/main.c:218
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Jalankan sebagai kompositor wayland"
 
-#: src/core/main.c:224
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Jalankan sebagai kompositor bersarang"
 
-#: src/core/main.c:232
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Jalankan sebagai server tampilan penuh, ketimbang tampilan bersarang"
 
@@ -325,14 +576,14 @@ msgstr "Jalankan sebagai server tampilan penuh, ketimbang tampilan bersarang"
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Hak cipta (C) 2001-%d Havoc Pennington, Red Hat, Inc., dan lain-lain.\n"
-"Ini adalah perangkat lunak bebas; lihatlah kode sumbernya untuk kondisi "
+"Hak Cipta (C) 2001-%d Havoc Pennington, Red Hat, Inc., dan lain-lain.\n"
+"Ini adalah perangkat lunak bebas; lihat kode asalnya untuk kondisi "
 "penyalinan.\n"
 "TIDAK ADA jaminan, bahkan untuk KELAYAKAN JUAL atau KELAYAKAN UNTUK KEGUNAAN "
 "TERTENTU.\n"
@@ -350,38 +601,38 @@ msgstr "Pengaya Mutter yang dipakai"
 msgid "Workspace %d"
 msgstr "Area kerja %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "Tampilan \"%s\" sudah memiliki manajer jendela; cobalah gunakan pilihan --"
 "replace untuk mengganti manajer jendela saat ini."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Layar %d pada tampilan '%s' tidak benar\n"
+msgid "Screen %d on display “%s” is invalid\n"
+msgstr "Layar %d pada tampilan \"%s\" tidak valid\n"
 
 #: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Muter dikompilasi tanpa dukungan mode riuh\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Tukar Mode: Mode %d"
 
 #: src/x11/session.c:1815
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
-"Jendela ini tidak bisa &quot;menyimpan setelan aktif saat ini&quot; dan bila "
-"log masuk kali lain Anda harus menjalankannya ulang."
+"Jendela ini tidak mendukung \"menyimpan setelan aktif saat ini\" dan mesti "
+"dijalankan ulang secara manual kala berikut Anda log masuk."
 
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (pada %s)"
