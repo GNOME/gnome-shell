@@ -304,6 +304,8 @@ motif_hints_from_results (GetPropertyResults *results,
 
   if (results->type == None || results->n_items <= 0)
     {
+      g_free (results->prop);
+      results->prop = NULL;
       meta_verbose ("Motif hints had unexpected type or n_items\n");
       return FALSE;
     }
@@ -314,10 +316,18 @@ motif_hints_from_results (GetPropertyResults *results,
    */
   *hints_p = calloc (1, sizeof (MotifWmHints));
   if (*hints_p == NULL)
-    return FALSE;
+    {
+      g_free (results->prop);
+      results->prop = NULL;
+      return FALSE;
+    }
 
   memcpy(*hints_p, results->prop, MIN (sizeof (MotifWmHints),
                                        results->n_items * sizeof (uint32_t)));
+
+  g_free (results->prop);
+  results->prop = NULL;
+
   return TRUE;
 }
 
@@ -348,6 +358,9 @@ latin1_string_from_results (GetPropertyResults *results,
     return FALSE;
 
   *str_p = g_strndup ((char *) results->prop, results->n_items);
+
+  g_free (results->prop);
+  results->prop = NULL;
 
   return TRUE;
 }
@@ -395,6 +408,9 @@ utf8_string_from_results (GetPropertyResults *results,
     }
 
   *str_p = g_strndup ((char *) results->prop, results->n_items);
+
+  g_free (results->prop);
+  results->prop = NULL;
 
   return TRUE;
 }
@@ -772,7 +788,11 @@ size_hints_from_results (GetPropertyResults *results,
     return FALSE;
 
   if (results->n_items < OldNumPropSizeElements)
-    return FALSE;
+    {
+      g_free (results->prop);
+      results->prop = NULL;
+      return FALSE;
+    }
 
   raw = (xPropSizeHints*) results->prop;
 
