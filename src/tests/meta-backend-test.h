@@ -20,10 +20,10 @@
 #ifndef META_BACKEND_TEST_H
 #define META_BACKEND_TEST_H
 
-#include "backends/x11/meta-backend-x11.h"
+#include "backends/x11/nested/meta-backend-x11-nested.h"
 
 #define META_TYPE_BACKEND_TEST (meta_backend_test_get_type ())
 G_DECLARE_FINAL_TYPE (MetaBackendTest, meta_backend_test,
-                      META, BACKEND_TEST, MetaBackendX11)
+                      META, BACKEND_TEST, MetaBackendX11Nested)
 
 #endif /* META_BACKEND_TEST_H */

@@ -25,10 +25,10 @@
 
 struct _MetaBackendTest
 {
-  MetaBackendX11 parent;
+  MetaBackendX11Nested parent;
 };
 
-G_DEFINE_TYPE (MetaBackendTest, meta_backend_test, META_TYPE_BACKEND_X11)
+G_DEFINE_TYPE (MetaBackendTest, meta_backend_test, META_TYPE_BACKEND_X11_NESTED)
 
 static void
 meta_backend_test_init (MetaBackendTest *backend_test)

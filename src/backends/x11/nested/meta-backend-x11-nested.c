@@ -27,11 +27,6 @@
 
 #include "wayland/meta-wayland.h"
 
-struct _MetaBackendX11Nested
-{
-  MetaBackendX11 parent;
-};
-
 G_DEFINE_TYPE (MetaBackendX11Nested, meta_backend_x11_nested,
                META_TYPE_BACKEND_X11)
 

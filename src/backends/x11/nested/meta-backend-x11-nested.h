@@ -25,7 +25,12 @@
 #include "backends/x11/meta-backend-x11.h"
 
 #define META_TYPE_BACKEND_X11_NESTED (meta_backend_x11_nested_get_type ())
-G_DECLARE_FINAL_TYPE (MetaBackendX11Nested, meta_backend_x11_nested,
-                      META, BACKEND_X11_NESTED, MetaBackendX11)
+G_DECLARE_DERIVABLE_TYPE (MetaBackendX11Nested, meta_backend_x11_nested,
+                          META, BACKEND_X11_NESTED, MetaBackendX11)
+
+struct _MetaBackendX11NestedClass
+{
+  MetaBackendX11Class parent_class;
+};
 
 #endif /* META_BACKEND_X11_NESTED_H */
