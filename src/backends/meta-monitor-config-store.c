@@ -491,10 +491,10 @@ handle_end_element (GMarkupParseContext  *context,
         if (logical_monitor_config->scale == 0)
           logical_monitor_config->scale = 1;
 
-        if (!meta_verify_logical_monitor_config (logical_monitor_config, error))
+        if (!derive_logical_monitor_layout (logical_monitor_config, error))
           return;
 
-        if (!derive_logical_monitor_layout (logical_monitor_config, error))
+        if (!meta_verify_logical_monitor_config (logical_monitor_config, error))
           return;
 
         parser->current_logical_monitor_configs =
