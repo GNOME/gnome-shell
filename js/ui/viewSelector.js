@@ -77,6 +77,7 @@ Signals.addSignalMethods(TouchpadShowOverviewAction.prototype);
 const ShowOverviewAction = new Lang.Class({
     Name: 'ShowOverviewAction',
     Extends: Clutter.GestureAction,
+    Signals: { 'activated': {} },
 
     _init : function() {
         this.parent();
@@ -135,7 +136,6 @@ const ShowOverviewAction = new Lang.Class({
         this.emit('activated', areaDiff);
     }
 });
-Signals.addSignalMethods(ShowOverviewAction.prototype);
 
 const ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
