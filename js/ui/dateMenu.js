@@ -87,9 +87,7 @@ const WorldClocksSection = new Lang.Class({
 
     _init: function() {
         this._clock = new GnomeDesktop.WallClock();
-        this._settings = null;
         this._clockNotifyId = 0;
-        this._changedId = 0;
 
         this._locations = [];
 
@@ -98,8 +96,7 @@ const WorldClocksSection = new Lang.Class({
                                      can_focus: true });
         this.actor.connect('clicked', Lang.bind(this,
             function() {
-                let app = this._getClockApp();
-                app.activate();
+                this._clockAppMon.activateApp();
 
                 Main.overview.hide();
                 Main.panel.closeCalendar();
@@ -112,40 +109,25 @@ const WorldClocksSection = new Lang.Class({
 
         this.actor.child = this._grid;
 
-        Shell.AppSystem.get_default().connect('installed-changed',
-                                              Lang.bind(this, this._sync));
+        this._clockAppMon = new Util.AppSettingsMonitor('org.gnome.clocks.desktop',
+                                                        'org.gnome.clocks');
+        this._clockAppMon.connect('available-changed',
+                                  Lang.bind(this, this._sync));
+        this._clockAppMon.watchSetting('world-clocks',
+                                       Lang.bind(this, this._clocksChanged));
         this._sync();
     },
 
-    _getClockApp: function() {
-        return Shell.AppSystem.get_default().lookup_app('org.gnome.clocks.desktop');
-    },
-
     _sync: function() {
-        this.actor.visible = (this._getClockApp() != null);
-
-        if (this.actor.visible) {
-            if (!this._settings) {
-                this._settings = new Gio.Settings({ schema_id: 'org.gnome.clocks' });
-                this._changedId =
-                    this._settings.connect('changed::world-clocks',
-                                           Lang.bind(this, this._clocksChanged));
-                this._clocksChanged();
-            }
-        } else {
-            if (this._settings)
-                this._settings.disconnect(this._changedId);
-            this._settings = null;
-            this._changedId = 0;
-        }
+        this.actor.visible = this._clockAppMon.available;
     },
 
-    _clocksChanged: function() {
+    _clocksChanged: function(settings) {
         this._grid.destroy_all_children();
         this._locations = [];
 
         let world = GWeather.Location.get_world();
-        let clocks = this._settings.get_value('world-clocks').deep_unpack();
+        let clocks = settings.get_value('world-clocks').deep_unpack();
         for (let i = 0; i < clocks.length; i++) {
             let l = world.deserialize(clocks[i].location);
             this._locations.push({ location: l });
