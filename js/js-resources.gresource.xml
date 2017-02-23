@@ -25,6 +25,7 @@
     <file>misc/params.js</file>
     <file>misc/smartcardManager.js</file>
     <file>misc/util.js</file>
+    <file>misc/weather.js</file>
 
     <file>perf/core.js</file>
     <file>perf/hwtest.js</file>
