@@ -7,13 +7,6 @@ const Meta = imports.gi.Meta;
 const GnomeDesktop = imports.gi.GnomeDesktop;
 const Shell = imports.gi.Shell;
 
-// We stop polling if the user is idle for more than this amount of time
-const IDLE_TIME = 1000;
-
-// This file implements a reasonably efficient system for tracking the position
-// of the mouse pointer. We simply query the pointer from the X server in a loop,
-// but we turn off the polling when the user is idle.
-
 let _pointerWatcher = null;
 function getPointerWatcher() {
     if (_pointerWatcher == null)
@@ -25,9 +18,8 @@ function getPointerWatcher() {
 const PointerWatch = new Lang.Class({
     Name: 'PointerWatch',
 
-    _init: function(watcher, interval, callback) {
+    _init: function(watcher, callback) {
         this.watcher = watcher;
-        this.interval = interval;
         this.callback = callback;
     },
 
@@ -43,9 +35,9 @@ const PointerWatcher = new Lang.Class({
     Name: 'PointerWatcher',
 
     _init: function() {
-        this._idleMonitor = Meta.IdleMonitor.get_core();
-        this._idleMonitor.add_idle_watch(IDLE_TIME, Lang.bind(this, this._onIdleMonitorBecameIdle));
-        this._idle = this._idleMonitor.get_idletime() > IDLE_TIME;
+        this._cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
+        this._cursorTracker.connect('position-changed', Lang.bind(this, this._updatePointer));
+
         this._watches = [];
         this.pointerX = null;
         this.pointerY = null;
@@ -61,58 +53,23 @@ const PointerWatcher = new Lang.Class({
     // Set up a watch on the position of the mouse pointer. Returns a
     // PointerWatch object which has a remove() method to remove the watch.
     addWatch: function(interval, callback) {
+        this._cursorTracker.enable_track_position();
+
         // Avoid unreliably calling the watch for the current position
         this._updatePointer();
 
-        let watch = new PointerWatch(this, interval, callback);
-        this._watches.push(watch);
-        this._updateTimeout();
+        this._watches.push(callback);
         return watch;
     },
 
     _removeWatch: function(watch) {
         for (let i = 0; i < this._watches.length; i++) {
             if (this._watches[i] == watch) {
+                this._cursorTracker.disable_track_position();
                 this._watches.splice(i, 1);
-                this._updateTimeout();
                 return;
             }
         }
-    },
-
-    _onIdleMonitorBecameActive: function(monitor) {
-        this._idle = false;
-        this._updatePointer();
-        this._updateTimeout();
-    },
-
-    _onIdleMonitorBecameIdle: function(monitor) {
-        this._idle = true;
-        this._idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
-        this._updateTimeout();
-    },
-
-    _updateTimeout: function() {
-        if (this._timeoutId) {
-            Mainloop.source_remove(this._timeoutId);
-            this._timeoutId = 0;
-        }
-
-        if (this._idle || this._watches.length == 0)
-            return;
-
-        let minInterval = this._watches[0].interval;
-        for (let i = 1; i < this._watches.length; i++)
-            minInterval = Math.min(this._watches[i].interval, minInterval);
-
-        this._timeoutId = Mainloop.timeout_add(minInterval,
-                                               Lang.bind(this, this._onTimeout));
-        GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
-    },
-
-    _onTimeout: function() {
-        this._updatePointer();
-        return GLib.SOURCE_CONTINUE;
     },
 
     _updatePointer: function() {

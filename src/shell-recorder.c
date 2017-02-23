@@ -80,7 +80,6 @@ struct _ShellRecorder {
   guint redraw_timeout;
   guint redraw_idle;
   guint update_memory_used_timeout;
-  guint update_pointer_timeout;
   guint repaint_hook_id;
 };
 
@@ -125,11 +124,6 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * and the size of the recording.
  */
 #define DEFAULT_FRAMES_PER_SECOND 30
-
-/* The time (in milliseconds) between querying the server for the cursor
- * position.
- */
-#define UPDATE_POINTER_TIME 100
 
 /* The time we wait (in milliseconds) before redrawing when the memory used
  * changes.
@@ -537,7 +531,8 @@ on_cursor_changed (MetaCursorTracker *tracker,
 }
 
 static void
-recorder_update_pointer (ShellRecorder *recorder)
+on_cursor_position_changed (MetaCursorTracker *tracker,
+                            ShellRecorder     *recorder)
 {
   int pointer_x, pointer_y;
 
@@ -548,36 +543,6 @@ recorder_update_pointer (ShellRecorder *recorder)
       recorder->pointer_x = pointer_x;
       recorder->pointer_y = pointer_y;
       recorder_queue_redraw (recorder);
-    }
-}
-
-static gboolean
-recorder_update_pointer_timeout (gpointer data)
-{
-  recorder_update_pointer (data);
-
-  return TRUE;
-}
-
-static void
-recorder_add_update_pointer_timeout (ShellRecorder *recorder)
-{
-  if (!recorder->update_pointer_timeout)
-    {
-      recorder->update_pointer_timeout = g_timeout_add (UPDATE_POINTER_TIME,
-                                                        recorder_update_pointer_timeout,
-                                                        recorder);
-      g_source_set_name_by_id (recorder->update_pointer_timeout, "[gnome-shell] recorder_update_pointer_timeout");
-    }
-}
-
-static void
-recorder_remove_update_pointer_timeout (ShellRecorder *recorder)
-{
-  if (recorder->update_pointer_timeout)
-    {
-      g_source_remove (recorder->update_pointer_timeout);
-      recorder->update_pointer_timeout = 0;
     }
 }
 
@@ -652,6 +617,8 @@ recorder_set_screen (ShellRecorder *recorder,
   recorder->cursor_tracker = tracker;
   g_signal_connect_object (tracker, "cursor-changed",
                            G_CALLBACK (on_cursor_changed), recorder, 0);
+  g_signal_connect_object (tracker, "position-changed",
+                           G_CALLBACK (on_cursor_position_changed), recorder, 0);
 }
 
 static void
@@ -1514,7 +1481,7 @@ shell_recorder_record (ShellRecorder  *recorder,
 
   recorder->state = RECORDER_STATE_RECORDING;
   recorder_update_pointer (recorder);
-  recorder_add_update_pointer_timeout (recorder);
+  meta_cursor_tracker_enable_track_position (recorder->cursor_tracker);
 
   /* Disable unredirection while we are recoring */
   meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
@@ -1553,7 +1520,7 @@ shell_recorder_close (ShellRecorder *recorder)
    */
   clutter_actor_paint (CLUTTER_ACTOR (recorder->stage));
 
-  recorder_remove_update_pointer_timeout (recorder);
+  meta_cursor_tracker_disable_track_position (recorder->cursor_tracker);
   recorder_close_pipeline (recorder);
 
   /* Queue a redraw to remove the recording indicator */
