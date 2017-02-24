@@ -122,6 +122,7 @@ meta_renderer_x11_create_view (MetaRenderer       *renderer,
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   MetaMonitorTransform view_transform;
+  int view_scale;
   int width, height;
   CoglTexture2D *texture_2d;
   CoglOffscreen *fake_onscreen;
@@ -130,10 +131,15 @@ meta_renderer_x11_create_view (MetaRenderer       *renderer,
 
   g_assert (meta_is_wayland_compositor ());
 
-  width = logical_monitor->rect.width;
-  height = logical_monitor->rect.height;
-
   view_transform = calculate_view_transform (monitor_manager, logical_monitor);
+
+  if (meta_is_stage_views_scaled ())
+    view_scale = logical_monitor->scale;
+  else
+    view_scale = 1;
+
+  width = logical_monitor->rect.width * view_scale;
+  height = logical_monitor->rect.height * view_scale;
 
   texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
   fake_onscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
@@ -158,6 +164,7 @@ meta_renderer_x11_create_view (MetaRenderer       *renderer,
                        "framebuffer", COGL_FRAMEBUFFER (fake_onscreen),
                        "offscreen", COGL_FRAMEBUFFER (offscreen),
                        "transform", view_transform,
+                       "scale", view_scale,
                        NULL);
 }
 

@@ -214,7 +214,14 @@ meta_test_adjecent_to (void)
 static gboolean
 run_tests (gpointer data)
 {
+  MetaBackend *backend = meta_get_backend ();
   gboolean ret;
+
+  meta_backend_override_experimental_features (backend);
+
+  meta_backend_enable_experimental_feature (
+    backend,
+    META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
 
   ret = g_test_run ();
 

@@ -112,7 +112,14 @@
         available, or configurable. Don't expect adding anything in this
         setting to be future proof.
 
-        Currently possible keywords: (none)
+        Currently possible keywords:
+
+        * "scale-monitor-framebuffer" - makes mutter default to layout logical
+                                        monitors in a logical pixel coordinate
+                                        space, while scaling monitor
+                                        framebuffers instead of window content,
+                                        to manage HiDPI monitors. Does not
+                                        require a restart.
       </description>
     </key>
 

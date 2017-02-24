@@ -319,6 +319,16 @@ meta_monitor_manager_get_max_screen_size (MetaMonitorManager *manager,
   return manager_class->get_max_screen_size (manager, max_width, max_height);
 }
 
+
+MetaLogicalMonitorLayoutMode
+meta_monitor_manager_get_default_layout_mode (MetaMonitorManager *manager)
+{
+  MetaMonitorManagerClass *manager_class =
+    META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  return manager_class->get_default_layout_mode (manager);
+}
+
 static void
 meta_monitor_manager_ensure_initial_config (MetaMonitorManager *manager)
 {
@@ -1397,6 +1407,13 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_boolean (FALSE));
     }
 
+  if (capabilities & META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE)
+    {
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "layout-mode",
+                             g_variant_new_uint32 (manager->layout_mode));
+    }
+
   if (meta_monitor_manager_get_max_screen_size (manager,
                                                 &max_screen_width,
                                                 &max_screen_height))
@@ -1593,10 +1610,12 @@ create_monitor_config_from_variant (MetaMonitorManager *manager,
 }
 
 static gboolean
-derive_logical_monitor_size (GList  *monitor_configs,
-                             int    *width,
-                             int    *height,
-                             GError **error)
+derive_logical_monitor_size (GList                       *monitor_configs,
+                             int                         *width,
+                             int                         *height,
+                             double                       scale,
+                             MetaLogicalMonitorLayoutMode layout_mode,
+                             GError                     **error)
 {
   MetaMonitorConfig *monitor_config;
 
@@ -1608,16 +1627,27 @@ derive_logical_monitor_size (GList  *monitor_configs,
     }
 
   monitor_config = monitor_configs->data;
-  *width = monitor_config->mode_spec->width;
-  *height = monitor_config->mode_spec->height;
 
-  return TRUE;
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      *width = monitor_config->mode_spec->width / scale;
+      *height = monitor_config->mode_spec->height / scale;
+      return TRUE;
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      *width = monitor_config->mode_spec->width;
+      *height = monitor_config->mode_spec->height;
+      return TRUE;
+    }
+
+  g_assert_not_reached ();
 }
 
 static MetaLogicalMonitorConfig *
-create_logical_monitor_config_from_variant (MetaMonitorManager *manager,
-                                            GVariant           *logical_monitor_config_variant,
-                                            GError            **error)
+create_logical_monitor_config_from_variant (MetaMonitorManager          *manager,
+                                            GVariant                    *logical_monitor_config_variant,
+                                            MetaLogicalMonitorLayoutMode layout_mode,
+                                            GError                     **error)
 {
   MetaLogicalMonitorConfig *logical_monitor_config;
   int x, y, width, height;
@@ -1658,7 +1688,8 @@ create_logical_monitor_config_from_variant (MetaMonitorManager *manager,
     }
   g_variant_iter_free (monitor_configs_iter);
 
-  if (!derive_logical_monitor_size (monitor_configs, &width, &height, error))
+  if (!derive_logical_monitor_size (monitor_configs, &width, &height,
+                                    scale, layout_mode, error))
     goto err;
 
   logical_monitor_config = g_new0 (MetaLogicalMonitorConfig, 1);
@@ -1674,7 +1705,9 @@ create_logical_monitor_config_from_variant (MetaMonitorManager *manager,
     .monitor_configs = monitor_configs
   };
 
-  if (!meta_verify_logical_monitor_config (logical_monitor_config, error))
+  if (!meta_verify_logical_monitor_config (logical_monitor_config,
+                                           layout_mode,
+                                           error))
     {
       meta_logical_monitor_config_free (logical_monitor_config);
       return NULL;
@@ -1688,6 +1721,19 @@ err:
 }
 
 static gboolean
+is_valid_layout_mode (MetaLogicalMonitorLayoutMode layout_mode)
+{
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gboolean
 meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skeleton,
                                                    GDBusMethodInvocation *invocation,
                                                    guint                  serial,
@@ -1696,6 +1742,9 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
                                                    GVariant              *properties_variant)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaMonitorManagerCapability capabilities;
+  GVariant *layout_mode_variant = NULL;
+  MetaLogicalMonitorLayoutMode layout_mode;
   GVariantIter logical_monitor_configs_iter;
   MetaMonitorsConfig *config;
   GList *logical_monitor_configs = NULL;
@@ -1717,6 +1766,39 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
       return TRUE;
     }
 
+  capabilities = meta_monitor_manager_get_capabilities (manager);
+
+  if (properties_variant)
+    layout_mode_variant = g_variant_lookup_value (properties_variant,
+                                                  "layout-mode",
+                                                  G_VARIANT_TYPE ("u"));
+
+  if (layout_mode_variant &&
+      capabilities & META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE)
+    {
+      g_variant_get (layout_mode_variant, "u", &layout_mode);
+    }
+  else if (!layout_mode_variant)
+    {
+      layout_mode =
+        meta_monitor_manager_get_default_layout_mode (manager);
+    }
+  else
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_INVALID_ARGS,
+                                             "Can't set layout mode");
+      return TRUE;
+    }
+
+  if (!is_valid_layout_mode (layout_mode))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Invalid layout mode specified");
+      return TRUE;
+    }
+
   g_variant_iter_init (&logical_monitor_configs_iter,
                        logical_monitor_configs_variant);
   while (TRUE)
@@ -1731,6 +1813,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
       logical_monitor_config =
         create_logical_monitor_config_from_variant (manager,
                                                     logical_monitor_config_variant,
+                                                    layout_mode,
                                                     &error);
       if (!logical_monitor_config)
         {
@@ -1747,7 +1830,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
                                                logical_monitor_config);
     }
 
-  config = meta_monitors_config_new (logical_monitor_configs);
+  config = meta_monitors_config_new (logical_monitor_configs, layout_mode);
   if (!meta_verify_monitors_config (config, &error))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
@@ -2416,6 +2499,12 @@ void
 meta_monitor_manager_update_logical_state (MetaMonitorManager *manager,
                                            MetaMonitorsConfig *config)
 {
+  if (config)
+    manager->layout_mode = config->layout_mode;
+  else
+    manager->layout_mode =
+      meta_monitor_manager_get_default_layout_mode (manager);
+
   meta_monitor_manager_rebuild_logical_monitors (manager, config);
 }
 
@@ -2455,6 +2544,8 @@ meta_monitor_manager_update_monitor_modes_derived (MetaMonitorManager *manager)
 void
 meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager)
 {
+  manager->layout_mode = META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+
   meta_monitor_manager_rebuild_logical_monitors_derived (manager);
 }
 

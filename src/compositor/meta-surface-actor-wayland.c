@@ -35,6 +35,7 @@
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-window-wayland.h"
 
+#include "backends/meta-backend-private.h"
 #include "compositor/region-utils.h"
 
 enum {
@@ -104,9 +105,12 @@ meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *self)
 
    window = meta_wayland_surface_get_toplevel_window (surface);
 
-   /* XXX: We do not handle x11 clients yet */
-   if (window && window->client_type != META_WINDOW_CLIENT_TYPE_X11)
-     geometry_scale = meta_window_wayland_get_geometry_scale (window);
+   if (!meta_is_stage_views_scaled ())
+     {
+       /* XXX: We do not handle x11 clients yet */
+       if (window && window->client_type != META_WINDOW_CLIENT_TYPE_X11)
+         geometry_scale = meta_window_wayland_get_geometry_scale (window);
+     }
 
    return (double) geometry_scale / (double) surface->scale;
 }

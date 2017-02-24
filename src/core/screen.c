@@ -1279,6 +1279,37 @@ update_num_workspaces (MetaScreen *screen,
   g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
+static int
+find_highest_logical_monitor_scale (MetaBackend      *backend,
+                                    MetaCursorSprite *cursor_sprite)
+{
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaCursorRenderer *cursor_renderer =
+    meta_backend_get_cursor_renderer (backend);
+  MetaRectangle cursor_rect;
+  GList *logical_monitors;
+  GList *l;
+  int highest_scale = 0.0;
+
+  cursor_rect = meta_cursor_renderer_calculate_rect (cursor_renderer,
+                                                     cursor_sprite);
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      if (!meta_rectangle_overlap (&cursor_rect, &logical_monitor->rect))
+        continue;
+
+      highest_scale = MAX (highest_scale, logical_monitor->scale);
+    }
+
+  return highest_scale;
+}
+
 static void
 root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
                         int               x,
@@ -1286,16 +1317,35 @@ root_cursor_prepare_at (MetaCursorSprite *cursor_sprite,
                         MetaScreen       *screen)
 {
   MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaLogicalMonitor *logical_monitor;
 
-  logical_monitor =
-    meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
+  if (meta_is_stage_views_scaled ())
+    {
+      int scale;
 
-  /* Reload the cursor texture if the scale has changed. */
-  if (logical_monitor)
-    meta_cursor_sprite_set_theme_scale (cursor_sprite, logical_monitor->scale);
+      scale = find_highest_logical_monitor_scale (backend, cursor_sprite);
+      if (scale != 0.0)
+        {
+          meta_cursor_sprite_set_theme_scale (cursor_sprite, scale);
+          meta_cursor_sprite_set_texture_scale (cursor_sprite, 1.0 / scale);
+        }
+    }
+  else
+    {
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
+      MetaLogicalMonitor *logical_monitor;
+
+      logical_monitor =
+        meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
+
+      /* Reload the cursor texture if the scale has changed. */
+      if (logical_monitor)
+        {
+          meta_cursor_sprite_set_theme_scale (cursor_sprite,
+                                              logical_monitor->scale);
+          meta_cursor_sprite_set_texture_scale (cursor_sprite, 1.0);
+        }
+    }
 }
 
 static void
@@ -2206,6 +2256,9 @@ static void
 on_monitors_changed (MetaMonitorManager *manager,
                      MetaScreen         *screen)
 {
+  MetaBackend *backend;
+  MetaCursorRenderer *cursor_renderer;
+
   meta_monitor_manager_get_screen_size (manager,
                                         &screen->rect.width,
                                         &screen->rect.height);
@@ -2236,6 +2289,10 @@ on_monitors_changed (MetaMonitorManager *manager,
   meta_screen_foreach_window (screen, META_LIST_DEFAULT, meta_screen_resize_func, 0);
 
   meta_screen_queue_check_fullscreen (screen);
+
+  backend = meta_get_backend ();
+  cursor_renderer = meta_backend_get_cursor_renderer (backend);
+  meta_cursor_renderer_force_update (cursor_renderer);
 
   g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0);
 }

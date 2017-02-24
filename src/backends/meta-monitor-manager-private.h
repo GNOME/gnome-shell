@@ -71,7 +71,8 @@ typedef struct _MetaTileInfo MetaTileInfo;
 typedef enum _MetaMonitorManagerCapability
 {
   META_MONITOR_MANAGER_CAPABILITY_NONE = 0,
-  META_MONITOR_MANAGER_CAPABILITY_MIRRORING = (1 << 0)
+  META_MONITOR_MANAGER_CAPABILITY_MIRRORING = (1 << 0),
+  META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE = (1 << 1)
 } MetaMonitorManagerCapability;
 
 /* Equivalent to the 'method' enum in org.gnome.Mutter.DisplayConfig */
@@ -81,6 +82,13 @@ typedef enum _MetaMonitorsConfigMethod
   META_MONITORS_CONFIG_METHOD_TEMPORARY = 1,
   META_MONITORS_CONFIG_METHOD_PERSISTENT = 2
 } MetaMonitorsConfigMethod;
+
+/* Equivalent to the 'layout-mode' enum in org.gnome.Mutter.DisplayConfig */
+typedef enum _MetaLogicalMonitorLayoutMode
+{
+  META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL = 1,
+  META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL = 2
+} MetaLogicalMonitorLayoutMode;
 
 typedef enum
 {
@@ -274,6 +282,8 @@ struct _MetaMonitorManager
 
   MetaPowerSave power_save_mode;
 
+  MetaLogicalMonitorLayoutMode layout_mode;
+
   int screen_width;
   int screen_height;
 
@@ -376,6 +386,8 @@ struct _MetaMonitorManagerClass
   gboolean (*get_max_screen_size) (MetaMonitorManager *,
                                    int                *,
                                    int                *);
+
+  MetaLogicalMonitorLayoutMode (*get_default_layout_mode) (MetaMonitorManager *);
 };
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
@@ -478,6 +490,9 @@ int                meta_monitor_manager_calculate_monitor_mode_scale (MetaMonito
 gboolean           meta_monitor_manager_get_max_screen_size (MetaMonitorManager *manager,
                                                              int                *max_width,
                                                              int                *max_height);
+
+MetaLogicalMonitorLayoutMode
+                   meta_monitor_manager_get_default_layout_mode (MetaMonitorManager *manager);
 
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);

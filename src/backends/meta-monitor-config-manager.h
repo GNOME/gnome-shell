@@ -56,6 +56,8 @@ struct _MetaMonitorsConfig
 
   MetaMonitorsConfigKey *key;
   GList *logical_monitor_configs;
+
+  MetaLogicalMonitorLayoutMode layout_mode;
 };
 
 #define META_TYPE_MONITORS_CONFIG (meta_monitors_config_get_type ())
@@ -85,7 +87,8 @@ void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_m
 
 MetaMonitorsConfig * meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manager);
 
-MetaMonitorsConfig * meta_monitors_config_new (GList *logical_monitor_configs);
+MetaMonitorsConfig * meta_monitors_config_new (GList                       *logical_monitor_configs,
+                                               MetaLogicalMonitorLayoutMode layout_mode);
 
 unsigned int meta_monitors_config_key_hash (gconstpointer config_key);
 
@@ -107,8 +110,9 @@ gboolean meta_verify_monitor_spec (MetaMonitorSpec *monitor_spec,
 gboolean meta_verify_monitor_config (MetaMonitorConfig *monitor_config,
                                      GError           **error);
 
-gboolean meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_config,
-                                             GError                  **error);
+gboolean meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor_config,
+                                             MetaLogicalMonitorLayoutMode layout_mode,
+                                             GError                     **error);
 
 gboolean meta_verify_monitors_config (MetaMonitorsConfig *config,
                                       GError            **error);

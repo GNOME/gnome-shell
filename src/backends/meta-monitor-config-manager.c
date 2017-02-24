@@ -51,8 +51,8 @@ meta_monitor_config_manager_new (MetaMonitorManager *monitor_manager)
 
   config_manager = g_object_new (META_TYPE_MONITOR_CONFIG_MANAGER, NULL);
   config_manager->monitor_manager = monitor_manager;
-  config_manager->config_store = g_object_new (META_TYPE_MONITOR_CONFIG_STORE,
-                                               NULL);
+  config_manager->config_store =
+    meta_monitor_config_store_new (monitor_manager);
 
   return config_manager;
 }
@@ -461,10 +461,11 @@ create_monitor_config (MetaMonitor     *monitor,
 }
 
 static MetaLogicalMonitorConfig *
-create_preferred_logical_monitor_config (MetaMonitorManager *monitor_manager,
-                                         MetaMonitor        *monitor,
-                                         int                 x,
-                                         int                 y)
+create_preferred_logical_monitor_config (MetaMonitorManager          *monitor_manager,
+                                         MetaMonitor                 *monitor,
+                                         int                          x,
+                                         int                          y,
+                                         MetaLogicalMonitorLayoutMode layout_mode)
 {
   MetaMonitorMode *mode;
   int width, height;
@@ -477,6 +478,16 @@ create_preferred_logical_monitor_config (MetaMonitorManager *monitor_manager,
   scale = meta_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
                                                              monitor,
                                                              mode);
+
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      width /= scale;
+      height /= scale;
+      break;
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      break;
+    }
 
   monitor_config = create_monitor_config (monitor, mode);
 
@@ -501,6 +512,7 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
   MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
   GList *logical_monitor_configs;
   MetaMonitor *primary_monitor;
+  MetaLogicalMonitorLayoutMode layout_mode;
   MetaLogicalMonitorConfig *primary_logical_monitor_config;
   int x;
   GList *monitors;
@@ -510,10 +522,13 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
   if (!primary_monitor)
     return NULL;
 
+  layout_mode = meta_monitor_manager_get_default_layout_mode (monitor_manager);
+
   primary_logical_monitor_config =
     create_preferred_logical_monitor_config (monitor_manager,
                                              primary_monitor,
-                                             0, 0);
+                                             0, 0,
+                                             layout_mode);
   primary_logical_monitor_config->is_primary = TRUE;
   logical_monitor_configs = g_list_append (NULL,
                                            primary_logical_monitor_config);
@@ -535,14 +550,15 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
       logical_monitor_config =
         create_preferred_logical_monitor_config (monitor_manager,
                                                  monitor,
-                                                 x, 0);
+                                                 x, 0,
+                                                 layout_mode);
       logical_monitor_configs = g_list_append (logical_monitor_configs,
                                                logical_monitor_config);
 
       x += logical_monitor_config->layout.width;
     }
 
-  return meta_monitors_config_new (logical_monitor_configs);
+  return meta_monitors_config_new (logical_monitor_configs, layout_mode);
 }
 
 MetaMonitorsConfig *
@@ -551,21 +567,25 @@ meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_ma
   MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
   MetaMonitor *primary_monitor;
   GList *logical_monitor_configs;
+  MetaLogicalMonitorLayoutMode layout_mode;
   MetaLogicalMonitorConfig *primary_logical_monitor_config;
 
   primary_monitor = find_primary_monitor (monitor_manager);
   if (!primary_monitor)
     return NULL;
 
+  layout_mode = meta_monitor_manager_get_default_layout_mode (monitor_manager);
+
   primary_logical_monitor_config =
     create_preferred_logical_monitor_config (monitor_manager,
                                              primary_monitor,
-                                             0, 0);
+                                             0, 0,
+                                             layout_mode);
   primary_logical_monitor_config->is_primary = TRUE;
   logical_monitor_configs = g_list_append (NULL,
                                            primary_logical_monitor_config);
 
-  return meta_monitors_config_new (logical_monitor_configs);
+  return meta_monitors_config_new (logical_monitor_configs, layout_mode);
 }
 
 MetaMonitorsConfig *
@@ -574,6 +594,7 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
   MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
   MetaLogicalMonitorConfig *primary_logical_monitor_config = NULL;
   MetaMonitor *primary_monitor;
+  MetaLogicalMonitorLayoutMode layout_mode;
   GList *logical_monitor_configs;
   GList *region;
   GList *monitors;
@@ -582,6 +603,8 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
   primary_monitor = find_primary_monitor (monitor_manager);
   if (!primary_monitor)
     return NULL;
+
+  layout_mode = meta_monitor_manager_get_default_layout_mode (monitor_manager);
 
   logical_monitor_configs = NULL;
   region = NULL;
@@ -598,7 +621,8 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
       logical_monitor_config =
         create_preferred_logical_monitor_config (monitor_manager,
                                                  monitor,
-                                                 x, y);
+                                                 x, y,
+                                                 layout_mode);
       logical_monitor_configs = g_list_append (logical_monitor_configs,
                                                logical_monitor_config);
 
@@ -629,7 +653,7 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
 
   primary_logical_monitor_config->is_primary = TRUE;
 
-  return meta_monitors_config_new (logical_monitor_configs);
+  return meta_monitors_config_new (logical_monitor_configs, layout_mode);
 }
 
 void
@@ -774,13 +798,15 @@ meta_monitors_config_key_equal (gconstpointer data_a,
 }
 
 MetaMonitorsConfig *
-meta_monitors_config_new (GList *logical_monitor_configs)
+meta_monitors_config_new (GList                       *logical_monitor_configs,
+                          MetaLogicalMonitorLayoutMode layout_mode)
 {
   MetaMonitorsConfig *config;
 
   config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
   config->logical_monitor_configs = logical_monitor_configs;
   config->key = meta_monitors_config_key_new (logical_monitor_configs);
+  config->layout_mode = layout_mode;
 
   return config;
 }
@@ -862,12 +888,13 @@ meta_verify_monitor_config (MetaMonitorConfig *monitor_config,
 }
 
 gboolean
-meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_config,
-                                    GError                  **error)
+meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor_config,
+                                    MetaLogicalMonitorLayoutMode layout_mode,
+                                    GError                     **error)
 {
   GList *l;
-  int layout_width;
-  int layout_height;
+  int expected_mode_width = 0;
+  int expected_mode_height = 0;
 
   if (logical_monitor_config->scale < 1)
     {
@@ -894,14 +921,26 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig *logical_monitor_co
       return FALSE;
     }
 
-  layout_width = logical_monitor_config->layout.width;
-  layout_height = logical_monitor_config->layout.height;
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      expected_mode_width = (logical_monitor_config->layout.width *
+                             logical_monitor_config->scale);
+      expected_mode_height = (logical_monitor_config->layout.height *
+                              logical_monitor_config->scale);
+      break;
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      expected_mode_width = logical_monitor_config->layout.width;
+      expected_mode_height = logical_monitor_config->layout.height;
+      break;
+    }
+
   for (l = logical_monitor_config->monitor_configs; l; l = l->next)
     {
       MetaMonitorConfig *monitor_config = l->data;
 
-      if (monitor_config->mode_spec->width != layout_width ||
-          monitor_config->mode_spec->height != layout_height)
+      if (monitor_config->mode_spec->width != expected_mode_width ||
+          monitor_config->mode_spec->height != expected_mode_height)
         {
           g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                        "Monitor modes in logical monitor conflict");

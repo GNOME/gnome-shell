@@ -605,10 +605,30 @@ meta_monitor_manager_dummy_get_supported_scales (MetaMonitorManager *manager,
   *n_scales = G_N_ELEMENTS (supported_scales_dummy);
 }
 
+static gboolean
+is_monitor_framebuffers_scaled (void)
+{
+  MetaBackend *backend = meta_get_backend ();
+
+  return meta_backend_is_experimental_feature_enabled (
+    backend,
+    META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
+}
+
 static MetaMonitorManagerCapability
 meta_monitor_manager_dummy_get_capabilities (MetaMonitorManager *manager)
 {
-  return META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
+  MetaMonitorManagerCapability capabilities =
+    META_MONITOR_MANAGER_CAPABILITY_NONE;
+
+  capabilities |= META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
+
+  if (meta_backend_is_experimental_feature_enabled (
+        meta_get_backend (),
+        META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER))
+    capabilities |= META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE;
+
+  return capabilities;
 }
 
 static gboolean
@@ -625,6 +645,18 @@ meta_monitor_manager_dummy_get_max_screen_size (MetaMonitorManager *manager,
   return TRUE;
 }
 
+static MetaLogicalMonitorLayoutMode
+meta_monitor_manager_dummy_get_default_layout_mode (MetaMonitorManager *manager)
+{
+  if (!meta_is_stage_views_enabled ())
+    return META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+
+  if (is_monitor_framebuffers_scaled ())
+    return META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL;
+  else
+    return META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+}
+
 static void
 meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
@@ -639,6 +671,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->get_supported_scales = meta_monitor_manager_dummy_get_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_dummy_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_dummy_get_max_screen_size;
+  manager_class->get_default_layout_mode = meta_monitor_manager_dummy_get_default_layout_mode;
 }
 
 static void

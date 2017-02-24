@@ -100,6 +100,7 @@ struct _MetaBackendClass
 typedef enum _MetaExperimentalFeature
 {
   META_EXPERIMENTAL_FEATURE_NONE = 0,
+  META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER = (1 << 0)
 } MetaExperimentalFeature;
 
 void meta_init_backend (GType backend_gtype);
@@ -160,6 +161,8 @@ void meta_backend_enable_experimental_feature (MetaBackend            *backend,
                                                MetaExperimentalFeature feature);
 
 gboolean meta_is_stage_views_enabled (void);
+
+gboolean meta_is_stage_views_scaled (void);
 
 MetaInputSettings *meta_backend_get_input_settings (MetaBackend *backend);
 

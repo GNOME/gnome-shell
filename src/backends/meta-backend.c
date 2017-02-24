@@ -428,7 +428,10 @@ experimental_features_handler (GVariant *features_variant,
   while (g_variant_iter_loop (&features_iter, "s", &feature))
     {
       /* So far no experimental features defined. */
-      g_info ("Unknown experimental feature '%s'\n", feature);
+      if (g_str_equal (feature, "scale-monitor-framebuffer"))
+        features |= META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER;
+      else
+        g_info ("Unknown experimental feature '%s'\n", feature);
     }
 
   if (features != priv->experimental_features)
@@ -966,6 +969,22 @@ meta_is_stage_views_enabled (void)
     return TRUE;
 
   return !g_str_equal (mutter_stage_views, "0");
+}
+
+gboolean
+meta_is_stage_views_scaled (void)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitorLayoutMode layout_mode;
+
+  if (!meta_is_stage_views_enabled ())
+    return FALSE;
+
+  layout_mode = monitor_manager->layout_mode;
+
+  return layout_mode == META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL;
 }
 
 MetaInputSettings *

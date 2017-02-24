@@ -1354,13 +1354,13 @@ meta_test_monitor_hidpi_linear_config (void)
         {
           .monitors = { 0 },
           .n_monitors = 1,
-          .layout = { .x = 0, .y = 0, .width = 1280, .height = 720 },
+          .layout = { .x = 0, .y = 0, .width = 640, .height = 360 },
           .scale = 2
         },
         {
           .monitors = { 1 },
           .n_monitors = 1,
-          .layout = { .x = 1280, .y = 0, .width = 1024, .height = 768 },
+          .layout = { .x = 640, .y = 0, .width = 1024, .height = 768 },
           .scale = 1
         }
       },
@@ -1376,11 +1376,17 @@ meta_test_monitor_hidpi_linear_config (void)
         }
       },
       .n_crtcs = 2,
-      .screen_width = 1280 + 1024,
+      .screen_width = 640 + 1024,
       .screen_height = 768
     }
   };
   MetaMonitorTestSetup *test_setup;
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
 
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
@@ -2689,7 +2695,7 @@ meta_test_monitor_custom_scale_config (void)
         {
           .monitors = { 0 },
           .n_monitors = 1,
-          .layout = { .x = 0, .y = 0, .width = 1920, .height = 1080 },
+          .layout = { .x = 0, .y = 0, .width = 960, .height = 540 },
           .scale = 2
         }
       },
@@ -2703,8 +2709,8 @@ meta_test_monitor_custom_scale_config (void)
       },
       .n_crtcs = 1,
       .n_tiled_monitors = 0,
-      .screen_width = 1920,
-      .screen_height = 1080
+      .screen_width = 960,
+      .screen_height = 540
     }
   };
   MetaMonitorTestSetup *test_setup;
@@ -2824,7 +2830,7 @@ meta_test_monitor_custom_tiled_config (void)
         {
           .monitors = { 0 },
           .n_monitors = 1,
-          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .layout = { .x = 0, .y = 0, .width = 400, .height = 300 },
           .scale = 2
         }
       },
@@ -2841,8 +2847,8 @@ meta_test_monitor_custom_tiled_config (void)
       },
       .n_crtcs = 2,
       .n_tiled_monitors = 1,
-      .screen_width = 800,
-      .screen_height = 600
+      .screen_width = 400,
+      .screen_height = 300
     }
   };
   MetaMonitorTestSetup *test_setup;

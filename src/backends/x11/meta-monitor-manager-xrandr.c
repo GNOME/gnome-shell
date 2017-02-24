@@ -1623,6 +1623,16 @@ meta_monitor_manager_xrandr_get_max_screen_size (MetaMonitorManager *manager,
   return TRUE;
 }
 
+static MetaLogicalMonitorLayoutMode
+meta_monitor_manager_xrandr_get_default_layout_mode (MetaMonitorManager *manager)
+{
+  /*
+   * Under X11, we still use the 'logical' layout mode, but it is
+   * eqivalent to 'physical' as the scale is always 1.
+   */
+  return META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL;
+}
+
 static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
@@ -1703,6 +1713,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->get_supported_scales = meta_monitor_manager_xrandr_get_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_xrandr_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_xrandr_get_max_screen_size;
+  manager_class->get_default_layout_mode = meta_monitor_manager_xrandr_get_default_layout_mode;
 
   quark_meta_monitor_xrandr_data =
     g_quark_from_static_string ("-meta-monitor-xrandr-data");

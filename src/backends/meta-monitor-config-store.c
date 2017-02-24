@@ -81,6 +81,8 @@ struct _MetaMonitorConfigStore
 {
   GObject parent;
 
+  MetaMonitorManager *monitor_manager;
+
   GHashTable *configs;
 };
 
@@ -355,11 +357,13 @@ handle_start_element (GMarkupParseContext  *context,
 }
 
 static gboolean
-derive_logical_monitor_layout (MetaLogicalMonitorConfig *logical_monitor_config,
-                               GError                  **error)
+derive_logical_monitor_layout (MetaLogicalMonitorConfig    *logical_monitor_config,
+                               MetaLogicalMonitorLayoutMode layout_mode,
+                               GError                     **error)
 {
   MetaMonitorConfig *monitor_config;
   int mode_width, mode_height;
+  int width = 0, height = 0;
   GList *l;
 
   monitor_config = logical_monitor_config->monitor_configs->data;
@@ -379,8 +383,19 @@ derive_logical_monitor_layout (MetaLogicalMonitorConfig *logical_monitor_config,
         }
     }
 
-  logical_monitor_config->layout.width = mode_width;
-  logical_monitor_config->layout.height = mode_height;
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      width = mode_width / logical_monitor_config->scale;
+      height = mode_height / logical_monitor_config->scale;
+      break;
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      width = mode_width;
+      height = mode_height;
+    }
+
+  logical_monitor_config->layout.width = width;
+  logical_monitor_config->layout.height = height;
 
   return TRUE;
 }
@@ -491,12 +506,6 @@ handle_end_element (GMarkupParseContext  *context,
         if (logical_monitor_config->scale == 0)
           logical_monitor_config->scale = 1;
 
-        if (!derive_logical_monitor_layout (logical_monitor_config, error))
-          return;
-
-        if (!meta_verify_logical_monitor_config (logical_monitor_config, error))
-          return;
-
         parser->current_logical_monitor_configs =
           g_list_append (parser->current_logical_monitor_configs,
                          logical_monitor_config);
@@ -508,12 +517,34 @@ handle_end_element (GMarkupParseContext  *context,
 
     case STATE_CONFIGURATION:
       {
+        MetaMonitorConfigStore *store = parser->config_store;
         MetaMonitorsConfig *config;
+        GList *l;
+        MetaLogicalMonitorLayoutMode layout_mode;
 
         g_assert (g_str_equal (element_name, "configuration"));
 
+        layout_mode =
+          meta_monitor_manager_get_default_layout_mode (store->monitor_manager);
+
+        for (l = parser->current_logical_monitor_configs; l; l = l->next)
+          {
+            MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+
+            if (!derive_logical_monitor_layout (logical_monitor_config,
+                                                layout_mode,
+                                                error))
+              return;
+
+            if (!meta_verify_logical_monitor_config (logical_monitor_config,
+                                                     layout_mode,
+                                                     error))
+              return;
+          }
+
         config =
-          meta_monitors_config_new (parser->current_logical_monitor_configs);
+          meta_monitors_config_new (parser->current_logical_monitor_configs,
+                                    layout_mode);
 
         if (!meta_verify_monitors_config (config, error))
           {
@@ -850,6 +881,17 @@ int
 meta_monitor_config_store_get_config_count (MetaMonitorConfigStore *config_store)
 {
   return (int) g_hash_table_size (config_store->configs);
+}
+
+MetaMonitorConfigStore *
+meta_monitor_config_store_new (MetaMonitorManager *monitor_manager)
+{
+  MetaMonitorConfigStore *store;
+
+  store = g_object_new (META_TYPE_MONITOR_CONFIG_STORE, NULL);
+  store->monitor_manager = monitor_manager;
+
+  return store;
 }
 
 static void

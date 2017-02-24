@@ -1937,6 +1937,11 @@ meta_monitor_manager_kms_get_capabilities (MetaMonitorManager *manager)
   MetaMonitorManagerCapability capabilities =
     META_MONITOR_MANAGER_CAPABILITY_NONE;
 
+  if (meta_backend_is_experimental_feature_enabled (
+        backend,
+        META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER))
+    capabilities |= META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE;
+
   switch (meta_renderer_native_get_mode (renderer_native))
     {
     case META_RENDERER_NATIVE_MODE_GBM:
@@ -1965,6 +1970,20 @@ meta_monitor_manager_kms_get_max_screen_size (MetaMonitorManager *manager,
   *max_height = manager_kms->max_buffer_height;
 
   return TRUE;
+}
+
+static MetaLogicalMonitorLayoutMode
+meta_monitor_manager_kms_get_default_layout_mode (MetaMonitorManager *manager)
+{
+  if (!meta_is_stage_views_enabled ())
+    return META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+
+  if (meta_backend_is_experimental_feature_enabled (
+        meta_get_backend (),
+        META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER))
+    return META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL;
+  else
+    return META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
 }
 
 static void
@@ -2011,4 +2030,5 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->get_supported_scales = meta_monitor_manager_kms_get_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_kms_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_kms_get_max_screen_size;
+  manager_class->get_default_layout_mode = meta_monitor_manager_kms_get_default_layout_mode;
 }

@@ -60,9 +60,9 @@ G_DECLARE_FINAL_TYPE (MetaLogicalMonitor, meta_logical_monitor,
                       META, LOGICAL_MONITOR,
                       GObject)
 
-MetaLogicalMonitor * meta_logical_monitor_new (MetaMonitorManager          *monitor_manager,
-                                               MetaLogicalMonitorConfig    *logical_monitor_config,
-                                               int                          monitor_number);
+MetaLogicalMonitor * meta_logical_monitor_new (MetaMonitorManager       *monitor_manager,
+                                               MetaLogicalMonitorConfig *logical_monitor_config,
+                                               int                       monitor_number);
 
 MetaLogicalMonitor * meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
                                                        MetaMonitor        *monitor,

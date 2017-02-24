@@ -38,10 +38,13 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "compositor/meta-surface-actor-wayland.h"
+#include "backends/meta-backend-private.h"
 
 struct _MetaWindowWayland
 {
   MetaWindow parent;
+
+  int geometry_scale;
 
   MetaWaylandSerial pending_configure_serial;
   gboolean has_pending_move;
@@ -61,10 +64,23 @@ struct _MetaWindowWaylandClass
 
 G_DEFINE_TYPE (MetaWindowWayland, meta_window_wayland, META_TYPE_WINDOW)
 
+static int
+get_window_geometry_scale_for_logical_monitor (MetaLogicalMonitor *logical_monitor)
+{
+  if (meta_is_stage_views_scaled ())
+    return 1;
+  else
+    return logical_monitor->scale;
+}
+
 static void
 meta_window_wayland_manage (MetaWindow *window)
 {
+  MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   MetaDisplay *display = window->display;
+
+  wl_window->geometry_scale =
+    get_window_geometry_scale_for_logical_monitor (window->monitor);
 
   meta_display_register_wayland_window (display, window);
 
@@ -375,6 +391,12 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
       return;
     }
 
+  if (meta_is_stage_views_scaled ())
+    {
+      window->monitor = to;
+      return;
+    }
+
   /* To avoid a window alternating between two main monitors because scaling
    * changes the main monitor, wait until both the current and the new scale
    * will result in the same main monitor. */
@@ -393,8 +415,16 @@ static void
 meta_window_wayland_main_monitor_changed (MetaWindow               *window,
                                           const MetaLogicalMonitor *old)
 {
+  MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
+  int old_geometry_scale = wl_window->geometry_scale;
+  int geometry_scale;
   float scale_factor;
   MetaWaylandSurface *surface;
+
+  if (!window->monitor)
+    return;
+
+  geometry_scale = meta_window_wayland_get_geometry_scale (window);
 
   /* This function makes sure that window geometry, window actor geometry and
    * surface actor geometry gets set according the old and current main monitor
@@ -402,7 +432,7 @@ meta_window_wayland_main_monitor_changed (MetaWindow               *window,
    * didn't change, there is nothing to do. */
   if (old == NULL ||
       window->monitor == NULL ||
-      old->scale == window->monitor->scale)
+      old_geometry_scale == geometry_scale)
     return;
 
   /* MetaWindow keeps its rectangles in the physical pixel coordinate space.
@@ -410,7 +440,7 @@ meta_window_wayland_main_monitor_changed (MetaWindow               *window,
    * window surfaces to be scaled given the monitor scale, so we need to scale
    * the rectangles in MetaWindow accordingly. */
 
-  scale_factor = (float)window->monitor->scale / old->scale;
+  scale_factor = (float) geometry_scale / old_geometry_scale;
 
   /* Window size. */
   scale_rect_size (&window->rect, scale_factor);
@@ -418,7 +448,6 @@ meta_window_wayland_main_monitor_changed (MetaWindow               *window,
   scale_rect_size (&window->saved_rect, scale_factor);
   scale_size (&window->size_hints.min_width, &window->size_hints.min_height, scale_factor);
   scale_size (&window->size_hints.max_width, &window->size_hints.max_height, scale_factor);
-
 
   /* Window geometry offset (XXX: Need a better place, see
    * meta_window_wayland_move_resize). */
@@ -449,6 +478,8 @@ meta_window_wayland_main_monitor_changed (MetaWindow               *window,
       meta_surface_actor_wayland_sync_state_recursive (actor);
     }
 
+  wl_window->geometry_scale = geometry_scale;
+
   meta_window_emit_size_changed (window);
 }
 
@@ -476,6 +507,8 @@ static void
 meta_window_wayland_init (MetaWindowWayland *wl_window)
 {
   MetaWindow *window = META_WINDOW (wl_window);
+
+  wl_window->geometry_scale = 1;
 
   g_signal_connect (window, "notify::appears-focused",
                     G_CALLBACK (appears_focused_changed), NULL);
@@ -571,7 +604,7 @@ should_do_pending_move (MetaWindowWayland *wl_window,
 int
 meta_window_wayland_get_geometry_scale (MetaWindow *window)
 {
-  return window->monitor->scale;
+  return get_window_geometry_scale_for_logical_monitor (window->monitor);
 }
 
 /**

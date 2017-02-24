@@ -472,8 +472,8 @@ meta_test_monitor_store_scale (void)
             .layout = {
               .x = 0,
               .y = 0,
-              .width = 1920,
-              .height = 1080
+              .width = 960,
+              .height = 540
             },
             .scale = 2,
             .is_primary = TRUE,

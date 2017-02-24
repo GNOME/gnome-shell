@@ -30,6 +30,8 @@
 G_DECLARE_FINAL_TYPE (MetaMonitorConfigStore, meta_monitor_config_store,
                       META, MONITOR_CONFIG_STORE, GObject)
 
+MetaMonitorConfigStore * meta_monitor_config_store_new (MetaMonitorManager *monitor_manager);
+
 MetaMonitorsConfig * meta_monitor_config_store_lookup (MetaMonitorConfigStore *config_store,
                                                        MetaMonitorsConfigKey  *key);
 

@@ -1707,16 +1707,26 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
   MetaMonitorTransform view_transform;
   CoglOnscreen *onscreen = NULL;
   CoglOffscreen *offscreen = NULL;
+  int scale;
+  int width, height;
   MetaRendererView *view;
   GError *error = NULL;
 
   view_transform = calculate_view_transform (monitor_manager, logical_monitor);
 
+  if (meta_is_stage_views_scaled ())
+    scale = logical_monitor->scale;
+  else
+    scale = 1;
+
+  width = logical_monitor->rect.width * scale;
+  height = logical_monitor->rect.height * scale;
+
   onscreen = meta_renderer_native_create_onscreen (META_RENDERER_NATIVE (renderer),
                                                    cogl_context,
                                                    view_transform,
-                                                   logical_monitor->rect.width,
-                                                   logical_monitor->rect.height);
+                                                   width,
+                                                   height);
   if (!onscreen)
     meta_fatal ("Failed to allocate onscreen framebuffer\n");
 
@@ -1725,14 +1735,15 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
       offscreen = meta_renderer_native_create_offscreen (META_RENDERER_NATIVE (renderer),
                                                          cogl_context,
                                                          view_transform,
-                                                         logical_monitor->rect.width,
-                                                         logical_monitor->rect.height);
+                                                         width,
+                                                         height);
       if (!offscreen)
         meta_fatal ("Failed to allocate back buffer texture\n");
     }
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
                        "layout", &logical_monitor->rect,
+                       "scale", scale,
                        "framebuffer", onscreen,
                        "offscreen", offscreen,
                        "logical-monitor", logical_monitor,
