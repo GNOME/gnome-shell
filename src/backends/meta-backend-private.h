@@ -97,6 +97,11 @@ struct _MetaBackendClass
 
 };
 
+typedef enum _MetaExperimentalFeature
+{
+  META_EXPERIMENTAL_FEATURE_NONE = 0,
+} MetaExperimentalFeature;
+
 void meta_init_backend (GType backend_gtype);
 
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
@@ -145,6 +150,14 @@ void meta_backend_set_client_pointer_constraint (MetaBackend *backend,
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
 void meta_backend_monitors_changed (MetaBackend *backend);
+
+gboolean meta_backend_is_experimental_feature_enabled (MetaBackend            *backend,
+                                                       MetaExperimentalFeature feature);
+
+void meta_backend_override_experimental_features (MetaBackend *backend);
+
+void meta_backend_enable_experimental_feature (MetaBackend            *backend,
+                                               MetaExperimentalFeature feature);
 
 gboolean meta_is_stage_views_enabled (void);
 

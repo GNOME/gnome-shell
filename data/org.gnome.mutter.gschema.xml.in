@@ -102,6 +102,20 @@
       </description>
     </key>
 
+    <key name="experimental-features" type="as">
+      <default>[]</default>
+      <summary>Enable experimental features</summary>
+      <description>
+        To enable experimental features, add the feature keyword to the list.
+        Whether the feature requires restarting the compositor depends on the
+        given feature. Any experimental feature is not required to still be
+        available, or configurable. Don't expect adding anything in this
+        setting to be future proof.
+
+        Currently possible keywords: (none)
+      </description>
+    </key>
+
     <child name="keybindings" schema="org.gnome.mutter.keybindings"/>
 
   </schema>

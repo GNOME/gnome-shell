@@ -68,6 +68,10 @@ struct _MetaBackendPrivate
   MetaRenderer *renderer;
   MetaEgl *egl;
 
+  GSettings *mutter_settings;
+  MetaExperimentalFeature experimental_features;
+  gboolean experimental_features_overridden;
+
   ClutterBackend *clutter_backend;
   ClutterActor *stage;
 
@@ -403,6 +407,96 @@ meta_backend_real_get_relative_motion_deltas (MetaBackend *backend,
   return FALSE;
 }
 
+static gboolean
+experimental_features_handler (GVariant *features_variant,
+                               gpointer *result,
+                               gpointer  data)
+{
+  MetaBackend *backend = data;
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  GVariantIter features_iter;
+  char *feature;
+  MetaExperimentalFeature features = META_EXPERIMENTAL_FEATURE_NONE;
+
+  if (priv->experimental_features_overridden)
+    {
+      *result = GINT_TO_POINTER (FALSE);
+      return TRUE;
+    }
+
+  g_variant_iter_init (&features_iter, features_variant);
+  while (g_variant_iter_loop (&features_iter, "s", &feature))
+    {
+      /* So far no experimental features defined. */
+      g_info ("Unknown experimental feature '%s'\n", feature);
+    }
+
+  if (features != priv->experimental_features)
+    {
+      priv->experimental_features = features;
+      *result = GINT_TO_POINTER (TRUE);
+    }
+  else
+    {
+      *result = GINT_TO_POINTER (FALSE);
+    }
+
+  return TRUE;
+}
+
+static gboolean
+update_experimental_features (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return GPOINTER_TO_INT (g_settings_get_mapped (priv->mutter_settings,
+                                                 "experimental-features",
+                                                 experimental_features_handler,
+                                                 backend));
+}
+
+static void
+mutter_settings_changed (GSettings   *settings,
+                         gchar       *key,
+                         MetaBackend *backend)
+{
+  gboolean changed;
+
+  if (!g_str_equal (key, "experimental-features"))
+    return;
+
+  changed = update_experimental_features (backend);
+  if (changed)
+    g_signal_emit_by_name (backend, "experimental-features-changed");
+}
+
+gboolean
+meta_backend_is_experimental_feature_enabled (MetaBackend            *backend,
+                                              MetaExperimentalFeature feature)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return !!(priv->experimental_features & feature);
+}
+
+void
+meta_backend_override_experimental_features (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  priv->experimental_features = META_EXPERIMENTAL_FEATURE_NONE;
+  priv->experimental_features_overridden = TRUE;
+}
+
+void
+meta_backend_enable_experimental_feature (MetaBackend            *backend,
+                                          MetaExperimentalFeature feature)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  priv->experimental_features |= feature;
+}
+
 static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
@@ -435,6 +529,12 @@ meta_backend_class_init (MetaBackendClass *klass)
                 0,
                 NULL, NULL, NULL,
                 G_TYPE_NONE, 1, G_TYPE_INT);
+  g_signal_new ("experimental-features-changed",
+                G_TYPE_FROM_CLASS (object_class),
+                G_SIGNAL_RUN_LAST,
+                0,
+                NULL, NULL, NULL,
+                G_TYPE_NONE, 0);
 }
 
 static gboolean
@@ -444,6 +544,12 @@ meta_backend_initable_init (GInitable     *initable,
 {
   MetaBackend *backend = META_BACKEND (initable);
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  priv->mutter_settings = g_settings_new ("org.gnome.mutter");
+  g_signal_connect (priv->mutter_settings, "changed",
+                    G_CALLBACK (mutter_settings_changed),
+                    backend);
+  update_experimental_features (backend);
 
   priv->egl = g_object_new (META_TYPE_EGL, NULL);
 
