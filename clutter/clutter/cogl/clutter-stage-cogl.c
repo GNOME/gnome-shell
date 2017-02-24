@@ -504,6 +504,7 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
   cairo_rectangle_int_t clip_region;
   gboolean clip_region_empty;
   int window_scale;
+  int fb_scale;
 
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
 
@@ -558,6 +559,7 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
   clip_region_empty = may_use_clipped_redraw && clip_region.width == 0;
 
   window_scale = _clutter_stage_window_get_scale_factor (stage_window);
+  fb_scale = window_scale * clutter_stage_view_get_scale (view);
 
   swap_with_damage = FALSE;
   if (has_buffer_age)
@@ -628,13 +630,13 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
 
       stage_cogl->using_clipped_redraw = TRUE;
 
-      scissor_x = (clip_region.x - view_rect.x) * window_scale;
-      scissor_y = (clip_region.y - view_rect.y) * window_scale;
+      scissor_x = (clip_region.x - view_rect.x) * fb_scale;
+      scissor_y = (clip_region.y - view_rect.y) * fb_scale;
       cogl_framebuffer_push_scissor_clip (fb,
                                           scissor_x,
                                           scissor_y,
-                                          clip_region.width * window_scale,
-                                          clip_region.height * window_scale);
+                                          clip_region.width * fb_scale,
+                                          clip_region.height * fb_scale);
       paint_stage (stage_cogl, view, &clip_region);
       cogl_framebuffer_pop_clip (fb);
 
@@ -653,13 +655,13 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
           int scissor_x;
           int scissor_y;
 
-          scissor_x = (clip_region.x - view_rect.x) * window_scale;;
-          scissor_y = (clip_region.y - view_rect.y) * window_scale;
+          scissor_x = (clip_region.x - view_rect.x) * fb_scale;;
+          scissor_y = (clip_region.y - view_rect.y) * fb_scale;
           cogl_framebuffer_push_scissor_clip (fb,
                                               scissor_x,
                                               scissor_y,
-                                              clip_region.width * window_scale,
-                                              clip_region.height * window_scale);
+                                              clip_region.width * fb_scale,
+                                              clip_region.height * fb_scale);
           paint_stage (stage_cogl, view, &clip_region);
           cogl_framebuffer_pop_clip (fb);
         }
@@ -724,10 +726,10 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
       else if (use_clipped_redraw)
         {
           swap_region = (cairo_rectangle_int_t) {
-            .x = (clip_region.x - view_rect.x) * window_scale,
-            .y = (clip_region.y - view_rect.y) * window_scale,
-            .width = clip_region.width * window_scale,
-            .height = clip_region.height * window_scale,
+            .x = (clip_region.x - view_rect.x) * fb_scale,
+            .y = (clip_region.y - view_rect.y) * fb_scale,
+            .width = clip_region.width * fb_scale,
+            .height = clip_region.height * fb_scale,
           };
           g_assert (swap_region.width > 0);
           do_swap_buffer = TRUE;
@@ -737,8 +739,8 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
           swap_region = (cairo_rectangle_int_t) {
             .x = 0,
             .y = 0,
-            .width = view_rect.width * window_scale,
-            .height = view_rect.height * window_scale,
+            .width = view_rect.width * fb_scale,
+            .height = view_rect.height * fb_scale,
           };
           do_swap_buffer = TRUE;
         }

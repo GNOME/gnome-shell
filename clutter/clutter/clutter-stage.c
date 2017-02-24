@@ -1380,6 +1380,8 @@ _clutter_stage_do_pick_on_view (ClutterStage     *stage,
   gint read_y;
   int window_scale;
   float fb_width, fb_height;
+  int view_scale;
+  int fb_scale;
   int viewport_offset_x;
   int viewport_offset_y;
 
@@ -1387,10 +1389,12 @@ _clutter_stage_do_pick_on_view (ClutterStage     *stage,
 
   context = _clutter_context_get_default ();
   window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
+  view_scale = clutter_stage_view_get_scale (view);
+  fb_scale = window_scale * view_scale;
   clutter_stage_view_get_layout (view, &view_layout);
 
-  fb_width = view_layout.width;
-  fb_height = view_layout.height;
+  fb_width = view_layout.width * view_scale;
+  fb_height = view_layout.height * view_scale;
   cogl_push_framebuffer (fb);
 
   /* needed for when a context switch happens */
@@ -1400,38 +1404,38 @@ _clutter_stage_do_pick_on_view (ClutterStage     *stage,
    * picking to not work at all, so setting it the whole framebuffer content
    * for now. */
   cogl_framebuffer_push_scissor_clip (fb, 0, 0,
-                                      view_layout.width,
-                                      view_layout.height);
+                                      view_layout.width * view_scale,
+                                      view_layout.height * view_scale);
 
   _clutter_stage_window_get_dirty_pixel (priv->impl, view, &dirty_x, &dirty_y);
 
   if (G_LIKELY (!(clutter_pick_debug_flags & CLUTTER_DEBUG_DUMP_PICK_BUFFERS)))
     {
       CLUTTER_NOTE (PICK, "Pushing pick scissor clip x: %d, y: %d, 1x1",
-                    dirty_x * window_scale,
-                    dirty_y * window_scale);
-      cogl_framebuffer_push_scissor_clip (fb, dirty_x * window_scale, dirty_y * window_scale, 1, 1);
+                    dirty_x * fb_scale,
+                    dirty_y * fb_scale);
+      cogl_framebuffer_push_scissor_clip (fb, dirty_x * fb_scale, dirty_y * fb_scale, 1, 1);
     }
 
-  viewport_offset_x = x * window_scale - dirty_x * window_scale;
-  viewport_offset_y = y * window_scale - dirty_y * window_scale;
+  viewport_offset_x = x * fb_scale - dirty_x * fb_scale;
+  viewport_offset_y = y * fb_scale - dirty_y * fb_scale;
   CLUTTER_NOTE (PICK, "Setting viewport to %f, %f, %f, %f",
-                priv->viewport[0] * window_scale - viewport_offset_x,
-                priv->viewport[1] * window_scale - viewport_offset_y,
-                priv->viewport[2] * window_scale,
-                priv->viewport[3] * window_scale);
-  cogl_set_viewport (priv->viewport[0] * window_scale - viewport_offset_x,
-                     priv->viewport[1] * window_scale - viewport_offset_y,
-                     priv->viewport[2] * window_scale,
-                     priv->viewport[3] * window_scale);
+                priv->viewport[0] * fb_scale - viewport_offset_x,
+                priv->viewport[1] * fb_scale - viewport_offset_y,
+                priv->viewport[2] * fb_scale,
+                priv->viewport[3] * fb_scale);
+  cogl_set_viewport (priv->viewport[0] * fb_scale - viewport_offset_x,
+                     priv->viewport[1] * fb_scale - viewport_offset_y,
+                     priv->viewport[2] * fb_scale,
+                     priv->viewport[3] * fb_scale);
 
-  read_x = dirty_x * window_scale;
-  read_y = dirty_y * window_scale;
+  read_x = dirty_x * fb_scale;
+  read_y = dirty_y * fb_scale;
 
-  CLUTTER_NOTE (PICK, "Performing pick at %i,%i on view %dx%d+%d+%d",
+  CLUTTER_NOTE (PICK, "Performing pick at %i,%i on view %dx%d+%d+%d s: %d",
                 x, y,
                 view_layout.width, view_layout.height,
-                view_layout.x, view_layout.y);
+                view_layout.x, view_layout.y, view_scale);
 
   cogl_color_init_from_4ub (&stage_pick_id, 255, 255, 255, 255);
   cogl_clear (&stage_pick_id, COGL_BUFFER_BIT_COLOR | COGL_BUFFER_BIT_DEPTH);
@@ -3569,6 +3573,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage     *stage,
       cairo_rectangle_int_t view_layout;
       ClutterPerspective perspective;
       int window_scale;
+      int fb_scale;
       int viewport_offset_x;
       int viewport_offset_y;
       float z_2d;
@@ -3579,14 +3584,15 @@ _clutter_stage_maybe_setup_viewport (ClutterStage     *stage,
                     priv->viewport[3]);
 
       window_scale = _clutter_stage_window_get_scale_factor (priv->impl);
+      fb_scale = window_scale * clutter_stage_view_get_scale (view);
       clutter_stage_view_get_layout (view, &view_layout);
 
-      viewport_offset_x = view_layout.x * window_scale;
-      viewport_offset_y = view_layout.y * window_scale;
-      cogl_set_viewport (priv->viewport[0] * window_scale - viewport_offset_x,
-                         priv->viewport[1] * window_scale - viewport_offset_y,
-                         priv->viewport[2] * window_scale,
-                         priv->viewport[3] * window_scale);
+      viewport_offset_x = view_layout.x * fb_scale;
+      viewport_offset_y = view_layout.y * fb_scale;
+      cogl_set_viewport (priv->viewport[0] * fb_scale - viewport_offset_x,
+                         priv->viewport[1] * fb_scale - viewport_offset_y,
+                         priv->viewport[2] * fb_scale,
+                         priv->viewport[3] * fb_scale);
 
       perspective = priv->perspective;
 

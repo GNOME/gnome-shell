@@ -28,6 +28,7 @@ enum
   PROP_LAYOUT,
   PROP_FRAMEBUFFER,
   PROP_OFFSCREEN,
+  PROP_SCALE,
 
   PROP_LAST
 };
@@ -37,6 +38,7 @@ static GParamSpec *obj_props[PROP_LAST];
 typedef struct _ClutterStageViewPrivate
 {
   cairo_rectangle_int_t layout;
+  int scale;
   CoglFramebuffer *framebuffer;
 
   CoglOffscreen *offscreen;
@@ -141,6 +143,15 @@ clutter_stage_view_blit_offscreen (ClutterStageView            *view,
   cogl_framebuffer_pop_matrix (priv->framebuffer);
 }
 
+int
+clutter_stage_view_get_scale (ClutterStageView *view)
+{
+  ClutterStageViewPrivate *priv =
+    clutter_stage_view_get_instance_private (view);
+
+  return priv->scale;
+}
+
 gboolean
 clutter_stage_view_is_dirty_viewport (ClutterStageView *view)
 {
@@ -229,6 +240,9 @@ clutter_stage_view_get_property (GObject    *object,
     case PROP_OFFSCREEN:
       g_value_set_boxed (value, priv->offscreen);
       break;
+    case PROP_SCALE:
+      g_value_set_int (value, priv->scale);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -257,6 +271,9 @@ clutter_stage_view_set_property (GObject      *object,
     case PROP_OFFSCREEN:
       priv->offscreen = g_value_dup_boxed (value);
       break;
+    case PROP_SCALE:
+      priv->scale = g_value_get_int (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -284,6 +301,7 @@ clutter_stage_view_init (ClutterStageView *view)
 
   priv->dirty_viewport = TRUE;
   priv->dirty_projection = TRUE;
+  priv->scale = 1;
 }
 
 static void
@@ -322,6 +340,14 @@ clutter_stage_view_class_init (ClutterStageViewClass *klass)
                         G_PARAM_READWRITE |
 			G_PARAM_CONSTRUCT_ONLY |
                         G_PARAM_STATIC_STRINGS);
+
+  obj_props[PROP_SCALE] =
+    g_param_spec_int ("scale",
+                      "View scale",
+                      "The view scale",
+                      1, G_MAXINT, 1,
+                      G_PARAM_READWRITE |
+                      G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 }
