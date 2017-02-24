@@ -36,7 +36,7 @@ const TodayButton = new Lang.Class({
         // on the current date can be confusing. So don't make the button reactive
         // until the selected date changes.
         this.actor = new St.Button({ style_class: 'datemenu-today-button',
-                                     x_align: St.Align.START,
+                                     x_expand: true, x_align: St.Align.START,
                                      can_focus: true,
                                      reactive: false
                                    });
@@ -290,6 +290,22 @@ const FreezableBinLayout = new Lang.Class({
     }
 });
 
+const CalendarColumnLayout = new Lang.Class({
+    Name: 'CalendarColumnLayout',
+    Extends: Clutter.BoxLayout,
+
+    _init(actor) {
+        this.parent({ orientation: Clutter.Orientation.VERTICAL });
+        this._calActor = actor;
+    },
+
+    vfunc_get_preferred_width: function(container, forHeight) {
+        if (!this._calActor || this._calActor.get_parent() != container)
+            return this.parent(container, forHeight);
+        return this._calActor.get_preferred_width(forHeight);
+    }
+});
+
 const DateMenuButton = new Lang.Class({
     Name: 'DateMenuButton',
     Extends: PanelMenu.Button,
@@ -346,14 +362,16 @@ const DateMenuButton = new Lang.Class({
         hbox.add(this._messageList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
 
         // Fill up the second column
-        vbox = new St.BoxLayout({ style_class: 'datemenu-calendar-column',
-                                  vertical: true });
+        let boxLayout = new CalendarColumnLayout(this._calendar.actor);
+        vbox = new St.Widget({ style_class: 'datemenu-calendar-column',
+                               layout_manager: boxLayout });
+        boxLayout.hookup_style(vbox);
         hbox.add(vbox);
 
         this._date = new TodayButton(this._calendar);
         vbox.add_actor(this._date.actor);
 
-        vbox.add(this._calendar.actor);
+        vbox.add_actor(this._calendar.actor);
 
         this._displaysSection = new St.ScrollView({ style_class: 'datemenu-displays-section vfade',
                                                     x_expand: true, x_fill: true,
