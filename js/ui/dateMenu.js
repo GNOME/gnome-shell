@@ -8,6 +8,7 @@ const Gtk = imports.gi.Gtk;
 const GWeather = imports.gi.GWeather;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const Pango = imports.gi.Pango;
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Shell = imports.gi.Shell;
@@ -20,6 +21,7 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Calendar = imports.ui.calendar;
+const Weather = imports.misc.weather;
 
 function _isToday(date) {
     let now = new Date();
@@ -189,6 +191,133 @@ const WorldClocksSection = new Lang.Class({
             let now = GLib.DateTime.new_now(tz);
             l.actor.text = Util.formatTime(now, { timeOnly: true });
         }
+    }
+});
+
+const WeatherSection = new Lang.Class({
+    Name: 'WeatherSection',
+
+    _init: function() {
+        this._weatherClient = new Weather.WeatherClient();
+
+        this.actor = new St.Button({ style_class: 'weather-button',
+                                     x_fill: true,
+                                     can_focus: true });
+        this.actor.connect('clicked', () => {
+            this._weatherClient.activateApp();
+
+            Main.overview.hide();
+            Main.panel.closeCalendar();
+        });
+        this.actor.connect('notify::mapped', () => {
+            if (this.actor.mapped)
+                this._weatherClient.update();
+        });
+
+        let box = new St.BoxLayout({ style_class: 'weather-box',
+                                      vertical: true });
+
+        this.actor.child = box;
+
+        box.add_child(new St.Label({ style_class: 'weather-header',
+                                     x_align: Clutter.ActorAlign.START,
+                                     text: _("Weather") }));
+
+        this._conditionsLabel = new St.Label({ style_class: 'weather-conditions',
+                                               x_align: Clutter.ActorAlign.START });
+        this._conditionsLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        this._conditionsLabel.clutter_text.line_wrap = true;
+        box.add_child(this._conditionsLabel);
+
+        this._weatherClient.connect('changed', Lang.bind(this, this._sync));
+        this._sync();
+    },
+
+    _getSummary: function(info) {
+        let summary = info.get_conditions();
+        if (summary == '-')
+            return info.get_sky();
+        return summary;
+    },
+
+    _sameSummary: function(info1, info2) {
+        let [ok1, phenom1, qualifier1] = info1.get_value_conditions();
+        let [ok2, phenom2, qualifier2] = info2.get_value_conditions();
+        if (ok1 || ok2)
+            return ok1 == ok2 && phenom1 == phenom2 && qualifier1 == qualifier2;
+
+        let [, sky1] = info1.get_value_sky();
+        let [, sky2] = info2.get_value_sky();
+        return sky1 == sky2;
+    },
+
+    _getSummaryText: function() {
+        let info = this._weatherClient.info;
+        let forecasts = info.get_forecast_list();
+        if (forecasts.length == 0) // No forecasts, just current conditions
+            return '%s.'.format(this._getSummary(info));
+
+        let current = info;
+        let summaries = [this._getSummary(info)];
+        for (let i = 0; i < forecasts.length; i++) {
+            let [ok, timestamp] = forecasts[i].get_value_update();
+            if (!_isToday(new Date(timestamp * 1000)))
+                continue; // Ignore forecasts from other days
+
+            if (this._sameSummary(current, forecasts[i]))
+                continue; // Ignore consecutive runs of equal summaries
+
+            current = forecasts[i];
+            if (summaries.push(this._getSummary(current)) == 3)
+                break; // Use a maximum of three summaries
+        }
+
+        let fmt;
+        switch(summaries.length) {
+            /* Translators: %s is a weather condition like "Clear sky"; see
+               libgweather for the possible condition strings. If at all
+               possible, the sentence should match the grammatical case etc. of
+               the inserted conditions. */
+            case 1: fmt = _("%s all day."); break;
+
+            /* Translators: %s is a weather condition like "Clear sky"; see
+               libgweather for the possible condition strings. If at all
+               possible, the sentence should match the grammatical case etc. of
+               the inserted conditions. */
+            case 2: fmt = _("%s, then %s later."); break;
+
+            /* Translators: %s is a weather condition like "Clear sky"; see
+               libgweather for the possible condition strings. If at all
+               possible, the sentence should match the grammatical case etc. of
+               the inserted conditions. */
+            case 3: fmt = _("%s, then %s, followed by %s later."); break;
+        }
+        return String.prototype.format.apply(fmt, summaries);
+    },
+
+    _getLabelText: function() {
+        if (this._weatherClient.loading)
+            return _("Loading…");
+
+        let info = this._weatherClient.info;
+        if (info.is_valid())
+            return this._getSummaryText() + ' ' +
+                   /* Translators: %s is a temperature with unit, e.g. "23℃" */
+                   _("Feels like %s.").format(info.get_apparent());
+
+        if (info.network_error())
+            return _("Go online for weather information");
+
+        return _("Weather information is currently unavailable");
+    },
+
+    _sync: function() {
+        this.actor.visible = this._weatherClient.available;
+
+        if (!this.actor.visible)
+            return;
+
+        this._conditionsLabel.text = this._getLabelText();
     }
 });
 
@@ -394,6 +523,8 @@ const DateMenuButton = new Lang.Class({
         this._clocksItem = new WorldClocksSection();
         displaysBox.add(this._clocksItem.actor, { x_fill: true });
 
+        this._weatherItem = new WeatherSection();
+        displaysBox.add(this._weatherItem.actor, { x_fill: true });
 
         // Done with hbox for calendar and event list
 
