@@ -51,7 +51,7 @@ void meta_window_wayland_move_resize (MetaWindow        *window,
                                       MetaRectangle      new_geom,
                                       int                dx,
                                       int                dy);
-int meta_window_wayland_get_main_monitor_scale (MetaWindow *window);
+int meta_window_wayland_get_geometry_scale (MetaWindow *window);
 
 void meta_window_wayland_place_relative_to (MetaWindow *window,
                                             MetaWindow *other,

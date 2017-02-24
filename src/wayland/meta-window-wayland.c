@@ -177,7 +177,7 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
   int configured_y;
   int configured_width;
   int configured_height;
-  int monitor_scale;
+  int geometry_scale;
 
   g_assert (window->frame == NULL);
 
@@ -192,9 +192,9 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
    * is mainly on. Scale the configured rectangle to be in logical pixel
    * coordinate space so that we can have a scale independent size to pass
    * to the Wayland surface. */
-  monitor_scale = meta_window_wayland_get_main_monitor_scale (window);
-  configured_width = constrained_rect.width / monitor_scale;
-  configured_height = constrained_rect.height / monitor_scale;
+  geometry_scale = meta_window_wayland_get_geometry_scale (window);
+  configured_width = constrained_rect.width / geometry_scale;
+  configured_height = constrained_rect.height / geometry_scale;
 
   /* For wayland clients, the size is completely determined by the client,
    * and while this allows to avoid some trickery with frames and the resulting
@@ -569,7 +569,7 @@ should_do_pending_move (MetaWindowWayland *wl_window,
 }
 
 int
-meta_window_wayland_get_main_monitor_scale (MetaWindow *window)
+meta_window_wayland_get_geometry_scale (MetaWindow *window)
 {
   return window->monitor->scale;
 }
@@ -587,25 +587,26 @@ meta_window_wayland_move_resize (MetaWindow        *window,
                                  int                dy)
 {
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
+  int geometry_scale;
   int gravity;
   MetaRectangle rect;
   MetaMoveResizeFlags flags;
-  int monitor_scale;
 
   /* new_geom is in the logical pixel coordinate space, but MetaWindow wants its
    * rects to represent what in turn will end up on the stage, i.e. we need to
    * scale new_geom to physical pixels given what buffer scale and texture scale
    * is in use. */
-  monitor_scale = meta_window_wayland_get_main_monitor_scale (window);
-  new_geom.x *= monitor_scale;
-  new_geom.y *= monitor_scale;
-  new_geom.width *= monitor_scale;
-  new_geom.height *= monitor_scale;
+
+  geometry_scale = meta_window_wayland_get_geometry_scale (window);
+  new_geom.x *= geometry_scale;
+  new_geom.y *= geometry_scale;
+  new_geom.width *= geometry_scale;
+  new_geom.height *= geometry_scale;
 
   /* The (dx, dy) offset is also in logical pixel coordinate space and needs
    * to be scaled in the same way as new_geom. */
-  dx *= monitor_scale;
-  dy *= monitor_scale;
+  dx *= geometry_scale;
+  dy *= geometry_scale;
 
   /* XXX: Find a better place to store the window geometry offsets. */
   window->custom_frame_extents.left = new_geom.x;
@@ -655,18 +656,16 @@ meta_window_wayland_place_relative_to (MetaWindow *window,
                                        int         x,
                                        int         y)
 {
-  int monitor_scale;
+  int geometry_scale;
 
   /* If there is no monitor, we can't position the window reliably. */
   if (!other->monitor)
     return;
 
-  /* Scale the relative coordinate (x, y) from logical pixels to physical
-   * pixels. */
-  monitor_scale = other->monitor->scale;
+  geometry_scale = meta_window_wayland_get_geometry_scale (other);
   meta_window_move_frame (window, FALSE,
-                          other->buffer_rect.x + (x * monitor_scale),
-                          other->buffer_rect.y + (y * monitor_scale));
+                          other->buffer_rect.x + (x * geometry_scale),
+                          other->buffer_rect.y + (y * geometry_scale));
   window->placed = TRUE;
 }
 
@@ -703,7 +702,7 @@ meta_window_wayland_set_min_size (MetaWindow *window,
       return;
     }
 
-  scale = (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale = (float) meta_window_wayland_get_geometry_scale (window);
   scale_size (&width, &height, scale);
 
   new_width = width + (window->custom_frame_extents.left +
@@ -737,7 +736,7 @@ meta_window_wayland_set_max_size (MetaWindow *window,
       return;
     }
 
-  scale = (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale = (float) meta_window_wayland_get_geometry_scale (window);
   scale_size (&width, &height, scale);
 
   new_width = width + (window->custom_frame_extents.left +
@@ -779,7 +778,7 @@ meta_window_wayland_get_min_size (MetaWindow *window,
   *width = MAX (current_width, 0);
   *height = MAX (current_height, 0);
 
-  scale = 1.0 / (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale = 1.0 / (float) meta_window_wayland_get_geometry_scale (window);
   scale_size (width, height, scale);
 }
 
@@ -814,7 +813,7 @@ meta_window_wayland_get_max_size (MetaWindow *window,
   *width = CLAMP (current_width, 0, G_MAXINT);
   *height = CLAMP (current_height, 0, G_MAXINT);
 
-  scale = 1.0 / (float) meta_window_wayland_get_main_monitor_scale (window);
+  scale = 1.0 / (float) meta_window_wayland_get_geometry_scale (window);
   scale_size (width, height, scale);
 }
 

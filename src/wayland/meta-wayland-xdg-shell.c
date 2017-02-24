@@ -778,16 +778,18 @@ static void
 scale_placement_rule (MetaPlacementRule  *placement_rule,
                       MetaWaylandSurface *surface)
 {
-  int monitor_scale = surface->window->monitor->scale;
+  int geometry_scale;
 
-  placement_rule->anchor_rect.x *= monitor_scale;
-  placement_rule->anchor_rect.y *= monitor_scale;
-  placement_rule->anchor_rect.width *= monitor_scale;
-  placement_rule->anchor_rect.height *= monitor_scale;
-  placement_rule->offset_x *= monitor_scale;
-  placement_rule->offset_y *= monitor_scale;
-  placement_rule->width *= monitor_scale;
-  placement_rule->height *= monitor_scale;
+  geometry_scale = meta_window_wayland_get_geometry_scale (surface->window);
+
+  placement_rule->anchor_rect.x *= geometry_scale;
+  placement_rule->anchor_rect.y *= geometry_scale;
+  placement_rule->anchor_rect.width *= geometry_scale;
+  placement_rule->anchor_rect.height *= geometry_scale;
+  placement_rule->offset_x *= geometry_scale;
+  placement_rule->offset_y *= geometry_scale;
+  placement_rule->width *= geometry_scale;
+  placement_rule->height *= geometry_scale;
 }
 
 static void
@@ -920,7 +922,7 @@ xdg_popup_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface_role);
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_popup);
   MetaWindow *parent_window = xdg_popup->parent_surface->window;
-  int monitor_scale;
+  int geometry_scale;
   int x, y;
 
   /* If the parent surface was destroyed, its window will be destroyed
@@ -934,9 +936,9 @@ xdg_popup_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role
   if (!parent_window)
     return;
 
-  monitor_scale = meta_window_wayland_get_main_monitor_scale (parent_window);
-  x = (new_x - parent_window->rect.x) / monitor_scale;
-  y = (new_y - parent_window->rect.y) / monitor_scale;
+  geometry_scale = meta_window_wayland_get_geometry_scale (parent_window);
+  x = (new_x - parent_window->rect.x) / geometry_scale;
+  y = (new_y - parent_window->rect.y) / geometry_scale;
   zxdg_popup_v6_send_configure (xdg_popup->resource,
                                 x, y, new_width, new_height);
   meta_wayland_xdg_surface_send_configure (xdg_surface);
