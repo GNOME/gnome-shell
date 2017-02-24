@@ -334,7 +334,12 @@ meta_monitor_manager_apply_monitors_config (MetaMonitorManager      *manager,
   MetaMonitorManagerClass *manager_class =
     META_MONITOR_MANAGER_GET_CLASS (manager);
 
-  return manager_class->apply_monitors_config (manager, config, method, error);
+  if (!manager_class->apply_monitors_config (manager, config, method, error))
+    return FALSE;
+
+  meta_monitor_config_manager_set_current (manager->config_manager, config);
+
+  return TRUE;
 }
 
 gboolean
@@ -469,8 +474,6 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
     }
 
 done:
-  meta_monitor_config_manager_set_current (manager->config_manager, config);
-
   if (!config)
     {
       meta_monitor_manager_apply_monitors_config (manager,
