@@ -174,7 +174,15 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
     case COGL_PIXEL_FORMAT_BGRA_8888:
     case COGL_PIXEL_FORMAT_BGRA_8888_PRE:
       glintformat = GL_RGBA;
-      glformat = GL_BGRA;
+      /* If the driver has texture_swizzle, pretend internal
+       * and buffer format are the same here, the pixels
+       * will be flipped through this extension.
+       */
+      if (_cogl_has_private_feature
+          (context, COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE))
+        glformat = GL_RGBA;
+      else
+        glformat = GL_BGRA;
       gltype = GL_UNSIGNED_BYTE;
       break;
 

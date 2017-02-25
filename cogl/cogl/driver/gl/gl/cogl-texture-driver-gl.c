@@ -114,6 +114,18 @@ _cogl_texture_driver_gen (CoglContext *ctx,
                                  red_swizzle) );
     }
 
+  /* If swizzle extension is available, prefer it to flip bgra buffers to rgba */
+  if ((internal_format == COGL_PIXEL_FORMAT_BGRA_8888 ||
+       internal_format == COGL_PIXEL_FORMAT_BGRA_8888_PRE) &&
+      _cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE))
+    {
+      static const GLint bgra_swizzle[] = { GL_BLUE, GL_GREEN, GL_RED, GL_ALPHA };
+
+      GE( ctx, glTexParameteriv (gl_target,
+                                 GL_TEXTURE_SWIZZLE_RGBA,
+                                 bgra_swizzle) );
+    }
+
   return tex;
 }
 
