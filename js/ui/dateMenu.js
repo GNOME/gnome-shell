@@ -233,11 +233,16 @@ var WeatherSection = new Lang.Class({
         this._sync();
     },
 
-    _getSummary: function(info) {
-        let summary = info.get_conditions();
-        if (summary == '-')
-            return info.get_sky();
-        return summary;
+    _getSummary: function(info, capitalize=false) {
+        let options = capitalize ? GWeather.FormatOptions.SENTENCE_CAPITALIZATION
+                                 : GWeather.FormatOptions.NO_CAPITALIZATION;
+
+        let [ok, phenom, qualifier] = info.get_value_conditions();
+        if (ok)
+            return GWeather.conditions_to_string_full(phenom, qualifier, options);
+
+        let [, sky] = info.get_value_sky();
+        return GWeather.sky_to_string_full(sky, options);
     },
 
     _sameSummary: function(info1, info2) {
@@ -255,10 +260,10 @@ var WeatherSection = new Lang.Class({
         let info = this._weatherClient.info;
         let forecasts = info.get_forecast_list();
         if (forecasts.length == 0) // No forecasts, just current conditions
-            return '%s.'.format(this._getSummary(info));
+            return '%s.'.format(this._getSummary(info, true));
 
         let current = info;
-        let summaries = [this._getSummary(info)];
+        let infos = [info];
         for (let i = 0; i < forecasts.length; i++) {
             let [ok, timestamp] = forecasts[i].get_value_update();
             if (!_isToday(new Date(timestamp * 1000)))
@@ -268,12 +273,12 @@ var WeatherSection = new Lang.Class({
                 continue; // Ignore consecutive runs of equal summaries
 
             current = forecasts[i];
-            if (summaries.push(this._getSummary(current)) == 3)
+            if (infos.push(current) == 3)
                 break; // Use a maximum of three summaries
         }
 
         let fmt;
-        switch(summaries.length) {
+        switch(infos.length) {
             /* Translators: %s is a weather condition like "Clear sky"; see
                libgweather for the possible condition strings. If at all
                possible, the sentence should match the grammatical case etc. of
@@ -292,6 +297,10 @@ var WeatherSection = new Lang.Class({
                the inserted conditions. */
             case 3: fmt = _("%s, then %s, followed by %s later."); break;
         }
+        let summaries = infos.map((info, i) => {
+            let capitalize = i == 0 && fmt.startsWith('%s');
+            return this._getSummary(info, capitalize);
+        });
         return String.prototype.format.apply(fmt, summaries);
     },
 
