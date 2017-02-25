@@ -2,17 +2,22 @@
 
 const Geoclue = imports.gi.Geoclue;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const GWeather = imports.gi.GWeather;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
 const Util = imports.misc.util;
 
+// Minimum time between updates to show loading indication
+const UPDATE_THRESHOLD = 10 * GLib.TIME_SPAN_MINUTE;
+
 const WeatherClient = new Lang.Class({
     Name: 'WeatherClient',
 
     _init: function() {
         this._loading = false;
+        this._lastUpdate = GLib.DateTime.new_from_unix_local(0);
 
         this._useAutoLocation = false;
         this._mostRecentLocation = null;
@@ -29,6 +34,7 @@ const WeatherClient = new Lang.Class({
                         GWeather.Provider.OWM;
         this._weatherInfo = new GWeather.Info({ enabled_providers: providers });
         this._weatherInfo.connect_after('updated', () => {
+            this._lastUpdate = GLib.DateTime.new_now_local();
             this.emit('changed');
         });
 
@@ -58,7 +64,13 @@ const WeatherClient = new Lang.Class({
     },
 
     update: function() {
-        this._loadInfo();
+        let now = GLib.DateTime.new_now_local();
+        // Update without loading indication if the current info is recent enough
+        if (this._weatherInfo.is_valid() &&
+            now.difference(this._lastUpdate) < UPDATE_THRESHOLD)
+            this._weatherInfo.update();
+        else
+            this._loadInfo();
     },
 
     _loadInfo: function() {
