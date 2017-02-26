@@ -1098,12 +1098,26 @@ const CalendarMessageList = new Lang.Class({
         this._placeholder = new Placeholder();
         this.actor.add_actor(this._placeholder.actor);
 
+        let box = new St.BoxLayout({ vertical: true,
+                                     x_expand: true, y_expand: true });
+        this.actor.add_actor(box);
+
         this._scrollView = new St.ScrollView({ style_class: 'vfade',
                                                overlay_scrollbars: true,
                                                x_expand: true, y_expand: true,
                                                x_fill: true, y_fill: true });
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.actor.add_actor(this._scrollView);
+        box.add_actor(this._scrollView);
+
+        this._clearButton = new St.Button({ style_class: 'message-list-clear-button button',
+                                            label: _("Clear All"),
+                                            can_focus: true });
+        this._clearButton.set_x_align(Clutter.ActorAlign.END);
+        this._clearButton.connect('clicked', () => {
+            let sections = [...this._sections.keys()];
+            sections.forEach((s) => { s.clear(); });
+        });
+        box.add_actor(this._clearButton);
 
         this._sectionList = new St.BoxLayout({ style_class: 'message-list-sections',
                                                vertical: true,
@@ -1129,6 +1143,7 @@ const CalendarMessageList = new Lang.Class({
             destroyId: 0,
             visibleId:  0,
             emptyChangedId: 0,
+            canClearChangedId: 0,
             keyFocusId: 0
         };
         obj.destroyId = section.actor.connect('destroy', Lang.bind(this,
@@ -1139,6 +1154,8 @@ const CalendarMessageList = new Lang.Class({
                                               Lang.bind(this, this._sync));
         obj.emptyChangedId = section.connect('empty-changed',
                                              Lang.bind(this, this._sync));
+        obj.canClearChangedId = section.connect('can-clear-changed',
+                                                Lang.bind(this, this._sync));
         obj.keyFocusId = section.connect('key-focus-in',
                                          Lang.bind(this, this._onKeyFocusIn));
 
@@ -1152,6 +1169,7 @@ const CalendarMessageList = new Lang.Class({
         section.actor.disconnect(obj.destroyId);
         section.actor.disconnect(obj.visibleId);
         section.disconnect(obj.emptyChangedId);
+        section.disconnect(obj.canClearChangedId);
         section.disconnect(obj.keyFocusId);
 
         this._sections.delete(section);
@@ -1172,10 +1190,16 @@ const CalendarMessageList = new Lang.Class({
         if (!visible)
             return;
 
-        let showPlaceholder = sections.every(function(s) {
+        let empty = sections.every(function(s) {
             return s.empty || !s.actor.visible;
         });
-        this._placeholder.actor.visible = showPlaceholder;
+        this._placeholder.actor.visible = empty;
+        this._clearButton.visible = !empty;
+
+        let canClear = sections.some(function(s) {
+            return s.canClear && s.actor.visible;
+        });
+        this._clearButton.reactive = canClear;
     },
 
     setEventSource: function(eventSource) {
