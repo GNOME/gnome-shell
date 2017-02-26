@@ -9,9 +9,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 21:00+0000\n"
+"POT-Creation-Date: 2017-02-26 07:50+0000\n"
 "PO-Revision-Date: 2017-02-25 19:52+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <(nothing)>\n"
@@ -19,37 +19,12 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
-
-#: data/50-gnome-shell-system.xml:6
-msgid "System"
-msgstr "Систем"
-
-#: data/50-gnome-shell-system.xml:9
-msgid "Show the notification list"
-msgstr "Прикажите списак обавештења"
-
-#: data/50-gnome-shell-system.xml:12
-msgid "Focus the active notification"
-msgstr "Поставите у жижу активно обавештење"
-
-#: data/50-gnome-shell-system.xml:15
-msgid "Show the overview"
-msgstr "Прикажи преглед"
-
-#: data/50-gnome-shell-system.xml:18
-msgid "Show all applications"
-msgstr "Прикажи све програме"
-
-#: data/50-gnome-shell-system.xml:21
-msgid "Open the application menu"
-msgstr "Отворите изборник програма"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:149
-#| msgid "GNOME Shell Extensions"
 msgid "Shell Extensions"
 msgstr "Проширења шкољке"
 
@@ -149,14 +124,10 @@ msgid "History for the looking glass dialog"
 msgstr "Историјат прозорчета огледала"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Увек приказује ставку изборника „Одјави ме“ у изборнику корисника."
 
 #: data/org.gnome.shell.gschema.xml.in:68
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -172,11 +143,6 @@ msgstr ""
 "датотека"
 
 #: data/org.gnome.shell.gschema.xml.in:76
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -214,14 +180,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Пречица за отварање изборника програма."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Пречица за отварање прегледа „Прикажи програме“"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr "Пречица за отварање прегледа „Прикажи програме“ у прегледу активности."
@@ -283,10 +245,6 @@ msgid "The application icon mode."
 msgstr "Режим иконице програма."
 
 #: data/org.gnome.shell.gschema.xml.in:177
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -500,7 +458,6 @@ msgstr "%d .%B %Y., %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:67
-#| msgid "Network Login"
 msgid "Hotspot Login"
 msgstr "Пријава на врућу тачку"
 
@@ -817,7 +774,6 @@ msgstr "Потврди идентитет"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:301 js/ui/shellMountOperation.js:383
-#| msgid "Sorry, that didn't work. Please try again."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Погрешили сте! Покушајте поново."
 
@@ -1137,7 +1093,6 @@ msgid "New shortcut…"
 msgstr "Нова пречица…"
 
 #: js/ui/padOsd.js:86
-#| msgid "Applications"
 msgid "Application defined"
 msgstr "Дефинисани програм"
 
@@ -1146,7 +1101,6 @@ msgid "Show on-screen help"
 msgstr "Прикажи помоћ на екрану"
 
 #: js/ui/padOsd.js:88
-#| msgid "Switch User"
 msgid "Switch monitor"
 msgstr "Промени монитор"
 
@@ -1215,7 +1169,6 @@ msgid "Close"
 msgstr "Затвори"
 
 #: js/ui/runDialog.js:277
-#| msgid "Encryption is not available"
 msgid "Restart is not available on Wayland"
 msgstr "Поновно покретање није доступно на Вејланду"
 
@@ -1575,7 +1528,6 @@ msgid "%s Not Connected"
 msgstr "%s неповезано"
 
 #: js/ui/status/network.js:1434
-#| msgid "connecting..."
 msgid "connecting…"
 msgstr "повезујем се…"
 
@@ -1607,33 +1559,30 @@ msgstr "Искључи ВПН"
 
 #: js/ui/status/network.js:1631
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s жичана веза"
 msgstr[1] "%s жичане везе"
 msgstr[2] "%s жичаних веза"
-msgstr[3] "Једна жичана веза"
+msgstr[3] "%s жичана веза"
 
 #: js/ui/status/network.js:1635
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s бежична веза"
 msgstr[1] "%s бежичне везе"
 msgstr[2] "%s бежичних веза"
-msgstr[3] "Једна бежична веза"
+msgstr[3] "%s бежична веза"
 
 #: js/ui/status/network.js:1639
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s модемска веза"
 msgstr[1] "%s модемске везе"
 msgstr[2] "%s модемских веза"
-msgstr[3] "Једна модемска веза"
+msgstr[3] "%s модемска веза"
 
 #: js/ui/status/network.js:1786
 msgid "Connection failed"
@@ -1889,7 +1838,6 @@ msgid "Mode used by GDM for login screen"
 msgstr "Који режим користи ГДМ за екран пријављивања"
 
 #: src/main.c:393
-#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Користи нарочит режим, нпр. „gdm“ за екран пријављивања"
 
@@ -1918,6 +1866,24 @@ msgstr "Лозинка не може бити празна"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Корисник је одбацио прозорче за потврђивање идентитета"
+
+#~ msgid "System"
+#~ msgstr "Систем"
+
+#~ msgid "Show the notification list"
+#~ msgstr "Прикажите списак обавештења"
+
+#~ msgid "Focus the active notification"
+#~ msgstr "Поставите у жижу активно обавештење"
+
+#~ msgid "Show the overview"
+#~ msgstr "Прикажи преглед"
+
+#~ msgid "Show all applications"
+#~ msgstr "Прикажи све програме"
+
+#~ msgid "Open the application menu"
+#~ msgstr "Отворите изборник програма"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "Поставке проширења Гномове шкољке"
