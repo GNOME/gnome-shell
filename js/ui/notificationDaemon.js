@@ -600,7 +600,8 @@ const GtkNotificationDaemonNotification = new Lang.Class({
               "priority": priority,
               "buttons": buttons,
               "default-action": defaultAction,
-              "default-action-target": defaultActionTarget } = notification;
+              "default-action-target": defaultActionTarget,
+              "timestamp": time } = notification;
 
         if (priority) {
             let urgency = PRIORITY_URGENCY_MAP[priority.unpack()];
@@ -623,7 +624,8 @@ const GtkNotificationDaemonNotification = new Lang.Class({
         this._defaultActionTarget = defaultActionTarget;
 
         this.update(title.unpack(), body ? body.unpack() : null,
-                    { gicon: gicon ? Gio.icon_deserialize(gicon) : null });
+                    { gicon: gicon ? Gio.icon_deserialize(gicon) : null,
+                      datetime : time ? GLib.DateTime.new_from_unix_local(time.unpack()) : null });
     },
 
     _activateAction: function(namespacedActionId, target) {
@@ -863,6 +865,9 @@ const GtkNotificationDaemon = new Lang.Class({
             invocation.return_dbus_error('org.gtk.Notifications.InvalidApp', 'The app by ID "%s" could not be found'.format(appId));
             return;
         }
+
+        let timestamp = GLib.DateTime.new_now_local().to_unix();
+        notification['timestamp'] = new GLib.Variant('x', timestamp);
 
         source.addNotification(notificationId, notification, true);
 
