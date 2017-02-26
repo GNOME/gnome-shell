@@ -18,6 +18,7 @@ const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
 const WindowMenu = imports.ui.windowMenu;
 const PadOsd = imports.ui.padOsd;
+const EdgeDragAction = imports.ui.edgeDragAction;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 const MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
@@ -995,6 +996,12 @@ const WindowManager = new Lang.Class({
 
         gesture = new AppSwitchAction();
         gesture.connect('activated', Lang.bind(this, this._switchApp));
+        global.stage.add_action(gesture);
+
+        gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, Shell.ActionMode.ALL);
+        gesture.connect('activated', Lang.bind(this, function() {
+            Main.keyboard.show(Main.layoutManager.bottomIndex);
+        }));
         global.stage.add_action(gesture);
     },
 
