@@ -20,7 +20,7 @@ const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 const ELLIPSIS_CHAR = '\u2026';
 
-const MESSAGE_ICON_SIZE = 32;
+const MESSAGE_ICON_SIZE = 16;
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
@@ -958,7 +958,8 @@ const NotificationSection = new Lang.Class({
 
     _createTimeLabel: function(datetime) {
         let label = new St.Label({ style_class: 'event-time',
-                                   x_align: Clutter.ActorAlign.START });
+                                   x_align: Clutter.ActorAlign.START,
+                                   y_align: Clutter.ActorAlign.END });
         label.connect('notify::mapped', () => {
             if (label.mapped)
                 label.text = Util.formatTimeSpan(datetime);

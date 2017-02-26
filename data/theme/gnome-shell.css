@@ -868,54 +868,53 @@ StScrollBar {
     background-color: #454c4c; }
 
 .message-list-sections {
-  spacing: 1.5em; }
+  spacing: 1em; }
 
 .message-list-section,
 .message-list-section-list {
-  spacing: 0.7em; }
+  spacing: 0.4em; }
 
 .message {
-  background-color: #454c4c;
   border-radius: 3px; }
   .message:hover, .message:focus {
-    background-color: #5d6767; }
+    background-color: #454c4c; }
 
 .message-icon-bin {
-  padding: 8px 0px 8px 8px; }
+  padding: 10px 3px 10px 10px; }
   .message-icon-bin:rtl {
-    padding: 8px 8px 8px 0px; }
+    padding: 10px 10px 10px 3px; }
 
 .message-icon-bin > StIcon {
-  icon-size: 32px; }
-
-.message-secondary-bin:ltr {
-  padding-left: 8px; }
-.message-secondary-bin:rtl {
-  padding-right: 8px; }
+  color: #bebeb6;
+  icon-size: 16px;
+  -st-icon-style: symbolic; }
 
 .message-secondary-bin {
-  color: #8e8e80; }
+  padding: 0 12px; }
+
+.message-secondary-bin > .event-time {
+  color: #8e8e80;
+  font-size: 0.7em; }
 
 .message-secondary-bin > StIcon {
   icon-size: 16px; }
 
 .message-title {
-  font-weight: bold;
-  font-size: 1.1em; }
+  color: #e2e2df; }
 
 .message-content {
-  padding: 8px;
-  font-size: .9em; }
+  color: #bebeb6;
+  padding: 10px; }
 
 .message-media-control {
-  padding: 6px; }
+  padding: 12px; }
   .message-media-control:last-child:ltr {
     padding-right: 18px; }
   .message-media-control:last-child:rtl {
     padding-left: 18px; }
 
 .media-message-cover-icon {
-  icon-size: 32px; }
+  icon-size: 48px !important; }
   .media-message-cover-icon.fallback {
     color: #515a5a;
     background-color: #393f3f;

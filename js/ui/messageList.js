@@ -318,6 +318,7 @@ const Message = new Lang.Class({
 
         this._iconBin = new St.Bin({ style_class: 'message-icon-bin',
                                      y_expand: true,
+                                     y_align: St.Align.START,
                                      visible: false });
         hbox.add_actor(this._iconBin);
 
