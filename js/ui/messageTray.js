@@ -368,12 +368,18 @@ const Notification = new Lang.Class({
                                         secondaryGIcon: null,
                                         bannerMarkup: false,
                                         clear: false,
+                                        datetime: null,
                                         soundName: null,
                                         soundFile: null });
 
         this.title = title;
         this.bannerBodyText = banner;
         this.bannerBodyMarkup = params.bannerMarkup;
+
+        if (params.datetime)
+            this.datetime = params.datetime;
+        else
+            this.datetime = GLib.DateTime.new_now_local();
 
         if (params.gicon || params.clear)
             this.gicon = params.gicon;

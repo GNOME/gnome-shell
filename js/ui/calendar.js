@@ -946,8 +946,8 @@ const NotificationSection = new Lang.Class({
                !Main.sessionMode.isGreeter;
     },
 
-    _createTimeLabel: function() {
-        let label = Util.createTimeLabel(new Date());
+    _createTimeLabel: function(datetime) {
+        let label = Util.createTimeLabel(datetime);
         label.style_class = 'event-time',
         label.x_align = Clutter.ActorAlign.END;
         return label;
@@ -970,13 +970,13 @@ const NotificationSection = new Lang.Class({
 
     _onNotificationAdded: function(source, notification) {
         let message = new NotificationMessage(notification);
-        message.setSecondaryActor(this._createTimeLabel());
+        message.setSecondaryActor(this._createTimeLabel(notification.datetime));
 
         let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
 
         let updatedId = notification.connect('updated', Lang.bind(this,
             function() {
-                message.setSecondaryActor(this._createTimeLabel());
+                message.setSecondaryActor(this._createTimeLabel(notification.datetime));
                 this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.actor.mapped);
             }));
         let destroyId = notification.connect('destroy', Lang.bind(this,
