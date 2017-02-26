@@ -706,6 +706,14 @@ const EventMessage = new Lang.Class({
         this._date = date;
 
         this.parent(this._formatEventTime(), event.summary);
+
+        this._icon = new St.Icon({ icon_name: 'x-office-calendar-symbolic' });
+        this.setIcon(this._icon);
+
+        this.actor.connect('style-changed', () => {
+            let iconVisible = this.actor.get_parent().has_style_pseudo_class('first-child');
+            this._icon.opacity = (iconVisible ? 255 : 0);
+        });
     },
 
     _formatEventTime: function() {
