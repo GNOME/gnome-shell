@@ -811,7 +811,16 @@ const EventsSection = new Lang.Class({
         this._desktopSettings.connect('changed', Lang.bind(this, this._reloadEvents));
         this._eventSource = new EmptyEventSource();
 
-        this.parent('');
+        this.parent();
+
+        this._title = new St.Button({ style_class: 'events-section-title',
+                                      label: '',
+                                      x_align: St.Align.START,
+                                      can_focus: true });
+        this.actor.insert_child_below(this._title, null);
+
+        this._title.connect('clicked', Lang.bind(this, this._onTitleClicked));
+        this._title.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
 
         Shell.AppSystem.get_default().connect('installed-changed',
                                               Lang.bind(this, this._appInstalledChanged));
@@ -832,10 +841,10 @@ const EventsSection = new Lang.Class({
     },
 
     _updateTitle: function() {
-        if (isToday(this._date)) {
-            this._title.label = _("Events");
+        this._title.visible = !isToday(this._date);
+
+        if (!this._title.visible)
             return;
-        }
 
         let dayFormat;
         let now = new Date();
@@ -897,7 +906,8 @@ const EventsSection = new Lang.Class({
     },
 
     _onTitleClicked: function() {
-        this.parent();
+        Main.overview.hide();
+        Main.panel.closeCalendar();
 
         let app = this._getCalendarApp();
         if (app.get_id() == 'evolution.desktop')
@@ -928,7 +938,7 @@ const NotificationSection = new Lang.Class({
     Extends: MessageList.MessageListSection,
 
     _init: function() {
-        this.parent(_("Notifications"));
+        this.parent();
 
         this._sources = new Map();
         this._nUrgent = 0;
@@ -1017,26 +1027,8 @@ const NotificationSection = new Lang.Class({
                 message.notification.acknowledged = true;
     },
 
-    _onTitleClicked: function() {
-        this.parent();
-
-        let app = Shell.AppSystem.get_default().lookup_app('gnome-notifications-panel.desktop');
-
-        if (!app) {
-            log('Settings panel for desktop file ' + desktopFile + ' could not be loaded!');
-            return;
-        }
-
-        app.activate();
-    },
-
     _shouldShow: function() {
         return !this.empty && isToday(this._date);
-    },
-
-    _sync: function() {
-        this.parent();
-        this._title.reactive = Main.sessionMode.allowSettings;
     }
 });
 

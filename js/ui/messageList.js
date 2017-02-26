@@ -520,19 +520,10 @@ Signals.addSignalMethods(Message.prototype);
 const MessageListSection = new Lang.Class({
     Name: 'MessageListSection',
 
-    _init: function(title) {
+    _init: function() {
         this.actor = new St.BoxLayout({ style_class: 'message-list-section',
                                         clip_to_allocation: true,
                                         x_expand: true, vertical: true });
-        this._title = new St.Button({ style_class: 'message-list-section-title',
-                                      label: title,
-                                      can_focus: true,
-                                      x_expand: true,
-                                      x_align: St.Align.START });
-        this.actor.add_actor(this._title);
-
-        this._title.connect('clicked', Lang.bind(this, this._onTitleClicked));
-        this._title.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
 
         this._list = new St.BoxLayout({ style_class: 'message-list-section-list',
                                         vertical: true });
@@ -552,11 +543,6 @@ const MessageListSection = new Lang.Class({
         this.empty = true;
         this.canClear = false;
         this._sync();
-    },
-
-    _onTitleClicked: function() {
-        Main.overview.hide();
-        Main.panel.closeCalendar();
     },
 
     _onKeyFocusIn: function(actor) {

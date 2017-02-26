@@ -214,7 +214,7 @@ const MediaSection = new Lang.Class({
     Extends: MessageList.MessageListSection,
 
     _init: function() {
-        this.parent(_("Media"));
+        this.parent();
 
         this._players = new Map();
 

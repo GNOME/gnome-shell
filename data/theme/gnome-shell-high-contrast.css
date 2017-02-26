@@ -737,7 +737,7 @@ StScrollBar {
 .datemenu-today-button,
 .world-clocks-button,
 .weather-button,
-.message-list-section-title {
+.events-section-title {
   border-radius: 4px;
   padding: .4em; }
 
@@ -752,13 +752,13 @@ StScrollBar {
 .world-clocks-button:focus,
 .weather-button:hover,
 .weather-button:focus,
-.message-list-section-title:hover,
-.message-list-section-title:focus {
+.events-section-title:hover,
+.events-section-title:focus {
   background-color: #0d0d0d; }
 .datemenu-today-button:active,
 .world-clocks-button:active,
 .weather-button:active,
-.message-list-section-title:active {
+.events-section-title:active {
   color: white;
   background-color: #215d9c; }
 
@@ -767,7 +767,7 @@ StScrollBar {
 
 .world-clocks-header,
 .weather-header,
-.message-list-section-title {
+.events-section-title {
   color: #999999;
   font-weight: bold; }
 
