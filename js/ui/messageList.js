@@ -524,28 +524,15 @@ const MessageListSection = new Lang.Class({
         this.actor = new St.BoxLayout({ style_class: 'message-list-section',
                                         clip_to_allocation: true,
                                         x_expand: true, vertical: true });
-        let titleBox = new St.BoxLayout({ style_class: 'message-list-section-title-box' });
-        this.actor.add_actor(titleBox);
-
         this._title = new St.Button({ style_class: 'message-list-section-title',
                                       label: title,
                                       can_focus: true,
                                       x_expand: true,
                                       x_align: St.Align.START });
-        titleBox.add_actor(this._title);
+        this.actor.add_actor(this._title);
 
         this._title.connect('clicked', Lang.bind(this, this._onTitleClicked));
         this._title.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
-
-        let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic' });
-        this._closeButton = new St.Button({ style_class: 'message-list-section-close',
-                                            child: closeIcon,
-                                            accessible_name: _("Clear section"),
-                                            can_focus: true });
-        this._closeButton.set_x_align(Clutter.ActorAlign.END);
-        titleBox.add_actor(this._closeButton);
-
-        this._closeButton.connect('clicked', Lang.bind(this, this.clear));
 
         this._list = new St.BoxLayout({ style_class: 'message-list-section-list',
                                         vertical: true });
@@ -727,7 +714,6 @@ const MessageListSection = new Lang.Class({
         if (changed)
             this.emit('can-clear-changed');
 
-        this._closeButton.visible = this.canClear;
         this.actor.visible = this.allowed && this._shouldShow();
     }
 });

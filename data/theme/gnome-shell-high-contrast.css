@@ -874,20 +874,6 @@ StScrollBar {
 .message-list-section-list {
   spacing: 0.7em; }
 
-.message-list-section-title-box {
-  spacing: 0.4em; }
-
-.message-list-section-close > StIcon {
-  icon-size: 16px;
-  border-radius: 8px;
-  color: #000;
-  background-color: #666666; }
-
-/* FIXME: how do you do this in sass? */
-.message-list-section-close:hover > StIcon,
-.message-list-section-close:focus > StIcon {
-  background-color: #999999; }
-
 .message {
   background-color: #0d0d0d;
   border-radius: 3px; }
