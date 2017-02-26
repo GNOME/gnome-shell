@@ -563,6 +563,7 @@ const MessageListSection = new Lang.Class({
         this._messages = new Map();
         this._date = new Date();
         this.empty = true;
+        this.canClear = false;
         this._sync();
     },
 
@@ -719,7 +720,14 @@ const MessageListSection = new Lang.Class({
         if (changed)
             this.emit('empty-changed');
 
-        this._closeButton.visible = this._canClear();
+        let canClear = this._canClear();
+        changed = this.canClear !== canClear;
+        this.canClear = canClear;
+
+        if (changed)
+            this.emit('can-clear-changed');
+
+        this._closeButton.visible = this.canClear;
         this.actor.visible = this.allowed && this._shouldShow();
     }
 });
