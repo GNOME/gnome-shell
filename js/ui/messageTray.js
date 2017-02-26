@@ -541,7 +541,8 @@ const NotificationBanner = new Lang.Class({
 
     _addSecondaryIcon: function() {
         if (this.notification.secondaryGIcon) {
-            let icon = new St.Icon({ gicon: this.notification.secondaryGIcon });
+            let icon = new St.Icon({ gicon: this.notification.secondaryGIcon,
+                                     x_align: Clutter.ActorAlign.END });
             this.setSecondaryActor(icon);
         }
     },

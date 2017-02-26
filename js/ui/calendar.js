@@ -959,7 +959,7 @@ const NotificationSection = new Lang.Class({
     _createTimeLabel: function(datetime) {
         let label = Util.createTimeLabel(datetime);
         label.style_class = 'event-time',
-        label.x_align = Clutter.ActorAlign.END;
+        label.x_align = Clutter.ActorAlign.START;
         return label;
     },
 

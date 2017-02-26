@@ -331,18 +331,18 @@ const Message = new Lang.Class({
         let titleBox = new St.BoxLayout();
         contentBox.add_actor(titleBox);
 
-        this.titleLabel = new St.Label({ style_class: 'message-title',
-                                         x_expand: true,
-                                         x_align: Clutter.ActorAlign.START });
+        this.titleLabel = new St.Label({ style_class: 'message-title' });
         this.setTitle(title);
         titleBox.add_actor(this.titleLabel);
 
-        this._secondaryBin = new St.Bin({ style_class: 'message-secondary-bin' });
+        this._secondaryBin = new St.Bin({ style_class: 'message-secondary-bin',
+                                          x_expand: true, y_expand: true,
+                                          x_fill: true, y_fill: true });
         titleBox.add_actor(this._secondaryBin);
 
         let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic',
                                       icon_size: 16 });
-        this._closeButton = new St.Button({ child: closeIcon, visible: false });
+        this._closeButton = new St.Button({ child: closeIcon, opacity: 0 });
         titleBox.add_actor(this._closeButton);
 
         this._bodyStack = new St.Widget({ x_expand: true });
@@ -493,9 +493,8 @@ const Message = new Lang.Class({
     },
 
     _sync: function() {
-        let hovered = this.actor.hover;
-        this._closeButton.visible = hovered && this.canClose();
-        this._secondaryBin.visible = !hovered;
+        let visible = this.actor.hover && this.canClose();
+        this._closeButton.opacity = visible ? 255 : 0;
     },
 
     _onClicked: function() {
