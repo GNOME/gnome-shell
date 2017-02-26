@@ -279,14 +279,22 @@ const FreezableBinLayout = new Lang.Class({
 
     vfunc_get_preferred_width: function(container, forHeight) {
         if (!this._frozen || this._savedWidth.some(isNaN))
-            this._savedWidth = this.parent(container, forHeight);
+            return this.parent(container, forHeight);
         return this._savedWidth;
     },
 
     vfunc_get_preferred_height: function(container, forWidth) {
         if (!this._frozen || this._savedHeight.some(isNaN))
-            this._savedHeight = this.parent(container, forWidth);
+            return this.parent(container, forWidth);
         return this._savedHeight;
+    },
+
+    vfunc_allocate: function(container, allocation, flags) {
+        this.parent(container, allocation, flags);
+
+        let [width, height] = allocation.get_size();
+        this._savedWidth = [width, width];
+        this._savedHeight = [height, height];
     }
 });
 
