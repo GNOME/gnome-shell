@@ -957,9 +957,12 @@ const NotificationSection = new Lang.Class({
     },
 
     _createTimeLabel: function(datetime) {
-        let label = Util.createTimeLabel(datetime);
-        label.style_class = 'event-time',
-        label.x_align = Clutter.ActorAlign.START;
+        let label = new St.Label({ style_class: 'event-time',
+                                   x_align: Clutter.ActorAlign.START });
+        label.connect('notify::mapped', () => {
+            if (label.mapped)
+                label.text = Util.formatTimeSpan(datetime);
+        });
         return label;
     },
 

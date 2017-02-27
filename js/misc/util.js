@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
@@ -161,6 +162,41 @@ function trySpawnCommandLine(command_line) {
 function _handleSpawnError(command, err) {
     let title = _("Execution of “%s” failed:").format(command);
     Main.notifyError(title, err.message);
+}
+
+function formatTimeSpan(date) {
+    let now = GLib.DateTime.new_now_local();
+
+    let timespan = now.difference(date);
+
+    let minutesAgo = timespan / GLib.TIME_SPAN_MINUTE;
+    let hoursAgo = timespan / GLib.TIME_SPAN_HOUR;
+    let daysAgo = timespan / GLib.TIME_SPAN_DAY;
+    let weeksAgo = daysAgo / 7;
+    let monthsAgo = daysAgo / 30;
+    let yearsAgo = weeksAgo / 52;
+
+    if (minutesAgo < 5)
+        return _("Just now");
+    if (hoursAgo < 1)
+        return Gettext.ngettext("%d minute ago",
+                                "%d minutes ago", minutesAgo).format(minutesAgo);
+    if (daysAgo < 1)
+        return Gettext.ngettext("%d hour ago",
+                                "%d hours ago", hoursAgo).format(hoursAgo);
+    if (daysAgo < 2)
+        return _("Yesterday");
+    if (daysAgo < 15)
+        return Gettext.ngettext("%d day ago",
+                                "%d days ago", daysAgo).format(daysAgo);
+    if (weeksAgo < 8)
+        return Gettext.ngettext("%d week ago",
+                                "%d weeks ago", weeksAgo).format(weeksAgo);
+    if (yearsAgo < 1)
+        return Gettext.ngettext("%d month ago",
+                                "%d months ago", monthsAgo).format(monthsAgo);
+    return Gettext.ngettext("%d year ago",
+                            "%d years ago", yearsAgo).format(yearsAgo);
 }
 
 function formatTime(time, params) {
