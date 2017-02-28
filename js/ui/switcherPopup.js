@@ -385,7 +385,7 @@ const SwitcherList = new Lang.Class({
 
         let n = this._items.length;
         bbox.connect('clicked', Lang.bind(this, function() { this._onItemClicked(n); }));
-        bbox.connect('enter-event', Lang.bind(this, function() { this._onItemEnter(n); }));
+        bbox.connect('motion-event', Lang.bind(this, function() { return this._onItemEnter(n); }));
 
         bbox.label_actor = label;
 
@@ -399,7 +399,11 @@ const SwitcherList = new Lang.Class({
     },
 
     _onItemEnter: function (index) {
-        this._itemEntered(index);
+        // Avoid reentrancy
+        if (index != this._currentItemEntered) {
+            this._currentItemEntered = index;
+            this._itemEntered(index);
+        }
         return Clutter.EVENT_PROPAGATE;
     },
 
