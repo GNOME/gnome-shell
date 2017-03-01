@@ -917,11 +917,14 @@ StScrollBar {
   padding: 10px; }
 
 .message-media-control {
-  padding: 12px; }
+  padding: 12px;
+  color: #cccccc; }
   .message-media-control:last-child:ltr {
     padding-right: 18px; }
   .message-media-control:last-child:rtl {
     padding-left: 18px; }
+  .message-media-control:hover {
+    color: #fff; }
   .message-media-control:insensitive {
     color: #999999; }
 
