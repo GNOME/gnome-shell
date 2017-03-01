@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 01:07+0000\n"
-"PO-Revision-Date: 2017-02-16 09:06+0500\n"
+"POT-Creation-Date: 2017-03-01 09:59+0000\n"
+"PO-Revision-Date: 2017-03-01 16:04+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -400,36 +400,80 @@ msgstr "Аутентификация қатесі"
 msgid "(or swipe finger)"
 msgstr "(немесе саусағыңызды өткізіңіз)"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "Команда табылмады"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "Команданы талдау мүмкін емес:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "\"%s\" жөнелту сәтсіз:"
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Жаңа ғана"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d минут бұрын"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d сағат бұрын"
+
+#: js/misc/util.js:188
+msgid "Yesterday"
+msgstr "Кеше"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d күн бұрын"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d апта бұрын"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d ай бұрын"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d жыл бұрын"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Кеше, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -437,7 +481,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
@@ -445,26 +489,26 @@ msgstr "%B %d, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%B %d %Y, %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Кеше, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -472,7 +516,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
@@ -480,7 +524,7 @@ msgstr "%B %d, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%B %d %Y, %l∶%M %p"
@@ -656,36 +700,32 @@ msgstr "Апта %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Толық күн"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "Оқиғалар"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Хабарламалар"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Хабарламалар жоқ"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Оқиғалар жоқ"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Барлығын тазарту"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -809,7 +849,7 @@ msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көрің
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:767
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s енді %s ретінде белгілі"
@@ -831,7 +871,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%B %e %Y"
 
@@ -839,17 +879,66 @@ msgstr "%B %e %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %B %e %Y"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Дүниежүзілік сағаттарды қосу…"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Дүниежүзілік сағаттар"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Ауа райы"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "%s күні бойы."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, одан кейін %s."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, одан кейін %s, одан кейін %s."
+
+#: js/ui/dateMenu.js:300
+msgid "Loading…"
+msgstr "Жүктеу…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "%s сияқты сезіледі."
+
+#: js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "Ауа райы ақпаратын алу үшін желіге байланысыңыз"
+
+#: js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "Ауа райы ақпараты ағымдағы уақытта қолжетерсіз"
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1064,25 +1153,17 @@ msgstr "Бастапқы кодын қарау"
 msgid "Web Page"
 msgstr "Веб парағы"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Санатты тазарту"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Жүйелік ақпарат"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Белгісіз әртіс"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Белгісіз атауы"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "Медиа"
 
 #: js/ui/overview.js:84
 msgid "Undo"
@@ -1853,6 +1934,18 @@ msgstr "Пароль бос болуы мүмкін емес"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация терезесін пайдаланушы тайдырды"
+
+#~ msgid "Events"
+#~ msgstr "Оқиғалар"
+
+#~ msgid "Notifications"
+#~ msgstr "Хабарламалар"
+
+#~ msgid "Clear section"
+#~ msgstr "Санатты тазарту"
+
+#~ msgid "Media"
+#~ msgstr "Медиа"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "GNOME Shell кеңейту баптаулары"
