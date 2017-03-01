@@ -738,6 +738,9 @@ StScrollBar {
 .datemenu-displays-section {
   padding-bottom: 3em; }
 
+.datemenu-displays-box {
+  spacing: 1em; }
+
 .datemenu-today-button,
 .world-clocks-button,
 .weather-button,
