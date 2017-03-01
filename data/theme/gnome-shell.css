@@ -741,6 +741,13 @@ StScrollBar {
 .datemenu-displays-box {
   spacing: 1em; }
 
+.datemenu-calendar-column {
+  border: 0 solid #454c4c; }
+  .datemenu-calendar-column:ltr {
+    border-left-width: 1px; }
+  .datemenu-calendar-column:rtl {
+    border-right-width: 1px; }
+
 .datemenu-today-button,
 .world-clocks-button,
 .weather-button,
