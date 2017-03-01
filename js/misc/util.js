@@ -501,7 +501,7 @@ const AppSettingsMonitor = new Lang.Class({
             this._setSettings(null);
     },
 
-    _setSettings(settings) {
+    _setSettings: function(settings) {
         this._handlers.forEach((handler) => { this._disconnectHandler(handler); });
 
         let hadSettings = (this._settings != null);

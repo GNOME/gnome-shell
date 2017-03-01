@@ -431,7 +431,7 @@ const CalendarColumnLayout = new Lang.Class({
     Name: 'CalendarColumnLayout',
     Extends: Clutter.BoxLayout,
 
-    _init(actor) {
+    _init: function(actor) {
         this.parent({ orientation: Clutter.Orientation.VERTICAL });
         this._calActor = actor;
     },
