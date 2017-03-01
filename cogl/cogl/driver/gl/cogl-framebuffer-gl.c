@@ -1418,6 +1418,15 @@ _cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                                             &gl_format,
                                                             &gl_type);
 
+  /* As we are reading pixels, we want to consider the bitmap according to
+   * its real pixel format, not the swizzled channels we pretend face to the
+   * pipeline.
+   */
+  if ((format == COGL_PIXEL_FORMAT_BGRA_8888 ||
+       format == COGL_PIXEL_FORMAT_BGRA_8888_PRE) &&
+      _cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE))
+    gl_format = GL_BGRA;
+
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
   if (_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
