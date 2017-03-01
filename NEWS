@@ -1,3 +1,22 @@
+3.23.91
+=======
+* Give libinput read-only access to /sys [Carlos; #778472]
+* Allow edge-scrolling without 2-finger-scroll capable devices [Rui; #778554]
+* Fullscreen windows on the requested monitor on wayland [Rui; #772525]
+* Implement threaded swap_event fallback for NVIDIA driver [Owen; #779039]
+* Avoid pixel conversions when storing textures from cairo [Carlos; #779234]
+* Misc. bug fixes [Piotr, Rui, Florian; #772218, #776919, #778831, #642652]
+
+Contributors:
+  Piotr Drąg, Carlos Garnacho, Rui Matos, Florian Müllner, Owen W. Taylor
+
+Translations:
+  Inaki Larranaga Murgoitio [eu], Daniel Mustieles [es], Claude Paroz [fr],
+  Mario Blättermann [de], Kjartan Maraas [nb], Piotr Drąg [pl],
+  Andika Triwidada [id], Anders Jonsson [sv], Milo Casagrande [it],
+  Fabio Tomat [fur], Rafael Fontenelle [pt_BR],
+  Мирослав Николић [sr, sr@latin], Balázs Meskó [hu], Chao-Hsiung Liao [zh_TW]
+
 3.23.90
 =======
 * Fix window menu placement with HiDPI [Jonas; #776055]
