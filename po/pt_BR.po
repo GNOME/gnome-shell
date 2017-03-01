@@ -16,27 +16,50 @@
 # Felipe Braga <fbobraga@gmail.com>, 2015.
 # Artur de Aquino Morais <artur.morais93@outlook.com>, 2016.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2013, 2014, 2015, 2016, 2017.
-# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014, 2015, 2016.
+# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-22 19:28+0000\n"
-"PO-Revision-Date: 2017-02-25 08:43-0200\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2017-03-01 09:59+0000\n"
+"PO-Revision-Date: 2017-03-01 12:31-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Virtaal 1.0.0-beta1\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Project-Style: gnome\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Sistema"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Mostra a lista de notificação"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Ativar as notificação ativas"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Mostrar o panorama"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Mostrar todos os aplicativos"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Abre o menu do aplicativo"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:149
-#| msgid "GNOME Shell Extensions"
 msgid "Shell Extensions"
 msgstr "Extensões do shell"
 
@@ -142,14 +165,10 @@ msgid "History for the looking glass dialog"
 msgstr "Histórico do diálogo do shell looking glass"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Sempre mostrar o item de menu “Encerrar sessão” no menu de usuário."
 
 #: data/org.gnome.shell.gschema.xml.in:68
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -165,11 +184,6 @@ msgstr ""
 "ou remotos"
 
 #: data/org.gnome.shell.gschema.xml.in:76
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -209,14 +223,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Atalho de teclado para abrir um menu de aplicativo."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Atalho de teclado para abrir a visualização “Mostrar aplicativos”"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -283,10 +293,6 @@ msgid "The application icon mode."
 msgstr "O modo ícone do aplicativo."
 
 #: data/org.gnome.shell.gschema.xml.in:177
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -414,36 +420,86 @@ msgstr "Erro de autenticação"
 msgid "(or swipe finger)"
 msgstr "(ou deslize o dedo)"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "Comando não encontrado"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "Não foi possível analisar comando:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "A execução de “%s” falhou:"
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Agora mesmo"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minuto atrás"
+msgstr[1] "%d minutos atrás"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d hora atrás"
+msgstr[1] "%d horas atrás"
+
+#: js/misc/util.js:188
+msgid "Yesterday"
+msgstr "Ontem"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d dia atrás"
+msgstr[1] "%d dias atrás"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d semana atrás"
+msgstr[1] "%d semanas atrás"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d mês atrás"
+msgstr[1] "%d meses atrás"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d ano atrás"
+msgstr[1] "%d anos atrás"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Ontem, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -451,7 +507,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d de %B, %H∶%M"
@@ -459,26 +515,26 @@ msgstr "%d de %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d de %B de %Y, %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Ontem, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -486,7 +542,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d de %B, %l∶%M %p"
@@ -494,14 +550,13 @@ msgstr "%d de %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:67
-#| msgid "Network Login"
 msgid "Hotspot Login"
 msgstr "Autenticação de ponto de acesso"
 
@@ -671,36 +726,32 @@ msgstr "Semana %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dia todo"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "Eventos"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Notificações"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Nenhuma notificação"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Nenhum evento"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Limpar tudo"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -820,13 +871,12 @@ msgstr "Autenticação"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:301 js/ui/shellMountOperation.js:383
-#| msgid "Sorry, that didn't work. Please try again."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Desculpe, isto não funcionou. Por favor, tente novamente."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:767
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s agora é conhecido como %s"
@@ -848,7 +898,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%e de %B de %Y"
 
@@ -856,17 +906,66 @@ msgstr "%e de %B de %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A, %e de %B de %Y"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Adicionar relógios mundiais…"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Relógios mundiais"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Meteorologia"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "%s por todo o dia."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, depois %s mais tarde."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, depois %s, seguido de %s mais tarde."
+
+#: js/ui/dateMenu.js:300
+msgid "Loading…"
+msgstr "Carregando…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Sensação térmica de %s."
+
+#: js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "Conecte-se à internet para obter as informações meteorológicas"
+
+#: js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "No momento as informações meteorológicas não estão disponíveis"
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1088,25 +1187,17 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Página web"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Limpar seção"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Informações do sistema"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Artista desconhecido"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Título desconhecido"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "Mídia"
 
 #: js/ui/overview.js:84
 msgid "Undo"
@@ -1561,7 +1652,6 @@ msgid "%s Not Connected"
 msgstr "%s não está conectado"
 
 #: js/ui/status/network.js:1434
-#| msgid "connecting..."
 msgid "connecting…"
 msgstr "conectando…"
 
@@ -1860,7 +1950,6 @@ msgid "Mode used by GDM for login screen"
 msgstr "Modo usado pelo GDM para a tela de início de sessão"
 
 #: src/main.c:393
-#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Utilizar um modo específico, ex.: “gdm” para a tela de login"
 
@@ -1890,23 +1979,17 @@ msgstr "A senha não pode estar em branco"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi descartado pelo usuário"
 
-#~ msgid "System"
-#~ msgstr "Sistema"
+#~ msgid "Events"
+#~ msgstr "Eventos"
 
-#~ msgid "Show the notification list"
-#~ msgstr "Mostra a lista de notificação"
+#~ msgid "Notifications"
+#~ msgstr "Notificações"
 
-#~ msgid "Focus the active notification"
-#~ msgstr "Ativar as notificação ativas"
+#~ msgid "Clear section"
+#~ msgstr "Limpar seção"
 
-#~ msgid "Show the overview"
-#~ msgstr "Mostrar o panorama"
-
-#~ msgid "Show all applications"
-#~ msgstr "Mostrar todos os aplicativos"
-
-#~ msgid "Open the application menu"
-#~ msgstr "Abre o menu do aplicativo"
+#~ msgid "Media"
+#~ msgstr "Mídia"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "Preferências de extensões do Shell do GNOME"
