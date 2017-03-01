@@ -660,7 +660,9 @@ const ChatNotification = new Lang.Class({
         }
 
         if (message.direction == NotificationDirection.RECEIVED)
-            this.update(this.source.title, messageBody, { bannerMarkup: true });
+            this.update(this.source.title, messageBody,
+                        { datetime: GLib.DateTime.new_from_unix_local (message.timestamp),
+                          bannerMarkup: true });
 
         let group = (message.direction == NotificationDirection.RECEIVED ?
                      'received' : 'sent');
@@ -670,8 +672,6 @@ const ChatNotification = new Lang.Class({
                        styles: styles,
                        timestamp: message.timestamp,
                        noTimestamp: noTimestamp });
-        this.update(this.title, this.bannerBodyText,
-                    { datetime: GLib.DateTime.new_from_unix_local (message.timestamp) });
     },
 
     _filterMessages: function() {
