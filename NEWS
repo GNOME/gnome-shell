@@ -1,3 +1,23 @@
+3.23.91
+=======
+* Use the original timestamps for restored notifications [Florian; #766410]
+* Add weather information to date+time drop-down [Florian; #754031]
+* Refine message list layout in date+time drop-down [Florian; #775763]
+* Make next/prev media controls insensitive when unavailable [Florian; #773884]
+* Misc. bug fixes [Piotr, Bastien, Florian; #772210, #769546, #775799]
+
+Contributors:
+  Piotr Drąg, Carlos Garnacho, Florian Müllner, Bastien Nocera
+
+Translations:
+  Baurzhan Muftakhidinov [kk], Jordi Mas [ca], Ask Hjorth Larsen [da],
+  Inaki Larranaga Murgoitio [eu], Daniel Mustieles [es], Dušan Kazik [sk],
+  Aurimas Černius [lt], Jiri Grönroos [fi], Kjartan Maraas [nb],
+  Piotr Drąg [pl], Daniel Korostil [uk], Kukuh Syafaat [id],
+  Milo Casagrande [it], Fabio Tomat [fur], Rafael Fontenelle [pt_BR],
+  Fran Dieguez [gl], Мирослав Николић [sr, sr@latin], Balázs Meskó [hu],
+  Chao-Hsiung Liao [zh_TW]
+
 3.23.90
 =======
 * Handle Ctrl+Q and Ctrl+W in portal window [Bastien; #764133]
