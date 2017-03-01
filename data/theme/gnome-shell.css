@@ -901,7 +901,10 @@ StScrollBar {
 
 .message-secondary-bin > .event-time {
   color: #8e8e80;
-  font-size: 0.7em; }
+  font-size: 0.7em;
+  /* HACK: the label should be baseline-aligned with a 1em label,
+           fake this with some bottom padding */
+  padding-bottom: 0.13em; }
 
 .message-secondary-bin > StIcon {
   icon-size: 16px; }
