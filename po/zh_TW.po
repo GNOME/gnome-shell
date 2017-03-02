@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-22 19:28+0000\n"
-"PO-Revision-Date: 2017-02-26 10:52+0800\n"
+"POT-Creation-Date: 2017-03-01 09:59+0000\n"
+"PO-Revision-Date: 2017-03-02 08:38+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -18,7 +18,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.12\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "系統"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "顯示通知清單"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "聚焦到使用中的通知"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "顯示概覽"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "顯示所有的應用程式"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "開啟應用程式選單"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:149
@@ -348,36 +372,80 @@ msgstr "核對錯誤"
 msgid "(or swipe finger)"
 msgstr "(或是滑過手指)"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "找不到指令"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "無法分析指令："
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "執行「%s」失敗："
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "就是現在"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d 分鐘前"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d 小時前"
+
+#: js/misc/util.js:188
+msgid "Yesterday"
+msgstr "昨天"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d 天前"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d 週前"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d 個月前"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d 年前"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "昨天 %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A %H∶%M"
@@ -385,7 +453,7 @@ msgstr "%A %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%m月%d日 %H∶%M"
@@ -393,26 +461,26 @@ msgstr "%m月%d日 %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%Y年%m月%d日 %H:%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%p %l∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "昨天 %p %l∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A%p %l∶%M"
@@ -420,7 +488,7 @@ msgstr "%A%p %l∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%m月%d日%p %l∶%M"
@@ -428,7 +496,7 @@ msgstr "%m月%d日%p %l∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y年%m月%d日%p %l∶%M"
@@ -603,36 +671,32 @@ msgstr "%V 週"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "整天"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "行程"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "通知"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "沒有通知"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "沒有行程"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "全部清除"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -755,7 +819,7 @@ msgstr "抱歉，那沒有作用。請再試一次。"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:767
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s 現在被稱為 %s"
@@ -777,7 +841,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%Y年%m月%e日"
 
@@ -785,17 +849,66 @@ msgstr "%Y年%m月%e日"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%Y年%m月%e日%A"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "加入世界時鐘…"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "世界時鐘"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "天氣"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "全天 %s。"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s，較晚 %s。"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s，然後 %s，接著較晚 %s。"
+
+#: js/ui/dateMenu.js:300
+msgid "Loading…"
+msgstr "載入中…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "體感溫度 %s。"
+
+#: js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "上線以取得天氣資訊"
+
+#: js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "天氣資訊目前不可使用"
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1005,25 +1118,17 @@ msgstr "檢示來源"
 msgid "Web Page"
 msgstr "網頁"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "清除區段"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "系統資訊"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "不明的演出者"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "沒有標題"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "媒體"
 
 #: js/ui/overview.js:84
 msgid "Undo"
@@ -1793,23 +1898,17 @@ msgstr "密碼不能為空白"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "核對對話盒被使用者取消了"
 
-#~ msgid "System"
-#~ msgstr "系統"
+#~ msgid "Events"
+#~ msgstr "行程"
 
-#~ msgid "Show the notification list"
-#~ msgstr "顯示通知清單"
+#~ msgid "Notifications"
+#~ msgstr "通知"
 
-#~ msgid "Focus the active notification"
-#~ msgstr "聚焦到使用中的通知"
+#~ msgid "Clear section"
+#~ msgstr "清除區段"
 
-#~ msgid "Show the overview"
-#~ msgstr "顯示概覽"
-
-#~ msgid "Show all applications"
-#~ msgstr "顯示所有的應用程式"
-
-#~ msgid "Open the application menu"
-#~ msgstr "開啟應用程式選單"
+#~ msgid "Media"
+#~ msgstr "媒體"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "GNOME Shell 擴充套件偏好設定"
