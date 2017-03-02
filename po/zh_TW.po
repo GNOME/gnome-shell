@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: metacity 3.3.4\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-22 19:28+0000\n"
-"PO-Revision-Date: 2017-02-27 10:46+0800\n"
+"POT-Creation-Date: 2017-02-28 06:20+0000\n"
+"PO-Revision-Date: 2017-03-01 10:24+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -19,7 +19,247 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.12\n"
+
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "導航"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "將視窗移至第 1 個工作區"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "將視窗移至第 2 個工作區"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "將視窗移至第 3 個工作區"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "將視窗移至第 4 個工作區"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "將視窗移至上一個工作區"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "將視窗移至左方的工作區"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "將視窗移至右方的工作區"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "將視窗移至上方的工作區"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "將視窗移至下方的工作區"
+
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "將視窗移至左方的螢幕"
+
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "將視窗移至右方的螢幕"
+
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "將視窗移至上方的螢幕"
+
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "將視窗移至下方的螢幕"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "切換程式"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "切換至上一個應用程式"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "切換視窗"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "切換至上一個視窗"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "切換程式的視窗"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "切換至上一個應用程式的視窗"
+
+#: data/50-mutter-navigation.xml:76
+msgid "Switch system controls"
+msgstr "切換系統控制"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "切換至上一個系統控制"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "直接切換視窗"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "直接切換至上一個視窗"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "直接切換程式的視窗"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr "直接切換至上一個程式視窗"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "直接切換系統控制"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "直接切換至上一個系統控制"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "隱藏所有一般視窗"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "切換至第 1 個工作區"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "切換至第 2 個工作區"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "切換至第 3 個工作區"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "切換至第 4 個工作區"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "切換至上一個工作區"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "移至左方的工作區"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "移至右方的工作區"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "移至上方的工作區"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "移至下方的工作區"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "系統"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "顯示執行指令提示"
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "顯示活動概覽"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "視窗"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "使用視窗選單"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "切換全螢幕模式"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "切換最大化狀態"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "視窗最大化"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "還原視窗"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "切換視窗捲起/放下狀態"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "關閉視窗"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "隱藏視窗"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "移動視窗"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "調整視窗大小"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr "切換視窗顯示在所有工作區或是只顯示於其中之一"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "若被其他視窗遮蔽就抬升它，否則將它降下"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "令某個視窗覆蓋其它視窗"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "遮蔽某個視窗"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "將視窗縱向最大化"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "將視窗橫向最大化"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "檢視分割於左側"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "檢視分割於右側"
 
 #: data/mutter.desktop.in:4
 msgid "Mutter"
@@ -377,183 +617,6 @@ msgstr "這些視窗不支援「儲存目前的設定」，必須在下次登入
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s（在 %s）"
-
-#~ msgid "Navigation"
-#~ msgstr "導航"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "將視窗移至第 1 個工作區"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "將視窗移至第 2 個工作區"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "將視窗移至第 3 個工作區"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "將視窗移至第 4 個工作區"
-
-#~ msgid "Move window to last workspace"
-#~ msgstr "將視窗移至上一個工作區"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "將視窗移至左方的工作區"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "將視窗移至右方的工作區"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "將視窗移至上方的工作區"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "將視窗移至下方的工作區"
-
-#~ msgid "Move window one monitor to the left"
-#~ msgstr "將視窗移至左方的螢幕"
-
-#~ msgid "Move window one monitor to the right"
-#~ msgstr "將視窗移至右方的螢幕"
-
-#~ msgid "Move window one monitor up"
-#~ msgstr "將視窗移至上方的螢幕"
-
-#~ msgid "Move window one monitor down"
-#~ msgstr "將視窗移至下方的螢幕"
-
-#~ msgid "Switch applications"
-#~ msgstr "切換程式"
-
-#~ msgid "Switch to previous application"
-#~ msgstr "切換至上一個應用程式"
-
-#~ msgid "Switch windows"
-#~ msgstr "切換視窗"
-
-#~ msgid "Switch to previous window"
-#~ msgstr "切換至上一個視窗"
-
-#~ msgid "Switch windows of an application"
-#~ msgstr "切換程式的視窗"
-
-#~ msgid "Switch to previous window of an application"
-#~ msgstr "切換至上一個應用程式的視窗"
-
-#~ msgid "Switch to previous system control"
-#~ msgstr "切換至上一個系統控制"
-
-#~ msgid "Switch windows directly"
-#~ msgstr "直接切換視窗"
-
-#~ msgid "Switch directly to previous window"
-#~ msgstr "直接切換至上一個視窗"
-
-#~ msgid "Switch windows of an app directly"
-#~ msgstr "直接切換程式的視窗"
-
-#~ msgid "Switch directly to previous window of an app"
-#~ msgstr "直接切換至上一個程式視窗"
-
-#~ msgid "Switch system controls directly"
-#~ msgstr "直接切換系統控制"
-
-#~ msgid "Switch directly to previous system control"
-#~ msgstr "直接切換至上一個系統控制"
-
-#~ msgid "Hide all normal windows"
-#~ msgstr "隱藏所有一般視窗"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "切換至第 1 個工作區"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "切換至第 2 個工作區"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "切換至第 3 個工作區"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "切換至第 4 個工作區"
-
-#~ msgid "Switch to last workspace"
-#~ msgstr "切換至上一個工作區"
-
-#~ msgid "Move to workspace left"
-#~ msgstr "移至左方的工作區"
-
-#~ msgid "Move to workspace right"
-#~ msgstr "移至右方的工作區"
-
-#~ msgid "Move to workspace above"
-#~ msgstr "移至上方的工作區"
-
-#~ msgid "Move to workspace below"
-#~ msgstr "移至下方的工作區"
-
-#~ msgid "System"
-#~ msgstr "系統"
-
-#~ msgid "Show the run command prompt"
-#~ msgstr "顯示執行指令提示"
-
-#~ msgid "Show the activities overview"
-#~ msgstr "顯示活動概覽"
-
-#~ msgid "Windows"
-#~ msgstr "視窗"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "使用視窗選單"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "切換全螢幕模式"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "切換最大化狀態"
-
-#~ msgid "Maximize window"
-#~ msgstr "視窗最大化"
-
-#~ msgid "Restore window"
-#~ msgstr "還原視窗"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "切換視窗捲起/放下狀態"
-
-#~ msgid "Close window"
-#~ msgstr "關閉視窗"
-
-#~ msgid "Hide window"
-#~ msgstr "隱藏視窗"
-
-#~ msgid "Move window"
-#~ msgstr "移動視窗"
-
-#~ msgid "Resize window"
-#~ msgstr "調整視窗大小"
-
-#~ msgid "Toggle window on all workspaces or one"
-#~ msgstr "切換視窗顯示在所有工作區或是只顯示於其中之一"
-
-#~ msgid "Raise window if covered, otherwise lower it"
-#~ msgstr "若被其他視窗遮蔽就抬升它，否則將它降下"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "令某個視窗覆蓋其它視窗"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "遮蔽某個視窗"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "將視窗縱向最大化"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "將視窗橫向最大化"
-
-#~ msgid "View split on left"
-#~ msgstr "檢視分割於左側"
-
-#~ msgid "View split on right"
-#~ msgstr "檢視分割於右側"
 
 #~ msgid "background texture could not be created from file"
 #~ msgstr "背景材質無法從檔案建立"
