@@ -2319,32 +2319,8 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 #~ msgid "Networking is disabled"
 #~ msgstr "תכונת הרשת מנוטרלת"
 
-#~ msgid "%d hour remaining"
-#~ msgid_plural "%d hours remaining"
-#~ msgstr[0] "נותרה שעה"
-#~ msgstr[1] "נותרו %d שעות"
-#~ msgstr[2] "נותרו שעתיים"
-
 #~ msgid "%d %s %d %s remaining"
 #~ msgstr "%d %s %d %s נותרו"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "שעה"
-#~ msgstr[1] "שעות"
-#~ msgstr[2] "שעתיים"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "דקה"
-#~ msgstr[1] "דקות"
-#~ msgstr[2] "דקות"
-
-#~ msgid "%d minute remaining"
-#~ msgid_plural "%d minutes remaining"
-#~ msgstr[0] "דקה אחת נותרה"
-#~ msgstr[1] "%d דקות נותרו"
-#~ msgstr[2] "שתי דקות נותרו"
 
 #~ msgid "AC Adapter"
 #~ msgstr "מתאם חשמל"
@@ -2610,30 +2586,6 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "לפני פחות מדקה"
-
-#~ msgid "%d minute ago"
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "לפני דקה"
-#~ msgstr[1] "לפני %d דקות"
-#~ msgstr[2] "לפני 2 דקות"
-
-#~ msgid "%d hour ago"
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "לפני שעה"
-#~ msgstr[1] "לפני %d שעות"
-#~ msgstr[2] "לפני שעתיים"
-
-#~ msgid "%d day ago"
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "לפני יום"
-#~ msgstr[1] "לפני %d ימים"
-#~ msgstr[2] "לפני יומיים"
-
-#~ msgid "%d week ago"
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "לפני שבוע"
-#~ msgstr[1] "לפני %d שבועות"
-#~ msgstr[2] "לפני שבועיים"
 
 #~ msgid "Shut Down"
 #~ msgstr "כיבוי"
