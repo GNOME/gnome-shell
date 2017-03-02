@@ -1,5 +1,5 @@
 # Danish translation of Mutter.
-# Copyright (C) 2002-2009, 2012-2016.
+# Copyright (C) 2002-2009, 2012-2017.
 # This file is distributed under the same license as the metacity package.
 # Kjartan Maraas <kmaraas@gnome.org>, 2002
 # Keld simonsen <keld@dkuug.dk>, 2002
@@ -8,7 +8,7 @@
 # Lasse Bang Mikkelsen <lbm@fatalerror.dk>, 2006.
 # Kenneth Nielsen <k.nielsen81@gmail.com>, 2008.
 # Joe Hansen <joedalton2@yahoo.dk>, 2011.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 09, 10, 12, 13, 14, 15, 16.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2007, 09, 10, 12, 13, 14, 15, 16, 17.
 #
 # Ordliste:
 #
@@ -19,256 +19,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-13 10:16+0000\n"
-"PO-Revision-Date: 2016-09-08 23:52+0200\n"
+"POT-Creation-Date: 2017-02-22 19:28+0000\n"
+"PO-Revision-Date: 2017-03-02 12:04+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: data/50-mutter-navigation.xml:6
-msgid "Navigation"
-msgstr "Navigation"
-
-#: data/50-mutter-navigation.xml:9
-msgid "Move window to workspace 1"
-msgstr "Flyt vindue til arbejdsområde 1"
-
-#: data/50-mutter-navigation.xml:12
-msgid "Move window to workspace 2"
-msgstr "Flyt vindue til arbejdsområde 2"
-
-#: data/50-mutter-navigation.xml:15
-msgid "Move window to workspace 3"
-msgstr "Flyt vindue til arbejdsområde 3"
-
-#: data/50-mutter-navigation.xml:18
-msgid "Move window to workspace 4"
-msgstr "Flyt vindue til arbejdsområde 4"
-
-#: data/50-mutter-navigation.xml:21
-msgid "Move window to last workspace"
-msgstr "Flyt vindue til sidste arbejdsområde"
-
-#: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "Flyt vindue et arbejdsområde til venstre"
-
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "Flyt vindue et arbejdsområde til højre"
-
-#: data/50-mutter-navigation.xml:30
-msgid "Move window one workspace up"
-msgstr "Flyt vindue et arbejdsområde op"
-
-#: data/50-mutter-navigation.xml:33
-msgid "Move window one workspace down"
-msgstr "Flyt vindue et arbejdsområde ned"
-
-#: data/50-mutter-navigation.xml:36
-msgid "Move window one monitor to the left"
-msgstr "Flyt vindue en skærm til venstre"
-
-#: data/50-mutter-navigation.xml:39
-msgid "Move window one monitor to the right"
-msgstr "Flyt vindue en skærm til højre"
-
-#: data/50-mutter-navigation.xml:42
-msgid "Move window one monitor up"
-msgstr "Flyt vindue en skærm op"
-
-#: data/50-mutter-navigation.xml:45
-msgid "Move window one monitor down"
-msgstr "Flyt vindue en skærm ned"
-
-#: data/50-mutter-navigation.xml:49
-msgid "Switch applications"
-msgstr "Skift mellem programmer"
-
-#: data/50-mutter-navigation.xml:54
-msgid "Switch to previous application"
-msgstr "Skift til forrige program"
-
-#: data/50-mutter-navigation.xml:58
-msgid "Switch windows"
-msgstr "Skift mellem vinduer"
-
-#: data/50-mutter-navigation.xml:63
-msgid "Switch to previous window"
-msgstr "Skift til forrige vindue"
-
-#: data/50-mutter-navigation.xml:67
-msgid "Switch windows of an application"
-msgstr "Skift mellem vinduer i et program"
-
-#: data/50-mutter-navigation.xml:72
-msgid "Switch to previous window of an application"
-msgstr "Skift til forrige vindue af et program"
-
-#: data/50-mutter-navigation.xml:76
-msgid "Switch system controls"
-msgstr "Skift mellem systemkontroller"
-
-#: data/50-mutter-navigation.xml:81
-msgid "Switch to previous system control"
-msgstr "Skift til forrige systemkontrol"
-
-#: data/50-mutter-navigation.xml:85
-msgid "Switch windows directly"
-msgstr "Skift direkte mellem vinduer"
-
-#: data/50-mutter-navigation.xml:90
-msgid "Switch directly to previous window"
-msgstr "Skift direkte til forrige vindue"
-
-#: data/50-mutter-navigation.xml:94
-msgid "Switch windows of an app directly"
-msgstr "Skift direkte mellem vinduer i et program"
-
-#: data/50-mutter-navigation.xml:99
-msgid "Switch directly to previous window of an app"
-msgstr "Skift direkte til forrige vindue af et program"
-
-#: data/50-mutter-navigation.xml:103
-msgid "Switch system controls directly"
-msgstr "Skift direkte mellem systemkontroller"
-
-#: data/50-mutter-navigation.xml:108
-msgid "Switch directly to previous system control"
-msgstr "Skift direkte til forrige systemkontrol"
-
-#: data/50-mutter-navigation.xml:111
-msgid "Hide all normal windows"
-msgstr "Skjul alle normale vinduer"
-
-#: data/50-mutter-navigation.xml:114
-msgid "Switch to workspace 1"
-msgstr "Skift til arbejdsområde 1"
-
-#: data/50-mutter-navigation.xml:117
-msgid "Switch to workspace 2"
-msgstr "Skift til arbejdsområde 2"
-
-#: data/50-mutter-navigation.xml:120
-msgid "Switch to workspace 3"
-msgstr "Skift til arbejdsområde 3"
-
-#: data/50-mutter-navigation.xml:123
-msgid "Switch to workspace 4"
-msgstr "Skift til arbejdsområde 4"
-
-#: data/50-mutter-navigation.xml:126
-msgid "Switch to last workspace"
-msgstr "Skift til sidste arbejdsområde"
-
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "Flyt til arbejdsområdet til venstre"
-
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "Flyt til arbejdsområdet til højre"
-
-#: data/50-mutter-navigation.xml:135
-msgid "Move to workspace above"
-msgstr "Flyt til arbejdsområdet ovenover"
-
-#: data/50-mutter-navigation.xml:138
-msgid "Move to workspace below"
-msgstr "Flyt til arbejdsområdet nedenunder"
-
-#: data/50-mutter-system.xml:6
-msgid "System"
-msgstr "System"
-
-#: data/50-mutter-system.xml:8
-msgid "Show the run command prompt"
-msgstr "Vis \"kør kommando\"-prompten"
-
-#: data/50-mutter-system.xml:10
-msgid "Show the activities overview"
-msgstr "Vis aktivitetsoversigten"
-
-#: data/50-mutter-windows.xml:6
-msgid "Windows"
-msgstr "Vinduer"
-
-#: data/50-mutter-windows.xml:8
-msgid "Activate the window menu"
-msgstr "Aktivér vinduesmenuen"
-
-#: data/50-mutter-windows.xml:10
-msgid "Toggle fullscreen mode"
-msgstr "Slå fuldskærmstilstand til/fra"
-
-#: data/50-mutter-windows.xml:12
-msgid "Toggle maximization state"
-msgstr "Slå maksimering til/fra"
-
-#: data/50-mutter-windows.xml:14
-msgid "Maximize window"
-msgstr "Maksimér vindue"
-
-#: data/50-mutter-windows.xml:16
-msgid "Restore window"
-msgstr "Gendan vindue"
-
-#: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "Slå vinduesoprulning til/fra"
-
-#: data/50-mutter-windows.xml:20
-msgid "Close window"
-msgstr "Luk vindue"
-
-#: data/50-mutter-windows.xml:22
-msgid "Hide window"
-msgstr "Skjul vindue"
-
-#: data/50-mutter-windows.xml:24
-msgid "Move window"
-msgstr "Flyt vindue"
-
-#: data/50-mutter-windows.xml:26
-msgid "Resize window"
-msgstr "Ændr vinduesstørrelse"
-
-#: data/50-mutter-windows.xml:29
-msgid "Toggle window on all workspaces or one"
-msgstr "Slå visning af vindue på alle arbejdsområder til/fra"
-
-#: data/50-mutter-windows.xml:31
-msgid "Raise window if covered, otherwise lower it"
-msgstr "Hæv vindue hvis det er dækket, ellers sænk det"
-
-#: data/50-mutter-windows.xml:33
-msgid "Raise window above other windows"
-msgstr "Hæv vindue over andre vinduer"
-
-#: data/50-mutter-windows.xml:35
-msgid "Lower window below other windows"
-msgstr "Sænk vindue under andre vinduer"
-
-#: data/50-mutter-windows.xml:37
-msgid "Maximize window vertically"
-msgstr "Maksimér vindue lodret"
-
-#: data/50-mutter-windows.xml:39
-msgid "Maximize window horizontally"
-msgstr "Maksimér vindue vandret"
-
-#: data/50-mutter-windows.xml:43
-msgid "View split on left"
-msgstr "Delt visning venstre"
-
-#: data/50-mutter-windows.xml:47
-msgid "View split on right"
-msgstr "Delt visning højre"
 
 #: data/mutter.desktop.in:4
 msgid "Mutter"
@@ -280,15 +40,11 @@ msgstr "Modifikationstast til brug for udvidede vindueshåndteringsoperationer"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"Denne nøgle vil klargøre \"overlay\", som er en kombineret vinduesoversigt "
-"og programstartsystem. Standardværdien på PC-hardware er tiltænkt som "
-"\"Windows\"-tasten. Det forventes at denne binding enten har "
-"standardværdien, eller er sat til den tomme streng."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
+msgstr "Denne nøgle vil klargøre \"overlay\", som er en kombineret vinduesoversigt og programstartersystem. Standardværdien på PC-hardware er tiltænkt som \"Windows\"-tasten. Det forventes, at denne binding enten har standardværdien, eller er sat til den tomme streng."
 
 #: data/org.gnome.mutter.gschema.xml.in:20
 msgid "Attach modal dialogs"
@@ -326,7 +82,7 @@ msgstr "Arbejdsområder håndteres dynamisk"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -364,9 +120,9 @@ msgstr "Lad fokusændringer vente indtil markøren holder op med at bevæge sig"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
 "Hvis sat til sand, og fokustilstanden er enten \"sloppy\" eller \"mouse\", "
 "vil fokus ikke blive ændret omgående når man går ind i et nyt vindue, men "
@@ -378,7 +134,7 @@ msgstr "Bredde af den trækbare kant"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "Samlet mængde kant der kan trækkes. Hvis temaets synlige grænser ikke er "
@@ -463,44 +219,51 @@ msgstr "Skift til VT 11"
 msgid "Switch to VT 12"
 msgstr "Skift til VT 12"
 
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1800
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Tilstandsskift (Gruppe %d)"
+
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1845
+#: src/backends/meta-input-settings.c:1822
 msgid "Switch monitor"
 msgstr "Skift skærm"
 
-#: src/backends/meta-input-settings.c:1847
+#: src/backends/meta-input-settings.c:1824
 msgid "Show on-screen help"
 msgstr "Vis integreret hjælp"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Indbygget terminal"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Ukendt terminal"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
 "En anden komposithåndtering kører allerede på skærm %i på terminal \"%s\"."
 
@@ -508,6 +271,7 @@ msgstr ""
 msgid "Bell event"
 msgstr "Bip-hændelse"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -526,51 +290,51 @@ msgstr ""
 "du kan tvinge programmet til at afslutte fuldstændigt."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Vent"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Tving til at afslutte"
 
-#: src/core/display.c:590
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Vent"
+
+#: src/core/display.c:608
 #, c-format
-msgid "Failed to open X Window System display '%s'\n"
+msgid "Failed to open X Window System display “%s”\n"
 msgstr "Kunne ikke åbne X Window System-terminalen \"%s\"\n"
 
-#: src/core/main.c:182
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Deaktivér forbindelse til sessionshåndtering"
 
-#: src/core/main.c:188
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Erstat den kørende vindueshåndtering"
 
-#: src/core/main.c:194
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Angiv sessionhåndterings-id"
 
-#: src/core/main.c:199
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "X-terminal som bruges"
 
-#: src/core/main.c:205
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Initialisér session fra gemt fil"
 
-#: src/core/main.c:211
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Gør kald til X synkrone"
 
-#: src/core/main.c:218
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Kør som en wayland-kompositor"
 
-#: src/core/main.c:224
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Kør som en indlejret kompositor"
 
-#: src/core/main.c:232
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Kør som fuld terminalserver, frem for indlejret"
 
@@ -578,16 +342,15 @@ msgstr "Kør som fuld terminalserver, frem for indlejret"
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., og andre\n"
+"Copyright © 2001–%d Havoc Pennington, Red Hat, Inc., og andre\n"
 "Dette er frit programmel; se kildekoden for kopieringsbetingelser.\n"
-"Der er INGEN garanti; ikke engang for SALGBARHED eller EGNETHED TIL ET "
-"BESTEMT FORMÅL.\n"
+"Der er INGEN garanti; ikke engang for SALGBARHED eller EGNETHED TIL ET BESTEMT FORMÅL.\n"
 
 #: src/core/mutter.c:53
 msgid "Print version"
@@ -602,42 +365,220 @@ msgstr "Mutter-udvidelsesmodul der skal bruges"
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "Terminalen \"%s\" har allerede en vindueshåndtering; prøv tilvalget --"
 "replace for at erstatte den aktuelle vindueshåndtering."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Skærm %d på terminal \"%s\" er ugyldig\n"
 
 #: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter blev kompileret uden understøttelse for uddybende tilstand\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Tilstandsskift: Tilstand %d"
 
 #: src/x11/session.c:1815
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Disse vinduer understøtter ikke gemning af deres opsætning og skal "
-"genstartes manuelt næste gang du logger på."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
+msgstr "Disse vinduer understøtter ikke at gemme deres opsætning og skal genstartes manuelt næste gang, du logger på."
 
 # Lad os håbe dette er rigtigt
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
+
+#~ msgid "Navigation"
+#~ msgstr "Navigation"
+
+#~ msgid "Move window to workspace 1"
+#~ msgstr "Flyt vindue til arbejdsområde 1"
+
+#~ msgid "Move window to workspace 2"
+#~ msgstr "Flyt vindue til arbejdsområde 2"
+
+#~ msgid "Move window to workspace 3"
+#~ msgstr "Flyt vindue til arbejdsområde 3"
+
+#~ msgid "Move window to workspace 4"
+#~ msgstr "Flyt vindue til arbejdsområde 4"
+
+#~ msgid "Move window to last workspace"
+#~ msgstr "Flyt vindue til sidste arbejdsområde"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Flyt vindue et arbejdsområde til venstre"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Flyt vindue et arbejdsområde til højre"
+
+#~ msgid "Move window one workspace up"
+#~ msgstr "Flyt vindue et arbejdsområde op"
+
+#~ msgid "Move window one workspace down"
+#~ msgstr "Flyt vindue et arbejdsområde ned"
+
+#~ msgid "Move window one monitor to the left"
+#~ msgstr "Flyt vindue en skærm til venstre"
+
+#~ msgid "Move window one monitor to the right"
+#~ msgstr "Flyt vindue en skærm til højre"
+
+#~ msgid "Move window one monitor up"
+#~ msgstr "Flyt vindue en skærm op"
+
+#~ msgid "Move window one monitor down"
+#~ msgstr "Flyt vindue en skærm ned"
+
+#~ msgid "Switch applications"
+#~ msgstr "Skift mellem programmer"
+
+#~ msgid "Switch to previous application"
+#~ msgstr "Skift til forrige program"
+
+#~ msgid "Switch windows"
+#~ msgstr "Skift mellem vinduer"
+
+#~ msgid "Switch to previous window"
+#~ msgstr "Skift til forrige vindue"
+
+#~ msgid "Switch windows of an application"
+#~ msgstr "Skift mellem vinduer i et program"
+
+#~ msgid "Switch to previous window of an application"
+#~ msgstr "Skift til forrige vindue af et program"
+
+#~ msgid "Switch system controls"
+#~ msgstr "Skift mellem systemkontroller"
+
+#~ msgid "Switch to previous system control"
+#~ msgstr "Skift til forrige systemkontrol"
+
+#~ msgid "Switch windows directly"
+#~ msgstr "Skift direkte mellem vinduer"
+
+#~ msgid "Switch directly to previous window"
+#~ msgstr "Skift direkte til forrige vindue"
+
+#~ msgid "Switch windows of an app directly"
+#~ msgstr "Skift direkte mellem vinduer i et program"
+
+#~ msgid "Switch directly to previous window of an app"
+#~ msgstr "Skift direkte til forrige vindue af et program"
+
+#~ msgid "Switch system controls directly"
+#~ msgstr "Skift direkte mellem systemkontroller"
+
+#~ msgid "Switch directly to previous system control"
+#~ msgstr "Skift direkte til forrige systemkontrol"
+
+#~ msgid "Hide all normal windows"
+#~ msgstr "Skjul alle normale vinduer"
+
+#~ msgid "Switch to workspace 1"
+#~ msgstr "Skift til arbejdsområde 1"
+
+#~ msgid "Switch to workspace 2"
+#~ msgstr "Skift til arbejdsområde 2"
+
+#~ msgid "Switch to workspace 3"
+#~ msgstr "Skift til arbejdsområde 3"
+
+#~ msgid "Switch to workspace 4"
+#~ msgstr "Skift til arbejdsområde 4"
+
+#~ msgid "Switch to last workspace"
+#~ msgstr "Skift til sidste arbejdsområde"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "Flyt til arbejdsområdet til venstre"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "Flyt til arbejdsområdet til højre"
+
+#~ msgid "Move to workspace above"
+#~ msgstr "Flyt til arbejdsområdet ovenover"
+
+#~ msgid "Move to workspace below"
+#~ msgstr "Flyt til arbejdsområdet nedenunder"
+
+#~ msgid "System"
+#~ msgstr "System"
+
+#~ msgid "Show the run command prompt"
+#~ msgstr "Vis \"kør kommando\"-prompten"
+
+#~ msgid "Show the activities overview"
+#~ msgstr "Vis aktivitetsoversigten"
+
+#~ msgid "Windows"
+#~ msgstr "Vinduer"
+
+#~ msgid "Activate the window menu"
+#~ msgstr "Aktivér vinduesmenuen"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "Slå fuldskærmstilstand til/fra"
+
+#~ msgid "Toggle maximization state"
+#~ msgstr "Slå maksimering til/fra"
+
+#~ msgid "Maximize window"
+#~ msgstr "Maksimér vindue"
+
+#~ msgid "Restore window"
+#~ msgstr "Gendan vindue"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "Slå vinduesoprulning til/fra"
+
+#~ msgid "Close window"
+#~ msgstr "Luk vindue"
+
+#~ msgid "Hide window"
+#~ msgstr "Skjul vindue"
+
+#~ msgid "Move window"
+#~ msgstr "Flyt vindue"
+
+#~ msgid "Resize window"
+#~ msgstr "Ændr vinduesstørrelse"
+
+#~ msgid "Toggle window on all workspaces or one"
+#~ msgstr "Slå visning af vindue på alle arbejdsområder til/fra"
+
+#~ msgid "Raise window if covered, otherwise lower it"
+#~ msgstr "Hæv vindue hvis det er dækket, ellers sænk det"
+
+#~ msgid "Raise window above other windows"
+#~ msgstr "Hæv vindue over andre vinduer"
+
+#~ msgid "Lower window below other windows"
+#~ msgstr "Sænk vindue under andre vinduer"
+
+#~ msgid "Maximize window vertically"
+#~ msgstr "Maksimér vindue lodret"
+
+#~ msgid "Maximize window horizontally"
+#~ msgstr "Maksimér vindue vandret"
+
+#~ msgid "View split on left"
+#~ msgstr "Delt visning venstre"
+
+#~ msgid "View split on right"
+#~ msgstr "Delt visning højre"
 
 #~ msgid "Failed to scan themes directory: %s\n"
 #~ msgstr "Kunne ikke skanne temamappe: %s\n"
