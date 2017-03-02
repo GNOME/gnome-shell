@@ -9,10 +9,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 21:00+0000\n"
-"PO-Revision-Date: 2017-02-22 17:45+0100\n"
+"POT-Creation-Date: 2017-03-01 09:59+0000\n"
+"PO-Revision-Date: 2017-03-01 14:37+0100\n"
 "Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.12\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -400,36 +400,86 @@ msgstr "Hitelesítési hiba"
 msgid "(or swipe finger)"
 msgstr "(vagy húzza le az ujját)"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "A parancs nem található"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "A parancs nem dolgozható fel:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "„%s” végrehajtása meghiúsult:"
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Épp most"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d perce"
+msgstr[1] "%d perce"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d órája"
+msgstr[1] "%d órája"
+
+#: js/misc/util.js:188
+msgid "Yesterday"
+msgstr "Tegnap"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d napja"
+msgstr[1] "%d napja"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d hete"
+msgstr[1] "%d hete"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d hónapja"
+msgstr[1] "%d hónapja"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d éve"
+msgstr[1] "%d éve"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%k.%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Tegnap, %k.%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A %k.%M"
@@ -437,7 +487,7 @@ msgstr "%A %k.%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%B %d., %k.%M"
@@ -445,26 +495,26 @@ msgstr "%B %d., %k.%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%Y. %B %d., %k.%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%P %l.%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Tegnap %l.%M %P"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l.%M %P"
@@ -472,7 +522,7 @@ msgstr "%A, %l.%M %P"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d., %l.%M  %p"
@@ -480,7 +530,7 @@ msgstr "%B %d., %l.%M  %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y. %B %d., %l.%M  %p"
@@ -656,36 +706,32 @@ msgstr "%V. hét"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Egész nap"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "Események"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d."
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y. %B %d."
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Értesítések"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Nincsenek értesítések"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Nincsenek események"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Összes törlése"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -810,7 +856,7 @@ msgstr "Elnézést, ez nem sikerült. Próbálja újra."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:767
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s mostantól %s néven ismert"
@@ -833,7 +879,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%Y. %B %e."
 
@@ -841,17 +887,66 @@ msgstr "%Y. %B %e."
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A, %Y. %B %e."
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Világórák hozzáadása…"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Világórák"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Időjárás"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "Egész nap: %s."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, később: %s."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, utána: %s, később: %s."
+
+#: js/ui/dateMenu.js:300
+msgid "Loading…"
+msgstr "Betöltés…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Hőérzet: %s."
+
+#: js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "Időjárás-információkért kapcsolódjon az internetre"
+
+#: js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "Az időjárás-információk jelenleg nem érhetőek el"
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1074,25 +1169,17 @@ msgstr "Forrás megtekintése"
 msgid "Web Page"
 msgstr "Weblap"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Szakasz törlése"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Rendszerinformációk"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Ismeretlen előadó"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Ismeretlen cím"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "Adathordozó"
 
 #: js/ui/overview.js:84
 msgid "Undo"
@@ -1873,6 +1960,18 @@ msgstr "A jelszó nem lehet üres"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
+#~ msgid "Events"
+#~ msgstr "Események"
+
+#~ msgid "Notifications"
+#~ msgstr "Értesítések"
+
+#~ msgid "Clear section"
+#~ msgstr "Szakasz törlése"
+
+#~ msgid "Media"
+#~ msgstr "Adathordozó"
+
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "GNOME Shell kiterjesztések beállításai"
 
@@ -2452,11 +2551,6 @@ msgstr "A hitelesítési ablakot a felhasználó bezárta"
 #~ msgid "Wi-Fi"
 #~ msgstr "Wi-Fi"
 
-#~ msgid "%d hour remaining"
-#~ msgid_plural "%d hours remaining"
-#~ msgstr[0] "%d óra van hátra"
-#~ msgstr[1] "%d óra van hátra"
-
 #~ msgid "%d %s %d %s remaining"
 #~ msgstr "%d %s %d %s van hátra"
 
@@ -2469,11 +2563,6 @@ msgstr "A hitelesítési ablakot a felhasználó bezárta"
 #~ msgid_plural "minutes"
 #~ msgstr[0] "perc"
 #~ msgstr[1] "perc"
-
-#~ msgid "%d minute remaining"
-#~ msgid_plural "%d minutes remaining"
-#~ msgstr[0] "%d perc van hátra"
-#~ msgstr[1] "%d perc van hátra"
 
 #~ msgid "AC Adapter"
 #~ msgstr "Hálózati csatlakozó"
