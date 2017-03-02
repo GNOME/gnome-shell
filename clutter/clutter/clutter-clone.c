@@ -54,6 +54,7 @@
 struct _ClutterClonePrivate
 {
   ClutterActor *clone_source;
+  gulong source_destroy_id;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (ClutterClone, clutter_clone, CLUTTER_TYPE_ACTOR)
@@ -377,6 +378,13 @@ clutter_clone_new (ClutterActor *source)
 }
 
 static void
+on_source_destroyed (ClutterActor *source,
+                     ClutterClone *self)
+{
+  clutter_clone_set_source_internal (self, NULL);
+}
+
+static void
 clutter_clone_set_source_internal (ClutterClone *self,
 				   ClutterActor *source)
 {
@@ -387,6 +395,8 @@ clutter_clone_set_source_internal (ClutterClone *self,
 
   if (priv->clone_source != NULL)
     {
+      g_signal_handler_disconnect (priv->clone_source, priv->source_destroy_id);
+      priv->source_destroy_id = 0;
       _clutter_actor_detach_clone (priv->clone_source, CLUTTER_ACTOR (self));
       g_object_unref (priv->clone_source);
       priv->clone_source = NULL;
@@ -396,6 +406,8 @@ clutter_clone_set_source_internal (ClutterClone *self,
     {
       priv->clone_source = g_object_ref (source);
       _clutter_actor_attach_clone (priv->clone_source, CLUTTER_ACTOR (self));
+      priv->source_destroy_id = g_signal_connect (priv->clone_source, "destroy",
+                                                  G_CALLBACK (on_source_destroyed), self);
     }
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_SOURCE]);
