@@ -772,11 +772,12 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
 
   upload_format = cogl_bitmap_get_format (upload_bmp);
 
-  ctx->driver_vtable->pixel_format_to_gl (ctx,
-                                          upload_format,
-                                          NULL, /* internal format */
-                                          &gl_format,
-                                          &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl_with_target (ctx,
+                                                      upload_format,
+                                                      _cogl_texture_get_format (tex),
+                                                      NULL, /* internal gl format */
+                                                      &gl_format,
+                                                      &gl_type);
 
   /* If this touches the first pixel then we'll update our copy */
   if (dst_x == 0 && dst_y == 0 &&
