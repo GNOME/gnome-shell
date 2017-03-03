@@ -61,6 +61,7 @@ _cogl_driver_nop =
   {
     NULL, /* pixel_format_from_gl_internal */
     NULL, /* pixel_format_to_gl */
+    NULL, /* pixel_format_to_gl_with_target */
     _cogl_driver_update_features,
     _cogl_offscreen_nop_allocate,
     _cogl_offscreen_nop_free,

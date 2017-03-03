@@ -55,6 +55,13 @@ struct _CoglDriverVtable
                           GLenum *out_glintformat,
                           GLenum *out_glformat,
                           GLenum *out_gltype);
+  CoglPixelFormat
+  (* pixel_format_to_gl_with_target) (CoglContext *context,
+                                      CoglPixelFormat format,
+                                      CoglPixelFormat target_format,
+                                      GLenum *out_glintformat,
+                                      GLenum *out_glformat,
+                                      GLenum *out_gltype);
 
   CoglBool
   (* update_features) (CoglContext *context,

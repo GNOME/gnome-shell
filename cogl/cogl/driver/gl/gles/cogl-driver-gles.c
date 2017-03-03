@@ -67,11 +67,12 @@ _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
 }
 
 static CoglPixelFormat
-_cogl_driver_pixel_format_to_gl (CoglContext *context,
-                                 CoglPixelFormat  format,
-                                 GLenum *out_glintformat,
-                                 GLenum *out_glformat,
-                                 GLenum *out_gltype)
+_cogl_driver_pixel_format_to_gl_with_target (CoglContext *context,
+                                             CoglPixelFormat format,
+                                             CoglPixelFormat target_format,
+                                             GLenum *out_glintformat,
+                                             GLenum *out_glformat,
+                                             GLenum *out_gltype)
 {
   CoglPixelFormat required_format;
   GLenum glintformat;
@@ -217,6 +218,20 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
     *out_gltype = gltype;
 
   return required_format;
+}
+
+static CoglPixelFormat
+_cogl_driver_pixel_format_to_gl (CoglContext *context,
+                                 CoglPixelFormat  format,
+                                 GLenum *out_glintformat,
+                                 GLenum *out_glformat,
+                                 GLenum *out_gltype)
+{
+  return _cogl_driver_pixel_format_to_gl_with_target (context,
+                                                      format, format,
+                                                      out_glintformat,
+                                                      out_glformat,
+                                                      out_gltype);
 }
 
 static CoglBool
@@ -457,6 +472,7 @@ _cogl_driver_gles =
   {
     _cogl_driver_pixel_format_from_gl_internal,
     _cogl_driver_pixel_format_to_gl,
+    _cogl_driver_pixel_format_to_gl_with_target,
     _cogl_driver_update_features,
     _cogl_offscreen_gl_allocate,
     _cogl_offscreen_gl_free,
