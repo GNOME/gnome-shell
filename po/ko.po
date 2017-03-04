@@ -6,7 +6,7 @@
 # Changwoo Ryu <cwryu@debian.org>, 2003, 2004, 2005, 2006, 2007, 2008, 2009.
 #
 # Updated in mutter:
-# Changwoo Ryu <cwryu@debian.org>, 2011-2016.
+# Changwoo Ryu <cwryu@debian.org>, 2011-2017.
 #
 #
 # 주의:
@@ -16,10 +16,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-07 09:27+0000\n"
-"PO-Revision-Date: 2016-09-10 00:38+0900\n"
+"POT-Creation-Date: 2017-02-28 06:20+0000\n"
+"PO-Revision-Date: 2017-03-04 03:25+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -278,14 +278,14 @@ msgstr "창 관리 작업을 할 때 사용할 변경 키"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
-"다음 창으로 이동할 때 창 팝업 및 프레임을 표시할지 여부. 이 키는 \"오버레이"
-"\"를 시작합니다. 오버레이는 창 상태 보기 및 프로그램 실행 환경입니다. PC에서 "
-"기본값은 \"윈도우 키\"입니다. 보통 이 키 바인딩은 기본값이거나 빈 문자열입니"
+"다음 창으로 이동할 때 창 팝업 및 프레임을 표시할지 여부. 이 키는 “오버레"
+"이”를 시작합니다. 오버레이는 창 상태 보기 및 프로그램 실행 환경입니다. PC에"
+"서 기본값은 “윈도우 키”입니다. 보통 이 키 바인딩은 기본값이거나 빈 문자열입니"
 "다."
 
 #: data/org.gnome.mutter.gschema.xml.in:20
@@ -321,7 +321,7 @@ msgstr "작업 공간을 동적으로 관리"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -358,12 +358,12 @@ msgstr "포인터가 움직임을 멈출 때까지 포커스 전환 미루기"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
-"참이고 포커스 모드가 \"sloppy\"나 \"mouse\"인 경우, 창 안에 포인터를 옮겼을 "
-"때 즉시 포커스를 전환하지 않고, 포인터가 움직임을 멈추었을 때 전환합니다."
+"참이고 포커스 모드가 “sloppy”나 “mouse”인 경우, 창 안에 포인터를 옮겼을 때 즉"
+"시 포커스를 전환하지 않고, 포인터가 움직임을 멈추었을 때 전환합니다."
 
 #: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
@@ -371,7 +371,7 @@ msgstr "마우스로 끌 수 있는 가장자리의 너비"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "마우스로 끌 수 있는 가장자리의 너비. 테마의 가장자리가 이보다 작은 경우, 투명"
@@ -453,49 +453,60 @@ msgstr "가상 터미널 11로 이동"
 msgid "Switch to VT 12"
 msgstr "가상 터미널 12로 이동"
 
-#: src/backends/meta-input-settings.c:1707
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1800
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "모드 전환 (그룹 %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1822
 msgid "Switch monitor"
 msgstr "모니터 전환"
 
-#: src/backends/meta-input-settings.c:1709
+#: src/backends/meta-input-settings.c:1824
 msgid "Show on-screen help"
 msgstr "화면 도움말 표시"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "내장 디스플레이"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "알 수 없는 디스플레이"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
-"다른 창 구성 관리 프로그램이 이미 디스플레이 \"%2$s\" 화면 %1$i번에서 실행 중"
-"입니다."
+"다른 창 구성 관리 프로그램이 이미 디스플레이 “%2$s” 화면 %1$i번에서 실행 중입"
+"니다."
 
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "삑소리 이벤트"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -512,51 +523,51 @@ msgid ""
 msgstr "좀 더 기다리거나 해당 프로그램을 강제로 끝낼 수 있습니다."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "기다리기(_W)"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "강제로 끝내기(_F)"
 
-#: src/core/display.c:590
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "X 윈도 시스템 디스플레이 '%s'을(를) 여는데 실패하였습니다\n"
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "기다리기(_W)"
 
-#: src/core/main.c:182
+#: src/core/display.c:608
+#, c-format
+msgid "Failed to open X Window System display “%s”\n"
+msgstr "X 윈도 시스템 디스플레이 “%s”을(를) 여는데 실패하였습니다\n"
+
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "세션 관리자와 연결 하지 않습니다"
 
-#: src/core/main.c:188
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "실행 중인 창 관리자를 바꿉니다"
 
-#: src/core/main.c:194
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "세션 관리 ID를 지정합니다"
 
-#: src/core/main.c:199
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "사용할 X 디스플레이"
 
-#: src/core/main.c:205
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "저장 파일에서 세션을 초기화 합니다"
 
-#: src/core/main.c:211
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "동기 X 호출을 합니다"
 
-#: src/core/main.c:218
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "웨일랜드 컴포지터로 실행합니다"
 
-#: src/core/main.c:224
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "내장 컴포지터로 실행합니다"
 
-#: src/core/main.c:232
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "전체 디스플레이 서버로 실행, 내장 프로그램 아님"
 
@@ -564,13 +575,13 @@ msgstr "전체 디스플레이 서버로 실행, 내장 프로그램 아님"
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
@@ -588,39 +599,39 @@ msgstr "사용할 머터 플러그인"
 msgid "Workspace %d"
 msgstr "작업 공간 %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
-"디스플레이 \"%s\"에 이미 창 관리자가 있습니다. 현재 창 관리자를 바꾸려면 --"
+"디스플레이  “%s”에 이미 창 관리자가 있습니다. 현재 창 관리자를 바꾸려면 --"
 "replace 옵션을 써보십시오."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "디스플레이 '%2$s'의 화면 %1$d은(는) 잘못되었습니다\n"
+msgid "Screen %d on display “%s” is invalid\n"
+msgstr "디스플레이 “%2$s”의 화면 %1$d은(는) 잘못되었습니다\n"
 
 #: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "머터가 자세한 모드 지원 없이 컴파일 되었습니다\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "모드 전환: 모드 %d"
 
 #: src/x11/session.c:1815
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
-"이 창은 &quot;현재 설정 저장&quot;을 지원하지 않기 때문에 다음 번에 로그인 "
-"할 때 수동으로 다시 시작해야 합니다."
+"이 창은 “현재 설정 저장”을 지원하지 않기 때문에 다음 번에 로그인 할 때 수동으"
+"로 다시 시작해야 합니다."
 
 # <창제목> (on <기계>)
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s에서)"
