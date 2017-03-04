@@ -9,11 +9,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 21:00+0000\n"
-"PO-Revision-Date: 2017-02-18 17:34+0200\n"
-"Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
+"POT-Creation-Date: 2017-03-03 11:37+0000\n"
+"PO-Revision-Date: 2017-03-03 14:19+0200\n"
+"Last-Translator: Moo\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -50,7 +50,6 @@ msgstr "Atverti programų meniu"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:149
-#| msgid "GNOME Shell Extensions"
 msgid "Shell Extensions"
 msgstr "Shell plėtiniai"
 
@@ -152,14 +151,10 @@ msgid "History for the looking glass dialog"
 msgstr "Didinamojo stiklo dialogo retrospektyva"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Visada rodyti naudotojo meniu punktą „Atsijungti“."
 
 #: data/org.gnome.shell.gschema.xml.in:68
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -174,11 +169,6 @@ msgstr ""
 "Ar atsiminti slaptažodį prijungiant šifruotas ar nutolusias failų sistemas"
 
 #: data/org.gnome.shell.gschema.xml.in:76
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -217,14 +207,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Klavišų susiejimas, kuriuo atveriamas programų meniu."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Klavišų susiejimas, kuriuo atveriamas rodinys „rodyti programas“"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -288,10 +274,6 @@ msgid "The application icon mode."
 msgstr "Programos piktogramos veiksena."
 
 #: data/org.gnome.shell.gschema.xml.in:177
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -416,36 +398,92 @@ msgstr "Tapatybės patvirtinimo klaida"
 msgid "(or swipe finger)"
 msgstr "(arba perbraukite pirštu)"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "Komanda nerasta"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "Nepavyko perskaityti komandos:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Nepavyko įvykdyti „%s“:"
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Ką tik"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "Prieš %d minutę"
+msgstr[1] "Prieš %d minutes"
+msgstr[2] "Prieš %d minučių"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "Prieš %d valandą"
+msgstr[1] "Prieš %d valandas"
+msgstr[2] "Prieš %d valandų"
+
+#: js/misc/util.js:188
+msgid "Yesterday"
+msgstr "Vakar"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "Prieš %d dieną"
+msgstr[1] "Prieš %d dienas"
+msgstr[2] "Prieš %d dienų"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "Prieš %d savaitę"
+msgstr[1] "Prieš %d savaites"
+msgstr[2] "Prieš %d savaičių"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "Prieš %d mėnesį"
+msgstr[1] "Prieš %d mėnesius"
+msgstr[2] "Prieš %d mėnesių"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "Prieš %d metus"
+msgstr[1] "Prieš %d metus"
+msgstr[2] "Prieš %d metų"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Vakar, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -453,7 +491,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%B %d, %H∶%M"
@@ -461,26 +499,26 @@ msgstr "%B %d, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%Y %m %d, %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Vakar, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -488,7 +526,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%B %d, %l∶%M %p"
@@ -496,14 +534,13 @@ msgstr "%B %d, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%Y %B %d, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:67
-#| msgid "Network Login"
 msgid "Hotspot Login"
 msgstr "Prisijungimas prie prieigos taško"
 
@@ -672,36 +709,32 @@ msgstr "Savaitė %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Visa diena"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "Įvykiai"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d d."
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y m. %B %d d."
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Pranešimai"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Nėra pranešimų"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Nėra įvykių"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Viską išvalyti"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -821,13 +854,12 @@ msgstr "Patvirtinti tapatybę"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:301 js/ui/shellMountOperation.js:383
-#| msgid "Sorry, that didn't work. Please try again."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:767
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s nuo šiol vadinasi %s"
@@ -849,7 +881,7 @@ msgstr "Paleidimo sritis"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%Y m. %B %d d."
 
@@ -857,17 +889,66 @@ msgstr "%Y m. %B %d d."
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A, %Y m. %B %d d."
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Pridėti pasaulio laikrodžius…"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Pasaulio laikrodžiai"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Orai"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "%s visą dieną."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, o vėliau %s."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, tuomet %s, o po to vėliau %s."
+
+#: js/ui/dateMenu.js:300
+msgid "Loading…"
+msgstr "Įkeliama…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Jaučiama kaip %s."
+
+#: js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "Prisijunkite prie tinklo orų informacijai gauti"
+
+#: js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "Orų informacija šiuo metu yra neprieinama"
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1093,25 +1174,17 @@ msgstr "Žiūrėti šaltinį"
 msgid "Web Page"
 msgstr "Tinklalapis"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Išvalyti skiltį"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Sistemos informacija"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Nežinomas atlikėjas"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Nežinomas pavadinimas"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "Medija"
 
 #: js/ui/overview.js:84
 msgid "Undo"
@@ -1136,7 +1209,6 @@ msgid "New shortcut…"
 msgstr "Naujas trumpinys…"
 
 #: js/ui/padOsd.js:86
-#| msgid "Applications"
 msgid "Application defined"
 msgstr "Programos nustatytas"
 
@@ -1145,7 +1217,6 @@ msgid "Show on-screen help"
 msgstr "Rodyti pagalbą ekrane"
 
 #: js/ui/padOsd.js:88
-#| msgid "Switch User"
 msgid "Switch monitor"
 msgstr "Keisti monitorių"
 
@@ -1214,7 +1285,6 @@ msgid "Close"
 msgstr "Užverti"
 
 #: js/ui/runDialog.js:277
-#| msgid "Encryption is not available"
 msgid "Restart is not available on Wayland"
 msgstr "Perleisti Wayland aplinkoje negalima"
 
@@ -1569,7 +1639,6 @@ msgid "%s Not Connected"
 msgstr "Neprisijungta prie %s"
 
 #: js/ui/status/network.js:1434
-#| msgid "connecting..."
 msgid "connecting…"
 msgstr "jungiamasi…"
 
@@ -1601,7 +1670,6 @@ msgstr "VPN išjungtas"
 
 #: js/ui/status/network.js:1631
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s laidinis ryšys"
@@ -1610,7 +1678,6 @@ msgstr[2] "%s laidinių ryšių"
 
 #: js/ui/status/network.js:1635
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s belaidis ryšys"
@@ -1619,7 +1686,6 @@ msgstr[2] "%s belaidžių ryšių"
 
 #: js/ui/status/network.js:1639
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s modemo ryšys"
@@ -1877,7 +1943,6 @@ msgid "Mode used by GDM for login screen"
 msgstr "Veiksena, naudojama GDM prisijungimo ekrane"
 
 #: src/main.c:393
-#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Naudoti konkrečią veikseną, pvz., „gdm“ prisijungimo ekranui"
 
@@ -1906,6 +1971,18 @@ msgstr "Slaptažodis negali būti tuščias"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
+
+#~ msgid "Events"
+#~ msgstr "Įvykiai"
+
+#~ msgid "Notifications"
+#~ msgstr "Pranešimai"
+
+#~ msgid "Clear section"
+#~ msgstr "Išvalyti skiltį"
+
+#~ msgid "Media"
+#~ msgstr "Medija"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "GNOME Shell plėtinių nuostatos"
