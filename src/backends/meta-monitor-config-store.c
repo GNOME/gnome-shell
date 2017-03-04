@@ -546,6 +546,8 @@ handle_end_element (GMarkupParseContext  *context,
           meta_monitors_config_new (parser->current_logical_monitor_configs,
                                     layout_mode);
 
+        parser->current_logical_monitor_configs = NULL;
+
         if (!meta_verify_monitors_config (config, error))
           {
             g_object_unref (config);
@@ -554,8 +556,6 @@ handle_end_element (GMarkupParseContext  *context,
 
         g_hash_table_replace (parser->config_store->configs,
                               config->key, config);
-
-        parser->current_logical_monitor_configs = NULL;
 
         parser->state = STATE_MONITORS;
         return;
