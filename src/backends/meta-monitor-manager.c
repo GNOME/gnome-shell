@@ -45,7 +45,6 @@
 
 enum {
   CONFIRM_DISPLAY_CHANGE,
-  LID_IS_CLOSED_CHANGED,
   SIGNALS_LAST
 };
 
@@ -243,8 +242,8 @@ meta_monitor_manager_lid_is_closed_changed (MetaMonitorManager *manager)
 {
   if (manager->config_manager)
     meta_monitor_manager_ensure_configured (manager);
-
-  g_signal_emit (manager, signals[LID_IS_CLOSED_CHANGED], 0);
+  else
+    meta_monitor_config_lid_is_closed_changed (manager->legacy_config, manager);
 }
 
 static void
@@ -663,14 +662,6 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 
   signals[CONFIRM_DISPLAY_CHANGE] =
     g_signal_new ("confirm-display-change",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  0,
-                  NULL, NULL, NULL,
-		  G_TYPE_NONE, 0);
-
-  signals[LID_IS_CLOSED_CHANGED] =
-    g_signal_new ("lid-is-closed-changed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  0,

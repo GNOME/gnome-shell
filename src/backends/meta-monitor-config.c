@@ -96,9 +96,6 @@ static gboolean meta_monitor_config_assign_crtcs (MetaConfiguration  *config,
                                                   GPtrArray          *crtcs,
                                                   GPtrArray          *outputs);
 
-static void     power_client_changed_cb (MetaMonitorManager *manager,
-                                         gpointer    user_data);
-
 static void
 free_output_key (MetaOutputKey *key)
 {
@@ -794,8 +791,6 @@ meta_monitor_config_new (MetaMonitorManager *manager)
   self = g_object_new (META_TYPE_MONITOR_CONFIG, NULL);
 
   self->lid_is_closed = meta_monitor_manager_is_lid_closed (manager);
-  g_signal_connect_object (manager, "lid-is-closed-changed",
-                           G_CALLBACK (power_client_changed_cb), self, 0);
 
   meta_monitor_config_load (self);
 
@@ -1584,11 +1579,10 @@ turn_off_laptop_display (MetaMonitorConfig  *self,
   self->current_is_for_laptop_lid = TRUE;
 }
 
-static void
-power_client_changed_cb (MetaMonitorManager *manager,
-                         gpointer            user_data)
+void
+meta_monitor_config_lid_is_closed_changed (MetaMonitorConfig  *self,
+                                           MetaMonitorManager *manager)
 {
-  MetaMonitorConfig *self = user_data;
   gboolean is_closed;
 
   is_closed = meta_monitor_manager_is_lid_closed (manager);

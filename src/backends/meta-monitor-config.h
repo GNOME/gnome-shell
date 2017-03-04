@@ -46,4 +46,7 @@ void               meta_monitor_config_restore_previous (MetaMonitorConfig  *con
 
 gboolean           meta_monitor_config_get_is_builtin_display_on (MetaMonitorConfig *config);
 
+void               meta_monitor_config_lid_is_closed_changed (MetaMonitorConfig  *self,
+                                                              MetaMonitorManager *manager);
+
 #endif /* META_MONITOR_CONFIG_H */
