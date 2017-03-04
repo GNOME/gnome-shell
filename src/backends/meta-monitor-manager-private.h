@@ -315,6 +315,8 @@ struct _MetaMonitorManager
 
   GnomePnpIds *pnp_ids;
   UpClient *up_client;
+
+  gulong experimental_features_changed_handler_id;
 };
 
 struct _MetaMonitorManagerClass
@@ -389,6 +391,8 @@ struct _MetaMonitorManagerClass
 
   MetaLogicalMonitorLayoutMode (*get_default_layout_mode) (MetaMonitorManager *);
 };
+
+gboolean            meta_is_monitor_config_manager_enabled (void);
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
                                                   MetaMonitorsConfig *config);

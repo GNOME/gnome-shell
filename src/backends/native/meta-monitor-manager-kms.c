@@ -1260,7 +1260,7 @@ meta_monitor_manager_kms_ensure_initial_config (MetaMonitorManager *manager)
 
   config = meta_monitor_manager_ensure_configured (manager);
 
-  if (manager->config_manager)
+  if (meta_is_monitor_config_manager_enabled ())
     meta_monitor_manager_update_logical_state (manager, config);
   else
     meta_monitor_manager_update_logical_state_derived (manager);

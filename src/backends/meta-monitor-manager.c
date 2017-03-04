@@ -74,6 +74,14 @@ meta_monitor_manager_init (MetaMonitorManager *manager)
 {
 }
 
+gboolean
+meta_is_monitor_config_manager_enabled (void)
+{
+  return meta_backend_is_experimental_feature_enabled (
+    meta_get_backend (),
+    META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER);
+}
+
 static void
 meta_monitor_manager_set_primary_logical_monitor (MetaMonitorManager *manager,
                                                   MetaLogicalMonitor *logical_monitor)
@@ -240,7 +248,7 @@ power_save_mode_changed (MetaMonitorManager *manager,
 void
 meta_monitor_manager_lid_is_closed_changed (MetaMonitorManager *manager)
 {
-  if (manager->config_manager)
+  if (meta_is_monitor_config_manager_enabled ())
     meta_monitor_manager_ensure_configured (manager);
   else
     meta_monitor_config_lid_is_closed_changed (manager->legacy_config, manager);
@@ -390,7 +398,7 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
   MetaMonitorsConfigMethod fallback_method =
     META_MONITORS_CONFIG_METHOD_TEMPORARY;
 
-  if (!manager->config_manager)
+  if (!meta_is_monitor_config_manager_enabled ())
     {
       legacy_ensure_configured (manager);
       return NULL;
@@ -498,11 +506,39 @@ done:
 }
 
 static void
+experimental_features_changed (MetaBackend        *backend,
+                               MetaMonitorManager *manager)
+{
+  MetaDBusDisplayConfig *skeleton = META_DBUS_DISPLAY_CONFIG (manager);
+  gboolean was_config_manager_enabled;
+  gboolean is_config_manager_enabled;
+
+  is_config_manager_enabled = meta_is_monitor_config_manager_enabled ();
+  was_config_manager_enabled =
+    meta_dbus_display_config_get_is_experimental_api_enabled (skeleton);
+
+  if (was_config_manager_enabled != is_config_manager_enabled)
+    {
+      meta_dbus_display_config_set_is_experimental_api_enabled (
+        skeleton, is_config_manager_enabled);
+
+      meta_monitor_manager_on_hotplug (manager);
+    }
+}
+
+static void
 meta_monitor_manager_constructed (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
+  MetaDBusDisplayConfig *skeleton = META_DBUS_DISPLAY_CONFIG (manager);
   MetaMonitorManagerClass *manager_class =
     META_MONITOR_MANAGER_GET_CLASS (manager);
+
+  manager->experimental_features_changed_handler_id =
+    g_signal_connect (meta_get_backend (),
+                      "experimental-features-changed",
+                      G_CALLBACK (experimental_features_changed),
+                      manager);
 
   if (manager_class->is_lid_closed == meta_monitor_manager_real_is_lid_closed)
     {
@@ -514,12 +550,18 @@ meta_monitor_manager_constructed (GObject *object)
   g_signal_connect_object (manager, "notify::power-save-mode",
                            G_CALLBACK (power_save_mode_changed), manager, 0);
 
+  meta_dbus_display_config_set_is_experimental_api_enabled (
+    skeleton,
+    meta_is_monitor_config_manager_enabled ());
+
   manager->in_init = TRUE;
 
-  if (g_strcmp0 (g_getenv ("MUTTER_USE_CONFIG_MANAGER"), "1") == 0)
-    manager->config_manager = meta_monitor_config_manager_new (manager);
-  else
-    manager->legacy_config = meta_monitor_config_new (manager);
+  /*
+   * MetaMonitorConfigManager will only be used if the corresponding
+   * experimental feature is enabled.
+   */
+  manager->config_manager = meta_monitor_config_manager_new (manager);
+  manager->legacy_config = meta_monitor_config_new (manager);
 
   meta_monitor_manager_read_current_state (manager);
 
@@ -612,6 +654,9 @@ meta_monitor_manager_finalize (GObject *object)
   meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
   meta_monitor_manager_free_crtc_array (manager->crtcs, manager->n_crtcs);
   g_list_free_full (manager->logical_monitors, g_object_unref);
+
+  g_signal_handler_disconnect (meta_get_backend (),
+                               manager->experimental_features_changed_handler_id);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->finalize (object);
 }
@@ -993,10 +1038,7 @@ save_config_timeout (gpointer user_data)
 {
   MetaMonitorManager *manager = user_data;
 
-  if (manager->config_manager)
-    g_assert (!"missing implementation");
-  else
-    legacy_restore_previous_config (manager);
+  legacy_restore_previous_config (manager);
 
   manager->persistent_timeout_id = 0;
   return G_SOURCE_REMOVE;
@@ -1020,13 +1062,8 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
   guint output_index;
   GPtrArray *crtc_infos, *output_infos;
 
-  if (manager->config_manager)
-    {
-      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                             G_DBUS_ERROR_NOT_SUPPORTED,
-                                             "Used old configuration API with new configuration system");
-      return TRUE;
-    }
+  if (meta_monitor_config_manager_get_current (manager->config_manager))
+    meta_monitor_config_manager_set_current (manager->config_manager, NULL);
 
   if (serial != manager->serial)
     {
@@ -1285,6 +1322,14 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
   int i;
   MetaMonitorManagerCapability capabilities;
   int max_screen_width, max_screen_height;
+
+  if (!meta_is_monitor_config_manager_enabled ())
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "This experimental API is currently not enabled");
+      return TRUE;
+    }
 
   g_variant_builder_init (&monitors_builder,
                           G_VARIANT_TYPE (MONITORS_FORMAT));
@@ -1741,11 +1786,11 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
   GList *logical_monitor_configs = NULL;
   GError *error = NULL;
 
-  if (!manager->config_manager)
+  if (!meta_is_monitor_config_manager_enabled ())
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                             G_DBUS_ERROR_NOT_SUPPORTED,
-                                             "Used new configuration API with old configuration system");
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "This experimental API is currently not enabled");
       return TRUE;
     }
 
@@ -1888,10 +1933,7 @@ meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
   g_source_remove (manager->persistent_timeout_id);
   manager->persistent_timeout_id = 0;
 
-  if (manager->config_manager)
-    g_assert (!"not implemented");
-  else
-    legacy_confirm_configuration (manager, ok);
+  legacy_confirm_configuration (manager, ok);
 }
 
 static gboolean
@@ -2643,7 +2685,7 @@ legacy_on_hotplug (MetaMonitorManager *manager)
 void
 meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
 {
-  if (manager->legacy_config)
+  if (!meta_is_monitor_config_manager_enabled ())
     {
       legacy_on_hotplug (manager);
       return;

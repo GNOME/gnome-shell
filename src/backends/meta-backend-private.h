@@ -100,7 +100,8 @@ struct _MetaBackendClass
 typedef enum _MetaExperimentalFeature
 {
   META_EXPERIMENTAL_FEATURE_NONE = 0,
-  META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER = (1 << 0)
+  META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER = (1 << 0),
+  META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER = (1 << 1)
 } MetaExperimentalFeature;
 
 void meta_init_backend (GType backend_gtype);

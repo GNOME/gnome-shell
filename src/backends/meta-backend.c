@@ -430,6 +430,8 @@ experimental_features_handler (GVariant *features_variant,
       /* So far no experimental features defined. */
       if (g_str_equal (feature, "scale-monitor-framebuffer"))
         features |= META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER;
+      else if (g_str_equal (feature, "monitor-config-manager"))
+        features |= META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER;
       else
         g_info ("Unknown experimental feature '%s'\n", feature);
     }

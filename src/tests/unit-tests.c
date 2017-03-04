@@ -219,9 +219,15 @@ run_tests (gpointer data)
 
   meta_backend_override_experimental_features (backend);
 
-  meta_backend_enable_experimental_feature (
-    backend,
-    META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
+  if (g_strcmp0 (g_getenv ("MUTTER_USE_CONFIG_MANAGER"), "1") == 0)
+    {
+      meta_backend_enable_experimental_feature (
+        backend,
+        META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER);
+      meta_backend_enable_experimental_feature (
+        backend,
+        META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
+    }
 
   ret = g_test_run ();
 

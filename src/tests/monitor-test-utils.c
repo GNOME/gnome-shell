@@ -28,11 +28,7 @@
 gboolean
 is_using_monitor_config_manager (void)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-
-  return !!monitor_manager->config_manager;
+  return meta_is_monitor_config_manager_enabled ();
 }
 
 void
