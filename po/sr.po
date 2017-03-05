@@ -11,17 +11,41 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-26 07:50+0000\n"
-"PO-Revision-Date: 2017-02-25 19:52+0200\n"
+"POT-Creation-Date: 2017-03-03 11:37+0000\n"
+"PO-Revision-Date: 2017-03-05 05:41+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <(nothing)>\n"
+"Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
+
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "Систем"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Прикажите списак обавештења"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Поставите у жижу активно обавештење"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Прикажи преглед"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Прикажи све програме"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Отворите изборник програма"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:149
@@ -371,36 +395,99 @@ msgstr "Грешка потврђивања идентитета"
 msgid "(or swipe finger)"
 msgstr "(или превуците прст)"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "Наредба није нађена"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "Не могу да обрадим наредбу:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Није успело извршавање „%s“:"
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Управо сада"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "Пре %d минут"
+msgstr[1] "Пре %d минута"
+msgstr[2] "Пре %d минута"
+msgstr[3] "Пре један минут"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "Пре %d сат"
+msgstr[1] "Пре %d сата"
+msgstr[2] "Пре %d сати"
+msgstr[3] "Пре један сат"
+
+#: js/misc/util.js:188
+#| msgid "Yesterday, %H∶%M"
+msgid "Yesterday"
+msgstr "Јуче"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "Пре %d дан"
+msgstr[1] "Пре %d дана"
+msgstr[2] "Пре %d дана"
+msgstr[3] "Пре један дан"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "Пре %d недељу"
+msgstr[1] "Пре %d недеље"
+msgstr[2] "Пре %d недеља"
+msgstr[3] "Пре недељу дана"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "Пре %d месец"
+msgstr[1] "Пре %d месеца"
+msgstr[2] "Пре %d месеци"
+msgstr[3] "Пре месец дана"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "Пре %d годину"
+msgstr[1] "Пре %d године"
+msgstr[2] "Пре %d година"
+msgstr[3] "Пре годину дана"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Јуче, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -408,7 +495,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d. %B, %H∶%M"
@@ -416,26 +503,26 @@ msgstr "%d. %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d. %B %Y., %H:%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Јуче, %l:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -443,7 +530,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d. %B, %l∶%M %p"
@@ -451,7 +538,7 @@ msgstr "%d. %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d .%B %Y., %l∶%M %p"
@@ -626,36 +713,32 @@ msgstr "Седмица %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Цео дан"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "Догађаји"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y."
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Обавештења"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Без обавештења"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Без догађаја"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Очисти све"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -779,7 +862,7 @@ msgstr "Погрешили сте! Покушајте поново."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:767
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "„%s“ је сада познат као „%s“"
@@ -801,7 +884,7 @@ msgstr "Полет"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%e. %B %Y."
 
@@ -809,17 +892,67 @@ msgstr "%e. %B %Y."
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A, %e. %B %Y."
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Светски сатови…"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Светски сатови"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Временска прогноза"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "%s целог дана."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, затим %s касније."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, затим %s, касније праћено %s."
+
+#: js/ui/dateMenu.js:300
+#| msgid "Searching…"
+msgid "Loading…"
+msgstr "Учитавам…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Осећа се као %s."
+
+#: js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "Идите на мрежу за податке о временској прогнози."
+
+#: js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "Подаци о временској прогнози тренутно нису доступни."
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1050,25 +1183,17 @@ msgstr "Прикажи код"
 msgid "Web Page"
 msgstr "Веб страница"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Очисти одељак"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Подаци о систему"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Непознат извођач"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Непознат наслов"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "Медији"
 
 #: js/ui/overview.js:84
 msgid "Undo"
@@ -1867,23 +1992,17 @@ msgstr "Лозинка не може бити празна"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Корисник је одбацио прозорче за потврђивање идентитета"
 
-#~ msgid "System"
-#~ msgstr "Систем"
+#~ msgid "Events"
+#~ msgstr "Догађаји"
 
-#~ msgid "Show the notification list"
-#~ msgstr "Прикажите списак обавештења"
+#~ msgid "Notifications"
+#~ msgstr "Обавештења"
 
-#~ msgid "Focus the active notification"
-#~ msgstr "Поставите у жижу активно обавештење"
+#~ msgid "Clear section"
+#~ msgstr "Очисти одељак"
 
-#~ msgid "Show the overview"
-#~ msgstr "Прикажи преглед"
-
-#~ msgid "Show all applications"
-#~ msgstr "Прикажи све програме"
-
-#~ msgid "Open the application menu"
-#~ msgstr "Отворите изборник програма"
+#~ msgid "Media"
+#~ msgstr "Медији"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "Поставке проширења Гномове шкољке"
