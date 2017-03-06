@@ -535,6 +535,9 @@ meta_backend_x11_get_current_logical_monitor (MetaBackend *backend)
   logical_monitor =
     meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
 
+  if (!logical_monitor && monitor_manager->logical_monitors)
+    logical_monitor = monitor_manager->logical_monitors->data;
+
   priv->cached_current_logical_monitor = logical_monitor;
   return priv->cached_current_logical_monitor;
 }
