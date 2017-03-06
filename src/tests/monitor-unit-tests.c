@@ -338,10 +338,15 @@ check_monitor_mode (MetaMonitor         *monitor,
   MetaMonitorManager *monitor_manager = data->monitor_manager;
   MetaOutput *output;
   MetaCrtcMode *crtc_mode;
+  int expect_crtc_mode_index;
 
   output = output_from_winsys_id (monitor_manager,
                                   data->expect_crtc_mode_iter->output);
-  crtc_mode = &monitor_manager->modes[data->expect_crtc_mode_iter->crtc_mode];
+  expect_crtc_mode_index = data->expect_crtc_mode_iter->crtc_mode;
+  if (expect_crtc_mode_index == -1)
+    crtc_mode = NULL;
+  else
+    crtc_mode = &monitor_manager->modes[expect_crtc_mode_index];
 
   g_assert (monitor_crtc_mode->output == output);
   g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
@@ -368,8 +373,21 @@ check_current_monitor_mode (MetaMonitor         *monitor,
   output = output_from_winsys_id (monitor_manager,
                                   data->expect_crtc_mode_iter->output);
 
-  g_assert_nonnull (output->crtc);
-  g_assert (monitor_crtc_mode->crtc_mode == output->crtc->current_mode);
+  if (data->expect_crtc_mode_iter->crtc_mode == -1)
+    {
+      g_assert_null (output->crtc);
+    }
+  else
+    {
+      MetaLogicalMonitor *logical_monitor;
+
+      g_assert_nonnull (output->crtc);
+      g_assert (monitor_crtc_mode->crtc_mode == output->crtc->current_mode);
+
+      logical_monitor = output->crtc->logical_monitor;
+      g_assert_nonnull (logical_monitor);
+    }
+
 
   data->expect_crtc_mode_iter++;
 
@@ -459,7 +477,8 @@ check_logical_monitor (MonitorTestCase               *test_case,
               primary_output = output;
             }
 
-          g_assert (output->crtc->logical_monitor == logical_monitor);
+          g_assert (!output->crtc ||
+                    output->crtc->logical_monitor == logical_monitor);
           g_assert_cmpint (logical_monitor->is_presentation,
                            ==,
                            output->is_presentation);
@@ -2868,6 +2887,165 @@ meta_test_monitor_custom_tiled_config (void)
 }
 
 static void
+meta_test_monitor_custom_tiled_custom_resolution_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 400,
+          .height = 600,
+          .refresh_rate = 60.000495910644531
+        },
+        {
+          .width = 640,
+          .height = 480,
+          .refresh_rate = 60.000495910644531
+        }
+      },
+      .n_modes = 2,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0, 1 },
+          .n_modes = 2,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0, 1 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 0,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        },
+        {
+          .crtc = -1,
+          .modes = { 0, 1 },
+          .n_modes = 2,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0, 1 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 1,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        }
+      },
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0, 1 },
+          .n_outputs = 2,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0,
+                  .x = 0,
+                  .y = 0,
+                },
+                {
+                  .output = 1,
+                  .crtc_mode = 0,
+                  .x = 400,
+                  .y = 0,
+                }
+              }
+            },
+            {
+              .width = 640,
+              .height = 480,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 1,
+                  .x = 0,
+                  .y = 0,
+                },
+                {
+                  .output = 1,
+                  .crtc_mode = -1,
+                }
+              }
+            }
+          },
+          .n_modes = 2,
+          .current_mode = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 320, .height = 240 },
+          .scale = 2
+        }
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 1,
+        },
+        {
+          .current_mode = -1,
+        }
+      },
+      .n_crtcs = 2,
+      .n_tiled_monitors = 1,
+      .screen_width = 320,
+      .screen_height = 240
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  set_custom_monitor_config ("tiled-custom-resolution.xml");
+  emulate_hotplug (test_setup);
+
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_custom_mirrored_config (void)
 {
   MonitorTestCase test_case = {
@@ -3045,6 +3223,8 @@ init_monitor_tests (void)
                    meta_test_monitor_custom_scale_config);
   g_test_add_func ("/backends/monitor/custom/tiled-config",
                    meta_test_monitor_custom_tiled_config);
+  g_test_add_func ("/backends/monitor/custom/tiled-custom-resolution-config",
+                   meta_test_monitor_custom_tiled_custom_resolution_config);
   g_test_add_func ("/backends/monitor/custom/mirrored-config",
                    meta_test_monitor_custom_mirrored_config);
 }
