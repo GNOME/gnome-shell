@@ -59,7 +59,8 @@ meta_logical_monitor_new (MetaMonitor *monitor,
     {
       MetaOutput *output = l->data;
 
-      output->crtc->logical_monitor = logical_monitor;
+      if (output->crtc)
+        output->crtc->logical_monitor = logical_monitor;
 
       is_presentation = is_presentation && output->is_presentation;
     }
