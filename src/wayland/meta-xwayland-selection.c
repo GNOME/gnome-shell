@@ -388,6 +388,20 @@ meta_xwayland_shutdown_dnd (MetaXWaylandManager *manager)
   dnd->dnd_window = None;
 }
 
+static void
+meta_xwayland_end_dnd_grab (MetaWaylandDataDevice *data_device)
+{
+  Display *xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+  MetaXWaylandManager *manager = &compositor->xwayland_manager;
+  MetaDndBridge *dnd = &manager->selection_data->dnd;
+
+  meta_wayland_data_device_end_drag (data_device);
+
+  XMoveResizeWindow (xdisplay, dnd->dnd_window, -1, -1, 1, 1);
+  XUnmapWindow (xdisplay, dnd->dnd_window);
+}
+
 /* X11/Wayland data bridges */
 
 static MetaSelectionBridge *
@@ -1400,8 +1414,16 @@ drag_xgrab_button (MetaWaylandPointerGrab *grab,
 {
   MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
   MetaWaylandSeat *seat = compositor->seat;
+  MetaWaylandDataSource *data_source;
 
   meta_wayland_pointer_send_button (seat->pointer, event);
+  data_source = compositor->seat->data_device.dnd_data_source;
+
+  if (seat->pointer->button_count == 0 &&
+      (!meta_wayland_drag_grab_get_focus ((MetaWaylandDragGrab *) grab) ||
+       meta_wayland_data_source_get_current_action (data_source) ==
+       WL_DATA_DEVICE_MANAGER_DND_ACTION_NONE))
+    meta_xwayland_end_dnd_grab (&seat->data_device);
 }
 
 static const MetaWaylandPointerGrabInterface drag_xgrab_interface = {
@@ -1537,6 +1559,7 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
       else if (event->message_type == xdnd_atoms[ATOM_DND_DROP])
         {
           meta_wayland_surface_drag_dest_drop (drag_focus);
+          meta_xwayland_end_dnd_grab (&seat->data_device);
           return TRUE;
         }
     }
@@ -1596,7 +1619,6 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
   else if (selection->selection_atom == xdnd_atoms[ATOM_DND_SELECTION])
     {
       MetaWaylandDataDevice *data_device = &compositor->seat->data_device;
-      MetaXWaylandSelection *selection_data = compositor->xwayland_manager.selection_data;
       MetaWaylandSurface *focus;
 
       selection->owner = event->owner;
@@ -1617,8 +1639,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
         }
       else if (event->owner == None)
         {
-          meta_wayland_data_device_end_drag (data_device);
-          XUnmapWindow (xdisplay, selection_data->dnd.dnd_window);
+          meta_xwayland_end_dnd_grab (data_device);
         }
     }
 
