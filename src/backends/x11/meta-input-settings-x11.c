@@ -36,6 +36,7 @@
 #endif
 
 #include <meta/errors.h>
+#include "backends/meta-logical-monitor.h"
 
 typedef struct _MetaInputSettingsX11Private
 {
@@ -604,7 +605,7 @@ meta_input_settings_x11_set_tablet_area (MetaInputSettings  *settings,
 static void
 meta_input_settings_x11_set_tablet_keep_aspect (MetaInputSettings  *settings,
                                                 ClutterInputDevice *device,
-                                                MetaOutput         *output,
+                                                MetaLogicalMonitor *logical_monitor,
                                                 gboolean            keep_aspect)
 {
   gint32 width, height, dev_width, dev_height, area[4] = { 0 };
@@ -614,12 +615,12 @@ meta_input_settings_x11_set_tablet_keep_aspect (MetaInputSettings  *settings,
 
   if (keep_aspect)
     {
-      gdouble output_aspect, dev_aspect;
+      double aspect_ratio, dev_aspect;
 
-      if (output && output->crtc)
+      if (logical_monitor)
         {
-          width = output->crtc->rect.width;
-          height = output->crtc->rect.height;
+          width = logical_monitor->rect.width;
+          height = logical_monitor->rect.height;
         }
       else
         {
@@ -632,13 +633,13 @@ meta_input_settings_x11_set_tablet_keep_aspect (MetaInputSettings  *settings,
                                                 &width, &height);
         }
 
-      output_aspect = (gdouble) width / height;
-      dev_aspect = (gdouble) dev_width / dev_height;
+      aspect_ratio = (double) width / height;
+      dev_aspect = (double) dev_width / dev_height;
 
-      if (dev_aspect > output_aspect)
-        dev_width = dev_height * output_aspect;
-      else if (dev_aspect < output_aspect)
-        dev_height = dev_width / output_aspect;
+      if (dev_aspect > aspect_ratio)
+        dev_width = dev_height * aspect_ratio;
+      else if (dev_aspect < aspect_ratio)
+        dev_height = dev_width / aspect_ratio;
     }
 
   area[2] = dev_width;

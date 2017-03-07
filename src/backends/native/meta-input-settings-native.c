@@ -29,6 +29,7 @@
 
 #include "meta-backend-native.h"
 #include "meta-input-settings-native.h"
+#include "backends/meta-logical-monitor.h"
 
 G_DEFINE_TYPE (MetaInputSettingsNative, meta_input_settings_native, META_TYPE_INPUT_SETTINGS)
 
@@ -390,19 +391,19 @@ meta_input_settings_native_set_tablet_mapping (MetaInputSettings     *settings,
 static void
 meta_input_settings_native_set_tablet_keep_aspect (MetaInputSettings  *settings,
                                                    ClutterInputDevice *device,
-                                                   MetaOutput         *output,
+                                                   MetaLogicalMonitor *logical_monitor,
                                                    gboolean            keep_aspect)
 {
-  gdouble output_aspect = 0;
+  double aspect_ratio = 0;
 
   if (keep_aspect)
     {
-      gint output_width, output_height;
+      int width, height;
 
-      if (output && output->crtc)
+      if (logical_monitor)
         {
-          output_width = output->crtc->rect.width;
-          output_height = output->crtc->rect.height;
+          width = logical_monitor->rect.width;
+          height = logical_monitor->rect.height;
         }
       else
         {
@@ -412,14 +413,14 @@ meta_input_settings_native_set_tablet_keep_aspect (MetaInputSettings  *settings,
           backend = meta_get_backend ();
           monitor_manager = meta_backend_get_monitor_manager (backend);
 	  meta_monitor_manager_get_screen_size (monitor_manager,
-						&output_width,
-						&output_height);
+						&width,
+						&height);
         }
 
-      output_aspect = (gdouble) output_width / output_height;
+      aspect_ratio = (double) width / height;
     }
 
-  g_object_set (device, "output-aspect-ratio", output_aspect, NULL);
+  g_object_set (device, "output-aspect-ratio", aspect_ratio, NULL);
 }
 
 static void

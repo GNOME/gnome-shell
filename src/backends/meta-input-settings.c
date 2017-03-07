@@ -31,6 +31,8 @@
 
 #include "meta-backend-private.h"
 #include "meta-input-settings-private.h"
+#include "backends/meta-logical-monitor.h"
+#include "backends/meta-monitor.h"
 #include "x11/meta-input-settings-x11.h"
 
 #ifdef HAVE_NATIVE_BACKEND
@@ -686,14 +688,40 @@ update_keyboard_repeat (MetaInputSettings *input_settings)
                                              repeat, delay, interval);
 }
 
-static MetaOutput *
-meta_input_settings_find_output (MetaInputSettings  *input_settings,
-                                 GSettings          *settings,
-                                 ClutterInputDevice *device)
+static gboolean
+logical_monitor_has_monitor (MetaMonitorManager *monitor_manager,
+                             MetaLogicalMonitor *logical_monitor,
+                             const char         *vendor,
+                             const char         *product,
+                             const char         *serial)
+{
+  GList *monitors;
+  GList *l;
+
+  monitors = meta_monitor_manager_get_monitors (monitor_manager);
+  for (l = monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (g_strcmp0 (meta_monitor_get_vendor (monitor), vendor) == 0 &&
+          g_strcmp0 (meta_monitor_get_product (monitor), product) == 0 &&
+          g_strcmp0 (meta_monitor_get_serial (monitor), serial) == 0)
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+static MetaLogicalMonitor *
+meta_input_settings_find_logical_monitor (MetaInputSettings  *input_settings,
+                                          GSettings          *settings,
+                                          ClutterInputDevice *device)
 {
   MetaInputSettingsPrivate *priv;
-  guint n_values, n_outputs, i;
-  MetaOutput *outputs;
+  MetaMonitorManager *monitor_manager;
+  guint n_values;
+  GList *logical_monitors;
+  GList *l;
   gchar **edid;
 
   priv = meta_input_settings_get_instance_private (input_settings);
@@ -711,14 +739,19 @@ meta_input_settings_find_output (MetaInputSettings  *input_settings,
   if (!*edid[0] && !*edid[1] && !*edid[2])
     return NULL;
 
-  outputs = meta_monitor_manager_get_outputs (priv->monitor_manager,
-                                              &n_outputs);
-  for (i = 0; i < n_outputs; i++)
+  monitor_manager = priv->monitor_manager;
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+  for (l = logical_monitors; l; l = l->next)
     {
-      if (g_strcmp0 (outputs[i].vendor, edid[0]) == 0 &&
-          g_strcmp0 (outputs[i].product, edid[1]) == 0 &&
-          g_strcmp0 (outputs[i].serial, edid[2]) == 0)
-        return &outputs[i];
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      if (logical_monitor_has_monitor (monitor_manager,
+                                       logical_monitor,
+                                       edid[0],
+                                       edid[1],
+                                       edid[2]))
+        return logical_monitor;
     }
 
   return NULL;
@@ -730,7 +763,7 @@ update_tablet_keep_aspect (MetaInputSettings  *input_settings,
                            ClutterInputDevice *device)
 {
   MetaInputSettingsClass *input_settings_class;
-  MetaOutput *output = NULL;
+  MetaLogicalMonitor *logical_monitor = NULL;
   gboolean keep_aspect;
 
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
@@ -757,7 +790,9 @@ update_tablet_keep_aspect (MetaInputSettings  *input_settings,
       CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE)
     {
       keep_aspect = g_settings_get_boolean (settings, "keep-aspect");
-      output = meta_input_settings_find_output (input_settings, settings, device);
+      logical_monitor = meta_input_settings_find_logical_monitor (input_settings,
+                                                                  settings,
+                                                                  device);
     }
   else
     {
@@ -765,7 +800,7 @@ update_tablet_keep_aspect (MetaInputSettings  *input_settings,
     }
 
   input_settings_class->set_tablet_keep_aspect (input_settings, device,
-                                                output, keep_aspect);
+                                                logical_monitor, keep_aspect);
 }
 
 static void
@@ -776,7 +811,7 @@ update_device_display (MetaInputSettings  *input_settings,
   MetaInputSettingsClass *input_settings_class;
   MetaInputSettingsPrivate *priv;
   gfloat matrix[6] = { 1, 0, 0, 0, 1, 0 };
-  MetaOutput *output;
+  MetaLogicalMonitor *logical_monitor;
 
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
       clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
@@ -791,13 +826,15 @@ update_device_display (MetaInputSettings  *input_settings,
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE ||
       clutter_input_device_get_mapping_mode (device) ==
       CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE)
-    output = meta_input_settings_find_output (input_settings, settings, device);
+    logical_monitor = meta_input_settings_find_logical_monitor (input_settings,
+                                                                settings,
+                                                                device);
   else
-    output = NULL;
+    logical_monitor = NULL;
 
-  if (output)
+  if (logical_monitor)
     meta_monitor_manager_get_monitor_matrix (priv->monitor_manager,
-                                             output, matrix);
+                                             logical_monitor, matrix);
 
   input_settings_class->set_matrix (input_settings, device, matrix);
 
@@ -1472,7 +1509,6 @@ meta_input_settings_get_tablet_logical_monitor (MetaInputSettings  *settings,
 {
   MetaInputSettingsPrivate *priv;
   DeviceMappingInfo *info;
-  MetaOutput *output;
 
   g_return_val_if_fail (META_IS_INPUT_SETTINGS (settings), NULL);
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device), NULL);
@@ -1482,12 +1518,9 @@ meta_input_settings_get_tablet_logical_monitor (MetaInputSettings  *settings,
   if (!info)
     return NULL;
 
-  output = meta_input_settings_find_output (settings, info->settings, device);
-
-  if (output && output->crtc)
-    return output->crtc->logical_monitor;
-
-  return NULL;
+  return meta_input_settings_find_logical_monitor (settings,
+                                                   info->settings,
+                                                   device);
 }
 
 GDesktopTabletMapping
@@ -1549,47 +1582,38 @@ meta_input_settings_get_tablet_wacom_device (MetaInputSettings *settings,
 #endif /* HAVE_LIBWACOM */
 
 static gboolean
-cycle_outputs (MetaInputSettings  *settings,
-               MetaOutput         *current_output,
-               MetaOutput        **next_output)
+cycle_logical_monitors (MetaInputSettings   *settings,
+                        MetaLogicalMonitor  *current_logical_monitor,
+                        MetaLogicalMonitor **next_logical_monitor)
 {
-  MetaInputSettingsPrivate *priv;
-  MetaOutput *next, *outputs;
-  guint n_outputs, current, i;
-
-  priv = meta_input_settings_get_instance_private (settings);
-  outputs = meta_monitor_manager_get_outputs (priv->monitor_manager,
-                                              &n_outputs);
-  if (n_outputs <= 1)
-    return FALSE;
+  MetaInputSettingsPrivate *priv =
+    meta_input_settings_get_instance_private (settings);
+  MetaMonitorManager *monitor_manager = priv->monitor_manager;
+  GList *logical_monitors;
 
   /* We cycle between:
    * - the span of all monitors (current_output = NULL)
    * - each monitor individually.
    */
-  if (!current_output)
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+
+  if (!current_logical_monitor)
     {
-      next = &outputs[0];
+      *next_logical_monitor = logical_monitors->data;
     }
   else
     {
-      for (i = 0; i < n_outputs; i++)
-        {
-          if (current_output != &outputs[i])
-            continue;
-          current = i;
-          break;
-        }
+      GList *l;
 
-      g_assert (i < n_outputs);
-
-      if (current == n_outputs - 1)
-        next = NULL;
+      l = g_list_find (logical_monitors, current_logical_monitor);
+      if (l->next)
+        *next_logical_monitor = l->next->data;
       else
-        next = &outputs[current + 1];
+        *next_logical_monitor = logical_monitors->data;
     }
 
-  *next_output = next;
   return TRUE;
 }
 
@@ -1599,7 +1623,7 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
 {
   MetaInputSettingsPrivate *priv;
   DeviceMappingInfo *info;
-  MetaOutput *output;
+  MetaLogicalMonitor *logical_monitor;
   const gchar *edid[4] = { 0 }, *pretty_name = NULL;
 
   g_return_if_fail (META_IS_INPUT_SETTINGS (input_settings));
@@ -1622,14 +1646,30 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
     }
 #endif
 
-  output = meta_input_settings_find_output (input_settings,
-                                            info->settings, device);
-  if (!cycle_outputs (input_settings, output, &output))
+  logical_monitor = meta_input_settings_find_logical_monitor (input_settings,
+                                                              info->settings,
+                                                              device);
+  if (!cycle_logical_monitors (input_settings,
+                               logical_monitor,
+                               &logical_monitor))
     return;
 
-  edid[0] = output ? output->vendor : "";
-  edid[1] = output ? output->product : "";
-  edid[2] = output ? output->serial : "";
+  if (logical_monitor)
+    {
+      MetaMonitor *monitor;
+
+      /* Pick an arbitrary monitor in the logical monitor to represent it. */
+      monitor = meta_logical_monitor_get_monitors (logical_monitor)->data;
+      edid[0] = meta_monitor_get_vendor (monitor);
+      edid[1] = meta_monitor_get_product (monitor);
+      edid[2] = meta_monitor_get_serial (monitor);
+    }
+  else
+    {
+      edid[0] = "";
+      edid[1] = "";
+      edid[2] = "";
+    }
   g_settings_set_strv (info->settings, "display", edid);
 
   meta_display_show_tablet_mapping_notification (meta_get_display (),

@@ -423,7 +423,7 @@ void               meta_monitor_manager_read_current_state (MetaMonitorManager *
 void               meta_monitor_manager_on_hotplug (MetaMonitorManager *manager);
 
 gboolean           meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
-                                                            MetaOutput         *output,
+                                                            MetaLogicalMonitor *logical_monitor,
                                                             gfloat              matrix[6]);
 
 void               meta_monitor_manager_tiled_monitor_added (MetaMonitorManager *manager,

@@ -1980,18 +1980,15 @@ meta_monitor_manager_on_hotplug (MetaMonitorManager *manager)
 
 static gboolean
 calculate_viewport_matrix (MetaMonitorManager *manager,
-                           MetaOutput         *output,
+                           MetaLogicalMonitor *logical_monitor,
                            gfloat              viewport[6])
 {
   gfloat x, y, width, height;
 
-  if (!output->crtc)
-    return FALSE;
-
-  x = (float) output->crtc->rect.x / manager->screen_width;
-  y = (float) output->crtc->rect.y / manager->screen_height;
-  width  = (float) output->crtc->rect.width / manager->screen_width;
-  height = (float) output->crtc->rect.height / manager->screen_height;
+  x = (float) logical_monitor->rect.x / manager->screen_width;
+  y = (float) logical_monitor->rect.y / manager->screen_height;
+  width  = (float) logical_monitor->rect.width / manager->screen_width;
+  height = (float) logical_monitor->rect.height / manager->screen_height;
 
   viewport[0] = width;
   viewport[1] = 0.0f;
@@ -2018,15 +2015,21 @@ multiply_matrix (float a[6],
 
 gboolean
 meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
-                                         MetaOutput         *output,
+                                         MetaLogicalMonitor *logical_monitor,
                                          gfloat              matrix[6])
 {
+  MetaMonitor *main_monitor;
+  MetaOutput *main_output;
+  MetaMonitorTransform transform;
   gfloat viewport[9];
 
-  if (!calculate_viewport_matrix (manager, output, viewport))
+  if (!calculate_viewport_matrix (manager, logical_monitor, viewport))
     return FALSE;
 
-  multiply_matrix (viewport, transform_matrices[output->crtc->transform],
+  main_monitor = meta_logical_monitor_get_monitors (logical_monitor)->data;
+  main_output = meta_monitor_get_main_output (main_monitor);
+  transform = main_output->crtc->transform;
+  multiply_matrix (viewport, transform_matrices[transform],
                    matrix);
   return TRUE;
 }
