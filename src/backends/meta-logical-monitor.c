@@ -95,7 +95,8 @@ meta_logical_monitor_add_monitor (MetaLogicalMonitor *logical_monitor,
           MetaOutput *output = l_output->data;
 
           is_presentation = is_presentation && output->is_presentation;
-          output->crtc->logical_monitor = logical_monitor;
+          if (output->crtc)
+            output->crtc->logical_monitor = logical_monitor;
         }
     }
 
