@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-22 19:28+0000\n"
-"PO-Revision-Date: 2017-02-27 20:29+0200\n"
+"POT-Creation-Date: 2017-03-03 11:37+0000\n"
+"PO-Revision-Date: 2017-03-07 20:04+0200\n"
 "Last-Translator: Kris Thomsen\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -31,9 +31,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/50-gnome-shell-system.xml:6
+msgid "System"
+msgstr "System"
+
+#: data/50-gnome-shell-system.xml:9
+msgid "Show the notification list"
+msgstr "Vis påmindelseslisten"
+
+#: data/50-gnome-shell-system.xml:12
+msgid "Focus the active notification"
+msgstr "Fokusér på den aktive påmindelse"
+
+#: data/50-gnome-shell-system.xml:15
+msgid "Show the overview"
+msgstr "Vis overblikket"
+
+#: data/50-gnome-shell-system.xml:18
+msgid "Show all applications"
+msgstr "Vis alle programmer"
+
+#: data/50-gnome-shell-system.xml:21
+msgid "Open the application menu"
+msgstr "Åbn program-menuen"
+
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:149
-#| msgid "GNOME Shell Extensions"
 msgid "Shell Extensions"
 msgstr "Shell-udvidelser"
 
@@ -135,14 +158,10 @@ msgid "History for the looking glass dialog"
 msgstr "Historik for looking glass-dialogen"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Vis altid “Log ud”-menupunktet i brugermenuen."
 
 #: data/org.gnome.shell.gschema.xml.in:68
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -158,11 +177,6 @@ msgstr ""
 "filsystemer"
 
 #: data/org.gnome.shell.gschema.xml.in:76
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -171,8 +185,8 @@ msgid ""
 msgstr ""
 "Shell'en vil spørge efter en adgangskode når en krypteret enhed eller et "
 "fjern-filsystem bliver monteret. Hvis adgangskoden kan gemmes til fremtidig "
-"brug, vil et “Husk adgangskode”-afkrydsningsfelt være synlig. Denne nøgle angiver "
-"standard-værdien af dette afkrydsningsfelt."
+"brug, vil et “Husk adgangskode”-afkrydsningsfelt være synlig. Denne nøgle "
+"angiver standard-værdien af dette afkrydsningsfelt."
 
 #: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
@@ -201,14 +215,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Genvejstast til at åbne program-menuen."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Genvejstast til at åbne “Vis programmer”-visningen"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -271,18 +281,14 @@ msgid "The application icon mode."
 msgstr "Ikon-tilstanden for programmet."
 
 #: data/org.gnome.shell.gschema.xml.in:177
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 msgstr ""
 "Konfigurerer hvordan vinduer bliver vist i omskifteren. Gyldige muligheder "
-"er “thumbnail-only” (viser forhåndsvisning af vinduet), “app-icon-only” "
-"(viser kun programikonet) eller “both” (begge)."
+"er “thumbnail-only” (viser forhåndsvisning af vinduet), “app-icon-"
+"only” (viser kun programikonet) eller “both” (begge)."
 
 #: data/org.gnome.shell.gschema.xml.in:186
 msgid ""
@@ -402,36 +408,91 @@ msgstr "Godkendelsesfejl"
 msgid "(or swipe finger)"
 msgstr "(eller indlæs fingeraftryk)"
 
-#: js/misc/util.js:119
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "Kommando ikke fundet"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "Kunne ikke fortolke kommando:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Kørsel af “%s” mislykkedes:"
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Lige nu"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "%d minut siden"
+msgstr[1] "%d minutter siden"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "%d time siden"
+msgstr[1] "%d timer siden"
+
+#: js/misc/util.js:188
+#| msgid "Yesterday, %H∶%M"
+msgid "Yesterday"
+msgstr "I går"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "%d dag siden"
+msgstr[1] "%d dage siden"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "%d uge siden"
+msgstr[1] "%d uger siden"
+
+#: js/misc/util.js:196
+#, javascript-format
+#| msgid "%d minute ago"
+#| msgid_plural "%d minutes ago"
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "%d måned siden"
+msgstr[1] "%d måneder siden"
+
+#: js/misc/util.js:198
+#, javascript-format
+#| msgid "%d day ago"
+#| msgid_plural "%d days ago"
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "%d år siden"
+msgstr[1] "%d år siden"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "I går, %H∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
@@ -439,7 +500,7 @@ msgstr "%A, %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d. %B, %H∶%M"
@@ -447,26 +508,26 @@ msgstr "%d. %B, %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d. %B %Y, %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "I går, %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -474,7 +535,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d. %B, %l∶%M %p"
@@ -482,14 +543,13 @@ msgstr "%d. %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d. %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:67
-#| msgid "Network Login"
 msgid "Hotspot Login"
 msgstr "Hotspot-login"
 
@@ -498,8 +558,8 @@ msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"Din forbindelse til dette hotspot-login er ikke sikkert. Adgangskoder eller anden "
-"information du indtaster på denne side, kan ses af personer i nærheden."
+"Din forbindelse til dette hotspot-login er ikke sikkert. Adgangskoder eller "
+"anden information du indtaster på denne side, kan ses af personer i nærheden."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -658,36 +718,32 @@ msgstr "Uge %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "Begivenheder"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d. %B %Y"
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Beskeder"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Ingen påmindelser"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Ingen begivenheder"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Ryd alle"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -807,13 +863,12 @@ msgstr "Godkend"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:301 js/ui/shellMountOperation.js:383
-#| msgid "Sorry, that didn't work. Please try again."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Beklager, det fungerede ikke. Prøv igen."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:767
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s kalder sig nu %s"
@@ -835,7 +890,7 @@ msgstr "Favoritområde"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%e. %B %Y"
 
@@ -843,17 +898,67 @@ msgstr "%e. %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %e. %B %Y"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Tilføj verdensure …"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Verdensure"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Vejr"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "%s hele dagen."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, derefter %s."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, derefter %s, efterfulgt af %s."
+
+#: js/ui/dateMenu.js:300
+#| msgid "Searching…"
+msgid "Loading…"
+msgstr "Indlæser …"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Føles som %s."
+
+#: js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "Gå online for at se information om vejret"
+
+#: js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "Vejrinformation er ikke tilgængelig i øjeblikket"
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1072,25 +1177,17 @@ msgstr "Vis kilde"
 msgid "Web Page"
 msgstr "Webside"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Ryd afsnit"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Systeminformation"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Ukendt kunstner"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Ukendt titel"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "Medier"
 
 #: js/ui/overview.js:84
 msgid "Undo"
@@ -1115,17 +1212,14 @@ msgid "New shortcut…"
 msgstr "Ny genvej …"
 
 #: js/ui/padOsd.js:86
-#| msgid "Applications"
 msgid "Application defined"
 msgstr "Program defineret"
 
 #: js/ui/padOsd.js:87
-#| msgid "Show the onscreen keyboard"
 msgid "Show on-screen help"
 msgstr "Vis hjælp på skærmen"
 
 #: js/ui/padOsd.js:88
-#| msgid "Switch User"
 msgid "Switch monitor"
 msgstr "Skift skærm"
 
@@ -1194,7 +1288,6 @@ msgid "Close"
 msgstr "Luk"
 
 #: js/ui/runDialog.js:277
-#| msgid "Encryption is not available"
 msgid "Restart is not available on Wayland"
 msgstr "Genstart er ikke tilgængelig på Wayland"
 
@@ -1547,7 +1640,6 @@ msgid "%s Not Connected"
 msgstr "%s er ikke forbundet"
 
 #: js/ui/status/network.js:1434
-#| msgid "connecting..."
 msgid "connecting…"
 msgstr "forbinder …"
 
@@ -1579,7 +1671,6 @@ msgstr "VPN slukket"
 
 #: js/ui/status/network.js:1631
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s kablet forbindelse"
@@ -1587,7 +1678,6 @@ msgstr[1] "%s kablede forbindelser"
 
 #: js/ui/status/network.js:1635
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s trådløs forbindelse"
@@ -1595,7 +1685,6 @@ msgstr[1] "%s trådløse forbindelser"
 
 #: js/ui/status/network.js:1639
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s modem-forbindelse"
@@ -1610,7 +1699,6 @@ msgid "Activation of network connection failed"
 msgstr "Aktivering af netværksforbindelse mislykkedes"
 
 #: js/ui/status/nightLight.js:68
-#| msgid "Networking is disabled"
 msgid "Night Light Disabled"
 msgstr "Nattelys deaktiveret"
 
@@ -1850,7 +1938,6 @@ msgid "Mode used by GDM for login screen"
 msgstr "Tilstand brugt af GDM til indlogningskærm"
 
 #: src/main.c:393
-#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Brug en specifik tilstand, f.eks. “gdm” til logind-skærm"
 
@@ -1880,23 +1967,17 @@ msgstr "Adgangskode må ikke være tom"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
 
-#~ msgid "System"
-#~ msgstr "System"
+#~ msgid "Events"
+#~ msgstr "Begivenheder"
 
-#~ msgid "Show the notification list"
-#~ msgstr "Vis påmindelseslisten"
+#~ msgid "Notifications"
+#~ msgstr "Beskeder"
 
-#~ msgid "Focus the active notification"
-#~ msgstr "Fokusér på den aktive påmindelse"
+#~ msgid "Clear section"
+#~ msgstr "Ryd afsnit"
 
-#~ msgid "Show the overview"
-#~ msgstr "Vis overblikket"
-
-#~ msgid "Show all applications"
-#~ msgstr "Vis alle programmer"
-
-#~ msgid "Open the application menu"
-#~ msgstr "Åbn program-menuen"
+#~ msgid "Media"
+#~ msgstr "Medier"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "Udvidelsesmodulindstillinger for GNOME Shell"
@@ -2757,26 +2838,6 @@ msgstr "Godkendelsesdialogen blev afvist af brugeren"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Mindre end et minut siden"
-
-#~ msgid "%d minute ago"
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "%d minut siden"
-#~ msgstr[1] "%d minutter siden"
-
-#~ msgid "%d hour ago"
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "%d time siden"
-#~ msgstr[1] "%d timer siden"
-
-#~ msgid "%d day ago"
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "%d dag siden"
-#~ msgstr[1] "%d dage siden"
-
-#~ msgid "%d week ago"
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "%d uge siden"
-#~ msgstr[1] "%d uger siden"
 
 #~ msgid "Shut Down"
 #~ msgstr "Luk ned"
