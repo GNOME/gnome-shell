@@ -108,47 +108,6 @@ logical_monitor_from_layout (MetaMonitorManager *manager,
   return NULL;
 }
 
-static MetaLogicalMonitor *
-create_logical_monitor_from_config (MetaMonitorManager       *manager,
-                                    MetaLogicalMonitorConfig *logical_monitor_config,
-                                    int                       monitor_number)
-{
-  MetaLogicalMonitor *logical_monitor;
-  GList *monitor_configs;
-  MetaMonitorConfig *first_monitor_config;
-  MetaMonitorSpec *first_monitor_spec;
-  MetaMonitor *first_monitor;
-  GList *l;
-
-  monitor_configs = logical_monitor_config->monitor_configs;
-  first_monitor_config = g_list_first (monitor_configs)->data;
-  first_monitor_spec = first_monitor_config->monitor_spec;
-  first_monitor =
-    meta_monitor_manager_get_monitor_from_spec (manager, first_monitor_spec);
-
-  /* Create logical monitor from the first monitor. */
-  logical_monitor = meta_logical_monitor_new (first_monitor,
-                                              logical_monitor_config->layout.x,
-                                              logical_monitor_config->layout.y,
-                                              monitor_number);
-
-  /* Add the other monitors. */
-  for (l = monitor_configs->next; l; l = l->next)
-    {
-      MetaMonitorConfig *monitor_config = l->data;
-      MetaMonitorSpec *monitor_spec;
-      MetaMonitor *monitor;
-
-      monitor_spec = monitor_config->monitor_spec;
-      monitor = meta_monitor_manager_get_monitor_from_spec (manager,
-                                                            monitor_spec);
-
-      meta_logical_monitor_add_monitor (logical_monitor, monitor);
-    }
-
-  return logical_monitor;
-}
-
 static void
 meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
                                                MetaMonitorsConfig *config)
@@ -165,10 +124,9 @@ meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
       MetaLogicalMonitorConfig *logical_monitor_config = l->data;
       MetaLogicalMonitor *logical_monitor;
 
-      logical_monitor =
-        create_logical_monitor_from_config (manager,
-                                            logical_monitor_config,
-                                            monitor_number);
+      logical_monitor = meta_logical_monitor_new (manager,
+                                                  logical_monitor_config,
+                                                  monitor_number);
       monitor_number++;
 
       if (logical_monitor_config->is_primary)
@@ -190,16 +148,16 @@ meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
 }
 
 static void
-derive_monitor_position (MetaMonitor *monitor,
-                         int         *x,
-                         int         *y)
+derive_monitor_layout (MetaMonitor   *monitor,
+                       MetaRectangle *layout)
 {
   MetaOutput *main_output;
 
   main_output = meta_monitor_get_main_output (monitor);
+  layout->x = main_output->crtc->rect.x;
+  layout->y = main_output->crtc->rect.y;
 
-  *x = main_output->crtc->rect.x;
-  *y = main_output->crtc->rect.y;
+  meta_monitor_derive_dimensions (monitor, &layout->width, &layout->height);
 }
 
 static void
@@ -221,8 +179,7 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manag
       if (!meta_monitor_is_active (monitor))
         continue;
 
-      derive_monitor_position (monitor, &layout.x, &layout.y);
-      meta_monitor_get_dimensions (monitor, &layout.width, &layout.height);
+      derive_monitor_layout (monitor, &layout);
       logical_monitor = logical_monitor_from_layout (manager, logical_monitors,
                                                      &layout);
       if (logical_monitor)
@@ -231,12 +188,10 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manag
         }
       else
         {
-          int x, y;
-
-          derive_monitor_position (monitor, &x, &y);
-          logical_monitor = meta_logical_monitor_new (monitor,
-                                                      x, y,
-                                                      monitor_number);
+          logical_monitor = meta_logical_monitor_new_derived (manager,
+                                                              monitor,
+                                                              &layout,
+                                                              monitor_number);
           logical_monitors = g_list_append (logical_monitors, logical_monitor);
           monitor_number++;
         }

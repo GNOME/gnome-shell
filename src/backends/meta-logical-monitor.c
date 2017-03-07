@@ -21,54 +21,97 @@
 
 #include "config.h"
 
+#include "backends/meta-backend-private.h"
 #include "backends/meta-logical-monitor.h"
 
 G_DEFINE_TYPE (MetaLogicalMonitor, meta_logical_monitor, G_TYPE_OBJECT)
 
+static MetaMonitor *
+get_first_monitor (MetaMonitorManager *monitor_manager,
+                   GList              *monitor_configs)
+{
+  MetaMonitorConfig *first_monitor_config;
+  MetaMonitorSpec *first_monitor_spec;
+
+  first_monitor_config = g_list_first (monitor_configs)->data;
+  first_monitor_spec = first_monitor_config->monitor_spec;
+
+  return meta_monitor_manager_get_monitor_from_spec (monitor_manager,
+                                                     first_monitor_spec);
+}
+
+typedef struct
+{
+  MetaMonitorManager *monitor_manager;
+  MetaLogicalMonitor *logical_monitor;
+} AddMonitorFromConfigData;
+
+static void
+add_monitor_from_config (MetaMonitorConfig        *monitor_config,
+                         AddMonitorFromConfigData *data)
+{
+  MetaMonitorSpec *monitor_spec;
+  MetaMonitor *monitor;
+
+  monitor_spec = monitor_config->monitor_spec;
+  monitor = meta_monitor_manager_get_monitor_from_spec (data->monitor_manager,
+                                                        monitor_spec);
+
+  meta_logical_monitor_add_monitor (data->logical_monitor, monitor);
+}
+
 MetaLogicalMonitor *
-meta_logical_monitor_new (MetaMonitor *monitor,
-                          int          x,
-                          int          y,
-                          int          number)
+meta_logical_monitor_new (MetaMonitorManager       *monitor_manager,
+                          MetaLogicalMonitorConfig *logical_monitor_config,
+                          int                       monitor_number)
+{
+  MetaLogicalMonitor *logical_monitor;
+  GList *monitor_configs;
+  MetaMonitor *first_monitor;
+  MetaOutput *main_output;
+
+  logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
+
+  monitor_configs = logical_monitor_config->monitor_configs;
+  first_monitor = get_first_monitor (monitor_manager, monitor_configs);
+  main_output = meta_monitor_get_main_output (first_monitor);
+
+  logical_monitor->number = monitor_number;
+  logical_monitor->winsys_id = main_output->winsys_id;
+  logical_monitor->scale = main_output->scale;
+  logical_monitor->in_fullscreen = -1;
+  logical_monitor->rect = logical_monitor_config->layout;
+
+  logical_monitor->is_presentation = TRUE;
+  g_list_foreach (monitor_configs, (GFunc) add_monitor_from_config,
+                  &(AddMonitorFromConfigData) {
+                    .monitor_manager = monitor_manager,
+                    .logical_monitor = logical_monitor
+                  });
+
+  return logical_monitor;
+}
+
+MetaLogicalMonitor *
+meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
+                                  MetaMonitor        *monitor,
+                                  MetaRectangle      *layout,
+                                  int                 monitor_number)
 {
   MetaLogicalMonitor *logical_monitor;
   MetaOutput *main_output;
-  GList *outputs;
-  GList *l;
-  gboolean is_presentation;
-
-  g_assert (meta_monitor_is_active (monitor));
 
   logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
 
   main_output = meta_monitor_get_main_output (monitor);
-  logical_monitor->number = number;
+  logical_monitor->number = monitor_number;
   logical_monitor->winsys_id = main_output->winsys_id;
   logical_monitor->scale = main_output->scale;
   logical_monitor->in_fullscreen = -1;
+  logical_monitor->rect = *layout;
 
-  logical_monitor->rect.x = x;
-  logical_monitor->rect.y = y;
-  meta_monitor_get_dimensions (monitor,
-                               &logical_monitor->rect.width,
-                               &logical_monitor->rect.height);
-
-  is_presentation = TRUE;
-  outputs = meta_monitor_get_outputs (monitor);
-  for (l = outputs; l; l = l->next)
-    {
-      MetaOutput *output = l->data;
-
-      if (output->crtc)
-        output->crtc->logical_monitor = logical_monitor;
-
-      is_presentation = is_presentation && output->is_presentation;
-    }
-
-  logical_monitor->is_presentation = is_presentation;
-
-  logical_monitor->monitors = g_list_append (logical_monitor->monitors,
-                                             monitor);
+  logical_monitor->is_presentation = TRUE;
+  meta_logical_monitor_add_monitor (logical_monitor, monitor);
 
   return logical_monitor;
 }

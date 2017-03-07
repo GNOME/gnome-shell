@@ -215,11 +215,22 @@ meta_monitor_is_laptop_panel (MetaMonitor *monitor)
 }
 
 void
-meta_monitor_get_dimensions (MetaMonitor   *monitor,
-                             int           *width,
-                             int           *height)
+meta_monitor_get_current_resolution (MetaMonitor *monitor,
+                                     int         *width,
+                                     int         *height)
 {
-  META_MONITOR_GET_CLASS (monitor)->get_dimensions (monitor, width, height);
+  MetaMonitorMode *mode = meta_monitor_get_current_mode (monitor);
+
+  *width = mode->spec.width;
+  *height = mode->spec.height;
+}
+
+void
+meta_monitor_derive_dimensions (MetaMonitor   *monitor,
+                                int           *width,
+                                int           *height)
+{
+  META_MONITOR_GET_CLASS (monitor)->derive_dimensions (monitor, width, height);
 }
 
 void
@@ -362,9 +373,9 @@ meta_monitor_normal_get_main_output (MetaMonitor *monitor)
 }
 
 static void
-meta_monitor_normal_get_dimensions (MetaMonitor   *monitor,
-                                    int           *width,
-                                    int           *height)
+meta_monitor_normal_derive_dimensions (MetaMonitor   *monitor,
+                                       int           *width,
+                                       int           *height)
 {
   MetaOutput *output;
 
@@ -384,7 +395,7 @@ meta_monitor_normal_class_init (MetaMonitorNormalClass *klass)
   MetaMonitorClass *monitor_class = META_MONITOR_CLASS (klass);
 
   monitor_class->get_main_output = meta_monitor_normal_get_main_output;
-  monitor_class->get_dimensions = meta_monitor_normal_get_dimensions;
+  monitor_class->derive_dimensions = meta_monitor_normal_derive_dimensions;
 }
 
 uint32_t
@@ -684,11 +695,34 @@ meta_monitor_tiled_get_main_output (MetaMonitor *monitor)
 }
 
 static void
-meta_monitor_tiled_get_dimensions (MetaMonitor   *monitor,
-                                   int           *width,
-                                   int           *height)
+meta_monitor_tiled_derive_dimensions (MetaMonitor   *monitor,
+                                      int           *out_width,
+                                      int           *out_height)
 {
-  meta_monitor_tiled_calculate_tiled_size (monitor, width, height);
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  GList *l;
+  int width;
+  int height;
+
+  width = 0;
+  height = 0;
+  for (l = monitor_priv->outputs; l; l = l->next)
+    {
+      MetaOutput *output = l->data;
+
+      if (!output->crtc)
+        continue;
+
+      if (output->tile_info.loc_v_tile == 0)
+        width += output->crtc->rect.width;
+
+      if (output->tile_info.loc_h_tile == 0)
+        height += output->crtc->rect.height;
+    }
+
+  *out_width = width;
+  *out_height = height;
 }
 
 static void
@@ -717,7 +751,7 @@ meta_monitor_tiled_class_init (MetaMonitorTiledClass *klass)
   object_class->finalize = meta_monitor_tiled_finalize;
 
   monitor_class->get_main_output = meta_monitor_tiled_get_main_output;
-  monitor_class->get_dimensions = meta_monitor_tiled_get_dimensions;
+  monitor_class->derive_dimensions = meta_monitor_tiled_derive_dimensions;
 }
 
 static void

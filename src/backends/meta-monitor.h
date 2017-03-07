@@ -65,9 +65,9 @@ struct _MetaMonitorClass
   GObjectClass parent_class;
 
   MetaOutput * (* get_main_output) (MetaMonitor *monitor);
-  void (* get_dimensions) (MetaMonitor   *monitor,
-                           int           *width,
-                           int           *height);
+  void (* derive_dimensions) (MetaMonitor   *monitor,
+                              int           *width,
+                              int           *height);
 };
 
 #define META_TYPE_MONITOR_NORMAL (meta_monitor_normal_get_type ())
@@ -99,9 +99,13 @@ gboolean meta_monitor_is_laptop_panel (MetaMonitor *monitor);
 
 GList * meta_monitor_get_outputs (MetaMonitor *monitor);
 
-void meta_monitor_get_dimensions (MetaMonitor   *monitor,
-                                  int           *width,
-                                  int           *height);
+void meta_monitor_get_current_resolution (MetaMonitor *monitor,
+                                          int           *width,
+                                          int           *height);
+
+void meta_monitor_derive_dimensions (MetaMonitor   *monitor,
+                                     int           *width,
+                                     int           *height);
 
 void meta_monitor_get_physical_dimensions (MetaMonitor *monitor,
                                            int         *width_mm,

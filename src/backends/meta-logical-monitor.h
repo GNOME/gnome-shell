@@ -25,6 +25,7 @@
 #include <glib-object.h>
 
 #include "backends/meta-monitor.h"
+#include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "meta/boxes.h"
 
@@ -59,10 +60,14 @@ G_DECLARE_FINAL_TYPE (MetaLogicalMonitor, meta_logical_monitor,
                       META, LOGICAL_MONITOR,
                       GObject)
 
-MetaLogicalMonitor * meta_logical_monitor_new (MetaMonitor *monitor,
-                                               int          x,
-                                               int          y,
-                                               int          number);
+MetaLogicalMonitor * meta_logical_monitor_new (MetaMonitorManager          *monitor_manager,
+                                               MetaLogicalMonitorConfig    *logical_monitor_config,
+                                               int                          monitor_number);
+
+MetaLogicalMonitor * meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
+                                                       MetaMonitor        *monitor,
+                                                       MetaRectangle      *layout,
+                                                       int                 monitor_number);
 
 void meta_logical_monitor_add_monitor (MetaLogicalMonitor *logical_monitor,
                                        MetaMonitor        *monitor);
