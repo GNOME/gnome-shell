@@ -180,15 +180,23 @@ clutter_stage_view_set_dirty_projection (ClutterStageView *view,
 }
 
 void
+clutter_stage_view_get_offscreen_transformation_matrix (ClutterStageView *view,
+                                                        CoglMatrix       *matrix)
+{
+  ClutterStageViewClass *view_class = CLUTTER_STAGE_VIEW_GET_CLASS (view);
+
+  view_class->get_offscreen_transformation_matrix (view, matrix);
+}
+
+void
 clutter_stage_view_transform_to_onscreen (ClutterStageView *view,
                                           gfloat           *x,
                                           gfloat           *y)
 {
-  ClutterStageViewClass *view_class = CLUTTER_STAGE_VIEW_GET_CLASS (view);
   gfloat z = 0, w = 1;
   CoglMatrix matrix;
 
-  view_class->get_offscreen_transformation_matrix (view, &matrix);
+  clutter_stage_view_get_offscreen_transformation_matrix (view, &matrix);
   cogl_matrix_get_inverse (&matrix, &matrix);
   cogl_matrix_transform_point (&matrix, x, y, &z, &w);
 }
