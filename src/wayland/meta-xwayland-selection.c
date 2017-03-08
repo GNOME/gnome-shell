@@ -1359,10 +1359,10 @@ repick_drop_surface (MetaWaylandCompositor *compositor,
   MetaWaylandSurface *focus = NULL;
 
   focus = pick_drop_surface (compositor, event);
-  dnd->focus_surface = focus;
-
-  if (meta_wayland_drag_grab_get_focus (drag_grab) == focus)
+  if (dnd->focus_surface == focus)
     return;
+
+  dnd->focus_surface = focus;
 
   if (focus &&
       focus->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
