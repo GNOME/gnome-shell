@@ -702,11 +702,12 @@ meta_monitor_tiled_derive_dimensions (MetaMonitor   *monitor,
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
   GList *l;
-  int width;
-  int height;
+  int min_x, min_y, max_x, max_y;
 
-  width = 0;
-  height = 0;
+  min_x = INT_MAX;
+  min_y = INT_MAX;
+  max_x = 0;
+  max_y = 0;
   for (l = monitor_priv->outputs; l; l = l->next)
     {
       MetaOutput *output = l->data;
@@ -714,15 +715,14 @@ meta_monitor_tiled_derive_dimensions (MetaMonitor   *monitor,
       if (!output->crtc)
         continue;
 
-      if (output->tile_info.loc_v_tile == 0)
-        width += output->crtc->rect.width;
-
-      if (output->tile_info.loc_h_tile == 0)
-        height += output->crtc->rect.height;
+      min_x = MIN (output->crtc->rect.x, min_x);
+      min_y = MIN (output->crtc->rect.y, min_y);
+      max_x = MAX (output->crtc->rect.x + output->crtc->rect.width, max_x);
+      max_y = MAX (output->crtc->rect.y + output->crtc->rect.height, max_y);
     }
 
-  *out_width = width;
-  *out_height = height;
+  *out_width = max_x - min_x;
+  *out_height = max_y - min_y;
 }
 
 static void
