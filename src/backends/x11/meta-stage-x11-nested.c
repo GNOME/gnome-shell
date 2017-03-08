@@ -102,11 +102,17 @@ meta_stage_x11_nested_finish_frame (ClutterStageWindow *stage_window)
       cairo_rectangle_int_t view_layout;
       CoglFramebuffer *framebuffer;
       CoglTexture *texture;
+      CoglMatrix matrix;
 
       clutter_stage_view_get_layout (view, &view_layout);
 
-      framebuffer = clutter_stage_view_get_framebuffer (view);
+      framebuffer = clutter_stage_view_get_onscreen (view);
       texture = cogl_offscreen_get_texture (COGL_OFFSCREEN (framebuffer));
+
+      clutter_stage_view_get_offscreen_transformation_matrix (view, &matrix);
+      cogl_matrix_get_inverse (&matrix, &matrix);
+      cogl_pipeline_set_layer_matrix (stage_nested->pipeline, 0, &matrix);
+
       cogl_framebuffer_set_viewport (onscreen,
                                      view_layout.x,
                                      view_layout.y,

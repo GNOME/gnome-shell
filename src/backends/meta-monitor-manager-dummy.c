@@ -42,6 +42,8 @@
 struct _MetaMonitorManagerDummy
 {
   MetaMonitorManager parent_instance;
+
+  gboolean is_transform_handled;
 };
 
 struct _MetaMonitorManagerDummyClass
@@ -526,7 +528,9 @@ meta_monitor_manager_dummy_is_transform_handled (MetaMonitorManager  *manager,
                                                  MetaCrtc            *crtc,
                                                  MetaMonitorTransform transform)
 {
-  return TRUE;
+  MetaMonitorManagerDummy *manager_dummy = META_MONITOR_MANAGER_DUMMY (manager);
+
+  return manager_dummy->is_transform_handled;
 }
 
 static void
@@ -544,4 +548,12 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 static void
 meta_monitor_manager_dummy_init (MetaMonitorManagerDummy *manager)
 {
+  const char *nested_offscreen_transform;
+
+  nested_offscreen_transform =
+    g_getenv ("MUTTER_DEBUG_NESTED_OFFSCREEN_TRANSFORM");
+  if (g_strcmp0 (nested_offscreen_transform, "1") == 0)
+    manager->is_transform_handled = FALSE;
+  else
+    manager->is_transform_handled = TRUE;
 }
