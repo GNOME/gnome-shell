@@ -1968,6 +1968,19 @@ meta_monitor_manager_kms_wait_for_flip (MetaMonitorManagerKms *manager_kms)
   drmHandleEvent (manager_kms->fd, &evctx);
 }
 
+static gboolean
+meta_monitor_manager_kms_is_transform_handled (MetaMonitorManager  *manager,
+                                               MetaCrtc            *crtc,
+                                               MetaMonitorTransform transform)
+{
+  MetaCrtcKms *crtc_kms = crtc->driver_private;
+
+  if ((1 << crtc->transform) & crtc_kms->all_hw_transforms)
+    return TRUE;
+  else
+    return FALSE;
+}
+
 static void
 meta_monitor_manager_kms_dispose (GObject *object)
 {
@@ -2007,20 +2020,5 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->set_power_save_mode = meta_monitor_manager_kms_set_power_save_mode;
   manager_class->get_crtc_gamma = meta_monitor_manager_kms_get_crtc_gamma;
   manager_class->set_crtc_gamma = meta_monitor_manager_kms_set_crtc_gamma;
-}
-
-MetaMonitorTransform
-meta_monitor_manager_kms_get_view_transform (MetaMonitorManagerKms *manager,
-                                             MetaCrtc              *crtc)
-{
-  MetaCrtcKms *crtc_kms;
-
-  crtc_kms = crtc->driver_private;
-  if ((1 << crtc->transform) & crtc_kms->all_hw_transforms)
-    {
-      /* Transform is managed by the hardware, the view is untransformed */
-      return META_MONITOR_TRANSFORM_NORMAL;
-    }
-
-  return crtc->transform;
+  manager_class->is_transform_handled = meta_monitor_manager_kms_is_transform_handled;
 }

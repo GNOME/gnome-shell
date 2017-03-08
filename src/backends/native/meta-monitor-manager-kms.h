@@ -58,9 +58,4 @@ gboolean meta_monitor_manager_kms_flip_crtc (MetaMonitorManagerKms *manager_kms,
 
 void meta_monitor_manager_kms_wait_for_flip (MetaMonitorManagerKms *manager_kms);
 
-MetaMonitorTransform
-meta_monitor_manager_kms_get_view_transform (MetaMonitorManagerKms *manager,
-                                             MetaCrtc              *crtc);
-
-
 #endif /* META_MONITOR_MANAGER_KMS_H */

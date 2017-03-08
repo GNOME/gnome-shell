@@ -521,6 +521,14 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
   meta_monitor_manager_rebuild_derived (manager);
 }
 
+static gboolean
+meta_monitor_manager_dummy_is_transform_handled (MetaMonitorManager  *manager,
+                                                 MetaCrtc            *crtc,
+                                                 MetaMonitorTransform transform)
+{
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
@@ -530,6 +538,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->ensure_initial_config = meta_monitor_manager_dummy_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_dummy_apply_monitors_config;
   manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
+  manager_class->is_transform_handled = meta_monitor_manager_dummy_is_transform_handled;
 }
 
 static void

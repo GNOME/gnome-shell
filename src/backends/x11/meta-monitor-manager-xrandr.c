@@ -1558,6 +1558,16 @@ meta_monitor_manager_xrandr_init_monitors (MetaMonitorManagerXrandr *manager_xra
 }
 #endif
 
+static gboolean
+meta_monitor_manager_xrandr_is_transform_handled (MetaMonitorManager  *manager,
+                                                  MetaCrtc            *crtc,
+                                                  MetaMonitorTransform transform)
+{
+  g_warn_if_fail (crtc->all_transforms & transform);
+
+  return TRUE;
+}
+
 static void
 meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
 {
@@ -1633,6 +1643,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->tiled_monitor_added = meta_monitor_manager_xrandr_tiled_monitor_added;
   manager_class->tiled_monitor_removed = meta_monitor_manager_xrandr_tiled_monitor_removed;
 #endif
+  manager_class->is_transform_handled = meta_monitor_manager_xrandr_is_transform_handled;
 
   quark_meta_monitor_xrandr_data =
     g_quark_from_static_string ("-meta-monitor-xrandr-data");
