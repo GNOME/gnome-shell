@@ -60,17 +60,25 @@ append_monitor (GArray *modes,
                 GArray *outputs,
                 int     scale)
 {
-  MetaCrtcMode mode;
+  MetaCrtcMode modes_decl[] = {
+    {
+      .width = 800,
+      .height = 600,
+      .refresh_rate = 60.0
+    },
+    {
+      .width = 1024,
+      .height = 768,
+      .refresh_rate = 60.0
+    }
+  };
   MetaCrtc crtc;
   MetaOutput output;
+  unsigned int i;
 
-  mode = (MetaCrtcMode) {
-    .mode_id = modes->len,
-    .width = 1024,
-    .height = 768,
-    .refresh_rate = 60.0
-  };
-  g_array_append_val (modes, mode);
+  for (i = 0; i < G_N_ELEMENTS (modes_decl); i++)
+    modes_decl[i].mode_id = modes->len + i;
+  g_array_append_vals (modes, modes_decl, G_N_ELEMENTS (modes_decl));
 
   crtc = (MetaCrtc) {
     .crtc_id = crtcs->len + 1,
@@ -96,9 +104,11 @@ append_monitor (GArray *modes,
     .scale = scale,
   };
 
-  output.modes = g_new0 (MetaCrtcMode *, 1);
-  output.modes[0] = &array_last (modes, MetaCrtcMode);
-  output.n_modes = 1;
+  output.modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
+  for (i = 0; i < G_N_ELEMENTS (modes_decl); i++)
+    output.modes[i] = &g_array_index (modes, MetaCrtcMode,
+                                      modes->len - (i + 1));
+  output.n_modes = G_N_ELEMENTS (modes_decl);
   output.possible_crtcs = g_new0 (MetaCrtc *, 1);
   output.possible_crtcs[0] = &array_last (crtcs, MetaCrtc);
   output.n_possible_crtcs = 1;
