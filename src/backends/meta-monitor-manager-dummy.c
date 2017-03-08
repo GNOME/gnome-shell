@@ -117,12 +117,102 @@ append_monitor (GArray *modes,
 }
 
 static void
+append_tiled_monitor (GArray *modes,
+                      GArray *crtcs,
+                      GArray *outputs,
+                      int     scale)
+{
+  MetaCrtcMode modes_decl[] = {
+    {
+      .width = 800,
+      .height = 600,
+      .refresh_rate = 60.0
+    },
+    {
+      .width = 512,
+      .height = 768,
+      .refresh_rate = 60.0
+    }
+  };
+  MetaCrtc crtcs_decl[] = {
+    {
+      .all_transforms = ALL_TRANSFORMS,
+    },
+    {
+      .all_transforms = ALL_TRANSFORMS,
+    },
+  };
+  MetaOutput output;
+  unsigned int i;
+  uint32_t tile_group_id;
+
+  for (i = 0; i < G_N_ELEMENTS (modes_decl); i++)
+    modes_decl[i].mode_id = modes->len + i;
+  g_array_append_vals (modes, modes_decl, G_N_ELEMENTS (modes_decl));
+
+  for (i = 0; i < G_N_ELEMENTS (crtcs_decl); i++)
+    crtcs_decl[i].crtc_id = crtcs->len + i + 1;
+  g_array_append_vals (crtcs, crtcs_decl, G_N_ELEMENTS (crtcs_decl));
+
+  tile_group_id = outputs->len + 1;
+  for (i = 0; i < G_N_ELEMENTS (crtcs_decl); i++)
+    {
+      MetaCrtcMode *preferred_mode;
+      unsigned int j;
+
+      preferred_mode = &array_last (modes, MetaCrtcMode),
+      output = (MetaOutput) {
+        .winsys_id = outputs->len + 1,
+        .name = g_strdup_printf ("LVDS%d", outputs->len + 1),
+        .vendor = g_strdup ("MetaProducts Inc."),
+        .product = g_strdup ("MetaMonitor"),
+        .serial = g_strdup_printf ("0xC0FFEE-%d", outputs->len + 1),
+        .suggested_x = -1,
+        .suggested_y = -1,
+        .width_mm = 222,
+        .height_mm = 125,
+        .subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN,
+        .preferred_mode = preferred_mode,
+        .n_possible_clones = 0,
+        .backlight = -1,
+        .connector_type = META_CONNECTOR_TYPE_LVDS,
+        .tile_info = (MetaTileInfo) {
+          .group_id = tile_group_id,
+          .max_h_tiles = G_N_ELEMENTS (crtcs_decl),
+          .max_v_tiles = 1,
+          .loc_h_tile = i,
+          .loc_v_tile = 0,
+          .tile_w = preferred_mode->width,
+          .tile_h = preferred_mode->height
+        },
+        .scale = scale
+      };
+
+      output.modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
+      for (j = 0; j < G_N_ELEMENTS (modes_decl); j++)
+        output.modes[j] = &g_array_index (modes, MetaCrtcMode,
+                                          modes->len - (j + 1));
+      output.n_modes = G_N_ELEMENTS (modes_decl);
+
+      output.possible_crtcs = g_new0 (MetaCrtc *, G_N_ELEMENTS (crtcs_decl));
+      for (j = 0; j < G_N_ELEMENTS (crtcs_decl); j++)
+        output.possible_crtcs[j] = &g_array_index (crtcs, MetaCrtc,
+                                                   crtcs->len - (j + 1));
+      output.n_possible_crtcs = G_N_ELEMENTS (crtcs_decl);
+
+      g_array_append_val (outputs, output);
+    }
+}
+
+static void
 meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 {
   unsigned int num_monitors = 1;
   int *monitor_scales = NULL;
   const char *num_monitors_str;
   const char *monitor_scales_str;
+  const char *tiled_monitors_str;
+  gboolean tiled_monitors;
   unsigned int i;
   GArray *outputs;
   GArray *crtcs;
@@ -140,11 +230,17 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
    *
    * A comma separated list that specifies the scales of the dummy monitors.
    *
+   * MUTTER_DEBUG_TILED_DUMMY_MONITORS
+   *
+   * If set to "1" the dummy monitors will emulate being tiled, i.e. each have a
+   * unique tile group id, made up of multiple outputs and CRTCs.
+   *
    * For example the following configuration results in two monitors, where the
    * first one has the monitor scale 1, and the other the monitor scale 2.
    *
    * MUTTER_DEBUG_NUM_DUMMY_MONITORS=2
    * MUTTER_DEBUG_DUMMY_MONITOR_SCALES=1,2
+   * MUTTER_DEBUG_TILED_DUMMY_MONITORS=1
    */
   num_monitors_str = getenv ("MUTTER_DEBUG_NUM_DUMMY_MONITORS");
   if (num_monitors_str)
@@ -188,6 +284,9 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
       g_strfreev (scales_str_list);
     }
 
+  tiled_monitors_str = g_getenv ("MUTTER_DEBUG_TILED_DUMMY_MONITORS");
+  tiled_monitors = g_strcmp0 (tiled_monitors_str, "1") == 0;
+
   manager->max_screen_width = 65535;
   manager->max_screen_height = 65535;
 
@@ -196,7 +295,12 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   outputs = g_array_sized_new (FALSE, TRUE, sizeof (MetaOutput), MAX_OUTPUTS);
 
   for (i = 0; i < num_monitors; i++)
-    append_monitor (modes, crtcs, outputs, monitor_scales[i]);
+    {
+      if (tiled_monitors)
+        append_tiled_monitor (modes, crtcs, outputs, monitor_scales[i]);
+      else
+        append_monitor (modes, crtcs, outputs, monitor_scales[i]);
+    }
 
   manager->modes = (MetaCrtcMode *) modes->data;
   manager->n_modes = modes->len;
