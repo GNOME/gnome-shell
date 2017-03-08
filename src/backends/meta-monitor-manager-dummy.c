@@ -34,6 +34,11 @@
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
+#define MAX_MONITORS 5
+#define MAX_OUTPUTS (MAX_MONITORS * 2)
+#define MAX_CRTCS (MAX_MONITORS * 2)
+#define MAX_MODES (MAX_MONITORS * 4)
+
 struct _MetaMonitorManagerDummy
 {
   MetaMonitorManager parent_instance;
@@ -46,6 +51,61 @@ struct _MetaMonitorManagerDummyClass
 
 G_DEFINE_TYPE (MetaMonitorManagerDummy, meta_monitor_manager_dummy, META_TYPE_MONITOR_MANAGER);
 
+#define array_last(a, t) \
+  g_array_index (a, t, a->len - 1)
+
+static void
+append_monitor (GArray *modes,
+                GArray *crtcs,
+                GArray *outputs,
+                int     scale)
+{
+  MetaCrtcMode mode;
+  MetaCrtc crtc;
+  MetaOutput output;
+
+  mode = (MetaCrtcMode) {
+    .mode_id = modes->len,
+    .width = 1024,
+    .height = 768,
+    .refresh_rate = 60.0
+  };
+  g_array_append_val (modes, mode);
+
+  crtc = (MetaCrtc) {
+    .crtc_id = crtcs->len + 1,
+    .all_transforms = ALL_TRANSFORMS,
+  };
+  g_array_append_val (crtcs, crtc);
+
+  output = (MetaOutput) {
+    .winsys_id = outputs->len + 1,
+    .name = g_strdup_printf ("LVDS%d", outputs->len + 1),
+    .vendor = g_strdup ("MetaProducts Inc."),
+    .product = g_strdup ("MetaMonitor"),
+    .serial = g_strdup_printf ("0xC0FFEE-%d", outputs->len + 1),
+    .suggested_x = -1,
+    .suggested_y = -1,
+    .width_mm = 222,
+    .height_mm = 125,
+    .subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN,
+    .preferred_mode = &array_last (modes, MetaCrtcMode),
+    .n_possible_clones = 0,
+    .backlight = -1,
+    .connector_type = META_CONNECTOR_TYPE_LVDS,
+    .scale = scale,
+  };
+
+  output.modes = g_new0 (MetaCrtcMode *, 1);
+  output.modes[0] = &array_last (modes, MetaCrtcMode);
+  output.n_modes = 1;
+  output.possible_crtcs = g_new0 (MetaCrtc *, 1);
+  output.possible_crtcs[0] = &array_last (crtcs, MetaCrtc);
+  output.n_possible_crtcs = 1;
+
+  g_array_append_val (outputs, output);
+}
+
 static void
 meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 {
@@ -54,7 +114,9 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   const char *num_monitors_str;
   const char *monitor_scales_str;
   unsigned int i;
-  int current_x = 0;
+  GArray *outputs;
+  GArray *crtcs;
+  GArray *modes;
 
   /* To control what monitor configuration is generated, there are two available
    * environmental variables that can be used:
@@ -82,6 +144,13 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
         {
           meta_warning ("Invalid number of dummy monitors");
           num_monitors = 1;
+        }
+
+      if (num_monitors > MAX_MONITORS)
+        {
+          meta_warning ("Clamping monitor count to max (%d)",
+                        MAX_MONITORS);
+          num_monitors = MAX_MONITORS;
         }
     }
 
@@ -112,56 +181,23 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   manager->max_screen_width = 65535;
   manager->max_screen_height = 65535;
 
-  manager->modes = g_new0 (MetaCrtcMode, 1);
-  manager->n_modes = 1;
-
-  manager->modes[0].mode_id = 0;
-  manager->modes[0].width = 1024;
-  manager->modes[0].height = 768;
-  manager->modes[0].refresh_rate = 60.0;
-
-  manager->crtcs = g_new0 (MetaCrtc, num_monitors);
-  manager->n_crtcs = num_monitors;
-  manager->outputs = g_new0 (MetaOutput, num_monitors);
-  manager->n_outputs = num_monitors;
+  modes = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtcMode), MAX_MODES);
+  crtcs = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtc), MAX_CRTCS);
+  outputs = g_array_sized_new (FALSE, TRUE, sizeof (MetaOutput), MAX_OUTPUTS);
 
   for (i = 0; i < num_monitors; i++)
-    {
-      manager->crtcs[i].crtc_id = i + 1;
-      manager->crtcs[i].current_mode = NULL;
-      manager->crtcs[i].transform = META_MONITOR_TRANSFORM_NORMAL;
-      manager->crtcs[i].all_transforms = ALL_TRANSFORMS;
-      manager->crtcs[i].is_dirty = FALSE;
-      manager->crtcs[i].logical_monitor = NULL;
+    append_monitor (modes, crtcs, outputs, monitor_scales[i]);
 
-      current_x += manager->crtcs[i].rect.width;
+  manager->modes = (MetaCrtcMode *) modes->data;
+  manager->n_modes = modes->len;
+  manager->crtcs = (MetaCrtc *) crtcs->data;
+  manager->n_crtcs = crtcs->len;
+  manager->outputs = (MetaOutput *) outputs->data;
+  manager->n_outputs = outputs->len;
 
-      manager->outputs[i].crtc = &manager->crtcs[i];
-      manager->outputs[i].winsys_id = i + 1;
-      manager->outputs[i].name = g_strdup_printf ("LVDS%d", i + 1);
-      manager->outputs[i].vendor = g_strdup ("MetaProducts Inc.");
-      manager->outputs[i].product = g_strdup ("unknown");
-      manager->outputs[i].serial = g_strdup ("0xC0FFEE");
-      manager->outputs[i].suggested_x = -1;
-      manager->outputs[i].suggested_y = -1;
-      manager->outputs[i].width_mm = 222;
-      manager->outputs[i].height_mm = 125;
-      manager->outputs[i].subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-      manager->outputs[i].preferred_mode = &manager->modes[0];
-      manager->outputs[i].n_modes = 1;
-      manager->outputs[i].modes = g_new0 (MetaCrtcMode *, 1);
-      manager->outputs[i].modes[0] = &manager->modes[0];
-      manager->outputs[i].n_possible_crtcs = 1;
-      manager->outputs[i].possible_crtcs = g_new0 (MetaCrtc *, 1);
-      manager->outputs[i].possible_crtcs[0] = &manager->crtcs[i];
-      manager->outputs[i].n_possible_clones = 0;
-      manager->outputs[i].possible_clones = g_new0 (MetaOutput *, 0);
-      manager->outputs[i].backlight = -1;
-      manager->outputs[i].backlight_min = 0;
-      manager->outputs[i].backlight_max = 0;
-      manager->outputs[i].connector_type = META_CONNECTOR_TYPE_LVDS;
-      manager->outputs[i].scale = monitor_scales[i];
-    }
+  g_array_free (modes, FALSE);
+  g_array_free (crtcs, FALSE);
+  g_array_free (outputs, FALSE);
 }
 
 static void
