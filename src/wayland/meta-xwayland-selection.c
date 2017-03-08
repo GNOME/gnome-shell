@@ -67,6 +67,7 @@ typedef struct {
   Window window;
   Window owner;
   Time timestamp;
+  Time client_message_timestamp;
   MetaWaylandDataSource *source; /* owned by MetaWaylandDataDevice */
   WaylandSelectionData *wayland_selection;
   X11SelectionData *x11_selection;
@@ -834,7 +835,7 @@ meta_x11_source_send (MetaWaylandDataSource *source,
                      selection->selection_atom, type_atom,
                      gdk_x11_get_xatom_by_name ("_META_SELECTION"),
                      selection->window,
-                     CurrentTime);
+                     selection->client_message_timestamp);
   XFlush (xdisplay);
 }
 
@@ -1533,6 +1534,8 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
           ClutterPoint pos;
           uint32_t action = 0;
 
+          dnd->selection.client_message_timestamp = event->data.l[3];
+
           motion = clutter_event_new (CLUTTER_MOTION);
           clutter_input_device_get_coords (seat->pointer->device, NULL, &pos);
           clutter_event_set_coords (motion, pos.x, pos.y);
@@ -1558,6 +1561,7 @@ meta_xwayland_selection_handle_client_message (MetaWaylandCompositor *compositor
         }
       else if (event->message_type == xdnd_atoms[ATOM_DND_DROP])
         {
+          dnd->selection.client_message_timestamp = event->data.l[2];
           meta_wayland_surface_drag_dest_drop (drag_focus);
           meta_xwayland_end_dnd_grab (&seat->data_device);
           return TRUE;
@@ -1627,6 +1631,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
       if (event->owner != None && event->owner != selection->window &&
           focus && meta_xwayland_is_xwayland_surface (focus))
         {
+          selection->client_message_timestamp = CurrentTime;
           selection->source = meta_wayland_data_source_xwayland_new (selection);
           meta_wayland_data_device_set_dnd_source (&compositor->seat->data_device,
                                                    selection->source);
