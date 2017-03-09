@@ -11,10 +11,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-10 22:51+0000\n"
-"PO-Revision-Date: 2017-02-11 15:30+0100\n"
+"POT-Creation-Date: 2017-03-07 12:40+0000\n"
+"PO-Revision-Date: 2017-03-09 07:51+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -275,10 +275,10 @@ msgstr "Modifikátor, který se má použít u operací rozšířené správy ok
 
 #: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
 "Tato klávesa spustí „překrytí“ („overlay“), což je kombinace přehledu oken a "
 "systému spouštění aplikací. Výchozí u osobních počítačů je „klávesa "
@@ -320,7 +320,7 @@ msgstr "Pracovní plochy jsou spravovány dynamicky"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -357,11 +357,11 @@ msgstr "Se změnou zaměření čekat na zastavení pohybu ukazatele"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
-"Je-li je zapnuto a režim zaměření je buď „sloppy“ nebo „mouse“, pak se "
+"Je-li zapnuto a režim zaměření je buď „sloppy“ nebo „mouse“, pak se "
 "zaměření nezmění hned, když vstoupíte do kona, ale až se přestane pohybovat "
 "ukazatel."
 
@@ -371,7 +371,7 @@ msgstr "Šířka přetažitelného okraje"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "Počet všech přetažitelných okrajů. Nestačí-li viditelné okraje motivu, budou "
@@ -460,7 +460,7 @@ msgstr "Přepnout na VT 12"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1759
+#: src/backends/meta-input-settings.c:1800
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Přepínač režimu (skupina %d)"
@@ -468,11 +468,11 @@ msgstr "Přepínač režimu (skupina %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1781
+#: src/backends/meta-input-settings.c:1822
 msgid "Switch monitor"
 msgstr "Přepnout monitor"
 
-#: src/backends/meta-input-settings.c:1783
+#: src/backends/meta-input-settings.c:1824
 msgid "Show on-screen help"
 msgstr "Zobrazit nápovědu na obrazovce"
 
@@ -498,11 +498,10 @@ msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:474
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr "Jiný kompozitní správce již běží na obrazovce %i displeje „%s“."
 
 #: src/core/bell.c:194
@@ -537,42 +536,42 @@ msgstr "_Počkat"
 
 #: src/core/display.c:608
 #, c-format
-msgid "Failed to open X Window System display '%s'\n"
+msgid "Failed to open X Window System display “%s”\n"
 msgstr "Nelze otevřít displej X Window System „%s“\n"
 
-#: src/core/main.c:187
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Zakáže připojení ke správci sezení"
 
-#: src/core/main.c:193
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Nahradí běžícího správce oken"
 
-#: src/core/main.c:199
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Určení ID správy sezení"
 
-#: src/core/main.c:204
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Displej X, který použije"
 
-#: src/core/main.c:210
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Spustí sezení z uloženého souboru"
 
-#: src/core/main.c:216
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Provede volání X synchronně"
 
-#: src/core/main.c:223
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Spustit jako kompozitor protokolu Wayland"
 
-#: src/core/main.c:229
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Spustit jako podkladový kompozitor"
 
-#: src/core/main.c:237
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Spustit jako plnohodnotný server displeje, nikoliv vnořeně"
 
@@ -580,7 +579,7 @@ msgstr "Spustit jako plnohodnotný server displeje, nikoliv vnořeně"
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
@@ -608,15 +607,15 @@ msgstr "Plocha %d"
 #: src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "Displej „%s“ již správce oken má; zkuste prosím nahradit aktuálního správce "
 "oken pomocí přepínače --replace."
 
 #: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Obrazovka %d na displeji „%s“ je neplatná\n"
 
 #: src/core/util.c:120
@@ -630,10 +629,10 @@ msgstr "Přepínač režimu: režim %d"
 
 #: src/x11/session.c:1815
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
-"Tato okna nepodporují &quot;ukládání aktuálního nastavení&quot; a po vašem "
+"Tato okna nepodporují „uložení aktuálního nastavení“ a po svém "
 "příštím přihlášení je budete muset spustit ručně."
 
 #: src/x11/window-props.c:559
@@ -641,662 +640,3 @@ msgstr ""
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#~ msgid "Failed to scan themes directory: %s\n"
-#~ msgstr "Nelze prohledat adresář motivů: %s\n"
-
-#~ msgid ""
-#~ "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-#~ msgstr ""
-#~ "Nelze najít motiv! Ujistěte se prosím, že existuje %s a obsahuje obvyklé "
-#~ "motivy.\n"
-
-#~ msgid "Screen %d on display \"%s\" already has a window manager\n"
-#~ msgstr "Obrazovka %d na displeji „%s“ již má správce oken\n"
-
-#~ msgid "%d x %d"
-#~ msgstr "%d × %d"
-
-#~ msgid "top"
-#~ msgstr "nahoře"
-
-#~ msgid "bottom"
-#~ msgstr "dole"
-
-#~ msgid "left"
-#~ msgstr "vlevo"
-
-#~ msgid "right"
-#~ msgstr "vpravo"
-
-#~ msgid "frame geometry does not specify \"%s\" dimension"
-#~ msgstr "geometrie rámu nedefinuje rozměr „%s“"
-
-#~ msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-#~ msgstr "geometrie rámu nedefinuje rozměr „%s“ okraje „%s“"
-
-#~ msgid "Button aspect ratio %g is not reasonable"
-#~ msgstr "Poměr stran tlačítka %g není přiměřený"
-
-#~ msgid "Frame geometry does not specify size of buttons"
-#~ msgstr "Geometrie rámu nedefinuje velikost tlačítek"
-
-#~ msgid "Gradients should have at least two colors"
-#~ msgstr "Přechody by měly mít alespoň dvě barvy"
-
-#~ msgid ""
-#~ "GTK custom color specification must have color name and fallback in "
-#~ "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-#~ msgstr ""
-#~ "Určení vlastní barvy GTK musí mít název barvy a záložní možnost v "
-#~ "závorce, např. gtk:custom(x,y); nelze analyzovat „%s“"
-
-#~ msgid ""
-#~ "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-"
-#~ "z0-9-_ are valid"
-#~ msgstr ""
-#~ "Neplatný znak „%c“ v parametru color_name v gtk:custom, platné jsou pouze "
-#~ "A-Za-z0-9-_"
-
-#~ msgid ""
-#~ "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
-#~ "fit the format"
-#~ msgstr ""
-#~ "Formát Gtk:custom má podobu „gtk:custom(název_barvy,záloha)“, „%s“ tomuto "
-#~ "formátu neodpovídá"
-
-#~ msgid ""
-#~ "GTK color specification must have the state in brackets, e.g. gtk:"
-#~ "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-#~ msgstr ""
-#~ "Specifikace GTK barvy musí mít stav v hranatých závorkách, např. gtk:"
-#~ "fg[NORMAL], kde NORMAL je stav; nelze analyzovat „%s“"
-
-#~ msgid ""
-#~ "GTK color specification must have a close bracket after the state, e.g. "
-#~ "gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-#~ msgstr ""
-#~ "Specifikace GTK barvy musí mít za stavem hranatou závorku, např. gtk:"
-#~ "fg[NORMAL], kde NORMAL je stav; nelze analyzovat „%s“"
-
-#~ msgid "Did not understand state \"%s\" in color specification"
-#~ msgstr "Nerozumí se stavu „%s“ ve specifikaci barvy"
-
-#~ msgid "Did not understand color component \"%s\" in color specification"
-#~ msgstr "Nerozumí se barevné složce „%s“ ve specifikaci barvy"
-
-#~ msgid ""
-#~ "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit "
-#~ "the format"
-#~ msgstr ""
-#~ "Formát prolínání má podobu „prolínání/barva_pozadí/barva_popředí/alfa“, "
-#~ "„%s“ tomuto formátu neodpovídá"
-
-#~ msgid "Could not parse alpha value \"%s\" in blended color"
-#~ msgstr "Nelze analyzovat hodnotu alfa „%s“ v prolínající barvě"
-
-#~ msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-#~ msgstr "Hodnota alfa „%s“ v prolínající barvě není mezi 0.0 a 1.0"
-
-#~ msgid ""
-#~ "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the "
-#~ "format"
-#~ msgstr ""
-#~ "Formát stínu má podobu „stín/základní_barva/faktor“, „%s“ tomuto formátu "
-#~ "neodpovídá"
-
-#~ msgid "Could not parse shade factor \"%s\" in shaded color"
-#~ msgstr "Nelze analyzovat faktor stínu „%s“ ve stínované barvě"
-
-#~ msgid "Shade factor \"%s\" in shaded color is negative"
-#~ msgstr "Faktor stínu „%s“ ve stínované barvě je záporný"
-
-#~ msgid "Could not parse color \"%s\""
-#~ msgstr "Nelze analyzovat barvu „%s“"
-
-#~ msgid "Coordinate expression contains character '%s' which is not allowed"
-#~ msgstr "Souřadnicový výraz obsahuje nepovolený znak „%s“"
-
-#~ msgid ""
-#~ "Coordinate expression contains floating point number '%s' which could not "
-#~ "be parsed"
-#~ msgstr ""
-#~ "Souřadnicový výraz obsahuje číslo s pohyblivou řádovou čárkou „%s“, které "
-#~ "nelze analyzovat"
-
-#~ msgid ""
-#~ "Coordinate expression contains integer '%s' which could not be parsed"
-#~ msgstr "Souřadnicový výraz obsahuje celé číslo „%s“, které nelze analyzovat"
-
-#~ msgid ""
-#~ "Coordinate expression contained unknown operator at the start of this "
-#~ "text: \"%s\""
-#~ msgstr "Souřadnicový výraz obsahuje na začátku textu neznámý operátor: „%s“"
-
-#~ msgid "Coordinate expression was empty or not understood"
-#~ msgstr "Souřadnicový výraz byl prázdný nebo mu nebylo rozuměno"
-
-#~ msgid "Coordinate expression results in division by zero"
-#~ msgstr "Souřadnicový výraz způsobil dělení nulou"
-
-#~ msgid ""
-#~ "Coordinate expression tries to use mod operator on a floating-point number"
-#~ msgstr ""
-#~ "Souřadnicový výraz chce použít operátor mod na číslo s pohyblivou řádovou "
-#~ "čárkou"
-
-#~ msgid ""
-#~ "Coordinate expression has an operator \"%s\" where an operand was expected"
-#~ msgstr ""
-#~ "Souřadnicový výraz má na místě, kde byl očekáván operand, operátor „%s“"
-
-#~ msgid "Coordinate expression had an operand where an operator was expected"
-#~ msgstr "Souřadnicový výraz má operand tam, kde byl očekáván operátor"
-
-#~ msgid "Coordinate expression ended with an operator instead of an operand"
-#~ msgstr "Souřadnicový výraz končí operátorem místo operandu"
-
-#~ msgid ""
-#~ "Coordinate expression has operator \"%c\" following operator \"%c\" with "
-#~ "no operand in between"
-#~ msgstr ""
-#~ "Souřadnicový výraz má operátor „%c“ za operátorem „%c“ bez operandu "
-#~ "umístěného mezi nimi"
-
-#~ msgid "Coordinate expression had unknown variable or constant \"%s\""
-#~ msgstr "Souřadnicový výraz má neznámou proměnnou nebo konstantu „%s“"
-
-#~ msgid "Coordinate expression parser overflowed its buffer."
-#~ msgstr "Analyzátor souřadnicových výrazů přeplnil svou vyrovnávací paměť."
-
-#~ msgid ""
-#~ "Coordinate expression had a close parenthesis with no open parenthesis"
-#~ msgstr "Souřadnicový výraz má pravou závorku bez levé závorky"
-
-#~ msgid ""
-#~ "Coordinate expression had an open parenthesis with no close parenthesis"
-#~ msgstr "Souřadnicový výraz má levou závorku bez pravé závorky"
-
-#~ msgid "Coordinate expression doesn't seem to have any operators or operands"
-#~ msgstr "Souřadnicový výraz zřejmě nemá žádné operátory nebo operandy"
-
-#~ msgid "Theme contained an expression that resulted in an error: %s\n"
-#~ msgstr "Motiv obsahoval výraz, který způsobil chybu: %s\n"
-
-#~ msgid ""
-#~ "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-#~ "specified for this frame style"
-#~ msgstr ""
-#~ "U tohoto stylu rámu musí být zadáno <button function=\"%s\" state=\"%s\" "
-#~ "draw_ops=\"cokoliv\"/>"
-
-#~ msgid ""
-#~ "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/"
-#~ ">"
-#~ msgstr ""
-#~ "Chybí <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"cokoliv\"/>"
-
-#~ msgid "Failed to load theme \"%s\": %s\n"
-#~ msgstr "Nelze načíst motiv „%s“: %s\n"
-
-#~ msgid "No <%s> set for theme \"%s\""
-#~ msgstr "Není nastaveno <%s> motivu „%s“"
-
-#~ msgid ""
-#~ "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-#~ "type=\"%s\" style_set=\"whatever\"/> element"
-#~ msgstr ""
-#~ "U typu okna „%s“ motivu „%s“ není nastaven typ rámu, přidejte prosím "
-#~ "prvek <window type=\"%s\" style_set=\"cokoliv\"/>"
-
-#~ msgid ""
-#~ "User-defined constants must begin with a capital letter; \"%s\" does not"
-#~ msgstr ""
-#~ "Uživatelem definované konstanty musí začínat velkým písmenem; „%s“ toto "
-#~ "nesplňuje"
-
-#~ msgid "Constant \"%s\" has already been defined"
-#~ msgstr "Konstanta „%s“ již byla definována"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Chybí atribut „%s“ v prvku <%s>"
-
-#~ msgid "Line %d character %d: %s"
-#~ msgstr "Řádek %d znak %d: %s"
-
-#~ msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-#~ msgstr "Atribut „%s“ opakován dvakrát v jednom prvku <%s>"
-
-#~ msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-#~ msgstr "Atribut „%s“ je v prvku <%s> v tomto kontextu neplatný"
-
-#~ msgid "Could not parse \"%s\" as an integer"
-#~ msgstr "„%s“ nelze analyzovat jako celé číslo"
-
-#~ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-#~ msgstr "Nerozuměno koncovým znakům „%s“ v řetězci „%s“"
-
-#~ msgid "Integer %ld must be positive"
-#~ msgstr "Celé číslo %ld musí být kladné"
-
-#~ msgid "Integer %ld is too large, current max is %d"
-#~ msgstr "Celé číslo %ld je příliš velké, aktuální maximum je %d"
-
-#~ msgid "Could not parse \"%s\" as a floating point number"
-#~ msgstr "Nelze analyzovat „%s“ jako číslo s pohyblivou řádovou čárkou"
-
-#~ msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-#~ msgstr "Pravdivostní hodnoty musí být „true“ nebo „false“, nikoliv „%s“"
-
-#~ msgid "Angle must be between 0.0 and 360.0, was %g\n"
-#~ msgstr "Úhel musí být mezi 0.0 a 360.0, měl hodnotu %g\n"
-
-#~ msgid ""
-#~ "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-#~ msgstr ""
-#~ "Alfa musí být mezi 0.0 (neviditelný) a 1.0 (zcela neprůhledný), měla "
-#~ "hodnotu %g\n"
-
-#~ msgid ""
-#~ "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-#~ "large,x-large,xx-large)\n"
-#~ msgstr ""
-#~ "Neplatné měřítko nadpisu „%s“ (musí být jedno z xx-small, x-small, "
-#~ "medium, large, x-large, xx-large)\n"
-
-#~ msgid "<%s> name \"%s\" used a second time"
-#~ msgstr "<%s>: název „%s“ použit podruhé"
-
-#~ msgid "<%s> parent \"%s\" has not been defined"
-#~ msgstr "<%s>: rodič „%s“ nebyl definován"
-
-#~ msgid "<%s> geometry \"%s\" has not been defined"
-#~ msgstr "<%s>: geometrie „%s“ nebyla definována"
-
-#~ msgid "<%s> must specify either a geometry or a parent that has a geometry"
-#~ msgstr "<%s> musí určit buď geometrii, nebo rodiče, který má geometrii"
-
-#~ msgid "You must specify a background for an alpha value to be meaningful"
-#~ msgstr "Aby měla hodnota alfa význam, je nutné určit pozadí"
-
-#~ msgid "Unknown type \"%s\" on <%s> element"
-#~ msgstr "Neznámý typ „%s“ v prvku <%s>"
-
-#~ msgid "Unknown style_set \"%s\" on <%s> element"
-#~ msgstr "Neznámý style_set „%s“ v prvku <%s>"
-
-#~ msgid "Window type \"%s\" has already been assigned a style set"
-#~ msgstr "Typu okna „%s“ již byla přiřazena sada stylů"
-
-#~ msgid "Element <%s> is not allowed below <%s>"
-#~ msgstr "Prvek <%s> není povolen pod <%s>"
-
-#~ msgid ""
-#~ "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio"
-#~ "\" for buttons"
-#~ msgstr ""
-#~ "U tlačítek nelze zadat „button_width“/„button_height“ a zároveň "
-#~ "„aspect_ratio“"
-
-#~ msgid "Distance \"%s\" is unknown"
-#~ msgstr "Vzdálenost „%s“ není známa"
-
-#~ msgid "Aspect ratio \"%s\" is unknown"
-#~ msgstr "Poměr stran „%s“ není znám"
-
-#~ msgid "Border \"%s\" is unknown"
-#~ msgstr "Okraj „%s“ není znám"
-
-#~ msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-#~ msgstr "Chybí atribut „start_angle“ nebo „from“ v prvku <%s>"
-
-#~ msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-#~ msgstr "Chybí atribut „extent_angle“ nebo „to“ v prvku <%s>"
-
-#~ msgid "Did not understand value \"%s\" for type of gradient"
-#~ msgstr "Nerozumí se hodnotě „%s“ typu přechodu"
-
-#~ msgid "Did not understand fill type \"%s\" for <%s> element"
-#~ msgstr "Nerozumí se typu výplně „%s“ prvku <%s>"
-
-#~ msgid "Did not understand state \"%s\" for <%s> element"
-#~ msgstr "Nerozumí se stavu „%s“ prvku <%s>"
-
-#~ msgid "Did not understand shadow \"%s\" for <%s> element"
-#~ msgstr "Nerozumí se stínu „%s“ prvku <%s>"
-
-#~ msgid "Did not understand arrow \"%s\" for <%s> element"
-#~ msgstr "Nerozumí se šipce „%s“ prvku <%s>"
-
-#~ msgid "No <draw_ops> called \"%s\" has been defined"
-#~ msgstr "Nebyly definovány žádné <draw_ops> nazvané „%s“"
-
-#~ msgid "Including draw_ops \"%s\" here would create a circular reference"
-#~ msgstr "Vložení draw_ops „%s“ na tomto místě by vytvořilo zacyklený odkaz"
-
-#~ msgid "Unknown position \"%s\" for frame piece"
-#~ msgstr "Neznámá pozice položky rámu „%s“"
-
-#~ msgid "Frame style already has a piece at position %s"
-#~ msgstr "Styl rámu již má položku na pozici %s"
-
-#~ msgid "No <draw_ops> with the name \"%s\" has been defined"
-#~ msgstr "Nebyly definované žádné <draw_ops> s názvem „%s“"
-
-#~ msgid "Unknown function \"%s\" for button"
-#~ msgstr "Neznámá funkce tlačítka „%s“"
-
-#~ msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-#~ msgstr "Funkce tlačítka „%s“ v této verzi neexistuje (%d, potřeba je %d)"
-
-#~ msgid "Unknown state \"%s\" for button"
-#~ msgstr "Neznámý stav tlačítka „%s“"
-
-#~ msgid "Frame style already has a button for function %s state %s"
-#~ msgstr "Styl rámu již má tlačítko funkce %s stavu %s"
-
-#~ msgid "\"%s\" is not a valid value for focus attribute"
-#~ msgstr "„%s“ není platná hodnota atributu focus"
-
-#~ msgid "\"%s\" is not a valid value for state attribute"
-#~ msgstr "„%s“ není platná hodnota atributu state"
-
-#~ msgid "A style called \"%s\" has not been defined"
-#~ msgstr "Nebyl definován styl „%s“"
-
-#~ msgid "\"%s\" is not a valid value for resize attribute"
-#~ msgstr "„%s“ není platná hodnota atributu resize"
-
-#~ msgid ""
-#~ "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-#~ "states"
-#~ msgstr ""
-#~ "Atribut „resize“ by neměl být na prvku <%s> maximalizovaného/svinutého "
-#~ "stavu"
-
-#~ msgid ""
-#~ "Should not have \"resize\" attribute on <%s> element for maximized states"
-#~ msgstr "Atribut „resize“ by neměl být na prvku <%s> maximalizovaného stavu"
-
-#~ msgid "Style has already been specified for state %s resize %s focus %s"
-#~ msgstr "U state %s resize %s focus %s již byl definován styl"
-
-#~ msgid "Style has already been specified for state %s focus %s"
-#~ msgstr "U state %s focus %s již byl definován styl"
-
-#~ msgid ""
-#~ "Can't have a two draw_ops for a <piece> element (theme specified a "
-#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
-#~ "elements)"
-#~ msgstr ""
-#~ "Nelze mít dvě draw_ops u prvku <piece> (motiv definoval atribut draw_ops "
-#~ "i prvek <draw_ops>, nebo definoval dva prvky)"
-
-#~ msgid ""
-#~ "Can't have a two draw_ops for a <button> element (theme specified a "
-#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
-#~ "elements)"
-#~ msgstr ""
-#~ "Nelze mít dvě draw_ops u prvku <button> (motiv definoval atribut draw_ops "
-#~ "i prvek <draw_ops>, nebo definoval dva prvky)"
-
-#~ msgid ""
-#~ "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-#~ "draw_ops attribute and also a <draw_ops> element, or specified two "
-#~ "elements)"
-#~ msgstr ""
-#~ "Nelze mít dvě draw_ops u prvku <menu_icon> (motiv definoval atribut "
-#~ "draw_ops i prvek <draw_ops>, nebo definoval dva prvky)"
-
-#~ msgid "Bad version specification '%s'"
-#~ msgstr "Chybné zadání verze „%s“"
-
-#~ msgid ""
-#~ "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
-#~ "theme-2.xml"
-#~ msgstr ""
-#~ "Atribut „version“ nemůže být použit v metacity-theme-1.xml or metacity-"
-#~ "theme-2.xml"
-
-#~ msgid ""
-#~ "Theme requires version %s but latest supported theme version is %d.%d"
-#~ msgstr ""
-#~ "Motiv vyžaduje verzi %s, ale poslední verze podporovaného motivu je %d.%d"
-
-#~ msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-#~ msgstr "Vnější prvek motivu musí být <metacity_theme>, nikoliv <%s>"
-
-#~ msgid ""
-#~ "Element <%s> is not allowed inside a name/author/date/description element"
-#~ msgstr "Prvek <%s> není dovolen v prvku name/author/date/description"
-
-#~ msgid "Element <%s> is not allowed inside a <constant> element"
-#~ msgstr "Prvek <%s> není dovolen v prvku <constant>"
-
-#~ msgid ""
-#~ "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-#~ msgstr "Prvek <%s> není dovolen v prvku distance/border/aspect_ratio"
-
-#~ msgid "Element <%s> is not allowed inside a draw operation element"
-#~ msgstr "Prvek <%s> není dovolen v prvku operace kreslení"
-
-#~ msgid "Element <%s> is not allowed inside a <%s> element"
-#~ msgstr "Prvek <%s> není dovolen v prvku <%s>"
-
-#~ msgid "No draw_ops provided for frame piece"
-#~ msgstr "U položky rámu neposkytnuty draw_ops"
-
-#~ msgid "No draw_ops provided for button"
-#~ msgstr "U tlačítka neposkytnuty draw_ops"
-
-#~ msgid "No text is allowed inside element <%s>"
-#~ msgstr "V prvku <%s> není dovolen žádný text"
-
-#~ msgid "<%s> specified twice for this theme"
-#~ msgstr "<%s> u tohoto motivu definováno dvakrát"
-
-#~ msgid "Failed to find a valid file for theme %s\n"
-#~ msgstr "Nelze nalézt platný soubor motivu %s\n"
-
-#~ msgid "background texture could not be created from file"
-#~ msgstr "textura pozadí nemohla být ze souboru vytvořena"
-
-#~ msgid "Unknown window information request: %d"
-#~ msgstr "Neznámý informační požadavek okna: %d"
-
-#~ msgid "Missing %s extension required for compositing"
-#~ msgstr "Schází rozšíření %s vyžadované funkcemi kompozitoru"
-
-#~ msgid ""
-#~ "Some other program is already using the key %s with modifiers %x as a "
-#~ "binding\n"
-#~ msgstr ""
-#~ "Klávesu %s s modifikátory %x již jako zkratku používá nějaký jiný "
-#~ "program\n"
-
-#~ msgid "\"%s\" is not a valid accelerator\n"
-#~ msgstr "„%s“ není platný akcelerátor\n"
-
-#~ msgid ""
-#~ "Workarounds for broken applications disabled. Some applications may not "
-#~ "behave properly.\n"
-#~ msgstr ""
-#~ "Bylo zakázáno obcházení chyb aplikací. Některé aplikace se možná nebudou "
-#~ "chovat správně.\n"
-
-#~ msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-#~ msgstr "Nelze zpracovat popis písma „%s“ v klíči GSettings %s\n"
-
-#~ msgid ""
-#~ "\"%s\" found in configuration database is not a valid value for mouse "
-#~ "button modifier\n"
-#~ msgstr ""
-#~ "„%s“ nalezené v databázi nastavení není platnou hodnotou modifikátoru "
-#~ "tlačítka myši\n"
-
-#~ msgid ""
-#~ "\"%s\" found in configuration database is not a valid value for "
-#~ "keybinding \"%s\"\n"
-#~ msgstr ""
-#~ "„%s“ nalezené v databázi nastavení není platnou hodnotou klávesové "
-#~ "zkratky „%s“\n"
-
-#~ msgid ""
-#~ "Could not acquire window manager selection on screen %d display \"%s\"\n"
-#~ msgstr "Nelze získat výběr správce oken na obrazovce %d displeje „%s“\n"
-
-#~ msgid "Could not release screen %d on display \"%s\"\n"
-#~ msgstr "Nelze uvolnit obrazovku %d na displeji „%s“\n"
-
-#~ msgid "Could not create directory '%s': %s\n"
-#~ msgstr "Nelze vytvořit adresář „%s“: %s\n"
-
-#~ msgid "Could not open session file '%s' for writing: %s\n"
-#~ msgstr "Nelze otevřít soubor sezení „%s“ k zápisu: %s\n"
-
-#~ msgid "Error writing session file '%s': %s\n"
-#~ msgstr "Chyba při zápisu souboru sezení „%s“: %s\n"
-
-#~ msgid "Error closing session file '%s': %s\n"
-#~ msgstr "Chyba při zavírání souboru sezení „%s“: %s\n"
-
-#~ msgid "Failed to parse saved session file: %s\n"
-#~ msgstr "Chyba při analyzování uloženého souboru sezení: %s\n"
-
-#~ msgid "<mutter_session> attribute seen but we already have the session ID"
-#~ msgstr "nalezen atribut <mutter_session>, ale ID sezení už k dispozici je"
-
-#~ msgid "Unknown attribute %s on <%s> element"
-#~ msgstr "Neznámý atribut %s prvku <%s>"
-
-#~ msgid "nested <window> tag"
-#~ msgstr "vnořená značka <window>"
-
-#~ msgid "Unknown element %s"
-#~ msgstr "Neznámý prvek %s"
-
-#~ msgid "Failed to open debug log: %s\n"
-#~ msgstr "Nelze otevřít ladicí záznam: %s\n"
-
-#~ msgid "Failed to fdopen() log file %s: %s\n"
-#~ msgstr "Nelze provést fdopen() soubor záznamu %s: %s\n"
-
-#~ msgid "Opened log file %s\n"
-#~ msgstr "Otevřen soubor záznamu %s\n"
-
-#~ msgid "Window manager: "
-#~ msgstr "Správce oken: "
-
-#~ msgid "Bug in window manager: "
-#~ msgstr "Chyba ve správci oken: "
-
-#~ msgid "Window manager warning: "
-#~ msgstr "Varování správce oken: "
-
-#~ msgid "Window manager error: "
-#~ msgstr "Chyba správce oken: "
-
-#~ msgid ""
-#~ "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-#~ "window as specified in the ICCCM.\n"
-#~ msgstr ""
-#~ "Okno %s nastavilo SM_CLIENT_ID samo na sebe, namísto okna "
-#~ "WM_CLIENT_LEADER, jak je definováno v ICCCM.\n"
-
-#~ msgid ""
-#~ "Window %s sets an MWM hint indicating it isn't resizable, but sets min "
-#~ "size %d x %d and max size %d x %d; this doesn't make much sense.\n"
-#~ msgstr ""
-#~ "Okno %s nastavuje pokyn MWM, kterým naznačuje, že se nedá měnit jeho "
-#~ "velikost, ale nastavuje min. velikost %d × %d a max. velikost %d × %d; to "
-#~ "nedává smysl.\n"
-
-#~ msgid "Application set a bogus _NET_WM_PID %lu\n"
-#~ msgstr "Aplikace nastavila neplatný _NET_WM_PID %lu\n"
-
-#~ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-#~ msgstr "Neplatné okno WM_TRANSIENT_FOR 0x%lx specifikováno pro %s.\n"
-
-#~ msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-#~ msgstr "Okno WM_TRANSIENT_FOR 0x%lx by vytvořilo smyčku pro %s.\n"
-
-#~ msgid ""
-#~ "Window 0x%lx has property %s\n"
-#~ "that was expected to have type %s format %d\n"
-#~ "and actually has type %s format %d n_items %d.\n"
-#~ "This is most likely an application bug, not a window manager bug.\n"
-#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-#~ msgstr ""
-#~ "Okno 0x%lx má vlastnost %s\n"
-#~ "Ta má mít typ %s formátu %d\n"
-#~ "a ve skutečnosti má typ %s formátu %d n_items %d.\n"
-#~ "To je pravděpodobně chyba aplikace, nikoliv správce oken.\n"
-#~ "Okno má nadpis=„%s“, třída=„%s“, název=„%s“.\n"
-
-#~ msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-#~ msgstr "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8\n"
-
-#~ msgid ""
-#~ "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the "
-#~ "list\n"
-#~ msgstr ""
-#~ "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8 u položky %d seznamu\n"
-
-#~ msgid "Mi_nimize"
-#~ msgstr "Mi_nimalizovat"
-
-#~ msgid "Ma_ximize"
-#~ msgstr "Ma_ximalizovat"
-
-#~ msgid "Unma_ximize"
-#~ msgstr "Zrušit ma_ximalizaci"
-
-#~ msgid "Roll _Up"
-#~ msgstr "Sv_inout"
-
-#~ msgid "_Unroll"
-#~ msgstr "Rozv_inout"
-
-#~ msgid "_Move"
-#~ msgstr "_Přesunout"
-
-#~ msgid "_Resize"
-#~ msgstr "Z_měnit velikost"
-
-#~ msgid "Move Titlebar On_screen"
-#~ msgstr "Přesunout záhlaví okna na _obrazovku"
-
-#~ msgid "Always on _Top"
-#~ msgstr "_Vždy navrchu"
-
-#~ msgid "_Always on Visible Workspace"
-#~ msgstr "Vžd_y na viditelné ploše"
-
-#~ msgid "_Only on This Workspace"
-#~ msgstr "_Jen na této ploše"
-
-#~ msgid "Move to Workspace _Left"
-#~ msgstr "Přesunout na plochu v_levo"
-
-#~ msgid "Move to Workspace R_ight"
-#~ msgstr "Přesunout na plochu vp_ravo"
-
-#~ msgid "Move to Workspace _Up"
-#~ msgstr "Přesunout na plochu na_hoře"
-
-#~ msgid "Move to Workspace _Down"
-#~ msgstr "Přesunout na plochu _dole"
-
-#~ msgid "_Close"
-#~ msgstr "_Zavřít"
-
-#~ msgid "Workspace %d%n"
-#~ msgstr "Plocha %d%n"
-
-#~ msgid "Workspace 1_0"
-#~ msgstr "Plocha 1_0"
-
-#~ msgid "Workspace %s%d"
-#~ msgstr "Plocha %s%d"
-
-#~ msgid "Move to Another _Workspace"
-#~ msgstr "Přes_unout na jinou plochu"
