@@ -1231,7 +1231,7 @@ const MessageTray = new Lang.Class({
         if (this._notificationState == State.HIDDEN) {
             let nextNotification = this._notificationQueue[0] || null;
             if (hasNotifications && nextNotification) {
-                let limited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
+                let limited = this._busy || Main.layoutManager.primaryMonitor.inFullscreen;
                 let showNextNotification = (!limited || nextNotification.forFeedback || nextNotification.urgency == Urgency.CRITICAL);
                 if (showNextNotification)
                     this._showNotification();
