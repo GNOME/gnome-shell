@@ -1368,7 +1368,7 @@ repick_drop_surface (MetaWaylandCompositor *compositor,
   if (focus &&
       focus->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     {
-      XMapWindow (xdisplay, dnd->dnd_window);
+      XMapRaised (xdisplay, dnd->dnd_window);
       XMoveResizeWindow (xdisplay, dnd->dnd_window,
                          focus->window->rect.x,
                          focus->window->rect.y,
