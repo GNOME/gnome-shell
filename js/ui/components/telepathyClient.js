@@ -8,8 +8,15 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const St = imports.gi.St;
-const Tpl = imports.gi.TelepathyLogger;
-const Tp = imports.gi.TelepathyGLib;
+
+var Tpl = null;
+var Tp = null;
+try {
+    Tpl = imports.gi.TelepathyLogger;
+    Tp = imports.gi.TelepathyGLib;
+} catch(e) {
+    log('Telepathy is not available, chat integration will be disabled.');
+}
 
 const History = imports.misc.history;
 const Main = imports.ui.main;
@@ -18,6 +25,8 @@ const MessageTray = imports.ui.messageTray;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
+
+const HAVE_TP = (Tp != null && Tpl != null);
 
 // See Notification.appendMessage
 const SCROLLBACK_IMMEDIATE_TIME = 3 * 60; // 3 minutes
@@ -70,7 +79,41 @@ function makeMessageFromTplEvent(event) {
     };
 }
 
-const TelepathyClient = new Lang.Class({
+const TelepathyComponent = new Lang.Class({
+    Name: 'TelepathyComponent',
+
+    _init: function() {
+        this._client = null;
+
+        if (!HAVE_TP)
+            return; // Telepathy isn't available
+
+        this._client = new TelepathyClient();
+    },
+
+    enable: function() {
+        if (!this._client)
+            return;
+
+        try {
+            this._client.register();
+        } catch (e) {
+            throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
+        }
+
+        if (!this._client.account_manager.is_prepared(Tp.AccountManager.get_feature_quark_core()))
+            this._client.account_manager.prepare_async(null, null);
+    },
+
+    disable: function() {
+        if (!this._client)
+            return;
+
+        this._client.unregister();
+    }
+});
+
+const TelepathyClient = HAVE_TP ? new Lang.Class({
     Name: 'TelepathyClient',
     Extends: Tp.BaseClient,
 
@@ -115,21 +158,6 @@ const TelepathyClient = new Lang.Class({
         // needed
         this.set_delegated_channels_callback(
             Lang.bind(this, this._delegatedChannelsCb));
-    },
-
-    enable: function() {
-        try {
-            this.register();
-        } catch (e) {
-            throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
-        }
-
-        if (!this._accountManager.is_prepared(Tp.AccountManager.get_feature_quark_core()))
-            this._accountManager.prepare_async(null, null);
-    },
-
-    disable: function() {
-        this.unregister();
     },
 
     vfunc_observe_channels: function(account, conn, channels,
@@ -250,7 +278,7 @@ const TelepathyClient = new Lang.Class({
         // Nothing to do as we don't make a distinction between observed and
         // handled channels.
     },
-});
+}) : null;
 
 const ChatSource = new Lang.Class({
     Name: 'ChatSource',
@@ -968,4 +996,4 @@ const ChatNotificationBanner = new Lang.Class({
     }
 });
 
-const Component = TelepathyClient;
+const Component = TelepathyComponent;
