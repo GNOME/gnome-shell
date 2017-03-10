@@ -537,21 +537,31 @@ meta_activate_session (void)
 void
 meta_backend_native_pause (MetaBackendNative *native)
 {
+  MetaBackend *backend = META_BACKEND (native);
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (monitor_manager);
+
   clutter_evdev_release_devices ();
   clutter_egl_freeze_master_clock ();
+
+  meta_monitor_manager_kms_pause (monitor_manager_kms);
 }
 
 void meta_backend_native_resume (MetaBackendNative *native)
 {
   MetaBackend *backend = META_BACKEND (native);
-  MetaRenderer *renderer;
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (monitor_manager);
   MetaCursorRenderer *cursor_renderer;
   MetaCursorRendererNative *cursor_renderer_native;
   ClutterActor *stage;
   MetaIdleMonitor *idle_monitor;
 
-  renderer = meta_backend_get_renderer (backend);
-  meta_renderer_native_queue_modes_reset (META_RENDERER_NATIVE (renderer));
+  meta_monitor_manager_kms_resume (monitor_manager_kms);
 
   clutter_evdev_reclaim_devices ();
   clutter_egl_thaw_master_clock ();

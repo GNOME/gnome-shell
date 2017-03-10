@@ -1783,6 +1783,21 @@ meta_monitor_manager_kms_disconnect_uevent_handler (MetaMonitorManagerKms *manag
   manager_kms->uevent_handler_id = 0;
 }
 
+void
+meta_monitor_manager_kms_pause (MetaMonitorManagerKms *manager_kms)
+{
+  meta_monitor_manager_kms_disconnect_uevent_handler (manager_kms);
+}
+
+void
+meta_monitor_manager_kms_resume (MetaMonitorManagerKms *manager_kms)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+
+  meta_monitor_manager_kms_connect_uevent_handler (manager_kms);
+  handle_hotplug_event (manager);
+}
+
 static void
 meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
 {
