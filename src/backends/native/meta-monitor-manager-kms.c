@@ -112,6 +112,7 @@ struct _MetaMonitorManagerKms
   unsigned int       n_connectors;
 
   GUdevClient *udev;
+  guint uevent_handler_id;
 
   GSettings *desktop_settings;
 
@@ -1765,6 +1766,23 @@ static GSourceFuncs kms_event_funcs = {
 };
 
 static void
+meta_monitor_manager_kms_connect_uevent_handler (MetaMonitorManagerKms *manager_kms)
+{
+  manager_kms->uevent_handler_id = g_signal_connect (manager_kms->udev,
+                                                     "uevent",
+                                                     G_CALLBACK (on_uevent),
+                                                     manager_kms);
+}
+
+static void
+meta_monitor_manager_kms_disconnect_uevent_handler (MetaMonitorManagerKms *manager_kms)
+{
+  g_signal_handler_disconnect (manager_kms->udev,
+                               manager_kms->uevent_handler_id);
+  manager_kms->uevent_handler_id = 0;
+}
+
+static void
 meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
 {
   MetaBackend *backend = meta_get_backend ();
@@ -1778,8 +1796,7 @@ meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
 
   const char *subsystems[2] = { "drm", NULL };
   manager_kms->udev = g_udev_client_new (subsystems);
-  g_signal_connect (manager_kms->udev, "uevent",
-                    G_CALLBACK (on_uevent), manager_kms);
+  meta_monitor_manager_kms_connect_uevent_handler (manager_kms);
 
   source = g_source_new (&kms_event_funcs, sizeof (MetaKmsSource));
   manager_kms->source = (MetaKmsSource *) source;
