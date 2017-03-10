@@ -139,7 +139,7 @@ shell_dbus_init (gboolean replace)
 
   request_name_flags = G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT;
   if (replace)
-    request_name_flags |= DBUS_NAME_FLAG_REPLACE_EXISTING;
+    request_name_flags |= G_BUS_NAME_OWNER_FLAGS_REPLACE;
 
   shell_dbus_acquire_name (bus,
                            request_name_flags,
@@ -169,7 +169,7 @@ shell_dbus_init (gboolean replace)
                             NULL);
   /* ...and the on-screen keyboard service */
   shell_dbus_acquire_name (bus,
-                           DBUS_NAME_FLAG_REPLACE_EXISTING,
+                           G_BUS_NAME_OWNER_FLAGS_REPLACE,
                            &request_name_result,
                            "org.gnome.Caribou.Keyboard", FALSE);
   g_object_unref (bus);
