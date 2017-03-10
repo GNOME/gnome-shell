@@ -332,7 +332,7 @@ read_edid_blob (MetaMonitorManagerKms *manager_kms,
   if (!edid_blob)
     {
       g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errno),
-                   "Failed to get EDID property blob: %s", strerror (errno));
+                   "%s", strerror (errno));
       return NULL;
     }
 
@@ -907,7 +907,8 @@ init_output (MetaOutput         *output,
       edid = read_output_edid (manager_kms, output, &error);
       if (!edid)
         {
-          g_warning ("Failed to read EDID: %s", error->message);
+          g_warning ("Failed to read EDID blob from %s: %s",
+                     output->name, error->message);
           g_error_free (error);
         }
     }
