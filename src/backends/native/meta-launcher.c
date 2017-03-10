@@ -24,7 +24,6 @@
 #include <gio/gunixfdlist.h>
 
 #include <clutter/clutter.h>
-#include <clutter/egl/clutter-egl.h>
 #include <clutter/evdev/clutter-evdev.h>
 
 #include <sys/types.h>
@@ -43,6 +42,7 @@
 #include "meta-dbus-login1.h"
 
 #include "backends/meta-backend-private.h"
+#include "backends/native/meta-backend-native.h"
 #include "meta-cursor-renderer-native.h"
 #include "meta-idle-monitor-native.h"
 #include "meta-renderer-native.h"
@@ -108,42 +108,6 @@ get_seat_proxy (GCancellable *cancellable,
     g_prefix_error(error, "Could not get seat proxy: ");
 
   return seat;
-}
-
-static void
-session_unpause (void)
-{
-  MetaBackend *backend;
-  MetaRenderer *renderer;
-
-  backend = meta_get_backend ();
-  renderer = meta_backend_get_renderer (backend);
-  meta_renderer_native_queue_modes_reset (META_RENDERER_NATIVE (renderer));
-
-  clutter_evdev_reclaim_devices ();
-  clutter_egl_thaw_master_clock ();
-
-  {
-    MetaBackend *backend = meta_get_backend ();
-    MetaCursorRendererNative *cursor_renderer_native =
-      META_CURSOR_RENDERER_NATIVE (meta_backend_get_cursor_renderer (backend));
-    ClutterActor *stage = meta_backend_get_stage (backend);
-
-    /* When we mode-switch back, we need to immediately queue a redraw
-     * in case nothing else queued one for us, and force the cursor to
-     * update. */
-
-    clutter_actor_queue_redraw (stage);
-    meta_cursor_renderer_native_force_update (cursor_renderer_native);
-    meta_idle_monitor_native_reset_idletime (meta_idle_monitor_get_core ());
-  }
-}
-
-static void
-session_pause (void)
-{
-  clutter_evdev_release_devices ();
-  clutter_egl_freeze_master_clock ();
 }
 
 static gboolean
@@ -281,6 +245,8 @@ out:
 static void
 sync_active (MetaLauncher *self)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaBackendNative *backend_native = META_BACKEND_NATIVE (backend);
   gboolean active = login1_session_get_active (LOGIN1_SESSION (self->session_proxy));
 
   if (active == self->session_active)
@@ -289,9 +255,9 @@ sync_active (MetaLauncher *self)
   self->session_active = active;
 
   if (active)
-    session_unpause ();
+    meta_backend_native_resume (backend_native);
   else
-    session_pause ();
+    meta_backend_native_pause (backend_native);
 }
 
 static void

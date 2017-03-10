@@ -34,4 +34,8 @@ G_DECLARE_FINAL_TYPE (MetaBackendNative, meta_backend_native,
 
 gboolean meta_activate_vt (int vt, GError **error);
 
+void meta_backend_native_pause (MetaBackendNative *backend_native);
+
+void meta_backend_native_resume (MetaBackendNative *backend_native);
+
 #endif /* META_BACKEND_NATIVE_H */
