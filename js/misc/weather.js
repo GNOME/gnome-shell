@@ -24,7 +24,7 @@ const WeatherClient = new Lang.Class({
 
         this._gclueService = null;
         this._gclueStarted = false;
-        this._gclueFailed = false;
+        this._gclueStarting = false;
         this._gclueLocationChangedId = 0;
 
         this._world = GWeather.Location.get_world();
@@ -125,21 +125,21 @@ const WeatherClient = new Lang.Class({
     },
 
     _startGClueService: function() {
-        if (this._gclueStarted)
+        if (this._gclueStarting)
             return;
 
-        this._gclueStarted = true;
+        this._gclueStarting = true;
+
         Geoclue.Simple.new('org.gnome.Shell', Geoclue.AccuracyLevel.CITY, null,
             (o, res) => {
                 try {
                     this._gclueService = Geoclue.Simple.new_finish(res);
                 } catch(e) {
                     log('Failed to connect to Geoclue2 service: ' + e.message);
-                    this._gclueFailed = true;
                     this._setLocation(this._mostRecentLocation);
                     return;
                 }
-
+                this._gclueStarted = true;
                 this._gclueService.get_client().distance_threshold = 100;
                 this._updateLocationMonitoring();
             });
@@ -163,12 +163,10 @@ const WeatherClient = new Lang.Class({
 
         this._updateLocationMonitoring();
 
-        if (this._useAutoLocation) {
-            if (!this._gclueStarted)
-                this._startGClueService();
-        } else {
+        if (this._useAutoLocation)
+            this._startGClueService();
+        else
             this._setLocation(this._mostRecentLocation);
-        }
     },
 
     _onLocationsChanged: function(settings, key) {
@@ -183,7 +181,7 @@ const WeatherClient = new Lang.Class({
 
         this._mostRecentLocation = mostRecentLocation;
 
-        if (!this._useAutoLocation || this._gclueFailed)
+        if (!this._useAutoLocation || !this._gclueStarted)
             this._setLocation(this._mostRecentLocation);
     }
 });
