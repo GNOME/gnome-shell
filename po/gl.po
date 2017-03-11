@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-26 02:20+0100\n"
-"PO-Revision-Date: 2017-02-26 02:24+0100\n"
+"POT-Creation-Date: 2017-03-11 01:00+0100\n"
+"PO-Revision-Date: 2017-03-11 01:02+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -100,36 +100,86 @@ msgstr "Erro de autenticación"
 msgid "(or swipe finger)"
 msgstr "(ou pase o dedo)"
 
-#: ../js/misc/util.js:119
+#: ../js/misc/util.js:122
 msgid "Command not found"
 msgstr "Orde non atopada"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:152
+#: ../js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "Non foi posíbel analizar a orde:"
 
-#: ../js/misc/util.js:160
+#: ../js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Produciuse un fallo na execución de «%s»:"
 
+#: ../js/misc/util.js:180
+msgid "Just now"
+msgstr "Xusto agora"
+
+#: ../js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "hai %d minuto"
+msgstr[1] "hai %d minutos"
+
+#: ../js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "hai %d hora"
+msgstr[1] "hai %d horas"
+
+#: ../js/misc/util.js:188
+msgid "Yesterday"
+msgstr "Onte"
+
+#: ../js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "hai %d día"
+msgstr[1] "hai %d días"
+
+#: ../js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "hai %d semana"
+msgstr[1] "hai %d semanas"
+
+#: ../js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "hai %d mes"
+msgstr[1] "hai %d meses"
+
+#: ../js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "hai %d ano"
+msgstr[1] "hai %d anos"
+
 #. Translators: Time in 24h format
-#: ../js/misc/util.js:191
+#: ../js/misc/util.js:229
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: ../js/misc/util.js:197
+#: ../js/misc/util.js:235
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Onte, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: ../js/misc/util.js:203
+#: ../js/misc/util.js:241
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A ás %H:%M"
@@ -137,7 +187,7 @@ msgstr "%A ás %H:%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: ../js/misc/util.js:209
+#: ../js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d de %B ás %H:%M"
@@ -145,26 +195,26 @@ msgstr "%d de %B ás %H:%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: ../js/misc/util.js:215
+#: ../js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d de %B de %Y ás %H:%M"
 
 #. Translators: Time in 12h format
-#: ../js/misc/util.js:220
+#: ../js/misc/util.js:258
 msgid "%l∶%M %p"
 msgstr "%l:%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: ../js/misc/util.js:226
+#: ../js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "Onte, %H:%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: ../js/misc/util.js:232
+#: ../js/misc/util.js:270
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -172,7 +222,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: ../js/misc/util.js:238
+#: ../js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d de %B, %l∶%M %p"
@@ -180,7 +230,7 @@ msgstr "%d de %B, %l∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: ../js/misc/util.js:244
+#: ../js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d de %B de %Y, %l∶%M %p"
@@ -356,36 +406,32 @@ msgstr "Semana %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:721
+#: ../js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo o día"
 
-#: ../js/ui/calendar.js:836
-msgid "Events"
-msgstr "Eventos"
-
-#: ../js/ui/calendar.js:845
+#: ../js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
-#: ../js/ui/calendar.js:849
+#: ../js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Notificacións"
-
-#: ../js/ui/calendar.js:1082
+#: ../js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Non hai notificacións"
 
-#: ../js/ui/calendar.js:1085
+#: ../js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Non hai eventos"
+
+#: ../js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Limpar todo"
 
 #: ../js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -521,7 +567,7 @@ msgstr "Desculpe, iso non funcionou. Ténteo de novo."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:765
+#: ../js/ui/components/telepathyClient.js:771
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "Agora %s chámase %s"
@@ -543,7 +589,7 @@ msgstr "Taboleiro"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:73
+#: ../js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%e de %B de %Y"
 
@@ -551,17 +597,66 @@ msgstr "%e de %B de %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: ../js/ui/dateMenu.js:80
+#: ../js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A, %e de %B de %Y"
 
-#: ../js/ui/dateMenu.js:160
+#: ../js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Engadir reloxos do mundo…"
 
-#: ../js/ui/dateMenu.js:161
+#: ../js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Reloxos do mundo"
+
+#: ../js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Tempo"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: ../js/ui/dateMenu.js:281
+#, javascript-format
+msgid "%s all day."
+msgstr "%s todo o día"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: ../js/ui/dateMenu.js:287
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, entón %$s máis tarde."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: ../js/ui/dateMenu.js:293
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, entón %s, seguido de %s máis tarde."
+
+#: ../js/ui/dateMenu.js:300
+msgid "Loading…"
+msgstr "Cargando…"
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: ../js/ui/dateMenu.js:306
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Sensación de %s."
+
+#: ../js/ui/dateMenu.js:309
+msgid "Go online for weather information"
+msgstr "Conectarse para var a información do tempo"
+
+#: ../js/ui/dateMenu.js:311
+msgid "Weather information is currently unavailable"
+msgstr "A información do tempo non está dispoñíbel actualmente"
 
 #: ../js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -781,25 +876,17 @@ msgstr "Ver fonte"
 msgid "Web Page"
 msgstr "Páxina web"
 
-#: ../js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Limpar sección"
-
-#: ../js/ui/messageTray.js:1486
+#: ../js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Información do sistema"
 
-#: ../js/ui/mpris.js:194
+#: ../js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Artista descoñecido"
 
-#: ../js/ui/mpris.js:195
+#: ../js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Título descoñecido"
-
-#: ../js/ui/mpris.js:217
-msgid "Media"
-msgstr "Multimedia"
 
 #: ../js/ui/overview.js:84
 msgid "Undo"
@@ -1533,21 +1620,21 @@ msgstr[1] "%u entradas"
 msgid "System Sounds"
 msgstr "Sons do sistema"
 
-#: ../src/main.c:381
+#: ../src/main.c:372
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/main.c:387
+#: ../src/main.c:378
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para a pantalla de inicio"
 
-#: ../src/main.c:393
+#: ../src/main.c:384
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Usar un modo específico, por exemplo, «gdm» para a pantalla de inicio de "
 "sesión"
 
-#: ../src/main.c:399
+#: ../src/main.c:390
 msgid "List possible modes"
 msgstr "Listar os modos posíbeis"
 
@@ -1572,6 +1659,18 @@ msgstr "O contrasinal non pode estar baleiro"
 #: ../src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O usuario rexeitou o diálogo de autenticación"
+
+#~ msgid "Events"
+#~ msgstr "Eventos"
+
+#~ msgid "Notifications"
+#~ msgstr "Notificacións"
+
+#~ msgid "Clear section"
+#~ msgstr "Limpar sección"
+
+#~ msgid "Media"
+#~ msgstr "Multimedia"
 
 #~ msgid "System"
 #~ msgstr "Sistema"
@@ -2483,9 +2582,6 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 #~ msgid "tray"
 #~ msgstr "área de notificación"
 
-#~ msgid "Clear"
-#~ msgstr "Limpar"
-
 #~ msgid "More..."
 #~ msgstr "Máis…"
 
@@ -2701,26 +2797,6 @@ msgstr "O usuario rexeitou o diálogo de autenticación"
 
 #~ msgid "Less than a minute ago"
 #~ msgstr "Hai menos dun minuto"
-
-#~ msgid "%d minute ago"
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "hai %d minuto"
-#~ msgstr[1] "hai %d minutos"
-
-#~ msgid "%d hour ago"
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "hai %d hora"
-#~ msgstr[1] "hai %d horas"
-
-#~ msgid "%d day ago"
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "hai %d día"
-#~ msgstr[1] "hai %d días"
-
-#~ msgid "%d week ago"
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "hai %d semana"
-#~ msgstr[1] "hai %d semanas"
 
 #~ msgid "Shut Down"
 #~ msgstr "Apagar"
