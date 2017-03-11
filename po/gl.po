@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-11 00:17+0000\n"
-"PO-Revision-Date: 2017-03-11 02:58+0100\n"
+"POT-Creation-Date: 2017-03-11 01:59+0000\n"
+"PO-Revision-Date: 2017-03-11 13:17+0100\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -153,14 +153,10 @@ msgid "History for the looking glass dialog"
 msgstr "Historial do diálogo de «looking glass»"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Mostrar sempre o elemento de menú «Saír da sesión» no menú de usuario."
 
 #: data/org.gnome.shell.gschema.xml.in:68
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -176,11 +172,6 @@ msgstr ""
 "cifrados ou remotos"
 
 #: data/org.gnome.shell.gschema.xml.in:76
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -220,14 +211,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Combinación de teclas para abrir o menú de aplicativo."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Combinación de teclas para abrir a vista «Mostrar aplicativos»"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -291,10 +278,6 @@ msgid "The application icon mode."
 msgstr "O modo da icona do aplicativo."
 
 #: data/org.gnome.shell.gschema.xml.in:177
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
@@ -343,7 +326,6 @@ msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr "Atrasar os cambios de foco no modo rato até que o punteiro se pare"
 
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:3
-#| msgid "Network Settings"
 msgid "Network Login"
 msgstr "Inicio de sesión de rede"
 
@@ -1710,11 +1692,11 @@ msgstr "Produciuse un fallo na activación da conexión de rede"
 
 #: js/ui/status/nightLight.js:68
 msgid "Night Light Disabled"
-msgstr "Luz de noite desactivado"
+msgstr "Luz nocturna desactivada"
 
 #: js/ui/status/nightLight.js:69
 msgid "Night Light On"
-msgstr "Luz de noite activado"
+msgstr "Luz nocturna activada"
 
 #: js/ui/status/nightLight.js:70
 msgid "Resume"
