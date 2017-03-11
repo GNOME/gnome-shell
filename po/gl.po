@@ -629,7 +629,7 @@ msgstr "%s todo o día"
 #: ../js/ui/dateMenu.js:287
 #, javascript-format
 msgid "%s, then %s later."
-msgstr "%s, entón %$s máis tarde."
+msgstr "%s, entón %s máis tarde."
 
 #. Translators: %s is a weather condition like "Clear sky"; see
 #. libgweather for the possible condition strings. If at all
