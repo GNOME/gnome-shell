@@ -803,7 +803,7 @@ const Source = new Lang.Class({
         notification.acknowledged = false;
         this.pushNotification(notification);
 
-        if (this.policy.showBanners) {
+        if (this.policy.showBanners || notification.urgency == Urgency.CRITICAL) {
             this.emit('notify', notification);
         } else {
             notification.playSound();
