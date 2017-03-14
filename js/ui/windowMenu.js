@@ -123,6 +123,22 @@ var WindowMenu = new Lang.Class({
                         window.change_workspace(workspace.get_neighbor(dir));
                     });
                 }
+
+                let nWorkspaces = global.screen.n_workspaces;
+                if (nWorkspaces > 1 && !Meta.prefs_get_dynamic_workspaces()) {
+                    item = new PopupMenu.PopupSubMenuMenuItem(_("Move to another workspace"));
+                    this.addMenuItem(item);
+
+                    let currentIndex = global.screen.get_active_workspace_index();
+                    for (let i = 0; i < nWorkspaces; i++) {
+                        let index = i;
+                        let name = Meta.prefs_get_workspace_name(i);
+                        let subitem = item.menu.addAction(name, () => {
+                            window.change_workspace_by_index(index, false);
+                        });
+                        subitem.setSensitive(currentIndex != i);
+                    }
+                }
             }
         }
 
