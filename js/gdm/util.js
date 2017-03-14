@@ -133,7 +133,7 @@ const ShellUserVerifier = new Lang.Class({
                                Lang.bind(this, this._updateDefaultService));
         this._updateDefaultService();
 
-        this._fprintManager = new Fprint.FprintManager();
+        this._fprintManager = Fprint.FprintManager();
         this._smartcardManager = SmartcardManager.getSmartcardManager();
 
         // We check for smartcards right away, since an inserted smartcard
@@ -293,7 +293,8 @@ const ShellUserVerifier = new Lang.Class({
     _checkForFingerprintReader: function() {
         this._haveFingerprintReader = false;
 
-        if (!this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY)) {
+        if (!this._settings.get_boolean(FINGERPRINT_AUTHENTICATION_KEY) ||
+            this._fprintManager == null) {
             this._updateDefaultService();
             return;
         }

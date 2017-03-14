@@ -23,6 +23,12 @@ function FprintManager() {
                                    g_object_path: '/net/reactivated/Fprint/Manager',
                                    g_flags: (Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
 
-    self.init(null);
+    try {
+        self.init(null);
+    } catch(e) {
+        log('Failed to connect to Fprint service: ' + e.message);
+        return null;
+    }
+
     return self;
 }
