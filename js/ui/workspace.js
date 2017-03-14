@@ -471,6 +471,10 @@ const WindowOverlay = new Lang.Class({
         this.title = title;
         this.closeButton = button;
 
+        // Don't block drop targets
+        Shell.util_set_hidden_from_pick(this.title, true);
+        Shell.util_set_hidden_from_pick(this.border, true);
+
         parentActor.add_actor(this.title);
         parentActor.add_actor(this.border);
         parentActor.add_actor(this.closeButton);
