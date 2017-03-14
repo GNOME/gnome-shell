@@ -1,3 +1,24 @@
+3.23.92
+=======
+* Properly handle EGLOutput acquire errors [Jonas, Miguel; #779112]
+* Fix crash when a window closes during Alt+Tab [Rui; #779483]
+* Implement DnD handling code in wayland [Hyungwon; #765003]
+* Fix fallout from pixel conversion optimization in 3.23.91 [Carlos; #779234]
+* Fix mouse input stopping to work in applications [Carlos; #763246]
+* Fix DnD between QT5 and GTK3 applications on wayland [Carlos; #779757]
+* Make EDID reading less fragile [Jonas; #779837]
+* Add support for tablet grouping [Carlos; #779986]
+* Misc. bug fixes and cleanups [Rui, Jonas; #779436, #779001, #779745]
+
+Contributors:
+  Jonas Ådahl, Miguel A. Vico, Olivier Fourdan, Carlos Garnacho,
+  Hyungwon Hwang, Rui Matos
+
+Translations:
+  Chao-Hsiung Liao [zh_TW], Sveinn í Felli [is], Ask Hjorth Larsen [da],
+  Changwoo Ryu [ko], Aurimas Černius [lt], GNOME Translation Robot [gd],
+  Marek Černocký [cs], Fran Dieguez [gl], Dušan Kazik [sk]
+
 3.23.91
 =======
 * Give libinput read-only access to /sys [Carlos; #778472]
