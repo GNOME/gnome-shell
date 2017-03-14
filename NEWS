@@ -1,3 +1,28 @@
+3.23.92
+=======
+* Implement DND to overview on wayland [Hyungwon; #765003]
+* Make telepathy optional at runtime [Florian; #771721, #779878]
+* Don't show forecasts for NYC when geoclue gets stuck [Sebastian; #779898]
+* Add bottom edge drag gesture to bring up the OSK [Jan-Michael; #757712]
+* Allow switching between pads in the same group [Carlos; #779986]
+* Ignore showBanners policy for critical notifications [Florian; #779974]
+* Misc. bug fixes [Florian; #779435, #779819, #779820]
+
+Contributors:
+  Jan-Michael Brummer, Allan Day, Carlos Garnacho, Hyungwon Hwang,
+  Sebastian Keller, Florian Müllner
+
+Translations:
+  Enrico Nicoletto [pt_BR], Jiri Grönroos [fi], Chao-Hsiung Liao [zh_TW],
+  Piotr Drąg [pl], Piotr Drąg [he], Balázs Meskó [hu], Kris Thomsen [da],
+  Yuras Shumovich [be], Sveinn í Felli [is], Inaki Larranaga Murgoitio [eu],
+  Changwoo Ryu [ko], Jordi Mas [ca], Aurimas Černius [lt],
+  Мирослав Николић [sr, sr@latin], Christian Kirbach [de], Anders Jonsson [sv],
+  Fabio Tomat [fur], GNOME Translation Robot [gd], Dušan Kazik [sk],
+  Kukuh Syafaat [id], Marek Černocký [cs], Stas Solovey [ru],
+  Milo Casagrande [it], Fran Dieguez [gl], Daniel Boles [gl], A S Alam [pa],
+  Daniel Mustieles [es]
+
 3.23.91
 =======
 * Use the original timestamps for restored notifications [Florian; #766410]
