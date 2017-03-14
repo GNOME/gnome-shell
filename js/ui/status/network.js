@@ -769,6 +769,14 @@ const NMWirelessDialog = new Lang.Class({
         this._scanTimeoutId = Mainloop.timeout_add_seconds(15, Lang.bind(this, this._onScanTimeout));
         GLib.Source.set_name_by_id(this._scanTimeoutId, '[gnome-shell] this._onScanTimeout');
         this._onScanTimeout();
+
+        let id = Main.sessionMode.connect('updated', () => {
+            if (Main.sessionMode.allowSettings)
+                return;
+
+            Main.sessionMode.disconnect(id);
+            this.close();
+        });
     },
 
     destroy: function() {
