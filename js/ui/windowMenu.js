@@ -97,8 +97,6 @@ const WindowMenu = new Lang.Class({
             if (window.is_always_on_all_workspaces())
                 item.setSensitive(false);
 
-            let nWorkspaces = global.screen.n_workspaces;
-
             if (!isSticky) {
                 let workspace = window.get_workspace();
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.LEFT)) {
