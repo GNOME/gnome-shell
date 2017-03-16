@@ -6,6 +6,7 @@ const Signals = imports.signals;
 
 const Main = imports.ui.main;
 
+// In alphabetical order
 const RENAMED_DESKTOP_IDS = {
     'baobab.desktop': 'org.gnome.baobab.desktop',
     'cheese.desktop': 'org.gnome.Cheese.desktop',
@@ -27,6 +28,7 @@ const RENAMED_DESKTOP_IDS = {
     'gnome-documents.desktop': 'org.gnome.Documents.desktop',
     'gnome-font-viewer.desktop': 'org.gnome.font-viewer.desktop',
     'gnome-nibbles.desktop': 'org.gnome.Nibbles.desktop',
+    'gnome-music.desktop': 'org.gnome.Music.desktop',
     'gnome-photos.desktop': 'org.gnome.Photos.desktop',
     'gnome-screenshot.desktop': 'org.gnome.Screenshot.desktop',
     'gnome-software.desktop': 'org.gnome.Software.desktop',
