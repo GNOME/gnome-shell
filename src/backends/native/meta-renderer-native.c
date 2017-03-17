@@ -1686,10 +1686,10 @@ calculate_view_transform (MetaMonitorManager *monitor_manager,
 
   if (meta_monitor_manager_is_transform_handled (monitor_manager,
                                                  main_output->crtc,
-                                                 main_output->crtc->transform))
+                                                 logical_monitor->transform))
     return META_MONITOR_TRANSFORM_NORMAL;
   else
-    return main_output->crtc->transform;
+    return logical_monitor->transform;
 }
 
 static MetaRendererView *

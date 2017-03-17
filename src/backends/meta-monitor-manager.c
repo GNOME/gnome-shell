@@ -2734,17 +2734,13 @@ meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
                                          MetaLogicalMonitor *logical_monitor,
                                          gfloat              matrix[6])
 {
-  MetaMonitor *main_monitor;
-  MetaOutput *main_output;
   MetaMonitorTransform transform;
   gfloat viewport[9];
 
   if (!calculate_viewport_matrix (manager, logical_monitor, viewport))
     return FALSE;
 
-  main_monitor = meta_logical_monitor_get_monitors (logical_monitor)->data;
-  main_output = meta_monitor_get_main_output (main_monitor);
-  transform = main_output->crtc->transform;
+  transform = logical_monitor->transform;
   multiply_matrix (viewport, transform_matrices[transform],
                    matrix);
   return TRUE;

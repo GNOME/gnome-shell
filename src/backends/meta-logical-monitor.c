@@ -92,6 +92,16 @@ meta_logical_monitor_new (MetaMonitorManager       *monitor_manager,
   return logical_monitor;
 }
 
+static MetaMonitorTransform
+derive_monitor_transform (MetaMonitor *monitor)
+{
+  MetaOutput *main_output;
+
+  main_output = meta_monitor_get_main_output (monitor);
+
+  return main_output->crtc->transform;
+}
+
 MetaLogicalMonitor *
 meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
                                   MetaMonitor        *monitor,
@@ -102,6 +112,7 @@ meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
   MetaOutput *main_output;
   MetaMonitorMode *monitor_mode;
   int scale;
+  MetaMonitorTransform transform;
 
   logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
 
@@ -110,10 +121,13 @@ meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
                                                              monitor,
                                                              monitor_mode);
 
+  transform = derive_monitor_transform (monitor);
+
   main_output = meta_monitor_get_main_output (monitor);
   logical_monitor->number = monitor_number;
   logical_monitor->winsys_id = main_output->winsys_id;
   logical_monitor->scale = scale;
+  logical_monitor->transform = transform;
   logical_monitor->in_fullscreen = -1;
   logical_monitor->rect = *layout;
 
