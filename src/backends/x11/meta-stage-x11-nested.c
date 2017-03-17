@@ -37,7 +37,6 @@ struct _MetaStageX11Nested
   ClutterStageX11 parent;
 
   CoglPipeline *pipeline;
-  GList *views;
 };
 
 static void
