@@ -117,6 +117,7 @@ assign_monitor_crtc (MetaMonitor         *monitor,
   MonitorAssignmentData *data = user_data;
   MetaOutput *output;
   MetaCrtc *crtc;
+  int crtc_x, crtc_y;
   MetaCrtcInfo *crtc_info;
   MetaOutputInfo *output_info;
   MetaMonitorConfig *first_monitor_config;
@@ -136,12 +137,15 @@ assign_monitor_crtc (MetaMonitor         *monitor,
       return FALSE;
     }
 
+  meta_monitor_calculate_crtc_pos (monitor, mode, output,
+                                   &crtc_x, &crtc_y);
+
   crtc_info = g_slice_new0 (MetaCrtcInfo);
   *crtc_info = (MetaCrtcInfo) {
     .crtc = crtc,
     .mode = monitor_crtc_mode->crtc_mode,
-    .x = monitor_crtc_mode->x,
-    .y = monitor_crtc_mode->y,
+    .x = crtc_x,
+    .y = crtc_y,
     .transform = META_MONITOR_TRANSFORM_NORMAL,
     .outputs = g_ptr_array_new ()
   };

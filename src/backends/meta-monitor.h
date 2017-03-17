@@ -43,8 +43,6 @@ typedef struct _MetaMonitorModeSpec
 
 typedef struct _MetaMonitorCrtcMode
 {
-  int x;
-  int y;
   MetaOutput *output;
   MetaCrtcMode *crtc_mode;
 } MetaMonitorCrtcMode;
@@ -66,6 +64,11 @@ struct _MetaMonitorClass
   void (* derive_dimensions) (MetaMonitor   *monitor,
                               int           *width,
                               int           *height);
+  void (* calculate_crtc_pos) (MetaMonitor         *monitor,
+                               MetaMonitorMode     *monitor_mode,
+                               MetaOutput          *output,
+                               int                 *out_x,
+                               int                 *out_y);
 };
 
 #define META_TYPE_MONITOR_NORMAL (meta_monitor_normal_get_type ())
@@ -142,6 +145,12 @@ void meta_monitor_set_current_mode (MetaMonitor     *monitor,
                                     MetaMonitorMode *mode);
 
 GList * meta_monitor_get_modes (MetaMonitor *monitor);
+
+void meta_monitor_calculate_crtc_pos (MetaMonitor         *monitor,
+                                      MetaMonitorMode     *monitor_mode,
+                                      MetaOutput          *output,
+                                      int                 *out_x,
+                                      int                 *out_y);
 
 MetaMonitorModeSpec * meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode);
 

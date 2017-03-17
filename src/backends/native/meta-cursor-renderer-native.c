@@ -240,15 +240,20 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
     meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
   MetaRectangle scaled_crtc_rect;
   int scale;
+  int crtc_x, crtc_y;
 
   if (meta_is_stage_views_scaled ())
     scale = meta_logical_monitor_get_scale (data->in_logical_monitor);
   else
     scale = 1;
 
+  meta_monitor_calculate_crtc_pos (monitor, monitor_mode,
+                                   monitor_crtc_mode->output,
+                                   &crtc_x, &crtc_y);
+
   scaled_crtc_rect = (MetaRectangle) {
-    .x = monitor_crtc_mode->x / scale,
-    .y = monitor_crtc_mode->y / scale,
+    .x = crtc_x / scale,
+    .y = crtc_y / scale,
     .width = monitor_crtc_mode->crtc_mode->width / scale,
     .height = monitor_crtc_mode->crtc_mode->height / scale
   };

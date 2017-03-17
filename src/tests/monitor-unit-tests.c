@@ -128,8 +128,6 @@ typedef struct _MonitorTestCaseMonitorCrtcMode
 {
   int output;
   int crtc_mode;
-  int x;
-  int y;
 } MetaTestCaseMonitorCrtcMode;
 
 typedef struct _MonitorTestCaseMonitorMode
@@ -162,6 +160,8 @@ typedef struct _MonitorTestCaseLogicalMonitor
 typedef struct _MonitorTestCaseCrtcExpect
 {
   int current_mode;
+  int x;
+  int y;
 } MonitorTestCaseCrtcExpect;
 
 typedef struct _MonitorTestCaseExpect
@@ -351,9 +351,6 @@ check_monitor_mode (MetaMonitor         *monitor,
   g_assert (monitor_crtc_mode->output == output);
   g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
 
-  g_assert_cmpint (monitor_crtc_mode->x, ==, data->expect_crtc_mode_iter->x);
-  g_assert_cmpint (monitor_crtc_mode->y, ==, data->expect_crtc_mode_iter->y);
-
   data->expect_crtc_mode_iter++;
 
   return TRUE;
@@ -487,6 +484,42 @@ check_logical_monitor (MonitorTestCase               *test_case,
 
   if (logical_monitor == monitor_manager->primary_logical_monitor)
     g_assert_nonnull (primary_output);
+}
+
+static void
+get_compensated_crtc_position (MetaCrtc *crtc,
+                               int      *x,
+                               int      *y)
+{
+  MetaLogicalMonitor *logical_monitor;
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  GList *views;
+  GList *l;
+
+  logical_monitor = crtc->logical_monitor;
+  g_assert_nonnull (logical_monitor);
+
+  views = meta_renderer_get_views (renderer);
+  for (l = views; l; l = l->next)
+    {
+      MetaRendererView *view = l->data;
+      MetaRectangle view_layout;
+
+      clutter_stage_view_get_layout (CLUTTER_STAGE_VIEW (view),
+                                     &view_layout);
+
+      if (meta_rectangle_equal (&view_layout,
+                                &logical_monitor->rect))
+        {
+          *x = crtc->rect.x - view_layout.x;
+          *y = crtc->rect.y - view_layout.y;
+          return;
+        }
+    }
+
+  *x = crtc->rect.x;
+  *y = crtc->rect.y;
 }
 
 static void
@@ -671,8 +704,14 @@ check_monitor_configuration (MonitorTestCase *test_case)
           MetaCrtc *crtc = &monitor_manager->crtcs[i];
           MetaCrtcMode *expected_current_mode =
             &monitor_manager->modes[test_case->expect.crtcs[i].current_mode];
+          int crtc_x, crtc_y;
 
           g_assert (crtc->current_mode == expected_current_mode);
+
+          get_compensated_crtc_position (crtc, &crtc_x, &crtc_y);
+
+          g_assert_cmpint (crtc_x, ==, test_case->expect.crtcs[i].x);
+          g_assert_cmpint (crtc_y, ==, test_case->expect.crtcs[i].y);
         }
     }
 }
@@ -1224,8 +1263,6 @@ meta_test_monitor_tiled_linear_config (void)
                 {
                   .output = 1,
                   .crtc_mode = 0,
-                  .x = 400,
-                  .y = 0
                 }
               }
             },
@@ -1254,6 +1291,8 @@ meta_test_monitor_tiled_linear_config (void)
         },
         {
           .current_mode = 0,
+          .x = 400,
+          .y = 0
         }
       },
       .n_crtcs = 2,
@@ -2826,14 +2865,10 @@ meta_test_monitor_custom_tiled_config (void)
                 {
                   .output = 0,
                   .crtc_mode = 0,
-                  .x = 0,
-                  .y = 0,
                 },
                 {
                   .output = 1,
                   .crtc_mode = 0,
-                  .x = 400,
-                  .y = 0,
                 }
               }
             }
@@ -2862,6 +2897,8 @@ meta_test_monitor_custom_tiled_config (void)
         },
         {
           .current_mode = 0,
+          .x = 400,
+          .y = 0
         }
       },
       .n_crtcs = 2,
@@ -2969,14 +3006,10 @@ meta_test_monitor_custom_tiled_custom_resolution_config (void)
                 {
                   .output = 0,
                   .crtc_mode = 0,
-                  .x = 0,
-                  .y = 0,
                 },
                 {
                   .output = 1,
                   .crtc_mode = 0,
-                  .x = 400,
-                  .y = 0,
                 }
               }
             },
@@ -2987,8 +3020,6 @@ meta_test_monitor_custom_tiled_custom_resolution_config (void)
                 {
                   .output = 0,
                   .crtc_mode = 1,
-                  .x = 0,
-                  .y = 0,
                 },
                 {
                   .output = 1,
@@ -3021,6 +3052,8 @@ meta_test_monitor_custom_tiled_custom_resolution_config (void)
         },
         {
           .current_mode = -1,
+          .x = 400,
+          .y = 0,
         }
       },
       .n_crtcs = 2,
