@@ -24,11 +24,18 @@
 #include "backends/meta-monitor-manager-dummy.h"
 #include "backends/x11/nested/meta-backend-x11-nested.h"
 #include "backends/x11/nested/meta-cursor-renderer-x11-nested.h"
+#include "backends/x11/nested/meta-renderer-x11-nested.h"
 
 #include "wayland/meta-wayland.h"
 
 G_DEFINE_TYPE (MetaBackendX11Nested, meta_backend_x11_nested,
                META_TYPE_BACKEND_X11)
+
+static MetaRenderer *
+meta_backend_x11_nested_create_renderer (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_RENDERER_X11_NESTED, NULL);
+}
 
 static MetaMonitorManager *
 meta_backend_x11_nested_create_monitor_manager (MetaBackend *backend)
@@ -167,6 +174,7 @@ meta_backend_x11_nested_class_init (MetaBackendX11NestedClass *klass)
   MetaBackendClass *backend_class = META_BACKEND_CLASS (klass);
   MetaBackendX11Class *backend_x11_class = META_BACKEND_X11_CLASS (klass);
 
+  backend_class->create_renderer = meta_backend_x11_nested_create_renderer;
   backend_class->create_monitor_manager = meta_backend_x11_nested_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_x11_nested_create_cursor_renderer;
   backend_class->update_screen_size = meta_backend_x11_nested_update_screen_size;

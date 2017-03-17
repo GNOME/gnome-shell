@@ -451,12 +451,6 @@ meta_backend_x11_create_idle_monitor (MetaBackend *backend,
                        NULL);
 }
 
-static MetaRenderer *
-meta_backend_x11_create_renderer (MetaBackend *backend)
-{
-  return g_object_new (META_TYPE_RENDERER_X11, NULL);
-}
-
 static gboolean
 meta_backend_x11_grab_device (MetaBackend *backend,
                               int          device_id,
@@ -600,7 +594,6 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->create_clutter_backend = meta_backend_x11_create_clutter_backend;
   backend_class->post_init = meta_backend_x11_post_init;
   backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
-  backend_class->create_renderer = meta_backend_x11_create_renderer;
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;

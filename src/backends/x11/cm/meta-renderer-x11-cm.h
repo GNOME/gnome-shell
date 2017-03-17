@@ -18,25 +18,16 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  *
- * Written by:
- *     Jonas Ådahl <jadahl@gmail.com>
  */
 
-#ifndef META_RENDERER_X11_H
-#define META_RENDERER_X11_H
+#ifndef META_RENDERER_X11_CM_H
+#define META_RENDERER_X11_CM_H
 
-#include <glib-object.h>
+#include "backends/x11/meta-renderer-x11.h"
 
-#include "backends/meta-renderer.h"
+#define META_TYPE_RENDERER_X11_CM (meta_renderer_x11_cm_get_type ())
+G_DECLARE_FINAL_TYPE (MetaRendererX11Cm, meta_renderer_x11_cm,
+                      META, RENDERER_X11_CM,
+                      MetaRendererX11)
 
-struct _MetaRendererX11Class
-{
-  MetaRendererClass parent_class;
-};
-
-#define META_TYPE_RENDERER_X11 (meta_renderer_x11_get_type ())
-G_DECLARE_DERIVABLE_TYPE (MetaRendererX11, meta_renderer_x11,
-                          META, RENDERER_X11,
-                          MetaRenderer)
-
-#endif /* META_RENDERER_X11_H */
+#endif /* META_RENDERER_X11_CM_H */

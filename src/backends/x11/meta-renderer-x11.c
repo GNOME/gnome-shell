@@ -40,11 +40,6 @@
 #include "meta/meta-backend.h"
 #include "meta/util.h"
 
-struct _MetaRendererX11
-{
-  MetaRenderer parent;
-};
-
 G_DEFINE_TYPE (MetaRendererX11, meta_renderer_x11, META_TYPE_RENDERER)
 
 static const CoglWinsysVtable *
@@ -90,84 +85,6 @@ meta_renderer_x11_create_cogl_renderer (MetaRenderer *renderer)
   return cogl_renderer;
 }
 
-static MetaMonitorTransform
-calculate_view_transform (MetaMonitorManager *monitor_manager,
-                          MetaLogicalMonitor *logical_monitor)
-{
-  MetaMonitor *main_monitor;
-  MetaOutput *main_output;
-  main_monitor = meta_logical_monitor_get_monitors (logical_monitor)->data;
-  main_output = meta_monitor_get_main_output (main_monitor);
-
-  /*
-   * Pick any monitor and output and check; all CRTCs of a logical monitor will
-   * always have the same transform assigned to them.
-   */
-
-  if (meta_monitor_manager_is_transform_handled (monitor_manager,
-                                                 main_output->crtc,
-                                                 main_output->crtc->transform))
-    return META_MONITOR_TRANSFORM_NORMAL;
-  else
-    return main_output->crtc->transform;
-}
-
-static MetaRendererView *
-meta_renderer_x11_create_view (MetaRenderer       *renderer,
-                               MetaLogicalMonitor *logical_monitor)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
-  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
-  MetaMonitorTransform view_transform;
-  int view_scale;
-  int width, height;
-  CoglTexture2D *texture_2d;
-  CoglOffscreen *fake_onscreen;
-  CoglOffscreen *offscreen;
-  GError *error = NULL;
-
-  g_assert (meta_is_wayland_compositor ());
-
-  view_transform = calculate_view_transform (monitor_manager, logical_monitor);
-
-  if (meta_is_stage_views_scaled ())
-    view_scale = logical_monitor->scale;
-  else
-    view_scale = 1;
-
-  width = logical_monitor->rect.width * view_scale;
-  height = logical_monitor->rect.height * view_scale;
-
-  texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
-  fake_onscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
-
-  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (fake_onscreen), &error))
-    meta_fatal ("Couldn't allocate framebuffer: %s", error->message);
-
-  if (view_transform != META_MONITOR_TRANSFORM_NORMAL)
-    {
-      texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
-      offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
-      if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (offscreen), &error))
-        meta_fatal ("Couldn't allocate offscreen framebuffer: %s", error->message);
-    }
-  else
-    {
-      offscreen = NULL;
-    }
-
-  return g_object_new (META_TYPE_RENDERER_VIEW,
-                       "layout", &logical_monitor->rect,
-                       "framebuffer", COGL_FRAMEBUFFER (fake_onscreen),
-                       "offscreen", COGL_FRAMEBUFFER (offscreen),
-                       "transform", view_transform,
-                       "scale", view_scale,
-                       NULL);
-}
-
 static void
 meta_renderer_x11_init (MetaRendererX11 *renderer_x11)
 {
@@ -179,5 +96,4 @@ meta_renderer_x11_class_init (MetaRendererX11Class *klass)
   MetaRendererClass *renderer_class = META_RENDERER_CLASS (klass);
 
   renderer_class->create_cogl_renderer = meta_renderer_x11_create_cogl_renderer;
-  renderer_class->create_view = meta_renderer_x11_create_view;
 }
