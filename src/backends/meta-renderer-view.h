@@ -28,4 +28,6 @@ G_DECLARE_FINAL_TYPE (MetaRendererView, meta_renderer_view,
 
 MetaLogicalMonitor *meta_renderer_view_get_logical_monitor (MetaRendererView *view);
 
+MetaMonitorTransform meta_renderer_view_get_transform (MetaRendererView *view);
+
 #endif /* META_RENDERER_VIEW_H */

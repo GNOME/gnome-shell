@@ -51,6 +51,12 @@ meta_renderer_view_get_logical_monitor (MetaRendererView *view)
   return view->logical_monitor;
 }
 
+MetaMonitorTransform
+meta_renderer_view_get_transform (MetaRendererView *view)
+{
+  return view->transform;
+}
+
 static void
 meta_renderer_view_get_offscreen_transformation_matrix (ClutterStageView *view,
                                                         CoglMatrix       *matrix)
