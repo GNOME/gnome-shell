@@ -34,6 +34,7 @@
 #include "clutter/egl/clutter-egl.h"
 #include "clutter/evdev/clutter-evdev.h"
 #include "meta-barrier-native.h"
+#include "meta-border.h"
 #include "meta-idle-monitor-native.h"
 #include "meta-monitor-manager-kms.h"
 #include "meta-cursor-renderer-native.h"
@@ -256,6 +257,78 @@ pointer_constrain_callback (ClutterInputDevice *device,
 }
 
 static void
+relative_motion_across_outputs (MetaMonitorManager *monitor_manager,
+                                MetaLogicalMonitor *current,
+                                float               cur_x,
+                                float               cur_y,
+                                float              *dx_inout,
+                                float              *dy_inout)
+{
+  MetaLogicalMonitor *cur = current;
+  float x = cur_x, y = cur_y;
+  float dx = *dx_inout, dy = *dy_inout;
+  MetaScreenDirection direction = -1;
+
+  while (cur)
+    {
+      MetaLine2 left, right, top, bottom, motion;
+      MetaVector2 intersection;
+
+      motion = (MetaLine2) {
+        .a = { x, y },
+        .b = { x + (dx * cur->scale), y + (dy * cur->scale) }
+      };
+      left = (MetaLine2) {
+        { cur->rect.x, cur->rect.y },
+        { cur->rect.x, cur->rect.y + cur->rect.height }
+      };
+      right = (MetaLine2) {
+        { cur->rect.x + cur->rect.width, cur->rect.y },
+        { cur->rect.x + cur->rect.width, cur->rect.y + cur->rect.height }
+      };
+      top = (MetaLine2) {
+        { cur->rect.x, cur->rect.y },
+        { cur->rect.x + cur->rect.width, cur->rect.y }
+      };
+      bottom = (MetaLine2) {
+        { cur->rect.x, cur->rect.y + cur->rect.height },
+        { cur->rect.x + cur->rect.width, cur->rect.y + cur->rect.height }
+      };
+
+      if (direction != META_SCREEN_RIGHT &&
+          meta_line2_intersects_with (&motion, &left, &intersection))
+        direction = META_SCREEN_LEFT;
+      else if (direction != META_SCREEN_LEFT &&
+               meta_line2_intersects_with (&motion, &right, &intersection))
+        direction = META_SCREEN_RIGHT;
+      else if (direction != META_SCREEN_DOWN &&
+               meta_line2_intersects_with (&motion, &top, &intersection))
+        direction = META_SCREEN_UP;
+      else if (direction != META_SCREEN_UP &&
+               meta_line2_intersects_with (&motion, &bottom, &intersection))
+        direction = META_SCREEN_DOWN;
+      else
+        {
+          /* We reached the dest logical monitor */
+          x = motion.b.x;
+          y = motion.b.y;
+          break;
+        }
+
+      x = intersection.x;
+      y = intersection.y;
+      dx -= intersection.x - motion.a.x;
+      dy -= intersection.y - motion.a.y;
+
+      cur = meta_monitor_manager_get_logical_monitor_neighbor (monitor_manager,
+                                                               cur, direction);
+    }
+
+  *dx_inout = x - cur_x;
+  *dy_inout = y - cur_y;
+}
+
+static void
 relative_motion_filter (ClutterInputDevice *device,
                         float               x,
                         float               y,
@@ -264,14 +337,34 @@ relative_motion_filter (ClutterInputDevice *device,
                         gpointer            user_data)
 {
   MetaMonitorManager *monitor_manager = user_data;
+  MetaLogicalMonitor *logical_monitor, *dest_logical_monitor;
+  float new_dx, new_dy;
 
   logical_monitor = meta_monitor_manager_get_logical_monitor_at (monitor_manager,
                                                                  x, y);
   if (!logical_monitor)
     return;
 
-  *dx *= logical_monitor->scale;
-  *dy *= logical_monitor->scale;
+  new_dx = (*dx) * logical_monitor->scale;
+  new_dy = (*dy) * logical_monitor->scale;
+
+  dest_logical_monitor = meta_monitor_manager_get_logical_monitor_at (monitor_manager,
+                                                                      x + new_dx,
+                                                                      y + new_dy);
+  if (dest_logical_monitor &&
+      dest_logical_monitor != logical_monitor)
+    {
+      /* If we are crossing monitors, attempt to bisect the distance on each
+       * axis and apply the relative scale for each of them.
+       */
+      new_dx = *dx;
+      new_dy = *dy;
+      relative_motion_across_outputs (monitor_manager, logical_monitor,
+                                      x, y, &new_dx, &new_dy);
+    }
+
+  *dx = new_dx;
+  *dy = new_dy;
 }
 
 static ClutterBackend *
