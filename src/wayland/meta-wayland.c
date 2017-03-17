@@ -404,3 +404,40 @@ meta_wayland_finalize (void)
 
   meta_xwayland_stop (&compositor->xwayland_manager);
 }
+
+void
+meta_wayland_compositor_restore_shortcuts (MetaWaylandCompositor *compositor,
+                                           ClutterInputDevice    *source)
+{
+  MetaWaylandKeyboard *keyboard;
+
+  /* Clutter is not multi-seat aware yet, use the default seat instead */
+  keyboard = compositor->seat->keyboard;
+  if (!keyboard || !keyboard->focus_surface)
+    return;
+
+  if (!meta_wayland_surface_is_shortcuts_inhibited (keyboard->focus_surface,
+                                                    compositor->seat))
+    return;
+
+  meta_wayland_surface_restore_shortcuts (keyboard->focus_surface,
+                                          compositor->seat);
+}
+
+gboolean
+meta_wayland_compositor_is_shortcuts_inhibited (MetaWaylandCompositor *compositor,
+                                                ClutterInputDevice    *source)
+{
+  MetaWaylandKeyboard *keyboard;
+
+  if (clutter_input_device_get_device_type (source) != CLUTTER_KEYBOARD_DEVICE)
+    return FALSE;
+
+  /* Clutter is not multi-seat aware yet, use the default seat instead */
+  keyboard = compositor->seat->keyboard;
+  if (keyboard && keyboard->focus_surface != NULL)
+    return meta_wayland_surface_is_shortcuts_inhibited (keyboard->focus_surface,
+                                                        compositor->seat);
+
+  return FALSE;
+}

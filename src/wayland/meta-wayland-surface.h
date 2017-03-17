@@ -240,6 +240,9 @@ struct _MetaWaylandSurface
     gboolean pending_pos;
     GSList *pending_placement_ops;
   } sub;
+
+  /* table of seats for which shortcuts are inhibited */
+  GHashTable *shortcut_inhibited_seats;
 };
 
 void                meta_wayland_shell_init     (MetaWaylandCompositor *compositor);
@@ -325,5 +328,14 @@ gboolean            meta_wayland_surface_begin_grab_op (MetaWaylandSurface *surf
 
 void                meta_wayland_surface_window_managed (MetaWaylandSurface *surface,
                                                          MetaWindow         *window);
+
+void                meta_wayland_surface_inhibit_shortcuts (MetaWaylandSurface *surface,
+                                                            MetaWaylandSeat    *seat);
+
+void                meta_wayland_surface_restore_shortcuts (MetaWaylandSurface *surface,
+                                                            MetaWaylandSeat    *seat);
+
+gboolean            meta_wayland_surface_is_shortcuts_inhibited (MetaWaylandSurface *surface,
+                                                                 MetaWaylandSeat    *seat);
 
 #endif

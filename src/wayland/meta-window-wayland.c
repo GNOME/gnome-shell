@@ -521,6 +521,24 @@ meta_window_wayland_init (MetaWindowWayland *wl_window)
 }
 
 static void
+meta_window_wayland_force_restore_shortcuts (MetaWindow         *window,
+                                             ClutterInputDevice *source)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+
+  meta_wayland_compositor_restore_shortcuts (compositor, source);
+}
+
+static gboolean
+meta_window_wayland_shortcuts_inhibited (MetaWindow         *window,
+                                         ClutterInputDevice *source)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+
+  return meta_wayland_compositor_is_shortcuts_inhibited (compositor, source);
+}
+
+static void
 meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
 {
   MetaWindowClass *window_class = META_WINDOW_CLASS (klass);
@@ -537,6 +555,8 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->update_main_monitor = meta_window_wayland_update_main_monitor;
   window_class->main_monitor_changed = meta_window_wayland_main_monitor_changed;
   window_class->get_client_pid = meta_window_wayland_get_client_pid;
+  window_class->force_restore_shortcuts = meta_window_wayland_force_restore_shortcuts;
+  window_class->shortcuts_inhibited = meta_window_wayland_shortcuts_inhibited;
 }
 
 MetaWindow *

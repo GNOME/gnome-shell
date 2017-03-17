@@ -1716,6 +1716,16 @@ process_event (MetaDisplay          *display,
       (!window && binding->flags & META_KEY_BINDING_PER_WINDOW))
     goto not_found;
 
+  if (display->focus_window &&
+      !(binding->handler->flags & META_KEY_BINDING_NON_MASKABLE))
+    {
+      ClutterInputDevice *source;
+
+      source = clutter_event_get_source_device ((ClutterEvent *) event);
+      if (meta_window_shortcuts_inhibited (display->focus_window, source))
+        goto not_found;
+    }
+
   /* If the compositor filtered out the keybindings, that
    * means they don't want the binding to trigger, so we do
    * the same thing as if the binding didn't exist. */
@@ -3364,6 +3374,23 @@ handle_rotate_monitor (MetaDisplay    *display,
   meta_monitor_manager_rotate_monitor (monitor_manager);
 }
 
+static void
+handle_restore_shortcuts (MetaDisplay     *display,
+                          MetaScreen      *screen,
+                          MetaWindow      *window,
+                          ClutterKeyEvent *event,
+                          MetaKeyBinding  *binding,
+                          gpointer         dummy)
+{
+  ClutterInputDevice *source;
+
+  source = clutter_event_get_source_device ((ClutterEvent *) event);
+
+  meta_topic (META_DEBUG_KEYBINDINGS, "Restoring normal keyboard shortcuts\n");
+
+  meta_window_force_restore_shortcuts (display->focus_window, source);
+}
+
 /**
  * meta_keybindings_set_custom_handler:
  * @name: The name of the keybinding to set
@@ -3674,88 +3701,95 @@ init_builtin_key_bindings (MetaDisplay *display)
       add_builtin_keybinding (display,
                               "switch-to-session-1",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 1);
 
       add_builtin_keybinding (display,
                               "switch-to-session-2",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 2);
 
       add_builtin_keybinding (display,
                               "switch-to-session-3",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 3);
 
       add_builtin_keybinding (display,
                               "switch-to-session-4",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 4);
 
       add_builtin_keybinding (display,
                               "switch-to-session-5",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 5);
 
       add_builtin_keybinding (display,
                               "switch-to-session-6",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 6);
 
       add_builtin_keybinding (display,
                               "switch-to-session-7",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 7);
 
       add_builtin_keybinding (display,
                               "switch-to-session-8",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 8);
 
       add_builtin_keybinding (display,
                               "switch-to-session-9",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 9);
 
       add_builtin_keybinding (display,
                               "switch-to-session-10",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 10);
 
       add_builtin_keybinding (display,
                               "switch-to-session-11",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 11);
 
       add_builtin_keybinding (display,
                               "switch-to-session-12",
                               mutter_wayland_keybindings,
-                              META_KEY_BINDING_NONE,
+                              META_KEY_BINDING_NON_MASKABLE,
                               META_KEYBINDING_ACTION_NONE,
                               handle_switch_vt, 12);
     }
 #endif /* HAVE_NATIVE_BACKEND */
+
+  add_builtin_keybinding (display,
+                          "restore-shortcuts",
+                          mutter_wayland_keybindings,
+                          META_KEY_BINDING_NON_MASKABLE,
+                          META_KEYBINDING_ACTION_NONE,
+                          handle_restore_shortcuts, 0);
 
   /************************ PER WINDOW BINDINGS ************************/
 

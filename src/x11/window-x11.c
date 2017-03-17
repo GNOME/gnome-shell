@@ -1505,6 +1505,27 @@ meta_window_x11_get_client_pid (MetaWindow *window)
 }
 
 static void
+meta_window_x11_force_restore_shortcuts (MetaWindow         *window,
+                                         ClutterInputDevice *source)
+{
+  /*
+   * Not needed on X11 because clients can use a keyboard grab
+   * to bypass the compositor shortcuts.
+   */
+}
+
+static gboolean
+meta_window_x11_shortcuts_inhibited (MetaWindow         *window,
+                                     ClutterInputDevice *source)
+{
+  /*
+   * On X11, we don't use a shortcuts inhibitor, clients just grab
+   * the keyboard.
+   */
+  return FALSE;
+}
+
+static void
 meta_window_x11_class_init (MetaWindowX11Class *klass)
 {
   MetaWindowClass *window_class = META_WINDOW_CLASS (klass);
@@ -1525,6 +1546,8 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->update_main_monitor = meta_window_x11_update_main_monitor;
   window_class->main_monitor_changed = meta_window_x11_main_monitor_changed;
   window_class->get_client_pid = meta_window_x11_get_client_pid;
+  window_class->force_restore_shortcuts = meta_window_x11_force_restore_shortcuts;
+  window_class->shortcuts_inhibited = meta_window_x11_shortcuts_inhibited;
 }
 
 void

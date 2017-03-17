@@ -130,6 +130,8 @@ enum {
   SURFACE_DESTROY,
   SURFACE_UNMAPPED,
   SURFACE_CONFIGURE,
+  SURFACE_SHORTCUTS_INHIBITED,
+  SURFACE_SHORTCUTS_RESTORED,
   N_SURFACE_SIGNALS
 };
 
@@ -1334,6 +1336,8 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->wl_subsurface)
     wl_resource_destroy (surface->wl_subsurface);
 
+  g_hash_table_destroy (surface->shortcut_inhibited_seats);
+
   g_object_unref (surface);
 
   meta_wayland_compositor_repick (compositor);
@@ -1385,6 +1389,7 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   sync_drag_dest_funcs (surface);
 
   surface->outputs_to_destroy_notify_id = g_hash_table_new (NULL, NULL);
+  surface->shortcut_inhibited_seats = g_hash_table_new (NULL, NULL);
 
   return surface;
 }
@@ -1881,6 +1886,22 @@ meta_wayland_surface_class_init (MetaWaylandSurfaceClass *klass)
                   0, NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  surface_signals[SURFACE_SHORTCUTS_INHIBITED] =
+    g_signal_new ("shortcuts-inhibited",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+
+  surface_signals[SURFACE_SHORTCUTS_RESTORED] =
+    g_signal_new ("shortcuts-restored",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 }
 
 static void
@@ -2218,4 +2239,30 @@ meta_wayland_surface_calculate_input_region (MetaWaylandSurface *surface)
     cairo_region_intersect (region, surface->input_region);
 
   return region;
+}
+
+void
+meta_wayland_surface_inhibit_shortcuts (MetaWaylandSurface *surface,
+                                        MetaWaylandSeat    *seat)
+{
+  g_hash_table_add (surface->shortcut_inhibited_seats, seat);
+  g_signal_emit (surface, surface_signals[SURFACE_SHORTCUTS_INHIBITED], 0);
+}
+
+void
+meta_wayland_surface_restore_shortcuts (MetaWaylandSurface *surface,
+                                        MetaWaylandSeat    *seat)
+{
+  g_signal_emit (surface, surface_signals[SURFACE_SHORTCUTS_RESTORED], 0);
+  g_hash_table_remove (surface->shortcut_inhibited_seats, seat);
+}
+
+gboolean
+meta_wayland_surface_is_shortcuts_inhibited (MetaWaylandSurface *surface,
+                                             MetaWaylandSeat    *seat)
+{
+  if (surface->shortcut_inhibited_seats == NULL)
+    return FALSE;
+
+  return g_hash_table_contains (surface->shortcut_inhibited_seats, seat);
 }

@@ -58,5 +58,10 @@ void                    meta_wayland_compositor_destroy_frame_callbacks (MetaWay
 const char             *meta_wayland_get_wayland_display_name   (MetaWaylandCompositor *compositor);
 const char             *meta_wayland_get_xwayland_display_name  (MetaWaylandCompositor *compositor);
 
+void                    meta_wayland_compositor_restore_shortcuts      (MetaWaylandCompositor *compositor,
+                                                                        ClutterInputDevice    *source);
+gboolean                meta_wayland_compositor_is_shortcuts_inhibited (MetaWaylandCompositor *compositor,
+                                                                        ClutterInputDevice    *source);
+
 #endif
 

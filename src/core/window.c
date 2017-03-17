@@ -8066,3 +8066,17 @@ meta_window_get_placement_rule (MetaWindow *window)
 {
   return window->placement_rule;
 }
+
+void
+meta_window_force_restore_shortcuts (MetaWindow         *window,
+                                     ClutterInputDevice *source)
+{
+  META_WINDOW_GET_CLASS (window)->force_restore_shortcuts (window, source);
+}
+
+gboolean
+meta_window_shortcuts_inhibited (MetaWindow         *window,
+                                 ClutterInputDevice *source)
+{
+  return META_WINDOW_GET_CLASS (window)->shortcuts_inhibited (window, source);
+}
