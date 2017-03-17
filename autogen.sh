@@ -4,7 +4,9 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-pushd $srcdir
+olddir="$(pwd)"
+
+cd "${srcdir}"
 
 (test -f configure.ac \
   && test -d src) || {
@@ -26,8 +28,8 @@ gtkdocize --copy || exit 1
 intltoolize --force --copy --automake || exit 1
 autoreconf --verbose --force --install || exit 1
 
-popd
+cd "${olddir}"
 
 if [ "$NOCONFIGURE" = "" ]; then
-    $srcdir/configure "$@" || exit 1
+    "${srcdir}/configure" "$@" || exit 1
 fi
