@@ -33,6 +33,9 @@ const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 const LOCK_DELAY_KEY = 'lock-delay';
 
+const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
+const DISABLE_LOCK_KEY = 'disable-lock-screen';
+
 const LOCKED_STATE_STR = 'screenShield.locked';
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
@@ -540,6 +543,8 @@ const ScreenShield = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
         this._settings.connect('changed::' + LOCK_ENABLED_KEY, Lang.bind(this, this._syncInhibitor));
+
+        this._lockSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
 
         this._isModal = false;
         this._hasLockScreen = false;
@@ -1290,6 +1295,11 @@ const ScreenShield = new Lang.Class({
     },
 
     lock: function(animate) {
+        if (this._lockSettings.get_boolean(DISABLE_LOCK_KEY)) {
+            log('Screen lock is locked down, not locking') // lock, lock - who's there?
+            return;
+        }
+
         // Warn the user if we can't become modal
         if (!this._becomeModal()) {
             Main.notifyError(_("Unable to lock"),
