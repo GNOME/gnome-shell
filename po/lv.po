@@ -7,14 +7,14 @@
 # Raivis Dejus <orvils@gmail.com>, 2006, 2007, 2009.
 # Rudolfs <rudolfs.mazurs@gmail.com>, 2011.
 # Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011, 2012.
-# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012, 2013, 2014, 2015, 2016.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012, 2013, 2014, 2015, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: lv\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-07 09:27+0000\n"
-"PO-Revision-Date: 2016-09-08 21:31+0200\n"
+"POT-Creation-Date: 2017-02-28 06:20+0000\n"
+"PO-Revision-Date: 2017-03-18 12:09+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -274,11 +274,16 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Modifikators, kuru lietot paplašinātām loga pārvaldības darbībām"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
+#| msgid ""
+#| "This key will initiate the \"overlay\", which is a combination window "
+#| "overview and application launching system. The default is intended to be "
+#| "the \"Windows key\" on PC hardware. It's expected that this binding "
+#| "either the default or set to the empty string."
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
 "Šis taustiņš inicializēs “pārklāšanu”, kas ir kombināciju loga pārskats un "
 "lietotnes palaišanas sistēma. Noklusētais parasti ir “Windows taustiņš” uz "
@@ -318,8 +323,12 @@ msgid "Workspaces are managed dynamically"
 msgstr "Darbvirsmas tiek pārvaldītas dinamiski"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
+#| msgid ""
+#| "Determines whether workspaces are managed dynamically or whether there's "
+#| "a static number of workspaces (determined by the num-workspaces key in "
+#| "org.gnome.desktop.wm.preferences)."
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -356,22 +365,29 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj kustēties"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
+#| msgid ""
+#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#| "the focus will not be changed immediately when entering a window, but "
+#| "only after the pointer stops moving."
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
-"Ja patiess un fokusēšanas režīms ir vai nu \"sloppy\" (paviršs) vai \"mouse"
-"\" (pele), tad fokuss nemainīsies uzreiz pēc ieiešanas logā, bet tikai pēc "
-"tam, kad rādītājs beidzis kustēties."
+"Ja patiess un fokusēšanas režīms ir vai nu “sloppy” (paviršs) vai “mouse”"
+" (pele), tad fokuss nemainīsies uzreiz pēc ieiešanas logā, bet tikai pēc tam,"
+" kad rādītājs beidzis kustēties."
 
 #: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
 msgstr "Velkams malas platums"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
+#| msgid ""
+#| "The amount of total draggable borders. If the theme's visible borders are "
+#| "not enough, invisible borders will be added to meet this value."
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "Kopējo velkamo malu apjoms. Ja motīva redzamās robežas nav pietiekamas, tiks "
@@ -456,48 +472,62 @@ msgstr "Pārslēgties uz VT 11"
 msgid "Switch to VT 12"
 msgstr "Pārslēgties uz VT 12"
 
-#: src/backends/meta-input-settings.c:1707
-#| msgid "Switch system controls"
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1800
+#, c-format
+#| msgid "Mode Switch: Mode %d"
+msgid "Mode Switch (Group %d)"
+msgstr "Režīma slēdzis (grupa %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1822
 msgid "Switch monitor"
 msgstr "Pārslēgt monitoru"
 
-#: src/backends/meta-input-settings.c:1709
+#: src/backends/meta-input-settings.c:1824
 msgid "Show on-screen help"
 msgstr "Rādīt palīdzību uz ekrāna"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Iebūvēts displejs"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Nezināms"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Nezināms displejs"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
+#| msgid ""
+#| "Another compositing manager is already running on screen %i on display "
+#| "\"%s\"."
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr "Cits kompozīcijas pārvaldnieks jau darbojas ekrānā %d displejā “%s”."
 
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Zvana notikums"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -516,65 +546,72 @@ msgstr ""
 "kārtā."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Gaidīt"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "Aizvērt _piespiedu kārtā"
 
-#: src/core/display.c:590
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Gaidīt"
+
+#: src/core/display.c:608
 #, c-format
-msgid "Failed to open X Window System display '%s'\n"
+#| msgid "Failed to open X Window System display '%s'\n"
+msgid "Failed to open X Window System display “%s”\n"
 msgstr "Neizdevās atvērt X logu sistēmas displeju “%s”\n"
 
-#: src/core/main.c:182
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Deaktivēt savienojumu ar sesiju pārvaldnieku"
 
-#: src/core/main.c:188
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Aizvietot darbojošos logu pārvaldnieku"
 
-#: src/core/main.c:194
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Norādiet sesiju pārvaldības ID"
 
-#: src/core/main.c:199
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Lietojamais X displejs"
 
-#: src/core/main.c:205
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Inicializēt sesiju no saglabātās datnes"
 
-#: src/core/main.c:211
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Padarīt X izsaukumus sinhronus"
 
-#: src/core/main.c:218
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Palaist kā wayland kompozitoru"
 
-#: src/core/main.c:224
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Palaist kā ligzdotu kompozitoru"
 
-#: src/core/main.c:232
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Palaist kā pilnu attēlošanas serveri, nevis iegultu"
 
 #: src/core/mutter.c:39
 #, c-format
+#| msgid ""
+#| "mutter %s\n"
+#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+#| "This is free software; see the source for copying conditions.\n"
+#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Autortiesības (C) 2001-%d Havoc Pennington, Red Hat, Inc., un citi\n"
+"Autortiesības © 2001-%d Havoc Pennington, Red Hat, Inc., un citi\n"
 "Šī ir brīvā programmatūra; par kopēšanas nosacījumiem skatīt avotu.\n"
 "Netiek dota NEKĀDA garantija; pat ne KOMERCIĀLAS VĒRTĪBAS vai DERĪGUMA "
 "NOTEIKTAM NOLŪKAM.\n"
@@ -592,38 +629,45 @@ msgstr "Izmantojamais mutter spraudnis"
 msgid "Workspace %d"
 msgstr "Darbvieta %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
+#| msgid ""
+#| "Display \"%s\" already has a window manager; try using the --replace "
+#| "option to replace the current window manager."
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "Displejam “%s” jau ir logu pārvaldnieks; mēģiniet lietot --replace iespēju, "
 "lai aizvietotu pašreizējo logu pārvaldnieku."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
+#| msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Ekrāna %d displejs “%s“ nav derīgs\n"
 
 #: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter tika kompilēts bez detalizētas izvades režīma atbalsta\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Režīma slēdzis: režīms %d"
 
 #: src/x11/session.c:1815
+#| msgid ""
+#| "These windows do not support &quot;save current setup&quot; and will have "
+#| "to be restarted manually next time you log in."
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
 "Šie logi neatbalsta “saglabāt pašreizējos iestatījumus” un būs jāpārstartē "
 "pašrocīgi nākamreiz, kad ierakstīsities."
 
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (uz %s)"
