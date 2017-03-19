@@ -17,6 +17,7 @@ const WeatherClient = new Lang.Class({
 
     _init: function() {
         this._loading = false;
+        this._locationValid = false;
         this._lastUpdate = GLib.DateTime.new_from_unix_local(0);
 
         this._useAutoLocation = false;
@@ -55,6 +56,10 @@ const WeatherClient = new Lang.Class({
         return this._loading;
     },
 
+    get hasLocation() {
+        return this._locationValid;
+    },
+
     get info() {
         return this._weatherInfo;
     },
@@ -64,6 +69,9 @@ const WeatherClient = new Lang.Class({
     },
 
     update: function() {
+        if (!this._locationValid)
+            return;
+
         let now = GLib.DateTime.new_now_local();
         // Update without loading indication if the current info is recent enough
         if (this._weatherInfo.is_valid() &&
@@ -101,6 +109,7 @@ const WeatherClient = new Lang.Class({
 
         this._weatherInfo.abort();
         this._weatherInfo.set_location(location);
+        this._locationValid = (location != null);
 
         if (location)
             this._loadInfo();

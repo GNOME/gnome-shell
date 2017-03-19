@@ -296,6 +296,9 @@ const WeatherSection = new Lang.Class({
     },
 
     _getLabelText: function() {
+        if (!this._weatherClient.hasLocation)
+            return _("Select a location…");
+
         if (this._weatherClient.loading)
             return _("Loading…");
 
