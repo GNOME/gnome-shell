@@ -23,6 +23,7 @@
     <file>misc/modemManager.js</file>
     <file>misc/objectManager.js</file>
     <file>misc/params.js</file>
+    <file>misc/permissionStore.js</file>
     <file>misc/smartcardManager.js</file>
     <file>misc/util.js</file>
     <file>misc/weather.js</file>

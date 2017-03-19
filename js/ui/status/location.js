@@ -9,6 +9,7 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const ModalDialog = imports.ui.modalDialog;
+const PermissionStore = imports.misc.permissionStore;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -61,26 +62,6 @@ var AgentIface = '<node> \
     </method> \
   </interface> \
 </node>';
-
-var PermissionStoreIface = '<node> \
-  <interface name="org.freedesktop.impl.portal.PermissionStore"> \
-    <method name="Lookup"> \
-      <arg name="table" type="s" direction="in"/> \
-      <arg name="id" type="s" direction="in"/> \
-      <arg name="permissions" type="a{sas}" direction="out"/> \
-      <arg name="data" type="v" direction="out"/> \
-    </method> \
-    <method name="Set"> \
-      <arg name="table" type="s" direction="in"/> \
-      <arg name="create" type="b" direction="in"/> \
-      <arg name="id" type="s" direction="in"/> \
-      <arg name="app_permissions" type="a{sas}" direction="in"/> \
-      <arg name="data" type="v" direction="in"/> \
-    </method> \
-  </interface> \
-</node>';
-
-const PermissionStore = Gio.DBusProxy.makeProxyWrapper(PermissionStoreIface);
 
 const Indicator = new Lang.Class({
     Name: 'LocationIndicator',
@@ -253,10 +234,7 @@ const Indicator = new Lang.Class({
 
     _connectToPermissionStore: function() {
         this._permStoreProxy = null;
-        new PermissionStore(Gio.DBus.session,
-                           'org.freedesktop.impl.portal.PermissionStore',
-                           '/org/freedesktop/impl/portal/PermissionStore',
-                           Lang.bind(this, this._onPermStoreProxyReady));
+        new PermissionStore.PermissionStore(Lang.bind(this, this._onPermStoreProxyReady), null);
     },
 
     _onPermStoreProxyReady: function(proxy, error) {
