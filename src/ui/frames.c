@@ -181,7 +181,7 @@ update_style_contexts (MetaFrames *frames)
   frames->normal_style = meta_theme_create_style_info (screen, NULL);
 
   variants = g_hash_table_get_keys (frames->style_variants);
-  for (variant = variants; variant; variant = variants->next)
+  for (variant = variants; variant; variant = variant->next)
     {
       style_info = meta_theme_create_style_info (screen, (char *)variant->data);
       g_hash_table_insert (frames->style_variants,
