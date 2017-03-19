@@ -28,6 +28,10 @@ const WeatherClient = new Lang.Class({
         this._gclueStarting = false;
         this._gclueLocationChangedId = 0;
 
+        this._locationSettings = new Gio.Settings({ schema_id: 'org.gnome.system.location' });
+        this._locationSettings.connect('changed::enabled',
+                                       Lang.bind(this, this._updateAutoLocation));
+
         this._world = GWeather.Location.get_world();
 
         let providers = GWeather.Provider.METAR |
@@ -82,7 +86,8 @@ const WeatherClient = new Lang.Class({
     },
 
     get _useAutoLocation() {
-        return this._autoLocationRequested;
+        return this._autoLocationRequested &&
+               this._locationSettings.get_boolean('enabled');
     },
 
     _loadInfo: function() {
@@ -174,6 +179,10 @@ const WeatherClient = new Lang.Class({
 
         this._autoLocationRequested = useAutoLocation;
 
+        this._updateAutoLocation();
+    },
+
+    _updateAutoLocation: function() {
         this._updateLocationMonitoring();
 
         if (this._useAutoLocation)
