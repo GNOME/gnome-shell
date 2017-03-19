@@ -20,7 +20,7 @@ const WeatherClient = new Lang.Class({
         this._locationValid = false;
         this._lastUpdate = GLib.DateTime.new_from_unix_local(0);
 
-        this._useAutoLocation = false;
+        this._autoLocationRequested = false;
         this._mostRecentLocation = null;
 
         this._gclueService = null;
@@ -79,6 +79,10 @@ const WeatherClient = new Lang.Class({
             this._weatherInfo.update();
         else
             this._loadInfo();
+    },
+
+    get _useAutoLocation() {
+        return this._autoLocationRequested;
     },
 
     _loadInfo: function() {
@@ -165,10 +169,10 @@ const WeatherClient = new Lang.Class({
 
     _onAutomaticLocationChanged: function(settings, key) {
         let useAutoLocation = settings.get_boolean(key);
-        if (this._useAutoLocation == useAutoLocation)
+        if (this._autoLocationRequested == useAutoLocation)
             return;
 
-        this._useAutoLocation = useAutoLocation;
+        this._autoLocationRequested = useAutoLocation;
 
         this._updateLocationMonitoring();
 
