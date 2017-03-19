@@ -7,6 +7,7 @@ const GWeather = imports.gi.GWeather;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
+const PermissionStore = imports.misc.permissionStore;
 const Util = imports.misc.util;
 
 // Minimum time between updates to show loading indication
@@ -27,6 +28,25 @@ const WeatherClient = new Lang.Class({
         this._gclueStarted = false;
         this._gclueStarting = false;
         this._gclueLocationChangedId = 0;
+
+        this._weatherAuthorized = false;
+        this._permStore = new PermissionStore.PermissionStore((proxy, error) => {
+            if (error) {
+                log('Failed to connect to permissionStore: ' + error.message);
+                return;
+            }
+
+            this._permStore.LookupRemote('gnome', 'geolocation', (res, error) => {
+                if (error)
+                    log('Error looking up permission: ' + error.message);
+
+                let [perms, data] = error ? [{}, null] : res;
+                let  params = ['gnome', 'geolocation', false, data, perms];
+                this._onPermStoreChanged(this._permStore, '', params);
+            });
+        });
+        this._permStore.connectSignal('Changed',
+                                      Lang.bind(this, this._onPermStoreChanged));
 
         this._locationSettings = new Gio.Settings({ schema_id: 'org.gnome.system.location' });
         this._locationSettings.connect('changed::enabled',
@@ -87,7 +107,8 @@ const WeatherClient = new Lang.Class({
 
     get _useAutoLocation() {
         return this._autoLocationRequested &&
-               this._locationSettings.get_boolean('enabled');
+               this._locationSettings.get_boolean('enabled') &&
+               this._weatherAuthorized;
     },
 
     _loadInfo: function() {
@@ -205,6 +226,19 @@ const WeatherClient = new Lang.Class({
 
         if (!this._useAutoLocation || !this._gclueStarted)
             this._setLocation(this._mostRecentLocation);
+    },
+
+    _onPermStoreChanged: function(proxy, sender, params) {
+        let [table, id, deleted, data, perms] = params;
+
+        if (table != 'gnome' || id != 'geolocation')
+            return;
+
+        let permission = perms['org.gnome.Weather.Application'] || ['NONE'];
+        let [accuracy] = permission;
+        this._weatherAuthorized = accuracy != 'NONE';
+
+        this._updateAutoLocation();
     }
 });
 Signals.addSignalMethods(WeatherClient.prototype);
