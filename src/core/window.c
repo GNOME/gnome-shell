@@ -3645,6 +3645,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   MetaRectangle unconstrained_rect;
   MetaRectangle constrained_rect;
   MetaMoveResizeResultFlags result = 0;
+  gboolean moved_or_resized = FALSE;
 
   g_return_if_fail (!window->override_redirect);
 
@@ -3720,19 +3721,28 @@ meta_window_move_resize_internal (MetaWindow          *window,
   META_WINDOW_GET_CLASS (window)->move_resize_internal (window, gravity, unconstrained_rect, constrained_rect, flags, &result);
 
   if (result & META_MOVE_RESIZE_RESULT_MOVED)
-    g_signal_emit (window, window_signals[POSITION_CHANGED], 0);
+    {
+      moved_or_resized = TRUE;
+      g_signal_emit (window, window_signals[POSITION_CHANGED], 0);
+    }
 
   if (result & META_MOVE_RESIZE_RESULT_RESIZED)
-    g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
-
-  if ((result & (META_MOVE_RESIZE_RESULT_MOVED | META_MOVE_RESIZE_RESULT_RESIZED)) != 0 || did_placement)
     {
-      window->unconstrained_rect = unconstrained_rect;
+      moved_or_resized = TRUE;
+      g_signal_emit (window, window_signals[SIZE_CHANGED], 0);
+    }
 
-      if (window->known_to_compositor)
-        meta_compositor_sync_window_geometry (window->display->compositor,
-                                              window,
-                                              did_placement);
+  if (moved_or_resized || did_placement)
+    window->unconstrained_rect = unconstrained_rect;
+
+  if ((moved_or_resized ||
+       did_placement ||
+       (flags & META_MOVE_RESIZE_STATE_CHANGED) != 0) &&
+      window->known_to_compositor)
+    {
+      meta_compositor_sync_window_geometry (window->display->compositor,
+                                            window,
+                                            did_placement);
     }
 
   old_output_winsys_id = window->monitor->winsys_id;
