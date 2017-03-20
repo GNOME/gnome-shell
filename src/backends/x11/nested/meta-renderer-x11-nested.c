@@ -66,6 +66,104 @@ calculate_view_transform (MetaMonitorManager *monitor_manager,
 }
 
 static MetaRendererView *
+get_legacy_view (MetaRenderer *renderer)
+{
+  GList *views;
+
+  views = meta_renderer_get_views (renderer);
+  if (views)
+    return META_RENDERER_VIEW (views->data);
+  else
+    return NULL;
+}
+
+static CoglOffscreen *
+create_offscreen (CoglContext *cogl_context,
+                  int          width,
+                  int          height)
+{
+  CoglTexture2D *texture_2d;
+  CoglOffscreen *offscreen;
+  GError *error = NULL;
+
+  texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
+  offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
+
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (offscreen), &error))
+    meta_fatal ("Couldn't allocate framebuffer: %s", error->message);
+
+  return offscreen;
+}
+
+static void
+meta_renderer_x11_nested_resize_legacy_view (MetaRendererX11Nested *renderer_x11_nested,
+                                             int                    width,
+                                             int                    height)
+{
+  MetaRenderer *renderer = META_RENDERER (renderer_x11_nested);
+  MetaBackend *backend = meta_get_backend ();
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  MetaRendererView *legacy_view;
+  cairo_rectangle_int_t view_layout;
+  CoglOffscreen *fake_onscreen;
+
+  legacy_view = get_legacy_view (renderer);
+
+  clutter_stage_view_get_layout (CLUTTER_STAGE_VIEW (legacy_view),
+                                 &view_layout);
+  if (view_layout.width == width &&
+      view_layout.height == height)
+    return;
+
+  view_layout = (cairo_rectangle_int_t) {
+      .width = width,
+        .height = height
+  };
+
+  fake_onscreen = create_offscreen (cogl_context, width, height);
+
+  g_object_set (G_OBJECT (legacy_view),
+                "layout", &view_layout,
+                "framebuffer", COGL_FRAMEBUFFER (fake_onscreen),
+                NULL);
+}
+
+void
+meta_renderer_x11_nested_ensure_legacy_view (MetaRendererX11Nested *renderer_x11_nested,
+                                             int                    width,
+                                             int                    height)
+{
+  MetaRenderer *renderer = META_RENDERER (renderer_x11_nested);
+  MetaBackend *backend = meta_get_backend ();
+  ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
+  CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
+  cairo_rectangle_int_t view_layout;
+  CoglOffscreen *fake_onscreen;
+  MetaRendererView *legacy_view;
+
+  if (get_legacy_view (renderer))
+    {
+      meta_renderer_x11_nested_resize_legacy_view (renderer_x11_nested,
+                                                   width, height);
+      return;
+    }
+
+  fake_onscreen = create_offscreen (cogl_context, width, height);
+
+  view_layout = (cairo_rectangle_int_t) {
+    .width = width,
+    .height = height
+  };
+  legacy_view = g_object_new (META_TYPE_RENDERER_VIEW,
+                              "layout", &view_layout,
+                              "framebuffer", COGL_FRAMEBUFFER (fake_onscreen),
+                              NULL);
+
+  meta_renderer_set_legacy_view (renderer, legacy_view);
+}
+
+static MetaRendererView *
 meta_renderer_x11_nested_create_view (MetaRenderer       *renderer,
                                       MetaLogicalMonitor *logical_monitor)
 {
@@ -77,10 +175,8 @@ meta_renderer_x11_nested_create_view (MetaRenderer       *renderer,
   MetaMonitorTransform view_transform;
   int view_scale;
   int width, height;
-  CoglTexture2D *texture_2d;
   CoglOffscreen *fake_onscreen;
   CoglOffscreen *offscreen;
-  GError *error = NULL;
 
   view_transform = calculate_view_transform (monitor_manager, logical_monitor);
 
@@ -89,26 +185,25 @@ meta_renderer_x11_nested_create_view (MetaRenderer       *renderer,
   else
     view_scale = 1;
 
-  width = logical_monitor->rect.width * view_scale;
-  height = logical_monitor->rect.height * view_scale;
-
-  texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
-  fake_onscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
-
-  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (fake_onscreen), &error))
-    meta_fatal ("Couldn't allocate framebuffer: %s", error->message);
-
-  if (view_transform != META_MONITOR_TRANSFORM_NORMAL)
+  if (meta_monitor_transform_is_rotated (view_transform))
     {
-      texture_2d = cogl_texture_2d_new_with_size (cogl_context, width, height);
-      offscreen = cogl_offscreen_new_with_texture (COGL_TEXTURE (texture_2d));
-      if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (offscreen), &error))
-        meta_fatal ("Couldn't allocate offscreen framebuffer: %s", error->message);
+      width = logical_monitor->rect.height;
+      height = logical_monitor->rect.width;
     }
   else
     {
-      offscreen = NULL;
+      width = logical_monitor->rect.width;
+      height = logical_monitor->rect.height;
     }
+  width *= view_scale;
+  height *= view_scale;
+
+  fake_onscreen = create_offscreen (cogl_context, width, height);
+
+  if (view_transform != META_MONITOR_TRANSFORM_NORMAL)
+    offscreen = create_offscreen (cogl_context, width, height);
+  else
+    offscreen = NULL;
 
   return g_object_new (META_TYPE_RENDERER_VIEW,
                        "layout", &logical_monitor->rect,

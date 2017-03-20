@@ -28,6 +28,7 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-renderer.h"
+#include "backends/x11/nested/meta-renderer-x11-nested.h"
 #include "clutter/clutter-mutter.h"
 
 static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
@@ -53,6 +54,25 @@ typedef struct _ClutterStageX11View
   ClutterStageViewCogl *view;
 } MetaStageX11NestedView;
 
+static void
+meta_stage_x11_nested_resize (ClutterStageWindow *stage_window,
+                              gint                width,
+                              gint                height)
+{
+  if (!meta_is_stage_views_enabled ())
+    {
+      MetaBackend *backend = meta_get_backend ();
+      MetaRenderer *renderer = meta_backend_get_renderer (backend);
+      MetaRendererX11Nested *renderer_x11_nested =
+        META_RENDERER_X11_NESTED (renderer);
+
+      meta_renderer_x11_nested_ensure_legacy_view (renderer_x11_nested,
+                                                   width, height);
+    }
+
+  clutter_stage_window_parent_iface->resize (stage_window, width, height);
+}
+
 static gboolean
 meta_stage_x11_nested_can_clip_redraws (ClutterStageWindow *stage_window)
 {
@@ -65,10 +85,7 @@ meta_stage_x11_nested_get_views (ClutterStageWindow *stage_window)
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
 
-  if (meta_is_stage_views_enabled ())
-    return meta_renderer_get_views (renderer);
-  else
-    return clutter_stage_window_parent_iface->get_views (stage_window);
+  return meta_renderer_get_views (renderer);
 }
 
 static void
@@ -81,12 +98,6 @@ meta_stage_x11_nested_finish_frame (ClutterStageWindow *stage_window)
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglFramebuffer *onscreen = COGL_FRAMEBUFFER (stage_x11->onscreen);
   GList *l;
-
-  /*
-   * If we are in legacy mode, the stage is already on the onscreen.
-   */
-  if (!meta_is_stage_views_enabled ())
-    return;
 
   if (!stage_nested->pipeline)
     stage_nested->pipeline = cogl_pipeline_new (clutter_backend->cogl_context);
@@ -177,9 +188,9 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
   clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
 
+  iface->resize = meta_stage_x11_nested_resize;
   iface->can_clip_redraws = meta_stage_x11_nested_can_clip_redraws;
   iface->unrealize = meta_stage_x11_nested_unrealize;
   iface->get_views = meta_stage_x11_nested_get_views;
   iface->finish_frame = meta_stage_x11_nested_finish_frame;
 }
-
