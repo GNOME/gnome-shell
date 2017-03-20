@@ -1362,7 +1362,11 @@ const NMDeviceWireless = new Lang.Class({
         if (!this._device.active_connection)
             return false;
 
-        let connection = this._settings.get_connection_by_path(this._device.active_connection.connection);
+        let connectionPath = this._device.active_connection.connection;
+        if (!connectionPath)
+            return false;
+
+        let connection = this._settings.get_connection_by_path(connectionPath);
         if (!connection)
             return false;
 
