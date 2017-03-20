@@ -1,3 +1,9 @@
+3.24.0
+======
+
+Translations:
+  Yuri Myasoedov [ru], Rūdolfs Mazurs [lv], Jordi Mas [ca]
+
 3.23.92
 =======
 * Properly handle EGLOutput acquire errors [Jonas, Miguel; #779112]
