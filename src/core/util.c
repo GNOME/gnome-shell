@@ -470,7 +470,9 @@ meta_fatal (const char *format, ...)
   gchar *str;
   FILE *out;
 
-  g_return_if_fail (format != NULL);
+  g_warn_if_fail (format);
+  if (!format)
+    meta_exit (META_EXIT_ERROR);
 
   va_start (args, format);
   str = g_strdup_vprintf (format, args);
