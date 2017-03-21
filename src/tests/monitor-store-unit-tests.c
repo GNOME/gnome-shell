@@ -52,6 +52,7 @@ typedef struct _MonitorTestCaseLogicalMonitor
 {
   MetaRectangle layout;
   int scale;
+  MetaMonitorTransform transform;
   gboolean is_primary;
   gboolean is_presentation;
   MonitorTestCaseMonitor monitors[MAX_N_MONITORS];
@@ -143,6 +144,9 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
       g_assert_cmpint (logical_monitor_config->scale,
                        ==,
                        config_expect->logical_monitors[i].scale);
+      g_assert_cmpint (logical_monitor_config->transform,
+                       ==,
+                       config_expect->logical_monitors[i].transform);
       g_assert_cmpint (logical_monitor_config->is_primary,
                        ==,
                        config_expect->logical_monitors[i].is_primary);
@@ -571,6 +575,160 @@ meta_test_monitor_store_mirrored (void)
   check_monitor_configurations (&expect);
 }
 
+static void
+meta_test_monitor_store_first_rotated (void)
+{
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 0,
+              .width = 768,
+              .height = 1024
+            },
+            .scale = 1,
+            .transform = META_MONITOR_TRANSFORM_270,
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1024,
+                  .height = 768,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          },
+          {
+            .layout = {
+              .x = 768,
+              .y = 0,
+              .width = 1024,
+              .height = 768
+            },
+            .scale = 1,
+            .transform = META_MONITOR_TRANSFORM_NORMAL,
+            .is_primary = FALSE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-2",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1024,
+                  .height = 768,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          }
+        },
+        .n_logical_monitors = 2
+      }
+    },
+    .n_configurations = 1
+  };
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  set_custom_monitor_config ("first-rotated.xml");
+
+  check_monitor_configurations (&expect);
+}
+
+static void
+meta_test_monitor_store_second_rotated (void)
+{
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 256,
+              .width = 1024,
+              .height = 768
+            },
+            .scale = 1,
+            .transform = META_MONITOR_TRANSFORM_NORMAL,
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1024,
+                  .height = 768,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          },
+          {
+            .layout = {
+              .x = 1024,
+              .y = 0,
+              .width = 768,
+              .height = 1024
+            },
+            .scale = 1,
+            .transform = META_MONITOR_TRANSFORM_90,
+            .is_primary = FALSE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-2",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1024,
+                  .height = 768,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          }
+        },
+        .n_logical_monitors = 2
+      }
+    },
+    .n_configurations = 1
+  };
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  set_custom_monitor_config ("second-rotated.xml");
+
+  check_monitor_configurations (&expect);
+}
+
 void
 init_monitor_store_tests (void)
 {
@@ -586,4 +744,8 @@ init_monitor_store_tests (void)
                    meta_test_monitor_store_scale);
   g_test_add_func ("/backends/monitor-store/mirrored",
                    meta_test_monitor_store_mirrored);
+  g_test_add_func ("/backends/monitor-store/first-rotated",
+                   meta_test_monitor_store_first_rotated);
+  g_test_add_func ("/backends/monitor-store/second-rotated",
+                   meta_test_monitor_store_second_rotated);
 }
