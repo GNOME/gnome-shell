@@ -1,26 +1,26 @@
 # Hungarian translation for gnome-shell.
-# Copyright 2009-2016 Free Software Foundation, Inc.
+# Copyright 2009-2017 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
 # Balázs Meskó <meskobalazs at gmail dot com>, 2014.
-# Balázs Úr <urbalazs at gmail dot com>, 2012, 2014, 2015, 2016.
+# Balázs Úr <urbalazs at gmail dot com>, 2012, 2014, 2015, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-01 09:59+0000\n"
-"PO-Revision-Date: 2017-03-01 14:37+0100\n"
-"Last-Translator: Meskó Balázs <meskobalazs@gmail.com>\n"
+"POT-Creation-Date: 2017-03-20 18:14+0000\n"
+"PO-Revision-Date: 2017-03-21 16:08+0100\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -339,7 +339,7 @@ msgstr "Hiba történt a(z) %s beállításablakának betöltésekor:"
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:939
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:947
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -387,7 +387,7 @@ msgstr "Felhasználónév: "
 msgid "Login Window"
 msgstr "Bejelentkezési ablak"
 
-#: js/gdm/util.js:341
+#: js/gdm/util.js:342
 msgid "Authentication error"
 msgstr "Hitelesítési hiba"
 
@@ -396,7 +396,7 @@ msgstr "Hitelesítési hiba"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:473
+#: js/gdm/util.js:474
 msgid "(or swipe finger)"
 msgstr "(vagy húzza le az ujját)"
 
@@ -551,11 +551,11 @@ msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:62 js/ui/status/location.js:427
+#: js/ui/accessDialog.js:62 js/ui/status/location.js:405
 msgid "Deny Access"
 msgstr "Hozzáférés tiltása"
 
-#: js/ui/accessDialog.js:63 js/ui/status/location.js:430
+#: js/ui/accessDialog.js:63 js/ui/status/location.js:408
 msgid "Grant Access"
 msgstr "Hozzáférés megadása"
 
@@ -755,7 +755,7 @@ msgid "Type again:"
 msgstr "Írja be újra:"
 
 #: js/ui/components/networkAgent.js:140 js/ui/status/network.js:272
-#: js/ui/status/network.js:366 js/ui/status/network.js:942
+#: js/ui/status/network.js:366 js/ui/status/network.js:950
 msgid "Connect"
 msgstr "Kapcsolódás"
 
@@ -830,7 +830,7 @@ msgstr "Mobil széles sávú hálózat jelszava"
 msgid "A password is required to connect to “%s”."
 msgstr "Jelszó szükséges a kapcsolódáshoz a következőhöz: „%s”."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1747
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1755
 msgid "Network Manager"
 msgstr "Hálózatkezelő"
 
@@ -856,7 +856,7 @@ msgstr "Elnézést, ez nem sikerült. Próbálja újra."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:767
+#: js/ui/components/telepathyClient.js:799
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s mostantól %s néven ismert"
@@ -931,20 +931,25 @@ msgid "%s, then %s, followed by %s later."
 msgstr "%s, utána: %s, később: %s."
 
 #: js/ui/dateMenu.js:300
+#| msgid "Select a network"
+msgid "Select a location…"
+msgstr "Válasszon egy helyet…"
+
+#: js/ui/dateMenu.js:303
 msgid "Loading…"
 msgstr "Betöltés…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:306
+#: js/ui/dateMenu.js:309
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Hőérzet: %s."
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:312
 msgid "Go online for weather information"
 msgstr "Időjárás-információkért kapcsolódjon az internetre"
 
-#: js/ui/dateMenu.js:311
+#: js/ui/dateMenu.js:314
 msgid "Weather information is currently unavailable"
 msgstr "Az időjárás-információk jelenleg nem érhetőek el"
 
@@ -1121,51 +1126,51 @@ msgstr "Tálca elrejtése"
 msgid "Status Icons"
 msgstr "Állapotikonok"
 
-#: js/ui/lookingGlass.js:643
+#: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
 msgstr "Nincsenek kiterjesztések telepítve"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:697
+#: js/ui/lookingGlass.js:696
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s nem adott hibát."
 
-#: js/ui/lookingGlass.js:703
+#: js/ui/lookingGlass.js:702
 msgid "Hide Errors"
 msgstr "Hibák elrejtése"
 
-#: js/ui/lookingGlass.js:707 js/ui/lookingGlass.js:767
+#: js/ui/lookingGlass.js:706 js/ui/lookingGlass.js:766
 msgid "Show Errors"
 msgstr "Hibák megjelenítése"
 
-#: js/ui/lookingGlass.js:716
+#: js/ui/lookingGlass.js:715
 msgid "Enabled"
 msgstr "Engedélyezve"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:719 src/gvc/gvc-mixer-control.c:1866
+#: js/ui/lookingGlass.js:718 src/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Tiltva"
 
-#: js/ui/lookingGlass.js:721
+#: js/ui/lookingGlass.js:720
 msgid "Error"
 msgstr "Hiba"
 
-#: js/ui/lookingGlass.js:723
+#: js/ui/lookingGlass.js:722
 msgid "Out of date"
 msgstr "Elavult"
 
-#: js/ui/lookingGlass.js:725
+#: js/ui/lookingGlass.js:724
 msgid "Downloading"
 msgstr "Letöltés"
 
-#: js/ui/lookingGlass.js:749
+#: js/ui/lookingGlass.js:748
 msgid "View Source"
 msgstr "Forrás megtekintése"
 
-#: js/ui/lookingGlass.js:758
+#: js/ui/lookingGlass.js:757
 msgid "Web Page"
 msgstr "Weblap"
 
@@ -1199,47 +1204,47 @@ msgstr "Áttekintés"
 msgid "Type to search…"
 msgstr "Gépeljen a kereséshez…"
 
-#: js/ui/padOsd.js:37
+#: js/ui/padOsd.js:103
 msgid "New shortcut…"
 msgstr "Új gyorsbillentyű…"
 
-#: js/ui/padOsd.js:86
+#: js/ui/padOsd.js:152
 msgid "Application defined"
 msgstr "Alkalmazás által meghatározott"
 
-#: js/ui/padOsd.js:87
+#: js/ui/padOsd.js:153
 msgid "Show on-screen help"
 msgstr "Súgó megjelenítése"
 
-#: js/ui/padOsd.js:88
+#: js/ui/padOsd.js:154
 msgid "Switch monitor"
 msgstr "Kijelzőváltás"
 
-#: js/ui/padOsd.js:89
+#: js/ui/padOsd.js:155
 msgid "Assign keystroke"
 msgstr "Billentyűleütés hozzárendelése"
 
-#: js/ui/padOsd.js:143
+#: js/ui/padOsd.js:209
 msgid "Done"
 msgstr "Kész"
 
-#: js/ui/padOsd.js:597
+#: js/ui/padOsd.js:698
 msgid "Edit…"
 msgstr "Szerkesztés…"
 
-#: js/ui/padOsd.js:610 js/ui/padOsd.js:665
+#: js/ui/padOsd.js:738 js/ui/padOsd.js:800
 msgid "None"
 msgstr "Nincs"
 
-#: js/ui/padOsd.js:648
+#: js/ui/padOsd.js:783
 msgid "Press a button to configure"
 msgstr "Válasszon egy beállítandó gombot"
 
-#: js/ui/padOsd.js:649
+#: js/ui/padOsd.js:784
 msgid "Press Esc to exit"
 msgstr "Nyomja meg az Esc gombot a kilépéshez"
 
-#: js/ui/padOsd.js:652
+#: js/ui/padOsd.js:787
 msgid "Press any key to exit"
 msgstr "Nyomjon meg egy gombot a kilépéshez"
 
@@ -1275,7 +1280,7 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Adjon meg egy parancsot"
 
-#: js/ui/runDialog.js:111 js/ui/windowMenu.js:162
+#: js/ui/runDialog.js:111 js/ui/windowMenu.js:160
 msgid "Close"
 msgstr "Bezárás"
 
@@ -1289,29 +1294,29 @@ msgstr "Újraindítás…"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/screenShield.js:85
+#: js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %B %d."
 
-#: js/ui/screenShield.js:144
+#: js/ui/screenShield.js:147
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d új üzenet"
 msgstr[1] "%d új üzenet"
 
-#: js/ui/screenShield.js:146
+#: js/ui/screenShield.js:149
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d új értesítés"
 msgstr[1] "%d új értesítés"
 
-#: js/ui/screenShield.js:449 js/ui/status/system.js:409
+#: js/ui/screenShield.js:452 js/ui/status/system.js:409
 msgid "Lock"
 msgstr "Zárolás"
 
-#: js/ui/screenShield.js:707
+#: js/ui/screenShield.js:715
 msgid "GNOME needs to lock the screen"
 msgstr "A GNOME-nak zárolnia kell a képernyőt"
 
@@ -1322,11 +1327,11 @@ msgstr "A GNOME-nak zárolnia kell a képernyőt"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:828 js/ui/screenShield.js:1295
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
 msgid "Unable to lock"
 msgstr "Nem lehet zárolni"
 
-#: js/ui/screenShield.js:829 js/ui/screenShield.js:1296
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
 msgid "Lock was blocked by an application"
 msgstr "A zárolást egy alkalmazás blokkolta"
 
@@ -1430,13 +1435,13 @@ msgstr "Ki"
 msgid "On"
 msgstr "Be"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1302
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1310
 msgid "Turn On"
 msgstr "Bekapcsolás"
 
 #: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
-#: js/ui/status/network.js:367 js/ui/status/network.js:1302
-#: js/ui/status/network.js:1417 js/ui/status/nightLight.js:47
+#: js/ui/status/network.js:367 js/ui/status/network.js:1310
+#: js/ui/status/network.js:1425 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Kikapcsolás"
@@ -1449,37 +1454,37 @@ msgstr "Fényerő"
 msgid "Show Keyboard Layout"
 msgstr "Billentyűzetkiosztás megjelenítése"
 
-#: js/ui/status/location.js:107 js/ui/status/location.js:215
+#: js/ui/status/location.js:88 js/ui/status/location.js:196
 msgid "Location Enabled"
 msgstr "Hely engedélyezve"
 
-#: js/ui/status/location.js:108 js/ui/status/location.js:216
+#: js/ui/status/location.js:89 js/ui/status/location.js:197
 msgid "Disable"
 msgstr "Letiltás"
 
-#: js/ui/status/location.js:109
+#: js/ui/status/location.js:90
 msgid "Privacy Settings"
 msgstr "Adatvédelmi beállítások"
 
-#: js/ui/status/location.js:214
+#: js/ui/status/location.js:195
 msgid "Location In Use"
 msgstr "Hely használatban"
 
-#: js/ui/status/location.js:218
+#: js/ui/status/location.js:199
 msgid "Location Disabled"
 msgstr "Hely letiltva"
 
-#: js/ui/status/location.js:219
+#: js/ui/status/location.js:200
 msgid "Enable"
 msgstr "Engedélyezés"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:436
+#: js/ui/status/location.js:414
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Elérheti a(z) %s a földrajzi hely adatait?"
 
-#: js/ui/status/location.js:438
+#: js/ui/status/location.js:416
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "A hely hozzáférése bármikor megváltoztatható az adatvédelmi beállításokban."
@@ -1489,7 +1494,7 @@ msgid "<unknown>"
 msgstr "<ismeretlen>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:465 js/ui/status/network.js:1331
+#: js/ui/status/network.js:465 js/ui/status/network.js:1339
 #, javascript-format
 msgid "%s Off"
 msgstr "%s ki"
@@ -1515,7 +1520,7 @@ msgid "%s Disconnecting"
 msgstr "%s leválasztása"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:483 js/ui/status/network.js:1323
+#: js/ui/status/network.js:483 js/ui/status/network.js:1331
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s kapcsolódás"
@@ -1555,7 +1560,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Mobil széles sáv beállításai"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:602 js/ui/status/network.js:1328
+#: js/ui/status/network.js:602 js/ui/status/network.js:1336
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s hardver letiltva"
@@ -1571,122 +1576,122 @@ msgstr "%s letiltva"
 msgid "Connect to Internet"
 msgstr "Kapcsolódás az internetre"
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:844
 msgid "Airplane Mode is On"
 msgstr "Repülőgép üzemmód be"
 
-#: js/ui/status/network.js:837
+#: js/ui/status/network.js:845
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "A Wi-Fi ki van kapcsolva repülőgép üzemmódban."
 
-#: js/ui/status/network.js:838
+#: js/ui/status/network.js:846
 msgid "Turn Off Airplane Mode"
 msgstr "Repülőgép üzemmód kikapcsolása"
 
-#: js/ui/status/network.js:847
+#: js/ui/status/network.js:855
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi ki"
 
-#: js/ui/status/network.js:848
+#: js/ui/status/network.js:856
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "A Wi-Fi-t be kell kapcsolni a hálózatra kapcsolódáshoz."
 
-#: js/ui/status/network.js:849
+#: js/ui/status/network.js:857
 msgid "Turn On Wi-Fi"
 msgstr "Wi-Fi bekapcsolása"
 
-#: js/ui/status/network.js:874
+#: js/ui/status/network.js:882
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi hálózatok"
 
-#: js/ui/status/network.js:876
+#: js/ui/status/network.js:884
 msgid "Select a network"
 msgstr "Válasszon egy hálózatot"
 
-#: js/ui/status/network.js:906
+#: js/ui/status/network.js:914
 msgid "No Networks"
 msgstr "Nincs hálózat"
 
-#: js/ui/status/network.js:927 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:935 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "A hardveres kapcsolóval kapcsolja ki"
 
-#: js/ui/status/network.js:1194
+#: js/ui/status/network.js:1202
 msgid "Select Network"
 msgstr "Válasszon hálózatot"
 
-#: js/ui/status/network.js:1200
+#: js/ui/status/network.js:1208
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi beállítások"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1319
+#: js/ui/status/network.js:1327
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s hotspot aktív"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1334
+#: js/ui/status/network.js:1342
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s nincs kapcsolódva"
 
-#: js/ui/status/network.js:1434
+#: js/ui/status/network.js:1442
 msgid "connecting…"
 msgstr "kapcsolódás…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1437
+#: js/ui/status/network.js:1445
 msgid "authentication required"
 msgstr "hitelesítés szükséges"
 
-#: js/ui/status/network.js:1439
+#: js/ui/status/network.js:1447
 msgid "connection failed"
 msgstr "a kapcsolódás meghiúsult"
 
-#: js/ui/status/network.js:1505 js/ui/status/network.js:1600
+#: js/ui/status/network.js:1513 js/ui/status/network.js:1608
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Hálózati beállítások"
 
-#: js/ui/status/network.js:1507
+#: js/ui/status/network.js:1515
 msgid "VPN Settings"
 msgstr "VPN beállítások"
 
-#: js/ui/status/network.js:1526
+#: js/ui/status/network.js:1534
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1536
+#: js/ui/status/network.js:1544
 msgid "VPN Off"
 msgstr "VPN ki"
 
-#: js/ui/status/network.js:1631
+#: js/ui/status/network.js:1639
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s vezetékes kapcsolat"
 msgstr[1] "%s vezetékes kapcsolat"
 
-#: js/ui/status/network.js:1635
+#: js/ui/status/network.js:1643
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Wi-Fi kapcsolat"
 msgstr[1] "%s Wi-Fi kapcsolat"
 
-#: js/ui/status/network.js:1639
+#: js/ui/status/network.js:1647
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s modemes kapcsolat"
 msgstr[1] "%s modemes kapcsolat"
 
-#: js/ui/status/network.js:1786
+#: js/ui/status/network.js:1794
 msgid "Connection failed"
 msgstr "Kapcsolódás meghiúsult"
 
-#: js/ui/status/network.js:1787
+#: js/ui/status/network.js:1795
 msgid "Activation of network connection failed"
 msgstr "A hálózati kapcsolat aktiválása meghiúsult"
 
@@ -1797,22 +1802,22 @@ msgstr "Oldalsáv"
 msgid "“%s” is ready"
 msgstr "„%s” kész"
 
-#: js/ui/windowManager.js:83
+#: js/ui/windowManager.js:84
 msgid "Do you want to keep these display settings?"
 msgstr "Meg szeretné tartani ezeket a kijelzőbeállításokat?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:102
+#: js/ui/windowManager.js:103
 msgid "Revert Settings"
 msgstr "Beállítások visszavonása"
 
-#: js/ui/windowManager.js:105
+#: js/ui/windowManager.js:106
 msgid "Keep Changes"
 msgstr "Módosítások megtartása"
 
-#: js/ui/windowManager.js:123
+#: js/ui/windowManager.js:124
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1821,7 +1826,7 @@ msgstr[1] "A beállítások módosításai %d másodperc múlva visszavonásra k
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:678
+#: js/ui/windowManager.js:679
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -1858,35 +1863,35 @@ msgstr "Mindig felül"
 msgid "Always on Visible Workspace"
 msgstr "Mindig a látható munkaterületen"
 
-#: js/ui/windowMenu.js:105
+#: js/ui/windowMenu.js:103
 msgid "Move to Workspace Left"
 msgstr "Áthelyezés a bal oldali munkaterületre"
 
-#: js/ui/windowMenu.js:110
+#: js/ui/windowMenu.js:108
 msgid "Move to Workspace Right"
 msgstr "Áthelyezés a jobb oldali munkaterületre"
 
-#: js/ui/windowMenu.js:115
+#: js/ui/windowMenu.js:113
 msgid "Move to Workspace Up"
 msgstr "Áthelyezés a felső munkaterületre"
 
-#: js/ui/windowMenu.js:120
+#: js/ui/windowMenu.js:118
 msgid "Move to Workspace Down"
 msgstr "Áthelyezés az alsó munkaterületre"
 
-#: js/ui/windowMenu.js:136
+#: js/ui/windowMenu.js:134
 msgid "Move to Monitor Up"
 msgstr "Áthelyezés a felső kijelzőre"
 
-#: js/ui/windowMenu.js:142
+#: js/ui/windowMenu.js:140
 msgid "Move to Monitor Down"
 msgstr "Áthelyezés az alsó kijelzőre"
 
-#: js/ui/windowMenu.js:148
+#: js/ui/windowMenu.js:146
 msgid "Move to Monitor Left"
 msgstr "Áthelyezés a bal oldali kijelzőre"
 
-#: js/ui/windowMenu.js:154
+#: js/ui/windowMenu.js:152
 msgid "Move to Monitor Right"
 msgstr "Áthelyezés a jobb oldali kijelzőre"
 
@@ -1921,20 +1926,20 @@ msgstr[1] "%u bemenet"
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
-#: src/main.c:381
+#: src/main.c:372
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: src/main.c:387
+#: src/main.c:378
 msgid "Mode used by GDM for login screen"
 msgstr "A GDM által a bejelentkezési képernyőhöz használt mód"
 
-#: src/main.c:393
+#: src/main.c:384
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
 
-#: src/main.c:399
+#: src/main.c:390
 msgid "List possible modes"
 msgstr "Lehetséges módok listázása"
 
@@ -1960,733 +1965,3 @@ msgstr "A jelszó nem lehet üres"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
-#~ msgid "Events"
-#~ msgstr "Események"
-
-#~ msgid "Notifications"
-#~ msgstr "Értesítések"
-
-#~ msgid "Clear section"
-#~ msgstr "Szakasz törlése"
-
-#~ msgid "Media"
-#~ msgstr "Adathordozó"
-
-#~ msgid "GNOME Shell Extension Preferences"
-#~ msgstr "GNOME Shell kiterjesztések beállításai"
-
-#~ msgid "Web Authentication Redirect"
-#~ msgstr "Web hitelesítés átirányítás"
-
-#~ msgid "%d x %d"
-#~ msgstr "%d x %d"
-
-#~ msgid "Not In Use"
-#~ msgstr "Nincs használatban"
-
-#~ msgid "Show the week date in the calendar"
-#~ msgstr "Hetek számának megjelenítése a naptárban"
-
-#~ msgid "If true, display the ISO week date in the calendar."
-#~ msgstr "Ha igazra van állítva, a naptárban megjelenik az ISO hétszám."
-
-#~ msgid "Use as Internet connection"
-#~ msgstr "Használat internetkapcsolatként"
-
-#~ msgid "%s is requesting access to your location."
-#~ msgstr "%s hozzáférést kér a földrajzi hely adataihoz."
-
-#~ msgid "GNOME Shell (wayland compositor)"
-#~ msgstr "GNOME Shell (wayland kompozitáló)"
-
-#~ msgid "%d Connected Device"
-#~ msgid_plural "%d Connected Devices"
-#~ msgstr[0] "%d eszköz kapcsolódott"
-#~ msgstr[1] "%d eszköz kapcsolódott"
-
-#~ msgid "Authentication required"
-#~ msgstr "Hitelesítés szükséges"
-
-#~ msgid "UPS"
-#~ msgstr "Szünetmentes táp"
-
-#~ msgid "Battery"
-#~ msgstr "Akkumulátor"
-
-#~ msgid "Airplane Mode"
-#~ msgstr "Repülőgép üzemmód"
-
-#~ msgctxt "event list time"
-#~ msgid "%H∶%M"
-#~ msgstr "%k.%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l∶%M %p"
-#~ msgstr "%l.%M  %p"
-
-#~ msgid "Invitation"
-#~ msgstr "Meghívás"
-
-#~ msgid "Call"
-#~ msgstr "Hívás"
-
-#~ msgid "File Transfer"
-#~ msgstr "Fájlátvitel"
-
-#~ msgid "Chat"
-#~ msgstr "Csevegés"
-
-#~ msgid "Invitation to %s"
-#~ msgstr "Meghívás ide: %s"
-
-#~ msgid "%s is inviting you to join %s"
-#~ msgstr "%s kéri, hogy csatlakozzon ehhez: %s"
-
-#~ msgid "Decline"
-#~ msgstr "Elutasítás"
-
-#~ msgid "Accept"
-#~ msgstr "Elfogadás"
-
-#~ msgid "Video call from %s"
-#~ msgstr "Videohívás tőle: %s"
-
-#~ msgid "Call from %s"
-#~ msgstr "Hívás tőle: %s"
-
-#~ msgid "Answer"
-#~ msgstr "Válasz"
-
-#~ msgid "%s is sending you %s"
-#~ msgstr "%s a következőt küldi: %s"
-
-#~ msgid "%s would like permission to see when you are online"
-#~ msgstr "%s engedélyt kér, hogy láthassa az Ön elérhető állapotát"
-
-#~ msgid "Authentication failed"
-#~ msgstr "A hitelesítés meghiúsult"
-
-#~ msgid "Encryption error"
-#~ msgstr "Titkosítási hiba"
-
-#~ msgid "Certificate not provided"
-#~ msgstr "Nincs megadva tanúsítvány"
-
-#~ msgid "Certificate untrusted"
-#~ msgstr "A tanúsítvány nem megbízható"
-
-#~ msgid "Certificate expired"
-#~ msgstr "A tanúsítvány lejárt"
-
-#~ msgid "Certificate not activated"
-#~ msgstr "A tanúsítvány nincs aktiválva"
-
-#~ msgid "Certificate hostname mismatch"
-#~ msgstr "A tanúsítvány gépneve eltér"
-
-#~ msgid "Certificate fingerprint mismatch"
-#~ msgstr "A tanúsítvány ujjlenyomata eltér"
-
-#~ msgid "Certificate self-signed"
-#~ msgstr "A tanúsítvány önaláírt"
-
-#~ msgid "Status is set to offline"
-#~ msgstr "Az állapot beállítva kilépettre"
-
-#~ msgid "Certificate is invalid"
-#~ msgstr "A tanúsítvány érvénytelen"
-
-#~ msgid "Connection has been refused"
-#~ msgstr "A kapcsolat visszautasítva"
-
-#~ msgid "Connection can't be established"
-#~ msgstr "A kapcsolat nem hozható létre"
-
-#~ msgid "Connection has been lost"
-#~ msgstr "A kapcsolat elveszett"
-
-#~ msgid "This account is already connected to the server"
-#~ msgstr "Ez a fiók már kapcsolódik a kiszolgálóhoz"
-
-#~ msgid ""
-#~ "Connection has been replaced by a new connection using the same resource"
-#~ msgstr ""
-#~ "A kapcsolatot leváltotta egy új, ugyanazt az erőforrást használó kapcsolat"
-
-#~ msgid "The account already exists on the server"
-#~ msgstr "A fiók már létezik a kiszolgálón"
-
-#~ msgid "Server is currently too busy to handle the connection"
-#~ msgstr "A kiszolgáló pillanatnyilag túl elfoglalt a kapcsolat kezeléséhez"
-
-#~ msgid "Certificate has been revoked"
-#~ msgstr "A tanúsítvány visszavonva"
-
-#~ msgid ""
-#~ "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-#~ msgstr ""
-#~ "A tanúsítvány nem biztonságos titkosító algoritmust használ, vagy "
-#~ "titkosításilag gyenge"
-
-#~ msgid ""
-#~ "The length of the server certificate, or the depth of the server "
-#~ "certificate chain, exceed the limits imposed by the cryptography library"
-#~ msgstr ""
-#~ "A kiszolgáló tanúsítványának hossza, vagy a kiszolgáló "
-#~ "tanúsítványláncának mélysége túllépi a titkosítási programkönyvtár "
-#~ "korlátozásait"
-
-#~ msgid "Internal error"
-#~ msgstr "Belső hiba"
-
-#~ msgid "Unable to connect to %s"
-#~ msgstr "Nem lehet kapcsolódni ehhez: %s"
-
-#~ msgid "View account"
-#~ msgstr "Fiók megtekintése"
-
-#~| msgid "Show the message tray"
-#~ msgid "Show the message list"
-#~ msgstr "Üzenetlista megjelenítése"
-
-#~ msgctxt "list sunday"
-#~ msgid "Su"
-#~ msgstr "V"
-
-#~ msgctxt "list monday"
-#~ msgid "M"
-#~ msgstr "H"
-
-#~ msgctxt "list tuesday"
-#~ msgid "T"
-#~ msgstr "K"
-
-#~ msgctxt "list wednesday"
-#~ msgid "W"
-#~ msgstr "Sze"
-
-#~ msgctxt "list thursday"
-#~ msgid "Th"
-#~ msgstr "Cs"
-
-#~ msgctxt "list friday"
-#~ msgid "F"
-#~ msgstr "P"
-
-#~ msgctxt "list saturday"
-#~ msgid "S"
-#~ msgstr "Szo"
-
-#~ msgid "Nothing Scheduled"
-#~ msgstr "Semmi sincs ütemezve"
-
-#~ msgid "Today"
-#~ msgstr "Ma"
-
-#~ msgid "Tomorrow"
-#~ msgstr "Holnap"
-
-#~ msgid "This week"
-#~ msgstr "Ezen a héten"
-
-#~ msgid "Next week"
-#~ msgstr "Jövő héten"
-
-#~ msgid "Removable Devices"
-#~ msgstr "Cserélhető eszközök"
-
-#~ msgid "Eject"
-#~ msgstr "Kiadás"
-
-#~ msgid "Unmute"
-#~ msgstr "Visszahangosítás"
-
-#~ msgid "Mute"
-#~ msgstr "Némítás"
-
-#~ msgid "Open Calendar"
-#~ msgstr "Naptár megnyitása"
-
-#~ msgid "Date & Time Settings"
-#~ msgstr "Dátum- és időbeállítások"
-
-#~ msgid "Open"
-#~ msgstr "Megnyitás"
-
-#~ msgid "Remove"
-#~ msgstr "Eltávolítás"
-
-#~ msgid "Clear Messages"
-#~ msgstr "Üzenetek törlése"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Értesítések beállításai"
-
-#~ msgid "Tray Menu"
-#~ msgstr "Tálcamenü"
-
-#~ msgid "No Messages"
-#~ msgstr "Nincs üzenet"
-
-#~ msgid "Message Tray"
-#~ msgstr "Üzenettálca"
-
-#~ msgid "Captive Portal"
-#~ msgstr "Fogoly portál"
-
-#~ msgid "The maximum accuracy level of location."
-#~ msgstr "A hely maximális pontossági szintje."
-
-#~ msgid ""
-#~ "Configures the maximum level of location accuracy applications are "
-#~ "allowed to see. Valid options are 'off' (disable location tracking), "
-#~ "'country', 'city', 'neighborhood', 'street', and 'exact' (typically "
-#~ "requires GPS receiver). Please keep in mind that this only controls what "
-#~ "GeoClue will allow applications to see and they can find user's location "
-#~ "on their own using network resources (albeit with street-level accuracy "
-#~ "at best)."
-#~ msgstr ""
-#~ "A földrajzi hely alkalmazások által látható maximális pontossági "
-#~ "szintjének megadása. A lehetséges értékek: „off” (helymeghatározás "
-#~ "kikapcsolása), „country” (ország), „city” (város), "
-#~ "„neighborhood” (városrész), „street” (utca) és „exact” (pontos - "
-#~ "általában GPS vevőt igényel). Ne feledje, hogy ez csak azt befolyásolja, "
-#~ "amit a GeoClue megenged az alkalmazásoknak, amelyek viszont saját maguk "
-#~ "is meghatározhatják a földrajzi helyet (de legjobb esetben is csak utca "
-#~ "szintű pontossággal)."
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "A gombok elrendezése az ablak címsorában"
-
-#~ msgid ""
-#~ "This key overrides the key in org.gnome.desktop.wm.preferences when "
-#~ "running GNOME Shell."
-#~ msgstr ""
-#~ "Ez a kulcs felülbírálja az org.gnome.desktop.wm.preferences helyen lévő "
-#~ "kulcsot, amikor a GNOME Shell fut."
-
-#~ msgid "Extension"
-#~ msgstr "Kiterjesztés"
-
-#~ msgid "Select an extension to configure using the combobox above."
-#~ msgstr "Válasszon egy beállítandó kiterjesztést a fenti legördülő menüből."
-
-#~ msgid "calendar:MY"
-#~ msgstr "calendar:YM"
-
-#~ msgid "unavailable"
-#~ msgstr "nem érhető el"
-
-#~ msgid "List of categories that should be displayed as folders"
-#~ msgstr "Mappaként megjelenítendő kategóriák listája"
-
-#~ msgid ""
-#~ "Each category name in this list will be represented as folder in the "
-#~ "application view, rather than being displayed inline in the main view."
-#~ msgstr ""
-#~ "A listában minden kategórianév egy mappaként lesz megjelenítve az "
-#~ "alkalmazás nézetben, nem pedig beágyazva a fő nézetben."
-
-#~ msgid "<b>%A</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%A</b>, <b>%H.%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-#~ msgstr "<b>%B</b> <b>%d</b>, <b>%H.%M</b>"
-
-#~ msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-#~ msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H.%M</b> "
-
-#~ msgid "Authorization request from %s"
-#~ msgstr "Felhatalmazási kérés a következőtől: %s"
-
-#~ msgid "Device %s wants to pair with this computer"
-#~ msgstr "Az eszköz (%s) párosítást kér a számítógéppel"
-
-#~ msgid "Allow"
-#~ msgstr "Engedélyezés"
-
-#~ msgid "Deny"
-#~ msgstr "Tiltás"
-
-#~ msgid "Device %s wants access to the service '%s'"
-#~ msgstr "A(z) %s eszköz szeretné használni a(z) „%s” szolgáltatást"
-
-#~ msgid "Grant this time only"
-#~ msgstr "Csak most"
-
-#~ msgid "Reject"
-#~ msgstr "Visszautasítás"
-
-#~ msgid "Pairing confirmation for %s"
-#~ msgstr "Párosítás megerősítése ehhez: %s"
-
-#~ msgid ""
-#~ "Please confirm whether the Passkey '%06d' matches the one on the device."
-#~ msgstr ""
-#~ "Erősítse meg, hogy a(z) „%06d” jelkulcs megegyezik az eszközön lévővel."
-
-#~ msgid "Matches"
-#~ msgstr "Megegyezik"
-
-#~ msgid "Does not match"
-#~ msgstr "Nem egyezik"
-
-#~ msgid "Pairing request for %s"
-#~ msgstr "Párosítási kérés ehhez: %s"
-
-#~ msgid "Please enter the PIN mentioned on the device."
-#~ msgstr "Adja meg az eszközön említett PIN-kódot."
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid ""
-#~ "Sorry, no wisdom for you today:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Elnézést, mára nincs bölcsesség:\n"
-#~ "%s"
-
-#~ msgid "%s the Oracle says"
-#~ msgstr "%s az orákulum ezt mondja"
-
-#~ msgctxt "event list time"
-#~ msgid "%H\\u2236%M"
-#~ msgstr "%H\\u2236%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l\\u2236%M\\u2009%p"
-#~ msgstr "%l\\u2236%M\\u2009%p"
-
-#~ msgid "Settings Menu"
-#~ msgstr "Beállítások menü"
-
-#~ msgid "Screenshots"
-#~ msgstr "Képernyőképek"
-
-#~ msgid "Record a screencast"
-#~ msgstr "Képernyővideó felvétele"
-
-#~ msgid ""
-#~ "Internally used to store the last IM presence explicitly set by the user. "
-#~ "The value here is from the TpConnectionPresenceType enumeration."
-#~ msgstr ""
-#~ "Belső használatra; a felhasználó által saját kezűleg beállított utolsó "
-#~ "azonnaliüzenő-állapot. Az itteni érték a TpConnectionPresenceType "
-#~ "felsorolásból származik."
-
-#~ msgid ""
-#~ "Internally used to store the last session presence status for the user. "
-#~ "The value here is from the GsmPresenceStatus enumeration."
-#~ msgstr ""
-#~ "Belső használatra; a felhasználóhoz beállított utolsó munkamenetjelenlét-"
-#~ "állapot. Az itteni érték a GsmPresenceStatus felsorolásból származik."
-
-#~ msgid "Keybinding to toggle the screen recorder"
-#~ msgstr "Billentyűtársítás a képernyőfelvevő megnyitásához"
-
-#~ msgid "Keybinding to start/stop the builtin screen recorder."
-#~ msgstr ""
-#~ "Billentyűtársítás a beépített képernyőfelvevő elindításához/leállításához."
-
-#~ msgid "Framerate used for recording screencasts."
-#~ msgstr "A képernyővideók felvételéhez használt képkockasebesség."
-
-#~ msgid ""
-#~ "The framerate of the resulting screencast recordered by GNOME Shell's "
-#~ "screencast recorder in frames-per-second."
-#~ msgstr ""
-#~ "A GNOME Shell képernyőfelvevője által felvett eredményül kapott "
-#~ "képernyővideó képkockasebessége képkocka/másodpercben."
-
-#~ msgid "The gstreamer pipeline used to encode the screencast"
-#~ msgstr "A képernyővideó kódolására használt GStreamer adatcsatorna"
-
-#~ msgid ""
-#~ "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#~ "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#~ "pad where the recorded video is recorded. It will normally have a "
-#~ "unconnected source pad; output from that pad will be written into the "
-#~ "output file. However the pipeline can also take care of its own output - "
-#~ "this might be used to send the output to an icecast server via shout2send "
-#~ "or similar. When unset or set to an empty value, the default pipeline "
-#~ "will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 "
-#~ "cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to "
-#~ "WEBM using the VP8 codec. %T is used as a placeholder for a guess at the "
-#~ "optimal thread count on the system."
-#~ msgstr ""
-#~ "Beállítja a felvételek kódolásához használt GStreamer adatcsatornát. A "
-#~ "gst-launch szintaxisát követi. Az adatcsatornának rendelkeznie kell egy "
-#~ "nem csatlakoztatott nyelőfelülettel, ahová a felvett videó felvételre "
-#~ "kerül. Normális esetben rendelkezni fog egy nem csatlakoztatott "
-#~ "nyelőfelülettel, amely felületről a kimenet a kimeneti fájlba kerül "
-#~ "kiírásra. Azonban az adatcsatorna is kezelheti a saját kimenetét – ennek "
-#~ "segítségével a kimenet elküldhető egy icecast kiszolgálóra a shout2send "
-#~ "vagy hasonló segítségével. Ha nincs beállítva, vagy üres értékre van "
-#~ "állítva, akkor az alapértelmezett adatcsatorna kerül felhasználásra. Ez "
-#~ "jelenleg: „vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 "
-#~ "deadline=1000000 threads=%T ! queue ! webmmux” és WEBM formátumba rögzít "
-#~ "a VP8 kodek használatával. A %T egy helykitöltő, a rendszeren optimális "
-#~ "szálmennyiség megtippelésére."
-
-#~ msgid "File extension used for storing the screencast"
-#~ msgstr "A képernyővideó tárolásához használt fájlkiterjesztés"
-
-#~ msgid ""
-#~ "The filename for recorded screencasts will be a unique filename based on "
-#~ "the current date, and use this extension. It should be changed when "
-#~ "recording to a different container format."
-#~ msgstr ""
-#~ "A rögzített képernyővideók fájlneve az aktuális dátumon alapuló egyedi "
-#~ "névvel, és ezzel a kiterjesztéssel fog rendelkezni. Más tárolóformátumba "
-#~ "való rögzítéskor módosítani kell."
-
-#~ msgid "Session"
-#~ msgstr "Munkamenet"
-
-#~ msgid "Power"
-#~ msgstr "Kikapcsolás"
-
-#~ msgid "Restart"
-#~ msgstr "Újraindítás"
-
-#~ msgid "Screencast from %d %t"
-#~ msgstr "Képernyővideó ekkor: %d %t"
-
-#~ msgid "Click Log Out to quit these applications and log out of the system."
-#~ msgstr ""
-#~ "Nyomja meg a Kijelentkezés gombot az alkalmazások bezárásához és a "
-#~ "kijelentkezéshez a rendszerből."
-
-#~ msgid "Logging out of the system."
-#~ msgstr "Kijelentkezés a rendszerből."
-
-#~ msgid "Click Power Off to quit these applications and power off the system."
-#~ msgstr ""
-#~ "Nyomja meg a Kikapcsolás gombot az alkalmazások bezárásához és a rendszer "
-#~ "kikapcsolásához."
-
-#~ msgid "Powering off the system."
-#~ msgstr "A rendszer kikapcsolása."
-
-#~ msgid "Click Restart to quit these applications and restart the system."
-#~ msgstr ""
-#~ "Nyomja meg az Újraindítás gombot az alkalmazások bezárásához és a "
-#~ "rendszer újraindításához."
-
-#~ msgid "Restarting the system."
-#~ msgstr "A rendszer újraindítása."
-
-#~ msgid "Volume, network, battery"
-#~ msgstr "Hangerő, hálózat, akkumulátor"
-
-#~ msgid "Shutting down might cause them to lose unsaved work."
-#~ msgstr "A leállítás miatt elveszhet a mentetlen munkájuk."
-
-#~ msgid "Whether to collect stats about applications usage"
-#~ msgstr "Statisztikák gyűjtése alkalmazások használatáról"
-
-#~ msgid ""
-#~ "The shell normally monitors active applications in order to present the "
-#~ "most used ones (e.g. in launchers). While this data will be kept private, "
-#~ "you may want to disable this for privacy reasons. Please note that doing "
-#~ "so won't remove already saved data."
-#~ msgstr ""
-#~ "A Shell általában figyeli az aktív alkalmazásokat a legtöbbet használtak "
-#~ "megjelenítése érdekében (például az indítóikonokban). Noha ezek az adatok "
-#~ "titkosak maradnak, magánszférájának védelme érdekében letilthatja ezek "
-#~ "gyűjtését. Ne feledje, hogy ez nem fogja a már mentett adatokat törölni."
-
-#~ msgid "Universal Access Settings"
-#~ msgstr "Akadálymentesítési beállítások"
-
-#~ msgid "Visibility"
-#~ msgstr "Láthatóság"
-
-#~ msgid "Set Up a New Device…"
-#~ msgstr "Új eszköz beállítása…"
-
-#~ msgid "Send Files…"
-#~ msgstr "Fájlok küldése…"
-
-#~ msgid "Keyboard Settings"
-#~ msgstr "Billentyűzetbeállítások"
-
-#~ msgid "Mouse Settings"
-#~ msgstr "Egérbeállítások"
-
-#~ msgid "Region & Language Settings"
-#~ msgstr "Területi és nyelvi beállítások"
-
-#~ msgid "disabled"
-#~ msgstr "tiltva"
-
-#~ msgid "cable unplugged"
-#~ msgstr "vezeték kihúzva"
-
-#~ msgid "More…"
-#~ msgstr "Több…"
-
-#~ msgid "Wired"
-#~ msgstr "Vezetékes"
-
-#~ msgid "Auto Ethernet"
-#~ msgstr "Auto Ethernet"
-
-#~ msgid "Auto broadband"
-#~ msgstr "Auto széles sáv"
-
-#~ msgid "Auto dial-up"
-#~ msgstr "Auto betárcsázós"
-
-#~ msgid "Auto %s"
-#~ msgstr "Auto %s"
-
-#~ msgid "Auto bluetooth"
-#~ msgstr "Auto Bluetooth"
-
-#~ msgid "Auto wireless"
-#~ msgstr "Auto vezeték nélküli"
-
-#~ msgid "Wi-Fi"
-#~ msgstr "Wi-Fi"
-
-#~ msgid "%d %s %d %s remaining"
-#~ msgstr "%d %s %d %s van hátra"
-
-#~ msgid "hour"
-#~ msgid_plural "hours"
-#~ msgstr[0] "óra"
-#~ msgstr[1] "óra"
-
-#~ msgid "minute"
-#~ msgid_plural "minutes"
-#~ msgstr[0] "perc"
-#~ msgstr[1] "perc"
-
-#~ msgid "AC Adapter"
-#~ msgstr "Hálózati csatlakozó"
-
-#~ msgid "Laptop Battery"
-#~ msgstr "Noteszgép-akkumulátor"
-
-#~ msgid "Monitor"
-#~ msgstr "Monitor"
-
-#~ msgid "Mouse"
-#~ msgstr "Egér"
-
-#~ msgid "PDA"
-#~ msgstr "PDA"
-
-#~ msgid "Cell Phone"
-#~ msgstr "Mobiltelefon"
-
-#~ msgid "Media Player"
-#~ msgstr "Médialejátszó"
-
-#~ msgid "Tablet"
-#~ msgstr "Táblagép"
-
-#~ msgid "Computer"
-#~ msgstr "Számítógép"
-
-#~ msgctxt "device"
-#~ msgid "Unknown"
-#~ msgstr "Ismeretlen"
-
-#~ msgid "Available"
-#~ msgstr "Elérhető"
-
-#~ msgid "Busy"
-#~ msgstr "Elfoglalt"
-
-#~ msgid "Invisible"
-#~ msgstr "Láthatatlan"
-
-#~ msgid "Away"
-#~ msgstr "Távol"
-
-#~ msgid "Idle"
-#~ msgstr "Ráér"
-
-#~ msgid "Your chat status will be set to busy"
-#~ msgstr "Csevegési állapota elfoglaltra lesz állítva"
-
-#~ msgid ""
-#~ "Notifications are now disabled, including chat messages. Your online "
-#~ "status has been adjusted to let others know that you might not see their "
-#~ "messages."
-#~ msgstr ""
-#~ "Az értesítések, beleértve a csevegési üzeneteket is, le lettek tiltva. A "
-#~ "kapcsolati állapota módosítva lett, így partnerei tudni fogják, hogy "
-#~ "esetleg nem fogja látni üzeneteiket."
-
-#~ msgid "Show full name in the user menu"
-#~ msgstr "Teljes név megjelenítése a felhasználói menüben"
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "Bejelentkezés"
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%k.%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l:%M %p"
-#~ msgstr "%p %l.%M"
-
-#~ msgid "tray"
-#~ msgstr "tálca"
-
-#~ msgid "More..."
-#~ msgstr "Több…"
-
-#~ msgid "United Kingdom"
-#~ msgstr "Egyesült Királyság"
-
-#~ msgid "Default"
-#~ msgstr "Alapértelmezett"
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "ALKALMAZÁSOK"
-
-#~ msgid "SETTINGS"
-#~ msgstr "BEÁLLÍTÁSOK"
-
-#~ msgid "Subscription request"
-#~ msgstr "Feliratkozási kérés"
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "Elküldve: <b>%A</b>, <b>%k.%M</b>"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "Elküldve: <b>%A</b>, %Y. <b>%B %d.</b>"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "A kapcsolódás meghiúsult ehhez: %s"
-
-#~ msgid "Reconnect"
-#~ msgstr "Újracsatlakozás"
-
-#~ msgid "Browse Files..."
-#~ msgstr "Fájlok tallózása…"
-
-#~ msgid "Error browsing device"
-#~ msgstr "Hiba az eszköz tallózásakor"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "A kért eszköz nem tallózható. A hiba: „%s”"
-
-#~ msgid "Wireless"
-#~ msgstr "Vezeték nélküli"
-
-#~ msgid "VPN Connections"
-#~ msgstr "VPN kapcsolatok"
-
-#~ msgid "System Settings"
-#~ msgstr "Rendszerbeállítások"
-
-#~ msgid "Your favorite Easter Egg"
-#~ msgstr "Kedvenc easter egged"
