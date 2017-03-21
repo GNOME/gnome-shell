@@ -10,6 +10,7 @@ const Signals = imports.signals;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const GObject = imports.gi.GObject;
 
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
@@ -77,7 +78,7 @@ Signals.addSignalMethods(TouchpadShowOverviewAction.prototype);
 const ShowOverviewAction = new Lang.Class({
     Name: 'ShowOverviewAction',
     Extends: Clutter.GestureAction,
-    Signals: { 'activated': {} },
+    Signals: { 'activated': { param_types: [GObject.TYPE_DOUBLE] } },
 
     _init : function() {
         this.parent();
