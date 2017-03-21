@@ -1304,7 +1304,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
 #define MONITORS_FORMAT "a" MONITOR_FORMAT
 
 #define LOGICAL_MONITOR_MONITORS_FORMAT "a" MONITOR_SPEC_FORMAT
-#define LOGICAL_MONITOR_FORMAT "(iidb" LOGICAL_MONITOR_MONITORS_FORMAT "a{sv})"
+#define LOGICAL_MONITOR_FORMAT "(iidub" LOGICAL_MONITOR_MONITORS_FORMAT "a{sv})"
 #define LOGICAL_MONITORS_FORMAT "a" LOGICAL_MONITOR_FORMAT
 
 static gboolean
@@ -1422,6 +1422,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              logical_monitor->rect.x,
                              logical_monitor->rect.y,
                              (double) logical_monitor->scale,
+                             logical_monitor->transform,
                              logical_monitor->is_primary,
                              &logical_monitor_monitors_builder,
                              NULL);
@@ -1583,7 +1584,7 @@ find_monitor_spec (MetaMonitorManager *manager,
 #define MONITOR_CONFIG_FORMAT "(s" MONITOR_MODE_SPEC_FORMAT "a{sv})"
 #define MONITOR_CONFIGS_FORMAT "a" MONITOR_CONFIG_FORMAT
 
-#define LOGICAL_MONITOR_CONFIG_FORMAT "(iidb" MONITOR_CONFIGS_FORMAT ")"
+#define LOGICAL_MONITOR_CONFIG_FORMAT "(iidub" MONITOR_CONFIGS_FORMAT ")"
 
 static MetaMonitorConfig *
 create_monitor_config_from_variant (MetaMonitorManager *manager,
@@ -1647,13 +1648,15 @@ create_monitor_config_from_variant (MetaMonitorManager *manager,
 
 static gboolean
 derive_logical_monitor_size (GList                       *monitor_configs,
-                             int                         *width,
-                             int                         *height,
+                             int                         *out_width,
+                             int                         *out_height,
                              double                       scale,
+                             MetaMonitorTransform         transform,
                              MetaLogicalMonitorLayoutMode layout_mode,
                              GError                     **error)
 {
   MetaMonitorConfig *monitor_config;
+  int width, height;
 
   if (!monitor_configs)
     {
@@ -1664,19 +1667,31 @@ derive_logical_monitor_size (GList                       *monitor_configs,
 
   monitor_config = monitor_configs->data;
 
+  if (meta_monitor_transform_is_rotated (transform))
+    {
+      width = monitor_config->mode_spec->height;
+      height = monitor_config->mode_spec->width;
+    }
+  else
+    {
+      width = monitor_config->mode_spec->width;
+      height = monitor_config->mode_spec->height;
+    }
+
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      *width = monitor_config->mode_spec->width / scale;
-      *height = monitor_config->mode_spec->height / scale;
-      return TRUE;
+      width /= scale;
+      height /= scale;
+      break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      *width = monitor_config->mode_spec->width;
-      *height = monitor_config->mode_spec->height;
-      return TRUE;
+      break;
     }
 
-  g_assert_not_reached ();
+  *out_width = width;
+  *out_height = height;
+
+  return TRUE;
 }
 
 static MetaLogicalMonitorConfig *
@@ -1688,6 +1703,7 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
   MetaLogicalMonitorConfig *logical_monitor_config;
   int x, y, width, height;
   double scale;
+  MetaMonitorTransform transform;
   gboolean is_primary;
   GVariantIter *monitor_configs_iter;
   GList *monitor_configs = NULL;
@@ -1696,6 +1712,7 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
                  &x,
                  &y,
                  &scale,
+                 &transform,
                  &is_primary,
                  &monitor_configs_iter);
 
@@ -1725,7 +1742,7 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
   g_variant_iter_free (monitor_configs_iter);
 
   if (!derive_logical_monitor_size (monitor_configs, &width, &height,
-                                    scale, layout_mode, error))
+                                    scale, transform, layout_mode, error))
     goto err;
 
   logical_monitor_config = g_new0 (MetaLogicalMonitorConfig, 1);
@@ -1736,7 +1753,7 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
       .width = width,
       .height = height
     },
-    .transform = META_MONITOR_TRANSFORM_NORMAL,
+    .transform = transform,
     .scale = (int) scale,
     .is_primary = is_primary,
     .monitor_configs = monitor_configs

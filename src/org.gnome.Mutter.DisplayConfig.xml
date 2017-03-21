@@ -342,6 +342,7 @@
 	* i x: x position
 	* i y: y position
 	* d scale: scale
+	* u transform: transform (see below)
 	* b primary: true if this is the primary logical monitor
 	* a(sss) monitors: monitors displaying this logical monitor
 	    * connector: name of the connector (e.g. DP-1, eDP-1 etc)
@@ -349,6 +350,16 @@
 	    * product: product name
 	    * serial: product serial
 	* a{sv} properties: possibly other properties
+
+	Posisble transform values:
+	  0: normal
+	  1: 90°
+	  2: 180°
+	  3: 270°
+	  4: flipped
+	  5: 90° flipped
+	  6: 180° flipped
+	  7: 270° flipped
 
 
 	@supported_scales is an ordered list of floating point numbers representing
@@ -387,7 +398,7 @@
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />
       <arg name="monitors" direction="out" type="a((ssss)a(iiddu)a{sv})" />
-      <arg name="logical_monitors" direction="out" type="a(iidba(ssss)a{sv})" />
+      <arg name="logical_monitors" direction="out" type="a(iiduba(ssss)a{sv})" />
       <arg name="supported_scales" direction="out" type="ad" />
       <arg name="properties" direction="out" type="a{sv}" />
     </method>
@@ -412,6 +423,7 @@
 	* i: layout x position
 	* i: layout y position
 	* d: scale
+	* u: transform (see GetCurrentState)
 	* b primary: true if this is the primary logical monitor
 	* a(siida{sv}): a list of monitors, each consisting of:
 	    * s: connector
@@ -432,7 +444,7 @@
     <method name="ApplyMonitorsConfig">
       <arg name="serial" direction="in" type="u" />
       <arg name="method" direction="in" type="u" />
-      <arg name="logical_monitors" direction="in" type="a(iidba(s(iid)a{sv}))" />
+      <arg name="logical_monitors" direction="in" type="a(iiduba(s(iid)a{sv}))" />
       <arg name="properties" direction="in" type="a{sv}" />
     </method>
   </interface>
