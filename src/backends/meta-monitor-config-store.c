@@ -50,6 +50,10 @@
  *           <rate>60.049972534179688</rate>
  *         </mode>
  *       </monitor>
+ *       <transform>
+ *         <rotation>right</rotation>
+ *         <flipped>no</flipped>
+ *       </transform>
  *       <primary>yes</primary>
  *       <presentation>no</presentation>
  *     </logicalmonitor>
@@ -97,6 +101,9 @@ typedef enum
   STATE_LOGICAL_MONITOR_PRIMARY,
   STATE_LOGICAL_MONITOR_PRESENTATION,
   STATE_LOGICAL_MONITOR_SCALE,
+  STATE_TRANSFORM,
+  STATE_TRANSFORM_ROTATION,
+  STATE_TRANSFORM_FLIPPED,
   STATE_MONITOR,
   STATE_MONITOR_SPEC,
   STATE_MONITOR_SPEC_CONNECTOR,
@@ -117,6 +124,8 @@ typedef struct
 
   GList *current_logical_monitor_configs;
   MetaMonitorSpec *current_monitor_spec;
+  gboolean current_transform_flipped;
+  MetaMonitorTransform current_transform;
   MetaMonitorModeSpec *current_monitor_mode_spec;
   MetaMonitorConfig *current_monitor_config;
   MetaLogicalMonitorConfig *current_logical_monitor_config;
@@ -221,6 +230,10 @@ handle_start_element (GMarkupParseContext  *context,
           {
             parser->state = STATE_LOGICAL_MONITOR_PRESENTATION;
           }
+        else if (g_str_equal (element_name, "transform"))
+          {
+            parser->state = STATE_TRANSFORM;
+          }
         else if (g_str_equal (element_name, "monitor"))
           {
             parser->current_monitor_config = g_new0 (MetaMonitorConfig, 1);;
@@ -245,6 +258,28 @@ handle_start_element (GMarkupParseContext  *context,
       {
         g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
                      "Invalid logical monitor element '%s'", element_name);
+        return;
+      }
+
+    case STATE_TRANSFORM:
+      {
+        if (g_str_equal (element_name, "rotation"))
+          {
+            parser->state = STATE_TRANSFORM_ROTATION;
+          }
+        else if (g_str_equal (element_name, "flipped"))
+          {
+            parser->state = STATE_TRANSFORM_FLIPPED;
+          }
+
+        return;
+      }
+
+    case STATE_TRANSFORM_ROTATION:
+    case STATE_TRANSFORM_FLIPPED:
+      {
+        g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                     "Invalid transform element '%s'", element_name);
         return;
       }
 
@@ -383,15 +418,25 @@ derive_logical_monitor_layout (MetaLogicalMonitorConfig    *logical_monitor_conf
         }
     }
 
+  if (meta_monitor_transform_is_rotated (logical_monitor_config->transform))
+    {
+      width = mode_height;
+      height = mode_width;
+    }
+  else
+    {
+      width = mode_width;
+      height = mode_height;
+    }
+
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      width = mode_width / logical_monitor_config->scale;
-      height = mode_height / logical_monitor_config->scale;
+      width /= logical_monitor_config->scale;
+      height /= logical_monitor_config->scale;
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      width = mode_width;
-      height = mode_height;
+      break;
     }
 
   logical_monitor_config->layout.width = width;
@@ -417,6 +462,32 @@ handle_end_element (GMarkupParseContext  *context,
     case STATE_LOGICAL_MONITOR_PRESENTATION:
       {
         parser->state = STATE_LOGICAL_MONITOR;
+        return;
+      }
+
+    case STATE_TRANSFORM:
+      {
+        g_assert (g_str_equal (element_name, "transform"));
+
+        parser->current_logical_monitor_config->transform =
+          parser->current_transform;
+        if (parser->current_transform_flipped)
+          {
+            parser->current_logical_monitor_config->transform +=
+              META_MONITOR_TRANSFORM_FLIPPED;
+          }
+
+        parser->current_transform = META_MONITOR_TRANSFORM_NORMAL;
+        parser->current_transform_flipped = FALSE;
+
+        parser->state = STATE_LOGICAL_MONITOR;
+        return;
+      }
+
+    case STATE_TRANSFORM_ROTATION:
+    case STATE_TRANSFORM_FLIPPED:
+      {
+        parser->state = STATE_TRANSFORM;
         return;
       }
 
@@ -687,6 +758,7 @@ handle_text (GMarkupParseContext *context,
     case STATE_MONITOR:
     case STATE_MONITOR_SPEC:
     case STATE_MONITOR_MODE:
+    case STATE_TRANSFORM:
       {
         if (!is_all_whitespace (text, text_len))
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
@@ -761,6 +833,31 @@ handle_text (GMarkupParseContext *context,
       {
         read_bool (text, text_len,
                    &parser->current_logical_monitor_config->is_presentation,
+                   error);
+        return;
+      }
+
+    case STATE_TRANSFORM_ROTATION:
+      {
+        if (strncmp (text, "normal", text_len) == 0)
+          parser->current_transform = META_MONITOR_TRANSFORM_NORMAL;
+        else if (strncmp (text, "left", text_len) == 0)
+          parser->current_transform = META_MONITOR_TRANSFORM_90;
+        else if (strncmp (text, "upside_down", text_len) == 0)
+          parser->current_transform = META_MONITOR_TRANSFORM_180;
+        else if (strncmp (text, "right", text_len) == 0)
+          parser->current_transform = META_MONITOR_TRANSFORM_270;
+        else
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       "Invalid rotation type %.*s", (int)text_len, text);
+
+        return;
+      }
+
+    case STATE_TRANSFORM_FLIPPED:
+      {
+        read_bool (text, text_len,
+                   &parser->current_transform_flipped,
                    error);
         return;
       }
