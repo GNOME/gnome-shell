@@ -34,6 +34,7 @@ struct _MetaMonitorManagerTest
   MetaMonitorManager parent;
 
   gboolean is_lid_closed;
+  gboolean handles_transforms;
 
   int tiled_monitor_count;
 
@@ -72,6 +73,15 @@ meta_monitor_manager_test_set_is_lid_closed (MetaMonitorManagerTest *manager_tes
                                              gboolean                is_lid_closed)
 {
   manager_test->is_lid_closed = is_lid_closed;
+}
+
+void
+meta_monitor_manager_test_set_handles_transforms (MetaMonitorManagerTest *manager_test,
+                                                  gboolean                handles_transforms)
+{
+  g_assert (handles_transforms || meta_is_stage_views_enabled());
+
+  manager_test->handles_transforms = handles_transforms;
 }
 
 int
@@ -361,7 +371,9 @@ meta_monitor_manager_test_is_transform_handled (MetaMonitorManager  *manager,
                                                 MetaCrtc            *crtc,
                                                 MetaMonitorTransform transform)
 {
-  return TRUE;
+  MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
+
+  return manager_test->handles_transforms;
 }
 
 static int
@@ -449,6 +461,8 @@ static void
 meta_monitor_manager_test_init (MetaMonitorManagerTest *manager_test)
 {
   g_assert (_initial_test_setup);
+
+  manager_test->handles_transforms = TRUE;
 
   manager_test->test_setup = _initial_test_setup;
 }
