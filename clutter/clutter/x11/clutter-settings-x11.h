@@ -6,7 +6,6 @@ static const struct {
   const char *xsetting_name;
   const char *settings_property;
 } _clutter_settings_map[] = {
-  { "Net/DoubleClickTime",     "double-click-time" },
   { "Net/DoubleClickDistance", "double-click-distance" },
   { "Net/DndDragThreshold",    "dnd-drag-threshold" },
   { "Gtk/FontName",            "font-name" },
