@@ -180,7 +180,8 @@ assign_monitor_crtc (MetaMonitor         *monitor,
    * as such.
    */
   first_monitor_config = data->logical_monitor_config->monitor_configs->data;
-  if (data->monitor_config == first_monitor_config &&
+  if (data->logical_monitor_config->is_primary &&
+      data->monitor_config == first_monitor_config &&
       meta_monitor_get_main_output (monitor) == output)
     assign_output_as_primary = TRUE;
   else
