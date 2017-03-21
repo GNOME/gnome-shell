@@ -73,6 +73,8 @@ mutter_built_sources += \
 	xdg-foreign-unstable-v1-server-protocol.h			\
 	linux-dmabuf-unstable-v1-protocol.c					\
 	linux-dmabuf-unstable-v1-server-protocol.h				\
+	keyboard-shortcuts-inhibit-unstable-v1-protocol.c		\
+	keyboard-shortcuts-inhibit-unstable-v1-server-protocol.h	\
 	$(NULL)
 endif
 
@@ -388,6 +390,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	wayland/meta-wayland-wl-shell.h		\
 	wayland/meta-wayland-gtk-shell.c	\
 	wayland/meta-wayland-gtk-shell.h	\
+	wayland/meta-wayland-inhibit-shortcuts.c \
+	wayland/meta-wayland-inhibit-shortcuts.h \
 	$(NULL)
 endif
 
@@ -650,3 +654,7 @@ endef
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code $< $@
 %-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header $< $@
+keyboard-shortcuts-inhibit-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+keyboard-shortcuts-inhibit-unstable-v1-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@

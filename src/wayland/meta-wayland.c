@@ -42,6 +42,7 @@
 #include "meta-wayland-tablet-manager.h"
 #include "meta-wayland-xdg-foreign.h"
 #include "meta-wayland-dma-buf.h"
+#include "meta-wayland-inhibit-shortcuts.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
 static char *_display_name_override;
@@ -357,6 +358,7 @@ meta_wayland_init (void)
   meta_wayland_pointer_constraints_init (compositor);
   meta_wayland_xdg_foreign_init (compositor);
   meta_wayland_dma_buf_init (compositor);
+  meta_wayland_keyboard_shortcuts_inhibit_init (compositor);
 
   if (!meta_xwayland_start (&compositor->xwayland_manager, compositor->wayland_display))
     g_error ("Failed to start X Wayland");
