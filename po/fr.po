@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-14 17:05+0000\n"
-"PO-Revision-Date: 2017-03-16 00:19+0100\n"
+"POT-Creation-Date: 2017-03-20 18:14+0000\n"
+"PO-Revision-Date: 2017-03-21 17:11+0100\n"
 "Last-Translator: Guillaume Bernard <contact.guib@laposte.net>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -365,7 +365,7 @@ msgstr ""
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:939
+#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:947
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -413,7 +413,7 @@ msgstr "Nom d'utilisateur : "
 msgid "Login Window"
 msgstr "Fenêtre de connexion"
 
-#: js/gdm/util.js:341
+#: js/gdm/util.js:342
 msgid "Authentication error"
 msgstr "Erreur d'authentification"
 
@@ -422,7 +422,7 @@ msgstr "Erreur d'authentification"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:473
+#: js/gdm/util.js:474
 msgid "(or swipe finger)"
 msgstr "(ou faites glisser le doigt)"
 
@@ -571,17 +571,17 @@ msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"La connexion à ce point d'accès n'est pas sûre. Les mots de passe et les autres "
-"informations que vous saisissez sur cette page peuvent êtres interceptées par "
-"des personnes autour de vous."
+"La connexion à ce point d'accès n'est pas sûre. Les mots de passe et les "
+"autres informations que vous saisissez sur cette page peuvent êtres "
+"interceptées par des personnes autour de vous."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:62 js/ui/status/location.js:427
+#: js/ui/accessDialog.js:62 js/ui/status/location.js:405
 msgid "Deny Access"
 msgstr "Refuser l'accès"
 
-#: js/ui/accessDialog.js:63 js/ui/status/location.js:430
+#: js/ui/accessDialog.js:63 js/ui/status/location.js:408
 msgid "Grant Access"
 msgstr "Accorder l'accès"
 
@@ -796,7 +796,7 @@ msgid "Type again:"
 msgstr "Saisissez à nouveau :"
 
 #: js/ui/components/networkAgent.js:140 js/ui/status/network.js:272
-#: js/ui/status/network.js:366 js/ui/status/network.js:942
+#: js/ui/status/network.js:366 js/ui/status/network.js:950
 msgid "Connect"
 msgstr "Se connecter"
 
@@ -871,7 +871,7 @@ msgstr "Mot de passe de la connexion mobile"
 msgid "A password is required to connect to “%s”."
 msgstr "Un mot de passe est requis pour se connecter à « %s »."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1747
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1755
 msgid "Network Manager"
 msgstr "Gestionnaire de réseau"
 
@@ -983,20 +983,24 @@ msgid "%s, then %s, followed by %s later."
 msgstr "%s, puis %s, suivi par %s plus tard."
 
 #: js/ui/dateMenu.js:300
+msgid "Select a location…"
+msgstr "Choisir un emplacement…"
+
+#: js/ui/dateMenu.js:303
 msgid "Loading…"
 msgstr "Chargement…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:306
+#: js/ui/dateMenu.js:309
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Température ressentie : %s"
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:312
 msgid "Go online for weather information"
 msgstr "Chercher les informations météorologiques en ligne"
 
-#: js/ui/dateMenu.js:311
+#: js/ui/dateMenu.js:314
 msgid "Weather information is currently unavailable"
 msgstr "Les informations météorologiques ne sont pas disponibles actuellement"
 
@@ -1338,29 +1342,29 @@ msgstr "Redémarrage…"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/screenShield.js:85
+#: js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A %d %B"
 
-#: js/ui/screenShield.js:144
+#: js/ui/screenShield.js:147
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nouveau message"
 msgstr[1] "%d nouveaux messages"
 
-#: js/ui/screenShield.js:146
+#: js/ui/screenShield.js:149
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nouvelle notification"
 msgstr[1] "%d nouvelles notifications"
 
-#: js/ui/screenShield.js:449 js/ui/status/system.js:409
+#: js/ui/screenShield.js:452 js/ui/status/system.js:409
 msgid "Lock"
 msgstr "Verrouiller"
 
-#: js/ui/screenShield.js:707
+#: js/ui/screenShield.js:715
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME a besoin de verrouiller l'écran"
 
@@ -1371,11 +1375,11 @@ msgstr "GNOME a besoin de verrouiller l'écran"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:828 js/ui/screenShield.js:1295
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
 msgid "Unable to lock"
 msgstr "Impossible de verrouiller"
 
-#: js/ui/screenShield.js:829 js/ui/screenShield.js:1296
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
 msgid "Lock was blocked by an application"
 msgstr "Le verrouillage a été bloqué par une application"
 
@@ -1479,13 +1483,13 @@ msgstr "Éteint"
 msgid "On"
 msgstr "Actif"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1302
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1310
 msgid "Turn On"
 msgstr "Activer"
 
 #: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
-#: js/ui/status/network.js:367 js/ui/status/network.js:1302
-#: js/ui/status/network.js:1417 js/ui/status/nightLight.js:47
+#: js/ui/status/network.js:367 js/ui/status/network.js:1310
+#: js/ui/status/network.js:1425 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Éteindre"
@@ -1498,37 +1502,37 @@ msgstr "Luminosité"
 msgid "Show Keyboard Layout"
 msgstr "Afficher la disposition du clavier"
 
-#: js/ui/status/location.js:107 js/ui/status/location.js:215
+#: js/ui/status/location.js:88 js/ui/status/location.js:196
 msgid "Location Enabled"
 msgstr "Localisation activée"
 
-#: js/ui/status/location.js:108 js/ui/status/location.js:216
+#: js/ui/status/location.js:89 js/ui/status/location.js:197
 msgid "Disable"
 msgstr "Désactiver"
 
-#: js/ui/status/location.js:109
+#: js/ui/status/location.js:90
 msgid "Privacy Settings"
 msgstr "Paramètres de confidentialité"
 
-#: js/ui/status/location.js:214
+#: js/ui/status/location.js:195
 msgid "Location In Use"
 msgstr "Localisation en cours d'utilisation"
 
-#: js/ui/status/location.js:218
+#: js/ui/status/location.js:199
 msgid "Location Disabled"
 msgstr "Localisation désactivée"
 
-#: js/ui/status/location.js:219
+#: js/ui/status/location.js:200
 msgid "Enable"
 msgstr "Activer"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:436
+#: js/ui/status/location.js:414
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Donner accès à votre position à %s ?"
 
-#: js/ui/status/location.js:438
+#: js/ui/status/location.js:416
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Les règles d'accès à la localisation peuvent à tout moment être modifiées "
@@ -1539,7 +1543,7 @@ msgid "<unknown>"
 msgstr "<inconnu>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:465 js/ui/status/network.js:1331
+#: js/ui/status/network.js:465 js/ui/status/network.js:1339
 #, javascript-format
 msgid "%s Off"
 msgstr "%s éteint"
@@ -1565,7 +1569,7 @@ msgid "%s Disconnecting"
 msgstr "Déconnexion de %s en cours"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:483 js/ui/status/network.js:1323
+#: js/ui/status/network.js:483 js/ui/status/network.js:1331
 #, javascript-format
 msgid "%s Connecting"
 msgstr "Connexion de %s en cours"
@@ -1605,7 +1609,7 @@ msgid "Mobile Broadband Settings"
 msgstr "Paramètres connexion mobile"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:602 js/ui/status/network.js:1328
+#: js/ui/status/network.js:602 js/ui/status/network.js:1336
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "Équipement %s désactivé"
@@ -1621,122 +1625,122 @@ msgstr "%s désactivé"
 msgid "Connect to Internet"
 msgstr "Se connecter à Internet"
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:844
 msgid "Airplane Mode is On"
 msgstr "Le mode avion est activé"
 
-#: js/ui/status/network.js:837
+#: js/ui/status/network.js:845
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Le Wi-Fi est désactivé quand le mode avion est activé."
 
-#: js/ui/status/network.js:838
+#: js/ui/status/network.js:846
 msgid "Turn Off Airplane Mode"
 msgstr "Désactiver le mode avion"
 
-#: js/ui/status/network.js:847
+#: js/ui/status/network.js:855
 msgid "Wi-Fi is Off"
 msgstr "Le Wi-Fi est désactivé"
 
-#: js/ui/status/network.js:848
+#: js/ui/status/network.js:856
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Le Wi-Fi a besoin d'être activé pour se connecter à un réseau."
 
-#: js/ui/status/network.js:849
+#: js/ui/status/network.js:857
 msgid "Turn On Wi-Fi"
 msgstr "Activer le Wi-Fi"
 
-#: js/ui/status/network.js:874
+#: js/ui/status/network.js:882
 msgid "Wi-Fi Networks"
 msgstr "Réseaux Wi-Fi"
 
-#: js/ui/status/network.js:876
+#: js/ui/status/network.js:884
 msgid "Select a network"
 msgstr "Choisir un réseau"
 
-#: js/ui/status/network.js:906
+#: js/ui/status/network.js:914
 msgid "No Networks"
 msgstr "Aucun réseau disponible"
 
-#: js/ui/status/network.js:927 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:935 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Utiliser l'interrupteur matériel pour éteindre"
 
-#: js/ui/status/network.js:1194
+#: js/ui/status/network.js:1202
 msgid "Select Network"
 msgstr "Sélectionner un réseau"
 
-#: js/ui/status/network.js:1200
+#: js/ui/status/network.js:1208
 msgid "Wi-Fi Settings"
 msgstr "Paramètres Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1319
+#: js/ui/status/network.js:1327
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Point d'accès %s actif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1334
+#: js/ui/status/network.js:1342
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s non connecté"
 
-#: js/ui/status/network.js:1434
+#: js/ui/status/network.js:1442
 msgid "connecting…"
 msgstr "connexion…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1437
+#: js/ui/status/network.js:1445
 msgid "authentication required"
 msgstr "authentification nécessaire"
 
-#: js/ui/status/network.js:1439
+#: js/ui/status/network.js:1447
 msgid "connection failed"
 msgstr "échec de connexion"
 
-#: js/ui/status/network.js:1505 js/ui/status/network.js:1600
+#: js/ui/status/network.js:1513 js/ui/status/network.js:1608
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Paramètres du réseau"
 
-#: js/ui/status/network.js:1507
+#: js/ui/status/network.js:1515
 msgid "VPN Settings"
 msgstr "Paramètres VPN"
 
-#: js/ui/status/network.js:1526
+#: js/ui/status/network.js:1534
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1536
+#: js/ui/status/network.js:1544
 msgid "VPN Off"
 msgstr "VPN désactivé"
 
-#: js/ui/status/network.js:1631
+#: js/ui/status/network.js:1639
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s connexion filaire."
 msgstr[1] "%s connexions filaires."
 
-#: js/ui/status/network.js:1635
+#: js/ui/status/network.js:1643
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s connexion Wi-Fi."
 msgstr[1] "%s connexions Wi-Fi."
 
-#: js/ui/status/network.js:1639
+#: js/ui/status/network.js:1647
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s connexion à un modem."
 msgstr[1] "%s connexions à des modem."
 
-#: js/ui/status/network.js:1786
+#: js/ui/status/network.js:1794
 msgid "Connection failed"
 msgstr "Échec de connexion"
 
-#: js/ui/status/network.js:1787
+#: js/ui/status/network.js:1795
 msgid "Activation of network connection failed"
 msgstr "L'activation de la connexion réseau a échoué"
 
