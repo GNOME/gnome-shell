@@ -3495,6 +3495,191 @@ meta_test_monitor_custom_second_rotated_config (void)
   check_monitor_configuration (&test_case);
 }
 
+static void
+meta_test_monitor_custom_second_rotated_tiled_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.000495910644531
+        },
+        {
+          .width = 400,
+          .height = 600,
+          .refresh_rate = 60.000495910644531
+        }
+      },
+      .n_modes = 2,
+      .outputs = {
+        {
+          .crtc = 0,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+        },
+        {
+          .crtc = -1,
+          .modes = { 1 },
+          .n_modes = 1,
+          .preferred_mode = 1,
+          .possible_crtcs = { 1, 2 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 0,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        },
+        {
+          .crtc = -1,
+          .modes = { 1 },
+          .n_modes = 1,
+          .preferred_mode = 1,
+          .possible_crtcs = { 1, 2 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 1,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        }
+      },
+      .n_outputs = 3,
+      .crtcs = {
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 3
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        },
+        {
+          .outputs = { 1, 2 },
+          .n_outputs = 2,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .crtc_modes = {
+                {
+                  .output = 1,
+                  .crtc_mode = 1,
+                },
+                {
+                  .output = 2,
+                  .crtc_mode = 1,
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 2,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 256, .width = 1024, .height = 768 },
+          .scale = 1
+        },
+        {
+          .monitors = { 1 },
+          .n_monitors = 1,
+          .layout = { .x = 1024, .y = 0, .width = 600, .height = 800 },
+          .scale = 1,
+          .transform = META_MONITOR_TRANSFORM_90
+        }
+      },
+      .n_logical_monitors = 2,
+      .primary_logical_monitor = 0,
+      .n_outputs = 3,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 1,
+          .transform = META_MONITOR_TRANSFORM_90,
+          .x = 0,
+          .y = 400,
+        },
+        {
+          .current_mode = 1,
+          .transform = META_MONITOR_TRANSFORM_90
+        }
+      },
+      .n_crtcs = 3,
+      .n_tiled_monitors = 1,
+      .screen_width = 1024 + 600,
+      .screen_height = 1024
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  set_custom_monitor_config ("second-rotated-tiled.xml");
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -3549,4 +3734,6 @@ init_monitor_tests (void)
                    meta_test_monitor_custom_first_rotated_config);
   g_test_add_func ("/backends/monitor/custom/second-rotated-config",
                    meta_test_monitor_custom_second_rotated_config);
+  g_test_add_func ("/backends/monitor/custom/second-rotated-tiled-config",
+                   meta_test_monitor_custom_second_rotated_tiled_config);
 }
