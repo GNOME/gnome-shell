@@ -387,21 +387,6 @@ calendar_appointment_init (CalendarAppointment  *appointment,
                                                    default_zone);
 }
 
-static icaltimezone *
-resolve_timezone_id (const char *tzid,
-                     ECalClient *source)
-{
-  icaltimezone *retval;
-
-  retval = icaltimezone_get_builtin_timezone_from_tzid (tzid);
-  if (!retval)
-    {
-      e_cal_client_get_timezone_sync (source, tzid, &retval, NULL, NULL);
-    }
-
-  return retval;
-}
-
 static CalendarAppointment *
 calendar_appointment_new (icalcomponent        *ical,
                           ECalClient           *cal)
@@ -624,7 +609,6 @@ app_load_events (App *app)
     {
       ECalClient *cal = E_CAL_CLIENT (l->data);
       GError *error;
-      GSList *objects, *j;
       ECalClientView *view;
       CollectAppointmentsData data;
 
