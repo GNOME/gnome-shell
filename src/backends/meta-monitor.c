@@ -412,6 +412,7 @@ static void
 meta_monitor_normal_calculate_crtc_pos (MetaMonitor         *monitor,
                                         MetaMonitorMode     *monitor_mode,
                                         MetaOutput          *output,
+                                        MetaMonitorTransform crtc_transform,
                                         int                 *out_x,
                                         int                 *out_y)
 {
@@ -482,6 +483,7 @@ add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
 static void
 calculate_tile_coordinate (MetaMonitor         *monitor,
                            MetaOutput          *output,
+                           MetaMonitorTransform crtc_transform,
                            int                 *out_x,
                            int                 *out_y)
 {
@@ -495,12 +497,45 @@ calculate_tile_coordinate (MetaMonitor         *monitor,
     {
       MetaOutput *other_output = l->data;
 
-      if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
-          other_output->tile_info.loc_h_tile < output->tile_info.loc_h_tile)
-        x += other_output->tile_info.tile_w;
-      if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
-          other_output->tile_info.loc_v_tile < output->tile_info.loc_v_tile)
-        y += other_output->tile_info.tile_h;
+      switch (crtc_transform)
+        {
+        case META_MONITOR_TRANSFORM_NORMAL:
+        case META_MONITOR_TRANSFORM_FLIPPED:
+          if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
+              other_output->tile_info.loc_h_tile < output->tile_info.loc_h_tile)
+            x += other_output->tile_info.tile_w;
+          if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
+              other_output->tile_info.loc_v_tile < output->tile_info.loc_v_tile)
+            y += other_output->tile_info.tile_h;
+          break;
+        case META_MONITOR_TRANSFORM_180:
+        case META_MONITOR_TRANSFORM_FLIPPED_180:
+          if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
+              other_output->tile_info.loc_h_tile > output->tile_info.loc_h_tile)
+            x += other_output->tile_info.tile_w;
+          if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
+              other_output->tile_info.loc_v_tile > output->tile_info.loc_v_tile)
+            y += other_output->tile_info.tile_h;
+          break;
+        case META_MONITOR_TRANSFORM_270:
+        case META_MONITOR_TRANSFORM_FLIPPED_270:
+          if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
+              other_output->tile_info.loc_h_tile < output->tile_info.loc_h_tile)
+            y += other_output->tile_info.tile_w;
+          if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
+              other_output->tile_info.loc_v_tile < output->tile_info.loc_v_tile)
+            x += other_output->tile_info.tile_h;
+          break;
+        case META_MONITOR_TRANSFORM_90:
+        case META_MONITOR_TRANSFORM_FLIPPED_90:
+          if (other_output->tile_info.loc_v_tile == output->tile_info.loc_v_tile &&
+              other_output->tile_info.loc_h_tile > output->tile_info.loc_h_tile)
+            y += other_output->tile_info.tile_w;
+          if (other_output->tile_info.loc_h_tile == output->tile_info.loc_h_tile &&
+              other_output->tile_info.loc_v_tile > output->tile_info.loc_v_tile)
+            x += other_output->tile_info.tile_h;
+          break;
+        }
     }
 
   *out_x = x;
@@ -759,6 +794,7 @@ static void
 meta_monitor_tiled_calculate_crtc_pos (MetaMonitor         *monitor,
                                        MetaMonitorMode     *monitor_mode,
                                        MetaOutput          *output,
+                                       MetaMonitorTransform crtc_transform,
                                        int                 *out_x,
                                        int                 *out_y)
 {
@@ -766,7 +802,7 @@ meta_monitor_tiled_calculate_crtc_pos (MetaMonitor         *monitor,
 
   if (mode_tiled->is_tiled)
     {
-      calculate_tile_coordinate (monitor, output,
+      calculate_tile_coordinate (monitor, output, crtc_transform,
                                  out_x, out_y);
     }
   else
@@ -919,12 +955,14 @@ void
 meta_monitor_calculate_crtc_pos (MetaMonitor         *monitor,
                                  MetaMonitorMode     *monitor_mode,
                                  MetaOutput          *output,
+                                 MetaMonitorTransform crtc_transform,
                                  int                 *out_x,
                                  int                 *out_y)
 {
   META_MONITOR_GET_CLASS (monitor)->calculate_crtc_pos (monitor,
                                                         monitor_mode,
                                                         output,
+                                                        crtc_transform,
                                                         out_x,
                                                         out_y);
 }

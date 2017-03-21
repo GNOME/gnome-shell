@@ -67,6 +67,7 @@ struct _MetaMonitorClass
   void (* calculate_crtc_pos) (MetaMonitor         *monitor,
                                MetaMonitorMode     *monitor_mode,
                                MetaOutput          *output,
+                               MetaMonitorTransform crtc_transform,
                                int                 *out_x,
                                int                 *out_y);
 };
@@ -149,6 +150,7 @@ GList * meta_monitor_get_modes (MetaMonitor *monitor);
 void meta_monitor_calculate_crtc_pos (MetaMonitor         *monitor,
                                       MetaMonitorMode     *monitor_mode,
                                       MetaOutput          *output,
+                                      MetaMonitorTransform crtc_transform,
                                       int                 *out_x,
                                       int                 *out_y);
 

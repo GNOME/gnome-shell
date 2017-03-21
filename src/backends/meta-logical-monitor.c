@@ -79,6 +79,7 @@ meta_logical_monitor_new (MetaMonitorManager       *monitor_manager,
   logical_monitor->number = monitor_number;
   logical_monitor->winsys_id = main_output->winsys_id;
   logical_monitor->scale = logical_monitor_config->scale;
+  logical_monitor->transform = logical_monitor_config->transform;
   logical_monitor->in_fullscreen = -1;
   logical_monitor->rect = logical_monitor_config->layout;
 

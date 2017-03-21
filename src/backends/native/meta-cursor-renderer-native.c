@@ -249,6 +249,7 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
 
   meta_monitor_calculate_crtc_pos (monitor, monitor_mode,
                                    monitor_crtc_mode->output,
+                                   META_MONITOR_TRANSFORM_NORMAL,
                                    &crtc_x, &crtc_y);
 
   scaled_crtc_rect = (MetaRectangle) {

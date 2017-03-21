@@ -101,6 +101,7 @@ find_unassigned_crtc (MetaOutput *output,
 
 typedef struct
 {
+  MetaMonitorManager *monitor_manager;
   MetaLogicalMonitorConfig *logical_monitor_config;
   MetaMonitorConfig *monitor_config;
   GPtrArray *crtc_infos;
@@ -117,6 +118,8 @@ assign_monitor_crtc (MetaMonitor         *monitor,
   MonitorAssignmentData *data = user_data;
   MetaOutput *output;
   MetaCrtc *crtc;
+  MetaMonitorTransform transform;
+  MetaMonitorTransform crtc_transform;
   int crtc_x, crtc_y;
   MetaCrtcInfo *crtc_info;
   MetaOutputInfo *output_info;
@@ -137,7 +140,15 @@ assign_monitor_crtc (MetaMonitor         *monitor,
       return FALSE;
     }
 
-  meta_monitor_calculate_crtc_pos (monitor, mode, output,
+  transform = data->logical_monitor_config->transform;
+  if (meta_monitor_manager_is_transform_handled (data->monitor_manager,
+                                                 crtc,
+                                                 transform))
+    crtc_transform = transform;
+  else
+    crtc_transform = META_MONITOR_TRANSFORM_NORMAL;
+
+  meta_monitor_calculate_crtc_pos (monitor, mode, output, crtc_transform,
                                    &crtc_x, &crtc_y);
 
   crtc_info = g_slice_new0 (MetaCrtcInfo);
@@ -146,7 +157,7 @@ assign_monitor_crtc (MetaMonitor         *monitor,
     .mode = monitor_crtc_mode->crtc_mode,
     .x = crtc_x,
     .y = crtc_y,
-    .transform = META_MONITOR_TRANSFORM_NORMAL,
+    .transform = crtc_transform,
     .outputs = g_ptr_array_new ()
   };
   g_ptr_array_add (crtc_info->outputs, output);
@@ -229,6 +240,7 @@ assign_monitor_crtcs (MetaMonitorManager       *manager,
     }
 
   data = (MonitorAssignmentData) {
+    .monitor_manager = manager,
     .logical_monitor_config = logical_monitor_config,
     .monitor_config = monitor_config,
     .crtc_infos = crtc_infos,
@@ -925,17 +937,24 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor
       return FALSE;
     }
 
+  if (meta_monitor_transform_is_rotated (logical_monitor_config->transform))
+    {
+      expected_mode_width = logical_monitor_config->layout.height;
+      expected_mode_height = logical_monitor_config->layout.width;
+    }
+  else
+    {
+      expected_mode_width = logical_monitor_config->layout.width;
+      expected_mode_height = logical_monitor_config->layout.height;
+    }
+
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      expected_mode_width = (logical_monitor_config->layout.width *
-                             logical_monitor_config->scale);
-      expected_mode_height = (logical_monitor_config->layout.height *
-                              logical_monitor_config->scale);
+      expected_mode_width *= logical_monitor_config->scale;
+      expected_mode_height *= logical_monitor_config->scale;
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      expected_mode_width = logical_monitor_config->layout.width;
-      expected_mode_height = logical_monitor_config->layout.height;
       break;
     }
 

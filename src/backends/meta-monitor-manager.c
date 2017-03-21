@@ -1736,6 +1736,7 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
       .width = width,
       .height = height
     },
+    .transform = META_MONITOR_TRANSFORM_NORMAL,
     .scale = (int) scale,
     .is_primary = is_primary,
     .monitor_configs = monitor_configs
