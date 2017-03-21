@@ -158,11 +158,25 @@ static void
 derive_monitor_layout (MetaMonitor   *monitor,
                        MetaRectangle *layout)
 {
-  MetaOutput *main_output;
+  GList *outputs;
+  GList *l;
+  int x = INT_MAX;
+  int y = INT_MAX;
 
-  main_output = meta_monitor_get_main_output (monitor);
-  layout->x = main_output->crtc->rect.x;
-  layout->y = main_output->crtc->rect.y;
+  outputs = meta_monitor_get_outputs (monitor);
+  for (l = outputs; l; l = l->next)
+    {
+      MetaOutput *output = l->data;
+
+      if (!output->crtc)
+        continue;
+
+      x = MIN (x, output->crtc->rect.x);
+      y = MIN (y, output->crtc->rect.y);
+    }
+
+  layout->x = x;
+  layout->y = y;
 
   meta_monitor_derive_dimensions (monitor, &layout->width, &layout->height);
 }
