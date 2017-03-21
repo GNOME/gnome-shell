@@ -707,6 +707,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
       else
         {
           MetaCrtc *crtc = &monitor_manager->crtcs[i];
+          MetaLogicalMonitor *logical_monitor = crtc->logical_monitor;
           MetaCrtcMode *expected_current_mode =
             &monitor_manager->modes[test_case->expect.crtcs[i].current_mode];
           int crtc_x, crtc_y;
@@ -717,10 +718,30 @@ check_monitor_configuration (MonitorTestCase *test_case)
                             ==,
                             test_case->expect.crtcs[i].transform);
 
-          get_compensated_crtc_position (crtc, &crtc_x, &crtc_y);
+          if (meta_is_stage_views_enabled ())
+            {
+              get_compensated_crtc_position (crtc, &crtc_x, &crtc_y);
 
-          g_assert_cmpint (crtc_x, ==, test_case->expect.crtcs[i].x);
-          g_assert_cmpint (crtc_y, ==, test_case->expect.crtcs[i].y);
+              g_assert_cmpint (crtc_x, ==, test_case->expect.crtcs[i].x);
+              g_assert_cmpint (crtc_y, ==, test_case->expect.crtcs[i].y);
+            }
+          else
+            {
+              int expect_crtc_x;
+              int expect_crtc_y;
+
+              g_assert_cmpuint (logical_monitor->transform,
+                                ==,
+                                crtc->transform);
+
+              expect_crtc_x = (test_case->expect.crtcs[i].x +
+                               logical_monitor->rect.x);
+              expect_crtc_y = (test_case->expect.crtcs[i].y +
+                               logical_monitor->rect.y);
+
+              g_assert_cmpint (crtc->rect.x, ==, expect_crtc_x);
+              g_assert_cmpint (crtc->rect.y, ==, expect_crtc_y);
+            }
         }
     }
 }
@@ -1452,6 +1473,12 @@ meta_test_monitor_hidpi_linear_config (void)
   if (!is_using_monitor_config_manager ())
     {
       g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
       return;
     }
 
@@ -2788,6 +2815,12 @@ meta_test_monitor_custom_scale_config (void)
       return;
     }
 
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
+      return;
+    }
+
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
   set_custom_monitor_config ("scale.xml");
@@ -2921,6 +2954,12 @@ meta_test_monitor_custom_tiled_config (void)
   if (!is_using_monitor_config_manager ())
     {
       g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
       return;
     }
 
@@ -3076,6 +3115,12 @@ meta_test_monitor_custom_tiled_custom_resolution_config (void)
   if (!is_using_monitor_config_manager ())
     {
       g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
       return;
     }
 

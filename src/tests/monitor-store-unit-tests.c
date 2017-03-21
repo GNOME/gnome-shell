@@ -510,6 +510,12 @@ meta_test_monitor_store_scale (void)
       return;
     }
 
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
+      return;
+    }
+
   set_custom_monitor_config ("scale.xml");
 
   check_monitor_configurations (&expect);

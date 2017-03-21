@@ -268,7 +268,10 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manage
       manager->screen_width = 1;
       manager->screen_height = 1;
 
-      meta_monitor_manager_rebuild (manager, NULL);
+      if (meta_is_stage_views_enabled ())
+        meta_monitor_manager_rebuild (manager, NULL);
+      else
+        meta_monitor_manager_rebuild_derived (manager);
 
       return TRUE;
     }
@@ -296,7 +299,11 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manage
   g_ptr_array_free (output_infos, TRUE);
 
   update_screen_size (manager, config);
-  meta_monitor_manager_rebuild (manager, config);
+
+  if (meta_is_stage_views_enabled ())
+    meta_monitor_manager_rebuild (manager, config);
+  else
+    meta_monitor_manager_rebuild_derived (manager);
 
   return TRUE;
 }
