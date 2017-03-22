@@ -290,6 +290,7 @@ st_widget_texture_cache_changed (StTextureCache *cache,
   StWidget *actor = ST_WIDGET (user_data);
   StWidgetPrivate *priv = st_widget_get_instance_private (actor);
   StThemeNode *node = priv->theme_node;
+  StBorderImage *border_image;
   gboolean changed = FALSE;
   GFile *theme_file;
 
@@ -303,7 +304,8 @@ st_widget_texture_cache_changed (StTextureCache *cache,
       changed = TRUE;
     }
 
-  theme_file = st_border_image_get_file (st_theme_node_get_border_image (node));
+  border_image = st_theme_node_get_border_image (node);
+  theme_file = border_image ? st_border_image_get_file (border_image) : NULL;
   if ((theme_file != NULL) && g_file_equal (theme_file, file))
     {
       st_theme_node_invalidate_border_image (node);
