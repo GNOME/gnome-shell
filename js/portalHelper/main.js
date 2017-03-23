@@ -12,7 +12,6 @@ const WebKit = imports.gi.WebKit2;
 const _ = Gettext.gettext;
 
 const Config = imports.misc.config;
-const FileUtils = imports.misc.fileUtils;
 
 const PortalHelperResult = {
     CANCELLED: 0,
@@ -141,12 +140,8 @@ const PortalWindow = new Lang.Class({
         this._doneCallback = doneCallback;
         this._lastRecheck = 0;
         this._recheckAtExit = false;
-        let cacheDir = GLib.Dir.make_tmp("gnome-shell-portal-helper-XXXXXXXX");
-        this._cacheDir = Gio.File.new_for_path(cacheDir);
 
-        let dataManager = new WebKit.WebsiteDataManager({ base_data_directory: cacheDir,
-                                                          base_cache_directory: cacheDir });
-        this._webContext = new WebKit.WebContext({ website_data_manager: dataManager });
+        this._webContext = WebKit.WebContext.new_ephemeral();
         this._webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
 
         this._webView = WebKit.WebView.new_with_context(this._webContext);
@@ -169,7 +164,6 @@ const PortalWindow = new Lang.Class({
 
     destroyWindow: function() {
         this.destroy();
-        FileUtils.recursivelyDeleteDir(this._cacheDir, true);
     },
 
     _syncUri: function() {
@@ -362,6 +356,11 @@ function initEnvironment() {
 
 function main(argv) {
     initEnvironment();
+
+    if (!WebKit.WebContext.new_ephemeral) {
+        log('WebKitGTK 2.16 is required for the portal-helper, see https://bugzilla.gnome.org/show_bug.cgi?id=780453');
+        return 1;
+    }
 
     Gettext.bindtextdomain(Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
     Gettext.textdomain(Config.GETTEXT_PACKAGE);
