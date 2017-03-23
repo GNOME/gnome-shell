@@ -1047,15 +1047,79 @@ legacy_restore_previous_config (MetaMonitorManager *manager)
   meta_monitor_config_restore_previous (manager->legacy_config, manager);
 }
 
+static void
+restore_previous_config (MetaMonitorManager *manager)
+{
+  MetaMonitorsConfig *previous_config;
+  GError *error = NULL;
+
+  previous_config =
+    meta_monitor_config_manager_get_previous (manager->config_manager);
+
+  if (previous_config)
+    {
+      MetaMonitorsConfigMethod method;
+
+      method = META_MONITORS_CONFIG_METHOD_TEMPORARY;
+      g_object_ref (previous_config);
+      if (meta_monitor_manager_apply_monitors_config (manager,
+                                                      previous_config,
+                                                      method,
+                                                      &error))
+        {
+          g_object_unref (previous_config);
+          return;
+        }
+      else
+        {
+          g_object_unref (previous_config);
+          g_warning ("Failed to restore previous configuration: %s",
+                     error->message);
+          g_error_free (error);
+        }
+    }
+
+  meta_monitor_manager_ensure_configured (manager);
+}
+
 static gboolean
 save_config_timeout (gpointer user_data)
 {
   MetaMonitorManager *manager = user_data;
 
-  legacy_restore_previous_config (manager);
+  switch (manager->pending_persistent_system)
+    {
+    case META_MONITOR_CONFIG_SYSTEM_LEGACY:
+      legacy_restore_previous_config (manager);
+      break;
+    case META_MONITOR_CONFIG_SYSTEM_MANAGER:
+      restore_previous_config (manager);
+      break;
+    }
 
   manager->persistent_timeout_id = 0;
   return G_SOURCE_REMOVE;
+}
+
+static void
+cancel_persistent_confirmation (MetaMonitorManager *manager)
+{
+  g_source_remove (manager->persistent_timeout_id);
+  manager->persistent_timeout_id = 0;
+}
+
+static void
+request_persistent_confirmation (MetaMonitorManager     *manager,
+                                 MetaMonitorConfigSystem system)
+{
+  manager->pending_persistent_system = system;
+  manager->persistent_timeout_id = g_timeout_add_seconds (20,
+                                                          save_config_timeout,
+                                                          manager);
+  g_source_set_name_by_id (manager->persistent_timeout_id,
+                           "[mutter] save_config_timeout");
+
+  g_signal_emit (manager, signals[CONFIRM_DISPLAY_CHANGE], 0);
 }
 
 static gboolean
@@ -1276,10 +1340,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
      don't save it, but also don't queue for restoring it.
   */
   if (manager->persistent_timeout_id && persistent)
-    {
-      g_source_remove (manager->persistent_timeout_id);
-      manager->persistent_timeout_id = 0;
-    }
+    cancel_persistent_confirmation (manager);
 
   meta_monitor_manager_apply_configuration (manager,
                                             (MetaCrtcInfo**)crtc_infos->pdata,
@@ -1298,11 +1359,8 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
   */
   meta_monitor_config_update_current (manager->legacy_config, manager);
   if (persistent)
-    {
-      manager->persistent_timeout_id = g_timeout_add_seconds (20, save_config_timeout, manager);
-      g_source_set_name_by_id (manager->persistent_timeout_id, "[mutter] save_config_timeout");
-      g_signal_emit (manager, signals[CONFIRM_DISPLAY_CHANGE], 0);
-    }
+    request_persistent_confirmation (manager,
+                                     META_MONITOR_CONFIG_SYSTEM_LEGACY);
 
   meta_dbus_display_config_complete_apply_configuration (skeleton, invocation);
   return TRUE;
@@ -1919,6 +1977,9 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
       return TRUE;
     }
 
+  if (manager->persistent_timeout_id)
+    cancel_persistent_confirmation (manager);
+
   if (!meta_monitor_manager_apply_monitors_config (manager,
                                                    config,
                                                    method,
@@ -1931,6 +1992,11 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
       g_object_unref (config);
       return TRUE;
     }
+
+  if (method == META_MONITORS_CONFIG_METHOD_PERSISTENT)
+    request_persistent_confirmation (manager,
+                                     META_MONITOR_CONFIG_SYSTEM_MANAGER);
+
 
   meta_dbus_display_config_complete_apply_monitors_config (skeleton, invocation);
 
@@ -1952,6 +2018,16 @@ legacy_confirm_configuration (MetaMonitorManager *manager,
     meta_monitor_config_restore_previous (manager->legacy_config, manager);
 }
 
+static void
+confirm_configuration (MetaMonitorManager *manager,
+                       gboolean            confirmed)
+{
+  if (confirmed)
+    meta_monitor_config_manager_save_current (manager->config_manager);
+  else
+    restore_previous_config (manager);
+}
+
 void
 meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
                                             gboolean            ok)
@@ -1962,10 +2038,16 @@ meta_monitor_manager_confirm_configuration (MetaMonitorManager *manager,
       return;
     }
 
-  g_source_remove (manager->persistent_timeout_id);
-  manager->persistent_timeout_id = 0;
-
-  legacy_confirm_configuration (manager, ok);
+  cancel_persistent_confirmation (manager);
+  switch (manager->pending_persistent_system)
+    {
+    case META_MONITOR_CONFIG_SYSTEM_LEGACY:
+      legacy_confirm_configuration (manager, ok);
+      break;
+    case META_MONITOR_CONFIG_SYSTEM_MANAGER:
+      confirm_configuration (manager, ok);
+      break;
+    }
 }
 
 static gboolean

@@ -36,6 +36,7 @@ struct _MetaMonitorConfigManager
   MetaMonitorConfigStore *config_store;
 
   MetaMonitorsConfig *current_config;
+  MetaMonitorsConfig *previous_config;
 };
 
 G_DEFINE_TYPE (MetaMonitorConfigManager, meta_monitor_config_manager,
@@ -677,13 +678,30 @@ void
 meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_manager,
                                          MetaMonitorsConfig       *config)
 {
+  g_set_object (&config_manager->previous_config,
+                config_manager->current_config);
   g_set_object (&config_manager->current_config, config);
+}
+
+void
+meta_monitor_config_manager_save_current (MetaMonitorConfigManager *config_manager)
+{
+  g_return_if_fail (config_manager->current_config);
+
+  meta_monitor_config_store_add (config_manager->config_store,
+                                 config_manager->current_config);
 }
 
 MetaMonitorsConfig *
 meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manager)
 {
   return config_manager->current_config;
+}
+
+MetaMonitorsConfig *
+meta_monitor_config_manager_get_previous (MetaMonitorConfigManager *config_manager)
+{
+  return config_manager->previous_config;
 }
 
 static void
@@ -693,6 +711,7 @@ meta_monitor_config_manager_dispose (GObject *object)
     META_MONITOR_CONFIG_MANAGER (object);
 
   g_clear_object (&config_manager->current_config);
+  g_clear_object (&config_manager->previous_config);
 
   G_OBJECT_CLASS (meta_monitor_config_manager_parent_class)->dispose (object);
 }

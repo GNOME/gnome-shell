@@ -88,6 +88,10 @@ void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_m
 
 MetaMonitorsConfig * meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manager);
 
+MetaMonitorsConfig * meta_monitor_config_manager_get_previous (MetaMonitorConfigManager *config_manager);
+
+void meta_monitor_config_manager_save_current (MetaMonitorConfigManager *config_manager);
+
 MetaMonitorsConfig * meta_monitors_config_new (GList                       *logical_monitor_configs,
                                                MetaLogicalMonitorLayoutMode layout_mode);
 

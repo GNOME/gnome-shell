@@ -260,6 +260,12 @@ struct _MetaOutputInfo
   gboolean     is_underscanning;
 };
 
+typedef enum _MetaMonitorConfigSystem
+{
+  META_MONITOR_CONFIG_SYSTEM_LEGACY,
+  META_MONITOR_CONFIG_SYSTEM_MANAGER
+} MetaMonitorConfigSystem;
+
 #define META_TYPE_MONITOR_MANAGER            (meta_monitor_manager_get_type ())
 #define META_MONITOR_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER, MetaMonitorManager))
 #define META_MONITOR_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_MANAGER, MetaMonitorManagerClass))
@@ -308,7 +314,9 @@ struct _MetaMonitorManager
 
   int dbus_name_id;
 
+  MetaMonitorConfigSystem pending_persistent_system;
   int persistent_timeout_id;
+
   MetaMonitorConfig *legacy_config;
 
   MetaMonitorConfigManager *config_manager;
