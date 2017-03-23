@@ -275,7 +275,7 @@ AS_IF([test "$enable_egl_device" = "yes"], [
   AC_DEFINE([HAVE_EGL_DEVICE],[1], [Defined if EGLDevice support is enabled])
 ])
 
-MUTTER_WAYLAND_MODULES="wayland-server >= 1.6.90"
+MUTTER_WAYLAND_MODULES="wayland-server >= 1.13.0"
 
 AC_ARG_ENABLE(wayland,
   AS_HELP_STRING([--disable-wayland], [disable mutter on wayland support]),,
