@@ -1417,6 +1417,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
       GVariantBuilder modes_builder;
       GVariantBuilder monitor_properties_builder;
       GList *k;
+      gboolean is_builtin;
 
       current_mode = meta_monitor_get_current_mode (monitor);
       preferred_mode = meta_monitor_get_preferred_mode (monitor);
@@ -1457,6 +1458,11 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                  "is_underscanning",
                                  g_variant_new_boolean (is_underscanning));
         }
+
+      is_builtin = meta_monitor_is_laptop_panel (monitor);
+      g_variant_builder_add (&monitor_properties_builder, "{sv}",
+                             "is_builtin",
+                             g_variant_new_boolean (is_builtin));
 
       g_variant_builder_add (&monitors_builder, MONITOR_FORMAT,
                              monitor_spec->connector,
