@@ -188,9 +188,9 @@ const PortalWindow = new Lang.Class({
     },
 
     _onLoadChanged: function(view, loadEvent) {
-        if (loadEvent == WebKit.LOAD_STARTED) {
+        if (loadEvent == WebKit.LoadEvent.STARTED) {
             this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
-        } else if (loadEvent == WebKit.LOAD_COMMITTED) {
+        } else if (loadEvent == WebKit.LoadEvent.COMMITTED) {
             let tlsInfo = this._webView.get_tls_info();
             let ret = tlsInfo[0];
             let flags = tlsInfo[2];
