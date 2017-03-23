@@ -28,6 +28,11 @@
 
 #include "backends/meta-monitor-config-manager.h"
 
+#define MONITORS_CONFIG_XML_FORMAT_VERSION 2
+
+#define QUOTE1(a) #a
+#define QUOTE(a) QUOTE1(a)
+
 /*
  * Example configuration:
  *
@@ -100,7 +105,10 @@ struct _MetaMonitorConfigStore
 
   GHashTable *configs;
 
+  GCancellable *save_cancellable;
+
   GFile *user_file;
+  GFile *custom_file;
 };
 
 typedef enum
@@ -181,7 +189,7 @@ handle_start_element (GMarkupParseContext  *context,
         
         /* TODO: Handle converting version 1 configuration files. */
 
-        if (!g_str_equal (version, "2"))
+        if (!g_str_equal (version, QUOTE (MONITORS_CONFIG_XML_FORMAT_VERSION)))
           {
             g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                          "Invalid or unsupported version '%s'", version);
@@ -965,12 +973,223 @@ meta_monitor_config_store_lookup (MetaMonitorConfigStore *config_store,
                                                     key));
 }
 
+static void
+append_monitors (GString *buffer,
+                 GList   *monitor_configs)
+{
+  GList *l;
+
+  for (l = monitor_configs; l; l = l->next)
+    {
+      MetaMonitorConfig *monitor_config = l->data;
+      char rate_str[G_ASCII_DTOSTR_BUF_SIZE];
+
+      g_ascii_dtostr (rate_str, sizeof (rate_str),
+                      monitor_config->mode_spec->refresh_rate);
+
+      g_string_append (buffer, "      <monitor>\n");
+      g_string_append (buffer, "        <monitorspec>\n");
+      g_string_append_printf (buffer, "          <connector>%s</connector>\n",
+                              monitor_config->monitor_spec->connector);
+      g_string_append_printf (buffer, "          <vendor>%s</vendor>\n",
+                              monitor_config->monitor_spec->vendor);
+      g_string_append_printf (buffer, "          <product>%s</product>\n",
+                              monitor_config->monitor_spec->product);
+      g_string_append_printf (buffer, "          <serial>%s</serial>\n",
+                              monitor_config->monitor_spec->serial);
+      g_string_append (buffer, "        </monitorspec>\n");
+      g_string_append (buffer, "        <mode>\n");
+      g_string_append_printf (buffer, "          <width>%d</width>\n",
+                              monitor_config->mode_spec->width);
+      g_string_append_printf (buffer, "          <height>%d</height>\n",
+                              monitor_config->mode_spec->height);
+      g_string_append_printf (buffer, "          <rate>%s</rate>\n",
+                              rate_str);
+      g_string_append (buffer, "        </mode>\n");
+      if (monitor_config->enable_underscanning)
+        g_string_append (buffer, "        <underscanning>yes</underscanning>\n");
+      g_string_append (buffer, "      </monitor>\n");
+    }
+}
+
+static const char *
+bool_to_string (gboolean value)
+{
+  return value ? "yes" : "no";
+}
+
+static void
+append_transform (GString             *buffer,
+                  MetaMonitorTransform transform)
+{
+  const char *rotation = NULL;
+  gboolean flipped = FALSE;
+
+  switch (transform)
+    {
+    case META_MONITOR_TRANSFORM_NORMAL:
+      return;
+    case META_MONITOR_TRANSFORM_90:
+      rotation = "left";
+      break;
+    case META_MONITOR_TRANSFORM_180:
+      rotation = "upside_down";
+      break;
+    case META_MONITOR_TRANSFORM_270:
+      rotation = "right";
+      break;
+    case META_MONITOR_TRANSFORM_FLIPPED:
+      rotation = "normal";
+      flipped = TRUE;
+      break;
+    case META_MONITOR_TRANSFORM_FLIPPED_90:
+      rotation = "left";
+      flipped = TRUE;
+      break;
+    case META_MONITOR_TRANSFORM_FLIPPED_180:
+      rotation = "upside_down";
+      flipped = TRUE;
+      break;
+    case META_MONITOR_TRANSFORM_FLIPPED_270:
+      rotation = "right";
+      flipped = TRUE;
+      break;
+    }
+
+  g_string_append (buffer, "      <transform>\n");
+  g_string_append_printf (buffer, "        <rotation>%s</rotation>\n",
+                          rotation);
+  g_string_append_printf (buffer, "        <flipped>%s</flipped>\n",
+                          bool_to_string (flipped));
+  g_string_append (buffer, "      </transform>\n");
+}
+
+static void
+append_logical_monitor_xml (GString                  *buffer,
+                            MetaLogicalMonitorConfig *logical_monitor_config)
+{
+  g_string_append (buffer, "    <logicalmonitor>\n");
+  g_string_append_printf (buffer, "      <x>%d</x>\n",
+                          logical_monitor_config->layout.x);
+  g_string_append_printf (buffer, "      <y>%d</y>\n",
+                          logical_monitor_config->layout.y);
+  g_string_append_printf (buffer, "      <scale>%d</scale>\n",
+                          logical_monitor_config->scale);
+  if (logical_monitor_config->is_primary)
+    g_string_append (buffer, "      <primary>yes</primary>\n");
+  if (logical_monitor_config->is_presentation)
+    g_string_append (buffer, "      <presentation>yes</presentation>\n");
+  append_transform (buffer, logical_monitor_config->transform);
+  append_monitors (buffer, logical_monitor_config->monitor_configs);
+  g_string_append (buffer, "    </logicalmonitor>\n");
+}
+
+static GString *
+generate_config_xml (MetaMonitorConfigStore *config_store)
+{
+  GString *buffer;
+  GHashTableIter iter;
+  MetaMonitorsConfig *config;
+
+  buffer = g_string_new ("");
+  g_string_append_printf (buffer, "<monitors version=\"%d\">\n",
+                          MONITORS_CONFIG_XML_FORMAT_VERSION);
+
+  g_hash_table_iter_init (&iter, config_store->configs);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &config))
+    {
+      GList *l;
+
+      g_string_append (buffer, "  <configuration>\n");
+
+      for (l = config->logical_monitor_configs; l; l = l->next)
+        {
+          MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+
+          append_logical_monitor_xml (buffer, logical_monitor_config);
+        }
+
+      g_string_append (buffer, "  </configuration>\n");
+    }
+
+  g_string_append (buffer, "</monitors>\n");
+
+  return buffer;
+}
+
+typedef struct _SaveData
+{
+  MetaMonitorConfigStore *config_store;
+  GString *buffer;
+} SaveData;
+
+static void
+saved_cb (GObject      *object,
+          GAsyncResult *result,
+          gpointer      user_data)
+{
+  SaveData *data = user_data;
+  GError *error = NULL;
+
+  if (!g_file_replace_contents_finish (G_FILE (object), result, NULL, &error))
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_warning ("Saving monitor configuration failed: %s\n", error->message);
+      else
+        g_clear_object (&data->config_store->save_cancellable);
+
+      g_error_free (error);
+    }
+  else
+    {
+      g_clear_object (&data->config_store->save_cancellable);
+    }
+
+  g_clear_object (&data->config_store);
+  g_string_free (data->buffer, TRUE);
+  g_free (data);
+}
+
+static void
+meta_monitor_config_store_save (MetaMonitorConfigStore *config_store)
+{
+  GString *buffer;
+  SaveData *data;
+
+  if (config_store->save_cancellable)
+    {
+      g_cancellable_cancel (config_store->save_cancellable);
+      g_clear_object (&config_store->save_cancellable);
+    }
+
+  config_store->save_cancellable = g_cancellable_new ();
+
+  buffer = generate_config_xml (config_store);
+
+  data = g_new0 (SaveData, 1);
+  *data = (SaveData) {
+    .config_store = g_object_ref (config_store),
+    .buffer = buffer
+  };
+
+  g_file_replace_contents_async (config_store->user_file,
+                                 buffer->str, buffer->len,
+                                 NULL,
+                                 TRUE,
+                                 G_FILE_CREATE_REPLACE_DESTINATION,
+                                 config_store->save_cancellable,
+                                 saved_cb, data);
+}
+
 void
 meta_monitor_config_store_add (MetaMonitorConfigStore *config_store,
                                MetaMonitorsConfig     *config)
 {
   g_hash_table_insert (config_store->configs,
                        config->key, g_object_ref (config));
+
+  if (!config_store->custom_file)
+    meta_monitor_config_store_save (config_store);
 }
 
 gboolean
@@ -978,13 +1197,12 @@ meta_monitor_config_store_set_custom (MetaMonitorConfigStore *config_store,
                                       const char             *path,
                                       GError                **error)
 {
-  g_autoptr (GFile) custom_file = NULL;
-
+  g_clear_object (&config_store->custom_file);
   g_hash_table_remove_all (config_store->configs);
 
-  custom_file = g_file_new_for_path (path);
+  config_store->custom_file = g_file_new_for_path (path);
 
-  return read_config_file (config_store, custom_file, error);
+  return read_config_file (config_store, config_store->custom_file, error);
 }
 
 int
@@ -1034,6 +1252,7 @@ meta_monitor_config_store_dispose (GObject *object)
   g_clear_pointer (&config_store->configs, g_hash_table_destroy);
 
   g_clear_object (&config_store->user_file);
+  g_clear_object (&config_store->custom_file);
 
   G_OBJECT_CLASS (meta_monitor_config_store_parent_class)->dispose (object);
 }
