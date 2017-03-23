@@ -81,6 +81,17 @@
  *
  */
 
+enum
+{
+  PROP_0,
+
+  PROP_MONITOR_MANAGER,
+
+  PROP_LAST
+};
+
+static GParamSpec *obj_props[PROP_LAST];
+
 struct _MetaMonitorConfigStore
 {
   GObject parent;
@@ -88,6 +99,8 @@ struct _MetaMonitorConfigStore
   MetaMonitorManager *monitor_manager;
 
   GHashTable *configs;
+
+  GFile *user_file;
 };
 
 typedef enum
@@ -983,12 +996,34 @@ meta_monitor_config_store_get_config_count (MetaMonitorConfigStore *config_store
 MetaMonitorConfigStore *
 meta_monitor_config_store_new (MetaMonitorManager *monitor_manager)
 {
-  MetaMonitorConfigStore *store;
+  return g_object_new (META_TYPE_MONITOR_CONFIG_STORE,
+                       "monitor-manager", monitor_manager,
+                       NULL);
+}
 
-  store = g_object_new (META_TYPE_MONITOR_CONFIG_STORE, NULL);
-  store->monitor_manager = monitor_manager;
+static void
+meta_monitor_config_store_constructed (GObject *object)
+{
+  MetaMonitorConfigStore *config_store = META_MONITOR_CONFIG_STORE (object);
+  char *user_file_path;
+  GError *error = NULL;
 
-  return store;
+  user_file_path = g_build_filename (g_get_user_config_dir (),
+                                     "monitors-experimental.xml",
+                                     NULL);
+  config_store->user_file = g_file_new_for_path (user_file_path);
+
+  if (g_file_test (user_file_path, G_FILE_TEST_EXISTS))
+    {
+      if (!read_config_file (config_store, config_store->user_file, &error))
+        {
+          g_warning ("Failed to read monitors config file '%s': %s",
+                     user_file_path, error->message);
+          g_error_free (error);
+        }
+    }
+
+  g_free (user_file_path);
 }
 
 static void
@@ -998,7 +1033,45 @@ meta_monitor_config_store_dispose (GObject *object)
 
   g_clear_pointer (&config_store->configs, g_hash_table_destroy);
 
+  g_clear_object (&config_store->user_file);
+
   G_OBJECT_CLASS (meta_monitor_config_store_parent_class)->dispose (object);
+}
+
+static void
+meta_monitor_config_store_get_property (GObject    *object,
+                                        guint       prop_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
+{
+  MetaMonitorConfigStore *config_store = META_MONITOR_CONFIG_STORE (object);
+
+  switch (prop_id)
+    {
+    case PROP_MONITOR_MANAGER:
+      g_value_set_object (value, &config_store->monitor_manager);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+meta_monitor_config_store_set_property (GObject      *object,
+                                        guint         prop_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
+{
+  MetaMonitorConfigStore *config_store = META_MONITOR_CONFIG_STORE (object);
+
+  switch (prop_id)
+    {
+    case PROP_MONITOR_MANAGER:
+      config_store->monitor_manager = g_value_get_object (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
 }
 
 static void
@@ -1015,5 +1088,19 @@ meta_monitor_config_store_class_init (MetaMonitorConfigStoreClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->constructed = meta_monitor_config_store_constructed;
   object_class->dispose = meta_monitor_config_store_dispose;
+  object_class->get_property = meta_monitor_config_store_get_property;
+  object_class->set_property = meta_monitor_config_store_set_property;
+
+  obj_props[PROP_MONITOR_MANAGER] =
+    g_param_spec_object ("monitor-manager",
+                         "MetaMonitorManager",
+                         "MetaMonitorManager",
+                         META_TYPE_MONITOR_MANAGER,
+                         G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS |
+                         G_PARAM_CONSTRUCT_ONLY);
+
+  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 }
