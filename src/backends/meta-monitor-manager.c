@@ -1572,37 +1572,8 @@ meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager *manager,
     {
       MetaLogicalMonitor *other = l->data;
 
-      switch (direction)
-        {
-        case META_SCREEN_RIGHT:
-           if (other->rect.x == (logical_monitor->rect.x +
-                                 logical_monitor->rect.width) &&
-               meta_rectangle_vert_overlap (&other->rect,
-                                            &logical_monitor->rect))
-             return other;
-           break;
-        case META_SCREEN_LEFT:
-           if (logical_monitor->rect.x == (other->rect.x +
-                                           other->rect.width) &&
-               meta_rectangle_vert_overlap (&other->rect,
-                                            &logical_monitor->rect))
-             return other;
-           break;
-        case META_SCREEN_UP:
-           if (logical_monitor->rect.y == (other->rect.y +
-                                           other->rect.height) &&
-               meta_rectangle_horiz_overlap (&other->rect,
-                                             &logical_monitor->rect))
-             return other;
-           break;
-        case META_SCREEN_DOWN:
-           if (other->rect.y == (logical_monitor->rect.y +
-                                 logical_monitor->rect.height) &&
-               meta_rectangle_horiz_overlap (&other->rect,
-                                             &logical_monitor->rect))
-             return other;
-           break;
-        }
+      if (meta_logical_monitor_has_neighbor (logical_monitor, other, direction))
+        return other;
     }
 
   return NULL;
