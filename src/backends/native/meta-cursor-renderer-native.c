@@ -65,6 +65,7 @@ struct _MetaCursorRendererNativePrivate
 {
   gboolean hw_state_invalidated;
   gboolean has_hw_cursor;
+  gboolean hw_cursor_broken;
 
   MetaCursorSprite *last_cursor;
   guint animation_timeout_id;
@@ -185,8 +186,13 @@ set_crtc_cursor (MetaCursorRendererNative *native,
       handle = gbm_bo_get_handle (bo);
       meta_cursor_sprite_get_hotspot (cursor_sprite, &hot_x, &hot_y);
 
-      drmModeSetCursor2 (priv->drm_fd, crtc->crtc_id, handle.u32,
-                         priv->cursor_width, priv->cursor_height, hot_x, hot_y);
+      if (drmModeSetCursor2 (priv->drm_fd, crtc->crtc_id, handle.u32,
+                             priv->cursor_width, priv->cursor_height,
+                             hot_x, hot_y) < 0)
+        {
+          priv->has_hw_cursor = FALSE;
+          priv->hw_cursor_broken = TRUE;
+        }
 
       if (cursor_priv->pending_bo_state == META_CURSOR_GBM_BO_STATE_SET)
         {
@@ -311,7 +317,12 @@ static gboolean
 should_have_hw_cursor (MetaCursorRenderer *renderer,
                        MetaCursorSprite   *cursor_sprite)
 {
+  MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
+  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
   CoglTexture *texture;
+
+  if (priv->hw_cursor_broken)
+    return FALSE;
 
   if (!cursor_sprite)
     return FALSE;
@@ -528,7 +539,7 @@ meta_cursor_renderer_native_realize_cursor_from_wl_buffer (MetaCursorRenderer *r
   CoglTexture *texture;
   uint width, height;
 
-  if (!priv->gbm)
+  if (!priv->gbm || priv->hw_cursor_broken)
     return;
 
   /* Destroy any previous pending cursor buffer; we'll always either fail (which
@@ -621,7 +632,7 @@ meta_cursor_renderer_native_realize_cursor_from_xcursor (MetaCursorRenderer *ren
   MetaCursorRendererNativePrivate *priv =
 	  meta_cursor_renderer_native_get_instance_private (native);
 
-  if (!priv->gbm)
+  if (!priv->gbm || priv->hw_cursor_broken)
     return;
 
   invalidate_pending_cursor_sprite_gbm_bo (cursor_sprite);
