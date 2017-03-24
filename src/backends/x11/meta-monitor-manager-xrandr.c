@@ -655,63 +655,63 @@ output_get_connector_type (MetaMonitorManagerXrandr *manager_xrandr,
 
 static void
 output_get_modes (MetaMonitorManager *manager,
-                  MetaOutput         *meta_output,
-                  XRROutputInfo      *output)
+                  MetaOutput         *output,
+                  XRROutputInfo      *xrandr_output)
 {
   guint j, k;
   guint n_actual_modes;
 
-  meta_output->modes = g_new0 (MetaCrtcMode *, output->nmode);
+  output->modes = g_new0 (MetaCrtcMode *, xrandr_output->nmode);
 
   n_actual_modes = 0;
-  for (j = 0; j < (guint)output->nmode; j++)
+  for (j = 0; j < (guint)xrandr_output->nmode; j++)
     {
       for (k = 0; k < manager->n_modes; k++)
         {
-          if (output->modes[j] == (XID)manager->modes[k].mode_id)
+          if (xrandr_output->modes[j] == (XID)manager->modes[k].mode_id)
             {
-              meta_output->modes[n_actual_modes] = &manager->modes[k];
+              output->modes[n_actual_modes] = &manager->modes[k];
               n_actual_modes += 1;
               break;
             }
         }
     }
-  meta_output->n_modes = n_actual_modes;
+  output->n_modes = n_actual_modes;
   if (n_actual_modes > 0)
-    meta_output->preferred_mode = meta_output->modes[0];
+    output->preferred_mode = output->modes[0];
 }
 
 static void
 output_get_crtcs (MetaMonitorManager *manager,
-                  MetaOutput         *meta_output,
-                  XRROutputInfo      *output)
+                  MetaOutput         *output,
+                  XRROutputInfo      *xrandr_output)
 {
   guint j, k;
   guint n_actual_crtcs;
 
-  meta_output->possible_crtcs = g_new0 (MetaCrtc *, output->ncrtc);
+  output->possible_crtcs = g_new0 (MetaCrtc *, xrandr_output->ncrtc);
 
   n_actual_crtcs = 0;
-  for (j = 0; j < (unsigned)output->ncrtc; j++)
+  for (j = 0; j < (unsigned) xrandr_output->ncrtc; j++)
     {
       for (k = 0; k < manager->n_crtcs; k++)
         {
-          if ((XID)manager->crtcs[k].crtc_id == output->crtcs[j])
+          if ((XID) manager->crtcs[k].crtc_id == xrandr_output->crtcs[j])
             {
-              meta_output->possible_crtcs[n_actual_crtcs] = &manager->crtcs[k];
+              output->possible_crtcs[n_actual_crtcs] = &manager->crtcs[k];
               n_actual_crtcs += 1;
               break;
             }
         }
     }
-  meta_output->n_possible_crtcs = n_actual_crtcs;
+  output->n_possible_crtcs = n_actual_crtcs;
 
-  meta_output->crtc = NULL;
+  output->crtc = NULL;
   for (j = 0; j < manager->n_crtcs; j++)
     {
-      if ((XID)manager->crtcs[j].crtc_id == output->crtc)
+      if ((XID) manager->crtcs[j].crtc_id == xrandr_output->crtc)
         {
-          meta_output->crtc = &manager->crtcs[j];
+          output->crtc = &manager->crtcs[j];
           break;
         }
     }
@@ -850,67 +850,73 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   n_actual_outputs = 0;
   for (i = 0; i < (unsigned)resources->noutput; i++)
     {
-      XRROutputInfo *output;
-      MetaOutput *meta_output;
+      XRROutputInfo *xrandr_output;
+      MetaOutput *output;
 
-      output = XRRGetOutputInfo (manager_xrandr->xdisplay, resources, resources->outputs[i]);
-      if (!output)
+      xrandr_output = XRRGetOutputInfo (manager_xrandr->xdisplay,
+                                        resources, resources->outputs[i]);
+      if (!xrandr_output)
         continue;
 
-      meta_output = &manager->outputs[n_actual_outputs];
+      output = &manager->outputs[n_actual_outputs];
 
-      if (output->connection != RR_Disconnected)
+      if (xrandr_output->connection != RR_Disconnected)
 	{
           GBytes *edid;
 
-	  meta_output->winsys_id = resources->outputs[i];
-	  meta_output->name = g_strdup (output->name);
+	  output->winsys_id = resources->outputs[i];
+	  output->name = g_strdup (xrandr_output->name);
 
-          edid = read_output_edid (manager_xrandr, meta_output->winsys_id);
-          meta_output_parse_edid (meta_output, edid);
+          edid = read_output_edid (manager_xrandr, output->winsys_id);
+          meta_output_parse_edid (output, edid);
           g_bytes_unref (edid);
 
-	  meta_output->width_mm = output->mm_width;
-	  meta_output->height_mm = output->mm_height;
-	  meta_output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-          meta_output->hotplug_mode_update = output_get_hotplug_mode_update (manager_xrandr, meta_output);
-	  meta_output->suggested_x = output_get_suggested_x (manager_xrandr, meta_output);
-	  meta_output->suggested_y = output_get_suggested_y (manager_xrandr, meta_output);
-          meta_output->connector_type = output_get_connector_type (manager_xrandr, meta_output);
+	  output->width_mm = xrandr_output->mm_width;
+	  output->height_mm = xrandr_output->mm_height;
+	  output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+          output->hotplug_mode_update =
+            output_get_hotplug_mode_update (manager_xrandr, output);
+	  output->suggested_x = output_get_suggested_x (manager_xrandr, output);
+	  output->suggested_y = output_get_suggested_y (manager_xrandr, output);
+          output->connector_type = output_get_connector_type (manager_xrandr,
+                                                              output);
 
-	  output_get_tile_info (manager_xrandr, meta_output);
-	  output_get_modes (manager, meta_output, output);
-          output_get_crtcs (manager, meta_output, output);
+	  output_get_tile_info (manager_xrandr, output);
+	  output_get_modes (manager, output, xrandr_output);
+          output_get_crtcs (manager, output, xrandr_output);
 
-	  meta_output->n_possible_clones = output->nclone;
-	  meta_output->possible_clones = g_new0 (MetaOutput *, meta_output->n_possible_clones);
+	  output->n_possible_clones = xrandr_output->nclone;
+	  output->possible_clones = g_new0 (MetaOutput *,
+                                            output->n_possible_clones);
 	  /* We can build the list of clones now, because we don't have the list of outputs
 	     yet, so temporarily set the pointers to the bare XIDs, and then we'll fix them
 	     in a second pass
 	  */
-	  for (j = 0; j < (unsigned)output->nclone; j++)
+	  for (j = 0; j < (unsigned) xrandr_output->nclone; j++)
 	    {
-	      meta_output->possible_clones[j] = GINT_TO_POINTER (output->clones[j]);
+	      output->possible_clones[j] =
+                GINT_TO_POINTER (xrandr_output->clones[j]);
 	    }
 
-	  meta_output->is_primary = ((XID)meta_output->winsys_id == primary_output);
-	  meta_output->is_presentation = output_get_presentation_xrandr (manager_xrandr, meta_output);
-	  meta_output->is_underscanning = output_get_underscanning_xrandr (manager_xrandr, meta_output);
-          meta_output->supports_underscanning = output_get_supports_underscanning_xrandr (manager_xrandr, meta_output);
-	  output_get_backlight_limits_xrandr (manager_xrandr, meta_output);
+	  output->is_primary = ((XID) output->winsys_id == primary_output);
+	  output->is_presentation = output_get_presentation_xrandr (manager_xrandr, output);
+	  output->is_underscanning = output_get_underscanning_xrandr (manager_xrandr, output);
+          output->supports_underscanning =
+            output_get_supports_underscanning_xrandr (manager_xrandr, output);
+	  output_get_backlight_limits_xrandr (manager_xrandr, output);
 
-	  if (!(meta_output->backlight_min == 0 && meta_output->backlight_max == 0))
-	    meta_output->backlight = output_get_backlight_xrandr (manager_xrandr, meta_output);
+	  if (!(output->backlight_min == 0 && output->backlight_max == 0))
+	    output->backlight = output_get_backlight_xrandr (manager_xrandr, output);
 	  else
-	    meta_output->backlight = -1;
+	    output->backlight = -1;
 
-          if (meta_output->n_modes == 0 || meta_output->n_possible_crtcs == 0)
-            meta_monitor_manager_clear_output (meta_output);
+          if (output->n_modes == 0 || output->n_possible_crtcs == 0)
+            meta_monitor_manager_clear_output (output);
           else
             n_actual_outputs++;
 	}
 
-      XRRFreeOutputInfo (output);
+      XRRFreeOutputInfo (xrandr_output);
     }
 
   manager->n_outputs = n_actual_outputs;
@@ -921,19 +927,19 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   /* Now fix the clones */
   for (i = 0; i < manager->n_outputs; i++)
     {
-      MetaOutput *meta_output;
+      MetaOutput *output;
 
-      meta_output = &manager->outputs[i];
+      output = &manager->outputs[i];
 
-      for (j = 0; j < meta_output->n_possible_clones; j++)
+      for (j = 0; j < output->n_possible_clones; j++)
 	{
-	  RROutput clone = GPOINTER_TO_INT (meta_output->possible_clones[j]);
+	  RROutput clone = GPOINTER_TO_INT (output->possible_clones[j]);
 
 	  for (k = 0; k < manager->n_outputs; k++)
 	    {
 	      if (clone == (XID)manager->outputs[k].winsys_id)
 		{
-		  meta_output->possible_clones[j] = &manager->outputs[k];
+		  output->possible_clones[j] = &manager->outputs[k];
 		  break;
 		}
 	    }
