@@ -815,32 +815,35 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 
   for (i = 0; i < (unsigned)resources->ncrtc; i++)
     {
-      XRRCrtcInfo *crtc;
-      MetaCrtc *meta_crtc;
+      XRRCrtcInfo *xrandr_crtc;
+      MetaCrtc *crtc;
 
-      crtc = XRRGetCrtcInfo (manager_xrandr->xdisplay, resources, resources->crtcs[i]);
+      xrandr_crtc = XRRGetCrtcInfo (manager_xrandr->xdisplay, resources,
+                                    resources->crtcs[i]);
 
-      meta_crtc = &manager->crtcs[i];
+      crtc = &manager->crtcs[i];
 
-      meta_crtc->crtc_id = resources->crtcs[i];
-      meta_crtc->rect.x = crtc->x;
-      meta_crtc->rect.y = crtc->y;
-      meta_crtc->rect.width = crtc->width;
-      meta_crtc->rect.height = crtc->height;
-      meta_crtc->is_dirty = FALSE;
-      meta_crtc->transform = meta_monitor_transform_from_xrandr (crtc->rotation);
-      meta_crtc->all_transforms = meta_monitor_transform_from_xrandr_all (crtc->rotations);
+      crtc->crtc_id = resources->crtcs[i];
+      crtc->rect.x = xrandr_crtc->x;
+      crtc->rect.y = xrandr_crtc->y;
+      crtc->rect.width = xrandr_crtc->width;
+      crtc->rect.height = xrandr_crtc->height;
+      crtc->is_dirty = FALSE;
+      crtc->transform =
+        meta_monitor_transform_from_xrandr (xrandr_crtc->rotation);
+      crtc->all_transforms =
+        meta_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
       for (j = 0; j < (unsigned)resources->nmode; j++)
 	{
-	  if (resources->modes[j].id == crtc->mode)
+	  if (resources->modes[j].id == xrandr_crtc->mode)
 	    {
-	      meta_crtc->current_mode = &manager->modes[j];
+	      crtc->current_mode = &manager->modes[j];
 	      break;
 	    }
 	}
 
-      XRRFreeCrtcInfo (crtc);
+      XRRFreeCrtcInfo (xrandr_crtc);
     }
 
   primary_output = XRRGetOutputPrimary (manager_xrandr->xdisplay,
