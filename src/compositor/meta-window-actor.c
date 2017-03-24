@@ -23,6 +23,7 @@
 #include <meta/meta-enum-types.h>
 #include <meta/meta-shadow-factory.h>
 
+#include "backends/meta-backend-private.h"
 #include "clutter/clutter-mutter.h"
 #include "compositor-private.h"
 #include "meta-shaped-texture-private.h"
@@ -944,31 +945,36 @@ static void
 queue_send_frame_messages_timeout (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
+  MetaWindow *window = priv->window;
+  MetaDisplay *display = meta_window_get_display (priv->window);
+  MetaLogicalMonitor *logical_monitor;
+  int64_t current_time;
+  float refresh_rate;
+  int interval, offset;
 
   if (priv->send_frame_messages_timer != 0)
     return;
 
-  MetaDisplay *display = meta_window_get_display (priv->window);
-  gint64 current_time = meta_compositor_monotonic_time_to_server_time (display, g_get_monotonic_time ());
-  MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
-  MetaWindow *window = priv->window;
-  GList *outputs;
-  GList *l;
-  float refresh_rate = 60.0f;
-  gint interval, offset;
-
-  outputs = meta_monitor_manager_get_outputs (monitor_manager);
-  for (l = outputs; l; l = l->next)
+  logical_monitor = meta_window_get_main_logical_monitor (window);
+  if (logical_monitor)
     {
-      MetaOutput *output = l->data;
+      GList *monitors = meta_logical_monitor_get_monitors (logical_monitor);
+      MetaMonitor *monitor;
+      MetaMonitorMode *mode;
 
-      if (output->winsys_id == window->monitor->winsys_id && output->crtc)
-        {
-          refresh_rate = output->crtc->current_mode->refresh_rate;
-          break;
-        }
+      monitor = g_list_first (monitors)->data;
+      mode = meta_monitor_get_current_mode (monitor);
+
+      refresh_rate = meta_monitor_mode_get_refresh_rate (mode);
+    }
+  else
+    {
+      refresh_rate = 60.0f;
     }
 
+  current_time =
+    meta_compositor_monotonic_time_to_server_time (display,
+                                                   g_get_monotonic_time ());
   interval = (int)(1000000 / refresh_rate) * 6;
   offset = MAX (0, priv->frame_drawn_time + interval - current_time) / 1000;
 
