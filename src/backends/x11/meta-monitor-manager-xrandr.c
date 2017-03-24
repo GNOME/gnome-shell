@@ -45,6 +45,7 @@
 #include <meta/errors.h>
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-logical-monitor.h"
+#include "backends/meta-output.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
@@ -731,8 +732,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
   XRRScreenResources *resources;
   RROutput primary_output;
-  unsigned int i, j, k;
-  unsigned int n_actual_outputs;
+  unsigned int i, j;
+  GList *l;
   int min_width, min_height;
   Screen *screen;
   BOOL dpms_capable, dpms_enabled;
@@ -790,10 +791,9 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
     return;
 
   manager_xrandr->resources = resources;
-  manager->n_outputs = resources->noutput;
   manager->n_crtcs = resources->ncrtc;
   manager->n_modes = resources->nmode;
-  manager->outputs = g_new0 (MetaOutput, manager->n_outputs);
+  manager->outputs = NULL;
   manager->modes = g_new0 (MetaCrtcMode, manager->n_modes);
   manager->crtcs = g_new0 (MetaCrtc, manager->n_crtcs);
 
@@ -846,7 +846,6 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   primary_output = XRRGetOutputPrimary (manager_xrandr->xdisplay,
 					DefaultRootWindow (manager_xrandr->xdisplay));
 
-  n_actual_outputs = 0;
   for (i = 0; i < (unsigned)resources->noutput; i++)
     {
       XRROutputInfo *xrandr_output;
@@ -857,7 +856,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       if (!xrandr_output)
         continue;
 
-      output = &manager->outputs[n_actual_outputs];
+      output = g_object_new (META_TYPE_OUTPUT, NULL);
 
       if (xrandr_output->connection != RR_Disconnected)
 	{
@@ -910,35 +909,34 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	    output->backlight = -1;
 
           if (output->n_modes == 0 || output->n_possible_crtcs == 0)
-            meta_monitor_manager_clear_output (output);
+            g_object_unref (output);
           else
-            n_actual_outputs++;
+            manager->outputs = g_list_prepend (manager->outputs, output);
 	}
 
       XRRFreeOutputInfo (xrandr_output);
     }
 
-  manager->n_outputs = n_actual_outputs;
-
   /* Sort the outputs for easier handling in MetaMonitorConfig */
-  qsort (manager->outputs, manager->n_outputs, sizeof (MetaOutput), compare_outputs);
+  manager->outputs = g_list_sort (manager->outputs, compare_outputs);
 
   /* Now fix the clones */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output;
-
-      output = &manager->outputs[i];
+      MetaOutput *output = l->data;
+      GList *k;
 
       for (j = 0; j < output->n_possible_clones; j++)
 	{
 	  RROutput clone = GPOINTER_TO_INT (output->possible_clones[j]);
 
-	  for (k = 0; k < manager->n_outputs; k++)
+	  for (k = manager->outputs; k; k = k->next)
 	    {
-	      if (clone == (XID)manager->outputs[k].winsys_id)
+              MetaOutput *possible_clone = k->data;
+
+	      if (clone == (XID) possible_clone->winsys_id)
 		{
-		  output->possible_clones[j] = &manager->outputs[k];
+		  output->possible_clones[j] = possible_clone;
 		  break;
 		}
 	    }
@@ -1219,6 +1217,7 @@ is_assignments_changed (MetaMonitorManager *manager,
                         unsigned int        n_output_infos)
 {
   unsigned int i;
+  GList *l;
 
   for (i = 0; i < manager->n_crtcs; i++)
     {
@@ -1228,9 +1227,9 @@ is_assignments_changed (MetaMonitorManager *manager,
         return TRUE;
     }
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (is_output_assignment_changed (output,
                                         crtc_infos,
@@ -1253,6 +1252,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
   unsigned i;
+  GList *l;
   int width, height, width_mm, height_mm;
 
   XGrabServer (manager_xrandr->xdisplay);
@@ -1443,9 +1443,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->is_dirty)
         {

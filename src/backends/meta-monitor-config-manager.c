@@ -26,6 +26,7 @@
 #include "backends/meta-monitor-config-migration.h"
 #include "backends/meta-monitor-config-store.h"
 #include "backends/meta-monitor-manager-private.h"
+#include "backends/meta-output.h"
 #include "core/boxes-private.h"
 
 #define CONFIG_HISTORY_MAX_SIZE 3

@@ -40,6 +40,7 @@
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-orientation-manager.h"
+#include "backends/meta-output.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
 
@@ -446,11 +447,11 @@ meta_monitor_manager_apply_monitors_config (MetaMonitorManager      *manager,
 gboolean
 meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
 {
-  unsigned int i;
+  GList *l;
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->hotplug_mode_update)
         return TRUE;
@@ -719,35 +720,6 @@ meta_monitor_manager_constructed (GObject *object)
 }
 
 void
-meta_monitor_manager_clear_output (MetaOutput *output)
-{
-  g_free (output->name);
-  g_free (output->vendor);
-  g_free (output->product);
-  g_free (output->serial);
-  g_free (output->modes);
-  g_free (output->possible_crtcs);
-  g_free (output->possible_clones);
-
-  if (output->driver_notify)
-    output->driver_notify (output);
-
-  memset (output, 0, sizeof (*output));
-}
-
-static void
-meta_monitor_manager_free_output_array (MetaOutput *old_outputs,
-                                        int         n_old_outputs)
-{
-  int i;
-
-  for (i = 0; i < n_old_outputs; i++)
-    meta_monitor_manager_clear_output (&old_outputs[i]);
-
-  g_free (old_outputs);
-}
-
-void
 meta_monitor_manager_clear_mode (MetaCrtcMode *mode)
 {
   g_free (mode->name);
@@ -796,7 +768,7 @@ meta_monitor_manager_finalize (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
 
-  meta_monitor_manager_free_output_array (manager->outputs, manager->n_outputs);
+  g_list_free_full (manager->outputs, g_object_unref);
   meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
   meta_monitor_manager_free_crtc_array (manager->crtcs, manager->n_crtcs);
   g_list_free_full (manager->logical_monitors, g_object_unref);
@@ -965,6 +937,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (skeleton);
   GVariantBuilder crtc_builder, output_builder, mode_builder;
+  GList *l;
   unsigned int i, j;
   int max_screen_width;
   int max_screen_height;
@@ -996,9 +969,9 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              NULL /* properties */);
     }
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
       GVariantBuilder crtcs, modes, clones, properties;
       GBytes *edid;
       char *edid_file;
@@ -1015,8 +988,13 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
       g_variant_builder_init (&clones, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_possible_clones; j++)
-        g_variant_builder_add (&clones, "u",
-                               (unsigned)(output->possible_clones[j] - manager->outputs));
+        {
+          unsigned int possible_clone_index;
+
+          possible_clone_index = g_list_index (manager->outputs,
+                                               output->possible_clones[j]);
+          g_variant_builder_add (&clones, "u", possible_clone_index);
+        }
 
       g_variant_builder_init (&properties, G_VARIANT_TYPE ("a{sv}"));
       g_variant_builder_add (&properties, "{sv}", "vendor",
@@ -2030,14 +2008,14 @@ meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (output_index >= manager->n_outputs)
+  if (output_index >= g_list_length (manager->outputs))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid output id");
       return TRUE;
     }
-  output = &manager->outputs[output_index];
+  output = g_list_nth_data (manager->outputs, output_index);
 
   if (value < 0 || value > 100)
     {
@@ -2425,11 +2403,9 @@ meta_monitor_manager_get_monitors (MetaMonitorManager *manager)
   return manager->monitors;
 }
 
-MetaOutput *
-meta_monitor_manager_get_outputs (MetaMonitorManager *manager,
-                                  unsigned int       *n_outputs)
+GList *
+meta_monitor_manager_get_outputs (MetaMonitorManager *manager)
 {
-  *n_outputs = manager->n_outputs;
   return manager->outputs;
 }
 
@@ -2471,7 +2447,7 @@ meta_monitor_manager_get_screen_size (MetaMonitorManager *manager,
 static void
 rebuild_monitors (MetaMonitorManager *manager)
 {
-  unsigned int i;
+  GList *l;
 
   if (manager->monitors)
     {
@@ -2479,9 +2455,9 @@ rebuild_monitors (MetaMonitorManager *manager)
       manager->monitors = NULL;
     }
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->tile_info.group_id)
         {
@@ -2541,16 +2517,15 @@ meta_monitor_manager_is_transform_handled (MetaMonitorManager  *manager,
 void
 meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 {
-  MetaOutput *old_outputs;
+  GList *old_outputs;
   MetaCrtc *old_crtcs;
   MetaCrtcMode *old_modes;
-  unsigned int n_old_outputs, n_old_crtcs, n_old_modes;
+  unsigned int n_old_crtcs, n_old_modes;
 
   /* Some implementations of read_current use the existing information
    * we have available, so don't free the old configuration until after
    * read_current finishes. */
   old_outputs = manager->outputs;
-  n_old_outputs = manager->n_outputs;
   old_crtcs = manager->crtcs;
   n_old_crtcs = manager->n_crtcs;
   old_modes = manager->modes;
@@ -2561,7 +2536,7 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 
   rebuild_monitors (manager);
 
-  meta_monitor_manager_free_output_array (old_outputs, n_old_outputs);
+  g_list_free_full (old_outputs, g_object_unref);
   meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
   meta_monitor_manager_free_crtc_array (old_crtcs, n_old_crtcs);
 }
@@ -2832,9 +2807,9 @@ meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
   GList *l;
 
   g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), -1);
-  g_return_val_if_fail (id < manager->n_outputs, -1);
+  g_return_val_if_fail (id < g_list_length (manager->outputs), -1);
 
-  output = &manager->outputs[id];
+  output = g_list_nth_data (manager->outputs, id);
   if (!output || !output->crtc)
     return -1;
 

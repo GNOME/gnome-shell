@@ -26,6 +26,7 @@
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-migration.h"
 #include "backends/meta-monitor-config-store.h"
+#include "backends/meta-output.h"
 #include "tests/meta-monitor-manager-test.h"
 #include "tests/monitor-test-utils.h"
 #include "tests/test-utils.h"
@@ -366,11 +367,11 @@ static MetaOutput *
 output_from_winsys_id (MetaMonitorManager *monitor_manager,
                        long                winsys_id)
 {
-  unsigned int i;
+  GList *l;
 
-  for (i = 0; i < monitor_manager->n_outputs; i++)
+  for (l = monitor_manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &monitor_manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->winsys_id == winsys_id)
         return output;
@@ -616,7 +617,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
   g_assert_cmpint (monitor_manager->screen_height,
                    ==,
                    test_case->expect.screen_height);
-  g_assert_cmpint ((int) monitor_manager->n_outputs,
+  g_assert_cmpint ((int) g_list_length (monitor_manager->outputs),
                    ==,
                    test_case->expect.n_outputs);
   g_assert_cmpint ((int) monitor_manager->n_crtcs,
@@ -892,10 +893,10 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       };
     }
 
-  test_setup->n_outputs = test_case->setup.n_outputs;
-  test_setup->outputs = g_new0 (MetaOutput, test_setup->n_outputs);
-  for (i = 0; i < test_setup->n_outputs; i++)
+  test_setup->outputs = NULL;
+  for (i = 0; i < test_case->setup.n_outputs; i++)
     {
+      MetaOutput *output;
       MetaOutputTest *output_test;
       int crtc_index;
       MetaCrtc *crtc;
@@ -958,37 +959,39 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       if (!serial)
         serial = "0x123456";
 
-      test_setup->outputs[i] = (MetaOutput) {
-        .crtc = crtc,
-        .winsys_id = i,
-        .name = (is_laptop_panel ? g_strdup_printf ("eDP-%d",
-                                                    ++n_laptop_panels)
-                                 : g_strdup_printf ("DP-%d",
-                                                    ++n_normal_panels)),
-        .vendor = g_strdup ("MetaProduct's Inc."),
-        .product = g_strdup ("MetaMonitor"),
-        .serial = g_strdup (serial),
-        .suggested_x = -1,
-        .suggested_y = -1,
-        .hotplug_mode_update = hotplug_mode_update,
-        .width_mm = test_case->setup.outputs[i].width_mm,
-        .height_mm = test_case->setup.outputs[i].height_mm,
-        .subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN,
-        .preferred_mode = preferred_mode,
-        .n_modes = n_modes,
-        .modes = modes,
-        .n_possible_crtcs = n_possible_crtcs,
-        .possible_crtcs = possible_crtcs,
-        .n_possible_clones = 0,
-        .possible_clones = NULL,
-        .backlight = -1,
-        .connector_type = (is_laptop_panel ? META_CONNECTOR_TYPE_eDP
-                                           : META_CONNECTOR_TYPE_DisplayPort),
-        .tile_info = test_case->setup.outputs[i].tile_info,
-        .is_underscanning = test_case->setup.outputs[i].is_underscanning,
-        .driver_private = output_test,
-        .driver_notify = (GDestroyNotify) meta_output_test_destroy_notify
-      };
+      output = g_object_new (META_TYPE_OUTPUT, NULL);
+
+      output->crtc = crtc;
+      output->winsys_id = i;
+      output->name = (is_laptop_panel ? g_strdup_printf ("eDP-%d",
+                                                  ++n_laptop_panels)
+                               : g_strdup_printf ("DP-%d",
+                                                  ++n_normal_panels));
+      output->vendor = g_strdup ("MetaProduct's Inc.");
+      output->product = g_strdup ("MetaMonitor");
+      output->serial = g_strdup (serial);
+      output->suggested_x = -1;
+      output->suggested_y = -1;
+      output->hotplug_mode_update = hotplug_mode_update;
+      output->width_mm = test_case->setup.outputs[i].width_mm;
+      output->height_mm = test_case->setup.outputs[i].height_mm;
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+      output->preferred_mode = preferred_mode;
+      output->n_modes = n_modes;
+      output->modes = modes;
+      output->n_possible_crtcs = n_possible_crtcs;
+      output->possible_crtcs = possible_crtcs;
+      output->n_possible_clones = 0;
+      output->possible_clones = NULL;
+      output->backlight = -1;
+      output->connector_type = (is_laptop_panel ? META_CONNECTOR_TYPE_eDP
+                                         : META_CONNECTOR_TYPE_DisplayPort);
+      output->tile_info = test_case->setup.outputs[i].tile_info;
+      output->is_underscanning = test_case->setup.outputs[i].is_underscanning;
+      output->driver_private = output_test;
+      output->driver_notify = (GDestroyNotify) meta_output_test_destroy_notify;
+
+      test_setup->outputs = g_list_append (test_setup->outputs, output);
     }
 
   return test_setup;
@@ -1910,6 +1913,15 @@ meta_test_monitor_hidpi_linear_config (void)
 }
 
 static void
+set_suggested_output_position (MetaOutput *output,
+                               int         x,
+                               int         y)
+{
+  output->suggested_x = x;
+  output->suggested_y = y;
+}
+
+static void
 meta_test_monitor_suggested_config (void)
 {
   MonitorTestCase test_case = {
@@ -2047,10 +2059,10 @@ meta_test_monitor_suggested_config (void)
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
 
-  test_setup->outputs[0].suggested_x = 1024;
-  test_setup->outputs[0].suggested_y = 758;
-  test_setup->outputs[1].suggested_x = 0;
-  test_setup->outputs[1].suggested_y = 0;
+  set_suggested_output_position (g_list_nth_data (test_setup->outputs, 0),
+                                 1024, 758);
+  set_suggested_output_position (g_list_nth_data (test_setup->outputs, 1),
+                                 0, 0);
 
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);

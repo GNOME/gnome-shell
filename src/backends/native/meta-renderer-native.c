@@ -51,6 +51,7 @@
 #include "backends/meta-egl.h"
 #include "backends/meta-egl-ext.h"
 #include "backends/meta-logical-monitor.h"
+#include "backends/meta-output.h"
 #include "backends/meta-renderer-view.h"
 #include "backends/native/meta-monitor-manager-kms.h"
 #include "backends/native/meta-renderer-native.h"

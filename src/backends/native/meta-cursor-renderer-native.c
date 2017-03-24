@@ -38,6 +38,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-manager-private.h"
+#include "backends/meta-output.h"
 #include "backends/native/meta-renderer-native.h"
 #include "core/boxes-private.h"
 #include "meta/boxes.h"

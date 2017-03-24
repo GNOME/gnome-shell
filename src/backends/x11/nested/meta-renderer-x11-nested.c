@@ -29,6 +29,7 @@
 #include "clutter/x11/clutter-x11.h"
 #include "backends/meta-backend-private.h"
 #include "backends/meta-logical-monitor.h"
+#include "backends/meta-output.h"
 #include "backends/meta-renderer.h"
 #include "backends/meta-renderer-view.h"
 #include "core/boxes-private.h"

@@ -26,6 +26,7 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-settings-private.h"
+#include "backends/meta-output.h"
 
 #define SCALE_FACTORS_PER_INTEGER 4
 #define MINIMUM_SCALE_FACTOR 1.0f
@@ -560,11 +561,13 @@ add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
 {
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (META_MONITOR (monitor_tiled));
-  unsigned int i;
+  GList *outputs;
+  GList *l;
 
-  for (i = 0; i < monitor_manager->n_outputs; i++)
+  outputs = monitor_manager->outputs;
+  for (l = outputs; l; l = l->next)
     {
-      MetaOutput *output = &monitor_manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->tile_info.group_id != monitor_tiled->tile_group_id)
         continue;

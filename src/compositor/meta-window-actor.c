@@ -952,18 +952,19 @@ queue_send_frame_messages_timeout (MetaWindowActor *self)
   gint64 current_time = meta_compositor_monotonic_time_to_server_time (display, g_get_monotonic_time ());
   MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
   MetaWindow *window = priv->window;
-
-  MetaOutput *outputs;
-  guint n_outputs, i;
+  GList *outputs;
+  GList *l;
   float refresh_rate = 60.0f;
   gint interval, offset;
 
-  outputs = meta_monitor_manager_get_outputs (monitor_manager, &n_outputs);
-  for (i = 0; i < n_outputs; i++)
+  outputs = meta_monitor_manager_get_outputs (monitor_manager);
+  for (l = outputs; l; l = l->next)
     {
-      if (outputs[i].winsys_id == window->monitor->winsys_id && outputs[i].crtc)
+      MetaOutput *output = l->data;
+
+      if (output->winsys_id == window->monitor->winsys_id && output->crtc)
         {
-          refresh_rate = outputs[i].crtc->current_mode->refresh_rate;
+          refresh_rate = output->crtc->current_mode->refresh_rate;
           break;
         }
     }

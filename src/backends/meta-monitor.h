@@ -25,6 +25,7 @@
 #include <glib-object.h>
 
 #include "backends/meta-monitor-manager-private.h"
+#include "backends/meta-output.h"
 
 typedef struct _MetaMonitorSpec
 {

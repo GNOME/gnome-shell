@@ -25,6 +25,7 @@
 
 #include "meta-monitor-manager-kms.h"
 #include "meta-monitor-config-manager.h"
+#include "meta-output.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
 
@@ -134,8 +135,8 @@ free_resources (MetaMonitorManagerKms *manager_kms)
 }
 
 static int
-compare_outputs (const void *one,
-                 const void *two)
+compare_outputs (gconstpointer one,
+                 gconstpointer two)
 {
   const MetaOutput *o_one = one, *o_two = two;
 
@@ -470,15 +471,18 @@ compare_modes (const void *one,
 }
 
 static MetaOutput *
-find_output_by_id (MetaOutput *outputs,
-                   unsigned    n_outputs,
-                   glong       id)
+find_output_by_id (GList *outputs,
+                   glong  id)
 {
-  unsigned i;
+  GList *l;
 
-  for (i = 0; i < n_outputs; i++)
-    if (outputs[i].winsys_id == id)
-      return &outputs[i];
+  for (l = outputs; l; l = l->next)
+    {
+      MetaOutput *output = l->data;
+
+      if (output->winsys_id == id)
+        return output;
+    }
 
   return NULL;
 }
@@ -692,18 +696,20 @@ init_crtc (MetaCrtc           *crtc,
   crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
 }
 
-static void
-init_output (MetaOutput         *output,
-             MetaMonitorManager *manager,
-             drmModeConnector   *connector,
-             MetaOutput         *old_output)
+static MetaOutput *
+create_output (MetaMonitorManager *manager,
+               drmModeConnector   *connector,
+               MetaOutput         *old_output)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  MetaOutput *output;
   MetaOutputKms *output_kms;
   GArray *crtcs;
   GBytes *edid;
   unsigned int i;
   unsigned int crtc_mask;
+
+  output = g_object_new (META_TYPE_OUTPUT, NULL);
 
   output_kms = g_slice_new0 (MetaOutputKms);
   output->driver_private = output_kms;
@@ -865,6 +871,8 @@ init_output (MetaOutput         *output,
   output->backlight_min = 0;
   output->backlight_max = 0;
   output->backlight = -1;
+
+  return output;
 }
 
 static void
@@ -874,6 +882,7 @@ detect_and_setup_output_clones (MetaMonitorManager *manager,
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   drmModeEncoder **encoders;
   unsigned int i, n_encoders;
+  GList *l;
 
   n_encoders = (unsigned int) resources->count_encoders;
   encoders = g_new (drmModeEncoder *, n_encoders);
@@ -883,14 +892,11 @@ detect_and_setup_output_clones (MetaMonitorManager *manager,
   /*
    * Setup encoder position mask and encoder clone mask.
    */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output;
-      MetaOutputKms *output_kms;
+      MetaOutput *output = l->data;
+      MetaOutputKms *output_kms = output->driver_private;
       unsigned int j;
-
-      output = &manager->outputs[i];
-      output_kms = output->driver_private;
 
       output_kms->enc_clone_mask = 0xff;
       output_kms->encoder_mask = 0;
@@ -920,27 +926,21 @@ detect_and_setup_output_clones (MetaMonitorManager *manager,
   /*
    * Setup MetaOutput <-> MetaOutput clone associations.
    */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output;
-      MetaOutputKms *output_kms;
-      unsigned int j;
-
-      output = &manager->outputs[i];
-      output_kms = output->driver_private;
+      MetaOutput *output = l->data;
+      MetaOutputKms *output_kms = output->driver_private;
+      GList *k;
 
       if (output_kms->enc_clone_mask == 0)
         continue;
 
-      for (j = 0; j < manager->n_outputs; j++)
+      for (k = manager->outputs; k; k = k->next)
         {
-          MetaOutput *meta_clone;
-          MetaOutputKms *clone_kms;
+          MetaOutput *clone = k->data;
+          MetaOutputKms *clone_kms = clone->driver_private;
 
-          meta_clone = &manager->outputs[i];
-          clone_kms = meta_clone->driver_private;
-
-          if (meta_clone == output)
+          if (clone == output)
             continue;
 
           if (clone_kms->encoder_mask == 0)
@@ -952,7 +952,7 @@ detect_and_setup_output_clones (MetaMonitorManager *manager,
               output->possible_clones = g_renew (MetaOutput *,
                                                  output->possible_clones,
                                                  output->n_possible_clones);
-              output->possible_clones[output->n_possible_clones - 1] = meta_clone;
+              output->possible_clones[output->n_possible_clones - 1] = clone;
             }
         }
     }
@@ -1066,42 +1066,33 @@ init_outputs (MetaMonitorManager *manager,
               drmModeRes         *resources)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  MetaOutput *old_outputs;
-  unsigned int n_old_outputs;
-  unsigned int n_actual_outputs;
+  GList *old_outputs;
   unsigned int i;
 
   old_outputs = manager->outputs;
-  n_old_outputs = manager->n_outputs;
 
-  manager->outputs = g_new0 (MetaOutput, manager_kms->n_connectors);
-  n_actual_outputs = 0;
+  manager->outputs = NULL;
 
   for (i = 0; i < manager_kms->n_connectors; i++)
     {
       drmModeConnector *connector;
-      MetaOutput *output;
 
       connector = manager_kms->connectors[i];
-      output = &manager->outputs[n_actual_outputs];
 
       if (connector && connector->connection == DRM_MODE_CONNECTED)
         {
+          MetaOutput *output;
           MetaOutput *old_output;
 
-          old_output = find_output_by_id (old_outputs, n_old_outputs,
-                                          connector->connector_id);
-          init_output (output, manager, connector, old_output);
-          n_actual_outputs++;
+          old_output = find_output_by_id (old_outputs, connector->connector_id);
+          output = create_output (manager, connector, old_output);
+          manager->outputs = g_list_prepend (manager->outputs, output);
         }
     }
 
-  manager->n_outputs = n_actual_outputs;
-  manager->outputs = g_renew (MetaOutput, manager->outputs, manager->n_outputs);
 
   /* Sort the outputs for easier handling in MetaMonitorConfig */
-  qsort (manager->outputs, manager->n_outputs, sizeof (MetaOutput),
-         compare_outputs);
+  manager->outputs = g_list_sort (manager->outputs, compare_outputs);
 
   detect_and_setup_output_clones (manager, resources);
 }
@@ -1163,7 +1154,7 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   uint64_t state;
-  unsigned i;
+  GList *l;
 
   switch (mode) {
   case META_POWER_SAVE_ON:
@@ -1182,13 +1173,10 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
     return;
   }
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output;
-      MetaOutputKms *output_kms;
-
-      output = &manager->outputs[i];
-      output_kms = output->driver_private;
+      MetaOutput *output = l->data;
+      MetaOutputKms *output_kms = output->driver_private;
 
       if (output_kms->dpms_prop_id != 0)
         {
@@ -1264,6 +1252,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   unsigned i;
+  GList *l;
 
   for (i = 0; i < n_crtcs; i++)
     {
@@ -1370,9 +1359,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->is_dirty)
         {
@@ -1605,12 +1594,12 @@ get_crtc_connectors (MetaMonitorManager *manager,
                      uint32_t          **connectors,
                      unsigned int       *n_connectors)
 {
-  unsigned int i;
   GArray *connectors_array = g_array_new (FALSE, FALSE, sizeof (uint32_t));
+  GList *l;
 
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->crtc == crtc)
         g_array_append_val (connectors_array, output->winsys_id);
@@ -1671,16 +1660,16 @@ meta_monitor_manager_kms_is_crtc_active (MetaMonitorManagerKms *manager_kms,
                                          MetaCrtc              *crtc)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
-  unsigned int i;
+  GList *l;
   gboolean connected_crtc_found;
 
   if (manager->power_save_mode != META_POWER_SAVE_ON)
     return FALSE;
 
   connected_crtc_found = FALSE;
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->crtc == crtc)
         {

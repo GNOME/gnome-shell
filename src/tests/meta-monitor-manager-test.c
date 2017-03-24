@@ -23,6 +23,7 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-config-manager.h"
+#include "backends/meta-output.h"
 
 struct _MetaMonitorManagerTest
 {
@@ -99,7 +100,6 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
   manager->n_crtcs = manager_test->test_setup->n_crtcs;
 
   manager->outputs = manager_test->test_setup->outputs;
-  manager->n_outputs = manager_test->test_setup->n_outputs;
 }
 
 static gboolean
@@ -134,6 +134,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
                         MetaOutputInfo    **outputs,
                         unsigned int        n_outputs)
 {
+  GList *l;
   unsigned int i;
 
   for (i = 0; i < n_crtcs; i++)
@@ -218,9 +219,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->is_dirty)
         {

@@ -33,6 +33,7 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-manager.h"
+#include "backends/meta-output.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
@@ -69,7 +70,7 @@ meta_output_dummy_notify_destroy (MetaOutput *output);
 static void
 append_monitor (GArray *modes,
                 GArray *crtcs,
-                GArray *outputs,
+                GList **outputs,
                 float   scale)
 {
   MetaCrtcMode modes_decl[] = {
@@ -86,8 +87,9 @@ append_monitor (GArray *modes,
   };
   MetaCrtc crtc;
   MetaOutputDummy *output_dummy;
-  MetaOutput output;
+  MetaOutput *output;
   unsigned int i;
+  unsigned int number;
 
   for (i = 0; i < G_N_ELEMENTS (modes_decl); i++)
     modes_decl[i].mode_id = modes->len + i;
@@ -99,47 +101,49 @@ append_monitor (GArray *modes,
   };
   g_array_append_val (crtcs, crtc);
 
+  output = g_object_new (META_TYPE_OUTPUT, NULL);
+
   output_dummy = g_new0 (MetaOutputDummy, 1);
   *output_dummy = (MetaOutputDummy) {
     .scale = scale
   };
 
-  output = (MetaOutput) {
-    .winsys_id = outputs->len + 1,
-    .name = g_strdup_printf ("LVDS%d", outputs->len + 1),
-    .vendor = g_strdup ("MetaProducts Inc."),
-    .product = g_strdup ("MetaMonitor"),
-    .serial = g_strdup_printf ("0xC0FFEE-%d", outputs->len + 1),
-    .suggested_x = -1,
-    .suggested_y = -1,
-    .width_mm = 222,
-    .height_mm = 125,
-    .subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN,
-    .preferred_mode = &array_last (modes, MetaCrtcMode),
-    .n_possible_clones = 0,
-    .backlight = -1,
-    .connector_type = META_CONNECTOR_TYPE_LVDS,
-    .driver_private = output_dummy,
-    .driver_notify =
-      (GDestroyNotify) meta_output_dummy_notify_destroy
-  };
+  number = g_list_length (*outputs) + 1;
 
-  output.modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
+  output->winsys_id = number;
+  output->name = g_strdup_printf ("LVDS%d", number);
+  output->vendor = g_strdup ("MetaProducts Inc.");
+  output->product = g_strdup ("MetaMonitor");
+  output->serial = g_strdup_printf ("0xC0FFEE-%d", number);
+  output->suggested_x = -1;
+  output->suggested_y = -1;
+  output->width_mm = 222;
+  output->height_mm = 125;
+  output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+  output->preferred_mode = &array_last (modes, MetaCrtcMode);
+  output->n_possible_clones = 0;
+  output->backlight = -1;
+  output->connector_type = META_CONNECTOR_TYPE_LVDS;
+  output->driver_private = output_dummy;
+  output->driver_notify =
+    (GDestroyNotify) meta_output_dummy_notify_destroy;
+
+  output->modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
   for (i = 0; i < G_N_ELEMENTS (modes_decl); i++)
-    output.modes[i] = &g_array_index (modes, MetaCrtcMode,
-                                      modes->len - (i + 1));
-  output.n_modes = G_N_ELEMENTS (modes_decl);
-  output.possible_crtcs = g_new0 (MetaCrtc *, 1);
-  output.possible_crtcs[0] = &array_last (crtcs, MetaCrtc);
-  output.n_possible_crtcs = 1;
+    output->modes[i] = &g_array_index (modes, MetaCrtcMode,
+                                       modes->len - (i + 1));
+  output->n_modes = G_N_ELEMENTS (modes_decl);
+  output->possible_crtcs = g_new0 (MetaCrtc *, 1);
+  output->possible_crtcs[0] = &array_last (crtcs, MetaCrtc);
+  output->n_possible_crtcs = 1;
 
-  g_array_append_val (outputs, output);
+  *outputs = g_list_append (*outputs, output);
 }
 
 static void
 append_tiled_monitor (GArray *modes,
                       GArray *crtcs,
-                      GArray *outputs,
+                      GList **outputs,
                       int     scale)
 {
   MetaCrtcMode modes_decl[] = {
@@ -162,7 +166,7 @@ append_tiled_monitor (GArray *modes,
       .all_transforms = ALL_TRANSFORMS,
     },
   };
-  MetaOutput output;
+  MetaOutput *output;
   unsigned int i;
   uint32_t tile_group_id;
 
@@ -174,61 +178,66 @@ append_tiled_monitor (GArray *modes,
     crtcs_decl[i].crtc_id = crtcs->len + i + 1;
   g_array_append_vals (crtcs, crtcs_decl, G_N_ELEMENTS (crtcs_decl));
 
-  tile_group_id = outputs->len + 1;
+  tile_group_id = g_list_length (*outputs) + 1;
   for (i = 0; i < G_N_ELEMENTS (crtcs_decl); i++)
     {
       MetaOutputDummy *output_dummy;
       MetaCrtcMode *preferred_mode;
       unsigned int j;
+      unsigned int number;
 
       output_dummy = g_new0 (MetaOutputDummy, 1);
       *output_dummy = (MetaOutputDummy) {
         .scale = scale
       };
 
-      preferred_mode = &array_last (modes, MetaCrtcMode),
-      output = (MetaOutput) {
-        .winsys_id = outputs->len + 1,
-        .name = g_strdup_printf ("LVDS%d", outputs->len + 1),
-        .vendor = g_strdup ("MetaProducts Inc."),
-        .product = g_strdup ("MetaMonitor"),
-        .serial = g_strdup_printf ("0xC0FFEE-%d", outputs->len + 1),
-        .suggested_x = -1,
-        .suggested_y = -1,
-        .width_mm = 222,
-        .height_mm = 125,
-        .subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN,
-        .preferred_mode = preferred_mode,
-        .n_possible_clones = 0,
-        .backlight = -1,
-        .connector_type = META_CONNECTOR_TYPE_LVDS,
-        .tile_info = (MetaTileInfo) {
-          .group_id = tile_group_id,
-          .max_h_tiles = G_N_ELEMENTS (crtcs_decl),
-          .max_v_tiles = 1,
-          .loc_h_tile = i,
-          .loc_v_tile = 0,
-          .tile_w = preferred_mode->width,
-          .tile_h = preferred_mode->height
-        },
-        .driver_private = output_dummy,
-        .driver_notify =
-          (GDestroyNotify) meta_output_dummy_notify_destroy
-      };
+      /* Arbitrary ID unique for this output */
+      number = g_list_length (*outputs) + 1;
 
-      output.modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
+      preferred_mode = &array_last (modes, MetaCrtcMode);
+
+      output = g_object_new (META_TYPE_OUTPUT, NULL);
+
+      output->winsys_id = number;
+      output->name = g_strdup_printf ("LVDS%d", number);
+      output->vendor = g_strdup ("MetaProducts Inc.");
+      output->product = g_strdup ("MetaMonitor");
+      output->serial = g_strdup_printf ("0xC0FFEE-%d", number);
+      output->suggested_x = -1;
+      output->suggested_y = -1;
+      output->width_mm = 222;
+      output->height_mm = 125;
+      output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
+      output->preferred_mode = preferred_mode;
+      output->n_possible_clones = 0;
+      output->backlight = -1;
+      output->connector_type = META_CONNECTOR_TYPE_LVDS;
+      output->tile_info = (MetaTileInfo) {
+        .group_id = tile_group_id,
+        .max_h_tiles = G_N_ELEMENTS (crtcs_decl),
+        .max_v_tiles = 1,
+        .loc_h_tile = i,
+        .loc_v_tile = 0,
+        .tile_w = preferred_mode->width,
+        .tile_h = preferred_mode->height
+      },
+      output->driver_private = output_dummy;
+      output->driver_notify =
+        (GDestroyNotify) meta_output_dummy_notify_destroy;
+
+      output->modes = g_new0 (MetaCrtcMode *, G_N_ELEMENTS (modes_decl));
       for (j = 0; j < G_N_ELEMENTS (modes_decl); j++)
-        output.modes[j] = &g_array_index (modes, MetaCrtcMode,
-                                          modes->len - (j + 1));
-      output.n_modes = G_N_ELEMENTS (modes_decl);
+        output->modes[j] = &g_array_index (modes, MetaCrtcMode,
+                                           modes->len - (j + 1));
+      output->n_modes = G_N_ELEMENTS (modes_decl);
 
-      output.possible_crtcs = g_new0 (MetaCrtc *, G_N_ELEMENTS (crtcs_decl));
+      output->possible_crtcs = g_new0 (MetaCrtc *, G_N_ELEMENTS (crtcs_decl));
       for (j = 0; j < G_N_ELEMENTS (crtcs_decl); j++)
-        output.possible_crtcs[j] = &g_array_index (crtcs, MetaCrtc,
-                                                   crtcs->len - (j + 1));
-      output.n_possible_crtcs = G_N_ELEMENTS (crtcs_decl);
+        output->possible_crtcs[j] = &g_array_index (crtcs, MetaCrtc,
+                                                    crtcs->len - (j + 1));
+      output->n_possible_crtcs = G_N_ELEMENTS (crtcs_decl);
 
-      g_array_append_val (outputs, output);
+      *outputs = g_list_append (*outputs, output);
     }
 }
 
@@ -248,7 +257,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   const char *tiled_monitors_str;
   gboolean tiled_monitors;
   unsigned int i;
-  GArray *outputs;
+  GList *outputs;
   GArray *crtcs;
   GArray *modes;
 
@@ -321,26 +330,24 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 
   modes = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtcMode), MAX_MODES);
   crtcs = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtc), MAX_CRTCS);
-  outputs = g_array_sized_new (FALSE, TRUE, sizeof (MetaOutput), MAX_OUTPUTS);
+  outputs = NULL;
 
   for (i = 0; i < num_monitors; i++)
     {
       if (tiled_monitors)
-        append_tiled_monitor (modes, crtcs, outputs, monitor_scales[i]);
+        append_tiled_monitor (modes, crtcs, &outputs, monitor_scales[i]);
       else
-        append_monitor (modes, crtcs, outputs, monitor_scales[i]);
+        append_monitor (modes, crtcs, &outputs, monitor_scales[i]);
     }
 
   manager->modes = (MetaCrtcMode *) modes->data;
   manager->n_modes = modes->len;
   manager->crtcs = (MetaCrtc *) crtcs->data;
   manager->n_crtcs = crtcs->len;
-  manager->outputs = (MetaOutput *) outputs->data;
-  manager->n_outputs = outputs->len;
+  manager->outputs = outputs;
 
   g_array_free (modes, FALSE);
   g_array_free (crtcs, FALSE);
-  g_array_free (outputs, FALSE);
 }
 
 static void
@@ -363,6 +370,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
                         MetaOutputInfo    **outputs,
                         unsigned int        n_outputs)
 {
+  GList *l;
   unsigned i;
 
   for (i = 0; i < n_crtcs; i++)
@@ -446,9 +454,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (i = 0; i < manager->n_outputs; i++)
+  for (l = manager->outputs; l; l = l->next)
     {
-      MetaOutput *output = &manager->outputs[i];
+      MetaOutput *output = l->data;
 
       if (output->is_dirty)
         {
