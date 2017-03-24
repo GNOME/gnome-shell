@@ -1090,7 +1090,7 @@ init_outputs (MetaMonitorManager *manager,
           MetaOutput *old_output;
 
           old_output = find_output_by_id (old_outputs, n_old_outputs,
-                                          output->winsys_id);
+                                          connector->connector_id);
           init_output (output, manager, connector, old_output);
           n_actual_outputs++;
         }
