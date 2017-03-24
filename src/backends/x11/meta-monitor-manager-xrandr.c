@@ -1774,7 +1774,7 @@ meta_monitor_manager_xrandr_is_transform_handled (MetaMonitorManager  *manager,
                                                   MetaCrtc            *crtc,
                                                   MetaMonitorTransform transform)
 {
-  g_warn_if_fail (crtc->all_transforms & transform);
+  g_warn_if_fail ((crtc->all_transforms & transform) == transform);
 
   return TRUE;
 }
