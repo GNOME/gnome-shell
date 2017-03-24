@@ -93,7 +93,8 @@ Recommends: gkbd-capplet,
             unzip
 Breaks: gdm3 (<< 3.19.92),
         gnome-session (<< 3.19)
-Conflicts: gnome-screensaver (<< 3.6)
+Conflicts: eos-shell (<< 3.22)
+Replaces: eos-shell (<< 3.22)
 Provides: notification-daemon, polkit-1-auth-agent
 Description: graphical shell for the GNOME desktop
  The GNOME Shell provides core interface functions like switching
@@ -108,5 +109,7 @@ Architecture: all
 Depends: ${misc:Depends}
 Breaks: gnome-tweak-tool (<< 3.21.91),
         gnome-calendar (<< 3.21.4)
+Conflicts: eos-shell-common (<< 3.22)
+Replaces: eos-shell-common (<< 3.22)
 Description: common files for the GNOME graphical shell
  This package contains translations and data files for the GNOME shell.
