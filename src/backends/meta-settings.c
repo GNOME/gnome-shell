@@ -86,37 +86,15 @@ calculate_ui_scaling_factor (MetaSettings *settings)
   return (int) max_scale;
 }
 
-static int
-get_xsettings_scaling_factor (void)
-{
-  GdkScreen *screen;
-  GValue value = G_VALUE_INIT;
-
-  g_value_init (&value, G_TYPE_INT);
-
-  screen = gdk_screen_get_default ();
-  if (gdk_screen_get_setting (screen, "gdk-window-scaling-factor", &value))
-    return g_value_get_int (&value);
-  else
-    return 1;
-}
-
 static gboolean
 update_ui_scaling_factor (MetaSettings *settings)
 {
   int ui_scaling_factor;
 
   if (meta_is_stage_views_scaled ())
-    {
-      ui_scaling_factor = 1;
-    }
+    ui_scaling_factor = 1;
   else
-    {
-      if (meta_is_monitor_config_manager_enabled ())
-        ui_scaling_factor = calculate_ui_scaling_factor (settings);
-      else
-        ui_scaling_factor = get_xsettings_scaling_factor ();
-    }
+    ui_scaling_factor = calculate_ui_scaling_factor (settings);
 
   if (settings->ui_scaling_factor != ui_scaling_factor)
     {
@@ -127,34 +105,6 @@ update_ui_scaling_factor (MetaSettings *settings)
     {
       return FALSE;
     }
-}
-
-static void
-xft_dpi_changed (GtkSettings  *gtk_settings,
-                 GParamSpec   *pspec,
-                 MetaSettings *settings)
-{
-  /* This only matters when we rely on XSettings. */
-  if (meta_is_monitor_config_manager_enabled ())
-    return;
-
-  meta_settings_update_ui_scaling_factor (settings);
-}
-
-static void
-x11_display_opened (MetaBackend  *backend,
-                    MetaSettings *settings)
-{
-  /*
-   * gdk-window-scaling-factor is not exported to gtk-settings
-   * because it is handled inside gdk, so we use gtk-xft-dpi instead
-   * which also changes when the scale factor changes.
-   *
-   * TODO: Only rely on our own configured scale when we only have
-   * MetaMonitorConfigManager.
-   */
-  g_signal_connect (gtk_settings_get_default (), "notify::gtk-xft-dpi",
-                    G_CALLBACK (xft_dpi_changed), settings);
 }
 
 void
@@ -312,8 +262,6 @@ experimental_features_handler (GVariant *features_variant,
       /* So far no experimental features defined. */
       if (g_str_equal (feature, "scale-monitor-framebuffer"))
         features |= META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER;
-      else if (g_str_equal (feature, "monitor-config-manager"))
-        features |= META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER;
       else
         g_info ("Unknown experimental feature '%s'\n", feature);
     }
@@ -363,10 +311,6 @@ meta_settings_new (MetaBackend *backend)
 
   settings = g_object_new (META_TYPE_SETTINGS, NULL);
   settings->backend = backend;
-
-  g_signal_connect (backend, "x11-display-opened",
-                    G_CALLBACK (x11_display_opened),
-                    settings);
 
   return settings;
 }

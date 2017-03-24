@@ -52,7 +52,6 @@ enum
   KEYMAP_CHANGED,
   KEYMAP_LAYOUT_GROUP_CHANGED,
   LAST_DEVICE_CHANGED,
-  X11_DISPLAY_OPENED,
 
   N_SIGNALS
 };
@@ -499,13 +498,6 @@ meta_backend_class_init (MetaBackendClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1, G_TYPE_INT);
-  signals[X11_DISPLAY_OPENED] =
-    g_signal_new ("x11-display-opened",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
 
   mutter_stage_views = g_getenv ("MUTTER_STAGE_VIEWS");
   stage_views_disabled = g_strcmp0 (mutter_stage_views, "0") == 0;
@@ -942,12 +934,6 @@ meta_clutter_init (void)
   g_source_unref (source);
 
   meta_backend_post_init (_backend);
-}
-
-void
-meta_backend_x11_display_opened (MetaBackend *backend)
-{
-  g_signal_emit (backend, signals[X11_DISPLAY_OPENED], 0);
 }
 
 gboolean

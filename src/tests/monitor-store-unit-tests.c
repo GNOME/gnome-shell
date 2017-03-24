@@ -257,12 +257,6 @@ meta_test_monitor_store_single (void)
     .n_configurations = 1
   };
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   set_custom_monitor_config ("single.xml");
 
   check_monitor_configurations (&expect);
@@ -331,12 +325,6 @@ meta_test_monitor_store_vertical (void)
     },
     .n_configurations = 1
   };
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   set_custom_monitor_config ("vertical.xml");
 
@@ -407,12 +395,6 @@ meta_test_monitor_store_primary (void)
     .n_configurations = 1
   };
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   set_custom_monitor_config ("primary.xml");
 
   check_monitor_configurations (&expect);
@@ -458,12 +440,6 @@ meta_test_monitor_store_underscanning (void)
     .n_configurations = 1
   };
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   set_custom_monitor_config ("underscanning.xml");
 
   check_monitor_configurations (&expect);
@@ -507,12 +483,6 @@ meta_test_monitor_store_scale (void)
     },
     .n_configurations = 1
   };
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   if (!meta_is_stage_views_enabled ())
     {
@@ -564,12 +534,6 @@ meta_test_monitor_store_fractional_scale (void)
     .n_configurations = 1
   };
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   if (!meta_is_stage_views_enabled ())
     {
       g_test_skip ("Not using stage views");
@@ -619,12 +583,6 @@ meta_test_monitor_store_high_precision_fractional_scale (void)
     },
     .n_configurations = 1
   };
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   if (!meta_is_stage_views_enabled ())
     {
@@ -685,12 +643,6 @@ meta_test_monitor_store_mirrored (void)
     },
     .n_configurations = 1
   };
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   set_custom_monitor_config ("mirrored.xml");
 
@@ -763,12 +715,6 @@ meta_test_monitor_store_first_rotated (void)
     .n_configurations = 1
   };
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   set_custom_monitor_config ("first-rotated.xml");
 
   check_monitor_configurations (&expect);
@@ -840,12 +786,6 @@ meta_test_monitor_store_second_rotated (void)
     .n_configurations = 1
   };
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   set_custom_monitor_config ("second-rotated.xml");
 
   check_monitor_configurations (&expect);
@@ -890,12 +830,6 @@ meta_test_monitor_store_interlaced (void)
     },
     .n_configurations = 1
   };
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   set_custom_monitor_config ("interlaced.xml");
 

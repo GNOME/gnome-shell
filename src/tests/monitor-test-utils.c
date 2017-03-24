@@ -25,12 +25,6 @@
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-monitor-config-store.h"
 
-gboolean
-is_using_monitor_config_manager (void)
-{
-  return meta_is_monitor_config_manager_enabled ();
-}
-
 void
 set_custom_monitor_config (const char *filename)
 {

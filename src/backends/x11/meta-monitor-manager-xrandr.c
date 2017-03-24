@@ -43,7 +43,6 @@
 #include "meta-backend-x11.h"
 #include <meta/main.h>
 #include <meta/errors.h>
-#include "meta-monitor-config.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-logical-monitor.h"
 
@@ -1465,8 +1464,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
 static void
 meta_monitor_manager_xrandr_ensure_initial_config (MetaMonitorManager *manager)
 {
-  MetaMonitorManagerDeriveFlag flags =
-    META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
+  MetaMonitorManagerDeriveFlag flags;
 
   meta_monitor_manager_ensure_configured (manager);
 
@@ -1477,9 +1475,7 @@ meta_monitor_manager_xrandr_ensure_initial_config (MetaMonitorManager *manager)
    */
   meta_monitor_manager_read_current_state (manager);
 
-  if (meta_is_monitor_config_manager_enabled ())
-    flags |= META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
-
+  flags = META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
   meta_monitor_manager_update_logical_state_derived (manager, flags);
 }
 
@@ -1543,16 +1539,6 @@ meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager      *mana
   g_ptr_array_free (output_infos, TRUE);
 
   return TRUE;
-}
-
-static void
-meta_monitor_manager_xrandr_apply_configuration (MetaMonitorManager *manager,
-						 MetaCrtcInfo      **crtcs,
-						 unsigned int        n_crtcs,
-						 MetaOutputInfo    **outputs,
-						 unsigned int        n_outputs)
-{
-  apply_crtc_assignments (manager, FALSE, crtcs, n_crtcs, outputs, n_outputs);
 }
 
 static void
@@ -1909,7 +1895,6 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;
   manager_class->ensure_initial_config = meta_monitor_manager_xrandr_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_xrandr_apply_monitors_config;
-  manager_class->apply_configuration = meta_monitor_manager_xrandr_apply_configuration;
   manager_class->set_power_save_mode = meta_monitor_manager_xrandr_set_power_save_mode;
   manager_class->change_backlight = meta_monitor_manager_xrandr_change_backlight;
   manager_class->get_crtc_gamma = meta_monitor_manager_xrandr_get_crtc_gamma;

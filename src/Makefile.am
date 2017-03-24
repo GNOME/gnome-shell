@@ -109,8 +109,6 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-input-settings-private.h	\
 	backends/meta-logical-monitor.c		\
 	backends/meta-logical-monitor.h		\
-	backends/meta-monitor-config.c		\
-	backends/meta-monitor-config.h		\
 	backends/meta-monitor-config-manager.c	\
 	backends/meta-monitor-config-manager.h	\
 	backends/meta-monitor-config-store.c	\

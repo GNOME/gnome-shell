@@ -963,8 +963,6 @@ meta_display_open (void)
 
   meta_screen_init_workspaces (screen);
 
-  meta_backend_x11_display_opened (meta_get_backend ());
-
   enable_compositor (display);
 
   meta_screen_create_guard_window (screen);

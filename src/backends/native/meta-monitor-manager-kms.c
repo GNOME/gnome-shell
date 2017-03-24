@@ -24,7 +24,6 @@
 #include "config.h"
 
 #include "meta-monitor-manager-kms.h"
-#include "meta-monitor-config.h"
 #include "meta-monitor-config-manager.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
@@ -1253,17 +1252,7 @@ meta_monitor_manager_kms_ensure_initial_config (MetaMonitorManager *manager)
 
   config = meta_monitor_manager_ensure_configured (manager);
 
-  if (meta_is_monitor_config_manager_enabled ())
-    {
-      meta_monitor_manager_update_logical_state (manager, config);
-    }
-  else
-    {
-      MetaMonitorManagerDeriveFlag flags =
-        META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
-
-      meta_monitor_manager_update_logical_state_derived (manager, flags);
-    }
+  meta_monitor_manager_update_logical_state (manager, config);
 }
 
 static void
@@ -1467,40 +1456,6 @@ meta_monitor_manager_kms_apply_monitors_config (MetaMonitorManager      *manager
   meta_monitor_manager_rebuild (manager, config);
 
   return TRUE;
-}
-
-static void
-legacy_calculate_screen_size (MetaMonitorManager *manager)
-{
-  unsigned int i;
-  int width = 0, height = 0;
-
-  for (i = 0; i < manager->n_crtcs; i++)
-    {
-      MetaCrtc *crtc = &manager->crtcs[i];
-
-      width = MAX (width, crtc->rect.x + crtc->rect.width);
-      height = MAX (height, crtc->rect.y + crtc->rect.height);
-    }
-
-  manager->screen_width = width;
-  manager->screen_height = height;
-}
-
-static void
-meta_monitor_manager_kms_apply_configuration (MetaMonitorManager *manager,
-                                              MetaCrtcInfo      **crtcs,
-                                              unsigned int        n_crtcs,
-                                              MetaOutputInfo    **outputs,
-                                              unsigned int        n_outputs)
-{
-  MetaMonitorManagerDeriveFlag flags =
-    META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
-
-  apply_crtc_assignments (manager, crtcs, n_crtcs, outputs, n_outputs);
-
-  legacy_calculate_screen_size (manager);
-  meta_monitor_manager_rebuild_derived (manager, flags);
 }
 
 static void
@@ -1961,7 +1916,6 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->read_edid = meta_monitor_manager_kms_read_edid;
   manager_class->ensure_initial_config = meta_monitor_manager_kms_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_kms_apply_monitors_config;
-  manager_class->apply_configuration = meta_monitor_manager_kms_apply_configuration;
   manager_class->set_power_save_mode = meta_monitor_manager_kms_set_power_save_mode;
   manager_class->get_crtc_gamma = meta_monitor_manager_kms_get_crtc_gamma;
   manager_class->set_crtc_gamma = meta_monitor_manager_kms_set_crtc_gamma;

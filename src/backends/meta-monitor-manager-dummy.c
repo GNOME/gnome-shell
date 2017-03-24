@@ -350,10 +350,8 @@ meta_monitor_manager_dummy_ensure_initial_config (MetaMonitorManager *manager)
 
   config = meta_monitor_manager_ensure_configured (manager);
 
-  if (meta_is_monitor_config_manager_enabled ())
-    {
-      meta_monitor_manager_update_logical_state (manager, config);
-    }
+  if (meta_is_stage_views_enabled ())
+    meta_monitor_manager_update_logical_state (manager, config);
   else
     {
       MetaMonitorManagerDeriveFlag flags =
@@ -541,41 +539,6 @@ meta_monitor_manager_dummy_apply_monitors_config (MetaMonitorManager      *manag
   return TRUE;
 }
 
-static void
-legacy_calculate_screen_size (MetaMonitorManager *manager)
-{
-  unsigned int i;
-  int width = 0, height = 0;
-
-  for (i = 0; i < manager->n_crtcs; i++)
-    {
-      MetaCrtc *crtc = &manager->crtcs[i];
-
-      width = MAX (width, crtc->rect.x + crtc->rect.width);
-      height = MAX (height, crtc->rect.y + crtc->rect.height);
-    }
-
-  manager->screen_width = width;
-  manager->screen_height = height;
-}
-
-static void
-meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
-                                         MetaCrtcInfo      **crtcs,
-                                         unsigned int        n_crtcs,
-                                         MetaOutputInfo    **outputs,
-                                         unsigned int        n_outputs)
-{
-  MetaMonitorManagerDeriveFlag flags =
-    META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
-
-  apply_crtc_assignments (manager, crtcs, n_crtcs, outputs, n_outputs);
-
-  legacy_calculate_screen_size (manager);
-
-  meta_monitor_manager_rebuild_derived (manager, flags);
-}
-
 static gboolean
 meta_monitor_manager_dummy_is_transform_handled (MetaMonitorManager  *manager,
                                                  MetaCrtc            *crtc,
@@ -687,7 +650,6 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->read_current = meta_monitor_manager_dummy_read_current;
   manager_class->ensure_initial_config = meta_monitor_manager_dummy_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_dummy_apply_monitors_config;
-  manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
   manager_class->is_transform_handled = meta_monitor_manager_dummy_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_dummy_calculate_monitor_mode_scale;
   manager_class->calculate_supported_scales = meta_monitor_manager_dummy_calculate_supported_scales;

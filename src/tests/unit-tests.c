@@ -220,15 +220,9 @@ run_tests (gpointer data)
 
   meta_settings_override_experimental_features (settings);
 
-  if (g_strcmp0 (g_getenv ("MUTTER_USE_CONFIG_MANAGER"), "1") == 0)
-    {
-      meta_settings_enable_experimental_feature (
-        settings,
-        META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER);
-      meta_settings_enable_experimental_feature (
-        settings,
-        META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
-    }
+  meta_settings_enable_experimental_feature (
+    settings,
+    META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
 
   ret = g_test_run ();
 

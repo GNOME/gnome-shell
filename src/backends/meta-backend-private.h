@@ -102,8 +102,6 @@ struct _MetaBackendClass
 
 void meta_init_backend (GType backend_gtype);
 
-void meta_backend_x11_display_opened (MetaBackend *backend);
-
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,

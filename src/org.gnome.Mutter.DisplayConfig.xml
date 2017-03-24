@@ -292,17 +292,6 @@
     <signal name="MonitorsChanged" />
 
     <!--
-	IsExperimentalApiEnabled:
-
-	True if the experimental APIs are enabled, false if not. The
-	experimental APIs consists of the following methods:
-
-	  GetCurrentState()
-	  ApplyMonitorsConfig()
-    -->
-    <property name="IsExperimentalApiEnabled" type="b" access="read" />
-
-    <!--
 	GetCurrentState:
 	@serial: configuration serial
 	@monitors: available monitors

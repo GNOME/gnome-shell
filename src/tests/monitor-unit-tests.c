@@ -1550,12 +1550,6 @@ meta_test_monitor_tiled_non_preferred_linear_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Only the new monitor config manager handles this case.");
-      return;
-    }
-
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
   emulate_hotplug (test_setup);
@@ -1844,12 +1838,6 @@ meta_test_monitor_hidpi_linear_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   if (!meta_is_stage_views_enabled ())
     {
       g_test_skip ("Not using stage views");
@@ -2126,15 +2114,9 @@ meta_test_monitor_limited_crtcs (void)
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
 
-  /*
-   * With the config manager, we'll get a g_warning.
-   * With the old it's just a meta_warning().
-   */
-  if (is_using_monitor_config_manager ())
-    {
-      g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
-                             "Failed to use linear *");
-    }
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "Failed to use linear *");
+
   emulate_hotplug (test_setup);
   g_test_assert_expected_messages ();
 
@@ -2304,45 +2286,25 @@ meta_test_monitor_lid_switch_config (void)
   test_case.expect.crtcs[0].current_mode = 0;
   test_case.expect.crtcs[1].current_mode = 0;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      test_case.expect.logical_monitors[0] = (MonitorTestCaseLogicalMonitor) {
-          .monitors = { 0 },
-          .n_monitors = 1,
-          .layout = {.x = 0, .y = 0, .width = 1024, .height = 768 },
-          .scale = 1
-      };
-      test_case.expect.logical_monitors[1] = (MonitorTestCaseLogicalMonitor) {
-          .monitors = { 1 },
-          .n_monitors = 1,
-          .layout = {.x = 1024, .y = 0, .width = 1024, .height = 768 },
-          .scale = 1
-      };
-      test_case.expect.n_logical_monitors = 2;
-      test_case.expect.primary_logical_monitor = 0;
-    }
-  else
-    {
-      /*
-       * FIXME: The above expectation is correct, but MetaMonitorConfigManager
-       * doesn't support restoring previous configurations yet, so it'll
-       * pick keep the external monitor as primary and put it first.
-       */
-      test_case.expect.logical_monitors[0] = (MonitorTestCaseLogicalMonitor) {
-          .monitors = { 1 },
-          .n_monitors = 1,
-          .layout = {.x = 0, .y = 0, .width = 1024, .height = 768 },
-          .scale = 1
-      };
-      test_case.expect.logical_monitors[1] = (MonitorTestCaseLogicalMonitor) {
-          .monitors = { 0 },
-          .n_monitors = 1,
-          .layout = {.x = 1024, .y = 0, .width = 1024, .height = 768 },
-          .scale = 1
-      };
-      test_case.expect.n_logical_monitors = 2;
-      test_case.expect.primary_logical_monitor = 0;
-    }
+  /*
+   * FIXME: The above expectation is correct, but MetaMonitorConfigManager
+   * doesn't support restoring previous configurations yet, so it'll
+   * pick keep the external monitor as primary and put it first.
+   */
+  test_case.expect.logical_monitors[0] = (MonitorTestCaseLogicalMonitor) {
+    .monitors = { 1 },
+    .n_monitors = 1,
+    .layout = {.x = 0, .y = 0, .width = 1024, .height = 768 },
+    .scale = 1
+  };
+  test_case.expect.logical_monitors[1] = (MonitorTestCaseLogicalMonitor) {
+    .monitors = { 0 },
+    .n_monitors = 1,
+    .layout = {.x = 1024, .y = 0, .width = 1024, .height = 768 },
+    .scale = 1
+  };
+  test_case.expect.n_logical_monitors = 2;
+  test_case.expect.primary_logical_monitor = 0;
 
   check_monitor_configuration (&test_case);
 }
@@ -2478,12 +2440,6 @@ meta_test_monitor_lid_opened_config (void)
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Only the new monitor config manager handles this case.");
-      return;
-    }
 
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
@@ -2624,12 +2580,6 @@ meta_test_monitor_no_outputs (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Only the new monitor config manager handles this case.");
-      return;
-    }
 
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
@@ -2859,12 +2809,6 @@ meta_test_monitor_custom_vertical_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
   set_custom_monitor_config ("vertical.xml");
@@ -3004,12 +2948,6 @@ meta_test_monitor_custom_primary_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
   set_custom_monitor_config ("primary.xml");
@@ -3102,12 +3040,6 @@ meta_test_monitor_custom_underscanning_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
   set_custom_monitor_config ("underscanning.xml");
@@ -3198,12 +3130,6 @@ meta_test_monitor_custom_scale_config (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   if (!meta_is_stage_views_enabled ())
     {
@@ -3302,12 +3228,6 @@ meta_test_monitor_custom_fractional_scale_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   if (!meta_is_stage_views_enabled ())
     {
       g_test_skip ("Not using stage views");
@@ -3404,12 +3324,6 @@ meta_test_monitor_custom_high_precision_fractional_scale_config (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   if (!meta_is_stage_views_enabled ())
     {
@@ -3547,12 +3461,6 @@ meta_test_monitor_custom_tiled_config (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   if (!meta_is_stage_views_enabled ())
     {
@@ -3710,12 +3618,6 @@ meta_test_monitor_custom_tiled_custom_resolution_config (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   if (!meta_is_stage_views_enabled ())
     {
@@ -3897,12 +3799,6 @@ meta_test_monitor_custom_tiled_non_preferred_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Only the new monitor config manager handles this case.");
-      return;
-    }
-
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
   set_custom_monitor_config ("non-preferred-tiled-custom-resolution.xml");
@@ -4030,12 +3926,6 @@ meta_test_monitor_custom_mirrored_config (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
@@ -4172,12 +4062,6 @@ meta_test_monitor_custom_first_rotated_config (void)
   };
   MetaMonitorTestSetup *test_setup;
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
   set_custom_monitor_config ("first-rotated.xml");
@@ -4311,12 +4195,6 @@ meta_test_monitor_custom_second_rotated_config (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
@@ -4504,12 +4382,6 @@ meta_test_monitor_custom_second_rotated_tiled_config (void)
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   meta_monitor_manager_test_set_handles_transforms (monitor_manager_test,
                                                     TRUE);
 
@@ -4652,12 +4524,6 @@ meta_test_monitor_custom_second_rotated_nonnative_config (void)
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
 
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
-
   if (!meta_is_stage_views_enabled ())
     {
       g_test_skip ("Not using stage views");
@@ -4775,12 +4641,6 @@ meta_test_monitor_custom_interlaced_config (void)
     }
   };
   MetaMonitorTestSetup *test_setup;
-
-  if (!is_using_monitor_config_manager ())
-    {
-      g_test_skip ("Not using MetaMonitorConfigManager");
-      return;
-    }
 
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NONE);
