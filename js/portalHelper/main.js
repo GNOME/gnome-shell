@@ -215,6 +215,18 @@ const PortalWindow = new Lang.Class({
 
     _onDecidePolicy: function(view, decision, type) {
         if (type == WebKit.PolicyDecisionType.NEW_WINDOW_ACTION) {
+            let navigationAction = decision.get_navigation_action();
+            if (navigationAction.is_user_gesture()) {
+                // Even though the portal asks for a new window,
+                // perform the navigation in the current one. Some
+                // portals open a window as their last login step and
+                // ignoring that window causes them to not let the
+                // user go through. We don't risk popups taking over
+                // the page because we check that the navigation is
+                // user initiated.
+                this._webView.load_request(navigationAction.get_request());
+            }
+
             decision.ignore();
             return true;
         }
