@@ -785,6 +785,11 @@ const PopupMenu = new Lang.Class({
     },
 
     _onKeyPress: function(actor, event) {
+        // Disable toggling the menu by keyboard
+        // when it cannot be toggled by pointer
+        if (!actor.reactive)
+            return Clutter.EVENT_PROPAGATE;
+
         let navKey;
         switch (this._boxPointer.arrowSide) {
             case St.Side.TOP:
