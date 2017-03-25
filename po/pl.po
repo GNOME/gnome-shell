@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-20 19:18+0000\n"
-"PO-Revision-Date: 2017-03-23 22:10+0100\n"
+"POT-Creation-Date: 2017-03-23 21:15+0000\n"
+"PO-Revision-Date: 2017-03-25 21:19+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -521,7 +521,7 @@ msgstr "%l∶%M %p"
 #: js/misc/util.js:264
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr "Wczoraj o %l∶%M %p"
+msgstr "Wczoraj o %l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
@@ -536,7 +536,7 @@ msgstr "%A, %l∶%M %p"
 #: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
-msgstr "%d %B, %l∶%M %p"
+msgstr "%d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -544,7 +544,7 @@ msgstr "%d %B, %l∶%M %p"
 #: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d %B %Y, %l∶%M %p"
+msgstr "%d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:67
@@ -871,7 +871,7 @@ msgstr "To nie zadziałało. Proszę spróbować ponownie."
 msgid "%s is now known as %s"
 msgstr "Użytkownik „%s” jest teraz znany jako „%s”"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:179
 msgid "Windows"
 msgstr "Okna"
 
@@ -1810,11 +1810,11 @@ msgstr "Zaloguj jako inny użytkownik"
 msgid "Unlock Window"
 msgstr "Okno odblokowania"
 
-#: js/ui/viewSelector.js:182
+#: js/ui/viewSelector.js:183
 msgid "Applications"
 msgstr "Programy"
 
-#: js/ui/viewSelector.js:186
+#: js/ui/viewSelector.js:187
 msgid "Search"
 msgstr "Wyszukiwanie"
 
