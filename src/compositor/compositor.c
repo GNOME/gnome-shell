@@ -388,7 +388,9 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
       meta_display_sync_wayland_input_focus (display);
       meta_display_cancel_touch (display);
 
+#ifdef HAVE_WAYLAND
       meta_dnd_wayland_handle_begin_modal (compositor);
+#endif
     }
 
   return TRUE;

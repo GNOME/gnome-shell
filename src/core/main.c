@@ -443,11 +443,13 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
 #endif /* HAVE_WAYLAND */
     *compositor_type = META_COMPOSITOR_TYPE_X11;
 
+#ifdef HAVE_WAYLAND
   if (opt_nested)
     {
       *backend_gtype = META_TYPE_BACKEND_X11_NESTED;
       return;
     }
+#endif /* HAVE_WAYLAND */
 
 #ifdef HAVE_NATIVE_BACKEND
   if (opt_display_server)
