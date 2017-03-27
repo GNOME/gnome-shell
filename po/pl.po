@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-23 21:15+0000\n"
-"PO-Revision-Date: 2017-03-25 21:19+0100\n"
+"POT-Creation-Date: 2017-03-25 20:20+0000\n"
+"PO-Revision-Date: 2017-03-27 20:39+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -501,7 +501,7 @@ msgstr "%A, %H∶%M"
 #: js/misc/util.js:247
 #, no-c-format
 msgid "%B %d, %H∶%M"
-msgstr "%d %B, %H∶%M"
+msgstr "%-d %B, %H∶%M"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
@@ -509,7 +509,7 @@ msgstr "%d %B, %H∶%M"
 #: js/misc/util.js:253
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
-msgstr "%d %B %Y, %H∶%M"
+msgstr "%-d %B %Y, %H∶%M"
 
 #. Translators: Time in 12h format
 #: js/misc/util.js:258
@@ -536,7 +536,7 @@ msgstr "%A, %l∶%M %p"
 #: js/misc/util.js:276
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
-msgstr "%d %B, %l∶%M %p"
+msgstr "%-d %B, %l∶%M %p"
 
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
@@ -544,7 +544,7 @@ msgstr "%d %B, %l∶%M %p"
 #: js/misc/util.js:282
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
-msgstr "%d %B %Y, %l∶%M %p"
+msgstr "%-d %B %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:67
@@ -724,12 +724,12 @@ msgstr "Cały dzień"
 #: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %e %B"
+msgstr "%A, %-d %B"
 
 #: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %e %B %Y"
+msgstr "%A, %-d %B %Y"
 
 #: js/ui/calendar.js:1086
 msgid "No Notifications"
@@ -890,7 +890,7 @@ msgstr "Ulubione"
 #.
 #: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
-msgstr "%e %B %Y"
+msgstr "%-d %B %Y"
 
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
@@ -898,7 +898,7 @@ msgstr "%e %B %Y"
 #.
 #: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
-msgstr "%A, %e %B %Y"
+msgstr "%A, %-d %B %Y"
 
 #: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
@@ -1311,7 +1311,7 @@ msgstr "Ponowne uruchamianie…"
 #. long format
 #: js/ui/screenShield.js:88
 msgid "%A, %B %d"
-msgstr "%A, %e %B"
+msgstr "%A, %-d %B"
 
 #: js/ui/screenShield.js:147
 #, javascript-format
