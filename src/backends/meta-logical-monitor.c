@@ -201,6 +201,51 @@ meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor)
   return logical_monitor->monitors;
 }
 
+typedef struct _ForeachCrtcData
+{
+  MetaLogicalMonitor *logical_monitor;
+  MetaLogicalMonitorCrtcFunc func;
+  gpointer user_data;
+} ForeachCrtcData;
+
+static gboolean
+foreach_crtc (MetaMonitor         *monitor,
+              MetaMonitorMode     *mode,
+              MetaMonitorCrtcMode *monitor_crtc_mode,
+              gpointer             user_data,
+              GError             **error)
+{
+  ForeachCrtcData *data = user_data;
+
+  data->func (data->logical_monitor,
+              monitor_crtc_mode->output->crtc,
+              data->user_data);
+
+  return TRUE;
+}
+
+void
+meta_logical_monitor_foreach_crtc (MetaLogicalMonitor        *logical_monitor,
+                                   MetaLogicalMonitorCrtcFunc func,
+                                   gpointer                   user_data)
+{
+  GList *l;
+
+  for (l = logical_monitor->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+      MetaMonitorMode *mode;
+      ForeachCrtcData data = {
+        .logical_monitor = logical_monitor,
+        .func = func,
+        .user_data = user_data
+      };
+
+      mode = meta_monitor_get_current_mode (monitor);
+      meta_monitor_mode_foreach_crtc (monitor, mode, foreach_crtc, &data, NULL);
+    }
+}
+
 static void
 meta_logical_monitor_init (MetaLogicalMonitor *logical_monitor)
 {

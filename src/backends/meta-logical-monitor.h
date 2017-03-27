@@ -61,6 +61,10 @@ G_DECLARE_FINAL_TYPE (MetaLogicalMonitor, meta_logical_monitor,
                       META, LOGICAL_MONITOR,
                       GObject)
 
+typedef void (* MetaLogicalMonitorCrtcFunc) (MetaLogicalMonitor *logical_monitor,
+                                             MetaCrtc           *crtc,
+                                             gpointer            user_data);
+
 MetaLogicalMonitor * meta_logical_monitor_new (MetaMonitorManager       *monitor_manager,
                                                MetaLogicalMonitorConfig *logical_monitor_config,
                                                int                       monitor_number);
@@ -89,5 +93,9 @@ GList * meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor);
 gboolean meta_logical_monitor_has_neighbor (MetaLogicalMonitor  *logical_monitor,
                                             MetaLogicalMonitor  *neighbor,
                                             MetaScreenDirection  neighbor_dir);
+
+void meta_logical_monitor_foreach_crtc (MetaLogicalMonitor        *logical_monitor,
+                                        MetaLogicalMonitorCrtcFunc func,
+                                        gpointer                   user_data);
 
 #endif /* META_LOGICAL_MONITOR_H */
