@@ -615,6 +615,32 @@ meta_onscreen_native_flip_crtc (MetaOnscreenNative *onscreen_native,
     }
 }
 
+typedef struct _SetCrtcFbData
+{
+  MetaMonitorManager *monitor_manager;
+  MetaLogicalMonitor *logical_monitor;
+  uint32_t fb_id;
+} SetCrtcFbData;
+
+static void
+set_crtc_fb (MetaLogicalMonitor *logical_monitor,
+             MetaCrtc           *crtc,
+             gpointer            user_data)
+{
+  SetCrtcFbData *data = user_data;
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (data->monitor_manager);
+  int x, y;
+
+  x = crtc->rect.x - logical_monitor->rect.x;
+  y = crtc->rect.y - logical_monitor->rect.y;
+
+  meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
+                                            crtc,
+                                            x, y,
+                                            data->fb_id);
+}
+
 static void
 meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
 {
@@ -646,22 +672,14 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
   logical_monitor = meta_renderer_view_get_logical_monitor (view);
   if (logical_monitor)
     {
-      unsigned int i;
+      SetCrtcFbData data = {
+          .monitor_manager = monitor_manager,
+          .fb_id = fb_id
+      };
 
-      for (i = 0; i < monitor_manager->n_crtcs; i++)
-        {
-          MetaCrtc *crtc = &monitor_manager->crtcs[i];
-          int x = crtc->rect.x - logical_monitor->rect.x;
-          int y = crtc->rect.y - logical_monitor->rect.y;
-
-          if (crtc->logical_monitor != logical_monitor)
-            continue;
-
-          meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
-                                                    crtc,
-                                                    x, y,
-                                                    fb_id);
-        }
+      meta_logical_monitor_foreach_crtc (logical_monitor,
+                                         set_crtc_fb,
+                                         &data);
     }
   else
     {
@@ -677,6 +695,31 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
                                                     fb_id);
         }
     }
+}
+
+typedef struct _FlipCrtcData
+{
+  MetaOnscreenNative *onscreen_native;
+  GClosure *flip_closure;
+
+  gboolean out_fb_in_use;
+} FlipCrtcData;
+
+static void
+flip_crtc (MetaLogicalMonitor *logical_monitor,
+           MetaCrtc           *crtc,
+           gpointer            user_data)
+{
+  FlipCrtcData *data = user_data;
+  int x, y;
+
+  x = crtc->rect.x - logical_monitor->rect.x;
+  y = crtc->rect.y - logical_monitor->rect.y;
+
+  meta_onscreen_native_flip_crtc (data->onscreen_native,
+                                  data->flip_closure,
+                                  crtc, x, y,
+                                  &data->out_fb_in_use);
 }
 
 static void
@@ -713,21 +756,15 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
   logical_monitor = meta_renderer_view_get_logical_monitor (view);
   if (logical_monitor)
     {
-      unsigned int i;
+      FlipCrtcData data = {
+        .onscreen_native = onscreen_native,
+        .flip_closure = flip_closure,
+      };
 
-      for (i = 0; i < monitor_manager->n_crtcs; i++)
-        {
-          MetaCrtc *crtc = &monitor_manager->crtcs[i];
-          int x = crtc->rect.x - logical_monitor->rect.x;
-          int y = crtc->rect.y - logical_monitor->rect.y;
-
-          if (crtc->logical_monitor != logical_monitor)
-            continue;
-
-          meta_onscreen_native_flip_crtc (onscreen_native, flip_closure,
-                                          crtc, x, y,
-                                          &fb_in_use);
-        }
+      meta_logical_monitor_foreach_crtc (logical_monitor,
+                                         flip_crtc,
+                                         &data);
+      fb_in_use = data.out_fb_in_use;
     }
   else
     {
