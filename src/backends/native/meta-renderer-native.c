@@ -48,6 +48,7 @@
 #include <xf86drm.h>
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-crtc.h"
 #include "backends/meta-egl.h"
 #include "backends/meta-egl-ext.h"
 #include "backends/meta-logical-monitor.h"
@@ -683,11 +684,13 @@ meta_onscreen_native_set_crtc_modes (MetaOnscreenNative *onscreen_native)
     }
   else
     {
-      unsigned int i;
+      GList *crtcs;
+      GList *l;
 
-      for (i = 0; i < monitor_manager->n_crtcs; i++)
+      crtcs = meta_monitor_manager_get_crtcs (monitor_manager);
+      for (l = crtcs; l; l = l->next)
         {
-          MetaCrtc *crtc = &monitor_manager->crtcs[i];
+          MetaCrtc *crtc = l->data;
 
           meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
                                                     crtc,
@@ -768,11 +771,13 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
     }
   else
     {
-      unsigned int i;
+      GList *crtcs;
+      GList *l;
 
-      for (i = 0; i < monitor_manager->n_crtcs; i++)
+      crtcs = meta_monitor_manager_get_crtcs (monitor_manager);
+      for (l = crtcs; l; l = l->next)
         {
-          MetaCrtc *crtc = &monitor_manager->crtcs[i];
+          MetaCrtc *crtc = l->data;
 
           meta_onscreen_native_flip_crtc (onscreen_native, flip_closure,
                                           crtc, crtc->rect.x, crtc->rect.y,
@@ -1827,11 +1832,13 @@ meta_renderer_native_finish_frame (MetaRendererNative *renderer_native)
         meta_backend_get_monitor_manager (backend);
       MetaMonitorManagerKms *monitor_manager_kms =
         META_MONITOR_MANAGER_KMS (monitor_manager);
-      unsigned int i;
+      GList *crtcs;
+      GList *l;
 
-      for (i = 0; i < monitor_manager->n_crtcs; i++)
+      crtcs = meta_monitor_manager_get_crtcs (monitor_manager);
+      for (l = crtcs; l; l = l->next)
         {
-          MetaCrtc *crtc = &monitor_manager->crtcs[i];
+          MetaCrtc *crtc = l->data;
 
           if (crtc->current_mode)
             continue;

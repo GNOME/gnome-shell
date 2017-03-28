@@ -25,6 +25,7 @@
 
 #include "meta-monitor-manager-kms.h"
 #include "meta-monitor-config-manager.h"
+#include "meta-crtc.h"
 #include "meta-output.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
@@ -663,12 +664,14 @@ add_common_modes (MetaMonitorManager *manager,
   g_ptr_array_free (array, TRUE);
 }
 
-static void
-init_crtc (MetaCrtc           *crtc,
-           MetaMonitorManager *manager,
-           drmModeCrtc        *drm_crtc)
+static MetaCrtc *
+create_crtc (MetaMonitorManager *manager,
+             drmModeCrtc        *drm_crtc)
 {
+  MetaCrtc *crtc;
   unsigned int i;
+
+  crtc = g_object_new (META_TYPE_CRTC, NULL);
 
   crtc->crtc_id = drm_crtc->crtc_id;
   crtc->rect.x = drm_crtc->x;
@@ -694,6 +697,8 @@ init_crtc (MetaCrtc           *crtc,
 
   crtc->driver_private = g_new0 (MetaCrtcKms, 1);
   crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
+
+  return crtc;
 }
 
 static MetaOutput *
@@ -706,6 +711,7 @@ create_output (MetaMonitorManager *manager,
   MetaOutputKms *output_kms;
   GArray *crtcs;
   GBytes *edid;
+  GList *l;
   unsigned int i;
   unsigned int crtc_mask;
 
@@ -791,11 +797,12 @@ create_output (MetaMonitorManager *manager,
 
   crtcs = g_array_new (FALSE, FALSE, sizeof (MetaCrtc*));
 
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs, i = 0; l; l = l->next, i++)
     {
       if (crtc_mask & (1 << i))
         {
-          MetaCrtc *crtc = &manager->crtcs[i];
+          MetaCrtc *crtc = l->data;
+
           g_array_append_val (crtcs, crtc);
         }
     }
@@ -805,11 +812,13 @@ create_output (MetaMonitorManager *manager,
 
   if (output_kms->current_encoder && output_kms->current_encoder->crtc_id != 0)
     {
-      for (i = 0; i < manager->n_crtcs; i++)
+      for (l = manager->crtcs; l; l = l->next)
         {
-          if (manager->crtcs[i].crtc_id == output_kms->current_encoder->crtc_id)
+          MetaCrtc *crtc = l->data;
+
+          if (crtc->crtc_id == output_kms->current_encoder->crtc_id)
             {
-              output->crtc = &manager->crtcs[i];
+              output->crtc = crtc;
               break;
             }
         }
@@ -1041,8 +1050,7 @@ init_crtcs (MetaMonitorManager *manager,
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   unsigned int i;
 
-  manager->n_crtcs = resources->count_crtcs;
-  manager->crtcs = g_new0 (MetaCrtc, manager->n_crtcs);
+  manager->crtcs = NULL;
 
   for (i = 0; i < (unsigned)resources->count_crtcs; i++)
     {
@@ -1051,13 +1059,13 @@ init_crtcs (MetaMonitorManager *manager,
 
       drm_crtc = drmModeGetCrtc (manager_kms->fd, resources->crtcs[i]);
 
-      crtc = &manager->crtcs[i];
-
-      init_crtc (crtc, manager, drm_crtc);
+      crtc = create_crtc (manager, drm_crtc);
       find_crtc_properties (manager_kms, crtc);
       init_crtc_rotations (manager, crtc, i);
 
       drmModeFreeCrtc (drm_crtc);
+
+      manager->crtcs = g_list_append (manager->crtcs, crtc);
     }
 }
 
@@ -1327,9 +1335,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
   /* Disable CRTCs not mentioned in the list (they have is_dirty == FALSE,
      because they weren't seen in the first loop) */
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      MetaCrtc *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = l->data;
 
       crtc->logical_monitor = NULL;
 

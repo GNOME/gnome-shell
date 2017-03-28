@@ -22,6 +22,7 @@
 #include "tests/monitor-unit-tests.h"
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-crtc.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-migration.h"
@@ -607,6 +608,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
     META_MONITOR_MANAGER_TEST (monitor_manager);
   int tiled_monitor_count;
   GList *monitors;
+  GList *crtcs;
   int n_logical_monitors;
   GList *l;
   int i;
@@ -620,7 +622,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
   g_assert_cmpint ((int) g_list_length (monitor_manager->outputs),
                    ==,
                    test_case->expect.n_outputs);
-  g_assert_cmpint ((int) monitor_manager->n_crtcs,
+  g_assert_cmpint ((int) g_list_length (monitor_manager->crtcs),
                    ==,
                    test_case->expect.n_crtcs);
 
@@ -786,15 +788,17 @@ check_monitor_configuration (MonitorTestCase *test_case)
     }
   g_assert_cmpint (n_logical_monitors, ==, i);
 
-  for (i = 0; i < test_case->expect.n_crtcs; i++)
+  crtcs = meta_monitor_manager_get_crtcs (monitor_manager);
+  for (l = crtcs, i = 0; l; l = l->next, i++)
     {
+      MetaCrtc *crtc = l->data;
+
       if (test_case->expect.crtcs[i].current_mode == -1)
         {
-          g_assert_null (monitor_manager->crtcs[i].current_mode);
+          g_assert_null (crtc->current_mode);
         }
       else
         {
-          MetaCrtc *crtc = &monitor_manager->crtcs[i];
           MetaLogicalMonitor *logical_monitor = crtc->logical_monitor;
           MetaCrtcMode *expected_current_mode =
             &monitor_manager->modes[test_case->expect.crtcs[i].current_mode];
@@ -872,10 +876,10 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       };
     }
 
-  test_setup->n_crtcs = test_case->setup.n_crtcs;
-  test_setup->crtcs = g_new0 (MetaCrtc, test_setup->n_crtcs);
-  for (i = 0; i < test_setup->n_crtcs; i++)
+  test_setup->crtcs = NULL;
+  for (i = 0; i < test_case->setup.n_crtcs; i++)
     {
+      MetaCrtc *crtc;
       int current_mode_index;
       MetaCrtcMode *current_mode;
 
@@ -885,12 +889,13 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       else
         current_mode = &test_setup->modes[current_mode_index];
 
-      test_setup->crtcs[i] = (MetaCrtc) {
-        .crtc_id = i + 1,
-        .current_mode = current_mode,
-        .transform = META_MONITOR_TRANSFORM_NORMAL,
-        .all_transforms = ALL_TRANSFORMS
-      };
+      crtc = g_object_new (META_TYPE_CRTC, NULL);
+      crtc->crtc_id = i + 1;
+      crtc->current_mode = current_mode;
+      crtc->transform = META_MONITOR_TRANSFORM_NORMAL;
+      crtc->all_transforms = ALL_TRANSFORMS;
+
+      test_setup->crtcs = g_list_append (test_setup->crtcs, crtc);
     }
 
   test_setup->outputs = NULL;
@@ -915,7 +920,7 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       if (crtc_index == -1)
         crtc = NULL;
       else
-        crtc = &test_setup->crtcs[crtc_index];
+        crtc = g_list_nth_data (test_setup->crtcs, crtc_index);
 
       preferred_mode_index = test_case->setup.outputs[i].preferred_mode;
       if (preferred_mode_index == -1)
@@ -940,7 +945,8 @@ create_monitor_test_setup (MonitorTestCase *test_case,
           int possible_crtc_index;
 
           possible_crtc_index = test_case->setup.outputs[i].possible_crtcs[j];
-          possible_crtcs[j] = &test_setup->crtcs[possible_crtc_index];
+          possible_crtcs[j] = g_list_nth_data (test_setup->crtcs,
+                                               possible_crtc_index);
         }
 
       output_test = g_new0 (MetaOutputTest, 1);

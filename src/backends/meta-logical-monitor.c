@@ -24,6 +24,7 @@
 #include "backends/meta-logical-monitor.h"
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-crtc.h"
 #include "backends/meta-output.h"
 
 G_DEFINE_TYPE (MetaLogicalMonitor, meta_logical_monitor, G_TYPE_OBJECT)

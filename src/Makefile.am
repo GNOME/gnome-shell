@@ -97,6 +97,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-backend-private.h		\
 	backends/meta-barrier.c			\
 	backends/meta-barrier-private.h		\
+	backends/meta-crtc.c			\
+	backends/meta-crtc.h			\
 	backends/meta-cursor.c			\
 	backends/meta-cursor.h			\
 	backends/meta-cursor-tracker.c		\

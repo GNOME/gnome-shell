@@ -24,6 +24,7 @@
 
 #include <glib-object.h>
 
+#include "backends/meta-crtc.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-output.h"
 

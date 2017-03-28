@@ -22,6 +22,7 @@
 #include "tests/meta-monitor-manager-test.h"
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-crtc.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-output.h"
 
@@ -97,7 +98,6 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
   manager->n_modes = manager_test->test_setup->n_modes;
 
   manager->crtcs = manager_test->test_setup->crtcs;
-  manager->n_crtcs = manager_test->test_setup->n_crtcs;
 
   manager->outputs = manager_test->test_setup->outputs;
 }
@@ -199,9 +199,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      MetaCrtc *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = l->data;
 
       crtc->logical_monitor = NULL;
 

@@ -43,6 +43,7 @@
 #include "meta-backend-x11.h"
 #include <meta/main.h>
 #include <meta/errors.h>
+#include "backends/meta-crtc.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-output.h"
@@ -686,19 +687,22 @@ output_get_crtcs (MetaMonitorManager *manager,
                   MetaOutput         *output,
                   XRROutputInfo      *xrandr_output)
 {
-  guint j, k;
+  guint j;
   guint n_actual_crtcs;
+  GList *l;
 
   output->possible_crtcs = g_new0 (MetaCrtc *, xrandr_output->ncrtc);
 
   n_actual_crtcs = 0;
   for (j = 0; j < (unsigned) xrandr_output->ncrtc; j++)
     {
-      for (k = 0; k < manager->n_crtcs; k++)
+      for (l = manager->crtcs; l; l = l->next)
         {
-          if ((XID) manager->crtcs[k].crtc_id == xrandr_output->crtcs[j])
+          MetaCrtc *crtc = l->data;
+
+          if ((XID) crtc->crtc_id == xrandr_output->crtcs[j])
             {
-              output->possible_crtcs[n_actual_crtcs] = &manager->crtcs[k];
+              output->possible_crtcs[n_actual_crtcs] = crtc;
               n_actual_crtcs += 1;
               break;
             }
@@ -707,11 +711,13 @@ output_get_crtcs (MetaMonitorManager *manager,
   output->n_possible_crtcs = n_actual_crtcs;
 
   output->crtc = NULL;
-  for (j = 0; j < manager->n_crtcs; j++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      if ((XID) manager->crtcs[j].crtc_id == xrandr_output->crtc)
+      MetaCrtc *crtc = l->data;
+
+      if ((XID) crtc->crtc_id == xrandr_output->crtc)
         {
-          output->crtc = &manager->crtcs[j];
+          output->crtc = crtc;
           break;
         }
     }
@@ -791,11 +797,10 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
     return;
 
   manager_xrandr->resources = resources;
-  manager->n_crtcs = resources->ncrtc;
   manager->n_modes = resources->nmode;
   manager->outputs = NULL;
   manager->modes = g_new0 (MetaCrtcMode, manager->n_modes);
-  manager->crtcs = g_new0 (MetaCrtc, manager->n_crtcs);
+  manager->crtcs = NULL;
 
   for (i = 0; i < (unsigned)resources->nmode; i++)
     {
@@ -821,7 +826,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       xrandr_crtc = XRRGetCrtcInfo (manager_xrandr->xdisplay, resources,
                                     resources->crtcs[i]);
 
-      crtc = &manager->crtcs[i];
+      crtc = g_object_new (META_TYPE_CRTC, NULL);
 
       crtc->crtc_id = resources->crtcs[i];
       crtc->rect.x = xrandr_crtc->x;
@@ -844,6 +849,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	}
 
       XRRFreeCrtcInfo (xrandr_crtc);
+
+      manager->crtcs = g_list_append (manager->crtcs, crtc);
     }
 
   primary_output = XRRGetOutputPrimary (manager_xrandr->xdisplay,
@@ -1219,12 +1226,11 @@ is_assignments_changed (MetaMonitorManager *manager,
                         MetaOutputInfo    **output_infos,
                         unsigned int        n_output_infos)
 {
-  unsigned int i;
   GList *l;
 
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      MetaCrtc *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = l->data;
 
       if (is_crtc_assignment_changed (crtc, crtc_infos, n_crtc_infos))
         return TRUE;
@@ -1314,9 +1320,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      MetaCrtc *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = l->data;
 
       if (crtc->is_dirty)
         {

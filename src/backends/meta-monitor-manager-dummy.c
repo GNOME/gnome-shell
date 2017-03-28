@@ -31,6 +31,7 @@
 
 #include <meta/util.h>
 #include "backends/meta-backend-private.h"
+#include "backends/meta-crtc.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-output.h"
@@ -69,7 +70,7 @@ meta_output_dummy_notify_destroy (MetaOutput *output);
 
 static void
 append_monitor (GArray *modes,
-                GArray *crtcs,
+                GList **crtcs,
                 GList **outputs,
                 float   scale)
 {
@@ -85,7 +86,7 @@ append_monitor (GArray *modes,
       .refresh_rate = 60.0
     }
   };
-  MetaCrtc crtc;
+  MetaCrtc *crtc;
   MetaOutputDummy *output_dummy;
   MetaOutput *output;
   unsigned int i;
@@ -95,11 +96,10 @@ append_monitor (GArray *modes,
     modes_decl[i].mode_id = modes->len + i;
   g_array_append_vals (modes, modes_decl, G_N_ELEMENTS (modes_decl));
 
-  crtc = (MetaCrtc) {
-    .crtc_id = crtcs->len + 1,
-    .all_transforms = ALL_TRANSFORMS,
-  };
-  g_array_append_val (crtcs, crtc);
+  crtc = g_object_new (META_TYPE_CRTC, NULL);
+  crtc->crtc_id = g_list_length (*crtcs) + 1;
+  crtc->all_transforms = ALL_TRANSFORMS;
+  *crtcs = g_list_append (*crtcs, crtc);
 
   output = g_object_new (META_TYPE_OUTPUT, NULL);
 
@@ -134,7 +134,7 @@ append_monitor (GArray *modes,
                                        modes->len - (i + 1));
   output->n_modes = G_N_ELEMENTS (modes_decl);
   output->possible_crtcs = g_new0 (MetaCrtc *, 1);
-  output->possible_crtcs[0] = &array_last (crtcs, MetaCrtc);
+  output->possible_crtcs[0] = g_list_last (*crtcs)->data;
   output->n_possible_crtcs = 1;
 
   *outputs = g_list_append (*outputs, output);
@@ -142,7 +142,7 @@ append_monitor (GArray *modes,
 
 static void
 append_tiled_monitor (GArray *modes,
-                      GArray *crtcs,
+                      GList **crtcs,
                       GList **outputs,
                       int     scale)
 {
@@ -159,6 +159,7 @@ append_tiled_monitor (GArray *modes,
     }
   };
   unsigned int n_tiles = 2;
+  GList *new_crtcs = NULL;
   MetaOutput *output;
   unsigned int i;
   uint32_t tile_group_id;
@@ -169,13 +170,14 @@ append_tiled_monitor (GArray *modes,
 
   for (i = 0; i < n_tiles; i++)
     {
-      MetaCrtc crtc = {
-        .crtc_id = crtcs->len + i + 1,
-        .all_transforms = ALL_TRANSFORMS
-      };
+      MetaCrtc *crtc;
 
-      g_array_append_val (crtcs, crtc);
+      crtc = g_object_new (META_TYPE_CRTC, NULL);
+      crtc->crtc_id = g_list_length (*crtcs) + i + 1;
+      crtc->all_transforms = ALL_TRANSFORMS;
+      new_crtcs = g_list_append (new_crtcs, crtc);
     }
+  *crtcs = g_list_concat (*crtcs, new_crtcs);
 
   tile_group_id = g_list_length (*outputs) + 1;
   for (i = 0; i < n_tiles; i++)
@@ -184,6 +186,7 @@ append_tiled_monitor (GArray *modes,
       MetaCrtcMode *preferred_mode;
       unsigned int j;
       unsigned int number;
+      GList *l;
 
       output_dummy = g_new0 (MetaOutputDummy, 1);
       *output_dummy = (MetaOutputDummy) {
@@ -231,9 +234,12 @@ append_tiled_monitor (GArray *modes,
       output->n_modes = G_N_ELEMENTS (modes_decl);
 
       output->possible_crtcs = g_new0 (MetaCrtc *, n_tiles);
-      for (j = 0; j < n_tiles; j++)
-        output->possible_crtcs[j] = &g_array_index (crtcs, MetaCrtc,
-                                                    crtcs->len - (j + 1));
+      for (l = new_crtcs, j = 0; l; l = l->next, j++)
+        {
+          MetaCrtc *crtc = l->data;
+
+          output->possible_crtcs[j] = crtc;
+        }
       output->n_possible_crtcs = n_tiles;
 
       *outputs = g_list_append (*outputs, output);
@@ -257,7 +263,7 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   gboolean tiled_monitors;
   unsigned int i;
   GList *outputs;
-  GArray *crtcs;
+  GList *crtcs;
   GArray *modes;
 
   /* To control what monitor configuration is generated, there are two available
@@ -328,25 +334,23 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   tiled_monitors = g_strcmp0 (tiled_monitors_str, "1") == 0;
 
   modes = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtcMode), MAX_MODES);
-  crtcs = g_array_sized_new (FALSE, TRUE, sizeof (MetaCrtc), MAX_CRTCS);
+  crtcs = NULL;
   outputs = NULL;
 
   for (i = 0; i < num_monitors; i++)
     {
       if (tiled_monitors)
-        append_tiled_monitor (modes, crtcs, &outputs, monitor_scales[i]);
+        append_tiled_monitor (modes, &crtcs, &outputs, monitor_scales[i]);
       else
-        append_monitor (modes, crtcs, &outputs, monitor_scales[i]);
+        append_monitor (modes, &crtcs, &outputs, monitor_scales[i]);
     }
 
   manager->modes = (MetaCrtcMode *) modes->data;
   manager->n_modes = modes->len;
-  manager->crtcs = (MetaCrtc *) crtcs->data;
-  manager->n_crtcs = crtcs->len;
+  manager->crtcs = crtcs;
   manager->outputs = outputs;
 
   g_array_free (modes, FALSE);
-  g_array_free (crtcs, FALSE);
 }
 
 static void
@@ -433,9 +437,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs; l; l = l->next)
     {
-      MetaCrtc *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = l->data;
 
       crtc->logical_monitor = NULL;
 

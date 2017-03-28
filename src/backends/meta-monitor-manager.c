@@ -36,6 +36,7 @@
 #include "util-private.h"
 #include <meta/errors.h>
 #include "edid.h"
+#include "backends/meta-crtc.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-manager.h"
@@ -742,27 +743,6 @@ meta_monitor_manager_free_mode_array (MetaCrtcMode *old_modes,
   g_free (old_modes);
 }
 
-void
-meta_monitor_manager_clear_crtc (MetaCrtc *crtc)
-{
-  if (crtc->driver_notify)
-    crtc->driver_notify (crtc);
-
-  memset (crtc, 0, sizeof (*crtc));
-}
-
-static void
-meta_monitor_manager_free_crtc_array (MetaCrtc *old_crtcs,
-                                      int       n_old_crtcs)
-{
-  int i;
-
-  for (i = 0; i < n_old_crtcs; i++)
-    meta_monitor_manager_clear_crtc (&old_crtcs[i]);
-
-  g_free (old_crtcs);
-}
-
 static void
 meta_monitor_manager_finalize (GObject *object)
 {
@@ -770,7 +750,7 @@ meta_monitor_manager_finalize (GObject *object)
 
   g_list_free_full (manager->outputs, g_object_unref);
   meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
-  meta_monitor_manager_free_crtc_array (manager->crtcs, manager->n_crtcs);
+  g_list_free_full (manager->crtcs, g_object_unref);
   g_list_free_full (manager->logical_monitors, g_object_unref);
 
   g_signal_handler_disconnect (meta_get_backend (),
@@ -946,9 +926,9 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
   g_variant_builder_init (&output_builder, G_VARIANT_TYPE ("a(uxiausauaua{sv})"));
   g_variant_builder_init (&mode_builder, G_VARIANT_TYPE ("a(uxuudu)"));
 
-  for (i = 0; i < manager->n_crtcs; i++)
+  for (l = manager->crtcs, i = 0; l; l = l->next, i++)
     {
-      MetaCrtc *crtc = &manager->crtcs[i];
+      MetaCrtc *crtc = l->data;
       GVariantBuilder transforms;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
@@ -975,11 +955,17 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
       GVariantBuilder crtcs, modes, clones, properties;
       GBytes *edid;
       char *edid_file;
+      int crtc_index;
 
       g_variant_builder_init (&crtcs, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_possible_crtcs; j++)
-        g_variant_builder_add (&crtcs, "u",
-                               (unsigned)(output->possible_crtcs[j] - manager->crtcs));
+        {
+          MetaCrtc *possible_crtc = output->possible_crtcs[j];
+          unsigned possible_crtc_index;
+
+          possible_crtc_index = g_list_index (manager->crtcs, possible_crtc);
+          g_variant_builder_add (&crtcs, "u", possible_crtc_index);
+        }
 
       g_variant_builder_init (&modes, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_modes; j++)
@@ -1058,10 +1044,12 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                                 output->tile_info.tile_h));
         }
 
+      crtc_index = output->crtc ? g_list_index (manager->crtcs, output->crtc)
+                                : -1;
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
                              (gint64)output->winsys_id,
-                             (int)(output->crtc ? output->crtc - manager->crtcs : -1),
+                             crtc_index,
                              &crtcs,
                              output->name,
                              &modes,
@@ -2064,14 +2052,15 @@ meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= manager->n_crtcs)
+  if (crtc_id >= g_list_length (manager->crtcs))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid crtc id");
       return TRUE;
     }
-  crtc = &manager->crtcs[crtc_id];
+
+  crtc = g_list_nth_data (manager->crtcs, crtc_id);
 
   klass = META_MONITOR_MANAGER_GET_CLASS (manager);
   if (klass->get_crtc_gamma)
@@ -2126,14 +2115,15 @@ meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= manager->n_crtcs)
+  if (crtc_id >= g_list_length (manager->crtcs))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid crtc id");
       return TRUE;
     }
-  crtc = &manager->crtcs[crtc_id];
+
+  crtc = g_list_nth_data (manager->crtcs, crtc_id);
 
   red_bytes = g_variant_get_data_as_bytes (red_v);
   green_bytes = g_variant_get_data_as_bytes (green_v);
@@ -2409,6 +2399,12 @@ meta_monitor_manager_get_outputs (MetaMonitorManager *manager)
   return manager->outputs;
 }
 
+GList *
+meta_monitor_manager_get_crtcs (MetaMonitorManager *manager)
+{
+  return manager->crtcs;
+}
+
 void
 meta_monitor_manager_get_screen_size (MetaMonitorManager *manager,
                                       int                *width,
@@ -2492,16 +2488,15 @@ void
 meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 {
   GList *old_outputs;
-  MetaCrtc *old_crtcs;
+  GList *old_crtcs;
   MetaCrtcMode *old_modes;
-  unsigned int n_old_crtcs, n_old_modes;
+  unsigned int n_old_modes;
 
   /* Some implementations of read_current use the existing information
    * we have available, so don't free the old configuration until after
    * read_current finishes. */
   old_outputs = manager->outputs;
   old_crtcs = manager->crtcs;
-  n_old_crtcs = manager->n_crtcs;
   old_modes = manager->modes;
   n_old_modes = manager->n_modes;
 
@@ -2512,7 +2507,7 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 
   g_list_free_full (old_outputs, g_object_unref);
   meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
-  meta_monitor_manager_free_crtc_array (old_crtcs, n_old_crtcs);
+  g_list_free_full (old_crtcs, g_object_unref);
 }
 
 static void

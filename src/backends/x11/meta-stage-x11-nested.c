@@ -27,6 +27,7 @@
 #include "backends/x11/meta-stage-x11-nested.h"
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-crtc.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-output.h"
