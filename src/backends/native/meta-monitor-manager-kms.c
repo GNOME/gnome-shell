@@ -406,8 +406,8 @@ output_get_tile_info (MetaMonitorManagerKms *manager_kms,
 }
 
 static MetaCrtcMode *
-find_meta_mode (MetaMonitorManager    *manager,
-                const drmModeModeInfo *drm_mode)
+mode_from_drm_mode (MetaMonitorManager    *manager,
+                    const drmModeModeInfo *drm_mode)
 {
   unsigned k;
 
@@ -625,7 +625,7 @@ static void
 add_common_modes (MetaMonitorManager *manager,
                   MetaOutput         *output)
 {
-  const drmModeModeInfo *mode;
+  const drmModeModeInfo *drm_mode;
   GPtrArray *array;
   unsigned i;
   unsigned max_hdisplay = 0;
@@ -634,10 +634,10 @@ add_common_modes (MetaMonitorManager *manager,
 
   for (i = 0; i < output->n_modes; i++)
     {
-      mode = output->modes[i]->driver_private;
-      max_hdisplay = MAX (max_hdisplay, mode->hdisplay);
-      max_vdisplay = MAX (max_vdisplay, mode->vdisplay);
-      max_vrefresh = MAX (max_vrefresh, drm_mode_vrefresh (mode));
+      drm_mode = output->modes[i]->driver_private;
+      max_hdisplay = MAX (max_hdisplay, drm_mode->hdisplay);
+      max_vdisplay = MAX (max_vdisplay, drm_mode->vdisplay);
+      max_vrefresh = MAX (max_vrefresh, drm_mode_vrefresh (drm_mode));
     }
 
   max_vrefresh = MAX (max_vrefresh, 60.0);
@@ -646,13 +646,13 @@ add_common_modes (MetaMonitorManager *manager,
   array = g_ptr_array_new ();
   for (i = 0; i < G_N_ELEMENTS (meta_default_drm_mode_infos); i++)
     {
-      mode = &meta_default_drm_mode_infos[i];
-      if (mode->hdisplay > max_hdisplay ||
-          mode->vdisplay > max_vdisplay ||
-          drm_mode_vrefresh (mode) > max_vrefresh)
+      drm_mode = &meta_default_drm_mode_infos[i];
+      if (drm_mode->hdisplay > max_hdisplay ||
+          drm_mode->vdisplay > max_vdisplay ||
+          drm_mode_vrefresh (drm_mode) > max_vrefresh)
         continue;
 
-      g_ptr_array_add (array, find_meta_mode (manager, mode));
+      g_ptr_array_add (array, mode_from_drm_mode (manager, drm_mode));
     }
 
   output->modes = g_renew (MetaCrtcMode *, output->modes,
@@ -753,7 +753,7 @@ create_output (MetaMonitorManager *manager,
   output->n_modes = connector->count_modes;
   output->modes = g_new0 (MetaCrtcMode *, output->n_modes);
   for (i = 0; i < output->n_modes; i++) {
-      output->modes[i] = find_meta_mode (manager, &connector->modes[i]);
+      output->modes[i] = mode_from_drm_mode (manager, &connector->modes[i]);
       if (connector->modes[i].type & DRM_MODE_TYPE_PREFERRED)
         output->preferred_mode = output->modes[i];
   }
