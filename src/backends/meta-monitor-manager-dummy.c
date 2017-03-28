@@ -158,14 +158,7 @@ append_tiled_monitor (GArray *modes,
       .refresh_rate = 60.0
     }
   };
-  MetaCrtc crtcs_decl[] = {
-    {
-      .all_transforms = ALL_TRANSFORMS,
-    },
-    {
-      .all_transforms = ALL_TRANSFORMS,
-    },
-  };
+  unsigned int n_tiles = 2;
   MetaOutput *output;
   unsigned int i;
   uint32_t tile_group_id;
@@ -174,12 +167,18 @@ append_tiled_monitor (GArray *modes,
     modes_decl[i].mode_id = modes->len + i;
   g_array_append_vals (modes, modes_decl, G_N_ELEMENTS (modes_decl));
 
-  for (i = 0; i < G_N_ELEMENTS (crtcs_decl); i++)
-    crtcs_decl[i].crtc_id = crtcs->len + i + 1;
-  g_array_append_vals (crtcs, crtcs_decl, G_N_ELEMENTS (crtcs_decl));
+  for (i = 0; i < n_tiles; i++)
+    {
+      MetaCrtc crtc = {
+        .crtc_id = crtcs->len + i + 1,
+        .all_transforms = ALL_TRANSFORMS
+      };
+
+      g_array_append_val (crtcs, crtc);
+    }
 
   tile_group_id = g_list_length (*outputs) + 1;
-  for (i = 0; i < G_N_ELEMENTS (crtcs_decl); i++)
+  for (i = 0; i < n_tiles; i++)
     {
       MetaOutputDummy *output_dummy;
       MetaCrtcMode *preferred_mode;
@@ -214,7 +213,7 @@ append_tiled_monitor (GArray *modes,
       output->connector_type = META_CONNECTOR_TYPE_LVDS;
       output->tile_info = (MetaTileInfo) {
         .group_id = tile_group_id,
-        .max_h_tiles = G_N_ELEMENTS (crtcs_decl),
+        .max_h_tiles = n_tiles,
         .max_v_tiles = 1,
         .loc_h_tile = i,
         .loc_v_tile = 0,
@@ -231,11 +230,11 @@ append_tiled_monitor (GArray *modes,
                                            modes->len - (j + 1));
       output->n_modes = G_N_ELEMENTS (modes_decl);
 
-      output->possible_crtcs = g_new0 (MetaCrtc *, G_N_ELEMENTS (crtcs_decl));
-      for (j = 0; j < G_N_ELEMENTS (crtcs_decl); j++)
+      output->possible_crtcs = g_new0 (MetaCrtc *, n_tiles);
+      for (j = 0; j < n_tiles; j++)
         output->possible_crtcs[j] = &g_array_index (crtcs, MetaCrtc,
                                                     crtcs->len - (j + 1));
-      output->n_possible_crtcs = G_N_ELEMENTS (crtcs_decl);
+      output->n_possible_crtcs = n_tiles;
 
       *outputs = g_list_append (*outputs, output);
     }
