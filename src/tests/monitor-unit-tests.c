@@ -406,7 +406,8 @@ check_monitor_mode (MetaMonitor         *monitor,
   if (expect_crtc_mode_index == -1)
     crtc_mode = NULL;
   else
-    crtc_mode = &monitor_manager->modes[expect_crtc_mode_index];
+    crtc_mode = g_list_nth_data (monitor_manager->modes,
+                                 expect_crtc_mode_index);
 
   g_assert (monitor_crtc_mode->output == output);
   g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
@@ -800,10 +801,12 @@ check_monitor_configuration (MonitorTestCase *test_case)
       else
         {
           MetaLogicalMonitor *logical_monitor = crtc->logical_monitor;
-          MetaCrtcMode *expected_current_mode =
-            &monitor_manager->modes[test_case->expect.crtcs[i].current_mode];
+          MetaCrtcMode *expected_current_mode;
           int crtc_x, crtc_y;
 
+          expected_current_mode =
+            g_list_nth_data (monitor_manager->modes,
+                             test_case->expect.crtcs[i].current_mode);
           g_assert (crtc->current_mode == expected_current_mode);
 
           g_assert_cmpuint (crtc->transform,
@@ -863,17 +866,19 @@ create_monitor_test_setup (MonitorTestCase *test_case,
 
   test_setup = g_new0 (MetaMonitorTestSetup, 1);
 
-  test_setup->n_modes = test_case->setup.n_modes;
-  test_setup->modes = g_new0 (MetaCrtcMode, test_setup->n_modes);
-  for (i = 0; i < test_setup->n_modes; i++)
+  test_setup->modes = NULL;
+  for (i = 0; i < test_case->setup.n_modes; i++)
     {
-      test_setup->modes[i] = (MetaCrtcMode) {
-        .mode_id = i,
-        .width = test_case->setup.modes[i].width,
-        .height = test_case->setup.modes[i].height,
-        .refresh_rate = test_case->setup.modes[i].refresh_rate,
-        .flags = test_case->setup.modes[i].flags,
-      };
+      MetaCrtcMode *mode;
+
+      mode = g_object_new (META_TYPE_CRTC_MODE, NULL);
+      mode->mode_id = i;
+      mode->width = test_case->setup.modes[i].width;
+      mode->height = test_case->setup.modes[i].height;
+      mode->refresh_rate = test_case->setup.modes[i].refresh_rate;
+      mode->flags = test_case->setup.modes[i].flags;
+
+      test_setup->modes = g_list_append (test_setup->modes, mode);
     }
 
   test_setup->crtcs = NULL;
@@ -887,7 +892,7 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       if (current_mode_index == -1)
         current_mode = NULL;
       else
-        current_mode = &test_setup->modes[current_mode_index];
+        current_mode = g_list_nth_data (test_setup->modes, current_mode_index);
 
       crtc = g_object_new (META_TYPE_CRTC, NULL);
       crtc->crtc_id = i + 1;
@@ -926,7 +931,8 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       if (preferred_mode_index == -1)
         preferred_mode = NULL;
       else
-        preferred_mode = &test_setup->modes[preferred_mode_index];
+        preferred_mode = g_list_nth_data (test_setup->modes,
+                                          preferred_mode_index);
 
       n_modes = test_case->setup.outputs[i].n_modes;
       modes = g_new0 (MetaCrtcMode *, n_modes);
@@ -935,7 +941,7 @@ create_monitor_test_setup (MonitorTestCase *test_case,
           int mode_index;
 
           mode_index = test_case->setup.outputs[i].modes[j];
-          modes[j] = &test_setup->modes[mode_index];
+          modes[j] = g_list_nth_data (test_setup->modes, mode_index);
         }
 
       n_possible_crtcs = test_case->setup.outputs[i].n_possible_crtcs;

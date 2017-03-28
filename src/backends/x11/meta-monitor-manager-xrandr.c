@@ -659,7 +659,7 @@ output_get_modes (MetaMonitorManager *manager,
                   MetaOutput         *output,
                   XRROutputInfo      *xrandr_output)
 {
-  guint j, k;
+  guint j;
   guint n_actual_modes;
 
   output->modes = g_new0 (MetaCrtcMode *, xrandr_output->nmode);
@@ -667,11 +667,15 @@ output_get_modes (MetaMonitorManager *manager,
   n_actual_modes = 0;
   for (j = 0; j < (guint)xrandr_output->nmode; j++)
     {
-      for (k = 0; k < manager->n_modes; k++)
+      GList *l;
+
+      for (l = manager->modes; l; l = l->next)
         {
-          if (xrandr_output->modes[j] == (XID)manager->modes[k].mode_id)
+          MetaCrtcMode *mode = l->data;
+
+          if (xrandr_output->modes[j] == (XID) mode->mode_id)
             {
-              output->modes[n_actual_modes] = &manager->modes[k];
+              output->modes[n_actual_modes] = mode;
               n_actual_modes += 1;
               break;
             }
@@ -797,9 +801,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
     return;
 
   manager_xrandr->resources = resources;
-  manager->n_modes = resources->nmode;
   manager->outputs = NULL;
-  manager->modes = g_new0 (MetaCrtcMode, manager->n_modes);
+  manager->modes = NULL;
   manager->crtcs = NULL;
 
   for (i = 0; i < (unsigned)resources->nmode; i++)
@@ -807,7 +810,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
       XRRModeInfo *xmode = &resources->modes[i];
       MetaCrtcMode *mode;
 
-      mode = &manager->modes[i];
+      mode = g_object_new (META_TYPE_CRTC_MODE, NULL);
 
       mode->mode_id = xmode->id;
       mode->width = xmode->width;
@@ -816,6 +819,8 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 			    ((float)xmode->hTotal * xmode->vTotal));
       mode->flags = xmode->modeFlags;
       mode->name = get_xmode_name (xmode);
+
+      manager->modes = g_list_append (manager->modes, mode);
     }
 
   for (i = 0; i < (unsigned)resources->ncrtc; i++)
@@ -843,7 +848,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 	{
 	  if (resources->modes[j].id == xrandr_crtc->mode)
 	    {
-	      crtc->current_mode = &manager->modes[j];
+	      crtc->current_mode = g_list_nth_data (manager->modes, j);
 	      break;
 	    }
 	}

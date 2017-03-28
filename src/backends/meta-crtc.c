@@ -23,6 +23,8 @@
 
 G_DEFINE_TYPE (MetaCrtc, meta_crtc, G_TYPE_OBJECT)
 
+G_DEFINE_TYPE (MetaCrtcMode, meta_crtc_mode, G_TYPE_OBJECT)
+
 static void
 meta_crtc_finalize (GObject *object)
 {
@@ -45,4 +47,28 @@ meta_crtc_class_init (MetaCrtcClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_crtc_finalize;
+}
+
+static void
+meta_crtc_mode_finalize (GObject *object)
+{
+  MetaCrtcMode *crtc_mode = META_CRTC_MODE (object);
+
+  if (crtc_mode->driver_notify)
+    crtc_mode->driver_notify (crtc_mode);
+
+  G_OBJECT_CLASS (meta_crtc_mode_parent_class)->finalize (object);
+}
+
+static void
+meta_crtc_mode_init (MetaCrtcMode *crtc_mode)
+{
+}
+
+static void
+meta_crtc_mode_class_init (MetaCrtcModeClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_crtc_mode_finalize;
 }

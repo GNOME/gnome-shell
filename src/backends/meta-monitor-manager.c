@@ -720,36 +720,13 @@ meta_monitor_manager_constructed (GObject *object)
   manager->in_init = FALSE;
 }
 
-void
-meta_monitor_manager_clear_mode (MetaCrtcMode *mode)
-{
-  g_free (mode->name);
-
-  if (mode->driver_notify)
-    mode->driver_notify (mode);
-
-  memset (mode, 0, sizeof (*mode));
-}
-
-static void
-meta_monitor_manager_free_mode_array (MetaCrtcMode *old_modes,
-                                      int           n_old_modes)
-{
-  int i;
-
-  for (i = 0; i < n_old_modes; i++)
-    meta_monitor_manager_clear_mode (&old_modes[i]);
-
-  g_free (old_modes);
-}
-
 static void
 meta_monitor_manager_finalize (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
 
   g_list_free_full (manager->outputs, g_object_unref);
-  meta_monitor_manager_free_mode_array (manager->modes, manager->n_modes);
+  g_list_free_full (manager->modes, g_object_unref);
   g_list_free_full (manager->crtcs, g_object_unref);
   g_list_free_full (manager->logical_monitors, g_object_unref);
 
@@ -930,12 +907,17 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
     {
       MetaCrtc *crtc = l->data;
       GVariantBuilder transforms;
+      int current_mode_index;
 
       g_variant_builder_init (&transforms, G_VARIANT_TYPE ("au"));
       for (j = 0; j <= META_MONITOR_TRANSFORM_FLIPPED_270; j++)
         if (crtc->all_transforms & (1 << j))
           g_variant_builder_add (&transforms, "u", j);
 
+      if (crtc->current_mode)
+        current_mode_index = g_list_index (manager->modes, crtc->current_mode);
+      else
+        current_mode_index = -1;
       g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
                              i, /* ID */
                              (gint64)crtc->crtc_id,
@@ -943,7 +925,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              (int)crtc->rect.y,
                              (int)crtc->rect.width,
                              (int)crtc->rect.height,
-                             (int)(crtc->current_mode ? crtc->current_mode - manager->modes : -1),
+                             current_mode_index,
                              (guint32)crtc->transform,
                              &transforms,
                              NULL /* properties */);
@@ -969,8 +951,12 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
 
       g_variant_builder_init (&modes, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_modes; j++)
-        g_variant_builder_add (&modes, "u",
-                               (unsigned)(output->modes[j] - manager->modes));
+        {
+          unsigned mode_index;
+
+          mode_index = g_list_index (manager->modes, output->modes[j]);
+          g_variant_builder_add (&modes, "u", mode_index);
+        }
 
       g_variant_builder_init (&clones, G_VARIANT_TYPE ("au"));
       for (j = 0; j < output->n_possible_clones; j++)
@@ -1057,9 +1043,9 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              &properties);
     }
 
-  for (i = 0; i < manager->n_modes; i++)
+  for (l = manager->modes, i = 0; l; l = l->next, i++)
     {
-      MetaCrtcMode *mode = &manager->modes[i];
+      MetaCrtcMode *mode = l->data;
 
       g_variant_builder_add (&mode_builder, "(uxuudu)",
                              i, /* ID */
@@ -2489,8 +2475,7 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 {
   GList *old_outputs;
   GList *old_crtcs;
-  MetaCrtcMode *old_modes;
-  unsigned int n_old_modes;
+  GList *old_modes;
 
   /* Some implementations of read_current use the existing information
    * we have available, so don't free the old configuration until after
@@ -2498,7 +2483,6 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
   old_outputs = manager->outputs;
   old_crtcs = manager->crtcs;
   old_modes = manager->modes;
-  n_old_modes = manager->n_modes;
 
   manager->serial++;
   META_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
@@ -2506,7 +2490,7 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
   rebuild_monitors (manager);
 
   g_list_free_full (old_outputs, g_object_unref);
-  meta_monitor_manager_free_mode_array (old_modes, n_old_modes);
+  g_list_free_full (old_modes, g_object_unref);
   g_list_free_full (old_crtcs, g_object_unref);
 }
 

@@ -70,6 +70,8 @@ struct _MetaCrtc
 
 struct _MetaCrtcMode
 {
+  GObject parent;
+
   /* The low-level ID of this mode, used to apply back configuration */
   glong mode_id;
   char *name;
@@ -85,5 +87,8 @@ struct _MetaCrtcMode
 
 #define META_TYPE_CRTC (meta_crtc_get_type ())
 G_DECLARE_FINAL_TYPE (MetaCrtc, meta_crtc, META, CRTC, GObject)
+
+#define META_TYPE_CRTC_MODE (meta_crtc_mode_get_type ())
+G_DECLARE_FINAL_TYPE (MetaCrtcMode, meta_crtc_mode, META, CRTC_MODE, GObject)
 
 #endif /* META_CRTC_H */

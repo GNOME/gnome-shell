@@ -95,7 +95,6 @@ meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
   g_assert (manager_test->test_setup);
 
   manager->modes = manager_test->test_setup->modes;
-  manager->n_modes = manager_test->test_setup->n_modes;
 
   manager->crtcs = manager_test->test_setup->crtcs;
 

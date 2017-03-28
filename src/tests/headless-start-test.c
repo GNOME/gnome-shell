@@ -58,9 +58,7 @@ meta_test_headless_start (void)
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
 
-  g_assert_cmpint ((int) monitor_manager->n_modes,
-                   ==,
-                   0);
+  g_assert_null (monitor_manager->modes);
   g_assert_null (monitor_manager->outputs);
   g_assert_null (monitor_manager->crtcs);
   g_assert_null (monitor_manager->monitors);
@@ -99,6 +97,7 @@ meta_test_headless_monitor_connect (void)
     META_MONITOR_MANAGER_TEST (monitor_manager);
   MetaMonitorTestSetup *test_setup;
   MetaCrtcMode **modes;
+  MetaCrtcMode *crtc_mode;
   MetaCrtc *crtc;
   MetaCrtc **possible_crtcs;
   MetaOutput *output;
@@ -106,14 +105,13 @@ meta_test_headless_monitor_connect (void)
   ClutterActor *stage;
 
   test_setup = g_new0 (MetaMonitorTestSetup, 1);
-  test_setup->n_modes = 1;
-  test_setup->modes = g_new0 (MetaCrtcMode, test_setup->n_modes);
-  test_setup->modes[0] = (MetaCrtcMode) {
-    .mode_id = 1,
-    .width = 1024,
-    .height = 768,
-    .refresh_rate = 60.0
-  };
+
+  crtc_mode = g_object_new (META_TYPE_CRTC_MODE, NULL);
+  crtc_mode->mode_id = 1;
+  crtc_mode->width = 1024;
+  crtc_mode->height = 768;
+  crtc_mode->refresh_rate = 60.0;
+  test_setup->modes = g_list_append (NULL, crtc_mode);
 
   crtc = g_object_new (META_TYPE_CRTC, NULL);
   crtc->crtc_id = 1;
@@ -121,7 +119,7 @@ meta_test_headless_monitor_connect (void)
   test_setup->crtcs = g_list_append (NULL, crtc);
 
   modes = g_new0 (MetaCrtcMode *, 1);
-  modes[0] = &test_setup->modes[0];
+  modes[0] = crtc_mode;
 
   possible_crtcs = g_new0 (MetaCrtc *, 1);
   possible_crtcs[0] = g_list_first (test_setup->crtcs)->data;

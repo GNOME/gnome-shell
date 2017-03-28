@@ -409,12 +409,14 @@ static MetaCrtcMode *
 mode_from_drm_mode (MetaMonitorManager    *manager,
                     const drmModeModeInfo *drm_mode)
 {
-  unsigned k;
+  GList *l;
 
-  for (k = 0; k < manager->n_modes; k++)
+  for (l = manager->modes; l; l = l->next)
     {
-      if (drm_mode_equal (drm_mode, manager->modes[k].driver_private))
-        return &manager->modes[k];
+      MetaCrtcMode *mode = l->data;
+
+      if (drm_mode_equal (drm_mode, mode->driver_private))
+        return mode;
     }
 
   g_assert_not_reached ();
@@ -439,11 +441,13 @@ drm_mode_vrefresh (const drmModeModeInfo *mode)
   return refresh;
 }
 
-static void
-init_mode (MetaCrtcMode          *mode,
-           const drmModeModeInfo *drm_mode,
-           long                   mode_id)
+static MetaCrtcMode *
+create_mode (const drmModeModeInfo *drm_mode,
+             long                   mode_id)
 {
+  MetaCrtcMode *mode;
+
+  mode = g_object_new (META_TYPE_CRTC_MODE, NULL);
   mode->mode_id = mode_id;
   mode->name = g_strndup (drm_mode->name, DRM_DISPLAY_MODE_LEN);
   mode->width = drm_mode->hdisplay;
@@ -452,6 +456,8 @@ init_mode (MetaCrtcMode          *mode,
   mode->refresh_rate = drm_mode_vrefresh (drm_mode);
   mode->driver_private = g_slice_dup (drmModeModeInfo, drm_mode);
   mode->driver_notify = (GDestroyNotify)meta_monitor_mode_destroy_notify;
+
+  return mode;
 }
 
 static int
@@ -669,7 +675,6 @@ create_crtc (MetaMonitorManager *manager,
              drmModeCrtc        *drm_crtc)
 {
   MetaCrtc *crtc;
-  unsigned int i;
 
   crtc = g_object_new (META_TYPE_CRTC, NULL);
 
@@ -685,11 +690,15 @@ create_crtc (MetaMonitorManager *manager,
 
   if (drm_crtc->mode_valid)
     {
-      for (i = 0; i < manager->n_modes; i++)
+      GList *l;
+
+      for (l = manager->modes; l; l = l->next)
         {
-          if (drm_mode_equal (&drm_crtc->mode, manager->modes[i].driver_private))
+          MetaCrtcMode *mode = l->data;
+
+          if (drm_mode_equal (&drm_crtc->mode, mode->driver_private))
             {
-              crtc->current_mode = &manager->modes[i];
+              crtc->current_mode = mode;
               break;
             }
         }
@@ -1015,8 +1024,7 @@ init_modes (MetaMonitorManager *manager,
         }
     }
 
-  manager->n_modes = g_hash_table_size (modes) + G_N_ELEMENTS (meta_default_drm_mode_infos);
-  manager->modes = g_new0 (MetaCrtcMode, manager->n_modes);
+  manager->modes = NULL;
 
   g_hash_table_iter_init (&iter, modes);
   mode_id = 0;
@@ -1024,8 +1032,8 @@ init_modes (MetaMonitorManager *manager,
     {
       MetaCrtcMode *mode;
 
-      mode = &manager->modes[mode_id];
-      init_mode (mode, drm_mode, (long) mode_id);
+      mode = create_mode (drm_mode, (long) mode_id);
+      manager->modes = g_list_append (manager->modes, mode);
 
       mode_id++;
     }
@@ -1036,8 +1044,8 @@ init_modes (MetaMonitorManager *manager,
     {
       MetaCrtcMode *mode;
 
-      mode = &manager->modes[mode_id];
-      init_mode (mode, &meta_default_drm_mode_infos[i], (long) mode_id);
+      mode = create_mode (&meta_default_drm_mode_infos[i], (long) mode_id);
+      manager->modes = g_list_append (manager->modes, mode);
 
       mode_id++;
     }
