@@ -68,7 +68,6 @@ main(int argc, char **argv)
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
 
-  g_object_set (clutter_settings_get_default (), "window-scaling-factor", 1, NULL);
   gdk_x11_display_set_window_scale (gdk_display_get_default (), 1);
 
   context = g_option_context_new (NULL);
