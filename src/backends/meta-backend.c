@@ -948,7 +948,6 @@ meta_init_backend (GType backend_gtype)
 void
 meta_clutter_init (void)
 {
-  ClutterSettings *clutter_settings;
   GSource *source;
 
   clutter_set_custom_backend_func (meta_get_clutter_backend);
@@ -958,13 +957,6 @@ meta_clutter_init (void)
       g_warning ("Unable to initialize Clutter.\n");
       exit (1);
     }
-
-  /*
-   * XXX: We cannot handle high dpi scaling yet, so fix the scale to 1
-   * for now.
-   */
-  clutter_settings = clutter_settings_get_default ();
-  g_object_set (clutter_settings, "window-scaling-factor", 1, NULL);
 
   source = g_source_new (&event_funcs, sizeof (GSource));
   g_source_attach (source, NULL);

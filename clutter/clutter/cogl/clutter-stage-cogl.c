@@ -503,7 +503,6 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
   cairo_rectangle_int_t swap_region;
   cairo_rectangle_int_t clip_region;
   gboolean clip_region_empty;
-  int window_scale;
   int fb_scale;
 
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
@@ -558,8 +557,7 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
 
   clip_region_empty = may_use_clipped_redraw && clip_region.width == 0;
 
-  window_scale = _clutter_stage_window_get_scale_factor (stage_window);
-  fb_scale = window_scale * clutter_stage_view_get_scale (view);
+  fb_scale = clutter_stage_view_get_scale (view);
 
   swap_with_damage = FALSE;
   if (has_buffer_age)

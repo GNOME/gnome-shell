@@ -83,9 +83,6 @@ struct _ClutterStageWindowIface
 
   gboolean          (* can_clip_redraws)        (ClutterStageWindow *stage_window);
 
-  void              (* set_scale_factor)        (ClutterStageWindow *stage_window,
-                                                 int                 factor);
-  int               (* get_scale_factor)        (ClutterStageWindow *stage_window);
   GList            *(* get_views)               (ClutterStageWindow *stage_window);
   int64_t           (* get_frame_counter)       (ClutterStageWindow *stage_window);
   void              (* finish_frame)            (ClutterStageWindow *stage_window);
@@ -139,10 +136,6 @@ void              _clutter_stage_window_get_dirty_pixel         (ClutterStageWin
                                                                  int *x, int *y);
 
 gboolean          _clutter_stage_window_can_clip_redraws        (ClutterStageWindow *window);
-
-void              _clutter_stage_window_set_scale_factor        (ClutterStageWindow *window,
-                                                                 int                 factor);
-int               _clutter_stage_window_get_scale_factor        (ClutterStageWindow *window);
 
 GList *           _clutter_stage_window_get_views               (ClutterStageWindow *window);
 

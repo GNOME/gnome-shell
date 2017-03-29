@@ -77,9 +77,7 @@ struct _ClutterSettings
 
   guint password_hint_time;
 
-  gint window_scaling_factor;
   gint unscaled_font_dpi;
-  guint fixed_scaling_factor : 1;
 };
 
 struct _ClutterSettingsClass
@@ -112,7 +110,6 @@ enum
 
   PROP_PASSWORD_HINT_TIME,
 
-  PROP_WINDOW_SCALING_FACTOR,
   PROP_UNSCALED_FONT_DPI,
 
   PROP_LAST
@@ -355,14 +352,6 @@ clutter_settings_set_property (GObject      *gobject,
       self->password_hint_time = g_value_get_uint (value);
       break;
 
-    case PROP_WINDOW_SCALING_FACTOR:
-      if (!self->fixed_scaling_factor)
-        {
-          self->window_scaling_factor = g_value_get_int (value);
-          self->fixed_scaling_factor = TRUE;
-        }
-      break;
-
     case PROP_UNSCALED_FONT_DPI:
       self->font_dpi = g_value_get_int (value);
       settings_update_resolution (self);
@@ -382,14 +371,7 @@ clutter_settings_set_property_internal (ClutterSettings *self,
 
   property = g_intern_string (property);
 
-  if (property == I_("window-scaling-factor") &&
-      self->fixed_scaling_factor)
-    return;
-
   g_object_set_property (G_OBJECT (self), property, value);
-
-  if (property == I_("window-scaling-factor"))
-    self->fixed_scaling_factor = FALSE;
 }
 
 static void
@@ -444,10 +426,6 @@ clutter_settings_get_property (GObject    *gobject,
 
     case PROP_PASSWORD_HINT_TIME:
       g_value_set_uint (value, self->password_hint_time);
-      break;
-
-    case PROP_WINDOW_SCALING_FACTOR:
-      g_value_set_int (value, self->window_scaling_factor);
       break;
 
     default:
@@ -677,14 +655,6 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
                       500,
                       CLUTTER_PARAM_READWRITE);
 
-  obj_props[PROP_WINDOW_SCALING_FACTOR] =
-    g_param_spec_int ("window-scaling-factor",
-                      P_("Window Scaling Factor"),
-                      P_("The scaling factor to be applied to windows"),
-                      1, G_MAXINT,
-                      1,
-                      CLUTTER_PARAM_READWRITE);
-
   obj_props[PROP_FONTCONFIG_TIMESTAMP] =
     g_param_spec_uint ("fontconfig-timestamp",
                        P_("Fontconfig configuration timestamp"),
@@ -722,8 +692,6 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
 static void
 clutter_settings_init (ClutterSettings *self)
 {
-  const char *scale_str;
-
   self->resolution = -1.0;
 
   self->font_dpi = -1;
@@ -742,18 +710,6 @@ clutter_settings_init (ClutterSettings *self)
   self->xft_rgba = NULL;
 
   self->long_press_duration = 500;
-
-  /* if the scaling factor was set by the environment we ignore
-   * any explicit setting
-   */
-  scale_str = g_getenv ("CLUTTER_SCALE");
-  if (scale_str != NULL)
-    {
-      self->window_scaling_factor = atol (scale_str);
-      self->fixed_scaling_factor = TRUE;
-    }
-  else
-    self->window_scaling_factor = 1;
 }
 
 /**

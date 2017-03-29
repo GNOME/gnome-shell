@@ -76,9 +76,6 @@ struct _ClutterCanvasPrivate
   gboolean dirty;
 
   CoglBitmap *buffer;
-
-  int scale_factor;
-  guint scale_factor_set : 1;
 };
 
 enum
@@ -87,8 +84,6 @@ enum
 
   PROP_WIDTH,
   PROP_HEIGHT,
-  PROP_SCALE_FACTOR,
-  PROP_SCALE_FACTOR_SET,
 
   LAST_PROP
 };
@@ -185,11 +180,6 @@ clutter_canvas_set_property (GObject      *gobject,
       }
       break;
 
-    case PROP_SCALE_FACTOR:
-      clutter_canvas_set_scale_factor (CLUTTER_CANVAS (gobject),
-                                       g_value_get_int (value));
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -212,17 +202,6 @@ clutter_canvas_get_property (GObject    *gobject,
 
     case PROP_HEIGHT:
       g_value_set_int (value, priv->height);
-      break;
-
-    case PROP_SCALE_FACTOR:
-      if (priv->scale_factor_set)
-        g_value_set_int (value, priv->scale_factor);
-      else
-        g_value_set_int (value, -1);
-      break;
-
-    case PROP_SCALE_FACTOR_SET:
-      g_value_set_boolean (value, priv->scale_factor_set);
       break;
 
     default:
@@ -268,46 +247,6 @@ clutter_canvas_class_init (ClutterCanvasClass *klass)
                       G_PARAM_READWRITE |
                       G_PARAM_STATIC_STRINGS);
 
-  /**
-   * ClutterCanvas:scale-factor-set:
-   *
-   * Whether the #ClutterCanvas:scale-factor property is set.
-   *
-   * If the #ClutterCanvas:scale-factor-set property is %FALSE
-   * then #ClutterCanvas will use the #ClutterSettings:window-scaling-factor
-   * property.
-   *
-   * Since: 1.18
-   */
-  obj_props[PROP_SCALE_FACTOR_SET] =
-    g_param_spec_boolean ("scale-factor-set",
-                          P_("Scale Factor Set"),
-                          P_("Whether the scale-factor property is set"),
-                          FALSE,
-                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
-
-  /**
-   * ClutterCanvas:scale-factor:
-   *
-   * The scaling factor to be applied to the Cairo surface used for
-   * drawing.
-   *
-   * If #ClutterCanvas:scale-factor is set to a negative value, the
-   * value of the #ClutterSettings:window-scaling-factor property is
-   * used instead.
-   *
-   * Use #ClutterCanvas:scale-factor-set to check if the scale factor
-   * is set.
-   *
-   * Since: 1.18
-   */
-  obj_props[PROP_SCALE_FACTOR] =
-    g_param_spec_int ("scale-factor",
-                      P_("Scale Factor"),
-                      P_("The scaling factor for the surface"),
-                      -1, 1000,
-                      -1,
-                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
    * ClutterCanvas::draw:
@@ -354,7 +293,6 @@ clutter_canvas_init (ClutterCanvas *self)
 
   self->priv->width = -1;
   self->priv->height = -1;
-  self->priv->scale_factor = -1;
 }
 
 static void
@@ -397,7 +335,6 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
   gboolean mapped_buffer;
   unsigned char *data;
   CoglBuffer *buffer;
-  int window_scale = 1;
   gboolean res;
   cairo_t *cr;
 
@@ -405,20 +342,11 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
 
   priv->dirty = TRUE;
 
-  if (priv->scale_factor_set)
-    window_scale = priv->scale_factor;
-  else
-    g_object_get (clutter_settings_get_default (),
-                  "window-scaling-factor", &window_scale,
-                  NULL);
+  real_width = priv->width;
+  real_height = priv->height;
 
-  real_width = priv->width * window_scale;
-  real_height = priv->height * window_scale;
-
-  CLUTTER_NOTE (MISC, "Creating Cairo surface with size %d x %d (real: %d x %d, scale: %d)",
-                priv->width, priv->height,
-                real_width, real_height,
-                window_scale);
+  CLUTTER_NOTE (MISC, "Creating Cairo surface with size %d x %d",
+                priv->width, priv->height);
 
   if (priv->buffer == NULL)
     {
@@ -460,8 +388,6 @@ clutter_canvas_emit_draw (ClutterCanvas *self)
 
       mapped_buffer = FALSE;
     }
-
-  cairo_surface_set_device_scale (surface, window_scale, window_scale);
 
   self->priv->cr = cr = cairo_create (surface);
 
@@ -635,82 +561,4 @@ clutter_canvas_set_size (ClutterCanvas *canvas,
   g_return_val_if_fail (width >= -1 && height >= -1, FALSE);
 
   return clutter_canvas_invalidate_internal (canvas, width, height);
-}
-
-/**
- * clutter_canvas_set_scale_factor:
- * @canvas: a #ClutterCanvas
- * @scale: the scale factor, or -1 for the default
- *
- * Sets the scaling factor for the Cairo surface used by @canvas.
- *
- * This function should rarely be used.
- *
- * The default scaling factor of a #ClutterCanvas content uses the
- * #ClutterSettings:window-scaling-factor property, which is set by
- * the windowing system. By using this function it is possible to
- * override that setting.
- *
- * Changing the scale factor will invalidate the @canvas.
- *
- * Since: 1.18
- */
-void
-clutter_canvas_set_scale_factor (ClutterCanvas *canvas,
-                                 int            scale)
-{
-  ClutterCanvasPrivate *priv;
-  GObject *obj;
-
-  g_return_if_fail (CLUTTER_IS_CANVAS (canvas));
-  g_return_if_fail (scale != 0);
-
-  priv = canvas->priv;
-
-  if (scale < 0)
-    {
-      if (!priv->scale_factor_set)
-        return;
-
-      priv->scale_factor_set = FALSE;
-      priv->scale_factor = -1;
-    }
-  else
-    {
-      if (priv->scale_factor_set && priv->scale_factor == scale)
-        return;
-
-      priv->scale_factor_set = TRUE;
-      priv->scale_factor = scale;
-    }
-
-  clutter_content_invalidate (CLUTTER_CONTENT (canvas));
-
-  obj = G_OBJECT (canvas);
-
-  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_FACTOR]);
-  g_object_notify_by_pspec (obj, obj_props[PROP_SCALE_FACTOR_SET]);
-}
-
-/**
- * clutter_canvas_get_scale_factor:
- * @canvas: a #ClutterCanvas
- *
- * Retrieves the scaling factor of @canvas, as set using
- * clutter_canvas_set_scale_factor().
- *
- * Return value: the scaling factor, or -1 if the @canvas
- *   uses the default from #ClutterSettings
- *
- * Since: 1.18
- */
-int
-clutter_canvas_get_scale_factor (ClutterCanvas *canvas)
-{
-  g_return_val_if_fail (CLUTTER_IS_CANVAS (canvas), -1);
-
-  if (!canvas->priv->scale_factor_set)
-    return -1;
-
-  return canvas->priv->scale_factor;
 }

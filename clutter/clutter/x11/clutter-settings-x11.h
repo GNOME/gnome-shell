@@ -15,7 +15,6 @@ static const struct {
   { "Xft/HintStyle",           "font-hint-style" },
   { "Xft/RGBA",                "font-subpixel-order" },
   { "Fontconfig/Timestamp",    "fontconfig-timestamp" },
-  { "Gdk/WindowScalingFactor", "window-scaling-factor" },
   { "Gdk/UnscaledDPI",         "unscaled-font-dpi" },
 };
 

@@ -69,8 +69,6 @@ struct _ClutterStageX11
 
   ClutterStageX11State wm_state;
 
-  int scale_factor;
-
   guint is_foreign_xwin       : 1;
   guint fullscreening         : 1;
   guint is_cursor_visible     : 1;
