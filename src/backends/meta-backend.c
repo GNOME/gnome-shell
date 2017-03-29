@@ -44,6 +44,18 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-dummy.h"
 
+enum
+{
+  KEYMAP_CHANGED,
+  KEYMAP_LAYOUT_GROUP_CHANGED,
+  LAST_DEVICE_CHANGED,
+  EXPERIMENTAL_FEATURES_CHANGED,
+
+  N_SIGNALS
+};
+
+static guint signals[N_SIGNALS];
+
 static MetaBackend *_backend;
 
 /**
@@ -472,7 +484,7 @@ mutter_settings_changed (GSettings   *settings,
 
   changed = update_experimental_features (backend);
   if (changed)
-    g_signal_emit_by_name (backend, "experimental-features-changed");
+    g_signal_emit (backend, signals[EXPERIMENTAL_FEATURES_CHANGED], 0);
 }
 
 gboolean
@@ -516,30 +528,34 @@ meta_backend_class_init (MetaBackendClass *klass)
   klass->select_stage_events = meta_backend_real_select_stage_events;
   klass->get_relative_motion_deltas = meta_backend_real_get_relative_motion_deltas;
 
-  g_signal_new ("keymap-changed",
-                G_TYPE_FROM_CLASS (object_class),
-                G_SIGNAL_RUN_LAST,
-                0,
-                NULL, NULL, NULL,
-                G_TYPE_NONE, 0);
-  g_signal_new ("keymap-layout-group-changed",
-                G_TYPE_FROM_CLASS (object_class),
-                G_SIGNAL_RUN_LAST,
-                0,
-                NULL, NULL, NULL,
-                G_TYPE_NONE, 1, G_TYPE_UINT);
-  g_signal_new ("last-device-changed",
-                G_TYPE_FROM_CLASS (object_class),
-                G_SIGNAL_RUN_LAST,
-                0,
-                NULL, NULL, NULL,
-                G_TYPE_NONE, 1, G_TYPE_INT);
-  g_signal_new ("experimental-features-changed",
-                G_TYPE_FROM_CLASS (object_class),
-                G_SIGNAL_RUN_LAST,
-                0,
-                NULL, NULL, NULL,
-                G_TYPE_NONE, 0);
+  signals[KEYMAP_CHANGED] =
+    g_signal_new ("keymap-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+  signals[KEYMAP_LAYOUT_GROUP_CHANGED] =
+    g_signal_new ("keymap-layout-group-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1, G_TYPE_UINT);
+  signals[LAST_DEVICE_CHANGED] =
+    g_signal_new ("last-device-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1, G_TYPE_INT);
+  signals[EXPERIMENTAL_FEATURES_CHANGED] =
+    g_signal_new ("experimental-features-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 }
 
 static gboolean
@@ -757,8 +773,8 @@ update_last_device (MetaBackend *backend)
                                               priv->current_device_id);
   device_type = clutter_input_device_get_device_type (device);
 
-  g_signal_emit_by_name (backend, "last-device-changed",
-                         priv->current_device_id);
+  g_signal_emit (backend, signals[LAST_DEVICE_CHANGED], 0,
+                 priv->current_device_id);
 
   switch (device_type)
     {
@@ -1011,4 +1027,18 @@ meta_backend_get_dnd (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->dnd;
+}
+
+void
+meta_backend_notify_keymap_changed (MetaBackend *backend)
+{
+  g_signal_emit (backend, signals[KEYMAP_CHANGED], 0);
+}
+
+void
+meta_backend_notify_keymap_layout_group_changed (MetaBackend *backend,
+                                                 unsigned int locked_group)
+{
+  g_signal_emit (backend, signals[KEYMAP_LAYOUT_GROUP_CHANGED], 0,
+                 locked_group);
 }

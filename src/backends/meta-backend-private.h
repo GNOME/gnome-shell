@@ -167,4 +167,9 @@ gboolean meta_is_stage_views_scaled (void);
 
 MetaInputSettings *meta_backend_get_input_settings (MetaBackend *backend);
 
+void meta_backend_notify_keymap_changed (MetaBackend *backend);
+
+void meta_backend_notify_keymap_layout_group_changed (MetaBackend *backend,
+                                                      unsigned int locked_group);
+
 #endif /* META_BACKEND_PRIVATE_H */

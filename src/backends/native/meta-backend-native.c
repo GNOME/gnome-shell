@@ -485,7 +485,7 @@ meta_backend_native_set_keymap (MetaBackend *backend,
 
   clutter_evdev_set_keyboard_map (manager, keymap);
 
-  g_signal_emit_by_name (backend, "keymap-changed", 0);
+  meta_backend_notify_keymap_changed (backend);
 
   xkb_keymap_unref (keymap);
 }
@@ -502,8 +502,9 @@ meta_backend_native_lock_layout_group (MetaBackend *backend,
                                        guint        idx)
 {
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+
   clutter_evdev_set_keyboard_layout_index (manager, idx);
-  g_signal_emit_by_name (backend, "keymap-layout-group-changed", idx, 0);
+  meta_backend_notify_keymap_layout_group_changed (backend, idx);
 }
 
 static void
