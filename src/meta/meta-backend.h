@@ -48,6 +48,8 @@ void meta_backend_lock_layout_group (MetaBackend *backend,
 void meta_backend_set_numlock (MetaBackend *backend,
                                gboolean     numlock_state);
 
+int meta_backend_get_ui_scaling_factor (MetaBackend *backend);
+
 ClutterActor *meta_backend_get_stage (MetaBackend *backend);
 MetaDnd      *meta_backend_get_dnd   (MetaBackend *backend);
 

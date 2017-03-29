@@ -537,6 +537,7 @@ experimental_features_changed (MetaBackend        *backend,
         skeleton, is_config_manager_enabled);
 
       meta_monitor_manager_on_hotplug (manager);
+      meta_backend_notify_ui_scaling_factor_changed (backend);
     }
 }
 

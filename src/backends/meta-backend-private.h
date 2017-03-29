@@ -106,6 +106,8 @@ typedef enum _MetaExperimentalFeature
 
 void meta_init_backend (GType backend_gtype);
 
+void meta_backend_display_opened (MetaBackend *backend);
+
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
 MetaIdleMonitor * meta_backend_get_idle_monitor (MetaBackend *backend,
@@ -171,5 +173,7 @@ void meta_backend_notify_keymap_changed (MetaBackend *backend);
 
 void meta_backend_notify_keymap_layout_group_changed (MetaBackend *backend,
                                                       unsigned int locked_group);
+
+void meta_backend_notify_ui_scaling_factor_changed (MetaBackend *backend);
 
 #endif /* META_BACKEND_PRIVATE_H */

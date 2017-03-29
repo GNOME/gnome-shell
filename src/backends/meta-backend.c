@@ -43,6 +43,7 @@
 #include "backends/meta-idle-monitor-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-dummy.h"
+#include "ui/theme-private.h"
 
 enum
 {
@@ -50,6 +51,7 @@ enum
   KEYMAP_LAYOUT_GROUP_CHANGED,
   LAST_DEVICE_CHANGED,
   EXPERIMENTAL_FEATURES_CHANGED,
+  UI_SCALING_FACTOR_CHANGED,
 
   N_SIGNALS
 };
@@ -556,6 +558,13 @@ meta_backend_class_init (MetaBackendClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+  signals[UI_SCALING_FACTOR_CHANGED] =
+    g_signal_new ("ui-scaling-factor-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 }
 
 static gboolean
@@ -965,6 +974,28 @@ meta_clutter_init (void)
   meta_backend_post_init (_backend);
 }
 
+static void
+xft_dpi_changed (GtkSettings *settings,
+                 GParamSpec  *pspec,
+                 MetaBackend *backend)
+{
+  meta_backend_notify_ui_scaling_factor_changed (backend);
+}
+
+void
+meta_backend_display_opened (MetaBackend *backend)
+{
+  /*
+   * gdk-window-scaling-factor is not exported to gtk-settings
+   * because it is handled inside gdk, so we use gtk-xft-dpi instead
+   * which also changes when the scale factor changes.
+   *
+   * TODO: Don't rely on GtkSettings for this
+   */
+  g_signal_connect (gtk_settings_get_default (), "notify::gtk-xft-dpi",
+                    G_CALLBACK (xft_dpi_changed), backend);
+}
+
 gboolean
 meta_is_stage_views_enabled (void)
 {
@@ -1033,4 +1064,19 @@ meta_backend_notify_keymap_layout_group_changed (MetaBackend *backend,
 {
   g_signal_emit (backend, signals[KEYMAP_LAYOUT_GROUP_CHANGED], 0,
                  locked_group);
+}
+
+int
+meta_backend_get_ui_scaling_factor (MetaBackend *backend)
+{
+  if (meta_is_stage_views_scaled ())
+    return 1;
+  else
+    return meta_theme_get_window_scaling_factor ();
+}
+
+void
+meta_backend_notify_ui_scaling_factor_changed (MetaBackend *backend)
+{
+  g_signal_emit (backend, signals[UI_SCALING_FACTOR_CHANGED], 0);
 }
