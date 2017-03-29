@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-20 18:14+0000\n"
-"PO-Revision-Date: 2017-03-21 00:19+0300\n"
+"POT-Creation-Date: 2017-03-20 21:20+0000\n"
+"PO-Revision-Date: 2017-03-30 01:51+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -832,7 +832,7 @@ msgstr "Требуется PIN-код"
 
 #: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "Для широкополосного мобильного устройства требуется PIN-код"
+msgstr "Для устройства мобильной связи требуется PIN-код"
 
 #: js/ui/components/networkAgent.js:341
 msgid "PIN: "
@@ -840,7 +840,7 @@ msgstr "PIN-код: "
 
 #: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
 msgid "Mobile broadband network password"
-msgstr "Пароль для мобильной широкополосной сети"
+msgstr "Пароль сети мобильной связи"
 
 #: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
 #: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
@@ -848,7 +848,7 @@ msgstr "Пароль для мобильной широкополосной се
 msgid "A password is required to connect to “%s”."
 msgstr "Для подключения к «%s» требуется пароль."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1755
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1759
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
@@ -1468,7 +1468,7 @@ msgstr "Включить"
 
 #: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
 #: js/ui/status/network.js:367 js/ui/status/network.js:1310
-#: js/ui/status/network.js:1425 js/ui/status/nightLight.js:47
+#: js/ui/status/network.js:1429 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Выключить"
@@ -1483,7 +1483,7 @@ msgstr "Показать раскладку клавиатуры"
 
 #: js/ui/status/location.js:88 js/ui/status/location.js:196
 msgid "Location Enabled"
-msgstr "Определение местоположения включено"
+msgstr "Геолокация включена"
 
 #: js/ui/status/location.js:89 js/ui/status/location.js:197
 msgid "Disable"
@@ -1495,11 +1495,12 @@ msgstr "Параметры конфиденциальности"
 
 #: js/ui/status/location.js:195
 msgid "Location In Use"
-msgstr "Определение местоположения используется"
+msgstr "Геолокация используется"
 
+# заменил "определение местоположения" на "геолокация" потому что не влазит в панель
 #: js/ui/status/location.js:199
 msgid "Location Disabled"
-msgstr "Определение местоположения выключено"
+msgstr "Геолокация выключена"
 
 #: js/ui/status/location.js:200
 msgid "Enable"
@@ -1525,13 +1526,17 @@ msgstr "<неизвестно>"
 #: js/ui/status/network.js:465 js/ui/status/network.js:1339
 #, javascript-format
 msgid "%s Off"
-msgstr "Выключено %s"
+msgstr ""
+"%s сеть\n"
+"выключена"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:468
 #, javascript-format
 msgid "%s Connected"
-msgstr "Подключено %s"
+msgstr ""
+"%s сеть\n"
+"подключена"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
@@ -1539,25 +1544,33 @@ msgstr "Подключено %s"
 #: js/ui/status/network.js:473
 #, javascript-format
 msgid "%s Unmanaged"
-msgstr "Не управляется %s"
+msgstr ""
+" %s сеть\n"
+"не управляется"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:476
 #, javascript-format
 msgid "%s Disconnecting"
-msgstr "Отключение %s"
+msgstr ""
+"%s сеть\n"
+"выключается"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:483 js/ui/status/network.js:1331
 #, javascript-format
 msgid "%s Connecting"
-msgstr "Подключение %s"
+msgstr ""
+"%s сеть\n"
+"подключается"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
 #: js/ui/status/network.js:486
 #, javascript-format
 msgid "%s Requires Authentication"
-msgstr "Требуется аутентификация для %s"
+msgstr ""
+"%s сеть\n"
+"требует аутентификацию"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
@@ -1571,13 +1584,15 @@ msgstr "Отсутствует прошивка для %s"
 #: js/ui/status/network.js:498
 #, javascript-format
 msgid "%s Unavailable"
-msgstr "Недоступно %s"
+msgstr ""
+"%s сеть\n"
+"недоступна"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:501
 #, javascript-format
 msgid "%s Connection Failed"
-msgstr "Сбой подключения %s"
+msgstr "Сбой подключения %s сети"
 
 #: js/ui/status/network.js:517
 msgid "Wired Settings"
@@ -1585,20 +1600,25 @@ msgstr "Параметры проводных соединений"
 
 #: js/ui/status/network.js:559
 msgid "Mobile Broadband Settings"
-msgstr "Параметры широкополосной мобильной связи"
+msgstr "Параметры мобильной связи"
 
+# заменил "оборудование" потому что не влазит в панель
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:602 js/ui/status/network.js:1336
 #, javascript-format
 msgid "%s Hardware Disabled"
-msgstr "Оборудование выключено %s"
+msgstr ""
+"%s аппаратура\n"
+"отключена"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
 #: js/ui/status/network.js:606
 #, javascript-format
 msgid "%s Disabled"
-msgstr "Выключено %s"
+msgstr ""
+"%s сеть\n"
+"отключена"
 
 #: js/ui/status/network.js:646
 msgid "Connect to Internet"
@@ -1606,7 +1626,7 @@ msgstr "Подключиться к Интернету"
 
 #: js/ui/status/network.js:844
 msgid "Airplane Mode is On"
-msgstr "Включён режим авиаперелёта"
+msgstr "Включён авиарежим"
 
 #: js/ui/status/network.js:845
 msgid "Wi-Fi is disabled when airplane mode is on."
@@ -1642,7 +1662,9 @@ msgstr "Сети отсутствуют"
 
 #: js/ui/status/network.js:935 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
-msgstr "Используйте механический переключатель, чтобы выключить"
+msgstr ""
+"Используйте механический\n"
+"переключатель, чтобы выключить"
 
 #: js/ui/status/network.js:1202
 msgid "Select Network"
@@ -1652,49 +1674,54 @@ msgstr "Выбрать сеть"
 msgid "Wi-Fi Settings"
 msgstr "Параметры Wi-Fi"
 
+# перенос иначе не влазит в панель
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1327
 #, javascript-format
 msgid "%s Hotspot Active"
-msgstr "Точка доступа %s включена"
+msgstr ""
+"Включена точка\n"
+"доступа %s"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1342
 #, javascript-format
 msgid "%s Not Connected"
-msgstr "Не подключено %s"
+msgstr ""
+"%s сеть\n"
+"не подключена"
 
-#: js/ui/status/network.js:1442
+#: js/ui/status/network.js:1446
 msgid "connecting…"
 msgstr "подключение…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1445
+#: js/ui/status/network.js:1449
 msgid "authentication required"
-msgstr "требуется подтверждение подлинности"
+msgstr "требуется аутентификация"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1451
 msgid "connection failed"
 msgstr "сбой подключения"
 
-#: js/ui/status/network.js:1513 js/ui/status/network.js:1608
+#: js/ui/status/network.js:1517 js/ui/status/network.js:1612
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
-msgstr "Настроить сеть"
+msgstr "Параметры сети"
 
-#: js/ui/status/network.js:1515
+#: js/ui/status/network.js:1519
 msgid "VPN Settings"
 msgstr "Параметры VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1538
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1544
+#: js/ui/status/network.js:1548
 msgid "VPN Off"
 msgstr "Соединение VPN выключено"
 
-#: js/ui/status/network.js:1639
+#: js/ui/status/network.js:1643
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -1702,7 +1729,7 @@ msgstr[0] "%s проводное соединение"
 msgstr[1] "%s проводных соединения"
 msgstr[2] "%s проводных соединений"
 
-#: js/ui/status/network.js:1643
+#: js/ui/status/network.js:1647
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -1710,7 +1737,7 @@ msgstr[0] "%s соединение Wi-Fi"
 msgstr[1] "%s соединения Wi-Fi"
 msgstr[2] "%s соединений Wi-Fi"
 
-#: js/ui/status/network.js:1647
+#: js/ui/status/network.js:1651
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -1718,11 +1745,11 @@ msgstr[0] "%s модемное соединение"
 msgstr[1] "%s модемных соединения"
 msgstr[2] "%s модемных соединений"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1798
 msgid "Connection failed"
 msgstr "Сбой подключения"
 
-#: js/ui/status/network.js:1795
+#: js/ui/status/network.js:1799
 msgid "Activation of network connection failed"
 msgstr "Не удалось активировать сетевое подключение"
 
@@ -1748,7 +1775,7 @@ msgstr "Параметры электропитания"
 
 #: js/ui/status/power.js:77
 msgid "Fully Charged"
-msgstr "Полностью заряжена"
+msgstr "Полный заряд"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
