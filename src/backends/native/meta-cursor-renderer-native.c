@@ -190,6 +190,9 @@ set_crtc_cursor (MetaCursorRendererNative *native,
                              priv->cursor_width, priv->cursor_height,
                              hot_x, hot_y) < 0)
         {
+          g_warning ("drmModeSetCursor2 failed with (%s), "
+                     "drawing cursor with OpenGL from now on",
+                     strerror (errno));
           priv->has_hw_cursor = FALSE;
           priv->hw_cursor_broken = TRUE;
         }
