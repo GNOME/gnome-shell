@@ -166,7 +166,8 @@ const BackgroundCache = new Lang.Class({
                                         settingsSchema: null,
                                         onLoaded: null });
 
-        if (this._animations[params.settingsSchema] && _fileEqual0(this._animationFile, params.file)) {
+        let animation = this._animations[params.settingsSchema];
+        if (animation && _fileEqual0(animation.file, params.file)) {
             if (params.onLoaded) {
                 let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
                     params.onLoaded(this._animations[params.settingsSchema]);
@@ -177,7 +178,7 @@ const BackgroundCache = new Lang.Class({
             return;
         }
 
-        let animation = new Animation({ file: params.file });
+        animation = new Animation({ file: params.file });
 
         animation.load(Lang.bind(this, function() {
                            this._animations[params.settingsSchema] = animation;
