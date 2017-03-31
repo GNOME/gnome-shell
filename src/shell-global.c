@@ -22,6 +22,7 @@
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <girepository.h>
+#include <meta/meta-backend.h>
 #include <meta/display.h>
 #include <meta/util.h>
 #include <meta/meta-shaped-texture.h>
@@ -833,32 +834,36 @@ global_stage_after_swap (gpointer data)
   return TRUE;
 }
 
-
 static void
-update_scale_factor (GtkSettings *settings,
-                     GParamSpec *pspec,
-                     gpointer data)
+update_scaling_factor (ShellGlobal *global,
+                       MetaBackend *backend)
+
 {
-  ShellGlobal *global = SHELL_GLOBAL (data);
   ClutterStage *stage = CLUTTER_STAGE (global->stage);
   StThemeContext *context = st_theme_context_get_for_stage (stage);
-  GValue value = G_VALUE_INIT;
+  int scaling_factor;
 
-  g_value_init (&value, G_TYPE_INT);
-  if (gdk_screen_get_setting (global->gdk_screen, "gdk-window-scaling-factor", &value))
+  scaling_factor = meta_backend_get_ui_scaling_factor (backend);
+
+  g_object_set (context, "scale-factor", scaling_factor, NULL);
+  if (meta_is_wayland_compositor ())
     {
-      g_object_set (context, "scale-factor", g_value_get_int (&value), NULL);
-      if (meta_is_wayland_compositor ())
-        {
-          int xft_dpi;
-          g_object_get (settings, "gtk-xft-dpi", &xft_dpi, NULL);
+      GtkSettings *settings = gtk_settings_get_default ();
+      int xft_dpi;
 
-          g_object_set (clutter_settings_get_default (), "font-dpi", xft_dpi, NULL);
-        }
+      g_object_get (settings, "gtk-xft-dpi", &xft_dpi, NULL);
+      g_object_set (clutter_settings_get_default (), "font-dpi", xft_dpi, NULL);
     }
 
   /* Make sure clutter and gdk scaling stays disabled */
   gdk_x11_display_set_window_scale (gdk_display_get_default (), 1);
+}
+
+static void
+ui_scaling_factor_changed (MetaBackend *backend,
+                           ShellGlobal *global)
+{
+  update_scaling_factor (global, backend);
 }
 
 /* This is an IBus workaround. The flow of events with IBus is that every time
@@ -964,6 +969,8 @@ void
 _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
 {
+  MetaBackend *backend;
+
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
 
@@ -1044,18 +1051,15 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
 
-  /* gdk-window-scaling-factor is not exported to gtk-settings
-   * because it is handled inside gdk, so we use gtk-xft-dpi instead
-   * which also changes when the scale factor changes.
-   */
-  g_signal_connect (gtk_settings_get_default (), "notify::gtk-xft-dpi",
-                    G_CALLBACK (update_scale_factor), global);
+  backend = meta_get_backend ();
+  g_signal_connect (backend, "ui-scaling-factor-changed",
+                    G_CALLBACK (ui_scaling_factor_changed), global);
 
   gdk_event_handler_set (gnome_shell_gdk_event_handler, global, NULL);
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 
-  update_scale_factor (gtk_settings_get_default (), NULL, global);
+  update_scaling_factor (global, meta_get_backend ());
 }
 
 GjsContext *
