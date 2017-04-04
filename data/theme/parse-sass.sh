@@ -1,3 +1,7 @@
-#!/usr/bin/bash
+#!/usr/bin/sh
 
-bundle exec sass --update --sourcemap=none .
+srcdir=`dirname $0`
+for scss in $srcdir/*.scss
+do
+  sassc -a $scss ${scss%%.scss}.css
+done

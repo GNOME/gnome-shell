@@ -69,9 +69,9 @@ dist_theme_files =						\
 	$(NULL)
 
 %.css: %.scss $(theme_sources)
-	@if test -n "$(SASS)"; then \
+	@if test -n "$(SASSC)"; then \
 		if $(AM_V_P); then PS4= set -x; else echo "  GEN      $@"; fi; \
-		$(SASS) --sourcemap=none -f -q --update $<; \
+		$(SASSC) -a $< $@; \
 	fi
 
 resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir)/theme --generate-dependencies $(srcdir)/gnome-shell-theme.gresource.xml)
