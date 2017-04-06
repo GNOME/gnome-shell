@@ -398,6 +398,9 @@
 			     using the logical monitor scale.
 	    * 2 : physical - the dimension of a logical monitor is derived from
 			     the monitor modes associated with it.
+	* "supports-changing-layout-mode" (b): True if the layout mode can be
+					       changed. Absence of this means the
+					       layout mode cannot be changed.
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />

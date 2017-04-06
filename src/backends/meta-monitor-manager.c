@@ -1531,11 +1531,14 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_boolean (FALSE));
     }
 
+  g_variant_builder_add (&properties_builder, "{sv}",
+                         "layout-mode",
+                         g_variant_new_uint32 (manager->layout_mode));
   if (capabilities & META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE)
     {
       g_variant_builder_add (&properties_builder, "{sv}",
-                             "layout-mode",
-                             g_variant_new_uint32 (manager->layout_mode));
+                             "supports-changing-layout-mode",
+                             g_variant_new_boolean (TRUE));
     }
 
   if (meta_monitor_manager_get_max_screen_size (manager,
