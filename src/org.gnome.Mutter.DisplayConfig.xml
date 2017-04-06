@@ -323,15 +323,15 @@
 	    * d preferred scale: scale preferred as per calculations
 	    * u flags: mode flags (see below)
 	* a{sv} properties: optional properties, including:
-	    - "width_mm" (i): physical width of monitor in millimeters
-	    - "height_mm" (i): physical height of monitor in millimeters
-	    - "is_underscanning" (b): whether underscanning is enabled
+	    - "width-mm" (i): physical width of monitor in millimeters
+	    - "height-mm" (i): physical height of monitor in millimeters
+	    - "is-underscanning" (b): whether underscanning is enabled
 				      (absence of this means underscanning
 				      not being supported)
-	    - "max_screen_size" (ii): the maximum size a screen may have
+	    - "max-screen-size" (ii): the maximum size a screen may have
 				      (absence of this means unlimited screen
 				      size)
-	    - "is_builtin" (b): whether the monitor is built in, e.g. a
+	    - "is-builtin" (b): whether the monitor is built in, e.g. a
 				laptop panel (absence of this means it is
 				not built in)
 

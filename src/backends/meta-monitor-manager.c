@@ -1456,13 +1456,13 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
           gboolean is_underscanning = meta_monitor_is_underscanning (monitor);
 
           g_variant_builder_add (&monitor_properties_builder, "{sv}",
-                                 "is_underscanning",
+                                 "is-underscanning",
                                  g_variant_new_boolean (is_underscanning));
         }
 
       is_builtin = meta_monitor_is_laptop_panel (monitor);
       g_variant_builder_add (&monitor_properties_builder, "{sv}",
-                             "is_builtin",
+                             "is-builtin",
                              g_variant_new_boolean (is_builtin));
 
       g_variant_builder_add (&monitors_builder, MONITOR_FORMAT,
@@ -1544,7 +1544,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              max_screen_height);
 
       g_variant_builder_add (&properties_builder, "{sv}",
-                             "max_screen_size",
+                             "max-screen-size",
                              g_variant_builder_end (&max_screen_size_builder));
     }
 
