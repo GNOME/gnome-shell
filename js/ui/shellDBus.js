@@ -28,6 +28,9 @@ const GnomeShellIface = '<node> \
 <method name="ShowMonitorLabels"> \
     <arg type="a{uv}" direction="in" name="params" /> \
 </method> \
+<method name="ShowMonitorLabels2"> \
+    <arg type="a{sv}" direction="in" name="params" /> \
+</method> \
 <method name="HideMonitorLabels" /> \
 <method name="FocusApp"> \
     <arg type="s" direction="in" name="id"/> \
@@ -248,6 +251,12 @@ const GnomeShell = new Lang.Class({
         let sender = invocation.get_sender();
         let [dict] = params;
         Main.osdMonitorLabeler.show(sender, dict);
+    },
+
+    ShowMonitorLabels2Async: function(params, invocation) {
+        let sender = invocation.get_sender();
+        let [dict] = params;
+        Main.osdMonitorLabeler.show2(sender, dict);
     },
 
     HideMonitorLabelsAsync: function(params, invocation) {

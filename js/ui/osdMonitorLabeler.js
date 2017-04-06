@@ -120,6 +120,25 @@ const OsdMonitorLabeler = new Lang.Class({
         }
     },
 
+    show2: function(client, params) {
+        if (!this._trackClient(client))
+            return;
+
+        this._reset();
+
+        for (let connector in params) {
+            let monitor = this._monitorManager.get_monitor_for_connector(connector);
+            if (monitor == -1)
+                continue;
+            this._monitorLabels.get(monitor).push(params[connector].deep_unpack());
+        }
+
+        for (let [monitor, labels] of this._monitorLabels.entries()) {
+            labels.sort();
+            this._osdLabels.push(new OsdMonitorLabel(monitor, labels.join(' ')));
+        }
+    },
+
     hide: function(client) {
         if (!this._untrackClient(client))
             return;
