@@ -272,6 +272,15 @@ meta_monitor_get_subpixel_order (MetaMonitor *monitor)
 }
 
 const char *
+meta_monitor_get_connector (MetaMonitor *monitor)
+{
+  MetaOutput *output;
+
+  output = meta_monitor_get_main_output (monitor);
+  return output->name;
+}
+
+const char *
 meta_monitor_get_vendor (MetaMonitor *monitor)
 {
   MetaOutput *output;
