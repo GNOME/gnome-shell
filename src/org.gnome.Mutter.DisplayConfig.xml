@@ -334,6 +334,7 @@
 	    - "is-builtin" (b): whether the monitor is built in, e.g. a
 				laptop panel (absence of this means it is
 				not built in)
+	    - "display-name" (s): a human readable display name of the monitor
 
         Possible mode flags:
 	  1 : preferred mode

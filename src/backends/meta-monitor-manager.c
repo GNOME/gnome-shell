@@ -1419,6 +1419,8 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
       GVariantBuilder monitor_properties_builder;
       GList *k;
       gboolean is_builtin;
+      MetaOutput *main_output;
+      char *display_name;
 
       current_mode = meta_monitor_get_current_mode (monitor);
       preferred_mode = meta_monitor_get_preferred_mode (monitor);
@@ -1464,6 +1466,12 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
       g_variant_builder_add (&monitor_properties_builder, "{sv}",
                              "is-builtin",
                              g_variant_new_boolean (is_builtin));
+
+      main_output = meta_monitor_get_main_output (monitor);
+      display_name = make_display_name (manager, main_output);
+      g_variant_builder_add (&monitor_properties_builder, "{sv}",
+                             "display-name",
+                             g_variant_new_take_string (display_name));
 
       g_variant_builder_add (&monitors_builder, MONITOR_FORMAT,
                              monitor_spec->connector,
