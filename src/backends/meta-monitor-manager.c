@@ -2876,7 +2876,7 @@ meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
 }
 
 /**
- * meta_monitor_manager_get_output_geometry:
+ * meta_monitor_manager_get_monitor_for_output:
  * @manager: A #MetaMonitorManager
  * @id: A valid #MetaOutput id
  *
