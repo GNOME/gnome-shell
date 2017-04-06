@@ -2909,6 +2909,35 @@ meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
   return -1;
 }
 
+/**
+ * meta_monitor_manager_get_monitor_for_connector:
+ * @manager: A #MetaMonitorManager
+ * @connector: A valid connector name
+ *
+ * Returns: The monitor index or -1 if @id isn't valid or the connector
+ * isn't associated with a logical monitor.
+ */
+gint
+meta_monitor_manager_get_monitor_for_connector (MetaMonitorManager *manager,
+                                                const char         *connector)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (g_str_equal (connector, meta_monitor_get_connector (monitor)))
+        {
+          MetaOutput *main_output = meta_monitor_get_main_output (monitor);
+
+          return main_output->crtc->logical_monitor->number;
+        }
+    }
+
+  return -1;
+}
+
 gboolean
 meta_monitor_manager_get_is_builtin_display_on (MetaMonitorManager *manager)
 {
