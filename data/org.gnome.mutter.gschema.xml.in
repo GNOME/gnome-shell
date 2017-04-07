@@ -109,12 +109,12 @@
         To enable experimental features, add the feature keyword to the list.
         Whether the feature requires restarting the compositor depends on the
         given feature. Any experimental feature is not required to still be
-        available, or configurable. Don't expect adding anything in this
+        available, or configurable. Don’t expect adding anything in this
         setting to be future proof.
 
         Currently possible keywords:
 
-        * "scale-monitor-framebuffer" - makes mutter default to layout logical
+        • “scale-monitor-framebuffer” — makes mutter default to layout logical
                                         monitors in a logical pixel coordinate
                                         space, while scaling monitor
                                         framebuffers instead of window content,
