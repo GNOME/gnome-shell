@@ -479,14 +479,18 @@ mutter_settings_changed (GSettings   *settings,
                          gchar       *key,
                          MetaBackend *backend)
 {
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  MetaExperimentalFeature old_experimental_features;
   gboolean changed;
 
   if (!g_str_equal (key, "experimental-features"))
     return;
 
+  old_experimental_features = priv->experimental_features;
   changed = update_experimental_features (backend);
   if (changed)
-    g_signal_emit (backend, signals[EXPERIMENTAL_FEATURES_CHANGED], 0);
+    g_signal_emit (backend, signals[EXPERIMENTAL_FEATURES_CHANGED], 0,
+                   (unsigned int) old_experimental_features);
 }
 
 gboolean
@@ -557,7 +561,7 @@ meta_backend_class_init (MetaBackendClass *klass)
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
+                  G_TYPE_NONE, 1, G_TYPE_UINT);
   signals[UI_SCALING_FACTOR_CHANGED] =
     g_signal_new ("ui-scaling-factor-changed",
                   G_TYPE_FROM_CLASS (object_class),

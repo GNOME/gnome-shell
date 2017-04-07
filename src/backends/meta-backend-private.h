@@ -158,6 +158,8 @@ void meta_backend_monitors_changed (MetaBackend *backend);
 gboolean meta_backend_is_experimental_feature_enabled (MetaBackend            *backend,
                                                        MetaExperimentalFeature feature);
 
+MetaExperimentalFeature meta_backend_get_experimental_features (MetaBackend *backend);
+
 void meta_backend_override_experimental_features (MetaBackend *backend);
 
 void meta_backend_enable_experimental_feature (MetaBackend            *backend,

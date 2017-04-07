@@ -520,25 +520,45 @@ done:
 }
 
 static void
-experimental_features_changed (MetaBackend        *backend,
-                               MetaMonitorManager *manager)
+experimental_features_changed (MetaBackend            *backend,
+                               MetaExperimentalFeature old_experimental_features,
+                               MetaMonitorManager     *manager)
 {
   MetaDBusDisplayConfig *skeleton = META_DBUS_DISPLAY_CONFIG (manager);
   gboolean was_config_manager_enabled;
+  gboolean was_stage_views_scaled;
   gboolean is_config_manager_enabled;
+  gboolean is_stage_views_scaled;
+  gboolean should_reconfigure = FALSE;
+  int ui_scaling_factor;
 
   is_config_manager_enabled = meta_is_monitor_config_manager_enabled ();
   was_config_manager_enabled =
     meta_dbus_display_config_get_is_experimental_api_enabled (skeleton);
 
   if (was_config_manager_enabled != is_config_manager_enabled)
-    {
-      meta_dbus_display_config_set_is_experimental_api_enabled (
-        skeleton, is_config_manager_enabled);
+    meta_dbus_display_config_set_is_experimental_api_enabled (
+      skeleton, is_config_manager_enabled);
 
-      meta_monitor_manager_on_hotplug (manager);
-      meta_backend_notify_ui_scaling_factor_changed (backend);
-    }
+  was_stage_views_scaled =
+    !!(old_experimental_features &
+       META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
+  is_stage_views_scaled =
+    meta_backend_is_experimental_feature_enabled (
+      backend,
+      META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
+
+  if (is_config_manager_enabled != was_config_manager_enabled ||
+      is_stage_views_scaled != was_stage_views_scaled)
+    should_reconfigure = TRUE;
+
+  ui_scaling_factor = meta_backend_get_ui_scaling_factor (backend);
+
+  if (should_reconfigure)
+    meta_monitor_manager_on_hotplug (manager);
+
+  if (ui_scaling_factor != meta_backend_get_ui_scaling_factor (backend))
+    meta_backend_notify_ui_scaling_factor_changed (backend);
 }
 
 static void
