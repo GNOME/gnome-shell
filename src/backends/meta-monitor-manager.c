@@ -2950,7 +2950,8 @@ meta_monitor_manager_get_monitor_for_connector (MetaMonitorManager *manager,
     {
       MetaMonitor *monitor = l->data;
 
-      if (g_str_equal (connector, meta_monitor_get_connector (monitor)))
+      if (meta_monitor_is_active (monitor) &&
+          g_str_equal (connector, meta_monitor_get_connector (monitor)))
         {
           MetaOutput *main_output = meta_monitor_get_main_output (monitor);
 
