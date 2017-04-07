@@ -18,18 +18,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-07 09:27+0000\n"
-"PO-Revision-Date: 2016-09-15 11:47+0300\n"
-"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
+"POT-Creation-Date: 2017-02-28 06:20+0000\n"
+"PO-Revision-Date: 2017-04-07 13:41+0300\n"
+"Last-Translator: Tom Tryfonidis <tomtryf@gnome.org>\n"
 "Language-Team: Greek, Modern (1453-) <opensuse-translation-el@opensuse.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.9\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-mutter-navigation.xml:6
@@ -282,16 +282,15 @@ msgstr "Μετατροπέας για χρήση στις εκτεταμένες
 
 #: data/org.gnome.mutter.gschema.xml.in:8
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
-"Αυτό το πλήκτρο θα ξεκινήσει την \"επικάλυψη\", που είναι συνδυασμένο "
-"σύστημα επισκόπησης παραθύρων και εκκίνησης εφαρμογών. Η προεπιλογή "
-"προτίθεται να είναι το \"πλήκτρο Windows\" σε μηχανήματα PC. Αναμένεται ότι "
-"αυτή η αντιστοίχιση θα είναι είτε η προεπιλογή ή θα ορίζεται στην κενή "
-"συμβολοσειρά."
+"Αυτό το πλήκτρο θα ξεκινήσει την «επικάλυψη», που είναι συνδυασμένο σύστημα "
+"επισκόπησης παραθύρων και εκκίνησης εφαρμογών. Η προεπιλογή προτίθεται να "
+"είναι το «πλήκτρο Windows» σε μηχανήματα PC. Αναμένεται ότι αυτή η "
+"αντιστοίχιση θα είναι είτε η προεπιλογή ή θα ορίζεται στην κενή συμβολοσειρά."
 
 #: data/org.gnome.mutter.gschema.xml.in:20
 msgid "Attach modal dialogs"
@@ -330,7 +329,7 @@ msgstr "Οι χώροι εργασίας διαχειρίζονται δυναμ
 
 #: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -369,13 +368,13 @@ msgstr ""
 
 #: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
-"Αν οριστεί σε αληθής, και η λειτουργία της εστίασης είναι \"sloppy\" ή "
-"\"mouse\" τότε η εστίαση δεν θα αλλάξει αμέσως όταν ανοίγετε ένα παράθυρο, "
-"αλλά μόνο όταν ο δείκτης σταματήσει να κινείται."
+"Αν οριστεί σε αληθής, και η λειτουργία της εστίασης είναι «sloppy» ή «mouse» "
+"τότε η εστίαση δεν θα αλλάξει αμέσως όταν ανοίγετε ένα παράθυρο, αλλά μόνο "
+"όταν ο δείκτης σταματήσει να κινείται."
 
 #: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
@@ -383,7 +382,7 @@ msgstr "Συρόμενο πλάτος περιγράμματος"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "Το ποσό των συνολικών συρόμενων περιγραμμάτων. Αν τα περιγράμματα του "
@@ -472,48 +471,59 @@ msgstr "Εναλλαγή στο VT 11"
 msgid "Switch to VT 12"
 msgstr "Εναλλαγή στο VT 12"
 
-#: src/backends/meta-input-settings.c:1707
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1800
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Λειτουργία διακόπτη (ομάδα %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1822
 msgid "Switch monitor"
 msgstr "Εναλλαγή οθόνης"
 
-#: src/backends/meta-input-settings.c:1709
+#: src/backends/meta-input-settings.c:1824
 msgid "Show on-screen help"
 msgstr "Εμφάνιση βοήθειας στην οθόνη"
 
-#: src/backends/meta-monitor-manager.c:514
+#: src/backends/meta-monitor-manager.c:675
 msgid "Built-in display"
 msgstr "Ενσωματωμένη οθόνη"
 
-#: src/backends/meta-monitor-manager.c:537
+#: src/backends/meta-monitor-manager.c:698
 msgid "Unknown"
 msgstr "Άγνωστη"
 
-#: src/backends/meta-monitor-manager.c:539
+#: src/backends/meta-monitor-manager.c:700
 msgid "Unknown Display"
 msgstr "Άγνωστη οθόνη"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:547
+#: src/backends/meta-monitor-manager.c:708
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:463
+#: src/compositor/compositor.c:471
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
-"Εκτελείται ένας άλλος διαχειριστής παραθύρων στην οθόνη %i προβολή \"%s\"."
+"Εκτελείται ένας άλλος διαχειριστής παραθύρων στην οθόνη %i προβολή «%s»."
 
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Ηχητικό συμβάν κουδουνιού"
 
+#. Translators: %s is a window title
 #: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
@@ -532,52 +542,52 @@ msgstr ""
 "την εφαρμογή σε έξοδο."
 
 #: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Αναμονή"
-
-#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Εξαναγκασμός σε τερματισμό"
 
-# gconf/gconf-internals.c:2416
-#: src/core/display.c:590
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "Αποτυχία ανοίγματος οθόνης του συστήματος παραθύρων Χ '%s'\n"
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Αναμονή"
 
-#: src/core/main.c:182
+# gconf/gconf-internals.c:2416
+#: src/core/display.c:608
+#, c-format
+msgid "Failed to open X Window System display “%s”\n"
+msgstr "Αποτυχία ανοίγματος οθόνης του συστήματος παραθύρων Χ «%s»\n"
+
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Απενεργοποίηση σύνδεσης στο διαχειριστή συνεδρίας"
 
-#: src/core/main.c:188
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Αντικατάσταση του τρέχοντος διαχειριστή παραθύρων"
 
-#: src/core/main.c:194
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Καθορισμός αναγνωριστικού διαχείρισης συνεδρίας"
 
-#: src/core/main.c:199
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Εμφάνιση Χ για χρήση"
 
-#: src/core/main.c:205
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Εκκίνηση συνεδρίας από savefile"
 
-#: src/core/main.c:211
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Να καταστούν σύγχρονες οι κλήσεις του X"
 
-#: src/core/main.c:218
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Εκτέλεση ως wayland compositor"
 
-#: src/core/main.c:224
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Εκτέλεση ως ενσωματωμένος compositor"
 
-#: src/core/main.c:232
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Εκτέλεση ως διακομιστής πλήρους οθόνης, αντί ενσωματωμένης"
 
@@ -585,14 +595,13 @@ msgstr "Εκτέλεση ως διακομιστής πλήρους οθόνης
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Πνευματικά Δικαιώματα (C) 2001-%d Havoc Pennington, Red Hat, Inc., και "
-"άλλοι\n"
+"Πνευματικά Δικαιώματα © 2001-%d Havoc Pennington, Red Hat, Inc., και άλλοι\n"
 "Αυτό είναι ελεύθερο λογισμικό, βλ. τον πηγαίο κώδικα για όρους αντιγραφής.\n"
 "ΔΕΝ παρέχεται καμία εγγύηση, ούτε ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ούτε ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ "
 "ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ.\n"
@@ -610,20 +619,20 @@ msgstr "Πρόσθετα του Mutter για χρήση"
 msgid "Workspace %d"
 msgstr "Χώρος εργασίας %d"
 
-#: src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
-"Η προβολή \"%s\" έχει ήδη ένα διαχειριστή παραθύρων· προσπαθήστε να "
+"Η προβολή «%s» έχει ήδη ένα διαχειριστή παραθύρων· προσπαθήστε να "
 "χρησιμοποιήσετε την επιλογή --replace για να αντικαταστήσετε τον τρέχων "
 "διαχειριστή παραθύρων."
 
-#: src/core/screen.c:606
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Η οθόνη %d στην προβολή '%s' δεν είναι έγκυρη\n"
+msgid "Screen %d on display “%s” is invalid\n"
+msgstr "Η οθόνη %d στην προβολή «%s» δεν είναι έγκυρη\n"
 
 #: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
@@ -631,21 +640,20 @@ msgstr ""
 "Το Mutter έχει μεταγλωττιστεί χωρίς υποστήριξη για λειτουργία εμφάνισης "
 "λεπτομερειών\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:595
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Λειτουργία διακόπτη: Λειτουργία %d"
 
 #: src/x11/session.c:1815
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
-"Αυτά τα παράθυρα δεν υποστηρίζουν &quot;αποθήκευση της τρέχουσας "
-"εγκατάστασης&quot; και θα πρέπει να επανεκκινηθούν χειροκίνητα στην επόμενη "
-"είσοδο σας."
+"Αυτά τα παράθυρα δεν υποστηρίζουν «αποθήκευση της τρέχουσας εγκατάστασης» "
+"και θα πρέπει να επανεκκινηθούν χειροκίνητα στην επόμενη είσοδο σας."
 
-#: src/x11/window-props.c:548
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (σε %s)"
