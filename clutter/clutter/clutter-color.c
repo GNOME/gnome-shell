@@ -48,7 +48,7 @@
 #include "clutter-debug.h"
 
 /* XXX - keep in sync with the ClutterStaticColor enumeration order */
-static const ClutterColor const static_colors[] = {
+static const ClutterColor static_colors[] = {
   /* CGA/EGA color palette */
   { 0xff, 0xff, 0xff, 0xff },   /* white */
   { 0x00, 0x00, 0x00, 0xff },   /* black */
