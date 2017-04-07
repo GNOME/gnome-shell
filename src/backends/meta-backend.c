@@ -97,6 +97,8 @@ struct _MetaBackendPrivate
 
   MetaPointerConstraint *client_pointer_constraint;
   MetaDnd *dnd;
+
+  int ui_scaling_factor;
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
@@ -151,6 +153,25 @@ center_pointer (MetaBackend *backend)
                              primary->rect.y + primary->rect.height / 2);
 }
 
+static gboolean
+meta_backend_update_ui_scaling_factor (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  int ui_scaling_factor;
+
+  ui_scaling_factor = meta_backend_get_ui_scaling_factor (backend);
+
+  if (ui_scaling_factor != priv->ui_scaling_factor)
+    {
+      priv->ui_scaling_factor = ui_scaling_factor;
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
+}
+
 void
 meta_backend_monitors_changed (MetaBackend *backend)
 {
@@ -170,6 +191,9 @@ meta_backend_monitors_changed (MetaBackend *backend)
           !meta_monitor_manager_is_headless (monitor_manager))
         center_pointer (backend);
     }
+
+  if (meta_backend_update_ui_scaling_factor (backend))
+    meta_backend_notify_ui_scaling_factor_changed (backend);
 }
 
 void
@@ -338,6 +362,8 @@ meta_backend_real_post_init (MetaBackend *backend)
   priv->monitor_manager = create_monitor_manager (backend);
 
   meta_backend_sync_screen_size (backend);
+
+  meta_backend_update_ui_scaling_factor (backend);
 
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
 
@@ -983,6 +1009,7 @@ xft_dpi_changed (GtkSettings *settings,
                  GParamSpec  *pspec,
                  MetaBackend *backend)
 {
+  meta_backend_update_ui_scaling_factor (backend);
   meta_backend_notify_ui_scaling_factor_changed (backend);
 }
 
@@ -1070,13 +1097,41 @@ meta_backend_notify_keymap_layout_group_changed (MetaBackend *backend,
                  locked_group);
 }
 
+static int
+calculate_ui_scaling_factor (MetaBackend *backend)
+{
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  GList *logical_monitors;
+  GList *l;
+  int max_scale = 1;
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      max_scale = MAX (logical_monitor->scale, max_scale);
+    }
+
+  return max_scale;
+}
+
 int
 meta_backend_get_ui_scaling_factor (MetaBackend *backend)
 {
   if (meta_is_stage_views_scaled ())
-    return 1;
+    {
+      return 1;
+    }
   else
-    return meta_theme_get_window_scaling_factor ();
+    {
+      if (meta_is_monitor_config_manager_enabled ())
+        return calculate_ui_scaling_factor (backend);
+      else
+        return meta_theme_get_window_scaling_factor ();
+    }
 }
 
 void
