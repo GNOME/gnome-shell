@@ -45,6 +45,8 @@
 #include "backends/meta-monitor-manager-dummy.h"
 #include "ui/theme-private.h"
 
+#define META_IDLE_MONITOR_CORE_DEVICE 0
+
 enum
 {
   KEYMAP_CHANGED,
@@ -246,6 +248,16 @@ destroy_device_monitor (MetaBackend *backend,
 }
 
 static void
+meta_backend_monitor_device (MetaBackend        *backend,
+                             ClutterInputDevice *device)
+{
+  int device_id;
+
+  device_id = clutter_input_device_get_device_id (device);
+  create_device_monitor (backend, device_id);
+}
+
+static void
 on_device_added (ClutterDeviceManager *device_manager,
                  ClutterInputDevice   *device,
                  gpointer              user_data)
@@ -353,9 +365,49 @@ create_monitor_manager (MetaBackend *backend)
 }
 
 static void
+create_device_monitors (MetaBackend          *backend,
+                        ClutterDeviceManager *device_manager)
+{
+  const GSList *devices;
+  const GSList *l;
+
+  create_device_monitor (backend, META_IDLE_MONITOR_CORE_DEVICE);
+
+  devices = clutter_device_manager_peek_devices (device_manager);
+  for (l = devices; l; l = l->next)
+    {
+      ClutterInputDevice *device = l->data;
+
+      meta_backend_monitor_device (backend, device);
+    }
+}
+
+static void
+set_initial_pointer_visibility (MetaBackend          *backend,
+                                ClutterDeviceManager *device_manager)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  const GSList *devices;
+  const GSList *l;
+  gboolean has_touchscreen = FALSE;
+
+  devices = clutter_device_manager_peek_devices (device_manager);
+  for (l = devices; l; l = l->next)
+    {
+      ClutterInputDevice *device = l->data;
+
+      has_touchscreen |= device_is_slave_touchscreen (device);
+    }
+
+  meta_cursor_tracker_set_pointer_visible (priv->cursor_tracker,
+                                           !has_touchscreen);
+}
+
+static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+  ClutterDeviceManager *device_manager = clutter_device_manager_get_default ();
 
   priv->stage = meta_stage_new ();
   clutter_actor_realize (priv->stage);
@@ -373,35 +425,14 @@ meta_backend_real_post_init (MetaBackend *backend)
     g_hash_table_new_full (g_int_hash, g_int_equal,
                            NULL, (GDestroyNotify) g_object_unref);
 
-  {
-    MetaCursorTracker *cursor_tracker;
-    ClutterDeviceManager *manager;
-    gboolean has_touchscreen = FALSE;
-    GSList *devices, *l;
+  create_device_monitors (backend, device_manager);
 
-    /* Create the core device monitor. */
-    create_device_monitor (backend, 0);
+  g_signal_connect_object (device_manager, "device-added",
+                           G_CALLBACK (on_device_added), backend, 0);
+  g_signal_connect_object (device_manager, "device-removed",
+                           G_CALLBACK (on_device_removed), backend, 0);
 
-    manager = clutter_device_manager_get_default ();
-    g_signal_connect_object (manager, "device-added",
-                             G_CALLBACK (on_device_added), backend, 0);
-    g_signal_connect_object (manager, "device-removed",
-                             G_CALLBACK (on_device_removed), backend, 0);
-
-    devices = clutter_device_manager_list_devices (manager);
-
-    for (l = devices; l != NULL; l = l->next)
-      {
-        ClutterInputDevice *device = l->data;
-        on_device_added (manager, device, backend);
-        has_touchscreen |= device_is_slave_touchscreen (device);
-      }
-
-    cursor_tracker = priv->cursor_tracker;
-    meta_cursor_tracker_set_pointer_visible (cursor_tracker, !has_touchscreen);
-
-    g_slist_free (devices);
-  }
+  set_initial_pointer_visibility (backend, device_manager);
 
   priv->input_settings = meta_input_settings_create ();
 
