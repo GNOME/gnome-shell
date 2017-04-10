@@ -114,6 +114,9 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaBackend, meta_backend, G_TYPE_OBJECT,
                                   G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                                                          initable_iface_init));
 
+static int
+meta_backend_calculate_ui_scaling_factor (MetaBackend *backend);
+
 static void
 meta_backend_finalize (GObject *object)
 {
@@ -163,7 +166,7 @@ meta_backend_update_ui_scaling_factor (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   int ui_scaling_factor;
 
-  ui_scaling_factor = meta_backend_get_ui_scaling_factor (backend);
+  ui_scaling_factor = meta_backend_calculate_ui_scaling_factor (backend);
 
   if (ui_scaling_factor != priv->ui_scaling_factor)
     {
@@ -1156,8 +1159,8 @@ calculate_ui_scaling_factor (MetaBackend *backend)
   return max_scale;
 }
 
-int
-meta_backend_get_ui_scaling_factor (MetaBackend *backend)
+static int
+meta_backend_calculate_ui_scaling_factor (MetaBackend *backend)
 {
   if (meta_is_stage_views_scaled ())
     {
@@ -1170,6 +1173,14 @@ meta_backend_get_ui_scaling_factor (MetaBackend *backend)
       else
         return meta_theme_get_window_scaling_factor ();
     }
+}
+
+int
+meta_backend_get_ui_scaling_factor (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->ui_scaling_factor;
 }
 
 void
