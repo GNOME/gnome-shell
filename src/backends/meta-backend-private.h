@@ -59,6 +59,7 @@ struct _MetaBackendClass
   MetaMonitorManager * (* create_monitor_manager) (MetaBackend *backend);
   MetaCursorRenderer * (* create_cursor_renderer) (MetaBackend *backend);
   MetaRenderer * (* create_renderer) (MetaBackend *backend);
+  MetaInputSettings * (* create_input_settings) (MetaBackend *backend);
 
   gboolean (* grab_device) (MetaBackend *backend,
                             int          device_id,

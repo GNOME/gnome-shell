@@ -33,12 +33,6 @@
 #include "meta-input-settings-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
-#include "x11/meta-input-settings-x11.h"
-
-#ifdef HAVE_NATIVE_BACKEND
-#include "native/meta-backend-native.h"
-#include "native/meta-input-settings-native.h"
-#endif
 
 #include <glib/gi18n-lib.h>
 #include <meta/util.h>
@@ -1476,23 +1470,6 @@ meta_input_settings_init (MetaInputSettings *settings)
 #endif
 
   priv->two_finger_devices = g_hash_table_new (NULL, NULL);
-}
-
-MetaInputSettings *
-meta_input_settings_create (void)
-{
-#ifdef HAVE_NATIVE_BACKEND
-  MetaBackend *backend;
-
-  backend = meta_get_backend ();
-
-  if (META_IS_BACKEND_NATIVE (backend))
-    return g_object_new (META_TYPE_INPUT_SETTINGS_NATIVE, NULL);
-#endif
-  if (!meta_is_wayland_compositor ())
-    return g_object_new (META_TYPE_INPUT_SETTINGS_X11, NULL);
-
-  return NULL;
 }
 
 GSettings *

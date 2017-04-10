@@ -45,6 +45,7 @@
 #include "backends/meta-pointer-constraint.h"
 #include "backends/meta-stage.h"
 #include "backends/native/meta-clutter-backend-native.h"
+#include "backends/native/meta-input-settings-native.h"
 #include "backends/native/meta-renderer-native.h"
 #include "backends/native/meta-stage-native.h"
 
@@ -431,6 +432,12 @@ meta_backend_native_create_renderer (MetaBackend *backend)
   return META_RENDERER (renderer_native);
 }
 
+static MetaInputSettings *
+meta_backend_native_create_input_settings (MetaBackend *backend)
+{
+  return g_object_new (META_TYPE_INPUT_SETTINGS_NATIVE, NULL);
+}
+
 static void
 meta_backend_native_warp_pointer (MetaBackend *backend,
                                   int          x,
@@ -561,6 +568,7 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
   backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_native_create_cursor_renderer;
   backend_class->create_renderer = meta_backend_native_create_renderer;
+  backend_class->create_input_settings = meta_backend_native_create_input_settings;
 
   backend_class->warp_pointer = meta_backend_native_warp_pointer;
 

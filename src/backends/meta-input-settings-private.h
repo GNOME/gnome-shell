@@ -31,20 +31,9 @@
 #include <libwacom/libwacom.h>
 #endif
 
-#define META_TYPE_INPUT_SETTINGS             (meta_input_settings_get_type ())
-#define META_INPUT_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_INPUT_SETTINGS, MetaInputSettings))
-#define META_INPUT_SETTINGS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_INPUT_SETTINGS, MetaInputSettingsClass))
-#define META_IS_INPUT_SETTINGS(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_INPUT_SETTINGS))
-#define META_IS_INPUT_SETTINGS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_INPUT_SETTINGS))
-#define META_INPUT_SETTINGS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_INPUT_SETTINGS, MetaInputSettingsClass))
-
-typedef struct _MetaInputSettings MetaInputSettings;
-typedef struct _MetaInputSettingsClass MetaInputSettingsClass;
-
-struct _MetaInputSettings
-{
-  GObject parent_instance;
-};
+#define META_TYPE_INPUT_SETTINGS (meta_input_settings_get_type ())
+G_DECLARE_DERIVABLE_TYPE (MetaInputSettings, meta_input_settings,
+                          META, INPUT_SETTINGS, GObject)
 
 struct _MetaInputSettingsClass
 {
@@ -121,10 +110,6 @@ struct _MetaInputSettingsClass
   gboolean (* has_two_finger_scroll) (MetaInputSettings  *settings,
                                       ClutterInputDevice *device);
 };
-
-GType meta_input_settings_get_type (void) G_GNUC_CONST;
-
-MetaInputSettings * meta_input_settings_create (void);
 
 GSettings *           meta_input_settings_get_tablet_settings (MetaInputSettings  *settings,
                                                                ClutterInputDevice *device);

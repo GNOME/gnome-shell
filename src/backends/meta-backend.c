@@ -403,6 +403,12 @@ set_initial_pointer_visibility (MetaBackend          *backend,
                                            !has_touchscreen);
 }
 
+static MetaInputSettings *
+meta_backend_create_input_settings (MetaBackend *backend)
+{
+  return META_BACKEND_GET_CLASS (backend)->create_input_settings (backend);
+}
+
 static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
@@ -434,7 +440,7 @@ meta_backend_real_post_init (MetaBackend *backend)
 
   set_initial_pointer_visibility (backend, device_manager);
 
-  priv->input_settings = meta_input_settings_create ();
+  priv->input_settings = meta_backend_create_input_settings (backend);
 
   center_pointer (backend);
 }
