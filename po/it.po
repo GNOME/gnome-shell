@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-20 18:14+0000\n"
-"PO-Revision-Date: 2017-03-21 08:58+0100\n"
+"POT-Creation-Date: 2017-04-07 12:28+0000\n"
+"PO-Revision-Date: 2017-04-11 08:40+0200\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italiano <gnome-it-list@gnome.org>\n"
 "Language: it\n"
@@ -63,12 +63,12 @@ msgstr "GNOME Shell"
 
 #: data/org.gnome.Shell.desktop.in.in:5
 msgid "Window management and application launching"
-msgstr "Gestisce finestre e avvia applicazioni"
+msgstr "Gestione finestre e avvio applicazioni"
 
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
-"Abilita gli strumenti interni utili a sviluppatori e beta-tester attraverso "
+"Abilita gli strumenti interni utili a sviluppatori e collaudatori attraverso "
 "Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:9
@@ -110,7 +110,8 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:34
 msgid "Disables the validation of extension version compatibility"
-msgstr "Disabilità convalida compatibilità versione estesioni"
+msgstr ""
+"Disabilita la convalida della compatibilità con le versioni delle estensioni"
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid ""
@@ -550,11 +551,11 @@ msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d %B %Y, %I∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:67
+#: js/portalHelper/main.js:66
 msgid "Hotspot Login"
 msgstr "Accesso hotspot"
 
-#: js/portalHelper/main.js:113
+#: js/portalHelper/main.js:112
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -845,7 +846,7 @@ msgstr "Password rete mobile"
 msgid "A password is required to connect to “%s”."
 msgstr "È richiesta una password per connettersi a «%s»."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1755
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1759
 msgid "Network Manager"
 msgstr "Gestore reti"
 
@@ -876,7 +877,7 @@ msgstr "Errore nell'autenticazione. Provare di nuovo."
 msgid "%s is now known as %s"
 msgstr "%s ha cambiato nome in %s"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:179
 msgid "Windows"
 msgstr "Finestre"
 
@@ -1094,8 +1095,8 @@ msgstr ""
 #: js/ui/endSessionDialog.js:361
 msgid "Running on battery power: please plug in before installing updates."
 msgstr ""
-"In funzione con batteria: collegare l'alimentazione prima di installare gli "
-"aggiornamenti."
+"Alimentazione da batteria: collegare alla rete elettrica prima di installare "
+"gli aggiornamenti."
 
 #: js/ui/endSessionDialog.js:378
 msgid "Some applications are busy or have unsaved work."
@@ -1453,11 +1454,11 @@ msgstr "On"
 
 #: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1310
 msgid "Turn On"
-msgstr "Attiva"
+msgstr "Accendi"
 
 #: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
 #: js/ui/status/network.js:367 js/ui/status/network.js:1310
-#: js/ui/status/network.js:1425 js/ui/status/nightLight.js:47
+#: js/ui/status/network.js:1429 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Spegni"
@@ -1599,15 +1600,15 @@ msgstr "Connetti a Internet"
 
 #: js/ui/status/network.js:844
 msgid "Airplane Mode is On"
-msgstr "La modalità aereo è attiva"
+msgstr "La modalità aereo è accesa"
 
 #: js/ui/status/network.js:845
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Il Wi-Fi è disabilitato quando la modalità aereo è attiva"
+msgstr "Il Wi-Fi è disabilitato quando la modalità aereo è accesa."
 
 #: js/ui/status/network.js:846
 msgid "Turn Off Airplane Mode"
-msgstr "Disattiva modalità aereo"
+msgstr "Spegni modalità aereo"
 
 #: js/ui/status/network.js:855
 msgid "Wi-Fi is Off"
@@ -1615,11 +1616,11 @@ msgstr "Il Wi-Fi è spento"
 
 #: js/ui/status/network.js:856
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "È necessario attivare il Wi-Fi per potersi connettere a una rete."
+msgstr "È necessario accendere il Wi-Fi per potersi connettere a una rete."
 
 #: js/ui/status/network.js:857
 msgid "Turn On Wi-Fi"
-msgstr "Attiva Wi-Fi"
+msgstr "Accendi Wi-Fi"
 
 #: js/ui/status/network.js:882
 msgid "Wi-Fi Networks"
@@ -1635,7 +1636,7 @@ msgstr "Nessuna rete"
 
 #: js/ui/status/network.js:935 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
-msgstr "Usare l'interruttore hardware per disattivare"
+msgstr "Usare l'interruttore hardware per spegnere"
 
 #: js/ui/status/network.js:1202
 msgid "Select Network"
@@ -1657,62 +1658,62 @@ msgstr "Hotspot %s attivo"
 msgid "%s Not Connected"
 msgstr "%s non collegato"
 
-#: js/ui/status/network.js:1442
+#: js/ui/status/network.js:1446
 msgid "connecting…"
 msgstr "connessione…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1445
+#: js/ui/status/network.js:1449
 msgid "authentication required"
 msgstr "richiesta autenticazione"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1451
 msgid "connection failed"
 msgstr "connessione non riuscita"
 
-#: js/ui/status/network.js:1513 js/ui/status/network.js:1608
+#: js/ui/status/network.js:1517 js/ui/status/network.js:1612
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Impostazioni rete"
 
-#: js/ui/status/network.js:1515
+#: js/ui/status/network.js:1519
 msgid "VPN Settings"
 msgstr "Impostazioni VPN"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1538
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1544
+#: js/ui/status/network.js:1548
 msgid "VPN Off"
-msgstr "VPN spento"
+msgstr "VPN spenta"
 
-#: js/ui/status/network.js:1639
+#: js/ui/status/network.js:1643
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s connessione via cavo"
 msgstr[1] "%s connessioni via cavo"
 
-#: js/ui/status/network.js:1643
+#: js/ui/status/network.js:1647
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s connessione Wi-Fi"
 msgstr[1] "%s connessioni Wi-Fi"
 
-#: js/ui/status/network.js:1647
+#: js/ui/status/network.js:1651
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s connessione modem"
 msgstr[1] "%s connessioni modem"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1798
 msgid "Connection failed"
 msgstr "Connessione non riuscita"
 
-#: js/ui/status/network.js:1795
+#: js/ui/status/network.js:1799
 msgid "Activation of network connection failed"
 msgstr "Attivazione della connessione di rete non riuscita"
 
@@ -1769,7 +1770,7 @@ msgstr "%d %%"
 #. changing the menu contents.
 #: js/ui/status/rfkill.js:88
 msgid "Airplane Mode On"
-msgstr "Modalità aereo attiva"
+msgstr "Modalità aereo accesa"
 
 #: js/ui/status/system.js:378
 msgid "Switch User"
@@ -1811,11 +1812,11 @@ msgstr "Accedi come altro utente"
 msgid "Unlock Window"
 msgstr "Sblocca finestra"
 
-#: js/ui/viewSelector.js:182
+#: js/ui/viewSelector.js:183
 msgid "Applications"
 msgstr "Applicazioni"
 
-#: js/ui/viewSelector.js:186
+#: js/ui/viewSelector.js:187
 msgid "Search"
 msgstr "Cerca"
 
@@ -1959,7 +1960,7 @@ msgstr "Modalità usata da GDM per la schermata d'accesso"
 
 #: src/main.c:384
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr "Usa una modalità specifica, p.e. \"gdm\" per la schermata di accesso"
+msgstr "Usa una modalità specifica, p.e. «gdm» per la schermata di accesso"
 
 #: src/main.c:390
 msgid "List possible modes"
