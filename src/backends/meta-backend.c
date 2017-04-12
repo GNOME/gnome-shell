@@ -100,6 +100,8 @@ struct _MetaBackendPrivate
   ClutterBackend *clutter_backend;
   ClutterActor *stage;
 
+  gboolean is_pointer_position_initialized;
+
   guint device_update_idle_id;
 
   GHashTable *device_monitors;
@@ -185,10 +187,14 @@ meta_backend_monitors_changed (MetaBackend *backend)
   if (clutter_input_device_get_coords (device, NULL, &point))
     {
       /* If we're outside all monitors, warp the pointer back inside */
-      if (!meta_monitor_manager_get_logical_monitor_at (monitor_manager,
-                                                        point.x, point.y) &&
+      if ((!meta_monitor_manager_get_logical_monitor_at (monitor_manager,
+                                                         point.x, point.y) ||
+           !priv->is_pointer_position_initialized) &&
           !meta_monitor_manager_is_headless (monitor_manager))
-        center_pointer (backend);
+        {
+          center_pointer (backend);
+          priv->is_pointer_position_initialized = TRUE;
+        }
     }
 
   meta_settings_update_ui_scaling_factor (priv->settings);
@@ -456,8 +462,6 @@ meta_backend_real_post_init (MetaBackend *backend)
 
   priv->input_settings = meta_backend_create_input_settings (backend);
 
-  center_pointer (backend);
-
 #ifdef HAVE_REMOTE_DESKTOP
   priv->dbus_session_watcher = g_object_new (META_TYPE_DBUS_SESSION_WATCHER, NULL);
   if (is_screen_cast_enabled (backend))
@@ -465,6 +469,12 @@ meta_backend_real_post_init (MetaBackend *backend)
   if (is_remote_desktop_enabled (backend))
     priv->remote_desktop = meta_remote_desktop_new (priv->dbus_session_watcher);
 #endif /* HAVE_REMOTE_DESKTOP */
+
+  if (!meta_monitor_manager_is_headless (priv->monitor_manager))
+    {
+      center_pointer (backend);
+      priv->is_pointer_position_initialized = TRUE;
+    }
 }
 
 static MetaCursorRenderer *

@@ -355,7 +355,7 @@ meta_monitor_manager_is_lid_closed (MetaMonitorManager *manager)
 gboolean
 meta_monitor_manager_is_headless (MetaMonitorManager *manager)
 {
-  return !manager->monitors;
+  return !manager->logical_monitors;
 }
 
 float
