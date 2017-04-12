@@ -276,9 +276,8 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manage
 
   if (!config)
     {
-      /* The screen is made 1x1, as clutter stage used cannot be empty. */
-      manager->screen_width = 1;
-      manager->screen_height = 1;
+      manager->screen_width = META_MONITOR_MANAGER_MIN_SCREEN_WIDTH;
+      manager->screen_height = META_MONITOR_MANAGER_MIN_SCREEN_HEIGHT;
 
       if (meta_is_stage_views_enabled ())
         {

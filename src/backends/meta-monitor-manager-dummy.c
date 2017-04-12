@@ -506,10 +506,11 @@ meta_monitor_manager_dummy_apply_monitors_config (MetaMonitorManager      *manag
 
   if (!config)
     {
-      manager->screen_width = 0;
-      manager->screen_height = 0;
+      manager->screen_width = META_MONITOR_MANAGER_MIN_SCREEN_WIDTH;
+      manager->screen_height = META_MONITOR_MANAGER_MIN_SCREEN_HEIGHT;
 
       meta_monitor_manager_rebuild (manager, NULL);
+      return TRUE;
     }
 
   if (!meta_monitor_config_manager_assign (manager, config,

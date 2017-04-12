@@ -2563,9 +2563,8 @@ meta_test_monitor_no_outputs (void)
       .n_outputs = 0,
       .n_crtcs = 0,
       .n_tiled_monitors = 0,
-      /* The screen is made 1x1, as clutter stage used cannot be empty. */
-      .screen_width = 1,
-      .screen_height = 1
+      .screen_width = META_MONITOR_MANAGER_MIN_SCREEN_WIDTH,
+      .screen_height = META_MONITOR_MANAGER_MIN_SCREEN_HEIGHT
     }
   };
   MetaMonitorTestSetup *test_setup;
