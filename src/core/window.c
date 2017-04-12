@@ -1039,7 +1039,10 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->compositor_private = NULL;
 
   window->monitor = meta_window_calculate_main_logical_monitor (window);
-  window->preferred_output_winsys_id = window->monitor->winsys_id;
+  if (window->monitor)
+    window->preferred_output_winsys_id = window->monitor->winsys_id;
+  else
+    window->preferred_output_winsys_id = UINT_MAX;
 
   window->tile_match = NULL;
 
