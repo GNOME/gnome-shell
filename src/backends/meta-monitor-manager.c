@@ -1983,7 +1983,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
         {
           g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                                  G_DBUS_ERROR_INVALID_ARGS,
-                                                 error->message);
+                                                 "%s", error->message);
           g_error_free (error);
           g_list_free_full (logical_monitor_configs,
                             (GDestroyNotify) meta_logical_monitor_config_free);
@@ -1999,7 +1999,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
-                                             error->message);
+                                             "%s", error->message);
       g_error_free (error);
       g_object_unref (config);
       return TRUE;
@@ -2009,7 +2009,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
-                                             error->message);
+                                             "%s", error->message);
       g_error_free (error);
       g_object_unref (config);
       return TRUE;
@@ -2025,7 +2025,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
-                                             error->message);
+                                             "%s", error->message);
       g_error_free (error);
       g_object_unref (config);
       return TRUE;
