@@ -937,7 +937,8 @@ var ThumbnailsBox = new Lang.Class({
     },
 
     addThumbnails: function(start, count) {
-        this._ensurePorthole();
+        if (!this._ensurePorthole())
+            return;
         for (let k = start; k < start + count; k++) {
             let metaWorkspace = global.screen.get_workspace_by_index(k);
             let thumbnail = new WorkspaceThumbnail(metaWorkspace);
@@ -1125,7 +1126,12 @@ var ThumbnailsBox = new Lang.Class({
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
 
-        this._ensurePorthole();
+        if (!this._ensurePorthole()) {
+            alloc.min_size = -1;
+            alloc.natural_size = -1;
+            return;
+        }
+
         let themeNode = this.actor.get_theme_node();
 
         let spacing = themeNode.get_length('spacing');
@@ -1137,7 +1143,11 @@ var ThumbnailsBox = new Lang.Class({
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
-        this._ensurePorthole();
+        if (!this._ensurePorthole()) {
+            alloc.min_size = -1;
+            alloc.natural_size = -1;
+            return;
+        }
 
         let themeNode = this.actor.get_theme_node();
 
@@ -1158,8 +1168,13 @@ var ThumbnailsBox = new Lang.Class({
     // The "porthole" is the portion of the screen that we show in the
     // workspaces
     _ensurePorthole: function() {
+        if (!Main.layoutManager.primaryMonitor)
+            return false;
+
         if (!this._porthole)
             this._porthole = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+
+        return true;
     },
 
     _allocate: function(actor, box, flags) {

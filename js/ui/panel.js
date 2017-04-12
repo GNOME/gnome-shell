@@ -839,8 +839,14 @@ var Panel = new Lang.Class({
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
+        let primaryMonitor = Main.layoutManager.primaryMonitor;
+
         alloc.min_size = -1;
-        alloc.natural_size = Main.layoutManager.primaryMonitor.width;
+
+        if (primaryMonitor)
+            alloc.natural_size = primaryMonitor.width;
+        else
+            alloc.natural_size = -1;
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
@@ -859,15 +865,16 @@ var Panel = new Lang.Class({
 
         let sideWidth, centerWidth;
         centerWidth = centerNaturalWidth;
-        sideWidth = (allocWidth - centerWidth) / 2;
+        sideWidth = Math.max(0, (allocWidth - centerWidth) / 2);
 
         let childBox = new Clutter.ActorBox();
 
         childBox.y1 = 0;
         childBox.y2 = allocHeight;
         if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
-            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
-                                                leftNaturalWidth);
+            childBox.x1 = Math.max(allocWidth - Math.min(Math.floor(sideWidth),
+                                                         leftNaturalWidth),
+                                   0);
             childBox.x2 = allocWidth;
         } else {
             childBox.x1 = 0;
@@ -889,8 +896,9 @@ var Panel = new Lang.Class({
             childBox.x2 = Math.min(Math.floor(sideWidth),
                                    rightNaturalWidth);
         } else {
-            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
-                                                rightNaturalWidth);
+            childBox.x1 = Math.max(allocWidth - Math.min(Math.floor(sideWidth),
+                                                         rightNaturalWidth),
+                                   0);
             childBox.x2 = allocWidth;
         }
         this._rightBox.allocate(childBox, flags);
@@ -1043,6 +1051,9 @@ var Panel = new Lang.Class({
             this._removeStyleClassName('solid');
             return;
         }
+
+        if (!Main.layoutManager.primaryMonitor)
+            return;
 
         /* Get all the windows in the active workspace that are in the primary monitor and visible */
         let activeWorkspace = global.screen.get_active_workspace();
