@@ -1185,8 +1185,8 @@ void
 meta_monitor_config_store_add (MetaMonitorConfigStore *config_store,
                                MetaMonitorsConfig     *config)
 {
-  g_hash_table_insert (config_store->configs,
-                       config->key, g_object_ref (config));
+  g_hash_table_replace (config_store->configs,
+                        config->key, g_object_ref (config));
 
   if (!config_store->custom_file)
     meta_monitor_config_store_save (config_store);
