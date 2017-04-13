@@ -827,7 +827,7 @@ meta_monitors_config_key_equal (gconstpointer data_a,
         return FALSE;
     }
 
-  if (l_b || l_b)
+  if (l_a || l_b)
     return FALSE;
 
   return TRUE;
