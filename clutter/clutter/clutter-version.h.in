@@ -312,7 +312,7 @@ G_BEGIN_DECLS
  *
  * Since: 1.2
  */
-const guint clutter_major_version;
+extern const guint clutter_major_version;
 
 /**
  * clutter_minor_version:
@@ -326,7 +326,7 @@ const guint clutter_major_version;
  *
  * Since: 1.2
  */
-const guint clutter_minor_version;
+extern const guint clutter_minor_version;
 
 /**
  * clutter_micro_version:
@@ -340,7 +340,7 @@ const guint clutter_minor_version;
  *
  * Since: 1.2
  */
-const guint clutter_micro_version;
+extern const guint clutter_micro_version;
 
 G_END_DECLS
 
