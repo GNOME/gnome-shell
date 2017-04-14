@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
-const Gettext_gtk30 = imports.gettext.domain('gtk30');
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
@@ -22,8 +21,6 @@ var ELLIPSIS_CHAR = '\u2026';
 
 var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
-// alias to prevent xgettext from picking up strings translated in GTK+
-const gtk30_ = Gettext_gtk30.gettext;
 var NC_ = function(context, str) { return context + '\u0004' + str; };
 
 function sameYear(dateA, dateB) {
@@ -376,20 +373,18 @@ var Calendar = new Lang.Class({
         this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
 
-        // Find the ordering for month/year in the calendar heading
-        this._headerFormatWithoutYear = '%B';
-        switch (gtk30_('calendar:MY')) {
-        case 'calendar:MY':
-            this._headerFormat = '%B %Y';
-            break;
-        case 'calendar:YM':
-            this._headerFormat = '%Y %B';
-            break;
-        default:
-            log('Translation of "calendar:MY" in GTK+ is not correct');
-            this._headerFormat = '%B %Y';
-            break;
-        }
+        /**
+         * Translators: The header displaying just the month name
+         * standalone, when this is a month of the current year.
+         */
+        this._headerFormatWithoutYear = _('%B');
+        /**
+         * Translators: The header displaying the month name and the year
+         * number, when this is a month of a different year.  You can
+         * reorder the format specifiers or add other modifications
+         * according to the requirements of your language.
+         */
+        this._headerFormat = _('%B %Y');
 
         // Start off with the current date
         this._selectedDate = new Date();
