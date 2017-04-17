@@ -37,6 +37,11 @@
 #include "cogl-gl-header.h"
 #include "cogl-texture.h"
 
+/* In OpenGL ES context, GL_CONTEXT_LOST has a _KHR prefix */
+#ifndef GL_CONTEXT_LOST
+#define GL_CONTEXT_LOST GL_CONTEXT_LOST_KHR
+#endif
+
 #ifdef COGL_GL_DEBUG
 
 const char *
