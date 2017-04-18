@@ -735,7 +735,8 @@ meta_backend_get_cursor_renderer (MetaBackend *backend)
 /**
  * meta_backend_get_renderer: (skip)
  */
-MetaRenderer * meta_backend_get_renderer (MetaBackend *backend)
+MetaRenderer *
+meta_backend_get_renderer (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
@@ -745,7 +746,8 @@ MetaRenderer * meta_backend_get_renderer (MetaBackend *backend)
 /**
  * meta_backend_get_egl: (skip)
  */
-MetaEgl * meta_backend_get_egl (MetaBackend *backend)
+MetaEgl *
+meta_backend_get_egl (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
