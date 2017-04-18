@@ -33,8 +33,10 @@
 #include <clutter/clutter.h>
 
 #include <X11/Xatom.h>
+#include <X11/Xlibint.h>
 #include <X11/extensions/Xrandr.h>
 #include <X11/extensions/dpms.h>
+#include <X11/extensions/extutil.h>
 #include <X11/Xlib-xcb.h>
 #include <xcb/randr.h>
 
@@ -978,27 +980,27 @@ meta_monitor_manager_xrandr_set_power_save_mode (MetaMonitorManager *manager,
   DPMSSetTimeouts (manager_xrandr->xdisplay, 0, 0, 0);
 }
 
-static Rotation
+static xcb_randr_rotation_t
 meta_monitor_transform_to_xrandr (MetaMonitorTransform transform)
 {
   switch (transform)
     {
     case META_MONITOR_TRANSFORM_NORMAL:
-      return RR_Rotate_0;
+      return XCB_RANDR_ROTATION_ROTATE_0;
     case META_MONITOR_TRANSFORM_90:
-      return RR_Rotate_90;
+      return XCB_RANDR_ROTATION_ROTATE_90;
     case META_MONITOR_TRANSFORM_180:
-      return RR_Rotate_180;
+      return XCB_RANDR_ROTATION_ROTATE_180;
     case META_MONITOR_TRANSFORM_270:
-      return RR_Rotate_270;
+      return XCB_RANDR_ROTATION_ROTATE_270;
     case META_MONITOR_TRANSFORM_FLIPPED:
-      return RR_Reflect_X | RR_Rotate_0;
+      return XCB_RANDR_ROTATION_REFLECT_X | XCB_RANDR_ROTATION_ROTATE_0;
     case META_MONITOR_TRANSFORM_FLIPPED_90:
-      return RR_Reflect_X | RR_Rotate_90;
+      return XCB_RANDR_ROTATION_REFLECT_X | XCB_RANDR_ROTATION_ROTATE_90;
     case META_MONITOR_TRANSFORM_FLIPPED_180:
-      return RR_Reflect_X | RR_Rotate_180;
+      return XCB_RANDR_ROTATION_REFLECT_X | XCB_RANDR_ROTATION_ROTATE_180;
     case META_MONITOR_TRANSFORM_FLIPPED_270:
-      return RR_Reflect_X | RR_Rotate_270;
+      return XCB_RANDR_ROTATION_REFLECT_X | XCB_RANDR_ROTATION_ROTATE_270;
     }
 
   g_assert_not_reached ();
@@ -1067,6 +1069,49 @@ output_set_underscanning_xrandr (MetaMonitorManagerXrandr *manager_xrandr,
     }
 }
 
+static gboolean
+xrandr_set_crtc_config (MetaMonitorManagerXrandr *manager_xrandr,
+                        xcb_randr_crtc_t          crtc,
+                        xcb_timestamp_t           timestamp,
+                        int                       x,
+                        int                       y,
+                        xcb_randr_mode_t          mode,
+                        xcb_randr_rotation_t      rotation,
+                        xcb_randr_output_t       *outputs,
+                        int                       n_outputs)
+{
+  xcb_connection_t *xcb_conn;
+  xcb_timestamp_t config_timestamp;
+  xcb_randr_set_crtc_config_cookie_t cookie;
+  xcb_randr_set_crtc_config_reply_t *reply;
+  xcb_generic_error_t *xcb_error = NULL;
+
+  xcb_conn = XGetXCBConnection (manager_xrandr->xdisplay);
+  config_timestamp = manager_xrandr->resources->configTimestamp;
+  cookie = xcb_randr_set_crtc_config (xcb_conn,
+                                      crtc,
+                                      timestamp,
+                                      config_timestamp,
+                                      x, y,
+                                      mode,
+                                      rotation,
+                                      n_outputs,
+                                      outputs);
+  reply = xcb_randr_set_crtc_config_reply (xcb_conn,
+                                           cookie,
+                                           &xcb_error);
+  if (xcb_error || !reply)
+    {
+      free (xcb_error);
+      free (reply);
+      return FALSE;
+    }
+
+  free (reply);
+
+  return TRUE;
+}
+
 static void
 apply_crtc_assignments (MetaMonitorManager *manager,
                         MetaCrtcInfo      **crtcs,
@@ -1117,14 +1162,12 @@ apply_crtc_assignments (MetaMonitorManager *manager,
           crtc->rect.x + crtc->rect.width > width ||
           crtc->rect.y + crtc->rect.height > height)
         {
-          XRRSetCrtcConfig (manager_xrandr->xdisplay,
-                            manager_xrandr->resources,
-                            (XID)crtc->crtc_id,
-                            CurrentTime,
-                            0, 0,
-                            None,
-                            RR_Rotate_0,
-                            NULL, 0);
+          xrandr_set_crtc_config (manager_xrandr,
+                                  (xcb_randr_crtc_t) crtc->crtc_id,
+                                  XCB_CURRENT_TIME,
+                                  0, 0, XCB_NONE,
+                                  XCB_RANDR_ROTATION_ROTATE_0,
+                                  NULL, 0);
 
           crtc->rect.x = 0;
           crtc->rect.y = 0;
@@ -1147,14 +1190,12 @@ apply_crtc_assignments (MetaMonitorManager *manager,
       if (crtc->current_mode == NULL)
         continue;
 
-      XRRSetCrtcConfig (manager_xrandr->xdisplay,
-                        manager_xrandr->resources,
-                        (XID)crtc->crtc_id,
-                        CurrentTime,
-                        0, 0,
-                        None,
-                        RR_Rotate_0,
-                        NULL, 0);
+      xrandr_set_crtc_config (manager_xrandr,
+                              (xcb_randr_crtc_t) crtc->crtc_id,
+                              XCB_CURRENT_TIME,
+                              0, 0, XCB_NONE,
+                              XCB_RANDR_ROTATION_ROTATE_0,
+                              NULL, 0);
 
       crtc->rect.x = 0;
       crtc->rect.y = 0;
@@ -1183,14 +1224,14 @@ apply_crtc_assignments (MetaMonitorManager *manager,
       if (crtc_info->mode != NULL)
         {
           MetaCrtcMode *mode;
-          g_autofree XID *output_ids = NULL;
+          g_autofree xcb_randr_output_t *output_ids = NULL;
           unsigned int j, n_output_ids;
-          Status ok;
+          xcb_randr_rotation_t rotation;
 
           mode = crtc_info->mode;
 
           n_output_ids = crtc_info->outputs->len;
-          output_ids = g_new (XID, n_output_ids);
+          output_ids = g_new (xcb_randr_output_t, n_output_ids);
 
           for (j = 0; j < n_output_ids; j++)
             {
@@ -1204,16 +1245,14 @@ apply_crtc_assignments (MetaMonitorManager *manager,
               output_ids[j] = output->winsys_id;
             }
 
-          ok = XRRSetCrtcConfig (manager_xrandr->xdisplay,
-                                 manager_xrandr->resources,
-                                 (XID)crtc->crtc_id,
-                                 CurrentTime,
-                                 crtc_info->x, crtc_info->y,
-                                 (XID)mode->mode_id,
-                                 meta_monitor_transform_to_xrandr (crtc_info->transform),
-                                 output_ids, n_output_ids);
-
-          if (ok != Success)
+          rotation = meta_monitor_transform_to_xrandr (crtc_info->transform);
+          if (!xrandr_set_crtc_config (manager_xrandr,
+                                       (xcb_randr_crtc_t) crtc->crtc_id,
+                                       XCB_CURRENT_TIME,
+                                       crtc_info->x, crtc_info->y,
+                                       (xcb_randr_mode_t) mode->mode_id,
+                                       rotation,
+                                       output_ids, n_output_ids))
             {
               meta_warning ("Configuring CRTC %d with mode %d (%d x %d @ %f) at position %d, %d and transform %u failed\n",
                             (unsigned)(crtc->crtc_id), (unsigned)(mode->mode_id),
