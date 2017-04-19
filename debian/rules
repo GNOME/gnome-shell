@@ -49,5 +49,5 @@ override_dh_strip:
 
 ifeq ($(shell dpkg-vendor --query vendor),Ubuntu)
 override_dh_gencontrol:
-	dh_gencontrol -- -Vicon-theme:Depends=adwaita-icon-theme-full
+	dh_gencontrol -- -Vicon-theme:Depends=adwaita-icon-theme
 endif
