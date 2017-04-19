@@ -775,10 +775,12 @@ const LoginDialog = new Lang.Class({
     },
 
     _onPrompted: function() {
-        this._sessionMenuButton.updateSensitivity(true);
-
-        if (this._shouldShowSessionMenuButton())
+        if (this._shouldShowSessionMenuButton()) {
+            this._sessionMenuButton.updateSensitivity(true);
             this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
+        } else {
+            this._sessionMenuButton.updateSensitivity(false);
+        }
         this._showPrompt();
     },
 
@@ -881,6 +883,7 @@ const LoginDialog = new Lang.Class({
                                                       }));
         this._updateCancelButton();
 
+        this._sessionMenuButton.updateSensitivity(false);
         this._authPrompt.updateSensitivity(true);
         this._showPrompt();
     },
