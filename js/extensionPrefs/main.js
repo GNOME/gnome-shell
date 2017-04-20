@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const Gdk = imports.gi.Gdk;
 const Pango = imports.gi.Pango;
 const Format = imports.format;
 
@@ -92,9 +93,11 @@ const Application = new Lang.Class({
             widget = this._buildErrorUI(extension, e);
         }
 
-        let dialog = new Gtk.Dialog({ use_header_bar: true,
-                                      modal: true,
-                                      title: extension.metadata.name });
+        let dialog = new Gtk.Window({ modal: !this._skipMainWindow,
+                                      type_hint: Gdk.WindowTypeHint.DIALOG });
+        dialog.set_titlebar(new Gtk.HeaderBar({ show_close_button: true,
+                                                title: extension.metadata.name,
+                                                visible: true }));
 
         if (this._skipMainWindow) {
             this.application.add_window(dialog);
@@ -107,7 +110,7 @@ const Application = new Lang.Class({
         }
 
         dialog.set_default_size(600, 400);
-        dialog.get_content_area().add(widget);
+        dialog.add(widget);
         dialog.show();
     },
 
