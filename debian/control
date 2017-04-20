@@ -8,6 +8,7 @@ Priority: optional
 Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
 Uploaders: Andreas Henriksson <andreas@fatal.se>, Emilio Pozuelo Monfort <pochu@debian.org>, Michael Biebl <biebl@debian.org>
 Build-Depends: debhelper (>= 10),
+               gnome-common,
                gnome-control-center-dev (>= 1:3.4),
                gnome-pkg-tools (>= 0.11),
                gettext,
