@@ -1,0 +1,53 @@
+#!/usr/bin/make -f
+
+include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
+
+# Ensure at build time that the library has no dependencies on undefined
+# symbols, and speed up loading.
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,defs -Wl,-O1 -Wl,--as-needed
+# Work around binutils behaviour change https://bugs.debian.org/847298
+DEB_LDFLAGS_MAINT_APPEND += -Wl,--disable-new-dtags
+
+%:
+	dh $@ --with gir,gnome
+
+override_dh_autoreconf:
+	dh_autoreconf --as-needed
+
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+CONFFLAGS = \
+	--enable-networkmanager \
+	--enable-systemd
+endif
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--libdir=/usr/lib \
+		--libexecdir="\$${libdir}/gnome-shell" \
+		--enable-compile-warnings \
+		$(CONFFLAGS)
+
+override_dh_install:
+	find debian/tmp -name '*.la' -delete
+	dh_install --list-missing
+
+override_dh_makeshlibs:
+	dh_makeshlibs -Xlibgnome-shell
+
+override_dh_shlibdeps:
+	# gnome-shell uses mutters private mutter-clutter-1.0.so etc.
+	dh_shlibdeps -l"usr/lib/$(DEB_HOST_MULTIARCH)/mutter"
+
+override_dh_girepository:
+	dh_girepository \
+		-l src:src/gvc \
+		-p /usr/lib/$(DEB_HOST_MULTIARCH)/mutter \
+		/usr/lib/gnome-shell
+
+override_dh_strip:
+	dh_strip --dbgsym-migration='gnome-shell-dbg (<< 3.20.2-2~)'
+
+ifeq ($(shell dpkg-vendor --query vendor),Ubuntu)
+override_dh_gencontrol:
+	dh_gencontrol -- -Vicon-theme:Depends=adwaita-icon-theme-full
+endif

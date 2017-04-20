@@ -1,0 +1,2 @@
+[org.gnome.shell]
+favorite-apps=[ 'firefox-esr.desktop', 'evolution.desktop', 'rhythmbox.desktop', 'libreoffice-writer.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'yelp.desktop' ]

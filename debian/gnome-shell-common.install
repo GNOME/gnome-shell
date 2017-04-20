@@ -1,0 +1,10 @@
+debian/source_gnome-shell.py /usr/share/apport/package-hooks
+usr/share/GConf
+usr/share/glib-2.0
+usr/share/gnome-control-center
+usr/share/gnome-shell
+usr/share/gtk-doc
+usr/share/locale
+
+# This is a hack for #853018. Remove this after Debian stretch is released.
+debian/jessie-upgrade/process-working.svg /usr/share/gnome-shell/theme
