@@ -154,7 +154,7 @@ const Application = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.bind('disable-user-extensions', killSwitch, 'active',
-                            Gio.SettingsBindFlags.BIND_DEFAULT |
+                            Gio.SettingsBindFlags.DEFAULT |
                             Gio.SettingsBindFlags.INVERT_BOOLEAN);
 
         let scroll = new Gtk.ScrolledWindow({ hscrollbar_policy: Gtk.PolicyType.NEVER });
