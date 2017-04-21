@@ -184,15 +184,94 @@ derive_monitor_layout (MetaMonitor   *monitor,
   meta_monitor_derive_dimensions (monitor, &layout->width, &layout->height);
 }
 
+static int
+derive_configured_global_scale (MetaMonitorManager *manager)
+{
+  MetaMonitorsConfig *config;
+  MetaLogicalMonitorConfig *logical_monitor_config;
+
+  config = meta_monitor_config_manager_get_current (manager->config_manager);
+  if (!config)
+    return 1;
+
+  logical_monitor_config = config->logical_monitor_configs->data;
+
+  return logical_monitor_config->scale;
+}
+
+static int
+calculate_monitor_scale (MetaMonitorManager *manager,
+                         MetaMonitor        *monitor)
+{
+  MetaMonitorMode *monitor_mode;
+
+  monitor_mode = meta_monitor_get_current_mode (monitor);
+  return meta_monitor_manager_calculate_monitor_mode_scale (manager,
+                                                            monitor,
+                                                            monitor_mode);
+}
+
+static int
+derive_calculated_global_scale (MetaMonitorManager *manager)
+{
+  MetaMonitor *primary_monitor;
+
+  primary_monitor = meta_monitor_manager_get_primary_monitor (manager);
+  if (!primary_monitor)
+    return 1;
+
+  return calculate_monitor_scale (manager, primary_monitor);
+}
+
+static int
+derive_scale_from_config (MetaMonitorManager *manager,
+                          MetaRectangle      *layout)
+{
+  MetaMonitorsConfig *config;
+  GList *l;
+
+  config = meta_monitor_config_manager_get_current (manager->config_manager);
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+
+      if (meta_rectangle_equal (layout, &logical_monitor_config->layout))
+        return logical_monitor_config->scale;
+    }
+
+  g_warning ("Missing logical monitor, using scale 1");
+  return 1;
+}
+
 static void
-meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manager)
+meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager          *manager,
+                                                       MetaMonitorManagerDeriveFlag flags)
 {
   GList *logical_monitors = NULL;
   GList *l;
   int monitor_number;
   MetaLogicalMonitor *primary_logical_monitor = NULL;
+  gboolean use_configured_scale;
+  gboolean use_global_scale;
+  int global_scale = 0;
+  MetaMonitorManagerCapability capabilities;
 
   monitor_number = 0;
+
+  capabilities = meta_monitor_manager_get_capabilities (manager);
+  use_global_scale =
+    !!(capabilities & META_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED);
+
+  use_configured_scale =
+    !!(flags & META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE);
+
+  if (use_global_scale)
+    {
+      if (use_configured_scale)
+        global_scale = derive_configured_global_scale (manager);
+      else
+        global_scale = derive_calculated_global_scale (manager);
+    }
 
   for (l = manager->monitors; l; l = l->next)
     {
@@ -212,9 +291,21 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager *manag
         }
       else
         {
+          int scale;
+
+          if (use_global_scale)
+            scale = global_scale;
+          else if (use_configured_scale)
+            scale = derive_scale_from_config (manager, &layout);
+          else
+            scale = calculate_monitor_scale (manager, monitor);
+
+          g_assert (scale > 0);
+
           logical_monitor = meta_logical_monitor_new_derived (manager,
                                                               monitor,
                                                               &layout,
+                                                              scale,
                                                               monitor_number);
           logical_monitors = g_list_append (logical_monitors, logical_monitor);
           monitor_number++;
@@ -323,7 +414,7 @@ meta_monitor_manager_get_supported_scales (MetaMonitorManager *manager,
   manager_class->get_supported_scales (manager, scales, n_scales);
 }
 
-static MetaMonitorManagerCapability
+MetaMonitorManagerCapability
 meta_monitor_manager_get_capabilities (MetaMonitorManager *manager)
 {
   MetaMonitorManagerClass *manager_class =
@@ -1563,6 +1654,13 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              g_variant_new_boolean (TRUE));
     }
 
+  if (capabilities & META_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED)
+    {
+      g_variant_builder_add (&properties_builder, "{sv}",
+                             "global-scale-required",
+                             g_variant_new_boolean (TRUE));
+    }
+
   if (meta_monitor_manager_get_max_screen_size (manager,
                                                 &max_screen_width,
                                                 &max_screen_height))
@@ -1997,7 +2095,7 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
     }
 
   config = meta_monitors_config_new (logical_monitor_configs, layout_mode);
-  if (!meta_verify_monitors_config (config, &error))
+  if (!meta_verify_monitors_config (config, manager, &error))
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
@@ -2729,15 +2827,17 @@ meta_monitor_manager_update_monitor_modes_derived (MetaMonitorManager *manager)
 }
 
 void
-meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager)
+meta_monitor_manager_update_logical_state_derived (MetaMonitorManager          *manager,
+                                                   MetaMonitorManagerDeriveFlag flags)
 {
   manager->layout_mode = META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
 
-  meta_monitor_manager_rebuild_logical_monitors_derived (manager);
+  meta_monitor_manager_rebuild_logical_monitors_derived (manager, flags);
 }
 
 void
-meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
+meta_monitor_manager_rebuild_derived (MetaMonitorManager          *manager,
+                                      MetaMonitorManagerDeriveFlag flags)
 {
   GList *old_logical_monitors;
 
@@ -2748,7 +2848,7 @@ meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager)
 
   old_logical_monitors = manager->logical_monitors;
 
-  meta_monitor_manager_update_logical_state_derived (manager);
+  meta_monitor_manager_update_logical_state_derived (manager, flags);
 
   meta_monitor_manager_notify_monitors_changed (manager);
 

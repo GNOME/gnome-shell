@@ -357,9 +357,16 @@ meta_monitor_manager_dummy_ensure_initial_config (MetaMonitorManager *manager)
   config = meta_monitor_manager_ensure_configured (manager);
 
   if (meta_is_monitor_config_manager_enabled ())
-    meta_monitor_manager_update_logical_state (manager, config);
+    {
+      meta_monitor_manager_update_logical_state (manager, config);
+    }
   else
-    meta_monitor_manager_update_logical_state_derived (manager);
+    {
+      MetaMonitorManagerDeriveFlag flags =
+        META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
+
+      meta_monitor_manager_update_logical_state_derived (manager, flags);
+    }
 }
 
 static void
@@ -565,11 +572,14 @@ meta_monitor_manager_dummy_apply_config (MetaMonitorManager *manager,
                                          MetaOutputInfo    **outputs,
                                          unsigned int        n_outputs)
 {
+  MetaMonitorManagerDeriveFlag flags =
+    META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
+
   apply_crtc_assignments (manager, crtcs, n_crtcs, outputs, n_outputs);
 
   legacy_calculate_screen_size (manager);
 
-  meta_monitor_manager_rebuild_derived (manager);
+  meta_monitor_manager_rebuild_derived (manager, flags);
 }
 
 static gboolean

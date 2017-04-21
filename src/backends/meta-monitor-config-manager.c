@@ -483,6 +483,7 @@ create_preferred_logical_monitor_config (MetaMonitorManager          *monitor_ma
                                          MetaMonitor                 *monitor,
                                          int                          x,
                                          int                          y,
+                                         MetaLogicalMonitorConfig    *primary_logical_monitor_config,
                                          MetaLogicalMonitorLayoutMode layout_mode)
 {
   MetaMonitorMode *mode;
@@ -493,9 +494,15 @@ create_preferred_logical_monitor_config (MetaMonitorManager          *monitor_ma
 
   mode = meta_monitor_get_preferred_mode (monitor);
   meta_monitor_mode_get_resolution (mode, &width, &height);
-  scale = meta_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
-                                                             monitor,
-                                                             mode);
+
+  if ((meta_monitor_manager_get_capabilities (monitor_manager) &
+       META_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED) &&
+      primary_logical_monitor_config)
+    scale = primary_logical_monitor_config->scale;
+  else
+    scale = meta_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
+                                                               monitor,
+                                                               mode);
 
   switch (layout_mode)
     {
@@ -546,6 +553,7 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
     create_preferred_logical_monitor_config (monitor_manager,
                                              primary_monitor,
                                              0, 0,
+                                             NULL,
                                              layout_mode);
   primary_logical_monitor_config->is_primary = TRUE;
   logical_monitor_configs = g_list_append (NULL,
@@ -569,6 +577,7 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
         create_preferred_logical_monitor_config (monitor_manager,
                                                  monitor,
                                                  x, 0,
+                                                 primary_logical_monitor_config,
                                                  layout_mode);
       logical_monitor_configs = g_list_append (logical_monitor_configs,
                                                logical_monitor_config);
@@ -598,6 +607,7 @@ meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_ma
     create_preferred_logical_monitor_config (monitor_manager,
                                              primary_monitor,
                                              0, 0,
+                                             NULL,
                                              layout_mode);
   primary_logical_monitor_config->is_primary = TRUE;
   logical_monitor_configs = g_list_append (NULL,
@@ -615,6 +625,7 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
   MetaLogicalMonitorLayoutMode layout_mode;
   GList *logical_monitor_configs;
   GList *region;
+  int x, y;
   GList *monitors;
   GList *l;
 
@@ -622,16 +633,30 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
   if (!primary_monitor)
     return NULL;
 
+  if (!meta_monitor_get_suggested_position (primary_monitor, &x, &y))
+    return NULL;
+
   layout_mode = meta_monitor_manager_get_default_layout_mode (monitor_manager);
 
-  logical_monitor_configs = NULL;
-  region = NULL;
+  primary_logical_monitor_config =
+    create_preferred_logical_monitor_config (monitor_manager,
+                                             primary_monitor,
+                                             x, y,
+                                             NULL,
+                                             layout_mode);
+  primary_logical_monitor_config->is_primary = TRUE;
+  logical_monitor_configs = g_list_append (NULL,
+                                           primary_logical_monitor_config);
+  region = g_list_prepend (NULL, &primary_logical_monitor_config->layout);
+
   monitors = meta_monitor_manager_get_monitors (monitor_manager);
   for (l = monitors; l; l = l->next)
     {
       MetaMonitor *monitor = l->data;
       MetaLogicalMonitorConfig *logical_monitor_config;
-      int x, y;
+
+      if (monitor == primary_monitor)
+        continue;
 
       if (!meta_monitor_get_suggested_position (monitor, &x, &y))
         continue;
@@ -640,6 +665,7 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
         create_preferred_logical_monitor_config (monitor_manager,
                                                  monitor,
                                                  x, y,
+                                                 primary_logical_monitor_config,
                                                  layout_mode);
       logical_monitor_configs = g_list_append (logical_monitor_configs,
                                                logical_monitor_config);
@@ -655,21 +681,12 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
         }
 
       region = g_list_prepend (region, &logical_monitor_config->layout);
-
-      if (monitor == primary_monitor)
-        primary_logical_monitor_config = logical_monitor_config;
     }
 
   g_list_free (region);
 
   if (!logical_monitor_configs)
     return NULL;
-
-  if (!primary_logical_monitor_config)
-    primary_logical_monitor_config =
-      g_list_first (logical_monitor_configs)->data;
-
-  primary_logical_monitor_config->is_primary = TRUE;
 
   return meta_monitors_config_new (logical_monitor_configs, layout_mode);
 }
@@ -1024,12 +1041,14 @@ has_adjecent_neighbour (MetaMonitorsConfig       *config,
 
 gboolean
 meta_verify_monitors_config (MetaMonitorsConfig *config,
+                             MetaMonitorManager *monitor_manager,
                              GError            **error)
 {
   int min_x, min_y;
   gboolean has_primary;
   GList *region;
   GList *l;
+  gboolean global_scale_required;
 
   if (!config->logical_monitor_configs)
     {
@@ -1038,6 +1057,10 @@ meta_verify_monitors_config (MetaMonitorsConfig *config,
       return FALSE;
     }
 
+  global_scale_required =
+    !!(meta_monitor_manager_get_capabilities (monitor_manager) &
+       META_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED);
+
   min_x = INT_MAX;
   min_y = INT_MAX;
   region = NULL;
@@ -1045,6 +1068,21 @@ meta_verify_monitors_config (MetaMonitorsConfig *config,
   for (l = config->logical_monitor_configs; l; l = l->next)
     {
       MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+
+      if (global_scale_required)
+        {
+          MetaLogicalMonitorConfig *prev_logical_monitor_config =
+            l->prev ? l->prev->data : NULL;
+
+          if (prev_logical_monitor_config &&
+              (prev_logical_monitor_config->scale !=
+               logical_monitor_config->scale))
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Logical monitor scales must be identical");
+              return FALSE;
+            }
+        }
 
       if (meta_rectangle_overlaps_with_region (region,
                                                &logical_monitor_config->layout))

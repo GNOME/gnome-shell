@@ -640,7 +640,8 @@ handle_end_element (GMarkupParseContext  *context,
 
         parser->current_logical_monitor_configs = NULL;
 
-        if (!meta_verify_monitors_config (config, error))
+        if (!meta_verify_monitors_config (config, store->monitor_manager,
+                                          error))
           {
             g_object_unref (config);
             return;

@@ -107,20 +107,14 @@ MetaLogicalMonitor *
 meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
                                   MetaMonitor        *monitor,
                                   MetaRectangle      *layout,
+                                  int                 scale,
                                   int                 monitor_number)
 {
   MetaLogicalMonitor *logical_monitor;
   MetaOutput *main_output;
-  MetaMonitorMode *monitor_mode;
-  int scale;
   MetaMonitorTransform transform;
 
   logical_monitor = g_object_new (META_TYPE_LOGICAL_MONITOR, NULL);
-
-  monitor_mode = meta_monitor_get_current_mode (monitor);
-  scale = meta_monitor_manager_calculate_monitor_mode_scale (monitor_manager,
-                                                             monitor,
-                                                             monitor_mode);
 
   transform = derive_monitor_transform (monitor);
 

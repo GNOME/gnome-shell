@@ -68,6 +68,7 @@ MetaLogicalMonitor * meta_logical_monitor_new (MetaMonitorManager       *monitor
 MetaLogicalMonitor * meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
                                                        MetaMonitor        *monitor,
                                                        MetaRectangle      *layout,
+                                                       int                 scale,
                                                        int                 monitor_number);
 
 void meta_logical_monitor_add_monitor (MetaLogicalMonitor *logical_monitor,

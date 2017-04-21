@@ -401,6 +401,10 @@
 	* "supports-changing-layout-mode" (b): True if the layout mode can be
 					       changed. Absence of this means the
 					       layout mode cannot be changed.
+	* "global-scale-required" (b): True if all the logical monitors must
+				       always use the same scale. Absence of
+				       this means logical monitor scales can
+				       differ.
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />

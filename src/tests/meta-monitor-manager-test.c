@@ -123,9 +123,16 @@ meta_monitor_manager_test_ensure_initial_config (MetaMonitorManager *manager)
   config = meta_monitor_manager_ensure_configured (manager);
 
   if (meta_is_monitor_config_manager_enabled ())
-    meta_monitor_manager_update_logical_state (manager, config);
+    {
+      meta_monitor_manager_update_logical_state (manager, config);
+    }
   else
-    meta_monitor_manager_update_logical_state_derived (manager);
+    {
+      MetaMonitorManagerDeriveFlag flags =
+        META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
+
+      meta_monitor_manager_update_logical_state_derived (manager, flags);
+    }
 }
 
 static void
@@ -279,9 +286,16 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manage
       manager->screen_height = 1;
 
       if (meta_is_stage_views_enabled ())
-        meta_monitor_manager_rebuild (manager, NULL);
+        {
+          meta_monitor_manager_rebuild (manager, NULL);
+        }
       else
-        meta_monitor_manager_rebuild_derived (manager);
+        {
+          MetaMonitorManagerDeriveFlag flags =
+            META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
+
+          meta_monitor_manager_rebuild_derived (manager, flags);
+        }
 
       return TRUE;
     }
@@ -311,9 +325,16 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manage
   update_screen_size (manager, config);
 
   if (meta_is_stage_views_enabled ())
-    meta_monitor_manager_rebuild (manager, config);
+    {
+      meta_monitor_manager_rebuild (manager, config);
+    }
   else
-    meta_monitor_manager_rebuild_derived (manager);
+    {
+      MetaMonitorManagerDeriveFlag flags =
+        META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
+
+      meta_monitor_manager_rebuild_derived (manager, flags);
+    }
 
   return TRUE;
 }
@@ -343,9 +364,12 @@ meta_monitor_manager_test_apply_configuration (MetaMonitorManager *manager,
                                                MetaOutputInfo    **outputs,
                                                unsigned int        n_outputs)
 {
+  MetaMonitorManagerDeriveFlag flags =
+    META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
+
   apply_crtc_assignments (manager, crtcs, n_crtcs, outputs, n_outputs);
   legacy_calculate_screen_size (manager);
-  meta_monitor_manager_rebuild_derived (manager);
+  meta_monitor_manager_rebuild_derived (manager, flags);
 }
 
 static void

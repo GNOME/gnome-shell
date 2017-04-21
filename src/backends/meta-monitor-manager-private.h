@@ -72,7 +72,8 @@ typedef enum _MetaMonitorManagerCapability
 {
   META_MONITOR_MANAGER_CAPABILITY_NONE = 0,
   META_MONITOR_MANAGER_CAPABILITY_MIRRORING = (1 << 0),
-  META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE = (1 << 1)
+  META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE = (1 << 1),
+  META_MONITOR_MANAGER_CAPABILITY_GLOBAL_SCALE_REQUIRED = (1 << 2)
 } MetaMonitorManagerCapability;
 
 /* Equivalent to the 'method' enum in org.gnome.Mutter.DisplayConfig */
@@ -89,6 +90,12 @@ typedef enum _MetaLogicalMonitorLayoutMode
   META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL = 1,
   META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL = 2
 } MetaLogicalMonitorLayoutMode;
+
+typedef enum _MetaMonitorManagerDeriveFlag
+{
+  META_MONITOR_MANAGER_DERIVE_FLAG_NONE = 0,
+  META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE = (1 << 0)
+} MetaMonitorManagerDeriveFlag;
 
 typedef enum
 {
@@ -404,7 +411,8 @@ gboolean            meta_is_monitor_config_manager_enabled (void);
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
                                                   MetaMonitorsConfig *config);
-void                meta_monitor_manager_rebuild_derived   (MetaMonitorManager *manager);
+void                meta_monitor_manager_rebuild_derived (MetaMonitorManager          *manager,
+                                                          MetaMonitorManagerDeriveFlag flags);
 
 int                 meta_monitor_manager_get_num_logical_monitors (MetaMonitorManager *manager);
 
@@ -487,7 +495,8 @@ MetaMonitorsConfig * meta_monitor_manager_ensure_configured (MetaMonitorManager 
 
 void               meta_monitor_manager_update_logical_state (MetaMonitorManager *manager,
                                                               MetaMonitorsConfig *config);
-void               meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager);
+void               meta_monitor_manager_update_logical_state_derived (MetaMonitorManager          *manager,
+                                                                      MetaMonitorManagerDeriveFlag flags);
 
 gboolean           meta_monitor_manager_is_lid_closed (MetaMonitorManager *manager);
 
@@ -498,6 +507,9 @@ gboolean           meta_monitor_manager_is_headless (MetaMonitorManager *manager
 int                meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                                       MetaMonitor        *monitor,
                                                                       MetaMonitorMode    *monitor_mode);
+
+MetaMonitorManagerCapability
+                   meta_monitor_manager_get_capabilities (MetaMonitorManager *manager);
 
 gboolean           meta_monitor_manager_get_max_screen_size (MetaMonitorManager *manager,
                                                              int                *max_width,

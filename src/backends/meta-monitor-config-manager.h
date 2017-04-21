@@ -120,6 +120,7 @@ gboolean meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logica
                                              GError                     **error);
 
 gboolean meta_verify_monitors_config (MetaMonitorsConfig *config,
+                                      MetaMonitorManager *monitor_manager,
                                       GError            **error);
 
 #endif /* META_MONITOR_CONFIG_MANAGER_H */
