@@ -609,22 +609,25 @@ static gboolean
 is_monitor_framebuffers_scaled (void)
 {
   MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
 
-  return meta_backend_is_experimental_feature_enabled (
-    backend,
+  return meta_settings_is_experimental_feature_enabled (
+    settings,
     META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
 }
 
 static MetaMonitorManagerCapability
 meta_monitor_manager_dummy_get_capabilities (MetaMonitorManager *manager)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
   MetaMonitorManagerCapability capabilities =
     META_MONITOR_MANAGER_CAPABILITY_NONE;
 
   capabilities |= META_MONITOR_MANAGER_CAPABILITY_MIRRORING;
 
-  if (meta_backend_is_experimental_feature_enabled (
-        meta_get_backend (),
+  if (meta_settings_is_experimental_feature_enabled (
+        settings,
         META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER))
     capabilities |= META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE;
 

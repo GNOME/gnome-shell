@@ -51,7 +51,10 @@ void meta_backend_set_numlock (MetaBackend *backend,
 int meta_backend_get_ui_scaling_factor (MetaBackend *backend);
 
 ClutterActor *meta_backend_get_stage (MetaBackend *backend);
+
 MetaDnd      *meta_backend_get_dnd   (MetaBackend *backend);
+
+MetaSettings *meta_backend_get_settings (MetaBackend *backend);
 
 void meta_clutter_init (void);
 

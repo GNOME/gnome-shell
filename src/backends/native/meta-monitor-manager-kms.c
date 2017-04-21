@@ -1932,13 +1932,14 @@ static MetaMonitorManagerCapability
 meta_monitor_manager_kms_get_capabilities (MetaMonitorManager *manager)
 {
   MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
   MetaMonitorManagerCapability capabilities =
     META_MONITOR_MANAGER_CAPABILITY_NONE;
 
-  if (meta_backend_is_experimental_feature_enabled (
-        backend,
+  if (meta_settings_is_experimental_feature_enabled (
+        settings,
         META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER))
     capabilities |= META_MONITOR_MANAGER_CAPABILITY_LAYOUT_MODE;
 
@@ -1975,11 +1976,14 @@ meta_monitor_manager_kms_get_max_screen_size (MetaMonitorManager *manager,
 static MetaLogicalMonitorLayoutMode
 meta_monitor_manager_kms_get_default_layout_mode (MetaMonitorManager *manager)
 {
+  MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
+
   if (!meta_is_stage_views_enabled ())
     return META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
 
-  if (meta_backend_is_experimental_feature_enabled (
-        meta_get_backend (),
+  if (meta_settings_is_experimental_feature_enabled (
+        settings,
         META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER))
     return META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL;
   else

@@ -82,6 +82,7 @@ wayland_protocols =				\
 libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-backend.c			\
 	meta/meta-backend.h			\
+	meta/meta-settings.h			\
 	backends/meta-backend-private.h		\
 	backends/meta-barrier.c			\
 	backends/meta-barrier-private.h		\
@@ -119,6 +120,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-monitor-manager-dummy.h	\
 	backends/meta-pointer-constraint.c	\
 	backends/meta-pointer-constraint.h	\
+	backends/meta-settings.c		\
+	backends/meta-settings-private.h	\
 	backends/meta-stage.h			\
 	backends/meta-stage.c			\
 	backends/meta-renderer.c		\
@@ -445,6 +448,7 @@ libmutterinclude_headers =			\
 	meta/meta-idle-monitor.h		\
 	meta/meta-plugin.h			\
 	meta/meta-monitor-manager.h		\
+	meta/meta-settings.h			\
 	meta/meta-shaped-texture.h		\
 	meta/meta-shadow-factory.h		\
 	meta/meta-window-actor.h		\

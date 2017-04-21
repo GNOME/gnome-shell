@@ -40,5 +40,6 @@ typedef struct _MetaKeyBinding  MetaKeyBinding;
 typedef struct _MetaCursorTracker MetaCursorTracker;
 
 typedef struct _MetaDnd         MetaDnd;
+typedef struct _MetaSettings    MetaSettings;
 
 #endif

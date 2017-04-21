@@ -403,9 +403,10 @@ static gboolean
 is_monitor_framebuffer_scaled (void)
 {
   MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
 
-  return meta_backend_is_experimental_feature_enabled (
-    backend,
+  return meta_settings_is_experimental_feature_enabled (
+    settings,
     META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
 }
 

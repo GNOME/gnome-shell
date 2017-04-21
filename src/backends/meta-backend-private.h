@@ -38,6 +38,7 @@
 #include "backends/meta-egl.h"
 #include "backends/meta-pointer-constraint.h"
 #include "backends/meta-renderer.h"
+#include "backends/meta-settings-private.h"
 #include "core/util-private.h"
 
 #define DEFAULT_XKB_RULES_FILE "evdev"
@@ -98,13 +99,6 @@ struct _MetaBackendClass
 
 };
 
-typedef enum _MetaExperimentalFeature
-{
-  META_EXPERIMENTAL_FEATURE_NONE = 0,
-  META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER = (1 << 0),
-  META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER = (1 << 1)
-} MetaExperimentalFeature;
-
 void meta_init_backend (GType backend_gtype);
 
 void meta_backend_x11_display_opened (MetaBackend *backend);
@@ -122,6 +116,7 @@ MetaCursorTracker * meta_backend_get_cursor_tracker (MetaBackend *backend);
 MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
 MetaRenderer * meta_backend_get_renderer (MetaBackend *backend);
 MetaEgl * meta_backend_get_egl (MetaBackend *backend);
+MetaSettings * meta_backend_get_settings (MetaBackend *backend);
 
 gboolean meta_backend_grab_device (MetaBackend *backend,
                                    int          device_id,
@@ -155,16 +150,6 @@ void meta_backend_set_client_pointer_constraint (MetaBackend *backend,
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
 void meta_backend_monitors_changed (MetaBackend *backend);
-
-gboolean meta_backend_is_experimental_feature_enabled (MetaBackend            *backend,
-                                                       MetaExperimentalFeature feature);
-
-MetaExperimentalFeature meta_backend_get_experimental_features (MetaBackend *backend);
-
-void meta_backend_override_experimental_features (MetaBackend *backend);
-
-void meta_backend_enable_experimental_feature (MetaBackend            *backend,
-                                               MetaExperimentalFeature feature);
 
 gboolean meta_is_stage_views_enabled (void);
 

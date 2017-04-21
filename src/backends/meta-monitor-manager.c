@@ -77,8 +77,11 @@ meta_monitor_manager_init (MetaMonitorManager *manager)
 gboolean
 meta_is_monitor_config_manager_enabled (void)
 {
-  return meta_backend_is_experimental_feature_enabled (
-    meta_get_backend (),
+  MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
+
+  return meta_settings_is_experimental_feature_enabled (
+    settings,
     META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER);
 }
 
@@ -521,7 +524,7 @@ done:
 }
 
 static void
-experimental_features_changed (MetaBackend            *backend,
+experimental_features_changed (MetaSettings           *settings,
                                MetaExperimentalFeature old_experimental_features,
                                MetaMonitorManager     *manager)
 {
@@ -531,7 +534,6 @@ experimental_features_changed (MetaBackend            *backend,
   gboolean is_config_manager_enabled;
   gboolean is_stage_views_scaled;
   gboolean should_reconfigure = FALSE;
-  int ui_scaling_factor;
 
   is_config_manager_enabled = meta_is_monitor_config_manager_enabled ();
   was_config_manager_enabled =
@@ -545,21 +547,18 @@ experimental_features_changed (MetaBackend            *backend,
     !!(old_experimental_features &
        META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
   is_stage_views_scaled =
-    meta_backend_is_experimental_feature_enabled (
-      backend,
+    meta_settings_is_experimental_feature_enabled (
+      settings,
       META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
 
   if (is_config_manager_enabled != was_config_manager_enabled ||
       is_stage_views_scaled != was_stage_views_scaled)
     should_reconfigure = TRUE;
 
-  ui_scaling_factor = meta_backend_get_ui_scaling_factor (backend);
-
   if (should_reconfigure)
     meta_monitor_manager_on_hotplug (manager);
 
-  if (ui_scaling_factor != meta_backend_get_ui_scaling_factor (backend))
-    meta_backend_notify_ui_scaling_factor_changed (backend);
+  meta_settings_update_ui_scaling_factor (settings);
 }
 
 static void
@@ -569,9 +568,11 @@ meta_monitor_manager_constructed (GObject *object)
   MetaDBusDisplayConfig *skeleton = META_DBUS_DISPLAY_CONFIG (manager);
   MetaMonitorManagerClass *manager_class =
     META_MONITOR_MANAGER_GET_CLASS (manager);
+  MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
 
   manager->experimental_features_changed_handler_id =
-    g_signal_connect (meta_get_backend (),
+    g_signal_connect (settings,
                       "experimental-features-changed",
                       G_CALLBACK (experimental_features_changed),
                       manager);

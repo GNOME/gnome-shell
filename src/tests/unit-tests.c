@@ -215,17 +215,18 @@ static gboolean
 run_tests (gpointer data)
 {
   MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
   gboolean ret;
 
-  meta_backend_override_experimental_features (backend);
+  meta_settings_override_experimental_features (settings);
 
   if (g_strcmp0 (g_getenv ("MUTTER_USE_CONFIG_MANAGER"), "1") == 0)
     {
-      meta_backend_enable_experimental_feature (
-        backend,
+      meta_settings_enable_experimental_feature (
+        settings,
         META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER);
-      meta_backend_enable_experimental_feature (
-        backend,
+      meta_settings_enable_experimental_feature (
+        settings,
         META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER);
     }
 

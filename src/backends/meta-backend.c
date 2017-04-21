@@ -43,7 +43,7 @@
 #include "backends/meta-idle-monitor-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-dummy.h"
-#include "ui/theme-private.h"
+#include "backends/meta-settings-private.h"
 
 #define META_IDLE_MONITOR_CORE_DEVICE 0
 
@@ -52,8 +52,7 @@ enum
   KEYMAP_CHANGED,
   KEYMAP_LAYOUT_GROUP_CHANGED,
   LAST_DEVICE_CHANGED,
-  EXPERIMENTAL_FEATURES_CHANGED,
-  UI_SCALING_FACTOR_CHANGED,
+  X11_DISPLAY_OPENED,
 
   N_SIGNALS
 };
@@ -85,10 +84,7 @@ struct _MetaBackendPrivate
   MetaInputSettings *input_settings;
   MetaRenderer *renderer;
   MetaEgl *egl;
-
-  GSettings *mutter_settings;
-  MetaExperimentalFeature experimental_features;
-  gboolean experimental_features_overridden;
+  MetaSettings *settings;
 
   ClutterBackend *clutter_backend;
   ClutterActor *stage;
@@ -101,8 +97,6 @@ struct _MetaBackendPrivate
 
   MetaPointerConstraint *client_pointer_constraint;
   MetaDnd *dnd;
-
-  int ui_scaling_factor;
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
@@ -113,9 +107,6 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaBackend, meta_backend, G_TYPE_OBJECT,
                                   G_ADD_PRIVATE (MetaBackend)
                                   G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                                                          initable_iface_init));
-
-static int
-meta_backend_calculate_ui_scaling_factor (MetaBackend *backend);
 
 static void
 meta_backend_finalize (GObject *object)
@@ -130,6 +121,8 @@ meta_backend_finalize (GObject *object)
     g_source_remove (priv->device_update_idle_id);
 
   g_hash_table_destroy (priv->device_monitors);
+
+  g_clear_object (&priv->settings);
 
   G_OBJECT_CLASS (meta_backend_parent_class)->finalize (object);
 }
@@ -160,28 +153,10 @@ center_pointer (MetaBackend *backend)
                              primary->rect.y + primary->rect.height / 2);
 }
 
-static gboolean
-meta_backend_update_ui_scaling_factor (MetaBackend *backend)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-  int ui_scaling_factor;
-
-  ui_scaling_factor = meta_backend_calculate_ui_scaling_factor (backend);
-
-  if (ui_scaling_factor != priv->ui_scaling_factor)
-    {
-      priv->ui_scaling_factor = ui_scaling_factor;
-      return TRUE;
-    }
-  else
-    {
-      return FALSE;
-    }
-}
-
 void
 meta_backend_monitors_changed (MetaBackend *backend)
 {
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
@@ -199,8 +174,7 @@ meta_backend_monitors_changed (MetaBackend *backend)
         center_pointer (backend);
     }
 
-  if (meta_backend_update_ui_scaling_factor (backend))
-    meta_backend_notify_ui_scaling_factor_changed (backend);
+  meta_settings_update_ui_scaling_factor (priv->settings);
 }
 
 void
@@ -426,8 +400,6 @@ meta_backend_real_post_init (MetaBackend *backend)
 
   meta_backend_sync_screen_size (backend);
 
-  meta_backend_update_ui_scaling_factor (backend);
-
   priv->cursor_renderer = META_BACKEND_GET_CLASS (backend)->create_cursor_renderer (backend);
 
   priv->device_monitors =
@@ -489,105 +461,6 @@ meta_backend_real_get_relative_motion_deltas (MetaBackend *backend,
   return FALSE;
 }
 
-static gboolean
-experimental_features_handler (GVariant *features_variant,
-                               gpointer *result,
-                               gpointer  data)
-{
-  MetaBackend *backend = data;
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-  GVariantIter features_iter;
-  char *feature;
-  MetaExperimentalFeature features = META_EXPERIMENTAL_FEATURE_NONE;
-
-  if (priv->experimental_features_overridden)
-    {
-      *result = GINT_TO_POINTER (FALSE);
-      return TRUE;
-    }
-
-  g_variant_iter_init (&features_iter, features_variant);
-  while (g_variant_iter_loop (&features_iter, "s", &feature))
-    {
-      /* So far no experimental features defined. */
-      if (g_str_equal (feature, "scale-monitor-framebuffer"))
-        features |= META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER;
-      else if (g_str_equal (feature, "monitor-config-manager"))
-        features |= META_EXPERIMENTAL_FEATURE_MONITOR_CONFIG_MANAGER;
-      else
-        g_info ("Unknown experimental feature '%s'\n", feature);
-    }
-
-  if (features != priv->experimental_features)
-    {
-      priv->experimental_features = features;
-      *result = GINT_TO_POINTER (TRUE);
-    }
-  else
-    {
-      *result = GINT_TO_POINTER (FALSE);
-    }
-
-  return TRUE;
-}
-
-static gboolean
-update_experimental_features (MetaBackend *backend)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  return GPOINTER_TO_INT (g_settings_get_mapped (priv->mutter_settings,
-                                                 "experimental-features",
-                                                 experimental_features_handler,
-                                                 backend));
-}
-
-static void
-mutter_settings_changed (GSettings   *settings,
-                         gchar       *key,
-                         MetaBackend *backend)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-  MetaExperimentalFeature old_experimental_features;
-  gboolean changed;
-
-  if (!g_str_equal (key, "experimental-features"))
-    return;
-
-  old_experimental_features = priv->experimental_features;
-  changed = update_experimental_features (backend);
-  if (changed)
-    g_signal_emit (backend, signals[EXPERIMENTAL_FEATURES_CHANGED], 0,
-                   (unsigned int) old_experimental_features);
-}
-
-gboolean
-meta_backend_is_experimental_feature_enabled (MetaBackend            *backend,
-                                              MetaExperimentalFeature feature)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  return !!(priv->experimental_features & feature);
-}
-
-void
-meta_backend_override_experimental_features (MetaBackend *backend)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  priv->experimental_features = META_EXPERIMENTAL_FEATURE_NONE;
-  priv->experimental_features_overridden = TRUE;
-}
-
-void
-meta_backend_enable_experimental_feature (MetaBackend            *backend,
-                                          MetaExperimentalFeature feature)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  priv->experimental_features |= feature;
-}
-
 static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
@@ -624,15 +497,8 @@ meta_backend_class_init (MetaBackendClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1, G_TYPE_INT);
-  signals[EXPERIMENTAL_FEATURES_CHANGED] =
-    g_signal_new ("experimental-features-changed",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1, G_TYPE_UINT);
-  signals[UI_SCALING_FACTOR_CHANGED] =
-    g_signal_new ("ui-scaling-factor-changed",
+  signals[X11_DISPLAY_OPENED] =
+    g_signal_new ("x11-display-opened",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   0,
@@ -651,11 +517,7 @@ meta_backend_initable_init (GInitable     *initable,
   MetaBackend *backend = META_BACKEND (initable);
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
-  priv->mutter_settings = g_settings_new ("org.gnome.mutter");
-  g_signal_connect (priv->mutter_settings, "changed",
-                    G_CALLBACK (mutter_settings_changed),
-                    backend);
-  update_experimental_features (backend);
+  priv->settings = meta_settings_new (backend);
 
   priv->egl = g_object_new (META_TYPE_EGL, NULL);
 
@@ -690,7 +552,11 @@ meta_backend_init (MetaBackend *backend)
 static void
 meta_backend_post_init (MetaBackend *backend)
 {
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
   META_BACKEND_GET_CLASS (backend)->post_init (backend);
+
+  meta_settings_post_init (priv->settings);
 }
 
 /**
@@ -755,6 +621,17 @@ meta_backend_get_egl (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->egl;
+}
+
+/**
+ * meta_backend_get_settings: (skip)
+ */
+MetaSettings *
+meta_backend_get_settings (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->settings;
 }
 
 /**
@@ -1052,27 +929,10 @@ meta_clutter_init (void)
   meta_backend_post_init (_backend);
 }
 
-static void
-xft_dpi_changed (GtkSettings *settings,
-                 GParamSpec  *pspec,
-                 MetaBackend *backend)
-{
-  meta_backend_update_ui_scaling_factor (backend);
-  meta_backend_notify_ui_scaling_factor_changed (backend);
-}
-
 void
 meta_backend_x11_display_opened (MetaBackend *backend)
 {
-  /*
-   * gdk-window-scaling-factor is not exported to gtk-settings
-   * because it is handled inside gdk, so we use gtk-xft-dpi instead
-   * which also changes when the scale factor changes.
-   *
-   * TODO: Don't rely on GtkSettings for this
-   */
-  g_signal_connect (gtk_settings_get_default (), "notify::gtk-xft-dpi",
-                    G_CALLBACK (xft_dpi_changed), backend);
+  g_signal_emit (backend, signals[X11_DISPLAY_OPENED], 0);
 }
 
 gboolean
@@ -1136,55 +996,4 @@ meta_backend_notify_keymap_layout_group_changed (MetaBackend *backend,
 {
   g_signal_emit (backend, signals[KEYMAP_LAYOUT_GROUP_CHANGED], 0,
                  locked_group);
-}
-
-static int
-calculate_ui_scaling_factor (MetaBackend *backend)
-{
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  GList *logical_monitors;
-  GList *l;
-  int max_scale = 1;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager);
-  for (l = logical_monitors; l; l = l->next)
-    {
-      MetaLogicalMonitor *logical_monitor = l->data;
-
-      max_scale = MAX (logical_monitor->scale, max_scale);
-    }
-
-  return max_scale;
-}
-
-static int
-meta_backend_calculate_ui_scaling_factor (MetaBackend *backend)
-{
-  if (meta_is_stage_views_scaled ())
-    {
-      return 1;
-    }
-  else
-    {
-      if (meta_is_monitor_config_manager_enabled ())
-        return calculate_ui_scaling_factor (backend);
-      else
-        return meta_theme_get_window_scaling_factor ();
-    }
-}
-
-int
-meta_backend_get_ui_scaling_factor (MetaBackend *backend)
-{
-  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
-
-  return priv->ui_scaling_factor;
-}
-
-void
-meta_backend_notify_ui_scaling_factor_changed (MetaBackend *backend)
-{
-  g_signal_emit (backend, signals[UI_SCALING_FACTOR_CHANGED], 0);
 }
