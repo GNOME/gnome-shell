@@ -1062,7 +1062,7 @@ xft_dpi_changed (GtkSettings *settings,
 }
 
 void
-meta_backend_display_opened (MetaBackend *backend)
+meta_backend_x11_display_opened (MetaBackend *backend)
 {
   /*
    * gdk-window-scaling-factor is not exported to gtk-settings

@@ -107,7 +107,7 @@ typedef enum _MetaExperimentalFeature
 
 void meta_init_backend (GType backend_gtype);
 
-void meta_backend_display_opened (MetaBackend *backend);
+void meta_backend_x11_display_opened (MetaBackend *backend);
 
 ClutterBackend * meta_backend_get_clutter_backend (MetaBackend *backend);
 
