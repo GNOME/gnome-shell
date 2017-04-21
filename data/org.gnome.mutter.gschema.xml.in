@@ -114,12 +114,22 @@
 
         Currently possible keywords:
 
+        • “monitor-config-manager”    — use the new monitor configuration
+                                        system, aimed to replace the old one.
+                                        This enables a higher level configuration
+                                        API to be used by confugiration
+                                        applications, as well as the ability to
+                                        configure per logical monitor scale.
         • “scale-monitor-framebuffer” — makes mutter default to layout logical
                                         monitors in a logical pixel coordinate
                                         space, while scaling monitor
                                         framebuffers instead of window content,
                                         to manage HiDPI monitors. Does not
                                         require a restart.
+
+                                        Also enabling "monitor-config-manager"
+                                        is required for this feature to be
+                                        enabled.
       </description>
     </key>
 
