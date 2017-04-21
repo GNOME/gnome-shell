@@ -8,15 +8,255 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-22 19:28+0000\n"
-"PO-Revision-Date: 2017-02-24 16:31+0100\n"
+"POT-Creation-Date: 2017-04-12 14:54+0000\n"
+"PO-Revision-Date: 2017-04-21 23:28+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.12\n"
+
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "Navigazion"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "Sposte barcon tal spazi di lavôr 1"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "Sposte barcon tal spazi di lavôr 2"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "Sposte barcon tal spazi di lavôr 3"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "Sposte barcon tal spazi di lavôr 4"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "Sposte barcon tal ultin spazi di lavôr"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "Sposte barcon tal spazi di lavôr a çampe"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "Sposte barcon tal spazi di lavôr a drete"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "Sposte barcon tal spazi di lavôr parsore"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "Sposte barcon tal spazi di lavôr sot"
+
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "Sposte barcon tal visôr a çampe"
+
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "Sposte barcon tal visôr a drete"
+
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "Sposte barcon tal visôr parsore"
+
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "Sposte barcon tal visôr sot"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "Passâ di une aplicazion in chê altre"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "Passe ae aplicazion prime"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "Passâ di un barcon in chel altri"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "Passe al barcon prime"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "Passâ di un barcon in chel altri di une aplicazion"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "Passe al barcon prime di une aplicazion"
+
+#: data/50-mutter-navigation.xml:76
+msgid "Switch system controls"
+msgstr "Passâ di un control di sisteme in chel altri"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "Passe al control di sisteme precedent"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "Passe dret ai barcons"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "Passe dret al barcon precedent"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "Passe dret a un barcon di une aplicazion"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr "Passe dret al barcon precedent di une aplicazion"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "Passe dret ai controi dal sisteme"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "Passe dret al control precedent dal sisteme"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "Plate ducj i barcons normâi"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "Passe al spazi di lavôr 1"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "Passe al spazi di lavôr 2"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "Passe al spazi di lavôr 3"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "Passe al spazi di lavôr 4"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "Passe al ultin spazi di lavôr"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "Sposte il spazi di lavôr a çampe"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "Sposte il spazi di lavôr a drete"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "Sposte il spazi di lavôr parsore"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "Sposte il spazi di lavôr sot"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "Sisteme"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "Mostre la richieste \"eseguìs comant\""
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "Mostre la panoramiche ativitâts"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "Barcons"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "Ative il menù dal barcon"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "Ative/Disative modalitât plen visôr"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "Ative/Disative il stât slargjât"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "Slargje il barcon"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "Ripristine barcon"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "Ative/Disative stât inrodolât"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "Siere il barcon"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "Plate il barcon"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "Sposte il barcon"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "Ridimensione barcon"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr "Ative/Disative barcon su ducj i spazis di lavôr o nome un"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Tire sù il barcon se al è cuviert, se no sbassilu"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "Met il barcon parsore di chei altris"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "Bute il barcon sot di chei altris"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "Slargje il barcon par verticâl"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "Slargje il barcon par orizontâl"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "Slargje dividint ae çampe"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "Slargje dividint ae drete"
 
 #: data/mutter.desktop.in:4
 msgid "Mutter"
@@ -155,11 +395,27 @@ msgstr ""
 "Se metût a VÊR, i gnûfs barcons a vegnaran plaçâts simpri tal mieç dal "
 "schermi atîf dal visôr."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Abilite funzionalitâts sperimentâls"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Selezione barcon dal tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Anule tab popup"
 
@@ -214,7 +470,7 @@ msgstr "Passe al VT 12"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:1848
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Cambie mût (Grup %d)"
@@ -222,37 +478,37 @@ msgstr "Cambie mût (Grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:1870
 msgid "Switch monitor"
 msgstr "Cambie visôr"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:1872
 msgid "Show on-screen help"
 msgstr "Mostre jutori a schermi"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:783
 msgid "Built-in display"
 msgstr "Display integrât"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:806
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:808
 msgid "Unknown Display"
 msgstr "Display no cognossût"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:816
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:474
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -394,183 +650,3 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (su %s)"
-
-#~ msgid "Navigation"
-#~ msgstr "Navigazion"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Sposte barcon tal spazi di lavôr 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Sposte barcon tal spazi di lavôr 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Sposte barcon tal spazi di lavôr 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Sposte barcon tal spazi di lavôr 4"
-
-#~ msgid "Move window to last workspace"
-#~ msgstr "Sposte barcon tal ultin spazi di lavôr"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Sposte barcon tal spazi di lavôr a çampe"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Sposte barcon tal spazi di lavôr a drete"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Sposte barcon tal spazi di lavôr parsore"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Sposte barcon tal spazi di lavôr sot"
-
-#~ msgid "Move window one monitor to the left"
-#~ msgstr "Sposte barcon tal visôr a çampe"
-
-#~ msgid "Move window one monitor to the right"
-#~ msgstr "Sposte barcon tal visôr a drete"
-
-#~ msgid "Move window one monitor up"
-#~ msgstr "Sposte barcon tal visôr parsore"
-
-#~ msgid "Move window one monitor down"
-#~ msgstr "Sposte barcon tal visôr sot"
-
-#~ msgid "Switch applications"
-#~ msgstr "Passâ di une aplicazion in chê altre"
-
-#~ msgid "Switch to previous application"
-#~ msgstr "Passe ae aplicazion prime"
-
-#~ msgid "Switch windows"
-#~ msgstr "Passâ di un barcon in chel altri"
-
-#~ msgid "Switch to previous window"
-#~ msgstr "Passe al barcon prime"
-
-#~ msgid "Switch windows of an application"
-#~ msgstr "Passâ di un barcon in chel altri di une aplicazion"
-
-#~ msgid "Switch to previous window of an application"
-#~ msgstr "Passe al barcon prime di une aplicazion"
-
-#~ msgid "Switch system controls"
-#~ msgstr "Passâ di un control di sisteme in chel altri"
-
-#~ msgid "Switch to previous system control"
-#~ msgstr "Passe al control di sisteme precedent"
-
-#~ msgid "Switch windows directly"
-#~ msgstr "Passe dret ai barcons"
-
-#~ msgid "Switch directly to previous window"
-#~ msgstr "Passe dret al barcon precedent"
-
-#~ msgid "Switch windows of an app directly"
-#~ msgstr "Passe dret a un barcon di une aplicazion"
-
-#~ msgid "Switch directly to previous window of an app"
-#~ msgstr "Passe dret al barcon precedent di une aplicazion"
-
-#~ msgid "Switch system controls directly"
-#~ msgstr "Passe dret ai controi dal sisteme"
-
-#~ msgid "Switch directly to previous system control"
-#~ msgstr "Passe dret al control precedent dal sisteme"
-
-#~ msgid "Hide all normal windows"
-#~ msgstr "Plate ducj i barcons normâi"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Passe al spazi di lavôr 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Passe al spazi di lavôr 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Passe al spazi di lavôr 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Passe al spazi di lavôr 4"
-
-#~ msgid "Switch to last workspace"
-#~ msgstr "Passe al ultin spazi di lavôr"
-
-#~ msgid "Move to workspace left"
-#~ msgstr "Sposte il spazi di lavôr a çampe"
-
-#~ msgid "Move to workspace right"
-#~ msgstr "Sposte il spazi di lavôr a drete"
-
-#~ msgid "Move to workspace above"
-#~ msgstr "Sposte il spazi di lavôr parsore"
-
-#~ msgid "Move to workspace below"
-#~ msgstr "Sposte il spazi di lavôr sot"
-
-#~ msgid "System"
-#~ msgstr "Sisteme"
-
-#~ msgid "Show the run command prompt"
-#~ msgstr "Mostre la richieste \"eseguìs comant\""
-
-#~ msgid "Show the activities overview"
-#~ msgstr "Mostre la panoramiche ativitâts"
-
-#~ msgid "Windows"
-#~ msgstr "Barcons"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "Ative il menù dal barcon"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Ative/Disative modalitât plen visôr"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Ative/Disative il stât slargjât"
-
-#~ msgid "Maximize window"
-#~ msgstr "Slargje il barcon"
-
-#~ msgid "Restore window"
-#~ msgstr "Ripristine barcon"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Ative/Disative stât inrodolât"
-
-#~ msgid "Close window"
-#~ msgstr "Siere il barcon"
-
-#~ msgid "Hide window"
-#~ msgstr "Plate il barcon"
-
-#~ msgid "Move window"
-#~ msgstr "Sposte il barcon"
-
-#~ msgid "Resize window"
-#~ msgstr "Ridimensione barcon"
-
-#~ msgid "Toggle window on all workspaces or one"
-#~ msgstr "Ative/Disative barcon su ducj i spazis di lavôr o nome un"
-
-#~ msgid "Raise window if covered, otherwise lower it"
-#~ msgstr "Tire sù il barcon se al è cuviert, se no sbassilu"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Met il barcon parsore di chei altris"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Bute il barcon sot di chei altris"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Slargje il barcon par verticâl"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Slargje il barcon par orizontâl"
-
-#~ msgid "View split on left"
-#~ msgstr "Slargje dividint ae çampe"
-
-#~ msgid "View split on right"
-#~ msgstr "Slargje dividint ae drete"
