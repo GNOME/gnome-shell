@@ -44,6 +44,9 @@ void meta_settings_post_init (MetaSettings *settings);
 
 void meta_settings_update_ui_scaling_factor (MetaSettings *settings);
 
+gboolean meta_settings_get_global_scaling_factor (MetaSettings *settings,
+                                                  int          *scaing_factor);
+
 gboolean meta_settings_is_experimental_feature_enabled (MetaSettings           *settings,
                                                         MetaExperimentalFeature feature);
 

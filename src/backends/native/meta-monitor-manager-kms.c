@@ -28,6 +28,7 @@
 #include "meta-monitor-config-manager.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
+#include "backends/meta-input-settings-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -114,8 +115,6 @@ struct _MetaMonitorManagerKms
 
   GUdevClient *udev;
   guint uevent_handler_id;
-
-  GSettings *desktop_settings;
 
   gboolean page_flips_not_supported;
 
@@ -1639,8 +1638,6 @@ meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
                                                       G_IO_IN | G_IO_ERR);
   manager_kms->source->manager_kms = manager_kms;
   g_source_attach (source, NULL);
-
-  manager_kms->desktop_settings = g_settings_new ("org.gnome.desktop.interface");
 }
 
 static void
@@ -1908,12 +1905,11 @@ meta_monitor_manager_kms_calculate_monitor_mode_scale (MetaMonitorManager *manag
                                                        MetaMonitor        *monitor,
                                                        MetaMonitorMode    *monitor_mode)
 {
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
+  MetaBackend *backend = meta_get_backend ();
+  MetaSettings *settings = meta_backend_get_settings (backend);
   int global_scale;
 
-  global_scale = g_settings_get_uint (manager_kms->desktop_settings,
-                                      "scaling-factor");
-  if (global_scale > 0)
+  if (meta_settings_get_global_scaling_factor (settings, &global_scale))
     return global_scale;
   else
     return compute_scale (monitor, monitor_mode);
@@ -1996,7 +1992,6 @@ meta_monitor_manager_kms_dispose (GObject *object)
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (object);
 
   g_clear_object (&manager_kms->udev);
-  g_clear_object (&manager_kms->desktop_settings);
 
   G_OBJECT_CLASS (meta_monitor_manager_kms_parent_class)->dispose (object);
 }

@@ -33,6 +33,7 @@
 enum
 {
   UI_SCALING_FACTOR_CHANGED,
+  GLOBAL_SCALING_FACTOR_CHANGED,
   EXPERIMENTAL_FEATURES_CHANGED,
 
   N_SIGNALS
@@ -46,9 +47,11 @@ struct _MetaSettings
 
   MetaBackend *backend;
 
+  GSettings *interface_settings;
   GSettings *mutter_settings;
 
   int ui_scaling_factor;
+  int global_scaling_factor;
 
   MetaExperimentalFeature experimental_features;
   gboolean experimental_features_overridden;
@@ -164,6 +167,49 @@ meta_settings_get_ui_scaling_factor (MetaSettings *settings)
   return settings->ui_scaling_factor;
 }
 
+static gboolean
+update_global_scaling_factor (MetaSettings *settings)
+{
+  int global_scaling_factor;
+
+  global_scaling_factor =
+    (int) g_settings_get_uint (settings->interface_settings,
+                               "scaling-factor");
+
+  if (settings->global_scaling_factor != global_scaling_factor)
+    {
+      settings->global_scaling_factor = global_scaling_factor;
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
+}
+
+gboolean
+meta_settings_get_global_scaling_factor (MetaSettings *settings,
+                                         int          *out_scaling_factor)
+{
+  if (settings->global_scaling_factor == 0)
+    return FALSE;
+
+  *out_scaling_factor = settings->global_scaling_factor;
+  return TRUE;
+}
+
+static void
+interface_settings_changed (GSettings    *interface_settings,
+                            const char   *key,
+                            MetaSettings *settings)
+{
+  if (g_str_equal (key, "scaling-factor"))
+    {
+      if (update_global_scaling_factor (settings))
+        g_signal_emit (settings, signals[GLOBAL_SCALING_FACTOR_CHANGED], 0);
+    }
+}
+
 gboolean
 meta_settings_is_experimental_feature_enabled (MetaSettings           *settings,
                                                MetaExperimentalFeature feature)
@@ -274,6 +320,7 @@ meta_settings_dispose (GObject *object)
   MetaSettings *settings = META_SETTINGS (object);
 
   g_clear_object (&settings->mutter_settings);
+  g_clear_object (&settings->interface_settings);
 
   G_OBJECT_CLASS (meta_settings_parent_class)->dispose (object);
 }
@@ -281,11 +328,20 @@ meta_settings_dispose (GObject *object)
 static void
 meta_settings_init (MetaSettings *settings)
 {
+  settings->interface_settings = g_settings_new ("org.gnome.desktop.interface");
+  g_signal_connect (settings->interface_settings, "changed",
+                    G_CALLBACK (interface_settings_changed),
+                    settings);
   settings->mutter_settings = g_settings_new ("org.gnome.mutter");
   g_signal_connect (settings->mutter_settings, "changed",
                     G_CALLBACK (mutter_settings_changed),
                     settings);
 
+  /* Chain up inter-dependent settings. */
+  g_signal_connect (settings, "global-scaling-factor-changed",
+                    G_CALLBACK (meta_settings_update_ui_scaling_factor), NULL);
+
+  update_global_scaling_factor (settings);
   update_experimental_features (settings);
 }
 
@@ -304,6 +360,14 @@ meta_settings_class_init (MetaSettingsClass *klass)
 
   signals[UI_SCALING_FACTOR_CHANGED] =
     g_signal_new ("ui-scaling-factor-changed",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  signals[GLOBAL_SCALING_FACTOR_CHANGED] =
+    g_signal_new ("global-scaling-factor-changed",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   0,
