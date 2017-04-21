@@ -28,7 +28,6 @@
 #include "meta-monitor-config-manager.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
-#include "backends/meta-input-settings-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -1829,90 +1828,12 @@ meta_monitor_manager_kms_is_transform_handled (MetaMonitorManager  *manager,
     return FALSE;
 }
 
-/* The minimum resolution at which we turn on a window-scale of 2 */
-#define HIDPI_LIMIT 192
-
-/* The minimum screen height at which we turn on a window-scale of 2;
- * below this there just isn't enough vertical real estate for GNOME
- * apps to work, and it's better to just be tiny */
-#define HIDPI_MIN_HEIGHT 1200
-
-/* From http://en.wikipedia.org/wiki/4K_resolution#Resolutions_of_common_formats */
-#define SMALLEST_4K_WIDTH 3656
-
-static int
-compute_scale (MetaMonitor     *monitor,
-               MetaMonitorMode *monitor_mode)
-{
-  int resolution_width, resolution_height;
-  int width_mm, height_mm;
-  int scale;
-
-  scale = 1;
-
-  meta_monitor_mode_get_resolution (monitor_mode,
-                                    &resolution_width,
-                                    &resolution_height);
-
-  if (resolution_height < HIDPI_MIN_HEIGHT)
-    goto out;
-
-  /* 4K TV */
-  switch (meta_monitor_get_connector_type (monitor))
-    {
-    case META_CONNECTOR_TYPE_HDMIA:
-    case META_CONNECTOR_TYPE_HDMIB:
-      if (resolution_width >= SMALLEST_4K_WIDTH)
-        goto out;
-      break;
-    default:
-      break;
-    }
-
-  meta_monitor_get_physical_dimensions (monitor, &width_mm, &height_mm);
-
-  /*
-   * Somebody encoded the aspect ratio (16/9 or 16/10) instead of the physical
-   * size.
-   */
-  if ((width_mm == 160 && height_mm == 90) ||
-      (width_mm == 160 && height_mm == 100) ||
-      (width_mm == 16 && height_mm == 9) ||
-      (width_mm == 16 && height_mm == 10))
-    goto out;
-
-  if (width_mm > 0 && height_mm > 0)
-    {
-      double dpi_x, dpi_y;
-
-      dpi_x = (double) resolution_width / (width_mm / 25.4);
-      dpi_y = (double) resolution_height / (height_mm / 25.4);
-
-      /*
-       * We don't completely trust these values so both must be high, and never
-       * pick higher ratio than 2 automatically.
-       */
-      if (dpi_x > HIDPI_LIMIT && dpi_y > HIDPI_LIMIT)
-        scale = 2;
-    }
-
-out:
-  return scale;
-}
-
 static int
 meta_monitor_manager_kms_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                        MetaMonitor        *monitor,
                                                        MetaMonitorMode    *monitor_mode)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaSettings *settings = meta_backend_get_settings (backend);
-  int global_scale;
-
-  if (meta_settings_get_global_scaling_factor (settings, &global_scale))
-    return global_scale;
-  else
-    return compute_scale (monitor, monitor_mode);
+  return meta_monitor_calculate_mode_scale (monitor, monitor_mode);
 }
 
 static void

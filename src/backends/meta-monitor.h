@@ -156,6 +156,9 @@ void meta_monitor_calculate_crtc_pos (MetaMonitor         *monitor,
                                       int                 *out_x,
                                       int                 *out_y);
 
+int meta_monitor_calculate_mode_scale (MetaMonitor     *monitor,
+                                       MetaMonitorMode *monitor_mode);
+
 MetaMonitorModeSpec * meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode);
 
 void meta_monitor_mode_get_resolution (MetaMonitorMode *monitor_mode,
