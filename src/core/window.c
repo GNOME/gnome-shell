@@ -2955,7 +2955,11 @@ unmaximize_window_before_freeing (MetaWindow        *window)
       window->rect = window->saved_rect;
       set_net_wm_state (window);
     }
-  else if (window->screen->closing)     /* See bug #358042 */
+  else if (window->screen->closing      /* See bug #358042 */
+#ifdef HAVE_WAYLAND
+           && !meta_is_wayland_compositor ()
+#endif
+           )
     {
       /* Do NOT update net_wm_state: this screen is closing,
        * it likely will be managed by another window manager
