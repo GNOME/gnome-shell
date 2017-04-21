@@ -27,6 +27,7 @@
 #include <meta/util.h>
 #include <meta/meta-shaped-texture.h>
 #include <meta/meta-cursor-tracker.h>
+#include <meta/meta-settings.h>
 
 #ifdef HAVE_SYSTEMD
 #include <systemd/sd-journal.h>
@@ -835,23 +836,22 @@ global_stage_after_swap (gpointer data)
 }
 
 static void
-update_scaling_factor (ShellGlobal *global,
-                       MetaBackend *backend)
-
+update_scaling_factor (ShellGlobal  *global,
+                       MetaSettings *settings)
 {
   ClutterStage *stage = CLUTTER_STAGE (global->stage);
   StThemeContext *context = st_theme_context_get_for_stage (stage);
   int scaling_factor;
 
-  scaling_factor = meta_backend_get_ui_scaling_factor (backend);
+  scaling_factor = meta_settings_get_ui_scaling_factor (settings);
 
   g_object_set (context, "scale-factor", scaling_factor, NULL);
   if (meta_is_wayland_compositor ())
     {
-      GtkSettings *settings = gtk_settings_get_default ();
+      GtkSettings *gtk_settings = gtk_settings_get_default ();
       int xft_dpi;
 
-      g_object_get (settings, "gtk-xft-dpi", &xft_dpi, NULL);
+      g_object_get (gtk_settings, "gtk-xft-dpi", &xft_dpi, NULL);
       g_object_set (clutter_settings_get_default (), "font-dpi", xft_dpi, NULL);
     }
 
@@ -860,10 +860,10 @@ update_scaling_factor (ShellGlobal *global,
 }
 
 static void
-ui_scaling_factor_changed (MetaBackend *backend,
-                           ShellGlobal *global)
+ui_scaling_factor_changed (MetaSettings *settings,
+                           ShellGlobal  *global)
 {
-  update_scaling_factor (global, backend);
+  update_scaling_factor (global, settings);
 }
 
 /* This is an IBus workaround. The flow of events with IBus is that every time
@@ -970,6 +970,7 @@ _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
 {
   MetaBackend *backend;
+  MetaSettings *settings;
 
   g_return_if_fail (SHELL_IS_GLOBAL (global));
   g_return_if_fail (global->plugin == NULL);
@@ -1052,14 +1053,15 @@ _shell_global_set_plugin (ShellGlobal *global,
                     G_CALLBACK (focus_window_changed), global);
 
   backend = meta_get_backend ();
-  g_signal_connect (backend, "ui-scaling-factor-changed",
+  settings = meta_backend_get_settings (backend);
+  g_signal_connect (settings, "ui-scaling-factor-changed",
                     G_CALLBACK (ui_scaling_factor_changed), global);
 
   gdk_event_handler_set (gnome_shell_gdk_event_handler, global, NULL);
 
   global->focus_manager = st_focus_manager_get_for_stage (global->stage);
 
-  update_scaling_factor (global, meta_get_backend ());
+  update_scaling_factor (global, settings);
 }
 
 GjsContext *
