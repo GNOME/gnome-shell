@@ -1712,7 +1712,7 @@ msgstr "%d∶%02d Queda (%d %%)"
 #: js/ui/status/power.js:103
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d Fins que estigui del tot carregada (%d %%)"
+msgstr "%d∶%02d per completar la carrega (%d %%)"
 
 #: js/ui/status/power.js:131 js/ui/status/power.js:133
 #, javascript-format
