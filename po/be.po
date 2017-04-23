@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-28 06:20+0000\n"
-"PO-Revision-Date: 2017-03-27 18:08+0300\n"
+"POT-Creation-Date: 2017-04-21 21:33+0000\n"
+"PO-Revision-Date: 2017-04-23 16:56+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -396,11 +396,35 @@ msgstr ""
 "Калі ўключана, новыя вокны будуць заўсёды з'яўляцца пасярэдзіне дзейнага "
 "манітора."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Уключыць эксперыментальныя функцыі"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+"Каб уключыць эксперыментальныя функцыі, дадайце адпаведнае ключавое слова ў "
+"гэты ліст. Некаторыя функцыі могуць патрабаваць перазапуску кампазітара. "
+"Эксперыментальны функцыі могуць быць недаступныя. Не чакайце, што функцыі, "
+"дададзеныя ў гэты спіс, будуць працаваць і далей. Магчымыя ключавыя словы: • "
+"\"scale-monitor-framebuffer\" - прымушае mutter прадвызначана размяшчаць "
+"лагічныя маніторы ў лагічнай прасторы каардынат пікселаў, пры гэтым "
+"маштабаваць кадравы буфер, а не змесціва акна, для падтрымкі HiDPI "
+"манітораў. Не патрабуе перазапуску."
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Выбраць акно з выплыўнога акенца"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Закрыць выплыўное акенца"
 
@@ -455,7 +479,7 @@ msgstr "Перайсці ў віртуальны тэрмінал 12"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:1848
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Пераключыць рэжым (група %d)"
@@ -463,37 +487,37 @@ msgstr "Пераключыць рэжым (група %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:1870
 msgid "Switch monitor"
 msgstr "Пераключыць манітор"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:1872
 msgid "Show on-screen help"
 msgstr "Паказаць экранную даведку"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:783
 msgid "Built-in display"
 msgstr "Убудаваны дысплей"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:806
 msgid "Unknown"
 msgstr "Невядомы"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:808
 msgid "Unknown Display"
 msgstr "Невядомы дысплей"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:816
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:474
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
