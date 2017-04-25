@@ -44,7 +44,8 @@ struct _MetaKeyHandler
 };
 
 typedef struct _MetaResolvedKeyCombo {
-  xkb_keycode_t keycode;
+  xkb_keycode_t *keycodes;
+  int            len;
   xkb_mod_mask_t mask;
 } MetaResolvedKeyCombo;
 
@@ -102,7 +103,7 @@ typedef struct
   MetaKeyCombo overlay_key_combo;
   MetaResolvedKeyCombo overlay_resolved_key_combo;
   gboolean overlay_key_only_pressed;
-  MetaResolvedKeyCombo *iso_next_group_combos;
+  MetaResolvedKeyCombo iso_next_group_combo[2];
   int n_iso_next_group_combos;
 
   xkb_level_index_t keymap_num_levels;
