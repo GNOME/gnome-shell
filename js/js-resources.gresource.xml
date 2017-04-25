@@ -141,6 +141,7 @@
 
     <!-- Endless-specific files beyond this point -->
 
+    <file>ui/appActivation.js</file>
     <file>ui/forceAppExitDialog.js</file>
   </gresource>
 </gresources>

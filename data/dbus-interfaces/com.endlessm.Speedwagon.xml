@@ -1,0 +1,10 @@
+<node>
+  <interface name="com.endlessm.Speedwagon">
+    <method name="ShowSplash">
+      <arg type="s" direction="in" name="desktopFile" />
+    </method>
+    <method name="HideSplash">
+      <arg type="s" direction="in" name="desktopFile" />
+    </method>
+  </interface>
+</node>
