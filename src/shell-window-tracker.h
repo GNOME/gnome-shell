@@ -24,6 +24,10 @@ ShellApp *shell_window_tracker_get_app_from_pid (ShellWindowTracker *tracker, in
 
 GSList *shell_window_tracker_get_startup_sequences (ShellWindowTracker *tracker);
 
+gboolean shell_window_tracker_is_window_interesting (MetaWindow *window);
+
+gboolean shell_window_tracker_is_speedwagon_window (MetaWindow *window);
+
 G_END_DECLS
 
 #endif /* __SHELL_WINDOW_TRACKER_H__ */

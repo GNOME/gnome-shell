@@ -1454,7 +1454,23 @@ var WindowManager = class {
                 this._checkDimming(parent);
         });
 
-        if (actor.meta_window.is_attached_dialog())
+        let metaWindow = actor.meta_window;
+        let isSplashWindow = Shell.WindowTracker.is_speedwagon_window(metaWindow);
+
+        if (!isSplashWindow) {
+            // If we have an active splash window for the app, don't animate it.
+            let tracker = Shell.WindowTracker.get_default();
+            let app = tracker.get_window_app(metaWindow);
+            let hasSplashWindow = (app && app.get_windows().some(w => {
+                return Shell.WindowTracker.is_speedwagon_window(w);
+            }));
+            if (hasSplashWindow) {
+                shellwm.completed_map(actor);
+                return;
+            }
+        }
+
+        if (metaWindow.is_attached_dialog())
             this._checkDimming(actor.get_meta_window().get_transient_for());
 
         let types = [Meta.WindowType.NORMAL,

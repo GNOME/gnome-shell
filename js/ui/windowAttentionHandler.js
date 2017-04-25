@@ -33,6 +33,10 @@ var WindowAttentionHandler = class {
         if (!window || window.has_focus() || window.is_skip_taskbar())
             return;
 
+	let focusWindow = global.display.focus_window;
+	if (focusWindow && Shell.WindowTracker.is_speedwagon_window(focusWindow))
+	    return;
+
         let app = this._tracker.get_window_app(window);
         let source = new WindowAttentionSource(app, window);
         Main.messageTray.add(source);
