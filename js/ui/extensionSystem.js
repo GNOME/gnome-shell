@@ -276,12 +276,20 @@ function _onVersionValidationChanged() {
     // temporarily disable them all
     enabledExtensions = [];
     for (let uuid in ExtensionUtils.extensions)
-        reloadExtension(ExtensionUtils.extensions[uuid]);
+        try {
+            reloadExtension(ExtensionUtils.extensions[uuid]);
+        } catch(e) {
+            logExtensionError(uuid, e);
+        }
     enabledExtensions = getEnabledExtensions();
 
     if (Main.sessionMode.allowExtensions) {
         enabledExtensions.forEach(function(uuid) {
-            enableExtension(uuid);
+            try {
+                enableExtension(uuid);
+            } catch(e) {
+                logExtensionError(uuid, e);
+            }
         });
     }
 }
