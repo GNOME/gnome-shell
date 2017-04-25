@@ -1,8 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported addBackgroundMenu */
 
-const { Clutter, St } = imports.gi;
+const { Clutter, Shell, St } = imports.gi;
 
+const AppActivation = imports.ui.appActivation;
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
@@ -13,8 +14,16 @@ var BackgroundMenu = class BackgroundMenu extends PopupMenu.PopupMenu {
 
         this.addSettingsAction(_("Change Background…"), 'gnome-background-panel.desktop');
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.addSettingsAction(_("Display Settings"), 'gnome-display-panel.desktop');
-        this.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
+
+        this.addAction(_('Add App'), () => {
+            let app = Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop');
+            let activationContext = new AppActivation.AppActivationContext(app);
+            activationContext.activate(Clutter.get_current_event());
+        });
+
+        this.addAction(_('Add Website'), () => {
+            Main.appStore.showPage(global.get_current_time(), 'web');
+        });
 
         this.actor.add_style_class_name('background-menu');
 
