@@ -109,6 +109,22 @@
         the shell.
       </description>
     </key>
+
+    <!-- Endless-specific keys beyond this point -->
+
+    <key name="no-default-maximize" type="b">
+      <default>false</default>
+      <summary>
+        Prevent apps from being automatically maximized on launch
+      </summary>
+      <description>
+        Makes window management more like standard Gnome.
+        Hides application splash screens, prevents applications from being forced
+        to open maximized, and does not automatically switch to the app selector
+        when a window is minimized.
+      </description>
+    </key>
+
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
   </schema>
 
