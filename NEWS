@@ -1,3 +1,24 @@
+3.25.1
+======
+* Always sync window geometry on state changes [Jonas; #780292]
+* Use EGL instead of GLX when drawing using GLES [Jonas; #771636]
+* Fix HiDPI detection on vertical monitor layouts [Carlos; #777687]
+* Get double-click timing from desktop mouse settings [Armin; #771576]
+* Scale relative motion deltas with monitor scale [Jonas, Carlos; #778119]
+* Use texture fallback when setting hardware cursor fails [Jente; #770020]
+* Fix lock-up when using additional theme variants [Shantanu; #780254]
+* Rework low-level monitor configuration [Jonas; #777732]
+* Fix building with GLES2 instead of GL [Mario; #781398]
+* Misc. bug fixes [Jonas, Piotr, Philip; #780304, #772218, #781242, #781391]
+
+Contributors:
+  Jonas Ådahl, Philip Chimento, Piotr Drąg, Carlos Garnacho, Shantanu Goel,
+  Jente Hidskes, Armin Krezović, Rui Matos, Florian Müllner, Mario Sanchez Prada
+
+Translations:
+  Yuras Shumovich [be], Yosef Or Boczko [he], Tom Tryfonidis [el],
+  Fabio Tomat [fur], Kukuh Syafaat [id]
+
 3.24.0
 ======
 
