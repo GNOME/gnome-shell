@@ -1,3 +1,32 @@
+3.25.1
+======
+* Close Wifi selection dialog on lock [Florian; #780054]
+* Fix DND over window previews in overview [Florian; #737166]
+* Do not lock the screen when disabled by lockdown settings [Florian; #780212]
+* Follow GNOME Weather's location permissions [Florian; #780252]
+* Fix portals that require a new window to be loaded [Catalin; #759044]
+* Fix restricting menus to screen height on HiDPI displays [Cosimo; #753305]
+* Misc. bug fixes and cleanups [Florian, Cosimo, Bastien, Catalin, Carlos G.,
+  Jonas, Carlos S., Xiaoguang, Rares, Emilio; #780063, #780321, #780381,
+  #780453, #758873, #780606, #642652, #777732, #780157, #781482, #780404,
+  #781545, #781728]
+
+Contributors:
+  Jonas Ådahl, Cosimo Cecchi, Philip Chimento, Carlos Garnacho, Catalin Iacob,
+  Florian Müllner, Bastien Nocera, Emilio Pozuelo Monfort, Carlos Soriano,
+  Rares Visalom, Xiaoguang Wang
+
+Translations:
+  Marek Cernocky [cs], Piotr Drąg [pl], Anders Jonsson [sv], Stas Solovey [ru],
+  Rafael Fontenelle [pt_BR], Baurzhan Muftakhidinov [kk], Daniel Korostil [uk],
+  Kukuh Syafaat [id], Milo Casagrande [it], Jiri Grönroos [fi],
+  Daniel Mustieles [es], Balázs Úr [hu], Guillaume Bernard [fr],
+  Changwoo Ryu [ko], Mario Blättermann [de], Fran Dieguez [gl],
+  Dušan Kazik [sk], Yuras Shumovich [be], Fabio Tomat [fur],
+  Kjartan Maraas [nb], Aurimas Černius [lt], Trần Ngọc Quân [vi],
+  Rūdolfs Mazurs [lv], Γιάννης Κουτσούκος [el], gogo [hr], Марко Костић [sr],
+  Jordi Mas [ca], Khaled Hosny [ar]
+
 3.24.0
 ======
 
