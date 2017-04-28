@@ -390,9 +390,9 @@ meta_monitor_normal_new (MetaOutput *output)
 
   monitor_priv->outputs = g_list_append (NULL, output);
   monitor_priv->winsys_id = output->winsys_id;
+  meta_monitor_generate_spec (monitor);
 
   meta_monitor_normal_generate_modes (monitor_normal);
-  meta_monitor_generate_spec (monitor);
 
   return monitor_normal;
 }
@@ -752,11 +752,12 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
   monitor_tiled->main_output = output;
   add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
 
+  meta_monitor_generate_spec (monitor);
+
   meta_monitor_manager_tiled_monitor_added (monitor_manager,
                                             META_MONITOR (monitor_tiled));
 
   meta_monitor_tiled_generate_modes (monitor_tiled);
-  meta_monitor_generate_spec (monitor);
 
   return monitor_tiled;
 }
