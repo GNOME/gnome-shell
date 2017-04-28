@@ -36,6 +36,7 @@
 
 #include "boxes-private.h"
 #include "meta-monitor-config.h"
+#include "meta-backend-private.h"
 
 #include <string.h>
 #include <clutter/clutter.h>
@@ -140,6 +141,28 @@ config_new (void)
   MetaConfiguration *config = g_slice_new0 (MetaConfiguration);
   config->refcount = 1;
   return config;
+}
+
+static MetaConfiguration *
+config_copy (MetaConfiguration *config)
+{
+  MetaConfiguration *new = config_new ();
+  guint i;
+
+  new->n_outputs = config->n_outputs;
+
+  new->keys = g_malloc (sizeof (MetaOutputKey) * config->n_outputs);
+  for (i = 0; i < config->n_outputs; i++)
+    {
+      new->keys[i].connector = g_strdup (config->keys[i].connector);
+      new->keys[i].vendor = g_strdup (config->keys[i].vendor);
+      new->keys[i].product = g_strdup (config->keys[i].product);
+      new->keys[i].serial = g_strdup (config->keys[i].serial);
+    }
+
+  new->outputs = g_memdup (config->outputs, sizeof (MetaOutputConfig) * config->n_outputs);
+
+  return new;
 }
 
 static unsigned long
@@ -1596,6 +1619,60 @@ meta_monitor_config_lid_is_closed_changed (MetaMonitorConfig  *self,
       else if (self->current_is_for_laptop_lid)
         meta_monitor_config_restore_previous (self, manager);
     }
+}
+
+static void
+do_builtin_display_rotation (MetaMonitorConfig    *self,
+                             gboolean              rotate,
+                             MetaMonitorTransform  transform)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager = meta_backend_get_monitor_manager (backend);
+  MetaConfiguration *new_config;
+  MetaOutputConfig *output_config;
+  guint i;
+
+  if (!self->current)
+    return;
+
+  if (multiple_outputs_are_enabled (self->current) ||
+      !laptop_display_is_on (self->current))
+    return;
+
+  new_config = config_copy (self->current);
+
+  output_config = NULL;
+  for (i = 0; i < new_config->n_outputs; i++)
+    if (new_config->outputs[i].enabled)
+      {
+        output_config = &new_config->outputs[i];
+        break;
+      }
+  g_assert (output_config);
+
+  if (rotate)
+    transform = (output_config->transform + 1) % META_MONITOR_TRANSFORM_FLIPPED;
+
+  if (output_config->transform != transform)
+    {
+      output_config->transform = transform;
+      apply_configuration (self, new_config, monitor_manager);
+    }
+
+  config_unref (new_config);
+}
+
+void
+meta_monitor_config_orientation_changed (MetaMonitorConfig    *self,
+                                         MetaMonitorTransform  transform)
+{
+  do_builtin_display_rotation (self, FALSE, transform);
+}
+
+void
+meta_monitor_config_rotate_monitor (MetaMonitorConfig *self)
+{
+  do_builtin_display_rotation (self, TRUE, META_MONITOR_TRANSFORM_NORMAL);
 }
 
 typedef struct {

@@ -49,4 +49,9 @@ gboolean           meta_monitor_config_get_is_builtin_display_on (MetaMonitorCon
 void               meta_monitor_config_lid_is_closed_changed (MetaMonitorConfig  *self,
                                                               MetaMonitorManager *manager);
 
+void               meta_monitor_config_orientation_changed (MetaMonitorConfig    *self,
+                                                            MetaMonitorTransform  transform);
+
+void               meta_monitor_config_rotate_monitor (MetaMonitorConfig *self);
+
 #endif /* META_MONITOR_CONFIG_H */
