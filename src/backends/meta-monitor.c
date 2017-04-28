@@ -143,7 +143,7 @@ meta_monitor_spec_free (MetaMonitorSpec *monitor_spec)
 }
 
 static void
-meta_monitor_generate_id (MetaMonitor *monitor)
+meta_monitor_generate_spec (MetaMonitor *monitor)
 {
   MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
   MetaOutput *output = meta_monitor_get_main_output (monitor);
@@ -392,7 +392,7 @@ meta_monitor_normal_new (MetaOutput *output)
   monitor_priv->winsys_id = output->winsys_id;
 
   meta_monitor_normal_generate_modes (monitor_normal);
-  meta_monitor_generate_id (monitor);
+  meta_monitor_generate_spec (monitor);
 
   return monitor_normal;
 }
@@ -756,7 +756,7 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
                                             META_MONITOR (monitor_tiled));
 
   meta_monitor_tiled_generate_modes (monitor_tiled);
-  meta_monitor_generate_id (monitor);
+  meta_monitor_generate_spec (monitor);
 
   return monitor_tiled;
 }
