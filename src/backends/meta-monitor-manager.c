@@ -40,6 +40,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-manager.h"
+#include "backends/meta-orientation-manager.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 #include "meta-backend-private.h"
 
@@ -632,6 +633,57 @@ done:
 }
 
 static void
+orientation_changed (MetaOrientationManager *orientation_manager,
+                     MetaMonitorManager     *manager)
+{
+  MetaMonitorTransform transform;
+
+  switch (meta_orientation_manager_get_orientation (orientation_manager))
+    {
+    case META_ORIENTATION_NORMAL:
+      transform = META_MONITOR_TRANSFORM_NORMAL;
+      break;
+    case META_ORIENTATION_BOTTOM_UP:
+      transform = META_MONITOR_TRANSFORM_180;
+      break;
+    case META_ORIENTATION_LEFT_UP:
+      transform = META_MONITOR_TRANSFORM_90;
+      break;
+    case META_ORIENTATION_RIGHT_UP:
+      transform = META_MONITOR_TRANSFORM_270;
+      break;
+
+    case META_ORIENTATION_UNDEFINED:
+      return;
+    }
+
+  if (!meta_is_monitor_config_manager_enabled ())
+    {
+      meta_monitor_config_orientation_changed (manager->legacy_config, transform);
+    }
+  else
+    {
+      GError *error = NULL;
+      MetaMonitorsConfig *config =
+        meta_monitor_config_manager_create_for_orientation (manager->config_manager,
+                                                            transform);
+      if (!config)
+        return;
+
+      if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                       config,
+                                                       META_MONITORS_CONFIG_METHOD_TEMPORARY,
+                                                       &error))
+        {
+          g_warning ("Failed to use orientation monitor configuration: %s",
+                     error->message);
+          g_error_free (error);
+        }
+      g_object_unref (config);
+    }
+}
+
+static void
 experimental_features_changed (MetaSettings           *settings,
                                MetaExperimentalFeature old_experimental_features,
                                MetaMonitorManager     *manager)
@@ -698,6 +750,11 @@ meta_monitor_manager_constructed (GObject *object)
   meta_dbus_display_config_set_is_experimental_api_enabled (
     skeleton,
     meta_is_monitor_config_manager_enabled ());
+
+  g_signal_connect_object (meta_backend_get_orientation_manager (backend),
+                           "orientation-changed",
+                           G_CALLBACK (orientation_changed),
+                           manager, 0);
 
   manager->in_init = TRUE;
 
