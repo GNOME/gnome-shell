@@ -691,6 +691,66 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
   return meta_monitors_config_new (logical_monitor_configs, layout_mode);
 }
 
+static MetaMonitorsConfig *
+create_for_builtin_display_rotation (MetaMonitorConfigManager *config_manager,
+                                     gboolean                  rotate,
+                                     MetaMonitorTransform      transform)
+{
+  MetaLogicalMonitorConfig *logical_monitor_config;
+  MetaLogicalMonitorConfig *current_logical_monitor_config;
+  MetaMonitorConfig *monitor_config;
+  MetaMonitorConfig *current_monitor_config;
+
+  if (!meta_monitor_manager_get_is_builtin_display_on (config_manager->monitor_manager))
+    return NULL;
+
+  if (!config_manager->current_config)
+    return NULL;
+
+  if (g_list_length (config_manager->current_config->logical_monitor_configs) != 1)
+    return NULL;
+
+  current_logical_monitor_config = config_manager->current_config->logical_monitor_configs->data;
+
+  if (rotate)
+    transform = (current_logical_monitor_config->transform + 1) % META_MONITOR_TRANSFORM_FLIPPED;
+
+  if (current_logical_monitor_config->transform == transform)
+    return NULL;
+
+  if (g_list_length (current_logical_monitor_config->monitor_configs) != 1)
+    return NULL;
+
+  current_monitor_config = current_logical_monitor_config->monitor_configs->data;
+
+  monitor_config = g_new0 (MetaMonitorConfig, 1);
+  *monitor_config = (MetaMonitorConfig) {
+    .monitor_spec = meta_monitor_spec_clone (current_monitor_config->monitor_spec),
+    .mode_spec = g_memdup (current_monitor_config->mode_spec, sizeof (MetaMonitorModeSpec)),
+    .enable_underscanning = current_monitor_config->enable_underscanning
+  };
+
+  logical_monitor_config = g_memdup (current_logical_monitor_config, sizeof (MetaLogicalMonitorConfig));
+  logical_monitor_config->monitor_configs = g_list_append (NULL, monitor_config);
+  logical_monitor_config->transform = transform;
+
+  return meta_monitors_config_new (g_list_append (NULL, logical_monitor_config),
+                                   config_manager->current_config->layout_mode);
+}
+
+MetaMonitorsConfig *
+meta_monitor_config_manager_create_for_orientation (MetaMonitorConfigManager *config_manager,
+                                                    MetaMonitorTransform      transform)
+{
+  return create_for_builtin_display_rotation (config_manager, FALSE, transform);
+}
+
+MetaMonitorsConfig *
+meta_monitor_config_manager_create_for_rotate_monitor (MetaMonitorConfigManager *config_manager)
+{
+  return create_for_builtin_display_rotation (config_manager, TRUE, META_MONITOR_TRANSFORM_NORMAL);
+}
+
 void
 meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_manager,
                                          MetaMonitorsConfig       *config)

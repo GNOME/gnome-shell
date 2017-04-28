@@ -83,6 +83,11 @@ MetaMonitorsConfig * meta_monitor_config_manager_create_fallback (MetaMonitorCon
 
 MetaMonitorsConfig * meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_manager);
 
+MetaMonitorsConfig * meta_monitor_config_manager_create_for_orientation (MetaMonitorConfigManager *config_manager,
+                                                                         MetaMonitorTransform      transform);
+
+MetaMonitorsConfig * meta_monitor_config_manager_create_for_rotate_monitor (MetaMonitorConfigManager *config_manager);
+
 void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_manager,
                                               MetaMonitorsConfig       *config);
 
