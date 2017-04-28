@@ -79,6 +79,7 @@ meta_get_backend (void)
 struct _MetaBackendPrivate
 {
   MetaMonitorManager *monitor_manager;
+  MetaOrientationManager *orientation_manager;
   MetaCursorTracker *cursor_tracker;
   MetaCursorRenderer *cursor_renderer;
   MetaInputSettings *input_settings;
@@ -115,6 +116,7 @@ meta_backend_finalize (GObject *object)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   g_clear_object (&priv->monitor_manager);
+  g_clear_object (&priv->orientation_manager);
   g_clear_object (&priv->input_settings);
 
   if (priv->device_update_idle_id)
@@ -534,6 +536,8 @@ meta_backend_initable_init (GInitable     *initable,
 
   priv->dnd = g_object_new (META_TYPE_DND, NULL);
 
+  priv->orientation_manager = g_object_new (META_TYPE_ORIENTATION_MANAGER, NULL);
+
   return TRUE;
 }
 
@@ -580,6 +584,17 @@ meta_backend_get_monitor_manager (MetaBackend *backend)
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   return priv->monitor_manager;
+}
+
+/**
+ * meta_backend_get_orientation_manager: (skip)
+ */
+MetaOrientationManager *
+meta_backend_get_orientation_manager (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->orientation_manager;
 }
 
 MetaCursorTracker *

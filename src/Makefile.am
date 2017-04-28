@@ -118,6 +118,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-monitor-manager-private.h	\
 	backends/meta-monitor-manager-dummy.c	\
 	backends/meta-monitor-manager-dummy.h	\
+	backends/meta-orientation-manager.c	\
+	backends/meta-orientation-manager.h	\
 	backends/meta-pointer-constraint.c	\
 	backends/meta-pointer-constraint.h	\
 	backends/meta-settings.c		\

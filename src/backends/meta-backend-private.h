@@ -34,6 +34,7 @@
 #include <meta/meta-idle-monitor.h>
 #include "meta-cursor-renderer.h"
 #include "meta-monitor-manager-private.h"
+#include "meta-orientation-manager.h"
 #include "meta-input-settings-private.h"
 #include "backends/meta-egl.h"
 #include "backends/meta-pointer-constraint.h"
@@ -112,6 +113,7 @@ void meta_backend_foreach_device_monitor (MetaBackend *backend,
                                           gpointer     user_data);
 
 MetaMonitorManager * meta_backend_get_monitor_manager (MetaBackend *backend);
+MetaOrientationManager * meta_backend_get_orientation_manager (MetaBackend *backend);
 MetaCursorTracker * meta_backend_get_cursor_tracker (MetaBackend *backend);
 MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
 MetaRenderer * meta_backend_get_renderer (MetaBackend *backend);
