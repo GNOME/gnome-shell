@@ -604,6 +604,14 @@ is_monitor_mode_assigned (MetaMonitor     *monitor,
   return TRUE;
 }
 
+static gboolean
+is_crtc_mode_tiled (MetaOutput   *output,
+                    MetaCrtcMode *crtc_mode)
+{
+  return (crtc_mode->width == (int) output->tile_info.tile_w &&
+          crtc_mode->height == (int) output->tile_info.tile_h);
+}
+
 static MetaMonitorMode *
 create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled)
 {
@@ -653,12 +661,7 @@ create_untiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   GList *l;
   int i;
 
-  /*
-   * Assume modes with a resolution identical to the tile sizes are tiled
-   * modes.
-   */
-  if (crtc_mode->width == (int) main_output->tile_info.tile_w &&
-      crtc_mode->height == (int) main_output->tile_info.tile_h)
+  if (is_crtc_mode_tiled (main_output, crtc_mode))
     return NULL;
 
   mode = g_new0 (MetaMonitorModeTiled, 1);
