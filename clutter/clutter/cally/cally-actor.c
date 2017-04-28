@@ -780,8 +780,8 @@ _cally_actor_get_top_level_origin (ClutterActor *actor,
         g_warning ("[x11] We were not able to get proper absolute "
                    "position of the stage");
     }
-  else
 #else
+  else
     {
       static gboolean yet_warned = FALSE;
 
