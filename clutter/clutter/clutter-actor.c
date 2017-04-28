@@ -4015,7 +4015,11 @@ clutter_actor_continue_paint (ClutterActor *self)
           clutter_paint_node_unref (dummy);
 
           /* XXX:2.0 - Call the paint() virtual directly */
-          g_signal_emit (self, actor_signals[PAINT], 0);
+          if (g_signal_has_handler_pending (self, actor_signals[PAINT],
+                                            0, TRUE))
+            g_signal_emit (self, actor_signals[PAINT], 0);
+          else
+            CLUTTER_ACTOR_GET_CLASS (self)->paint (self);
         }
       else
         {
@@ -4029,7 +4033,11 @@ clutter_actor_continue_paint (ClutterActor *self)
            *
            * XXX:2.0 - Call the pick() virtual directly
            */
-          g_signal_emit (self, actor_signals[PICK], 0, &col);
+          if (g_signal_has_handler_pending (self, actor_signals[PICK],
+                                            0, TRUE))
+            g_signal_emit (self, actor_signals[PICK], 0, &col);
+          else
+            CLUTTER_ACTOR_GET_CLASS (self)->pick (self, &col);
         }
     }
   else
