@@ -780,8 +780,8 @@ _cally_actor_get_top_level_origin (ClutterActor *actor,
         g_warning ("[x11] We were not able to get proper absolute "
                    "position of the stage");
     }
-#else
   else
+#endif
     {
       static gboolean yet_warned = FALSE;
 
@@ -793,7 +793,6 @@ _cally_actor_get_top_level_origin (ClutterActor *actor,
                      "atk_component_get_extents() with ATK_XY_SCREEN.");
         }
     }
-#endif
 
   if (xp)
     *xp = x;
