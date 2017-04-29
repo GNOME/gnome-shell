@@ -1102,7 +1102,7 @@ upload_vertices (CoglJournal *journal,
 
   attribute_buffer = create_attribute_buffer (journal, needed_vbo_len * 4);
   buffer = COGL_BUFFER (attribute_buffer);
-  cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
+  cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_DYNAMIC);
 
   vout = _cogl_buffer_map_range_for_fill_or_fallback (buffer,
                                                       0, /* offset */
