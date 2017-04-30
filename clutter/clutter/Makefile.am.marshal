@@ -43,7 +43,7 @@ $(marshal_h): stamp-marshal
 	@true
 
 $(marshal_c): $(marshal_h)
-	$(AM_V_GEN)$(GLIB_GENMARSHAL)
+	$(AM_V_GEN)$(GLIB_GENMARSHAL) \
 		--prefix=$(glib_marshal_prefix) \
 		--body \
 	$(marshal_list) > xgen-mc \
