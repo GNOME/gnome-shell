@@ -4828,7 +4828,8 @@ clutter_actor_set_scale_factor (ClutterActor      *self,
   g_assert (pspec != NULL);
   g_assert (scale_p != NULL);
 
-  _clutter_actor_create_transition (self, pspec, *scale_p, factor);
+  if (*scale_p != factor)
+    _clutter_actor_create_transition (self, pspec, *scale_p, factor);
 }
 
 static inline void
@@ -10263,9 +10264,10 @@ clutter_actor_set_position (ClutterActor *self,
   cur_position.x = clutter_actor_get_x (self);
   cur_position.y = clutter_actor_get_y (self);
 
-  _clutter_actor_create_transition (self, obj_props[PROP_POSITION],
-                                    &cur_position,
-                                    &new_position);
+  if (!clutter_point_equals (&cur_position, &new_position))
+    _clutter_actor_create_transition (self, obj_props[PROP_POSITION],
+                                      &cur_position,
+                                      &new_position);
 }
 
 /**
