@@ -2176,8 +2176,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
     g_signal_new (I_("presented"),
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
+                  0, NULL, NULL,
+                  _clutter_marshal_VOID__INT_POINTER,
                   G_TYPE_NONE, 2,
                   G_TYPE_INT, G_TYPE_POINTER);
 
