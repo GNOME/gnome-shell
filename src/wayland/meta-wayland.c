@@ -179,12 +179,14 @@ meta_wayland_compositor_update (MetaWaylandCompositor *compositor,
 void
 meta_wayland_compositor_paint_finished (MetaWaylandCompositor *compositor)
 {
+  gint64 current_time = g_get_monotonic_time ();
+
   while (!wl_list_empty (&compositor->frame_callbacks))
     {
       MetaWaylandFrameCallback *callback =
         wl_container_of (compositor->frame_callbacks.next, callback, link);
 
-      wl_callback_send_done (callback->resource, g_get_monotonic_time () / 1000);
+      wl_callback_send_done (callback->resource, current_time / 1000);
       wl_resource_destroy (callback->resource);
     }
 }
