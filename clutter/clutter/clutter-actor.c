@@ -2656,7 +2656,15 @@ _clutter_actor_signal_queue_redraw (ClutterActor *self,
   _clutter_actor_queue_redraw_on_clones (self);
 
   /* calls klass->queue_redraw in default handler */
-  g_signal_emit (self, actor_signals[QUEUE_REDRAW], 0, origin);
+  if (g_signal_has_handler_pending (self, actor_signals[QUEUE_REDRAW],
+                                    0, TRUE))
+    {
+      g_signal_emit (self, actor_signals[QUEUE_REDRAW], 0, origin);
+    }
+  else
+    {
+      CLUTTER_ACTOR_GET_CLASS (self)->queue_redraw (self, origin);
+    }
 }
 
 static void
