@@ -640,6 +640,10 @@ check_monitor_configuration (MonitorTestCase *test_case)
                                             expected_current_mode_index)->data;
 
       g_assert (current_mode == expected_current_mode);
+      if (current_mode)
+        g_assert (meta_monitor_is_active (monitor));
+      else
+        g_assert (!meta_monitor_is_active (monitor));
 
       if (current_mode)
         {
