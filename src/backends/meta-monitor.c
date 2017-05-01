@@ -77,6 +77,10 @@ struct _MetaMonitorTiled
 
   uint32_t tile_group_id;
 
+  /* The tile (0, 0) output. */
+  MetaOutput *origin_output;
+
+  /* The output enabled even when a non-tiled mode is used. */
   MetaOutput *main_output;
 };
 
@@ -494,7 +498,7 @@ add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
         continue;
 
       g_warn_if_fail (output->subpixel_order ==
-                      monitor_tiled->main_output->subpixel_order);
+                      monitor_tiled->origin_output->subpixel_order);
 
       monitor_priv->outputs = g_list_append (monitor_priv->outputs, output);
     }
@@ -622,15 +626,45 @@ is_crtc_mode_tiled (MetaOutput   *output,
           crtc_mode->height == (int) output->tile_info.tile_h);
 }
 
+static MetaCrtcMode *
+find_tiled_crtc_mode (MetaOutput *output,
+                      float       refresh_rate)
+{
+  MetaCrtcMode *crtc_mode;
+  unsigned int i;
+
+  crtc_mode = output->preferred_mode;
+  if (is_crtc_mode_tiled (output, crtc_mode))
+    return crtc_mode;
+
+  for (i = 0; i < output->n_modes; i++)
+    {
+      crtc_mode = output->modes[i];
+
+      if (!is_crtc_mode_tiled (output, crtc_mode))
+        continue;
+
+      if (crtc_mode->refresh_rate != refresh_rate)
+        continue;
+
+      return crtc_mode;
+    }
+
+  return NULL;
+}
+
 static MetaMonitorMode *
-create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled)
+create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
+                           float             refresh_rate,
+                           gboolean         *out_is_preferred)
 {
   MetaMonitor *monitor = META_MONITOR (monitor_tiled);
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
   MetaMonitorModeTiled *mode;
   GList *l;
-  int i;
+  unsigned int i;
+  gboolean is_preferred = TRUE;
 
   mode = g_new0 (MetaMonitorModeTiled, 1);
   mode->is_tiled = TRUE;
@@ -642,21 +676,85 @@ create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled)
   for (l = monitor_priv->outputs, i = 0; l; l = l->next, i++)
     {
       MetaOutput *output = l->data;
-      MetaCrtcMode *preferred_crtc_mode = output->preferred_mode;
+      MetaCrtcMode *tiled_crtc_mode;
+
+      tiled_crtc_mode = find_tiled_crtc_mode (output, refresh_rate);
+      if (!tiled_crtc_mode)
+        {
+          g_warning ("No tiled mode with refresh rate %f on %s",
+                     refresh_rate, output->name);
+          meta_monitor_mode_free ((MetaMonitorMode *) mode);
+          return NULL;
+        }
 
       mode->parent.crtc_modes[i] = (MetaMonitorCrtcMode) {
         .output = output,
-        .crtc_mode = preferred_crtc_mode
+        .crtc_mode = tiled_crtc_mode
       };
 
-      g_warn_if_fail (mode->parent.spec.refresh_rate == 0.0f ||
-                      (mode->parent.spec.refresh_rate ==
-                       preferred_crtc_mode->refresh_rate));
+      mode->parent.spec.refresh_rate = refresh_rate;
 
-      mode->parent.spec.refresh_rate = preferred_crtc_mode->refresh_rate;
+      is_preferred = is_preferred && tiled_crtc_mode == output->preferred_mode;
     }
 
-  return &mode->parent;
+  *out_is_preferred = is_preferred;
+
+  return (MetaMonitorMode *) mode;
+}
+
+static void
+generate_tiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
+{
+  MetaMonitor *monitor = META_MONITOR (monitor_tiled);
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  MetaOutput *main_output;
+  GList *tiled_modes = NULL;
+  unsigned int i;
+
+  main_output = meta_monitor_get_main_output (META_MONITOR (monitor_tiled));
+
+  for (i = 0; i < main_output->n_modes; i++)
+    {
+      MetaCrtcMode *crtc_mode = main_output->modes[i];
+      MetaMonitorMode *mode;
+      gboolean is_preferred;
+
+      if (!is_crtc_mode_tiled (main_output, crtc_mode))
+        continue;
+
+      mode = create_tiled_monitor_mode (monitor_tiled, crtc_mode->refresh_rate,
+                                        &is_preferred);
+      if (!mode)
+        continue;
+
+      tiled_modes = g_list_append (tiled_modes, mode);
+
+      if (is_monitor_mode_assigned (monitor, mode))
+        monitor_priv->current_mode = mode;
+
+      if (is_preferred)
+        monitor_priv->preferred_mode = mode;
+    }
+
+  if (!monitor_priv->preferred_mode)
+    {
+      MetaMonitorMode *best_mode = NULL;
+      GList *l;
+
+      for (l = tiled_modes; l; l = l->next)
+        {
+          MetaMonitorMode *mode = l->data;
+
+          if (!best_mode ||
+              mode->spec.refresh_rate > best_mode->spec.refresh_rate)
+            best_mode = mode;
+        }
+
+      monitor_priv->preferred_mode = best_mode;
+    }
+
+  monitor_priv->modes = g_list_concat (monitor_priv->modes, tiled_modes);
 }
 
 static MetaMonitorMode *
@@ -708,42 +806,184 @@ create_untiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   return &mode->parent;
 }
 
+static int
+count_untiled_crtc_modes (MetaOutput *output)
+{
+  int count;
+  unsigned int i;
+
+  count = 0;
+  for (i = 0; i < output->n_modes; i++)
+    {
+      MetaCrtcMode *crtc_mode = output->modes[i];
+
+      if (!is_crtc_mode_tiled (output, crtc_mode))
+        count++;
+    }
+
+  return count;
+}
+
+static MetaOutput *
+find_untiled_output (MetaMonitorTiled *monitor_tiled)
+{
+  MetaMonitor *monitor = META_MONITOR (monitor_tiled);
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  MetaOutput *best_output;
+  int best_untiled_crtc_mode_count;
+  GList *l;
+
+  best_output = monitor_tiled->origin_output;
+  best_untiled_crtc_mode_count =
+    count_untiled_crtc_modes (monitor_tiled->origin_output);
+
+  for (l = monitor_priv->outputs; l; l = l->next)
+    {
+      MetaOutput *output = l->data;
+      int untiled_crtc_mode_count;
+
+      if (output == monitor_tiled->origin_output)
+        continue;
+
+      untiled_crtc_mode_count = count_untiled_crtc_modes (output);
+      if (untiled_crtc_mode_count > best_untiled_crtc_mode_count)
+        {
+          best_untiled_crtc_mode_count = untiled_crtc_mode_count;
+          best_output = output;
+        }
+    }
+
+  return best_output;
+}
+
+static void
+generate_untiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
+{
+  MetaMonitor *monitor = META_MONITOR (monitor_tiled);
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  MetaOutput *main_output;
+  unsigned int i;
+
+  main_output = meta_monitor_get_main_output (monitor);
+
+  for (i = 0; i < main_output->n_modes; i++)
+    {
+      MetaCrtcMode *crtc_mode = main_output->modes[i];
+      MetaMonitorMode *mode;
+
+      mode = create_untiled_monitor_mode (monitor_tiled,
+                                          main_output,
+                                          crtc_mode);
+      if (!mode)
+        continue;
+
+      monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
+
+      if (is_monitor_mode_assigned (monitor, mode))
+        {
+          g_assert (!monitor_priv->current_mode);
+          monitor_priv->current_mode = mode;
+        }
+
+      if (!monitor_priv->preferred_mode &&
+          crtc_mode == main_output->preferred_mode)
+        monitor_priv->preferred_mode = mode;
+    }
+}
+
+static MetaMonitorMode *
+find_best_mode (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
+  MetaMonitorMode *best_mode = NULL;
+  GList *l;
+
+  for (l = monitor_priv->modes; l; l = l->next)
+    {
+      MetaMonitorMode *mode = l->data;
+      int area, best_area;
+
+      if (!best_mode)
+        {
+          best_mode = mode;
+          continue;
+        }
+
+      area = mode->spec.width * mode->spec.height;
+      best_area = best_mode->spec.width * best_mode->spec.height;
+      if (area > best_area)
+        {
+          best_mode = mode;
+          continue;
+        }
+
+      if (mode->spec.refresh_rate > best_mode->spec.refresh_rate)
+        {
+          best_mode = mode;
+          continue;
+        }
+    }
+
+  return best_mode;
+}
+
 static void
 meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
 {
   MetaMonitor *monitor = META_MONITOR (monitor_tiled);
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
-  MetaMonitorMode *mode;
-  MetaOutput *main_output;
-  unsigned int i;
 
-  mode = create_tiled_monitor_mode (monitor_tiled);
-  monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
+  /*
+   * Tiled monitors may look a bit different from each other, depending on the
+   * monitor itself, the driver, etc.
+   *
+   * On some, the tiled modes will be the preferred CRTC modes, and running
+   * untiled is done by only enabling (0, 0) tile. In this case, things are
+   * pretty straight forward.
+   *
+   * Other times a monitor may have some bogus mode preferred on the main tile,
+   * and an untiled mode preferred on the non-main tile, and there seems to be
+   * no guarantee that the (0, 0) tile is the one that should drive the
+   * non-tiled mode.
+   *
+   * To handle both these cases, the following hueristics are implemented:
+   *
+   *  1) Find all the tiled CRTC modes of the (0, 0) tile, and create tiled
+   *     monitor modes for all tiles based on these.
+   *  2) If there is any tiled monitor mode combination where all CRTC modes
+   *     are the preferred ones, that one is marked as preferred.
+   *  3) If there is no preferred mode determined so far, assume the tiled
+   *     monitor mode with the highest refresh rate is preferred.
+   *  4) Find the tile with highest number of untiled CRTC modes available,
+   *     assume this is the one driving the monitor in untiled mode, and
+   *     create monitor modes for all untiled CRTC modes of that tile. If
+   *     there is still no preferred mode, set any untiled mode as preferred
+   *     if the CRTC mode is marked as such.
+   *  5) If at this point there is still no preferred mode, just pick the one
+   *     with the highest number of pixels and highest refresh rate.
+   *
+   * Note that this ignores the preference if the preference is a non-tiled
+   * mode. This seems to be the case on some systems, where the user tends to
+   * manually set up the tiled mode anyway.
+   */
 
-  monitor_priv->preferred_mode = mode;
+  generate_tiled_monitor_modes (monitor_tiled);
 
-  if (is_monitor_mode_assigned (monitor, mode))
-    monitor_priv->current_mode = mode;
+  if (!monitor_priv->preferred_mode)
+    g_warning ("Tiled monitor on %s didn't have any tiled modes",
+               monitor_priv->spec->connector);
 
-  main_output = meta_monitor_get_main_output (monitor);
-  for (i = 0; i < main_output->n_modes; i++)
+  generate_untiled_monitor_modes (monitor_tiled);
+
+  if (!monitor_priv->preferred_mode)
     {
-      MetaCrtcMode *crtc_mode = main_output->modes[i];
-
-      mode = create_untiled_monitor_mode (monitor_tiled,
-                                          main_output,
-                                          crtc_mode);
-      if (mode)
-        {
-          monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
-
-          if (is_monitor_mode_assigned (monitor, mode))
-            {
-              g_assert (!monitor_priv->current_mode);
-              monitor_priv->current_mode = mode;
-            }
-        }
+      g_warning ("Tiled monitor on %s didn't have a valid preferred mode",
+                 monitor_priv->spec->connector);
+      monitor_priv->preferred_mode = find_best_mode (monitor);
     }
 }
 
@@ -762,8 +1002,10 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
   monitor_tiled->tile_group_id = output->tile_info.group_id;
   monitor_priv->winsys_id = output->winsys_id;
 
-  monitor_tiled->main_output = output;
+  monitor_tiled->origin_output = output;
   add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
+
+  monitor_tiled->main_output = find_untiled_output (monitor_tiled);
 
   meta_monitor_generate_spec (monitor);
 
