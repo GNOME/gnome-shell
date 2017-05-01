@@ -70,6 +70,9 @@ struct _MetaMonitorClass
                                MetaMonitorTransform crtc_transform,
                                int                 *out_x,
                                int                 *out_y);
+  gboolean (* get_suggested_position) (MetaMonitor *monitor,
+                                       int         *width,
+                                       int         *height);
 };
 
 #define META_TYPE_MONITOR_NORMAL (meta_monitor_normal_get_type ())
