@@ -25,6 +25,7 @@ override_dh_auto_configure:
 		--libdir=/usr/lib \
 		--libexecdir="\$${libdir}/gnome-shell" \
 		--enable-compile-warnings \
+		--disable-browser-plugin \
 		$(CONFFLAGS)
 
 override_dh_install:
