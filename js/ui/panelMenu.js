@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported Button, SystemIndicator */
+/* exported Button, SingleIconButton, SystemIndicator */
 
 const { Atk, Clutter, GObject, St } = imports.gi;
 
@@ -225,5 +225,33 @@ class SystemIndicator extends St.BoxLayout {
         icon.connect('notify::visible', this._syncIndicatorsVisible.bind(this));
         this._syncIndicatorsVisible();
         return icon;
+    }
+});
+
+/* SingleIconButton:
+ *
+ * This class simplifies the process of creating an independent button
+ * with a single icon and a popup menu associated to it.
+ */
+var SingleIconButton = GObject.registerClass(
+class SingleIconButton extends Button {
+    _init(nameText, xAlign, yAlign) {
+        super._init(0.0, nameText);
+
+        this._mainIcon = new St.Icon({ style_class: 'single-icon-button' });
+
+        if (xAlign)
+            this._mainIcon.x_align = xAlign;
+
+        if (yAlign)
+            this._mainIcon.y_align = yAlign;
+
+        this.add_actor(this._mainIcon);
+    }
+
+    setIcon(icon, size) {
+        this._mainIcon.gicon = icon;
+        if (size)
+            this._mainIcon.set_icon_size(size);
     }
 });
