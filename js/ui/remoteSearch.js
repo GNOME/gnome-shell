@@ -278,7 +278,8 @@ const RemoteSearchProvider = new Lang.Class({
                                name: metas[i]['name'],
                                description: metas[i]['description'],
                                createIcon: Lang.bind(this,
-                                                     this.createIcon, metas[i]) });
+                                                     this.createIcon, metas[i]),
+                               clipboardText: metas[i]['clipboardText'] });
         }
         callback(resultMetas);
     },
