@@ -1301,20 +1301,11 @@ var PopupMenuManager = class {
             menu,
             openStateChangeId: menu.connect('open-state-changed', this._onMenuOpenState.bind(this)),
             destroyId:         menu.connect('destroy', this._onMenuDestroy.bind(this)),
-            enterId:           0,
-            focusInId:         0,
         };
 
         let source = menu.sourceActor;
-        if (source) {
-            if (!menu.blockSourceEvents)
-                this._grabHelper.addActor(source);
-            menudata.enterId = source.connect('enter-event',
-                () => this._onMenuSourceEnter(menu));
-            menudata.focusInId = source.connect('key-focus-in', () => {
-                this._onMenuSourceEnter(menu);
-            });
-        }
+        if (source && !menu.blockSourceEvents)
+            this._grabHelper.addActor(source);
 
         if (position == undefined)
             this._menus.push(menudata);
@@ -1333,11 +1324,6 @@ var PopupMenuManager = class {
         let menudata = this._menus[position];
         menu.disconnect(menudata.openStateChangeId);
         menu.disconnect(menudata.destroyId);
-
-        if (menudata.enterId)
-            menu.sourceActor.disconnect(menudata.enterId);
-        if (menudata.focusInId)
-            menu.sourceActor.disconnect(menudata.focusInId);
 
         if (menu.sourceActor)
             this._grabHelper.removeActor(menu.sourceActor);
@@ -1368,23 +1354,6 @@ var PopupMenuManager = class {
         } else {
             this._grabHelper.ungrab({ actor: menu.actor });
         }
-    }
-
-    _changeMenu(newMenu) {
-        newMenu.open(this.activeMenu
-            ? BoxPointer.PopupAnimation.FADE
-            : BoxPointer.PopupAnimation.FULL);
-    }
-
-    _onMenuSourceEnter(menu) {
-        if (!this._grabHelper.grabbed)
-            return Clutter.EVENT_PROPAGATE;
-
-        if (this._grabHelper.isActorGrabbed(menu.actor))
-            return Clutter.EVENT_PROPAGATE;
-
-        this._changeMenu(menu);
-        return Clutter.EVENT_PROPAGATE;
     }
 
     _onMenuDestroy(menu) {
