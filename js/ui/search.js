@@ -152,6 +152,8 @@ const SearchResultsBase = new Lang.Class({
 
         this._resultDisplays = {};
 
+        this._clipboard = St.Clipboard.get_default();
+
         this._cancellable = new Gio.Cancellable();
     },
 
@@ -181,6 +183,8 @@ const SearchResultsBase = new Lang.Class({
 
     _activateResult: function(result, id) {
         this.provider.activateResult(id, this._terms);
+        if (result.metaInfo.clipboardText)
+            this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
         Main.overview.toggle();
     },
 
