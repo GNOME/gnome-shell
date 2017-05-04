@@ -554,6 +554,8 @@ gboolean           meta_monitor_manager_get_max_screen_size (MetaMonitorManager 
 MetaLogicalMonitorLayoutMode
                    meta_monitor_manager_get_default_layout_mode (MetaMonitorManager *manager);
 
+void meta_monitor_manager_rotate_monitor (MetaMonitorManager *manager);
+
 void meta_monitor_manager_clear_output (MetaOutput *output);
 void meta_monitor_manager_clear_mode (MetaCrtcMode *mode);
 void meta_monitor_manager_clear_crtc (MetaCrtc *crtc);

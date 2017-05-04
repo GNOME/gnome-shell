@@ -3255,3 +3255,32 @@ meta_monitor_manager_get_is_builtin_display_on (MetaMonitorManager *manager)
 
   return meta_monitor_is_active (laptop_panel);
 }
+
+void
+meta_monitor_manager_rotate_monitor (MetaMonitorManager *manager)
+{
+  if (!meta_is_monitor_config_manager_enabled ())
+    {
+      meta_monitor_config_rotate_monitor (manager->legacy_config);
+    }
+  else
+    {
+      GError *error = NULL;
+      MetaMonitorsConfig *config =
+        meta_monitor_config_manager_create_for_rotate_monitor (manager->config_manager);
+
+      if (!config)
+        return;
+
+      if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                       config,
+                                                       META_MONITORS_CONFIG_METHOD_TEMPORARY,
+                                                       &error))
+        {
+          g_warning ("Failed to use rotate monitor configuration: %s",
+                     error->message);
+          g_error_free (error);
+        }
+      g_object_unref (config);
+    }
+}
