@@ -55,8 +55,6 @@ struct _StIconPrivate
   GIcon        *fallback_gicon;
 
   CoglPipeline *shadow_pipeline;
-  float         shadow_width;
-  float         shadow_height;
   StShadow     *shadow_spec;
 };
 
@@ -267,8 +265,6 @@ st_icon_init (StIcon *self)
   self->priv->prop_icon_size = -1;
 
   self->priv->shadow_pipeline = NULL;
-  self->priv->shadow_width = -1;
-  self->priv->shadow_height = -1;
 }
 
 static void
@@ -286,8 +282,6 @@ st_icon_update_shadow_pipeline (StIcon *icon)
                                     &width, &height);
 
      priv->shadow_pipeline = _st_create_shadow_pipeline_from_actor (priv->shadow_spec, priv->icon_texture);
-     priv->shadow_width = width;
-     priv->shadow_height = height;
    }
 }
 
