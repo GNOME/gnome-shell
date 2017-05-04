@@ -1142,7 +1142,7 @@ _st_entry_icon_press_cb (ClutterActor       *actor,
                          ClutterButtonEvent *event,
                          StEntry            *entry)
 {
-  StEntryPrivate *priv = ST_ENTRY_PRIV (actor);
+  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
 
   if (actor == priv->primary_icon)
     g_signal_emit (entry, entry_signals[PRIMARY_ICON_CLICKED], 0);
