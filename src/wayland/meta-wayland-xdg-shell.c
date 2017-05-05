@@ -1274,11 +1274,19 @@ xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
     }
   else if (!priv->has_set_geometry)
     {
+      MetaRectangle new_geometry = { 0 };
+
       /* If the surface has never set any geometry, calculate
        * a default one unioning the surface and all subsurfaces together. */
+
       meta_wayland_surface_calculate_window_geometry (surface,
-                                                      &priv->geometry,
+                                                      &new_geometry,
                                                       0, 0);
+      if (!meta_rectangle_equal (&new_geometry, &priv->geometry))
+        {
+          pending->has_new_geometry = TRUE;
+          priv->geometry = new_geometry;
+        }
     }
 }
 
