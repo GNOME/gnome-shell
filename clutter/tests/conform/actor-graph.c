@@ -350,7 +350,8 @@ actor_replace_child (void)
   g_assert_cmpstr (clutter_actor_get_name (iter), ==, "qux");
 
   clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
-                                                "name", "foo"));
+                                                "name", "foo",
+                                                NULL));
 
   clutter_actor_replace_child (actor, iter,
                                g_object_new (CLUTTER_TYPE_ACTOR,
