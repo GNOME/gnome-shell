@@ -11,9 +11,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.24\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-20 07:06+0100\n"
+"POT-Creation-Date: 2017-04-21 21:33+0000\n"
 "PO-Revision-Date: 2016-03-13 14:45+0100\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -24,10 +24,491 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "Navegació"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "Mou la finestra a l'espai de treball 1"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "Mou la finestra a l'espai de treball 2"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "Mou la finestra a l'espai de treball 3"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "Mou la finestra a l'espai de treball 4"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "Mou la finestra a l'últim espai de treball"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "Mou la finestra un espai de treball a l'esquerra"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "Mou la finestra un espai de treball a la dreta"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "Mou la finestra un espai de treball amunt"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "Mou la finestra un espai de treball avall"
+
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "Mou la finestra un monitor a l'esquerra"
+
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "Mou la finestra un monitor a la dreta"
+
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "Mou la finestra un monitor amunt"
+
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "Mou la finestra un monitor avall"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "Canvia d'aplicacions"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "Canvia a l'aplicació anterior"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "Canvia de finestres"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "Canvia a la finestra anterior"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "Canvia entre les finestres d'una aplicació"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "Canvia a la finestra anterior d'una aplicació"
+
+#: data/50-mutter-navigation.xml:76
+#, fuzzy
+#| msgid "Switch system controls directly"
+msgid "Switch system controls"
+msgstr "Canvia immediatament entre els controls del sistema"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "Canvia al control del sistema anterior"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "Canvia immediatament entre finestres"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "Canvia immediatament a la finestra anterior"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "Canvia immediatament entre les finestres d'una aplicació"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr "Canvia immediatament a la finestra anterior d'una aplicació"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "Canvia immediatament entre els controls del sistema"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "Canvia immediatament al control del sistema anterior"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "Oculta totes les finestres normals"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "Canvia a l'espai de treball 1"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "Canvia a l'espai de treball 2"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "Canvia a l'espai de treball 3"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "Canvia a l'espai de treball 4"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "Canvia a l'últim espai de treball"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "Mou a l'espai de treball de l'esquerra"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "Mou a l'espai de treball de la dreta"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "Mou a l'espai de treball de sobre"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "Mou a l'espai de treball de sota"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "Sistema"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "Mostra l'indicador d'execució d'aplicacions"
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "Mostra la vista general d'activitats"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "Finestres"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "Activa el menú de finestra"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "Canvia entre el mode a pantalla completa"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "Canvia l'estat de maximització"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "Maximitza la finestra"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "Restaura la finestra"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "Canvia l'estat d'ombrejat"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "Tanca la finestra"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "Oculta la finestra"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "Mou la finestra"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "Redimensiona la finestra"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr ""
+"Canvia la funció que fa que la finestra estigui en tots els espais de "
+"treball o només en un"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Alça la finestra si està coberta per una altra, o sinó baixa-la"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "Alça la finestra per damunt de les altres"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "Baixa la finestra sota les altres"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "Maximitza la finestra verticalment"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "Maximitza la finestra horitzontalment"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "Mostra la partició a l'esquerra"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "Mostra la partició a la dreta"
+
+#: data/mutter.desktop.in:4
+msgid "Mutter"
+msgstr "Mutter"
+
+#: data/org.gnome.mutter.gschema.xml.in:7
+msgid "Modifier to use for extended window management operations"
+msgstr ""
+"Modificador que s'utilitzarà per les operacions ampliades de gestió de "
+"finestres"
+
+#: data/org.gnome.mutter.gschema.xml.in:8
+#, fuzzy
+#| msgid ""
+#| "This key will initiate the \"overlay\", which is a combination window "
+#| "overview and application launching system. The default is intended to be "
+#| "the \"Windows key\" on PC hardware. It's expected that this binding "
+#| "either the default or set to the empty string."
+msgid ""
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
+msgstr ""
+"Aquesta tecla iniciarà l'«overlay» (superposador), el qual és una combinació "
+"de visualització de finestres i sistema de llançament d'aplicacions. El "
+"valor predeterminat és la «tecla Windows» en maquinari basat en ordinadors "
+"PC. El valor d'aquesta vinculació s'espera que sigui el predeterminat o text "
+"en blanc."
+
+#: data/org.gnome.mutter.gschema.xml.in:20
+msgid "Attach modal dialogs"
+msgstr "Adjunta els diàlegs modals"
+
+#: data/org.gnome.mutter.gschema.xml.in:21
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"Quan sigui «true» (cert), en lloc de tenir barres de títol independents, els "
+"diàlegs modals apareixeran adjuntats a la barra de títol de la finestra mare "
+"i es mouran juntament amb aquesta."
+
+#: data/org.gnome.mutter.gschema.xml.in:30
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+"Habilita la tesselització a les vores en deixar anar les finestres a les "
+"vores de la pantalla"
+
+#: data/org.gnome.mutter.gschema.xml.in:31
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+"Si s'habilita, es maximitzaran les finestres verticalment i es "
+"redimensionaran horitzontalment per cobrir la meitat de l'àrea disponible en "
+"deixar-les anar a les vores verticals de la pantalla. Si es deixen anar a la "
+"vora superior de la pantalla es maximitzaran completament."
+
+#: data/org.gnome.mutter.gschema.xml.in:40
+msgid "Workspaces are managed dynamically"
+msgstr "Els espais de treball es gestionen dinàmicament"
+
+#: data/org.gnome.mutter.gschema.xml.in:41
+#, fuzzy
+#| msgid ""
+#| "Determines whether workspaces are managed dynamically or whether there's "
+#| "a static number of workspaces (determined by the num-workspaces key in "
+#| "org.gnome.desktop.wm.preferences)."
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there’s a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"Determina si els espais de treball es gestionen dinàmicament o hi ha un "
+"nombre determinat d'espais de treball (determinat per la clau «num-"
+"workspaces» a «org.gnome.desktop.wm.preferences»)."
+
+#: data/org.gnome.mutter.gschema.xml.in:50
+msgid "Workspaces only on primary"
+msgstr "Espais de treball només en el primari"
+
+#: data/org.gnome.mutter.gschema.xml.in:51
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Determina si el canvi d'espai de treball hauria de ser per les finestres en "
+"tots els monitors o només en les finestres del monitor primari."
+
+#: data/org.gnome.mutter.gschema.xml.in:59
+msgid "No tab popup"
+msgstr "Sense finestres emergents a les pestanyes"
+
+#: data/org.gnome.mutter.gschema.xml.in:60
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+"Determina si s'ha d'inhabilitar el quadre que es mostra a les finestres "
+"emergents i ressaltades en commutar entre finestres."
+
+#: data/org.gnome.mutter.gschema.xml.in:68
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Retarda el canvi del focus fins que s'aturi el punter"
+
+#: data/org.gnome.mutter.gschema.xml.in:69
+#, fuzzy
+#| msgid ""
+#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#| "the focus will not be changed immediately when entering a window, but "
+#| "only after the pointer stops moving."
+msgid ""
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
+msgstr ""
+"Si és «true» (cert), i el mode del focus és «sloppy» o «mouse», no es "
+"canviarà el focus immediatament quan s'entri a una finestra, només es "
+"canviarà quan el punter deixi de moure's."
+
+#: data/org.gnome.mutter.gschema.xml.in:79
+msgid "Draggable border width"
+msgstr "Amplada del contorn arrossegable"
+
+#: data/org.gnome.mutter.gschema.xml.in:80
+#, fuzzy
+#| msgid ""
+#| "The amount of total draggable borders. If the theme's visible borders are "
+#| "not enough, invisible borders will be added to meet this value."
+msgid ""
+"The amount of total draggable borders. If the theme’s visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"La quantitat total de contorn arrossegable. Si els contorns visibles del "
+"tema no són suficients, s'afegiran contorns invisibles per aconseguir aquest "
+"valor."
+
+#: data/org.gnome.mutter.gschema.xml.in:89
+msgid "Auto maximize nearly monitor sized windows"
+msgstr ""
+"Maximitza automàticament les finestres que gairebé facin la mida de la "
+"pantalla"
+
+#: data/org.gnome.mutter.gschema.xml.in:90
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+"Si s'habilita, les finestres que inicialment gairebé fan la mida de la "
+"pantalla es maximitzaran automàticament."
+
+#: data/org.gnome.mutter.gschema.xml.in:98
+msgid "Place new windows in the center"
+msgstr "Posiciona les finestres noves al centre"
+
+#: data/org.gnome.mutter.gschema.xml.in:99
+msgid ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+msgstr ""
+"Si és «true» (cert), les finestres noves seran posicionades al centre de la "
+"pantalla activa del monitor."
+
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr ""
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+
+#: data/org.gnome.mutter.gschema.xml.in:141
+msgid "Select window from tab popup"
+msgstr "Selecció de finestra entre les emergents d'una pestanya"
+
+#: data/org.gnome.mutter.gschema.xml.in:146
+msgid "Cancel tab popup"
+msgstr "Cancel·lació de les finestres emergents a les pestanyes"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:6
+msgid "Switch to VT 1"
+msgstr "Canvia al terminal virtual 1"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:10
+msgid "Switch to VT 2"
+msgstr "Canvia al terminal virtual 2"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:14
+msgid "Switch to VT 3"
+msgstr "Canvia al terminal virtual 3"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:18
+msgid "Switch to VT 4"
+msgstr "Canvia al terminal virtual 4"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:22
+msgid "Switch to VT 5"
+msgstr "Canvia al terminal virtual 5"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:26
+msgid "Switch to VT 6"
+msgstr "Canvia al terminal virtual 6"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:30
+msgid "Switch to VT 7"
+msgstr "Canvia al terminal virtual 7"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:34
+msgid "Switch to VT 8"
+msgstr "Canvia al terminal virtual 8"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:38
+msgid "Switch to VT 9"
+msgstr "Canvia al terminal virtual 9"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:42
+msgid "Switch to VT 10"
+msgstr "Canvia al terminal virtual 10"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:46
+msgid "Switch to VT 11"
+msgstr "Canvia al terminal virtual 11"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:50
+msgid "Switch to VT 12"
+msgstr "Canvia al terminal virtual 12"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: ../src/backends/meta-input-settings.c:1840
+#: src/backends/meta-input-settings.c:1848
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Mode de commutació (grup %d)"
@@ -35,37 +516,37 @@ msgstr "Mode de commutació (grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: ../src/backends/meta-input-settings.c:1862
+#: src/backends/meta-input-settings.c:1870
 msgid "Switch monitor"
 msgstr "Commuta el monitor"
 
-#: ../src/backends/meta-input-settings.c:1864
+#: src/backends/meta-input-settings.c:1872
 msgid "Show on-screen help"
 msgstr "Mostra l'ajuda en pantalla"
 
-#: ../src/backends/meta-monitor-manager.c:630
+#: src/backends/meta-monitor-manager.c:783
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: ../src/backends/meta-monitor-manager.c:653
+#: src/backends/meta-monitor-manager.c:806
 msgid "Unknown"
 msgstr "Desconeguda"
 
-#: ../src/backends/meta-monitor-manager.c:655
+#: src/backends/meta-monitor-manager.c:808
 msgid "Unknown Display"
 msgstr "Pantalla desconeguda"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:663
+#: src/backends/meta-monitor-manager.c:816
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:474
+#: src/compositor/compositor.c:474
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -73,21 +554,21 @@ msgstr ""
 "Ja s'està executant un altre gestor de composició al monitor %i a la "
 "pantalla «%s»."
 
-#: ../src/core/bell.c:194
+#: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Esdeveniment de campana"
 
 #. Translators: %s is a window title
-#: ../src/core/delete.c:127
+#: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
 msgstr "«%s» no està responent."
 
-#: ../src/core/delete.c:129
+#: src/core/delete.c:129
 msgid "Application is not responding."
 msgstr "L'aplicació no està responent."
 
-#: ../src/core/delete.c:134
+#: src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -95,45 +576,45 @@ msgstr ""
 "Podeu esperar un moment perquè continuï o podeu forçar-ne la sortida "
 "completa."
 
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Força'n la sortida"
 
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Wait"
 msgstr "_Espera"
 
-#: ../src/core/display.c:608
+#: src/core/display.c:608
 #, c-format
 msgid "Failed to open X Window System display “%s”\n"
 msgstr ""
 "S'ha produït un error en obrir la pantalla del sistema de finestres X «%s»\n"
 
-#: ../src/core/main.c:189
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Inhabilita la connexió al gestor de sessions"
 
-#: ../src/core/main.c:195
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Reemplaça el gestor de finestres en execució"
 
-#: ../src/core/main.c:201
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Especifica l'ID de gestió de sessió"
 
-#: ../src/core/main.c:206
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Visualització X per usar"
 
-#: ../src/core/main.c:212
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Inicialitza la sessió des del fitxer desat"
 
-#: ../src/core/main.c:218
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Fes que les crides a l'X siguin síncrones"
 
-#: ../src/core/main.c:225
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Funciona com a compositor de Wayland"
 
@@ -142,15 +623,15 @@ msgstr "Funciona com a compositor de Wayland"
 #
 # Camins:
 # ../src/core/main.c:223
-#: ../src/core/main.c:231
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Funciona com a compositor imbricat"
 
-#: ../src/core/main.c:239
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Funciona com a servidor de pantalla completa, en comptes d'imbricat"
 
-#: ../src/core/mutter.c:39
+#: src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -166,20 +647,20 @@ msgstr ""
 "No hi ha CAP garantia; ni tan sols la garantia implícita de COMERCIABILITAT\n"
 "o ADEQUACIÓ A PER UN PROPÒSIT PARTICULAR.\n"
 
-#: ../src/core/mutter.c:53
+#: src/core/mutter.c:53
 msgid "Print version"
 msgstr "Escriu versió"
 
-#: ../src/core/mutter.c:59
+#: src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Connector del Mutter a utilitzar"
 
-#: ../src/core/prefs.c:1997
+#: src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Espai de treball %d"
 
-#: ../src/core/screen.c:580
+#: src/core/screen.c:580
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -188,21 +669,21 @@ msgstr ""
 "La pantalla «%s» ja té un gestor de finestres; proveu l'opció --replace per "
 "reemplaçar el gestor de finestres actual."
 
-#: ../src/core/screen.c:665
+#: src/core/screen.c:665
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "El monitor %d en la pantalla '%s' no és vàlida\n"
 
-#: ../src/core/util.c:120
+#: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter es va compilar sense compatibilitat per al mode detallat\n"
 
-#: ../src/wayland/meta-wayland-tablet-pad.c:563
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Mode de commutació: mode %d"
 
-#: ../src/x11/session.c:1815
+#: src/x11/session.c:1815
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -210,355 +691,10 @@ msgstr ""
 "Aquestes finestres no implementen «desa la configuració actual» i s'hauran "
 "de reiniciar manualment la pròxima vegada que entreu."
 
-#: ../src/x11/window-props.c:559
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (a %s)"
-
-#~ msgid "Navigation"
-#~ msgstr "Navegació"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Mou la finestra a l'espai de treball 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Mou la finestra a l'espai de treball 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Mou la finestra a l'espai de treball 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Mou la finestra a l'espai de treball 4"
-
-#~ msgid "Move window to last workspace"
-#~ msgstr "Mou la finestra a l'últim espai de treball"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Mou la finestra un espai de treball a l'esquerra"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Mou la finestra un espai de treball a la dreta"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Mou la finestra un espai de treball amunt"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Mou la finestra un espai de treball avall"
-
-#~ msgid "Move window one monitor to the left"
-#~ msgstr "Mou la finestra un monitor a l'esquerra"
-
-#~ msgid "Move window one monitor to the right"
-#~ msgstr "Mou la finestra un monitor a la dreta"
-
-#~ msgid "Move window one monitor up"
-#~ msgstr "Mou la finestra un monitor amunt"
-
-#~ msgid "Move window one monitor down"
-#~ msgstr "Mou la finestra un monitor avall"
-
-#~ msgid "Switch applications"
-#~ msgstr "Canvia d'aplicacions"
-
-#~ msgid "Switch to previous application"
-#~ msgstr "Canvia a l'aplicació anterior"
-
-#~ msgid "Switch windows"
-#~ msgstr "Canvia de finestres"
-
-#~ msgid "Switch to previous window"
-#~ msgstr "Canvia a la finestra anterior"
-
-#~ msgid "Switch windows of an application"
-#~ msgstr "Canvia entre les finestres d'una aplicació"
-
-#~ msgid "Switch to previous window of an application"
-#~ msgstr "Canvia a la finestra anterior d'una aplicació"
-
-#~ msgid "Switch to previous system control"
-#~ msgstr "Canvia al control del sistema anterior"
-
-#~ msgid "Switch windows directly"
-#~ msgstr "Canvia immediatament entre finestres"
-
-#~ msgid "Switch directly to previous window"
-#~ msgstr "Canvia immediatament a la finestra anterior"
-
-#~ msgid "Switch windows of an app directly"
-#~ msgstr "Canvia immediatament entre les finestres d'una aplicació"
-
-#~ msgid "Switch directly to previous window of an app"
-#~ msgstr "Canvia immediatament a la finestra anterior d'una aplicació"
-
-#~ msgid "Switch system controls directly"
-#~ msgstr "Canvia immediatament entre els controls del sistema"
-
-#~ msgid "Switch directly to previous system control"
-#~ msgstr "Canvia immediatament al control del sistema anterior"
-
-#~ msgid "Hide all normal windows"
-#~ msgstr "Oculta totes les finestres normals"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Canvia a l'espai de treball 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Canvia a l'espai de treball 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Canvia a l'espai de treball 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Canvia a l'espai de treball 4"
-
-#~ msgid "Switch to last workspace"
-#~ msgstr "Canvia a l'últim espai de treball"
-
-#~ msgid "Move to workspace left"
-#~ msgstr "Mou a l'espai de treball de l'esquerra"
-
-#~ msgid "Move to workspace right"
-#~ msgstr "Mou a l'espai de treball de la dreta"
-
-#~ msgid "Move to workspace above"
-#~ msgstr "Mou a l'espai de treball de sobre"
-
-#~ msgid "Move to workspace below"
-#~ msgstr "Mou a l'espai de treball de sota"
-
-#~ msgid "System"
-#~ msgstr "Sistema"
-
-#~ msgid "Show the run command prompt"
-#~ msgstr "Mostra l'indicador d'execució d'aplicacions"
-
-#~ msgid "Show the activities overview"
-#~ msgstr "Mostra la vista general d'activitats"
-
-#~ msgid "Windows"
-#~ msgstr "Finestres"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "Activa el menú de finestra"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Canvia entre el mode a pantalla completa"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Canvia l'estat de maximització"
-
-#~ msgid "Maximize window"
-#~ msgstr "Maximitza la finestra"
-
-#~ msgid "Restore window"
-#~ msgstr "Restaura la finestra"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Canvia l'estat d'ombrejat"
-
-#~ msgid "Close window"
-#~ msgstr "Tanca la finestra"
-
-#~ msgid "Hide window"
-#~ msgstr "Oculta la finestra"
-
-#~ msgid "Move window"
-#~ msgstr "Mou la finestra"
-
-#~ msgid "Resize window"
-#~ msgstr "Redimensiona la finestra"
-
-#~ msgid "Toggle window on all workspaces or one"
-#~ msgstr ""
-#~ "Canvia la funció que fa que la finestra estigui en tots els espais de "
-#~ "treball o només en un"
-
-#~ msgid "Raise window if covered, otherwise lower it"
-#~ msgstr "Alça la finestra si està coberta per una altra, o sinó baixa-la"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Alça la finestra per damunt de les altres"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Baixa la finestra sota les altres"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximitza la finestra verticalment"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximitza la finestra horitzontalment"
-
-#~ msgid "View split on left"
-#~ msgstr "Mostra la partició a l'esquerra"
-
-#~ msgid "View split on right"
-#~ msgstr "Mostra la partició a la dreta"
-
-#~ msgid "Mutter"
-#~ msgstr "Mutter"
-
-#~ msgid "Modifier to use for extended window management operations"
-#~ msgstr ""
-#~ "Modificador que s'utilitzarà per les operacions ampliades de gestió de "
-#~ "finestres"
-
-#~ msgid ""
-#~ "This key will initiate the \"overlay\", which is a combination window "
-#~ "overview and application launching system. The default is intended to be "
-#~ "the \"Windows key\" on PC hardware. It's expected that this binding "
-#~ "either the default or set to the empty string."
-#~ msgstr ""
-#~ "Aquesta tecla iniciarà l'«overlay» (superposador), el qual és una "
-#~ "combinació de visualització de finestres i sistema de llançament "
-#~ "d'aplicacions. El valor predeterminat és la «tecla Windows» en maquinari "
-#~ "basat en ordinadors PC. El valor d'aquesta vinculació s'espera que sigui "
-#~ "el predeterminat o text en blanc."
-
-#~ msgid "Attach modal dialogs"
-#~ msgstr "Adjunta els diàlegs modals"
-
-#~ msgid ""
-#~ "When true, instead of having independent titlebars, modal dialogs appear "
-#~ "attached to the titlebar of the parent window and are moved together with "
-#~ "the parent window."
-#~ msgstr ""
-#~ "Quan sigui «true» (cert), en lloc de tenir barres de títol independents, "
-#~ "els diàlegs modals apareixeran adjuntats a la barra de títol de la "
-#~ "finestra mare i es mouran juntament amb aquesta."
-
-#~ msgid "Enable edge tiling when dropping windows on screen edges"
-#~ msgstr ""
-#~ "Habilita la tesselització a les vores en deixar anar les finestres a les "
-#~ "vores de la pantalla"
-
-#~ msgid ""
-#~ "If enabled, dropping windows on vertical screen edges maximizes them "
-#~ "vertically and resizes them horizontally to cover half of the available "
-#~ "area. Dropping windows on the top screen edge maximizes them completely."
-#~ msgstr ""
-#~ "Si s'habilita, es maximitzaran les finestres verticalment i es "
-#~ "redimensionaran horitzontalment per cobrir la meitat de l'àrea disponible "
-#~ "en deixar-les anar a les vores verticals de la pantalla. Si es deixen "
-#~ "anar a la vora superior de la pantalla es maximitzaran completament."
-
-#~ msgid "Workspaces are managed dynamically"
-#~ msgstr "Els espais de treball es gestionen dinàmicament"
-
-#~ msgid ""
-#~ "Determines whether workspaces are managed dynamically or whether there's "
-#~ "a static number of workspaces (determined by the num-workspaces key in "
-#~ "org.gnome.desktop.wm.preferences)."
-#~ msgstr ""
-#~ "Determina si els espais de treball es gestionen dinàmicament o hi ha un "
-#~ "nombre determinat d'espais de treball (determinat per la clau «num-"
-#~ "workspaces» a «org.gnome.desktop.wm.preferences»)."
-
-#~ msgid "Workspaces only on primary"
-#~ msgstr "Espais de treball només en el primari"
-
-#~ msgid ""
-#~ "Determines whether workspace switching should happen for windows on all "
-#~ "monitors or only for windows on the primary monitor."
-#~ msgstr ""
-#~ "Determina si el canvi d'espai de treball hauria de ser per les finestres "
-#~ "en tots els monitors o només en les finestres del monitor primari."
-
-#~ msgid "No tab popup"
-#~ msgstr "Sense finestres emergents a les pestanyes"
-
-#~ msgid ""
-#~ "Determines whether the use of popup and highlight frame should be "
-#~ "disabled for window cycling."
-#~ msgstr ""
-#~ "Determina si s'ha d'inhabilitar el quadre que es mostra a les finestres "
-#~ "emergents i ressaltades en commutar entre finestres."
-
-#~ msgid "Delay focus changes until the pointer stops moving"
-#~ msgstr "Retarda el canvi del focus fins que s'aturi el punter"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focus will not be changed immediately when entering a window, but "
-#~ "only after the pointer stops moving."
-#~ msgstr ""
-#~ "Si és «true» (cert), i el mode del focus és «sloppy» o «mouse», no es "
-#~ "canviarà el focus immediatament quan s'entri a una finestra, només es "
-#~ "canviarà quan el punter deixi de moure's."
-
-#~ msgid "Draggable border width"
-#~ msgstr "Amplada del contorn arrossegable"
-
-#~ msgid ""
-#~ "The amount of total draggable borders. If the theme's visible borders are "
-#~ "not enough, invisible borders will be added to meet this value."
-#~ msgstr ""
-#~ "La quantitat total de contorn arrossegable. Si els contorns visibles del "
-#~ "tema no són suficients, s'afegiran contorns invisibles per aconseguir "
-#~ "aquest valor."
-
-#~ msgid "Auto maximize nearly monitor sized windows"
-#~ msgstr ""
-#~ "Maximitza automàticament les finestres que gairebé facin la mida de la "
-#~ "pantalla"
-
-#~ msgid ""
-#~ "If enabled, new windows that are initially the size of the monitor "
-#~ "automatically get maximized."
-#~ msgstr ""
-#~ "Si s'habilita, les finestres que inicialment gairebé fan la mida de la "
-#~ "pantalla es maximitzaran automàticament."
-
-#~ msgid "Place new windows in the center"
-#~ msgstr "Posiciona les finestres noves al centre"
-
-#~ msgid ""
-#~ "When true, the new windows will always be put in the center of the active "
-#~ "screen of the monitor."
-#~ msgstr ""
-#~ "Si és «true» (cert), les finestres noves seran posicionades al centre de "
-#~ "la pantalla activa del monitor."
-
-#~ msgid "Select window from tab popup"
-#~ msgstr "Selecció de finestra entre les emergents d'una pestanya"
-
-#~ msgid "Cancel tab popup"
-#~ msgstr "Cancel·lació de les finestres emergents a les pestanyes"
-
-#~ msgid "Switch to VT 1"
-#~ msgstr "Canvia al terminal virtual 1"
-
-#~ msgid "Switch to VT 2"
-#~ msgstr "Canvia al terminal virtual 2"
-
-#~ msgid "Switch to VT 3"
-#~ msgstr "Canvia al terminal virtual 3"
-
-#~ msgid "Switch to VT 4"
-#~ msgstr "Canvia al terminal virtual 4"
-
-#~ msgid "Switch to VT 5"
-#~ msgstr "Canvia al terminal virtual 5"
-
-#~ msgid "Switch to VT 6"
-#~ msgstr "Canvia al terminal virtual 6"
-
-#~ msgid "Switch to VT 7"
-#~ msgstr "Canvia al terminal virtual 7"
-
-#~ msgid "Switch to VT 8"
-#~ msgstr "Canvia al terminal virtual 8"
-
-#~ msgid "Switch to VT 9"
-#~ msgstr "Canvia al terminal virtual 9"
-
-#~ msgid "Switch to VT 10"
-#~ msgstr "Canvia al terminal virtual 10"
-
-#~ msgid "Switch to VT 11"
-#~ msgstr "Canvia al terminal virtual 11"
-
-#~ msgid "Switch to VT 12"
-#~ msgstr "Canvia al terminal virtual 12"
 
 #~ msgid "Failed to scan themes directory: %s\n"
 #~ msgstr "No s'ha pogut analitzar el directori de temes: %s\n"
