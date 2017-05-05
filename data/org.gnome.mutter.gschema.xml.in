@@ -156,5 +156,10 @@
       <summary>Cancel tab popup</summary>
     </key>
 
+    <key name="rotate-monitor" type="as">
+      <default><![CDATA[['XF86RotateWindows']]]></default>
+      <summary>Rotates the built-in monitor configuration</summary>
+    </key>
+
   </schema>
 </schemalist>

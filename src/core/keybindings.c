@@ -44,6 +44,7 @@
 #define KEY_GRAVE 0x29 /* assume the use of xf86-input-keyboard */
 #endif
 
+#include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/window-x11.h"
@@ -3327,6 +3328,21 @@ handle_switch_vt (MetaDisplay     *display,
 }
 #endif /* HAVE_NATIVE_BACKEND */
 
+static void
+handle_rotate_monitor (MetaDisplay    *display,
+                       MetaScreen     *screen,
+                       MetaWindow     *window,
+                       ClutterKeyEvent *event,
+                       MetaKeyBinding *binding,
+                       gpointer        dummy)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+
+  meta_monitor_manager_rotate_monitor (monitor_manager);
+}
+
 /**
  * meta_keybindings_set_custom_handler:
  * @name: The name of the keybinding to set
@@ -3615,6 +3631,13 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_SET_SPEW_MARK,
                           handle_set_spew_mark, 0);
+
+  add_builtin_keybinding (display,
+                          "rotate-monitor",
+                          mutter_keybindings,
+                          META_KEY_BINDING_NONE,
+                          META_KEYBINDING_ACTION_ROTATE_MONITOR,
+                          handle_rotate_monitor, 0);
 
 #ifdef HAVE_NATIVE_BACKEND
   MetaBackend *backend = meta_get_backend ();
