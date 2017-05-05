@@ -26,4 +26,6 @@
 
 int meta_settings_get_ui_scaling_factor (MetaSettings *settings);
 
+int meta_settings_get_font_dpi (MetaSettings *settings);
+
 #endif /* META_SETTINGS_H */

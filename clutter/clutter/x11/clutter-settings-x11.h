@@ -10,7 +10,6 @@ static const struct {
   { "Net/DndDragThreshold",    "dnd-drag-threshold" },
   { "Gtk/FontName",            "font-name" },
   { "Xft/Antialias",           "font-antialias" },
-  { "Xft/DPI",                 "font-dpi" },
   { "Xft/Hinting",             "font-hinting" },
   { "Xft/HintStyle",           "font-hint-style" },
   { "Xft/RGBA",                "font-subpixel-order" },
