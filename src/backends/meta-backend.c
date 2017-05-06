@@ -60,6 +60,8 @@ static guint signals[N_SIGNALS];
 
 static MetaBackend *_backend;
 
+static gboolean stage_views_disabled = FALSE;
+
 /**
  * meta_get_backend:
  *
@@ -549,6 +551,7 @@ meta_backend_enable_experimental_feature (MetaBackend            *backend,
 static void
 meta_backend_class_init (MetaBackendClass *klass)
 {
+  const gchar *mutter_stage_views;
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_backend_finalize;
@@ -595,6 +598,9 @@ meta_backend_class_init (MetaBackendClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+
+  mutter_stage_views = g_getenv ("MUTTER_STAGE_VIEWS");
+  stage_views_disabled = g_strcmp0 (mutter_stage_views, "0") == 0;
 }
 
 static gboolean
@@ -1030,17 +1036,10 @@ meta_backend_display_opened (MetaBackend *backend)
 gboolean
 meta_is_stage_views_enabled (void)
 {
-  const gchar *mutter_stage_views;
-
   if (!meta_is_wayland_compositor ())
     return FALSE;
 
-  mutter_stage_views = g_getenv ("MUTTER_STAGE_VIEWS");
-
-  if (!mutter_stage_views)
-    return TRUE;
-
-  return !g_str_equal (mutter_stage_views, "0");
+  return !stage_views_disabled;
 }
 
 gboolean
