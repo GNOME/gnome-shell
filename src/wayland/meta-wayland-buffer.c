@@ -129,8 +129,18 @@ meta_wayland_buffer_realize (MetaWaylandBuffer *buffer)
   stream = meta_wayland_egl_stream_new (buffer, NULL);
   if (stream)
     {
+      CoglTexture2D *texture;
+
       buffer->egl_stream.stream = stream;
       buffer->type = META_WAYLAND_BUFFER_TYPE_EGL_STREAM;
+
+      texture = meta_wayland_egl_stream_create_texture (stream, NULL);
+      if (!texture)
+        return FALSE;
+
+      buffer->texture = COGL_TEXTURE (texture);
+      buffer->is_y_inverted = meta_wayland_egl_stream_is_y_inverted (stream);
+
       return TRUE;
     }
 
@@ -319,18 +329,6 @@ egl_stream_buffer_attach (MetaWaylandBuffer  *buffer,
   MetaWaylandEglStream *stream = buffer->egl_stream.stream;
 
   g_assert (stream);
-
-  if (!buffer->texture)
-    {
-      CoglTexture2D *texture;
-
-      texture = meta_wayland_egl_stream_create_texture (stream, error);
-      if (!texture)
-        return FALSE;
-
-      buffer->texture = COGL_TEXTURE (texture);
-      buffer->is_y_inverted = meta_wayland_egl_stream_is_y_inverted (stream);
-    }
 
   if (!meta_wayland_egl_stream_attach (stream, error))
     return FALSE;
