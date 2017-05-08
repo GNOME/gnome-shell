@@ -4,8 +4,8 @@
 const { AccountsService, Atk, Clutter,
         Gdm, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
-const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const Monitor = imports.ui.monitor;
 
 const AuthPrompt = imports.gdm.authPrompt;
 
@@ -23,7 +23,7 @@ var UnlockDialog = GObject.registerClass({
             visible: false,
         });
 
-        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.add_constraint(new Monitor.MonitorConstraint({ primary: true }));
         parentActor.add_child(this);
 
         this._userManager = AccountsService.UserManager.get_default();

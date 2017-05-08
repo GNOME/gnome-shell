@@ -8,8 +8,8 @@ const Signals = imports.signals;
 
 const Calendar = imports.ui.calendar;
 const GnomeSession = imports.misc.gnomeSession;
-const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const Monitor = imports.ui.monitor;
 const Params = imports.misc.params;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
@@ -854,7 +854,7 @@ var MessageTray = class MessageTray {
         this.actor = new St.Widget({ visible: false,
                                      clip_to_allocation: true,
                                      layout_manager: new Clutter.BinLayout() });
-        let constraint = new Layout.MonitorConstraint({ primary: true });
+        let constraint = new Monitor.MonitorConstraint({ primary: true });
         Main.layoutManager.panelBox.bind_property('visible',
                                                   constraint, 'work-area',
                                                   GObject.BindingFlags.SYNC_CREATE);

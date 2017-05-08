@@ -6,8 +6,8 @@ const { Atk, Clutter, GDesktopEnums, Gio,
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
+const Monitor = imports.ui.monitor;
 const PopupMenu = imports.ui.popupMenu;
-const Layout = imports.ui.layout;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
 
@@ -662,7 +662,7 @@ var PadOsd = class {
         Main.uiGroup.add_actor(this.actor);
 
         this._monitorIndex = monitorIndex;
-        let constraint = new Layout.MonitorConstraint({ index: monitorIndex });
+        let constraint = new Monitor.MonitorConstraint({ index: monitorIndex });
         this.actor.add_constraint(constraint);
 
         this._titleBox = new St.BoxLayout({ style_class: 'pad-osd-title-box',

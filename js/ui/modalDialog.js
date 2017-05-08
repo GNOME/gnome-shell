@@ -4,9 +4,9 @@
 const { Atk, Clutter, GObject, Shell, St } = imports.gi;
 
 const Dialog = imports.ui.dialog;
-const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const Monitor = imports.ui.monitor;
 const Params = imports.misc.params;
 
 var OPEN_AND_CLOSE_TIME = 100;
@@ -60,7 +60,7 @@ var ModalDialog = GObject.registerClass({
         this.backgroundStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._backgroundBin = new St.Bin({ child: this.backgroundStack,
                                            x_fill: true, y_fill: true });
-        this._monitorConstraint = new Layout.MonitorConstraint();
+        this._monitorConstraint = new Monitor.MonitorConstraint();
         this._backgroundBin.add_constraint(this._monitorConstraint);
         this.add_actor(this._backgroundBin);
 

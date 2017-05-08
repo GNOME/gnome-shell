@@ -26,9 +26,9 @@ const Batch = imports.gdm.batch;
 const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const GdmUtil = imports.gdm.util;
-const Layout = imports.ui.layout;
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
+const Monitor = imports.ui.monitor;
 const PopupMenu = imports.ui.popupMenu;
 const Realmd = imports.gdm.realmd;
 const UserWidget = imports.ui.userWidget;
@@ -396,7 +396,7 @@ var LoginDialog = GObject.registerClass({
 
         this.get_accessible().set_role(Atk.Role.WINDOW);
 
-        this.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.add_constraint(new Monitor.MonitorConstraint({ primary: true }));
         this.connect('destroy', this._onDestroy.bind(this));
         parentActor.add_child(this);
 
