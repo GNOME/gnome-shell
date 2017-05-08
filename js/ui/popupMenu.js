@@ -467,8 +467,13 @@ const PopupMenuBase = new Lang.Class({
         this._setSettingsVisibility(Main.sessionMode.allowSettings);
     },
 
-    addAction: function(title, callback) {
-        let menuItem = new PopupMenuItem(title);
+    addAction: function(title, callback, icon) {
+        let menuItem;
+        if (icon != undefined)
+            menuItem = new PopupImageMenuItem(title, icon);
+        else
+            menuItem = new PopupMenuItem(title);
+
         this.addMenuItem(menuItem);
         menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             callback(event);
