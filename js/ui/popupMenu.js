@@ -2,6 +2,8 @@
 
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -389,7 +391,7 @@ const PopupImageMenuItem = new Lang.Class({
     Name: 'PopupImageMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function (text, iconName, params) {
+    _init: function (text, icon, params) {
         this.parent(params);
 
         this.label = new St.Label({ text: text });
@@ -398,11 +400,15 @@ const PopupImageMenuItem = new Lang.Class({
         this.actor.add_child(this._icon, { align: St.Align.END });
         this.actor.label_actor = this.label;
 
-        this.setIcon(iconName);
+        this.setIcon(icon);
     },
 
-    setIcon: function(name) {
-        this._icon.icon_name = name;
+    setIcon: function(icon) {
+        // The 'icon' parameter can be either a Gio.Icon or a string.
+        if (GObject.type_is_a(icon, Gio.Icon))
+            this._icon.gicon = icon;
+        else
+            this._icon.icon_name = icon;
     }
 });
 
