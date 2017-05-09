@@ -664,8 +664,9 @@ meta_pointer_confinement_wayland_maybe_warp (MetaPointerConfinementWayland *self
 }
 
 static void
-surface_actor_painting (MetaSurfaceActorWayland       *surface_actor,
-                        MetaPointerConfinementWayland *self)
+surface_actor_allocation_notify (MetaSurfaceActorWayland       *surface_actor,
+                                 GParamSpec                    *pspec,
+                                 MetaPointerConfinementWayland *self)
 {
   meta_pointer_confinement_wayland_maybe_warp (self);
 }
@@ -684,8 +685,8 @@ meta_pointer_confinement_wayland_new (MetaWaylandPointerConstraint *constraint)
 
   surface = meta_wayland_pointer_constraint_get_surface (constraint);
   g_signal_connect_object (surface->surface_actor,
-                           "painting",
-                           G_CALLBACK (surface_actor_painting),
+                           "notify::allocation",
+                           G_CALLBACK (surface_actor_allocation_notify),
                            confinement,
                            0);
 
