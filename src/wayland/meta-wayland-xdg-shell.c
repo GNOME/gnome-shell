@@ -624,20 +624,18 @@ xdg_toplevel_role_commit (MetaWaylandSurfaceRole  *surface_role,
   if (!window)
     return;
 
-  if (!pending->has_new_geometry)
+  if (pending->has_new_geometry)
     {
-      if (pending->dx != 0 || pending->dx != 0)
-        {
-          g_warning ("XXX: Attach-initiated move without a new geometry. This is unimplemented right now.");
-        }
-      return;
+      window_geometry = meta_wayland_xdg_surface_get_window_geometry (xdg_surface);
+      meta_window_wayland_move_resize (window,
+                                       &xdg_surface_priv->acked_configure_serial,
+                                       window_geometry,
+                                       pending->dx, pending->dy);
     }
-
-  window_geometry = meta_wayland_xdg_surface_get_window_geometry (xdg_surface);
-  meta_window_wayland_move_resize (window,
-                                   &xdg_surface_priv->acked_configure_serial,
-                                   window_geometry,
-                                   pending->dx, pending->dy);
+  else if (pending->dx != 0 || pending->dx != 0)
+    {
+      g_warning ("XXX: Attach-initiated move without a new geometry. This is unimplemented right now.");
+    }
 
   /* When we get to this point, we ought to have valid size hints */
   if (pending->has_new_min_size || pending->has_new_max_size)
