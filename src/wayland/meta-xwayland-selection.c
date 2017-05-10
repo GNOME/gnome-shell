@@ -829,7 +829,7 @@ meta_x11_source_send (MetaWaylandDataSource *source,
   /* Takes ownership of fd */
   selection->x11_selection =
     x11_selection_data_new (compositor->xwayland_manager.selection_data,
-                            fd, mime_type);
+                            fd, gdk_x11_get_xatom_name (type_atom));
 
   XConvertSelection (xdisplay,
                      selection->selection_atom, type_atom,
