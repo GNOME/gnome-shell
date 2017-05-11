@@ -167,10 +167,7 @@ st_icon_paint (ClutterActor *actor)
       if (priv->shadow_pipeline)
         {
           ClutterActorBox allocation;
-          float width, height;
-
           clutter_actor_get_allocation_box (priv->icon_texture, &allocation);
-          clutter_actor_box_get_size (&allocation, &width, &height);
 
           _st_paint_shadow_with_opacity (priv->shadow_spec,
                                          priv->shadow_pipeline,
@@ -207,6 +204,12 @@ st_icon_style_changed (StWidget *widget)
 }
 
 static void
+st_icon_resource_scale_changed (StWidget *widget)
+{
+  st_icon_update (ST_ICON (widget));
+}
+
+static void
 st_icon_class_init (StIconClass *klass)
 {
   GParamSpec *pspec;
@@ -222,6 +225,7 @@ st_icon_class_init (StIconClass *klass)
   actor_class->paint = st_icon_paint;
 
   widget_class->style_changed = st_icon_style_changed;
+  widget_class->resource_scale_changed = st_icon_resource_scale_changed;
 
   pspec = g_param_spec_object ("gicon",
                                "GIcon",
@@ -313,6 +317,8 @@ st_icon_finish_update (StIcon *icon)
       g_signal_connect_object (priv->icon_texture, "pixbuf-change",
                                G_CALLBACK (on_pixbuf_changed), icon, 0);
     }
+
+  clutter_actor_queue_relayout (CLUTTER_ACTOR (icon));
 }
 
 static void
@@ -335,9 +341,10 @@ st_icon_update (StIcon *icon)
   StIconPrivate *priv = icon->priv;
   StThemeNode *theme_node;
   StTextureCache *cache;
-  gint scale;
+  gint paint_scale;
   ClutterActor *stage;
   StThemeContext *context;
+  float resource_scale;
 
   if (priv->pending_texture)
     {
@@ -347,13 +354,16 @@ st_icon_update (StIcon *icon)
       priv->opacity_handler_id = 0;
     }
 
+  if (!st_widget_get_resource_scale (ST_WIDGET (icon), &resource_scale))
+    return;
+
   theme_node = st_widget_peek_theme_node (ST_WIDGET (icon));
   if (theme_node == NULL)
     return;
 
   stage = clutter_actor_get_stage (CLUTTER_ACTOR (icon));
   context = st_theme_context_get_for_stage (CLUTTER_STAGE (stage));
-  g_object_get (context, "scale-factor", &scale, NULL);
+  g_object_get (context, "scale-factor", &paint_scale, NULL);
 
   cache = st_texture_cache_get_default ();
 
@@ -362,16 +372,16 @@ st_icon_update (StIcon *icon)
                                                          theme_node,
                                                          priv->gicon,
                                                          priv->icon_size,
-                                                         scale,
-                                                         1);
+                                                         paint_scale,
+                                                         resource_scale);
 
   if (priv->pending_texture == NULL && priv->fallback_gicon != NULL)
     priv->pending_texture = st_texture_cache_load_gicon (cache,
                                                          theme_node,
                                                          priv->fallback_gicon,
                                                          priv->icon_size,
-                                                         scale,
-                                                         1);
+                                                         paint_scale,
+                                                         resource_scale);
 
   if (priv->pending_texture)
     {
