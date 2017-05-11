@@ -2658,7 +2658,7 @@ rebuild_monitors (MetaMonitorManager *manager)
         {
           MetaMonitorNormal *monitor_normal;
 
-          monitor_normal = meta_monitor_normal_new (output);
+          monitor_normal = meta_monitor_normal_new (manager, output);
           manager->monitors = g_list_append (manager->monitors,
                                              monitor_normal);
         }

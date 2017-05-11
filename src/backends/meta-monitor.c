@@ -42,6 +42,8 @@ typedef struct _MetaMonitorModeTiled
 
 typedef struct _MetaMonitorPrivate
 {
+  MetaMonitorManager *monitor_manager;
+
   GList *outputs;
   GList *modes;
 
@@ -382,7 +384,8 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
 }
 
 MetaMonitorNormal *
-meta_monitor_normal_new (MetaOutput *output)
+meta_monitor_normal_new (MetaMonitorManager *monitor_manager,
+                         MetaOutput         *output)
 {
   MetaMonitorNormal *monitor_normal;
   MetaMonitor *monitor;
@@ -391,6 +394,8 @@ meta_monitor_normal_new (MetaOutput *output)
   monitor_normal = g_object_new (META_TYPE_MONITOR_NORMAL, NULL);
   monitor = META_MONITOR (monitor_normal);
   monitor_priv = meta_monitor_get_instance_private (monitor);
+
+  monitor_priv->monitor_manager = monitor_manager;
 
   monitor_priv->outputs = g_list_append (NULL, output);
   monitor_priv->winsys_id = output->winsys_id;
@@ -999,6 +1004,8 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
   monitor = META_MONITOR (monitor_tiled);
   monitor_priv = meta_monitor_get_instance_private (monitor);
 
+  monitor_priv->monitor_manager = monitor_manager;
+
   monitor_tiled->tile_group_id = output->tile_info.group_id;
   monitor_priv->winsys_id = output->winsys_id;
 
@@ -1089,13 +1096,12 @@ meta_monitor_tiled_calculate_crtc_pos (MetaMonitor         *monitor,
 static void
 meta_monitor_tiled_finalize (GObject *object)
 {
-  MetaMonitorTiled *monitor_tiled = META_MONITOR_TILED (object);
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
+  MetaMonitor *monitor = META_MONITOR (object);
+  MetaMonitorPrivate *monitor_priv =
+    meta_monitor_get_instance_private (monitor);
 
-  meta_monitor_manager_tiled_monitor_removed (monitor_manager,
-                                              META_MONITOR (monitor_tiled));
+  meta_monitor_manager_tiled_monitor_removed (monitor_priv->monitor_manager,
+                                              monitor);
 }
 
 static void
