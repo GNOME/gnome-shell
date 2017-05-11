@@ -63,6 +63,7 @@ struct _StWidgetClass
   /* signals */
   void     (* style_changed)       (StWidget         *self);
   void     (* popup_menu)          (StWidget         *self);
+  void     (* resource_scale_changed) (StWidget         *self);
 
   /* vfuncs */
 
@@ -137,6 +138,8 @@ StThemeNode *         st_widget_peek_theme_node           (StWidget        *widg
 
 GList *               st_widget_get_focus_chain           (StWidget        *widget);
 void                  st_widget_paint_background          (StWidget        *widget);
+gboolean              st_widget_get_resource_scale        (StWidget        *widget,
+                                                           float           *resource_scale);
 
 /* debug methods */
 char  *st_describe_actor       (ClutterActor *actor);
