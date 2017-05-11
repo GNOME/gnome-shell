@@ -121,6 +121,7 @@ enum
 {
   STYLE_CHANGED,
   POPUP_MENU,
+  RESOURCE_SCALE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -452,6 +453,7 @@ static void
 st_widget_parent_set (ClutterActor *widget,
                       ClutterActor *old_parent)
 {
+  StWidget *self = ST_WIDGET (widget);
   ClutterActorClass *parent_class;
   ClutterActor *new_parent;
 
@@ -463,7 +465,7 @@ st_widget_parent_set (ClutterActor *widget,
 
   /* don't send the style changed signal if we no longer have a parent actor */
   if (new_parent)
-    st_widget_style_changed (ST_WIDGET (widget));
+    st_widget_style_changed (self);
 }
 
 static void
@@ -1019,6 +1021,21 @@ st_widget_class_init (StWidgetClass *klass)
                   G_STRUCT_OFFSET (StWidgetClass, popup_menu),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+
+  /**
+   * StWidget::resource-scale-changed:
+   * @widget: the #StWidget
+   *
+   * Emitted when the paint scale that the widget will be painted as
+   * changed.
+   */
+  signals[RESOURCE_SCALE_CHANGED] =
+    g_signal_new ("resource-scale-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (StWidgetClass, resource_scale_changed),
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
 }
 
 /**
@@ -1448,12 +1465,37 @@ st_widget_get_style (StWidget *actor)
   return ST_WIDGET_PRIVATE (actor)->inline_style;
 }
 
+/**
+ * st_widget_get_resource_scale:
+ * @widget: A #StWidget
+ * @resource_scale: (out): return location for the resource scale
+ *
+ * Retrieves the resource scale for this #StWidget, if available.
+ *
+ * The resource scale refers to the scale the actor should use for its resources.
+ */
+gboolean
+st_widget_get_resource_scale (StWidget *widget,
+                              float    *resource_scale)
+{
+  return clutter_actor_get_resource_scale (CLUTTER_ACTOR (widget),
+                                           resource_scale);
+}
+
 static void
 st_widget_name_notify (StWidget   *widget,
                        GParamSpec *pspec,
                        gpointer    data)
 {
   st_widget_style_changed (widget);
+}
+
+static void
+st_widget_resource_scale_notify (StWidget   *widget,
+                                 GParamSpec *pspec,
+                                 gpointer    data)
+{
+  g_signal_emit (widget, signals[RESOURCE_SCALE_CHANGED], 0);
 }
 
 static void
@@ -1536,6 +1578,7 @@ st_widget_init (StWidget *actor)
 
   /* connect style changed */
   g_signal_connect (actor, "notify::name", G_CALLBACK (st_widget_name_notify), NULL);
+  g_signal_connect (actor, "notify::resource-scale", G_CALLBACK (st_widget_resource_scale_notify), NULL);
   g_signal_connect (actor, "notify::reactive", G_CALLBACK (st_widget_reactive_notify), NULL);
 
   g_signal_connect (actor, "notify::first-child", G_CALLBACK (st_widget_first_child_notify), NULL);
