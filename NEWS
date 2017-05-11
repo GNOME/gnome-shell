@@ -1,3 +1,17 @@
+3.24.2
+======
+* Only fetch weather information when there's a valid location [Rares; #780404]
+* Handle extension errors during reload due to settings change [Emilio; #781728]
+* Fix StEntry::primary-icon-clicked emission [Florian; #782190]
+* Allow search providers to provide clipboard text for results [Daiki; #775099]
+* Misc. bug fixes [Florian; #781545]
+
+Contributors:
+  Florian Müllner, Emilio Pozuelo Monfort, Daiki Ueno, Rares Visalom
+
+Translations:
+  Milo Casagrande [it], Милош Поповић [sr], Khaled Hosny [ar]
+
 3.24.1
 ======
 * Close Wifi selection dialog on lock [Florian; #780054]
