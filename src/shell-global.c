@@ -844,17 +844,7 @@ update_scaling_factor (ShellGlobal  *global,
   int scaling_factor;
 
   scaling_factor = meta_settings_get_ui_scaling_factor (settings);
-
   g_object_set (context, "scale-factor", scaling_factor, NULL);
-  if (meta_is_wayland_compositor ())
-    {
-      GtkSettings *gtk_settings = gtk_settings_get_default ();
-      int xft_dpi;
-
-      g_object_get (gtk_settings, "gtk-xft-dpi", &xft_dpi, NULL);
-      g_object_set (clutter_settings_get_default (), "font-dpi", xft_dpi, NULL);
-    }
-
 }
 
 static void
