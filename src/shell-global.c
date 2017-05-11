@@ -855,8 +855,6 @@ update_scaling_factor (ShellGlobal  *global,
       g_object_set (clutter_settings_get_default (), "font-dpi", xft_dpi, NULL);
     }
 
-  /* Make sure clutter and gdk scaling stays disabled */
-  gdk_x11_display_set_window_scale (gdk_display_get_default (), 1);
 }
 
 static void
