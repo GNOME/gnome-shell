@@ -842,7 +842,8 @@ ensure_request (StTextureCache        *cache,
  *                            if the icon must not be recolored
  * @icon: the #GIcon to load
  * @size: Size of themed
- * @scale: Scale factor of display
+ * @paint_scale: Scale factor of display
+ * @resource_scale: Resource scale factor
  *
  * This method returns a new #ClutterActor for a given #GIcon. If the
  * icon isn't loaded already, the texture will be filled
@@ -855,9 +856,11 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
                              StThemeNode       *theme_node,
                              GIcon             *icon,
                              gint               size,
-                             gint               scale)
+                             gint               paint_scale,
+                             gint               resource_scale)
 {
   AsyncTextureLoadData *request;
+  gint scale;
   ClutterActor *texture;
   char *gicon_string;
   char *key;
@@ -889,7 +892,10 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   else
     lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
 
-  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale, lookup_flags);
+  scale = paint_scale * resource_scale;
+  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon,
+                                                   size, scale,
+                                                   lookup_flags);
   if (info == NULL)
     return NULL;
 
@@ -918,7 +924,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   g_free (gicon_string);
 
   texture = (ClutterActor *) create_default_texture ();
-  clutter_actor_set_size (texture, size * scale, size * scale);
+  clutter_actor_set_size (texture, size * paint_scale, size * paint_scale);
 
   if (ensure_request (cache, key, policy, &request, texture))
     {
