@@ -393,14 +393,16 @@ st_icon_update (StIcon *icon)
                                                          theme_node,
                                                          priv->gicon,
                                                          priv->icon_size,
-                                                         scale);
+                                                         scale,
+                                                         1);
 
   if (priv->pending_texture == NULL && priv->fallback_gicon != NULL)
     priv->pending_texture = st_texture_cache_load_gicon (cache,
                                                          theme_node,
                                                          priv->fallback_gicon,
                                                          priv->icon_size,
-                                                         scale);
+                                                         scale,
+                                                         1);
 
   if (priv->pending_texture)
     {
