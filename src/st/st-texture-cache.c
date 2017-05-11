@@ -868,7 +868,8 @@ ensure_request (StTextureCache        *cache,
  *                            if the icon must not be recolored
  * @icon: the #GIcon to load
  * @size: Size of themed
- * @scale: Scale factor of display
+ * @paint_scale: Scale factor of display
+ * @resource_scale: Resource scale factor
  *
  * This method returns a new #ClutterActor for a given #GIcon. If the
  * icon isn't loaded already, the texture will be filled
@@ -881,12 +882,15 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
                              StThemeNode       *theme_node,
                              GIcon             *icon,
                              gint               size,
-                             gint               scale)
+                             gint               paint_scale,
+                             gint               resource_scale)
 {
   AsyncTextureLoadData *request;
   ClutterActor *actor;
+  gint scale;
   char *gicon_string;
   char *key;
+  float actor_size;
   GtkIconTheme *theme;
   GtkIconInfo *info;
   StTextureCachePolicy policy;
@@ -915,7 +919,10 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   else
     lookup_flags |= GTK_ICON_LOOKUP_DIR_LTR;
 
-  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon, size, scale, lookup_flags);
+  scale = ceilf (paint_scale * resource_scale);
+  info = gtk_icon_theme_lookup_by_gicon_for_scale (theme, icon,
+                                                   size, scale,
+                                                   lookup_flags);
   if (info == NULL)
     return NULL;
 
@@ -944,8 +951,8 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   g_free (gicon_string);
 
   actor = create_invisible_actor ();
-  clutter_actor_set_size (actor, size * scale, size * scale);
-
+  actor_size = size * scale * paint_scale;
+  clutter_actor_set_size (actor, actor_size, actor_size);
   if (ensure_request (cache, key, policy, &request, actor))
     {
       /* If there's an outstanding request, we've just added ourselves to it */
