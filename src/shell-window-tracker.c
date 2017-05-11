@@ -905,7 +905,7 @@ shell_startup_sequence_create_icon (ShellStartupSequence *sequence, guint size)
 
   themed = g_themed_icon_new (icon_name);
   texture = st_texture_cache_load_gicon (st_texture_cache_get_default (),
-                                         NULL, themed, size, scale);
+                                         NULL, themed, size, scale, 1);
   g_object_unref (G_OBJECT (themed));
   return texture;
 }
