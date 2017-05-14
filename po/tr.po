@@ -7,306 +7,312 @@
 # İlker DAĞLI <ilker@ilkerdagli.info>, 2011.
 # Muhammed EKEN <gnome@m-eken.com>, 2011.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016.
+# Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-10 20:26+0000\n"
-"PO-Revision-Date: 2016-05-26 22:25+0300\n"
-"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
-"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"POT-Creation-Date: 2017-05-11 12:29+0000\n"
+"PO-Revision-Date: 2017-05-13 17:23+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"Language-Team: Türkçe <>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../data/50-mutter-navigation.xml.in.h:1
+#: data/50-mutter-navigation.xml:6
 msgid "Navigation"
 msgstr "Gezinme"
 
-#: ../data/50-mutter-navigation.xml.in.h:2
+#: data/50-mutter-navigation.xml:9
 msgid "Move window to workspace 1"
-msgstr "Pencereyi çalışma alanı 1'e taşı"
+msgstr "Pencereyi çalışma alanı 1’e taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:3
+#: data/50-mutter-navigation.xml:12
 msgid "Move window to workspace 2"
-msgstr "Pencereyi çalışma alanı 2'ye taşı"
+msgstr "Pencereyi çalışma alanı 2’ye taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:4
+#: data/50-mutter-navigation.xml:15
 msgid "Move window to workspace 3"
-msgstr "Pencereyi çalışma alanı 3'e taşı"
+msgstr "Pencereyi çalışma alanı 3’e taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:5
+#: data/50-mutter-navigation.xml:18
 msgid "Move window to workspace 4"
-msgstr "Pencereyi çalışma alanı 4'e taşı"
+msgstr "Pencereyi çalışma alanı 4’e taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:6
+#: data/50-mutter-navigation.xml:21
 msgid "Move window to last workspace"
 msgstr "Pencereyi son çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:7
+#: data/50-mutter-navigation.xml:24
 msgid "Move window one workspace to the left"
 msgstr "Pencereyi soldaki çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:8
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace to the right"
 msgstr "Pencereyi sağdaki çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:9
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Pencereyi üstteki çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:10
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one workspace down"
 msgstr "Pencereyi alttaki çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:11
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor to the left"
 msgstr "Pencereyi soldaki monitöre taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:12
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor to the right"
 msgstr "Pencereyi sağdaki monitöre taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:13
+#: data/50-mutter-navigation.xml:42
 msgid "Move window one monitor up"
 msgstr "Pencereyi üstteki monitöre taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:14
+#: data/50-mutter-navigation.xml:45
 msgid "Move window one monitor down"
 msgstr "Pencereyi alttaki monitöre taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:15
+#: data/50-mutter-navigation.xml:49
 msgid "Switch applications"
 msgstr "Uygulamalar arasında geçiş yap"
 
-#: ../data/50-mutter-navigation.xml.in.h:16
+#: data/50-mutter-navigation.xml:54
 msgid "Switch to previous application"
 msgstr "Önceki uygulamaya geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:17
+#: data/50-mutter-navigation.xml:58
 msgid "Switch windows"
 msgstr "Pencereler arasında geçiş yap"
 
-#: ../data/50-mutter-navigation.xml.in.h:18
+#: data/50-mutter-navigation.xml:63
 msgid "Switch to previous window"
 msgstr "Önceki pencereye geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:19
+#: data/50-mutter-navigation.xml:67
 msgid "Switch windows of an application"
 msgstr "Uygulamanın pencereleri arasında geçiş yap"
 
-#: ../data/50-mutter-navigation.xml.in.h:20
+#: data/50-mutter-navigation.xml:72
 msgid "Switch to previous window of an application"
 msgstr "Uygulamanın bir önceki penceresine geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:21
+#: data/50-mutter-navigation.xml:76
 msgid "Switch system controls"
 msgstr "Sistem denetimleri arasında geçiş yap"
 
-#: ../data/50-mutter-navigation.xml.in.h:22
+#: data/50-mutter-navigation.xml:81
 msgid "Switch to previous system control"
 msgstr "Önceki sistem denetimine geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:23
+#: data/50-mutter-navigation.xml:85
 msgid "Switch windows directly"
 msgstr "Pencereler arasında doğrudan geçiş yap"
 
-#: ../data/50-mutter-navigation.xml.in.h:24
+#: data/50-mutter-navigation.xml:90
 msgid "Switch directly to previous window"
 msgstr "Önceki pencereye doğrudan geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:25
+#: data/50-mutter-navigation.xml:94
 msgid "Switch windows of an app directly"
 msgstr "Uygulamanın pencereleri arasında anında geçiş yap"
 
-#: ../data/50-mutter-navigation.xml.in.h:26
+#: data/50-mutter-navigation.xml:99
 msgid "Switch directly to previous window of an app"
 msgstr "Bir uygulamanın önceki penceresine doğrudan geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:27
+#: data/50-mutter-navigation.xml:103
 msgid "Switch system controls directly"
 msgstr "Sistem denetimleri arasında doğrudan geçiş yap"
 
-#: ../data/50-mutter-navigation.xml.in.h:28
+#: data/50-mutter-navigation.xml:108
 msgid "Switch directly to previous system control"
 msgstr "Önceki sistem denetimine doğrudan geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:29
+#: data/50-mutter-navigation.xml:111
 msgid "Hide all normal windows"
 msgstr "Tüm normal pencereleri gizle"
 
-#: ../data/50-mutter-navigation.xml.in.h:30
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 1"
-msgstr "Çalışma alanı 1'e geç"
+msgstr "Çalışma alanı 1’e geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:31
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 2"
-msgstr "Çalışma alanı 2'ye geç"
+msgstr "Çalışma alanı 2’ye geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:32
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to workspace 3"
-msgstr "Çalışma alanı 3'e geç"
+msgstr "Çalışma alanı 3’e geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:33
+#: data/50-mutter-navigation.xml:123
 msgid "Switch to workspace 4"
-msgstr "Çalışma alanı 4'e geç"
+msgstr "Çalışma alanı 4’e geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:34
+#: data/50-mutter-navigation.xml:126
 msgid "Switch to last workspace"
 msgstr "Son çalışma alanına geç"
 
-#: ../data/50-mutter-navigation.xml.in.h:35
+#: data/50-mutter-navigation.xml:129
 msgid "Move to workspace left"
 msgstr "Soldaki çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:36
+#: data/50-mutter-navigation.xml:132
 msgid "Move to workspace right"
 msgstr "Sağdaki çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:37
+#: data/50-mutter-navigation.xml:135
 msgid "Move to workspace above"
 msgstr "Üstteki çalışma alanına taşı"
 
-#: ../data/50-mutter-navigation.xml.in.h:38
+#: data/50-mutter-navigation.xml:138
 msgid "Move to workspace below"
 msgstr "Alttaki çalışma alanına taşı"
 
-#: ../data/50-mutter-system.xml.in.h:1
+#: data/50-mutter-system.xml:6
 msgid "System"
 msgstr "Sistem"
 
-#: ../data/50-mutter-system.xml.in.h:2
+#: data/50-mutter-system.xml:8
 msgid "Show the run command prompt"
 msgstr "Komut çalıştırma istemini göster"
 
-#: ../data/50-mutter-system.xml.in.h:3
+#: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Etkinlik genel görünümünü göster"
 
-#: ../data/50-mutter-windows.xml.in.h:1
+#: data/50-mutter-windows.xml:6
 msgid "Windows"
 msgstr "Pencereler"
 
-#: ../data/50-mutter-windows.xml.in.h:2
+#: data/50-mutter-windows.xml:8
 msgid "Activate the window menu"
 msgstr "Pencere menüsünü etkinleştir"
 
-#: ../data/50-mutter-windows.xml.in.h:3
+#: data/50-mutter-windows.xml:10
 msgid "Toggle fullscreen mode"
-msgstr "Tam ekran kipini aç veya kapat"
+msgstr "Tam ekran kipini değiştir"
 
-#: ../data/50-mutter-windows.xml.in.h:4
+#: data/50-mutter-windows.xml:12
 msgid "Toggle maximization state"
-msgstr "Ekranı kaplama durumunu aç veya kapat"
+msgstr "Ekranı kaplama durumunu değiştir"
 
-#: ../data/50-mutter-windows.xml.in.h:5
+#: data/50-mutter-windows.xml:14
 msgid "Maximize window"
 msgstr "Bencereyi büyült"
 
-#: ../data/50-mutter-windows.xml.in.h:6
+#: data/50-mutter-windows.xml:16
 msgid "Restore window"
-msgstr "Pencereyi geri al"
+msgstr "Pencereyi eski haline getir"
 
-#: ../data/50-mutter-windows.xml.in.h:7
+#: data/50-mutter-windows.xml:18
 msgid "Toggle shaded state"
-msgstr "Toplanmış durumu aç veya kapat"
+msgstr "Toplanmış durumu değiştir"
 
-#: ../data/50-mutter-windows.xml.in.h:8
+#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Pencereyi kapat"
 
-#: ../data/50-mutter-windows.xml.in.h:9
+#: data/50-mutter-windows.xml:22
 msgid "Hide window"
 msgstr "Pencereyi gizle"
 
-#: ../data/50-mutter-windows.xml.in.h:10
+#: data/50-mutter-windows.xml:24
 msgid "Move window"
 msgstr "Pencere taşı"
 
-#: ../data/50-mutter-windows.xml.in.h:11
+#: data/50-mutter-windows.xml:26
 msgid "Resize window"
 msgstr "Pencereyi yeniden boyutlandır"
 
-#: ../data/50-mutter-windows.xml.in.h:12
+#: data/50-mutter-windows.xml:29
 msgid "Toggle window on all workspaces or one"
 msgstr ""
-"Pencerenin tüm çalışma alanlarında veya sadece bir tanesi üzerinde olmasını "
-"seç"
+"Pencerenin tüm çalışma alanlarında veya yalnızca bir tanesi üzerinde "
+"olmasını seç"
 
-#: ../data/50-mutter-windows.xml.in.h:13
+#: data/50-mutter-windows.xml:31
 msgid "Raise window if covered, otherwise lower it"
-msgstr ""
-"Pencere eğer başkası tarafından kapatılmışsa yukarı çıkar, yoksa aşağıya it"
+msgstr "Pencere altta kalmışsa yükselt, aksi halde alçalt"
 
-#: ../data/50-mutter-windows.xml.in.h:14
+#: data/50-mutter-windows.xml:33
 msgid "Raise window above other windows"
 msgstr "Pencereyi diğerlerinin üstüne çıkar"
 
-#: ../data/50-mutter-windows.xml.in.h:15
+#: data/50-mutter-windows.xml:35
 msgid "Lower window below other windows"
 msgstr "Pencereyi diğerlerinin altına gönder"
 
-#: ../data/50-mutter-windows.xml.in.h:16
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window vertically"
 msgstr "Pencereyi dikey olarak büyült"
 
-#: ../data/50-mutter-windows.xml.in.h:17
+#: data/50-mutter-windows.xml:39
 msgid "Maximize window horizontally"
 msgstr "Pencereyi yatay olarak büyült"
 
-#: ../data/50-mutter-windows.xml.in.h:18
+#: data/50-mutter-windows.xml:43
 msgid "View split on left"
 msgstr "Solda bölünmüş olarak göster"
 
-#: ../data/50-mutter-windows.xml.in.h:19
+#: data/50-mutter-windows.xml:47
 msgid "View split on right"
 msgstr "Sağda bölünmüş olarak göster"
 
-#: ../data/mutter.desktop.in.h:1
+#: data/mutter.desktop.in:4
 msgid "Mutter"
 msgstr "Mutter"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+#: data/org.gnome.mutter.gschema.xml.in:7
 msgid "Modifier to use for extended window management operations"
 msgstr "Genişletilmiş pencere yönetimi işlemleri için kullanılacak değiştirici"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+#: data/org.gnome.mutter.gschema.xml.in:8
+#| msgid ""
+#| "This key will initiate the \"overlay\", which is a combination window "
+#| "overview and application launching system. The default is intended to be "
+#| "the \"Windows key\" on PC hardware. It's expected that this binding "
+#| "either the default or set to the empty string."
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
-"Bu anahtar, pencere genel görünümü ve uygulama başlatma sisteminin bir "
-"birleşimi olan \"bindirme\" işlemini başlatır. Öntanımlı olarak PC "
-"donanımındaki \"windows tuşu\" olması tasarlanmıştır. Bağlayıcı varsayılan "
-"olarak veya boş dize olarak ayarlanması beklenir."
+"Bu tuş, pencere genel görünümü ve uygulama başlatma sisteminin bir birleşimi "
+"olan “bindirme” işlemini başlatır. Öntanımlı olarak PC donanımındaki "
+"“Windows tuşu” olması tasarlanmıştır. Bu bağlayıcının öntanımlı veya boş "
+"dizge olarak ayarlanması beklenir."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+#: data/org.gnome.mutter.gschema.xml.in:20
 msgid "Attach modal dialogs"
 msgstr "Yardımcı diyalogları ekle"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+#: data/org.gnome.mutter.gschema.xml.in:21
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
-"Eğer \"doğru\" ise, bağımsız başlık çubuklarına sahip olduğundan, yardım "
-"diyalogları üst pencerenin başlık çubuğunda ekli gözükür ve üst pencere ile "
-"birlikte hareket eder."
+"Seçili olduğunda, bağımsız başlık çubuklarına sahip olmak yerine, kipsel "
+"diyaloglar üst pencerenin başlık çubuğunda ekli gözükür ve üst pencere ile "
+"birlikte hareket ettirilebilirler."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+#: data/org.gnome.mutter.gschema.xml.in:30
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Pencereler ekran kenarlarında bırakıldığında kenar döşemeyi etkinleştir."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+#: data/org.gnome.mutter.gschema.xml.in:31
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
@@ -317,13 +323,13 @@ msgstr ""
 "şekilde yeniden boyutlandırılır. Ekranın tepedeki kenarına bırakılan "
 "pencereler ekranı tamamen kaplar."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+#: data/org.gnome.mutter.gschema.xml.in:40
 msgid "Workspaces are managed dynamically"
 msgstr "Çalışma alanları dinamik olarak yönetilir"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+#: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
@@ -331,23 +337,23 @@ msgstr ""
 "çalışma alanı mı olacağını belirler (org.gnome.desktop.wm.preferences "
 "içindeki num-workspaces değişkeni tarafından belirlenir)."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+#: data/org.gnome.mutter.gschema.xml.in:50
 msgid "Workspaces only on primary"
-msgstr "Sadece birincil monitördeki çalışma alanları"
+msgstr "Yalnızca birincil monitördeki çalışma alanları"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+#: data/org.gnome.mutter.gschema.xml.in:51
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
 "Çalışma alanı değiştirilmesinin, tüm monitörlerdeki pencerelerde mi yoksa "
-"sadece birincil monitördekilerde mi gerçekleşeceğini belirler."
+"yalnızca birincil monitördekilerde mi gerçekleşeceğini belirler."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+#: data/org.gnome.mutter.gschema.xml.in:59
 msgid "No tab popup"
 msgstr "Sekme açılır penceresi yok"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+#: data/org.gnome.mutter.gschema.xml.in:60
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -355,37 +361,42 @@ msgstr ""
 "Pencere geçişinde çerçeve vurgulanması ve açılır pencere kullanımının "
 "kapatılıp kapatılmayacağını belirler."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+#: data/org.gnome.mutter.gschema.xml.in:68
 msgid "Delay focus changes until the pointer stops moving"
 msgstr "Odak değişikliklerini işaretçi hareketi durana kadar ertele"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+#: data/org.gnome.mutter.gschema.xml.in:69
+#| msgid ""
+#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#| "the focus will not be changed immediately when entering a window, but "
+#| "only after the pointer stops moving."
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
-"Eğer seçiliyse ve odaklama kipi \"sloppy\" ya da \"mouse\" ise bir pencereye "
-"geçişte odak hemen değil, fakat işaretçi hareket etmeyi bıraktığında değişir."
+"Eğer seçiliyse ve odaklama kipi “sloppy” yada “mouse” ise bir pencereye "
+"geçişte odak hemen değil, yanlızca işaretçi hareket etmeyi bıraktığında "
+"değişir."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+#: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
 msgstr "Sürüklenebilir kenarlık genişliği"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+#: data/org.gnome.mutter.gschema.xml.in:80
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "Sürüklenebilir kenarlıkların toplam miktarı. Eğer temanın görünür "
 "kenarlıkları yetersiz gelirse, bu değere ulaşmak için görünmez kenarlıklar "
 "eklenir."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+#: data/org.gnome.mutter.gschema.xml.in:89
 msgid "Auto maximize nearly monitor sized windows"
 msgstr "Ekran boyutuna yakın pencereleri otomatik ekranı kaplat"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+#: data/org.gnome.mutter.gschema.xml.in:90
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
@@ -393,11 +404,11 @@ msgstr ""
 "Etkinleştirildiğinde ekran boyutunda başlayan yeni pencereler otomatik "
 "olarak ekranı kaplar."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+#: data/org.gnome.mutter.gschema.xml.in:98
 msgid "Place new windows in the center"
 msgstr "Yeni pencereleri ekranın ortasına yerleştir"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+#: data/org.gnome.mutter.gschema.xml.in:99
 msgid ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
@@ -405,218 +416,277 @@ msgstr ""
 "Etkinleştirildiğinde, yeni pencereler her zaman monitörün etkin ekranında "
 "ortaya yerleştirilir."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Deneysel özellikleri etkinleştir"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+"Deneysel özellikleri etkinleştirmek için özelliğin anahtar sözcüğünü listeye "
+"ekleyin. Özelliğin yeniden başlatmayı gerektirip gerektirmeyeceği verilen "
+"özelliğe bağlıdır. Hiçbir deneysel özellik hala kullanılabilir veya "
+"yapılandırılabilir olmak zorunda değildir. Bu ayara eklenecek herhangi bir "
+"şeyin gelecekte olabilecek değişikliklerden etkilenmeyeceğini düşünmeyin. Şu "
+"anda kullanılabilir anahtar sözcükler: • “scale-monitor-framebuffer” — "
+"mutter’in HiDPI monitörleri yönetmesi için pencere içeriği yerine monitör "
+"çerçeve arabelleğini ölçeklendirirken, mantıksal monitörleri mantıksal "
+"piksel koordinat aralığına yerleştirmesini öntanımlı yapar."
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Pencereyi, sekme açılır penceresinden seç"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Sekmeyi yeni pencerede açmayı iptal et"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+#: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
-msgstr "VT 1'e geç"
+msgstr "VT 1’e geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+#: data/org.gnome.mutter.wayland.gschema.xml.in:10
 msgid "Switch to VT 2"
-msgstr "VT 2'ye geç"
+msgstr "VT 2’ye geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+#: data/org.gnome.mutter.wayland.gschema.xml.in:14
 msgid "Switch to VT 3"
-msgstr "VT 3'e geç"
+msgstr "VT 3’e geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+#: data/org.gnome.mutter.wayland.gschema.xml.in:18
 msgid "Switch to VT 4"
-msgstr "VT 4'e geç"
+msgstr "VT 4’e geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+#: data/org.gnome.mutter.wayland.gschema.xml.in:22
 msgid "Switch to VT 5"
-msgstr "VT 5'e geç"
+msgstr "VT 5’e geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+#: data/org.gnome.mutter.wayland.gschema.xml.in:26
 msgid "Switch to VT 6"
-msgstr "VT 6'ya geç"
+msgstr "VT 6’ya geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+#: data/org.gnome.mutter.wayland.gschema.xml.in:30
 msgid "Switch to VT 7"
-msgstr "VT 7'ye geç"
+msgstr "VT 7’ye geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
+#: data/org.gnome.mutter.wayland.gschema.xml.in:34
 msgid "Switch to VT 8"
-msgstr "VT 8'e geç"
+msgstr "VT 8’e geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
+#: data/org.gnome.mutter.wayland.gschema.xml.in:38
 msgid "Switch to VT 9"
-msgstr "VT 9'a geç"
+msgstr "VT 9’a geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
+#: data/org.gnome.mutter.wayland.gschema.xml.in:42
 msgid "Switch to VT 10"
-msgstr "VT 10'a geç"
+msgstr "VT 10’a geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
+#: data/org.gnome.mutter.wayland.gschema.xml.in:46
 msgid "Switch to VT 11"
-msgstr "VT 11'e geç"
+msgstr "VT 11’e geç"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
+#: data/org.gnome.mutter.wayland.gschema.xml.in:50
 msgid "Switch to VT 12"
-msgstr "VT 12'ye geç"
+msgstr "VT 12’ye geç"
 
-#: ../src/backends/meta-monitor-manager.c:515
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:1848
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Kip anahtarı (Group %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:1870
+msgid "Switch monitor"
+msgstr "Monitör değiştir"
+
+#: src/backends/meta-input-settings.c:1872
+msgid "Show on-screen help"
+msgstr "Ekranda yardımı göster"
+
+#: src/backends/meta-monitor-manager.c:783
 msgid "Built-in display"
 msgstr "Yerleşik ekran"
 
-#: ../src/backends/meta-monitor-manager.c:538
+#: src/backends/meta-monitor-manager.c:806
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: ../src/backends/meta-monitor-manager.c:540
+#: src/backends/meta-monitor-manager.c:808
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:548
+#: src/backends/meta-monitor-manager.c:816
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
+#: src/compositor/compositor.c:476
 #, c-format
+#| msgid ""
+#| "Another compositing manager is already running on screen %i on display "
+#| "\"%s\"."
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
-"\"%2$s\" monitöründeki %1$i ekranında zaten başka bir birleştirme yöneticisi "
-"çalışıyor."
+"“%2$s” monitöründeki %1$i ekranında zaten başka bir birleştirme yöneticisi çalışıyor."
 
-#: ../src/core/bell.c:194
+#: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Etkinlik zili"
 
-#: ../src/core/delete.c:127
+#. Translators: %s is a window title
+#: src/core/delete.c:127
 #, c-format
 msgid "“%s” is not responding."
 msgstr "“%s” yanıt vermiyor."
 
-#: ../src/core/delete.c:129
+#: src/core/delete.c:129
 msgid "Application is not responding."
 msgstr "Uygulama cevap vermiyor"
 
-#: ../src/core/delete.c:134
+#: src/core/delete.c:134
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Uygulamanın devam etmesi için bir müddet bekleyi seçebilirsiniz ya d a "
+"Uygulamanın devam etmesi için bir müddet bekleyi seçebilirsiniz ya da "
 "uygulamanın tamamen çıkması için onu zorlayabilirsiniz."
 
-#: ../src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Bekle"
-
-#: ../src/core/delete.c:141
+#: src/core/delete.c:141
 msgid "_Force Quit"
 msgstr "_Sonlandır"
 
-#: ../src/core/display.c:555
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "X Pencere Sistemi '%s' ekranı açılamadı\n"
+#: src/core/delete.c:141
+msgid "_Wait"
+msgstr "_Bekle"
 
-#: ../src/core/main.c:181
+#: src/core/display.c:608
+#, c-format
+msgid "Failed to open X Window System display “%s”\n"
+msgstr "X Pencere Sistemi “%s” ekranı açılamadı\n"
+
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Ortam yöneticisine olan bağlantıyı kapat"
 
-#: ../src/core/main.c:187
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Çalışan pencere yöneticisinin yerini al"
 
-#: ../src/core/main.c:193
+#: src/core/main.c:201
 msgid "Specify session management ID"
-msgstr "Ortam yönetim ID'sini belirtin"
+msgstr "Ortam yönetim ID’sini belirt"
 
-#: ../src/core/main.c:198
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "Kullanılacak X Ekranı"
 
-#: ../src/core/main.c:204
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Ortamı kayıtlı dosyadan başlat"
 
-#: ../src/core/main.c:210
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "X çağrılarını eşazamanlı yap"
 
-#: ../src/core/main.c:217
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Bir wayland dizgicisi olarak çalıştır"
 
-#: ../src/core/main.c:223
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Yuvalanmış dizgici olarak çalıştır"
 
-#: ../src/core/main.c:231
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "İç içe değil tam ekran sunucusu olarak çalıştır"
 
-#: ../src/core/mutter.c:39
+#: src/core/mutter.c:39
 #, c-format
+#| msgid ""
+#| "mutter %s\n"
+#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+#| "This is free software; see the source for copying conditions.\n"
+#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"Telif Hakkı (C) 2001-%d Havoc Pennington, Red Hat, Inc., ve diğerleri\n"
-"Bu bir özgür yazılımdır; telif koşullarını öğrenmek için kaynak koda bakın.\n"
-"Hiç bir garantisi, BELİRLİ BİR AMACA UYGUNLUĞU için dahi, YOKTUR.\n"
+"Telif Hakkı © 2001-%d Havoc Pennington, Red Hat, Inc., ve diğerleri\n"
+"Bu bir özgür yazılımdır; kopyalama koşullarını öğrenmek için kaynağa bakın.\n"
+"Hiçbir garanti YOK; BELİRLİ BİR AMACA UYGUNLUK ya da SATILABİLİRLİK için "
+"dahi.\n"
 
-#: ../src/core/mutter.c:53
+#: src/core/mutter.c:53
 msgid "Print version"
 msgstr "Sürümü yazdır"
 
-#: ../src/core/mutter.c:59
+#: src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Kullanılacak Mutter eklentisi"
 
-#: ../src/core/prefs.c:1997
+#: src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Çalışma Alanı %d"
 
-#: ../src/core/screen.c:521
+#: src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
-"\"%s\" ekranı zaten bir pencere yöneticisine sahip; geçerli pencere "
+"“%s” ekranı zaten bir pencere yöneticisine sahip; geçerli pencere "
 "yöneticisinin yerine bir başkasını koymak için --replace seçeneğini "
 "kullanmayı deneyin."
 
-#: ../src/core/screen.c:603
+#: src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "'%2$s' X oturumundaki ekran %1$d geçersiz\n"
+#| msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
+msgstr "“%2$s” monitöründeki %1$d ekranı geçersiz\n"
 
-#: ../src/core/util.c:121
+#: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter, ayrıntılı kip desteği olmadan derlenmiş\n"
 
-#: ../src/x11/session.c:1815
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"Bu pencereler, &quot;geçerli ayarları kaydet&quot; özelliğini desteklemiyor "
-"ve bir dahaki girişinizde elle yeniden başlatmanız gerekecek."
+#: src/wayland/meta-wayland-tablet-pad.c:563
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr "Kip Anahtarı: Kip %d"
 
-#: ../src/x11/window-props.c:549
+#: src/x11/session.c:1815
+msgid ""
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
+msgstr ""
+"Bu pencereler, “geçerli ayarları kaydet” özelliğini desteklemiyor ve bir "
+"dahaki girişinizde elle yeniden başlatılmak zorunda."
+
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s üzerinde)"
