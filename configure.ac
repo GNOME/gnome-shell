@@ -190,7 +190,7 @@ if test "x$enable_networkmanager" != "xno"; then
                      [libnm-glib
                      libnm-util >= $NETWORKMANAGER_MIN_VERSION
                      libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
-                     libsecret-unstable],
+                     libsecret-1 >= 0.18],
                      [have_networkmanager=yes],
                      [have_networkmanager=no])
 

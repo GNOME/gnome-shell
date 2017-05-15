@@ -23,8 +23,6 @@
 #include <string.h>
 #include <dbus/dbus-glib.h>
 
-/* For use of unstable features in libsecret, until they stabilize */
-#define SECRET_API_SUBJECT_TO_CHANGE
 #include <libsecret/secret.h>
 
 #include "shell-network-agent.h"
