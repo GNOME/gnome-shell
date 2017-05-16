@@ -104,3 +104,4 @@ js/ui/hotCorner.js
 js/ui/iconGridLayout.js
 js/ui/internetSearch.js
 js/ui/userMenu.js
+src/shell-desktop-dir-info.c
