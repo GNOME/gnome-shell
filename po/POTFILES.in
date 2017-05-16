@@ -101,3 +101,4 @@ js/ui/iconGridLayout.js
 js/ui/internetSearch.js
 js/ui/status/orientation.js
 js/ui/userMenu.js
+src/shell-desktop-dir-info.c
