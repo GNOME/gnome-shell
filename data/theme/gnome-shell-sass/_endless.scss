@@ -313,3 +313,55 @@ popup-separator-menu-item {
     &:bl { background-image: url("corner-ripple-bl.png"); }
     &:br { background-image: url("corner-ripple-br.png"); }
 }
+
+// Desktop Search (text entry widget)
+
+#searchEntry {
+    width: 350px;
+    height: 38px;
+
+    margin-top: 8px;
+    padding: 0 12px 0 0;
+
+    font-size: 11.5pt;
+
+    color: #484645;
+    selected-color: #ededed;
+    caret-color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+
+    border-width: 0;
+    border-radius: 19px;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+
+    -minimum-vpadding: 48px;
+
+    .search-entry-text-hint {
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-bottom: 2px;
+
+        font-size: 12pt;
+        color: #424040;
+    }
+
+    .search-icon {
+        background-gradient-start: rgba(255,95,42,0.9);
+        background-gradient-end: rgba(248,63,0,0.9);
+        background-gradient-direction: vertical;
+
+        color: white;
+
+        width: 38px;
+        height: 38px;
+        border-radius: 19px;
+
+        box-shadow: inset 0 -1px 1px rgba(0,0,0,0.25);
+    }
+
+    &:hover, &:focus { background-color: rgba(255, 255, 255, 0.95); }
+    &:rtl {
+        padding-left: 12px;
+        padding-right: 0px;
+    }
+}

@@ -1,16 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported addContextMenu CapsLockWarning */
+/* exported addContextMenu CapsLockWarning, OverviewEntry */
 
-const { Clutter, GObject, Pango, Shell, St } = imports.gi;
+const { Clutter, Gio, GObject, Gtk, Pango, Shell, St } = imports.gi;
 
+const Animation = imports.ui.animation;
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
+const Util = imports.misc.util;
+
+const SPINNER_ICON_SIZE = 16;
+
+const OVERVIEW_ENTRY_BLINK_DURATION = 400;
+const OVERVIEW_ENTRY_BLINK_BRIGHTNESS = 1.4;
+
 var EntryMenu = class extends PopupMenu.PopupMenu {
     constructor(entry) {
-        super(entry, 0, St.Side.TOP);
+        super(entry, 0.025, St.Side.TOP);
 
         this._entry = entry;
         this._clipboard = St.Clipboard.get_default();
@@ -95,6 +103,304 @@ var EntryMenu = class extends PopupMenu.PopupMenu {
         this._entry.password_visible  = !this._entry.password_visible;
     }
 };
+
+var OverviewEntry = GObject.registerClass({
+    Signals: {
+        'search-activated': {},
+        'search-active-changed': {},
+        'search-navigate-focus': { param_types: [GObject.TYPE_INT] },
+        'search-terms-changed': {},
+    },
+    Properties: {
+        'blinkBrightness': GObject.ParamSpec.double(
+            'blinkBrightness',
+            'blinkBrightness',
+            'blinkBrightness',
+            GObject.ParamFlags.READWRITE,
+            0, 10, 0),
+    },
+}, class OverviewEntry extends St.Entry {
+    _init() {
+        this._active = false;
+
+        this._capturedEventId = 0;
+
+        let primaryIcon = new St.Icon({
+            icon_name: 'edit-find-symbolic',
+            style_class: 'search-icon',
+            icon_size: 16,
+            track_hover: true,
+        });
+
+        this._spinner = new Animation.Spinner(SPINNER_ICON_SIZE, {
+            animate: true,
+            hideOnStop: true,
+        });
+
+        // Set the search entry's text based on the current search engine
+        let entryText;
+        let searchEngine = Util.getSearchEngineName();
+
+        if (searchEngine)
+            entryText = _('Search %s and more…').format(searchEngine);
+        else
+            entryText = _('Search the internet and more…');
+
+        let hintActor = new St.Label({
+            text: entryText,
+            style_class: 'search-entry-text-hint',
+        });
+
+        super._init({
+            name: 'searchEntry',
+            track_hover: true,
+            reactive: true,
+            can_focus: true,
+            hint_text: '',
+            hint_actor: hintActor,
+            primary_icon: primaryIcon,
+            secondary_icon: this._spinner,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this._blinkBrightnessEffect = new Clutter.BrightnessContrastEffect({
+            enabled: false,
+        });
+        this.add_effect(this._blinkBrightnessEffect);
+
+        addContextMenu(this);
+
+        this.connect('primary-icon-clicked', () => {
+            this.grab_key_focus();
+        });
+        this.connect('notify::mapped', this._onMapped.bind(this));
+        this.clutter_text.connect('key-press-event', this._onKeyPress.bind(this));
+        this.clutter_text.connect('text-changed', this._onTextChanged.bind(this));
+        global.stage.connect('notify::key-focus', this._onStageKeyFocusChanged.bind(this));
+    }
+
+    _isActivated() {
+        return !this.hint_actor.visible;
+    }
+
+    _getTermsForSearchString(searchString) {
+        searchString = searchString.replace(/^\s+/g, '').replace(/\s+$/g, '');
+        if (searchString === '')
+            return [];
+
+        let terms = searchString.split(/\s+/);
+        return terms;
+    }
+
+    _onCapturedEvent(actor, event) {
+        if (event.type() !== Clutter.EventType.BUTTON_PRESS)
+            return false;
+
+        let source = event.get_source();
+        if (source !== this.clutter_text &&
+            !Main.layoutManager.keyboardBox.contains(source)) {
+            // If the user clicked outside after activating the entry,
+            // drop the focus from the search bar, but avoid resetting
+            // the entry state.
+            // If no search terms entered were entered, also reset the
+            // entry to its initial state.
+            if (this.clutter_text.text === '')
+                this.resetSearch();
+            else
+                this._stopSearch();
+        }
+
+        return false;
+    }
+
+    _onKeyPress(entry, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol === Clutter.Escape && this._isActivated()) {
+            this.resetSearch();
+            return true;
+        }
+
+        if (!this.active)
+            return false;
+
+        let arrowNext, nextDirection;
+        if (entry.get_text_direction() === Clutter.TextDirection.RTL) {
+            arrowNext = Clutter.Left;
+            nextDirection = Gtk.DirectionType.LEFT;
+        } else {
+            arrowNext = Clutter.Right;
+            nextDirection = Gtk.DirectionType.RIGHT;
+        }
+
+        if (symbol === Clutter.Down)
+            nextDirection = Gtk.DirectionType.DOWN;
+
+        if ((symbol === arrowNext && this.clutter_text.position === -1) ||
+            (symbol === Clutter.Down)) {
+            this.emit('search-navigate-focus', nextDirection);
+            return true;
+        } else if (symbol === Clutter.Return || symbol === Clutter.KP_Enter) {
+            this._activateSearch();
+            return true;
+        }
+
+        return false;
+    }
+
+    _onMapped() {
+        // The entry might get mapped because of the clone, so we also
+        // have to check if the actual overview actor is visible.
+        if (this.mapped && Main.layoutManager.overviewGroup.visible) {
+            // Enable 'find-as-you-type'
+            this._capturedEventId =
+                global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
+
+            this.clutter_text.set_cursor_visible(true);
+            // Move the cursor at the end of the current text
+            let buffer = this.clutter_text.get_buffer();
+            let nChars = buffer.get_length();
+            this.clutter_text.set_selection(nChars, nChars);
+        } else if (this._capturedEventId > 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+    }
+
+    _onStageKeyFocusChanged() {
+        let focus = global.stage.get_key_focus();
+        let appearFocused = this.contains(focus);
+
+        this.clutter_text.set_cursor_visible(appearFocused);
+
+        if (appearFocused)
+            this.add_style_pseudo_class('focus');
+        else
+            this.remove_style_pseudo_class('focus');
+    }
+
+    _onTextChanged() {
+        this.emit('search-terms-changed');
+        let terms = this._getTermsForSearchString(this.get_text());
+        this.active = terms.length > 0;
+    }
+
+    _searchCancelled() {
+        // Leave the entry focused when it doesn't have any text;
+        // when replacing a selected search term, Clutter emits
+        // two 'text-changed' signals, one for deleting the previous
+        // text and one for the new one - the second one is handled
+        // incorrectly when we remove focus
+        // (https://bugzilla.gnome.org/show_bug.cgi?id=636341) */
+        if (this.clutter_text.text !== '')
+            this.resetSearch();
+    }
+
+    _shouldTriggerSearch(symbol) {
+        let unicode = Clutter.keysym_to_unicode(symbol);
+        if (unicode === 0)
+            return symbol === Clutter.BackSpace && this.active;
+
+        return this._getTermsForSearchString(String.fromCharCode(unicode)).length > 0;
+    }
+
+    _activateSearch() {
+        this.emit('search-activated');
+    }
+
+    _stopSearch() {
+        global.stage.set_key_focus(null);
+    }
+
+    _startSearch(event) {
+        global.stage.set_key_focus(this.clutter_text);
+        this.clutter_text.event(event, false);
+    }
+
+    resetSearch() {
+        this._stopSearch();
+        this.text = '';
+
+        this.clutter_text.set_cursor_visible(true);
+        this.clutter_text.set_selection(0, 0);
+    }
+
+    handleStageEvent(event) {
+        let symbol = event.get_key_symbol();
+
+        if (symbol === Clutter.Escape && this.active) {
+            this.resetSearch();
+            return true;
+        }
+
+        if (this._shouldTriggerSearch(symbol)) {
+            this._startSearch(event);
+            return true;
+        }
+
+        return false;
+    }
+
+    setSpinning(visible) {
+        if (visible)
+            this._spinner.play();
+        else
+            this._spinner.stop();
+    }
+
+    get blinkBrightness() {
+        return this._blinkBrightness;
+    }
+
+    set blinkBrightness(v) {
+        this._blinkBrightness = v;
+        this._blinkBrightnessEffect.enabled = this._blinkBrightness !== 1;
+        let colorval = this._blinkBrightness * 127;
+        this._blinkBrightnessEffect.brightness = new Clutter.Color({
+            red: colorval,
+            green: colorval,
+            blue: colorval,
+        });
+    }
+
+    blink() {
+        this.blinkBrightness = 1;
+        this.ease({
+            blinkBrightness: OVERVIEW_ENTRY_BLINK_BRIGHTNESS,
+            duration: OVERVIEW_ENTRY_BLINK_DURATION / 2,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            onComplete: () => {
+                this.ease({
+                    blinkBrightness: 1,
+                    duration: OVERVIEW_ENTRY_BLINK_DURATION / 2,
+                    mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                });
+            },
+        });
+
+    }
+
+    set active(value) {
+        if (value === this._active)
+            return;
+
+        this._active = value;
+        this._ongoing = false;
+
+        if (!this._active)
+            this._searchCancelled();
+
+        this.emit('search-active-changed');
+    }
+
+    get active() {
+        return this._active;
+    }
+
+    getSearchTerms() {
+        return this._getTermsForSearchString(this.get_text());
+    }
+});
 
 function _setMenuAlignment(entry, stageX) {
     let [success, entryX] = entry.transform_stage_point(stageX, 0);

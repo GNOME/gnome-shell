@@ -44,6 +44,7 @@
     <file>hot-corner-symbolic.svg</file>
     <file>hot-corner-rtl-symbolic.svg</file>
     <file>mini-icon-active-indicator.png</file>
+    <file>process-working-dark.svg</file>
     <file>system-logout.png</file>
   </gresource>
 </gresources>
