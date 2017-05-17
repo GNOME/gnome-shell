@@ -172,7 +172,7 @@ class BaseAppView {
         let oldApps = this._allItems.slice();
         let oldAppIds = oldApps.map(icon => icon.id);
 
-        let newApps = this._loadApps().sort(this._compareItems);
+        let newApps = this._loadApps();
         let newAppIds = newApps.map(icon => icon.id);
 
         let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
@@ -378,8 +378,7 @@ var AllView = class AllView extends BaseAppView {
         Shell.AppSystem.get_default().connect('installed-changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
-        this._folderSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-        this._folderSettings.connect('changed::folder-children', () => {
+        IconGridLayout.layout.connect('changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
 
@@ -387,11 +386,6 @@ var AllView = class AllView extends BaseAppView {
         Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
 
         this._nEventBlockerInhibits = 0;
-    }
-
-    _redisplay() {
-        super._redisplay();
-        this._refilterApps();
     }
 
     _itemNameChanged(item) {
@@ -405,62 +399,24 @@ var AllView = class AllView extends BaseAppView {
         this._grid.addItem(item, newIdx);
     }
 
-    _refilterApps() {
-        let filteredApps = this._allItems.filter(icon => !icon.actor.visible);
-
-        this._allItems.forEach(icon => {
-            if (icon instanceof AppIcon)
-                icon.actor.visible = true;
-        });
-
-        this.folderIcons.forEach(folder => {
-            let folderApps = folder.getAppIds();
-            folderApps.forEach(appId => {
-                let appIcon = this._items[appId];
-                appIcon.actor.visible = false;
-            });
-        });
-
-        // Scale in app icons that weren't visible, but now are
-        filteredApps.filter(icon => icon.actor.visible).forEach(icon => {
-            if (icon instanceof AppIcon)
-                icon.scaleIn();
-        });
-    }
-
     getAppInfos() {
         return this._appInfoList;
     }
 
     _loadApps() {
         let newApps = [];
-        this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
-            try {
-                (appInfo.get_id()); // catch invalid file encodings
-            } catch (e) {
-                return false;
-            }
-            return appInfo.should_show();
-        });
+        let items = [];
 
-        let apps = this._appInfoList.map(app => app.get_id());
+        let desktopIds = IconGridLayout.layout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
+
+        for (let idx in desktopIds) {
+            let itemId = desktopIds[idx];
+            items.push(itemId);
+        }
 
         let appSys = Shell.AppSystem.get_default();
 
         this.folderIcons = [];
-
-        let folders = this._folderSettings.get_strv('folder-children');
-        folders.forEach(id => {
-            let path = this._folderSettings.path + 'folders/' + id + '/';
-            let icon = this._items[id];
-            if (!icon) {
-                icon = new FolderIcon(id, path, this);
-                icon.connect('name-changed', this._itemNameChanged.bind(this));
-                icon.connect('apps-changed', this._redisplay.bind(this));
-            }
-            newApps.push(icon);
-            this.folderIcons.push(icon);
-        });
 
         // Allow dragging of the icon only if the Dash would accept a drop to
         // change favorite-apps. There are no other possible drop targets from
@@ -470,11 +426,27 @@ var AllView = class AllView extends BaseAppView {
         // but we hope that is not used much.
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
-        apps.forEach(appId => {
-            let app = appSys.lookup_app(appId);
+        items.forEach((itemId) => {
+            let icon = null;
 
-            let icon = new AppIcon(app,
-                                   { isDraggable: favoritesWritable });
+            if (IconGridLayout.layout.iconIsFolder(itemId)) {
+                icon = this._items[itemId];
+                if (!icon) {
+                    let item = Shell.DesktopDirInfo.new(itemId);
+                    icon = new FolderIcon(item, this);
+                    icon.connect('name-changed', this._itemNameChanged.bind(this));
+                }
+                this.folderIcons.push(icon);
+            } else {
+                let app = appSys.lookup_app(itemId);
+                if (!app)
+                    return;
+
+                icon = new AppIcon(app, {
+                    isDraggable: favoritesWritable,
+                });
+            }
+
             newApps.push(icon);
         });
 
@@ -1238,13 +1210,14 @@ var AppSearchProvider = class AppSearchProvider {
 };
 
 var FolderView = class FolderView extends BaseAppView {
-    constructor(folder, id, parentView) {
+    constructor(dirInfo, parentView) {
         super(null, null);
+
+        this._dirInfo = dirInfo;
+
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
-        this._id = id;
-        this._folder = folder;
         this._parentView = parentView;
         this._grid._delegate = this;
 
@@ -1258,7 +1231,6 @@ var FolderView = class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this.actor.add_action(action);
 
-        this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
     }
 
@@ -1350,12 +1322,8 @@ var FolderView = class FolderView extends BaseAppView {
 
     _loadApps() {
         let apps = [];
-        let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
-            if (excludedApps.includes(appId))
-                return;
-
             let app = appSys.lookup_app(appId);
             if (!app)
                 return;
@@ -1370,51 +1338,23 @@ var FolderView = class FolderView extends BaseAppView {
             apps.push(icon);
         };
 
-        let folderApps = this._folder.get_strv('apps');
+        let id = this._dirInfo.get_id();
+        let folderApps = IconGridLayout.layout.getIcons(id);
         folderApps.forEach(addAppId);
-
-        let folderCategories = this._folder.get_strv('categories');
-        let appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
-
-            addAppId(appInfo.get_id());
-        });
 
         return apps;
     }
 
     removeApp(app) {
-        let folderApps = this._folder.get_strv('apps');
-        let index = folderApps.indexOf(app.id);
-        if (index >= 0)
-            folderApps.splice(index, 1);
-
-        // If this is a categories-based folder, also add it to
-        // the list of excluded apps
-        let categories = this._folder.get_strv('categories');
-        if (categories.length > 0) {
-            let excludedApps = this._folder.get_strv('excluded-apps');
-            excludedApps.push(app.id);
-            this._folder.set_strv('excluded-apps', excludedApps);
-        }
+        let id = this._dirInfo.get_id();
+        let folderApps = IconGridLayout.layout.getIcons(id);
 
         // Remove the folder if this is the last app icon; otherwise,
         // just remove the icon
         if (folderApps.length == 0) {
-            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-            let folders = settings.get_strv('folder-children');
-            folders.splice(folders.indexOf(this._id), 1);
-            settings.set_strv('folder-children', folders);
-
-            // Resetting all keys deletes the relocatable schema
-            let keys = this._folder.settings_schema.list_keys();
-            for (let key of keys)
-                this._folder.reset(key);
+            IconGridLayout.layout.removeIcon(id);
         } else {
-            this._folder.set_strv('apps', folderApps);
+            /* FIXME */
         }
 
         return true;
@@ -1422,13 +1362,12 @@ var FolderView = class FolderView extends BaseAppView {
 };
 
 var FolderIcon = class FolderIcon {
-    constructor(id, path, parentView) {
-        this.id = id;
+    constructor(dirInfo, parentView) {
         this.name = '';
         this._parentView = parentView;
 
-        this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                          path: path });
+        this.id = dirInfo.get_id();
+        this._dirInfo = dirInfo;
         this.actor = new St.Button({ style_class: 'app-well-app app-folder',
                                      button_mask: St.ButtonMask.ONE,
                                      toggle_mode: true,
@@ -1446,7 +1385,7 @@ var FolderIcon = class FolderIcon {
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
 
-        this.view = new FolderView(this._folder, id, parentView);
+        this.view = new FolderView(this._dirInfo, parentView);
 
         this._itemDragBeginId = Main.overview.connect(
             'item-drag-begin', this._onDragBegin.bind(this));
@@ -1467,7 +1406,6 @@ var FolderIcon = class FolderIcon {
                 this._popup.popdown();
         });
 
-        this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
     }
 
@@ -1533,7 +1471,8 @@ var FolderIcon = class FolderIcon {
         if (!view || !(view instanceof AllView))
             return false;
 
-        if (this._folder.get_strv('apps').includes(source.id))
+        let folderApps = IconGridLayout.layout.getIcons(source.id);
+        if (folderApps.includes(source.id))
             return false;
 
         return true;
@@ -1551,7 +1490,7 @@ var FolderIcon = class FolderIcon {
             return false;
 
         let app = source.app;
-        let folderApps = this._folder.get_strv('apps');
+        let folderApps = IconGridLayout.layout.getIcons(this.id);
         folderApps.push(app.id);
 
         this._folder.set_strv('apps', folderApps);
@@ -1569,7 +1508,7 @@ var FolderIcon = class FolderIcon {
     }
 
     _updateName() {
-        let name = _getFolderName(this._folder);
+        let name = this._dirInfo.get_name();
         if (this.name == name)
             return;
 
@@ -1700,12 +1639,13 @@ var FolderIcon = class FolderIcon {
         if (!this._menu) {
             this._menuManager = new PopupMenu.PopupMenuManager(this.actor);
 
-            this._menu = new RenameFolderMenu(this, this._folder);
+            this._menu = new RenameFolderMenu(this, this._dirInfo);
             this._menuManager.addMenu(this._menu);
 
             this._menu.connect('open-state-changed', (menu, isPoppedUp) => {
                 if (!isPoppedUp)
                     this.actor.sync_hover();
+                this._updateName();
             });
             let id = Main.overview.connect('hiding', () => {
                 this._menu.close();
@@ -1732,14 +1672,14 @@ Signals.addSignalMethods(FolderIcon.prototype);
 
 var RenameFolderMenuItem = GObject.registerClass(
 class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
-    _init(folder) {
+    _init(dirInfo) {
         super._init({
             style_class: 'rename-folder-popup-item',
             reactive: false,
         });
         this.setOrnament(PopupMenu.Ornament.HIDDEN);
 
-        this._folder = folder;
+        this._dirInfo = dirInfo;
 
         // Entry
         this._entry = new St.Entry({
@@ -1767,7 +1707,7 @@ class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
     }
 
     vfunc_map() {
-        this._entry.text = _getFolderName(this._folder);
+        this._entry.text = this._dirInfo.get_name();
         this._entry.clutter_text.set_selection(0, -1);
         super.vfunc_map();
     }
@@ -1778,7 +1718,7 @@ class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
     }
 
     _isValidFolderName() {
-        let folderName = _getFolderName(this._folder);
+        let folderName = this._dirInfo.get_name();
         let newFolderName = this._entry.text.trim();
 
         return newFolderName.length > 0 && newFolderName != folderName;
@@ -1795,8 +1735,7 @@ class RenameFolderMenuItem extends PopupMenu.PopupBaseMenuItem {
             return;
 
         let newFolderName = this._entry.text.trim();
-        this._folder.set_string('name', newFolderName);
-        this._folder.set_boolean('translate', false);
+        this._dirInfo.create_custom_with_name(newFolderName);
         this.activate(Clutter.get_current_event());
     }
 });
