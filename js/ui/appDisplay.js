@@ -73,18 +73,6 @@ function _listsIntersect(a, b) {
     return false;
 }
 
-function _getFolderName(folder) {
-    let name = folder.get_string('name');
-
-    if (folder.get_boolean('translate')) {
-        let translated = Shell.util_get_translated_folder_name(name);
-        if (translated !== null)
-            return translated;
-    }
-
-    return name;
-}
-
 function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
@@ -150,6 +138,8 @@ var BaseAppView = GObject.registerClass({
             padWithSpacing: true,
         }, true);
 
+        this._iconGridLayout = IconGridLayout.getDefault();
+
         if (this.use_pagination)
             this._grid = new IconGrid.PaginatedIconGrid(gridParams);
         else
@@ -173,7 +163,7 @@ var BaseAppView = GObject.registerClass({
         let oldApps = this._orderedItems.slice();
         let oldAppIds = oldApps.map(icon => icon.id);
 
-        let newApps = this._loadApps().sort(this._compareItems);
+        let newApps = this._loadApps();
         let newAppIds = newApps.map(icon => icon.id);
 
         let addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
@@ -388,8 +378,7 @@ class AppDisplay extends BaseAppView {
         Shell.AppSystem.get_default().connect('installed-changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
-        this._folderSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-        this._folderSettings.connect('changed::folder-children', () => {
+        this._iconGridLayout.connect('layout-changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
 
@@ -460,15 +449,6 @@ class AppDisplay extends BaseAppView {
         super.vfunc_unmap();
     }
 
-    _redisplay() {
-        super._redisplay();
-
-        this._folderIcons.forEach(icon => {
-            icon.view._redisplay();
-        });
-        this._refilterApps();
-    }
-
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
         // supposed to be and reinsert it where it's sorted.
@@ -481,62 +461,23 @@ class AppDisplay extends BaseAppView {
         this.selectApp(item.id);
     }
 
-    _refilterApps() {
-        let filteredApps = this._orderedItems.filter(icon => !icon.visible);
-
-        this._orderedItems.forEach(icon => {
-            if (icon instanceof AppIcon)
-                icon.visible = true;
-        });
-
-        this._folderIcons.forEach(folder => {
-            let folderApps = folder.getAppIds();
-            folderApps.forEach(appId => {
-                let appIcon = this._items.get(appId);
-                appIcon.visible = false;
-            });
-        });
-
-        // Scale in app icons that weren't visible, but now are
-        filteredApps.filter(icon => icon.visible).forEach(icon => {
-            if (icon instanceof AppIcon)
-                icon.scaleIn();
-        });
-    }
-
     getAppInfos() {
         return this._appInfoList;
     }
 
     _loadApps() {
         let appIcons = [];
-        this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
-            try {
-                appInfo.get_id(); // catch invalid file encodings
-            } catch (e) {
-                return false;
-            }
-            return appInfo.should_show();
-        });
+        let items = [];
 
-        let apps = this._appInfoList.map(app => app.get_id());
+        let desktopIds = this._iconGridLayout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
+        for (let idx in desktopIds) {
+            let itemId = desktopIds[idx];
+            items.push(itemId);
+        }
 
         let appSys = Shell.AppSystem.get_default();
 
         this._folderIcons = [];
-
-        let folders = this._folderSettings.get_strv('folder-children');
-        folders.forEach(id => {
-            let path = '%sfolders/%s/'.format(this._folderSettings.path, id);
-            let icon = this._items.get(id);
-            if (!icon) {
-                icon = new FolderIcon(id, path, this);
-                icon.connect('name-changed', this._itemNameChanged.bind(this));
-                icon.connect('apps-changed', this._redisplay.bind(this));
-            }
-            appIcons.push(icon);
-            this._folderIcons.push(icon);
-        });
 
         // Allow dragging of the icon only if the Dash would accept a drop to
         // change favorite-apps. There are no other possible drop targets from
@@ -546,10 +487,27 @@ class AppDisplay extends BaseAppView {
         // but we hope that is not used much.
         let favoritesWritable = global.settings.is_writable('favorite-apps');
 
-        apps.forEach(appId => {
-            let icon = this._items.get(appId);
-            if (!icon) {
-                let app = appSys.lookup_app(appId);
+        items.forEach(itemId => {
+            let icon = this._items.get(itemId);
+
+            if (this._iconGridLayout.iconIsFolder(itemId)) {
+                if (!icon) {
+                    let item = Shell.DesktopDirInfo.new(itemId);
+                    if (!item) {
+                        log(`Error loading folder for ${itemId}`);
+                        this._iconGridLayout.removeIcon(itemId, false);
+                        return;
+                    }
+                    icon = new FolderIcon(item, this);
+                    icon.connect('name-changed', this._itemNameChanged.bind(this));
+                } else {
+                    icon.update();
+                }
+                this._folderIcons.push(icon);
+            } else {
+                let app = appSys.lookup_app(itemId);
+                if (!app)
+                    return;
 
                 icon = new AppIcon(app, {
                     isDraggable: favoritesWritable,
@@ -908,8 +866,8 @@ class AppDisplay extends BaseAppView {
         if (!this._canAccept(source))
             return false;
 
-        let view = _getViewFromIcon(source);
-        view.removeApp(source.app);
+        this._iconGridLayout.appendIcon(
+            source.app.id, IconGridLayout.DESKTOP_GRID_ID);
 
         if (this._currentDialog)
             this._currentDialog.popdown();
@@ -918,32 +876,15 @@ class AppDisplay extends BaseAppView {
     }
 
     createFolder(apps) {
-        let newFolderId = GLib.uuid_string_random();
-
-        let folders = this._folderSettings.get_strv('folder-children');
-        folders.push(newFolderId);
-        this._folderSettings.set_strv('folder-children', folders);
-
-        // Create the new folder
-        let newFolderPath = this._folderSettings.path.concat('folders/', newFolderId, '/');
-        let newFolderSettings = new Gio.Settings({
-            schema_id: 'org.gnome.desktop.app-folders.folder',
-            path: newFolderPath,
-        });
-        if (!newFolderSettings) {
-            log('Error creating new folder');
-            return false;
-        }
-
         let appItems = apps.map(id => this._items.get(id).app);
         let folderName = _findBestFolderName(appItems);
-        if (!folderName)
-            folderName = _("Unnamed Folder");
 
-        newFolderSettings.delay();
-        newFolderSettings.set_string('name', folderName);
-        newFolderSettings.set_strv('apps', apps);
-        newFolderSettings.apply();
+        let newFolderId = this._iconGridLayout.addFolder(folderName);
+        if (!newFolderId)
+            return false;
+
+        for (let app of apps)
+            this._iconGridLayout.appendIcon(app, newFolderId);
 
         this.selectApp(newFolderId);
 
@@ -1041,7 +982,7 @@ var AppSearchProvider = class AppSearchProvider {
 
 var FolderView = GObject.registerClass(
 class FolderView extends BaseAppView {
-    _init(folder, id, parentView) {
+    _init(dirInfo, parentView) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
@@ -1050,11 +991,11 @@ class FolderView extends BaseAppView {
             minRows: 1,
         });
 
+        this._dirInfo = dirInfo;
+
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
-        this._id = id;
-        this._folder = folder;
         this._parentView = parentView;
         this._grid._delegate = this;
 
@@ -1079,6 +1020,7 @@ class FolderView extends BaseAppView {
         action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
+        this._iconGridLayout.connect('layout-changed', this._redisplay.bind(this));
         this._redisplay();
     }
 
@@ -1144,12 +1086,8 @@ class FolderView extends BaseAppView {
 
     _loadApps() {
         let apps = [];
-        let excludedApps = this._folder.get_strv('excluded-apps');
         let appSys = Shell.AppSystem.get_default();
         let addAppId = appId => {
-            if (excludedApps.includes(appId))
-                return;
-
             let app = appSys.lookup_app(appId);
             if (!app)
                 return;
@@ -1167,68 +1105,27 @@ class FolderView extends BaseAppView {
             apps.push(icon);
         };
 
-        let folderApps = this._folder.get_strv('apps');
+        let id = this._dirInfo.get_id();
+        let folderApps = this._iconGridLayout.getIcons(id);
         folderApps.forEach(addAppId);
-
-        let folderCategories = this._folder.get_strv('categories');
-        let appInfos = this._parentView.getAppInfos();
-        appInfos.forEach(appInfo => {
-            let appCategories = _getCategories(appInfo);
-            if (!_listsIntersect(folderCategories, appCategories))
-                return;
-
-            addAppId(appInfo.get_id());
-        });
 
         return apps;
     }
 
     addApp(app) {
-        let folderApps = this._folder.get_strv('apps');
-        folderApps.push(app.id);
-
-        this._folder.set_strv('apps', folderApps);
-
-        // Also remove from 'excluded-apps' if the app id is listed
-        // there. This is only possible on categories-based folders.
-        let excludedApps = this._folder.get_strv('excluded-apps');
-        let index = excludedApps.indexOf(app.id);
-        if (index >= 0) {
-            excludedApps.splice(index, 1);
-            this._folder.set_strv('excluded-apps', excludedApps);
-        }
+        let folderId = this._dirInfo.get_id();
+        this._iconGridLayout.appendIcon(app.id, folderId);
+        this._redisplay();
     }
 
     removeApp(app) {
-        let folderApps = this._folder.get_strv('apps');
-        let index = folderApps.indexOf(app.id);
-        if (index >= 0)
-            folderApps.splice(index, 1);
-
-        // If this is a categories-based folder, also add it to
-        // the list of excluded apps
-        let categories = this._folder.get_strv('categories');
-        if (categories.length > 0) {
-            let excludedApps = this._folder.get_strv('excluded-apps');
-            excludedApps.push(app.id);
-            this._folder.set_strv('excluded-apps', excludedApps);
-        }
+        let id = this._dirInfo.get_id();
+        let folderApps = this._iconGridLayout.getIcons(id);
 
         // Remove the folder if this is the last app icon; otherwise,
         // just remove the icon
-        if (folderApps.length == 0) {
-            // Resetting all keys deletes the relocatable schema
-            let keys = this._folder.settings_schema.list_keys();
-            for (let key of keys)
-                this._folder.reset(key);
-
-            let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-            let folders = settings.get_strv('folder-children');
-            folders.splice(folders.indexOf(this._id), 1);
-            settings.set_strv('folder-children', folders);
-        } else {
-            this._folder.set_strv('apps', folderApps);
-        }
+        if (folderApps.length == 0)
+            this._iconGridLayout.removeIcon(id);
     }
 });
 
@@ -1238,19 +1135,19 @@ var FolderIcon = GObject.registerClass({
         'name-changed': {},
     },
 }, class FolderIcon extends St.Button {
-    _init(id, path, parentView) {
+    _init(dirInfo, parentView) {
         super._init({
             style_class: 'app-well-app app-folder',
             button_mask: St.ButtonMask.ONE,
             toggle_mode: true,
             can_focus: true,
         });
-        this.id = id;
         this.name = '';
         this._parentView = parentView;
 
-        this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',
-                                          path });
+        this.id = dirInfo.get_id();
+        this._dirInfo = dirInfo;
+
         this._delegate = this;
 
         this.icon = new IconGrid.BaseIcon('', {
@@ -1260,7 +1157,7 @@ var FolderIcon = GObject.registerClass({
         this.set_child(this.icon);
         this.label_actor = this.icon.label;
 
-        this.view = new FolderView(this._folder, id, parentView);
+        this.view = new FolderView(this._dirInfo, parentView);
 
         this._itemDragBeginId = Main.overview.connect(
             'item-drag-begin', this._onDragBegin.bind(this));
@@ -1269,8 +1166,6 @@ var FolderIcon = GObject.registerClass({
 
         this.connect('destroy', this._onDestroy.bind(this));
 
-        this._folderChangedId = this._folder.connect(
-            'changed', this._sync.bind(this));
         this._sync();
     }
 
@@ -1279,11 +1174,6 @@ var FolderIcon = GObject.registerClass({
         Main.overview.disconnect(this._itemDragEndId);
 
         this.view.destroy();
-
-        if (this._folderChangedId) {
-            this._folder.disconnect(this._folderChangedId);
-            delete this._folderChangedId;
-        }
 
         if (this._dialog)
             this._dialog.destroy();
@@ -1341,7 +1231,9 @@ var FolderIcon = GObject.registerClass({
         if (!view || !(view instanceof AppDisplay))
             return false;
 
-        if (this._folder.get_strv('apps').includes(source.id))
+        const iconGridLayout = IconGridLayout.getDefault();
+        let folderApps = iconGridLayout.getIcons(source.id);
+        if (folderApps.includes(source.id))
             return false;
 
         return true;
@@ -1359,12 +1251,13 @@ var FolderIcon = GObject.registerClass({
             return false;
 
         this.view.addApp(source.app);
+        this._sync();
 
         return true;
     }
 
     _updateName() {
-        let name = _getFolderName(this._folder);
+        let name = this._dirInfo.get_name();
         if (this.name == name)
             return;
 
@@ -1380,6 +1273,10 @@ var FolderIcon = GObject.registerClass({
         this.icon.update();
     }
 
+    update() {
+        this._sync();
+    }
+
     _createIcon(iconSize) {
         return this.view.createFolderIcon(iconSize, this);
     }
@@ -1388,7 +1285,7 @@ var FolderIcon = GObject.registerClass({
         if (this._dialog)
             return;
         if (!this._dialog) {
-            this._dialog = new AppFolderDialog(this, this._folder);
+            this._dialog = new AppFolderDialog(this, this._dirInfo);
             this._parentView.addFolderDialog(this._dialog);
             this._dialog.connect('open-state-changed', (popup, isOpen) => {
                 if (!isOpen)
@@ -1403,7 +1300,7 @@ var AppFolderDialog = GObject.registerClass({
         'open-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
     },
 }, class AppFolderDialog extends St.Widget {
-    _init(source, folder) {
+    _init(source, dirInfo) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             style_class: 'app-folder-dialog-container',
@@ -1415,7 +1312,7 @@ var AppFolderDialog = GObject.registerClass({
         });
 
         this._source = source;
-        this._folder = folder;
+        this._dirInfo = dirInfo;
         this._view = source.view;
 
         this._isOpen = false;
@@ -1519,12 +1416,11 @@ var AppFolderDialog = GObject.registerClass({
             coordinate: Clutter.BindCoordinate.SIZE,
         }));
 
-        this._folder.connect('changed::name', () => this._syncFolderName());
         this._syncFolderName();
     }
 
     _syncFolderName() {
-        let newName = _getFolderName(this._folder);
+        let newName = this._dirInfo.get_name();
 
         this._folderNameLabel.text = newName;
         this._entry.text = newName;
@@ -1564,14 +1460,13 @@ var AppFolderDialog = GObject.registerClass({
     }
 
     _maybeUpdateFolderName() {
-        let folderName = _getFolderName(this._folder);
+        let folderName = this._dirInfo.get_name();
         let newFolderName = this._entry.text.trim();
 
         if (newFolderName.length === 0 || newFolderName === folderName)
             return;
 
-        this._folder.set_string('name', newFolderName);
-        this._folder.set_boolean('translate', false);
+        this._dirInfo.create_custom_with_name(newFolderName);
     }
 
     _zoomAndFadeIn() {
