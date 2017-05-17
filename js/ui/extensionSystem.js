@@ -218,8 +218,10 @@ function initExtension(uuid) {
         throw new Error("Extension was not properly created. Call loadExtension first");
 
     let extensionJs = dir.get_child('extension.js');
-    if (!extensionJs.query_exists(null))
-        throw new Error('Missing extension.js');
+    if (!extensionJs.query_exists(null)) {
+        logExtensionError(uuid, new Error('Missing extension.js'));
+        return false;
+    }
 
     let extensionModule;
     let extensionState = null;
