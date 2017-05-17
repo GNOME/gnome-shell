@@ -130,12 +130,14 @@ function updateExtension(uuid) {
             FileUtils.recursivelyMoveDir(extensionDir, oldExtensionTmpDir);
             FileUtils.recursivelyMoveDir(newExtensionTmpDir, extensionDir);
 
-            let extension = ExtensionUtils.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
+            let extension = null;
 
             try {
+                extension = ExtensionUtils.createExtensionObject(uuid, extensionDir, ExtensionUtils.ExtensionType.PER_USER);
                 ExtensionSystem.loadExtension(extension);
             } catch(e) {
-                ExtensionSystem.unloadExtension(extension);
+                if (extension)
+                    ExtensionSystem.unloadExtension(extension);
 
                 logError(e, 'Error loading extension %s'.format(uuid));
 
@@ -242,9 +244,8 @@ const InstallExtensionDialog = new Lang.Class({
                 global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
             }
 
-            let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
-
             try {
+                let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
                 ExtensionSystem.loadExtension(extension);
             } catch(e) {
                 uninstallExtension(uuid);

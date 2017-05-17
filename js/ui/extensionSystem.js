@@ -199,7 +199,14 @@ function reloadExtension(oldExtension) {
     unloadExtension(oldExtension);
 
     // Now, recreate the extension and load it.
-    let newExtension = ExtensionUtils.createExtensionObject(uuid, dir, type);
+    let newExtension;
+    try {
+        newExtension = ExtensionUtils.createExtensionObject(uuid, dir, type);
+    } catch(e) {
+        logExtensionError(uuid, e);
+        return;
+    }
+
     loadExtension(newExtension);
 }
 
