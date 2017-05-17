@@ -225,7 +225,12 @@ function initExtension(uuid) {
     let extensionState = null;
 
     ExtensionUtils.installImporter(extension);
-    extensionModule = extension.imports.extension;
+    try {
+        extensionModule = extension.imports.extension;
+    } catch(e) {
+        logExtensionError(uuid, e);
+        return false;
+    }
 
     if (extensionModule.init) {
         try {
