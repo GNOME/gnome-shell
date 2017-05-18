@@ -1059,6 +1059,7 @@ cogl_texture_get_data (CoglTexture *texture,
 
   closest_format =
     ctx->texture_driver->find_best_gl_get_data_format (ctx,
+                                                       texture_format,
                                                        format,
                                                        &closest_gl_format,
                                                        &closest_gl_type);
