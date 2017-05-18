@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-04-09 11:12+0000\n"
-"PO-Revision-Date: 2017-03-21 18:18+0100\n"
+"POT-Creation-Date: 2017-05-18 18:56+0000\n"
+"PO-Revision-Date: 2017-05-18 22:42+0200\n"
 "Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.0.2\n"
 "X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -50,7 +50,7 @@ msgid "Open the application menu"
 msgstr "Отворите изборник програма"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:149
+#: js/extensionPrefs/main.js:152
 msgid "Shell Extensions"
 msgstr "Проширења шкољке"
 
@@ -328,7 +328,7 @@ msgstr "Мрежна пријава"
 msgid "network-workgroup"
 msgstr "network-workgroup"
 
-#: js/extensionPrefs/main.js:117
+#: js/extensionPrefs/main.js:120
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Дошло је до грешке при учитавању прозорчета поставки за „%s“:"
@@ -599,12 +599,12 @@ msgstr "Додај у омиљене"
 msgid "Show Details"
 msgstr "Прикажи детаље"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:138
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "„%s“ је додат међу омиљене."
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:172
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "„%s“ је уклоњен из омиљених."
@@ -934,7 +934,7 @@ msgstr "%s, затим %s касније."
 #: js/ui/dateMenu.js:293
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
-msgstr "%s, затим %s, касније праћено %s."
+msgstr "%s, затим %s, а касније %s."
 
 #: js/ui/dateMenu.js:300
 msgid "Select a location…"
@@ -1352,11 +1352,11 @@ msgstr "Не могу да закључам"
 msgid "Lock was blocked by an application"
 msgstr "Неки програм је блокирао закључавање"
 
-#: js/ui/search.js:617
+#: js/ui/search.js:621
 msgid "Searching…"
 msgstr "Тражим…"
 
-#: js/ui/search.js:619
+#: js/ui/search.js:623
 msgid "No results."
 msgstr "Нема одговарајућих резултата."
 
