@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-20 18:14+0000\n"
+"POT-Creation-Date: 2017-05-04 22:42+0000\n"
 "PO-Revision-Date: 2017-03-21 19:33+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
@@ -58,7 +58,7 @@ msgid "Open the application menu"
 msgstr "Das Anwendungsmenü öffnen"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-#: js/extensionPrefs/main.js:149
+#: js/extensionPrefs/main.js:152
 msgid "Shell Extensions"
 msgstr "Shell-Erweiterungen"
 
@@ -347,7 +347,7 @@ msgstr "Netzwerkanmeldung"
 msgid "network-workgroup"
 msgstr "network-workgroup"
 
-#: js/extensionPrefs/main.js:117
+#: js/extensionPrefs/main.js:120
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Beim Laden des Einstellungsdialogs für %s ist ein Fehler aufgetreten:"
@@ -433,7 +433,7 @@ msgstr "Ausführung von »%s« ist gescheitert:"
 
 #: js/misc/util.js:180
 msgid "Just now"
-msgstr "Genau jetzt"
+msgstr "Gerade eben"
 
 #: js/misc/util.js:182
 #, javascript-format
@@ -553,11 +553,11 @@ msgid "%B %d %Y, %l∶%M %p"
 msgstr "%e. %B %Y, %H:%M"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
-#: js/portalHelper/main.js:67
+#: js/portalHelper/main.js:66
 msgid "Hotspot Login"
 msgstr "Hotspot-Anmeldung"
 
-#: js/portalHelper/main.js:113
+#: js/portalHelper/main.js:112
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
@@ -847,7 +847,7 @@ msgstr "Passwort der mobilen Breitbandverbindung"
 msgid "A password is required to connect to “%s”."
 msgstr "Es wird ein Passwort benötigt, um sich mit »%s« zu verbinden."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1755
+#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1759
 msgid "Network Manager"
 msgstr "Netzwerk-Verwaltung"
 
@@ -879,7 +879,7 @@ msgstr ""
 msgid "%s is now known as %s"
 msgstr "%s heißt jetzt %s"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:178
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:179
 msgid "Windows"
 msgstr "Fenster"
 
@@ -1459,7 +1459,7 @@ msgstr "Einschalten"
 
 #: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
 #: js/ui/status/network.js:367 js/ui/status/network.js:1310
-#: js/ui/status/network.js:1425 js/ui/status/nightLight.js:47
+#: js/ui/status/network.js:1429 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Ausschalten"
@@ -1662,62 +1662,62 @@ msgstr "Hotspot %s eingeschaltet"
 msgid "%s Not Connected"
 msgstr "%s nicht verbunden"
 
-#: js/ui/status/network.js:1442
+#: js/ui/status/network.js:1446
 msgid "connecting…"
 msgstr "Verbindungsaufbau …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1445
+#: js/ui/status/network.js:1449
 msgid "authentication required"
 msgstr "Anmeldung erforderlich"
 
-#: js/ui/status/network.js:1447
+#: js/ui/status/network.js:1451
 msgid "connection failed"
 msgstr "Verbindung gescheitert"
 
-#: js/ui/status/network.js:1513 js/ui/status/network.js:1608
+#: js/ui/status/network.js:1517 js/ui/status/network.js:1612
 #: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Netzwerkeinstellungen"
 
-#: js/ui/status/network.js:1515
+#: js/ui/status/network.js:1519
 msgid "VPN Settings"
 msgstr "VPN-Einstellungen"
 
-#: js/ui/status/network.js:1534
+#: js/ui/status/network.js:1538
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1544
+#: js/ui/status/network.js:1548
 msgid "VPN Off"
 msgstr "VPN ausgeschaltet"
 
-#: js/ui/status/network.js:1639
+#: js/ui/status/network.js:1643
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Kabelverbindung"
 msgstr[1] "%s Kabelverbindungen"
 
-#: js/ui/status/network.js:1643
+#: js/ui/status/network.js:1647
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Funknetzwerkverbindung"
 msgstr[1] "%s Funknetzwerkverbindungen"
 
-#: js/ui/status/network.js:1647
+#: js/ui/status/network.js:1651
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Modem-Verbindung"
 msgstr[1] "%s Modem-Verbindungen"
 
-#: js/ui/status/network.js:1794
+#: js/ui/status/network.js:1798
 msgid "Connection failed"
 msgstr "Verbindung gescheitert"
 
-#: js/ui/status/network.js:1795
+#: js/ui/status/network.js:1799
 msgid "Activation of network connection failed"
 msgstr "Aktivierung der Netzwerkverbindung ist gescheitert"
 
@@ -1815,11 +1815,11 @@ msgstr "Als anderer Benutzer anmelden"
 msgid "Unlock Window"
 msgstr "Fenster entsperren"
 
-#: js/ui/viewSelector.js:182
+#: js/ui/viewSelector.js:183
 msgid "Applications"
 msgstr "Anwendungen"
 
-#: js/ui/viewSelector.js:186
+#: js/ui/viewSelector.js:187
 msgid "Search"
 msgstr "Suchen"
 
