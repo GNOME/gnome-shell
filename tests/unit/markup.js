@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-// Test cases for Calendar markup parsing
+// Test cases for MessageList markup parsing
 
 const JsUnit = imports.jsUnit;
 const Pango = imports.gi.Pango;
@@ -8,7 +8,7 @@ const Pango = imports.gi.Pango;
 const Environment = imports.ui.environment;
 Environment.init();
 
-const Calendar = imports.ui.calendar;
+const MessageList = imports.ui.messageList;
 
 // Assert that @input, assumed to be markup, gets "fixed" to @output,
 // which is valid markup. If @output is null, @input is expected to
@@ -16,7 +16,7 @@ const Calendar = imports.ui.calendar;
 function assertConverts(input, output) {
     if (!output)
         output = input;
-    let fixed = Calendar._fixMarkup(input, true);
+    let fixed = MessageList._fixMarkup(input, true);
     JsUnit.assertEquals(output, fixed);
 
     let parsed = false;
@@ -30,7 +30,7 @@ function assertConverts(input, output) {
 // Assert that @input, assumed to be plain text, gets escaped to @output,
 // which is valid markup.
 function assertEscapes(input, output) {
-    let fixed = Calendar._fixMarkup(input, false);
+    let fixed = MessageList._fixMarkup(input, false);
     JsUnit.assertEquals(output, fixed);
 
     let parsed = false;
