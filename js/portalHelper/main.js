@@ -143,6 +143,7 @@ const PortalWindow = new Lang.Class({
 
         this._webContext = WebKit.WebContext.new_ephemeral();
         this._webContext.set_cache_model(WebKit.CacheModel.DOCUMENT_VIEWER);
+        this._webContext.set_network_proxy_settings(WebKit.NetworkProxyMode.NO_PROXY, null);
 
         this._webView = WebKit.WebView.new_with_context(this._webContext);
         this._webView.connect('decide-policy', Lang.bind(this, this._onDecidePolicy));
