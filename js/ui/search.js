@@ -447,6 +447,7 @@ var SearchResults = class {
 
         this._terms = [];
         this._results = {};
+        this._isAnimating = false;
 
         this._providers = [];
 
@@ -660,22 +661,44 @@ var SearchResults = class {
         return this._providers.some(p => p.searchInProgress);
     }
 
+    get isAnimating() {
+        return this._isAnimating;
+    }
+
+    set isAnimating (v) {
+        if (this._isAnimating == v)
+            return;
+
+        this._isAnimating = v;
+        this._updateSearchProgress();
+        if (!this._isAnimating) {
+            this._providers.forEach((provider) => {
+                let results = this._results[provider.id];
+                if (results)
+                    this._updateResults(provider, results);
+            });
+        }
+    }
+
     _updateSearchProgress() {
         let haveResults = this._providers.some(provider => {
             let display = provider.display;
             return (display.getFirstResult() != null);
         });
+        let showStatus = !haveResults && !this.isAnimating;
 
         this._scrollView.visible = haveResults;
-        this._statusBin.visible = !haveResults;
+        this._statusBin.visible = showStatus;
 
-        if (!haveResults) {
+        if (showStatus) {
             if (this.searchInProgress) {
                 this._statusText.set_text(_("Searching…"));
             } else {
                 this._statusText.set_text(_("No results."));
             }
         }
+
+        this.emit('search-progress-updated');
     }
 
     _updateResults(provider, results) {
@@ -691,6 +714,10 @@ var SearchResults = class {
     }
 
     activateDefault() {
+        // If we are about to activate a result, we are done animating and need
+        // to update the display immediately.
+        this.isAnimating = false;
+
         // If we have a search queued up, force the search now.
         if (this._searchTimeoutId > 0)
             this._doSearch();
