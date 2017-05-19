@@ -1283,7 +1283,7 @@ calculate_scale (MetaMonitor     *monitor,
     {
     case META_CONNECTOR_TYPE_HDMIA:
     case META_CONNECTOR_TYPE_HDMIB:
-      if (resolution_width >= SMALLEST_4K_WIDTH)
+      if (resolution_width < SMALLEST_4K_WIDTH)
         goto out;
       break;
     default:
