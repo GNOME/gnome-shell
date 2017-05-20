@@ -1316,12 +1316,12 @@ const WindowManager = new Lang.Class({
         if ((whichChange == Meta.SizeChange.FULLSCREEN ||
              whichChange == Meta.SizeChange.UNFULLSCREEN) &&
             oldFrameRect.width > 0 && oldFrameRect.height > 0)
-            this._fullscreenAnimation(shellwm, actor, oldFrameRect, whichChange);
+            this._prepareAnimationInfo(shellwm, actor, oldFrameRect, whichChange);
         else
             shellwm.completed_size_change(actor);
     },
 
-    _fullscreenAnimation: function(shellwm, actor, oldFrameRect, change) {
+    _prepareAnimationInfo: function(shellwm, actor, oldFrameRect, change) {
         // Position a clone of the window on top of the old position,
         // while actor updates are frozen.
         let actorContent = Shell.util_get_content_for_window_actor(actor, oldFrameRect);
@@ -1331,22 +1331,22 @@ const WindowManager = new Lang.Class({
         actorClone.set_size(oldFrameRect.width, oldFrameRect.height);
         Main.uiGroup.add_actor(actorClone);
 
-        if (this._clearFullscreenInfo(actor))
+        if (this._clearAnimationInfo(actor))
             this._shellwm.completed_size_change(actor);
 
-        actor.__fullscreenInfo = { clone: actorClone,
-                                   oldRect: oldFrameRect };
+        actor.__animationInfo = { clone: actorClone,
+                                  oldRect: oldFrameRect };
     },
 
     _sizeChangedWindow: function(shellwm, actor) {
-        if (!actor.__fullscreenInfo)
+        if (!actor.__animationInfo)
             return;
         if (this._resizing.indexOf(actor) != -1)
             return;
 
-        let actorClone = actor.__fullscreenInfo.clone;
+        let actorClone = actor.__animationInfo.clone;
         let targetRect = actor.meta_window.get_frame_rect();
-        let sourceRect = actor.__fullscreenInfo.oldRect;
+        let sourceRect = actor.__animationInfo.oldRect;
 
         let scaleX = targetRect.width / sourceRect.width;
         let scaleY = targetRect.height / sourceRect.height;
@@ -1393,10 +1393,10 @@ const WindowManager = new Lang.Class({
         shellwm.completed_size_change(actor);
     },
 
-    _clearFullscreenInfo: function(actor) {
-        if (actor.__fullscreenInfo) {
-            actor.__fullscreenInfo.clone.destroy();
-            delete actor.__fullscreenInfo;
+    _clearAnimationInfo: function(actor) {
+        if (actor.__animationInfo) {
+            actor.__animationInfo.clone.destroy();
+            delete actor.__animationInfo;
             return true;
         }
         return false;
@@ -1409,13 +1409,13 @@ const WindowManager = new Lang.Class({
             actor.scale_y = 1.0;
             actor.translation_x = 0;
             actor.translation_y = 0;
-            this._clearFullscreenInfo(actor);
+            this._clearAnimationInfo(actor);
         }
     },
 
     _sizeChangeWindowOverwritten: function(shellwm, actor) {
         if (this._removeEffect(this._resizing, actor))
-            this._clearFullscreenInfo(actor);
+            this._clearAnimationInfo(actor);
     },
 
     _hasAttachedDialogs: function(window, ignoreWindow) {
