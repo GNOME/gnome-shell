@@ -1313,9 +1313,7 @@ const WindowManager = new Lang.Class({
             return;
         }
 
-        if ((whichChange == Meta.SizeChange.FULLSCREEN ||
-             whichChange == Meta.SizeChange.UNFULLSCREEN) &&
-            oldFrameRect.width > 0 && oldFrameRect.height > 0)
+        if (oldFrameRect.width > 0 && oldFrameRect.height > 0)
             this._prepareAnimationInfo(shellwm, actor, oldFrameRect, whichChange);
         else
             shellwm.completed_size_change(actor);
