@@ -1366,10 +1366,10 @@ const WindowManager = new Lang.Class({
                          });
 
         let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
-        let oldRect = actor.__fullscreenInfo.oldRect;
-        if (oldRect) {
-            actor.translation_x = oldRect.x - monitor.x;
-            actor.translation_y = oldRect.y - monitor.y;
+        let sourceRect = actor.__fullscreenInfo.oldRect;
+        if (sourceRect) {
+            actor.translation_x = sourceRect.x - monitor.x;
+            actor.translation_y = sourceRect.y - monitor.y;
         } else {
             actor.translation_x = -(targetRect.x - monitor.x);
             actor.translation_y = -(targetRect.y - monitor.y);
