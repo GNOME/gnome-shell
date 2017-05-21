@@ -218,11 +218,10 @@ function formatTime(time, params) {
     if (_desktopSettings == null)
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
     let clockFormat = _desktopSettings.get_string('clock-format');
-    let hasAmPm = date.format('%p') != '';
 
     params = Params.parse(params, { timeOnly: false });
 
-    if (clockFormat == '24h' || !hasAmPm) {
+    if (clockFormat == '24h') {
         // Show only the time if date is on today
         if (daysAgo < 1 || params.timeOnly)
             /* Translators: Time in 24h format */
