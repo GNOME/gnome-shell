@@ -1,0 +1,24 @@
+#!/bin/sh
+
+EOS_SHELL_DCONF_PROFILE_OVERRIDE=/etc/dconf/db/gdm.d/99-gdm-eos-shell-settings
+DCONF_GDM_DATABASE=/etc/dconf/db/gdm
+
+if [ "$1" = configure ]; then
+  # Our previous eos-shell package would install an override file for the GDM
+  # dconf profile under /etc to select 'gdm-eos-shell' as the default session.
+  # However, /usr/share/gnome-session/sessions/gdm-eos-shell.session is no longer
+  # being installed now we don't ship eos-shell, and so we need to make sure that
+  # both the override file and the dconf database for the gdm profile get deleted
+  # from /etc when dist-upgrading before running dconf update, or we'll get a
+  # broken setup pointing to a not available session.
+  if [ -f $EOS_SHELL_DCONF_PROFILE_OVERRIDE ]; then
+      rm -f $EOS_SHELL_DCONF_PROFILE_OVERRIDE
+  fi
+
+  if [ -f $DCONF_GDM_DATABASE ]; then
+      rm -f $DCONF_GDM_DATABASE
+  fi
+
+  # Make sure the GDM dconf database gets regenerated back again.
+  dconf update
+fi
