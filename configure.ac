@@ -57,6 +57,13 @@ AM_GNU_GETTEXT([external])
 
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
+
+# Debian / Ubuntu set this flag to 'no' in libtool, causing linking errors
+# (i.e when linking against mutter-clutter). Not to explicitly redefine such
+# deps, we enable this flag for everybody.
+link_all_deplibs=yes
+link_all_deplibs_CXX=yes
+
 AC_PROG_CC
 AC_PROG_CC_C_O
 AC_PROG_INSTALL
