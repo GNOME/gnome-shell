@@ -103,7 +103,7 @@ Breaks: gdm3 (<< 3.19.92),
         gnome-session (<< 3.19)
 Conflicts: eos-shell (<< 3.22)
 Replaces: eos-shell (<< 3.22)
-Provides: notification-daemon, polkit-1-auth-agent
+Provides: eos-shell, notification-daemon, polkit-1-auth-agent
 Description: graphical shell for the GNOME desktop
  The GNOME Shell provides core interface functions like switching
  windows, launching applications or see your notifications. It takes
