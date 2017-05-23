@@ -833,19 +833,19 @@ const LookingGlass = new Lang.Class({
             return Clutter.EVENT_STOP;
         }));
 
-        let gcIcon = new St.Icon({ icon_name: 'gnome-fs-trash-full',
+        let gcIcon = new St.Icon({ icon_name: 'user-trash-full',
                                    icon_size: 24 });
         toolbar.add_actor(gcIcon);
         gcIcon.reactive = true;
         gcIcon.connect('button-press-event', Lang.bind(this, function () {
-           gcIcon.icon_name = 'gnome-fs-trash-empty';
+           gcIcon.icon_name = 'user-trash';
            System.gc();
            this._timeoutId = Mainloop.timeout_add(500, Lang.bind(this, function () {
-                gcIcon.icon_name = 'gnome-fs-trash-full';
+                gcIcon.icon_name = 'user-trash-full';
                 this._timeoutId = 0;
                 return GLib.SOURCE_REMOVE;
            }));
-           GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] gcIcon.icon_name = \'gnome-fs-trash-full\'');
+           GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] gcIcon.icon_name = \'user-trash-full\'');
            return Clutter.EVENT_PROPAGATE;
         }));
 
