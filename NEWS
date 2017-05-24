@@ -1,3 +1,22 @@
+3.25.2
+======
+* Fix StEntry::primary-icon-clicked emission [Florian; #782190]
+* Add an optional icon parameter to PopupMenu.addAction() [Mario; #782166]
+* Allow search providers to include clipboard text with results [Daiki; #775099]
+* Reduce dependency on Caribou [Carlos; #777342]
+* Add transparency to top bar when free floating [Alessandro; #747163]
+* Animate maximize/unmaximize operations [Alessandro; #766685]
+* Misc. bug fixes [Florian, Matthias, Jeremy, Michael, Carlos, Lan; #782000,
+  #780215, #782802, #782637, #782930, #755164, #780215, #782982]
+
+Contributors:
+  Jeremy Bicha, Michael Biebl, Alessandro Bono, Carlos Garnacho, Ting-Wei Lan,
+  Matthias Liertzer, Florian Müllner, Mario Sanchez Prada, Daiki Ueno
+
+Translations:
+  Jordi Mas [ca], Christian Stadelmann [de], Милош Поповић [sr],
+  Милош Поповић [sr@latin], Furkan Ahmet Kara [tr]
+
 3.25.1
 ======
 * Close Wifi selection dialog on lock [Florian; #780054]
