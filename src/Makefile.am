@@ -42,8 +42,7 @@ generated_script_substitutions = \
 	    -e "s|@pkgdatadir[@]|$(pkgdatadir)|g" \
 	    -e "s|@PYTHON[@]|$(PYTHON)|g" \
 	    -e "s|@VERSION[@]|$(VERSION)|g" \
-	    -e "s|@sysconfdir[@]|$(sysconfdir)|g" \
-	    -e "s|@GJS_CONSOLE[@]|$(GJS_CONSOLE)|g"
+	    -e "s|@sysconfdir[@]|$(sysconfdir)|g"
 
 gnome-shell-extension-tool: gnome-shell-extension-tool.in Makefile
 	$(AM_V_GEN) sed $(generated_script_substitutions) $< > $@.tmp && mv $@.tmp $@ && chmod a+x $@
