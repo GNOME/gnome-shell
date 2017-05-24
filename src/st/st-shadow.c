@@ -180,7 +180,7 @@ st_shadow_get_box (StShadow              *shadow,
 }
 
 /**
- * SECTION:st-shadow-helper:
+ * SECTION: st-shadow-helper
  *
  * An helper for implementing a drop shadow on a actor.
  * The actor is expected to recreate the helper whenever its contents
