@@ -252,37 +252,8 @@ var Overview = class {
 
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
             let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
-                                                               monitorIndex: i,
-                                                               vignette: true });
+                                                               monitorIndex: i });
             this._bgManagers.push(bgManager);
-        }
-    }
-
-    _unshadeBackgrounds() {
-        let backgrounds = this._backgroundGroup.get_children();
-        for (let i = 0; i < backgrounds.length; i++) {
-            backgrounds[i].ease_property('brightness', 1.0, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-            backgrounds[i].ease_property('vignette-sharpness', 0.0, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-        }
-    }
-
-    _shadeBackgrounds() {
-        let backgrounds = this._backgroundGroup.get_children();
-        for (let i = 0; i < backgrounds.length; i++) {
-            backgrounds[i].ease_property('brightness', Lightbox.VIGNETTE_BRIGHTNESS, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
-            backgrounds[i].ease_property('vignette-sharpness', Lightbox.VIGNETTE_SHARPNESS, {
-                duration: SHADE_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            });
         }
     }
 
@@ -610,7 +581,6 @@ var Overview = class {
             duration: ANIMATION_TIME,
             onComplete: () => this._showDone(),
         });
-        this._shadeBackgrounds();
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
@@ -674,7 +644,6 @@ var Overview = class {
             duration: ANIMATION_TIME,
             onComplete: () => this._hideDone(),
         });
-        this._unshadeBackgrounds();
 
         Main.layoutManager.overviewGroup.set_child_above_sibling(
             this._coverPane, null);
