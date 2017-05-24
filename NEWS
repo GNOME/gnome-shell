@@ -1,3 +1,29 @@
+3.25.2
+======
+* Fix frame updates on hide-titlebar-when-maximized changes [Florian; #781862]
+* Fix accessible screen coordinates on X11 [Florian; #781902]
+* Use less CPU when rendering fast-updating windows [Carlos, Emmanuele; #782344]
+* Compute geometry of clients that don't set one explicitly [Olivier; #782213]
+* Fix copy+paste of UTF8 strings between X11 and wayland [Carlos; #782472]
+* Fix non-wayland builds [Chris; #780533]
+* Add plugin vfunc to implement a custom force-quit dialog [Carlos; #711619]
+* Fix swapped red and blue channels in CoglTexture data [Carlos; #779234
+* Fix build where libtool's link_all_deplibs defaults to 'no' [Marco; #782821]
+* Fix glitches when opening a window maximized [Olivier; #781353, #782183]
+* Fix wrong cursor after window underneath the pointer changed [Carlos; #755164]
+* Implement support for disable-while-typing option [Evan; #764852]
+* Emit size-change signal when tiling [Alessandro; #782968]
+* Misc. bug fixes [Nigel, Matthias, Jonas; #759085, #780215, #782156, #782152]
+
+Contributors:
+  Jonas Ådahl, Emmanuele Bassi, Alessandro Bono, Olivier Fourdan,
+  Carlos Garnacho, Matthias Liertzer, Florian Müllner, Nigel Taylor,
+  Marco Trevisan (Treviño), Chris Vine, Evan Welsh
+
+Translations:
+  Fabio Tomat [fur], Jordi Mas [ca], Mario Blättermann [de],
+  Emin Tufan Çetin [tr], Balázs Úr [hu]
+
 3.25.1
 ======
 * Always sync window geometry on state changes [Jonas; #780292]
