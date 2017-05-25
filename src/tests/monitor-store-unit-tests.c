@@ -522,6 +522,62 @@ meta_test_monitor_store_scale (void)
 }
 
 static void
+meta_test_monitor_store_fractional_scale (void)
+{
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 0,
+              .width = 800,
+              .height = 600
+            },
+            .scale = 1.5,
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1200,
+                  .height = 900,
+                  .refresh_rate = 60.000495910644531
+                }
+              }
+            },
+            .n_monitors = 1,
+          }
+        },
+        .n_logical_monitors = 1
+      }
+    },
+    .n_configurations = 1
+  };
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
+      return;
+    }
+
+  set_custom_monitor_config ("fractional-scale.xml");
+
+  check_monitor_configurations (&expect);
+}
+
+static void
 meta_test_monitor_store_mirrored (void)
 {
   MonitorStoreTestExpect expect = {
@@ -748,6 +804,8 @@ init_monitor_store_tests (void)
                    meta_test_monitor_store_underscanning);
   g_test_add_func ("/backends/monitor-store/scale",
                    meta_test_monitor_store_scale);
+  g_test_add_func ("/backends/monitor-store/fractional-scale",
+                   meta_test_monitor_store_fractional_scale);
   g_test_add_func ("/backends/monitor-store/mirrored",
                    meta_test_monitor_store_mirrored);
   g_test_add_func ("/backends/monitor-store/first-rotated",

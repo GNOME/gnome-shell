@@ -102,7 +102,7 @@ typedef struct _MonitorTestCaseOutput
   int width_mm;
   int height_mm;
   MetaTileInfo tile_info;
-  int scale;
+  float scale;
   gboolean is_laptop_panel;
   gboolean is_underscanning;
 } MonitorTestCaseOutput;
@@ -152,7 +152,7 @@ typedef struct _MonitorTestCaseMonitor
 typedef struct _MonitorTestCaseLogicalMonitor
 {
   MetaRectangle layout;
-  int scale;
+  float scale;
   int monitors[MAX_N_MONITORS];
   int n_monitors;
   MetaMonitorTransform transform;
@@ -3010,6 +3010,108 @@ meta_test_monitor_custom_scale_config (void)
 }
 
 static void
+meta_test_monitor_custom_fractional_scale_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1200,
+          .height = 900,
+          .refresh_rate = 60.000495910644531
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = 0,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        },
+      },
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0
+        },
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1200,
+              .height = 900,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .scale = 1.5
+        }
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        }
+      },
+      .n_crtcs = 1,
+      .n_tiled_monitors = 0,
+      .screen_width = 800,
+      .screen_height = 600
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
+      return;
+    }
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  set_custom_monitor_config ("fractional-scale.xml");
+  emulate_hotplug (test_setup);
+
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_custom_tiled_config (void)
 {
   MonitorTestCase test_case = {
@@ -4288,6 +4390,8 @@ init_monitor_tests (void)
                    meta_test_monitor_custom_underscanning_config);
   g_test_add_func ("/backends/monitor/custom/scale-config",
                    meta_test_monitor_custom_scale_config);
+  g_test_add_func ("/backends/monitor/custom/fractional-scale-config",
+                   meta_test_monitor_custom_fractional_scale_config);
   g_test_add_func ("/backends/monitor/custom/tiled-config",
                    meta_test_monitor_custom_tiled_config);
   g_test_add_func ("/backends/monitor/custom/tiled-custom-resolution-config",
