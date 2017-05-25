@@ -1,7 +1,7 @@
 # Point to our macro directory and pick up user flags from the environment
 ACLOCAL_AMFLAGS  = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = data js src  tests po docs
+SUBDIRS = data js subprojects/gvc src  tests po docs
 
 if BUILD_BROWSER_PLUGIN
 SUBDIRS += browser-plugin

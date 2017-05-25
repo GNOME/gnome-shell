@@ -8,8 +8,6 @@ noinst_LTLIBRARIES =
 noinst_PROGRAMS =
 service_in_files =
 
-SUBDIRS = gvc
-
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir) --add-include-path=$(MUTTER_GIR_DIR) -L$(MUTTER_TYPELIB_DIR)
@@ -287,6 +285,8 @@ shell-enum-types.c: $(srcdir)/shell-enum-types.c.in stamp-shell-enum-types.h
 	rm -f $(@F).tmp
 EXTRA_DIST += shell-enum-types.c.in
 
+gvcdir = $(top_builddir)/subprojects/gvc
+
 libgnome_shell_ldflags = -avoid-version
 libgnome_shell_libadd =		\
 	-lm			\
@@ -294,7 +294,7 @@ libgnome_shell_libadd =		\
 	libgnome-shell-menu.la	\
 	libst-1.0.la       	\
 	libtray.la		\
-	gvc/libgvc.la		\
+	$(gvcdir)/libgvc.la	\
 	$(NULL)
 
 libgnome_shell_menu_la_LDFLAGS = $(libgnome_shell_ldflags)

@@ -65,8 +65,6 @@ js/ui/windowAttentionHandler.js
 js/ui/windowManager.js
 js/ui/windowMenu.js
 src/calendar-server/evolution-calendar.desktop.in
-# Please do not remove this file from POTFILES.in. Run "git submodule init && git submodule update" to get it.
-src/gvc/gvc-mixer-control.c
 src/main.c
 src/shell-app.c
 src/shell-app-system.c
@@ -74,3 +72,5 @@ src/shell-global.c
 src/shell-keyring-prompt.c
 src/shell-polkit-authentication-agent.c
 src/shell-util.c
+# Please do not remove this file from POTFILES.in. Run "git submodule init && git submodule update" to get it.
+subprojects/gvc/gvc-mixer-control.c

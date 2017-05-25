@@ -16,7 +16,7 @@ cd "${srcdir}"
 }
 
 # Fetch submodules if needed
-if test ! -f src/gvc/Makefile.am || test ! -f data/theme/gnome-shell-sass/COPYING;
+if test ! -f subprojects/gvc/Makefile.am || test ! -f data/theme/gnome-shell-sass/COPYING;
 then
   echo "+ Setting up submodules"
   git submodule init

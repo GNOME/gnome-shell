@@ -259,7 +259,7 @@ AC_CONFIG_FILES([
   docs/reference/st/st-docs.sgml
   js/Makefile
   src/Makefile
-  src/gvc/Makefile
+  subprojects/gvc/Makefile
   browser-plugin/Makefile
   tests/Makefile
   po/Makefile.in
