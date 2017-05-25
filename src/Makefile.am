@@ -174,6 +174,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	meta/boxes.h				\
 	core/meta-border.c			\
 	core/meta-border.h			\
+	core/meta-fraction.c			\
+	core/meta-fraction.h			\
 	compositor/clutter-utils.c		\
 	compositor/clutter-utils.h		\
 	compositor/cogl-utils.c			\
