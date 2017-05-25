@@ -394,9 +394,10 @@ struct _MetaMonitorManagerClass
                                          MetaMonitor        *,
                                          MetaMonitorMode    *);
 
-  void (*get_supported_scales) (MetaMonitorManager *,
-                                float             **,
-                                int                *);
+  void (*get_supported_scales) (MetaMonitorManager          *,
+                                MetaLogicalMonitorLayoutMode ,
+                                float                      **,
+                                int                         *);
 
   MetaMonitorManagerCapability (*get_capabilities) (MetaMonitorManager *);
 
@@ -507,6 +508,10 @@ gboolean           meta_monitor_manager_is_headless (MetaMonitorManager *manager
 float              meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                                       MetaMonitor        *monitor,
                                                                       MetaMonitorMode    *monitor_mode);
+
+gboolean           meta_monitor_manager_is_scale_supported (MetaMonitorManager          *manager,
+                                                            MetaLogicalMonitorLayoutMode layout_mode,
+                                                            float                        scale);
 
 MetaMonitorManagerCapability
                    meta_monitor_manager_get_capabilities (MetaMonitorManager *manager);

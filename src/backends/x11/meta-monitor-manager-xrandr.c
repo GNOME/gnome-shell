@@ -1800,9 +1800,10 @@ meta_monitor_manager_xrandr_calculate_monitor_mode_scale (MetaMonitorManager *ma
 }
 
 static void
-meta_monitor_manager_xrandr_get_supported_scales (MetaMonitorManager *manager,
-                                                  float             **scales,
-                                                  int                *n_scales)
+meta_monitor_manager_xrandr_get_supported_scales (MetaMonitorManager          *manager,
+                                                  MetaLogicalMonitorLayoutMode layout_mode,
+                                                  float                      **scales,
+                                                  int                         *n_scales)
 {
   *scales = supported_scales_xrandr;
   *n_scales = G_N_ELEMENTS (supported_scales_xrandr);

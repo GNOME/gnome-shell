@@ -437,9 +437,9 @@ check_logical_monitor (MonitorTestCase               *test_case,
   g_assert_cmpint (logical_monitor->rect.height,
                    ==,
                    test_logical_monitor->layout.height);
-  g_assert_cmpint (logical_monitor->scale,
-                   ==,
-                   test_logical_monitor->scale);
+  g_assert_cmpfloat (logical_monitor->scale,
+                     ==,
+                     test_logical_monitor->scale);
   g_assert_cmpuint (logical_monitor->transform,
                     ==,
                     test_logical_monitor->transform);

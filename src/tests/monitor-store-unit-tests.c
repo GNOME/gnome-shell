@@ -51,7 +51,7 @@ typedef struct _MonitorTestCaseMonitor
 typedef struct _MonitorTestCaseLogicalMonitor
 {
   MetaRectangle layout;
-  int scale;
+  float scale;
   MetaMonitorTransform transform;
   gboolean is_primary;
   gboolean is_presentation;
@@ -141,9 +141,9 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
 
       g_assert (meta_rectangle_equal (&logical_monitor_config->layout,
                                       &config_expect->logical_monitors[i].layout));
-      g_assert_cmpint (logical_monitor_config->scale,
-                       ==,
-                       config_expect->logical_monitors[i].scale);
+      g_assert_cmpfloat (logical_monitor_config->scale,
+                         ==,
+                         config_expect->logical_monitors[i].scale);
       g_assert_cmpint (logical_monitor_config->transform,
                        ==,
                        config_expect->logical_monitors[i].transform);

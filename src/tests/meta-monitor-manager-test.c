@@ -24,7 +24,13 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-config-manager.h"
 
-static float supported_scales_test[] = {
+static float supported_scales_test_logical[] = {
+  1.0,
+  1.5,
+  2.0
+};
+
+static float supported_scales_test_physical[] = {
   1.0,
   2.0
 };
@@ -415,12 +421,22 @@ meta_monitor_manager_test_calculate_monitor_mode_scale (MetaMonitorManager *mana
 }
 
 static void
-meta_monitor_manager_test_get_supported_scales (MetaMonitorManager *manager,
-                                                float             **scales,
-                                                int                *n_scales)
+meta_monitor_manager_test_get_supported_scales (MetaMonitorManager          *manager,
+                                                MetaLogicalMonitorLayoutMode layout_mode,
+                                                float                      **scales,
+                                                int                         *n_scales)
 {
-  *scales = supported_scales_test;
-  *n_scales = G_N_ELEMENTS (supported_scales_test);
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      *scales = supported_scales_test_logical;
+      *n_scales = G_N_ELEMENTS (supported_scales_test_logical);
+      break;
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      *scales = supported_scales_test_physical;
+      *n_scales = G_N_ELEMENTS (supported_scales_test_physical);
+      break;
+    }
 }
 
 static gboolean

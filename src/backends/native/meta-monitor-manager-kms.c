@@ -52,7 +52,13 @@
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
 #define SYNC_TOLERANCE 0.01    /* 1 percent */
 
-static float supported_scales_kms[] = {
+static float supported_scales_kms_logical[] = {
+  1.0,
+  1.5,
+  2.0
+};
+
+static float supported_scales_kms_physical[] = {
   1.0,
   2.0
 };
@@ -1847,12 +1853,22 @@ meta_monitor_manager_kms_calculate_monitor_mode_scale (MetaMonitorManager *manag
 }
 
 static void
-meta_monitor_manager_kms_get_supported_scales (MetaMonitorManager *manager,
-                                               float             **scales,
-                                               int                *n_scales)
+meta_monitor_manager_kms_get_supported_scales (MetaMonitorManager          *manager,
+                                               MetaLogicalMonitorLayoutMode layout_mode,
+                                               float                      **scales,
+                                               int                         *n_scales)
 {
-  *scales = supported_scales_kms;
-  *n_scales = G_N_ELEMENTS (supported_scales_kms);
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      *scales = supported_scales_kms_logical;
+      *n_scales = G_N_ELEMENTS (supported_scales_kms_logical);
+      break;
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      *scales = supported_scales_kms_physical;
+      *n_scales = G_N_ELEMENTS (supported_scales_kms_physical);
+      break;
+    }
 }
 
 static MetaMonitorManagerCapability

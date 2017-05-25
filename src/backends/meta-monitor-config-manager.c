@@ -943,13 +943,16 @@ meta_verify_monitor_config (MetaMonitorConfig *monitor_config,
 gboolean
 meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor_config,
                                     MetaLogicalMonitorLayoutMode layout_mode,
+                                    MetaMonitorManager          *monitor_manager,
                                     GError                     **error)
 {
   GList *l;
   int expected_mode_width = 0;
   int expected_mode_height = 0;
 
-  if (logical_monitor_config->scale < 1.0)
+  if (!meta_monitor_manager_is_scale_supported (monitor_manager,
+                                                layout_mode,
+                                                logical_monitor_config->scale))
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Invalid logical monitor config scale %g",

@@ -630,6 +630,7 @@ handle_end_element (GMarkupParseContext  *context,
 
             if (!meta_verify_logical_monitor_config (logical_monitor_config,
                                                      layout_mode,
+                                                     store->monitor_manager,
                                                      error))
               return;
           }
@@ -1069,13 +1070,17 @@ static void
 append_logical_monitor_xml (GString                  *buffer,
                             MetaLogicalMonitorConfig *logical_monitor_config)
 {
+  char scale_str[G_ASCII_DTOSTR_BUF_SIZE];
+
   g_string_append (buffer, "    <logicalmonitor>\n");
   g_string_append_printf (buffer, "      <x>%d</x>\n",
                           logical_monitor_config->layout.x);
   g_string_append_printf (buffer, "      <y>%d</y>\n",
                           logical_monitor_config->layout.y);
-  g_string_append_printf (buffer, "      <scale>%g</scale>\n",
-                          logical_monitor_config->scale);
+  g_ascii_dtostr (scale_str, G_ASCII_DTOSTR_BUF_SIZE,
+                  logical_monitor_config->scale);
+  g_string_append_printf (buffer, "      <scale>%s</scale>\n",
+                          scale_str);
   if (logical_monitor_config->is_primary)
     g_string_append (buffer, "      <primary>yes</primary>\n");
   if (logical_monitor_config->is_presentation)

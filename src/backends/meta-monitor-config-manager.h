@@ -117,6 +117,7 @@ gboolean meta_verify_monitor_config (MetaMonitorConfig *monitor_config,
 
 gboolean meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor_config,
                                              MetaLogicalMonitorLayoutMode layout_mode,
+                                             MetaMonitorManager          *monitor_manager,
                                              GError                     **error);
 
 gboolean meta_verify_monitors_config (MetaMonitorsConfig *config,

@@ -40,7 +40,13 @@
 #define MAX_CRTCS (MAX_MONITORS * 2)
 #define MAX_MODES (MAX_MONITORS * 4)
 
-static float supported_scales_dummy[] = {
+static float supported_scales_dummy_logical[] = {
+  1.0,
+  1.5,
+  2.0
+};
+
+static float supported_scales_dummy_physical[] = {
   1.0,
   2.0
 };
@@ -242,20 +248,6 @@ meta_output_dummy_notify_destroy (MetaOutput *output)
   g_clear_pointer (&output->driver_private, g_free);
 }
 
-static gboolean
-is_scale_supported (float scale)
-{
-  unsigned int i;
-
-  for (i = 0; i < G_N_ELEMENTS (supported_scales_dummy); i++)
-    {
-      if (scale == supported_scales_dummy[i])
-        return TRUE;
-    }
-
-  return FALSE;
-}
-
 static void
 meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 {
@@ -328,7 +320,9 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
       for (i = 0; i < num_monitors && scales_str_list[i]; i++)
         {
           float scale = g_ascii_strtod (scales_str_list[i], NULL);
-          if (is_scale_supported (scale))
+          if (meta_monitor_manager_is_scale_supported (manager,
+                                                       manager->layout_mode,
+                                                       scale))
             monitor_scales[i] = scale;
           else
             meta_warning ("Invalid dummy monitor scale\n");
@@ -621,12 +615,22 @@ meta_monitor_manager_dummy_calculate_monitor_mode_scale (MetaMonitorManager *man
 }
 
 static void
-meta_monitor_manager_dummy_get_supported_scales (MetaMonitorManager *manager,
-                                                 float             **scales,
-                                                 int                *n_scales)
+meta_monitor_manager_dummy_get_supported_scales (MetaMonitorManager          *manager,
+                                                 MetaLogicalMonitorLayoutMode layout_mode,
+                                                 float                      **scales,
+                                                 int                         *n_scales)
 {
-  *scales = supported_scales_dummy;
-  *n_scales = G_N_ELEMENTS (supported_scales_dummy);
+  switch (layout_mode)
+    {
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      *scales = supported_scales_dummy_logical;
+      *n_scales = G_N_ELEMENTS (supported_scales_dummy_logical);
+      break;
+    case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
+      *scales = supported_scales_dummy_physical;
+      *n_scales = G_N_ELEMENTS (supported_scales_dummy_physical);
+      break;
+    }
 }
 
 static gboolean
