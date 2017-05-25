@@ -173,7 +173,7 @@ meta_renderer_x11_nested_create_view (MetaRenderer       *renderer,
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   MetaMonitorTransform view_transform;
-  int view_scale;
+  float view_scale;
   int width, height;
   CoglOffscreen *fake_onscreen;
   CoglOffscreen *offscreen;
@@ -183,7 +183,7 @@ meta_renderer_x11_nested_create_view (MetaRenderer       *renderer,
   if (meta_is_stage_views_scaled ())
     view_scale = logical_monitor->scale;
   else
-    view_scale = 1;
+    view_scale = 1.0;
 
   if (meta_monitor_transform_is_rotated (view_transform))
     {
@@ -210,7 +210,7 @@ meta_renderer_x11_nested_create_view (MetaRenderer       *renderer,
                        "framebuffer", COGL_FRAMEBUFFER (fake_onscreen),
                        "offscreen", COGL_FRAMEBUFFER (offscreen),
                        "transform", view_transform,
-                       "scale", (float) view_scale,
+                       "scale", view_scale,
                        "logical-monitor", logical_monitor,
                        NULL);
 }

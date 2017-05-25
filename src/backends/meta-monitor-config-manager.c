@@ -488,7 +488,7 @@ create_preferred_logical_monitor_config (MetaMonitorManager          *monitor_ma
 {
   MetaMonitorMode *mode;
   int width, height;
-  int scale;
+  float scale;
   MetaMonitorConfig *monitor_config;
   MetaLogicalMonitorConfig *logical_monitor_config;
 
@@ -949,10 +949,10 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor
   int expected_mode_width = 0;
   int expected_mode_height = 0;
 
-  if (logical_monitor_config->scale < 1)
+  if (logical_monitor_config->scale < 1.0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Invalid logical monitor config scale %d",
+                   "Invalid logical monitor config scale %g",
                    logical_monitor_config->scale);
       return FALSE;
     }

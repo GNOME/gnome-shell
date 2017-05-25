@@ -70,7 +70,7 @@ get_window_geometry_scale_for_logical_monitor (MetaLogicalMonitor *logical_monit
   if (meta_is_stage_views_scaled ())
     return 1;
   else
-    return logical_monitor->scale;
+    return meta_logical_monitor_get_scale (logical_monitor);
 }
 
 static void
@@ -359,6 +359,7 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   MetaLogicalMonitor *from;
   MetaLogicalMonitor *to;
   MetaLogicalMonitor *scaled_new;
+  float from_scale, to_scale;
   float scale;
   MetaRectangle rect;
 
@@ -383,9 +384,12 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   if (from == to)
     return;
 
+  from_scale = meta_logical_monitor_get_scale (from);
+  to_scale = meta_logical_monitor_get_scale (to);
+
   /* If we are setting the first output, unsetting the output, or the new has
    * the same scale as the old no need to do any further checking. */
-  if (from == NULL || to == NULL || from->scale == to->scale)
+  if (from == NULL || to == NULL || from_scale == to_scale)
     {
       window->monitor = to;
       return;
@@ -400,7 +404,7 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   /* To avoid a window alternating between two main monitors because scaling
    * changes the main monitor, wait until both the current and the new scale
    * will result in the same main monitor. */
-  scale = (float)to->scale / from->scale;
+  scale = to_scale / from_scale;
   rect = window->rect;
   scale_rect_size (&rect, scale);
   scaled_new =

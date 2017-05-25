@@ -1838,7 +1838,7 @@ meta_monitor_manager_kms_is_transform_handled (MetaMonitorManager  *manager,
     return FALSE;
 }
 
-static int
+static float
 meta_monitor_manager_kms_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                        MetaMonitor        *monitor,
                                                        MetaMonitorMode    *monitor_mode)

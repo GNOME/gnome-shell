@@ -34,7 +34,7 @@ typedef struct _MetaMonitorTestSetup
 
 typedef struct _MetaOutputTest
 {
-  int scale;
+  float scale;
 } MetaOutputTest;
 
 #define META_TYPE_MONITOR_MANAGER_TEST (meta_monitor_manager_test_get_type ())

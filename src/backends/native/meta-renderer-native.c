@@ -1707,7 +1707,7 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
   MetaMonitorTransform view_transform;
   CoglOnscreen *onscreen = NULL;
   CoglOffscreen *offscreen = NULL;
-  int scale;
+  float scale;
   int width, height;
   MetaRendererView *view;
   GError *error = NULL;
@@ -1715,9 +1715,9 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
   view_transform = calculate_view_transform (monitor_manager, logical_monitor);
 
   if (meta_is_stage_views_scaled ())
-    scale = logical_monitor->scale;
+    scale = meta_logical_monitor_get_scale (logical_monitor);
   else
-    scale = 1;
+    scale = 1.0;
 
   width = logical_monitor->rect.width * scale;
   height = logical_monitor->rect.height * scale;
@@ -1743,7 +1743,7 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
                        "layout", &logical_monitor->rect,
-                       "scale", (float) scale,
+                       "scale", scale,
                        "framebuffer", onscreen,
                        "offscreen", offscreen,
                        "logical-monitor", logical_monitor,

@@ -239,13 +239,13 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
   MetaCursorRendererNativePrivate *priv =
     meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
   MetaRectangle scaled_crtc_rect;
-  int scale;
+  float scale;
   int crtc_x, crtc_y;
 
   if (meta_is_stage_views_scaled ())
     scale = meta_logical_monitor_get_scale (data->in_logical_monitor);
   else
-    scale = 1;
+    scale = 1.0;
 
   meta_monitor_calculate_crtc_pos (monitor, monitor_mode,
                                    monitor_crtc_mode->output,

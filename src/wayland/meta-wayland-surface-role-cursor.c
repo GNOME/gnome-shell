@@ -104,7 +104,7 @@ cursor_sprite_prepare_at (MetaCursorSprite             *cursor_sprite,
       MetaBackend *backend = meta_get_backend ();
       MetaMonitorManager *monitor_manager =
         meta_backend_get_monitor_manager (backend);
-      const MetaLogicalMonitor *logical_monitor;
+      MetaLogicalMonitor *logical_monitor;
 
       logical_monitor =
         meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
@@ -115,7 +115,8 @@ cursor_sprite_prepare_at (MetaCursorSprite             *cursor_sprite,
           if (meta_is_stage_views_scaled ())
             texture_scale = 1.0 / surface->scale;
           else
-            texture_scale = (float) logical_monitor->scale / surface->scale;
+            texture_scale = (meta_logical_monitor_get_scale (logical_monitor) /
+                             surface->scale);
 
           meta_cursor_sprite_set_texture_scale (cursor_sprite, texture_scale);
         }

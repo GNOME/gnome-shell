@@ -59,7 +59,7 @@ struct _MetaMonitorManagerDummyClass
 
 typedef struct _MetaOutputDummy
 {
-  int scale;
+  float scale;
 } MetaOutputDummy;
 
 G_DEFINE_TYPE (MetaMonitorManagerDummy, meta_monitor_manager_dummy, META_TYPE_MONITOR_MANAGER);
@@ -74,7 +74,7 @@ static void
 append_monitor (GArray *modes,
                 GArray *crtcs,
                 GArray *outputs,
-                int     scale)
+                float   scale)
 {
   MetaCrtcMode modes_decl[] = {
     {
@@ -242,11 +242,25 @@ meta_output_dummy_notify_destroy (MetaOutput *output)
   g_clear_pointer (&output->driver_private, g_free);
 }
 
+static gboolean
+is_scale_supported (float scale)
+{
+  unsigned int i;
+
+  for (i = 0; i < G_N_ELEMENTS (supported_scales_dummy); i++)
+    {
+      if (scale == supported_scales_dummy[i])
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 {
   unsigned int num_monitors = 1;
-  int *monitor_scales = NULL;
+  float *monitor_scales = NULL;
   const char *num_monitors_str;
   const char *monitor_scales_str;
   const char *tiled_monitors_str;
@@ -298,9 +312,9 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
         }
     }
 
-  monitor_scales = g_newa (int, num_monitors);
+  monitor_scales = g_newa (typeof (*monitor_scales), num_monitors);
   for (i = 0; i < num_monitors; i++)
-    monitor_scales[i] = 1;
+    monitor_scales[i] = 1.0;
 
   monitor_scales_str = getenv ("MUTTER_DEBUG_DUMMY_MONITOR_SCALES");
   if (monitor_scales_str)
@@ -313,11 +327,11 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
                       "of monitors (defaults to 1).\n");
       for (i = 0; i < num_monitors && scales_str_list[i]; i++)
         {
-          int scale = g_ascii_strtoll (scales_str_list[i], NULL, 10);
-          if (scale == 1 || scale == 2)
+          float scale = g_ascii_strtod (scales_str_list[i], NULL);
+          if (is_scale_supported (scale))
             monitor_scales[i] = scale;
           else
-            meta_warning ("Invalid dummy monitor scale");
+            meta_warning ("Invalid dummy monitor scale\n");
         }
       g_strfreev (scales_str_list);
     }
@@ -592,7 +606,7 @@ meta_monitor_manager_dummy_is_transform_handled (MetaMonitorManager  *manager,
   return manager_dummy->is_transform_handled;
 }
 
-static int
+static float
 meta_monitor_manager_dummy_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                          MetaMonitor        *monitor,
                                                          MetaMonitorMode    *monitor_mode)

@@ -205,7 +205,7 @@ send_output_events (struct wl_resource *resource,
     {
       int scale;
 
-      scale = meta_logical_monitor_get_scale (logical_monitor);
+      scale = (int) meta_logical_monitor_get_scale (logical_monitor);
       if (need_all_events ||
           old_scale != scale)
         {
@@ -273,7 +273,7 @@ meta_wayland_output_set_logical_monitor (MetaWaylandOutput  *wayland_output,
 
   if (current_mode == preferred_mode)
     wayland_output->mode_flags |= WL_OUTPUT_MODE_PREFERRED;
-  wayland_output->scale = meta_logical_monitor_get_scale (logical_monitor);
+  wayland_output->scale = (int) meta_logical_monitor_get_scale (logical_monitor);
   wayland_output->refresh_rate = meta_monitor_mode_get_refresh_rate (current_mode);
 }
 

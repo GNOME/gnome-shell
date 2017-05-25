@@ -400,7 +400,7 @@ meta_monitor_manager_test_is_transform_handled (MetaMonitorManager  *manager,
   return manager_test->handles_transforms;
 }
 
-static int
+static float
 meta_monitor_manager_test_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                         MetaMonitor        *monitor,
                                                         MetaMonitorMode    *monitor_mode)

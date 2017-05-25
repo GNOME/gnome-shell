@@ -107,7 +107,7 @@ MetaLogicalMonitor *
 meta_logical_monitor_new_derived (MetaMonitorManager *monitor_manager,
                                   MetaMonitor        *monitor,
                                   MetaRectangle      *layout,
-                                  int                 scale,
+                                  float               scale,
                                   int                 monitor_number)
 {
   MetaLogicalMonitor *logical_monitor;
@@ -175,7 +175,7 @@ meta_logical_monitor_make_primary (MetaLogicalMonitor *logical_monitor)
   logical_monitor->is_primary = TRUE;
 }
 
-int
+float
 meta_logical_monitor_get_scale (MetaLogicalMonitor *logical_monitor)
 {
   return logical_monitor->scale;

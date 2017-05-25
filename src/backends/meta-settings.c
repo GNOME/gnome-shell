@@ -69,7 +69,7 @@ calculate_ui_scaling_factor (MetaSettings *settings)
     meta_backend_get_monitor_manager (settings->backend);
   GList *logical_monitors;
   GList *l;
-  int max_scale = 1;
+  float max_scale = 1.0;
 
   logical_monitors =
     meta_monitor_manager_get_logical_monitors (monitor_manager);
@@ -81,7 +81,9 @@ calculate_ui_scaling_factor (MetaSettings *settings)
                        max_scale);
     }
 
-  return max_scale;
+  g_warn_if_fail (fmodf (max_scale, 1.0) == 0.0);
+
+  return (int) max_scale;
 }
 
 static int

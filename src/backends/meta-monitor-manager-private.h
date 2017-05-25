@@ -390,9 +390,9 @@ struct _MetaMonitorManagerClass
                                     MetaCrtc            *,
                                     MetaMonitorTransform);
 
-  int (*calculate_monitor_mode_scale) (MetaMonitorManager *,
-                                       MetaMonitor        *,
-                                       MetaMonitorMode    *);
+  float (*calculate_monitor_mode_scale) (MetaMonitorManager *,
+                                         MetaMonitor        *,
+                                         MetaMonitorMode    *);
 
   void (*get_supported_scales) (MetaMonitorManager *,
                                 float             **,
@@ -504,7 +504,7 @@ void               meta_monitor_manager_lid_is_closed_changed (MetaMonitorManage
 
 gboolean           meta_monitor_manager_is_headless (MetaMonitorManager *manager);
 
-int                meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
+float              meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                                       MetaMonitor        *monitor,
                                                                       MetaMonitorMode    *monitor_mode);
 

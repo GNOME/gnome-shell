@@ -184,7 +184,7 @@ derive_monitor_layout (MetaMonitor   *monitor,
   meta_monitor_derive_dimensions (monitor, &layout->width, &layout->height);
 }
 
-static int
+static float
 derive_configured_global_scale (MetaMonitorManager *manager)
 {
   MetaMonitorsConfig *config;
@@ -192,14 +192,14 @@ derive_configured_global_scale (MetaMonitorManager *manager)
 
   config = meta_monitor_config_manager_get_current (manager->config_manager);
   if (!config)
-    return 1;
+    return 1.0;
 
   logical_monitor_config = config->logical_monitor_configs->data;
 
   return logical_monitor_config->scale;
 }
 
-static int
+static float
 calculate_monitor_scale (MetaMonitorManager *manager,
                          MetaMonitor        *monitor)
 {
@@ -211,19 +211,19 @@ calculate_monitor_scale (MetaMonitorManager *manager,
                                                             monitor_mode);
 }
 
-static int
+static float
 derive_calculated_global_scale (MetaMonitorManager *manager)
 {
   MetaMonitor *primary_monitor;
 
   primary_monitor = meta_monitor_manager_get_primary_monitor (manager);
   if (!primary_monitor)
-    return 1;
+    return 1.0;
 
   return calculate_monitor_scale (manager, primary_monitor);
 }
 
-static int
+static float
 derive_scale_from_config (MetaMonitorManager *manager,
                           MetaRectangle      *layout)
 {
@@ -240,7 +240,7 @@ derive_scale_from_config (MetaMonitorManager *manager,
     }
 
   g_warning ("Missing logical monitor, using scale 1");
-  return 1;
+  return 1.0;
 }
 
 static void
@@ -253,7 +253,7 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager       
   MetaLogicalMonitor *primary_logical_monitor = NULL;
   gboolean use_configured_scale;
   gboolean use_global_scale;
-  int global_scale = 0;
+  float global_scale = 0.0;
   MetaMonitorManagerCapability capabilities;
 
   monitor_number = 0;
@@ -291,7 +291,7 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager       
         }
       else
         {
-          int scale;
+          float scale;
 
           if (use_global_scale)
             scale = global_scale;
@@ -393,7 +393,7 @@ meta_monitor_manager_is_headless (MetaMonitorManager *manager)
   return !manager->monitors;
 }
 
-int
+float
 meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                    MetaMonitor        *monitor,
                                                    MetaMonitorMode    *monitor_mode)
@@ -1894,6 +1894,14 @@ derive_logical_monitor_size (GList                       *monitor_configs,
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
+      if (fmodf (width, scale) != 0.0 || fmodf (height, scale) != 0.0)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Scale %g not valid for resolution %dx%d",
+                       scale, width, height);
+          return FALSE;
+        }
+
       width /= scale;
       height /= scale;
       break;
@@ -1967,7 +1975,7 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
       .height = height
     },
     .transform = transform,
-    .scale = (int) scale,
+    .scale = scale,
     .is_primary = is_primary,
     .monitor_configs = monitor_configs
   };

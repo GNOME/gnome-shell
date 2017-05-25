@@ -1261,7 +1261,7 @@ meta_monitor_calculate_crtc_pos (MetaMonitor         *monitor,
 /* From http://en.wikipedia.org/wiki/4K_resolution#Resolutions_of_common_formats */
 #define SMALLEST_4K_WIDTH 3656
 
-static int
+static float
 calculate_scale (MetaMonitor     *monitor,
                  MetaMonitorMode *monitor_mode)
 {
@@ -1269,7 +1269,7 @@ calculate_scale (MetaMonitor     *monitor,
   int width_mm, height_mm;
   int scale;
 
-  scale = 1;
+  scale = 1.0;
 
   meta_monitor_mode_get_resolution (monitor_mode,
                                     &resolution_width,
@@ -1314,14 +1314,14 @@ calculate_scale (MetaMonitor     *monitor,
        * pick higher ratio than 2 automatically.
        */
       if (dpi_x > HIDPI_LIMIT && dpi_y > HIDPI_LIMIT)
-        scale = 2;
+        scale = 2.0;
     }
 
 out:
   return scale;
 }
 
-int
+float
 meta_monitor_calculate_mode_scale (MetaMonitor     *monitor,
                                    MetaMonitorMode *monitor_mode)
 {

@@ -828,14 +828,14 @@ handle_text (GMarkupParseContext *context,
 
     case STATE_LOGICAL_MONITOR_SCALE:
       {
-        if (!read_int (text, text_len,
-                       &parser->current_logical_monitor_config->scale, error))
+        if (!read_float (text, text_len,
+                         &parser->current_logical_monitor_config->scale, error))
           return;
 
-        if (parser->current_logical_monitor_config->scale <= 0)
+        if (parser->current_logical_monitor_config->scale < 1.0)
           {
             g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                         "Logical monitor scale '%d' invalid",
+                         "Logical monitor scale '%g' invalid",
                          parser->current_logical_monitor_config->scale);
             return;
           }
@@ -1074,7 +1074,7 @@ append_logical_monitor_xml (GString                  *buffer,
                           logical_monitor_config->layout.x);
   g_string_append_printf (buffer, "      <y>%d</y>\n",
                           logical_monitor_config->layout.y);
-  g_string_append_printf (buffer, "      <scale>%d</scale>\n",
+  g_string_append_printf (buffer, "      <scale>%g</scale>\n",
                           logical_monitor_config->scale);
   if (logical_monitor_config->is_primary)
     g_string_append (buffer, "      <primary>yes</primary>\n");
