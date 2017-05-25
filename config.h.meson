@@ -1,0 +1,26 @@
+/* The prefix for our gettext translation domains. */
+#mesondefine GETTEXT_PACKAGE
+
+/* Version number of package */
+#mesondefine VERSION
+
+/* Version number of package */
+#mesondefine PACKAGE_VERSION
+
+/* Define to 1 if you have the `fdwalk' function. */
+#mesondefine HAVE_FDWALK
+
+/* Define to 1 if you have the `mallinfo' function. */
+#mesondefine HAVE_MALLINFO
+
+/* Define to 1 fi you have the <sys/resource.h> header file. */
+#mesondefine HAVE_SYS_RESOURCE_H
+
+/* Define if we have NetworkManager */
+#mesondefine HAVE_NETWORKMANAGER
+
+/* Define if we have systemd */
+#mesondefine HAVE_SYSTEMD
+
+/* Define if _NL_TIME_FIRST_WEEKDATE is available */
+#mesondefine HAVE__NL_TIME_FIRST_WEEKDAY

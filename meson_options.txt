@@ -1,0 +1,31 @@
+option('enable-browser-plugin',
+  type: 'boolean',
+  value: true,
+  description: 'Enable extensions.gnome.org browser plugin'
+)
+
+option('enable-documentation',
+  type: 'boolean',
+  value: false,
+  description: 'Build API reference'
+)
+
+option('enable-man',
+  type: 'boolean',
+  value: true,
+  description: 'Generate man pages'
+)
+
+option('enable-networkmanager',
+  type: 'combo',
+  choices: ['yes', 'no', 'auto'],
+  value: 'auto',
+  description: 'Enable NetworkManager support'
+)
+
+option('enable-systemd',
+  type: 'combo',
+  choices: ['yes', 'no', 'auto'],
+  value: 'auto',
+  description: 'Enable systemd integration'
+)

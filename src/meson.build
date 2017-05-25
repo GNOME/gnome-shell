@@ -1,0 +1,301 @@
+service_data = configuration_data()
+service_data.set('libexecdir', libexecdir)
+
+subdir('calendar-server')
+subdir('hotplug-sniffer')
+subdir('st')
+subdir('tray')
+
+script_data = configuration_data()
+script_data.set('bindir', bindir)
+script_data.set('datadir', datadir)
+script_data.set('libdir', libdir)
+script_data.set('libexecdir', libexecdir)
+script_data.set('pkgdatadir', pkgdatadir)
+script_data.set('pkglibdir', pkglibdir)
+script_data.set('sysconfdir', sysconfdir)
+script_data.set('PYTHON', python.path())
+script_data.set('VERSION', meson.project_version())
+
+foreach tool : ['gnome-shell-extension-tool', 'gnome-shell-perf-tool']
+  configure_file(
+    input: tool + '.in',
+    output: tool,
+    configuration: script_data,
+    install_dir: bindir
+  )
+endforeach
+
+gnome_shell_cflags = [
+  '-DCLUTTER_ENABLE_EXPERIMENTAL_API',
+  '-DCOGL_ENABLE_EXPERIMENTAL_API',
+  '-DVERSION="@0@"'.format(meson.project_version()),
+  '-DLOCALEDIR="@0@"'.format(localedir),
+  '-DDATADIR="@0@"'.format(datadir),
+  '-DGNOME_SHELL_LIBEXECDIR="@0@"'.format(libexecdir),
+  '-DGNOME_SHELL_DATADIR="@0@"'.format(pkgdatadir),
+  '-DGNOME_SHELL_PKGLIBDIR="@0@"'.format(pkglibdir)
+]
+
+rpath_link_args = ['-Wl,-rpath', mutter_typelibdir]
+install_rpath = ':'.join([mutter_typelibdir, pkglibdir])
+
+gnome_shell_deps = [
+  gio_unix_dep,
+  libxml_dep,
+  gtk_dep,
+  atk_bridge_dep,
+  gjs_dep,
+  gdk_x11_dep,
+  soup_dep,
+  clutter_dep,
+  cogl_pango_dep,
+  startup_dep,
+  gi_dep,
+  canberra_dep, canberra_gtk_dep,
+  polkit_dep,
+  gcr_dep,
+  systemd_dep
+]
+
+gnome_shell_deps += nm_deps
+gnome_shell_deps += recorder_deps
+
+libshell_menu_gir_sources = [
+  'gtkactionmuxer.h',
+  'gtkactionmuxer.c',
+  'gtkactionobservable.h',
+  'gtkactionobservable.c',
+  'gtkactionobserver.h',
+  'gtkactionobserver.c',
+  'gtkmenutrackeritem.c',
+  'gtkmenutrackeritem.h'
+]
+
+libshell_menu_no_gir_sources= [
+  'gtkmenutracker.c',
+  'gtkmenutracker.h'
+]
+
+libshell_menu = library('gnome-shell-menu',
+  sources: libshell_menu_gir_sources + libshell_menu_no_gir_sources,
+  dependencies: [gio_dep, clutter_dep],
+  include_directories: conf_inc,
+  link_args: rpath_link_args,
+  install_rpath: mutter_typelibdir,
+  install_dir: pkglibdir,
+  install: true
+)
+
+libshell_menu_gir = gnome.generate_gir(libshell_menu,
+  sources: libshell_menu_gir_sources,
+  nsversion: '0.1',
+  namespace: 'ShellMenu',
+  identifier_prefix: 'Gtk',
+  symbol_prefix: 'gtk',
+  includes: ['Gio-2.0', libst_gir[0]],
+  dependencies: [mutter_dep],
+  extra_args: ['--quiet'],
+  install_dir_gir: pkgdatadir,
+  install_dir_typelib: pkglibdir,
+  install: true
+)
+
+
+libshell_public_headers = [
+  'shell-app.h',
+  'shell-app-system.h',
+  'shell-app-usage.h',
+  'shell-embedded-window.h',
+  'shell-generic-container.h',
+  'shell-glsl-quad.h',
+  'shell-gtk-embed.h',
+  'shell-global.h',
+  'shell-invert-lightness-effect.h',
+  'shell-action-modes.h',
+  'shell-mount-operation.h',
+  'shell-perf-log.h',
+  'shell-screenshot.h',
+  'shell-stack.h',
+  'shell-tray-icon.h',
+  'shell-tray-manager.h',
+  'shell-util.h',
+  'shell-window-tracker.h',
+  'shell-wm.h'
+]
+
+if have_networkmanager
+  libshell_public_headers += 'shell-network-agent.h'
+endif
+
+libshell_private_headers = [
+  'shell-app-private.h',
+  'shell-app-system-private.h',
+  'shell-global-private.h',
+  'shell-window-tracker-private.h',
+  'shell-wm-private.h'
+]
+
+libshell_sources = [
+  'gnome-shell-plugin.c',
+  'shell-app.c',
+  'shell-app-system.c',
+  'shell-app-usage.c',
+  'shell-embedded-window.c',
+  'shell-embedded-window-private.h',
+  'shell-generic-container.c',
+  'shell-global.c',
+  'shell-glsl-quad.c',
+  'shell-gtk-embed.c',
+  'shell-invert-lightness-effect.c',
+  'shell-keyring-prompt.c',
+  'shell-keyring-prompt.h',
+  'shell-menu-tracker.c',
+  'shell-menu-tracker.h',
+  'shell-mount-operation.c',
+  'shell-perf-log.c',
+  'shell-polkit-authentication-agent.c',
+  'shell-polkit-authentication-agent.h',
+  'shell-screenshot.c',
+  'shell-secure-text-buffer.c',
+  'shell-secure-text-buffer.h',
+  'shell-stack.c',
+  'shell-tray-icon.c',
+  'shell-tray-manager.c',
+  'shell-util.c',
+  'shell-window-tracker.c',
+  'shell-wm.c'
+]
+
+if have_networkmanager
+  libshell_sources += 'shell-network-agent.c'
+endif
+
+libshell_private_sources = []
+
+if enable_recorder
+    libshell_sources += ['shell-recorder.c']
+    libshell_public_headers += ['shell-recorder.h']
+
+    libshell_private_sources += ['shell-recorder-src.c']
+    libshell_private_headers += ['shell-recorder-src.h']
+endif
+
+
+libshell_enums = gnome.mkenums('shell-enum-types',
+  sources: libshell_public_headers,
+  c_template: 'shell-enum-types.c.in',
+  h_template: 'shell-enum-types.h.in'
+)
+
+libshell_gir_sources = [
+  libshell_enums,
+  libshell_public_headers,
+  libshell_sources
+]
+
+libshell_no_gir_sources = [
+  js_resources,
+  libshell_private_headers,
+  libshell_private_sources
+]
+
+dbus_generated = gnome.gdbus_codegen('org-gtk-application',
+  'org.gtk.Application.xml',
+  namespace: 'Shell'
+)
+
+libshell_no_gir_sources += dbus_generated
+
+libshell = library('gnome-shell',
+  sources: libshell_gir_sources + libshell_no_gir_sources,
+  dependencies: gnome_shell_deps + [mutter_dep, m_dep],
+  include_directories: [conf_inc, st_inc, include_directories('tray')],
+  c_args: gnome_shell_cflags,
+  link_with: [libshell_menu, libst, libtray],
+  link_args: rpath_link_args,
+  install_rpath: install_rpath,
+  install_dir: pkglibdir,
+  install: true
+)
+
+libshell_gir_includes = [
+  'Clutter-@0@'.format(mutter_api_version),
+  'ClutterX11-@0@'.format(mutter_api_version),
+  'Meta-@0@'.format(mutter_api_version),
+  'Soup-2.4'
+]
+
+if have_networkmanager
+  libshell_gir_includes += ['NetworkManager-1.0', 'NMClient-1.0']
+endif
+
+libshell_gir_includes += [
+  libgvc_gir[0],
+  libshell_menu_gir[0],
+  libst_gir[0]
+]
+
+gnome.generate_gir(libshell,
+  sources: libshell_gir_sources,
+  nsversion: '0.1',
+  namespace: 'Shell',
+  includes: libshell_gir_includes,
+  link_with: [libshell_menu, libst],
+  extra_args: ['--quiet'],
+  install_dir_gir: pkgdatadir,
+  install_dir_typelib: pkglibdir,
+  install: true
+)
+
+executable('gnome-shell', 'main.c',
+  c_args: gnome_shell_cflags + [
+    '-DMUTTER_TYPELIB_DIR="@0@"'.format(mutter_typelibdir)
+  ],
+  dependencies: gnome_shell_deps + [mutter_dep],
+  link_with: libshell,
+  include_directories: [conf_inc, st_inc, include_directories('tray')],
+  link_args: rpath_link_args,
+  install_rpath: install_rpath,
+  install: true
+)
+
+executable('gnome-shell-extension-prefs',
+  'gnome-shell-extension-prefs.c', js_resources,
+  c_args: gnome_shell_cflags,
+  dependencies: gnome_shell_deps,
+  include_directories: [conf_inc],
+  link_args: rpath_link_args,
+  install_rpath: install_rpath,
+  install: true
+)
+
+
+if have_networkmanager
+  executable('gnome-shell-portal-helper',
+    'gnome-shell-portal-helper.c', js_resources,
+    c_args: gnome_shell_cflags,
+    dependencies: gnome_shell_deps,
+    include_directories: [conf_inc],
+    link_args: rpath_link_args,
+    install_rpath: install_rpath,
+    install_dir: libexecdir,
+    install: true
+  )
+endif
+
+executable('gnome-shell-perf-helper', 'shell-perf-helper.c',
+  dependencies: [gtk_dep, gio_dep, m_dep],
+  include_directories: [conf_inc],
+  link_args: rpath_link_args,
+  install_rpath: install_rpath,
+  install_dir: libexecdir,
+  install: true
+)
+
+executable('run-js-test', 'run-js-test.c',
+  dependencies: [mutter_dep, gio_dep, gjs_dep],
+  include_directories: [conf_inc],
+  link_with: libshell,
+  link_args: rpath_link_args
+)

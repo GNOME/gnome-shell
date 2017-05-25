@@ -47,10 +47,15 @@
       <xi:include href="xml/st-texture-cache.xml"/>
     </chapter>
   </part>
+  <!-- FIXME:
+       Not generated at the moment, find out whether to blame gtk-doc or meson
+  -->
+  <!--
   <chapter id="object-tree">
     <title>Object Hierarchy</title>
      <xi:include href="xml/tree_index.sgml"/>
   </chapter>
+  -->
   <index id="api-index-full">
     <title>API Index</title>
     <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
