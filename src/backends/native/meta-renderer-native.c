@@ -1743,7 +1743,7 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
                        "layout", &logical_monitor->rect,
-                       "scale", scale,
+                       "scale", (float) scale,
                        "framebuffer", onscreen,
                        "offscreen", offscreen,
                        "logical-monitor", logical_monitor,

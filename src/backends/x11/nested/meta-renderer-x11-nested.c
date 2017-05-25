@@ -210,7 +210,7 @@ meta_renderer_x11_nested_create_view (MetaRenderer       *renderer,
                        "framebuffer", COGL_FRAMEBUFFER (fake_onscreen),
                        "offscreen", COGL_FRAMEBUFFER (offscreen),
                        "transform", view_transform,
-                       "scale", view_scale,
+                       "scale", (float) view_scale,
                        "logical-monitor", logical_monitor,
                        NULL);
 }

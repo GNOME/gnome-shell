@@ -503,7 +503,7 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
   cairo_rectangle_int_t swap_region;
   cairo_rectangle_int_t clip_region;
   gboolean clip_region_empty;
-  int fb_scale;
+  float fb_scale;
 
   wrapper = CLUTTER_ACTOR (stage_cogl->wrapper);
 
@@ -653,7 +653,7 @@ clutter_stage_cogl_redraw_view (ClutterStageWindow *stage_window,
           int scissor_x;
           int scissor_y;
 
-          scissor_x = (clip_region.x - view_rect.x) * fb_scale;;
+          scissor_x = (clip_region.x - view_rect.x) * fb_scale;
           scissor_y = (clip_region.y - view_rect.y) * fb_scale;
           cogl_framebuffer_push_scissor_clip (fb,
                                               scissor_x,
