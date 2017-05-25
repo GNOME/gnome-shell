@@ -392,7 +392,8 @@ meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
 static gboolean
 should_use_stored_config (MetaMonitorManager *manager)
 {
-  return !meta_monitor_manager_has_hotplug_mode_update (manager);
+  return (manager->in_init ||
+          !meta_monitor_manager_has_hotplug_mode_update (manager));
 }
 
 static void
