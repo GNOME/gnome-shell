@@ -322,6 +322,7 @@ clutter_stage_view_class_init (ClutterStageViewClass *klass)
                         "The view layout on the screen",
                         CAIRO_GOBJECT_TYPE_RECTANGLE_INT,
                         G_PARAM_READWRITE |
+                        G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS);
 
   obj_props[PROP_FRAMEBUFFER] =
@@ -330,6 +331,7 @@ clutter_stage_view_class_init (ClutterStageViewClass *klass)
                         "The front buffer of the view",
                         COGL_TYPE_HANDLE,
                         G_PARAM_READWRITE |
+                        G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS);
 
   obj_props[PROP_OFFSCREEN] =
@@ -347,6 +349,7 @@ clutter_stage_view_class_init (ClutterStageViewClass *klass)
                       "The view scale",
                       1, G_MAXINT, 1,
                       G_PARAM_READWRITE |
+                      G_PARAM_CONSTRUCT |
                       G_PARAM_STATIC_STRINGS);
 
   g_object_class_install_properties (object_class, PROP_LAST, obj_props);
