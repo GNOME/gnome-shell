@@ -155,7 +155,7 @@ file_loaded (GObject      *source_object,
   CoglError *catch_error = NULL;
   GTask *task;
   CoglTexture *texture;
-  GdkPixbuf *pixbuf;
+  GdkPixbuf *pixbuf, *rotated;
   int width, height, row_stride;
   guchar *pixels;
   gboolean has_alpha;
@@ -171,6 +171,13 @@ file_loaded (GObject      *source_object,
       g_clear_error (&error);
       g_free (uri);
       goto out;
+    }
+
+  rotated = gdk_pixbuf_apply_embedded_orientation (pixbuf);
+  if (rotated != NULL)
+    {
+      g_object_unref (pixbuf);
+      pixbuf = rotated;
     }
 
   width = gdk_pixbuf_get_width (pixbuf);
