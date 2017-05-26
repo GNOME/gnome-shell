@@ -204,7 +204,7 @@ var OsdWindow = new Lang.Class({
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._icon.icon_size = popupSize / (2 * scaleFactor);
-        this._box.translation_y = monitor.height / 4;
+        this._box.translation_y = Math.round(monitor.height / 4);
         this._boxConstraint.minSize = popupSize;
     }
 });
