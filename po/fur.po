@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-04-21 21:33+0000\n"
-"PO-Revision-Date: 2017-04-30 15:41+0200\n"
+"POT-Creation-Date: 2017-05-26 14:16+0000\n"
+"PO-Revision-Date: 2017-05-27 22:55+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -405,10 +405,14 @@ msgid ""
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
-"mutter default to layout logical monitors in a logical pixel coordinate "
-"space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
 msgstr ""
 "Par abilitâ lis funzionalitâts sperimentâls, zonte la peraule clâf de "
 "funzionalitât ae liste. Il fat che la funzionalitât e vedi bisugne di tornâ "
@@ -416,16 +420,22 @@ msgstr ""
 "funzionalitât sperimentâl no je necessarie che e sedi disponibile o "
 "configurabile. No sta spietâti di zontâ alc in cheste impostazion e pensâ "
 "che e duredi tal timp. Atualmentri lis peraulis clâf pussibilis a son: • "
-"“scale-monitor-framebuffer” — al rint come predefinît par mutter la "
-"disposizion dai visôrs logjics intun spazi logjic di coordenadis dai pixel, "
-"intant i framebuffer dai visôrs par scjalâ, invezit dal contignût dal "
-"barcon, a gjestissin i visôrs HiDPI. Nol covente tornâ a inviâ."
+"“monitor-config-manager” — al dopre il gnûf sisteme di configurazion dal "
+"visôr, fat par sostituî chel vecjo. Chest al abilite une API di nivel "
+"superiôr che e pues jessi doprade di aplicazions di configurazion, cussì "
+"come la capacitât di configurâ par scjale di monitor logjic. • “scale-"
+"monitor-framebuffer” — al rint come predefinît par mutter la disposizion dai "
+"visôrs logjics intun spazi logjic di coordenadis dai pixel, intant i "
+"framebuffer dai visôrs par scjalâ, invezit dal contignût dal barcon, a "
+"gjestissin i visôrs HiDPI. Nol covente tornâ a inviâ. In plui al è necessari "
+"abilitâ “monitor-config-manager” par fâ in mût che cheste funzionalitât e "
+"sedi abilitade."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr "Selezione barcon dal tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Anule tab popup"
 
@@ -480,7 +490,7 @@ msgstr "Passe al VT 12"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1848
+#: src/backends/meta-input-settings.c:1866
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Cambie mût (Grup %d)"
@@ -488,37 +498,37 @@ msgstr "Cambie mût (Grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1870
+#: src/backends/meta-input-settings.c:1888
 msgid "Switch monitor"
 msgstr "Cambie visôr"
 
-#: src/backends/meta-input-settings.c:1872
+#: src/backends/meta-input-settings.c:1890
 msgid "Show on-screen help"
 msgstr "Mostre jutori a schermi"
 
-#: src/backends/meta-monitor-manager.c:783
+#: src/backends/meta-monitor-manager.c:876
 msgid "Built-in display"
 msgstr "Display integrât"
 
-#: src/backends/meta-monitor-manager.c:806
+#: src/backends/meta-monitor-manager.c:899
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: src/backends/meta-monitor-manager.c:808
+#: src/backends/meta-monitor-manager.c:901
 msgid "Unknown Display"
 msgstr "Display no cognossût"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:816
+#: src/backends/meta-monitor-manager.c:909
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:474
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -529,32 +539,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Event cjampane"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "“%s” nol rispuint."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "La aplicazion no rispuint."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Al è pussibil sielzi di spietâ un pôc lassant che la aplicazion e continui o "
-"sfuarçâ la aplicazion par sierâle dal dut."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "Sfuarce _Jessude"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Spiete"
 
 #: src/core/display.c:608
 #, c-format
@@ -596,6 +580,32 @@ msgstr "Eseguìs come compositor nidiât"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Eseguìs come servidôr display complet, invezit che nidiât"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "“%s” nol rispuint."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "La aplicazion no rispuint."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Al è pussibil sielzi di spietâ un pôc lassant che la aplicazion e continui o "
+"sfuarçâ la aplicazion par sierâle dal dut."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "Sfuarce _Jessude"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Spiete"
 
 #: src/core/mutter.c:39
 #, c-format
