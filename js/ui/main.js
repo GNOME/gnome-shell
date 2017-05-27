@@ -48,6 +48,7 @@ const KbdA11yDialog = imports.ui.kbdA11yDialog;
 const LocatePointer = imports.ui.locatePointer;
 const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
 const Watermark = imports.ui.watermark;
+const WorkspaceMonitor = imports.ui.workspaceMonitor;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
@@ -90,6 +91,7 @@ var inputMethod = null;
 var introspectService = null;
 var locatePointer = null;
 var trayArea = null;
+var workspaceMonitor = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -209,6 +211,9 @@ function _initializeUI() {
     overview.init();
 
     (new PointerA11yTimeout.PointerA11yTimeout());
+
+    // WorkspaceMonitor expects layoutManager to be ready, initialize it here.
+    workspaceMonitor = new WorkspaceMonitor.WorkspaceMonitor();
 
     _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
