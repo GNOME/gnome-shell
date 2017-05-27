@@ -144,5 +144,6 @@
     <file>ui/appActivation.js</file>
     <file>ui/appIconBar.js</file>
     <file>ui/forceAppExitDialog.js</file>
+    <file>ui/workspaceMonitor.js</file>
   </gresource>
 </gresources>

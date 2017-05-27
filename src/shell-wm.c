@@ -20,11 +20,13 @@ struct _ShellWM {
 enum
 {
   MINIMIZE,
+  MINIMIZE_COMPLETED,
   UNMINIMIZE,
   SIZE_CHANGED,
   SIZE_CHANGE,
   MAP,
   DESTROY,
+  DESTROY_COMPLETED,
   SWITCH_WORKSPACE,
   KILL_SWITCH_WORKSPACE,
   KILL_WINDOW_EFFECTS,
@@ -70,6 +72,14 @@ shell_wm_class_init (ShellWMClass *klass)
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1,
                   META_TYPE_WINDOW_ACTOR);
+  shell_wm_signals[MINIMIZE_COMPLETED] =
+    g_signal_new ("minimize-completed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[UNMINIMIZE] =
     g_signal_new ("unminimize",
                   G_TYPE_FROM_CLASS (klass),
@@ -104,6 +114,14 @@ shell_wm_class_init (ShellWMClass *klass)
                   META_TYPE_WINDOW_ACTOR);
   shell_wm_signals[DESTROY] =
     g_signal_new ("destroy",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  META_TYPE_WINDOW_ACTOR);
+  shell_wm_signals[DESTROY_COMPLETED] =
+    g_signal_new ("destroy-completed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
@@ -247,6 +265,7 @@ shell_wm_completed_minimize (ShellWM         *wm,
                              MetaWindowActor *actor)
 {
   meta_plugin_minimize_completed (wm->plugin, actor);
+  g_signal_emit (wm, shell_wm_signals[MINIMIZE_COMPLETED], 0, actor);
 }
 
 /**
@@ -296,6 +315,7 @@ shell_wm_completed_destroy (ShellWM         *wm,
                             MetaWindowActor *actor)
 {
   meta_plugin_destroy_completed (wm->plugin, actor);
+  g_signal_emit (wm, shell_wm_signals[DESTROY_COMPLETED], 0, actor);
 }
 
 /**
