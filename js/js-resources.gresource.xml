@@ -147,5 +147,6 @@
     <file>ui/forceAppExitDialog.js</file>
     <file>ui/hotCorner.js</file>
     <file>ui/monitor.js</file>
+    <file>ui/sideComponent.js</file>
   </gresource>
 </gresources>

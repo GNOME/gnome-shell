@@ -24,6 +24,7 @@
  * Copyright Red Hat, Inc. 2006-2008
  */
 
+#define SIDE_COMPONENT_ROLE "eos-side-component"
 #define SPEEDWAGON_ROLE "eos-speedwagon"
 
 /**
@@ -371,6 +372,10 @@ get_app_for_window (ShellWindowTracker    *tracker,
   ShellApp *result = NULL;
   MetaWindow *transient_for;
   const char *startup_id;
+
+  /* Side components don't have an associated app */
+  if (g_strcmp0 (meta_window_get_role (window), SIDE_COMPONENT_ROLE) == 0)
+    return NULL;
 
   transient_for = meta_window_get_transient_for (window);
   if (transient_for != NULL)
@@ -821,6 +826,9 @@ shell_window_tracker_get_startup_sequences (ShellWindowTracker *self)
 gboolean
 shell_window_tracker_is_window_interesting (MetaWindow *window)
 {
+  if (g_strcmp0 (meta_window_get_role (window), SIDE_COMPONENT_ROLE) == 0)
+    return TRUE;
+
   if (meta_window_is_skip_taskbar (window))
     return FALSE;
 
