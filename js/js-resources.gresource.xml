@@ -146,6 +146,7 @@
     <file>ui/endlessButton.js</file>
     <file>ui/forceAppExitDialog.js</file>
     <file>ui/hotCorner.js</file>
+    <file>ui/sideComponent.js</file>
     <file>ui/workspaceMonitor.js</file>
   </gresource>
 </gresources>

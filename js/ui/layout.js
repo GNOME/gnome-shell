@@ -196,7 +196,8 @@ const defaultParams = {
 };
 
 var LayoutManager = GObject.registerClass({
-    Signals: { 'hot-corners-changed': {},
+    Signals: { 'background-clicked': {},
+               'hot-corners-changed': {},
                'startup-complete': {},
                'startup-prepared': {},
                'monitors-changed': {},
@@ -218,6 +219,7 @@ var LayoutManager = GObject.registerClass({
         this._inOverview = false;
         this._updateRegionIdle = 0;
 
+        this._overlayRegion = null;
         this._trackedActors = [];
         this._topActors = [];
         this._isPopupWindowVisible = false;
@@ -859,6 +861,11 @@ var LayoutManager = GObject.registerClass({
         this._trackActor(actor, params);
     }
 
+    setOverlayRegion(region) {
+        this._overlayRegion = region;
+        this._queueUpdateRegions();
+    }
+
     // addTopChrome:
     // @actor: an actor to add to the chrome
     // @params: (optional) additional params
@@ -1118,6 +1125,20 @@ var LayoutManager = GObject.registerClass({
                 let strutRect = new Meta.Rectangle({ x: x1, y: y1, width: x2 - x1, height: y2 - y1 });
                 let strut = new Meta.Strut({ rect: strutRect, side });
                 struts.push(strut);
+            }
+        }
+
+        if (this._overlayRegion != null) {
+            let numOverlayRects = this._overlayRegion.numRectangles();
+            for (let idx = 0; idx < numOverlayRects; idx++) {
+                let rect = this._overlayRegion.getRectangle(idx);
+                let metaRect = new Meta.Rectangle({
+                    x: rect.x,
+                    y: rect.y,
+                    width: rect.width,
+                    height: rect.height,
+                });
+                rects.push(metaRect);
             }
         }
 
