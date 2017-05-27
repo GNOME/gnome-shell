@@ -4,8 +4,10 @@
 const { GdkPixbuf, Gio, GLib, Shell, St } = imports.gi;
 
 const FileUtils = imports.misc.fileUtils;
+const IconGridLayout = imports.ui.iconGridLayout;
 
 const KEY_FILE_GROUP = 'Shell Search Provider';
+const CONTROL_CENTER_DESKTOP_ID = 'gnome-control-center.desktop';
 
 const SearchProviderIface = `
 <node>
@@ -158,14 +160,32 @@ function loadRemoteSearchProviders(searchSettings, callback) {
         let idxA, idxB;
         let appIdA, appIdB;
 
+        const iconGridLayout = IconGridLayout.getDefault();
+
         appIdA = providerA.appInfo.get_id();
         appIdB = providerB.appInfo.get_id();
 
         idxA = sortOrder.indexOf(appIdA);
         idxB = sortOrder.indexOf(appIdB);
 
-        // if no provider is found in the order, use alphabetical order
+        // none of the providers are in the list; check if they're on the desktop
         if ((idxA == -1) && (idxB == -1)) {
+            // We special case gnome-control-center, since we don't have it on
+            // the desktop but still want to see the results it provides
+            let hasA = iconGridLayout.hasIcon(appIdA) ||
+                        appIdA === CONTROL_CENTER_DESKTOP_ID;
+            let hasB = iconGridLayout.hasIcon(appIdB) ||
+                        appIdB === CONTROL_CENTER_DESKTOP_ID;
+
+            // if providerA is on the desktop, it's sorted before providerB
+            if (hasA && !hasB)
+                return -1;
+
+            // if providerB is on the desktop, it's sorted before providerA
+            if (hasB && !hasA)
+                return 1;
+
+            // fall back to alphabetical order
             let nameA = providerA.appInfo.get_name();
             let nameB = providerB.appInfo.get_name();
 

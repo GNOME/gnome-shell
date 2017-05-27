@@ -9,6 +9,7 @@ const AppFavorites = imports.ui.appFavorites;
 const DND = imports.ui.dnd;
 const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
+const IconGridLayout = imports.ui.iconGridLayout;
 const Main = imports.ui.main;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
@@ -52,6 +53,12 @@ const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 const SwitcherooProxyInterface = loadInterfaceXML('net.hadess.SwitcherooControl');
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 let discreteGpuAvailable = false;
+
+// Endless-specific definitions below this point
+
+const EOS_LINK_PREFIX = 'eos-link-';
+
+const EOS_APP_CENTER_ID = 'org.gnome.Software.desktop';
 
 function _getCategories(info) {
     let categoriesStr = info.get_categories();
@@ -1211,6 +1218,7 @@ var AppSearchProvider = class AppSearchProvider {
         this.isRemoteProvider = false;
         this.canLaunchSearch = false;
 
+        this._iconGridLayout = IconGridLayout.getDefault();
         this._systemActions = new SystemActions.getDefault();
     }
 
@@ -1252,6 +1260,13 @@ var AppSearchProvider = class AppSearchProvider {
         let results = [];
         groups.forEach(group => {
             group = group.filter(appID => {
+                const isLink = appID.startsWith(EOS_LINK_PREFIX);
+                const isOnDesktop = this._iconGridLayout.hasIcon(appID);
+
+                // exclude links that are not part of the desktop grid
+                if (isLink && !isOnDesktop)
+                    return false;
+
                 const app = this._appSys.lookup_app(appID);
                 return app && app.app_info.should_show();
             });
@@ -1262,6 +1277,13 @@ var AppSearchProvider = class AppSearchProvider {
 
         results = results.concat(this._systemActions.getMatchingActions(terms));
 
+        // resort to keep results on the desktop grid before the others
+        results = results.sort((a, b) => {
+            let hasA = a === EOS_APP_CENTER_ID || this._iconGridLayout.hasIcon(a);
+            let hasB = b === EOS_APP_CENTER_ID || this._iconGridLayout.hasIcon(b);
+
+            return hasB - hasA;
+        });
         callback(results);
     }
 
