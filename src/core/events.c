@@ -384,6 +384,17 @@ meta_display_handle_event (MetaDisplay        *display,
                                  XIReplayDevice, event->button.time);
                 }
             }
+
+          /* If the focus window has an active close dialog let clutter
+           * events go through, so fancy clutter dialogs can get to handle
+           * all events.
+           */
+          if (window->close_dialog &&
+              meta_close_dialog_is_visible (window->close_dialog))
+            {
+              bypass_wayland = TRUE;
+              bypass_clutter = FALSE;
+            }
         }
 
       goto out;
