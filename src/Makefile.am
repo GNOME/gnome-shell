@@ -78,7 +78,6 @@ gnome_shell_cflags =				\
 
 privlibdir = $(pkglibdir)
 privlib_LTLIBRARIES = libgnome-shell-menu.la libgnome-shell.la
-noinst_LTLIBRARIES += libgnome-shell-base.la
 
 shell_built_sources = \
 	org-gtk-application.h \
@@ -127,13 +126,22 @@ libgnome_shell_menu_la_SOURCES = 	\
 	gtkmenutracker.h		\
 	$(NULL)
 
-libgnome_shell_base_la_SOURCES = 	\
+libgnome_shell_sources =		\
 	$(shell_public_headers_h)	\
 	$(shell_private_sources)	\
+	gnome-shell-plugin.c		\
+	shell-app.c			\
+	shell-app-private.h		\
+	shell-app-system.c		\
+	shell-app-system-private.h	\
+	shell-app-usage.c		\
 	shell-embedded-window-private.h	\
 	shell-embedded-window.c		\
 	shell-generic-container.c	\
+	shell-global.c			\
+	shell-global-private.h		\
 	shell-glsl-quad.c		\
+	shell-gtk-embed.c		\
 	shell-invert-lightness-effect.c	\
 	shell-keyring-prompt.h		\
 	shell-keyring-prompt.c		\
@@ -143,35 +151,23 @@ libgnome_shell_base_la_SOURCES = 	\
 	shell-perf-log.c		\
 	shell-polkit-authentication-agent.h	\
 	shell-polkit-authentication-agent.c	\
+	shell-screenshot.c		\
 	shell-secure-text-buffer.c	\
 	shell-secure-text-buffer.h	\
 	shell-stack.c			\
-	$(NULL)
-
-if HAVE_NETWORKMANAGER
-libgnome_shell_base_la_SOURCES +=  shell-network-agent.c
-endif
-
-libgnome_shell_sources =		\
-	$(shell_public_headers_h)	\
-	shell-app-private.h		\
-	shell-app-system-private.h	\
-	shell-global-private.h		\
-	shell-window-tracker-private.h	\
-	shell-wm-private.h		\
-	gnome-shell-plugin.c		\
-	shell-app.c			\
-	shell-app-system.c		\
-	shell-app-usage.c		\
-	shell-global.c			\
-	shell-gtk-embed.c		\
-	shell-screenshot.c		\
 	shell-tray-icon.c		\
 	shell-tray-manager.c		\
 	shell-util.c			\
 	shell-window-tracker.c		\
+	shell-window-tracker-private.h	\
 	shell-wm.c			\
+	shell-wm-private.h		\
 	$(NULL)
+
+if HAVE_NETWORKMANAGER
+libgnome_shell_sources +=  shell-network-agent.c
+endif
+
 
 libgnome_shell_built_sources =		\
 	$(shell_built_sources)		\
@@ -187,7 +183,7 @@ shell_no_gir_sources = \
 	org-gtk-application.c
 
 libgnome_shell_la_gir_sources = \
-	$(filter-out %-private.h $(shell_private_sources) $(shell_no_gir_sources), $(shell_public_headers_h) $(libgnome_shell_base_la_SOURCES) $(libgnome_shell_sources) $(libgnome_shell_built_sources))
+	$(filter-out %-private.h $(shell_private_sources) $(shell_no_gir_sources), $(shell_public_headers_h) $(libgnome_shell_sources) $(libgnome_shell_built_sources))
 
 gnome_shell_SOURCES = main.c
 gnome_shell_CPPFLAGS = \
@@ -305,11 +301,8 @@ libgnome_shell_menu_la_LDFLAGS = $(libgnome_shell_ldflags)
 libgnome_shell_menu_la_LIBADD = $(GNOME_SHELL_LIBS)
 libgnome_shell_menu_la_CPPFLAGS = $(GNOME_SHELL_CFLAGS)
 
-libgnome_shell_base_la_LIBADD = $(libgnome_shell_libadd)
-libgnome_shell_base_la_CPPFLAGS = $(gnome_shell_cflags)
-
 libgnome_shell_la_LDFLAGS = $(libgnome_shell_ldflags)
-libgnome_shell_la_LIBADD = $(GNOME_SHELL_LIBS) $(MUTTER_LIBS) libgnome-shell-base.la
+libgnome_shell_la_LIBADD = $(GNOME_SHELL_LIBS) $(MUTTER_LIBS) $(libgnome_shell_libadd)
 libgnome_shell_la_CPPFLAGS = $(MUTTER_CFLAGS) $(gnome_shell_cflags)
 
 ShellMenu-0.1.gir: libgnome-shell-menu.la
