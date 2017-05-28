@@ -110,7 +110,7 @@ LT_LIB_M
 AC_HEADER_STDC
 
 # required versions for dependencies
-m4_define([glib_req_version],           [2.44.0])
+m4_define([glib_req_version],           [2.53.2])
 m4_define([cogl_req_version],           [1.21.2])
 m4_define([json_glib_req_version],      [0.12.0])
 m4_define([atk_req_version],            [2.5.3])
