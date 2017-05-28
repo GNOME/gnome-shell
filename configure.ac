@@ -254,9 +254,9 @@ AC_CONFIG_FILES([
   docs/Makefile
   docs/reference/Makefile
   docs/reference/shell/Makefile
-  docs/reference/shell/shell-docs.sgml
+  docs/reference/shell/version.xml
   docs/reference/st/Makefile
-  docs/reference/st/st-docs.sgml
+  docs/reference/st/version.xml
   js/Makefile
   src/Makefile
   subprojects/gvc/Makefile
