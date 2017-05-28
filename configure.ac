@@ -61,7 +61,6 @@ if $PKG_CONFIG --exists gstreamer-1.0 '>=' $GSTREAMER_MIN_VERSION ; then
    AC_MSG_RESULT(yes)
    build_recorder=true
    recorder_modules="gstreamer-1.0 gstreamer-base-1.0 x11 gtk+-3.0"
-   PKG_CHECK_MODULES(TEST_SHELL_RECORDER, $recorder_modules $LIBMUTTER_CLUTTER)
 else
    AC_MSG_RESULT(no)
 fi
