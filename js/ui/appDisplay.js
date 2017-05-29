@@ -13,6 +13,7 @@ const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
 const IconGridLayout = imports.ui.iconGridLayout;
 const Main = imports.ui.main;
+const MessageTray = imports.ui.messageTray;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Search = imports.ui.search;
@@ -1745,6 +1746,19 @@ var AppFolderPopup = class AppFolderPopup {
 };
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
+var AppIconSourceActor = GObject.registerClass(
+class AppIconSourceActor extends MessageTray.SourceActor {
+    _init(source, size) {
+        super._init(source, size);
+        this.setIcon(new St.Bin());
+    }
+
+    _shouldShowCount() {
+        // Always show the counter when there's at least one notification
+        return this.source.count > 0;
+    }
+});
+
 var AppIcon = class AppIcon {
     constructor(app, iconParams = {}) {
         this.app = app;
@@ -1782,6 +1796,7 @@ var AppIcon = class AppIcon {
         delete iconParams['isDraggable'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
+        iconParams['createExtraIcons'] = this._createExtraIcons.bind(this);
         iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
@@ -1851,6 +1866,14 @@ var AppIcon = class AppIcon {
 
     _createIcon(iconSize) {
         return this.app.create_icon_texture(iconSize);
+    }
+
+    _createExtraIcons(iconSize) {
+        if (!this._notificationSource)
+            return [];
+
+        let sourceActor = new AppIconSourceActor(this._notificationSource, iconSize);
+        return [sourceActor.actor];
     }
 
     _removeMenuTimeout() {

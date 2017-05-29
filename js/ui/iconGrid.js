@@ -32,6 +32,7 @@ var BaseIcon = GObject.registerClass(
 class BaseIcon extends St.Bin {
     _init(label, params) {
         params = Params.parse(params, { createIcon: null,
+                                        createExtraIcons: null,
                                         setSizeManually: false,
                                         showLabel: true });
 
@@ -51,8 +52,23 @@ class BaseIcon extends St.Bin {
         this.iconSize = ICON_SIZE;
         this._iconBin = new St.Bin({ x_align: St.Align.MIDDLE,
                                      y_align: St.Align.MIDDLE });
+        this._iconBin.add_style_class_name('icon-button');
 
         this._box.add_actor(this._iconBin);
+
+        this._layeredIcon = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                            visible: true,
+                                            x_expand: true,
+                                            y_expand: true,
+                                            width: this.iconSize,
+                                            height: this.iconSize });
+        this._iconBin.add_actor(this._layeredIcon);
+
+        let shadow = new St.Widget({ style_class: 'shadow-icon',
+                                     visible: true,
+                                     x_expand: true,
+                                     y_expand: true });
+        this._layeredIcon.add_actor(shadow);
 
         if (params.showLabel) {
             this.label = new St.Label({ text: label });
@@ -67,9 +83,12 @@ class BaseIcon extends St.Bin {
 
         if (params.createIcon)
             this.createIcon = params.createIcon;
+        if (params.createExtraIcons)
+            this.createExtraIcons = params.createExtraIcons;
         this._setSizeManually = params.setSizeManually;
 
         this.icon = null;
+        this.extraIcons = [];
 
         let cache = St.TextureCache.get_default();
         this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
@@ -86,6 +105,12 @@ class BaseIcon extends St.Bin {
         throw new GObject.NotImplementedError(`createIcon in ${this.constructor.name}`);
     }
 
+    // This can be overridden by a subclass, or by the createExtraIcons
+    // parameter to _init()
+    createExtraIcons(size) {
+        return [];
+    }
+
     setIconSize(size) {
         if (!this._setSizeManually)
             throw new Error('setSizeManually has to be set to use setIconsize');
@@ -99,10 +124,24 @@ class BaseIcon extends St.Bin {
     _createIconTexture(size) {
         if (this.icon)
             this.icon.destroy();
+        this.extraIcons.forEach(function (i) {
+            i.destroy();
+        });
         this.iconSize = size;
         this.icon = this.createIcon(this.iconSize);
+        this.extraIcons = this.createExtraIcons(this.iconSize);
 
-        this._iconBin.child = this.icon;
+        this._layeredIcon.add_actor(this.icon);
+        this._layeredIcon.set_child_below_sibling(this.icon, null);
+
+        this.extraIcons.forEach((i) => {
+            this._layeredIcon.add_actor(i);
+        });
+
+        // The icon returned by createIcon() might actually be smaller than
+        // the requested icon size (for instance StTextureCache does this
+        // for fallback icons), so set the size explicitly.
+        this._layeredIcon.set_size(this.iconSize, this.iconSize);
     }
 
     vfunc_style_changed() {
@@ -117,7 +156,7 @@ class BaseIcon extends St.Bin {
             size = found ? len : ICON_SIZE;
         }
 
-        if (this.iconSize == size && this._iconBin.child)
+        if (this.iconSize == size && this.icon !== null)
             return;
 
         this._createIconTexture(size);
