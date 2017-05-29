@@ -1015,6 +1015,8 @@ const Panel = new Lang.Class({
         else
             Main.messageTray.bannerAlignment = Clutter.ActorAlign.CENTER;
 
+        this._updateSolidStyle();
+
         if (this._sessionStyle)
             this._removeStyleClassName(this._sessionStyle);
 
