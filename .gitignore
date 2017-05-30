@@ -6,16 +6,8 @@
 ABOUT-NLS
 ChangeLog
 INSTALL
-Makefile
-Makefile.in
 aclocal.m4
 autom4te.cache
-config.h
-config.h.in
-config.log
-config.status
-config
-configure
 data/org.gnome.Shell.desktop
 data/org.gnome.Shell.desktop.in
 data/gnome-shell-extension-prefs.desktop
@@ -41,15 +33,9 @@ docs/reference/*/*.types
 docs/reference/*/html/
 docs/reference/*/xml/
 docs/reference/shell/doc-gen-*
-gtk-doc.make
 js/misc/config.js
 js/js-resources.c
 js/js-resources.h
-intltool-extract.in
-intltool-merge.in
-intltool-update.in
-libtool
-m4/
 man/gnome-shell.1
 omf.make
 po/*.gmo
@@ -58,7 +44,6 @@ po/*.header
 po/*.sed
 po/*.sin
 po/.intltool-merge-cache
-po/Makefile.in.in
 po/Makevars.template
 po/POTFILES
 po/Rules-quot
@@ -68,8 +53,6 @@ src/*.gir
 src/*.typelib
 src/*-enum-types.[ch]
 src/*-marshal.[ch]
-src/Makefile
-src/Makefile.in
 src/calendar-server/evolution-calendar.desktop
 src/calendar-server/org.gnome.Shell.CalendarServer.service
 src/gnome-shell
@@ -93,7 +76,6 @@ src/st-scroll-view-fade-generated.c
 src/stamp-st-scroll-view-fade-generated.c
 stamp-h1
 tests/run-test.sh
-xmldocs.make
 *~
 *.patch
 *.sw?
