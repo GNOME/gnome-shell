@@ -270,6 +270,7 @@ var ViewSelector = GObject.registerClass({
         this.reset();
         this._workspacesDisplay.show(true);
         this._activePage = null;
+        this._showPage(this._appsPage);
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
