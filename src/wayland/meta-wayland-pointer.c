@@ -87,6 +87,10 @@ G_DEFINE_TYPE (MetaWaylandPointer, meta_wayland_pointer,
                META_TYPE_WAYLAND_INPUT_DEVICE)
 
 static void
+meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
+                                  MetaWaylandSurface *surface);
+
+static void
 meta_wayland_pointer_reset_grab (MetaWaylandPointer *pointer);
 
 static void
@@ -510,6 +514,7 @@ meta_wayland_pointer_disable (MetaWaylandPointer *pointer)
   meta_wayland_pointer_cancel_grab (pointer);
   meta_wayland_pointer_reset_grab (pointer);
   meta_wayland_pointer_set_focus (pointer, NULL);
+  meta_wayland_pointer_set_current (pointer, NULL);
 
   g_clear_pointer (&pointer->pointer_clients, g_hash_table_unref);
   pointer->cursor_surface = NULL;
@@ -538,10 +543,39 @@ count_buttons (const ClutterEvent *event)
 }
 
 static void
+current_surface_destroyed (MetaWaylandSurface *surface,
+                           MetaWaylandPointer *pointer)
+{
+  meta_wayland_pointer_set_current (pointer, NULL);
+}
+
+static void
+meta_wayland_pointer_set_current (MetaWaylandPointer *pointer,
+                                  MetaWaylandSurface *surface)
+{
+  if (pointer->current)
+    {
+      g_signal_handler_disconnect (pointer->current,
+                                   pointer->current_surface_destroyed_handler_id);
+      pointer->current = NULL;
+    }
+
+  if (surface)
+    {
+      pointer->current = surface;
+      pointer->current_surface_destroyed_handler_id =
+        g_signal_connect (surface, "destroy",
+                          G_CALLBACK (current_surface_destroyed),
+                          pointer);
+    }
+}
+
+static void
 repick_for_event (MetaWaylandPointer *pointer,
                   const ClutterEvent *for_event)
 {
   ClutterActor *actor;
+  MetaWaylandSurface *surface;
 
   if (for_event)
     actor = clutter_event_get_source (for_event);
@@ -549,10 +583,18 @@ repick_for_event (MetaWaylandPointer *pointer,
     actor = clutter_input_device_get_pointer_actor (pointer->device);
 
   if (META_IS_SURFACE_ACTOR_WAYLAND (actor))
-    pointer->current =
-      meta_surface_actor_wayland_get_surface (META_SURFACE_ACTOR_WAYLAND (actor));
+    {
+      MetaSurfaceActorWayland *actor_wayland =
+        META_SURFACE_ACTOR_WAYLAND (actor);
+
+      surface = meta_surface_actor_wayland_get_surface (actor_wayland);
+    }
   else
-    pointer->current = NULL;
+    {
+      surface = NULL;
+    }
+
+  meta_wayland_pointer_set_current (pointer, surface);
 
   sync_focus_surface (pointer);
   meta_wayland_pointer_update_cursor_surface (pointer);
