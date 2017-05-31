@@ -375,6 +375,9 @@ lid_is_closed_changed (UpClient   *client,
 static gboolean
 meta_monitor_manager_real_is_lid_closed (MetaMonitorManager *manager)
 {
+  if (!manager->up_client)
+    return FALSE;
+
   return up_client_get_lid_is_closed (manager->up_client);
 }
 
