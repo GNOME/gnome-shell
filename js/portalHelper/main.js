@@ -357,7 +357,7 @@ const WebPortalHelper = new Lang.Class({
         if (top.window != null)
             return;
 
-        top.window = new PortalWindow(this, top.uri, top.timestamp, Lang.bind(this, function(result) {
+        top.window = new PortalWindow(this, top.url, top.timestamp, Lang.bind(this, function(result) {
             this._dbusImpl.emit_signal('Done', new GLib.Variant('(ou)', [top.connection, result]));
         }));
     },
