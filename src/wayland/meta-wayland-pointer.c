@@ -247,14 +247,6 @@ sync_focus_surface (MetaWaylandPointer *pointer)
 }
 
 static void
-pointer_handle_focus_surface_destroy (struct wl_listener *listener, void *data)
-{
-  MetaWaylandPointer *pointer = wl_container_of (listener, pointer, focus_surface_listener);
-
-  meta_wayland_pointer_set_focus (pointer, NULL);
-}
-
-static void
 meta_wayland_pointer_send_frame (MetaWaylandPointer *pointer,
 				 struct wl_resource *resource)
 {
@@ -487,8 +479,6 @@ meta_wayland_pointer_enable (MetaWaylandPointer *pointer)
   pointer->pointer_clients =
     g_hash_table_new_full (NULL, NULL, NULL,
                            (GDestroyNotify) meta_wayland_pointer_client_free);
-
-  pointer->focus_surface_listener.notify = pointer_handle_focus_surface_destroy;
 
   pointer->cursor_surface = NULL;
 
@@ -815,6 +805,13 @@ meta_wayland_pointer_broadcast_leave (MetaWaylandPointer *pointer,
   meta_wayland_pointer_broadcast_frame (pointer);
 }
 
+static void
+focus_surface_destroyed (MetaWaylandSurface *surface,
+                         MetaWaylandPointer *pointer)
+{
+  meta_wayland_pointer_set_focus (pointer, NULL);
+}
+
 void
 meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
                                 MetaWaylandSurface *surface)
@@ -838,7 +835,9 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
           pointer->focus_client = NULL;
         }
 
-      wl_list_remove (&pointer->focus_surface_listener.link);
+      g_signal_handler_disconnect (pointer->focus_surface,
+                                   pointer->focus_surface_destroyed_handler_id);
+      pointer->focus_surface_destroyed_handler_id = 0;
       pointer->focus_surface = NULL;
     }
 
@@ -848,8 +847,11 @@ meta_wayland_pointer_set_focus (MetaWaylandPointer *pointer,
       ClutterPoint pos;
 
       pointer->focus_surface = surface;
-      wl_resource_add_destroy_listener (pointer->focus_surface->resource,
-                                        &pointer->focus_surface_listener);
+
+      pointer->focus_surface_destroyed_handler_id =
+        g_signal_connect_after (pointer->focus_surface, "destroy",
+                                G_CALLBACK (focus_surface_destroyed),
+                                pointer);
 
       clutter_input_device_get_coords (pointer->device, NULL, &pos);
 
