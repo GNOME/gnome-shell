@@ -18,8 +18,8 @@ const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 const WorkspacesView = imports.ui.workspacesView;
 
-// The maximum size of a thumbnail is 1/8 the width and height of the screen
-let MAX_THUMBNAIL_SCALE = 1/8.;
+// The maximum size of a thumbnail is 1/10 the width and height of the screen
+let MAX_THUMBNAIL_SCALE = 1/10.;
 
 var RESCALE_ANIMATION_TIME = 0.2;
 var SLIDE_ANIMATION_TIME = 0.2;
