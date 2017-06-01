@@ -254,18 +254,12 @@ var ThumbnailsSlider = new Lang.Class({
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateSlide));
         this.actor.connect('notify::hover', Lang.bind(this, this._updateSlide));
-        global.window_manager.connect('switch-workspace', Lang.bind(this, this._updateSlide));
         this._thumbnailsBox.actor.bind_property('visible', this.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
     },
 
     _getAlwaysZoomOut: function() {
-        // Always show the pager when hover, during a drag, or if workspaces are
-        // actually used, e.g. there are windows on any non-active workspace
-        let alwaysZoomOut = this.actor.hover ||
-                            this._inDrag ||
-                            !Meta.prefs_get_dynamic_workspaces() ||
-                            global.screen.n_workspaces > 2 ||
-                            global.screen.get_active_workspace_index() != 0;
+        // Always show the pager on hover or during a drag
+        let alwaysZoomOut = this.actor.hover || this._inDrag;
 
         if (!alwaysZoomOut) {
             let monitors = Main.layoutManager.monitors;
