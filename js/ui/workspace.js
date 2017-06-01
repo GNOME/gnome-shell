@@ -439,7 +439,6 @@ var WindowOverlay = new Lang.Class({
         let title = new St.Label({ style_class: 'window-caption',
                                    text: metaWindow.title });
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        title._spacing = 0;
         windowClone.actor.label_actor = title;
 
         this._updateCaptionId = metaWindow.connect('notify::title',
@@ -475,8 +474,8 @@ var WindowOverlay = new Lang.Class({
         Shell.util_set_hidden_from_pick(this.title, true);
         Shell.util_set_hidden_from_pick(this.border, true);
 
-        parentActor.add_actor(this.title);
         parentActor.add_actor(this.border);
+        parentActor.add_actor(this.title);
         parentActor.add_actor(this.closeButton);
         title.connect('style-changed',
                       Lang.bind(this, this._onStyleChanged));
@@ -506,7 +505,7 @@ var WindowOverlay = new Lang.Class({
 
     chromeHeights: function () {
         return [Math.max(this.borderSize, this.closeButton.height - this.closeButton._overlap),
-                this.title.height + this.title._spacing];
+                (this.title.height - this.borderSize) / 2];
     },
 
     chromeWidths: function () {
@@ -552,7 +551,7 @@ var WindowOverlay = new Lang.Class({
         title.width = prevTitleWidth;
 
         let titleX = cloneX + (cloneWidth - titleWidth) / 2;
-        let titleY = cloneY + cloneHeight + title._spacing;
+        let titleY = cloneY + cloneHeight - (title.height - this.borderSize) / 2;
 
         if (animate)
             this._animateOverlayActor(title, Math.floor(titleX), Math.floor(titleY), titleWidth);
@@ -717,9 +716,6 @@ var WindowOverlay = new Lang.Class({
     },
 
     _onStyleChanged: function() {
-        let titleNode = this.title.get_theme_node();
-        this.title._spacing = titleNode.get_length('-shell-caption-spacing');
-
         let closeNode = this.closeButton.get_theme_node();
         this.closeButton._overlap = closeNode.get_length('-shell-close-overlap');
 
@@ -1951,19 +1947,16 @@ var Workspace = new Lang.Class({
             right: node.get_padding(St.Side.RIGHT),
         };
 
-        let closeButtonHeight, captionHeight;
-        let leftBorder, rightBorder;
-
         // All of the overlays have the same chrome sizes,
         // so just pick the first one.
         let overlay = this._windowOverlays[0];
-        [closeButtonHeight, captionHeight] = overlay.chromeHeights();
-        [leftBorder, rightBorder] = overlay.chromeWidths();
+        let [topBorder, bottomBorder] = overlay.chromeHeights();
+        let [leftBorder, rightBorder] = overlay.chromeWidths();
 
-        rowSpacing += captionHeight;
+        rowSpacing += (topBorder + bottomBorder) / 2;
         columnSpacing += (rightBorder + leftBorder) / 2;
-        padding.top += closeButtonHeight;
-        padding.bottom += captionHeight;
+        padding.top += topBorder;
+        padding.bottom += bottomBorder;
         padding.left += leftBorder;
         padding.right += rightBorder;
 
