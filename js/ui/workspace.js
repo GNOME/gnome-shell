@@ -20,7 +20,7 @@ const WindowManager = imports.ui.windowManager;
 
 var WINDOW_DND_SIZE = 256;
 
-var WINDOW_CLONE_MAXIMUM_SCALE = 0.7;
+var WINDOW_CLONE_MAXIMUM_SCALE = 1.0;
 
 var CLOSE_BUTTON_FADE_TIME = 0.1;
 
