@@ -1162,13 +1162,33 @@ meta_wayland_pointer_create_new_resource (MetaWaylandPointer *pointer,
     }
 }
 
+static gboolean
+pointer_can_grab_surface (MetaWaylandPointer *pointer,
+                          MetaWaylandSurface *surface)
+{
+  GList *l;
+
+  if (pointer->focus_surface == surface)
+    return TRUE;
+
+  for (l = surface->subsurfaces; l; l = l->next)
+    {
+      MetaWaylandSurface *subsurface = l->data;
+
+      if (pointer_can_grab_surface (pointer, subsurface))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
 gboolean
 meta_wayland_pointer_can_grab_surface (MetaWaylandPointer *pointer,
                                        MetaWaylandSurface *surface,
                                        uint32_t            serial)
 {
   return (pointer->grab_serial == serial &&
-          pointer->focus_surface == surface);
+          pointer_can_grab_surface (pointer, surface));
 }
 
 gboolean
