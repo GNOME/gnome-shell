@@ -219,17 +219,10 @@ var BaseAppView = new Lang.Class({
         }
 
         if (animationDirection == IconGrid.AnimationDirection.IN) {
-            let toAnimate = this._grid.actor.connect('notify::allocation', Lang.bind(this,
-                function() {
-                    this._grid.actor.disconnect(toAnimate);
-                    // We need to hide the grid temporary to not flash it
-                    // for a frame
-                    this._grid.actor.opacity = 0;
-                    Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                                   Lang.bind(this, function() {
-                                       this._doSpringAnimation(animationDirection)
-                                  }));
-                }));
+            let id = this._grid.actor.connect('paint', () => {
+                this._grid.actor.disconnect(id);
+                this._doSpringAnimation(animationDirection);
+            });
         } else {
             this._doSpringAnimation(animationDirection);
         }
