@@ -2911,7 +2911,12 @@ meta_window_tile (MetaWindow *window)
                                       META_SIZE_CHANGE_MAXIMIZE,
                                       &old_frame_rect, &old_buffer_rect);
 
-  meta_window_move_resize_now (window);
+  meta_window_move_resize_internal (window,
+                                    (META_MOVE_RESIZE_MOVE_ACTION |
+                                     META_MOVE_RESIZE_RESIZE_ACTION |
+                                     META_MOVE_RESIZE_STATE_CHANGED),
+                                    NorthWestGravity,
+                                    window->unconstrained_rect);
 
   if (window->frame)
     meta_frame_queue_draw (window->frame);
