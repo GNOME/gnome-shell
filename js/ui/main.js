@@ -47,6 +47,7 @@ const XdndHandler = imports.ui.xdndHandler;
 const KbdA11yDialog = imports.ui.kbdA11yDialog;
 const LocatePointer = imports.ui.locatePointer;
 const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
+const Watermark = imports.ui.watermark;
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
 const STICKY_KEYS_ENABLE = 'stickykeys-enable';
@@ -95,6 +96,7 @@ let _a11ySettings = null;
 let _themeResource = null;
 let _oskResource = null;
 let _desktopAppClient = null;
+let _watermarkManager = null;
 
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
@@ -273,6 +275,10 @@ function _initializeUI() {
             Scripting.runPerfScript(module, perfOutput);
         }
     });
+
+    /* Initialize watermarks */
+    _watermarkManager = new Watermark.WatermarkManager();
+    _watermarkManager.init();
 }
 
 function _getStylesheet(name) {

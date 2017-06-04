@@ -1,4 +1,15 @@
 <schemalist>
+  <!-- Keep Endless-specific enumerations at the top of the file -->
+
+  <enum id="org.gnome.shell.watermark.Position">
+    <value nick="center" value="0"/>
+    <value nick="bottom-left" value="1"/>
+    <value nick="bottom-center" value="2"/>
+    <value nick="bottom-right" value="3"/>
+  </enum>
+
+  <!-- End of Endless-specific enumerations -->
+
   <schema id="org.gnome.shell" path="/org/gnome/shell/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="development-tools" type="b">
@@ -451,6 +462,48 @@
       <description>
         This key overrides the key in org.gnome.mutter when running GNOME Shell.
       </description>
+    </key>
+  </schema>
+
+  <!-- Endless-specific schemas beyond this point -->
+
+  <schema id="org.gnome.shell.watermark" path="/org/gnome/shell/watermark/"
+	  gettext-domain="@GETTEXT_PACKAGE@">
+    <key type="s" name="watermark-file">
+      <default>''</default>
+      <summary>Watermark file</summary>
+      <description>The full watermark file path</description>
+    </key>
+    <key name="watermark-position" enum="org.gnome.shell.watermark.Position">
+      <default>'bottom-right'</default>
+      <summary>Watermark position</summary>
+      <description>
+        The position of the watermark; valid values are 'center',
+        'bottom-left', 'bottom-center' and 'bottom-right'
+      </description>
+    </key>
+    <key type="d" name="watermark-size">
+      <range min="5.0" max="30.0"/>
+      <default>9.0</default>
+      <summary>Watermark size</summary>
+      <description>The watermark size in percent relative to the screen width</description>
+    </key>
+    <key type="u" name="watermark-border">
+      <range min="0" max="100"/>
+      <default>40</default>
+      <summary>Watermark border</summary>
+      <description>The watermark around the logo</description>
+    </key>
+    <key type="u" name="watermark-opacity">
+      <range min="0" max="255"/>
+      <default>255</default>
+      <summary>Watermark opacity</summary>
+      <description>The watermark of the logo</description>
+    </key>
+    <key type="b" name="watermark-always-visible">
+      <default>false</default>
+      <summary>Watermark always visible</summary>
+      <description>Show the watermark even on a non default background</description>
     </key>
   </schema>
 </schemalist>
