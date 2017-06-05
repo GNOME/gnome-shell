@@ -72,6 +72,8 @@ enum
   PROP_0,
 
   PROP_CLUTTER_TEXT,
+  PROP_PRIMARY_ICON,
+  PROP_SECONDARY_ICON,
   PROP_HINT_TEXT,
   PROP_TEXT,
   PROP_INPUT_PURPOSE,
@@ -122,6 +124,14 @@ st_entry_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
+    case PROP_PRIMARY_ICON:
+      st_entry_set_primary_icon (entry, g_value_get_object (value));
+      break;
+
+    case PROP_SECONDARY_ICON:
+      st_entry_set_secondary_icon (entry, g_value_get_object (value));
+      break;
+
     case PROP_HINT_TEXT:
       st_entry_set_hint_text (entry, g_value_get_string (value));
       break;
@@ -156,6 +166,14 @@ st_entry_get_property (GObject    *gobject,
     {
     case PROP_CLUTTER_TEXT:
       g_value_set_object (value, priv->entry);
+      break;
+
+    case PROP_PRIMARY_ICON:
+      g_value_set_object (value, priv->primary_icon);
+      break;
+
+    case PROP_SECONDARY_ICON:
+      g_value_set_object (value, priv->secondary_icon);
       break;
 
     case PROP_HINT_TEXT:
@@ -794,6 +812,20 @@ st_entry_class_init (StEntryClass *klass)
 			       G_PARAM_READABLE);
   g_object_class_install_property (gobject_class, PROP_CLUTTER_TEXT, pspec);
 
+  pspec = g_param_spec_object ("primary-icon",
+			       "Primary Icon",
+			       "Primary Icon actor",
+			       CLUTTER_TYPE_ACTOR,
+			       G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_PRIMARY_ICON, pspec);
+
+  pspec = g_param_spec_object ("secondary-icon",
+			       "Secondary Icon",
+			       "Secondary Icon actor",
+			       CLUTTER_TYPE_ACTOR,
+			       G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, PROP_SECONDARY_ICON, pspec);
+
   pspec = g_param_spec_string ("hint-text",
                                "Hint Text",
                                "Text to display when the entry is not focused "
@@ -1194,6 +1226,23 @@ st_entry_set_primary_icon (StEntry      *entry,
 }
 
 /**
+ * st_entry_get_primary_icon:
+ * @entry: a #StEntry
+ *
+ * Returns: (transfer none): a #ClutterActor
+ */
+ClutterActor *
+st_entry_get_primary_icon (StEntry *entry)
+{
+  StEntryPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
+
+  priv = ST_ENTRY_PRIV (entry);
+  return priv->primary_icon;
+}
+
+/**
  * st_entry_set_secondary_icon:
  * @entry: a #StEntry
  * @icon: (nullable): an #ClutterActor
@@ -1211,6 +1260,23 @@ st_entry_set_secondary_icon (StEntry      *entry,
   priv = st_entry_get_instance_private (entry);
 
   _st_entry_set_icon (entry, &priv->secondary_icon, icon);
+}
+
+/**
+ * st_entry_get_secondary_icon:
+ * @entry: a #StEntry
+ *
+ * Returns: (transfer none): a #ClutterActor
+ */
+ClutterActor *
+st_entry_get_secondary_icon (StEntry *entry)
+{
+  StEntryPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
+
+  priv = ST_ENTRY_PRIV (entry);
+  return priv->secondary_icon;
 }
 
 /******************************************************************************/

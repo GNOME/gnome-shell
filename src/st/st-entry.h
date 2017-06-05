@@ -57,10 +57,13 @@ void            st_entry_set_input_hints    (StEntry        *entry,
                                              GtkInputHints   hints);
 GtkInputHints   st_entry_get_input_hints    (StEntry        *entry);
 
-void            st_entry_set_primary_icon   (StEntry        *entry,
-                                             ClutterActor   *icon);
-void            st_entry_set_secondary_icon (StEntry        *entry,
-                                             ClutterActor   *icon);
+void            st_entry_set_primary_icon  (StEntry      *entry,
+                                            ClutterActor *icon);
+ClutterActor *  st_entry_get_primary_icon  (StEntry      *entry);
+
+void            st_entry_set_secondary_icon (StEntry      *entry,
+                                             ClutterActor *icon);
+ClutterActor *  st_entry_get_secondary_icon (StEntry      *entry);
 
 typedef void (*StEntryCursorFunc) (StEntry *entry, gboolean use_ibeam, gpointer data);
 void            st_entry_set_cursor_func    (StEntryCursorFunc func,
