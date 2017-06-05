@@ -406,16 +406,21 @@ meta_monitor_manager_calculate_monitor_mode_scale (MetaMonitorManager *manager,
                                                       monitor_mode);
 }
 
-static void
-meta_monitor_manager_get_supported_scales (MetaMonitorManager          *manager,
-                                           MetaLogicalMonitorLayoutMode layout_mode,
-                                           float                      **scales,
-                                           int                         *n_scales)
+float *
+meta_monitor_manager_calculate_supported_scales (MetaMonitorManager          *manager,
+                                                 MetaLogicalMonitorLayoutMode layout_mode,
+                                                 MetaMonitor                 *monitor,
+                                                 MetaMonitorMode             *monitor_mode,
+                                                 int                         *n_supported_scales)
 {
   MetaMonitorManagerClass *manager_class =
     META_MONITOR_MANAGER_GET_CLASS (manager);
 
-  manager_class->get_supported_scales (manager, layout_mode, scales, n_scales);
+  return manager_class->calculate_supported_scales (manager,
+                                                    layout_mode,
+                                                    monitor,
+                                                    monitor_mode,
+                                                    n_supported_scales);
 }
 
 MetaMonitorManagerCapability
@@ -1487,7 +1492,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
 #define META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED (1 << 0)
 #define META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT (1 << 1)
 
-#define MODE_FORMAT "(iiddu)"
+#define MODE_FORMAT "(iiddadu)"
 #define MODES_FORMAT "a" MODE_FORMAT
 #define MONITOR_SPEC_FORMAT "(ssss)"
 #define MONITOR_FORMAT "(" MONITOR_SPEC_FORMAT MODES_FORMAT "a{sv})"
@@ -1504,11 +1509,8 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   GVariantBuilder monitors_builder;
   GVariantBuilder logical_monitors_builder;
-  GVariantBuilder supported_scales_builder;
   GVariantBuilder properties_builder;
   GList *l;
-  float *supported_scales;
-  int n_supported_scales;
   int i;
   MetaMonitorManagerCapability capabilities;
   int max_screen_width, max_screen_height;
@@ -1546,8 +1548,11 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
       for (k = meta_monitor_get_modes (monitor); k; k = k->next)
         {
           MetaMonitorMode *monitor_mode = k->data;
+          GVariantBuilder supported_scales_builder;
           MetaMonitorModeSpec *monitor_mode_spec;
-          int preferred_scale;
+          float preferred_scale;
+          float *supported_scales;
+          int n_supported_scales;
           uint32_t flags = 0;
 
           monitor_mode_spec = meta_monitor_mode_get_spec (monitor_mode);
@@ -1555,6 +1560,20 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
             meta_monitor_manager_calculate_monitor_mode_scale (manager,
                                                                monitor,
                                                                monitor_mode);
+
+          g_variant_builder_init (&supported_scales_builder,
+                                  G_VARIANT_TYPE ("ad"));
+          supported_scales =
+            meta_monitor_manager_calculate_supported_scales (manager,
+                                                             manager->layout_mode,
+                                                             monitor,
+                                                             monitor_mode,
+                                                             &n_supported_scales);
+          for (i = 0; i < n_supported_scales; i++)
+            g_variant_builder_add (&supported_scales_builder, "d",
+                                   (double) supported_scales[i]);
+          g_free (supported_scales);
+
           if (monitor_mode == current_mode)
             flags |= META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT;
           if (monitor_mode == preferred_mode)
@@ -1565,6 +1584,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                  monitor_mode_spec->height,
                                  monitor_mode_spec->refresh_rate,
                                  (double) preferred_scale,
+                                 &supported_scales_builder,
                                  flags);
         }
 
@@ -1632,14 +1652,6 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              NULL);
     }
 
-  g_variant_builder_init (&supported_scales_builder, G_VARIANT_TYPE ("ad"));
-  meta_monitor_manager_get_supported_scales (manager,
-                                             manager->layout_mode,
-                                             &supported_scales,
-                                             &n_supported_scales);
-  for (i = 0; i < n_supported_scales; i++)
-    g_variant_builder_add (&supported_scales_builder, "d", supported_scales[i]);
-
   g_variant_builder_init (&properties_builder, G_VARIANT_TYPE ("a{sv}"));
   capabilities = meta_monitor_manager_get_capabilities (manager);
   if ((capabilities & META_MONITOR_MANAGER_CAPABILITY_MIRRORING) == 0)
@@ -1690,7 +1702,6 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
     manager->serial,
     g_variant_builder_end (&monitors_builder),
     g_variant_builder_end (&logical_monitors_builder),
-    g_variant_builder_end (&supported_scales_builder),
     g_variant_builder_end (&properties_builder));
 
   return TRUE;
@@ -1708,16 +1719,20 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
 gboolean
 meta_monitor_manager_is_scale_supported (MetaMonitorManager          *manager,
                                          MetaLogicalMonitorLayoutMode layout_mode,
+                                         MetaMonitor                 *monitor,
+                                         MetaMonitorMode             *monitor_mode,
                                          float                        scale)
 {
-  float *supported_scales;
+  g_autofree float *supported_scales = NULL;
   int n_supported_scales;
   int i;
 
-  meta_monitor_manager_get_supported_scales (manager,
-                                             layout_mode,
-                                             &supported_scales,
-                                             &n_supported_scales);
+  supported_scales =
+    meta_monitor_manager_calculate_supported_scales (manager,
+                                                     layout_mode,
+                                                     monitor,
+                                                     monitor_mode,
+                                                     &n_supported_scales);
   for (i = 0; i < n_supported_scales; i++)
     {
       if (supported_scales[i] == scale)
@@ -1739,15 +1754,6 @@ meta_monitor_manager_is_config_applicable (MetaMonitorManager *manager,
       MetaLogicalMonitorConfig *logical_monitor_config = l->data;
       float scale = logical_monitor_config->scale;
       GList *k;
-
-      if (!meta_monitor_manager_is_scale_supported (manager,
-                                                    config->layout_mode,
-                                                    scale))
-        {
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "Scale not supported by backend");
-          return FALSE;
-        }
 
       for (k = logical_monitor_config->monitor_configs; k; k = k->next)
         {
@@ -1773,6 +1779,18 @@ meta_monitor_manager_is_config_applicable (MetaMonitorManager *manager,
                            "Specified monitor mode not available");
               return FALSE;
             }
+
+          if (!meta_monitor_manager_is_scale_supported (manager,
+                                                        config->layout_mode,
+                                                        monitor,
+                                                        monitor_mode,
+                                                        scale))
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Scale not supported by backend");
+              return FALSE;
+            }
+
         }
     }
 

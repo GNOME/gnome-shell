@@ -307,7 +307,6 @@
 	@serial: configuration serial
 	@monitors: available monitors
 	@logical_monitors: current logical monitor configuration
-	@supported_scales: scaling factors supported by the display server
 	@properties: display configuration properties
 
 	@monitors represent connected physical monitors
@@ -316,11 +315,12 @@
 	* s vendor: vendor name
 	* s product: product name
 	* s serial: product serial
-	* a(iidu) modes: available modes
+	* a(iiddadu) modes: available modes
 	    * i width: width in physical pixels
 	    * i height: height in physical pixels
 	    * d refresh rate: refresh rate
 	    * d preferred scale: scale preferred as per calculations
+	    * ad supported scales: scales supported by this mode
 	    * u flags: mode flags (see below)
 	* a{sv} properties: optional properties, including:
 	    - "width-mm" (i): physical width of monitor in millimeters
@@ -366,10 +366,6 @@
 	  7: 270° flipped
 
 
-	@supported_scales is an ordered list of floating point numbers representing
-	scale factors of logical monitors supported by the display server.
-
-
 	@layout_mode current layout mode represents the way logical monitors
 	are layed out on the screen. Possible modes include:
 
@@ -408,9 +404,8 @@
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />
-      <arg name="monitors" direction="out" type="a((ssss)a(iiddu)a{sv})" />
+      <arg name="monitors" direction="out" type="a((ssss)a(iiddadu)a{sv})" />
       <arg name="logical_monitors" direction="out" type="a(iiduba(ssss)a{sv})" />
-      <arg name="supported_scales" direction="out" type="ad" />
       <arg name="properties" direction="out" type="a{sv}" />
     </method>
 

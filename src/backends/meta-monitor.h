@@ -53,6 +53,12 @@ typedef gboolean (* MetaMonitorModeFunc) (MetaMonitor         *monitor,
                                           gpointer             user_data,
                                           GError             **error);
 
+typedef enum _MetaMonitorScalesConstraint
+{
+  META_MONITOR_SCALES_CONSTRAINT_NONE = 0,
+  META_MONITOR_SCALES_CONSTRAINT_NO_FRAC = (1 << 0),
+} MetaMonitorScalesConstraint;
+
 #define META_TYPE_MONITOR (meta_monitor_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaMonitor, meta_monitor, META, MONITOR, GObject)
 
@@ -162,6 +168,11 @@ void meta_monitor_calculate_crtc_pos (MetaMonitor         *monitor,
 
 float meta_monitor_calculate_mode_scale (MetaMonitor     *monitor,
                                          MetaMonitorMode *monitor_mode);
+
+float * meta_monitor_calculate_supported_scales (MetaMonitor                *monitor,
+                                                 MetaMonitorMode            *monitor_mode,
+                                                 MetaMonitorScalesConstraint constraints,
+                                                 int                        *n_supported_scales);
 
 MetaMonitorModeSpec * meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode);
 

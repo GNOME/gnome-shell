@@ -24,17 +24,6 @@
 #include "backends/meta-backend-private.h"
 #include "backends/meta-monitor-config-manager.h"
 
-static float supported_scales_test_logical[] = {
-  1.0,
-  1.5,
-  2.0
-};
-
-static float supported_scales_test_physical[] = {
-  1.0,
-  2.0
-};
-
 struct _MetaMonitorManagerTest
 {
   MetaMonitorManager parent;
@@ -420,23 +409,28 @@ meta_monitor_manager_test_calculate_monitor_mode_scale (MetaMonitorManager *mana
   return output_test->scale;
 }
 
-static void
-meta_monitor_manager_test_get_supported_scales (MetaMonitorManager          *manager,
-                                                MetaLogicalMonitorLayoutMode layout_mode,
-                                                float                      **scales,
-                                                int                         *n_scales)
+static float *
+meta_monitor_manager_test_calculate_supported_scales (MetaMonitorManager          *manager,
+                                                      MetaLogicalMonitorLayoutMode layout_mode,
+                                                      MetaMonitor                 *monitor,
+                                                      MetaMonitorMode             *monitor_mode,
+                                                      int                         *n_supported_scales)
 {
+  MetaMonitorScalesConstraint constraints =
+    META_MONITOR_SCALES_CONSTRAINT_NONE;
+
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      *scales = supported_scales_test_logical;
-      *n_scales = G_N_ELEMENTS (supported_scales_test_logical);
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      *scales = supported_scales_test_physical;
-      *n_scales = G_N_ELEMENTS (supported_scales_test_physical);
+      constraints |= META_MONITOR_SCALES_CONSTRAINT_NO_FRAC;
       break;
     }
+
+  return meta_monitor_calculate_supported_scales (monitor, monitor_mode,
+                                                  constraints,
+                                                  n_supported_scales);
 }
 
 static gboolean
@@ -525,7 +519,7 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
   manager_class->tiled_monitor_removed = meta_monitor_manager_test_tiled_monitor_removed;
   manager_class->is_transform_handled = meta_monitor_manager_test_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_test_calculate_monitor_mode_scale;
-  manager_class->get_supported_scales = meta_monitor_manager_test_get_supported_scales;
+  manager_class->calculate_supported_scales = meta_monitor_manager_test_calculate_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_test_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_test_get_max_screen_size;
   manager_class->get_default_layout_mode = meta_monitor_manager_test_get_default_layout_mode;

@@ -1336,6 +1336,43 @@ meta_monitor_calculate_mode_scale (MetaMonitor     *monitor,
   return calculate_scale (monitor, monitor_mode);
 }
 
+float *
+meta_monitor_calculate_supported_scales (MetaMonitor                *monitor,
+                                         MetaMonitorMode            *monitor_mode,
+                                         MetaMonitorScalesConstraint constraints,
+                                         int                        *n_supported_scales)
+{
+  unsigned int i;
+  int width, height;
+  GArray *supported_scales;
+  static const float all_scales[] = {
+    1.0,
+    1.5,
+    2.0
+  };
+
+  meta_monitor_mode_get_resolution (monitor_mode, &width, &height);
+
+  supported_scales = g_array_new (FALSE, FALSE, sizeof (float));
+
+  for (i = 0; i < G_N_ELEMENTS (all_scales); i++)
+    {
+      float scale = all_scales[i];
+
+      if ((constraints & META_MONITOR_SCALES_CONSTRAINT_NO_FRAC) &&
+          fmodf (scale, 1.0) != 0.0)
+        continue;
+
+      if (fmodf (width, scale) != 0.0 || fmodf (height, scale) != 0.0)
+        continue;
+
+      g_array_append_val (supported_scales, scale);
+    }
+
+  *n_supported_scales = supported_scales->len;
+  return (float *) g_array_free (supported_scales, FALSE);
+}
+
 MetaMonitorModeSpec *
 meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode)
 {

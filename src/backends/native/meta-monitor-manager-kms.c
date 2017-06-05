@@ -52,17 +52,6 @@
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
 #define SYNC_TOLERANCE 0.01    /* 1 percent */
 
-static float supported_scales_kms_logical[] = {
-  1.0,
-  1.5,
-  2.0
-};
-
-static float supported_scales_kms_physical[] = {
-  1.0,
-  2.0
-};
-
 typedef struct
 {
   drmModeConnector *connector;
@@ -1852,23 +1841,28 @@ meta_monitor_manager_kms_calculate_monitor_mode_scale (MetaMonitorManager *manag
   return meta_monitor_calculate_mode_scale (monitor, monitor_mode);
 }
 
-static void
-meta_monitor_manager_kms_get_supported_scales (MetaMonitorManager          *manager,
-                                               MetaLogicalMonitorLayoutMode layout_mode,
-                                               float                      **scales,
-                                               int                         *n_scales)
+static float *
+meta_monitor_manager_kms_calculate_supported_scales (MetaMonitorManager          *manager,
+                                                     MetaLogicalMonitorLayoutMode layout_mode,
+                                                     MetaMonitor                 *monitor,
+                                                     MetaMonitorMode             *monitor_mode,
+                                                     int                         *n_supported_scales)
 {
+  MetaMonitorScalesConstraint constraints =
+    META_MONITOR_SCALES_CONSTRAINT_NONE;
+
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      *scales = supported_scales_kms_logical;
-      *n_scales = G_N_ELEMENTS (supported_scales_kms_logical);
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      *scales = supported_scales_kms_physical;
-      *n_scales = G_N_ELEMENTS (supported_scales_kms_physical);
+      constraints |= META_MONITOR_SCALES_CONSTRAINT_NO_FRAC;
       break;
     }
+
+  return meta_monitor_calculate_supported_scales (monitor, monitor_mode,
+                                                  constraints,
+                                                  n_supported_scales);
 }
 
 static MetaMonitorManagerCapability
@@ -1973,7 +1967,7 @@ meta_monitor_manager_kms_class_init (MetaMonitorManagerKmsClass *klass)
   manager_class->set_crtc_gamma = meta_monitor_manager_kms_set_crtc_gamma;
   manager_class->is_transform_handled = meta_monitor_manager_kms_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_kms_calculate_monitor_mode_scale;
-  manager_class->get_supported_scales = meta_monitor_manager_kms_get_supported_scales;
+  manager_class->calculate_supported_scales = meta_monitor_manager_kms_calculate_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_kms_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_kms_get_max_screen_size;
   manager_class->get_default_layout_mode = meta_monitor_manager_kms_get_default_layout_mode;

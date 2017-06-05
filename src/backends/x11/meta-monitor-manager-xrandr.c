@@ -54,10 +54,6 @@
  * for the reasoning */
 #define DPI_FALLBACK 96.0
 
-static float supported_scales_xrandr[] = {
-  1.0, 2.0
-};
-
 struct _MetaMonitorManagerXrandr
 {
   MetaMonitorManager parent_instance;
@@ -1799,14 +1795,19 @@ meta_monitor_manager_xrandr_calculate_monitor_mode_scale (MetaMonitorManager *ma
   return meta_monitor_calculate_mode_scale (monitor, monitor_mode);
 }
 
-static void
-meta_monitor_manager_xrandr_get_supported_scales (MetaMonitorManager          *manager,
-                                                  MetaLogicalMonitorLayoutMode layout_mode,
-                                                  float                      **scales,
-                                                  int                         *n_scales)
+static float *
+meta_monitor_manager_xrandr_calculate_supported_scales (MetaMonitorManager          *manager,
+                                                        MetaLogicalMonitorLayoutMode layout_mode,
+                                                        MetaMonitor                 *monitor,
+                                                        MetaMonitorMode             *monitor_mode,
+                                                        int                         *n_supported_scales)
 {
-  *scales = supported_scales_xrandr;
-  *n_scales = G_N_ELEMENTS (supported_scales_xrandr);
+  MetaMonitorScalesConstraint constraints;
+
+  constraints = META_MONITOR_SCALES_CONSTRAINT_NO_FRAC;
+  return meta_monitor_calculate_supported_scales (monitor, monitor_mode,
+                                                  constraints,
+                                                  n_supported_scales);
 }
 
 static MetaMonitorManagerCapability
@@ -1913,7 +1914,7 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
 #endif
   manager_class->is_transform_handled = meta_monitor_manager_xrandr_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_xrandr_calculate_monitor_mode_scale;
-  manager_class->get_supported_scales = meta_monitor_manager_xrandr_get_supported_scales;
+  manager_class->calculate_supported_scales = meta_monitor_manager_xrandr_calculate_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_xrandr_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_xrandr_get_max_screen_size;
   manager_class->get_default_layout_mode = meta_monitor_manager_xrandr_get_default_layout_mode;

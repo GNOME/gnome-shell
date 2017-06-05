@@ -394,10 +394,11 @@ struct _MetaMonitorManagerClass
                                          MetaMonitor        *,
                                          MetaMonitorMode    *);
 
-  void (*get_supported_scales) (MetaMonitorManager          *,
-                                MetaLogicalMonitorLayoutMode ,
-                                float                      **,
-                                int                         *);
+  float * (*calculate_supported_scales) (MetaMonitorManager          *,
+                                         MetaLogicalMonitorLayoutMode ,
+                                         MetaMonitor                 *,
+                                         MetaMonitorMode             *,
+                                         int                         *);
 
   MetaMonitorManagerCapability (*get_capabilities) (MetaMonitorManager *);
 
@@ -509,8 +510,16 @@ float              meta_monitor_manager_calculate_monitor_mode_scale (MetaMonito
                                                                       MetaMonitor        *monitor,
                                                                       MetaMonitorMode    *monitor_mode);
 
+float *            meta_monitor_manager_calculate_supported_scales (MetaMonitorManager          *,
+                                                                    MetaLogicalMonitorLayoutMode ,
+                                                                    MetaMonitor                 *,
+                                                                    MetaMonitorMode             *,
+                                                                    int                         *);
+
 gboolean           meta_monitor_manager_is_scale_supported (MetaMonitorManager          *manager,
                                                             MetaLogicalMonitorLayoutMode layout_mode,
+                                                            MetaMonitor                 *monitor,
+                                                            MetaMonitorMode             *monitor_mode,
                                                             float                        scale);
 
 MetaMonitorManagerCapability

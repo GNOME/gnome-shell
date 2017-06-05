@@ -31,6 +31,7 @@
 
 #include <meta/util.h>
 #include "backends/meta-backend-private.h"
+#include "backends/meta-monitor.h"
 #include "backends/meta-monitor-config-manager.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
@@ -39,17 +40,6 @@
 #define MAX_OUTPUTS (MAX_MONITORS * 2)
 #define MAX_CRTCS (MAX_MONITORS * 2)
 #define MAX_MODES (MAX_MONITORS * 4)
-
-static float supported_scales_dummy_logical[] = {
-  1.0,
-  1.5,
-  2.0
-};
-
-static float supported_scales_dummy_physical[] = {
-  1.0,
-  2.0
-};
 
 struct _MetaMonitorManagerDummy
 {
@@ -320,12 +310,8 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
       for (i = 0; i < num_monitors && scales_str_list[i]; i++)
         {
           float scale = g_ascii_strtod (scales_str_list[i], NULL);
-          if (meta_monitor_manager_is_scale_supported (manager,
-                                                       manager->layout_mode,
-                                                       scale))
-            monitor_scales[i] = scale;
-          else
-            meta_warning ("Invalid dummy monitor scale\n");
+
+          monitor_scales[i] = scale;
         }
       g_strfreev (scales_str_list);
     }
@@ -614,23 +600,28 @@ meta_monitor_manager_dummy_calculate_monitor_mode_scale (MetaMonitorManager *man
   return output_dummy->scale;
 }
 
-static void
-meta_monitor_manager_dummy_get_supported_scales (MetaMonitorManager          *manager,
-                                                 MetaLogicalMonitorLayoutMode layout_mode,
-                                                 float                      **scales,
-                                                 int                         *n_scales)
+static float *
+meta_monitor_manager_dummy_calculate_supported_scales (MetaMonitorManager          *manager,
+                                                       MetaLogicalMonitorLayoutMode layout_mode,
+                                                       MetaMonitor                 *monitor,
+                                                       MetaMonitorMode             *monitor_mode,
+                                                       int                         *n_supported_scales)
 {
+  MetaMonitorScalesConstraint constraints =
+    META_MONITOR_SCALES_CONSTRAINT_NONE;
+
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      *scales = supported_scales_dummy_logical;
-      *n_scales = G_N_ELEMENTS (supported_scales_dummy_logical);
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
-      *scales = supported_scales_dummy_physical;
-      *n_scales = G_N_ELEMENTS (supported_scales_dummy_physical);
+      constraints |= META_MONITOR_SCALES_CONSTRAINT_NO_FRAC;
       break;
     }
+
+  return meta_monitor_calculate_supported_scales (monitor, monitor_mode,
+                                                  constraints,
+                                                  n_supported_scales);
 }
 
 static gboolean
@@ -699,7 +690,7 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
   manager_class->apply_configuration = meta_monitor_manager_dummy_apply_config;
   manager_class->is_transform_handled = meta_monitor_manager_dummy_is_transform_handled;
   manager_class->calculate_monitor_mode_scale = meta_monitor_manager_dummy_calculate_monitor_mode_scale;
-  manager_class->get_supported_scales = meta_monitor_manager_dummy_get_supported_scales;
+  manager_class->calculate_supported_scales = meta_monitor_manager_dummy_calculate_supported_scales;
   manager_class->get_capabilities = meta_monitor_manager_dummy_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_dummy_get_max_screen_size;
   manager_class->get_default_layout_mode = meta_monitor_manager_dummy_get_default_layout_mode;
