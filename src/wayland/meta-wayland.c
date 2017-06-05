@@ -58,7 +58,8 @@ typedef struct
 } WaylandEventSource;
 
 static gboolean
-wayland_event_source_prepare (GSource *base, int *timeout)
+wayland_event_source_prepare (GSource *base,
+                              int     *timeout)
 {
   WaylandEventSource *source = (WaylandEventSource *)base;
 
@@ -70,9 +71,9 @@ wayland_event_source_prepare (GSource *base, int *timeout)
 }
 
 static gboolean
-wayland_event_source_dispatch (GSource *base,
+wayland_event_source_dispatch (GSource    *base,
                                GSourceFunc callback,
-                               void *data)
+                               void       *data)
 {
   WaylandEventSource *source = (WaylandEventSource *)base;
   struct wl_event_loop *loop = wl_display_get_event_loop (source->display);
@@ -122,20 +123,22 @@ meta_wayland_compositor_repick (MetaWaylandCompositor *compositor)
 }
 
 static void
-wl_compositor_create_surface (struct wl_client *client,
+wl_compositor_create_surface (struct wl_client   *client,
                               struct wl_resource *resource,
-                              guint32 id)
+                              uint32_t            id)
 {
   MetaWaylandCompositor *compositor = wl_resource_get_user_data (resource);
+
   meta_wayland_surface_create (compositor, client, resource, id);
 }
 
 static void
-wl_compositor_create_region (struct wl_client *client,
+wl_compositor_create_region (struct wl_client   *client,
                              struct wl_resource *resource,
-                             uint32_t id)
+                             uint32_t            id)
 {
   MetaWaylandCompositor *compositor = wl_resource_get_user_data (resource);
+
   meta_wayland_region_create (compositor, client, resource, id);
 }
 
@@ -146,15 +149,17 @@ static const struct wl_compositor_interface meta_wayland_wl_compositor_interface
 
 static void
 compositor_bind (struct wl_client *client,
-		 void *data,
-                 guint32 version,
-                 guint32 id)
+                 void             *data,
+                 uint32_t          version,
+                 uint32_t          id)
 {
   MetaWaylandCompositor *compositor = data;
   struct wl_resource *resource;
 
   resource = wl_resource_create (client, &wl_compositor_interface, version, id);
-  wl_resource_set_implementation (resource, &meta_wayland_wl_compositor_interface, compositor, NULL);
+  wl_resource_set_implementation (resource,
+                                  &meta_wayland_wl_compositor_interface,
+                                  compositor, NULL);
 }
 
 /**
