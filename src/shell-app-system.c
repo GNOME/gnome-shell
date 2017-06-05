@@ -56,6 +56,7 @@ enum {
 enum {
   APP_STATE_CHANGED,
   INSTALLED_CHANGED,
+  APP_INFO_CHANGED,
   LAST_SIGNAL
 };
 
@@ -107,6 +108,15 @@ static void shell_app_system_class_init(ShellAppSystemClass *klass)
                   0,
                   NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
+
+  signals[APP_INFO_CHANGED] =
+    g_signal_new ("app-info-changed",
+                  SHELL_TYPE_APP_SYSTEM,
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  SHELL_TYPE_APP);
 }
 
 static void
@@ -210,12 +220,85 @@ app_is_stale (ShellApp *app)
   return !is_unchanged;
 }
 
-static gboolean
-stale_app_remove_func (gpointer key,
-                       gpointer value,
-                       gpointer user_data)
+static GDesktopAppInfo *
+get_new_desktop_app_info_from_app (ShellApp *app)
 {
-  return app_is_stale (value);
+  const char *id;
+
+  if (shell_app_is_window_backed (app))
+    return NULL;
+
+  /* If g_app_info_delete() was called, such as when a custom desktop
+   * icon is removed, the desktop ID of the underlying GDesktopAppInfo
+   * will be set to NULL.
+   * So we explicitly check for that case and mark the app as stale.
+   * See https://git.gnome.org/browse/glib/tree/gio/gdesktopappinfo.c?h=glib-2-44&id=2.44.0#n3682
+   */
+  id = shell_app_get_id (app);
+  if (id == NULL)
+    return NULL;
+
+  return g_desktop_app_info_new (id);
+}
+
+static gboolean
+app_info_changed (ShellApp        *app,
+                  GDesktopAppInfo *desk_new_info)
+{
+  GIcon *app_icon;
+  GIcon *new_icon;
+  GDesktopAppInfo *desk_app_info = shell_app_get_app_info (app);
+  GAppInfo *app_info = G_APP_INFO (desk_app_info);
+  GAppInfo *new_info = G_APP_INFO (desk_new_info);
+
+  if (!app_info)
+    return TRUE;
+
+  app_icon = g_app_info_get_icon (app_info);
+  new_icon = g_app_info_get_icon (new_info);
+
+  return !(g_app_info_equal (app_info, new_info) &&
+           g_icon_equal (app_icon, new_icon) &&
+           g_app_info_should_show (app_info) == g_app_info_should_show (new_info) &&
+           strcmp (g_desktop_app_info_get_filename (desk_app_info),
+                   g_desktop_app_info_get_filename (desk_new_info)) == 0 &&
+           g_strcmp0 (g_app_info_get_executable (app_info),
+                      g_app_info_get_executable (new_info)) == 0 &&
+           g_strcmp0 (g_app_info_get_commandline (app_info),
+                      g_app_info_get_commandline (new_info)) == 0 &&
+           strcmp (g_app_info_get_name (app_info),
+                   g_app_info_get_name (new_info)) == 0 &&
+           strcmp (g_app_info_get_display_name (app_info),
+                   g_app_info_get_display_name (new_info)) == 0 &&
+           g_strcmp0 (g_app_info_get_description (app_info),
+                      g_app_info_get_description (new_info)) == 0);
+}
+
+static void
+remove_or_update_app_from_info (ShellAppSystem *self)
+{
+  GHashTableIter iter;
+  ShellApp *app;
+
+  g_hash_table_iter_init (&iter, self->priv->id_to_app);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer) &app))
+    {
+      g_autoptr(GDesktopAppInfo) app_info = NULL;
+
+      if (app_is_stale (app))
+        {
+          /* App is stale, we remove it */
+          g_hash_table_iter_remove (&iter);
+          continue;
+        }
+
+      app_info = get_new_desktop_app_info_from_app (app);
+      if (app_info_changed (app, app_info))
+        {
+          _shell_app_set_app_info (app, app_info);
+          g_signal_emit (self, signals[APP_INFO_CHANGED], 0, app);
+        }
+    }
 }
 
 static gboolean
@@ -268,7 +351,7 @@ installed_changed (ShellAppCache  *cache,
 
   scan_startup_wm_class_to_id (self);
 
-  g_hash_table_foreach_remove (self->priv->id_to_app, stale_app_remove_func, NULL);
+  remove_or_update_app_from_info (self);
 
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0, NULL);
 }
