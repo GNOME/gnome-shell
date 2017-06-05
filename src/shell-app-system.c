@@ -8,6 +8,7 @@
 
 #include <gio/gio.h>
 #include <glib/gi18n.h>
+#include <eosmetrics/eosmetrics.h>
 
 #include "shell-app-cache-private.h"
 #include "shell-app-private.h"
@@ -23,6 +24,14 @@
  */
 #define RESCAN_TIMEOUT_MS 2500
 #define MAX_RESCAN_RETRIES 6
+
+/* Occurs when an application visible to the shell is opened or closed. The
+ * payload varies depending on whether it is given as an opening event or a
+ * closed event. If it is an opening event, the payload is a human-readable
+ * application name. If it is a closing event, the payload is empty. The key
+ * used is a pointer to the corresponding ShellApp.
+ */
+#define SHELL_APP_IS_OPEN_EVENT "b5e11a3d-13f8-4219-84fd-c9ba0bf3d1f0"
 
 /* Vendor prefixes are something that can be preprended to a .desktop
  * file name.  Undo this.
@@ -418,15 +427,34 @@ _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
 {
   ShellAppState state = shell_app_get_state (app);
 
+  g_autofree gchar *app_address = g_strdup_printf ("%p", app);
+  GDesktopAppInfo *app_info = shell_app_get_app_info (app);
+  const gchar *app_info_id = NULL;
+  if (app_info != NULL)
+    app_info_id = g_app_info_get_id (G_APP_INFO (app_info));
+
   switch (state)
     {
     case SHELL_APP_STATE_RUNNING:
+      if (app_info_id != NULL)
+        {
+          emtr_event_recorder_record_start (emtr_event_recorder_get_default (),
+                                            SHELL_APP_IS_OPEN_EVENT,
+                                            g_variant_new_string (app_address),
+                                            g_variant_new_string (app_info_id));
+        }
       g_hash_table_insert (self->priv->running_apps, g_object_ref (app), NULL);
       break;
     case SHELL_APP_STATE_STARTING:
       break;
     case SHELL_APP_STATE_STOPPED:
-      g_hash_table_remove (self->priv->running_apps, app);
+      if (g_hash_table_remove (self->priv->running_apps, app) && app_info_id != NULL)
+        {
+          emtr_event_recorder_record_stop (emtr_event_recorder_get_default (),
+                                           SHELL_APP_IS_OPEN_EVENT,
+                                           g_variant_new_string (app_address),
+                                           NULL);
+        }
       break;
     default:
       g_warn_if_reached();
