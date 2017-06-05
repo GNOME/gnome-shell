@@ -31,4 +31,6 @@ char         ***shell_app_system_search                    (const char *search_s
 
 GList          *shell_app_system_get_installed             (ShellAppSystem  *self);
 
+gboolean        shell_app_system_has_starting_apps         (ShellAppSystem  *self);
+
 #endif /* __SHELL_APP_SYSTEM_H__ */
