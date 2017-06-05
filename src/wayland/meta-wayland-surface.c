@@ -298,7 +298,8 @@ meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
 
 static void
 surface_process_damage (MetaWaylandSurface *surface,
-                        cairo_region_t *region)
+                        cairo_region_t     *surface_region,
+                        cairo_region_t     *buffer_region)
 {
   MetaWaylandBuffer *buffer = surface->buffer_ref.buffer;
   unsigned int buffer_width;
@@ -323,11 +324,15 @@ surface_process_damage (MetaWaylandSurface *surface,
     .width = buffer_width / surface->scale,
     .height = buffer_height / surface->scale,
   };
-  cairo_region_intersect_rectangle (region, &surface_rect);
+  cairo_region_intersect_rectangle (surface_region, &surface_rect);
 
   /* The damage region must be in the same coordinate space as the buffer,
    * i.e. scaled with surface->scale. */
-  scaled_region = meta_region_scale (region, surface->scale);
+  scaled_region = meta_region_scale (surface_region, surface->scale);
+
+  /* Now add the buffer damage on top of the scaled damage region, as buffer
+   * damage is already in that scale. */
+  cairo_region_union (scaled_region, buffer_region);
 
   /* First update the buffer. */
   meta_wayland_buffer_process_damage (buffer, scaled_region);
@@ -492,7 +497,8 @@ pending_state_init (MetaWaylandPendingState *state)
   state->opaque_region = NULL;
   state->opaque_region_set = FALSE;
 
-  state->damage = cairo_region_create ();
+  state->surface_damage = cairo_region_create ();
+  state->buffer_damage = cairo_region_create ();
   wl_list_init (&state->frame_callback_list);
 
   state->has_new_geometry = FALSE;
@@ -505,7 +511,8 @@ pending_state_destroy (MetaWaylandPendingState *state)
 {
   MetaWaylandFrameCallback *cb, *next;
 
-  g_clear_pointer (&state->damage, cairo_region_destroy);
+  g_clear_pointer (&state->surface_damage, cairo_region_destroy);
+  g_clear_pointer (&state->buffer_damage, cairo_region_destroy);
   g_clear_pointer (&state->input_region, cairo_region_destroy);
   g_clear_pointer (&state->opaque_region, cairo_region_destroy);
 
@@ -535,7 +542,8 @@ move_pending_state (MetaWaylandPendingState *from,
   to->dx = from->dx;
   to->dy = from->dy;
   to->scale = from->scale;
-  to->damage = from->damage;
+  to->surface_damage = from->surface_damage;
+  to->buffer_damage = from->buffer_damage;
   to->input_region = from->input_region;
   to->input_region_set = from->input_region_set;
   to->opaque_region = from->opaque_region;
@@ -798,8 +806,11 @@ apply_pending_state (MetaWaylandSurface      *surface,
   if (pending->scale > 0)
     surface->scale = pending->scale;
 
-  if (!cairo_region_is_empty (pending->damage))
-    surface_process_damage (surface, pending->damage);
+  if (!cairo_region_is_empty (pending->surface_damage) ||
+      !cairo_region_is_empty (pending->buffer_damage))
+    surface_process_damage (surface,
+                            pending->surface_damage,
+                            pending->buffer_damage);
 
   surface->offset_x += pending->dx;
   surface->offset_y += pending->dy;
@@ -932,21 +943,27 @@ wl_surface_attach (struct wl_client *client,
 }
 
 static void
-wl_surface_damage (struct wl_client *client,
+wl_surface_damage (struct wl_client   *client,
                    struct wl_resource *surface_resource,
-                   gint32 x,
-                   gint32 y,
-                   gint32 width,
-                   gint32 height)
+                   int32_t             x,
+                   int32_t             y,
+                   int32_t             width,
+                   int32_t             height)
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
-  cairo_rectangle_int_t rectangle = { x, y, width, height };
+  cairo_rectangle_int_t rectangle;
 
   /* X11 unmanaged window */
   if (!surface)
     return;
 
-  cairo_region_union_rectangle (surface->pending->damage, &rectangle);
+  rectangle = (cairo_rectangle_int_t) {
+    .x = x,
+    .y = y,
+    .width = width,
+    .height = height
+  };
+  cairo_region_union_rectangle (surface->pending->surface_damage, &rectangle);
 }
 
 static void
@@ -1054,6 +1071,30 @@ wl_surface_set_buffer_scale (struct wl_client *client,
     g_warning ("Trying to set invalid buffer_scale of %d\n", scale);
 }
 
+static void
+wl_surface_damage_buffer (struct wl_client   *client,
+                          struct wl_resource *surface_resource,
+                          int32_t             x,
+                          int32_t             y,
+                          int32_t             width,
+                          int32_t             height)
+{
+  MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
+  cairo_rectangle_int_t rectangle;
+
+  /* X11 unmanaged window */
+  if (!surface)
+    return;
+
+  rectangle = (cairo_rectangle_int_t) {
+    .x = x,
+    .y = y,
+    .width = width,
+    .height = height
+  };
+  cairo_region_union_rectangle (surface->pending->buffer_damage, &rectangle);
+}
+
 static const struct wl_surface_interface meta_wayland_wl_surface_interface = {
   wl_surface_destroy,
   wl_surface_attach,
@@ -1063,7 +1104,8 @@ static const struct wl_surface_interface meta_wayland_wl_surface_interface = {
   wl_surface_set_input_region,
   wl_surface_commit,
   wl_surface_set_buffer_transform,
-  wl_surface_set_buffer_scale
+  wl_surface_set_buffer_scale,
+  wl_surface_damage_buffer,
 };
 
 static gboolean

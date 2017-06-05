@@ -130,7 +130,9 @@ struct _MetaWaylandPendingState
   int scale;
 
   /* wl_surface.damage */
-  cairo_region_t *damage;
+  cairo_region_t *surface_damage;
+  /* wl_surface.damage_buffer */
+  cairo_region_t *buffer_damage;
 
   cairo_region_t *input_region;
   gboolean input_region_set;
