@@ -72,6 +72,7 @@ struct _ShellAppSystem
 
 struct _ShellAppSystemPrivate {
   GHashTable *running_apps;
+  GHashTable *starting_apps;
   GHashTable *id_to_app;
   GHashTable *startup_wm_class_to_id;
   GList *installed_apps;
@@ -281,6 +282,7 @@ shell_app_system_init (ShellAppSystem *self)
   self->priv = priv = shell_app_system_get_instance_private (self);
 
   priv->running_apps = g_hash_table_new_full (NULL, NULL, (GDestroyNotify) g_object_unref, NULL);
+  priv->starting_apps = g_hash_table_new_full (NULL, NULL, (GDestroyNotify) g_object_unref, NULL);
   priv->id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            NULL,
                                            (GDestroyNotify)g_object_unref);
@@ -300,6 +302,7 @@ shell_app_system_finalize (GObject *object)
   ShellAppSystemPrivate *priv = self->priv;
 
   g_hash_table_destroy (priv->running_apps);
+  g_hash_table_destroy (priv->starting_apps);
   g_hash_table_destroy (priv->id_to_app);
   g_hash_table_destroy (priv->startup_wm_class_to_id);
   g_list_free_full (priv->installed_apps, g_object_unref);
@@ -521,10 +524,32 @@ _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
                                             g_variant_new_string (app_info_id));
         }
       g_hash_table_insert (self->priv->running_apps, g_object_ref (app), NULL);
+      g_hash_table_remove (self->priv->starting_apps, app);
       break;
     case SHELL_APP_STATE_STARTING:
+      g_hash_table_insert (self->priv->starting_apps, g_object_ref (app), NULL);
       break;
     case SHELL_APP_STATE_STOPPED:
+      /* Applications associated to multiple .desktop files (e.g. gnome-control-center)
+       * will create different ShellApp instances during the startup process when not
+       * launched via the main .desktop file: one initial instance for the .desktop file
+       * originally launched (that will end up in the starting_apps table) and a different
+       * one associated to the main .desktop file for the application.
+       *
+       * Thus, we can not rely on the initial ShellApp being removed from the starting_apps
+       * table in the SHELL_APP_STATE_RUNNING case above because the instance will be different
+       * than the one being added to running_apps, resulting in a rogue ShellApp instance being
+       * kept forever in the starting_apps table, that will confuse the shell.
+       *
+       * The solution is to make sure that we remove that rogue ShellApp instance from the
+       * starting_apps table, if needed, when moving to SHELL_APP_STATE_STOPPED, since that
+       * state change will be enforced from _shell_app_handle_startup_sequence() for this kind
+       * of apps launched from a secondary .desktop file, before moving the real ShellApp instance
+       * into the running state.
+       */
+      if (g_hash_table_contains (self->priv->starting_apps, app))
+        g_hash_table_remove (self->priv->starting_apps, app);
+
       if (g_hash_table_remove (self->priv->running_apps, app) && app_info_id != NULL)
         {
           emtr_event_recorder_record_stop (emtr_event_recorder_get_default (),
@@ -553,12 +578,20 @@ GSList *
 shell_app_system_get_running (ShellAppSystem *self)
 {
   gpointer key, value;
-  GSList *ret;
+  GSList *ret = NULL;
   GHashTableIter iter;
 
   g_hash_table_iter_init (&iter, self->priv->running_apps);
 
   ret = NULL;
+  while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      ShellApp *app = key;
+
+      ret = g_slist_prepend (ret, app);
+    }
+
+  g_hash_table_iter_init (&iter, self->priv->starting_apps);
   while (g_hash_table_iter_next (&iter, &key, &value))
     {
       ShellApp *app = key;
@@ -610,4 +643,10 @@ GList *
 shell_app_system_get_installed (ShellAppSystem *self)
 {
   return shell_app_cache_get_all (shell_app_cache_get_default ());
+}
+
+gboolean
+shell_app_system_has_starting_apps (ShellAppSystem *self)
+{
+  return g_hash_table_size (self->priv->starting_apps) > 0;
 }
