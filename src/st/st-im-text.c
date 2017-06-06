@@ -202,7 +202,7 @@ st_im_text_get_paint_volume (ClutterActor       *self,
   return clutter_paint_volume_set_from_allocation (volume, self);
 }
 
-static GdkWindow *event_window;
+static GdkWindow *event_window = NULL;
 
 void
 st_im_text_set_event_window (GdkWindow *window)

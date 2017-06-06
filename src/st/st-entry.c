@@ -718,8 +718,8 @@ st_entry_key_focus_in (ClutterActor *actor)
   clutter_actor_grab_key_focus (priv->entry);
 }
 
-static StEntryCursorFunc cursor_func;
-static gpointer          cursor_func_data;
+static StEntryCursorFunc cursor_func = NULL;
+static gpointer          cursor_func_data = NULL;
 
 /**
  * st_entry_set_cursor_func: (skip)
