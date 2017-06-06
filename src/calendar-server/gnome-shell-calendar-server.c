@@ -573,6 +573,7 @@ app_load_events (App *app)
   gchar *since_iso8601;
   gchar *until_iso8601;
   gchar *query;
+  const char *tz_location;
 
   /* out with the old */
   g_hash_table_remove_all (app->appointments);
@@ -594,15 +595,17 @@ app_load_events (App *app)
 
   since_iso8601 = isodate_from_time_t (app->since);
   until_iso8601 = isodate_from_time_t (app->until);
+  tz_location = icaltimezone_get_location (app->zone);
 
   print_debug ("Loading events since %s until %s",
                since_iso8601,
                until_iso8601);
 
   query = g_strdup_printf ("occur-in-time-range? (make-time \"%s\") "
-                           "(make-time \"%s\")",
+                           "(make-time \"%s\") \"%s\"",
                            since_iso8601,
-                           until_iso8601);
+                           until_iso8601,
+                           tz_location);
 
   clients = calendar_sources_get_appointment_clients (app->sources);
   for (l = clients; l != NULL; l = l->next)
