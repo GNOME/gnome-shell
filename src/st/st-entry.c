@@ -245,7 +245,6 @@ static void
 st_entry_dispose (GObject *object)
 {
   StEntry *entry = ST_ENTRY (object);
-  StEntryPrivate *priv = ST_ENTRY_PRIV (entry);
   GdkKeymap *keymap;
 
   keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
