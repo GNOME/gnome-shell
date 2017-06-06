@@ -739,7 +739,8 @@ static void
 st_entry_set_cursor (StEntry  *entry,
                      gboolean  use_ibeam)
 {
-  cursor_func (entry, use_ibeam, cursor_func_data);
+  if (cursor_func)
+    cursor_func (entry, use_ibeam, cursor_func_data);
 
   ((StEntryPrivate *)ST_ENTRY_PRIV (entry))->has_ibeam = use_ibeam;
 }
