@@ -6,8 +6,6 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
-const Calendar = imports.ui.calendar;
-
 function test() {
     let stage = new Clutter.Stage({ width: 400, height: 400 });
     UI.init(stage);
