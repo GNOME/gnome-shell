@@ -217,9 +217,11 @@ st_im_text_realize (ClutterActor *actor)
 {
   StIMTextPrivate *priv = ST_IM_TEXT (actor)->priv;
 
-  g_assert (event_window != NULL);
-  priv->window = g_object_ref (event_window);
-  gtk_im_context_set_client_window (priv->im_context, priv->window);
+  if (event_window != NULL)
+    {
+      priv->window = g_object_ref (event_window);
+      gtk_im_context_set_client_window (priv->im_context, priv->window);
+    }
 }
 
 static void
@@ -230,8 +232,12 @@ st_im_text_unrealize (ClutterActor *actor)
 
   reset_im_context (self);
   gtk_im_context_set_client_window (priv->im_context, NULL);
-  g_object_unref (priv->window);
-  priv->window = NULL;
+
+  if (priv->window != NULL)
+    {
+      g_object_unref (priv->window);
+      priv->window = NULL;
+    }
 }
 
 static gboolean
@@ -277,10 +283,12 @@ static GdkEventKey *
 key_event_to_gdk (ClutterKeyEvent *event_clutter)
 {
   GdkEventKey *event_gdk;
+
+  if (event_window == NULL)
+    return NULL;
+
   event_gdk = (GdkEventKey *)gdk_event_new ((event_clutter->type == CLUTTER_KEY_PRESS) ?
                                             GDK_KEY_PRESS : GDK_KEY_RELEASE);
-
-  g_assert (event_window != NULL);
   event_gdk->window = g_object_ref (event_window);
   event_gdk->send_event = FALSE;
   event_gdk->time = event_clutter->time;
@@ -348,13 +356,14 @@ st_im_text_captured_event (ClutterActor *actor,
     {
       GdkEventKey *event_gdk = key_event_to_gdk ((ClutterKeyEvent *)event);
 
-      if (gtk_im_context_filter_keypress (priv->im_context, event_gdk))
+      if (event_gdk && gtk_im_context_filter_keypress (priv->im_context, event_gdk))
         {
           priv->need_im_reset = TRUE;
           result = TRUE;
         }
 
-      gdk_event_free ((GdkEvent *)event_gdk);
+      if (event_gdk)
+        gdk_event_free ((GdkEvent *)event_gdk);
     }
 
   old_position = clutter_text_get_cursor_position (clutter_text);
