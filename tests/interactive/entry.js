@@ -13,10 +13,11 @@ function test() {
     let vbox = new St.BoxLayout({ vertical: true,
                                   width: stage.width,
                                   height: stage.height,
-                                  style: 'padding: 10px; spacing: 10px; font: 15px sans-serif;' });
+                                  style: 'padding: 10px; spacing: 10px; font: 32px sans-serif;' });
     stage.add_actor(vbox);
 
-    let entry = new St.Entry({ style: 'border: 1px solid black;' });
+    let entry = new St.Entry({ style: 'border: 1px solid black; text-shadow: 0 2px red;',
+                               text: 'Example text' });
     vbox.add(entry,
              { expand: true,
                y_fill: false, y_align: St.Align.MIDDLE });
