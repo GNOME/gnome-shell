@@ -27,6 +27,10 @@
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-settings-private.h"
 
+#define SCALE_FACTORS_PER_INTEGER 8
+#define MINIMUM_SCALE_FACTOR 0.5f
+#define MAXIMUM_SCALE_FACTOR 4.0f
+
 typedef struct _MetaMonitorMode
 {
   MetaMonitorModeSpec spec;
@@ -1336,37 +1340,112 @@ meta_monitor_calculate_mode_scale (MetaMonitor     *monitor,
   return calculate_scale (monitor, monitor_mode);
 }
 
+static float
+get_closest_scale_factor_for_resolution (float width,
+                                         float height,
+                                         float scale,
+                                         float scale_step)
+{
+  unsigned int i, j;
+  float scaled_h;
+  float scaled_w;
+  float best_scale;
+  int base_scaled_w;
+  gboolean limit_exceeded;
+  gboolean found_one;
+
+  best_scale = 0;
+  scaled_w = width / scale;
+  scaled_h = height / scale;
+
+  if (scale < MINIMUM_SCALE_FACTOR || scale > MAXIMUM_SCALE_FACTOR)
+    goto out;
+
+  if (floorf (scaled_w) == scaled_w && floorf (scaled_h) == scaled_h)
+    return scale;
+
+  i = 0;
+  found_one = FALSE;
+  limit_exceeded = FALSE;
+  base_scaled_w = floorf (scaled_w);
+
+  do
+    {
+
+      for (j = 0; j < 2; j++)
+        {
+          float current_scale;
+          int offset = i * (j ? 1 : -1);
+
+          scaled_w = base_scaled_w + offset;
+          current_scale = width / scaled_w;
+          scaled_h = height / current_scale;
+
+          if (current_scale >= scale + scale_step ||
+              current_scale <= scale - scale_step ||
+              current_scale < MINIMUM_SCALE_FACTOR ||
+              current_scale > MAXIMUM_SCALE_FACTOR)
+            {
+              limit_exceeded = TRUE;
+              continue;
+            }
+
+          if (floorf (scaled_h) == scaled_h)
+            {
+              found_one = TRUE;
+
+              if (fabsf (current_scale - scale) < fabsf (best_scale - scale))
+                best_scale = current_scale;
+            }
+        }
+
+      i++;
+    }
+  while (!found_one && !limit_exceeded);
+
+out:
+  return best_scale;
+}
+
 float *
 meta_monitor_calculate_supported_scales (MetaMonitor                *monitor,
                                          MetaMonitorMode            *monitor_mode,
                                          MetaMonitorScalesConstraint constraints,
                                          int                        *n_supported_scales)
 {
-  unsigned int i;
+  unsigned int i, j;
   int width, height;
+  float scale_steps;
   GArray *supported_scales;
-  static const float all_scales[] = {
-    1.0,
-    1.5,
-    2.0
-  };
+
+  scale_steps = 1.0 / (float) SCALE_FACTORS_PER_INTEGER;
+  supported_scales = g_array_new (FALSE, FALSE, sizeof (float));
 
   meta_monitor_mode_get_resolution (monitor_mode, &width, &height);
 
-  supported_scales = g_array_new (FALSE, FALSE, sizeof (float));
-
-  for (i = 0; i < G_N_ELEMENTS (all_scales); i++)
+  for (i = floorf (MINIMUM_SCALE_FACTOR);
+       i <= ceilf (MAXIMUM_SCALE_FACTOR);
+       i++)
     {
-      float scale = all_scales[i];
+      for (j = 0; j < SCALE_FACTORS_PER_INTEGER; j++)
+        {
+          float scale;
+          float scale_value = i + j * scale_steps;
 
-      if ((constraints & META_MONITOR_SCALES_CONSTRAINT_NO_FRAC) &&
-          fmodf (scale, 1.0) != 0.0)
-        continue;
+          if ((constraints & META_MONITOR_SCALES_CONSTRAINT_NO_FRAC) &&
+              fmodf (scale_value, 1.0) != 0.0)
+            {
+              continue;
+            }
 
-      if (fmodf (width, scale) != 0.0 || fmodf (height, scale) != 0.0)
-        continue;
+          scale = get_closest_scale_factor_for_resolution (width,
+                                                           height,
+                                                           scale_value,
+                                                           scale_steps);
 
-      g_array_append_val (supported_scales, scale);
+          if (scale > 0.0f)
+            g_array_append_val (supported_scales, scale);
+        }
     }
 
   *n_supported_scales = supported_scales->len;
