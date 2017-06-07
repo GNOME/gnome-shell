@@ -7508,7 +7508,7 @@ check_transient_for_loop (MetaWindow *window,
 {
   while (parent)
     {
-      if (parent->transient_for == window)
+      if (parent == window)
           return TRUE;
       parent = parent->transient_for;
     }
