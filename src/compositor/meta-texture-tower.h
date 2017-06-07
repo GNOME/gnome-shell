@@ -62,6 +62,6 @@ void              meta_texture_tower_update_area       (MetaTextureTower *tower,
                                                         int               height);
 CoglTexture      *meta_texture_tower_get_paint_texture (MetaTextureTower *tower);
 
-G_BEGIN_DECLS
+G_END_DECLS
 
 #endif /* __META_TEXTURE_TOWER_H__ */
