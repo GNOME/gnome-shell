@@ -162,6 +162,7 @@ var ViewSelector = class {
         this._capturedEventId = 0;
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
+        this._workspacesDisplay.connect('empty-space-clicked', this._onEmptySpaceClicked.bind(this));
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
                                              _("Windows"), 'focus-windows-symbolic');
 
@@ -253,6 +254,10 @@ var ViewSelector = class {
     _pinchGestureActivated(action, scale) {
         if (scale < PINCH_GESTURE_THRESHOLD)
             Main.overview.show();
+    }
+
+    _onEmptySpaceClicked() {
+        this.setActivePage(ViewPage.APPS);
     }
 
     showApps() {
