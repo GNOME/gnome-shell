@@ -3329,6 +3329,27 @@ handle_switch_vt (MetaDisplay     *display,
 #endif /* HAVE_NATIVE_BACKEND */
 
 static void
+handle_switch_monitor (MetaDisplay    *display,
+                       MetaScreen     *screen,
+                       MetaWindow     *window,
+                       ClutterKeyEvent *event,
+                       MetaKeyBinding *binding,
+                       gpointer        dummy)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorSwitchConfigType config_type =
+    meta_monitor_manager_get_switch_config (monitor_manager);
+
+  if (!meta_monitor_manager_can_switch_config (monitor_manager))
+    return;
+
+  config_type = (config_type + 1) % (META_MONITOR_SWITCH_CONFIG_UNKNOWN);
+  meta_monitor_manager_switch_config (monitor_manager, config_type);
+}
+
+static void
 handle_rotate_monitor (MetaDisplay    *display,
                        MetaScreen     *screen,
                        MetaWindow     *window,
@@ -3631,6 +3652,13 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_SET_SPEW_MARK,
                           handle_set_spew_mark, 0);
+
+  add_builtin_keybinding (display,
+                          "switch-monitor",
+                          mutter_keybindings,
+                          META_KEY_BINDING_NONE,
+                          META_KEYBINDING_ACTION_SWITCH_MONITOR,
+                          handle_switch_monitor, 0);
 
   add_builtin_keybinding (display,
                           "rotate-monitor",
