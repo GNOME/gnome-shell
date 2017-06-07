@@ -540,7 +540,8 @@ const ShellUserVerifier = new Lang.Class({
                 let signalId = this.connect('no-more-messages',
                                             Lang.bind(this, function() {
                                                 this.disconnect(signalId);
-                                                this._retry();
+                                                if (this._failCounter != 0)
+                                                    this._retry();
                                             }));
             }
         } else {
