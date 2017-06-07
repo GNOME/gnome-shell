@@ -362,7 +362,7 @@ clutter_stage_view_class_init (ClutterStageViewClass *klass)
     g_param_spec_float ("scale",
                         "View scale",
                         "The view scale",
-                        1.0, G_MAXFLOAT, 1.0,
+                        0.5, G_MAXFLOAT, 1.0,
                         G_PARAM_READWRITE |
                         G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS);
