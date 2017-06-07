@@ -4,6 +4,7 @@ const UI = imports.testcommon.ui;
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const St = imports.gi.St;
 
 function test() {
@@ -22,6 +23,37 @@ function test() {
              { expand: true,
                y_fill: false, y_align: St.Align.MIDDLE });
     entry.grab_key_focus();
+
+    let entryTextHint = new St.Entry({ style: 'border: 1px solid black; text-shadow: 0 2px red;',
+                                       hint_text: 'Hint text' });
+    vbox.add(entryTextHint,
+             { expand: true,
+               y_fill: false, y_align: St.Align.MIDDLE });
+
+    let hintActor = new St.Label({ text: 'Hint actor' });
+    let entryHintActor = new St.Entry({ style: 'border: 1px solid black; text-shadow: 0 2px red;',
+                                        hint_actor: hintActor });
+    vbox.add(entryHintActor,
+             { expand: true,
+               y_fill: false, y_align: St.Align.MIDDLE });
+
+    let hintActor2 = new St.Label({ text: 'Hint both (actor)' });
+    let entryHintBoth = new St.Entry({ style: 'border: 1px solid black; text-shadow: 0 2px red;',
+                                       hint_actor: hintActor2 });
+    let idx = 0;
+    Mainloop.timeout_add_seconds(1, function() {
+        idx++;
+
+        if (idx % 2 == 0)
+            entryHintBoth.hint_actor = hintActor2;
+        else
+            entryHintBoth.hint_text = 'Hint both (text)';
+
+        return true;
+    });
+    vbox.add(entryHintBoth,
+             { expand: true,
+               y_fill: false, y_align: St.Align.MIDDLE });
 
     UI.main(stage);
 }
