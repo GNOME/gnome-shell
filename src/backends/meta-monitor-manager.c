@@ -1884,25 +1884,75 @@ create_monitor_config_from_variant (MetaMonitorManager *manager,
 }
 
 static gboolean
-derive_logical_monitor_size (GList                       *monitor_configs,
+find_monitor_mode_scale (MetaMonitorManager          *manager,
+                         MetaLogicalMonitorLayoutMode layout_mode,
+                         MetaMonitorConfig           *monitor_config,
+                         float                        scale,
+                         float                       *out_scale,
+                         GError                     **error)
+{
+  MetaMonitorSpec *monitor_spec;
+  MetaMonitor *monitor;
+  MetaMonitorModeSpec *monitor_mode_spec;
+  MetaMonitorMode *monitor_mode;
+  g_autofree float *supported_scales = NULL;
+  int n_supported_scales;
+  int i;
+
+  monitor_spec = monitor_config->monitor_spec;
+  monitor = meta_monitor_manager_get_monitor_from_spec (manager,
+                                                        monitor_spec);
+  if (!monitor)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor not found");
+      return FALSE;
+    }
+
+  monitor_mode_spec = monitor_config->mode_spec;
+  monitor_mode = meta_monitor_get_mode_from_spec (monitor,
+                                                  monitor_mode_spec);
+  if (!monitor_mode)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Monitor mode not found");
+      return FALSE;
+    }
+
+  supported_scales =
+    meta_monitor_manager_calculate_supported_scales (manager, layout_mode,
+                                                     monitor, monitor_mode,
+                                                     &n_supported_scales);
+
+  for (i = 0; i < n_supported_scales; i++)
+    {
+      float supported_scale = supported_scales[i];
+
+      if (fabsf (supported_scale - scale) < FLT_EPSILON)
+        {
+          *out_scale = supported_scale;
+          return TRUE;
+        }
+    }
+
+  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+               "Scale %g not valid for resolution %dx%d",
+               scale,
+               monitor_mode_spec->width,
+               monitor_mode_spec->height);
+  return FALSE;
+}
+
+static gboolean
+derive_logical_monitor_size (MetaMonitorConfig           *monitor_config,
                              int                         *out_width,
                              int                         *out_height,
-                             double                       scale,
+                             float                        scale,
                              MetaMonitorTransform         transform,
                              MetaLogicalMonitorLayoutMode layout_mode,
                              GError                     **error)
 {
-  MetaMonitorConfig *monitor_config;
   int width, height;
-
-  if (!monitor_configs)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Empty logical monitor");
-      return FALSE;
-    }
-
-  monitor_config = monitor_configs->data;
 
   if (meta_monitor_transform_is_rotated (transform))
     {
@@ -1918,14 +1968,6 @@ derive_logical_monitor_size (GList                       *monitor_configs,
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      if (fmodf (width, scale) != 0.0 || fmodf (height, scale) != 0.0)
-        {
-          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                       "Scale %g not valid for resolution %dx%d",
-                       scale, width, height);
-          return FALSE;
-        }
-
       width /= scale;
       height /= scale;
       break;
@@ -1947,19 +1989,22 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
 {
   MetaLogicalMonitorConfig *logical_monitor_config;
   int x, y, width, height;
-  double scale;
+  double scale_d;
+  float scale;
   MetaMonitorTransform transform;
   gboolean is_primary;
   GVariantIter *monitor_configs_iter;
   GList *monitor_configs = NULL;
+  MetaMonitorConfig *monitor_config;
 
   g_variant_get (logical_monitor_config_variant, LOGICAL_MONITOR_CONFIG_FORMAT,
                  &x,
                  &y,
-                 &scale,
+                 &scale_d,
                  &transform,
                  &is_primary,
                  &monitor_configs_iter);
+  scale = (float) scale_d;
 
   while (TRUE)
     {
@@ -1986,7 +2031,23 @@ create_logical_monitor_config_from_variant (MetaMonitorManager          *manager
     }
   g_variant_iter_free (monitor_configs_iter);
 
-  if (!derive_logical_monitor_size (monitor_configs, &width, &height,
+  if (!monitor_configs)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Empty logical monitor");
+      goto err;
+    }
+
+  monitor_config = monitor_configs->data;
+  if (!find_monitor_mode_scale (manager,
+                                layout_mode,
+                                monitor_config,
+                                scale,
+                                &scale,
+                                error))
+    goto err;
+
+  if (!derive_logical_monitor_size (monitor_config, &width, &height,
                                     scale, transform, layout_mode, error))
     goto err;
 
