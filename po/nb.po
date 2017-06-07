@@ -1282,7 +1282,7 @@ msgstr "Starter på nytt …"
 #. long format
 #: js/ui/screenShield.js:88
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A %e. %B"
 
 #: js/ui/screenShield.js:147
 #, javascript-format
