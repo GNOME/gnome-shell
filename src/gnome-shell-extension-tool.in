@@ -153,8 +153,8 @@ def enable_extension(uuid):
         sys.exit(1)
 
     extensions.append(uuid)
+    print("Enabling extension %r asynchronously, please check that log contains no error." % (uuid,), file=sys.stderr)
     settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
-    print("%r is now enabled." % (uuid,), file=sys.stderr)
 
 def disable_extension(uuid):
     settings = Gio.Settings(schema='org.gnome.shell')
@@ -169,8 +169,8 @@ def disable_extension(uuid):
     while uuid in extensions:
         extensions.remove(uuid)
 
+    print("Disabling extension %r asynchronously, please check that log contains no error." % (uuid,), file=sys.stderr)
     settings.set_strv(ENABLED_EXTENSIONS_KEY, extensions)
-    print("%r is now disabled." % (uuid,), file=sys.stderr)
 
 def reload_extension(uuid):
     settings = Gio.Settings(schema='org.gnome.shell')
