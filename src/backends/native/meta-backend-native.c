@@ -341,6 +341,9 @@ relative_motion_filter (ClutterInputDevice *device,
   MetaLogicalMonitor *logical_monitor, *dest_logical_monitor;
   float new_dx, new_dy;
 
+  if (meta_is_stage_views_scaled ())
+    return;
+
   logical_monitor = meta_monitor_manager_get_logical_monitor_at (monitor_manager,
                                                                  x, y);
   if (!logical_monitor)
