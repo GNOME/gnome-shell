@@ -4720,6 +4720,7 @@ capture_view (ClutterStage          *stage,
   int stride;
   CoglBitmap *bitmap;
   cairo_rectangle_int_t view_layout;
+  float view_scale;
 
   framebuffer = clutter_stage_view_get_framebuffer (view);
 
@@ -4730,8 +4731,11 @@ capture_view (ClutterStage          *stage,
       clutter_stage_do_paint_view (stage, view, rect);
     }
 
+  view_scale = clutter_stage_view_get_scale (view);
   image = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                      rect->width, rect->height);
+                                      rect->width * view_scale,
+                                      rect->height * view_scale);
+  cairo_surface_set_device_scale (image, view_scale, view_scale);
 
   data = cairo_image_surface_get_data (image);
   stride = cairo_image_surface_get_stride (image);
@@ -4739,7 +4743,8 @@ capture_view (ClutterStage          *stage,
   backend = clutter_get_default_backend ();
   context = clutter_backend_get_cogl_context (backend);
   bitmap = cogl_bitmap_new_for_data (context,
-                                     rect->width, rect->height,
+                                     rect->width * view_scale,
+                                     rect->height * view_scale,
                                      CLUTTER_CAIRO_FORMAT_ARGB32,
                                      stride,
                                      data);
@@ -4747,8 +4752,8 @@ capture_view (ClutterStage          *stage,
   clutter_stage_view_get_layout (view, &view_layout);
 
   cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
-                                            rect->x - view_layout.x,
-                                            rect->y - view_layout.y,
+                                            (rect->x - view_layout.x) * view_scale,
+                                            (rect->y - view_layout.y) * view_scale,
                                             COGL_READ_PIXELS_COLOR_BUFFER,
                                             bitmap);
 
