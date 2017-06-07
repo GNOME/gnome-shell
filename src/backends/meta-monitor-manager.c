@@ -730,6 +730,7 @@ meta_monitor_manager_constructed (GObject *object)
                            G_CALLBACK (orientation_changed),
                            manager, 0);
 
+  manager->current_switch_config = META_MONITOR_SWITCH_CONFIG_UNKNOWN;
   manager->in_init = TRUE;
 
   /*
@@ -2883,6 +2884,8 @@ meta_monitor_manager_notify_monitors_changed (MetaMonitorManager *manager)
 {
   MetaBackend *backend = meta_get_backend ();
 
+  manager->current_switch_config = META_MONITOR_SWITCH_CONFIG_UNKNOWN;
+
   meta_backend_monitors_changed (backend);
   g_signal_emit_by_name (manager, "monitors-changed");
 }
@@ -3257,4 +3260,54 @@ meta_monitor_manager_rotate_monitor (MetaMonitorManager *manager)
         }
       g_object_unref (config);
     }
+}
+
+void
+meta_monitor_manager_switch_config (MetaMonitorManager          *manager,
+                                    MetaMonitorSwitchConfigType  config_type)
+{
+  g_return_if_fail (config_type != META_MONITOR_SWITCH_CONFIG_UNKNOWN);
+
+  if (!meta_is_monitor_config_manager_enabled ())
+    {
+      if (meta_monitor_config_switch_config (manager->legacy_config, config_type))
+        manager->current_switch_config = config_type;
+    }
+  else
+    {
+      GError *error = NULL;
+      MetaMonitorsConfig *config =
+        meta_monitor_config_manager_create_for_switch_config (manager->config_manager,
+                                                              config_type);
+      if (!config)
+        return;
+
+      if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                       config,
+                                                       META_MONITORS_CONFIG_METHOD_TEMPORARY,
+                                                       &error))
+        {
+          g_warning ("Failed to use switch monitor configuration: %s",
+                     error->message);
+          g_error_free (error);
+        }
+      else
+        {
+          manager->current_switch_config = config_type;
+        }
+      g_object_unref (config);
+    }
+}
+
+gboolean
+meta_monitor_manager_can_switch_config (MetaMonitorManager *manager)
+{
+  return (!meta_monitor_manager_is_lid_closed (manager) &&
+          g_list_length (manager->monitors) > 1);
+}
+
+MetaMonitorSwitchConfigType
+meta_monitor_manager_get_switch_config (MetaMonitorManager *manager)
+{
+  return manager->current_switch_config;
 }

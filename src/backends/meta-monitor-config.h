@@ -54,4 +54,7 @@ void               meta_monitor_config_orientation_changed (MetaMonitorConfig   
 
 void               meta_monitor_config_rotate_monitor (MetaMonitorConfig *self);
 
+gboolean           meta_monitor_config_switch_config (MetaMonitorConfig           *self,
+                                                      MetaMonitorSwitchConfigType  config_type);
+
 #endif /* META_MONITOR_CONFIG_H */

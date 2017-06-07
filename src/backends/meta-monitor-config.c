@@ -1270,9 +1270,9 @@ make_linear_config (MetaMonitorConfig *self,
                     unsigned           n_outputs,
                     int                max_width,
                     int                max_height,
-                    MetaConfiguration *config)
+                    MetaConfiguration *config,
+                    unsigned long      output_configured_bitmap)
 {
-  unsigned long output_configured_bitmap = 0;
   unsigned i;
   int x;
   int primary;
@@ -1409,7 +1409,7 @@ make_default_config (MetaMonitorConfig *self,
       extend_stored_config (self, outputs, n_outputs, max_width, max_height, ret))
       goto check_limits;
 
-  make_linear_config (self, outputs, n_outputs, max_width, max_height, ret);
+  make_linear_config (self, outputs, n_outputs, max_width, max_height, ret, 0);
 
 check_limits:
   /* Disable outputs that would go beyond framebuffer limits */
@@ -1673,6 +1673,201 @@ void
 meta_monitor_config_rotate_monitor (MetaMonitorConfig *self)
 {
   do_builtin_display_rotation (self, TRUE, META_MONITOR_TRANSFORM_NORMAL);
+}
+
+static MetaConfiguration *
+make_all_mirror_config (MetaMonitorConfig *self,
+                        MetaOutput        *outputs,
+                        guint              n_outputs)
+{
+  MetaConfiguration *config;
+  gint common_width = 0;
+  gint common_height = 0;
+  guint i, j, k;
+
+  if (n_outputs < 2)
+    return NULL;
+
+  for (i = 0; i < outputs[0].n_modes; i++)
+    {
+      gboolean common_mode_size = TRUE;
+
+      for (j = 1; j < n_outputs; j++)
+        {
+          gboolean have_same_mode_size = FALSE;
+
+          for (k = 0; k < outputs[j].n_modes; k++)
+            {
+              if (outputs[j].modes[k]->width == outputs[0].modes[i]->width &&
+                  outputs[j].modes[k]->height == outputs[0].modes[i]->height)
+                {
+                  have_same_mode_size = TRUE;
+                  break;
+                }
+            }
+
+          if (!have_same_mode_size)
+            {
+              common_mode_size = FALSE;
+              break;
+            }
+        }
+
+      if (common_mode_size &&
+          common_width * common_height < outputs[0].modes[i]->width * outputs[0].modes[i]->height)
+        {
+          common_width = outputs[0].modes[i]->width;
+          common_height = outputs[0].modes[i]->height;
+        }
+    }
+
+  if (common_width == 0 || common_height == 0)
+    return NULL;
+
+  config = config_new ();
+  make_config_key (config, outputs, n_outputs, -1);
+  config->outputs = g_new0 (MetaOutputConfig, n_outputs);
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      init_config_from_preferred_mode (&config->outputs[i], &outputs[i]);
+      config->outputs[i].rect.width = common_width;
+      config->outputs[i].rect.height = common_height;
+      config->outputs[i].is_primary = TRUE;
+    }
+
+  return config;
+}
+
+static MetaConfiguration *
+make_all_linear_config (MetaMonitorConfig *self,
+                        MetaOutput        *outputs,
+                        guint              n_outputs,
+                        gint               max_width,
+                        gint               max_height)
+{
+  MetaConfiguration *config;
+
+  config = config_new ();
+  make_config_key (config, outputs, n_outputs, -1);
+  config->outputs = g_new0 (MetaOutputConfig, n_outputs);
+
+  make_linear_config (self, outputs, n_outputs, max_width, max_height, config, 0);
+
+  return config;
+}
+
+static MetaConfiguration *
+make_external_config (MetaMonitorConfig *self,
+                      MetaOutput        *outputs,
+                      guint              n_outputs,
+                      gint               max_width,
+                      gint               max_height)
+{
+  MetaConfiguration *config;
+  gulong bitmap;
+  guint i;
+
+  config = config_new ();
+  make_config_key (config, outputs, n_outputs, -1);
+  config->outputs = g_new0 (MetaOutputConfig, n_outputs);
+
+  bitmap = 0;
+  for (i = 0; i < n_outputs; i++)
+    if (meta_output_is_laptop (&outputs[i]))
+      {
+        bitmap = 1 << i;
+        break;
+      }
+
+  make_linear_config (self, outputs, n_outputs, max_width, max_height, config, bitmap);
+
+  return config;
+}
+
+static MetaConfiguration *
+make_builtin_config (MetaMonitorConfig *self,
+                     MetaOutput        *outputs,
+                     guint              n_outputs)
+{
+  MetaConfiguration *config;
+  gboolean have_builtin = FALSE;
+  guint i;
+
+  config = config_new ();
+  make_config_key (config, outputs, n_outputs, -1);
+  config->outputs = g_new0 (MetaOutputConfig, n_outputs);
+
+  for (i = 0; i < n_outputs; i++)
+    {
+      if (meta_output_is_laptop (&outputs[i]))
+        {
+          init_config_from_preferred_mode (&config->outputs[i], &outputs[i]);
+          config->outputs[i].is_primary = TRUE;
+          have_builtin = TRUE;
+        }
+      else
+        {
+          config->outputs[i].enabled = FALSE;
+        }
+    }
+
+  if (have_builtin)
+    return config;
+
+  config_unref (config);
+  return NULL;
+}
+
+gboolean
+meta_monitor_config_switch_config (MetaMonitorConfig           *self,
+                                   MetaMonitorSwitchConfigType  config_type)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager = meta_backend_get_monitor_manager (backend);
+  MetaConfiguration *new_config = NULL;
+  MetaOutput *outputs;
+  gint max_width, max_height;
+  guint n_outputs;
+  gboolean success;
+
+  if (!meta_monitor_manager_can_switch_config (monitor_manager))
+    return FALSE;
+
+  outputs = meta_monitor_manager_get_outputs (monitor_manager, &n_outputs);
+
+  if (!meta_monitor_manager_get_max_screen_size (monitor_manager, &max_width, &max_height))
+    {
+      max_width = 65535;
+      max_height = 65535;
+    }
+
+  switch (config_type)
+    {
+    case META_MONITOR_SWITCH_CONFIG_ALL_MIRROR:
+      new_config = make_all_mirror_config (self, outputs, n_outputs);
+      break;
+    case META_MONITOR_SWITCH_CONFIG_ALL_LINEAR:
+      new_config = make_all_linear_config (self, outputs, n_outputs, max_width, max_height);
+      break;
+    case META_MONITOR_SWITCH_CONFIG_EXTERNAL:
+      new_config = make_external_config (self, outputs, n_outputs, max_width, max_height);
+      break;
+    case META_MONITOR_SWITCH_CONFIG_BUILTIN:
+      new_config = make_builtin_config (self, outputs, n_outputs);
+      break;
+    case META_MONITOR_SWITCH_CONFIG_UNKNOWN:
+      g_warn_if_reached ();
+      break;
+    }
+
+  if (!new_config)
+    return FALSE;
+
+  success = apply_configuration (self, new_config, monitor_manager);
+  config_unref (new_config);
+
+  return success;
 }
 
 typedef struct {

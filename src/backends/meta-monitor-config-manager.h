@@ -88,6 +88,9 @@ MetaMonitorsConfig * meta_monitor_config_manager_create_for_orientation (MetaMon
 
 MetaMonitorsConfig * meta_monitor_config_manager_create_for_rotate_monitor (MetaMonitorConfigManager *config_manager);
 
+MetaMonitorsConfig * meta_monitor_config_manager_create_for_switch_config (MetaMonitorConfigManager    *config_manager,
+                                                                           MetaMonitorSwitchConfigType  config_type);
+
 void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_manager,
                                               MetaMonitorsConfig       *config);
 

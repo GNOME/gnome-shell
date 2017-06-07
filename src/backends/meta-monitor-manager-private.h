@@ -354,6 +354,8 @@ struct _MetaMonitorManager
   UpClient *up_client;
 
   gulong experimental_features_changed_handler_id;
+
+  MetaMonitorSwitchConfigType current_switch_config;
 };
 
 struct _MetaMonitorManagerClass

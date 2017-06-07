@@ -24,6 +24,15 @@
 
 #include <glib-object.h>
 
+typedef enum
+{
+  META_MONITOR_SWITCH_CONFIG_ALL_MIRROR,
+  META_MONITOR_SWITCH_CONFIG_ALL_LINEAR,
+  META_MONITOR_SWITCH_CONFIG_EXTERNAL,
+  META_MONITOR_SWITCH_CONFIG_BUILTIN,
+  META_MONITOR_SWITCH_CONFIG_UNKNOWN,
+} MetaMonitorSwitchConfigType;
+
 typedef struct _MetaMonitorManagerClass    MetaMonitorManagerClass;
 typedef struct _MetaMonitorManager         MetaMonitorManager;
 
@@ -38,5 +47,12 @@ gint meta_monitor_manager_get_monitor_for_connector (MetaMonitorManager *manager
                                                      const char         *connector);
 
 gboolean meta_monitor_manager_get_is_builtin_display_on (MetaMonitorManager *manager);
+
+void meta_monitor_manager_switch_config (MetaMonitorManager          *manager,
+                                         MetaMonitorSwitchConfigType  config_type);
+
+gboolean meta_monitor_manager_can_switch_config (MetaMonitorManager *manager);
+
+MetaMonitorSwitchConfigType meta_monitor_manager_get_switch_config (MetaMonitorManager *manager);
 
 #endif /* META_MONITOR_MANAGER_H */
