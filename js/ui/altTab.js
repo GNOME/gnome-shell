@@ -271,10 +271,12 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _finish(timestamp) {
         let appIcon = this._items[this._selectedIndex];
-        if (this._currentWindow < 0)
+        if (this._currentWindow < 0) {
             appIcon.app.activate_window(appIcon.cachedWindows[0], timestamp);
-        else if (appIcon.cachedWindows[this._currentWindow])
+            Main.overview.hide();
+        } else if (appIcon.cachedWindows[this._currentWindow]) {
             Main.activateWindow(appIcon.cachedWindows[this._currentWindow], timestamp);
+        }
 
         super._finish(timestamp);
     }
