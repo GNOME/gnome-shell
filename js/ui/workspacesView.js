@@ -389,8 +389,11 @@ class ExtraWorkspaceView extends WorkspacesViewBase {
     }
 });
 
-var WorkspacesDisplay = GObject.registerClass(
-class WorkspacesDisplay extends St.Widget {
+var WorkspacesDisplay = GObject.registerClass({
+    Signals: {
+        'empty-space-clicked': {},
+    },
+}, class WorkspacesDisplay extends St.Widget {
     _init(scrollAdjustment) {
         super._init({ clip_to_allocation: true });
         this.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
@@ -416,8 +419,10 @@ class WorkspacesDisplay extends St.Widget {
             if ((action.get_button() == 1 || action.get_button() == 0) &&
                 this._workspacesViews[index].getActiveWorkspace().isEmpty())
                 Main.overview.hide();
+
+            this.emit('empty-space-clicked');
         });
-        Main.overview.addAction(clickAction);
+        Main.overview.addAction(clickAction, false);
         this.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
         this._clickAction = clickAction;
 

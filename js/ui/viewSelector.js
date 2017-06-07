@@ -170,6 +170,8 @@ var ViewSelector = GObject.registerClass({
 
         this._workspacesDisplay =
             new WorkspacesView.WorkspacesDisplay(workspaceAdjustment);
+        this._workspacesDisplay.connect('empty-space-clicked',
+            this._onEmptySpaceClicked.bind(this));
         this._workspacesPage = this._addPage(this._workspacesDisplay,
                                              _("Windows"), 'focus-windows-symbolic');
 
@@ -261,6 +263,10 @@ var ViewSelector = GObject.registerClass({
     _pinchGestureActivated(action, scale) {
         if (scale < PINCH_GESTURE_THRESHOLD)
             Main.overview.show();
+    }
+
+    _onEmptySpaceClicked() {
+        this.setActivePage(ViewPage.APPS);
     }
 
     showApps() {

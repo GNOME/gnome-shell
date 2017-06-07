@@ -322,9 +322,19 @@ var Overview = class {
         if (this.isDummy)
             return;
 
+        // this._allMonitorsGroup is a simple actor that covers all monitors,
+        // used to install actions that apply to all monitors
+        this._allMonitorsGroup = new Clutter.Actor({
+            reactive: true,
+            x_expand: true,
+            y_expand: true,
+        });
+
         this._overview = new OverviewActor();
         this._overview._delegate = this;
-        Main.layoutManager.overviewGroup.add_child(this._overview);
+        this._allMonitorsGroup.add_actor(this._overview);
+
+        Main.layoutManager.overviewGroup.add_child(this._allMonitorsGroup);
 
         this._shellInfo = new ShellInfo();
 
@@ -436,11 +446,14 @@ var Overview = class {
         return Clutter.EVENT_PROPAGATE;
     }
 
-    addAction(action) {
+    addAction(action, isPrimary = true) {
         if (this.isDummy)
             return;
 
-        this._backgroundGroup.add_action(action);
+        if (isPrimary)
+            this._overview.add_action(action);
+        else
+            this._allMonitorsGroup.add_action(action);
     }
 
     _getDesktopClone() {
