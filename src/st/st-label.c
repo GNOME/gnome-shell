@@ -267,6 +267,7 @@ st_label_init (StLabel *label)
 
   label->priv->label = g_object_new (CLUTTER_TYPE_TEXT,
                                      "ellipsize", PANGO_ELLIPSIZE_END,
+                                     "line-wrap", FALSE,
                                      NULL);
   label->priv->text_shadow_pipeline = NULL;
   label->priv->shadow_width = -1.;

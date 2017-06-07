@@ -5,6 +5,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Pango = imports.gi.Pango;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
