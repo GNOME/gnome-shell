@@ -60,13 +60,14 @@ void meta_cursor_renderer_set_cursor (MetaCursorRenderer *renderer,
                                       MetaCursorSprite   *cursor_sprite);
 
 void meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
-                                        int x, int y);
+                                        float               x,
+                                        float               y);
 void meta_cursor_renderer_force_update (MetaCursorRenderer *renderer);
 
 MetaCursorSprite * meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer);
 
-MetaRectangle meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
-                                                   MetaCursorSprite   *cursor_sprite);
+ClutterRect meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
+                                                 MetaCursorSprite   *cursor_sprite);
 
 #ifdef HAVE_WAYLAND
 void meta_cursor_renderer_realize_cursor_from_wl_buffer (MetaCursorRenderer *renderer,

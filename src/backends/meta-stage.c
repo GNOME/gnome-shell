@@ -36,8 +36,8 @@ struct _MetaOverlay {
   CoglPipeline *pipeline;
   CoglTexture *texture;
 
-  MetaRectangle current_rect;
-  MetaRectangle previous_rect;
+  ClutterRect current_rect;
+  ClutterRect previous_rect;
   gboolean previous_is_valid;
 };
 
@@ -71,9 +71,9 @@ meta_overlay_free (MetaOverlay *overlay)
 }
 
 static void
-meta_overlay_set (MetaOverlay   *overlay,
-                  CoglTexture   *texture,
-                  MetaRectangle *rect)
+meta_overlay_set (MetaOverlay *overlay,
+                  CoglTexture *texture,
+                  ClutterRect *rect)
 {
   if (overlay->texture != texture)
     {
@@ -104,12 +104,12 @@ meta_overlay_paint (MetaOverlay *overlay)
 
   cogl_framebuffer_draw_rectangle (cogl_get_draw_framebuffer (),
                                    overlay->pipeline,
-                                   overlay->current_rect.x,
-                                   overlay->current_rect.y,
-                                   overlay->current_rect.x +
-                                   overlay->current_rect.width,
-                                   overlay->current_rect.y +
-                                   overlay->current_rect.height);
+                                   overlay->current_rect.origin.x,
+                                   overlay->current_rect.origin.y,
+                                   (overlay->current_rect.origin.x +
+                                    overlay->current_rect.size.width),
+                                   (overlay->current_rect.origin.y +
+                                    overlay->current_rect.size.height));
 
   overlay->previous_rect = overlay->current_rect;
   overlay->previous_is_valid = TRUE;
@@ -204,10 +204,10 @@ queue_redraw_for_overlay (MetaStage   *stage,
   /* Clear the location the overlay was at before, if we need to. */
   if (overlay->previous_is_valid)
     {
-      clip.x = overlay->previous_rect.x;
-      clip.y = overlay->previous_rect.y;
-      clip.width = overlay->previous_rect.width;
-      clip.height = overlay->previous_rect.height;
+      clip.x = floorf (overlay->previous_rect.origin.x),
+      clip.y = floorf (overlay->previous_rect.origin.y),
+      clip.width = ceilf (overlay->previous_rect.size.width),
+      clip.height = ceilf (overlay->previous_rect.size.height),
       clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), &clip);
       overlay->previous_is_valid = FALSE;
     }
@@ -215,10 +215,10 @@ queue_redraw_for_overlay (MetaStage   *stage,
   /* Draw the overlay at the new position */
   if (overlay->enabled)
     {
-      clip.x = overlay->current_rect.x;
-      clip.y = overlay->current_rect.y;
-      clip.width = overlay->current_rect.width;
-      clip.height = overlay->current_rect.height;
+      clip.x = floorf (overlay->current_rect.origin.x),
+      clip.y = floorf (overlay->current_rect.origin.y),
+      clip.width = ceilf (overlay->current_rect.size.width),
+      clip.height = ceilf (overlay->current_rect.size.height),
       clutter_actor_queue_redraw_with_clip (CLUTTER_ACTOR (stage), &clip);
     }
 }
@@ -251,10 +251,10 @@ meta_stage_remove_cursor_overlay (MetaStage   *stage,
 }
 
 void
-meta_stage_update_cursor_overlay (MetaStage          *stage,
-                                  MetaOverlay        *overlay,
-                                  CoglTexture        *texture,
-                                  MetaRectangle      *rect)
+meta_stage_update_cursor_overlay (MetaStage   *stage,
+                                  MetaOverlay *overlay,
+                                  CoglTexture *texture,
+                                  ClutterRect *rect)
 {
   g_assert (meta_is_wayland_compositor () || texture == NULL);
 

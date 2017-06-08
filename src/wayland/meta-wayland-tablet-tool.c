@@ -921,8 +921,8 @@ meta_wayland_tablet_tool_handle_event (MetaWaylandTabletTool *tool,
 
 void
 meta_wayland_tablet_tool_set_cursor_position (MetaWaylandTabletTool *tool,
-                                              int                    new_x,
-                                              int                    new_y)
+                                              float                  new_x,
+                                              float                  new_y)
 {
   if (tool->cursor_renderer)
     meta_cursor_renderer_set_position (tool->cursor_renderer, new_x, new_y);

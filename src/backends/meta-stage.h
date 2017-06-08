@@ -56,10 +56,10 @@ MetaOverlay      *meta_stage_create_cursor_overlay   (MetaStage   *stage);
 void              meta_stage_remove_cursor_overlay   (MetaStage   *stage,
 						      MetaOverlay *overlay);
 
-void              meta_stage_update_cursor_overlay   (MetaStage     *stage,
-						      MetaOverlay   *overlay,
-						      CoglTexture   *texture,
-						      MetaRectangle *rect);
+void              meta_stage_update_cursor_overlay   (MetaStage   *stage,
+                                                      MetaOverlay *overlay,
+                                                      CoglTexture *texture,
+                                                      ClutterRect *rect);
 
 void meta_stage_set_active (MetaStage *stage,
                             gboolean   is_active);

@@ -1286,21 +1286,25 @@ find_highest_logical_monitor_scale (MetaBackend      *backend,
     meta_backend_get_monitor_manager (backend);
   MetaCursorRenderer *cursor_renderer =
     meta_backend_get_cursor_renderer (backend);
-  MetaRectangle cursor_rect;
+  ClutterRect cursor_rect;
   GList *logical_monitors;
   GList *l;
   int highest_scale = 0.0;
 
   cursor_rect = meta_cursor_renderer_calculate_rect (cursor_renderer,
-                                                     cursor_sprite);
+						     cursor_sprite);
 
   logical_monitors =
     meta_monitor_manager_get_logical_monitors (monitor_manager);
   for (l = logical_monitors; l; l = l->next)
     {
       MetaLogicalMonitor *logical_monitor = l->data;
+      ClutterRect logical_monitor_rect =
+	      meta_rectangle_to_clutter_rect (&logical_monitor->rect);
 
-      if (!meta_rectangle_overlap (&cursor_rect, &logical_monitor->rect))
+      if (!clutter_rect_intersection (&cursor_rect,
+				      &logical_monitor_rect,
+				      NULL))
         continue;
 
       highest_scale = MAX (highest_scale, logical_monitor->scale);

@@ -37,7 +37,8 @@
 
 struct _MetaCursorRendererPrivate
 {
-  int current_x, current_y;
+  float current_x;
+  float current_y;
 
   MetaCursorSprite *displayed_cursor;
   MetaOverlay *stage_overlay;
@@ -69,7 +70,7 @@ queue_redraw (MetaCursorRenderer *renderer,
   MetaBackend *backend = meta_get_backend ();
   ClutterActor *stage = meta_backend_get_stage (backend);
   CoglTexture *texture;
-  MetaRectangle rect = { 0 };
+  ClutterRect rect = { 0 };
 
   if (cursor_sprite)
     rect = meta_cursor_renderer_calculate_rect (renderer, cursor_sprite);
@@ -159,7 +160,7 @@ meta_cursor_renderer_init (MetaCursorRenderer *renderer)
                                            NULL);
 }
 
-MetaRectangle
+ClutterRect
 meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
                                      MetaCursorSprite   *cursor_sprite)
 {
@@ -172,18 +173,22 @@ meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
 
   texture = meta_cursor_sprite_get_cogl_texture (cursor_sprite);
   if (!texture)
-    return (MetaRectangle) { 0 };
+    return (ClutterRect) { 0 };
 
   meta_cursor_sprite_get_hotspot (cursor_sprite, &hot_x, &hot_y);
   texture_scale = meta_cursor_sprite_get_texture_scale (cursor_sprite);
   width = cogl_texture_get_width (texture);
   height = cogl_texture_get_height (texture);
 
-  return (MetaRectangle) {
-    .x = (int)roundf (priv->current_x - (hot_x * texture_scale)),
-    .y = (int)roundf (priv->current_y - (hot_y * texture_scale)),
-    .width = (int)roundf (width * texture_scale),
-    .height = (int)roundf (height * texture_scale),
+  return (ClutterRect) {
+    .origin = {
+      .x = priv->current_x - (hot_x * texture_scale),
+      .y = priv->current_y - (hot_y * texture_scale)
+    },
+    .size = {
+      .width = width * texture_scale,
+      .height = height * texture_scale
+    }
   };
 }
 
@@ -197,8 +202,8 @@ update_cursor (MetaCursorRenderer *renderer,
 
   if (cursor_sprite)
     meta_cursor_sprite_prepare_at (cursor_sprite,
-                                   priv->current_x,
-                                   priv->current_y);
+                                   (int) priv->current_x,
+                                   (int) priv->current_y);
 
   handled_by_backend =
     META_CURSOR_RENDERER_GET_CLASS (renderer)->update_cursor (renderer,
@@ -246,7 +251,8 @@ meta_cursor_renderer_force_update (MetaCursorRenderer *renderer)
 
 void
 meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
-                                   int x, int y)
+                                   float               x,
+                                   float               y)
 {
   MetaCursorRendererPrivate *priv = meta_cursor_renderer_get_instance_private (renderer);
 

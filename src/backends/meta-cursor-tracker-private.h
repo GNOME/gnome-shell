@@ -62,8 +62,8 @@ void     meta_cursor_tracker_set_root_cursor     (MetaCursorTracker *tracker,
                                                   MetaCursorSprite  *cursor_sprite);
 
 void     meta_cursor_tracker_update_position (MetaCursorTracker *tracker,
-					      int                new_x,
-					      int                new_y);
+                                              float              new_x,
+                                              float              new_y);
 
 MetaCursorSprite * meta_cursor_tracker_get_displayed_cursor (MetaCursorTracker *tracker);
 

@@ -218,4 +218,19 @@ GList* meta_rectangle_find_nonintersected_monitor_edges (
 gboolean meta_rectangle_is_adjecent_to (MetaRectangle *rect,
                                         MetaRectangle *other);
 
+static inline ClutterRect
+meta_rectangle_to_clutter_rect (MetaRectangle *rect)
+{
+  return (ClutterRect) {
+    .origin = {
+      .x = rect->x,
+      .y = rect->y
+    },
+    .size = {
+      .width = rect->width,
+      .height = rect->height
+    }
+  };
+}
+
 #endif /* META_BOXES_PRIVATE_H */
