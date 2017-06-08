@@ -22,6 +22,7 @@ const WindowMenu = imports.ui.windowMenu;
 const PadOsd = imports.ui.padOsd;
 const EdgeDragAction = imports.ui.edgeDragAction;
 const CloseDialog = imports.ui.closeDialog;
+const SwitchMonitor = imports.ui.switchMonitor;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var MINIMIZE_WINDOW_ANIMATION_TIME = 0.2;
@@ -898,6 +899,10 @@ var WindowManager = new Lang.Class({
                                         Shell.ActionMode.UNLOCK_SCREEN |
                                         Shell.ActionMode.LOGIN_SCREEN,
                                         Lang.bind(this, this._startA11ySwitcher));
+        this.setCustomKeybindingHandler('switch-monitor',
+                                        Shell.ActionMode.NORMAL |
+                                        Shell.ActionMode.OVERVIEW,
+                                        Lang.bind(this, this._startSwitcher));
 
         this.addKeybinding('pause-resume-tweens',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
@@ -1837,6 +1842,9 @@ var WindowManager = new Lang.Class({
             case 'cycle-group':
             case 'cycle-group-backward':
                 constructor = AltTab.GroupCyclerPopup;
+                break;
+            case 'switch-monitor':
+                constructor = SwitchMonitor.SwitchMonitorPopup;
                 break;
         }
 
