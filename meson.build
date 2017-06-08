@@ -57,6 +57,8 @@ portaldir = join_paths(datadir, 'xdg-desktop-portal', 'portals')
 schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 servicedir = join_paths(datadir, 'dbus-1', 'services')
 
+themedir = join_paths(pkgdatadir, 'theme')
+
 plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
 
 keybindings_dep = dependency('gnome-keybindings', required: false)
