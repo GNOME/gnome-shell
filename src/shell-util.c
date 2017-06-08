@@ -461,6 +461,8 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
   cairo_surface_t *image;
   cairo_t *cr;
 
+  g_assert (n_captures > 0);
+
   target_scale = 0.0;
   for (i = 0; i < n_captures; i++)
     {
