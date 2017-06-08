@@ -1,6 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Background = imports.ui.background;
@@ -274,6 +274,13 @@ var LayoutManager = GObject.registerClass({
         this._backgroundGroup.lower_bottom();
         this._bgManagers = [];
 
+        this._interfaceSettings = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.interface'
+        });
+
+       this._interfaceSettings.connect('changed::enable-hot-corners',
+                                       this._updateHotCorners.bind(this));
+
         // Need to update struts on new workspaces when they are added
         let workspaceManager = global.workspace_manager;
         workspaceManager.connect('notify::n-workspaces',
@@ -376,6 +383,11 @@ var LayoutManager = GObject.registerClass({
                 corner.destroy();
         });
         this.hotCorners = [];
+
+        if (!this._interfaceSettings.get_boolean('enable-hot-corners')) {
+            this.emit('hot-corners-changed');
+            return;
+        }
 
         let size = this.panelBox.height;
 
