@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include <errno.h>
+#include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -434,14 +435,23 @@ shell_util_get_content_for_window_actor (MetaWindowActor *window_actor,
   cairo_surface_t *surface;
   cairo_rectangle_int_t clip;
   gfloat actor_x, actor_y;
+  gfloat resource_scale;
 
   texture = meta_window_actor_get_texture (window_actor);
   clutter_actor_get_position (CLUTTER_ACTOR (window_actor), &actor_x, &actor_y);
 
+  if (!clutter_actor_get_resource_scale (CLUTTER_ACTOR (window_actor),
+                                         &resource_scale))
+    {
+      resource_scale = 1.0;
+      g_warning ("Actor resource scale is not know at this point, "
+                 "falling back to default 1.0");
+    }
+
   clip.x = window_rect->x - (gint) actor_x;
   clip.y = window_rect->y - (gint) actor_y;
-  clip.width = window_rect->width;
-  clip.height = window_rect->height;
+  clip.width = ceilf (window_rect->width * resource_scale);
+  clip.height = ceilf (window_rect->height * resource_scale);
 
   surface = meta_shaped_texture_get_image (META_SHAPED_TEXTURE (texture),
                                            &clip);
