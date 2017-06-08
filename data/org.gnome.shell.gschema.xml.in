@@ -38,6 +38,14 @@
         load all extensions regardless of the versions they claim to support.
       </description>
     </key>
+    <key name="enable-hot-corners" type="b">
+      <default>true</default>
+      <summary>Enable hot corners</summary>
+      <description>
+        If true, the overview can be accessed by moving the mouse to the
+        top-left corner.
+      </description>
+    </key>
     <key name="favorite-apps" type="as">
       <default>[ 'epiphany.desktop', 'evolution.desktop', 'rhythmbox.desktop', 'shotwell.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop' ]</default>
       <summary>List of desktop file IDs for favorite applications</summary>

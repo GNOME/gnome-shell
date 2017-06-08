@@ -268,6 +268,9 @@ var LayoutManager = new Lang.Class({
         this._backgroundGroup.lower_bottom();
         this._bgManagers = [];
 
+        global.settings.connect('changed::enable-hot-corners',
+                                this._updateHotCorners.bind(this));
+
         // Need to update struts on new workspaces when they are added
         global.screen.connect('notify::n-workspaces',
                               this._queueUpdateRegions.bind(this));
@@ -363,6 +366,11 @@ var LayoutManager = new Lang.Class({
                 corner.destroy();
         });
         this.hotCorners = [];
+
+        if (!global.settings.get_boolean('enable-hot-corners')) {
+            this.emit('hot-corners-changed');
+            return;
+        }
 
         let size = this.panelBox.height;
 
