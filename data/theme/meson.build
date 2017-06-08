@@ -23,3 +23,5 @@ foreach style: styles
                               ],
                               depend_files: theme_sources)
 endforeach
+
+install_data('process-working.svg', install_dir: themedir)
