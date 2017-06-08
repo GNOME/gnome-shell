@@ -833,7 +833,7 @@ handle_text (GMarkupParseContext *context,
                          &parser->current_logical_monitor_config->scale, error))
           return;
 
-        if (parser->current_logical_monitor_config->scale < 1.0)
+        if (parser->current_logical_monitor_config->scale <= 0.0)
           {
             g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                          "Logical monitor scale '%g' invalid",
