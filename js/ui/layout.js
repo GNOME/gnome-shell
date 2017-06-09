@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported MonitorConstraint, LayoutManager */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gdk, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Background = imports.ui.background;
@@ -477,7 +477,16 @@ var LayoutManager = GObject.registerClass({
     }
 
     _addBackgroundMenu(bgManager) {
-        BackgroundMenu.addBackgroundMenu(bgManager.backgroundActor, this);
+        let clickAction = new Clutter.ClickAction();
+        bgManager.backgroundActor.add_action(clickAction);
+
+        BackgroundMenu.addBackgroundMenuForAction(clickAction, this);
+
+        clickAction.connect('clicked', action => {
+            let button = action.get_button();
+            if (button == Gdk.BUTTON_PRIMARY)
+                Main.overview.showApps();
+        });
     }
 
     _createBackgroundManager(monitorIndex) {
