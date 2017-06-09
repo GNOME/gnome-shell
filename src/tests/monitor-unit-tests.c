@@ -3112,6 +3112,108 @@ meta_test_monitor_custom_fractional_scale_config (void)
 }
 
 static void
+meta_test_monitor_custom_high_precision_fractional_scale_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.000495910644531
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = 0,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        },
+      },
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0
+        },
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 744, .height = 558 },
+          .scale = 1024.0/744.0 /* 1.3763440847396851 */
+        }
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        }
+      },
+      .n_crtcs = 1,
+      .n_tiled_monitors = 0,
+      .screen_width = 744,
+      .screen_height = 558
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_test_skip ("Not using stage views");
+      return;
+    }
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  set_custom_monitor_config ("high-precision-fractional-scale.xml");
+  emulate_hotplug (test_setup);
+
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_custom_tiled_config (void)
 {
   MonitorTestCase test_case = {
@@ -4392,6 +4494,8 @@ init_monitor_tests (void)
                    meta_test_monitor_custom_scale_config);
   g_test_add_func ("/backends/monitor/custom/fractional-scale-config",
                    meta_test_monitor_custom_fractional_scale_config);
+  g_test_add_func ("/backends/monitor/custom/high-precision-fractional-scale-config",
+                   meta_test_monitor_custom_high_precision_fractional_scale_config);
   g_test_add_func ("/backends/monitor/custom/tiled-config",
                    meta_test_monitor_custom_tiled_config);
   g_test_add_func ("/backends/monitor/custom/tiled-custom-resolution-config",
