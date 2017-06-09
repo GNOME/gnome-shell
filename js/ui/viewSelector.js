@@ -5,7 +5,9 @@ const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
+const LayoutManager = imports.ui.layout;
 const Main = imports.ui.main;
+const Monitor = imports.ui.monitor;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const Search = imports.ui.search;
@@ -21,6 +23,10 @@ var ViewPage = {
     WINDOWS: 1,
     APPS: 2,
     SEARCH: 3
+};
+
+const ViewsDisplayPage = {
+    APP_GRID: 1
 };
 
 var FocusTrap = GObject.registerClass(
@@ -123,6 +129,74 @@ var ShowOverviewAction = GObject.registerClass({
     }
 });
 
+var ViewsDisplayLayout = GObject.registerClass(
+class ViewsDisplayLayout extends Clutter.BinLayout {
+    _init(appDisplayActor) {
+        super._init();
+
+        this._appDisplayActor = appDisplayActor;
+        this._appDisplayActor.connect('style-changed', this._onStyleChanged.bind(this));
+    }
+
+    _onStyleChanged() {
+        this.layout_changed();
+    }
+});
+
+var ViewsDisplayContainer = GObject.registerClass(
+class ViewsDisplayContainer extends St.Widget {
+    _init(appDisplay) {
+        this._appDisplay = appDisplay;
+        this._activePage = ViewsDisplayPage.APP_GRID;
+
+        super._init({
+            layout_manager: new ViewsDisplayLayout(this._appDisplay.actor),
+            x_expand: true,
+            y_expand: true,
+        });
+
+        this.add_actor(this._appDisplay.actor);
+    }
+
+    showPage(page) {
+        if (this._activePage === page)
+            return;
+
+        this._activePage = page;
+    }
+
+    getActivePage() {
+        return this._activePage;
+    }
+});
+
+var ViewsDisplay = class {
+    constructor() {
+        this._appDisplay = new AppDisplay.AppDisplay()
+
+        this.actor = new ViewsDisplayContainer(this._appDisplay);
+    }
+
+    get appDisplay() {
+        return this._appDisplay;
+    }
+
+    get activeViewsPage() {
+        return this.actor.getActivePage();
+    }
+};
+
+var ViewsDisplayConstraint = GObject.registerClass(
+class ViewsDisplayConstraint extends Monitor.MonitorConstraint {
+    vfunc_update_allocation(actor, actorBox) {
+        let originalBox = actorBox.copy();
+        super.vfunc_update_allocation(actor, actorBox);
+
+        actorBox.init_rect(originalBox.get_x(), originalBox.get_y(),
+                           actorBox.get_width(), originalBox.get_height());
+    }
+});
+
 var ViewSelector = class {
     constructor(searchEntry) {
         this.actor = new Shell.Stack({ name: 'viewSelector' });
@@ -166,9 +240,13 @@ var ViewSelector = class {
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
                                              _("Windows"), 'focus-windows-symbolic');
 
-        this.appDisplay = new AppDisplay.AppDisplay();
-        this._appsPage = this._addPage(this.appDisplay.actor,
-                                       _("Applications"), 'view-app-grid-symbolic');
+        this._viewsDisplay = new ViewsDisplay();
+        this._appsPage = this._addPage(this._viewsDisplay.actor,
+                                       _("Applications"), 'view-grid-symbolic');
+        this._appsPage.add_constraint(new ViewsDisplayConstraint({ primary: true,
+                                                                   work_area: true }));
+
+        this.appDisplay = this._viewsDisplay.appDisplay;
 
         this._searchResults = new Search.SearchResults();
         this._searchPage = this._addPage(this._searchResults.actor,
