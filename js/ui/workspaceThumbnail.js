@@ -676,6 +676,12 @@ const ThumbnailsBox = new Lang.Class({
         this._settings = new Gio.Settings({ schema_id: OVERRIDE_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             Lang.bind(this, this._updateSwitcherVisibility));
+
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, function() {
+            this._destroyThumbnails();
+            if (Main.overview.visible)
+                this._createThumbnails();
+        }));
     },
 
     _updateSwitcherVisibility: function() {
