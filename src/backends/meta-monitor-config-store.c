@@ -453,8 +453,8 @@ derive_logical_monitor_layout (MetaLogicalMonitorConfig    *logical_monitor_conf
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      width /= logical_monitor_config->scale;
-      height /= logical_monitor_config->scale;
+      width = roundf (width / logical_monitor_config->scale);
+      height = roundf (height / logical_monitor_config->scale);
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
       break;

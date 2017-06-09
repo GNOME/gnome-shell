@@ -981,8 +981,10 @@ meta_verify_logical_monitor_config (MetaLogicalMonitorConfig    *logical_monitor
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      expected_mode_width *= logical_monitor_config->scale;
-      expected_mode_height *= logical_monitor_config->scale;
+      expected_mode_width = roundf (expected_mode_width *
+                                    logical_monitor_config->scale);
+      expected_mode_height = roundf (expected_mode_height *
+                                     logical_monitor_config->scale);
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
       break;

@@ -1968,8 +1968,8 @@ derive_logical_monitor_size (MetaMonitorConfig           *monitor_config,
   switch (layout_mode)
     {
     case META_LOGICAL_MONITOR_LAYOUT_MODE_LOGICAL:
-      width /= scale;
-      height /= scale;
+      width = roundf (width / scale);
+      height = roundf (height / scale);
       break;
     case META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL:
       break;
