@@ -7,7 +7,6 @@ const St = imports.gi.St;
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const ShellMountOperation = imports.ui.shellMountOperation;
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
