@@ -70,6 +70,16 @@ const UserListItem = new Lang.Class({
         this.actor.connect('destroy',
                            Lang.bind(this, this._onDestroy));
 
+        this.actor.connect('key-focus-in', () => {
+            this._setSelected(true);
+        });
+        this.actor.connect('key-focus-out', () => {
+            this._setSelected(false);
+        });
+        this.actor.connect('notify::hover', () => {
+            this._setSelected(this.actor.hover);
+        });
+
         this._userWidget = new UserWidget.UserWidget(this.user);
         layout.add(this._userWidget.actor);
 
@@ -101,6 +111,15 @@ const UserListItem = new Lang.Class({
 
     _onClicked: function() {
         this.emit('activate');
+    },
+
+    _setSelected: function(selected) {
+        if (selected) {
+            this.actor.add_style_pseudo_class('selected');
+            this.actor.grab_key_focus();
+        } else {
+            this.actor.remove_style_pseudo_class('selected');
+        }
     },
 
     showTimedLoginIndicator: function(time) {

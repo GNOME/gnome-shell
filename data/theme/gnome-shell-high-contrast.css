@@ -1724,7 +1724,7 @@ StScrollBar {
   spacing: 12px;
   padding: .2em;
   width: 23em; }
-  .login-dialog-user-list:expanded .login-dialog-user-list-item:focus {
+  .login-dialog-user-list:expanded .login-dialog-user-list-item:selected {
     background-color: #215d9c;
     color: #ffffff; }
   .login-dialog-user-list:expanded .login-dialog-user-list-item:logged-in {
@@ -1738,9 +1738,6 @@ StScrollBar {
     padding-right: 1em; }
   .login-dialog-user-list-item:rtl {
     padding-left: 1em; }
-  .login-dialog-user-list-item:hover {
-    background-color: #215d9c;
-    color: #ffffff; }
   .login-dialog-user-list-item .login-dialog-timed-login-indicator {
     height: 2px;
     margin: 2px 0 0 0;
