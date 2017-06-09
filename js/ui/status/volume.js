@@ -7,6 +7,7 @@ const Gvc = imports.gi.Gvc;
 const St = imports.gi.St;
 const Signals = imports.signals;
 
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Slider = imports.ui.slider;
@@ -149,6 +150,13 @@ const StreamSlider = new Lang.Class({
                 return 'audio-volume-high-symbolic';
             return 'audio-volume-medium-symbolic';
         }
+    },
+
+    getLevel: function() {
+        if (!this._stream)
+            return null;
+
+        return 100 * this._stream.volume / this._control.get_vol_max_norm();
     }
 });
 Signals.addSignalMethods(StreamSlider.prototype);
@@ -298,6 +306,10 @@ const VolumeMenu = new Lang.Class({
 
     getIcon: function() {
         return this._output.getIcon();
+    },
+
+    getLevel: function() {
+        return this._output.getLevel();
     }
 });
 
@@ -329,6 +341,13 @@ const Indicator = new Lang.Class({
     },
 
     _onScrollEvent: function(actor, event) {
-        return this._volumeMenu.scroll(event);
+        let result = this._volumeMenu.scroll(event);
+        if (result == Clutter.EVENT_PROPAGATE || this.menu.actor.mapped)
+            return result;
+
+        let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon() });
+        let level = this._volumeMenu.getLevel();
+        Main.osdWindowManager.show(-1, gicon, null, level);
+        return result;
     }
 });
