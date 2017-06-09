@@ -100,9 +100,9 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             this._item.show();
             this._percentageLabel.visible = this._desktopSettings.get_boolean(SHOW_BATTERY_PERCENTAGE);
         } else {
-            // If there's no battery, then we use the power icon.
+            // If there's no battery, then we hide the indicator.
             this._item.hide();
-            this._indicator.icon_name = 'system-shutdown-symbolic';
+            this._indicator.hide();
             this._percentageLabel.hide();
             return;
         }
@@ -127,6 +127,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         let fallbackIcon = this._proxy.IconName;
         this._indicator.fallback_icon_name = fallbackIcon;
+        this._indicator.show();
         this._item.icon.fallback_icon_name = fallbackIcon;
 
         // The icon label
