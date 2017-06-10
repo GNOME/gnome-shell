@@ -999,20 +999,17 @@ var PopupSubMenu = new Lang.Class({
         if (animate) {
             let [minHeight, naturalHeight] = this.actor.get_preferred_height(-1);
             this.actor.height = 0;
-            this.actor._arrowRotation = this._arrow.rotation_angle_z;
             Tweener.addTween(this.actor,
-                             { _arrowRotation: targetAngle,
-                               height: naturalHeight,
+                             { height: naturalHeight,
                                time: 0.25,
-                               onUpdateScope: this,
-                               onUpdate() {
-                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
-                               },
                                onCompleteScope: this,
                                onComplete() {
                                    this.actor.set_height(-1);
                                }
                              });
+            Tweener.addTween(this._arrow,
+                             { rotation_angle_z: targetAngle,
+                               time: 0.25 });
         } else {
             this._arrow.rotation_angle_z = targetAngle;
         }
@@ -1032,21 +1029,18 @@ var PopupSubMenu = new Lang.Class({
             animate = false;
 
         if (animate) {
-            this.actor._arrowRotation = this._arrow.rotation_angle_z;
             Tweener.addTween(this.actor,
-                             { _arrowRotation: 0,
-                               height: 0,
+                             { height: 0,
                                time: 0.25,
-                               onUpdateScope: this,
-                               onUpdate() {
-                                   this._arrow.rotation_angle_z = this.actor._arrowRotation;
-                               },
                                onCompleteScope: this,
                                onComplete() {
                                    this.actor.hide();
                                    this.actor.set_height(-1);
                                },
                              });
+            Tweener.addTween(this._arrow,
+                             { rotation_angle_z: 0,
+                               time: 0.25 });
         } else {
             this._arrow.rotation_angle_z = 0;
             this.actor.hide();
