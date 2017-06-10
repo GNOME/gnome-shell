@@ -1191,11 +1191,9 @@ var HotCorner = new Lang.Class({
         // We draw a ripple by using a source image and animating it scaling
         // outwards and fading away. We want the ripples to move linearly
         // or it looks unrealistic, but if the opacity of the ripple goes
-        // linearly to zero it fades away too quickly, so we use Tweener's
-        // 'onUpdate' to give a non-linear curve to the fade-away and make
+        // linearly to zero it fades away too quickly, so we use a separate
+        // tween to give a non-linear curve to the fade-away and make
         // it more visible in the middle section.
-
-        ripple._opacity = startOpacity;
 
         if (ripple.get_text_direction() == Clutter.TextDirection.RTL)
             ripple.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
@@ -1207,13 +1205,15 @@ var HotCorner = new Lang.Class({
         ripple.x = this._x;
         ripple.y = this._y;
 
-        Tweener.addTween(ripple, { _opacity: 0,
-                                   scale_x: finalScale,
+        Tweener.addTween(ripple, { opacity: 0,
+                                   delay: delay,
+                                   time: time,
+                                   transition: 'easeInQuad' });
+        Tweener.addTween(ripple, { scale_x: finalScale,
                                    scale_y: finalScale,
                                    delay: delay,
                                    time: time,
                                    transition: 'linear',
-                                   onUpdate: function() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
                                    onComplete: function() { ripple.visible = false; } });
     },
 
