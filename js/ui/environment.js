@@ -58,6 +58,73 @@ function _patchLayoutClass(layoutClass, styleProps) {
     };
 }
 
+let _easingTransitions = new Map();
+
+function _trackTransition(transition, callback) {
+    if (_easingTransitions.has(transition))
+        transition.disconnect(_easingTransitions.get(transition));
+
+    let id = transition.connect('stopped', isFinished => {
+        _easingTransitions.delete(transition);
+        callback(isFinished);
+    });
+
+    _easingTransitions.set(transition, id);
+}
+
+function _makeEaseCallback(params) {
+    let onComplete = params.onComplete;
+    delete params.onComplete;
+
+    let onStopped = params.onStopped;
+    delete params.onStopped;
+
+    if (!onComplete && !onStopped)
+        return null;
+
+    return isFinished => {
+        if (onStopped)
+            onStopped(isFinished);
+        if (onComplete && isFinished)
+            onComplete();
+    };
+}
+
+function _easeActor(actor, params) {
+    actor.save_easing_state();
+
+    if (params.duration != undefined)
+        actor.set_easing_duration(params.duration);
+    delete params.duration;
+
+    if (params.delay != undefined)
+        actor.set_easing_delay(params.delay);
+    delete params.delay;
+
+    if (params.mode != undefined)
+        actor.set_easing_mode(params.mode);
+    delete params.mode;
+
+    let callback = _makeEaseCallback(params);
+
+    // cancel overwritten transitions
+    let animatedProps = Object.keys(params).map(p => p.replace('_', '-', 'g'));
+    animatedProps.forEach(p => actor.remove_transition(p));
+
+    actor.set(params);
+
+    if (callback) {
+        let transition = actor.get_transition(animatedProps[0]);
+
+        if (transition)
+            _trackTransition(transition, callback);
+        else
+            callback(true);
+    }
+
+    actor.restore_easing_state();
+}
+
 function _loggingFunc(...args) {
     let fields = { 'MESSAGE': args.join(', ') };
     let domain = "GNOME Shell";
@@ -101,6 +168,10 @@ function init() {
     let origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
     Clutter.Actor.prototype.set_easing_delay = function(msecs) {
         origSetEasingDelay.call(this, adjustAnimationTime(msecs));
+    };
+
+    Clutter.Actor.prototype.ease = function(props, easingParams) {
+        _easeActor(this, props, easingParams);
     };
 
     Clutter.Actor.prototype.toString = function() {
