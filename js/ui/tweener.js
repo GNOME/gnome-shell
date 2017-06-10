@@ -29,6 +29,117 @@ function init() {
     Tweener.setFrameTicker(new ClutterFrameTicker());
 }
 
+const transitionTranslations = {
+    easeNone: Clutter.AnimationMode.LINEAR,
+    linear: Clutter.AnimationMode.LINEAR,
+    easeInQuad: Clutter.AnimationMode.EASE_IN_QUAD,
+    easeOutQuad: Clutter.AnimationMode.EASE_OUT_QUAD,
+    easeInOutQuad: Clutter.AnimationMode.EASE_IN_OUT_QUAD,
+    easeOutInQuad: undefined,
+    easeInCubic: Clutter.AnimationMode.EASE_IN_CUBIC,
+    easeOutCubic: Clutter.AnimationMode.EASE_OUT_CUBIC,
+    easeInOutCubic: Clutter.AnimationMode.EASE_IN_OUT_CUBIC,
+    easeOutInCubic: undefined,
+    easeInQuart: Clutter.AnimationMode.EASE_IN_QUART,
+    easeOutQuart: Clutter.AnimationMode.EASE_OUT_QUART,
+    easeInOutQuart: Clutter.AnimationMode.EASE_IN_OUT_QUART,
+    easeOutInQuart: undefined,
+    easeInQuint: Clutter.AnimationMode.EASE_IN_QUINT,
+    easeOutQuint: Clutter.AnimationMode.EASE_OUT_QUINT,
+    easeInOutQuint: Clutter.AnimationMode.EASE_IN_OUT_QUINT,
+    easeOutInQuint: undefined,
+    easeInSine: Clutter.AnimationMode.EASE_IN_SINE,
+    easeOutSine: Clutter.AnimationMode.EASE_OUT_SINE,
+    easeInOutSine: Clutter.AnimationMode.EASE_IN_OUT_SINE,
+    easeOutInSine: undefined,
+    easeInExpo: Clutter.AnimationMode.EASE_IN_EXPO,
+    easeOutExpo: Clutter.AnimationMode.EASE_OUT_EXPO,
+    easeInOutExpo: Clutter.AnimationMode.EASE_IN_OUT_EXPO,
+    easeOutInExpo: undefined,
+    easeInCirc: Clutter.AnimationMode.EASE_IN_CIRC,
+    easeOutCirc: Clutter.AnimationMode.EASE_OUT_CIRC,
+    easeInOutCirc: Clutter.AnimationMode.EASE_IN_OUT_CIRC,
+    easeOutInCirc: undefined,
+    easeInElastic: Clutter.AnimationMode.EASE_IN_ELASTIC,
+    easeOutElastic: Clutter.AnimationMode.EASE_OUT_ELASTIC,
+    easeInOutElastic: Clutter.AnimationMode.EASE_IN_OUT_ELASTIC,
+    easeOutInElastic: undefined,
+    easeInBack: Clutter.AnimationMode.EASE_IN_BACK,
+    easeOutBack: Clutter.AnimationMode.EASE_OUT_BACK,
+    easeInOutBack: Clutter.AnimationMode.EASE_IN_OUT_BACK,
+    easeOutInBack: undefined,
+    easeInBounce: Clutter.AnimationMode.EASE_IN_BOUNCE,
+    easeOutBounce: Clutter.AnimationMode.EASE_OUT_BOUNCE,
+    easeInOutBounce: Clutter.AnimationMode.EASE_IN_OUT_BOUNCE,
+    easeOutInBounce: undefined,
+};
+
+function _easeTarget(target, tweeningParameters) {
+    if (!(target instanceof Clutter.Actor))
+        return false;
+
+    let props = Object.assign({}, tweeningParameters);
+    let easingParams = {};
+
+    if (tweeningParameters.hasOwnProperty('time'))
+        easingParams['duration'] = tweeningParameters['time'] * 1000;
+    delete props['time'];
+
+    if (tweeningParameters.hasOwnProperty('delay'))
+        easingParams['delay'] = tweeningParameters['delay'] * 1000;
+    delete props['delay'];
+
+    let mode = Clutter.AnimationMode.EASE_OUT_EXPO;
+    if (tweeningParameters.hasOwnProperty('transition'))
+        mode = transitionTranslations[tweeningParameters['transition']];
+    delete props['transition'];
+
+    if (mode == undefined)
+        return false;
+
+    easingParams['mode'] = mode;
+
+    let getHandler = function(name) {
+        if (!tweeningParameters.hasOwnProperty(name))
+            return null;
+
+        let [handler, scope, params] = [
+            tweeningParameters[name],
+            tweeningParameters[name + 'Scope'] || target,
+            tweeningParameters[name + 'Params'] || []
+        ];
+
+        delete props[name];
+        delete props[name + 'Scope'];
+        delete props[name + 'Params'];
+
+        return () => { handler.apply(scope, params); };
+    }
+
+    let onUpdate = getHandler('onUpdate');
+    if (onUpdate)
+        easingParams['onUpdate'] = onUpdate;
+
+    let onComplete = getHandler('onComplete');
+    let onOverwrite = getHandler('onOverwrite');
+    if (onComplete || onOverwrite)
+        easingParams['onStopped'] = isFinished => {
+            if (!isFinished && onOverwrite)
+                onOverwrite();
+            if (!target._tweensRemoved && onComplete)
+                onComplete();
+        }
+
+    // Implicit animations only work with animatable properties
+    if (Object.keys(props).some(p => !target.find_property(p)))
+        return false;
+
+    target._tweensRemoved = false;
+    target.ease(props, easingParams);
+
+    return true;
+}
+
 
 function addCaller(target, tweeningParameters) {
     _wrapTweening(target, tweeningParameters);
@@ -36,6 +147,9 @@ function addCaller(target, tweeningParameters) {
 }
 
 function addTween(target, tweeningParameters) {
+    if (_easeTarget(target, tweeningParameters))
+        return;
+
     _wrapTweening(target, tweeningParameters);
     Tweener.addTween(target, tweeningParameters);
 }
@@ -116,6 +230,11 @@ function isTweening(scope) {
 }
 
 function removeTweens(scope) {
+    scope._tweensRemoved = true;
+    if (scope instanceof Clutter.Actor)
+        scope.remove_all_transitions();
+    scope._tweensRemoved = false;
+
     if (Tweener.removeTweens.apply(null, arguments)) {
         // If we just removed the last active tween, clean up
         if (Tweener.getTweenCount(scope) == 0)
