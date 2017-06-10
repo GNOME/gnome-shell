@@ -39,25 +39,26 @@ var Ripples = class Ripples {
         // We draw a ripple by using a source image and animating it scaling
         // outwards and fading away. We want the ripples to move linearly
         // or it looks unrealistic, but if the opacity of the ripple goes
-        // linearly to zero it fades away too quickly, so we use Tweener's
-        // 'onUpdate' to give a non-linear curve to the fade-away and make
+        // linearly to zero it fades away too quickly, so we use a separate
+        // tween to give a non-linear curve to the fade-away and make
         // it more visible in the middle section.
 
         ripple.x = this._x;
         ripple.y = this._y;
-        ripple._opacity = startOpacity;
         ripple.visible = true;
         ripple.opacity = 255 * Math.sqrt(startOpacity);
         ripple.scale_x = ripple.scale_y = startScale;
         ripple.set_translation( - this._px * ripple.width, - this._py * ripple.height, 0.0);
 
-        Tweener.addTween(ripple, { _opacity: 0,
-                                   scale_x: finalScale,
+        Tweener.addTween(ripple, { opacity: 0,
+                                   delay: delay,
+                                   time: time,
+                                   transition: 'easeInQuad' });
+        Tweener.addTween(ripple, { scale_x: finalScale,
                                    scale_y: finalScale,
                                    delay: delay,
                                    time: time,
                                    transition: 'linear',
-                                   onUpdate: () => ripple.opacity = 255 * Math.sqrt(ripple._opacity),
                                    onComplete: () => ripple.visible = false });
     }
 
