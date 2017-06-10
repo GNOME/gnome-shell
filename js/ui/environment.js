@@ -69,6 +69,42 @@ function _adjustEasingTime(msecs) {
     return St.get_slow_down_factor() * msecs;
 }
 
+function _easeActor(actor, props, easingParams) {
+    let { duration, delay, mode, onStopped, onUpdate } = easingParams;
+
+    let animatedProps = Object.keys(props).map(p => p.replace('_', '-', 'g'));
+
+    actor.save_easing_state();
+
+    if (duration)
+        actor.set_easing_duration(duration);
+
+    if (delay)
+        actor.set_easing_delay(delay);
+
+    if (mode)
+        actor.set_easing_mode(mode);
+
+    Object.assign(actor, props);
+
+    let transition = actor.get_transition(animatedProps[0]);
+
+    if (onUpdate && transition)
+        transition.connect('new-frame', onUpdate);
+
+    if (onStopped) {
+        // Use getter instead of easingParams.duration for adjusted time
+        if (!actor.mapped || !actor.get_easing_duration())
+            onStopped(true);
+        else if (transition)
+            transition.connect('stopped', function(t, isFinished) {
+                onStopped(isFinished);
+            });
+    }
+
+    actor.restore_easing_state();
+}
+
 function _loggingFunc() {
     let fields = {'MESSAGE': [].join.call(arguments, ', ')};
     let domain = "GNOME Shell";
@@ -112,6 +148,10 @@ function init() {
     let origSetEasingDelay = Clutter.Actor.prototype.set_easing_delay;
     Clutter.Actor.prototype.set_easing_delay = function(msecs) {
         origSetEasingDelay.call(this, _adjustEasingTime(msecs));
+    };
+
+    Clutter.Actor.prototype.ease = function(props, easingParams) {
+        _easeActor(this, props, easingParams);
     };
 
     Clutter.Actor.prototype.toString = function() {
