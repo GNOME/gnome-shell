@@ -90,6 +90,25 @@ function _makeEaseCallback(params) {
     };
 }
 
+function _getPropertyTarget(actor, propName) {
+    if (!propName.startsWith('@'))
+        return [actor, propName];
+
+    let [type, name, prop] = propName.split('.');
+    switch (type) {
+    case '@layout':
+        return [actor.layout_manager, name];
+    case '@actions':
+        return [actor.get_action(name), prop];
+    case '@constraints':
+        return [actor.get_constraint(name), prop];
+    case '@effects':
+        return [actor.get_effect(name), prop];
+    }
+
+    throw new Error(`Invalid property name ${propName}`);
+}
+
 function _easeActor(actor, params) {
     actor.save_easing_state();
 
@@ -123,6 +142,45 @@ function _easeActor(actor, params) {
     }
 
     actor.restore_easing_state();
+}
+
+function _easeActorProperty(actor, propName, target, params) {
+    // Avoid pointless difference with ease()
+    if (params.mode)
+        params.progress_mode = params.mode;
+    delete params.mode;
+
+    if (params.duration)
+        params.duration = adjustAnimationTime(params.duration);
+    let duration = Math.floor(params.duration || 0);
+
+    let callback = _makeEaseCallback(params);
+
+    // cancel overwritten transition
+    actor.remove_transition(propName);
+
+    if (duration == 0) {
+        let [obj, prop] = _getPropertyTarget(actor, propName);
+        obj[prop] = target;
+
+        if (callback)
+            callback(true);
+
+        return;
+    }
+
+    let pspec = actor.find_property(propName);
+    let transition = new Clutter.PropertyTransition(Object.assign({
+        property_name: propName,
+        interval: new Clutter.Interval({ value_type: pspec.value_type }),
+        remove_on_complete: true
+    }, params));
+    actor.add_transition(propName, transition);
+
+    transition.set_to(target);
+
+    if (callback)
+        _trackTransition(transition, callback);
 }
 
 function _loggingFunc(...args) {
@@ -172,6 +230,9 @@ function init() {
 
     Clutter.Actor.prototype.ease = function(props, easingParams) {
         _easeActor(this, props, easingParams);
+    };
+    Clutter.Actor.prototype.ease_property = function(propName, target, params) {
+        _easeActorProperty(this, propName, target, params);
     };
 
     Clutter.Actor.prototype.toString = function() {
