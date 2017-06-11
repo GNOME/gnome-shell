@@ -58,6 +58,8 @@ function _patchLayoutClass(layoutClass, styleProps) {
 }
 
 function _adjustEasingTime(msecs) {
+    if (!St.Settings.get().enable_animations)
+        return 1;
     return St.get_slow_down_factor() * msecs;
 }
 
