@@ -64,6 +64,8 @@ function _patchLayoutClass(layoutClass, styleProps) {
 }
 
 function _adjustEasingTime(msecs) {
+    if (!Gtk.Settings.get_default().gtk_enable_animations)
+        return 0;
     return St.get_slow_down_factor() * msecs;
 }
 
