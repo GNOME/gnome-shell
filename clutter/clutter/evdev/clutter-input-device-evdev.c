@@ -163,6 +163,9 @@ clutter_input_device_evdev_update_from_tool (ClutterInputDevice     *device,
   if (libinput_tablet_tool_has_slider (evdev_tool->tool))
     _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_SLIDER, -1, 1, 0);
 
+  if (libinput_tablet_tool_has_wheel (evdev_tool->tool))
+    _clutter_input_device_add_axis (device, CLUTTER_INPUT_AXIS_WHEEL, -180, 180, 0);
+
   g_object_thaw_notify (G_OBJECT (device));
 }
 

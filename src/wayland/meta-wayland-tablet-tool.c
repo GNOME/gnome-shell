@@ -801,6 +801,38 @@ broadcast_rotation (MetaWaylandTabletTool *tool,
 }
 
 static void
+broadcast_wheel (MetaWaylandTabletTool *tool,
+                 const ClutterEvent    *event)
+{
+  struct wl_resource *resource;
+  ClutterInputDevice *source;
+  gdouble angle;
+  gint32 clicks = 0;
+
+  source = clutter_event_get_source_device (event);
+
+  if (!clutter_input_device_get_axis_value (source, event->motion.axes,
+                                            CLUTTER_INPUT_AXIS_WHEEL,
+                                            &angle))
+    return;
+
+  /* FIXME: Perform proper angle-to-clicks accumulation elsewhere */
+  if (angle > 0.01)
+    clicks = 1;
+  else if (angle < -0.01)
+    clicks = -1;
+  else
+    return;
+
+  wl_resource_for_each (resource, &tool->focus_resource_list)
+    {
+      zwp_tablet_tool_v2_send_wheel (resource,
+                                     wl_fixed_from_double (angle),
+                                     clicks);
+    }
+}
+
+static void
 broadcast_axes (MetaWaylandTabletTool *tool,
                 const ClutterEvent    *event)
 {
@@ -823,8 +855,8 @@ broadcast_axes (MetaWaylandTabletTool *tool,
     broadcast_rotation (tool, event);
   if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_SLIDER))
     broadcast_axis (tool, event, CLUTTER_INPUT_AXIS_SLIDER);
-
-  /* FIXME: Missing wp_tablet_tool.wheel */
+  if (capabilities & (1 << ZWP_TABLET_TOOL_V2_CAPABILITY_WHEEL))
+    broadcast_wheel (tool, event);
 }
 
 static void
