@@ -133,6 +133,9 @@ static void set_workspace_state (MetaWindow    *window,
                                  gboolean       on_all_workspaces,
                                  MetaWorkspace *workspace);
 
+static MetaWindow * meta_window_find_tile_match (MetaWindow   *window,
+                                                 MetaTileMode  mode);
+
 /* Idle handlers for the three queues (run with meta_later_add()). The
  * "data" parameter in each case will be a GINT_TO_POINTER of the
  * index into the queue arrays to use.
@@ -2974,10 +2977,19 @@ meta_window_get_tile_fraction (MetaWindow   *window,
                                MetaTileMode  tile_mode,
                                double       *fraction)
 {
+  MetaWindow *tile_match;
+
+  /* Make sure the tile match is up-to-date and matches the
+   * passed in mode rather than the current state
+   */
+  tile_match = meta_window_find_tile_match (window, tile_mode);
+
   if (tile_mode == META_TILE_NONE)
     *fraction = -1.;
   else if (tile_mode == META_TILE_MAXIMIZED)
     *fraction = 1.;
+  else if (tile_match)
+    *fraction = 1. - tile_match->tile_hfraction;
   else if (META_WINDOW_TILED_SIDE_BY_SIDE (window))
     {
       if (window->tile_mode != tile_mode)
@@ -2994,6 +3006,7 @@ meta_window_update_tile_fraction (MetaWindow *window,
                                   int         new_w,
                                   int         new_h)
 {
+  MetaWindow *tile_match = window->tile_match;
   MetaRectangle work_area;
 
   if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
@@ -3003,6 +3016,9 @@ meta_window_update_tile_fraction (MetaWindow *window,
                                          window->tile_monitor_number,
                                          &work_area);
   window->tile_hfraction = (double)new_w / work_area.width;
+
+  if (tile_match && window->display->grab_window == window)
+    meta_window_tile (tile_match, tile_match->tile_mode);
 }
 
 void
@@ -4061,6 +4077,34 @@ meta_window_move_to_monitor (MetaWindow  *window,
     meta_screen_queue_check_fullscreen (window->screen);
 }
 
+static void
+adjust_size_for_tile_match (MetaWindow *window,
+                            int        *new_w,
+                            int        *new_h)
+{
+  MetaRectangle work_area, rect;
+  MetaWindow *tile_match = window->tile_match;
+
+  if (!META_WINDOW_TILED_SIDE_BY_SIDE (window) || !tile_match)
+    return;
+
+  meta_window_get_work_area_for_monitor (window, window->tile_monitor_number, &work_area);
+
+  /* Make sure the resize does not break minimum sizes */
+  rect = work_area;
+  rect.width = *new_w;
+
+  meta_window_frame_rect_to_client_rect (window, &rect, &rect);
+  *new_w += MAX(0, window->size_hints.min_width - rect.width);
+
+  /* Make sure we're not resizing the tile match below its min width */
+  rect = work_area;
+  rect.width = work_area.width - *new_w;
+
+  meta_window_frame_rect_to_client_rect (tile_match, &rect, &rect);
+  *new_w -= MAX(0, tile_match->size_hints.min_width - rect.width);
+}
+
 void
 meta_window_resize_frame_with_gravity (MetaWindow *window,
                                        gboolean     user_op,
@@ -4075,7 +4119,14 @@ meta_window_resize_frame_with_gravity (MetaWindow *window,
   rect.height = h;
 
   if (user_op)
-    meta_window_update_tile_fraction (window, w, h);
+    {
+      /* When resizing in-tandem with a tile match, we need to respect
+       * its minimum width
+       */
+      if (window->display->grab_window == window)
+        adjust_size_for_tile_match (window, &w, &h);
+      meta_window_update_tile_fraction (window, w, h);
+    }
 
   flags = (user_op ? META_MOVE_RESIZE_USER_ACTION : 0) | META_MOVE_RESIZE_RESIZE_ACTION;
   meta_window_move_resize_internal (window, flags, gravity, rect);
@@ -7568,21 +7619,26 @@ meta_window_get_tile_match (MetaWindow *window)
 void
 meta_window_compute_tile_match (MetaWindow *window)
 {
+  window->tile_match = meta_window_find_tile_match (window, window->tile_mode);
+}
+
+static MetaWindow *
+meta_window_find_tile_match (MetaWindow   *window,
+                             MetaTileMode  current_mode)
+{
   MetaWindow *match;
   MetaStack *stack;
   MetaTileMode match_tile_mode = META_TILE_NONE;
 
-  window->tile_match = NULL;
-
   if (window->shaded || window->minimized)
-    return;
+    return NULL;
 
-  if (META_WINDOW_TILED_LEFT (window))
+  if (current_mode == META_TILE_LEFT)
     match_tile_mode = META_TILE_RIGHT;
-  else if (META_WINDOW_TILED_RIGHT (window))
+  else if (current_mode == META_TILE_RIGHT)
     match_tile_mode = META_TILE_LEFT;
   else
-    return;
+    return NULL;
 
   stack = window->screen->stack;
 
@@ -7593,7 +7649,7 @@ meta_window_compute_tile_match (MetaWindow *window)
       if (!match->shaded &&
           !match->minimized &&
           match->tile_mode == match_tile_mode &&
-          match->monitor == window->monitor &&
+          match->tile_monitor_number == window->tile_monitor_number &&
           meta_window_get_workspace (match) == meta_window_get_workspace (window))
         break;
     }
@@ -7633,11 +7689,11 @@ meta_window_compute_tile_match (MetaWindow *window)
 
           if (meta_rectangle_overlap (&above_rect, &bottommost_rect) &&
               meta_rectangle_overlap (&above_rect, &topmost_rect))
-            return;
+            return NULL;
         }
-
-      window->tile_match = match;
     }
+
+  return match;
 }
 
 void
