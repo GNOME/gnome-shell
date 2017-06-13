@@ -756,42 +756,44 @@ const Dash = new Lang.Class({
         let newIndex = 0;
         let oldIndex = 0;
         while (newIndex < newApps.length || oldIndex < oldApps.length) {
+            let oldApp = oldApps.length > oldIndex ? oldApps[oldIndex] : null;
+            let newApp = newApps.length > newIndex ? newApps[newIndex] : null;
+
             // No change at oldIndex/newIndex
-            if (oldApps[oldIndex] == newApps[newIndex]) {
+            if (oldApp == newApp) {
                 oldIndex++;
                 newIndex++;
                 continue;
             }
 
             // App removed at oldIndex
-            if (oldApps[oldIndex] &&
-                newApps.indexOf(oldApps[oldIndex]) == -1) {
+            if (oldApp && newApps.indexOf(oldApp) == -1) {
                 removedActors.push(children[oldIndex]);
                 oldIndex++;
                 continue;
             }
 
             // App added at newIndex
-            if (newApps[newIndex] &&
-                oldApps.indexOf(newApps[newIndex]) == -1) {
-                addedItems.push({ app: newApps[newIndex],
-                                  item: this._createAppItem(newApps[newIndex]),
+            if (newApp && oldApps.indexOf(newApp) == -1) {
+                addedItems.push({ app: newApp,
+                                  item: this._createAppItem(newApp),
                                   pos: newIndex });
                 newIndex++;
                 continue;
             }
 
             // App moved
-            let insertHere = newApps[newIndex + 1] &&
-                             newApps[newIndex + 1] == oldApps[oldIndex];
+            let nextApp = newApps.length > newIndex + 1 ? newApps[newIndex + 1]
+                                                        : null;
+            let insertHere = nextApp && nextApp == oldApp;
             let alreadyRemoved = removedActors.reduce(function(result, actor) {
                 let removedApp = actor.child._delegate.app;
-                return result || removedApp == newApps[newIndex];
+                return result || removedApp == newApp;
             }, false);
 
             if (insertHere || alreadyRemoved) {
-                let newItem = this._createAppItem(newApps[newIndex]);
-                addedItems.push({ app: newApps[newIndex],
+                let newItem = this._createAppItem(newApp);
+                addedItems.push({ app: newApp,
                                   item: newItem,
                                   pos: newIndex + removedActors.length });
                 newIndex++;
