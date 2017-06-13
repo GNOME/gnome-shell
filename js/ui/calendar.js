@@ -761,8 +761,8 @@ const NotificationMessage = new Lang.Class({
     _init: function(notification) {
         this.notification = notification;
 
-        this.setUseBodyMarkup(notification.bannerBodyMarkup);
         this.parent(notification.title, notification.bannerBodyText);
+        this.setUseBodyMarkup(notification.bannerBodyMarkup);
 
         this.setIcon(this._getIcon());
 
