@@ -1614,7 +1614,7 @@ const WindowManager = new Lang.Class({
             return;
         }
 
-        switch (actor._windowType) {
+        switch (actor.meta_window.window_type) {
         case Meta.WindowType.NORMAL:
             actor.set_pivot_point(0.5, 0.5);
             this._destroying.push(actor);
