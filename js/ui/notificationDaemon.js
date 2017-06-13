@@ -186,7 +186,8 @@ const FdoNotificationDaemon = new Lang.Class({
             return source;
         }
 
-        source = new FdoNotificationDaemonSource(title, pid, sender, ndata ? ndata.hints['desktop-entry'] : null);
+        let appId = ndata ? ndata.hints['desktop-entry'] || null : null;
+        source = new FdoNotificationDaemonSource(title, pid, sender, appId);
 
         this._sources.push(source);
         source.connect('destroy', Lang.bind(this, function() {
