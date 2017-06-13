@@ -200,6 +200,7 @@ const RemoteSearchProvider = new Lang.Class({
         this.appInfo = appInfo;
         this.id = appInfo.get_id();
         this.isRemoteProvider = true;
+        this.canLaunchSearch = false;
     },
 
     createIcon: function(size, meta) {
