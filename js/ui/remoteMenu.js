@@ -192,6 +192,10 @@ const RemoteMenu = new Lang.Class({
                                               _removeItem.bind(null, this));
     },
 
+    get actionGroup() {
+        return this._actionGroup;
+    },
+
     destroy: function() {
         this._tracker.destroy();
         this.parent();
