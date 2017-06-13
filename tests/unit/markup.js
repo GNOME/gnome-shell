@@ -5,10 +5,7 @@
 const JsUnit = imports.jsUnit;
 import Pango from 'gi://Pango';
 
-import 'resource:///org/gnome/shell/ui/environment.js';
-import 'resource:///org/gnome/shell/ui/main.js';
-
-import * as MessageList from 'resource:///org/gnome/shell/ui/messageList.js';
+import {fixMarkup} from 'resource:///org/gnome/shell/misc/util.js';
 
 /**
  * Assert that `input`, assumed to be markup, gets "fixed" to `output`,
@@ -21,7 +18,7 @@ import * as MessageList from 'resource:///org/gnome/shell/ui/messageList.js';
 function assertConverts(input, output) {
     if (!output)
         output = input;
-    let fixed = MessageList._fixMarkup(input, true);
+    let fixed = fixMarkup(input, true);
     JsUnit.assertEquals(output, fixed);
 
     let parsed = false;
@@ -41,7 +38,7 @@ function assertConverts(input, output) {
  * @param {string} output the output
  */
 function assertEscapes(input, output) {
-    let fixed = MessageList._fixMarkup(input, false);
+    let fixed = fixMarkup(input, false);
     JsUnit.assertEquals(output, fixed);
 
     let parsed = false;

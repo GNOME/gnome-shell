@@ -18,32 +18,6 @@ const MESSAGE_ANIMATION_TIME = 100;
 
 const DEFAULT_EXPAND_LINES = 6;
 
-/**
- * @param {string} text
- * @param {boolean} allowMarkup
- * @returns {string}
- */
-export function _fixMarkup(text, allowMarkup) {
-    if (allowMarkup) {
-        // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
-        // occurrences of '&'.
-        let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, '&amp;');
-
-        // Support <b>, <i>, and <u>, escape anything else
-        // so it displays as raw markup.
-        // Ref: https://developer.gnome.org/notification-spec/#markup
-        _text = _text.replace(/<(?!\/?[biu]>)/g, '&lt;');
-
-        try {
-            Pango.parse_markup(_text, -1, '');
-            return _text;
-        } catch (e) {}
-    }
-
-    // !allowMarkup, or invalid markup
-    return GLib.markup_escape_text(text, -1);
-}
-
 export const URLHighlighter = GObject.registerClass(
 class URLHighlighter extends St.Label {
     _init(text = '', lineWrap, allowMarkup) {
@@ -127,7 +101,7 @@ class URLHighlighter extends St.Label {
     }
 
     setMarkup(text, allowMarkup) {
-        text = text ? _fixMarkup(text, allowMarkup) : '';
+        text = text ? Util.fixMarkup(text, allowMarkup) : '';
         this._text = text;
 
         this.clutter_text.set_markup(text);
@@ -560,7 +534,7 @@ export const Message = GObject.registerClass({
 
     set title(text) {
         this._titleText = text;
-        const title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
+        const title = text ? Util.fixMarkup(text.replace(/\n/g, ' '), false) : '';
         this.titleLabel.clutter_text.set_markup(title);
         this.notify('title');
     }

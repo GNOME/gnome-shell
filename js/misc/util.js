@@ -2,6 +2,7 @@
 
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 import GnomeDesktop from 'gi://GnomeDesktop';
@@ -187,6 +188,35 @@ function _handleSpawnError(command, err) {
     // Use dynamic import to not pull in UI related code in unit tests
     import('../ui/main.js').then(
         ({notifyError}) => notifyError(title, err.message));
+}
+
+/**
+ * Fix up embedded markup so that it can be displayed correctly in
+ * UI elements such as the message list. In some cases, we might want to
+ * keep some of the embedded markup, so specify allowMarkup for that case
+ *
+ * @param {string} text containing markup to escape and parse
+ * @param {boolean} allowMarkup to allow embedded markup or just escape it all
+ * @returns the escaped string
+ */
+export function fixMarkup(text, allowMarkup) {
+    if (allowMarkup) {
+        // Support &amp;, &quot;, &apos;, &lt; and &gt;, escape all other
+        // occurrences of '&'.
+        let _text = text.replace(/&(?!amp;|quot;|apos;|lt;|gt;)/g, '&amp;');
+
+        // Support <b>, <i>, and <u>, escape anything else
+        // so it displays as raw markup.
+        _text = _text.replace(/<(?!\/?[biu]>)/g, '&lt;');
+
+        try {
+            Pango.parse_markup(_text, -1, '');
+            return _text;
+        } catch (e) {}
+    }
+
+    // !allowMarkup, or invalid markup
+    return GLib.markup_escape_text(text, -1);
 }
 
 /**
