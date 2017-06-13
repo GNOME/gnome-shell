@@ -1104,7 +1104,7 @@ const Panel = new Lang.Class({
     },
 
     _onMenuSet: function(indicator) {
-        if (!indicator.menu || indicator.menu._openChangedId > 0)
+        if (!indicator.menu || indicator.menu.hasOwnProperty('_openChangedId'))
             return;
 
         indicator.menu._openChangedId = indicator.menu.connect('open-state-changed',
