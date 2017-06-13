@@ -1709,6 +1709,7 @@ const NMApplet = new Lang.Class({
 
         this._mainConnection = null;
         this._mainConnectionIconChangedId = 0;
+        this._mainConnectionStateChangedId = 0;
 
         this._notification = null;
 

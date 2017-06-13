@@ -1083,6 +1083,8 @@ const AppSearchProvider = new Lang.Class({
     _init: function() {
         this._appSys = Shell.AppSystem.get_default();
         this.id = 'applications';
+        this.isRemoteProvider = false;
+        this.canLaunchSearch = false;
     },
 
     getResultMetas: function(apps, callback) {
@@ -1251,6 +1253,7 @@ const FolderIcon = new Lang.Class({
 
     _init: function(id, path, parentView) {
         this.id = id;
+        this.name = '';
         this._parentView = parentView;
 
         this._folder = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders.folder',

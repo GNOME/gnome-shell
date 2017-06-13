@@ -783,6 +783,7 @@ const LookingGlass = new Lang.Class({
 
         this._open = false;
 
+        this._it = null;
         this._offset = 0;
         this._results = [];
 

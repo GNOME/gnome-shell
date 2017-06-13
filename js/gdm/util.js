@@ -128,6 +128,9 @@ const ShellUserVerifier = new Lang.Class({
 
         this._client = client;
 
+        this._defaultService = null;
+        this._preemptingService = null;
+
         this._settings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
         this._settings.connect('changed',
                                Lang.bind(this, this._updateDefaultService));
@@ -140,6 +143,7 @@ const ShellUserVerifier = new Lang.Class({
         // at startup should result in immediately initiating authentication.
         // This is different than fingeprint readers, where we only check them
         // after a user has been picked.
+        this.smartcardDetected = false;
         this._checkForSmartcard();
 
         this._smartcardInsertedId = this._smartcardManager.connect('smartcard-inserted',

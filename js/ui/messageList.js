@@ -165,6 +165,11 @@ const ScaleLayout = new Lang.Class({
     Name: 'ScaleLayout',
     Extends: Clutter.BinLayout,
 
+    _init: function(params) {
+        this._container = null;
+        this.parent(params);
+    },
+
     _connectContainer: function(container) {
         if (this._container == container)
             return;
@@ -298,6 +303,8 @@ const Message = new Lang.Class({
 
     _init: function(title, body) {
         this.expanded = false;
+
+        this._useBodyMarkup = false;
 
         this.actor = new St.Button({ style_class: 'message',
                                      accessible_role: Atk.Role.NOTIFICATION,

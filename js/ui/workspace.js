@@ -1100,6 +1100,7 @@ const Workspace = new Lang.Class({
     _init : function(metaWorkspace, monitorIndex) {
         // When dragging a window, we use this slot for reserve space.
         this._reservedSlot = null;
+        this._reservedSlotWindow = null;
         this.metaWorkspace = metaWorkspace;
 
         // The full geometry is the geometry we should try and position
