@@ -5593,6 +5593,60 @@ update_move_timeout (gpointer data)
 }
 
 static void
+update_move_maybe_tile (MetaWindow *window,
+                        int         shake_threshold,
+                        int         x,
+                        int         y)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+  MetaRectangle work_area;
+
+  /* For side-by-side tiling we are interested in the inside vertical
+   * edges of the work area of the monitor where the pointer is located,
+   * and in the outside top edge for maximized tiling.
+   *
+   * For maximized tiling we use the outside edge instead of the
+   * inside edge, because we don't want to force users to maximize
+   * windows they are placing near the top of their screens.
+   *
+   * The "current" idea of meta_window_get_work_area_current_monitor() and
+   * meta_screen_get_current_monitor() is slightly different: the former
+   * refers to the monitor which contains the largest part of the window,
+   * the latter to the one where the pointer is located.
+   */
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
+  if (!logical_monitor)
+    return;
+
+  meta_window_get_work_area_for_monitor (window,
+                                         logical_monitor->number,
+                                         &work_area);
+
+  /* Check if the cursor is in a position which triggers tiling
+   * and set tile_mode accordingly.
+   */
+  if (meta_window_can_tile_side_by_side (window) &&
+      x >= logical_monitor->rect.x && x < (work_area.x + shake_threshold))
+    window->tile_mode = META_TILE_LEFT;
+  else if (meta_window_can_tile_side_by_side (window) &&
+           x >= work_area.x + work_area.width - shake_threshold &&
+           x < (logical_monitor->rect.x + logical_monitor->rect.width))
+    window->tile_mode = META_TILE_RIGHT;
+  else if (meta_window_can_tile_maximized (window) &&
+           y >= logical_monitor->rect.y && y <= work_area.y)
+    window->tile_mode = META_TILE_MAXIMIZED;
+  else
+    window->tile_mode = META_TILE_NONE;
+
+  if (window->tile_mode != META_TILE_NONE)
+    window->tile_monitor_number = logical_monitor->number;
+}
+
+static void
 update_move (MetaWindow  *window,
              gboolean     snap,
              int          x,
@@ -5647,49 +5701,7 @@ update_move (MetaWindow  *window,
            !META_WINDOW_MAXIMIZED (window) &&
            !META_WINDOW_TILED_SIDE_BY_SIDE (window))
     {
-      MetaBackend *backend = meta_get_backend ();
-      MetaMonitorManager *monitor_manager =
-        meta_backend_get_monitor_manager (backend);
-      const MetaLogicalMonitor *monitor;
-      MetaRectangle work_area;
-
-      /* For side-by-side tiling we are interested in the inside vertical
-       * edges of the work area of the monitor where the pointer is located,
-       * and in the outside top edge for maximized tiling.
-       *
-       * For maximized tiling we use the outside edge instead of the
-       * inside edge, because we don't want to force users to maximize
-       * windows they are placing near the top of their screens.
-       *
-       * The "current" idea of meta_window_get_work_area_current_monitor() and
-       * meta_screen_get_current_monitor() is slightly different: the former
-       * refers to the monitor which contains the largest part of the window,
-       * the latter to the one where the pointer is located.
-       */
-      monitor = meta_monitor_manager_get_logical_monitor_at (monitor_manager,
-                                                             x, y);
-      meta_window_get_work_area_for_monitor (window,
-                                             monitor->number,
-                                             &work_area);
-
-      /* Check if the cursor is in a position which triggers tiling
-       * and set tile_mode accordingly.
-       */
-      if (meta_window_can_tile_side_by_side (window) &&
-          x >= monitor->rect.x && x < (work_area.x + shake_threshold))
-        window->tile_mode = META_TILE_LEFT;
-      else if (meta_window_can_tile_side_by_side (window) &&
-               x >= work_area.x + work_area.width - shake_threshold &&
-               x < (monitor->rect.x + monitor->rect.width))
-        window->tile_mode = META_TILE_RIGHT;
-      else if (meta_window_can_tile_maximized (window) &&
-               y >= monitor->rect.y && y <= work_area.y)
-        window->tile_mode = META_TILE_MAXIMIZED;
-      else
-        window->tile_mode = META_TILE_NONE;
-
-      if (window->tile_mode != META_TILE_NONE)
-        window->tile_monitor_number = monitor->number;
+      update_move_maybe_tile (window, shake_threshold, x, y);
     }
 
   /* shake loose (unmaximize) maximized or tiled window if dragged beyond
