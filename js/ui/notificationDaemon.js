@@ -391,10 +391,10 @@ const FdoNotificationDaemon = new Lang.Class({
                 notification.setUrgency(MessageTray.Urgency.CRITICAL);
                 break;
         }
-        notification.setResident(hints.resident == true);
+        notification.setResident(!!hints.resident);
         // 'transient' is a reserved keyword in JS, so we have to retrieve the value
         // of the 'transient' hint with hints['transient'] rather than hints.transient
-        notification.setTransient(hints['transient'] == true);
+        notification.setTransient(!!hints['transient']);
 
         let sourceGIcon = source.useNotificationIcon ? gicon : null;
         source.processNotification(notification, sourceGIcon);

@@ -607,7 +607,7 @@ const Keyboard = new Lang.Class({
     shouldTakeEvent: function(event) {
         let actor = event.get_source();
         return Main.layoutManager.keyboardBox.contains(actor) ||
-               actor._extended_keys || actor.extended_key;
+               !!actor._extended_keys || !!actor.extended_key;
     },
 
     _clearKeyboardRestTimer: function() {
