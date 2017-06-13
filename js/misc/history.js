@@ -69,7 +69,7 @@ const HistoryManager = new Lang.Class({
             this._indexChanged();
         }
 
-        return this._historyIndex[this._history.length];
+        return this._historyIndex ? this._history[this._historyIndex -1] : null;
     },
 
     addItem: function(input) {
