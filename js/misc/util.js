@@ -6,7 +6,6 @@ import Shell from 'gi://Shell';
 import St from 'gi://St';
 import GnomeDesktop from 'gi://GnomeDesktop';
 
-import * as Main from '../ui/main.js';
 import {formatTime} from './dateUtils.js';
 
 // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
@@ -184,8 +183,10 @@ export function trySpawnCommandLine(commandLine) {
 }
 
 function _handleSpawnError(command, err) {
-    let title = _('Execution of “%s” failed:').format(command);
-    Main.notifyError(title, err.message);
+    const title = _('Execution of “%s” failed:').format(command);
+    // Use dynamic import to not pull in UI related code in unit tests
+    import('../ui/main.js').then(
+        ({notifyError}) => notifyError(title, err.message));
 }
 
 /**
