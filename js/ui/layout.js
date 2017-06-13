@@ -896,7 +896,10 @@ const LayoutManager = new Lang.Class({
     },
 
     findMonitorForActor: function(actor) {
-        return this.monitors[this.findIndexForActor(actor)];
+        let index = this.findIndexForActor(actor);
+        if (index >= 0 && index < this.monitors.length)
+            return this.monitors[index];
+        return null;
     },
 
     _queueUpdateRegions: function() {
