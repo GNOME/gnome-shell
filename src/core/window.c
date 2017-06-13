@@ -6256,7 +6256,7 @@ end_grab_op (MetaWindow *window,
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
           update_resize (window,
-                         modifiers & CLUTTER_SHIFT_MASK,
+                         modifiers & CLUTTER_SHIFT_MASK || window->tile_match != NULL,
                          x, y,
                          TRUE);
           maybe_maximize_tiled_window (window);
@@ -6333,7 +6333,7 @@ meta_window_handle_mouse_grab_op_event  (MetaWindow         *window,
       else if (meta_grab_op_is_resizing (window->display->grab_op))
         {
           update_resize (window,
-                         modifier_state & CLUTTER_SHIFT_MASK,
+                         modifier_state & CLUTTER_SHIFT_MASK || window->tile_match != NULL,
                          x, y,
                          FALSE);
         }
