@@ -190,7 +190,7 @@ const IBusManager = new Lang.Class({
     },
 
     getEngineDesc: function(id) {
-        if (!IBus || !this._ready)
+        if (!IBus || !this._ready || !this._engines.hasOwnProperty(id))
             return null;
 
         return this._engines[id];
