@@ -1267,7 +1267,6 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
 {
   MetaRectangle old_outer, new_outer;
   int proposed_outer_width, proposed_outer_height;
-  gboolean is_resize;
 
   meta_window_get_frame_rect (window, &old_outer);
   proposed_outer_width  = *new_width;
@@ -1279,7 +1278,6 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
                                       proposed_outer_height);
 
   window->display->grab_last_user_action_was_snap = snap;
-  is_resize = TRUE;
   if (apply_edge_resistance_to_each_side (window->display,
                                           window,
                                           &old_outer,
@@ -1287,7 +1285,7 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
                                           timeout_func,
                                           snap,
                                           is_keyboard_op,
-                                          is_resize))
+                                          TRUE))
     {
       *new_width = new_outer.width;
       *new_height = new_outer.height;
