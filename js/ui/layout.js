@@ -285,6 +285,7 @@ var LayoutManager = GObject.registerClass({
         global.window_group.add_child(this._backgroundGroup);
         global.window_group.set_child_below_sibling(this._backgroundGroup, null);
         this._bgManagers = [];
+        this._viewsClone = null;
 
         this._interfaceSettings = new Gio.Settings({
             schema_id: 'org.gnome.desktop.interface',
@@ -474,6 +475,11 @@ var LayoutManager = GObject.registerClass({
         }
 
         this.emit('hot-corners-changed');
+    }
+
+    setViewsClone(actor) {
+        this._viewsClone = actor;
+        this._backgroundGroup.add_child(this._viewsClone);
     }
 
     _addBackgroundMenu(bgManager) {

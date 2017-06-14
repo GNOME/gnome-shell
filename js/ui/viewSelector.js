@@ -581,6 +581,9 @@ var ViewSelector = GObject.registerClass({
         this._entry = this._viewsDisplay.entry;
 
         this._stageKeyPressId = 0;
+
+        this._addViewsPageClone();
+
         Main.overview.connect('showing', () => {
             this._stageKeyPressId = global.stage.connect('key-press-event',
                                                          this._onStageKeyPress.bind(this));
@@ -648,6 +651,18 @@ var ViewSelector = GObject.registerClass({
     _pinchGestureActivated(action, scale) {
         if (scale < PINCH_GESTURE_THRESHOLD)
             Main.overview.show();
+    }
+
+    _addViewsPageClone() {
+        let layoutViewsClone = new ViewsClone(this, this._viewsDisplay, false);
+        Main.layoutManager.setViewsClone(layoutViewsClone);
+
+        let overviewViewsClone = new ViewsClone(this, this._viewsDisplay, true);
+        Main.overview.setViewsClone(overviewViewsClone);
+        this._appsPage.bind_property('visible',
+                                     overviewViewsClone, 'visible',
+                                     GObject.BindingFlags.SYNC_CREATE |
+                                     GObject.BindingFlags.INVERT_BOOLEAN);
     }
 
     _onEmptySpaceClicked() {
