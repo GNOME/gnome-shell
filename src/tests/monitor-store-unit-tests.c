@@ -189,6 +189,9 @@ check_monitor_configuration (MetaMonitorConfigStore        *config_store,
           g_assert_cmpfloat (monitor_config->mode_spec->refresh_rate,
                              ==,
                              test_monitor->mode.refresh_rate);
+          g_assert_cmpint (monitor_config->mode_spec->flags,
+                           ==,
+                           test_monitor->mode.flags);
           g_assert_cmpint (monitor_config->enable_underscanning,
                            ==,
                            test_monitor->is_underscanning);
@@ -848,6 +851,57 @@ meta_test_monitor_store_second_rotated (void)
   check_monitor_configurations (&expect);
 }
 
+static void
+meta_test_monitor_store_interlaced (void)
+{
+  MonitorStoreTestExpect expect = {
+    .configurations = {
+      {
+        .logical_monitors = {
+          {
+            .layout = {
+              .x = 0,
+              .y = 0,
+              .width = 1024,
+              .height = 768
+            },
+            .scale = 1,
+            .is_primary = TRUE,
+            .is_presentation = FALSE,
+            .monitors = {
+              {
+                .connector = "DP-1",
+                .vendor = "MetaProduct's Inc.",
+                .product = "MetaMonitor",
+                .serial = "0x123456",
+                .mode = {
+                  .width = 1024,
+                  .height = 768,
+                  .refresh_rate = 60.000495910644531,
+                  .flags = META_CRTC_MODE_FLAG_INTERLACE,
+                }
+              }
+            },
+            .n_monitors = 1,
+          },
+        },
+        .n_logical_monitors = 1
+      }
+    },
+    .n_configurations = 1
+  };
+
+  if (!is_using_monitor_config_manager ())
+    {
+      g_test_skip ("Not using MetaMonitorConfigManager");
+      return;
+    }
+
+  set_custom_monitor_config ("interlaced.xml");
+
+  check_monitor_configurations (&expect);
+}
+
 void
 init_monitor_store_tests (void)
 {
@@ -871,4 +925,6 @@ init_monitor_store_tests (void)
                    meta_test_monitor_store_first_rotated);
   g_test_add_func ("/backends/monitor-store/second-rotated",
                    meta_test_monitor_store_second_rotated);
+  g_test_add_func ("/backends/monitor-store/interlaced",
+                   meta_test_monitor_store_interlaced);
 }
