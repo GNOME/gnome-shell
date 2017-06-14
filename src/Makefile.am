@@ -235,6 +235,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	meta/meta-close-dialog.h		\
 	core/meta-close-dialog-default.c	\
 	core/meta-close-dialog-default-private.h	\
+	core/meta-inhibit-shortcuts-dialog.c	\
+	meta/meta-inhibit-shortcuts-dialog.h	\
 	core/delete.c				\
 	core/display.c				\
 	core/display-private.h			\
@@ -453,6 +455,7 @@ libmutterinclude_headers =			\
 	meta/meta-background-image.h		\
 	meta/meta-background-group.h		\
 	meta/meta-close-dialog.h		\
+	meta/meta-inhibit-shortcuts-dialog.h	\
 	meta/meta-cursor-tracker.h		\
 	meta/meta-dnd.h			\
 	meta/meta-idle-monitor.h		\
