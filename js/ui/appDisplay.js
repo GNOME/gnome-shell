@@ -300,23 +300,54 @@ class BaseAppView {
 }
 Signals.addSignalMethods(BaseAppView.prototype);
 
+var AllViewContainer = GObject.registerClass(
+class AllViewContainer extends St.Widget {
+    _init(gridActor) {
+        super._init({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
+
+        this.gridActor = gridActor;
+
+        gridActor.y_expand = true;
+        gridActor.y_align = Clutter.ActorAlign.START;
+
+        this.scrollView = new St.ScrollView({
+            style_class: 'all-apps-scroller',
+            x_expand: true,
+            y_expand: true,
+            x_fill: true,
+            y_fill: false,
+            reactive: true,
+            hscrollbar_policy: St.PolicyType.NEVER,
+            vscrollbar_policy: St.PolicyType.EXTERNAL,
+            y_align: Clutter.ActorAlign.START,
+        });
+
+        this.stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        let box = new St.BoxLayout({ vertical: true });
+
+        this.stack.add_child(gridActor);
+        box.add_child(this.stack);
+
+        // For some reason I couldn't investigate yet using add_child()
+        // here makes the icon grid not to show up on the desktop.
+        this.scrollView.add_actor(box);
+
+        this.add_child(this.scrollView);
+    }
+});
+
 var AllView = class AllView extends BaseAppView {
     constructor() {
         super({ usePagination: true }, null);
-        this._scrollView = new St.ScrollView({ style_class: 'all-apps',
-                                               x_expand: true,
-                                               y_expand: true,
-                                               x_fill: true,
-                                               y_fill: false,
-                                               reactive: true,
-                                               y_align: St.Align.START });
-        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                     x_expand: true, y_expand: true });
-        this.actor.add_actor(this._scrollView);
+        this.actor = new AllViewContainer(this._grid);
+        this._scrollView = this.actor.scrollView;
+        this._stack = this.actor.stack;
         this._grid._delegate = this;
 
-        this._scrollView.set_policy(St.PolicyType.NEVER,
-                                    St.PolicyType.EXTERNAL);
         this._adjustment = this._scrollView.vscroll.adjustment;
 
         this._pageIndicators = new PageIndicators.AnimatedPageIndicators();
@@ -329,16 +360,9 @@ var AllView = class AllView extends BaseAppView {
 
         this.folderIcons = [];
 
-        this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
-        let box = new St.BoxLayout({ vertical: true });
-
         this._grid.currentPage = 0;
-        this._stack.add_actor(this._grid);
         this._eventBlocker = new St.Widget({ x_expand: true, y_expand: true });
         this._stack.add_actor(this._eventBlocker);
-
-        box.add_actor(this._stack);
-        this._scrollView.add_actor(box);
 
         this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
@@ -897,6 +921,7 @@ var AppDisplay = class AppDisplay {
         this._allView = new AllView();
 
         this.actor = new St.Widget({
+            style_class: 'all-apps',
             x_expand: true,
             y_expand: true,
             layout_manager: new Clutter.BinLayout(),
