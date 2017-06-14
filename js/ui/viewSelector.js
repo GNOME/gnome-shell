@@ -474,6 +474,120 @@ var ViewsDisplay = class {
     }
 };
 
+var ViewsClone = GObject.registerClass(
+class ViewsClone extends St.Widget {
+    _init(viewSelector, viewsDisplay, forOverview) {
+        this._viewSelector = viewSelector;
+        this._viewsDisplay = viewsDisplay;
+        this._forOverview = forOverview;
+
+        let appDisplay = this._viewsDisplay.appDisplay;
+        let entry = new ShellEntry.OverviewEntry();
+        entry.reactive = false;
+        entry.clutter_text.reactive = false;
+
+        let iconGridClone = new Clutter.Clone({
+            source: appDisplay.gridActor,
+            x_expand: true,
+            y_expand: true,
+            reactive: false,
+        });
+
+        let appGridContainer =
+            new AppDisplay.AllViewContainer(iconGridClone, {
+                allowScrolling: false
+        });
+        appGridContainer.reactive = false;
+
+        let layoutManager = new ViewsDisplayLayout(entry, appGridContainer, null);
+        super._init({
+            layout_manager: layoutManager,
+            x_expand: true,
+            y_expand: true,
+            reactive: false,
+        });
+
+        // Ensure the cloned grid is scrolled to the same page as the original one
+        let originalGridContainer = appDisplay.gridContainer;
+        let originalAdjustment = originalGridContainer.scrollView.vscroll.adjustment;
+        let cloneAdjustment = appGridContainer.scrollView.vscroll.adjustment;
+        originalAdjustment.bind_property('value', cloneAdjustment, 'value', GObject.BindingFlags.SYNC_CREATE);
+
+        this.add_child(entry);
+        this.add_child(appGridContainer);
+
+        this._saturation = new Clutter.DesaturateEffect({
+            name: 'saturation',
+            factor: AppDisplay.EOS_INACTIVE_GRID_SATURATION,
+            enabled: false,
+        });
+        this.add_effect(this._saturation);
+
+        let workareaConstraint = new Monitor.MonitorConstraint({ primary: true,
+                                                                 work_area: true });
+        this.add_constraint(workareaConstraint);
+
+        Main.overview.connect('showing', () => {
+            this.opacity = AppDisplay.EOS_INACTIVE_GRID_OPACITY;
+            this._saturation.factor = AppDisplay.EOS_INACTIVE_GRID_SATURATION;
+            this._saturation.enabled = this._forOverview;
+        });
+        Main.overview.connect('hidden', () => {
+            this.opacity = AppDisplay.EOS_INACTIVE_GRID_OPACITY;
+            this._saturation.factor = AppDisplay.EOS_INACTIVE_GRID_SATURATION;
+            this._saturation.enabled = !this._forOverview;
+
+            // When we're hidden and coming from the apps page, tween out the
+            // clone saturation and opacity in the background as an override
+            if (!this._forOverview &&
+                this._viewSelector.getActivePage() == ViewPage.APPS) {
+                this.opacity = AppDisplay.EOS_ACTIVE_GRID_OPACITY;
+                this.saturation = AppDisplay.EOS_ACTIVE_GRID_SATURATION;
+                this.ease({
+                    opacity: AppDisplay.EOS_INACTIVE_GRID_OPACITY,
+                    duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+
+                this.ease_property(
+                    '@effects.saturation.factor',
+                    AppDisplay.EOS_INACTIVE_GRID_SATURATION, {
+                        duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    }
+                );
+            }
+        });
+
+        let settings = Clutter.Settings.get_default();
+        settings.connect('notify::font-dpi', () => {
+            let overviewVisible = Main.layoutManager.overviewGroup.visible;
+            let saturationEnabled = this._saturation.enabled;
+
+            // Maybe because of the already known issue with FBO and ClutterClones,
+            // simply redrawing the overview group without assuring it is visible
+            // won't work. Clutter was supposed to do that, but it doesn't. The
+            // FBO, in this case, is introduced through the saturation effect.
+            this._saturation.enabled = false;
+            Main.layoutManager.overviewGroup.visible = true;
+
+            Main.layoutManager.overviewGroup.queue_redraw();
+
+            // Restore the previous states
+            Main.layoutManager.overviewGroup.visible = overviewVisible;
+            this._saturation.enabled = saturationEnabled;
+        });
+    }
+
+    set saturation(factor) {
+        this._saturation.factor = factor;
+    }
+
+    get saturation() {
+        return this._saturation.factor;
+    }
+});
+
 var ViewsDisplayConstraint = GObject.registerClass(
 class ViewsDisplayConstraint extends Monitor.MonitorConstraint {
     vfunc_update_allocation(actor, actorBox) {
