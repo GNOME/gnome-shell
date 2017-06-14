@@ -28,6 +28,7 @@
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-wayland-versions.h"
 #include "wayland/meta-wayland-inhibit-shortcuts.h"
+#include "wayland/meta-wayland-inhibit-shortcuts-dialog.h"
 
 struct _MetaWaylandKeyboardShotscutsInhibit
 {
@@ -48,6 +49,8 @@ zwp_keyboard_shortcuts_inhibit_destroy (struct wl_client   *client,
   shortcut_inhibit = wl_resource_get_user_data (resource);
   if (shortcut_inhibit->surface)
     {
+      meta_wayland_surface_hide_inhibit_shortcuts_dialog (shortcut_inhibit->surface);
+
       g_signal_handler_disconnect (shortcut_inhibit->surface,
                                    shortcut_inhibit->surface_destroyed_handler);
 
@@ -135,13 +138,12 @@ zwp_keyboard_shortcuts_inhibit_manager_inhibit_shortcuts (struct wl_client   *cl
     g_signal_connect (surface, "shortcuts-restored",
                       G_CALLBACK (shortcuts_restored_cb),
                       shortcut_inhibit);
-
   shortcut_inhibit->surface_destroyed_handler =
     g_signal_connect (surface, "destroy",
                       G_CALLBACK (surface_destroyed_cb),
                       shortcut_inhibit);
 
-  meta_wayland_surface_inhibit_shortcuts (surface, seat);
+  meta_wayland_surface_show_inhibit_shortcuts_dialog (surface, seat);
 
   wl_resource_set_implementation (keyboard_shortcuts_inhibit_resource,
                                   &meta_keyboard_shortcuts_inhibit_interface,

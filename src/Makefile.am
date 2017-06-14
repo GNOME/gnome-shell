@@ -237,6 +237,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	core/meta-close-dialog-default-private.h	\
 	core/meta-inhibit-shortcuts-dialog.c	\
 	meta/meta-inhibit-shortcuts-dialog.h	\
+	core/meta-inhibit-shortcuts-dialog-default.c	\
+	core/meta-inhibit-shortcuts-dialog-default-private.h \
 	core/delete.c				\
 	core/display.c				\
 	core/display-private.h			\
@@ -394,6 +396,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	wayland/meta-wayland-gtk-shell.h	\
 	wayland/meta-wayland-inhibit-shortcuts.c \
 	wayland/meta-wayland-inhibit-shortcuts.h \
+	wayland/meta-wayland-inhibit-shortcuts-dialog.c	\
+	wayland/meta-wayland-inhibit-shortcuts-dialog.h	\
 	$(NULL)
 endif
 
