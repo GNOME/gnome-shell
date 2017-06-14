@@ -839,6 +839,7 @@ var WindowManager = class {
         // The desktop overlay needs to replicate the background's functionality;
         // when clicked, we animate the side component out before emitting "background-clicked".
         this._desktopOverlay.connect('clicked', () => {
+            Main.layoutManager.prepareToEnterOverview();
             this._slideSideComponentOut(
                 this._shellwm,
                 this._desktopOverlay.overlayActor,
@@ -1512,6 +1513,7 @@ var WindowManager = class {
         }
 
         this._unminimizing.add(actor);
+        Main.layoutManager.prepareToLeaveOverview();
 
         if (actor.meta_window.is_monitor_sized()) {
             actor.opacity = 0;
@@ -1969,6 +1971,8 @@ var WindowManager = class {
             if (!this._showDesktopOnDestroyDone && SideComponent.shouldHideOtherWindows(actor.meta_window)) {
                 // reveal other windows while we slide out the side component
                 this._showOtherWindows(actor, true);
+            } else if (this._showDesktopOnDestroyDone) {
+                Main.layoutManager.prepareToEnterOverview();
             }
 
             return;

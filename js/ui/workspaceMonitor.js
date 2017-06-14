@@ -9,7 +9,9 @@ const ViewSelector = imports.ui.viewSelector;
 var WorkspaceMonitor = class {
     constructor() {
         this._shellwm = global.window_manager;
+        this._shellwm.connect('minimize', this._windowDisappearing.bind(this));
         this._shellwm.connect('minimize-completed', this._windowDisappeared.bind(this));
+        this._shellwm.connect('destroy', this._windowDisappearing.bind(this));
         this._shellwm.connect('destroy-completed', this._windowDisappeared.bind(this));
 
         this._windowTracker = Shell.WindowTracker.get_default();
@@ -31,6 +33,23 @@ var WorkspaceMonitor = class {
             this._inFullscreen = inFullscreen;
             this._updateOverview();
         }
+    }
+
+    _windowDisappearing(shellwm, actor) {
+        function _isLastWindow(apps, win) {
+            if (apps.length === 0)
+                return true;
+
+            if (apps.length > 1)
+                return false;
+
+            let windows = apps[0].get_windows();
+            return (windows.length === 1) && (windows[0] === win);
+        }
+
+        let visibleApps = this._getVisibleApps();
+        if (_isLastWindow(visibleApps, actor.meta_window))
+            Main.layoutManager.prepareToEnterOverview();
     }
 
     _updateOverview() {

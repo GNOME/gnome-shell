@@ -4,6 +4,7 @@
 const { Clutter, Gdk, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const AppDisplay = imports.ui.appDisplay;
 const Background = imports.ui.background;
 const BackgroundMenu = imports.ui.backgroundMenu;
 const LoginManager = imports.misc.loginManager;
@@ -480,6 +481,34 @@ var LayoutManager = GObject.registerClass({
     setViewsClone(actor) {
         this._viewsClone = actor;
         this._backgroundGroup.add_child(this._viewsClone);
+    }
+
+    _animateViewsClone(targetOpacity, targetSaturation) {
+        if (!this._viewsClone)
+            return;
+
+        this._viewsClone.show();
+
+        // Don't unnecessarily tween the clone's saturation & opacity.
+        if (this._viewsClone.opacity == targetOpacity && this._viewsClone.saturation == targetSaturation)
+            return;
+
+        this._viewsClone.ease({
+            opacity: targetOpacity,
+            saturation: targetSaturation,
+            duration: 250,
+            transition: AppDisplay.EOS_ACTIVE_GRID_TRANSITION,
+        });
+    }
+
+    prepareToEnterOverview() {
+        this._animateViewsClone(AppDisplay.EOS_ACTIVE_GRID_OPACITY,
+                                AppDisplay.EOS_ACTIVE_GRID_SATURATION);
+    }
+
+    prepareToLeaveOverview() {
+        this._animateViewsClone(AppDisplay.EOS_INACTIVE_GRID_OPACITY,
+                                AppDisplay.EOS_INACTIVE_GRID_SATURATION);
     }
 
     _addBackgroundMenu(bgManager) {
