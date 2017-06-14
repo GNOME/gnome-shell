@@ -1,5 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/* exported ViewSelector */
+/* exported ViewSelector, ViewsClone */
 
 const { EosMetrics, Clutter, Gio,
         GLib, GObject, Meta, Shell, St } = imports.gi;
@@ -286,6 +286,97 @@ class ViewsDisplayConstraint extends LayoutManager.MonitorConstraint {
     }
 });
 
+var ViewsClone = GObject.registerClass(
+class ViewsClone extends St.Widget {
+    _init(viewSelector, viewsDisplay, forOverview) {
+        this._viewSelector = viewSelector;
+        this._viewsDisplay = viewsDisplay;
+        this._forOverview = forOverview;
+
+        let appDisplay = this._viewsDisplay.appDisplay;
+        let entry = new ShellEntry.OverviewEntry();
+        entry.reactive = false;
+        entry.clutter_text.reactive = false;
+
+        const appDisplayClone = new AppDisplay.AppDisplay();
+        appDisplayClone._eventBlocker.visible = true;
+
+        let layoutManager = new ViewsDisplayLayout(entry, appDisplayClone, null);
+        super._init({
+            layout_manager: layoutManager,
+            x_expand: true,
+            y_expand: true,
+            reactive: false,
+            visible: false,
+            opacity: 0,
+        });
+
+        Shell.util_set_hidden_from_pick(this, true);
+
+        // Ensure the cloned grid is scrolled to the same page as the original one
+        let originalAdjustment = appDisplay.scrollView.vscroll.adjustment;
+        let cloneAdjustment = appDisplayClone.scrollView.vscroll.adjustment;
+        originalAdjustment.bind_property('value', cloneAdjustment, 'value', GObject.BindingFlags.SYNC_CREATE);
+
+        this.add_child(entry);
+        this.add_child(appDisplayClone);
+
+        this._saturation = new Clutter.DesaturateEffect({
+            name: 'saturation',
+            factor: AppDisplay.EOS_INACTIVE_GRID_SATURATION,
+        });
+        this.add_effect(this._saturation);
+
+        let workareaConstraint = new LayoutManager.MonitorConstraint({
+            primary: true,
+            work_area: true,
+        });
+        this.add_constraint(workareaConstraint);
+
+        Main.overview.connect('showing', () => {
+            this.opacity = AppDisplay.EOS_INACTIVE_GRID_OPACITY;
+            this._saturation.factor = AppDisplay.EOS_INACTIVE_GRID_SATURATION;
+        });
+        Main.overview.connect('hidden', () => {
+            this.opacity = AppDisplay.EOS_INACTIVE_GRID_OPACITY;
+            this._saturation.factor = AppDisplay.EOS_INACTIVE_GRID_SATURATION;
+
+            // When we're hidden and coming from the apps page, tween out the
+            // clone saturation and opacity in the background as an override
+            if (!this._forOverview &&
+                this._viewSelector.getActivePage() === ViewPage.APPS) {
+                this.show();
+                this.opacity = AppDisplay.EOS_ACTIVE_GRID_OPACITY;
+                this.saturation = AppDisplay.EOS_ACTIVE_GRID_SATURATION;
+                this.ease({
+                    opacity: AppDisplay.EOS_INACTIVE_GRID_OPACITY,
+                    duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+
+                this.ease_property(
+                    '@effects.saturation.factor',
+                    AppDisplay.EOS_INACTIVE_GRID_SATURATION, {
+                        duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    });
+
+                GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                    appDisplayClone.gridActor.queue_relayout();
+                    return GLib.SOURCE_REMOVE;
+                });
+            }
+        });
+    }
+
+    set saturation(factor) {
+        this._saturation.factor = factor;
+    }
+
+    get saturation() {
+        return this._saturation.factor;
+    }
+});
 var ViewsDisplay = GObject.registerClass(
 class ViewsDisplay extends St.Widget {
     _init() {
