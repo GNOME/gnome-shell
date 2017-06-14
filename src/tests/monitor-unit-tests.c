@@ -134,6 +134,7 @@ typedef struct _MonitorTestCaseMonitorMode
 {
   int width;
   int height;
+  float refresh_rate;
   MetaTestCaseMonitorCrtcMode crtc_modes[MAX_N_CRTCS];
 } MetaMonitorTestCaseMonitorMode;
 
@@ -240,6 +241,7 @@ static MonitorTestCase initial_test_case = {
           {
             .width = 1024,
             .height = 768,
+            .refresh_rate = 60.0,
             .crtc_modes = {
               {
                 .output = 0,
@@ -260,6 +262,7 @@ static MonitorTestCase initial_test_case = {
           {
             .width = 1024,
             .height = 768,
+            .refresh_rate = 60.0,
             .crtc_modes = {
               {
                 .output = 1,
@@ -352,6 +355,16 @@ check_monitor_mode (MetaMonitor         *monitor,
 
   g_assert (monitor_crtc_mode->output == output);
   g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
+
+
+  if (crtc_mode)
+    {
+      float refresh_rate;
+
+      refresh_rate = meta_monitor_mode_get_refresh_rate (mode);
+
+      g_assert_cmpfloat (refresh_rate, ==, crtc_mode->refresh_rate);
+    }
 
   data->expect_crtc_mode_iter++;
 
@@ -609,9 +622,11 @@ check_monitor_configuration (MonitorTestCase *test_case)
           MetaMonitorMode *mode = l_mode->data;
           int width;
           int height;
+          float refresh_rate;
           CheckMonitorModeData data;
 
           meta_monitor_mode_get_resolution (mode, &width, &height);
+          refresh_rate = meta_monitor_mode_get_refresh_rate (mode);
 
           g_assert_cmpint (width,
                            ==,
@@ -619,6 +634,9 @@ check_monitor_configuration (MonitorTestCase *test_case)
           g_assert_cmpint (height,
                            ==,
                            test_case->expect.monitors[i].modes[j].height);
+          g_assert_cmpfloat (refresh_rate,
+                             ==,
+                             test_case->expect.monitors[i].modes[j].refresh_rate);
 
           data = (CheckMonitorModeData) {
             .monitor_manager = monitor_manager,
@@ -938,6 +956,7 @@ meta_test_monitor_one_disconnected_linear_config (void)
           {
             .width = 1024,
             .height = 768,
+            .refresh_rate = 60.0,
             .crtc_modes = {
               {
                 .output = 0,
@@ -1027,6 +1046,7 @@ meta_test_monitor_one_off_linear_config (void)
           {
             .width = 1024,
             .height = 768,
+            .refresh_rate = 60.0,
             .crtc_modes = {
               {
                 .output = 0,
@@ -1047,6 +1067,7 @@ meta_test_monitor_one_off_linear_config (void)
           {
             .width = 1024,
             .height = 768,
+            .refresh_rate = 60.0,
             .crtc_modes = {
               {
                 .output = 1,
@@ -1151,6 +1172,7 @@ meta_test_monitor_preferred_linear_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1161,6 +1183,7 @@ meta_test_monitor_preferred_linear_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1171,6 +1194,7 @@ meta_test_monitor_preferred_linear_config (void)
             {
               .width = 1280,
               .height = 720,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1289,6 +1313,7 @@ meta_test_monitor_tiled_linear_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1432,6 +1457,7 @@ meta_test_monitor_tiled_non_preferred_linear_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 120.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1446,6 +1472,7 @@ meta_test_monitor_tiled_non_preferred_linear_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1460,6 +1487,7 @@ meta_test_monitor_tiled_non_preferred_linear_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1583,6 +1611,7 @@ meta_test_monitor_hidpi_linear_config (void)
             {
               .width = 1280,
               .height = 720,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1603,6 +1632,7 @@ meta_test_monitor_hidpi_linear_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -1729,6 +1759,7 @@ meta_test_monitor_suggested_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1749,6 +1780,7 @@ meta_test_monitor_suggested_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -1866,6 +1898,7 @@ meta_test_monitor_limited_crtcs (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -1886,6 +1919,7 @@ meta_test_monitor_limited_crtcs (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -2000,6 +2034,7 @@ meta_test_monitor_lid_switch_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -2020,6 +2055,7 @@ meta_test_monitor_lid_switch_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -2204,6 +2240,7 @@ meta_test_monitor_lid_opened_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -2224,6 +2261,7 @@ meta_test_monitor_lid_opened_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -2346,6 +2384,7 @@ meta_test_monitor_lid_closed_no_external (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -2479,6 +2518,7 @@ meta_test_monitor_underscanning_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -2585,6 +2625,7 @@ meta_test_monitor_custom_vertical_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -2605,6 +2646,7 @@ meta_test_monitor_custom_vertical_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -2728,6 +2770,7 @@ meta_test_monitor_custom_primary_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -2748,6 +2791,7 @@ meta_test_monitor_custom_primary_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -2853,6 +2897,7 @@ meta_test_monitor_custom_underscanning_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -2950,6 +2995,7 @@ meta_test_monitor_custom_scale_config (void)
             {
               .width = 1920,
               .height = 1080,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3052,6 +3098,7 @@ meta_test_monitor_custom_fractional_scale_config (void)
             {
               .width = 1200,
               .height = 900,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3154,6 +3201,7 @@ meta_test_monitor_custom_high_precision_fractional_scale_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3287,6 +3335,7 @@ meta_test_monitor_custom_tiled_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3434,6 +3483,7 @@ meta_test_monitor_custom_tiled_custom_resolution_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3448,6 +3498,7 @@ meta_test_monitor_custom_tiled_custom_resolution_config (void)
             {
               .width = 640,
               .height = 480,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3605,6 +3656,7 @@ meta_test_monitor_custom_tiled_non_preferred_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 120.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3619,6 +3671,7 @@ meta_test_monitor_custom_tiled_non_preferred_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3633,6 +3686,7 @@ meta_test_monitor_custom_tiled_non_preferred_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.0,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3749,6 +3803,7 @@ meta_test_monitor_custom_mirrored_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3769,6 +3824,7 @@ meta_test_monitor_custom_mirrored_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -3881,6 +3937,7 @@ meta_test_monitor_custom_first_rotated_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -3901,6 +3958,7 @@ meta_test_monitor_custom_first_rotated_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -4019,6 +4077,7 @@ meta_test_monitor_custom_second_rotated_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -4039,6 +4098,7 @@ meta_test_monitor_custom_second_rotated_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -4193,6 +4253,7 @@ meta_test_monitor_custom_second_rotated_tiled_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -4213,6 +4274,7 @@ meta_test_monitor_custom_second_rotated_tiled_config (void)
             {
               .width = 800,
               .height = 600,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 1,
@@ -4350,6 +4412,7 @@ meta_test_monitor_custom_second_rotated_nonnative_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 0,
@@ -4370,6 +4433,7 @@ meta_test_monitor_custom_second_rotated_nonnative_config (void)
             {
               .width = 1024,
               .height = 768,
+              .refresh_rate = 60.000495910644531,
               .crtc_modes = {
                 {
                   .output = 1,
