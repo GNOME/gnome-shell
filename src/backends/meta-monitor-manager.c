@@ -471,7 +471,15 @@ meta_monitor_manager_apply_monitors_config (MetaMonitorManager      *manager,
   if (!manager_class->apply_monitors_config (manager, config, method, error))
     return FALSE;
 
-  meta_monitor_config_manager_set_current (manager->config_manager, config);
+  switch (method)
+    {
+    case META_MONITORS_CONFIG_METHOD_TEMPORARY:
+    case META_MONITORS_CONFIG_METHOD_PERSISTENT:
+      meta_monitor_config_manager_set_current (manager->config_manager, config);
+      break;
+    case META_MONITORS_CONFIG_METHOD_VERIFY:
+      break;
+    }
 
   return TRUE;
 }
