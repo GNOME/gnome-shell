@@ -33,6 +33,7 @@
 
 typedef struct _MetaMonitorMode
 {
+  char *id;
   MetaMonitorModeSpec spec;
   MetaMonitorCrtcMode *crtc_modes;
 } MetaMonitorMode;
@@ -50,6 +51,7 @@ typedef struct _MetaMonitorPrivate
 
   GList *outputs;
   GList *modes;
+  GHashTable *mode_ids;
 
   MetaMonitorMode *preferred_mode;
   MetaMonitorMode *current_mode;
@@ -333,6 +335,7 @@ meta_monitor_finalize (GObject *object)
   MetaMonitor *monitor = META_MONITOR (object);
   MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
 
+  g_hash_table_destroy (priv->mode_ids);
   g_list_free_full (priv->modes, (GDestroyNotify) meta_monitor_mode_free);
   g_clear_pointer (&priv->outputs, g_list_free);
   meta_monitor_spec_free (priv->spec);
@@ -341,6 +344,9 @@ meta_monitor_finalize (GObject *object)
 static void
 meta_monitor_init (MetaMonitor *monitor)
 {
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  priv->mode_ids = g_hash_table_new (g_str_hash, g_str_equal);
 }
 
 static void
@@ -349,6 +355,36 @@ meta_monitor_class_init (MetaMonitorClass *klass)
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_monitor_finalize;
+}
+
+static char *
+generate_mode_id (MetaMonitorModeSpec *monitor_mode_spec)
+{
+  char refresh_rate_str[G_ASCII_DTOSTR_BUF_SIZE];
+
+  g_ascii_dtostr (refresh_rate_str, G_ASCII_DTOSTR_BUF_SIZE,
+                  monitor_mode_spec->refresh_rate);
+
+  return g_strdup_printf ("%dx%d@%s",
+                          monitor_mode_spec->width,
+                          monitor_mode_spec->height,
+                          refresh_rate_str);
+}
+
+static gboolean
+meta_monitor_add_mode (MetaMonitor     *monitor,
+                       MetaMonitorMode *monitor_mode)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  if (g_hash_table_lookup (priv->mode_ids,
+                           meta_monitor_mode_get_id (monitor_mode)))
+    return FALSE;
+
+  priv->modes = g_list_append (priv->modes, monitor_mode);
+  g_hash_table_insert (priv->mode_ids, monitor_mode->id, monitor_mode);
+
+  return TRUE;
 }
 
 static void
@@ -372,6 +408,7 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
         .height = crtc_mode->height,
         .refresh_rate = crtc_mode->refresh_rate
       },
+      mode->id = generate_mode_id (&mode->spec);
       mode->crtc_modes = g_new (MetaMonitorCrtcMode, 1);
       mode->crtc_modes[0] = (MetaMonitorCrtcMode) {
         .output = output,
@@ -383,7 +420,8 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
       if (output->crtc && crtc_mode == output->crtc->current_mode)
         monitor_priv->current_mode = mode;
 
-      monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
+      if (!meta_monitor_add_mode (monitor, mode))
+        meta_monitor_mode_free (mode);
     }
 }
 
@@ -671,15 +709,22 @@ create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
   MetaMonitorModeTiled *mode;
+  int width, height;
   GList *l;
   unsigned int i;
   gboolean is_preferred = TRUE;
 
   mode = g_new0 (MetaMonitorModeTiled, 1);
   mode->is_tiled = TRUE;
-  meta_monitor_tiled_calculate_tiled_size (monitor,
-                                           &mode->parent.spec.width,
-                                           &mode->parent.spec.height);
+  meta_monitor_tiled_calculate_tiled_size (monitor, &width, &height);
+
+  mode->parent.spec = (MetaMonitorModeSpec) {
+    .width = width,
+    .height = height,
+    .refresh_rate = refresh_rate,
+  };
+  mode->parent.id = generate_mode_id (&mode->parent.spec);
+
   mode->parent.crtc_modes = g_new0 (MetaMonitorCrtcMode,
                                     g_list_length (monitor_priv->outputs));
   for (l = monitor_priv->outputs, i = 0; l; l = l->next, i++)
@@ -701,8 +746,6 @@ create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
         .crtc_mode = tiled_crtc_mode
       };
 
-      mode->parent.spec.refresh_rate = refresh_rate;
-
       is_preferred = is_preferred && tiled_crtc_mode == output->preferred_mode;
     }
 
@@ -720,6 +763,8 @@ generate_tiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
   MetaOutput *main_output;
   GList *tiled_modes = NULL;
   unsigned int i;
+  MetaMonitorMode *best_mode = NULL;
+  GList *l;
 
   main_output = meta_monitor_get_main_output (META_MONITOR (monitor_tiled));
 
@@ -746,24 +791,28 @@ generate_tiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
         monitor_priv->preferred_mode = mode;
     }
 
-  if (!monitor_priv->preferred_mode)
+  while ((l = tiled_modes))
     {
-      MetaMonitorMode *best_mode = NULL;
-      GList *l;
+      MetaMonitorMode *mode = l->data;
 
-      for (l = tiled_modes; l; l = l->next)
+      tiled_modes = g_list_remove_link (tiled_modes, l);
+
+      if (!meta_monitor_add_mode (monitor, mode))
         {
-          MetaMonitorMode *mode = l->data;
+          meta_monitor_mode_free (mode);
+          continue;
+        }
 
+      if (!monitor_priv->preferred_mode)
+        {
           if (!best_mode ||
               mode->spec.refresh_rate > best_mode->spec.refresh_rate)
             best_mode = mode;
         }
-
-      monitor_priv->preferred_mode = best_mode;
     }
 
-  monitor_priv->modes = g_list_concat (monitor_priv->modes, tiled_modes);
+  if (best_mode)
+    monitor_priv->preferred_mode = best_mode;
 }
 
 static MetaMonitorMode *
@@ -789,6 +838,7 @@ create_untiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
     .height = crtc_mode->height,
     .refresh_rate = crtc_mode->refresh_rate
   };
+  mode->parent.id = generate_mode_id (&mode->parent.spec);
   mode->parent.crtc_modes = g_new0 (MetaMonitorCrtcMode,
                              g_list_length (monitor_priv->outputs));
 
@@ -888,7 +938,11 @@ generate_untiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
       if (!mode)
         continue;
 
-      monitor_priv->modes = g_list_append (monitor_priv->modes, mode);
+      if (!meta_monitor_add_mode (monitor, mode))
+        {
+          meta_monitor_mode_free (mode);
+          continue;
+        }
 
       if (is_monitor_mode_assigned (monitor, mode))
         {
@@ -1130,6 +1184,7 @@ meta_monitor_tiled_class_init (MetaMonitorTiledClass *klass)
 static void
 meta_monitor_mode_free (MetaMonitorMode *monitor_mode)
 {
+  g_free (monitor_mode->id);
   g_free (monitor_mode->crtc_modes);
   g_free (monitor_mode);
 }
@@ -1151,6 +1206,15 @@ meta_monitor_get_logical_monitor (MetaMonitor *monitor)
     return output->crtc->logical_monitor;
   else
     return NULL;
+}
+
+MetaMonitorMode *
+meta_monitor_get_mode_from_id (MetaMonitor *monitor,
+                               const char  *monitor_mode_id)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  return g_hash_table_lookup (priv->mode_ids, monitor_mode_id);
 }
 
 static gboolean
@@ -1456,6 +1520,12 @@ MetaMonitorModeSpec *
 meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode)
 {
   return &monitor_mode->spec;
+}
+
+const char *
+meta_monitor_mode_get_id (MetaMonitorMode *monitor_mode)
+{
+  return monitor_mode->id;
 }
 
 void

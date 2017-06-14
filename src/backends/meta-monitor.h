@@ -145,6 +145,9 @@ gboolean meta_monitor_get_suggested_position (MetaMonitor *monitor,
 
 MetaLogicalMonitor * meta_monitor_get_logical_monitor (MetaMonitor *monitor);
 
+MetaMonitorMode * meta_monitor_get_mode_from_id (MetaMonitor *monitor,
+                                                 const char  *monitor_mode_id);
+
 MetaMonitorMode * meta_monitor_get_mode_from_spec (MetaMonitor         *monitor,
                                                    MetaMonitorModeSpec *monitor_mode_spec);
 
@@ -173,6 +176,8 @@ float * meta_monitor_calculate_supported_scales (MetaMonitor                *mon
                                                  MetaMonitorMode            *monitor_mode,
                                                  MetaMonitorScalesConstraint constraints,
                                                  int                        *n_supported_scales);
+
+const char * meta_monitor_mode_get_id (MetaMonitorMode *monitor_mode);
 
 MetaMonitorModeSpec * meta_monitor_mode_get_spec (MetaMonitorMode *monitor_mode);
 

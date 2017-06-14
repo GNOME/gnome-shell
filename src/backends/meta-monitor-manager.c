@@ -1492,7 +1492,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
 #define META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED (1 << 0)
 #define META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT (1 << 1)
 
-#define MODE_FORMAT "(iiddadu)"
+#define MODE_FORMAT "(siiddadu)"
 #define MODES_FORMAT "a" MODE_FORMAT
 #define MONITOR_SPEC_FORMAT "(ssss)"
 #define MONITOR_FORMAT "(" MONITOR_SPEC_FORMAT MODES_FORMAT "a{sv})"
@@ -1549,13 +1549,19 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
         {
           MetaMonitorMode *monitor_mode = k->data;
           GVariantBuilder supported_scales_builder;
-          MetaMonitorModeSpec *monitor_mode_spec;
+          const char *mode_id;
+          int mode_width, mode_height;
+          float refresh_rate;
           float preferred_scale;
           float *supported_scales;
           int n_supported_scales;
           uint32_t flags = 0;
 
-          monitor_mode_spec = meta_monitor_mode_get_spec (monitor_mode);
+          mode_id = meta_monitor_mode_get_id (monitor_mode);
+          meta_monitor_mode_get_resolution (monitor_mode,
+                                            &mode_width, &mode_height);
+          refresh_rate = meta_monitor_mode_get_refresh_rate (monitor_mode);
+
           preferred_scale =
             meta_monitor_manager_calculate_monitor_mode_scale (manager,
                                                                monitor,
@@ -1580,9 +1586,10 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
             flags |= META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED;
 
           g_variant_builder_add (&modes_builder, MODE_FORMAT,
-                                 monitor_mode_spec->width,
-                                 monitor_mode_spec->height,
-                                 monitor_mode_spec->refresh_rate,
+                                 mode_id,
+                                 mode_width,
+                                 mode_height,
+                                 refresh_rate,
                                  (double) preferred_scale,
                                  &supported_scales_builder,
                                  flags);
@@ -1797,12 +1804,15 @@ meta_monitor_manager_is_config_applicable (MetaMonitorManager *manager,
   return TRUE;
 }
 
-static MetaMonitorSpec *
-find_monitor_spec (MetaMonitorManager *manager,
-                   char               *connector)
+static MetaMonitor *
+find_monitor_from_connector (MetaMonitorManager *manager,
+                             char               *connector)
 {
   GList *monitors;
   GList *l;
+
+  if (!connector)
+    return NULL;
 
   monitors = meta_monitor_manager_get_monitors (manager);
   for (l = monitors; l; l = l->next)
@@ -1811,14 +1821,13 @@ find_monitor_spec (MetaMonitorManager *manager,
       MetaMonitorSpec *monitor_spec = meta_monitor_get_spec (monitor);
 
       if (g_str_equal (connector, monitor_spec->connector))
-        return meta_monitor_spec_clone (monitor_spec);
+        return monitor;
     }
 
   return NULL;
 }
 
-#define MONITOR_MODE_SPEC_FORMAT "(iid)"
-#define MONITOR_CONFIG_FORMAT "(s" MONITOR_MODE_SPEC_FORMAT "a{sv})"
+#define MONITOR_CONFIG_FORMAT "(ssa{sv})"
 #define MONITOR_CONFIGS_FORMAT "a" MONITOR_CONFIG_FORMAT
 
 #define LOGICAL_MONITOR_CONFIG_FORMAT "(iidub" MONITOR_CONFIGS_FORMAT ")"
@@ -1830,48 +1839,42 @@ create_monitor_config_from_variant (MetaMonitorManager *manager,
 {
 
   MetaMonitorConfig *monitor_config = NULL;
-  char *connector;
+  g_autofree char *connector = NULL;
+  g_autofree char *mode_id = NULL;
+  MetaMonitorMode *monitor_mode;
+  MetaMonitor *monitor;
   MetaMonitorSpec *monitor_spec;
   MetaMonitorModeSpec *monitor_mode_spec;
-  GVariant *properties_variant = NULL;
+  g_autoptr (GVariant) properties_variant = NULL;
   gboolean enable_underscanning = FALSE;
-  int32_t mode_width;
-  int32_t mode_height;
-  double mode_refresh_rate;
 
-  monitor_spec = g_new0 (MetaMonitorSpec, 1);
-  monitor_mode_spec = g_new0 (MetaMonitorModeSpec, 1);
-
-  g_variant_get (monitor_config_variant, "(s" MONITOR_MODE_SPEC_FORMAT "@a{sv})",
+  g_variant_get (monitor_config_variant, "(ss@a{sv})",
                  &connector,
-                 &mode_width,
-                 &mode_height,
-                 &mode_refresh_rate,
+                 &mode_id,
                  &properties_variant);
 
-  *monitor_mode_spec = (MetaMonitorModeSpec) {
-    .width = mode_width,
-    .height = mode_height,
-    .refresh_rate = mode_refresh_rate
-  };
-
-  monitor_spec = find_monitor_spec (manager, connector);
-  if (!monitor_spec)
+  monitor = find_monitor_from_connector (manager, connector);
+  if (!monitor)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Invalid connector '%s' specified", connector);
-      g_free (monitor_mode_spec);
       return NULL;
     }
 
-  if (!meta_verify_monitor_mode_spec (monitor_mode_spec, error))
+  monitor_mode = meta_monitor_get_mode_from_id (monitor, mode_id);
+  if (!monitor_mode)
     {
-      g_free (monitor_mode_spec);
-      meta_monitor_spec_free (monitor_spec);
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Invalid mode '%s' specified", mode_id);
       return NULL;
     }
 
   g_variant_lookup (properties_variant, "underscanning", "b", &enable_underscanning);
+
+  monitor_spec = meta_monitor_spec_clone (meta_monitor_get_spec (monitor));
+
+  monitor_mode_spec = g_new0 (MetaMonitorModeSpec, 1);
+  *monitor_mode_spec = *meta_monitor_mode_get_spec (monitor_mode);
 
   monitor_config = g_new0 (MetaMonitorConfig, 1);
   *monitor_config = (MetaMonitorConfig) {
