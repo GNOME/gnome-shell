@@ -27,6 +27,7 @@
 #include <meta/compositor-mutter.h>
 #include <meta/meta-version.h>
 #include <meta/meta-close-dialog.h>
+#include <meta/meta-inhibit-shortcuts-dialog.h>
 
 #include <clutter/clutter.h>
 #include <X11/extensions/Xfixes.h>
@@ -239,6 +240,17 @@ struct _MetaPluginClass
    */
   MetaCloseDialog * (* create_close_dialog) (MetaPlugin *plugin,
                                              MetaWindow *window);
+
+  /**
+   * MetaPluginClass::create_inhibit_shortcuts_dialog:
+   * @plugin: a #MetaPlugin
+   * @window: a #MetaWindow
+   *
+   * Virtual function called to create a "inhibit shortcuts" dialog
+   * when a client requests compositor shortcuts to be inhibited.
+   */
+  MetaInhibitShortcutsDialog * (* create_inhibit_shortcuts_dialog) (MetaPlugin *plugin,
+                                                                    MetaWindow *window);
 };
 
 /**

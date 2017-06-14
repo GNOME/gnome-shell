@@ -1422,3 +1422,11 @@ meta_compositor_create_close_dialog (MetaCompositor *compositor,
   return meta_plugin_manager_create_close_dialog (compositor->plugin_mgr,
                                                   window);
 }
+
+MetaInhibitShortcutsDialog *
+meta_compositor_create_inhibit_shortcuts_dialog (MetaCompositor *compositor,
+                                                 MetaWindow     *window)
+{
+  return meta_plugin_manager_create_inhibit_shortcuts_dialog (compositor->plugin_mgr,
+                                                              window);
+}

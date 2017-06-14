@@ -65,4 +65,7 @@ void meta_compositor_flash_window (MetaCompositor *compositor,
 MetaCloseDialog * meta_compositor_create_close_dialog (MetaCompositor *compositor,
                                                        MetaWindow     *window);
 
+MetaInhibitShortcutsDialog * meta_compositor_create_inhibit_shortcuts_dialog (MetaCompositor *compositor,
+                                                                              MetaWindow     *window);
+
 #endif /* META_COMPOSITOR_PRIVATE_H */
