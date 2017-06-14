@@ -31,6 +31,8 @@
 #define MINIMUM_SCALE_FACTOR 0.5f
 #define MAXIMUM_SCALE_FACTOR 4.0f
 
+#define HANDLED_CRTC_MODE_FLAGS (META_CRTC_MODE_FLAG_INTERLACE)
+
 typedef struct _MetaMonitorMode
 {
   char *id;
@@ -360,14 +362,17 @@ meta_monitor_class_init (MetaMonitorClass *klass)
 static char *
 generate_mode_id (MetaMonitorModeSpec *monitor_mode_spec)
 {
+  gboolean is_interlaced;
   char refresh_rate_str[G_ASCII_DTOSTR_BUF_SIZE];
 
+  is_interlaced = !!(monitor_mode_spec->flags & META_CRTC_MODE_FLAG_INTERLACE);
   g_ascii_dtostr (refresh_rate_str, G_ASCII_DTOSTR_BUF_SIZE,
                   monitor_mode_spec->refresh_rate);
 
-  return g_strdup_printf ("%dx%d@%s",
+  return g_strdup_printf ("%dx%d%s@%s",
                           monitor_mode_spec->width,
                           monitor_mode_spec->height,
+                          is_interlaced ? "i" : "",
                           refresh_rate_str);
 }
 
@@ -406,7 +411,8 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
       mode->spec = (MetaMonitorModeSpec) {
         .width = crtc_mode->width,
         .height = crtc_mode->height,
-        .refresh_rate = crtc_mode->refresh_rate
+        .refresh_rate = crtc_mode->refresh_rate,
+        .flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS
       },
       mode->id = generate_mode_id (&mode->spec);
       mode->crtc_modes = g_new (MetaMonitorCrtcMode, 1);
@@ -674,8 +680,8 @@ is_crtc_mode_tiled (MetaOutput   *output,
 }
 
 static MetaCrtcMode *
-find_tiled_crtc_mode (MetaOutput *output,
-                      float       refresh_rate)
+find_tiled_crtc_mode (MetaOutput   *output,
+                      MetaCrtcMode *reference_crtc_mode)
 {
   MetaCrtcMode *crtc_mode;
   unsigned int i;
@@ -691,7 +697,10 @@ find_tiled_crtc_mode (MetaOutput *output,
       if (!is_crtc_mode_tiled (output, crtc_mode))
         continue;
 
-      if (crtc_mode->refresh_rate != refresh_rate)
+      if (crtc_mode->refresh_rate != reference_crtc_mode->refresh_rate)
+        continue;
+
+      if (crtc_mode->flags != reference_crtc_mode->flags)
         continue;
 
       return crtc_mode;
@@ -702,7 +711,7 @@ find_tiled_crtc_mode (MetaOutput *output,
 
 static MetaMonitorMode *
 create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
-                           float             refresh_rate,
+                           MetaCrtcMode     *reference_crtc_mode,
                            gboolean         *out_is_preferred)
 {
   MetaMonitor *monitor = META_MONITOR (monitor_tiled);
@@ -721,7 +730,8 @@ create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   mode->parent.spec = (MetaMonitorModeSpec) {
     .width = width,
     .height = height,
-    .refresh_rate = refresh_rate,
+    .refresh_rate = reference_crtc_mode->refresh_rate,
+    .flags = reference_crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS
   };
   mode->parent.id = generate_mode_id (&mode->parent.spec);
 
@@ -732,11 +742,10 @@ create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
       MetaOutput *output = l->data;
       MetaCrtcMode *tiled_crtc_mode;
 
-      tiled_crtc_mode = find_tiled_crtc_mode (output, refresh_rate);
+      tiled_crtc_mode = find_tiled_crtc_mode (output, reference_crtc_mode);
       if (!tiled_crtc_mode)
         {
-          g_warning ("No tiled mode with refresh rate %f on %s",
-                     refresh_rate, output->name);
+          g_warning ("No tiled mode found on %s", output->name);
           meta_monitor_mode_free ((MetaMonitorMode *) mode);
           return NULL;
         }
@@ -770,14 +779,14 @@ generate_tiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
 
   for (i = 0; i < main_output->n_modes; i++)
     {
-      MetaCrtcMode *crtc_mode = main_output->modes[i];
+      MetaCrtcMode *reference_crtc_mode = main_output->modes[i];
       MetaMonitorMode *mode;
       gboolean is_preferred;
 
-      if (!is_crtc_mode_tiled (main_output, crtc_mode))
+      if (!is_crtc_mode_tiled (main_output, reference_crtc_mode))
         continue;
 
-      mode = create_tiled_monitor_mode (monitor_tiled, crtc_mode->refresh_rate,
+      mode = create_tiled_monitor_mode (monitor_tiled, reference_crtc_mode,
                                         &is_preferred);
       if (!mode)
         continue;
@@ -836,7 +845,8 @@ create_untiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   mode->parent.spec = (MetaMonitorModeSpec) {
     .width = crtc_mode->width,
     .height = crtc_mode->height,
-    .refresh_rate = crtc_mode->refresh_rate
+    .refresh_rate = crtc_mode->refresh_rate,
+    .flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS
   };
   mode->parent.id = generate_mode_id (&mode->parent.spec);
   mode->parent.crtc_modes = g_new0 (MetaMonitorCrtcMode,
@@ -1224,7 +1234,8 @@ meta_monitor_mode_spec_equals (MetaMonitorModeSpec *monitor_mode_spec,
   return (monitor_mode_spec->width == other_monitor_mode_spec->width &&
           monitor_mode_spec->height == other_monitor_mode_spec->height &&
           (monitor_mode_spec->refresh_rate ==
-           other_monitor_mode_spec->refresh_rate));
+           other_monitor_mode_spec->refresh_rate) &&
+          monitor_mode_spec->flags == other_monitor_mode_spec->flags);
 }
 
 MetaMonitorMode *
@@ -1541,6 +1552,12 @@ float
 meta_monitor_mode_get_refresh_rate (MetaMonitorMode *monitor_mode)
 {
   return monitor_mode->spec.refresh_rate;
+}
+
+MetaCrtcModeFlag
+meta_monitor_mode_get_flags (MetaMonitorMode *monitor_mode)
+{
+  return monitor_mode->spec.flags;
 }
 
 gboolean

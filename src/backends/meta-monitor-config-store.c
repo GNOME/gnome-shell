@@ -53,6 +53,7 @@
  *           <width>1920</width>
  *           <height>1080</height>
  *           <rate>60.049972534179688</rate>
+ *           <flag>interlace</flag>
  *         </mode>
  *       </monitor>
  *       <transform>
@@ -135,6 +136,7 @@ typedef enum
   STATE_MONITOR_MODE_WIDTH,
   STATE_MONITOR_MODE_HEIGHT,
   STATE_MONITOR_MODE_RATE,
+  STATE_MONITOR_MODE_FLAG,
   STATE_MONITOR_UNDERSCANNING
 } ParserState;
 
@@ -384,6 +386,10 @@ handle_start_element (GMarkupParseContext  *context,
           {
             parser->state = STATE_MONITOR_MODE_RATE;
           }
+        else if (g_str_equal (element_name, "flag"))
+          {
+            parser->state = STATE_MONITOR_MODE_FLAG;
+          }
         else
           {
             g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
@@ -397,6 +403,7 @@ handle_start_element (GMarkupParseContext  *context,
     case STATE_MONITOR_MODE_WIDTH:
     case STATE_MONITOR_MODE_HEIGHT:
     case STATE_MONITOR_MODE_RATE:
+    case STATE_MONITOR_MODE_FLAG:
       {
         g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
                      "Invalid mode sub element '%s'", element_name);
@@ -539,6 +546,7 @@ handle_end_element (GMarkupParseContext  *context,
     case STATE_MONITOR_MODE_WIDTH:
     case STATE_MONITOR_MODE_HEIGHT:
     case STATE_MONITOR_MODE_RATE:
+    case STATE_MONITOR_MODE_FLAG:
       {
         parser->state = STATE_MONITOR_MODE;
         return;
@@ -909,6 +917,22 @@ handle_text (GMarkupParseContext *context,
         return;
       }
 
+    case STATE_MONITOR_MODE_FLAG:
+      {
+        if (strncmp (text, "interlace", text_len) == 0)
+          {
+            parser->current_monitor_mode_spec->flags |=
+              META_CRTC_MODE_FLAG_INTERLACE;
+          }
+        else
+          {
+            g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                         "Invalid mode flag %.*s", (int) text_len, text);
+          }
+
+        return;
+      }
+
     case STATE_MONITOR_UNDERSCANNING:
       {
         read_bool (text, text_len,
@@ -1007,6 +1031,8 @@ append_monitors (GString *buffer,
                               monitor_config->mode_spec->height);
       g_string_append_printf (buffer, "          <rate>%s</rate>\n",
                               rate_str);
+      if (monitor_config->mode_spec->flags & META_CRTC_MODE_FLAG_INTERLACE)
+        g_string_append_printf (buffer, "          <flag>interlace</flag>\n");
       g_string_append (buffer, "        </mode>\n");
       if (monitor_config->enable_underscanning)
         g_string_append (buffer, "        <underscanning>yes</underscanning>\n");

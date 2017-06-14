@@ -36,6 +36,7 @@ typedef struct _MonitorTestCaseMonitorMode
   int width;
   int height;
   float refresh_rate;
+  MetaCrtcModeFlag flags;
 } MonitorTestCaseMonitorMode;
 
 typedef struct _MonitorTestCaseMonitor

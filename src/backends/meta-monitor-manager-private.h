@@ -131,6 +131,28 @@ typedef enum
   META_CONNECTOR_TYPE_DSI = 16,
 } MetaConnectorType;
 
+/* Same as KMS mode flags and X11 randr flags */
+typedef enum
+{
+  META_CRTC_MODE_FLAG_NONE = 0,
+  META_CRTC_MODE_FLAG_PHSYNC = (1 << 0),
+  META_CRTC_MODE_FLAG_NHSYNC = (1 << 1),
+  META_CRTC_MODE_FLAG_PVSYNC = (1 << 2),
+  META_CRTC_MODE_FLAG_NVSYNC = (1 << 3),
+  META_CRTC_MODE_FLAG_INTERLACE = (1 << 4),
+  META_CRTC_MODE_FLAG_DBLSCAN = (1 << 5),
+  META_CRTC_MODE_FLAG_CSYNC = (1 << 6),
+  META_CRTC_MODE_FLAG_PCSYNC = (1 << 7),
+  META_CRTC_MODE_FLAG_NCSYNC = (1 << 8),
+  META_CRTC_MODE_FLAG_HSKEW = (1 << 9),
+  META_CRTC_MODE_FLAG_BCAST = (1 << 10),
+  META_CRTC_MODE_FLAG_PIXMUX = (1 << 11),
+  META_CRTC_MODE_FLAG_DBLCLK = (1 << 12),
+  META_CRTC_MODE_FLAG_CLKDIV2 = (1 << 13),
+
+  META_CRTC_MODE_FLAG_MASK = 0x3fff
+} MetaCrtcModeFlag;
+
 struct _MetaTileInfo
 {
   guint32 group_id;
@@ -231,7 +253,7 @@ struct _MetaCrtcMode
   int width;
   int height;
   float refresh_rate;
-  guint32 flags;
+  MetaCrtcModeFlag flags;
 
   gpointer driver_private;
   GDestroyNotify driver_notify;

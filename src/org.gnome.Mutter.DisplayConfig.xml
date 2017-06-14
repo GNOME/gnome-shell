@@ -325,6 +325,7 @@
 	    * a{sv} properties: optional properties, including:
 	       - "is-current" (b): the mode is currently active mode
 	       - "is-preferred" (b): the mode is the preferred mode
+	       - "is-interlaced" (b): the mode is an interlaced mode
 	* a{sv} properties: optional properties, including:
 	    - "width-mm" (i): physical width of monitor in millimeters
 	    - "height-mm" (i): physical height of monitor in millimeters

@@ -1556,6 +1556,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
           float *supported_scales;
           int n_supported_scales;
           GVariantBuilder mode_properties_builder;
+          MetaCrtcModeFlag mode_flags;
 
           mode_id = meta_monitor_mode_get_id (monitor_mode);
           meta_monitor_mode_get_resolution (monitor_mode,
@@ -1580,6 +1581,8 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                    (double) supported_scales[i]);
           g_free (supported_scales);
 
+          mode_flags = meta_monitor_mode_get_flags (monitor_mode);
+
           g_variant_builder_init (&mode_properties_builder,
                                   G_VARIANT_TYPE ("a{sv}"));
           if (monitor_mode == current_mode)
@@ -1589,6 +1592,10 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
           if (monitor_mode == preferred_mode)
             g_variant_builder_add (&mode_properties_builder, "{sv}",
                                    "is-preferred",
+                                   g_variant_new_boolean (TRUE));
+          if (mode_flags & META_CRTC_MODE_FLAG_INTERLACE)
+            g_variant_builder_add (&mode_properties_builder, "{sv}",
+                                   "is-interlaced",
                                    g_variant_new_boolean (TRUE));
 
           g_variant_builder_add (&modes_builder, MODE_FORMAT,
