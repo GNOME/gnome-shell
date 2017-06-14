@@ -193,6 +193,11 @@ const ObjectManager = new Lang.Class({
 
             let [objects] = result;
 
+            if (!objects) {
+                this._tryToCompleteLoad();
+                return;
+            }
+
             let objectPaths = Object.keys(objects);
             for (let i = 0; i < objectPaths.length; i++) {
                 let objectPath = objectPaths[i];
