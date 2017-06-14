@@ -430,15 +430,6 @@ class AppDisplay extends BaseAppView {
             });
     }
 
-    vfunc_allocate(box, flags) {
-        box = this.get_theme_node().get_content_box(box);
-        let availWidth = box.get_width();
-        let availHeight = box.get_height();
-        this.adaptToSize(availWidth, availHeight);
-
-        super.vfunc_allocate(box, flags);
-    }
-
     _onDestroy() {
         if (this._scrollTimeoutId !== 0) {
             GLib.source_remove(this._scrollTimeoutId);

@@ -139,6 +139,15 @@ class ViewsDisplayLayout extends Clutter.BoxLayout {
     _onStyleChanged() {
         this.layout_changed();
     }
+
+    vfunc_allocate(actor, box, flags) {
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+
+        this._appDisplayActor.adaptToSize(availWidth, availHeight);
+
+        super.vfunc_allocate(actor, box, flags);
+    }
 });
 
 var ViewsDisplayConstraint = GObject.registerClass(
