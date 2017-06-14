@@ -315,14 +315,16 @@
 	* s vendor: vendor name
 	* s product: product name
 	* s serial: product serial
-	* a(siiddad) modes: available modes
+	* a(siiddada{sv}) modes: available modes
 	    * s id: mode ID
 	    * i width: width in physical pixels
 	    * i height: height in physical pixels
 	    * d refresh rate: refresh rate
 	    * d preferred scale: scale preferred as per calculations
 	    * ad supported scales: scales supported by this mode
-	    * u flags: mode flags (see below)
+	    * a{sv} properties: optional properties, including:
+	       - "is-current" (b): the mode is currently active mode
+	       - "is-preferred" (b): the mode is the preferred mode
 	* a{sv} properties: optional properties, including:
 	    - "width-mm" (i): physical width of monitor in millimeters
 	    - "height-mm" (i): physical height of monitor in millimeters
@@ -405,7 +407,7 @@
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />
-      <arg name="monitors" direction="out" type="a((ssss)a(siiddadu)a{sv})" />
+      <arg name="monitors" direction="out" type="a((ssss)a(siiddada{sv})a{sv})" />
       <arg name="logical_monitors" direction="out" type="a(iiduba(ssss)a{sv})" />
       <arg name="properties" direction="out" type="a{sv}" />
     </method>

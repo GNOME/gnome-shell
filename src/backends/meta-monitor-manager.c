@@ -1492,7 +1492,7 @@ meta_monitor_manager_legacy_handle_apply_configuration  (MetaDBusDisplayConfig *
 #define META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED (1 << 0)
 #define META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT (1 << 1)
 
-#define MODE_FORMAT "(siiddadu)"
+#define MODE_FORMAT "(siiddada{sv})"
 #define MODES_FORMAT "a" MODE_FORMAT
 #define MONITOR_SPEC_FORMAT "(ssss)"
 #define MONITOR_FORMAT "(" MONITOR_SPEC_FORMAT MODES_FORMAT "a{sv})"
@@ -1555,7 +1555,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
           float preferred_scale;
           float *supported_scales;
           int n_supported_scales;
-          uint32_t flags = 0;
+          GVariantBuilder mode_properties_builder;
 
           mode_id = meta_monitor_mode_get_id (monitor_mode);
           meta_monitor_mode_get_resolution (monitor_mode,
@@ -1580,10 +1580,16 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                    (double) supported_scales[i]);
           g_free (supported_scales);
 
+          g_variant_builder_init (&mode_properties_builder,
+                                  G_VARIANT_TYPE ("a{sv}"));
           if (monitor_mode == current_mode)
-            flags |= META_DISPLAY_CONFIG_MODE_FLAGS_CURRENT;
+            g_variant_builder_add (&mode_properties_builder, "{sv}",
+                                   "is-current",
+                                   g_variant_new_boolean (TRUE));
           if (monitor_mode == preferred_mode)
-            flags |= META_DISPLAY_CONFIG_MODE_FLAGS_PREFERRED;
+            g_variant_builder_add (&mode_properties_builder, "{sv}",
+                                   "is-preferred",
+                                   g_variant_new_boolean (TRUE));
 
           g_variant_builder_add (&modes_builder, MODE_FORMAT,
                                  mode_id,
@@ -1592,7 +1598,7 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                  refresh_rate,
                                  (double) preferred_scale,
                                  &supported_scales_builder,
-                                 flags);
+                                 &mode_properties_builder);
         }
 
       g_variant_builder_init (&monitor_properties_builder,
