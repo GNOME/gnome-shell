@@ -1883,16 +1883,16 @@ meta_test_monitor_limited_crtcs (void)
           .outputs = { 1 },
           .n_outputs = 1,
           .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .crtc_modes = {
                 {
-                  .width = 1024,
-                  .height = 768,
-                  .crtc_modes = {
-                    {
-                      .output = 1,
-                      .crtc_mode = 0
-                    }
-                  }
+                  .output = 1,
+                  .crtc_mode = 0
                 }
+              }
+            }
           },
           .n_modes = 1,
           .current_mode = -1,

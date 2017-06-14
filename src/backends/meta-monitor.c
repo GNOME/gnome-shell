@@ -840,7 +840,7 @@ create_untiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   };
   mode->parent.id = generate_mode_id (&mode->parent.spec);
   mode->parent.crtc_modes = g_new0 (MetaMonitorCrtcMode,
-                             g_list_length (monitor_priv->outputs));
+                                    g_list_length (monitor_priv->outputs));
 
   for (l = monitor_priv->outputs, i = 0; l; l = l->next, i++)
     {
