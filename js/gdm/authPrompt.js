@@ -188,7 +188,7 @@ const AuthPrompt = new Lang.Class({
                                              if (!this._userVerifier.hasPendingMessages)
                                                  this._fadeOutMessage();
 
-                                             this._updateNextButtonSensitivity(this._entry.text.length > 0);
+                                             this._updateNextButtonSensitivity(this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING);
                                          }));
         this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
             if (this.nextButton.reactive)
@@ -416,7 +416,7 @@ const AuthPrompt = new Lang.Class({
     },
 
     updateSensitivity: function(sensitive) {
-        this._updateNextButtonSensitivity(sensitive && this._entry.text.length > 0);
+        this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING));
         this._entry.reactive = sensitive;
         this._entry.clutter_text.editable = sensitive;
     },
