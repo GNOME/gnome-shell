@@ -159,7 +159,9 @@ class OverviewActor extends St.BoxLayout {
             accessible_name: _("Overview"),
             vertical: true,
         });
+    }
 
+    init() {
         this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
 
         this._searchEntry = new St.Entry({
@@ -331,6 +333,7 @@ var Overview = class {
         });
 
         this._overview = new OverviewActor();
+        this._overview.init();
         this._overview._delegate = this;
         this._allMonitorsGroup.add_actor(this._overview);
 

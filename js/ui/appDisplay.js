@@ -6,6 +6,7 @@ const Signals = imports.signals;
 
 const AppActivation = imports.ui.appActivation;
 const AppFavorites = imports.ui.appFavorites;
+const BackgroundMenu = imports.ui.backgroundMenu;
 const DND = imports.ui.dnd;
 const GrabHelper = imports.ui.grabHelper;
 const IconGrid = imports.ui.iconGrid;
@@ -358,7 +359,18 @@ class AppDisplay extends BaseAppView {
             if (!this._currentDialog.contains(actor))
                 this._currentDialog.popdown();
         });
-        this._eventBlocker.add_action(this._clickAction);
+        Main.overview.addAction(this._clickAction, false);
+        this._eventBlocker.bind_property('reactive', this._clickAction,
+            'enabled', GObject.BindingFlags.SYNC_CREATE);
+
+        this._bgAction = new Clutter.ClickAction();
+        Main.overview.addAction(this._bgAction);
+        BackgroundMenu.addBackgroundMenuForAction(this._bgAction, Main.layoutManager);
+        this._clickAction.bind_property('enabled', this._bgAction,
+            'enabled',
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+        this.bind_property('mapped', this._bgAction,
+            'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         this._currentDialog = null;
         this._displayingDialog = false;
@@ -818,6 +830,7 @@ class AppDisplay extends BaseAppView {
         };
         DND.addDragMonitor(this._dragMonitor);
 
+        this._bgAction.release();
         this._eventBlocker.visible = false;
     }
 
