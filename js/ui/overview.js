@@ -164,7 +164,7 @@ class OverviewActor extends St.BoxLayout {
     init() {
         this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
 
-        this._controls = new OverviewControls.ControlsManager(this._searchEntry);
+        this._controls = new OverviewControls.ControlsManager();
 
         // Add our same-line elements after the search entry
         this.add_child(this._controls);
@@ -180,7 +180,7 @@ class OverviewActor extends St.BoxLayout {
     }
 
     get searchEntry() {
-        return this._searchEntry;
+        return this._controls.viewSelector.searchEntry;
     }
 
     get viewSelector() {

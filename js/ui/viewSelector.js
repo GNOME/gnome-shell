@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ViewSelector */
 
-const { Clutter, Gio, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
@@ -18,13 +18,16 @@ const IconGrid = imports.ui.iconGrid;
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var PINCH_GESTURE_THRESHOLD = 0.7;
 
+const SEARCH_ACTIVATION_TIMEOUT = 50;
+
 var ViewPage = {
     WINDOWS: 1,
     APPS: 2,
 };
 
 const ViewsDisplayPage = {
-    APP_GRID: 1
+    APP_GRID: 1,
+    SEARCH: 2,
 };
 
 var FocusTrap = GObject.registerClass(
@@ -126,26 +129,133 @@ var ShowOverviewAction = GObject.registerClass({
     }
 });
 
-var ViewsDisplayLayout = GObject.registerClass(
-class ViewsDisplayLayout extends Clutter.BoxLayout {
-    _init(appDisplayActor) {
+var ViewsDisplayLayout = GObject.registerClass({
+    Properties: {
+        'expansion': GObject.ParamSpec.float(
+            'expansion',
+            'expansion',
+            'expansion',
+            GObject.ParamFlags.READWRITE,
+            0, 1, 0),
+    },
+}, class ViewsDisplayLayout extends Clutter.BoxLayout {
+    _init(entry, appDisplay, searchResultsActor) {
         super._init();
 
-        this._appDisplayActor = appDisplayActor;
-        this._appDisplayActor.connect('style-changed', this._onStyleChanged.bind(this));
+        this._entry = entry;
+        this._appDisplay = appDisplay;
+        this._searchResultsActor = searchResultsActor;
+
+        this._entry.connect('style-changed', this._onStyleChanged.bind(this));
+        this._appDisplay.connect('style-changed', this._onStyleChanged.bind(this));
+
+        this._heightAboveEntry = 0;
+        this.expansion = 0;
     }
 
     _onStyleChanged() {
         this.layout_changed();
     }
 
+    _centeredHeightAbove(height, availHeight) {
+        return Math.max(0, Math.floor((availHeight - height) / 2));
+    }
+
+    _computeAppDisplayPlacement(viewHeight, entryHeight, availHeight) {
+        // If we have the space for it, we add some padding to the top of the
+        // all view when calculating its centered position. This is to offset
+        // the icon labels at the bottom of the icon grid, so the icons
+        // themselves appears centered.
+        let themeNode = this._appDisplay.get_theme_node();
+        let topPadding = themeNode.get_length('-natural-padding-top');
+        let heightAbove = this._centeredHeightAbove(viewHeight + topPadding, availHeight);
+        let leftover = Math.max(availHeight - viewHeight - heightAbove, 0);
+        heightAbove += Math.min(topPadding, leftover);
+        // Always leave enough room for the search entry at the top
+        heightAbove = Math.max(entryHeight, heightAbove);
+        return heightAbove;
+    }
+
+    _computeChildrenAllocation(allocation) {
+        let availWidth = allocation.x2 - allocation.x1;
+        let availHeight = allocation.y2 - allocation.y1;
+
+        // Entry height
+        let entryHeight = this._entry.get_preferred_height(availWidth)[1];
+        let themeNode = this._entry.get_theme_node();
+        let entryMinPadding = themeNode.get_length('-minimum-vpadding');
+        let entryTopMargin = themeNode.get_length('margin-top');
+        entryHeight += entryMinPadding * 2;
+
+        // AppDisplay height
+        // Step 1: pre pre-allocate the grid with the maximum available size
+        this._appDisplay.adaptToSize(availWidth, availHeight - entryHeight);
+
+        // Use the maximum preferred size for now
+        let appDisplayHeight = this._appDisplay.get_preferred_height(availWidth)[1];
+
+        let heightAboveGrid = this._computeAppDisplayPlacement(appDisplayHeight, entryHeight, availHeight);
+        this._heightAboveEntry = this._centeredHeightAbove(entryHeight, heightAboveGrid);
+
+        let entryBox = allocation.copy();
+        entryBox.y1 = this._heightAboveEntry + entryTopMargin;
+        entryBox.y2 = entryBox.y1 + entryHeight;
+
+        let appDisplayBox = allocation.copy();
+        // The grid container box should have the dimensions of this container but start
+        // after the search entry and according to the calculated xplacement policies
+        appDisplayBox.y1 = heightAboveGrid;
+
+        let searchResultsBox = allocation.copy();
+
+        // The views clone does not have a searchResultsActor
+        if (this._searchResultsActor) {
+            let searchResultsHeight = availHeight - entryHeight;
+            searchResultsBox.x1 = allocation.x1;
+            searchResultsBox.x2 = allocation.x2;
+            searchResultsBox.y1 = entryBox.y2;
+            searchResultsBox.y2 = searchResultsBox.y1 + searchResultsHeight;
+        }
+
+        // Step 2: pre-allocate to a smaller, but realistic, size
+        this._appDisplay.adaptToSize(availWidth, appDisplayBox.get_height());
+
+        return [entryBox, appDisplayBox, searchResultsBox];
+    }
+
     vfunc_allocate(actor, box, flags) {
-        let availWidth = box.x2 - box.x1;
-        let availHeight = box.y2 - box.y1;
+        let [entryBox, appDisplayBox, searchResultsBox] = this._computeChildrenAllocation(box);
 
-        this._appDisplayActor.adaptToSize(availWidth, availHeight);
+        this._entry.allocate(entryBox, flags);
 
-        super.vfunc_allocate(actor, box, flags);
+        // Step 3: actually allocate the grid
+        this._appDisplay.allocate(appDisplayBox, flags);
+
+        if (this._searchResultsActor)
+            this._searchResultsActor.allocate(searchResultsBox, flags);
+    }
+
+    set expansion(v) {
+        if (v === this._expansion || !this._searchResultsActor)
+            return;
+
+        this._appDisplay.visible = v !== 1;
+        this._searchResultsActor.visible = v !== 0;
+
+        this._appDisplay.opacity = (1 - v) * 255;
+        this._searchResultsActor.opacity = v * 255;
+
+        let entryTranslation = -this._heightAboveEntry * v;
+        this._entry.translation_y = entryTranslation;
+
+        this._searchResultsActor.translation_y = entryTranslation;
+
+        this._expansion = v;
+        this.notify('expansion');
+    }
+
+    get expansion() {
+        return this._expansion;
     }
 });
 
@@ -164,24 +274,137 @@ class ViewsDisplayConstraint extends LayoutManager.MonitorConstraint {
 var ViewsDisplay = GObject.registerClass(
 class ViewsDisplay extends St.Widget {
     _init() {
+        this._enterSearchTimeoutId = 0;
         this._activePage = ViewsDisplayPage.APP_GRID;
 
         this._appDisplay = new AppDisplay.AppDisplay();
 
+        this._searchResults = new Search.SearchResultsView();
+        this._searchResults.connect('search-progress-updated', this._updateSpinner.bind(this));
+
+        // Since the entry isn't inside the results container we install this
+        // dummy widget as the last results container child so that we can
+        // include the entry in the keynav tab path
+        this._focusTrap = new FocusTrap({ can_focus: true });
+        this._focusTrap.connect('key-focus-in', () => {
+            this._entry.grab_key_focus();
+        });
+        this._searchResults.add_actor(this._focusTrap);
+
+        global.focus_manager.add_group(this._searchResults);
+
+        this._entry = new ShellEntry.OverviewEntry();
+        this._entry.connect('search-activated', this._onSearchActivated.bind(this));
+        this._entry.connect('search-active-changed', this._onSearchActiveChanged.bind(this));
+        this._entry.connect('search-navigate-focus', this._onSearchNavigateFocus.bind(this));
+        this._entry.connect('search-terms-changed', this._onSearchTermsChanged.bind(this));
+
+        this._entry.clutter_text.connect('key-focus-in', () => {
+            this._searchResults.highlightDefault(true);
+        });
+        this._entry.clutter_text.connect('key-focus-out', () => {
+            this._searchResults.highlightDefault(false);
+        });
+
+        // Clicking on any empty area should exit search and get back to the desktop.
+        let clickAction = new Clutter.ClickAction();
+        clickAction.connect('clicked', this._resetSearch.bind(this));
+        Main.overview.addAction(clickAction, false);
+        this._searchResults.bind_property('mapped', clickAction,
+            'enabled', GObject.BindingFlags.SYNC_CREATE);
+
         super._init({
-            layout_manager: new ViewsDisplayLayout(this._appDisplay),
+            layout_manager: new ViewsDisplayLayout(this._entry, this._appDisplay, this._searchResults),
             x_expand: true,
             y_expand: true,
         });
 
+        this.add_child(this._entry);
         this.add_actor(this._appDisplay);
+        this.add_child(this._searchResults);
     }
 
-    showPage(page) {
+    showPage(page, doAnimation) {
         if (this._activePage === page)
             return;
 
         this._activePage = page;
+
+        let tweenTarget = page === ViewsDisplayPage.SEARCH ? 1 : 0;
+        if (doAnimation) {
+            this._searchResults.isAnimating = true;
+            this.ease_property('@layout.expansion', tweenTarget, {
+                duration: 250,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._searchResults.isAnimating = false;
+                },
+            });
+        } else {
+            this.layout_manager.expansion = tweenTarget;
+        }
+    }
+
+    _updateSpinner() {
+        this._entry.setSpinning(this._searchResults.searchInProgress);
+    }
+
+    _enterSearch() {
+        if (this._enterSearchTimeoutId > 0)
+            return;
+
+        // We give a very short time for search results to populate before
+        // triggering the animation, unless an animation is already in progress
+        if (this._searchResults.isAnimating) {
+            this.showPage(ViewsDisplayPage.SEARCH, true);
+            return;
+        }
+
+        this._enterSearchTimeoutId = GLib.timeout_add(
+            GLib.PRIORITY_DEFAULT,
+            SEARCH_ACTIVATION_TIMEOUT, () => {
+                this._enterSearchTimeoutId = 0;
+                this.showPage(ViewsDisplayPage.SEARCH, true);
+
+                return GLib.SOURCE_REMOVE;
+            });
+    }
+
+    _leaveSearch() {
+        if (this._enterSearchTimeoutId > 0) {
+            GLib.source_remove(this._enterSearchTimeoutId);
+            this._enterSearchTimeoutId = 0;
+        }
+        this.showPage(ViewsDisplayPage.APP_GRID, true);
+    }
+
+    _onSearchActivated() {
+        this._searchResults.activateDefault();
+        this._resetSearch();
+    }
+
+    _onSearchActiveChanged() {
+        if (this._entry.active)
+            this._enterSearch();
+        else
+            this._leaveSearch();
+    }
+
+    _onSearchNavigateFocus(entry, direction) {
+        this._searchResults.navigateFocus(direction);
+    }
+
+    _onSearchTermsChanged() {
+        let terms = this._entry.getSearchTerms();
+        this._searchResults.setTerms(terms);
+    }
+
+    _resetSearch() {
+        this._entry.resetSearch();
+    }
+
+    get entry() {
+        return this._entry;
     }
 
     get appDisplay() {
@@ -476,5 +699,9 @@ var ViewSelector = GObject.registerClass({
             duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
         });
+    }
+
+    get searchEntry() {
+        return this._viewsDisplay.entry;
     }
 });
