@@ -7,7 +7,6 @@ const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const FileUtils = imports.misc.fileUtils;
-const Main = imports.ui.main;
 const Params = imports.misc.params;
 
 const Config = imports.misc.config;
