@@ -6,6 +6,7 @@ const Signals = imports.signals;
 
 const AppActivation = imports.ui.appActivation;
 const AppFavorites = imports.ui.appFavorites;
+const BackgroundMenu = imports.ui.backgroundMenu;
 const BoxPointer = imports.ui.boxpointer;
 const DND = imports.ui.dnd;
 const GrabHelper = imports.ui.grabHelper;
@@ -344,7 +345,16 @@ var AllView = class AllView extends BaseAppView {
             if (!this._currentPopup.actor.contains(actor))
                 this._currentPopup.popdown();
         });
-        this._eventBlocker.add_action(this._clickAction);
+        Main.overview.addAction(this._clickAction, false);
+        this._eventBlocker.bind_property('reactive', this._clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+
+        this._bgAction = new Clutter.ClickAction();
+        Main.overview.addAction(this._bgAction, true);
+        BackgroundMenu.addBackgroundMenuForAction(this._bgAction, Main.layoutManager);
+        this._clickAction.bind_property('enabled', this._bgAction, 'enabled',
+                                        GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN);
+        this.actor.bind_property('mapped', this._bgAction, 'enabled',
+                                 GObject.BindingFlags.SYNC_CREATE);
 
         this._displayingPopup = false;
         this._currentPopupDestroyId = 0;
