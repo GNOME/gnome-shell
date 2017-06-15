@@ -447,7 +447,10 @@ const AllView = new Lang.Class({
             }));
         this._grid.connect('space-opened', Lang.bind(this,
             function() {
-                this._scrollView.get_effect('fade').enabled = false;
+                let fadeEffect = this._scrollView.get_effect('fade');
+                if (fadeEffect)
+                    fadeEffect.enabled = false;
+
                 this.emit('space-ready');
             }));
         this._grid.connect('space-closed', Lang.bind(this,
@@ -658,7 +661,11 @@ const AllView = new Lang.Class({
 
     _closeSpaceForPopup: function() {
         this._updateIconOpacities(false);
-        this._scrollView.get_effect('fade').enabled = true;
+
+        let fadeEffect = this._scrollView.get_effect('fade');
+        if (fadeEffect)
+            fadeEffect.enabled = true;
+
         this._grid.closeExtraSpace();
     },
 
