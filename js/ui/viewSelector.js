@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported ViewSelector */
 
-const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { EosMetrics, Clutter, Gio,
+        GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
@@ -19,6 +20,20 @@ const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 var PINCH_GESTURE_THRESHOLD = 0.7;
 
 const SEARCH_ACTIVATION_TIMEOUT = 50;
+
+const SEARCH_METRIC_INACTIVITY_TIMEOUT_SECONDS = 3;
+
+// Occurs when a user initiates a search from the desktop. The payload, with
+// type `(us)`, consists of an enum value from the DesktopSearchProvider enum
+// telling what kind of search was requested; followed by the search query.
+const EVENT_DESKTOP_SEARCH = 'b02266bc-b010-44b2-ae0f-8f116ffa50eb';
+
+// Represents the various search providers that can be used for searching from
+// the desktop. Keep in sync with the corresponding enum in
+// https://github.com/endlessm/eos-analytics/tree/master/src/main/java/com/endlessm/postprocessing/query/SearchQuery.java.
+const DesktopSearchProvider = {
+    MY_COMPUTER: 0,
+};
 
 var ViewPage = {
     WINDOWS: 1,
@@ -275,6 +290,7 @@ var ViewsDisplay = GObject.registerClass(
 class ViewsDisplay extends St.Widget {
     _init() {
         this._enterSearchTimeoutId = 0;
+        this._localSearchMetricTimeoutId = 0;
         this._activePage = ViewsDisplayPage.APP_GRID;
 
         this._appDisplay = new AppDisplay.AppDisplay();
@@ -345,6 +361,12 @@ class ViewsDisplay extends St.Widget {
         }
     }
 
+    _recordDesktopSearchMetric(query, searchProvider) {
+        let eventRecorder = EosMetrics.EventRecorder.get_default();
+        let auxiliaryPayload = new GLib.Variant('(us)', [searchProvider, query]);
+        eventRecorder.record_event(EVENT_DESKTOP_SEARCH, auxiliaryPayload);
+    }
+
     _updateSpinner() {
         this._entry.setSpinning(this._searchResults.searchInProgress);
     }
@@ -397,6 +419,25 @@ class ViewsDisplay extends St.Widget {
     _onSearchTermsChanged() {
         let terms = this._entry.getSearchTerms();
         this._searchResults.setTerms(terms);
+
+        // Since the search is live, only record a metric a few seconds after
+        // the user has stopped typing. Don't record one if the user deleted
+        // what they wrote and left it at that.
+        if (this._localSearchMetricTimeoutId > 0)
+            GLib.source_remove(this._localSearchMetricTimeoutId);
+
+        this._localSearchMetricTimeoutId = GLib.timeout_add_seconds(
+            GLib.PRIORITY_DEFAULT,
+            SEARCH_METRIC_INACTIVITY_TIMEOUT_SECONDS,
+            () => {
+                let query = terms.join(' ');
+                if (query !== '') {
+                    this._recordDesktopSearchMetric(query,
+                        DesktopSearchProvider.MY_COMPUTER);
+                }
+                this._localSearchMetricTimeoutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
     }
 
     _resetSearch() {
