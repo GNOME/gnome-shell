@@ -6,7 +6,7 @@ const { Clutter, GLib, GObject, Meta, St } = imports.gi;
 const Params = imports.misc.params;
 const Main = imports.ui.main;
 
-var ICON_SIZE = 96;
+var ICON_SIZE = 64;
 var MIN_ICON_SIZE = 16;
 
 var EXTRA_SPACE_ANIMATION_TIME = 250;
@@ -689,33 +689,6 @@ var IconGrid = GObject.registerClass({
         this._fixedHItemSize = this._hItemSize;
         this._fixedVItemSize = this._vItemSize;
         this._updateSpacingForSize(availWidth, availHeight);
-
-        if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
-            let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth;
-            let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight;
-
-            let neededSpacePerItem = (neededWidth > neededHeight)
-                ? Math.ceil(neededWidth / this._minColumns)
-                : Math.ceil(neededHeight / this._minRows);
-            this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
-            this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
-
-            this._updateSpacingForSize(availWidth, availHeight);
-        }
-        if (!this._updateIconSizesLaterId)
-            this._updateIconSizesLaterId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                                                          this._updateIconSizes.bind(this));
-    }
-
-    // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
-    _updateIconSizes() {
-        this._updateIconSizesLaterId = 0;
-        let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
-        let newIconSize = Math.floor(ICON_SIZE * scale);
-        for (let i in this._items) {
-            this._items[i].icon.setIconSize(newIconSize);
-        }
-        return GLib.SOURCE_REMOVE;
     }
 });
 
