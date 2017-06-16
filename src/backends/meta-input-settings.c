@@ -1637,7 +1637,7 @@ cycle_logical_monitors (MetaInputSettings   *settings,
       if (l->next)
         *next_logical_monitor = l->next->data;
       else
-        *next_logical_monitor = logical_monitors->data;
+        *next_logical_monitor = NULL;
     }
 
   return TRUE;
