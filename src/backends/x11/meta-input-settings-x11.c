@@ -189,9 +189,14 @@ meta_input_settings_x11_set_left_handed (MetaInputSettings  *settings,
                                          ClutterInputDevice *device,
                                          gboolean            enabled)
 {
+  ClutterInputDeviceType device_type;
   guchar value;
 
-  if (clutter_input_device_get_device_type (device) == CLUTTER_TABLET_DEVICE)
+  device_type = clutter_input_device_get_device_type (device);
+
+  if (device_type == CLUTTER_TABLET_DEVICE ||
+      device_type == CLUTTER_PEN_DEVICE ||
+      device_type == CLUTTER_ERASER_DEVICE)
     {
       value = enabled ? 3 : 0;
       change_property (device, "Wacom Rotation",
