@@ -7682,6 +7682,23 @@ meta_window_find_tile_match (MetaWindow   *window,
 
       meta_window_get_frame_rect (bottommost, &bottommost_rect);
       meta_window_get_frame_rect (topmost, &topmost_rect);
+
+      /*
+       * If we are looking for a tile match while actually being tiled,
+       * rather than a match for a potential tile mode, then discard
+       * windows with too much gap or overlap
+       */
+      if (window->tile_mode == current_mode &&
+          !(meta_grab_op_is_resizing (window->display->grab_op) &&
+            window->display->grab_window == window &&
+            window->tile_match != NULL))
+        {
+          int threshold = meta_prefs_get_drag_threshold ();
+          if (ABS (topmost_rect.x - bottommost_rect.x - bottommost_rect.width) > threshold &&
+              ABS (bottommost_rect.x - topmost_rect.x - topmost_rect.width) > threshold)
+            return NULL;
+        }
+
       /*
        * If there's a window stacked in between which is partially visible
        * behind the topmost tile we don't consider the tiles to match.
