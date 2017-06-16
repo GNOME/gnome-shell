@@ -609,7 +609,7 @@ meta_input_settings_x11_set_tablet_area (MetaInputSettings  *settings,
   area[0] = width * padding_left;
   area[1] = height * padding_top;
   area[2] = width - (width * padding_right);
-  area[2] = height - (height * padding_bottom);
+  area[3] = height - (height * padding_bottom);
   update_tablet_area (settings, device, area);
 }
 
