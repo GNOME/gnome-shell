@@ -42,9 +42,15 @@ const AltSwitcher = new Lang.Class({
     _init: function(standard, alternate) {
         this._standard = standard;
         this._standard.connect('notify::visible', Lang.bind(this, this._sync));
+        if (this._standard instanceof St.Button)
+            this._standard.connect('clicked',
+                                   () => { this._clickAction.release(); });
 
         this._alternate = alternate;
         this._alternate.connect('notify::visible', Lang.bind(this, this._sync));
+        if (this._alternate instanceof St.Button)
+            this._alternate.connect('clicked',
+                                    () => { this._clickAction.release(); });
 
         this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
 
