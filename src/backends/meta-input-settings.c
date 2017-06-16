@@ -732,7 +732,7 @@ logical_monitor_has_monitor (MetaMonitorManager *monitor_manager,
   GList *monitors;
   GList *l;
 
-  monitors = meta_monitor_manager_get_monitors (monitor_manager);
+  monitors = meta_logical_monitor_get_monitors (logical_monitor);
   for (l = monitors; l; l = l->next)
     {
       MetaMonitor *monitor = l->data;
