@@ -3977,6 +3977,9 @@ meta_window_move_to_monitor (MetaWindow  *window,
 {
   MetaRectangle old_area, new_area;
 
+  if (window->tile_mode != META_TILE_NONE)
+    window->tile_monitor_number = monitor;
+
   meta_window_get_work_area_for_monitor (window,
                                          window->monitor->number,
                                          &old_area);
@@ -3997,9 +4000,6 @@ meta_window_move_to_monitor (MetaWindow  *window,
 
       meta_window_move_between_rects (window, &old_area, &new_area);
     }
-
-  if (window->tile_mode != META_TILE_NONE)
-    window->tile_monitor_number = monitor;
 
   window->preferred_output_winsys_id = window->monitor->winsys_id;
 
