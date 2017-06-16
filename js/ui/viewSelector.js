@@ -505,6 +505,7 @@ class ViewsClone extends St.Widget {
             x_expand: true,
             y_expand: true,
             reactive: false,
+            opacity: AppDisplay.EOS_ACTIVE_GRID_OPACITY,
         });
 
         // Ensure the cloned grid is scrolled to the same page as the original one

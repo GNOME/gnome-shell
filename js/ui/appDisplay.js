@@ -302,12 +302,14 @@ Signals.addSignalMethods(BaseAppView.prototype);
 
 var AllViewContainer = GObject.registerClass(
 class AllViewContainer extends St.Widget {
-    _init(gridActor) {
+    _init(gridActor, params) {
         super._init({
             layout_manager: new Clutter.BinLayout(),
             x_expand: true,
             y_expand: true,
         });
+
+        params = Params.parse(params, { allowScrolling: true });
 
         this.gridActor = gridActor;
 
@@ -321,6 +323,7 @@ class AllViewContainer extends St.Widget {
             x_fill: true,
             y_fill: false,
             reactive: true,
+            reactive: params.allowScrolling,
             hscrollbar_policy: St.PolicyType.NEVER,
             vscrollbar_policy: St.PolicyType.EXTERNAL,
             y_align: Clutter.ActorAlign.START,
