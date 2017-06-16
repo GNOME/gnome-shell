@@ -374,8 +374,8 @@ var AllView = class AllView extends BaseAppView {
         panAction.connect('gesture-cancel', this._onPanEnd.bind(this));
         panAction.connect('gesture-end', this._onPanEnd.bind(this));
         this._panAction = panAction;
-        this._scrollView.add_action(panAction);
         this._panning = false;
+
         this._clickAction = new Clutter.ClickAction();
         this._clickAction.connect('clicked', () => {
             if (!this._currentPopup)
@@ -762,6 +762,11 @@ var AllView = class AllView extends BaseAppView {
         // Update folder views
         for (let i = 0; i < this.folderIcons.length; i++)
             this.folderIcons[i].adaptToSize(availWidth, availHeight);
+
+        // Enable panning depending on the number of pages
+        this._scrollView.remove_action(this._panAction);
+        if (this._grid.nPages() > 1)
+            this._scrollView.add_action(this._panAction);
     }
 
     _handleDragOvershoot(dragEvent) {
