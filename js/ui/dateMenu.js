@@ -474,6 +474,8 @@ const DateMenuButton = new Lang.Class({
 
         let layout = new FreezableBinLayout();
         let bin = new St.Widget({ layout_manager: layout });
+        // For some minimal compatibility with PopupMenuItem
+        bin._delegate = this;
         this.menu.box.add_child(bin);
 
         hbox = new St.BoxLayout({ name: 'calendarArea' });
