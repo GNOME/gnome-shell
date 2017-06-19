@@ -451,8 +451,18 @@ meta_input_settings_native_set_tablet_area (MetaInputSettings  *settings,
                                             gdouble             padding_bottom)
 {
   struct libinput_device *libinput_device;
-  gfloat matrix[6] = { 1. - (padding_left + padding_right), 0., padding_left,
-                       0., 1. - (padding_top + padding_bottom), padding_top };
+  gfloat scale_x;
+  gfloat scale_y;
+  gfloat offset_x;
+  gfloat offset_y;
+
+  scale_x = 1. / (1. - (padding_left + padding_right));
+  scale_y = 1. / (1. - (padding_top + padding_bottom));
+  offset_x = -padding_left * scale_x;
+  offset_y = -padding_top * scale_y;
+
+  gfloat matrix[6] = { scale_x, 0., offset_x,
+                       0., scale_y, offset_y };
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
   if (!libinput_device ||
