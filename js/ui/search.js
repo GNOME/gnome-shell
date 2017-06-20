@@ -84,33 +84,34 @@ const ListSearchResult = new Lang.Class({
                                          vertical: false });
         this.actor.set_child(content);
 
+        let titleBox = new St.BoxLayout({ style_class: 'list-search-result-title' });
+
+        content.add(titleBox, { x_fill: true,
+                                y_fill: false,
+                                x_align: St.Align.START,
+                                y_align: St.Align.MIDDLE });
+
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
         if (icon) {
-            content.add(icon);
+            titleBox.add(icon);
         }
 
-        let details = new St.BoxLayout({ vertical: true });
-        content.add(details, { x_fill: true,
-                               y_fill: false,
-                               x_align: St.Align.START,
-                               y_align: St.Align.MIDDLE });
-
-        let title = new St.Label({ style_class: 'list-search-result-title',
-                                   text: this.metaInfo['name'] })
-        details.add(title, { x_fill: false,
-                             y_fill: false,
-                             x_align: St.Align.START,
-                             y_align: St.Align.START });
+        let title = new St.Label({ text: this.metaInfo['name'] });
+        titleBox.add(title, { x_fill: false,
+                              y_fill: false,
+                              x_align: St.Align.START,
+                              y_align: St.Align.MIDDLE });
         this.actor.label_actor = title;
 
         if (this.metaInfo['description']) {
-            let description = new St.Label({ style_class: 'list-search-result-description' });
-            description.clutter_text.set_markup(this.metaInfo['description']);
-            details.add(description, { x_fill: false,
+            let description = new St.Label({ style_class: 'list-search-result-description',
+                                             text: this.metaInfo['description'] });
+
+            content.add(description, { x_fill: false,
                                        y_fill: false,
                                        x_align: St.Align.START,
-                                       y_align: St.Align.END });
+                                       y_align: St.Align.MIDDLE });
         }
     }
 });

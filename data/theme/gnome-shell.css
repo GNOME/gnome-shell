@@ -1179,12 +1179,12 @@ StScrollBar {
   height: 1px; }
 
 .list-search-result-content {
-  spacing: 12px;
-  padding: 12px; }
+  spacing: 30px; }
 
 .list-search-result-title {
   font-size: 1.5em;
-  color: #e2e2df; }
+  color: #e2e2df;
+  spacing: 12px; }
 
 .list-search-result-description {
   color: #cacac4; }
