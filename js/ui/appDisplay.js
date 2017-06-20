@@ -26,7 +26,7 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 var MENU_POPUP_TIMEOUT = 600;
 var MAX_COLUMNS = 7;
 var MIN_COLUMNS = 4;
-var MIN_ROWS = 4;
+var MIN_ROWS = 1;
 
 var INACTIVE_GRID_OPACITY = 77;
 // This time needs to be less than IconGrid.EXTRA_SPACE_ANIMATION_TIME
@@ -52,6 +52,8 @@ const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface)
 let discreteGpuAvailable = false;
 
 // Endless-specific definitions below this point
+
+const EOS_DESKTOP_MIN_ROWS = 2;
 
 const EOS_LINK_PREFIX = 'eos-link-';
 
@@ -345,7 +347,8 @@ class AllViewContainer extends St.Widget {
 
 var AllView = class AllView extends BaseAppView {
     constructor() {
-        super({ usePagination: true }, null);
+        super({ usePagination: true },
+              { minRows: EOS_DESKTOP_MIN_ROWS });
         this.actor = new AllViewContainer(this._grid);
         this._scrollView = this.actor.scrollView;
         this._stack = this.actor.stack;

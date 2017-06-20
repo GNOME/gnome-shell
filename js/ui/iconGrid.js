@@ -789,7 +789,7 @@ var PaginatedIconGrid = GObject.registerClass({
             nRows = Math.min(nRows, this._rowLimit);
 
         // We want to contain the grid inside the parent box with padding
-        this._rowsPerPage = this.rowsForHeight(availHeightPerPage);
+        this._rowsPerPage = Math.min(Math.max (this._minRows, nRows), this.rowsForHeight(availHeightPerPage));
         this._nPages = Math.ceil(nRows / this._rowsPerPage);
 
         if (this._nPages > 1)
