@@ -1171,6 +1171,11 @@ StScrollBar {
 .list-search-results {
   spacing: 3px; }
 
+.list-search-provider-details {
+  spacing: 3px;
+  width: 150px;
+  margin-left: 30px; }
+
 .search-section-separator {
   -gradient-height: 1px;
   -gradient-start: rgba(255, 255, 255, 0);
