@@ -72,7 +72,7 @@ const ListSearchResult = new Lang.Class({
     Name: 'ListSearchResult',
     Extends: SearchResult,
 
-    ICON_SIZE: 64,
+    ICON_SIZE: 24,
 
     _init: function(provider, metaInfo) {
         this.parent(provider, metaInfo);
@@ -685,7 +685,7 @@ const ProviderInfo = new Lang.Class({
     Name: 'ProviderInfo',
     Extends: St.Button,
 
-    PROVIDER_ICON_SIZE: 48,
+    PROVIDER_ICON_SIZE: 32,
 
     _init: function(provider) {
         this.provider = provider;
