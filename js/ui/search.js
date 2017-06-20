@@ -224,9 +224,6 @@ var SearchResultsBase = class {
         Main.overview.hide();
     }
 
-    _setMoreCount(_count) {
-    }
-
     _ensureResultActors(results, callback) {
         let metasNeeded = results.filter(
             resultId => this._resultDisplays[resultId] === undefined
@@ -280,7 +277,6 @@ var SearchResultsBase = class {
             let results = maxResults > -1
                 ? this.provider.filterResults(providerResults, maxResults)
                 : providerResults;
-            let moreCount = Math.max(providerResults.length - results.length, 0);
 
             this._ensureResultActors(results, successful => {
                 if (!successful) {
@@ -297,7 +293,6 @@ var SearchResultsBase = class {
                 results.forEach(resultId => {
                     this._addItem(this._resultDisplays[resultId]);
                 });
-                this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.actor.show();
                 callback();
             });
@@ -330,10 +325,6 @@ var ListSearchResults = class extends SearchResultsBase {
                                              y_align: St.Align.MIDDLE });
 
         this._resultDisplayBin.set_child(this._container);
-    }
-
-    _setMoreCount(count) {
-        this.providerInfo.setMoreCount(count);
     }
 
     _getMaxDisplayedResults() {
@@ -874,22 +865,8 @@ class ProviderInfo extends St.Button {
         let icon = new St.Icon({ icon_size: this.PROVIDER_ICON_SIZE,
                                  gicon: provider.appInfo.get_icon() });
 
-        let detailsBox = new St.BoxLayout({ style_class: 'list-search-provider-details',
-                                            vertical: true,
-                                            x_expand: true });
-
-        let nameLabel = new St.Label({ text: provider.appInfo.get_name(),
-                                       x_align: Clutter.ActorAlign.START });
-
-        this._moreLabel = new St.Label({ x_align: Clutter.ActorAlign.START });
-
-        detailsBox.add_actor(nameLabel);
-        detailsBox.add_actor(this._moreLabel);
-
-
         this._content = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._content.add_actor(icon);
-        this._content.add_actor(detailsBox);
 
         let box = new St.BoxLayout({ vertical: true, x_expand: false });
         this.set_child(box);
@@ -910,10 +887,5 @@ class ProviderInfo extends St.Button {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
         if (app.state == Shell.AppState.STOPPED)
             IconGrid.zoomOutActor(this._content);
-    }
-
-    setMoreCount(count) {
-        this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);
-        this._moreLabel.visible = count > 0;
     }
 });
