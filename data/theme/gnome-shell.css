@@ -1177,11 +1177,8 @@ StScrollBar {
   margin-left: 30px; }
 
 .search-section-separator {
-  -gradient-height: 1px;
-  -gradient-start: rgba(255, 255, 255, 0);
-  -gradient-end: rgba(255, 255, 255, 0.1);
-  -margin-horizontal: 1.5em;
-  height: 1px; }
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.2); }
 
 .list-search-result-content {
   spacing: 12px;

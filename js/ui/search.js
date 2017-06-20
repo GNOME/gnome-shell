@@ -149,8 +149,8 @@ const SearchResultsBase = new Lang.Class({
                                               y_fill: true });
         this.actor.add(this._resultDisplayBin, { expand: true });
 
-        let separator = new Separator.HorizontalSeparator({ style_class: 'search-section-separator' });
-        this.actor.add(separator.actor);
+        let separator = new St.DrawingArea({ style_class: 'search-section-separator' });
+        this.actor.add(separator);
 
         this._resultDisplays = {};
 
