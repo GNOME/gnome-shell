@@ -90,7 +90,7 @@ const ListSearchResult = new Lang.Class({
             content.add(icon);
         }
 
-        let details = new St.BoxLayout({ vertical: true });
+        let details = new St.BoxLayout({ vertical: false });
         content.add(details, { x_fill: true,
                                y_fill: false,
                                x_align: St.Align.START,
@@ -101,16 +101,18 @@ const ListSearchResult = new Lang.Class({
         details.add(title, { x_fill: false,
                              y_fill: false,
                              x_align: St.Align.START,
-                             y_align: St.Align.START });
+                             y_align: St.Align.MIDDLE });
         this.actor.label_actor = title;
 
         if (this.metaInfo['description']) {
-            let description = new St.Label({ style_class: 'list-search-result-description' });
-            description.clutter_text.set_markup(this.metaInfo['description']);
+            let description = new St.Label({
+                                style_class: 'list-search-result-description',
+                                text: this.metaInfo['description'] });
+
             details.add(description, { x_fill: false,
                                        y_fill: false,
                                        x_align: St.Align.START,
-                                       y_align: St.Align.END });
+                                       y_align: St.Align.MIDDLE });
         }
     }
 });
