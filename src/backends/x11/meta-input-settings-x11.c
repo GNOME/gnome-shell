@@ -555,6 +555,8 @@ meta_input_settings_x11_set_tablet_mapping (MetaInputSettings     *settings,
 
 static gboolean
 device_query_area (ClutterInputDevice *device,
+                   gint               *x,
+                   gint               *y,
                    gint               *width,
                    gint               *height)
 {
@@ -580,9 +582,15 @@ device_query_area (ClutterInputDevice *device,
       if (valuator->type != XIValuatorClass)
         continue;
       if (valuator->label == abs_x)
-        *width = valuator->max - valuator->min;
+        {
+          *x = valuator->min;
+          *width = valuator->max - valuator->min;
+        }
       else if (valuator->label == abs_y)
-        *height = valuator->max - valuator->min;
+        {
+          *y = valuator->min;
+          *height = valuator->max - valuator->min;
+        }
     }
 
   XIFreeDeviceInfo (info);
@@ -606,15 +614,15 @@ meta_input_settings_x11_set_tablet_area (MetaInputSettings  *settings,
                                          gdouble             padding_top,
                                          gdouble             padding_bottom)
 {
-  gint32 width, height, area[4] = { 0 };
+  gint32 x, y, width, height, area[4] = { 0 };
 
-  if (!device_query_area (device, &width, &height))
+  if (!device_query_area (device, &x, &y, &width, &height))
     return;
 
-  area[0] = width * padding_left;
-  area[1] = height * padding_top;
-  area[2] = width - (width * padding_right);
-  area[3] = height - (height * padding_bottom);
+  area[0] = (width * padding_left) + x;
+  area[1] = (height * padding_top) + y;
+  area[2] = width - (width * padding_right) + x;
+  area[3] = height - (height * padding_bottom) + y;
   update_tablet_area (settings, device, area);
 }
 
@@ -624,9 +632,9 @@ meta_input_settings_x11_set_tablet_keep_aspect (MetaInputSettings  *settings,
                                                 MetaLogicalMonitor *logical_monitor,
                                                 gboolean            keep_aspect)
 {
-  gint32 width, height, dev_width, dev_height, area[4] = { 0 };
+  gint32 width, height, dev_x, dev_y, dev_width, dev_height, area[4] = { 0 };
 
-  if (!device_query_area (device, &dev_width, &dev_height))
+  if (!device_query_area (device, &dev_x, &dev_y, &dev_width, &dev_height))
     return;
 
   if (keep_aspect)
@@ -658,8 +666,10 @@ meta_input_settings_x11_set_tablet_keep_aspect (MetaInputSettings  *settings,
         dev_height = dev_width / aspect_ratio;
     }
 
-  area[2] = dev_width;
-  area[3] = dev_height;
+  area[0] = dev_x;
+  area[1] = dev_y;
+  area[2] = dev_width + dev_x;
+  area[3] = dev_height + dev_y;
   update_tablet_area (settings, device, area);
 }
 
