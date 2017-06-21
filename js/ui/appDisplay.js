@@ -484,6 +484,7 @@ class AppDisplay extends BaseAppView {
         this.bind_property('mapped', this._bgAction,
             'enabled', GObject.BindingFlags.SYNC_CREATE);
 
+        this._appCenterIcon = null;
         this._currentDialog = null;
         this._displayingDialog = false;
         this._currentDialogDestroyId = 0;
@@ -619,7 +620,23 @@ class AppDisplay extends BaseAppView {
             appIcons.push(icon);
         });
 
+        // Add the App Center icon if it is enabled (and installed)
+        this._maybeAddAppCenterIcon(appIcons);
+
         return appIcons;
+    }
+
+    _maybeAddAppCenterIcon(apps) {
+        let appSys = Shell.AppSystem.get_default();
+        if (!appSys.lookup_app(EOS_APP_CENTER_ID)) {
+            log('App center %s is not installed'.format(EOS_APP_CENTER_ID));
+            return;
+        }
+
+        if (!this._appCenterIcon)
+            this._appCenterIcon = new AppCenterIcon();
+
+        apps.push(this._appCenterIcon);
     }
 
     // Overridden from BaseAppView
@@ -2436,5 +2453,83 @@ class SystemActionIcon extends Search.GridSearchResult {
     activate() {
         SystemActions.getDefault().activateAction(this.metaInfo['id']);
         Main.overview.viewSelector.show(2);
+    }
+});
+
+var AppCenterIcon = GObject.registerClass(
+class AppCenterIcon extends AppIcon {
+    _init() {
+        let viewIconParams = {
+            isDraggable: false,
+            showMenu: false,
+        };
+
+        let iconParams = {
+            createIcon: this._createIcon.bind(this),
+        };
+
+        let appSys = Shell.AppSystem.get_default();
+        let app = appSys.lookup_app(EOS_APP_CENTER_ID);
+
+        super._init(app, viewIconParams, iconParams);
+
+        this._id = EOS_APP_CENTER_ID;
+        this._name = this.app.get_generic_name();
+        this.icon.label.text = this.name;
+    }
+
+    _onDragBegin() {
+        super._onDragBegin();
+
+        this.icon.label.text = _("Remove");
+        this.icon.update();
+    }
+
+    _onDragEnd() {
+        super._onDragEnd();
+
+        this.icon.label.text = this.app.get_generic_name();
+        this.icon.update();
+    }
+
+    _setHoveringByDnd(hovering) {
+        this._hovering = hovering;
+
+        this.icon.update();
+    }
+
+    _createIcon(iconSize) {
+        if (!this._dragMonitor)
+            return super._createIcon(iconSize);
+
+        let iconResource = '';
+        if (this._hovering)
+            iconResource = 'resource:///org/gnome/shell/theme/trash-icon-full.png';
+        else
+            iconResource = 'resource:///org/gnome/shell/theme/trash-icon-empty.png';
+
+        let gicon = new Gio.FileIcon({
+            file: Gio.File.new_for_uri(iconResource),
+        });
+
+        return new St.Icon({
+            gicon: gicon,
+            icon_size: iconSize,
+        });
+    }
+
+    _canAccept(source) {
+        return source instanceof ViewIcon;
+    }
+
+    acceptDrop(source) {
+        this._setHoveringByDnd(false);
+
+        if (!this._canAccept(source))
+            return false;
+
+        const iconGridLayout = IconGridLayout.getDefault();
+        iconGridLayout.removeIcon(source.id, true);
+        return true;
     }
 });
