@@ -248,6 +248,18 @@ meta_monitor_is_laptop_panel (MetaMonitor *monitor)
     }
 }
 
+gboolean
+meta_monitor_is_same_as (MetaMonitor *monitor,
+                         MetaMonitor *other_monitor)
+{
+  MetaMonitorPrivate *priv =
+    meta_monitor_get_instance_private (monitor);
+  MetaMonitorPrivate *other_priv =
+    meta_monitor_get_instance_private (other_monitor);
+
+  return priv->winsys_id == other_priv->winsys_id;
+}
+
 void
 meta_monitor_get_current_resolution (MetaMonitor *monitor,
                                      int         *width,
