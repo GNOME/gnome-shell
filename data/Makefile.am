@@ -56,7 +56,6 @@ theme_sources = 						\
 
 dist_theme_files =						\
 	$(theme_sources)					\
-	theme/Gemfile						\
 	theme/HACKING						\
 	theme/README						\
 	theme/gnome-shell-sass/COPYING				\
@@ -64,7 +63,7 @@ dist_theme_files =						\
 	theme/gnome-shell-sass/NEWS				\
 	theme/gnome-shell-sass/README				\
 	theme/gnome-shell-sass/gnome-shell-sass.doap		\
-	theme/pad-osd.css						\
+	theme/pad-osd.css					\
 	theme/parse-sass.sh					\
 	$(NULL)
 
