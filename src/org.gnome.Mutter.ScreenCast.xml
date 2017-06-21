@@ -1,0 +1,107 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Mutter.ScreenCast:
+      @short_description: Screen cast interface
+  -->
+  <interface name="org.gnome.Mutter.ScreenCast">
+
+    <!--
+	CreateSession:
+	@properties: Properties
+	@session_path: Path to the new session object
+
+	* "remote-desktop-session-id" (s): The ID of a remote desktop session.
+					   Remote desktop driven screen casts
+					   are started and stopped by the remote
+					   desktop session.
+    -->
+    <method name="CreateSession">
+      <arg name="properties" type="a{sv}" direction="in" />
+      <arg name="session_path" type="o" direction="out" />
+    </method>
+
+  </interface>
+
+  <!--
+       org.gnome.Mutter.ScreenCast.Session:
+       @short_description: Screen cast session
+  -->
+  <interface name="org.gnome.Mutter.ScreenCast.Session">
+
+    <!--
+	Start:
+
+	Start the screen cast session
+    -->
+    <method name="Start" />
+
+    <!--
+	Stop:
+
+	Stop the screen cast session
+    -->
+    <method name="Stop" />
+
+    <!--
+	Closed:
+
+	The session has closed.
+    -->
+    <signal name="Closed" />
+
+    <!--
+	RecordMonitor:
+	@connector: Connector of the monitor to record
+	@properties: Properties
+	@stream_path: Path to the new stream object
+
+	Record a single monitor.
+
+	Available @properties include: (none)
+    -->
+    <method name="RecordMonitor">
+      <arg name="connector" type="s" direction="in" />
+      <arg name="properties" type="a{sv}" direction="in" />
+      <arg name="stream_path" type="o" direction="out" />
+    </method>
+
+    <!--
+	RecordWindow:
+	@properties: Properties used determining what window to select
+	@stream_path: Path to the new stream object
+
+	Record a single window.
+
+	Available @properties include: (none)
+    -->
+    <method name="RecordWindow">
+      <arg name="properties" type="a{sv}" direction="in" />
+      <arg name="stream_path" type="o" direction="out" />
+    </method>
+  </interface>
+
+  <!--
+       org.gnome.Mutter.ScreenCast.Stream:
+       @short_description: Screen cast stream
+  -->
+  <interface name="org.gnome.Mutter.ScreenCast.Stream">
+
+    <!--
+	PipeWireStreamAdded:
+	@short_description: Pipewire stream added
+
+	A signal emitted when PipeWire stream for the screen cast stream has
+	been created. The @node_id corresponds to the PipeWire stream node.
+    -->
+    <signal name="PipeWireStreamAdded">
+      <annotation name="org.gtk.GDBus.C.Name" value="pipewire-stream-added"/>
+      <arg name="stream_id" type="s" direction="out" />
+    </signal>
+
+  </interface>
+
+</node>

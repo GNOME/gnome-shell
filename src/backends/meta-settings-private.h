@@ -31,6 +31,8 @@ typedef enum _MetaExperimentalFeature
 {
   META_EXPERIMENTAL_FEATURE_NONE = 0,
   META_EXPERIMENTAL_FEATURE_SCALE_MONITOR_FRAMEBUFFER = (1 << 0),
+  META_EXPERIMENTAL_FEATURE_SCREEN_CAST = (1 << 1),
+  META_EXPERIMENTAL_FEATURE_REMOTE_DESKTOP  = (1 << 2),
 } MetaExperimentalFeature;
 
 #define META_TYPE_SETTINGS (meta_settings_get_type ())

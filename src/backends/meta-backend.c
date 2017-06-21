@@ -29,12 +29,18 @@
 #include <clutter/clutter-mutter.h>
 #include <meta/meta-backend.h>
 #include <meta/main.h>
+#include <meta/util.h>
 #include "meta-backend-private.h"
 #include "meta-input-settings-private.h"
-
 #include "backends/x11/meta-backend-x11.h"
 #include "meta-cursor-tracker-private.h"
 #include "meta-stage.h"
+
+#ifdef HAVE_REMOTE_DESKTOP
+#include "backends/meta-dbus-session-watcher.h"
+#include "backends/meta-screen-cast.h"
+#include "backends/meta-remote-desktop.h"
+#endif
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
@@ -85,6 +91,11 @@ struct _MetaBackendPrivate
   MetaRenderer *renderer;
   MetaEgl *egl;
   MetaSettings *settings;
+#ifdef HAVE_REMOTE_DESKTOP
+  MetaDbusSessionWatcher *dbus_session_watcher;
+  MetaScreenCast *screen_cast;
+  MetaRemoteDesktop *remote_desktop;
+#endif
 
   ClutterBackend *clutter_backend;
   ClutterActor *stage;
@@ -117,6 +128,11 @@ meta_backend_finalize (GObject *object)
   g_clear_object (&priv->monitor_manager);
   g_clear_object (&priv->orientation_manager);
   g_clear_object (&priv->input_settings);
+#ifdef HAVE_REMOTE_DESKTOP
+  g_clear_object (&priv->remote_desktop);
+  g_clear_object (&priv->screen_cast);
+  g_clear_object (&priv->dbus_session_watcher);
+#endif
 
   if (priv->device_update_idle_id)
     g_source_remove (priv->device_update_idle_id);
@@ -387,6 +403,28 @@ meta_backend_create_input_settings (MetaBackend *backend)
   return META_BACKEND_GET_CLASS (backend)->create_input_settings (backend);
 }
 
+#ifdef HAVE_REMOTE_DESKTOP
+static gboolean
+is_screen_cast_enabled (MetaBackend *backend)
+{
+  MetaSettings *settings = meta_backend_get_settings (backend);
+
+  return meta_settings_is_experimental_feature_enabled (
+    settings,
+    META_EXPERIMENTAL_FEATURE_SCREEN_CAST);
+}
+
+static gboolean
+is_remote_desktop_enabled (MetaBackend *backend)
+{
+  MetaSettings *settings = meta_backend_get_settings (backend);
+
+  return meta_settings_is_experimental_feature_enabled (
+    settings,
+    META_EXPERIMENTAL_FEATURE_REMOTE_DESKTOP);
+}
+#endif /* HAVE_REMOTE_DESKTOP */
+
 static void
 meta_backend_real_post_init (MetaBackend *backend)
 {
@@ -419,6 +457,14 @@ meta_backend_real_post_init (MetaBackend *backend)
   priv->input_settings = meta_backend_create_input_settings (backend);
 
   center_pointer (backend);
+
+#ifdef HAVE_REMOTE_DESKTOP
+  priv->dbus_session_watcher = g_object_new (META_TYPE_DBUS_SESSION_WATCHER, NULL);
+  if (is_screen_cast_enabled (backend))
+    priv->screen_cast = meta_screen_cast_new (priv->dbus_session_watcher);
+  if (is_remote_desktop_enabled (backend))
+    priv->remote_desktop = meta_remote_desktop_new (priv->dbus_session_watcher);
+#endif /* HAVE_REMOTE_DESKTOP */
 }
 
 static MetaCursorRenderer *
@@ -503,6 +549,26 @@ meta_backend_class_init (MetaBackendClass *klass)
   stage_views_disabled = g_strcmp0 (mutter_stage_views, "0") == 0;
 }
 
+static void
+experimental_features_changed (MetaSettings            *settings,
+                               MetaExperimentalFeature  old_experimental_features,
+                               MetaBackend             *backend)
+{
+#ifdef HAVE_REMOTE_DESKTOP
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  if (is_screen_cast_enabled (backend) && !priv->screen_cast)
+    priv->screen_cast = meta_screen_cast_new (priv->dbus_session_watcher);
+  else if (!is_screen_cast_enabled (backend))
+    g_clear_object (&priv->screen_cast);
+
+  if (is_remote_desktop_enabled (backend) && !priv->remote_desktop)
+    priv->remote_desktop = meta_remote_desktop_new (priv->dbus_session_watcher);
+  else if (!is_remote_desktop_enabled (backend))
+    g_clear_object (&priv->remote_desktop);
+#endif /* HAVE_REMOTE_DESKTOP */
+}
+
 static gboolean
 meta_backend_initable_init (GInitable     *initable,
                             GCancellable  *cancellable,
@@ -512,6 +578,9 @@ meta_backend_initable_init (GInitable     *initable,
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
 
   priv->settings = meta_settings_new (backend);
+  g_signal_connect (priv->settings, "experimental-features-changed",
+                    G_CALLBACK (experimental_features_changed),
+                    backend);
 
   priv->egl = g_object_new (META_TYPE_EGL, NULL);
 
@@ -640,6 +709,19 @@ meta_backend_get_settings (MetaBackend *backend)
 
   return priv->settings;
 }
+
+#ifdef HAVE_REMOTE_DESKTOP
+/**
+ * meta_backend_get_remote_desktop: (skip)
+ */
+MetaRemoteDesktop *
+meta_backend_get_remote_desktop (MetaBackend *backend)
+{
+  MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
+
+  return priv->remote_desktop;
+}
+#endif /* HAVE_REMOTE_DESKTOP */
 
 /**
  * meta_backend_grab_device: (skip)

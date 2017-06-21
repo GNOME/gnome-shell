@@ -71,6 +71,8 @@ src/stamp-meta-enum-types.h
 src/meta-dbus-display-config.[ch]
 src/meta-dbus-idle-monitor.[ch]
 src/meta-dbus-login1.[ch]
+src/meta-dbus-remote-desktop.[ch]
+src/meta-dbus-screen-cast.[ch]
 src/gtk-primary-selection-protocol.c
 src/gtk-primary-selection-server-protocol.h
 src/gtk-shell-protocol.c

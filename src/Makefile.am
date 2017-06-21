@@ -53,6 +53,13 @@ mutter_built_sources = \
 	meta-enum-types.c			\
 	$(NULL)
 
+if HAVE_REMOTE_DESKTOP
+mutter_built_sources += \
+	$(dbus_remote_desktop_built_sources)	\
+	$(dbus_screen_cast_built_sources)	\
+	$(NULL)
+endif
+
 if HAVE_WAYLAND
 mutter_built_sources += \
 	pointer-gestures-unstable-v1-protocol.c				\
@@ -312,6 +319,29 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	x11/xprops.h				\
 	x11/mutter-Xatomtype.h			\
 	$(NULL)
+
+if HAVE_REMOTE_DESKTOP
+libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
+	backends/meta-dbus-session-watcher.c	\
+	backends/meta-dbus-session-watcher.h	\
+	backends/meta-remote-desktop.c		\
+	backends/meta-remote-desktop.h		\
+	backends/meta-remote-desktop-session.c	\
+	backends/meta-remote-desktop-session.h	\
+	backends/meta-screen-cast.c		\
+	backends/meta-screen-cast.h		\
+	backends/meta-screen-cast-monitor-stream.c	\
+	backends/meta-screen-cast-monitor-stream.h	\
+	backends/meta-screen-cast-monitor-stream-src.c	\
+	backends/meta-screen-cast-monitor-stream-src.h	\
+	backends/meta-screen-cast-session.c	\
+	backends/meta-screen-cast-session.h	\
+	backends/meta-screen-cast-stream.c	\
+	backends/meta-screen-cast-stream.h	\
+	backends/meta-screen-cast-stream-src.c	\
+	backends/meta-screen-cast-stream-src.h	\
+	$(NULL)
+endif
 
 if HAVE_WAYLAND
 libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
@@ -581,6 +611,8 @@ EXTRA_DIST +=					\
 	org.freedesktop.login1.xml		\
 	org.gnome.Mutter.DisplayConfig.xml	\
 	org.gnome.Mutter.IdleMonitor.xml	\
+	org.gnome.Mutter.RemoteDesktop.xml	\
+	org.gnome.Mutter.ScreenCast.xml	\
 	backends/native/gen-default-modes.py	\
 	$(NULL)
 
@@ -628,6 +660,26 @@ $(dbus_idle_built_sources) : Makefile.am org.gnome.Mutter.IdleMonitor.xml
 		--c-generate-object-manager						\
 		--c-generate-autocleanup all						\
 		$(srcdir)/org.gnome.Mutter.IdleMonitor.xml
+
+if HAVE_REMOTE_DESKTOP
+dbus_remote_desktop_built_sources = meta-dbus-remote-desktop.c meta-dbus-remote-desktop.h
+
+$(dbus_remote_desktop_built_sources) : Makefile.am org.gnome.Mutter.RemoteDesktop.xml
+	$(AM_V_GEN)gdbus-codegen							\
+		--interface-prefix org.gnome.Mutter					\
+		--c-namespace MetaDBus							\
+		--generate-c-code meta-dbus-remote-desktop				\
+		$(srcdir)/org.gnome.Mutter.RemoteDesktop.xml
+
+dbus_screen_cast_built_sources = meta-dbus-screen-cast.c meta-dbus-screen-cast.h
+
+$(dbus_screen_cast_built_sources) : Makefile.am org.gnome.Mutter.ScreenCast.xml
+	$(AM_V_GEN)gdbus-codegen							\
+		--interface-prefix org.gnome.Mutter					\
+		--c-namespace MetaDBus							\
+		--generate-c-code meta-dbus-screen-cast					\
+		$(srcdir)/org.gnome.Mutter.ScreenCast.xml
+endif
 
 dbus_login1_built_sources = meta-dbus-login1.c meta-dbus-login1.h
 

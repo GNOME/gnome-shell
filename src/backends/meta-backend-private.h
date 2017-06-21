@@ -38,6 +38,9 @@
 #include "meta-input-settings-private.h"
 #include "backends/meta-egl.h"
 #include "backends/meta-pointer-constraint.h"
+#ifdef HAVE_REMOTE_DESKTOP
+#include "backends/meta-remote-desktop.h"
+#endif
 #include "backends/meta-renderer.h"
 #include "backends/meta-settings-private.h"
 #include "core/util-private.h"
@@ -119,6 +122,10 @@ MetaCursorRenderer * meta_backend_get_cursor_renderer (MetaBackend *backend);
 MetaRenderer * meta_backend_get_renderer (MetaBackend *backend);
 MetaEgl * meta_backend_get_egl (MetaBackend *backend);
 MetaSettings * meta_backend_get_settings (MetaBackend *backend);
+
+#ifdef HAVE_REMOTE_DESKTOP
+MetaRemoteDesktop * meta_backend_get_remote_desktop (MetaBackend *backend);
+#endif
 
 gboolean meta_backend_grab_device (MetaBackend *backend,
                                    int          device_id,

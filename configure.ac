@@ -238,6 +238,17 @@ else
   fi
 fi
 
+AC_ARG_ENABLE(remote-desktop,
+  AS_HELP_STRING([--enable-remote-desktop], [enable support for remote desktop and screen cast]),
+  enable_remote_desktop=yes,
+  enable_remote_desktop=no
+)
+AS_IF([test "$enable_remote_desktop" = "yes"], [
+  MUTTER_PC_MODULES="$MUTTER_PC_MODULES libpipewire-0.1 >= 0.1.4"
+  AC_DEFINE([HAVE_REMOTE_DESKTOP],[1], [Defined if EGLDevice support is enabled])
+])
+AM_CONDITIONAL([HAVE_REMOTE_DESKTOP],[test "$enable_remote_desktop" = "yes"])
+
 INTROSPECTION_VERSION=0.9.5
 GOBJECT_INTROSPECTION_CHECK([$INTROSPECTION_VERSION])
 
@@ -513,6 +524,7 @@ mutter-$VERSION
 	Wayland:                  ${have_wayland}
 	Native (KMS) backend:     ${have_native_backend}
 	EGLDevice:                ${enable_egl_device}
+	Remote desktop:           ${enable_remote_desktop}
 "
 
 

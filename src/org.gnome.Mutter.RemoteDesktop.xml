@@ -1,0 +1,103 @@
+<!DOCTYPE node PUBLIC
+'-//freedesktop//DTD D-BUS Object Introspection 1.0//EN'
+'http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd'>
+<node>
+
+  <!--
+      org.gnome.Mutter.RemoteDesktop:
+      @short_description: Remote desktop interface
+  -->
+  <interface name="org.gnome.Mutter.RemoteDesktop">
+
+    <!--
+	CreateSession:
+	@session_path: Path to the new session object
+    -->
+    <method name="CreateSession">
+      <arg name="session_path" type="o" direction="out" />
+    </method>
+
+  </interface>
+
+  <!--
+       org.gnome.Mutter.RemoteDesktop.Session:
+       @short_description: Remote desktop session
+  -->
+  <interface name="org.gnome.Mutter.RemoteDesktop.Session">
+
+    <!--
+	SessionId:
+
+	An identification string used for identifying a remote desktop session.
+	It can be used to associate screen cast sessions with a remote desktop session.
+    -->
+    <property name="SessionId" type="s" access="read" />
+
+    <!--
+	Start:
+
+	Start the remote desktop session
+    -->
+    <method name="Start" />
+
+    <!--
+	Stop:
+
+	Stop the remote desktop session
+    -->
+    <method name="Stop" />
+
+    <!--
+	Closed:
+
+	The session has closed.
+
+	A session doesn't have to have been started before it may be closed.
+	After it being closed, it can no longer be used.
+    -->
+    <signal name="Closed" />
+
+    <!--
+	NotifyKeyboardKeysym:
+
+	A key identified by a keysym was pressed or released
+     -->
+    <method name="NotifyKeyboardKeysym">
+      <arg name="keysym" type="u" direction="in" />
+      <arg name="state" type="b" direction="in" />
+    </method>
+
+    <!--
+	NotifyPointerButton:
+
+	A pointer button was pressed or released
+     -->
+    <method name="NotifyPointerButton">
+      <arg name="button" type="i" direction="in" />
+      <arg name="state" type="b" direction="in" />
+    </method>
+
+    <!--
+	NotifyPointerAxisDiscrete:
+
+	A discrete pointer axis event notification
+     -->
+    <method name="NotifyPointerAxisDiscrete">
+      <arg name="axis" type="u" direction="in" />
+      <arg name="steps" type="i" direction="in" />
+    </method>
+
+    <!--
+	NotifyPointerMotionAbsolute:
+
+	A absolute pointer motion event notification
+     -->
+    <method name="NotifyPointerMotionAbsolute">
+      <arg name="stream" type="s" direction="in" />
+      <arg name="x" type="d" direction="in" />
+      <arg name="y" type="d" direction="in" />
+    </method>
+
+  </interface>
+
+</node>
