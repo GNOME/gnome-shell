@@ -34,4 +34,7 @@ void     meta_set_syncing (gboolean setting);
 void     meta_set_replace_current_wm (gboolean setting);
 void     meta_set_is_wayland_compositor (gboolean setting);
 
+char *   meta_generate_random_id (GRand *rand,
+                                  int    length);
+
 #endif

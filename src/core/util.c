@@ -994,5 +994,21 @@ meta_get_locale_direction (void)
     }
 }
 
+char *
+meta_generate_random_id (GRand *rand,
+                         int    length)
+{
+  char *id;
+  int i;
+
+  /* Generate a random string of printable ASCII characters. */
+
+  id = g_new0 (char, length + 1);
+  for (i = 0; i < length; i++)
+    id[i] = (char) g_rand_int_range (rand, 32, 127);
+
+  return id;
+}
+
 /* eof util.c */
 

@@ -28,6 +28,7 @@
 
 #include <wayland-server.h>
 
+#include "core/util-private.h"
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-wayland-versions.h"
 #include "wayland/meta-wayland-xdg-shell.h"
@@ -78,21 +79,6 @@ xdg_exporter_destroy (struct wl_client   *client,
                       struct wl_resource *resource)
 {
   wl_resource_destroy (resource);
-}
-
-static char *
-generate_handle (MetaWaylandXdgForeign *foreign)
-{
-  char *handle = g_new0 (char, META_XDG_FOREIGN_HANDLE_LENGTH + 1);
-  int i;
-
-  /*
-   * Generate a random string of printable ASCII characters.
-   */
-  for (i = 0; i < META_XDG_FOREIGN_HANDLE_LENGTH; i++)
-    handle[i] = (char) g_rand_int_range (foreign->rand, 32, 127);
-
-  return handle;
 }
 
 static void
@@ -195,7 +181,8 @@ xdg_exporter_export (struct wl_client   *client,
 
   while (TRUE)
     {
-      handle = generate_handle (foreign);
+      handle = meta_generate_random_id (foreign->rand,
+                                        META_XDG_FOREIGN_HANDLE_LENGTH);
 
       if (!g_hash_table_contains (foreign->exported_surfaces, handle))
         {
