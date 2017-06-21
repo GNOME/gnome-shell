@@ -1,3 +1,17 @@
+3.25.3
+======
+* Bypass proxies for captive portal [Bastien; #769692]
+* Correctly handle "text-shadow: none;" [Matt; #783485]
+* Add StEntry:hint-actor property [Mario; #783484]
+* Support text-shadow CSS property in StEntry [Mario; #783484]
+* Misc. bug fixes [Jonas, Florian, Bastien, Ting-Wei, Cosimo, Mario, Sebastian;
+  #777732, #783202, #783210, #783206, #783286, #783439, #783483, #783823,
+  #781950]
+
+Contributors:
+  Jonas Ådahl, Cosimo Cecchi, Sebastian Keller, Ting-Wei Lan, Florian Müllner,
+  Bastien Nocera, Mario Sanchez Prada, Matt Watson
+
 3.25.2
 ======
 * Fix StEntry::primary-icon-clicked emission [Florian; #782190]
