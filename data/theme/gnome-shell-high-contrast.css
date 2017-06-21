@@ -1704,11 +1704,12 @@ StScrollBar {
 
 .login-dialog-user-selection-box {
   padding: 100px 0px; }
-  .login-dialog-user-selection-box .login-dialog-not-listed-label {
-    padding-left: 2px; }
-    .login-dialog-not-listed-button:focus .login-dialog-user-selection-box .login-dialog-not-listed-label,
-    .login-dialog-not-listed-button:hover .login-dialog-user-selection-box .login-dialog-not-listed-label {
-      color: #eeeeec; }
+
+.login-dialog-not-listed-label {
+  padding-left: 2px; }
+  .login-dialog-not-listed-button:focus .login-dialog-not-listed-label,
+  .login-dialog-not-listed-button:hover .login-dialog-not-listed-label {
+    color: #eeeeec; }
 
 .login-dialog-not-listed-label {
   font-size: 90%;
