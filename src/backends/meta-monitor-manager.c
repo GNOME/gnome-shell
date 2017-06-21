@@ -2314,6 +2314,24 @@ meta_monitor_manager_get_laptop_panel (MetaMonitorManager *manager)
 }
 
 MetaMonitor *
+meta_monitor_manager_get_monitor_from_connector (MetaMonitorManager *manager,
+                                                 const char         *connector)
+{
+  GList *l;
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (g_str_equal (meta_monitor_get_connector (monitor),
+                       connector))
+        return monitor;
+    }
+
+  return NULL;
+}
+
+MetaMonitor *
 meta_monitor_manager_get_monitor_from_spec (MetaMonitorManager *manager,
                                             MetaMonitorSpec    *monitor_spec)
 {

@@ -449,6 +449,9 @@ MetaMonitor *       meta_monitor_manager_get_laptop_panel (MetaMonitorManager *m
 MetaMonitor *       meta_monitor_manager_get_monitor_from_spec (MetaMonitorManager *manager,
                                                                 MetaMonitorSpec    *monitor_spec);
 
+MetaMonitor *       meta_monitor_manager_get_monitor_from_connector (MetaMonitorManager *manager,
+                                                                     const char         *connector);
+
 GList *             meta_monitor_manager_get_monitors      (MetaMonitorManager *manager);
 
 MetaOutput         *meta_monitor_manager_get_outputs       (MetaMonitorManager *manager,
