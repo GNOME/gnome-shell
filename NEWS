@@ -1,3 +1,27 @@
+3.25.3
+======
+* Ignore hotplug-mode-update value on startup [Marco; #783073]
+* Implement configurable monitor scales on X11 [Jonas; #777732]
+* Fix handling of tiled monitors [Jonas; #781723]
+* Handle multiple keycodes for keysym [Christian; #781223]
+* Consider subsurfaces when grabbing [mindtree; #781811]
+* Fix logic for HiPDPI scaling of TV outputs [Christian; #777347]
+* Fix handling of left-handed mode on pen/eraser devices [Carlos; #782027]
+* Fix output cycling in non-display-attached tablets [Carlos; #782032]
+* Fix wacom cursor offset on wayland [Jason; #784009]
+* Handle EXIF orientation of backgrounds [Silvère; #783125]
+* Misc. bug fixes [Piotr, Tim, Bastien, Jonas, Florian, Benoit, Carlos; #772218,
+  #783161, #780407, #783113, #783293, #783505, #781703]
+
+Contributors:
+  mitchmindtree, Jonas Ådahl, Ikey Doherty, Piotr Drąg, Carlos Garnacho,
+  Jason Gerecke, Benoit Gschwind, Christian Kellner, Silvère Latchurié,
+  Tim Lunn, Florian Müllner, Bastien Nocera, Marco Trevisan (Treviño)
+
+Translations:
+  Fabio Tomat [fur], Kukuh Syafaat [id], Khaled Hosny [ar],
+  Daniel Mustieles [es]
+
 3.25.2
 ======
 * Fix frame updates on hide-titlebar-when-maximized changes [Florian; #781862]
