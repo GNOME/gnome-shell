@@ -1752,9 +1752,15 @@ var AppIcon = GObject.registerClass({
         this._folderPreviewId = 0;
 
         // Get the isDraggable property without passing it on to the BaseIcon:
-        let appIconParams = Params.parse(iconParams, { isDraggable: true }, true);
+        let appIconParams = Params.parse(iconParams, {
+            isDraggable: true,
+            showMenu: true,
+        }, true);
         let isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
+
+        this._showMenu = appIconParams['showMenu'];
+        delete iconParams['showMenu'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = false;
@@ -1908,6 +1914,10 @@ var AppIcon = GObject.registerClass({
 
     popupMenu() {
         this._removeMenuTimeout();
+
+        if (!this._showMenu)
+            return true;
+
         this.fake_release();
 
         if (this._draggable)
