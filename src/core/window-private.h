@@ -80,6 +80,7 @@ typedef enum
   META_MOVE_RESIZE_WAYLAND_RESIZE = 1 << 4,
   META_MOVE_RESIZE_STATE_CHANGED = 1 << 5,
   META_MOVE_RESIZE_UNMAXIMIZE = 1 << 6,
+  META_MOVE_RESIZE_FORCE_MOVE = 1 << 7,
 } MetaMoveResizeFlags;
 
 typedef enum
@@ -792,7 +793,8 @@ void meta_window_emit_size_changed (MetaWindow *window);
 
 MetaPlacementRule *meta_window_get_placement_rule (MetaWindow *window);
 
-void meta_window_force_placement (MetaWindow *window);
+void meta_window_force_placement (MetaWindow *window,
+                                  gboolean    force_move);
 
 void meta_window_force_restore_shortcuts (MetaWindow         *window,
                                           ClutterInputDevice *source);

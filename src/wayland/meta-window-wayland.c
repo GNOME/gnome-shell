@@ -232,7 +232,11 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
    * it can be for maximized or fullscreen.
    */
 
-  if (flags & META_MOVE_RESIZE_WAYLAND_RESIZE)
+  if (flags & META_MOVE_RESIZE_FORCE_MOVE)
+    {
+      can_move_now = TRUE;
+    }
+  else if (flags & META_MOVE_RESIZE_WAYLAND_RESIZE)
     {
       /* This is a call to wl_surface_commit(), ignore the constrained_rect and
        * update the real client size to match the buffer size.
@@ -762,7 +766,7 @@ meta_window_place_with_placement_rule (MetaWindow        *window,
 
   window->unconstrained_rect.width = placement_rule->width;
   window->unconstrained_rect.height = placement_rule->height;
-  meta_window_force_placement (window);
+  meta_window_force_placement (window, FALSE);
 }
 
 void

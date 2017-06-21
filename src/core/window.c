@@ -1713,7 +1713,7 @@ implement_showing (MetaWindow *window,
        * see #751887
        */
       if (!window->placed && client_window_should_be_mapped (window))
-        meta_window_force_placement (window);
+        meta_window_force_placement (window, FALSE);
 
       meta_window_hide (window);
     }
@@ -2294,8 +2294,11 @@ window_would_be_covered (const MetaWindow *newbie)
 }
 
 void
-meta_window_force_placement (MetaWindow *window)
+meta_window_force_placement (MetaWindow *window,
+                             gboolean    force_move)
 {
+  MetaMoveResizeFlags flags;
+
   if (window->placed)
     return;
 
@@ -2308,7 +2311,15 @@ meta_window_force_placement (MetaWindow *window)
    * show the window.
    */
   window->calc_placement = TRUE;
-  meta_window_move_resize_now (window);
+
+  flags = META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION;
+  if (force_move)
+    flags |= META_MOVE_RESIZE_FORCE_MOVE;
+
+  meta_window_move_resize_internal (window,
+                                    flags,
+                                    NorthWestGravity,
+                                    window->unconstrained_rect);
   window->calc_placement = FALSE;
 
   /* don't ever do the initial position constraint thing again.
@@ -2387,7 +2398,7 @@ meta_window_show (MetaWindow *window)
               window->maximize_vertically_after_placement = TRUE;
             }
         }
-      meta_window_force_placement (window);
+      meta_window_force_placement (window, FALSE);
     }
 
   if (needs_stacking_adjustment)

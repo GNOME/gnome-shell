@@ -347,9 +347,10 @@ xdg_toplevel_set_maximized (struct wl_client   *client,
                             struct wl_resource *resource)
 {
   MetaWaylandSurface *surface = surface_from_xdg_toplevel_resource (resource);
+  MetaWindow *window = surface->window;
 
-  meta_window_force_placement (surface->window);
-  meta_window_maximize (surface->window, META_MAXIMIZE_BOTH);
+  meta_window_force_placement (window, TRUE);
+  meta_window_maximize (window, META_MAXIMIZE_BOTH);
 }
 
 static void
