@@ -617,6 +617,10 @@ check_monitor_configuration (MonitorTestCase *test_case)
                        test_case->expect.monitors[i].height_mm);
 
       modes = meta_monitor_get_modes (monitor);
+      g_assert_cmpint (g_list_length (modes),
+                       ==,
+                       test_case->expect.monitors[i].n_modes);
+
       for (l_mode = modes, j = 0; l_mode; l_mode = l_mode->next, j++)
         {
           MetaMonitorMode *mode = l_mode->data;
