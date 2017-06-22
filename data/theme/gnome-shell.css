@@ -1188,7 +1188,7 @@ StScrollBar {
   color: #e2e2df; }
 
 .list-search-result-description {
-  color: #cacac4;
+  color: rgba(202, 202, 196, 0.5);
   margin-left: 30px; }
 
 .search-provider-icon {
