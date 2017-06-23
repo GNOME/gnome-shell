@@ -241,6 +241,21 @@ shell_util_translate_time_string (const char *str)
 }
 
 /**
+ * shell_util_regex_escape:
+ * @str: a UTF-8 string to escape
+ *
+ * A wrapper around g_regex_escape_string() that takes its argument as
+ * \0-terminated string rather than a byte-array the confuses gjs.
+ *
+ * Returns: @str with all regex-special characters escaped
+ */
+char *
+shell_util_regex_escape (const char *str)
+{
+  return g_regex_escape_string (str, -1);
+}
+
+/**
  * shell_write_string_to_stream:
  * @stream: a #GOutputStream
  * @str: a UTF-8 string to write to @stream
