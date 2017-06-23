@@ -280,7 +280,10 @@ function formatTime(time, params) {
             // xgettext:no-c-format
             format = N_("%B %d %Y, %l\u2236%M %p");
     }
-    return date.format(Shell.util_translate_time_string(format));
+
+    let formattedTime = date.format(Shell.util_translate_time_string(format));
+    // prepend LTR-mark to colon/ratio to force a text direction on times
+    return formattedTime.replace(/([:\u2236])/g, '\u200e$1');
 }
 
 function createTimeLabel(date, params) {
