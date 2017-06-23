@@ -572,9 +572,15 @@ meta_wayland_tablet_tool_account_button (MetaWaylandTabletTool *tool,
                                          const ClutterEvent    *event)
 {
   if (event->type == CLUTTER_BUTTON_PRESS)
-    tool->pressed_buttons |= 1 << (event->button.button - 1);
+    {
+      tool->pressed_buttons |= 1 << (event->button.button - 1);
+      tool->button_count++;
+    }
   else if (event->type == CLUTTER_BUTTON_RELEASE)
-    tool->pressed_buttons &= ~(1 << (event->button.button - 1));
+    {
+      tool->pressed_buttons &= ~(1 << (event->button.button - 1));
+      tool->button_count--;
+    }
 }
 
 static void
@@ -840,6 +846,9 @@ handle_button_event (MetaWaylandTabletTool *tool,
   if (!tool->focus_surface)
     return;
 
+  if (event->type == CLUTTER_BUTTON_PRESS && tool->button_count == 1)
+    clutter_event_get_coords (event, &tool->grab_x, &tool->grab_y);
+
   if (event->type == CLUTTER_BUTTON_PRESS && event->button.button == 1)
     broadcast_down (tool, event);
   else if (event->type == CLUTTER_BUTTON_RELEASE && event->button.button == 1)
@@ -917,4 +926,33 @@ meta_wayland_tablet_tool_set_cursor_position (MetaWaylandTabletTool *tool,
 {
   if (tool->cursor_renderer)
     meta_cursor_renderer_set_position (tool->cursor_renderer, new_x, new_y);
+}
+
+static gboolean
+tablet_tool_can_grab_surface (MetaWaylandTabletTool *tool,
+                              MetaWaylandSurface    *surface)
+{
+  GList *l;
+
+  if (tool->focus_surface == surface)
+    return TRUE;
+
+  for (l = surface->subsurfaces; l; l = l->next)
+    {
+      MetaWaylandSurface *subsurface = l->data;
+
+      if (tablet_tool_can_grab_surface (tool, subsurface))
+        return TRUE;
+    }
+
+  return FALSE;
+}
+
+gboolean
+meta_wayland_tablet_tool_can_grab_surface (MetaWaylandTabletTool *tool,
+                                           MetaWaylandSurface    *surface,
+                                           uint32_t               serial)
+{
+  return ((tool->down_serial == serial || tool->button_serial == serial) &&
+          tablet_tool_can_grab_surface (tool, surface));
 }

@@ -48,10 +48,13 @@ struct _MetaWaylandTabletTool
 
   MetaWaylandSurface *current;
   guint32 pressed_buttons;
+  guint32 button_count;
 
   guint32 proximity_serial;
   guint32 down_serial;
   guint32 button_serial;
+
+  float grab_x, grab_y;
 
   MetaWaylandTablet *current_tablet;
 };
@@ -79,5 +82,8 @@ void     meta_wayland_tablet_tool_set_cursor_position (MetaWaylandTabletTool  *t
                                                        int                     new_x,
                                                        int                     new_y);
 
+gboolean meta_wayland_tablet_tool_can_grab_surface (MetaWaylandTabletTool *tool,
+                                                    MetaWaylandSurface    *surface,
+                                                    uint32_t               serial);
 
 #endif /* META_WAYLAND_TABLET_TOOL_H */

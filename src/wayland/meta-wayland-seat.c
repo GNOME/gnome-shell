@@ -426,36 +426,58 @@ meta_wayland_seat_get_grab_info (MetaWaylandSeat    *seat,
                                  gfloat             *x,
                                  gfloat             *y)
 {
-  ClutterEventSequence *sequence = NULL;
-  gboolean can_grab_surface = FALSE;
+  MetaWaylandCompositor *compositor;
+  MetaWaylandTabletSeat *tablet_seat;
+  GList *tools, *l;
+
+  compositor = meta_wayland_compositor_get_default ();
+  tablet_seat = meta_wayland_tablet_manager_ensure_seat (compositor->tablet_manager, seat);
+  tools = g_hash_table_get_values (tablet_seat->tools);
 
   if (meta_wayland_seat_has_touch (seat))
-    sequence = meta_wayland_touch_find_grab_sequence (seat->touch,
-                                                      surface,
-                                                      serial);
-
-  if (sequence)
     {
-      meta_wayland_touch_get_press_coords (seat->touch, sequence, x, y);
+      ClutterEventSequence *sequence;
+      sequence = meta_wayland_touch_find_grab_sequence (seat->touch,
+                                                        surface,
+                                                        serial);
+      if (sequence)
+        {
+          meta_wayland_touch_get_press_coords (seat->touch, sequence, x, y);
+          return TRUE;
+        }
     }
-  else
-    {
-      if (meta_wayland_seat_has_pointer (seat) &&
-          (!require_pressed || seat->pointer->button_count > 0))
-        can_grab_surface = meta_wayland_pointer_can_grab_surface (seat->pointer,
-                                                                  surface,
-                                                                  serial);
 
-      if (can_grab_surface)
+  if (meta_wayland_seat_has_pointer (seat))
+    {
+      if ((!require_pressed || seat->pointer->button_count > 0) &&
+          meta_wayland_pointer_can_grab_surface (seat->pointer, surface, serial))
         {
           if (x)
             *x = seat->pointer->grab_x;
           if (y)
             *y = seat->pointer->grab_y;
+
+          return TRUE;
         }
     }
 
-  return sequence || can_grab_surface;
+  for (l = tools; l; l = l->next)
+    {
+      MetaWaylandTabletTool *tool = l->data;
+
+      if ((!require_pressed || tool->button_count > 0) &&
+          meta_wayland_tablet_tool_can_grab_surface (tool, surface, serial))
+        {
+          if (x)
+            *x = tool->grab_x;
+          if (y)
+            *y = tool->grab_y;
+
+          return TRUE;
+        }
+    }
+
+  return FALSE;
 }
 
 gboolean

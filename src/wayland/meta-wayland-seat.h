@@ -31,6 +31,7 @@
 #include "meta-wayland-keyboard.h"
 #include "meta-wayland-touch.h"
 #include "meta-wayland-data-device.h"
+#include "meta-wayland-tablet-tool.h"
 
 struct _MetaWaylandSeat
 {
