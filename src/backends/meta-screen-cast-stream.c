@@ -70,6 +70,17 @@ meta_screen_cast_stream_create_src (MetaScreenCastStream  *stream,
                                                                  error);
 }
 
+static void
+on_stream_src_closed (MetaScreenCastStreamSrc *src,
+                      MetaScreenCastStream    *stream)
+{
+  MetaScreenCastStreamPrivate *priv =
+    meta_screen_cast_stream_get_instance_private (stream);
+
+  if (priv->src)
+    meta_screen_cast_stream_close (stream);
+}
+
 gboolean
 meta_screen_cast_stream_start (MetaScreenCastStream  *stream,
                                GError               **error)
@@ -87,6 +98,7 @@ meta_screen_cast_stream_start (MetaScreenCastStream  *stream,
     return FALSE;
 
   priv->src = src;
+  g_signal_connect (src, "closed", G_CALLBACK (on_stream_src_closed), stream);
 
   meta_dbus_screen_cast_stream_emit_pipewire_stream_added (skeleton, stream_id);
 

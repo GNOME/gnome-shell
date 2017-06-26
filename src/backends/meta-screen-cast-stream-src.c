@@ -50,6 +50,15 @@ enum
   PROP_STREAM_ID,
 };
 
+enum
+{
+  CLOSED,
+
+  N_SIGNALS
+};
+
+static guint signals[N_SIGNALS];
+
 typedef struct _MetaSpaType
 {
   uint32_t format;
@@ -189,11 +198,33 @@ meta_screen_cast_stream_src_maybe_record_frame (MetaScreenCastStreamSrc *src)
 }
 
 static void
+meta_screen_cast_stream_src_notify_closed (MetaScreenCastStreamSrc *src)
+{
+  g_signal_emit (src, signals[CLOSED], 0);
+}
+
+static void
 on_stream_state_changed (void                 *data,
                          enum pw_stream_state  old,
                          enum pw_stream_state  state,
                          const char           *error_message)
 {
+  MetaScreenCastStreamSrc *src = data;
+
+  switch (state)
+    {
+    case PW_STREAM_STATE_ERROR:
+      g_warning ("pipewire stream error: %s", error_message);
+      meta_screen_cast_stream_src_notify_closed (src);
+      break;
+    case PW_STREAM_STATE_UNCONNECTED:
+    case PW_STREAM_STATE_CONNECTING:
+    case PW_STREAM_STATE_CONFIGURE:
+    case PW_STREAM_STATE_READY:
+    case PW_STREAM_STATE_PAUSED:
+    case PW_STREAM_STATE_STREAMING:
+      break;
+    }
 }
 
 static void
@@ -341,6 +372,7 @@ on_state_changed (void                 *data,
     {
     case PW_REMOTE_STATE_ERROR:
       g_warning ("pipewire remote error: %s\n", error_message);
+      meta_screen_cast_stream_src_notify_closed (src);
       break;
     case PW_REMOTE_STATE_CONNECTED:
       pipewire_stream = create_pipewire_stream (src, &error);
@@ -348,6 +380,7 @@ on_state_changed (void                 *data,
         {
           g_warning ("Could not create pipewire stream: %s", error->message);
           g_error_free (error);
+          meta_screen_cast_stream_src_notify_closed (src);
         }
       else
         {
@@ -594,4 +627,11 @@ meta_screen_cast_stream_src_class_init (MetaScreenCastStreamSrcClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  signals[CLOSED] = g_signal_new ("closed",
+                                  G_TYPE_FROM_CLASS (klass),
+                                  G_SIGNAL_RUN_LAST,
+                                  0,
+                                  NULL, NULL, NULL,
+                                  G_TYPE_NONE, 0);
 }
