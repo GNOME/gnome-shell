@@ -138,7 +138,7 @@ const ShellUserVerifier = new Lang.Class({
 
         // We check for smartcards right away, since an inserted smartcard
         // at startup should result in immediately initiating authentication.
-        // This is different than fingeprint readers, where we only check them
+        // This is different than fingerprint readers, where we only check them
         // after a user has been picked.
         this._checkForSmartcard();
 
