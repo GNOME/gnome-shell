@@ -1260,7 +1260,6 @@ update_num_workspaces (MetaScreen *screen,
     {
       MetaWorkspace *w = l->data;
 
-      g_assert (w->windows == NULL);
       meta_workspace_remove (w);
     }
 
