@@ -94,6 +94,42 @@ meta_screen_cast_monitor_stream_src_get_specs (MetaScreenCastStreamSrc *src,
 }
 
 static void
+stage_painted (ClutterActor                   *actor,
+               MetaScreenCastMonitorStreamSrc *monitor_src)
+{
+  MetaScreenCastStreamSrc *src = META_SCREEN_CAST_STREAM_SRC (monitor_src);
+
+  meta_screen_cast_stream_src_maybe_record_frame (src);
+}
+
+static void
+meta_screen_cast_monitor_stream_src_enable (MetaScreenCastStreamSrc *src)
+{
+  MetaScreenCastMonitorStreamSrc *monitor_src =
+    META_SCREEN_CAST_MONITOR_STREAM_SRC (src);
+  ClutterStage *stage;
+
+  stage = get_stage (monitor_src);
+  monitor_src->stage_painted_handler_id =
+    g_signal_connect_after (stage, "paint",
+                            G_CALLBACK (stage_painted),
+                            monitor_src);
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
+}
+
+static void
+meta_screen_cast_monitor_stream_src_disable (MetaScreenCastStreamSrc *src)
+{
+  MetaScreenCastMonitorStreamSrc *monitor_src =
+    META_SCREEN_CAST_MONITOR_STREAM_SRC (src);
+  ClutterStage *stage;
+
+  stage = get_stage (monitor_src);
+  g_signal_handler_disconnect (stage, monitor_src->stage_painted_handler_id);
+  monitor_src->stage_painted_handler_id = 0;
+}
+
+static void
 meta_screen_cast_monitor_stream_src_record_frame (MetaScreenCastStreamSrc *src,
                                                   uint8_t                 *data)
 {
@@ -107,15 +143,6 @@ meta_screen_cast_monitor_stream_src_record_frame (MetaScreenCastStreamSrc *src,
   monitor = get_monitor (monitor_src);
   logical_monitor = meta_monitor_get_logical_monitor (monitor);
   clutter_stage_capture_into (stage, FALSE, &logical_monitor->rect, data);
-}
-
-static void
-stage_painted (ClutterActor                   *actor,
-               MetaScreenCastMonitorStreamSrc *monitor_src)
-{
-  MetaScreenCastStreamSrc *src = META_SCREEN_CAST_STREAM_SRC (monitor_src);
-
-  meta_screen_cast_stream_src_maybe_record_frame (src);
 }
 
 MetaScreenCastMonitorStreamSrc *
@@ -132,36 +159,6 @@ meta_screen_cast_monitor_stream_src_new (MetaScreenCastMonitorStream  *monitor_s
 }
 
 static void
-meta_screen_cast_monitor_stream_src_constructed (GObject *object)
-{
-  MetaScreenCastMonitorStreamSrc *monitor_src =
-    META_SCREEN_CAST_MONITOR_STREAM_SRC (object);
-  ClutterStage *stage;
-
-  stage = get_stage (monitor_src);
-  monitor_src->stage_painted_handler_id =
-    g_signal_connect_after (stage, "paint",
-                            G_CALLBACK (stage_painted),
-                            monitor_src);
-  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-}
-
-static void
-meta_screen_cast_monitor_stream_src_finalize (GObject *object)
-{
-  MetaScreenCastMonitorStreamSrc *monitor_src =
-    META_SCREEN_CAST_MONITOR_STREAM_SRC (object);
-  GObjectClass *parent_class =
-    G_OBJECT_CLASS (meta_screen_cast_monitor_stream_src_parent_class);
-  ClutterStage *stage;
-
-  stage = get_stage (monitor_src);
-  g_signal_handler_disconnect (stage, monitor_src->stage_painted_handler_id);
-
-  parent_class->finalize (object);
-}
-
-static void
 meta_screen_cast_monitor_stream_src_init (MetaScreenCastMonitorStreamSrc *monitor_src)
 {
 }
@@ -169,13 +166,11 @@ meta_screen_cast_monitor_stream_src_init (MetaScreenCastMonitorStreamSrc *monito
 static void
 meta_screen_cast_monitor_stream_src_class_init (MetaScreenCastMonitorStreamSrcClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   MetaScreenCastStreamSrcClass *src_class =
     META_SCREEN_CAST_STREAM_SRC_CLASS (klass);
 
-  object_class->constructed = meta_screen_cast_monitor_stream_src_constructed;
-  object_class->finalize = meta_screen_cast_monitor_stream_src_finalize;
-
   src_class->get_specs = meta_screen_cast_monitor_stream_src_get_specs;
+  src_class->enable = meta_screen_cast_monitor_stream_src_enable;
+  src_class->disable = meta_screen_cast_monitor_stream_src_disable;
   src_class->record_frame = meta_screen_cast_monitor_stream_src_record_frame;
 }

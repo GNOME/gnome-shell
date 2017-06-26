@@ -44,6 +44,8 @@ struct _MetaScreenCastStreamSrcClass
                       int                     *width,
                       int                     *height,
                       float                   *frame_rate);
+  void (* enable) (MetaScreenCastStreamSrc *src);
+  void (* disable) (MetaScreenCastStreamSrc *src);
   void (* record_frame) (MetaScreenCastStreamSrc *src,
                          uint8_t                 *data);
 };
