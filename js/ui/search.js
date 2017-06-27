@@ -84,6 +84,8 @@ const ListSearchResult = new Lang.Class({
                                          vertical: false });
         this.actor.set_child(content);
 
+        this._termsChangedId = 0;
+
         let titleBox = new St.BoxLayout({ style_class: 'list-search-result-title' });
 
         content.add(titleBox, { x_fill: true,
@@ -106,14 +108,31 @@ const ListSearchResult = new Lang.Class({
         this.actor.label_actor = title;
 
         if (this.metaInfo['description']) {
-            let description = new St.Label({ style_class: 'list-search-result-description',
-                                             text: this.metaInfo['description'] });
+            this._descriptionLabel = new St.Label({ style_class: 'list-search-result-description' });
+            content.add(this._descriptionLabel, { x_fill: false,
+                                                  y_fill: false,
+                                                  x_align: St.Align.START,
+                                                  y_align: St.Align.MIDDLE });
 
-            content.add(description, { x_fill: false,
-                                       y_fill: false,
-                                       x_align: St.Align.START,
-                                       y_align: St.Align.MIDDLE });
+            this._termsChangedId =
+                this._resultsView.connect('terms-changed',
+                                          Lang.bind(this, this._highlightTerms));
+
+            this._highlightTerms();
         }
+
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    _highlightTerms: function() {
+        let markup = this._resultsView.highlightTerms(this.metaInfo['description']);
+        this._descriptionLabel.clutter_text.set_markup(markup);
+    },
+
+    _onDestroy: function() {
+        if (this._termsChangedId)
+            this._resultsView.disconnect(this._termsChangedId);
+        this._termsChangedId = 0;
     }
 });
 
@@ -234,7 +253,6 @@ const SearchResultsBase = new Lang.Class({
 
     updateSearch: function(providerResults, terms, callback) {
         this._terms = terms;
-
         if (providerResults.length == 0) {
             this._clearResultDisplay();
             this.actor.hide();
@@ -423,6 +441,8 @@ const SearchResults = new Lang.Class({
 
         this._providers = [];
 
+        this._highlightRegex = null;
+
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
         this._searchSettings.connect('changed::enabled', Lang.bind(this, this._reloadRemoteProviders));
@@ -542,6 +562,11 @@ const SearchResults = new Lang.Class({
 
         if (this._searchTimeoutId == 0)
             this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, Lang.bind(this, this._onSearchTimeout));
+
+        let escapedTerms = this._terms.map(term => Shell.util_regex_escape(term));
+        this._highlightRegex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
+
+        this.emit('terms-changed');
     },
 
     _onPan: function(action) {
@@ -680,8 +705,19 @@ const SearchResults = new Lang.Class({
         } else {
             result.actor.remove_style_pseudo_class('selected');
         }
+    },
+
+    highlightTerms: function(description) {
+        if (!description)
+            return '';
+
+        if (!this._highlightRegex)
+            return description;
+
+        return description.replace(this._highlightRegex, '<b>$1</b>');
     }
 });
+Signals.addSignalMethods(SearchResults.prototype);
 
 const ProviderInfo = new Lang.Class({
     Name: 'ProviderInfo',
