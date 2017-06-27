@@ -100,6 +100,7 @@ src/linux-dmabuf-unstable-v*-protocol.c
 src/linux-dmabuf-unstable-v*-server-protocol.h
 src/xdg-shell-protocol.c
 src/xdg-shell-server-protocol.h
+src/wayland-eglstream-controller-server-protocol.h
 src/meta/meta-version.h
 src/libmutter-*.pc
 doc/reference/*.args

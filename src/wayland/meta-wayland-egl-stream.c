@@ -32,6 +32,104 @@
 #include "backends/meta-egl-ext.h"
 #include "meta/meta-backend.h"
 #include "wayland/meta-wayland-buffer.h"
+#include "wayland/meta-wayland-private.h"
+
+#ifdef HAVE_WAYLAND_EGLSTREAM
+
+#include "wayland-eglstream-controller-server-protocol.h"
+#include <dlfcn.h>
+
+static struct wl_interface *wl_eglstream_controller_interface_ptr = NULL;
+
+static void
+attach_eglstream_consumer (struct wl_client   *client,
+                           struct wl_resource *resource,
+                           struct wl_resource *wl_surface,
+                           struct wl_resource *wl_eglstream)
+{
+  MetaWaylandBuffer *buffer = meta_wayland_buffer_from_resource (wl_eglstream);
+
+  if (!meta_wayland_buffer_is_realized (buffer))
+    meta_wayland_buffer_realize (buffer);
+}
+
+static const struct wl_eglstream_controller_interface
+meta_eglstream_controller_interface = {
+  attach_eglstream_consumer
+};
+
+static void
+bind_eglstream_controller (struct wl_client *client,
+                           void             *data,
+                           uint32_t          version,
+                           uint32_t          id)
+{
+  struct wl_resource *resource;
+
+  g_assert (wl_eglstream_controller_interface_ptr != NULL);
+
+  resource = wl_resource_create (client,
+                                 wl_eglstream_controller_interface_ptr,
+                                 version,
+                                 id);
+
+  if (resource == NULL)
+    {
+      wl_client_post_no_memory(client);
+      return;
+    }
+
+  wl_resource_set_implementation (resource,
+                                  &meta_eglstream_controller_interface,
+                                  data,
+                                  NULL);
+}
+
+#endif /* HAVE_WAYLAND_EGLSTREAM */
+
+gboolean
+meta_wayland_eglstream_controller_init (MetaWaylandCompositor *compositor)
+{
+#ifdef HAVE_WAYLAND_EGLSTREAM
+  /*
+   * wl_eglstream_controller_interface is provided by
+   * libnvidia-egl-wayland.so.1
+   *
+   * Since it might not be available on the
+   * system, dynamically load it at runtime and resolve the needed
+   * symbols. If available, it should be found under any of the search
+   * directories of dlopen()
+   *
+   * Failure to initialize wl_eglstream_controller is non-fatal
+   */
+
+  void *lib = dlopen ("libnvidia-egl-wayland.so.1", RTLD_NOW | RTLD_LAZY);
+  if (!lib)
+    goto fail;
+
+  wl_eglstream_controller_interface_ptr =
+    dlsym (lib, "wl_eglstream_controller_interface");
+
+  if (!wl_eglstream_controller_interface_ptr)
+    goto fail;
+
+  if (wl_global_create (compositor->wayland_display,
+                        wl_eglstream_controller_interface_ptr, 1,
+                        NULL,
+                        bind_eglstream_controller) == NULL)
+    goto fail;
+
+  return TRUE;
+
+fail:
+  if (lib)
+    dlclose(lib);
+
+  g_debug ("WL: Unable to initialize wl_eglstream_controller.");
+#endif
+
+  return FALSE;
+}
 
 struct _MetaWaylandEglStream
 {

@@ -31,6 +31,8 @@
 #include "cogl/cogl.h"
 #include "wayland/meta-wayland-types.h"
 
+gboolean meta_wayland_eglstream_controller_init (MetaWaylandCompositor *compositor);
+
 #define META_TYPE_WAYLAND_EGL_STREAM (meta_wayland_egl_stream_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandEglStream, meta_wayland_egl_stream,
                       META, WAYLAND_EGL_STREAM, GObject);

@@ -91,6 +91,12 @@ mutter_built_sources += \
 	gtk-text-input-protocol.c					\
 	gtk-text-input-server-protocol.h				\
 	$(NULL)
+
+if HAVE_WAYLAND_EGLSTREAM
+mutter_built_sources += \
+	wayland-eglstream-controller-server-protocol.h \
+	$(NULL)
+endif
 endif
 
 wayland_protocols =				\
@@ -765,4 +771,6 @@ endef
 %-protocol.c : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code $< $@
 %-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header $< $@
+%-server-protocol.h : $(WAYLAND_EGLSTREAM_DATADIR)/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header $< $@

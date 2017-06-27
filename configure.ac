@@ -290,13 +290,24 @@ AS_IF([test "$have_native_backend" = "yes"], [
 ])
 AM_CONDITIONAL([HAVE_NATIVE_BACKEND],[test "$have_native_backend" = "yes"])
 
+MUTTER_WAYLAND_EGLSTREAM_MODULES="wayland-eglstream-protocols"
+
 AC_ARG_ENABLE(egl-device,
   AS_HELP_STRING([--enable-egl-device], [enable support for EGLDevice on top of KMS]),,
   enable_egl_device=no
+  have_wayland_eglstream=no
 )
 AS_IF([test "$enable_egl_device" = "yes"], [
   AC_DEFINE([HAVE_EGL_DEVICE],[1], [Defined if EGLDevice support is enabled])
+  PKG_CHECK_EXISTS([$MUTTER_WAYLAND_EGLSTREAM_MODULES], [have_wayland_eglstream=yes], [have_wayland_eglstream=no])
 ])
+AS_IF([test "$have_wayland_eglstream" = "yes"], [
+  AC_DEFINE([HAVE_WAYLAND_EGLSTREAM],[1],[Defined if Wayland EGLStream protocols are available])
+  PKG_CHECK_MODULES(WAYLAND_EGLSTREAM, [$MUTTER_WAYLAND_EGLSTREAM_MODULES],
+                    [ac_wayland_eglstream_pkgdatadir=`$PKG_CONFIG --variable=pkgdatadir $MUTTER_WAYLAND_EGLSTREAM_MODULES`])
+  AC_SUBST(WAYLAND_EGLSTREAM_DATADIR, $ac_wayland_eglstream_pkgdatadir)
+])
+AM_CONDITIONAL([HAVE_WAYLAND_EGLSTREAM],[test "$have_wayland_eglstream" = "yes"])
 
 MUTTER_WAYLAND_MODULES="wayland-server >= 1.13.0"
 
@@ -549,6 +560,7 @@ mutter-$VERSION
 	Introspection:            ${found_introspection}
 	Session management:       ${found_sm}
 	Wayland:                  ${have_wayland}
+	Wayland EGLStream:        ${have_wayland_eglstream}
 	Native (KMS) backend:     ${have_native_backend}
 	EGLDevice:                ${enable_egl_device}
 	Remote desktop:           ${enable_remote_desktop}
