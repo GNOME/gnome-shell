@@ -1131,7 +1131,7 @@ const AppSearchProvider = new Lang.Class({
         this.getInitialResultSet(terms, callback, cancellable);
     },
 
-    createResultObject: function (resultMeta) {
+    createResultObject: function (resultMeta, searchResultsView) {
         let app = this._appSys.lookup_app(resultMeta['id']);
         return new AppIcon(app);
     }

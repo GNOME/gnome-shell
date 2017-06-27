@@ -48,9 +48,10 @@ const MaxWidthBin = new Lang.Class({
 const SearchResult = new Lang.Class({
     Name: 'SearchResult',
 
-    _init: function(provider, metaInfo) {
+    _init: function(provider, metaInfo, searchResultsView) {
         this.provider = provider;
         this.metaInfo = metaInfo;
+        this._searchResultsView = searchResultsView;
 
         this.actor = new St.Button({ reactive: true,
                                      can_focus: true,
@@ -74,8 +75,8 @@ const ListSearchResult = new Lang.Class({
 
     ICON_SIZE: 24,
 
-    _init: function(provider, metaInfo) {
-        this.parent(provider, metaInfo);
+    _init: function(provider, metaInfo, searchResultsView) {
+        this.parent(provider, metaInfo, searchResultsView);
 
         this.actor.style_class = 'list-search-result';
         this.actor.x_fill = true;
@@ -121,8 +122,8 @@ const GridSearchResult = new Lang.Class({
     Name: 'GridSearchResult',
     Extends: SearchResult,
 
-    _init: function(provider, metaInfo) {
-        this.parent(provider, metaInfo);
+    _init: function(provider, metaInfo, searchResultsView) {
+        this.parent(provider, metaInfo, searchResultsView);
 
         this.actor.style_class = 'grid-search-result';
 
@@ -137,8 +138,9 @@ const GridSearchResult = new Lang.Class({
 const SearchResultsBase = new Lang.Class({
     Name: 'SearchResultsBase',
 
-    _init: function(provider) {
+    _init: function(provider, searchResultsView) {
         this.provider = provider;
+        this._searchResultsView = searchResultsView;
 
         this._terms = [];
 
@@ -166,7 +168,8 @@ const SearchResultsBase = new Lang.Class({
 
     _createResultDisplay: function(meta) {
         if (this.provider.createResultObject)
-            return this.provider.createResultObject(meta);
+            return this.provider.createResultObject(meta,
+                                                    this._searchResultsView);
 
         return null;
     },
@@ -271,8 +274,8 @@ const ListSearchResults = new Lang.Class({
     Name: 'ListSearchResults',
     Extends: SearchResultsBase,
 
-    _init: function(provider) {
-        this.parent(provider);
+    _init: function(provider, searchResultsView) {
+        this.parent(provider, searchResultsView);
 
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerInfo = new ProviderInfo(provider);
@@ -309,7 +312,8 @@ const ListSearchResults = new Lang.Class({
     },
 
     _createResultDisplay: function(meta) {
-        return this.parent(meta) || new ListSearchResult(this.provider, meta);
+        return this.parent(meta, this._searchResultsView) ||
+            new ListSearchResult(this.provider, meta, this._searchResultsView);
     },
 
     _addItem: function(display) {
@@ -329,14 +333,14 @@ const GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
     Extends: SearchResultsBase,
 
-    _init: function(provider, parentContainer) {
-        this.parent(provider);
+    _init: function(provider, searchResultsView) {
+        this.parent(provider, searchResultsView);
         // We need to use the parent container to know how much results we can show.
         // None of the actors in this class can be used for that, since the main actor
         // goes hidden when no results are displayed, and then it lost its allocation.
         // Then on the next use of _getMaxDisplayedResults allocation is 0, en therefore
         // it doesn't show any result although we have some.
-        this._parentContainer = parentContainer;
+        this._parentContainer = searchResultsView.actor;
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
@@ -357,7 +361,8 @@ const GridSearchResults = new Lang.Class({
     },
 
     _createResultDisplay: function(meta) {
-        return this.parent(meta) || new GridSearchResult(this.provider, meta);
+        return this.parent(meta, this._searchResultsView) ||
+            new GridSearchResult(this.provider, meta, this._searchResultsView);
     },
 
     _addItem: function(display) {
@@ -559,9 +564,9 @@ const SearchResults = new Lang.Class({
 
         let providerDisplay;
         if (provider.appInfo)
-            providerDisplay = new ListSearchResults(provider);
+            providerDisplay = new ListSearchResults(provider, this);
         else
-            providerDisplay = new GridSearchResults(provider, this.actor);
+            providerDisplay = new GridSearchResults(provider, this);
 
         providerDisplay.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
         providerDisplay.actor.hide();
