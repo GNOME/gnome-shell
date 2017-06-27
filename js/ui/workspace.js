@@ -1793,14 +1793,20 @@ const Workspace = new Lang.Class({
         global.screen.disconnect(this._windowEnteredMonitorId);
         global.screen.disconnect(this._windowLeftMonitorId);
 
-        if (this._repositionWindowsId > 0)
+        if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
+            this._repositionWindowsId = 0;
+        }
 
-        if (this._positionWindowsId > 0)
+        if (this._positionWindowsId > 0) {
             Meta.later_remove(this._positionWindowsId);
+            this._positionWindowsId = 0;
+        }
 
-        if (this._actualGeometryLater > 0)
+        if (this._actualGeometryLater > 0) {
             Meta.later_remove(this._actualGeometryLater);
+            this._actualGeometryLater = 0;
+        }
 
         this._windows = [];
     },
