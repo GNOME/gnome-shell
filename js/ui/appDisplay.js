@@ -4,6 +4,7 @@
 const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const AppActivation = imports.ui.appActivation;
 const AppFavorites = imports.ui.appFavorites;
 const BoxPointer = imports.ui.boxpointer;
 const DND = imports.ui.dnd;
@@ -2195,22 +2196,8 @@ var AppIcon = class AppIcon {
 
     activate(button) {
         let event = Clutter.get_current_event();
-        let modifiers = event ? event.get_state() : 0;
-        let isMiddleButton = button && button == Clutter.BUTTON_MIDDLE;
-        let isCtrlPressed = (modifiers & Clutter.ModifierType.CONTROL_MASK) != 0;
-        let openNewWindow = this.app.can_open_new_window() &&
-                            this.app.state == Shell.AppState.RUNNING &&
-                            (isCtrlPressed || isMiddleButton);
-
-        if (this.app.state == Shell.AppState.STOPPED || openNewWindow)
-            this.animateLaunch();
-
-        if (openNewWindow)
-            this.app.open_new_window(-1);
-        else
-            this.app.activate();
-
-        Main.overview.hide();
+        let activationContext = new AppActivation.AppActivationContext(this.app);
+        activationContext.activate(event);
     }
 
     animateLaunch() {
