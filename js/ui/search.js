@@ -105,16 +105,35 @@ const ListSearchResult = new Lang.Class({
                              y_align: St.Align.MIDDLE });
         this.actor.label_actor = title;
 
-        if (this.metaInfo['description']) {
-            let description = new St.Label({
-                                style_class: 'list-search-result-description',
-                                text: this.metaInfo['description'] });
+        this._descriptionLabel =
+                        new St.Label({
+                              style_class: 'list-search-result-description' });
 
-            details.add(description, { x_fill: false,
-                                       y_fill: false,
-                                       x_align: St.Align.START,
-                                       y_align: St.Align.MIDDLE });
+        if (this.metaInfo['description']) {
+            this._highlightTerms();
+
+            details.add(this._descriptionLabel, { x_fill: false,
+                                                  y_fill: false,
+                                                  x_align: St.Align.START,
+                                                  y_align: St.Align.MIDDLE });
         }
+
+        this._termsChangedSignal =
+                    this._searchResultsView.connect(
+                                        'terms-changed',
+                                        Lang.bind(this, this._highlightTerms));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    _highlightTerms: function() {
+        if (!this.metaInfo['description'] || !this._descriptionLabel || !this._searchResultsView)
+            return;
+
+        this._descriptionLabel.clutter_text.set_markup(this._searchResultsView.highlightTerms(this.metaInfo['description']));
+    },
+
+    _onDestroy: function() {
+        this._searchResultsView.disconnect(this._termsChangedSignal);
     }
 });
 
@@ -236,7 +255,6 @@ const SearchResultsBase = new Lang.Class({
 
     updateSearch: function(providerResults, terms, callback) {
         this._terms = terms;
-
         if (providerResults.length == 0) {
             this._clearResultDisplay();
             this.actor.hide();
@@ -426,6 +444,8 @@ const SearchResults = new Lang.Class({
 
         this._providers = [];
 
+        this._searchTermRegex = null;
+
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
         this._searchSettings.connect('changed::enabled', Lang.bind(this, this._reloadRemoteProviders));
@@ -545,6 +565,14 @@ const SearchResults = new Lang.Class({
 
         if (this._searchTimeoutId == 0)
             this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, Lang.bind(this, this._onSearchTimeout));
+
+        let escapedSearchTerms = this._terms.map(
+                    (currentTerm, index, array) =>
+                            { return Shell.util_regex_escape(currentTerm) });
+
+        this._searchTermRegex =
+                        new RegExp(`(${escapedSearchTerms.join('|')})`, 'gi');
+        this.emit('terms-changed');
     },
 
     _onPan: function(action) {
@@ -683,8 +711,16 @@ const SearchResults = new Lang.Class({
         } else {
             result.actor.remove_style_pseudo_class('selected');
         }
+    },
+
+    highlightTerms: function(description) {
+        if (!description)
+            return '';
+
+        return description.replace(this._searchTermRegex, '<b>$1</b>');
     }
 });
+Signals.addSignalMethods(SearchResults.prototype);
 
 const ProviderInfo = new Lang.Class({
     Name: 'ProviderInfo',
