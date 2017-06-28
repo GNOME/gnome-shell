@@ -759,6 +759,8 @@ var ScreenShield = class {
         if (this._isLocked)
             this._ensureUnlockDialog(false, false);
 
+        this._haveDragMotion = false;
+
         return true;
     }
 
@@ -771,13 +773,16 @@ var ScreenShield = class {
 
         this._lockScreenGroup.y = newY;
 
+        this._haveDragMotion = true;
+
         return true;
     }
 
     _onDragEnd(_action, _actor, _eventX, _eventY, _modifiers) {
         if (this._lockScreenState != MessageTray.State.HIDING)
             return;
-        if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
+        if ((this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) ||
+            !this._haveDragMotion) {
             // Complete motion automatically
             let [velocity_, velocityX_, velocityY] = this._dragAction.get_velocity(0);
             this._liftShield(true, -velocityY);
