@@ -380,7 +380,7 @@ var AuthenticationAgent = new Lang.Class({
         }
     },
 
-    _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
+    _onInitiate(nativeAgent, actionId, message, iconName, cookie, subjectPid, userNames) {
         // Don't pop up a dialog while locked
         if (Main.sessionMode.isLocked) {
             this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {

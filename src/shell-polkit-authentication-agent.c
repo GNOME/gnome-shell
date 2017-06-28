@@ -162,7 +162,8 @@ shell_polkit_authentication_agent_class_init (ShellPolkitAuthenticationAgentClas
                   NULL, /* accumulator data */
                   NULL, /* marshaller */
                   G_TYPE_NONE,
-                  5,
+                  6,
+                  G_TYPE_STRING,
                   G_TYPE_STRING,
                   G_TYPE_STRING,
                   G_TYPE_STRING,
@@ -267,6 +268,7 @@ auth_request_initiate (AuthRequest *request)
                  request->message,
                  request->icon_name,
                  request->cookie,
+                 polkit_details_lookup (request->details, "polkit.subject-pid"),
                  user_names);
   g_strfreev (user_names);
 }
