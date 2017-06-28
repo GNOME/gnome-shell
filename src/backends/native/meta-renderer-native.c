@@ -2070,16 +2070,21 @@ meta_renderer_native_initable_init (GInitable     *initable,
   GError *egl_device_error = NULL;
 #endif
 
-  if (init_gbm (renderer_native, &gbm_error))
-    return TRUE;
-
 #ifdef HAVE_EGL_DEVICE
+  /* Try to initialize the EGLDevice backend first. Whenever we use a
+   * non-NVIDIA GPU, the EGLDevice enumeration function won't find a match, and
+   * we'll fall back to GBM (which will always succeed as it has a software
+   * rendering fallback)
+   */
   if (init_egl_device (renderer_native, &egl_device_error))
+    return TRUE;
+#endif
+
+  if (init_gbm (renderer_native, &gbm_error))
     {
-      g_error_free (gbm_error);
+      g_error_free (egl_device_error);
       return TRUE;
     }
-#endif
 
   g_set_error (error, G_IO_ERROR,
                G_IO_ERROR_FAILED,
