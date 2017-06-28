@@ -62,11 +62,9 @@ G_DEFINE_TYPE_WITH_CODE (MetaScreenCastStream,
 
 static MetaScreenCastStreamSrc *
 meta_screen_cast_stream_create_src (MetaScreenCastStream  *stream,
-                                    const char            *stream_id,
                                     GError               **error)
 {
   return META_SCREEN_CAST_STREAM_GET_CLASS (stream)->create_src (stream,
-                                                                 stream_id,
                                                                  error);
 }
 
@@ -81,26 +79,31 @@ on_stream_src_closed (MetaScreenCastStreamSrc *src,
     meta_screen_cast_stream_close (stream);
 }
 
+static void
+on_stream_src_ready (MetaScreenCastStreamSrc *src,
+                     uint32_t                 node_id,
+                     MetaScreenCastStream    *stream)
+{
+  MetaDBusScreenCastStream *skeleton = META_DBUS_SCREEN_CAST_STREAM (stream);
+
+  meta_dbus_screen_cast_stream_emit_pipewire_stream_added (skeleton, node_id);
+}
+
 gboolean
 meta_screen_cast_stream_start (MetaScreenCastStream  *stream,
                                GError               **error)
 {
-  MetaDBusScreenCastStream *skeleton = META_DBUS_SCREEN_CAST_STREAM (stream);
   MetaScreenCastStreamPrivate *priv =
     meta_screen_cast_stream_get_instance_private (stream);
-  g_autofree char *stream_id = NULL;
   MetaScreenCastStreamSrc *src;
-  static unsigned int global_stream_id = 0;
 
-  stream_id = g_strdup_printf ("%u", ++global_stream_id);
-  src = meta_screen_cast_stream_create_src (stream, stream_id, error);
+  src = meta_screen_cast_stream_create_src (stream, error);
   if (!src)
     return FALSE;
 
   priv->src = src;
+  g_signal_connect (src, "ready", G_CALLBACK (on_stream_src_ready), stream);
   g_signal_connect (src, "closed", G_CALLBACK (on_stream_src_closed), stream);
-
-  meta_dbus_screen_cast_stream_emit_pipewire_stream_added (skeleton, stream_id);
 
   return TRUE;
 }

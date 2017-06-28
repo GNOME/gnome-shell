@@ -35,7 +35,6 @@ G_DECLARE_FINAL_TYPE (MetaScreenCastMonitorStreamSrc,
                       MetaScreenCastStreamSrc)
 
 MetaScreenCastMonitorStreamSrc * meta_screen_cast_monitor_stream_src_new (MetaScreenCastMonitorStream *monitor_stream,
-                                                                          const char                  *stream_id,
                                                                           GError                     **error);
 
 #endif /* META_SCREEN_CAST_MONITOR_STREAM_SRC_H */

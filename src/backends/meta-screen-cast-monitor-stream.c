@@ -135,7 +135,6 @@ meta_screen_cast_monitor_stream_new (GDBusConnection     *connection,
 
 static MetaScreenCastStreamSrc *
 meta_screen_cast_monitor_stream_create_src (MetaScreenCastStream  *stream,
-                                            const char            *stream_id,
                                             GError               **error)
 {
   MetaScreenCastMonitorStream *monitor_stream =
@@ -143,7 +142,6 @@ meta_screen_cast_monitor_stream_create_src (MetaScreenCastStream  *stream,
   MetaScreenCastMonitorStreamSrc *monitor_stream_src;
 
   monitor_stream_src = meta_screen_cast_monitor_stream_src_new (monitor_stream,
-                                                                stream_id,
                                                                 error);
   if (!monitor_stream_src)
     return NULL;

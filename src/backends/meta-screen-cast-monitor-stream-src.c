@@ -147,13 +147,9 @@ meta_screen_cast_monitor_stream_src_record_frame (MetaScreenCastStreamSrc *src,
 
 MetaScreenCastMonitorStreamSrc *
 meta_screen_cast_monitor_stream_src_new (MetaScreenCastMonitorStream  *monitor_stream,
-                                         const char                   *stream_id,
                                          GError                      **error)
 {
-  return g_initable_new (META_TYPE_SCREEN_CAST_MONITOR_STREAM_SRC,
-                         NULL,
-                         error,
-                         "stream-id", stream_id,
+  return g_initable_new (META_TYPE_SCREEN_CAST_MONITOR_STREAM_SRC, NULL, error,
                          "stream", monitor_stream,
                          NULL);
 }

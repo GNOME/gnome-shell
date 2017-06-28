@@ -38,7 +38,6 @@ struct _MetaScreenCastStreamClass
   MetaDBusScreenCastStreamSkeletonClass parent_class;
 
   MetaScreenCastStreamSrc * (* create_src) (MetaScreenCastStream *stream,
-                                            const char           *stream_id,
                                             GError              **error);
 };
 

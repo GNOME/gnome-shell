@@ -47,11 +47,11 @@ enum
   PROP_0,
 
   PROP_STREAM,
-  PROP_STREAM_ID,
 };
 
 enum
 {
+  READY,
   CLOSED,
 
   N_SIGNALS
@@ -81,7 +81,6 @@ typedef struct _MetaPipeWireSource
 typedef struct _MetaScreenCastStreamSrcPrivate
 {
   MetaScreenCastStream *stream;
-  char *stream_id;
 
   struct pw_core *pipewire_core;
   struct pw_remote *pipewire_remote;
@@ -243,6 +242,9 @@ on_stream_state_changed (void                 *data,
                          const char           *error_message)
 {
   MetaScreenCastStreamSrc *src = data;
+  MetaScreenCastStreamSrcPrivate *priv =
+    meta_screen_cast_stream_src_get_instance_private (src);
+  uint32_t node_id;
 
   switch (state)
     {
@@ -250,9 +252,12 @@ on_stream_state_changed (void                 *data,
       g_warning ("pipewire stream error: %s", error_message);
       meta_screen_cast_stream_src_notify_closed (src);
       break;
+    case PW_STREAM_STATE_CONFIGURE:
+      node_id = pw_stream_get_node_id (priv->pipewire_stream);
+      g_signal_emit (src, signals[READY], 0, (unsigned int) node_id);
+      break;
     case PW_STREAM_STATE_UNCONNECTED:
     case PW_STREAM_STATE_CONNECTING:
-    case PW_STREAM_STATE_CONFIGURE:
     case PW_STREAM_STATE_READY:
     case PW_STREAM_STATE_PAUSED:
       if (meta_screen_cast_stream_src_is_enabled (src))
@@ -585,7 +590,6 @@ meta_screen_cast_stream_src_finalize (GObject *object)
   pw_remote_destroy (priv->pipewire_remote);
   pw_core_destroy (priv->pipewire_core);
   g_source_destroy (&priv->pipewire_source->base);
-  g_clear_pointer (&priv->stream_id, g_free);
 
   G_OBJECT_CLASS (meta_screen_cast_stream_src_parent_class)->finalize (object);
 }
@@ -605,9 +609,6 @@ meta_screen_cast_stream_src_set_property (GObject      *object,
     case PROP_STREAM:
       priv->stream = g_value_get_object (value);
       break;;
-    case PROP_STREAM_ID:
-      priv->stream_id = g_strdup (g_value_get_string (value));
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -627,9 +628,6 @@ meta_screen_cast_stream_src_get_property (GObject    *object,
     {
     case PROP_STREAM:
       g_value_set_object (value, priv->stream);
-      break;
-    case PROP_STREAM_ID:
-      g_value_set_string (value, priv->stream_id);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -659,16 +657,14 @@ meta_screen_cast_stream_src_class_init (MetaScreenCastStreamSrcClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
-  g_object_class_install_property (object_class,
-                                   PROP_STREAM_ID,
-                                   g_param_spec_string ("stream-id",
-                                                        "stream-id",
-                                                        "Unique stream ID",
-                                                        NULL,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
-                                                        G_PARAM_STATIC_STRINGS));
 
+  signals[READY] = g_signal_new ("ready",
+                                 G_TYPE_FROM_CLASS (klass),
+                                 G_SIGNAL_RUN_LAST,
+                                 0,
+                                 NULL, NULL, NULL,
+                                 G_TYPE_NONE, 1,
+                                 G_TYPE_UINT);
   signals[CLOSED] = g_signal_new ("closed",
                                   G_TYPE_FROM_CLASS (klass),
                                   G_SIGNAL_RUN_LAST,
