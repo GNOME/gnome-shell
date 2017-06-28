@@ -374,6 +374,7 @@ StScrollBar {
   border: 3px solid $_bubble_borders_color;
 
   .message-dialog-main-layout { spacing: 24px; padding: 10px; }
+  .message-dialog-icon { -st-icon-style: symbolic; }
   .message-dialog-content { spacing: 16px; }
   .message-dialog-title { color: darken($osd_fg_color,25%); }
 }

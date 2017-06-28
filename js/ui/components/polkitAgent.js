@@ -32,7 +32,7 @@ var AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init(actionId, body, cookie, userNames) {
+    _init(actionId, body, cookie, app, userNames) {
         this.parent({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
@@ -44,8 +44,11 @@ var AuthenticationDialog = new Lang.Class({
             this._group.visible = !Main.sessionMode.isLocked;
         });
 
-        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
-        let title = _("Authentication Required");
+        let appInfo = app ? app.app_info : null;
+        let icon = appInfo ? appInfo.get_icon()
+                           : new Gio.ThemedIcon({ name: 'dialog-password' });
+        let title = appInfo ? _("%s Requires Authentication").format(appInfo.get_name())
+                            : _("Authentication Required");
 
         let content = new Dialog.MessageDialogContent({ icon, title, body });
         this.contentLayout.add_actor(content);
@@ -362,6 +365,8 @@ var AuthenticationAgent = new Lang.Class({
         this._native.connect('initiate', this._onInitiate.bind(this));
         this._native.connect('cancel', this._onCancel.bind(this));
         this._sessionUpdatedId = 0;
+
+        this._windowTracker = Shell.WindowTracker.get_default();
     },
 
     enable() {
@@ -392,7 +397,10 @@ var AuthenticationAgent = new Lang.Class({
             return;
         }
 
-        this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
+        let pid = parseInt(subjectPid);
+        let app = pid != NaN ? this._windowTracker.get_app_from_pid(pid) : null;
+
+        this._currentDialog = new AuthenticationDialog(actionId, message, cookie, app, userNames);
 
         // We actually don't want to open the dialog until we know for
         // sure that we're going to interact with the user. For
