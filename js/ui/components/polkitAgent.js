@@ -366,7 +366,7 @@ var AuthenticationAgent = new Lang.Class({
         }
     },
 
-    _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
+    _onInitiate(nativeAgent, actionId, message, iconName, cookie, subjectPid, userNames) {
         this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
 
         // We actually don't want to open the dialog until we know for
