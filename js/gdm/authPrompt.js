@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+const Pango = imports.gi.Pango;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
@@ -13,7 +14,6 @@ const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
-const Pango = imports.gi.Pango;
 
 const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
 const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
