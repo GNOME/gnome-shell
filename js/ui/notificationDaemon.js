@@ -128,10 +128,10 @@ const FdoNotificationDaemon = new Lang.Class({
         switch (hints.urgency) {
             case Urgency.LOW:
             case Urgency.NORMAL:
-                stockIcon = 'gtk-dialog-info';
+                stockIcon = 'dialog-information';
                 break;
             case Urgency.CRITICAL:
-                stockIcon = 'gtk-dialog-error';
+                stockIcon = 'dialog-error';
                 break;
         }
         return new Gio.ThemedIcon({ name: stockIcon });
