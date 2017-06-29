@@ -263,7 +263,7 @@ const AuthPrompt = new Lang.Class({
     _onVerificationComplete: function() {
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
-	this.cancelButton.reactive = false;
+        this.cancelButton.reactive = false;
     },
 
     _onReset: function() {
