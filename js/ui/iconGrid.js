@@ -708,6 +708,7 @@ var PaginatedIconGrid = GObject.registerClass({
         this._rowsPerPage = 0;
         this._spaceBetweenPages = 0;
         this._childrenPerPage = 0;
+        this._maxRowsPerPage = 0;
     }
 
     vfunc_get_preferred_height(_forWidth) {
@@ -798,6 +799,7 @@ var PaginatedIconGrid = GObject.registerClass({
             this._spaceBetweenPages = this._getSpacing();
 
         this._childrenPerPage = nColumns * this._rowsPerPage;
+        this._maxRowsPerPage = this.rowsForHeight(availHeightPerPage);
     }
 
     adaptToSize(availWidth, availHeight) {
@@ -855,7 +857,7 @@ var PaginatedIconGrid = GObject.registerClass({
         let sourceRow = Math.floor((index - pageOffset) / childrenPerRow);
 
         let nRowsAbove = (side == St.Side.TOP) ? sourceRow + 1 : sourceRow;
-        let nRowsBelow = this._rowsPerPage - nRowsAbove;
+        let nRowsBelow = this._maxRowsPerPage - nRowsAbove;
 
         // Since it always tries to show up the folder icon, then when only 1 row is
         // being displayed, the number of rows (to be moved out) here is 0; however
