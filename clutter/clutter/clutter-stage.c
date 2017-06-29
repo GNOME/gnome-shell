@@ -962,6 +962,7 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
       ClutterEvent *next_event;
       ClutterInputDevice *device;
       ClutterInputDevice *next_device;
+      ClutterInputDeviceType device_type;
       gboolean check_device = FALSE;
 
       event = l->data;
@@ -977,8 +978,16 @@ _clutter_stage_process_queued_events (ClutterStage *stage)
       if (device != NULL && next_device != NULL)
         check_device = TRUE;
 
-      /* Skip consecutive motion events coming from the same device */
-      if (priv->throttle_motion_events && next_event != NULL)
+      device_type = clutter_input_device_get_device_type (device);
+
+      /* Skip consecutive motion events coming from the same device,
+       * except those of tablet tools, since users of these events
+       * want no precision loss.
+       */
+      if (priv->throttle_motion_events && next_event != NULL &&
+          device_type != CLUTTER_TABLET_DEVICE &&
+          device_type != CLUTTER_PEN_DEVICE &&
+          device_type != CLUTTER_ERASER_DEVICE)
         {
           if (event->type == CLUTTER_MOTION &&
               (next_event->type == CLUTTER_MOTION ||
