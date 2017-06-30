@@ -2386,6 +2386,13 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 });
             }
         }
+
+        // Add the "Remove from desktop" menu item at the end.
+        let item = this._appendMenuItem(_("Remove from desktop"));
+        item.connect('activate', () => {
+            const iconGridLayout = IconGridLayout.getDefault();
+            iconGridLayout.removeIcon(this._source.id, true);
+        });
     }
 
     _appendSeparator() {
