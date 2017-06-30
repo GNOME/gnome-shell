@@ -2386,28 +2386,6 @@ var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
                 });
             }
 
-            let canFavorite = global.settings.is_writable('favorite-apps');
-
-            if (canFavorite) {
-                this._appendSeparator();
-
-                let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._source.app.get_id());
-
-                if (isFavorite) {
-                    let item = this._appendMenuItem(_("Remove from Favorites"));
-                    item.connect('activate', () => {
-                        let favs = AppFavorites.getAppFavorites();
-                        favs.removeFavorite(this._source.app.get_id());
-                    });
-                } else {
-                    let item = this._appendMenuItem(_("Add to Favorites"));
-                    item.connect('activate', () => {
-                        let favs = AppFavorites.getAppFavorites();
-                        favs.addFavorite(this._source.app.get_id());
-                    });
-                }
-            }
-
             if (Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop')) {
                 this._appendSeparator();
                 let item = this._appendMenuItem(_("Show Details"));
