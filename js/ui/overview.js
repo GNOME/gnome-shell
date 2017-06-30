@@ -244,7 +244,7 @@ var Overview = class {
         this.viewSelector.connect('page-changed', this._onPageChanged.bind(this));
         Main.layoutManager.connect('startup-prepared', this._onStartupPrepared.bind(this));
         Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
-        this._relayout();
+        this._relayoutNoHide();
     }
 
     addSearchProvider(provider) {
@@ -378,6 +378,10 @@ var Overview = class {
         // when it is next shown.
         this.hide();
 
+        this._relayoutNoHide();
+    }
+
+    _relayoutNoHide() {
         this._coverPane.set_position(0, 0);
         this._coverPane.set_size(global.screen_width, global.screen_height);
 
