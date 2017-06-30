@@ -30,6 +30,14 @@ var ShellInfo = class {
     constructor() {
         this._source = null;
         this._undoCallback = null;
+        this._destroyCallback = null;
+    }
+
+    _onDestroy() {
+        if (this._destroyCallback)
+            this._destroyCallback();
+
+        this._destroyCallback = null;
     }
 
     _onUndoClicked() {
@@ -45,10 +53,12 @@ var ShellInfo = class {
         options = Params.parse(options, {
             undoCallback: null,
             forFeedback: false,
+            destroyCallback: null,
         });
 
         let undoCallback = options.undoCallback;
         let forFeedback = options.forFeedback;
+        let destroyCallback = options.destroyCallback;
 
         if (this._source == null) {
             this._source = new MessageTray.SystemNotificationSource();
@@ -64,9 +74,16 @@ var ShellInfo = class {
             notification.setTransient(true);
             notification.setForFeedback(forFeedback);
         } else {
+            // as we reuse the notification, ensure that the previous _destroyCallback() is called
+            if (this._destroyCallback)
+                this._destroyCallback();
+
             notification = this._source.notifications[0];
             notification.update(text, null, { clear: true });
         }
+
+        this._destroyCallback = destroyCallback;
+        notification.connect('destroy', this._onDestroy.bind(this));
 
         this._undoCallback = undoCallback;
         if (undoCallback)
