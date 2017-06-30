@@ -1069,10 +1069,15 @@ static void
 apply_mappable_device_settings (MetaInputSettings *input_settings,
                                 DeviceMappingInfo *info)
 {
-  update_device_display (input_settings, info->settings, info->device);
+  ClutterInputDeviceType device_type;
 
-  if (clutter_input_device_get_device_type (info->device) == CLUTTER_TABLET_DEVICE ||
-      clutter_input_device_get_device_type (info->device) == CLUTTER_PAD_DEVICE)
+  update_device_display (input_settings, info->settings, info->device);
+  device_type = clutter_input_device_get_device_type (info->device);
+
+  if (device_type == CLUTTER_TABLET_DEVICE ||
+      device_type == CLUTTER_PEN_DEVICE ||
+      device_type == CLUTTER_ERASER_DEVICE ||
+      device_type == CLUTTER_PAD_DEVICE)
     {
       update_tablet_mapping (input_settings, info->settings, info->device);
       update_tablet_area (input_settings, info->settings, info->device);
