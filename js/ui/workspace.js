@@ -1156,7 +1156,6 @@ class Workspace extends St.Widget {
         this.set_size(0, 0);
 
         this._dropRect = new Clutter.Actor({ opacity: 0 });
-        this._dropRect._delegate = this;
 
         this.add_actor(this._dropRect);
         this.add_actor(this._windowOverlaysGroup);
