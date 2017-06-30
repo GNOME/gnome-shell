@@ -551,6 +551,15 @@ meta_input_settings_x11_set_tablet_mapping (MetaInputSettings     *settings,
       g_warning ("Could not set tablet mapping for %s",
                  clutter_input_device_get_device_name (device));
     }
+  else
+    {
+      ClutterInputDeviceMapping dev_mapping;
+
+      dev_mapping = (mapping == G_DESKTOP_TABLET_MAPPING_ABSOLUTE) ?
+        CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE :
+        CLUTTER_INPUT_DEVICE_MAPPING_RELATIVE;
+      clutter_input_device_set_mapping_mode (device, dev_mapping);
+    }
 }
 
 static gboolean

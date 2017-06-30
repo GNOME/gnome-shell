@@ -857,7 +857,7 @@ update_device_display (MetaInputSettings  *input_settings,
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
 
   /* If mapping is relative, the device can move on all displays */
-  if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE ||
+  if (clutter_input_device_get_device_type (device) == CLUTTER_TOUCHSCREEN_DEVICE ||
       clutter_input_device_get_mapping_mode (device) ==
       CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE)
     logical_monitor = meta_input_settings_find_logical_monitor (input_settings,
