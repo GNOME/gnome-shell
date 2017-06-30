@@ -531,7 +531,7 @@ var _Draggable = new Lang.Class({
             // Snap the clone back to its source
             [x, y] = this._dragActorSource.get_transformed_position();
             let [sourceScaledWidth, sourceScaledHeight] = this._dragActorSource.get_transformed_size();
-            scale = this._dragActor.width / sourceScaledWidth;
+            scale = sourceScaledWidth ? this._dragActor.width / sourceScaledWidth : 0;
         } else if (this._dragOrigParent) {
             // Snap the actor back to its original position within
             // its parent, adjusting for the fact that the parent
