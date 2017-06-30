@@ -621,17 +621,16 @@ repick_for_event (MetaWaylandTabletTool *tool,
 
 static void
 meta_wayland_tablet_tool_get_relative_coordinates (MetaWaylandTabletTool *tool,
-                                                   ClutterInputDevice    *device,
+                                                   const ClutterEvent    *event,
                                                    MetaWaylandSurface    *surface,
                                                    wl_fixed_t            *sx,
                                                    wl_fixed_t            *sy)
 {
-  float xf = 0.0f, yf = 0.0f;
-  ClutterPoint pos;
+  float xf, yf;
 
-  clutter_input_device_get_coords (device, NULL, &pos);
+  clutter_event_get_coords (event, &xf, &yf);
   clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
-                                       pos.x, pos.y, &xf, &yf);
+                                       xf, yf, &xf, &yf);
 
   *sx = wl_fixed_from_double (xf) / surface->scale;
   *sy = wl_fixed_from_double (yf) / surface->scale;
@@ -642,11 +641,9 @@ broadcast_motion (MetaWaylandTabletTool *tool,
                   const ClutterEvent    *event)
 {
   struct wl_resource *resource;
-  ClutterInputDevice *device;
   wl_fixed_t sx, sy;
 
-  device = clutter_event_get_source_device (event);
-  meta_wayland_tablet_tool_get_relative_coordinates (tool, device,
+  meta_wayland_tablet_tool_get_relative_coordinates (tool, event,
                                                      tool->focus_surface,
                                                      &sx, &sy);
 
