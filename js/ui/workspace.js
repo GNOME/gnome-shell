@@ -1142,7 +1142,6 @@ var Workspace = class {
         this.actor.set_size(0, 0);
 
         this._dropRect = new Clutter.Actor({ opacity: 0 });
-        this._dropRect._delegate = this;
 
         this.actor.add_actor(this._dropRect);
         this.actor.add_actor(this._windowOverlaysGroup);
