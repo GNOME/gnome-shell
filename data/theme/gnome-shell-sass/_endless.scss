@@ -453,17 +453,38 @@ popup-separator-menu-item {
     -arrow-background-color: rgba(0, 0, 0, 0.3);
 }
 
+%overview-icon {
+    width: 118px;
+    height: 118px;
+    icon-size: 64px;
+    spacing: 4px;
+    padding-top: 12px;
+    padding-bottom: 0px;
+    border-radius: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
 .icon-grid {
     spacing: 10px;
     -shell-grid-horizontal-item-size: 118px;
     -shell-grid-vertical-item-size: 118px;
 
     .overview-icon {
-        icon-size: 64px;
-        spacing: 8px;
-        border-radius: 15px;
-        font-weight: bold;
+        @extend %overview-icon;
     }
+}
+
+.folder-no-apps-label {
+  text-shadow: black 0px 2px 2px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.overview-icon.dnd {
+    @extend %overview-icon;
 }
 
 // Desktop Search (text entry widget)
@@ -547,9 +568,7 @@ popup-separator-menu-item {
     margin-bottom: 10px;
 
     .overview-icon {
-        icon-size: 64px;
-        spacing: 8px;
-        text-align: center;
+        @extend %overview-icon;
     }
 
     .overview-icon-label {
