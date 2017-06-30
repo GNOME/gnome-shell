@@ -2243,10 +2243,15 @@ clutter_input_device_get_device_node (ClutterInputDevice *device)
 ClutterInputDeviceMapping
 clutter_input_device_get_mapping_mode (ClutterInputDevice *device)
 {
+  ClutterInputDeviceType device_type;
+
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (device),
                         CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE);
-  g_return_val_if_fail (clutter_input_device_get_device_type (device) ==
-                        CLUTTER_TABLET_DEVICE,
+
+  device_type = clutter_input_device_get_device_type (device);
+  g_return_val_if_fail (device_type == CLUTTER_TABLET_DEVICE ||
+                        device_type == CLUTTER_PEN_DEVICE ||
+                        device_type == CLUTTER_ERASER_DEVICE,
                         CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE);
 
   return device->mapping_mode;
@@ -2256,9 +2261,14 @@ void
 clutter_input_device_set_mapping_mode (ClutterInputDevice        *device,
                                        ClutterInputDeviceMapping  mapping)
 {
+  ClutterInputDeviceType device_type;
+
   g_return_if_fail (CLUTTER_IS_INPUT_DEVICE (device));
-  g_return_if_fail (clutter_input_device_get_device_type (device) ==
-                    CLUTTER_TABLET_DEVICE);
+
+  device_type = clutter_input_device_get_device_type (device);
+  g_return_if_fail (device_type == CLUTTER_TABLET_DEVICE ||
+                    device_type == CLUTTER_PEN_DEVICE ||
+                    device_type == CLUTTER_ERASER_DEVICE);
 
   if (device->mapping_mode == mapping)
     return;
