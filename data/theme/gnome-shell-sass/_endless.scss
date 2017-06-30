@@ -462,6 +462,18 @@ popup-separator-menu-item {
     }
 }
 
+.folder-no-apps-label {
+  text-shadow: black 0px 2px 2px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.overview-icon.dnd {
+    @extend %overview-icon;
+}
+
 // Desktop Search (results)
 
 %search-label-main {

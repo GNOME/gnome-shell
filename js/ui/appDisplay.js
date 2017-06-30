@@ -1343,8 +1343,15 @@ class ViewIcon extends St.Button {
     }
 
     getDragActor() {
-        // Each subclass creates the actor returned here in different ways
-        throw new Error('Not implemented');
+        let iconParams = {
+            createIcon: this._createIcon.bind(this),
+            showLabel: this.icon.label != null,
+            setSizeManually: false,
+        };
+
+        let icon = new IconGrid.BaseIcon(this.name, iconParams);
+        icon.add_style_class_name('dnd');
+        return icon;
     }
 
     // Returns the original actor that should align with the actor
@@ -2121,10 +2128,6 @@ var AppIcon = GObject.registerClass({
                                         timestamp: 0 });
 
         this.app.open_new_window(params.workspace);
-    }
-
-    getDragActor() {
-        return this.app.create_icon_texture(this._iconSize);
     }
 
     shouldShowTooltip() {
