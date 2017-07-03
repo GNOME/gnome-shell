@@ -1186,6 +1186,10 @@ StScrollBar {
   font-size: 1.5em;
   color: #e2e2df; }
 
+.list-search-result-provider {
+  color: #e2e2df;
+  margin-top: 0.24em; }
+
 .list-search-result-description {
   color: #cacac4;
   margin-left: 30px; }

@@ -749,8 +749,8 @@ const ProviderInfo = new Lang.Class({
                                     vertical: true });
 
         let providerNameLabel = new St.Label({
-                                        style_class: 'list-search-result-title',
-                                        text: provider.appInfo.get_name() });
+                                    style_class: 'list-search-result-provider',
+                                    text: provider.appInfo.get_name() });
 
         this._remainingResultsLabel = new St.Label({
                                     style_class: 'list-search-result-title' });
@@ -770,7 +770,7 @@ const ProviderInfo = new Lang.Class({
         this._content.add(icon, { x_fill: false,
                                   y_fill: false,
                                   x_align: St.Align.START,
-                                  y_align: St.Align.START });
+                                  y_align: St.Align.MIDDLE });
         this._content.add(this._providerDetails, { x_fill: false,
                                                    y_fill: false,
                                                    x_align: St.Align.START,
