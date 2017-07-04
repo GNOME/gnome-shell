@@ -422,6 +422,7 @@ create_crtc (MetaMonitorManager *manager,
 
   crtc = g_object_new (META_TYPE_CRTC, NULL);
 
+  crtc->monitor_manager = manager;
   crtc->crtc_id = drm_crtc->crtc_id;
   crtc->rect.x = drm_crtc->x;
   crtc->rect.y = drm_crtc->y;

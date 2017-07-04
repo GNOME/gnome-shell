@@ -218,6 +218,7 @@ append_tiled_monitor (MetaMonitorManager *manager,
       MetaCrtc *crtc;
 
       crtc = g_object_new (META_TYPE_CRTC, NULL);
+      crtc->monitor_manager = manager;
       crtc->crtc_id = g_list_length (*crtcs) + i + 1;
       crtc->all_transforms = ALL_TRANSFORMS;
       new_crtcs = g_list_append (new_crtcs, crtc);

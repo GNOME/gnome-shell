@@ -25,6 +25,12 @@ G_DEFINE_TYPE (MetaCrtc, meta_crtc, G_TYPE_OBJECT)
 
 G_DEFINE_TYPE (MetaCrtcMode, meta_crtc_mode, G_TYPE_OBJECT)
 
+MetaMonitorManager *
+meta_crtc_get_monitor_manager (MetaCrtc *crtc)
+{
+  return crtc->monitor_manager;
+}
+
 static void
 meta_crtc_finalize (GObject *object)
 {

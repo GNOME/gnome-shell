@@ -833,6 +833,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
 
       crtc = g_object_new (META_TYPE_CRTC, NULL);
 
+      crtc->monitor_manager = manager;
       crtc->crtc_id = resources->crtcs[i];
       crtc->rect.x = xrandr_crtc->x;
       crtc->rect.y = xrandr_crtc->y;
