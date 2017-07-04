@@ -44,9 +44,8 @@
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-output.h"
+#include "backends/x11/meta-crtc-xrandr.h"
 #include "backends/x11/meta-output-xrandr.h"
-
-#define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
 /* Look for DPI_FALLBACK in:
  * http://git.gnome.org/browse/gnome-settings-daemon/tree/plugins/xsettings/gsd-xsettings-manager.c
@@ -95,81 +94,16 @@ meta_monitor_manager_xrandr_get_xdisplay (MetaMonitorManagerXrandr *manager_xran
   return manager_xrandr->xdisplay;
 }
 
+XRRScreenResources *
+meta_monitor_manager_xrandr_get_resources (MetaMonitorManagerXrandr *manager_xrandr)
+{
+  return manager_xrandr->resources;
+}
+
 gboolean
 meta_monitor_manager_xrandr_has_randr15 (MetaMonitorManagerXrandr *manager_xrandr)
 {
   return manager_xrandr->has_randr15;
-}
-
-static MetaMonitorTransform
-meta_monitor_transform_from_xrandr (Rotation rotation)
-{
-  static const MetaMonitorTransform y_reflected_map[4] = {
-    META_MONITOR_TRANSFORM_FLIPPED_180,
-    META_MONITOR_TRANSFORM_FLIPPED_90,
-    META_MONITOR_TRANSFORM_FLIPPED,
-    META_MONITOR_TRANSFORM_FLIPPED_270
-  };
-  MetaMonitorTransform ret;
-
-  switch (rotation & 0x7F)
-    {
-    default:
-    case RR_Rotate_0:
-      ret = META_MONITOR_TRANSFORM_NORMAL;
-      break;
-    case RR_Rotate_90:
-      ret = META_MONITOR_TRANSFORM_90;
-      break;
-    case RR_Rotate_180:
-      ret = META_MONITOR_TRANSFORM_180;
-      break;
-    case RR_Rotate_270:
-      ret = META_MONITOR_TRANSFORM_270;
-      break;
-    }
-
-  if (rotation & RR_Reflect_X)
-    return ret + 4;
-  else if (rotation & RR_Reflect_Y)
-    return y_reflected_map[ret];
-  else
-    return ret;
-}
-
-#define ALL_ROTATIONS (RR_Rotate_0 | RR_Rotate_90 | RR_Rotate_180 | RR_Rotate_270)
-
-static MetaMonitorTransform
-meta_monitor_transform_from_xrandr_all (Rotation rotation)
-{
-  unsigned ret;
-
-  /* Handle the common cases first (none or all) */
-  if (rotation == 0 || rotation == RR_Rotate_0)
-    return (1 << META_MONITOR_TRANSFORM_NORMAL);
-
-  /* All rotations and one reflection -> all of them by composition */
-  if ((rotation & ALL_ROTATIONS) &&
-      ((rotation & RR_Reflect_X) || (rotation & RR_Reflect_Y)))
-    return ALL_TRANSFORMS;
-
-  ret = 1 << META_MONITOR_TRANSFORM_NORMAL;
-  if (rotation & RR_Rotate_90)
-    ret |= 1 << META_MONITOR_TRANSFORM_90;
-  if (rotation & RR_Rotate_180)
-    ret |= 1 << META_MONITOR_TRANSFORM_180;
-  if (rotation & RR_Rotate_270)
-    ret |= 1 << META_MONITOR_TRANSFORM_270;
-  if (rotation & (RR_Rotate_0 | RR_Reflect_X))
-    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED;
-  if (rotation & (RR_Rotate_90 | RR_Reflect_X))
-    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED_90;
-  if (rotation & (RR_Rotate_180 | RR_Reflect_X))
-    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED_180;
-  if (rotation & (RR_Rotate_270 | RR_Reflect_X))
-    ret |= 1 << META_MONITOR_TRANSFORM_FLIPPED_270;
-
-  return ret;
 }
 
 static int
@@ -280,34 +214,13 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
   for (i = 0; i < (unsigned)resources->ncrtc; i++)
     {
       XRRCrtcInfo *xrandr_crtc;
+      RRCrtc crtc_id;
       MetaCrtc *crtc;
 
-      xrandr_crtc = XRRGetCrtcInfo (manager_xrandr->xdisplay, resources,
-                                    resources->crtcs[i]);
-
-      crtc = g_object_new (META_TYPE_CRTC, NULL);
-
-      crtc->monitor_manager = manager;
-      crtc->crtc_id = resources->crtcs[i];
-      crtc->rect.x = xrandr_crtc->x;
-      crtc->rect.y = xrandr_crtc->y;
-      crtc->rect.width = xrandr_crtc->width;
-      crtc->rect.height = xrandr_crtc->height;
-      crtc->is_dirty = FALSE;
-      crtc->transform =
-        meta_monitor_transform_from_xrandr (xrandr_crtc->rotation);
-      crtc->all_transforms =
-        meta_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
-
-      for (j = 0; j < (unsigned)resources->nmode; j++)
-	{
-	  if (resources->modes[j].id == xrandr_crtc->mode)
-	    {
-	      crtc->current_mode = g_list_nth_data (manager->modes, j);
-	      break;
-	    }
-	}
-
+      crtc_id = resources->crtcs[i];
+      xrandr_crtc = XRRGetCrtcInfo (manager_xrandr->xdisplay,
+                                    resources, crtc_id);
+      crtc = meta_create_xrandr_crtc (manager, xrandr_crtc, crtc_id, resources);
       XRRFreeCrtcInfo (xrandr_crtc);
 
       manager->crtcs = g_list_append (manager->crtcs, crtc);
@@ -432,8 +345,9 @@ meta_monitor_transform_to_xrandr (MetaMonitorTransform transform)
 
 static gboolean
 xrandr_set_crtc_config (MetaMonitorManagerXrandr *manager_xrandr,
+                        MetaCrtc                 *crtc,
                         gboolean                  save_timestamp,
-                        xcb_randr_crtc_t          crtc,
+                        xcb_randr_crtc_t          xrandr_crtc,
                         xcb_timestamp_t           timestamp,
                         int                       x,
                         int                       y,
@@ -442,37 +356,16 @@ xrandr_set_crtc_config (MetaMonitorManagerXrandr *manager_xrandr,
                         xcb_randr_output_t       *outputs,
                         int                       n_outputs)
 {
-  xcb_connection_t *xcb_conn;
-  xcb_timestamp_t config_timestamp;
-  xcb_randr_set_crtc_config_cookie_t cookie;
-  xcb_randr_set_crtc_config_reply_t *reply;
-  xcb_generic_error_t *xcb_error = NULL;
+  xcb_timestamp_t new_timestamp;
 
-  xcb_conn = XGetXCBConnection (manager_xrandr->xdisplay);
-  config_timestamp = manager_xrandr->resources->configTimestamp;
-  cookie = xcb_randr_set_crtc_config (xcb_conn,
-                                      crtc,
-                                      timestamp,
-                                      config_timestamp,
-                                      x, y,
-                                      mode,
-                                      rotation,
-                                      n_outputs,
-                                      outputs);
-  reply = xcb_randr_set_crtc_config_reply (xcb_conn,
-                                           cookie,
-                                           &xcb_error);
-  if (xcb_error || !reply)
-    {
-      free (xcb_error);
-      free (reply);
-      return FALSE;
-    }
+  if (!meta_crtc_xrandr_set_config (crtc, xrandr_crtc, timestamp,
+                                    x, y, mode, rotation,
+                                    outputs, n_outputs,
+                                    &new_timestamp))
+    return FALSE;
 
   if (save_timestamp)
-    manager_xrandr->last_xrandr_set_timestamp = reply->timestamp;
-
-  free (reply);
+    manager_xrandr->last_xrandr_set_timestamp = new_timestamp;
 
   return TRUE;
 }
@@ -654,6 +547,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
           crtc->rect.y + crtc->rect.height > height)
         {
           xrandr_set_crtc_config (manager_xrandr,
+                                  crtc,
                                   save_timestamp,
                                   (xcb_randr_crtc_t) crtc->crtc_id,
                                   XCB_CURRENT_TIME,
@@ -683,6 +577,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
         continue;
 
       xrandr_set_crtc_config (manager_xrandr,
+                              crtc,
                               save_timestamp,
                               (xcb_randr_crtc_t) crtc->crtc_id,
                               XCB_CURRENT_TIME,
@@ -740,6 +635,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
 
           rotation = meta_monitor_transform_to_xrandr (crtc_info->transform);
           if (!xrandr_set_crtc_config (manager_xrandr,
+                                       crtc,
                                        save_timestamp,
                                        (xcb_randr_crtc_t) crtc->crtc_id,
                                        XCB_CURRENT_TIME,

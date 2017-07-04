@@ -23,6 +23,8 @@
 #ifndef META_MONITOR_MANAGER_XRANDR_H
 #define META_MONITOR_MANAGER_XRANDR_H
 
+#include <X11/extensions/Xrandr.h>
+
 #include "meta-monitor-manager-private.h"
 
 #define META_TYPE_MONITOR_MANAGER_XRANDR (meta_monitor_manager_xrandr_get_type ())
@@ -30,6 +32,8 @@ G_DECLARE_FINAL_TYPE (MetaMonitorManagerXrandr, meta_monitor_manager_xrandr,
                       META, MONITOR_MANAGER_XRANDR, MetaMonitorManager)
 
 Display * meta_monitor_manager_xrandr_get_xdisplay (MetaMonitorManagerXrandr *manager_xrandr);
+
+XRRScreenResources * meta_monitor_manager_xrandr_get_resources (MetaMonitorManagerXrandr *manager_xrandr);
 
 gboolean meta_monitor_manager_xrandr_has_randr15 (MetaMonitorManagerXrandr *manager_xrandr);
 
