@@ -29,6 +29,7 @@
 #include "meta-output.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
+#include "meta-output-kms.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -39,8 +40,6 @@
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <xf86drm.h>
-#include <xf86drmMode.h>
 
 #include <meta/main.h>
 #include <meta/errors.h>
@@ -51,33 +50,6 @@
 
 #define ALL_TRANSFORMS (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
-#define SYNC_TOLERANCE 0.01    /* 1 percent */
-
-typedef struct
-{
-  drmModeConnector *connector;
-
-  unsigned n_encoders;
-  drmModeEncoderPtr *encoders;
-  drmModeEncoderPtr  current_encoder;
-
-  /*
-   * Bitmasks of encoder position in the resources array (used during clone
-   * setup).
-   */
-  uint32_t encoder_mask;
-  uint32_t enc_clone_mask;
-
-  uint32_t dpms_prop_id;
-  uint32_t edid_blob_id;
-  uint32_t tile_blob_id;
-
-  int suggested_x;
-  int suggested_y;
-  uint32_t hotplug_mode_update;
-
-  gboolean has_scaling;
-} MetaOutputKms;
 
 typedef struct
 {
@@ -124,6 +96,12 @@ struct _MetaMonitorManagerKmsClass
 
 G_DEFINE_TYPE (MetaMonitorManagerKms, meta_monitor_manager_kms, META_TYPE_MONITOR_MANAGER);
 
+int
+meta_monitor_manager_kms_get_fd (MetaMonitorManagerKms *manager_kms)
+{
+  return manager_kms->fd;
+}
+
 static void
 free_resources (MetaMonitorManagerKms *manager_kms)
 {
@@ -142,54 +120,6 @@ compare_outputs (gconstpointer one,
   const MetaOutput *o_one = one, *o_two = two;
 
   return strcmp (o_one->name, o_two->name);
-}
-
-static char *
-make_output_name (drmModeConnector *connector)
-{
-  static const char * const connector_type_names[] = {
-    "None",
-    "VGA",
-    "DVI-I",
-    "DVI-D",
-    "DVI-A",
-    "Composite",
-    "SVIDEO",
-    "LVDS",
-    "Component",
-    "DIN",
-    "DP",
-    "HDMI",
-    "HDMI-B",
-    "TV",
-    "eDP",
-    "Virtual",
-    "DSI",
-  };
-
-  if (connector->connector_type < G_N_ELEMENTS (connector_type_names))
-    return g_strdup_printf ("%s-%d",
-                            connector_type_names[connector->connector_type],
-                            connector->connector_type_id);
-  else
-    return g_strdup_printf ("Unknown%d-%d",
-                            connector->connector_type,
-                            connector->connector_type_id);
-}
-
-static void
-meta_output_destroy_notify (MetaOutput *output)
-{
-  MetaOutputKms *output_kms;
-  unsigned i;
-
-  output_kms = output->driver_private;
-
-  for (i = 0; i < output_kms->n_encoders; i++)
-    drmModeFreeEncoder (output_kms->encoders[i]);
-  g_free (output_kms->encoders);
-
-  g_slice_free (MetaOutputKms, output_kms);
 }
 
 static void
@@ -248,44 +178,6 @@ drm_mode_hash (gconstpointer ptr)
 }
 
 static void
-find_connector_properties (MetaMonitorManagerKms *manager_kms,
-                           MetaOutputKms         *output_kms)
-{
-  int i;
-
-  output_kms->hotplug_mode_update = 0;
-  output_kms->suggested_x = -1;
-  output_kms->suggested_y = -1;
-  for (i = 0; i < output_kms->connector->count_props; i++)
-    {
-      drmModePropertyPtr prop = drmModeGetProperty (manager_kms->fd, output_kms->connector->props[i]);
-      if (!prop)
-        continue;
-
-      if ((prop->flags & DRM_MODE_PROP_ENUM) && strcmp (prop->name, "DPMS") == 0)
-        output_kms->dpms_prop_id = prop->prop_id;
-      else if ((prop->flags & DRM_MODE_PROP_BLOB) && strcmp (prop->name, "EDID") == 0)
-        output_kms->edid_blob_id = output_kms->connector->prop_values[i];
-      else if ((prop->flags & DRM_MODE_PROP_BLOB) &&
-               strcmp (prop->name, "TILE") == 0)
-        output_kms->tile_blob_id = output_kms->connector->prop_values[i];
-      else if ((prop->flags & DRM_MODE_PROP_RANGE) &&
-               strcmp (prop->name, "suggested X") == 0)
-        output_kms->suggested_x = output_kms->connector->prop_values[i];
-      else if ((prop->flags & DRM_MODE_PROP_RANGE) &&
-               strcmp (prop->name, "suggested Y") == 0)
-        output_kms->suggested_y = output_kms->connector->prop_values[i];
-      else if ((prop->flags & DRM_MODE_PROP_RANGE) &&
-               strcmp (prop->name, "hotplug_mode_update") == 0)
-        output_kms->hotplug_mode_update = output_kms->connector->prop_values[i];
-      else if (strcmp (prop->name, "scaling mode") == 0)
-        output_kms->has_scaling = TRUE;
-
-      drmModeFreeProperty (prop);
-    }
-}
-
-static void
 find_crtc_properties (MetaMonitorManagerKms *manager_kms,
                       MetaCrtc *meta_crtc)
 {
@@ -316,99 +208,11 @@ find_crtc_properties (MetaMonitorManagerKms *manager_kms,
     }
 }
 
-static drmModePropertyBlobPtr
-read_edid_blob (MetaMonitorManagerKms *manager_kms,
-                uint32_t               edid_blob_id,
-                GError               **error)
+MetaCrtcMode *
+meta_monitor_manager_kms_get_mode_from_drm_mode (MetaMonitorManagerKms *manager_kms,
+                                                 const drmModeModeInfo *drm_mode)
 {
-  drmModePropertyBlobPtr edid_blob = NULL;
-
-  edid_blob = drmModeGetPropertyBlob (manager_kms->fd, edid_blob_id);
-  if (!edid_blob)
-    {
-      g_set_error (error, G_IO_ERROR, g_io_error_from_errno (errno),
-                   "%s", strerror (errno));
-      return NULL;
-    }
-
-  return edid_blob;
-}
-
-static GBytes *
-read_output_edid (MetaMonitorManagerKms *manager_kms,
-                  MetaOutput            *output,
-                  GError               **error)
-{
-  MetaOutputKms *output_kms = output->driver_private;
-  drmModePropertyBlobPtr edid_blob;
-
-  g_assert (output_kms->edid_blob_id != 0);
-
-  edid_blob = read_edid_blob (manager_kms, output_kms->edid_blob_id, error);
-  if (!edid_blob)
-    return NULL;
-
-  if (edid_blob->length == 0)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "EDID blob was empty");
-      drmModeFreePropertyBlob (edid_blob);
-      return NULL;
-    }
-
-  return g_bytes_new_with_free_func (edid_blob->data, edid_blob->length,
-                                     (GDestroyNotify) drmModeFreePropertyBlob,
-                                     edid_blob);
-}
-
-static gboolean
-output_get_tile_info (MetaMonitorManagerKms *manager_kms,
-                      MetaOutput            *output)
-{
-  MetaOutputKms *output_kms = output->driver_private;
-  drmModePropertyBlobPtr tile_blob = NULL;
-  int ret;
-
-  if (output_kms->tile_blob_id == 0)
-    return FALSE;
-
-  tile_blob = drmModeGetPropertyBlob (manager_kms->fd, output_kms->tile_blob_id);
-  if (!tile_blob)
-    {
-      meta_warning ("Failed to read TILE of output %s: %s\n", output->name, strerror(errno));
-      return FALSE;
-    }
-
-  if (tile_blob->length > 0)
-    {
-      ret = sscanf ((char *)tile_blob->data, "%d:%d:%d:%d:%d:%d:%d:%d",
-                    &output->tile_info.group_id,
-                    &output->tile_info.flags,
-                    &output->tile_info.max_h_tiles,
-                    &output->tile_info.max_v_tiles,
-                    &output->tile_info.loc_h_tile,
-                    &output->tile_info.loc_v_tile,
-                    &output->tile_info.tile_w,
-                    &output->tile_info.tile_h);
-      drmModeFreePropertyBlob (tile_blob);
-
-      if (ret != 8)
-        {
-          meta_warning ("Couldn't understand output tile property blob\n");
-          return FALSE;
-        }
-      return TRUE;
-    }
-  else
-    {
-      drmModeFreePropertyBlob (tile_blob);
-      return FALSE;
-    }
-}
-
-static MetaCrtcMode *
-mode_from_drm_mode (MetaMonitorManager    *manager,
-                    const drmModeModeInfo *drm_mode)
-{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
   GList *l;
 
   for (l = manager->modes; l; l = l->next)
@@ -423,8 +227,8 @@ mode_from_drm_mode (MetaMonitorManager    *manager,
   return NULL;
 }
 
-static float
-drm_mode_vrefresh (const drmModeModeInfo *mode)
+float
+meta_calculate_drm_mode_refresh_rate (const drmModeModeInfo *mode)
 {
   float refresh = 0.0;
 
@@ -453,28 +257,11 @@ create_mode (const drmModeModeInfo *drm_mode,
   mode->width = drm_mode->hdisplay;
   mode->height = drm_mode->vdisplay;
   mode->flags = drm_mode->flags;
-  mode->refresh_rate = drm_mode_vrefresh (drm_mode);
+  mode->refresh_rate = meta_calculate_drm_mode_refresh_rate (drm_mode);
   mode->driver_private = g_slice_dup (drmModeModeInfo, drm_mode);
-  mode->driver_notify = (GDestroyNotify)meta_monitor_mode_destroy_notify;
+  mode->driver_notify = (GDestroyNotify) meta_monitor_mode_destroy_notify;
 
   return mode;
-}
-
-static int
-compare_modes (const void *one,
-               const void *two)
-{
-  MetaCrtcMode *a = *(MetaCrtcMode **) one;
-  MetaCrtcMode *b = *(MetaCrtcMode **) two;
-
-  if (a->width != b->width)
-    return a->width > b->width ? -1 : 1;
-  if (a->height != b->height)
-    return a->height > b->height ? -1 : 1;
-  if (a->refresh_rate != b->refresh_rate)
-    return a->refresh_rate > b->refresh_rate ? -1 : 1;
-
-  return g_strcmp0 (b->name, a->name);
 }
 
 static MetaOutput *
@@ -627,49 +414,6 @@ init_crtc_rotations (MetaMonitorManager *manager,
   drmModeFreePlaneResources (planes);
 }
 
-static void
-add_common_modes (MetaMonitorManager *manager,
-                  MetaOutput         *output)
-{
-  const drmModeModeInfo *drm_mode;
-  GPtrArray *array;
-  unsigned i;
-  unsigned max_hdisplay = 0;
-  unsigned max_vdisplay = 0;
-  float max_vrefresh = 0.0;
-
-  for (i = 0; i < output->n_modes; i++)
-    {
-      drm_mode = output->modes[i]->driver_private;
-      max_hdisplay = MAX (max_hdisplay, drm_mode->hdisplay);
-      max_vdisplay = MAX (max_vdisplay, drm_mode->vdisplay);
-      max_vrefresh = MAX (max_vrefresh, drm_mode_vrefresh (drm_mode));
-    }
-
-  max_vrefresh = MAX (max_vrefresh, 60.0);
-  max_vrefresh *= (1 + SYNC_TOLERANCE);
-
-  array = g_ptr_array_new ();
-  for (i = 0; i < G_N_ELEMENTS (meta_default_drm_mode_infos); i++)
-    {
-      drm_mode = &meta_default_drm_mode_infos[i];
-      if (drm_mode->hdisplay > max_hdisplay ||
-          drm_mode->vdisplay > max_vdisplay ||
-          drm_mode_vrefresh (drm_mode) > max_vrefresh)
-        continue;
-
-      g_ptr_array_add (array, mode_from_drm_mode (manager, drm_mode));
-    }
-
-  output->modes = g_renew (MetaCrtcMode *, output->modes,
-                           output->n_modes + array->len);
-  memcpy (output->modes + output->n_modes, array->pdata,
-          array->len * sizeof (MetaCrtcMode *));
-  output->n_modes += array->len;
-
-  g_ptr_array_free (array, TRUE);
-}
-
 static MetaCrtc *
 create_crtc (MetaMonitorManager *manager,
              drmModeCrtc        *drm_crtc)
@@ -710,268 +454,31 @@ create_crtc (MetaMonitorManager *manager,
   return crtc;
 }
 
-static MetaOutput *
-create_output (MetaMonitorManager *manager,
-               drmModeConnector   *connector,
-               MetaOutput         *old_output)
-{
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  MetaOutput *output;
-  MetaOutputKms *output_kms;
-  GArray *crtcs;
-  GBytes *edid;
-  GList *l;
-  unsigned int i;
-  unsigned int crtc_mask;
-
-  output = g_object_new (META_TYPE_OUTPUT, NULL);
-
-  output_kms = g_slice_new0 (MetaOutputKms);
-  output->driver_private = output_kms;
-  output->driver_notify = (GDestroyNotify)meta_output_destroy_notify;
-
-  output->monitor_manager = manager;
-  output->winsys_id = connector->connector_id;
-  output->name = make_output_name (connector);
-  output->width_mm = connector->mmWidth;
-  output->height_mm = connector->mmHeight;
-
-  switch (connector->subpixel)
-    {
-    case DRM_MODE_SUBPIXEL_NONE:
-      output->subpixel_order = COGL_SUBPIXEL_ORDER_NONE;
-      break;
-    case DRM_MODE_SUBPIXEL_HORIZONTAL_RGB:
-      output->subpixel_order = COGL_SUBPIXEL_ORDER_HORIZONTAL_RGB;
-      break;
-    case DRM_MODE_SUBPIXEL_HORIZONTAL_BGR:
-      output->subpixel_order = COGL_SUBPIXEL_ORDER_HORIZONTAL_BGR;
-      break;
-    case DRM_MODE_SUBPIXEL_VERTICAL_RGB:
-      output->subpixel_order = COGL_SUBPIXEL_ORDER_VERTICAL_RGB;
-      break;
-    case DRM_MODE_SUBPIXEL_VERTICAL_BGR:
-      output->subpixel_order = COGL_SUBPIXEL_ORDER_VERTICAL_BGR;
-      break;
-    case DRM_MODE_SUBPIXEL_UNKNOWN:
-    default:
-      output->subpixel_order = COGL_SUBPIXEL_ORDER_UNKNOWN;
-      break;
-    }
-
-  output->preferred_mode = NULL;
-  output->n_modes = connector->count_modes;
-  output->modes = g_new0 (MetaCrtcMode *, output->n_modes);
-  for (i = 0; i < output->n_modes; i++) {
-      output->modes[i] = mode_from_drm_mode (manager, &connector->modes[i]);
-      if (connector->modes[i].type & DRM_MODE_TYPE_PREFERRED)
-        output->preferred_mode = output->modes[i];
-  }
-
-  if (!output->preferred_mode)
-    output->preferred_mode = output->modes[0];
-
-  output_kms->connector = connector;
-  find_connector_properties (manager_kms, output_kms);
-
-  /* FIXME: MSC feature bit? */
-  /* Presume that if the output supports scaling, then we have
-   * a panel fitter capable of adjusting any mode to suit.
-   */
-  if (output_kms->has_scaling)
-    add_common_modes (manager, output);
-
-  qsort (output->modes, output->n_modes, sizeof (MetaCrtcMode *), compare_modes);
-
-  output_kms->n_encoders = connector->count_encoders;
-  output_kms->encoders = g_new0 (drmModeEncoderPtr, output_kms->n_encoders);
-
-  crtc_mask = ~(unsigned int) 0;
-  for (i = 0; i < output_kms->n_encoders; i++)
-    {
-      output_kms->encoders[i] = drmModeGetEncoder (manager_kms->fd,
-                                                   connector->encoders[i]);
-      if (!output_kms->encoders[i])
-        continue;
-
-      /* We only list CRTCs as supported if they are supported by all encoders
-         for this connectors.
-
-         This is what xf86-video-modesetting does (see drmmode_output_init())
-         */
-      crtc_mask &= output_kms->encoders[i]->possible_crtcs;
-
-      if (output_kms->encoders[i]->encoder_id == connector->encoder_id)
-        output_kms->current_encoder = output_kms->encoders[i];
-    }
-
-  crtcs = g_array_new (FALSE, FALSE, sizeof (MetaCrtc*));
-
-  for (l = manager->crtcs, i = 0; l; l = l->next, i++)
-    {
-      if (crtc_mask & (1 << i))
-        {
-          MetaCrtc *crtc = l->data;
-
-          g_array_append_val (crtcs, crtc);
-        }
-    }
-
-  output->n_possible_crtcs = crtcs->len;
-  output->possible_crtcs = (void*)g_array_free (crtcs, FALSE);
-
-  if (output_kms->current_encoder && output_kms->current_encoder->crtc_id != 0)
-    {
-      for (l = manager->crtcs; l; l = l->next)
-        {
-          MetaCrtc *crtc = l->data;
-
-          if (crtc->crtc_id == output_kms->current_encoder->crtc_id)
-            {
-              output->crtc = crtc;
-              break;
-            }
-        }
-    }
-  else
-    {
-      output->crtc = NULL;
-    }
-
-  if (old_output)
-    {
-      output->is_primary = old_output->is_primary;
-      output->is_presentation = old_output->is_presentation;
-    }
-  else
-    {
-      output->is_primary = FALSE;
-      output->is_presentation = FALSE;
-    }
-
-  output->suggested_x = output_kms->suggested_x;
-  output->suggested_y = output_kms->suggested_y;
-  output->hotplug_mode_update = output_kms->hotplug_mode_update;
-
-  if (output_kms->edid_blob_id != 0)
-    {
-      GError *error = NULL;
-
-      edid = read_output_edid (manager_kms, output, &error);
-      if (!edid)
-        {
-          g_warning ("Failed to read EDID blob from %s: %s",
-                     output->name, error->message);
-          g_error_free (error);
-        }
-    }
-  else
-    {
-      edid = NULL;
-    }
-
-  meta_output_parse_edid (output, edid);
-  g_bytes_unref (edid);
-
-  /* MetaConnectorType matches DRM's connector types */
-  output->connector_type = (MetaConnectorType) connector->connector_type;
-
-  output_get_tile_info (manager_kms, output);
-
-  /* FIXME: backlight is a very driver specific thing unfortunately,
-     every DDX does its own thing, and the dumb KMS API does not include it.
-
-     For example, xf86-video-intel has a list of paths to probe in /sys/class/backlight
-     (one for each major HW maker, and then some).
-     We can't do the same because we're not root.
-     It might be best to leave backlight out of the story and rely on the setuid
-     helper in gnome-settings-daemon.
-     */
-  output->backlight_min = 0;
-  output->backlight_max = 0;
-  output->backlight = -1;
-
-  return output;
-}
-
 static void
-detect_and_setup_output_clones (MetaMonitorManager *manager,
-                                drmModeRes         *resources)
+setup_output_clones (MetaMonitorManager *manager)
 {
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  drmModeEncoder **encoders;
-  unsigned int i, n_encoders;
   GList *l;
 
-  n_encoders = (unsigned int) resources->count_encoders;
-  encoders = g_new (drmModeEncoder *, n_encoders);
-  for (i = 0; i < n_encoders; i++)
-    encoders[i] = drmModeGetEncoder (manager_kms->fd, resources->encoders[i]);
-
-  /*
-   * Setup encoder position mask and encoder clone mask.
-   */
   for (l = manager->outputs; l; l = l->next)
     {
       MetaOutput *output = l->data;
-      MetaOutputKms *output_kms = output->driver_private;
-      unsigned int j;
-
-      output_kms->enc_clone_mask = 0xff;
-      output_kms->encoder_mask = 0;
-
-      for (j = 0; j < output_kms->n_encoders; j++)
-        {
-          unsigned int k;
-
-          for (k = 0; k < n_encoders; k++)
-            {
-              if (output_kms->encoders[j] && encoders[k] &&
-                  output_kms->encoders[j]->encoder_id == encoders[k]->encoder_id)
-                {
-                  output_kms->encoder_mask |= (1 << k);
-                  break;
-                }
-            }
-
-          output_kms->enc_clone_mask &= output_kms->encoders[j]->possible_clones;
-        }
-    }
-
-  for (i = 0; i < (unsigned)resources->count_encoders; i++)
-    drmModeFreeEncoder (encoders[i]);
-  g_free (encoders);
-
-  /*
-   * Setup MetaOutput <-> MetaOutput clone associations.
-   */
-  for (l = manager->outputs; l; l = l->next)
-    {
-      MetaOutput *output = l->data;
-      MetaOutputKms *output_kms = output->driver_private;
       GList *k;
-
-      if (output_kms->enc_clone_mask == 0)
-        continue;
 
       for (k = manager->outputs; k; k = k->next)
         {
-          MetaOutput *clone = k->data;
-          MetaOutputKms *clone_kms = clone->driver_private;
+          MetaOutput *other_output = k->data;
 
-          if (clone == output)
+          if (other_output == output)
             continue;
 
-          if (clone_kms->encoder_mask == 0)
-            continue;
-
-          if (clone_kms->encoder_mask == output_kms->enc_clone_mask)
+          if (meta_output_kms_can_clone (output, other_output))
             {
               output->n_possible_clones++;
               output->possible_clones = g_renew (MetaOutput *,
                                                  output->possible_clones,
                                                  output->n_possible_clones);
-              output->possible_clones[output->n_possible_clones - 1] = clone;
+              output->possible_clones[output->n_possible_clones - 1] =
+                other_output;
             }
         }
     }
@@ -1080,7 +587,7 @@ init_crtcs (MetaMonitorManager *manager,
 
 static void
 init_outputs (MetaMonitorManager *manager,
-              drmModeRes         *resources)
+              MetaKmsResources   *resources)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   GList *old_outputs;
@@ -1102,7 +609,7 @@ init_outputs (MetaMonitorManager *manager,
           MetaOutput *old_output;
 
           old_output = find_output_by_id (old_outputs, connector->connector_id);
-          output = create_output (manager, connector, old_output);
+          output = meta_create_kms_output (manager, connector, resources, old_output);
           manager->outputs = g_list_prepend (manager->outputs, output);
         }
     }
@@ -1111,19 +618,47 @@ init_outputs (MetaMonitorManager *manager,
   /* Sort the outputs for easier handling in MetaMonitorConfig */
   manager->outputs = g_list_sort (manager->outputs, compare_outputs);
 
-  detect_and_setup_output_clones (manager, resources);
+  setup_output_clones (manager);
+}
+
+static void
+meta_kms_resources_init (MetaKmsResources *resources,
+                         int               fd)
+{
+  drmModeRes *drm_resources;
+  unsigned int i;
+
+  drm_resources = drmModeGetResources (fd);
+  resources->resources = drm_resources;
+
+  resources->n_encoders = (unsigned int) drm_resources->count_encoders;
+  resources->encoders = g_new (drmModeEncoder *, resources->n_encoders);
+  for (i = 0; i < resources->n_encoders; i++)
+    resources->encoders[i] = drmModeGetEncoder (fd, drm_resources->encoders[i]);
+}
+
+static void
+meta_kms_resources_release (MetaKmsResources *resources)
+{
+  unsigned int i;
+
+  for (i = 0; i < resources->n_encoders; i++)
+    drmModeFreeEncoder (resources->encoders[i]);
+  g_free (resources->encoders);
+
+  drmModeFreeResources (resources->resources);
 }
 
 static void
 meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  drmModeRes *resources;
+  MetaKmsResources resources;
 
-  resources = drmModeGetResources (manager_kms->fd);
+  meta_kms_resources_init (&resources, manager_kms->fd);
 
-  manager_kms->max_buffer_width = resources->max_width;
-  manager_kms->max_buffer_height = resources->max_height;
+  manager_kms->max_buffer_width = resources.resources->max_width;
+  manager_kms->max_buffer_height = resources.resources->max_height;
 
   manager->power_save_mode = META_POWER_SAVE_ON;
 
@@ -1133,43 +668,25 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
      are freed by the platform-independent layer. */
   free_resources (manager_kms);
 
-  init_connectors (manager, resources);
-  init_modes (manager, resources);
-  init_crtcs (manager, resources);
-  init_outputs (manager, resources);
+  init_connectors (manager, resources.resources);
+  init_modes (manager, resources.resources);
+  init_crtcs (manager, resources.resources);
+  init_outputs (manager, &resources);
 
-  drmModeFreeResources (resources);
+  meta_kms_resources_release (&resources);
 }
 
 static GBytes *
 meta_monitor_manager_kms_read_edid (MetaMonitorManager *manager,
                                     MetaOutput         *output)
 {
-  MetaOutputKms *output_kms = output->driver_private;
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  GError *error = NULL;
-  GBytes *edid;
-
-  if (output_kms->edid_blob_id == 0)
-    return NULL;
-
-  edid = read_output_edid (manager_kms, output, &error);
-  if (!edid)
-    {
-      g_warning ("Failed to read EDID from '%s': %s",
-                 output->name, error->message);
-      g_error_free (error);
-      return NULL;
-    }
-
-  return edid;
+  return meta_output_kms_read_edid (output);
 }
 
 static void
 meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
                                               MetaPowerSave       mode)
 {
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   uint64_t state;
   GList *l;
 
@@ -1193,18 +710,8 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
   for (l = manager->outputs; l; l = l->next)
     {
       MetaOutput *output = l->data;
-      MetaOutputKms *output_kms = output->driver_private;
 
-      if (output_kms->dpms_prop_id != 0)
-        {
-          int ok = drmModeObjectSetProperty (manager_kms->fd, output->winsys_id,
-                                             DRM_MODE_OBJECT_CONNECTOR,
-                                             output_kms->dpms_prop_id, state);
-
-          if (ok < 0)
-            meta_warning ("Failed to set power save mode for output %s: %s\n",
-                          output->name, strerror (errno));
-        }
+      meta_output_kms_set_power_save_mode (output, state);
     }
 }
 

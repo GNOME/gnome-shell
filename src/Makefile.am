@@ -457,6 +457,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
 	backends/native/meta-monitor-manager-kms.h	\
 	backends/native/meta-launcher.c			\
 	backends/native/meta-launcher.h			\
+	backends/native/meta-output-kms.c		\
+	backends/native/meta-output-kms.h		\
 	backends/native/meta-renderer-native.c		\
 	backends/native/meta-renderer-native.h		\
 	backends/native/meta-stage-native.c		\
