@@ -25,17 +25,10 @@
 
 #include "meta-monitor-manager-private.h"
 
-#define META_TYPE_MONITOR_MANAGER_KMS            (meta_monitor_manager_kms_get_type ())
-#define META_MONITOR_MANAGER_KMS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_KMS, MetaMonitorManagerKms))
-#define META_MONITOR_MANAGER_KMS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_MANAGER_KMS, MetaMonitorManagerKmsClass))
-#define META_IS_MONITOR_MANAGER_KMS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_MANAGER_KMS))
-#define META_IS_MONITOR_MANAGER_KMS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_MANAGER_KMS))
-#define META_MONITOR_MANAGER_KMS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_MANAGER_KMS, MetaMonitorManagerKmsClass))
-
-typedef struct _MetaMonitorManagerKmsClass    MetaMonitorManagerKmsClass;
-typedef struct _MetaMonitorManagerKms         MetaMonitorManagerKms;
-
-GType meta_monitor_manager_kms_get_type (void);
+#define META_TYPE_MONITOR_MANAGER_KMS (meta_monitor_manager_kms_get_type ())
+G_DECLARE_FINAL_TYPE (MetaMonitorManagerKms, meta_monitor_manager_kms,
+                      META, MONITOR_MANAGER_KMS,
+                      MetaMonitorManager)
 
 typedef void (*MetaKmsFlipCallback) (void *user_data);
 
