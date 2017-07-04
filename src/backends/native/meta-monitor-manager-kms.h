@@ -44,6 +44,9 @@ typedef void (*MetaKmsFlipCallback) (void *user_data);
 
 int meta_monitor_manager_kms_get_fd (MetaMonitorManagerKms *manager_kms);
 
+gboolean meta_drm_mode_equal (const drmModeModeInfo *one,
+                              const drmModeModeInfo *two);
+
 MetaCrtcMode * meta_monitor_manager_kms_get_mode_from_drm_mode (MetaMonitorManagerKms *manager_kms,
                                                                 const drmModeModeInfo *drm_mode);
 

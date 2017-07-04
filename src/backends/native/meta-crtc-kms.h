@@ -19,25 +19,24 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_OUTPUT_KMS_H
-#define META_OUTPUT_KMS_H
+#ifndef META_CRTC_KMS_H
+#define META_CRTC_KMS_H
 
-#include "backends/meta-output.h"
-#include "backends/native/meta-monitor-manager-kms.h"
+#include <xf86drm.h>
+#include <xf86drmMode.h>
 
-void meta_output_kms_set_underscan (MetaOutput *output);
+#include "backends/meta-crtc.h"
 
-void meta_output_kms_set_power_save_mode (MetaOutput *output,
-                                          uint64_t    state);
+gboolean meta_crtc_kms_is_transform_handled (MetaCrtc             *crtc,
+                                             MetaMonitorTransform  transform);
 
-gboolean meta_output_kms_can_clone (MetaOutput *output,
-                                    MetaOutput *other_output);
+void meta_crtc_kms_apply_transform (MetaCrtc *crtc);
 
-GBytes * meta_output_kms_read_edid (MetaOutput *output);
+void meta_crtc_kms_set_underscan (MetaCrtc *crtc,
+                                  gboolean  is_underscanning);
 
-MetaOutput * meta_create_kms_output (MetaMonitorManager *monitor_manager,
-                                     drmModeConnector   *connector,
-                                     MetaKmsResources   *resources,
-                                     MetaOutput         *old_output);
+MetaCrtc * meta_create_kms_crtc (MetaMonitorManager *monitor_manager,
+                                 drmModeCrtc        *drm_crtc,
+                                 unsigned int        crtc_index);
 
-#endif /* META_OUTPUT_KMS_H */
+#endif /* META_CRTC_KMS_H */

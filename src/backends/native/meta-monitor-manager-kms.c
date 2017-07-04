@@ -29,6 +29,7 @@
 #include "meta-output.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
+#include "meta-crtc-kms.h"
 #include "meta-output-kms.h"
 
 #include <string.h>
@@ -47,20 +48,6 @@
 #include <gudev/gudev.h>
 
 #include "meta-default-modes.h"
-
-#define ALL_TRANSFORMS (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)
-#define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
-
-typedef struct
-{
-  uint32_t underscan_prop_id;
-  uint32_t underscan_hborder_prop_id;
-  uint32_t underscan_vborder_prop_id;
-  uint32_t primary_plane_id;
-  uint32_t rotation_prop_id;
-  uint32_t rotation_map[ALL_TRANSFORMS];
-  uint32_t all_hw_transforms;
-} MetaCrtcKms;
 
 typedef struct
 {
@@ -128,34 +115,25 @@ meta_monitor_mode_destroy_notify (MetaCrtcMode *mode)
   g_slice_free (drmModeModeInfo, mode->driver_private);
 }
 
-static void
-meta_crtc_destroy_notify (MetaCrtc *crtc)
+gboolean
+meta_drm_mode_equal (const drmModeModeInfo *one,
+                     const drmModeModeInfo *two)
 {
-  g_free (crtc->driver_private);
-}
-
-static gboolean
-drm_mode_equal (gconstpointer one,
-                gconstpointer two)
-{
-  const drmModeModeInfo *m_one = one;
-  const drmModeModeInfo *m_two = two;
-
-  return m_one->clock == m_two->clock &&
-    m_one->hdisplay == m_two->hdisplay &&
-    m_one->hsync_start == m_two->hsync_start &&
-    m_one->hsync_end == m_two->hsync_end &&
-    m_one->htotal == m_two->htotal &&
-    m_one->hskew == m_two->hskew &&
-    m_one->vdisplay == m_two->vdisplay &&
-    m_one->vsync_start == m_two->vsync_start &&
-    m_one->vsync_end == m_two->vsync_end &&
-    m_one->vtotal == m_two->vtotal &&
-    m_one->vscan == m_two->vscan &&
-    m_one->vrefresh == m_two->vrefresh &&
-    m_one->flags == m_two->flags &&
-    m_one->type == m_two->type &&
-    strncmp (m_one->name, m_two->name, DRM_DISPLAY_MODE_LEN) == 0;
+  return (one->clock == two->clock &&
+          one->hdisplay == two->hdisplay &&
+          one->hsync_start == two->hsync_start &&
+          one->hsync_end == two->hsync_end &&
+          one->htotal == two->htotal &&
+          one->hskew == two->hskew &&
+          one->vdisplay == two->vdisplay &&
+          one->vsync_start == two->vsync_start &&
+          one->vsync_end == two->vsync_end &&
+          one->vtotal == two->vtotal &&
+          one->vscan == two->vscan &&
+          one->vrefresh == two->vrefresh &&
+          one->flags == two->flags &&
+          one->type == two->type &&
+          strncmp (one->name, two->name, DRM_DISPLAY_MODE_LEN) == 0);
 }
 
 static guint
@@ -177,37 +155,6 @@ drm_mode_hash (gconstpointer ptr)
   return hash;
 }
 
-static void
-find_crtc_properties (MetaMonitorManagerKms *manager_kms,
-                      MetaCrtc *meta_crtc)
-{
-  MetaCrtcKms *crtc_kms;
-  drmModeObjectPropertiesPtr props;
-  size_t i;
-
-  crtc_kms = meta_crtc->driver_private;
-
-  props = drmModeObjectGetProperties (manager_kms->fd, meta_crtc->crtc_id, DRM_MODE_OBJECT_CRTC);
-  if (!props)
-    return;
-
-  for (i = 0; i < props->count_props; i++)
-    {
-      drmModePropertyPtr prop = drmModeGetProperty (manager_kms->fd, props->props[i]);
-      if (!prop)
-        continue;
-
-      if ((prop->flags & DRM_MODE_PROP_ENUM) && strcmp (prop->name, "underscan") == 0)
-        crtc_kms->underscan_prop_id = prop->prop_id;
-      else if ((prop->flags & DRM_MODE_PROP_RANGE) && strcmp (prop->name, "underscan hborder") == 0)
-        crtc_kms->underscan_hborder_prop_id = prop->prop_id;
-      else if ((prop->flags & DRM_MODE_PROP_RANGE) && strcmp (prop->name, "underscan vborder") == 0)
-        crtc_kms->underscan_vborder_prop_id = prop->prop_id;
-
-      drmModeFreeProperty (prop);
-    }
-}
-
 MetaCrtcMode *
 meta_monitor_manager_kms_get_mode_from_drm_mode (MetaMonitorManagerKms *manager_kms,
                                                  const drmModeModeInfo *drm_mode)
@@ -219,7 +166,7 @@ meta_monitor_manager_kms_get_mode_from_drm_mode (MetaMonitorManagerKms *manager_
     {
       MetaCrtcMode *mode = l->data;
 
-      if (drm_mode_equal (drm_mode, mode->driver_private))
+      if (meta_drm_mode_equal (drm_mode, mode->driver_private))
         return mode;
     }
 
@@ -279,180 +226,6 @@ find_output_by_id (GList *outputs,
     }
 
   return NULL;
-}
-
-static int
-find_property_index (MetaMonitorManager         *manager,
-                     drmModeObjectPropertiesPtr  props,
-                     const gchar                *prop_name,
-                     drmModePropertyPtr         *found)
-{
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  unsigned int i;
-
-  for (i = 0; i < props->count_props; i++)
-    {
-      drmModePropertyPtr prop;
-
-      prop = drmModeGetProperty (manager_kms->fd, props->props[i]);
-      if (!prop)
-        continue;
-
-      if (strcmp (prop->name, prop_name) == 0)
-        {
-          *found = prop;
-          return i;
-        }
-
-      drmModeFreeProperty (prop);
-    }
-
-  return -1;
-}
-
-static void
-parse_transforms (MetaMonitorManager *manager,
-                  drmModePropertyPtr  prop,
-                  MetaCrtc           *crtc)
-{
-  MetaCrtcKms *crtc_kms = crtc->driver_private;
-  int i;
-
-  for (i = 0; i < prop->count_enums; i++)
-    {
-      int cur = -1;
-
-      if (strcmp (prop->enums[i].name, "rotate-0") == 0)
-        cur = META_MONITOR_TRANSFORM_NORMAL;
-      else if (strcmp (prop->enums[i].name, "rotate-90") == 0)
-        cur = META_MONITOR_TRANSFORM_90;
-      else if (strcmp (prop->enums[i].name, "rotate-180") == 0)
-        cur = META_MONITOR_TRANSFORM_180;
-      else if (strcmp (prop->enums[i].name, "rotate-270") == 0)
-        cur = META_MONITOR_TRANSFORM_270;
-
-      if (cur != -1)
-        {
-          crtc_kms->all_hw_transforms |= 1 << cur;
-          crtc_kms->rotation_map[cur] = 1 << prop->enums[i].value;
-        }
-    }
-}
-
-static gboolean
-is_primary_plane (MetaMonitorManager         *manager,
-                  drmModeObjectPropertiesPtr  props)
-{
-  drmModePropertyPtr prop;
-  int idx;
-
-  idx = find_property_index (manager, props, "type", &prop);
-  if (idx < 0)
-    return FALSE;
-
-  drmModeFreeProperty (prop);
-  return props->prop_values[idx] == DRM_PLANE_TYPE_PRIMARY;
-}
-
-static void
-init_crtc_rotations (MetaMonitorManager *manager,
-                     MetaCrtc           *crtc,
-                     unsigned int        idx)
-{
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
-  drmModeObjectPropertiesPtr props;
-  drmModePlaneRes *planes;
-  drmModePlane *drm_plane;
-  MetaCrtcKms *crtc_kms;
-  unsigned int i;
-
-  crtc_kms = crtc->driver_private;
-
-  planes = drmModeGetPlaneResources(manager_kms->fd);
-  if (planes == NULL)
-    return;
-
-  for (i = 0; i < planes->count_planes; i++)
-    {
-      drmModePropertyPtr prop;
-
-      drm_plane = drmModeGetPlane (manager_kms->fd, planes->planes[i]);
-
-      if (!drm_plane)
-        continue;
-
-      if ((drm_plane->possible_crtcs & (1 << idx)))
-        {
-          props = drmModeObjectGetProperties (manager_kms->fd,
-                                              drm_plane->plane_id,
-                                              DRM_MODE_OBJECT_PLANE);
-
-          if (props && is_primary_plane (manager, props))
-            {
-              int rotation_idx;
-
-              crtc_kms->primary_plane_id = drm_plane->plane_id;
-              rotation_idx = find_property_index (manager, props, "rotation", &prop);
-
-              if (rotation_idx >= 0)
-                {
-                  crtc_kms->rotation_prop_id = props->props[rotation_idx];
-                  parse_transforms (manager, prop, crtc);
-                  drmModeFreeProperty (prop);
-                }
-            }
-
-          if (props)
-            drmModeFreeObjectProperties (props);
-        }
-
-      drmModeFreePlane (drm_plane);
-    }
-
-  crtc->all_transforms |= crtc_kms->all_hw_transforms;
-
-  drmModeFreePlaneResources (planes);
-}
-
-static MetaCrtc *
-create_crtc (MetaMonitorManager *manager,
-             drmModeCrtc        *drm_crtc)
-{
-  MetaCrtc *crtc;
-
-  crtc = g_object_new (META_TYPE_CRTC, NULL);
-
-  crtc->monitor_manager = manager;
-  crtc->crtc_id = drm_crtc->crtc_id;
-  crtc->rect.x = drm_crtc->x;
-  crtc->rect.y = drm_crtc->y;
-  crtc->rect.width = drm_crtc->width;
-  crtc->rect.height = drm_crtc->height;
-  crtc->is_dirty = FALSE;
-  crtc->transform = META_MONITOR_TRANSFORM_NORMAL;
-  crtc->all_transforms = meta_is_stage_views_enabled () ?
-    ALL_TRANSFORMS_MASK : META_MONITOR_TRANSFORM_NORMAL;
-
-  if (drm_crtc->mode_valid)
-    {
-      GList *l;
-
-      for (l = manager->modes; l; l = l->next)
-        {
-          MetaCrtcMode *mode = l->data;
-
-          if (drm_mode_equal (&drm_crtc->mode, mode->driver_private))
-            {
-              crtc->current_mode = mode;
-              break;
-            }
-        }
-    }
-
-  crtc->driver_private = g_new0 (MetaCrtcKms, 1);
-  crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
-
-  return crtc;
 }
 
 static void
@@ -518,7 +291,7 @@ init_modes (MetaMonitorManager *manager,
   /*
    * Gather all modes on all connected connectors.
    */
-  modes = g_hash_table_new (drm_mode_hash, drm_mode_equal);
+  modes = g_hash_table_new (drm_mode_hash, (GEqualFunc) meta_drm_mode_equal);
   for (i = 0; i < manager_kms->n_connectors; i++)
     {
       drmModeConnector *drm_connector;
@@ -562,23 +335,22 @@ init_modes (MetaMonitorManager *manager,
 
 static void
 init_crtcs (MetaMonitorManager *manager,
-            drmModeRes         *resources)
+            MetaKmsResources   *resources)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   unsigned int i;
 
   manager->crtcs = NULL;
 
-  for (i = 0; i < (unsigned)resources->count_crtcs; i++)
+  for (i = 0; i < (unsigned int) resources->resources->count_crtcs; i++)
     {
       drmModeCrtc *drm_crtc;
       MetaCrtc *crtc;
 
-      drm_crtc = drmModeGetCrtc (manager_kms->fd, resources->crtcs[i]);
+      drm_crtc = drmModeGetCrtc (manager_kms->fd,
+                                 resources->resources->crtcs[i]);
 
-      crtc = create_crtc (manager, drm_crtc);
-      find_crtc_properties (manager_kms, crtc);
-      init_crtc_rotations (manager, crtc, i);
+      crtc = meta_create_kms_crtc (manager, drm_crtc, i);
 
       drmModeFreeCrtc (drm_crtc);
 
@@ -671,7 +443,7 @@ meta_monitor_manager_kms_read_current (MetaMonitorManager *manager)
 
   init_connectors (manager, resources.resources);
   init_modes (manager, resources.resources);
-  init_crtcs (manager, resources.resources);
+  init_crtcs (manager, &resources);
   init_outputs (manager, &resources);
 
   meta_kms_resources_release (&resources);
@@ -717,48 +489,6 @@ meta_monitor_manager_kms_set_power_save_mode (MetaMonitorManager *manager,
 }
 
 static void
-set_underscan (MetaMonitorManagerKms *manager_kms,
-               MetaOutput *output)
-{
-  if (!output->crtc)
-    return;
-
-  MetaCrtc *crtc = output->crtc;
-  MetaCrtcKms *crtc_kms = crtc->driver_private;
-  if (!crtc_kms->underscan_prop_id)
-    return;
-
-  if (output->is_underscanning)
-    {
-      drmModeObjectSetProperty (manager_kms->fd, crtc->crtc_id,
-                                DRM_MODE_OBJECT_CRTC,
-                                crtc_kms->underscan_prop_id, (uint64_t) 1);
-
-      if (crtc_kms->underscan_hborder_prop_id)
-        {
-          uint64_t value = crtc->current_mode->width * 0.05;
-          drmModeObjectSetProperty (manager_kms->fd, crtc->crtc_id,
-                                    DRM_MODE_OBJECT_CRTC,
-                                    crtc_kms->underscan_hborder_prop_id, value);
-        }
-      if (crtc_kms->underscan_vborder_prop_id)
-        {
-          uint64_t value = crtc->current_mode->height * 0.05;
-          drmModeObjectSetProperty (manager_kms->fd, crtc->crtc_id,
-                                    DRM_MODE_OBJECT_CRTC,
-                                    crtc_kms->underscan_vborder_prop_id, value);
-        }
-
-    }
-  else
-    {
-      drmModeObjectSetProperty (manager_kms->fd, crtc->crtc_id,
-                                DRM_MODE_OBJECT_CRTC,
-                                crtc_kms->underscan_prop_id, (uint64_t) 0);
-    }
-}
-
-static void
 meta_monitor_manager_kms_ensure_initial_config (MetaMonitorManager *manager)
 {
   MetaMonitorsConfig *config;
@@ -775,7 +505,6 @@ apply_crtc_assignments (MetaMonitorManager *manager,
                         MetaOutputInfo     **outputs,
                         unsigned int         n_outputs)
 {
-  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (manager);
   unsigned i;
   GList *l;
 
@@ -783,8 +512,6 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     {
       MetaCrtcInfo *crtc_info = crtcs[i];
       MetaCrtc *crtc = crtc_info->crtc;
-      MetaCrtcKms *crtc_kms = crtc->driver_private;
-      MetaMonitorTransform hw_transform;
 
       crtc->is_dirty = TRUE;
 
@@ -831,24 +558,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
             }
         }
 
-      if (crtc_kms->all_hw_transforms & (1 << crtc->transform))
-        hw_transform = crtc->transform;
-      else
-        hw_transform = META_MONITOR_TRANSFORM_NORMAL;
-
-      if (drmModeObjectSetProperty (manager_kms->fd,
-                                    crtc_kms->primary_plane_id,
-                                    DRM_MODE_OBJECT_PLANE,
-                                    crtc_kms->rotation_prop_id,
-                                    crtc_kms->rotation_map[hw_transform]) != 0)
-        {
-          g_warning ("Failed to apply DRM plane transform %d: %m", hw_transform);
-
-          /* Blacklist this HW transform, we want to fallback to our
-           * fallbacks in this case.
-           */
-          crtc_kms->all_hw_transforms &= ~(1 << hw_transform);
-        }
+      meta_crtc_kms_apply_transform (crtc);
     }
   /* Disable CRTCs not mentioned in the list (they have is_dirty == FALSE,
      because they weren't seen in the first loop) */
@@ -880,7 +590,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
       output->is_presentation = output_info->is_presentation;
       output->is_underscanning = output_info->is_underscanning;
 
-      set_underscan (manager_kms, output);
+      meta_output_kms_set_underscan (output);
     }
 
   /* Disable outputs not mentioned in the list */
@@ -1294,12 +1004,7 @@ meta_monitor_manager_kms_is_transform_handled (MetaMonitorManager  *manager,
                                                MetaCrtc            *crtc,
                                                MetaMonitorTransform transform)
 {
-  MetaCrtcKms *crtc_kms = crtc->driver_private;
-
-  if ((1 << transform) & crtc_kms->all_hw_transforms)
-    return TRUE;
-  else
-    return FALSE;
+  return meta_crtc_kms_is_transform_handled (crtc, transform);
 }
 
 static float

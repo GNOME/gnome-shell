@@ -28,6 +28,7 @@
 #include <string.h>
 
 #include "backends/meta-crtc.h"
+#include "backends/native/meta-crtc-kms.h"
 #include "backends/native/meta-default-modes.h"
 #include "backends/native/meta-monitor-manager-kms.h"
 
@@ -60,6 +61,16 @@ typedef struct _MetaOutputKms
 
   gboolean has_scaling;
 } MetaOutputKms;
+
+void
+meta_output_kms_set_underscan (MetaOutput *output)
+{
+  if (!output->crtc)
+    return;
+
+  meta_crtc_kms_set_underscan (output->crtc,
+                               output->is_underscanning);
+}
 
 void
 meta_output_kms_set_power_save_mode (MetaOutput *output,

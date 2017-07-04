@@ -444,6 +444,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
 	backends/native/meta-backend-native-private.h	\
 	backends/native/meta-barrier-native.c		\
 	backends/native/meta-barrier-native.h		\
+	backends/native/meta-crtc-kms.c			\
+	backends/native/meta-crtc-kms.h			\
 	backends/native/meta-clutter-backend-native.c	\
 	backends/native/meta-clutter-backend-native.h	\
 	backends/native/meta-cursor-renderer-native.c	\
