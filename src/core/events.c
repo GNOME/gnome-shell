@@ -220,10 +220,12 @@ meta_display_handle_event (MetaDisplay        *display,
 
   if (!display->current_pad_osd &&
       (event->type == CLUTTER_PAD_BUTTON_PRESS ||
-       event->type == CLUTTER_PAD_BUTTON_RELEASE))
+       event->type == CLUTTER_PAD_BUTTON_RELEASE ||
+       event->type == CLUTTER_PAD_RING ||
+       event->type == CLUTTER_PAD_STRIP))
     {
-      if (meta_input_settings_handle_pad_button (meta_backend_get_input_settings (backend),
-                                                 &event->pad_button))
+      if (meta_input_settings_handle_pad_event (meta_backend_get_input_settings (backend),
+                                                event))
         {
           bypass_wayland = bypass_clutter = TRUE;
           goto out;

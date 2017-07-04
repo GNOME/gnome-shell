@@ -74,6 +74,14 @@ struct _MetaInputSettingsPrivate
 #endif
 
   GHashTable *two_finger_devices;
+
+  /* Pad ring/strip emission */
+  struct {
+    ClutterInputDevice *pad;
+    MetaPadActionType action;
+    guint number;
+    gdouble value;
+  } last_pad_action_info;
 };
 
 typedef void (*ConfigBoolFunc)   (MetaInputSettings  *input_settings,
@@ -85,6 +93,14 @@ typedef void (*ConfigDoubleFunc) (MetaInputSettings  *input_settings,
 typedef void (*ConfigUintFunc)   (MetaInputSettings  *input_settings,
                                   ClutterInputDevice *device,
                                   guint               value);
+
+typedef enum {
+  META_PAD_DIRECTION_NONE = -1,
+  META_PAD_DIRECTION_UP = 0,
+  META_PAD_DIRECTION_DOWN,
+  META_PAD_DIRECTION_CW,
+  META_PAD_DIRECTION_CCW,
+} MetaPadDirection;
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaInputSettings, meta_input_settings, G_TYPE_OBJECT)
 
@@ -1161,20 +1177,58 @@ lookup_tool_settings (ClutterInputDeviceTool *tool,
 }
 
 static GSettings *
-lookup_pad_button_settings (ClutterInputDevice *device,
-                            guint               button)
+lookup_pad_action_settings (ClutterInputDevice *device,
+                            MetaPadActionType   action,
+                            guint               number,
+                            MetaPadDirection    direction,
+                            gint                mode)
 {
-  const gchar *vendor, *product;
+  const gchar *vendor, *product, *action_type, *detail_type = NULL;
   GSettings *settings;
-  gchar *path;
+  GString *path;
+  gchar action_label;
 
   vendor = clutter_input_device_get_vendor_id (device);
   product = clutter_input_device_get_product_id (device);
-  path = g_strdup_printf ("/org/gnome/desktop/peripherals/tablets/%s:%s/button%c/",
-                          vendor, product, 'A' + button);
+
+  action_label = 'A' + number;
+
+  switch (action)
+    {
+    case META_PAD_ACTION_BUTTON:
+      action_type = "button";
+      break;
+    case META_PAD_ACTION_RING:
+      g_assert (direction == META_PAD_DIRECTION_CW ||
+                direction == META_PAD_DIRECTION_CCW);
+      action_type = "ring";
+      detail_type = (direction == META_PAD_DIRECTION_CW) ? "cw" : "ccw";
+      break;
+    case META_PAD_ACTION_STRIP:
+      g_assert (direction == META_PAD_DIRECTION_UP ||
+                direction == META_PAD_DIRECTION_DOWN);
+      action_type = "strip";
+      detail_type = (direction == META_PAD_DIRECTION_UP) ? "up" : "down";
+      break;
+    default:
+      return NULL;
+    }
+
+  path = g_string_new (NULL);
+  g_string_append_printf (path, "/org/gnome/desktop/peripherals/tablets/%s:%s/%s%c",
+                          vendor, product, action_type, action_label);
+
+  if (detail_type)
+    g_string_append_printf (path, "-%s", detail_type);
+
+  if (mode >= 0)
+    g_string_append_printf (path, "-mode-%d", mode);
+
+  g_string_append_c (path, '/');
+
   settings = g_settings_new_with_path ("org.gnome.desktop.peripherals.tablet.pad-button",
-                                       path);
-  g_free (path);
+                                       path->str);
+  g_string_free (path, TRUE);
 
   return settings;
 }
@@ -1589,7 +1643,8 @@ meta_input_settings_get_pad_button_action (MetaInputSettings   *input_settings,
   g_return_val_if_fail (CLUTTER_IS_INPUT_DEVICE (pad),
                         G_DESKTOP_PAD_BUTTON_ACTION_NONE);
 
-  settings = lookup_pad_button_settings (pad, button);
+  settings = lookup_pad_action_settings (pad, META_PAD_ACTION_BUTTON,
+                                         button, META_PAD_DIRECTION_NONE, -1);
   action = g_settings_get_enum (settings, "action");
   g_object_unref (settings);
 
@@ -1738,24 +1793,20 @@ emulate_modifiers (ClutterVirtualInputDevice *device,
 
 static void
 meta_input_settings_emulate_keybinding (MetaInputSettings  *input_settings,
-                                        ClutterInputDevice *pad,
-                                        guint               button,
+                                        const gchar        *accel,
                                         gboolean            is_press)
 {
   MetaInputSettingsPrivate *priv;
   ClutterKeyState state;
-  GSettings *settings;
   guint key, mods;
-  gchar *accel;
+
+  if (!accel || !*accel)
+    return;
 
   priv = meta_input_settings_get_instance_private (input_settings);
-  settings = lookup_pad_button_settings (pad, button);
-  accel = g_settings_get_string (settings, "keybinding");
-  g_object_unref (settings);
 
   /* FIXME: This is appalling */
   gtk_accelerator_parse (accel, &key, &mods);
-  g_free (accel);
 
   if (!priv->virtual_pad_keyboard)
     {
@@ -1792,20 +1843,21 @@ meta_input_settings_is_pad_button_grabbed (MetaInputSettings  *input_settings,
           G_DESKTOP_PAD_BUTTON_ACTION_NONE);
 }
 
-gboolean
+static gboolean
 meta_input_settings_handle_pad_button (MetaInputSettings           *input_settings,
+                                       ClutterInputDevice          *pad,
                                        const ClutterPadButtonEvent *event)
 {
   GDesktopPadButtonAction action;
-  ClutterInputDevice *pad;
   gint button, group, mode;
   gboolean is_press;
+  GSettings *settings;
+  gchar *accel;
 
   g_return_val_if_fail (META_IS_INPUT_SETTINGS (input_settings), FALSE);
   g_return_val_if_fail (event->type == CLUTTER_PAD_BUTTON_PRESS ||
                         event->type == CLUTTER_PAD_BUTTON_RELEASE, FALSE);
 
-  pad = clutter_event_get_source_device ((ClutterEvent *) event);
   button = event->button;
   mode = event->mode;
   group = clutter_input_device_get_mode_switch_button_group (pad, button);
@@ -1842,10 +1894,133 @@ meta_input_settings_handle_pad_button (MetaInputSettings           *input_settin
         meta_display_request_pad_osd (meta_get_display (), pad, FALSE);
       return TRUE;
     case G_DESKTOP_PAD_BUTTON_ACTION_KEYBINDING:
-      meta_input_settings_emulate_keybinding (input_settings, pad,
-                                              button, is_press);
+      settings = lookup_pad_action_settings (pad, META_PAD_ACTION_BUTTON,
+                                             button, META_PAD_DIRECTION_NONE, -1);
+      accel = g_settings_get_string (settings, "keybinding");
+      meta_input_settings_emulate_keybinding (input_settings, accel, is_press);
+      g_object_unref (settings);
+      g_free (accel);
       return TRUE;
     case G_DESKTOP_PAD_BUTTON_ACTION_NONE:
+    default:
+      return FALSE;
+    }
+}
+
+static gboolean
+meta_input_settings_handle_pad_action (MetaInputSettings         *input_settings,
+                                       ClutterInputDevice        *pad,
+                                       MetaPadActionType          action,
+                                       guint                      number,
+                                       MetaPadDirection           direction,
+                                       guint                      mode)
+{
+  GSettings *settings;
+  gboolean handled = FALSE;
+  gchar *accel;
+
+  settings = lookup_pad_action_settings (pad, action, number, direction, mode);
+  accel = g_settings_get_string (settings, "keybinding");
+
+  if (accel && *accel)
+    {
+      meta_input_settings_emulate_keybinding (input_settings, accel, TRUE);
+      meta_input_settings_emulate_keybinding (input_settings, accel, FALSE);
+      handled = TRUE;
+    }
+
+  g_object_unref (settings);
+  g_free (accel);
+
+  return handled;
+}
+
+static gboolean
+meta_input_settings_get_pad_action_direction (MetaInputSettings  *input_settings,
+                                              const ClutterEvent *event,
+                                              MetaPadDirection   *direction)
+{
+  MetaInputSettingsPrivate *priv;
+  ClutterInputDevice *pad = clutter_event_get_device (event);
+  MetaPadActionType pad_action;
+  gboolean has_direction = FALSE;
+  MetaPadDirection inc_dir, dec_dir;
+  guint number;
+  gdouble value;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  *direction = META_PAD_DIRECTION_NONE;
+
+  switch (event->type)
+    {
+    case CLUTTER_PAD_RING:
+      pad_action = META_PAD_ACTION_RING;
+      number = event->pad_ring.ring_number;
+      value = event->pad_ring.angle;
+      inc_dir = META_PAD_DIRECTION_CW;
+      dec_dir = META_PAD_DIRECTION_CCW;
+      break;
+    case CLUTTER_PAD_STRIP:
+      pad_action = META_PAD_ACTION_STRIP;
+      number = event->pad_strip.strip_number;
+      value = event->pad_strip.value;
+      inc_dir = META_PAD_DIRECTION_DOWN;
+      dec_dir = META_PAD_DIRECTION_UP;
+      break;
+    default:
+      return FALSE;
+    }
+
+  if (priv->last_pad_action_info.pad == pad &&
+      priv->last_pad_action_info.action == pad_action &&
+      priv->last_pad_action_info.number == number &&
+      value >= 0 && priv->last_pad_action_info.value >= 0)
+    {
+      *direction = (value - priv->last_pad_action_info.value) > 0 ?
+        inc_dir : dec_dir;
+      has_direction = TRUE;
+    }
+
+  priv->last_pad_action_info.pad = pad;
+  priv->last_pad_action_info.action = pad_action;
+  priv->last_pad_action_info.number = number;
+  priv->last_pad_action_info.value = value;
+  return has_direction;
+}
+
+gboolean
+meta_input_settings_handle_pad_event (MetaInputSettings  *input_settings,
+                                      const ClutterEvent *event)
+{
+  ClutterInputDevice *pad;
+  MetaPadDirection direction = META_PAD_DIRECTION_NONE;
+
+  pad = clutter_event_get_source_device ((ClutterEvent *) event);
+
+  switch (event->type)
+    {
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+      return meta_input_settings_handle_pad_button (input_settings, pad,
+                                                    &event->pad_button);
+    case CLUTTER_PAD_RING:
+      if (!meta_input_settings_get_pad_action_direction (input_settings,
+                                                         event, &direction))
+        return FALSE;
+      return meta_input_settings_handle_pad_action (input_settings, pad,
+                                                    META_PAD_ACTION_RING,
+                                                    event->pad_ring.ring_number,
+                                                    direction,
+                                                    event->pad_ring.mode);
+    case CLUTTER_PAD_STRIP:
+      if (!meta_input_settings_get_pad_action_direction (input_settings,
+                                                         event, &direction))
+        return FALSE;
+      return meta_input_settings_handle_pad_action (input_settings, pad,
+                                                    META_PAD_ACTION_STRIP,
+                                                    event->pad_strip.strip_number,
+                                                    direction,
+                                                    event->pad_strip.mode);
     default:
       return FALSE;
     }
@@ -1883,7 +2058,8 @@ meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_setti
         GSettings *settings;
         gchar *accel;
 
-        settings = lookup_pad_button_settings (pad, button);
+        settings = lookup_pad_action_settings (pad, META_PAD_ACTION_BUTTON,
+                                               button, META_PAD_DIRECTION_NONE, -1);
         accel = g_settings_get_string (settings, "keybinding");
         g_object_unref (settings);
 
