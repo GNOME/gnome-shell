@@ -171,6 +171,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/x11/meta-input-settings-x11.h		\
 	backends/x11/meta-monitor-manager-xrandr.c	\
 	backends/x11/meta-monitor-manager-xrandr.h	\
+	backends/x11/meta-output-xrandr.c		\
+	backends/x11/meta-output-xrandr.h		\
 	backends/x11/meta-renderer-x11.c		\
 	backends/x11/meta-renderer-x11.h		\
 	backends/x11/meta-stage-x11-nested.c		\
