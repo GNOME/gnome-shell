@@ -730,6 +730,7 @@ create_output (MetaMonitorManager *manager,
   output->driver_private = output_kms;
   output->driver_notify = (GDestroyNotify)meta_output_destroy_notify;
 
+  output->monitor_manager = manager;
   output->winsys_id = connector->connector_id;
   output->name = make_output_name (connector);
   output->width_mm = connector->mmWidth;

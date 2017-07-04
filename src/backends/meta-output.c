@@ -23,6 +23,12 @@
 
 G_DEFINE_TYPE (MetaOutput, meta_output, G_TYPE_OBJECT)
 
+MetaMonitorManager *
+meta_output_get_monitor_manager (MetaOutput *output)
+{
+  return output->monitor_manager;
+}
+
 static void
 meta_output_finalize (GObject *object)
 {

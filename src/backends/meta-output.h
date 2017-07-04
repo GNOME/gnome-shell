@@ -62,6 +62,8 @@ struct _MetaOutput
 {
   GObject parent;
 
+  MetaMonitorManager *monitor_manager;
+
   /* The CRTC driving this output, NULL if the output is not enabled */
   MetaCrtc *crtc;
 
@@ -116,5 +118,7 @@ struct _MetaOutput
 
 #define META_TYPE_OUTPUT (meta_output_get_type ())
 G_DECLARE_FINAL_TYPE (MetaOutput, meta_output, META, OUTPUT, GObject)
+
+MetaMonitorManager * meta_output_get_monitor_manager (MetaOutput *output);
 
 #endif /* META_OUTPUT_H */

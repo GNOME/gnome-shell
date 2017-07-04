@@ -89,10 +89,11 @@ create_mode (CrtcModeSpec *spec,
 }
 
 static void
-append_monitor (GList **modes,
-                GList **crtcs,
-                GList **outputs,
-                float   scale)
+append_monitor (MetaMonitorManager *manager,
+                GList             **modes,
+                GList             **crtcs,
+                GList             **outputs,
+                float               scale)
 {
   CrtcModeSpec mode_specs[] = {
     {
@@ -140,6 +141,7 @@ append_monitor (GList **modes,
 
   number = g_list_length (*outputs) + 1;
 
+  output->monitor_manager = manager;
   output->winsys_id = number;
   output->name = g_strdup_printf ("LVDS%d", number);
   output->vendor = g_strdup ("MetaProducts Inc.");
@@ -174,10 +176,11 @@ append_monitor (GList **modes,
 }
 
 static void
-append_tiled_monitor (GList **modes,
-                      GList **crtcs,
-                      GList **outputs,
-                      int     scale)
+append_tiled_monitor (MetaMonitorManager *manager,
+                      GList             **modes,
+                      GList             **crtcs,
+                      GList             **outputs,
+                      int                 scale)
 {
   CrtcModeSpec mode_specs[] = {
     {
@@ -242,6 +245,7 @@ append_tiled_monitor (GList **modes,
 
       output = g_object_new (META_TYPE_OUTPUT, NULL);
 
+      output->monitor_manager = manager;
       output->winsys_id = number;
       output->name = g_strdup_printf ("LVDS%d", number);
       output->vendor = g_strdup ("MetaProducts Inc.");
@@ -385,9 +389,10 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
   for (i = 0; i < num_monitors; i++)
     {
       if (tiled_monitors)
-        append_tiled_monitor (&modes, &crtcs, &outputs, monitor_scales[i]);
+        append_tiled_monitor (manager,
+                              &modes, &crtcs, &outputs, monitor_scales[i]);
       else
-        append_monitor (&modes, &crtcs, &outputs, monitor_scales[i]);
+        append_monitor (manager, &modes, &crtcs, &outputs, monitor_scales[i]);
     }
 
   manager->modes = modes;

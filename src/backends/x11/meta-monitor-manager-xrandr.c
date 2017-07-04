@@ -872,6 +872,7 @@ meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
         continue;
 
       output = g_object_new (META_TYPE_OUTPUT, NULL);
+      output->monitor_manager = manager;
 
       if (xrandr_output->connection != RR_Disconnected)
 	{

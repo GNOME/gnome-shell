@@ -91,8 +91,12 @@ static void
 meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 {
   MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
+  GList *l;
 
   g_assert (manager_test->test_setup);
+
+  for (l = manager_test->test_setup->outputs; l; l = l->next)
+    META_OUTPUT (l->data)->monitor_manager = manager;
 
   manager->modes = manager_test->test_setup->modes;
 
