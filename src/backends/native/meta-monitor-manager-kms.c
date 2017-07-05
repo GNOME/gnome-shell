@@ -799,31 +799,6 @@ meta_monitor_manager_kms_resume (MetaMonitorManagerKms *manager_kms)
 }
 
 static void
-meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaRenderer *renderer = meta_backend_get_renderer (backend);
-  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
-  GSource *source;
-
-  manager_kms->fd = meta_renderer_native_get_kms_fd (renderer_native);
-
-  drmSetClientCap (manager_kms->fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
-
-  const char *subsystems[2] = { "drm", NULL };
-  manager_kms->udev = g_udev_client_new (subsystems);
-  meta_monitor_manager_kms_connect_uevent_handler (manager_kms);
-
-  source = g_source_new (&kms_event_funcs, sizeof (MetaKmsSource));
-  manager_kms->source = (MetaKmsSource *) source;
-  manager_kms->source->fd_tag = g_source_add_unix_fd (source,
-                                                      manager_kms->fd,
-                                                      G_IO_IN | G_IO_ERR);
-  manager_kms->source->manager_kms = manager_kms;
-  g_source_attach (source, NULL);
-}
-
-static void
 get_crtc_connectors (MetaMonitorManager *manager,
                      MetaCrtc           *crtc,
                      uint32_t          **connectors,
@@ -1120,6 +1095,31 @@ meta_monitor_manager_kms_finalize (GObject *object)
   g_source_destroy ((GSource *) manager_kms->source);
 
   G_OBJECT_CLASS (meta_monitor_manager_kms_parent_class)->finalize (object);
+}
+
+static void
+meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaRenderer *renderer = meta_backend_get_renderer (backend);
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+  GSource *source;
+
+  manager_kms->fd = meta_renderer_native_get_kms_fd (renderer_native);
+
+  drmSetClientCap (manager_kms->fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+
+  const char *subsystems[2] = { "drm", NULL };
+  manager_kms->udev = g_udev_client_new (subsystems);
+  meta_monitor_manager_kms_connect_uevent_handler (manager_kms);
+
+  source = g_source_new (&kms_event_funcs, sizeof (MetaKmsSource));
+  manager_kms->source = (MetaKmsSource *) source;
+  manager_kms->source->fd_tag = g_source_add_unix_fd (source,
+                                                      manager_kms->fd,
+                                                      G_IO_IN | G_IO_ERR);
+  manager_kms->source->manager_kms = manager_kms;
+  g_source_attach (source, NULL);
 }
 
 static void

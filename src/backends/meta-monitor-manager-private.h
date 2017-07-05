@@ -259,6 +259,8 @@ struct _MetaMonitorManagerClass
   MetaLogicalMonitorLayoutMode (*get_default_layout_mode) (MetaMonitorManager *);
 };
 
+void                meta_monitor_manager_setup (MetaMonitorManager *manager);
+
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
                                                   MetaMonitorsConfig *config);
 void                meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager,

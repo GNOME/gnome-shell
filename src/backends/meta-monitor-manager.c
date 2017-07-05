@@ -676,6 +676,20 @@ experimental_features_changed (MetaSettings           *settings,
   meta_settings_update_ui_scaling_factor (settings);
 }
 
+void
+meta_monitor_manager_setup (MetaMonitorManager *manager)
+{
+  manager->in_init = TRUE;
+
+  manager->config_manager = meta_monitor_config_manager_new (manager);
+
+  meta_monitor_manager_read_current_state (manager);
+
+  meta_monitor_manager_ensure_initial_config (manager);
+
+  manager->in_init = FALSE;
+}
+
 static void
 meta_monitor_manager_constructed (GObject *object)
 {
@@ -707,17 +721,8 @@ meta_monitor_manager_constructed (GObject *object)
                            manager, 0);
 
   manager->current_switch_config = META_MONITOR_SWITCH_CONFIG_UNKNOWN;
-  manager->in_init = TRUE;
-
-  manager->config_manager = meta_monitor_config_manager_new (manager);
-
-  meta_monitor_manager_read_current_state (manager);
-
-  meta_monitor_manager_ensure_initial_config (manager);
 
   initialize_dbus_interface (manager);
-
-  manager->in_init = FALSE;
 }
 
 static void

@@ -355,15 +355,6 @@ on_device_removed (ClutterDeviceManager *device_manager,
     }
 }
 
-static MetaMonitorManager *
-create_monitor_manager (MetaBackend *backend)
-{
-  if (g_getenv ("META_DUMMY_MONITORS"))
-    return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
-
-  return META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
-}
-
 static void
 create_device_monitors (MetaBackend          *backend,
                         ClutterDeviceManager *device_manager)
@@ -441,7 +432,7 @@ meta_backend_real_post_init (MetaBackend *backend)
   clutter_actor_realize (priv->stage);
   META_BACKEND_GET_CLASS (backend)->select_stage_events (backend);
 
-  priv->monitor_manager = create_monitor_manager (backend);
+  meta_monitor_manager_setup (priv->monitor_manager);
 
   meta_backend_sync_screen_size (backend);
 
@@ -579,6 +570,15 @@ experimental_features_changed (MetaSettings            *settings,
 #endif /* HAVE_REMOTE_DESKTOP */
 }
 
+static MetaMonitorManager *
+meta_backend_create_monitor_manager (MetaBackend *backend)
+{
+  if (g_getenv ("META_DUMMY_MONITORS"))
+    return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
+
+  return META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+}
+
 static MetaRenderer *
 meta_backend_create_renderer (MetaBackend *backend,
                               GError     **error)
@@ -601,15 +601,17 @@ meta_backend_initable_init (GInitable     *initable,
 
   priv->egl = g_object_new (META_TYPE_EGL, NULL);
 
+  priv->orientation_manager = g_object_new (META_TYPE_ORIENTATION_MANAGER, NULL);
+
   priv->renderer = meta_backend_create_renderer (backend, error);
   if (!priv->renderer)
     return FALSE;
 
+  priv->monitor_manager = meta_backend_create_monitor_manager (backend);
+
   priv->cursor_tracker = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
 
   priv->dnd = g_object_new (META_TYPE_DND, NULL);
-
-  priv->orientation_manager = g_object_new (META_TYPE_ORIENTATION_MANAGER, NULL);
 
   return TRUE;
 }
