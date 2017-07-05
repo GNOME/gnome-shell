@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const AppStream = imports.gi.AppStreamGlib;
 const Shell = imports.gi.Shell;
 const Lang = imports.lang;
 const Signals = imports.signals;
@@ -50,6 +51,13 @@ var AppFavorites = new Lang.Class({
     FAVORITE_APPS_KEY: 'favorite-apps',
 
     _init() {
+       let loadFlags = AppStream.StoreLoadFlags.APP_INFO_SYSTEM |
+                       AppStream.StoreLoadFlags.APP_INFO_USER |
+                       AppStream.StoreLoadFlags.APPDATA |
+                       AppStream.StoreLoadFlags.DESKTOP;
+        this._appDataStore = new AppStream.Store();
+        this._appDataStore.load(loadFlags, null);
+
         this._favorites = {};
         global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, this._onFavsChanged.bind(this));
         this.reload();
@@ -67,12 +75,23 @@ var AppFavorites = new Lang.Class({
         // Map old desktop file names to the current ones
         let updated = false;
         ids = ids.map(id => {
-            let newId = RENAMED_DESKTOP_IDS[id];
+            let appData = this._appDataStore.get_app_by_id_with_fallbacks(id) ||
+                          this._appDataStore.get_app_by_provide(AppStream.ProvideKind.ID, id);
+            let newId = appData != null ? appData.get_id() : undefined;
+            if (newId !== undefined &&
+                newId !== id &&
+                appSys.lookup_app(newId) != null) {
+                updated = true;
+                return newId;
+            }
+
+            newId = RENAMED_DESKTOP_IDS[id];
             if (newId !== undefined &&
                 appSys.lookup_app(newId) != null) {
                 updated = true;
                 return newId;
             }
+
             return id;
         });
         // ... and write back the updated desktop file names
