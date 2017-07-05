@@ -32,7 +32,8 @@ G_DEFINE_TYPE (MetaBackendX11Nested, meta_backend_x11_nested,
                META_TYPE_BACKEND_X11)
 
 static MetaRenderer *
-meta_backend_x11_nested_create_renderer (MetaBackend *backend)
+meta_backend_x11_nested_create_renderer (MetaBackend *backend,
+                                         GError     **error)
 {
   return g_object_new (META_TYPE_RENDERER_X11_NESTED, NULL);
 }
