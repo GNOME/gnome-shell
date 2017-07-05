@@ -293,6 +293,8 @@ const PadDiagram = new Lang.Class({
     _init: function (params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
         let [success, css, etag] = file.load_contents(null);
+        this._curEdited = null;
+        this._prevEdited = null;
         this._css = css;
         this._labels = [];
         this._activeButtons = [];
@@ -560,19 +562,29 @@ const PadDiagram = new Lang.Class({
         label.show();
     },
 
-    stopEdition: function (str) {
+    stopEdition: function (continues, str) {
         this._editorActor.hide();
+
+        if (this._prevEdited) {
+            let [label, action, idx, dir] = this._prevEdited;
+            this._applyLabel(label, action, idx, dir, str);
+            this._prevEdited = null;
+        }
 
         if (this._curEdited) {
             let [label, action, idx, dir] = this._curEdited;
             this._applyLabel(label, action, idx, dir, str);
+            if (continues)
+                this._prevEdited = this._curEdited;
             this._curEdited = null;
         }
     },
 
     startEdition: function(action, idx, dir) {
         let editedLabel;
-        this.stopEdition();
+
+        if (this._curEdited)
+            return;
 
         for (let i = 0; i < this._labels.length; i++) {
             let [label, itemAction, itemIdx, itemDir] = this._labels[i];
@@ -666,7 +678,7 @@ const PadOsd = new Lang.Class({
         this._updatePadChooser();
 
         this._actionEditor = new ActionEditor();
-        this._actionEditor.connect('done', Lang.bind(this, this._endButtonActionEdition));
+        this._actionEditor.connect('done', Lang.bind(this, this._endActionEdition));
 
         this._padDiagram = new PadDiagram({ image: this._imagePath,
                                             left_handed: settings.get_boolean('left-handed'),
@@ -753,8 +765,10 @@ const PadOsd = new Lang.Class({
         if (event.type() == Clutter.EventType.PAD_BUTTON_PRESS &&
             event.get_source_device() == this.padDevice) {
             this._padDiagram.activateButton(event.get_button());
+            let isModeSwitch = this.padDevice.get_mode_switch_button_group(event.get_button()) >= 0;
 
-            if (this._editionMode)
+            /* Buttons that switch between modes cannot be edited */
+            if (this._editionMode && !isModeSwitch)
                 this._startButtonActionEdition(event.get_button());
             return Clutter.EVENT_STOP;
         } else if (event.type() == Clutter.EventType.PAD_BUTTON_RELEASE &&
@@ -763,11 +777,23 @@ const PadOsd = new Lang.Class({
             return Clutter.EVENT_STOP;
         } else if (event.type() == Clutter.EventType.KEY_PRESS &&
                    (!this._editionMode || event.get_key_symbol() == Clutter.Escape)) {
-            if (this._editingButtonAction != null)
-                this._endButtonActionEdition();
+            if (this._editedAction != null)
+                this._endActionEdition();
             else
                 this.destroy();
             return Clutter.EVENT_STOP;
+        } else if (event.get_source_device() == this.padDevice &&
+                   event.type() == Clutter.EventType.PAD_STRIP) {
+            if (this._editionMode) {
+                let [retval, number, mode] = event.get_pad_event_details();
+                this._startStripActionEdition(number, UP, mode);
+            }
+        } else if (event.get_source_device() == this.padDevice &&
+                   event.type() == Clutter.EventType.PAD_RING) {
+            if (this._editionMode) {
+                let [retval, number, mode] = event.get_pad_event_details();
+                this._startRingActionEdition(number, CCW, mode);
+            }
         }
 
         // If the event comes from another pad in the same group,
@@ -800,33 +826,79 @@ const PadOsd = new Lang.Class({
         this._titleLabel.clutter_text.set_markup('<span size="larger"><b>' + title + '</b></span>');
     },
 
-    _endButtonActionEdition: function () {
+    _isEditedAction: function (type, number, dir) {
+        if (!this._editedAction)
+            return false;
+
+        return (this._editedAction.type == type &&
+                this._editedAction.number == number &&
+                this._editedAction.dir == dir);
+    },
+
+    _followUpActionEdition: function (str) {
+        let { type, dir, number, mode } = this._editedAction;
+        let hasNextAction = (type == Meta.PadActionType.RING && dir == CCW ||
+                             type == Meta.PadActionType.STRIP && dir == UP);
+        if (!hasNextAction)
+            return false;
+
+        this._padDiagram.stopEdition(true, str);
+        this._editedAction = null;
+        if (type == Meta.PadActionType.RING)
+            this._startRingActionEdition(number, CW, mode);
+        else
+            this._startStripActionEdition(number, DOWN, mode);
+
+        return true;
+    },
+
+    _endActionEdition: function () {
         this._actionEditor.close();
 
-        if (this._editingButtonAction != null) {
+        if (this._editedAction != null) {
             let str = global.display.get_pad_action_label(this.padDevice,
-                                                          Meta.PadActionType.BUTTON,
-                                                          this._editingButtonAction);
-            this._padDiagram.stopEdition(str ? str : _("None"))
-            this._editingButtonAction = null;
+                                                          this._editedAction.type,
+                                                          this._editedAction.number);
+            if (this._followUpActionEdition(str))
+                return;
+
+            this._padDiagram.stopEdition(false, str ? str : _("None"))
+            this._editedAction = null;
         }
 
-        this._editedButtonSettings = null;
+        this._editedActionSettings = null;
+    },
+
+    _startActionEdition: function (key, type, number, dir, mode) {
+        if (this._isEditedAction(type, number, dir))
+            return;
+
+        this._endActionEdition();
+        this._editedAction = { type, number, dir, mode };
+
+        let settingsPath = this._settings.path + key + '/';
+        this._editedActionSettings = Gio.Settings.new_with_path('org.gnome.desktop.peripherals.tablet.pad-button',
+                                                                settingsPath);
+        this._actionEditor.setSettings(this._editedActionSettings);
+        this._padDiagram.startEdition(type, number, dir);
     },
 
     _startButtonActionEdition: function (button) {
-        if (this._editingButtonAction == button)
-            return;
-
-        this._endButtonActionEdition();
-        this._editingButtonAction = button;
-
         let ch = String.fromCharCode('A'.charCodeAt() + button);
-        let settingsPath = this._settings.path + "button" + ch + '/';
-        this._editedButtonSettings = Gio.Settings.new_with_path('org.gnome.desktop.peripherals.tablet.pad-button',
-                                                                settingsPath);
-        this._actionEditor.setSettings(this._editedButtonSettings);
-        this._padDiagram.startEdition(Meta.PadActionType.BUTTON, button);
+        let key = 'button' + ch;
+        this._startActionEdition(key, Meta.PadActionType.BUTTON, button);
+    },
+
+    _startRingActionEdition: function (ring, dir, mode) {
+        let ch = String.fromCharCode('A'.charCodeAt() + ring);
+        let key = 'ring%s-%s-mode-%d'.format(ch, dir == CCW ? 'ccw' : 'cw', mode);
+        this._startActionEdition(key, Meta.PadActionType.RING, ring, dir, mode);
+    },
+
+    _startStripActionEdition: function (strip, dir, mode) {
+        let ch = String.fromCharCode('A'.charCodeAt() + strip);
+        let key = 'strip%s-%s-mode-%d'.format(ch, dir == UP ? 'up' : 'down', mode);
+        this._startActionEdition(key, Meta.PadActionType.STRIP, strip, dir, mode);
     },
 
     setEditionMode: function (editionMode) {
