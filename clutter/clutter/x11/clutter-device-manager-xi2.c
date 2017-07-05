@@ -66,6 +66,14 @@ static const char *clutter_input_axis_atom_names[] = {
 
 #define N_AXIS_ATOMS    G_N_ELEMENTS (clutter_input_axis_atom_names)
 
+enum {
+  PAD_AXIS_FIRST  = 3, /* First axes are always x/y/pressure, ignored in pads */
+  PAD_AXIS_STRIP1 = PAD_AXIS_FIRST,
+  PAD_AXIS_STRIP2,
+  PAD_AXIS_RING1,
+  PAD_AXIS_RING2,
+};
+
 static Atom clutter_input_axis_atoms[N_AXIS_ATOMS] = { 0, };
 
 static void clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface);
@@ -359,6 +367,36 @@ get_device_node_path (ClutterBackendX11  *backend_x11,
   return node_path;
 }
 
+static void
+get_pad_features (XIDeviceInfo *info,
+                  guint        *n_rings,
+                  guint        *n_strips)
+{
+  gint i, rings = 0, strips = 0;
+
+  for (i = PAD_AXIS_FIRST; i < info->num_classes; i++)
+    {
+      XIValuatorClassInfo *valuator = (XIValuatorClassInfo*) info->classes[i];
+      int axis = valuator->number;
+
+      if (valuator->type != XIValuatorClass)
+        continue;
+      if (valuator->max <= 1)
+        continue;
+
+      /* Ring/strip axes are fixed in pad devices as handled by the
+       * wacom driver. Match those to detect pad features.
+       */
+      if (axis == PAD_AXIS_STRIP1 || axis == PAD_AXIS_STRIP2)
+        strips++;
+      else if (axis == PAD_AXIS_RING1 || axis == PAD_AXIS_RING2)
+        rings++;
+    }
+
+  *n_rings = rings;
+  *n_strips = strips;
+}
+
 static ClutterInputDevice *
 create_device (ClutterDeviceManagerXI2 *manager_xi2,
                ClutterBackendX11       *backend_x11,
@@ -368,7 +406,7 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
   ClutterInputDevice *retval;
   ClutterInputMode mode;
   gboolean is_enabled;
-  guint num_touches = 0;
+  guint num_touches = 0, num_rings = 0, num_strips = 0;
   gchar *vendor_id = NULL, *product_id = NULL, *node_path = NULL;
 
   if (info->use == XIMasterKeyboard || info->use == XISlaveKeyboard)
@@ -437,7 +475,10 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
     }
 
   if (source == CLUTTER_PAD_DEVICE)
-    is_enabled = TRUE;
+    {
+      is_enabled = TRUE;
+      get_pad_features (info, &num_rings, &num_strips);
+    }
 
   retval = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_XI2,
                          "name", info->name,
@@ -451,6 +492,8 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
                          "vendor-id", vendor_id,
                          "product-id", product_id,
                          "device-node", node_path,
+                         "n-rings", num_rings,
+                         "n-strips", num_strips,
                          NULL);
 
   translate_device_classes (backend_x11->xdpy, retval,
@@ -850,6 +893,54 @@ translate_axes (ClutterInputDevice *device,
   return retval;
 }
 
+static gboolean
+translate_pad_axis (ClutterInputDevice *device,
+                    XIValuatorState    *valuators,
+                    ClutterEventType   *evtype,
+                    guint              *number,
+                    gdouble            *value)
+{
+  double *values;
+  gint i;
+
+  values = valuators->values;
+
+  for (i = PAD_AXIS_FIRST; i < valuators->mask_len * 8; i++)
+    {
+      gdouble val;
+      guint axis_number = 0;
+
+      if (!XIMaskIsSet (valuators->mask, i))
+        continue;
+
+      val = *values++;
+      if (val <= 0)
+        continue;
+
+      _clutter_input_device_translate_axis (device, i, val, value);
+
+      if (i == PAD_AXIS_RING1 || i == PAD_AXIS_RING2)
+        {
+          *evtype = CLUTTER_PAD_RING;
+          (*value) *= 360.0;
+        }
+      else if (i == PAD_AXIS_STRIP1 || i == PAD_AXIS_STRIP2)
+        {
+          *evtype = CLUTTER_PAD_STRIP;
+        }
+      else
+        continue;
+
+      if (i == PAD_AXIS_STRIP2 || i == PAD_AXIS_RING2)
+        axis_number++;
+
+      *number = axis_number;
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
 static void
 translate_coords (ClutterStageX11 *stage_x11,
                   gdouble          event_x,
@@ -1026,6 +1117,54 @@ handle_property_event (ClutterDeviceManagerXI2 *manager_xi2,
       clutter_input_device_xi2_update_tool (device, tool);
       g_signal_emit_by_name (manager_xi2, "tool-changed", device, tool);
     }
+}
+
+static gboolean
+translate_pad_event (ClutterEvent       *event,
+                     XIDeviceEvent      *xev,
+                     ClutterInputDevice *device)
+{
+  gdouble value;
+  guint number;
+
+  if (!translate_pad_axis (device, &xev->valuators,
+                           &event->any.type,
+                           &number, &value))
+    return FALSE;
+
+  /* When touching a ring/strip a first XI_Motion event
+   * is generated. Use it to reset the pad state, so
+   * later events actually have a directionality.
+   */
+  if (xev->evtype == XI_Motion)
+    value = -1;
+
+  if (event->any.type == CLUTTER_PAD_RING)
+    {
+      event->pad_ring.ring_number = number;
+      event->pad_ring.angle = value;
+    }
+  else
+    {
+      event->pad_strip.strip_number = number;
+      event->pad_strip.value = value;
+    }
+
+  event->any.time = xev->time;
+  clutter_event_set_device (event, device);
+  clutter_event_set_source_device (event, device);
+
+  CLUTTER_NOTE (EVENT,
+                "%s: win:0x%x, device:%d '%s', time:%d "
+                "(value:%f)",
+                event->any.type == CLUTTER_PAD_RING
+                ? "pad ring  "
+                : "pad strip",
+                (unsigned int) stage_x11->xwin,
+                device->id,
+                device->device_name,
+                event->any.time, value);
+  return TRUE;
 }
 
 static ClutterTranslateReturn
@@ -1209,15 +1348,23 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                            XIAsyncDevice,
                            xev->time);
 
-	    /* Ignore 4-7 buttons */
-            if (xev->detail >= 4 && xev->detail <= 7)
-              return CLUTTER_TRANSLATE_REMOVE;
+            event->any.stage = stage;
 
-            event->pad_button.type =
+            if (xev->detail >= 4 && xev->detail <= 7)
+              {
+                retval = CLUTTER_TRANSLATE_REMOVE;
+
+                if (xi_event->evtype == XI_ButtonPress &&
+                    translate_pad_event (event, xev, source_device))
+                  retval = CLUTTER_TRANSLATE_QUEUE;
+
+                break;
+              }
+
+            event->any.type =
               (xi_event->evtype == XI_ButtonPress) ? CLUTTER_PAD_BUTTON_PRESS
                                                    : CLUTTER_PAD_BUTTON_RELEASE;
-            event->pad_button.time = xev->time;
-            event->pad_button.stage = stage;
+            event->any.time = xev->time;
 
             /* The 4-7 button range is taken as non-existent on pad devices,
              * let the buttons above that take over this range.
@@ -1383,6 +1530,15 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                              GINT_TO_POINTER (xev->sourceid));
         device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                       GINT_TO_POINTER (xev->deviceid));
+
+        if (clutter_input_device_get_device_type (source_device) == CLUTTER_PAD_DEVICE)
+          {
+            event->any.stage = stage;
+
+            if (translate_pad_event (event, xev, source_device))
+              retval = CLUTTER_TRANSLATE_QUEUE;
+            break;
+          }
 
         /* Set the stage for core events coming out of nowhere (see bug #684509) */
         if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER &&
