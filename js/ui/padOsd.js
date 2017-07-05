@@ -550,18 +550,22 @@ const PadDiagram = new Lang.Class({
         this.add_actor(label);
     },
 
+    _applyLabel: function(label, action, idx, dir, str) {
+        if (str != null) {
+            label.set_text(str);
+
+            let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
+            this._allocateChild(label, x, y, arrangement);
+        }
+        label.show();
+    },
+
     stopEdition: function (str) {
         this._editorActor.hide();
 
         if (this._curEdited) {
             let [label, action, idx, dir] = this._curEdited;
-            if (str != null) {
-                label.set_text(str);
-
-                let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
-                this._allocateChild(label, x, y, arrangement);
-            }
-            label.show();
+            this._applyLabel(label, action, idx, dir, str);
             this._curEdited = null;
         }
     },
