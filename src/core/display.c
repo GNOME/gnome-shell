@@ -3162,18 +3162,14 @@ meta_display_get_pad_action_label (MetaDisplay        *display,
                                    MetaPadActionType   action_type,
                                    guint               action_number)
 {
+  MetaInputSettings *settings;
   gchar *label;
 
   /* First, lookup the action, as imposed by settings */
-  if (action_type == META_PAD_ACTION_BUTTON)
-    {
-      MetaInputSettings *settings;
-
-      settings = meta_backend_get_input_settings (meta_get_backend ());
-      label = meta_input_settings_get_pad_button_action_label (settings, pad, action_number);
-      if (label)
-        return label;
-    }
+  settings = meta_backend_get_input_settings (meta_get_backend ());
+  label = meta_input_settings_get_pad_action_label (settings, pad, action_type, action_number);
+  if (label)
+    return label;
 
 #ifdef HAVE_WAYLAND
   /* Second, if this wayland, lookup the actions set by the clients */

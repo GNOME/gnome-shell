@@ -51,6 +51,7 @@ struct _DeviceMappingInfo
 #ifdef HAVE_LIBWACOM
   WacomDevice *wacom_device;
 #endif
+  guint *group_modes;
 };
 
 struct _MetaInputSettingsPrivate
@@ -1259,6 +1260,7 @@ device_mapping_info_free (DeviceMappingInfo *info)
 #endif
   g_signal_handler_disconnect (info->settings, info->changed_id);
   g_object_unref (info->settings);
+  g_free (info->group_modes);
   g_slice_free (DeviceMappingInfo, info);
 }
 
@@ -1301,6 +1303,12 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
       libwacom_error_free (&error);
     }
 #endif
+
+  if (clutter_input_device_get_device_type (device) == CLUTTER_PAD_DEVICE)
+    {
+      info->group_modes =
+        g_new0 (guint, clutter_input_device_get_n_mode_groups (device));
+    }
 
   info->changed_id = g_signal_connect (settings, "changed",
                                        G_CALLBACK (mapped_device_changed_cb),
@@ -1867,18 +1875,19 @@ meta_input_settings_handle_pad_button (MetaInputSettings           *input_settin
     {
       guint n_modes = clutter_input_device_get_group_n_modes (pad, group);
       const gchar *pretty_name = NULL;
-#ifdef HAVE_LIBWACOM
       MetaInputSettingsPrivate *priv;
       DeviceMappingInfo *info;
 
       priv = meta_input_settings_get_instance_private (input_settings);
       info = g_hash_table_lookup (priv->mappable_devices, pad);
 
+#ifdef HAVE_LIBWACOM
       if (info && info->wacom_device)
         pretty_name = libwacom_get_name (info->wacom_device);
 #endif
       meta_display_notify_pad_group_switch (meta_get_display (), pad,
                                             pretty_name, group, mode, n_modes);
+      info->group_modes[group] = mode;
     }
 
   action = meta_input_settings_get_pad_button_action (input_settings, pad, button);
@@ -2026,10 +2035,70 @@ meta_input_settings_handle_pad_event (MetaInputSettings  *input_settings,
     }
 }
 
-gchar *
-meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_settings,
-                                                 ClutterInputDevice *pad,
-                                                 guint               button)
+static gchar *
+compose_directional_action_label (GSettings *direction1,
+                                  GSettings *direction2)
+{
+  gchar *accel1, *accel2, *str = NULL;
+
+  accel1 = g_settings_get_string (direction1, "keybinding");
+  accel2 = g_settings_get_string (direction2, "keybinding");
+
+  if (accel1 && *accel1 && accel2 && *accel2)
+    str = g_strdup_printf ("%s / %s", accel1, accel2);
+
+  g_free (accel1);
+  g_free (accel2);
+
+  return str;
+}
+
+static gchar *
+meta_input_settings_get_ring_label (MetaInputSettings  *settings,
+                                    ClutterInputDevice *pad,
+                                    guint               number,
+                                    guint               mode)
+{
+  GSettings *settings1, *settings2;
+  gchar *label;
+
+  /* We only allow keybinding actions with those */
+  settings1 = lookup_pad_action_settings (pad, META_PAD_ACTION_RING, number,
+                                          META_PAD_DIRECTION_CW, mode);
+  settings2 = lookup_pad_action_settings (pad, META_PAD_ACTION_RING, number,
+                                          META_PAD_DIRECTION_CCW, mode);
+  label = compose_directional_action_label (settings1, settings2);
+  g_object_unref (settings1);
+  g_object_unref (settings2);
+
+  return label;
+}
+
+static gchar *
+meta_input_settings_get_strip_label (MetaInputSettings  *settings,
+                                     ClutterInputDevice *pad,
+                                     guint               number,
+                                     guint               mode)
+{
+  GSettings *settings1, *settings2;
+  gchar *label;
+
+  /* We only allow keybinding actions with those */
+  settings1 = lookup_pad_action_settings (pad, META_PAD_ACTION_STRIP, number,
+                                          META_PAD_DIRECTION_UP, mode);
+  settings2 = lookup_pad_action_settings (pad, META_PAD_ACTION_STRIP, number,
+                                          META_PAD_DIRECTION_DOWN, mode);
+  label = compose_directional_action_label (settings1, settings2);
+  g_object_unref (settings1);
+  g_object_unref (settings2);
+
+  return label;
+}
+
+static gchar *
+meta_input_settings_get_button_label (MetaInputSettings  *input_settings,
+                                      ClutterInputDevice *pad,
+                                      guint               button)
 {
   GDesktopPadButtonAction action;
   gint group;
@@ -2076,4 +2145,56 @@ meta_input_settings_get_pad_button_action_label (MetaInputSettings  *input_setti
     default:
       return NULL;
     }
+}
+
+static guint
+get_current_pad_mode (MetaInputSettings  *input_settings,
+                      ClutterInputDevice *pad,
+                      MetaPadActionType   action_type,
+                      guint               number)
+{
+  MetaInputSettingsPrivate *priv;
+  DeviceMappingInfo *info;
+  guint group = 0, n_groups;
+
+  priv = meta_input_settings_get_instance_private (input_settings);
+  info = g_hash_table_lookup (priv->mappable_devices, pad);
+  n_groups = clutter_input_device_get_n_mode_groups (pad);
+
+  if (!info->group_modes || n_groups == 0)
+    return 0;
+
+  if (action_type == META_PAD_ACTION_RING ||
+      action_type == META_PAD_ACTION_STRIP)
+    {
+      /* Assume features are evenly distributed in groups */
+      group = number % n_groups;
+    }
+
+  return info->group_modes[group];
+}
+
+gchar *
+meta_input_settings_get_pad_action_label (MetaInputSettings  *input_settings,
+                                          ClutterInputDevice *pad,
+                                          MetaPadActionType   action_type,
+                                          guint               number)
+{
+  guint mode;
+
+  switch (action_type)
+    {
+    case META_PAD_ACTION_BUTTON:
+      return meta_input_settings_get_button_label (input_settings, pad, number);
+    case META_PAD_ACTION_RING:
+      mode = get_current_pad_mode (input_settings, pad, action_type, number);
+      return meta_input_settings_get_ring_label (input_settings, pad,
+                                                 number, mode);
+    case META_PAD_ACTION_STRIP:
+      mode = get_current_pad_mode (input_settings, pad, action_type, number);
+      return meta_input_settings_get_strip_label (input_settings, pad,
+                                                  number, mode);
+    }
+
+  return NULL;
 }
