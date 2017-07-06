@@ -25,7 +25,9 @@
 
 #include "meta-monitor-manager-kms.h"
 #include "meta-monitor-config-manager.h"
+#include "meta-backend-native.h"
 #include "meta-crtc.h"
+#include "meta-launcher.h"
 #include "meta-output.h"
 #include "meta-backend-private.h"
 #include "meta-renderer-native.h"
@@ -49,6 +51,8 @@
 
 #include "meta-default-modes.h"
 
+#define DRM_CARD_UDEV_DEVICE_TYPE "drm_minor"
+
 typedef struct
 {
   GSource source;
@@ -62,6 +66,7 @@ struct _MetaMonitorManagerKms
   MetaMonitorManager parent_instance;
 
   int fd;
+  char *file_path;
   MetaKmsSource *source;
 
   drmModeConnector **connectors;
@@ -81,12 +86,24 @@ struct _MetaMonitorManagerKmsClass
   MetaMonitorManagerClass parent_class;
 };
 
-G_DEFINE_TYPE (MetaMonitorManagerKms, meta_monitor_manager_kms, META_TYPE_MONITOR_MANAGER);
+static void
+initable_iface_init (GInitableIface *initable_iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaMonitorManagerKms, meta_monitor_manager_kms,
+                         META_TYPE_MONITOR_MANAGER,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                initable_iface_init))
 
 int
 meta_monitor_manager_kms_get_fd (MetaMonitorManagerKms *manager_kms)
 {
   return manager_kms->fd;
+}
+
+const char *
+meta_monitor_manager_kms_get_file_path (MetaMonitorManagerKms *manager_kms)
+{
+  return manager_kms->file_path;
 }
 
 static void
@@ -1076,6 +1093,235 @@ meta_monitor_manager_kms_get_default_layout_mode (MetaMonitorManager *manager)
     return META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
 }
 
+static guint
+count_devices_with_connectors (const char *seat_id,
+                               GList      *devices)
+{
+  g_autoptr (GHashTable) cards = NULL;
+  GList *l;
+
+  cards = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_object_unref);
+  for (l = devices; l != NULL; l = l->next)
+    {
+      GUdevDevice *device = l->data;
+      g_autoptr (GUdevDevice) parent_device = NULL;
+      const gchar *parent_device_type = NULL;
+      const gchar *parent_device_name = NULL;
+      const gchar *card_seat;
+
+      /* Filter out the real card devices, we only care about the connectors. */
+      if (g_udev_device_get_device_type (device) != G_UDEV_DEVICE_TYPE_NONE)
+        continue;
+
+      /* Only connectors have a modes attribute. */
+      if (!g_udev_device_has_sysfs_attr (device, "modes"))
+        continue;
+
+      parent_device = g_udev_device_get_parent (device);
+
+      if (g_udev_device_get_device_type (parent_device) ==
+          G_UDEV_DEVICE_TYPE_CHAR)
+        parent_device_type = g_udev_device_get_property (parent_device,
+                                                         "DEVTYPE");
+
+      if (g_strcmp0 (parent_device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
+        continue;
+
+      card_seat = g_udev_device_get_property (parent_device, "ID_SEAT");
+
+      if (!card_seat)
+        card_seat = "seat0";
+
+      if (g_strcmp0 (seat_id, card_seat) != 0)
+        continue;
+
+      parent_device_name = g_udev_device_get_name (parent_device);
+      g_hash_table_insert (cards,
+                           (gpointer) parent_device_name ,
+                           g_steal_pointer (&parent_device));
+    }
+
+  return g_hash_table_size (cards);
+}
+
+static char *
+get_primary_gpu_path (MetaMonitorManagerKms *manager_kms)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaBackendNative *backend_native = META_BACKEND_NATIVE (backend);
+  MetaLauncher *launcher = meta_backend_native_get_launcher (backend_native);
+  g_autoptr (GUdevEnumerator) enumerator = NULL;
+  const char *seat_id;
+  char *path = NULL;
+  GList *devices;
+  GList *l;
+
+  enumerator = g_udev_enumerator_new (manager_kms->udev);
+
+  g_udev_enumerator_add_match_name (enumerator, "card*");
+  g_udev_enumerator_add_match_tag (enumerator, "seat");
+
+  /*
+   * We need to explicitly match the subsystem for now.
+   * https://bugzilla.gnome.org/show_bug.cgi?id=773224
+   */
+  g_udev_enumerator_add_match_subsystem (enumerator, "drm");
+
+  devices = g_udev_enumerator_execute (enumerator);
+  if (!devices)
+    goto out;
+
+  seat_id = meta_launcher_get_seat_id (launcher);
+
+  /*
+   * For now, fail on systems where some of the connectors are connected to
+   * secondary gpus.
+   *
+   * https://bugzilla.gnome.org/show_bug.cgi?id=771442
+   */
+  if (g_getenv ("MUTTER_ALLOW_HYBRID_GPUS") == NULL)
+    {
+      unsigned int num_devices;
+
+      num_devices = count_devices_with_connectors (seat_id, devices);
+      if (num_devices != 1)
+        goto out;
+    }
+
+  for (l = devices; l; l = l->next)
+    {
+      GUdevDevice *dev = l->data;
+      g_autoptr (GUdevDevice) platform_device = NULL;
+      g_autoptr (GUdevDevice) pci_device = NULL;
+      const char *device_type;
+      const char *device_seat;
+
+      /* Filter out devices that are not character device, like card0-VGA-1. */
+      if (g_udev_device_get_device_type (dev) != G_UDEV_DEVICE_TYPE_CHAR)
+        continue;
+
+      device_type = g_udev_device_get_property (dev, "DEVTYPE");
+      if (g_strcmp0 (device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
+        continue;
+
+      device_seat = g_udev_device_get_property (dev, "ID_SEAT");
+      if (!device_seat)
+        {
+          /* When ID_SEAT is not set, it means seat0. */
+          device_seat = "seat0";
+        }
+      else if (g_strcmp0 (device_seat, "seat0") != 0)
+        {
+          /*
+           * If the device has been explicitly assigned other seat
+           * than seat0, it is probably the right device to use.
+           */
+          path = g_strdup (g_udev_device_get_device_file (dev));
+          break;
+        }
+
+      /* Skip devices that do not belong to our seat. */
+      if (g_strcmp0 (seat_id, device_seat))
+        continue;
+
+      platform_device = g_udev_device_get_parent_with_subsystem (dev,
+                                                                 "platform",
+                                                                 NULL);
+      if (platform_device != NULL)
+        {
+          path = g_strdup (g_udev_device_get_device_file (dev));
+          break;
+        }
+
+      pci_device = g_udev_device_get_parent_with_subsystem (dev, "pci", NULL);
+      if (pci_device != NULL)
+        {
+          int boot_vga;
+
+          boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device,
+                                                          "boot_vga");
+          if (boot_vga == 1)
+            {
+              path = g_strdup (g_udev_device_get_device_file (dev));
+              break;
+            }
+        }
+    }
+
+out:
+  g_list_free_full (devices, g_object_unref);
+
+  return path;
+}
+
+static gboolean
+open_primary_gpu (MetaMonitorManagerKms *manager_kms,
+                  int                   *fd_out,
+                  char                 **kms_file_path_out,
+                  GError               **error)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaBackendNative *backend_native = META_BACKEND_NATIVE (backend);
+  MetaLauncher *launcher = meta_backend_native_get_launcher (backend_native);
+  g_autofree char *path = NULL;
+  int fd;
+
+  path = get_primary_gpu_path (manager_kms);
+  if (!path)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
+                   "Could not find drm kms device");
+      return FALSE;
+    }
+
+  fd = meta_launcher_open_restricted (launcher, path, error);
+  if (fd == -1)
+    return FALSE;
+
+  *fd_out = fd;
+  *kms_file_path_out = g_steal_pointer (&path);
+
+  return TRUE;
+}
+
+static gboolean
+meta_monitor_manager_kms_initable_init (GInitable    *initable,
+                                        GCancellable *cancellable,
+                                        GError      **error)
+{
+  MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (initable);
+  GSource *source;
+  const char *subsystems[2] = { "drm", NULL };
+
+  manager_kms->udev = g_udev_client_new (subsystems);
+
+  if (!open_primary_gpu (manager_kms,
+                         &manager_kms->fd,
+                         &manager_kms->file_path,
+                         error))
+    return FALSE;
+
+  drmSetClientCap (manager_kms->fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+
+  meta_monitor_manager_kms_connect_uevent_handler (manager_kms);
+
+  source = g_source_new (&kms_event_funcs, sizeof (MetaKmsSource));
+  manager_kms->source = (MetaKmsSource *) source;
+  manager_kms->source->fd_tag = g_source_add_unix_fd (source,
+                                                      manager_kms->fd,
+                                                      G_IO_IN | G_IO_ERR);
+  manager_kms->source->manager_kms = manager_kms;
+  g_source_attach (source, NULL);
+
+  return TRUE;
+}
+
+static void
+initable_iface_init (GInitableIface *initable_iface)
+{
+  initable_iface->init = meta_monitor_manager_kms_initable_init;
+}
+
 static void
 meta_monitor_manager_kms_dispose (GObject *object)
 {
@@ -1090,6 +1336,13 @@ static void
 meta_monitor_manager_kms_finalize (GObject *object)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (object);
+  MetaBackend *backend = meta_get_backend ();
+  MetaBackendNative *backend_native = META_BACKEND_NATIVE (backend);
+  MetaLauncher *launcher = meta_backend_native_get_launcher (backend_native);
+
+  if (manager_kms->fd != -1)
+    meta_launcher_close_restricted (launcher, manager_kms->fd);
+  g_clear_pointer (&manager_kms->file_path, g_free);
 
   free_resources (manager_kms);
   g_source_destroy ((GSource *) manager_kms->source);
@@ -1100,26 +1353,7 @@ meta_monitor_manager_kms_finalize (GObject *object)
 static void
 meta_monitor_manager_kms_init (MetaMonitorManagerKms *manager_kms)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaRenderer *renderer = meta_backend_get_renderer (backend);
-  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
-  GSource *source;
-
-  manager_kms->fd = meta_renderer_native_get_kms_fd (renderer_native);
-
-  drmSetClientCap (manager_kms->fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
-
-  const char *subsystems[2] = { "drm", NULL };
-  manager_kms->udev = g_udev_client_new (subsystems);
-  meta_monitor_manager_kms_connect_uevent_handler (manager_kms);
-
-  source = g_source_new (&kms_event_funcs, sizeof (MetaKmsSource));
-  manager_kms->source = (MetaKmsSource *) source;
-  manager_kms->source->fd_tag = g_source_add_unix_fd (source,
-                                                      manager_kms->fd,
-                                                      G_IO_IN | G_IO_ERR);
-  manager_kms->source->manager_kms = manager_kms;
-  g_source_attach (source, NULL);
+  manager_kms->fd = -1;
 }
 
 static void

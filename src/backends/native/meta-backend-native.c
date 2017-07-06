@@ -400,9 +400,10 @@ meta_backend_native_create_idle_monitor (MetaBackend *backend,
 }
 
 static MetaMonitorManager *
-meta_backend_native_create_monitor_manager (MetaBackend *backend)
+meta_backend_native_create_monitor_manager (MetaBackend *backend,
+                                            GError     **error)
 {
-  return g_object_new (META_TYPE_MONITOR_MANAGER_KMS, NULL);
+  return g_initable_new (META_TYPE_MONITOR_MANAGER_KMS, NULL, error, NULL);
 }
 
 static MetaCursorRenderer *
@@ -415,16 +416,13 @@ static MetaRenderer *
 meta_backend_native_create_renderer (MetaBackend *backend,
                                      GError     **error)
 {
-  MetaBackendNative *native = META_BACKEND_NATIVE (backend);
-  MetaBackendNativePrivate *priv =
-    meta_backend_native_get_instance_private (native);
-  int kms_fd;
-  const char *kms_file_path;
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (monitor_manager);
   MetaRendererNative *renderer_native;
 
-  kms_fd = meta_launcher_get_kms_fd (priv->launcher);
-  kms_file_path = meta_launcher_get_kms_file_path (priv->launcher);
-  renderer_native = meta_renderer_native_new (kms_fd, kms_file_path, error);
+  renderer_native = meta_renderer_native_new (monitor_manager_kms, error);
   if (!renderer_native)
     return NULL;
 
@@ -621,14 +619,23 @@ meta_backend_native_init (MetaBackendNative *native)
              native);
 }
 
+MetaLauncher *
+meta_backend_native_get_launcher (MetaBackendNative *native)
+{
+  MetaBackendNativePrivate *priv =
+    meta_backend_native_get_instance_private (native);
+
+  return priv->launcher;
+}
+
 gboolean
 meta_activate_vt (int vt, GError **error)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaBackendNative *native = META_BACKEND_NATIVE (backend);
-  MetaBackendNativePrivate *priv = meta_backend_native_get_instance_private (native);
+  MetaLauncher *launcher = meta_backend_native_get_launcher (native);
 
-  return meta_launcher_activate_vt (priv->launcher, vt, error);
+  return meta_launcher_activate_vt (launcher, vt, error);
 }
 
 MetaBarrierManagerNative *

@@ -571,12 +571,14 @@ experimental_features_changed (MetaSettings            *settings,
 }
 
 static MetaMonitorManager *
-meta_backend_create_monitor_manager (MetaBackend *backend)
+meta_backend_create_monitor_manager (MetaBackend *backend,
+                                     GError     **error)
 {
   if (g_getenv ("META_DUMMY_MONITORS"))
     return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
 
-  return META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend);
+  return META_BACKEND_GET_CLASS (backend)->create_monitor_manager (backend,
+                                                                   error);
 }
 
 static MetaRenderer *
@@ -603,11 +605,13 @@ meta_backend_initable_init (GInitable     *initable,
 
   priv->orientation_manager = g_object_new (META_TYPE_ORIENTATION_MANAGER, NULL);
 
+  priv->monitor_manager = meta_backend_create_monitor_manager (backend, error);
+  if (!priv->monitor_manager)
+    return FALSE;
+
   priv->renderer = meta_backend_create_renderer (backend, error);
   if (!priv->renderer)
     return FALSE;
-
-  priv->monitor_manager = meta_backend_create_monitor_manager (backend);
 
   priv->cursor_tracker = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
 

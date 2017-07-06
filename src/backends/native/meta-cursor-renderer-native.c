@@ -862,8 +862,12 @@ meta_cursor_renderer_native_init (MetaCursorRendererNative *native)
       MetaBackend *backend = meta_get_backend ();
       MetaRenderer *renderer = meta_backend_get_renderer (backend);
       MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
+      MetaMonitorManagerKms *monitor_manager_kms =
+        META_MONITOR_MANAGER_KMS (monitor_manager);
 
-      priv->drm_fd = meta_renderer_native_get_kms_fd (renderer_native);
+      priv->drm_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
       priv->gbm = meta_renderer_native_get_gbm (renderer_native);
 
       uint64_t width, height;

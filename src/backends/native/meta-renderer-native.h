@@ -29,6 +29,7 @@
 #include <xf86drmMode.h>
 
 #include "backends/meta-renderer.h"
+#include "backends/native/meta-monitor-manager-kms.h"
 
 #define META_TYPE_RENDERER_NATIVE (meta_renderer_native_get_type ())
 G_DECLARE_FINAL_TYPE (MetaRendererNative, meta_renderer_native,
@@ -43,15 +44,12 @@ typedef enum _MetaRendererNativeMode
 #endif
 } MetaRendererNativeMode;
 
-MetaRendererNative *meta_renderer_native_new (int         kms_fd,
-                                              const char *kms_file_path,
-                                              GError    **error);
+MetaRendererNative * meta_renderer_native_new (MetaMonitorManagerKms *monitor_manager_kms,
+                                               GError               **error);
 
 MetaRendererNativeMode meta_renderer_native_get_mode (MetaRendererNative *renderer_native);
 
 struct gbm_device * meta_renderer_native_get_gbm (MetaRendererNative *renderer_native);
-
-int meta_renderer_native_get_kms_fd (MetaRendererNative *renderer_native);
 
 void meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native);
 

@@ -47,19 +47,21 @@
 #include "meta-idle-monitor-native.h"
 #include "meta-renderer-native.h"
 
-#define DRM_CARD_UDEV_DEVICE_TYPE "drm_minor"
-
 struct _MetaLauncher
 {
   Login1Session *session_proxy;
   Login1Seat *seat_proxy;
+  char *seat_id;
 
   GHashTable *sysfs_fds;
   gboolean session_active;
-
-  int kms_fd;
-  char *kms_file_path;
 };
+
+const char *
+meta_launcher_get_seat_id (MetaLauncher *launcher)
+{
+  return launcher->seat_id;
+}
 
 static Login1Session *
 get_session_proxy (GCancellable *cancellable,
@@ -171,6 +173,54 @@ get_device_info_from_fd (int  fd,
   return TRUE;
 }
 
+int
+meta_launcher_open_restricted (MetaLauncher *launcher,
+                               const char   *path,
+                               GError      **error)
+{
+  int fd;
+  int major, minor;
+
+  if (!get_device_info_from_path (path, &major, &minor))
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_NOT_FOUND,
+                   "Could not get device info for path %s: %m", path);
+      return -1;
+    }
+
+  if (!take_device (launcher->session_proxy, major, minor, &fd, NULL, error))
+    return -1;
+
+  return fd;
+}
+
+void
+meta_launcher_close_restricted (MetaLauncher *launcher,
+                                int           fd)
+{
+  int major, minor;
+  GError *error = NULL;
+
+  if (!get_device_info_from_fd (fd, &major, &minor))
+    {
+      g_warning ("Could not get device info for fd %d: %m", fd);
+      goto out;
+    }
+
+  if (!login1_session_call_release_device_sync (launcher->session_proxy,
+                                                major, minor,
+                                                NULL, &error))
+    {
+      g_warning ("Could not release device (%d,%d): %s",
+                 major, minor, error->message);
+    }
+
+out:
+  close (fd);
+}
+
 static int
 on_evdev_device_open (const char  *path,
                       int          flags,
@@ -178,12 +228,12 @@ on_evdev_device_open (const char  *path,
                       GError     **error)
 {
   MetaLauncher *self = user_data;
-  int fd;
-  int major, minor;
 
   /* Allow readonly access to sysfs */
   if (g_str_has_prefix (path, "/sys/"))
     {
+      int fd;
+
       do
         {
           fd = open (path, flags);
@@ -203,19 +253,7 @@ on_evdev_device_open (const char  *path,
       return fd;
     }
 
-  if (!get_device_info_from_path (path, &major, &minor))
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_NOT_FOUND,
-                   "Could not get device info for path %s: %m", path);
-      return -1;
-    }
-
-  if (!take_device (self->session_proxy, major, minor, &fd, NULL, error))
-    return -1;
-
-  return fd;
+  return meta_launcher_open_restricted (self, path, error);
 }
 
 static void
@@ -223,8 +261,6 @@ on_evdev_device_close (int      fd,
                        gpointer user_data)
 {
   MetaLauncher *self = user_data;
-  int major, minor;
-  GError *error = NULL;
 
   if (g_hash_table_lookup (self->sysfs_fds, GINT_TO_POINTER (fd)))
     {
@@ -234,21 +270,7 @@ on_evdev_device_close (int      fd,
       return;
     }
 
-  if (!get_device_info_from_fd (fd, &major, &minor))
-    {
-      g_warning ("Could not get device info for fd %d: %m", fd);
-      goto out;
-    }
-
-  if (!login1_session_call_release_device_sync (self->session_proxy,
-                                                major, minor,
-                                                NULL, &error))
-    {
-      g_warning ("Could not release device %d,%d: %s", major, minor, error->message);
-    }
-
-out:
-  close (fd);
+  meta_launcher_close_restricted (self, fd);
 }
 
 static void
@@ -276,194 +298,6 @@ on_active_changed (Login1Session *session,
 {
   MetaLauncher *self = user_data;
   sync_active (self);
-}
-
-static guint
-count_devices_with_connectors (const gchar *seat_name,
-                               GList       *devices)
-{
-  g_autoptr (GHashTable) cards = NULL;
-  GList *tmp;
-
-  cards = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_object_unref);
-  for (tmp = devices; tmp != NULL; tmp = tmp->next)
-    {
-      GUdevDevice *device = tmp->data;
-      g_autoptr (GUdevDevice) parent_device = NULL;
-      const gchar *parent_device_type = NULL;
-      const gchar *parent_device_name = NULL;
-      const gchar *card_seat;
-
-      /* filter out the real card devices, we only care about the connectors */
-      if (g_udev_device_get_device_type (device) != G_UDEV_DEVICE_TYPE_NONE)
-        continue;
-
-      /* only connectors have a modes attribute */
-      if (!g_udev_device_has_sysfs_attr (device, "modes"))
-        continue;
-
-      parent_device = g_udev_device_get_parent (device);
-
-      if (g_udev_device_get_device_type (parent_device) == G_UDEV_DEVICE_TYPE_CHAR)
-        parent_device_type = g_udev_device_get_property (parent_device, "DEVTYPE");
-
-      if (g_strcmp0 (parent_device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
-        continue;
-
-      card_seat = g_udev_device_get_property (parent_device, "ID_SEAT");
-
-      if (!card_seat)
-        card_seat = "seat0";
-
-      if (g_strcmp0 (seat_name, card_seat) != 0)
-        continue;
-
-      parent_device_name = g_udev_device_get_name (parent_device);
-      g_hash_table_insert (cards,
-                           (gpointer) parent_device_name ,
-                           g_steal_pointer (&parent_device));
-    }
-
-  return g_hash_table_size (cards);
-}
-
-static gchar *
-get_primary_gpu_path (const gchar *seat_name)
-{
-  const gchar *subsystems[] = {"drm", NULL};
-  gchar *path = NULL;
-  GList *devices, *tmp;
-
-  g_autoptr (GUdevClient) gudev_client = g_udev_client_new (subsystems);
-  g_autoptr (GUdevEnumerator) enumerator = g_udev_enumerator_new (gudev_client);
-
-  g_udev_enumerator_add_match_name (enumerator, "card*");
-  g_udev_enumerator_add_match_tag (enumerator, "seat");
-
-  /* We need to explicitly match the subsystem for now.
-   * https://bugzilla.gnome.org/show_bug.cgi?id=773224
-   */
-  g_udev_enumerator_add_match_subsystem (enumerator, "drm");
-
-  devices = g_udev_enumerator_execute (enumerator);
-  if (!devices)
-    goto out;
-
-  /* For now, fail on systems where some of the connectors
-   * are connected to secondary gpus.
-   *
-   * https://bugzilla.gnome.org/show_bug.cgi?id=771442
-   */
-  if (g_getenv ("MUTTER_ALLOW_HYBRID_GPUS") == NULL)
-    {
-      guint num_devices;
-
-      num_devices = count_devices_with_connectors (seat_name, devices);
-      if (num_devices != 1)
-        goto out;
-    }
-
-  for (tmp = devices; tmp != NULL; tmp = tmp->next)
-    {
-      g_autoptr (GUdevDevice) platform_device = NULL;
-      g_autoptr (GUdevDevice) pci_device = NULL;
-      GUdevDevice *dev = tmp->data;
-      gint boot_vga;
-      const gchar *device_type;
-      const gchar *device_seat;
-
-      /* filter out devices that are not character device, like card0-VGA-1 */
-      if (g_udev_device_get_device_type (dev) != G_UDEV_DEVICE_TYPE_CHAR)
-        continue;
-
-      device_type = g_udev_device_get_property (dev, "DEVTYPE");
-      if (g_strcmp0 (device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
-        continue;
-
-      device_seat = g_udev_device_get_property (dev, "ID_SEAT");
-      if (!device_seat)
-        {
-          /* when ID_SEAT is not set, it means seat0 */
-          device_seat = "seat0";
-        }
-      else if (g_strcmp0 (device_seat, "seat0") != 0)
-        {
-          /* if the device has been explicitly assigned other seat
-           * than seat0, it is probably the right device to use */
-          path = g_strdup (g_udev_device_get_device_file (dev));
-          break;
-        }
-
-      /* skip devices that do not belong to our seat */
-      if (g_strcmp0 (seat_name, device_seat))
-        continue;
-
-      platform_device = g_udev_device_get_parent_with_subsystem (dev, "platform", NULL);
-      if (platform_device != NULL)
-        {
-          path = g_strdup (g_udev_device_get_device_file (dev));
-          break;
-        }
-
-      pci_device = g_udev_device_get_parent_with_subsystem (dev, "pci", NULL);
-      if (pci_device != NULL)
-        {
-          /* get value of boot_vga attribute or 0 if the device has no boot_vga */
-          boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device, "boot_vga");
-          if (boot_vga == 1)
-            {
-              /* found the boot_vga device */
-              path = g_strdup (g_udev_device_get_device_file (dev));
-              break;
-            }
-        }
-    }
-
-out:
-  g_list_free_full (devices, g_object_unref);
-
-  return path;
-}
-
-static gboolean
-get_kms_fd (Login1Session *session_proxy,
-            const gchar   *seat_id,
-            int           *fd_out,
-            char         **kms_file_path_out,
-            GError       **error)
-{
-  int major, minor;
-  int fd;
-
-  g_autofree gchar *path = get_primary_gpu_path (seat_id);
-  if (!path)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_NOT_FOUND,
-                   "could not find drm kms device");
-      return FALSE;
-    }
-
-  if (!get_device_info_from_path (path, &major, &minor))
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_NOT_FOUND,
-                   "Could not get device info for path %s: %m", path);
-      return FALSE;
-    }
-
-  if (!take_device (session_proxy, major, minor, &fd, NULL, error))
-    {
-      g_prefix_error (error, "Could not open DRM device: ");
-      return FALSE;
-    }
-
-  *fd_out = fd;
-  *kms_file_path_out = g_steal_pointer (&path);
-
-  return TRUE;
 }
 
 static gchar *
@@ -504,8 +338,6 @@ meta_launcher_new (GError **error)
   g_autoptr (Login1Seat) seat_proxy = NULL;
   g_autofree char *seat_id = NULL;
   gboolean have_control = FALSE;
-  int kms_fd;
-  char *kms_file_path;
 
   session_proxy = get_session_proxy (NULL, error);
   if (!session_proxy)
@@ -527,25 +359,21 @@ meta_launcher_new (GError **error)
   if (!seat_proxy)
     goto fail;
 
-  if (!get_kms_fd (session_proxy, seat_id, &kms_fd, &kms_file_path, error))
-    goto fail;
-
   self = g_slice_new0 (MetaLauncher);
   self->session_proxy = g_object_ref (session_proxy);
   self->seat_proxy = g_object_ref (seat_proxy);
+  self->seat_id = g_steal_pointer (&seat_id);
   self->sysfs_fds = g_hash_table_new (NULL, NULL);
-
   self->session_active = TRUE;
-  self->kms_fd = kms_fd;
-  self->kms_file_path = kms_file_path;
 
-  clutter_evdev_set_seat_id (seat_id);
+  clutter_evdev_set_seat_id (self->seat_id);
 
   clutter_evdev_set_device_callbacks (on_evdev_device_open,
                                       on_evdev_device_close,
                                       self);
 
   g_signal_connect (self->session_proxy, "notify::active", G_CALLBACK (on_active_changed), self);
+
   return self;
 
  fail:
@@ -557,10 +385,10 @@ meta_launcher_new (GError **error)
 void
 meta_launcher_free (MetaLauncher *self)
 {
+  g_free (self->seat_id);
   g_object_unref (self->seat_proxy);
   g_object_unref (self->session_proxy);
   g_hash_table_destroy (self->sysfs_fds);
-  g_free (self->kms_file_path);
   g_slice_free (MetaLauncher, self);
 }
 
@@ -581,16 +409,4 @@ meta_launcher_activate_vt (MetaLauncher  *launcher,
                            GError       **error)
 {
   return login1_seat_call_switch_to_sync (launcher->seat_proxy, vt, NULL, error);
-}
-
-int
-meta_launcher_get_kms_fd (MetaLauncher *self)
-{
-  return self->kms_fd;
-}
-
-const char *
-meta_launcher_get_kms_file_path (MetaLauncher *self)
-{
-  return self->kms_file_path;
 }
