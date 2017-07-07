@@ -269,6 +269,10 @@ const UserList = new Lang.Class({
 
         item.actor.destroy();
         delete this._items[userName];
+    },
+
+    numItems: function() {
+        return Object.keys(this._items).length;
     }
 });
 Signals.addSignalMethods(UserList.prototype);
@@ -706,6 +710,10 @@ const LoginDialog = new Lang.Class({
 
     _updateDisableUserList: function() {
         let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
+
+        // Disable user list when there are no users.
+        if (this._userListLoaded && this._userList.numItems() == 0)
+            disableUserList = true;
 
         if (disableUserList != this._disableUserList) {
             this._disableUserList = disableUserList;
@@ -1178,14 +1186,18 @@ const LoginDialog = new Lang.Class({
             this._userList.addUser(users[i]);
         }
 
+        this._updateDisableUserList();
+
         this._userAddedId = this._userManager.connect('user-added',
                                                       Lang.bind(this, function(userManager, user) {
                                                           this._userList.addUser(user);
+                                                          this._updateDisableUserList();
                                                       }));
 
         this._userRemovedId = this._userManager.connect('user-removed',
                                                         Lang.bind(this, function(userManager, user) {
                                                             this._userList.removeUser(user);
+                                                            this._updateDisableUserList();
                                                         }));
 
         this._userChangedId = this._userManager.connect('user-changed',
@@ -1194,6 +1206,7 @@ const LoginDialog = new Lang.Class({
                                                                 this._userList.removeUser(user);
                                                             else if (!this._userList.containsUser(user) && !user.locked)
                                                                 this._userList.addUser(user);
+                                                            this._updateDisableUserList();
                                                         }));
 
         return GLib.SOURCE_REMOVE;
