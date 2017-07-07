@@ -31,8 +31,16 @@ var AppFavorites = new Lang.Class({
                        AppStream.StoreLoadFlags.APP_INFO_USER |
                        AppStream.StoreLoadFlags.APPDATA |
                        AppStream.StoreLoadFlags.DESKTOP;
+        this._appDataReady = false;
         this._appDataStore = new AppStream.Store();
-        this._appDataStore.load(loadFlags, null);
+        this._appDataStore.load_async(loadFlags, null, (store, res) => {
+            try {
+                this._appDataReady = store.load_finish(res);
+                this.reload();
+            } catch(e) {
+                log('Failed to load AppData store: ' + e.message);
+            }
+        });
 
         this._favorites = {};
         global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, this._onFavsChanged.bind(this));
@@ -51,8 +59,11 @@ var AppFavorites = new Lang.Class({
         // Map old desktop file names to the current ones
         let updated = false;
         ids = ids.map(id => {
-            let appData = this._appDataStore.get_app_by_id_with_fallbacks(id) ||
+            let appData = null;
+            if (this._appDataReady)
+                appData = this._appDataStore.get_app_by_id_with_fallbacks(id) ||
                           this._appDataStore.get_app_by_provide(AppStream.ProvideKind.ID, id);
+
             let newId = appData != null ? appData.get_id() : undefined;
             if (newId !== undefined &&
                 newId !== id &&
