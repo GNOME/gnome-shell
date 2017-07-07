@@ -891,14 +891,6 @@ meta_cursor_renderer_native_init (MetaCursorRendererNative *native)
 #endif
 }
 
-struct gbm_device *
-meta_cursor_renderer_native_get_gbm_device (MetaCursorRendererNative *native)
-{
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
-
-  return priv->gbm;
-}
-
 void
 meta_cursor_renderer_native_force_update (MetaCursorRendererNative *native)
 {
