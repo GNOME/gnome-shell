@@ -27,27 +27,10 @@
 
 #include "meta-cursor-renderer.h"
 
-#define META_TYPE_CURSOR_RENDERER_NATIVE             (meta_cursor_renderer_native_get_type ())
-#define META_CURSOR_RENDERER_NATIVE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_CURSOR_RENDERER_NATIVE, MetaCursorRendererNative))
-#define META_CURSOR_RENDERER_NATIVE_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_CURSOR_RENDERER_NATIVE, MetaCursorRendererNativeClass))
-#define META_IS_CURSOR_RENDERER_NATIVE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_CURSOR_RENDERER_NATIVE))
-#define META_IS_CURSOR_RENDERER_NATIVE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_CURSOR_RENDERER_NATIVE))
-#define META_CURSOR_RENDERER_NATIVE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_CURSOR_RENDERER_NATIVE, MetaCursorRendererNativeClass))
-
-typedef struct _MetaCursorRendererNative        MetaCursorRendererNative;
-typedef struct _MetaCursorRendererNativeClass   MetaCursorRendererNativeClass;
-
-struct _MetaCursorRendererNative
-{
-  MetaCursorRenderer parent;
-};
-
-struct _MetaCursorRendererNativeClass
-{
-  MetaCursorRendererClass parent_class;
-};
-
-GType meta_cursor_renderer_native_get_type (void) G_GNUC_CONST;
+#define META_TYPE_CURSOR_RENDERER_NATIVE (meta_cursor_renderer_native_get_type ())
+G_DECLARE_FINAL_TYPE (MetaCursorRendererNative, meta_cursor_renderer_native,
+                      META, CURSOR_RENDERER_NATIVE,
+                      MetaCursorRenderer)
 
 struct gbm_device * meta_cursor_renderer_native_get_gbm_device (MetaCursorRendererNative *renderer);
 void meta_cursor_renderer_native_get_cursor_size (MetaCursorRendererNative *native, uint64_t *width, uint64_t *height);

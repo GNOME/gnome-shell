@@ -65,6 +65,11 @@
 
 static GQuark quark_cursor_sprite = 0;
 
+struct _MetaCursorRendererNative
+{
+  MetaCursorRenderer parent;
+};
+
 struct _MetaCursorRendererNativePrivate
 {
   gboolean hw_state_invalidated;
