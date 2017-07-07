@@ -34,4 +34,6 @@ G_DECLARE_FINAL_TYPE (MetaCursorRendererNative, meta_cursor_renderer_native,
 
 void meta_cursor_renderer_native_force_update (MetaCursorRendererNative *renderer);
 
+MetaCursorRendererNative * meta_cursor_renderer_native_new (MetaBackend *backend);
+
 #endif /* META_CURSOR_RENDERER_NATIVE_H */

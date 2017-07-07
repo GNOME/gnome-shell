@@ -409,7 +409,7 @@ meta_backend_native_create_monitor_manager (MetaBackend *backend,
 static MetaCursorRenderer *
 meta_backend_native_create_cursor_renderer (MetaBackend *backend)
 {
-  return g_object_new (META_TYPE_CURSOR_RENDERER_NATIVE, NULL);
+  return META_CURSOR_RENDERER (meta_cursor_renderer_native_new (backend));
 }
 
 static MetaRenderer *

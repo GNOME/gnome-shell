@@ -72,6 +72,8 @@ struct _MetaCursorRendererNative
 
 struct _MetaCursorRendererNativePrivate
 {
+  MetaMonitorManager *monitor_manager;
+
   gboolean hw_state_invalidated;
   gboolean has_hw_cursor;
   gboolean hw_cursor_broken;
@@ -307,9 +309,7 @@ update_hw_cursor (MetaCursorRendererNative *native,
 {
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
   MetaCursorRenderer *renderer = META_CURSOR_RENDERER (native);
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManager *monitor_manager = priv->monitor_manager;
   GList *logical_monitors;
   GList *l;
   ClutterRect rect;
@@ -392,9 +392,11 @@ static gboolean
 cursor_over_transformed_logical_monitor (MetaCursorRenderer *renderer,
                                          MetaCursorSprite   *cursor_sprite)
 {
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
+  MetaCursorRendererNative *cursor_renderer_native =
+    META_CURSOR_RENDERER_NATIVE (renderer);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
+  MetaMonitorManager *monitor_manager = priv->monitor_manager;
   GList *logical_monitors;
   GList *l;
   ClutterRect cursor_rect;
@@ -438,8 +440,11 @@ static gboolean
 can_draw_cursor_unscaled (MetaCursorRenderer *renderer,
                           MetaCursorSprite   *cursor_sprite)
 {
-  MetaBackend *backend;
-  MetaMonitorManager *monitor_manager;
+  MetaCursorRendererNative *cursor_renderer_native =
+    META_CURSOR_RENDERER_NATIVE (renderer);
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
+  MetaMonitorManager *monitor_manager = priv->monitor_manager;
   ClutterRect cursor_rect;
   GList *logical_monitors;
   GList *l;
@@ -448,8 +453,6 @@ can_draw_cursor_unscaled (MetaCursorRenderer *renderer,
   if (!meta_is_stage_views_scaled ())
    return meta_cursor_sprite_get_texture_scale (cursor_sprite) == 1.0;
 
-  backend = meta_get_backend ();
-  monitor_manager = meta_backend_get_monitor_manager (backend);
   logical_monitors =
     meta_monitor_manager_get_logical_monitors (monitor_manager);
 
@@ -850,45 +853,66 @@ on_monitors_changed (MetaMonitorManager       *monitors,
 }
 
 static void
-meta_cursor_renderer_native_init (MetaCursorRendererNative *native)
+init_hw_cursor_support (MetaCursorRendererNative *cursor_renderer_native,
+                        MetaBackend              *backend)
 {
-  MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
-  MetaMonitorManager *monitors;
+  MetaRendererNative *renderer_native =
+    META_RENDERER_NATIVE (meta_backend_get_renderer (backend));
+  MetaCursorRendererNativePrivate *priv =
+    meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
+  MetaMonitorManagerKms *monitor_manager_kms =
+    META_MONITOR_MANAGER_KMS (priv->monitor_manager);
+  uint64_t width, height;
+  struct gbm_device *gbm_device;
 
-  monitors = meta_monitor_manager_get ();
-  g_signal_connect_object (monitors, "monitors-changed",
-                           G_CALLBACK (on_monitors_changed), native, 0);
+  gbm_device = meta_renderer_native_get_gbm (renderer_native);
+  if (!gbm_device)
+    return;
 
+  priv->gbm = gbm_device;
+  priv->drm_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+
+  if (drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_WIDTH, &width) == 0 &&
+      drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_HEIGHT, &height) == 0)
+    {
+      priv->cursor_width = width;
+      priv->cursor_height = height;
+    }
+  else
+    {
+      priv->cursor_width = 64;
+      priv->cursor_height = 64;
+    }
+}
+
+MetaCursorRendererNative *
+meta_cursor_renderer_native_new (MetaBackend *backend)
+{
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaCursorRendererNative *cursor_renderer_native;
+  MetaCursorRendererNativePrivate *priv;
+
+  cursor_renderer_native =
+    g_object_new (META_TYPE_CURSOR_RENDERER_NATIVE, NULL);
+  priv =
+    meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
+
+  g_signal_connect_object (monitor_manager, "monitors-changed",
+                           G_CALLBACK (on_monitors_changed),
+                           cursor_renderer_native, 0);
+
+  priv->monitor_manager = monitor_manager;
   priv->hw_state_invalidated = TRUE;
 
-#if defined(CLUTTER_WINDOWING_EGL)
-  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_EGL))
-    {
-      MetaBackend *backend = meta_get_backend ();
-      MetaRenderer *renderer = meta_backend_get_renderer (backend);
-      MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
-      MetaMonitorManager *monitor_manager =
-        meta_backend_get_monitor_manager (backend);
-      MetaMonitorManagerKms *monitor_manager_kms =
-        META_MONITOR_MANAGER_KMS (monitor_manager);
+  init_hw_cursor_support (cursor_renderer_native, backend);
 
-      priv->drm_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
-      priv->gbm = meta_renderer_native_get_gbm (renderer_native);
+  return cursor_renderer_native;
+}
 
-      uint64_t width, height;
-      if (drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_WIDTH, &width) == 0 &&
-          drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_HEIGHT, &height) == 0)
-        {
-          priv->cursor_width = width;
-          priv->cursor_height = height;
-        }
-      else
-        {
-          priv->cursor_width = 64;
-          priv->cursor_height = 64;
-        }
-    }
-#endif
+static void
+meta_cursor_renderer_native_init (MetaCursorRendererNative *native)
+{
 }
 
 void
