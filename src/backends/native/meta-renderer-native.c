@@ -2082,7 +2082,9 @@ meta_renderer_native_initable_init (GInitable     *initable,
 
   if (init_gbm (renderer_native, &gbm_error))
     {
+#ifdef HAVE_EGL_DEVICE
       g_error_free (egl_device_error);
+#endif
       return TRUE;
     }
 
