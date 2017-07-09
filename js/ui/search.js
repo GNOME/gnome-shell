@@ -125,7 +125,7 @@ const ListSearchResult = new Lang.Class({
     },
 
     _highlightTerms: function() {
-        let markup = this._resultsView.highlightTerms(this.metaInfo['description']);
+        let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
     },
 
