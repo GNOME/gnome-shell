@@ -25,10 +25,12 @@
 #ifndef META_RENDERER_NATIVE_H
 #define META_RENDERER_NATIVE_H
 
+#include <gbm.h>
 #include <glib-object.h>
 #include <xf86drmMode.h>
 
 #include "backends/meta-renderer.h"
+#include "backends/native/meta-gpu-kms.h"
 #include "backends/native/meta-monitor-manager-kms.h"
 
 #define META_TYPE_RENDERER_NATIVE (meta_renderer_native_get_type ())
@@ -47,9 +49,9 @@ typedef enum _MetaRendererNativeMode
 MetaRendererNative * meta_renderer_native_new (MetaMonitorManagerKms *monitor_manager_kms,
                                                GError               **error);
 
-MetaRendererNativeMode meta_renderer_native_get_mode (MetaRendererNative *renderer_native);
+struct gbm_device * meta_gbm_device_from_gpu (MetaGpuKms *gpu_kms);
 
-struct gbm_device * meta_renderer_native_get_gbm (MetaRendererNative *renderer_native);
+gboolean meta_renderer_native_supports_mirroring (MetaRendererNative *renderer_native);
 
 void meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native);
 

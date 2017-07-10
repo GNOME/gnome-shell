@@ -93,11 +93,11 @@ G_DECLARE_FINAL_TYPE (MetaMonitorTiled, meta_monitor_tiled,
                       META, MONITOR_TILED,
                       MetaMonitor)
 
-MetaMonitorTiled * meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
-                                           MetaOutput         *main_output);
+MetaMonitorTiled * meta_monitor_tiled_new (MetaGpu    *gpu,
+                                           MetaOutput *output);
 
-MetaMonitorNormal * meta_monitor_normal_new (MetaMonitorManager *monitor_manager,
-                                             MetaOutput         *output);
+MetaMonitorNormal * meta_monitor_normal_new (MetaGpu    *gpu,
+                                             MetaOutput *output);
 
 MetaMonitorSpec * meta_monitor_get_spec (MetaMonitor *monitor);
 

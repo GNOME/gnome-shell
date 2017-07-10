@@ -25,6 +25,7 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-crtc.h"
+#include "backends/meta-gpu.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-settings-private.h"
 #include "backends/meta-output.h"
@@ -54,7 +55,7 @@ typedef struct _MetaMonitorModeTiled
 
 typedef struct _MetaMonitorPrivate
 {
-  MetaMonitorManager *monitor_manager;
+  MetaGpu *gpu;
 
   GList *outputs;
   GList *modes;
@@ -450,8 +451,8 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
 }
 
 MetaMonitorNormal *
-meta_monitor_normal_new (MetaMonitorManager *monitor_manager,
-                         MetaOutput         *output)
+meta_monitor_normal_new (MetaGpu    *gpu,
+                         MetaOutput *output)
 {
   MetaMonitorNormal *monitor_normal;
   MetaMonitor *monitor;
@@ -461,7 +462,7 @@ meta_monitor_normal_new (MetaMonitorManager *monitor_manager,
   monitor = META_MONITOR (monitor_normal);
   monitor_priv = meta_monitor_get_instance_private (monitor);
 
-  monitor_priv->monitor_manager = monitor_manager;
+  monitor_priv->gpu = gpu;
 
   monitor_priv->outputs = g_list_append (NULL, output);
   monitor_priv->winsys_id = output->winsys_id;
@@ -557,15 +558,15 @@ meta_monitor_get_suggested_position (MetaMonitor *monitor,
 }
 
 static void
-add_tiled_monitor_outputs (MetaMonitorManager *monitor_manager,
-                           MetaMonitorTiled   *monitor_tiled)
+add_tiled_monitor_outputs (MetaGpu          *gpu,
+                           MetaMonitorTiled *monitor_tiled)
 {
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (META_MONITOR (monitor_tiled));
   GList *outputs;
   GList *l;
 
-  outputs = monitor_manager->outputs;
+  outputs = meta_gpu_get_outputs (gpu);
   for (l = outputs; l; l = l->next)
     {
       MetaOutput *output = l->data;
@@ -1084,9 +1085,10 @@ meta_monitor_tiled_generate_modes (MetaMonitorTiled *monitor_tiled)
 }
 
 MetaMonitorTiled *
-meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
-                        MetaOutput         *output)
+meta_monitor_tiled_new (MetaGpu    *gpu,
+                        MetaOutput *output)
 {
+  MetaMonitorManager *monitor_manager;
   MetaMonitorTiled *monitor_tiled;
   MetaMonitor *monitor;
   MetaMonitorPrivate *monitor_priv;
@@ -1095,18 +1097,19 @@ meta_monitor_tiled_new (MetaMonitorManager *monitor_manager,
   monitor = META_MONITOR (monitor_tiled);
   monitor_priv = meta_monitor_get_instance_private (monitor);
 
-  monitor_priv->monitor_manager = monitor_manager;
+  monitor_priv->gpu = gpu;
 
   monitor_tiled->tile_group_id = output->tile_info.group_id;
   monitor_priv->winsys_id = output->winsys_id;
 
   monitor_tiled->origin_output = output;
-  add_tiled_monitor_outputs (monitor_manager, monitor_tiled);
+  add_tiled_monitor_outputs (gpu, monitor_tiled);
 
   monitor_tiled->main_output = find_untiled_output (monitor_tiled);
 
   meta_monitor_generate_spec (monitor);
 
+  monitor_manager = meta_gpu_get_monitor_manager (gpu);
   meta_monitor_manager_tiled_monitor_added (monitor_manager,
                                             META_MONITOR (monitor_tiled));
 
@@ -1193,8 +1196,10 @@ meta_monitor_tiled_finalize (GObject *object)
   MetaMonitor *monitor = META_MONITOR (object);
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
+  MetaMonitorManager *monitor_manager;
 
-  meta_monitor_manager_tiled_monitor_removed (monitor_priv->monitor_manager,
+  monitor_manager = meta_gpu_get_monitor_manager (monitor_priv->gpu);
+  meta_monitor_manager_tiled_monitor_removed (monitor_manager,
                                               monitor);
 
   G_OBJECT_CLASS (meta_monitor_tiled_parent_class)->finalize (object);

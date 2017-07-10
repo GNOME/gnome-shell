@@ -45,6 +45,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-output.h"
 #include "backends/x11/meta-crtc-xrandr.h"
+#include "backends/x11/meta-gpu-xrandr.h"
 #include "backends/x11/meta-output-xrandr.h"
 
 /* Look for DPI_FALLBACK in:
@@ -57,19 +58,22 @@ struct _MetaMonitorManagerXrandr
   MetaMonitorManager parent_instance;
 
   Display *xdisplay;
-  XRRScreenResources *resources;
   int rr_event_base;
   int rr_error_base;
   gboolean has_randr15;
+
+  /*
+   * The X server deals with multiple GPUs for us, soe just see what the X
+   * server gives us as one single GPU, even though it may actually be backed
+   * by multiple.
+   */
+  MetaGpu *gpu;
 
   xcb_timestamp_t last_xrandr_set_timestamp;
 
 #ifdef HAVE_XRANDR15
   GHashTable *tiled_monitor_atoms;
 #endif /* HAVE_XRANDR15 */
-
-  int max_screen_width;
-  int max_screen_height;
 };
 
 struct _MetaMonitorManagerXrandrClass
@@ -94,192 +98,10 @@ meta_monitor_manager_xrandr_get_xdisplay (MetaMonitorManagerXrandr *manager_xran
   return manager_xrandr->xdisplay;
 }
 
-XRRScreenResources *
-meta_monitor_manager_xrandr_get_resources (MetaMonitorManagerXrandr *manager_xrandr)
-{
-  return manager_xrandr->resources;
-}
-
 gboolean
 meta_monitor_manager_xrandr_has_randr15 (MetaMonitorManagerXrandr *manager_xrandr)
 {
   return manager_xrandr->has_randr15;
-}
-
-static int
-compare_outputs (const void *one,
-                 const void *two)
-{
-  const MetaOutput *o_one = one, *o_two = two;
-
-  return strcmp (o_one->name, o_two->name);
-}
-
-static char *
-get_xmode_name (XRRModeInfo *xmode)
-{
-  int width = xmode->width;
-  int height = xmode->height;
-
-  return g_strdup_printf ("%dx%d", width, height);
-}
-
-static void
-meta_monitor_manager_xrandr_read_current (MetaMonitorManager *manager)
-{
-  MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (manager);
-  XRRScreenResources *resources;
-  RROutput primary_output;
-  unsigned int i, j;
-  GList *l;
-  int min_width, min_height;
-  Screen *screen;
-  BOOL dpms_capable, dpms_enabled;
-  CARD16 dpms_state;
-
-  if (manager_xrandr->resources)
-    XRRFreeScreenResources (manager_xrandr->resources);
-  manager_xrandr->resources = NULL;
-
-  dpms_capable = DPMSCapable (manager_xrandr->xdisplay);
-
-  if (dpms_capable &&
-      DPMSInfo (manager_xrandr->xdisplay, &dpms_state, &dpms_enabled) &&
-      dpms_enabled)
-    {
-      switch (dpms_state)
-        {
-        case DPMSModeOn:
-          manager->power_save_mode = META_POWER_SAVE_ON;
-          break;
-        case DPMSModeStandby:
-          manager->power_save_mode = META_POWER_SAVE_STANDBY;
-          break;
-        case DPMSModeSuspend:
-          manager->power_save_mode = META_POWER_SAVE_SUSPEND;
-          break;
-        case DPMSModeOff:
-          manager->power_save_mode = META_POWER_SAVE_OFF;
-          break;
-        default:
-          manager->power_save_mode = META_POWER_SAVE_UNSUPPORTED;
-          break;
-        }
-    }
-  else
-    {
-      manager->power_save_mode = META_POWER_SAVE_UNSUPPORTED;
-    }
-
-  XRRGetScreenSizeRange (manager_xrandr->xdisplay, DefaultRootWindow (manager_xrandr->xdisplay),
-			 &min_width,
-			 &min_height,
-			 &manager_xrandr->max_screen_width,
-			 &manager_xrandr->max_screen_height);
-
-  screen = ScreenOfDisplay (manager_xrandr->xdisplay,
-			    DefaultScreen (manager_xrandr->xdisplay));
-  /* This is updated because we called RRUpdateConfiguration below */
-  manager->screen_width = WidthOfScreen (screen);
-  manager->screen_height = HeightOfScreen (screen);
-
-  resources = XRRGetScreenResourcesCurrent (manager_xrandr->xdisplay,
-					    DefaultRootWindow (manager_xrandr->xdisplay));
-  if (!resources)
-    return;
-
-  manager_xrandr->resources = resources;
-  manager->outputs = NULL;
-  manager->modes = NULL;
-  manager->crtcs = NULL;
-
-  for (i = 0; i < (unsigned)resources->nmode; i++)
-    {
-      XRRModeInfo *xmode = &resources->modes[i];
-      MetaCrtcMode *mode;
-
-      mode = g_object_new (META_TYPE_CRTC_MODE, NULL);
-
-      mode->mode_id = xmode->id;
-      mode->width = xmode->width;
-      mode->height = xmode->height;
-      mode->refresh_rate = (xmode->dotClock /
-			    ((float)xmode->hTotal * xmode->vTotal));
-      mode->flags = xmode->modeFlags;
-      mode->name = get_xmode_name (xmode);
-
-      manager->modes = g_list_append (manager->modes, mode);
-    }
-
-  for (i = 0; i < (unsigned)resources->ncrtc; i++)
-    {
-      XRRCrtcInfo *xrandr_crtc;
-      RRCrtc crtc_id;
-      MetaCrtc *crtc;
-
-      crtc_id = resources->crtcs[i];
-      xrandr_crtc = XRRGetCrtcInfo (manager_xrandr->xdisplay,
-                                    resources, crtc_id);
-      crtc = meta_create_xrandr_crtc (manager, xrandr_crtc, crtc_id, resources);
-      XRRFreeCrtcInfo (xrandr_crtc);
-
-      manager->crtcs = g_list_append (manager->crtcs, crtc);
-    }
-
-  primary_output = XRRGetOutputPrimary (manager_xrandr->xdisplay,
-					DefaultRootWindow (manager_xrandr->xdisplay));
-
-  for (i = 0; i < (unsigned)resources->noutput; i++)
-    {
-      RROutput output_id;
-      XRROutputInfo *xrandr_output;
-
-      output_id = resources->outputs[i];
-      xrandr_output = XRRGetOutputInfo (manager_xrandr->xdisplay,
-                                        resources, output_id);
-      if (!xrandr_output)
-        continue;
-
-      if (xrandr_output->connection != RR_Disconnected)
-	{
-          MetaOutput *output;
-
-          output = meta_create_xrandr_output (manager,
-                                              xrandr_output,
-                                              output_id,
-                                              primary_output);
-          if (output)
-            manager->outputs = g_list_prepend (manager->outputs, output);
-	}
-
-      XRRFreeOutputInfo (xrandr_output);
-    }
-
-  /* Sort the outputs for easier handling in MetaMonitorConfig */
-  manager->outputs = g_list_sort (manager->outputs, compare_outputs);
-
-  /* Now fix the clones */
-  for (l = manager->outputs; l; l = l->next)
-    {
-      MetaOutput *output = l->data;
-      GList *k;
-
-      for (j = 0; j < output->n_possible_clones; j++)
-	{
-	  RROutput clone = GPOINTER_TO_INT (output->possible_clones[j]);
-
-	  for (k = manager->outputs; k; k = k->next)
-	    {
-              MetaOutput *possible_clone = k->data;
-
-	      if (clone == (XID) possible_clone->winsys_id)
-		{
-		  output->possible_clones[j] = possible_clone;
-		  break;
-		}
-	    }
-	}
-    }
 }
 
 static GBytes *
@@ -469,9 +291,11 @@ is_assignments_changed (MetaMonitorManager *manager,
                         MetaOutputInfo    **output_infos,
                         unsigned int        n_output_infos)
 {
+  MetaMonitorManagerXrandr *manager_xrandr =
+    META_MONITOR_MANAGER_XRANDR (manager);
   GList *l;
 
-  for (l = manager->crtcs; l; l = l->next)
+  for (l = meta_gpu_get_crtcs (manager_xrandr->gpu); l; l = l->next)
     {
       MetaCrtc *crtc = l->data;
 
@@ -479,7 +303,7 @@ is_assignments_changed (MetaMonitorManager *manager,
         return TRUE;
     }
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = meta_gpu_get_outputs (manager_xrandr->gpu); l; l = l->next)
     {
       MetaOutput *output = l->data;
 
@@ -564,7 +388,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (l = manager->crtcs; l; l = l->next)
+  for (l = meta_gpu_get_crtcs (manager_xrandr->gpu); l; l = l->next)
     {
       MetaCrtc *crtc = l->data;
 
@@ -684,7 +508,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (l = manager->outputs; l; l = l->next)
+  for (l = meta_gpu_get_outputs (manager_xrandr->gpu); l; l = l->next)
     {
       MetaOutput *output = l->data;
 
@@ -1038,8 +862,8 @@ meta_monitor_manager_xrandr_get_max_screen_size (MetaMonitorManager *manager,
   MetaMonitorManagerXrandr *manager_xrandr =
     META_MONITOR_MANAGER_XRANDR (manager);
 
-  *max_width = manager_xrandr->max_screen_width;
-  *max_height = manager_xrandr->max_screen_height;
+  meta_gpu_xrandr_get_max_screen_size (META_GPU_XRANDR (manager_xrandr->gpu),
+                                       max_width, max_height);
 
   return TRUE;
 }
@@ -1060,6 +884,9 @@ meta_monitor_manager_xrandr_constructed (GObject *object)
     META_BACKEND_X11 (meta_monitor_manager_get_backend (manager));
 
   manager_xrandr->xdisplay = meta_backend_x11_get_xdisplay (backend);
+
+  manager_xrandr->gpu = META_GPU (meta_gpu_xrandr_new (manager_xrandr));
+  meta_monitor_manager_add_gpu (manager, manager_xrandr->gpu);
 
   if (!XRRQueryExtension (manager_xrandr->xdisplay,
 			  &manager_xrandr->rr_event_base,
@@ -1099,9 +926,7 @@ meta_monitor_manager_xrandr_finalize (GObject *object)
 {
   MetaMonitorManagerXrandr *manager_xrandr = META_MONITOR_MANAGER_XRANDR (object);
 
-  if (manager_xrandr->resources)
-    XRRFreeScreenResources (manager_xrandr->resources);
-  manager_xrandr->resources = NULL;
+  g_clear_object (&manager_xrandr->gpu);
 
   g_hash_table_destroy (manager_xrandr->tiled_monitor_atoms);
 
@@ -1122,7 +947,6 @@ meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
   object_class->finalize = meta_monitor_manager_xrandr_finalize;
   object_class->constructed = meta_monitor_manager_xrandr_constructed;
 
-  manager_class->read_current = meta_monitor_manager_xrandr_read_current;
   manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;
   manager_class->ensure_initial_config = meta_monitor_manager_xrandr_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_xrandr_apply_monitors_config;
@@ -1150,6 +974,8 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 					   XEvent                   *event)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_xrandr);
+  MetaGpuXrandr *gpu_xrandr;
+  XRRScreenResources *resources;
   gboolean is_hotplug;
   gboolean is_our_configuration;
 
@@ -1160,10 +986,11 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
 
   meta_monitor_manager_read_current_state (manager);
 
+  gpu_xrandr = META_GPU_XRANDR (manager_xrandr->gpu);
+  resources = meta_gpu_xrandr_get_resources (gpu_xrandr);
 
-  is_hotplug = (manager_xrandr->resources->timestamp <
-                manager_xrandr->resources->configTimestamp);
-  is_our_configuration = (manager_xrandr->resources->timestamp ==
+  is_hotplug = resources->timestamp < resources->configTimestamp;
+  is_our_configuration = (resources->timestamp ==
                           manager_xrandr->last_xrandr_set_timestamp);
   if (is_hotplug)
     {

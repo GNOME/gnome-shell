@@ -30,7 +30,6 @@
 #include "backends/meta-crtc.h"
 #include "backends/native/meta-crtc-kms.h"
 #include "backends/native/meta-default-modes.h"
-#include "backends/native/meta-monitor-manager-kms.h"
 
 #define SYNC_TOLERANCE 0.01    /* 1 percent */
 
@@ -77,16 +76,14 @@ meta_output_kms_set_power_save_mode (MetaOutput *output,
                                      uint64_t    state)
 {
   MetaOutputKms *output_kms = output->driver_private;
-  MetaMonitorManager *monitor_manager =
-    meta_output_get_monitor_manager (output);
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpu *gpu = meta_output_get_gpu (output);
+  MetaGpuKms *gpu_kms = META_GPU_KMS (gpu);
 
   if (output_kms->dpms_prop_id != 0)
     {
       int fd;
 
-      fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+      fd = meta_gpu_kms_get_fd (gpu_kms);
       if (drmModeObjectSetProperty (fd, output->winsys_id,
                                     DRM_MODE_OBJECT_CONNECTOR,
                                     output_kms->dpms_prop_id, state) < 0)
@@ -113,14 +110,14 @@ meta_output_kms_can_clone (MetaOutput *output,
 }
 
 static drmModePropertyBlobPtr
-read_edid_blob (MetaMonitorManagerKms *monitor_manager_kms,
-                uint32_t               edid_blob_id,
-                GError               **error)
+read_edid_blob (MetaGpuKms *gpu_kms,
+                uint32_t    edid_blob_id,
+                GError    **error)
 {
   int fd;
   drmModePropertyBlobPtr edid_blob = NULL;
 
-  fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  fd = meta_gpu_kms_get_fd (gpu_kms);
   edid_blob = drmModeGetPropertyBlob (fd, edid_blob_id);
   if (!edid_blob)
     {
@@ -133,16 +130,16 @@ read_edid_blob (MetaMonitorManagerKms *monitor_manager_kms,
 }
 
 static GBytes *
-read_output_edid (MetaMonitorManagerKms *monitor_manager_kms,
-                  MetaOutput            *output,
-                  GError               **error)
+read_output_edid (MetaGpuKms *gpu_kms,
+                  MetaOutput *output,
+                  GError    **error)
 {
   MetaOutputKms *output_kms = output->driver_private;
   drmModePropertyBlobPtr edid_blob;
 
   g_assert (output_kms->edid_blob_id != 0);
 
-  edid_blob = read_edid_blob (monitor_manager_kms, output_kms->edid_blob_id, error);
+  edid_blob = read_edid_blob (gpu_kms, output_kms->edid_blob_id, error);
   if (!edid_blob)
     return NULL;
 
@@ -159,8 +156,8 @@ read_output_edid (MetaMonitorManagerKms *monitor_manager_kms,
 }
 
 static gboolean
-output_get_tile_info (MetaMonitorManagerKms *monitor_manager_kms,
-                      MetaOutput            *output)
+output_get_tile_info (MetaGpuKms *gpu_kms,
+                      MetaOutput *output)
 {
   MetaOutputKms *output_kms = output->driver_private;
   int fd;
@@ -169,7 +166,7 @@ output_get_tile_info (MetaMonitorManagerKms *monitor_manager_kms,
   if (output_kms->tile_blob_id == 0)
     return FALSE;
 
-  fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  fd = meta_gpu_kms_get_fd (gpu_kms);
   tile_blob = drmModeGetPropertyBlob (fd, output_kms->tile_blob_id);
   if (!tile_blob)
     {
@@ -211,17 +208,15 @@ GBytes *
 meta_output_kms_read_edid (MetaOutput *output)
 {
   MetaOutputKms *output_kms = output->driver_private;
-  MetaMonitorManager *monitor_manager =
-    meta_output_get_monitor_manager (output);
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpu *gpu = meta_output_get_gpu (output);
+  MetaGpuKms *gpu_kms = META_GPU_KMS (gpu);
   GError *error = NULL;
   GBytes *edid;
 
   if (output_kms->edid_blob_id == 0)
     return NULL;
 
-  edid = read_output_edid (monitor_manager_kms, output, &error);
+  edid = read_output_edid (gpu_kms, output, &error);
   if (!edid)
     {
       g_warning ("Failed to read EDID from '%s': %s",
@@ -234,14 +229,14 @@ meta_output_kms_read_edid (MetaOutput *output)
 }
 
 static void
-find_connector_properties (MetaMonitorManagerKms *monitor_manager_kms,
-                           MetaOutputKms         *output_kms)
+find_connector_properties (MetaGpuKms    *gpu_kms,
+                           MetaOutputKms *output_kms)
 {
   drmModeConnector *connector = output_kms->connector;
   int fd;
   int i;
 
-  fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  fd = meta_gpu_kms_get_fd (gpu_kms);
 
   output_kms->hotplug_mode_update = 0;
   output_kms->suggested_x = -1;
@@ -327,8 +322,8 @@ meta_output_destroy_notify (MetaOutput *output)
 }
 
 static void
-add_common_modes (MetaOutput            *output,
-                  MetaMonitorManagerKms *monitor_manager_kms)
+add_common_modes (MetaOutput *output,
+                  MetaGpuKms *gpu_kms)
 {
   GPtrArray *array;
   unsigned i;
@@ -365,8 +360,8 @@ add_common_modes (MetaOutput            *output,
           refresh_rate > max_refresh_rate)
         continue;
 
-      crtc_mode = meta_monitor_manager_kms_get_mode_from_drm_mode (monitor_manager_kms,
-                                                                   drm_mode);
+      crtc_mode = meta_gpu_kms_get_mode_from_drm_mode (gpu_kms,
+                                                       drm_mode);
       g_ptr_array_add (array, crtc_mode);
     }
 
@@ -397,8 +392,8 @@ compare_modes (const void *one,
 }
 
 static void
-init_output_modes (MetaOutput            *output,
-                   MetaMonitorManagerKms *monitor_manager_kms)
+init_output_modes (MetaOutput *output,
+                   MetaGpuKms *gpu_kms)
 {
   MetaOutputKms *output_kms = output->driver_private;
   unsigned int i;
@@ -412,9 +407,7 @@ init_output_modes (MetaOutput            *output,
       MetaCrtcMode *crtc_mode;
 
       drm_mode = &output_kms->connector->modes[i];
-      crtc_mode =
-        meta_monitor_manager_kms_get_mode_from_drm_mode (monitor_manager_kms,
-                                                         drm_mode);
+      crtc_mode = meta_gpu_kms_get_mode_from_drm_mode (gpu_kms, drm_mode);
       output->modes[i] = crtc_mode;
       if (output_kms->connector->modes[i].type & DRM_MODE_TYPE_PREFERRED)
         output->preferred_mode = output->modes[i];
@@ -425,13 +418,12 @@ init_output_modes (MetaOutput            *output,
 }
 
 MetaOutput *
-meta_create_kms_output (MetaMonitorManager *monitor_manager,
-                        drmModeConnector   *connector,
-                        MetaKmsResources   *resources,
-                        MetaOutput         *old_output)
+meta_create_kms_output (MetaGpuKms       *gpu_kms,
+                        drmModeConnector *connector,
+                        MetaKmsResources *resources,
+                        MetaOutput       *old_output)
 {
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpu *gpu = META_GPU (gpu_kms);
   MetaOutput *output;
   MetaOutputKms *output_kms;
   GArray *crtcs;
@@ -447,7 +439,7 @@ meta_create_kms_output (MetaMonitorManager *monitor_manager,
   output->driver_private = output_kms;
   output->driver_notify = (GDestroyNotify) meta_output_destroy_notify;
 
-  output->monitor_manager = monitor_manager;
+  output->gpu = gpu;
   output->winsys_id = connector->connector_id;
   output->name = make_output_name (connector);
   output->width_mm = connector->mmWidth;
@@ -477,16 +469,16 @@ meta_create_kms_output (MetaMonitorManager *monitor_manager,
     }
 
   output_kms->connector = connector;
-  find_connector_properties (monitor_manager_kms, output_kms);
+  find_connector_properties (gpu_kms, output_kms);
 
-  init_output_modes (output, monitor_manager_kms);
+  init_output_modes (output, gpu_kms);
 
   /* FIXME: MSC feature bit? */
   /* Presume that if the output supports scaling, then we have
    * a panel fitter capable of adjusting any mode to suit.
    */
   if (output_kms->has_scaling)
-    add_common_modes (output, monitor_manager_kms);
+    add_common_modes (output, gpu_kms);
 
   qsort (output->modes, output->n_modes,
          sizeof (MetaCrtcMode *), compare_modes);
@@ -494,7 +486,7 @@ meta_create_kms_output (MetaMonitorManager *monitor_manager,
   output_kms->n_encoders = connector->count_encoders;
   output_kms->encoders = g_new0 (drmModeEncoderPtr, output_kms->n_encoders);
 
-  fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  fd = meta_gpu_kms_get_fd (gpu_kms);
 
   crtc_mask = ~(unsigned int) 0;
   for (i = 0; i < output_kms->n_encoders; i++)
@@ -516,7 +508,7 @@ meta_create_kms_output (MetaMonitorManager *monitor_manager,
 
   crtcs = g_array_new (FALSE, FALSE, sizeof (MetaCrtc*));
 
-  for (l = monitor_manager->crtcs, i = 0; l; l = l->next, i++)
+  for (l = meta_gpu_get_crtcs (gpu), i = 0; l; l = l->next, i++)
     {
       if (crtc_mask & (1 << i))
         {
@@ -531,7 +523,7 @@ meta_create_kms_output (MetaMonitorManager *monitor_manager,
 
   if (output_kms->current_encoder && output_kms->current_encoder->crtc_id != 0)
     {
-      for (l = monitor_manager->crtcs; l; l = l->next)
+      for (l = meta_gpu_get_crtcs (gpu); l; l = l->next)
         {
           MetaCrtc *crtc = l->data;
 
@@ -566,7 +558,7 @@ meta_create_kms_output (MetaMonitorManager *monitor_manager,
     {
       GError *error = NULL;
 
-      edid = read_output_edid (monitor_manager_kms, output, &error);
+      edid = read_output_edid (gpu_kms, output, &error);
       if (!edid)
         {
           g_warning ("Failed to read EDID blob from %s: %s",
@@ -585,7 +577,7 @@ meta_create_kms_output (MetaMonitorManager *monitor_manager,
   /* MetaConnectorType matches DRM's connector types */
   output->connector_type = (MetaConnectorType) connector->connector_type;
 
-  output_get_tile_info (monitor_manager_kms, output);
+  output_get_tile_info (gpu_kms, output);
 
   /* FIXME: backlight is a very driver specific thing unfortunately,
      every DDX does its own thing, and the dumb KMS API does not include it.

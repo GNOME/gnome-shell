@@ -28,53 +28,17 @@
 
 #include "meta-monitor-manager-private.h"
 
+typedef struct _MetaGpuKms MetaGpuKms;
+
 #define META_TYPE_MONITOR_MANAGER_KMS (meta_monitor_manager_kms_get_type ())
 G_DECLARE_FINAL_TYPE (MetaMonitorManagerKms, meta_monitor_manager_kms,
                       META, MONITOR_MANAGER_KMS,
                       MetaMonitorManager)
 
-typedef struct _MetaKmsResources
-{
-  drmModeRes *resources;
-  drmModeEncoder **encoders;
-  unsigned int n_encoders;
-} MetaKmsResources;
-
-typedef void (*MetaKmsFlipCallback) (void *user_data);
-
-int meta_monitor_manager_kms_get_fd (MetaMonitorManagerKms *manager_kms);
-
-const char * meta_monitor_manager_kms_get_file_path (MetaMonitorManagerKms *manager_kms);
-
-gboolean meta_drm_mode_equal (const drmModeModeInfo *one,
-                              const drmModeModeInfo *two);
-
-MetaCrtcMode * meta_monitor_manager_kms_get_mode_from_drm_mode (MetaMonitorManagerKms *manager_kms,
-                                                                const drmModeModeInfo *drm_mode);
-
-gboolean meta_monitor_manager_kms_apply_crtc_mode (MetaMonitorManagerKms *manager_kms,
-                                                   MetaCrtc              *crtc,
-                                                   int                    x,
-                                                   int                    y,
-                                                   uint32_t               fb_id);
-
-gboolean meta_monitor_manager_kms_is_crtc_active (MetaMonitorManagerKms *manager_kms,
-                                                  MetaCrtc              *crtc);
-
-gboolean meta_monitor_manager_kms_flip_crtc (MetaMonitorManagerKms *manager_kms,
-                                             MetaCrtc              *crtc,
-                                             int                    x,
-                                             int                    y,
-                                             uint32_t               fb_id,
-                                             GClosure              *flip_closure,
-                                             gboolean              *fb_in_use);
-
-void meta_monitor_manager_kms_wait_for_flip (MetaMonitorManagerKms *manager_kms);
+MetaGpuKms * meta_monitor_manager_kms_get_primary_gpu (MetaMonitorManagerKms *manager_kms);
 
 void meta_monitor_manager_kms_pause (MetaMonitorManagerKms *manager_kms);
 
 void meta_monitor_manager_kms_resume (MetaMonitorManagerKms *manager_kms);
-
-float meta_calculate_drm_mode_refresh_rate (const drmModeModeInfo *mode);
 
 #endif /* META_MONITOR_MANAGER_KMS_H */

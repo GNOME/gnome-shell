@@ -23,10 +23,10 @@
 
 G_DEFINE_TYPE (MetaOutput, meta_output, G_TYPE_OBJECT)
 
-MetaMonitorManager *
-meta_output_get_monitor_manager (MetaOutput *output)
+MetaGpu *
+meta_output_get_gpu (MetaOutput *output)
 {
-  return output->monitor_manager;
+  return output->gpu;
 }
 
 static void

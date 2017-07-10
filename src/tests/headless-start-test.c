@@ -57,10 +57,16 @@ meta_test_headless_start (void)
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
+  GList *gpus;
+  MetaGpu *gpu;
 
-  g_assert_null (monitor_manager->modes);
-  g_assert_null (monitor_manager->outputs);
-  g_assert_null (monitor_manager->crtcs);
+  gpus = meta_monitor_manager_get_gpus (monitor_manager);
+  g_assert_cmpint ((int) g_list_length (gpus), ==, 1);
+
+  gpu = gpus->data;
+  g_assert_null (meta_gpu_get_modes (gpu));
+  g_assert_null (meta_gpu_get_outputs (gpu));
+  g_assert_null (meta_gpu_get_crtcs (gpu));
   g_assert_null (monitor_manager->monitors);
   g_assert_null (monitor_manager->logical_monitors);
 

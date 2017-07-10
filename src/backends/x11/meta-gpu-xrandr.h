@@ -19,25 +19,24 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_OUTPUT_XRANDR
-#define META_OUTPUT_XRANDR
+#ifndef META_GPU_XRANDR_H
+#define META_GPU_XRANDR_H
 
+#include <glib-object.h>
 #include <X11/extensions/Xrandr.h>
 
-#include "backends/meta-output.h"
-#include "backends/x11/meta-gpu-xrandr.h"
+#include "backends/meta-gpu.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 
-void meta_output_xrandr_apply_mode (MetaOutput *output);
+#define META_TYPE_GPU_XRANDR (meta_gpu_xrandr_get_type ())
+G_DECLARE_FINAL_TYPE (MetaGpuXrandr, meta_gpu_xrandr, META, GPU_XRANDR, MetaGpu)
 
-void meta_output_xrandr_change_backlight (MetaOutput *output,
-                                          int         value);
+XRRScreenResources * meta_gpu_xrandr_get_resources (MetaGpuXrandr *gpu_xrandr);
 
-GBytes * meta_output_xrandr_read_edid (MetaOutput *output);
+void meta_gpu_xrandr_get_max_screen_size (MetaGpuXrandr *gpu_xrandr,
+                                          int           *max_width,
+                                          int           *max_height);
 
-MetaOutput * meta_create_xrandr_output (MetaGpuXrandr *gpu_xrandr,
-                                        XRROutputInfo *xrandr_output,
-                                        RROutput       output_id,
-                                        RROutput       primary_output);
+MetaGpuXrandr * meta_gpu_xrandr_new (MetaMonitorManagerXrandr *monitor_manager_xrandr);
 
-#endif /* META_OUTPUT_XRANDR */
+#endif /* META_GPU_XRANDR_H */

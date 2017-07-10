@@ -25,10 +25,10 @@ G_DEFINE_TYPE (MetaCrtc, meta_crtc, G_TYPE_OBJECT)
 
 G_DEFINE_TYPE (MetaCrtcMode, meta_crtc_mode, G_TYPE_OBJECT)
 
-MetaMonitorManager *
-meta_crtc_get_monitor_manager (MetaCrtc *crtc)
+MetaGpu *
+meta_crtc_get_gpu (MetaCrtc *crtc)
 {
-  return crtc->monitor_manager;
+  return crtc->gpu;
 }
 
 static void

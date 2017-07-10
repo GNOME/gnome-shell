@@ -22,7 +22,7 @@
 
 #include <glib-object.h>
 
-#include "backends/meta-monitor-manager-private.h"
+#include "backends/meta-gpu.h"
 
 /* Same as KMS mode flags and X11 randr flags */
 typedef enum _MetaCrtcModeFlag
@@ -50,7 +50,7 @@ struct _MetaCrtc
 {
   GObject parent;
 
-  MetaMonitorManager *monitor_manager;
+  MetaGpu *gpu;
 
   glong crtc_id;
   MetaRectangle rect;
@@ -93,6 +93,6 @@ G_DECLARE_FINAL_TYPE (MetaCrtc, meta_crtc, META, CRTC, GObject)
 #define META_TYPE_CRTC_MODE (meta_crtc_mode_get_type ())
 G_DECLARE_FINAL_TYPE (MetaCrtcMode, meta_crtc_mode, META, CRTC_MODE, GObject)
 
-MetaMonitorManager * meta_crtc_get_monitor_manager (MetaCrtc *crtc);
+MetaGpu * meta_crtc_get_gpu (MetaCrtc *crtc);
 
 #endif /* META_CRTC_H */

@@ -60,6 +60,8 @@ typedef struct _MetaLogicalMonitor MetaLogicalMonitor;
 
 typedef struct _MetaMonitorMode MetaMonitorMode;
 
+typedef struct _MetaGpu MetaGpu;
+
 typedef struct _MetaCrtc MetaCrtc;
 typedef struct _MetaOutput MetaOutput;
 typedef struct _MetaCrtcMode MetaCrtcMode;
@@ -164,14 +166,7 @@ struct _MetaMonitorManager
   int screen_width;
   int screen_height;
 
-  /* Outputs refer to physical screens,
-     CRTCs refer to stuff that can drive outputs
-     (like encoders, but less tied to the HW),
-     while logical_monitors refer to logical ones.
-  */
-  GList *outputs;
-  GList *crtcs;
-  GList *modes;
+  GList *gpus;
 
   GList *monitors;
 
@@ -195,8 +190,6 @@ struct _MetaMonitorManager
 struct _MetaMonitorManagerClass
 {
   MetaDBusDisplayConfigSkeletonClass parent_class;
-
-  void (*read_current) (MetaMonitorManager *);
 
   char* (*get_edid_file) (MetaMonitorManager *,
                           MetaOutput         *);
@@ -302,9 +295,10 @@ MetaMonitor *       meta_monitor_manager_get_monitor_from_connector (MetaMonitor
 
 GList *             meta_monitor_manager_get_monitors      (MetaMonitorManager *manager);
 
-GList *             meta_monitor_manager_get_outputs       (MetaMonitorManager *manager);
+void                meta_monitor_manager_add_gpu (MetaMonitorManager *manager,
+                                                  MetaGpu            *gpu);
 
-GList *             meta_monitor_manager_get_crtcs         (MetaMonitorManager *manager);
+GList *             meta_monitor_manager_get_gpus (MetaMonitorManager *manager);
 
 void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
                                                             int                *width,

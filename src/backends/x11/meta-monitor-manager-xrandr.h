@@ -33,8 +33,6 @@ G_DECLARE_FINAL_TYPE (MetaMonitorManagerXrandr, meta_monitor_manager_xrandr,
 
 Display * meta_monitor_manager_xrandr_get_xdisplay (MetaMonitorManagerXrandr *manager_xrandr);
 
-XRRScreenResources * meta_monitor_manager_xrandr_get_resources (MetaMonitorManagerXrandr *manager_xrandr);
-
 gboolean meta_monitor_manager_xrandr_has_randr15 (MetaMonitorManagerXrandr *manager_xrandr);
 
 gboolean meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager,

@@ -24,7 +24,7 @@
 #include "backends/native/meta-crtc-kms.h"
 
 #include "backends/meta-backend-private.h"
-#include "backends/native/meta-monitor-manager-kms.h"
+#include "backends/native/meta-gpu-kms.h"
 
 #define ALL_TRANSFORMS (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
@@ -57,13 +57,12 @@ void
 meta_crtc_kms_apply_transform (MetaCrtc *crtc)
 {
   MetaCrtcKms *crtc_kms = crtc->driver_private;
-  MetaMonitorManager *monitor_manager = meta_crtc_get_monitor_manager (crtc);
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpu *gpu = meta_crtc_get_gpu (crtc);
+  MetaGpuKms *gpu_kms = META_GPU_KMS (gpu);
   int kms_fd;
   MetaMonitorTransform hw_transform;
 
-  kms_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
   if (crtc_kms->all_hw_transforms & (1 << crtc->transform))
     hw_transform = crtc->transform;
@@ -91,15 +90,14 @@ meta_crtc_kms_set_underscan (MetaCrtc *crtc,
                              gboolean  is_underscanning)
 {
   MetaCrtcKms *crtc_kms = crtc->driver_private;
-  MetaMonitorManager *monitor_manager = meta_crtc_get_monitor_manager (crtc);
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpu *gpu = meta_crtc_get_gpu (crtc);
+  MetaGpuKms *gpu_kms = META_GPU_KMS (gpu);
   int kms_fd;
 
   if (!crtc_kms->underscan_prop_id)
     return;
 
-  kms_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
   if (is_underscanning)
     {
@@ -136,17 +134,16 @@ meta_crtc_kms_set_underscan (MetaCrtc *crtc,
 }
 
 static int
-find_property_index (MetaMonitorManager         *monitor_manager,
+find_property_index (MetaGpu                    *gpu,
                      drmModeObjectPropertiesPtr  props,
                      const char                 *prop_name,
                      drmModePropertyPtr         *out_prop)
 {
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpuKms *gpu_kms = META_GPU_KMS (gpu);
   int kms_fd;
   unsigned int i;
 
-  kms_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
   for (i = 0; i < props->count_props; i++)
     {
@@ -197,13 +194,13 @@ parse_transforms (MetaCrtc          *crtc,
 }
 
 static gboolean
-is_primary_plane (MetaMonitorManager        *monitor_manager,
+is_primary_plane (MetaGpu                   *gpu,
                   drmModeObjectPropertiesPtr props)
 {
   drmModePropertyPtr prop;
   int idx;
 
-  idx = find_property_index (monitor_manager, props, "type", &prop);
+  idx = find_property_index (gpu, props, "type", &prop);
   if (idx < 0)
     return FALSE;
 
@@ -212,19 +209,18 @@ is_primary_plane (MetaMonitorManager        *monitor_manager,
 }
 
 static void
-init_crtc_rotations (MetaCrtc           *crtc,
-                     MetaMonitorManager *monitor_manager)
+init_crtc_rotations (MetaCrtc *crtc,
+                     MetaGpu  *gpu)
 {
   MetaCrtcKms *crtc_kms = crtc->driver_private;
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpuKms *gpu_kms = META_GPU_KMS (gpu);
   int kms_fd;
   drmModeObjectPropertiesPtr props;
   drmModePlaneRes *planes;
   drmModePlane *drm_plane;
   unsigned int i;
 
-  kms_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
   planes = drmModeGetPlaneResources (kms_fd);
   if (planes == NULL)
@@ -245,12 +241,12 @@ init_crtc_rotations (MetaCrtc           *crtc,
                                               drm_plane->plane_id,
                                               DRM_MODE_OBJECT_PLANE);
 
-          if (props && is_primary_plane (monitor_manager, props))
+          if (props && is_primary_plane (gpu, props))
             {
               int rotation_idx;
 
               crtc_kms->primary_plane_id = drm_plane->plane_id;
-              rotation_idx = find_property_index (monitor_manager, props,
+              rotation_idx = find_property_index (gpu, props,
                                                   "rotation", &prop);
               if (rotation_idx >= 0)
                 {
@@ -273,15 +269,15 @@ init_crtc_rotations (MetaCrtc           *crtc,
 }
 
 static void
-find_crtc_properties (MetaCrtc              *crtc,
-                      MetaMonitorManagerKms *monitor_manager_kms)
+find_crtc_properties (MetaCrtc   *crtc,
+                      MetaGpuKms *gpu_kms)
 {
   MetaCrtcKms *crtc_kms = crtc->driver_private;
   int kms_fd;
   drmModeObjectPropertiesPtr props;
   unsigned int i;
 
-  kms_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  kms_fd = meta_gpu_kms_get_fd (gpu_kms);
   props = drmModeObjectGetProperties (kms_fd, crtc->crtc_id,
                                       DRM_MODE_OBJECT_CRTC);
   if (!props)
@@ -314,18 +310,17 @@ meta_crtc_destroy_notify (MetaCrtc *crtc)
 }
 
 MetaCrtc *
-meta_create_kms_crtc (MetaMonitorManager *monitor_manager,
-                      drmModeCrtc        *drm_crtc,
-                      unsigned int        crtc_index)
+meta_create_kms_crtc (MetaGpuKms   *gpu_kms,
+                      drmModeCrtc  *drm_crtc,
+                      unsigned int  crtc_index)
 {
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaGpu *gpu = META_GPU (gpu_kms);
   MetaCrtc *crtc;
   MetaCrtcKms *crtc_kms;
 
   crtc = g_object_new (META_TYPE_CRTC, NULL);
 
-  crtc->monitor_manager = monitor_manager;
+  crtc->gpu = gpu;
   crtc->crtc_id = drm_crtc->crtc_id;
   crtc->rect.x = drm_crtc->x;
   crtc->rect.y = drm_crtc->y;
@@ -340,7 +335,7 @@ meta_create_kms_crtc (MetaMonitorManager *monitor_manager,
     {
       GList *l;
 
-      for (l = monitor_manager->modes; l; l = l->next)
+      for (l = meta_gpu_get_modes (gpu); l; l = l->next)
         {
           MetaCrtcMode *mode = l->data;
 
@@ -358,8 +353,8 @@ meta_create_kms_crtc (MetaMonitorManager *monitor_manager,
   crtc->driver_private = crtc_kms;
   crtc->driver_notify = (GDestroyNotify) meta_crtc_destroy_notify;
 
-  find_crtc_properties (crtc, monitor_manager_kms);
-  init_crtc_rotations (crtc, monitor_manager);
+  find_crtc_properties (crtc, gpu_kms);
+  init_crtc_rotations (crtc, gpu);
 
   return crtc;
 }

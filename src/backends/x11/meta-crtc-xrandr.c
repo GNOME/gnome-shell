@@ -39,6 +39,9 @@
 #include <X11/Xlib-xcb.h>
 #include <xcb/randr.h>
 
+#include "backends/meta-crtc.h"
+#include "backends/x11/meta-crtc-xrandr.h"
+#include "backends/x11/meta-gpu-xrandr.h"
 #include "backends/x11/meta-monitor-manager-xrandr.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
@@ -55,7 +58,9 @@ meta_crtc_xrandr_set_config (MetaCrtc            *crtc,
                              int                  n_outputs,
                              xcb_timestamp_t     *out_timestamp)
 {
-  MetaMonitorManager *monitor_manager = meta_crtc_get_monitor_manager (crtc);
+  MetaGpu *gpu = meta_crtc_get_gpu (crtc);
+  MetaGpuXrandr *gpu_xrandr = META_GPU_XRANDR (gpu);
+  MetaMonitorManager *monitor_manager = meta_gpu_get_monitor_manager (gpu);
   MetaMonitorManagerXrandr *monitor_manager_xrandr =
     META_MONITOR_MANAGER_XRANDR (monitor_manager);
   Display *xdisplay;
@@ -68,8 +73,7 @@ meta_crtc_xrandr_set_config (MetaCrtc            *crtc,
 
   xdisplay = meta_monitor_manager_xrandr_get_xdisplay (monitor_manager_xrandr);
   xcb_conn = XGetXCBConnection (xdisplay);
-  resources =
-    meta_monitor_manager_xrandr_get_resources (monitor_manager_xrandr);
+  resources = meta_gpu_xrandr_get_resources (gpu_xrandr);
   config_timestamp = resources->configTimestamp;
   cookie = xcb_randr_set_crtc_config (xcb_conn,
                                       xrandr_crtc,
@@ -168,17 +172,18 @@ meta_monitor_transform_from_xrandr_all (Rotation rotation)
 }
 
 MetaCrtc *
-meta_create_xrandr_crtc (MetaMonitorManager *monitor_manager,
+meta_create_xrandr_crtc (MetaGpuXrandr      *gpu_xrandr,
                          XRRCrtcInfo        *xrandr_crtc,
                          RRCrtc              crtc_id,
                          XRRScreenResources *resources)
 {
   MetaCrtc *crtc;
   unsigned int i;
+  GList *modes;
 
   crtc = g_object_new (META_TYPE_CRTC, NULL);
 
-  crtc->monitor_manager = monitor_manager;
+  crtc->gpu = META_GPU (gpu_xrandr);
   crtc->crtc_id = crtc_id;
   crtc->rect.x = xrandr_crtc->x;
   crtc->rect.y = xrandr_crtc->y;
@@ -190,11 +195,12 @@ meta_create_xrandr_crtc (MetaMonitorManager *monitor_manager,
   crtc->all_transforms =
     meta_monitor_transform_from_xrandr_all (xrandr_crtc->rotations);
 
+  modes = meta_gpu_get_modes (crtc->gpu);
   for (i = 0; i < (unsigned int) resources->nmode; i++)
     {
       if (resources->modes[i].id == xrandr_crtc->mode)
         {
-          crtc->current_mode = g_list_nth_data (monitor_manager->modes, i);
+          crtc->current_mode = g_list_nth_data (modes, i);
           break;
         }
     }

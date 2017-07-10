@@ -48,8 +48,8 @@
 static Display *
 xdisplay_from_output (MetaOutput *output)
 {
-  MetaMonitorManager *monitor_manager =
-    meta_output_get_monitor_manager (output);
+  MetaGpu *gpu = meta_output_get_gpu (output);
+  MetaMonitorManager *monitor_manager = meta_gpu_get_monitor_manager (gpu);
   MetaMonitorManagerXrandr *monitor_manager_xrandr =
     META_MONITOR_MANAGER_XRANDR (monitor_manager);
 
@@ -607,8 +607,8 @@ output_get_connector_type (MetaOutput *output)
 static void
 output_get_tile_info (MetaOutput *output)
 {
-  MetaMonitorManager *monitor_manager =
-    meta_output_get_monitor_manager (output);
+  MetaGpu *gpu = meta_output_get_gpu (output);
+  MetaMonitorManager *monitor_manager = meta_gpu_get_monitor_manager (gpu);
   MetaMonitorManagerXrandr *monitor_manager_xrandr =
     META_MONITOR_MANAGER_XRANDR (monitor_manager);
   Display *xdisplay = xdisplay_from_output (output);
@@ -646,10 +646,10 @@ output_get_tile_info (MetaOutput *output)
 
 
 static void
-output_get_modes (MetaMonitorManager *monitor_manager,
-                  MetaOutput         *output,
-                  XRROutputInfo      *xrandr_output)
+output_get_modes (MetaOutput    *output,
+                  XRROutputInfo *xrandr_output)
 {
+  MetaGpu *gpu = meta_output_get_gpu (output);
   unsigned int i;
   unsigned int n_actual_modes;
 
@@ -660,7 +660,7 @@ output_get_modes (MetaMonitorManager *monitor_manager,
     {
       GList *l;
 
-      for (l = monitor_manager->modes; l; l = l->next)
+      for (l = meta_gpu_get_modes (gpu); l; l = l->next)
         {
           MetaCrtcMode *mode = l->data;
 
@@ -678,10 +678,10 @@ output_get_modes (MetaMonitorManager *monitor_manager,
 }
 
 static void
-output_get_crtcs (MetaMonitorManager *monitor_manager,
-                  MetaOutput         *output,
-                  XRROutputInfo      *xrandr_output)
+output_get_crtcs (MetaOutput    *output,
+                  XRROutputInfo *xrandr_output)
 {
+  MetaGpu *gpu = meta_output_get_gpu (output);
   unsigned int i;
   unsigned int n_actual_crtcs;
   GList *l;
@@ -691,7 +691,7 @@ output_get_crtcs (MetaMonitorManager *monitor_manager,
   n_actual_crtcs = 0;
   for (i = 0; i < (unsigned int) xrandr_output->ncrtc; i++)
     {
-      for (l = monitor_manager->crtcs; l; l = l->next)
+      for (l = meta_gpu_get_crtcs (gpu); l; l = l->next)
         {
           MetaCrtc *crtc = l->data;
 
@@ -706,7 +706,7 @@ output_get_crtcs (MetaMonitorManager *monitor_manager,
   output->n_possible_crtcs = n_actual_crtcs;
 
   output->crtc = NULL;
-  for (l = monitor_manager->crtcs; l; l = l->next)
+  for (l = meta_gpu_get_crtcs (gpu); l; l = l->next)
     {
       MetaCrtc *crtc = l->data;
 
@@ -719,17 +719,17 @@ output_get_crtcs (MetaMonitorManager *monitor_manager,
 }
 
 MetaOutput *
-meta_create_xrandr_output (MetaMonitorManager *monitor_manager,
-                           XRROutputInfo      *xrandr_output,
-                           RROutput            output_id,
-                           RROutput            primary_output)
+meta_create_xrandr_output (MetaGpuXrandr *gpu_xrandr,
+                           XRROutputInfo *xrandr_output,
+                           RROutput       output_id,
+                           RROutput       primary_output)
 {
   MetaOutput *output;
   GBytes *edid;
   unsigned int i;
 
   output = g_object_new (META_TYPE_OUTPUT, NULL);
-  output->monitor_manager = monitor_manager;
+  output->gpu = META_GPU (gpu_xrandr);
   output->winsys_id = output_id;
   output->name = g_strdup (xrandr_output->name);
 
@@ -746,8 +746,8 @@ meta_create_xrandr_output (MetaMonitorManager *monitor_manager,
   output->connector_type = output_get_connector_type (output);
 
   output_get_tile_info (output);
-  output_get_modes (monitor_manager, output, xrandr_output);
-  output_get_crtcs (monitor_manager, output, xrandr_output);
+  output_get_modes (output, xrandr_output);
+  output_get_crtcs (output, xrandr_output);
 
   output->n_possible_clones = xrandr_output->nclone;
   output->possible_clones = g_new0 (MetaOutput *,

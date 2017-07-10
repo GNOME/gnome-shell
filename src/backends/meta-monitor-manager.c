@@ -467,11 +467,11 @@ meta_monitor_manager_has_hotplug_mode_update (MetaMonitorManager *manager)
 {
   GList *l;
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = manager->gpus; l; l = l->next)
     {
-      MetaOutput *output = l->data;
+      MetaGpu *gpu = l->data;
 
-      if (output->hotplug_mode_update)
+      if (meta_gpu_has_hotplug_mode_update (gpu))
         return TRUE;
     }
 
@@ -747,9 +747,7 @@ meta_monitor_manager_finalize (GObject *object)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
 
-  g_list_free_full (manager->outputs, g_object_unref);
-  g_list_free_full (manager->modes, g_object_unref);
-  g_list_free_full (manager->crtcs, g_object_unref);
+  g_list_free_full (manager->gpus, g_object_unref);
   g_list_free_full (manager->logical_monitors, g_object_unref);
 
   g_signal_handler_disconnect (manager->backend,
@@ -957,23 +955,47 @@ get_connector_type_name (MetaConnectorType connector_type)
     }
 }
 
+static GList *
+combine_gpu_lists (MetaMonitorManager    *manager,
+                   GList              * (*list_getter) (MetaGpu *gpu))
+{
+  GList *list = NULL;
+  GList *l;
+
+  for (l = manager->gpus; l; l = l->next)
+    {
+      MetaGpu *gpu = l->data;
+
+      list = g_list_concat (list, g_list_copy (list_getter (gpu)));
+    }
+
+  return list;
+}
+
 static gboolean
 meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                            GDBusMethodInvocation *invocation)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_GET_CLASS (skeleton);
+  GList *combined_modes;
+  GList *combined_outputs;
+  GList *combined_crtcs;
   GVariantBuilder crtc_builder, output_builder, mode_builder;
   GList *l;
   unsigned int i, j;
   int max_screen_width;
   int max_screen_height;
 
+  combined_modes = combine_gpu_lists (manager, meta_gpu_get_modes);
+  combined_outputs = combine_gpu_lists (manager, meta_gpu_get_outputs);
+  combined_crtcs = combine_gpu_lists (manager, meta_gpu_get_crtcs);
+
   g_variant_builder_init (&crtc_builder, G_VARIANT_TYPE ("a(uxiiiiiuaua{sv})"));
   g_variant_builder_init (&output_builder, G_VARIANT_TYPE ("a(uxiausauaua{sv})"));
   g_variant_builder_init (&mode_builder, G_VARIANT_TYPE ("a(uxuudu)"));
 
-  for (l = manager->crtcs, i = 0; l; l = l->next, i++)
+  for (l = combined_crtcs, i = 0; l; l = l->next, i++)
     {
       MetaCrtc *crtc = l->data;
       GVariantBuilder transforms;
@@ -985,7 +1007,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
           g_variant_builder_add (&transforms, "u", j);
 
       if (crtc->current_mode)
-        current_mode_index = g_list_index (manager->modes, crtc->current_mode);
+        current_mode_index = g_list_index (combined_modes, crtc->current_mode);
       else
         current_mode_index = -1;
       g_variant_builder_add (&crtc_builder, "(uxiiiiiuaua{sv})",
@@ -1001,7 +1023,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              NULL /* properties */);
     }
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = combined_outputs; l; l = l->next)
     {
       MetaOutput *output = l->data;
       GVariantBuilder crtcs, modes, clones, properties;
@@ -1015,7 +1037,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
           MetaCrtc *possible_crtc = output->possible_crtcs[j];
           unsigned possible_crtc_index;
 
-          possible_crtc_index = g_list_index (manager->crtcs, possible_crtc);
+          possible_crtc_index = g_list_index (combined_crtcs, possible_crtc);
           g_variant_builder_add (&crtcs, "u", possible_crtc_index);
         }
 
@@ -1024,7 +1046,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
         {
           unsigned mode_index;
 
-          mode_index = g_list_index (manager->modes, output->modes[j]);
+          mode_index = g_list_index (combined_modes, output->modes[j]);
           g_variant_builder_add (&modes, "u", mode_index);
         }
 
@@ -1033,7 +1055,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
         {
           unsigned int possible_clone_index;
 
-          possible_clone_index = g_list_index (manager->outputs,
+          possible_clone_index = g_list_index (combined_outputs,
                                                output->possible_clones[j]);
           g_variant_builder_add (&clones, "u", possible_clone_index);
         }
@@ -1100,7 +1122,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                                 output->tile_info.tile_h));
         }
 
-      crtc_index = output->crtc ? g_list_index (manager->crtcs, output->crtc)
+      crtc_index = output->crtc ? g_list_index (combined_crtcs, output->crtc)
                                 : -1;
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
@@ -1113,7 +1135,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              &properties);
     }
 
-  for (l = manager->modes, i = 0; l; l = l->next, i++)
+  for (l = combined_modes, i = 0; l; l = l->next, i++)
     {
       MetaCrtcMode *mode = l->data;
 
@@ -1143,6 +1165,11 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                                    g_variant_builder_end (&mode_builder),
                                                    max_screen_width,
                                                    max_screen_height);
+
+  g_list_free (combined_modes);
+  g_list_free (combined_outputs);
+  g_list_free (combined_crtcs);
+
   return TRUE;
 }
 
@@ -2042,6 +2069,7 @@ meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
                                                gint                   value)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  GList *combined_outputs;
   MetaOutput *output;
 
   if (serial != manager->serial)
@@ -2052,14 +2080,18 @@ meta_monitor_manager_handle_change_backlight  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (output_index >= g_list_length (manager->outputs))
+  combined_outputs = combine_gpu_lists (manager, meta_gpu_get_outputs);
+
+  if (output_index >= g_list_length (combined_outputs))
     {
+      g_list_free (combined_outputs);
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid output id");
       return TRUE;
     }
-  output = g_list_nth_data (manager->outputs, output_index);
+  output = g_list_nth_data (combined_outputs, output_index);
+  g_list_free (combined_outputs);
 
   if (value < 0 || value > 100)
     {
@@ -2092,6 +2124,7 @@ meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   MetaMonitorManagerClass *klass;
+  GList *combined_crtcs;
   MetaCrtc *crtc;
   gsize size;
   unsigned short *red;
@@ -2108,15 +2141,18 @@ meta_monitor_manager_handle_get_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= g_list_length (manager->crtcs))
+  combined_crtcs = combine_gpu_lists (manager, meta_gpu_get_crtcs);
+  if (crtc_id >= g_list_length (combined_crtcs))
     {
+      g_list_free (combined_crtcs);
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid crtc id");
       return TRUE;
     }
 
-  crtc = g_list_nth_data (manager->crtcs, crtc_id);
+  crtc = g_list_nth_data (combined_crtcs, crtc_id);
+  g_list_free (combined_crtcs);
 
   klass = META_MONITOR_MANAGER_GET_CLASS (manager);
   if (klass->get_crtc_gamma)
@@ -2156,6 +2192,7 @@ meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
   MetaMonitorManagerClass *klass;
+  GList *combined_crtcs;
   MetaCrtc *crtc;
   gsize size, dummy;
   unsigned short *red;
@@ -2171,15 +2208,19 @@ meta_monitor_manager_handle_set_crtc_gamma  (MetaDBusDisplayConfig *skeleton,
       return TRUE;
     }
 
-  if (crtc_id >= g_list_length (manager->crtcs))
+  combined_crtcs = combine_gpu_lists (manager, meta_gpu_get_crtcs);
+
+  if (crtc_id >= g_list_length (combined_crtcs))
     {
+      g_list_free (combined_crtcs);
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_INVALID_ARGS,
                                              "Invalid crtc id");
       return TRUE;
     }
 
-  crtc = g_list_nth_data (manager->crtcs, crtc_id);
+  crtc = g_list_nth_data (combined_crtcs, crtc_id);
+  g_list_free (combined_crtcs);
 
   red_bytes = g_variant_get_data_as_bytes (red_v);
   green_bytes = g_variant_get_data_as_bytes (green_v);
@@ -2449,16 +2490,17 @@ meta_monitor_manager_get_monitors (MetaMonitorManager *manager)
   return manager->monitors;
 }
 
-GList *
-meta_monitor_manager_get_outputs (MetaMonitorManager *manager)
+void
+meta_monitor_manager_add_gpu (MetaMonitorManager *manager,
+                              MetaGpu            *gpu)
 {
-  return manager->outputs;
+  manager->gpus = g_list_append (manager->gpus, gpu);
 }
 
 GList *
-meta_monitor_manager_get_crtcs (MetaMonitorManager *manager)
+meta_monitor_manager_get_gpus (MetaMonitorManager *manager)
 {
-  return manager->crtcs;
+  return manager->gpus;
 }
 
 void
@@ -2481,28 +2523,34 @@ rebuild_monitors (MetaMonitorManager *manager)
       manager->monitors = NULL;
     }
 
-  for (l = manager->outputs; l; l = l->next)
+  for (l = manager->gpus; l; l = l->next)
     {
-      MetaOutput *output = l->data;
+      MetaGpu *gpu = l->data;
+      GList *k;
 
-      if (output->tile_info.group_id)
+      for (k = meta_gpu_get_outputs (gpu); k; k = k->next)
         {
-          if (is_main_tiled_monitor_output (output))
+          MetaOutput *output = k->data;
+
+          if (output->tile_info.group_id)
             {
-              MetaMonitorTiled *monitor_tiled;
+              if (is_main_tiled_monitor_output (output))
+                {
+                  MetaMonitorTiled *monitor_tiled;
 
-              monitor_tiled = meta_monitor_tiled_new (manager, output);
-              manager->monitors = g_list_append (manager->monitors,
-                                                 monitor_tiled);
+                  monitor_tiled = meta_monitor_tiled_new (gpu, output);
+                  manager->monitors = g_list_append (manager->monitors,
+                                                     monitor_tiled);
+                }
             }
-        }
-      else
-        {
-          MetaMonitorNormal *monitor_normal;
+          else
+            {
+              MetaMonitorNormal *monitor_normal;
 
-          monitor_normal = meta_monitor_normal_new (manager, output);
-          manager->monitors = g_list_append (manager->monitors,
-                                             monitor_normal);
+              monitor_normal = meta_monitor_normal_new (gpu, output);
+              manager->monitors = g_list_append (manager->monitors,
+                                                 monitor_normal);
+            }
         }
     }
 }
@@ -2543,25 +2591,23 @@ meta_monitor_manager_is_transform_handled (MetaMonitorManager  *manager,
 void
 meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 {
-  GList *old_outputs;
-  GList *old_crtcs;
-  GList *old_modes;
-
-  /* Some implementations of read_current use the existing information
-   * we have available, so don't free the old configuration until after
-   * read_current finishes. */
-  old_outputs = manager->outputs;
-  old_crtcs = manager->crtcs;
-  old_modes = manager->modes;
+  GList *l;
 
   manager->serial++;
-  META_MONITOR_MANAGER_GET_CLASS (manager)->read_current (manager);
+
+  for (l = manager->gpus; l; l = l->next)
+    {
+      MetaGpu *gpu = l->data;
+      GError *error = NULL;
+
+      if (!meta_gpu_read_current (gpu, &error))
+        {
+          g_warning ("Failed to read current KMS state: %s", error->message);
+          g_clear_error (&error);
+        }
+    }
 
   rebuild_monitors (manager);
-
-  g_list_free_full (old_outputs, g_object_unref);
-  g_list_free_full (old_modes, g_object_unref);
-  g_list_free_full (old_crtcs, g_object_unref);
 }
 
 static void

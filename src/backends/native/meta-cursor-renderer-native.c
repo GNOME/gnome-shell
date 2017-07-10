@@ -488,12 +488,17 @@ should_have_hw_cursor (MetaCursorRenderer *renderer,
 {
   MetaCursorRendererNative *native = META_CURSOR_RENDERER_NATIVE (renderer);
   MetaCursorRendererNativePrivate *priv = meta_cursor_renderer_native_get_instance_private (native);
+  GList *gpus;
   CoglTexture *texture;
 
   if (priv->hw_cursor_broken)
     return FALSE;
 
   if (!cursor_sprite)
+    return FALSE;
+
+  gpus = meta_monitor_manager_get_gpus (priv->monitor_manager);
+  if (g_list_length (gpus) != 1)
     return FALSE;
 
   if (cursor_over_transformed_logical_monitor (renderer, cursor_sprite))
@@ -853,24 +858,26 @@ on_monitors_changed (MetaMonitorManager       *monitors,
 }
 
 static void
-init_hw_cursor_support (MetaCursorRendererNative *cursor_renderer_native,
-                        MetaBackend              *backend)
+init_hw_cursor_support (MetaCursorRendererNative *cursor_renderer_native)
 {
-  MetaRendererNative *renderer_native =
-    META_RENDERER_NATIVE (meta_backend_get_renderer (backend));
   MetaCursorRendererNativePrivate *priv =
     meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
-  MetaMonitorManagerKms *monitor_manager_kms =
-    META_MONITOR_MANAGER_KMS (priv->monitor_manager);
+  GList *gpus;
+  MetaGpuKms *gpu_kms;
   uint64_t width, height;
   struct gbm_device *gbm_device;
 
-  gbm_device = meta_renderer_native_get_gbm (renderer_native);
+  gpus = meta_monitor_manager_get_gpus (priv->monitor_manager);
+  if (g_list_length (gpus) != 1)
+    return;
+
+  gpu_kms = META_GPU_KMS (gpus->data);
+  gbm_device = meta_gbm_device_from_gpu (gpu_kms);
   if (!gbm_device)
     return;
 
   priv->gbm = gbm_device;
-  priv->drm_fd = meta_monitor_manager_kms_get_fd (monitor_manager_kms);
+  priv->drm_fd = meta_gpu_kms_get_fd (gpu_kms);
 
   if (drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_WIDTH, &width) == 0 &&
       drmGetCap (priv->drm_fd, DRM_CAP_CURSOR_HEIGHT, &height) == 0)
@@ -905,7 +912,7 @@ meta_cursor_renderer_native_new (MetaBackend *backend)
   priv->monitor_manager = monitor_manager;
   priv->hw_state_invalidated = TRUE;
 
-  init_hw_cursor_support (cursor_renderer_native, backend);
+  init_hw_cursor_support (cursor_renderer_native);
 
   return cursor_renderer_native;
 }

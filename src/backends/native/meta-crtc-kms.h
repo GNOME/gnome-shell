@@ -26,6 +26,8 @@
 #include <xf86drmMode.h>
 
 #include "backends/meta-crtc.h"
+#include "backends/meta-gpu.h"
+#include "backends/native/meta-gpu-kms.h"
 
 gboolean meta_crtc_kms_is_transform_handled (MetaCrtc             *crtc,
                                              MetaMonitorTransform  transform);
@@ -35,8 +37,8 @@ void meta_crtc_kms_apply_transform (MetaCrtc *crtc);
 void meta_crtc_kms_set_underscan (MetaCrtc *crtc,
                                   gboolean  is_underscanning);
 
-MetaCrtc * meta_create_kms_crtc (MetaMonitorManager *monitor_manager,
-                                 drmModeCrtc        *drm_crtc,
-                                 unsigned int        crtc_index);
+MetaCrtc * meta_create_kms_crtc (MetaGpuKms   *gpu_kms,
+                                 drmModeCrtc  *drm_crtc,
+                                 unsigned int  crtc_index);
 
 #endif /* META_CRTC_KMS_H */

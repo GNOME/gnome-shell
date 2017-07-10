@@ -20,6 +20,7 @@
 #ifndef META_MONITOR_MANAGER_TEST_H
 #define META_MONITOR_MANAGER_TEST_H
 
+#include "backends/meta-gpu.h"
 #include "backends/meta-monitor-manager-private.h"
 
 typedef struct _MetaMonitorTestSetup
@@ -38,7 +39,12 @@ typedef struct _MetaOutputTest
 G_DECLARE_FINAL_TYPE (MetaMonitorManagerTest, meta_monitor_manager_test,
                       META, MONITOR_MANAGER_TEST, MetaMonitorManager)
 
+#define META_TYPE_GPU_TEST (meta_gpu_test_get_type ())
+G_DECLARE_FINAL_TYPE (MetaGpuTest, meta_gpu_test, META, GPU_TEST, MetaGpu)
+
 void meta_monitor_manager_test_init_test_setup (MetaMonitorTestSetup *test_setup);
+
+MetaGpu * meta_monitor_manager_test_get_gpu (MetaMonitorManagerTest *manager_test);
 
 void meta_monitor_manager_test_emulate_hotplug (MetaMonitorManagerTest *manager_test,
                                                 MetaMonitorTestSetup   *test_setup);

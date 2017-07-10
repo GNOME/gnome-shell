@@ -23,12 +23,15 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-crtc.h"
+#include "backends/meta-gpu.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-output.h"
 
 struct _MetaMonitorManagerTest
 {
   MetaMonitorManager parent;
+
+  MetaGpu *gpu;
 
   gboolean is_lid_closed;
   gboolean handles_transforms;
@@ -41,12 +44,25 @@ struct _MetaMonitorManagerTest
 G_DEFINE_TYPE (MetaMonitorManagerTest, meta_monitor_manager_test,
                META_TYPE_MONITOR_MANAGER)
 
+struct _MetaGpuTest
+{
+  MetaGpu parent;
+};
+
+G_DEFINE_TYPE (MetaGpuTest, meta_gpu_test, META_TYPE_GPU)
+
 static MetaMonitorTestSetup *_initial_test_setup = NULL;
 
 void
 meta_monitor_manager_test_init_test_setup (MetaMonitorTestSetup *test_setup)
 {
   _initial_test_setup = test_setup;
+}
+
+MetaGpu *
+meta_monitor_manager_test_get_gpu (MetaMonitorManagerTest *manager_test)
+{
+  return manager_test->gpu;
 }
 
 void
@@ -91,20 +107,24 @@ static void
 meta_monitor_manager_test_read_current (MetaMonitorManager *manager)
 {
   MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
+  MetaGpu *gpu = manager_test->gpu;
   GList *l;
 
   g_assert (manager_test->test_setup);
 
   for (l = manager_test->test_setup->outputs; l; l = l->next)
-    META_OUTPUT (l->data)->monitor_manager = manager;
+    META_OUTPUT (l->data)->gpu = gpu;
   for (l = manager_test->test_setup->crtcs; l; l = l->next)
-    META_CRTC (l->data)->monitor_manager = manager;
+    META_CRTC (l->data)->gpu = gpu;
 
-  manager->modes = manager_test->test_setup->modes;
+  meta_gpu_take_modes (manager_test->gpu,
+                       manager_test->test_setup->modes);
 
-  manager->crtcs = manager_test->test_setup->crtcs;
+  meta_gpu_take_crtcs (manager_test->gpu,
+                       manager_test->test_setup->crtcs);
 
-  manager->outputs = manager_test->test_setup->outputs;
+  meta_gpu_take_outputs (manager_test->gpu,
+                         manager_test->test_setup->outputs);
 }
 
 static gboolean
@@ -139,6 +159,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
                         MetaOutputInfo    **outputs,
                         unsigned int        n_outputs)
 {
+  MetaMonitorManagerTest *manager_test = META_MONITOR_MANAGER_TEST (manager);
   GList *l;
   unsigned int i;
 
@@ -204,7 +225,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (l = manager->crtcs; l; l = l->next)
+  for (l = meta_gpu_get_crtcs (manager_test->gpu); l; l = l->next)
     {
       MetaCrtc *crtc = l->data;
 
@@ -224,7 +245,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (l = manager->outputs; l; l = l->next)
+  for (l = meta_gpu_get_outputs (manager_test->gpu); l; l = l->next)
     {
       MetaOutput *output = l->data;
 
@@ -453,11 +474,18 @@ meta_monitor_manager_test_dispose (GObject *object)
 static void
 meta_monitor_manager_test_init (MetaMonitorManagerTest *manager_test)
 {
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_test);
+
   g_assert (_initial_test_setup);
 
   manager_test->handles_transforms = TRUE;
 
   manager_test->test_setup = _initial_test_setup;
+
+  manager_test->gpu = g_object_new (META_TYPE_GPU_TEST,
+                                    "monitor-manager", manager,
+                                    NULL);
+  meta_monitor_manager_add_gpu (manager, manager_test->gpu);
 }
 
 static void
@@ -468,7 +496,6 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
 
   object_class->dispose = meta_monitor_manager_test_dispose;
 
-  manager_class->read_current = meta_monitor_manager_test_read_current;
   manager_class->is_lid_closed = meta_monitor_manager_test_is_lid_closed;
   manager_class->ensure_initial_config = meta_monitor_manager_test_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_test_apply_monitors_config;
@@ -480,4 +507,28 @@ meta_monitor_manager_test_class_init (MetaMonitorManagerTestClass *klass)
   manager_class->get_capabilities = meta_monitor_manager_test_get_capabilities;
   manager_class->get_max_screen_size = meta_monitor_manager_test_get_max_screen_size;
   manager_class->get_default_layout_mode = meta_monitor_manager_test_get_default_layout_mode;
+}
+
+static gboolean
+meta_gpu_test_read_current (MetaGpu  *gpu,
+                            GError  **error)
+{
+  MetaMonitorManager *manager = meta_gpu_get_monitor_manager (gpu);
+
+  meta_monitor_manager_test_read_current (manager);
+
+  return TRUE;
+}
+
+static void
+meta_gpu_test_init (MetaGpuTest *gpu_test)
+{
+}
+
+static void
+meta_gpu_test_class_init (MetaGpuTestClass *klass)
+{
+  MetaGpuClass *gpu_class = META_GPU_CLASS (klass);
+
+  gpu_class->read_current = meta_gpu_test_read_current;
 }

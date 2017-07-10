@@ -368,9 +368,12 @@ static MetaOutput *
 output_from_winsys_id (MetaMonitorManager *monitor_manager,
                        long                winsys_id)
 {
+  MetaMonitorManagerTest *monitor_manager_test =
+    META_MONITOR_MANAGER_TEST (monitor_manager);
+  MetaGpu *gpu = meta_monitor_manager_test_get_gpu (monitor_manager_test);
   GList *l;
 
-  for (l = monitor_manager->outputs; l; l = l->next)
+  for (l = meta_gpu_get_outputs (gpu); l; l = l->next)
     {
       MetaOutput *output = l->data;
 
@@ -402,16 +405,21 @@ check_monitor_mode (MetaMonitor         *monitor,
 
   output = output_from_winsys_id (monitor_manager,
                                   data->expect_crtc_mode_iter->output);
+  g_assert (monitor_crtc_mode->output == output);
+
   expect_crtc_mode_index = data->expect_crtc_mode_iter->crtc_mode;
   if (expect_crtc_mode_index == -1)
-    crtc_mode = NULL;
+    {
+      crtc_mode = NULL;
+    }
   else
-    crtc_mode = g_list_nth_data (monitor_manager->modes,
-                                 expect_crtc_mode_index);
+    {
+      MetaGpu *gpu = meta_output_get_gpu (output);
 
-  g_assert (monitor_crtc_mode->output == output);
+      crtc_mode = g_list_nth_data (meta_gpu_get_modes (gpu),
+                                   expect_crtc_mode_index);
+    }
   g_assert (monitor_crtc_mode->crtc_mode == crtc_mode);
-
 
   if (crtc_mode)
     {
@@ -607,6 +615,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
+  MetaGpu *gpu = meta_monitor_manager_test_get_gpu (monitor_manager_test);
   int tiled_monitor_count;
   GList *monitors;
   GList *crtcs;
@@ -620,10 +629,10 @@ check_monitor_configuration (MonitorTestCase *test_case)
   g_assert_cmpint (monitor_manager->screen_height,
                    ==,
                    test_case->expect.screen_height);
-  g_assert_cmpint ((int) g_list_length (monitor_manager->outputs),
+  g_assert_cmpint ((int) g_list_length (meta_gpu_get_outputs (gpu)),
                    ==,
                    test_case->expect.n_outputs);
-  g_assert_cmpint ((int) g_list_length (monitor_manager->crtcs),
+  g_assert_cmpint ((int) g_list_length (meta_gpu_get_crtcs (gpu)),
                    ==,
                    test_case->expect.n_crtcs);
 
@@ -789,7 +798,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
     }
   g_assert_cmpint (n_logical_monitors, ==, i);
 
-  crtcs = meta_monitor_manager_get_crtcs (monitor_manager);
+  crtcs = meta_gpu_get_crtcs (gpu);
   for (l = crtcs, i = 0; l; l = l->next, i++)
     {
       MetaCrtc *crtc = l->data;
@@ -805,7 +814,7 @@ check_monitor_configuration (MonitorTestCase *test_case)
           int crtc_x, crtc_y;
 
           expected_current_mode =
-            g_list_nth_data (monitor_manager->modes,
+            g_list_nth_data (meta_gpu_get_modes (gpu),
                              test_case->expect.crtcs[i].current_mode);
           g_assert (crtc->current_mode == expected_current_mode);
 

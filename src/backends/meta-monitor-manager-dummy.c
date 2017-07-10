@@ -47,6 +47,8 @@ struct _MetaMonitorManagerDummy
 {
   MetaMonitorManager parent_instance;
 
+  MetaGpu *gpu;
+
   gboolean is_transform_handled;
 };
 
@@ -61,6 +63,13 @@ typedef struct _MetaOutputDummy
 } MetaOutputDummy;
 
 G_DEFINE_TYPE (MetaMonitorManagerDummy, meta_monitor_manager_dummy, META_TYPE_MONITOR_MANAGER);
+
+struct _MetaGpuDummy
+{
+  MetaGpu parent;
+};
+
+G_DEFINE_TYPE (MetaGpuDummy, meta_gpu_dummy, META_TYPE_GPU)
 
 static void
 meta_output_dummy_notify_destroy (MetaOutput *output);
@@ -95,6 +104,8 @@ append_monitor (MetaMonitorManager *manager,
                 GList             **outputs,
                 float               scale)
 {
+  MetaMonitorManagerDummy *manager_dummy = META_MONITOR_MANAGER_DUMMY (manager);
+  MetaGpu *gpu = manager_dummy->gpu;
   CrtcModeSpec mode_specs[] = {
     {
       .width = 800,
@@ -141,7 +152,7 @@ append_monitor (MetaMonitorManager *manager,
 
   number = g_list_length (*outputs) + 1;
 
-  output->monitor_manager = manager;
+  output->gpu = gpu;
   output->winsys_id = number;
   output->name = g_strdup_printf ("LVDS%d", number);
   output->vendor = g_strdup ("MetaProducts Inc.");
@@ -182,6 +193,8 @@ append_tiled_monitor (MetaMonitorManager *manager,
                       GList             **outputs,
                       int                 scale)
 {
+  MetaMonitorManagerDummy *manager_dummy = META_MONITOR_MANAGER_DUMMY (manager);
+  MetaGpu *gpu = manager_dummy->gpu;
   CrtcModeSpec mode_specs[] = {
     {
       .width = 800,
@@ -218,7 +231,7 @@ append_tiled_monitor (MetaMonitorManager *manager,
       MetaCrtc *crtc;
 
       crtc = g_object_new (META_TYPE_CRTC, NULL);
-      crtc->monitor_manager = manager;
+      crtc->gpu = gpu;
       crtc->crtc_id = g_list_length (*crtcs) + i + 1;
       crtc->all_transforms = ALL_TRANSFORMS;
       new_crtcs = g_list_append (new_crtcs, crtc);
@@ -246,7 +259,7 @@ append_tiled_monitor (MetaMonitorManager *manager,
 
       output = g_object_new (META_TYPE_OUTPUT, NULL);
 
-      output->monitor_manager = manager;
+      output->gpu = gpu;
       output->winsys_id = number;
       output->name = g_strdup_printf ("LVDS%d", number);
       output->vendor = g_strdup ("MetaProducts Inc.");
@@ -305,6 +318,8 @@ meta_output_dummy_notify_destroy (MetaOutput *output)
 static void
 meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
 {
+  MetaMonitorManagerDummy *manager_dummy = META_MONITOR_MANAGER_DUMMY (manager);
+  MetaGpu *gpu = manager_dummy->gpu;
   unsigned int num_monitors = 1;
   float *monitor_scales = NULL;
   const char *num_monitors_str;
@@ -396,9 +411,9 @@ meta_monitor_manager_dummy_read_current (MetaMonitorManager *manager)
         append_monitor (manager, &modes, &crtcs, &outputs, monitor_scales[i]);
     }
 
-  manager->modes = modes;
-  manager->crtcs = crtcs;
-  manager->outputs = outputs;
+  meta_gpu_take_modes (gpu, modes);
+  meta_gpu_take_crtcs (gpu, crtcs);
+  meta_gpu_take_outputs (gpu, outputs);
 }
 
 static void
@@ -421,6 +436,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
                         MetaOutputInfo    **outputs,
                         unsigned int        n_outputs)
 {
+  MetaMonitorManagerDummy *manager_dummy = META_MONITOR_MANAGER_DUMMY (manager);
   GList *l;
   unsigned i;
 
@@ -485,7 +501,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable CRTCs not mentioned in the list */
-  for (l = manager->crtcs; l; l = l->next)
+  for (l = meta_gpu_get_crtcs (manager_dummy->gpu); l; l = l->next)
     {
       MetaCrtc *crtc = l->data;
 
@@ -505,7 +521,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
     }
 
   /* Disable outputs not mentioned in the list */
-  for (l = manager->outputs; l; l = l->next)
+  for (l = meta_gpu_get_outputs (manager_dummy->gpu); l; l = l->next)
     {
       MetaOutput *output = l->data;
 
@@ -702,7 +718,6 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 {
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
 
-  manager_class->read_current = meta_monitor_manager_dummy_read_current;
   manager_class->ensure_initial_config = meta_monitor_manager_dummy_ensure_initial_config;
   manager_class->apply_monitors_config = meta_monitor_manager_dummy_apply_monitors_config;
   manager_class->is_transform_handled = meta_monitor_manager_dummy_is_transform_handled;
@@ -714,14 +729,44 @@ meta_monitor_manager_dummy_class_init (MetaMonitorManagerDummyClass *klass)
 }
 
 static void
-meta_monitor_manager_dummy_init (MetaMonitorManagerDummy *manager)
+meta_monitor_manager_dummy_init (MetaMonitorManagerDummy *manager_dummy)
 {
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_dummy);
   const char *nested_offscreen_transform;
 
   nested_offscreen_transform =
     g_getenv ("MUTTER_DEBUG_NESTED_OFFSCREEN_TRANSFORM");
   if (g_strcmp0 (nested_offscreen_transform, "1") == 0)
-    manager->is_transform_handled = FALSE;
+    manager_dummy->is_transform_handled = FALSE;
   else
-    manager->is_transform_handled = TRUE;
+    manager_dummy->is_transform_handled = TRUE;
+
+  manager_dummy->gpu = g_object_new (META_TYPE_GPU_DUMMY,
+                                     "monitor-manager", manager,
+                                     NULL);
+  meta_monitor_manager_add_gpu (manager, manager_dummy->gpu);
+}
+
+static gboolean
+meta_gpu_dummy_read_current (MetaGpu  *gpu,
+                             GError  **error)
+{
+  MetaMonitorManager *manager = meta_gpu_get_monitor_manager (gpu);
+
+  meta_monitor_manager_dummy_read_current (manager);
+
+  return TRUE;
+}
+
+static void
+meta_gpu_dummy_init (MetaGpuDummy *gpu_dummy)
+{
+}
+
+static void
+meta_gpu_dummy_class_init (MetaGpuDummyClass *klass)
+{
+  MetaGpuClass *gpu_class = META_GPU_CLASS (klass);
+
+  gpu_class->read_current = meta_gpu_dummy_read_current;
 }

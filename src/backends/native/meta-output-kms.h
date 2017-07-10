@@ -23,7 +23,7 @@
 #define META_OUTPUT_KMS_H
 
 #include "backends/meta-output.h"
-#include "backends/native/meta-monitor-manager-kms.h"
+#include "backends/native/meta-gpu-kms.h"
 
 void meta_output_kms_set_underscan (MetaOutput *output);
 
@@ -35,9 +35,9 @@ gboolean meta_output_kms_can_clone (MetaOutput *output,
 
 GBytes * meta_output_kms_read_edid (MetaOutput *output);
 
-MetaOutput * meta_create_kms_output (MetaMonitorManager *monitor_manager,
-                                     drmModeConnector   *connector,
-                                     MetaKmsResources   *resources,
-                                     MetaOutput         *old_output);
+MetaOutput * meta_create_kms_output (MetaGpuKms       *gpu_kms,
+                                     drmModeConnector *connector,
+                                     MetaKmsResources *resources,
+                                     MetaOutput       *old_output);
 
 #endif /* META_OUTPUT_KMS_H */

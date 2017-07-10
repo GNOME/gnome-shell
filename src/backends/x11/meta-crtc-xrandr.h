@@ -26,6 +26,7 @@
 #include <xcb/randr.h>
 
 #include "backends/meta-crtc.h"
+#include "backends/x11/meta-gpu-xrandr.h"
 
 gboolean meta_crtc_xrandr_set_config (MetaCrtc            *crtc,
                                       xcb_randr_crtc_t     xrandr_crtc,
@@ -38,7 +39,7 @@ gboolean meta_crtc_xrandr_set_config (MetaCrtc            *crtc,
                                       int                  n_outputs,
                                       xcb_timestamp_t     *out_timestamp);
 
-MetaCrtc * meta_create_xrandr_crtc (MetaMonitorManager *monitor_manager,
+MetaCrtc * meta_create_xrandr_crtc (MetaGpuXrandr      *gpu_xrandr,
                                     XRRCrtcInfo        *xrandr_crtc,
                                     RRCrtc              crtc_id,
                                     XRRScreenResources *resources);
