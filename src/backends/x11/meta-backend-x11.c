@@ -72,7 +72,15 @@ struct _MetaBackendX11Private
 };
 typedef struct _MetaBackendX11Private MetaBackendX11Private;
 
-G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND);
+static GInitableIface *initable_parent_iface;
+
+static void
+initable_iface_init (GInitableIface *initable_iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND,
+                         G_ADD_PRIVATE (MetaBackendX11)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                initable_iface_init));
 
 static void
 handle_alarm_notify (MetaBackend *backend,
@@ -392,8 +400,6 @@ meta_backend_x11_post_init (MetaBackend *backend)
   int major, minor;
   gboolean has_xi = FALSE;
 
-  priv->xdisplay = clutter_x11_get_default_display ();
-
   priv->source = x_event_source_new (backend);
 
   if (!XSyncQueryExtension (priv->xdisplay, &priv->xsync_event_base, &priv->xsync_error_base) ||
@@ -584,6 +590,46 @@ meta_backend_x11_get_xkb_event_base (MetaBackendX11 *x11)
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
 
   return priv->xkb_event_base;
+}
+
+static gboolean
+meta_backend_x11_initable_init (GInitable    *initable,
+                                GCancellable *cancellable,
+                                GError      **error)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (initable);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  Display *xdisplay;
+  const char *xdisplay_name;
+
+  xdisplay_name = g_getenv ("DISPLAY");
+  if (!xdisplay_name)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Unable to open display, DISPLAY not set");
+      return FALSE;
+    }
+
+  xdisplay = XOpenDisplay (xdisplay_name);
+  if (!xdisplay)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Unable to open display '%s'", xdisplay_name);
+      return FALSE;
+    }
+
+  priv->xdisplay = xdisplay;
+  clutter_x11_set_display (xdisplay);
+
+  return initable_parent_iface->init (initable, cancellable, error);
+}
+
+static void
+initable_iface_init (GInitableIface *initable_iface)
+{
+  initable_parent_iface = g_type_interface_peek_parent (initable_iface);
+
+  initable_iface->init = meta_backend_x11_initable_init;
 }
 
 static void
