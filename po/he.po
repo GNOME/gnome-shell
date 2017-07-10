@@ -4,7 +4,7 @@
 # liel <lielft@gmail.com>, 2009.
 # Yaron Shahrabani <sh.yaron@gmail.com>, 2010.
 # 
-# Yosef Or Boczko <yoseforb@gnome.org>, 2013, 2014., 2014.
+# Yosef Or Boczko <yoseforb@gnome.org>, 2013, 2014.
 #
 msgid ""
 msgstr ""

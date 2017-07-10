@@ -4,7 +4,7 @@
 # Jorge González <jorgegonz@svn.gnome.org>, 2009, 2010, 2011.
 # Benjamín Valero Espinosa <benjavalero@gmail.com>, 2011.
 # 
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011, 2012, 2013, 2014, 2015., 2016.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010-2016.
 #
 msgid ""
 msgstr ""
