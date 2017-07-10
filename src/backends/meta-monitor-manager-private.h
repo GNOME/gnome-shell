@@ -148,6 +148,8 @@ struct _MetaMonitorManager
 {
   MetaDBusDisplayConfigSkeleton parent_instance;
 
+  MetaBackend *backend;
+
   /* XXX: this structure is very badly
      packed, but I like the logical organization
      of fields */
@@ -258,6 +260,8 @@ struct _MetaMonitorManagerClass
 
   MetaLogicalMonitorLayoutMode (*get_default_layout_mode) (MetaMonitorManager *);
 };
+
+MetaBackend *       meta_monitor_manager_get_backend (MetaMonitorManager *manager);
 
 void                meta_monitor_manager_setup (MetaMonitorManager *manager);
 

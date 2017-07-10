@@ -42,7 +42,9 @@ static MetaMonitorManager *
 meta_backend_x11_nested_create_monitor_manager (MetaBackend *backend,
                                                 GError     **error)
 {
-  return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY, NULL);
+  return g_object_new (META_TYPE_MONITOR_MANAGER_DUMMY,
+                       "backend", backend,
+                       NULL);
 }
 
 static MetaCursorRenderer *

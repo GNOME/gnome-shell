@@ -1034,7 +1034,7 @@ meta_monitor_manager_kms_calculate_supported_scales (MetaMonitorManager         
 static MetaMonitorManagerCapability
 meta_monitor_manager_kms_get_capabilities (MetaMonitorManager *manager)
 {
-  MetaBackend *backend = meta_get_backend ();
+  MetaBackend *backend = meta_monitor_manager_get_backend (manager);
   MetaSettings *settings = meta_backend_get_settings (backend);
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
@@ -1079,7 +1079,7 @@ meta_monitor_manager_kms_get_max_screen_size (MetaMonitorManager *manager,
 static MetaLogicalMonitorLayoutMode
 meta_monitor_manager_kms_get_default_layout_mode (MetaMonitorManager *manager)
 {
-  MetaBackend *backend = meta_get_backend ();
+  MetaBackend *backend = meta_monitor_manager_get_backend (manager);
   MetaSettings *settings = meta_backend_get_settings (backend);
 
   if (!meta_is_stage_views_enabled ())
@@ -1147,7 +1147,8 @@ count_devices_with_connectors (const char *seat_id,
 static char *
 get_primary_gpu_path (MetaMonitorManagerKms *manager_kms)
 {
-  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+  MetaBackend *backend = meta_monitor_manager_get_backend (manager);
   MetaBackendNative *backend_native = META_BACKEND_NATIVE (backend);
   MetaLauncher *launcher = meta_backend_native_get_launcher (backend_native);
   g_autoptr (GUdevEnumerator) enumerator = NULL;
@@ -1260,7 +1261,8 @@ open_primary_gpu (MetaMonitorManagerKms *manager_kms,
                   char                 **kms_file_path_out,
                   GError               **error)
 {
-  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+  MetaBackend *backend = meta_monitor_manager_get_backend (manager);
   MetaBackendNative *backend_native = META_BACKEND_NATIVE (backend);
   MetaLauncher *launcher = meta_backend_native_get_launcher (backend_native);
   g_autofree char *path = NULL;
@@ -1336,7 +1338,8 @@ static void
 meta_monitor_manager_kms_finalize (GObject *object)
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (object);
-  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
+  MetaBackend *backend = meta_monitor_manager_get_backend (manager);
   MetaBackendNative *backend_native = META_BACKEND_NATIVE (backend);
   MetaLauncher *launcher = meta_backend_native_get_launcher (backend_native);
 

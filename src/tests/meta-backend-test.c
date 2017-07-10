@@ -39,7 +39,9 @@ static MetaMonitorManager *
 meta_backend_test_create_monitor_manager (MetaBackend *backend,
                                           GError     **error)
 {
-  return g_object_new (META_TYPE_MONITOR_MANAGER_TEST, NULL);
+  return g_object_new (META_TYPE_MONITOR_MANAGER_TEST,
+                       "backend", backend,
+                       NULL);
 }
 
 static void

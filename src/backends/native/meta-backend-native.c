@@ -403,7 +403,9 @@ static MetaMonitorManager *
 meta_backend_native_create_monitor_manager (MetaBackend *backend,
                                             GError     **error)
 {
-  return g_initable_new (META_TYPE_MONITOR_MANAGER_KMS, NULL, error, NULL);
+  return g_initable_new (META_TYPE_MONITOR_MANAGER_KMS, NULL, error,
+                         "backend", backend,
+                         NULL);
 }
 
 static MetaCursorRenderer *

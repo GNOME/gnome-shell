@@ -1051,9 +1051,13 @@ meta_monitor_manager_xrandr_get_default_layout_mode (MetaMonitorManager *manager
 }
 
 static void
-meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
+meta_monitor_manager_xrandr_constructed (GObject *object)
 {
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  MetaMonitorManagerXrandr *manager_xrandr =
+    META_MONITOR_MANAGER_XRANDR (object);
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_xrandr);
+  MetaBackendX11 *backend =
+    META_BACKEND_X11 (meta_monitor_manager_get_backend (manager));
 
   manager_xrandr->xdisplay = meta_backend_x11_get_xdisplay (backend);
 
@@ -1105,12 +1109,18 @@ meta_monitor_manager_xrandr_finalize (GObject *object)
 }
 
 static void
+meta_monitor_manager_xrandr_init (MetaMonitorManagerXrandr *manager_xrandr)
+{
+}
+
+static void
 meta_monitor_manager_xrandr_class_init (MetaMonitorManagerXrandrClass *klass)
 {
   MetaMonitorManagerClass *manager_class = META_MONITOR_MANAGER_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   object_class->finalize = meta_monitor_manager_xrandr_finalize;
+  object_class->constructed = meta_monitor_manager_xrandr_constructed;
 
   manager_class->read_current = meta_monitor_manager_xrandr_read_current;
   manager_class->read_edid = meta_monitor_manager_xrandr_read_edid;

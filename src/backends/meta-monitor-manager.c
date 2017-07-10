@@ -47,6 +47,17 @@
 
 #define DEFAULT_DISPLAY_CONFIGURATION_TIMEOUT 20
 
+enum
+{
+  PROP_0,
+
+  PROP_BACKEND,
+
+  PROP_LAST
+};
+
+static GParamSpec *obj_props[PROP_LAST];
+
 enum {
   CONFIRM_DISPLAY_CHANGE,
   SIGNALS_LAST
@@ -76,6 +87,12 @@ static void initialize_dbus_interface (MetaMonitorManager *manager);
 static gboolean
 meta_monitor_manager_is_config_complete (MetaMonitorManager *manager,
                                          MetaMonitorsConfig *config);
+
+MetaBackend *
+meta_monitor_manager_get_backend (MetaMonitorManager *manager)
+{
+  return manager->backend;
+}
 
 static void
 meta_monitor_manager_init (MetaMonitorManager *manager)
@@ -696,7 +713,7 @@ meta_monitor_manager_constructed (GObject *object)
   MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
   MetaMonitorManagerClass *manager_class =
     META_MONITOR_MANAGER_GET_CLASS (manager);
-  MetaBackend *backend = meta_get_backend ();
+  MetaBackend *backend = manager->backend;
   MetaSettings *settings = meta_backend_get_settings (backend);
 
   manager->experimental_features_changed_handler_id =
@@ -735,7 +752,7 @@ meta_monitor_manager_finalize (GObject *object)
   g_list_free_full (manager->crtcs, g_object_unref);
   g_list_free_full (manager->logical_monitors, g_object_unref);
 
-  g_signal_handler_disconnect (meta_get_backend (),
+  g_signal_handler_disconnect (manager->backend,
                                manager->experimental_features_changed_handler_id);
 
   G_OBJECT_CLASS (meta_monitor_manager_parent_class)->finalize (object);
@@ -773,6 +790,42 @@ meta_monitor_manager_real_get_edid_file (MetaMonitorManager *manager,
 }
 
 static void
+meta_monitor_manager_set_property (GObject      *object,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      manager->backend = g_value_get_object (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+meta_monitor_manager_get_property (GObject    *object,
+                                   guint       prop_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec)
+{
+  MetaMonitorManager *manager = META_MONITOR_MANAGER (object);
+
+  switch (prop_id)
+    {
+    case PROP_BACKEND:
+      g_value_set_object (value, manager->backend);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
 meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -780,6 +833,8 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
   object_class->constructed = meta_monitor_manager_constructed;
   object_class->dispose = meta_monitor_manager_dispose;
   object_class->finalize = meta_monitor_manager_finalize;
+  object_class->get_property = meta_monitor_manager_get_property;
+  object_class->set_property = meta_monitor_manager_set_property;
 
   klass->get_edid_file = meta_monitor_manager_real_get_edid_file;
   klass->read_edid = meta_monitor_manager_real_read_edid;
@@ -792,6 +847,16 @@ meta_monitor_manager_class_init (MetaMonitorManagerClass *klass)
 		  0,
                   NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
+
+  obj_props[PROP_BACKEND] =
+    g_param_spec_object ("backend",
+                         "backend",
+                         "MetaBackend",
+                         META_TYPE_BACKEND,
+                         G_PARAM_READWRITE |
+                         G_PARAM_CONSTRUCT_ONLY |
+                         G_PARAM_STATIC_STRINGS);
+  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 }
 
 static const double known_diagonals[] = {
@@ -2502,11 +2567,10 @@ meta_monitor_manager_read_current_state (MetaMonitorManager *manager)
 static void
 meta_monitor_manager_notify_monitors_changed (MetaMonitorManager *manager)
 {
-  MetaBackend *backend = meta_get_backend ();
-
   manager->current_switch_config = META_MONITOR_SWITCH_CONFIG_UNKNOWN;
 
-  meta_backend_monitors_changed (backend);
+  meta_backend_monitors_changed (manager->backend);
+
   g_signal_emit_by_name (manager, "monitors-changed");
 }
 
