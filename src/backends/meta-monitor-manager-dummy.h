@@ -25,16 +25,8 @@
 
 #include "meta-monitor-manager-private.h"
 
-#define META_TYPE_MONITOR_MANAGER_DUMMY            (meta_monitor_manager_dummy_get_type ())
-#define META_MONITOR_MANAGER_DUMMY(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_MONITOR_MANAGER_DUMMY, MetaMonitorManagerDummy))
-#define META_MONITOR_MANAGER_DUMMY_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  META_TYPE_MONITOR_MANAGER_DUMMY, MetaMonitorManagerDummyClass))
-#define META_IS_MONITOR_MANAGER_DUMMY(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), META_TYPE_MONITOR_MANAGER_DUMMY))
-#define META_IS_MONITOR_MANAGER_DUMMY_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),  META_TYPE_MONITOR_MANAGER_DUMMY))
-#define META_MONITOR_MANAGER_DUMMY_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj),  META_TYPE_MONITOR_MANAGER_DUMMY, MetaMonitorManagerDummyClass))
-
-typedef struct _MetaMonitorManagerDummyClass    MetaMonitorManagerDummyClass;
-typedef struct _MetaMonitorManagerDummy         MetaMonitorManagerDummy;
-
-GType meta_monitor_manager_dummy_get_type (void);
+#define META_TYPE_MONITOR_MANAGER_DUMMY (meta_monitor_manager_dummy_get_type ())
+G_DECLARE_FINAL_TYPE (MetaMonitorManagerDummy, meta_monitor_manager_dummy,
+                      META, MONITOR_MANAGER_DUMMY, MetaMonitorManager)
 
 #endif /* META_MONITOR_MANAGER_DUMMY_H */
