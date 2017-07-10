@@ -40,9 +40,6 @@ GType meta_monitor_manager_get_type (void);
 
 MetaMonitorManager *meta_monitor_manager_get  (void);
 
-gint meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
-                                                  guint               id);
-
 gint meta_monitor_manager_get_monitor_for_connector (MetaMonitorManager *manager,
                                                      const char         *connector);
 

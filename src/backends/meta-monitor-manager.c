@@ -2814,40 +2814,6 @@ meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
 }
 
 /**
- * meta_monitor_manager_get_monitor_for_output:
- * @manager: A #MetaMonitorManager
- * @id: A valid #MetaOutput id
- *
- * Returns: The monitor index or -1 if @id isn't valid or the output
- * isn't associated with a logical monitor.
- */
-gint
-meta_monitor_manager_get_monitor_for_output (MetaMonitorManager *manager,
-                                             guint               id)
-{
-  MetaOutput *output;
-  GList *l;
-
-  g_return_val_if_fail (META_IS_MONITOR_MANAGER (manager), -1);
-  g_return_val_if_fail (id < g_list_length (manager->outputs), -1);
-
-  output = g_list_nth_data (manager->outputs, id);
-  if (!output || !output->crtc)
-    return -1;
-
-  for (l = manager->logical_monitors; l; l = l->next)
-    {
-      MetaLogicalMonitor *logical_monitor = l->data;
-
-      if (meta_rectangle_contains_rect (&logical_monitor->rect,
-                                        &output->crtc->rect))
-        return logical_monitor->number;
-    }
-
-  return -1;
-}
-
-/**
  * meta_monitor_manager_get_monitor_for_connector:
  * @manager: A #MetaMonitorManager
  * @connector: A valid connector name
