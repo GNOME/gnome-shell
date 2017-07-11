@@ -71,6 +71,8 @@ mutter_built_sources += \
 	tablet-unstable-v2-server-protocol.h				\
 	xdg-foreign-unstable-v1-protocol.c				\
 	xdg-foreign-unstable-v1-server-protocol.h			\
+	linux-dmabuf-unstable-v1-protocol.c					\
+	linux-dmabuf-unstable-v1-server-protocol.h				\
 	$(NULL)
 endif
 
@@ -317,6 +319,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	wayland/meta-xwayland-private.h		\
 	wayland/meta-wayland-buffer.c      	\
 	wayland/meta-wayland-buffer.h      	\
+	wayland/meta-wayland-dma-buf.c      	\
+	wayland/meta-wayland-dma-buf.h      	\
 	wayland/meta-wayland-region.c      	\
 	wayland/meta-wayland-region.h      	\
 	wayland/meta-wayland-data-device.c      \

@@ -167,4 +167,20 @@ gboolean meta_egl_stream_consumer_gl_texture_external (MetaEgl     *egl,
                                                        EGLStreamKHR stream,
                                                        GError     **error);
 
+gboolean meta_egl_query_dma_buf_formats (MetaEgl    *egl,
+                                         EGLDisplay  display,
+                                         EGLint      max_formats,
+                                         EGLint     *formats,
+                                         EGLint     *num_formats,
+                                         GError    **error);
+
+gboolean meta_egl_query_dma_buf_modifiers (MetaEgl      *egl,
+                                           EGLDisplay    display,
+                                           EGLint        format,
+                                           EGLint        max_modifiers,
+                                           EGLuint64KHR *modifiers,
+                                           EGLBoolean   *external_only,
+                                           EGLint       *num_formats,
+                                           GError      **error);
+
 #endif /* META_EGL_H */

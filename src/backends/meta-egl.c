@@ -66,6 +66,9 @@ struct _MetaEgl
 
   PFNEGLSTREAMCONSUMERACQUIREKHRPROC eglStreamConsumerAcquireKHR;
   PFNEGLSTREAMCONSUMERACQUIREATTRIBNVPROC eglStreamConsumerAcquireAttribNV;
+
+  PFNEGLQUERYDMABUFFORMATSEXTPROC eglQueryDmaBufFormatsEXT;
+  PFNEGLQUERYDMABUFMODIFIERSEXTPROC eglQueryDmaBufModifiersEXT;
 };
 
 G_DEFINE_TYPE (MetaEgl, meta_egl, G_TYPE_OBJECT)
@@ -711,6 +714,51 @@ meta_egl_stream_consumer_acquire (MetaEgl     *egl,
   return TRUE;
 }
 
+gboolean
+meta_egl_query_dma_buf_formats (MetaEgl   *egl,
+                                EGLDisplay display,
+                                EGLint     max_formats,
+                                EGLint    *formats,
+                                EGLint    *num_formats,
+                                GError   **error)
+{
+  if (!is_egl_proc_valid (egl->eglQueryDmaBufFormatsEXT, error))
+    return FALSE;
+
+  if (!egl->eglQueryDmaBufFormatsEXT (display, max_formats, formats,
+                                      num_formats))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+    return TRUE;
+}
+
+gboolean
+meta_egl_query_dma_buf_modifiers (MetaEgl      *egl,
+                                  EGLDisplay    display,
+                                  EGLint        format,
+                                  EGLint        max_modifiers,
+                                  EGLuint64KHR *modifiers,
+                                  EGLBoolean   *external_only,
+                                  EGLint       *num_modifiers,
+                                  GError      **error)
+{
+  if (!is_egl_proc_valid (egl->eglQueryDmaBufModifiersEXT, error))
+    return FALSE;
+
+  if (!egl->eglQueryDmaBufModifiersEXT (display, format, max_modifiers,
+                                        modifiers, external_only,
+                                        num_modifiers))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+    return TRUE;
+}
+
 #define GET_EGL_PROC_ADDR(proc) \
   egl->proc = (void *) eglGetProcAddress (#proc);
 
@@ -753,6 +801,9 @@ meta_egl_constructed (GObject *object)
 
   GET_EGL_PROC_ADDR (eglStreamConsumerAcquireKHR);
   GET_EGL_PROC_ADDR (eglStreamConsumerAcquireAttribNV);
+
+  GET_EGL_PROC_ADDR (eglQueryDmaBufFormatsEXT);
+  GET_EGL_PROC_ADDR (eglQueryDmaBufModifiersEXT);
 }
 
 #undef GET_EGL_PROC_ADDR
