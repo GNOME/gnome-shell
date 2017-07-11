@@ -221,7 +221,6 @@ egl_image_buffer_attach (MetaWaylandBuffer *buffer,
   ClutterBackend *clutter_backend = meta_backend_get_clutter_backend (backend);
   CoglContext *cogl_context = clutter_backend_get_cogl_context (clutter_backend);
   EGLDisplay egl_display = cogl_egl_context_get_egl_display (cogl_context);
-  EGLContext egl_context = cogl_egl_context_get_egl_context (cogl_context);
   int format, width, height, y_inverted;
   CoglPixelFormat cogl_format;
   EGLImageKHR egl_image;
@@ -265,7 +264,9 @@ egl_image_buffer_attach (MetaWaylandBuffer *buffer,
       return FALSE;
     }
 
-  egl_image = meta_egl_create_image (egl, egl_display, egl_context,
+  /* The WL_bind_wayland_display spec states that EGL_NO_CONTEXT is to be used
+   * in conjunction with the EGL_WAYLAND_BUFFER_WL target. */
+  egl_image = meta_egl_create_image (egl, egl_display, EGL_NO_CONTEXT,
                                      EGL_WAYLAND_BUFFER_WL, buffer->resource,
                                      NULL,
                                      error);
