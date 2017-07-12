@@ -154,9 +154,16 @@ const ActionComboBox = new Lang.Class({
         this._actionLabels.set(GDesktopEnums.PadButtonAction.SWITCH_MONITOR, _("Switch monitor"));
         this._actionLabels.set(GDesktopEnums.PadButtonAction.KEYBINDING, _("Assign keystroke"));
 
+        this._buttonItems = [];
+
         for (let [action, label] of this._actionLabels.entries()) {
             let selectedAction = action;
-            this._editMenu.addAction(label, Lang.bind(this, function() { this._onActionSelected(selectedAction) }));
+            let item = this._editMenu.addAction(label, Lang.bind(this, function() { this._onActionSelected(selectedAction) }));
+
+            /* These actions only apply to pad buttons */
+            if (selectedAction == GDesktopEnums.PadButtonAction.HELP ||
+                selectedAction == GDesktopEnums.PadButtonAction.SWITCH_MONITOR)
+                this._buttonItems.push(item);
         }
 
         this.setAction(GDesktopEnums.PadButtonAction.NONE);
@@ -185,6 +192,10 @@ const ActionComboBox = new Lang.Class({
             this.popup();
         else
             this.popdown();
+    },
+
+    setButtonActionsActive: function (active) {
+        this._buttonItems.forEach(item => { item.setSensitive(active); });
     }
 });
 Signals.addSignalMethods(ActionComboBox.prototype);
@@ -223,13 +234,16 @@ const ActionEditor = new Lang.Class({
         }
     },
 
-    setSettings: function (settings) {
+    setSettings: function (settings, action) {
         this._buttonSettings = settings;
 
         this._currentAction = this._buttonSettings.get_enum('action');
         this._currentKeybinding = this._buttonSettings.get_string('keybinding');
         this._actionComboBox.setAction(this._currentAction);
         this._updateKeybindingEntryState();
+
+        let isButton = (action == Meta.PadActionType.BUTTON);
+        this._actionComboBox.setButtonActionsActive(isButton);
     },
 
     close: function() {
@@ -879,7 +893,7 @@ const PadOsd = new Lang.Class({
         let settingsPath = this._settings.path + key + '/';
         this._editedActionSettings = Gio.Settings.new_with_path('org.gnome.desktop.peripherals.tablet.pad-button',
                                                                 settingsPath);
-        this._actionEditor.setSettings(this._editedActionSettings);
+        this._actionEditor.setSettings(this._editedActionSettings, type);
         this._padDiagram.startEdition(type, number, dir);
     },
 
