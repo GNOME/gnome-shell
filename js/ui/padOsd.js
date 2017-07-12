@@ -685,11 +685,17 @@ const PadOsd = new Lang.Class({
         }
 
         for (i = 0; i < padDevice.get_n_rings(); i++) {
+            let [found] = this._padDiagram.getRingLabelCoords(i, CW);
+            if (!found)
+                break;
             this._createLabel(Meta.PadActionType.RING, i, CW);
             this._createLabel(Meta.PadActionType.RING, i, CCW);
         }
 
         for (i = 0; i < padDevice.get_n_strips(); i++) {
+            let [found] = this._padDiagram.getStripLabelCoords(i, UP);
+            if (!found)
+                break;
             this._createLabel(Meta.PadActionType.STRIP, i, UP);
             this._createLabel(Meta.PadActionType.STRIP, i, DOWN);
         }
