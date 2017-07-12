@@ -158,33 +158,6 @@ meta_monitor_manager_rebuild_logical_monitors (MetaMonitorManager *manager,
                                                     primary_logical_monitor);
 }
 
-static void
-derive_monitor_layout (MetaMonitor   *monitor,
-                       MetaRectangle *layout)
-{
-  GList *outputs;
-  GList *l;
-  int x = INT_MAX;
-  int y = INT_MAX;
-
-  outputs = meta_monitor_get_outputs (monitor);
-  for (l = outputs; l; l = l->next)
-    {
-      MetaOutput *output = l->data;
-
-      if (!output->crtc)
-        continue;
-
-      x = MIN (x, output->crtc->rect.x);
-      y = MIN (y, output->crtc->rect.y);
-    }
-
-  layout->x = x;
-  layout->y = y;
-
-  meta_monitor_derive_dimensions (monitor, &layout->width, &layout->height);
-}
-
 static float
 derive_configured_global_scale (MetaMonitorManager *manager)
 {
@@ -283,7 +256,7 @@ meta_monitor_manager_rebuild_logical_monitors_derived (MetaMonitorManager       
       if (!meta_monitor_is_active (monitor))
         continue;
 
-      derive_monitor_layout (monitor, &layout);
+      meta_monitor_derive_layout (monitor, &layout);
       logical_monitor = logical_monitor_from_layout (manager, logical_monitors,
                                                      &layout);
       if (logical_monitor)

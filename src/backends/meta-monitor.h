@@ -68,9 +68,8 @@ struct _MetaMonitorClass
   GObjectClass parent_class;
 
   MetaOutput * (* get_main_output) (MetaMonitor *monitor);
-  void (* derive_dimensions) (MetaMonitor   *monitor,
-                              int           *width,
-                              int           *height);
+  void (* derive_layout) (MetaMonitor   *monitor,
+                          MetaRectangle *layout);
   void (* calculate_crtc_pos) (MetaMonitor         *monitor,
                                MetaMonitorMode     *monitor_mode,
                                MetaOutput          *output,
@@ -118,9 +117,8 @@ void meta_monitor_get_current_resolution (MetaMonitor *monitor,
                                           int           *width,
                                           int           *height);
 
-void meta_monitor_derive_dimensions (MetaMonitor   *monitor,
-                                     int           *width,
-                                     int           *height);
+void meta_monitor_derive_layout (MetaMonitor   *monitor,
+                                 MetaRectangle *layout);
 
 void meta_monitor_get_physical_dimensions (MetaMonitor *monitor,
                                            int         *width_mm,

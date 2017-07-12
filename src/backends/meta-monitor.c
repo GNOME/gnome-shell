@@ -258,11 +258,10 @@ meta_monitor_get_current_resolution (MetaMonitor *monitor,
 }
 
 void
-meta_monitor_derive_dimensions (MetaMonitor   *monitor,
-                                int           *width,
-                                int           *height)
+meta_monitor_derive_layout (MetaMonitor   *monitor,
+                            MetaRectangle *layout)
 {
-  META_MONITOR_GET_CLASS (monitor)->derive_dimensions (monitor, width, height);
+  META_MONITOR_GET_CLASS (monitor)->derive_layout (monitor, layout);
 }
 
 void
@@ -464,15 +463,18 @@ meta_monitor_normal_get_main_output (MetaMonitor *monitor)
 }
 
 static void
-meta_monitor_normal_derive_dimensions (MetaMonitor   *monitor,
-                                       int           *width,
-                                       int           *height)
+meta_monitor_normal_derive_layout (MetaMonitor   *monitor,
+                                   MetaRectangle *layout)
 {
   MetaOutput *output;
 
   output = meta_monitor_get_main_output (monitor);
-  *width = output->crtc->rect.width;
-  *height = output->crtc->rect.height;
+  *layout = (MetaRectangle) {
+    .x = output->crtc->rect.x,
+    .y = output->crtc->rect.y,
+    .width = output->crtc->rect.width,
+    .height = output->crtc->rect.height
+  };
 }
 
 static gboolean
@@ -515,7 +517,7 @@ meta_monitor_normal_class_init (MetaMonitorNormalClass *klass)
   MetaMonitorClass *monitor_class = META_MONITOR_CLASS (klass);
 
   monitor_class->get_main_output = meta_monitor_normal_get_main_output;
-  monitor_class->derive_dimensions = meta_monitor_normal_derive_dimensions;
+  monitor_class->derive_layout = meta_monitor_normal_derive_layout;
   monitor_class->calculate_crtc_pos = meta_monitor_normal_calculate_crtc_pos;
   monitor_class->get_suggested_position = meta_monitor_normal_get_suggested_position;
 }
@@ -1101,9 +1103,8 @@ meta_monitor_tiled_get_main_output (MetaMonitor *monitor)
 }
 
 static void
-meta_monitor_tiled_derive_dimensions (MetaMonitor   *monitor,
-                                      int           *out_width,
-                                      int           *out_height)
+meta_monitor_derived_derive_layout (MetaMonitor   *monitor,
+                                    MetaRectangle *layout)
 {
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
@@ -1127,8 +1128,12 @@ meta_monitor_tiled_derive_dimensions (MetaMonitor   *monitor,
       max_y = MAX (output->crtc->rect.y + output->crtc->rect.height, max_y);
     }
 
-  *out_width = max_x - min_x;
-  *out_height = max_y - min_y;
+  *layout = (MetaRectangle) {
+    .x = min_x,
+    .y = min_y,
+    .width = max_x - min_x,
+    .height = max_y - min_y
+  };
 }
 
 static gboolean
@@ -1186,7 +1191,7 @@ meta_monitor_tiled_class_init (MetaMonitorTiledClass *klass)
   object_class->finalize = meta_monitor_tiled_finalize;
 
   monitor_class->get_main_output = meta_monitor_tiled_get_main_output;
-  monitor_class->derive_dimensions = meta_monitor_tiled_derive_dimensions;
+  monitor_class->derive_layout = meta_monitor_derived_derive_layout;
   monitor_class->calculate_crtc_pos = meta_monitor_tiled_calculate_crtc_pos;
   monitor_class->get_suggested_position = meta_monitor_tiled_get_suggested_position;
 }
