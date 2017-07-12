@@ -188,9 +188,22 @@ on_evdev_device_open (const char  *path,
   /* Allow readonly access to sysfs */
   if (g_str_has_prefix (path, "/sys/"))
     {
-      fd = open (path, flags);
-      if (fd >= 0)
-        g_hash_table_add (self->sysfs_fds, GINT_TO_POINTER (fd));
+      do
+        {
+          fd = open (path, flags);
+        }
+      while (fd < 0 && errno == EINTR);
+
+      if (fd < 0)
+        {
+          g_set_error (error,
+                       G_FILE_ERROR,
+                       g_file_error_from_errno (errno),
+                       "Could not open /sys file: %s: %m", path);
+          return -1;
+        }
+
+      g_hash_table_add (self->sysfs_fds, GINT_TO_POINTER (fd));
       return fd;
     }
 
