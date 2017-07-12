@@ -1189,13 +1189,16 @@ StScrollBar {
 .list-search-result-description {
   color: #cacac4; }
 
+.list-search-provider-details {
+  width: 150px;
+  color: #e2e2df;
+  margin-top: 0.24em; }
+
+.list-search-provider-content {
+  spacing: 20px; }
+
 .search-provider-icon {
   padding: 15px; }
-
-.search-provider-icon-more {
-  width: 16px;
-  height: 16px;
-  background-image: url("resource:///org/gnome/shell/theme/more-results.svg"); }
 
 /* DASHBOARD */
 #dash {
