@@ -47,6 +47,7 @@ struct _DeviceMappingInfo
   MetaInputSettings *input_settings;
   ClutterInputDevice *device;
   GSettings *settings;
+  guint changed_id;
 #ifdef HAVE_LIBWACOM
   WacomDevice *wacom_device;
 #endif
@@ -1202,6 +1203,7 @@ device_mapping_info_free (DeviceMappingInfo *info)
   if (info->wacom_device)
     libwacom_destroy (info->wacom_device);
 #endif
+  g_signal_handler_disconnect (info->settings, info->changed_id);
   g_object_unref (info->settings);
   g_slice_free (DeviceMappingInfo, info);
 }
@@ -1246,8 +1248,9 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
     }
 #endif
 
-  g_signal_connect (settings, "changed",
-                    G_CALLBACK (mapped_device_changed_cb), info);
+  info->changed_id = g_signal_connect (settings, "changed",
+                                       G_CALLBACK (mapped_device_changed_cb),
+                                       info);
 
   g_hash_table_insert (priv->mappable_devices, device, info);
 
