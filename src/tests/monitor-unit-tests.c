@@ -1563,6 +1563,155 @@ meta_test_monitor_tiled_non_preferred_linear_config (void)
 }
 
 static void
+meta_test_monitor_tiled_non_main_origin_linear_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 400,
+          .height = 600,
+          .refresh_rate = 60.0
+        },
+        {
+          .width = 800,
+          .height = 600,
+          .refresh_rate = 30.0
+        },
+      },
+      .n_modes = 2,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0, 1 },
+          .n_modes = 2,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 1,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        },
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 1 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .tile_info = {
+            .group_id = 1,
+            .max_h_tiles = 2,
+            .max_v_tiles = 1,
+            .loc_h_tile = 0,
+            .loc_v_tile = 0,
+            .tile_w = 400,
+            .tile_h = 600
+          }
+        }
+      },
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0, 1 },
+          .n_outputs = 2,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .refresh_rate = 60.0,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0,
+                },
+                {
+                  .output = 1,
+                  .crtc_mode = 0,
+                }
+              }
+            },
+            {
+              .width = 800,
+              .height = 600,
+              .refresh_rate = 30.0,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 1
+                },
+                {
+                  .output = 1,
+                  .crtc_mode = -1,
+                }
+              }
+            },
+          },
+          .n_modes = 2,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .scale = 1
+        },
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+          .x = 400,
+          .y = 0
+        },
+        {
+          .current_mode = 0,
+        }
+      },
+      .n_crtcs = 2,
+      .n_tiled_monitors = 1,
+      .screen_width = 800,
+      .screen_height = 600,
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_hidpi_linear_config (void)
 {
   MonitorTestCase test_case = {
@@ -4662,6 +4811,8 @@ init_monitor_tests (void)
                    meta_test_monitor_tiled_linear_config);
   g_test_add_func ("/backends/monitor/tiled-non-preferred-linear-config",
                    meta_test_monitor_tiled_non_preferred_linear_config);
+  g_test_add_func ("/backends/monitor/tiled-non-main-origin-linear-config",
+                   meta_test_monitor_tiled_non_main_origin_linear_config);
   g_test_add_func ("/backends/monitor/hidpi-linear-config",
                    meta_test_monitor_hidpi_linear_config);
   g_test_add_func ("/backends/monitor/suggested-config",
