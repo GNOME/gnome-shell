@@ -436,6 +436,9 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
       node_path = get_device_node_path (backend_x11, info);
     }
 
+  if (source == CLUTTER_PAD_DEVICE)
+    is_enabled = TRUE;
+
   retval = g_object_new (CLUTTER_TYPE_INPUT_DEVICE_XI2,
                          "name", info->name,
                          "id", info->deviceid,
@@ -1224,6 +1227,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
             /* Pad buttons are 0-indexed */
             event->pad_button.button = xev->detail - 1;
+            clutter_event_set_device (event, device);
             clutter_event_set_source_device (event, source_device);
 
             CLUTTER_NOTE (EVENT,
