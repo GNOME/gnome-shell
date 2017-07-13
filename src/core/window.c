@@ -3603,7 +3603,7 @@ meta_window_update_monitor (MetaWindow *window,
   const MetaLogicalMonitor *old;
 
   old = window->monitor;
-  META_WINDOW_GET_CLASS (window)->update_main_monitor (window);
+  META_WINDOW_GET_CLASS (window)->update_main_monitor (window, user_op);
   if (old != window->monitor)
     {
       meta_window_on_all_workspaces_changed (window);

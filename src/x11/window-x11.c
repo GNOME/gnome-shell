@@ -1456,7 +1456,8 @@ meta_window_x11_update_icon (MetaWindow       *window,
 }
 
 static void
-meta_window_x11_update_main_monitor (MetaWindow *window)
+meta_window_x11_update_main_monitor (MetaWindow *window,
+                                     gboolean    user_op)
 {
   window->monitor = meta_window_calculate_main_logical_monitor (window);
 }

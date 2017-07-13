@@ -350,7 +350,8 @@ scale_rect_size (MetaRectangle *rect,
 }
 
 static void
-meta_window_wayland_update_main_monitor (MetaWindow *window)
+meta_window_wayland_update_main_monitor (MetaWindow *window,
+                                         gboolean    user_op)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
@@ -370,6 +371,7 @@ meta_window_wayland_update_main_monitor (MetaWindow *window)
   toplevel_window = meta_wayland_surface_get_toplevel_window (window->surface);
   if (toplevel_window != window)
     {
+      meta_window_update_monitor (toplevel_window, user_op);
       window->monitor = toplevel_window->monitor;
       return;
     }

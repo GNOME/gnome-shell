@@ -531,7 +531,8 @@ struct _MetaWindowClass
                                   cairo_surface_t **icon,
                                   cairo_surface_t **mini_icon);
   uint32_t (*get_client_pid)     (MetaWindow *window);
-  void (*update_main_monitor)    (MetaWindow *window);
+  void (*update_main_monitor)    (MetaWindow *window,
+                                  gboolean    user_op);
   void (*main_monitor_changed)   (MetaWindow *window,
                                   const MetaLogicalMonitor *old);
 };
