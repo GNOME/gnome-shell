@@ -3,6 +3,7 @@
 
 const { GdkPixbuf, Gio, GLib, Shell, St } = imports.gi;
 
+const AppActivation = imports.ui.appActivation;
 const FileUtils = imports.misc.fileUtils;
 const IconGridLayout = imports.ui.iconGridLayout;
 
@@ -327,6 +328,8 @@ var RemoteSearchProvider = class {
     }
 
     activateResult(id) {
+        // Activate the app so the splash is shown if needed
+        this.activateAppContext();
         this.proxy.ActivateResultRemote(id);
     }
 
@@ -334,7 +337,13 @@ var RemoteSearchProvider = class {
         // the provider is not compatible with the new version of the interface, launch
         // the app itself but warn so we can catch the error in logs
         log(`Search provider ${this.appInfo.get_id()} does not implement LaunchSearch`);
-        this.appInfo.launch([], global.create_app_launch_context(0, -1));
+        this.activateAppContext();
+    }
+
+    activateAppContext() {
+        let app = Shell.AppSystem.get_default().lookup_app(this.appInfo.get_id());
+        let context = new AppActivation.AppActivationContext(app);
+        context.showSplash();
     }
 };
 
@@ -346,10 +355,14 @@ var RemoteSearchProvider2 = class extends RemoteSearchProvider {
     }
 
     activateResult(id, terms) {
+        // Activate the app so the splash is shown if needed
+        this.activateAppContext();
         this.proxy.ActivateResultRemote(id, terms, global.get_current_time());
     }
 
     launchSearch(terms) {
+        // Activate the app so the splash is shown if needed
+        this.activateAppContext();
         this.proxy.LaunchSearchRemote(terms, global.get_current_time());
     }
 };
