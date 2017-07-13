@@ -1183,7 +1183,7 @@ StScrollBar {
   spacing: 12px; }
 
 .list-search-result-description {
-  color: #cacac4; }
+  color: rgba(202, 202, 196, 0.5); }
 
 .list-search-provider-details {
   width: 150px;
