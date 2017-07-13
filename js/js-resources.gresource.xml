@@ -87,7 +87,6 @@
     <file>ui/screenshot.js</file>
     <file>ui/scripting.js</file>
     <file>ui/search.js</file>
-    <file>ui/separator.js</file>
     <file>ui/sessionMode.js</file>
     <file>ui/shellDBus.js</file>
     <file>ui/shellEntry.js</file>
