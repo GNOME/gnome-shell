@@ -969,7 +969,11 @@ const LayoutManager = new Lang.Class({
             if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
                 rects.push(new Meta.Rectangle({ x: x, y: y, width: w, height: h }));
 
-            if (actorData.affectsStruts) {
+            let monitor = null;
+            if (actorData.affectsStruts)
+                monitor = this.findMonitorForActor(actorData.actor);
+
+            if (monitor) {
                 // Limit struts to the size of the screen
                 let x1 = Math.max(x, 0);
                 let x2 = Math.min(x + w, global.screen_width);
@@ -986,7 +990,6 @@ const LayoutManager = new Lang.Class({
                 // spans the width/height across the middle of the
                 // screen, then we don't create a strut for it at all.
 
-                let monitor = this.findMonitorForActor(actorData.actor);
                 let side;
                 if (x1 <= monitor.x && x2 >= monitor.x + monitor.width) {
                     if (y1 <= monitor.y)
