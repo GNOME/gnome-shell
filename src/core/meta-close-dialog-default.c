@@ -183,7 +183,10 @@ meta_close_dialog_default_hide (MetaCloseDialog *dialog)
     }
 
   if (dialog_default->dialog_pid > -1)
-    kill (dialog_default->dialog_pid, SIGTERM);
+    {
+      kill (dialog_default->dialog_pid, SIGTERM);
+      dialog_default->dialog_pid = -1;
+    }
 }
 
 static void
