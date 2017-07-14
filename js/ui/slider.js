@@ -17,6 +17,7 @@ const Slider = new Lang.Class({
             // Avoid spreading NaNs around
             throw TypeError('The slider value must be a number');
         this._value = Math.max(Math.min(value, 1), 0);
+        this._sliderWidth = 0;
 
         this.actor = new St.DrawingArea({ style_class: 'slider',
                                           can_focus: true,
@@ -27,6 +28,9 @@ const Slider = new Lang.Class({
         this.actor.connect('touch-event', Lang.bind(this, this._touchDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         this.actor.connect('key-press-event', Lang.bind(this, this.onKeyPressEvent));
+        this.actor.connect('allocation-changed', (actor, box) => {
+            this._sliderWidth = box.get_width();
+        });
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
@@ -242,7 +246,7 @@ const Slider = new Lang.Class({
         relX = absX - sliderX;
         relY = absY - sliderY;
 
-        let width = this.actor.width;
+        let width = this._sliderWidth;
         let handleRadius = this.actor.get_theme_node().get_length('-slider-handle-radius');
 
         let newvalue;
