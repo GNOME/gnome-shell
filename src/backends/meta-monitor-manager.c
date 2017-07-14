@@ -654,6 +654,7 @@ orientation_changed (MetaOrientationManager *orientation_manager,
       break;
 
     case META_ORIENTATION_UNDEFINED:
+    default:
       return;
     }
 
