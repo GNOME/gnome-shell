@@ -46,6 +46,7 @@ struct _MetaCloseDialogInterface
 
 void              meta_close_dialog_show (MetaCloseDialog *dialog);
 void              meta_close_dialog_hide (MetaCloseDialog *dialog);
+gboolean          meta_close_dialog_is_visible (MetaCloseDialog *dialog);
 
 void              meta_close_dialog_response (MetaCloseDialog         *dialog,
                                               MetaCloseDialogResponse  response);

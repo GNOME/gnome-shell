@@ -31,6 +31,8 @@ enum {
 
 guint dialog_signals[N_SIGNALS] = { 0 };
 
+static GQuark quark_visible = 0;
+
 G_DEFINE_INTERFACE (MetaCloseDialog, meta_close_dialog, G_TYPE_OBJECT)
 
 static void
@@ -50,6 +52,8 @@ meta_close_dialog_default_init (MetaCloseDialogInterface *iface)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 1, META_TYPE_CLOSE_DIALOG_RESPONSE);
+
+  quark_visible = g_quark_from_static_string ("meta-close-dialog-visible");
 }
 
 /**
@@ -67,6 +71,7 @@ meta_close_dialog_show (MetaCloseDialog *dialog)
 
   iface = META_CLOSE_DIALOG_GET_IFACE (dialog);
   iface->show (dialog);
+  g_object_set_qdata (G_OBJECT (dialog), quark_visible, GINT_TO_POINTER (TRUE));
 }
 
 /**
@@ -84,6 +89,7 @@ meta_close_dialog_hide (MetaCloseDialog *dialog)
 
   iface = META_CLOSE_DIALOG_GET_IFACE (dialog);
   iface->hide (dialog);
+  g_object_steal_qdata (G_OBJECT (dialog), quark_visible);
 }
 
 /**
@@ -100,4 +106,18 @@ meta_close_dialog_response (MetaCloseDialog         *dialog,
 {
   g_signal_emit (dialog, dialog_signals[RESPONSE], 0, response);
   meta_close_dialog_hide (dialog);
+}
+
+/**
+ * meta_close_dialog_is_visible:
+ * @dialog: a #MetaCloseDialog
+ *
+ * Returns whether @dialog is currently visible.
+ *
+ * Returns: #TRUE if @dialog is visible.
+ **/
+gboolean
+meta_close_dialog_is_visible (MetaCloseDialog *dialog)
+{
+  return GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (dialog), quark_visible));
 }
