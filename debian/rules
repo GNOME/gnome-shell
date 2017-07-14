@@ -5,8 +5,6 @@ include /usr/share/gnome-pkg-tools/1/rules/gnome-get-source.mk
 # Ensure at build time that the library has no dependencies on undefined
 # symbols, and speed up loading.
 export DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,defs -Wl,-O1 -Wl,--as-needed
-# Work around binutils behaviour change https://bugs.debian.org/847298
-DEB_LDFLAGS_MAINT_APPEND += -Wl,--disable-new-dtags
 
 %:
 	dh $@ --with gir,gnome
