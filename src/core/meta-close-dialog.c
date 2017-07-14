@@ -121,3 +121,22 @@ meta_close_dialog_is_visible (MetaCloseDialog *dialog)
 {
   return GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT (dialog), quark_visible));
 }
+
+/**
+ * meta_close_dialog_focus:
+ * @dialog: a #MetaCloseDialog
+ *
+ * Call whenever @dialog should receive keyboard focus,
+ * usually when the window would.
+ **/
+void
+meta_close_dialog_focus (MetaCloseDialog *dialog)
+{
+  MetaCloseDialogInterface *iface;
+
+  g_return_if_fail (META_IS_CLOSE_DIALOG (dialog));
+
+  iface = META_CLOSE_DIALOG_GET_IFACE (dialog);
+  if (iface->focus)
+    iface->focus (dialog);
+}

@@ -66,6 +66,11 @@ meta_window_set_alive (MetaWindow *window,
     {
       meta_window_ensure_close_dialog (window);
       meta_close_dialog_show (window->close_dialog);
+
+      if (window->display &&
+          window->display->event_route == META_EVENT_ROUTE_NORMAL &&
+          window == window->display->focus_window)
+        meta_close_dialog_focus (window->close_dialog);
     }
 }
 

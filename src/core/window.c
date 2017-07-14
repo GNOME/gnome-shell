@@ -4369,6 +4369,10 @@ meta_window_focus (MetaWindow  *window,
       clutter_stage_set_key_focus (stage, NULL);
     }
 
+  if (window->close_dialog &&
+      meta_close_dialog_is_visible (window->close_dialog))
+    meta_close_dialog_focus (window->close_dialog);
+
   if (window->wm_state_demands_attention)
     meta_window_unset_demands_attention(window);
 
