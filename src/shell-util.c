@@ -245,7 +245,7 @@ shell_util_translate_time_string (const char *str)
  * @str: a UTF-8 string to escape
  *
  * A wrapper around g_regex_escape_string() that takes its argument as
- * \0-terminated string rather than a byte-array the confuses gjs.
+ * \0-terminated string rather than a byte-array that confuses gjs.
  *
  * Returns: @str with all regex-special characters escaped
  */
