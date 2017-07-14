@@ -2179,3 +2179,61 @@ clutter_event_get_mode_group (const ClutterEvent *event)
       return 0;
     }
 }
+
+/**
+ * clutter_event_get_pad_event_details:
+ * @event: a pad event
+ * @number: (out) (optional): ring/strip/button number
+ * @mode: (out) (optional): pad mode as per the event
+ * @value: (out) (optional): event axis value
+ *
+ * Returns the details of a pad event.
+ *
+ * Returns: #TRUE if event details could be obtained
+ **/
+gboolean
+clutter_event_get_pad_event_details (const ClutterEvent *event,
+                                     guint              *number,
+                                     guint              *mode,
+                                     gdouble            *value)
+{
+  guint n, m;
+  gdouble v;
+
+  g_return_val_if_fail (event != NULL, FALSE);
+  g_return_val_if_fail (event->type == CLUTTER_PAD_BUTTON_PRESS ||
+                        event->type == CLUTTER_PAD_BUTTON_RELEASE ||
+                        event->type == CLUTTER_PAD_RING ||
+                        event->type == CLUTTER_PAD_STRIP, FALSE);
+
+  switch (event->type)
+    {
+    case CLUTTER_PAD_BUTTON_PRESS:
+    case CLUTTER_PAD_BUTTON_RELEASE:
+      n = event->pad_button.button;
+      m = event->pad_button.mode;
+      v = 0.0;
+      break;
+    case CLUTTER_PAD_RING:
+      n = event->pad_ring.ring_number;
+      m = event->pad_ring.mode;
+      v = event->pad_ring.angle;
+      break;
+    case CLUTTER_PAD_STRIP:
+      n = event->pad_strip.strip_number;
+      m = event->pad_strip.mode;
+      v = event->pad_strip.value;
+      break;
+    default:
+      return FALSE;
+    }
+
+  if (number)
+    *number = n;
+  if (mode)
+    *mode = m;
+  if (value)
+    *value = v;
+
+  return TRUE;
+}

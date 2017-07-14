@@ -778,6 +778,12 @@ ClutterScrollFinishFlags clutter_event_get_scroll_finish_flags       (const Clut
 CLUTTER_AVAILABLE_IN_ALL
 guint                    clutter_event_get_mode_group                (const ClutterEvent     *event);
 
+CLUTTER_AVAILABLE_IN_MUTTER
+gboolean                 clutter_event_get_pad_event_details         (const ClutterEvent     *event,
+                                                                      guint                  *number,
+                                                                      guint                  *mode,
+                                                                      gdouble                *value);
+
 
 G_END_DECLS
 
