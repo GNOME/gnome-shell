@@ -91,6 +91,9 @@ static const MetaPluginInfo *gnome_shell_plugin_plugin_info   (MetaPlugin *plugi
 static MetaCloseDialog * gnome_shell_plugin_create_close_dialog (MetaPlugin *plugin,
                                                               MetaWindow *window);
 
+static MetaInhibitShortcutsDialog * gnome_shell_plugin_create_inhibit_shortcuts_dialog (MetaPlugin *plugin,
+                                                                                        MetaWindow *window);
+
 #define GNOME_TYPE_SHELL_PLUGIN            (gnome_shell_plugin_get_type ())
 #define GNOME_SHELL_PLUGIN(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GNOME_TYPE_SHELL_PLUGIN, GnomeShellPlugin))
 #define GNOME_SHELL_PLUGIN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass),  GNOME_TYPE_SHELL_PLUGIN, GnomeShellPluginClass))
@@ -153,6 +156,7 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->plugin_info       = gnome_shell_plugin_plugin_info;
 
   plugin_class->create_close_dialog = gnome_shell_plugin_create_close_dialog;
+  plugin_class->create_inhibit_shortcuts_dialog = gnome_shell_plugin_create_inhibit_shortcuts_dialog;
 }
 
 static void
@@ -435,4 +439,11 @@ gnome_shell_plugin_create_close_dialog (MetaPlugin *plugin,
                                         MetaWindow *window)
 {
   return _shell_wm_create_close_dialog (get_shell_wm (), window);
+}
+
+static MetaInhibitShortcutsDialog *
+gnome_shell_plugin_create_inhibit_shortcuts_dialog (MetaPlugin *plugin,
+                                                    MetaWindow *window)
+{
+  return _shell_wm_create_inhibit_shortcuts_dialog (get_shell_wm (), window);
 }

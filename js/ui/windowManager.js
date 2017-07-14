@@ -14,6 +14,7 @@ const Signals = imports.signals;
 const AltTab = imports.ui.altTab;
 const Dialog = imports.ui.dialog;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
+const InhibitShortcutsDialog = imports.ui.inhibitShortcutsDialog;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
@@ -711,6 +712,7 @@ var WindowManager = new Lang.Class({
         this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
         this._shellwm.connect('confirm-display-change', Lang.bind(this, this._confirmDisplayChange));
         this._shellwm.connect('create-close-dialog', Lang.bind(this, this._createCloseDialog));
+        this._shellwm.connect('create-inhibit-shortcuts-dialog', Lang.bind(this, this._createInhibitShortcutsDialog));
         global.screen.connect('restacked', Lang.bind(this, this._syncStacking));
 
         this._workspaceSwitcherPopup = null;
@@ -1974,6 +1976,10 @@ var WindowManager = new Lang.Class({
 
     _createCloseDialog: function (shellwm, window) {
         return new CloseDialog.CloseDialog(window);
+    },
+
+    _createInhibitShortcutsDialog: function (shellwm, window) {
+        return new InhibitShortcutsDialog.InhibitShortcutsDialog(window);
     },
 
     _showResizePopup: function(display, show, rect, displayW, displayH) {

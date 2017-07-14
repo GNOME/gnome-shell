@@ -454,6 +454,10 @@ StScrollBar {
 .extension-dialog .message-dialog-title {
   color: #b2b2a9; }
 
+/* Inhibit-Shortcuts Dialog */
+.inhibit-shortcuts-dialog {
+  spacing: 30px; }
+
 /* Network Agent Dialog */
 .network-dialog-secret-table {
   spacing-rows: 15px;
