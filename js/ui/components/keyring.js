@@ -10,6 +10,7 @@ const GObject = imports.gi.GObject;
 const Gcr = imports.gi.Gcr;
 
 const Animation = imports.ui.animation;
+const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const CheckBox = imports.ui.checkBox;
@@ -31,38 +32,24 @@ const KeyringDialog = new Lang.Class({
         this.prompt.connect('show-confirm', Lang.bind(this, this._onShowConfirm));
         this.prompt.connect('prompt-close', Lang.bind(this, this._onHidePrompt));
 
-        let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
-                                                vertical: false });
-        this.contentLayout.add(mainContentBox);
+        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
+        this._content = new Dialog.MessageDialogContent({ icon });
+        this.contentLayout.add(this._content);
 
-        let icon = new St.Icon({ icon_name: 'dialog-password-symbolic' });
-        mainContentBox.add(icon,
-                           { x_fill:  true,
-                             y_fill:  false,
-                             x_align: St.Align.END,
-                             y_align: St.Align.START });
+        // FIXME: Why does this break now?
+        /*
+        this.prompt.bind_property('message', this._content, 'title', GObject.BindingFlags.SYNC_CREATE);
+        this.prompt.bind_property('description', this._content, 'body', GObject.BindingFlags.SYNC_CREATE);
+        */
+        this.prompt.connect('notify::message', () => {
+            this._content.title = this.prompt.message;
+        });
+        this._content.title = this.prompt.message;
 
-        this._messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
-                                              vertical: true });
-        mainContentBox.add(this._messageBox,
-                           { y_align: St.Align.START, expand: true, x_fill: true, y_fill: true });
-
-        let subject = new St.Label({ style_class: 'prompt-dialog-headline headline' });
-        this.prompt.bind_property('message', subject, 'text', GObject.BindingFlags.SYNC_CREATE);
-
-        this._messageBox.add(subject,
-                             { x_fill: false,
-                               y_fill:  false,
-                               x_align: St.Align.START,
-                               y_align: St.Align.START });
-
-        let description = new St.Label({ style_class: 'prompt-dialog-description' });
-        description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        description.clutter_text.line_wrap = true;
-        this.prompt.bind_property('description', description, 'text', GObject.BindingFlags.SYNC_CREATE);
-        this._messageBox.add(description,
-                            { y_fill:  true,
-                              y_align: St.Align.START });
+        this.prompt.connect('notify::description', () => {
+            this._content.body = this.prompt.description;
+        });
+        this._content.body = this.prompt.description;
 
         this._workSpinner = null;
         this._controlTable = null;
@@ -195,7 +182,7 @@ const KeyringDialog = new Lang.Class({
         }
 
         this._controlTable = table;
-        this._messageBox.add(table, { x_fill: true, y_fill: true });
+        this._content.messageBox.add(table, { x_fill: true, y_fill: true });
     },
 
     _updateSensitivity: function(sensitive) {

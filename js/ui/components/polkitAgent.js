@@ -15,6 +15,7 @@ const PolkitAgent = imports.gi.PolkitAgent;
 
 const Animation = imports.ui.animation;
 const Components = imports.ui.components;
+const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
@@ -34,47 +35,15 @@ const AuthenticationDialog = new Lang.Class({
         this.parent({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
-        this.message = message;
+        this.message = body;
         this.userNames = userNames;
         this._wasDismissed = false;
 
-        let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
-                                                vertical: false });
-        this.contentLayout.add(mainContentBox,
-                               { x_fill: true,
-                                 y_fill: true });
+        let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
+        let title = _("Authentication Required");
 
-        let icon = new St.Icon({ icon_name: 'dialog-password-symbolic' });
-        mainContentBox.add(icon,
-                           { x_fill:  true,
-                             y_fill:  false,
-                             x_align: St.Align.END,
-                             y_align: St.Align.START });
-
-        let messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
-                                            vertical: true });
-        mainContentBox.add(messageBox,
-                           { expand: true, y_align: St.Align.START });
-
-        this._subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline headline',
-                                            text: _("Authentication Required") });
-
-        messageBox.add(this._subjectLabel,
-                       { x_fill: false,
-                         y_fill:  false,
-                         x_align: St.Align.START,
-                         y_align: St.Align.START });
-
-        this._descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
-                                                text: message });
-        this._descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this._descriptionLabel.clutter_text.line_wrap = true;
-
-        messageBox.add(this._descriptionLabel,
-                       { x_fill: false,
-                         y_fill:  true,
-                         x_align: St.Align.START,
-                         y_align: St.Align.START });
+        let content = new Dialog.MessageDialogContent({ icon, title, body });
+        this.contentLayout.add_actor(content);
 
         if (userNames.length > 1) {
             log('polkitAuthenticationAgent: Received ' + userNames.length +
@@ -105,12 +74,12 @@ const AuthenticationDialog = new Lang.Class({
         if (userIsRoot) {
             let userLabel = new St.Label(({ style_class: 'polkit-dialog-user-root-label',
                                             text: userRealName }));
-            messageBox.add(userLabel, { x_fill: false,
-                                        x_align: St.Align.START });
+            content.messageBox.add(userLabel, { x_fill: false,
+                                                x_align: St.Align.START });
         } else {
             let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
                                              vertical: false });
-            messageBox.add(userBox);
+            content.messageBox.add(userBox);
             this._userAvatar = new UserWidget.Avatar(this._user,
                                                      { iconSize: DIALOG_ICON_SIZE,
                                                        styleClass: 'polkit-dialog-user-icon' });
@@ -132,7 +101,7 @@ const AuthenticationDialog = new Lang.Class({
         this._onUserChanged();
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
-        messageBox.add(this._passwordBox);
+        content.messageBox.add(this._passwordBox);
         this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
         this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
         this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
@@ -155,13 +124,13 @@ const AuthenticationDialog = new Lang.Class({
         this._errorMessageLabel = new St.Label({ style_class: 'prompt-dialog-error-label' });
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
-        messageBox.add(this._errorMessageLabel, { x_fill: false, x_align: St.Align.START });
+        content.messageBox.add(this._errorMessageLabel, { x_fill: false, x_align: St.Align.START });
         this._errorMessageLabel.hide();
 
         this._infoMessageLabel = new St.Label({ style_class: 'prompt-dialog-info-label' });
         this._infoMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._infoMessageLabel.clutter_text.line_wrap = true;
-        messageBox.add(this._infoMessageLabel);
+        content.messageBox.add(this._infoMessageLabel);
         this._infoMessageLabel.hide();
 
         /* text is intentionally non-blank otherwise the height is not the same as for
@@ -173,7 +142,7 @@ const AuthenticationDialog = new Lang.Class({
         this._nullMessageLabel.add_style_class_name('hidden');
         this._nullMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._nullMessageLabel.clutter_text.line_wrap = true;
-        messageBox.add(this._nullMessageLabel);
+        content.messageBox.add(this._nullMessageLabel);
         this._nullMessageLabel.show();
 
         this._cancelButton = this.addButton({ label: _("Cancel"),

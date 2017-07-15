@@ -7,6 +7,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
 const CheckBox = imports.ui.checkBox;
+const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 
 const RequestIface = '<node> \
@@ -64,29 +65,11 @@ const AccessDialog = new Lang.Class({
         let iconName = options['icon'] || null;
         let choices = options['choices'] || [];
 
-        let mainContentBox = new St.BoxLayout();
-        mainContentBox.style_class = 'access-dialog-main-layout';
-        this.contentLayout.add_actor(mainContentBox);
-
-        let icon = new St.Icon({ style_class: 'access-dialog-icon',
-                                 icon_name: iconName,
-                                 y_align: Clutter.ActorAlign.START });
-        mainContentBox.add_actor(icon);
-
-        let messageBox = new St.BoxLayout({ vertical: true });
-        messageBox.style_class = 'access-dialog-content',
-        mainContentBox.add_actor(messageBox);
-
-        let label;
-        label = new St.Label({ style_class: 'access-dialog-title headline',
-                               text: title });
-        messageBox.add_actor(label);
-
-        label = new St.Label({ style_class: 'access-dialog-subtitle',
-                               text: subtitle });
-        label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        label.clutter_text.line_wrap = true;
-        messageBox.add_actor(label);
+        let contentParams = { title, subtitle, body };
+        if (iconName)
+            contentParams.icon = new Gio.ThemedIcon({ name: iconName });
+        let content = new Dialog.MessageDialogContent(contentParams);
+        this.contentLayout.add_actor(content);
 
         this._choices = new Map();
 
@@ -98,15 +81,10 @@ const AccessDialog = new Lang.Class({
             let check = new CheckBox.CheckBox();
             check.getLabelActor().text = name;
             check.actor.checked = selected == "true";
-            messageBox.add_actor(check.actor);
+            content.insertBeforeBody(check.actor);
 
             this._choices.set(id, check);
         }
-
-        label = new St.Label({ text: body });
-        label.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        label.clutter_text.line_wrap = true;
-        messageBox.add_actor(label);
 
         this.addButton({ label: denyLabel,
                          action: () => {

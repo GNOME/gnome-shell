@@ -315,24 +315,20 @@ StScrollBar {
 
 .mount-dialog {
   spacing: 24px; }
-
-.mount-dialog-subject {
-  padding-top: 10px;
-  padding-left: 17px;
-  padding-bottom: 6px;
-  max-width: 34em; }
-
-.mount-dialog-subject:rtl {
-  padding-left: 0px;
-  padding-right: 17px; }
-
-.mount-dialog-description {
-  padding-left: 17px;
-  width: 28em; }
-
-.mount-dialog-description:rtl {
-  padding-left: 0px;
-  padding-right: 17px; }
+  .mount-dialog .message-dialog-title {
+    padding-top: 10px;
+    padding-left: 17px;
+    padding-bottom: 6px;
+    max-width: 34em; }
+  .mount-dialog .message-dialog-title:rtl {
+    padding-left: 0px;
+    padding-right: 17px; }
+  .mount-dialog .message-dialog-body {
+    padding-left: 17px;
+    width: 28em; }
+  .mount-dialog .message-dialog-body:rtl {
+    padding-left: 0px;
+    padding-right: 17px; }
 
 .mount-dialog-app-list {
   max-height: 200px;
@@ -366,17 +362,13 @@ StScrollBar {
 .prompt-dialog {
   width: 34em;
   border: 3px solid rgba(238, 238, 236, 0.2); }
-
-.prompt-dialog-main-layout {
-  spacing: 24px;
-  padding: 10px; }
-
-.prompt-dialog-message-layout {
-  spacing: 16px; }
-
-.prompt-dialog-headline {
-  font-weight: bold;
-  color: #b2b2a9; }
+  .prompt-dialog .message-dialog-main-layout {
+    spacing: 24px;
+    padding: 10px; }
+  .prompt-dialog .message-dialog-content {
+    spacing: 16px; }
+  .prompt-dialog .message-dialog-title {
+    color: #b2b2a9; }
 
 .prompt-dialog-description:rtl {
   text-align: right; }
@@ -450,44 +442,9 @@ StScrollBar {
 .access-dialog {
   spacing: 30px; }
 
-.access-dialog-main-layout {
-  padding: 12px 20px 0;
-  spacing: 12px; }
-
-.access-dialog-content {
-  max-width: 28em;
-  spacing: 20px; }
-
-.access-dialog-icon {
-  min-width: 48px;
-  icon-size: 48px; }
-
-.access-dialog-title {
-  font-weight: bold; }
-
-.access-dialog-subtitle {
-  color: #999999;
-  font-weight: bold; }
-
 /* Geolocation Dialog */
 .geolocation-dialog {
   spacing: 30px; }
-
-.geolocation-dialog-main-layout {
-  spacing: 12px; }
-
-.geolocation-dialog-content {
-  spacing: 20px; }
-
-.geolocation-dialog-icon {
-  icon-size: 48px; }
-
-.geolocation-dialog-title {
-  font-weight: bold; }
-
-.geolocation-dialog-reason {
-  color: #999999;
-  font-weight: bold; }
 
 /* Extension Dialog */
 .extension-dialog .message-dialog-main-layout {

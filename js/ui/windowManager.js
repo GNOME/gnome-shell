@@ -12,6 +12,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
 const AltTab = imports.ui.altTab;
+const Dialog = imports.ui.dialog;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
@@ -62,40 +63,18 @@ const DisplayChangeDialog = new Lang.Class({
 
         this._wm = wm;
 
-        let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
-                                                vertical: false });
-        this.contentLayout.add(mainContentBox,
+        this._countDown = DISPLAY_REVERT_TIMEOUT;
+
+        let iconName = 'preferences-desktop-display-symbolic';
+        let icon = new Gio.ThemedIcon({ name: iconName });
+        let title = _("Do you want to keep these display settings?");
+        let body = this._formatCountDown();
+
+        this._content = new Dialog.MessageDialogContent({ icon, title, body });
+
+        this.contentLayout.add(this._content,
                                { x_fill: true,
                                  y_fill: true });
-
-        let icon = new St.Icon({ icon_name: 'preferences-desktop-display-symbolic' });
-        mainContentBox.add(icon,
-                           { x_fill:  true,
-                             y_fill:  false,
-                             x_align: St.Align.END,
-                             y_align: St.Align.START });
-
-        let messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
-                                            vertical: true });
-        mainContentBox.add(messageBox,
-                           { expand: true, y_align: St.Align.START });
-
-        let subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline',
-                                            text: _("Do you want to keep these display settings?") });
-        messageBox.add(subjectLabel,
-                       { y_fill:  false,
-                         y_align: St.Align.START });
-
-        this._countDown = DISPLAY_REVERT_TIMEOUT;
-        let message = this._formatCountDown();
-        this._descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
-                                                text: this._formatCountDown() });
-        this._descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this._descriptionLabel.clutter_text.line_wrap = true;
-
-        messageBox.add(this._descriptionLabel,
-                       { y_fill:  true,
-                         y_align: St.Align.START });
 
         /* Translators: this and the following message should be limited in lenght,
            to avoid ellipsizing the labels.
@@ -136,7 +115,7 @@ const DisplayChangeDialog = new Lang.Class({
             return GLib.SOURCE_REMOVE;
         }
 
-        this._descriptionLabel.text = this._formatCountDown();
+        this._content.body = this._formatCountDown();
         return GLib.SOURCE_CONTINUE;
     },
 

@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 
+const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -377,30 +378,19 @@ const GeolocationDialog = new Lang.Class({
     Name: 'GeolocationDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(name, reason, reqAccuracyLevel) {
+    _init: function(name, subtitle, reqAccuracyLevel) {
         this.parent({ styleClass: 'geolocation-dialog' });
         this.reqAccuracyLevel = reqAccuracyLevel;
 
-        let mainContentBox = new St.BoxLayout({ style_class: 'geolocation-dialog-main-layout' });
-        this.contentLayout.add_actor(mainContentBox);
+        let icon = new Gio.ThemedIcon({ name: 'find-location-symbolic' });
 
-        let icon = new St.Icon({ style_class: 'geolocation-dialog-icon',
-                                 icon_name: 'find-location-symbolic',
-                                 y_align: Clutter.ActorAlign.START });
-        mainContentBox.add_actor(icon);
+        /* Translators: %s is an application name */
+        let title = _("Give %s access to your location?").format(name);
+        let body = _("Location access can be changed at any time from the privacy settings.");
 
-        let messageBox = new St.BoxLayout({ style_class: 'geolocation-dialog-content',
-                                            vertical: true });
-        mainContentBox.add_actor(messageBox);
-
-        this._title = new St.Label({ style_class: 'geolocation-dialog-title headline' });
-        messageBox.add_actor(this._title);
-
-        this._reason = new St.Label({ style_class: 'geolocation-dialog-reason' });
-        messageBox.add_actor(this._reason);
-
-        this._privacyNote = new St.Label();
-        messageBox.add_actor(this._privacyNote);
+        let contentParams = { icon, title, subtitle, body };
+        let content = new Dialog.MessageDialogContent(contentParams);
+        this.contentLayout.add_actor(content);
 
         let button = this.addButton({ label: _("Deny Access"),
                                       action: Lang.bind(this, this._onDenyClicked),
@@ -409,15 +399,6 @@ const GeolocationDialog = new Lang.Class({
                          action: Lang.bind(this, this._onGrantClicked) });
 
         this.setInitialKeyFocus(button);
-
-        /* Translators: %s is an application name */
-        this._title.text = _("Give %s access to your location?").format(name);
-
-        this._privacyNote.text = _("Location access can be changed at any time from the privacy settings.");
-
-        if (reason)
-            this._reason.text = reason;
-        this._reason.visible = (reason != null);
     },
 
     _onGrantClicked: function() {

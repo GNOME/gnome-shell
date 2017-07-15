@@ -11,6 +11,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
 const CheckBox = imports.ui.checkBox;
+const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
@@ -46,12 +47,11 @@ function _setButtonsForChoices(dialog, choices) {
     dialog.setButtons(buttons);
 }
 
-function _setLabelsForMessage(dialog, message) {
+function _setLabelsForMessage(content, message) {
     let labels = message.split('\n');
 
-    _setLabelText(dialog.subjectLabel, labels.shift());
-    if (labels.length > 0)
-        _setLabelText(dialog.descriptionLabel, labels.join('\n'));
+    content.title = labels.shift();
+    content.body = labels.join('\n');
 }
 
 function _createIcon(gicon) {
@@ -281,43 +281,15 @@ const ShellMountQuestionDialog = new Lang.Class({
     Name: 'ShellMountQuestionDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(gicon) {
+    _init: function(icon) {
         this.parent({ styleClass: 'mount-dialog' });
 
-        let mainContentLayout = new St.BoxLayout();
-        this.contentLayout.add(mainContentLayout, { x_fill: true,
-                                                    y_fill: false });
-
-        this._iconBin = new St.Bin({ child: _createIcon(gicon) });
-        mainContentLayout.add(this._iconBin,
-                              { x_fill:  true,
-                                y_fill:  false,
-                                x_align: St.Align.END,
-                                y_align: St.Align.MIDDLE });
-
-        let messageLayout = new St.BoxLayout({ vertical: true });
-        mainContentLayout.add(messageLayout,
-                              { y_align: St.Align.START });
-
-        this.subjectLabel = new St.Label({ style_class: 'mount-dialog-subject' });
-        this.subjectLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.subjectLabel.clutter_text.line_wrap = true;
-
-        messageLayout.add(this.subjectLabel,
-                          { y_fill:  false,
-                            y_align: St.Align.START });
-
-        this.descriptionLabel = new St.Label({ style_class: 'mount-dialog-description' });
-        this.descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.descriptionLabel.clutter_text.line_wrap = true;
-
-        messageLayout.add(this.descriptionLabel,
-                          { y_fill:  true,
-                            y_align: St.Align.START });
+        this._content = new Dialog.MessageDialogContent({ icon });
+        this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
     },
 
     update: function(message, choices) {
-        _setLabelsForMessage(this, message);
+        _setLabelsForMessage(this._content, message);
         _setButtonsForChoices(this, choices);
     }
 });
@@ -327,44 +299,17 @@ const ShellMountPasswordDialog = new Lang.Class({
     Name: 'ShellMountPasswordDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(message, gicon, flags) {
+    _init: function(message, icon, flags) {
         let strings = message.split('\n');
+        let title = strings.shift() || null;
+        let body = strings.shift() || null;
         this.parent({ styleClass: 'prompt-dialog' });
 
-        let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
-                                                vertical: false });
-        this.contentLayout.add(mainContentBox);
-
-        let icon = _createIcon(gicon);
-        mainContentBox.add(icon,
-                           { x_fill:  true,
-                             y_fill:  false,
-                             x_align: St.Align.END,
-                             y_align: St.Align.START });
-
-        this._messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
-                                              vertical: true });
-        mainContentBox.add(this._messageBox,
-                           { y_align: St.Align.START, expand: true, x_fill: true, y_fill: true });
-
-        let subject = new St.Label({ style_class: 'prompt-dialog-headline headline' });
-        this._messageBox.add(subject,
-                             { y_fill:  false,
-                               y_align: St.Align.START });
-        if (strings[0])
-            subject.set_text(strings[0]);
-
-        let description = new St.Label({ style_class: 'prompt-dialog-description' });
-        description.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        description.clutter_text.line_wrap = true;
-        this._messageBox.add(description,
-                            { y_fill:  true,
-                              y_align: St.Align.START });
-        if (strings[1])
-            description.set_text(strings[1]);
+        let content = new Dialog.MessageDialogContent({ icon, title, body });
+        this.contentLayout.add_actor(content);
 
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
-        this._messageBox.add(this._passwordBox);
+        content.messageBox.add(this._passwordBox);
 
         this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label',
                                               text: _("Password") }));
@@ -384,14 +329,14 @@ const ShellMountPasswordDialog = new Lang.Class({
         this._errorMessageLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this._errorMessageLabel.clutter_text.line_wrap = true;
         this._errorMessageLabel.hide();
-        this._messageBox.add(this._errorMessageLabel);
+        content.messageBox.add(this._errorMessageLabel);
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
             this._rememberChoice = new CheckBox.CheckBox();
             this._rememberChoice.getLabelActor().text = _("Remember Password");
             this._rememberChoice.actor.checked =
                 global.settings.get_boolean(REMEMBER_MOUNT_PASSWORD_KEY);
-            this._messageBox.add(this._rememberChoice.actor);
+            content.messageBox.add(this._rememberChoice.actor);
         } else {
             this._rememberChoice = null;
         }
@@ -435,37 +380,11 @@ const ShellProcessesDialog = new Lang.Class({
     Name: 'ShellProcessesDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(gicon) {
+    _init: function(icon) {
         this.parent({ styleClass: 'mount-dialog' });
 
-        let mainContentLayout = new St.BoxLayout();
-        this.contentLayout.add(mainContentLayout, { x_fill: true,
-                                                    y_fill: false });
-
-        this._iconBin = new St.Bin({ child: _createIcon(gicon) });
-        mainContentLayout.add(this._iconBin,
-                              { x_fill:  true,
-                                y_fill:  false,
-                                x_align: St.Align.END,
-                                y_align: St.Align.MIDDLE });
-
-        let messageLayout = new St.BoxLayout({ vertical: true });
-        mainContentLayout.add(messageLayout,
-                              { y_align: St.Align.START });
-
-        this.subjectLabel = new St.Label({ style_class: 'mount-dialog-subject' });
-
-        messageLayout.add(this.subjectLabel,
-                          { y_fill:  false,
-                            y_align: St.Align.START });
-
-        this.descriptionLabel = new St.Label({ style_class: 'mount-dialog-description' });
-        this.descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-        this.descriptionLabel.clutter_text.line_wrap = true;
-
-        messageLayout.add(this.descriptionLabel,
-                          { y_fill:  true,
-                            y_align: St.Align.START });
+        this._content = new Dialog.MessageDialogContent({ icon });
+        this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
 
         let scrollView = new St.ScrollView({ style_class: 'mount-dialog-app-list'});
         scrollView.set_policy(Gtk.PolicyType.NEVER,
@@ -515,7 +434,7 @@ const ShellProcessesDialog = new Lang.Class({
 
     update: function(message, processes, choices) {
         this._setAppsForPids(processes);
-        _setLabelsForMessage(this, message);
+        _setLabelsForMessage(this._content, message);
         _setButtonsForChoices(this, choices);
     }
 });
