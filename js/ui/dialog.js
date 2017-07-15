@@ -1,6 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
+const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Lang = imports.lang;
 
@@ -128,4 +131,101 @@ const Dialog = new Lang.Class({
         this.buttonLayout.destroy_all_children();
         this._buttonKeys = {};
     },
+});
+
+const MessageDialogContent = new Lang.Class({
+    Name: 'MessageDialogContent',
+    Extends: St.BoxLayout,
+    Properties: {
+        'icon': GObject.ParamSpec.object('icon', 'icon', 'icon',
+                                         GObject.ParamFlags.READWRITE |
+                                         GObject.ParamFlags.CONSTRUCT,
+                                         Gio.Icon.$gtype),
+        'title': GObject.ParamSpec.string('title', 'title', 'title',
+                                          GObject.ParamFlags.READWRITE |
+                                          GObject.ParamFlags.CONSTRUCT,
+                                          null),
+        'subtitle': GObject.ParamSpec.string('subtitle', 'subtitle', 'subtitle',
+                                             GObject.ParamFlags.READWRITE |
+                                             GObject.ParamFlags.CONSTRUCT,
+                                             null),
+        'body': GObject.ParamSpec.string('body', 'body', 'body',
+                                         GObject.ParamFlags.READWRITE |
+                                         GObject.ParamFlags.CONSTRUCT,
+                                         null)
+    },
+
+    _init: function(params) {
+        this._icon = new St.Icon({ y_align: Clutter.ActorAlign.START });
+        this._title = new St.Label({ style_class: 'headline' });
+        this._subtitle = new St.Label();
+        this._body = new St.Label();
+
+        ['icon', 'title', 'subtitle', 'body'].forEach(prop => {
+            this[`_${prop}`].add_style_class_name(`message-dialog-${prop}`);
+        });
+
+        let textProps = { ellipsize_mode: Pango.EllipsizeMode.NONE,
+                          line_wrap: true };
+        Object.assign(this._subtitle.clutter_text, textProps);
+        Object.assign(this._body.clutter_text, textProps);
+
+        if (!params.hasOwnProperty('style_class'))
+            params.style_class = 'message-dialog-main-layout';
+
+        this.parent(params);
+
+        this.messageBox = new St.BoxLayout({ style_class: 'message-dialog-content',
+                                             x_expand: true,
+                                             vertical: true });
+
+        this.messageBox.add_actor(this._title);
+        this.messageBox.add_actor(this._subtitle);
+        this.messageBox.add_actor(this._body);
+
+        this.add_actor(this._icon);
+        this.add_actor(this.messageBox);
+    },
+
+    get icon() {
+        return this._icon.gicon;
+    },
+
+    get title() {
+        return this._title.text;
+    },
+
+    get subtitle() {
+        return this._subtitle.text;
+    },
+
+    get body() {
+        return this._body.text;
+    },
+
+    set icon(icon) {
+        Object.assign(this._icon, { gicon: icon, visible: icon != null });
+        this.notify('icon');
+    },
+
+    set title(title) {
+        this._setLabel(this._title, 'title', title);
+    },
+
+    set subtitle(subtitle) {
+        this._setLabel(this._subtitle, 'subtitle', subtitle);
+    },
+
+    set body(body) {
+        this._setLabel(this._body, 'body', body);
+    },
+
+    _setLabel(label, prop, value) {
+        Object.assign(label, { text: value || '', visible: value != null });
+        this.notify(prop);
+    },
+
+    insertBeforeBody: function(actor) {
+        this.messageBox.insert_child_below(actor, this._body);
+    }
 });
