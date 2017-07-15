@@ -69,7 +69,7 @@ const ListItem = new Lang.Class({
 
         let layout = new St.BoxLayout({ vertical: false});
 
-        this.actor = new St.Button({ style_class: 'show-processes-dialog-app-list-item',
+        this.actor = new St.Button({ style_class: 'mount-dialog-app-list-item',
                                      can_focus: true,
                                      child: layout,
                                      reactive: true,
@@ -78,12 +78,12 @@ const ListItem = new Lang.Class({
 
         this._icon = this._app.create_icon_texture(LIST_ITEM_ICON_SIZE);
 
-        let iconBin = new St.Bin({ style_class: 'show-processes-dialog-app-list-item-icon',
+        let iconBin = new St.Bin({ style_class: 'mount-dialog-app-list-item-icon',
                                    child: this._icon });
         layout.add(iconBin);
 
         this._nameLabel = new St.Label({ text: this._app.get_name(),
-                                         style_class: 'show-processes-dialog-app-list-item-name' });
+                                         style_class: 'mount-dialog-app-list-item-name' });
         let labelBin = new St.Bin({ y_align: St.Align.MIDDLE,
                                     child: this._nameLabel });
         layout.add(labelBin);
@@ -282,7 +282,7 @@ const ShellMountQuestionDialog = new Lang.Class({
     Extends: ModalDialog.ModalDialog,
 
     _init: function(gicon) {
-        this.parent({ styleClass: 'mount-question-dialog' });
+        this.parent({ styleClass: 'mount-dialog' });
 
         let mainContentLayout = new St.BoxLayout();
         this.contentLayout.add(mainContentLayout, { x_fill: true,
@@ -299,7 +299,7 @@ const ShellMountQuestionDialog = new Lang.Class({
         mainContentLayout.add(messageLayout,
                               { y_align: St.Align.START });
 
-        this.subjectLabel = new St.Label({ style_class: 'mount-question-dialog-subject' });
+        this.subjectLabel = new St.Label({ style_class: 'mount-dialog-subject' });
         this.subjectLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.subjectLabel.clutter_text.line_wrap = true;
 
@@ -307,7 +307,7 @@ const ShellMountQuestionDialog = new Lang.Class({
                           { y_fill:  false,
                             y_align: St.Align.START });
 
-        this.descriptionLabel = new St.Label({ style_class: 'mount-question-dialog-description' });
+        this.descriptionLabel = new St.Label({ style_class: 'mount-dialog-description' });
         this.descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.descriptionLabel.clutter_text.line_wrap = true;
 
@@ -436,7 +436,7 @@ const ShellProcessesDialog = new Lang.Class({
     Extends: ModalDialog.ModalDialog,
 
     _init: function(gicon) {
-        this.parent({ styleClass: 'show-processes-dialog' });
+        this.parent({ styleClass: 'mount-dialog' });
 
         let mainContentLayout = new St.BoxLayout();
         this.contentLayout.add(mainContentLayout, { x_fill: true,
@@ -453,13 +453,13 @@ const ShellProcessesDialog = new Lang.Class({
         mainContentLayout.add(messageLayout,
                               { y_align: St.Align.START });
 
-        this.subjectLabel = new St.Label({ style_class: 'show-processes-dialog-subject' });
+        this.subjectLabel = new St.Label({ style_class: 'mount-dialog-subject' });
 
         messageLayout.add(this.subjectLabel,
                           { y_fill:  false,
                             y_align: St.Align.START });
 
-        this.descriptionLabel = new St.Label({ style_class: 'show-processes-dialog-description' });
+        this.descriptionLabel = new St.Label({ style_class: 'mount-dialog-description' });
         this.descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.descriptionLabel.clutter_text.line_wrap = true;
 
@@ -467,7 +467,7 @@ const ShellProcessesDialog = new Lang.Class({
                           { y_fill:  true,
                             y_align: St.Align.START });
 
-        let scrollView = new St.ScrollView({ style_class: 'show-processes-dialog-app-list'});
+        let scrollView = new St.ScrollView({ style_class: 'mount-dialog-app-list'});
         scrollView.set_policy(Gtk.PolicyType.NEVER,
                               Gtk.PolicyType.AUTOMATIC);
         this.contentLayout.add(scrollView,
