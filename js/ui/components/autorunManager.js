@@ -63,8 +63,7 @@ function startAppForMount(app, mount) {
 
     try {
         retval = app.launch(files, 
-                            global.create_app_launch_context(0, -1),
-                            false)
+                            global.create_app_launch_context(0, -1));
     } catch (e) {
         log('Unable to launch the application ' + app.get_name()
             + ': ' + e.toString());

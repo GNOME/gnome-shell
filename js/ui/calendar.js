@@ -920,7 +920,7 @@ const EventsSection = new Lang.Class({
         let app = this._getCalendarApp();
         if (app.get_id() == 'evolution.desktop')
             app = Gio.DesktopAppInfo.new('evolution-calendar.desktop');
-        app.launch([], global.create_app_launch_context(0, -1), false);
+        app.launch([], global.create_app_launch_context(0, -1));
     },
 
     setDate: function(date) {
