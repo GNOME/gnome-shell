@@ -31,7 +31,7 @@ const AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(actionId, message, cookie, userNames) {
+    _init: function(actionId, body, cookie, userNames) {
         this.parent({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
