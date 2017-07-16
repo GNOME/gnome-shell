@@ -489,6 +489,14 @@ StScrollBar {
   color: #8e8e80;
   font-weight: bold; }
 
+/* Extension Dialog */
+.extension-dialog .message-dialog-main-layout {
+  spacing: 24px;
+  padding: 10px; }
+
+.extension-dialog .message-dialog-title {
+  color: #b2b2a9; }
+
 /* Network Agent Dialog */
 .network-dialog-secret-table {
   spacing-rows: 15px;

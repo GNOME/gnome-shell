@@ -203,7 +203,7 @@ const InstallExtensionDialog = new Lang.Class({
 
         let message = _("Download and install “%s” from extensions.gnome.org?").format(info.name);
 
-        let box = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
+        let box = new St.BoxLayout({ style_class: 'message-dialog-main-layout',
                                      vertical: false });
         this.contentLayout.add(box);
 
@@ -211,7 +211,7 @@ const InstallExtensionDialog = new Lang.Class({
         let icon = new St.Icon({ gicon: gicon });
         box.add(icon);
 
-        let label = new St.Label({ style_class: 'prompt-dialog-headline headline',
+        let label = new St.Label({ style_class: 'message-dialog-title headline',
                                    text: message });
         box.add(label);
     },
