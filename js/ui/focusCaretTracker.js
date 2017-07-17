@@ -47,18 +47,17 @@ const FocusCaretTracker = new Lang.Class({
     },
 
     _initAtspi: function() {
-        if (!this._atspiInited) {
-            Atspi.init();
+        if (!this._atspiInited && Atspi.init() == 0) {
             Atspi.set_timeout(250, 250);
             this._atspiInited = true;
         }
+
+	return this._atspiInited;
     },
 
     registerFocusListener: function() {
-        if (this._focusListenerRegistered)
+        if (!this._initAtspi() || this._focusListenerRegistered)
             return;
-
-        this._initAtspi();
 
         this._atspiListener.register(STATECHANGED + ':focused');
         this._atspiListener.register(STATECHANGED + ':selected');
@@ -66,10 +65,8 @@ const FocusCaretTracker = new Lang.Class({
     },
 
     registerCaretListener: function() {
-        if (this._caretListenerRegistered)
+        if (!this._initAtspi() || this._caretListenerRegistered)
             return;
-
-        this._initAtspi();
 
         this._atspiListener.register(CARETMOVED);
         this._caretListenerRegistered = true;
