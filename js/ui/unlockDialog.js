@@ -493,6 +493,13 @@ var UnlockDialog = GObject.registerClass({
 
         this._gdmClient = new Gdm.Client();
 
+        try {
+            this._gdmClient.set_enabled_extensions([
+                Gdm.UserVerifierChoiceList.interface_info().name,
+            ]);
+        } catch (e) {
+        }
+
         this._adjustment = new St.Adjustment({
             actor: this,
             lower: 0,

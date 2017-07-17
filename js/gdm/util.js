@@ -237,6 +237,10 @@ var ShellUserVerifier = class {
             this._disconnectSignals();
             this._userVerifier.run_dispose();
             this._userVerifier = null;
+            if (this._userVerifierChoiceList) {
+                this._userVerifierChoiceList.run_dispose();
+                this._userVerifierChoiceList = null;
+            }
         }
     }
 
@@ -265,6 +269,10 @@ var ShellUserVerifier = class {
             credentialManager.disconnect(credentialManager._authenticatedSignalId);
             credentialManager = null;
         }
+    }
+
+    selectChoice(serviceName, key) {
+        this._userVerifierChoiceList.call_select_choice(serviceName, key, this._cancellable, null);
     }
 
     answerQuery(serviceName, answer) {
@@ -453,6 +461,11 @@ var ShellUserVerifier = class {
             return;
         }
 
+        if (this._client.get_user_verifier_choice_list)
+            this._userVerifierChoiceList = this._client.get_user_verifier_choice_list();
+        else
+            this._userVerifierChoiceList = null;
+
         this.reauthenticating = true;
         this._connectSignals();
         this._beginVerification();
@@ -470,6 +483,11 @@ var ShellUserVerifier = class {
             this._reportInitError('Failed to obtain user verifier', e);
             return;
         }
+
+        if (this._client.get_user_verifier_choice_list)
+            this._userVerifierChoiceList = this._client.get_user_verifier_choice_list();
+        else
+            this._userVerifierChoiceList = null;
 
         this._connectSignals();
         this._beginVerification();
@@ -496,6 +514,9 @@ var ShellUserVerifier = class {
         this._signalIds.push(id);
         id = this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._signalIds.push(id);
+
+        if (this._userVerifierChoiceList)
+            this._userVerifierChoiceList.connect('choice-query', this._onChoiceListQuery.bind(this));
     }
 
     _disconnectSignals() {
@@ -574,6 +595,13 @@ var ShellUserVerifier = class {
             this._fingerprintReaderType !== FingerprintReaderType.NONE &&
             !this.serviceIsForeground(FINGERPRINT_SERVICE_NAME))
             this._startService(FINGERPRINT_SERVICE_NAME);
+    }
+
+    _onChoiceListQuery(client, serviceName, promptMessage, list) {
+        if (!this.serviceIsForeground(serviceName))
+            return;
+
+        this.emit('show-choice-list', serviceName, promptMessage, list.deep_unpack());
     }
 
     _onInfo(client, serviceName, info) {

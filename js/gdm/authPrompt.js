@@ -4,6 +4,7 @@
 const { Clutter, GLib, GObject, Pango, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
+const AuthList = imports.gdm.authList;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const OVirt = imports.gdm.oVirt;
@@ -73,6 +74,7 @@ var AuthPrompt = GObject.registerClass({
 
         this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
         this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
+        this._userVerifier.connect('show-choice-list', this._onShowChoiceList.bind(this));
         this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
         this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
         this._userVerifier.connect('reset', this._onReset.bind(this));
@@ -90,7 +92,7 @@ var AuthPrompt = GObject.registerClass({
 
         this._hasCancelButton = this._mode === AuthPromptMode.UNLOCK_OR_LOG_IN;
 
-        this._initEntryRow();
+        this._initInputRow();
 
         let capsLockPlaceholder = new St.Label();
         this.add_child(capsLockPlaceholder);
@@ -129,7 +131,7 @@ var AuthPrompt = GObject.registerClass({
         return super.vfunc_key_press_event(keyPressEvent);
     }
 
-    _initEntryRow() {
+    _initInputRow() {
         this._mainBox = new St.BoxLayout({
             style_class: 'login-dialog-button-box',
             vertical: false,
@@ -151,6 +153,25 @@ var AuthPrompt = GObject.registerClass({
         else
             this.cancelButton.opacity = 0;
         this._mainBox.add_child(this.cancelButton);
+
+        this._authList = new AuthList.AuthList();
+        this._authList.set({
+            visible: false,
+        });
+        this._authList.connect('activate', (list, key) => {
+            this._authList.reactive = false;
+            this._authList.ease({
+                opacity: 0,
+                duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    this._authList.clear();
+                    this._authList.hide();
+                    this._userVerifier.selectChoice(this._queryingService, key);
+                },
+            });
+        });
+        this._mainBox.add_child(this._authList);
 
         let entryParams = {
             style_class: 'login-dialog-prompt-entry',
@@ -290,6 +311,20 @@ var AuthPrompt = GObject.registerClass({
         this.emit('prompted');
     }
 
+    _onShowChoiceList(userVerifier, serviceName, promptMessage, choiceList) {
+        if (this._queryingService)
+            this.clear();
+
+        this._queryingService = serviceName;
+
+        if (this._preemptiveAnswer)
+            this._preemptiveAnswer = null;
+
+        this.setChoiceList(promptMessage, choiceList);
+        this.updateSensitivity(true);
+        this.emit('prompted');
+    }
+
     _onCredentialManagerAuthenticated() {
         if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
@@ -425,13 +460,44 @@ var AuthPrompt = GObject.registerClass({
     clear() {
         this._entry.text = '';
         this.stopSpinning();
+        this._authList.clear();
+        this._authList.hide();
     }
 
     setQuestion(question) {
         this._entry.hint_text = question;
 
+        this._authList.hide();
         this._entry.show();
         this._entry.grab_key_focus();
+    }
+
+    _fadeInChoiceList() {
+        this._authList.set({
+            opacity: 0,
+            visible: true,
+            reactive: false,
+        });
+        this._authList.ease({
+            opacity: 255,
+            duration: MESSAGE_FADE_OUT_ANIMATION_TIME,
+            transition: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => (this._authList.reactive = true),
+        });
+    }
+
+    setChoiceList(promptMessage, choiceList) {
+        this._authList.clear();
+        this._authList.label.text = promptMessage;
+        for (let key in choiceList) {
+            let text = choiceList[key];
+            this._authList.addItem(key, text);
+        }
+
+        this._entry.hide();
+        if (this._message.text === '')
+            this._message.hide();
+        this._fadeInChoiceList();
     }
 
     getAnswer() {
@@ -469,6 +535,7 @@ var AuthPrompt = GObject.registerClass({
         else
             this._message.remove_style_class_name('login-dialog-message-hint');
 
+        this._message.show();
         if (message) {
             this._message.remove_all_transitions();
             this._message.text = message;
