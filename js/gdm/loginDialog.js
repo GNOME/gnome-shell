@@ -418,6 +418,11 @@ var LoginDialog = new Lang.Class({
         this._userManager = AccountsService.UserManager.get_default()
         this._gdmClient = new Gdm.Client();
 
+        try {
+            this._gdmClient.set_enabled_extensions([Gdm.UserVerifierChoiceList.interface_info().name]);
+        } catch(e) {
+        }
+
         this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
         this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_KEY,
