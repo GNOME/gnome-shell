@@ -8,6 +8,7 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Animation = imports.ui.animation;
+const AuthList = imports.gdm.authList;
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const Params = imports.misc.params;
@@ -57,6 +58,7 @@ var AuthPrompt = new Lang.Class({
 
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._onShowMessage));
+        this._userVerifier.connect('show-choice-list', Lang.bind(this, this._onShowChoiceList));
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
         this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
@@ -116,6 +118,17 @@ var AuthPrompt = new Lang.Class({
         this._message.clutter_text.line_wrap = true;
         this._message.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         this.actor.add(this._message, { x_fill: false, x_align: St.Align.START, y_align: St.Align.START });
+
+        this._authList = new AuthList.AuthList();
+        this._authList.connect('activate', (list, key) => {
+            this._userVerifier.selectChoice(this._queryingService, key);
+        });
+        this._authList.actor.hide();
+        this.actor.add(this._authList.actor,
+                       { expand: true,
+                         x_fill: true,
+                         y_fill: false,
+                         x_align: St.Align.START });
 
         this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
                                              vertical: false });
@@ -218,6 +231,21 @@ var AuthPrompt = new Lang.Class({
             this.nextButton.label = _("Next");
         }
 
+        this.updateSensitivity(true);
+        this.emit('prompted');
+    },
+
+    _onShowChoiceList: function(userVerifier, serviceName, choiceList) {
+        if (this._queryingService)
+            this.clear();
+
+        this._queryingService = serviceName;
+
+        if (this._preemptiveAnswer)
+            this._preemptiveAnswer = null;
+
+        this.nextButton.label = _("Next");
+        this.setChoiceList(choiceList);
         this.updateSensitivity(true);
         this.emit('prompted');
     },
@@ -350,6 +378,8 @@ var AuthPrompt = new Lang.Class({
     clear: function() {
         this._entry.text = '';
         this.stopSpinning();
+        this._authList.clear();
+        this._authList.actor.hide();
     },
 
     setPasswordChar: function(passwordChar) {
@@ -360,10 +390,23 @@ var AuthPrompt = new Lang.Class({
     setQuestion: function(question) {
         this._label.set_text(question);
 
+        this._authList.actor.hide();
         this._label.show();
         this._entry.show();
 
         this._entry.grab_key_focus();
+    },
+
+    setChoiceList: function(choiceList) {
+        this._label.hide();
+        this._entry.hide();
+
+        this._authList.clear();
+        for (let key in choiceList) {
+            let text = choiceList[key];
+            this._authList.addItem(key, text);
+        }
+        this._authList.actor.show();
     },
 
     getAnswer: function() {
@@ -416,7 +459,7 @@ var AuthPrompt = new Lang.Class({
     },
 
     updateSensitivity: function(sensitive) {
-        this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING));
+        this._updateNextButtonSensitivity(sensitive && !this._authList.actor.visible && (this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING));
         this._entry.reactive = sensitive;
         this._entry.clutter_text.editable = sensitive;
     },
