@@ -276,6 +276,13 @@ var IconGrid = new Lang.Class({
         this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
         this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
 
+        // Cancel animations when hiding the overview, to avoid icons
+        // swarming into the void ...
+        this.actor.connect('notify::mapped', () => {
+            if (!this.actor.mapped)
+                this._cancelAnimation();
+        });
+
         this._grid.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._grid.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this._grid.connect('allocate', Lang.bind(this, this._allocate));
