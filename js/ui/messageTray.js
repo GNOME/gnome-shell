@@ -1042,7 +1042,7 @@ const MessageTray = new Lang.Class({
     },
 
     getSources: function() {
-        return [k for (k of this._sources.keys())];
+        return [...this._sources.keys()];
     },
 
     _onSourceEnableChanged: function(policy, source) {
