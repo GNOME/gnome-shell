@@ -103,7 +103,7 @@
     </key>
 
     <key name="experimental-features" type="as">
-      <default>[]</default>
+      <default>['monitor-config-manager']</default>
       <summary>Enable experimental features</summary>
       <description>
         To enable experimental features, add the feature keyword to the list.
