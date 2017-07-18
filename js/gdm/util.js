@@ -119,7 +119,7 @@ function cloneAndFadeOutActor(actor) {
     return hold;
 }
 
-const ShellUserVerifier = new Lang.Class({
+var ShellUserVerifier = new Lang.Class({
     Name: 'ShellUserVerifier',
 
     _init: function(client, params) {

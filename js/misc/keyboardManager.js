@@ -38,7 +38,7 @@ function holdKeyboard() {
     global.display.freeze_keyboard(global.get_current_time());
 }
 
-const KeyboardManager = new Lang.Class({
+var KeyboardManager = new Lang.Class({
     Name: 'KeyboardManager',
 
     // The XKB protocol doesn't allow for more that 4 layouts in a

@@ -21,7 +21,7 @@ const ShellEntry = imports.ui.shellEntry;
 
 const VPN_UI_GROUP = 'VPN Plugin UI';
 
-const NetworkSecretDialog = new Lang.Class({
+var NetworkSecretDialog = new Lang.Class({
     Name: 'NetworkSecretDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -329,7 +329,7 @@ const NetworkSecretDialog = new Lang.Class({
     }
 });
 
-const VPNRequestHandler = new Lang.Class({
+var VPNRequestHandler = new Lang.Class({
     Name: 'VPNRequestHandler',
 
     _init: function(agent, requestId, authHelper, serviceType, connection, hints, flags) {
@@ -575,7 +575,7 @@ const VPNRequestHandler = new Lang.Class({
     },
 });
 
-const NetworkAgent = new Lang.Class({
+var NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
 
     _init: function() {

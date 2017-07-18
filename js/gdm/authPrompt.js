@@ -38,7 +38,7 @@ const BeginRequestType = {
     DONT_PROVIDE_USERNAME: 1
 };
 
-const AuthPrompt = new Lang.Class({
+var AuthPrompt = new Lang.Class({
     Name: 'AuthPrompt',
 
     _init: function(gdmClient, mode) {

@@ -102,7 +102,7 @@ function getLoginManager() {
     return _loginManager;
 }
 
-const LoginManagerSystemd = new Lang.Class({
+var LoginManagerSystemd = new Lang.Class({
     Name: 'LoginManagerSystemd',
 
     _init: function() {
@@ -183,7 +183,7 @@ const LoginManagerSystemd = new Lang.Class({
 });
 Signals.addSignalMethods(LoginManagerSystemd.prototype);
 
-const LoginManagerDummy = new Lang.Class({
+var LoginManagerDummy = new Lang.Class({
     Name: 'LoginManagerDummy',
 
     getCurrentSessionProxy: function(callback) {

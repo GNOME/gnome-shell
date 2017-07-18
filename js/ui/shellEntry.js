@@ -10,7 +10,7 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-const EntryMenu = new Lang.Class({
+var EntryMenu = new Lang.Class({
     Name: 'ShellEntryMenu',
     Extends: PopupMenu.PopupMenu,
 

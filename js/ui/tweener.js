@@ -162,7 +162,7 @@ function registerSpecialPropertySplitter(name, splitFunction, parameters) {
 // time updates; even better is to pay attention to the vertical
 // vblank and sync to that when possible.)
 //
-const ClutterFrameTicker = new Lang.Class({
+var ClutterFrameTicker = new Lang.Class({
     Name: 'ClutterFrameTicker',
 
     FRAME_RATE : 60,

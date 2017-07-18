@@ -28,7 +28,7 @@ const AudioDeviceSelectionIface = '<node> \
 </interface> \
 </node>';
 
-const AudioDeviceSelectionDialog = new Lang.Class({
+var AudioDeviceSelectionDialog = new Lang.Class({
     Name: 'AudioDeviceSelectionDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -146,7 +146,7 @@ const AudioDeviceSelectionDialog = new Lang.Class({
     }
 });
 
-const AudioDeviceSelectionDBus = new Lang.Class({
+var AudioDeviceSelectionDBus = new Lang.Class({
     Name: 'AudioDeviceSelectionDBus',
 
     _init: function() {

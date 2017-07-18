@@ -90,7 +90,7 @@ function HotplugSniffer() {
                                    '/org/gnome/Shell/HotplugSniffer');
 }
 
-const ContentTypeDiscoverer = new Lang.Class({
+var ContentTypeDiscoverer = new Lang.Class({
     Name: 'ContentTypeDiscoverer',
 
     _init: function(callback) {
@@ -159,7 +159,7 @@ const ContentTypeDiscoverer = new Lang.Class({
     }
 });
 
-const AutorunManager = new Lang.Class({
+var AutorunManager = new Lang.Class({
     Name: 'AutorunManager',
 
     _init: function() {
@@ -196,7 +196,7 @@ const AutorunManager = new Lang.Class({
     }
 });
 
-const AutorunDispatcher = new Lang.Class({
+var AutorunDispatcher = new Lang.Class({
     Name: 'AutorunDispatcher',
 
     _init: function(manager) {
@@ -292,7 +292,7 @@ const AutorunDispatcher = new Lang.Class({
     }
 });
 
-const AutorunSource = new Lang.Class({
+var AutorunSource = new Lang.Class({
     Name: 'AutorunSource',
     Extends: MessageTray.Source,
 
@@ -319,7 +319,7 @@ const AutorunSource = new Lang.Class({
     }
 });
 
-const AutorunNotification = new Lang.Class({
+var AutorunNotification = new Lang.Class({
     Name: 'AutorunNotification',
     Extends: MessageTray.Notification,
 

@@ -20,7 +20,7 @@ const WORK_SPINNER_ICON_SIZE = 16;
 const WORK_SPINNER_ANIMATION_DELAY = 1.0;
 const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
-const KeyringDialog = new Lang.Class({
+var KeyringDialog = new Lang.Class({
     Name: 'KeyringDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -258,7 +258,7 @@ const KeyringDialog = new Lang.Class({
     },
 });
 
-const KeyringDummyDialog = new Lang.Class({
+var KeyringDummyDialog = new Lang.Class({
     Name: 'KeyringDummyDialog',
 
     _init: function() {
@@ -274,7 +274,7 @@ const KeyringDummyDialog = new Lang.Class({
     }
 });
 
-const KeyringPrompter = new Lang.Class({
+var KeyringPrompter = new Lang.Class({
     Name: 'KeyringPrompter',
 
     _init: function() {

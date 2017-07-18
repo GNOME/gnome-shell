@@ -50,7 +50,7 @@ const HelperDBusInterface = '<node> \
 </interface> \
 </node>';
 
-const PortalHeaderBar = new Lang.Class({
+var PortalHeaderBar = new Lang.Class({
     Name: 'PortalHeaderBar',
     Extends: Gtk.HeaderBar,
 
@@ -115,7 +115,7 @@ const PortalHeaderBar = new Lang.Class({
     },
 });
 
-const PortalWindow = new Lang.Class({
+var PortalWindow = new Lang.Class({
     Name: 'PortalWindow',
     Extends: Gtk.ApplicationWindow,
 
@@ -282,7 +282,7 @@ const PortalWindow = new Lang.Class({
     },
 });
 
-const WebPortalHelper = new Lang.Class({
+var WebPortalHelper = new Lang.Class({
     Name: 'WebPortalHelper',
     Extends: Gtk.Application,
 

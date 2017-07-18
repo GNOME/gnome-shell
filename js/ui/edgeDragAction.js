@@ -11,7 +11,7 @@ const Main = imports.ui.main;
 const EDGE_THRESHOLD = 20;
 const DRAG_DISTANCE = 80;
 
-const EdgeDragAction = new Lang.Class({
+var EdgeDragAction = new Lang.Class({
     Name: 'EdgeDragAction',
     Extends: Clutter.GestureAction,
     Signals: { 'activated': {} },

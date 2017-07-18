@@ -59,7 +59,7 @@ function _getAutoCompleteGlobalKeywords() {
     return keywords.concat(windowProperties).concat(headerProperties);
 }
 
-const AutoComplete = new Lang.Class({
+var AutoComplete = new Lang.Class({
     Name: 'AutoComplete',
 
     _init: function(entry) {
@@ -125,7 +125,7 @@ const AutoComplete = new Lang.Class({
 Signals.addSignalMethods(AutoComplete.prototype);
 
 
-const Notebook = new Lang.Class({
+var Notebook = new Lang.Class({
     Name: 'Notebook',
 
     _init: function() {
@@ -263,7 +263,7 @@ function objectToString(o) {
     }
 }
 
-const ObjLink = new Lang.Class({
+var ObjLink = new Lang.Class({
     Name: 'ObjLink',
 
     _init: function(lookingGlass, o, title) {
@@ -290,7 +290,7 @@ const ObjLink = new Lang.Class({
     }
 });
 
-const Result = new Lang.Class({
+var Result = new Lang.Class({
     Name: 'Result',
 
     _init: function(lookingGlass, command, o, index) {
@@ -313,7 +313,7 @@ const Result = new Lang.Class({
     }
 });
 
-const WindowList = new Lang.Class({
+var WindowList = new Lang.Class({
     Name: 'WindowList',
 
     _init: function(lookingGlass) {
@@ -361,7 +361,7 @@ const WindowList = new Lang.Class({
 });
 Signals.addSignalMethods(WindowList.prototype);
 
-const ObjInspector = new Lang.Class({
+var ObjInspector = new Lang.Class({
     Name: 'ObjInspector',
 
     _init: function(lookingGlass) {
@@ -471,7 +471,7 @@ const ObjInspector = new Lang.Class({
     }
 });
 
-const RedBorderEffect = new Lang.Class({
+var RedBorderEffect = new Lang.Class({
     Name: 'RedBorderEffect',
     Extends: Clutter.Effect,
 
@@ -497,7 +497,7 @@ const RedBorderEffect = new Lang.Class({
     },
 });
 
-const Inspector = new Lang.Class({
+var Inspector = new Lang.Class({
     Name: 'Inspector',
 
     _init: function(lookingGlass) {
@@ -631,7 +631,7 @@ const Inspector = new Lang.Class({
 
 Signals.addSignalMethods(Inspector.prototype);
 
-const Extensions = new Lang.Class({
+var Extensions = new Lang.Class({
     Name: 'Extensions',
 
     _init: function(lookingGlass) {
@@ -774,7 +774,7 @@ const Extensions = new Lang.Class({
     }
 });
 
-const LookingGlass = new Lang.Class({
+var LookingGlass = new Lang.Class({
     Name: 'LookingGlass',
 
     _init : function() {

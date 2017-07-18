@@ -24,7 +24,7 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const MAX_LIST_SEARCH_RESULTS_ROWS = 5;
 const MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
-const MaxWidthBin = new Lang.Class({
+var MaxWidthBin = new Lang.Class({
     Name: 'MaxWidthBin',
     Extends: St.Bin,
 
@@ -44,7 +44,7 @@ const MaxWidthBin = new Lang.Class({
     }
 });
 
-const SearchResult = new Lang.Class({
+var SearchResult = new Lang.Class({
     Name: 'SearchResult',
 
     _init: function(provider, metaInfo, resultsView) {
@@ -68,7 +68,7 @@ const SearchResult = new Lang.Class({
 });
 Signals.addSignalMethods(SearchResult.prototype);
 
-const ListSearchResult = new Lang.Class({
+var ListSearchResult = new Lang.Class({
     Name: 'ListSearchResult',
     Extends: SearchResult,
 
@@ -136,7 +136,7 @@ const ListSearchResult = new Lang.Class({
     }
 });
 
-const GridSearchResult = new Lang.Class({
+var GridSearchResult = new Lang.Class({
     Name: 'GridSearchResult',
     Extends: SearchResult,
 
@@ -153,7 +153,7 @@ const GridSearchResult = new Lang.Class({
     }
 });
 
-const SearchResultsBase = new Lang.Class({
+var SearchResultsBase = new Lang.Class({
     Name: 'SearchResultsBase',
 
     _init: function(provider, resultsView) {
@@ -285,7 +285,7 @@ const SearchResultsBase = new Lang.Class({
     }
 });
 
-const ListSearchResults = new Lang.Class({
+var ListSearchResults = new Lang.Class({
     Name: 'ListSearchResults',
     Extends: SearchResultsBase,
 
@@ -344,7 +344,7 @@ const ListSearchResults = new Lang.Class({
 });
 Signals.addSignalMethods(ListSearchResults.prototype);
 
-const GridSearchResults = new Lang.Class({
+var GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
     Extends: SearchResultsBase,
 
@@ -393,7 +393,7 @@ const GridSearchResults = new Lang.Class({
 });
 Signals.addSignalMethods(GridSearchResults.prototype);
 
-const SearchResults = new Lang.Class({
+var SearchResults = new Lang.Class({
     Name: 'SearchResults',
 
     _init: function() {
@@ -719,7 +719,7 @@ const SearchResults = new Lang.Class({
 });
 Signals.addSignalMethods(SearchResults.prototype);
 
-const ProviderInfo = new Lang.Class({
+var ProviderInfo = new Lang.Class({
     Name: 'ProviderInfo',
     Extends: St.Button,
 

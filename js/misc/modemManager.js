@@ -130,7 +130,7 @@ const ModemCdmaInterface = '<node> \
 
 const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
 
-const ModemGsm = new Lang.Class({
+var ModemGsm = new Lang.Class({
     Name: 'ModemGsm',
 
     _init: function(path) {
@@ -172,7 +172,7 @@ const ModemGsm = new Lang.Class({
 });
 Signals.addSignalMethods(ModemGsm.prototype);
 
-const ModemCdma = new Lang.Class({
+var ModemCdma = new Lang.Class({
     Name: 'ModemCdma',
 
     _init: function(path) {
@@ -244,7 +244,7 @@ const BroadbandModemCdmaInterface = '<node> \
 </node>';
 const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdmaInterface);
 
-const BroadbandModem = new Lang.Class({
+var BroadbandModem = new Lang.Class({
     Name: 'BroadbandModem',
 
     _init: function(path, capabilities) {

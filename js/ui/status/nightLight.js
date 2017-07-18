@@ -19,7 +19,7 @@ const ColorInterface = '<node> \
 
 const ColorProxy = Gio.DBusProxy.makeProxyWrapper(ColorInterface);
 
-const Indicator = new Lang.Class({
+var Indicator = new Lang.Class({
     Name: 'NightLightIndicator',
     Extends: PanelMenu.SystemIndicator,
 

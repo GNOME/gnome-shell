@@ -2,7 +2,7 @@
 const Lang = imports.lang;
 const Main = imports.ui.main;
 
-const ComponentManager = new Lang.Class({
+var ComponentManager = new Lang.Class({
     Name: 'ComponentManager',
 
     _init: function() {

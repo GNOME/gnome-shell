@@ -38,7 +38,7 @@ function _removeItem(menu, position) {
     items[position].destroy();
 }
 
-const RemoteMenuSeparatorItemMapper = new Lang.Class({
+var RemoteMenuSeparatorItemMapper = new Lang.Class({
     Name: 'RemoteMenuSeparatorItemMapper',
 
     _init: function(trackerItem) {
@@ -57,7 +57,7 @@ const RemoteMenuSeparatorItemMapper = new Lang.Class({
     },
 });
 
-const RequestSubMenu = new Lang.Class({
+var RequestSubMenu = new Lang.Class({
     Name: 'RequestSubMenu',
     Extends: PopupMenu.PopupSubMenuMenuItem,
 
@@ -76,7 +76,7 @@ const RequestSubMenu = new Lang.Class({
     },
 });
 
-const RemoteMenuSubmenuItemMapper = new Lang.Class({
+var RemoteMenuSubmenuItemMapper = new Lang.Class({
     Name: 'RemoteMenuSubmenuItemMapper',
 
     _init: function(trackerItem) {
@@ -112,7 +112,7 @@ const RemoteMenuSubmenuItemMapper = new Lang.Class({
     },
 });
 
-const RemoteMenuItemMapper = new Lang.Class({
+var RemoteMenuItemMapper = new Lang.Class({
     Name: 'RemoteMenuItemMapper',
 
     _init: function(trackerItem) {
@@ -176,7 +176,7 @@ const RemoteMenuItemMapper = new Lang.Class({
     },
 });
 
-const RemoteMenu = new Lang.Class({
+var RemoteMenu = new Lang.Class({
     Name: 'RemoteMenu',
     Extends: PopupMenu.PopupMenu,
 

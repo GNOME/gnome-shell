@@ -79,7 +79,7 @@ const ScreenSaverIface = '<node> \
 </interface> \
 </node>';
 
-const GnomeShell = new Lang.Class({
+var GnomeShell = new Lang.Class({
     Name: 'GnomeShellDBus',
 
     _init: function() {
@@ -326,7 +326,7 @@ const GnomeShellExtensionsIface = '<node> \
 </interface> \
 </node>';
 
-const GnomeShellExtensions = new Lang.Class({
+var GnomeShellExtensions = new Lang.Class({
     Name: 'GnomeShellExtensionsDBus',
 
     _init: function() {
@@ -432,7 +432,7 @@ const GnomeShellExtensions = new Lang.Class({
     }
 });
 
-const ScreenSaverDBus = new Lang.Class({
+var ScreenSaverDBus = new Lang.Class({
     Name: 'ScreenSaverDBus',
 
     _init: function(screenShield) {

@@ -27,7 +27,7 @@ const KEYBOARD_TYPE = 'keyboard-type';
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
-const Key = new Lang.Class({
+var Key = new Lang.Class({
     Name: 'Key',
 
     _init : function(key) {
@@ -153,7 +153,7 @@ const Key = new Lang.Class({
 });
 Signals.addSignalMethods(Key.prototype);
 
-const Keyboard = new Lang.Class({
+var Keyboard = new Lang.Class({
     Name: 'Keyboard',
 
     _init: function () {
@@ -731,7 +731,7 @@ const Keyboard = new Lang.Class({
     },
 });
 
-const KeyboardSource = new Lang.Class({
+var KeyboardSource = new Lang.Class({
     Name: 'KeyboardSource',
     Extends: MessageTray.Source,
 
@@ -752,7 +752,7 @@ const KeyboardSource = new Lang.Class({
     }
 });
 
-const LocalAdapter = new Lang.Class({
+var LocalAdapter = new Lang.Class({
     Name: 'LocalAdapter',
     Extends: Caribou.XAdapter,
 

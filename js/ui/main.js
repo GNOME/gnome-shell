@@ -669,7 +669,7 @@ function queueDeferredWork(workId) {
     }
 }
 
-const RestartMessage = new Lang.Class({
+var RestartMessage = new Lang.Class({
     Name: 'RestartMessage',
     Extends: ModalDialog.ModalDialog,
 

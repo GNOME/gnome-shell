@@ -181,7 +181,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
     callback(loadedProviders);
 }
 
-const RemoteSearchProvider = new Lang.Class({
+var RemoteSearchProvider = new Lang.Class({
     Name: 'RemoteSearchProvider',
 
     _init: function(appInfo, dbusName, dbusPath, proxyInfo) {
@@ -303,7 +303,7 @@ const RemoteSearchProvider = new Lang.Class({
     }
 });
 
-const RemoteSearchProvider2 = new Lang.Class({
+var RemoteSearchProvider2 = new Lang.Class({
     Name: 'RemoteSearchProvider2',
     Extends: RemoteSearchProvider,
 

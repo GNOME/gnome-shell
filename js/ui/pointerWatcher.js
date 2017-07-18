@@ -22,7 +22,7 @@ function getPointerWatcher() {
     return _pointerWatcher;
 }
 
-const PointerWatch = new Lang.Class({
+var PointerWatch = new Lang.Class({
     Name: 'PointerWatch',
 
     _init: function(watcher, interval, callback) {
@@ -39,7 +39,7 @@ const PointerWatch = new Lang.Class({
     }
 });
 
-const PointerWatcher = new Lang.Class({
+var PointerWatcher = new Lang.Class({
     Name: 'PointerWatcher',
 
     _init: function() {

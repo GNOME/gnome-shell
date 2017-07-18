@@ -38,7 +38,7 @@ const DialogResponse = {
     CLOSED: 2
 };
 
-const AccessDialog = new Lang.Class({
+var AccessDialog = new Lang.Class({
     Name: 'AccessDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -137,7 +137,7 @@ const AccessDialog = new Lang.Class({
     }
 });
 
-const AccessDialogDBus = new Lang.Class({
+var AccessDialogDBus = new Lang.Class({
     Name: 'AccessDialogDBus',
 
     _init: function() {

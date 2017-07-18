@@ -61,7 +61,7 @@ function _createIcon(gicon) {
 
 /* -------------------------------------------------------- */
 
-const ListItem = new Lang.Class({
+var ListItem = new Lang.Class({
     Name: 'ListItem',
 
     _init: function(app) {
@@ -98,7 +98,7 @@ const ListItem = new Lang.Class({
 });
 Signals.addSignalMethods(ListItem.prototype);
 
-const ShellMountOperation = new Lang.Class({
+var ShellMountOperation = new Lang.Class({
     Name: 'ShellMountOperation',
 
     _init: function(source, params) {
@@ -237,7 +237,7 @@ const ShellMountOperation = new Lang.Class({
     }
 });
 
-const ShellUnmountNotifier = new Lang.Class({
+var ShellUnmountNotifier = new Lang.Class({
     Name: 'ShellUnmountNotifier',
     Extends: MessageTray.Source,
 
@@ -277,7 +277,7 @@ const ShellUnmountNotifier = new Lang.Class({
     }
 });
 
-const ShellMountQuestionDialog = new Lang.Class({
+var ShellMountQuestionDialog = new Lang.Class({
     Name: 'ShellMountQuestionDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -295,7 +295,7 @@ const ShellMountQuestionDialog = new Lang.Class({
 });
 Signals.addSignalMethods(ShellMountQuestionDialog.prototype);
 
-const ShellMountPasswordDialog = new Lang.Class({
+var ShellMountPasswordDialog = new Lang.Class({
     Name: 'ShellMountPasswordDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -376,7 +376,7 @@ const ShellMountPasswordDialog = new Lang.Class({
     }
 });
 
-const ShellProcessesDialog = new Lang.Class({
+var ShellProcessesDialog = new Lang.Class({
     Name: 'ShellProcessesDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -480,7 +480,7 @@ const ShellMountOperationType = {
     SHOW_PROCESSES: 3
 };
 
-const GnomeShellMountOpHandler = new Lang.Class({
+var GnomeShellMountOpHandler = new Lang.Class({
     Name: 'GnomeShellMountOpHandler',
 
     _init: function() {

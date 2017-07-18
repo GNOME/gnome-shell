@@ -27,7 +27,7 @@ const WORK_SPINNER_ICON_SIZE = 16;
 const WORK_SPINNER_ANIMATION_DELAY = 1.0;
 const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
-const AuthenticationDialog = new Lang.Class({
+var AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -339,7 +339,7 @@ const AuthenticationDialog = new Lang.Class({
 });
 Signals.addSignalMethods(AuthenticationDialog.prototype);
 
-const AuthenticationAgent = new Lang.Class({
+var AuthenticationAgent = new Lang.Class({
     Name: 'AuthenticationAgent',
 
     _init: function() {

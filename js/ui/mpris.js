@@ -47,7 +47,7 @@ const MprisPlayerProxy = Gio.DBusProxy.makeProxyWrapper(MprisPlayerIface);
 
 const MPRIS_PLAYER_PREFIX = 'org.mpris.MediaPlayer2.';
 
-const MediaMessage = new Lang.Class({
+var MediaMessage = new Lang.Class({
     Name: 'MediaMessage',
     Extends: MessageList.Message,
 
@@ -111,7 +111,7 @@ const MediaMessage = new Lang.Class({
     }
 });
 
-const MprisPlayer = new Lang.Class({
+var MprisPlayer = new Lang.Class({
     Name: 'MprisPlayer',
 
     _init: function(busName) {
@@ -226,7 +226,7 @@ const MprisPlayer = new Lang.Class({
 });
 Signals.addSignalMethods(MprisPlayer.prototype);
 
-const MediaSection = new Lang.Class({
+var MediaSection = new Lang.Class({
     Name: 'MediaSection',
     Extends: MessageList.MessageListSection,
 

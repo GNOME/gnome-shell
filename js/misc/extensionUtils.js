@@ -158,7 +158,7 @@ function installImporter(extension) {
     imports.searchPath = oldSearchPath;
 }
 
-const ExtensionFinder = new Lang.Class({
+var ExtensionFinder = new Lang.Class({
     Name: 'ExtensionFinder',
 
     _loadExtension: function(extensionDir, info, perUserDir) {

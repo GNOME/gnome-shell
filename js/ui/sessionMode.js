@@ -149,7 +149,7 @@ function listModes() {
     Mainloop.run('listModes');
 }
 
-const SessionMode = new Lang.Class({
+var SessionMode = new Lang.Class({
     Name: 'SessionMode',
 
     _init: function() {

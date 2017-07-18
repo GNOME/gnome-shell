@@ -11,7 +11,7 @@ const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const RemoteMenu = imports.ui.remoteMenu;
 
-const WindowMenu = new Lang.Class({
+var WindowMenu = new Lang.Class({
     Name: 'WindowMenu',
     Extends: PopupMenu.PopupMenu,
 
@@ -165,7 +165,7 @@ const WindowMenu = new Lang.Class({
     }
 });
 
-const AppMenu = new Lang.Class({
+var AppMenu = new Lang.Class({
     Name: 'AppMenu',
     Extends: RemoteMenu.RemoteMenu,
 
@@ -184,7 +184,7 @@ const AppMenu = new Lang.Class({
     }
 });
 
-const WindowMenuManager = new Lang.Class({
+var WindowMenuManager = new Lang.Class({
     Name: 'WindowMenuManager',
 
     _init: function() {

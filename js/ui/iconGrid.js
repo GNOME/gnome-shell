@@ -34,7 +34,7 @@ const AnimationDirection = {
 const APPICON_ANIMATION_OUT_SCALE = 3;
 const APPICON_ANIMATION_OUT_TIME = 0.25;
 
-const BaseIcon = new Lang.Class({
+var BaseIcon = new Lang.Class({
     Name: 'BaseIcon',
 
     _init : function(label, params) {
@@ -240,7 +240,7 @@ function zoomOutActor(actor) {
                     });
 }
 
-const IconGrid = new Lang.Class({
+var IconGrid = new Lang.Class({
     Name: 'IconGrid',
 
     _init: function(params) {
@@ -790,7 +790,7 @@ const IconGrid = new Lang.Class({
 });
 Signals.addSignalMethods(IconGrid.prototype);
 
-const PaginatedIconGrid = new Lang.Class({
+var PaginatedIconGrid = new Lang.Class({
     Name: 'PaginatedIconGrid',
     Extends: IconGrid,
 

@@ -36,7 +36,7 @@ function getIBusManager() {
     return _ibusManager;
 }
 
-const IBusManager = new Lang.Class({
+var IBusManager = new Lang.Class({
     Name: 'IBusManager',
 
     // This is the longest we'll keep the keyboard frozen until an input

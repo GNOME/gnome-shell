@@ -27,7 +27,7 @@ function OVirtCredentials() {
     return self;
 }
 
-const OVirtCredentialsManager = new Lang.Class({
+var OVirtCredentialsManager = new Lang.Class({
     Name: 'OVirtCredentialsManager',
     _init: function() {
         this._token = null;

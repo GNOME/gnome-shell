@@ -36,7 +36,7 @@ function isPopupMetaWindow(actor) {
     }
 }
 
-const MonitorConstraint = new Lang.Class({
+var MonitorConstraint = new Lang.Class({
     Name: 'MonitorConstraint',
     Extends: Clutter.Constraint,
     Properties: {'primary': GObject.ParamSpec.boolean('primary', 
@@ -147,7 +147,7 @@ const MonitorConstraint = new Lang.Class({
     }
 });
 
-const Monitor = new Lang.Class({
+var Monitor = new Lang.Class({
     Name: 'Monitor',
 
     _init: function(index, geometry) {
@@ -169,7 +169,7 @@ const defaultParams = {
     affectsInputRegion: true
 };
 
-const LayoutManager = new Lang.Class({
+var LayoutManager = new Lang.Class({
     Name: 'LayoutManager',
 
     _init: function () {
@@ -1045,7 +1045,7 @@ Signals.addSignalMethods(LayoutManager.prototype);
 //
 // This class manages a "hot corner" that can toggle switching to
 // overview.
-const HotCorner = new Lang.Class({
+var HotCorner = new Lang.Class({
     Name: 'HotCorner',
 
     _init : function(layoutManager, monitor, x, y) {
@@ -1239,7 +1239,7 @@ const HotCorner = new Lang.Class({
     }
 });
 
-const PressureBarrier = new Lang.Class({
+var PressureBarrier = new Lang.Class({
     Name: 'PressureBarrier',
 
     _init: function(threshold, timeout, actionMode) {

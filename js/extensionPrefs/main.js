@@ -32,7 +32,7 @@ function stripPrefix(string, prefix) {
     return string;
 }
 
-const Application = new Lang.Class({
+var Application = new Lang.Class({
     Name: 'Application',
     _init: function() {
         GLib.set_prgname('gnome-shell-extension-prefs');
@@ -253,7 +253,7 @@ const Application = new Lang.Class({
     }
 });
 
-const DescriptionLabel = new Lang.Class({
+var DescriptionLabel = new Lang.Class({
     Name: 'DescriptionLabel',
     Extends: Gtk.Label,
 
@@ -265,7 +265,7 @@ const DescriptionLabel = new Lang.Class({
     }
 });
 
-const ExtensionRow = new Lang.Class({
+var ExtensionRow = new Lang.Class({
     Name: 'ExtensionRow',
     Extends: Gtk.ListBoxRow,
 

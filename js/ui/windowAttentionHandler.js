@@ -6,7 +6,7 @@ const Shell = imports.gi.Shell;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
-const WindowAttentionHandler = new Lang.Class({
+var WindowAttentionHandler = new Lang.Class({
     Name: 'WindowAttentionHandler',
 
     _init : function() {
@@ -54,7 +54,7 @@ const WindowAttentionHandler = new Lang.Class({
     }
 });
 
-const Source = new Lang.Class({
+var Source = new Lang.Class({
     Name: 'WindowAttentionSource',
     Extends: MessageTray.Source,
 

@@ -26,7 +26,7 @@ const AnimationType = {
 
 const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
-const WorkspacesViewBase = new Lang.Class({
+var WorkspacesViewBase = new Lang.Class({
     Name: 'WorkspacesViewBase',
 
     _init: function(monitorIndex) {
@@ -86,7 +86,7 @@ const WorkspacesViewBase = new Lang.Class({
     },
 });
 
-const WorkspacesView = new Lang.Class({
+var WorkspacesView = new Lang.Class({
     Name: 'WorkspacesView',
     Extends: WorkspacesViewBase,
 
@@ -352,7 +352,7 @@ const WorkspacesView = new Lang.Class({
 });
 Signals.addSignalMethods(WorkspacesView.prototype);
 
-const ExtraWorkspaceView = new Lang.Class({
+var ExtraWorkspaceView = new Lang.Class({
     Name: 'ExtraWorkspaceView',
     Extends: WorkspacesViewBase,
 
@@ -402,7 +402,7 @@ const ExtraWorkspaceView = new Lang.Class({
     },
 });
 
-const DelegateFocusNavigator = new Lang.Class({
+var DelegateFocusNavigator = new Lang.Class({
     Name: 'DelegateFocusNavigator',
     Extends: St.Widget,
 
@@ -411,7 +411,7 @@ const DelegateFocusNavigator = new Lang.Class({
     },
 });
 
-const WorkspacesDisplay = new Lang.Class({
+var WorkspacesDisplay = new Lang.Class({
     Name: 'WorkspacesDisplay',
 
     _init: function() {

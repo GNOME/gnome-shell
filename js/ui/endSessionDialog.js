@@ -275,7 +275,7 @@ function init() {
     _endSessionDialog = new EndSessionDialog();
 }
 
-const EndSessionDialog = new Lang.Class({
+var EndSessionDialog = new Lang.Class({
     Name: 'EndSessionDialog',
     Extends: ModalDialog.ModalDialog,
 

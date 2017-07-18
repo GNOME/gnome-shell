@@ -132,7 +132,7 @@ There are many approaches to classes in JavaScript. We use our own class framewo
 (sigh), which is built in gjs. The advantage is that it supports inheriting from
 GObjects, although this feature isn't used very often in the Shell itself.
 
-    const IconLabelMenuItem = new Lang.Class({
+    var IconLabelMenuItem = new Lang.Class({
         Name: 'IconLabelMenuItem',
         Extends: PopupMenu.PopupMenuBaseItem,
 
@@ -169,7 +169,7 @@ GObject Introspection is a powerful feature that allows us to have native
 bindings for almost any library built around GObject. If a library requires
 you to inherit from a type to use it, you can do so:
 
-    const MyClutterActor = new Lang.Class({
+    var MyClutterActor = new Lang.Class({
         Name: 'MyClutterActor',
         Extends: Clutter.Actor,
 
@@ -215,7 +215,7 @@ that has a property called `actor`. We call this wrapper class the "delegate".
 We sometimes use expando properties to set a property called `_delegate` on
 the actor itself:
 
-    const MyClass = new Lang.Class({
+    var MyClass = new Lang.Class({
         Name: 'MyClass',
 
         _init: function() {
@@ -264,7 +264,7 @@ prototype:
     const Lang = imports.lang;
     const FnorbLib = imports.fborbLib;
 
-    const MyClass = new Lang.Class({
+    var MyClass = new Lang.Class({
         _init: function() {
             let fnorb = new FnorbLib.Fnorb();
             fnorb.connect('frobate', Lang.bind(this, this._onFnorbFrobate));
@@ -306,7 +306,7 @@ property.
 
     const ANIMATION_TIME = 2000;
 
-    const MyClass = new Lang.Class({
+    var MyClass = new Lang.Class({
         Name: 'MyClass',
 
         _init: function() {

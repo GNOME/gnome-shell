@@ -40,7 +40,7 @@ function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
 
-const WindowCloneLayout = new Lang.Class({
+var WindowCloneLayout = new Lang.Class({
     Name: 'WindowCloneLayout',
     Extends: Clutter.LayoutManager,
 
@@ -102,7 +102,7 @@ const WindowCloneLayout = new Lang.Class({
     }
 });
 
-const WindowClone = new Lang.Class({
+var WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
     _init : function(realWindow, workspace) {
@@ -423,7 +423,7 @@ Signals.addSignalMethods(WindowClone.prototype);
  * @parentActor: The actor which will be the parent of all overlay items
  *               such as app icon and window caption
  */
-const WindowOverlay = new Lang.Class({
+var WindowOverlay = new Lang.Class({
     Name: 'WindowOverlay',
 
     _init : function(windowClone, parentActor) {
@@ -811,7 +811,7 @@ const WindowPositionFlags = {
 // each window's "cell" area to be the same, but we shrink the thumbnail
 // and center it horizontally, and align it to the bottom vertically.
 
-const LayoutStrategy = new Lang.Class({
+var LayoutStrategy = new Lang.Class({
     Name: 'LayoutStrategy',
     Abstract: true,
 
@@ -983,7 +983,7 @@ const LayoutStrategy = new Lang.Class({
     }
 });
 
-const UnalignedLayoutStrategy = new Lang.Class({
+var UnalignedLayoutStrategy = new Lang.Class({
     Name: 'UnalignedLayoutStrategy',
     Extends: LayoutStrategy,
 
@@ -1094,7 +1094,7 @@ function rectEqual(one, two) {
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
-const Workspace = new Lang.Class({
+var Workspace = new Lang.Class({
     Name: 'Workspace',
 
     _init : function(metaWorkspace, monitorIndex) {

@@ -7,7 +7,7 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Lang = imports.lang;
 
-const Dialog = new Lang.Class({
+var Dialog = new Lang.Class({
     Name: 'Dialog',
     Extends: St.Widget,
 
@@ -133,7 +133,7 @@ const Dialog = new Lang.Class({
     },
 });
 
-const MessageDialogContent = new Lang.Class({
+var MessageDialogContent = new Lang.Class({
     Name: 'MessageDialogContent',
     Extends: St.BoxLayout,
     Properties: {

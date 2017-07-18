@@ -4,7 +4,7 @@ const St = imports.gi.St;
 
 const Lang = imports.lang;
 
-const CheckBox = new Lang.Class({
+var CheckBox = new Lang.Class({
     Name: 'CheckBox',
 
     _init: function(label) {

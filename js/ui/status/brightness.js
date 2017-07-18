@@ -19,7 +19,7 @@ const BrightnessInterface = '<node> \
 
 const BrightnessProxy = Gio.DBusProxy.makeProxyWrapper(BrightnessInterface);
 
-const Indicator = new Lang.Class({
+var Indicator = new Lang.Class({
     Name: 'BrightnessIndicator',
     Extends: PanelMenu.SystemIndicator,
 

@@ -126,7 +126,7 @@ function createSettingsAction(label, device) {
     return item;
 }
 
-const NMConnectionItem = new Lang.Class({
+var NMConnectionItem = new Lang.Class({
     Name: 'NMConnectionItem',
 
     _init: function(section, connection) {
@@ -220,7 +220,7 @@ const NMConnectionItem = new Lang.Class({
 });
 Signals.addSignalMethods(NMConnectionItem.prototype);
 
-const NMConnectionSection = new Lang.Class({
+var NMConnectionSection = new Lang.Class({
     Name: 'NMConnectionSection',
     Abstract: true,
 
@@ -352,7 +352,7 @@ const NMConnectionSection = new Lang.Class({
 });
 Signals.addSignalMethods(NMConnectionSection.prototype);
 
-const NMConnectionDevice = new Lang.Class({
+var NMConnectionDevice = new Lang.Class({
     Name: 'NMConnectionDevice',
     Extends: NMConnectionSection,
     Abstract: true,
@@ -506,7 +506,7 @@ const NMConnectionDevice = new Lang.Class({
     },
 });
 
-const NMDeviceWired = new Lang.Class({
+var NMDeviceWired = new Lang.Class({
     Name: 'NMDeviceWired',
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WIRED,
@@ -548,7 +548,7 @@ const NMDeviceWired = new Lang.Class({
     }
 });
 
-const NMDeviceModem = new Lang.Class({
+var NMDeviceModem = new Lang.Class({
     Name: 'NMDeviceModem',
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
@@ -627,7 +627,7 @@ const NMDeviceModem = new Lang.Class({
     },
 });
 
-const NMDeviceBluetooth = new Lang.Class({
+var NMDeviceBluetooth = new Lang.Class({
     Name: 'NMDeviceBluetooth',
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
@@ -661,7 +661,7 @@ const NMDeviceBluetooth = new Lang.Class({
     }
 });
 
-const NMWirelessDialogItem = new Lang.Class({
+var NMWirelessDialogItem = new Lang.Class({
     Name: 'NMWirelessDialogItem',
 
     _init: function(network) {
@@ -726,7 +726,7 @@ const NMWirelessDialogItem = new Lang.Class({
 });
 Signals.addSignalMethods(NMWirelessDialogItem.prototype);
 
-const NMWirelessDialog = new Lang.Class({
+var NMWirelessDialog = new Lang.Class({
     Name: 'NMWirelessDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -1187,7 +1187,7 @@ const NMWirelessDialog = new Lang.Class({
     },
 });
 
-const NMDeviceWireless = new Lang.Class({
+var NMDeviceWireless = new Lang.Class({
     Name: 'NMDeviceWireless',
     category: NMConnectionCategory.WIRELESS,
 
@@ -1405,7 +1405,7 @@ const NMDeviceWireless = new Lang.Class({
 });
 Signals.addSignalMethods(NMDeviceWireless.prototype);
 
-const NMVPNConnectionItem = new Lang.Class({
+var NMVPNConnectionItem = new Lang.Class({
     Name: 'NMVPNConnectionItem',
     Extends: NMConnectionItem,
 
@@ -1494,7 +1494,7 @@ const NMVPNConnectionItem = new Lang.Class({
     },
 });
 
-const NMVPNSection = new Lang.Class({
+var NMVPNSection = new Lang.Class({
     Name: 'NMVPNSection',
     Extends: NMConnectionSection,
     category: NMConnectionCategory.VPN,
@@ -1589,7 +1589,7 @@ const NMVPNSection = new Lang.Class({
 });
 Signals.addSignalMethods(NMVPNSection.prototype);
 
-const DeviceCategory = new Lang.Class({
+var DeviceCategory = new Lang.Class({
     Name: 'DeviceCategory',
     Extends: PopupMenu.PopupMenuSection,
 
@@ -1656,7 +1656,7 @@ const DeviceCategory = new Lang.Class({
     }
 });
 
-const NMApplet = new Lang.Class({
+var NMApplet = new Lang.Class({
     Name: 'NMApplet',
     Extends: PanelMenu.SystemIndicator,
 

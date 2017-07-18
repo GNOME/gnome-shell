@@ -51,7 +51,7 @@ const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 const _MAX_BOTTOM_MENU_ITEMS = 5;
 
-const UserListItem = new Lang.Class({
+var UserListItem = new Lang.Class({
     Name: 'UserListItem',
 
     _init: function(user) {
@@ -145,7 +145,7 @@ const UserListItem = new Lang.Class({
 });
 Signals.addSignalMethods(UserListItem.prototype);
 
-const UserList = new Lang.Class({
+var UserList = new Lang.Class({
     Name: 'UserList',
 
     _init: function() {
@@ -296,7 +296,7 @@ const UserList = new Lang.Class({
 });
 Signals.addSignalMethods(UserList.prototype);
 
-const SessionMenuButton = new Lang.Class({
+var SessionMenuButton = new Lang.Class({
     Name: 'SessionMenuButton',
 
     _init: function() {
@@ -402,7 +402,7 @@ const SessionMenuButton = new Lang.Class({
 });
 Signals.addSignalMethods(SessionMenuButton.prototype);
 
-const LoginDialog = new Lang.Class({
+var LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
 
     _init: function(parentActor) {

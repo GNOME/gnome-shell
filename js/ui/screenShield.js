@@ -60,7 +60,7 @@ const MANUAL_FADE_TIME = 0.3;
 const BACKGROUND_FADE_TIME = 1.0;
 const CURTAIN_SLIDE_TIME = 0.3;
 
-const Clock = new Lang.Class({
+var Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
 
     _init: function() {
@@ -95,7 +95,7 @@ const Clock = new Lang.Class({
     }
 });
 
-const NotificationsBox = new Lang.Class({
+var NotificationsBox = new Lang.Class({
     Name: 'NotificationsBox',
 
     _init: function() {
@@ -345,7 +345,7 @@ const NotificationsBox = new Lang.Class({
 });
 Signals.addSignalMethods(NotificationsBox.prototype);
 
-const Arrow = new Lang.Class({
+var Arrow = new Lang.Class({
     Name: 'Arrow',
     Extends: St.Bin,
 
@@ -431,7 +431,7 @@ function clamp(value, min, max) {
  * This will ensure that the screen blanks at the right time when it fades out.
  * https://bugzilla.gnome.org/show_bug.cgi?id=668703 explains the dependency.
  */
-const ScreenShield = new Lang.Class({
+var ScreenShield = new Lang.Class({
     Name: 'ScreenShield',
 
     _init: function() {

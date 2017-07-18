@@ -46,7 +46,7 @@ function _popGrabHelper(grabHelper) {
 // your code just needs to deal with it; you shouldn't adjust behavior directly
 // after you call ungrab(), but instead pass an 'onUngrab' callback when you
 // call grab().
-const GrabHelper = new Lang.Class({
+var GrabHelper = new Lang.Class({
     Name: 'GrabHelper',
 
     _init: function(owner, params) {

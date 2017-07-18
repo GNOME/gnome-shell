@@ -36,7 +36,7 @@ const SensorProxyInterface = '<node> \
 
 const SensorProxy = Gio.DBusProxy.makeProxyWrapper(SensorProxyInterface);
 
-const AltSwitcher = new Lang.Class({
+var AltSwitcher = new Lang.Class({
     Name: 'AltSwitcher',
 
     _init: function(standard, alternate) {
@@ -131,7 +131,7 @@ const AltSwitcher = new Lang.Class({
     }
 });
 
-const Indicator = new Lang.Class({
+var Indicator = new Lang.Class({
     Name: 'SystemIndicator',
     Extends: PanelMenu.SystemIndicator,
 

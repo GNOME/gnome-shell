@@ -21,7 +21,7 @@ const RfkillManagerInterface = '<node> \
 
 const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface);
 
-const RfkillManager = new Lang.Class({
+var RfkillManager = new Lang.Class({
     Name: 'RfkillManager',
 
     _init: function() {
@@ -68,7 +68,7 @@ function getRfkillManager() {
     return _manager;
 }
 
-const Indicator = new Lang.Class({
+var Indicator = new Lang.Class({
     Name: 'RfkillIndicator',
     Extends: PanelMenu.SystemIndicator,
 

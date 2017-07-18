@@ -30,7 +30,7 @@ const CCW = 1;
 const UP = 0;
 const DOWN = 1;
 
-const PadChooser = new Lang.Class({
+var PadChooser = new Lang.Class({
     Name: 'PadChooser',
 
     _init: function (device, groupDevices) {
@@ -96,7 +96,7 @@ const PadChooser = new Lang.Class({
 });
 Signals.addSignalMethods(PadChooser.prototype);
 
-const KeybindingEntry = new Lang.Class({
+var KeybindingEntry = new Lang.Class({
     Name: 'KeybindingEntry',
 
     _init: function () {
@@ -120,7 +120,7 @@ const KeybindingEntry = new Lang.Class({
 });
 Signals.addSignalMethods(KeybindingEntry.prototype);
 
-const ActionComboBox = new Lang.Class({
+var ActionComboBox = new Lang.Class({
     Name: 'ActionComboBox',
 
     _init: function () {
@@ -200,7 +200,7 @@ const ActionComboBox = new Lang.Class({
 });
 Signals.addSignalMethods(ActionComboBox.prototype);
 
-const ActionEditor = new Lang.Class({
+var ActionEditor = new Lang.Class({
     Name: 'ActionEditor',
 
     _init: function () {
@@ -285,7 +285,7 @@ const ActionEditor = new Lang.Class({
 });
 Signals.addSignalMethods(ActionEditor.prototype);
 
-const PadDiagram = new Lang.Class({
+var PadDiagram = new Lang.Class({
     Name: 'PadDiagram',
     Extends: St.DrawingArea,
     Properties: { 'left-handed': GObject.ParamSpec.boolean('left-handed',
@@ -619,7 +619,7 @@ const PadDiagram = new Lang.Class({
     }
 });
 
-const PadOsd = new Lang.Class({
+var PadOsd = new Lang.Class({
     Name: 'PadOsd',
 
     _init: function (padDevice, settings, imagePath, editionMode, monitorIndex) {
@@ -961,7 +961,7 @@ const PadOsdIface = '<node> \
 </interface> \
 </node>';
 
-const PadOsdService = new Lang.Class({
+var PadOsdService = new Lang.Class({
     Name: 'PadOsdService',
 
     _init: function() {

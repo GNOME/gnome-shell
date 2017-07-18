@@ -15,7 +15,7 @@ const HIDE_TIMEOUT = 1500;
 const FADE_TIME = 0.1;
 const LEVEL_ANIMATION_TIME = 0.1;
 
-const LevelBar = new Lang.Class({
+var LevelBar = new Lang.Class({
     Name: 'LevelBar',
 
     _init: function() {
@@ -45,7 +45,7 @@ const LevelBar = new Lang.Class({
     }
 });
 
-const OsdWindowConstraint = new Lang.Class({
+var OsdWindowConstraint = new Lang.Class({
     Name: 'OsdWindowConstraint',
     Extends: Clutter.Constraint,
 
@@ -77,7 +77,7 @@ const OsdWindowConstraint = new Lang.Class({
     }
 });
 
-const OsdWindow = new Lang.Class({
+var OsdWindow = new Lang.Class({
     Name: 'OsdWindow',
 
     _init: function(monitorIndex) {
@@ -209,7 +209,7 @@ const OsdWindow = new Lang.Class({
     }
 });
 
-const OsdWindowManager = new Lang.Class({
+var OsdWindowManager = new Lang.Class({
     Name: 'OsdWindowManager',
 
     _init: function() {

@@ -9,7 +9,7 @@ const Atk = imports.gi.Atk;
 
 const ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 
-const Animation = new Lang.Class({
+var Animation = new Lang.Class({
     Name: 'Animation',
 
     _init: function(file, width, height, speed) {
@@ -78,7 +78,7 @@ const Animation = new Lang.Class({
     }
 });
 
-const AnimatedIcon = new Lang.Class({
+var AnimatedIcon = new Lang.Class({
     Name: 'AnimatedIcon',
     Extends: Animation,
 

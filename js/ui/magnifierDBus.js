@@ -98,7 +98,7 @@ const ZoomRegionIface = '<node> \
 // '/org/gnome/Magnifier/ZoomRegion/zoomer1', etc.
 let _zoomRegionInstanceCount = 0;
 
-const ShellMagnifier = new Lang.Class({
+var ShellMagnifier = new Lang.Class({
     Name: 'ShellMagnifier',
 
     _init: function() {
@@ -334,7 +334,7 @@ const ShellMagnifier = new Lang.Class({
  * @zoomerObjectPath:   String that is the path to a DBus ZoomRegion.
  * @zoomRegion:         The actual zoom region associated with the object path.
  */
-const ShellMagnifierZoomRegion = new Lang.Class({
+var ShellMagnifierZoomRegion = new Lang.Class({
     Name: 'ShellMagnifierZoomRegion',
 
     _init: function(zoomerObjectPath, zoomRegion) {

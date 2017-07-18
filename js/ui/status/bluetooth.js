@@ -22,7 +22,7 @@ const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface
 
 const HAD_BLUETOOTH_DEVICES_SETUP = 'had-bluetooth-devices-setup';
 
-const Indicator = new Lang.Class({
+var Indicator = new Lang.Class({
     Name: 'BTIndicator',
     Extends: PanelMenu.SystemIndicator,
 

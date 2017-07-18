@@ -92,7 +92,7 @@ function _getCalendarDayAbbreviation(dayNumber) {
 
 // Abstraction for an appointment/event in a calendar
 
-const CalendarEvent = new Lang.Class({
+var CalendarEvent = new Lang.Class({
     Name: 'CalendarEvent',
 
     _init: function(id, date, end, summary, allDay) {
@@ -108,7 +108,7 @@ const CalendarEvent = new Lang.Class({
 //
 
 // First, an implementation with no events
-const EmptyEventSource = new Lang.Class({
+var EmptyEventSource = new Lang.Class({
     Name: 'EmptyEventSource',
 
     _init: function() {
@@ -179,7 +179,7 @@ function _dateIntervalsOverlap(a0, a1, b0, b1)
 }
 
 // an implementation that reads data from a session bus service
-const DBusEventSource = new Lang.Class({
+var DBusEventSource = new Lang.Class({
     Name: 'DBusEventSource',
 
     _init: function() {
@@ -366,7 +366,7 @@ const DBusEventSource = new Lang.Class({
 });
 Signals.addSignalMethods(DBusEventSource.prototype);
 
-const Calendar = new Lang.Class({
+var Calendar = new Lang.Class({
     Name: 'Calendar',
 
     _init: function() {
@@ -697,7 +697,7 @@ const Calendar = new Lang.Class({
 });
 Signals.addSignalMethods(Calendar.prototype);
 
-const EventMessage = new Lang.Class({
+var EventMessage = new Lang.Class({
     Name: 'EventMessage',
     Extends: MessageList.Message,
 
@@ -754,7 +754,7 @@ const EventMessage = new Lang.Class({
     }
 });
 
-const NotificationMessage = new Lang.Class({
+var NotificationMessage = new Lang.Class({
     Name: 'NotificationMessage',
     Extends: MessageList.Message,
 
@@ -810,7 +810,7 @@ const NotificationMessage = new Lang.Class({
     }
 });
 
-const EventsSection = new Lang.Class({
+var EventsSection = new Lang.Class({
     Name: 'EventsSection',
     Extends: MessageList.MessageListSection,
 
@@ -941,7 +941,7 @@ const EventsSection = new Lang.Class({
     }
 });
 
-const NotificationSection = new Lang.Class({
+var NotificationSection = new Lang.Class({
     Name: 'NotificationSection',
     Extends: MessageList.MessageListSection,
 
@@ -1044,7 +1044,7 @@ const NotificationSection = new Lang.Class({
     }
 });
 
-const Placeholder = new Lang.Class({
+var Placeholder = new Lang.Class({
     Name: 'Placeholder',
 
     _init: function() {
@@ -1091,7 +1091,7 @@ const Placeholder = new Lang.Class({
     }
 });
 
-const CalendarMessageList = new Lang.Class({
+var CalendarMessageList = new Lang.Class({
     Name: 'CalendarMessageList',
 
     _init: function() {

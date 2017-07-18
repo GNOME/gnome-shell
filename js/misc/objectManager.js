@@ -26,7 +26,7 @@ const ObjectManagerIface = '<node> \
 
 const ObjectManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ObjectManagerIface);
 
-const ObjectManager = new Lang.Class({
+var ObjectManager = new Lang.Class({
     Name: 'ObjectManager',
     _init: function(params) {
         params = Params.parse(params, { connection: null,

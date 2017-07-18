@@ -58,7 +58,7 @@ const ScreenshotIface = '<node> \
 </interface> \
 </node>';
 
-const ScreenshotService = new Lang.Class({
+var ScreenshotService = new Lang.Class({
     Name: 'ScreenshotService',
 
     _init: function() {
@@ -213,7 +213,7 @@ const ScreenshotService = new Lang.Class({
     }
 });
 
-const SelectArea = new Lang.Class({
+var SelectArea = new Lang.Class({
     Name: 'SelectArea',
 
     _init: function() {
@@ -340,7 +340,7 @@ Signals.addSignalMethods(SelectArea.prototype);
 
 const FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
 
-const Flashspot = new Lang.Class({
+var Flashspot = new Lang.Class({
     Name: 'Flashspot',
     Extends: Lightbox.Lightbox,
 

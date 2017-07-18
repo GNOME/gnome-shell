@@ -79,7 +79,7 @@ function makeMessageFromTplEvent(event) {
     };
 }
 
-const TelepathyComponent = new Lang.Class({
+var TelepathyComponent = new Lang.Class({
     Name: 'TelepathyComponent',
 
     _init: function() {
@@ -113,7 +113,7 @@ const TelepathyComponent = new Lang.Class({
     }
 });
 
-const TelepathyClient = HAVE_TP ? new Lang.Class({
+var TelepathyClient = HAVE_TP ? new Lang.Class({
     Name: 'TelepathyClient',
     Extends: Tp.BaseClient,
 
@@ -280,7 +280,7 @@ const TelepathyClient = HAVE_TP ? new Lang.Class({
     },
 }) : null;
 
-const ChatSource = new Lang.Class({
+var ChatSource = new Lang.Class({
     Name: 'ChatSource',
     Extends: MessageTray.Source,
 
@@ -647,7 +647,7 @@ const ChatSource = new Lang.Class({
     }
 });
 
-const ChatNotification = new Lang.Class({
+var ChatNotification = new Lang.Class({
     Name: 'ChatNotification',
     Extends: MessageTray.Notification,
 
@@ -806,7 +806,7 @@ const ChatNotification = new Lang.Class({
     }
 });
 
-const ChatLineBox = new Lang.Class({
+var ChatLineBox = new Lang.Class({
     Name: 'ChatLineBox',
     Extends: St.BoxLayout,
 
@@ -816,7 +816,7 @@ const ChatLineBox = new Lang.Class({
     }
 });
 
-const ChatNotificationBanner = new Lang.Class({
+var ChatNotificationBanner = new Lang.Class({
     Name: 'ChatNotificationBanner',
     Extends: MessageTray.NotificationBanner,
 

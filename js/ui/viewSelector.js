@@ -32,7 +32,7 @@ const ViewPage = {
     SEARCH: 3
 };
 
-const FocusTrap = new Lang.Class({
+var FocusTrap = new Lang.Class({
     Name: 'FocusTrap',
     Extends: St.Widget,
 
@@ -53,7 +53,7 @@ function getTermsForSearchString(searchString) {
     return terms;
 }
 
-const TouchpadShowOverviewAction = new Lang.Class({
+var TouchpadShowOverviewAction = new Lang.Class({
     Name: 'TouchpadShowOverviewAction',
 
     _init: function(actor) {
@@ -75,7 +75,7 @@ const TouchpadShowOverviewAction = new Lang.Class({
 });
 Signals.addSignalMethods(TouchpadShowOverviewAction.prototype);
 
-const ShowOverviewAction = new Lang.Class({
+var ShowOverviewAction = new Lang.Class({
     Name: 'ShowOverviewAction',
     Extends: Clutter.GestureAction,
     Signals: { 'activated': { param_types: [GObject.TYPE_DOUBLE] } },
@@ -138,7 +138,7 @@ const ShowOverviewAction = new Lang.Class({
     }
 });
 
-const ViewSelector = new Lang.Class({
+var ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
 
     _init : function(searchEntry, showAppsButton) {

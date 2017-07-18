@@ -33,7 +33,7 @@ function getAppFromSource(source) {
 
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
-const DashItemContainer = new Lang.Class({
+var DashItemContainer = new Lang.Class({
     Name: 'DashItemContainer',
     Extends: St.Widget,
 
@@ -235,7 +235,7 @@ const DashItemContainer = new Lang.Class({
     }
 });
 
-const ShowAppsIcon = new Lang.Class({
+var ShowAppsIcon = new Lang.Class({
     Name: 'ShowAppsIcon',
     Extends: DashItemContainer,
 
@@ -315,7 +315,7 @@ const ShowAppsIcon = new Lang.Class({
     }
 });
 
-const DragPlaceholderItem = new Lang.Class({
+var DragPlaceholderItem = new Lang.Class({
     Name: 'DragPlaceholderItem',
     Extends: DashItemContainer,
 
@@ -325,7 +325,7 @@ const DragPlaceholderItem = new Lang.Class({
     }
 });
 
-const EmptyDropTargetItem = new Lang.Class({
+var EmptyDropTargetItem = new Lang.Class({
     Name: 'EmptyDropTargetItem',
     Extends: DashItemContainer,
 
@@ -335,7 +335,7 @@ const EmptyDropTargetItem = new Lang.Class({
     }
 });
 
-const DashActor = new Lang.Class({
+var DashActor = new Lang.Class({
     Name: 'DashActor',
     Extends: St.Widget,
 
@@ -387,7 +387,7 @@ const DashActor = new Lang.Class({
 
 const baseIconSizes = [ 16, 22, 24, 32, 48, 64 ];
 
-const Dash = new Lang.Class({
+var Dash = new Lang.Class({
     Name: 'Dash',
 
     _init : function() {

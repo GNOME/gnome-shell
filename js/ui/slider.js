@@ -9,7 +9,7 @@ const Signals = imports.signals;
 
 const SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 
-const Slider = new Lang.Class({
+var Slider = new Lang.Class({
     Name: "Slider",
 
     _init: function(value) {

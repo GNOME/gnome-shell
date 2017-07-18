@@ -8,7 +8,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const DND = imports.ui.dnd;
 
-const XdndHandler = new Lang.Class({
+var XdndHandler = new Lang.Class({
     Name: 'XdndHandler',
 
     _init: function() {

@@ -30,7 +30,7 @@ const EXEC_ARG_KEY = 'exec-arg';
 
 const DIALOG_GROW_TIME = 0.1;
 
-const RunDialog = new Lang.Class({
+var RunDialog = new Lang.Class({
     Name: 'RunDialog',
     Extends: ModalDialog.ModalDialog,
 

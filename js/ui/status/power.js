@@ -29,7 +29,7 @@ const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(DisplayDeviceInterface)
 
 const SHOW_BATTERY_PERCENTAGE       = 'show-battery-percentage';
 
-const Indicator = new Lang.Class({
+var Indicator = new Lang.Class({
     Name: 'PowerIndicator',
     Extends: PanelMenu.SystemIndicator,
 

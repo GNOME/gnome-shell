@@ -55,7 +55,7 @@ const GsdWacomIface = '<node name="/org/gnome/SettingsDaemon/Wacom"> \
 
 const GsdWacomProxy = Gio.DBusProxy.makeProxyWrapper(GsdWacomIface);
 
-const DisplayChangeDialog = new Lang.Class({
+var DisplayChangeDialog = new Lang.Class({
     Name: 'DisplayChangeDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -131,7 +131,7 @@ const DisplayChangeDialog = new Lang.Class({
     },
 });
 
-const WindowDimmer = new Lang.Class({
+var WindowDimmer = new Lang.Class({
     Name: 'WindowDimmer',
 
     _init: function(actor) {
@@ -185,7 +185,7 @@ function getWindowDimmer(actor) {
  */
 const LAST_WINDOW_GRACE_TIME = 1000;
 
-const WorkspaceTracker = new Lang.Class({
+var WorkspaceTracker = new Lang.Class({
     Name: 'WorkspaceTracker',
 
     _init: function(wm) {
@@ -389,7 +389,7 @@ const WorkspaceTracker = new Lang.Class({
     }
 });
 
-const TilePreview = new Lang.Class({
+var TilePreview = new Lang.Class({
     Name: 'TilePreview',
 
     _init: function() {
@@ -476,7 +476,7 @@ const TilePreview = new Lang.Class({
     }
 });
 
-const TouchpadWorkspaceSwitchAction = new Lang.Class({
+var TouchpadWorkspaceSwitchAction = new Lang.Class({
     Name: 'TouchpadWorkspaceSwitchAction',
 
     _init: function(actor) {
@@ -532,7 +532,7 @@ const TouchpadWorkspaceSwitchAction = new Lang.Class({
 });
 Signals.addSignalMethods(TouchpadWorkspaceSwitchAction.prototype);
 
-const WorkspaceSwitchAction = new Lang.Class({
+var WorkspaceSwitchAction = new Lang.Class({
     Name: 'WorkspaceSwitchAction',
     Extends: Clutter.SwipeAction,
     Signals: { 'activated': { param_types: [Meta.MotionDirection.$gtype] } },
@@ -574,7 +574,7 @@ const WorkspaceSwitchAction = new Lang.Class({
     }
 });
 
-const AppSwitchAction = new Lang.Class({
+var AppSwitchAction = new Lang.Class({
     Name: 'AppSwitchAction',
     Extends: Clutter.GestureAction,
     Signals: { 'activated': {} },
@@ -640,7 +640,7 @@ const AppSwitchAction = new Lang.Class({
     }
 });
 
-const ResizePopup = new Lang.Class({
+var ResizePopup = new Lang.Class({
     Name: 'ResizePopup',
 
     _init: function() {
@@ -669,7 +669,7 @@ const ResizePopup = new Lang.Class({
     },
 });
 
-const WindowManager = new Lang.Class({
+var WindowManager = new Lang.Class({
     Name: 'WindowManager',
 
     _init : function() {

@@ -91,7 +91,7 @@ const rewriteRules = {
     ]
 };
 
-const FdoNotificationDaemon = new Lang.Class({
+var FdoNotificationDaemon = new Lang.Class({
     Name: 'FdoNotificationDaemon',
 
     _init: function() {
@@ -459,7 +459,7 @@ const FdoNotificationDaemon = new Lang.Class({
     }
 });
 
-const FdoNotificationDaemonSource = new Lang.Class({
+var FdoNotificationDaemonSource = new Lang.Class({
     Name: 'FdoNotificationDaemonSource',
     Extends: MessageTray.Source,
 
@@ -586,7 +586,7 @@ const PRIORITY_URGENCY_MAP = {
     urgent: MessageTray.Urgency.CRITICAL
 };
 
-const GtkNotificationDaemonNotification = new Lang.Class({
+var GtkNotificationDaemonNotification = new Lang.Class({
     Name: 'GtkNotificationDaemonNotification',
     Extends: MessageTray.Notification,
 
@@ -680,7 +680,7 @@ function getPlatformData() {
 
 function InvalidAppError() {}
 
-const GtkNotificationDaemonAppSource = new Lang.Class({
+var GtkNotificationDaemonAppSource = new Lang.Class({
     Name: 'GtkNotificationDaemonAppSource',
     Extends: MessageTray.Source,
 
@@ -787,7 +787,7 @@ const GtkNotificationsIface = '<node> \
 </interface> \
 </node>';
 
-const GtkNotificationDaemon = new Lang.Class({
+var GtkNotificationDaemon = new Lang.Class({
     Name: 'GtkNotificationDaemon',
 
     _init: function() {
@@ -885,7 +885,7 @@ const GtkNotificationDaemon = new Lang.Class({
     },
 });
 
-const NotificationDaemon = new Lang.Class({
+var NotificationDaemon = new Lang.Class({
     Name: 'NotificationDaemon',
 
     _init: function() {

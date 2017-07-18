@@ -11,7 +11,7 @@ const Meta = imports.gi.Meta;
 
 const FADE_TIME = 0.1;
 
-const OsdMonitorLabel = new Lang.Class({
+var OsdMonitorLabel = new Lang.Class({
     Name: 'OsdMonitorLabel',
 
     _init: function(monitor, label) {
@@ -52,7 +52,7 @@ const OsdMonitorLabel = new Lang.Class({
     }
 });
 
-const OsdMonitorLabeler = new Lang.Class({
+var OsdMonitorLabeler = new Lang.Class({
     Name: 'OsdMonitorLabeler',
 
     _init: function() {

@@ -28,7 +28,7 @@ const LoginDialog = imports.gdm.loginDialog;
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
 
-const UnlockDialog = new Lang.Class({
+var UnlockDialog = new Lang.Class({
     Name: 'UnlockDialog',
 
     _init: function(parentActor) {

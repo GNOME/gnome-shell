@@ -28,7 +28,7 @@ const Signals = imports.signals;
 const CARETMOVED        = 'object:text-caret-moved';
 const STATECHANGED      = 'object:state-changed';
 
-const FocusCaretTracker = new Lang.Class({
+var FocusCaretTracker = new Lang.Class({
     Name: 'FocusCaretTracker',
 
     _init: function() {

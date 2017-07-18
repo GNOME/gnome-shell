@@ -43,7 +43,7 @@ const RENAMED_DESKTOP_IDS = {
     'totem.desktop': 'org.gnome.Totem.desktop',
 };
 
-const AppFavorites = new Lang.Class({
+var AppFavorites = new Lang.Class({
     Name: 'AppFavorites',
 
     FAVORITE_APPS_KEY: 'favorite-apps',

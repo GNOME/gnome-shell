@@ -5,7 +5,7 @@ const Lang = imports.lang;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 
-const Indicator = new Lang.Class({
+var Indicator = new Lang.Class({
     Name: 'ScreencastIndicator',
     Extends: PanelMenu.SystemIndicator,
 

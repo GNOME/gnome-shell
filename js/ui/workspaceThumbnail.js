@@ -35,7 +35,7 @@ const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
 /* A layout manager that requests size only for primary_actor, but then allocates
    all using a fixed layout */
-const PrimaryActorLayout = new Lang.Class({
+var PrimaryActorLayout = new Lang.Class({
     Name: 'PrimaryActorLayout',
     Extends: Clutter.FixedLayout,
 
@@ -54,7 +54,7 @@ const PrimaryActorLayout = new Lang.Class({
     },
 });
 
-const WindowClone = new Lang.Class({
+var WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
     _init : function(realWindow) {
@@ -254,7 +254,7 @@ const ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-const WorkspaceThumbnail = new Lang.Class({
+var WorkspaceThumbnail = new Lang.Class({
     Name: 'WorkspaceThumbnail',
 
     _init : function(metaWorkspace) {
@@ -612,7 +612,7 @@ const WorkspaceThumbnail = new Lang.Class({
 Signals.addSignalMethods(WorkspaceThumbnail.prototype);
 
 
-const ThumbnailsBox = new Lang.Class({
+var ThumbnailsBox = new Lang.Class({
     Name: 'ThumbnailsBox',
 
     _init: function() {

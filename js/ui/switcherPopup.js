@@ -36,7 +36,7 @@ function primaryModifier(mask) {
     return primary;
 }
 
-const SwitcherPopup = new Lang.Class({
+var SwitcherPopup = new Lang.Class({
     Name: 'SwitcherPopup',
     Abstract: true,
 
@@ -295,7 +295,7 @@ const SwitcherPopup = new Lang.Class({
     }
 });
 
-const SwitcherList = new Lang.Class({
+var SwitcherList = new Lang.Class({
     Name: 'SwitcherList',
 
     _init : function(squareItems) {

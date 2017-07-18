@@ -30,7 +30,7 @@ function _isToday(date) {
            now.getDate() == date.getDate();
 }
 
-const TodayButton = new Lang.Class({
+var TodayButton = new Lang.Class({
     Name: 'TodayButton',
 
     _init: function(calendar) {
@@ -84,7 +84,7 @@ const TodayButton = new Lang.Class({
     }
 });
 
-const WorldClocksSection = new Lang.Class({
+var WorldClocksSection = new Lang.Class({
     Name: 'WorldClocksSection',
 
     _init: function() {
@@ -194,7 +194,7 @@ const WorldClocksSection = new Lang.Class({
     }
 });
 
-const WeatherSection = new Lang.Class({
+var WeatherSection = new Lang.Class({
     Name: 'WeatherSection',
 
     _init: function() {
@@ -324,7 +324,7 @@ const WeatherSection = new Lang.Class({
     }
 });
 
-const MessagesIndicator = new Lang.Class({
+var MessagesIndicator = new Lang.Class({
     Name: 'MessagesIndicator',
 
     _init: function() {
@@ -364,7 +364,7 @@ const MessagesIndicator = new Lang.Class({
     }
 });
 
-const IndicatorPad = new Lang.Class({
+var IndicatorPad = new Lang.Class({
     Name: 'IndicatorPad',
     Extends: St.Widget,
 
@@ -387,7 +387,7 @@ const IndicatorPad = new Lang.Class({
     }
 });
 
-const FreezableBinLayout = new Lang.Class({
+var FreezableBinLayout = new Lang.Class({
     Name: 'FreezableBinLayout',
     Extends: Clutter.BinLayout,
 
@@ -429,7 +429,7 @@ const FreezableBinLayout = new Lang.Class({
     }
 });
 
-const CalendarColumnLayout = new Lang.Class({
+var CalendarColumnLayout = new Lang.Class({
     Name: 'CalendarColumnLayout',
     Extends: Clutter.BoxLayout,
 
@@ -445,7 +445,7 @@ const CalendarColumnLayout = new Lang.Class({
     }
 });
 
-const DateMenuButton = new Lang.Class({
+var DateMenuButton = new Lang.Class({
     Name: 'DateMenuButton',
     Extends: PanelMenu.Button,
 

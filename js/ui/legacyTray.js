@@ -36,7 +36,7 @@ const TEMP_REVEAL_TIME = 2;
 const BARRIER_THRESHOLD = 70;
 const BARRIER_TIMEOUT = 1000;
 
-const LegacyTray = new Lang.Class({
+var LegacyTray = new Lang.Class({
     Name: 'LegacyTray',
 
     _init: function() {

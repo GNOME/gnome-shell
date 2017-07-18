@@ -14,7 +14,7 @@ const Tweener = imports.ui.tweener;
 const FROZEN_WINDOW_BRIGHTNESS = -0.3
 const DIALOG_TRANSITION_TIME = 0.15
 
-const CloseDialog = new Lang.Class({
+var CloseDialog = new Lang.Class({
     Name: 'CloseDialog',
     Extends: GObject.Object,
     Implements: [ Meta.CloseDialog ],

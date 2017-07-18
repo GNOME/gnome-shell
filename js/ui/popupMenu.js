@@ -58,7 +58,7 @@ function arrowIcon(side) {
     return arrow;
 }
 
-const PopupBaseMenuItem = new Lang.Class({
+var PopupBaseMenuItem = new Lang.Class({
     Name: 'PopupBaseMenuItem',
 
     _init: function (params) {
@@ -236,7 +236,7 @@ const PopupBaseMenuItem = new Lang.Class({
 });
 Signals.addSignalMethods(PopupBaseMenuItem.prototype);
 
-const PopupMenuItem = new Lang.Class({
+var PopupMenuItem = new Lang.Class({
     Name: 'PopupMenuItem',
     Extends: PopupBaseMenuItem,
 
@@ -249,7 +249,7 @@ const PopupMenuItem = new Lang.Class({
     }
 });
 
-const PopupSeparatorMenuItem = new Lang.Class({
+var PopupSeparatorMenuItem = new Lang.Class({
     Name: 'PopupSeparatorMenuItem',
     Extends: PopupBaseMenuItem,
 
@@ -276,7 +276,7 @@ const PopupSeparatorMenuItem = new Lang.Class({
     }
 });
 
-const Switch = new Lang.Class({
+var Switch = new Lang.Class({
     Name: 'Switch',
 
     _init: function(state) {
@@ -305,7 +305,7 @@ const Switch = new Lang.Class({
     }
 });
 
-const PopupSwitchMenuItem = new Lang.Class({
+var PopupSwitchMenuItem = new Lang.Class({
     Name: 'PopupSwitchMenuItem',
     Extends: PopupBaseMenuItem,
 
@@ -387,7 +387,7 @@ const PopupSwitchMenuItem = new Lang.Class({
     }
 });
 
-const PopupImageMenuItem = new Lang.Class({
+var PopupImageMenuItem = new Lang.Class({
     Name: 'PopupImageMenuItem',
     Extends: PopupBaseMenuItem,
 
@@ -412,7 +412,7 @@ const PopupImageMenuItem = new Lang.Class({
     }
 });
 
-const PopupMenuBase = new Lang.Class({
+var PopupMenuBase = new Lang.Class({
     Name: 'PopupMenuBase',
     Abstract: true,
 
@@ -757,7 +757,7 @@ const PopupMenuBase = new Lang.Class({
 });
 Signals.addSignalMethods(PopupMenuBase.prototype);
 
-const PopupMenu = new Lang.Class({
+var PopupMenu = new Lang.Class({
     Name: 'PopupMenu',
     Extends: PopupMenuBase,
 
@@ -893,7 +893,7 @@ const PopupMenu = new Lang.Class({
     }
 });
 
-const PopupDummyMenu = new Lang.Class({
+var PopupDummyMenu = new Lang.Class({
     Name: 'PopupDummyMenu',
 
     _init: function(sourceActor) {
@@ -915,7 +915,7 @@ const PopupDummyMenu = new Lang.Class({
 });
 Signals.addSignalMethods(PopupDummyMenu.prototype);
 
-const PopupSubMenu = new Lang.Class({
+var PopupSubMenu = new Lang.Class({
     Name: 'PopupSubMenu',
     Extends: PopupMenuBase,
 
@@ -1063,7 +1063,7 @@ const PopupSubMenu = new Lang.Class({
  * can add it to another menu), but is completely transparent
  * to the user
  */
-const PopupMenuSection = new Lang.Class({
+var PopupMenuSection = new Lang.Class({
     Name: 'PopupMenuSection',
     Extends: PopupMenuBase,
 
@@ -1081,7 +1081,7 @@ const PopupMenuSection = new Lang.Class({
     close: function() { this.emit('open-state-changed', false); },
 });
 
-const PopupSubMenuMenuItem = new Lang.Class({
+var PopupSubMenuMenuItem = new Lang.Class({
     Name: 'PopupSubMenuMenuItem',
     Extends: PopupBaseMenuItem,
 
@@ -1206,7 +1206,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
 /* Basic implementation of a menu manager.
  * Call addMenu to add menus
  */
-const PopupMenuManager = new Lang.Class({
+var PopupMenuManager = new Lang.Class({
     Name: 'PopupMenuManager',
 
     _init: function(owner, grabParams) {

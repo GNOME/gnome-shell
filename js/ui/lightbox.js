@@ -27,7 +27,7 @@ t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
 cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
 
-const RadialShaderQuad = new Lang.Class({
+var RadialShaderQuad = new Lang.Class({
     Name: 'RadialShaderQuad',
     Extends: Shell.GLSLQuad,
 
@@ -91,7 +91,7 @@ const RadialShaderQuad = new Lang.Class({
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height in @params.
  */
-const Lightbox = new Lang.Class({
+var Lightbox = new Lang.Class({
     Name: 'Lightbox',
 
     _init : function(container, params) {

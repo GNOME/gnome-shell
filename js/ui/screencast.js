@@ -32,7 +32,7 @@ const ScreencastIface = '<node> \
 </interface> \
 </node>';
 
-const ScreencastService = new Lang.Class({
+var ScreencastService = new Lang.Class({
     Name: 'ScreencastService',
 
     _init: function() {

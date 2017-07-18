@@ -13,7 +13,7 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-const ButtonBox = new Lang.Class({
+var ButtonBox = new Lang.Class({
     Name: 'ButtonBox',
 
     _init: function(params) {
@@ -89,7 +89,7 @@ const ButtonBox = new Lang.Class({
     },
 });
 
-const Button = new Lang.Class({
+var Button = new Lang.Class({
     Name: 'PanelMenuButton',
     Extends: ButtonBox,
 
@@ -203,7 +203,7 @@ Signals.addSignalMethods(Button.prototype);
  * of an icon and a menu section, which will be composed into the
  * aggregate menu.
  */
-const SystemIndicator = new Lang.Class({
+var SystemIndicator = new Lang.Class({
     Name: 'SystemIndicator',
 
     _init: function() {

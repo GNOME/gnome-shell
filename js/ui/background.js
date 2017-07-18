@@ -138,7 +138,7 @@ function _fileEqual0(file1, file2) {
     return file1.equal(file2);
 }
 
-const BackgroundCache = new Lang.Class({
+var BackgroundCache = new Lang.Class({
     Name: 'BackgroundCache',
 
     _init: function() {
@@ -226,7 +226,7 @@ function getBackgroundCache() {
     return _backgroundCache;
 }
 
-const Background = new Lang.Class({
+var Background = new Lang.Class({
     Name: 'Background',
 
     _init: function(params) {
@@ -488,7 +488,7 @@ Signals.addSignalMethods(Background.prototype);
 
 let _systemBackground;
 
-const SystemBackground = new Lang.Class({
+var SystemBackground = new Lang.Class({
     Name: 'SystemBackground',
 
     _init: function() {
@@ -525,7 +525,7 @@ const SystemBackground = new Lang.Class({
 });
 Signals.addSignalMethods(SystemBackground.prototype);
 
-const BackgroundSource = new Lang.Class({
+var BackgroundSource = new Lang.Class({
     Name: 'BackgroundSource',
 
     _init: function(layoutManager, settingsSchema) {
@@ -613,7 +613,7 @@ const BackgroundSource = new Lang.Class({
     }
 });
 
-const Animation = new Lang.Class({
+var Animation = new Lang.Class({
     Name: 'Animation',
 
     _init: function(params) {
@@ -661,7 +661,7 @@ const Animation = new Lang.Class({
 });
 Signals.addSignalMethods(Animation.prototype);
 
-const BackgroundManager = new Lang.Class({
+var BackgroundManager = new Lang.Class({
     Name: 'BackgroundManager',
 
     _init: function(params) {

@@ -9,7 +9,7 @@ const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 
-const BackgroundMenu = new Lang.Class({
+var BackgroundMenu = new Lang.Class({
     Name: 'BackgroundMenu',
     Extends: PopupMenu.PopupMenu,
 

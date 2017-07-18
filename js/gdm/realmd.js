@@ -59,7 +59,7 @@ const RealmIface = '<node> \
 </node>';
 const Realm = Gio.DBusProxy.makeProxyWrapper(RealmIface);
 
-const Manager = new Lang.Class({
+var Manager = new Lang.Class({
     Name: 'Manager',
 
     _init: function(parentActor) {

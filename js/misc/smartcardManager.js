@@ -25,7 +25,7 @@ function getSmartcardManager() {
     return _smartcardManager;
 }
 
-const SmartcardManager = new Lang.Class({
+var SmartcardManager = new Lang.Class({
     Name: 'SmartcardManager',
     _init: function() {
         this._objectManager = new ObjectManager.ObjectManager({ connection: Gio.DBus.session,

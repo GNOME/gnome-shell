@@ -39,7 +39,7 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-const URLHighlighter = new Lang.Class({
+var URLHighlighter = new Lang.Class({
     Name: 'URLHighlighter',
 
     _init: function(text, lineWrap, allowMarkup) {
@@ -161,7 +161,7 @@ const URLHighlighter = new Lang.Class({
     }
 });
 
-const ScaleLayout = new Lang.Class({
+var ScaleLayout = new Lang.Class({
     Name: 'ScaleLayout',
     Extends: Clutter.BinLayout,
 
@@ -208,7 +208,7 @@ const ScaleLayout = new Lang.Class({
     }
 });
 
-const LabelExpanderLayout = new Lang.Class({
+var LabelExpanderLayout = new Lang.Class({
     Name: 'LabelExpanderLayout',
     Extends: Clutter.LayoutManager,
     Properties: { 'expansion': GObject.ParamSpec.double('expansion',
@@ -298,7 +298,7 @@ const LabelExpanderLayout = new Lang.Class({
     }
 });
 
-const Message = new Lang.Class({
+var Message = new Lang.Class({
     Name: 'Message',
 
     _init: function(title, body) {
@@ -524,7 +524,7 @@ const Message = new Lang.Class({
 });
 Signals.addSignalMethods(Message.prototype);
 
-const MessageListSection = new Lang.Class({
+var MessageListSection = new Lang.Class({
     Name: 'MessageListSection',
 
     _init: function() {

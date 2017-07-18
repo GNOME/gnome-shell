@@ -19,7 +19,7 @@ const SETTING_ENABLE_AUTOMOUNT = 'automount';
 
 const AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
 
-const AutomountManager = new Lang.Class({
+var AutomountManager = new Lang.Class({
     Name: 'AutomountManager',
 
     _init: function() {

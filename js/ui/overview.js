@@ -35,7 +35,7 @@ const DND_WINDOW_SWITCH_TIMEOUT = 750;
 
 const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 
-const ShellInfo = new Lang.Class({
+var ShellInfo = new Lang.Class({
     Name: 'ShellInfo',
 
     _init: function() {
@@ -87,7 +87,7 @@ const ShellInfo = new Lang.Class({
     }
 });
 
-const Overview = new Lang.Class({
+var Overview = new Lang.Class({
     Name: 'Overview',
 
     _init: function() {

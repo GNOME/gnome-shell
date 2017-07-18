@@ -47,7 +47,7 @@
 const Lang = imports.lang;
 const Signals = imports.signals;
 
-const Task = new Lang.Class({
+var Task = new Lang.Class({
     Name: 'Task',
 
     _init: function(scope, handler) {
@@ -68,7 +68,7 @@ const Task = new Lang.Class({
 });
 Signals.addSignalMethods(Task.prototype);
 
-const Hold = new Lang.Class({
+var Hold = new Lang.Class({
     Name: 'Hold',
     Extends: Task,
 
@@ -110,7 +110,7 @@ const Hold = new Lang.Class({
 });
 Signals.addSignalMethods(Hold.prototype);
 
-const Batch = new Lang.Class({
+var Batch = new Lang.Class({
     Name: 'Batch',
     Extends: Task,
 
@@ -185,7 +185,7 @@ const Batch = new Lang.Class({
 });
 Signals.addSignalMethods(Batch.prototype);
 
-const ConcurrentBatch = new Lang.Class({
+var ConcurrentBatch = new Lang.Class({
     Name: 'ConcurrentBatch',
     Extends: Batch,
 
@@ -204,7 +204,7 @@ const ConcurrentBatch = new Lang.Class({
 });
 Signals.addSignalMethods(ConcurrentBatch.prototype);
 
-const ConsecutiveBatch = new Lang.Class({
+var ConsecutiveBatch = new Lang.Class({
     Name: 'ConsecutiveBatch',
     Extends: Batch,
 
