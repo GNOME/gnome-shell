@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/shell">
+    <file>gdm/authList.js</file>
     <file>gdm/authPrompt.js</file>
     <file>gdm/batch.js</file>
     <file>gdm/fingerprint.js</file>
