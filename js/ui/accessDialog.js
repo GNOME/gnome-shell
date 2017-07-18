@@ -32,7 +32,7 @@ const AccessIface = '<node> \
 </interface> \
 </node>';
 
-const DialogResponse = {
+var DialogResponse = {
     OK: 0,
     CANCEL: 1,
     CLOSED: 2

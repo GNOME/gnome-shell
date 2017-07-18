@@ -17,7 +17,7 @@ const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const History = imports.misc.history;
 
-const MAX_FILE_DELETED_BEFORE_INVALID = 10;
+var MAX_FILE_DELETED_BEFORE_INVALID = 10;
 
 const HISTORY_KEY = 'command-history';
 
@@ -28,7 +28,7 @@ const TERMINAL_SCHEMA = 'org.gnome.desktop.default-applications.terminal';
 const EXEC_KEY = 'exec';
 const EXEC_ARG_KEY = 'exec-arg';
 
-const DIALOG_GROW_TIME = 0.1;
+var DIALOG_GROW_TIME = 0.1;
 
 var RunDialog = new Lang.Class({
     Name: 'RunDialog',

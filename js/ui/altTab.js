@@ -14,19 +14,19 @@ const Main = imports.ui.main;
 const SwitcherPopup = imports.ui.switcherPopup;
 const Tweener = imports.ui.tweener;
 
-const APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
+var APP_ICON_HOVER_TIMEOUT = 200; // milliseconds
 
-const THUMBNAIL_DEFAULT_SIZE = 256;
-const THUMBNAIL_POPUP_TIME = 500; // milliseconds
-const THUMBNAIL_FADE_TIME = 0.1; // seconds
+var THUMBNAIL_DEFAULT_SIZE = 256;
+var THUMBNAIL_POPUP_TIME = 500; // milliseconds
+var THUMBNAIL_FADE_TIME = 0.1; // seconds
 
-const WINDOW_PREVIEW_SIZE = 128;
-const APP_ICON_SIZE = 96;
-const APP_ICON_SIZE_SMALL = 48;
+var WINDOW_PREVIEW_SIZE = 128;
+var APP_ICON_SIZE = 96;
+var APP_ICON_SIZE_SMALL = 48;
 
 const baseIconSizes = [96, 64, 48, 32, 22];
 
-const AppIconMode = {
+var AppIconMode = {
     THUMBNAIL_ONLY: 1,
     APP_ICON_ONLY: 2,
     BOTH: 3,

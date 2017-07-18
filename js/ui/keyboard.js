@@ -19,7 +19,7 @@ const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
-const KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
+var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
 
 const KEYBOARD_SCHEMA = 'org.gnome.shell.keyboard';
 const KEYBOARD_TYPE = 'keyboard-type';

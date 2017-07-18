@@ -12,7 +12,7 @@ const St = imports.gi.St;
 
 const Params = imports.misc.params;
 
-const AVATAR_ICON_SIZE = 64;
+var AVATAR_ICON_SIZE = 64;
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //

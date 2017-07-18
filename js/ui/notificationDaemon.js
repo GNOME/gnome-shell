@@ -67,14 +67,14 @@ const FdoNotificationsIface = '<node> \
 </interface> \
 </node>';
 
-const NotificationClosedReason = {
+var NotificationClosedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     APP_CLOSED: 3,
     UNDEFINED: 4
 };
 
-const Urgency = {
+var Urgency = {
     LOW: 0,
     NORMAL: 1,
     CRITICAL: 2

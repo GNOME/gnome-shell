@@ -7,9 +7,9 @@ const Meta = imports.gi.Meta;
 
 const Main = imports.ui.main;
 
-const DEFAULT_LOCALE = 'en_US';
-const DEFAULT_LAYOUT = 'us';
-const DEFAULT_VARIANT = '';
+var DEFAULT_LOCALE = 'en_US';
+var DEFAULT_LAYOUT = 'us';
+var DEFAULT_VARIANT = '';
 
 let _xkbInfo = null;
 

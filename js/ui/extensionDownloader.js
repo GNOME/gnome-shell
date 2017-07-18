@@ -17,10 +17,10 @@ const ModalDialog = imports.ui.modalDialog;
 
 const _signals = ExtensionSystem._signals;
 
-const REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
-const REPOSITORY_URL_DOWNLOAD = REPOSITORY_URL_BASE + '/download-extension/%s.shell-extension.zip';
-const REPOSITORY_URL_INFO     = REPOSITORY_URL_BASE + '/extension-info/';
-const REPOSITORY_URL_UPDATE   = REPOSITORY_URL_BASE + '/update-info/';
+var REPOSITORY_URL_BASE = 'https://extensions.gnome.org';
+var REPOSITORY_URL_DOWNLOAD = REPOSITORY_URL_BASE + '/download-extension/%s.shell-extension.zip';
+var REPOSITORY_URL_INFO     = REPOSITORY_URL_BASE + '/extension-info/';
+var REPOSITORY_URL_UPDATE   = REPOSITORY_URL_BASE + '/update-info/';
 
 let _httpSession;
 

@@ -552,7 +552,7 @@ function activateWindow(window, time, workspaceNum) {
 
 // TODO - replace this timeout with some system to guess when the user might
 // be e.g. just reading the screen and not likely to interact.
-const DEFERRED_TIMEOUT_SECONDS = 20;
+var DEFERRED_TIMEOUT_SECONDS = 20;
 var _deferredWorkData = {};
 // Work scheduled for some point in the future
 var _deferredWorkQueue = [];

@@ -107,7 +107,7 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
+var DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
 const PRIMARY_COLOR_KEY = 'primary-color';
@@ -117,14 +117,14 @@ const BACKGROUND_STYLE_KEY = 'picture-options';
 const PICTURE_OPACITY_KEY = 'picture-opacity';
 const PICTURE_URI_KEY = 'picture-uri';
 
-const FADE_ANIMATION_TIME = 1.0;
+var FADE_ANIMATION_TIME = 1.0;
 
 // These parameters affect how often we redraw.
 // The first is how different (percent crossfaded) the slide show
 // has to look before redrawing and the second is the minimum
 // frequency (in seconds) we're willing to wake up
-const ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
-const ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
+var ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
+var ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
 
 let _backgroundCache = null;
 

@@ -22,7 +22,7 @@ const ENABLED = 'enabled';
 const APP_PERMISSIONS_TABLE = 'gnome';
 const APP_PERMISSIONS_ID = 'geolocation';
 
-const GeoclueAccuracyLevel = {
+var GeoclueAccuracyLevel = {
     NONE: 0,
     COUNTRY: 1,
     CITY: 4,

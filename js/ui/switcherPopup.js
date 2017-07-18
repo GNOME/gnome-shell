@@ -13,12 +13,12 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const POPUP_DELAY_TIMEOUT = 150; // milliseconds
+var POPUP_DELAY_TIMEOUT = 150; // milliseconds
 
-const POPUP_SCROLL_TIME = 0.10; // seconds
-const POPUP_FADE_OUT_TIME = 0.1; // seconds
+var POPUP_SCROLL_TIME = 0.10; // seconds
+var POPUP_FADE_OUT_TIME = 0.1; // seconds
 
-const DISABLE_HOVER_TIMEOUT = 500; // milliseconds
+var DISABLE_HOVER_TIMEOUT = 500; // milliseconds
 
 function mod(a, b) {
     return (a + b) % b;

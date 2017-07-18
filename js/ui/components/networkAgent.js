@@ -798,4 +798,4 @@ var NetworkAgent = new Lang.Class({
         }
     }
 });
-const Component = NetworkAgent;
+var Component = NetworkAgent;

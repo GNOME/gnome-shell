@@ -9,7 +9,7 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Meta = imports.gi.Meta;
 
-const FADE_TIME = 0.1;
+var FADE_TIME = 0.1;
 
 var OsdMonitorLabel = new Lang.Class({
     Name: 'OsdMonitorLabel',

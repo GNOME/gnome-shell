@@ -338,7 +338,7 @@ var SelectArea = new Lang.Class({
 });
 Signals.addSignalMethods(SelectArea.prototype);
 
-const FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
+var FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
 
 var Flashspot = new Lang.Class({
     Name: 'Flashspot',

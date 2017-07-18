@@ -21,15 +21,15 @@ const WorkspacesView = imports.ui.workspacesView;
 // The maximum size of a thumbnail is 1/8 the width and height of the screen
 let MAX_THUMBNAIL_SCALE = 1/8.;
 
-const RESCALE_ANIMATION_TIME = 0.2;
-const SLIDE_ANIMATION_TIME = 0.2;
+var RESCALE_ANIMATION_TIME = 0.2;
+var SLIDE_ANIMATION_TIME = 0.2;
 
 // When we create workspaces by dragging, we add a "cut" into the top and
 // bottom of each workspace so that the user doesn't have to hit the
 // placeholder exactly.
-const WORKSPACE_CUT_SIZE = 10;
+var WORKSPACE_CUT_SIZE = 10;
 
-const WORKSPACE_KEEP_ALIVE_TIME = 100;
+var WORKSPACE_KEEP_ALIVE_TIME = 100;
 
 const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 

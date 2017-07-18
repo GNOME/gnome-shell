@@ -25,12 +25,12 @@ const RemoteMenu = imports.ui.remoteMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const PANEL_ICON_SIZE = 16;
-const APP_MENU_ICON_MARGIN = 0;
+var PANEL_ICON_SIZE = 16;
+var APP_MENU_ICON_MARGIN = 0;
 
-const BUTTON_DND_ACTIVATION_TIMEOUT = 250;
+var BUTTON_DND_ACTIVATION_TIMEOUT = 250;
 
-const SPINNER_ANIMATION_TIME = 1.0;
+var SPINNER_ANIMATION_TIME = 1.0;
 
 // To make sure the panel corners blend nicely with the panel,
 // we draw background and borders the same way, e.g. drawing

@@ -40,14 +40,14 @@ const NMAccessPointSecurity = {
     WPA2_ENT: 6
 };
 
-const MAX_DEVICE_ITEMS = 4;
+var MAX_DEVICE_ITEMS = 4;
 
 // small optimization, to avoid using [] all the time
 const NM80211Mode = NetworkManager['80211Mode'];
 const NM80211ApFlags = NetworkManager['80211ApFlags'];
 const NM80211ApSecurityFlags = NetworkManager['80211ApSecurityFlags'];
 
-const PortalHelperResult = {
+var PortalHelperResult = {
     CANCELLED: 0,
     COMPLETED: 1,
     RECHECK: 2

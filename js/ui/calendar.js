@@ -16,15 +16,15 @@ const MessageTray = imports.ui.messageTray;
 const Mpris = imports.ui.mpris;
 const Util = imports.misc.util;
 
-const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
-const SHOW_WEEKDATE_KEY = 'show-weekdate';
-const ELLIPSIS_CHAR = '\u2026';
+var MSECS_IN_DAY = 24 * 60 * 60 * 1000;
+var SHOW_WEEKDATE_KEY = 'show-weekdate';
+var ELLIPSIS_CHAR = '\u2026';
 
-const MESSAGE_ICON_SIZE = 16;
+var MESSAGE_ICON_SIZE = 16;
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
-const NC_ = function(context, str) { return context + '\u0004' + str; };
+var NC_ = function(context, str) { return context + '\u0004' + str; };
 
 function sameYear(dateA, dateB) {
     return (dateA.getYear() == dateB.getYear());

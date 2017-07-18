@@ -1,19 +1,19 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 /* The name of this package (not localized) */
-const PACKAGE_NAME = '@PACKAGE_NAME@';
+var PACKAGE_NAME = '@PACKAGE_NAME@';
 /* The version of this package */
-const PACKAGE_VERSION = '@PACKAGE_VERSION@';
+var PACKAGE_VERSION = '@PACKAGE_VERSION@';
 /* 1 if gnome-bluetooth is available, 0 otherwise */
-const HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
+var HAVE_BLUETOOTH = @HAVE_BLUETOOTH@;
 /* 1 if networkmanager is available, 0 otherwise */
-const HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
+var HAVE_NETWORKMANAGER = @HAVE_NETWORKMANAGER@;
 /* gettext package */
-const GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
+var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 /* locale dir */
-const LOCALEDIR = '@datadir@/locale';
+var LOCALEDIR = '@datadir@/locale';
 /* other standard directories */
-const LIBEXECDIR = '@libexecdir@';
-const SYSCONFDIR = '@sysconfdir@';
+var LIBEXECDIR = '@libexecdir@';
+var SYSCONFDIR = '@sysconfdir@';
 /* g-i package versions */
-const LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'
+var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'

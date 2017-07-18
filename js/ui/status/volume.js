@@ -12,7 +12,7 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Slider = imports.ui.slider;
 
-const VOLUME_NOTIFY_ID = 1;
+var VOLUME_NOTIFY_ID = 1;
 
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton

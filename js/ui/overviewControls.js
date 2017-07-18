@@ -14,7 +14,7 @@ const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
-const SIDE_CONTROLS_ANIMATION_TIME = 0.16;
+var SIDE_CONTROLS_ANIMATION_TIME = 0.16;
 
 function getRtlSlideDirection(direction, actor) {
     let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
@@ -25,7 +25,7 @@ function getRtlSlideDirection(direction, actor) {
     return direction;
 };
 
-const SlideDirection = {
+var SlideDirection = {
     LEFT: 0,
     RIGHT: 1
 };

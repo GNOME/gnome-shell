@@ -24,9 +24,9 @@ const EdgeDragAction = imports.ui.edgeDragAction;
 const IconGrid = imports.ui.iconGrid;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
-const PINCH_GESTURE_THRESHOLD = 0.7;
+var PINCH_GESTURE_THRESHOLD = 0.7;
 
-const ViewPage = {
+var ViewPage = {
     WINDOWS: 1,
     APPS: 2,
     SEARCH: 3

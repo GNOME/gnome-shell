@@ -18,12 +18,12 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const STARTUP_ANIMATION_TIME = 0.5;
-const KEYBOARD_ANIMATION_TIME = 0.15;
-const BACKGROUND_FADE_ANIMATION_TIME = 1.0;
+var STARTUP_ANIMATION_TIME = 0.5;
+var KEYBOARD_ANIMATION_TIME = 0.15;
+var BACKGROUND_FADE_ANIMATION_TIME = 1.0;
 
-const HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
-const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
+var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
+var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
 function isPopupMetaWindow(actor) {
     switch(actor.meta_window.get_window_type()) {

@@ -10,9 +10,9 @@ const Shell = imports.gi.Shell;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const DEFAULT_FADE_FACTOR = 0.4;
-const VIGNETTE_BRIGHTNESS = 0.8;
-const VIGNETTE_SHARPNESS = 0.7;
+var DEFAULT_FADE_FACTOR = 0.4;
+var VIGNETTE_BRIGHTNESS = 0.8;
+var VIGNETTE_SHARPNESS = 0.7;
 
 const VIGNETTE_DECLARATIONS = '\
 uniform float brightness;\n\

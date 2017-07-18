@@ -15,25 +15,25 @@ const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
-const DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
-const DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
-const DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
+var DEFAULT_BUTTON_WELL_ICON_SIZE = 16;
+var DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
+var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
 
-const MESSAGE_FADE_OUT_ANIMATION_TIME = 0.5;
+var MESSAGE_FADE_OUT_ANIMATION_TIME = 0.5;
 
-const AuthPromptMode = {
+var AuthPromptMode = {
     UNLOCK_ONLY: 0,
     UNLOCK_OR_LOG_IN: 1
 };
 
-const AuthPromptStatus = {
+var AuthPromptStatus = {
     NOT_VERIFYING: 0,
     VERIFYING: 1,
     VERIFICATION_FAILED: 2,
     VERIFICATION_SUCCEEDED: 3
 };
 
-const BeginRequestType = {
+var BeginRequestType = {
     PROVIDE_USERNAME: 0,
     DONT_PROVIDE_USERNAME: 1
 };

@@ -9,10 +9,10 @@ const St = imports.gi.St;
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 
-const MAX_CANDIDATES_PER_PAGE = 16;
+var MAX_CANDIDATES_PER_PAGE = 16;
 
-const DEFAULT_INDEX_LABELS = [ '1', '2', '3', '4', '5', '6', '7', '8',
-                               '9', '0', 'a', 'b', 'c', 'd', 'e', 'f' ];
+var DEFAULT_INDEX_LABELS = [ '1', '2', '3', '4', '5', '6', '7', '8',
+                             '9', '0', 'a', 'b', 'c', 'd', 'e', 'f' ];
 
 var CandidateArea = new Lang.Class({
     Name: 'CandidateArea',

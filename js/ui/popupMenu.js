@@ -16,7 +16,7 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const Ornament = {
+var Ornament = {
     NONE: 0,
     DOT: 1,
     CHECK: 2,

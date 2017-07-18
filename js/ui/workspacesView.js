@@ -17,9 +17,9 @@ const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
-const WORKSPACE_SWITCH_TIME = 0.25;
+var WORKSPACE_SWITCH_TIME = 0.25;
 
-const AnimationType = {
+var AnimationType = {
     ZOOM: 0,
     FADE: 1
 };

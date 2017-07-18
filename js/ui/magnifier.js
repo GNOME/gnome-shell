@@ -19,11 +19,11 @@ const MagnifierDBus = imports.ui.magnifierDBus;
 const Params = imports.misc.params;
 const PointerWatcher = imports.ui.pointerWatcher;
 
-const MOUSE_POLL_FREQUENCY = 50;
-const CROSSHAIRS_CLIP_SIZE = [100, 100];
-const NO_CHANGE = 0.0;
+var MOUSE_POLL_FREQUENCY = 50;
+var CROSSHAIRS_CLIP_SIZE = [100, 100];
+var NO_CHANGE = 0.0;
 
-const POINTER_REST_TIME = 1000; // milliseconds
+var POINTER_REST_TIME = 1000; // milliseconds
 
 // Settings
 const APPLICATIONS_SCHEMA       = 'org.gnome.desktop.a11y.applications';

@@ -15,7 +15,7 @@ const SETTING_START_APP = 'autorun-x-content-start-app';
 const SETTING_IGNORE = 'autorun-x-content-ignore';
 const SETTING_OPEN_FOLDER = 'autorun-x-content-open-folder';
 
-const AutorunSetting = {
+var AutorunSetting = {
     RUN: 0,
     IGNORE: 1,
     FILES: 2,
@@ -378,4 +378,4 @@ var AutorunNotification = new Lang.Class({
     }
 });
 
-const Component = AutorunManager;
+var Component = AutorunManager;

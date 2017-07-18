@@ -41,7 +41,7 @@ let _endSessionDialog = null;
 const _ITEM_ICON_SIZE = 48;
 const _DIALOG_ICON_SIZE = 48;
 
-const GSM_SESSION_MANAGER_LOGOUT_FORCE = 2;
+var GSM_SESSION_MANAGER_LOGOUT_FORCE = 2;
 
 const EndSessionDialogIface = '<node> \
 <interface name="org.gnome.SessionManager.EndSessionDialog"> \
@@ -166,7 +166,7 @@ const DialogContent = {
     4 /* DialogType.UPGRADE_RESTART */: restartUpgradeDialogContent
 };
 
-const MAX_USERS_IN_SESSION_DIALOG = 5;
+var MAX_USERS_IN_SESSION_DIALOG = 5;
 
 const LogindSessionIface = '<node> \
 <interface name="org.freedesktop.login1.Session"> \

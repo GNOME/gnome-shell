@@ -24,16 +24,16 @@ const Tweener = imports.ui.tweener;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Time for initial animation going into Overview mode
-const ANIMATION_TIME = 0.25;
+var ANIMATION_TIME = 0.25;
 
 // Must be less than ANIMATION_TIME, since we switch to
 // or from the overview completely after ANIMATION_TIME,
 // and don't want the shading animation to get cut off
-const SHADE_ANIMATION_TIME = .20;
+var SHADE_ANIMATION_TIME = .20;
 
-const DND_WINDOW_SWITCH_TIMEOUT = 750;
+var DND_WINDOW_SWITCH_TIMEOUT = 750;
 
-const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
+var OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 
 var ShellInfo = new Lang.Class({
     Name: 'ShellInfo',

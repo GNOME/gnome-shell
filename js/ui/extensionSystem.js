@@ -10,7 +10,7 @@ const St = imports.gi.St;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 
-const ExtensionState = {
+var ExtensionState = {
     ENABLED: 1,
     DISABLED: 2,
     ERROR: 3,
@@ -26,7 +26,7 @@ const ExtensionState = {
 // Arrays of uuids
 var enabledExtensions;
 // Contains the order that extensions were enabled in.
-const extensionOrder = [];
+var extensionOrder = [];
 
 // We don't really have a class to add signals on. So, create
 // a simple dummy object, add the signal methods, and export those
@@ -34,8 +34,8 @@ const extensionOrder = [];
 var _signals = {};
 Signals.addSignalMethods(_signals);
 
-const connect = Lang.bind(_signals, _signals.connect);
-const disconnect = Lang.bind(_signals, _signals.disconnect);
+var connect = Lang.bind(_signals, _signals.connect);
+var disconnect = Lang.bind(_signals, _signals.disconnect);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';

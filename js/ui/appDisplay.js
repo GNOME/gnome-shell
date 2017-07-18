@@ -27,38 +27,38 @@ const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
 
-const MAX_APPLICATION_WORK_MILLIS = 75;
-const MENU_POPUP_TIMEOUT = 600;
-const MAX_COLUMNS = 6;
-const MIN_COLUMNS = 4;
-const MIN_ROWS = 4;
+var MAX_APPLICATION_WORK_MILLIS = 75;
+var MENU_POPUP_TIMEOUT = 600;
+var MAX_COLUMNS = 6;
+var MIN_COLUMNS = 4;
+var MIN_ROWS = 4;
 
-const INACTIVE_GRID_OPACITY = 77;
+var INACTIVE_GRID_OPACITY = 77;
 // This time needs to be less than IconGrid.EXTRA_SPACE_ANIMATION_TIME
 // to not clash with other animations
-const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.24;
-const FOLDER_SUBICON_FRACTION = .4;
+var INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.24;
+var FOLDER_SUBICON_FRACTION = .4;
 
-const MIN_FREQUENT_APPS_COUNT = 3;
+var MIN_FREQUENT_APPS_COUNT = 3;
 
-const INDICATORS_BASE_TIME = 0.25;
-const INDICATORS_ANIMATION_DELAY = 0.125;
-const INDICATORS_ANIMATION_MAX_TIME = 0.75;
+var INDICATORS_BASE_TIME = 0.25;
+var INDICATORS_ANIMATION_DELAY = 0.125;
+var INDICATORS_ANIMATION_MAX_TIME = 0.75;
 
-const VIEWS_SWITCH_TIME = 0.4;
-const VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
+var VIEWS_SWITCH_TIME = 0.4;
+var VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
 
 // Follow iconGrid animations approach and divide by 2 to animate out to
 // not annoy the user when the user wants to quit appDisplay.
 // Also, make sure we don't exceed iconGrid animation total time or
 // views switch time.
-const INDICATORS_BASE_TIME_OUT = 0.125;
-const INDICATORS_ANIMATION_DELAY_OUT = 0.0625;
-const INDICATORS_ANIMATION_MAX_TIME_OUT =
+var INDICATORS_BASE_TIME_OUT = 0.125;
+var INDICATORS_ANIMATION_DELAY_OUT = 0.0625;
+var INDICATORS_ANIMATION_MAX_TIME_OUT =
     Math.min (VIEWS_SWITCH_TIME,
               IconGrid.ANIMATION_TIME_OUT + IconGrid.ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
 
-const PAGE_SWITCH_TIME = 0.3;
+var PAGE_SWITCH_TIME = 0.3;
 
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
@@ -873,7 +873,7 @@ var FrequentView = new Lang.Class({
     }
 });
 
-const Views = {
+var Views = {
     FREQUENT: 0,
     ALL: 1
 };

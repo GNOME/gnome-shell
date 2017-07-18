@@ -8,7 +8,7 @@ const GnomeDesktop = imports.gi.GnomeDesktop;
 const Shell = imports.gi.Shell;
 
 // We stop polling if the user is idle for more than this amount of time
-const IDLE_TIME = 1000;
+var IDLE_TIME = 1000;
 
 // This file implements a reasonably efficient system for tracking the position
 // of the mouse pointer. We simply query the pointer from the X server in a loop,

@@ -13,7 +13,7 @@ const Overview = imports.ui.overview;
 const OverviewControls = imports.ui.overviewControls;
 const Tweener = imports.ui.tweener;
 
-const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
+var STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
     'bluetooth-applet': 'bluetooth',
     'gnome-volume-control-applet': 'volume', // renamed to gnome-sound-applet
                                              // when moved to control center
@@ -29,12 +29,12 @@ const STANDARD_TRAY_ICON_IMPLEMENTATIONS = {
 };
 
 // Offset of the original position from the bottom-right corner
-const CONCEALED_WIDTH = 3;
-const REVEAL_ANIMATION_TIME = 0.2;
-const TEMP_REVEAL_TIME = 2;
+var CONCEALED_WIDTH = 3;
+var REVEAL_ANIMATION_TIME = 0.2;
+var TEMP_REVEAL_TIME = 2;
 
-const BARRIER_THRESHOLD = 70;
-const BARRIER_TIMEOUT = 1000;
+var BARRIER_THRESHOLD = 70;
+var BARRIER_TIMEOUT = 1000;
 
 var LegacyTray = new Lang.Class({
     Name: 'LegacyTray',

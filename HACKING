@@ -304,7 +304,7 @@ designed around setting properties, like Tweener. If you want to animate an
 arbitrary property, create a getter and setter, and use Tweener to animate the
 property.
 
-    const ANIMATION_TIME = 2000;
+    var ANIMATION_TIME = 2000;
 
     var MyClass = new Lang.Class({
         Name: 'MyClass',

@@ -14,26 +14,26 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 
 // Time to scale down to maxDragActorSize
-const SCALE_ANIMATION_TIME = 0.25;
+var SCALE_ANIMATION_TIME = 0.25;
 // Time to animate to original position on cancel
-const SNAP_BACK_ANIMATION_TIME = 0.25;
+var SNAP_BACK_ANIMATION_TIME = 0.25;
 // Time to animate to original position on success
-const REVERT_ANIMATION_TIME = 0.75;
+var REVERT_ANIMATION_TIME = 0.75;
 
-const DragMotionResult = {
+var DragMotionResult = {
     NO_DROP:   0,
     COPY_DROP: 1,
     MOVE_DROP: 2,
     CONTINUE:  3
 };
 
-const DRAG_CURSOR_MAP = {
+var DRAG_CURSOR_MAP = {
     0: Meta.Cursor.DND_UNSUPPORTED_TARGET,
     1: Meta.Cursor.DND_COPY,
     2: Meta.Cursor.DND_MOVE
 };
 
-const DragDropResult = {
+var DragDropResult = {
     FAILURE:  0,
     SUCCESS:  1,
     CONTINUE: 2

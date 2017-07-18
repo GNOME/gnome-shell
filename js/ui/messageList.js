@@ -15,9 +15,9 @@ const Calendar = imports.ui.calendar;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
-const MESSAGE_ANIMATION_TIME = 0.1;
+var MESSAGE_ANIMATION_TIME = 0.1;
 
-const DEFAULT_EXPAND_LINES = 6;
+var DEFAULT_EXPAND_LINES = 6;
 
 function _fixMarkup(text, allowMarkup) {
     if (allowMarkup) {

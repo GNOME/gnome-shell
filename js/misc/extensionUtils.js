@@ -11,13 +11,13 @@ const Gio = imports.gi.Gio;
 const Config = imports.misc.config;
 const FileUtils = imports.misc.fileUtils;
 
-const ExtensionType = {
+var ExtensionType = {
     SYSTEM: 1,
     PER_USER: 2
 };
 
 // Maps uuid -> metadata object
-const extensions = {};
+var extensions = {};
 
 /**
  * getCurrentExtension:

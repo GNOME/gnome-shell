@@ -12,10 +12,10 @@ const SwitcherPopup = imports.ui.switcherPopup;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const POPUP_APPICON_SIZE = 96;
-const POPUP_FADE_TIME = 0.1; // seconds
+var POPUP_APPICON_SIZE = 96;
+var POPUP_FADE_TIME = 0.1; // seconds
 
-const SortGroup = {
+var SortGroup = {
     TOP:    0,
     MIDDLE: 1,
     BOTTOM: 2

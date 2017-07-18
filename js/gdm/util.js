@@ -21,8 +21,8 @@ const PASSWORD_SERVICE_NAME = 'gdm-password';
 const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 const OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
-const FADE_ANIMATION_TIME = 0.16;
-const CLONE_FADE_ANIMATION_TIME = 0.25;
+var FADE_ANIMATION_TIME = 0.16;
+var CLONE_FADE_ANIMATION_TIME = 0.25;
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
@@ -36,9 +36,9 @@ const LOGO_KEY = 'logo';
 const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 48ms to read each character of a PAM message
-const USER_READ_TIME = 48
+var USER_READ_TIME = 48
 
-const MessageType = {
+var MessageType = {
     NONE: 0,
     ERROR: 1,
     INFO: 2,

@@ -7,7 +7,7 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
-const ANIMATED_ICON_UPDATE_TIMEOUT = 16;
+var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 
 var Animation = new Lang.Class({
     Name: 'Animation',

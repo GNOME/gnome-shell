@@ -21,11 +21,11 @@ const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
 const Tweener = imports.ui.tweener;
 
-const DIALOG_ICON_SIZE = 48;
+var DIALOG_ICON_SIZE = 48;
 
-const WORK_SPINNER_ICON_SIZE = 16;
-const WORK_SPINNER_ANIMATION_DELAY = 1.0;
-const WORK_SPINNER_ANIMATION_TIME = 0.3;
+var WORK_SPINNER_ICON_SIZE = 16;
+var WORK_SPINNER_ANIMATION_DELAY = 1.0;
+var WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 var AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
@@ -400,4 +400,4 @@ var AuthenticationAgent = new Lang.Class({
     },
 });
 
-const Component = AuthenticationAgent;
+var Component = AuthenticationAgent;

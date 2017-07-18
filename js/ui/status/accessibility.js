@@ -21,7 +21,7 @@ const KEY_MOUSE_KEYS_ENABLED        = 'mousekeys-enable';
 
 const APPLICATIONS_SCHEMA           = 'org.gnome.desktop.a11y.applications';
 
-const DPI_FACTOR_LARGE              = 1.25;
+var DPI_FACTOR_LARGE              = 1.25;
 
 const WM_SCHEMA                     = 'org.gnome.desktop.wm.preferences';
 const KEY_VISUAL_BELL               = 'visual-bell';

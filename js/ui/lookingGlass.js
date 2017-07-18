@@ -46,9 +46,9 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
 
 const HISTORY_KEY = 'looking-glass-history';
 // Time between tabs for them to count as a double-tab event
-const AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
-const AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 0.2;
-const AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
+var AUTO_COMPLETE_DOUBLE_TAB_DELAY = 500;
+var AUTO_COMPLETE_SHOW_COMPLETION_ANIMATION_DURATION = 0.2;
+var AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
 
 function _getAutoCompleteGlobalKeywords() {
     const keywords = ['true', 'false', 'null', 'new'];

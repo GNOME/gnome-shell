@@ -24,23 +24,23 @@ const Util = imports.misc.util;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
-const ANIMATION_TIME = 0.2;
-const NOTIFICATION_TIMEOUT = 4;
+var ANIMATION_TIME = 0.2;
+var NOTIFICATION_TIMEOUT = 4;
 
-const HIDE_TIMEOUT = 0.2;
-const LONGER_HIDE_TIMEOUT = 0.6;
+var HIDE_TIMEOUT = 0.2;
+var LONGER_HIDE_TIMEOUT = 0.6;
 
-const MAX_NOTIFICATIONS_IN_QUEUE = 3;
-const MAX_NOTIFICATIONS_PER_SOURCE = 3;
-const MAX_NOTIFICATION_BUTTONS = 3;
+var MAX_NOTIFICATIONS_IN_QUEUE = 3;
+var MAX_NOTIFICATIONS_PER_SOURCE = 3;
+var MAX_NOTIFICATION_BUTTONS = 3;
 
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
-const MOUSE_LEFT_ACTOR_THRESHOLD = 20;
+var MOUSE_LEFT_ACTOR_THRESHOLD = 20;
 
-const IDLE_TIME = 1000;
+var IDLE_TIME = 1000;
 
-const State = {
+var State = {
     HIDDEN:  0,
     SHOWING: 1,
     SHOWN:   2,
@@ -52,7 +52,7 @@ const State = {
 // and the user did not interact with, DISMISSED for all other notifications
 // that were destroyed as a result of a user action, and SOURCE_CLOSED for the
 // notifications that were requested to be destroyed by the associated source.
-const NotificationDestroyedReason = {
+var NotificationDestroyedReason = {
     EXPIRED: 1,
     DISMISSED: 2,
     SOURCE_CLOSED: 3
@@ -62,7 +62,7 @@ const NotificationDestroyedReason = {
 // urgency values map to the corresponding values for the notifications received
 // through the notification daemon. HIGH urgency value is used for chats received
 // through the Telepathy client.
-const Urgency = {
+var Urgency = {
     LOW: 0,
     NORMAL: 1,
     HIGH: 2,

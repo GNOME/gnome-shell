@@ -20,10 +20,10 @@ const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const OPEN_AND_CLOSE_TIME = 0.1;
-const FADE_OUT_DIALOG_TIME = 1.0;
+var OPEN_AND_CLOSE_TIME = 0.1;
+var FADE_OUT_DIALOG_TIME = 1.0;
 
-const State = {
+var State = {
     OPENED: 0,
     CLOSED: 1,
     OPENING: 2,

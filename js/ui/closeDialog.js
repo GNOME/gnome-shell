@@ -11,8 +11,8 @@ const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
-const FROZEN_WINDOW_BRIGHTNESS = -0.3
-const DIALOG_TRANSITION_TIME = 0.15
+var FROZEN_WINDOW_BRIGHTNESS = -0.3
+var DIALOG_TRANSITION_TIME = 0.15
 
 var CloseDialog = new Lang.Class({
     Name: 'CloseDialog',

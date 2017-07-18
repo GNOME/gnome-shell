@@ -11,13 +11,13 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 
-const GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
+var GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
 
 // GSettings keys
 const SETTINGS_SCHEMA = 'org.gnome.desktop.media-handling';
 const SETTING_ENABLE_AUTOMOUNT = 'automount';
 
-const AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
+var AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
 
 var AutomountManager = new Lang.Class({
     Name: 'AutomountManager',
@@ -242,4 +242,4 @@ var AutomountManager = new Lang.Class({
         GLib.Source.set_name_by_id(id, '[gnome-shell] volume.allowAutorun');
     }
 });
-const Component = AutomountManager;
+var Component = AutomountManager;

@@ -18,23 +18,23 @@ const Overview = imports.ui.overview;
 const Tweener = imports.ui.tweener;
 const WindowManager = imports.ui.windowManager;
 
-const WINDOW_DND_SIZE = 256;
+var WINDOW_DND_SIZE = 256;
 
-const WINDOW_CLONE_MAXIMUM_SCALE = 0.7;
+var WINDOW_CLONE_MAXIMUM_SCALE = 0.7;
 
-const CLOSE_BUTTON_FADE_TIME = 0.1;
+var CLOSE_BUTTON_FADE_TIME = 0.1;
 
-const DRAGGING_WINDOW_OPACITY = 100;
+var DRAGGING_WINDOW_OPACITY = 100;
 
 // When calculating a layout, we calculate the scale of windows and the percent
 // of the available area the new layout uses. If the values for the new layout,
 // when weighted with the values as below, are worse than the previous layout's,
 // we stop looking for a new layout and use the previous layout.
 // Otherwise, we keep looking for a new layout.
-const LAYOUT_SCALE_WEIGHT = 1;
-const LAYOUT_SPACE_WEIGHT = 0.1;
+var LAYOUT_SCALE_WEIGHT = 1;
+var LAYOUT_SPACE_WEIGHT = 0.1;
 
-const WINDOW_ANIMATION_MAX_NUMBER_BLENDING = 3;
+var WINDOW_ANIMATION_MAX_NUMBER_BLENDING = 3;
 
 function _interpolate(start, end, step) {
     return start + (end - start) * step;
@@ -731,7 +731,7 @@ var WindowOverlay = new Lang.Class({
 });
 Signals.addSignalMethods(WindowOverlay.prototype);
 
-const WindowPositionFlags = {
+var WindowPositionFlags = {
     NONE: 0,
     INITIAL: 1 << 0,
     ANIMATE: 1 << 1

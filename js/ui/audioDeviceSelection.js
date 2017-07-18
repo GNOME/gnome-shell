@@ -9,7 +9,7 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 
-const AudioDevice = {
+var AudioDevice = {
     HEADPHONES: 1 << 0,
     HEADSET:    1 << 1,
     MICROPHONE: 1 << 2

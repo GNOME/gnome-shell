@@ -11,9 +11,9 @@ const Mainloop = imports.mainloop;
 const Tweener = imports.ui.tweener;
 const Meta = imports.gi.Meta;
 
-const HIDE_TIMEOUT = 1500;
-const FADE_TIME = 0.1;
-const LEVEL_ANIMATION_TIME = 0.1;
+var HIDE_TIMEOUT = 1500;
+var FADE_TIME = 0.1;
+var LEVEL_ANIMATION_TIME = 0.1;
 
 var LevelBar = new Lang.Class({
     Name: 'LevelBar',

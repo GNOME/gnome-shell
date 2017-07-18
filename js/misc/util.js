@@ -14,7 +14,7 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Params = imports.misc.params;
 
-const SCROLL_TIME = 0.1;
+var SCROLL_TIME = 0.1;
 
 // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 const _balancedParens = '\\((?:[^\\s()<>]+|(?:\\(?:[^\\s()<>]+\\)))*\\)';

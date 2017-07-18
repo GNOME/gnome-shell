@@ -16,7 +16,7 @@ const PresenceIface = '<node> \
 </interface> \
 </node>';
 
-const PresenceStatus = {
+var PresenceStatus = {
     AVAILABLE: 0,
     INVISIBLE: 1,
     BUSY: 2,

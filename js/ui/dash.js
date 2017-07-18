@@ -18,10 +18,10 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 
-const DASH_ANIMATION_TIME = 0.2;
-const DASH_ITEM_LABEL_SHOW_TIME = 0.15;
-const DASH_ITEM_LABEL_HIDE_TIME = 0.1;
-const DASH_ITEM_HOVER_TIMEOUT = 300;
+var DASH_ANIMATION_TIME = 0.2;
+var DASH_ITEM_LABEL_SHOW_TIME = 0.15;
+var DASH_ITEM_LABEL_HIDE_TIME = 0.1;
+var DASH_ITEM_HOVER_TIMEOUT = 300;
 
 function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppIcon) {
