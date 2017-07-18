@@ -45,6 +45,9 @@ const INDICATORS_BASE_TIME = 0.25;
 const INDICATORS_ANIMATION_DELAY = 0.125;
 const INDICATORS_ANIMATION_MAX_TIME = 0.75;
 
+const VIEWS_SWITCH_TIME = 0.4;
+const VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
+
 // Follow iconGrid animations approach and divide by 2 to animate out to
 // not annoy the user when the user wants to quit appDisplay.
 // Also, make sure we don't exceed iconGrid animation total time or
@@ -56,9 +59,6 @@ const INDICATORS_ANIMATION_MAX_TIME_OUT =
               IconGrid.ANIMATION_TIME_OUT + IconGrid.ANIMATION_MAX_DELAY_OUT_FOR_ITEM);
 
 const PAGE_SWITCH_TIME = 0.3;
-
-const VIEWS_SWITCH_TIME = 0.4;
-const VIEWS_SWITCH_ANIMATION_DELAY = 0.1;
 
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
