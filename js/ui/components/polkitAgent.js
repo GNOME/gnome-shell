@@ -15,6 +15,11 @@ var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
 
+const DialogMode = {
+    AUTH: 0,
+    CONFIRM: 1
+};
+
 var AuthenticationDialog = GObject.registerClass({
     Signals: { 'done': { param_types: [GObject.TYPE_BOOLEAN] } }
 }, class AuthenticationDialog extends ModalDialog.ModalDialog {
@@ -52,10 +57,6 @@ var AuthenticationDialog = GObject.registerClass({
 
         this._user = AccountsService.UserManager.get_default().get_user(userName);
         let userRealName = this._user.get_real_name();
-        this._userLoadedId = this._user.connect('notify::is_loaded',
-                                                this._onUserChanged.bind(this));
-        this._userChangedId = this._user.connect('changed',
-                                                 this._onUserChanged.bind(this));
 
         // Special case 'root'
         let userIsRoot = false;
@@ -91,10 +92,14 @@ var AuthenticationDialog = GObject.registerClass({
                           y_align: St.Align.MIDDLE });
         }
 
-        this._onUserChanged();
-
         this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         content.messageBox.add(this._passwordBox);
+
+        // onUserChanged needs to be called after we have the _passwordBox set
+        this._userLoadedId = this._user.connect('notify::is_loaded', this._onUserChanged.bind(this));
+        this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
+        this._onUserChanged();
+
         this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label' }));
         this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
         this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
@@ -154,7 +159,7 @@ var AuthenticationDialog = GObject.registerClass({
             this._workSpinner.stop();
     }
 
-    performAuthentication() {
+    _initiateSession() {
         this._destroySession();
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
@@ -163,6 +168,12 @@ var AuthenticationDialog = GObject.registerClass({
         this._sessionShowErrorId = this._session.connect('show-error', this._onSessionShowError.bind(this));
         this._sessionShowInfoId = this._session.connect('show-info', this._onSessionShowInfo.bind(this));
         this._session.initiate();
+    }
+
+    performAuthentication() {
+        if (this._mode == DialogMode.AUTH)
+            this._initiateSession();
+        this._ensureOpen();
     }
 
     _ensureOpen() {
@@ -215,7 +226,10 @@ var AuthenticationDialog = GObject.registerClass({
     }
 
     _onAuthenticateButtonPressed() {
-        this._onEntryActivate();
+        if (this._mode == DialogMode.CONFIRM)
+            this._initiateSession();
+        else
+            this._onEntryActivate();
     }
 
     _onSessionCompleted(session, gainedAuthorization) {
@@ -305,6 +319,13 @@ var AuthenticationDialog = GObject.registerClass({
         if (this._user.is_loaded && this._userAvatar) {
             this._userAvatar.update();
             this._userAvatar.actor.show();
+        }
+
+        if (this._user.get_password_mode() == AccountsService.UserPasswordMode.NONE) {
+            this._mode = DialogMode.CONFIRM;
+            this._passwordBox.hide();
+        } else {
+            this._mode = DialogMode.AUTH;
         }
     }
 
