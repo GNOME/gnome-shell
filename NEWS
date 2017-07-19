@@ -1,3 +1,20 @@
+3.24.3
+======
+* Bypass proxies for captive portal [Bastien; #769692]
+* Fix missing icons in freedesktop notifications [Florian; #784245]
+* Fix blocked clicks in shutdown dialog [Florian; #781738]
+* Implement tablet rings/strips configuration [Carlos; #782033]
+* Misc. bug fixes [Matthias, Jeremy, Bastien, Florian; #780215, #782802,
+  #783286, #784130, #784353, #781471]
+
+Contributors:
+  Jeremy Bicha, Carlos Garnacho, Matthias Liertzer, Florian Müllner,
+  Bastien Nocera
+
+Translations:
+  Christian Stadelmann [de], Марко Костић [sr], Милош Поповић [sr@latin],
+  Furkan Ahmet Kara [tr], Jeremy Bicha [es, he]
+
 3.24.2
 ======
 * Only fetch weather information when there's a valid location [Rares; #780404]
