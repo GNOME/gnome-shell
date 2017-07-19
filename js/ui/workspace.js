@@ -157,6 +157,12 @@ var WindowClone = new Lang.Class({
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
 
+        this.actor.connect('enter-event', () => { this.emit('show-chrome'); });
+        this.actor.connect('key-focus-in', () => { this.emit('show-chrome'); });
+
+        this.actor.connect('leave-event', () => { this.emit('hide-chrome'); });
+        this.actor.connect('key-focus-out', () => { this.emit('hide-chrome'); });
+
         this._draggable = DND.makeDraggable(this.actor,
                                             { restoreOnSuccess: true,
                                               manualMode: true,
@@ -454,14 +460,8 @@ var WindowOverlay = new Lang.Class({
         button.connect('clicked', Lang.bind(this, this._closeWindow));
 
         windowClone.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        windowClone.actor.connect('enter-event',
-                                  Lang.bind(this, this._onEnter));
-        windowClone.actor.connect('leave-event',
-                                  Lang.bind(this, this._onLeave));
-        windowClone.actor.connect('key-focus-in',
-                                  Lang.bind(this, this._onEnter));
-        windowClone.actor.connect('key-focus-out',
-                                  Lang.bind(this, this._onLeave));
+        windowClone.connect('show-chrome', Lang.bind(this, this._onShowChrome));
+        windowClone.connect('hide-chrome', Lang.bind(this, this._onHideChrome));
 
         this._windowAddedId = 0;
 
@@ -651,25 +651,23 @@ var WindowOverlay = new Lang.Class({
         });
     },
 
-    _onEnter: function() {
+    _onShowChrome: function() {
         // We might get enter events on the clone while the overlay is
         // hidden, e.g. during animations, we ignore these events,
         // as the close button will be shown as needed when the overlays
         // are shown again
         if (this._hidden)
-            return Clutter.EVENT_PROPAGATE;
+            return;
 
         this._animateVisible();
         this.emit('show-close-button');
-        return Clutter.EVENT_PROPAGATE;
     },
 
-    _onLeave: function() {
+    _onHideChrome: function() {
         if (this._idleToggleCloseId == 0) {
             this._idleToggleCloseId = Mainloop.timeout_add(750, Lang.bind(this, this._idleToggleCloseButton));
             GLib.Source.set_name_by_id(this._idleToggleCloseId, '[gnome-shell] this._idleToggleCloseButton');
         }
-        return Clutter.EVENT_PROPAGATE;
     },
 
     _idleToggleCloseButton: function() {
