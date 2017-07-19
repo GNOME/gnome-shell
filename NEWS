@@ -1,3 +1,30 @@
+3.25.4
+======
+* gdm: Fix "Not listed" focus indication [Florian; #784040]
+* Fix missing icons in freedesktop notifications [Florian; #784245]
+* gdm: Disable user list when empty [Xiaoguang; #731320]
+* gdm: Allow empty reponse to PAM messages [Ray; #784360]
+* Fix blocked clicks in shutdown dialog [Florian; #781738]
+* Show OSD popup when changing volume via scroll wheel [Florian; #781028]
+* Refine list search results [Rares; #749957]
+* Replace mutter's unresponsive app dialog [Carlos; #762083]
+* Improve handling of extension errors [Florian; #781728]
+* Implement tablet rings/strips configuration [Carlos; #782033]
+* Adjust to mozjs52 update in gjs [Florian; #785084, #785090]
+* Support the meson build system [Florian; #783229]
+* Misc. bug fixes [Ray, Florian, Jonas, Marco, Shih-Yuan, Joaquim, Carlos S.;
+  #780403, #772589, #784130, #783975, #784353, #784361, #772284, #765011,
+  #765011, #765011, #784985, #781471, #785047, #736148, #736148]
+
+Contributors:
+  Jonas Ådahl, Alessandro Bono, Michael Catanzaro, Carlos Garnacho,
+  Shih-Yuan Lee (FourDollars), Florian Müllner, Joaquim Rocha,
+  Mario Sanchez Prada, Carlos Soriano, Ray Strode, Marco Trevisan (Treviño),
+  Rares Visalom, Xiaoguang Wang
+
+Translations:
+  Jeremy Bicha po/es, he.po, Kukuh Syafaat [id], Fabio Tomat [fur]
+
 3.25.3
 ======
 * Bypass proxies for captive portal [Bastien; #769692]
