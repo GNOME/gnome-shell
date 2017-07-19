@@ -1,3 +1,22 @@
+3.25.4
+======
+* Do not throttle motion events on tablet tools [Carlos; #783535]
+* Handle left-handed mode on pen/eraser devices [Carlos; #782027]
+* Add wl_surface.damage_buffer() support [Jonas; #784080]
+* Fix crash when moving across on-adjacent monitors [Jonas; #783630]
+* Fix window moving/resizing via tablet tools [Jason; #777333]
+* Support fractional monitor scaling [Jonas, Marco; #765011]
+* Keep override-redirect windows stacked on top [Rui; #780485]
+* Implement tablet rings/strips configuration [Carlos; #782033]
+* Support tablet wheel events on wayland [Jason; #783716]
+* Move g-s-d xrandr functionality into mutter [Rui; #781906]
+* Misc. bug fixes [Florian, Jason, Miguel, Carlos, Jonas; #783502, #784009,
+  #784223, #784272, #784402, #784881, #762083, #784867, #781723]
+
+Contributors:
+  Jonas Ådahl, Miguel A. Vico, Emmanuele Bassi, Carlos Garnacho, Jason Gerecke,
+  Rui Matos, Florian Müllner, Marco Trevisan (Treviño)
+
 3.25.3
 ======
 * Ignore hotplug-mode-update value on startup [Marco; #783073]
