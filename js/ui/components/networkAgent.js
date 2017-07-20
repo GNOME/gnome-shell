@@ -514,7 +514,7 @@ var VPNRequestHandler = new Lang.Class({
                                 message: keyfile.get_string(VPN_UI_GROUP, 'Description'),
                                 secrets: [] };
 
-            let [groups, len] = keyfile.get_groups();
+            let groups = keyfile.get_groups();
             for (let i = 0; i < groups.length; i++) {
                 if (groups[i] == VPN_UI_GROUP)
                     continue;
