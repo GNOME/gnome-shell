@@ -49,9 +49,6 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._globalSignals = [];
         this._globalSignals.push(global.screen.connect('workspace-added', Lang.bind(this, this._redisplay)));
         this._globalSignals.push(global.screen.connect('workspace-removed', Lang.bind(this, this._redisplay)));
-
-        this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, Lang.bind(this, this._onTimeout));
-        GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
     },
 
     _getPreferredHeight : function (actor, forWidth, alloc) {
