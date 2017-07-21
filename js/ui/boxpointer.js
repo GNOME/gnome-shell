@@ -243,6 +243,10 @@ var BoxPointer = GObject.registerClass({
             this._updateFlip(box);
             this.set_allocation(box, flags);
         }
+
+        // Since the allocation changed, we need to redraw the arrow, otherwise
+        // it can be left in the wrong place
+        this._border.queue_repaint();
     }
 
     _drawBorder(area) {
