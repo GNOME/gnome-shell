@@ -605,7 +605,7 @@ cursor_priv_free (gpointer data)
     return;
 
   for (i = 0; i < HW_CURSOR_BUFFER_COUNT; i++)
-    g_clear_pointer (&cursor_priv->bos[0], (GDestroyNotify) gbm_bo_destroy);
+    g_clear_pointer (&cursor_priv->bos[i], (GDestroyNotify) gbm_bo_destroy);
   g_slice_free (MetaCursorNativePrivate, cursor_priv);
 }
 
