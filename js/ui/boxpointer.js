@@ -234,6 +234,10 @@ var BoxPointer = new Lang.Class({
             this._reposition();
             this._updateFlip();
         }
+
+        // Since the allocation changed, we need to redraw the arrow, otherwise
+        // it can be left in the wrong place
+        this._border.queue_repaint();
     },
 
     _drawBorder(area) {
