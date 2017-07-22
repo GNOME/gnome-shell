@@ -500,7 +500,7 @@ var WindowOverlay = new Lang.Class({
         this._hidden = false;
 
         this.title.show();
-        if (this._windowClone.actor.has_pointer())
+        if (this._windowClone.actor['has-pointer'])
             this._animateVisible();
     },
 
@@ -699,8 +699,8 @@ var WindowOverlay = new Lang.Class({
     _idleToggleCloseButton: function() {
         this._idleToggleCloseId = 0;
 
-        if (!this._windowClone.actor.has_pointer() &&
-            !this.closeButton.has_pointer())
+        if (!this._windowClone.actor['has-pointer'] &&
+            !this.closeButton['has-pointer'])
             this._animateInvisible();
 
         return GLib.SOURCE_REMOVE;
