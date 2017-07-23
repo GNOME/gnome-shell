@@ -11,15 +11,15 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-05-31 14:13+0000\n"
-"PO-Revision-Date: 2017-06-07 15:00+0700\n"
+"POT-Creation-Date: 2017-07-19 09:20+0000\n"
+"PO-Revision-Date: 2017-07-23 09:46+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 1.8.11\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/50-mutter-navigation.xml:6
@@ -440,6 +440,14 @@ msgstr "Pilih jendela dari popup tab"
 msgid "Cancel tab popup"
 msgstr "Batalkan popup tab"
 
+#: data/org.gnome.mutter.gschema.xml.in:161
+msgid "Switch monitor configurations"
+msgstr "Tukar konfigurasi monitor bawaan"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+msgid "Rotates the built-in monitor configuration"
+msgstr "Memutar konfigurasi monitor bawaan"
+
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
 msgstr "Bertukar ke VT 1"
@@ -491,7 +499,7 @@ msgstr "Bertukar ke VT 12"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1866
+#: src/backends/meta-input-settings.c:2118
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Tukar Mode: (Grup %d)"
@@ -499,30 +507,30 @@ msgstr "Tukar Mode: (Grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1888
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Berpindah monitor"
 
-#: src/backends/meta-input-settings.c:1890
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Tampilkan bantuan pada layar"
 
-#: src/backends/meta-monitor-manager.c:879
+#: src/backends/meta-monitor-manager.c:925
 msgid "Built-in display"
 msgstr "Tampilan bawaan"
 
-#: src/backends/meta-monitor-manager.c:902
+#: src/backends/meta-monitor-manager.c:948
 msgid "Unknown"
 msgstr "Tak Dikenal"
 
-#: src/backends/meta-monitor-manager.c:904
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown Display"
 msgstr "Tampilan Tak Dikenal"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:912
+#: src/backends/meta-monitor-manager.c:958
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
