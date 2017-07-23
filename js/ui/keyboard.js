@@ -171,7 +171,7 @@ var Keyboard = new Lang.Class({
         this._keyboardSettings = new Gio.Settings({ schema_id: KEYBOARD_SCHEMA });
         this._keyboardSettings.connect('changed', Lang.bind(this, this._sync));
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
-        this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._sync));
+        this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._syncEnabled));
         this._lastDeviceId = null;
 
         Caribou.DisplayAdapter.set_default(new LocalAdapter());
@@ -183,7 +183,7 @@ var Keyboard = new Lang.Class({
 
                 if (device.get_device_name().indexOf('XTEST') < 0) {
                     this._lastDeviceId = deviceId;
-                    this._sync();
+                    this._syncEnabled();
                 }
             }));
         this._sync();
@@ -304,24 +304,32 @@ var Keyboard = new Lang.Class({
         return device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
     },
 
-    _sync: function () {
+    _syncEnabled: function () {
         this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD) ||
                                this._lastDeviceIsTouchscreen();
         if (!this._enableKeyboard && !this._keyboard)
             return;
-        if (this._enableKeyboard && this._keyboard &&
-            this._keyboard.keyboard_type == this._keyboardSettings.get_string(KEYBOARD_TYPE))
-            return;
 
         this._setCaretTrackerEnabled(this._enableKeyboard);
 
-        if (this._keyboard)
-            this._destroyKeyboard();
-
-        if (this._enableKeyboard)
-            this._setupKeyboard();
-        else
+        if (this._enableKeyboard) {
+            if (!this._keyboard)
+                this._setupKeyboard();
+            else
+                Main.layoutManager.showKeyboard();
+        } else {
             Main.layoutManager.hideKeyboard(true);
+        }
+    },
+
+    _sync: function () {
+        if (this._keyboard &&
+            this._keyboard.keyboard_type != this._keyboardSettings.get_string(KEYBOARD_TYPE)) {
+            this._destroyKeyboard();
+            this._setupKeyboard();
+        }
+
+        this._syncEnabled();
     },
 
     _destroyKeyboard: function() {
