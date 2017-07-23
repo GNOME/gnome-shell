@@ -172,7 +172,6 @@ var Keyboard = new Lang.Class({
         this._keyboardSettings.connect('changed', Lang.bind(this, this._sync));
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._sync));
-        this._daemonProxy = null;
         this._lastDeviceId = null;
 
         Caribou.DisplayAdapter.set_default(new LocalAdapter());
@@ -339,15 +338,6 @@ var Keyboard = new Lang.Class({
         this.actor = null;
 
         this._destroySource();
-        if (this._daemonProxy) {
-            this._daemonProxy.QuitRemote(function (result, error) {
-                if (error) {
-                    log(error.message);
-                    return;
-                }
-            });
-            this._daemonProxy = null;
-        }
     },
 
     _setupKeyboard: function() {
