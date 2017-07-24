@@ -71,7 +71,8 @@ meta_renderer_x11_create_cogl_renderer (MetaRenderer *renderer)
   Display *xdisplay = clutter_x11_get_default_display ();
 
   cogl_renderer = cogl_renderer_new ();
-  cogl_renderer_set_custom_winsys (cogl_renderer, get_x11_cogl_winsys_vtable);
+  cogl_renderer_set_custom_winsys (cogl_renderer, get_x11_cogl_winsys_vtable,
+                                   NULL);
   cogl_xlib_renderer_set_foreign_display (cogl_renderer, xdisplay);
 
   /* Set up things so that if the INTEL_swap_event extension is not present,

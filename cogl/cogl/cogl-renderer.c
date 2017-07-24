@@ -566,8 +566,10 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
 
 void
 cogl_renderer_set_custom_winsys (CoglRenderer                *renderer,
-                                 CoglCustomWinsysVtableGetter winsys_vtable_getter)
+                                 CoglCustomWinsysVtableGetter winsys_vtable_getter,
+                                 void                        *user_data)
 {
+  renderer->custom_winsys_user_data = user_data;
   renderer->custom_winsys_vtable_getter = winsys_vtable_getter;
 }
 

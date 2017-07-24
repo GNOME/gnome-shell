@@ -1693,7 +1693,8 @@ meta_renderer_native_create_cogl_renderer (MetaRenderer *renderer)
 
   cogl_renderer = cogl_renderer_new ();
   cogl_renderer_set_custom_winsys (cogl_renderer,
-                                   get_native_cogl_winsys_vtable);
+                                   get_native_cogl_winsys_vtable,
+                                   NULL);
 
   return cogl_renderer;
 }

@@ -43,6 +43,7 @@
 #include <cogl/winsys/cogl-winsys-private.h>
 
 void cogl_renderer_set_custom_winsys (CoglRenderer                *renderer,
-                                      CoglCustomWinsysVtableGetter winsys_vtable_getter);
+                                      CoglCustomWinsysVtableGetter winsys_vtable_getter,
+                                      void                        *user_data);
 
 #endif /* __COGL_MUTTER_H___ */
