@@ -6,16 +6,16 @@
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Žygimantas Beručka <zygis@gnome.org>, 2004-2007.
 # Gintautas Miliauskas <gintautas@miliauskas.lt>, 2007-2009, 2010.
-# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014, 2015, 2016.
+# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-02 18:41+0000\n"
-"PO-Revision-Date: 2017-03-03 20:29+0200\n"
-"Last-Translator: Moo\n"
+"POT-Creation-Date: 2017-07-19 09:20+0000\n"
+"PO-Revision-Date: 2017-07-24 23:59+0300\n"
+"Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -401,13 +401,55 @@ msgstr ""
 "Kai teigiama, nauji langai bus visada patalpinti aktyvaus monitoriaus ekrano "
 "viduryje."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Įjungti eksperimentines savybes"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
+msgstr ""
+"Norėdami įjungti eksperimentines savybes, pridėkite į sąrašą raktinį žodį. "
+"Ar savybė reikalauja kompozitoriaus paleidimo iš naujo priklauso nuo "
+"konkrečios savybės. Nei viena eksperimentinė savybė privalo būti prieinama "
+"ar konfigūruojama. Nesitikėkite, kad ką nors pridėjus į šį sąrašą, tai "
+"išliks ir ateityje. Šiuo metu galimi raktažodžiai: • „monitor-config-"
+"manager“ — naudoti naują monitorių konfigūracijos sistemą, kuria siekiama "
+"pakeisti dabartinę. Tai leidžia programoms naudoti geriau konfigūruojamą "
+"aukštesnio lygio API, taip pat galimybę konfigūruoti pagal loginę "
+"monitoriaus skalę. • „scale-monitor-framebuffer“ — mutter numatytai išdėsto "
+"loginius monitorius loginėje pikselių koordinačių erdvėje, tuo pat "
+"ištempiant monitorių kadrų buferius vietoje langų turinio, tokiu būdu "
+"valdant didelio tankio monitorius. Nereikalauja paleisti iš naujo. Taip pat "
+"šiai savybei įjungti reikia, kad „monitor-config-manager“ būtų įjungta."
+
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr "Pasirinkti langą iš tab iššokimo"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Atšaukti tab iššokimą"
+
+#: data/org.gnome.mutter.gschema.xml.in:161
+#| msgid "Switch monitor"
+msgid "Switch monitor configurations"
+msgstr "Perjungti monitorių konfigūracijas"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+msgid "Rotates the built-in monitor configuration"
+msgstr "Suka integruotas monitorių konfigūracijas"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -460,7 +502,7 @@ msgstr "Persijungti į VT 12"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2118
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Veiksenos perjungimas (Grupė %d)"
@@ -468,37 +510,37 @@ msgstr "Veiksenos perjungimas (Grupė %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Perjungti monitorių"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Rodyti pagalbą ekrane"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:925
 msgid "Built-in display"
 msgstr "Integruotas vaizduoklis"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:948
 msgid "Unknown"
 msgstr "Nežinomas"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown Display"
 msgstr "Nežinomas vaizduoklis"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:958
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -507,30 +549,6 @@ msgstr "Kita kompozicijos tvarkytuvė jau veikia ekrane %i vaizduoklyje „%s“
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Skambučio įvykis"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "%s neatsiliepia į komandas."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Programa neatsiliepia į komandas."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Priverstinai išeiti"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Laukti"
 
 #: src/core/display.c:608
 #, c-format
@@ -572,6 +590,30 @@ msgstr "Vykdyti kaip įdėtinį kompozitorių"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Vykdyti kaip visą vaizduoklio serverį, o ne įdėtinį"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "%s neatsiliepia į komandas."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Programa neatsiliepia į komandas."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Priverstinai išeiti"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Laukti"
 
 #: src/core/mutter.c:39
 #, c-format
