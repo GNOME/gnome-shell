@@ -520,59 +520,16 @@ meta_monitor_manager_kms_get_primary_gpu (MetaMonitorManagerKms *manager_kms)
   return manager_kms->primary_gpu;
 }
 
-static guint
-count_devices_with_connectors (const char *seat_id,
-                               GList      *devices)
+typedef enum
 {
-  g_autoptr (GHashTable) cards = NULL;
-  GList *l;
+  GPU_TYPE_PRIMARY,
+  GPU_TYPE_SECONDARY
+} GpuType;
 
-  cards = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_object_unref);
-  for (l = devices; l != NULL; l = l->next)
-    {
-      GUdevDevice *device = l->data;
-      g_autoptr (GUdevDevice) parent_device = NULL;
-      const gchar *parent_device_type = NULL;
-      const gchar *parent_device_name = NULL;
-      const gchar *card_seat;
-
-      /* Filter out the real card devices, we only care about the connectors. */
-      if (g_udev_device_get_device_type (device) != G_UDEV_DEVICE_TYPE_NONE)
-        continue;
-
-      /* Only connectors have a modes attribute. */
-      if (!g_udev_device_has_sysfs_attr (device, "modes"))
-        continue;
-
-      parent_device = g_udev_device_get_parent (device);
-
-      if (g_udev_device_get_device_type (parent_device) ==
-          G_UDEV_DEVICE_TYPE_CHAR)
-        parent_device_type = g_udev_device_get_property (parent_device,
-                                                         "DEVTYPE");
-
-      if (g_strcmp0 (parent_device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
-        continue;
-
-      card_seat = g_udev_device_get_property (parent_device, "ID_SEAT");
-
-      if (!card_seat)
-        card_seat = "seat0";
-
-      if (g_strcmp0 (seat_id, card_seat) != 0)
-        continue;
-
-      parent_device_name = g_udev_device_get_name (parent_device);
-      g_hash_table_insert (cards,
-                           (gpointer) parent_device_name ,
-                           g_steal_pointer (&parent_device));
-    }
-
-  return g_hash_table_size (cards);
-}
-
-static char *
-get_primary_gpu_path (MetaMonitorManagerKms *manager_kms)
+static GList *
+get_gpu_paths (MetaMonitorManagerKms *manager_kms,
+               GpuType                gpu_type,
+               const char            *filtered_gpu_path)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (manager_kms);
   MetaBackend *backend = meta_monitor_manager_get_backend (manager);
@@ -580,9 +537,9 @@ get_primary_gpu_path (MetaMonitorManagerKms *manager_kms)
   MetaLauncher *launcher = meta_backend_native_get_launcher (backend_native);
   g_autoptr (GUdevEnumerator) enumerator = NULL;
   const char *seat_id;
-  char *path = NULL;
   GList *devices;
   GList *l;
+  GList *gpu_paths = NULL;
 
   enumerator = g_udev_enumerator_new (manager_kms->udev);
 
@@ -597,30 +554,16 @@ get_primary_gpu_path (MetaMonitorManagerKms *manager_kms)
 
   devices = g_udev_enumerator_execute (enumerator);
   if (!devices)
-    goto out;
+    return NULL;
 
   seat_id = meta_launcher_get_seat_id (launcher);
-
-  /*
-   * For now, fail on systems where some of the connectors are connected to
-   * secondary gpus.
-   *
-   * https://bugzilla.gnome.org/show_bug.cgi?id=771442
-   */
-  if (g_getenv ("MUTTER_ALLOW_HYBRID_GPUS") == NULL)
-    {
-      unsigned int num_devices;
-
-      num_devices = count_devices_with_connectors (seat_id, devices);
-      if (num_devices != 1)
-        goto out;
-    }
 
   for (l = devices; l; l = l->next)
     {
       GUdevDevice *dev = l->data;
       g_autoptr (GUdevDevice) platform_device = NULL;
       g_autoptr (GUdevDevice) pci_device = NULL;
+      const char *device_path;
       const char *device_type;
       const char *device_seat;
 
@@ -632,19 +575,24 @@ get_primary_gpu_path (MetaMonitorManagerKms *manager_kms)
       if (g_strcmp0 (device_type, DRM_CARD_UDEV_DEVICE_TYPE) != 0)
         continue;
 
+      device_path = g_udev_device_get_device_file (dev);
+      if (g_strcmp0 (device_path, filtered_gpu_path) == 0)
+        continue;
+
       device_seat = g_udev_device_get_property (dev, "ID_SEAT");
       if (!device_seat)
         {
           /* When ID_SEAT is not set, it means seat0. */
           device_seat = "seat0";
         }
-      else if (g_strcmp0 (device_seat, "seat0") != 0)
+      else if (g_strcmp0 (device_seat, "seat0") != 0 &&
+               gpu_type == GPU_TYPE_PRIMARY)
         {
           /*
            * If the device has been explicitly assigned other seat
            * than seat0, it is probably the right device to use.
            */
-          path = g_strdup (g_udev_device_get_device_file (dev));
+          gpu_paths = g_list_append (gpu_paths, g_strdup (device_path));
           break;
         }
 
@@ -655,31 +603,37 @@ get_primary_gpu_path (MetaMonitorManagerKms *manager_kms)
       platform_device = g_udev_device_get_parent_with_subsystem (dev,
                                                                  "platform",
                                                                  NULL);
-      if (platform_device != NULL)
+      if (platform_device != NULL && gpu_type == GPU_TYPE_PRIMARY)
         {
-          path = g_strdup (g_udev_device_get_device_file (dev));
+          gpu_paths = g_list_append (gpu_paths, g_strdup (device_path));
           break;
         }
 
       pci_device = g_udev_device_get_parent_with_subsystem (dev, "pci", NULL);
       if (pci_device != NULL)
         {
-          int boot_vga;
-
-          boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device,
-                                                          "boot_vga");
-          if (boot_vga == 1)
+          if (gpu_type == GPU_TYPE_PRIMARY)
             {
-              path = g_strdup (g_udev_device_get_device_file (dev));
-              break;
+              int boot_vga;
+
+              boot_vga = g_udev_device_get_sysfs_attr_as_int (pci_device,
+                                                              "boot_vga");
+              if (boot_vga == 1)
+                {
+                  gpu_paths = g_list_append (gpu_paths, g_strdup (device_path));
+                  break;
+                }
+            }
+          else
+            {
+              gpu_paths = g_list_append (gpu_paths, g_strdup (device_path));
             }
         }
     }
 
-out:
   g_list_free_full (devices, g_object_unref);
 
-  return path;
+  return gpu_paths;
 }
 
 static gboolean
@@ -689,21 +643,26 @@ meta_monitor_manager_kms_initable_init (GInitable    *initable,
 {
   MetaMonitorManagerKms *manager_kms = META_MONITOR_MANAGER_KMS (initable);
   const char *subsystems[2] = { "drm", NULL };
-  g_autofree char *primary_gpu_path;
+  GList *gpu_paths;
+  g_autofree char *primary_gpu_path = NULL;
+  GList *l;
 
   manager_kms->udev = g_udev_client_new (subsystems);
 
-  primary_gpu_path = get_primary_gpu_path (manager_kms);
-  if (!primary_gpu_path)
+  gpu_paths = get_gpu_paths (manager_kms, GPU_TYPE_PRIMARY, NULL);
+  if (g_list_length (gpu_paths) != 1)
     {
+      g_list_free_full (gpu_paths, g_free);
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND,
-                   "Could not find drm kms device");
+                   "Could not find a primary drm kms device");
       return FALSE;
     }
 
+  primary_gpu_path = g_strdup (gpu_paths->data);
   manager_kms->primary_gpu = meta_gpu_kms_new (manager_kms,
                                                primary_gpu_path,
                                                error);
+  g_list_free_full (gpu_paths, g_free);
   if (!manager_kms->primary_gpu)
     return FALSE;
 
@@ -711,6 +670,26 @@ meta_monitor_manager_kms_initable_init (GInitable    *initable,
 
   meta_monitor_manager_add_gpu (META_MONITOR_MANAGER (manager_kms),
                                 META_GPU (manager_kms->primary_gpu));
+
+  gpu_paths = get_gpu_paths (manager_kms, GPU_TYPE_SECONDARY, primary_gpu_path);
+  for (l = gpu_paths; l; l = l->next)
+    {
+      GError *secondary_error = NULL;
+      char *gpu_path = l->data;
+      MetaGpuKms *gpu_kms;
+
+      gpu_kms = meta_gpu_kms_new (manager_kms, gpu_path, &secondary_error);
+      if (!gpu_kms)
+        {
+          g_warning ("Failed to open secondary gpu '%s': %s",
+                     gpu_path, secondary_error->message);
+          g_error_free (secondary_error);
+        }
+
+      meta_monitor_manager_add_gpu (META_MONITOR_MANAGER (manager_kms),
+                                    META_GPU (gpu_kms));
+    }
+  g_list_free_full (gpu_paths, g_free);
 
   return TRUE;
 }
