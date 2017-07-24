@@ -71,17 +71,33 @@ gboolean meta_egl_destroy_image (MetaEgl    *egl,
                                  EGLImageKHR image,
                                  GError    **error);
 
+EGLSurface meta_egl_create_window_surface (MetaEgl            *egl,
+                                           EGLDisplay          display,
+                                           EGLConfig           config,
+                                           EGLNativeWindowType native_window_type,
+                                           const EGLint       *attrib_list,
+                                           GError            **error);
+
 EGLSurface meta_egl_create_pbuffer_surface (MetaEgl      *egl,
                                             EGLDisplay    display,
                                             EGLConfig     config,
                                             const EGLint *attrib_list,
                                             GError      **error);
 
+gboolean meta_egl_destroy_surface (MetaEgl   *egl,
+                                   EGLDisplay display,
+                                   EGLSurface surface,
+                                   GError   **error);
+
 EGLDisplay meta_egl_get_platform_display (MetaEgl      *egl,
                                           EGLenum       platform,
                                           void         *native_display,
                                           const EGLint *attrib_list,
                                           GError      **error);
+
+gboolean meta_egl_terminate (MetaEgl   *egl,
+                             EGLDisplay display,
+                             GError   **error);
 
 gboolean meta_egl_query_wayland_buffer (MetaEgl            *egl,
                                         EGLDisplay          display,

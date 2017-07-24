@@ -291,6 +291,27 @@ meta_egl_choose_config (MetaEgl      *egl,
 }
 
 EGLSurface
+meta_egl_create_window_surface (MetaEgl            *egl,
+                                EGLDisplay          display,
+                                EGLConfig           config,
+                                EGLNativeWindowType native_window_type,
+                                const EGLint       *attrib_list,
+                                GError            **error)
+{
+  EGLSurface surface;
+
+  surface = eglCreateWindowSurface (display, config,
+                                    native_window_type, attrib_list);
+  if (surface == EGL_NO_SURFACE)
+    {
+      set_egl_error (error);
+      return EGL_NO_SURFACE;
+    }
+
+  return surface;
+}
+
+EGLSurface
 meta_egl_create_pbuffer_surface (MetaEgl      *egl,
                                  EGLDisplay    display,
                                  EGLConfig     config,
@@ -307,6 +328,21 @@ meta_egl_create_pbuffer_surface (MetaEgl      *egl,
     }
 
   return surface;
+}
+
+gboolean
+meta_egl_destroy_surface (MetaEgl   *egl,
+                          EGLDisplay display,
+                          EGLSurface surface,
+                          GError   **error)
+{
+  if (!eglDestroySurface (display, surface))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 static gboolean
@@ -351,6 +387,20 @@ meta_egl_get_platform_display (MetaEgl      *egl,
     }
 
   return display;
+}
+
+gboolean
+meta_egl_terminate (MetaEgl   *egl,
+                    EGLDisplay display,
+                    GError   **error)
+{
+  if (!eglTerminate (display))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
 }
 
 EGLImageKHR

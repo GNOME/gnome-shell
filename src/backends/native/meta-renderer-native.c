@@ -242,9 +242,11 @@ static void
 meta_renderer_native_disconnect (CoglRenderer *cogl_renderer)
 {
   CoglRendererEGL *cogl_renderer_egl = cogl_renderer->winsys;
+  MetaRendererNative *renderer_native = cogl_renderer_egl->platform;
+  MetaEgl *egl = meta_renderer_native_get_egl (renderer_native);
 
   if (cogl_renderer_egl->edpy != EGL_NO_DISPLAY)
-    eglTerminate (cogl_renderer_egl->edpy);
+    meta_egl_terminate (egl, cogl_renderer_egl->edpy, NULL);
 
   g_slice_free (CoglRendererEGL, cogl_renderer_egl);
 }
@@ -516,10 +518,15 @@ meta_renderer_native_egl_cleanup_context (CoglDisplay *cogl_display)
   CoglDisplayEGL *cogl_display_egl = cogl_display->winsys;
   CoglRenderer *cogl_renderer = cogl_display->renderer;
   CoglRendererEGL *cogl_renderer_egl = cogl_renderer->winsys;
+  MetaRendererNative *renderer_native = cogl_renderer_egl->platform;
+  MetaEgl *egl = meta_renderer_native_get_egl (renderer_native);
 
   if (cogl_display_egl->dummy_surface != EGL_NO_SURFACE)
     {
-      eglDestroySurface (cogl_renderer_egl->edpy, cogl_display_egl->dummy_surface);
+      meta_egl_destroy_surface (egl,
+                                cogl_renderer_egl->edpy,
+                                cogl_display_egl->dummy_surface,
+                                NULL);
       cogl_display_egl->dummy_surface = EGL_NO_SURFACE;
     }
 }
@@ -1062,6 +1069,7 @@ meta_renderer_native_create_surface_gbm (MetaOnscreenNative  *onscreen_native,
   CoglDisplayEGL *cogl_display_egl = cogl_display->winsys;
   CoglRendererEGL *cogl_renderer_egl = cogl_display->renderer->winsys;
   MetaRendererNative *renderer_native = cogl_renderer_egl->platform;
+  MetaEgl *egl = meta_renderer_native_get_egl (renderer_native);
   MetaRendererNativeGpuData *renderer_gpu_data;
   struct gbm_surface *new_gbm_surface;
   EGLNativeWindowType egl_native_window;
@@ -1085,16 +1093,16 @@ meta_renderer_native_create_surface_gbm (MetaOnscreenNative  *onscreen_native,
     }
 
   egl_native_window = (EGLNativeWindowType) new_gbm_surface;
-  new_egl_surface = eglCreateWindowSurface (cogl_renderer_egl->edpy,
-                                            cogl_display_egl->egl_config,
-                                            egl_native_window,
-                                            NULL);
+  new_egl_surface =
+    meta_egl_create_window_surface (egl,
+                                    cogl_renderer_egl->edpy,
+                                    cogl_display_egl->egl_config,
+                                    egl_native_window,
+                                    NULL,
+                                    error);
   if (new_egl_surface == EGL_NO_SURFACE)
     {
       gbm_surface_destroy (new_gbm_surface);
-      g_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                   "Failed to allocate surface");
       return FALSE;
     }
 
@@ -1458,8 +1466,9 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
   CoglContext *cogl_context = framebuffer->context;
   CoglRenderer *cogl_renderer = cogl_context->display->renderer;
   CoglRendererEGL *cogl_renderer_egl = cogl_renderer->winsys;
-  CoglOnscreenEGL *onscreen_egl = onscreen->winsys;
   MetaRendererNative *renderer_native = cogl_renderer_egl->platform;
+  MetaEgl *egl = meta_renderer_native_get_egl (renderer_native);
+  CoglOnscreenEGL *onscreen_egl = onscreen->winsys;
   MetaOnscreenNative *onscreen_native;
   MetaRendererNativeGpuData *renderer_gpu_data;
 
@@ -1471,7 +1480,10 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
 
   if (onscreen_egl->egl_surface != EGL_NO_SURFACE)
     {
-      eglDestroySurface (cogl_renderer_egl->edpy, onscreen_egl->egl_surface);
+      meta_egl_destroy_surface (egl,
+                                cogl_renderer_egl->edpy,
+                                onscreen_egl->egl_surface,
+                                NULL);
       onscreen_egl->egl_surface = EGL_NO_SURFACE;
     }
 
