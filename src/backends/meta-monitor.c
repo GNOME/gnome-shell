@@ -180,6 +180,14 @@ meta_monitor_generate_spec (MetaMonitor *monitor)
   priv->spec = monitor_spec;
 }
 
+MetaGpu *
+meta_monitor_get_gpu (MetaMonitor *monitor)
+{
+  MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+
+  return priv->gpu;
+}
+
 GList *
 meta_monitor_get_outputs (MetaMonitor *monitor)
 {
