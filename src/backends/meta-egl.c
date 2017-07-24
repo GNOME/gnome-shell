@@ -160,11 +160,11 @@ set_egl_error (GError **error)
                        error_str);
 }
 
-static gboolean
-extensions_string_has_extensions_valist (const char *extensions_str,
-                                         char     ***missing_extensions,
-                                         char       *first_extension,
-                                         va_list     var_args)
+gboolean
+meta_extensions_string_has_extensions_valist (const char *extensions_str,
+                                              char     ***missing_extensions,
+                                              char       *first_extension,
+                                              va_list     var_args)
 {
   char **extensions;
   char *extension;
@@ -222,10 +222,11 @@ meta_egl_has_extensions (MetaEgl   *egl,
     }
 
   va_start (var_args, first_extension);
-  has_extensions = extensions_string_has_extensions_valist (extensions_str,
-                                                            missing_extensions,
-                                                            first_extension,
-                                                            var_args);
+  has_extensions =
+    meta_extensions_string_has_extensions_valist (extensions_str,
+                                                  missing_extensions,
+                                                  first_extension,
+                                                  var_args);
   va_end (var_args);
 
   return has_extensions;
@@ -479,10 +480,11 @@ meta_egl_egl_device_has_extensions (MetaEgl     *egl,
     }
 
   va_start (var_args, first_extension);
-  has_extensions = extensions_string_has_extensions_valist (extensions_str,
-                                                            missing_extensions,
-                                                            first_extension,
-                                                            var_args);
+  has_extensions =
+    meta_extensions_string_has_extensions_valist (extensions_str,
+                                                  missing_extensions,
+                                                  first_extension,
+                                                  var_args);
   va_end (var_args);
 
   return has_extensions;

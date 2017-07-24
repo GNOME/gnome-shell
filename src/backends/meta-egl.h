@@ -36,6 +36,12 @@ G_DECLARE_FINAL_TYPE (MetaEgl, meta_egl, META, EGL, GObject)
 
 GQuark meta_egl_error_quark (void);
 
+gboolean
+meta_extensions_string_has_extensions_valist (const char *extensions_str,
+                                              char     ***missing_extensions,
+                                              char       *first_extension,
+                                              va_list     var_args);
+
 gboolean meta_egl_has_extensions (MetaEgl   *egl,
                                   EGLDisplay display,
                                   char    ***missing_extensions,
