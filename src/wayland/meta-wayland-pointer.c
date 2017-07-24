@@ -606,7 +606,12 @@ meta_wayland_pointer_update (MetaWaylandPointer *pointer,
 {
   repick_for_event (pointer, event);
 
-  pointer->button_count = count_buttons (event);
+  if (event->type == CLUTTER_MOTION ||
+      event->type == CLUTTER_BUTTON_PRESS ||
+      event->type == CLUTTER_BUTTON_RELEASE)
+    {
+      pointer->button_count = count_buttons (event);
+    }
 }
 
 static void
