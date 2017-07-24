@@ -52,6 +52,10 @@ gboolean meta_egl_initialize (MetaEgl   *egl,
                               EGLDisplay display,
                               GError   **error);
 
+gpointer meta_egl_get_proc_address (MetaEgl    *egl,
+                                    const char *procname,
+                                    GError    **error);
+
 gboolean meta_egl_choose_config (MetaEgl      *egl,
                                  EGLDisplay    display,
                                  const EGLint *attrib_list,

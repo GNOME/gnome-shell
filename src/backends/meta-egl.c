@@ -246,6 +246,25 @@ meta_egl_initialize (MetaEgl   *egl,
   return TRUE;
 }
 
+gpointer
+meta_egl_get_proc_address (MetaEgl    *egl,
+                           const char *procname,
+                           GError    **error)
+{
+  gpointer func;
+
+  func = (gpointer) eglGetProcAddress (procname);
+  if (!func)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Could not load symbol '%s': Not found",
+                   procname);
+      return NULL;
+    }
+
+  return func;
+}
+
 gboolean
 meta_egl_choose_config (MetaEgl      *egl,
                         EGLDisplay    display,
