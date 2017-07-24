@@ -422,6 +422,41 @@ meta_egl_terminate (MetaEgl   *egl,
   return TRUE;
 }
 
+EGLContext
+meta_egl_create_context (MetaEgl      *egl,
+                         EGLDisplay    display,
+                         EGLConfig     config,
+                         EGLContext    share_context,
+                         const EGLint *attrib_list,
+                         GError      **error)
+{
+  EGLContext context;
+
+  context = eglCreateContext (display, config, share_context, attrib_list);
+  if (context == EGL_NO_CONTEXT)
+    {
+      set_egl_error (error);
+      return EGL_NO_CONTEXT;
+    }
+
+  return context;
+}
+
+gboolean
+meta_egl_destroy_context (MetaEgl   *egl,
+                          EGLDisplay display,
+                          EGLContext context,
+                          GError   **error)
+{
+  if (!eglDestroyContext (display, context))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 EGLImageKHR
 meta_egl_create_image (MetaEgl        *egl,
                        EGLDisplay      display,
@@ -457,6 +492,38 @@ meta_egl_destroy_image (MetaEgl    *egl,
     return FALSE;
 
   if (!egl->eglDestroyImageKHR (display, image))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_egl_make_current (MetaEgl   *egl,
+                       EGLDisplay display,
+                       EGLSurface draw,
+                       EGLSurface read,
+                       EGLContext context,
+                       GError   **error)
+{
+  if (!eglMakeCurrent (display, draw, read, context))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+gboolean
+meta_egl_swap_buffers (MetaEgl   *egl,
+                       EGLDisplay display,
+                       EGLSurface surface,
+                       GError   **error)
+{
+  if (!eglSwapBuffers (display, surface))
     {
       set_egl_error (error);
       return FALSE;

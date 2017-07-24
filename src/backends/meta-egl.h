@@ -62,6 +62,18 @@ gboolean meta_egl_choose_config (MetaEgl      *egl,
                                  EGLConfig    *chosen_config,
                                  GError      **error);
 
+EGLContext meta_egl_create_context (MetaEgl      *egl,
+                                    EGLDisplay    display,
+                                    EGLConfig     config,
+                                    EGLContext    share_context,
+                                    const EGLint *attrib_list,
+                                    GError      **error);
+
+gboolean meta_egl_destroy_context (MetaEgl   *egl,
+                                   EGLDisplay display,
+                                   EGLContext context,
+                                   GError   **error);
+
 EGLImageKHR meta_egl_create_image (MetaEgl        *egl,
                                    EGLDisplay      display,
                                    EGLContext      context,
@@ -102,6 +114,18 @@ EGLDisplay meta_egl_get_platform_display (MetaEgl      *egl,
 gboolean meta_egl_terminate (MetaEgl   *egl,
                              EGLDisplay display,
                              GError   **error);
+
+gboolean meta_egl_make_current (MetaEgl   *egl,
+                                EGLDisplay display,
+                                EGLSurface draw,
+                                EGLSurface read,
+                                EGLContext context,
+                                GError   **error);
+
+gboolean meta_egl_swap_buffers (MetaEgl   *egl,
+                                EGLDisplay display,
+                                EGLSurface surface,
+                                GError   **error);
 
 gboolean meta_egl_query_wayland_buffer (MetaEgl            *egl,
                                         EGLDisplay          display,
