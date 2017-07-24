@@ -1594,13 +1594,13 @@ meta_renderer_native_create_onscreen (MetaGpuKms           *gpu_kms,
                                       CoglContext          *context,
                                       MetaMonitorTransform  transform,
                                       gint                  view_width,
-                                      gint                  view_height)
+                                      gint                  view_height,
+                                      GError              **error)
 {
   CoglOnscreen *onscreen;
   CoglOnscreenEGL *onscreen_egl;
   MetaOnscreenNative *onscreen_native;
   gint width, height;
-  GError *error = NULL;
 
   if (meta_monitor_transform_is_rotated (transform))
     {
@@ -1617,11 +1617,9 @@ meta_renderer_native_create_onscreen (MetaGpuKms           *gpu_kms,
   cogl_onscreen_set_swap_throttled (onscreen,
                                     _clutter_get_sync_to_vblank ());
 
-  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), &error))
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), error))
     {
-      g_warning ("Could not create onscreen: %s", error->message);
       cogl_object_unref (onscreen);
-      g_error_free (error);
       return NULL;
     }
 
@@ -1637,16 +1635,16 @@ meta_renderer_native_create_offscreen (MetaRendererNative    *renderer,
                                        CoglContext           *context,
                                        MetaMonitorTransform   transform,
                                        gint                   view_width,
-                                       gint                   view_height)
+                                       gint                   view_height,
+                                       GError               **error)
 {
   CoglOffscreen *fb;
   CoglTexture2D *tex;
-  GError *error = NULL;
 
   tex = cogl_texture_2d_new_with_size (context, view_width, view_height);
   cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex), FALSE);
 
-  if (!cogl_texture_allocate (COGL_TEXTURE (tex), &error))
+  if (!cogl_texture_allocate (COGL_TEXTURE (tex), error))
     {
       cogl_object_unref (tex);
       return FALSE;
@@ -1654,10 +1652,8 @@ meta_renderer_native_create_offscreen (MetaRendererNative    *renderer,
 
   fb = cogl_offscreen_new_with_texture (COGL_TEXTURE (tex));
   cogl_object_unref (tex);
-  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (fb), &error))
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (fb), error))
     {
-      g_warning ("Could not create offscreen: %s", error->message);
-      g_error_free (error);
       cogl_object_unref (fb);
       return FALSE;
     }
@@ -1786,9 +1782,10 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
                                                    cogl_context,
                                                    view_transform,
                                                    width,
-                                                   height);
+                                                   height,
+                                                   &error);
   if (!onscreen)
-    meta_fatal ("Failed to allocate onscreen framebuffer\n");
+    g_error ("Failed to allocate onscreen framebuffer: %s", error->message);
 
   if (view_transform != META_MONITOR_TRANSFORM_NORMAL)
     {
@@ -1796,9 +1793,10 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
                                                          cogl_context,
                                                          view_transform,
                                                          width,
-                                                         height);
+                                                         height,
+                                                         &error);
       if (!offscreen)
-        meta_fatal ("Failed to allocate back buffer texture\n");
+        g_error ("Failed to allocate back buffer texture: %s", error->message);
     }
 
   view = g_object_new (META_TYPE_RENDERER_VIEW,
