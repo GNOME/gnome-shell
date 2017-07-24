@@ -548,6 +548,7 @@ meta_onscreen_native_swap_drm_fb (CoglOnscreen *onscreen)
 
 static void
 on_crtc_flipped (GClosure         *closure,
+                 MetaGpuKms       *gpu_kms,
                  MetaRendererView *view)
 {
   ClutterStageView *stage_view = CLUTTER_STAGE_VIEW (view);
@@ -852,7 +853,7 @@ meta_onscreen_native_flip_crtcs (CoglOnscreen *onscreen)
   flip_closure = g_cclosure_new (G_CALLBACK (on_crtc_flipped),
                                  g_object_ref (view),
                                  (GClosureNotify) flip_closure_destroyed);
-  g_closure_set_marshal (flip_closure, g_cclosure_marshal_VOID__VOID);
+  g_closure_set_marshal (flip_closure, g_cclosure_marshal_VOID__OBJECT);
 
   /* Either flip the CRTC's of the monitor info, if we are drawing just part
    * of the stage, or all of the CRTC's if we are drawing the whole stage.
