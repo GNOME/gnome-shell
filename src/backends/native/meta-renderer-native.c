@@ -96,6 +96,14 @@ typedef struct _MetaRendererNativeGpuData
   gboolean no_add_fb2;
 } MetaRendererNativeGpuData;
 
+typedef struct _MetaDumbBuffer
+{
+  uint32_t fb_id;
+  uint32_t handle;
+  void *map;
+  uint64_t map_size;
+} MetaDumbBuffer;
+
 typedef struct _MetaOnscreenNative
 {
   MetaGpuKms *gpu_kms;
@@ -112,12 +120,7 @@ typedef struct _MetaOnscreenNative
   struct {
     EGLStreamKHR stream;
 
-    struct {
-      uint32_t fb_id;
-      uint32_t handle;
-      void *map;
-      uint64_t map_size;
-    } dumb_fb;
+    MetaDumbBuffer dumb_fb;
   } egl;
 #endif
 
@@ -160,6 +163,18 @@ G_DEFINE_TYPE_WITH_CODE (MetaRendererNative,
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 static const CoglWinsysVtable *parent_vtable;
+
+static void
+release_dumb_fb (MetaDumbBuffer *dumb_fb,
+                 MetaGpuKms     *gpu_kms);
+
+static gboolean
+init_dumb_fb (MetaDumbBuffer *dumb_fb,
+              MetaGpuKms     *gpu_kms,
+              int             width,
+              int             height,
+              uint32_t        format,
+              GError        **error);
 
 static void
 meta_renderer_native_gpu_data_free (MetaRendererNativeGpuData *renderer_gpu_data)
@@ -1179,14 +1194,15 @@ meta_renderer_native_create_surface_egl_device (MetaRendererNative *renderer_nat
 }
 
 static gboolean
-init_dumb_fb (MetaOnscreenNative *onscreen_native,
-              int                 width,
-              int                 height,
-              GError            **error)
+init_dumb_fb (MetaDumbBuffer  *dumb_fb,
+              MetaGpuKms      *gpu_kms,
+              int              width,
+              int              height,
+              uint32_t         format,
+              GError         **error)
 {
-  MetaRendererNativeGpuData *renderer_gpu_data;
-  MetaGpuKms *gpu_kms = onscreen_native->gpu_kms;
   MetaRendererNative *renderer_native = meta_renderer_native_from_gpu (gpu_kms);
+  MetaRendererNativeGpuData *renderer_gpu_data;
   struct drm_mode_create_dumb create_arg;
   struct drm_mode_destroy_dumb destroy_arg;
   struct drm_mode_map_dumb map_arg;
@@ -1210,17 +1226,15 @@ init_dumb_fb (MetaOnscreenNative *onscreen_native,
       goto err_ioctl;
     }
 
-  renderer_gpu_data =
-    meta_renderer_native_get_gpu_data (renderer_native,
-                                       onscreen_native->gpu_kms);
+  renderer_gpu_data = meta_renderer_native_get_gpu_data (renderer_native,
+                                                         gpu_kms);
   if (!renderer_gpu_data->no_add_fb2)
     {
       uint32_t handles[4] = { create_arg.handle, };
       uint32_t pitches[4] = { create_arg.pitch, };
       uint32_t offsets[4] = { 0 };
 
-      if (drmModeAddFB2 (kms_fd, width, height,
-                         GBM_FORMAT_XRGB8888,
+      if (drmModeAddFB2 (kms_fd, width, height, format,
                          handles, pitches, offsets,
                          &fb_id, 0) != 0)
         {
@@ -1271,10 +1285,10 @@ init_dumb_fb (MetaOnscreenNative *onscreen_native,
       goto err_mmap;
     }
 
-  onscreen_native->egl.dumb_fb.fb_id = fb_id;
-  onscreen_native->egl.dumb_fb.handle = create_arg.handle;
-  onscreen_native->egl.dumb_fb.map = map;
-  onscreen_native->egl.dumb_fb.map_size = create_arg.size;
+  dumb_fb->fb_id = fb_id;
+  dumb_fb->handle = create_arg.handle;
+  dumb_fb->map = map;
+  dumb_fb->map_size = create_arg.size;
 
   return TRUE;
 
@@ -1293,25 +1307,24 @@ err_ioctl:
 }
 
 static void
-release_dumb_fb (MetaOnscreenNative *onscreen_native)
+release_dumb_fb (MetaDumbBuffer *dumb_fb,
+                 MetaGpuKms     *gpu_kms)
 {
-  MetaGpuKms *gpu_kms = onscreen_native->gpu_kms;
   struct drm_mode_destroy_dumb destroy_arg;
   int kms_fd;
 
-  if (!onscreen_native->egl.dumb_fb.map)
+  if (!dumb_fb->map)
     return;
 
-  munmap (onscreen_native->egl.dumb_fb.map,
-          onscreen_native->egl.dumb_fb.map_size);
-  onscreen_native->egl.dumb_fb.map = NULL;
+  munmap (dumb_fb->map, dumb_fb->map_size);
+  dumb_fb->map = NULL;
 
   kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
-  drmModeRmFB (kms_fd, onscreen_native->egl.dumb_fb.fb_id);
+  drmModeRmFB (kms_fd, dumb_fb->fb_id);
 
   destroy_arg = (struct drm_mode_destroy_dumb) {
-    .handle = onscreen_native->egl.dumb_fb.handle
+    .handle = dumb_fb->handle
   };
   drmIoctl (kms_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &destroy_arg);
 }
@@ -1402,7 +1415,11 @@ meta_onscreen_native_allocate (CoglOnscreen *onscreen,
       break;
 #ifdef HAVE_EGL_DEVICE
     case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
-      if (!init_dumb_fb (onscreen_native, width, height, error))
+      if (!init_dumb_fb (&onscreen_native->egl.dumb_fb,
+                         onscreen_native->gpu_kms,
+                         width, height,
+                         GBM_FORMAT_XRGB8888,
+                         error))
         return FALSE;
 
       view = onscreen_native->view;
@@ -1468,7 +1485,8 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
       break;
 #ifdef HAVE_EGL_DEVICE
     case META_RENDERER_NATIVE_MODE_EGL_DEVICE:
-      release_dumb_fb (onscreen_native);
+      release_dumb_fb (&onscreen_native->egl.dumb_fb,
+                       onscreen_native->gpu_kms);
       if (onscreen_native->egl.stream != EGL_NO_STREAM_KHR)
         {
           MetaBackend *backend = meta_get_backend ();
