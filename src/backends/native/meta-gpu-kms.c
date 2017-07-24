@@ -25,6 +25,7 @@
 
 #include <drm.h>
 #include <errno.h>
+#include <poll.h>
 #include <string.h>
 #include <xf86drm.h>
 #include <xf86drmMode.h>
@@ -80,7 +81,7 @@ kms_event_dispatch (GSource     *source,
 {
   MetaKmsSource *kms_source = (MetaKmsSource *) source;
 
-  meta_gpu_kms_wait_for_flip (kms_source->gpu_kms);
+  meta_gpu_kms_wait_for_flip (kms_source->gpu_kms, NULL);
 
   return G_SOURCE_CONTINUE;
 }
@@ -256,18 +257,52 @@ page_flip_handler (int           fd,
   invoke_flip_closure (flip_closure);
 }
 
-void
-meta_gpu_kms_wait_for_flip (MetaGpuKms *gpu_kms)
+gboolean
+meta_gpu_kms_wait_for_flip (MetaGpuKms *gpu_kms,
+                            GError    **error)
 {
   drmEventContext evctx;
 
   if (gpu_kms->page_flips_not_supported)
-    return;
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Page flips not supported");
+      return FALSE;
+    }
 
   memset (&evctx, 0, sizeof evctx);
   evctx.version = DRM_EVENT_CONTEXT_VERSION;
   evctx.page_flip_handler = page_flip_handler;
-  drmHandleEvent (gpu_kms->fd, &evctx);
+
+  while (TRUE)
+    {
+      if (drmHandleEvent (gpu_kms->fd, &evctx) != 0)
+        {
+          struct pollfd pfd;
+          int ret;
+
+          if (errno != EAGAIN)
+            {
+              g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                                   strerror (errno));
+              return FALSE;
+            }
+
+          pfd.fd = gpu_kms->fd;
+          pfd.events = POLL_IN | POLL_ERR;
+          do
+            {
+              ret = poll (&pfd, 1, -1);
+            }
+          while (ret == -1 && errno == EINTR);
+        }
+      else
+        {
+          break;
+        }
+    }
+
+  return TRUE;
 }
 
 void

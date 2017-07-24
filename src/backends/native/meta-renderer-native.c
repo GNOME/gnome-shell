@@ -944,7 +944,7 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
    * animation earlier due to the animation being driven by some other monitor.
    */
   while (onscreen_native->pending_flips)
-    meta_gpu_kms_wait_for_flip (gpu_kms);
+    meta_gpu_kms_wait_for_flip (gpu_kms, NULL);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
@@ -1658,7 +1658,7 @@ meta_renderer_native_set_legacy_view_size (MetaRendererNative *renderer_native,
        * to swap the current buffer.
        */
       while (onscreen_native->gbm.next_fb_id != 0)
-        meta_gpu_kms_wait_for_flip (gpu_kms);
+        meta_gpu_kms_wait_for_flip (gpu_kms, NULL);
 
       /* Need to drop the GBM surface and create a new one */
 
