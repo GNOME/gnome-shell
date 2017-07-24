@@ -69,6 +69,9 @@ meta_crtc_kms_apply_transform (MetaCrtc *crtc)
   else
     hw_transform = META_MONITOR_TRANSFORM_NORMAL;
 
+  if (!meta_crtc_kms_is_transform_handled (crtc, META_MONITOR_TRANSFORM_NORMAL))
+    return;
+
   if (drmModeObjectSetProperty (kms_fd,
                                 crtc_kms->primary_plane_id,
                                 DRM_MODE_OBJECT_PLANE,
