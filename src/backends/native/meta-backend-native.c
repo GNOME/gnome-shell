@@ -67,7 +67,15 @@ struct _MetaBackendNativePrivate
 };
 typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (MetaBackendNative, meta_backend_native, META_TYPE_BACKEND);
+static GInitableIface *initable_parent_iface;
+
+static void
+initable_iface_init (GInitableIface *initable_iface);
+
+G_DEFINE_TYPE_WITH_CODE (MetaBackendNative, meta_backend_native, META_TYPE_BACKEND,
+                         G_ADD_PRIVATE (MetaBackendNative)
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                initable_iface_init))
 
 static void
 meta_backend_native_finalize (GObject *object)
@@ -556,12 +564,32 @@ meta_backend_native_update_screen_size (MetaBackend *backend,
   ClutterActor *stage = meta_backend_get_stage (backend);
 
   stage_native = meta_clutter_backend_native_get_stage_native (clutter_backend);
-  if (meta_is_stage_views_enabled ())
-    meta_stage_native_rebuild_views (stage_native);
-  else
-    meta_stage_native_legacy_set_size (stage_native, width, height);
+  meta_stage_native_rebuild_views (stage_native);
 
   clutter_actor_set_size (stage, width, height);
+}
+
+static gboolean
+meta_backend_native_initable_init (GInitable     *initable,
+                                   GCancellable  *cancellable,
+                                   GError       **error)
+{
+  if (!meta_is_stage_views_enabled ())
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "The native backend requires stage views");
+      return FALSE;
+    }
+
+  return initable_parent_iface->init (initable, cancellable, error);
+}
+
+static void
+initable_iface_init (GInitableIface *initable_iface)
+{
+  initable_parent_iface = g_type_interface_peek_parent (initable_iface);
+
+  initable_iface->init = meta_backend_native_initable_init;
 }
 
 static void

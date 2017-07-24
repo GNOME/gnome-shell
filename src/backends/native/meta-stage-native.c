@@ -38,18 +38,11 @@ struct _MetaStageNative
 {
   ClutterStageCogl parent;
 
-  CoglOnscreen *pending_onscreen;
   CoglClosure *frame_closure;
 
   int64_t presented_frame_counter_sync;
   int64_t presented_frame_counter_complete;
-
-  gboolean pending_resize;
-  int pending_width;
-  int pending_height;
 };
-
-static ClutterStageWindowIface *clutter_stage_window_parent_iface = NULL;
 
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface);
@@ -58,20 +51,6 @@ G_DEFINE_TYPE_WITH_CODE (MetaStageNative, meta_stage_native,
                          CLUTTER_TYPE_STAGE_COGL,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init))
-
-static MetaRendererView *
-get_legacy_view (MetaRenderer *renderer)
-{
-  GList *views;
-
-  views = meta_renderer_get_views (renderer);
-  g_assert (g_list_length (views) <= 1);
-
-  if (views)
-    return views->data;
-  else
-    return NULL;
-}
 
 static void
 frame_cb (CoglOnscreen  *onscreen,
@@ -164,26 +143,6 @@ meta_stage_native_rebuild_views (MetaStageNative *stage_native)
   ensure_frame_callbacks (stage_native);
 }
 
-void
-meta_stage_native_legacy_set_size (MetaStageNative *stage_native,
-                                   int              width,
-                                   int              height)
-{
-  stage_native->pending_resize = TRUE;
-  stage_native->pending_width = width;
-  stage_native->pending_height = height;
-}
-
-static void
-meta_stage_native_unrealize (ClutterStageWindow *stage_window)
-{
-  MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
-
-  clutter_stage_window_parent_iface->unrealize (stage_window);
-
-  g_clear_pointer (&stage_native->pending_onscreen, cogl_object_unref);
-}
-
 static gboolean
 meta_stage_native_can_clip_redraws (ClutterStageWindow *stage_window)
 {
@@ -217,36 +176,11 @@ meta_stage_native_get_geometry (ClutterStageWindow    *stage_window,
     }
 }
 
-static void
-ensure_legacy_view (ClutterStageWindow *stage_window)
-{
-  MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
-  MetaBackend *backend = meta_get_backend ();
-  MetaRenderer *renderer = meta_backend_get_renderer (backend);
-  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
-  MetaRendererView *legacy_view;
-
-  legacy_view = get_legacy_view (renderer);
-  if (legacy_view)
-    return;
-
-  legacy_view = meta_renderer_native_create_legacy_view (renderer_native);
-  if (!legacy_view)
-    return;
-
-  meta_renderer_set_legacy_view (renderer, legacy_view);
-
-  ensure_frame_callback (stage_native, CLUTTER_STAGE_VIEW (legacy_view));
-}
-
 static GList *
 meta_stage_native_get_views (ClutterStageWindow *stage_window)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
-
-  if (!meta_is_stage_views_enabled ())
-    ensure_legacy_view (stage_window);
 
   return meta_renderer_get_views (renderer);
 }
@@ -259,46 +193,6 @@ meta_stage_native_get_frame_counter (ClutterStageWindow *stage_window)
   MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
 
   return meta_renderer_native_get_frame_counter (renderer_native);
-}
-
-static void
-maybe_resize_legacy_view (MetaStageNative *stage_native)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaRenderer *renderer = meta_backend_get_renderer (backend);
-  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (renderer);
-  MetaRendererView *legacy_view;
-  int width = stage_native->pending_width;
-  int height = stage_native->pending_height;
-  GError *error = NULL;
-
-  if (!stage_native->pending_resize)
-    return;
-  stage_native->pending_resize = FALSE;
-
-  legacy_view = get_legacy_view (renderer);
-  if (!legacy_view)
-    return;
-
-  if (!meta_renderer_native_set_legacy_view_size (renderer_native,
-                                                  legacy_view,
-                                                  width, height,
-                                                  &error))
-    {
-      meta_warning ("Applying display configuration failed: %s\n",
-                    error->message);
-      g_error_free (error);
-    }
-}
-
-static void
-meta_stage_native_redraw (ClutterStageWindow *stage_window)
-{
-  MetaStageNative *stage_native = META_STAGE_NATIVE (stage_window);
-
-  maybe_resize_legacy_view (stage_native);
-
-  clutter_stage_window_parent_iface->redraw (stage_window);
 }
 
 static void
@@ -327,13 +221,9 @@ meta_stage_native_class_init (MetaStageNativeClass *klass)
 static void
 clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
 {
-  clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
-
-  iface->unrealize = meta_stage_native_unrealize;
   iface->can_clip_redraws = meta_stage_native_can_clip_redraws;
   iface->get_geometry = meta_stage_native_get_geometry;
   iface->get_views = meta_stage_native_get_views;
   iface->get_frame_counter = meta_stage_native_get_frame_counter;
-  iface->redraw = meta_stage_native_redraw;
   iface->finish_frame = meta_stage_native_finish_frame;
 }
