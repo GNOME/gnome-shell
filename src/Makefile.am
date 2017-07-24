@@ -109,6 +109,9 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-egl.c			\
 	backends/meta-egl.h			\
 	backends/meta-egl-ext.h			\
+	backends/meta-gles3.c			\
+	backends/meta-gles3.h			\
+	backends/meta-gles3-table.h		\
 	backends/meta-gpu.c			\
 	backends/meta-gpu.h			\
 	backends/meta-display-config-shared.h	\
