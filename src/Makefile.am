@@ -476,6 +476,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
 	backends/native/meta-output-kms.h		\
 	backends/native/meta-renderer-native.c		\
 	backends/native/meta-renderer-native.h		\
+	backends/native/meta-renderer-native-gles3.c	\
+	backends/native/meta-renderer-native-gles3.h	\
 	backends/native/meta-stage-native.c		\
 	backends/native/meta-stage-native.h		\
 	backends/native/dbus-utils.c			\
