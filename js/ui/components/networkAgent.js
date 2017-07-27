@@ -21,7 +21,7 @@ const ShellEntry = imports.ui.shellEntry;
 const VPN_UI_GROUP = 'VPN Plugin UI';
 
 var NetworkSecretDialog = class extends ModalDialog.ModalDialog {
-    constructor(agent, requestId, connection, settingName, hints, contentOverride) {
+    constructor(agent, requestId, connection, settingName, hints, flags, contentOverride) {
         super({ styleClass: 'prompt-dialog' });
 
         this._agent = agent;
@@ -104,6 +104,18 @@ var NetworkSecretDialog = class extends ModalDialog.ModalDialog {
         }
 
         contentBox.messageBox.add(secretTable);
+
+        if (flags & NM.SecretAgentGetSecretsFlags.WPS_PBC_ACTIVE) {
+            let descriptionLabel = new St.Label({ style_class: 'prompt-dialog-description',
+                                                  text: _("Alternatively you can connect by pushing the “WPS” button on your router.") });
+            descriptionLabel.clutter_text.line_wrap = true;
+            descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+
+            messageBox.add(descriptionLabel,
+                           { y_fill:  true,
+                             y_align: St.Align.START,
+                             expand: true });
+        }
 
         this._okButton = { label:  _("Connect"),
                            action: this._onOk.bind(this),
@@ -350,6 +362,7 @@ var VPNRequestHandler = class {
         this._agent = agent;
         this._requestId = requestId;
         this._connection = connection;
+        this._flags = flags;
         this._pluginOutBuffer = [];
         this._title = null;
         this._description = null;
@@ -568,7 +581,7 @@ var VPNRequestHandler = class {
 
         if (contentOverride && contentOverride.secrets.length) {
             // Only show the dialog if we actually have something to ask
-            this._shellDialog = new NetworkSecretDialog(this._agent, this._requestId, this._connection, 'vpn', [], contentOverride);
+            this._shellDialog = new NetworkSecretDialog(this._agent, this._requestId, this._connection, 'vpn', [], this._flags, contentOverride);
             this._shellDialog.open(global.get_current_time());
         } else {
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
@@ -738,7 +751,7 @@ var NetworkAgent = class {
             return;
         }
 
-        let dialog = new NetworkSecretDialog(this._native, requestId, connection, settingName, hints);
+        let dialog = new NetworkSecretDialog(this._native, requestId, connection, settingName, hints, flags);
         dialog.connect('destroy', () => {
             delete this._dialogs[requestId];
         });
