@@ -154,8 +154,12 @@ var BackgroundCache = new Lang.Class({
 
         let monitor = file.monitor(Gio.FileMonitorFlags.NONE, null);
         monitor.connect('changed',
-                        Lang.bind(this, function() {
-                            this.emit('file-changed', file);
+                        Lang.bind(this, function(obj, file, otherFile, eventType) {
+                            // Ignore CHANGED and CREATED events, since in both cases
+                            // we'll get a CHANGES_DONE_HINT event when done.
+                            if (eventType != Gio.FileMonitorEvent.CHANGED &&
+                                eventType != Gio.FileMonitorEvent.CREATED)
+                                this.emit('file-changed', file);
                         }));
 
         this._fileMonitors[key] = monitor;
