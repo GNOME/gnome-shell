@@ -35,6 +35,7 @@
 #include "st-drawing-area.h"
 
 #include <cairo.h>
+#include <math.h>
 
 typedef struct _StDrawingAreaPrivate StDrawingAreaPrivate;
 struct _StDrawingAreaPrivate {
@@ -84,12 +85,22 @@ st_drawing_area_allocate (ClutterActor          *self,
   ClutterContent *content = clutter_actor_get_content (self);
   ClutterActorBox content_box;
   int width, height;
+  float resource_scale;
+
+  if (!st_widget_get_resource_scale (ST_WIDGET (self), &resource_scale))
+    {
+      ClutterActorBox empty = CLUTTER_ACTOR_BOX_INIT_ZERO;
+      clutter_actor_set_allocation (self, &empty, 0);
+      return;
+    }
 
   clutter_actor_set_allocation (self, box, flags);
   st_theme_node_get_content_box (theme_node, box, &content_box);
 
   width = (int)(0.5 + content_box.x2 - content_box.x1);
   height = (int)(0.5 + content_box.y2 - content_box.y1);
+
+  clutter_canvas_set_scale_factor (CLUTTER_CANVAS (content), resource_scale);
   clutter_canvas_set_size (CLUTTER_CANVAS (content), width, height);
 }
 
@@ -102,6 +113,16 @@ st_drawing_area_style_changed (StWidget  *self)
 }
 
 static void
+st_drawing_area_resource_scale_changed (StWidget *self)
+{
+  float resource_scale;
+  ClutterContent *content = clutter_actor_get_content (CLUTTER_ACTOR (self));
+
+  if (st_widget_get_resource_scale (ST_WIDGET (self), &resource_scale))
+    clutter_canvas_set_scale_factor (CLUTTER_CANVAS (content), resource_scale);
+}
+
+static void
 st_drawing_area_class_init (StDrawingAreaClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
@@ -109,6 +130,7 @@ st_drawing_area_class_init (StDrawingAreaClass *klass)
 
   actor_class->allocate = st_drawing_area_allocate;
   widget_class->style_changed = st_drawing_area_style_changed;
+  widget_class->resource_scale_changed = st_drawing_area_resource_scale_changed;
 
   st_drawing_area_signals[REPAINT] =
     g_signal_new ("repaint",
@@ -185,7 +207,7 @@ st_drawing_area_get_surface_size (StDrawingArea *area,
 {
   StDrawingAreaPrivate *priv;
   ClutterContent *content;
-  float w, h;
+  float w, h, resource_scale;
 
   g_return_if_fail (ST_IS_DRAWING_AREA (area));
 
@@ -195,8 +217,18 @@ st_drawing_area_get_surface_size (StDrawingArea *area,
   content = clutter_actor_get_content (CLUTTER_ACTOR (area));
   clutter_content_get_preferred_size (content, &w, &h);
 
+  if (st_widget_get_resource_scale (ST_WIDGET (area), &resource_scale))
+    {
+      w /= resource_scale;
+      h /= resource_scale;
+    }
+  else
+    {
+      w = h = 0.0f;
+    }
+
   if (width)
-    *width = (guint)w;
+    *width = ceilf (w);
   if (height)
-    *height = (guint)h;
+    *height = ceilf (h);
 }
