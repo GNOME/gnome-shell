@@ -43,7 +43,7 @@ AC_SUBST(PYTHON)
 
 # We depend on a specific version of the libmutter API. The mutter variants of
 # the Cogl and Clutter libraries also use this API version.
-LIBMUTTER_API_VERSION=0
+LIBMUTTER_API_VERSION=1
 
 LIBMUTTER=libmutter-$LIBMUTTER_API_VERSION
 LIBMUTTER_COGL=mutter-cogl-$LIBMUTTER_API_VERSION
