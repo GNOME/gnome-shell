@@ -267,6 +267,7 @@ clutter_stage_view_set_property (GObject      *object,
       priv->layout = *layout;
       break;
     case PROP_FRAMEBUFFER:
+      g_clear_pointer (&priv->framebuffer, cogl_object_unref);
       priv->framebuffer = g_value_dup_boxed (value);
 #ifndef G_DISABLE_CHECKS
       if (priv->framebuffer)
@@ -284,6 +285,7 @@ clutter_stage_view_set_property (GObject      *object,
 #endif
       break;
     case PROP_OFFSCREEN:
+      g_clear_pointer (&priv->offscreen, cogl_object_unref);
       priv->offscreen = g_value_dup_boxed (value);
       break;
     case PROP_SCALE:
@@ -355,7 +357,7 @@ clutter_stage_view_class_init (ClutterStageViewClass *klass)
                         "Framebuffer used as intermediate buffer",
                         COGL_TYPE_HANDLE,
                         G_PARAM_READWRITE |
-			G_PARAM_CONSTRUCT_ONLY |
+                        G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS);
 
   obj_props[PROP_SCALE] =

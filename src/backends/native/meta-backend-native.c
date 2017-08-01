@@ -668,11 +668,14 @@ meta_backend_native_pause (MetaBackendNative *native)
     meta_backend_get_monitor_manager (backend);
   MetaMonitorManagerKms *monitor_manager_kms =
     META_MONITOR_MANAGER_KMS (monitor_manager);
+  MetaRendererNative *renderer_native =
+    META_RENDERER_NATIVE (meta_backend_get_renderer (backend));
 
   clutter_evdev_release_devices ();
   clutter_egl_freeze_master_clock ();
 
   meta_monitor_manager_kms_pause (monitor_manager_kms);
+  meta_renderer_native_pause (renderer_native);
 }
 
 void meta_backend_native_resume (MetaBackendNative *native)

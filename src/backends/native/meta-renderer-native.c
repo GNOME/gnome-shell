@@ -1786,6 +1786,24 @@ meta_renderer_native_get_frame_counter (MetaRendererNative *renderer_native)
   return renderer_native->frame_counter;
 }
 
+void
+meta_renderer_native_pause (MetaRendererNative *renderer_native)
+{
+  GList *views;
+  GList *l;
+
+  views = meta_renderer_get_views (META_RENDERER (renderer_native));
+  for (l = views; l; l = l->next)
+    {
+      ClutterStageView *stage_view = l->data;
+
+      g_object_set (G_OBJECT (stage_view),
+                    "framebuffer", NULL,
+                    "offscreen", NULL,
+                    NULL);
+    }
+}
+
 static void
 meta_renderer_native_get_property (GObject    *object,
                                    guint       prop_id,
