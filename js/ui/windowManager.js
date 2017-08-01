@@ -523,7 +523,7 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
             this._dx += dx;
             this._dy += dy;
 
-            workspacesDisplay._onPan(dy);
+            workspacesDisplay._onPan(dy * 1.5);
         } else if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.CANCEL) {
             workspacesDisplay._onPanCancel();
         } else {
