@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-22 21:01+0000\n"
+"POT-Creation-Date: 2017-07-28 11:38+0000\n"
 "PO-Revision-Date: 2017-07-25 15:43+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "GNOME Shell al cjarie nome lis estensions che a disin di supuartâ la version "
 "di GNOME Shell atualmentri in esecuzion. Abilitant cheste opzion il control "
-"nol vegnarà plui fat e al cirarà di cjariâ dutis lis estensions ignorant la "
+"nol vignarà plui fat e al cirarà di cjariâ dutis lis estensions ignorant la "
 "version che a disin di supuartâ."
 
 #: data/org.gnome.shell.gschema.xml.in:43
@@ -125,7 +125,7 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Lis aplicazions che a corispuindin a chescj indentificatôrs a vegnaran "
+"Lis aplicazions che a corispuindin a chescj identificadôrs a vignaran "
 "mostrâts te aree dai preferîts."
 
 #: data/org.gnome.shell.gschema.xml.in:51
@@ -190,7 +190,7 @@ msgid ""
 msgstr ""
 "La shell e mostrarà un menù Bluetooth nome se un adatatôr Bluetooth al è "
 "alimentât, o se a son dispositîfs configurâts e associâts cul adatatôr "
-"predefinît. Chest al vegnarà azerât se l'adatatôr predefinît nol à mai vût "
+"predefinît. Chest al vignarà azerât se l'adatatôr predefinît nol à mai vût "
 "dispositîfs associâts."
 
 #: data/org.gnome.shell.gschema.xml.in:101
@@ -563,7 +563,7 @@ msgstr "Garantìs l'acès"
 
 #: js/ui/appDisplay.js:806
 msgid "Frequently used applications will appear here"
-msgstr "Lis aplicazions dopradis dispès a vegnaran mostradis culì"
+msgstr "Lis aplicazions dopradis dispès a vignaran mostradis culì"
 
 #: js/ui/appDisplay.js:927
 msgid "Frequent"
@@ -1095,7 +1095,7 @@ msgid ""
 "%s %s will be installed after restart. Upgrade installation can take a long "
 "time: ensure that you have backed up and that the computer is plugged in."
 msgstr ""
-"%s %s al vegnarà instalât dopo vê tornât a inviâ il computer. La instalazion "
+"%s %s al vignarà instalât dopo vê tornât a inviâ il computer. La instalazion "
 "dal avanzament e pues tirâ a dilunc: siguriti di vê fat i backup e che il to "
 "computer al sedi tacât."
 
@@ -1134,7 +1134,7 @@ msgstr "Instale"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Scjariâ e instalâ '%s' da extensions.gnome.org?"
 
-#: js/ui/keyboard.js:740 js/ui/status/keyboard.js:782
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Tastiere"
 
@@ -1852,9 +1852,9 @@ msgstr "Ten lis modifichis"
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] ""
-"Lis modifichis as impostazions a vegnaran ripristinadis chi di %d secont"
+"Lis modifichis as impostazions a vignaran ripristinadis chi di %d secont"
 msgstr[1] ""
-"Lis modifichis as impostazions a vegnaran ripristinadis chi di %d seconts"
+"Lis modifichis as impostazions a vignaran ripristinadis chi di %d seconts"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
