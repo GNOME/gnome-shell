@@ -1479,38 +1479,6 @@ StScrollBar {
   color: pink; }
 
 /* Eeeky things */
-.legacy-tray {
-  background-color: #000;
-  border: 1px solid black;
-  border-bottom-width: 0; }
-  .legacy-tray:ltr {
-    border-radius: 0 6px 0 0;
-    border-left-width: 0; }
-  .legacy-tray:rtl {
-    border-radius: 6px 0 0 0;
-    border-right-width: 0; }
-
-.legacy-tray-handle,
-.legacy-tray-icon {
-  padding: 6px; }
-  .legacy-tray-handle StIcon,
-  .legacy-tray-icon StIcon {
-    icon-size: 24px; }
-  .legacy-tray-handle:hover, .legacy-tray-handle:focus,
-  .legacy-tray-icon:hover,
-  .legacy-tray-icon:focus {
-    background-color: rgba(255, 255, 255, 0.1); }
-
-.legacy-tray-icon-box {
-  spacing: 12px; }
-  .legacy-tray-icon-box:ltr {
-    padding-left: 12px; }
-  .legacy-tray-icon-box:rtl {
-    padding-right: 12px; }
-  .legacy-tray-icon-box StButton {
-    width: 24px;
-    height: 24px; }
-
 .magnifier-zoom-region {
   border: 2px solid #215d9c; }
   .magnifier-zoom-region.full-screen {

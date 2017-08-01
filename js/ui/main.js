@@ -20,7 +20,6 @@ const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const Keyboard = imports.ui.keyboard;
-const LegacyTray = imports.ui.legacyTray;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const OsdWindow = imports.ui.osdWindow;
@@ -56,7 +55,6 @@ var overview = null;
 var runDialog = null;
 var lookingGlass = null;
 var wm = null;
-var legacyTray = null;
 var messageTray = null;
 var screenShield = null;
 var notificationDaemon = null;
@@ -169,7 +167,6 @@ function _initializeUI() {
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();
 
-    legacyTray = new LegacyTray.LegacyTray();
     messageTray = new MessageTray.MessageTray();
     panel = new Panel.Panel();
     keyboard = new Keyboard.Keyboard();

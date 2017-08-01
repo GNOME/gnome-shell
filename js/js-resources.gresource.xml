@@ -64,7 +64,6 @@
     <file>ui/layout.js</file>
     <file>ui/lightbox.js</file>
     <file>ui/lookingGlass.js</file>
-    <file>ui/legacyTray.js</file>
     <file>ui/magnifier.js</file>
     <file>ui/magnifierDBus.js</file>
     <file>ui/main.js</file>
