@@ -446,6 +446,7 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
     {
     case META_WAYLAND_BUFFER_TYPE_SHM:
       res = process_shm_buffer_damage (buffer, region, &error);
+      break;
     case META_WAYLAND_BUFFER_TYPE_EGL_IMAGE:
     case META_WAYLAND_BUFFER_TYPE_EGL_STREAM:
     case META_WAYLAND_BUFFER_TYPE_DMA_BUF:
@@ -456,6 +457,7 @@ meta_wayland_buffer_process_damage (MetaWaylandBuffer *buffer,
                    G_IO_ERROR_FAILED,
                    "Unknown buffer type");
       res = FALSE;
+      break;
     }
 
   if (!res)
