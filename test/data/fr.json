@@ -1,7 +1,7 @@
 {
   "levels": [
     {
-      "level": 1,
+      "level": "",
       "mode": "default",
       "rows": [
         [
@@ -163,7 +163,7 @@
       ]
     },
     {
-      "level": 2,
+      "level": "shift",
       "mode": "latched",
       "rows": [
         [
@@ -325,7 +325,7 @@
       ]
     },
     {
-      "level": 3,
+      "level": "opt",
       "mode": "locked",
       "rows": [
         [
@@ -478,7 +478,7 @@
       ]
     },
     {
-      "level": 4,
+      "level": "opt+shift",
       "mode": "locked",
       "rows": [
         [
