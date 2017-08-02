@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: metacity 2.24\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-04-21 21:33+0000\n"
-"PO-Revision-Date: 2016-03-13 14:45+0100\n"
-"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"POT-Creation-Date: 2017-07-26 13:44+0000\n"
+"PO-Revision-Date: 2017-07-2614:45+0100\n"
+"Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
@@ -105,10 +105,8 @@ msgid "Switch to previous window of an application"
 msgstr "Canvia a la finestra anterior d'una aplicació"
 
 #: data/50-mutter-navigation.xml:76
-#, fuzzy
-#| msgid "Switch system controls directly"
 msgid "Switch system controls"
-msgstr "Canvia immediatament entre els controls del sistema"
+msgstr "Canvia els controls del sistema"
 
 #: data/50-mutter-navigation.xml:81
 msgid "Switch to previous system control"
@@ -279,12 +277,6 @@ msgstr ""
 "finestres"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
-#, fuzzy
-#| msgid ""
-#| "This key will initiate the \"overlay\", which is a combination window "
-#| "overview and application launching system. The default is intended to be "
-#| "the \"Windows key\" on PC hardware. It's expected that this binding "
-#| "either the default or set to the empty string."
 msgid ""
 "This key will initiate the “overlay”, which is a combination window overview "
 "and application launching system. The default is intended to be the “Windows "
@@ -333,11 +325,6 @@ msgid "Workspaces are managed dynamically"
 msgstr "Els espais de treball es gestionen dinàmicament"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
-#, fuzzy
-#| msgid ""
-#| "Determines whether workspaces are managed dynamically or whether there's "
-#| "a static number of workspaces (determined by the num-workspaces key in "
-#| "org.gnome.desktop.wm.preferences)."
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
@@ -376,11 +363,6 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Retarda el canvi del focus fins que s'aturi el punter"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
-#, fuzzy
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focus will not be changed immediately when entering a window, but "
-#| "only after the pointer stops moving."
 msgid ""
 "If set to true, and the focus mode is either “sloppy” or “mouse” then the "
 "focus will not be changed immediately when entering a window, but only after "
@@ -395,10 +377,6 @@ msgid "Draggable border width"
 msgstr "Amplada del contorn arrossegable"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
-#, fuzzy
-#| msgid ""
-#| "The amount of total draggable borders. If the theme's visible borders are "
-#| "not enough, invisible borders will be added to meet this value."
 msgid ""
 "The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -435,7 +413,7 @@ msgstr ""
 
 #: data/org.gnome.mutter.gschema.xml.in:107
 msgid "Enable experimental features"
-msgstr ""
+msgstr "Habilita les funcionalitats experimentals"
 
 #: data/org.gnome.mutter.gschema.xml.in:108
 msgid ""
@@ -443,19 +421,31 @@ msgid ""
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
-"mutter default to layout logical monitors in a logical pixel coordinate "
-"space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
 msgstr ""
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr "Selecció de finestra entre les emergents d'una pestanya"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Cancel·lació de les finestres emergents a les pestanyes"
+
+#: data/org.gnome.mutter.gschema.xml.in:161
+msgid "Switch monitor configurations"
+msgstr "Canvia configuracions de monitor"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+msgid "Rotates the built-in monitor configuration"
+msgstr "Gira la configuració del monitor integrada"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -508,7 +498,7 @@ msgstr "Canvia al terminal virtual 12"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1848
+#: src/backends/meta-input-settings.c:2118
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Mode de commutació (grup %d)"
@@ -516,37 +506,37 @@ msgstr "Mode de commutació (grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1870
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Commuta el monitor"
 
-#: src/backends/meta-input-settings.c:1872
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Mostra l'ajuda en pantalla"
 
-#: src/backends/meta-monitor-manager.c:783
+#: src/backends/meta-monitor-manager.c:925
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: src/backends/meta-monitor-manager.c:806
+#: src/backends/meta-monitor-manager.c:948
 msgid "Unknown"
 msgstr "Desconeguda"
 
-#: src/backends/meta-monitor-manager.c:808
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown Display"
 msgstr "Pantalla desconeguda"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:816
+#: src/backends/meta-monitor-manager.c:958
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:474
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -557,32 +547,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Esdeveniment de campana"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "«%s» no està responent."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "L'aplicació no està responent."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Podeu esperar un moment perquè continuï o podeu forçar-ne la sortida "
-"completa."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Força'n la sortida"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Espera"
 
 #: src/core/display.c:608
 #, c-format
@@ -630,6 +594,32 @@ msgstr "Funciona com a compositor imbricat"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Funciona com a servidor de pantalla completa, en comptes d'imbricat"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "«%s» no està responent."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "L'aplicació no està responent."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Podeu esperar un moment perquè continuï o podeu forçar-ne la sortida "
+"completa."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Força'n la sortida"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Espera"
 
 #: src/core/mutter.c:39
 #, c-format
