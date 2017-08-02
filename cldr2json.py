@@ -97,19 +97,21 @@ def convert_xml(tree):
     root["levels"] = []
     # parse levels
     for index, keymap in enumerate(tree.iter('keyMap')):
-        level = {}
-        root["levels"].append(level)
-        level["level"] = index + 1
         # FIXME: heuristics here
         modifiers = keymap.get('modifiers')
         if not modifiers:
             mode = 'default'
-        elif 'shift' in modifiers.split(' ') or 'lock' in modifiers.split(' '):
+            modifiers = ''
+        elif 'shift' in modifiers.split(' '):
             mode = 'latched'
+            modifiers = 'shift'
         else:
             mode = 'locked'
+        level = {}
+        level["level"] = modifiers
         level["mode"] = mode
         level["rows"] = parse_rows(keymap)
+        root["levels"].append(level)
     return root
 
 
