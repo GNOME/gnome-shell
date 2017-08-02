@@ -114,7 +114,6 @@ class TestConvertFile(unittest.TestCase):
         with open(outdir + "/fr.json", encoding="utf-8") as actual_json_fd:
             actual_json = json.load(actual_json_fd)
         self.assertEqual(expected_json, actual_json)
-    pass
 
 
 class TestLocaleToXKB(unittest.TestCase):
