@@ -71,7 +71,7 @@ ClutterActor *st_texture_cache_load_gicon (StTextureCache *cache,
                                            GIcon          *icon,
                                            gint            size,
                                            gint            paint_scale,
-                                           gint            resource_scale);
+                                           gfloat          resource_scale);
 
 ClutterActor *st_texture_cache_load_file_async (StTextureCache    *cache,
                                                 GFile             *file,
