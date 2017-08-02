@@ -25,6 +25,7 @@
 #include "st-private.h"
 #include "st-settings.h"
 #include <gtk/gtk.h>
+#include <math.h>
 #include <string.h>
 #include <glib.h>
 
@@ -884,7 +885,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
                              GIcon             *icon,
                              gint               size,
                              gint               paint_scale,
-                             gint               resource_scale)
+                             gfloat             resource_scale)
 {
   AsyncTextureLoadData *request;
   ClutterActor *actor;
@@ -952,7 +953,7 @@ st_texture_cache_load_gicon (StTextureCache    *cache,
   g_free (gicon_string);
 
   actor = create_invisible_actor ();
-  actor_size = size * scale * paint_scale;
+  actor_size = size * paint_scale;
   clutter_actor_set_size (actor, actor_size, actor_size);
   if (ensure_request (cache, key, policy, &request, actor))
     {
