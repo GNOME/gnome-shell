@@ -28,6 +28,13 @@ const SensorProxyInterface = '<node> \
 </interface> \
 </node>';
 
+const POWER_OFF_ACTION_ID        = 'power-off';
+const LOCK_SCREEN_ACTION_ID      = 'lock-screen';
+const LOGOUT_ACTION_ID           = 'logout';
+const SUSPEND_ACTION_ID          = 'suspend';
+const SWITCH_USER_ACTION_ID      = 'switch-user';
+const LOCK_ORIENTATION_ACTION_ID = 'lock-orientation';
+
 const SensorProxy = Gio.DBusProxy.makeProxyWrapper(SensorProxyInterface);
 
 let _singleton = null;
@@ -83,15 +90,23 @@ const SystemActions = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._canPowerOff = false;
         this._canHavePowerOff = true;
-        this._canSuspend = false;
         this._canHaveSuspend = true;
-        this._canLockScreen = false;
-        this._canSwitchUser = false;
-        this._canLogout = false;
-        this._canLockOrientation = false;
-        this._orientationLockIcon = null;
+
+        this._actions = new Map();
+        this._actions.set(POWER_OFF_ACTION_ID,
+                          { available: false });
+        this._actions.set(LOCK_SCREEN_ACTION_ID,
+                          { available: false });
+        this._actions.set(LOGOUT_ACTION_ID,
+                          { available: false });
+        this._actions.set(SUSPEND_ACTION_ID,
+                          { available: false });
+        this._actions.set(SWITCH_USER_ACTION_ID,
+                          { available: false });
+        this._actions.set(LOCK_ORIENTATION_ACTION_ID,
+                          { iconName: '',
+                            available: false });
 
         this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
@@ -147,31 +162,31 @@ const SystemActions = new Lang.Class({
     },
 
     get can_power_off() {
-        return this._canPowerOff;
+        return this._actions.get(POWER_OFF_ACTION_ID).available;
     },
 
     get can_suspend() {
-        return this._canSuspend;
+        return this._actions.get(SUSPEND_ACTION_ID).available;
     },
 
     get can_lock_screen() {
-        return this._canLockScreen;
+        return this._actions.get(LOCK_SCREEN_ACTION_ID).available;
     },
 
     get can_switch_user() {
-        return this._canSwitchUser;
+        return this._actions.get(SWITCH_USER_ACTION_ID).available;
     },
 
     get can_logout() {
-        return this._canLogout;
+        return this._actions.get(LOGOUT_ACTION_ID).available;
     },
 
     get can_lock_orientation() {
-        return this._canLockOrientation;
+        return this._actions.get(LOCK_ORIENTATION_ACTION_ID).available;
     },
 
     get orientation_lock_icon() {
-        return this._orientationLockIcon;
+        return this._actions.get(LOCK_ORIENTATION_ACTION_ID).iconName;
     },
 
     _sensorProxyAppeared: function() {
@@ -188,11 +203,12 @@ const SystemActions = new Lang.Class({
     },
 
     _updateOrientationLock: function() {
+        let available = false;
         if (this._sensorProxy)
-            this._canLockOrientation = this._sensorProxy.HasAccelerometer &&
-                                    this._monitorManager.get_is_builtin_display_on();
-        else
-            this._canLockOrientation = false;
+            available = this._sensorProxy.HasAccelerometer &&
+                        this._monitorManager.get_is_builtin_display_on();
+
+        this._actions.get(LOCK_ORIENTATION_ACTION_ID).available = available;
 
         this.notify('can-lock-orientation');
     },
@@ -201,7 +217,7 @@ const SystemActions = new Lang.Class({
         let locked = this._orientationSettings.get_boolean('orientation-lock');
         let iconName = locked ? 'rotation-locked-symbolic'
                               : 'rotation-allowed-symbolic';
-        this._orientationLockIcon = iconName;
+        this._actions.get(LOCK_ORIENTATION_ACTION_ID).iconName = iconName;
 
         this.notify('orientation-lock-icon');
     },
@@ -224,7 +240,7 @@ const SystemActions = new Lang.Class({
     _updateLockScreen() {
         let showLock = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
-        this._canLockScreen = showLock && allowLockScreen && LoginManager.canLock();
+        this._actions.get(LOCK_SCREEN_ACTION_ID).available = showLock && allowLockScreen && LoginManager.canLock();
         this.notify('can-lock-screen');
     },
 
@@ -242,7 +258,7 @@ const SystemActions = new Lang.Class({
         let disabled = Main.sessionMode.isLocked ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
-        this._canPowerOff = this._canHavePowerOff && !disabled;
+        this._actions.get(POWER_OFF_ACTION_ID).available = this._canHavePowerOff && !disabled;
         this.notify('can-power-off');
     },
 
@@ -260,7 +276,7 @@ const SystemActions = new Lang.Class({
                         this._suspendNeedsAuth) ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
-        this._canSuspend = this._canHaveSuspend && !disabled;
+        this._actions.get(SUSPEND_ACTION_ID).available = this._canHaveSuspend && !disabled;
         this.notify('can-suspend');
     },
 
@@ -275,7 +291,7 @@ const SystemActions = new Lang.Class({
         let shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
         let visible = allowSwitch && multiUser && shouldShowInMode;
-        this._canSwitchUser = visible;
+        this._actions.get(SWITCH_USER_ACTION_ID).available = visible;
         this.notify('can-switch-user');
 
         return visible;
@@ -293,14 +309,14 @@ const SystemActions = new Lang.Class({
         let shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 
         let visible = allowLogout && (alwaysShow || multiUser || multiSession || systemAccount || !localAccount) && shouldShowInMode;
-        this._canLogout = visible;
+        this._actions.get(LOGOUT_ACTION_ID).available = visible;
         this.notify('can-logout');
 
         return visible;
     },
 
     activateLockOrientation: function() {
-        if (!this._canLockOrientation)
+        if (!this._actions.get(LOCK_ORIENTATION_ACTION_ID).available)
             throw new Error('The lock-orientation action is not available!');
 
         let locked = this._orientationSettings.get_boolean('orientation-lock');
@@ -308,14 +324,14 @@ const SystemActions = new Lang.Class({
     },
 
     activateLockScreen: function() {
-        if (!this._canLockScreen)
+        if (!this._actions.get(LOCK_SCREEN_ACTION_ID).available)
             throw new Error('The lock-screen action is not available!');
 
         Main.screenShield.lock(true);
     },
 
     activateSwitchUser: function() {
-        if (!this._canSwitchUser)
+        if (!this._actions.get(SWITCH_USER_ACTION_ID).available)
             throw new Error('The switch-user action is not available!');
 
         if (Main.screenShield)
@@ -328,7 +344,7 @@ const SystemActions = new Lang.Class({
     },
 
     activateLogout: function() {
-        if (!this._canLogout)
+        if (!this._actions.get(LOGOUT_ACTION_ID).available)
             throw new Error('The logout action is not available!');
 
         Main.overview.hide();
@@ -336,14 +352,14 @@ const SystemActions = new Lang.Class({
     },
 
     activatePowerOff: function() {
-        if (!this._canPowerOff)
+        if (!this._actions.get(POWER_OFF_ACTION_ID).available)
             throw new Error('The power-off action is not available!');
 
         this._session.ShutdownRemote(0);
     },
 
     activateSuspend: function() {
-        if (!this._canSuspend)
+        if (!this._actions.get(SUSPEND_ACTION_ID).available)
             throw new Error('The suspend action is not available!');
 
         this._loginManager.suspend();
