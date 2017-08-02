@@ -48,12 +48,8 @@ LOCALE_TO_XKB_OVERRIDES = {
 
 
 def parse_single_key(value):
-    if hasattr(__builtins__, 'unichr'):
-        def unescape(m):
-            return chr(int(m.group(1), 16))
-    else:
-        def unescape(m):
-            return chr(int(m.group(1), 16))
+    def unescape(m):
+        return chr(int(m.group(1), 16))
     value = ESCAPE_PATTERN.sub(unescape, value)
     return value
 
