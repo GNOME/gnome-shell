@@ -25,6 +25,7 @@
     <file>misc/params.js</file>
     <file>misc/permissionStore.js</file>
     <file>misc/smartcardManager.js</file>
+    <file>misc/systemActions.js</file>
     <file>misc/util.js</file>
     <file>misc/weather.js</file>
 
