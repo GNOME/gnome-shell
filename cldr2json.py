@@ -181,12 +181,13 @@ def load_xkb_mappings():
     return name_to_xkb
 
 
+locale.setlocale(locale.LC_ALL, "C")
+name_to_xkb = load_xkb_mappings()
+
+
 if __name__ == "__main__":
     if "DEBUG" in os.environ:
         logging.basicConfig(level=logging.DEBUG)
-
-    locale.setlocale(locale.LC_ALL, "C")
-    name_to_xkb = load_xkb_mappings()
 
     if len(sys.argv) < 2:
         print("supply a CLDR keyboard file")
