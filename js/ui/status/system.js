@@ -2,39 +2,19 @@
 
 const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
-const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
-const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
+const GObject = imports.gi.GObject;
 
 const BoxPointer = imports.ui.boxpointer;
-const GnomeSession = imports.misc.gnomeSession;
-const LoginManager = imports.misc.loginManager;
+const SystemActions = imports.misc.systemActions;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
-const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
-const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
-const DISABLE_LOG_OUT_KEY = 'disable-log-out';
-const DISABLE_RESTART_KEY = 'disable-restart-buttons';
-const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
-
-const SENSOR_BUS_NAME = 'net.hadess.SensorProxy';
-const SENSOR_OBJECT_PATH = '/net/hadess/SensorProxy';
-
-const SensorProxyInterface = '<node> \
-<interface name="net.hadess.SensorProxy"> \
-  <property name="HasAccelerometer" type="b" access="read"/> \
-</interface> \
-</node>';
-
-const SensorProxy = Gio.DBusProxy.makeProxyWrapper(SensorProxyInterface);
 
 var AltSwitcher = new Lang.Class({
     Name: 'AltSwitcher',
@@ -138,41 +118,17 @@ var Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
-        this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
-        this._orientationSettings = new Gio.Settings({ schema_id: 'org.gnome.settings-daemon.peripherals.touchscreen' });
+        let userManager = AccountsService.UserManager.get_default();
+        this._user = userManager.get_user(GLib.get_user_name());
 
-        this._session = new GnomeSession.SessionManager();
-        this._loginManager = LoginManager.getLoginManager();
-        this._monitorManager = Meta.MonitorManager.get();
-        this._haveShutdown = true;
-        this._haveSuspend = true;
-
-        this._userManager = AccountsService.UserManager.get_default();
-        this._user = this._userManager.get_user(GLib.get_user_name());
+        this._systemActions = new SystemActions.getDefault();
 
         this._createSubMenu();
 
-        this._userManager.connect('notify::is-loaded',
-                                  Lang.bind(this, this._updateMultiUser));
-        this._userManager.connect('notify::has-multiple-users',
-                                  Lang.bind(this, this._updateMultiUser));
-        this._userManager.connect('user-added',
-                                  Lang.bind(this, this._updateMultiUser));
-        this._userManager.connect('user-removed',
-                                  Lang.bind(this, this._updateMultiUser));
-        this._lockdownSettings.connect('changed::' + DISABLE_USER_SWITCH_KEY,
-                                       Lang.bind(this, this._updateMultiUser));
-        this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
-                                       Lang.bind(this, this._updateMultiUser));
-        this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
-                                       Lang.bind(this, this._updateLockScreen));
-        global.settings.connect('changed::' + ALWAYS_SHOW_LOG_OUT_KEY,
-                                Lang.bind(this, this._updateMultiUser));
-        this._updateSwitchUser();
-        this._updateMultiUser();
-        this._updateLockScreen();
-
+        this._loginScreenItem.actor.connect('notify::visible',
+                                            () => { this._updateMultiUser(); });
+        this._logoutItem.actor.connect('notify::visible',
+                                       () => { this._updateMultiUser(); });
         // Whether shutdown is available or not depends on both lockdown
         // settings (disable-log-out) and Polkit policy - the latter doesn't
         // notify, so we update the menu item each time the menu opens or
@@ -182,40 +138,12 @@ var Indicator = new Lang.Class({
                 if (!open)
                     return;
 
-                this._updateHaveShutdown();
-                this._updateHaveSuspend();
+                this._systemActions.forceUpdate();
             }));
-        this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
-                                       Lang.bind(this, this._updateHaveShutdown));
-
-        this._orientationSettings.connect('changed::orientation-lock',
-                                          Lang.bind(this, this._updateOrientationLock));
-        Main.layoutManager.connect('monitors-changed',
-                                   Lang.bind(this, this._updateOrientationLock));
-        Gio.DBus.system.watch_name(SENSOR_BUS_NAME,
-                                   Gio.BusNameWatcherFlags.NONE,
-                                   Lang.bind(this, this._sensorProxyAppeared),
-                                   Lang.bind(this, function() {
-                                       this._sensorProxy = null;
-                                       this._updateOrientationLock();
-                                   }));
-        this._updateOrientationLock();
+        this._updateMultiUser();
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
-    },
-
-    _sensorProxyAppeared: function() {
-        this._sensorProxy = new SensorProxy(Gio.DBus.system, SENSOR_BUS_NAME, SENSOR_OBJECT_PATH,
-            Lang.bind(this, function(proxy, error) {
-                if (error) {
-                    log(error.message);
-                    return;
-                }
-                this._sensorProxy.connect('g-properties-changed',
-                                          Lang.bind(this, this._updateOrientationLock));
-                this._updateOrientationLock();
-            }));
     },
 
     _updateActionsVisibility: function() {
@@ -228,42 +156,14 @@ var Indicator = new Lang.Class({
     },
 
     _sessionUpdated: function() {
-        this._updateLockScreen();
-        this._updatePowerOff();
-        this._updateSuspend();
-        this._updateMultiUser();
         this._settingsAction.visible = Main.sessionMode.allowSettings;
-        this._updateActionsVisibility();
     },
 
     _updateMultiUser: function() {
-        let shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        let hasSwitchUser = this._updateSwitchUser();
-        let hasLogout = this._updateLogout();
+        let hasSwitchUser = this._loginScreenItem.actor.visible;
+        let hasLogout = this._logoutItem.actor.visible;
 
-        this._switchUserSubMenu.actor.visible = shouldShowInMode && (hasSwitchUser || hasLogout);
-    },
-
-    _updateSwitchUser: function() {
-        let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
-        let multiUser = this._userManager.can_switch() && this._userManager.has_multiple_users;
-
-        let visible = allowSwitch && multiUser;
-        this._loginScreenItem.actor.visible = visible;
-        return visible;
-    },
-
-    _updateLogout: function() {
-        let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
-        let alwaysShow = global.settings.get_boolean(ALWAYS_SHOW_LOG_OUT_KEY);
-        let systemAccount = this._user.system_account;
-        let localAccount = this._user.local_account;
-        let multiUser = this._userManager.has_multiple_users;
-        let multiSession = Gdm.get_session_ids().length > 1;
-
-        let visible = allowLogout && (alwaysShow || multiUser || multiSession || systemAccount || !localAccount);
-        this._logoutItem.actor.visible = visible;
-        return visible;
+        this._switchUserSubMenu.actor.visible = hasSwitchUser || hasLogout;
     },
 
     _updateSwitchUserSubMenu: function() {
@@ -299,63 +199,6 @@ var Indicator = new Lang.Class({
         }
     },
 
-    _updateOrientationLock: function() {
-        if (this._sensorProxy)
-            this._orientationLockAction.visible = this._sensorProxy.HasAccelerometer &&
-                                                  this._monitorManager.get_is_builtin_display_on();
-        else
-            this._orientationLockAction.visible = false;
-
-        let locked = this._orientationSettings.get_boolean('orientation-lock');
-        let icon = this._orientationLockAction.child;
-        icon.icon_name = locked ? 'rotation-locked-symbolic' : 'rotation-allowed-symbolic';
-
-        this._updateActionsVisibility();
-    },
-
-    _updateLockScreen: function() {
-        let showLock = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
-        this._lockScreenAction.visible = showLock && allowLockScreen && LoginManager.canLock();
-        this._updateActionsVisibility();
-    },
-
-    _updateHaveShutdown: function() {
-        this._session.CanShutdownRemote(Lang.bind(this, function(result, error) {
-            if (error)
-                return;
-
-            this._haveShutdown = result[0];
-            this._updatePowerOff();
-        }));
-    },
-
-    _updatePowerOff: function() {
-        let disabled = Main.sessionMode.isLocked ||
-                       (Main.sessionMode.isGreeter &&
-                        this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
-        this._powerOffAction.visible = this._haveShutdown && !disabled;
-        this._updateActionsVisibility();
-    },
-
-    _updateHaveSuspend: function() {
-        this._loginManager.canSuspend(Lang.bind(this,
-            function(canSuspend, needsAuth) {
-                this._haveSuspend = canSuspend;
-                this._suspendNeedsAuth = needsAuth;
-                this._updateSuspend();
-            }));
-    },
-
-    _updateSuspend: function() {
-        let disabled = (Main.sessionMode.isLocked &&
-                        this._suspendNeedsAuth) ||
-                       (Main.sessionMode.isGreeter &&
-                        this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
-        this._suspendAction.visible = this._haveSuspend && !disabled;
-        this._updateActionsVisibility();
-    },
-
     _createActionButton: function(iconName, accessibleName) {
         let icon = new St.Button({ reactive: true,
                                    can_focus: true,
@@ -367,6 +210,7 @@ var Indicator = new Lang.Class({
     },
 
     _createSubMenu: function() {
+        let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
         let item;
 
         this._switchUserSubMenu = new PopupMenu.PopupSubMenuMenuItem('', true);
@@ -382,14 +226,28 @@ var Indicator = new Lang.Class({
         }));
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
-        item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
+        item.connect('activate', () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
+            this._systemActions.activateSwitchUser();
+        });
         this._switchUserSubMenu.menu.addMenuItem(item);
         this._loginScreenItem = item;
+        this._systemActions.bind_property('can-switch-user',
+                                          this._loginScreenItem.actor,
+                                          'visible',
+                                          bindFlags);
 
         item = new PopupMenu.PopupMenuItem(_("Log Out"));
-        item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
+        item.connect('activate', () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
+            this._systemActions.activateLogout();
+        });
         this._switchUserSubMenu.menu.addMenuItem(item);
         this._logoutItem = item;
+        this._systemActions.bind_property('can-logout',
+                                          this._logoutItem.actor,
+                                          'visible',
+                                          bindFlags);
 
         this._switchUserSubMenu.menu.addSettingsAction(_("Account Settings"),
                                                        'gnome-user-accounts-panel.desktop');
@@ -405,28 +263,70 @@ var Indicator = new Lang.Class({
                                                  can_focus: false });
 
         this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
-        this._settingsAction.connect('clicked', Lang.bind(this, this._onSettingsClicked));
+        this._settingsAction.connect('clicked', () => { this._onSettingsClicked(); });
         item.actor.add(this._settingsAction, { expand: true, x_fill: false });
 
         this._orientationLockAction = this._createActionButton('', _("Orientation Lock"));
-        this._orientationLockAction.connect('clicked', Lang.bind(this, this._onOrientationLockClicked));
+        this._orientationLockAction.connect('clicked', () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE),
+            this._systemActions.activateLockOrientation();
+        });
         item.actor.add(this._orientationLockAction, { expand: true, x_fill: false });
+        this._systemActions.bind_property('can-lock-orientation',
+                                          this._orientationLockAction,
+                                          'visible',
+                                          bindFlags);
+        this._systemActions.bind_property('orientation-lock-icon',
+                                          this._orientationLockAction.child,
+                                          'icon-name',
+                                          bindFlags);
 
         this._lockScreenAction = this._createActionButton('changes-prevent-symbolic', _("Lock"));
-        this._lockScreenAction.connect('clicked', Lang.bind(this, this._onLockScreenClicked));
+        this._lockScreenAction.connect('clicked', () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
+            this._systemActions.activateLockScreen();
+        });
         item.actor.add(this._lockScreenAction, { expand: true, x_fill: false });
+        this._systemActions.bind_property('can-lock-screen',
+                                          this._lockScreenAction,
+                                          'visible',
+                                          bindFlags);
 
         this._suspendAction = this._createActionButton('media-playback-pause-symbolic', _("Suspend"));
-        this._suspendAction.connect('clicked', Lang.bind(this, this._onSuspendClicked));
+        this._suspendAction.connect('clicked', () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
+            this._systemActions.activateSuspend();
+        });
+        this._systemActions.bind_property('can-suspend',
+                                          this._suspendAction,
+                                          'visible',
+                                          bindFlags);
 
         this._powerOffAction = this._createActionButton('system-shutdown-symbolic', _("Power Off"));
-        this._powerOffAction.connect('clicked', Lang.bind(this, this._onPowerOffClicked));
+        this._powerOffAction.connect('clicked', () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
+            this._systemActions.activatePowerOff();
+        });
+        this._systemActions.bind_property('can-power-off',
+                                          this._powerOffAction,
+                                          'visible',
+                                          bindFlags);
 
         this._altSwitcher = new AltSwitcher(this._powerOffAction, this._suspendAction);
         item.actor.add(this._altSwitcher.actor, { expand: true, x_fill: false });
 
         this._actionsItem = item;
         this.menu.addMenuItem(item);
+
+
+        this._settingsAction.connect('notify::visible',
+                                     () => { this._updateActionsVisibility(); });
+        this._orientationLockAction.connect('notify::visible',
+                                            () => { this._updateActionsVisibility(); });
+        this._lockScreenAction.connect('notify::visible',
+                                       () => { this._updateActionsVisibility(); });
+        this._altSwitcher.actor.connect('notify::visible',
+                                        () => { this._updateActionsVisibility(); });
     },
 
     _onSettingsClicked: function() {
@@ -434,42 +334,5 @@ var Indicator = new Lang.Class({
         let app = Shell.AppSystem.get_default().lookup_app('gnome-control-center.desktop');
         Main.overview.hide();
         app.activate();
-    },
-
-    _onOrientationLockClicked: function() {
-        this.menu.itemActivated();
-        let locked = this._orientationSettings.get_boolean('orientation-lock');
-        this._orientationSettings.set_boolean('orientation-lock', !locked);
-        this._updateOrientationLock();
-    },
-
-    _onLockScreenClicked: function() {
-        this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-        Main.screenShield.lock(true);
-    },
-
-    _onLoginScreenActivate: function() {
-        this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-        if (Main.screenShield)
-            Main.screenShield.lock(false);
-
-        Clutter.threads_add_repaint_func_full(Clutter.RepaintFlags.POST_PAINT, function() {
-            Gdm.goto_login_session_sync(null);
-            return false;
-        });
-    },
-
-    _onQuitSessionActivate: function() {
-        this._session.LogoutRemote(0);
-    },
-
-    _onPowerOffClicked: function() {
-        this.menu.itemActivated();
-        this._session.ShutdownRemote(0);
-    },
-
-    _onSuspendClicked: function() {
-        this.menu.itemActivated();
-        this._loginManager.suspend();
-    },
+    }
 });
