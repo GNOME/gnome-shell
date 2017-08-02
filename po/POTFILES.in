@@ -9,6 +9,7 @@ js/extensionPrefs/main.js
 js/gdm/authPrompt.js
 js/gdm/loginDialog.js
 js/gdm/util.js
+js/misc/systemActions.js
 js/misc/util.js
 js/portalHelper/main.js
 js/ui/accessDialog.js

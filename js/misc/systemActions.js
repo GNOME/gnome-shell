@@ -95,17 +95,46 @@ const SystemActions = new Lang.Class({
 
         this._actions = new Map();
         this._actions.set(POWER_OFF_ACTION_ID,
-                          { available: false });
+                          { // Translators: The name of the power-off action in search
+                            name: C_("search-result", "Power off"),
+                            iconName: 'system-shutdown-symbolic',
+                            // Translators: A list of keywords that match the power-off action, separated by semicolons
+                            keywords: _("power off;shutdown").split(';'),
+                            available: false });
         this._actions.set(LOCK_SCREEN_ACTION_ID,
-                          { available: false });
+                          { // Translators: The name of the lock screen action in search
+                            name: C_("search-result", "Lock screen"),
+                            iconName: 'system-lock-screen-symbolic',
+                            // Translators: A list of keywords that match the lock screen action, separated by semicolons
+                            keywords: _("lock screen").split(';'),
+                            available: false });
         this._actions.set(LOGOUT_ACTION_ID,
-                          { available: false });
+                          { // Translators: The name of the logout action in search
+                            name: C_("search-result", "Log out"),
+                            iconName: 'application-exit-symbolic',
+                            // Translators: A list of keywords that match the logout action, separated by semicolons
+                            keywords: _("logout;sign off").split(';'),
+                            available: false });
         this._actions.set(SUSPEND_ACTION_ID,
-                          { available: false });
+                          { // Translators: The name of the suspend action in search
+                            name: C_("search-result", "Suspend"),
+                            iconName: 'media-playback-pause-symbolic',
+                            // Translators: A list of keywords that match the suspend action, separated by semicolons
+                            keywords: _("suspend;sleep").split(';'),
+                            available: false });
         this._actions.set(SWITCH_USER_ACTION_ID,
-                          { available: false });
+                          { // Translators: The name of the switch user action in search
+                            name: C_("search-result", "Switch user"),
+                            iconName: 'system-switch-user-symbolic',
+                            // Translators: A list of keywords that match the switch user action, separated by semicolons
+                            keywords: _("switch user").split(';'),
+                            available: false });
         this._actions.set(LOCK_ORIENTATION_ACTION_ID,
-                          { iconName: '',
+                          { // Translators: The name of the lock orientation action in search
+                            name: C_("search-result", "Lock orientation"),
+                            iconName: '',
+                            // Translators: A list of keywords that match the lock orientation action, separated by semicolons
+                            keywords: _("lock orientation").split(';'),
                             available: false });
 
         this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
@@ -235,6 +264,50 @@ const SystemActions = new Lang.Class({
         // latter, so their value may be outdated; force an update now
         this._updateHaveShutdown();
         this._updateHaveSuspend();
+    },
+
+    getMatchingActions: function(terms) {
+        // terms is a list of strings
+        terms = terms.map((term) => { return term.toLowerCase(); });
+
+        let results = [];
+
+        for (let [key, {available, keywords}] of this._actions)
+            if (available && terms.every(t => keywords.some(k => (k.indexOf(t) >= 0))))
+                results.push(key);
+
+        return results;
+    },
+
+    getName: function(id) {
+        return this._actions.get(id).name;
+    },
+
+    getIconName: function(id) {
+        return this._actions.get(id).iconName;
+    },
+
+    activateAction: function(id) {
+        switch (id) {
+            case POWER_OFF_ACTION_ID:
+                this.activatePowerOff();
+                break;
+            case LOCK_SCREEN_ACTION_ID:
+                this.activateLockScreen();
+                break;
+            case LOGOUT_ACTION_ID:
+                this.activateLogout();
+                break;
+            case SUSPEND_ACTION_ID:
+                this.activateSuspend();
+                break;
+            case SWITCH_USER_ACTION_ID:
+                this.activateSwitchUser();
+                break;
+            case LOCK_ORIENTATION_ACTION_ID:
+                this.activateLockOrientation();
+                break;
+        }
     },
 
     _updateLockScreen() {
