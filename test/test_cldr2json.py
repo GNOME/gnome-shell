@@ -101,8 +101,72 @@ class TestParseRow(unittest.TestCase):
 
 
 class TestConvertXml(unittest.TestCase):
-    # cldr2json.convert_xml(xml):
-    pass
+    def test_convert_xml(self):
+        xml_string = """<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE keyboard SYSTEM "../dtd/ldmlKeyboard.dtd">
+        <keyboard locale="fr-t-k0-android">
+            <version platform="4.4" number="$Revision: 11914 $"/>
+            <names>
+                <name value="French"/>
+            </names>
+            <keyMap>
+                <map iso="D01" to="a" longPress="à â % æ á ä ã å ā ª"/> <!-- Q -->
+            </keyMap>
+            <keyMap modifiers="shift caps">
+                <map iso="D01" to="A" longPress="À Â % Æ Á Ä Ã Å Ā ª"/> <!-- Q -->
+            </keyMap>
+            <keyMap modifiers="opt">
+                <map iso="D01" to="1" longPress="¹ ½ ⅓ ¼ ⅛"/> <!-- Q  base=a -->
+            </keyMap>
+            <keyMap modifiers="opt+shift">
+                <map iso="D01" to="~"/> <!-- Q  base=a -->
+            </keyMap>
+        </keyboard>
+        """
+        xml_tree = xml.etree.ElementTree.XML(xml_string)
+        json = {
+          "locale": "fr",
+          "name": "French",
+          "levels": [
+            {
+              "level": "",
+              "mode": "default",
+              "rows": [
+                [
+                  ['a', 'à', 'â', '%', 'æ', 'á', 'ä', 'ã', 'å', 'ā', 'ª'],
+                ]
+              ]
+            },
+            {
+              "level": "shift",
+              "mode": "latched",
+              "rows": [
+                [
+                  ['A', 'À', 'Â', '%', 'Æ', 'Á', 'Ä', 'Ã', 'Å', 'Ā', 'ª'],
+                ]
+              ]
+            },
+            {
+              "level": "opt",
+              "mode": "locked",
+              "rows": [
+                [
+                  ["1", "¹", "½", "⅓", "¼", "⅛"],
+                ]
+              ]
+            },
+            {
+              "level": "opt+shift",
+              "mode": "locked",
+              "rows": [
+                [
+                  ["~"],
+                ]
+              ]
+            }
+          ]
+        }
+        self.assertEqual(cldr2json.convert_xml(xml_tree), json)
 
 
 class TestConvertFile(unittest.TestCase):
