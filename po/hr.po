@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-20 03:49+0000\n"
-"PO-Revision-Date: 2017-07-25 20:05+0200\n"
+"POT-Creation-Date: 2017-08-02 13:17+0000\n"
+"PO-Revision-Date: 2017-08-02 21:51+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -1145,7 +1145,30 @@ msgstr "Instaliraj"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Preuzmi i instaliraj “%s” sa extensions.gnome.org?"
 
-#: js/ui/keyboard.js:740 js/ui/status/keyboard.js:782
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:54
+#, javascript-format
+msgid "%s wants to inhibit shortcuts"
+msgstr "%s želi spriječiti prečac"
+
+#: js/ui/inhibitShortcutsDialog.js:55
+msgid "Application wants to inhibit shortcuts"
+msgstr "Aplikacija želi spriječiti prečac"
+
+#: js/ui/inhibitShortcutsDialog.js:64
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "Možete obnoviti prečac pritiskom na %s."
+
+#: js/ui/inhibitShortcutsDialog.js:69
+msgid "Deny"
+msgstr "Spriječi"
+
+#: js/ui/inhibitShortcutsDialog.js:75
+msgid "Allow"
+msgstr "Dopusti"
+
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
