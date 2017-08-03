@@ -37,6 +37,9 @@ void meta_crtc_kms_apply_transform (MetaCrtc *crtc);
 void meta_crtc_kms_set_underscan (MetaCrtc *crtc,
                                   gboolean  is_underscanning);
 
+GArray * meta_crtc_kms_get_modifiers (MetaCrtc *crtc,
+                                      uint32_t  format);
+
 MetaCrtc * meta_create_kms_crtc (MetaGpuKms   *gpu_kms,
                                  drmModeCrtc  *drm_crtc,
                                  unsigned int  crtc_index);

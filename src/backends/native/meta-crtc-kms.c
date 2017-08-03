@@ -29,6 +29,8 @@
 #include "backends/meta-backend-private.h"
 #include "backends/native/meta-gpu-kms.h"
 
+#include <drm_fourcc.h>
+
 #define ALL_TRANSFORMS (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)
 #define ALL_TRANSFORMS_MASK ((1 << ALL_TRANSFORMS) - 1)
 
@@ -172,6 +174,18 @@ find_property_index (MetaGpu                    *gpu,
     }
 
   return -1;
+}
+
+GArray *
+meta_crtc_kms_get_modifiers (MetaCrtc *crtc,
+                             uint32_t  format)
+{
+  MetaCrtcKms *crtc_kms = crtc->driver_private;
+
+  if (format != DRM_FORMAT_XRGB8888)
+    return NULL;
+
+  return crtc_kms->modifiers_xrgb8888;
 }
 
 static inline uint32_t *

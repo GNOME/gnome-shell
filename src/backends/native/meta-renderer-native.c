@@ -56,6 +56,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-output.h"
 #include "backends/meta-renderer-view.h"
+#include "backends/native/meta-crtc-kms.h"
 #include "backends/native/meta-gpu-kms.h"
 #include "backends/native/meta-monitor-manager-kms.h"
 #include "backends/native/meta-renderer-native.h"
@@ -1638,6 +1639,146 @@ meta_renderer_native_init_egl_context (CoglContext *cogl_context,
   return TRUE;
 }
 
+static GArray *
+get_supported_modifiers (CoglOnscreen *onscreen,
+                         uint32_t      format)
+{
+  CoglOnscreenEGL *onscreen_egl = onscreen->winsys;
+  MetaOnscreenNative *onscreen_native = onscreen_egl->platform;
+  MetaRendererNative *renderer_native = onscreen_native->renderer_native;
+  MetaLogicalMonitor *logical_monitor = onscreen_native->logical_monitor;
+  MetaEgl *egl = meta_onscreen_native_get_egl (onscreen_native);
+  CoglContext *cogl_context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *cogl_renderer = cogl_context->display->renderer;
+  CoglRendererEGL *cogl_renderer_egl = cogl_renderer->winsys;
+  GArray *modifiers;
+  GArray *base_mods;
+  GList *l_crtc, *l_monitor;
+  MetaCrtc *base_crtc = NULL;
+  GList *other_crtcs = NULL;
+  unsigned int i;
+
+  if (!logical_monitor)
+    return NULL;
+
+  /* Find our base CRTC to intersect against. */
+  for (l_monitor = meta_logical_monitor_get_monitors (logical_monitor);
+       l_monitor;
+       l_monitor = l_monitor->next)
+    {
+      MetaMonitor *monitor = l_monitor->data;
+      MetaGpu *gpu = meta_monitor_get_gpu (monitor);
+      MetaRendererNativeGpuData *renderer_gpu_data;
+
+      /* All secondary GPUs need to be able to import DMA BUF with modifiers */
+      renderer_gpu_data = meta_renderer_native_get_gpu_data (renderer_native,
+                                                             META_GPU_KMS (gpu));
+      if (cogl_renderer_egl->platform != renderer_gpu_data &&
+          !meta_egl_has_extensions (egl, renderer_gpu_data->egl_display, NULL,
+                                    "EGL_EXT_image_dma_buf_import_modifiers",
+                                    NULL))
+        goto out;
+
+      for (l_crtc = meta_gpu_get_crtcs (gpu); l_crtc; l_crtc = l_crtc->next)
+        {
+          MetaCrtc *crtc = l_crtc->data;
+
+          if (crtc->logical_monitor != logical_monitor)
+            continue;
+
+          if (!base_crtc)
+            base_crtc = crtc;
+          else if (crtc == base_crtc)
+            continue;
+          else if (g_list_index (other_crtcs, crtc) == -1)
+            other_crtcs = g_list_append (other_crtcs, crtc);
+        }
+    }
+
+  if (!base_crtc)
+    goto out;
+
+  base_mods = meta_crtc_kms_get_modifiers (base_crtc, format);
+  if (!base_mods)
+    goto out;
+
+  /*
+   * If this is the only CRTC we have, we don't need to intersect the sets of
+   * modifiers.
+   */
+  if (other_crtcs == NULL)
+    {
+      modifiers = g_array_sized_new (FALSE, FALSE, sizeof (uint64_t),
+                                     base_mods->len);
+      g_array_append_vals (modifiers, base_mods->data, base_mods->len);
+      return modifiers;
+    }
+
+  modifiers = g_array_new (FALSE, FALSE, sizeof (uint64_t));
+
+  /*
+   * For each modifier from base_crtc, check if it's available on all other
+   * CRTCs.
+   */
+  for (i = 0; i < base_mods->len; i++)
+    {
+      uint64_t modifier = g_array_index (base_mods, uint64_t, i);
+      gboolean found_everywhere = TRUE;
+      GList *k;
+
+      /* Check if we have the same modifier available for all CRTCs. */
+      for (k = other_crtcs; k; k = k->next)
+        {
+          MetaCrtc *crtc = k->data;
+          GArray *crtc_mods;
+          unsigned int m;
+          gboolean found_here = FALSE;
+
+          if (crtc->logical_monitor != logical_monitor)
+            continue;
+
+          crtc_mods = meta_crtc_kms_get_modifiers (crtc, format);
+          if (!crtc_mods)
+            {
+              g_array_free (modifiers, TRUE);
+              goto out;
+            }
+
+          for (m = 0; m < crtc_mods->len; m++)
+            {
+              uint64_t local_mod = g_array_index (crtc_mods, uint64_t, m);
+
+              if (local_mod == modifier)
+                {
+                  found_here = TRUE;
+                  break;
+                }
+            }
+
+          if (!found_here)
+            {
+              found_everywhere = FALSE;
+              break;
+            }
+        }
+
+      if (found_everywhere)
+        g_array_append_val (modifiers, modifier);
+    }
+
+  if (modifiers->len == 0)
+    {
+      g_array_free (modifiers, TRUE);
+      goto out;
+    }
+
+  return modifiers;
+
+out:
+  g_list_free (other_crtcs);
+  return NULL;
+}
+
 static gboolean
 should_surface_be_sharable (CoglOnscreen *onscreen)
 {
@@ -1690,19 +1831,36 @@ meta_renderer_native_create_surface_gbm (CoglOnscreen        *onscreen,
   struct gbm_surface *new_gbm_surface;
   EGLNativeWindowType egl_native_window;
   EGLSurface new_egl_surface;
-  uint32_t flags;
-
-  flags = GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING;
-  if (should_surface_be_sharable (onscreen))
-    flags |= GBM_BO_USE_LINEAR;
+  uint32_t format = GBM_FORMAT_XRGB8888;
+  GArray *modifiers;
 
   renderer_gpu_data =
     meta_renderer_native_get_gpu_data (renderer_native,
                                        onscreen_native->render_gpu);
-  new_gbm_surface = gbm_surface_create (renderer_gpu_data->gbm.device,
-                                        width, height,
-                                        GBM_FORMAT_XRGB8888,
-                                        flags);
+
+  modifiers = get_supported_modifiers (onscreen, format);
+
+  if (modifiers)
+    {
+      new_gbm_surface =
+        gbm_surface_create_with_modifiers (renderer_gpu_data->gbm.device,
+                                           width, height, format,
+                                           (uint64_t *) modifiers->data,
+                                           modifiers->len);
+      g_array_free (modifiers, TRUE);
+    }
+  else
+    {
+      uint32_t flags = GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING;
+
+      if (should_surface_be_sharable (onscreen))
+        flags |= GBM_BO_USE_LINEAR;
+
+      new_gbm_surface = gbm_surface_create (renderer_gpu_data->gbm.device,
+                                            width, height,
+                                            format,
+                                            flags);
+    }
 
   if (!new_gbm_surface)
     {
