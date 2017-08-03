@@ -23,6 +23,9 @@
 
 #include "backends/native/meta-crtc-kms.h"
 
+#include <drm_fourcc.h>
+#include <drm_mode.h>
+
 #include "backends/meta-backend-private.h"
 #include "backends/native/meta-gpu-kms.h"
 
@@ -36,9 +39,12 @@ typedef struct _MetaCrtcKms
   uint32_t underscan_hborder_prop_id;
   uint32_t underscan_vborder_prop_id;
   uint32_t primary_plane_id;
+  uint32_t formats_prop_id;
   uint32_t rotation_prop_id;
   uint32_t rotation_map[ALL_TRANSFORMS];
   uint32_t all_hw_transforms;
+
+  GArray *modifiers_xrgb8888;
 } MetaCrtcKms;
 
 gboolean
@@ -168,6 +174,89 @@ find_property_index (MetaGpu                    *gpu,
   return -1;
 }
 
+static inline uint32_t *
+formats_ptr (struct drm_format_modifier_blob *blob)
+{
+  return (uint32_t *) (((char *) blob) + blob->formats_offset);
+}
+
+static inline struct drm_format_modifier *
+modifiers_ptr (struct drm_format_modifier_blob *blob)
+{
+  return (struct drm_format_modifier *) (((char *) blob) +
+                                         blob->modifiers_offset);
+}
+
+static void
+parse_formats (MetaCrtc *crtc,
+               int       kms_fd,
+               uint32_t  blob_id)
+{
+  MetaCrtcKms *crtc_kms = crtc->driver_private;
+  drmModePropertyBlobPtr blob;
+  struct drm_format_modifier_blob *blob_fmt;
+  uint32_t *formats;
+  struct drm_format_modifier *modifiers;
+  unsigned int i;
+  unsigned int xrgb_idx = UINT_MAX;
+
+  if (blob_id == 0)
+    return;
+
+  blob = drmModeGetPropertyBlob (kms_fd, blob_id);
+  if (!blob)
+    return;
+
+  if (blob->length < sizeof (struct drm_format_modifier_blob))
+    {
+      drmModeFreePropertyBlob (blob);
+      return;
+    }
+
+  blob_fmt = blob->data;
+
+  /* Find the index of our XRGB8888 format. */
+  formats = formats_ptr (blob_fmt);
+  for (i = 0; i < blob_fmt->count_formats; i++)
+    {
+      if (formats[i] == DRM_FORMAT_XRGB8888)
+        {
+          xrgb_idx = i;
+          break;
+        }
+    }
+
+  if (xrgb_idx == UINT_MAX)
+    {
+      drmModeFreePropertyBlob (blob);
+      return;
+    }
+
+  modifiers = modifiers_ptr (blob_fmt);
+  crtc_kms->modifiers_xrgb8888 = g_array_new (FALSE, FALSE, sizeof (uint64_t));
+  for (i = 0; i < blob_fmt->count_modifiers; i++)
+    {
+      /* The modifier advertisement blob is partitioned into groups of
+       * 64 formats. */
+      if (xrgb_idx < modifiers[i].offset ||
+          xrgb_idx > modifiers[i].offset + 63)
+        continue;
+
+      if (!(modifiers[i].formats & (1 << (xrgb_idx - modifiers[i].offset))))
+        continue;
+
+      g_array_append_val (crtc_kms->modifiers_xrgb8888, modifiers[i].modifier);
+    }
+
+  if (crtc_kms->modifiers_xrgb8888->len == 0)
+    {
+      g_array_free (crtc_kms->modifiers_xrgb8888, TRUE);
+      crtc_kms->modifiers_xrgb8888 = NULL;
+    }
+
+  drmModeFreePropertyBlob (blob);
+}
+
 static void
 parse_transforms (MetaCrtc          *crtc,
                   drmModePropertyPtr prop)
@@ -246,7 +335,7 @@ init_crtc_rotations (MetaCrtc *crtc,
 
           if (props && is_primary_plane (gpu, props))
             {
-              int rotation_idx;
+              int rotation_idx, fmts_idx;
 
               crtc_kms->primary_plane_id = drm_plane->plane_id;
               rotation_idx = find_property_index (gpu, props,
@@ -255,6 +344,15 @@ init_crtc_rotations (MetaCrtc *crtc,
                 {
                   crtc_kms->rotation_prop_id = props->props[rotation_idx];
                   parse_transforms (crtc, prop);
+                  drmModeFreeProperty (prop);
+                }
+
+              fmts_idx = find_property_index (gpu, props,
+                                              "IN_FORMATS", &prop);
+              if (fmts_idx >= 0)
+                {
+                  crtc_kms->formats_prop_id = props->props[fmts_idx];
+                  parse_formats (crtc, kms_fd, props->prop_values[fmts_idx]);
                   drmModeFreeProperty (prop);
                 }
             }
@@ -311,6 +409,10 @@ find_crtc_properties (MetaCrtc   *crtc,
 static void
 meta_crtc_destroy_notify (MetaCrtc *crtc)
 {
+  MetaCrtcKms *crtc_kms = crtc->driver_private;
+
+  if (crtc_kms->modifiers_xrgb8888)
+    g_array_free (crtc_kms->modifiers_xrgb8888, TRUE);
   g_free (crtc->driver_private);
 }
 
