@@ -153,12 +153,13 @@ var MonitorConstraint = new Lang.Class({
 var Monitor = new Lang.Class({
     Name: 'Monitor',
 
-    _init: function(index, geometry) {
+    _init: function(index, geometry, scale) {
         this.index = index;
         this.x = geometry.x;
         this.y = geometry.y;
         this.width = geometry.width;
         this.height = geometry.height;
+        this.scale = scale;
     },
 
     get inFullscreen() {
@@ -325,7 +326,9 @@ var LayoutManager = new Lang.Class({
         this.monitors = [];
         let nMonitors = screen.get_n_monitors();
         for (let i = 0; i < nMonitors; i++)
-            this.monitors.push(new Monitor(i, screen.get_monitor_geometry(i)));
+            this.monitors.push(new Monitor(i,
+                                           screen.get_monitor_geometry(i),
+                                           screen.get_monitor_scale(i)));
 
         if (nMonitors == 0) {
             this.primaryIndex = this.bottomIndex = -1;
