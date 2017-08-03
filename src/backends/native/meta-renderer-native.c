@@ -46,6 +46,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <xf86drm.h>
+#include <drm_fourcc.h>
 
 #include "backends/meta-backend-private.h"
 #include "backends/meta-crtc.h"
@@ -1276,31 +1277,44 @@ gbm_get_next_fb_id (MetaGpuKms         *gpu_kms,
                     struct gbm_bo     **out_next_bo,
                     uint32_t           *out_next_fb_id)
 {
-  uint32_t handle, stride;
   struct gbm_bo *next_bo;
   uint32_t next_fb_id;
   int kms_fd;
+  uint32_t handles[4] = { 0, };
+  uint32_t strides[4] = { 0, };
+  uint32_t offsets[4] = { 0, };
 
   /* Now we need to set the CRTC to whatever is the front buffer */
   next_bo = gbm_surface_lock_front_buffer (gbm_surface);
 
-  stride = gbm_bo_get_stride (next_bo);
-  handle = gbm_bo_get_handle (next_bo).u32;
+  strides[0] = gbm_bo_get_stride (next_bo);
+  handles[0] = gbm_bo_get_handle (next_bo).u32;
 
   kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
-  if (drmModeAddFB (kms_fd,
-                    gbm_bo_get_width (next_bo),
-                    gbm_bo_get_height (next_bo),
-                    24, /* depth */
-                    32, /* bpp */
-                    stride,
-                    handle,
-                    &next_fb_id))
+  if (drmModeAddFB2 (kms_fd,
+                     gbm_bo_get_width (next_bo),
+                     gbm_bo_get_height (next_bo),
+                     gbm_bo_get_format (next_bo),
+                     handles,
+                     strides,
+                     offsets,
+                     &next_fb_id,
+                     0))
     {
-      g_warning ("Failed to create new back buffer handle: %m");
-      gbm_surface_release_buffer (gbm_surface, next_bo);
-      return FALSE;
+      if (drmModeAddFB (kms_fd,
+                        gbm_bo_get_width (next_bo),
+                        gbm_bo_get_height (next_bo),
+                        24, /* depth */
+                        32, /* bpp */
+                        strides[0],
+                        handles[0],
+                        &next_fb_id))
+        {
+          g_warning ("Failed to create new back buffer handle: %m");
+          gbm_surface_release_buffer (gbm_surface, next_bo);
+          return FALSE;
+        }
     }
 
   *out_next_bo = next_bo;
