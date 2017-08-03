@@ -146,12 +146,13 @@ var MonitorConstraint = GObject.registerClass({
 });
 
 var Monitor = class Monitor {
-    constructor(index, geometry) {
+    constructor(index, geometry, geometry_scale) {
         this.index = index;
         this.x = geometry.x;
         this.y = geometry.y;
         this.width = geometry.width;
         this.height = geometry.height;
+        this.geometry_scale = geometry_scale;
     }
 
     get inFullscreen() {
@@ -318,7 +319,9 @@ var LayoutManager = GObject.registerClass({
         this.monitors = [];
         let nMonitors = display.get_n_monitors();
         for (let i = 0; i < nMonitors; i++)
-            this.monitors.push(new Monitor(i, display.get_monitor_geometry(i)));
+            this.monitors.push(new Monitor(i,
+                                           display.get_monitor_geometry(i),
+                                           display.get_monitor_scale(i)));
 
         if (nMonitors == 0) {
             this.primaryIndex = this.bottomIndex = -1;
