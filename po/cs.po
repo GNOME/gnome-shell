@@ -13,10 +13,10 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-07 12:40+0000\n"
-"PO-Revision-Date: 2017-03-09 07:51+0100\n"
+"POT-Creation-Date: 2017-08-02 10:05+0000\n"
+"PO-Revision-Date: 2017-08-03 08:15+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
-"Language-Team: čeština <gnome-cs-list@gnome.org>\n"
+"Language-Team: čeština <gnome-cs-list@gnome.org>>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -361,9 +361,8 @@ msgid ""
 "focus will not be changed immediately when entering a window, but only after "
 "the pointer stops moving."
 msgstr ""
-"Je-li zapnuto a režim zaměření je buď „sloppy“ nebo „mouse“, pak se "
-"zaměření nezmění hned, když vstoupíte do kona, ale až se přestane pohybovat "
-"ukazatel."
+"Je-li zapnuto a režim zaměření je buď „sloppy“ nebo „mouse“, pak se zaměření "
+"nezmění hned, když vstoupíte do kona, ale až se přestane pohybovat ukazatel."
 
 #: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
@@ -401,13 +400,55 @@ msgstr ""
 "Je-li zapnuto, nová okna budou vždy umístěna ve středu aktivní obrazovky "
 "monitoru."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Povolit experimentální funkce"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
+msgstr ""
+"Chcete-li povolit experimentální funkce, přidejte klíčové slovo funkce do "
+"seznamu. Zda funkce vyžaduje restartování kompozitoru, závisí na dané "
+"funkci. Ne u každé experimentální funkce je vyžadováno, aby byla stále "
+"dostupná nebo konfigurovatelná. Neočekávejte, že by bylo v tomto nastavení "
+"přidáno něco, co by do budoucna přineslo vylepšení. V současné době jsou "
+"možná tato klíčová slova: • „monitor-config-manager“ – použijte se nový "
+"systém nastavení monitoru, jehož cílem je nahradit starý. Poskytuje "
+"aplikacím pro nastavování API vyšší úrovně, stejně jako možnost nastavení "
+"podle logického škálování monitorů. • „scale-monitor-framebuffer“ – zajistí, "
+"aby byl mutter výchozí pro logické uspořádání monitorů v logickém "
+"souřadnicovém prostoru pixelů, zatímco škáluje přímo v grafické vyrovnávací "
+"paměti, namísto v obsahu oken, aby se postaral o správu montorů s HiDPI. "
+"Nevyžaduje restart. Aby tato funkce fungovala, je zapotřebí povolit rovněž "
+"„monitor-config-manager“."
+
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr "Vybrat okno z překryvné nabídky tabulátoru"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Zrušit překryvné okno tabulátoru"
+
+#: data/org.gnome.mutter.gschema.xml.in:161
+msgid "Switch monitor configurations"
+msgstr "Přepnout nastavení monitoru"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+msgid "Rotates the built-in monitor configuration"
+msgstr "Postupně mění vestavěná nastavení monitoru"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -457,10 +498,14 @@ msgstr "Přepnout na VT 11"
 msgid "Switch to VT 12"
 msgstr "Přepnout na VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Znovu povolit klávesové zkratky"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2118
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Přepínač režimu (skupina %d)"
@@ -468,37 +513,37 @@ msgstr "Přepínač režimu (skupina %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Přepnout monitor"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Zobrazit nápovědu na obrazovce"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:927
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:952
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:960
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:474
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -507,32 +552,6 @@ msgstr "Jiný kompozitní správce již běží na obrazovce %i displeje „%s�
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Událost zvonku"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "„%s“ nereaguje."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Aplikace nereaguje."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Je možné chvíli počkat, aby aplikace mohla pokračovat, nebo si vynutit úplné "
-"ukončení aplikace."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Vynutit ukončení"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Počkat"
 
 #: src/core/display.c:608
 #, c-format
@@ -574,6 +593,32 @@ msgstr "Spustit jako podkladový kompozitor"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Spustit jako plnohodnotný server displeje, nikoliv vnořeně"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "„%s“ nereaguje."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Aplikace nereaguje."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Je možné chvíli počkat, aby aplikace mohla pokračovat, nebo si vynutit úplné "
+"ukončení aplikace."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Vynutit ukončení"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Počkat"
 
 #: src/core/mutter.c:39
 #, c-format
@@ -632,11 +677,10 @@ msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Tato okna nepodporují „uložení aktuálního nastavení“ a po svém "
-"příštím přihlášení je budete muset spustit ručně."
+"Tato okna nepodporují „uložení aktuálního nastavení“ a po svém příštím "
+"přihlášení je budete muset spustit ručně."
 
 #: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
-
