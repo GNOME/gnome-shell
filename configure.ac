@@ -266,7 +266,7 @@ AC_SUBST(XWAYLAND_PATH)
 
 PKG_CHECK_MODULES(MUTTER, $MUTTER_PC_MODULES)
 
-MUTTER_NATIVE_BACKEND_MODULES="libdrm >= 2.4.83 libsystemd libinput >= 1.4 gudev-1.0 gbm >= 10.3"
+MUTTER_NATIVE_BACKEND_MODULES="libdrm >= 2.4.83 libsystemd libinput >= 1.4 gudev-1.0 gbm >= 17.1"
 
 AC_ARG_ENABLE(native-backend,
   AS_HELP_STRING([--disable-native-backend], [disable mutter native (KMS) backend]),,

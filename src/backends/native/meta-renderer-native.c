@@ -1283,24 +1283,49 @@ gbm_get_next_fb_id (MetaGpuKms         *gpu_kms,
   uint32_t handles[4] = { 0, };
   uint32_t strides[4] = { 0, };
   uint32_t offsets[4] = { 0, };
+  uint64_t modifiers[4] = { 0, };
+  int i;
 
   /* Now we need to set the CRTC to whatever is the front buffer */
   next_bo = gbm_surface_lock_front_buffer (gbm_surface);
 
-  strides[0] = gbm_bo_get_stride (next_bo);
-  handles[0] = gbm_bo_get_handle (next_bo).u32;
+  for (i = 0; i < gbm_bo_get_plane_count (next_bo); i++)
+    {
+      strides[i] = gbm_bo_get_stride_for_plane (next_bo, i);
+      handles[i] = gbm_bo_get_handle_for_plane (next_bo, i).u32;
+      offsets[i] = gbm_bo_get_offset (next_bo, i);
+      modifiers[i] = gbm_bo_get_modifier (next_bo);
+    }
 
   kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
-  if (drmModeAddFB2 (kms_fd,
-                     gbm_bo_get_width (next_bo),
-                     gbm_bo_get_height (next_bo),
-                     gbm_bo_get_format (next_bo),
-                     handles,
-                     strides,
-                     offsets,
-                     &next_fb_id,
-                     0))
+  if (modifiers[0] != DRM_FORMAT_MOD_INVALID)
+    {
+      if (drmModeAddFB2WithModifiers (kms_fd,
+                                      gbm_bo_get_width (next_bo),
+                                      gbm_bo_get_height (next_bo),
+                                      gbm_bo_get_format (next_bo),
+                                      handles,
+                                      strides,
+                                      offsets,
+                                      modifiers,
+                                      &next_fb_id,
+                                      DRM_MODE_FB_MODIFIERS))
+        {
+          g_warning ("Failed to create new back buffer handle: %m");
+          gbm_surface_release_buffer (gbm_surface, next_bo);
+          return FALSE;
+        }
+    }
+  else if (drmModeAddFB2 (kms_fd,
+                          gbm_bo_get_width (next_bo),
+                          gbm_bo_get_height (next_bo),
+                          gbm_bo_get_format (next_bo),
+                          handles,
+                          strides,
+                          offsets,
+                          &next_fb_id,
+                          0))
     {
       if (drmModeAddFB (kms_fd,
                         gbm_bo_get_width (next_bo),
