@@ -767,12 +767,8 @@ var BackgroundManager = new Lang.Class({
 
         this._container.add_child(backgroundActor);
 
-        let monitor = this._layoutManager.monitors[this._monitorIndex];
-
-        backgroundActor.set_size(monitor.width * monitor.scale,
-                                 monitor.height * monitor.scale);
-        backgroundActor.set_scale(1.0 / monitor.scale, 1.0 / monitor.scale);
         if (this._controlPosition) {
+            let monitor = this._layoutManager.monitors[this._monitorIndex];
             backgroundActor.set_position(monitor.x, monitor.y);
             backgroundActor.lower_bottom();
         }
