@@ -513,7 +513,7 @@ var PadDiagram = new Lang.Class({
     },
 
     getRingLabelCoords: function (number, dir) {
-        let numStr = number > 0 ? number.toString() : '';
+        let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == CW ? 'CW' : 'CCW';
         let labelName = 'LabelRing' + numStr + dirStr;
         let leaderName = 'LeaderRing' + numStr + dirStr;
