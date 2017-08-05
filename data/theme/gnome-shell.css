@@ -1506,27 +1506,18 @@ StScrollBar {
 #keyboard {
   background-color: rgba(46, 52, 54, 0.7); }
 
-.keyboard-layout {
-  spacing: 10px;
-  padding: 10px; }
-
-.keyboard-row {
-  spacing: 15px; }
+.key-container {
+  padding: 4px;
+  spacing: 4px; }
 
 .keyboard-key {
-  color: #eeeeec;
-  background-color: #2e3436;
-  border-color: rgba(0, 0, 0, 0.7);
-  box-shadow: inset 0 1px #454f52;
-  text-shadow: 0 1px black;
-  icon-shadow: 0 1px black;
+  background-color: #393f3f;
   min-height: 2em;
   min-width: 2em;
   font-size: 14pt;
-  font-weight: bold;
-  border-radius: 5px;
-  border: 1px solid #1c1f1f;
-  color: white; }
+  border-radius: 3px;
+  border: 1px solid #464d4d;
+  color: #e5e5e5; }
   .keyboard-key:focus {
     color: #eeeeec;
     text-shadow: 0 1px black;
@@ -1550,6 +1541,12 @@ StScrollBar {
     background-color: #2e3436;
     color: #eeeeec;
     border-color: rgba(0, 0, 0, 0.7); }
+  .keyboard-key.default-key {
+    border-color: #2d3232;
+    background-color: #1d2020; }
+  .keyboard-key.enter-key {
+    border-color: #005684;
+    background-color: #006098; }
 
 .keyboard-subkeys {
   color: white;
