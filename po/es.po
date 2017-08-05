@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-20 03:49+0000\n"
-"PO-Revision-Date: 2017-07-24 15:38+0200\n"
+"POT-Creation-Date: 2017-08-02 13:17+0000\n"
+"PO-Revision-Date: 2017-08-03 09:57+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -745,7 +745,6 @@ msgstr "Limpiar todo"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-#| msgid "“%s” is ready"
 msgid "“%s” is not responding."
 msgstr "«%s» no responde."
 
@@ -1141,7 +1140,30 @@ msgstr "Instalar"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 
-#: js/ui/keyboard.js:740 js/ui/status/keyboard.js:782
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:54
+#, javascript-format
+msgid "%s wants to inhibit shortcuts"
+msgstr "%s quiere inhibir los atajos"
+
+#: js/ui/inhibitShortcutsDialog.js:55
+msgid "Application wants to inhibit shortcuts"
+msgstr "Su aplicación quiere inhibir los atajos"
+
+#: js/ui/inhibitShortcutsDialog.js:64
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "Puede restaurar los atajos pulsando %s."
+
+#: js/ui/inhibitShortcutsDialog.js:69
+msgid "Deny"
+msgstr "Denegar"
+
+#: js/ui/inhibitShortcutsDialog.js:75
+msgid "Allow"
+msgstr "Permitir"
+
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Teclado"
 
@@ -2352,12 +2374,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "Device %s wants to pair with this computer"
 #~ msgstr "El dispositivo «%s» quiere emparejarse con este equipo"
-
-#~ msgid "Allow"
-#~ msgstr "Permitir"
-
-#~ msgid "Deny"
-#~ msgstr "Denegar"
 
 #~ msgid "Device %s wants access to the service '%s'"
 #~ msgstr "El dispositivo %s quiere acceder al servicio «%s»"
