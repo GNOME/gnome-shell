@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-22 20:54+0000\n"
-"PO-Revision-Date: 2017-07-24 15:56+0200\n"
+"POT-Creation-Date: 2017-08-02 10:05+0000\n"
+"PO-Revision-Date: 2017-08-03 09:59+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -453,7 +453,6 @@ msgid "Cancel tab popup"
 msgstr "Cancelar pestaña emergente"
 
 #: data/org.gnome.mutter.gschema.xml.in:161
-#| msgid "Switch monitor"
 msgid "Switch monitor configurations"
 msgstr "Cambiar la configuración del monitor"
 
@@ -509,6 +508,10 @@ msgstr "Cambiar al VT 11"
 msgid "Switch to VT 12"
 msgstr "Cambiar al VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Volver a activar los atajos"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
@@ -528,22 +531,22 @@ msgstr "Cambiar monitor"
 msgid "Show on-screen help"
 msgstr "Mostrar la ayuda en pantalla"
 
-#: src/backends/meta-monitor-manager.c:925
+#: src/backends/meta-monitor-manager.c:927
 msgid "Built-in display"
 msgstr "Pantalla integrada"
 
-#: src/backends/meta-monitor-manager.c:948
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown"
 msgstr "Desconocida"
 
-#: src/backends/meta-monitor-manager.c:950
+#: src/backends/meta-monitor-manager.c:952
 msgid "Unknown Display"
 msgstr "Pantalla desconocida"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:958
+#: src/backends/meta-monitor-manager.c:960
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
