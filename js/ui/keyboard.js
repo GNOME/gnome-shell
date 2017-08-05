@@ -17,7 +17,6 @@ const InputSourceManager = imports.ui.status.keyboard;
 const BoxPointer = imports.ui.boxpointer;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
-const MessageTray = imports.ui.messageTray;
 
 var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
 
@@ -158,7 +157,6 @@ var Keyboard = new Lang.Class({
 
     _init: function () {
         this.actor = null;
-        this._focusInTray = false;
         this._focusInExtendedKeys = false;
 
         this._focusCaretTracker = new FocusCaretTracker.FocusCaretTracker();
@@ -343,8 +341,6 @@ var Keyboard = new Lang.Class({
         this._keyboard = null;
         this.actor.destroy();
         this.actor = null;
-
-        this._destroySource();
     },
 
     _setupKeyboard: function() {
@@ -371,8 +367,6 @@ var Keyboard = new Lang.Class({
         this._keyboardGroupAddedId = this._keyboard.connect('group-added', Lang.bind(this, this._onGroupAdded));
         this._keyboardGroupRemovedId = this._keyboard.connect('group-removed', Lang.bind(this, this._onGroupRemoved));
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
-
-        this._createSource();
     },
 
     _onKeyFocusChanged: function () {
@@ -383,12 +377,6 @@ var Keyboard = new Lang.Class({
         let extendedKeysWereFocused = this._focusInExtendedKeys;
         this._focusInExtendedKeys = focus && (focus._extended_keys || focus.extended_key);
         if (this._focusInExtendedKeys || extendedKeysWereFocused)
-            return;
-
-        // Ignore focus changes caused by message tray showing/hiding
-        let trayWasFocused = this._focusInTray;
-        this._focusInTray = (focus && Main.messageTray.actor.contains(focus));
-        if (this._focusInTray || trayWasFocused)
             return;
 
         let time = global.get_current_time();
@@ -587,20 +575,6 @@ var Keyboard = new Lang.Class({
         this._current_page.show();
     },
 
-    _createSource: function () {
-        if (this._source == null) {
-            this._source = new KeyboardSource(this);
-            Main.messageTray.add(this._source);
-        }
-    },
-
-    _destroySource: function () {
-        if (this._source) {
-            this._source.destroy();
-            this._source = null;
-        }
-    },
-
     shouldTakeEvent: function(event) {
         let actor = event.get_source();
         return Main.layoutManager.keyboardBox.contains(actor) ||
@@ -647,7 +621,6 @@ var Keyboard = new Lang.Class({
         Main.layoutManager.keyboardIndex = monitor;
         this._redraw();
         Main.layoutManager.showKeyboard();
-        this._destroySource();
     },
 
     hide: function () {
@@ -677,7 +650,6 @@ var Keyboard = new Lang.Class({
 
         this._hideSubkeys();
         Main.layoutManager.hideKeyboard();
-        this._createSource();
     },
 
     _hideSubkeys: function() {
@@ -726,27 +698,6 @@ var Keyboard = new Lang.Class({
 
 //        this._setLocation(x, y);
     },
-});
-
-var KeyboardSource = new Lang.Class({
-    Name: 'KeyboardSource',
-    Extends: MessageTray.Source,
-
-    _init: function(keyboard) {
-        this._keyboard = keyboard;
-        this.parent(_("Keyboard"), 'input-keyboard-symbolic');
-        this.keepTrayOnSummaryClick = true;
-    },
-
-    handleSummaryClick: function(button) {
-        this.open();
-        return true;
-    },
-
-    open: function() {
-        // Show the OSK below the message tray
-        this._keyboard.show(Main.layoutManager.bottomIndex);
-    }
 });
 
 var LocalAdapter = new Lang.Class({
