@@ -379,6 +379,17 @@ var ScreenSaverDBus = class {
     }
 };
 
+function _iconIsVisibleOnDesktop(id) {
+    let visibleIcons = IconGridLayout.layout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
+    return visibleIcons.indexOf(id) !== -1;
+}
+
+function _reportAppAddedMetric(id) {
+    let eventRecorder = EosMetrics.EventRecorder.get_default();
+    let appId = new GLib.Variant('s', id);
+    eventRecorder.record_event(SHELL_APP_ADDED_EVENT, appId);
+}
+
 const AppStoreIface = loadInterfaceXML('org.gnome.Shell.AppStore');
 
 var AppStoreService = class {
@@ -399,19 +410,28 @@ var AppStoreService = class {
     }
 
     AddAppIfNotVisible(id) {
-        let visibleIcons = IconGridLayout.layout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
-        let isIconVisible = visibleIcons.indexOf(id) !== -1;
-
-        if (!isIconVisible) {
-            let eventRecorder = EosMetrics.EventRecorder.get_default();
-            let appId = new GLib.Variant('s', id);
-            eventRecorder.record_event(SHELL_APP_ADDED_EVENT, appId);
-        }
-
         if (IconGridLayout.layout.iconIsFolder(id))
             return;
 
-        IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+        if (!_iconIsVisibleOnDesktop(id)) {
+            IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+            _reportAppAddedMetric(id);
+        }
+    }
+
+    ReplaceApplication(originalId, replacementId) {
+        // Can't replace a folder
+        if (IconGridLayout.layout.iconIsFolder(originalId))
+            return;
+
+        // We can just replace the app icon directly now,
+        // since the replace operation degenerates to
+        // append if the source icon was not available
+        IconGridLayout.layout.replaceIcon(originalId, replacementId, IconGridLayout.DESKTOP_GRID_ID);
+
+        // We only care about reporting a metric if the replacement id was visible
+        if (!_iconIsVisibleOnDesktop(replacementId))
+            _reportAppAddedMetric(replacementId);
     }
 
     RemoveApplication(id) {

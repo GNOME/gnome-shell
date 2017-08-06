@@ -6,6 +6,10 @@
     <method name="AddAppIfNotVisible">
       <arg type="s" direction="in" name="id" />
     </method>
+    <method name="ReplaceApplication">
+      <arg type="s" direction="in" name="originalId" />
+      <arg type="s" direction="in" name="replacementId" />
+    </method>
     <method name="RemoveApplication">
       <arg type="s" direction="in" name="id" />
     </method>

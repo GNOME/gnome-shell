@@ -25,6 +25,14 @@ const APPEND_CONFIG_NAME_BASE = 'icon-grid-append';
  */
 const SHELL_APP_REMOVED_EVENT = '683b40a7-cac0-4f9a-994c-4b274693a0a0';
 
+function findInArray(array, func) {
+    for (let i = 0; i < array.length; ++i)
+        if (func(array[i]))
+            return array[i];
+
+    return null;
+}
+
 var IconGridLayout = GObject.registerClass({
     Signals: { 'changed': {} },
 }, class IconGridLayout extends GObject.Object {
@@ -211,6 +219,23 @@ var IconGridLayout = GObject.registerClass({
 
     appendIcon(id, folderId) {
         this.repositionIcon(id, null, folderId);
+    }
+
+    // Two operations, first insert the new icon
+    // to the left of the old one, then remove
+    // the old one
+    //
+    // defaultFolderId here refers to the folder id
+    // to insert the icon into if the icon is not already
+    // in a folder. Otherwise, we use the folder that
+    // the icon is in already.
+    replaceIcon(originalId, replacementId, defaultFolderId) {
+        let folderId = findInArray(Object.keys(this._iconTree), (key) => {
+            return this._iconTree[key].indexOf(originalId) !== -1;
+        }) || defaultFolderId;
+
+        this.repositionIcon(replacementId, originalId, folderId);
+        this.removeIcon(originalId, false);
     }
 
     removeIcon(id, interactive) {
