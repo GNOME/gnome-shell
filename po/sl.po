@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-07-28 09:28+0200\n"
-"PO-Revision-Date: 2017-07-28 09:30+0200\n"
+"PO-Revision-Date: 2017-08-04 11:07+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -102,6 +102,8 @@ msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
 msgstr ""
+"Onemogoči vse razširitve, ki jih je uporabnik omogoči brez vpliva na "
+"nastavitev »omogočena razširitev«"
 
 #: data/org.gnome.shell.gschema.xml.in:34
 msgid "Disables the validation of extension version compatibility"
@@ -147,22 +149,16 @@ msgid "History for the looking glass dialog"
 msgstr "Zgodovina za pogovorno okno povečevalnega stekla"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#, fuzzy
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "Vedno pokaži možnost 'Odjava' v meniju uporabnika."
+msgstr "Vedno pokaži možnost »Odjava« v uporabniškem meniju."
 
 #: data/org.gnome.shell.gschema.xml.in:68
-#, fuzzy
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
-"Ključ prepiše možnost samodejnega skrivanja predmeta menija 'Odjava' na "
-"enouporabniški in enosejni namestitvi."
+"Izbira prepiše možnost samodejnega skrivanja predmeta »Odjava« na sistemskem "
+"meniju pri eno-uporabniškem in eno-sejnem zagonu."
 
 #: data/org.gnome.shell.gschema.xml.in:75
 msgid ""
@@ -172,21 +168,15 @@ msgstr ""
 "sistemov shrani"
 
 #: data/org.gnome.shell.gschema.xml.in:76
-#, fuzzy
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
 "“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"Za dostop do oddaljenega datotečnega sistema ali šifrirane naprave bo po "
+"Za priklop oddaljenega datotečnega sistema ali šifrirane naprave bo po "
 "izbiri možnosti zahtevano geslo. Na pogovornem oknu bo prikazana možnost "
-"'Shrani geslo'. S tem bo nastavljeno privzeto stanje za uporabo."
+"»Shrani geslo«. Ta možnost določa privzeto stanje izbirnega polja."
 
 #: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
@@ -213,16 +203,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Tipkovna bližnjica, ki odpre meni programov."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#, fuzzy
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Tipkovna bližnjica, ki odpre pogled »Pokaži programe«"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#, fuzzy
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -286,19 +270,14 @@ msgid "The application icon mode."
 msgstr "Ikonski način programa."
 
 #: data/org.gnome.shell.gschema.xml.in:177
-#, fuzzy
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 msgstr ""
-"Določa, kako naj bodo prikazana okna v preklopniku. Veljavne možnosti so 'le "
-"sličice' (pokaže le sličice oken), 'le ikona' (pokaže ikono programa) in pa "
-"možnost 'oboje'."
+"Določa, kako naj bodo prikazana okna v preklopniku. Veljavne možnosti so »le "
+"sličice»« (pokaže le sličice oken), »le ikona« (pokaže ikono programa) in pa "
+"možnost »oboje«."
 
 #: data/org.gnome.shell.gschema.xml.in:186
 msgid ""
@@ -438,26 +417,22 @@ msgid "Just now"
 msgstr "Ravnokar"
 
 #: js/misc/util.js:182
-#, fuzzy, javascript-format
-#| msgid "%d minute remaining"
-#| msgid_plural "%d minutes remaining"
+#, javascript-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
-msgstr[0] "preostaja še %d minut"
-msgstr[1] "preostaja še %d minuta"
-msgstr[2] "preostajata še %d minuti"
-msgstr[3] "preostajajo še %d minute"
+msgstr[0] "Pred %d minutami"
+msgstr[1] "Pred %d minuto"
+msgstr[2] "Pred %d minutama"
+msgstr[3] "Pred %d minutami"
 
 #: js/misc/util.js:185
-#, fuzzy, javascript-format
-#| msgid "%d hour remaining"
-#| msgid_plural "%d hours remaining"
+#, javascript-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
-msgstr[0] "preostaja še %d ur"
-msgstr[1] "preostaja še %d ura"
-msgstr[2] "preostajata še %d uri"
-msgstr[3] "preostajajo še %d ure"
+msgstr[0] "Pred %d urami"
+msgstr[1] "Pred %d uro"
+msgstr[2] "Pred %d urama"
+msgstr[3] "Pred %d urami"
 
 #: js/misc/util.js:188
 msgid "Yesterday"
@@ -467,37 +442,37 @@ msgstr "Včeraj"
 #, javascript-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Pred %d dnevi"
+msgstr[1] "Pred %d dnevom"
+msgstr[2] "Pred %d dnevoma"
+msgstr[3] "Pred %d dnevi"
 
 #: js/misc/util.js:193
 #, javascript-format
 msgid "%d week ago"
 msgid_plural "%d weeks ago"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Pred %d tedni"
+msgstr[1] "Pred %d tednom"
+msgstr[2] "Pred %d tednoma"
+msgstr[3] "Pred %d tedni"
 
 #: js/misc/util.js:196
 #, javascript-format
 msgid "%d month ago"
 msgid_plural "%d months ago"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Pred %d meseci"
+msgstr[1] "Pred %d mesecem"
+msgstr[2] "Pred %d mesecema"
+msgstr[3] "Pred %d meseci"
 
 #: js/misc/util.js:198
 #, javascript-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "Pred %d leti"
+msgstr[1] "Pred %d letom"
+msgstr[2] "Pred %d letoma"
+msgstr[3] "Pred %d leti"
 
 #. Translators: Time in 24h format
 #: js/misc/util.js:228
@@ -571,16 +546,16 @@ msgstr "%B %d %Y, %l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:66
-#, fuzzy
-#| msgid "Hotspot Active"
 msgid "Hotspot Login"
-msgstr "Vroča točka"
+msgstr "Prijava prek vroče točke"
 
 #: js/portalHelper/main.js:112
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
+"Povezava prek vroče točke ni varna. Gesla in druge podrobnosti, ki bodo "
+"vpisane na spletne strani, bodo lahko vidne tretjim osebam."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -610,7 +585,7 @@ msgstr "Novo okno"
 
 #: js/ui/appDisplay.js:1909
 msgid "Launch using Dedicated Graphics Card"
-msgstr ""
+msgstr "Zaženi z uporabo določene grafične kartice"
 
 #: js/ui/appDisplay.js:1936 js/ui/dash.js:289
 msgid "Remove from Favorites"
@@ -773,23 +748,20 @@ msgid "“%s” is not responding."
 msgstr "Program »%s« se ne odziva."
 
 #: js/ui/closeDialog.js:45
-#, fuzzy
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Lahko še malo počakate, če program morda spet začne delovati, ali pa vsilite "
+"Lahko še malo počakate, če začne morda program spet delovati, ali pa vsilite "
 "končanje delovanja."
 
 #: js/ui/closeDialog.js:61
-#, fuzzy
 msgid "Force Quit"
-msgstr "_Vsili konec"
+msgstr "Vsili končanje"
 
 #: js/ui/closeDialog.js:64
-#, fuzzy
 msgid "Wait"
-msgstr "_Počakaj"
+msgstr "Počakaj"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -851,7 +823,7 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr ""
-"Za povezavo v brezžično omrežje “%s” je zahtevano geslo oziroma šifrirni "
+"Za povezavo v brezžično omrežje »%s« je zahtevano geslo oziroma šifrirni "
 "ključ."
 
 #: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:642
@@ -860,11 +832,11 @@ msgstr "Žična overitev 802.1X"
 
 #: js/ui/components/networkAgent.js:299
 msgid "Network name: "
-msgstr "Ime omrežja:"
+msgstr "Naziv omrežja:"
 
 #: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:646
 msgid "DSL authentication"
-msgstr "DSL overitev"
+msgstr "Overitev DSL"
 
 #: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:652
 msgid "PIN code required"
@@ -886,7 +858,7 @@ msgstr "Geslo mobilnega širokopasovnega dostopa"
 #: js/ui/components/networkAgent.js:647 js/ui/components/networkAgent.js:660
 #, javascript-format
 msgid "A password is required to connect to “%s”."
-msgstr "Za povezavo z omrežjem “%s” je zahtevano geslo."
+msgstr "Za povezavo z omrežjem »%s« je zahtevano geslo."
 
 #: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1760
 msgid "Network Manager"
@@ -909,13 +881,8 @@ msgstr "Overi"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:328
-#, fuzzy
-#| msgid "Sorry, that didn't work. Please try again."
 msgid "Sorry, that didn’t work. Please try again."
-msgstr ""
-"Povezovanje je spodletelo. Poskusite znova kasneje, ali pa \n"
-"obiščite spletišče <a href=\"https://www.openstreetmap.org/user/forgot-"
-"password\">OpenStreetMap</a> za ponastavitev gesla."
+msgstr "Overitev je spodletela.. Poskusite znova."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -962,7 +929,6 @@ msgid "World Clocks"
 msgstr "Svetovni časi"
 
 #: js/ui/dateMenu.js:224
-#, fuzzy
 msgid "Weather"
 msgstr "Vreme"
 
@@ -971,18 +937,18 @@ msgstr "Vreme"
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
 #: js/ui/dateMenu.js:281
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s all day."
-msgstr "Traja cel dan"
+msgstr "%s – ves dan."
 
 #. Translators: %s is a weather condition like "Clear sky"; see
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
 #: js/ui/dateMenu.js:287
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%s, then %s later."
-msgstr "_Pozneje"
+msgstr "%s, sledi %s."
 
 #. Translators: %s is a weather condition like "Clear sky"; see
 #. libgweather for the possible condition strings. If at all
@@ -991,7 +957,7 @@ msgstr "_Pozneje"
 #: js/ui/dateMenu.js:293
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
-msgstr ""
+msgstr "%s, sledi %s, kasneje tudi %s."
 
 #: js/ui/dateMenu.js:300
 msgid "Select a location…"
@@ -1003,19 +969,17 @@ msgstr "Poteka nalaganje ..."
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
 #: js/ui/dateMenu.js:309
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Feels like %s."
-msgstr "Všeč mi je"
+msgstr "Občuti se kot %s."
 
 #: js/ui/dateMenu.js:312
-#, fuzzy
 msgid "Go online for weather information"
-msgstr "Prijava v omrežje za urejanje osebnih podrobnosti."
+msgstr "Preglej splet za podrobnosti o vremenu."
 
 #: js/ui/dateMenu.js:314
-#, fuzzy
 msgid "Weather information is currently unavailable"
-msgstr "GnuPG ponovno izgrajuje zbirko podatkov in je trenutno nedostopen."
+msgstr "Podatki o vremenu trenutno niso na voljo."
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -1276,30 +1240,21 @@ msgstr "Pregled"
 #. characters.
 #: js/ui/overview.js:240
 msgid "Type to search…"
-msgstr "Vnos niza za iskanje ..."
+msgstr "Poišči ..."
 
 #: js/ui/padOsd.js:103
-#, fuzzy
 msgid "New shortcut…"
 msgstr "Nova bližnjica ..."
 
 #: js/ui/padOsd.js:152
-#, fuzzy
-#| msgid "Applications"
 msgid "Application defined"
-msgstr ""
-"Izbrana možnost določi odpiranje posnete datoteke s privzetim programom za "
-"vrsto datoteke neposredno po shranjevanju. Privzet program določi namizno "
-"okolje. "
+msgstr "Program je določen"
 
 #: js/ui/padOsd.js:153
-#, fuzzy
 msgid "Show on-screen help"
 msgstr "Pokaži zaslonsko pomoč"
 
 #: js/ui/padOsd.js:154
-#, fuzzy
-#| msgid "Switch User"
 msgid "Switch monitor"
 msgstr "Nadzornik preklopa"
 
@@ -1320,19 +1275,16 @@ msgid "None"
 msgstr "Brez"
 
 #: js/ui/padOsd.js:833
-#, fuzzy
 msgid "Press a button to configure"
-msgstr "Gump pritisni"
+msgstr "Pritisnite gumb za nastavitev"
 
 #: js/ui/padOsd.js:834
-#, fuzzy
 msgid "Press Esc to exit"
-msgstr "Učni način. Za izhod pritisnite tipko Esc."
+msgstr "Pritisnite tipko Esc za končanje"
 
 #: js/ui/padOsd.js:837
-#, fuzzy
 msgid "Press any key to exit"
-msgstr "(katerakoli tipka za izkod)"
+msgstr "Pritisnite katerokoli tipko za končanje"
 
 #: js/ui/panel.js:358
 msgid "Quit"
@@ -1434,9 +1386,9 @@ msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
 #: js/ui/search.js:768
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "%d more"
-msgstr "(še %d točk do vpisa na seznam najboljših)"
+msgstr "še %d"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1655,7 +1607,7 @@ msgstr "Nastavitve žičnega omrežja"
 
 #: js/ui/status/network.js:559
 msgid "Mobile Broadband Settings"
-msgstr "Nastavitve mobilega širokopasovnega dostopa"
+msgstr "Nastavitve mobilnega širokopasovnega dostopa"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:602 js/ui/status/network.js:1336
@@ -1672,7 +1624,7 @@ msgstr "%s onemogočeno"
 
 #: js/ui/status/network.js:646
 msgid "Connect to Internet"
-msgstr "Poveži se na internet"
+msgstr "Poveži na internet"
 
 #: js/ui/status/network.js:844
 msgid "Airplane Mode is On"
@@ -1680,7 +1632,7 @@ msgstr "Omogoči način letala"
 
 #: js/ui/status/network.js:845
 msgid "Wi-Fi is disabled when airplane mode is on."
-msgstr "Naprava Wi-Fi je v načinu latala onemogočena."
+msgstr "Naprava Wi-Fi je v načinu letala onemogočena."
 
 #: js/ui/status/network.js:846
 msgid "Turn Off Airplane Mode"
@@ -1692,7 +1644,7 @@ msgstr "Wi-Fi je onemogočen"
 
 #: js/ui/status/network.js:856
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
-msgstr "Napravo Wi-Fi je treba za povezavo najprej omogočiti."
+msgstr "Napravo Wi-Fi je treba pred povezovanjem najprej omogočiti."
 
 #: js/ui/status/network.js:857
 msgid "Turn On Wi-Fi"
@@ -1708,7 +1660,7 @@ msgstr "Izbor omrežja"
 
 #: js/ui/status/network.js:914
 msgid "No Networks"
-msgstr "Ni omrežij"
+msgstr "Ni zaznanih omrežij"
 
 #: js/ui/status/network.js:935 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
@@ -1765,53 +1717,47 @@ msgid "VPN Off"
 msgstr "Onemogočen VPN"
 
 #: js/ui/status/network.js:1643
-#, fuzzy, javascript-format
-#| msgid "%s Connecting"
+#, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
-msgstr[0] "%s poteka vzpostavljanje povezave"
-msgstr[1] "%s poteka vzpostavljanje povezave"
-msgstr[2] "%s poteka vzpostavljanje povezave"
-msgstr[3] "%s poteka vzpostavljanje povezave"
+msgstr[0] "%s žičnih povezav"
+msgstr[1] "%s žična povezava"
+msgstr[2] "%s žični povezavi"
+msgstr[3] "%s žične povezave"
 
 #: js/ui/status/network.js:1647
-#, fuzzy, javascript-format
-#| msgid "%s Connecting"
+#, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
-msgstr[0] "%s poteka vzpostavljanje povezave"
-msgstr[1] "%s poteka vzpostavljanje povezave"
-msgstr[2] "%s poteka vzpostavljanje povezave"
-msgstr[3] "%s poteka vzpostavljanje povezave"
+msgstr[0] "%s povezav Wi-Fi"
+msgstr[1] "%s povezava Wi-Fi"
+msgstr[2] "%s povezavi Wi-Fi"
+msgstr[3] "%s povezave Wi-Fi"
 
 #: js/ui/status/network.js:1651
-#, fuzzy, javascript-format
-#| msgid "%s Connecting"
+#, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
-msgstr[0] "%s poteka vzpostavljanje povezave"
-msgstr[1] "%s poteka vzpostavljanje povezave"
-msgstr[2] "%s poteka vzpostavljanje povezave"
-msgstr[3] "%s poteka vzpostavljanje povezave"
+msgstr[0] "%s modemskih povezav"
+msgstr[1] "%s modemska povezava"
+msgstr[2] "%s modemski povezavi"
+msgstr[3] "%s modemske povezave"
 
 #: js/ui/status/network.js:1799
 msgid "Connection failed"
-msgstr "Povezava je spodletela"
+msgstr "Povezovanje je spodletelo"
 
 #: js/ui/status/network.js:1800
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
 #: js/ui/status/nightLight.js:68
-#, fuzzy
-#| msgid "Networking is disabled"
 msgid "Night Light Disabled"
-msgstr "Stanjšana"
+msgstr "Nočna osvetlitev je onemogočena"
 
 #: js/ui/status/nightLight.js:69
-#, fuzzy
 msgid "Night Light On"
-msgstr "Stanjšana"
+msgstr "Nočna osvetlitev je omogočena"
 
 #: js/ui/status/nightLight.js:70
 msgid "Resume"
@@ -1877,7 +1823,7 @@ msgstr "Zaklep položaja"
 
 #: js/ui/status/system.js:419
 msgid "Suspend"
-msgstr "Zaustavi"
+msgstr "V pripravljenost"
 
 #: js/ui/status/system.js:422
 msgid "Power Off"
@@ -1925,7 +1871,7 @@ msgstr "Povrni nastavitve"
 
 #: js/ui/windowManager.js:86
 msgid "Keep Changes"
-msgstr "Sledi spremembam"
+msgstr "Ohrani spremembe"
 
 #: js/ui/windowManager.js:104
 #, javascript-format
@@ -1993,7 +1939,7 @@ msgstr "Premakni na spodnjo delovno površino"
 
 #: js/ui/windowMenu.js:134
 msgid "Move to Monitor Up"
-msgstr "\t"
+msgstr "Premakni na zaslon zgoraj"
 
 #: js/ui/windowMenu.js:140
 msgid "Move to Monitor Down"
@@ -2009,7 +1955,7 @@ msgstr "Premakni na zaslon desno"
 
 #: src/calendar-server/evolution-calendar.desktop.in:3
 msgid "Evolution Calendar"
-msgstr "Koledar Evolution "
+msgstr "Koledar Evolution"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: src/calendar-server/evolution-calendar.desktop.in:6
@@ -2022,7 +1968,7 @@ msgstr "Izpiši različico"
 
 #: src/main.c:378
 msgid "Mode used by GDM for login screen"
-msgstr "Način uporabljen v GDM za prijavni naslov"
+msgstr "Način uporabljen v GDM kot prijavni zaslon"
 
 #: src/main.c:384
 msgid "Use a specific mode, e.g. “gdm” for login screen"
@@ -2044,15 +1990,15 @@ msgstr "Zaganjanje »%s« je spodletelo"
 
 #: src/shell-keyring-prompt.c:730
 msgid "Passwords do not match."
-msgstr "Gesli se ne skladata."
+msgstr "Gesli nista skladni!"
 
 #: src/shell-keyring-prompt.c:738
 msgid "Password cannot be blank"
-msgstr "Geslo ne more biti prazno"
+msgstr "Geslo ne more biti prazna vrednost"
 
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
-msgstr "Uporabnik je zavrnil pogovorno okno overitve"
+msgstr "Uporabnik je preklical pogovorno okno overitve"
 
 #. translators:
 #. * The number of sound outputs on a particular device
