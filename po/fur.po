@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-28 11:38+0000\n"
-"PO-Revision-Date: 2017-07-25 15:43+0200\n"
+"POT-Creation-Date: 2017-08-07 14:10+0000\n"
+"PO-Revision-Date: 2017-08-08 21:00+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -1133,6 +1133,29 @@ msgstr "Instale"
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Scjariâ e instalâ '%s' da extensions.gnome.org?"
+
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:54
+#, javascript-format
+msgid "%s wants to inhibit shortcuts"
+msgstr "%s al desidere inibî lis scurtis"
+
+#: js/ui/inhibitShortcutsDialog.js:55
+msgid "Application wants to inhibit shortcuts"
+msgstr "Une aplicazion e desidere inibî lis scurtis"
+
+#: js/ui/inhibitShortcutsDialog.js:64
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "Si pues ripristinâ lis scurtis fracant %s."
+
+#: js/ui/inhibitShortcutsDialog.js:69
+msgid "Deny"
+msgstr "Dinee"
+
+#: js/ui/inhibitShortcutsDialog.js:75
+msgid "Allow"
+msgstr "Pemet"
 
 #: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
