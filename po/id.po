@@ -11,15 +11,15 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-19 09:20+0000\n"
-"PO-Revision-Date: 2017-07-23 09:46+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"POT-Creation-Date: 2017-08-02 10:05+0000\n"
+"PO-Revision-Date: 2017-08-04 09:46+0700\n"
+"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.3\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: data/50-mutter-navigation.xml:6
@@ -496,6 +496,10 @@ msgstr "Bertukar ke VT 11"
 msgid "Switch to VT 12"
 msgstr "Bertukar ke VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Aktifkan kembali pintasan"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
@@ -515,22 +519,22 @@ msgstr "Berpindah monitor"
 msgid "Show on-screen help"
 msgstr "Tampilkan bantuan pada layar"
 
-#: src/backends/meta-monitor-manager.c:925
+#: src/backends/meta-monitor-manager.c:927
 msgid "Built-in display"
 msgstr "Tampilan bawaan"
 
-#: src/backends/meta-monitor-manager.c:948
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown"
 msgstr "Tak Dikenal"
 
-#: src/backends/meta-monitor-manager.c:950
+#: src/backends/meta-monitor-manager.c:952
 msgid "Unknown Display"
 msgstr "Tampilan Tak Dikenal"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:958
+#: src/backends/meta-monitor-manager.c:960
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
