@@ -18,7 +18,7 @@ gschema_in_files = \
 gsettings_SCHEMAS = $(gschema_in_files:.xml.in=.xml)
 
 %.gschema.xml: %.gschema.xml.in Makefile
-	$(AM_V_GEN) sed -e 's|@GETTEXT_DOMAIN[@]|$(GETTEXT_DOMAIN)|g' \
+	$(AM_V_GEN) sed -e 's|@GETTEXT_DOMAIN[@]|$(GETTEXT_PACKAGE)|g' \
 	$< > $@ || rm $@
 
 @GSETTINGS_RULES@

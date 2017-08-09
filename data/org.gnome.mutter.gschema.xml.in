@@ -1,6 +1,6 @@
 <schemalist>
   <schema id="org.gnome.mutter" path="/org/gnome/mutter/"
-          gettext-domain="@GETTEXT_DOMAIN">
+          gettext-domain="@GETTEXT_DOMAIN@">
 
     <key name="overlay-key" type="s">
       <default>'Super_L'</default>
