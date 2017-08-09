@@ -27,9 +27,11 @@
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-settings-private.h"
 
-#define SCALE_FACTORS_PER_INTEGER 8
-#define MINIMUM_SCALE_FACTOR 0.5f
+#define SCALE_FACTORS_PER_INTEGER 4
+#define MINIMUM_SCALE_FACTOR 1.0f
 #define MAXIMUM_SCALE_FACTOR 4.0f
+#define MINIMUM_LOGICAL_WIDTH 800
+#define MINIMUM_LOGICAL_HEIGHT 600
 
 #define HANDLED_CRTC_MODE_FLAGS (META_CRTC_MODE_FLAG_INTERLACE)
 
@@ -1438,7 +1440,10 @@ get_closest_scale_factor_for_resolution (float width,
   scaled_w = width / scale;
   scaled_h = height / scale;
 
-  if (scale < MINIMUM_SCALE_FACTOR || scale > MAXIMUM_SCALE_FACTOR)
+  if (scale < MINIMUM_SCALE_FACTOR ||
+      scale > MAXIMUM_SCALE_FACTOR ||
+      floorf (scaled_w) < MINIMUM_LOGICAL_WIDTH ||
+      floorf (scaled_h) < MINIMUM_LOGICAL_HEIGHT)
     goto out;
 
   if (floorf (scaled_w) == scaled_w && floorf (scaled_h) == scaled_h)
