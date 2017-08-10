@@ -1,3 +1,22 @@
+3.25.90
+=======
+* Add permission dialog for inhibiting shortucts [Florian; #783342]
+* Improve window picker layout [Florian, Jakub; #783953]
+* Remove legacy status icon tray [Florian; #785956]
+* Drop autotools support [Florian; #785153]
+* Misc. bug fixes [Florian, Carlos, Cosimo; #785090, #785309, #767805,
+  #747794, #785358, #785556]
+
+Contributors:
+  Emmanuele Bassi, Cosimo Cecchi, Carlos Garnacho, Florian Müllner,
+  Jakub Steiner
+
+Translations:
+  Fabio Tomat [fur], Pawan Chitrakar [ne], Aurimas Černius [lt], gogo [hr],
+  Daniel Mustieles [es], Baurzhan Muftakhidinov [kk], Matej Urbančič [sl],
+  Marek Cernocky [cs], Dušan Kazik [sk], Jordi Mas [ca], Fran Dieguez [gl],
+  Andika Triwidada [id], Anders Jonsson [sv], Balázs Meskó [hu]
+
 3.25.4
 ======
 * gdm: Fix "Not listed" focus indication [Florian; #784040]
