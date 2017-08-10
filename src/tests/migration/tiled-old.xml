@@ -1,0 +1,37 @@
+<monitors version="1">
+  <configuration>
+    <clone>no</clone>
+    <output name="DP-1">
+      <vendor>DEL</vendor>
+      <product>DELL P2415Q</product>
+      <serial>GTTPW67P0WFB</serial>
+      <width>1920</width>
+      <height>2160</height>
+      <rate>60</rate>
+      <x>0</x>
+      <y>0</y>
+      <rotation>normal</rotation>
+      <reflect_x>no</reflect_x>
+      <reflect_y>no</reflect_y>
+      <primary>yes</primary>
+      <presentation>no</presentation>
+      <underscanning>no</underscanning>
+    </output>
+    <output name="DP-2">
+      <vendor>DEL</vendor>
+      <product>DELL P2415Q</product>
+      <serial>GTTPW67P0WFB</serial>
+      <width>1920</width>
+      <height>2160</height>
+      <rate>60</rate>
+      <x>1920</x>
+      <y>0</y>
+      <rotation>normal</rotation>
+      <reflect_x>no</reflect_x>
+      <reflect_y>no</reflect_y>
+      <primary>yes</primary>
+      <presentation>no</presentation>
+      <underscanning>no</underscanning>
+    </output>
+  </configuration>
+</monitors>

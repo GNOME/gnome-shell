@@ -17,15 +17,9 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MONITOR_TEST_UTILS_H
-#define MONITOR_TEST_UTILS_H
+#ifndef MONITOR_CONFIG_MIGRATION_UNIT_TESTS_H
+#define MONITOR_CONFIG_MIGRATION_UNIT_TESTS_H
 
-#include <glib.h>
+void init_monitor_config_migration_tests (void);
 
-gboolean is_using_monitor_config_manager (void);
-
-void set_custom_monitor_config (const char *filename);
-
-char * read_file (const char *file_path);
-
-#endif /* MONITOR_TEST_UTILS_H */
+#endif /* MONITOR_CONFIG_MIGRATION_UNIT_TESTS_H */

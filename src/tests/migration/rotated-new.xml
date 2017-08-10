@@ -1,0 +1,27 @@
+<monitors version="2">
+  <configuration>
+    <migrated/>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <primary>yes</primary>
+      <transform>
+        <rotation>right</rotation>
+        <flipped>no</flipped>
+      </transform>
+      <monitor>
+        <monitorspec>
+          <connector>DP-1</connector>
+          <vendor>MetaProduct's Inc.</vendor>
+          <product>MetaMonitor</product>
+          <serial>0x123456</serial>
+        </monitorspec>
+        <mode>
+          <width>800</width>
+          <height>600</height>
+          <rate>60</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
+</monitors>

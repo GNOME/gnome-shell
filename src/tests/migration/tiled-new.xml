@@ -1,0 +1,23 @@
+<monitors version="2">
+  <configuration>
+    <migrated/>
+    <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>DP-1</connector>
+          <vendor>DEL</vendor>
+          <product>DELL P2415Q</product>
+          <serial>GTTPW67P0WFB</serial>
+        </monitorspec>
+        <mode>
+          <width>3840</width>
+          <height>2160</height>
+          <rate>60</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
+</monitors>

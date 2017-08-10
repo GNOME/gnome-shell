@@ -46,3 +46,36 @@ set_custom_monitor_config (const char *filename)
                                              &error))
     g_error ("Failed to set custom config: %s", error->message);
 }
+
+char *
+read_file (const char *file_path)
+{
+  g_autoptr (GFile) file = NULL;
+  g_autoptr (GFileInputStream) input_stream = NULL;
+  g_autoptr (GFileInfo) file_info = NULL;
+  goffset file_size;
+  gsize bytes_read;
+  g_autofree char *buffer = NULL;
+  GError *error = NULL;
+
+  file = g_file_new_for_path (file_path);
+  input_stream = g_file_read (file, NULL, &error);
+  if (!input_stream)
+    g_error ("Failed to read migrated config file: %s", error->message);
+
+  file_info = g_file_input_stream_query_info (input_stream,
+                                              G_FILE_ATTRIBUTE_STANDARD_SIZE,
+                                              NULL, &error);
+  if (!file_info)
+    g_error ("Failed to read file info: %s", error->message);
+
+  file_size = g_file_info_get_size (file_info);
+  buffer = g_malloc0 (file_size + 1);
+
+  if (!g_input_stream_read_all (G_INPUT_STREAM (input_stream),
+                                buffer, file_size, &bytes_read, NULL, &error))
+    g_error ("Failed to read file content: %s", error->message);
+  g_assert_cmpint ((goffset) bytes_read, ==, file_size);
+
+  return g_steal_pointer (&buffer);
+}

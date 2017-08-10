@@ -29,6 +29,7 @@
 #include "core/boxes-private.h"
 #include "core/main-private.h"
 #include "tests/meta-backend-test.h"
+#include "tests/monitor-config-migration-unit-tests.h"
 #include "tests/monitor-unit-tests.h"
 #include "tests/monitor-store-unit-tests.h"
 #include "wayland/meta-wayland.h"
@@ -244,6 +245,7 @@ init_tests (int argc, char **argv)
   g_test_add_func ("/core/boxes/adjecent-to", meta_test_adjecent_to);
 
   init_monitor_store_tests ();
+  init_monitor_config_migration_tests ();
   init_monitor_tests ();
 }
 

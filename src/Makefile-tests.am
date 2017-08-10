@@ -38,6 +38,8 @@ mutter_test_unit_tests_SOURCES = \
 	tests/meta-backend-test.h \
 	tests/meta-monitor-manager-test.c \
 	tests/meta-monitor-manager-test.h \
+	tests/monitor-config-migration-unit-tests.c \
+	tests/monitor-config-migration-unit-tests.h \
 	tests/monitor-store-unit-tests.c \
 	tests/monitor-store-unit-tests.h \
 	tests/monitor-test-utils.c \
