@@ -17,23 +17,23 @@ const ShellEntry = imports.ui.shellEntry;
 const SmartcardManager = imports.misc.smartcardManager;
 const Tweener = imports.ui.tweener;
 
-const PASSWORD_SERVICE_NAME = 'gdm-password';
-const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
-const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
-const OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
+var PASSWORD_SERVICE_NAME = 'gdm-password';
+var FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
+var SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
+var OVIRT_SERVICE_NAME = 'gdm-ovirtcred';
 var FADE_ANIMATION_TIME = 0.16;
 var CLONE_FADE_ANIMATION_TIME = 0.25;
 
-const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
-const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
-const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
-const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
-const BANNER_MESSAGE_KEY = 'banner-message-enable';
-const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
-const ALLOWED_FAILURES_KEY = 'allowed-failures';
+var LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
+var PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
+var FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
+var SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
+var BANNER_MESSAGE_KEY = 'banner-message-enable';
+var BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
+var ALLOWED_FAILURES_KEY = 'allowed-failures';
 
-const LOGO_KEY = 'logo';
-const DISABLE_USER_LIST_KEY = 'disable-user-list';
+var LOGO_KEY = 'logo';
+var DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 // Give user 48ms to read each character of a PAM message
 var USER_READ_TIME = 48
