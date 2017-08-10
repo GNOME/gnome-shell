@@ -254,7 +254,7 @@ executable('gnome-shell', 'main.c',
   c_args: gnome_shell_cflags + [
     '-DMUTTER_TYPELIB_DIR="@0@"'.format(mutter_typelibdir)
   ],
-  dependencies: gnome_shell_deps + [libshell_dep, mutter_dep],
+  dependencies: gnome_shell_deps + [libshell_dep, libst_dep, mutter_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
   link_args: rpath_link_args,
   install_rpath: install_rpath,
