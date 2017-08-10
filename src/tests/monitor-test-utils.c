@@ -42,6 +42,7 @@ set_custom_monitor_config (const char *filename)
 
   path = g_test_get_filename (G_TEST_DIST, "tests", "monitor-configs",
                               filename, NULL);
-  if (!meta_monitor_config_store_set_custom (config_store, path, &error))
+  if (!meta_monitor_config_store_set_custom (config_store, path, NULL,
+                                             &error))
     g_error ("Failed to set custom config: %s", error->message);
 }

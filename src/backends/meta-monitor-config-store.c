@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include "backends/meta-monitor-config-manager.h"
+#include "backends/meta-monitor-config-migration.h"
 
 #define MONITORS_CONFIG_XML_FORMAT_VERSION 2
 
@@ -109,14 +110,27 @@ struct _MetaMonitorConfigStore
   GCancellable *save_cancellable;
 
   GFile *user_file;
-  GFile *custom_file;
+  GFile *custom_read_file;
+  GFile *custom_write_file;
 };
+
+#define META_MONITOR_CONFIG_STORE_ERROR (meta_monitor_config_store_error_quark ())
+static GQuark meta_monitor_config_store_error_quark (void);
+
+enum
+{
+  META_MONITOR_CONFIG_STORE_ERROR_NEEDS_MIGRATION
+};
+
+G_DEFINE_QUARK (meta-monitor-config-store-error-quark,
+                meta_monitor_config_store_error)
 
 typedef enum
 {
   STATE_INITIAL,
   STATE_MONITORS,
   STATE_CONFIGURATION,
+  STATE_MIGRATED,
   STATE_LOGICAL_MONITOR,
   STATE_LOGICAL_MONITOR_X,
   STATE_LOGICAL_MONITOR_Y,
@@ -145,6 +159,7 @@ typedef struct
   ParserState state;
   MetaMonitorConfigStore *config_store;
 
+  gboolean current_was_migrated;
   GList *current_logical_monitor_configs;
   MetaMonitorSpec *current_monitor_spec;
   gboolean current_transform_flipped;
@@ -189,7 +204,14 @@ handle_start_element (GMarkupParseContext  *context,
                          "Missing config file format version");
           }
         
-        /* TODO: Handle converting version 1 configuration files. */
+        if (g_str_equal (version, "1"))
+          {
+            g_set_error_literal (error,
+                                 META_MONITOR_CONFIG_STORE_ERROR,
+                                 META_MONITOR_CONFIG_STORE_ERROR_NEEDS_MIGRATION,
+                                 "monitors.xml has the old format");
+            return;
+          }
 
         if (!g_str_equal (version, QUOTE (MONITORS_CONFIG_XML_FORMAT_VERSION)))
           {
@@ -212,22 +234,40 @@ handle_start_element (GMarkupParseContext  *context,
           }
 
         parser->state = STATE_CONFIGURATION;
+        parser->current_was_migrated = FALSE;
+
         return;
       }
 
     case STATE_CONFIGURATION:
       {
-        if (!g_str_equal (element_name, "logicalmonitor"))
+        if (g_str_equal (element_name, "logicalmonitor"))
+          {
+            parser->current_logical_monitor_config =
+              g_new0 (MetaLogicalMonitorConfig, 1);
+
+            parser->state = STATE_LOGICAL_MONITOR;
+          }
+        else if (g_str_equal (element_name, "migrated"))
+          {
+            parser->current_was_migrated = TRUE;
+
+            parser->state = STATE_MIGRATED;
+          }
+        else
           {
             g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
                          "Invalid configuration element '%s'", element_name);
             return;
           }
 
-        parser->current_logical_monitor_config =
-          g_new0 (MetaLogicalMonitorConfig, 1);
+        return;
+      }
 
-        parser->state = STATE_LOGICAL_MONITOR;
+    case STATE_MIGRATED:
+      {
+        g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                     "Unexpected element '%s'", element_name);
         return;
       }
 
@@ -603,7 +643,9 @@ handle_end_element (GMarkupParseContext  *context,
 
         g_assert (g_str_equal (element_name, "logicalmonitor"));
 
-        if (logical_monitor_config->scale == 0)
+        if (parser->current_was_migrated)
+          logical_monitor_config->scale = -1;
+        else if (logical_monitor_config->scale == 0)
           logical_monitor_config->scale = 1;
 
         parser->current_logical_monitor_configs =
@@ -615,17 +657,29 @@ handle_end_element (GMarkupParseContext  *context,
         return;
       }
 
+    case STATE_MIGRATED:
+      {
+        g_assert (g_str_equal (element_name, "migrated"));
+
+        parser->state = STATE_CONFIGURATION;
+        return;
+      }
+
     case STATE_CONFIGURATION:
       {
         MetaMonitorConfigStore *store = parser->config_store;
         MetaMonitorsConfig *config;
         GList *l;
         MetaLogicalMonitorLayoutMode layout_mode;
+        MetaMonitorsConfigFlag config_flags = META_MONITORS_CONFIG_FLAG_NONE;
 
         g_assert (g_str_equal (element_name, "configuration"));
 
-        layout_mode =
-          meta_monitor_manager_get_default_layout_mode (store->monitor_manager);
+        if (parser->current_was_migrated)
+          layout_mode = META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
+        else
+          layout_mode =
+            meta_monitor_manager_get_default_layout_mode (store->monitor_manager);
 
         for (l = parser->current_logical_monitor_configs; l; l = l->next)
           {
@@ -643,9 +697,13 @@ handle_end_element (GMarkupParseContext  *context,
               return;
           }
 
+        if (parser->current_was_migrated)
+          config_flags |= META_MONITORS_CONFIG_FLAG_MIGRATED;
+
         config =
           meta_monitors_config_new (parser->current_logical_monitor_configs,
-                                    layout_mode);
+                                    layout_mode,
+                                    config_flags);
 
         parser->current_logical_monitor_configs = NULL;
 
@@ -785,6 +843,7 @@ handle_text (GMarkupParseContext *context,
     case STATE_INITIAL:
     case STATE_MONITORS:
     case STATE_CONFIGURATION:
+    case STATE_MIGRATED:
     case STATE_LOGICAL_MONITOR:
     case STATE_MONITOR:
     case STATE_MONITOR_SPEC:
@@ -1094,6 +1153,7 @@ append_transform (GString             *buffer,
 
 static void
 append_logical_monitor_xml (GString                  *buffer,
+                            MetaMonitorsConfig       *config,
                             MetaLogicalMonitorConfig *logical_monitor_config)
 {
   char scale_str[G_ASCII_DTOSTR_BUF_SIZE];
@@ -1105,8 +1165,9 @@ append_logical_monitor_xml (GString                  *buffer,
                           logical_monitor_config->layout.y);
   g_ascii_dtostr (scale_str, G_ASCII_DTOSTR_BUF_SIZE,
                   logical_monitor_config->scale);
-  g_string_append_printf (buffer, "      <scale>%s</scale>\n",
-                          scale_str);
+  if ((config->flags & META_MONITORS_CONFIG_FLAG_MIGRATED) == 0)
+    g_string_append_printf (buffer, "      <scale>%s</scale>\n",
+                            scale_str);
   if (logical_monitor_config->is_primary)
     g_string_append (buffer, "      <primary>yes</primary>\n");
   if (logical_monitor_config->is_presentation)
@@ -1134,11 +1195,14 @@ generate_config_xml (MetaMonitorConfigStore *config_store)
 
       g_string_append (buffer, "  <configuration>\n");
 
+      if (config->flags & META_MONITORS_CONFIG_FLAG_MIGRATED)
+        g_string_append (buffer, "    <migrated/>\n");
+
       for (l = config->logical_monitor_configs; l; l = l->next)
         {
           MetaLogicalMonitorConfig *logical_monitor_config = l->data;
 
-          append_logical_monitor_xml (buffer, logical_monitor_config);
+          append_logical_monitor_xml (buffer, config, logical_monitor_config);
         }
 
       g_string_append (buffer, "  </configuration>\n");
@@ -1204,6 +1268,31 @@ meta_monitor_config_store_save (MetaMonitorConfigStore *config_store)
     .buffer = buffer
   };
 
+  /*
+   * Custom write file is only ever used by the test suite, and the test suite
+   * will want to have be able to read back the content immediately, so for
+   * custom write files, do the content replacement synchronously.
+   */
+  if (config_store->custom_write_file)
+    {
+      GError *error = NULL;
+
+      if (!g_file_replace_contents (config_store->custom_write_file,
+                                    buffer->str, buffer->len,
+                                    NULL,
+                                    FALSE,
+                                    G_FILE_CREATE_REPLACE_DESTINATION,
+                                    NULL,
+                                    NULL,
+                                    &error))
+        {
+          g_warning ("Saving monitor configuration failed: %s\n",
+                     error->message);
+          g_error_free (error);
+        }
+      return;
+    }
+
   g_file_replace_contents_async (config_store->user_file,
                                  buffer->str, buffer->len,
                                  NULL,
@@ -1213,6 +1302,18 @@ meta_monitor_config_store_save (MetaMonitorConfigStore *config_store)
                                  saved_cb, data);
 }
 
+static void
+maybe_save_configs (MetaMonitorConfigStore *config_store)
+{
+  /*
+   * If a custom file is used, it means we are run by the test suite. When this
+   * is done, avoid replacing the user configuration file with test data,
+   * except if a custom write file is set as well.
+   */
+  if (!config_store->custom_read_file || config_store->custom_write_file)
+    meta_monitor_config_store_save (config_store);
+}
+
 void
 meta_monitor_config_store_add (MetaMonitorConfigStore *config_store,
                                MetaMonitorsConfig     *config)
@@ -1220,27 +1321,45 @@ meta_monitor_config_store_add (MetaMonitorConfigStore *config_store,
   g_hash_table_replace (config_store->configs,
                         config->key, g_object_ref (config));
 
-  if (!config_store->custom_file)
-    meta_monitor_config_store_save (config_store);
+  maybe_save_configs (config_store);
+}
+
+void
+meta_monitor_config_store_remove (MetaMonitorConfigStore *config_store,
+                                  MetaMonitorsConfig     *config)
+{
+  g_hash_table_remove (config_store->configs, config->key);
+
+  maybe_save_configs (config_store);
 }
 
 gboolean
 meta_monitor_config_store_set_custom (MetaMonitorConfigStore *config_store,
-                                      const char             *path,
+                                      const char             *read_path,
+                                      const char             *write_path,
                                       GError                **error)
 {
-  g_clear_object (&config_store->custom_file);
+  g_clear_object (&config_store->custom_read_file);
+  g_clear_object (&config_store->custom_write_file);
   g_hash_table_remove_all (config_store->configs);
 
-  config_store->custom_file = g_file_new_for_path (path);
+  config_store->custom_read_file = g_file_new_for_path (read_path);
+  if (write_path)
+    config_store->custom_write_file = g_file_new_for_path (write_path);
 
-  return read_config_file (config_store, config_store->custom_file, error);
+  return read_config_file (config_store, config_store->custom_read_file, error);
 }
 
 int
 meta_monitor_config_store_get_config_count (MetaMonitorConfigStore *config_store)
 {
   return (int) g_hash_table_size (config_store->configs);
+}
+
+MetaMonitorManager *
+meta_monitor_config_store_get_monitor_manager (MetaMonitorConfigStore *config_store)
+{
+  return config_store->monitor_manager;
 }
 
 MetaMonitorConfigStore *
@@ -1259,7 +1378,7 @@ meta_monitor_config_store_constructed (GObject *object)
   GError *error = NULL;
 
   user_file_path = g_build_filename (g_get_user_config_dir (),
-                                     "monitors-experimental.xml",
+                                     "monitors.xml",
                                      NULL);
   config_store->user_file = g_file_new_for_path (user_file_path);
 
@@ -1267,9 +1386,23 @@ meta_monitor_config_store_constructed (GObject *object)
     {
       if (!read_config_file (config_store, config_store->user_file, &error))
         {
-          g_warning ("Failed to read monitors config file '%s': %s",
-                     user_file_path, error->message);
-          g_error_free (error);
+          if (error->domain == META_MONITOR_CONFIG_STORE_ERROR &&
+              error->code == META_MONITOR_CONFIG_STORE_ERROR_NEEDS_MIGRATION)
+            {
+              g_clear_error (&error);
+              if (!meta_migrate_old_user_monitors_config (config_store, &error))
+                {
+                  g_warning ("Failed to migrate old monitors config file: %s",
+                             error->message);
+                  g_error_free (error);
+                }
+            }
+          else
+            {
+              g_warning ("Failed to read monitors config file '%s': %s",
+                         user_file_path, error->message);
+              g_error_free (error);
+            }
         }
     }
 
@@ -1284,7 +1417,8 @@ meta_monitor_config_store_dispose (GObject *object)
   g_clear_pointer (&config_store->configs, g_hash_table_destroy);
 
   g_clear_object (&config_store->user_file);
-  g_clear_object (&config_store->custom_file);
+  g_clear_object (&config_store->custom_read_file);
+  g_clear_object (&config_store->custom_write_file);
 
   G_OBJECT_CLASS (meta_monitor_config_store_parent_class)->dispose (object);
 }

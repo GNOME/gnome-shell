@@ -38,10 +38,16 @@ MetaMonitorsConfig * meta_monitor_config_store_lookup (MetaMonitorConfigStore *c
 void meta_monitor_config_store_add (MetaMonitorConfigStore *config_store,
                                     MetaMonitorsConfig     *config);
 
+void meta_monitor_config_store_remove (MetaMonitorConfigStore *config_store,
+                                       MetaMonitorsConfig     *config);
+
 gboolean meta_monitor_config_store_set_custom (MetaMonitorConfigStore *config_store,
-                                               const char             *path,
+                                               const char             *read_path,
+                                               const char             *write_path,
                                                GError                **error);
 
 int meta_monitor_config_store_get_config_count (MetaMonitorConfigStore *config_store);
+
+MetaMonitorManager * meta_monitor_config_store_get_monitor_manager (MetaMonitorConfigStore *config_store);
 
 #endif /* META_MONITOR_CONFIG_STORE_H */
