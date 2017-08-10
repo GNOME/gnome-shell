@@ -37,7 +37,6 @@ gnome_shell_cflags = [
   '-DGNOME_SHELL_PKGLIBDIR="@0@"'.format(pkglibdir)
 ]
 
-rpath_link_args = ['-Wl,-rpath', mutter_typelibdir]
 install_rpath = ':'.join([mutter_typelibdir, pkglibdir])
 
 gnome_shell_deps = [
@@ -81,7 +80,7 @@ libshell_menu = library('gnome-shell-menu',
   sources: libshell_menu_gir_sources + libshell_menu_no_gir_sources,
   dependencies: [gio_dep, clutter_dep],
   include_directories: conf_inc,
-  link_args: rpath_link_args,
+  build_rpath: mutter_typelibdir,
   install_rpath: mutter_typelibdir,
   install_dir: pkglibdir,
   install: true
@@ -214,7 +213,7 @@ libshell = library('gnome-shell',
   include_directories: [conf_inc, st_inc, include_directories('tray')],
   c_args: gnome_shell_cflags,
   link_with: [libtray],
-  link_args: rpath_link_args,
+  build_rpath: mutter_typelibdir,
   install_rpath: install_rpath,
   install_dir: pkglibdir,
   install: true
@@ -256,7 +255,7 @@ executable('gnome-shell', 'main.c',
   ],
   dependencies: gnome_shell_deps + [libshell_dep, libst_dep, mutter_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
-  link_args: rpath_link_args,
+  build_rpath: mutter_typelibdir,
   install_rpath: install_rpath,
   install: true
 )
@@ -266,7 +265,7 @@ executable('gnome-shell-extension-prefs',
   c_args: gnome_shell_cflags,
   dependencies: gnome_shell_deps,
   include_directories: [conf_inc],
-  link_args: rpath_link_args,
+  build_rpath: mutter_typelibdir,
   install_rpath: install_rpath,
   install: true
 )
@@ -278,7 +277,7 @@ if have_networkmanager
     c_args: gnome_shell_cflags,
     dependencies: gnome_shell_deps,
     include_directories: [conf_inc],
-    link_args: rpath_link_args,
+    build_rpath: mutter_typelibdir,
     install_rpath: install_rpath,
     install_dir: libexecdir,
     install: true
@@ -288,7 +287,7 @@ endif
 executable('gnome-shell-perf-helper', 'shell-perf-helper.c',
   dependencies: [gtk_dep, gio_dep, m_dep],
   include_directories: [conf_inc],
-  link_args: rpath_link_args,
+  build_rpath: mutter_typelibdir,
   install_rpath: install_rpath,
   install_dir: libexecdir,
   install: true
@@ -298,5 +297,5 @@ executable('run-js-test', 'run-js-test.c',
   dependencies: [mutter_dep, gio_dep, gjs_dep],
   include_directories: [conf_inc],
   link_with: libshell,
-  link_args: rpath_link_args
+  build_rpath: mutter_typelibdir,
 )
