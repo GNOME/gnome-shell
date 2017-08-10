@@ -127,6 +127,10 @@ libst = shared_library('st-1.0',
   install: true
 )
 
+libst_dep = declare_dependency(link_with: libst,
+  sources: st_built_sources
+)
+
 test_theme = executable('test-theme',
   sources: 'test-theme.c',
   c_args: st_cflags,

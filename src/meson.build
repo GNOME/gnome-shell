@@ -101,6 +101,7 @@ libshell_menu_gir = gnome.generate_gir(libshell_menu,
   install: true
 )
 
+libshell_menu_dep = declare_dependency(link_with: libshell_menu)
 
 libshell_public_headers = [
   'shell-app.h',
@@ -209,15 +210,17 @@ libshell_no_gir_sources += dbus_generated
 
 libshell = library('gnome-shell',
   sources: libshell_gir_sources + libshell_no_gir_sources,
-  dependencies: gnome_shell_deps + [mutter_dep, m_dep],
+  dependencies: gnome_shell_deps + [libshell_menu_dep, libst_dep, mutter_dep, m_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
   c_args: gnome_shell_cflags,
-  link_with: [libshell_menu, libst, libtray],
+  link_with: [libtray],
   link_args: rpath_link_args,
   install_rpath: install_rpath,
   install_dir: pkglibdir,
   install: true
 )
+
+libshell_dep = declare_dependency(link_with: libshell)
 
 libshell_gir_includes = [
   'Clutter-@0@'.format(mutter_api_version),
@@ -241,7 +244,6 @@ gnome.generate_gir(libshell,
   nsversion: '0.1',
   namespace: 'Shell',
   includes: libshell_gir_includes,
-  link_with: [libshell_menu, libst],
   extra_args: ['--quiet'],
   install_dir_gir: pkgdatadir,
   install_dir_typelib: pkglibdir,
@@ -252,8 +254,7 @@ executable('gnome-shell', 'main.c',
   c_args: gnome_shell_cflags + [
     '-DMUTTER_TYPELIB_DIR="@0@"'.format(mutter_typelibdir)
   ],
-  dependencies: gnome_shell_deps + [mutter_dep],
-  link_with: libshell,
+  dependencies: gnome_shell_deps + [libshell_dep, mutter_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
   link_args: rpath_link_args,
   install_rpath: install_rpath,
