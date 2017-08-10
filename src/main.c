@@ -200,6 +200,14 @@ shell_introspection_init (void)
 
   g_irepository_prepend_search_path (MUTTER_TYPELIB_DIR);
   g_irepository_prepend_search_path (GNOME_SHELL_PKGLIBDIR);
+
+  /* We need to explicitly add the directories where the private libraries are
+   * installed to the GIR's library path, so that they can be found at runtime
+   * when linking using DT_RUNPATH (instead of DT_RPATH), which is the default
+   * for some linkers (e.g. gold) and in some distros (e.g. Debian).
+   */
+  g_irepository_prepend_library_path (MUTTER_TYPELIB_DIR);
+  g_irepository_prepend_library_path (GNOME_SHELL_PKGLIBDIR);
 }
 
 static void
