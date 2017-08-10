@@ -35,6 +35,10 @@ var Avatar = new Lang.Class({
                                   reactive: params.reactive,
                                   width: this._iconSize * scaleFactor,
                                   height: this._iconSize * scaleFactor });
+
+        // Monitor the scaling factor to make sure we recreate the avatar when needed.
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        themeContext.connect('notify::scale-factor', Lang.bind(this, this.update));
     },
 
     setSensitive: function(sensitive) {
@@ -56,6 +60,9 @@ var Avatar = new Lang.Class({
             this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
                                              icon_size: this._iconSize });
         }
+
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this.actor.set_size(this._iconSize * scaleFactor, this._iconSize * scaleFactor);
     }
 });
 
