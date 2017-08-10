@@ -1,4 +1,7 @@
 /*** BEGIN file-header ***/
+#ifndef ST_COMPILATION
+#define ST_COMPILATION
+#endif
 #include "st-enum-types.h"
 /*** END file-header ***/
 
