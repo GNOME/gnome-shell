@@ -32,7 +32,6 @@ js/ui/extensionDownloader.js
 js/ui/extensionSystem.js
 js/ui/inhibitShortcutsDialog.js
 js/ui/keyboard.js
-js/ui/legacyTray.js
 js/ui/lookingGlass.js
 js/ui/main.js
 js/ui/messageList.js
