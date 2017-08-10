@@ -85,6 +85,7 @@ let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _a11ySettings = null;
 let _themeResource = null;
+let _oskResource = null;
 
 function _sessionUpdated() {
     if (sessionMode.isPrimary)
@@ -148,6 +149,7 @@ function _initializeUI() {
     Shell.AppUsage.get_default();
 
     reloadThemeResource();
+    _loadOskLayouts();
     _loadDefaultStylesheet();
 
     // Setup the stage hierarchy early
@@ -307,6 +309,11 @@ function reloadThemeResource() {
 
     _themeResource = Gio.Resource.load(global.datadir + '/gnome-shell-theme.gresource');
     _themeResource._register();
+}
+
+function _loadOskLayouts() {
+    _oskResource = Gio.Resource.load(global.datadir + '/gnome-shell-osk-layouts.gresource');
+    _oskResource._register();
 }
 
 /**
