@@ -1,3 +1,18 @@
+3.25.90
+=======
+* Add zwp_linux_dmabuf_v1 support [Daniel; #785262]
+* Add (x)wayland shortcut inhibitor support [Olivier; #783342]
+* Misc. bug fixes [Daniel, Carlos, Cosimo; #785263, #785347, #767805]
+
+Contributors:
+  Jonas Ådahl, Cosimo Cecchi, Olivier Fourdan, Carlos Garnacho, Daniel Stone
+
+Translations:
+  Fabio Tomat [fur], Kukuh Syafaat [id], Aurimas Černius [lt],
+  Daniel Mustieles [es], Baurzhan Muftakhidinov [kk], Jordi Mas [ca],
+  Matej Urbančič [sl], Marek Cernocky [cs], gogo [hr], Fran Dieguez [gl],
+  Balázs Meskó [hu]
+
 3.25.4
 ======
 * Do not throttle motion events on tablet tools [Carlos; #783535]
