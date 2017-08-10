@@ -12,15 +12,15 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-05-14 09:49+0000\n"
-"PO-Revision-Date: 2017-05-14 21:36+0200\n"
-"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"POT-Creation-Date: 2017-08-02 10:05+0000\n"
+"PO-Revision-Date: 2017-08-09 08:51+0200\n"
+"Last-Translator: Meskó Balázs <meskobalazs@fedoraproject.org>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Poedit 2.0.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: data/50-mutter-navigation.xml:6
@@ -409,29 +409,45 @@ msgid ""
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
-"mutter default to layout logical monitors in a logical pixel coordinate "
-"space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
 msgstr ""
 "A kísérleti funkciók engedélyezéséhez adja hozzá a funkció kulcsszavát a "
-"listához. A funkció a betűszedő újraindítását igényelheti az adott funkciótól "
-"függően. Egyik kísérleti funkciónál sem szükséges, hogy továbbra is elérhető "
-"vagy beállítható legyen. Ne várja el azt, hogy ha bármit hozzáad ehhez a "
-"beállításhoz, akkor az a jövőben is elérhető lesz. Jelenleg lehetséges "
-"kulcsszavak: • „scale-monitor-framebuffer” — alapértelmezetté teszi a mutter "
-"programot a logikai monitorok elrendezéséhez egy logikai "
-"képpontkoordináta-térben, miközben átméretezi a monitor keretpufferét az "
-"ablaktartalom helyett azért, hogy kezelje a HiDPI monitorokat. Nem igényel "
-"újraindítást."
+"listához. A funkció a betűszedő újraindítását igényelheti az adott "
+"funkciótól függően. Egyik kísérleti funkciónál sem szükséges, hogy továbbra "
+"is elérhető vagy beállítható legyen. Ne várja el azt, hogy ha bármit hozzáad "
+"ehhez a beállításhoz, akkor az a jövőben is elérhető lesz. Jelenleg "
+"lehetséges kulcsszavak: • „monitor-config-manager” – az új monitor "
+"konfigurációs rendszer használata, amely a régi leváltására készül. Ez egy "
+"magasabb szintű konfigurációs API-t biztosít a beállító alkalmazásoknak, "
+"valamint lehetővé teszi a logikai monitorok különálló méretezését. • „scale-"
+"monitor-framebuffer” — alapértelmezetté teszi a mutter programot a logikai "
+"monitorok elrendezéséhez egy logikai képpontkoordináta-térben, miközben "
+"átméretezi a monitor keretpufferét az ablaktartalom helyett azért, hogy "
+"kezelje a HiDPI monitorokat. Nem igényel újraindítást. Ezen funkció "
+"bekapcsolásához a „monitor-config-manager” engedélyezése is szükséges."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr "Ablakok kiválasztása tab billentyűre felugró ablakból"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Tab felugró kikapcsolása"
+
+#: data/org.gnome.mutter.gschema.xml.in:161
+msgid "Switch monitor configurations"
+msgstr "Monitorkonfiguráció átváltása"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+msgid "Rotates the built-in monitor configuration"
+msgstr "Cserélgeti a beépített monitorkonfigurációkat"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -481,10 +497,14 @@ msgstr "Váltás a 11. VT-re"
 msgid "Switch to VT 12"
 msgstr "Váltás a 12. VT-re"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Gyorsbillentyűk újraengedélyezése"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1848
+#: src/backends/meta-input-settings.c:2118
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Módkapcsoló (%d. csoport)"
@@ -492,30 +512,30 @@ msgstr "Módkapcsoló (%d. csoport)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1870
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Monitorváltás"
 
-#: src/backends/meta-input-settings.c:1872
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Képernyősúgó megjelenítése"
 
-#: src/backends/meta-monitor-manager.c:783
+#: src/backends/meta-monitor-manager.c:927
 msgid "Built-in display"
 msgstr "Beépített kijelző"
 
-#: src/backends/meta-monitor-manager.c:806
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: src/backends/meta-monitor-manager.c:808
+#: src/backends/meta-monitor-manager.c:952
 msgid "Unknown Display"
 msgstr "Ismeretlen kijelző"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:816
+#: src/backends/meta-monitor-manager.c:960
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -533,32 +553,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Csengetés esemény"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "„%s” nem válaszol."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Az alkalmazás nem válaszol."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Várhat egy kicsit a folytatódására, vagy kikényszerítheti az alkalmazás "
-"teljes kilépését."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Erőltetett kilépés"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "Vá_rakozás"
 
 #: src/core/display.c:608
 #, c-format
@@ -601,6 +595,32 @@ msgstr "Futtatás beágyazott betűszedőként"
 msgid "Run as a full display server, rather than nested"
 msgstr ""
 "Futtatás teljes megjelenítő kiszolgálóként az egymásba ágyazott helyett"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "„%s” nem válaszol."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Az alkalmazás nem válaszol."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Várhat egy kicsit a folytatódására, vagy kikényszerítheti az alkalmazás "
+"teljes kilépését."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Erőltetett kilépés"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "Vá_rakozás"
 
 #: src/core/mutter.c:39
 #, c-format
@@ -665,4 +685,3 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (ezen: %s)"
-
