@@ -843,7 +843,7 @@ var InputSourceIndicator = new Lang.Class({
             this._indicatorLabels[i] = indicatorLabel;
             is.connect('changed', function() {
                 menuItem.indicator.set_text(is.shortName);
-                indicatorLabel.set_text(is.shorName);
+                indicatorLabel.set_text(is.shortName);
             });
 
             this.menu.addMenuItem(menuItem, menuIndex++);
