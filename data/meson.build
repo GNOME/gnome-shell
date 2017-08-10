@@ -62,6 +62,14 @@ theme_resources = gnome.compile_resources(
   install_dir: pkgdatadir
 )
 
+osk_layout_resources = gnome.compile_resources(
+  'gnome-shell-osk-layouts', 'gnome-shell-osk-layouts.gresource.xml',
+  source_dir: 'osk-layouts',
+  gresource_bundle: true,
+  install: true,
+  install_dir: pkgdatadir
+)
+
 perfconf = configuration_data()
 perfconf.set('datadir', datadir)
 configure_file(
