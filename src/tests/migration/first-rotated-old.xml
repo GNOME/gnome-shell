@@ -1,0 +1,37 @@
+<monitors version="1">
+  <configuration>
+    <clone>no</clone>
+    <output name="HDMI-1">
+      <vendor>DEL</vendor>
+      <product>DELL P2415Q</product>
+      <serial>GTTPW67P0WFB</serial>
+      <width>2160</width>
+      <height>3840</height>
+      <rate>29.981103897094727</rate>
+      <x>0</x>
+      <y>0</y>
+      <rotation>left</rotation>
+      <reflect_x>no</reflect_x>
+      <reflect_y>no</reflect_y>
+      <primary>no</primary>
+      <presentation>no</presentation>
+      <underscanning>no</underscanning>
+    </output>
+    <output name="eDP-1">
+      <vendor>AUO</vendor>
+      <product>0x123d</product>
+      <serial>0x00000000</serial>
+      <width>1920</width>
+      <height>1080</height>
+      <rate>60.049972534179688</rate>
+      <x>2160</x>
+      <y>0</y>
+      <rotation>normal</rotation>
+      <reflect_x>no</reflect_x>
+      <reflect_y>no</reflect_y>
+      <primary>yes</primary>
+      <presentation>no</presentation>
+      <underscanning>no</underscanning>
+    </output>
+  </configuration>
+</monitors>

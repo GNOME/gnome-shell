@@ -100,6 +100,12 @@ meta_test_monitor_config_migration_tiled (void)
   test_migration ("tiled-old.xml", "tiled-new.xml");
 }
 
+static void
+meta_test_monitor_config_migration_first_rotated (void)
+{
+  test_migration ("first-rotated-old.xml", "first-rotated-new.xml");
+}
+
 void
 init_monitor_config_migration_tests (void)
 {
@@ -109,4 +115,6 @@ init_monitor_config_migration_tests (void)
                    meta_test_monitor_config_migration_rotated);
   g_test_add_func ("/backends/monitor-config-migration/tiled",
                    meta_test_monitor_config_migration_tiled);
+  g_test_add_func ("/backends/monitor-config-migration/first-rotated",
+                   meta_test_monitor_config_migration_first_rotated);
 }
