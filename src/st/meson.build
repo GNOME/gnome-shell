@@ -82,13 +82,13 @@ st_sources = [
   'st-widget.c'
 ]
 
-st_built_sources = gnome.mkenums('st-enum-types',
+st_enums = gnome.mkenums('st-enum-types',
   sources: st_headers,
   c_template: 'st-enum-types.c.in',
   h_template: 'st-enum-types.h.in'
 )
 
-st_gir_sources = st_sources + st_private_headers + st_headers + st_built_sources
+st_gir_sources = st_sources + st_private_headers + st_headers + st_enums
 
 st_non_gir_sources = [
   'st-scroll-view-fade.c',
@@ -128,7 +128,7 @@ libst = shared_library('st-1.0',
 )
 
 libst_dep = declare_dependency(link_with: libst,
-  sources: st_built_sources
+  sources: st_enums
 )
 
 test_theme = executable('test-theme',
