@@ -1172,13 +1172,9 @@ var FolderView = new Lang.Class({
         let numItems = this._allItems.length;
         let rtl = icon.get_text_direction() == Clutter.TextDirection.RTL;
         for (let i = 0; i < 4; i++) {
-            let bin;
-            if (i < numItems) {
-                let texture = this._allItems[i].app.create_icon_texture(subSize);
-                bin = new St.Bin({ child: texture });
-            } else {
-                bin = new St.Bin({ width: subSize, height: subSize });
-            }
+            let bin = new St.Bin({ width: subSize, height: subSize });
+            if (i < numItems)
+                bin.child = this._allItems[i].app.create_icon_texture(subSize);
             layout.attach(bin, rtl ? (i + 1) % 2 : i % 2, Math.floor(i / 2), 1, 1);
         }
 
