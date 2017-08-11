@@ -383,28 +383,37 @@ has_valid_cursor_sprite_gbm_bo (MetaCursorSprite *cursor_sprite)
 }
 
 static gboolean
-cursor_over_transformed_crtc (MetaCursorRenderer *renderer,
-                              MetaCursorSprite   *cursor_sprite)
+cursor_over_transformed_logical_monitor (MetaCursorRenderer *renderer,
+                                         MetaCursorSprite   *cursor_sprite)
 {
-  MetaMonitorManager *monitors;
-  MetaCrtc *crtcs;
-  unsigned int i, n_crtcs;
-  ClutterRect rect;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  GList *logical_monitors;
+  GList *l;
+  ClutterRect cursor_rect;
 
-  monitors = meta_monitor_manager_get ();
-  meta_monitor_manager_get_resources (monitors, NULL, NULL,
-                                      &crtcs, &n_crtcs, NULL, NULL);
-  rect = meta_cursor_renderer_calculate_rect (renderer, cursor_sprite);
-
-  for (i = 0; i < n_crtcs; i++)
+  cursor_rect = meta_cursor_renderer_calculate_rect (renderer, cursor_sprite);
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+  for (l = logical_monitors; l; l = l->next)
     {
-      MetaCrtc *crtc = &crtcs[i];
-      ClutterRect crtc_rect = meta_rectangle_to_clutter_rect (&crtc->rect);
+      MetaLogicalMonitor *logical_monitor = l->data;
+      MetaRectangle logical_monitor_layout;
+      ClutterRect logical_monitor_rect;
+      MetaMonitorTransform transform;
 
-      if (!clutter_rect_intersection (&rect, &crtc_rect, NULL))
+      logical_monitor_layout =
+        meta_logical_monitor_get_layout (logical_monitor);
+      logical_monitor_rect =
+        meta_rectangle_to_clutter_rect (&logical_monitor_layout);
+
+      if (!clutter_rect_intersection (&cursor_rect, &logical_monitor_rect,
+                                      NULL))
         continue;
 
-      if (crtc->transform != META_MONITOR_TRANSFORM_NORMAL)
+      transform = meta_logical_monitor_get_transform (logical_monitor);
+      if (transform != META_MONITOR_TRANSFORM_NORMAL)
         return TRUE;
     }
 
@@ -478,7 +487,7 @@ should_have_hw_cursor (MetaCursorRenderer *renderer,
   if (!cursor_sprite)
     return FALSE;
 
-  if (cursor_over_transformed_crtc (renderer, cursor_sprite))
+  if (cursor_over_transformed_logical_monitor (renderer, cursor_sprite))
     return FALSE;
 
   texture = meta_cursor_sprite_get_cogl_texture (cursor_sprite);

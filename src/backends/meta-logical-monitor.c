@@ -181,6 +181,18 @@ meta_logical_monitor_get_scale (MetaLogicalMonitor *logical_monitor)
   return logical_monitor->scale;
 }
 
+MetaMonitorTransform
+meta_logical_monitor_get_transform (MetaLogicalMonitor *logical_monitor)
+{
+  return logical_monitor->transform;
+}
+
+MetaRectangle
+meta_logical_monitor_get_layout (MetaLogicalMonitor *logical_monitor)
+{
+  return logical_monitor->rect;
+}
+
 GList *
 meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor)
 {

@@ -80,6 +80,10 @@ void meta_logical_monitor_make_primary (MetaLogicalMonitor *logical_monitor);
 
 float meta_logical_monitor_get_scale (MetaLogicalMonitor *logical_monitor);
 
+MetaMonitorTransform meta_logical_monitor_get_transform (MetaLogicalMonitor *logical_monitor);
+
+MetaRectangle meta_logical_monitor_get_layout (MetaLogicalMonitor *logical_monitor);
+
 GList * meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor);
 
 gboolean meta_logical_monitor_has_neighbor (MetaLogicalMonitor  *logical_monitor,
