@@ -128,7 +128,7 @@ libst = shared_library('st-1.0',
 )
 
 libst_dep = declare_dependency(link_with: libst,
-  sources: st_enums
+  sources: st_enums[1]
 )
 
 test_theme = executable('test-theme',
