@@ -765,7 +765,7 @@ var ProviderInfo = new Lang.Class({
     },
 
     setMoreCount: function(count) {
-        this._moreLabel.text = _("%d more").format(count);
+        this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);
         this._moreLabel.visible = count > 0;
     }
 });
