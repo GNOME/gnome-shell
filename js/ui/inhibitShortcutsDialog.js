@@ -57,10 +57,10 @@ var InhibitShortcutsDialog = new Lang.Class({
 
         let contentParams = { icon, title };
 
-        /* Translators: %s is a keyboard shortcut like "Super+x" */
         let restoreAccel = this._getRestoreAccel();
         if (restoreAccel)
             contentParams.subtitle =
+                /* Translators: %s is a keyboard shortcut like "Super+x" */
                 _("You can restore shortcuts by pressing %s.").format(restoreAccel);
 
         let content = new Dialog.MessageDialogContent(contentParams);
