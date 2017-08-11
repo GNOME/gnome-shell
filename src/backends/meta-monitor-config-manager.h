@@ -104,7 +104,11 @@ void meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_m
 
 MetaMonitorsConfig * meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manager);
 
+MetaMonitorsConfig * meta_monitor_config_manager_pop_previous (MetaMonitorConfigManager *config_manager);
+
 MetaMonitorsConfig * meta_monitor_config_manager_get_previous (MetaMonitorConfigManager *config_manager);
+
+void meta_monitor_config_manager_clear_history (MetaMonitorConfigManager *config_manager);
 
 void meta_monitor_config_manager_save_current (MetaMonitorConfigManager *config_manager);
 

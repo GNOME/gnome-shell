@@ -28,6 +28,8 @@
 #include "backends/meta-monitor-manager-private.h"
 #include "core/boxes-private.h"
 
+#define CONFIG_HISTORY_MAX_SIZE 3
+
 struct _MetaMonitorConfigManager
 {
   GObject parent;
@@ -37,7 +39,7 @@ struct _MetaMonitorConfigManager
   MetaMonitorConfigStore *config_store;
 
   MetaMonitorsConfig *current_config;
-  MetaMonitorsConfig *previous_config;
+  GQueue config_history;
 };
 
 G_DEFINE_TYPE (MetaMonitorConfigManager, meta_monitor_config_manager,
@@ -988,8 +990,15 @@ void
 meta_monitor_config_manager_set_current (MetaMonitorConfigManager *config_manager,
                                          MetaMonitorsConfig       *config)
 {
-  g_set_object (&config_manager->previous_config,
-                config_manager->current_config);
+  if (config_manager->current_config)
+    {
+      g_queue_push_head (&config_manager->config_history,
+                         g_object_ref (config_manager->current_config));
+      if (g_queue_get_length (&config_manager->config_history) >
+          CONFIG_HISTORY_MAX_SIZE)
+        g_object_unref (g_queue_pop_tail (&config_manager->config_history));
+    }
+
   g_set_object (&config_manager->current_config, config);
 }
 
@@ -1009,9 +1018,22 @@ meta_monitor_config_manager_get_current (MetaMonitorConfigManager *config_manage
 }
 
 MetaMonitorsConfig *
+meta_monitor_config_manager_pop_previous (MetaMonitorConfigManager *config_manager)
+{
+  return g_queue_pop_head (&config_manager->config_history);
+}
+
+MetaMonitorsConfig *
 meta_monitor_config_manager_get_previous (MetaMonitorConfigManager *config_manager)
 {
-  return config_manager->previous_config;
+  return g_queue_peek_head (&config_manager->config_history);
+}
+
+void
+meta_monitor_config_manager_clear_history (MetaMonitorConfigManager *config_manager)
+{
+  g_queue_foreach (&config_manager->config_history, (GFunc) g_object_unref, NULL);
+  g_queue_clear (&config_manager->config_history);
 }
 
 static void
@@ -1021,7 +1043,7 @@ meta_monitor_config_manager_dispose (GObject *object)
     META_MONITOR_CONFIG_MANAGER (object);
 
   g_clear_object (&config_manager->current_config);
-  g_clear_object (&config_manager->previous_config);
+  meta_monitor_config_manager_clear_history (config_manager);
 
   G_OBJECT_CLASS (meta_monitor_config_manager_parent_class)->dispose (object);
 }
@@ -1029,6 +1051,7 @@ meta_monitor_config_manager_dispose (GObject *object)
 static void
 meta_monitor_config_manager_init (MetaMonitorConfigManager *config_manager)
 {
+  g_queue_init (&config_manager->config_history);
 }
 
 static void

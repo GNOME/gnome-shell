@@ -1111,14 +1111,13 @@ restore_previous_config (MetaMonitorManager *manager)
   GError *error = NULL;
 
   previous_config =
-    meta_monitor_config_manager_get_previous (manager->config_manager);
+    meta_monitor_config_manager_pop_previous (manager->config_manager);
 
   if (previous_config)
     {
       MetaMonitorsConfigMethod method;
 
       method = META_MONITORS_CONFIG_METHOD_TEMPORARY;
-      g_object_ref (previous_config);
       if (meta_monitor_manager_apply_monitors_config (manager,
                                                       previous_config,
                                                       method,
