@@ -2281,32 +2281,19 @@ meta_test_monitor_lid_switch_config (void)
   meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, FALSE);
   meta_monitor_manager_lid_is_closed_changed (monitor_manager);
 
-  test_case.expect.n_logical_monitors = 2;
-  test_case.expect.screen_width = 1024 * 2;
-  test_case.expect.monitors[0].current_mode = 0;
-
-  test_case.expect.crtcs[0].current_mode = 0;
-  test_case.expect.crtcs[1].current_mode = 0;
-
-  /*
-   * FIXME: The above expectation is correct, but MetaMonitorConfigManager
-   * doesn't support restoring previous configurations yet, so it'll
-   * pick keep the external monitor as primary and put it first.
-   */
   test_case.expect.logical_monitors[0] = (MonitorTestCaseLogicalMonitor) {
-    .monitors = { 1 },
+    .monitors = { 0 },
     .n_monitors = 1,
     .layout = {.x = 0, .y = 0, .width = 1024, .height = 768 },
     .scale = 1
   };
-  test_case.expect.logical_monitors[1] = (MonitorTestCaseLogicalMonitor) {
-    .monitors = { 0 },
-    .n_monitors = 1,
-    .layout = {.x = 1024, .y = 0, .width = 1024, .height = 768 },
-    .scale = 1
-  };
   test_case.expect.n_logical_monitors = 2;
+  test_case.expect.screen_width = 1024 * 2;
+  test_case.expect.monitors[0].current_mode = 0;
   test_case.expect.primary_logical_monitor = 0;
+
+  test_case.expect.crtcs[0].current_mode = 0;
+  test_case.expect.crtcs[1].current_mode = 0;
 
   check_monitor_configuration (&test_case);
 }

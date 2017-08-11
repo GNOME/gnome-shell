@@ -71,6 +71,10 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (MetaMonitorManager, meta_monitor_manager, META
 
 static void initialize_dbus_interface (MetaMonitorManager *manager);
 
+static gboolean
+meta_monitor_manager_is_config_complete (MetaMonitorManager *manager,
+                                         MetaMonitorsConfig *config);
+
 static void
 meta_monitor_manager_init (MetaMonitorManager *manager)
 {
@@ -527,6 +531,31 @@ meta_monitor_manager_ensure_configured (MetaMonitorManager *manager)
         {
           goto done;
         }
+    }
+
+  config = meta_monitor_config_manager_get_previous (manager->config_manager);
+  if (config)
+    {
+      config = g_object_ref (config);
+
+      if (meta_monitor_manager_is_config_complete (manager, config))
+        {
+          if (!meta_monitor_manager_apply_monitors_config (manager,
+                                                           config,
+                                                           method,
+                                                           &error))
+            {
+              g_warning ("Failed to use suggested monitor configuration: %s",
+                         error->message);
+              g_clear_error (&error);
+            }
+          else
+            {
+              goto done;
+            }
+        }
+
+      g_clear_object (&config);
     }
 
   config = meta_monitor_config_manager_create_linear (manager->config_manager);
@@ -1492,6 +1521,44 @@ meta_monitor_manager_is_config_applicable (MetaMonitorManager *manager,
     }
 
   return TRUE;
+}
+
+static gboolean
+meta_monitor_manager_is_config_complete (MetaMonitorManager *manager,
+                                         MetaMonitorsConfig *config)
+{
+  GList *l;
+  unsigned int configured_monitor_count = 0;
+  unsigned int expected_monitor_count = 0;
+
+  for (l = config->logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+      GList *k;
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        configured_monitor_count++;
+    }
+
+  for (l = manager->monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+
+      if (meta_monitor_is_laptop_panel (monitor))
+        {
+          if (!meta_monitor_manager_is_lid_closed (manager))
+            expected_monitor_count++;
+        }
+      else
+        {
+          expected_monitor_count++;
+        }
+    }
+
+  if (configured_monitor_count != expected_monitor_count)
+    return FALSE;
+
+  return meta_monitor_manager_is_config_applicable (manager, config, NULL);
 }
 
 static MetaMonitor *
