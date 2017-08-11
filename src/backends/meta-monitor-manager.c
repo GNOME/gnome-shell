@@ -1965,7 +1965,8 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
       return TRUE;
     }
 
-  if (manager->persistent_timeout_id)
+  if (manager->persistent_timeout_id &&
+      method != META_MONITORS_CONFIG_METHOD_VERIFY)
     cancel_persistent_confirmation (manager);
 
   if (!meta_monitor_manager_apply_monitors_config (manager,
