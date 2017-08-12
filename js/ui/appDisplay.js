@@ -69,6 +69,8 @@ var EOS_ACTIVE_GRID_TRANSITION = Clutter.AnimationMode.EASE_IN_QUAD;
 var EOS_INACTIVE_GRID_SATURATION = 1;
 var EOS_ACTIVE_GRID_SATURATION = 0;
 
+const EOS_REPLACED_BY_KEY = 'X-Endless-Replaced-By';
+
 function _getCategories(info) {
     let categoriesStr = info.get_categories();
     if (!categoriesStr)
@@ -1017,6 +1019,8 @@ var AppSearchProvider = class AppSearchProvider {
         let groups = Shell.AppSystem.search(query);
         let usage = Shell.AppUsage.get_default();
         let results = [];
+        let replacementMap = {};
+
         groups.forEach(group => {
             group = group.filter(appID => {
                 let app = Gio.DesktopAppInfo.new(appID);
@@ -1027,7 +1031,15 @@ var AppSearchProvider = class AppSearchProvider {
                 if (!(app && app.should_show() && !(isLink && !isOnDesktop)))
                     return false;
 
-                return app && app.should_show();
+                if (app && app.should_show()) {
+                    let replacedByID = app.get_string(EOS_REPLACED_BY_KEY);
+                    if (replacedByID)
+                        replacementMap[appID] = replacedByID;
+
+                    return true;
+                }
+
+                return false;
             });
             results = results.concat(group.sort(
                 (a, b) => usage.compare(a, b)
@@ -1043,6 +1055,24 @@ var AppSearchProvider = class AppSearchProvider {
 
             return hasB - hasA;
         });
+
+        // perform replacements by removing replaceable apps
+        results = results.filter(function(appID) {
+            let replacedByID = replacementMap[appID];
+
+            // this app does not specify any replacements, show it
+            if (!replacedByID)
+                return true;
+
+            // the specified replacement is not installed, show it
+            let replacedByApp = Gio.DesktopAppInfo.new(replacedByID);
+            if (!replacedByApp)
+                return true;
+
+            // the specified replacement is installed, hide it
+            return false;
+        });
+
         callback(results);
     }
 
