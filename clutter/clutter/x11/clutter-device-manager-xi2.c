@@ -1160,7 +1160,7 @@ translate_pad_event (ClutterEvent       *event,
                 event->any.type == CLUTTER_PAD_RING
                 ? "pad ring  "
                 : "pad strip",
-                (unsigned int) stage_x11->xwin,
+                (unsigned int) xev->event,
                 device->id,
                 device->device_name,
                 event->any.time, value);
