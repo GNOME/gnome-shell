@@ -6,25 +6,26 @@
 # Baris Cicek <baris@teamforce.name.tr>, 2004, 2005, 2008, 2009.
 # İlker DAĞLI <ilker@ilkerdagli.info>, 2011.
 # Muhammed EKEN <gnome@m-eken.com>, 2011.
-# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017.
+# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-05-11 12:29+0000\n"
-"PO-Revision-Date: 2017-05-13 17:23+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
-"Language-Team: Türkçe <>\n"
+"POT-Creation-Date: 2017-08-12 09:57+0000\n"
+"PO-Revision-Date: 2017-08-13 18:46+0300\n"
+"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
+"Language-Team: Turkish <gnometurk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 2.91.7\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-DamnedLies-Scope: partial\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -277,11 +278,6 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Genişletilmiş pencere yönetimi işlemleri için kullanılacak değiştirici"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
-#| msgid ""
-#| "This key will initiate the \"overlay\", which is a combination window "
-#| "overview and application launching system. The default is intended to be "
-#| "the \"Windows key\" on PC hardware. It's expected that this binding "
-#| "either the default or set to the empty string."
 msgid ""
 "This key will initiate the “overlay”, which is a combination window overview "
 "and application launching system. The default is intended to be the “Windows "
@@ -366,10 +362,6 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Odak değişikliklerini işaretçi hareketi durana kadar ertele"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focus will not be changed immediately when entering a window, but "
-#| "only after the pointer stops moving."
 msgid ""
 "If set to true, and the focus mode is either “sloppy” or “mouse” then the "
 "focus will not be changed immediately when entering a window, but only after "
@@ -421,33 +413,56 @@ msgid "Enable experimental features"
 msgstr "Deneysel özellikleri etkinleştir"
 
 #: data/org.gnome.mutter.gschema.xml.in:108
+#| msgid ""
+#| "To enable experimental features, add the feature keyword to the list. "
+#| "Whether the feature requires restarting the compositor depends on the "
+#| "given feature. Any experimental feature is not required to still be "
+#| "available, or configurable. Don’t expect adding anything in this setting "
+#| "to be future proof. Currently possible keywords: • “scale-monitor-"
+#| "framebuffer” — makes mutter default to layout logical monitors in a "
+#| "logical pixel coordinate space, while scaling monitor framebuffers "
+#| "instead of window content, to manage HiDPI monitors. Does not require a "
+#| "restart."
 msgid ""
 "To enable experimental features, add the feature keyword to the list. "
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
-"mutter default to layout logical monitors in a logical pixel coordinate "
-"space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
 msgstr ""
 "Deneysel özellikleri etkinleştirmek için özelliğin anahtar sözcüğünü listeye "
 "ekleyin. Özelliğin yeniden başlatmayı gerektirip gerektirmeyeceği verilen "
 "özelliğe bağlıdır. Hiçbir deneysel özellik hala kullanılabilir veya "
 "yapılandırılabilir olmak zorunda değildir. Bu ayara eklenecek herhangi bir "
 "şeyin gelecekte olabilecek değişikliklerden etkilenmeyeceğini düşünmeyin. Şu "
-"anda kullanılabilir anahtar sözcükler: • “scale-monitor-framebuffer” — "
-"mutter’in HiDPI monitörleri yönetmesi için pencere içeriği yerine monitör "
-"çerçeve arabelleğini ölçeklendirirken, mantıksal monitörleri mantıksal "
-"piksel koordinat aralığına yerleştirmesini öntanımlı yapar."
+"anda kullanılabilir anahtar sözcükler: • “monitor-config-manager” — "
+"eskisinin yerini alması amaçlanan yeni monitör yapılandırma sistemini "
+"kullan. Bu, yapılandırma uygulamaları tarafından kullanılmak üzere daha "
+"yüksek düzeyde bir yapılandırma API'sini etkinleştirir ve ayrıca mantıksal "
+"monitör ölçeğinde yapılandırma yapmaya olanak tanır.• “scale-monitor-"
+"framebuffer” — mutter’in HiDPI monitörleri yönetmesi için pencere içeriği "
+"yerine monitör çerçeve arabelleğini ölçeklendirirken, mantıksal monitörleri "
+"mantıksal piksel koordinat aralığına yerleştirmesini öntanımlı yapar."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr "Pencereyi, sekme açılır penceresinden seç"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Sekmeyi yeni pencerede açmayı iptal et"
+
+#: data/org.gnome.mutter.gschema.xml.in:161
+#| msgid "Switch monitor"
+msgid "Switch monitor configurations"
+msgstr "Monitör yapılandırmaları arasında geçiş yap"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -500,7 +515,7 @@ msgstr "VT 12’ye geç"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1848
+#: src/backends/meta-input-settings.c:2118
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Kip anahtarı (Group %d)"
@@ -508,30 +523,30 @@ msgstr "Kip anahtarı (Group %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1870
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Monitör değiştir"
 
-#: src/backends/meta-input-settings.c:1872
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Ekranda yardımı göster"
 
-#: src/backends/meta-monitor-manager.c:783
+#: src/backends/meta-monitor-manager.c:927
 msgid "Built-in display"
 msgstr "Yerleşik ekran"
 
-#: src/backends/meta-monitor-manager.c:806
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: src/backends/meta-monitor-manager.c:808
+#: src/backends/meta-monitor-manager.c:952
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:816
+#: src/backends/meta-monitor-manager.c:960
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -540,43 +555,15 @@ msgstr "%s %s"
 #. * we have no way to get it to exit
 #: src/compositor/compositor.c:476
 #, c-format
-#| msgid ""
-#| "Another compositing manager is already running on screen %i on display "
-#| "\"%s\"."
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
-"“%2$s” monitöründeki %1$i ekranında zaten başka bir birleştirme yöneticisi çalışıyor."
+"“%2$s” monitöründeki %1$i ekranında zaten başka bir birleştirme yöneticisi "
+"çalışıyor."
 
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Etkinlik zili"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "“%s” yanıt vermiyor."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Uygulama cevap vermiyor"
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Uygulamanın devam etmesi için bir müddet bekleyi seçebilirsiniz ya da "
-"uygulamanın tamamen çıkması için onu zorlayabilirsiniz."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Sonlandır"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Bekle"
 
 #: src/core/display.c:608
 #, c-format
@@ -619,14 +606,34 @@ msgstr "Yuvalanmış dizgici olarak çalıştır"
 msgid "Run as a full display server, rather than nested"
 msgstr "İç içe değil tam ekran sunucusu olarak çalıştır"
 
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "“%s” yanıt vermiyor."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Uygulama cevap vermiyor"
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Uygulamanın devam etmesi için bir müddet bekleyi seçebilirsiniz ya da "
+"uygulamanın tamamen çıkması için onu zorlayabilirsiniz."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Sonlandır"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Bekle"
+
 #: src/core/mutter.c:39
 #, c-format
-#| msgid ""
-#| "mutter %s\n"
-#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
 "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -665,7 +672,6 @@ msgstr ""
 
 #: src/core/screen.c:665
 #, c-format
-#| msgid "Screen %d on display '%s' is invalid\n"
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "“%2$s” monitöründeki %1$d ekranı geçersiz\n"
 
