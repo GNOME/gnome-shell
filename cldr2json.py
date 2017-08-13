@@ -204,6 +204,5 @@ if __name__ == "__main__":
     if os.path.isfile(source):
         convert_file(source, destination)
     elif os.path.isdir(source):
-        os.chdir(source)
-        for path in glob.glob("*-t-k0-android.xml"):
+        for path in glob.glob(source + "/*-t-k0-android.xml"):
             convert_file(path, destination)
