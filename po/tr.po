@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-12 09:57+0000\n"
-"PO-Revision-Date: 2017-08-13 18:46+0300\n"
+"POT-Creation-Date: 2017-08-13 15:47+0000\n"
+"PO-Revision-Date: 2017-08-13 18:53+0300\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Turkish <gnometurk@gnome.org>\n"
 "Language: tr\n"
@@ -413,16 +413,6 @@ msgid "Enable experimental features"
 msgstr "Deneysel özellikleri etkinleştir"
 
 #: data/org.gnome.mutter.gschema.xml.in:108
-#| msgid ""
-#| "To enable experimental features, add the feature keyword to the list. "
-#| "Whether the feature requires restarting the compositor depends on the "
-#| "given feature. Any experimental feature is not required to still be "
-#| "available, or configurable. Don’t expect adding anything in this setting "
-#| "to be future proof. Currently possible keywords: • “scale-monitor-"
-#| "framebuffer” — makes mutter default to layout logical monitors in a "
-#| "logical pixel coordinate space, while scaling monitor framebuffers "
-#| "instead of window content, to manage HiDPI monitors. Does not require a "
-#| "restart."
 msgid ""
 "To enable experimental features, add the feature keyword to the list. "
 "Whether the feature requires restarting the compositor depends on the given "
@@ -460,9 +450,13 @@ msgid "Cancel tab popup"
 msgstr "Sekmeyi yeni pencerede açmayı iptal et"
 
 #: data/org.gnome.mutter.gschema.xml.in:161
-#| msgid "Switch monitor"
 msgid "Switch monitor configurations"
 msgstr "Monitör yapılandırmaları arasında geçiş yap"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+#| msgid "Switch monitor configurations"
+msgid "Rotates the built-in monitor configuration"
+msgstr "Tümleşik monitör yapılandırmaları arasında geçiş yap"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -511,6 +505,10 @@ msgstr "VT 11’e geç"
 #: data/org.gnome.mutter.wayland.gschema.xml.in:50
 msgid "Switch to VT 12"
 msgstr "VT 12’ye geç"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr ""
 
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
