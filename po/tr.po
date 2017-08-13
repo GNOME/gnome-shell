@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-08-13 15:47+0000\n"
-"PO-Revision-Date: 2017-08-13 18:53+0300\n"
+"PO-Revision-Date: 2017-08-13 18:55+0300\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Turkish <gnometurk@gnome.org>\n"
 "Language: tr\n"
@@ -456,7 +456,7 @@ msgstr "Monitör yapılandırmaları arasında geçiş yap"
 #: data/org.gnome.mutter.gschema.xml.in:166
 #| msgid "Switch monitor configurations"
 msgid "Rotates the built-in monitor configuration"
-msgstr "Tümleşik monitör yapılandırmaları arasında geçiş yap"
+msgstr "Yerleşik monitör yapılandırmaları arasında geçiş yapar"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
