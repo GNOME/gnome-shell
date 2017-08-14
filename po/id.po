@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-07 14:10+0000\n"
-"PO-Revision-Date: 2017-08-09 12:07+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"POT-Creation-Date: 2017-08-13 16:24+0000\n"
+"PO-Revision-Date: 2017-08-14 14:04+0700\n"
+"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.3\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -569,23 +569,23 @@ msgstr "Sering"
 msgid "All"
 msgstr "Semua"
 
-#: js/ui/appDisplay.js:1895
+#: js/ui/appDisplay.js:1891
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:1909
+#: js/ui/appDisplay.js:1905
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:1936 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1932 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:1942
+#: js/ui/appDisplay.js:1938
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:1952
+#: js/ui/appDisplay.js:1948
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -1132,6 +1132,7 @@ msgstr "%s ingin mencegah pintasan"
 msgid "Application wants to inhibit shortcuts"
 msgstr "Aplikasi ingin mencegah pintasan"
 
+#. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:64
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
@@ -1148,15 +1149,6 @@ msgstr "Izinkan"
 #: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Papan Ketik"
-
-#. translators: 'Hide' is a verb
-#: js/ui/legacyTray.js:65
-msgid "Hide tray"
-msgstr "Sembunyikan baki"
-
-#: js/ui/legacyTray.js:106
-msgid "Status Icons"
-msgstr "Ikon Status"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1377,7 +1369,8 @@ msgstr "Tak ada yang cocok."
 #: js/ui/search.js:768
 #, javascript-format
 msgid "%d more"
-msgstr "%d lagi"
+msgid_plural "%d more"
+msgstr[0] "%d lagi"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1934,19 +1927,19 @@ msgstr "Evolution Kalender"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:372
+#: src/main.c:380
 msgid "Print version"
 msgstr "Versi Cetak"
 
-#: src/main.c:378
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "Mode yang dipakai oleh layar log masuk GDM"
 
-#: src/main.c:384
+#: src/main.c:392
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Menggunakan mode tertentu, mis. \"gdm\" untuk layar masuk"
 
-#: src/main.c:390
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Menampilkan mode yang mungkin"
 
@@ -1991,3 +1984,9 @@ msgstr[0] "%u Masukan"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Suara Sistem"
+
+#~ msgid "Hide tray"
+#~ msgstr "Sembunyikan baki"
+
+#~ msgid "Status Icons"
+#~ msgstr "Ikon Status"
