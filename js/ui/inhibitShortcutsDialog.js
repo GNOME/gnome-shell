@@ -12,6 +12,8 @@ const ModalDialog = imports.ui.modalDialog;
 
 const WAYLAND_KEYBINDINGS_SCHEMA = 'org.gnome.mutter.wayland.keybindings';
 
+const APP_WHITELIST = ['gnome-control-center.desktop'];
+
 var DialogResponse = Meta.InhibitShortcutsDialogResponse;
 
 var InhibitShortcutsDialog = new Lang.Class({
@@ -38,6 +40,11 @@ var InhibitShortcutsDialog = new Lang.Class({
         this._window = window;
     },
 
+    get _app() {
+        let windowTracker = Shell.WindowTracker.get_default();
+        return windowTracker.get_window_app(this._window);
+    },
+
     _getRestoreAccel: function() {
         let settings = new Gio.Settings({ schema_id: WAYLAND_KEYBINDINGS_SCHEMA });
         let accel = settings.get_strv('restore-shortcuts')[0] || '';
@@ -46,9 +53,7 @@ var InhibitShortcutsDialog = new Lang.Class({
     },
 
     _buildLayout: function() {
-        let windowTracker = Shell.WindowTracker.get_default();
-        let app = windowTracker.get_window_app(this._window);
-        let name = app ? app.get_name() : this._window.title;
+        let name = this._app ? this._app.get_name() : this._window.title;
 
         /* Translators: %s is an application name like "Settings" */
         let title = name ? _("%s wants to inhibit shortcuts").format(name)
@@ -85,7 +90,10 @@ var InhibitShortcutsDialog = new Lang.Class({
     },
 
     vfunc_show: function() {
-        this._dialog.open();
+        if (this._app && APP_WHITELIST.indexOf(this._app.get_id()) != -1)
+            this._emitResponse(DialogResponse.ALLOW);
+        else
+            this._dialog.open();
     },
 
     vfunc_hide: function() {
