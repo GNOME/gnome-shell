@@ -17,10 +17,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 01:44+0000\n"
-"PO-Revision-Date: 2017-02-17 21:09+0100\n"
+"POT-Creation-Date: 2017-08-13 15:47+0000\n"
+"PO-Revision-Date: 2017-08-15 09:16+0200\n"
 "Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -410,15 +410,58 @@ msgstr ""
 "Si true (vrai), les nouvelles fenêtres seront toujours placées au centre de "
 "l'écran actif du moniteur."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Activer les fonctionnalités expérimentales"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
+msgstr ""
+"Pour activer les fonctionnalités expérimentales, ajoutez le mot-clé de la "
+"fonctionnalité dans la liste. Selon la fonctionnalité, il peut être nécessaire "
+"de redémarrer le compositeur. Chaque fonctionnalité expérimentale peut "
+"disparaître ou ne plus être configurable. N'attendez pas à ce que le contenu de "
+"ce réglage soit stable dans le temps. Les mots-clés actuellement possibles "
+"sont : • « monitor-config-manager » — utiliser le nouveau système de "
+"configuration de moniteur qui remplacera l'ancien à terme. Cela active une "
+"API de configuration de plus haut niveau exploitable par les applications de "
+"configuration. Il permet aussi de configurer par échelle de moniteur logique. "
+"• « scale-monitor-framebuffer » — demande à mutter d'utiliser par défaut une "
+"disposition par moniteur logique dans un espace de coordonnées de pixels logique, "
+"tout en mettant à l'échelle les « framebuffers » de moniteur au lieu des contenus "
+"de fenêtre pour pouvoir gérer les moniteurs à haute densité. Cela ne nécessite "
+"pas de redémarrage. L'activation de « monitor-config-manager » est requis pour "
+"que cette fonctionnalité soit activée."
+
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr ""
 "Sélectionner la fenêtre dans la vue qui apparaît suite à un appui sur la "
 "touche tab"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Fermer la vue qui apparaît suite à un appui sur la touche tab"
+
+#: data/org.gnome.mutter.gschema.xml.in:161
+msgid "Switch monitor configurations"
+msgstr "Changer de configuration de moniteur"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+msgid "Rotates the built-in monitor configuration"
+msgstr "Passe à la prochaine configuration intégrée de moniteur"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -468,10 +511,14 @@ msgstr "Passer à l'émulateur de terminal 11"
 msgid "Switch to VT 12"
 msgstr "Passer à l'émulateur de terminal 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Réactiver les raccourcis"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1759
+#: src/backends/meta-input-settings.c:2118
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Changement de mode (groupe %d)"
@@ -479,37 +526,37 @@ msgstr "Changement de mode (groupe %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1781
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Changer de moniteur"
 
-#: src/backends/meta-input-settings.c:1783
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Afficher l'aide à l'écran"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:927
 msgid "Built-in display"
 msgstr "Affichage intégré"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:952
 msgid "Unknown Display"
 msgstr "Affichage inconnu"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:960
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -520,32 +567,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Évènement sonore"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "« %s » ne répond pas."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "L'application ne répond pas."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Vous pouvez patienter un instant pour continuer ou forcer l'application à "
-"quitter définitivement."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Forcer à quitter"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Attendre"
 
 #: src/core/display.c:608
 #, c-format
@@ -587,6 +608,32 @@ msgstr "Lancer comme un compositeur imbriqué"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Lancer comme un serveur d'affichage complet, plutôt qu'imbriqué"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "« %s » ne répond pas."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "L'application ne répond pas."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Vous pouvez patienter un instant pour continuer ou forcer l'application à "
+"quitter définitivement."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Forcer à quitter"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Attendre"
 
 #: src/core/mutter.c:39
 #, c-format
