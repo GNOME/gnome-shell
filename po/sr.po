@@ -9,12 +9,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 01:44+0000\n"
-"PO-Revision-Date: 2017-02-21 07:16+0200\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-08-13 15:47+0000\n"
+"PO-Revision-Date: 2017-08-15 20:40+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <(nothing)>\n"
+"Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -272,11 +272,6 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Тастер који се користи за проширене радње управника прозорима"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
-#| msgid ""
-#| "This key will initiate the \"overlay\", which is a combination window "
-#| "overview and application launching system. The default is intended to be "
-#| "the \"Windows key\" on PC hardware. It's expected that this binding "
-#| "either the default or set to the empty string."
 msgid ""
 "This key will initiate the “overlay”, which is a combination window overview "
 "and application launching system. The default is intended to be the “Windows "
@@ -322,18 +317,14 @@ msgid "Workspaces are managed dynamically"
 msgstr "Радним просторима се управља динамички"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
-#| msgid ""
-#| "Determines whether workspaces are managed dynamically or whether there's "
-#| "a static number of workspaces (determined by the num-workspaces key in "
-#| "org.gnome.desktop.wm.preferences)."
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
 "Одређује да ли се радним просторима управља динамички или ће постојати "
-"стални број радних простора (одређен бројем радних простора у "
-"„org.gnome.desktop.wm.preferences“)."
+"стални број радних простора (одређен бројем радних простора у „org.gnome."
+"desktop.wm.preferences“)."
 
 #: data/org.gnome.mutter.gschema.xml.in:50
 msgid "Workspaces only on primary"
@@ -364,10 +355,6 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Застој првог плана се мења док се показивач не заустави"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focus will not be changed immediately when entering a window, but "
-#| "only after the pointer stops moving."
 msgid ""
 "If set to true, and the focus mode is either “sloppy” or “mouse” then the "
 "focus will not be changed immediately when entering a window, but only after "
@@ -382,9 +369,6 @@ msgid "Draggable border width"
 msgstr "Ширина ивице за превлачење"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
-#| msgid ""
-#| "The amount of total draggable borders. If the theme's visible borders are "
-#| "not enough, invisible borders will be added to meet this value."
 msgid ""
 "The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -416,13 +400,55 @@ msgstr ""
 "Ако је изабрано, нови прозори ће увек бити постављени на средину радног "
 "екрана монитора."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Укључује експерименталне функције"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
+"monitor configuration system, aimed to replace the old one. This enables a "
+"higher level configuration API to be used by configuration applications, as "
+"well as the ability to configure per logical monitor scale. • “scale-monitor-"
+"framebuffer” — makes mutter default to layout logical monitors in a logical "
+"pixel coordinate space, while scaling monitor framebuffers instead of window "
+"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
+"“monitor-config-manager” is required for this feature to be enabled."
+msgstr ""
+"Да укључите експерименталне функције, додајте кључну реч функције на списак. "
+"Да ли функција захтева поновно покретање састављача зависи од дате функције. "
+"Није потребно да нека експериментална функција буде и даље доступна или "
+"подесива. Немојте очекивати да додавање било чега у овом подешавању буде "
+"будући доказ. Тренутно могуће кључне речи су: • „monitor-config-manager“ — "
+"користи нови систем подешавања монитора, који треба да замени стари. Ово "
+"омогућава да АПИ подешавања вишег нивоа буде коришћен програмима подешавања, "
+"као и могућност подешавања скале монитора на нивоу логике. • „scale-monitor-"
+"framebuffer“ — чини да матер пређе на распоред логичких монитора у логичком "
+"координатном простору пиксела, док врши сразмеравање оквира монитора уместо "
+"садржаја прозора, за управљање ХиДПИ мониторима. Не захтева поновно "
+"покретање. Такође је потребно укључити „monitor-config-manager“ да би ова "
+"функција била укључена."
+
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Select window from tab popup"
 msgstr "Бира прозор из језичка искакања"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Cancel tab popup"
 msgstr "Отказивање језичка искакања"
+
+#: data/org.gnome.mutter.gschema.xml.in:161
+#| msgid "Switch monitor"
+msgid "Switch monitor configurations"
+msgstr "Мења подешавања монитора"
+
+#: data/org.gnome.mutter.gschema.xml.in:166
+msgid "Rotates the built-in monitor configuration"
+msgstr "Заокреће уграђена подешавања монитора"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -472,53 +498,53 @@ msgstr "Прелазак на ВТ 11"
 msgid "Switch to VT 12"
 msgstr "Прелазак на ВТ 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Поново укључивање пречица"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1759
+#: src/backends/meta-input-settings.c:2118
 #, c-format
-#| msgid "Mode Switch: Mode %d"
 msgid "Mode Switch (Group %d)"
 msgstr "Режим прекидача (група %d)"
 
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1781
+#: src/backends/meta-input-settings.c:2141
 msgid "Switch monitor"
 msgstr "Промени монитор"
 
-#: src/backends/meta-input-settings.c:1783
+#: src/backends/meta-input-settings.c:2143
 msgid "Show on-screen help"
 msgstr "Прикажи помоћ на екрану"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:927
 msgid "Built-in display"
 msgstr "Уграђени дисплеј"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:950
 msgid "Unknown"
 msgstr "Непознато"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:952
 msgid "Unknown Display"
 msgstr "Непознат дисплеј"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:960
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
-#| msgid ""
-#| "Another compositing manager is already running on screen %i on display "
-#| "\"%s\"."
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
@@ -528,35 +554,8 @@ msgstr ""
 msgid "Bell event"
 msgstr "Звонца"
 
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "„%s“ не даје одзив."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Програм не даје одзив."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Можете мало сачекати док се програм не сабере или приморати програм да "
-"комплетно прекине са радом."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Приморај излаз"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Сачекај"
-
 #: src/core/display.c:608
 #, c-format
-#| msgid "Failed to open X Window System display '%s'\n"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Нисам успео да отворим екран „%s“ Икс система прозора\n"
 
@@ -596,14 +595,34 @@ msgstr "Ради као угнеждени саставник"
 msgid "Run as a full display server, rather than nested"
 msgstr "Ради као пуни сервер приказа, уместо као угнеждени"
 
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "„%s“ не даје одзив."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Програм не даје одзив."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Можете мало сачекати док се програм не сабере или приморати програм да "
+"комплетно прекине са радом."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Приморај излаз"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Сачекај"
+
 #: src/core/mutter.c:39
 #, c-format
-#| msgid ""
-#| "mutter %s\n"
-#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
 "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -632,19 +651,15 @@ msgstr "%d. радни простор"
 
 #: src/core/screen.c:580
 #, c-format
-#| msgid ""
-#| "Display \"%s\" already has a window manager; try using the --replace "
-#| "option to replace the current window manager."
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
 "replace the current window manager."
 msgstr ""
-"Приказ „%s“ већ има управника прозора; пробајте да користите опцију "
-"„--replace“ да замените тренутног управника прозора."
+"Приказ „%s“ већ има управника прозора; пробајте да користите опцију „--"
+"replace“ да замените тренутног управника прозора."
 
 #: src/core/screen.c:665
 #, c-format
-#| msgid "Screen %d on display '%s' is invalid\n"
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Приказ „%d“ на екрану „%s“ није исправан\n"
 
@@ -658,9 +673,6 @@ msgid "Mode Switch: Mode %d"
 msgstr "Режим прекидача: Режим %d"
 
 #: src/x11/session.c:1815
-#| msgid ""
-#| "These windows do not support &quot;save current setup&quot; and will have "
-#| "to be restarted manually next time you log in."
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
