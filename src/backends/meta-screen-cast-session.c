@@ -105,9 +105,32 @@ static gboolean
 handle_start (MetaDBusScreenCastSession *skeleton,
               GDBusMethodInvocation     *invocation)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Stand alone screen casting not yet implemented");
+  MetaScreenCastSession *session = META_SCREEN_CAST_SESSION (skeleton);
+  GError *error = NULL;
+
+  switch (session->session_type)
+    {
+    case META_SCREEN_CAST_SESSION_TYPE_NORMAL:
+      break;
+    case META_SCREEN_CAST_SESSION_TYPE_REMOTE_DESKTOP:
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_FAILED,
+                                             "Must be started from remote desktop session");
+      return TRUE;
+    }
+
+  if (!meta_screen_cast_session_start (session, &error))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_FAILED,
+                                             "Failed to start screen cast: %s",
+                                             error->message);
+      g_error_free (error);
+
+      return TRUE;
+    }
+
+  meta_dbus_screen_cast_session_complete_start (skeleton, invocation);
 
   return TRUE;
 }
@@ -116,9 +139,22 @@ static gboolean
 handle_stop (MetaDBusScreenCastSession *skeleton,
              GDBusMethodInvocation     *invocation)
 {
-  g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
-                                         G_DBUS_ERROR_FAILED,
-                                         "Stand alone screen casting not yet implemented");
+  MetaScreenCastSession *session = META_SCREEN_CAST_SESSION (skeleton);
+
+  switch (session->session_type)
+    {
+    case META_SCREEN_CAST_SESSION_TYPE_NORMAL:
+      break;
+    case META_SCREEN_CAST_SESSION_TYPE_REMOTE_DESKTOP:
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_FAILED,
+                                             "Must be stopped from remote desktop session");
+      return TRUE;
+    }
+
+  meta_screen_cast_session_close (session);
+
+  meta_dbus_screen_cast_session_complete_stop (skeleton, invocation);
 
   return TRUE;
 }
