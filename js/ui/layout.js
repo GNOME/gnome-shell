@@ -684,8 +684,10 @@ var LayoutManager = new Lang.Class({
     },
 
     showKeyboard: function () {
+        this.keyboardBox.show();
         Tweener.addTween(this.keyboardBox,
                          { anchor_y: this.keyboardBox.height,
+                           opacity: 255,
                            time: KEYBOARD_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._showKeyboardComplete,
@@ -711,6 +713,7 @@ var LayoutManager = new Lang.Class({
         }
         Tweener.addTween(this.keyboardBox,
                          { anchor_y: 0,
+                           opacity: 0,
                            time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
                            transition: 'easeInQuad',
                            onComplete: this._hideKeyboardComplete,
@@ -721,6 +724,7 @@ var LayoutManager = new Lang.Class({
     },
 
     _hideKeyboardComplete: function() {
+        this.keyboardBox.hide();
         this._updateRegions();
     },
 
