@@ -163,6 +163,13 @@ var ViewSelector = new Lang.Class({
         this._text.connect('key-focus-out', Lang.bind(this, function() {
             this._searchResults.highlightDefault(false);
         }));
+        this._entry.connect('popup-menu', () => {
+            if (!this._searchActive)
+                return;
+
+            this._entry.menu.close();
+            this._searchResults.popupMenuDefault();
+        });
         this._entry.connect('notify::mapped', Lang.bind(this, this._onMapped));
         global.stage.connect('notify::key-focus', Lang.bind(this, this._onStageKeyFocusChanged));
 

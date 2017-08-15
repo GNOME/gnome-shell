@@ -681,6 +681,15 @@ var SearchResults = new Lang.Class({
         this._setSelected(this._defaultResult, highlight);
     },
 
+    popupMenuDefault: function() {
+        // If we have a search queued up, force the search now.
+        if (this._searchTimeoutId > 0)
+            this._doSearch();
+
+        if (this._defaultResult)
+            this._defaultResult.actor.popup_menu();
+    },
+
     navigateFocus: function(direction) {
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
         if (direction == Gtk.DirectionType.TAB_BACKWARD ||
