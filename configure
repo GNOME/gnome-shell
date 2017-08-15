@@ -52,7 +52,6 @@ sanitycheck() {
 }
 
 sanitycheck MESON 'meson'
-sanitycheck MESONTEST 'mesontest'
 sanitycheck NINJA 'ninja' 'ninja-build'
 
 enable_docs='-Denable-gtk-doc=false'
@@ -121,7 +120,7 @@ install:
 	DESTDIR="\$(DESTDIR)" ${NINJA} ${NINJA_OPT} install
 
 check:
-	${MESONTEST} ${NINJA_OPT}
+	${MESON} test ${NINJA_OPT}
 END
 
 echo "Summary:"
