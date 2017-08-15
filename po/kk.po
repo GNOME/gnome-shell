@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-20 03:49+0000\n"
-"PO-Revision-Date: 2017-07-27 17:09+0500\n"
+"POT-Creation-Date: 2017-08-13 16:24+0000\n"
+"PO-Revision-Date: 2017-08-15 20:48+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -565,23 +565,23 @@ msgstr "Жиі қолданылатын"
 msgid "All"
 msgstr "Барлығы"
 
-#: js/ui/appDisplay.js:1895
+#: js/ui/appDisplay.js:1891
 msgid "New Window"
 msgstr "Жаңа терезе"
 
-#: js/ui/appDisplay.js:1909
+#: js/ui/appDisplay.js:1905
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Бөлек графикалық картаны пайдаланып жөнелту"
 
-#: js/ui/appDisplay.js:1936 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1932 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Таңдамалылардан өшіру"
 
-#: js/ui/appDisplay.js:1942
+#: js/ui/appDisplay.js:1938
 msgid "Add to Favorites"
 msgstr "Таңдамалыларға қосу"
 
-#: js/ui/appDisplay.js:1952
+#: js/ui/appDisplay.js:1948
 msgid "Show Details"
 msgstr "Деректерді көрсету"
 
@@ -1118,18 +1118,33 @@ msgstr "Орнату"
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "extensions.gnome.org адресінен \"%s\" жүктеп алып, орнату керек пе?"
 
-#: js/ui/keyboard.js:740 js/ui/status/keyboard.js:782
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:54
+#, javascript-format
+msgid "%s wants to inhibit shortcuts"
+msgstr "%s жарлықтарды сөндіргісі келеді"
+
+#: js/ui/inhibitShortcutsDialog.js:55
+msgid "Application wants to inhibit shortcuts"
+msgstr "Қолданба жарлықтарды сөндіргісі келеді"
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:64
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr "Сіз жарлықтарды %s басу арқылы қалпына келтіре аласыз."
+
+#: js/ui/inhibitShortcutsDialog.js:69
+msgid "Deny"
+msgstr "Тыйым салу"
+
+#: js/ui/inhibitShortcutsDialog.js:75
+msgid "Allow"
+msgstr "Рұқсат ету"
+
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Пернетақта"
-
-#. translators: 'Hide' is a verb
-#: js/ui/legacyTray.js:65
-msgid "Hide tray"
-msgstr "Жүйелік трейді жасыру"
-
-#: js/ui/legacyTray.js:106
-msgid "Status Icons"
-msgstr "Қалып-күй таңбашалары"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1349,7 +1364,8 @@ msgstr "Нәтижелер жоқ."
 #: js/ui/search.js:768
 #, javascript-format
 msgid "%d more"
-msgstr "тағы %d"
+msgid_plural "%d more"
+msgstr[0] "тағы %d"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1908,19 +1924,19 @@ msgstr "Evolution күнтізбесі"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:372
+#: src/main.c:380
 msgid "Print version"
 msgstr "Баспа нұсқасы"
 
-#: src/main.c:378
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "GDM жүйеге кіру экраны үшін қолданатын режимі"
 
-#: src/main.c:384
+#: src/main.c:392
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Жүйеге кіру экраны үшін арнайы режимді, мыс. \"gdm\", қолдану"
 
-#: src/main.c:390
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Қолжетерлік режимдерді тізіп шығу"
 
@@ -1965,6 +1981,12 @@ msgstr[0] "%u кірісі"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Жүйелік дыбыстар"
+
+#~ msgid "Hide tray"
+#~ msgstr "Жүйелік трейді жасыру"
+
+#~ msgid "Status Icons"
+#~ msgstr "Қалып-күй таңбашалары"
 
 #~ msgid "Events"
 #~ msgstr "Оқиғалар"
