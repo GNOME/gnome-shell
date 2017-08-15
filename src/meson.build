@@ -182,10 +182,8 @@ if enable_recorder
 endif
 
 
-libshell_enums = gnome.mkenums('shell-enum-types',
-  sources: libshell_public_headers,
-  c_template: 'shell-enum-types.c.in',
-  h_template: 'shell-enum-types.h.in'
+libshell_enums = gnome.mkenums_simple('shell-enum-types',
+  sources: libshell_public_headers
 )
 
 libshell_gir_sources = [

@@ -82,10 +82,12 @@ st_sources = [
   'st-widget.c'
 ]
 
-st_enums = gnome.mkenums('st-enum-types',
+st_enums = gnome.mkenums_simple('st-enum-types',
   sources: st_headers,
-  c_template: 'st-enum-types.c.in',
-  h_template: 'st-enum-types.h.in'
+  header_prefix: '''
+#if !defined(ST_H_INSIDE) && !defined(ST_COMPILATION)
+#error "Only <st/st.h> can be included directly.h"
+#endif'''
 )
 
 st_gir_sources = st_sources + st_private_headers + st_headers + st_enums
