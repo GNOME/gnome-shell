@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-04 12:56+0000\n"
-"PO-Revision-Date: 2017-08-07 10:04+0200\n"
+"POT-Creation-Date: 2017-08-13 16:24+0000\n"
+"PO-Revision-Date: 2017-08-17 00:49+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician\n"
 "Language: gl\n"
@@ -573,23 +573,23 @@ msgstr "Frecuentes"
 msgid "All"
 msgstr "Todos"
 
-#: js/ui/appDisplay.js:1895
+#: js/ui/appDisplay.js:1891
 msgid "New Window"
 msgstr "Xanela nova"
 
-#: js/ui/appDisplay.js:1909
+#: js/ui/appDisplay.js:1905
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Iniciar usando a Tarxeta Gráfica Adicada"
 
-#: js/ui/appDisplay.js:1936 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1932 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Retirar dos marcadores"
 
-#: js/ui/appDisplay.js:1942
+#: js/ui/appDisplay.js:1938
 msgid "Add to Favorites"
 msgstr "Engadir aos favoritos"
 
-#: js/ui/appDisplay.js:1952
+#: js/ui/appDisplay.js:1948
 msgid "Show Details"
 msgstr "Mostrar detalles"
 
@@ -738,7 +738,6 @@ msgstr "Limpar todo"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-#| msgid "“%s” is ready"
 msgid "“%s” is not responding."
 msgstr "«%s» non está respondendo."
 
@@ -1143,6 +1142,7 @@ msgstr "%s quere inhibir os atallos de teclado"
 msgid "Application wants to inhibit shortcuts"
 msgstr "O aplicativo quere inhibir os atallos de teclado"
 
+#. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:64
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
@@ -1159,15 +1159,6 @@ msgstr "Permitir"
 #: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Teclado"
-
-#. translators: 'Hide' is a verb
-#: js/ui/legacyTray.js:65
-msgid "Hide tray"
-msgstr "Ocultar bandexa"
-
-#: js/ui/legacyTray.js:106
-msgid "Status Icons"
-msgstr "Iconas de estado"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1388,8 +1379,11 @@ msgstr "Sen resultados."
 
 #: js/ui/search.js:768
 #, javascript-format
+#| msgid "%d more"
 msgid "%d more"
-msgstr "%d máis"
+msgid_plural "%d more"
+msgstr[0] "%d máis"
+msgstr[1] "%d máis"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1953,21 +1947,21 @@ msgstr "Calendario de Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:372
+#: src/main.c:380
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: src/main.c:378
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para a pantalla de inicio"
 
-#: src/main.c:384
+#: src/main.c:392
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Usar un modo específico, por exemplo, «gdm» para a pantalla de inicio de "
 "sesión"
 
-#: src/main.c:390
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Listar os modos posíbeis"
 
@@ -2014,6 +2008,12 @@ msgstr[1] "%u entradas"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sons do sistema"
+
+#~ msgid "Hide tray"
+#~ msgstr "Ocultar bandexa"
+
+#~ msgid "Status Icons"
+#~ msgstr "Iconas de estado"
 
 #~ msgid "Events"
 #~ msgstr "Eventos"
