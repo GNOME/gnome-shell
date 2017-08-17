@@ -4792,6 +4792,16 @@ meta_test_monitor_migrated_rotated (void)
     g_error ("Failed to remove test data output file: %s", error->message);
 }
 
+static void
+add_monitor_test (const char *test_path,
+                  GTestFunc   test_func)
+{
+  g_test_add (test_path, gpointer, NULL,
+              NULL,
+              (void (* ) (void **, const void *)) test_func,
+              NULL);
+}
+
 void
 init_monitor_tests (void)
 {
@@ -4801,68 +4811,68 @@ init_monitor_tests (void)
                                                   MONITOR_TEST_FLAG_NO_STORED);
   meta_monitor_manager_test_init_test_setup (initial_test_setup);
 
-  g_test_add_func ("/backends/monitor/initial-linear-config",
-                   meta_test_monitor_initial_linear_config);
-  g_test_add_func ("/backends/monitor/one-disconnected-linear-config",
-                   meta_test_monitor_one_disconnected_linear_config);
-  g_test_add_func ("/backends/monitor/one-off-linear-config",
-                   meta_test_monitor_one_off_linear_config);
-  g_test_add_func ("/backends/monitor/preferred-linear-config",
-                   meta_test_monitor_preferred_linear_config);
-  g_test_add_func ("/backends/monitor/tiled-linear-config",
-                   meta_test_monitor_tiled_linear_config);
-  g_test_add_func ("/backends/monitor/tiled-non-preferred-linear-config",
-                   meta_test_monitor_tiled_non_preferred_linear_config);
-  g_test_add_func ("/backends/monitor/tiled-non-main-origin-linear-config",
-                   meta_test_monitor_tiled_non_main_origin_linear_config);
-  g_test_add_func ("/backends/monitor/hidpi-linear-config",
-                   meta_test_monitor_hidpi_linear_config);
-  g_test_add_func ("/backends/monitor/suggested-config",
-                   meta_test_monitor_suggested_config);
-  g_test_add_func ("/backends/monitor/limited-crtcs",
-                   meta_test_monitor_limited_crtcs);
-  g_test_add_func ("/backends/monitor/lid-switch-config",
-                   meta_test_monitor_lid_switch_config);
-  g_test_add_func ("/backends/monitor/lid-opened-config",
-                   meta_test_monitor_lid_opened_config);
-  g_test_add_func ("/backends/monitor/lid-closed-no-external",
-                   meta_test_monitor_lid_closed_no_external);
-  g_test_add_func ("/backends/monitor/no-outputs",
-                   meta_test_monitor_no_outputs);
-  g_test_add_func ("/backends/monitor/underscanning-config",
-                   meta_test_monitor_underscanning_config);
+  add_monitor_test ("/backends/monitor/initial-linear-config",
+                    meta_test_monitor_initial_linear_config);
+  add_monitor_test ("/backends/monitor/one-disconnected-linear-config",
+                    meta_test_monitor_one_disconnected_linear_config);
+  add_monitor_test ("/backends/monitor/one-off-linear-config",
+                    meta_test_monitor_one_off_linear_config);
+  add_monitor_test ("/backends/monitor/preferred-linear-config",
+                    meta_test_monitor_preferred_linear_config);
+  add_monitor_test ("/backends/monitor/tiled-linear-config",
+                    meta_test_monitor_tiled_linear_config);
+  add_monitor_test ("/backends/monitor/tiled-non-preferred-linear-config",
+                    meta_test_monitor_tiled_non_preferred_linear_config);
+  add_monitor_test ("/backends/monitor/tiled-non-main-origin-linear-config",
+                    meta_test_monitor_tiled_non_main_origin_linear_config);
+  add_monitor_test ("/backends/monitor/hidpi-linear-config",
+                    meta_test_monitor_hidpi_linear_config);
+  add_monitor_test ("/backends/monitor/suggested-config",
+                    meta_test_monitor_suggested_config);
+  add_monitor_test ("/backends/monitor/limited-crtcs",
+                    meta_test_monitor_limited_crtcs);
+  add_monitor_test ("/backends/monitor/lid-switch-config",
+                    meta_test_monitor_lid_switch_config);
+  add_monitor_test ("/backends/monitor/lid-opened-config",
+                    meta_test_monitor_lid_opened_config);
+  add_monitor_test ("/backends/monitor/lid-closed-no-external",
+                    meta_test_monitor_lid_closed_no_external);
+  add_monitor_test ("/backends/monitor/no-outputs",
+                    meta_test_monitor_no_outputs);
+  add_monitor_test ("/backends/monitor/underscanning-config",
+                    meta_test_monitor_underscanning_config);
 
-  g_test_add_func ("/backends/monitor/custom/vertical-config",
-                   meta_test_monitor_custom_vertical_config);
-  g_test_add_func ("/backends/monitor/custom/primary-config",
-                   meta_test_monitor_custom_primary_config);
-  g_test_add_func ("/backends/monitor/custom/underscanning-config",
-                   meta_test_monitor_custom_underscanning_config);
-  g_test_add_func ("/backends/monitor/custom/scale-config",
-                   meta_test_monitor_custom_scale_config);
-  g_test_add_func ("/backends/monitor/custom/fractional-scale-config",
-                   meta_test_monitor_custom_fractional_scale_config);
-  g_test_add_func ("/backends/monitor/custom/high-precision-fractional-scale-config",
-                   meta_test_monitor_custom_high_precision_fractional_scale_config);
-  g_test_add_func ("/backends/monitor/custom/tiled-config",
-                   meta_test_monitor_custom_tiled_config);
-  g_test_add_func ("/backends/monitor/custom/tiled-custom-resolution-config",
-                   meta_test_monitor_custom_tiled_custom_resolution_config);
-  g_test_add_func ("/backends/monitor/custom/tiled-non-preferred-config",
-                   meta_test_monitor_custom_tiled_non_preferred_config);
-  g_test_add_func ("/backends/monitor/custom/mirrored-config",
-                   meta_test_monitor_custom_mirrored_config);
-  g_test_add_func ("/backends/monitor/custom/first-rotated-config",
-                   meta_test_monitor_custom_first_rotated_config);
-  g_test_add_func ("/backends/monitor/custom/second-rotated-config",
-                   meta_test_monitor_custom_second_rotated_config);
-  g_test_add_func ("/backends/monitor/custom/second-rotated-tiled-config",
-                   meta_test_monitor_custom_second_rotated_tiled_config);
-  g_test_add_func ("/backends/monitor/custom/second-rotated-nonnative-config",
-                   meta_test_monitor_custom_second_rotated_nonnative_config);
-  g_test_add_func ("/backends/monitor/custom/interlaced-config",
-                   meta_test_monitor_custom_interlaced_config);
+  add_monitor_test ("/backends/monitor/custom/vertical-config",
+                    meta_test_monitor_custom_vertical_config);
+  add_monitor_test ("/backends/monitor/custom/primary-config",
+                    meta_test_monitor_custom_primary_config);
+  add_monitor_test ("/backends/monitor/custom/underscanning-config",
+                    meta_test_monitor_custom_underscanning_config);
+  add_monitor_test ("/backends/monitor/custom/scale-config",
+                    meta_test_monitor_custom_scale_config);
+  add_monitor_test ("/backends/monitor/custom/fractional-scale-config",
+                    meta_test_monitor_custom_fractional_scale_config);
+  add_monitor_test ("/backends/monitor/custom/high-precision-fractional-scale-config",
+                    meta_test_monitor_custom_high_precision_fractional_scale_config);
+  add_monitor_test ("/backends/monitor/custom/tiled-config",
+                    meta_test_monitor_custom_tiled_config);
+  add_monitor_test ("/backends/monitor/custom/tiled-custom-resolution-config",
+                    meta_test_monitor_custom_tiled_custom_resolution_config);
+  add_monitor_test ("/backends/monitor/custom/tiled-non-preferred-config",
+                    meta_test_monitor_custom_tiled_non_preferred_config);
+  add_monitor_test ("/backends/monitor/custom/mirrored-config",
+                    meta_test_monitor_custom_mirrored_config);
+  add_monitor_test ("/backends/monitor/custom/first-rotated-config",
+                    meta_test_monitor_custom_first_rotated_config);
+  add_monitor_test ("/backends/monitor/custom/second-rotated-config",
+                    meta_test_monitor_custom_second_rotated_config);
+  add_monitor_test ("/backends/monitor/custom/second-rotated-tiled-config",
+                    meta_test_monitor_custom_second_rotated_tiled_config);
+  add_monitor_test ("/backends/monitor/custom/second-rotated-nonnative-config",
+                    meta_test_monitor_custom_second_rotated_nonnative_config);
+  add_monitor_test ("/backends/monitor/custom/interlaced-config",
+                    meta_test_monitor_custom_interlaced_config);
 
-  g_test_add_func ("/backends/monitor/migrated/rotated",
-                   meta_test_monitor_migrated_rotated);
+  add_monitor_test ("/backends/monitor/migrated/rotated",
+                    meta_test_monitor_migrated_rotated);
 }
