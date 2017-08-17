@@ -148,31 +148,124 @@ gtk_surface_surface_destroyed (MetaWaylandGtkSurface *gtk_surface)
 }
 
 static void
-fill_states (struct wl_array *states,
-             MetaWindow      *window)
+fill_edge_states (struct wl_array *states,
+                  MetaWindow      *window)
 {
   uint32_t *s;
 
-  if (window->tile_mode == META_TILE_LEFT ||
-      window->tile_mode == META_TILE_RIGHT)
+  /* Top */
+  if (window->edge_constraints[0] != META_EDGE_CONSTRAINT_MONITOR)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_EDGE_CONSTRAINT_RESIZABLE_TOP;
+    }
+
+  /* Right */
+  if (window->edge_constraints[1] != META_EDGE_CONSTRAINT_MONITOR)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_EDGE_CONSTRAINT_RESIZABLE_RIGHT;
+    }
+
+  /* Bottom */
+  if (window->edge_constraints[2] != META_EDGE_CONSTRAINT_MONITOR)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_EDGE_CONSTRAINT_RESIZABLE_BOTTOM;
+    }
+
+  /* Left */
+  if (window->edge_constraints[3] != META_EDGE_CONSTRAINT_MONITOR)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_EDGE_CONSTRAINT_RESIZABLE_LEFT;
+    }
+}
+
+static void
+send_configure_edges (MetaWaylandGtkSurface *gtk_surface,
+                      MetaWindow            *window)
+{
+  struct wl_array edge_states;
+
+  wl_array_init (&edge_states);
+  fill_edge_states (&edge_states, window);
+
+  gtk_surface1_send_configure_edges (gtk_surface->resource, &edge_states);
+
+  wl_array_release (&edge_states);
+}
+
+static void
+fill_states (struct wl_array    *states,
+             MetaWindow         *window,
+             struct wl_resource *resource)
+{
+  uint32_t *s;
+  guint version;
+
+  version = wl_resource_get_version (resource);
+
+  if (version < GTK_SURFACE1_CONFIGURE_EDGES_SINCE_VERSION &&
+      (window->tile_mode == META_TILE_LEFT ||
+       window->tile_mode == META_TILE_RIGHT))
     {
       s = wl_array_add (states, sizeof *s);
       *s = GTK_SURFACE1_STATE_TILED;
     }
+
+  if (version >= GTK_SURFACE1_STATE_TILED_TOP_SINCE_VERSION &&
+      window->edge_constraints[0] != META_EDGE_CONSTRAINT_NONE)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_STATE_TILED_TOP;
+    }
+
+  if (version >= GTK_SURFACE1_STATE_TILED_RIGHT_SINCE_VERSION &&
+      window->edge_constraints[1] != META_EDGE_CONSTRAINT_NONE)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_STATE_TILED_RIGHT;
+    }
+
+  if (version >= GTK_SURFACE1_STATE_TILED_BOTTOM_SINCE_VERSION &&
+      window->edge_constraints[2] != META_EDGE_CONSTRAINT_NONE)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_STATE_TILED_BOTTOM;
+    }
+
+  if (version >= GTK_SURFACE1_STATE_TILED_LEFT_SINCE_VERSION &&
+      window->edge_constraints[3] != META_EDGE_CONSTRAINT_NONE)
+    {
+      s = wl_array_add (states, sizeof *s);
+      *s = GTK_SURFACE1_STATE_TILED_LEFT;
+    }
+}
+
+static void
+send_configure (MetaWaylandGtkSurface *gtk_surface,
+                MetaWindow            *window)
+{
+  struct wl_array states;
+
+  wl_array_init (&states);
+  fill_states (&states, window, gtk_surface->resource);
+
+  gtk_surface1_send_configure (gtk_surface->resource, &states);
+
+  wl_array_release (&states);
 }
 
 static void
 on_configure (MetaWaylandSurface    *surface,
               MetaWaylandGtkSurface *gtk_surface)
 {
-  struct wl_array states;
+  send_configure (gtk_surface, surface->window);
 
-  wl_array_init (&states);
-  fill_states (&states, surface->window);
 
-  gtk_surface1_send_configure (gtk_surface->resource, &states);
-
-  wl_array_release (&states);
+  if (wl_resource_get_version (gtk_surface->resource) >= GTK_SURFACE1_CONFIGURE_EDGES_SINCE_VERSION)
+    send_configure_edges (gtk_surface, surface->window);
 }
 
 static void
