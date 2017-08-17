@@ -135,6 +135,7 @@ static void set_workspace_state (MetaWindow    *window,
 
 static MetaWindow * meta_window_find_tile_match (MetaWindow   *window,
                                                  MetaTileMode  mode);
+static void update_edge_constraints (MetaWindow *window);
 
 /* Idle handlers for the three queues (run with meta_later_add()). The
  * "data" parameter in each case will be a GINT_TO_POINTER of the
@@ -2765,6 +2766,9 @@ meta_window_maximize_internal (MetaWindow        *window,
   window->maximized_vertically =
     window->maximized_vertically   || maximize_vertically;
 
+  /* Update the edge constraints */
+  update_edge_constraints (window);;
+
   meta_window_recalc_features (window);
   set_net_wm_state (window);
 
@@ -3021,6 +3025,63 @@ meta_window_update_tile_fraction (MetaWindow *window,
     meta_window_tile (tile_match, tile_match->tile_mode);
 }
 
+static void
+update_edge_constraints (MetaWindow *window)
+{
+  switch (window->tile_mode)
+    {
+    case META_TILE_NONE:
+      window->edge_constraints[0] = META_EDGE_CONSTRAINT_NONE;
+      window->edge_constraints[1] = META_EDGE_CONSTRAINT_NONE;
+      window->edge_constraints[2] = META_EDGE_CONSTRAINT_NONE;
+      window->edge_constraints[3] = META_EDGE_CONSTRAINT_NONE;
+      break;
+
+    case META_TILE_MAXIMIZED:
+      window->edge_constraints[0] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[1] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[2] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[3] = META_EDGE_CONSTRAINT_MONITOR;
+      break;
+
+    case META_TILE_LEFT:
+      window->edge_constraints[0] = META_EDGE_CONSTRAINT_MONITOR;
+
+      if (window->tile_match)
+        window->edge_constraints[1] = META_EDGE_CONSTRAINT_WINDOW;
+      else
+        window->edge_constraints[1] = META_EDGE_CONSTRAINT_NONE;
+
+      window->edge_constraints[2] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[3] = META_EDGE_CONSTRAINT_MONITOR;
+      break;
+
+    case META_TILE_RIGHT:
+      window->edge_constraints[0] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[1] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[2] = META_EDGE_CONSTRAINT_MONITOR;
+
+      if (window->tile_match)
+        window->edge_constraints[3] = META_EDGE_CONSTRAINT_WINDOW;
+      else
+        window->edge_constraints[3] = META_EDGE_CONSTRAINT_NONE;
+      break;
+    }
+
+  /* h/vmaximize also modify the edge constraints */
+  if (window->maximized_vertically)
+    {
+      window->edge_constraints[0] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[2] = META_EDGE_CONSTRAINT_MONITOR;
+    }
+
+  if (window->maximized_horizontally)
+    {
+      window->edge_constraints[1] = META_EDGE_CONSTRAINT_MONITOR;
+      window->edge_constraints[3] = META_EDGE_CONSTRAINT_MONITOR;
+    }
+}
+
 void
 meta_window_tile (MetaWindow   *window,
                   MetaTileMode  tile_mode)
@@ -3042,6 +3103,9 @@ meta_window_tile (MetaWindow   *window,
 
   meta_window_maximize_internal (window, directions, NULL);
   meta_screen_update_tile_preview (window->screen, FALSE);
+
+  /* Setup the edge constraints */
+  update_edge_constraints (window);
 
   meta_window_get_frame_rect (window, &old_frame_rect);
   meta_window_get_buffer_rect (window, &old_buffer_rect);
@@ -3183,6 +3247,9 @@ meta_window_unmaximize (MetaWindow        *window,
         window->maximized_horizontally && !unmaximize_horizontally;
       window->maximized_vertically =
         window->maximized_vertically   && !unmaximize_vertically;
+
+      /* Update the edge constraints */
+      update_edge_constraints (window);
 
       /* recalc_features() will eventually clear the cached frame
        * extents, but we need the correct frame extents in the code below,
