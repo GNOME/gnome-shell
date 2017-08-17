@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 srcdir=`dirname $0`
 stamp=${1}
