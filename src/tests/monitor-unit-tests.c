@@ -4793,11 +4793,24 @@ meta_test_monitor_migrated_rotated (void)
 }
 
 static void
+test_case_setup (void       **fixture,
+                 const void   *data)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorConfigManager *config_manager = monitor_manager->config_manager;
+
+  meta_monitor_config_manager_set_current (config_manager, NULL);
+  meta_monitor_config_manager_clear_history (config_manager);
+}
+
+static void
 add_monitor_test (const char *test_path,
                   GTestFunc   test_func)
 {
   g_test_add (test_path, gpointer, NULL,
-              NULL,
+              test_case_setup,
               (void (* ) (void **, const void *)) test_func,
               NULL);
 }
