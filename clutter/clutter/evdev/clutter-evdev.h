@@ -120,6 +120,9 @@ CLUTTER_AVAILABLE_IN_1_20
 void clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
                                               xkb_layout_index_t    idx);
 
+CLUTTER_AVAILABLE_IN_MUTTER
+xkb_layout_index_t clutter_evdev_get_keyboard_layout_index (ClutterDeviceManager *evdev);
+
 CLUTTER_AVAILABLE_IN_1_26
 void clutter_evdev_set_keyboard_numlock (ClutterDeviceManager *evdev,
                                          gboolean              numlock_state);

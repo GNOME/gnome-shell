@@ -2603,6 +2603,21 @@ clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
 }
 
 /**
+ * clutter_evdev_get_keyboard_layout_index: (skip)
+ */
+xkb_layout_index_t
+clutter_evdev_get_keyboard_layout_index (ClutterDeviceManager *evdev)
+{
+  ClutterDeviceManagerEvdev *manager_evdev;
+  struct xkb_state *state;
+
+  manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
+  state = manager_evdev->priv->main_seat->xkb;
+
+  return xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_LOCKED);
+}
+
+/**
  * clutter_evdev_set_keyboard_numlock: (skip)
  * @evdev: the #ClutterDeviceManager created by the evdev backend
  * @numlock_set: TRUE to set NumLock ON, FALSE otherwise.
