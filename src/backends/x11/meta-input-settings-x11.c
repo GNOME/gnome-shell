@@ -233,6 +233,17 @@ meta_input_settings_x11_set_tap_enabled (MetaInputSettings  *settings,
 }
 
 static void
+meta_input_settings_x11_set_tap_and_drag_enabled (MetaInputSettings  *settings,
+                                                  ClutterInputDevice *device,
+                                                  gboolean            enabled)
+{
+  guchar value = (enabled) ? 1 : 0;
+
+  change_property (device, "libinput TappingDrag Enabled",
+                   XA_INTEGER, 8, &value, 1);
+}
+
+static void
 meta_input_settings_x11_set_invert_scroll (MetaInputSettings  *settings,
                                            ClutterInputDevice *device,
                                            gboolean            inverted)
@@ -779,6 +790,7 @@ meta_input_settings_x11_class_init (MetaInputSettingsX11Class *klass)
   input_settings_class->set_speed = meta_input_settings_x11_set_speed;
   input_settings_class->set_left_handed = meta_input_settings_x11_set_left_handed;
   input_settings_class->set_tap_enabled = meta_input_settings_x11_set_tap_enabled;
+  input_settings_class->set_tap_and_drag_enabled = meta_input_settings_x11_set_tap_and_drag_enabled;
   input_settings_class->set_disable_while_typing = meta_input_settings_x11_set_disable_while_typing;
   input_settings_class->set_invert_scroll = meta_input_settings_x11_set_invert_scroll;
   input_settings_class->set_edge_scroll = meta_input_settings_x11_set_edge_scroll;

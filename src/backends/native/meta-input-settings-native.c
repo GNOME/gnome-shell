@@ -122,6 +122,24 @@ meta_input_settings_native_set_tap_enabled (MetaInputSettings  *settings,
 }
 
 static void
+meta_input_settings_native_set_tap_and_drag_enabled (MetaInputSettings  *settings,
+                                                     ClutterInputDevice *device,
+                                                     gboolean            enabled)
+{
+  struct libinput_device *libinput_device;
+
+  libinput_device = clutter_evdev_input_device_get_libinput_device (device);
+  if (!libinput_device)
+    return;
+
+  if (libinput_device_config_tap_get_finger_count (libinput_device) > 0)
+    libinput_device_config_tap_set_drag_enabled (libinput_device,
+                                                 enabled ?
+                                                 LIBINPUT_CONFIG_DRAG_ENABLED :
+                                                 LIBINPUT_CONFIG_DRAG_DISABLED);
+}
+
+static void
 meta_input_settings_native_set_disable_while_typing (MetaInputSettings  *settings,
                                                      ClutterInputDevice *device,
                                                      gboolean            enabled)
@@ -530,6 +548,7 @@ meta_input_settings_native_class_init (MetaInputSettingsNativeClass *klass)
   input_settings_class->set_speed = meta_input_settings_native_set_speed;
   input_settings_class->set_left_handed = meta_input_settings_native_set_left_handed;
   input_settings_class->set_tap_enabled = meta_input_settings_native_set_tap_enabled;
+  input_settings_class->set_tap_and_drag_enabled = meta_input_settings_native_set_tap_and_drag_enabled;
   input_settings_class->set_invert_scroll = meta_input_settings_native_set_invert_scroll;
   input_settings_class->set_edge_scroll = meta_input_settings_native_set_edge_scroll;
   input_settings_class->set_two_finger_scroll = meta_input_settings_native_set_two_finger_scroll;
