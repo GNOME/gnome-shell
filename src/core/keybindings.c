@@ -347,36 +347,43 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
                          int                     keysym,
                          MetaResolvedKeyCombo   *resolved_combo)
 {
-  GArray *retval;
+  MetaBackend *backend = meta_get_backend ();
+  struct xkb_keymap *keymap;
+  xkb_layout_index_t layout_index;
+  xkb_level_index_t layout_level;
+  GArray *keycodes;
   int keycode;
 
-  retval = g_array_new (FALSE, FALSE, sizeof (xkb_keysym_t));
+  keycodes = g_array_new (FALSE, FALSE, sizeof (xkb_keysym_t));
 
   /* Special-case: Fake mutter keysym */
   if (keysym == META_KEY_ABOVE_TAB)
     {
       keycode = KEY_GRAVE + 8;
-      g_array_append_val (retval, keycode);
+      g_array_append_val (keycodes, keycode);
       goto out;
     }
 
-  {
-    MetaBackend *backend = meta_get_backend ();
-    struct xkb_keymap *keymap = meta_backend_get_keymap (backend);
-    xkb_layout_index_t i;
-    xkb_level_index_t j;
+  keymap = meta_backend_get_keymap (backend);
+  layout_index = meta_backend_get_keymap_layout_group (backend);
 
-    for (i = 0; i < xkb_keymap_num_layouts (keymap); i++)
-      for (j = 0; j < keys->keymap_num_levels; j++)
-        {
-          FindKeysymData search_data = { retval, keysym, i, j };
-          xkb_keymap_key_for_each (keymap, get_keycodes_for_keysym_iter, &search_data);
-        }
-  }
+  for (layout_level = 0; layout_level < keys->keymap_num_levels; layout_level++)
+    {
+      FindKeysymData search_data = (FindKeysymData) {
+        .keycodes = keycodes,
+        .keysym = keysym,
+        .layout = layout_index,
+        .level = layout_level
+      };
+      xkb_keymap_key_for_each (keymap, get_keycodes_for_keysym_iter,
+                               &search_data);
+    }
 
  out:
-  resolved_combo->len = retval->len;
-  resolved_combo->keycodes = (xkb_keycode_t *) g_array_free (retval, retval->len == 0 ? TRUE : FALSE);
+  resolved_combo->len = keycodes->len;
+  resolved_combo->keycodes =
+    (xkb_keycode_t *) g_array_free (keycodes,
+                                    keycodes->len == 0 ? TRUE : FALSE);
 }
 
 static void
@@ -927,10 +934,8 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
 }
 
 static void
-on_keymap_changed (MetaBackend *backend,
-                   gpointer     user_data)
+reload_keybindings (MetaDisplay *display)
 {
-  MetaDisplay *display = user_data;
   MetaKeyBindingManager *keys = &display->key_binding_manager;
 
   ungrab_key_bindings (display);
@@ -4156,6 +4161,7 @@ void
 meta_display_init_keys (MetaDisplay *display)
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
+  MetaBackend *backend = meta_get_backend ();
   MetaKeyHandler *handler;
 
   /* Keybindings */
@@ -4208,10 +4214,8 @@ meta_display_init_keys (MetaDisplay *display)
 
   meta_prefs_add_listener (prefs_changed_callback, display);
 
-  {
-    MetaBackend *backend = meta_get_backend ();
-
-    g_signal_connect (backend, "keymap-changed",
-                      G_CALLBACK (on_keymap_changed), display);
-  }
+  g_signal_connect_swapped (backend, "keymap-changed",
+                            G_CALLBACK (reload_keybindings), display);
+  g_signal_connect_swapped (backend, "keymap-layout-group-changed",
+                            G_CALLBACK (reload_keybindings), display);
 }
