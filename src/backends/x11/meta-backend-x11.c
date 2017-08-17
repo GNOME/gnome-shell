@@ -67,6 +67,7 @@ struct _MetaBackendX11Private
   uint8_t xkb_error_base;
 
   struct xkb_keymap *keymap;
+  xkb_layout_index_t keymap_layout_group;
 
   MetaLogicalMonitor *cached_current_logical_monitor;
 };
@@ -282,11 +283,17 @@ handle_host_xevent (MetaBackend *backend,
 
       if (xkb_ev->any.device == META_VIRTUAL_CORE_KEYBOARD_ID)
         {
+          int layout_group;
+
           switch (xkb_ev->any.xkb_type)
             {
             case XkbNewKeyboardNotify:
             case XkbMapNotify:
               keymap_changed (backend);
+              break;
+            case XkbStateNotify:
+              layout_group = xkb_ev->state.locked_group;
+              priv->keymap_layout_group = layout_group;
               break;
             default:
               break;
@@ -424,7 +431,6 @@ meta_backend_x11_post_init (MetaBackend *backend)
   if (!has_xi)
     meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
 
-  priv->xcb = XGetXCBConnection (priv->xdisplay);
   if (!xkb_x11_setup_xkb_extension (priv->xcb,
                                     XKB_X11_MIN_MAJOR_XKB_VERSION,
                                     XKB_X11_MIN_MINOR_XKB_VERSION,
@@ -568,6 +574,15 @@ meta_backend_x11_get_keymap (MetaBackend *backend)
   return priv->keymap;
 }
 
+static xkb_layout_index_t
+meta_backend_x11_get_keymap_layout_group (MetaBackend *backend)
+{
+  MetaBackendX11 *x11 = META_BACKEND_X11 (backend);
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+
+  return priv->keymap_layout_group;
+}
+
 static void
 meta_backend_x11_set_numlock (MetaBackend *backend,
                               gboolean     numlock_state)
@@ -590,6 +605,25 @@ meta_backend_x11_get_xkb_event_base (MetaBackendX11 *x11)
   MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
 
   return priv->xkb_event_base;
+}
+
+static void
+init_xkb_state (MetaBackendX11 *x11)
+{
+  MetaBackendX11Private *priv = meta_backend_x11_get_instance_private (x11);
+  struct xkb_keymap *keymap;
+  int32_t device_id;
+  struct xkb_state *state;
+
+  keymap = meta_backend_get_keymap (META_BACKEND (x11));
+
+  device_id = xkb_x11_get_core_keyboard_device_id (priv->xcb);
+  state = xkb_x11_state_new_from_device (keymap, priv->xcb, device_id);
+
+  priv->keymap_layout_group =
+    xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_LOCKED);
+
+  xkb_state_unref (state);
 }
 
 static gboolean
@@ -619,7 +653,10 @@ meta_backend_x11_initable_init (GInitable    *initable,
     }
 
   priv->xdisplay = xdisplay;
+  priv->xcb = XGetXCBConnection (priv->xdisplay);
   clutter_x11_set_display (xdisplay);
+
+  init_xkb_state (x11);
 
   return initable_parent_iface->init (initable, cancellable, error);
 }
@@ -645,6 +682,7 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;
   backend_class->get_current_logical_monitor = meta_backend_x11_get_current_logical_monitor;
   backend_class->get_keymap = meta_backend_x11_get_keymap;
+  backend_class->get_keymap_layout_group = meta_backend_x11_get_keymap_layout_group;
   backend_class->set_numlock = meta_backend_x11_set_numlock;
 }
 

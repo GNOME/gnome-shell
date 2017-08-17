@@ -507,6 +507,14 @@ meta_backend_native_get_keymap (MetaBackend *backend)
   return clutter_evdev_get_keyboard_map (manager);
 }
 
+static xkb_layout_index_t
+meta_backend_native_get_keymap_layout_group (MetaBackend *backend)
+{
+  ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+
+  return clutter_evdev_get_keyboard_layout_index (manager);
+}
+
 static void
 meta_backend_native_lock_layout_group (MetaBackend *backend,
                                        guint        idx)
@@ -579,6 +587,7 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
 
   backend_class->set_keymap = meta_backend_native_set_keymap;
   backend_class->get_keymap = meta_backend_native_get_keymap;
+  backend_class->get_keymap_layout_group = meta_backend_native_get_keymap_layout_group;
   backend_class->lock_layout_group = meta_backend_native_lock_layout_group;
   backend_class->get_relative_motion_deltas = meta_backend_native_get_relative_motion_deltas;
   backend_class->update_screen_size = meta_backend_native_update_screen_size;

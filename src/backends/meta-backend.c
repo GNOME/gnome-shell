@@ -699,6 +699,12 @@ meta_backend_get_keymap (MetaBackend *backend)
   return META_BACKEND_GET_CLASS (backend)->get_keymap (backend);
 }
 
+xkb_layout_index_t
+meta_backend_get_keymap_layout_group (MetaBackend *backend)
+{
+  return META_BACKEND_GET_CLASS (backend)->get_keymap_layout_group (backend);
+}
+
 void
 meta_backend_lock_layout_group (MetaBackend *backend,
                                 guint idx)

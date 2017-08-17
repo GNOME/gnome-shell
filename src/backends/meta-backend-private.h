@@ -83,6 +83,8 @@ struct _MetaBackendClass
 
   struct xkb_keymap * (* get_keymap) (MetaBackend *backend);
 
+  xkb_layout_index_t (* get_keymap_layout_group) (MetaBackend *backend);
+
   void (* lock_layout_group) (MetaBackend *backend,
                               guint        idx);
 
@@ -132,6 +134,8 @@ void meta_backend_warp_pointer (MetaBackend *backend,
 MetaLogicalMonitor * meta_backend_get_current_logical_monitor (MetaBackend *backend);
 
 struct xkb_keymap * meta_backend_get_keymap (MetaBackend *backend);
+
+xkb_layout_index_t meta_backend_get_keymap_layout_group (MetaBackend *backend);
 
 void meta_backend_update_last_device (MetaBackend *backend,
                                       int          device_id);
