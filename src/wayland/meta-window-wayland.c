@@ -386,12 +386,16 @@ meta_window_wayland_update_main_monitor (MetaWindow *window,
   if (from == to)
     return;
 
+  if (from == NULL || to == NULL)
+    {
+      window->monitor = to;
+      return;
+    }
+
   from_scale = meta_logical_monitor_get_scale (from);
   to_scale = meta_logical_monitor_get_scale (to);
 
-  /* If we are setting the first output, unsetting the output, or the new has
-   * the same scale as the old no need to do any further checking. */
-  if (from == NULL || to == NULL || from_scale == to_scale)
+  if (from_scale == to_scale)
     {
       window->monitor = to;
       return;

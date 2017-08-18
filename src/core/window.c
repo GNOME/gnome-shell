@@ -3584,19 +3584,26 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
   if (!new)
     new = meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
 
-  if (window->tile_mode != META_TILE_NONE)
-    window->tile_monitor_number = new->number;
+  if (new && old)
+    {
+      if (window->tile_mode != META_TILE_NONE)
+        window->tile_monitor_number = new->number;
 
-  /* This will eventually reach meta_window_update_monitor that
-   * will send leave/enter-monitor events. The old != new monitor
-   * check will always fail (due to the new logical_monitors set) so
-   * we will always send the events, even if the new and old monitor
-   * index is the same. That is right, since the enumeration of the
-   * monitors changed and the same index could be refereing
-   * to a different monitor. */
-  meta_window_move_between_rects (window,
-                                  &old->rect,
-                                  &new->rect);
+      /* This will eventually reach meta_window_update_monitor that
+       * will send leave/enter-monitor events. The old != new monitor
+       * check will always fail (due to the new logical_monitors set) so
+       * we will always send the events, even if the new and old monitor
+       * index is the same. That is right, since the enumeration of the
+       * monitors changed and the same index could be refereing
+       * to a different monitor. */
+      meta_window_move_between_rects (window,
+                                      &old->rect,
+                                      &new->rect);
+    }
+  else
+    {
+      meta_window_update_monitor (window, FALSE);
+    }
 }
 
 void
@@ -3659,7 +3666,6 @@ meta_window_move_resize_internal (MetaWindow          *window,
    */
 
   gboolean did_placement;
-  guint old_output_winsys_id;
   MetaRectangle unconstrained_rect;
   MetaRectangle constrained_rect;
   MetaMoveResizeResultFlags result = 0;
@@ -3713,7 +3719,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
     g_assert_not_reached ();
 
   constrained_rect = unconstrained_rect;
-  if (flags & (META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION))
+  if (flags & (META_MOVE_RESIZE_MOVE_ACTION | META_MOVE_RESIZE_RESIZE_ACTION) &&
+      window->monitor)
     {
       MetaRectangle old_rect;
       meta_window_get_frame_rect (window, &old_rect);
@@ -3763,13 +3770,22 @@ meta_window_move_resize_internal (MetaWindow          *window,
                                             did_placement);
     }
 
-  old_output_winsys_id = window->monitor->winsys_id;
+  if (window->monitor)
+    {
+      guint old_output_winsys_id;
 
-  meta_window_update_monitor (window, flags & META_MOVE_RESIZE_USER_ACTION);
+      old_output_winsys_id = window->monitor->winsys_id;
 
-  if (old_output_winsys_id != window->monitor->winsys_id &&
-      flags & META_MOVE_RESIZE_MOVE_ACTION && flags & META_MOVE_RESIZE_USER_ACTION)
-    window->preferred_output_winsys_id = window->monitor->winsys_id;
+      meta_window_update_monitor (window, flags & META_MOVE_RESIZE_USER_ACTION);
+
+      if (old_output_winsys_id != window->monitor->winsys_id &&
+          flags & META_MOVE_RESIZE_MOVE_ACTION && flags & META_MOVE_RESIZE_USER_ACTION)
+        window->preferred_output_winsys_id = window->monitor->winsys_id;
+    }
+  else
+    {
+      meta_window_update_monitor (window, flags & META_MOVE_RESIZE_USER_ACTION);
+    }
 
   if ((result & META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED) && window->frame_bounds)
     {
@@ -5352,7 +5368,7 @@ meta_window_recalc_features (MetaWindow *window)
       window->has_maximize_func = FALSE;
     }
 
-  if (window->has_maximize_func)
+  if (window->has_maximize_func && window->monitor)
     {
       MetaRectangle work_area, client_rect;
 
