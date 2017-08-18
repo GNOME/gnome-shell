@@ -954,6 +954,7 @@ emulate_hotplug (MetaMonitorTestSetup *test_setup)
     META_MONITOR_MANAGER_TEST (monitor_manager);
 
   meta_monitor_manager_test_emulate_hotplug (monitor_manager_test, test_setup);
+  g_usleep (G_USEC_PER_SEC / 100);
 }
 
 static void
