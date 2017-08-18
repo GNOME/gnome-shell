@@ -164,7 +164,10 @@ meta_wayland_surface_hide_inhibit_shortcuts_dialog (MetaWaylandSurface *surface)
 
   /* The closure notify will take care of actually hiding the dialog */
   data = surface_inhibit_shortcuts_data_get (surface);
-  g_signal_handlers_disconnect_by_data (surface, data);
+  g_return_if_fail (data);
+
+  if (data->dialog)
+    meta_inhibit_shortcuts_dialog_hide (data->dialog);
 }
 
 void
