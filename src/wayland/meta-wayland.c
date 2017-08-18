@@ -321,6 +321,7 @@ meta_wayland_pre_clutter_init (void)
 void
 meta_wayland_override_display_name (char *display_name)
 {
+  g_clear_pointer (&_display_name_override, g_free);
   _display_name_override = g_strdup (display_name);
 }
 
@@ -367,13 +368,11 @@ meta_wayland_init (void)
 
   if (_display_name_override)
     {
-      compositor->display_name = _display_name_override;
+      compositor->display_name = g_steal_pointer (&_display_name_override);
 
       if (wl_display_add_socket (compositor->wayland_display,
-                                 _display_name_override) != 0)
+                                 compositor->display_name) != 0)
         g_error ("Failed to create_socket");
-
-      g_clear_pointer (&_display_name_override, g_free);
     }
   else
     {
@@ -407,6 +406,7 @@ meta_wayland_finalize (void)
   compositor = meta_wayland_compositor_get_default ();
 
   meta_xwayland_stop (&compositor->xwayland_manager);
+  g_clear_pointer (&compositor->display_name, g_free);
 }
 
 void
