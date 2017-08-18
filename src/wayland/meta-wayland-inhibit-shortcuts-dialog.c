@@ -94,7 +94,9 @@ inhibit_shortcuts_dialog_response_cb (MetaInhibitShortcutsDialog        *dialog,
   data->last_response = response;
   data->has_last_response = TRUE;
   inhibit_shortcuts_dialog_response_apply (data);
-  meta_wayland_surface_hide_inhibit_shortcuts_dialog (data->surface);
+
+  meta_inhibit_shortcuts_dialog_hide (data->dialog);
+  surface_inhibit_shortcuts_data_destroy_dialog (data);
 }
 
 static InhibitShortcutsData *
