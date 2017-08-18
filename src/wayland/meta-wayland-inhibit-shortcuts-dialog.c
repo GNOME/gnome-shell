@@ -51,12 +51,21 @@ surface_inhibit_shortcuts_data_set (MetaWaylandSurface   *surface,
 }
 
 static void
-surface_inhibit_shortcuts_data_free (MetaWaylandSurface   *surface,
-                                     InhibitShortcutsData *data)
+surface_inhibit_shortcuts_data_free (InhibitShortcutsData *data)
 {
   meta_inhibit_shortcuts_dialog_hide (data->dialog);
 
   g_free (data);
+}
+
+static void
+on_surface_destroyed (MetaWaylandSurface   *surface,
+                      InhibitShortcutsData *data)
+{
+  surface_inhibit_shortcuts_data_free (data);
+  g_object_set_qdata (G_OBJECT (surface),
+                      quark_surface_inhibit_shortcuts_data,
+                      NULL);
 }
 
 static void
@@ -98,14 +107,14 @@ meta_wayland_surface_ensure_inhibit_shortcuts_dialog (MetaWaylandSurface *surfac
   MetaInhibitShortcutsDialog *dialog;
 
   data = surface_inhibit_shortcuts_data_get (surface);
-  if (data == NULL)
-    {
-      data = g_new (InhibitShortcutsData, 1);
-      surface_inhibit_shortcuts_data_set (surface, data);
-    }
-  else if (data->dialog != NULL)
-     /* There is a dialog already created, nothing to do */
+  if (data)
     return data;
+
+  data = g_new (InhibitShortcutsData, 1);
+  surface_inhibit_shortcuts_data_set (surface, data);
+  g_signal_connect (surface, "destroy",
+                    G_CALLBACK (on_surface_destroyed),
+                    data);
 
   window = meta_wayland_surface_get_toplevel_window (surface);
   display = window->display;
@@ -121,10 +130,6 @@ meta_wayland_surface_ensure_inhibit_shortcuts_dialog (MetaWaylandSurface *surfac
                          G_CALLBACK (inhibit_shortcuts_dialog_response_cb),
                          data, surface_inhibit_shortcuts_dialog_free,
                          0);
-
-  g_signal_connect (surface, "destroy",
-                    G_CALLBACK (surface_inhibit_shortcuts_data_free),
-                    data);
 
   return data;
 }
