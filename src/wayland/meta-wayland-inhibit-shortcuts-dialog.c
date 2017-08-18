@@ -30,6 +30,7 @@ typedef struct _InhibitShortcutsData
   MetaWaylandSurface                *surface;
   MetaWaylandSeat                   *seat;
   MetaInhibitShortcutsDialog        *dialog;
+  gulong                             response_handler_id;
   gboolean                           has_last_response;
   MetaInhibitShortcutsDialogResponse last_response;
 } InhibitShortcutsData;
@@ -51,10 +52,18 @@ surface_inhibit_shortcuts_data_set (MetaWaylandSurface   *surface,
 }
 
 static void
+surface_inhibit_shortcuts_data_destroy_dialog (InhibitShortcutsData *data)
+{
+  g_signal_handler_disconnect (data->dialog, data->response_handler_id);
+  meta_inhibit_shortcuts_dialog_hide (data->dialog);
+  g_clear_object (&data->dialog);
+}
+
+static void
 surface_inhibit_shortcuts_data_free (InhibitShortcutsData *data)
 {
-  meta_inhibit_shortcuts_dialog_hide (data->dialog);
-
+  if (data->dialog)
+    surface_inhibit_shortcuts_data_destroy_dialog (data);
   g_free (data);
 }
 
@@ -66,15 +75,6 @@ on_surface_destroyed (MetaWaylandSurface   *surface,
   g_object_set_qdata (G_OBJECT (surface),
                       quark_surface_inhibit_shortcuts_data,
                       NULL);
-}
-
-static void
-surface_inhibit_shortcuts_dialog_free (gpointer  ptr,
-                                       GClosure *closure)
-{
-  InhibitShortcutsData *data = ptr;
-
-  meta_wayland_surface_hide_inhibit_shortcuts_dialog (data->surface);
 }
 
 static void
@@ -125,11 +125,10 @@ meta_wayland_surface_ensure_inhibit_shortcuts_dialog (MetaWaylandSurface *surfac
   data->surface = surface;
   data->seat = seat;
   data->dialog = dialog;
-
-  g_signal_connect_data (dialog, "response",
-                         G_CALLBACK (inhibit_shortcuts_dialog_response_cb),
-                         data, surface_inhibit_shortcuts_dialog_free,
-                         0);
+  data->response_handler_id =
+    g_signal_connect (dialog, "response",
+                      G_CALLBACK (inhibit_shortcuts_dialog_response_cb),
+                      data);
 
   return data;
 }
