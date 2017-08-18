@@ -365,10 +365,7 @@ test_case_do (TestCase *test,
       if (!client)
         return FALSE;
 
-      if (!test_client_do (client, error, "destroy_all", NULL))
-        return FALSE;
-
-      if (!test_client_wait (client, error))
+      if (!test_client_quit (client, error))
         return FALSE;
 
       g_hash_table_remove (test->clients, test_client_get_id (client));

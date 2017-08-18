@@ -396,6 +396,19 @@ test_client_new (const char          *id,
   return client;
 }
 
+gboolean
+test_client_quit (TestClient *client,
+                  GError    **error)
+{
+  if (!test_client_do (client, error, "destroy_all", NULL))
+    return FALSE;
+
+  if (!test_client_wait (client, error))
+    return FALSE;
+
+  return TRUE;
+}
+
 void
 test_client_destroy (TestClient *client)
 {
