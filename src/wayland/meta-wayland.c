@@ -445,3 +445,9 @@ meta_wayland_compositor_is_shortcuts_inhibited (MetaWaylandCompositor *composito
 
   return FALSE;
 }
+
+void
+meta_wayland_compositor_flush_clients (MetaWaylandCompositor *compositor)
+{
+  wl_display_flush_clients (compositor->wayland_display);
+}

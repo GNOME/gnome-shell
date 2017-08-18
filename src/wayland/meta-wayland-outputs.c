@@ -307,6 +307,8 @@ static MetaWaylandOutput *
 meta_wayland_output_new (MetaWaylandCompositor *compositor,
                          MetaLogicalMonitor    *logical_monitor)
 {
+  MetaWaylandCompositor *wayland_compositor =
+    meta_wayland_compositor_get_default ();
   MetaWaylandOutput *wayland_output;
 
   wayland_output = g_object_new (META_TYPE_WAYLAND_OUTPUT, NULL);
@@ -314,6 +316,7 @@ meta_wayland_output_new (MetaWaylandCompositor *compositor,
                                              &wl_output_interface,
                                              META_WL_OUTPUT_VERSION,
                                              wayland_output, bind_output);
+  meta_wayland_compositor_flush_clients (wayland_compositor);
   meta_wayland_output_set_logical_monitor (wayland_output, logical_monitor);
 
   return wayland_output;
