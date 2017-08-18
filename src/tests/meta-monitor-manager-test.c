@@ -372,7 +372,10 @@ meta_monitor_manager_test_calculate_monitor_mode_scale (MetaMonitorManager *mana
   output = meta_monitor_get_main_output (monitor);
   output_test = output->driver_private;
 
-  return output_test->scale;
+  if (output_test)
+    return output_test->scale;
+  else
+    return 1;
 }
 
 static float *
