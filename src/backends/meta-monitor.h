@@ -197,6 +197,12 @@ gboolean meta_monitor_mode_foreach_crtc (MetaMonitor        *monitor,
                                          gpointer            user_data,
                                          GError            **error);
 
+gboolean meta_monitor_mode_foreach_output (MetaMonitor        *monitor,
+                                           MetaMonitorMode    *mode,
+                                           MetaMonitorModeFunc func,
+                                           gpointer            user_data,
+                                           GError            **error);
+
 MetaMonitorSpec * meta_monitor_spec_clone (MetaMonitorSpec *monitor_id);
 
 gboolean meta_monitor_spec_equals (MetaMonitorSpec *monitor_id,

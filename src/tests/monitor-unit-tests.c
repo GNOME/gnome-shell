@@ -659,10 +659,10 @@ check_monitor_configuration (MonitorTestCase *test_case)
             .expect_crtc_mode_iter =
               test_case->expect.monitors[i].modes[j].crtc_modes
           };
-          meta_monitor_mode_foreach_crtc (monitor, mode,
-                                          check_monitor_mode,
-                                          &data,
-                                          NULL);
+          meta_monitor_mode_foreach_output (monitor, mode,
+                                            check_monitor_mode,
+                                            &data,
+                                            NULL);
         }
 
       current_mode = meta_monitor_get_current_mode (monitor);
@@ -688,10 +688,10 @@ check_monitor_configuration (MonitorTestCase *test_case)
             .expect_crtc_mode_iter =
               test_case->expect.monitors[i].modes[expected_current_mode_index].crtc_modes
           };
-          meta_monitor_mode_foreach_crtc (monitor, expected_current_mode,
-                                          check_current_monitor_mode,
-                                          &data,
-                                          NULL);
+          meta_monitor_mode_foreach_output (monitor, expected_current_mode,
+                                            check_current_monitor_mode,
+                                            &data,
+                                            NULL);
         }
 
       meta_monitor_derive_current_mode (monitor);
