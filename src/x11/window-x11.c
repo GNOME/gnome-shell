@@ -902,6 +902,31 @@ update_net_frame_extents (MetaWindow *window)
   meta_error_trap_pop (window->display);
 }
 
+static void
+update_gtk_edge_constraints (MetaWindow *window)
+{
+  MetaEdgeConstraint *constraints = window->edge_constraints;
+  unsigned long data[1];
+
+  /* Edge constraints */
+  data[0] = (constraints[0] != META_EDGE_CONSTRAINT_NONE ? 1 : 0)    << 0 |
+            (constraints[0] != META_EDGE_CONSTRAINT_MONITOR ? 1 : 0) << 1 |
+            (constraints[1] != META_EDGE_CONSTRAINT_NONE ? 1 : 0)    << 2 |
+            (constraints[1] != META_EDGE_CONSTRAINT_MONITOR ? 1 : 0) << 3 |
+            (constraints[2] != META_EDGE_CONSTRAINT_NONE ? 1 : 0)    << 4 |
+            (constraints[2] != META_EDGE_CONSTRAINT_MONITOR ? 1 : 0) << 5 |
+            (constraints[3] != META_EDGE_CONSTRAINT_NONE ? 1 : 0)    << 6 |
+            (constraints[3] != META_EDGE_CONSTRAINT_MONITOR ? 1 : 0) << 7;
+
+  meta_verbose ("Setting _GTK_EDGE_CONSTRAINTS to %lu\n", data[0]);
+
+  XChangeProperty (window->display->xdisplay,
+                   window->xwindow,
+                   window->display->atom__GTK_EDGE_CONSTRAINTS,
+                   XA_CARDINAL, 32, PropModeReplace,
+                   (guchar*) data, 1);
+}
+
 static gboolean
 sync_request_timeout (gpointer data)
 {
@@ -1259,6 +1284,8 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
     *result |= META_MOVE_RESIZE_RESULT_MOVED;
   if (need_resize_client || need_resize_frame)
     *result |= META_MOVE_RESIZE_RESULT_RESIZED;
+
+  update_gtk_edge_constraints (window);
 }
 
 static gboolean
@@ -1670,6 +1697,9 @@ meta_window_x11_set_net_wm_state (MetaWindow *window)
           meta_error_trap_pop (window->display);
         }
     }
+
+  /* Edge constraints */
+  update_gtk_edge_constraints (window);
 }
 
 static cairo_region_t *
