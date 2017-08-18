@@ -30,6 +30,7 @@ typedef struct _InhibitShortcutsData
   MetaWaylandSurface                *surface;
   MetaWaylandSeat                   *seat;
   MetaInhibitShortcutsDialog        *dialog;
+  gboolean                           has_last_response;
   MetaInhibitShortcutsDialogResponse last_response;
 } InhibitShortcutsData;
 
@@ -82,6 +83,7 @@ inhibit_shortcuts_dialog_response_cb (MetaInhibitShortcutsDialog        *dialog,
                                       InhibitShortcutsData              *data)
 {
   data->last_response = response;
+  data->has_last_response = TRUE;
   inhibit_shortcuts_dialog_response_apply (data);
   meta_wayland_surface_hide_inhibit_shortcuts_dialog (data->surface);
 }
@@ -136,7 +138,7 @@ meta_wayland_surface_show_inhibit_shortcuts_dialog (MetaWaylandSurface *surface,
   g_return_if_fail (META_IS_WAYLAND_SURFACE (surface));
 
   data = surface_inhibit_shortcuts_data_get (surface);
-  if (data != NULL)
+  if (data && data->has_last_response)
     {
       /* The dialog was shown before for this surface but is not showing
        * anymore, reuse the last user response.
