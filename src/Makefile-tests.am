@@ -43,6 +43,8 @@ mutter_test_runner_SOURCES = \
 mutter_test_runner_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION).la
 
 mutter_test_unit_tests_SOURCES = \
+	tests/test-utils.c \
+	tests/test-utils.h \
 	tests/unit-tests.c \
 	tests/meta-backend-test.c \
 	tests/meta-backend-test.h \

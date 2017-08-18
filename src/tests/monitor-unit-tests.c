@@ -28,6 +28,7 @@
 #include "backends/meta-monitor-config-store.h"
 #include "tests/meta-monitor-manager-test.h"
 #include "tests/monitor-test-utils.h"
+#include "tests/test-utils.h"
 
 #define ALL_TRANSFORMS ((1 << (META_MONITOR_TRANSFORM_FLIPPED_270 + 1)) - 1)
 
@@ -312,6 +313,53 @@ static MonitorTestCase initial_test_case = {
     .screen_height = 768
   }
 };
+
+static TestClient *monitor_test_client = NULL;
+
+#define TEST_CLIENT_NAME "client1"
+#define TEST_CLIENT_WINDOW "window1"
+
+static void
+create_monitor_test_client (void)
+{
+  GError *error = NULL;
+
+  monitor_test_client = test_client_new (TEST_CLIENT_NAME,
+                                         META_WINDOW_CLIENT_TYPE_WAYLAND,
+                                         &error);
+  if (!monitor_test_client)
+    g_error ("Failed to launch test client: %s", error->message);
+
+  if (!test_client_do (monitor_test_client, &error,
+                       "create", TEST_CLIENT_WINDOW,
+                       NULL))
+    g_error ("Failed to create window: %s", error->message);
+
+  if (!test_client_do (monitor_test_client, &error,
+                       "show", TEST_CLIENT_WINDOW,
+                       NULL))
+    g_error ("Failed to show the window: %s", error->message);
+}
+
+static void
+check_monitor_test_client_state (void)
+{
+  GError *error = NULL;
+
+  if (!test_client_wait (monitor_test_client, &error))
+    g_error ("Failed to sync test client: %s", error->message);
+}
+
+static void
+destroy_monitor_test_client (void)
+{
+  GError *error = NULL;
+
+  if (!test_client_quit (monitor_test_client, &error))
+    g_error ("Failed to quit test client: %s", error->message);
+
+  test_client_destroy (monitor_test_client);
+}
 
 static MetaOutput *
 output_from_winsys_id (MetaMonitorManager *monitor_manager,
@@ -782,6 +830,8 @@ check_monitor_configuration (MonitorTestCase *test_case)
             }
         }
     }
+
+  check_monitor_test_client_state ();
 }
 
 static void
@@ -4875,4 +4925,16 @@ init_monitor_tests (void)
 
   add_monitor_test ("/backends/monitor/migrated/rotated",
                     meta_test_monitor_migrated_rotated);
+}
+
+void
+pre_run_monitor_tests (void)
+{
+  create_monitor_test_client ();
+}
+
+void
+finish_monitor_tests (void)
+{
+  destroy_monitor_test_client ();
 }

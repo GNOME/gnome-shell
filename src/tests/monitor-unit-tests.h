@@ -22,4 +22,8 @@
 
 void init_monitor_tests (void);
 
+void pre_run_monitor_tests (void);
+
+void finish_monitor_tests (void);
+
 #endif /* MONITOR_UNIT_TESTS_H */
