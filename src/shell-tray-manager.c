@@ -223,8 +223,9 @@ shell_tray_manager_manage_screen (ShellTrayManager *manager,
 
   na_tray_manager_manage_screen (manager->priv->na_manager, gdk_screen);
 
-  g_signal_connect (theme_widget, "style-changed",
-                    G_CALLBACK (shell_tray_manager_style_changed), manager);
+  g_signal_connect_object (theme_widget, "style-changed",
+                           G_CALLBACK (shell_tray_manager_style_changed),
+                           manager, 0);
   shell_tray_manager_style_changed (theme_widget, manager);
 }
 
