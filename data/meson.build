@@ -78,11 +78,18 @@ install_data('50-gnome-shell-system.xml', install_dir: keysdir)
 
 schemaconf = configuration_data()
 schemaconf.set('GETTEXT_PACKAGE', meson.project_name())
-configure_file(
+schema = configure_file(
   input: 'org.gnome.shell.gschema.xml.in',
   output: 'org.gnome.shell.gschema.xml',
   configuration: schemaconf,
   install_dir: schemadir
 )
+
+# for unit tests - gnome.compile_schemas() only looks in srcdir
+custom_target('compile-schemas',
+  input: schema,
+  output: 'gschemas.compiled',
+  command: [find_program('glib-compile-schemas'), meson.current_build_dir()],
+  build_by_default: true)
 
 install_data('gnome-shell-overrides.convert', install_dir: convertdir)
