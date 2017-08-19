@@ -115,17 +115,6 @@ function ensureActiveConnectionProps(active, settings) {
     }
 }
 
-function createSettingsAction(label, device) {
-    let item = new PopupMenu.PopupMenuItem(label);
-
-    item.connect('activate', function() {
-        Util.spawnApp(['gnome-control-center', 'network', 'show-device',
-                       device.get_path()]);
-    });
-
-    return item;
-}
-
 var NMConnectionItem = new Lang.Class({
     Name: 'NMConnectionItem',
 
@@ -514,7 +503,7 @@ var NMDeviceWired = new Lang.Class({
     _init: function(client, device, settings) {
         this.parent(client, device, settings);
 
-        this.item.menu.addMenuItem(createSettingsAction(_("Wired Settings"), device));
+        this.item.menu.addSettingsAction(_("Wired Settings"), 'gnome-network-panel.desktop');
     },
 
     _hasCarrier: function() {
@@ -556,7 +545,7 @@ var NMDeviceModem = new Lang.Class({
     _init: function(client, device, settings) {
         this.parent(client, device, settings);
 
-        this.item.menu.addMenuItem(createSettingsAction(_("Mobile Broadband Settings"), device));
+        this.item.menu.addSettingsAction(_("Mobile Broadband Settings"), 'gnome-network-panel.desktop');
 
         this._mobileDevice = null;
 
@@ -635,7 +624,7 @@ var NMDeviceBluetooth = new Lang.Class({
     _init: function(client, device, settings) {
         this.parent(client, device, settings);
 
-        this.item.menu.addMenuItem(createSettingsAction(_("Bluetooth Settings"), device));
+        this.item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-network-panel.desktop');
     },
 
     _getDescription: function() {
@@ -1205,7 +1194,7 @@ var NMDeviceWireless = new Lang.Class({
         this._toggleItem.connect('activate', Lang.bind(this, this._toggleWifi));
         this.item.menu.addMenuItem(this._toggleItem);
 
-        this.item.menu.addMenuItem(createSettingsAction(_("Wi-Fi Settings"), device));
+        this.item.menu.addSettingsAction(_("Wi-Fi Settings"), 'gnome-wifi-panel.desktop');
 
         this._wirelessEnabledChangedId = this._client.connect('notify::wireless-enabled', Lang.bind(this, this._sync));
         this._wirelessHwEnabledChangedId = this._client.connect('notify::wireless-hardware-enabled', Lang.bind(this, this._sync));
