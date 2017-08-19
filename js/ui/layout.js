@@ -21,6 +21,8 @@ const Tweener = imports.ui.tweener;
 var STARTUP_ANIMATION_TIME = 0.5;
 var KEYBOARD_ANIMATION_TIME = 0.15;
 var BACKGROUND_FADE_ANIMATION_TIME = 1.0;
+var GRADIENT_FADE_IN_ANIMATION_TIME = 1.0;
+var GRADIENT_FADE_OUT_ANIMATION_TIME = 0.3;
 
 var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
@@ -301,8 +303,10 @@ var LayoutManager = new Lang.Class({
     // This is called by Main after everything else is constructed
     init() {
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
+        Main.panel.connect('solid-style-changed', this._updatePrimaryBackground.bind(this));
 
         this._loadBackground();
+        this._updatePrimaryBackground();
     },
 
     showOverview() {
@@ -322,6 +326,29 @@ var LayoutManager = new Lang.Class({
     _sessionUpdated() {
         this._updateVisibility();
         this._queueUpdateRegions();
+    },
+
+    _updatePrimaryBackground() {
+        let metaBackgroundActor = this._bgManagers[this.primaryIndex].backgroundActor;
+        metaBackgroundActor.gradient = true;
+        metaBackgroundActor.gradient_height = 3 * Main.panel.actor.get_height();
+        if (Main.panel.solidStyle) {
+            Tweener.addTween(metaBackgroundActor,
+                             { gradient_max_darkness: 0,
+                               time: GRADIENT_FADE_OUT_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: function() {
+                                   metaBackgroundActor.gradient = false;
+                               }
+                             });
+        } else {
+            Tweener.removeTweens(metaBackgroundActor);
+            Tweener.addTween(metaBackgroundActor,
+                             { gradient_max_darkness: 0.4,
+                               time: GRADIENT_FADE_IN_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
     },
 
     _updateMonitors() {
