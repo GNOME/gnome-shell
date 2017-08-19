@@ -728,7 +728,9 @@ StScrollBar {
 /* TOP BAR */
 
 #panel {
-  background-color: rgba(0, 0, 0, 0.35);
+  background-gradient-start: rgba(0,0,0,0.3);
+  background-gradient-end: rgba(0,0,0,0);
+  background-gradient-direction: vertical;
   /* transition from solid to transparent */
   transition-duration: 500ms;
   font-weight: bold;
@@ -747,7 +749,7 @@ StScrollBar {
 
   .panel-corner {
     -panel-corner-radius: $panel-corner-radius;
-    -panel-corner-background-color: rgba(0, 0, 0, 0.35);
+    -panel-corner-background-color: rgba(0, 0, 0, 0);
     -panel-corner-border-width: 2px;
     -panel-corner-border-color: transparent;
 
@@ -767,7 +769,7 @@ StScrollBar {
     -minimum-hpadding: 6px;
     font-weight: bold;
     color: #eee;
-    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
     transition-duration: 100ms;
 
     .app-menu-icon {
@@ -780,17 +782,17 @@ StScrollBar {
     .system-status-icon,
     .app-menu-icon > StIcon,
     .popup-menu-arrow {
-      icon-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);
+      icon-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
     }
 
     &:hover {
       color: lighten($fg_color, 10%);
-      text-shadow: 0px 1px 6px rgba(0, 0, 0, 1);
+      text-shadow: 0px 1px 3px rgba(0, 0, 0, 1);
 
       .system-status-icon,
       .app-menu-icon > StIcon,
       .popup-menu-arrow {
-        icon-shadow: 0px 1px 6px rgba(0, 0, 0, 1);
+        icon-shadow: 0px 1px 3px rgba(0, 0, 0, 1);
       }
     }
 
@@ -827,6 +829,9 @@ StScrollBar {
 
   &.solid {
     background-color: black;
+    background-gradient-start: none;
+    background-gradient-end: none;
+    background-gradient-direction: none;
     /* transition from transparent to solid */
     transition-duration: 300ms;
 
