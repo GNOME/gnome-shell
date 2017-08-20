@@ -662,6 +662,7 @@ var WindowOverlay = new Lang.Class({
         if (this._hidden)
             return;
 
+        this._windowClone.actor.grab_key_focus();
         this._animateVisible();
         this.emit('show-close-button');
     },
