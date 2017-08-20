@@ -100,19 +100,19 @@ typedef enum {
   CHANGED_ALL = 0xFFFF
 } ChangedFlags;
 
-#define VERTEX_SHADER_DECLARATIONS                                      \
+#define VIGNETTE_VERTEX_SHADER_DECLARATIONS                             \
 "uniform vec2 scale;\n"                                                 \
 "uniform vec2 offset;\n"                                                \
 "varying vec2 position;\n"                                              \
 
-#define VERTEX_SHADER_CODE                                              \
+#define VIGNETTE_VERTEX_SHADER_CODE                                     \
 "position = cogl_tex_coord0_in.xy * scale + offset;\n"                  \
 
-#define FRAGMENT_SHADER_DECLARATIONS                                    \
+#define VIGNETTE_FRAGMENT_SHADER_DECLARATIONS                           \
 "uniform float vignette_sharpness;\n"                                   \
 "varying vec2 position;\n"                                              \
 
-#define FRAGMENT_SHADER_CODE                                                   \
+#define VIGNETTE_FRAGMENT_SHADER_CODE                                          \
 "float t = 2.0 * length(position);\n"                                          \
 "t = min(t, 1.0);\n"                                                           \
 "float pixel_brightness = 1.0 - t * vignette_sharpness;\n"                     \
@@ -245,20 +245,22 @@ make_pipeline (PipelineFlags pipeline_flags)
 
       if ((pipeline_flags & PIPELINE_VIGNETTE) != 0)
         {
-          static CoglSnippet *vertex_snippet;
-          static CoglSnippet *fragment_snippet;
+          static CoglSnippet *vignette_vertex_snippet;
+          static CoglSnippet *vignette_fragment_snippet;
 
-          if (!vertex_snippet)
-            vertex_snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
-                                               VERTEX_SHADER_DECLARATIONS, VERTEX_SHADER_CODE);
+          if (!vignette_vertex_snippet)
+            vignette_vertex_snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
+                                                        VIGNETTE_VERTEX_SHADER_DECLARATIONS,
+                                                        VIGNETTE_VERTEX_SHADER_CODE);
 
-          cogl_pipeline_add_snippet (*templatep, vertex_snippet);
+          cogl_pipeline_add_snippet (*templatep, vignette_vertex_snippet);
 
-          if (!fragment_snippet)
-            fragment_snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
-                                                 FRAGMENT_SHADER_DECLARATIONS, FRAGMENT_SHADER_CODE);
+          if (!vignette_fragment_snippet)
+            vignette_fragment_snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                                          VIGNETTE_FRAGMENT_SHADER_DECLARATIONS,
+                                                          VIGNETTE_FRAGMENT_SHADER_CODE);
 
-          cogl_pipeline_add_snippet (*templatep, fragment_snippet);
+          cogl_pipeline_add_snippet (*templatep, vignette_fragment_snippet);
         }
 
       if ((pipeline_flags & PIPELINE_BLEND) == 0)
