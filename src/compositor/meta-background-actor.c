@@ -115,7 +115,7 @@ typedef enum {
 #define FRAGMENT_SHADER_CODE                                                   \
 "float t = 2.0 * length(position);\n"                                          \
 "t = min(t, 1.0);\n"                                                           \
-"float pixel_brightness = 1.0 - t * vignette_sharpness;\n"                       \
+"float pixel_brightness = 1.0 - t * vignette_sharpness;\n"                     \
 "cogl_color_out.rgb = cogl_color_out.rgb * pixel_brightness;\n"                \
 
 typedef struct _MetaBackgroundLayer MetaBackgroundLayer;
