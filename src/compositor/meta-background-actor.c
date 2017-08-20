@@ -311,6 +311,8 @@ setup_pipeline (MetaBackgroundActor   *self,
 
       cogl_pipeline_set_layer_texture (priv->pipeline, 0, texture);
       cogl_pipeline_set_layer_wrap_mode (priv->pipeline, 0, wrap_mode);
+
+      priv->changed &= ~CHANGED_BACKGROUND;
     }
 
   if ((priv->changed & CHANGED_VIGNETTE_PARAMETERS) != 0)
@@ -319,6 +321,8 @@ setup_pipeline (MetaBackgroundActor   *self,
                                     cogl_pipeline_get_uniform_location (priv->pipeline,
                                                                         "vignette_sharpness"),
                                     priv->vignette_sharpness);
+
+      priv->changed &= ~CHANGED_VIGNETTE_PARAMETERS;
     }
 
   if (priv->vignette)
