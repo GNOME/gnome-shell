@@ -88,6 +88,9 @@ enum
   PROP_META_SCREEN = 1,
   PROP_MONITOR,
   PROP_BACKGROUND,
+  PROP_GRADIENT,
+  PROP_GRADIENT_HEIGHT,
+  PROP_GRADIENT_MAX_DARKNESS,
   PROP_VIGNETTE,
   PROP_VIGNETTE_SHARPNESS,
   PROP_VIGNETTE_BRIGHTNESS
@@ -97,8 +100,27 @@ typedef enum {
   CHANGED_BACKGROUND = 1 << 0,
   CHANGED_EFFECTS = 1 << 2,
   CHANGED_VIGNETTE_PARAMETERS = 1 << 3,
+  CHANGED_GRADIENT_PARAMETERS = 1 << 4,
   CHANGED_ALL = 0xFFFF
 } ChangedFlags;
+
+#define GRADIENT_VERTEX_SHADER_DECLARATIONS                             \
+"uniform vec2 scale;\n"                                                 \
+"varying vec2 position;\n"                                              \
+
+#define GRADIENT_VERTEX_SHADER_CODE                                     \
+"position = cogl_tex_coord0_in.xy * scale;\n"                           \
+
+#define GRADIENT_FRAGMENT_SHADER_DECLARATIONS                           \
+"uniform float gradient_height_perc;\n"                                 \
+"uniform float gradient_max_darkness;\n"                                \
+"varying vec2 position;\n"                                              \
+
+#define GRADIENT_FRAGMENT_SHADER_CODE                                                    \
+"float min_brightness = 1.0 - gradient_max_darkness;\n"                                  \
+"float gradient_y_pos = min(position.y, gradient_height_perc) / gradient_height_perc;\n" \
+"float pixel_brightness = (1.0 - min_brightness) * gradient_y_pos + min_brightness;\n"   \
+"cogl_color_out.rgb = cogl_color_out.rgb * pixel_brightness;\n"                          \
 
 #define VIGNETTE_VERTEX_SHADER_DECLARATIONS                             \
 "uniform vec2 scale;\n"                                                 \
@@ -123,6 +145,7 @@ typedef struct _MetaBackgroundLayer MetaBackgroundLayer;
 typedef enum {
   PIPELINE_VIGNETTE = (1 << 0),
   PIPELINE_BLEND = (1 << 1),
+  PIPELINE_GRADIENT = (1 << 2),
 } PipelineFlags;
 
 struct _MetaBackgroundActorPrivate
@@ -131,6 +154,10 @@ struct _MetaBackgroundActorPrivate
   int monitor;
 
   MetaBackground *background;
+
+  gboolean gradient;
+  double gradient_max_darkness;
+  int gradient_height;
 
   gboolean vignette;
   double vignette_brightness;
@@ -231,7 +258,7 @@ meta_background_actor_get_preferred_height (ClutterActor *actor,
 static CoglPipeline *
 make_pipeline (PipelineFlags pipeline_flags)
 {
-  static CoglPipeline *templates[4];
+  static CoglPipeline *templates[8];
   CoglPipeline **templatep;
 
   templatep = &templates[pipeline_flags];
@@ -263,6 +290,26 @@ make_pipeline (PipelineFlags pipeline_flags)
           cogl_pipeline_add_snippet (*templatep, vignette_fragment_snippet);
         }
 
+      if ((pipeline_flags & PIPELINE_GRADIENT) != 0)
+        {
+          static CoglSnippet *gradient_vertex_snippet;
+          static CoglSnippet *gradient_fragment_snippet;
+
+          if (!gradient_vertex_snippet)
+            gradient_vertex_snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
+                                                        GRADIENT_VERTEX_SHADER_DECLARATIONS,
+                                                        GRADIENT_VERTEX_SHADER_CODE);
+
+          cogl_pipeline_add_snippet (*templatep, gradient_vertex_snippet);
+
+          if (!gradient_fragment_snippet)
+            gradient_fragment_snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                                                          GRADIENT_FRAGMENT_SHADER_DECLARATIONS,
+                                                          GRADIENT_FRAGMENT_SHADER_CODE);
+
+          cogl_pipeline_add_snippet (*templatep, gradient_fragment_snippet);
+        }
+
       if ((pipeline_flags & PIPELINE_BLEND) == 0)
         cogl_pipeline_set_blend (*templatep, "RGBA = ADD (SRC_COLOR, 0)", NULL);
     }
@@ -285,6 +332,8 @@ setup_pipeline (MetaBackgroundActor   *self,
     pipeline_flags |= PIPELINE_BLEND;
   if (priv->vignette && clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
     pipeline_flags |= PIPELINE_VIGNETTE;
+  if (priv->gradient && clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
+    pipeline_flags |= PIPELINE_GRADIENT;
 
   if (priv->pipeline &&
       pipeline_flags != priv->pipeline_flags)
@@ -325,6 +374,25 @@ setup_pipeline (MetaBackgroundActor   *self,
                                     priv->vignette_sharpness);
 
       priv->changed &= ~CHANGED_VIGNETTE_PARAMETERS;
+    }
+
+  if ((priv->changed & CHANGED_GRADIENT_PARAMETERS) != 0)
+    {
+      MetaRectangle monitor_geometry;
+      float gradient_height_perc;
+
+      meta_screen_get_monitor_geometry (priv->screen, priv->monitor, &monitor_geometry);
+      gradient_height_perc = MAX (0.0001, priv->gradient_height / (float)monitor_geometry.height);
+      cogl_pipeline_set_uniform_1f (priv->pipeline,
+                                    cogl_pipeline_get_uniform_location (priv->pipeline,
+                                                                        "gradient_height_perc"),
+                                    gradient_height_perc);
+      cogl_pipeline_set_uniform_1f (priv->pipeline,
+                                    cogl_pipeline_get_uniform_location (priv->pipeline,
+                                                                        "gradient_max_darkness"),
+                                    priv->gradient_max_darkness);
+
+      priv->changed &= ~CHANGED_GRADIENT_PARAMETERS;
     }
 
   if (priv->vignette)
@@ -484,10 +552,28 @@ meta_background_actor_set_property (GObject      *object,
       priv->screen = g_value_get_object (value);
       break;
     case PROP_MONITOR:
-      priv->monitor = g_value_get_int (value);
+      meta_background_actor_set_monitor (self, g_value_get_int (value));
       break;
     case PROP_BACKGROUND:
       meta_background_actor_set_background (self, g_value_get_object (value));
+      break;
+    case PROP_GRADIENT:
+      meta_background_actor_set_gradient (self,
+                                          g_value_get_boolean (value),
+                                          priv->gradient_height,
+                                          priv->gradient_max_darkness);
+      break;
+    case PROP_GRADIENT_HEIGHT:
+      meta_background_actor_set_gradient (self,
+                                          priv->gradient,
+                                          g_value_get_int (value),
+                                          priv->gradient_max_darkness);
+      break;
+    case PROP_GRADIENT_MAX_DARKNESS:
+      meta_background_actor_set_gradient (self,
+                                          priv->gradient,
+                                          priv->gradient_height,
+                                          g_value_get_double (value));
       break;
     case PROP_VIGNETTE:
       meta_background_actor_set_vignette (self,
@@ -531,6 +617,15 @@ meta_background_actor_get_property (GObject      *object,
       break;
     case PROP_BACKGROUND:
       g_value_set_object (value, priv->background);
+      break;
+    case PROP_GRADIENT:
+      g_value_set_boolean (value, priv->gradient);
+      break;
+    case PROP_GRADIENT_HEIGHT:
+      g_value_set_int (value, priv->gradient_height);
+      break;
+    case PROP_GRADIENT_MAX_DARKNESS:
+      g_value_set_double (value, priv->gradient_max_darkness);
       break;
     case PROP_VIGNETTE:
       g_value_set_boolean (value, priv->vignette);
@@ -595,6 +690,36 @@ meta_background_actor_class_init (MetaBackgroundActorClass *klass)
                                    PROP_BACKGROUND,
                                    param_spec);
 
+  param_spec = g_param_spec_boolean ("gradient",
+                                     "Gradient",
+                                     "Whether gradient effect is enabled",
+                                     FALSE,
+                                     G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_GRADIENT,
+                                   param_spec);
+
+  param_spec = g_param_spec_int ("gradient-height",
+                                 "Gradient Height",
+                                 "Height of gradient effect",
+                                 0, G_MAXINT, 0,
+                                 G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_GRADIENT_HEIGHT,
+                                   param_spec);
+
+  param_spec = g_param_spec_double ("gradient-max-darkness",
+                                    "Gradient Max Darkness",
+                                    "How dark is the gradient initially",
+                                     0.0, 1.0, 0.0,
+                                     G_PARAM_READWRITE);
+
+  g_object_class_install_property (object_class,
+                                   PROP_GRADIENT_MAX_DARKNESS,
+                                   param_spec);
+
   param_spec = g_param_spec_boolean ("vignette",
                                      "Vignette",
                                      "Whether vignette effect is enabled",
@@ -634,6 +759,10 @@ meta_background_actor_init (MetaBackgroundActor *self)
   priv = self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                                    META_TYPE_BACKGROUND_ACTOR,
                                                    MetaBackgroundActorPrivate);
+
+  priv->gradient = FALSE;
+  priv->gradient_height = 0;
+  priv->gradient_max_darkness = 0.0;
 
   priv->vignette = FALSE;
   priv->vignette_brightness = 1.0;
@@ -749,6 +878,61 @@ meta_background_actor_set_background (MetaBackgroundActor *self,
 
   invalidate_pipeline (self, CHANGED_BACKGROUND);
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
+void
+meta_background_actor_set_gradient (MetaBackgroundActor *self,
+                                    gboolean             enabled,
+                                    int                  height,
+                                    double               max_darkness)
+{
+  MetaBackgroundActorPrivate *priv;
+  gboolean changed = FALSE;
+
+  g_return_if_fail (META_IS_BACKGROUND_ACTOR (self));
+  g_return_if_fail (height >= 0);
+  g_return_if_fail (max_darkness >= 0. && max_darkness <= 1.);
+
+  priv = self->priv;
+
+  enabled = enabled != FALSE && height != 0;
+
+  if (enabled != priv->gradient)
+    {
+      priv->gradient = enabled;
+      invalidate_pipeline (self, CHANGED_EFFECTS);
+      changed = TRUE;
+    }
+
+  if (height != priv->gradient_height || max_darkness != priv->gradient_max_darkness)
+    {
+      priv->gradient_height = height;
+      priv->gradient_max_darkness = max_darkness;
+      invalidate_pipeline (self, CHANGED_GRADIENT_PARAMETERS);
+      changed = TRUE;
+    }
+
+  if (changed)
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+}
+
+void
+meta_background_actor_set_monitor (MetaBackgroundActor *self,
+                                   int                  monitor)
+{
+  MetaBackgroundActorPrivate *priv = self->priv;
+  MetaRectangle old_monitor_geometry;
+  MetaRectangle new_monitor_geometry;
+
+  if(priv->monitor == monitor)
+      return;
+
+  meta_screen_get_monitor_geometry (priv->screen, priv->monitor, &old_monitor_geometry);
+  meta_screen_get_monitor_geometry (priv->screen, monitor, &new_monitor_geometry);
+  if(old_monitor_geometry.height != new_monitor_geometry.height)
+      invalidate_pipeline (self, CHANGED_GRADIENT_PARAMETERS);
+
+  priv->monitor = monitor;
 }
 
 void
