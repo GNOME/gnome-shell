@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-13 16:24+0000\n"
-"PO-Revision-Date: 2017-08-18 22:49+0200\n"
+"POT-Creation-Date: 2017-08-18 20:50+0000\n"
+"PO-Revision-Date: 2017-08-20 22:29+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -367,7 +367,7 @@ msgstr "Odaberi sesiju"
 #. manually entering the username.
 #: js/gdm/loginDialog.js:458
 msgid "Not listed?"
-msgstr "Nije na popisu?"
+msgstr "Niste na popisu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
@@ -889,7 +889,7 @@ msgstr "Nažalost, to ne radi. Pokušajte ponovno."
 msgid "%s is now known as %s"
 msgstr "%s je poznat kao %s"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:179
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:186
 msgid "Windows"
 msgstr "Prozori"
 
@@ -1392,7 +1392,7 @@ msgstr "Pretraživanje…"
 msgid "No results."
 msgstr "Nema rezultata."
 
-#: js/ui/search.js:768
+#: js/ui/search.js:777
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -1850,11 +1850,11 @@ msgstr "Prijavi se kao drugi korisnik"
 msgid "Unlock Window"
 msgstr "Otključaj prozor"
 
-#: js/ui/viewSelector.js:183
+#: js/ui/viewSelector.js:190
 msgid "Applications"
 msgstr "Aplikacije"
 
-#: js/ui/viewSelector.js:187
+#: js/ui/viewSelector.js:194
 msgid "Search"
 msgstr "Pretraži"
 
