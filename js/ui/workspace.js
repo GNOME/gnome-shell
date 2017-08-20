@@ -132,6 +132,7 @@ var WindowClone = new Lang.Class({
 
         this.actor._delegate = this;
 
+        this.slotId = 0;
         this._slot = [0, 0, 0, 0];
         this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
@@ -1068,6 +1069,22 @@ function rectEqual(one, two) {
             one.height == two.height);
 }
 
+const WorkspaceActor = new Lang.Class({
+    Name: 'WorkspaceActor',
+    Extends: St.Widget,
+
+    vfunc_get_focus_chain: function() {
+        return this.get_children().filter(c => c.visible).sort((a,b) => {
+            let cloneA = (a._delegate && a._delegate instanceof WindowClone) ? a._delegate: null;
+            let cloneB = (b._delegate && b._delegate instanceof WindowClone) ? b._delegate: null;
+            if (cloneA && cloneB)
+                return cloneA.slotId - cloneB.slotId;
+
+            return 0;
+        });
+    }
+});
+
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
  */
@@ -1100,7 +1117,7 @@ var Workspace = new Lang.Class({
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);
 
-        this.actor = new St.Widget({ style_class: 'window-picker' });
+        this.actor = new WorkspaceActor({ style_class: 'window-picker' });
         if (monitorIndex != Main.layoutManager.primaryIndex)
             this.actor.add_style_class_name('external-monitor');
         this.actor.set_size(0, 0);
