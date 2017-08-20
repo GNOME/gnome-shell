@@ -1491,36 +1491,7 @@ var NMVPNSection = new Lang.Class({
     _init: function(client) {
         this.parent(client);
 
-        this._vpnSettings = new PopupMenu.PopupMenuItem('');
-        this.item.menu.addMenuItem(this._vpnSettings);
-        this._vpnSettings.connect('activate', Lang.bind(this, this._onSettingsActivate));
-
-        this._sync();
-    },
-
-    _sync: function() {
-        let nItems = this._connectionItems.size;
-        this.item.actor.visible = (nItems > 0);
-
-        if (nItems > 1)
-            this._vpnSettings.label.text = _("Network Settings");
-        else
-            this._vpnSettings.label.text = _("VPN Settings");
-
-        this.parent();
-    },
-
-    _onSettingsActivate: function() {
-        let nItems = this._connectionItems.size;
-        if (nItems > 1) {
-            let appSys = Shell.AppSystem.get_default();
-            let app = appSys.lookup_app('gnome-network-panel.desktop');
-            app.launch(0, -1, false);
-        } else {
-            let connection = this._connections[0];
-            Util.spawnApp(['gnome-control-center', 'network', 'show-device',
-                           connection.get_path()]);
-        }
+        this.item.menu.addSettingsAction(_("VPN Settings"), 'gnome-network-panel.desktop');
     },
 
     _getDescription: function() {
