@@ -445,13 +445,11 @@ var Indicator = new Lang.Class({
 
     _onLockScreenClicked: function() {
         this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-        Main.overview.hide();
         Main.screenShield.lock(true);
     },
 
     _onLoginScreenActivate: function() {
         this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-        Main.overview.hide();
         if (Main.screenShield)
             Main.screenShield.lock(false);
 
@@ -462,13 +460,11 @@ var Indicator = new Lang.Class({
     },
 
     _onQuitSessionActivate: function() {
-        Main.overview.hide();
         this._session.LogoutRemote(0);
     },
 
     _onPowerOffClicked: function() {
         this.menu.itemActivated();
-        Main.overview.hide();
         this._session.ShutdownRemote(0);
     },
 
