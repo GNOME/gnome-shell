@@ -1210,6 +1210,12 @@ StScrollBar {
   .icon-grid .overview-icon {
     icon-size: 96px; }
 
+.system-action-icon {
+  background-color: black;
+  color: white;
+  border-radius: 99px;
+  icon-size: 48px; }
+
 .app-view-controls {
   padding-bottom: 32px; }
 
