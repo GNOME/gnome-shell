@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-04 12:56+0000\n"
+"POT-Creation-Date: 2017-08-13 16:24+0000\n"
 "PO-Revision-Date: 2017-08-05 10:00+0200\n"
 "Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -584,23 +584,23 @@ msgstr "Freqüent"
 msgid "All"
 msgstr "Totes"
 
-#: js/ui/appDisplay.js:1895
+#: js/ui/appDisplay.js:1891
 msgid "New Window"
 msgstr "Finestra nova"
 
-#: js/ui/appDisplay.js:1909
+#: js/ui/appDisplay.js:1905
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Inicia usant una targeta gràfica dedicada"
 
-#: js/ui/appDisplay.js:1936 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1932 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Suprimeix dels preferits"
 
-#: js/ui/appDisplay.js:1942
+#: js/ui/appDisplay.js:1938
 msgid "Add to Favorites"
 msgstr "Afegeix als preferits"
 
-#: js/ui/appDisplay.js:1952
+#: js/ui/appDisplay.js:1948
 msgid "Show Details"
 msgstr "Mostra els detalls"
 
@@ -1157,6 +1157,7 @@ msgstr "%s vol inhabilitar les dreceres"
 msgid "Application wants to inhibit shortcuts"
 msgstr "L'aplicació vol inhabilitar les dreceres"
 
+#. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:64
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
@@ -1173,15 +1174,6 @@ msgstr "Permet"
 #: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Teclat"
-
-#. translators: 'Hide' is a verb
-#: js/ui/legacyTray.js:65
-msgid "Hide tray"
-msgstr "Oculta la Safata"
-
-#: js/ui/legacyTray.js:106
-msgid "Status Icons"
-msgstr "Icones d'estat"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1401,9 +1393,11 @@ msgid "No results."
 msgstr "No s'ha trobat cap resultat."
 
 #: js/ui/search.js:768
-#,javascript-format
+#, javascript-format
 msgid "%d more"
-msgstr "%d més"
+msgid_plural "%d more"
+msgstr[0] "%d més"
+msgstr[1] "%d més"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1562,10 +1556,10 @@ msgstr "<desconegut>"
 msgid "%s Off"
 msgstr "%s apagat"
 
+# N.T.: p. ex. Connectat amb fil
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:468
 #, javascript-format
-# N.T.: p. ex. Connectat amb fil
 msgid "%s Connected"
 msgstr "Connectat %s"
 
@@ -1714,7 +1708,7 @@ msgid "connection failed"
 msgstr "ha fallat la connexió"
 
 #: js/ui/status/network.js:1517 js/ui/status/network.js:1612
-#: js/ui/status/rfkill.js:93nn
+#: js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Paràmetres de xarxa"
 
@@ -1795,7 +1789,7 @@ msgstr "S'està estimant la durada…"
 msgid "%d∶%02d Remaining (%d %%)"
 msgstr "%d∶%02d queda (%d %%)"
 
-#. Translators: ethis is <hours>:<minutes> Until Full (<percentage>)
+#. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:103
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
@@ -1968,19 +1962,19 @@ msgstr "Calendari de l'Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:372
+#: src/main.c:380
 msgid "Print version"
 msgstr "Mostra la versió"
 
-#: src/main.c:378
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "El mode que utilitzarà el GDM per a la pantalla d'entrada"
 
-#: src/main.c:384
+#: src/main.c:392
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Utilitza un mode específic, p. ex. «gdm» per la pantalla d'entrada"
 
-#: src/main.c:390
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Llista els modes possibles"
 
@@ -2027,6 +2021,12 @@ msgstr[1] "%u entrades"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sons del sistema"
+
+#~ msgid "Hide tray"
+#~ msgstr "Oculta la Safata"
+
+#~ msgid "Status Icons"
+#~ msgstr "Icones d'estat"
 
 #~ msgid "Events"
 #~ msgstr "Cites"
