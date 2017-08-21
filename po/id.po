@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-02 10:05+0000\n"
-"PO-Revision-Date: 2017-08-04 09:46+0700\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-21 13:42+0700\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -408,43 +408,34 @@ msgid ""
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
-"monitor configuration system, aimed to replace the old one. This enables a "
-"higher level configuration API to be used by configuration applications, as "
-"well as the ability to configure per logical monitor scale. • “scale-monitor-"
-"framebuffer” — makes mutter default to layout logical monitors in a logical "
-"pixel coordinate space, while scaling monitor framebuffers instead of window "
-"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
-"“monitor-config-manager” is required for this feature to be enabled."
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
 msgstr ""
 "Untuk mengaktifkan fitur eksperimental, tambahkan kata kunci fitur ke dalam "
 "daftar. Apakah fitur memerlukan nyala ulang kompositor tergantung pada fitur "
 "yang diberikan. Setiap fitur eksperimental tidak diharuskan tetap tersedia, "
 "atau dapat dikonfigurasi. Jangan berharap menambahkan apapun dalam "
 "pengaturan ini kebal perubahan di masa depan. Saat ini kata kunci yang "
-"mungkin: • \"monitor-config-manager\" — gunakan sistem konfigurasi monitor "
-"baru, yang ditujukan untuk mengganti yang lama. Hal ini memungkinkan tingkat "
-"konfigurasi API yang lebih tinggi untuk digunakan oleh aplikasi konfigurasi, "
-"serta kemampuan untuk mengkonfigurasi per skala monitor logikal. • “scale-"
-"monitor-framebuffer” — membuat bawaan mutter untuk tata letak monitor "
-"logikal dalam ruang koordinat pixel logikal, sambil menskalakan framebuffer "
-"monitor alih-alih konten jendela, untuk mengelola monitor HiDPI. Tidak perlu "
-"mulai ulang. Juga mengaktifkan “monitor-config-manager” diperlukan agar "
-"fitur ini diaktifkan."
+"mungkin: • “scale-monitor-framebuffer” — membuat bawaan mutter untuk tata "
+"letak monitor logikal dalam ruang koordinat pixel logikal, sambil "
+"menskalakan framebuffer monitor alih-alih konten jendela, untuk mengelola "
+"monitor HiDPI. Tidak perlu mulai ulang."
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Pilih jendela dari popup tab"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Batalkan popup tab"
 
-#: data/org.gnome.mutter.gschema.xml.in:161
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Switch monitor configurations"
 msgstr "Tukar konfigurasi monitor bawaan"
 
-#: data/org.gnome.mutter.gschema.xml.in:166
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Rotates the built-in monitor configuration"
 msgstr "Memutar konfigurasi monitor bawaan"
 
@@ -503,7 +494,7 @@ msgstr "Aktifkan kembali pintasan"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2118
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Tukar Mode: (Grup %d)"
@@ -511,30 +502,30 @@ msgstr "Tukar Mode: (Grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2141
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Berpindah monitor"
 
-#: src/backends/meta-input-settings.c:2143
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Tampilkan bantuan pada layar"
 
-#: src/backends/meta-monitor-manager.c:927
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Tampilan bawaan"
 
-#: src/backends/meta-monitor-manager.c:950
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Tak Dikenal"
 
-#: src/backends/meta-monitor-manager.c:952
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Tampilan Tak Dikenal"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:960
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
