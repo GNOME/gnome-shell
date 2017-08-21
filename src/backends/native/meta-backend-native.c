@@ -520,6 +520,11 @@ meta_backend_native_lock_layout_group (MetaBackend *backend,
                                        guint        idx)
 {
   ClutterDeviceManager *manager = clutter_device_manager_get_default ();
+  xkb_layout_index_t old_idx;
+
+  old_idx = meta_backend_native_get_keymap_layout_group (backend);
+  if (old_idx == idx)
+    return;
 
   clutter_evdev_set_keyboard_layout_index (manager, idx);
   meta_backend_notify_keymap_layout_group_changed (backend, idx);
