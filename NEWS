@@ -1,3 +1,22 @@
+3.25.91
+=======
+* Reduce memory use of suspended instances [Jonas; #786299]
+* Make supported scales determination saner [Rui; #786474]
+* Fix crash on inhibit-shortcuts dialog reponse [Jonas; #786385]
+* Support libinput's tag-and-drag setting [freeroot; #775755]
+* Avoid overlapping keybindings with multiple layouts [Jonas; #786408]
+* Fix non-transformed cursor on rotated monitors [Jonas; #786023]
+* Avoid unnecessary work during background painting [Alessandro; #783512]
+* Misc. bug fixes [Alberts, Jonas, Mario; #691611, #786300, #777732, #786568]
+
+Contributors:
+  freeroot, Jonas Ådahl, Alessandro Bono, Carlos Garnacho, Rui Matos,
+  Alberts Muktupāvels, Mario Sanchez Prada
+
+Translations:
+  Muhammet Kara [tr], Claude Paroz [fr], Мирослав Николић [sr, sr@latin],
+  Pawan Chitrakar [ne], Kukuh Syafaat [id]
+
 3.25.90
 =======
 * Add zwp_linux_dmabuf_v1 support [Daniel; #785262]
