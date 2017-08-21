@@ -1,3 +1,22 @@
+3.25.91
+=======
+* Open context menu of highlighted search result on Shift+F10 [Florian; #675315]
+* Fix mid-sentence capitalization in weather forecasts [Florian; #779873]
+* Add switcher popup to cycle through monitor configurations [Rui; #783550]
+* Offer system actions in search [Rares; #691900]
+* Misc. bug fixes [Mario, Florian, Rui; #777519, #786120, #786145, #786419,
+  #786526, #786520, #786520, #786146]
+
+Contributors:
+  Emmanuele Bassi, Marek Cernocky, Piotr Drąg, Carlos Garnacho, Rui Matos,
+  Florian Müllner, Mario Sanchez Prada, Rares Visalom
+
+Translations:
+  Marek Cernocky [cs], Piotr Drąg [pl], Muhammet Kara [tr],
+  Мирослав Николић [sr, sr@latin], Kukuh Syafaat [id],
+  Baurzhan Muftakhidinov [kk], Aurimas Černius [lt], Fran Dieguez [gl],
+  gogo [hr], Jordi Mas [ca]
+
 3.25.90
 =======
 * Add permission dialog for inhibiting shortucts [Florian; #783342]
