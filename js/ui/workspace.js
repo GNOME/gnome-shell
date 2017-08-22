@@ -948,6 +948,10 @@ var LayoutStrategy = new Lang.Class({
                 let cloneX = x + (cellWidth - cloneWidth) / 2;
                 let cloneY = row.y + row.height * row.additionalScale - cellHeight + compensation;
 
+                // Align with the pixel grid to prevent blurry windows at scale = 1
+                cloneX = Math.floor(cloneX);
+                cloneY = Math.floor(cloneY);
+
                 slots.push([cloneX, cloneY, s, window]);
                 x += cellWidth + this._columnSpacing;
             }
