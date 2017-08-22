@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-02 10:05+0000\n"
-"PO-Revision-Date: 2017-08-03 08:15+0200\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-22 18:29+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>>\n"
 "Language: cs\n"
@@ -410,43 +410,35 @@ msgid ""
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
-"monitor configuration system, aimed to replace the old one. This enables a "
-"higher level configuration API to be used by configuration applications, as "
-"well as the ability to configure per logical monitor scale. • “scale-monitor-"
-"framebuffer” — makes mutter default to layout logical monitors in a logical "
-"pixel coordinate space, while scaling monitor framebuffers instead of window "
-"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
-"“monitor-config-manager” is required for this feature to be enabled."
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
 msgstr ""
 "Chcete-li povolit experimentální funkce, přidejte klíčové slovo funkce do "
 "seznamu. Zda funkce vyžaduje restartování kompozitoru, závisí na dané "
 "funkci. Ne u každé experimentální funkce je vyžadováno, aby byla stále "
 "dostupná nebo konfigurovatelná. Neočekávejte, že by bylo v tomto nastavení "
 "přidáno něco, co by do budoucna přineslo vylepšení. V současné době jsou "
-"možná tato klíčová slova: • „monitor-config-manager“ – použijte se nový "
-"systém nastavení monitoru, jehož cílem je nahradit starý. Poskytuje "
-"aplikacím pro nastavování API vyšší úrovně, stejně jako možnost nastavení "
-"podle logického škálování monitorů. • „scale-monitor-framebuffer“ – zajistí, "
+"možná tato klíčová slova: • „scale-monitor-framebuffer“ – zajistí, "
 "aby byl mutter výchozí pro logické uspořádání monitorů v logickém "
 "souřadnicovém prostoru pixelů, zatímco škáluje přímo v grafické vyrovnávací "
 "paměti, namísto v obsahu oken, aby se postaral o správu montorů s HiDPI. "
-"Nevyžaduje restart. Aby tato funkce fungovala, je zapotřebí povolit rovněž "
-"„monitor-config-manager“."
+"Nevyžaduje restart."
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Vybrat okno z překryvné nabídky tabulátoru"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Zrušit překryvné okno tabulátoru"
 
-#: data/org.gnome.mutter.gschema.xml.in:161
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Switch monitor configurations"
 msgstr "Přepnout nastavení monitoru"
 
-#: data/org.gnome.mutter.gschema.xml.in:166
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Rotates the built-in monitor configuration"
 msgstr "Postupně mění vestavěná nastavení monitoru"
 
@@ -505,7 +497,7 @@ msgstr "Znovu povolit klávesové zkratky"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2118
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Přepínač režimu (skupina %d)"
@@ -513,30 +505,30 @@ msgstr "Přepínač režimu (skupina %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2141
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Přepnout monitor"
 
-#: src/backends/meta-input-settings.c:2143
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Zobrazit nápovědu na obrazovce"
 
-#: src/backends/meta-monitor-manager.c:927
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Vestavěný displej"
 
-#: src/backends/meta-monitor-manager.c:950
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: src/backends/meta-monitor-manager.c:952
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Neznámý displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:960
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
