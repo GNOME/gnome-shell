@@ -762,19 +762,12 @@ meta_egl_query_dma_buf_modifiers (MetaEgl      *egl,
 #define GET_EGL_PROC_ADDR(proc) \
   egl->proc = (void *) eglGetProcAddress (#proc);
 
-#define GET_EGL_PROC_ADDR_REQUIRED(proc) \
-  GET_EGL_PROC_ADDR(proc) \
-  if (!egl->proc) \
-    { \
-      meta_fatal ("Failed to get proc address for '%s'\n", #proc); \
-    }
-
 static void
 meta_egl_constructed (GObject *object)
 {
   MetaEgl *egl = META_EGL (object);
 
-  GET_EGL_PROC_ADDR_REQUIRED (eglGetPlatformDisplayEXT);
+  GET_EGL_PROC_ADDR (eglGetPlatformDisplayEXT);
 
   GET_EGL_PROC_ADDR (eglCreateImageKHR);
   GET_EGL_PROC_ADDR (eglDestroyImageKHR);
