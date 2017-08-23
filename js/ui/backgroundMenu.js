@@ -71,11 +71,23 @@ function addBackgroundMenu(actor, layoutManager) {
     let grabOpBeginId = global.display.connect('grab-op-begin', () => {
         clickAction.release();
     });
+    let cursorTracker = Meta.CursorTracker.get_for_display(global.display);
 
     actor.connect('destroy', () => {
         actor._backgroundMenu.destroy();
         actor._backgroundMenu = null;
         actor._backgroundManager = null;
         global.display.disconnect(grabOpBeginId);
+    });
+
+    actor.connect('notify::allocation', function() {
+        // If the actor moves from underneath us, we should probably not
+        // fire the long press action. It may have moved outside of the
+        // range of where the cursor is, where we will never get ButtonPress
+        // events
+        let [xHot, yHot] = cursorTracker.get_hot();
+
+        if (!actor.allocation.contains(xHot, yHot))
+            clickAction.release();
     });
 }
