@@ -12,10 +12,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 21:09+0000\n"
-"PO-Revision-Date: 2017-02-19 21:52+0100\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-23 04:15+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -409,13 +409,45 @@ msgstr ""
 "Jeśli wynosi wartość „true”, to nowe okna będą zawsze umieszczane na środku "
 "aktywnego ekranu monitora."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Funkcje eksperymentalne"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+"Aby włączyć eksperymentalne funkcje, należy dodać słowo kluczowe funkcji do "
+"tej listy. Niektóre funkcje wymagają ponownego uruchomienia menedżera okien. "
+"Dostępność funkcji eksperymentalnych nie jest gwarantowana. W przyszłości "
+"każda funkcja może zostać usunięta. Obecnie obsługiwane słowa kluczowe: • "
+"„scale-monitor-framebuffer” — sprawia, że menedżer okien do zarządzania "
+"monitorami o wysokiej rozdzielczości domyślnie układa logiczne monitory "
+"w przestrzeni współrzędnych logicznych pikseli, jednocześnie skalując bufory "
+"ramki monitorów zamiast zawartości okien. Nie wymaga ponownego uruchomienia."
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Wybór okna z wyskakującego okna dla tabulacji"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Anulowanie wyskakującego okna dla tabulacji"
+
+#: data/org.gnome.mutter.gschema.xml.in:151
+msgid "Switch monitor configurations"
+msgstr "Przełączenie konfiguracji monitorów"
+
+#: data/org.gnome.mutter.gschema.xml.in:156
+msgid "Rotates the built-in monitor configuration"
+msgstr "Obrócenie wbudowanego monitora"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -465,10 +497,14 @@ msgstr "Przełączenie na 11. konsolę wirtualną"
 msgid "Switch to VT 12"
 msgstr "Przełączenie na 12. konsolę wirtualną"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Ponowne włączenie skrótów"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Przełącznik trybu (%d. grupa)"
@@ -476,37 +512,37 @@ msgstr "Przełącznik trybu (%d. grupa)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Przełączenie monitora"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
-msgstr "Wyświetlenie pomocy na ekranie"
+msgstr "Ekran pomocy"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Wbudowany ekran"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Nieznany ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -516,30 +552,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Zdarzenie sygnału dźwiękowego"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "Okno „%s” nie odpowiada."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Program nie odpowiada."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "Można poczekać chwilę dłużej lub wymusić zakończenie programu."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Zakończ"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Czekaj"
 
 #: src/core/display.c:608
 #, c-format
@@ -581,6 +593,30 @@ msgstr "Uruchamia jako osadzony menedżer składania"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Uruchamia jako pełny serwer wyświetlania zamiast osadzonego"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "Okno „%s” nie odpowiada."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Program nie odpowiada."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "Można poczekać chwilę dłużej lub wymusić zakończenie programu."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Zakończ"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Czekaj"
 
 #: src/core/mutter.c:39
 #, c-format
