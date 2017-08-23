@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-07 12:40+0000\n"
-"PO-Revision-Date: 2017-03-12 10:28+0100\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-23 19:50+0200\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -477,15 +477,41 @@ msgstr ""
 "Ak je nastavené na true, budú nové okná vždy umiestnené v strede aktívnej "
 "obrazovky monitoru."
 
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Povoliť experimentálne funkcie"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+
 # summary
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Vybrať okno z rozbaľovacej ponuky tabulátora"
 
 # summary
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Zrušit rozbaľovaciu ponuku tabulátora"
+
+# PK: predpokladam ze to prepisane medzi tlacidlami
+# description
+#: data/org.gnome.mutter.gschema.xml.in:151
+msgid "Switch monitor configurations"
+msgstr "Prepnúť nastavenia monitorov"
+
+#: data/org.gnome.mutter.gschema.xml.in:156
+msgid "Rotates the built-in monitor configuration"
+msgstr "Otočí nastavenie vstavaného monitora"
 
 # description
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
@@ -542,10 +568,14 @@ msgstr "Prepnúť na VT č. 11"
 msgid "Switch to VT 12"
 msgstr "Prepnúť na VT č. 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Znovu povoliť klávesové skratky"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Prepínač režimu (skupina č. %d)"
@@ -555,37 +585,37 @@ msgstr "Prepínač režimu (skupina č. %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Prepnúť monitor"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Zobraziť pomocníka na obrazovke"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Vstavaný displej"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Neznámy displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:474
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -595,32 +625,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Udalosť zvončeka"
-
-# %s is a window title
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "„%s“ neodpovedá."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Aplikácia neodpovedá."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Môžete chvíľu počkať na pokračovanie aplikácie, alebo ju môžete ukončiť."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Vynútiť ukončenie"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Počkať"
 
 # X window system preloz, napr. system na spravu okien X
 #: src/core/display.c:608
@@ -670,6 +674,32 @@ msgstr "Spustí ako kompozitor s vnoreným režimom"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Spustí ako plnohodnotný zobrazovací server, namiesto vnoreného režimu"
+
+# %s is a window title
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "„%s“ neodpovedá."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Aplikácia neodpovedá."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Môžete chvíľu počkať na pokračovanie aplikácie, alebo ju môžete ukončiť."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Vynútiť ukončenie"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Počkať"
 
 #: src/core/mutter.c:39
 #, c-format
