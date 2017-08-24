@@ -1931,7 +1931,7 @@ msgstr "इभोल्युसन पात्रो"
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: src/calendar-server/evolution-calendar.desktop.in:6
 msgid "evolution"
-msgstr "इभोल्युसन"
+msgstr "evolution"
 
 #: src/main.c:372
 msgid "Print version"
