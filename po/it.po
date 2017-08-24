@@ -10,10 +10,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 15:52+0000\n"
-"PO-Revision-Date: 2017-02-17 22:11+0100\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-24 09:45+0200\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0beta3\n"
+"X-Generator: Poedit 1.8.12\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -410,13 +410,47 @@ msgstr ""
 "Se impostata a VERO, le nuove finestre verranno sempre posizionate al centro "
 "dello schermo attivo."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Abilita funzionalità sperimentali"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+"Per abilitare le funzionalità sperimentali, aggiungere la parola chiave di "
+"tale funzionalità nella lista. Se la funzionalità desiderata richiede il "
+"riavvio del compositor, dipende dalla funzionalità stessa. Una qualsiasi "
+"funzionalità sperimentale non è richiesta, ma può essere disponibile e "
+"configurabile. Le funzionalità offerte potrebbero rendere il sistema "
+"instabile. I possibili valori sono: • \"scale-monitor-framebuffer\" — Fa in "
+"modo che mutter disponga gli schermi logici secondo uno spazio logico di "
+"coordinate pixel, applicando il ridimensionamento ai framebuffer invece che "
+"al contenuto della finestra, per gestire schermi HiDPI (non richiede il "
+"riavvio)."
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Seleziona finestra dal tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Annulla tab popup"
+
+#: data/org.gnome.mutter.gschema.xml.in:151
+msgid "Switch monitor configurations"
+msgstr "Cambia le configurazioni del monitor"
+
+#: data/org.gnome.mutter.gschema.xml.in:156
+msgid "Rotates the built-in monitor configuration"
+msgstr "Passa da una configurazione integrata all'altra del monitor"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -466,10 +500,14 @@ msgstr "Passa al VT 11"
 msgid "Switch to VT 12"
 msgstr "Passa al VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Riabilita scorciatoie"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Cambio modalità (gruppo %d)"
@@ -477,37 +515,37 @@ msgstr "Cambio modalità (gruppo %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Cambia monitor"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Mostra aiuto sullo schermo"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Display integrato"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Sconosciuto"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Display sconosciuto"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -518,32 +556,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Evento campanella"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "Nessuna risposta da %s."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "L'applicazione non risponde."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"È possibile scegliere di attendere un po' lasciando che l'applicazione "
-"continui, oppure forzare la terminazione dell'applicazione."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Forza uscita"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Attendi"
 
 #: src/core/display.c:608
 #, c-format
@@ -585,6 +597,32 @@ msgstr "Esegui come compositor annidato"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Esegui come display server invece che annidato"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "Nessuna risposta da %s."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "L'applicazione non risponde."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"È possibile scegliere di attendere un po' lasciando che l'applicazione "
+"continui, oppure forzare la terminazione dell'applicazione."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Forza uscita"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Attendi"
 
 #: src/core/mutter.c:39
 #, c-format
