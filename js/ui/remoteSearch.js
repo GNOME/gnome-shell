@@ -117,6 +117,13 @@ function loadRemoteSearchProviders(searchSettings, callback) {
                 // ignore error
             }
 
+            remoteProvider.autoStart = true;
+            try {
+                remoteProvider.autoStart = keyfile.get_boolean(group, 'AutoStart');
+            } catch(e) {
+                // ignore error
+            }
+
             objectPaths[objectPath] = remoteProvider;
             loadedProviders.push(remoteProvider);
         } catch(e) {
@@ -188,13 +195,18 @@ var RemoteSearchProvider = new Lang.Class({
         if (!proxyInfo)
             proxyInfo = SearchProviderProxyInfo;
 
+        let g_flags = Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES;
+        if (remoteProvider.autoStart)
+            g_flags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION;
+        else
+            g_flags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START;
+
         this.proxy = new Gio.DBusProxy({ g_bus_type: Gio.BusType.SESSION,
                                          g_name: dbusName,
                                          g_object_path: dbusPath,
                                          g_interface_info: proxyInfo,
                                          g_interface_name: proxyInfo.name,
-                                         g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION |
-                                                   Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+                                         g_flags });
         this.proxy.init_async(GLib.PRIORITY_DEFAULT, null, null);
 
         this.appInfo = appInfo;
