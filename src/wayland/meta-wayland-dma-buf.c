@@ -83,16 +83,13 @@ meta_wayland_dma_buf_buffer_attach (MetaWaylandBuffer *buffer,
   if (buffer->texture)
     return TRUE;
 
-  /* DRM_FORMAT_* enums consider the entire pixel as a single packed quantity,
-   * with little-endian ordering. COGL_PIXEL_FORMAT_* is in byte order when
-   * each channel is an 8-byte unit. Hence these have order swapped. */
   switch (dma_buf->drm_format)
     {
     case DRM_FORMAT_XRGB8888:
-      cogl_format = COGL_PIXEL_FORMAT_BGR_888;
+      cogl_format = COGL_PIXEL_FORMAT_RGB_888;
       break;
     case DRM_FORMAT_ARGB8888:
-      cogl_format = COGL_PIXEL_FORMAT_BGRA_8888_PRE;
+      cogl_format = COGL_PIXEL_FORMAT_ARGB_8888_PRE;
       break;
     case DRM_FORMAT_ARGB2101010:
       cogl_format = COGL_PIXEL_FORMAT_ARGB_2101010_PRE;
