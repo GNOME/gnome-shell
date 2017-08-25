@@ -42,6 +42,8 @@ struct _MetaRemoteDesktopSession
 {
   MetaDBusRemoteDesktopSessionSkeleton parent;
 
+  char *peer_name;
+
   char *session_id;
   char *object_path;
 
@@ -165,6 +167,7 @@ meta_remote_desktop_session_register_screen_cast (MetaRemoteDesktopSession  *ses
 
 MetaRemoteDesktopSession *
 meta_remote_desktop_session_new (MetaRemoteDesktop  *remote_desktop,
+                                 const char         *peer_name,
                                  GError            **error)
 {
   GDBusInterfaceSkeleton *interface_skeleton;
@@ -172,6 +175,8 @@ meta_remote_desktop_session_new (MetaRemoteDesktop  *remote_desktop,
   GDBusConnection *connection;
 
   session = g_object_new (META_TYPE_REMOTE_DESKTOP_SESSION, NULL);
+
+  session->peer_name = g_strdup (peer_name);
 
   interface_skeleton = G_DBUS_INTERFACE_SKELETON (session);
   connection = meta_remote_desktop_get_connection (remote_desktop);
@@ -188,11 +193,27 @@ meta_remote_desktop_session_new (MetaRemoteDesktop  *remote_desktop,
 }
 
 static gboolean
+check_permission (MetaRemoteDesktopSession *session,
+                  GDBusMethodInvocation    *invocation)
+{
+  return g_strcmp0 (session->peer_name,
+                    g_dbus_method_invocation_get_sender (invocation)) == 0;
+}
+
+static gboolean
 handle_start (MetaDBusRemoteDesktopSession *skeleton,
               GDBusMethodInvocation        *invocation)
 {
   MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
   GError *error = NULL;
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
 
   if (!meta_remote_desktop_session_start (session, &error))
     {
@@ -218,6 +239,14 @@ handle_stop (MetaDBusRemoteDesktopSession *skeleton,
 {
   MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
 
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
+
   meta_remote_desktop_session_close (session);
 
   meta_dbus_remote_desktop_session_complete_stop (skeleton, invocation);
@@ -232,8 +261,15 @@ handle_notify_keyboard_keysym (MetaDBusRemoteDesktopSession *skeleton,
                                gboolean                      pressed)
 {
   MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
-
   ClutterKeyState state;
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
 
   if (pressed)
     state = CLUTTER_KEY_STATE_PRESSED;
@@ -281,6 +317,14 @@ handle_notify_pointer_button (MetaDBusRemoteDesktopSession *skeleton,
   uint32_t button;
   ClutterButtonState state;
 
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
+
   button = translate_to_clutter_button (button_code);
 
   if (pressed)
@@ -323,6 +367,14 @@ handle_notify_pointer_axis_discrete (MetaDBusRemoteDesktopSession *skeleton,
 {
   MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
   ClutterScrollDirection direction;
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
 
   if (axis <= 1)
     {
@@ -369,6 +421,14 @@ handle_notify_pointer_motion_absolute (MetaDBusRemoteDesktopSession *skeleton,
 {
   MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
 
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
+
   clutter_virtual_input_device_notify_absolute_motion (session->virtual_pointer,
                                                        CLUTTER_CURRENT_TIME,
                                                        x, y);
@@ -409,6 +469,7 @@ meta_remote_desktop_session_finalize (GObject *object)
 
   g_assert (!meta_remote_desktop_session_is_running (session));
 
+  g_free (session->peer_name);
   g_free (session->session_id);
   g_free (session->object_path);
 

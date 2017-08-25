@@ -40,6 +40,7 @@ char * meta_screen_cast_session_get_object_path (MetaScreenCastSession *session)
 
 MetaScreenCastSession * meta_screen_cast_session_new (MetaScreenCast             *screen_cast,
                                                       MetaScreenCastSessionType   session_type,
+                                                      const char                 *peer_name,
                                                       GError                    **error);
 
 gboolean meta_screen_cast_session_start (MetaScreenCastSession  *session,

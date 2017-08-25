@@ -94,13 +94,16 @@ handle_create_session (MetaDBusRemoteDesktop *skeleton,
                        GDBusMethodInvocation *invocation)
 {
   MetaRemoteDesktop *remote_desktop = META_REMOTE_DESKTOP (skeleton);
+  const char *peer_name;
   MetaRemoteDesktopSession *session;
   GError *error = NULL;
   char *session_id;
   char *session_path;
   const char *client_dbus_name;
 
+  peer_name = g_dbus_method_invocation_get_sender (invocation);
   session = meta_remote_desktop_session_new (remote_desktop,
+                                             peer_name,
                                              &error);
   if (!session)
     {

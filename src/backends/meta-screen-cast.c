@@ -100,6 +100,7 @@ handle_create_session (MetaDBusScreenCast    *skeleton,
                        GVariant              *properties)
 {
   MetaScreenCast *screen_cast = META_SCREEN_CAST (skeleton);
+  const char *peer_name;
   MetaScreenCastSession *session;
   GError *error = NULL;
   const char *session_path;
@@ -115,7 +116,11 @@ handle_create_session (MetaDBusScreenCast    *skeleton,
   else
     session_type = META_SCREEN_CAST_SESSION_TYPE_NORMAL;
 
-  session = meta_screen_cast_session_new (screen_cast, session_type, &error);
+  peer_name = g_dbus_method_invocation_get_sender (invocation);
+  session = meta_screen_cast_session_new (screen_cast,
+                                          session_type,
+                                          peer_name,
+                                          &error);
   if (!session)
     {
       g_warning ("Failed to create screen cast session: %s",

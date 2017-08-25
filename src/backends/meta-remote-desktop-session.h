@@ -44,6 +44,7 @@ gboolean meta_remote_desktop_session_register_screen_cast (MetaRemoteDesktopSess
 void meta_remote_desktop_session_close (MetaRemoteDesktopSession *session);
 
 MetaRemoteDesktopSession * meta_remote_desktop_session_new (MetaRemoteDesktop  *remote_desktop,
+                                                            const char         *peer_name,
                                                             GError            **error);
 
 #endif /* META_REMOTE_DESKTOP_SESSION_H */

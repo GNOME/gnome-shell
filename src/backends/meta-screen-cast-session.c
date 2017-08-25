@@ -35,6 +35,8 @@ struct _MetaScreenCastSession
 {
   MetaDBusScreenCastSessionSkeleton parent;
 
+  char *peer_name;
+
   MetaScreenCastSessionType session_type;
   char *object_path;
 
@@ -102,11 +104,27 @@ meta_screen_cast_session_get_object_path (MetaScreenCastSession *session)
 }
 
 static gboolean
+check_permission (MetaScreenCastSession *session,
+                  GDBusMethodInvocation *invocation)
+{
+  return g_strcmp0 (session->peer_name,
+                    g_dbus_method_invocation_get_sender (invocation)) == 0;
+}
+
+static gboolean
 handle_start (MetaDBusScreenCastSession *skeleton,
               GDBusMethodInvocation     *invocation)
 {
   MetaScreenCastSession *session = META_SCREEN_CAST_SESSION (skeleton);
   GError *error = NULL;
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
 
   switch (session->session_type)
     {
@@ -140,6 +158,14 @@ handle_stop (MetaDBusScreenCastSession *skeleton,
              GDBusMethodInvocation     *invocation)
 {
   MetaScreenCastSession *session = META_SCREEN_CAST_SESSION (skeleton);
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
 
   switch (session->session_type)
     {
@@ -184,6 +210,14 @@ handle_record_monitor (MetaDBusScreenCastSession *skeleton,
   MetaScreenCastMonitorStream *monitor_stream;
   MetaScreenCastStream *stream;
   char *stream_path;
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
 
   interface_skeleton = G_DBUS_INTERFACE_SKELETON (skeleton);
   connection = g_dbus_interface_skeleton_get_connection (interface_skeleton);
@@ -238,6 +272,16 @@ handle_record_window (MetaDBusScreenCastSession *skeleton,
                       GDBusMethodInvocation     *invocation,
                       GVariant                  *properties_variant)
 {
+  MetaScreenCastSession *session = META_SCREEN_CAST_SESSION (skeleton);
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
+
   g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                          G_DBUS_ERROR_FAILED,
                                          "Recording a window not yet supported");
@@ -268,6 +312,7 @@ meta_dbus_session_init_iface (MetaDbusSessionInterface *iface)
 MetaScreenCastSession *
 meta_screen_cast_session_new (MetaScreenCast             *screen_cast,
                               MetaScreenCastSessionType   session_type,
+                              const char                 *peer_name,
                               GError                    **error)
 {
   GDBusInterfaceSkeleton *interface_skeleton;
@@ -277,6 +322,7 @@ meta_screen_cast_session_new (MetaScreenCast             *screen_cast,
 
   session = g_object_new (META_TYPE_SCREEN_CAST_SESSION, NULL);
   session->session_type = session_type;
+  session->peer_name = g_strdup (peer_name);
   session->object_path =
     g_strdup_printf (META_SCREEN_CAST_SESSION_DBUS_PATH "/u%u",
                      ++global_session_number);
@@ -297,6 +343,7 @@ meta_screen_cast_session_finalize (GObject *object)
 {
   MetaScreenCastSession *session = META_SCREEN_CAST_SESSION (object);
 
+  g_free (session->peer_name);
   g_free (session->object_path);
 
   G_OBJECT_CLASS (meta_screen_cast_session_parent_class)->finalize (object);
