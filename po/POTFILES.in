@@ -20,7 +20,6 @@ src/core/main.c
 src/core/meta-close-dialog-default.c
 src/core/mutter.c
 src/core/prefs.c
-src/core/screen.c
 src/core/util.c
 src/core/window.c
 src/ui/frames.c
