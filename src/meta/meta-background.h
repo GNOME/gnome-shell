@@ -23,7 +23,6 @@
 
 #include <clutter/clutter.h>
 #include <gsettings-desktop-schemas/gdesktop-enums.h>
-#include <meta/screen.h>
 
 /**
  * MetaBackground:
@@ -61,7 +60,7 @@ void meta_background_refresh_all (void);
 
 GType meta_background_get_type (void);
 
-MetaBackground *meta_background_new  (MetaDisplay *display);
+MetaBackground *meta_background_new (MetaDisplay *display);
 
 void meta_background_set_color    (MetaBackground            *self,
                                    ClutterColor              *color);

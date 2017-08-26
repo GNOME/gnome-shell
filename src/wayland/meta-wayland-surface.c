@@ -1273,7 +1273,6 @@ meta_wayland_surface_begin_grab_op (MetaWaylandSurface *surface,
      constrain it in the same way as it would be if the window was
      being moved/resized via a SSD event. */
   return meta_display_begin_grab_op (window->display,
-                                     window->screen,
                                      window,
                                      grab_op,
                                      TRUE, /* pointer_already_grabbed */

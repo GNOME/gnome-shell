@@ -24,7 +24,7 @@ struct _MetaWindowGroup
 {
   ClutterActor parent;
 
-  MetaScreen *screen;
+  MetaDisplay *display;
 };
 
 static void cullable_iface_init (MetaCullableInterface *iface);
@@ -65,7 +65,7 @@ meta_window_group_paint (ClutterActor *actor)
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   ClutterActor *stage = clutter_actor_get_stage (actor);
 
-  meta_display_get_size (window_group->screen->display, &screen_width, &screen_height);
+  meta_display_get_size (window_group->display, &screen_width, &screen_height);
 
   /* Normally we expect an actor to be drawn at it's position on the screen.
    * However, if we're inside the paint of a ClutterClone, that won't be the
@@ -200,13 +200,13 @@ meta_window_group_init (MetaWindowGroup *window_group)
 }
 
 ClutterActor *
-meta_window_group_new (MetaScreen *screen)
+meta_window_group_new (MetaDisplay *display)
 {
   MetaWindowGroup *window_group;
 
   window_group = g_object_new (META_TYPE_WINDOW_GROUP, NULL);
 
-  window_group->screen = screen;
+  window_group->display = display;
 
   return CLUTTER_ACTOR (window_group);
 }

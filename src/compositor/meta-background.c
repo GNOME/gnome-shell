@@ -26,9 +26,6 @@
 
 #include <string.h>
 
-// XXX: Remove this once transition to MetaDisplay has been completed
-#include "core/display-private.h"
-
 enum
 {
   CHANGED,

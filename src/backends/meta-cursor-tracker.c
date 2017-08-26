@@ -162,15 +162,15 @@ meta_cursor_tracker_class_init (MetaCursorTrackerClass *klass)
 }
 
 /**
- * meta_cursor_tracker_get_for_screen:
- * @screen: the #MetaScreen
+ * meta_cursor_tracker_get_for_display:
+ * @display: the #MetaDisplay
  *
- * Retrieves the cursor tracker object for @screen.
+ * Retrieves the cursor tracker object for @display.
  *
  * Returns: (transfer none):
  */
 MetaCursorTracker *
-meta_cursor_tracker_get_for_screen (MetaScreen *screen)
+meta_cursor_tracker_get_for_display (MetaDisplay *display)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaCursorTracker *tracker = meta_backend_get_cursor_tracker (backend);

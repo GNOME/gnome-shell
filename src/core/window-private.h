@@ -36,7 +36,7 @@
 #include <meta/compositor.h>
 #include <meta/window.h>
 #include <meta/meta-close-dialog.h>
-#include "screen-private.h"
+#include "backends/meta-logical-monitor.h"
 #include <meta/util.h>
 #include "stack.h"
 #include <X11/Xutil.h>
@@ -145,7 +145,6 @@ struct _MetaWindow
   GObject parent_instance;
 
   MetaDisplay *display;
-  MetaScreen *screen;
   guint64 stamp;
   MetaLogicalMonitor *monitor;
   MetaWorkspace *workspace;
@@ -586,7 +585,6 @@ struct _MetaWindowClass
 #define META_WINDOW_ALLOWS_VERTICAL_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) && (w)->size_hints.min_height < (w)->size_hints.max_height)
 
 MetaWindow * _meta_window_shared_new       (MetaDisplay         *display,
-                                            MetaScreen          *screen,
                                             MetaWindowClientType client_type,
                                             MetaWaylandSurface  *surface,
                                             Window               xwindow,

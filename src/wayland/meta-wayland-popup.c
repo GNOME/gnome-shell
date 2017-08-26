@@ -190,7 +190,6 @@ meta_wayland_popup_grab_begin (MetaWaylandPopupGrab *grab,
 
   meta_wayland_pointer_start_grab (pointer, (MetaWaylandPointerGrab*)grab);
   meta_display_begin_grab_op (window->display,
-                              window->screen,
                               window,
                               META_GRAB_OP_WAYLAND_POPUP,
                               FALSE, /* pointer_already_grabbed */

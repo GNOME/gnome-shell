@@ -421,7 +421,7 @@ void
 meta_plugin_end_modal (MetaPlugin *plugin,
                        guint32     timestamp);
 
-MetaScreen *meta_plugin_get_screen        (MetaPlugin *plugin);
+MetaDisplay *meta_plugin_get_display (MetaPlugin *plugin);
 
 void _meta_plugin_set_compositor (MetaPlugin *plugin, MetaCompositor *compositor);
 

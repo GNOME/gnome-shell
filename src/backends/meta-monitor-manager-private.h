@@ -40,7 +40,6 @@
 #include <libupower-glib/upower.h>
 
 #include "display-private.h"
-#include <meta/screen.h>
 #include "stack-tracker.h"
 #include <meta/meta-monitor-manager.h>
 

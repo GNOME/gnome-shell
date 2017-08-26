@@ -5,7 +5,7 @@
 
 #include <meta/meta-window-group.h>
 
-#include <meta/screen.h>
+#include <meta/display.h>
 
 /**
  * MetaWindowGroup:
@@ -19,6 +19,6 @@
 
 typedef struct _MetaWindowGroupPrivate MetaWindowGroupPrivate;
 
-ClutterActor *meta_window_group_new (MetaScreen *screen);
+ClutterActor *meta_window_group_new (MetaDisplay *display);
 
 #endif /* META_WINDOW_GROUP_PRIVATE_H */

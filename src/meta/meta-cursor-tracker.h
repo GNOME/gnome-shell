@@ -39,7 +39,7 @@ typedef struct _MetaCursorTrackerClass   MetaCursorTrackerClass;
 
 GType meta_cursor_tracker_get_type (void);
 
-MetaCursorTracker *meta_cursor_tracker_get_for_screen (MetaScreen *screen);
+MetaCursorTracker *meta_cursor_tracker_get_for_display (MetaDisplay *display);
 
 void           meta_cursor_tracker_get_hot    (MetaCursorTracker *tracker,
                                                int               *x,

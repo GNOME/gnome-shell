@@ -23,7 +23,6 @@
 #define META_PLUGIN_MANAGER_H_
 
 #include <meta/types.h>
-#include <meta/screen.h>
 #include <meta/meta-plugin.h>
 
 typedef enum {

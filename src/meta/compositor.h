@@ -114,8 +114,8 @@ void meta_compositor_queue_frame_drawn    (MetaCompositor *compositor,
 void meta_compositor_sync_stack                (MetaCompositor *compositor,
                                                 GList          *stack);
 
-void meta_compositor_flash_screen              (MetaCompositor *compositor,
-                                                MetaScreen     *screen);
+void meta_compositor_flash_display             (MetaCompositor *compositor,
+                                                MetaDisplay    *display);
 
 void meta_compositor_show_tile_preview (MetaCompositor *compositor,
                                         MetaWindow     *window,

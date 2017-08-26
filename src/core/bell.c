@@ -49,7 +49,6 @@
 
 #include <config.h>
 #include "bell.h"
-#include "screen-private.h"
 #include "window-private.h"
 #include "util-private.h"
 #include "compositor/compositor-private.h"
@@ -74,7 +73,7 @@
 static void
 bell_flash_fullscreen (MetaDisplay *display)
 {
-  meta_compositor_flash_screen (display->compositor, display->screen);
+  meta_compositor_flash_display (display->compositor, display);
 }
 
 /**

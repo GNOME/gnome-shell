@@ -29,7 +29,6 @@
 #include <meta/errors.h>
 #include "display-private.h"
 #include "x11/meta-x11-display-private.h"
-#include "screen-private.h"
 #include "startup-notification-private.h"
 
 /* This should be fairly long, as it should never be required unless

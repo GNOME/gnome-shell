@@ -22,7 +22,6 @@
 #define META_BACKGROUND_ACTOR_H
 
 #include <clutter/clutter.h>
-#include <meta/screen.h>
 #include <meta/meta-background.h>
 
 #include <gsettings-desktop-schemas/gdesktop-enums.h>
@@ -61,8 +60,8 @@ struct _MetaBackgroundActor
 
 GType meta_background_actor_get_type (void);
 
-ClutterActor *meta_background_actor_new    (MetaScreen *screen,
-                                            int         monitor);
+ClutterActor *meta_background_actor_new    (MetaDisplay *display,
+                                            int          monitor);
 
 void meta_background_actor_set_background  (MetaBackgroundActor *self,
                                             MetaBackground      *background);

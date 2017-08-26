@@ -23,7 +23,6 @@
 
 #include <meta/types.h>
 #include <meta/boxes.h>
-#include <meta/screen.h>
 
 #define META_TYPE_WORKSPACE            (meta_workspace_get_type ())
 #define META_WORKSPACE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), META_TYPE_WORKSPACE, MetaWorkspace))

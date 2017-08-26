@@ -220,14 +220,10 @@ meta_core_begin_grab_op (Display    *xdisplay,
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
   MetaDisplay *display;
-  MetaScreen *screen;
 
   display = meta_display_for_x_display (xdisplay);
-  screen = display->screen;
 
-  g_assert (screen != NULL);
-
-  return meta_display_begin_grab_op (display, screen, window,
+  return meta_display_begin_grab_op (display, window,
                                      op, pointer_already_grabbed,
                                      frame_action,
                                      button, modmask,

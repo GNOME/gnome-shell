@@ -147,7 +147,6 @@ struct _MetaDisplay
   guint focused_by_us : 1;
 
   /*< private-ish >*/
-  MetaScreen *screen;
   GHashTable *stamps;
   GHashTable *wayland_windows;
 

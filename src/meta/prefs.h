@@ -384,7 +384,6 @@ typedef enum
 /**
  * MetaKeyHandlerFunc:
  * @display: a #MetaDisplay
- * @screen: a #MetaScreen
  * @window: a #MetaWindow
  * @event: (type gpointer): a #ClutterKeyEvent
  * @binding: a #MetaKeyBinding
@@ -392,7 +391,6 @@ typedef enum
  *
  */
 typedef void (* MetaKeyHandlerFunc) (MetaDisplay     *display,
-                                     MetaScreen      *screen,
                                      MetaWindow      *window,
                                      ClutterKeyEvent *event,
                                      MetaKeyBinding  *binding,

@@ -119,7 +119,6 @@ void meta_window_frame_rect_to_client_rect (MetaWindow    *window,
                                             MetaRectangle *frame_rect,
                                             MetaRectangle *client_rect);
 
-MetaScreen *meta_window_get_screen (MetaWindow *window);
 MetaDisplay *meta_window_get_display (MetaWindow *window);
 Window meta_window_get_xwindow (MetaWindow *window);
 MetaWindowType meta_window_get_window_type (MetaWindow *window);

@@ -28,7 +28,6 @@
 
 #include <meta/meta-plugin.h>
 #include "meta-plugin-manager.h"
-#include <meta/screen.h>
 #include <meta/display.h>
 #include <meta/util.h>
 
@@ -191,19 +190,19 @@ meta_plugin_end_modal (MetaPlugin *plugin,
 }
 
 /**
- * meta_plugin_get_screen:
+ * meta_plugin_get_display:
  * @plugin: a #MetaPlugin
  *
- * Gets the #MetaScreen corresponding to a plugin.
+ * Gets the #MetaDisplay corresponding to a plugin.
  *
- * Return value: (transfer none): the #MetaScreen for the plugin
+ * Return value: (transfer none): the #MetaDisplay for the plugin
  */
-MetaScreen *
-meta_plugin_get_screen (MetaPlugin *plugin)
+MetaDisplay *
+meta_plugin_get_display (MetaPlugin *plugin)
 {
   MetaPluginPrivate *priv = META_PLUGIN (plugin)->priv;
 
-  return priv->compositor->display->screen;
+  return priv->compositor->display;
 }
 
 void

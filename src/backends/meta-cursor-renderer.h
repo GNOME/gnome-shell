@@ -27,7 +27,6 @@
 
 #include <glib-object.h>
 
-#include <meta/screen.h>
 #include "meta-cursor.h"
 
 #define META_TYPE_CURSOR_RENDERER (meta_cursor_renderer_get_type ())

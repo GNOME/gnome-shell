@@ -1160,9 +1160,8 @@ process_selection_clear (MetaX11Display *x11_display,
   meta_verbose ("Got selection clear for on display %s\n",
                 x11_display->name);
 
-  meta_display_unmanage_screen (x11_display->display,
-                                x11_display->display->screen,
-                                event->xselectionclear.time);
+  meta_display_close (x11_display->display,
+                      event->xselectionclear.time);
   return TRUE;
 }
 
