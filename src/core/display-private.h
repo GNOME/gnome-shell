@@ -37,6 +37,7 @@
 #include "keybindings-private.h"
 #include "startup-notification-private.h"
 #include "meta-gesture-tracker-private.h"
+#include "stack-tracker.h"
 #include <meta/prefs.h>
 #include <meta/barrier.h>
 #include <clutter/clutter.h>
@@ -244,6 +245,9 @@ struct _MetaDisplay
 
   MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaCursor current_cursor;
+
+  MetaStack *stack;
+  MetaStackTracker *stack_tracker;
 };
 
 struct _MetaDisplayClass
@@ -270,8 +274,9 @@ gboolean      meta_display_open                (void);
 void          meta_display_close               (MetaDisplay *display,
                                                 guint32      timestamp);
 
-void meta_display_unmanage_windows (MetaDisplay *display,
-                                    guint32      timestamp);
+void meta_display_manage_all_windows (MetaDisplay *display);
+void meta_display_unmanage_windows   (MetaDisplay *display,
+                                      guint32      timestamp);
 
 /* Utility function to compare the stacking of two windows */
 int           meta_display_stack_cmp           (const void *a,
@@ -425,5 +430,7 @@ void meta_display_foreach_window (MetaDisplay           *display,
                                   MetaListWindowsFlags   flags,
                                   MetaDisplayWindowFunc  func,
                                   gpointer               data);
+
+void meta_display_restacked (MetaDisplay *display);
 
 #endif

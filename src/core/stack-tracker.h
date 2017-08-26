@@ -34,12 +34,12 @@
 #ifndef META_STACK_TRACKER_H
 #define META_STACK_TRACKER_H
 
-#include <meta/screen.h>
+#include <meta/display.h>
 #include <meta/window.h>
 
 typedef struct _MetaStackTracker MetaStackTracker;
 
-MetaStackTracker *meta_stack_tracker_new  (MetaScreen       *screen);
+MetaStackTracker *meta_stack_tracker_new  (MetaDisplay      *display);
 void              meta_stack_tracker_free (MetaStackTracker *tracker);
 
 /* These functions are called when we make an X call that changes the

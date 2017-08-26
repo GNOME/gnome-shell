@@ -966,7 +966,7 @@ on_top_window_actor_destroyed (MetaWindowActor *window_actor,
   compositor->top_window_actor = NULL;
   compositor->windows = g_list_remove (compositor->windows, window_actor);
 
-  meta_stack_tracker_queue_sync_stack (compositor->display->screen->stack_tracker);
+  meta_stack_tracker_queue_sync_stack (compositor->display->stack_tracker);
 }
 
 void

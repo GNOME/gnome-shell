@@ -37,7 +37,7 @@
 #include <string.h>
 
 #include "frame.h"
-#include "screen-private.h"
+#include "display-private.h"
 #include "stack-tracker.h"
 #include <meta/errors.h>
 #include <meta/util.h>
@@ -142,7 +142,7 @@ union _MetaStackOp
 
 struct _MetaStackTracker
 {
-  MetaScreen *screen;
+  MetaDisplay *display;
 
   /* This is the serial of the last request we made that was reflected
    * in xserver_stack
@@ -177,7 +177,7 @@ static inline const char *
 get_window_desc (MetaStackTracker *tracker,
                  guint64           window)
 {
-  return meta_display_describe_stack_id (tracker->screen->display, window);
+  return meta_display_describe_stack_id (tracker->display, window);
 }
 
 static void
@@ -478,16 +478,16 @@ copy_stack (GArray *stack)
 static void
 query_xserver_stack (MetaStackTracker *tracker)
 {
-  MetaScreen *screen = tracker->screen;
+  MetaX11Display *x11_display = tracker->display->x11_display;
   Window ignored1, ignored2;
   Window *children;
   guint n_children;
   guint i;
 
-  tracker->xserver_serial = XNextRequest (screen->display->x11_display->xdisplay);
+  tracker->xserver_serial = XNextRequest (x11_display->xdisplay);
 
-  XQueryTree (screen->display->x11_display->xdisplay,
-              screen->display->x11_display->xroot,
+  XQueryTree (x11_display->xdisplay,
+              x11_display->xroot,
               &ignored1, &ignored2, &children, &n_children);
 
   tracker->verified_stack = g_array_sized_new (FALSE, FALSE, sizeof (guint64), n_children);
@@ -500,12 +500,12 @@ query_xserver_stack (MetaStackTracker *tracker)
 }
 
 MetaStackTracker *
-meta_stack_tracker_new (MetaScreen *screen)
+meta_stack_tracker_new (MetaDisplay *display)
 {
   MetaStackTracker *tracker;
 
   tracker = g_new0 (MetaStackTracker, 1);
-  tracker->screen = screen;
+  tracker->display = display;
 
   query_xserver_stack (tracker);
 
@@ -851,7 +851,7 @@ meta_stack_tracker_sync_stack (MetaStackTracker *tracker)
 
       if (META_STACK_ID_IS_X11 (window))
         {
-          MetaX11Display *x11_display = tracker->screen->display->x11_display;
+          MetaX11Display *x11_display = tracker->display->x11_display;
           MetaWindow *meta_window =
             meta_x11_display_lookup_x_window (x11_display, (Window)window);
 
@@ -868,14 +868,14 @@ meta_stack_tracker_sync_stack (MetaStackTracker *tracker)
         }
       else
         meta_windows = g_list_prepend (meta_windows,
-                                       meta_display_lookup_stamp (tracker->screen->display, window));
+                                       meta_display_lookup_stamp (tracker->display, window));
     }
 
-  meta_compositor_sync_stack (tracker->screen->display->compositor,
+  meta_compositor_sync_stack (tracker->display->compositor,
                               meta_windows);
   g_list_free (meta_windows);
 
-  meta_screen_restacked (tracker->screen);
+  meta_display_restacked (tracker->display);
 }
 
 static gboolean
@@ -980,7 +980,7 @@ meta_stack_tracker_lower_below (MetaStackTracker *tracker,
                                 guint64           sibling)
 {
   gulong serial = 0;
-  MetaX11Display *x11_display = tracker->screen->display->x11_display;
+  MetaX11Display *x11_display = tracker->display->x11_display;
 
   if (META_STACK_ID_IS_X11 (window))
     {
@@ -1015,7 +1015,7 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
                                 guint64           sibling)
 {
   gulong serial = 0;
-  MetaX11Display *x11_display = tracker->screen->display->x11_display;
+  MetaX11Display *x11_display = tracker->display->x11_display;
 
   if (META_STACK_ID_IS_X11 (window))
     {
@@ -1062,7 +1062,7 @@ meta_stack_tracker_keep_override_redirect_on_top (MetaStackTracker *tracker)
 
   for (i = n_windows - 1; i >= 0; i--)
     {
-      window = meta_display_lookup_stack_id (tracker->screen->display, stack[i]);
+      window = meta_display_lookup_stack_id (tracker->display, stack[i]);
       if (window && window->layer != META_LAYER_OVERRIDE_REDIRECT)
         break;
     }
@@ -1071,7 +1071,7 @@ meta_stack_tracker_keep_override_redirect_on_top (MetaStackTracker *tracker)
 
   for (i -= 1; i >= 0; i--)
     {
-      window = meta_display_lookup_stack_id (tracker->screen->display, stack[i]);
+      window = meta_display_lookup_stack_id (tracker->display, stack[i]);
       if (window && window->layer == META_LAYER_OVERRIDE_REDIRECT)
         {
           meta_stack_tracker_raise_above (tracker, stack[i], stack[topmost_non_or]);
@@ -1103,9 +1103,9 @@ meta_stack_tracker_restack_managed (MetaStackTracker *tracker,
   old_pos = n_windows - 1;
   for (old_pos = n_windows - 1; old_pos >= 0; old_pos--)
     {
-      MetaWindow *old_window = meta_display_lookup_stack_id (tracker->screen->display, windows[old_pos]);
+      MetaWindow *old_window = meta_display_lookup_stack_id (tracker->display, windows[old_pos]);
       if ((old_window && !old_window->override_redirect && !old_window->unmanaging) ||
-          windows[old_pos] == tracker->screen->guard_window)
+          windows[old_pos] == tracker->display->x11_display->guard_window)
         break;
     }
   g_assert (old_pos >= 0);
@@ -1124,7 +1124,7 @@ meta_stack_tracker_restack_managed (MetaStackTracker *tracker,
 
   while (old_pos >= 0 && new_pos >= 0)
     {
-      if (windows[old_pos] == tracker->screen->guard_window)
+      if (windows[old_pos] == tracker->display->x11_display->guard_window)
         break;
 
       if (windows[old_pos] == managed[new_pos])
@@ -1134,7 +1134,7 @@ meta_stack_tracker_restack_managed (MetaStackTracker *tracker,
           continue;
         }
 
-      MetaWindow *old_window = meta_display_lookup_stack_id (tracker->screen->display, windows[old_pos]);
+      MetaWindow *old_window = meta_display_lookup_stack_id (tracker->display, windows[old_pos]);
       if (!old_window || old_window->override_redirect || old_window->unmanaging)
         {
           old_pos--;

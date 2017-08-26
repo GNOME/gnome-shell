@@ -59,9 +59,6 @@ struct _MetaScreen
 
   GList *workspaces;
 
-  MetaStack *stack;
-  MetaStackTracker *stack_tracker;
-
   Window wm_sn_selection_window;
   Atom wm_sn_atom;
   guint32 wm_sn_timestamp;
@@ -84,11 +81,6 @@ struct _MetaScreen
 
   int closing;
 
-  /* Instead of unmapping withdrawn windows we can leave them mapped
-   * and restack them below a guard window. When using a compositor
-   * this allows us to provide live previews of unmapped windows */
-  Window guard_window;
-
   Window composite_overlay_window;
 };
 
@@ -96,7 +88,6 @@ struct _MetaScreenClass
 {
   GObjectClass parent_class;
 
-  void (*restacked)         (MetaScreen *);
   void (*workareas_changed) (MetaScreen *);
 };
 
@@ -150,7 +141,6 @@ void     meta_screen_update_showing_desktop_hint          (MetaScreen *screen);
 
 gboolean meta_screen_apply_startup_properties (MetaScreen *screen,
                                                MetaWindow *window);
-void     meta_screen_restacked (MetaScreen *screen);
 
 void     meta_screen_workspace_switched (MetaScreen         *screen,
                                          int                 from,
@@ -158,8 +148,6 @@ void     meta_screen_workspace_switched (MetaScreen         *screen,
                                          MetaMotionDirection direction);
 
 void meta_screen_set_active_workspace_hint (MetaScreen *screen);
-
-void meta_screen_create_guard_window (MetaScreen *screen);
 
 gboolean meta_screen_handle_xevent (MetaScreen *screen,
                                     XEvent     *xevent);

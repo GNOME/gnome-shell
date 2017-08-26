@@ -61,14 +61,14 @@ static void stack_do_resort           (MetaStack *stack);
 
 static void stack_ensure_sorted (MetaStack *stack);
 
-MetaStack*
-meta_stack_new (MetaScreen *screen)
+MetaStack *
+meta_stack_new (MetaDisplay *display)
 {
   MetaStack *stack;
 
   stack = g_new (MetaStack, 1);
 
-  stack->screen = screen;
+  stack->display = display;
   stack->xwindows = g_array_new (FALSE, FALSE, sizeof (Window));
 
   stack->sorted = NULL;
@@ -945,7 +945,7 @@ stack_do_resort (MetaStack *stack)
   stack->sorted = g_list_sort (stack->sorted,
                                (GCompareFunc) compare_window_position);
 
-  meta_screen_queue_check_fullscreen (stack->screen);
+  meta_screen_queue_check_fullscreen (stack->display->screen);
 
   stack->need_resort = FALSE;
 }
@@ -1052,7 +1052,7 @@ stack_sync_to_xserver (MetaStack *stack)
 
   /* The screen guard window sits above all hidden windows and acts as
    * a barrier to input reaching these windows. */
-  guint64 guard_window_id = stack->screen->guard_window;
+  guint64 guard_window_id = stack->display->x11_display->guard_window;
   g_array_append_val (hidden_stack_ids, guard_window_id);
 
   /* Sync to server */
@@ -1060,25 +1060,25 @@ stack_sync_to_xserver (MetaStack *stack)
   meta_topic (META_DEBUG_STACK, "Restacking %u windows\n",
               all_root_children_stacked->len);
 
-  meta_stack_tracker_restack_managed (stack->screen->stack_tracker,
+  meta_stack_tracker_restack_managed (stack->display->stack_tracker,
                                       (guint64 *)all_root_children_stacked->data,
                                       all_root_children_stacked->len);
-  meta_stack_tracker_restack_at_bottom (stack->screen->stack_tracker,
+  meta_stack_tracker_restack_at_bottom (stack->display->stack_tracker,
                                         (guint64 *)hidden_stack_ids->data,
                                         hidden_stack_ids->len);
 
   /* Sync _NET_CLIENT_LIST and _NET_CLIENT_LIST_STACKING */
 
-  XChangeProperty (stack->screen->display->x11_display->xdisplay,
-                   stack->screen->display->x11_display->xroot,
-                   stack->screen->display->x11_display->atom__NET_CLIENT_LIST,
+  XChangeProperty (stack->display->x11_display->xdisplay,
+                   stack->display->x11_display->xroot,
+                   stack->display->x11_display->atom__NET_CLIENT_LIST,
                    XA_WINDOW,
                    32, PropModeReplace,
                    (unsigned char *)stack->xwindows->data,
                    stack->xwindows->len);
-  XChangeProperty (stack->screen->display->x11_display->xdisplay,
-                   stack->screen->display->x11_display->xroot,
-                   stack->screen->display->x11_display->atom__NET_CLIENT_LIST_STACKING,
+  XChangeProperty (stack->display->x11_display->xdisplay,
+                   stack->display->x11_display->xroot,
+                   stack->display->x11_display->atom__NET_CLIENT_LIST_STACKING,
                    XA_WINDOW,
                    32, PropModeReplace,
                    (unsigned char *)x11_stacked->data,
@@ -1411,10 +1411,10 @@ meta_window_set_stack_position_no_sync (MetaWindow *window,
   int low, high, delta;
   GList *tmp;
 
-  g_return_if_fail (window->screen->stack != NULL);
+  g_return_if_fail (window->display->stack != NULL);
   g_return_if_fail (window->stack_position >= 0);
   g_return_if_fail (position >= 0);
-  g_return_if_fail (position < window->screen->stack->n_positions);
+  g_return_if_fail (position < window->display->stack->n_positions);
 
   if (position == window->stack_position)
     {
@@ -1423,8 +1423,8 @@ meta_window_set_stack_position_no_sync (MetaWindow *window,
       return;
     }
 
-  window->screen->stack->need_resort = TRUE;
-  window->screen->stack->need_constrain = TRUE;
+  window->display->stack->need_resort = TRUE;
+  window->display->stack->need_constrain = TRUE;
 
   if (position < window->stack_position)
     {
@@ -1439,7 +1439,7 @@ meta_window_set_stack_position_no_sync (MetaWindow *window,
       delta = -1;
     }
 
-  tmp = window->screen->stack->sorted;
+  tmp = window->display->stack->sorted;
   while (tmp != NULL)
     {
       MetaWindow *w = tmp->data;
@@ -1463,7 +1463,7 @@ meta_window_set_stack_position (MetaWindow *window,
                                 int         position)
 {
   meta_window_set_stack_position_no_sync (window, position);
-  stack_sync_to_xserver (window->screen->stack);
-  meta_stack_update_window_tile_matches (window->screen->stack,
+  stack_sync_to_xserver (window->display->stack);
+  meta_stack_update_window_tile_matches (window->display->stack,
                                          window->screen->active_workspace);
 }

@@ -1285,7 +1285,7 @@ handle_other_xevent (MetaDisplay *display,
     case CreateNotify:
       {
         if (event->xcreatewindow.parent == x11_display->xroot)
-          meta_stack_tracker_create_event (display->screen->stack_tracker,
+          meta_stack_tracker_create_event (display->stack_tracker,
                                            &event->xcreatewindow);
       }
       break;
@@ -1293,7 +1293,7 @@ handle_other_xevent (MetaDisplay *display,
     case DestroyNotify:
       {
         if (event->xdestroywindow.event == x11_display->xroot)
-          meta_stack_tracker_destroy_event (display->screen->stack_tracker,
+          meta_stack_tracker_destroy_event (display->stack_tracker,
                                             &event->xdestroywindow);
       }
       if (window)
@@ -1411,7 +1411,7 @@ handle_other_xevent (MetaDisplay *display,
     case ReparentNotify:
       {
         if (event->xreparent.event == x11_display->xroot)
-          meta_stack_tracker_reparent_event (display->screen->stack_tracker,
+          meta_stack_tracker_reparent_event (display->stack_tracker,
                                              &event->xreparent);
       }
       break;
@@ -1420,7 +1420,7 @@ handle_other_xevent (MetaDisplay *display,
         {
           if (event->xconfigure.event == x11_display->xroot &&
               event->xconfigure.window != display->screen->composite_overlay_window)
-            meta_stack_tracker_configure_event (display->screen->stack_tracker,
+            meta_stack_tracker_configure_event (display->stack_tracker,
                                                 &event->xconfigure);
         }
 

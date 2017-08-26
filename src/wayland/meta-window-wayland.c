@@ -88,7 +88,7 @@ meta_window_wayland_manage (MetaWindow *window)
   meta_display_register_wayland_window (display, window);
 
   {
-    meta_stack_tracker_record_add (window->screen->stack_tracker,
+    meta_stack_tracker_record_add (window->display->stack_tracker,
                                    window->stamp,
                                    0);
   }
@@ -100,7 +100,7 @@ static void
 meta_window_wayland_unmanage (MetaWindow *window)
 {
   {
-    meta_stack_tracker_record_remove (window->screen->stack_tracker,
+    meta_stack_tracker_record_remove (window->display->stack_tracker,
                                       window->stamp,
                                       0);
   }

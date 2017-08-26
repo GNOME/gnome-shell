@@ -982,7 +982,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->override_redirect = attrs->override_redirect;
 
   /* avoid tons of stack updates */
-  meta_stack_freeze (window->screen->stack);
+  meta_stack_freeze (window->display->stack);
 
   window->rect.x = attrs->x;
   window->rect.y = attrs->y;
@@ -1300,7 +1300,7 @@ _meta_window_shared_new (MetaDisplay         *display,
    * means restacking it.
    */
   if (meta_window_is_stackable (window))
-    meta_stack_add (window->screen->stack,
+    meta_stack_add (window->display->stack,
                     window);
   else if (window->override_redirect)
     window->layer = META_LAYER_OVERRIDE_REDIRECT; /* otherwise set by MetaStack */
@@ -1318,14 +1318,14 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->known_to_compositor = TRUE;
 
   /* Sync stack changes */
-  meta_stack_thaw (window->screen->stack);
+  meta_stack_thaw (window->display->stack);
 
   /* Usually the we'll have queued a stack sync anyways, because we've
    * added a new frame window or restacked. But if an undecorated
    * window is mapped, already stacked in the right place, then we
    * might need to do this explicitly.
    */
-  meta_stack_tracker_queue_sync_stack (window->screen->stack_tracker);
+  meta_stack_tracker_queue_sync_stack (window->display->stack_tracker);
 
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
@@ -1444,11 +1444,11 @@ meta_window_unmanage (MetaWindow  *window,
        * other windows in its group to a higher layer
        */
 
-      meta_stack_freeze (window->screen->stack);
+      meta_stack_freeze (window->display->stack);
       group = meta_window_get_group (window);
       if (group)
         meta_group_update_layers (group);
-      meta_stack_thaw (window->screen->stack);
+      meta_stack_thaw (window->display->stack);
     }
 
   meta_display_remove_pending_pings_for_window (window->display, window);
@@ -1537,13 +1537,13 @@ meta_window_unmanage (MetaWindow  *window,
     }
 
   if (meta_window_is_in_stack (window))
-    meta_stack_remove (window->screen->stack, window);
+    meta_stack_remove (window->display->stack, window);
 
   /* If an undecorated window is being withdrawn, that will change the
    * stack as presented to the compositing manager, without actually
    * changing the stacking order of X windows.
    */
-  meta_stack_tracker_queue_sync_stack (window->screen->stack_tracker);
+  meta_stack_tracker_queue_sync_stack (window->display->stack_tracker);
 
   if (window->display->autoraise_window == window)
     meta_display_remove_autoraise_callback (window->display);
@@ -1701,7 +1701,7 @@ implement_showing (MetaWindow *window,
 
   /* Some windows are not stackable until being showed, so add those now. */
   if (meta_window_is_stackable (window) && !meta_window_is_in_stack (window))
-    meta_stack_add (window->screen->stack, window);
+    meta_stack_add (window->display->stack, window);
 
   if (!showing)
     {
@@ -1743,7 +1743,7 @@ stackcmp (gconstpointer a, gconstpointer b)
   if (aw->screen != bw->screen)
     return 0; /* don't care how they sort with respect to each other */
   else
-    return meta_stack_windows_cmp (aw->screen->stack,
+    return meta_stack_windows_cmp (aw->display->stack,
                                    aw, bw);
 }
 
@@ -2460,9 +2460,9 @@ meta_window_show (MetaWindow *window)
 
   if (window->hidden)
     {
-      meta_stack_freeze (window->screen->stack);
+      meta_stack_freeze (window->display->stack);
       window->hidden = FALSE;
-      meta_stack_thaw (window->screen->stack);
+      meta_stack_thaw (window->display->stack);
       did_show = TRUE;
     }
 
@@ -2591,9 +2591,9 @@ meta_window_hide (MetaWindow *window)
 
   if (!window->hidden)
     {
-      meta_stack_freeze (window->screen->stack);
+      meta_stack_freeze (window->display->stack);
       window->hidden = TRUE;
-      meta_stack_thaw (window->screen->stack);
+      meta_stack_thaw (window->display->stack);
 
       did_hide = TRUE;
     }
@@ -3412,10 +3412,10 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
 
       window->fullscreen = TRUE;
 
-      meta_stack_freeze (window->screen->stack);
+      meta_stack_freeze (window->display->stack);
 
       meta_window_raise (window);
-      meta_stack_thaw (window->screen->stack);
+      meta_stack_thaw (window->display->stack);
 
       meta_window_recalc_features (window);
       set_net_wm_state (window);
@@ -4035,7 +4035,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   meta_window_foreach_transient (window, maybe_move_attached_dialog, NULL);
 
-  meta_stack_update_window_tile_matches (window->screen->stack,
+  meta_stack_update_window_tile_matches (window->display->stack,
                                          window->screen->active_workspace);
 }
 
@@ -4962,13 +4962,15 @@ meta_window_raise (MetaWindow  *window)
    * constraints in stack.c then magically take care of raising all
    * the child windows appropriately.
    */
-  if (window->screen->stack == ancestor->screen->stack)
-    meta_stack_raise (window->screen->stack, ancestor);
+  if (window->display->stack == ancestor->display->stack)
+    {
+      meta_stack_raise (window->display->stack, ancestor);
+    }
   else
     {
       meta_warning (
                     "Either stacks aren't per screen or some window has a weird "
-                    "transient_for hint; window->screen->stack != "
+                    "transient_for hint; window->display->stack != "
                     "ancestor->screen->stack.  window = %s, ancestor = %s.\n",
                     window->desc, ancestor->desc);
       /* We could raise the window here, but don't want to do that twice and
@@ -4982,7 +4984,7 @@ meta_window_raise (MetaWindow  *window)
    * correct child.  See bug 307875.
    */
   if (window != ancestor)
-    meta_stack_raise (window->screen->stack, window);
+    meta_stack_raise (window->display->stack, window);
 
   g_signal_emit (window, window_signals[RAISED], 0);
 }
@@ -4995,7 +4997,7 @@ meta_window_lower (MetaWindow  *window)
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Lowering window %s\n", window->desc);
 
-  meta_stack_lower (window->screen->stack, window);
+  meta_stack_lower (window->display->stack, window);
 }
 
 /*
@@ -6856,13 +6858,13 @@ meta_window_update_layer (MetaWindow *window)
 {
   MetaGroup *group;
 
-  meta_stack_freeze (window->screen->stack);
+  meta_stack_freeze (window->display->stack);
   group = meta_window_get_group (window);
   if (group)
     meta_group_update_layers (group);
   else
-    meta_stack_update_layer (window->screen->stack, window);
-  meta_stack_thaw (window->screen->stack);
+    meta_stack_update_layer (window->display->stack, window);
+  meta_stack_thaw (window->display->stack);
 }
 
 /* ensure_mru_position_after ensures that window appears after
@@ -7051,7 +7053,7 @@ void
 meta_window_set_demands_attention (MetaWindow *window)
 {
   MetaRectangle candidate_rect, other_rect;
-  GList *stack = window->screen->stack->sorted;
+  GList *stack = window->display->stack->sorted;
   MetaWindow *other_window;
   gboolean obscured = FALSE;
 
@@ -7740,7 +7742,7 @@ meta_window_find_tile_match (MetaWindow   *window,
   else
     return NULL;
 
-  stack = window->screen->stack;
+  stack = window->display->stack;
 
   for (match = meta_stack_get_top (stack);
        match;
@@ -7759,7 +7761,7 @@ meta_window_find_tile_match (MetaWindow   *window,
       MetaWindow *above, *bottommost, *topmost;
       MetaRectangle above_rect, bottommost_rect, topmost_rect;
 
-      if (meta_stack_windows_cmp (window->screen->stack, match, window) > 0)
+      if (meta_stack_windows_cmp (window->display->stack, match, window) > 0)
         {
           topmost = match;
           bottommost = window;
@@ -7939,7 +7941,7 @@ meta_window_set_transient_for (MetaWindow *window,
 
   /* update stacking constraints */
   if (!window->override_redirect)
-    meta_stack_update_transient (window->screen->stack, window);
+    meta_stack_update_transient (window->display->stack, window);
 
   /* possibly change its group. We treat being a window's transient as
    * equivalent to making it your group leader, to work around shortcomings

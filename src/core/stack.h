@@ -40,7 +40,7 @@
  * by layer, then by stack_position within each layer.
  */
 
-#include "screen-private.h"
+#include "display-private.h"
 
 /**
  * A sorted list of windows bearing some level of resemblance to the stack of
@@ -51,8 +51,8 @@
  */
 struct _MetaStack
 {
-  /** The MetaScreen containing this stack. */
-  MetaScreen *screen;
+  /** The MetaDisplay containing this stack. */
+  MetaDisplay *display;
 
   /**
    * A sequence of all the Windows (X handles, not MetaWindows) of the windows
@@ -123,13 +123,13 @@ struct _MetaStack
 
 /**
  * meta_stack_new:
- * @screen: The MetaScreen which will be the parent of this stack.
+ * @display: The MetaDisplay which will be the parent of this stack.
  *
  * Creates and initialises a MetaStack.
  *
- * Returns: The new screen.
+ * Returns: The new stack.
  */
-MetaStack *meta_stack_new       (MetaScreen     *screen);
+MetaStack *meta_stack_new       (MetaDisplay    *display);
 
 /**
  * meta_stack_free:

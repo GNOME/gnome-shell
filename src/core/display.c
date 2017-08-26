@@ -137,6 +137,7 @@ enum
   SHOW_OSD,
   PAD_MODE_SWITCH,
   MONITORS_CHANGED,
+  RESTACKED,
   LAST_SIGNAL
 };
 
@@ -433,6 +434,13 @@ meta_display_class_init (MetaDisplayClass *klass)
                   0, NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
+  display_signals[RESTACKED] =
+    g_signal_new ("restacked",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
   g_object_class_install_property (object_class,
                                    PROP_FOCUS_WINDOW,
                                    g_param_spec_object ("focus-window",
@@ -709,6 +717,9 @@ meta_display_open (void)
 
   xdisplay = display->x11_display->xdisplay;
 
+  display->stack = meta_stack_new (display);
+  display->stack_tracker = meta_stack_tracker_new (display);
+
   display->focus_serial = 0;
   display->server_focus_window = None;
   display->server_focus_serial = 0;
@@ -820,7 +831,7 @@ meta_display_open (void)
 
   enable_compositor (display);
 
-  meta_screen_create_guard_window (screen);
+  meta_x11_display_create_guard_window (display->x11_display);
 
   /* Set up touch support */
   display->gesture_tracker = meta_gesture_tracker_new ();
@@ -831,7 +842,7 @@ meta_display_open (void)
    * we start out with no windows.
    */
   if (!meta_is_wayland_compositor ())
-    meta_screen_manage_all_windows (screen);
+    meta_display_manage_all_windows (display);
 
   if (old_active_xwindow != None)
     {
@@ -984,6 +995,10 @@ meta_display_close (MetaDisplay *display,
 
   g_clear_object (&display->startup_notification);
   g_clear_object (&display->gesture_tracker);
+
+  g_clear_pointer (&display->stack, (GDestroyNotify) meta_stack_free);
+  g_clear_pointer (&display->stack_tracker,
+                   (GDestroyNotify) meta_stack_tracker_free);
 
   if (display->focus_timeout_id)
     g_source_remove (display->focus_timeout_id);
@@ -1251,7 +1266,7 @@ window_raise_with_delay_callback (void *data)
   /* If we aren't already on top, check whether the pointer is inside
    * the window and raise the window if so.
    */
-  if (meta_stack_get_top (window->screen->stack) != window)
+  if (meta_stack_get_top (window->display->stack) != window)
     {
       if (meta_window_has_pointer (window))
 	meta_window_raise (window);
@@ -2565,6 +2580,30 @@ meta_display_unmanage_screen (MetaDisplay *display,
 }
 
 void
+meta_display_manage_all_windows (MetaDisplay *display)
+{
+  guint64 *_children;
+  guint64 *children;
+  int n_children, i;
+
+  meta_stack_freeze (display->stack);
+  meta_stack_tracker_get_stack (display->stack_tracker, &_children, &n_children);
+
+  /* Copy the stack as it will be modified as part of the loop */
+  children = g_memdup (_children, sizeof (guint64) * n_children);
+
+  for (i = 0; i < n_children; ++i)
+    {
+      g_assert (META_STACK_ID_IS_X11 (children[i]));
+      meta_window_x11_new (display, children[i], TRUE,
+                           META_COMP_EFFECT_NONE);
+    }
+
+  g_free (children);
+  meta_stack_thaw (display->stack);
+}
+
+void
 meta_display_unmanage_windows (MetaDisplay *display,
                                guint32      timestamp)
 {
@@ -2602,7 +2641,7 @@ meta_display_stack_cmp (const void *a,
   MetaWindow *aw = (void*) a;
   MetaWindow *bw = (void*) b;
 
-  return meta_stack_windows_cmp (aw->screen->stack, aw, bw);
+  return meta_stack_windows_cmp (aw->display->stack, aw, bw);
 }
 
 /**
@@ -3208,4 +3247,10 @@ on_monitors_changed (MetaMonitorManager *monitor_manager,
                      MetaDisplay        *display)
 {
   g_signal_emit (display, display_signals[MONITORS_CHANGED], 0);
+}
+
+void
+meta_display_restacked (MetaDisplay *display)
+{
+  g_signal_emit (display, display_signals[RESTACKED], 0);
 }

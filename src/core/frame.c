@@ -76,7 +76,7 @@ meta_window_ensure_frame (MetaWindow *window)
                                           &create_serial);
   frame->xwindow = frame->ui_frame->xwindow;
 
-  meta_stack_tracker_record_add (window->screen->stack_tracker,
+  meta_stack_tracker_record_add (window->display->stack_tracker,
                                  frame->xwindow,
                                  create_serial);
 
@@ -98,7 +98,7 @@ meta_window_ensure_frame (MetaWindow *window)
       window->unmaps_pending += 1;
     }
 
-  meta_stack_tracker_record_remove (window->screen->stack_tracker,
+  meta_stack_tracker_record_remove (window->display->stack_tracker,
                                     window->xwindow,
                                     XNextRequest (x11_display->xdisplay));
   XReparentWindow (x11_display->xdisplay,
@@ -185,7 +185,7 @@ meta_window_destroy_frame (MetaWindow *window)
                   "Incrementing unmaps_pending on %s for reparent back to root\n", window->desc);
       window->unmaps_pending += 1;
     }
-  meta_stack_tracker_record_add (window->screen->stack_tracker,
+  meta_stack_tracker_record_add (window->display->stack_tracker,
                                  window->xwindow,
                                  XNextRequest (x11_display->xdisplay));
   XReparentWindow (x11_display->xdisplay,

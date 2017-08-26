@@ -276,10 +276,10 @@ meta_group_update_layers (MetaGroup *group)
        * but doesn't hurt anything. have to handle
        * groups that span 2 screens.
        */
-      meta_stack_freeze (window->screen->stack);
-      frozen_stacks = g_slist_prepend (frozen_stacks, window->screen->stack);
+      meta_stack_freeze (window->display->stack);
+      frozen_stacks = g_slist_prepend (frozen_stacks, window->display->stack);
 
-      meta_stack_update_layer (window->screen->stack,
+      meta_stack_update_layer (window->display->stack,
                                window);
 
       tmp = tmp->next;

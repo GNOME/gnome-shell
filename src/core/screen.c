@@ -79,7 +79,6 @@ enum
 
 enum
 {
-  RESTACKED,
   WORKSPACE_ADDED,
   WORKSPACE_REMOVED,
   WORKSPACE_SWITCHED,
@@ -155,14 +154,6 @@ meta_screen_class_init (MetaScreenClass *klass)
   object_class->get_property = meta_screen_get_property;
   object_class->set_property = meta_screen_set_property;
   object_class->finalize = meta_screen_finalize;
-
-  screen_signals[RESTACKED] =
-    g_signal_new ("restacked",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MetaScreenClass, restacked),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
 
   pspec = g_param_spec_int ("n-workspaces",
                             "N Workspaces",
@@ -481,75 +472,6 @@ reload_logical_monitors (MetaScreen *screen)
   screen->has_xinerama_indices = FALSE;
 }
 
-/* The guard window allows us to leave minimized windows mapped so
- * that compositor code may provide live previews of them.
- * Instead of being unmapped/withdrawn, they get pushed underneath
- * the guard window. We also select events on the guard window, which
- * should effectively be forwarded to events on the background actor,
- * providing that the scene graph is set up correctly.
- */
-static Window
-create_guard_window (Display *xdisplay, MetaScreen *screen)
-{
-  XSetWindowAttributes attributes;
-  MetaX11Display *x11_display = screen->display->x11_display;
-  Window guard_window;
-  gulong create_serial;
-
-  attributes.event_mask = NoEventMask;
-  attributes.override_redirect = True;
-
-  /* We have to call record_add() after we have the new window ID,
-   * so save the serial for the CreateWindow request until then */
-  create_serial = XNextRequest(xdisplay);
-  guard_window =
-    XCreateWindow (xdisplay,
-                   x11_display->xroot,
-		   0, /* x */
-		   0, /* y */
-                   screen->display->rect.width,
-                   screen->display->rect.height,
-		   0, /* border width */
-		   0, /* depth */
-		   InputOnly, /* class */
-		   CopyFromParent, /* visual */
-		   CWEventMask|CWOverrideRedirect,
-		   &attributes);
-
-  /* https://bugzilla.gnome.org/show_bug.cgi?id=710346 */
-  XStoreName (xdisplay, guard_window, "mutter guard window");
-
-  {
-    if (!meta_is_wayland_compositor ())
-      {
-        MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
-        Display *backend_xdisplay = meta_backend_x11_get_xdisplay (backend);
-        unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-        XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-        XISetMask (mask.mask, XI_ButtonPress);
-        XISetMask (mask.mask, XI_ButtonRelease);
-        XISetMask (mask.mask, XI_Motion);
-
-        /* Sync on the connection we created the window on to
-         * make sure it's created before we select on it on the
-         * backend connection. */
-        XSync (xdisplay, False);
-
-        XISelectEvents (backend_xdisplay, guard_window, &mask, 1);
-      }
-  }
-
-  meta_stack_tracker_record_add (screen->stack_tracker,
-                                 guard_window,
-                                 create_serial);
-
-  meta_stack_tracker_lower (screen->stack_tracker,
-                            guard_window);
-  XMapWindow (xdisplay, guard_window);
-  return guard_window;
-}
-
 static Window
 take_manager_selection (MetaDisplay *display,
                         Window       xroot,
@@ -695,7 +617,6 @@ meta_screen_new (MetaDisplay *display,
   screen->columns_of_workspaces = -1;
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
-  screen->guard_window = None;
 
   /* If we're a Wayland compositor, then we don't grab the COW, since it
    * will map it. */
@@ -739,9 +660,6 @@ meta_screen_new (MetaDisplay *display,
   screen->ui = meta_ui_new (xdisplay);
 
   screen->tile_preview_timeout_id = 0;
-
-  screen->stack = meta_stack_new (screen);
-  screen->stack_tracker = meta_stack_tracker_new (screen);
 
   meta_prefs_add_listener (prefs_changed_callback, screen);
 
@@ -803,9 +721,6 @@ meta_screen_free (MetaScreen *screen,
 
   meta_ui_free (screen->ui);
 
-  meta_stack_free (screen->stack);
-  meta_stack_tracker_free (screen->stack_tracker);
-
   unset_wm_check_hint (screen);
 
   XDestroyWindow (x11_display->xdisplay,
@@ -820,39 +735,6 @@ meta_screen_free (MetaScreen *screen,
     g_source_remove (screen->tile_preview_timeout_id);
 
   g_object_unref (screen);
-}
-
-void
-meta_screen_create_guard_window (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-
-  if (screen->guard_window == None)
-    screen->guard_window = create_guard_window (x11_display->xdisplay, screen);
-}
-
-void
-meta_screen_manage_all_windows (MetaScreen *screen)
-{
-  guint64 *_children;
-  guint64 *children;
-  int n_children, i;
-
-  meta_stack_freeze (screen->stack);
-  meta_stack_tracker_get_stack (screen->stack_tracker, &_children, &n_children);
-
-  /* Copy the stack as it will be modified as part of the loop */
-  children = g_memdup (_children, sizeof (guint64) * n_children);
-
-  for (i = 0; i < n_children; ++i)
-    {
-      g_assert (META_STACK_ID_IS_X11 (children[i]));
-      meta_window_x11_new (screen->display, children[i], TRUE,
-                           META_COMP_EFFECT_NONE);
-    }
-
-  g_free (children);
-  meta_stack_thaw (screen->stack);
 }
 
 static void
@@ -1291,7 +1173,7 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
 
   meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
 
-  window = meta_stack_get_default_focus_window_at_point (screen->stack,
+  window = meta_stack_get_default_focus_window_at_point (screen->display->stack,
                                                          screen->active_workspace,
                                                          not_this_one,
                                                          x, y);
@@ -2023,26 +1905,8 @@ meta_screen_free_workspace_layout (MetaWorkspaceLayout *layout)
 void
 meta_screen_on_monitors_changed (MetaScreen *screen)
 {
-  MetaDisplay *display = screen->display;
-
   reload_logical_monitors (screen);
   set_desktop_geometry_hint (screen);
-
-  /* Resize the guard window to fill the screen again. */
-  if (screen->guard_window != None)
-    {
-      XWindowChanges changes;
-
-      changes.x = 0;
-      changes.y = 0;
-      changes.width = display->rect.width;
-      changes.height = display->rect.height;
-
-      XConfigureWindow(display->x11_display->xdisplay,
-                       screen->guard_window,
-                       CWX | CWY | CWWidth | CWHeight,
-                       &changes);
-    }
 
   meta_screen_queue_check_fullscreen (screen);
 }
@@ -2364,12 +2228,6 @@ meta_screen_focus_default_window (MetaScreen *screen,
 }
 
 void
-meta_screen_restacked (MetaScreen *screen)
-{
-  g_signal_emit (screen, screen_signals[RESTACKED], 0);
-}
-
-void
 meta_screen_workspace_switched (MetaScreen         *screen,
                                 int                 from,
                                 int                 to,
@@ -2430,9 +2288,9 @@ check_fullscreen_func (gpointer data)
    * however we make an exception for maximized windows above the fullscreen
    * one, as in that case window+chrome fully obscure the fullscreen window.
    */
-  for (window = meta_stack_get_top (screen->stack);
+  for (window = meta_stack_get_top (screen->display->stack);
        window;
-       window = meta_stack_get_below (screen->stack, window, FALSE))
+       window = meta_stack_get_below (screen->display->stack, window, FALSE))
     {
       gboolean covers_monitors = FALSE;
 
@@ -2506,9 +2364,9 @@ check_fullscreen_func (gpointer data)
     {
       /* DOCK window stacking depends on the monitor's fullscreen
          status so we need to trigger a re-layering. */
-      MetaWindow *window = meta_stack_get_top (screen->stack);
+      MetaWindow *window = meta_stack_get_top (screen->display->stack);
       if (window)
-        meta_stack_update_layer (screen->stack, window);
+        meta_stack_update_layer (screen->display->stack, window);
 
       g_signal_emit (screen, screen_signals[IN_FULLSCREEN_CHANGED], 0, NULL);
     }

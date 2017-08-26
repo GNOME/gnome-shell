@@ -3454,7 +3454,7 @@ handle_raise_or_lower (MetaDisplay     *display,
   MetaWindow *above = NULL;
 
   /* Check if top */
-  if (meta_stack_get_top (window->screen->stack) == window)
+  if (meta_stack_get_top (window->display->stack) == window)
     {
       meta_window_lower (window);
       return;
@@ -3462,7 +3462,7 @@ handle_raise_or_lower (MetaDisplay     *display,
 
   /* else check if windows in same layer are intersecting it */
 
-  above = meta_stack_get_above (window->screen->stack, window, TRUE);
+  above = meta_stack_get_above (window->display->stack, window, TRUE);
 
   while (above)
     {
@@ -3481,7 +3481,7 @@ handle_raise_or_lower (MetaDisplay     *display,
             }
         }
 
-      above = meta_stack_get_above (window->screen->stack, above, TRUE);
+      above = meta_stack_get_above (window->display->stack, above, TRUE);
     }
 
   /* window is not obscured */

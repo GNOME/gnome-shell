@@ -1344,7 +1344,7 @@ pick_drop_surface (MetaWaylandCompositor *compositor,
   ClutterPoint pos;
 
   clutter_event_get_coords (event, &pos.x, &pos.y);
-  focus_window = meta_stack_get_default_focus_window_at_point (display->screen->stack,
+  focus_window = meta_stack_get_default_focus_window_at_point (display->stack,
                                                                NULL, NULL,
                                                                pos.x, pos.y);
   return focus_window ? focus_window->surface : NULL;

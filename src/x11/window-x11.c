@@ -2984,7 +2984,7 @@ is_our_xwindow (MetaDisplay       *display,
   if (xwindow == screen->wm_cm_selection_window)
     return TRUE;
 
-  if (xwindow == screen->guard_window)
+  if (xwindow == display->x11_display->guard_window)
     return TRUE;
 
   if (xwindow == screen->composite_overlay_window)

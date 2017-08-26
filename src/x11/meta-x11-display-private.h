@@ -61,6 +61,11 @@ struct _MetaX11Display
 #include "x11/atomnames.h"
 #undef item
 
+  /* Instead of unmapping withdrawn windows we can leave them mapped
+   * and restack them below a guard window. When using a compositor
+   * this allows us to provide live previews of unmapped windows */
+  Window guard_window;
+
   GHashTable *xids;
 
   /* Managed by group.c */
@@ -143,5 +148,7 @@ gboolean meta_x11_display_process_barrier_xevent (MetaX11Display *x11_display,
 void meta_x11_display_set_alarm_filter (MetaX11Display *x11_display,
                                         MetaAlarmFilter filter,
                                         gpointer        data);
+
+void meta_x11_display_create_guard_window (MetaX11Display *x11_display);
 
 #endif /* META_X11_DISPLAY_PRIVATE_H */

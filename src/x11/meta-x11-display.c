@@ -64,12 +64,35 @@ G_DEFINE_TYPE (MetaX11Display, meta_x11_display, G_TYPE_OBJECT)
 static char *get_screen_name (Display *xdisplay,
                               int      number);
 
+static void on_monitors_changed (MetaDisplay    *display,
+                                 MetaX11Display *x11_display);
+
 static void update_cursor_theme (MetaX11Display *x11_display);
 
 static void
 meta_x11_display_dispose (GObject *object)
 {
   MetaX11Display *x11_display = META_X11_DISPLAY (object);
+
+  if (x11_display->guard_window != None)
+    {
+      MetaStackTracker *stack_tracker = x11_display->display->stack_tracker;
+
+      if (stack_tracker)
+        {
+          unsigned long serial;
+
+          serial = XNextRequest (x11_display->xdisplay);
+          meta_stack_tracker_record_remove (stack_tracker,
+                                            x11_display->guard_window,
+                                            serial);
+        }
+
+      XUnmapWindow (x11_display->xdisplay, x11_display->guard_window);
+      XDestroyWindow (x11_display->xdisplay, x11_display->guard_window);
+
+      x11_display->guard_window = None;
+    }
 
   if (x11_display->prop_hooks)
     {
@@ -425,11 +448,18 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
                                         meta_unsigned_long_equal);
 
   x11_display->groups_by_leader = NULL;
+  x11_display->guard_window = None;
 
   x11_display->prop_hooks = NULL;
   meta_x11_display_init_window_prop_hooks (x11_display);
   x11_display->group_prop_hooks = NULL;
   meta_x11_display_init_group_prop_hooks (x11_display);
+
+  g_signal_connect_object (display,
+                           "monitors-changed",
+                           G_CALLBACK (on_monitors_changed),
+                           x11_display,
+                           0);
 
   return x11_display;
 }
@@ -658,4 +688,101 @@ meta_x11_display_set_alarm_filter (MetaX11Display *x11_display,
 
   x11_display->alarm_filter = filter;
   x11_display->alarm_filter_data = data;
+}
+
+/* The guard window allows us to leave minimized windows mapped so
+ * that compositor code may provide live previews of them.
+ * Instead of being unmapped/withdrawn, they get pushed underneath
+ * the guard window. We also select events on the guard window, which
+ * should effectively be forwarded to events on the background actor,
+ * providing that the scene graph is set up correctly.
+ */
+static Window
+create_guard_window (MetaX11Display *x11_display)
+{
+  XSetWindowAttributes attributes;
+  Window guard_window;
+  gulong create_serial;
+
+  attributes.event_mask = NoEventMask;
+  attributes.override_redirect = True;
+
+  /* We have to call record_add() after we have the new window ID,
+   * so save the serial for the CreateWindow request until then */
+  create_serial = XNextRequest (x11_display->xdisplay);
+  guard_window =
+    XCreateWindow (x11_display->xdisplay,
+                   x11_display->xroot,
+                   0, /* x */
+                   0, /* y */
+                   x11_display->display->rect.width,
+                   x11_display->display->rect.height,
+                   0, /* border width */
+                   0, /* depth */
+                   InputOnly, /* class */
+                   CopyFromParent, /* visual */
+                   CWEventMask | CWOverrideRedirect,
+                   &attributes);
+
+  /* https://bugzilla.gnome.org/show_bug.cgi?id=710346 */
+  XStoreName (x11_display->xdisplay, guard_window, "mutter guard window");
+
+  {
+    if (!meta_is_wayland_compositor ())
+      {
+        MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+        Display *backend_xdisplay = meta_backend_x11_get_xdisplay (backend);
+        unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+        XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+        XISetMask (mask.mask, XI_ButtonPress);
+        XISetMask (mask.mask, XI_ButtonRelease);
+        XISetMask (mask.mask, XI_Motion);
+
+        /* Sync on the connection we created the window on to
+         * make sure it's created before we select on it on the
+         * backend connection. */
+        XSync (x11_display->xdisplay, False);
+
+        XISelectEvents (backend_xdisplay, guard_window, &mask, 1);
+      }
+  }
+
+  meta_stack_tracker_record_add (x11_display->display->stack_tracker,
+                                 guard_window,
+                                 create_serial);
+
+  meta_stack_tracker_lower (x11_display->display->stack_tracker,
+                            guard_window);
+
+  XMapWindow (x11_display->xdisplay, guard_window);
+  return guard_window;
+}
+
+void
+meta_x11_display_create_guard_window (MetaX11Display *x11_display)
+{
+  if (x11_display->guard_window == None)
+    x11_display->guard_window = create_guard_window (x11_display);
+}
+
+static void
+on_monitors_changed (MetaDisplay    *display,
+                     MetaX11Display *x11_display)
+{
+  /* Resize the guard window to fill the screen again. */
+  if (x11_display->guard_window != None)
+    {
+      XWindowChanges changes;
+
+      changes.x = 0;
+      changes.y = 0;
+      changes.width = display->rect.width;
+      changes.height = display->rect.height;
+
+      XConfigureWindow (x11_display->xdisplay,
+                        x11_display->guard_window,
+                        CWX | CWY | CWWidth | CWHeight,
+                        &changes);
+    }
 }
