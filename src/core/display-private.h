@@ -404,8 +404,7 @@ gboolean meta_display_show_resize_popup (MetaDisplay *display,
                                          int display_w,
                                          int display_h);
 
-void meta_restart_init (void);
-void meta_restart_finish (void);
+void meta_set_is_restart (gboolean whether);
 
 void meta_display_cancel_touch (MetaDisplay *display);
 

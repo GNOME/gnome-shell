@@ -33,6 +33,8 @@
 #include "core/display-private.h"
 #include "x11/meta-x11-display-private.h"
 
+#include <gdk/gdk.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -189,7 +191,8 @@ meta_x11_display_dispose (GObject *object)
       XSelectInput (x11_display->xdisplay, x11_display->xroot, 0);
       if (meta_error_trap_pop_with_return (x11_display) != Success)
         meta_warning ("Could not release screen %d on display \"%s\"\n",
-                      meta_ui_get_screen_number (), x11_display->name);
+                      DefaultScreen (x11_display->xdisplay),
+                      x11_display->name);
 
       x11_display->xroot = None;
     }
@@ -200,6 +203,12 @@ meta_x11_display_dispose (GObject *object)
       meta_x11_display_free_events (x11_display);
 
       x11_display->xdisplay = NULL;
+    }
+
+  if (x11_display->gdk_display)
+    {
+      gdk_display_close (x11_display->gdk_display);
+      x11_display->gdk_display = NULL;
     }
 
   g_free (x11_display->name);
@@ -979,6 +988,46 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   guint32 timestamp;
   MetaWorkspace *current_workspace;
   uint32_t current_workspace_index = 0;
+  Atom atom_restart_helper;
+  Window restart_helper_window = None;
+  GdkDisplay *gdk_display;
+  const char *gdk_gl_env = NULL;
+  const char *xdisplay_name;
+
+  xdisplay_name = g_getenv ("DISPLAY");
+  if (!xdisplay_name)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Unable to open display, DISPLAY not set");
+      return FALSE;
+    }
+
+  gdk_set_allowed_backends ("x11");
+
+  gdk_gl_env = g_getenv ("GDK_GL");
+  g_setenv("GDK_GL", "disable", TRUE);
+
+  gdk_display = gdk_display_open (xdisplay_name);
+
+  if (!gdk_display)
+    {
+      meta_warning (_("Failed to initialize GDK\n"));
+
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to initialize GDK");
+
+      return NULL;
+    }
+
+  if (gdk_gl_env)
+    g_setenv("GDK_GL", gdk_gl_env, TRUE);
+  else
+    unsetenv("GDK_GL");
+
+  /* We need to be able to fully trust that the window and monitor sizes
+     that Gdk reports corresponds to the X ones, so we disable the automatic
+     scale handling */
+  gdk_x11_display_set_window_scale (gdk_display, 1);
 
   /* A list of all atom names, so that we can intern them in one go. */
   const char *atom_names[] = {
@@ -990,7 +1039,7 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
   meta_verbose ("Opening display '%s'\n", XDisplayName (NULL));
 
-  xdisplay = meta_ui_get_display ();
+  xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display);
 
   if (xdisplay == NULL)
     {
@@ -999,6 +1048,8 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Failed to open X11 display");
+
+      gdk_display_close (gdk_display);
 
       return NULL;
     }
@@ -1013,7 +1064,10 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
   replace_current_wm = meta_get_replace_current_wm ();
 
-  number = meta_ui_get_screen_number ();
+  /* According to _gdk_x11_display_open (), this will be returned
+   * by gdk_display_get_default_screen ()
+   */
+  number = DefaultScreen (xdisplay);
 
   xroot = RootWindow (xdisplay, number);
 
@@ -1031,12 +1085,20 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
       XFlush (xdisplay);
       XCloseDisplay (xdisplay);
 
+      gdk_display_close (gdk_display);
+
       return NULL;
     }
 
   xscreen = ScreenOfDisplay (xdisplay, number);
 
+  atom_restart_helper = XInternAtom (xdisplay, "_MUTTER_RESTART_HELPER", False);
+  restart_helper_window = XGetSelectionOwner (xdisplay, atom_restart_helper);
+  if (restart_helper_window)
+    meta_set_is_restart (TRUE);
+
   x11_display = g_object_new (META_TYPE_X11_DISPLAY, NULL);
+  x11_display->gdk_display = gdk_display;
   x11_display->display = display;
 
   /* here we use XDisplayName which is what the user
@@ -1144,7 +1206,8 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
   /* Now that we've gotten taken a reference count on the COW, we
    * can close the helper that is holding on to it */
-  meta_restart_finish ();
+  if (meta_is_restart ())
+    XSetSelectionOwner (xdisplay, atom_restart_helper, None, META_CURRENT_TIME);
 
   /* Handle creating a no_focus_window for this screen */
   x11_display->no_focus_window =
@@ -1166,7 +1229,7 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
   set_desktop_geometry_hint (x11_display);
 
-  x11_display->ui = meta_ui_new (xdisplay);
+  x11_display->ui = meta_ui_new (x11_display);
 
   x11_display->keys_grabbed = FALSE;
   meta_x11_display_grab_keys (x11_display);
@@ -1255,7 +1318,7 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 int
 meta_x11_display_get_screen_number (MetaX11Display *x11_display)
 {
-  return meta_ui_get_screen_number ();
+  return DefaultScreen (x11_display->xdisplay);
 }
 
 /**
@@ -1588,7 +1651,7 @@ meta_x11_display_set_cm_selection (MetaX11Display *x11_display)
 
   timestamp = meta_x11_display_get_current_time_roundtrip (x11_display);
   g_snprintf (selection, sizeof (selection), "_NET_WM_CM_S%d",
-              meta_ui_get_screen_number ());
+              DefaultScreen (x11_display->xdisplay));
   a = XInternAtom (x11_display->xdisplay, selection, False);
 
   x11_display->wm_cm_selection_window = take_manager_selection (x11_display, x11_display->xroot, a, timestamp, TRUE);

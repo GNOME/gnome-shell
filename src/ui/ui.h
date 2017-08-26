@@ -36,13 +36,7 @@ typedef struct _MetaUIFrame MetaUIFrame;
 
 typedef gboolean (* MetaEventFunc) (XEvent *xevent, gpointer data);
 
-void meta_ui_init (void);
-
-Display* meta_ui_get_display (void);
-
-gint meta_ui_get_screen_number (void);
-
-MetaUI* meta_ui_new (Display *xdisplay);
+MetaUI *meta_ui_new  (MetaX11Display *x11_display);
 void    meta_ui_free (MetaUI *ui);
 
 void meta_ui_theme_get_frame_borders (MetaUI *ui,

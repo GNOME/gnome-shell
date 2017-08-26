@@ -46,32 +46,17 @@
 void
 meta_error_trap_push (MetaX11Display *x11_display)
 {
-  GdkDisplay *gdk_display;
-
-  gdk_display = gdk_x11_lookup_xdisplay (x11_display->xdisplay);
-  g_assert (gdk_display != NULL);
-
-  gdk_x11_display_error_trap_push (gdk_display);
+  gdk_x11_display_error_trap_push (x11_display->gdk_display);
 }
 
 void
 meta_error_trap_pop (MetaX11Display *x11_display)
 {
-  GdkDisplay *gdk_display;
-
-  gdk_display = gdk_x11_lookup_xdisplay (x11_display->xdisplay);
-  g_assert (gdk_display != NULL);
-
-  gdk_x11_display_error_trap_pop_ignored (gdk_display);
+  gdk_x11_display_error_trap_pop_ignored (x11_display->gdk_display);
 }
 
 int
 meta_error_trap_pop_with_return (MetaX11Display *x11_display)
 {
-  GdkDisplay *gdk_display;
-
-  gdk_display = gdk_x11_lookup_xdisplay (x11_display->xdisplay);
-  g_assert (gdk_display != NULL);
-
-  return gdk_x11_display_error_trap_pop (gdk_display);
+  return gdk_x11_display_error_trap_pop (x11_display->gdk_display);
 }

@@ -47,6 +47,7 @@ struct _MetaX11Display
   GObject parent;
 
   MetaDisplay *display;
+  GdkDisplay *gdk_display;
 
   char *name;
   char *screen_name;
