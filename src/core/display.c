@@ -74,6 +74,7 @@
 #include "x11/window-props.h"
 #include "x11/group-props.h"
 #include "x11/xprops.h"
+#include "x11/meta-x11-display-private.h"
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-xwayland-private.h"
@@ -584,7 +585,9 @@ on_startup_notification_changed (MetaStartupNotification *sn,
 gboolean
 meta_display_open (void)
 {
+  GError *error = NULL;
   MetaDisplay *display;
+  MetaX11Display *x11_display;
   Display *xdisplay;
   MetaScreen *screen;
   int i;
@@ -622,6 +625,54 @@ meta_display_open (void)
   display = the_display = g_object_new (META_TYPE_DISPLAY, NULL);
 
   display->closing = 0;
+  display->display_opening = TRUE;
+
+  display->pending_pings = NULL;
+  display->autoraise_timeout_id = 0;
+  display->autoraise_window = NULL;
+  display->focus_window = NULL;
+  display->screen = NULL;
+  display->x11_display = NULL;
+
+  display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
+  display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
+                                                  terminal has the focus */
+
+  i = 0;
+  while (i < N_IGNORED_CROSSING_SERIALS)
+    {
+      display->ignored_crossing_serials[i] = 0;
+      ++i;
+    }
+
+  display->current_time = CurrentTime;
+  display->sentinel_counter = 0;
+
+  display->grab_resize_timeout_id = 0;
+  display->grab_have_keyboard = FALSE;
+  display->last_bell_time = 0;
+
+  display->grab_op = META_GRAB_OP_NONE;
+  display->grab_window = NULL;
+  display->grab_tile_mode = META_TILE_NONE;
+  display->grab_tile_monitor_number = -1;
+
+  display->grab_edge_resistance_data = NULL;
+
+  meta_display_init_keys (display);
+
+  meta_prefs_add_listener (prefs_changed_callback, display);
+
+  /* Get events */
+  meta_display_init_events (display);
+
+  display->stamps = g_hash_table_new (g_int64_hash,
+                                      g_int64_equal);
+  display->wayland_windows = g_hash_table_new (NULL, NULL);
+
+  x11_display = meta_x11_display_new (display, &error);
+  g_assert (x11_display != NULL); /* Required, for now */
+  display->x11_display = x11_display;
 
   /* here we use XDisplayName which is what the user
    * probably put in, vs. DisplayString(display) which is
@@ -629,25 +680,12 @@ meta_display_open (void)
    */
   display->name = g_strdup (XDisplayName (NULL));
   display->xdisplay = xdisplay;
-  display->display_opening = TRUE;
 
-  display->pending_pings = NULL;
-  display->autoraise_timeout_id = 0;
-  display->autoraise_window = NULL;
-  display->focus_window = NULL;
   display->focus_serial = 0;
   display->server_focus_window = None;
   display->server_focus_serial = 0;
 
-  display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
-  display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
-                                                  terminal has the focus */
-
   meta_bell_init (display);
-
-  meta_display_init_keys (display);
-
-  meta_prefs_add_listener (prefs_changed_callback, display);
 
   meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
   XInternAtoms (display->xdisplay, (char **)atom_names, G_N_ELEMENTS (atom_names),
@@ -671,39 +709,10 @@ meta_display_open (void)
 
   display->groups_by_leader = NULL;
 
-  display->screen = NULL;
-
-  /* Get events */
-  meta_display_init_events (display);
   meta_display_init_events_x11 (display);
 
   display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
-  display->stamps = g_hash_table_new (g_int64_hash,
-                                      g_int64_equal);
-  display->wayland_windows = g_hash_table_new (NULL, NULL);
-
-  i = 0;
-  while (i < N_IGNORED_CROSSING_SERIALS)
-    {
-      display->ignored_crossing_serials[i] = 0;
-      ++i;
-    }
-
-  display->current_time = CurrentTime;
-  display->sentinel_counter = 0;
-
-  display->grab_resize_timeout_id = 0;
-  display->grab_have_keyboard = FALSE;
-
-  display->last_bell_time = 0;
-
-  display->grab_op = META_GRAB_OP_NONE;
-  display->grab_window = NULL;
-  display->grab_tile_mode = META_TILE_NONE;
-  display->grab_tile_monitor_number = -1;
-
-  display->grab_edge_resistance_data = NULL;
 
   {
     int major, minor;
@@ -1126,7 +1135,6 @@ meta_display_close (MetaDisplay *display,
   display->focus_timeout_id = 0;
 
   /* Stop caring about events */
-  meta_display_free_events_x11 (display);
   meta_display_free_events (display);
 
   if (display->screen)
@@ -1136,9 +1144,19 @@ meta_display_close (MetaDisplay *display,
   /* Must be after all calls to meta_window_unmanage() since they
    * unregister windows
    */
-  g_hash_table_destroy (display->xids);
   g_hash_table_destroy (display->wayland_windows);
   g_hash_table_destroy (display->stamps);
+
+  if (display->compositor)
+    meta_compositor_destroy (display->compositor);
+
+  /* Stop caring about events */
+  meta_display_free_events_x11 (display);
+
+  /* Must be after all calls to meta_window_unmanage() since they
+   * unregister windows
+   */
+  g_hash_table_destroy (display->xids);
 
   if (display->leader_window != None)
     XDestroyWindow (display->xdisplay, display->leader_window);
@@ -1150,10 +1168,13 @@ meta_display_close (MetaDisplay *display,
 
   g_free (display->name);
 
-  meta_display_shutdown_keys (display);
+  if (display->x11_display)
+    {
+      g_object_run_dispose (G_OBJECT (display->x11_display));
+      g_clear_object (&display->x11_display);
+    }
 
-  if (display->compositor)
-    meta_compositor_destroy (display->compositor);
+  meta_display_shutdown_keys (display);
 
   g_object_unref (display);
   the_display = NULL;
@@ -2963,6 +2984,17 @@ MetaCompositor *
 meta_display_get_compositor (MetaDisplay *display)
 {
   return display->compositor;
+}
+
+/**
+ * meta_display_get_x11_display: (skip)
+ * @display: a #MetaDisplay
+ *
+ */
+MetaX11Display *
+meta_display_get_x11_display (MetaDisplay *display)
+{
+  return display->x11_display;
 }
 
 gboolean

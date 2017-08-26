@@ -26,6 +26,7 @@ src/core/window.c
 src/ui/frames.c
 src/ui/theme.c
 src/wayland/meta-wayland-tablet-pad.c
+src/x11/meta-x11-display.c
 src/x11/session.c
 src/x11/window-props.c
 src/x11/xprops.c

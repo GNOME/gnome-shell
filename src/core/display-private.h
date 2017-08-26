@@ -110,6 +110,8 @@ struct _MetaDisplay
 {
   GObject parent_instance;
 
+  MetaX11Display *x11_display;
+
   char *name;
   Display *xdisplay;
 

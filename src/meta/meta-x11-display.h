@@ -17,30 +17,17 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef META_TYPES_H
-#define META_TYPES_H
+#ifndef META_X11_DISPLAY_H
+#define META_X11_DISPLAY_H
 
-/**
- * MetaCompositor: (skip)
- *
- */
-typedef struct _MetaBackend     MetaBackend;
-typedef struct _MetaCompositor  MetaCompositor;
-typedef struct _MetaDisplay     MetaDisplay;
-typedef struct _MetaX11Display  MetaX11Display;
-typedef struct _MetaFrame       MetaFrame;
-typedef struct _MetaScreen      MetaScreen;
-typedef struct _MetaWindow      MetaWindow;
-typedef struct _MetaWorkspace   MetaWorkspace;
-/**
- * MetaGroup: (skip)
- *
- */
-typedef struct _MetaGroup       MetaGroup;
-typedef struct _MetaKeyBinding  MetaKeyBinding;
-typedef struct _MetaCursorTracker MetaCursorTracker;
+#include <glib-object.h>
+#include <X11/Xlib.h>
 
-typedef struct _MetaDnd         MetaDnd;
-typedef struct _MetaSettings    MetaSettings;
+#include <meta/common.h>
+#include <meta/prefs.h>
+#include <meta/types.h>
 
-#endif
+#define META_TYPE_X11_DISPLAY (meta_x11_display_get_type ())
+G_DECLARE_FINAL_TYPE (MetaX11Display, meta_x11_display, META, X11_DISPLAY, GObject)
+
+#endif /* META_X11_DISPLAY_H */
