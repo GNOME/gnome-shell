@@ -25,13 +25,13 @@
 #include <X11/Xlib.h>
 
 #include <meta/util.h>
-#include <meta/display.h>
+#include <meta/meta-x11-display.h>
 
-void      meta_error_trap_push (MetaDisplay *display);
-void      meta_error_trap_pop  (MetaDisplay *display);
+void      meta_error_trap_push (MetaX11Display *x11_display);
+void      meta_error_trap_pop  (MetaX11Display *x11_display);
 
 /* returns X error code, or 0 for no error */
-int       meta_error_trap_pop_with_return  (MetaDisplay *display);
+int       meta_error_trap_pop_with_return  (MetaX11Display *x11_display);
 
 
 #endif

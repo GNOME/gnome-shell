@@ -761,7 +761,7 @@ sync_client_window_mapped (MetaWindow *window)
 
   window->mapped = should_be_mapped;
 
-  meta_error_trap_push (window->display);
+  meta_error_trap_push (window->display->x11_display);
   if (should_be_mapped)
     {
       XMapWindow (window->display->x11_display->xdisplay, window->xwindow);
@@ -771,7 +771,7 @@ sync_client_window_mapped (MetaWindow *window)
       XUnmapWindow (window->display->x11_display->xdisplay, window->xwindow);
       window->unmaps_pending ++;
     }
-  meta_error_trap_pop (window->display);
+  meta_error_trap_pop (window->display->x11_display);
 }
 
 static gboolean
@@ -6772,7 +6772,7 @@ warp_grab_pointer (MetaWindow          *window,
   *x = CLAMP (*x, 0, window->screen->rect.width-1);
   *y = CLAMP (*y, 0, window->screen->rect.height-1);
 
-  meta_error_trap_push (display);
+  meta_error_trap_push (display->x11_display);
 
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Warping pointer to %d,%d with window at %d,%d\n",
@@ -6794,7 +6794,7 @@ warp_grab_pointer (MetaWindow          *window,
     meta_backend_warp_pointer (backend, *x, *y);
   }
 
-  if (meta_error_trap_pop_with_return (display) != Success)
+  if (meta_error_trap_pop_with_return (display->x11_display) != Success)
     {
       meta_verbose ("Failed to warp pointer for window %s\n",
                     window->desc);
@@ -8057,14 +8057,14 @@ window_has_pointer_x11 (MetaWindow *window)
   XIModifierState mods;
   XIGroupState group;
 
-  meta_error_trap_push (display);
+  meta_error_trap_push (display->x11_display);
   XIQueryPointer (display->x11_display->xdisplay,
                   META_VIRTUAL_CORE_POINTER_ID,
                   display->x11_display->xroot,
                   &root, &child,
                   &root_x, &root_y, &x, &y,
                   &buttons, &mods, &group);
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display->x11_display);
   free (buttons.mask);
 
   return meta_display_lookup_x_window (display, child) == window;

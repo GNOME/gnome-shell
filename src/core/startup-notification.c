@@ -590,7 +590,7 @@ sn_error_trap_push (SnDisplay *sn_display,
   MetaDisplay *display;
   display = meta_display_for_x_display (xdisplay);
   if (display != NULL)
-    meta_error_trap_push (display);
+    meta_error_trap_push (display->x11_display);
 }
 
 static void
@@ -600,7 +600,7 @@ sn_error_trap_pop (SnDisplay *sn_display,
   MetaDisplay *display;
   display = meta_display_for_x_display (xdisplay);
   if (display != NULL)
-    meta_error_trap_pop (display);
+    meta_error_trap_pop (display->x11_display);
 }
 
 static void

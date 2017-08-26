@@ -1534,7 +1534,7 @@ request_xserver_input_focus_change (MetaDisplay *display,
   if (meta_display_timestamp_too_old (display, &timestamp))
     return;
 
-  meta_error_trap_push (display);
+  meta_error_trap_push (display->x11_display);
 
   /* In order for mutter to know that the focus request succeeded, we track
    * the serial of the "focus request" we made, but if we take the serial
@@ -1567,7 +1567,7 @@ request_xserver_input_focus_change (MetaDisplay *display,
                                     serial,
                                     TRUE);
 
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display->x11_display);
 
   display->last_focus_time = timestamp;
 
@@ -2091,13 +2091,13 @@ meta_display_update_active_window_hint (MetaDisplay *display)
   else
     data[0] = None;
 
-  meta_error_trap_push (display);
+  meta_error_trap_push (display->x11_display);
   XChangeProperty (display->x11_display->xdisplay,
                    display->x11_display->xroot,
                    display->x11_display->atom__NET_ACTIVE_WINDOW,
                    XA_WINDOW,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display->x11_display);
 }
 
 void

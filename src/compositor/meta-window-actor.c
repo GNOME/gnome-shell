@@ -1990,10 +1990,10 @@ do_send_frame_drawn (MetaWindowActor *self, FrameData *frame)
   ev.data.l[2] = frame->frame_drawn_time & G_GUINT64_CONSTANT(0xffffffff);
   ev.data.l[3] = frame->frame_drawn_time >> 32;
 
-  meta_error_trap_push (display);
+  meta_error_trap_push (display->x11_display);
   XSendEvent (xdisplay, ev.window, False, 0, (XEvent*) &ev);
   XFlush (xdisplay);
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display->x11_display);
 }
 
 void
@@ -2067,10 +2067,10 @@ do_send_frame_timings (MetaWindowActor  *self,
   ev.data.l[3] = refresh_interval;
   ev.data.l[4] = 1000 * META_SYNC_DELAY;
 
-  meta_error_trap_push (display);
+  meta_error_trap_push (display->x11_display);
   XSendEvent (xdisplay, ev.window, False, 0, (XEvent*) &ev);
   XFlush (xdisplay);
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (display->x11_display);
 }
 
 static void

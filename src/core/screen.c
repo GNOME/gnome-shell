@@ -582,10 +582,10 @@ take_manager_selection (MetaDisplay *display,
       if (should_replace)
         {
           /* We want to find out when the current selection owner dies */
-          meta_error_trap_push (display);
+          meta_error_trap_push (x11_display);
           attrs.event_mask = StructureNotifyMask;
           XChangeWindowAttributes (x11_display->xdisplay, current_owner, CWEventMask, &attrs);
-          if (meta_error_trap_pop_with_return (display) != Success)
+          if (meta_error_trap_pop_with_return (x11_display) != Success)
             current_owner = None; /* don't wait for it to die later on */
         }
       else
@@ -970,13 +970,13 @@ set_number_of_spaces_hint (MetaScreen *screen,
 
   meta_verbose ("Setting _NET_NUMBER_OF_DESKTOPS to %lu\n", data[0]);
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_NUMBER_OF_DESKTOPS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (x11_display);
 }
 
 static void
@@ -993,13 +993,13 @@ set_desktop_geometry_hint (MetaScreen *screen)
 
   meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %lu, %lu\n", data[0], data[1]);
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_DESKTOP_GEOMETRY,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (x11_display);
 }
 
 static void
@@ -1019,13 +1019,13 @@ set_desktop_viewport_hint (MetaScreen *screen)
 
   meta_verbose ("Setting _NET_DESKTOP_VIEWPORT to 0, 0\n");
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_DESKTOP_VIEWPORT,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (x11_display);
 }
 
 void
@@ -1785,14 +1785,14 @@ set_workspace_names (MetaScreen *screen)
       ++i;
     }
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_DESKTOP_NAMES,
                    x11_display->atom_UTF8_STRING,
                    8, PropModeReplace,
 		   (unsigned char *)flattened->str, flattened->len);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (x11_display);
 
   g_string_free (flattened, TRUE);
 }
@@ -1860,14 +1860,14 @@ set_work_area_hint (MetaScreen *screen)
       tmp += 4;
     }
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_WORKAREA,
 		   XA_CARDINAL, 32, PropModeReplace,
 		   (guchar*) data, num_workspaces*4);
   g_free (data);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (x11_display);
 
   g_signal_emit (screen, screen_signals[WORKAREAS_CHANGED], 0);
 }
@@ -2262,13 +2262,13 @@ meta_screen_update_showing_desktop_hint (MetaScreen *screen)
 
   data[0] = screen->active_workspace->showing_desktop ? 1 : 0;
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_SHOWING_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (x11_display);
 }
 
 static void
@@ -2626,13 +2626,13 @@ meta_screen_set_active_workspace_hint (MetaScreen *screen)
 
   meta_verbose ("Setting _NET_CURRENT_DESKTOP to %lu\n", data[0]);
 
-  meta_error_trap_push (screen->display);
+  meta_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_CURRENT_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (screen->display);
+  meta_error_trap_pop (x11_display);
 }
 
 static gboolean

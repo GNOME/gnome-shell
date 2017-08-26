@@ -58,9 +58,9 @@ meta_x11_display_dispose (GObject *object)
 
   if (x11_display->xroot != None)
     {
-      meta_error_trap_push (x11_display->display);
+      meta_error_trap_push (x11_display);
       XSelectInput (x11_display->xdisplay, x11_display->xroot, 0);
-      if (meta_error_trap_pop_with_return (x11_display->display) != Success)
+      if (meta_error_trap_pop_with_return (x11_display) != Success)
         meta_warning ("Could not release screen %d on display \"%s\"\n",
                       meta_ui_get_screen_number (), x11_display->name);
 

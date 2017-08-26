@@ -3065,7 +3065,7 @@ handle_panel (MetaDisplay     *display,
               "off due to keybinding press\n", event->time);
   display->mouse_mode = FALSE;
 
-  meta_error_trap_push (display);
+  meta_error_trap_push (x11_display);
 
   /* Release the grab for the panel before sending the event */
   XUngrabKeyboard (x11_display->xdisplay, event->time);
@@ -3076,7 +3076,7 @@ handle_panel (MetaDisplay     *display,
 	      StructureNotifyMask,
 	      (XEvent*) &ev);
 
-  meta_error_trap_pop (display);
+  meta_error_trap_pop (x11_display);
 }
 
 static void

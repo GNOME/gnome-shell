@@ -26,10 +26,10 @@
 
 #include <config.h>
 #include <meta/errors.h>
-#include "display-private.h"
 #include <errno.h>
 #include <stdlib.h>
-#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
+#include "x11/meta-x11-display-private.h"
 
 /* In GTK+-3.0, the error trapping code was significantly rewritten. The new code
  * has some neat features (like knowing automatically if a sync is needed or not
@@ -44,19 +44,34 @@
  */
 
 void
-meta_error_trap_push (MetaDisplay *display)
+meta_error_trap_push (MetaX11Display *x11_display)
 {
-  gdk_error_trap_push ();
+  GdkDisplay *gdk_display;
+
+  gdk_display = gdk_x11_lookup_xdisplay (x11_display->xdisplay);
+  g_assert (gdk_display != NULL);
+
+  gdk_x11_display_error_trap_push (gdk_display);
 }
 
 void
-meta_error_trap_pop (MetaDisplay *display)
+meta_error_trap_pop (MetaX11Display *x11_display)
 {
-  gdk_error_trap_pop_ignored ();
+  GdkDisplay *gdk_display;
+
+  gdk_display = gdk_x11_lookup_xdisplay (x11_display->xdisplay);
+  g_assert (gdk_display != NULL);
+
+  gdk_x11_display_error_trap_pop_ignored (gdk_display);
 }
 
 int
-meta_error_trap_pop_with_return  (MetaDisplay *display)
+meta_error_trap_pop_with_return (MetaX11Display *x11_display)
 {
-  return gdk_error_trap_pop ();
+  GdkDisplay *gdk_display;
+
+  gdk_display = gdk_x11_lookup_xdisplay (x11_display->xdisplay);
+  g_assert (gdk_display != NULL);
+
+  return gdk_x11_display_error_trap_pop (gdk_display);
 }
