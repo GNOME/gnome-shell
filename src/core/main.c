@@ -300,7 +300,7 @@ meta_finalize (void)
 
   if (display)
     meta_display_close (display,
-                        CurrentTime); /* I doubt correct timestamps matter here */
+                        META_CURRENT_TIME); /* I doubt correct timestamps matter here */
 
 #ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())

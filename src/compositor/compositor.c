@@ -362,11 +362,14 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
   if (is_modal (display) || display->grab_op != META_GRAB_OP_NONE)
     return FALSE;
 
-  /* XXX: why is this needed? */
-  XIUngrabDevice (display->x11_display->xdisplay,
-                  META_VIRTUAL_CORE_POINTER_ID,
-                  timestamp);
-  XSync (display->x11_display->xdisplay, False);
+  if (display->x11_display)
+    {
+      /* XXX: why is this needed? */
+      XIUngrabDevice (display->x11_display->xdisplay,
+                      META_VIRTUAL_CORE_POINTER_ID,
+                      timestamp);
+      XSync (display->x11_display->xdisplay, False);
+    }
 
   if (!grab_devices (options, timestamp))
     return FALSE;
@@ -443,9 +446,8 @@ after_stage_paint (ClutterStage *stage,
 }
 
 static void
-redirect_windows (MetaDisplay *display)
+redirect_windows (MetaX11Display *x11_display)
 {
-  MetaX11Display *x11_display = meta_display_get_x11_display (display);
   Display *xdisplay = meta_x11_display_get_xdisplay (x11_display);
   Window xroot = meta_x11_display_get_xroot (x11_display);
   int screen_number = meta_x11_display_get_screen_number (x11_display);
@@ -489,10 +491,14 @@ void
 meta_compositor_manage (MetaCompositor *compositor)
 {
   MetaDisplay *display = compositor->display;
-  Display *xdisplay = display->x11_display->xdisplay;
+  Display *xdisplay = NULL;
   MetaBackend *backend = meta_get_backend ();
 
-  meta_x11_display_set_cm_selection (display->x11_display);
+  if (display->x11_display)
+    {
+      xdisplay = display->x11_display->xdisplay;
+      meta_x11_display_set_cm_selection (display->x11_display);
+    }
 
   compositor->stage = meta_backend_get_stage (backend);
 
@@ -558,7 +564,8 @@ meta_compositor_manage (MetaCompositor *compositor)
       compositor->have_x11_sync_object = meta_sync_ring_init (xdisplay);
     }
 
-  redirect_windows (display);
+  if (display->x11_display)
+    redirect_windows (display->x11_display);
 
   compositor->plugin_mgr = meta_plugin_manager_new (compositor);
 }

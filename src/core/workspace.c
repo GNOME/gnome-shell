@@ -1260,8 +1260,8 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
                                      MetaWindow    *not_this_one,
                                      guint32        timestamp)
 {
-  if (timestamp == CurrentTime)
-    meta_warning ("CurrentTime used to choose focus window; "
+  if (timestamp == META_CURRENT_TIME)
+    meta_warning ("META_CURRENT_TIME used to choose focus window; "
                   "focus window may not be correct.\n");
 
   if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_CLICK ||
@@ -1275,11 +1275,11 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
           window->type != META_WINDOW_DOCK &&
           window->type != META_WINDOW_DESKTOP)
         {
-          if (timestamp == CurrentTime)
+          if (timestamp == META_CURRENT_TIME)
             {
 
               /* We would like for this to never happen.  However, if
-               * it does happen then we kludge since using CurrentTime
+               * it does happen then we kludge since using META_CURRENT_TIME
                * can mean ugly race conditions--and we can avoid these
                * by allowing EnterNotify events (which come with
                * timestamps) to handle focus.

@@ -269,7 +269,7 @@ meta_display_handle_event (MetaDisplay        *display,
        event->type == CLUTTER_BUTTON_PRESS ||
        event->type == CLUTTER_TOUCH_BEGIN))
     {
-      if (CurrentTime == display->current_time)
+      if (META_CURRENT_TIME == display->current_time)
         {
           /* We can't use missing (i.e. invalid) timestamps to set user time,
            * nor do we want to use them to sanity check other timestamps.
@@ -410,7 +410,7 @@ meta_display_handle_event (MetaDisplay        *display,
     }
 #endif
 
-  display->current_time = CurrentTime;
+  display->current_time = META_CURRENT_TIME;
   return bypass_clutter;
 }
 

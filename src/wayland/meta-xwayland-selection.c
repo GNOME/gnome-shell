@@ -467,7 +467,7 @@ x11_selection_data_send_finished (MetaSelectionBridge *selection,
                          gdk_x11_get_xatom_by_name ("DELETE"),
                          gdk_x11_get_xatom_by_name ("_META_SELECTION"),
                          selection->window,
-                         CurrentTime);
+                         META_CURRENT_TIME);
     }
 
   xdnd_send_finished (selection->x11_selection->selection_data,
@@ -1616,7 +1616,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
                              gdk_x11_get_xatom_by_name ("TARGETS"),
                              gdk_x11_get_xatom_by_name ("_META_SELECTION"),
                              selection->window,
-                             CurrentTime);
+                             META_CURRENT_TIME);
           XFlush (xdisplay);
         }
     }
@@ -1631,7 +1631,7 @@ meta_xwayland_selection_handle_xfixes_selection_notify (MetaWaylandCompositor *c
       if (event->owner != None && event->owner != selection->window &&
           focus && meta_xwayland_is_xwayland_surface (focus))
         {
-          selection->client_message_timestamp = CurrentTime;
+          selection->client_message_timestamp = META_CURRENT_TIME;
           selection->source = meta_wayland_data_source_xwayland_new (selection);
           meta_wayland_data_device_set_dnd_source (&compositor->seat->data_device,
                                                    selection->source);
@@ -1702,7 +1702,7 @@ meta_selection_bridge_ownership_notify (struct wl_listener *listener,
       XSetSelectionOwner (xdisplay,
                           selection->selection_atom,
                           selection->window,
-                          CurrentTime);
+                          META_CURRENT_TIME);
     }
 }
 

@@ -5015,7 +5015,7 @@ meta_window_change_workspace_by_index (MetaWindow *window,
     meta_display_get_workspace_by_index (display, space_index);
 
   if (!workspace && append)
-    workspace = meta_display_append_new_workspace (display, FALSE, CurrentTime);
+    workspace = meta_display_append_new_workspace (display, FALSE, META_CURRENT_TIME);
 
   if (workspace)
     meta_window_change_workspace (window, workspace);

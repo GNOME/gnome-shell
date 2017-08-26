@@ -241,7 +241,7 @@ event_get_time (MetaX11Display *x11_display,
     case CirculateRequest:
     case MappingNotify:
     default:
-      return CurrentTime;
+      return META_CURRENT_TIME;
     }
 }
 
@@ -1826,7 +1826,7 @@ meta_x11_display_handle_xevent (MetaX11Display *x11_display,
         bypass_gtk = TRUE;
     }
 
-  display->current_time = CurrentTime;
+  display->current_time = META_CURRENT_TIME;
   return bypass_gtk;
 }
 

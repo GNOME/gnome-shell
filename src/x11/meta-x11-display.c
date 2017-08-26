@@ -1290,7 +1290,7 @@ meta_x11_display_get_current_time_roundtrip (MetaX11Display *x11_display)
   guint32 timestamp;
 
   timestamp = meta_display_get_current_time (x11_display->display);
-  if (timestamp == CurrentTime)
+  if (timestamp == META_CURRENT_TIME)
     {
       XEvent property_event;
 

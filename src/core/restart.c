@@ -195,7 +195,7 @@ meta_restart_finish (void)
       MetaDisplay *display = meta_get_display ();
       Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
       Atom atom_restart_helper = XInternAtom (xdisplay, "_MUTTER_RESTART_HELPER", False);
-      XSetSelectionOwner (xdisplay, atom_restart_helper, None, CurrentTime);
+      XSetSelectionOwner (xdisplay, atom_restart_helper, None, META_CURRENT_TIME);
     }
 }
 
