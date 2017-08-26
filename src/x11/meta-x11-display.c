@@ -887,6 +887,43 @@ set_workspace_names (MetaX11Display *x11_display)
   g_string_free (flattened, TRUE);
 }
 
+static void
+set_work_area_hint (MetaDisplay    *display,
+                    MetaX11Display *x11_display)
+{
+  int num_workspaces;
+  GList *l;
+  unsigned long *data, *tmp;
+  MetaRectangle area;
+
+  num_workspaces = meta_display_get_n_workspaces (display);
+  data = g_new (unsigned long, num_workspaces * 4);
+  tmp = data;
+
+  for (l = display->workspaces; l; l = l->next)
+    {
+      MetaWorkspace *workspace = l->data;
+
+      meta_workspace_get_work_area_all_monitors (workspace, &area);
+      tmp[0] = area.x;
+      tmp[1] = area.y;
+      tmp[2] = area.width;
+      tmp[3] = area.height;
+
+      tmp += 4;
+    }
+
+  meta_error_trap_push (x11_display);
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom__NET_WORKAREA,
+                   XA_CARDINAL, 32, PropModeReplace,
+                   (guchar*) data, num_workspaces*4);
+  meta_error_trap_pop (x11_display);
+
+  g_free (data);
+}
+
 /**
  * meta_set_wm_name: (skip)
  * @wm_name: value for _NET_WM_NAME
@@ -1197,6 +1234,12 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   set_workspace_names (x11_display);
 
   meta_prefs_add_listener (prefs_changed_callback, x11_display);
+
+  set_work_area_hint (display, x11_display);
+
+  g_signal_connect_object (display, "workareas-changed",
+                           G_CALLBACK (set_work_area_hint),
+                           x11_display, 0);
 
   init_x11_bell (x11_display);
 

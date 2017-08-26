@@ -3345,45 +3345,6 @@ meta_display_apply_startup_properties (MetaDisplay *display,
   return FALSE;
 }
 
-static void
-set_work_area_hint (MetaDisplay *display)
-{
-  MetaX11Display *x11_display = display->x11_display;
-  int num_workspaces;
-  GList *l;
-  unsigned long *data, *tmp;
-  MetaRectangle area;
-
-  num_workspaces = meta_display_get_n_workspaces (display);
-  data = g_new (unsigned long, num_workspaces * 4);
-  tmp = data;
-
-  for (l = display->workspaces; l; l = l->next)
-    {
-      MetaWorkspace *workspace = l->data;
-
-      meta_workspace_get_work_area_all_monitors (workspace, &area);
-      tmp[0] = area.x;
-      tmp[1] = area.y;
-      tmp[2] = area.width;
-      tmp[3] = area.height;
-
-      tmp += 4;
-    }
-
-  meta_error_trap_push (x11_display);
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_WORKAREA,
-                   XA_CARDINAL, 32, PropModeReplace,
-                   (guchar*) data, num_workspaces*4);
-  meta_error_trap_pop (x11_display);
-
-  g_free (data);
-
-  g_signal_emit (display, display_signals[WORKAREAS_CHANGED], 0);
-}
-
 static gboolean
 set_work_area_later_func (MetaDisplay *display)
 {
@@ -3392,7 +3353,7 @@ set_work_area_later_func (MetaDisplay *display)
 
   display->work_area_later = 0;
 
-  set_work_area_hint (display);
+  g_signal_emit (display, display_signals[WORKAREAS_CHANGED], 0);
 
   return FALSE;
 }
