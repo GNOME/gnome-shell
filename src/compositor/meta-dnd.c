@@ -27,6 +27,7 @@
 #include "core/display-private.h"
 #include "backends/meta-dnd-private.h"
 #include "meta/meta-dnd.h"
+#include "x11/meta-x11-display-private.h"
 
 struct _MetaDndClass
 {
@@ -159,7 +160,7 @@ meta_dnd_handle_xdnd_event (MetaBackend    *backend,
 
       memset (&xevent, 0, sizeof(xevent));
       xevent.xany.type = ClientMessage;
-      xevent.xany.display = display->xdisplay;
+      xevent.xany.display = display->x11_display->xdisplay;
       xevent.xclient.window = src;
       xevent.xclient.message_type = gdk_x11_get_xatom_by_name ("XdndStatus");
       xevent.xclient.format = 32;
@@ -168,7 +169,7 @@ meta_dnd_handle_xdnd_event (MetaBackend    *backend,
       xevent.xclient.data.l[1] = 2;
       xevent.xclient.data.l[4] = None;
 
-      XSendEvent (display->xdisplay, src, False, 0, &xevent);
+      XSendEvent (display->x11_display->xdisplay, src, False, 0, &xevent);
 
       meta_dnd_notify_dnd_position_change (dnd,
                                             (int)(xev->xclient.data.l[2] >> 16),

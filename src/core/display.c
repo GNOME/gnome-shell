@@ -572,7 +572,7 @@ gesture_tracker_state_changed (MetaGestureTracker   *tracker,
       XIAllowTouchEvents (meta_backend_x11_get_xdisplay (backend),
                           META_VIRTUAL_CORE_POINTER_ID,
                           clutter_x11_event_sequence_get_touch_detail (sequence),
-                          DefaultRootWindow (display->xdisplay), event_mode);
+                          DefaultRootWindow (display->x11_display->xdisplay), event_mode);
     }
 }
 
@@ -611,33 +611,6 @@ meta_display_open (void)
   int i;
   guint32 timestamp;
   Window old_active_xwindow = None;
-
-  /* A list of all atom names, so that we can intern them in one go. */
-  const char *atom_names[] = {
-#define item(x) #x,
-#include <x11/atomnames.h>
-#undef item
-  };
-  Atom atoms[G_N_ELEMENTS(atom_names)];
-
-  meta_verbose ("Opening display '%s'\n", XDisplayName (NULL));
-
-  xdisplay = meta_ui_get_display ();
-
-  if (xdisplay == NULL)
-    {
-      meta_warning (_("Failed to open X Window System display “%s”\n"),
-		    XDisplayName (NULL));
-      return FALSE;
-    }
-
-#ifdef HAVE_WAYLAND
-  if (meta_is_wayland_compositor ())
-    meta_xwayland_complete_init ();
-#endif
-
-  if (meta_is_syncing ())
-    XSynchronize (xdisplay, True);
 
   g_assert (the_display == NULL);
   display = the_display = g_object_new (META_TYPE_DISPLAY, NULL);
@@ -693,27 +666,13 @@ meta_display_open (void)
   display->x11_display = x11_display;
   g_signal_emit (display, display_signals[X11_DISPLAY_OPENED], 0);
 
-  /* here we use XDisplayName which is what the user
-   * probably put in, vs. DisplayString(display) which is
-   * canonicalized by XOpenDisplay()
-   */
-  display->name = g_strdup (XDisplayName (NULL));
-  display->xdisplay = xdisplay;
+  xdisplay = display->x11_display->xdisplay;
 
   display->focus_serial = 0;
   display->server_focus_window = None;
   display->server_focus_serial = 0;
 
   meta_bell_init (display);
-
-  meta_verbose ("Creating %d atoms\n", (int) G_N_ELEMENTS (atom_names));
-  XInternAtoms (display->xdisplay, (char **)atom_names, G_N_ELEMENTS (atom_names),
-                False, atoms);
-
-  i = 0;
-#define item(x) display->atom_##x = atoms[i++];
-#include <x11/atomnames.h>
-#undef item
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -745,10 +704,10 @@ meta_display_open (void)
     major = SYNC_MAJOR_VERSION;
     minor = SYNC_MINOR_VERSION;
 
-    if (!XSyncQueryExtension (display->xdisplay,
+    if (!XSyncQueryExtension (xdisplay,
                               &display->xsync_event_base,
                               &display->xsync_error_base) ||
-        !XSyncInitialize (display->xdisplay,
+        !XSyncInitialize (xdisplay,
                           &major, &minor))
       {
         display->xsync_error_base = 0;
@@ -757,7 +716,7 @@ meta_display_open (void)
     else
       {
         display->have_xsync = TRUE;
-        XSyncSetPriority (display->xdisplay, None, 10);
+        XSyncSetPriority (xdisplay, None, 10);
       }
 
     meta_verbose ("Attempted to init Xsync, found version %d.%d error base %d event base %d\n",
@@ -772,7 +731,7 @@ meta_display_open (void)
     display->shape_error_base = 0;
     display->shape_event_base = 0;
 
-    if (!XShapeQueryExtension (display->xdisplay,
+    if (!XShapeQueryExtension (xdisplay,
                                &display->shape_event_base,
                                &display->shape_error_base))
       {
@@ -793,7 +752,7 @@ meta_display_open (void)
     display->composite_error_base = 0;
     display->composite_event_base = 0;
 
-    if (!XCompositeQueryExtension (display->xdisplay,
+    if (!XCompositeQueryExtension (xdisplay,
                                    &display->composite_event_base,
                                    &display->composite_error_base))
       {
@@ -804,7 +763,7 @@ meta_display_open (void)
       {
         display->composite_major_version = 0;
         display->composite_minor_version = 0;
-        if (XCompositeQueryVersion (display->xdisplay,
+        if (XCompositeQueryVersion (xdisplay,
                                     &display->composite_major_version,
                                     &display->composite_minor_version))
           {
@@ -829,7 +788,7 @@ meta_display_open (void)
     display->damage_error_base = 0;
     display->damage_event_base = 0;
 
-    if (!XDamageQueryExtension (display->xdisplay,
+    if (!XDamageQueryExtension (xdisplay,
                                 &display->damage_event_base,
                                 &display->damage_error_base))
       {
@@ -846,13 +805,13 @@ meta_display_open (void)
     display->xfixes_error_base = 0;
     display->xfixes_event_base = 0;
 
-    if (XFixesQueryExtension (display->xdisplay,
+    if (XFixesQueryExtension (xdisplay,
                               &display->xfixes_event_base,
                               &display->xfixes_error_base))
       {
         int xfixes_major, xfixes_minor;
 
-        XFixesQueryVersion (display->xdisplay, &xfixes_major, &xfixes_minor);
+        XFixesQueryVersion (xdisplay, &xfixes_major, &xfixes_minor);
 
         if (xfixes_major * 100 + xfixes_minor < 500)
           meta_fatal ("Mutter requires XFixes 5.0");
@@ -871,13 +830,13 @@ meta_display_open (void)
     int major = 2, minor = 3;
     gboolean has_xi = FALSE;
 
-    if (XQueryExtension (display->xdisplay,
+    if (XQueryExtension (xdisplay,
                          "XInputExtension",
                          &display->xinput_opcode,
                          &display->xinput_error_base,
                          &display->xinput_event_base))
       {
-        if (XIQueryVersion (display->xdisplay, &major, &minor) == Success)
+        if (XIQueryVersion (xdisplay, &major, &minor) == Success)
           {
             int version = (major * 10) + minor;
             if (version >= 22)
@@ -910,33 +869,33 @@ meta_display_open (void)
      * 354213 for details.
      */
     display->leader_window =
-      meta_create_offscreen_window (display->xdisplay,
-                                    DefaultRootWindow (display->xdisplay),
-                                    PropertyChangeMask);
+      meta_x11_display_create_offscreen_window (display->x11_display,
+                                                DefaultRootWindow (xdisplay),
+                                                PropertyChangeMask);
 
     meta_prop_set_utf8_string_hint (display,
                                     display->leader_window,
-                                    display->atom__NET_WM_NAME,
+                                    display->x11_display->atom__NET_WM_NAME,
                                     net_wm_name);
 
     meta_prop_set_utf8_string_hint (display,
                                     display->leader_window,
-                                    display->atom__GNOME_WM_KEYBINDINGS,
+                                    display->x11_display->atom__GNOME_WM_KEYBINDINGS,
                                     gnome_wm_keybindings);
 
     meta_prop_set_utf8_string_hint (display,
                                     display->leader_window,
-                                    display->atom__MUTTER_VERSION,
+                                    display->x11_display->atom__MUTTER_VERSION,
                                     VERSION);
 
     data[0] = display->leader_window;
-    XChangeProperty (display->xdisplay,
+    XChangeProperty (xdisplay,
                      display->leader_window,
-                     display->atom__NET_SUPPORTING_WM_CHECK,
+                     display->x11_display->atom__NET_SUPPORTING_WM_CHECK,
                      XA_WINDOW,
                      32, PropModeReplace, (guchar*) data, 1);
 
-    XWindowEvent (display->xdisplay,
+    XWindowEvent (xdisplay,
                   display->leader_window,
                   PropertyChangeMask,
                   &event);
@@ -946,7 +905,7 @@ meta_display_open (void)
     /* Make it painfully clear that we can't rely on PropertyNotify events on
      * this window, as per bug 354213.
      */
-    XSelectInput(display->xdisplay,
+    XSelectInput(xdisplay,
                  display->leader_window,
                  NoEventMask);
   }
@@ -955,9 +914,9 @@ meta_display_open (void)
    * that meta_create_offscreen_window already selects for PropertyChangeMask.
    */
   display->timestamp_pinging_window =
-    meta_create_offscreen_window (display->xdisplay,
-                                  DefaultRootWindow (display->xdisplay),
-                                  PropertyChangeMask);
+    meta_x11_display_create_offscreen_window (display->x11_display,
+                                              DefaultRootWindow (xdisplay),
+                                              PropertyChangeMask);
 
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;
@@ -981,8 +940,8 @@ meta_display_open (void)
   display->screen = screen;
 
   if (!meta_is_wayland_compositor ())
-    meta_prop_get_window (display, display->screen->xroot,
-                          display->atom__NET_ACTIVE_WINDOW,
+    meta_prop_get_window (display, display->x11_display->xroot,
+                          display->x11_display->atom__NET_ACTIVE_WINDOW,
                           &old_active_xwindow);
 
   display->startup_notification = meta_startup_notification_get (display);
@@ -1178,14 +1137,10 @@ meta_display_close (MetaDisplay *display,
   g_hash_table_destroy (display->xids);
 
   if (display->leader_window != None)
-    XDestroyWindow (display->xdisplay, display->leader_window);
-
-  XFlush (display->xdisplay);
+    XDestroyWindow (display->x11_display->xdisplay, display->leader_window);
 
   meta_display_free_window_prop_hooks (display);
   meta_display_free_group_prop_hooks (display);
-
-  g_free (display->name);
 
   if (display->x11_display)
     {
@@ -1218,7 +1173,7 @@ meta_display_close (MetaDisplay *display,
 MetaDisplay*
 meta_display_for_x_display (Display *xdisplay)
 {
-  if (the_display->xdisplay == xdisplay)
+  if (the_display->x11_display->xdisplay == xdisplay)
     return the_display;
 
   meta_warning ("Could not find display for X display %p, probably going to crash\n",
@@ -1354,7 +1309,7 @@ find_timestamp_predicate (Display  *xdisplay,
   MetaDisplay *display = (MetaDisplay *) arg;
 
   return (ev->type == PropertyNotify &&
-          ev->xproperty.atom == display->atom__MUTTER_TIMESTAMP_PING);
+          ev->xproperty.atom == display->x11_display->atom__MUTTER_TIMESTAMP_PING);
 }
 
 /* Get a timestamp, even if it means a roundtrip */
@@ -1368,10 +1323,11 @@ meta_display_get_current_time_roundtrip (MetaDisplay *display)
     {
       XEvent property_event;
 
-      XChangeProperty (display->xdisplay, display->timestamp_pinging_window,
-                       display->atom__MUTTER_TIMESTAMP_PING,
+      XChangeProperty (display->x11_display->xdisplay,
+                       display->timestamp_pinging_window,
+                       display->x11_display->atom__MUTTER_TIMESTAMP_PING,
                        XA_STRING, 8, PropModeAppend, NULL, 0);
-      XIfEvent (display->xdisplay,
+      XIfEvent (display->x11_display->xdisplay,
                 &property_event,
                 find_timestamp_predicate,
                 (XPointer) display);
@@ -1588,21 +1544,22 @@ request_xserver_input_focus_change (MetaDisplay *display,
    * we know which is which by making two requests that the server will
    * process at the same time.
    */
-  XGrabServer (display->xdisplay);
+  XGrabServer (display->x11_display->xdisplay);
 
-  serial = XNextRequest (display->xdisplay);
+  serial = XNextRequest (display->x11_display->xdisplay);
 
-  XSetInputFocus (display->xdisplay,
+  XSetInputFocus (display->x11_display->xdisplay,
                   xwindow,
                   RevertToPointerRoot,
                   timestamp);
 
-  XChangeProperty (display->xdisplay, display->timestamp_pinging_window,
-                   display->atom__MUTTER_FOCUS_SET,
+  XChangeProperty (display->x11_display->xdisplay,
+                   display->timestamp_pinging_window,
+                   display->x11_display->atom__MUTTER_FOCUS_SET,
                    XA_STRING, 8, PropModeAppend, NULL, 0);
 
-  XUngrabServer (display->xdisplay);
-  XFlush (display->xdisplay);
+  XUngrabServer (display->x11_display->xdisplay);
+  XFlush (display->x11_display->xdisplay);
 
   meta_display_update_focus_window (display,
                                     meta_window,
@@ -1934,10 +1891,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
    * pointer operations on the display X11 connection, we need
    * to ungrab here to ensure that the backend's X11 can take
    * the device grab. */
-  XIUngrabDevice (display->xdisplay,
+  XIUngrabDevice (display->x11_display->xdisplay,
                   META_VIRTUAL_CORE_POINTER_ID,
                   timestamp);
-  XSync (display->xdisplay, False);
+  XSync (display->x11_display->xdisplay, False);
 
   if (meta_backend_grab_device (backend, META_VIRTUAL_CORE_POINTER_ID, timestamp))
     display->grab_have_pointer = TRUE;
@@ -2116,8 +2073,9 @@ void
 meta_display_increment_event_serial (MetaDisplay *display)
 {
   /* We just make some random X request */
-  XDeleteProperty (display->xdisplay, display->leader_window,
-                   display->atom__MOTIF_WM_HINTS);
+  XDeleteProperty (display->x11_display->xdisplay,
+                   display->leader_window,
+                   display->x11_display->atom__MOTIF_WM_HINTS);
 }
 
 void
@@ -2134,8 +2092,9 @@ meta_display_update_active_window_hint (MetaDisplay *display)
     data[0] = None;
 
   meta_error_trap_push (display);
-  XChangeProperty (display->xdisplay, display->screen->xroot,
-                   display->atom__NET_ACTIVE_WINDOW,
+  XChangeProperty (display->x11_display->xdisplay,
+                   display->x11_display->xroot,
+                   display->x11_display->atom__NET_ACTIVE_WINDOW,
                    XA_WINDOW,
                    32, PropModeReplace, (guchar*) data, 1);
   meta_error_trap_pop (display);
@@ -2184,7 +2143,7 @@ update_cursor_theme (void)
 {
   {
     MetaDisplay *display = meta_get_display ();
-    set_cursor_theme (display->xdisplay);
+    set_cursor_theme (display->x11_display->xdisplay);
 
     if (display->screen)
       meta_screen_update_cursor (display->screen);
@@ -2237,7 +2196,7 @@ meta_set_syncing (gboolean setting)
     {
       is_syncing = setting;
       if (meta_get_display ())
-        XSynchronize (meta_get_display ()->xdisplay, is_syncing);
+        XSynchronize (meta_get_display ()->x11_display->xdisplay, is_syncing);
     }
 }
 
@@ -2699,7 +2658,8 @@ meta_display_unmanage_screen (MetaDisplay *display,
                               guint32      timestamp)
 {
   meta_verbose ("Unmanaging screen %d on display %s\n",
-                meta_ui_get_screen_number (), display->name);
+                meta_ui_get_screen_number (),
+                display->x11_display->name);
   meta_display_close (display, timestamp);
 }
 
@@ -2797,9 +2757,9 @@ meta_display_increment_focus_sentinel (MetaDisplay *display)
 
   data[0] = meta_display_get_current_time (display);
 
-  XChangeProperty (display->xdisplay,
-                   display->screen->xroot,
-                   display->atom__MUTTER_SENTINEL,
+  XChangeProperty (display->x11_display->xdisplay,
+                   display->x11_display->xroot,
+                   display->x11_display->atom__MUTTER_SENTINEL,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
 
@@ -2985,17 +2945,6 @@ meta_display_supports_extended_barriers (MetaDisplay *display)
 }
 
 /**
- * meta_display_get_xdisplay: (skip)
- * @display: a #MetaDisplay
- *
- */
-Display *
-meta_display_get_xdisplay (MetaDisplay *display)
-{
-  return display->xdisplay;
-}
-
-/**
  * meta_display_get_compositor: (skip)
  * @display: a #MetaDisplay
  *
@@ -3064,13 +3013,6 @@ void
 meta_display_clear_mouse_mode (MetaDisplay *display)
 {
   display->mouse_mode = FALSE;
-}
-
-Cursor
-meta_display_create_x_cursor (MetaDisplay *display,
-                              MetaCursor   cursor)
-{
-  return meta_create_x_cursor (display->xdisplay, cursor);
 }
 
 MetaGestureTracker *

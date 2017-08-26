@@ -27,6 +27,7 @@
 #include "core/display-private.h"
 #include "core/window-private.h"
 #include "wayland/meta-wayland.h"
+#include "x11/meta-x11-display-private.h"
 
 struct _TestClient {
   char *id;
@@ -78,7 +79,8 @@ async_waiter_new (void)
 {
   AsyncWaiter *waiter = g_new0 (AsyncWaiter, 1);
 
-  Display *xdisplay = meta_get_display ()->xdisplay;
+  MetaDisplay *display = meta_get_display ();
+  Display *xdisplay = display->x11_display->xdisplay;
   XSyncValue value;
   XSyncAlarmAttributes attr;
 
@@ -118,7 +120,8 @@ async_waiter_new (void)
 void
 async_waiter_destroy (AsyncWaiter *waiter)
 {
-  Display *xdisplay = meta_get_display ()->xdisplay;
+  MetaDisplay *display = meta_get_display ();
+  Display *xdisplay = display->x11_display->xdisplay;
 
   XSyncDestroyAlarm (xdisplay, waiter->alarm);
   XSyncDestroyCounter (xdisplay, waiter->counter);
@@ -146,7 +149,8 @@ async_waiter_wait (AsyncWaiter *waiter,
 void
 async_waiter_set_and_wait (AsyncWaiter *waiter)
 {
-  Display *xdisplay = meta_get_display ()->xdisplay;
+  MetaDisplay *display = meta_get_display ();
+  Display *xdisplay = display->x11_display->xdisplay;
   int wait_value = async_waiter_next_value (waiter);
 
   XSyncValue sync_value;

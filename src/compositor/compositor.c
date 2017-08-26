@@ -80,6 +80,8 @@
 #include "backends/x11/meta-backend-x11.h"
 #include "clutter/clutter-mutter.h"
 
+#include "x11/meta-x11-display-private.h"
+
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland-private.h"
 #endif
@@ -232,7 +234,7 @@ meta_set_stage_input_region (MetaScreen   *screen,
     {
       MetaDisplay *display = screen->display;
       MetaCompositor *compositor = display->compositor;
-      Display *xdpy = meta_display_get_xdisplay (display);
+      Display *xdpy = meta_x11_display_get_xdisplay (display->x11_display);
       Window xstage = clutter_x11_get_stage_window (CLUTTER_STAGE (compositor->stage));
 
       XFixesSetWindowShapeRegion (xdpy, xstage, ShapeInput, 0, 0, region);
@@ -256,7 +258,7 @@ meta_empty_stage_input_region (MetaScreen *screen)
   if (region == None)
     {
       MetaDisplay  *display = meta_screen_get_display (screen);
-      Display      *xdpy    = meta_display_get_xdisplay (display);
+      Display      *xdpy    = meta_x11_display_get_xdisplay (display->x11_display);
       region = XFixesCreateRegion (xdpy, NULL, 0);
     }
 
@@ -365,10 +367,10 @@ meta_begin_modal_for_plugin (MetaCompositor   *compositor,
     return FALSE;
 
   /* XXX: why is this needed? */
-  XIUngrabDevice (display->xdisplay,
+  XIUngrabDevice (display->x11_display->xdisplay,
                   META_VIRTUAL_CORE_POINTER_ID,
                   timestamp);
-  XSync (display->xdisplay, False);
+  XSync (display->x11_display->xdisplay, False);
 
   if (!grab_devices (options, timestamp))
     return FALSE;
@@ -447,12 +449,13 @@ after_stage_paint (ClutterStage *stage,
 static void
 redirect_windows (MetaScreen *screen)
 {
-  MetaDisplay *display       = meta_screen_get_display (screen);
-  Display     *xdisplay      = meta_display_get_xdisplay (display);
-  Window       xroot         = meta_screen_get_xroot (screen);
-  int          screen_number = meta_screen_get_screen_number (screen);
-  guint        n_retries;
-  guint        max_retries;
+  MetaDisplay *display = meta_screen_get_display (screen);
+  MetaX11Display *x11_display = meta_display_get_x11_display (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (x11_display);
+  Window xroot = meta_x11_display_get_xroot (x11_display);
+  int screen_number = meta_x11_display_get_screen_number (x11_display);
+  guint n_retries;
+  guint max_retries;
 
   if (meta_get_replace_current_wm ())
     max_retries = 5;
@@ -479,7 +482,7 @@ redirect_windows (MetaScreen *screen)
           /* This probably means that a non-WM compositor like xcompmgr is running;
            * we have no way to get it to exit */
           meta_fatal (_("Another compositing manager is already running on screen %i on display “%s”."),
-                      screen_number, display->name);
+                      screen_number, x11_display->name);
         }
 
       n_retries++;
@@ -491,7 +494,7 @@ void
 meta_compositor_manage (MetaCompositor *compositor)
 {
   MetaDisplay *display = compositor->display;
-  Display *xdisplay = display->xdisplay;
+  Display *xdisplay = display->x11_display->xdisplay;
   MetaScreen *screen = display->screen;
   MetaBackend *backend = meta_get_backend ();
 
@@ -571,9 +574,9 @@ meta_compositor_unmanage (MetaCompositor *compositor)
 {
   if (!meta_is_wayland_compositor ())
     {
-      MetaDisplay *display = compositor->display;
-      Display *xdisplay = meta_display_get_xdisplay (display);
-      Window xroot = display->screen->xroot;
+      MetaX11Display *display = compositor->display->x11_display;
+      Display *xdisplay = display->xdisplay;
+      Window xroot = display->xroot;
 
       /* This is the most important part of cleanup - we have to do this
        * before giving up the window manager selection or the next
@@ -598,7 +601,7 @@ meta_shape_cow_for_window (MetaCompositor *compositor,
                            MetaWindow *window)
 {
   MetaDisplay *display = compositor->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
 
   if (window == NULL)
     XFixesSetWindowShapeRegion (xdisplay, compositor->output, ShapeBounding, 0, 0, None);
@@ -1169,7 +1172,7 @@ meta_pre_paint_func (gpointer data)
       if (compositor->have_x11_sync_object)
         compositor->have_x11_sync_object = meta_sync_ring_insert_wait ();
       else
-        XSync (compositor->display->xdisplay, False);
+        XSync (compositor->display->x11_display->xdisplay, False);
     }
 
   return TRUE;

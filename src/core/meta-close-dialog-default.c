@@ -28,6 +28,7 @@
 #include "window-private.h"
 #include <meta/meta-close-dialog.h>
 #include "meta-close-dialog-default-private.h"
+#include "x11/meta-x11-display-private.h"
 
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -157,7 +158,7 @@ meta_close_dialog_default_show (MetaCloseDialog *dialog)
   dialog_pid =
     meta_show_dialog ("--question",
                       window_content, NULL,
-                      window->screen->screen_name,
+                      window->display->x11_display->screen_name,
                       _("_Force Quit"), _("_Wait"),
                       "face-sad-symbolic", window->xwindow,
                       NULL, NULL);

@@ -23,6 +23,7 @@
 #include "group-props.h"
 #include "group-private.h"
 #include "xprops.h"
+#include "x11/meta-x11-display-private.h"
 #include <X11/Xatom.h>
 
 typedef void (* InitValueFunc)   (MetaDisplay   *display,
@@ -124,7 +125,7 @@ init_wm_client_machine (MetaDisplay   *display,
                         MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_STRING;
-  value->atom = display->atom_WM_CLIENT_MACHINE;
+  value->atom = display->x11_display->atom_WM_CLIENT_MACHINE;
 }
 
 static void
@@ -147,7 +148,7 @@ init_net_startup_id (MetaDisplay   *display,
                      MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_UTF8;
-  value->atom = display->atom__NET_STARTUP_ID;
+  value->atom = display->x11_display->atom__NET_STARTUP_ID;
 }
 
 static void
@@ -179,17 +180,17 @@ meta_display_init_group_prop_hooks (MetaDisplay *display)
 
   i = 0;
 
-  hooks[i].property = display->atom_WM_CLIENT_MACHINE;
+  hooks[i].property = display->x11_display->atom_WM_CLIENT_MACHINE;
   hooks[i].init_func = init_wm_client_machine;
   hooks[i].reload_func = reload_wm_client_machine;
   ++i;
 
-  hooks[i].property = display->atom__NET_WM_PID;
+  hooks[i].property = display->x11_display->atom__NET_WM_PID;
   hooks[i].init_func = NULL;
   hooks[i].reload_func = NULL;
   ++i;
 
-  hooks[i].property = display->atom__NET_STARTUP_ID;
+  hooks[i].property = display->x11_display->atom__NET_STARTUP_ID;
   hooks[i].init_func = init_net_startup_id;
   hooks[i].reload_func = reload_net_startup_id;
   ++i;

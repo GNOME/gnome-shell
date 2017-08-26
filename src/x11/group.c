@@ -30,6 +30,7 @@
 #include "group-private.h"
 #include "group-props.h"
 #include "window-private.h"
+#include "x11/meta-x11-display-private.h"
 #include <meta/window.h>
 #include <X11/Xlib-xcb.h>
 
@@ -51,7 +52,7 @@ meta_group_new (MetaDisplay *display,
   group->group_leader = group_leader;
   group->refcount = 1; /* owned by caller, hash table has only weak ref */
 
-  xcb_connection_t *xcb_conn = XGetXCBConnection (display->xdisplay);
+  xcb_connection_t *xcb_conn = XGetXCBConnection (display->x11_display->xdisplay);
   xcb_generic_error_t *e;
   g_autofree xcb_get_window_attributes_reply_t *attrs =
     xcb_get_window_attributes_reply (xcb_conn,
@@ -76,9 +77,9 @@ meta_group_new (MetaDisplay *display,
 
   /* Fill these in the order we want them to be gotten */
   i = 0;
-  initial_props[i++] = display->atom_WM_CLIENT_MACHINE;
-  initial_props[i++] = display->atom__NET_WM_PID;
-  initial_props[i++] = display->atom__NET_STARTUP_ID;
+  initial_props[i++] = display->x11_display->atom_WM_CLIENT_MACHINE;
+  initial_props[i++] = display->x11_display->atom__NET_WM_PID;
+  initial_props[i++] = display->x11_display->atom__NET_STARTUP_ID;
   g_assert (N_INITIAL_PROPS == i);
 
   meta_group_reload_properties (group, initial_props, N_INITIAL_PROPS);

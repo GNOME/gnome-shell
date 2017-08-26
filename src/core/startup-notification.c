@@ -28,6 +28,7 @@
 
 #include <meta/errors.h>
 #include "display-private.h"
+#include "x11/meta-x11-display-private.h"
 #include "screen-private.h"
 #include "startup-notification-private.h"
 
@@ -670,7 +671,7 @@ meta_startup_notification_constructed (GObject *object)
   g_assert (sn->display != NULL);
 
 #ifdef HAVE_STARTUP_NOTIFICATION
-  sn->sn_display = sn_display_new (sn->display->xdisplay,
+  sn->sn_display = sn_display_new (sn->display->x11_display->xdisplay,
                                    sn_error_trap_push,
                                    sn_error_trap_pop);
   sn->sn_context =

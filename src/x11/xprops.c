@@ -89,6 +89,7 @@ from The Open Group.
 #include "ui.h"
 #include "mutter-Xatomtype.h"
 #include "window-private.h"
+#include "x11/meta-x11-display-private.h"
 
 #include <X11/Xatom.h>
 #include <X11/Xlib-xcb.h>
@@ -111,6 +112,7 @@ validate_or_free_results (GetPropertyResults *results,
                           Atom                expected_type,
                           gboolean            must_have_items)
 {
+  MetaX11Display *x11_display = results->display->x11_display;
   char *type_name;
   char *expected_name;
   char *prop_name;
@@ -125,9 +127,9 @@ validate_or_free_results (GetPropertyResults *results,
     return TRUE;
 
   meta_error_trap_push (results->display);
-  type_name = XGetAtomName (results->display->xdisplay, results->type);
-  expected_name = XGetAtomName (results->display->xdisplay, expected_type);
-  prop_name = XGetAtomName (results->display->xdisplay, results->xatom);
+  type_name = XGetAtomName (x11_display->xdisplay, results->type);
+  expected_name = XGetAtomName (x11_display->xdisplay, expected_type);
+  prop_name = XGetAtomName (x11_display->xdisplay, results->xatom);
   meta_error_trap_pop (results->display);
 
   w = meta_display_lookup_x_window (results->display, results->xwindow);
@@ -232,7 +234,7 @@ get_property (MetaDisplay        *display,
               GetPropertyResults *results)
 {
   xcb_get_property_cookie_t cookie;
-  xcb_connection_t *xcb_conn = XGetXCBConnection (display->xdisplay);
+  xcb_connection_t *xcb_conn = XGetXCBConnection (display->x11_display->xdisplay);
 
   results->display = display;
   results->xwindow = xwindow;
@@ -389,7 +391,7 @@ utf8_string_from_results (GetPropertyResults *results,
   *str_p = NULL;
 
   if (!validate_or_free_results (results, 8,
-                                 results->display->atom_UTF8_STRING, FALSE))
+                                 results->display->x11_display->atom_UTF8_STRING, FALSE))
     return FALSE;
 
   if (results->n_items > 0 &&
@@ -397,7 +399,7 @@ utf8_string_from_results (GetPropertyResults *results,
     {
       char *name;
 
-      name = XGetAtomName (results->display->xdisplay, results->xatom);
+      name = XGetAtomName (results->display->x11_display->xdisplay, results->xatom);
       meta_warning ("Property %s on window 0x%lx contained invalid UTF-8\n",
                     name, results->xwindow);
       meta_XFree (name);
@@ -430,7 +432,7 @@ utf8_list_from_results (GetPropertyResults *results,
   *n_str_p = 0;
 
   if (!validate_or_free_results (results, 8,
-                                 results->display->atom_UTF8_STRING, FALSE))
+                                 results->display->x11_display->atom_UTF8_STRING, FALSE))
     return FALSE;
 
   /* I'm not sure this is right, but I'm guessing the
@@ -463,7 +465,7 @@ utf8_list_from_results (GetPropertyResults *results,
           char *name;
 
           meta_error_trap_push (results->display);
-          name = XGetAtomName (results->display->xdisplay, results->xatom);
+          name = XGetAtomName (results->display->x11_display->xdisplay, results->xatom);
           meta_error_trap_pop (results->display);
           meta_warning ("Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n",
                         name, results->xwindow, i);
@@ -503,7 +505,7 @@ meta_prop_get_utf8_list (MetaDisplay   *display,
   *str_p = NULL;
 
   if (!get_property (display, xwindow, xatom,
-                     display->atom_UTF8_STRING,
+                     display->x11_display->atom_UTF8_STRING,
                      &results))
     return FALSE;
 
@@ -516,10 +518,12 @@ meta_prop_set_utf8_string_hint (MetaDisplay *display,
                                 Atom atom,
                                 const char *val)
 {
+  MetaX11Display *x11_display = display->x11_display;
+
   meta_error_trap_push (display);
-  XChangeProperty (display->xdisplay,
+  XChangeProperty (x11_display->xdisplay,
                    xwindow, atom,
-                   display->atom_UTF8_STRING,
+                   x11_display->atom_UTF8_STRING,
                    8, PropModeReplace, (guchar*) val, strlen (val));
   meta_error_trap_pop (display);
 }
@@ -668,7 +672,7 @@ text_property_from_results (GetPropertyResults *results,
   tp.format = results->format;
   tp.nitems = results->n_items;
 
-  *utf8_str_p = text_property_to_utf8 (results->display->xdisplay, &tp);
+  *utf8_str_p = text_property_to_utf8 (results->display->x11_display->xdisplay, &tp);
 
   if (tp.value != NULL)
     XFree (tp.value);
@@ -859,7 +863,7 @@ meta_prop_get_values (MetaDisplay   *display,
 {
   int i;
   xcb_get_property_cookie_t *tasks;
-  xcb_connection_t *xcb_conn = XGetXCBConnection (display->xdisplay);
+  xcb_connection_t *xcb_conn = XGetXCBConnection (display->x11_display->xdisplay);
 
   meta_verbose ("Requesting %d properties of 0x%lx at once\n",
                 n_values, xwindow);
@@ -888,7 +892,7 @@ meta_prop_get_values (MetaDisplay   *display,
               break;
             case META_PROP_VALUE_UTF8_LIST:
             case META_PROP_VALUE_UTF8:
-              values[i].required_type = display->atom_UTF8_STRING;
+              values[i].required_type = display->x11_display->atom_UTF8_STRING;
               break;
             case META_PROP_VALUE_STRING:
             case META_PROP_VALUE_STRING_AS_UTF8:
@@ -934,7 +938,7 @@ meta_prop_get_values (MetaDisplay   *display,
   /* Get replies for all our tasks */
   meta_topic (META_DEBUG_SYNC, "Syncing to get %d GetProperty replies in %s\n",
               n_values, G_STRFUNC);
-  XSync (display->xdisplay, False);
+  XSync (display->x11_display->xdisplay, False);
 
   /* Collect results, should arrive in order requested */
   i = 0;

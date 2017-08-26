@@ -112,20 +112,10 @@ struct _MetaDisplay
 
   MetaX11Display *x11_display;
 
-  char *name;
-  Display *xdisplay;
-
   int clutter_event_filter;
 
   Window leader_window;
   Window timestamp_pinging_window;
-
-  /* Pull in all the names of atoms as fields; we will intern them when the
-   * class is constructed.
-   */
-#define item(x)  Atom atom_##x;
-#include <x11/atomnames.h>
-#undef item
 
   /* The window and serial of the most recent FocusIn event. */
   Window server_focus_window;
@@ -390,9 +380,6 @@ GSList*     meta_display_list_windows        (MetaDisplay          *display,
 
 MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
 MetaDisplay* meta_get_display            (void);
-
-Cursor         meta_display_create_x_cursor (MetaDisplay *display,
-                                             MetaCursor   cursor);
 
 void     meta_display_update_cursor (MetaDisplay *display);
 

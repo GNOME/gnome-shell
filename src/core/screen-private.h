@@ -48,10 +48,6 @@ struct _MetaScreen
   GObject parent_instance;
 
   MetaDisplay *display;
-  char *screen_name;
-  Window xroot;
-  int default_depth;
-  Visual *default_xvisual;
   MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaUI *ui;
 
@@ -135,11 +131,6 @@ void          meta_screen_update_workspace_layout (MetaScreen             *scree
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);
 void          meta_screen_queue_workarea_recalc   (MetaScreen             *screen);
 void          meta_screen_queue_check_fullscreen  (MetaScreen             *screen);
-
-
-Window meta_create_offscreen_window (Display *xdisplay,
-                                     Window   parent,
-                                     long     valuemask);
 
 typedef struct MetaWorkspaceLayout MetaWorkspaceLayout;
 

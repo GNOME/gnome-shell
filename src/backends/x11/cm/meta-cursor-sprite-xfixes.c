@@ -23,6 +23,7 @@
 #include <X11/extensions/Xfixes.h>
 
 #include "core/display-private.h"
+#include "meta/meta-x11-display.h"
 
 enum
 {
@@ -118,6 +119,8 @@ meta_cursor_sprite_xfixes_initable_init (GInitable     *initable,
   MetaCursorSpriteXfixes *sprite_xfixes =
     META_CURSOR_SPRITE_XFIXES (initable);
   MetaCursorSprite *sprite = META_CURSOR_SPRITE (sprite_xfixes);
+  MetaX11Display *x11_display;
+  Display *xdisplay;
   XFixesCursorImage *cursor_image;
   CoglTexture2D *texture;
   uint8_t *cursor_data;
@@ -125,7 +128,9 @@ meta_cursor_sprite_xfixes_initable_init (GInitable     *initable,
   ClutterBackend *clutter_backend;
   CoglContext *cogl_context;
 
-  cursor_image = XFixesGetCursorImage (sprite_xfixes->display->xdisplay);
+  x11_display = meta_display_get_x11_display (sprite_xfixes->display);
+  xdisplay = meta_x11_display_get_xdisplay (x11_display);
+  cursor_image = XFixesGetCursorImage (xdisplay);
   if (!cursor_image)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,

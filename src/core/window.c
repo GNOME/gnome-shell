@@ -52,6 +52,7 @@
 #include <meta/meta-cursor-tracker.h>
 #include "meta/compositor-mutter.h"
 
+#include "x11/meta-x11-display-private.h"
 #include "x11/window-x11.h"
 #include "x11/window-props.h"
 #include "x11/xprops.h"
@@ -763,11 +764,11 @@ sync_client_window_mapped (MetaWindow *window)
   meta_error_trap_push (window->display);
   if (should_be_mapped)
     {
-      XMapWindow (window->display->xdisplay, window->xwindow);
+      XMapWindow (window->display->x11_display->xdisplay, window->xwindow);
     }
   else
     {
-      XUnmapWindow (window->display->xdisplay, window->xwindow);
+      XUnmapWindow (window->display->x11_display->xdisplay, window->xwindow);
       window->unmaps_pending ++;
     }
   meta_error_trap_pop (window->display);
@@ -8050,7 +8051,6 @@ static gboolean
 window_has_pointer_x11 (MetaWindow *window)
 {
   MetaDisplay *display = window->display;
-  MetaScreen *screen = window->screen;
   Window root, child;
   double root_x, root_y, x, y;
   XIButtonState buttons;
@@ -8058,9 +8058,9 @@ window_has_pointer_x11 (MetaWindow *window)
   XIGroupState group;
 
   meta_error_trap_push (display);
-  XIQueryPointer (display->xdisplay,
+  XIQueryPointer (display->x11_display->xdisplay,
                   META_VIRTUAL_CORE_POINTER_ID,
-                  screen->xroot,
+                  display->x11_display->xroot,
                   &root, &child,
                   &root_x, &root_y, &x, &y,
                   &buttons, &mods, &group);

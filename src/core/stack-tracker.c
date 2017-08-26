@@ -44,6 +44,8 @@
 
 #include <meta/compositor.h>
 
+#include "x11/meta-x11-display-private.h"
+
 /* The complexity here comes from resolving two competing factors:
  *
  *  - We need to have a view of the stacking order that takes into
@@ -482,10 +484,10 @@ query_xserver_stack (MetaStackTracker *tracker)
   guint n_children;
   guint i;
 
-  tracker->xserver_serial = XNextRequest (screen->display->xdisplay);
+  tracker->xserver_serial = XNextRequest (screen->display->x11_display->xdisplay);
 
-  XQueryTree (screen->display->xdisplay,
-              screen->xroot,
+  XQueryTree (screen->display->x11_display->xdisplay,
+              screen->display->x11_display->xroot,
               &ignored1, &ignored2, &children, &n_children);
 
   tracker->verified_stack = g_array_sized_new (FALSE, FALSE, sizeof (guint64), n_children);
@@ -977,6 +979,7 @@ meta_stack_tracker_lower_below (MetaStackTracker *tracker,
                                 guint64           sibling)
 {
   gulong serial = 0;
+  MetaX11Display *x11_display = tracker->screen->display->x11_display;
 
   if (META_STACK_ID_IS_X11 (window))
     {
@@ -985,13 +988,13 @@ meta_stack_tracker_lower_below (MetaStackTracker *tracker,
 
       if (changes.sibling != find_x11_sibling_upwards (tracker, window))
         {
-          serial = XNextRequest (tracker->screen->display->xdisplay);
+          serial = XNextRequest (x11_display->xdisplay);
 
           meta_error_trap_push (tracker->screen->display);
 
           changes.stack_mode = changes.sibling ? Below : Above;
 
-          XConfigureWindow (tracker->screen->display->xdisplay,
+          XConfigureWindow (x11_display->xdisplay,
                             window,
                             (changes.sibling ? CWSibling : 0) | CWStackMode,
                             &changes);
@@ -1011,6 +1014,7 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
                                 guint64           sibling)
 {
   gulong serial = 0;
+  MetaX11Display *x11_display = tracker->screen->display->x11_display;
 
   if (META_STACK_ID_IS_X11 (window))
     {
@@ -1019,13 +1023,13 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
 
       if (changes.sibling != find_x11_sibling_downwards (tracker, window))
         {
-          serial = XNextRequest (tracker->screen->display->xdisplay);
+          serial = XNextRequest (x11_display->xdisplay);
 
           meta_error_trap_push (tracker->screen->display);
 
           changes.stack_mode = changes.sibling ? Above : Below;
 
-          XConfigureWindow (tracker->screen->display->xdisplay,
+          XConfigureWindow (x11_display->xdisplay,
                             (Window)window,
                             (changes.sibling ? CWSibling : 0) | CWStackMode,
                             &changes);

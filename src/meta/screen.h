@@ -36,10 +36,8 @@ typedef struct _MetaScreenClass   MetaScreenClass;
 
 GType meta_screen_get_type (void);
 
-int meta_screen_get_screen_number (MetaScreen *screen);
 MetaDisplay *meta_screen_get_display (MetaScreen *screen);
 
-Window meta_screen_get_xroot (MetaScreen *screen);
 void meta_screen_get_size (MetaScreen *screen,
                            int        *width,
                            int        *height);

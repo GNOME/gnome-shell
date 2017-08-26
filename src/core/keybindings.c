@@ -48,6 +48,7 @@
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-backend-x11.h"
+#include "x11/meta-x11-display-private.h"
 #include "x11/window-x11.h"
 
 #ifdef HAVE_NATIVE_BACKEND
@@ -1484,12 +1485,15 @@ meta_screen_change_keygrabs (MetaScreen *screen,
   int i;
 
   if (keys->overlay_resolved_key_combo.len != 0)
-    meta_change_keygrab (keys, screen->xroot, grab, &keys->overlay_resolved_key_combo);
+    meta_change_keygrab (keys, display->x11_display->xroot,
+                         grab, &keys->overlay_resolved_key_combo);
 
   for (i = 0; i < keys->n_iso_next_group_combos; i++)
-    meta_change_keygrab (keys, screen->xroot, grab, &keys->iso_next_group_combo[i]);
+    meta_change_keygrab (keys, display->x11_display->xroot,
+                         grab, &keys->iso_next_group_combo[i]);
 
-  change_binding_keygrabs (keys, screen->xroot, FALSE, grab);
+  change_binding_keygrabs (keys, display->x11_display->xroot,
+                           FALSE, grab);
 }
 
 void
@@ -1621,7 +1625,7 @@ meta_display_grab_accelerator (MetaDisplay *display,
       return META_KEYBINDING_ACTION_NONE;
     }
 
-  meta_change_keygrab (keys, display->screen->xroot, TRUE, &resolved_combo);
+  meta_change_keygrab (keys, display->x11_display->xroot, TRUE, &resolved_combo);
 
   grab = g_new0 (MetaKeyGrab, 1);
   grab->action = next_dynamic_keybinding_action ();
@@ -1665,7 +1669,8 @@ meta_display_ungrab_accelerator (MetaDisplay *display,
     {
       int i;
 
-      meta_change_keygrab (keys, display->screen->xroot, FALSE, &binding->resolved_combo);
+      meta_change_keygrab (keys, display->x11_display->xroot,
+                           FALSE, &binding->resolved_combo);
 
       for (i = 0; i < binding->resolved_combo.len; i++)
         {
@@ -3030,6 +3035,7 @@ handle_panel (MetaDisplay     *display,
               gpointer         dummy)
 {
   MetaKeyBindingAction action = binding->handler->data;
+  MetaX11Display *x11_display = display->x11_display;
   Atom action_atom;
   XClientMessageEvent ev;
 
@@ -3038,18 +3044,18 @@ handle_panel (MetaDisplay     *display,
     {
       /* FIXME: The numbers are wrong */
     case META_KEYBINDING_ACTION_PANEL_MAIN_MENU:
-      action_atom = display->atom__GNOME_PANEL_ACTION_MAIN_MENU;
+      action_atom = x11_display->atom__GNOME_PANEL_ACTION_MAIN_MENU;
       break;
     case META_KEYBINDING_ACTION_PANEL_RUN_DIALOG:
-      action_atom = display->atom__GNOME_PANEL_ACTION_RUN_DIALOG;
+      action_atom = x11_display->atom__GNOME_PANEL_ACTION_RUN_DIALOG;
       break;
     default:
       return;
     }
 
   ev.type = ClientMessage;
-  ev.window = screen->xroot;
-  ev.message_type = display->atom__GNOME_PANEL_ACTION;
+  ev.window = x11_display->xroot;
+  ev.message_type = x11_display->atom__GNOME_PANEL_ACTION;
   ev.format = 32;
   ev.data.l[0] = action_atom;
   ev.data.l[1] = event->time;
@@ -3062,10 +3068,10 @@ handle_panel (MetaDisplay     *display,
   meta_error_trap_push (display);
 
   /* Release the grab for the panel before sending the event */
-  XUngrabKeyboard (display->xdisplay, event->time);
+  XUngrabKeyboard (x11_display->xdisplay, event->time);
 
-  XSendEvent (display->xdisplay,
-	      screen->xroot,
+  XSendEvent (x11_display->xdisplay,
+              x11_display->xroot,
 	      False,
 	      StructureNotifyMask,
 	      (XEvent*) &ev);

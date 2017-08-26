@@ -35,6 +35,7 @@
 #include "meta-shaped-texture-private.h"
 #include "meta-cullable.h"
 #include "x11/window-x11.h"
+#include "x11/meta-x11-display-private.h"
 
 struct _MetaSurfaceActorX11Private
 {
@@ -68,7 +69,7 @@ free_damage (MetaSurfaceActorX11 *self)
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   MetaDisplay *display = priv->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
 
   if (priv->damage == None)
     return;
@@ -84,7 +85,7 @@ detach_pixmap (MetaSurfaceActorX11 *self)
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   MetaDisplay *display = priv->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
   MetaShapedTexture *stex = meta_surface_actor_get_texture (META_SURFACE_ACTOR (self));
 
   if (priv->pixmap == None)
@@ -138,7 +139,7 @@ update_pixmap (MetaSurfaceActorX11 *self)
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   MetaDisplay *display = priv->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
 
   if (priv->size_changed)
     {
@@ -223,7 +224,7 @@ meta_surface_actor_x11_pre_paint (MetaSurfaceActor *actor)
   MetaSurfaceActorX11 *self = META_SURFACE_ACTOR_X11 (actor);
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   MetaDisplay *display = priv->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
 
   if (priv->received_damage)
     {
@@ -311,7 +312,7 @@ sync_unredirected (MetaSurfaceActorX11 *self)
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
   MetaDisplay *display = priv->display;
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
   Window xwindow = meta_window_x11_get_toplevel_xwindow (priv->window);
 
   meta_error_trap_push (display);
@@ -403,7 +404,7 @@ static void
 create_damage (MetaSurfaceActorX11 *self)
 {
   MetaSurfaceActorX11Private *priv = meta_surface_actor_x11_get_instance_private (self);
-  Display *xdisplay = meta_display_get_xdisplay (priv->display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (priv->display->x11_display);
   Window xwindow = meta_window_x11_get_toplevel_xwindow (priv->window);
 
   priv->damage = XDamageCreate (xdisplay, xwindow, XDamageReportBoundingBox);

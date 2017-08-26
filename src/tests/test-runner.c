@@ -30,6 +30,7 @@
 #include "wayland/meta-wayland.h"
 #include "window-private.h"
 #include "tests/test-utils.h"
+#include "x11/meta-x11-display-private.h"
 
 typedef struct {
   GHashTable *clients;
@@ -301,8 +302,8 @@ test_case_check_xserver_stacking (TestCase *test,
   Window parent;
   Window *children;
   unsigned int n_children;
-  XQueryTree (display->xdisplay,
-              meta_screen_get_xroot (display->screen),
+  XQueryTree (display->x11_display->xdisplay,
+              display->x11_display->xroot,
               &root, &parent, &children, &n_children);
 
   for (i = 0; i < (int)n_children; i++)

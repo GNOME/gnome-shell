@@ -37,6 +37,8 @@
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-x11.h"
 
+#include "x11/meta-x11-display-private.h"
+
 #ifdef HAVE_WAYLAND
 #include "meta-surface-actor-wayland.h"
 #include "wayland/meta-wayland-surface.h"
@@ -1971,7 +1973,7 @@ do_send_frame_drawn (MetaWindowActor *self, FrameData *frame)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaDisplay *display = meta_window_get_display (priv->window);
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
 
   XClientMessageEvent ev = { 0, };
 
@@ -1981,7 +1983,7 @@ do_send_frame_drawn (MetaWindowActor *self, FrameData *frame)
 
   ev.type = ClientMessage;
   ev.window = meta_window_get_xwindow (priv->window);
-  ev.message_type = display->atom__NET_WM_FRAME_DRAWN;
+  ev.message_type = display->x11_display->atom__NET_WM_FRAME_DRAWN;
   ev.format = 32;
   ev.data.l[0] = frame->sync_request_serial & G_GUINT64_CONSTANT(0xffffffff);
   ev.data.l[1] = frame->sync_request_serial >> 32;
@@ -2039,13 +2041,13 @@ do_send_frame_timings (MetaWindowActor  *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaDisplay *display = meta_window_get_display (priv->window);
-  Display *xdisplay = meta_display_get_xdisplay (display);
+  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
 
   XClientMessageEvent ev = { 0, };
 
   ev.type = ClientMessage;
   ev.window = meta_window_get_xwindow (priv->window);
-  ev.message_type = display->atom__NET_WM_FRAME_TIMINGS;
+  ev.message_type = display->x11_display->atom__NET_WM_FRAME_TIMINGS;
   ev.format = 32;
   ev.data.l[0] = frame->sync_request_serial & G_GUINT64_CONSTANT(0xffffffff);
   ev.data.l[1] = frame->sync_request_serial >> 32;

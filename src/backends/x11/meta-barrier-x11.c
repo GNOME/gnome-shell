@@ -40,6 +40,7 @@
 #include <meta/barrier.h>
 #include "backends/x11/meta-barrier-x11.h"
 #include "display-private.h"
+#include "x11/meta-x11-display-private.h"
 
 struct _MetaBarrierImplX11Private
 {
@@ -68,10 +69,11 @@ _meta_barrier_impl_x11_release (MetaBarrierImpl  *impl,
   MetaBarrierImplX11Private *priv =
     meta_barrier_impl_x11_get_instance_private (self);
   MetaDisplay *display = priv->barrier->priv->display;
+  Display *dpy = meta_x11_display_get_xdisplay (display->x11_display);
 
   if (META_DISPLAY_HAS_XINPUT_23 (display))
     {
-      XIBarrierReleasePointer (display->xdisplay,
+      XIBarrierReleasePointer (dpy,
                                META_VIRTUAL_CORE_POINTER_ID,
                                priv->xbarrier, event->event_id);
     }
@@ -89,7 +91,7 @@ _meta_barrier_impl_x11_destroy (MetaBarrierImpl *impl)
   if (display == NULL)
     return;
 
-  dpy = display->xdisplay;
+  dpy = meta_x11_display_get_xdisplay (display->x11_display);
 
   if (!meta_barrier_is_active (priv->barrier))
     return;
@@ -119,7 +121,7 @@ meta_barrier_impl_x11_new (MetaBarrier *barrier)
   priv = meta_barrier_impl_x11_get_instance_private (self);
   priv->barrier = barrier;
 
-  dpy = display->xdisplay;
+  dpy = meta_x11_display_get_xdisplay (display->x11_display);
   root = DefaultRootWindow (dpy);
 
   allowed_motion_dirs =

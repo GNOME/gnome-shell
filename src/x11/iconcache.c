@@ -21,6 +21,7 @@
 
 #include "config.h"
 
+#include "x11/meta-x11-display-private.h"
 #include "iconcache.h"
 
 #include <meta/errors.h>
@@ -212,9 +213,9 @@ read_rgb_icon (MetaDisplay      *display,
   meta_error_trap_push (display);
   type = None;
   data = NULL;
-  result = XGetWindowProperty (display->xdisplay,
+  result = XGetWindowProperty (display->x11_display->xdisplay,
 			       xwindow,
-                               display->atom__NET_WM_ICON,
+                               display->x11_display->atom__NET_WM_ICON,
 			       0, G_MAXLONG,
 			       False, XA_CARDINAL, &type, &format, &nitems,
 			       &bytes_after, &data);
@@ -276,7 +277,7 @@ get_pixmap_geometry (MetaDisplay *display,
   if (d)
     *d = 1;
 
-  XGetGeometry (display->xdisplay,
+  XGetGeometry (display->x11_display->xdisplay,
                 pixmap, &root_ignored, &x_ignored, &y_ignored,
                 &width, &height, &border_width_ignored, &depth);
 
@@ -332,7 +333,7 @@ try_pixmap_and_mask (MetaDisplay      *display,
                      Pixmap            src_mask,
                      cairo_surface_t **iconp)
 {
-  Display *xdisplay = display->xdisplay;
+  Display *xdisplay = display->x11_display->xdisplay;
   cairo_surface_t *icon, *mask = NULL;
   int w, h, d;
 
@@ -405,11 +406,11 @@ get_kwm_win_icon (MetaDisplay *display,
 
   meta_error_trap_push (display);
   icons = NULL;
-  result = XGetWindowProperty (display->xdisplay, xwindow,
-                               display->atom__KWM_WIN_ICON,
+  result = XGetWindowProperty (display->x11_display->xdisplay, xwindow,
+                               display->x11_display->atom__KWM_WIN_ICON,
 			       0, G_MAXLONG,
 			       False,
-                               display->atom__KWM_WIN_ICON,
+                               display->x11_display->atom__KWM_WIN_ICON,
 			       &type, &format, &nitems,
 			       &bytes_after, &data);
   icons = (Pixmap *)data;
@@ -419,7 +420,7 @@ get_kwm_win_icon (MetaDisplay *display,
       result != Success)
     return;
 
-  if (type != display->atom__KWM_WIN_ICON)
+  if (type != display->x11_display->atom__KWM_WIN_ICON)
     {
       XFree (icons);
       return;
@@ -451,9 +452,9 @@ meta_icon_cache_property_changed (MetaIconCache *icon_cache,
                                   MetaDisplay   *display,
                                   Atom           atom)
 {
-  if (atom == display->atom__NET_WM_ICON)
+  if (atom == display->x11_display->atom__NET_WM_ICON)
     icon_cache->net_wm_icon_dirty = TRUE;
-  else if (atom == display->atom__KWM_WIN_ICON)
+  else if (atom == display->x11_display->atom__KWM_WIN_ICON)
     icon_cache->kwm_win_icon_dirty = TRUE;
   else if (atom == XA_WM_HINTS)
     icon_cache->wm_hints_dirty = TRUE;

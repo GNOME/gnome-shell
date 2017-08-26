@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include "meta-x11-display-private.h"
 #include "window-x11.h"
 #include "window-x11-private.h"
 
@@ -83,16 +84,17 @@ send_icccm_message (MetaWindow *window,
    */
 
   XClientMessageEvent ev;
+  MetaX11Display *x11_display = window->display->x11_display;
 
   ev.type = ClientMessage;
   ev.window = window->xwindow;
-  ev.message_type = window->display->atom_WM_PROTOCOLS;
+  ev.message_type = x11_display->atom_WM_PROTOCOLS;
   ev.format = 32;
   ev.data.l[0] = atom;
   ev.data.l[1] = timestamp;
 
   meta_error_trap_push (window->display);
-  XSendEvent (window->display->xdisplay,
+  XSendEvent (x11_display->xdisplay,
               window->xwindow, False, 0, (XEvent*) &ev);
   meta_error_trap_pop (window->display);
 }
@@ -104,7 +106,7 @@ read_client_leader (MetaDisplay *display,
   Window retval = None;
 
   meta_prop_get_window (display, xwindow,
-                        display->atom_WM_CLIENT_LEADER,
+                        display->x11_display->atom_WM_CLIENT_LEADER,
                         &retval);
 
   return retval;
@@ -159,7 +161,7 @@ update_sm_hints (MetaWindow *window)
       window->xclient_leader = leader;
 
       if (meta_prop_get_latin1_string (window->display, leader,
-                                       window->display->atom_SM_CLIENT_ID,
+                                       window->display->x11_display->atom_SM_CLIENT_ID,
                                        &str))
         {
           window->sm_client_id = g_strdup (str);
@@ -179,7 +181,7 @@ update_sm_hints (MetaWindow *window)
 
           str = NULL;
           if (meta_prop_get_latin1_string (window->display, window->xwindow,
-                                           window->display->atom_SM_CLIENT_ID,
+                                           window->display->x11_display->atom_SM_CLIENT_ID,
                                            &str))
             {
               if (window->sm_client_id == NULL) /* first time through */
@@ -200,6 +202,7 @@ update_sm_hints (MetaWindow *window)
 static void
 send_configure_notify (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   XEvent event;
@@ -209,7 +212,7 @@ send_configure_notify (MetaWindow *window)
   /* from twm */
 
   event.type = ConfigureNotify;
-  event.xconfigure.display = window->display->xdisplay;
+  event.xconfigure.display = x11_display->xdisplay;
   event.xconfigure.event = window->xwindow;
   event.xconfigure.window = window->xwindow;
   event.xconfigure.x = priv->client_rect.x - priv->border_width;
@@ -248,7 +251,7 @@ send_configure_notify (MetaWindow *window)
               event.xconfigure.width, event.xconfigure.height);
 
   meta_error_trap_push (window->display);
-  XSendEvent (window->display->xdisplay,
+  XSendEvent (x11_display->xdisplay,
               window->xwindow,
               False, StructureNotifyMask, &event);
   meta_error_trap_pop (window->display);
@@ -570,6 +573,7 @@ meta_window_x11_manage (MetaWindow *window)
 static void
 meta_window_x11_unmanage (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
 
@@ -583,15 +587,15 @@ meta_window_x11_unmanage (MetaWindow *window)
        * won't be restored if the app maps it again.
        */
       meta_verbose ("Cleaning state from window %s\n", window->desc);
-      XDeleteProperty (window->display->xdisplay,
+      XDeleteProperty (x11_display->xdisplay,
                        window->xwindow,
-                       window->display->atom__NET_WM_DESKTOP);
-      XDeleteProperty (window->display->xdisplay,
+                       x11_display->atom__NET_WM_DESKTOP);
+      XDeleteProperty (x11_display->xdisplay,
                        window->xwindow,
-                       window->display->atom__NET_WM_STATE);
-      XDeleteProperty (window->display->xdisplay,
+                       x11_display->atom__NET_WM_STATE);
+      XDeleteProperty (x11_display->xdisplay,
                        window->xwindow,
-                       window->display->atom__NET_WM_FULLSCREEN_MONITORS);
+                       x11_display->atom__NET_WM_FULLSCREEN_MONITORS);
       meta_window_x11_set_wm_state (window);
     }
   else
@@ -609,7 +613,7 @@ meta_window_x11_unmanage (MetaWindow *window)
        * current one, which will happen automatically if we re-map
        * the X Window.
        */
-      XMapWindow (window->display->xdisplay,
+      XMapWindow (x11_display->xdisplay,
                   window->xwindow);
     }
 
@@ -617,12 +621,12 @@ meta_window_x11_unmanage (MetaWindow *window)
 
   /* Put back anything we messed up */
   if (priv->border_width != 0)
-    XSetWindowBorderWidth (window->display->xdisplay,
+    XSetWindowBorderWidth (x11_display->xdisplay,
                            window->xwindow,
                            priv->border_width);
 
   /* No save set */
-  XRemoveFromSaveSet (window->display->xdisplay,
+  XRemoveFromSaveSet (x11_display->xdisplay,
                       window->xwindow);
 
   /* Even though the window is now unmanaged, we can't unselect events. This
@@ -647,7 +651,7 @@ meta_window_x11_unmanage (MetaWindow *window)
     }
 
   if (META_DISPLAY_HAS_SHAPE (window->display))
-    XShapeSelectInput (window->display->xdisplay, window->xwindow, NoEventMask);
+    XShapeSelectInput (x11_display->xdisplay, window->xwindow, NoEventMask);
 
   meta_window_ungrab_keys (window);
   meta_display_ungrab_window_buttons (window->display, window->xwindow);
@@ -673,27 +677,29 @@ meta_window_x11_ping (MetaWindow *window,
 {
   MetaDisplay *display = window->display;
 
-  send_icccm_message (window, display->atom__NET_WM_PING, serial);
+  send_icccm_message (window, display->x11_display->atom__NET_WM_PING, serial);
 }
 
 static void
 meta_window_x11_delete (MetaWindow *window,
                         guint32     timestamp)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
+
   meta_error_trap_push (window->display);
   if (window->delete_window)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Deleting %s with delete_window request\n",
                   window->desc);
-      send_icccm_message (window, window->display->atom_WM_DELETE_WINDOW, timestamp);
+      send_icccm_message (window, x11_display->atom_WM_DELETE_WINDOW, timestamp);
     }
   else
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Deleting %s with explicit kill\n",
                   window->desc);
-      XKillClient (window->display->xdisplay, window->xwindow);
+      XKillClient (x11_display->xdisplay, window->xwindow);
     }
   meta_error_trap_pop (window->display);
 }
@@ -701,12 +707,14 @@ meta_window_x11_delete (MetaWindow *window,
 static void
 meta_window_x11_kill (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
+
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Disconnecting %s with XKillClient()\n",
               window->desc);
 
   meta_error_trap_push (window->display);
-  XKillClient (window->display->xdisplay, window->xwindow);
+  XKillClient (x11_display->xdisplay, window->xwindow);
   meta_error_trap_pop (window->display);
 }
 
@@ -719,7 +727,7 @@ request_take_focus (MetaWindow *window,
   meta_topic (META_DEBUG_FOCUS, "WM_TAKE_FOCUS(%s, %u)\n",
               window->desc, timestamp);
 
-  send_icccm_message (window, display->atom_WM_TAKE_FOCUS, timestamp);
+  send_icccm_message (window, display->x11_display->atom_WM_TAKE_FOCUS, timestamp);
 }
 
 static void
@@ -872,6 +880,8 @@ meta_window_x11_grab_op_ended (MetaWindow *window,
 static void
 update_net_frame_extents (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
+
   unsigned long data[4];
   MetaFrameBorders borders;
 
@@ -891,8 +901,8 @@ update_net_frame_extents (MetaWindow *window)
               window->xwindow, data[0], data[1], data[2], data[3]);
 
   meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom__NET_FRAME_EXTENTS,
+  XChangeProperty (x11_display->xdisplay, window->xwindow,
+                   x11_display->atom__NET_FRAME_EXTENTS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 4);
   meta_error_trap_pop (window->display);
@@ -901,6 +911,7 @@ update_net_frame_extents (MetaWindow *window)
 static void
 update_gtk_edge_constraints (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   MetaEdgeConstraint *constraints = window->edge_constraints;
   unsigned long data[1];
 
@@ -917,9 +928,9 @@ update_gtk_edge_constraints (MetaWindow *window)
   meta_verbose ("Setting _GTK_EDGE_CONSTRAINTS to %lu\n", data[0]);
 
   meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay,
+  XChangeProperty (x11_display->xdisplay,
                    window->xwindow,
-                   window->display->atom__GTK_EDGE_CONSTRAINTS,
+                   x11_display->atom__GTK_EDGE_CONSTRAINTS,
                    XA_CARDINAL, 32, PropModeReplace,
                    (guchar*) data, 1);
   meta_error_trap_pop (window->display);
@@ -959,6 +970,7 @@ sync_request_timeout (gpointer data)
 static void
 send_sync_request (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   XClientMessageEvent ev;
   gint64 wait_serial;
 
@@ -975,9 +987,9 @@ send_sync_request (MetaWindow *window)
 
   ev.type = ClientMessage;
   ev.window = window->xwindow;
-  ev.message_type = window->display->atom_WM_PROTOCOLS;
+  ev.message_type = x11_display->atom_WM_PROTOCOLS;
   ev.format = 32;
-  ev.data.l[0] = window->display->atom__NET_WM_SYNC_REQUEST;
+  ev.data.l[0] = x11_display->atom__NET_WM_SYNC_REQUEST;
   /* FIXME: meta_display_get_current_time() is bad, but since calls
    * come from meta_window_move_resize_internal (which in turn come
    * from all over), I'm not sure what we can do to fix it.  Do we
@@ -991,7 +1003,7 @@ send_sync_request (MetaWindow *window)
   /* We don't need to trap errors here as we are already
    * inside an error_trap_push()/pop() pair.
    */
-  XSendEvent (window->display->xdisplay,
+  XSendEvent (x11_display->xdisplay,
 	      window->xwindow, False, 0, (XEvent*) &ev);
 
   /* We give the window 1 sec to respond to _NET_WM_SYNC_REQUEST;
@@ -1019,6 +1031,7 @@ meta_window_get_net_wm_desktop (MetaWindow *window)
 static void
 meta_window_x11_current_workspace_changed (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   /* FIXME if on more than one workspace, we claim to be "sticky",
    * the WM spec doesn't say what to do here.
    */
@@ -1036,8 +1049,8 @@ meta_window_x11_current_workspace_changed (MetaWindow *window)
                 window->desc, data[0]);
 
   meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom__NET_WM_DESKTOP,
+  XChangeProperty (x11_display->xdisplay, window->xwindow,
+                   x11_display->atom__NET_WM_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   meta_error_trap_pop (window->display);
@@ -1254,7 +1267,7 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
           send_sync_request (window);
         }
 
-      XConfigureWindow (window->display->xdisplay,
+      XConfigureWindow (window->display->x11_display->xdisplay,
                         window->xwindow,
                         mask,
                         &values);
@@ -1307,7 +1320,7 @@ meta_window_x11_update_struts (MetaWindow *window)
 
   if (meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
-                                   window->display->atom__NET_WM_STRUT_PARTIAL,
+                                   window->display->x11_display->atom__NET_WM_STRUT_PARTIAL,
                                    &struts, &nitems))
     {
       if (nitems != 12)
@@ -1373,7 +1386,7 @@ meta_window_x11_update_struts (MetaWindow *window)
   if (!new_struts &&
       meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
-                                   window->display->atom__NET_WM_STRUT,
+                                   window->display->x11_display->atom__NET_WM_STRUT,
                                    &struts, &nitems))
     {
       if (nitems != 4)
@@ -1498,7 +1511,8 @@ meta_window_x11_main_monitor_changed (MetaWindow               *window,
 static uint32_t
 meta_window_x11_get_client_pid (MetaWindow *window)
 {
-  xcb_connection_t *xcb = XGetXCBConnection (window->display->xdisplay);
+  MetaX11Display *x11_display = window->display->x11_display;
+  xcb_connection_t *xcb = XGetXCBConnection (x11_display->xdisplay);
   xcb_res_client_id_spec_t spec = { 0 };
   xcb_res_query_client_ids_cookie_t cookie;
   xcb_res_query_client_ids_reply_t *reply = NULL;
@@ -1587,6 +1601,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
 void
 meta_window_x11_set_net_wm_state (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   int i;
@@ -1595,75 +1610,75 @@ meta_window_x11_set_net_wm_state (MetaWindow *window)
   i = 0;
   if (window->shaded)
     {
-      data[i] = window->display->atom__NET_WM_STATE_SHADED;
+      data[i] = x11_display->atom__NET_WM_STATE_SHADED;
       ++i;
     }
   if (priv->wm_state_modal)
     {
-      data[i] = window->display->atom__NET_WM_STATE_MODAL;
+      data[i] = x11_display->atom__NET_WM_STATE_MODAL;
       ++i;
     }
   if (window->skip_pager)
     {
-      data[i] = window->display->atom__NET_WM_STATE_SKIP_PAGER;
+      data[i] = x11_display->atom__NET_WM_STATE_SKIP_PAGER;
       ++i;
     }
   if (window->skip_taskbar)
     {
-      data[i] = window->display->atom__NET_WM_STATE_SKIP_TASKBAR;
+      data[i] = x11_display->atom__NET_WM_STATE_SKIP_TASKBAR;
       ++i;
     }
   if (window->maximized_horizontally)
     {
-      data[i] = window->display->atom__NET_WM_STATE_MAXIMIZED_HORZ;
+      data[i] = x11_display->atom__NET_WM_STATE_MAXIMIZED_HORZ;
       ++i;
     }
   if (window->maximized_vertically)
     {
-      data[i] = window->display->atom__NET_WM_STATE_MAXIMIZED_VERT;
+      data[i] = x11_display->atom__NET_WM_STATE_MAXIMIZED_VERT;
       ++i;
     }
   if (window->fullscreen)
     {
-      data[i] = window->display->atom__NET_WM_STATE_FULLSCREEN;
+      data[i] = x11_display->atom__NET_WM_STATE_FULLSCREEN;
       ++i;
     }
   if (!meta_window_showing_on_its_workspace (window) || window->shaded)
     {
-      data[i] = window->display->atom__NET_WM_STATE_HIDDEN;
+      data[i] = x11_display->atom__NET_WM_STATE_HIDDEN;
       ++i;
     }
   if (window->wm_state_above)
     {
-      data[i] = window->display->atom__NET_WM_STATE_ABOVE;
+      data[i] = x11_display->atom__NET_WM_STATE_ABOVE;
       ++i;
     }
   if (window->wm_state_below)
     {
-      data[i] = window->display->atom__NET_WM_STATE_BELOW;
+      data[i] = x11_display->atom__NET_WM_STATE_BELOW;
       ++i;
     }
   if (window->wm_state_demands_attention)
     {
-      data[i] = window->display->atom__NET_WM_STATE_DEMANDS_ATTENTION;
+      data[i] = x11_display->atom__NET_WM_STATE_DEMANDS_ATTENTION;
       ++i;
     }
   if (window->on_all_workspaces_requested)
     {
-      data[i] = window->display->atom__NET_WM_STATE_STICKY;
+      data[i] = x11_display->atom__NET_WM_STATE_STICKY;
       ++i;
     }
   if (meta_window_appears_focused (window))
     {
-      data[i] = window->display->atom__NET_WM_STATE_FOCUSED;
+      data[i] = x11_display->atom__NET_WM_STATE_FOCUSED;
       ++i;
     }
 
   meta_verbose ("Setting _NET_WM_STATE with %d atoms\n", i);
 
   meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom__NET_WM_STATE,
+  XChangeProperty (x11_display->xdisplay, window->xwindow,
+                   x11_display->atom__NET_WM_STATE,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
   meta_error_trap_pop (window->display);
@@ -1687,9 +1702,9 @@ meta_window_x11_set_net_wm_state (MetaWindow *window)
 
           meta_verbose ("Setting _NET_WM_FULLSCREEN_MONITORS\n");
           meta_error_trap_push (window->display);
-          XChangeProperty (window->display->xdisplay,
+          XChangeProperty (x11_display->xdisplay,
                            window->xwindow,
-                           window->display->atom__NET_WM_FULLSCREEN_MONITORS,
+                           x11_display->atom__NET_WM_FULLSCREEN_MONITORS,
                            XA_CARDINAL, 32, PropModeReplace,
                            (guchar*) data, 4);
           meta_error_trap_pop (window->display);
@@ -1698,9 +1713,9 @@ meta_window_x11_set_net_wm_state (MetaWindow *window)
         {
           meta_verbose ("Clearing _NET_WM_FULLSCREEN_MONITORS\n");
           meta_error_trap_push (window->display);
-          XDeleteProperty (window->display->xdisplay,
+          XDeleteProperty (x11_display->xdisplay,
                            window->xwindow,
-                           window->display->atom__NET_WM_FULLSCREEN_MONITORS);
+                           x11_display->atom__NET_WM_FULLSCREEN_MONITORS);
           meta_error_trap_pop (window->display);
         }
     }
@@ -1766,6 +1781,7 @@ print_region (cairo_region_t *region)
 void
 meta_window_x11_update_input_region (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   cairo_region_t *region = NULL;
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
@@ -1789,7 +1805,7 @@ meta_window_x11_update_input_region (MetaWindow *window)
       int n_rects = -1, ordering;
 
       meta_error_trap_push (window->display);
-      rects = XShapeGetRectangles (window->display->xdisplay,
+      rects = XShapeGetRectangles (x11_display->xdisplay,
                                    window->xwindow,
                                    ShapeInput,
                                    &n_rects,
@@ -1879,6 +1895,7 @@ meta_window_set_shape_region (MetaWindow     *window,
 void
 meta_window_x11_update_shape_region (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   cairo_region_t *region = NULL;
@@ -1895,7 +1912,7 @@ meta_window_x11_update_shape_region (MetaWindow *window)
       int bounding_shaped, clip_shaped;
 
       meta_error_trap_push (window->display);
-      XShapeQueryExtents (window->display->xdisplay, window->xwindow,
+      XShapeQueryExtents (x11_display->xdisplay, window->xwindow,
                           &bounding_shaped, &x_bounding, &y_bounding,
                           &w_bounding, &h_bounding,
                           &clip_shaped, &x_clip, &y_clip,
@@ -1903,7 +1920,7 @@ meta_window_x11_update_shape_region (MetaWindow *window)
 
       if (bounding_shaped)
         {
-          rects = XShapeGetRectangles (window->display->xdisplay,
+          rects = XShapeGetRectangles (x11_display->xdisplay,
                                        window->xwindow,
                                        ShapeBounding,
                                        &n_rects,
@@ -1958,7 +1975,7 @@ static gboolean
 meta_window_same_client (MetaWindow *window,
                          MetaWindow *other_window)
 {
-  int resource_mask = window->display->xdisplay->resource_mask;
+  int resource_mask = window->display->x11_display->xdisplay->resource_mask;
 
   return ((window->xwindow & ~resource_mask) ==
           (other_window->xwindow & ~resource_mask));
@@ -2254,7 +2271,7 @@ process_property_notify (MetaWindow     *window,
 
   if (meta_is_verbose ()) /* avoid looking up the name if we don't have to */
     {
-      char *property_name = XGetAtomName (window->display->xdisplay,
+      char *property_name = XGetAtomName (window->display->x11_display->xdisplay,
                                           event->atom);
 
       meta_verbose ("Property notify on %s for %s\n",
@@ -2262,7 +2279,7 @@ process_property_notify (MetaWindow     *window,
       XFree (property_name);
     }
 
-  if (event->atom == window->display->atom__NET_WM_USER_TIME &&
+  if (event->atom == window->display->x11_display->atom__NET_WM_USER_TIME &&
       window->user_time_window)
     {
         xid = window->user_time_window;
@@ -2340,6 +2357,7 @@ gboolean
 meta_window_x11_client_message (MetaWindow *window,
                                 XEvent     *event)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   MetaDisplay *display;
@@ -2357,7 +2375,7 @@ meta_window_x11_client_message (MetaWindow *window,
     }
 
   if (event->xclient.message_type ==
-      display->atom__NET_CLOSE_WINDOW)
+      x11_display->atom__NET_CLOSE_WINDOW)
     {
       guint32 timestamp;
 
@@ -2377,7 +2395,7 @@ meta_window_x11_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom__NET_WM_DESKTOP)
+           x11_display->atom__NET_WM_DESKTOP)
     {
       int space;
       MetaWorkspace *workspace;
@@ -2404,7 +2422,7 @@ meta_window_x11_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom__NET_WM_STATE)
+           x11_display->atom__NET_WM_STATE)
     {
       gulong action;
       Atom first;
@@ -2420,12 +2438,12 @@ meta_window_x11_client_message (MetaWindow *window,
           char *str2;
 
           meta_error_trap_push (display);
-          str1 = XGetAtomName (display->xdisplay, first);
+          str1 = XGetAtomName (x11_display->xdisplay, first);
           if (meta_error_trap_pop_with_return (display) != Success)
             str1 = NULL;
 
           meta_error_trap_push (display);
-          str2 = XGetAtomName (display->xdisplay, second);
+          str2 = XGetAtomName (x11_display->xdisplay, second);
           if (meta_error_trap_pop_with_return (display) != Success)
             str2 = NULL;
 
@@ -2438,8 +2456,8 @@ meta_window_x11_client_message (MetaWindow *window,
           meta_XFree (str2);
         }
 
-      if (first == display->atom__NET_WM_STATE_SHADED ||
-          second == display->atom__NET_WM_STATE_SHADED)
+      if (first == x11_display->atom__NET_WM_STATE_SHADED ||
+          second == x11_display->atom__NET_WM_STATE_SHADED)
         {
           gboolean shade;
           guint32 timestamp;
@@ -2458,8 +2476,8 @@ meta_window_x11_client_message (MetaWindow *window,
             meta_window_unshade (window, timestamp);
         }
 
-      if (first == display->atom__NET_WM_STATE_FULLSCREEN ||
-          second == display->atom__NET_WM_STATE_FULLSCREEN)
+      if (first == x11_display->atom__NET_WM_STATE_FULLSCREEN ||
+          second == x11_display->atom__NET_WM_STATE_FULLSCREEN)
         {
           gboolean make_fullscreen;
 
@@ -2471,10 +2489,10 @@ meta_window_x11_client_message (MetaWindow *window,
             meta_window_unmake_fullscreen (window);
         }
 
-      if (first == display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
-          second == display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
-          first == display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
-          second == display->atom__NET_WM_STATE_MAXIMIZED_VERT)
+      if (first == x11_display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
+          second == x11_display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
+          first == x11_display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
+          second == x11_display->atom__NET_WM_STATE_MAXIMIZED_VERT)
         {
           gboolean max;
           MetaMaximizeFlags directions = 0;
@@ -2483,12 +2501,12 @@ meta_window_x11_client_message (MetaWindow *window,
                  (action == _NET_WM_STATE_TOGGLE &&
                   !window->maximized_horizontally));
 
-          if (first == display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
-              second == display->atom__NET_WM_STATE_MAXIMIZED_HORZ)
+          if (first == x11_display->atom__NET_WM_STATE_MAXIMIZED_HORZ ||
+              second == x11_display->atom__NET_WM_STATE_MAXIMIZED_HORZ)
             directions |= META_MAXIMIZE_HORIZONTAL;
 
-          if (first == display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
-              second == display->atom__NET_WM_STATE_MAXIMIZED_VERT)
+          if (first == x11_display->atom__NET_WM_STATE_MAXIMIZED_VERT ||
+              second == x11_display->atom__NET_WM_STATE_MAXIMIZED_VERT)
             directions |= META_MAXIMIZE_VERTICAL;
 
           if (max && window->has_maximize_func)
@@ -2505,8 +2523,8 @@ meta_window_x11_client_message (MetaWindow *window,
             }
         }
 
-      if (first == display->atom__NET_WM_STATE_MODAL ||
-          second == display->atom__NET_WM_STATE_MODAL)
+      if (first == x11_display->atom__NET_WM_STATE_MODAL ||
+          second == x11_display->atom__NET_WM_STATE_MODAL)
         {
           priv->wm_state_modal =
             (action == _NET_WM_STATE_ADD) ||
@@ -2516,8 +2534,8 @@ meta_window_x11_client_message (MetaWindow *window,
           meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
         }
 
-      if (first == display->atom__NET_WM_STATE_SKIP_PAGER ||
-          second == display->atom__NET_WM_STATE_SKIP_PAGER)
+      if (first == x11_display->atom__NET_WM_STATE_SKIP_PAGER ||
+          second == x11_display->atom__NET_WM_STATE_SKIP_PAGER)
         {
           priv->wm_state_skip_pager =
             (action == _NET_WM_STATE_ADD) ||
@@ -2527,8 +2545,8 @@ meta_window_x11_client_message (MetaWindow *window,
           meta_window_x11_set_net_wm_state (window);
         }
 
-      if (first == display->atom__NET_WM_STATE_SKIP_TASKBAR ||
-          second == display->atom__NET_WM_STATE_SKIP_TASKBAR)
+      if (first == x11_display->atom__NET_WM_STATE_SKIP_TASKBAR ||
+          second == x11_display->atom__NET_WM_STATE_SKIP_TASKBAR)
         {
           priv->wm_state_skip_taskbar =
             (action == _NET_WM_STATE_ADD) ||
@@ -2538,8 +2556,8 @@ meta_window_x11_client_message (MetaWindow *window,
           meta_window_x11_set_net_wm_state (window);
         }
 
-      if (first == display->atom__NET_WM_STATE_ABOVE ||
-          second == display->atom__NET_WM_STATE_ABOVE)
+      if (first == x11_display->atom__NET_WM_STATE_ABOVE ||
+          second == x11_display->atom__NET_WM_STATE_ABOVE)
         {
           if ((action == _NET_WM_STATE_ADD) ||
               (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention))
@@ -2548,8 +2566,8 @@ meta_window_x11_client_message (MetaWindow *window,
             meta_window_unmake_above (window);
         }
 
-      if (first == display->atom__NET_WM_STATE_BELOW ||
-          second == display->atom__NET_WM_STATE_BELOW)
+      if (first == x11_display->atom__NET_WM_STATE_BELOW ||
+          second == x11_display->atom__NET_WM_STATE_BELOW)
         {
           window->wm_state_below =
             (action == _NET_WM_STATE_ADD) ||
@@ -2559,8 +2577,8 @@ meta_window_x11_client_message (MetaWindow *window,
           meta_window_x11_set_net_wm_state (window);
         }
 
-      if (first == display->atom__NET_WM_STATE_DEMANDS_ATTENTION ||
-          second == display->atom__NET_WM_STATE_DEMANDS_ATTENTION)
+      if (first == x11_display->atom__NET_WM_STATE_DEMANDS_ATTENTION ||
+          second == x11_display->atom__NET_WM_STATE_DEMANDS_ATTENTION)
         {
           if ((action == _NET_WM_STATE_ADD) ||
               (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention))
@@ -2569,8 +2587,8 @@ meta_window_x11_client_message (MetaWindow *window,
             meta_window_unset_demands_attention (window);
         }
 
-       if (first == display->atom__NET_WM_STATE_STICKY ||
-          second == display->atom__NET_WM_STATE_STICKY)
+       if (first == x11_display->atom__NET_WM_STATE_STICKY ||
+          second == x11_display->atom__NET_WM_STATE_STICKY)
         {
           if ((action == _NET_WM_STATE_ADD) ||
               (action == _NET_WM_STATE_TOGGLE && !window->on_all_workspaces_requested))
@@ -2582,7 +2600,7 @@ meta_window_x11_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom_WM_CHANGE_STATE)
+           x11_display->atom_WM_CHANGE_STATE)
     {
       meta_verbose ("WM_CHANGE_STATE client message, state: %ld\n",
                     event->xclient.data.l[0]);
@@ -2592,7 +2610,7 @@ meta_window_x11_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom__NET_WM_MOVERESIZE)
+           x11_display->atom__NET_WM_MOVERESIZE)
     {
       int x_root;
       int y_root;
@@ -2737,7 +2755,7 @@ meta_window_x11_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom__NET_MOVERESIZE_WINDOW)
+           x11_display->atom__NET_MOVERESIZE_WINDOW)
     {
       int gravity;
       guint value_mask;
@@ -2758,7 +2776,7 @@ meta_window_x11_client_message (MetaWindow *window,
                                       event->xclient.data.l[4]); /* height */
     }
   else if (event->xclient.message_type ==
-           display->atom__NET_ACTIVE_WINDOW)
+           x11_display->atom__NET_ACTIVE_WINDOW)
     {
       MetaClientType source_indication;
       guint32        timestamp;
@@ -2785,7 +2803,7 @@ meta_window_x11_client_message (MetaWindow *window,
       return TRUE;
     }
   else if (event->xclient.message_type ==
-           display->atom__NET_WM_FULLSCREEN_MONITORS)
+           x11_display->atom__NET_WM_FULLSCREEN_MONITORS)
     {
       MetaLogicalMonitor *top, *bottom, *left, *right;
 
@@ -2809,7 +2827,7 @@ meta_window_x11_client_message (MetaWindow *window,
       meta_window_update_fullscreen_monitors (window, top, bottom, left, right);
     }
   else if (event->xclient.message_type ==
-           display->atom__GTK_SHOW_WINDOW_MENU)
+           x11_display->atom__GTK_SHOW_WINDOW_MENU)
     {
       gulong x, y;
 
@@ -2820,7 +2838,7 @@ meta_window_x11_client_message (MetaWindow *window,
       meta_window_show_menu (window, META_WINDOW_MENU_WM, x, y);
     }
   else if (event->xclient.message_type ==
-           display->atom__NET_RESTACK_WINDOW)
+           x11_display->atom__NET_RESTACK_WINDOW)
     {
       handle_net_restack_window (display, event);
     }
@@ -2842,9 +2860,9 @@ set_wm_state_on_xwindow (MetaDisplay *display,
   data[1] = None;
 
   meta_error_trap_push (display);
-  XChangeProperty (display->xdisplay, xwindow,
-                   display->atom_WM_STATE,
-                   display->atom_WM_STATE,
+  XChangeProperty (display->x11_display->xdisplay, xwindow,
+                   display->x11_display->atom_WM_STATE,
+                   display->x11_display->atom_WM_STATE,
                    32, PropModeReplace, (guchar*) data, 2);
   meta_error_trap_pop (display);
 }
@@ -2900,7 +2918,8 @@ maybe_filter_xwindow (MetaDisplay       *display,
   filtered = TRUE;
 
   meta_error_trap_push (display);
-  success = XGetClassHint (display->xdisplay, xwindow, &class_hint);
+  success = XGetClassHint (display->x11_display->xdisplay,
+                           xwindow, &class_hint);
 
   if (success)
     {
@@ -2930,8 +2949,8 @@ maybe_filter_xwindow (MetaDisplay       *display,
           uint32_t old_state;
 
           if (!meta_prop_get_cardinal_with_atom_type (display, xwindow,
-                                                      display->atom_WM_STATE,
-                                                      display->atom_WM_STATE,
+                                                      display->x11_display->atom_WM_STATE,
+                                                      display->x11_display->atom_WM_STATE,
                                                       &old_state))
             old_state = WithdrawnState;
 
@@ -2940,7 +2959,7 @@ maybe_filter_xwindow (MetaDisplay       *display,
         }
 
       /* Make sure filtered windows are hidden from view */
-      XUnmapWindow (display->xdisplay, xwindow);
+      XUnmapWindow (display->x11_display->xdisplay, xwindow);
     }
 
   meta_error_trap_pop (display);
@@ -3010,6 +3029,7 @@ meta_window_x11_new (MetaDisplay       *display,
                      gboolean           must_be_viewable,
                      MetaCompEffect     effect)
 {
+  MetaX11Display *x11_display = display->x11_display;
   MetaScreen *screen = display->screen;
   XWindowAttributes attrs;
   gulong existing_wm_state;
@@ -3034,14 +3054,14 @@ meta_window_x11_new (MetaDisplay       *display,
    * so we must be careful with X error handling.
    */
 
-  if (!XGetWindowAttributes (display->xdisplay, xwindow, &attrs))
+  if (!XGetWindowAttributes (x11_display->xdisplay, xwindow, &attrs))
     {
       meta_verbose ("Failed to get attributes for window 0x%lx\n",
                     xwindow);
       goto error;
     }
 
-  if (attrs.root != screen->xroot)
+  if (attrs.root != x11_display->xroot)
     {
       meta_verbose ("Not on our screen\n");
       goto error;
@@ -3073,8 +3093,8 @@ meta_window_x11_new (MetaDisplay       *display,
 
       /* WM_STATE isn't a cardinal, it's type WM_STATE, but is an int */
       if (!(meta_prop_get_cardinal_with_atom_type (display, xwindow,
-                                                   display->atom_WM_STATE,
-                                                   display->atom_WM_STATE,
+                                                   x11_display->atom_WM_STATE,
+                                                   x11_display->atom_WM_STATE,
                                                    &state) &&
             (state == IconicState || state == NormalState)))
         {
@@ -3094,7 +3114,7 @@ meta_window_x11_new (MetaDisplay       *display,
    * want this call failing to prevent the window from being managed, we
    * call this before creating the return-checked error trap.
    */
-  XAddToSaveSet (display->xdisplay, xwindow);
+  XAddToSaveSet (x11_display->xdisplay, xwindow);
 
   meta_error_trap_push (display);
 
@@ -3106,7 +3126,7 @@ meta_window_x11_new (MetaDisplay       *display,
    * the event mask, not replace it. For windows from other clients,
    * attrs.your_event_mask will be empty at this point.
    */
-  XSelectInput (display->xdisplay, xwindow, attrs.your_event_mask | event_mask);
+  XSelectInput (x11_display->xdisplay, xwindow, attrs.your_event_mask | event_mask);
 
   {
     unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
@@ -3117,15 +3137,15 @@ meta_window_x11_new (MetaDisplay       *display,
     XISetMask (mask.mask, XI_FocusIn);
     XISetMask (mask.mask, XI_FocusOut);
 
-    XISelectEvents (display->xdisplay, xwindow, &mask, 1);
+    XISelectEvents (x11_display->xdisplay, xwindow, &mask, 1);
   }
 
   if (META_DISPLAY_HAS_SHAPE (display))
-    XShapeSelectInput (display->xdisplay, xwindow, ShapeNotifyMask);
+    XShapeSelectInput (x11_display->xdisplay, xwindow, ShapeNotifyMask);
 
   /* Get rid of any borders */
   if (attrs.border_width != 0)
-    XSetWindowBorderWidth (display->xdisplay, xwindow, 0);
+    XSetWindowBorderWidth (x11_display->xdisplay, xwindow, 0);
 
   /* Get rid of weird gravities */
   if (attrs.win_gravity != NorthWestGravity)
@@ -3134,7 +3154,7 @@ meta_window_x11_new (MetaDisplay       *display,
 
       set_attrs.win_gravity = NorthWestGravity;
 
-      XChangeWindowAttributes (display->xdisplay,
+      XChangeWindowAttributes (x11_display->xdisplay,
                                xwindow,
                                CWWinGravity,
                                &set_attrs);
@@ -3179,42 +3199,43 @@ error:
 void
 meta_window_x11_recalc_window_type (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   MetaWindowX11 *window_x11 = META_WINDOW_X11 (window);
   MetaWindowX11Private *priv = meta_window_x11_get_instance_private (window_x11);
   MetaWindowType type;
 
   if (priv->type_atom != None)
     {
-      if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
+      if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_DESKTOP)
         type = META_WINDOW_DESKTOP;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DOCK)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_DOCK)
         type = META_WINDOW_DOCK;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLBAR)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_TOOLBAR)
         type = META_WINDOW_TOOLBAR;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_MENU)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_MENU)
         type = META_WINDOW_MENU;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_UTILITY)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_UTILITY)
         type = META_WINDOW_UTILITY;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_SPLASH)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_SPLASH)
         type = META_WINDOW_SPLASHSCREEN;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DIALOG)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_DIALOG)
         type = META_WINDOW_DIALOG;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NORMAL)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_NORMAL)
         type = META_WINDOW_NORMAL;
       /* The below are *typically* override-redirect windows, but the spec does
        * not disallow using them for managed windows.
        */
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_DROPDOWN_MENU)
         type = META_WINDOW_DROPDOWN_MENU;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_POPUP_MENU)
         type = META_WINDOW_POPUP_MENU;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_TOOLTIP)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_TOOLTIP)
         type = META_WINDOW_TOOLTIP;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_NOTIFICATION)
         type = META_WINDOW_NOTIFICATION;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_COMBO)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_COMBO)
         type = META_WINDOW_COMBO;
-      else if (priv->type_atom  == window->display->atom__NET_WM_WINDOW_TYPE_DND)
+      else if (priv->type_atom  == x11_display->atom__NET_WM_WINDOW_TYPE_DND)
         type = META_WINDOW_DND;
       else
         {
@@ -3226,7 +3247,7 @@ meta_window_x11_recalc_window_type (MetaWindow *window)
           type = META_WINDOW_NORMAL;
 
           meta_error_trap_push (window->display);
-          atom_name = XGetAtomName (window->display->xdisplay,
+          atom_name = XGetAtomName (x11_display->xdisplay,
                                     priv->type_atom);
           meta_error_trap_pop (window->display);
 
@@ -3331,6 +3352,7 @@ meta_window_x11_configure_notify (MetaWindow      *window,
 void
 meta_window_x11_set_allowed_actions_hint (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
 #define MAX_N_ACTIONS 12
   unsigned long data[MAX_N_ACTIONS];
   int i;
@@ -3338,27 +3360,27 @@ meta_window_x11_set_allowed_actions_hint (MetaWindow *window)
   i = 0;
   if (window->has_move_func)
     {
-      data[i] = window->display->atom__NET_WM_ACTION_MOVE;
+      data[i] = x11_display->atom__NET_WM_ACTION_MOVE;
       ++i;
     }
   if (window->has_resize_func)
     {
-      data[i] = window->display->atom__NET_WM_ACTION_RESIZE;
+      data[i] = x11_display->atom__NET_WM_ACTION_RESIZE;
       ++i;
     }
   if (window->has_fullscreen_func)
     {
-      data[i] = window->display->atom__NET_WM_ACTION_FULLSCREEN;
+      data[i] = x11_display->atom__NET_WM_ACTION_FULLSCREEN;
       ++i;
     }
   if (window->has_minimize_func)
     {
-      data[i] = window->display->atom__NET_WM_ACTION_MINIMIZE;
+      data[i] = x11_display->atom__NET_WM_ACTION_MINIMIZE;
       ++i;
     }
   if (window->has_shade_func)
     {
-      data[i] = window->display->atom__NET_WM_ACTION_SHADE;
+      data[i] = x11_display->atom__NET_WM_ACTION_SHADE;
       ++i;
     }
   /* sticky according to EWMH is different from mutter's sticky;
@@ -3366,24 +3388,24 @@ meta_window_x11_set_allowed_actions_hint (MetaWindow *window)
    */
   if (window->has_maximize_func)
     {
-      data[i] = window->display->atom__NET_WM_ACTION_MAXIMIZE_HORZ;
+      data[i] = x11_display->atom__NET_WM_ACTION_MAXIMIZE_HORZ;
       ++i;
-      data[i] = window->display->atom__NET_WM_ACTION_MAXIMIZE_VERT;
+      data[i] = x11_display->atom__NET_WM_ACTION_MAXIMIZE_VERT;
       ++i;
     }
   /* We always allow this */
-  data[i] = window->display->atom__NET_WM_ACTION_CHANGE_DESKTOP;
+  data[i] = x11_display->atom__NET_WM_ACTION_CHANGE_DESKTOP;
   ++i;
   if (window->has_close_func)
     {
-      data[i] = window->display->atom__NET_WM_ACTION_CLOSE;
+      data[i] = x11_display->atom__NET_WM_ACTION_CLOSE;
       ++i;
     }
 
   /* I guess we always allow above/below operations */
-  data[i] = window->display->atom__NET_WM_ACTION_ABOVE;
+  data[i] = x11_display->atom__NET_WM_ACTION_ABOVE;
   ++i;
-  data[i] = window->display->atom__NET_WM_ACTION_BELOW;
+  data[i] = x11_display->atom__NET_WM_ACTION_BELOW;
   ++i;
 
   g_assert (i <= MAX_N_ACTIONS);
@@ -3391,8 +3413,8 @@ meta_window_x11_set_allowed_actions_hint (MetaWindow *window)
   meta_verbose ("Setting _NET_WM_ALLOWED_ACTIONS with %d atoms\n", i);
 
   meta_error_trap_push (window->display);
-  XChangeProperty (window->display->xdisplay, window->xwindow,
-                   window->display->atom__NET_WM_ALLOWED_ACTIONS,
+  XChangeProperty (x11_display->xdisplay, window->xwindow,
+                   x11_display->atom__NET_WM_ALLOWED_ACTIONS,
                    XA_ATOM,
                    32, PropModeReplace, (guchar*) data, i);
   meta_error_trap_pop (window->display);
@@ -3402,6 +3424,7 @@ meta_window_x11_set_allowed_actions_hint (MetaWindow *window)
 void
 meta_window_x11_create_sync_request_alarm (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
   XSyncAlarmAttributes values;
   XSyncValue init;
 
@@ -3417,7 +3440,7 @@ meta_window_x11_create_sync_request_alarm (MetaWindow *window)
    */
   if (window->extended_sync_request_counter)
     {
-      if (!XSyncQueryCounter(window->display->xdisplay,
+      if (!XSyncQueryCounter(x11_display->xdisplay,
                              window->sync_request_counter,
                              &init))
         {
@@ -3432,7 +3455,7 @@ meta_window_x11_create_sync_request_alarm (MetaWindow *window)
   else
     {
       XSyncIntToValue (&init, 0);
-      XSyncSetCounter (window->display->xdisplay,
+      XSyncSetCounter (x11_display->xdisplay,
                        window->sync_request_counter, init);
       window->sync_request_serial = 0;
     }
@@ -3451,7 +3474,7 @@ meta_window_x11_create_sync_request_alarm (MetaWindow *window)
   /* we want events (on by default anyway) */
   values.events = True;
 
-  window->sync_request_alarm = XSyncCreateAlarm (window->display->xdisplay,
+  window->sync_request_alarm = XSyncCreateAlarm (x11_display->xdisplay,
                                                  XSyncCACounter |
                                                  XSyncCAValueType |
                                                  XSyncCAValue |
@@ -3476,7 +3499,7 @@ meta_window_x11_destroy_sync_request_alarm (MetaWindow *window)
     {
       /* Has to be unregistered _before_ clearing the structure field */
       meta_display_unregister_sync_alarm (window->display, window->sync_request_alarm);
-      XSyncDestroyAlarm (window->display->xdisplay,
+      XSyncDestroyAlarm (window->display->x11_display->xdisplay,
                          window->sync_request_alarm);
       window->sync_request_alarm = None;
     }

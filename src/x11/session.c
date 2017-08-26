@@ -26,6 +26,7 @@
 #include "util-private.h"
 #include <meta/main.h>
 #include "session.h"
+#include "x11/meta-x11-display-private.h"
 #include <X11/Xatom.h>
 
 #include <time.h>
@@ -1819,7 +1820,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
                            "and will have to be restarted manually next time "
                            "you log in."),
                          "240",
-                         meta_get_display()->screen->screen_name,
+                         meta_get_display()->x11_display->screen_name,
                          NULL, NULL, NULL,
                          None,
                          columns,

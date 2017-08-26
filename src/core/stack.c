@@ -37,6 +37,7 @@
 
 #include <X11/Xatom.h>
 
+#include "x11/meta-x11-display-private.h"
 #include "x11/group-private.h"
 
 #define WINDOW_HAS_TRANSIENT_TYPE(w)                    \
@@ -1068,16 +1069,16 @@ stack_sync_to_xserver (MetaStack *stack)
 
   /* Sync _NET_CLIENT_LIST and _NET_CLIENT_LIST_STACKING */
 
-  XChangeProperty (stack->screen->display->xdisplay,
-                   stack->screen->xroot,
-                   stack->screen->display->atom__NET_CLIENT_LIST,
+  XChangeProperty (stack->screen->display->x11_display->xdisplay,
+                   stack->screen->display->x11_display->xroot,
+                   stack->screen->display->x11_display->atom__NET_CLIENT_LIST,
                    XA_WINDOW,
                    32, PropModeReplace,
                    (unsigned char *)stack->xwindows->data,
                    stack->xwindows->len);
-  XChangeProperty (stack->screen->display->xdisplay,
-                   stack->screen->xroot,
-                   stack->screen->display->atom__NET_CLIENT_LIST_STACKING,
+  XChangeProperty (stack->screen->display->x11_display->xdisplay,
+                   stack->screen->display->x11_display->xroot,
+                   stack->screen->display->x11_display->atom__NET_CLIENT_LIST_STACKING,
                    XA_WINDOW,
                    32, PropModeReplace,
                    (unsigned char *)x11_stacked->data,

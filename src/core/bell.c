@@ -53,6 +53,7 @@
 #include "window-private.h"
 #include "util-private.h"
 #include "compositor/compositor-private.h"
+#include "x11/meta-x11-display-private.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>
 #ifdef HAVE_LIBCANBERRA
@@ -229,6 +230,7 @@ meta_bell_notify (MetaDisplay *display,
 void
 meta_bell_set_audible (MetaDisplay *display, gboolean audible)
 {
+  MetaX11Display *x11_display = display->x11_display;
 #ifdef HAVE_LIBCANBERRA
   /* When we are playing sounds using libcanberra support, we handle the
    * bell whether its an audible bell or a visible bell */
@@ -237,7 +239,7 @@ meta_bell_set_audible (MetaDisplay *display, gboolean audible)
   gboolean enable_system_bell = audible;
 #endif /* HAVE_LIBCANBERRA */
 
-  XkbChangeEnabledControls (display->xdisplay,
+  XkbChangeEnabledControls (x11_display->xdisplay,
                             XkbUseCoreKbd,
                             XkbAudibleBellMask,
                             enable_system_bell ? XkbAudibleBellMask : 0);
@@ -247,8 +249,9 @@ gboolean
 meta_bell_init (MetaDisplay *display)
 {
   int xkb_base_error_type, xkb_opcode;
+  MetaX11Display *x11_display = display->x11_display;
 
-  if (!XkbQueryExtension (display->xdisplay, &xkb_opcode,
+  if (!XkbQueryExtension (x11_display->xdisplay, &xkb_opcode,
 			  &display->xkb_base_event_type,
 			  &xkb_base_error_type,
 			  NULL, NULL))
@@ -262,13 +265,13 @@ meta_bell_init (MetaDisplay *display)
       unsigned int mask = XkbBellNotifyMask;
       gboolean visual_bell_auto_reset = FALSE;
       /* TRUE if and when non-broken version is available */
-      XkbSelectEvents (display->xdisplay,
+      XkbSelectEvents (x11_display->xdisplay,
 		       XkbUseCoreKbd,
 		       XkbBellNotifyMask,
 		       XkbBellNotifyMask);
       meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
       if (visual_bell_auto_reset) {
-	XkbSetAutoResetControls (display->xdisplay,
+        XkbSetAutoResetControls (x11_display->xdisplay,
 				 XkbAudibleBellMask,
 				 &mask,
 				 &mask);
@@ -281,8 +284,10 @@ meta_bell_init (MetaDisplay *display)
 void
 meta_bell_shutdown (MetaDisplay *display)
 {
+  MetaX11Display *x11_display = display->x11_display;
+
   /* TODO: persist initial bell state in display, reset here */
-  XkbChangeEnabledControls (display->xdisplay,
+  XkbChangeEnabledControls (x11_display->xdisplay,
 			    XkbUseCoreKbd,
 			    XkbAudibleBellMask,
 			    XkbAudibleBellMask);
