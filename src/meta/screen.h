@@ -38,8 +38,6 @@ GType meta_screen_get_type (void);
 
 MetaDisplay *meta_screen_get_display (MetaScreen *screen);
 
-void meta_screen_set_cm_selection (MetaScreen *screen);
-
 GSList *meta_screen_get_startup_sequences (MetaScreen *screen);
 
 GList *meta_screen_get_workspaces (MetaScreen *screen);

@@ -281,10 +281,9 @@ meta_focus_stage_window (MetaScreen *screen,
   if (window == None)
     return;
 
-  meta_display_set_input_focus_xwindow (screen->display,
-                                        screen,
-                                        window,
-                                        timestamp);
+  meta_x11_display_set_input_focus_xwindow (screen->display->x11_display,
+                                            window,
+                                            timestamp);
 }
 
 gboolean
@@ -305,7 +304,7 @@ meta_stage_is_focused (MetaScreen *screen)
   if (window == None)
     return FALSE;
 
-  return (screen->display->focus_xwindow == window);
+  return (screen->display->x11_display->focus_xwindow == window);
 }
 
 static gboolean
@@ -498,7 +497,7 @@ meta_compositor_manage (MetaCompositor *compositor)
   MetaScreen *screen = display->screen;
   MetaBackend *backend = meta_get_backend ();
 
-  meta_screen_set_cm_selection (display->screen);
+  meta_x11_display_set_cm_selection (display->x11_display);
 
   compositor->stage = meta_backend_get_stage (backend);
 
@@ -538,7 +537,7 @@ meta_compositor_manage (MetaCompositor *compositor)
     {
       Window xwin;
 
-      compositor->output = screen->composite_overlay_window;
+      compositor->output = display->x11_display->composite_overlay_window;
 
       xwin = meta_backend_x11_get_xwindow (META_BACKEND_X11 (backend));
 

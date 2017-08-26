@@ -111,23 +111,12 @@ struct _MetaDisplay
 
   int clutter_event_filter;
 
-  Window leader_window;
-  Window timestamp_pinging_window;
-
-  /* The window and serial of the most recent FocusIn event. */
-  Window server_focus_window;
-  gulong server_focus_serial;
-
   /* Our best guess as to the "currently" focused window (that is, the
    * window that we expect will be focused at the point when the X
    * server processes our next request), and the serial of the request
    * or event that caused this.
    */
   MetaWindow *focus_window;
-  /* For windows we've focused that don't necessarily have an X window,
-   * like the no_focus_window or the stage X window. */
-  Window focus_xwindow;
-  gulong focus_serial;
 
   /* last timestamp passed to XSetInputFocus */
   guint32 last_focus_time;
@@ -338,11 +327,6 @@ void meta_display_ungrab_focus_window_button (MetaDisplay *display,
 /* Next function is defined in edge-resistance.c */
 void meta_display_cleanup_edges              (MetaDisplay *display);
 
-/* make a request to ensure the event serial has changed */
-void     meta_display_increment_event_serial (MetaDisplay *display);
-
-void     meta_display_update_active_window_hint (MetaDisplay *display);
-
 /* utility goo */
 const char* meta_event_mode_to_string   (int m);
 const char* meta_event_detail_to_string (int d);
@@ -375,11 +359,6 @@ void meta_display_accelerator_activate (MetaDisplay     *display,
                                         guint            action,
                                         ClutterKeyEvent *event);
 gboolean meta_display_modifiers_accelerator_activate (MetaDisplay *display);
-
-void meta_display_set_input_focus_xwindow (MetaDisplay *display,
-                                           MetaScreen  *screen,
-                                           Window       window,
-                                           guint32      timestamp);
 
 void meta_display_sync_wayland_input_focus (MetaDisplay *display);
 void meta_display_update_focus_window (MetaDisplay *display,

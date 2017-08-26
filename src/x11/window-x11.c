@@ -105,7 +105,7 @@ read_client_leader (MetaDisplay *display,
 {
   Window retval = None;
 
-  meta_prop_get_window (display, xwindow,
+  meta_prop_get_window (display->x11_display, xwindow,
                         display->x11_display->atom_WM_CLIENT_LEADER,
                         &retval);
 
@@ -160,7 +160,7 @@ update_sm_hints (MetaWindow *window)
 
       window->xclient_leader = leader;
 
-      if (meta_prop_get_latin1_string (window->display, leader,
+      if (meta_prop_get_latin1_string (window->display->x11_display, leader,
                                        window->display->x11_display->atom_SM_CLIENT_ID,
                                        &str))
         {
@@ -180,7 +180,7 @@ update_sm_hints (MetaWindow *window)
           char *str;
 
           str = NULL;
-          if (meta_prop_get_latin1_string (window->display, window->xwindow,
+          if (meta_prop_get_latin1_string (window->display->x11_display, window->xwindow,
                                            window->display->x11_display->atom_SM_CLIENT_ID,
                                            &str))
             {
@@ -748,10 +748,10 @@ meta_window_x11_focus (MetaWindow *window,
     {
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing frame of %s\n", window->desc);
-      meta_display_set_input_focus_window (window->display,
-                                           window,
-                                           TRUE,
-                                           timestamp);
+      meta_x11_display_set_input_focus_window (window->display->x11_display,
+                                               window,
+                                               TRUE,
+                                               timestamp);
     }
   else
     {
@@ -760,10 +760,10 @@ meta_window_x11_focus (MetaWindow *window,
           meta_topic (META_DEBUG_FOCUS,
                       "Setting input focus on %s since input = true\n",
                       window->desc);
-          meta_display_set_input_focus_window (window->display,
-                                               window,
-                                               FALSE,
-                                               timestamp);
+          meta_x11_display_set_input_focus_window (window->display->x11_display,
+                                                   window,
+                                                   FALSE,
+                                                   timestamp);
         }
 
       if (window->take_focus)
@@ -786,9 +786,8 @@ meta_window_x11_focus (MetaWindow *window,
                */
               if (window->display->focus_window != NULL &&
                   window->display->focus_window->unmanaging)
-                meta_display_focus_the_no_focus_window (window->display,
-                                                        window->screen,
-                                                        timestamp);
+                meta_x11_display_focus_the_no_focus_window (window->display->x11_display,
+                                                            timestamp);
             }
 
           request_take_focus (window, timestamp);
@@ -1320,7 +1319,7 @@ meta_window_x11_update_struts (MetaWindow *window)
   old_struts = window->struts;
   new_struts = NULL;
 
-  if (meta_prop_get_cardinal_list (window->display,
+  if (meta_prop_get_cardinal_list (window->display->x11_display,
                                    window->xwindow,
                                    window->display->x11_display->atom__NET_WM_STRUT_PARTIAL,
                                    &struts, &nitems))
@@ -1386,7 +1385,7 @@ meta_window_x11_update_struts (MetaWindow *window)
     }
 
   if (!new_struts &&
-      meta_prop_get_cardinal_list (window->display,
+      meta_prop_get_cardinal_list (window->display->x11_display,
                                    window->xwindow,
                                    window->display->x11_display->atom__NET_WM_STRUT,
                                    &struts, &nitems))
@@ -2950,7 +2949,7 @@ maybe_filter_xwindow (MetaDisplay       *display,
         {
           uint32_t old_state;
 
-          if (!meta_prop_get_cardinal_with_atom_type (display, xwindow,
+          if (!meta_prop_get_cardinal_with_atom_type (display->x11_display, xwindow,
                                                       display->x11_display->atom_WM_STATE,
                                                       display->x11_display->atom_WM_STATE,
                                                       &old_state))
@@ -2970,24 +2969,23 @@ maybe_filter_xwindow (MetaDisplay       *display,
 }
 
 static gboolean
-is_our_xwindow (MetaDisplay       *display,
-                MetaScreen        *screen,
+is_our_xwindow (MetaX11Display    *x11_display,
                 Window             xwindow,
                 XWindowAttributes *attrs)
 {
-  if (xwindow == screen->no_focus_window)
+  if (xwindow == x11_display->no_focus_window)
     return TRUE;
 
-  if (xwindow == screen->wm_sn_selection_window)
+  if (xwindow == x11_display->wm_sn_selection_window)
     return TRUE;
 
-  if (xwindow == screen->wm_cm_selection_window)
+  if (xwindow == x11_display->wm_cm_selection_window)
     return TRUE;
 
-  if (xwindow == display->x11_display->guard_window)
+  if (xwindow == x11_display->guard_window)
     return TRUE;
 
-  if (xwindow == screen->composite_overlay_window)
+  if (xwindow == x11_display->composite_overlay_window)
     return TRUE;
 
   {
@@ -3040,7 +3038,7 @@ meta_window_x11_new (MetaDisplay       *display,
 
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
 
-  if (meta_display_xwindow_is_a_no_focus_window (display, xwindow))
+  if (meta_x11_display_xwindow_is_a_no_focus_window (x11_display, xwindow))
     {
       meta_verbose ("Not managing no_focus_window 0x%lx\n",
                     xwindow);
@@ -3075,7 +3073,7 @@ meta_window_x11_new (MetaDisplay       *display,
       goto error;
     }
 
-  if (is_our_xwindow (display, screen, xwindow, &attrs))
+  if (is_our_xwindow (x11_display, xwindow, &attrs))
     {
       meta_verbose ("Not managing our own windows\n");
       goto error;
@@ -3094,7 +3092,7 @@ meta_window_x11_new (MetaDisplay       *display,
       uint32_t state;
 
       /* WM_STATE isn't a cardinal, it's type WM_STATE, but is an int */
-      if (!(meta_prop_get_cardinal_with_atom_type (display, xwindow,
+      if (!(meta_prop_get_cardinal_with_atom_type (x11_display, xwindow,
                                                    x11_display->atom_WM_STATE,
                                                    x11_display->atom_WM_STATE,
                                                    &state) &&

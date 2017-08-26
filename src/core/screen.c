@@ -256,11 +256,12 @@ set_wm_check_hint (MetaScreen *screen)
   MetaX11Display *x11_display = screen->display->x11_display;
   unsigned long data[1];
 
-  g_return_val_if_fail (screen->display->leader_window != None, 0);
+  g_return_val_if_fail (x11_display->leader_window != None, 0);
 
-  data[0] = screen->display->leader_window;
+  data[0] = x11_display->leader_window;
 
-  XChangeProperty (x11_display->xdisplay, x11_display->xroot,
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
                    x11_display->atom__NET_SUPPORTING_WM_CHECK,
                    XA_WINDOW,
                    32, PropModeReplace, (guchar*) data, 1);
@@ -273,7 +274,8 @@ unset_wm_check_hint (MetaScreen *screen)
 {
   MetaX11Display *x11_display = screen->display->x11_display;
 
-  XDeleteProperty (x11_display->xdisplay, x11_display->xroot,
+  XDeleteProperty (x11_display->xdisplay,
+                   x11_display->xroot,
                    x11_display->atom__NET_SUPPORTING_WM_CHECK);
 }
 
@@ -472,81 +474,6 @@ reload_logical_monitors (MetaScreen *screen)
   screen->has_xinerama_indices = FALSE;
 }
 
-static Window
-take_manager_selection (MetaDisplay *display,
-                        Window       xroot,
-                        Atom         manager_atom,
-                        int          timestamp,
-                        gboolean     should_replace)
-{
-  MetaX11Display *x11_display = display->x11_display;
-  Window current_owner, new_owner;
-
-  current_owner = XGetSelectionOwner (x11_display->xdisplay, manager_atom);
-  if (current_owner != None)
-    {
-      XSetWindowAttributes attrs;
-
-      if (should_replace)
-        {
-          /* We want to find out when the current selection owner dies */
-          meta_error_trap_push (x11_display);
-          attrs.event_mask = StructureNotifyMask;
-          XChangeWindowAttributes (x11_display->xdisplay, current_owner, CWEventMask, &attrs);
-          if (meta_error_trap_pop_with_return (x11_display) != Success)
-            current_owner = None; /* don't wait for it to die later on */
-        }
-      else
-        {
-          meta_warning (_("Display “%s” already has a window manager; try using the --replace option to replace the current window manager."),
-                        x11_display->name);
-          return None;
-        }
-    }
-
-  /* We need SelectionClear and SelectionRequest events on the new owner,
-   * but those cannot be masked, so we only need NoEventMask.
-   */
-  new_owner = meta_x11_display_create_offscreen_window (x11_display, xroot, NoEventMask);
-
-  XSetSelectionOwner (x11_display->xdisplay, manager_atom, new_owner, timestamp);
-
-  if (XGetSelectionOwner (x11_display->xdisplay, manager_atom) != new_owner)
-    {
-      meta_warning ("Could not acquire selection: %s", XGetAtomName (x11_display->xdisplay, manager_atom));
-      return None;
-    }
-
-  {
-    /* Send client message indicating that we are now the selection owner */
-    XClientMessageEvent ev;
-
-    ev.type = ClientMessage;
-    ev.window = xroot;
-    ev.message_type = x11_display->atom_MANAGER;
-    ev.format = 32;
-    ev.data.l[0] = timestamp;
-    ev.data.l[1] = manager_atom;
-
-    XSendEvent (x11_display->xdisplay, xroot, False, StructureNotifyMask, (XEvent *) &ev);
-  }
-
-  /* Wait for old window manager to go away */
-  if (current_owner != None)
-    {
-      XEvent event;
-
-      /* We sort of block infinitely here which is probably lame. */
-
-      meta_verbose ("Waiting for old window manager to exit\n");
-      do
-        XWindowEvent (x11_display->xdisplay, current_owner, StructureNotifyMask, &event);
-      while (event.type != DestroyNotify);
-    }
-
-  return new_owner;
-}
-
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
                  guint32      timestamp)
@@ -555,59 +482,17 @@ meta_screen_new (MetaDisplay *display,
   int number;
   Window xroot = meta_x11_display_get_xroot (display->x11_display);
   Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
-  Window new_wm_sn_owner;
-  gboolean replace_current_wm;
-  Atom wm_sn_atom;
-  char buf[128];
-
-  replace_current_wm = meta_get_replace_current_wm ();
 
   number = meta_ui_get_screen_number ();
 
   meta_verbose ("Trying screen %d on display '%s'\n",
                 number, display->x11_display->name);
 
-  sprintf (buf, "WM_S%d", number);
-
-  wm_sn_atom = XInternAtom (xdisplay, buf, False);
-  new_wm_sn_owner = take_manager_selection (display, xroot, wm_sn_atom, timestamp, replace_current_wm);
-  if (new_wm_sn_owner == None)
-    return NULL;
-
-  {
-    long event_mask;
-    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
-    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
-
-    XISetMask (mask.mask, XI_Enter);
-    XISetMask (mask.mask, XI_Leave);
-    XISetMask (mask.mask, XI_FocusIn);
-    XISetMask (mask.mask, XI_FocusOut);
-#ifdef HAVE_XI23
-    if (META_X11_DISPLAY_HAS_XINPUT_23 (display->x11_display))
-      {
-        XISetMask (mask.mask, XI_BarrierHit);
-        XISetMask (mask.mask, XI_BarrierLeave);
-      }
-#endif /* HAVE_XI23 */
-    XISelectEvents (xdisplay, xroot, &mask, 1);
-
-    event_mask = (SubstructureRedirectMask | SubstructureNotifyMask |
-                  StructureNotifyMask | ColormapChangeMask | PropertyChangeMask);
-    XSelectInput (xdisplay, xroot, event_mask);
-  }
-
-  /* Select for cursor changes so the cursor tracker is up to date. */
-  XFixesSelectCursorInput (xdisplay, xroot, XFixesDisplayCursorNotifyMask);
-
   screen = g_object_new (META_TYPE_SCREEN, NULL);
   screen->closing = 0;
 
   screen->display = display;
 
-  screen->wm_sn_selection_window = new_wm_sn_owner;
-  screen->wm_sn_atom = wm_sn_atom;
-  screen->wm_sn_timestamp = timestamp;
   screen->work_area_later = 0;
   screen->check_fullscreen_later = 0;
 
@@ -618,24 +503,7 @@ meta_screen_new (MetaDisplay *display,
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
 
-  /* If we're a Wayland compositor, then we don't grab the COW, since it
-   * will map it. */
-  if (!meta_is_wayland_compositor ())
-    screen->composite_overlay_window = XCompositeGetOverlayWindow (xdisplay, xroot);
-
-  /* Now that we've gotten taken a reference count on the COW, we
-   * can close the helper that is holding on to it */
-  meta_restart_finish ();
-
   reload_logical_monitors (screen);
-
-  /* Handle creating a no_focus_window for this screen */
-  screen->no_focus_window =
-    meta_x11_display_create_offscreen_window (display->x11_display,
-                                              xroot,
-                                              FocusChangeMask|KeyPressMask|KeyReleaseMask);
-  XMapWindow (xdisplay, screen->no_focus_window);
-  /* Done with no_focus_window stuff */
 
   set_wm_icon_size_hint (screen);
 
@@ -680,10 +548,10 @@ meta_screen_init_workspaces (MetaScreen *screen)
 
   g_return_if_fail (META_IS_SCREEN (screen));
 
-  timestamp = screen->wm_sn_timestamp;
+  timestamp = screen->display->x11_display->wm_sn_timestamp;
 
   /* Get current workspace */
-  if (meta_prop_get_cardinal (display,
+  if (meta_prop_get_cardinal (display->x11_display,
                               display->x11_display->xroot,
                               display->x11_display->atom__NET_CURRENT_DESKTOP,
                               &current_workspace_index))
@@ -710,9 +578,6 @@ void
 meta_screen_free (MetaScreen *screen,
                   guint32     timestamp)
 {
-  MetaDisplay *display = screen->display;
-  MetaX11Display *x11_display = display->x11_display;
-
   screen->closing += 1;
 
   meta_prefs_remove_listener (prefs_changed_callback, screen);
@@ -722,9 +587,6 @@ meta_screen_free (MetaScreen *screen,
   meta_ui_free (screen->ui);
 
   unset_wm_check_hint (screen);
-
-  XDestroyWindow (x11_display->xdisplay,
-                  screen->wm_sn_selection_window);
 
   if (screen->work_area_later != 0)
     meta_later_remove (screen->work_area_later);
@@ -986,7 +848,7 @@ update_num_workspaces (MetaScreen *screen,
       n_items = 0;
       list = NULL;
 
-      if (meta_prop_get_cardinal_list (display,
+      if (meta_prop_get_cardinal_list (display->x11_display,
                                        display->x11_display->xroot,
                                        display->x11_display->atom__NET_NUMBER_OF_DESKTOPS,
                                        &list, &n_items))
@@ -1340,7 +1202,7 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
   list = NULL;
   n_items = 0;
 
-  if (meta_prop_get_cardinal_list (display,
+  if (meta_prop_get_cardinal_list (display->x11_display,
                                    display->x11_display->xroot,
                                    display->x11_display->atom__NET_DESKTOP_LAYOUT,
                                    &list, &n_items))
@@ -1516,7 +1378,7 @@ meta_screen_update_workspace_names (MetaScreen *screen)
 
   names = NULL;
   n_names = 0;
-  if (!meta_prop_get_utf8_list (screen->display,
+  if (!meta_prop_get_utf8_list (x11_display,
                                 x11_display->xroot,
                                 x11_display->atom__NET_DESKTOP_NAMES,
                                 &names, &n_names))
@@ -2166,21 +2028,6 @@ MetaDisplay *
 meta_screen_get_display (MetaScreen *screen)
 {
   return screen->display;
-}
-
-void
-meta_screen_set_cm_selection (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-  char selection[32];
-  Atom a;
-  guint32 timestamp;
-
-  timestamp = meta_display_get_current_time_roundtrip (screen->display);
-  g_snprintf (selection, sizeof (selection), "_NET_WM_CM_S%d",
-              meta_ui_get_screen_number ());
-  a = XInternAtom (x11_display->xdisplay, selection, False);
-  screen->wm_cm_selection_window = take_manager_selection (screen->display, x11_display->xroot, a, timestamp, TRUE);
 }
 
 /**

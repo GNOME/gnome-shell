@@ -712,7 +712,8 @@ handle_window_focus_event (MetaDisplay  *display,
       else
         window_type = "unknown client window";
     }
-  else if (meta_display_xwindow_is_a_no_focus_window (display, event->event))
+  else if (meta_x11_display_xwindow_is_a_no_focus_window (display->x11_display,
+                                                          event->event))
     window_type = "no_focus_window";
   else if (event->event == display->x11_display->xroot)
     window_type = "root window";
@@ -772,8 +773,8 @@ handle_window_focus_event (MetaDisplay  *display,
 
   if (event->evtype == XI_FocusIn)
     {
-      display->server_focus_window = event->event;
-      display->server_focus_serial = serial;
+      display->x11_display->server_focus_window = event->event;
+      display->x11_display->server_focus_serial = serial;
       focus_window = window;
     }
   else if (event->evtype == XI_FocusOut)
@@ -786,8 +787,8 @@ handle_window_focus_event (MetaDisplay  *display,
           return FALSE;
         }
 
-      display->server_focus_window = None;
-      display->server_focus_serial = serial;
+      display->x11_display->server_focus_window = None;
+      display->x11_display->server_focus_serial = serial;
       focus_window = NULL;
     }
   else
@@ -798,14 +799,14 @@ handle_window_focus_event (MetaDisplay  *display,
    * (See request_xserver_input_focus_change().) Otherwise, we can get
    * multiple focus events with the same serial.
    */
-  if (display->server_focus_serial > display->focus_serial ||
+  if (display->x11_display->server_focus_serial > display->x11_display->focus_serial ||
       (!display->focused_by_us &&
-       display->server_focus_serial == display->focus_serial))
+       display->x11_display->server_focus_serial == display->x11_display->focus_serial))
     {
       meta_display_update_focus_window (display,
                                         focus_window,
                                         focus_window ? focus_window->xwindow : None,
-                                        display->server_focus_serial,
+                                        display->x11_display->server_focus_serial,
                                         FALSE);
       return TRUE;
     }
@@ -950,7 +951,7 @@ process_request_frame_extents (MetaDisplay    *display,
   meta_verbose ("Setting frame extents for 0x%lx\n", xwindow);
 
   /* See if the window is decorated. */
-  hints_set = meta_prop_get_motif_hints (display,
+  hints_set = meta_prop_get_motif_hints (display->x11_display,
                                          xwindow,
                                          display->x11_display->atom__MOTIF_WM_HINTS,
                                          &hints);
@@ -1010,7 +1011,7 @@ convert_property (MetaDisplay *display,
   else if (target == x11_display->atom_TIMESTAMP)
     XChangeProperty (x11_display->xdisplay, w, property,
 		     XA_INTEGER, 32, PropModeReplace,
-		     (unsigned char *)&screen->wm_sn_timestamp, 1);
+                     (unsigned char *)&x11_display->wm_sn_timestamp, 1);
   else if (target == x11_display->atom_VERSION)
     XChangeProperty (x11_display->xdisplay, w, property,
 		     XA_INTEGER, 32, PropModeReplace,
@@ -1043,8 +1044,8 @@ process_selection_request (MetaDisplay   *display,
   MetaScreen *screen = display->screen;
   XSelectionEvent reply;
 
-  if (screen->wm_sn_selection_window != event->xselectionrequest.owner ||
-      screen->wm_sn_atom != event->xselectionrequest.selection)
+  if (x11_display->wm_sn_selection_window != event->xselectionrequest.owner ||
+      x11_display->wm_sn_atom != event->xselectionrequest.selection)
     {
       char *str;
 
@@ -1140,10 +1141,8 @@ static gboolean
 process_selection_clear (MetaDisplay   *display,
                          XEvent        *event)
 {
-  MetaScreen *screen = display->screen;
-
-  if (screen->wm_sn_selection_window != event->xselectionclear.window ||
-      screen->wm_sn_atom != event->xselectionclear.selection)
+  if (display->x11_display->wm_sn_selection_window != event->xselectionclear.window ||
+      display->x11_display->wm_sn_atom != event->xselectionclear.selection)
     {
       char *str;
 
@@ -1419,7 +1418,7 @@ handle_other_xevent (MetaDisplay *display,
       if (event->xconfigure.event != event->xconfigure.window)
         {
           if (event->xconfigure.event == x11_display->xroot &&
-              event->xconfigure.window != display->screen->composite_overlay_window)
+              event->xconfigure.window != x11_display->composite_overlay_window)
             meta_stack_tracker_configure_event (display->stack_tracker,
                                                 &event->xconfigure);
         }
@@ -1744,17 +1743,17 @@ meta_display_handle_xevent (MetaDisplay *display,
     meta_backend_x11_handle_event (META_BACKEND_X11 (backend), event);
 
   if (display->focused_by_us &&
-      event->xany.serial > display->focus_serial &&
+      event->xany.serial > display->x11_display->focus_serial &&
       display->focus_window &&
-      !window_has_xwindow (display->focus_window, display->server_focus_window))
+      !window_has_xwindow (display->focus_window, display->x11_display->server_focus_window))
     {
       meta_topic (META_DEBUG_FOCUS, "Earlier attempt to focus %s failed\n",
                   display->focus_window->desc);
       meta_display_update_focus_window (display,
                                         meta_x11_display_lookup_x_window (display->x11_display,
-                                                                          display->server_focus_window),
-                                        display->server_focus_window,
-                                        display->server_focus_serial,
+                                                                          display->x11_display->server_focus_window),
+                                        display->x11_display->server_focus_window,
+                                        display->x11_display->server_focus_serial,
                                         FALSE);
     }
 

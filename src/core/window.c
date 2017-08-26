@@ -8027,9 +8027,8 @@ mouse_mode_focus (MetaWindow  *window,
                       "Unsetting focus from %s due to mouse entering "
                       "the DESKTOP window\n",
                       display->focus_window->desc);
-          meta_display_focus_the_no_focus_window (display,
-                                                  window->screen,
-                                                  timestamp);
+          meta_x11_display_focus_the_no_focus_window (display->x11_display,
+                                                      timestamp);
         }
     }
 }

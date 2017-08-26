@@ -52,22 +52,12 @@ struct _MetaScreen
 
   MetaWorkspace *active_workspace;
 
-  /* This window holds the focus when we don't want to focus
-   * any actual clients
-   */
-  Window no_focus_window;
-
   GList *workspaces;
-
-  Window wm_sn_selection_window;
-  Atom wm_sn_atom;
-  guint32 wm_sn_timestamp;
 
   gboolean has_xinerama_indices;
 
   GSList *startup_sequences;
 
-  Window wm_cm_selection_window;
   guint work_area_later;
   guint check_fullscreen_later;
 
@@ -80,8 +70,6 @@ struct _MetaScreen
   guint keys_grabbed : 1;
 
   int closing;
-
-  Window composite_overlay_window;
 };
 
 struct _MetaScreenClass

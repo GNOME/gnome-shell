@@ -49,17 +49,23 @@
 
 #include "backends/meta-backend-private.h"
 #include "backends/x11/meta-backend-x11.h"
+#include "core/frame.h"
 #include "core/util-private.h"
 #include "meta/errors.h"
+#include "meta/main.h"
 
 #include "x11/group-props.h"
 #include "x11/window-props.h"
+#include "x11/xprops.h"
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-xwayland-private.h"
 #endif
 
 G_DEFINE_TYPE (MetaX11Display, meta_x11_display, G_TYPE_OBJECT)
+
+static const char *gnome_wm_keybindings = "Mutter";
+static const char *net_wm_name = "Mutter";
 
 static char *get_screen_name (Display *xdisplay,
                               int      number);
@@ -73,6 +79,40 @@ static void
 meta_x11_display_dispose (GObject *object)
 {
   MetaX11Display *x11_display = META_X11_DISPLAY (object);
+
+  if (x11_display->no_focus_window != None)
+    {
+      XUnmapWindow (x11_display->xdisplay, x11_display->no_focus_window);
+      XDestroyWindow (x11_display->xdisplay, x11_display->no_focus_window);
+
+      x11_display->no_focus_window = None;
+    }
+
+  if (x11_display->composite_overlay_window != None)
+    {
+      XCompositeReleaseOverlayWindow (x11_display->xdisplay,
+                                      x11_display->composite_overlay_window);
+
+      x11_display->composite_overlay_window = None;
+    }
+
+  if (x11_display->wm_sn_selection_window != None)
+    {
+      XDestroyWindow (x11_display->xdisplay, x11_display->wm_sn_selection_window);
+      x11_display->wm_sn_selection_window = None;
+    }
+
+  if (x11_display->timestamp_pinging_window != None)
+    {
+      XDestroyWindow (x11_display->xdisplay, x11_display->timestamp_pinging_window);
+      x11_display->timestamp_pinging_window = None;
+    }
+
+  if (x11_display->leader_window != None)
+    {
+      XDestroyWindow (x11_display->xdisplay, x11_display->leader_window);
+      x11_display->leader_window = None;
+    }
 
   if (x11_display->guard_window != None)
     {
@@ -331,6 +371,194 @@ query_xi_extension (MetaX11Display *x11_display)
     meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
 }
 
+static Window
+take_manager_selection (MetaX11Display *x11_display,
+                        Window          xroot,
+                        Atom            manager_atom,
+                        int             timestamp,
+                        gboolean        should_replace)
+{
+  Window current_owner, new_owner;
+
+  current_owner = XGetSelectionOwner (x11_display->xdisplay, manager_atom);
+  if (current_owner != None)
+    {
+      XSetWindowAttributes attrs;
+
+      if (should_replace)
+        {
+          /* We want to find out when the current selection owner dies */
+          meta_error_trap_push (x11_display);
+          attrs.event_mask = StructureNotifyMask;
+          XChangeWindowAttributes (x11_display->xdisplay, current_owner, CWEventMask, &attrs);
+          if (meta_error_trap_pop_with_return (x11_display) != Success)
+            current_owner = None; /* don't wait for it to die later on */
+        }
+      else
+        {
+          meta_warning (_("Display “%s” already has a window manager; try using the --replace option to replace the current window manager."),
+                        x11_display->name);
+          return None;
+        }
+    }
+
+  /* We need SelectionClear and SelectionRequest events on the new owner,
+   * but those cannot be masked, so we only need NoEventMask.
+   */
+  new_owner = meta_x11_display_create_offscreen_window (x11_display, xroot, NoEventMask);
+
+  XSetSelectionOwner (x11_display->xdisplay, manager_atom, new_owner, timestamp);
+
+  if (XGetSelectionOwner (x11_display->xdisplay, manager_atom) != new_owner)
+    {
+      meta_warning ("Could not acquire selection: %s", XGetAtomName (x11_display->xdisplay, manager_atom));
+      return None;
+    }
+
+  {
+    /* Send client message indicating that we are now the selection owner */
+    XClientMessageEvent ev;
+
+    ev.type = ClientMessage;
+    ev.window = xroot;
+    ev.message_type = x11_display->atom_MANAGER;
+    ev.format = 32;
+    ev.data.l[0] = timestamp;
+    ev.data.l[1] = manager_atom;
+
+    XSendEvent (x11_display->xdisplay, xroot, False, StructureNotifyMask, (XEvent *) &ev);
+  }
+
+  /* Wait for old window manager to go away */
+  if (current_owner != None)
+    {
+      XEvent event;
+
+      /* We sort of block infinitely here which is probably lame. */
+
+      meta_verbose ("Waiting for old window manager to exit\n");
+      do
+        XWindowEvent (x11_display->xdisplay, current_owner, StructureNotifyMask, &event);
+      while (event.type != DestroyNotify);
+    }
+
+  return new_owner;
+}
+
+/* Create the leader window here. Set its properties and
+ * use the timestamp from one of the PropertyNotify events
+ * that will follow.
+ */
+static void
+init_leader_window (MetaX11Display *x11_display,
+                    guint32        *timestamp)
+{
+  gulong data[1];
+  XEvent event;
+
+  /* We only care about the PropertyChangeMask in the next 30 or so lines of
+   * code.  Note that gdk will at some point unset the PropertyChangeMask for
+   * this window, so we can't rely on it still being set later.  See bug
+   * 354213 for details.
+   */
+  x11_display->leader_window =
+    meta_x11_display_create_offscreen_window (x11_display,
+                                              x11_display->xroot,
+                                              PropertyChangeMask);
+
+  meta_prop_set_utf8_string_hint (x11_display,
+                                  x11_display->leader_window,
+                                  x11_display->atom__NET_WM_NAME,
+                                  net_wm_name);
+
+  meta_prop_set_utf8_string_hint (x11_display,
+                                  x11_display->leader_window,
+                                  x11_display->atom__GNOME_WM_KEYBINDINGS,
+                                  gnome_wm_keybindings);
+
+  meta_prop_set_utf8_string_hint (x11_display,
+                                  x11_display->leader_window,
+                                  x11_display->atom__MUTTER_VERSION,
+                                  VERSION);
+
+  data[0] = x11_display->leader_window;
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->leader_window,
+                   x11_display->atom__NET_SUPPORTING_WM_CHECK,
+                   XA_WINDOW,
+                   32, PropModeReplace, (guchar*) data, 1);
+
+  XWindowEvent (x11_display->xdisplay,
+                x11_display->leader_window,
+                PropertyChangeMask,
+                &event);
+
+  if (timestamp)
+   *timestamp = event.xproperty.time;
+
+  /* Make it painfully clear that we can't rely on PropertyNotify events on
+   * this window, as per bug 354213.
+   */
+  XSelectInput (x11_display->xdisplay,
+                x11_display->leader_window,
+                NoEventMask);
+}
+
+static void
+init_event_masks (MetaX11Display *x11_display)
+{
+  long event_mask;
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+  XISetMask (mask.mask, XI_Enter);
+  XISetMask (mask.mask, XI_Leave);
+  XISetMask (mask.mask, XI_FocusIn);
+  XISetMask (mask.mask, XI_FocusOut);
+#ifdef HAVE_XI23
+  if (META_X11_DISPLAY_HAS_XINPUT_23 (x11_display))
+    {
+      XISetMask (mask.mask, XI_BarrierHit);
+      XISetMask (mask.mask, XI_BarrierLeave);
+    }
+#endif /* HAVE_XI23 */
+  XISelectEvents (x11_display->xdisplay, x11_display->xroot, &mask, 1);
+
+  event_mask = (SubstructureRedirectMask | SubstructureNotifyMask |
+                StructureNotifyMask | ColormapChangeMask | PropertyChangeMask);
+  XSelectInput (x11_display->xdisplay, x11_display->xroot, event_mask);
+}
+
+/**
+ * meta_set_wm_name: (skip)
+ * @wm_name: value for _NET_WM_NAME
+ *
+ * Set the value to use for the _NET_WM_NAME property. To take effect,
+ * it is necessary to call this function before meta_init().
+ */
+void
+meta_set_wm_name (const char *wm_name)
+{
+  g_return_if_fail (meta_get_display () == NULL);
+
+  net_wm_name = wm_name;
+}
+
+/**
+ * meta_set_gnome_wm_keybindings: (skip)
+ * @wm_keybindings: value for _GNOME_WM_KEYBINDINGS
+ *
+ * Set the value to use for the _GNOME_WM_KEYBINDINGS property. To take
+ * effect, it is necessary to call this function before meta_init().
+ */
+void
+meta_set_gnome_wm_keybindings (const char *wm_keybindings)
+{
+  g_return_if_fail (meta_get_display () == NULL);
+
+  gnome_wm_keybindings = wm_keybindings;
+}
+
 /**
  * meta_x11_display_new:
  *
@@ -349,6 +577,11 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   Screen *xscreen;
   Window xroot;
   int i, number;
+  Window new_wm_sn_owner;
+  gboolean replace_current_wm;
+  Atom wm_sn_atom;
+  char buf[128];
+  guint32 timestamp;
 
   /* A list of all atom names, so that we can intern them in one go. */
   const char *atom_names[] = {
@@ -381,6 +614,8 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   if (meta_is_syncing ())
     XSynchronize (xdisplay, True);
 
+  replace_current_wm = meta_get_replace_current_wm ();
+
   number = meta_ui_get_screen_number ();
 
   xroot = RootWindow (xdisplay, number);
@@ -390,7 +625,6 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
    */
   if (xroot == None)
     {
-
       meta_warning (_("Screen %d on display “%s” is invalid\n"),
                     number, XDisplayName (NULL));
 
@@ -448,7 +682,15 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
                                         meta_unsigned_long_equal);
 
   x11_display->groups_by_leader = NULL;
+  x11_display->composite_overlay_window = None;
   x11_display->guard_window = None;
+  x11_display->leader_window = None;
+  x11_display->timestamp_pinging_window = None;
+  x11_display->wm_sn_selection_window = None;
+
+  x11_display->focus_serial = 0;
+  x11_display->server_focus_window = None;
+  x11_display->server_focus_serial = 0;
 
   x11_display->prop_hooks = NULL;
   meta_x11_display_init_window_prop_hooks (x11_display);
@@ -460,6 +702,58 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
                            G_CALLBACK (on_monitors_changed),
                            x11_display,
                            0);
+
+  init_leader_window (x11_display, &timestamp);
+  x11_display->timestamp = timestamp;
+
+  /* Make a little window used only for pinging the server for timestamps; note
+   * that meta_create_offscreen_window already selects for PropertyChangeMask.
+   */
+  x11_display->timestamp_pinging_window =
+    meta_x11_display_create_offscreen_window (x11_display,
+                                              xroot,
+                                              PropertyChangeMask);
+
+  sprintf (buf, "WM_S%d", number);
+
+  wm_sn_atom = XInternAtom (xdisplay, buf, False);
+  new_wm_sn_owner = take_manager_selection (x11_display, xroot, wm_sn_atom, timestamp, replace_current_wm);
+  if (new_wm_sn_owner == None)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to acquire window manager ownership");
+
+      g_object_run_dispose (G_OBJECT (x11_display));
+      g_clear_object (&x11_display);
+
+      return NULL;
+    }
+
+  x11_display->wm_sn_selection_window = new_wm_sn_owner;
+  x11_display->wm_sn_atom = wm_sn_atom;
+  x11_display->wm_sn_timestamp = timestamp;
+
+  init_event_masks (x11_display);
+
+  /* Select for cursor changes so the cursor tracker is up to date. */
+  XFixesSelectCursorInput (xdisplay, xroot, XFixesDisplayCursorNotifyMask);
+
+  /* If we're a Wayland compositor, then we don't grab the COW, since it
+   * will map it. */
+  if (!meta_is_wayland_compositor ())
+    x11_display->composite_overlay_window = XCompositeGetOverlayWindow (xdisplay, xroot);
+
+  /* Now that we've gotten taken a reference count on the COW, we
+   * can close the helper that is holding on to it */
+  meta_restart_finish ();
+
+  /* Handle creating a no_focus_window for this screen */
+  x11_display->no_focus_window =
+    meta_x11_display_create_offscreen_window (x11_display,
+                                              xroot,
+                                              FocusChangeMask|KeyPressMask|KeyReleaseMask);
+  XMapWindow (xdisplay, x11_display->no_focus_window);
+  /* Done with no_focus_window stuff */
 
   return x11_display;
 }
@@ -785,4 +1079,190 @@ on_monitors_changed (MetaDisplay    *display,
                         CWX | CWY | CWWidth | CWHeight,
                         &changes);
     }
+}
+
+void
+meta_x11_display_set_cm_selection (MetaX11Display *x11_display)
+{
+  char selection[32];
+  Atom a;
+  guint32 timestamp;
+
+  timestamp = meta_x11_display_get_current_time_roundtrip (x11_display);
+  g_snprintf (selection, sizeof (selection), "_NET_WM_CM_S%d",
+              meta_ui_get_screen_number ());
+  a = XInternAtom (x11_display->xdisplay, selection, False);
+
+  x11_display->wm_cm_selection_window = take_manager_selection (x11_display, x11_display->xroot, a, timestamp, TRUE);
+}
+
+static Bool
+find_timestamp_predicate (Display  *xdisplay,
+                          XEvent   *ev,
+                          XPointer  arg)
+{
+  MetaX11Display *x11_display = (MetaX11Display *) arg;
+
+  return (ev->type == PropertyNotify &&
+          ev->xproperty.atom == x11_display->atom__MUTTER_TIMESTAMP_PING);
+}
+
+/* Get a timestamp, even if it means a roundtrip */
+guint32
+meta_x11_display_get_current_time_roundtrip (MetaX11Display *x11_display)
+{
+  guint32 timestamp;
+
+  timestamp = meta_display_get_current_time (x11_display->display);
+  if (timestamp == CurrentTime)
+    {
+      XEvent property_event;
+
+      XChangeProperty (x11_display->xdisplay,
+                       x11_display->timestamp_pinging_window,
+                       x11_display->atom__MUTTER_TIMESTAMP_PING,
+                       XA_STRING, 8, PropModeAppend, NULL, 0);
+      XIfEvent (x11_display->xdisplay,
+                &property_event,
+                find_timestamp_predicate,
+                (XPointer) x11_display);
+      timestamp = property_event.xproperty.time;
+    }
+
+  meta_display_sanity_check_timestamps (x11_display->display, timestamp);
+
+  return timestamp;
+}
+
+/**
+ * meta_x11_display_xwindow_is_a_no_focus_window:
+ * @x11_display: A #MetaX11Display
+ * @xwindow: An X11 window
+ *
+ * Returns: %TRUE iff window is one of mutter's internal "no focus" windows
+ * which will have the focus when there is no actual client window focused.
+ */
+gboolean
+meta_x11_display_xwindow_is_a_no_focus_window (MetaX11Display *x11_display,
+                                               Window xwindow)
+{
+  return xwindow == x11_display->no_focus_window;
+}
+
+void
+meta_x11_display_increment_event_serial (MetaX11Display *x11_display)
+
+{
+  /* We just make some random X request */
+  XDeleteProperty (x11_display->xdisplay,
+                   x11_display->leader_window,
+                   x11_display->atom__MOTIF_WM_HINTS);
+}
+
+void
+meta_x11_display_update_active_window_hint (MetaX11Display *x11_display)
+{
+  MetaWindow *focus_window = x11_display->display->focus_window;
+  gulong data[1];
+
+  if (x11_display->display->closing)
+    return; /* Leave old value for a replacement */
+
+  if (focus_window)
+    data[0] = focus_window->xwindow;
+  else
+    data[0] = None;
+
+  meta_error_trap_push (x11_display);
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom__NET_ACTIVE_WINDOW,
+                   XA_WINDOW,
+                   32, PropModeReplace, (guchar*) data, 1);
+  meta_error_trap_pop (x11_display);
+}
+
+static void
+request_xserver_input_focus_change (MetaX11Display *x11_display,
+                                    MetaWindow     *meta_window,
+                                    Window          xwindow,
+                                    guint32         timestamp)
+{
+  gulong serial;
+
+  if (meta_display_timestamp_too_old (x11_display->display, &timestamp))
+    return;
+
+  meta_error_trap_push (x11_display);
+
+  /* In order for mutter to know that the focus request succeeded, we track
+   * the serial of the "focus request" we made, but if we take the serial
+   * of the XSetInputFocus request, then there's no way to determine the
+   * difference between focus events as a result of the SetInputFocus and
+   * focus events that other clients send around the same time. Ensure that
+   * we know which is which by making two requests that the server will
+   * process at the same time.
+   */
+  XGrabServer (x11_display->xdisplay);
+
+  serial = XNextRequest (x11_display->xdisplay);
+
+  XSetInputFocus (x11_display->xdisplay,
+                  xwindow,
+                  RevertToPointerRoot,
+                  timestamp);
+
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->timestamp_pinging_window,
+                   x11_display->atom__MUTTER_FOCUS_SET,
+                   XA_STRING, 8, PropModeAppend, NULL, 0);
+
+  XUngrabServer (x11_display->xdisplay);
+  XFlush (x11_display->xdisplay);
+
+  meta_display_update_focus_window (x11_display->display,
+                                    meta_window,
+                                    xwindow,
+                                    serial,
+                                    TRUE);
+
+  meta_error_trap_pop (x11_display);
+
+  x11_display->display->last_focus_time = timestamp;
+
+  if (meta_window == NULL || meta_window != x11_display->display->autoraise_window)
+    meta_display_remove_autoraise_callback (x11_display->display);
+}
+
+void
+meta_x11_display_set_input_focus_window (MetaX11Display *x11_display,
+                                         MetaWindow     *window,
+                                         gboolean        focus_frame,
+                                         guint32         timestamp)
+{
+  request_xserver_input_focus_change (x11_display,
+                                      window,
+                                      focus_frame ? window->frame->xwindow : window->xwindow,
+                                      timestamp);
+}
+
+void
+meta_x11_display_set_input_focus_xwindow (MetaX11Display *x11_display,
+                                          Window          window,
+                                          guint32         timestamp)
+{
+  request_xserver_input_focus_change (x11_display,
+                                      NULL,
+                                      window,
+                                      timestamp);
+}
+
+void
+meta_x11_display_focus_the_no_focus_window (MetaX11Display *x11_display,
+                                            guint32         timestamp)
+{
+  request_xserver_input_focus_change (x11_display,
+                                      NULL,
+                                      x11_display->no_focus_window,
+                                      timestamp);
 }

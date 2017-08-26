@@ -104,7 +104,7 @@ meta_window_reload_property_from_xwindow (MetaWindow      *window,
 
   init_prop_value (window, hooks, &value);
 
-  meta_prop_get_values (window->display, xwindow,
+  meta_prop_get_values (window->display->x11_display, xwindow,
                         &value, 1);
 
   reload_prop_value (window, hooks, &value,
@@ -146,7 +146,7 @@ meta_window_load_initial_properties (MetaWindow *window)
     }
   n_properties = j;
 
-  meta_prop_get_values (window->display, window->xwindow,
+  meta_prop_get_values (window->display->x11_display, window->xwindow,
                         values, n_properties);
 
   j = 0;
@@ -569,7 +569,7 @@ set_title_text (MetaWindow  *window,
     *target = g_strdup (title);
 
   if (modified && atom != None)
-    meta_prop_set_utf8_string_hint (window->display,
+    meta_prop_set_utf8_string_hint (window->display->x11_display,
                                     window->xwindow,
                                     atom, *target);
 

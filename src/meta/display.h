@@ -80,9 +80,6 @@ MetaX11Display *meta_display_get_x11_display (MetaDisplay *display);
 
 MetaWindow *meta_display_get_focus_window (MetaDisplay *display);
 
-gboolean  meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
-                                                     Window xwindow);
-
 gboolean meta_display_xserver_time_is_before (MetaDisplay *display,
                                               guint32      time1,
                                               guint32      time2);
@@ -139,28 +136,6 @@ gboolean meta_display_ungrab_accelerator (MetaDisplay *display,
 guint meta_display_get_keybinding_action (MetaDisplay  *display,
                                           unsigned int  keycode,
                                           unsigned long mask);
-
-/* meta_display_set_input_focus_window is like XSetInputFocus, except
- * that (a) it can't detect timestamps later than the current time,
- * since Mutter isn't part of the XServer, and thus gives erroneous
- * behavior in this circumstance (so don't do it), (b) it uses
- * display->last_focus_time since we don't have access to the true
- * Xserver one, (c) it makes use of display->user_time since checking
- * whether a window should be allowed to be focused should depend
- * on user_time events (see bug 167358, comment 15 in particular)
- */
-void meta_display_set_input_focus_window   (MetaDisplay *display,
-                                            MetaWindow  *window,
-                                            gboolean     focus_frame,
-                                            guint32      timestamp);
-
-/* meta_display_focus_the_no_focus_window is called when the
- * designated no_focus_window should be focused, but is otherwise the
- * same as meta_display_set_input_focus_window
- */
-void meta_display_focus_the_no_focus_window (MetaDisplay *display,
-                                             MetaScreen  *screen,
-                                             guint32      timestamp);
 
 GSList *meta_display_sort_windows_by_stacking (MetaDisplay *display,
                                                GSList      *windows);

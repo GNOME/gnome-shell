@@ -74,7 +74,7 @@ meta_group_reload_properties (MetaGroup  *group,
       ++i;
     }
 
-  meta_prop_get_values (group->x11_display->display,
+  meta_prop_get_values (group->x11_display,
                         group->group_leader,
                         values, n_properties);
 

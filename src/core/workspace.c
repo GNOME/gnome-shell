@@ -1262,6 +1262,8 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
                                      MetaWindow    *not_this_one,
                                      guint32        timestamp)
 {
+  MetaDisplay *display = workspace->screen->display;
+
   if (timestamp == CurrentTime)
     meta_warning ("CurrentTime used to choose focus window; "
                   "focus window may not be correct.\n");
@@ -1300,8 +1302,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
           if (workspace->screen->display->autoraise_window != window &&
               meta_prefs_get_auto_raise ())
             {
-              meta_display_queue_autoraise_callback (workspace->screen->display,
-                                                     window);
+              meta_display_queue_autoraise_callback (display, window);
             }
         }
       else if (meta_prefs_get_focus_mode () == G_DESKTOP_FOCUS_MODE_SLOPPY)
@@ -1311,9 +1312,8 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
           meta_topic (META_DEBUG_FOCUS,
                       "Setting focus to no_focus_window, since no valid "
                       "window to focus found.\n");
-          meta_display_focus_the_no_focus_window (workspace->screen->display,
-                                                  workspace->screen,
-                                                  timestamp);
+          meta_x11_display_focus_the_no_focus_window (display->x11_display,
+                                                      timestamp);
         }
     }
 }
@@ -1334,6 +1334,7 @@ focus_ancestor_or_top_window (MetaWorkspace *workspace,
                               MetaWindow    *not_this_one,
                               guint32        timestamp)
 {
+  MetaDisplay *display = workspace->screen->display;
   MetaWindow *window = NULL;
 
   if (not_this_one)
@@ -1367,7 +1368,7 @@ focus_ancestor_or_top_window (MetaWorkspace *workspace,
         }
     }
 
-  window = meta_stack_get_default_focus_window (workspace->screen->display->stack,
+  window = meta_stack_get_default_focus_window (display->stack,
                                                 workspace,
                                                 not_this_one);
 
@@ -1385,9 +1386,8 @@ focus_ancestor_or_top_window (MetaWorkspace *workspace,
   else
     {
       meta_topic (META_DEBUG_FOCUS, "No MRU window to focus found; focusing no_focus_window.\n");
-      meta_display_focus_the_no_focus_window (workspace->screen->display,
-                                              workspace->screen,
-                                              timestamp);
+      meta_x11_display_focus_the_no_focus_window (display->x11_display,
+                                                  timestamp);
     }
 }
 

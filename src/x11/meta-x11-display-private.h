@@ -54,6 +54,8 @@ struct _MetaX11Display
   int default_depth;
   Visual *default_xvisual;
 
+  guint32 timestamp;
+
   /* Pull in all the names of atoms as fields; we will intern them when the
    * class is constructed.
    */
@@ -61,10 +63,35 @@ struct _MetaX11Display
 #include "x11/atomnames.h"
 #undef item
 
+  Window leader_window;
+  Window timestamp_pinging_window;
+
+  /* The window and serial of the most recent FocusIn event. */
+  Window server_focus_window;
+  gulong server_focus_serial;
+
+  /* For windows we've focused that don't necessarily have an X window,
+   * like the no_focus_window or the stage X window. */
+  Window focus_xwindow;
+  gulong focus_serial;
+
+  /* This window holds the focus when we don't want to focus
+   * any actual clients
+   */
+  Window no_focus_window;
+
   /* Instead of unmapping withdrawn windows we can leave them mapped
    * and restack them below a guard window. When using a compositor
    * this allows us to provide live previews of unmapped windows */
   Window guard_window;
+
+  Window wm_sn_selection_window;
+  Atom wm_sn_atom;
+  guint32 wm_sn_timestamp;
+
+  Window wm_cm_selection_window;
+
+  Window composite_overlay_window;
 
   GHashTable *xids;
 
@@ -150,5 +177,16 @@ void meta_x11_display_set_alarm_filter (MetaX11Display *x11_display,
                                         gpointer        data);
 
 void meta_x11_display_create_guard_window (MetaX11Display *x11_display);
+
+/* make a request to ensure the event serial has changed */
+void meta_x11_display_increment_event_serial    (MetaX11Display *x11_display);
+void meta_x11_display_update_active_window_hint (MetaX11Display *x11_display);
+
+guint32 meta_x11_display_get_current_time_roundtrip (MetaX11Display *x11_display);
+
+void meta_x11_display_set_input_focus_xwindow (MetaX11Display *x11_display,
+                                               Window          window,
+                                               guint32         timestamp);
+
 
 #endif /* META_X11_DISPLAY_PRIVATE_H */

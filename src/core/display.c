@@ -157,10 +157,6 @@ static guint display_signals [LAST_SIGNAL] = { 0 };
  */
 static MetaDisplay *the_display = NULL;
 
-
-static const char *gnome_wm_keybindings = "Mutter";
-static const char *net_wm_name = "Mutter";
-
 static void on_monitors_changed_internal (MetaMonitorManager *monitor_manager,
                                           MetaDisplay        *display);
 
@@ -534,36 +530,6 @@ meta_display_init (MetaDisplay *disp)
    * but it doesn't really matter. */
 }
 
-/**
- * meta_set_wm_name: (skip)
- * @wm_name: value for _NET_WM_NAME
- *
- * Set the value to use for the _NET_WM_NAME property. To take effect,
- * it is necessary to call this function before meta_init().
- */
-void
-meta_set_wm_name (const char *wm_name)
-{
-  g_return_if_fail (the_display == NULL);
-
-  net_wm_name = wm_name;
-}
-
-/**
- * meta_set_gnome_wm_keybindings: (skip)
- * @wm_keybindings: value for _GNOME_WM_KEYBINDINGS
- *
- * Set the value to use for the _GNOME_WM_KEYBINDINGS property. To take
- * effect, it is necessary to call this function before meta_init().
- */
-void
-meta_set_gnome_wm_keybindings (const char *wm_keybindings)
-{
-  g_return_if_fail (the_display == NULL);
-
-  gnome_wm_keybindings = wm_keybindings;
-}
-
 void
 meta_display_cancel_touch (MetaDisplay *display)
 {
@@ -638,7 +604,6 @@ meta_display_open (void)
   GError *error = NULL;
   MetaDisplay *display;
   MetaX11Display *x11_display;
-  Display *xdisplay;
   MetaScreen *screen;
   int i;
   guint32 timestamp;
@@ -715,87 +680,14 @@ meta_display_open (void)
   display->x11_display = x11_display;
   g_signal_emit (display, display_signals[X11_DISPLAY_OPENED], 0);
 
-  xdisplay = display->x11_display->xdisplay;
+  timestamp = display->x11_display->timestamp;
 
   display->stack = meta_stack_new (display);
   display->stack_tracker = meta_stack_tracker_new (display);
 
-  display->focus_serial = 0;
-  display->server_focus_window = None;
-  display->server_focus_serial = 0;
-
   meta_bell_init (display);
 
-  /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
-   * created in screen_new
-   */
-  display->leader_window = None;
-  display->timestamp_pinging_window = None;
-
   meta_display_init_events_x11 (display);
-
-  /* Create the leader window here. Set its properties and
-   * use the timestamp from one of the PropertyNotify events
-   * that will follow.
-   */
-  {
-    gulong data[1];
-    XEvent event;
-
-    /* We only care about the PropertyChangeMask in the next 30 or so lines of
-     * code.  Note that gdk will at some point unset the PropertyChangeMask for
-     * this window, so we can't rely on it still being set later.  See bug
-     * 354213 for details.
-     */
-    display->leader_window =
-      meta_x11_display_create_offscreen_window (display->x11_display,
-                                                DefaultRootWindow (xdisplay),
-                                                PropertyChangeMask);
-
-    meta_prop_set_utf8_string_hint (display,
-                                    display->leader_window,
-                                    display->x11_display->atom__NET_WM_NAME,
-                                    net_wm_name);
-
-    meta_prop_set_utf8_string_hint (display,
-                                    display->leader_window,
-                                    display->x11_display->atom__GNOME_WM_KEYBINDINGS,
-                                    gnome_wm_keybindings);
-
-    meta_prop_set_utf8_string_hint (display,
-                                    display->leader_window,
-                                    display->x11_display->atom__MUTTER_VERSION,
-                                    VERSION);
-
-    data[0] = display->leader_window;
-    XChangeProperty (xdisplay,
-                     display->leader_window,
-                     display->x11_display->atom__NET_SUPPORTING_WM_CHECK,
-                     XA_WINDOW,
-                     32, PropModeReplace, (guchar*) data, 1);
-
-    XWindowEvent (xdisplay,
-                  display->leader_window,
-                  PropertyChangeMask,
-                  &event);
-
-    timestamp = event.xproperty.time;
-
-    /* Make it painfully clear that we can't rely on PropertyNotify events on
-     * this window, as per bug 354213.
-     */
-    XSelectInput(xdisplay,
-                 display->leader_window,
-                 NoEventMask);
-  }
-
-  /* Make a little window used only for pinging the server for timestamps; note
-   * that meta_create_offscreen_window already selects for PropertyChangeMask.
-   */
-  display->timestamp_pinging_window =
-    meta_x11_display_create_offscreen_window (display->x11_display,
-                                              DefaultRootWindow (xdisplay),
-                                              PropertyChangeMask);
 
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;
@@ -819,7 +711,8 @@ meta_display_open (void)
   display->screen = screen;
 
   if (!meta_is_wayland_compositor ())
-    meta_prop_get_window (display, display->x11_display->xroot,
+    meta_prop_get_window (display->x11_display,
+                          display->x11_display->xroot,
                           display->x11_display->atom__NET_ACTIVE_WINDOW,
                           &old_active_xwindow);
 
@@ -852,10 +745,10 @@ meta_display_open (void)
       if (old_active_window)
         meta_window_focus (old_active_window, timestamp);
       else
-        meta_display_focus_the_no_focus_window (display, display->screen, timestamp);
+        meta_x11_display_focus_the_no_focus_window (display->x11_display, timestamp);
     }
   else
-    meta_display_focus_the_no_focus_window (display, display->screen, timestamp);
+    meta_x11_display_focus_the_no_focus_window (display->x11_display, timestamp);
 
   meta_idle_monitor_init_dbus ();
 
@@ -1023,9 +916,6 @@ meta_display_close (MetaDisplay *display,
   /* Stop caring about events */
   meta_display_free_events_x11 (display);
 
-  if (display->leader_window != None)
-    XDestroyWindow (display->x11_display->xdisplay, display->leader_window);
-
   if (display->x11_display)
     {
       g_signal_emit (display, display_signals[X11_DISPLAY_CLOSING], 0);
@@ -1185,42 +1075,10 @@ meta_display_get_current_time (MetaDisplay *display)
   return display->current_time;
 }
 
-static Bool
-find_timestamp_predicate (Display  *xdisplay,
-                          XEvent   *ev,
-                          XPointer  arg)
-{
-  MetaDisplay *display = (MetaDisplay *) arg;
-
-  return (ev->type == PropertyNotify &&
-          ev->xproperty.atom == display->x11_display->atom__MUTTER_TIMESTAMP_PING);
-}
-
-/* Get a timestamp, even if it means a roundtrip */
 guint32
 meta_display_get_current_time_roundtrip (MetaDisplay *display)
 {
-  guint32 timestamp;
-
-  timestamp = meta_display_get_current_time (display);
-  if (timestamp == CurrentTime)
-    {
-      XEvent property_event;
-
-      XChangeProperty (display->x11_display->xdisplay,
-                       display->timestamp_pinging_window,
-                       display->x11_display->atom__MUTTER_TIMESTAMP_PING,
-                       XA_STRING, 8, PropModeAppend, NULL, 0);
-      XIfEvent (display->x11_display->xdisplay,
-                &property_event,
-                find_timestamp_predicate,
-                (XPointer) display);
-      timestamp = property_event.xproperty.time;
-    }
-
-  meta_display_sanity_check_timestamps (display, timestamp);
-
-  return timestamp;
+  return meta_x11_display_get_current_time_roundtrip (display->x11_display);
 }
 
 /**
@@ -1308,10 +1166,13 @@ meta_display_sync_wayland_input_focus (MetaDisplay *display)
   MetaWindow *focus_window = NULL;
   MetaBackend *backend = meta_get_backend ();
   MetaStage *stage = META_STAGE (meta_backend_get_stage (backend));
+  gboolean is_focus_xwindow =
+    meta_x11_display_xwindow_is_a_no_focus_window (display->x11_display,
+                                                   display->x11_display->focus_xwindow);
 
   if (!meta_display_windows_are_interactable (display))
     focus_window = NULL;
-  else if (meta_display_xwindow_is_a_no_focus_window (display, display->focus_xwindow))
+  else if (is_focus_xwindow)
     focus_window = NULL;
   else if (display->focus_window && display->focus_window->surface)
     focus_window = display->focus_window;
@@ -1332,10 +1193,10 @@ meta_display_update_focus_window (MetaDisplay *display,
                                   gulong       serial,
                                   gboolean     focused_by_us)
 {
-  display->focus_serial = serial;
+  display->x11_display->focus_serial = serial;
   display->focused_by_us = focused_by_us;
 
-  if (display->focus_xwindow == xwindow &&
+  if (display->x11_display->focus_xwindow == xwindow &&
       display->focus_window == window)
     return;
 
@@ -1353,13 +1214,13 @@ meta_display_update_focus_window (MetaDisplay *display,
        */
       previous = display->focus_window;
       display->focus_window = NULL;
-      display->focus_xwindow = None;
+      display->x11_display->focus_xwindow = None;
 
       meta_window_set_focused_internal (previous, FALSE);
     }
 
   display->focus_window = window;
-  display->focus_xwindow = xwindow;
+  display->x11_display->focus_xwindow = xwindow;
 
   if (display->focus_window)
     {
@@ -1374,7 +1235,7 @@ meta_display_update_focus_window (MetaDisplay *display,
     meta_display_sync_wayland_input_focus (display);
 
   g_object_notify (G_OBJECT (display), "focus-window");
-  meta_display_update_active_window_hint (display);
+  meta_x11_display_update_active_window_hint (display->x11_display);
 }
 
 gboolean
@@ -1404,59 +1265,6 @@ meta_display_timestamp_too_old (MetaDisplay *display,
     }
 
   return FALSE;
-}
-
-static void
-request_xserver_input_focus_change (MetaDisplay *display,
-                                    MetaScreen  *screen,
-                                    MetaWindow  *meta_window,
-                                    Window       xwindow,
-                                    guint32      timestamp)
-{
-  gulong serial;
-
-  if (meta_display_timestamp_too_old (display, &timestamp))
-    return;
-
-  meta_error_trap_push (display->x11_display);
-
-  /* In order for mutter to know that the focus request succeeded, we track
-   * the serial of the "focus request" we made, but if we take the serial
-   * of the XSetInputFocus request, then there's no way to determine the
-   * difference between focus events as a result of the SetInputFocus and
-   * focus events that other clients send around the same time. Ensure that
-   * we know which is which by making two requests that the server will
-   * process at the same time.
-   */
-  XGrabServer (display->x11_display->xdisplay);
-
-  serial = XNextRequest (display->x11_display->xdisplay);
-
-  XSetInputFocus (display->x11_display->xdisplay,
-                  xwindow,
-                  RevertToPointerRoot,
-                  timestamp);
-
-  XChangeProperty (display->x11_display->xdisplay,
-                   display->timestamp_pinging_window,
-                   display->x11_display->atom__MUTTER_FOCUS_SET,
-                   XA_STRING, 8, PropModeAppend, NULL, 0);
-
-  XUngrabServer (display->x11_display->xdisplay);
-  XFlush (display->x11_display->xdisplay);
-
-  meta_display_update_focus_window (display,
-                                    meta_window,
-                                    xwindow,
-                                    serial,
-                                    TRUE);
-
-  meta_error_trap_pop (display->x11_display);
-
-  display->last_focus_time = timestamp;
-
-  if (meta_window == NULL || meta_window != display->autoraise_window)
-    meta_display_remove_autoraise_callback (display);
 }
 
 void
@@ -1541,22 +1349,6 @@ meta_display_notify_window_created (MetaDisplay  *display,
                                     MetaWindow   *window)
 {
   g_signal_emit (display, display_signals[WINDOW_CREATED], 0, window);
-}
-
-/**
- * meta_display_xwindow_is_a_no_focus_window:
- * @display: A #MetaDisplay
- * @xwindow: An X11 window
- *
- * Returns: %TRUE iff window is one of mutter's internal "no focus" windows
- * (there is one per screen) which will have the focus when there is no
- * actual client window focused.
- */
-gboolean
-meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
-                                           Window xwindow)
-{
-  return xwindow == display->screen->no_focus_window;
 }
 
 static MetaCursor
@@ -2011,37 +1803,6 @@ meta_display_check_threshold_reached (MetaDisplay *display,
   if (ABS (display->grab_initial_x - x) >= 8 ||
       ABS (display->grab_initial_y - y) >= 8)
     display->grab_threshold_movement_reached = TRUE;
-}
-
-void
-meta_display_increment_event_serial (MetaDisplay *display)
-{
-  /* We just make some random X request */
-  XDeleteProperty (display->x11_display->xdisplay,
-                   display->leader_window,
-                   display->x11_display->atom__MOTIF_WM_HINTS);
-}
-
-void
-meta_display_update_active_window_hint (MetaDisplay *display)
-{
-  gulong data[1];
-
-  if (display->closing)
-    return; /* Leave old value for a replacement */
-
-  if (display->focus_window)
-    data[0] = display->focus_window->xwindow;
-  else
-    data[0] = None;
-
-  meta_error_trap_push (display->x11_display);
-  XChangeProperty (display->x11_display->xdisplay,
-                   display->x11_display->xroot,
-                   display->x11_display->atom__NET_ACTIVE_WINDOW,
-                   XA_WINDOW,
-                   32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (display->x11_display);
 }
 
 void
@@ -2764,44 +2525,6 @@ meta_display_sanity_check_timestamps (MetaDisplay *display,
 
       g_slist_free (windows);
     }
-}
-
-void
-meta_display_set_input_focus_window (MetaDisplay *display,
-                                     MetaWindow  *window,
-                                     gboolean     focus_frame,
-                                     guint32      timestamp)
-{
-  request_xserver_input_focus_change (display,
-                                      window->screen,
-                                      window,
-                                      focus_frame ? window->frame->xwindow : window->xwindow,
-                                      timestamp);
-}
-
-void
-meta_display_set_input_focus_xwindow (MetaDisplay *display,
-                                      MetaScreen  *screen,
-                                      Window       window,
-                                      guint32      timestamp)
-{
-  request_xserver_input_focus_change (display,
-                                      screen,
-                                      NULL,
-                                      window,
-                                      timestamp);
-}
-
-void
-meta_display_focus_the_no_focus_window (MetaDisplay *display,
-                                        MetaScreen  *screen,
-                                        guint32      timestamp)
-{
-  request_xserver_input_focus_change (display,
-                                      screen,
-                                      NULL,
-                                      screen->no_focus_window,
-                                      timestamp);
 }
 
 void
