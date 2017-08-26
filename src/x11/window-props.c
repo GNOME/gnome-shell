@@ -1049,7 +1049,7 @@ reload_net_startup_id (MetaWindow    *window,
         if (window->initial_timestamp_set)
           timestamp = window->initial_timestamp;
         if (window->initial_workspace_set)
-          workspace = meta_screen_get_workspace_by_index (window->screen, window->initial_workspace);
+          workspace = meta_display_get_workspace_by_index (window->display, window->initial_workspace);
 
         meta_window_activate_with_workspace (window, timestamp, workspace);
       }

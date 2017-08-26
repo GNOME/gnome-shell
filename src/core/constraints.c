@@ -412,7 +412,7 @@ setup_constraint_info (ConstraintInfo      *info,
                             &info->entire_monitor);
     }
 
-  cur_workspace = window->screen->active_workspace;
+  cur_workspace = window->display->active_workspace;
   info->usable_screen_region   =
     meta_workspace_get_onscreen_region (cur_workspace);
   info->usable_monitor_region =
@@ -499,7 +499,7 @@ place_window_if_needed(MetaWindow     *window,
       meta_window_get_work_area_for_logical_monitor (window,
                                                      logical_monitor,
                                                      &info->work_area_monitor);
-      cur_workspace = window->screen->active_workspace;
+      cur_workspace = window->display->active_workspace;
       info->usable_monitor_region =
         meta_workspace_get_onmonitor_region (cur_workspace, logical_monitor);
 
@@ -965,7 +965,7 @@ constrain_maximization (MetaWindow         *window,
         direction = META_DIRECTION_HORIZONTAL;
       else
         direction = META_DIRECTION_VERTICAL;
-      active_workspace_struts = window->screen->active_workspace->all_struts;
+      active_workspace_struts = window->display->active_workspace->all_struts;
 
       target_size = info->current;
       meta_rectangle_expand_to_avoiding_struts (&target_size,

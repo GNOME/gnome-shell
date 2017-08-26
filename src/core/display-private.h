@@ -245,6 +245,16 @@ struct _MetaDisplay
 
   guint work_area_later;
   guint check_fullscreen_later;
+
+  MetaWorkspace *active_workspace;
+
+  GList *workspaces;
+
+  int rows_of_workspaces;
+  int columns_of_workspaces;
+  MetaDisplayCorner starting_corner;
+  guint vertical_workspaces : 1;
+  guint workspace_layout_overridden : 1;
 };
 
 struct _MetaDisplayClass
@@ -433,5 +443,39 @@ void meta_display_queue_check_fullscreen (MetaDisplay *display);
 
 MetaWindow *meta_display_get_pointer_window (MetaDisplay *display,
                                              MetaWindow  *not_this_one);
+
+void meta_display_init_workspaces         (MetaDisplay *display);
+void meta_display_update_workspace_layout (MetaDisplay *display);
+
+typedef struct MetaWorkspaceLayout MetaWorkspaceLayout;
+
+struct MetaWorkspaceLayout
+{
+  int rows;
+  int cols;
+  int *grid;
+  int grid_area;
+  int current_row;
+  int current_col;
+};
+
+void meta_display_calc_workspace_layout (MetaDisplay         *display,
+                                         int                  num_workspaces,
+                                         int                  current_space,
+                                         MetaWorkspaceLayout *layout);
+void meta_display_free_workspace_layout (MetaWorkspaceLayout *layout);
+
+void meta_display_minimize_all_on_active_workspace_except (MetaDisplay *display,
+                                                           MetaWindow *keep);
+
+/* Show/hide the desktop (temporarily hide all windows) */
+void     meta_display_show_desktop        (MetaDisplay *display,
+                                           guint32      timestamp);
+void     meta_display_unshow_desktop      (MetaDisplay *display);
+
+void     meta_display_workspace_switched (MetaDisplay        *display,
+                                          int                 from,
+                                          int                 to,
+                                          MetaMotionDirection direction);
 
 #endif

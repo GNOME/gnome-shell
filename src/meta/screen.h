@@ -38,46 +38,4 @@ GType meta_screen_get_type (void);
 
 MetaDisplay *meta_screen_get_display (MetaScreen *screen);
 
-GList *meta_screen_get_workspaces (MetaScreen *screen);
-
-int meta_screen_get_n_workspaces (MetaScreen *screen);
-
-MetaWorkspace* meta_screen_get_workspace_by_index (MetaScreen    *screen,
-                                                   int            index);
-void meta_screen_remove_workspace (MetaScreen    *screen,
-                                   MetaWorkspace *workspace,
-                                   guint32        timestamp);
-
-MetaWorkspace *meta_screen_append_new_workspace (MetaScreen    *screen,
-                                                 gboolean       activate,
-                                                 guint32        timestamp);
-
-int meta_screen_get_active_workspace_index (MetaScreen *screen);
-
-MetaWorkspace * meta_screen_get_active_workspace (MetaScreen *screen);
-
-void meta_screen_focus_default_window (MetaScreen *screen,
-                                       guint32     timestamp);
-
-/**
- * MetaScreenCorner:
- * @META_SCREEN_TOPLEFT: top-left corner
- * @META_SCREEN_TOPRIGHT: top-right corner
- * @META_SCREEN_BOTTOMLEFT: bottom-left corner
- * @META_SCREEN_BOTTOMRIGHT: bottom-right corner
- */
-typedef enum
-{
-  META_SCREEN_TOPLEFT,
-  META_SCREEN_TOPRIGHT,
-  META_SCREEN_BOTTOMLEFT,
-  META_SCREEN_BOTTOMRIGHT
-} MetaScreenCorner;
-
-void meta_screen_override_workspace_layout (MetaScreen      *screen,
-                                            MetaScreenCorner starting_corner,
-                                            gboolean         vertical_layout,
-                                            int              n_rows,
-                                            int              n_columns);
-
 #endif

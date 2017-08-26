@@ -843,7 +843,6 @@ handle_input_xevent (MetaX11Display *x11_display,
   Window modified;
   MetaWindow *window;
   MetaDisplay *display = x11_display->display;
-  MetaScreen *screen = display->screen;
 
   if (input_event == NULL)
     return FALSE;
@@ -912,7 +911,7 @@ handle_input_xevent (MetaX11Display *x11_display,
                           "Focus got set to None, probably due to "
                           "brain-damage in the X protocol (see bug "
                           "125492).  Setting the default focus window.\n");
-              meta_workspace_focus_default_window (screen->active_workspace,
+              meta_workspace_focus_default_window (display->active_workspace,
                                                    NULL,
                                                    meta_x11_display_get_current_time_roundtrip (x11_display));
             }
@@ -924,7 +923,7 @@ handle_input_xevent (MetaX11Display *x11_display,
                           "Focus got set to root window, probably due to "
                           "gnome-session logout dialog usage (see bug "
                           "153220).  Setting the default focus window.\n");
-              meta_workspace_focus_default_window (screen->active_workspace,
+              meta_workspace_focus_default_window (display->active_workspace,
                                                    NULL,
                                                    meta_x11_display_get_current_time_roundtrip (x11_display));
             }
@@ -1398,12 +1397,12 @@ handle_other_xevent (MetaX11Display *x11_display,
       if (window->minimized)
         {
           meta_window_unminimize (window);
-          if (window->workspace != window->screen->active_workspace)
+          if (window->workspace != window->display->active_workspace)
             {
               meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
                             window->mapped, window->minimized);
               meta_window_change_workspace (window,
-                                            window->screen->active_workspace);
+                                            window->display->active_workspace);
             }
         }
       break;
@@ -1488,10 +1487,10 @@ handle_other_xevent (MetaX11Display *x11_display,
           {
             if (event->xproperty.atom ==
                 x11_display->atom__NET_DESKTOP_LAYOUT)
-              meta_screen_update_workspace_layout (display->screen);
+              meta_display_update_workspace_layout (display);
             else if (event->xproperty.atom ==
                      x11_display->atom__NET_DESKTOP_NAMES)
-              meta_screen_update_workspace_names (display->screen);
+              meta_x11_display_update_workspace_names (x11_display);
 
             /* we just use this property as a sentinel to avoid
              * certain race conditions.  See the comment for the
@@ -1552,7 +1551,7 @@ handle_other_xevent (MetaX11Display *x11_display,
                                 "specified timestamp of %u\n",
                                 space, time);
 
-                  workspace = meta_screen_get_workspace_by_index (display->screen, space);
+                  workspace = meta_display_get_workspace_by_index (display, space);
 
                   /* Handle clients using the older version of the spec... */
                   if (time == 0 && workspace)
@@ -1593,11 +1592,11 @@ handle_other_xevent (MetaX11Display *x11_display,
                                 showing_desktop ? "show" : "hide");
 
                   if (showing_desktop)
-                    meta_screen_show_desktop (display->screen, timestamp);
+                    meta_display_show_desktop (display, timestamp);
                   else
                     {
-                      meta_screen_unshow_desktop (display->screen);
-                      meta_workspace_focus_default_window (display->screen->active_workspace, NULL, timestamp);
+                      meta_display_unshow_desktop (display);
+                      meta_workspace_focus_default_window (display->active_workspace, NULL, timestamp);
                     }
                 }
               else if (event->xclient.message_type ==

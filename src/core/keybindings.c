@@ -2752,8 +2752,8 @@ handle_switch_to_last_workspace (MetaDisplay     *display,
                                  MetaKeyBinding *binding,
                                  gpointer        dummy)
 {
-    gint target = meta_screen_get_n_workspaces(screen) - 1;
-    MetaWorkspace *workspace = meta_screen_get_workspace_by_index (screen, target);
+    gint target = meta_display_get_n_workspaces(display) - 1;
+    MetaWorkspace *workspace = meta_display_get_workspace_by_index (display, target);
     meta_workspace_activate (workspace, event->time);
 }
 
@@ -2774,12 +2774,12 @@ handle_switch_to_workspace (MetaDisplay     *display,
        * current workspace.
        */
 
-      workspace = meta_workspace_get_neighbor (screen->active_workspace,
+      workspace = meta_workspace_get_neighbor (display->active_workspace,
                                                which);
     }
   else
     {
-      workspace = meta_screen_get_workspace_by_index (screen, which);
+      workspace = meta_display_get_workspace_by_index (display, which);
     }
 
   if (workspace)
@@ -3016,15 +3016,15 @@ handle_show_desktop (MetaDisplay     *display,
                      MetaKeyBinding  *binding,
                      gpointer         dummy)
 {
-  if (screen->active_workspace->showing_desktop)
+  if (display->active_workspace->showing_desktop)
     {
-      meta_screen_unshow_desktop (screen);
-      meta_workspace_focus_default_window (screen->active_workspace,
+      meta_display_unshow_desktop (display);
+      meta_workspace_focus_default_window (display->active_workspace,
                                            NULL,
                                            event->time);
     }
   else
-    meta_screen_show_desktop (screen, event->time);
+    meta_display_show_desktop (display, event->time);
 }
 
 static void
@@ -3122,7 +3122,7 @@ do_choose_window (MetaDisplay     *display,
 
   window = meta_display_get_tab_next (display,
                                       type,
-                                      screen->active_workspace,
+                                      display->active_workspace,
                                       NULL,
                                       backward);
 
@@ -3357,8 +3357,8 @@ handle_move_to_workspace_last (MetaDisplay     *display,
   if (window->always_sticky)
     return;
 
-  which = meta_screen_get_n_workspaces (screen) - 1;
-  workspace = meta_screen_get_workspace_by_index (screen, which);
+  which = meta_display_get_n_workspaces (display) - 1;
+  workspace = meta_display_get_workspace_by_index (display, which);
   meta_window_change_workspace (window, workspace);
 }
 
@@ -3389,12 +3389,12 @@ handle_move_to_workspace  (MetaDisplay     *display,
   workspace = NULL;
   if (flip)
     {
-      workspace = meta_workspace_get_neighbor (screen->active_workspace,
+      workspace = meta_workspace_get_neighbor (display->active_workspace,
                                                which);
     }
   else
     {
-      workspace = meta_screen_get_workspace_by_index (screen, which);
+      workspace = meta_display_get_workspace_by_index (display, which);
     }
 
   if (workspace)
@@ -3406,7 +3406,7 @@ handle_move_to_workspace  (MetaDisplay     *display,
           meta_topic (META_DEBUG_FOCUS,
                       "Resetting mouse_mode to FALSE due to "
                       "handle_move_to_workspace() call with flip set.\n");
-          meta_display_clear_mouse_mode (workspace->screen->display);
+          meta_display_clear_mouse_mode (workspace->display);
           meta_workspace_activate_with_focus (workspace,
                                               window,
                                               event->time);

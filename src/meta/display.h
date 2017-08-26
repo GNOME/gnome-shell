@@ -208,4 +208,46 @@ int meta_display_get_monitor_neighbor_index (MetaDisplay         *display,
                                              int                  which_monitor,
                                              MetaDisplayDirection dir);
 
+GList *meta_display_get_workspaces (MetaDisplay *display);
+
+int meta_display_get_n_workspaces (MetaDisplay *display);
+
+MetaWorkspace* meta_display_get_workspace_by_index (MetaDisplay *display,
+                                                   int           index);
+void meta_display_remove_workspace (MetaDisplay   *display,
+                                    MetaWorkspace *workspace,
+                                    guint32        timestamp);
+
+MetaWorkspace *meta_display_append_new_workspace (MetaDisplay *display,
+                                                  gboolean     activate,
+                                                  guint32      timestamp);
+
+int meta_display_get_active_workspace_index (MetaDisplay *display);
+
+MetaWorkspace *meta_display_get_active_workspace (MetaDisplay *display);
+
+void meta_display_focus_default_window (MetaDisplay *display,
+                                        guint32      timestamp);
+
+/**
+ * MetaDisplayCorner:
+ * @META_DISPLAY_TOPLEFT: top-left corner
+ * @META_DISPLAY_TOPRIGHT: top-right corner
+ * @META_DISPLAY_BOTTOMLEFT: bottom-left corner
+ * @META_DISPLAY_BOTTOMRIGHT: bottom-right corner
+ */
+typedef enum
+{
+  META_DISPLAY_TOPLEFT,
+  META_DISPLAY_TOPRIGHT,
+  META_DISPLAY_BOTTOMLEFT,
+  META_DISPLAY_BOTTOMRIGHT
+} MetaDisplayCorner;
+
+void meta_display_override_workspace_layout (MetaDisplay       *display,
+                                             MetaDisplayCorner starting_corner,
+                                             gboolean          vertical_layout,
+                                             int               n_rows,
+                                             int               n_columns);
+
 #endif

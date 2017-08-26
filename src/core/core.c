@@ -87,22 +87,22 @@ lower_window_and_transients (MetaWindow *window,
        * Do extra sanity checks to avoid possible race conditions.
        * (Borrowed from window.c.)
        */
-      if (window->screen->active_workspace &&
+      if (window->display->active_workspace &&
           meta_window_located_on_workspace (window,
-                                            window->screen->active_workspace))
+                                            window->display->active_workspace))
         {
           GList* link;
-          link = g_list_find (window->screen->active_workspace->mru_list,
+          link = g_list_find (window->display->active_workspace->mru_list,
                               window);
           g_assert (link);
 
-          window->screen->active_workspace->mru_list =
-            g_list_remove_link (window->screen->active_workspace->mru_list,
+          window->display->active_workspace->mru_list =
+            g_list_remove_link (window->display->active_workspace->mru_list,
                                 link);
           g_list_free (link);
 
-          window->screen->active_workspace->mru_list =
-            g_list_append (window->screen->active_workspace->mru_list,
+          window->display->active_workspace->mru_list =
+            g_list_append (window->display->active_workspace->mru_list,
                            window);
         }
     }
@@ -123,7 +123,7 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
   * the focus window, assume that's always the case. (Typically,
   * this will be invoked via keyboard action or by a mouse action;
   * in either case the window or a modal child will have been focused.) */
-  meta_workspace_focus_default_window (window->screen->active_workspace,
+  meta_workspace_focus_default_window (window->display->active_workspace,
                                        NULL,
                                        timestamp);
 }

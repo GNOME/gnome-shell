@@ -445,8 +445,8 @@ meta_window_apply_session_info (MetaWindow *window,
           MetaWorkspace *space;
 
           space =
-            meta_screen_get_workspace_by_index (window->screen,
-                                                GPOINTER_TO_INT (tmp->data));
+            meta_display_get_workspace_by_index (window->display,
+                                                 GPOINTER_TO_INT (tmp->data));
 
           if (space)
             spaces = g_slist_prepend (spaces, space);
@@ -2409,8 +2409,8 @@ meta_window_x11_client_message (MetaWindow *window,
                     window->desc, space);
 
       workspace =
-        meta_screen_get_workspace_by_index (window->screen,
-                                            space);
+        meta_display_get_workspace_by_index (window->display,
+                                             space);
 
       if (workspace)
         meta_window_change_workspace (window, workspace);

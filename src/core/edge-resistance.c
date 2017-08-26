@@ -1010,7 +1010,7 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
    */
   stacked_windows =
     meta_stack_list_windows (display->stack,
-                             display->screen->active_workspace);
+                             display->active_workspace);
 
   /*
    * 2nd: we need to separate that stacked list into a list of windows that
@@ -1168,8 +1168,8 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
    */
   cache_edges (display,
                edges,
-               display->screen->active_workspace->monitor_edges,
-               display->screen->active_workspace->screen_edges);
+               display->active_workspace->monitor_edges,
+               display->active_workspace->screen_edges);
   g_list_free (edges);
 
   /*

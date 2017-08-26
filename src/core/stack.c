@@ -117,7 +117,7 @@ meta_stack_add (MetaStack  *stack,
               window->desc, window->stack_position);
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
+  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
 }
 
 void
@@ -153,7 +153,7 @@ meta_stack_remove (MetaStack  *stack,
     }
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
+  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
 }
 
 void
@@ -163,7 +163,7 @@ meta_stack_update_layer (MetaStack  *stack,
   stack->need_relayer = TRUE;
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
+  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
 }
 
 void
@@ -173,7 +173,7 @@ meta_stack_update_transient (MetaStack  *stack,
   stack->need_constrain = TRUE;
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
+  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
 }
 
 /* raise/lower within a layer */
@@ -202,7 +202,7 @@ meta_stack_raise (MetaStack  *stack,
   meta_window_set_stack_position_no_sync (window, max_stack_position);
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
+  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
 }
 
 void
@@ -230,7 +230,7 @@ meta_stack_lower (MetaStack  *stack,
   meta_window_set_stack_position_no_sync (window, min_stack_position);
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->screen->active_workspace);
+  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
 }
 
 void
@@ -1465,5 +1465,5 @@ meta_window_set_stack_position (MetaWindow *window,
   meta_window_set_stack_position_no_sync (window, position);
   stack_sync_to_xserver (window->display->stack);
   meta_stack_update_window_tile_matches (window->display->stack,
-                                         window->screen->active_workspace);
+                                         window->display->active_workspace);
 }
