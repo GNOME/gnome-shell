@@ -687,8 +687,6 @@ meta_display_open (void)
 
   meta_bell_init (display);
 
-  meta_display_init_events_x11 (display);
-
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;
   display->compositor = NULL;
@@ -912,9 +910,6 @@ meta_display_close (MetaDisplay *display,
 
   if (display->compositor)
     meta_compositor_destroy (display->compositor);
-
-  /* Stop caring about events */
-  meta_display_free_events_x11 (display);
 
   if (display->x11_display)
     {

@@ -289,7 +289,7 @@ reload_icon (MetaWindow    *window,
   MetaWindowX11Private *priv = window_x11->priv;
 
   meta_icon_cache_property_changed (&priv->icon_cache,
-                                    window->display,
+                                    window->display->x11_display,
                                     atom);
   meta_window_queue(window, META_QUEUE_UPDATE_ICON);
 }
@@ -1615,7 +1615,7 @@ reload_wm_hints (MetaWindow    *window,
   meta_window_set_urgent (window, urgent);
 
   meta_icon_cache_property_changed (&priv->icon_cache,
-                                    window->display,
+                                    window->display->x11_display,
                                     XA_WM_HINTS);
 
   meta_window_queue (window, META_QUEUE_UPDATE_ICON | META_QUEUE_MOVE_RESIZE);

@@ -137,9 +137,6 @@ void     meta_screen_workspace_switched (MetaScreen         *screen,
 
 void meta_screen_set_active_workspace_hint (MetaScreen *screen);
 
-gboolean meta_screen_handle_xevent (MetaScreen *screen,
-                                    XEvent     *xevent);
-
 MetaLogicalMonitor * meta_screen_xinerama_index_to_logical_monitor (MetaScreen *screen,
                                                                     int         index);
 

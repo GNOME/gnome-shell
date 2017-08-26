@@ -69,9 +69,6 @@ static void set_workspace_names    (MetaScreen *screen);
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
-static void set_desktop_geometry_hint (MetaScreen *screen);
-static void set_desktop_viewport_hint (MetaScreen *screen);
-
 enum
 {
   PROP_N_WORKSPACES = 1,
@@ -250,95 +247,6 @@ meta_screen_init (MetaScreen *screen)
 {
 }
 
-static int
-set_wm_check_hint (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-  unsigned long data[1];
-
-  g_return_val_if_fail (x11_display->leader_window != None, 0);
-
-  data[0] = x11_display->leader_window;
-
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_SUPPORTING_WM_CHECK,
-                   XA_WINDOW,
-                   32, PropModeReplace, (guchar*) data, 1);
-
-  return Success;
-}
-
-static void
-unset_wm_check_hint (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-
-  XDeleteProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_SUPPORTING_WM_CHECK);
-}
-
-static int
-set_supported_hint (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-
-  Atom atoms[] = {
-#define EWMH_ATOMS_ONLY
-#define item(x)  x11_display->atom_##x,
-#include <x11/atomnames.h>
-#undef item
-#undef EWMH_ATOMS_ONLY
-
-    x11_display->atom__GTK_FRAME_EXTENTS,
-    x11_display->atom__GTK_SHOW_WINDOW_MENU,
-    x11_display->atom__GTK_EDGE_CONSTRAINTS,
-  };
-
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_SUPPORTED,
-                   XA_ATOM,
-                   32, PropModeReplace,
-                   (guchar*) atoms, G_N_ELEMENTS(atoms));
-
-  return Success;
-}
-
-static int
-set_wm_icon_size_hint (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-
-#define N_VALS 6
-  gulong vals[N_VALS];
-
-  /* We've bumped the real icon size up to 96x96, but
-   * we really should not add these sorts of constraints
-   * on clients still using the legacy WM_HINTS interface.
-   */
-#define LEGACY_ICON_SIZE 32
-
-  /* min width, min height, max w, max h, width inc, height inc */
-  vals[0] = LEGACY_ICON_SIZE;
-  vals[1] = LEGACY_ICON_SIZE;
-  vals[2] = LEGACY_ICON_SIZE;
-  vals[3] = LEGACY_ICON_SIZE;
-  vals[4] = 0;
-  vals[5] = 0;
-#undef LEGACY_ICON_SIZE
-
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom_WM_ICON_SIZE,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) vals, N_VALS);
-
-  return Success;
-#undef N_VALS
-}
-
 static MetaScreenX11LogicalMonitorData *
 get_screen_x11_logical_monitor_data (MetaLogicalMonitor *logical_monitor)
 {
@@ -505,16 +413,6 @@ meta_screen_new (MetaDisplay *display,
 
   reload_logical_monitors (screen);
 
-  set_wm_icon_size_hint (screen);
-
-  set_supported_hint (screen);
-
-  set_wm_check_hint (screen);
-
-  set_desktop_viewport_hint (screen);
-
-  set_desktop_geometry_hint (screen);
-
   meta_screen_update_workspace_layout (screen);
 
   /* Screens must have at least one workspace at all times,
@@ -585,8 +483,6 @@ meta_screen_free (MetaScreen *screen,
   meta_screen_ungrab_keys (screen);
 
   meta_ui_free (screen->ui);
-
-  unset_wm_check_hint (screen);
 
   if (screen->work_area_later != 0)
     meta_later_remove (screen->work_area_later);
@@ -667,55 +563,6 @@ set_number_of_spaces_hint (MetaScreen *screen,
                    x11_display->atom__NET_NUMBER_OF_DESKTOPS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (x11_display);
-}
-
-static void
-set_desktop_geometry_hint (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-  unsigned long data[2];
-
-  if (screen->closing > 0)
-    return;
-
-  data[0] = screen->display->rect.width;
-  data[1] = screen->display->rect.height;
-
-  meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %lu, %lu\n", data[0], data[1]);
-
-  meta_error_trap_push (x11_display);
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_DESKTOP_GEOMETRY,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (x11_display);
-}
-
-static void
-set_desktop_viewport_hint (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-  unsigned long data[2];
-
-  if (screen->closing > 0)
-    return;
-
-  /*
-   * Mutter does not implement viewports, so this is a fixed 0,0
-   */
-  data[0] = 0;
-  data[1] = 0;
-
-  meta_verbose ("Setting _NET_DESKTOP_VIEWPORT to 0, 0\n");
-
-  meta_error_trap_push (x11_display);
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_DESKTOP_VIEWPORT,
-                   XA_CARDINAL,
-                   32, PropModeReplace, (guchar*) data, 2);
   meta_error_trap_pop (x11_display);
 }
 
@@ -1768,7 +1615,6 @@ void
 meta_screen_on_monitors_changed (MetaScreen *screen)
 {
   reload_logical_monitors (screen);
-  set_desktop_geometry_hint (screen);
 
   meta_screen_queue_check_fullscreen (screen);
 }
@@ -2267,17 +2113,4 @@ meta_screen_get_monitor_in_fullscreen (MetaScreen  *screen,
 
   /* We use -1 as a flag to mean "not known yet" for notification purposes */
   return logical_monitor->in_fullscreen == TRUE;
-}
-
-gboolean
-meta_screen_handle_xevent (MetaScreen *screen,
-                           XEvent     *xevent)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
-
-  if (meta_cursor_tracker_handle_xevent (cursor_tracker, xevent))
-    return TRUE;
-
-  return FALSE;
 }

@@ -189,7 +189,7 @@ argbdata_to_surface (gulong *argb_data, int w, int h)
 }
 
 static gboolean
-read_rgb_icon (MetaDisplay      *display,
+read_rgb_icon (MetaX11Display   *x11_display,
                Window            xwindow,
                int               ideal_width,
                int               ideal_height,
@@ -210,16 +210,16 @@ read_rgb_icon (MetaDisplay      *display,
   int mini_w, mini_h;
   gulong *data_as_long;
 
-  meta_error_trap_push (display->x11_display);
+  meta_error_trap_push (x11_display);
   type = None;
   data = NULL;
-  result = XGetWindowProperty (display->x11_display->xdisplay,
+  result = XGetWindowProperty (x11_display->xdisplay,
 			       xwindow,
-                               display->x11_display->atom__NET_WM_ICON,
+                               x11_display->atom__NET_WM_ICON,
 			       0, G_MAXLONG,
 			       False, XA_CARDINAL, &type, &format, &nitems,
 			       &bytes_after, &data);
-  err = meta_error_trap_pop_with_return (display->x11_display);
+  err = meta_error_trap_pop_with_return (x11_display);
 
   if (err != Success ||
       result != Success)
@@ -258,11 +258,11 @@ read_rgb_icon (MetaDisplay      *display,
 }
 
 static void
-get_pixmap_geometry (MetaDisplay *display,
-                     Pixmap       pixmap,
-                     int         *w,
-                     int         *h,
-                     int         *d)
+get_pixmap_geometry (MetaX11Display *x11_display,
+                     Pixmap          pixmap,
+                     int            *w,
+                     int            *h,
+                     int            *d)
 {
   Window root_ignored;
   int x_ignored, y_ignored;
@@ -277,7 +277,7 @@ get_pixmap_geometry (MetaDisplay *display,
   if (d)
     *d = 1;
 
-  XGetGeometry (display->x11_display->xdisplay,
+  XGetGeometry (x11_display->xdisplay,
                 pixmap, &root_ignored, &x_ignored, &y_ignored,
                 &width, &height, &border_width_ignored, &depth);
 
@@ -328,32 +328,32 @@ surface_from_pixmap (Display *xdisplay, Pixmap xpixmap,
 }
 
 static gboolean
-try_pixmap_and_mask (MetaDisplay      *display,
+try_pixmap_and_mask (MetaX11Display   *x11_display,
                      Pixmap            src_pixmap,
                      Pixmap            src_mask,
                      cairo_surface_t **iconp)
 {
-  Display *xdisplay = display->x11_display->xdisplay;
+  Display *xdisplay = x11_display->xdisplay;
   cairo_surface_t *icon, *mask = NULL;
   int w, h, d;
 
   if (src_pixmap == None)
     return FALSE;
 
-  meta_error_trap_push (display->x11_display);
+  meta_error_trap_push (x11_display);
 
-  get_pixmap_geometry (display, src_pixmap, &w, &h, &d);
+  get_pixmap_geometry (x11_display, src_pixmap, &w, &h, &d);
   icon = surface_from_pixmap (xdisplay, src_pixmap, w, h);
 
   if (icon && src_mask != None)
     {
-      get_pixmap_geometry (display, src_mask, &w, &h, &d);
+      get_pixmap_geometry (x11_display, src_mask, &w, &h, &d);
 
       if (d == 1)
         mask = surface_from_pixmap (xdisplay, src_mask, w, h);
     }
 
-  meta_error_trap_pop (display->x11_display);
+  meta_error_trap_pop (x11_display);
 
   if (icon && mask)
     {
@@ -388,10 +388,10 @@ try_pixmap_and_mask (MetaDisplay      *display,
 }
 
 static void
-get_kwm_win_icon (MetaDisplay *display,
-                  Window       xwindow,
-                  Pixmap      *pixmap,
-                  Pixmap      *mask)
+get_kwm_win_icon (MetaX11Display *x11_display,
+                  Window          xwindow,
+                  Pixmap         *pixmap,
+                  Pixmap         *mask)
 {
   Atom type;
   int format;
@@ -404,23 +404,23 @@ get_kwm_win_icon (MetaDisplay *display,
   *pixmap = None;
   *mask = None;
 
-  meta_error_trap_push (display->x11_display);
+  meta_error_trap_push (x11_display);
   icons = NULL;
-  result = XGetWindowProperty (display->x11_display->xdisplay, xwindow,
-                               display->x11_display->atom__KWM_WIN_ICON,
+  result = XGetWindowProperty (x11_display->xdisplay, xwindow,
+                               x11_display->atom__KWM_WIN_ICON,
 			       0, G_MAXLONG,
 			       False,
-                               display->x11_display->atom__KWM_WIN_ICON,
+                               x11_display->atom__KWM_WIN_ICON,
 			       &type, &format, &nitems,
 			       &bytes_after, &data);
   icons = (Pixmap *)data;
 
-  err = meta_error_trap_pop_with_return (display->x11_display);
+  err = meta_error_trap_pop_with_return (x11_display);
   if (err != Success ||
       result != Success)
     return;
 
-  if (type != display->x11_display->atom__KWM_WIN_ICON)
+  if (type != x11_display->atom__KWM_WIN_ICON)
     {
       XFree (icons);
       return;
@@ -448,13 +448,13 @@ meta_icon_cache_init (MetaIconCache *icon_cache)
 }
 
 void
-meta_icon_cache_property_changed (MetaIconCache *icon_cache,
-                                  MetaDisplay   *display,
-                                  Atom           atom)
+meta_icon_cache_property_changed (MetaIconCache  *icon_cache,
+                                  MetaX11Display *x11_display,
+                                  Atom            atom)
 {
-  if (atom == display->x11_display->atom__NET_WM_ICON)
+  if (atom == x11_display->atom__NET_WM_ICON)
     icon_cache->net_wm_icon_dirty = TRUE;
-  else if (atom == display->x11_display->atom__KWM_WIN_ICON)
+  else if (atom == x11_display->atom__KWM_WIN_ICON)
     icon_cache->kwm_win_icon_dirty = TRUE;
   else if (atom == XA_WM_HINTS)
     icon_cache->wm_hints_dirty = TRUE;
@@ -479,7 +479,7 @@ meta_icon_cache_get_icon_invalidated (MetaIconCache *icon_cache)
 }
 
 gboolean
-meta_read_icons (MetaScreen       *screen,
+meta_read_icons (MetaX11Display   *x11_display,
                  Window            xwindow,
                  MetaIconCache    *icon_cache,
                  Pixmap            wm_hints_pixmap,
@@ -515,7 +515,7 @@ meta_read_icons (MetaScreen       *screen,
     {
       icon_cache->net_wm_icon_dirty = FALSE;
 
-      if (read_rgb_icon (screen->display, xwindow,
+      if (read_rgb_icon (x11_display, xwindow,
                          ideal_width, ideal_height,
                          ideal_mini_width, ideal_mini_height,
                          iconp, mini_iconp))
@@ -544,7 +544,7 @@ meta_read_icons (MetaScreen       *screen,
            mask != icon_cache->prev_mask) &&
           pixmap != None)
         {
-          if (try_pixmap_and_mask (screen->display, pixmap, mask, iconp))
+          if (try_pixmap_and_mask (x11_display, pixmap, mask, iconp))
             {
               *mini_iconp = cairo_surface_reference (*iconp);
               icon_cache->prev_pixmap = pixmap;
@@ -563,13 +563,13 @@ meta_read_icons (MetaScreen       *screen,
 
       icon_cache->kwm_win_icon_dirty = FALSE;
 
-      get_kwm_win_icon (screen->display, xwindow, &pixmap, &mask);
+      get_kwm_win_icon (x11_display, xwindow, &pixmap, &mask);
 
       if ((pixmap != icon_cache->prev_pixmap ||
            mask != icon_cache->prev_mask) &&
           pixmap != None)
         {
-          if (try_pixmap_and_mask (screen->display, pixmap, mask, iconp))
+          if (try_pixmap_and_mask (x11_display, pixmap, mask, iconp))
             {
               *mini_iconp = cairo_surface_reference (*iconp);
               icon_cache->prev_pixmap = pixmap;

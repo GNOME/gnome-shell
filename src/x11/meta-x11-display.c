@@ -54,6 +54,7 @@
 #include "meta/errors.h"
 #include "meta/main.h"
 
+#include "x11/events.h"
 #include "x11/group-props.h"
 #include "x11/window-props.h"
 #include "x11/xprops.h"
@@ -74,6 +75,7 @@ static void on_monitors_changed (MetaDisplay    *display,
                                  MetaX11Display *x11_display);
 
 static void update_cursor_theme (MetaX11Display *x11_display);
+static void unset_wm_check_hint (MetaX11Display *x11_display);
 
 static void
 meta_x11_display_dispose (GObject *object)
@@ -157,6 +159,8 @@ meta_x11_display_dispose (GObject *object)
 
   if (x11_display->xroot != None)
     {
+      unset_wm_check_hint (x11_display);
+
       meta_error_trap_push (x11_display);
       XSelectInput (x11_display->xdisplay, x11_display->xroot, 0);
       if (meta_error_trap_pop_with_return (x11_display) != Success)
@@ -169,6 +173,8 @@ meta_x11_display_dispose (GObject *object)
 
   if (x11_display->xdisplay)
     {
+      meta_x11_display_free_events (x11_display);
+
       x11_display->xdisplay = NULL;
     }
 
@@ -369,6 +375,134 @@ query_xi_extension (MetaX11Display *x11_display)
 
   if (!has_xi)
     meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
+}
+
+static void
+set_desktop_geometry_hint (MetaX11Display *x11_display)
+{
+  unsigned long data[2];
+
+  if (x11_display->display->closing > 0)
+    return;
+
+  data[0] = x11_display->display->rect.width;
+  data[1] = x11_display->display->rect.height;
+
+  meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %lu, %lu\n", data[0], data[1]);
+
+  meta_error_trap_push (x11_display);
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom__NET_DESKTOP_GEOMETRY,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 2);
+  meta_error_trap_pop (x11_display);
+}
+
+static void
+set_desktop_viewport_hint (MetaX11Display *x11_display)
+{
+  unsigned long data[2];
+
+  if (x11_display->display->closing > 0)
+    return;
+
+  /*
+   * Mutter does not implement viewports, so this is a fixed 0,0
+   */
+  data[0] = 0;
+  data[1] = 0;
+
+  meta_verbose ("Setting _NET_DESKTOP_VIEWPORT to 0, 0\n");
+
+  meta_error_trap_push (x11_display);
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom__NET_DESKTOP_VIEWPORT,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 2);
+  meta_error_trap_pop (x11_display);
+}
+
+static int
+set_wm_check_hint (MetaX11Display *x11_display)
+{
+  unsigned long data[1];
+
+  g_return_val_if_fail (x11_display->leader_window != None, 0);
+
+  data[0] = x11_display->leader_window;
+
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom__NET_SUPPORTING_WM_CHECK,
+                   XA_WINDOW,
+                   32, PropModeReplace, (guchar*) data, 1);
+
+  return Success;
+}
+
+static void
+unset_wm_check_hint (MetaX11Display *x11_display)
+{
+  XDeleteProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom__NET_SUPPORTING_WM_CHECK);
+}
+
+static int
+set_supported_hint (MetaX11Display *x11_display)
+{
+  Atom atoms[] = {
+#define EWMH_ATOMS_ONLY
+#define item(x)  x11_display->atom_##x,
+#include "x11/atomnames.h"
+#undef item
+#undef EWMH_ATOMS_ONLY
+
+    x11_display->atom__GTK_FRAME_EXTENTS,
+    x11_display->atom__GTK_SHOW_WINDOW_MENU,
+  };
+
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom__NET_SUPPORTED,
+                   XA_ATOM,
+                   32, PropModeReplace,
+                   (guchar*) atoms, G_N_ELEMENTS(atoms));
+
+  return Success;
+}
+
+static int
+set_wm_icon_size_hint (MetaX11Display *x11_display)
+{
+#define N_VALS 6
+  gulong vals[N_VALS];
+
+  /* We've bumped the real icon size up to 96x96, but
+   * we really should not add these sorts of constraints
+   * on clients still using the legacy WM_HINTS interface.
+   */
+#define LEGACY_ICON_SIZE 32
+
+  /* min width, min height, max w, max h, width inc, height inc */
+  vals[0] = LEGACY_ICON_SIZE;
+  vals[1] = LEGACY_ICON_SIZE;
+  vals[2] = LEGACY_ICON_SIZE;
+  vals[3] = LEGACY_ICON_SIZE;
+  vals[4] = 0;
+  vals[5] = 0;
+#undef LEGACY_ICON_SIZE
+
+  XChangeProperty (x11_display->xdisplay,
+                   x11_display->xroot,
+                   x11_display->atom_WM_ICON_SIZE,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) vals, N_VALS);
+
+  return Success;
+#undef N_VALS
 }
 
 static Window
@@ -755,6 +889,18 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   XMapWindow (xdisplay, x11_display->no_focus_window);
   /* Done with no_focus_window stuff */
 
+  meta_x11_display_init_events (x11_display);
+
+  set_wm_icon_size_hint (x11_display);
+
+  set_supported_hint (x11_display);
+
+  set_wm_check_hint (x11_display);
+
+  set_desktop_viewport_hint (x11_display);
+
+  set_desktop_geometry_hint (x11_display);
+
   return x11_display;
 }
 
@@ -1064,6 +1210,8 @@ static void
 on_monitors_changed (MetaDisplay    *display,
                      MetaX11Display *x11_display)
 {
+  set_desktop_geometry_hint (x11_display);
+
   /* Resize the guard window to fill the screen again. */
   if (x11_display->guard_window != None)
     {
