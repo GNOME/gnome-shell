@@ -47,19 +47,11 @@ struct _MetaScreen
   MetaDisplay *display;
   MetaUI *ui;
 
-  guint tile_preview_timeout_id;
-  guint preview_tile_mode : 2;
-
   MetaWorkspace *active_workspace;
 
   GList *workspaces;
 
   gboolean has_xinerama_indices;
-
-  GSList *startup_sequences;
-
-  guint work_area_later;
-  guint check_fullscreen_later;
 
   int rows_of_workspaces;
   int columns_of_workspaces;
@@ -75,8 +67,6 @@ struct _MetaScreen
 struct _MetaScreenClass
 {
   GObjectClass parent_class;
-
-  void (*workareas_changed) (MetaScreen *);
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
@@ -86,17 +76,11 @@ void          meta_screen_free                (MetaScreen                 *scree
 void          meta_screen_init_workspaces     (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
 
-void          meta_screen_update_tile_preview          (MetaScreen    *screen,
-                                                        gboolean       delay);
-void          meta_screen_hide_tile_preview            (MetaScreen    *screen);
-
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
                                                 MetaWindow                 *not_this_one);
 
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);
-void          meta_screen_queue_workarea_recalc   (MetaScreen             *screen);
-void          meta_screen_queue_check_fullscreen  (MetaScreen             *screen);
 
 typedef struct MetaWorkspaceLayout MetaWorkspaceLayout;
 
@@ -126,9 +110,6 @@ void     meta_screen_unshow_desktop      (MetaScreen *screen);
 
 /* Update whether the destkop is being shown for the current active_workspace */
 void     meta_screen_update_showing_desktop_hint          (MetaScreen *screen);
-
-gboolean meta_screen_apply_startup_properties (MetaScreen *screen,
-                                               MetaWindow *window);
 
 void     meta_screen_workspace_switched (MetaScreen         *screen,
                                          int                 from,

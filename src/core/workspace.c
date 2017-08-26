@@ -768,7 +768,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 
   g_list_free (windows);
 
-  meta_screen_queue_workarea_recalc (workspace->screen);
+  meta_display_queue_workarea_recalc (workspace->screen->display);
 }
 
 static MetaStrut *

@@ -79,11 +79,6 @@ enum
   WORKSPACE_ADDED,
   WORKSPACE_REMOVED,
   WORKSPACE_SWITCHED,
-  WINDOW_ENTERED_MONITOR,
-  WINDOW_LEFT_MONITOR,
-  STARTUP_SEQUENCE_CHANGED,
-  WORKAREAS_CHANGED,
-  IN_FULLSCREEN_CHANGED,
 
   LAST_SIGNAL
 };
@@ -189,50 +184,6 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_TYPE_INT,
                   G_TYPE_INT,
                   META_TYPE_MOTION_DIRECTION);
-
-  screen_signals[WINDOW_ENTERED_MONITOR] =
-    g_signal_new ("window-entered-monitor",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 2,
-                  G_TYPE_INT,
-                  META_TYPE_WINDOW);
-
-  screen_signals[WINDOW_LEFT_MONITOR] =
-    g_signal_new ("window-left-monitor",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 2,
-                  G_TYPE_INT,
-                  META_TYPE_WINDOW);
-
-  screen_signals[STARTUP_SEQUENCE_CHANGED] =
-    g_signal_new ("startup-sequence-changed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 1, G_TYPE_POINTER);
-
-  screen_signals[WORKAREAS_CHANGED] =
-    g_signal_new ("workareas-changed",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (MetaScreenClass, workareas_changed),
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
-
-  screen_signals[IN_FULLSCREEN_CHANGED] =
-    g_signal_new ("in-fullscreen-changed",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-		  G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
                                    PROP_N_WORKSPACES,
@@ -401,9 +352,6 @@ meta_screen_new (MetaDisplay *display,
 
   screen->display = display;
 
-  screen->work_area_later = 0;
-  screen->check_fullscreen_later = 0;
-
   screen->active_workspace = NULL;
   screen->workspaces = NULL;
   screen->rows_of_workspaces = 1;
@@ -424,8 +372,6 @@ meta_screen_new (MetaDisplay *display,
   meta_screen_grab_keys (screen);
 
   screen->ui = meta_ui_new (xdisplay);
-
-  screen->tile_preview_timeout_id = 0;
 
   meta_prefs_add_listener (prefs_changed_callback, screen);
 
@@ -484,14 +430,6 @@ meta_screen_free (MetaScreen *screen,
 
   meta_ui_free (screen->ui);
 
-  if (screen->work_area_later != 0)
-    meta_later_remove (screen->work_area_later);
-  if (screen->check_fullscreen_later != 0)
-    meta_later_remove (screen->check_fullscreen_later);
-
-  if (screen->tile_preview_timeout_id)
-    g_source_remove (screen->tile_preview_timeout_id);
-
   g_object_unref (screen);
 }
 
@@ -545,7 +483,7 @@ meta_screen_get_workspace_by_index (MetaScreen  *screen,
 
 static void
 set_number_of_spaces_hint (MetaScreen *screen,
-			   int         n_spaces)
+                           int         n_spaces)
 {
   MetaX11Display *x11_display = screen->display->x11_display;
   unsigned long data[1];
@@ -623,7 +561,7 @@ meta_screen_remove_workspace (MetaScreen *screen, MetaWorkspace *workspace,
       meta_workspace_index_changed (w);
     }
 
-  meta_screen_queue_workarea_recalc (screen);
+  meta_display_queue_workarea_recalc (screen->display);
 
   g_signal_emit (screen, screen_signals[WORKSPACE_REMOVED], 0, index);
   g_object_notify (G_OBJECT (screen), "n-workspaces");
@@ -665,7 +603,7 @@ meta_screen_append_new_workspace (MetaScreen *screen, gboolean activate,
   if (!meta_prefs_get_dynamic_workspaces ())
     meta_prefs_set_num_workspaces (new_num);
 
-  meta_screen_queue_workarea_recalc (screen);
+  meta_display_queue_workarea_recalc (screen->display);
 
   g_signal_emit (screen, screen_signals[WORKSPACE_ADDED],
                  0, meta_workspace_index (w));
@@ -775,96 +713,12 @@ update_num_workspaces (MetaScreen *screen,
 
   set_number_of_spaces_hint (screen, new_num);
 
-  meta_screen_queue_workarea_recalc (screen);
+  meta_display_queue_workarea_recalc (display);
 
   for (i = old_num; i < new_num; i++)
     g_signal_emit (screen, screen_signals[WORKSPACE_ADDED], 0, i);
 
   g_object_notify (G_OBJECT (screen), "n-workspaces");
-}
-
-static gboolean
-meta_screen_update_tile_preview_timeout (gpointer data)
-{
-  MetaScreen *screen = data;
-  MetaWindow *window = screen->display->grab_window;
-  gboolean needs_preview = FALSE;
-
-  screen->tile_preview_timeout_id = 0;
-
-  if (window)
-    {
-      switch (screen->preview_tile_mode)
-        {
-          case META_TILE_LEFT:
-          case META_TILE_RIGHT:
-              if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
-                needs_preview = TRUE;
-              break;
-
-          case META_TILE_MAXIMIZED:
-              if (!META_WINDOW_MAXIMIZED (window))
-                needs_preview = TRUE;
-              break;
-
-          default:
-              needs_preview = FALSE;
-              break;
-        }
-    }
-
-  if (needs_preview)
-    {
-      MetaRectangle tile_rect;
-      int monitor;
-
-      monitor = meta_window_get_current_tile_monitor_number (window);
-      meta_window_get_tile_area (window, screen->preview_tile_mode, &tile_rect);
-      meta_compositor_show_tile_preview (screen->display->compositor,
-                                         window, &tile_rect, monitor);
-    }
-  else
-    meta_compositor_hide_tile_preview (screen->display->compositor);
-
-  return FALSE;
-}
-
-#define TILE_PREVIEW_TIMEOUT_MS 200
-
-void
-meta_screen_update_tile_preview (MetaScreen *screen,
-                                 gboolean    delay)
-{
-  if (delay)
-    {
-      if (screen->tile_preview_timeout_id > 0)
-        return;
-
-      screen->tile_preview_timeout_id =
-        g_timeout_add (TILE_PREVIEW_TIMEOUT_MS,
-                       meta_screen_update_tile_preview_timeout,
-                       screen);
-      g_source_set_name_by_id (screen->tile_preview_timeout_id,
-                               "[mutter] meta_screen_update_tile_preview_timeout");
-    }
-  else
-    {
-      if (screen->tile_preview_timeout_id > 0)
-        g_source_remove (screen->tile_preview_timeout_id);
-
-      meta_screen_update_tile_preview_timeout ((gpointer)screen);
-    }
-}
-
-void
-meta_screen_hide_tile_preview (MetaScreen *screen)
-{
-  if (screen->tile_preview_timeout_id > 0)
-    g_source_remove (screen->tile_preview_timeout_id);
-  screen->tile_preview_timeout_id = 0;
-
-  screen->preview_tile_mode = META_TILE_NONE;
-  meta_compositor_hide_tile_preview (screen->display->compositor);
 }
 
 MetaWindow*
@@ -1248,74 +1102,6 @@ meta_screen_update_workspace_names (MetaScreen *screen)
   g_strfreev (names);
 }
 
-static void
-set_work_area_hint (MetaScreen *screen)
-{
-  MetaX11Display *x11_display = screen->display->x11_display;
-  int num_workspaces;
-  GList *l;
-  unsigned long *data, *tmp;
-  MetaRectangle area;
-
-  num_workspaces = meta_screen_get_n_workspaces (screen);
-  data = g_new (unsigned long, num_workspaces * 4);
-  tmp = data;
-
-  for (l = screen->workspaces; l != NULL; l = l->next)
-    {
-      MetaWorkspace *workspace = l->data;
-
-      meta_workspace_get_work_area_all_monitors (workspace, &area);
-      tmp[0] = area.x;
-      tmp[1] = area.y;
-      tmp[2] = area.width;
-      tmp[3] = area.height;
-
-      tmp += 4;
-    }
-
-  meta_error_trap_push (x11_display);
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_WORKAREA,
-		   XA_CARDINAL, 32, PropModeReplace,
-		   (guchar*) data, num_workspaces*4);
-  g_free (data);
-  meta_error_trap_pop (x11_display);
-
-  g_signal_emit (screen, screen_signals[WORKAREAS_CHANGED], 0);
-}
-
-static gboolean
-set_work_area_later_func (MetaScreen *screen)
-{
-  meta_topic (META_DEBUG_WORKAREA,
-              "Running work area hint computation function\n");
-
-  screen->work_area_later = 0;
-
-  set_work_area_hint (screen);
-
-  return FALSE;
-}
-
-void
-meta_screen_queue_workarea_recalc (MetaScreen *screen)
-{
-  /* Recompute work area later before redrawing */
-  if (screen->work_area_later == 0)
-    {
-      meta_topic (META_DEBUG_WORKAREA,
-                  "Adding work area hint computation function\n");
-      screen->work_area_later =
-        meta_later_add (META_LATER_BEFORE_REDRAW,
-                        (GSourceFunc) set_work_area_later_func,
-                        screen,
-                        NULL);
-    }
-}
-
-
 #ifdef WITH_VERBOSE_MODE
 static const char *
 meta_screen_corner_to_string (MetaScreenCorner corner)
@@ -1615,8 +1401,6 @@ void
 meta_screen_on_monitors_changed (MetaScreen *screen)
 {
   reload_logical_monitors (screen);
-
-  meta_screen_queue_check_fullscreen (screen);
 }
 
 void
@@ -1715,154 +1499,6 @@ meta_screen_unshow_desktop (MetaScreen *screen)
 }
 
 /**
- * meta_screen_get_startup_sequences: (skip)
- * @screen:
- *
- * Return value: (transfer none): Currently active #SnStartupSequence items
- */
-GSList *
-meta_screen_get_startup_sequences (MetaScreen *screen)
-{
-  return screen->startup_sequences;
-}
-
-/* Sets the initial_timestamp and initial_workspace properties
- * of a window according to information given us by the
- * startup-notification library.
- *
- * Returns TRUE if startup properties have been applied, and
- * FALSE if they have not (for example, if they had already
- * been applied.)
- */
-gboolean
-meta_screen_apply_startup_properties (MetaScreen *screen,
-                                      MetaWindow *window)
-{
-#ifdef HAVE_STARTUP_NOTIFICATION
-  const char *startup_id;
-  GSList *l;
-  SnStartupSequence *sequence;
-
-  /* Does the window have a startup ID stored? */
-  startup_id = meta_window_get_startup_id (window);
-
-  meta_topic (META_DEBUG_STARTUP,
-              "Applying startup props to %s id \"%s\"\n",
-              window->desc,
-              startup_id ? startup_id : "(none)");
-
-  sequence = NULL;
-  if (startup_id == NULL)
-    {
-      /* No startup ID stored for the window. Let's ask the
-       * startup-notification library whether there's anything
-       * stored for the resource name or resource class hints.
-       */
-      for (l = screen->startup_sequences; l != NULL; l = l->next)
-        {
-          const char *wmclass;
-          SnStartupSequence *seq = l->data;
-
-          wmclass = sn_startup_sequence_get_wmclass (seq);
-
-          if (wmclass != NULL &&
-              ((window->res_class &&
-                strcmp (wmclass, window->res_class) == 0) ||
-               (window->res_name &&
-                strcmp (wmclass, window->res_name) == 0)))
-            {
-              sequence = seq;
-
-              g_assert (window->startup_id == NULL);
-              window->startup_id = g_strdup (sn_startup_sequence_get_id (sequence));
-              startup_id = window->startup_id;
-
-              meta_topic (META_DEBUG_STARTUP,
-                          "Ending legacy sequence %s due to window %s\n",
-                          sn_startup_sequence_get_id (sequence),
-                          window->desc);
-
-              sn_startup_sequence_complete (sequence);
-              break;
-            }
-        }
-    }
-
-  /* Still no startup ID? Bail. */
-  if (startup_id == NULL)
-    return FALSE;
-
-  /* We might get this far and not know the sequence ID (if the window
-   * already had a startup ID stored), so let's look for one if we don't
-   * already know it.
-   */
-  if (sequence == NULL)
-    {
-      for (l = screen->startup_sequences; l != NULL; l = l->next)
-        {
-          SnStartupSequence *seq = l->data;
-          const char *id;
-
-          id = sn_startup_sequence_get_id (seq);
-
-          if (strcmp (id, startup_id) == 0)
-            {
-              sequence = seq;
-              break;
-            }
-        }
-    }
-
-  if (sequence != NULL)
-    {
-      gboolean changed_something = FALSE;
-
-      meta_topic (META_DEBUG_STARTUP,
-                  "Found startup sequence for window %s ID \"%s\"\n",
-                  window->desc, startup_id);
-
-      if (!window->initial_workspace_set)
-        {
-          int space = sn_startup_sequence_get_workspace (sequence);
-          if (space >= 0)
-            {
-              meta_topic (META_DEBUG_STARTUP,
-                          "Setting initial window workspace to %d based on startup info\n",
-                          space);
-
-              window->initial_workspace_set = TRUE;
-              window->initial_workspace = space;
-              changed_something = TRUE;
-            }
-        }
-
-      if (!window->initial_timestamp_set)
-        {
-          guint32 timestamp = sn_startup_sequence_get_timestamp (sequence);
-          meta_topic (META_DEBUG_STARTUP,
-                      "Setting initial window timestamp to %u based on startup info\n",
-                      timestamp);
-
-          window->initial_timestamp_set = TRUE;
-          window->initial_timestamp = timestamp;
-          changed_something = TRUE;
-        }
-
-      return changed_something;
-    }
-  else
-    {
-      meta_topic (META_DEBUG_STARTUP,
-                  "Did not find startup sequence for window %s ID \"%s\"\n",
-                  window->desc, startup_id);
-    }
-
-#endif /* HAVE_STARTUP_NOTIFICATION */
-
-  return FALSE;
-}
-
-/**
  * meta_screen_get_display:
  * @screen: A #MetaScreen
  *
@@ -1957,123 +1593,6 @@ meta_screen_set_active_workspace_hint (MetaScreen *screen)
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
   meta_error_trap_pop (x11_display);
-}
-
-static gboolean
-check_fullscreen_func (gpointer data)
-{
-  MetaScreen *screen = data;
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  GList *logical_monitors, *l;
-  MetaWindow *window;
-  GSList *fullscreen_monitors = NULL;
-  GSList *obscured_monitors = NULL;
-  gboolean in_fullscreen_changed = FALSE;
-
-  screen->check_fullscreen_later = 0;
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager);
-
-  /* We consider a monitor in fullscreen if it contains a fullscreen window;
-   * however we make an exception for maximized windows above the fullscreen
-   * one, as in that case window+chrome fully obscure the fullscreen window.
-   */
-  for (window = meta_stack_get_top (screen->display->stack);
-       window;
-       window = meta_stack_get_below (screen->display->stack, window, FALSE))
-    {
-      gboolean covers_monitors = FALSE;
-
-      if (window->screen != screen || window->hidden)
-        continue;
-
-      if (window->fullscreen)
-        {
-          covers_monitors = TRUE;
-        }
-      else if (window->override_redirect)
-        {
-          /* We want to handle the case where an application is creating an
-           * override-redirect window the size of the screen (monitor) and treat
-           * it similarly to a fullscreen window, though it doesn't have fullscreen
-           * window management behavior. (Being O-R, it's not managed at all.)
-           */
-          if (meta_window_is_monitor_sized (window))
-            covers_monitors = TRUE;
-        }
-      else if (window->maximized_horizontally &&
-               window->maximized_vertically)
-        {
-          MetaLogicalMonitor *logical_monitor;
-
-          logical_monitor = meta_window_get_main_logical_monitor (window);
-          if (!g_slist_find (obscured_monitors, logical_monitor))
-            obscured_monitors = g_slist_prepend (obscured_monitors,
-                                                 logical_monitor);
-        }
-
-      if (covers_monitors)
-        {
-          MetaRectangle window_rect;
-
-          meta_window_get_frame_rect (window, &window_rect);
-
-          for (l = logical_monitors; l; l = l->next)
-            {
-              MetaLogicalMonitor *logical_monitor = l->data;
-
-              if (meta_rectangle_overlap (&window_rect,
-                                          &logical_monitor->rect) &&
-                  !g_slist_find (fullscreen_monitors, logical_monitor) &&
-                  !g_slist_find (obscured_monitors, logical_monitor))
-                fullscreen_monitors = g_slist_prepend (fullscreen_monitors,
-                                                       logical_monitor);
-            }
-        }
-    }
-
-  g_slist_free (obscured_monitors);
-
-  for (l = logical_monitors; l; l = l->next)
-    {
-      MetaLogicalMonitor *logical_monitor = l->data;
-      gboolean in_fullscreen;
-
-      in_fullscreen = g_slist_find (fullscreen_monitors,
-                                    logical_monitor) != NULL;
-      if (in_fullscreen != logical_monitor->in_fullscreen)
-        {
-          logical_monitor->in_fullscreen = in_fullscreen;
-          in_fullscreen_changed = TRUE;
-        }
-    }
-
-  g_slist_free (fullscreen_monitors);
-
-  if (in_fullscreen_changed)
-    {
-      /* DOCK window stacking depends on the monitor's fullscreen
-         status so we need to trigger a re-layering. */
-      MetaWindow *window = meta_stack_get_top (screen->display->stack);
-      if (window)
-        meta_stack_update_layer (screen->display->stack, window);
-
-      g_signal_emit (screen, screen_signals[IN_FULLSCREEN_CHANGED], 0, NULL);
-    }
-
-  return FALSE;
-}
-
-void
-meta_screen_queue_check_fullscreen (MetaScreen *screen)
-{
-  if (!screen->check_fullscreen_later)
-    screen->check_fullscreen_later = meta_later_add (META_LATER_CHECK_FULLSCREEN,
-                                                     check_fullscreen_func,
-                                                     screen, NULL);
 }
 
 /**

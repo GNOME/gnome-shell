@@ -1043,7 +1043,7 @@ reload_net_startup_id (MetaWindow    *window,
     window->initial_timestamp_set = 0;
     window->initial_workspace_set = 0;
 
-    if (meta_screen_apply_startup_properties (window->screen, window))
+    if (meta_display_apply_startup_properties (window->display, window))
       {
 
         if (window->initial_timestamp_set)

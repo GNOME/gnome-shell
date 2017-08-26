@@ -173,4 +173,6 @@ void meta_display_get_size (MetaDisplay *display,
 void meta_display_set_cursor (MetaDisplay *display,
                               MetaCursor   cursor);
 
+GSList *meta_display_get_startup_sequences (MetaDisplay *display);
+
 #endif

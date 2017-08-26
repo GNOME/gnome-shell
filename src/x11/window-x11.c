@@ -3341,7 +3341,7 @@ meta_window_x11_configure_notify (MetaWindow      *window,
    * on its geometry.
    */
   if (window->override_redirect)
-    meta_screen_queue_check_fullscreen (window->screen);
+    meta_display_queue_check_fullscreen (window->display);
 
   if (!event->override_redirect && !event->send_event)
     meta_warning ("Unhandled change of windows override redirect status\n");

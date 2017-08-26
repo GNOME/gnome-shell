@@ -945,7 +945,7 @@ stack_do_resort (MetaStack *stack)
   stack->sorted = g_list_sort (stack->sorted,
                                (GCompareFunc) compare_window_position);
 
-  meta_screen_queue_check_fullscreen (stack->display->screen);
+  meta_display_queue_check_fullscreen (stack->display);
 
   stack->need_resort = FALSE;
 }
