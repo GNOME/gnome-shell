@@ -476,13 +476,14 @@ copy_stack (GArray *stack)
 }
 
 static void
-query_xserver_stack (MetaStackTracker *tracker)
+query_xserver_stack (MetaDisplay      *display,
+                     MetaStackTracker *tracker)
 {
-  MetaX11Display *x11_display = tracker->display->x11_display;
+  MetaX11Display *x11_display = display->x11_display;
   Window ignored1, ignored2;
   Window *children;
   guint n_children;
-  guint i;
+  guint i, old_len;
 
   tracker->xserver_serial = XNextRequest (x11_display->xdisplay);
 
@@ -490,11 +491,12 @@ query_xserver_stack (MetaStackTracker *tracker)
               x11_display->xroot,
               &ignored1, &ignored2, &children, &n_children);
 
-  tracker->verified_stack = g_array_sized_new (FALSE, FALSE, sizeof (guint64), n_children);
-  g_array_set_size (tracker->verified_stack, n_children);
+  old_len = tracker->verified_stack->len;
+
+  g_array_set_size (tracker->verified_stack, old_len + n_children);
 
   for (i = 0; i < n_children; i++)
-    g_array_index (tracker->verified_stack, guint64, i) = children[i];
+    g_array_index (tracker->verified_stack, guint64, old_len + i) = children[i];
 
   XFree (children);
 }
@@ -507,9 +509,13 @@ meta_stack_tracker_new (MetaDisplay *display)
   tracker = g_new0 (MetaStackTracker, 1);
   tracker->display = display;
 
-  query_xserver_stack (tracker);
-
+  tracker->verified_stack = g_array_new (FALSE, FALSE, sizeof (guint64));
   tracker->unverified_predictions = g_queue_new ();
+
+  g_signal_connect (display,
+                    "x11-display-opened",
+                    G_CALLBACK (query_xserver_stack),
+                    tracker);
 
   meta_stack_tracker_dump (tracker);
 
@@ -529,6 +535,10 @@ meta_stack_tracker_free (MetaStackTracker *tracker)
   g_queue_foreach (tracker->unverified_predictions, (GFunc)meta_stack_op_free, NULL);
   g_queue_free (tracker->unverified_predictions);
   tracker->unverified_predictions = NULL;
+
+  g_signal_handlers_disconnect_by_func (tracker->display,
+                                        (gpointer)query_xserver_stack,
+                                        tracker);
 
   g_free (tracker);
 }

@@ -803,6 +803,9 @@ meta_display_open (void)
 
   meta_display_set_cursor (display, META_CURSOR_DEFAULT);
 
+  display->stack = meta_stack_new (display);
+  display->stack_tracker = meta_stack_tracker_new (display);
+
   /* This is the default layout extracted from default
    * variable values in update_num_workspaces ()
    * This can be overriden using _NET_DESKTOP_LAYOUT in
@@ -834,9 +837,6 @@ meta_display_open (void)
   g_signal_emit (display, display_signals[X11_DISPLAY_OPENED], 0);
 
   timestamp = display->x11_display->timestamp;
-
-  display->stack = meta_stack_new (display);
-  display->stack_tracker = meta_stack_tracker_new (display);
 
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;
