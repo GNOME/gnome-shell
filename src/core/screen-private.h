@@ -51,8 +51,6 @@ struct _MetaScreen
 
   GList *workspaces;
 
-  gboolean has_xinerama_indices;
-
   int rows_of_workspaces;
   int columns_of_workspaces;
   MetaScreenCorner starting_corner;
@@ -117,12 +115,6 @@ void     meta_screen_workspace_switched (MetaScreen         *screen,
                                          MetaMotionDirection direction);
 
 void meta_screen_set_active_workspace_hint (MetaScreen *screen);
-
-MetaLogicalMonitor * meta_screen_xinerama_index_to_logical_monitor (MetaScreen *screen,
-                                                                    int         index);
-
-int meta_screen_logical_monitor_to_xinerama_index (MetaScreen         *screen,
-                                                   MetaLogicalMonitor *logical_monitor);
 
 void meta_screen_on_monitors_changed (MetaScreen *screen);
 

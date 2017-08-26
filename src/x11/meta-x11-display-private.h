@@ -28,6 +28,7 @@
 #include <glib.h>
 #include <X11/Xlib.h>
 
+#include "backends/meta-monitor-manager-private.h"
 #include "core/display-private.h"
 #include "meta/common.h"
 #include "meta/types.h"
@@ -94,6 +95,8 @@ struct _MetaX11Display
   Window composite_overlay_window;
 
   GHashTable *xids;
+
+  gboolean has_xinerama_indices;
 
   /* Managed by group.c */
   GHashTable *groups_by_leader;
@@ -188,5 +191,10 @@ void meta_x11_display_set_input_focus_xwindow (MetaX11Display *x11_display,
                                                Window          window,
                                                guint32         timestamp);
 
+int meta_x11_display_logical_monitor_to_xinerama_index (MetaX11Display     *x11_display,
+                                                        MetaLogicalMonitor *logical_monitor);
+
+MetaLogicalMonitor *meta_x11_display_xinerama_index_to_logical_monitor (MetaX11Display *x11_display,
+                                                                        int             xinerama_index);
 
 #endif /* META_X11_DISPLAY_PRIVATE_H */

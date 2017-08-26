@@ -87,13 +87,6 @@ static guint screen_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (MetaScreen, meta_screen, G_TYPE_OBJECT);
 
-static GQuark quark_screen_x11_logical_monitor_data = 0;
-
-typedef struct _MetaScreenX11LogicalMonitorData
-{
-  int xinerama_index;
-} MetaScreenX11LogicalMonitorData;
-
 static void
 meta_screen_set_property (GObject      *object,
                           guint         prop_id,
@@ -188,135 +181,11 @@ meta_screen_class_init (MetaScreenClass *klass)
   g_object_class_install_property (object_class,
                                    PROP_N_WORKSPACES,
                                    pspec);
-
-  quark_screen_x11_logical_monitor_data =
-    g_quark_from_static_string ("-meta-screen-logical-monitor-x11-data");
 }
 
 static void
 meta_screen_init (MetaScreen *screen)
 {
-}
-
-static MetaScreenX11LogicalMonitorData *
-get_screen_x11_logical_monitor_data (MetaLogicalMonitor *logical_monitor)
-{
-  return g_object_get_qdata (G_OBJECT (logical_monitor),
-                             quark_screen_x11_logical_monitor_data);
-}
-
-static MetaScreenX11LogicalMonitorData *
-ensure_screen_x11_logical_monitor_data (MetaLogicalMonitor *logical_monitor)
-{
-  MetaScreenX11LogicalMonitorData *data;
-
-  data = get_screen_x11_logical_monitor_data (logical_monitor);
-  if (data)
-    return data;
-
-  data = g_new0 (MetaScreenX11LogicalMonitorData, 1);
-  g_object_set_qdata_full (G_OBJECT (logical_monitor),
-                           quark_screen_x11_logical_monitor_data,
-                           data,
-                           g_free);
-
-  return data;
-}
-
-static void
-meta_screen_ensure_xinerama_indices (MetaScreen *screen)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  GList *logical_monitors, *l;
-  XineramaScreenInfo *infos;
-  int n_infos, j;
-
-  if (screen->has_xinerama_indices)
-    return;
-
-  screen->has_xinerama_indices = TRUE;
-
-  if (!XineramaIsActive (screen->display->x11_display->xdisplay))
-    return;
-
-  infos = XineramaQueryScreens (screen->display->x11_display->xdisplay,
-                                &n_infos);
-  if (n_infos <= 0 || infos == NULL)
-    {
-      meta_XFree (infos);
-      return;
-    }
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager);
-
-  for (l = logical_monitors; l; l = l->next)
-    {
-      MetaLogicalMonitor *logical_monitor = l->data;
-
-      for (j = 0; j < n_infos; ++j)
-        {
-          if (logical_monitor->rect.x == infos[j].x_org &&
-              logical_monitor->rect.y == infos[j].y_org &&
-              logical_monitor->rect.width == infos[j].width &&
-              logical_monitor->rect.height == infos[j].height)
-            {
-              MetaScreenX11LogicalMonitorData *logical_monitor_data;
-
-              logical_monitor_data =
-                ensure_screen_x11_logical_monitor_data (logical_monitor);
-              logical_monitor_data->xinerama_index = j;
-            }
-        }
-    }
-
-  meta_XFree (infos);
-}
-
-int
-meta_screen_logical_monitor_to_xinerama_index (MetaScreen         *screen,
-                                               MetaLogicalMonitor *logical_monitor)
-{
-  MetaScreenX11LogicalMonitorData *logical_monitor_data;
-
-  g_return_val_if_fail (logical_monitor, -1);
-
-  meta_screen_ensure_xinerama_indices (screen);
-
-  logical_monitor_data = get_screen_x11_logical_monitor_data (logical_monitor);
-
-  return logical_monitor_data->xinerama_index;
-}
-
-MetaLogicalMonitor *
-meta_screen_xinerama_index_to_logical_monitor (MetaScreen *screen,
-                                               int         xinerama_index)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  GList *logical_monitors, *l;
-
-  meta_screen_ensure_xinerama_indices (screen);
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager);
-
-  for (l = logical_monitors; l; l = l->next)
-    {
-      MetaLogicalMonitor *logical_monitor = l->data;
-      MetaScreenX11LogicalMonitorData *logical_monitor_data;
-
-      logical_monitor_data =
-        ensure_screen_x11_logical_monitor_data (logical_monitor);
-
-      if (logical_monitor_data->xinerama_index == xinerama_index)
-        return logical_monitor;
-    }
-
-  return NULL;
 }
 
 static void
@@ -329,8 +198,6 @@ reload_logical_monitors (MetaScreen *screen)
       MetaWorkspace *space = l->data;
       meta_workspace_invalidate_work_area (space);
     }
-
-  screen->has_xinerama_indices = FALSE;
 }
 
 MetaScreen*

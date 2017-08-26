@@ -46,8 +46,10 @@
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xfixes.h>
+#include <X11/extensions/Xinerama.h>
 
 #include "backends/meta-backend-private.h"
+#include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "core/frame.h"
 #include "core/util-private.h"
@@ -64,6 +66,13 @@
 #endif
 
 G_DEFINE_TYPE (MetaX11Display, meta_x11_display, G_TYPE_OBJECT)
+
+static GQuark quark_x11_display_logical_monitor_data = 0;
+
+typedef struct _MetaX11DisplayLogicalMonitorData
+{
+  int xinerama_index;
+} MetaX11DisplayLogicalMonitorData;
 
 static const char *gnome_wm_keybindings = "Mutter";
 static const char *net_wm_name = "Mutter";
@@ -198,6 +207,8 @@ meta_x11_display_class_init (MetaX11DisplayClass *klass)
 static void
 meta_x11_display_init (MetaX11Display *x11_display)
 {
+  quark_x11_display_logical_monitor_data =
+    g_quark_from_static_string ("-meta-x11-display-logical-monitor-data");
 }
 
 static void
@@ -1227,6 +1238,8 @@ on_monitors_changed (MetaDisplay    *display,
                         CWX | CWY | CWWidth | CWHeight,
                         &changes);
     }
+
+  x11_display->has_xinerama_indices = FALSE;
 }
 
 void
@@ -1413,4 +1426,125 @@ meta_x11_display_focus_the_no_focus_window (MetaX11Display *x11_display,
                                       NULL,
                                       x11_display->no_focus_window,
                                       timestamp);
+}
+
+static MetaX11DisplayLogicalMonitorData *
+get_x11_display_logical_monitor_data (MetaLogicalMonitor *logical_monitor)
+{
+  return g_object_get_qdata (G_OBJECT (logical_monitor),
+                             quark_x11_display_logical_monitor_data);
+}
+
+static MetaX11DisplayLogicalMonitorData *
+ensure_x11_display_logical_monitor_data (MetaLogicalMonitor *logical_monitor)
+{
+  MetaX11DisplayLogicalMonitorData *data;
+
+  data = get_x11_display_logical_monitor_data (logical_monitor);
+  if (data)
+    return data;
+
+  data = g_new0 (MetaX11DisplayLogicalMonitorData, 1);
+  g_object_set_qdata_full (G_OBJECT (logical_monitor),
+                           quark_x11_display_logical_monitor_data,
+                           data,
+                           g_free);
+
+  return data;
+}
+
+static void
+meta_x11_display_ensure_xinerama_indices (MetaX11Display *x11_display)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  GList *logical_monitors, *l;
+  XineramaScreenInfo *infos;
+  int n_infos, j;
+
+  if (x11_display->has_xinerama_indices)
+    return;
+
+  x11_display->has_xinerama_indices = TRUE;
+
+  if (!XineramaIsActive (x11_display->xdisplay))
+    return;
+
+  infos = XineramaQueryScreens (x11_display->xdisplay,
+                                &n_infos);
+  if (n_infos <= 0 || infos == NULL)
+    {
+      meta_XFree (infos);
+      return;
+    }
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+
+      for (j = 0; j < n_infos; ++j)
+        {
+          if (logical_monitor->rect.x == infos[j].x_org &&
+              logical_monitor->rect.y == infos[j].y_org &&
+              logical_monitor->rect.width == infos[j].width &&
+              logical_monitor->rect.height == infos[j].height)
+            {
+              MetaX11DisplayLogicalMonitorData *logical_monitor_data;
+
+              logical_monitor_data =
+                ensure_x11_display_logical_monitor_data (logical_monitor);
+              logical_monitor_data->xinerama_index = j;
+            }
+        }
+    }
+
+  meta_XFree (infos);
+}
+
+int
+meta_x11_display_logical_monitor_to_xinerama_index (MetaX11Display     *x11_display,
+                                                    MetaLogicalMonitor *logical_monitor)
+{
+  MetaX11DisplayLogicalMonitorData *logical_monitor_data;
+
+  g_return_val_if_fail (logical_monitor, -1);
+
+  meta_x11_display_ensure_xinerama_indices (x11_display);
+
+  logical_monitor_data = get_x11_display_logical_monitor_data (logical_monitor);
+
+  return logical_monitor_data->xinerama_index;
+}
+
+MetaLogicalMonitor *
+meta_x11_display_xinerama_index_to_logical_monitor (MetaX11Display *x11_display,
+                                                    int             xinerama_index)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  GList *logical_monitors, *l;
+
+  meta_x11_display_ensure_xinerama_indices (x11_display);
+
+  logical_monitors =
+    meta_monitor_manager_get_logical_monitors (monitor_manager);
+
+  for (l = logical_monitors; l; l = l->next)
+    {
+      MetaLogicalMonitor *logical_monitor = l->data;
+      MetaX11DisplayLogicalMonitorData *logical_monitor_data;
+
+      logical_monitor_data =
+        ensure_x11_display_logical_monitor_data (logical_monitor);
+
+      if (logical_monitor_data->xinerama_index == xinerama_index)
+        return logical_monitor;
+    }
+
+  return NULL;
 }
