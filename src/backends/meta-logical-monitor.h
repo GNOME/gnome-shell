@@ -90,9 +90,9 @@ MetaRectangle meta_logical_monitor_get_layout (MetaLogicalMonitor *logical_monit
 
 GList * meta_logical_monitor_get_monitors (MetaLogicalMonitor *logical_monitor);
 
-gboolean meta_logical_monitor_has_neighbor (MetaLogicalMonitor  *logical_monitor,
-                                            MetaLogicalMonitor  *neighbor,
-                                            MetaScreenDirection  neighbor_dir);
+gboolean meta_logical_monitor_has_neighbor (MetaLogicalMonitor   *logical_monitor,
+                                            MetaLogicalMonitor   *neighbor,
+                                            MetaDisplayDirection  neighbor_dir);
 
 void meta_logical_monitor_foreach_crtc (MetaLogicalMonitor        *logical_monitor,
                                         MetaLogicalMonitorCrtcFunc func,

@@ -4222,28 +4222,28 @@ init_builtin_key_bindings (MetaDisplay *display)
                           common_keybindings,
                           META_KEY_BINDING_PER_WINDOW,
                           META_KEYBINDING_ACTION_MOVE_TO_MONITOR_LEFT,
-                          handle_move_to_monitor, META_SCREEN_LEFT);
+                          handle_move_to_monitor, META_DISPLAY_LEFT);
 
   add_builtin_keybinding (display,
                           "move-to-monitor-right",
                           common_keybindings,
                           META_KEY_BINDING_PER_WINDOW,
                           META_KEYBINDING_ACTION_MOVE_TO_MONITOR_RIGHT,
-                          handle_move_to_monitor, META_SCREEN_RIGHT);
+                          handle_move_to_monitor, META_DISPLAY_RIGHT);
 
   add_builtin_keybinding (display,
                           "move-to-monitor-down",
                           common_keybindings,
                           META_KEY_BINDING_PER_WINDOW,
                           META_KEYBINDING_ACTION_MOVE_TO_MONITOR_DOWN,
-                          handle_move_to_monitor, META_SCREEN_DOWN);
+                          handle_move_to_monitor, META_DISPLAY_DOWN);
 
   add_builtin_keybinding (display,
                           "move-to-monitor-up",
                           common_keybindings,
                           META_KEY_BINDING_PER_WINDOW,
                           META_KEYBINDING_ACTION_MOVE_TO_MONITOR_UP,
-                          handle_move_to_monitor, META_SCREEN_UP);
+                          handle_move_to_monitor, META_DISPLAY_UP);
 
   add_builtin_keybinding (display,
                           "raise-or-lower",

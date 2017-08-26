@@ -61,7 +61,7 @@ void meta_background_refresh_all (void);
 
 GType meta_background_get_type (void);
 
-MetaBackground *meta_background_new  (MetaScreen *screen);
+MetaBackground *meta_background_new  (MetaDisplay *display);
 
 void meta_background_set_color    (MetaBackground            *self,
                                    ClutterColor              *color);

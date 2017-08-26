@@ -279,34 +279,34 @@ meta_logical_monitor_class_init (MetaLogicalMonitorClass *klass)
 }
 
 gboolean
-meta_logical_monitor_has_neighbor (MetaLogicalMonitor  *logical_monitor,
-                                   MetaLogicalMonitor  *neighbor,
-                                   MetaScreenDirection  neighbor_direction)
+meta_logical_monitor_has_neighbor (MetaLogicalMonitor   *logical_monitor,
+                                   MetaLogicalMonitor   *neighbor,
+                                   MetaDisplayDirection  neighbor_direction)
 {
   switch (neighbor_direction)
     {
-    case META_SCREEN_RIGHT:
+    case META_DISPLAY_RIGHT:
       if (neighbor->rect.x == (logical_monitor->rect.x +
                                logical_monitor->rect.width) &&
           meta_rectangle_vert_overlap (&neighbor->rect,
                                        &logical_monitor->rect))
         return TRUE;
       break;
-    case META_SCREEN_LEFT:
+    case META_DISPLAY_LEFT:
       if (logical_monitor->rect.x == (neighbor->rect.x +
                                       neighbor->rect.width) &&
           meta_rectangle_vert_overlap (&neighbor->rect,
                                        &logical_monitor->rect))
         return TRUE;
       break;
-    case META_SCREEN_UP:
+    case META_DISPLAY_UP:
       if (logical_monitor->rect.y == (neighbor->rect.y +
                                       neighbor->rect.height) &&
           meta_rectangle_horiz_overlap (&neighbor->rect,
                                         &logical_monitor->rect))
         return TRUE;
       break;
-    case META_SCREEN_DOWN:
+    case META_DISPLAY_DOWN:
       if (neighbor->rect.y == (logical_monitor->rect.y +
                                logical_monitor->rect.height) &&
           meta_rectangle_horiz_overlap (&neighbor->rect,

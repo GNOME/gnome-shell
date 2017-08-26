@@ -82,6 +82,7 @@
 #include "meta-background-actor-private.h"
 #include "meta-background-private.h"
 #include "meta-cullable.h"
+#include "meta/display.h"
 
 enum
 {
@@ -213,7 +214,9 @@ get_preferred_size (MetaBackgroundActor *self,
   MetaBackgroundActorPrivate *priv = META_BACKGROUND_ACTOR (self)->priv;
   MetaRectangle monitor_geometry;
 
-  meta_screen_get_monitor_geometry (priv->screen, priv->monitor, &monitor_geometry);
+  meta_display_get_monitor_geometry (meta_screen_get_display (priv->screen),
+                                     priv->monitor,
+                                     &monitor_geometry);
 
   if (width != NULL)
     *width = monitor_geometry.width;
@@ -381,7 +384,8 @@ setup_pipeline (MetaBackgroundActor   *self,
       MetaRectangle monitor_geometry;
       float gradient_height_perc;
 
-      meta_screen_get_monitor_geometry (priv->screen, priv->monitor, &monitor_geometry);
+      meta_display_get_monitor_geometry (meta_screen_get_display (priv->screen),
+                                         priv->monitor, &monitor_geometry);
       gradient_height_perc = MAX (0.0001, priv->gradient_height / (float)monitor_geometry.height);
       cogl_pipeline_set_uniform_1f (priv->pipeline,
                                     cogl_pipeline_get_uniform_location (priv->pipeline,
@@ -923,12 +927,13 @@ meta_background_actor_set_monitor (MetaBackgroundActor *self,
   MetaBackgroundActorPrivate *priv = self->priv;
   MetaRectangle old_monitor_geometry;
   MetaRectangle new_monitor_geometry;
+  MetaDisplay *display = meta_screen_get_display (priv->screen);
 
   if(priv->monitor == monitor)
       return;
 
-  meta_screen_get_monitor_geometry (priv->screen, priv->monitor, &old_monitor_geometry);
-  meta_screen_get_monitor_geometry (priv->screen, monitor, &new_monitor_geometry);
+  meta_display_get_monitor_geometry (display, priv->monitor, &old_monitor_geometry);
+  meta_display_get_monitor_geometry (display, monitor, &new_monitor_geometry);
   if(old_monitor_geometry.height != new_monitor_geometry.height)
       invalidate_pipeline (self, CHANGED_GRADIENT_PARAMETERS);
 

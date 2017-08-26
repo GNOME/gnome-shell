@@ -82,14 +82,12 @@ static void
 meta_test_headless_monitor_getters (void)
 {
   MetaDisplay *display;
-  MetaScreen *screen;
   int index;
 
   display = meta_get_display ();
-  screen = display->screen;
 
-  index = meta_screen_get_monitor_index_for_rect (screen,
-                                                  &(MetaRectangle) { 0 });
+  index = meta_display_get_monitor_index_for_rect (display,
+                                                   &(MetaRectangle) { 0 });
   g_assert_cmpint (index, ==, -1);
 }
 

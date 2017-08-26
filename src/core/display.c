@@ -2908,8 +2908,8 @@ lookup_tablet_monitor (MetaDisplay        *display,
 
   if (monitor)
     {
-      monitor_idx = meta_screen_get_monitor_index_for_rect (display->screen,
-                                                            &monitor->rect);
+      monitor_idx = meta_display_get_monitor_index_for_rect (display,
+                                                             &monitor->rect);
     }
 
   return monitor_idx;
@@ -3444,4 +3444,181 @@ meta_display_queue_check_fullscreen (MetaDisplay *display)
     display->check_fullscreen_later = meta_later_add (META_LATER_CHECK_FULLSCREEN,
                                                       check_fullscreen_func,
                                                       display, NULL);
+}
+
+int
+meta_display_get_monitor_index_for_rect (MetaDisplay   *display,
+                                         MetaRectangle *rect)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_rect (monitor_manager, rect);
+  if (!logical_monitor)
+    return -1;
+
+  return logical_monitor->number;
+}
+
+int
+meta_display_get_monitor_neighbor_index (MetaDisplay         *display,
+                                         int                  which_monitor,
+                                         MetaDisplayDirection direction)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+  MetaLogicalMonitor *neighbor;
+
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          which_monitor);
+  neighbor = meta_monitor_manager_get_logical_monitor_neighbor (monitor_manager,
+                                                                logical_monitor,
+                                                                direction);
+  return neighbor ? neighbor->number : -1;
+}
+
+/**
+ * meta_display_get_current_monitor:
+ * @display: a #MetaDisplay
+ *
+ * Gets the index of the monitor that currently has the mouse pointer.
+ *
+ * Return value: a monitor index
+ */
+int
+meta_display_get_current_monitor (MetaDisplay *display)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaLogicalMonitor *logical_monitor;
+
+  logical_monitor = meta_backend_get_current_logical_monitor (backend);
+
+  /* Pretend its the first when there is no actual current monitor. */
+  if (!logical_monitor)
+    return 0;
+
+  return logical_monitor->number;
+}
+
+/**
+ * meta_display_get_n_monitors:
+ * @display: a #MetaDisplay
+ *
+ * Gets the number of monitors that are joined together to form @display.
+ *
+ * Return value: the number of monitors
+ */
+int
+meta_display_get_n_monitors (MetaDisplay *display)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+
+  g_return_val_if_fail (META_IS_DISPLAY (display), 0);
+
+  return meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+}
+
+/**
+ * meta_display_get_primary_monitor:
+ * @display: a #MetaDisplay
+ *
+ * Gets the index of the primary monitor on this @display.
+ *
+ * Return value: a monitor index
+ */
+int
+meta_display_get_primary_monitor (MetaDisplay *display)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+
+  g_return_val_if_fail (META_IS_DISPLAY (display), 0);
+
+  logical_monitor =
+    meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
+  if (logical_monitor)
+    return logical_monitor->number;
+  else
+    return 0;
+}
+
+/**
+ * meta_display_get_monitor_geometry:
+ * @display: a #MetaDisplay
+ * @monitor: the monitor number
+ * @geometry: (out): location to store the monitor geometry
+ *
+ * Stores the location and size of the indicated monitor in @geometry.
+ */
+void
+meta_display_get_monitor_geometry (MetaDisplay   *display,
+                                   int            monitor,
+                                   MetaRectangle *geometry)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+#ifndef G_DISABLE_CHECKS
+  int n_logical_monitors =
+    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+#endif
+
+  g_return_if_fail (META_IS_DISPLAY (display));
+  g_return_if_fail (monitor >= 0 && monitor < n_logical_monitors);
+  g_return_if_fail (geometry != NULL);
+
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          monitor);
+  *geometry = logical_monitor->rect;
+}
+
+/**
+ * meta_display_get_monitor_in_fullscreen:
+ * @display: a #MetaDisplay
+ * @monitor: the monitor number
+ *
+ * Determines whether there is a fullscreen window obscuring the specified
+ * monitor. If there is a fullscreen window, the desktop environment will
+ * typically hide any controls that might obscure the fullscreen window.
+ *
+ * You can get notification when this changes by connecting to
+ * MetaDisplay::in-fullscreen-changed.
+ *
+ * Returns: %TRUE if there is a fullscreen window covering the specified monitor.
+ */
+gboolean
+meta_display_get_monitor_in_fullscreen (MetaDisplay *display,
+                                        int          monitor)
+{
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaLogicalMonitor *logical_monitor;
+#ifndef G_DISABLE_CHECKS
+  int n_logical_monitors =
+    meta_monitor_manager_get_num_logical_monitors (monitor_manager);
+#endif
+
+  g_return_val_if_fail (META_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (monitor >= 0 &&
+                        monitor < n_logical_monitors, FALSE);
+
+  logical_monitor =
+    meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
+                                                          monitor);
+
+  /* We use -1 as a flag to mean "not known yet" for notification
+  purposes */ return logical_monitor->in_fullscreen == TRUE;
 }

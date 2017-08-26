@@ -2948,7 +2948,7 @@ meta_window_is_monitor_sized (MetaWindow *window)
       MetaRectangle window_rect, monitor_rect;
 
       meta_window_get_frame_rect (window, &window_rect);
-      meta_screen_get_monitor_geometry (window->screen, window->monitor->number, &monitor_rect);
+      meta_display_get_monitor_geometry (window->display, window->monitor->number, &monitor_rect);
 
       if (meta_rectangle_equal (&window_rect, &monitor_rect))
         return TRUE;
@@ -3170,7 +3170,7 @@ meta_window_can_tile_side_by_side (MetaWindow *window)
   if (!meta_window_can_tile_maximized (window))
     return FALSE;
 
-  monitor = meta_screen_get_current_monitor (window->screen);
+  monitor = meta_display_get_current_monitor (window->display);
   meta_window_get_work_area_for_monitor (window, monitor, &tile_area);
 
   /* Do not allow tiling in portrait orientation */

@@ -279,9 +279,9 @@ MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_at (MetaMonitorMana
 MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_from_rect (MetaMonitorManager *manager,
                                                                         MetaRectangle      *rect);
 
-MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager *manager,
-                                                                       MetaLogicalMonitor *logical_monitor,
-                                                                       MetaScreenDirection direction);
+MetaLogicalMonitor *meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager  *manager,
+                                                                       MetaLogicalMonitor  *logical_monitor,
+                                                                       MetaDisplayDirection direction);
 
 MetaMonitor *       meta_monitor_manager_get_primary_monitor (MetaMonitorManager *manager);
 

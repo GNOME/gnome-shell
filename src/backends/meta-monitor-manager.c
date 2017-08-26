@@ -2492,9 +2492,9 @@ meta_monitor_manager_get_logical_monitor_from_rect (MetaMonitorManager *manager,
 }
 
 MetaLogicalMonitor *
-meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager *manager,
-                                                   MetaLogicalMonitor *logical_monitor,
-                                                   MetaScreenDirection direction)
+meta_monitor_manager_get_logical_monitor_neighbor (MetaMonitorManager  *manager,
+                                                   MetaLogicalMonitor  *logical_monitor,
+                                                   MetaDisplayDirection direction)
 {
   GList *l;
 

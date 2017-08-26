@@ -26,6 +26,7 @@
 #include <meta/types.h>
 #include <meta/prefs.h>
 #include <meta/common.h>
+#include <meta/workspace.h>
 
 /**
  * MetaTabList:
@@ -174,5 +175,37 @@ void meta_display_set_cursor (MetaDisplay *display,
                               MetaCursor   cursor);
 
 GSList *meta_display_get_startup_sequences (MetaDisplay *display);
+
+/**
+ * MetaDisplayDirection:
+ * @META_DISPLAY_UP: up
+ * @META_DISPLAY_DOWN: down
+ * @META_DISPLAY_LEFT: left
+ * @META_DISPLAY_RIGHT: right
+ */
+typedef enum
+{
+  META_DISPLAY_UP,
+  META_DISPLAY_DOWN,
+  META_DISPLAY_LEFT,
+  META_DISPLAY_RIGHT
+} MetaDisplayDirection;
+
+int  meta_display_get_n_monitors       (MetaDisplay   *display);
+int  meta_display_get_primary_monitor  (MetaDisplay   *display);
+int  meta_display_get_current_monitor  (MetaDisplay   *display);
+void meta_display_get_monitor_geometry (MetaDisplay   *display,
+                                        int            monitor,
+                                        MetaRectangle *geometry);
+
+gboolean meta_display_get_monitor_in_fullscreen (MetaDisplay *display,
+                                                 int          monitor);
+
+int meta_display_get_monitor_index_for_rect (MetaDisplay   *display,
+                                             MetaRectangle *rect);
+
+int meta_display_get_monitor_neighbor_index (MetaDisplay         *display,
+                                             int                  which_monitor,
+                                             MetaDisplayDirection dir);
 
 #endif
