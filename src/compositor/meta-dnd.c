@@ -140,7 +140,7 @@ meta_dnd_notify_dnd_leave (MetaDnd *dnd)
 gboolean
 meta_dnd_handle_xdnd_event (MetaBackend    *backend,
                             MetaCompositor *compositor,
-                            MetaDisplay    *display,
+                            Display        *xdisplay,
                             XEvent         *xev)
 {
   MetaDnd *dnd = meta_backend_get_dnd (backend);
@@ -153,23 +153,23 @@ meta_dnd_handle_xdnd_event (MetaBackend    *backend,
       xev->xany.window != clutter_x11_get_stage_window (CLUTTER_STAGE (compositor->stage)))
     return FALSE;
 
-  if (xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndPosition"))
+  if (xev->xclient.message_type == XInternAtom (xdisplay, "XdndPosition", TRUE))
     {
       XEvent xevent;
       Window src = xev->xclient.data.l[0];
 
       memset (&xevent, 0, sizeof(xevent));
       xevent.xany.type = ClientMessage;
-      xevent.xany.display = display->x11_display->xdisplay;
+      xevent.xany.display = xdisplay;
       xevent.xclient.window = src;
-      xevent.xclient.message_type = gdk_x11_get_xatom_by_name ("XdndStatus");
+      xevent.xclient.message_type = XInternAtom (xdisplay, "XdndStatus", TRUE);
       xevent.xclient.format = 32;
       xevent.xclient.data.l[0] = output_window;
       /* flags: bit 0: will we accept the drop? bit 1: do we want more position messages */
       xevent.xclient.data.l[1] = 2;
       xevent.xclient.data.l[4] = None;
 
-      XSendEvent (display->x11_display->xdisplay, src, False, 0, &xevent);
+      XSendEvent (xdisplay, src, False, 0, &xevent);
 
       meta_dnd_notify_dnd_position_change (dnd,
                                             (int)(xev->xclient.data.l[2] >> 16),
@@ -177,13 +177,13 @@ meta_dnd_handle_xdnd_event (MetaBackend    *backend,
 
       return TRUE;
     }
-  else if (xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndLeave"))
+  else if (xev->xclient.message_type == XInternAtom (xdisplay, "XdndLeave", TRUE))
     {
       meta_dnd_notify_dnd_leave (dnd);
 
       return TRUE;
     }
-  else if (xev->xclient.message_type == gdk_x11_get_xatom_by_name ("XdndEnter"))
+  else if (xev->xclient.message_type == XInternAtom (xdisplay, "XdndEnter", TRUE))
     {
       meta_dnd_notify_dnd_enter (dnd);
 

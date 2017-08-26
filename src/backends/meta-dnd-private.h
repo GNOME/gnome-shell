@@ -24,7 +24,7 @@
 
 gboolean meta_dnd_handle_xdnd_event (MetaBackend    *backend,
                                      MetaCompositor *compositor,
-                                     MetaDisplay    *display,
+                                     Display        *xdisplay,
                                      XEvent         *xev);
 
 #ifdef HAVE_WAYLAND

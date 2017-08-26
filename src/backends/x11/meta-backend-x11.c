@@ -332,7 +332,7 @@ handle_host_xevent (MetaBackend *backend,
         if (meta_plugin_manager_xevent_filter (compositor->plugin_mgr, event))
           bypass_clutter = TRUE;
 
-        if (meta_dnd_handle_xdnd_event (backend, compositor, display, event))
+        if (meta_dnd_handle_xdnd_event (backend, compositor, priv->xdisplay, event))
           bypass_clutter = TRUE;
       }
   }
