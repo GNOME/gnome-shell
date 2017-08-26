@@ -1274,7 +1274,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
   else
     {
       MetaWindow * window;
-      window = meta_screen_get_mouse_window (workspace->screen, not_this_one);
+      window = meta_display_get_pointer_window (workspace->screen->display, not_this_one);
       if (window &&
           window->type != META_WINDOW_DOCK &&
           window->type != META_WINDOW_DESKTOP)

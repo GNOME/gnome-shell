@@ -588,29 +588,6 @@ update_num_workspaces (MetaScreen *screen,
   g_object_notify (G_OBJECT (screen), "n-workspaces");
 }
 
-MetaWindow*
-meta_screen_get_mouse_window (MetaScreen  *screen,
-                              MetaWindow  *not_this_one)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
-  MetaWindow *window;
-  int x, y;
-
-  if (not_this_one)
-    meta_topic (META_DEBUG_FOCUS,
-                "Focusing mouse window excluding %s\n", not_this_one->desc);
-
-  meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
-
-  window = meta_stack_get_default_focus_window_at_point (screen->display->stack,
-                                                         screen->active_workspace,
-                                                         not_this_one,
-                                                         x, y);
-
-  return window;
-}
-
 #define _NET_WM_ORIENTATION_HORZ 0
 #define _NET_WM_ORIENTATION_VERT 1
 

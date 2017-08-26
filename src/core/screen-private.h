@@ -74,9 +74,6 @@ void          meta_screen_free                (MetaScreen                 *scree
 void          meta_screen_init_workspaces     (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
 
-MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,
-                                                MetaWindow                 *not_this_one);
-
 void          meta_screen_update_workspace_layout (MetaScreen             *screen);
 void          meta_screen_update_workspace_names  (MetaScreen             *screen);
 
