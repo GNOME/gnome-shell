@@ -24,6 +24,7 @@
 #include "x11/events.h"
 
 #include <X11/Xatom.h>
+#include <X11/XKBlib.h>
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/shape.h>
 
@@ -1166,23 +1167,24 @@ process_selection_clear (MetaX11Display *x11_display,
 }
 
 static void
-notify_bell (MetaDisplay *display,
-             XkbAnyEvent *xkb_ev)
+notify_bell (MetaX11Display *x11_display,
+             XkbAnyEvent    *xkb_ev)
 {
+  MetaDisplay *display = x11_display->display;
   XkbBellNotifyEvent *xkb_bell_event = (XkbBellNotifyEvent*) xkb_ev;
   MetaWindow *window;
 
-  window = meta_x11_display_lookup_x_window (display->x11_display,
+  window = meta_x11_display_lookup_x_window (x11_display,
                                              xkb_bell_event->window);
   if (!window && display->focus_window && display->focus_window->frame)
     window = display->focus_window;
 
-  display->last_bell_time = xkb_ev->time;
+  x11_display->last_bell_time = xkb_ev->time;
   if (!meta_bell_notify (display, window) &&
       meta_prefs_bell_is_audible ())
     {
       /* Force a classic bell if the libcanberra bell failed. */
-      XkbForceDeviceBell (display->x11_display->xdisplay,
+      XkbForceDeviceBell (x11_display->xdisplay,
                           xkb_bell_event->device,
                           xkb_bell_event->bell_class,
                           xkb_bell_event->bell_id,
@@ -1656,17 +1658,17 @@ handle_other_xevent (MetaX11Display *x11_display,
       }
       break;
     default:
-      if (event->type == display->xkb_base_event_type)
+      if (event->type == x11_display->xkb_base_event_type)
         {
           XkbAnyEvent *xkb_ev = (XkbAnyEvent *) event;
 
           switch (xkb_ev->xkb_type)
             {
             case XkbBellNotify:
-              if (XSERVER_TIME_IS_BEFORE(display->last_bell_time,
+              if (XSERVER_TIME_IS_BEFORE(x11_display->last_bell_time,
                                          xkb_ev->time - 100))
                 {
-                  notify_bell (display, xkb_ev);
+                  notify_bell (x11_display, xkb_ev);
                 }
               break;
             default:

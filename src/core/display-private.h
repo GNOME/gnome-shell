@@ -48,6 +48,7 @@
 
 #include <X11/extensions/sync.h>
 
+typedef struct _MetaBell       MetaBell;
 typedef struct _MetaStack      MetaStack;
 typedef struct _MetaUISlave    MetaUISlave;
 
@@ -205,9 +206,6 @@ struct _MetaDisplay
    * to avoid some race conditions on EnterNotify events
    */
   int         sentinel_counter;
-
-  int         xkb_base_event_type;
-  guint32     last_bell_time;
   int	      grab_resize_timeout_id;
 
   MetaKeyBindingManager key_binding_manager;
@@ -254,6 +252,8 @@ struct _MetaDisplay
   MetaDisplayCorner starting_corner;
   guint vertical_workspaces : 1;
   guint workspace_layout_overridden : 1;
+
+  MetaBell *bell;
 };
 
 struct _MetaDisplayClass

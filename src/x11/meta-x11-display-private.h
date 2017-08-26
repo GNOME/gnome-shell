@@ -110,6 +110,9 @@ struct _MetaX11Display
   /* Managed by group-props.c */
   MetaGroupPropHooks *group_prop_hooks;
 
+  int xkb_base_event_type;
+  guint32 last_bell_time;
+
   MetaAlarmFilter alarm_filter;
   gpointer alarm_filter_data;
 

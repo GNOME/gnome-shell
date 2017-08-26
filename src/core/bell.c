@@ -52,12 +52,72 @@
 #include "window-private.h"
 #include "util-private.h"
 #include "compositor/compositor-private.h"
-#include "x11/meta-x11-display-private.h"
-#include <meta/prefs.h>
 #include <meta/compositor.h>
 #ifdef HAVE_LIBCANBERRA
 #include <canberra-gtk.h>
 #endif
+
+G_DEFINE_TYPE (MetaBell, meta_bell, G_TYPE_OBJECT)
+
+enum
+{
+  IS_AUDIBLE_CHANGED,
+  LAST_SIGNAL
+};
+
+static guint bell_signals [LAST_SIGNAL] = { 0 };
+
+static void
+prefs_changed_callback (MetaPreference pref,
+                        gpointer       data)
+{
+  MetaBell *bell = data;
+
+  if (pref == META_PREF_AUDIBLE_BELL)
+    {
+      g_signal_emit (bell, bell_signals[IS_AUDIBLE_CHANGED], 0,
+                     meta_prefs_bell_is_audible ());
+    }
+}
+
+static void
+meta_bell_finalize (GObject *object)
+{
+  MetaBell *bell = META_BELL (object);
+
+  meta_prefs_remove_listener (prefs_changed_callback, bell);
+
+  G_OBJECT_CLASS (meta_bell_parent_class)->finalize (object);
+}
+
+static void
+meta_bell_class_init (MetaBellClass *klass)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_bell_finalize;
+
+  bell_signals[IS_AUDIBLE_CHANGED] =
+    g_signal_new ("is-audible-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_BOOLEAN);
+}
+
+static void
+meta_bell_init (MetaBell *bell)
+{
+  meta_prefs_add_listener (prefs_changed_callback, bell);
+}
+
+MetaBell *
+meta_bell_new (MetaDisplay *display)
+{
+  return g_object_new (META_TYPE_BELL, NULL);
+}
 
 /**
  * bell_flash_fullscreen:
@@ -224,72 +284,6 @@ meta_bell_notify (MetaDisplay *display,
     return bell_audible_notify (display, window);
 
   return TRUE;
-}
-
-void
-meta_bell_set_audible (MetaDisplay *display, gboolean audible)
-{
-  MetaX11Display *x11_display = display->x11_display;
-#ifdef HAVE_LIBCANBERRA
-  /* When we are playing sounds using libcanberra support, we handle the
-   * bell whether its an audible bell or a visible bell */
-  gboolean enable_system_bell = FALSE;
-#else
-  gboolean enable_system_bell = audible;
-#endif /* HAVE_LIBCANBERRA */
-
-  XkbChangeEnabledControls (x11_display->xdisplay,
-                            XkbUseCoreKbd,
-                            XkbAudibleBellMask,
-                            enable_system_bell ? XkbAudibleBellMask : 0);
-}
-
-gboolean
-meta_bell_init (MetaDisplay *display)
-{
-  int xkb_base_error_type, xkb_opcode;
-  MetaX11Display *x11_display = display->x11_display;
-
-  if (!XkbQueryExtension (x11_display->xdisplay, &xkb_opcode,
-			  &display->xkb_base_event_type,
-			  &xkb_base_error_type,
-			  NULL, NULL))
-    {
-      display->xkb_base_event_type = -1;
-      g_message ("could not find XKB extension.");
-      return FALSE;
-    }
-  else
-    {
-      unsigned int mask = XkbBellNotifyMask;
-      gboolean visual_bell_auto_reset = FALSE;
-      /* TRUE if and when non-broken version is available */
-      XkbSelectEvents (x11_display->xdisplay,
-		       XkbUseCoreKbd,
-		       XkbBellNotifyMask,
-		       XkbBellNotifyMask);
-      meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
-      if (visual_bell_auto_reset) {
-        XkbSetAutoResetControls (x11_display->xdisplay,
-				 XkbAudibleBellMask,
-				 &mask,
-				 &mask);
-      }
-      return TRUE;
-    }
-  return FALSE;
-}
-
-void
-meta_bell_shutdown (MetaDisplay *display)
-{
-  MetaX11Display *x11_display = display->x11_display;
-
-  /* TODO: persist initial bell state in display, reset here */
-  XkbChangeEnabledControls (x11_display->xdisplay,
-			    XkbUseCoreKbd,
-			    XkbAudibleBellMask,
-			    XkbAudibleBellMask);
 }
 
 /**
