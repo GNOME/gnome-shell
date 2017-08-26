@@ -91,6 +91,14 @@ meta_x11_display_dispose (GObject *object)
 {
   MetaX11Display *x11_display = META_X11_DISPLAY (object);
 
+  meta_x11_display_ungrab_keys (x11_display);
+
+  if (x11_display->ui)
+    {
+      meta_ui_free (x11_display->ui);
+      x11_display->ui = NULL;
+    }
+
   if (x11_display->no_focus_window != None)
     {
       XUnmapWindow (x11_display->xdisplay, x11_display->no_focus_window);
@@ -827,6 +835,7 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
                                         meta_unsigned_long_equal);
 
   x11_display->groups_by_leader = NULL;
+  x11_display->ui = NULL;
   x11_display->composite_overlay_window = None;
   x11_display->guard_window = None;
   x11_display->leader_window = None;
@@ -911,6 +920,11 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   set_desktop_viewport_hint (x11_display);
 
   set_desktop_geometry_hint (x11_display);
+
+  x11_display->ui = meta_ui_new (xdisplay);
+
+  x11_display->keys_grabbed = FALSE;
+  meta_x11_display_grab_keys (x11_display);
 
   return x11_display;
 }

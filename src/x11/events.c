@@ -865,7 +865,7 @@ handle_input_xevent (MetaX11Display *x11_display,
            NULL;
 
   /* If this is an event for a GTK+ widget, let GTK+ handle it. */
-  if (meta_ui_window_is_widget (screen->ui, modified))
+  if (meta_ui_window_is_widget (x11_display->ui, modified))
     return FALSE;
 
   switch (input_event->evtype)
@@ -944,7 +944,6 @@ static void
 process_request_frame_extents (MetaX11Display *x11_display,
                                XEvent         *event)
 {
-  MetaDisplay *display = x11_display->display;
   /* The X window whose frame extents will be set. */
   Window xwindow = event->xclient.window;
   unsigned long data[4] = { 0, 0, 0, 0 };
@@ -964,7 +963,7 @@ process_request_frame_extents (MetaX11Display *x11_display,
       MetaFrameBorders borders;
 
       /* Return estimated frame extents for a normal window. */
-      meta_ui_theme_get_frame_borders (display->screen->ui,
+      meta_ui_theme_get_frame_borders (x11_display->ui,
                                        META_FRAME_TYPE_NORMAL,
                                        0,
                                        &borders);

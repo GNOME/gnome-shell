@@ -45,7 +45,6 @@ struct _MetaScreen
   GObject parent_instance;
 
   MetaDisplay *display;
-  MetaUI *ui;
 
   MetaWorkspace *active_workspace;
 
@@ -56,8 +55,6 @@ struct _MetaScreen
   MetaScreenCorner starting_corner;
   guint vertical_workspaces : 1;
   guint workspace_layout_overridden : 1;
-
-  guint keys_grabbed : 1;
 
   int closing;
 };

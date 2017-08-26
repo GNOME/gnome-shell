@@ -880,7 +880,8 @@ ungrab_key_bindings (MetaDisplay *display)
 {
   GSList *windows, *l;
 
-  meta_screen_ungrab_keys (display->screen);
+  if (display->x11_display)
+    meta_x11_display_ungrab_keys (display->x11_display);
 
   windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   for (l = windows; l; l = l->next)
@@ -897,7 +898,8 @@ grab_key_bindings (MetaDisplay *display)
 {
   GSList *windows, *l;
 
-  meta_screen_grab_keys (display->screen);
+  if (display->x11_display)
+    meta_x11_display_grab_keys (display->x11_display);
 
   windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   for (l = windows; l; l = l->next)
@@ -1477,45 +1479,44 @@ change_binding_keygrabs (MetaKeyBindingManager *keys,
 }
 
 static void
-meta_screen_change_keygrabs (MetaScreen *screen,
-                             gboolean    grab)
+meta_x11_display_change_keygrabs (MetaX11Display *x11_display,
+                                  gboolean        grab)
 {
-  MetaDisplay *display = screen->display;
-  MetaKeyBindingManager *keys = &display->key_binding_manager;
+  MetaKeyBindingManager *keys = &x11_display->display->key_binding_manager;
   int i;
 
   if (keys->overlay_resolved_key_combo.len != 0)
-    meta_change_keygrab (keys, display->x11_display->xroot,
+    meta_change_keygrab (keys, x11_display->xroot,
                          grab, &keys->overlay_resolved_key_combo);
 
   for (i = 0; i < keys->n_iso_next_group_combos; i++)
-    meta_change_keygrab (keys, display->x11_display->xroot,
+    meta_change_keygrab (keys, x11_display->xroot,
                          grab, &keys->iso_next_group_combo[i]);
 
-  change_binding_keygrabs (keys, display->x11_display->xroot,
+  change_binding_keygrabs (keys, x11_display->xroot,
                            FALSE, grab);
 }
 
 void
-meta_screen_grab_keys (MetaScreen *screen)
+meta_x11_display_grab_keys (MetaX11Display *x11_display)
 {
-  if (screen->keys_grabbed)
+  if (x11_display->keys_grabbed)
     return;
 
-  meta_screen_change_keygrabs (screen, TRUE);
+  meta_x11_display_change_keygrabs (x11_display, TRUE);
 
-  screen->keys_grabbed = TRUE;
+  x11_display->keys_grabbed = TRUE;
 }
 
 void
-meta_screen_ungrab_keys (MetaScreen  *screen)
+meta_x11_display_ungrab_keys (MetaX11Display *x11_display)
 {
-  if (!screen->keys_grabbed)
+  if (!x11_display->keys_grabbed)
     return;
 
-  meta_screen_change_keygrabs (screen, FALSE);
+  meta_x11_display_change_keygrabs (x11_display, FALSE);
 
-  screen->keys_grabbed = FALSE;
+  x11_display->keys_grabbed = FALSE;
 }
 
 static void

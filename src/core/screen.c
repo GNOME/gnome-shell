@@ -207,7 +207,6 @@ meta_screen_new (MetaDisplay *display,
   MetaScreen *screen;
   int number;
   Window xroot = meta_x11_display_get_xroot (display->x11_display);
-  Display *xdisplay = meta_x11_display_get_xdisplay (display->x11_display);
 
   number = meta_ui_get_screen_number ();
 
@@ -234,11 +233,6 @@ meta_screen_new (MetaDisplay *display,
    * so create that required workspace.
    */
   meta_workspace_new (screen);
-
-  screen->keys_grabbed = FALSE;
-  meta_screen_grab_keys (screen);
-
-  screen->ui = meta_ui_new (xdisplay);
 
   meta_prefs_add_listener (prefs_changed_callback, screen);
 
@@ -292,10 +286,6 @@ meta_screen_free (MetaScreen *screen,
   screen->closing += 1;
 
   meta_prefs_remove_listener (prefs_changed_callback, screen);
-
-  meta_screen_ungrab_keys (screen);
-
-  meta_ui_free (screen->ui);
 
   g_object_unref (screen);
 }

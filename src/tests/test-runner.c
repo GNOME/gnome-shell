@@ -223,7 +223,7 @@ test_case_assert_stacking (TestCase *test,
            * is managed as a MetaWindow.
            */
           if (META_STACK_ID_IS_X11 (windows[i]) &&
-              meta_ui_window_is_dummy (display->screen->ui, windows[i]))
+              meta_ui_window_is_dummy (display->x11_display->ui, windows[i]))
             continue;
 
           if (stack_string->len > 0)

@@ -65,7 +65,7 @@ meta_window_ensure_frame (MetaWindow *window)
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height);
 
-  frame->ui_frame = meta_ui_create_frame (window->screen->ui,
+  frame->ui_frame = meta_ui_create_frame (x11_display->ui,
                                           x11_display->xdisplay,
                                           frame->window,
                                           window->xvisual,
@@ -118,7 +118,7 @@ meta_window_ensure_frame (MetaWindow *window)
   meta_frame_update_style (frame);
   meta_frame_update_title (frame);
 
-  meta_ui_map_frame (frame->window->screen->ui, frame->xwindow);
+  meta_ui_map_frame (x11_display->ui, frame->xwindow);
 
   {
     MetaBackend *backend = meta_get_backend ();
