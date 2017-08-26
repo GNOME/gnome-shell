@@ -82,8 +82,8 @@ static void reload_prop_value          (MetaWindow          *window,
                                         MetaWindowPropHooks *hooks,
                                         MetaPropValue       *value,
                                         gboolean             initial);
-static MetaWindowPropHooks* find_hooks (MetaDisplay *display,
-                                        Atom         property);
+static MetaWindowPropHooks *find_hooks (MetaX11Display *x11_display,
+                                        Atom            property);
 
 
 void
@@ -95,7 +95,7 @@ meta_window_reload_property_from_xwindow (MetaWindow      *window,
   MetaPropValue value = { 0, };
   MetaWindowPropHooks *hooks;
 
-  hooks = find_hooks (window->display, property);
+  hooks = find_hooks (window->display->x11_display, property);
   if (!hooks)
     return;
 
@@ -130,13 +130,14 @@ meta_window_load_initial_properties (MetaWindow *window)
   int i, j;
   MetaPropValue *values;
   int n_properties = 0;
+  MetaX11Display *x11_display = window->display->x11_display;
 
-  values = g_new0 (MetaPropValue, window->display->n_prop_hooks);
+  values = g_new0 (MetaPropValue, x11_display->n_prop_hooks);
 
   j = 0;
-  for (i = 0; i < window->display->n_prop_hooks; i++)
+  for (i = 0; i < x11_display->n_prop_hooks; i++)
     {
-      MetaWindowPropHooks *hooks = &window->display->prop_hooks_table[i];
+      MetaWindowPropHooks *hooks = &x11_display->prop_hooks_table[i];
       if (hooks->flags & LOAD_INIT)
         {
           init_prop_value (window, hooks, &values[j]);
@@ -149,9 +150,9 @@ meta_window_load_initial_properties (MetaWindow *window)
                         values, n_properties);
 
   j = 0;
-  for (i = 0; i < window->display->n_prop_hooks; i++)
+  for (i = 0; i < x11_display->n_prop_hooks; i++)
     {
-      MetaWindowPropHooks *hooks = &window->display->prop_hooks_table[i];
+      MetaWindowPropHooks *hooks = &x11_display->prop_hooks_table[i];
       if (hooks->flags & LOAD_INIT)
         {
           /* If we didn't actually manage to load anything then we don't need
@@ -1799,8 +1800,8 @@ RELOAD_STRING (gtk_menubar_object_path,     "gtk-menubar-object-path")
 #undef RELOAD_STRING
 
 /**
- * meta_display_init_window_prop_hooks:
- * @display: The #MetaDisplay
+ * meta_x11_display_init_window_prop_hooks:
+ * @x11_display: The #MetaDX11isplay
  *
  * Initialises the property hooks system.  Each row in the table named "hooks"
  * represents an action to take when a property is found on a newly-created
@@ -1816,9 +1817,8 @@ RELOAD_STRING (gtk_menubar_object_path,     "gtk-menubar-object-path")
  * This value may be NULL, in which case no callback will be called.
  */
 void
-meta_display_init_window_prop_hooks (MetaDisplay *display)
+meta_x11_display_init_window_prop_hooks (MetaX11Display *x11_display)
 {
-  MetaX11Display *x11_display = display->x11_display;
   /* The ordering here is significant for the properties we load
    * initially: they are roughly ordered in the order we want them to
    * be gotten. We want to get window name and class first so we can
@@ -1877,10 +1877,10 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   MetaWindowPropHooks *table = g_memdup (hooks, sizeof (hooks)),
     *cursor = table;
 
-  g_assert (display->prop_hooks == NULL);
+  g_assert (x11_display->prop_hooks == NULL);
 
-  display->prop_hooks_table = (gpointer) table;
-  display->prop_hooks = g_hash_table_new (NULL, NULL);
+  x11_display->prop_hooks_table = (gpointer) table;
+  x11_display->prop_hooks = g_hash_table_new (NULL, NULL);
 
   while (cursor->property)
     {
@@ -1894,28 +1894,28 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
        * anything 32 bits or less, and atoms are 32 bits with the top three
        * bits clear.  (Scheifler & Gettys, 2e, p372)
        */
-      g_hash_table_insert (display->prop_hooks,
+      g_hash_table_insert (x11_display->prop_hooks,
                            GINT_TO_POINTER (cursor->property),
                            cursor);
       cursor++;
     }
-  display->n_prop_hooks = cursor - table;
+  x11_display->n_prop_hooks = cursor - table;
 }
 
 void
-meta_display_free_window_prop_hooks (MetaDisplay *display)
+meta_x11_display_free_window_prop_hooks (MetaX11Display *x11_display)
 {
-  g_hash_table_unref (display->prop_hooks);
-  display->prop_hooks = NULL;
+  g_hash_table_unref (x11_display->prop_hooks);
+  x11_display->prop_hooks = NULL;
 
-  g_free (display->prop_hooks_table);
-  display->prop_hooks_table = NULL;
+  g_free (x11_display->prop_hooks_table);
+  x11_display->prop_hooks_table = NULL;
 }
 
-static MetaWindowPropHooks*
-find_hooks (MetaDisplay *display,
-            Atom         property)
+static MetaWindowPropHooks *
+find_hooks (MetaX11Display *x11_display,
+            Atom            property)
 {
-  return g_hash_table_lookup (display->prop_hooks,
+  return g_hash_table_lookup (x11_display->prop_hooks,
                               GINT_TO_POINTER (property));
 }

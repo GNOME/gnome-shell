@@ -72,8 +72,6 @@
 
 #include "x11/events.h"
 #include "x11/window-x11.h"
-#include "x11/window-props.h"
-#include "x11/group-props.h"
 #include "x11/xprops.h"
 #include "x11/meta-x11-display-private.h"
 
@@ -717,18 +715,11 @@ meta_display_open (void)
 
   meta_bell_init (display);
 
-  display->prop_hooks = NULL;
-  meta_display_init_window_prop_hooks (display);
-  display->group_prop_hooks = NULL;
-  meta_display_init_group_prop_hooks (display);
-
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new
    */
   display->leader_window = None;
   display->timestamp_pinging_window = None;
-
-  display->groups_by_leader = NULL;
 
   meta_display_init_events_x11 (display);
 
@@ -1019,9 +1010,6 @@ meta_display_close (MetaDisplay *display,
 
   if (display->leader_window != None)
     XDestroyWindow (display->x11_display->xdisplay, display->leader_window);
-
-  meta_display_free_window_prop_hooks (display);
-  meta_display_free_group_prop_hooks (display);
 
   if (display->x11_display)
     {

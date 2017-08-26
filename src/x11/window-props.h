@@ -60,22 +60,22 @@ void meta_window_reload_property_from_xwindow (MetaWindow      *window,
 void meta_window_load_initial_properties (MetaWindow *window);
 
 /**
- * meta_display_init_window_prop_hooks:
- * @display:  The display.
+ * meta_x11_display_init_window_prop_hooks:
+ * @x11_display:  The X11 display.
  *
  * Initialises the hooks used for the reload_propert* functions
  * on a particular display, and stores a pointer to them in the
- * display.
+ * x11_display.
  */
-void meta_display_init_window_prop_hooks (MetaDisplay *display);
+void meta_x11_display_init_window_prop_hooks (MetaX11Display *x11_display);
 
 /**
- * meta_display_free_window_prop_hooks:
- * @display:  The display.
+ * meta_x11_display_free_window_prop_hooks:
+ * @x11_display:  The X11 display.
  * Frees the hooks used for the reload_propert* functions
  * for a particular display.
  */
-void meta_display_free_window_prop_hooks (MetaDisplay *display);
+void meta_x11_display_free_window_prop_hooks (MetaX11Display *x11_display);
 
 /**
  * meta_set_normal_hints:

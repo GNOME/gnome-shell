@@ -52,6 +52,9 @@
 #include "core/util-private.h"
 #include "meta/errors.h"
 
+#include "x11/group-props.h"
+#include "x11/window-props.h"
+
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-xwayland-private.h"
 #endif
@@ -67,6 +70,18 @@ static void
 meta_x11_display_dispose (GObject *object)
 {
   MetaX11Display *x11_display = META_X11_DISPLAY (object);
+
+  if (x11_display->prop_hooks)
+    {
+      meta_x11_display_free_window_prop_hooks (x11_display);
+      x11_display->prop_hooks = NULL;
+    }
+
+  if (x11_display->group_prop_hooks)
+    {
+      meta_x11_display_free_group_prop_hooks (x11_display);
+      x11_display->group_prop_hooks = NULL;
+    }
 
   if (x11_display->xids)
     {
@@ -408,6 +423,13 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
   x11_display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
+
+  x11_display->groups_by_leader = NULL;
+
+  x11_display->prop_hooks = NULL;
+  meta_x11_display_init_window_prop_hooks (x11_display);
+  x11_display->group_prop_hooks = NULL;
+  meta_x11_display_init_group_prop_hooks (x11_display);
 
   return x11_display;
 }

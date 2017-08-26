@@ -27,7 +27,7 @@
 struct _MetaGroup
 {
   int refcount;
-  MetaDisplay *display;
+  MetaX11Display *x11_display;
   GSList *windows;
   Window group_leader;
   char *startup_id;

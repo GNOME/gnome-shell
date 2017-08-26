@@ -33,6 +33,9 @@
 #include "meta/types.h"
 #include "meta/meta-x11-display.h"
 
+typedef struct _MetaGroupPropHooks  MetaGroupPropHooks;
+typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
+
 typedef gboolean (*MetaAlarmFilter) (MetaX11Display        *x11_display,
                                      XSyncAlarmNotifyEvent *event,
                                      gpointer               data);
@@ -59,6 +62,17 @@ struct _MetaX11Display
 #undef item
 
   GHashTable *xids;
+
+  /* Managed by group.c */
+  GHashTable *groups_by_leader;
+
+  /* Managed by window-props.c */
+  MetaWindowPropHooks *prop_hooks_table;
+  GHashTable *prop_hooks;
+  int n_prop_hooks;
+
+  /* Managed by group-props.c */
+  MetaGroupPropHooks *group_prop_hooks;
 
   MetaAlarmFilter alarm_filter;
   gpointer alarm_filter_data;

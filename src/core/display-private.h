@@ -50,9 +50,6 @@
 typedef struct _MetaStack      MetaStack;
 typedef struct _MetaUISlave    MetaUISlave;
 
-typedef struct _MetaGroupPropHooks  MetaGroupPropHooks;
-typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
-
 typedef struct MetaEdgeResistanceData MetaEdgeResistanceData;
 
 typedef enum {
@@ -234,17 +231,6 @@ struct _MetaDisplay
 
   /* Closing down the display */
   int closing;
-
-  /* Managed by group.c */
-  GHashTable *groups_by_leader;
-
-  /* Managed by window-props.c */
-  MetaWindowPropHooks *prop_hooks_table;
-  GHashTable *prop_hooks;
-  int n_prop_hooks;
-
-  /* Managed by group-props.c */
-  MetaGroupPropHooks *group_prop_hooks;
 
   /* Managed by compositor.c */
   MetaCompositor *compositor;
