@@ -137,10 +137,6 @@ static void bindings_changed (GSettings      *settings,
                               gchar          *key,
                               gpointer        data);
 
-static void shell_shows_app_menu_changed (GtkSettings *settings,
-                                          GParamSpec  *pspec,
-                                          gpointer     data);
-
 static void update_cursor_size_from_gtk (GtkSettings *settings,
                                          GParamSpec *pspec,
                                          gpointer data);
@@ -974,10 +970,6 @@ meta_prefs_init (void)
                       G_CALLBACK (wayland_settings_changed), NULL);
   g_hash_table_insert (settings_schemas, g_strdup (SCHEMA_INTERFACE), settings);
 
-  g_signal_connect (gtk_settings_get_default (),
-                    "notify::gtk-shell-shows-app-menu",
-                    G_CALLBACK (shell_shows_app_menu_changed), NULL);
-
   if (!meta_is_wayland_compositor ())
     g_signal_connect (gtk_settings_get_default (), "notify::gtk-cursor-theme-size",
                       G_CALLBACK (update_cursor_size_from_gtk), NULL);
@@ -1003,7 +995,6 @@ meta_prefs_init (void)
   handle_preference_init_int ();
 
   update_cursor_size ();
-  shell_shows_app_menu_changed (gtk_settings_get_default (), NULL, NULL);
 
   init_bindings ();
 }
@@ -1219,27 +1210,6 @@ bindings_changed (GSettings *settings,
 }
 
 static void
-shell_shows_app_menu_changed (GtkSettings *settings,
-                              GParamSpec *pspec,
-                              gpointer data)
-{
-  int shell_shows_app_menu = 1;
-  gboolean changed = FALSE;
-
-  g_object_get (settings,
-                "gtk-shell-shows-app-menu", &shell_shows_app_menu,
-                NULL);
-
-
-  changed = (show_fallback_app_menu == !!shell_shows_app_menu);
-
-  show_fallback_app_menu = !shell_shows_app_menu;
-
-  if (changed)
-    queue_changed (META_PREF_BUTTON_LAYOUT);
-}
-
-static void
 update_cursor_size (void)
 {
   if (meta_is_wayland_compositor ())
@@ -1341,6 +1311,19 @@ gboolean
 meta_prefs_get_show_fallback_app_menu (void)
 {
   return show_fallback_app_menu;
+}
+
+void
+meta_prefs_set_show_fallback_app_menu (gboolean whether)
+{
+  gboolean changed = FALSE;
+
+  changed = (show_fallback_app_menu == !whether);
+
+  show_fallback_app_menu = whether;
+
+  if (changed)
+    queue_changed (META_PREF_BUTTON_LAYOUT);
 }
 
 const char*

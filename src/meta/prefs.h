@@ -140,7 +140,9 @@ gboolean                    meta_prefs_get_gnome_animations   (void);
 gboolean                    meta_prefs_get_edge_tiling        (void);
 gboolean                    meta_prefs_get_auto_maximize      (void);
 gboolean                    meta_prefs_get_center_new_windows (void);
+
 gboolean                    meta_prefs_get_show_fallback_app_menu (void);
+void                        meta_prefs_set_show_fallback_app_menu (gboolean whether);
 
 void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
 
