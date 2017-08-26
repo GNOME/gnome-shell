@@ -1486,7 +1486,7 @@ handle_other_xevent (MetaX11Display *x11_display,
           {
             if (event->xproperty.atom ==
                 x11_display->atom__NET_DESKTOP_LAYOUT)
-              meta_display_update_workspace_layout (display);
+              meta_x11_display_update_workspace_layout (x11_display);
             else if (event->xproperty.atom ==
                      x11_display->atom__NET_DESKTOP_NAMES)
               meta_x11_display_update_workspace_names (x11_display);

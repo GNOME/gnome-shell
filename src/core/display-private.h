@@ -444,7 +444,11 @@ MetaWindow *meta_display_get_pointer_window (MetaDisplay *display,
                                              MetaWindow  *not_this_one);
 
 void meta_display_init_workspaces         (MetaDisplay *display);
-void meta_display_update_workspace_layout (MetaDisplay *display);
+void meta_display_update_workspace_layout (MetaDisplay       *display,
+                                           MetaDisplayCorner  starting_corner,
+                                           gboolean           vertical_layout,
+                                           int                n_rows,
+                                           int                n_columns);
 
 typedef struct MetaWorkspaceLayout MetaWorkspaceLayout;
 
@@ -476,5 +480,9 @@ void     meta_display_workspace_switched (MetaDisplay        *display,
                                           int                 from,
                                           int                 to,
                                           MetaMotionDirection direction);
+
+void meta_display_update_num_workspaces (MetaDisplay *display,
+                                         guint32      timestamp,
+                                         int          new_num);
 
 #endif

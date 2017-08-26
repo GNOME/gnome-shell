@@ -140,7 +140,9 @@ enum
   WORKSPACE_ADDED,
   WORKSPACE_REMOVED,
   WORKSPACE_SWITCHED,
+  ACTIVE_WORKSPACE_CHANGED,
   IN_FULLSCREEN_CHANGED,
+  SHOWING_DESKTOP_CHANGED,
   STARTUP_SEQUENCE_CHANGED,
   MONITORS_CHANGED,
   RESTACKED,
@@ -173,10 +175,6 @@ static void on_monitors_changed (MetaMonitorManager *monitor_manager,
 
 static void    prefs_changed_callback    (MetaPreference pref,
                                           void          *data);
-
-static void set_workspace_names   (MetaDisplay *display);
-static void update_num_workspaces (MetaDisplay *display,
-                                   guint32     timestamp);
 
 static int mru_cmp (gconstpointer a,
                     gconstpointer b);
@@ -488,11 +486,27 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_TYPE_INT,
                   META_TYPE_MOTION_DIRECTION);
 
+  display_signals[ACTIVE_WORKSPACE_CHANGED] =
+    g_signal_new ("active-workspace-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
   display_signals[IN_FULLSCREEN_CHANGED] =
     g_signal_new ("in-fullscreen-changed",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  display_signals[SHOWING_DESKTOP_CHANGED] =
+    g_signal_new ("showing-desktop-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
 
   display_signals[STARTUP_SEQUENCE_CHANGED] =
@@ -790,6 +804,26 @@ meta_display_open (void)
 
   meta_display_set_cursor (display, META_CURSOR_DEFAULT);
 
+
+  /* This is the default layout extracted from default
+   * variable values in update_num_workspaces ()
+   * This can be overriden using _NET_DESKTOP_LAYOUT in
+   * meta_x11_display_new (), if it's specified */
+  meta_display_update_workspace_layout (display,
+                                        META_DISPLAY_TOPLEFT,
+                                        FALSE,
+                                        -1,
+                                         1);
+
+  /* There must be at least one workspace at all times,
+   * so create that required workspace.
+   */
+  meta_workspace_new (display);
+
+  meta_display_init_workspaces (display);
+
+  reload_logical_monitors (display);
+
   x11_display = meta_x11_display_new (display, &error);
   g_assert (x11_display != NULL); /* Required, for now */
   display->x11_display = x11_display;
@@ -799,15 +833,6 @@ meta_display_open (void)
 
   display->stack = meta_stack_new (display);
   display->stack_tracker = meta_stack_tracker_new (display);
-
-  reload_logical_monitors (display);
-
-  meta_display_update_workspace_layout (display);
-
-  /* There must be at least one workspace at all times,
-   * so create that required workspace.
-   */
-  meta_workspace_new (display);
 
   meta_bell_init (display);
 
@@ -824,8 +849,6 @@ meta_display_open (void)
   display->startup_notification = meta_startup_notification_get (display);
   g_signal_connect (display->startup_notification, "changed",
                     G_CALLBACK (on_startup_notification_changed), display);
-
-  meta_display_init_workspaces (display);
 
   enable_compositor (display);
 
@@ -2559,11 +2582,8 @@ prefs_changed_callback (MetaPreference pref,
        */
       guint32 timestamp =
         meta_display_get_current_time_roundtrip (display);
-      update_num_workspaces (display, timestamp);
-    }
-  else if (pref == META_PREF_WORKSPACE_NAMES)
-    {
-      set_workspace_names (display);
+      int new_num = meta_prefs_get_num_workspaces ();
+      meta_display_update_num_workspaces (display, timestamp, new_num);
     }
 }
 
@@ -3717,36 +3737,20 @@ meta_display_get_pointer_window (MetaDisplay *display,
 void
 meta_display_init_workspaces (MetaDisplay *display)
 {
-  MetaWorkspace *current_workspace;
-  uint32_t current_workspace_index = 0;
-  guint32 timestamp;
+  int num;
 
   g_return_if_fail (META_IS_DISPLAY (display));
 
-  timestamp = display->x11_display->wm_sn_timestamp;
-
-  /* Get current workspace */
-  if (meta_prop_get_cardinal (display->x11_display,
-                              display->x11_display->xroot,
-                              display->x11_display->atom__NET_CURRENT_DESKTOP,
-                              &current_workspace_index))
-    meta_verbose ("Read existing _NET_CURRENT_DESKTOP = %d\n",
-                  (int) current_workspace_index);
+  if (meta_prefs_get_dynamic_workspaces ())
+    /* This will be properly updated using _NET_NUMBER_OF_DESKTOPS
+     * (if set) in meta_x11_display_new () */
+    num = 1;
   else
-    meta_verbose ("No _NET_CURRENT_DESKTOP present\n");
+    num = meta_prefs_get_num_workspaces ();
 
-  update_num_workspaces (display, timestamp);
+  meta_display_update_num_workspaces (display, META_CURRENT_TIME, num);
 
-  set_workspace_names (display);
-
-  /* Switch to the _NET_CURRENT_DESKTOP workspace */
-  current_workspace = meta_display_get_workspace_by_index (display,
-                                                           current_workspace_index);
-
-  if (current_workspace != NULL)
-    meta_workspace_activate (current_workspace, timestamp);
-  else
-    meta_workspace_activate (display->workspaces->data, timestamp);
+  meta_workspace_activate (display->workspaces->data, META_CURRENT_TIME);
 }
 
 int
@@ -3816,15 +3820,13 @@ meta_display_remove_workspace (MetaDisplay   *display,
 
   new_num = g_list_length (display->workspaces);
 
-  meta_x11_display_set_number_of_spaces_hint (display->x11_display, new_num);
-
   if (!meta_prefs_get_dynamic_workspaces ())
     meta_prefs_set_num_workspaces (new_num);
 
   /* If deleting a workspace before the current workspace, the active
    * workspace index changes, so we need to update that hint */
   if (active_index_changed)
-      meta_x11_display_set_active_workspace_hint (display->x11_display);
+    g_signal_emit (display, display_signals[ACTIVE_WORKSPACE_CHANGED], 0, NULL);
 
   for (l = next; l; l = l->next)
     {
@@ -3871,8 +3873,6 @@ meta_display_append_new_workspace (MetaDisplay *display,
 
   new_num = g_list_length (display->workspaces);
 
-  meta_x11_display_set_number_of_spaces_hint (display->x11_display, new_num);
-
   if (!meta_prefs_get_dynamic_workspaces ())
     meta_prefs_set_num_workspaces (new_num);
 
@@ -3885,51 +3885,23 @@ meta_display_append_new_workspace (MetaDisplay *display,
   return w;
 }
 
-static void
-update_num_workspaces (MetaDisplay *display,
-                       guint32     timestamp)
+void
+meta_display_update_num_workspaces (MetaDisplay *display,
+                                    guint32      timestamp,
+                                    int          new_num)
 {
-  int new_num, old_num;
+  int old_num;
   GList *l;
-  int i;
-  GList *extras;
-  MetaWorkspace *last_remaining;
-  gboolean need_change_space;
-
-  if (meta_prefs_get_dynamic_workspaces ())
-    {
-      int n_items;
-      uint32_t *list;
-
-      n_items = 0;
-      list = NULL;
-
-      if (meta_prop_get_cardinal_list (display->x11_display,
-                                       display->x11_display->xroot,
-                                       display->x11_display->atom__NET_NUMBER_OF_DESKTOPS,
-                                       &list, &n_items))
-        {
-          new_num = list[0];
-          meta_XFree (list);
-        }
-      else
-        {
-          new_num = 1;
-        }
-    }
-  else
-    {
-      new_num = meta_prefs_get_num_workspaces ();
-    }
+  int i = 0;
+  GList *extras = NULL;
+  MetaWorkspace *last_remaining = NULL;
+  gboolean need_change_space = FALSE;
 
   g_assert (new_num > 0);
 
   if (g_list_length (display->workspaces) == (guint) new_num)
     return;
 
-  last_remaining = NULL;
-  extras = NULL;
-  i = 0;
   for (l = display->workspaces; l != NULL; l = l->next)
     {
       MetaWorkspace *w = l->data;
@@ -3951,7 +3923,6 @@ update_num_workspaces (MetaDisplay *display,
    * wacky if the config tool for changing number of workspaces
    * is on a removed workspace ;-)
    */
-  need_change_space = FALSE;
   for (l = extras; l != NULL; l = l->next)
     {
       MetaWorkspace *w = l->data;
@@ -3978,8 +3949,6 @@ update_num_workspaces (MetaDisplay *display,
   for (i = old_num; i < new_num; i++)
     meta_workspace_new (display);
 
-  meta_x11_display_set_number_of_spaces_hint (display->x11_display, new_num);
-
   meta_display_queue_workarea_recalc (display);
 
   for (i = old_num; i < new_num; i++)
@@ -3988,100 +3957,24 @@ update_num_workspaces (MetaDisplay *display,
   g_object_notify (G_OBJECT (display), "n-workspaces");
 }
 
-#define _NET_WM_ORIENTATION_HORZ 0
-#define _NET_WM_ORIENTATION_VERT 1
-
-#define _NET_WM_TOPLEFT     0
-#define _NET_WM_TOPRIGHT    1
-#define _NET_WM_BOTTOMRIGHT 2
-#define _NET_WM_BOTTOMLEFT  3
-
 void
-meta_display_update_workspace_layout (MetaDisplay *display)
+meta_display_update_workspace_layout (MetaDisplay      *display,
+                                      MetaDisplayCorner starting_corner,
+                                      gboolean          vertical_layout,
+                                      int               n_rows,
+                                      int               n_columns)
 {
-  uint32_t *list;
-  int n_items;
+  g_return_if_fail (META_IS_DISPLAY (display));
+  g_return_if_fail (n_rows > 0 || n_columns > 0);
+  g_return_if_fail (n_rows != 0 && n_columns != 0);
 
   if (display->workspace_layout_overridden)
     return;
 
-  list = NULL;
-  n_items = 0;
-
-  if (meta_prop_get_cardinal_list (display->x11_display,
-                                   display->x11_display->xroot,
-                                   display->x11_display->atom__NET_DESKTOP_LAYOUT,
-                                   &list, &n_items))
-    {
-      if (n_items == 3 || n_items == 4)
-        {
-          int cols, rows;
-
-          switch (list[0])
-            {
-            case _NET_WM_ORIENTATION_HORZ:
-              display->vertical_workspaces = FALSE;
-              break;
-            case _NET_WM_ORIENTATION_VERT:
-              display->vertical_workspaces = TRUE;
-              break;
-            default:
-              meta_warning ("Someone set a weird orientation in _NET_DESKTOP_LAYOUT\n");
-              break;
-            }
-
-          cols = list[1];
-          rows = list[2];
-
-          if (rows <= 0 && cols <= 0)
-            {
-              meta_warning ("Columns = %d rows = %d in _NET_DESKTOP_LAYOUT makes no sense\n", rows, cols);
-            }
-          else
-            {
-              if (rows > 0)
-                display->rows_of_workspaces = rows;
-              else
-                display->rows_of_workspaces = -1;
-
-              if (cols > 0)
-                display->columns_of_workspaces = cols;
-              else
-                display->columns_of_workspaces = -1;
-            }
-
-          if (n_items == 4)
-            {
-              switch (list[3])
-                {
-                case _NET_WM_TOPLEFT:
-                  display->starting_corner = META_DISPLAY_TOPLEFT;
-                  break;
-                case _NET_WM_TOPRIGHT:
-                  display->starting_corner = META_DISPLAY_TOPRIGHT;
-                  break;
-                case _NET_WM_BOTTOMRIGHT:
-                  display->starting_corner = META_DISPLAY_BOTTOMRIGHT;
-                  break;
-                case _NET_WM_BOTTOMLEFT:
-                  display->starting_corner = META_DISPLAY_BOTTOMLEFT;
-                  break;
-                default:
-                  meta_warning ("Someone set a weird starting corner in _NET_DESKTOP_LAYOUT\n");
-                  break;
-                }
-            }
-          else
-            display->starting_corner = META_DISPLAY_TOPLEFT;
-        }
-      else
-        {
-          meta_warning ("Someone set _NET_DESKTOP_LAYOUT to %d integers instead of 4 "
-                        "(3 is accepted for backwards compat)\n", n_items);
-        }
-
-      meta_XFree (list);
-    }
+  display->vertical_workspaces = vertical_layout != FALSE;
+  display->starting_corner = starting_corner;
+  display->rows_of_workspaces = n_rows;
+  display->columns_of_workspaces = n_columns;
 
   meta_verbose ("Workspace layout rows = %d cols = %d orientation = %d starting corner = %u\n",
                 display->rows_of_workspaces,
@@ -4110,64 +4003,13 @@ meta_display_override_workspace_layout (MetaDisplay       *display,
                                         int                n_rows,
                                         int                n_columns)
 {
-  g_return_if_fail (META_IS_DISPLAY (display));
-  g_return_if_fail (n_rows > 0 || n_columns > 0);
-  g_return_if_fail (n_rows != 0 && n_columns != 0);
+  meta_display_update_workspace_layout (display,
+                                        starting_corner,
+                                        vertical_layout,
+                                        n_rows,
+                                        n_columns);
 
   display->workspace_layout_overridden = TRUE;
-  display->vertical_workspaces = vertical_layout != FALSE;
-  display->starting_corner = starting_corner;
-  display->rows_of_workspaces = n_rows;
-  display->columns_of_workspaces = n_columns;
-
-  /* In theory we should remove _NET_DESKTOP_LAYOUT from _NET_SUPPORTED at this
-   * point, but it's unlikely that anybody checks that, and it's unlikely that
-   * anybody who checks that handles changes, so we'd probably just create
-   * a race condition. And it's hard to implement with the code in set_supported_hint()
-   */
-}
-
-static void
-set_workspace_names (MetaDisplay *display)
-{
-  /* This updates names on root window when the pref changes,
-   * note we only get prefs change notify if things have
-   * really changed.
-   */
-  MetaX11Display *x11_display = display->x11_display;
-  GString *flattened;
-  int i;
-  int n_spaces;
-
-  /* flatten to nul-separated list */
-  n_spaces = meta_display_get_n_workspaces (display);
-  flattened = g_string_new ("");
-  i = 0;
-  while (i < n_spaces)
-    {
-      const char *name;
-
-      name = meta_prefs_get_workspace_name (i);
-
-      if (name)
-        g_string_append_len (flattened, name,
-                             strlen (name) + 1);
-      else
-        g_string_append_len (flattened, "", 1);
-
-      ++i;
-    }
-
-  meta_error_trap_push (x11_display);
-  XChangeProperty (x11_display->xdisplay,
-                   x11_display->xroot,
-                   x11_display->atom__NET_DESKTOP_NAMES,
-		   x11_display->atom_UTF8_STRING,
-                   8, PropModeReplace,
-		   (unsigned char *)flattened->str, flattened->len);
-  meta_error_trap_pop (x11_display);
-
-  g_string_free (flattened, TRUE);
 }
 
 #ifdef WITH_VERBOSE_MODE
@@ -4527,7 +4369,7 @@ meta_display_show_desktop (MetaDisplay *display,
         }
     }
 
-  meta_x11_display_update_showing_desktop_hint (display->x11_display);
+  g_signal_emit (display, display_signals[SHOWING_DESKTOP_CHANGED], 0, NULL);
 }
 
 void
@@ -4540,7 +4382,7 @@ meta_display_unshow_desktop (MetaDisplay *display)
 
   queue_windows_showing (display);
 
-  meta_x11_display_update_showing_desktop_hint (display->x11_display);
+  g_signal_emit (display, display_signals[SHOWING_DESKTOP_CHANGED], 0, NULL);
 }
 
 /**

@@ -543,17 +543,17 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
 
   workspace->display->active_workspace = workspace;
 
-  meta_x11_display_set_active_workspace_hint (workspace->display->x11_display);
+  g_signal_emit_by_name (workspace->display, "active-workspace-changed");
+
+  if (old == NULL)
+    return;
 
   /* If the "show desktop" mode is active for either the old workspace
    * or the new one *but not both*, then update the
    * _net_showing_desktop hint
    */
-  if (old && (old->showing_desktop != workspace->showing_desktop))
-    meta_x11_display_update_showing_desktop_hint (workspace->display->x11_display);
-
-  if (old == NULL)
-    return;
+  if (old->showing_desktop != workspace->showing_desktop)
+    g_signal_emit_by_name (workspace->display, "showing-desktop-changed");
 
   move_window = NULL;
   if (meta_grab_op_is_moving (workspace->display->grab_op))
@@ -650,7 +650,6 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
       meta_workspace_focus_default_window (workspace, NULL, timestamp);
     }
 
-   /* Emit switched signal from screen.c */
    meta_display_workspace_switched (display, current_space, new_space, direction);
 }
 
