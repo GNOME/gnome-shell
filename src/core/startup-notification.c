@@ -144,19 +144,19 @@ static void meta_startup_notification_ensure_timeout  (MetaStartupNotification *
 static void
 meta_startup_notification_update_feedback (MetaStartupNotification *sn)
 {
-  MetaScreen *screen = sn->display->screen;
+  MetaDisplay *display = sn->display;
 
   if (sn->startup_sequences != NULL)
     {
       meta_topic (META_DEBUG_STARTUP,
                   "Setting busy cursor\n");
-      meta_screen_set_cursor (screen, META_CURSOR_BUSY);
+      meta_display_set_cursor (display, META_CURSOR_BUSY);
     }
   else
     {
       meta_topic (META_DEBUG_STARTUP,
                   "Setting default cursor\n");
-      meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
+      meta_display_set_cursor (display, META_CURSOR_DEFAULT);
     }
 }
 

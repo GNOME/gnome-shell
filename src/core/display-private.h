@@ -106,6 +106,9 @@ typedef gboolean (*MetaAlarmFilter) (MetaDisplay           *display,
                                      XSyncAlarmNotifyEvent *event,
                                      gpointer               data);
 
+typedef void (* MetaDisplayWindowFunc) (MetaWindow *window,
+                                        gpointer    user_data);
+
 struct _MetaDisplay
 {
   GObject parent_instance;
@@ -260,6 +263,9 @@ struct _MetaDisplay
   ClutterActor *current_pad_osd;
 
   MetaStartupNotification *startup_notification;
+
+  MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
+  MetaCursor current_cursor;
 };
 
 struct _MetaDisplayClass
@@ -350,7 +356,8 @@ GSList*     meta_display_list_windows        (MetaDisplay          *display,
 MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
 MetaDisplay* meta_get_display            (void);
 
-void     meta_display_update_cursor (MetaDisplay *display);
+void meta_display_reload_cursor (MetaDisplay *display);
+void meta_display_update_cursor (MetaDisplay *display);
 
 void    meta_display_check_threshold_reached (MetaDisplay *display,
                                               int          x,
@@ -464,5 +471,10 @@ void meta_display_notify_pad_group_switch (MetaDisplay        *display,
                                            guint               n_group,
                                            guint               n_mode,
                                            guint               n_modes);
+
+void meta_display_foreach_window (MetaDisplay           *display,
+                                  MetaListWindowsFlags   flags,
+                                  MetaDisplayWindowFunc  func,
+                                  gpointer               data);
 
 #endif

@@ -38,9 +38,6 @@
 #include "ui.h"
 #include "meta-monitor-manager-private.h"
 
-typedef void (* MetaScreenWindowFunc) (MetaWindow *window,
-                                       gpointer    user_data);
-
 #define META_WIREFRAME_XOR_LINE_WIDTH 2
 
 struct _MetaScreen
@@ -48,7 +45,6 @@ struct _MetaScreen
   GObject parent_instance;
 
   MetaDisplay *display;
-  MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaUI *ui;
 
   guint tile_preview_timeout_id;
@@ -65,8 +61,6 @@ struct _MetaScreen
 
   MetaStack *stack;
   MetaStackTracker *stack_tracker;
-
-  MetaCursor current_cursor;
 
   Window wm_sn_selection_window;
   Atom wm_sn_atom;
@@ -104,7 +98,6 @@ struct _MetaScreenClass
 
   void (*restacked)         (MetaScreen *);
   void (*workareas_changed) (MetaScreen *);
-  void (*monitors_changed)  (MetaScreen *);
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
@@ -113,12 +106,6 @@ void          meta_screen_free                (MetaScreen                 *scree
                                                guint32                     timestamp);
 void          meta_screen_init_workspaces     (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
-void          meta_screen_foreach_window      (MetaScreen                 *screen,
-                                               MetaListWindowsFlags        flags,
-                                               MetaScreenWindowFunc        func,
-                                               gpointer                    data);
-
-void          meta_screen_update_cursor       (MetaScreen                 *screen);
 
 void          meta_screen_update_tile_preview          (MetaScreen    *screen,
                                                         gboolean       delay);
@@ -182,5 +169,7 @@ MetaLogicalMonitor * meta_screen_xinerama_index_to_logical_monitor (MetaScreen *
 
 int meta_screen_logical_monitor_to_xinerama_index (MetaScreen         *screen,
                                                    MetaLogicalMonitor *logical_monitor);
+
+void meta_screen_on_monitors_changed (MetaScreen *screen);
 
 #endif

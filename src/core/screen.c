@@ -72,11 +72,6 @@ static void prefs_changed_callback (MetaPreference pref,
 static void set_desktop_geometry_hint (MetaScreen *screen);
 static void set_desktop_viewport_hint (MetaScreen *screen);
 
-static void on_monitors_changed_internal (MetaMonitorManager *manager,
-                                          MetaScreen         *screen);
-static void on_monitors_changed          (MetaMonitorManager *manager,
-                                          MetaScreen         *screen);
-
 enum
 {
   PROP_N_WORKSPACES = 1,
@@ -92,7 +87,6 @@ enum
   WINDOW_LEFT_MONITOR,
   STARTUP_SEQUENCE_CHANGED,
   WORKAREAS_CHANGED,
-  MONITORS_CHANGED,
   IN_FULLSCREEN_CHANGED,
 
   LAST_SIGNAL
@@ -243,14 +237,6 @@ meta_screen_class_init (MetaScreenClass *klass)
                   G_STRUCT_OFFSET (MetaScreenClass, workareas_changed),
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
-
-  screen_signals[MONITORS_CHANGED] =
-    g_signal_new ("monitors-changed",
-		  G_TYPE_FROM_CLASS (object_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (MetaScreenClass, monitors_changed),
-          NULL, NULL, NULL,
-		  G_TYPE_NONE, 0);
 
   screen_signals[IN_FULLSCREEN_CHANGED] =
     g_signal_new ("in-fullscreen-changed",
@@ -521,8 +507,8 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
                    x11_display->xroot,
 		   0, /* x */
 		   0, /* y */
-		   screen->rect.width,
-		   screen->rect.height,
+                   screen->display->rect.width,
+                   screen->display->rect.height,
 		   0, /* border width */
 		   0, /* depth */
 		   InputOnly, /* class */
@@ -651,7 +637,6 @@ meta_screen_new (MetaDisplay *display,
   gboolean replace_current_wm;
   Atom wm_sn_atom;
   char buf[128];
-  MetaMonitorManager *manager;
 
   replace_current_wm = meta_get_replace_current_wm ();
 
@@ -697,19 +682,6 @@ meta_screen_new (MetaDisplay *display,
   screen->closing = 0;
 
   screen->display = display;
-  screen->rect.x = screen->rect.y = 0;
-
-  manager = meta_monitor_manager_get ();
-  g_signal_connect (manager, "monitors-changed-internal",
-                    G_CALLBACK (on_monitors_changed_internal), screen);
-  g_signal_connect (manager, "monitors-changed",
-                    G_CALLBACK (on_monitors_changed), screen);
-
-  meta_monitor_manager_get_screen_size (manager,
-                                        &screen->rect.width,
-                                        &screen->rect.height);
-
-  screen->current_cursor = -1; /* invalid/unset */
 
   screen->wm_sn_selection_window = new_wm_sn_owner;
   screen->wm_sn_atom = wm_sn_atom;
@@ -735,8 +707,6 @@ meta_screen_new (MetaDisplay *display,
   meta_restart_finish ();
 
   reload_logical_monitors (screen);
-
-  meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
 
   /* Handle creating a no_focus_window for this screen */
   screen->no_focus_window =
@@ -912,25 +882,6 @@ prefs_changed_callback (MetaPreference pref,
     }
 }
 
-void
-meta_screen_foreach_window (MetaScreen           *screen,
-                            MetaListWindowsFlags  flags,
-                            MetaScreenWindowFunc  func,
-                            gpointer              data)
-{
-  GSList *windows;
-
-  /* If we end up doing this often, just keeping a list
-   * of windows might be sensible.
-   */
-
-  windows = meta_display_list_windows (screen->display, flags);
-
-  g_slist_foreach (windows, (GFunc) func, data);
-
-  g_slist_free (windows);
-}
-
 int
 meta_screen_get_n_workspaces (MetaScreen *screen)
 {
@@ -988,8 +939,8 @@ set_desktop_geometry_hint (MetaScreen *screen)
   if (screen->closing > 0)
     return;
 
-  data[0] = screen->rect.width;
-  data[1] = screen->rect.height;
+  data[0] = screen->display->rect.width;
+  data[1] = screen->display->rect.height;
 
   meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %lu, %lu\n", data[0], data[1]);
 
@@ -1243,130 +1194,6 @@ update_num_workspaces (MetaScreen *screen,
     g_signal_emit (screen, screen_signals[WORKSPACE_ADDED], 0, i);
 
   g_object_notify (G_OBJECT (screen), "n-workspaces");
-}
-
-static int
-find_highest_logical_monitor_scale (MetaBackend      *backend,
-                                    MetaCursorSprite *cursor_sprite)
-{
-  MetaMonitorManager *monitor_manager =
-    meta_backend_get_monitor_manager (backend);
-  MetaCursorRenderer *cursor_renderer =
-    meta_backend_get_cursor_renderer (backend);
-  ClutterRect cursor_rect;
-  GList *logical_monitors;
-  GList *l;
-  int highest_scale = 0.0;
-
-  cursor_rect = meta_cursor_renderer_calculate_rect (cursor_renderer,
-						     cursor_sprite);
-
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager);
-  for (l = logical_monitors; l; l = l->next)
-    {
-      MetaLogicalMonitor *logical_monitor = l->data;
-      ClutterRect logical_monitor_rect =
-	      meta_rectangle_to_clutter_rect (&logical_monitor->rect);
-
-      if (!clutter_rect_intersection (&cursor_rect,
-				      &logical_monitor_rect,
-				      NULL))
-        continue;
-
-      highest_scale = MAX (highest_scale, logical_monitor->scale);
-    }
-
-  return highest_scale;
-}
-
-static void
-root_cursor_prepare_at (MetaCursorSpriteXcursor *sprite_xcursor,
-                        int                      x,
-                        int                      y,
-                        MetaScreen              *screen)
-{
-  MetaBackend *backend = meta_get_backend ();
-  MetaCursorSprite *cursor_sprite = META_CURSOR_SPRITE (sprite_xcursor);
-
-  if (meta_is_stage_views_scaled ())
-    {
-      int scale;
-
-      scale = find_highest_logical_monitor_scale (backend, cursor_sprite);
-      if (scale != 0.0)
-        {
-          meta_cursor_sprite_xcursor_set_theme_scale (sprite_xcursor, scale);
-          meta_cursor_sprite_set_texture_scale (cursor_sprite, 1.0 / scale);
-        }
-    }
-  else
-    {
-      MetaMonitorManager *monitor_manager =
-        meta_backend_get_monitor_manager (backend);
-      MetaLogicalMonitor *logical_monitor;
-
-      logical_monitor =
-        meta_monitor_manager_get_logical_monitor_at (monitor_manager, x, y);
-
-      /* Reload the cursor texture if the scale has changed. */
-      if (logical_monitor)
-        {
-          meta_cursor_sprite_xcursor_set_theme_scale (sprite_xcursor,
-                                                      logical_monitor->scale);
-          meta_cursor_sprite_set_texture_scale (cursor_sprite, 1.0);
-        }
-    }
-}
-
-static void
-manage_root_cursor_sprite_scale (MetaScreen              *screen,
-                                 MetaCursorSpriteXcursor *sprite_xcursor)
-{
-  g_signal_connect_object (sprite_xcursor,
-                           "prepare-at",
-                           G_CALLBACK (root_cursor_prepare_at),
-                           screen,
-                           0);
-}
-
-void
-meta_screen_update_cursor (MetaScreen *screen)
-{
-  MetaDisplay *display = screen->display;
-  MetaX11Display *x11_display = display->x11_display;
-  MetaCursor cursor = screen->current_cursor;
-  Cursor xcursor;
-  MetaCursorSpriteXcursor *sprite_xcursor;
-  MetaBackend *backend = meta_get_backend ();
-  MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
-
-  sprite_xcursor = meta_cursor_sprite_xcursor_new (cursor);
-
-  if (meta_is_wayland_compositor ())
-    manage_root_cursor_sprite_scale (screen, sprite_xcursor);
-
-  meta_cursor_tracker_set_root_cursor (cursor_tracker,
-                                       META_CURSOR_SPRITE (sprite_xcursor));
-  g_object_unref (sprite_xcursor);
-
-  /* Set a cursor for X11 applications that don't specify their own */
-  xcursor = meta_x11_display_create_x_cursor (x11_display, cursor);
-
-  XDefineCursor (x11_display->xdisplay, x11_display->xroot, xcursor);
-  XFlush (x11_display->xdisplay);
-  XFreeCursor (x11_display->xdisplay, xcursor);
-}
-
-void
-meta_screen_set_cursor (MetaScreen *screen,
-                        MetaCursor  cursor)
-{
-  if (cursor == screen->current_cursor)
-    return;
-
-  screen->current_cursor = cursor;
-  meta_screen_update_cursor (screen);
 }
 
 static gboolean
@@ -2197,26 +2024,10 @@ meta_screen_free_workspace_layout (MetaWorkspaceLayout *layout)
   g_free (layout->grid);
 }
 
-static void
-meta_screen_resize_func (MetaWindow *window,
-                         gpointer    user_data)
+void
+meta_screen_on_monitors_changed (MetaScreen *screen)
 {
-  if (window->struts)
-    {
-      meta_window_update_struts (window);
-    }
-  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
-
-  meta_window_recalc_features (window);
-}
-
-static void
-on_monitors_changed_internal (MetaMonitorManager *manager,
-                              MetaScreen         *screen)
-{
-  meta_monitor_manager_get_screen_size (manager,
-                                        &screen->rect.width,
-                                        &screen->rect.height);
+  MetaDisplay *display = screen->display;
 
   reload_logical_monitors (screen);
   set_desktop_geometry_hint (screen);
@@ -2228,30 +2039,16 @@ on_monitors_changed_internal (MetaMonitorManager *manager,
 
       changes.x = 0;
       changes.y = 0;
-      changes.width = screen->rect.width;
-      changes.height = screen->rect.height;
+      changes.width = display->rect.width;
+      changes.height = display->rect.height;
 
-      XConfigureWindow(screen->display->x11_display->xdisplay,
+      XConfigureWindow(display->x11_display->xdisplay,
                        screen->guard_window,
                        CWX | CWY | CWWidth | CWHeight,
                        &changes);
     }
 
-  /* Fix up monitor for all windows on this screen */
-  meta_screen_foreach_window (screen, META_LIST_INCLUDE_OVERRIDE_REDIRECT, (MetaScreenWindowFunc) meta_window_update_for_monitors_changed, 0);
-
-  /* Queue a resize on all the windows */
-  meta_screen_foreach_window (screen, META_LIST_DEFAULT, meta_screen_resize_func, 0);
-
   meta_screen_queue_check_fullscreen (screen);
-}
-
-static void
-on_monitors_changed (MetaMonitorManager *manager,
-                     MetaScreen         *screen)
-{
-  /* Inform the external world about what has happened */
-  g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0);
 }
 
 void
@@ -2509,26 +2306,6 @@ MetaDisplay *
 meta_screen_get_display (MetaScreen *screen)
 {
   return screen->display;
-}
-
-/**
- * meta_screen_get_size:
- * @screen: A #MetaScreen
- * @width: (out): The width of the screen
- * @height: (out): The height of the screen
- *
- * Retrieve the size of the screen.
- */
-void
-meta_screen_get_size (MetaScreen *screen,
-                      int        *width,
-                      int        *height)
-{
-  if (width != NULL)
-    *width = screen->rect.width;
-
-  if (height != NULL)
-    *height = screen->rect.height;
 }
 
 void

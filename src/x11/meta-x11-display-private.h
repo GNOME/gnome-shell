@@ -94,4 +94,6 @@ Window meta_x11_display_create_offscreen_window (MetaX11Display *x11_display,
 Cursor meta_x11_display_create_x_cursor (MetaX11Display *x11_display,
                                          MetaCursor      cursor);
 
+void meta_x11_display_reload_cursor (MetaX11Display *x11_display);
+
 #endif /* META_X11_DISPLAY_PRIVATE_H */

@@ -619,7 +619,7 @@ meta_shape_cow_for_window (MetaCompositor *compositor,
       window_bounds.width = rect.width;
       window_bounds.height = rect.height;
 
-      meta_screen_get_size (display->screen, &width, &height);
+      meta_display_get_size (display, &width, &height);
       screen_rect.x = 0;
       screen_rect.y = 0;
       screen_rect.width = width;
@@ -951,7 +951,7 @@ get_top_visible_window_actor (MetaCompositor *compositor)
 
       meta_window_get_buffer_rect (window, &buffer_rect);
 
-      if (meta_rectangle_overlap (&compositor->display->screen->rect,
+      if (meta_rectangle_overlap (&compositor->display->rect,
                                   &buffer_rect))
         return window_actor;
     }

@@ -38,10 +38,6 @@ GType meta_screen_get_type (void);
 
 MetaDisplay *meta_screen_get_display (MetaScreen *screen);
 
-void meta_screen_get_size (MetaScreen *screen,
-                           int        *width,
-                           int        *height);
-
 void meta_screen_set_cm_selection (MetaScreen *screen);
 
 GSList *meta_screen_get_startup_sequences (MetaScreen *screen);
@@ -119,8 +115,5 @@ void meta_screen_override_workspace_layout (MetaScreen      *screen,
                                             gboolean         vertical_layout,
                                             int              n_rows,
                                             int              n_columns);
-
-void          meta_screen_set_cursor          (MetaScreen                 *screen,
-                                               MetaCursor                  cursor);
 
 #endif

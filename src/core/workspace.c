@@ -849,13 +849,13 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   workspace->screen_region =
     meta_rectangle_get_minimal_spanning_set_for_region (
-      &workspace->screen->rect,
+      &workspace->screen->display->rect,
       workspace->all_struts);
 
   /* STEP 3: Get the work areas (region-to-maximize-to) for the screen and
    *         monitors.
    */
-  work_area = workspace->screen->rect;  /* start with the screen */
+  work_area = workspace->screen->display->rect;  /* start with the screen */
   if (workspace->screen_region == NULL)
     work_area = meta_rect (0, 0, -1, -1);
   else
@@ -872,7 +872,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
                     work_area.width, MIN_SANE_AREA);
       if (work_area.width < 1)
         {
-          work_area.x = (workspace->screen->rect.width - MIN_SANE_AREA)/2;
+          work_area.x = (workspace->screen->display->rect.width - MIN_SANE_AREA)/2;
           work_area.width = MIN_SANE_AREA;
         }
       else
@@ -889,7 +889,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
                     work_area.height, MIN_SANE_AREA);
       if (work_area.height < 1)
         {
-          work_area.y = (workspace->screen->rect.height - MIN_SANE_AREA)/2;
+          work_area.y = (workspace->screen->display->rect.height - MIN_SANE_AREA)/2;
           work_area.height = MIN_SANE_AREA;
         }
       else
@@ -956,7 +956,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   g_assert (workspace->screen_edges    == NULL);
   g_assert (workspace->monitor_edges  == NULL);
   workspace->screen_edges =
-    meta_rectangle_find_onscreen_edges (&workspace->screen->rect,
+    meta_rectangle_find_onscreen_edges (&workspace->screen->display->rect,
                                         workspace->all_struts);
   tmp = NULL;
   for (l = logical_monitors; l; l = l->next)
@@ -1036,7 +1036,7 @@ meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                                                  META_SCREEN_DOWN))
             continue;
 
-          strut->rect.height = screen->rect.height - strut->rect.y;
+          strut->rect.height = screen->display->rect.height - strut->rect.y;
           break;
         case META_SIDE_LEFT:
           if (meta_monitor_manager_get_logical_monitor_neighbor (monitor_manager,
@@ -1053,7 +1053,7 @@ meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                                                  META_SCREEN_RIGHT))
             continue;
 
-          strut->rect.width = screen->rect.width - strut->rect.x;
+          strut->rect.width = screen->display->rect.width - strut->rect.x;
           break;
         }
     }

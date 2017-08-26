@@ -1071,7 +1071,7 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
            * by other windows or DOCKS, but that's handled below).
            */
           meta_rectangle_intersect (&cur_rect,
-                                    &display->screen->rect,
+                                    &display->rect,
                                     &reduced);
 
           new_edges = NULL;

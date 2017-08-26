@@ -2914,7 +2914,7 @@ meta_window_is_screen_sized (MetaWindow *window)
   MetaRectangle window_rect;
   int screen_width, screen_height;
 
-  meta_screen_get_size (window->screen, &screen_width, &screen_height);
+  meta_display_get_size (window->display, &screen_width, &screen_height);
   meta_window_get_frame_rect (window, &window_rect);
 
   if (window_rect.x == 0 && window_rect.y == 0 &&
@@ -5632,8 +5632,8 @@ meta_window_recalc_features (MetaWindow *window)
        * is entire screen size (kind of broken, because we
        * actually fullscreen to monitor size not screen size)
        */
-      if (window->size_hints.min_width == window->screen->rect.width &&
-          window->size_hints.min_height == window->screen->rect.height)
+      if (window->size_hints.min_width == window->display->rect.width &&
+          window->size_hints.min_height == window->display->rect.height)
         ; /* leave fullscreen available */
       else
         window->has_fullscreen_func = FALSE;
@@ -6522,8 +6522,8 @@ meta_window_get_work_area_all_monitors (MetaWindow    *window,
 {
   GList *tmp;
 
-  /* Initialize to the whole screen */
-  *area = window->screen->rect;
+  /* Initialize to the whole display */
+  *area = window->display->rect;
 
   tmp = meta_window_get_workspaces (window);
   while (tmp != NULL)
@@ -6769,8 +6769,8 @@ warp_grab_pointer (MetaWindow          *window,
   *y += rect.y;
 
   /* Avoid weird bouncing at the screen edge; see bug 154706 */
-  *x = CLAMP (*x, 0, window->screen->rect.width-1);
-  *y = CLAMP (*y, 0, window->screen->rect.height-1);
+  *x = CLAMP (*x, 0, window->display->rect.width-1);
+  *y = CLAMP (*y, 0, window->display->rect.height-1);
 
   meta_error_trap_push (display->x11_display);
 

@@ -21,6 +21,7 @@
 
 #include <config.h>
 
+#include <meta/display.h>
 #include <meta/meta-plugin.h>
 #include <meta/window.h>
 #include <meta/meta-background-group.h>
@@ -31,6 +32,9 @@
 #include <clutter/clutter.h>
 #include <gmodule.h>
 #include <string.h>
+
+// XXX: Remove this once transition to MetaDisplay has been completed
+#include "core/display-private.h"
 
 #define DESTROY_TIMEOUT   100
 #define MINIMIZE_TIMEOUT  250
@@ -318,9 +322,10 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 }
 
 static void
-on_monitors_changed (MetaScreen *screen,
-                     MetaPlugin *plugin)
+on_monitors_changed (MetaDisplay *display,
+                     MetaPlugin  *plugin)
 {
+  MetaScreen *screen = display->screen;
   MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
   int i, n;
   GRand *rand = g_rand_new_with_seed (123456);
@@ -373,14 +378,15 @@ start (MetaPlugin *plugin)
 {
   MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
   MetaScreen *screen = meta_plugin_get_screen (plugin);
+  MetaDisplay *display = meta_screen_get_display (screen);
 
   self->priv->background_group = meta_background_group_new ();
   clutter_actor_insert_child_below (meta_get_window_group_for_screen (screen),
                                     self->priv->background_group, NULL);
 
-  g_signal_connect (screen, "monitors-changed",
+  g_signal_connect (display, "monitors-changed",
                     G_CALLBACK (on_monitors_changed), plugin);
-  on_monitors_changed (screen, plugin);
+  on_monitors_changed (display, plugin);
 
   clutter_actor_show (meta_get_stage_for_screen (screen));
 }
@@ -391,6 +397,7 @@ switch_workspace (MetaPlugin *plugin,
                   MetaMotionDirection direction)
 {
   MetaScreen *screen;
+  MetaDisplay *display;
   MetaDefaultPluginPrivate *priv = META_DEFAULT_PLUGIN (plugin)->priv;
   GList        *l;
   ClutterActor *workspace0  = clutter_actor_new ();
@@ -399,11 +406,12 @@ switch_workspace (MetaPlugin *plugin,
   int           screen_width, screen_height;
 
   screen = meta_plugin_get_screen (plugin);
+  display = meta_screen_get_display (screen);
   stage = meta_get_stage_for_screen (screen);
 
-  meta_screen_get_size (screen,
-                        &screen_width,
-                        &screen_height);
+  meta_display_get_size (display,
+                         &screen_width,
+                         &screen_height);
 
   clutter_actor_set_pivot_point (workspace1, 1.0, 1.0);
   clutter_actor_set_position (workspace1,

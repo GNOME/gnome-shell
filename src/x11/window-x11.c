@@ -1344,7 +1344,7 @@ meta_window_x11_update_struts (MetaWindow *window)
 
               temp = g_new (MetaStrut, 1);
               temp->side = 1 << i; /* See MetaSide def.  Matches nicely, eh? */
-              temp->rect = window->screen->rect;
+              temp->rect = window->display->rect;
               switch (temp->side)
                 {
                 case META_SIDE_RIGHT:
@@ -1407,7 +1407,7 @@ meta_window_x11_update_struts (MetaWindow *window)
 
               temp = g_new (MetaStrut, 1);
               temp->side = 1 << i;
-              temp->rect = window->screen->rect;
+              temp->rect = window->display->rect;
               switch (temp->side)
                 {
                 case META_SIDE_RIGHT:

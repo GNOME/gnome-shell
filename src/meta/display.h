@@ -191,4 +191,11 @@ gchar * meta_display_get_pad_action_label (MetaDisplay        *display,
                                            MetaPadActionType   action_type,
                                            guint               action_number);
 
+void meta_display_get_size (MetaDisplay *display,
+                            int         *width,
+                            int         *height);
+
+void meta_display_set_cursor (MetaDisplay *display,
+                              MetaCursor   cursor);
+
 #endif

@@ -17,6 +17,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <meta/display.h>
 #include <meta/util.h>
 #include <meta/meta-background.h>
 #include <meta/meta-background-image.h>
@@ -24,6 +25,10 @@
 #include "cogl-utils.h"
 
 #include <string.h>
+
+// XXX: Remove this once transition to MetaDisplay has been completed
+#include "core/display-private.h"
+#include "core/screen-private.h"
 
 enum
 {
@@ -128,8 +133,7 @@ free_wallpaper_texture (MetaBackground *self)
 }
 
 static void
-on_monitors_changed (MetaScreen     *screen,
-                     MetaBackground *self)
+invalidate_monitor_backgrounds (MetaBackground *self)
 {
   MetaBackgroundPrivate *priv = self->priv;
 
@@ -142,7 +146,7 @@ on_monitors_changed (MetaScreen     *screen,
     {
       int i;
 
-      priv->n_monitors = meta_screen_get_n_monitors (screen);
+      priv->n_monitors = meta_screen_get_n_monitors (priv->screen);
       priv->monitors = g_new0 (MetaBackgroundMonitor, priv->n_monitors);
 
       for (i = 0; i < priv->n_monitors; i++)
@@ -151,27 +155,34 @@ on_monitors_changed (MetaScreen     *screen,
 }
 
 static void
+on_monitors_changed (MetaDisplay    *display,
+                     MetaBackground *self)
+{
+  invalidate_monitor_backgrounds (self);
+}
+
+static void
 set_screen (MetaBackground *self,
             MetaScreen     *screen)
 {
   MetaBackgroundPrivate *priv = self->priv;
 
-  if (priv->screen != NULL)
+  if (priv->screen != NULL && priv->screen->display != NULL)
     {
-      g_signal_handlers_disconnect_by_func (priv->screen,
+      g_signal_handlers_disconnect_by_func (priv->screen->display,
                                             (gpointer)on_monitors_changed,
                                             self);
     }
 
   g_set_object (&priv->screen, screen);
 
-  if (priv->screen != NULL)
+  if (priv->screen != NULL && priv->screen->display != NULL)
     {
-      g_signal_connect (priv->screen, "monitors-changed",
+      g_signal_connect (priv->screen->display, "monitors-changed",
                         G_CALLBACK (on_monitors_changed), self);
     }
 
-  on_monitors_changed (priv->screen, self);
+  invalidate_monitor_backgrounds (self);
 }
 
 static void
@@ -388,6 +399,7 @@ get_texture_area (MetaBackground          *self,
                   CoglTexture             *texture,
                   cairo_rectangle_int_t   *texture_area)
 {
+  MetaDisplay *display;
   MetaBackgroundPrivate *priv = self->priv;
   cairo_rectangle_int_t image_area;
   int screen_width, screen_height;
@@ -396,6 +408,7 @@ get_texture_area (MetaBackground          *self,
 
   texture_width = cogl_texture_get_width (texture);
   texture_height = cogl_texture_get_height (texture);
+  display = meta_screen_get_display (priv->screen);
 
   switch (priv->style)
     {
@@ -407,7 +420,7 @@ get_texture_area (MetaBackground          *self,
       set_texture_area_from_monitor_area (monitor_rect, texture_area);
       break;
     case G_DESKTOP_BACKGROUND_STYLE_WALLPAPER:
-      meta_screen_get_size (priv->screen, &screen_width, &screen_height);
+      meta_display_get_size (display, &screen_width, &screen_height);
 
       /* Start off by centering a tile in the middle of the
        * total screen area.
@@ -476,7 +489,7 @@ get_texture_area (MetaBackground          *self,
         /* paint region is the union of all monitors, with the origin
          * of the region set to align with monitor associated with the background.
          */
-        meta_screen_get_size (priv->screen, &screen_width, &screen_height);
+        meta_display_get_size (display, &screen_width, &screen_height);
 
         /* unclipped texture area is whole screen */
         image_area.width = screen_width;

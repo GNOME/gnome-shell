@@ -13,6 +13,7 @@
 #include "meta-window-group-private.h"
 #include "window-private.h"
 #include "meta-cullable.h"
+#include "display-private.h"
 
 struct _MetaWindowGroupClass
 {
@@ -64,7 +65,7 @@ meta_window_group_paint (ClutterActor *actor)
   MetaWindowGroup *window_group = META_WINDOW_GROUP (actor);
   ClutterActor *stage = clutter_actor_get_stage (actor);
 
-  meta_screen_get_size (window_group->screen, &screen_width, &screen_height);
+  meta_display_get_size (window_group->screen->display, &screen_width, &screen_height);
 
   /* Normally we expect an actor to be drawn at it's position on the screen.
    * However, if we're inside the paint of a ClutterClone, that won't be the
