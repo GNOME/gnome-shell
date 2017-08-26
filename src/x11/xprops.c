@@ -132,7 +132,7 @@ validate_or_free_results (GetPropertyResults *results,
   prop_name = XGetAtomName (x11_display->xdisplay, results->xatom);
   meta_error_trap_pop (x11_display);
 
-  w = meta_display_lookup_x_window (results->display, results->xwindow);
+  w = meta_x11_display_lookup_x_window (x11_display, results->xwindow);
 
   if (w != NULL)
     {

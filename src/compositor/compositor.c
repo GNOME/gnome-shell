@@ -758,7 +758,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
       if (window == NULL)
         {
           Window xwin = ((XDamageNotifyEvent *) event)->drawable;
-          window = meta_display_lookup_x_window (compositor->display, xwin);
+          window = meta_x11_display_lookup_x_window (x11_display, xwin);
         }
 
       if (window)

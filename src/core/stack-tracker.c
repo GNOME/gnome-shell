@@ -851,8 +851,9 @@ meta_stack_tracker_sync_stack (MetaStackTracker *tracker)
 
       if (META_STACK_ID_IS_X11 (window))
         {
+          MetaX11Display *x11_display = tracker->screen->display->x11_display;
           MetaWindow *meta_window =
-            meta_display_lookup_x_window (tracker->screen->display, (Window)window);
+            meta_x11_display_lookup_x_window (x11_display, (Window)window);
 
           /* When mapping back from xwindow to MetaWindow we have to be a bit careful;
            * children of the root could include unmapped windows created by toolkits

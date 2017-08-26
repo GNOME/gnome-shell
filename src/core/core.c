@@ -29,6 +29,7 @@
 #include <meta/errors.h>
 #include "util-private.h"
 
+#include "x11/meta-x11-display-private.h"
 #include "x11/window-x11.h"
 #include "x11/window-x11-private.h"
 
@@ -51,7 +52,7 @@ get_window (Display *xdisplay,
   MetaWindow *window;
 
   display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
+  window = meta_x11_display_lookup_x_window (display->x11_display, frame_xwindow);
 
   if (window == NULL || window->frame == NULL)
     {

@@ -97,7 +97,7 @@ _meta_barrier_impl_x11_destroy (MetaBarrierImpl *impl)
     return;
 
   XFixesDestroyPointerBarrier (dpy, priv->xbarrier);
-  g_hash_table_remove (display->xids, &priv->xbarrier);
+  g_hash_table_remove (display->x11_display->xids, &priv->xbarrier);
   priv->xbarrier = 0;
 }
 
@@ -134,7 +134,7 @@ meta_barrier_impl_x11_new (MetaBarrier *barrier)
                                                allowed_motion_dirs,
                                                0, NULL);
 
-  g_hash_table_insert (display->xids, &priv->xbarrier, barrier);
+  g_hash_table_insert (display->x11_display->xids, &priv->xbarrier, barrier);
 
   return META_BARRIER_IMPL (self);
 }
@@ -174,8 +174,8 @@ meta_barrier_fire_xevent (MetaBarrier    *barrier,
 }
 
 gboolean
-meta_display_process_barrier_xevent (MetaDisplay *display,
-                                     XIEvent     *event)
+meta_x11_display_process_barrier_xevent (MetaX11Display *x11_display,
+                                         XIEvent        *event)
 {
   MetaBarrier *barrier;
   XIBarrierEvent *xev;
@@ -193,7 +193,7 @@ meta_display_process_barrier_xevent (MetaDisplay *display,
     }
 
   xev = (XIBarrierEvent *) event;
-  barrier = g_hash_table_lookup (display->xids, &xev->barrier);
+  barrier = g_hash_table_lookup (x11_display->xids, &xev->barrier);
   if (barrier != NULL)
     {
       meta_barrier_fire_xevent (barrier, xev);

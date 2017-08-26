@@ -7488,8 +7488,8 @@ meta_window_get_transient_for (MetaWindow *window)
   if (window->transient_for)
     return window->transient_for;
   else if (window->xtransient_for)
-    return meta_display_lookup_x_window (window->display,
-                                         window->xtransient_for);
+    return meta_x11_display_lookup_x_window (window->display->x11_display,
+                                             window->xtransient_for);
   else
     return NULL;
 }
@@ -8050,24 +8050,24 @@ window_has_pointer_wayland (MetaWindow *window)
 static gboolean
 window_has_pointer_x11 (MetaWindow *window)
 {
-  MetaDisplay *display = window->display;
+  MetaX11Display *x11_display = window->display->x11_display;
   Window root, child;
   double root_x, root_y, x, y;
   XIButtonState buttons;
   XIModifierState mods;
   XIGroupState group;
 
-  meta_error_trap_push (display->x11_display);
-  XIQueryPointer (display->x11_display->xdisplay,
+  meta_error_trap_push (x11_display);
+  XIQueryPointer (x11_display->xdisplay,
                   META_VIRTUAL_CORE_POINTER_ID,
-                  display->x11_display->xroot,
+                  x11_display->xroot,
                   &root, &child,
                   &root_x, &root_y, &x, &y,
                   &buttons, &mods, &group);
-  meta_error_trap_pop (display->x11_display);
+  meta_error_trap_pop (x11_display);
   free (buttons.mask);
 
-  return meta_display_lookup_x_window (display, child) == window;
+  return meta_x11_display_lookup_x_window (x11_display, child) == window;
 }
 
 gboolean

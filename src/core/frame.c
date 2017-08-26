@@ -85,7 +85,7 @@ meta_window_ensure_frame (MetaWindow *window)
   XChangeWindowAttributes (x11_display->xdisplay,
 			   frame->xwindow, CWEventMask, &attrs);
 
-  meta_display_register_x_window (window->display, &frame->xwindow, window);
+  meta_x11_display_register_x_window (x11_display, &frame->xwindow, window);
 
   meta_error_trap_push (x11_display);
   if (window->mapped)
@@ -201,8 +201,7 @@ meta_window_destroy_frame (MetaWindow *window)
 
   meta_ui_frame_unmanage (frame->ui_frame);
 
-  meta_display_unregister_x_window (window->display,
-                                    frame->xwindow);
+  meta_x11_display_unregister_x_window (x11_display, frame->xwindow);
 
   window->frame = NULL;
   if (window->frame_bounds)

@@ -610,8 +610,8 @@ wayland_selection_data_new (XSelectionRequestEvent *request_event,
   data->cancellable = g_cancellable_new ();
   data->stream = g_unix_input_stream_new (p[0], TRUE);
 
-  data->window = meta_display_lookup_x_window (display,
-                                               data->request_event.requestor);
+  data->window = meta_x11_display_lookup_x_window (x11_display,
+                                                   data->request_event.requestor);
 
   /* Do *not* change the event mask on the root window, bugger! */
   if (!data->window && data->request_event.requestor != x11_display->xroot)

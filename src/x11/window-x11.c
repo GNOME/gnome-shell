@@ -510,7 +510,9 @@ meta_window_x11_manage (MetaWindow *window)
 
   meta_icon_cache_init (&priv->icon_cache);
 
-  meta_display_register_x_window (display, &window->xwindow, window);
+  meta_x11_display_register_x_window (display->x11_display,
+                                      &window->xwindow,
+                                      window);
 
   /* assign the window to its group, or create a new group if needed */
   window->group = NULL;
@@ -617,7 +619,7 @@ meta_window_x11_unmanage (MetaWindow *window)
                   window->xwindow);
     }
 
-  meta_display_unregister_x_window (window->display, window->xwindow);
+  meta_x11_display_unregister_x_window (x11_display, window->xwindow);
 
   /* Put back anything we messed up */
   if (priv->border_width != 0)
@@ -645,8 +647,8 @@ meta_window_x11_unmanage (MetaWindow *window)
 
   if (window->user_time_window != None)
     {
-      meta_display_unregister_x_window (window->display,
-                                        window->user_time_window);
+      meta_x11_display_unregister_x_window (x11_display,
+                                            window->user_time_window);
       window->user_time_window = None;
     }
 
@@ -2247,8 +2249,8 @@ meta_window_x11_configure_request (MetaWindow *window,
               MetaDisplay *display;
 
               display = meta_window_get_display (window);
-              sibling = meta_display_lookup_x_window (display,
-                                                      event->xconfigurerequest.above);
+              sibling = meta_x11_display_lookup_x_window (display->x11_display,
+                                                          event->xconfigurerequest.above);
               if (sibling == NULL)
                 return TRUE;
 
@@ -2340,14 +2342,14 @@ handle_net_restack_window (MetaDisplay *display,
   if (event->xclient.data.l[0] != 2)
     return;
 
-  window = meta_display_lookup_x_window (display,
-                                         event->xclient.window);
+  window = meta_x11_display_lookup_x_window (display->x11_display,
+                                             event->xclient.window);
 
   if (window)
     {
       if (event->xclient.data.l[1])
-        sibling = meta_display_lookup_x_window (display,
-                                                event->xclient.data.l[1]);
+        sibling = meta_x11_display_lookup_x_window (display->x11_display,
+                                                    event->xclient.data.l[1]);
 
       restack_window (window, sibling, event->xclient.data.l[2]);
     }
@@ -3484,7 +3486,7 @@ meta_window_x11_create_sync_request_alarm (MetaWindow *window)
                                                  &values);
 
   if (meta_error_trap_pop_with_return (x11_display) == Success)
-    meta_display_register_sync_alarm (window->display, &window->sync_request_alarm, window);
+    meta_x11_display_register_sync_alarm (x11_display, &window->sync_request_alarm, window);
   else
     {
       window->sync_request_alarm = None;
@@ -3495,11 +3497,13 @@ meta_window_x11_create_sync_request_alarm (MetaWindow *window)
 void
 meta_window_x11_destroy_sync_request_alarm (MetaWindow *window)
 {
+  MetaX11Display *x11_display = window->display->x11_display;
+
   if (window->sync_request_alarm != None)
     {
       /* Has to be unregistered _before_ clearing the structure field */
-      meta_display_unregister_sync_alarm (window->display, window->sync_request_alarm);
-      XSyncDestroyAlarm (window->display->x11_display->xdisplay,
+      meta_x11_display_unregister_sync_alarm (x11_display, window->sync_request_alarm);
+      XSyncDestroyAlarm (x11_display->xdisplay,
                          window->sync_request_alarm);
       window->sync_request_alarm = None;
     }

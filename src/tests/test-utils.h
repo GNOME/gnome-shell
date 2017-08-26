@@ -44,7 +44,7 @@ void test_init (int    argc,
                 char **argv);
 
 gboolean async_waiter_alarm_filter (AsyncWaiter           *waiter,
-                                    MetaDisplay           *display,
+                                    MetaX11Display        *x11_display,
                                     XSyncAlarmNotifyEvent *event);
 
 void async_waiter_set_and_wait (AsyncWaiter *waiter);
@@ -56,7 +56,7 @@ void async_waiter_destroy (AsyncWaiter *waiter);
 char * test_client_get_id (TestClient *client);
 
 gboolean test_client_alarm_filter (TestClient            *client,
-                                   MetaDisplay           *display,
+                                   MetaX11Display        *x11_display,
                                    XSyncAlarmNotifyEvent *event);
 
 gboolean test_client_wait (TestClient *client,

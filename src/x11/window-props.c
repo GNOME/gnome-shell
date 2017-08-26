@@ -468,8 +468,8 @@ reload_net_wm_user_time_window (MetaWindow    *window,
       if (window->user_time_window != None)
         {
           /* See the comment to the meta_display_register_x_window call below. */
-          meta_display_unregister_x_window (window->display,
-                                            window->user_time_window);
+          meta_x11_display_unregister_x_window (window->display->x11_display,
+                                                window->user_time_window);
           /* Don't get events on not-managed windows */
           XSelectInput (window->display->x11_display->xdisplay,
                         window->user_time_window,
@@ -479,10 +479,12 @@ reload_net_wm_user_time_window (MetaWindow    *window,
       /* Ensure the new user time window is not used on another MetaWindow,
        * and unset its user time window if that is the case.
        */
-      prev_owner = meta_display_lookup_x_window (window->display, value->v.xwindow);
+      prev_owner = meta_x11_display_lookup_x_window (window->display->x11_display,
+                                                     value->v.xwindow);
       if (prev_owner && prev_owner->user_time_window == value->v.xwindow)
         {
-          meta_display_unregister_x_window (window->display, value->v.xwindow);
+          meta_x11_display_unregister_x_window (window->display->x11_display,
+                                               value->v.xwindow);
           prev_owner->user_time_window = None;
         }
 
@@ -502,9 +504,9 @@ reload_net_wm_user_time_window (MetaWindow    *window,
            * than atom__NET_WM_USER_TIME ones, but I just don't care
            * and it's not specified in the spec anyway.
            */
-          meta_display_register_x_window (window->display,
-                                          &window->user_time_window,
-                                          window);
+          meta_x11_display_register_x_window (window->display->x11_display,
+                                              &window->user_time_window,
+                                              window);
           /* Just listen for property notify events */
           XSelectInput (window->display->x11_display->xdisplay,
                         window->user_time_window,
@@ -1630,7 +1632,8 @@ reload_transient_for (MetaWindow    *window,
     {
       transient_for = value->v.xwindow;
 
-      parent = meta_display_lookup_x_window (window->display, transient_for);
+      parent = meta_x11_display_lookup_x_window (window->display->x11_display,
+                                                 transient_for);
       if (!parent)
         {
           meta_warning ("Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n",
@@ -1649,8 +1652,8 @@ reload_transient_for (MetaWindow    *window,
               break;
             }
 
-          parent = meta_display_lookup_x_window (parent->display,
-                                                 parent->xtransient_for);
+          parent = meta_x11_display_lookup_x_window (parent->display->x11_display,
+                                                     parent->xtransient_for);
         }
     }
   else
@@ -1671,8 +1674,8 @@ reload_transient_for (MetaWindow    *window,
     meta_window_set_transient_for (window, NULL);
   else
     {
-      parent = meta_display_lookup_x_window (window->display,
-                                             window->xtransient_for);
+      parent = meta_x11_display_lookup_x_window (window->display->x11_display,
+                                                 window->xtransient_for);
       meta_window_set_transient_for (window, parent);
     }
 }

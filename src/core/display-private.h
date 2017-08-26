@@ -102,10 +102,6 @@ typedef enum {
   META_EVENT_ROUTE_FRAME_BUTTON,
 } MetaEventRoute;
 
-typedef gboolean (*MetaAlarmFilter) (MetaDisplay           *display,
-                                     XSyncAlarmNotifyEvent *event,
-                                     gpointer               data);
-
 typedef void (* MetaDisplayWindowFunc) (MetaWindow *window,
                                         gpointer    user_data);
 
@@ -165,7 +161,6 @@ struct _MetaDisplay
 
   /*< private-ish >*/
   MetaScreen *screen;
-  GHashTable *xids;
   GHashTable *stamps;
   GHashTable *wayland_windows;
 
@@ -257,9 +252,6 @@ struct _MetaDisplay
   MetaGestureTracker *gesture_tracker;
   ClutterEventSequence *pointer_emulating_sequence;
 
-  MetaAlarmFilter alarm_filter;
-  gpointer alarm_filter_data;
-
   ClutterActor *current_pad_osd;
 
   MetaStartupNotification *startup_notification;
@@ -299,17 +291,6 @@ void meta_display_unmanage_windows (MetaDisplay *display,
 int           meta_display_stack_cmp           (const void *a,
                                                 const void *b);
 
-/* A given MetaWindow may have various X windows that "belong"
- * to it, such as the frame window.
- */
-MetaWindow* meta_display_lookup_x_window     (MetaDisplay *display,
-                                              Window       xwindow);
-void        meta_display_register_x_window   (MetaDisplay *display,
-                                              Window      *xwindowp,
-                                              MetaWindow  *window);
-void        meta_display_unregister_x_window (MetaDisplay *display,
-                                              Window       xwindow);
-
 /* Each MetaWindow is uniquely identified by a 64-bit "stamp"; unlike a
  * a MetaWindow *, a stamp will never be recycled
  */
@@ -337,14 +318,6 @@ void        meta_display_register_wayland_window   (MetaDisplay *display,
                                                     MetaWindow  *window);
 void        meta_display_unregister_wayland_window (MetaDisplay *display,
                                                     MetaWindow  *window);
-
-MetaWindow* meta_display_lookup_sync_alarm     (MetaDisplay *display,
-                                                XSyncAlarm   alarm);
-void        meta_display_register_sync_alarm   (MetaDisplay *display,
-                                                XSyncAlarm  *alarmp,
-                                                MetaWindow  *window);
-void        meta_display_unregister_sync_alarm (MetaDisplay *display,
-                                                XSyncAlarm   alarm);
 
 void        meta_display_notify_window_created (MetaDisplay  *display,
                                                 MetaWindow   *window);
@@ -412,11 +385,6 @@ void meta_display_accelerator_activate (MetaDisplay     *display,
                                         ClutterKeyEvent *event);
 gboolean meta_display_modifiers_accelerator_activate (MetaDisplay *display);
 
-#ifdef HAVE_XI23
-gboolean meta_display_process_barrier_xevent (MetaDisplay *display,
-                                              XIEvent     *event);
-#endif /* HAVE_XI23 */
-
 void meta_display_set_input_focus_xwindow (MetaDisplay *display,
                                            MetaScreen  *screen,
                                            Window       window,
@@ -455,10 +423,6 @@ void meta_restart_finish (void);
 void meta_display_cancel_touch (MetaDisplay *display);
 
 gboolean meta_display_windows_are_interactable (MetaDisplay *display);
-
-void meta_display_set_alarm_filter (MetaDisplay    *display,
-                                    MetaAlarmFilter filter,
-                                    gpointer        data);
 
 void meta_display_show_tablet_mapping_notification (MetaDisplay        *display,
                                                     ClutterInputDevice *pad,

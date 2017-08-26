@@ -68,6 +68,15 @@ meta_x11_display_dispose (GObject *object)
 {
   MetaX11Display *x11_display = META_X11_DISPLAY (object);
 
+  if (x11_display->xids)
+    {
+      /* Must be after all calls to meta_window_unmanage() since they
+       * unregister windows
+       */
+      g_hash_table_destroy (x11_display->xids);
+      x11_display->xids = NULL;
+    }
+
   if (x11_display->xroot != None)
     {
       meta_error_trap_push (x11_display);
@@ -397,6 +406,9 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 
   update_cursor_theme (x11_display);
 
+  x11_display->xids = g_hash_table_new (meta_unsigned_long_hash,
+                                        meta_unsigned_long_equal);
+
   return x11_display;
 }
 
@@ -555,4 +567,73 @@ update_cursor_theme (MetaX11Display *x11_display)
 
       set_cursor_theme (xdisplay);
     }
+}
+
+MetaWindow *
+meta_x11_display_lookup_x_window (MetaX11Display *x11_display,
+                                  Window          xwindow)
+{
+  return g_hash_table_lookup (x11_display->xids, &xwindow);
+}
+
+void
+meta_x11_display_register_x_window (MetaX11Display *x11_display,
+                                    Window         *xwindowp,
+                                    MetaWindow     *window)
+{
+  g_return_if_fail (g_hash_table_lookup (x11_display->xids, xwindowp) == NULL);
+
+  g_hash_table_insert (x11_display->xids, xwindowp, window);
+}
+
+void
+meta_x11_display_unregister_x_window (MetaX11Display *x11_display,
+                                      Window          xwindow)
+{
+  g_return_if_fail (g_hash_table_lookup (x11_display->xids, &xwindow) != NULL);
+
+  g_hash_table_remove (x11_display->xids, &xwindow);
+}
+
+
+/* We store sync alarms in the window ID hash table, because they are
+ * just more types of XIDs in the same global space, but we have
+ * typesafe functions to register/unregister for readability.
+ */
+
+MetaWindow *
+meta_x11_display_lookup_sync_alarm (MetaX11Display *x11_display,
+                                    XSyncAlarm      alarm)
+{
+  return g_hash_table_lookup (x11_display->xids, &alarm);
+}
+
+void
+meta_x11_display_register_sync_alarm (MetaX11Display *x11_display,
+                                      XSyncAlarm     *alarmp,
+                                      MetaWindow     *window)
+{
+  g_return_if_fail (g_hash_table_lookup (x11_display->xids, alarmp) == NULL);
+
+  g_hash_table_insert (x11_display->xids, alarmp, window);
+}
+
+void
+meta_x11_display_unregister_sync_alarm (MetaX11Display *x11_display,
+                                        XSyncAlarm      alarm)
+{
+  g_return_if_fail (g_hash_table_lookup (x11_display->xids, &alarm) != NULL);
+
+  g_hash_table_remove (x11_display->xids, &alarm);
+}
+
+void
+meta_x11_display_set_alarm_filter (MetaX11Display *x11_display,
+                                   MetaAlarmFilter filter,
+                                   gpointer        data)
+{
+  g_return_if_fail (filter == NULL || x11_display->alarm_filter == NULL);
+
+  x11_display->alarm_filter = filter;
+  x11_display->alarm_filter_data = data;
 }
