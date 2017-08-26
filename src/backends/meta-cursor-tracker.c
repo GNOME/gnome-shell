@@ -43,6 +43,7 @@
 
 #include "meta-backend-private.h"
 #include "backends/x11/cm/meta-cursor-sprite-xfixes.h"
+#include "x11/meta-x11-display-private.h"
 
 G_DEFINE_TYPE (MetaCursorTracker, meta_cursor_tracker, G_TYPE_OBJECT);
 
@@ -195,13 +196,13 @@ gboolean
 meta_cursor_tracker_handle_xevent (MetaCursorTracker *tracker,
                                    XEvent            *xevent)
 {
-  MetaDisplay *display = meta_get_display ();
+  MetaX11Display *x11_display = meta_get_display ()->x11_display;
   XFixesCursorNotifyEvent *notify_event;
 
   if (meta_is_wayland_compositor ())
     return FALSE;
 
-  if (xevent->xany.type != display->xfixes_event_base + XFixesCursorNotify)
+  if (xevent->xany.type != x11_display->xfixes_event_base + XFixesCursorNotify)
     return FALSE;
 
   notify_event = (XFixesCursorNotifyEvent *)xevent;

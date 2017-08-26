@@ -747,8 +747,10 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
                                MetaWindow     *window)
 {
+  MetaX11Display *x11_display = compositor->display->x11_display;
+
   if (!meta_is_wayland_compositor () &&
-      event->type == meta_display_get_damage_event_base (compositor->display) + XDamageNotify)
+      event->type == meta_x11_display_get_damage_event_base (x11_display) + XDamageNotify)
     {
       /* Core code doesn't handle damage events, so we need to extract the MetaWindow
        * ourselves

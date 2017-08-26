@@ -53,6 +53,36 @@ struct _MetaX11Display
 #define item(x) Atom atom_##x;
 #include "x11/atomnames.h"
 #undef item
+
+  int composite_event_base;
+  int composite_error_base;
+  int composite_major_version;
+  int composite_minor_version;
+  int damage_event_base;
+  int damage_error_base;
+  int xfixes_event_base;
+  int xfixes_error_base;
+  int xinput_error_base;
+  int xinput_event_base;
+  int xinput_opcode;
+  int xsync_event_base;
+  int xsync_error_base;
+  int shape_event_base;
+  int shape_error_base;
+  unsigned int have_xsync : 1;
+#define META_X11_DISPLAY_HAS_XSYNC(x11_display) ((x11_display)->have_xsync)
+  unsigned int have_shape : 1;
+#define META_X11_DISPLAY_HAS_SHAPE(x11_display) ((x11_display)->have_shape)
+  unsigned int have_composite : 1;
+  unsigned int have_damage : 1;
+#define META_X11_DISPLAY_HAS_COMPOSITE(x11_display) ((x11_display)->have_composite)
+#define META_X11_DISPLAY_HAS_DAMAGE(x11_display) ((x11_display)->have_damage)
+#ifdef HAVE_XI23
+  gboolean have_xinput_23 : 1;
+#define META_X11_DISPLAY_HAS_XINPUT_23(x11_display) ((x11_display)->have_xinput_23)
+#else
+#define META_X11_DISPLAY_HAS_XINPUT_23(x11_display) FALSE
+#endif /* HAVE_XI23 */
 };
 
 MetaX11Display *meta_x11_display_new (MetaDisplay *display, GError **error);

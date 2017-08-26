@@ -34,4 +34,9 @@ int      meta_x11_display_get_screen_number (MetaX11Display *x11_display);
 Display *meta_x11_display_get_xdisplay      (MetaX11Display *x11_display);
 Window   meta_x11_display_get_xroot         (MetaX11Display *x11_display);
 
+int      meta_x11_display_get_xinput_opcode     (MetaX11Display *x11_display);
+int      meta_x11_display_get_damage_event_base (MetaX11Display *x11_display);
+int      meta_x11_display_get_shape_event_base  (MetaX11Display *x11_display);
+gboolean meta_x11_display_has_shape             (MetaX11Display *x11_display);
+
 #endif /* META_X11_DISPLAY_H */

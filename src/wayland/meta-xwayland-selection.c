@@ -1673,9 +1673,9 @@ meta_xwayland_selection_handle_event (XEvent *xevent)
       return meta_xwayland_selection_handle_client_message (compositor, xevent);
     default:
       {
-        MetaDisplay *display = meta_get_display ();
+        MetaX11Display *x11_display = meta_get_display ()->x11_display;
 
-        if (xevent->type - display->xfixes_event_base == XFixesSelectionNotify)
+        if (xevent->type - x11_display->xfixes_event_base == XFixesSelectionNotify)
           return meta_xwayland_selection_handle_xfixes_selection_notify (compositor, xevent);
 
         return FALSE;

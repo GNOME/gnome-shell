@@ -474,15 +474,19 @@ meta_display_remove_pending_pings_for_window (MetaDisplay *display,
 static void
 enable_compositor (MetaDisplay *display)
 {
-  if (!META_DISPLAY_HAS_COMPOSITE (display) ||
-      !META_DISPLAY_HAS_DAMAGE (display))
+  MetaX11Display *x11_display = display->x11_display;
+
+  if (!META_X11_DISPLAY_HAS_COMPOSITE (x11_display) ||
+      !META_X11_DISPLAY_HAS_DAMAGE (x11_display))
     {
       meta_warning ("Missing %s extension required for compositing",
-                    !META_DISPLAY_HAS_COMPOSITE (display) ? "composite" : "damage");
+                    !META_X11_DISPLAY_HAS_COMPOSITE (x11_display) ?
+                    "composite" : "damage");
       return;
     }
 
-  int version = (display->composite_major_version * 10) + display->composite_minor_version;
+  int version = (x11_display->composite_major_version * 10) +
+                 x11_display->composite_minor_version;
   if (version < 3)
     {
       meta_warning ("Your version of COMPOSITE is too old.");
@@ -691,167 +695,6 @@ meta_display_open (void)
 
   display->xids = g_hash_table_new (meta_unsigned_long_hash,
                                         meta_unsigned_long_equal);
-
-  {
-    int major, minor;
-
-    display->have_xsync = FALSE;
-
-    display->xsync_error_base = 0;
-    display->xsync_event_base = 0;
-
-    /* I don't think we really have to fill these in */
-    major = SYNC_MAJOR_VERSION;
-    minor = SYNC_MINOR_VERSION;
-
-    if (!XSyncQueryExtension (xdisplay,
-                              &display->xsync_event_base,
-                              &display->xsync_error_base) ||
-        !XSyncInitialize (xdisplay,
-                          &major, &minor))
-      {
-        display->xsync_error_base = 0;
-        display->xsync_event_base = 0;
-      }
-    else
-      {
-        display->have_xsync = TRUE;
-        XSyncSetPriority (xdisplay, None, 10);
-      }
-
-    meta_verbose ("Attempted to init Xsync, found version %d.%d error base %d event base %d\n",
-                  major, minor,
-                  display->xsync_error_base,
-                  display->xsync_event_base);
-  }
-
-  {
-    display->have_shape = FALSE;
-
-    display->shape_error_base = 0;
-    display->shape_event_base = 0;
-
-    if (!XShapeQueryExtension (xdisplay,
-                               &display->shape_event_base,
-                               &display->shape_error_base))
-      {
-        display->shape_error_base = 0;
-        display->shape_event_base = 0;
-      }
-    else
-      display->have_shape = TRUE;
-
-    meta_verbose ("Attempted to init Shape, found error base %d event base %d\n",
-                  display->shape_error_base,
-                  display->shape_event_base);
-  }
-
-  {
-    display->have_composite = FALSE;
-
-    display->composite_error_base = 0;
-    display->composite_event_base = 0;
-
-    if (!XCompositeQueryExtension (xdisplay,
-                                   &display->composite_event_base,
-                                   &display->composite_error_base))
-      {
-        display->composite_error_base = 0;
-        display->composite_event_base = 0;
-      }
-    else
-      {
-        display->composite_major_version = 0;
-        display->composite_minor_version = 0;
-        if (XCompositeQueryVersion (xdisplay,
-                                    &display->composite_major_version,
-                                    &display->composite_minor_version))
-          {
-            display->have_composite = TRUE;
-          }
-        else
-          {
-            display->composite_major_version = 0;
-            display->composite_minor_version = 0;
-          }
-      }
-
-    meta_verbose ("Attempted to init Composite, found error base %d event base %d "
-                  "extn ver %d %d\n",
-                  display->composite_error_base,
-                  display->composite_event_base,
-                  display->composite_major_version,
-                  display->composite_minor_version);
-
-    display->have_damage = FALSE;
-
-    display->damage_error_base = 0;
-    display->damage_event_base = 0;
-
-    if (!XDamageQueryExtension (xdisplay,
-                                &display->damage_event_base,
-                                &display->damage_error_base))
-      {
-        display->damage_error_base = 0;
-        display->damage_event_base = 0;
-      }
-    else
-      display->have_damage = TRUE;
-
-    meta_verbose ("Attempted to init Damage, found error base %d event base %d\n",
-                  display->damage_error_base,
-                  display->damage_event_base);
-
-    display->xfixes_error_base = 0;
-    display->xfixes_event_base = 0;
-
-    if (XFixesQueryExtension (xdisplay,
-                              &display->xfixes_event_base,
-                              &display->xfixes_error_base))
-      {
-        int xfixes_major, xfixes_minor;
-
-        XFixesQueryVersion (xdisplay, &xfixes_major, &xfixes_minor);
-
-        if (xfixes_major * 100 + xfixes_minor < 500)
-          meta_fatal ("Mutter requires XFixes 5.0");
-      }
-    else
-      {
-        meta_fatal ("Mutter requires XFixes 5.0");
-      }
-
-    meta_verbose ("Attempted to init XFixes, found error base %d event base %d\n",
-                  display->xfixes_error_base,
-                  display->xfixes_event_base);
-  }
-
-  {
-    int major = 2, minor = 3;
-    gboolean has_xi = FALSE;
-
-    if (XQueryExtension (xdisplay,
-                         "XInputExtension",
-                         &display->xinput_opcode,
-                         &display->xinput_error_base,
-                         &display->xinput_event_base))
-      {
-        if (XIQueryVersion (xdisplay, &major, &minor) == Success)
-          {
-            int version = (major * 10) + minor;
-            if (version >= 22)
-              has_xi = TRUE;
-
-#ifdef HAVE_XI23
-            if (version >= 23)
-              display->have_xinput_23 = TRUE;
-#endif /* HAVE_XI23 */
-          }
-      }
-
-    if (!has_xi)
-      meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
-  }
 
   update_cursor_theme ();
 
@@ -2904,17 +2747,6 @@ meta_display_modifiers_accelerator_activate (MetaDisplay *display)
 }
 
 /**
- * meta_display_get_xinput_opcode: (skip)
- * @display: a #MetaDisplay
- *
- */
-int
-meta_display_get_xinput_opcode (MetaDisplay *display)
-{
-  return display->xinput_opcode;
-}
-
-/**
  * meta_display_supports_extended_barriers:
  * @display: a #MetaDisplay
  *
@@ -2937,7 +2769,7 @@ meta_display_supports_extended_barriers (MetaDisplay *display)
 
   if (META_IS_BACKEND_X11 (meta_get_backend ()))
     {
-      return (META_DISPLAY_HAS_XINPUT_23 (display) &&
+      return (META_X11_DISPLAY_HAS_XINPUT_23 (display->x11_display) &&
               !meta_is_wayland_compositor());
     }
 
@@ -2966,12 +2798,6 @@ meta_display_get_x11_display (MetaDisplay *display)
   return display->x11_display;
 }
 
-gboolean
-meta_display_has_shape (MetaDisplay *display)
-{
-  return META_DISPLAY_HAS_SHAPE (display);
-}
-
 /**
  * meta_display_get_focus_window:
  * @display: a #MetaDisplay
@@ -2986,18 +2812,6 @@ MetaWindow *
 meta_display_get_focus_window (MetaDisplay *display)
 {
   return display->focus_window;
-}
-
-int
-meta_display_get_damage_event_base (MetaDisplay *display)
-{
-  return display->damage_event_base;
-}
-
-int
-meta_display_get_shape_event_base (MetaDisplay *display)
-{
-  return display->shape_event_base;
 }
 
 /**

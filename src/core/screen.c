@@ -677,7 +677,7 @@ meta_screen_new (MetaDisplay *display,
     XISetMask (mask.mask, XI_FocusIn);
     XISetMask (mask.mask, XI_FocusOut);
 #ifdef HAVE_XI23
-    if (META_DISPLAY_HAS_XINPUT_23 (display))
+    if (META_X11_DISPLAY_HAS_XINPUT_23 (display->x11_display))
       {
         XISetMask (mask.mask, XI_BarrierHit);
         XISetMask (mask.mask, XI_BarrierLeave);

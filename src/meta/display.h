@@ -73,21 +73,15 @@ GType meta_display_get_type (void) G_GNUC_CONST;
 
 #define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
 
-int meta_display_get_xinput_opcode (MetaDisplay *display);
 gboolean meta_display_supports_extended_barriers (MetaDisplay *display);
 
 MetaCompositor *meta_display_get_compositor  (MetaDisplay *display);
 MetaX11Display *meta_display_get_x11_display (MetaDisplay *display);
 
-gboolean meta_display_has_shape (MetaDisplay *display);
-
 MetaWindow *meta_display_get_focus_window (MetaDisplay *display);
 
 gboolean  meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
                                                      Window xwindow);
-
-int meta_display_get_damage_event_base (MetaDisplay *display);
-int meta_display_get_shape_event_base (MetaDisplay *display);
 
 gboolean meta_display_xserver_time_is_before (MetaDisplay *display,
                                               guint32      time1,

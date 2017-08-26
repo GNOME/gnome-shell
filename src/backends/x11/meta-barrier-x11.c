@@ -71,7 +71,7 @@ _meta_barrier_impl_x11_release (MetaBarrierImpl  *impl,
   MetaDisplay *display = priv->barrier->priv->display;
   Display *dpy = meta_x11_display_get_xdisplay (display->x11_display);
 
-  if (META_DISPLAY_HAS_XINPUT_23 (display))
+  if (META_X11_DISPLAY_HAS_XINPUT_23 (display->x11_display))
     {
       XIBarrierReleasePointer (dpy,
                                META_VIRTUAL_CORE_POINTER_ID,

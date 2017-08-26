@@ -49,7 +49,7 @@ get_input_event (MetaDisplay *display,
                  XEvent      *event)
 {
   if (event->type == GenericEvent &&
-      event->xcookie.extension == display->xinput_opcode)
+      event->xcookie.extension == display->x11_display->xinput_opcode)
     {
       XIEvent *input_event;
 
@@ -189,8 +189,8 @@ event_get_modified_window (MetaDisplay *display,
       return None;
 
     default:
-      if (META_DISPLAY_HAS_SHAPE (display) &&
-          event->type == (display->shape_event_base + ShapeNotify))
+      if (META_X11_DISPLAY_HAS_SHAPE (display->x11_display) &&
+          event->type == (display->x11_display->shape_event_base + ShapeNotify))
         {
           XShapeEvent *sev = (XShapeEvent*) event;
           return sev->window;
@@ -583,8 +583,8 @@ meta_spew_core_event (MetaDisplay *display,
       name = "MappingNotify";
       break;
     default:
-      if (META_DISPLAY_HAS_XSYNC (display) &&
-          event->type == (display->xsync_event_base + XSyncAlarmNotify))
+      if (META_X11_DISPLAY_HAS_XSYNC (display->x11_display) &&
+          event->type == (display->x11_display->xsync_event_base + XSyncAlarmNotify))
         {
           XSyncAlarmNotifyEvent *aevent = (XSyncAlarmNotifyEvent*) event;
 
@@ -601,8 +601,8 @@ meta_spew_core_event (MetaDisplay *display,
                              alarm_state_to_string (aevent->state));
         }
       else
-        if (META_DISPLAY_HAS_SHAPE (display) &&
-            event->type == (display->shape_event_base + ShapeNotify))
+        if (META_X11_DISPLAY_HAS_SHAPE (display->x11_display) &&
+            event->type == (display->x11_display->shape_event_base + ShapeNotify))
           {
             XShapeEvent *sev = (XShapeEvent*) event;
 
@@ -675,10 +675,10 @@ meta_spew_event_print (MetaDisplay *display,
       event->type == NoExpose)
     return;
 
-  if (event->type == (display->damage_event_base + XDamageNotify))
+  if (event->type == (display->x11_display->damage_event_base + XDamageNotify))
     return;
 
-  if (event->type == (display->xsync_event_base + XSyncAlarmNotify))
+  if (event->type == (display->x11_display->xsync_event_base + XSyncAlarmNotify))
     return;
 
   if (event->type == PropertyNotify &&
@@ -1216,8 +1216,8 @@ handle_other_xevent (MetaDisplay *display,
       window = NULL;
     }
 
-  if (META_DISPLAY_HAS_XSYNC (display) &&
-      event->type == (display->xsync_event_base + XSyncAlarmNotify))
+  if (META_X11_DISPLAY_HAS_XSYNC (x11_display) &&
+      event->type == (x11_display->xsync_event_base + XSyncAlarmNotify))
     {
       MetaWindow *alarm_window = meta_display_lookup_sync_alarm (display,
                                                                  ((XSyncAlarmNotifyEvent*)event)->alarm);
@@ -1242,8 +1242,8 @@ handle_other_xevent (MetaDisplay *display,
       goto out;
     }
 
-  if (META_DISPLAY_HAS_SHAPE (display) &&
-      event->type == (display->shape_event_base + ShapeNotify))
+  if (META_X11_DISPLAY_HAS_SHAPE (x11_display) &&
+      event->type == (x11_display->shape_event_base + ShapeNotify))
     {
       bypass_gtk = TRUE; /* GTK doesn't want to see this really */
 

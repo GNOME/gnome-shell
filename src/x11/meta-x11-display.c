@@ -38,6 +38,15 @@
 #include <unistd.h>
 
 #include <X11/Xatom.h>
+#ifdef HAVE_RANDR
+#include <X11/extensions/Xrandr.h>
+#endif
+#include <X11/extensions/shape.h>
+#include <X11/Xcursor/Xcursor.h>
+#include <X11/extensions/Xcomposite.h>
+#include <X11/extensions/Xdamage.h>
+#include <X11/extensions/Xfixes.h>
+
 
 #include "core/util-private.h"
 #include "meta/errors.h"
@@ -93,6 +102,183 @@ meta_x11_display_class_init (MetaX11DisplayClass *klass)
 static void
 meta_x11_display_init (MetaX11Display *x11_display)
 {
+}
+
+static void
+query_xsync_extension (MetaX11Display *x11_display)
+{
+  int major, minor;
+
+  x11_display->have_xsync = FALSE;
+
+  x11_display->xsync_error_base = 0;
+  x11_display->xsync_event_base = 0;
+
+  /* I don't think we really have to fill these in */
+  major = SYNC_MAJOR_VERSION;
+  minor = SYNC_MINOR_VERSION;
+
+  if (!XSyncQueryExtension (x11_display->xdisplay,
+                            &x11_display->xsync_event_base,
+                            &x11_display->xsync_error_base) ||
+      !XSyncInitialize (x11_display->xdisplay,
+                        &major, &minor))
+    {
+      x11_display->xsync_error_base = 0;
+      x11_display->xsync_event_base = 0;
+    }
+  else
+    {
+      x11_display->have_xsync = TRUE;
+      XSyncSetPriority (x11_display->xdisplay, None, 10);
+    }
+
+  meta_verbose ("Attempted to init Xsync, found version %d.%d error base %d event base %d\n",
+                major, minor,
+                x11_display->xsync_error_base,
+                x11_display->xsync_event_base);
+}
+
+static void
+query_xshape_extension (MetaX11Display *x11_display)
+{
+  x11_display->have_shape = FALSE;
+
+  x11_display->shape_error_base = 0;
+  x11_display->shape_event_base = 0;
+
+  if (!XShapeQueryExtension (x11_display->xdisplay,
+                             &x11_display->shape_event_base,
+                             &x11_display->shape_error_base))
+    {
+      x11_display->shape_error_base = 0;
+      x11_display->shape_event_base = 0;
+    }
+  else
+    x11_display->have_shape = TRUE;
+
+  meta_verbose ("Attempted to init Shape, found error base %d event base %d\n",
+                x11_display->shape_error_base,
+                x11_display->shape_event_base);
+}
+
+static void
+query_xcomposite_extension (MetaX11Display *x11_display)
+{
+  x11_display->have_composite = FALSE;
+
+  x11_display->composite_error_base = 0;
+  x11_display->composite_event_base = 0;
+
+  if (!XCompositeQueryExtension (x11_display->xdisplay,
+                                 &x11_display->composite_event_base,
+                                 &x11_display->composite_error_base))
+    {
+      x11_display->composite_error_base = 0;
+      x11_display->composite_event_base = 0;
+    }
+  else
+    {
+      x11_display->composite_major_version = 0;
+      x11_display->composite_minor_version = 0;
+      if (XCompositeQueryVersion (x11_display->xdisplay,
+                                  &x11_display->composite_major_version,
+                                  &x11_display->composite_minor_version))
+        {
+          x11_display->have_composite = TRUE;
+        }
+      else
+        {
+          x11_display->composite_major_version = 0;
+          x11_display->composite_minor_version = 0;
+        }
+    }
+
+  meta_verbose ("Attempted to init Composite, found error base %d event base %d "
+                "extn ver %d %d\n",
+                x11_display->composite_error_base,
+                x11_display->composite_event_base,
+                x11_display->composite_major_version,
+                x11_display->composite_minor_version);
+}
+
+static void
+query_xdamage_extension (MetaX11Display *x11_display)
+{
+  x11_display->have_damage = FALSE;
+
+  x11_display->damage_error_base = 0;
+  x11_display->damage_event_base = 0;
+
+  if (!XDamageQueryExtension (x11_display->xdisplay,
+                              &x11_display->damage_event_base,
+                              &x11_display->damage_error_base))
+    {
+      x11_display->damage_error_base = 0;
+      x11_display->damage_event_base = 0;
+    }
+  else
+    x11_display->have_damage = TRUE;
+
+  meta_verbose ("Attempted to init Damage, found error base %d event base %d\n",
+                x11_display->damage_error_base,
+                x11_display->damage_event_base);
+}
+
+static void
+query_xfixes_extension (MetaX11Display *x11_display)
+{
+  x11_display->xfixes_error_base = 0;
+  x11_display->xfixes_event_base = 0;
+
+  if (XFixesQueryExtension (x11_display->xdisplay,
+                            &x11_display->xfixes_event_base,
+                            &x11_display->xfixes_error_base))
+    {
+      int xfixes_major, xfixes_minor;
+
+      XFixesQueryVersion (x11_display->xdisplay, &xfixes_major, &xfixes_minor);
+
+      if (xfixes_major * 100 + xfixes_minor < 500)
+        meta_fatal ("Mutter requires XFixes 5.0");
+    }
+  else
+    {
+      meta_fatal ("Mutter requires XFixes 5.0");
+    }
+
+  meta_verbose ("Attempted to init XFixes, found error base %d event base %d\n",
+                x11_display->xfixes_error_base,
+                x11_display->xfixes_event_base);
+}
+
+static void
+query_xi_extension (MetaX11Display *x11_display)
+{
+  int major = 2, minor = 3;
+  gboolean has_xi = FALSE;
+
+  if (XQueryExtension (x11_display->xdisplay,
+                       "XInputExtension",
+                       &x11_display->xinput_opcode,
+                       &x11_display->xinput_error_base,
+                       &x11_display->xinput_event_base))
+    {
+        if (XIQueryVersion (x11_display->xdisplay, &major, &minor) == Success)
+        {
+          int version = (major * 10) + minor;
+          if (version >= 22)
+            has_xi = TRUE;
+
+#ifdef HAVE_XI23
+          if (version >= 23)
+            x11_display->have_xinput_23 = TRUE;
+#endif /* HAVE_XI23 */
+        }
+    }
+
+  if (!has_xi)
+    meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
 }
 
 /**
@@ -193,6 +379,13 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
 #include "x11/atomnames.h"
 #undef item
 
+  query_xsync_extension (x11_display);
+  query_xshape_extension (x11_display);
+  query_xcomposite_extension (x11_display);
+  query_xdamage_extension (x11_display);
+  query_xfixes_extension (x11_display);
+  query_xi_extension (x11_display);
+
   return x11_display;
 }
 
@@ -222,6 +415,35 @@ Window
 meta_x11_display_get_xroot (MetaX11Display *x11_display)
 {
   return x11_display->xroot;
+}
+
+/**
+ * meta_x11_display_get_xinput_opcode: (skip)
+ * @x11_display: a #MetaX11Display
+ *
+ */
+int
+meta_x11_display_get_xinput_opcode (MetaX11Display *x11_display)
+{
+  return x11_display->xinput_opcode;
+}
+
+int
+meta_x11_display_get_damage_event_base (MetaX11Display *x11_display)
+{
+  return x11_display->damage_event_base;
+}
+
+int
+meta_x11_display_get_shape_event_base (MetaX11Display *x11_display)
+{
+  return x11_display->shape_event_base;
+}
+
+gboolean
+meta_x11_display_has_shape (MetaX11Display *x11_display)
+{
+  return META_X11_DISPLAY_HAS_SHAPE (x11_display);
 }
 
 Window
