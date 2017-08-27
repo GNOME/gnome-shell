@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-08-22 11:17+0000\n"
-"PO-Revision-Date: 2017-08-27 12:03+0800\n"
+"PO-Revision-Date: 2017-08-27 13:31+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -47,11 +47,11 @@ msgstr "開啟應用程式選單"
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:152
 msgid "Shell Extensions"
-msgstr "Shell 擴充功能"
+msgstr "Shell 擴充套件"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:5
 msgid "Configure GNOME Shell Extensions"
-msgstr "設定 GNOME Shell 擴充功能"
+msgstr "設定 GNOME Shell 擴充套件"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
@@ -73,7 +73,7 @@ msgstr "允許使用 Alt-F2 對話盒存取內部除錯和監控工具。"
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
-msgstr "要啟用的擴充功能 UUID"
+msgstr "要啟用的擴充套件 UUID"
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
@@ -82,23 +82,23 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"GNOME Shell 擴充功能有 UUID 屬性；這個設定鍵列出了應載入的擴充功能。任何要載"
-"入的擴充功能都要出現在這個清單中。您也可以用 org.gnome.Shell 中的 "
+"GNOME Shell 擴充套件有 UUID 屬性；這個設定鍵列出了應載入的擴充套件。任何要載"
+"入的擴充套件都要出現在這個清單中。您也可以用 org.gnome.Shell 中的 "
 "EnableExtension 和 DisableExtension D-Bus 方法來操作這個清單。"
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "Disable user extensions"
-msgstr "停用所有使用者擴充功能"
+msgstr "停用所有使用者擴充套件"
 
 #: data/org.gnome.shell.gschema.xml.in:27
 msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
-msgstr "停用所有使用者啟用的擴充功能但不影響「enabled-extension」設定值。"
+msgstr "停用所有使用者啟用的擴充套件但不影響「enabled-extension」設定值。"
 
 #: data/org.gnome.shell.gschema.xml.in:34
 msgid "Disables the validation of extension version compatibility"
-msgstr "停用擴充功能版本相容性的驗證"
+msgstr "停用擴充套件版本相容性的驗證"
 
 #: data/org.gnome.shell.gschema.xml.in:35
 msgid ""
@@ -106,8 +106,8 @@ msgid ""
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
-"GNOME Shell 只會載入宣稱支援目前運行中版本的擴充功能。啟用此選項會停用這項檢"
-"查，並嘗試載入所有的擴充功能，而不去管它們所宣稱支援的版本為何。"
+"GNOME Shell 只會載入宣稱支援目前運行中版本的擴充套件。啟用此選項會停用這項檢"
+"查，並嘗試載入所有的擴充套件，而不去管它們所宣稱支援的版本為何。"
 
 #: data/org.gnome.shell.gschema.xml.in:43
 msgid "List of desktop file IDs for favorite applications"
@@ -1179,7 +1179,7 @@ msgstr "鍵盤"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
-msgstr "沒有安裝擴充功能"
+msgstr "沒有安裝擴充套件"
 
 #. Translators: argument is an extension UUID.
 #: js/ui/lookingGlass.js:696
