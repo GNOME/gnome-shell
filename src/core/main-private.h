@@ -31,4 +31,6 @@ typedef enum _MetaCompositorType
 void meta_override_compositor_configuration (MetaCompositorType compositor_type,
                                              GType              backend_gtype);
 
+gboolean meta_should_autostart_x11_display (void);
+
 #endif /* META_MAIN_PRIVATE_H */

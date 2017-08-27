@@ -35,6 +35,7 @@
 #include "events.h"
 #include "util-private.h"
 #include <meta/main.h>
+#include "main-private.h"
 #include "window-private.h"
 #include "boxes-private.h"
 #include "frame.h"
@@ -813,12 +814,19 @@ meta_display_open (void)
 
   display->bell = meta_bell_new (display);
 
-  x11_display = meta_x11_display_new (display, &error);
-  g_assert (x11_display != NULL); /* Required, for now */
-  display->x11_display = x11_display;
-  g_signal_emit (display, display_signals[X11_DISPLAY_OPENED], 0);
+  if (meta_should_autostart_x11_display ())
+    {
+      x11_display = meta_x11_display_new (display, &error);
+      g_assert (x11_display != NULL); /* Required, for now */
+      display->x11_display = x11_display;
+      g_signal_emit (display, display_signals[X11_DISPLAY_OPENED], 0);
 
-  timestamp = display->x11_display->timestamp;
+      timestamp = display->x11_display->timestamp;
+    }
+  else
+    {
+      timestamp = meta_display_get_current_time_roundtrip (display);
+    }
 
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;
