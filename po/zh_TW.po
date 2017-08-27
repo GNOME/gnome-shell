@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2017-08-22 11:17+0000\n"
-"PO-Revision-Date: 2017-08-27 11:23+0800\n"
+"PO-Revision-Date: 2017-08-27 11:27+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -267,7 +267,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:197
 msgid "Attach modal dialog to the parent window"
-msgstr "在上層視窗附加強制對話盒"
+msgstr "情態對話盒附連母視窗"
 
 #: data/org.gnome.shell.gschema.xml.in:198
 #: data/org.gnome.shell.gschema.xml.in:207
