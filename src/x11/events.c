@@ -32,6 +32,7 @@
 #include "meta/meta-backend.h"
 #include "bell.h"
 #include "display-private.h"
+#include "meta-workspace-manager-private.h"
 #include "window-private.h"
 #include "workspace-private.h"
 #include "backends/meta-cursor-tracker-private.h"
@@ -844,6 +845,7 @@ handle_input_xevent (MetaX11Display *x11_display,
   Window modified;
   MetaWindow *window;
   MetaDisplay *display = x11_display->display;
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
 
   if (input_event == NULL)
     return FALSE;
@@ -912,7 +914,7 @@ handle_input_xevent (MetaX11Display *x11_display,
                           "Focus got set to None, probably due to "
                           "brain-damage in the X protocol (see bug "
                           "125492).  Setting the default focus window.\n");
-              meta_workspace_focus_default_window (display->active_workspace,
+              meta_workspace_focus_default_window (workspace_manager->active_workspace,
                                                    NULL,
                                                    meta_x11_display_get_current_time_roundtrip (x11_display));
             }
@@ -924,7 +926,7 @@ handle_input_xevent (MetaX11Display *x11_display,
                           "Focus got set to root window, probably due to "
                           "gnome-session logout dialog usage (see bug "
                           "153220).  Setting the default focus window.\n");
-              meta_workspace_focus_default_window (display->active_workspace,
+              meta_workspace_focus_default_window (workspace_manager->active_workspace,
                                                    NULL,
                                                    meta_x11_display_get_current_time_roundtrip (x11_display));
             }
@@ -1197,6 +1199,7 @@ handle_other_xevent (MetaX11Display *x11_display,
                      XEvent         *event)
 {
   MetaDisplay *display = x11_display->display;
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
   Window modified;
   MetaWindow *window;
   MetaWindow *property_for_window;
@@ -1398,12 +1401,12 @@ handle_other_xevent (MetaX11Display *x11_display,
       if (window->minimized)
         {
           meta_window_unminimize (window);
-          if (window->workspace != window->display->active_workspace)
+          if (window->workspace != workspace_manager->active_workspace)
             {
               meta_verbose ("Changing workspace due to MapRequest mapped = %d minimized = %d\n",
                             window->mapped, window->minimized);
               meta_window_change_workspace (window,
-                                            window->display->active_workspace);
+                                            workspace_manager->active_workspace);
             }
         }
       break;
@@ -1552,7 +1555,7 @@ handle_other_xevent (MetaX11Display *x11_display,
                                 "specified timestamp of %u\n",
                                 space, time);
 
-                  workspace = meta_display_get_workspace_by_index (display, space);
+                  workspace = meta_workspace_manager_get_workspace_by_index (workspace_manager, space);
 
                   /* Handle clients using the older version of the spec... */
                   if (time == 0 && workspace)
@@ -1593,11 +1596,11 @@ handle_other_xevent (MetaX11Display *x11_display,
                                 showing_desktop ? "show" : "hide");
 
                   if (showing_desktop)
-                    meta_display_show_desktop (display, timestamp);
+                    meta_workspace_manager_show_desktop (workspace_manager, timestamp);
                   else
                     {
-                      meta_display_unshow_desktop (display);
-                      meta_workspace_focus_default_window (display->active_workspace, NULL, timestamp);
+                      meta_workspace_manager_unshow_desktop (workspace_manager);
+                      meta_workspace_focus_default_window (workspace_manager->active_workspace, NULL, timestamp);
                     }
                 }
               else if (event->xclient.message_type ==

@@ -27,6 +27,7 @@
 
 #include <config.h>
 #include "stack.h"
+#include "meta-workspace-manager-private.h"
 #include "window-private.h"
 #include <meta/meta-x11-errors.h>
 #include "frame.h"
@@ -101,6 +102,8 @@ void
 meta_stack_add (MetaStack  *stack,
                 MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
   g_return_if_fail (meta_window_is_stackable (window));
 
   meta_topic (META_DEBUG_STACK, "Adding window %s to the stack\n", window->desc);
@@ -117,13 +120,15 @@ meta_stack_add (MetaStack  *stack,
               window->desc, window->stack_position);
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
+  meta_stack_update_window_tile_matches (stack, workspace_manager->active_workspace);
 }
 
 void
 meta_stack_remove (MetaStack  *stack,
                    MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
   meta_topic (META_DEBUG_STACK, "Removing window %s from the stack\n", window->desc);
 
   /* Set window to top position, so removing it will not leave gaps
@@ -153,27 +158,29 @@ meta_stack_remove (MetaStack  *stack,
     }
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
+  meta_stack_update_window_tile_matches (stack, workspace_manager->active_workspace);
 }
 
 void
 meta_stack_update_layer (MetaStack  *stack,
                          MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   stack->need_relayer = TRUE;
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
+  meta_stack_update_window_tile_matches (stack, workspace_manager->active_workspace);
 }
 
 void
 meta_stack_update_transient (MetaStack  *stack,
                              MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   stack->need_constrain = TRUE;
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
+  meta_stack_update_window_tile_matches (stack, workspace_manager->active_workspace);
 }
 
 /* raise/lower within a layer */
@@ -181,6 +188,7 @@ void
 meta_stack_raise (MetaStack  *stack,
                   MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   GList *l;
   int max_stack_position = window->stack_position;
   MetaWorkspace *workspace;
@@ -202,13 +210,14 @@ meta_stack_raise (MetaStack  *stack,
   meta_window_set_stack_position_no_sync (window, max_stack_position);
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
+  meta_stack_update_window_tile_matches (stack, workspace_manager->active_workspace);
 }
 
 void
 meta_stack_lower (MetaStack  *stack,
                   MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   GList *l;
   int min_stack_position = window->stack_position;
   MetaWorkspace *workspace;
@@ -230,7 +239,7 @@ meta_stack_lower (MetaStack  *stack,
   meta_window_set_stack_position_no_sync (window, min_stack_position);
 
   stack_sync_to_xserver (stack);
-  meta_stack_update_window_tile_matches (stack, window->display->active_workspace);
+  meta_stack_update_window_tile_matches (stack, workspace_manager->active_workspace);
 }
 
 void
@@ -1457,8 +1466,10 @@ void
 meta_window_set_stack_position (MetaWindow *window,
                                 int         position)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
   meta_window_set_stack_position_no_sync (window, position);
   stack_sync_to_xserver (window->display->stack);
   meta_stack_update_window_tile_matches (window->display->stack,
-                                         window->display->active_workspace);
+                                         workspace_manager->active_workspace);
 }

@@ -33,6 +33,7 @@
 #include "util-private.h"
 #include "frame.h"
 #include <meta/meta-x11-errors.h>
+#include "meta-workspace-manager-private.h"
 #include "workspace-private.h"
 #include "stack.h"
 #include "keybindings-private.h"
@@ -687,9 +688,10 @@ is_desktop_or_dock_foreach (MetaWindow *window,
 static void
 maybe_leave_show_desktop_mode (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   gboolean is_desktop_or_dock;
 
-  if (!window->display->active_workspace->showing_desktop)
+  if (!workspace_manager->active_workspace->showing_desktop)
     return;
 
   /* If the window is a transient for the dock or desktop, don't
@@ -706,9 +708,9 @@ maybe_leave_show_desktop_mode (MetaWindow *window)
 
   if (!is_desktop_or_dock)
     {
-      meta_display_minimize_all_on_active_workspace_except (window->display,
-                                                            window);
-      meta_display_unshow_desktop (window->display);
+      meta_workspace_manager_minimize_all_on_active_workspace_except (workspace_manager,
+                                                                      window);
+      meta_workspace_manager_unshow_desktop (workspace_manager);
     }
 }
 
@@ -929,6 +931,7 @@ _meta_window_shared_new (MetaDisplay         *display,
                          MetaCompEffect       effect,
                          XWindowAttributes   *attrs)
 {
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
   MetaWindow *window;
 
   g_assert (attrs != NULL);
@@ -1238,8 +1241,8 @@ _meta_window_shared_new (MetaDisplay         *display,
                       "Window %s is initially on space %d\n",
                       window->desc, window->initial_workspace);
 
-          workspace = meta_display_get_workspace_by_index (window->display,
-                                                           window->initial_workspace);
+          workspace = meta_workspace_manager_get_workspace_by_index (workspace_manager,
+                                                                     window->initial_workspace);
         }
 
       set_workspace_state (window, on_all_workspaces, workspace);
@@ -1278,7 +1281,7 @@ _meta_window_shared_new (MetaDisplay         *display,
                       "Putting window %s on active workspace\n",
                       window->desc);
 
-          set_workspace_state (window, FALSE, window->display->active_workspace);
+          set_workspace_state (window, FALSE, workspace_manager->active_workspace);
         }
 
       meta_window_update_struts (window);
@@ -1378,6 +1381,7 @@ void
 meta_window_unmanage (MetaWindow  *window,
                       guint32      timestamp)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   GList *tmp;
 
   meta_verbose ("Unmanaging %s\n", window->desc);
@@ -1464,7 +1468,7 @@ meta_window_unmanage (MetaWindow  *window,
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing default window since we're unmanaging %s\n",
                   window->desc);
-      meta_workspace_focus_default_window (window->display->active_workspace, NULL, timestamp);
+      meta_workspace_focus_default_window (workspace_manager->active_workspace, NULL, timestamp);
     }
   else
     {
@@ -1510,7 +1514,7 @@ meta_window_unmanage (MetaWindow  *window,
   g_assert (window->workspace == NULL);
 
 #ifndef G_DISABLE_CHECKS
-  tmp = window->display->workspaces;
+  tmp = workspace_manager->workspaces;
   while (tmp != NULL)
     {
       MetaWorkspace *workspace = tmp->data;
@@ -1622,6 +1626,7 @@ ancestor_is_minimized (MetaWindow *window)
 gboolean
 meta_window_showing_on_its_workspace (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   gboolean showing;
   gboolean is_desktop_or_dock;
   MetaWorkspace* workspace_of_window;
@@ -1641,7 +1646,7 @@ meta_window_showing_on_its_workspace (MetaWindow *window)
                                 &is_desktop_or_dock);
 
   if (window->on_all_workspaces)
-    workspace_of_window = window->display->active_workspace;
+    workspace_of_window = workspace_manager->active_workspace;
   else if (window->workspace)
     workspace_of_window = window->workspace;
   else /* This only seems to be needed for startup */
@@ -1673,6 +1678,8 @@ meta_window_showing_on_its_workspace (MetaWindow *window)
 gboolean
 meta_window_should_be_showing (MetaWindow  *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
 #ifdef HAVE_WAYLAND
   if (window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND &&
       !meta_wayland_surface_get_buffer (window->surface))
@@ -1681,7 +1688,7 @@ meta_window_should_be_showing (MetaWindow  *window)
 
   /* Windows should be showing if they're located on the
    * active workspace and they're showing on their own workspace. */
-  return (meta_window_located_on_workspace (window, window->display->active_workspace) &&
+  return (meta_window_located_on_workspace (window, workspace_manager->active_workspace) &&
           meta_window_showing_on_its_workspace (window));
 }
 
@@ -2551,6 +2558,7 @@ meta_window_show (MetaWindow *window)
 static void
 meta_window_hide (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   gboolean did_hide;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
@@ -2621,11 +2629,11 @@ meta_window_hide (MetaWindow *window)
        * We also pass in NULL if we are in the process of hiding all non-desktop
        * windows to avoid unexpected changes to the stacking order.
        */
-      if (my_workspace == window->display->active_workspace &&
+      if (my_workspace == workspace_manager->active_workspace &&
           !my_workspace->showing_desktop)
         not_this_one = window;
 
-      meta_workspace_focus_default_window (window->display->active_workspace,
+      meta_workspace_focus_default_window (workspace_manager->active_workspace,
                                            not_this_one,
                                            timestamp);
     }
@@ -3602,6 +3610,7 @@ meta_window_activate_full (MetaWindow     *window,
                            MetaClientType  source_indication,
                            MetaWorkspace  *workspace)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   gboolean allow_workspace_switch;
   meta_topic (META_DEBUG_FOCUS,
               "_NET_ACTIVE_WINDOW message sent for %s at time %u "
@@ -3630,7 +3639,7 @@ meta_window_activate_full (MetaWindow     *window,
 
   /* Get window on current or given workspace */
   if (workspace == NULL)
-    workspace = window->display->active_workspace;
+    workspace = workspace_manager->active_workspace;
 
   /* For non-transient windows, we just set up a pulsing indicator,
      rather than move windows or workspaces.
@@ -3839,6 +3848,7 @@ void
 meta_window_update_monitor (MetaWindow *window,
                             gboolean    user_op)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   const MetaLogicalMonitor *old;
 
   old = window->monitor;
@@ -3858,8 +3868,8 @@ meta_window_update_monitor (MetaWindow *window,
        */
       if (meta_prefs_get_workspaces_only_on_primary () && user_op &&
           meta_window_is_on_primary_monitor (window)  &&
-          window->display->active_workspace != window->workspace)
-        meta_window_change_workspace (window, window->display->active_workspace);
+          workspace_manager->active_workspace != window->workspace)
+        meta_window_change_workspace (window, workspace_manager->active_workspace);
 
       meta_window_main_monitor_changed (window, old);
 
@@ -3894,6 +3904,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * to the client.
    */
 
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   gboolean did_placement;
   MetaRectangle unconstrained_rect;
   MetaRectangle constrained_rect;
@@ -4025,7 +4036,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   meta_window_foreach_transient (window, maybe_move_attached_dialog, NULL);
 
   meta_stack_update_window_tile_matches (window->display->stack,
-                                         window->display->active_workspace);
+                                         workspace_manager->active_workspace);
 }
 
 /**
@@ -4605,6 +4616,7 @@ void
 meta_window_focus (MetaWindow  *window,
                    guint32      timestamp)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   MetaWindow *modal_transient;
 
   g_return_if_fail (!window->override_redirect);
@@ -4631,8 +4643,8 @@ meta_window_focus (MetaWindow  *window,
       meta_topic (META_DEBUG_FOCUS,
                   "%s has %s as a modal transient, so focusing it instead.\n",
                   window->desc, modal_transient->desc);
-      if (!meta_window_located_on_workspace (modal_transient, window->display->active_workspace))
-        meta_window_change_workspace (modal_transient, window->display->active_workspace);
+      if (!meta_window_located_on_workspace (modal_transient, workspace_manager->active_workspace))
+        meta_window_change_workspace (modal_transient, workspace_manager->active_workspace);
       window = modal_transient;
     }
 
@@ -4682,6 +4694,8 @@ set_workspace_state (MetaWindow    *window,
                      gboolean       on_all_workspaces,
                      MetaWorkspace *workspace)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
   /* If we're on all workspaces, then our new workspace must be NULL. */
   if (on_all_workspaces)
     g_assert (workspace == NULL);
@@ -4703,7 +4717,7 @@ set_workspace_state (MetaWindow    *window,
   else if (window->on_all_workspaces)
     {
       GList *l;
-      for (l = window->display->workspaces; l != NULL; l = l->next)
+      for (l = workspace_manager->workspaces; l != NULL; l = l->next)
         {
           MetaWorkspace *ws = l->data;
           meta_workspace_remove_window (ws, window);
@@ -4718,7 +4732,7 @@ set_workspace_state (MetaWindow    *window,
   else if (window->on_all_workspaces)
     {
       GList *l;
-      for (l = window->display->workspaces; l != NULL; l = l->next)
+      for (l = workspace_manager->workspaces; l != NULL; l = l->next)
         {
           MetaWorkspace *ws = l->data;
           meta_workspace_add_window (ws, window);
@@ -4760,6 +4774,7 @@ should_be_on_all_workspaces (MetaWindow *window)
 void
 meta_window_on_all_workspaces_changed (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   gboolean on_all_workspaces = should_be_on_all_workspaces (window);
 
   if (window->on_all_workspaces == on_all_workspaces)
@@ -4775,7 +4790,7 @@ meta_window_on_all_workspaces_changed (MetaWindow *window)
     {
       /* We're coming out of the sticky state. Put the window on
        * the currently active workspace. */
-      workspace = window->display->active_workspace;
+      workspace = workspace_manager->active_workspace;
     }
 
   set_workspace_state (window, on_all_workspaces, workspace);
@@ -4998,6 +5013,7 @@ meta_window_change_workspace_by_index (MetaWindow *window,
                                        gint        space_index,
                                        gboolean    append)
 {
+  MetaWorkspaceManager *workspace_manager;
   MetaWorkspace *workspace;
   MetaDisplay   *display;
 
@@ -5010,12 +5026,13 @@ meta_window_change_workspace_by_index (MetaWindow *window,
     }
 
   display = window->display;
+  workspace_manager = display->workspace_manager;
 
   workspace =
-    meta_display_get_workspace_by_index (display, space_index);
+    meta_workspace_manager_get_workspace_by_index (workspace_manager, space_index);
 
   if (!workspace && append)
-    workspace = meta_display_append_new_workspace (display, FALSE, META_CURRENT_TIME);
+    workspace = meta_workspace_manager_append_new_workspace (workspace_manager, FALSE, META_CURRENT_TIME);
 
   if (workspace)
     meta_window_change_workspace (window, workspace);
@@ -5115,6 +5132,8 @@ void
 meta_window_set_focused_internal (MetaWindow *window,
                                   gboolean    focused)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
   if (focused)
     {
       window->has_focus = TRUE;
@@ -5129,22 +5148,22 @@ meta_window_set_focused_internal (MetaWindow *window,
        * list only if the window is actually on the active
        * workspace.
        */
-      if (window->display->active_workspace &&
+      if (workspace_manager->active_workspace &&
           meta_window_located_on_workspace (window,
-                                            window->display->active_workspace))
+                                            workspace_manager->active_workspace))
         {
           GList* link;
-          link = g_list_find (window->display->active_workspace->mru_list,
+          link = g_list_find (workspace_manager->active_workspace->mru_list,
                               window);
           g_assert (link);
 
-          window->display->active_workspace->mru_list =
-            g_list_remove_link (window->display->active_workspace->mru_list,
+          workspace_manager->active_workspace->mru_list =
+            g_list_remove_link (workspace_manager->active_workspace->mru_list,
                                 link);
           g_list_free (link);
 
-          window->display->active_workspace->mru_list =
-            g_list_prepend (window->display->active_workspace->mru_list,
+          workspace_manager->active_workspace->mru_list =
+            g_list_prepend (workspace_manager->active_workspace->mru_list,
                             window);
         }
 
@@ -5387,8 +5406,10 @@ idle_update_icon (gpointer data)
 GList*
 meta_window_get_workspaces (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
   if (window->on_all_workspaces)
-    return window->display->workspaces;
+    return workspace_manager->workspaces;
   else if (window->workspace != NULL)
     return window->workspace->list_containing_self;
   else if (window->constructing)
@@ -5745,6 +5766,7 @@ meta_window_show_menu_for_rect (MetaWindow         *window,
 void
 meta_window_shove_titlebar_onscreen (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   MetaRectangle  frame_rect;
   GList         *onscreen_region;
   int            horiz_amount, vert_amount;
@@ -5757,7 +5779,7 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
 
   /* Get the basic info we need */
   meta_window_get_frame_rect (window, &frame_rect);
-  onscreen_region = window->display->active_workspace->screen_region;
+  onscreen_region = workspace_manager->active_workspace->screen_region;
 
   /* Extend the region (just in case the window is too big to fit on the
    * screen), then shove the window on screen, then return the region to
@@ -5785,6 +5807,7 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
 gboolean
 meta_window_titlebar_is_onscreen (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   MetaRectangle  titlebar_rect, frame_rect;
   GList         *onscreen_region;
   gboolean       is_onscreen;
@@ -5809,7 +5832,7 @@ meta_window_titlebar_is_onscreen (MetaWindow *window)
    * them overlaps with the titlebar sufficiently to consider it onscreen.
    */
   is_onscreen = FALSE;
-  onscreen_region = window->display->active_workspace->screen_region;
+  onscreen_region = workspace_manager->active_workspace->screen_region;
   while (onscreen_region)
     {
       MetaRectangle *spanning_rect = onscreen_region->data;
@@ -6882,11 +6905,12 @@ ensure_mru_position_after (MetaWindow *window,
    * map.
    */
 
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   GList* active_mru_list;
   GList* window_position;
   GList* after_this_one_position;
 
-  active_mru_list         = window->display->active_workspace->mru_list;
+  active_mru_list         = workspace_manager->active_workspace->mru_list;
   window_position         = g_list_find (active_mru_list, window);
   after_this_one_position = g_list_find (active_mru_list, after_this_one);
 
@@ -6899,12 +6923,12 @@ ensure_mru_position_after (MetaWindow *window,
 
   if (g_list_length (window_position) > g_list_length (after_this_one_position))
     {
-      window->display->active_workspace->mru_list =
-        g_list_delete_link (window->display->active_workspace->mru_list,
+      workspace_manager->active_workspace->mru_list =
+        g_list_delete_link (workspace_manager->active_workspace->mru_list,
                             window_position);
 
-      window->display->active_workspace->mru_list =
-        g_list_insert_before (window->display->active_workspace->mru_list,
+      workspace_manager->active_workspace->mru_list =
+        g_list_insert_before (workspace_manager->active_workspace->mru_list,
                               after_this_one_position->next,
                               window);
     }
@@ -7052,12 +7076,13 @@ meta_window_get_stable_sequence (MetaWindow *window)
 void
 meta_window_set_demands_attention (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   MetaRectangle candidate_rect, other_rect;
   GList *stack = window->display->stack->sorted;
   MetaWindow *other_window;
   gboolean obscured = FALSE;
 
-  MetaWorkspace *workspace = window->display->active_workspace;
+  MetaWorkspace *workspace = workspace_manager->active_workspace;
 
   if (window->wm_state_demands_attention)
     return;
@@ -7243,8 +7268,10 @@ meta_window_get_window_type (MetaWindow *window)
 MetaWorkspace *
 meta_window_get_workspace (MetaWindow *window)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
+
   if (window->on_all_workspaces)
-    return window->display->active_workspace;
+    return workspace_manager->active_workspace;
   else
     return window->workspace;
 }

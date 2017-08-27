@@ -48,4 +48,49 @@ struct _MetaWorkspaceManager
 
 MetaWorkspaceManager *meta_workspace_manager_new (MetaDisplay *display);
 
+void meta_workspace_manager_init_workspaces         (MetaWorkspaceManager *workspace_manager);
+void meta_workspace_manager_update_workspace_layout (MetaWorkspaceManager *workspace_manager,
+                                                     MetaDisplayCorner     starting_corner,
+                                                     gboolean              vertical_layout,
+                                                     int                   n_rows,
+                                                     int                   n_columns);
+
+void meta_workspace_manager_reload_work_areas (MetaWorkspaceManager *workspace_manager);
+
+typedef struct MetaWorkspaceLayout MetaWorkspaceLayout;
+
+struct MetaWorkspaceLayout
+{
+  int rows;
+  int cols;
+  int *grid;
+  int grid_area;
+  int current_row;
+  int current_col;
+};
+
+void meta_workspace_manager_calc_workspace_layout (MetaWorkspaceManager *workspace_manager,
+                                                   int                   num_workspaces,
+                                                   int                   current_space,
+                                                   MetaWorkspaceLayout  *layout);
+
+void meta_workspace_manager_free_workspace_layout (MetaWorkspaceLayout *layout);
+
+void meta_workspace_manager_minimize_all_on_active_workspace_except (MetaWorkspaceManager *workspace_manager,
+                                                                     MetaWindow           *keep);
+
+/* Show/hide the desktop (temporarily hide all windows) */
+void meta_workspace_manager_show_desktop   (MetaWorkspaceManager *workspace_manager,
+                                            guint32               timestamp);
+void meta_workspace_manager_unshow_desktop (MetaWorkspaceManager *workspace_manager);
+
+void meta_workspace_manager_workspace_switched (MetaWorkspaceManager *workspace_manager,
+                                                int                   from,
+                                                int                   to,
+                                                MetaMotionDirection   direction);
+
+void meta_workspace_manager_update_num_workspaces (MetaWorkspaceManager *workspace_manager,
+                                                   guint32               timestamp,
+                                                   int                   new_num);
+
 #endif /* META_WORKSPACE_MANAGER_PRIVATE_H */

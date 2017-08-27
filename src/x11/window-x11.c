@@ -50,6 +50,7 @@
 #include "xprops.h"
 #include "session.h"
 #include "workspace-private.h"
+#include "meta-workspace-manager-private.h"
 
 #include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-backend-x11.h"
@@ -442,11 +443,12 @@ meta_window_apply_session_info (MetaWindow *window,
       tmp = info->workspace_indices;
       while (tmp != NULL)
         {
+          MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
           MetaWorkspace *space;
 
           space =
-            meta_display_get_workspace_by_index (window->display,
-                                                 GPOINTER_TO_INT (tmp->data));
+            meta_workspace_manager_get_workspace_by_index (workspace_manager,
+                                                           GPOINTER_TO_INT (tmp->data));
 
           if (space)
             spaces = g_slist_prepend (spaces, space);
@@ -2403,6 +2405,7 @@ meta_window_x11_client_message (MetaWindow *window,
            x11_display->atom__NET_WM_DESKTOP)
     {
       int space;
+      MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
       MetaWorkspace *workspace;
 
       space = event->xclient.data.l[0];
@@ -2411,8 +2414,8 @@ meta_window_x11_client_message (MetaWindow *window,
                     window->desc, space);
 
       workspace =
-        meta_display_get_workspace_by_index (window->display,
-                                             space);
+        meta_workspace_manager_get_workspace_by_index (workspace_manager,
+                                                       space);
 
       if (workspace)
         meta_window_change_workspace (window, workspace);

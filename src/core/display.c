@@ -154,8 +154,7 @@ enum
 enum {
   PROP_0,
 
-  PROP_FOCUS_WINDOW,
-  PROP_N_WORKSPACES
+  PROP_FOCUS_WINDOW
 };
 
 static guint display_signals [LAST_SIGNAL] = { 0 };
@@ -189,9 +188,6 @@ meta_display_get_property(GObject         *object,
     {
     case PROP_FOCUS_WINDOW:
       g_value_set_object (value, display->focus_window);
-      break;
-    case PROP_N_WORKSPACES:
-      g_value_set_int (value, meta_display_get_n_workspaces (display));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -536,14 +532,6 @@ meta_display_class_init (MetaDisplayClass *klass)
                                                         META_TYPE_WINDOW,
                                                         G_PARAM_READABLE));
 
-  g_object_class_install_property (object_class,
-                                   PROP_N_WORKSPACES,
-                                   g_param_spec_int ("n-workspaces",
-                                                     "N Workspaces",
-                                                     "Number of workspaces",
-                                                     1, G_MAXINT, 1,
-                                                     G_PARAM_READABLE));
-
 }
 
 
@@ -688,18 +676,6 @@ on_startup_notification_changed (MetaStartupNotification *sn,
   g_signal_emit_by_name (display, "startup-sequence-changed", sequence);
 }
 
-static void
-reload_logical_monitors (MetaDisplay *display)
-{
-  GList *l;
-
-  for (l = display->workspaces; l != NULL; l = l->next)
-    {
-      MetaWorkspace *space = l->data;
-      meta_workspace_invalidate_work_area (space);
-    }
-}
-
 /**
  * meta_display_open:
  *
@@ -762,13 +738,6 @@ meta_display_open (void)
   display->grab_tile_mode = META_TILE_NONE;
   display->grab_tile_monitor_number = -1;
 
-  display->active_workspace = NULL;
-  display->workspaces = NULL;
-  display->rows_of_workspaces = 1;
-  display->columns_of_workspaces = -1;
-  display->vertical_workspaces = FALSE;
-  display->starting_corner = META_DISPLAY_TOPLEFT;
-
   display->grab_edge_resistance_data = NULL;
 
   meta_display_init_keys (display);
@@ -792,25 +761,6 @@ meta_display_open (void)
   display->stack_tracker = meta_stack_tracker_new (display);
 
   display->workspace_manager = meta_workspace_manager_new (display);
-
-  /* This is the default layout extracted from default
-   * variable values in update_num_workspaces ()
-   * This can be overriden using _NET_DESKTOP_LAYOUT in
-   * meta_x11_display_new (), if it's specified */
-  meta_display_update_workspace_layout (display,
-                                        META_DISPLAY_TOPLEFT,
-                                        FALSE,
-                                        -1,
-                                         1);
-
-  /* There must be at least one workspace at all times,
-   * so create that required workspace.
-   */
-  meta_workspace_new (display);
-
-  meta_display_init_workspaces (display);
-
-  reload_logical_monitors (display);
 
   display->startup_notification = meta_startup_notification_get (display);
   g_signal_connect (display->startup_notification, "changed",
@@ -2564,18 +2514,6 @@ prefs_changed_callback (MetaPreference pref,
     {
       meta_display_reload_cursor (display);
     }
-  else if ((pref == META_PREF_NUM_WORKSPACES ||
-            pref == META_PREF_DYNAMIC_WORKSPACES) &&
-            !meta_prefs_get_dynamic_workspaces ())
-    {
-      /* GSettings doesn't provide timestamps, but luckily update_num_workspaces
-       * often doesn't need it...
-       */
-      guint32 timestamp =
-        meta_display_get_current_time_roundtrip (display);
-      int new_num = meta_prefs_get_num_workspaces ();
-      meta_display_update_num_workspaces (display, timestamp, new_num);
-    }
 }
 
 void
@@ -3082,7 +3020,7 @@ on_monitors_changed_internal (MetaMonitorManager *monitor_manager,
   MetaBackend *backend;
   MetaCursorRenderer *cursor_renderer;
 
-  reload_logical_monitors (display);
+  meta_workspace_manager_reload_work_areas (display->workspace_manager);
 
   /* Fix up monitor for all windows on this display */
   meta_display_foreach_window (display, META_LIST_INCLUDE_OVERRIDE_REDIRECT,
@@ -3665,6 +3603,7 @@ MetaWindow *
 meta_display_get_pointer_window (MetaDisplay *display,
                                  MetaWindow  *not_this_one)
 {
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
   MetaBackend *backend = meta_get_backend ();
   MetaCursorTracker *cursor_tracker = meta_backend_get_cursor_tracker (backend);
   MetaWindow *window;
@@ -3677,7 +3616,7 @@ meta_display_get_pointer_window (MetaDisplay *display,
   meta_cursor_tracker_get_pointer (cursor_tracker, &x, &y, NULL);
 
   window = meta_stack_get_default_focus_window_at_point (display->stack,
-                                                         display->active_workspace,
+                                                         workspace_manager->active_workspace,
                                                          not_this_one,
                                                          x, y);
 
@@ -3685,708 +3624,14 @@ meta_display_get_pointer_window (MetaDisplay *display,
 }
 
 void
-meta_display_init_workspaces (MetaDisplay *display)
-{
-  int num;
-
-  g_return_if_fail (META_IS_DISPLAY (display));
-
-  if (meta_prefs_get_dynamic_workspaces ())
-    /* This will be properly updated using _NET_NUMBER_OF_DESKTOPS
-     * (if set) in meta_x11_display_new () */
-    num = 1;
-  else
-    num = meta_prefs_get_num_workspaces ();
-
-  meta_display_update_num_workspaces (display, META_CURRENT_TIME, num);
-
-  meta_workspace_activate (display->workspaces->data, META_CURRENT_TIME);
-}
-
-int
-meta_display_get_n_workspaces (MetaDisplay *display)
-{
-  return g_list_length (display->workspaces);
-}
-
-/**
- * meta_display_get_workspace_by_index:
- * @display: a #MetaDisplay
- * @index: index of one of the display's workspaces
- *
- * Gets the workspace object for one of a display's workspaces given the workspace
- * index. It's valid to call this function with an out-of-range index and it
- * will robustly return %NULL.
- *
- * Return value: (transfer none): the workspace object with specified index, or %NULL
- *   if the index is out of range.
- */
-MetaWorkspace *
-meta_display_get_workspace_by_index (MetaDisplay  *display,
-                                     int           idx)
-{
-  return g_list_nth_data (display->workspaces, idx);
-}
-
-void
-meta_display_remove_workspace (MetaDisplay   *display,
-                               MetaWorkspace *workspace,
-                               guint32        timestamp)
-{
-  GList *l;
-  GList *next;
-  MetaWorkspace *neighbour = NULL;
-  int index;
-  gboolean active_index_changed;
-  int new_num;
-
-  l = g_list_find (display->workspaces, workspace);
-  if (!l)
-    return;
-
-  next = l->next;
-
-  if (l->prev)
-    neighbour = l->prev->data;
-  else if (l->next)
-    neighbour = l->next->data;
-  else
-    {
-      /* Cannot remove the only workspace! */
-      return;
-    }
-
-  meta_workspace_relocate_windows (workspace, neighbour);
-
-  if (workspace == display->active_workspace)
-    meta_workspace_activate (neighbour, timestamp);
-
-  /* To emit the signal after removing the workspace */
-  index = meta_workspace_index (workspace);
-  active_index_changed = index < meta_display_get_active_workspace_index (display);
-
-  /* This also removes the workspace from the displays list */
-  meta_workspace_remove (workspace);
-
-  new_num = g_list_length (display->workspaces);
-
-  if (!meta_prefs_get_dynamic_workspaces ())
-    meta_prefs_set_num_workspaces (new_num);
-
-  /* If deleting a workspace before the current workspace, the active
-   * workspace index changes, so we need to update that hint */
-  if (active_index_changed)
-    g_signal_emit (display, display_signals[ACTIVE_WORKSPACE_CHANGED], 0, NULL);
-
-  for (l = next; l; l = l->next)
-    {
-      MetaWorkspace *w = l->data;
-
-      meta_workspace_index_changed (w);
-    }
-
-  meta_display_queue_workarea_recalc (display);
-
-  g_signal_emit (display, display_signals[WORKSPACE_REMOVED], 0, index);
-  g_object_notify (G_OBJECT (display), "n-workspaces");
-}
-
-/**
- * meta_display_append_new_workspace:
- * @display: a #MetaDisplay
- * @activate: %TRUE if the workspace should be switched to after creation
- * @timestamp: if switching to a new workspace, timestamp to be used when
- *   focusing a window on the new workspace. (Doesn't hurt to pass a valid
- *   timestamp when available even if not switching workspaces.)
- *
- * Append a new workspace to the display and (optionally) switch to that
- * display.
- *
- * Return value: (transfer none): the newly appended workspace.
- */
-MetaWorkspace *
-meta_display_append_new_workspace (MetaDisplay *display,
-                                   gboolean     activate,
-                                   guint32      timestamp)
-{
-  MetaWorkspace *w;
-  int new_num;
-
-  /* This also adds the workspace to the display list */
-  w = meta_workspace_new (display);
-
-  if (!w)
-    return NULL;
-
-  if (activate)
-    meta_workspace_activate (w, timestamp);
-
-  new_num = g_list_length (display->workspaces);
-
-  if (!meta_prefs_get_dynamic_workspaces ())
-    meta_prefs_set_num_workspaces (new_num);
-
-  meta_display_queue_workarea_recalc (display);
-
-  g_signal_emit (display, display_signals[WORKSPACE_ADDED],
-                 0, meta_workspace_index (w));
-  g_object_notify (G_OBJECT (display), "n-workspaces");
-
-  return w;
-}
-
-void
-meta_display_update_num_workspaces (MetaDisplay *display,
-                                    guint32      timestamp,
-                                    int          new_num)
-{
-  int old_num;
-  GList *l;
-  int i = 0;
-  GList *extras = NULL;
-  MetaWorkspace *last_remaining = NULL;
-  gboolean need_change_space = FALSE;
-
-  g_assert (new_num > 0);
-
-  if (g_list_length (display->workspaces) == (guint) new_num)
-    return;
-
-  for (l = display->workspaces; l != NULL; l = l->next)
-    {
-      MetaWorkspace *w = l->data;
-
-      if (i >= new_num)
-        extras = g_list_prepend (extras, w);
-      else
-        last_remaining = w;
-
-      ++i;
-    }
-  old_num = i;
-
-  g_assert (last_remaining);
-
-  /* Get rid of the extra workspaces by moving all their windows
-   * to last_remaining, then activating last_remaining if
-   * one of the removed workspaces was active. This will be a bit
-   * wacky if the config tool for changing number of workspaces
-   * is on a removed workspace ;-)
-   */
-  for (l = extras; l != NULL; l = l->next)
-    {
-      MetaWorkspace *w = l->data;
-
-      meta_workspace_relocate_windows (w, last_remaining);
-
-      if (w == display->active_workspace)
-        need_change_space = TRUE;
-    }
-
-  if (need_change_space)
-    meta_workspace_activate (last_remaining, timestamp);
-
-  /* Should now be safe to free the workspaces */
-  for (l = extras; l != NULL; l = l->next)
-    {
-      MetaWorkspace *w = l->data;
-
-      meta_workspace_remove (w);
-    }
-
-  g_list_free (extras);
-
-  for (i = old_num; i < new_num; i++)
-    meta_workspace_new (display);
-
-  meta_display_queue_workarea_recalc (display);
-
-  for (i = old_num; i < new_num; i++)
-    g_signal_emit (display, display_signals[WORKSPACE_ADDED], 0, i);
-
-  g_object_notify (G_OBJECT (display), "n-workspaces");
-}
-
-void
-meta_display_update_workspace_layout (MetaDisplay      *display,
-                                      MetaDisplayCorner starting_corner,
-                                      gboolean          vertical_layout,
-                                      int               n_rows,
-                                      int               n_columns)
-{
-  g_return_if_fail (META_IS_DISPLAY (display));
-  g_return_if_fail (n_rows > 0 || n_columns > 0);
-  g_return_if_fail (n_rows != 0 && n_columns != 0);
-
-  if (display->workspace_layout_overridden)
-    return;
-
-  display->vertical_workspaces = vertical_layout != FALSE;
-  display->starting_corner = starting_corner;
-  display->rows_of_workspaces = n_rows;
-  display->columns_of_workspaces = n_columns;
-
-  meta_verbose ("Workspace layout rows = %d cols = %d orientation = %d starting corner = %u\n",
-                display->rows_of_workspaces,
-                display->columns_of_workspaces,
-                display->vertical_workspaces,
-                display->starting_corner);
-}
-
-/**
- * meta_display_override_workspace_layout:
- * @display: a #MetaDisplay
- * @starting_corner: the corner at which the first workspace is found
- * @vertical_layout: if %TRUE the workspaces are laid out in columns rather than rows
- * @n_rows: number of rows of workspaces, or -1 to determine the number of rows from
- *   @n_columns and the total number of workspaces
- * @n_columns: number of columns of workspaces, or -1 to determine the number of columns from
- *   @n_rows and the total number of workspaces
- *
- * Explicitly set the layout of workspaces. Once this has been called, the contents of the
- * _NET_DESKTOP_LAYOUT property on the root window are completely ignored.
- */
-void
-meta_display_override_workspace_layout (MetaDisplay       *display,
-                                        MetaDisplayCorner  starting_corner,
-                                        gboolean           vertical_layout,
-                                        int                n_rows,
-                                        int                n_columns)
-{
-  meta_display_update_workspace_layout (display,
-                                        starting_corner,
-                                        vertical_layout,
-                                        n_rows,
-                                        n_columns);
-
-  display->workspace_layout_overridden = TRUE;
-}
-
-#ifdef WITH_VERBOSE_MODE
-static const char *
-meta_display_corner_to_string (MetaDisplayCorner corner)
-{
-  switch (corner)
-    {
-    case META_DISPLAY_TOPLEFT:
-      return "TopLeft";
-    case META_DISPLAY_TOPRIGHT:
-      return "TopRight";
-    case META_DISPLAY_BOTTOMLEFT:
-      return "BottomLeft";
-    case META_DISPLAY_BOTTOMRIGHT:
-      return "BottomRight";
-    }
-
-  return "Unknown";
-}
-#endif /* WITH_VERBOSE_MODE */
-
-void
-meta_display_calc_workspace_layout (MetaDisplay         *display,
-                                    int                  num_workspaces,
-                                    int                  current_space,
-                                    MetaWorkspaceLayout *layout)
-{
-  int rows, cols;
-  int grid_area;
-  int *grid;
-  int i, r, c;
-  int current_row, current_col;
-
-  rows = display->rows_of_workspaces;
-  cols = display->columns_of_workspaces;
-  if (rows <= 0 && cols <= 0)
-    cols = num_workspaces;
-
-  if (rows <= 0)
-    rows = num_workspaces / cols + ((num_workspaces % cols) > 0 ? 1 : 0);
-  if (cols <= 0)
-    cols = num_workspaces / rows + ((num_workspaces % rows) > 0 ? 1 : 0);
-
-  /* paranoia */
-  if (rows < 1)
-    rows = 1;
-  if (cols < 1)
-    cols = 1;
-
-  g_assert (rows != 0 && cols != 0);
-
-  grid_area = rows * cols;
-
-  meta_verbose ("Getting layout rows = %d cols = %d current = %d "
-                "num_spaces = %d vertical = %s corner = %s\n",
-                rows, cols, current_space, num_workspaces,
-                display->vertical_workspaces ? "(true)" : "(false)",
-                meta_display_corner_to_string (display->starting_corner));
-
-  /* ok, we want to setup the distances in the workspace array to go
-   * in each direction. Remember, there are many ways that a workspace
-   * array can be setup.
-   * see http://www.freedesktop.org/standards/wm-spec/1.2/html/x109.html
-   * and look at the _NET_DESKTOP_LAYOUT section for details.
-   * For instance:
-   */
-  /* starting_corner = META_DISPLAY_TOPLEFT
-   *  vertical_workspaces = 0                 vertical_workspaces=1
-   *       1234                                    1357
-   *       5678                                    2468
-   *
-   * starting_corner = META_DISPLAY_TOPRIGHT
-   *  vertical_workspaces = 0                 vertical_workspaces=1
-   *       4321                                    7531
-   *       8765                                    8642
-   *
-   * starting_corner = META_DISPLAY_BOTTOMLEFT
-   *  vertical_workspaces = 0                 vertical_workspaces=1
-   *       5678                                    2468
-   *       1234                                    1357
-   *
-   * starting_corner = META_DISPLAY_BOTTOMRIGHT
-   *  vertical_workspaces = 0                 vertical_workspaces=1
-   *       8765                                    8642
-   *       4321                                    7531
-   *
-   */
-  /* keep in mind that we could have a ragged layout, e.g. the "8"
-   * in the above grids could be missing
-   */
-
-
-  grid = g_new (int, grid_area);
-
-  current_row = -1;
-  current_col = -1;
-  i = 0;
-
-  switch (display->starting_corner)
-    {
-    case META_DISPLAY_TOPLEFT:
-      if (display->vertical_workspaces)
-        {
-          c = 0;
-          while (c < cols)
-            {
-              r = 0;
-              while (r < rows)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  ++r;
-                }
-              ++c;
-            }
-        }
-      else
-        {
-          r = 0;
-          while (r < rows)
-            {
-              c = 0;
-              while (c < cols)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  ++c;
-                }
-              ++r;
-            }
-        }
-      break;
-    case META_DISPLAY_TOPRIGHT:
-      if (display->vertical_workspaces)
-        {
-          c = cols - 1;
-          while (c >= 0)
-            {
-              r = 0;
-              while (r < rows)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  ++r;
-                }
-              --c;
-            }
-        }
-      else
-        {
-          r = 0;
-          while (r < rows)
-            {
-              c = cols - 1;
-              while (c >= 0)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  --c;
-                }
-              ++r;
-            }
-        }
-      break;
-    case META_DISPLAY_BOTTOMLEFT:
-      if (display->vertical_workspaces)
-        {
-          c = 0;
-          while (c < cols)
-            {
-              r = rows - 1;
-              while (r >= 0)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  --r;
-                }
-              ++c;
-            }
-        }
-      else
-        {
-          r = rows - 1;
-          while (r >= 0)
-            {
-              c = 0;
-              while (c < cols)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  ++c;
-                }
-              --r;
-            }
-        }
-      break;
-    case META_DISPLAY_BOTTOMRIGHT:
-      if (display->vertical_workspaces)
-        {
-          c = cols - 1;
-          while (c >= 0)
-            {
-              r = rows - 1;
-              while (r >= 0)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  --r;
-                }
-              --c;
-            }
-        }
-      else
-        {
-          r = rows - 1;
-          while (r >= 0)
-            {
-              c = cols - 1;
-              while (c >= 0)
-                {
-                  grid[r*cols+c] = i;
-                  ++i;
-                  --c;
-                }
-              --r;
-            }
-        }
-      break;
-    }
-
-  if (i != grid_area)
-    meta_bug ("did not fill in the whole workspace grid in %s (%d filled)\n",
-              G_STRFUNC, i);
-
-  current_row = 0;
-  current_col = 0;
-  r = 0;
-  while (r < rows)
-    {
-      c = 0;
-      while (c < cols)
-        {
-          if (grid[r*cols+c] == current_space)
-            {
-              current_row = r;
-              current_col = c;
-            }
-          else if (grid[r*cols+c] >= num_workspaces)
-            {
-              /* flag nonexistent spaces with -1 */
-              grid[r*cols+c] = -1;
-            }
-          ++c;
-        }
-      ++r;
-    }
-
-  layout->rows = rows;
-  layout->cols = cols;
-  layout->grid = grid;
-  layout->grid_area = grid_area;
-  layout->current_row = current_row;
-  layout->current_col = current_col;
-
-#ifdef WITH_VERBOSE_MODE
-  if (meta_is_verbose ())
-    {
-      r = 0;
-      while (r < layout->rows)
-        {
-          meta_verbose (" ");
-          meta_push_no_msg_prefix ();
-          c = 0;
-          while (c < layout->cols)
-            {
-              if (r == layout->current_row &&
-                  c == layout->current_col)
-                meta_verbose ("*%2d ", layout->grid[r*layout->cols+c]);
-              else
-                meta_verbose ("%3d ", layout->grid[r*layout->cols+c]);
-              ++c;
-            }
-          meta_verbose ("\n");
-          meta_pop_no_msg_prefix ();
-          ++r;
-        }
-    }
-#endif /* WITH_VERBOSE_MODE */
-}
-
-void
-meta_display_free_workspace_layout (MetaWorkspaceLayout *layout)
-{
-  g_free (layout->grid);
-}
-
-static void
-queue_windows_showing (MetaDisplay *display)
-{
-  GSList *windows, *l;
-
-  /* Must operate on all windows on display instead of just on the
-   * active_workspace's window list, because the active_workspace's
-   * window list may not contain the on_all_workspace windows.
-   */
-  windows = meta_display_list_windows (display, META_LIST_DEFAULT);
-
-  for (l = windows; l != NULL; l = l->next)
-    {
-      MetaWindow *w = l->data;
-      meta_window_queue (w, META_QUEUE_CALC_SHOWING);
-    }
-
-  g_slist_free (windows);
-}
-
-void
-meta_display_minimize_all_on_active_workspace_except (MetaDisplay *display,
-                                                      MetaWindow  *keep)
-{
-  GList *l;
-
-  for (l = display->active_workspace->windows; l != NULL; l = l->next)
-    {
-      MetaWindow *w = l->data;
-
-      if (w->has_minimize_func && w != keep)
-	meta_window_minimize (w);
-    }
-}
-
-void
-meta_display_show_desktop (MetaDisplay *display,
-                           guint32      timestamp)
-{
-  GList *l;
-
-  if (display->active_workspace->showing_desktop)
-    return;
-
-  display->active_workspace->showing_desktop = TRUE;
-
-  queue_windows_showing (display);
-
-  /* Focus the most recently used META_WINDOW_DESKTOP window, if there is one;
-   * see bug 159257.
-   */
-  for (l = display->active_workspace->mru_list; l != NULL; l = l->next)
-    {
-      MetaWindow *w = l->data;
-
-      if (w->type == META_WINDOW_DESKTOP)
-        {
-          meta_window_focus (w, timestamp);
-          break;
-        }
-    }
-
-  g_signal_emit (display, display_signals[SHOWING_DESKTOP_CHANGED], 0, NULL);
-}
-
-void
-meta_display_unshow_desktop (MetaDisplay *display)
-{
-  if (!display->active_workspace->showing_desktop)
-    return;
-
-  display->active_workspace->showing_desktop = FALSE;
-
-  queue_windows_showing (display);
-
-  g_signal_emit (display, display_signals[SHOWING_DESKTOP_CHANGED], 0, NULL);
-}
-
-/**
- * meta_display_get_workspaces: (skip)
- * @display: a #MetaDisplay
- *
- * Returns: (transfer none) (element-type Meta.Workspace): The workspaces for @display
- */
-GList *
-meta_display_get_workspaces (MetaDisplay *display)
-{
-  return display->workspaces;
-}
-
-int
-meta_display_get_active_workspace_index (MetaDisplay *display)
-{
-  MetaWorkspace *active = display->active_workspace;
-
-  if (!active)
-    return -1;
-
-  return meta_workspace_index (active);
-}
-
-/**
- * meta_display_get_active_workspace:
- * @display: A #MetaDisplay
- *
- * Returns: (transfer none): The current workspace
- */
-MetaWorkspace *
-meta_display_get_active_workspace (MetaDisplay *display)
-{
-  return display->active_workspace;
-}
-
-void
 meta_display_focus_default_window (MetaDisplay *display,
                                    guint32      timestamp)
 {
-  meta_workspace_focus_default_window (display->active_workspace,
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
+
+  meta_workspace_focus_default_window (workspace_manager->active_workspace,
                                        NULL,
                                        timestamp);
-}
-
-void
-meta_display_workspace_switched (MetaDisplay        *display,
-                                 int                 from,
-                                 int                 to,
-                                 MetaMotionDirection direction)
-{
-  g_signal_emit (display, display_signals[WORKSPACE_SWITCHED], 0,
-                 from, to, direction);
 }
 
 MetaWorkspaceManager *

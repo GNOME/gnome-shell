@@ -23,6 +23,7 @@
 #include "edge-resistance.h"
 #include "boxes-private.h"
 #include "display-private.h"
+#include "meta-workspace-manager-private.h"
 #include "workspace-private.h"
 
 /* A simple macro for whether a given window's edges are potentially
@@ -999,6 +1000,7 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
    * in the layer that we are working on
    */
   GSList *rem_windows, *rem_win_stacking;
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
 
   g_assert (display->grab_window != NULL);
   meta_topic (META_DEBUG_WINDOW_OPS,
@@ -1010,7 +1012,7 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
    */
   stacked_windows =
     meta_stack_list_windows (display->stack,
-                             display->active_workspace);
+                             workspace_manager->active_workspace);
 
   /*
    * 2nd: we need to separate that stacked list into a list of windows that
@@ -1172,8 +1174,8 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
    */
   cache_edges (display,
                edges,
-               display->active_workspace->monitor_edges,
-               display->active_workspace->screen_edges);
+               workspace_manager->active_workspace->monitor_edges,
+               workspace_manager->active_workspace->screen_edges);
   g_list_free (edges);
 
   /*

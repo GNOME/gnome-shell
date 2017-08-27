@@ -36,6 +36,7 @@
 #include "backends/meta-logical-monitor.h"
 #include "x11/meta-x11-display-private.h"
 #include <meta/workspace.h>
+#include "meta-workspace-manager-private.h"
 #include "workspace-private.h"
 #include "boxes-private.h"
 #include <meta/meta-x11-errors.h>
@@ -222,17 +223,20 @@ meta_workspace_init (MetaWorkspace *workspace)
 {
 }
 
-MetaWorkspace*
-meta_workspace_new (MetaDisplay *display)
+MetaWorkspace *
+meta_workspace_new (MetaWorkspaceManager *workspace_manager)
 {
+  MetaDisplay *display = workspace_manager->display;
   MetaWorkspace *workspace;
   GSList *windows, *l;
 
   workspace = g_object_new (META_TYPE_WORKSPACE, NULL);
 
   workspace->display = display;
-  workspace->display->workspaces =
-    g_list_append (workspace->display->workspaces, workspace);
+  workspace->manager = workspace_manager;
+
+  workspace_manager->workspaces =
+    g_list_append (workspace_manager->workspaces, workspace);
   workspace->windows = NULL;
   workspace->mru_list = NULL;
 
@@ -319,12 +323,14 @@ assert_workspace_empty (MetaWorkspace *workspace)
 void
 meta_workspace_remove (MetaWorkspace *workspace)
 {
-  g_return_if_fail (workspace != workspace->display->active_workspace);
+  MetaWorkspaceManager *manager = workspace->display->workspace_manager;
+
+  g_return_if_fail (workspace != manager->active_workspace);
 
   assert_workspace_empty (workspace);
 
-  workspace->display->workspaces =
-    g_list_remove (workspace->display->workspaces, workspace);
+  manager->workspaces =
+    g_list_remove (manager->workspaces, workspace);
 
   meta_workspace_clear_logical_monitor_data (workspace);
 
@@ -439,14 +445,14 @@ workspace_switch_sound(MetaWorkspace *from,
   int i, nw, x, y, fi, ti;
   const char *e;
 
-  nw = meta_display_get_n_workspaces(from->display);
+  nw = meta_workspace_manager_get_n_workspaces (from->manager);
   fi = meta_workspace_index(from);
   ti = meta_workspace_index(to);
 
-  meta_display_calc_workspace_layout(from->display,
-                                     nw,
-                                     fi,
-                                     &layout);
+  meta_workspace_manager_calc_workspace_layout (from->manager,
+                                                nw,
+                                                fi,
+                                                &layout);
 
   for (i = 0; i < nw; i++)
     if (layout.grid[i] == ti)
@@ -489,7 +495,7 @@ workspace_switch_sound(MetaWorkspace *from,
                   NULL);
 
  finish:
-  meta_display_free_workspace_layout (&layout);
+  meta_workspace_manager_free_workspace_layout (&layout);
 #endif /* HAVE_LIBCANBERRA */
 }
 
@@ -519,7 +525,6 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
 {
   MetaWorkspace  *old;
   MetaWindow     *move_window;
-  MetaDisplay    *display;
   MetaCompositor *comp;
   MetaWorkspaceLayout layout1, layout2;
   gint num_workspaces, current_space, new_space;
@@ -528,22 +533,22 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
   meta_verbose ("Activating workspace %d\n",
                 meta_workspace_index (workspace));
 
-  if (workspace->display->active_workspace == workspace)
+  if (workspace->manager->active_workspace == workspace)
     return;
 
   /* Free any cached pointers to the workspaces's edges from
    * a current resize or move operation */
   meta_display_cleanup_edges (workspace->display);
 
-  if (workspace->display->active_workspace)
-    workspace_switch_sound (workspace->display->active_workspace, workspace);
+  if (workspace->manager->active_workspace)
+    workspace_switch_sound (workspace->manager->active_workspace, workspace);
 
   /* Note that old can be NULL; e.g. when starting up */
-  old = workspace->display->active_workspace;
+  old = workspace->manager->active_workspace;
 
-  workspace->display->active_workspace = workspace;
+  workspace->manager->active_workspace = workspace;
 
-  g_signal_emit_by_name (workspace->display, "active-workspace-changed");
+  g_signal_emit_by_name (workspace->manager, "active-workspace-changed");
 
   if (old == NULL)
     return;
@@ -553,7 +558,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
    * _net_showing_desktop hint
    */
   if (old->showing_desktop != workspace->showing_desktop)
-    g_signal_emit_by_name (workspace->display, "showing-desktop-changed");
+    g_signal_emit_by_name (workspace->manager, "showing-desktop-changed");
 
   move_window = NULL;
   if (meta_grab_op_is_moving (workspace->display->grab_op))
@@ -578,18 +583,17 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
    /*
     * Notify the compositor that the active workspace is changing.
     */
-   display = workspace->display;
-   comp = meta_display_get_compositor (display);
+   comp = meta_display_get_compositor (workspace->display);
    direction = 0;
 
    current_space = meta_workspace_index (old);
    new_space     = meta_workspace_index (workspace);
-   num_workspaces = meta_display_get_n_workspaces (workspace->display);
-   meta_display_calc_workspace_layout (workspace->display, num_workspaces,
-                                       current_space, &layout1);
+   num_workspaces = meta_workspace_manager_get_n_workspaces (workspace->manager);
+   meta_workspace_manager_calc_workspace_layout (workspace->manager, num_workspaces,
+                                                 current_space, &layout1);
 
-   meta_display_calc_workspace_layout (workspace->display, num_workspaces,
-                                       new_space, &layout2);
+   meta_workspace_manager_calc_workspace_layout (workspace->manager, num_workspaces,
+                                                 new_space, &layout2);
 
    if (meta_get_locale_direction () == META_LOCALE_DIRECTION_RTL)
      {
@@ -626,8 +630,8 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
          direction = META_MOTION_UP_LEFT;
      }
 
-   meta_display_free_workspace_layout (&layout1);
-   meta_display_free_workspace_layout (&layout2);
+   meta_workspace_manager_free_workspace_layout (&layout1);
+   meta_workspace_manager_free_workspace_layout (&layout2);
 
    meta_compositor_switch_workspace (comp, old, workspace, direction);
 
@@ -650,7 +654,8 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
       meta_workspace_focus_default_window (workspace, NULL, timestamp);
     }
 
-   meta_display_workspace_switched (display, current_space, new_space, direction);
+   meta_workspace_manager_workspace_switched (workspace->manager, current_space,
+                                              new_space, direction);
 }
 
 void
@@ -665,7 +670,7 @@ meta_workspace_index (MetaWorkspace *workspace)
 {
   int ret;
 
-  ret = g_list_index (workspace->display->workspaces, workspace);
+  ret = g_list_index (workspace->manager->workspaces, workspace);
 
   if (ret < 0)
     meta_bug ("Workspace does not exist to index!\n");
@@ -738,7 +743,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 
   /* If we are in the middle of a resize or move operation, we
    * might have cached pointers to the workspace's edges */
-  if (workspace == workspace->display->active_workspace)
+  if (workspace == workspace->manager->active_workspace)
     meta_display_cleanup_edges (workspace->display);
 
   meta_workspace_clear_logical_monitor_data (workspace);
@@ -1204,9 +1209,9 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   gboolean ltr;
 
   current_space = meta_workspace_index (workspace);
-  num_workspaces = meta_display_get_n_workspaces (workspace->display);
-  meta_display_calc_workspace_layout (workspace->display, num_workspaces,
-                                      current_space, &layout);
+  num_workspaces = meta_workspace_manager_get_n_workspaces (workspace->manager);
+  meta_workspace_manager_calc_workspace_layout (workspace->manager, num_workspaces,
+                                                current_space, &layout);
 
   meta_verbose ("Getting neighbor of %d in direction %s\n",
                 current_space, meta_motion_direction_to_string (direction));
@@ -1251,9 +1256,9 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   meta_verbose ("Neighbor workspace is %d at row %d col %d\n",
                 i, layout.current_row, layout.current_col);
 
-  meta_display_free_workspace_layout (&layout);
+  meta_workspace_manager_free_workspace_layout (&layout);
 
-  return meta_display_get_workspace_by_index (workspace->display, i);
+  return meta_workspace_manager_get_workspace_by_index (workspace->manager, i);
 }
 
 const char*

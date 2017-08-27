@@ -49,6 +49,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "util-private.h"
+#include "meta-workspace-manager-private.h"
 
 #ifndef HOST_NAME_MAX
 /* Solaris headers apparently don't define this so do so manually; #326745 */
@@ -1027,6 +1028,7 @@ reload_net_startup_id (MetaWindow    *window,
                        MetaPropValue *value,
                        gboolean       initial)
 {
+  MetaWorkspaceManager *workspace_manager = window->display->workspace_manager;
   guint32 timestamp = window->net_wm_user_time;
   MetaWorkspace *workspace = NULL;
 
@@ -1049,7 +1051,8 @@ reload_net_startup_id (MetaWindow    *window,
         if (window->initial_timestamp_set)
           timestamp = window->initial_timestamp;
         if (window->initial_workspace_set)
-          workspace = meta_display_get_workspace_by_index (window->display, window->initial_workspace);
+          workspace = meta_workspace_manager_get_workspace_by_index (workspace_manager,
+                                                                     window->initial_workspace);
 
         meta_window_activate_with_workspace (window, timestamp, workspace);
       }

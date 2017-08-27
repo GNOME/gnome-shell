@@ -29,6 +29,7 @@
 
 #include <config.h>
 #include "keybindings-private.h"
+#include "meta-workspace-manager-private.h"
 #include "workspace-private.h"
 #include <meta/compositor.h>
 #include <meta/meta-x11-errors.h>
@@ -2733,8 +2734,9 @@ handle_switch_to_last_workspace (MetaDisplay     *display,
                                  MetaKeyBinding *binding,
                                  gpointer        dummy)
 {
-    gint target = meta_display_get_n_workspaces(display) - 1;
-    MetaWorkspace *workspace = meta_display_get_workspace_by_index (display, target);
+    MetaWorkspaceManager *workspace_manager = display->workspace_manager;
+    gint target = meta_workspace_manager_get_n_workspaces (workspace_manager) - 1;
+    MetaWorkspace *workspace = meta_workspace_manager_get_workspace_by_index (workspace_manager, target);
     meta_workspace_activate (workspace, event->time);
 }
 
@@ -2746,6 +2748,7 @@ handle_switch_to_workspace (MetaDisplay     *display,
                             gpointer         dummy)
 {
   gint which = binding->handler->data;
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
   MetaWorkspace *workspace;
 
   if (which < 0)
@@ -2754,12 +2757,12 @@ handle_switch_to_workspace (MetaDisplay     *display,
        * current workspace.
        */
 
-      workspace = meta_workspace_get_neighbor (display->active_workspace,
+      workspace = meta_workspace_get_neighbor (workspace_manager->active_workspace,
                                                which);
     }
   else
     {
-      workspace = meta_display_get_workspace_by_index (display, which);
+      workspace = meta_workspace_manager_get_workspace_by_index (workspace_manager, which);
     }
 
   if (workspace)
@@ -2982,15 +2985,17 @@ handle_show_desktop (MetaDisplay     *display,
                      MetaKeyBinding  *binding,
                      gpointer         dummy)
 {
-  if (display->active_workspace->showing_desktop)
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
+
+  if (workspace_manager->active_workspace->showing_desktop)
     {
-      meta_display_unshow_desktop (display);
-      meta_workspace_focus_default_window (display->active_workspace,
+      meta_workspace_manager_unshow_desktop (workspace_manager);
+      meta_workspace_focus_default_window (workspace_manager->active_workspace,
                                            NULL,
                                            event->time);
     }
   else
-    meta_display_show_desktop (display, event->time);
+    meta_workspace_manager_show_desktop (workspace_manager, event->time);
 }
 
 static void
@@ -3077,6 +3082,7 @@ do_choose_window (MetaDisplay     *display,
                   MetaKeyBinding  *binding,
                   gboolean         backward)
 {
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
   MetaTabList type = binding->handler->data;
   MetaWindow *window;
 
@@ -3085,7 +3091,7 @@ do_choose_window (MetaDisplay     *display,
 
   window = meta_display_get_tab_next (display,
                                       type,
-                                      display->active_workspace,
+                                      workspace_manager->active_workspace,
                                       NULL,
                                       backward);
 
@@ -3299,14 +3305,15 @@ handle_move_to_workspace_last (MetaDisplay     *display,
                                MetaKeyBinding  *binding,
                                gpointer         dummy)
 {
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
   gint which;
   MetaWorkspace *workspace;
 
   if (window->always_sticky)
     return;
 
-  which = meta_display_get_n_workspaces (display) - 1;
-  workspace = meta_display_get_workspace_by_index (display, which);
+  which = meta_workspace_manager_get_n_workspaces (workspace_manager) - 1;
+  workspace = meta_workspace_manager_get_workspace_by_index (workspace_manager, which);
   meta_window_change_workspace (window, workspace);
 }
 
@@ -3318,6 +3325,7 @@ handle_move_to_workspace  (MetaDisplay     *display,
                            MetaKeyBinding  *binding,
                            gpointer         dummy)
 {
+  MetaWorkspaceManager *workspace_manager = display->workspace_manager;
   gint which = binding->handler->data;
   gboolean flip = (which < 0);
   MetaWorkspace *workspace;
@@ -3336,12 +3344,12 @@ handle_move_to_workspace  (MetaDisplay     *display,
   workspace = NULL;
   if (flip)
     {
-      workspace = meta_workspace_get_neighbor (display->active_workspace,
+      workspace = meta_workspace_get_neighbor (workspace_manager->active_workspace,
                                                which);
     }
   else
     {
-      workspace = meta_display_get_workspace_by_index (display, which);
+      workspace = meta_workspace_manager_get_workspace_by_index (workspace_manager, which);
     }
 
   if (workspace)
