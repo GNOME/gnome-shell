@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: metacity 3.3.4\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-28 06:20+0000\n"
-"PO-Revision-Date: 2017-03-01 10:24+0800\n"
-"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-27 12:05+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.8.12\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -383,13 +383,43 @@ msgid ""
 "screen of the monitor."
 msgstr "當設定為「true」時，新視窗會永遠置於使用中螢幕畫面的正中央。"
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "啟用試驗性功能"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+#, fuzzy
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+"若要啟用實驗性功能，請將功能關鍵字加入列表中。置於該功能是否須要重新啟動混成"
+"器則視給予的功能而定。任何實驗性功能不一定能用、或是可以調整設定。請不要預期"
+"在此設定中加入的任何東西未來都能存在。目前可用的關鍵字有： • “scale-monitor-"
+"framebuffer” — 讓 mutter 預設採用邏輯像素座標空間的配置邏輯螢幕，而縮放螢幕 "
+"framebuffer 則取代視窗內容以管理 HiDPI 螢幕。不須要重新啟動。"
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "從分頁彈出項選擇視窗"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "取消分頁彈出項"
+
+#: data/org.gnome.mutter.gschema.xml.in:151
+msgid "Switch monitor configurations"
+msgstr "切換螢幕組態"
+
+#: data/org.gnome.mutter.gschema.xml.in:156
+msgid "Rotates the built-in monitor configuration"
+msgstr "旋轉切換內建螢幕組態"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -439,10 +469,14 @@ msgstr "切換至 VT 11"
 msgid "Switch to VT 12"
 msgstr "切換至 VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "重新啟用快捷鍵"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "模式切換( 群組 %d)"
@@ -450,30 +484,30 @@ msgstr "模式切換( 群組 %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
-msgstr "切換監視器"
+msgstr "切換螢幕"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "顯示螢幕求助"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "內建顯示"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "不明"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "不明的顯示器"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -481,7 +515,7 @@ msgstr "%s %s"
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -490,30 +524,6 @@ msgstr "在畫面「%2$s」中的第 %1$i 個螢幕中已啟動另一個組合�
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "響鈴事件"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "“%s”沒有回應。"
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "應用程式沒有回應。"
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "您可以選擇稍等一下，或者強制程式立即結束。"
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "強制結束(_F)"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "等待(_W)"
 
 #: src/core/display.c:608
 #, c-format
@@ -556,6 +566,30 @@ msgstr "以巢狀組合器執行"
 msgid "Run as a full display server, rather than nested"
 msgstr "以完全顯示伺服器執行，而非巢狀"
 
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "「%s」沒有回應。"
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "應用程式沒有回應。"
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "您可以選擇稍等一下讓它繼續，或者強制完全退出程式。"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "強制退出(_F)"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "等待(_W)"
+
 #: src/core/mutter.c:39
 #, c-format
 msgid ""
@@ -566,8 +600,8 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
-"版權所有 (C) 2001-%d Havoc Pennington, Red Hat, Inc. 及其它開發者\n"
-"本程式是自由軟體；有關版權的詳情請參考源程式碼。\n"
+"著作權所有 (C) 2001-%d Havoc Pennington, Red Hat, Inc. 及其它開發者\n"
+"本程式是自由軟體；有關著作權的詳情請參考源始程式碼。\n"
 "本程式不負任何擔保責任；亦無對適售性或特定目的適用性所為的默示性擔保。\n"
 
 #: src/core/mutter.c:53
