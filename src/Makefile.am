@@ -293,6 +293,9 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	core/frame.h				\
 	core/meta-gesture-tracker.c		\
 	core/meta-gesture-tracker-private.h	\
+	core/meta-workspace-manager.c		\
+	core/meta-workspace-manager-private.h	\
+	meta/meta-workspace-manager.h		\
 	core/keybindings.c			\
 	core/keybindings-private.h		\
 	core/main-private.h			\
@@ -558,6 +561,7 @@ libmutterinclude_headers =			\
 	meta/meta-window-actor.h		\
 	meta/meta-window-group.h		\
 	meta/meta-window-shape.h		\
+	meta/meta-workspace-manager.h		\
 	meta/meta-x11-display.h			\
 	meta/meta-x11-errors.h			\
 	meta/prefs.h				\

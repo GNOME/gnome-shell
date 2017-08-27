@@ -42,4 +42,6 @@ typedef struct _MetaCursorTracker MetaCursorTracker;
 typedef struct _MetaDnd         MetaDnd;
 typedef struct _MetaSettings    MetaSettings;
 
+typedef struct _MetaWorkspaceManager MetaWorkspaceManager;
+
 #endif

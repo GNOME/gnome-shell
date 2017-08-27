@@ -43,6 +43,7 @@
 #include "keybindings-private.h"
 #include <meta/prefs.h>
 #include "workspace-private.h"
+#include "meta-workspace-manager-private.h"
 #include "bell.h"
 #include <meta/compositor.h>
 #include <meta/compositor-mutter.h>
@@ -731,6 +732,7 @@ meta_display_open (void)
   display->autoraise_timeout_id = 0;
   display->autoraise_window = NULL;
   display->focus_window = NULL;
+  display->workspace_manager = NULL;
   display->x11_display = NULL;
 
   display->current_cursor = -1; /* invalid/unset */
@@ -788,6 +790,8 @@ meta_display_open (void)
 
   display->stack = meta_stack_new (display);
   display->stack_tracker = meta_stack_tracker_new (display);
+
+  display->workspace_manager = meta_workspace_manager_new (display);
 
   /* This is the default layout extracted from default
    * variable values in update_num_workspaces ()
@@ -1045,6 +1049,7 @@ meta_display_close (MetaDisplay *display,
 
   g_clear_object (&display->bell);
   g_clear_object (&display->startup_notification);
+  g_clear_object (&display->workspace_manager);
 
   g_object_unref (display);
   the_display = NULL;
@@ -4382,4 +4387,10 @@ meta_display_workspace_switched (MetaDisplay        *display,
 {
   g_signal_emit (display, display_signals[WORKSPACE_SWITCHED], 0,
                  from, to, direction);
+}
+
+MetaWorkspaceManager *
+meta_display_get_workspace_manager (MetaDisplay *display)
+{
+  return display->workspace_manager;
 }

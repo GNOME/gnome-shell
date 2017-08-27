@@ -245,4 +245,6 @@ void meta_display_override_workspace_layout (MetaDisplay       *display,
                                              int               n_rows,
                                              int               n_columns);
 
+MetaWorkspaceManager *meta_display_get_workspace_manager (MetaDisplay *display);
+
 #endif
