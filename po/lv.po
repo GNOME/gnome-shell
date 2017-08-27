@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: lv\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-28 06:20+0000\n"
-"PO-Revision-Date: 2017-03-18 12:09+0200\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-27 23:49+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
@@ -274,11 +274,6 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Modifikators, kuru lietot paplašinātām loga pārvaldības darbībām"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
-#| msgid ""
-#| "This key will initiate the \"overlay\", which is a combination window "
-#| "overview and application launching system. The default is intended to be "
-#| "the \"Windows key\" on PC hardware. It's expected that this binding "
-#| "either the default or set to the empty string."
 msgid ""
 "This key will initiate the “overlay”, which is a combination window overview "
 "and application launching system. The default is intended to be the “Windows "
@@ -323,10 +318,6 @@ msgid "Workspaces are managed dynamically"
 msgstr "Darbvirsmas tiek pārvaldītas dinamiski"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
-#| msgid ""
-#| "Determines whether workspaces are managed dynamically or whether there's "
-#| "a static number of workspaces (determined by the num-workspaces key in "
-#| "org.gnome.desktop.wm.preferences)."
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
@@ -365,27 +356,20 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj kustēties"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focus will not be changed immediately when entering a window, but "
-#| "only after the pointer stops moving."
 msgid ""
 "If set to true, and the focus mode is either “sloppy” or “mouse” then the "
 "focus will not be changed immediately when entering a window, but only after "
 "the pointer stops moving."
 msgstr ""
-"Ja patiess un fokusēšanas režīms ir vai nu “sloppy” (paviršs) vai “mouse”"
-" (pele), tad fokuss nemainīsies uzreiz pēc ieiešanas logā, bet tikai pēc tam,"
-" kad rādītājs beidzis kustēties."
+"Ja patiess un fokusēšanas režīms ir vai nu “sloppy” (paviršs) vai "
+"“mouse” (pele), tad fokuss nemainīsies uzreiz pēc ieiešanas logā, bet tikai "
+"pēc tam, kad rādītājs beidzis kustēties."
 
 #: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
 msgstr "Velkams malas platums"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
-#| msgid ""
-#| "The amount of total draggable borders. If the theme's visible borders are "
-#| "not enough, invisible borders will be added to meet this value."
 msgid ""
 "The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -416,13 +400,47 @@ msgid ""
 msgstr ""
 "Ja patiess, jaunie logi vienmēr tiks novietoti monitora aktīvā ekrāna vidū."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Ieslēgt eksperimentālās iespējas"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+"Lai ieslēgtu eksperimentālās iespējas, pievienojiet iespējas atslēgvārdu"
+" sarakstam. Vai iespējai būs nepieciešama kompozitora pārstartēšana, būs"
+" atkarīga no dotās iespējas. Jebkura eksperimentāla iespēja var būt"
+" nepieejama vai nekonfigurējama. Negaidiet, ka jebkura no šīm iespējām"
+" nākotnē strādās. Pašlaik pieejamie atslēgvārdi: •"
+" “scale-monitor-framebuffer” — liek mutter pēc noklusējuma izkārtot loģiskos"
+" monitorus loģisko pikseļu koordināšu telpā, kamēr mērogo monitora kadru"
+" buferus, nevis loga saturu, lai pārvaldītu HiDPI monitorus. Pārstartēšana"
+" nav nepieciešama."
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Izvēlēties logu no tabulatora izvēlnes"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Atcelt logu rādīšanu"
+
+#: data/org.gnome.mutter.gschema.xml.in:151
+#| msgid "Switch monitor"
+msgid "Switch monitor configurations"
+msgstr "Pārslēgt monitoru konfigurācijas"
+
+#: data/org.gnome.mutter.gschema.xml.in:156
+msgid "Rotates the built-in monitor configuration"
+msgstr "Pagriež iebūvētā monitora konfigurāciju"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -472,53 +490,53 @@ msgstr "Pārslēgties uz VT 11"
 msgid "Switch to VT 12"
 msgstr "Pārslēgties uz VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Atkal ieslēdz saīsnes"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2151
 #, c-format
-#| msgid "Mode Switch: Mode %d"
 msgid "Mode Switch (Group %d)"
 msgstr "Režīma slēdzis (grupa %d)"
 
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Pārslēgt monitoru"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Rādīt palīdzību uz ekrāna"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Iebūvēts displejs"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Nezināms"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Nezināms displejs"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
-#| msgid ""
-#| "Another compositing manager is already running on screen %i on display "
-#| "\"%s\"."
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
 msgstr "Cits kompozīcijas pārvaldnieks jau darbojas ekrānā %d displejā “%s”."
@@ -527,35 +545,8 @@ msgstr "Cits kompozīcijas pārvaldnieks jau darbojas ekrānā %d displejā “%
 msgid "Bell event"
 msgstr "Zvana notikums"
 
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "“%s” nereaģē."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Lietotne nereaģē."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Var uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to piespiedu "
-"kārtā."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "Aizvērt _piespiedu kārtā"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Gaidīt"
-
 #: src/core/display.c:608
 #, c-format
-#| msgid "Failed to open X Window System display '%s'\n"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Neizdevās atvērt X logu sistēmas displeju “%s”\n"
 
@@ -595,14 +586,34 @@ msgstr "Palaist kā ligzdotu kompozitoru"
 msgid "Run as a full display server, rather than nested"
 msgstr "Palaist kā pilnu attēlošanas serveri, nevis iegultu"
 
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "“%s” nereaģē."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Lietotne nereaģē."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Var uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to piespiedu "
+"kārtā."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "Aizvērt _piespiedu kārtā"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Gaidīt"
+
 #: src/core/mutter.c:39
 #, c-format
-#| msgid ""
-#| "mutter %s\n"
-#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
 "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -631,9 +642,6 @@ msgstr "Darbvieta %d"
 
 #: src/core/screen.c:580
 #, c-format
-#| msgid ""
-#| "Display \"%s\" already has a window manager; try using the --replace "
-#| "option to replace the current window manager."
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
 "replace the current window manager."
@@ -643,7 +651,6 @@ msgstr ""
 
 #: src/core/screen.c:665
 #, c-format
-#| msgid "Screen %d on display '%s' is invalid\n"
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Ekrāna %d displejs “%s“ nav derīgs\n"
 
@@ -657,9 +664,6 @@ msgid "Mode Switch: Mode %d"
 msgstr "Režīma slēdzis: režīms %d"
 
 #: src/x11/session.c:1815
-#| msgid ""
-#| "These windows do not support &quot;save current setup&quot; and will have "
-#| "to be restarted manually next time you log in."
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
