@@ -26,7 +26,7 @@
 
 #include <glib-object.h>
 
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "display-private.h"
 #include "x11/meta-x11-display-private.h"
 #include "startup-notification-private.h"
@@ -584,7 +584,7 @@ sn_error_trap_push (SnDisplay *sn_display,
   MetaDisplay *display;
   display = meta_display_for_x_display (xdisplay);
   if (display != NULL)
-    meta_error_trap_push (display->x11_display);
+    meta_x11_error_trap_push (display->x11_display);
 }
 
 static void
@@ -594,7 +594,7 @@ sn_error_trap_pop (SnDisplay *sn_display,
   MetaDisplay *display;
   display = meta_display_for_x_display (xdisplay);
   if (display != NULL)
-    meta_error_trap_pop (display->x11_display);
+    meta_x11_error_trap_pop (display->x11_display);
 }
 
 static void

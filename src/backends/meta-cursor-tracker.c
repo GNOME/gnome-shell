@@ -33,7 +33,7 @@
 #include <string.h>
 #include <meta/main.h>
 #include <meta/util.h>
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 
 #include <cogl/cogl.h>
 #include <clutter/clutter.h>

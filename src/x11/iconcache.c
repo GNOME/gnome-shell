@@ -24,7 +24,7 @@
 #include "x11/meta-x11-display-private.h"
 #include "iconcache.h"
 
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 
 #include <cairo.h>
 #include <cairo-xlib.h>
@@ -210,7 +210,7 @@ read_rgb_icon (MetaX11Display   *x11_display,
   int mini_w, mini_h;
   gulong *data_as_long;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   type = None;
   data = NULL;
   result = XGetWindowProperty (x11_display->xdisplay,
@@ -219,7 +219,7 @@ read_rgb_icon (MetaX11Display   *x11_display,
 			       0, G_MAXLONG,
 			       False, XA_CARDINAL, &type, &format, &nitems,
 			       &bytes_after, &data);
-  err = meta_error_trap_pop_with_return (x11_display);
+  err = meta_x11_error_trap_pop_with_return (x11_display);
 
   if (err != Success ||
       result != Success)
@@ -340,7 +340,7 @@ try_pixmap_and_mask (MetaX11Display   *x11_display,
   if (src_pixmap == None)
     return FALSE;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
 
   get_pixmap_geometry (x11_display, src_pixmap, &w, &h, &d);
   icon = surface_from_pixmap (xdisplay, src_pixmap, w, h);
@@ -353,7 +353,7 @@ try_pixmap_and_mask (MetaX11Display   *x11_display,
         mask = surface_from_pixmap (xdisplay, src_mask, w, h);
     }
 
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   if (icon && mask)
     {
@@ -404,7 +404,7 @@ get_kwm_win_icon (MetaX11Display *x11_display,
   *pixmap = None;
   *mask = None;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   icons = NULL;
   result = XGetWindowProperty (x11_display->xdisplay, xwindow,
                                x11_display->atom__KWM_WIN_ICON,
@@ -415,7 +415,7 @@ get_kwm_win_icon (MetaX11Display *x11_display,
 			       &bytes_after, &data);
   icons = (Pixmap *)data;
 
-  err = meta_error_trap_pop_with_return (x11_display);
+  err = meta_x11_error_trap_pop_with_return (x11_display);
   if (err != Success ||
       result != Success)
     return;

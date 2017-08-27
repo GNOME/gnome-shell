@@ -26,7 +26,7 @@
 
 #include "meta-window-wayland.h"
 
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include <errno.h>
 #include <string.h> /* for strerror () */
 #include "window-private.h"
@@ -614,7 +614,7 @@ meta_window_wayland_new (MetaDisplay        *display,
    * X requests (passing a window xid of None) until we thoroughly audit all
    * the code to make sure it knows about non X based clients...
    */
-  meta_error_trap_push (display->x11_display); /* Push a trap over all of window
+  meta_x11_error_trap_push (display->x11_display); /* Push a trap over all of window
                                                 * creation, to reduce XSync() calls
                                                 */
 
@@ -627,7 +627,7 @@ meta_window_wayland_new (MetaDisplay        *display,
                                     &attrs);
   window->can_ping = TRUE;
 
-  meta_error_trap_pop (display->x11_display); /* pop the XSync()-reducing trap */
+  meta_x11_error_trap_pop (display->x11_display); /* pop the XSync()-reducing trap */
 
   return window;
 }

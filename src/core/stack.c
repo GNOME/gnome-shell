@@ -28,7 +28,7 @@
 #include <config.h>
 #include "stack.h"
 #include "window-private.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "frame.h"
 #include <meta/group.h>
 #include <meta/prefs.h>

@@ -47,7 +47,7 @@
 #include <meta/main.h>
 #include "util-private.h"
 #include "display-private.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "ui.h"
 #include <meta/prefs.h>
 #include <meta/compositor.h>

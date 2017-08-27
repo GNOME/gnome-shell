@@ -55,7 +55,7 @@
 #include <clutter/x11/clutter-x11.h>
 
 #include "core.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include <meta/window.h>
 #include "compositor-private.h"
 #include <meta/compositor-mutter.h>
@@ -467,11 +467,11 @@ redirect_windows (MetaX11Display *x11_display)
    */
   while (TRUE)
     {
-      meta_error_trap_push (x11_display);
+      meta_x11_error_trap_push (x11_display);
       XCompositeRedirectSubwindows (xdisplay, xroot, CompositeRedirectManual);
       XSync (xdisplay, FALSE);
 
-      if (!meta_error_trap_pop_with_return (x11_display))
+      if (!meta_x11_error_trap_pop_with_return (x11_display))
         break;
 
       if (n_retries == max_retries)
@@ -663,12 +663,12 @@ meta_compositor_add_window (MetaCompositor    *compositor,
 {
   MetaDisplay *display = compositor->display;
 
-  meta_error_trap_push (display->x11_display);
+  meta_x11_error_trap_push (display->x11_display);
 
   meta_window_actor_new (window);
   sync_actor_stacking (compositor);
 
-  meta_error_trap_pop (display->x11_display);
+  meta_x11_error_trap_pop (display->x11_display);
 }
 
 void

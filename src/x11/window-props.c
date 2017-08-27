@@ -41,7 +41,7 @@
 #include "window-x11.h"
 #include "window-x11-private.h"
 #include "x11/meta-x11-display-private.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "xprops.h"
 #include "frame.h"
 #include <meta/group.h>
@@ -576,11 +576,11 @@ set_title_text (MetaWindow  *window,
   /* Bug 330671 -- Don't forget to clear _NET_WM_VISIBLE_(ICON_)NAME */
   if (!modified && previous_was_modified)
     {
-      meta_error_trap_push (window->display->x11_display);
+      meta_x11_error_trap_push (window->display->x11_display);
       XDeleteProperty (window->display->x11_display->xdisplay,
                        window->xwindow,
                        atom);
-      meta_error_trap_pop (window->display->x11_display);
+      meta_x11_error_trap_pop (window->display->x11_display);
     }
 
   return modified;

@@ -25,7 +25,7 @@
  */
 
 #include <config.h>
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <gdk/gdkx.h>
@@ -44,19 +44,19 @@
  */
 
 void
-meta_error_trap_push (MetaX11Display *x11_display)
+meta_x11_error_trap_push (MetaX11Display *x11_display)
 {
   gdk_x11_display_error_trap_push (x11_display->gdk_display);
 }
 
 void
-meta_error_trap_pop (MetaX11Display *x11_display)
+meta_x11_error_trap_pop (MetaX11Display *x11_display)
 {
   gdk_x11_display_error_trap_pop_ignored (x11_display->gdk_display);
 }
 
 int
-meta_error_trap_pop_with_return (MetaX11Display *x11_display)
+meta_x11_error_trap_pop_with_return (MetaX11Display *x11_display)
 {
   return gdk_x11_display_error_trap_pop (x11_display->gdk_display);
 }

@@ -38,7 +38,7 @@
 #include <meta/workspace.h>
 #include "workspace-private.h"
 #include "boxes-private.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include <meta/prefs.h>
 
 #include <meta/compositor.h>

@@ -35,7 +35,7 @@
 #include <gudev/gudev.h>
 #endif
 
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "backends/meta-logical-monitor.h"
 
 typedef struct _MetaInputSettingsX11Private
@@ -63,9 +63,9 @@ device_free_xdevice (gpointer user_data)
   Display *xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
   XDevice *xdev = user_data;
 
-  meta_error_trap_push (display->x11_display);
+  meta_x11_error_trap_push (display->x11_display);
   XCloseDevice (xdisplay, xdev);
-  meta_error_trap_pop (display->x11_display);
+  meta_x11_error_trap_pop (display->x11_display);
 }
 
 static XDevice *
@@ -81,9 +81,9 @@ device_ensure_xdevice (ClutterInputDevice *device)
   if (xdev)
     return xdev;
 
-  meta_error_trap_push (display->x11_display);
+  meta_x11_error_trap_push (display->x11_display);
   xdev = XOpenDevice (xdisplay, device_id);
-  meta_error_trap_pop (display->x11_display);
+  meta_x11_error_trap_pop (display->x11_display);
 
   if (xdev)
     {
@@ -586,7 +586,7 @@ meta_input_settings_x11_set_tablet_mapping (MetaInputSettings     *settings,
     return;
 
   /* Grab the puke bucket! */
-  meta_error_trap_push (display->x11_display);
+  meta_x11_error_trap_push (display->x11_display);
   xdev = device_ensure_xdevice (device);
   if (xdev)
     {
@@ -595,7 +595,7 @@ meta_input_settings_x11_set_tablet_mapping (MetaInputSettings     *settings,
                       Absolute : Relative);
     }
 
-  if (meta_error_trap_pop_with_return (display->x11_display))
+  if (meta_x11_error_trap_pop_with_return (display->x11_display))
     {
       g_warning ("Could not set tablet mapping for %s",
                  clutter_input_device_get_device_name (device));
@@ -782,7 +782,6 @@ meta_input_settings_x11_set_stylus_button_map (MetaInputSettings          *setti
     return;
 
   /* Grab the puke bucket! */
-  meta_error_trap_push (display->x11_display);
   xdev = device_ensure_xdevice (device);
   if (xdev)
     {
@@ -800,7 +799,7 @@ meta_input_settings_x11_set_stylus_button_map (MetaInputSettings          *setti
       XSetDeviceButtonMapping (xdisplay, xdev, map, G_N_ELEMENTS (map));
     }
 
-  if (meta_error_trap_pop_with_return (display->x11_display))
+  if (meta_x11_error_trap_pop_with_return (display->x11_display))
     {
       g_warning ("Could not set stylus button map for %s",
                  clutter_input_device_get_device_name (device));

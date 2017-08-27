@@ -84,7 +84,7 @@ from The Open Group.
 #include <stdlib.h>
 
 #include "xprops.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "util-private.h"
 #include "ui.h"
 #include "mutter-Xatomtype.h"
@@ -126,11 +126,11 @@ validate_or_free_results (GetPropertyResults *results,
       (!must_have_items || results->n_items > 0))
     return TRUE;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   type_name = XGetAtomName (x11_display->xdisplay, results->type);
   expected_name = XGetAtomName (x11_display->xdisplay, expected_type);
   prop_name = XGetAtomName (x11_display->xdisplay, results->xatom);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   w = meta_x11_display_lookup_x_window (x11_display, results->xwindow);
 
@@ -464,9 +464,9 @@ utf8_list_from_results (GetPropertyResults *results,
         {
           char *name;
 
-          meta_error_trap_push (results->x11_display);
+          meta_x11_error_trap_push (results->x11_display);
           name = XGetAtomName (results->x11_display->xdisplay, results->xatom);
-          meta_error_trap_pop (results->x11_display);
+          meta_x11_error_trap_pop (results->x11_display);
           meta_warning ("Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n",
                         name, results->xwindow, i);
           meta_XFree (name);
@@ -518,12 +518,12 @@ meta_prop_set_utf8_string_hint (MetaX11Display *x11_display,
                                 Atom           atom,
                                 const char    *val)
 {
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    xwindow, atom,
                    x11_display->atom_UTF8_STRING,
                    8, PropModeReplace, (guchar*) val, strlen (val));
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 }
 
 static gboolean

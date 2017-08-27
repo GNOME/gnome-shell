@@ -57,8 +57,8 @@
 #include "core/frame.h"
 #include "core/util-private.h"
 #include "core/workspace-private.h"
-#include "meta/errors.h"
 #include "meta/main.h"
+#include "meta/meta-x11-errors.h"
 
 #include "x11/events.h"
 #include "x11/group-props.h"
@@ -187,9 +187,9 @@ meta_x11_display_dispose (GObject *object)
     {
       unset_wm_check_hint (x11_display);
 
-      meta_error_trap_push (x11_display);
+      meta_x11_error_trap_push (x11_display);
       XSelectInput (x11_display->xdisplay, x11_display->xroot, 0);
-      if (meta_error_trap_pop_with_return (x11_display) != Success)
+      if (meta_x11_error_trap_pop_with_return (x11_display) != Success)
         meta_warning ("Could not release screen %d on display \"%s\"\n",
                       DefaultScreen (x11_display->xdisplay),
                       x11_display->name);
@@ -519,13 +519,13 @@ set_desktop_geometry_hint (MetaX11Display *x11_display)
 
   meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %lu, %lu\n", data[0], data[1]);
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_DESKTOP_GEOMETRY,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 }
 
 static void
@@ -544,13 +544,13 @@ set_desktop_viewport_hint (MetaX11Display *x11_display)
 
   meta_verbose ("Setting _NET_DESKTOP_VIEWPORT to 0, 0\n");
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_DESKTOP_VIEWPORT,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 2);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 }
 
 static int
@@ -651,10 +651,10 @@ take_manager_selection (MetaX11Display *x11_display,
       if (should_replace)
         {
           /* We want to find out when the current selection owner dies */
-          meta_error_trap_push (x11_display);
+          meta_x11_error_trap_push (x11_display);
           attrs.event_mask = StructureNotifyMask;
           XChangeWindowAttributes (x11_display->xdisplay, current_owner, CWEventMask, &attrs);
-          if (meta_error_trap_pop_with_return (x11_display) != Success)
+          if (meta_x11_error_trap_pop_with_return (x11_display) != Success)
             current_owner = None; /* don't wait for it to die later on */
         }
       else
@@ -811,13 +811,13 @@ set_active_workspace_hint (MetaDisplay    *display,
 
   meta_verbose ("Setting _NET_CURRENT_DESKTOP to %lu\n", data[0]);
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_CURRENT_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 }
 
 static void
@@ -835,13 +835,13 @@ set_number_of_spaces_hint (MetaDisplay *display,
 
   meta_verbose ("Setting _NET_NUMBER_OF_DESKTOPS to %lu\n", data[0]);
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_NUMBER_OF_DESKTOPS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 }
 
 static void
@@ -852,13 +852,13 @@ set_showing_desktop_hint (MetaDisplay    *display,
 
   data[0] = display->active_workspace->showing_desktop ? 1 : 0;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_SHOWING_DESKTOP,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 }
 
 static void
@@ -887,14 +887,14 @@ set_workspace_names (MetaX11Display *x11_display)
       ++i;
     }
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_DESKTOP_NAMES,
                    x11_display->atom_UTF8_STRING,
                    8, PropModeReplace,
                    (unsigned char *)flattened->str, flattened->len);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   g_string_free (flattened, TRUE);
 }
@@ -925,13 +925,13 @@ set_work_area_hint (MetaDisplay    *display,
       tmp += 4;
     }
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_WORKAREA,
                    XA_CARDINAL, 32, PropModeReplace,
                    (guchar*) data, num_workspaces*4);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   g_free (data);
 }
@@ -1751,13 +1751,13 @@ meta_x11_display_update_active_window_hint (MetaX11Display *x11_display)
   else
     data[0] = None;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay,
                    x11_display->xroot,
                    x11_display->atom__NET_ACTIVE_WINDOW,
                    XA_WINDOW,
                    32, PropModeReplace, (guchar*) data, 1);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 }
 
 static void
@@ -1771,7 +1771,7 @@ request_xserver_input_focus_change (MetaX11Display *x11_display,
   if (meta_display_timestamp_too_old (x11_display->display, &timestamp))
     return;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
 
   /* In order for mutter to know that the focus request succeeded, we track
    * the serial of the "focus request" we made, but if we take the serial
@@ -1804,7 +1804,7 @@ request_xserver_input_focus_change (MetaX11Display *x11_display,
                                     serial,
                                     TRUE);
 
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   x11_display->display->last_focus_time = timestamp;
 

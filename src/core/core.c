@@ -26,7 +26,7 @@
 #include "frame.h"
 #include "workspace-private.h"
 #include <meta/prefs.h>
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "util-private.h"
 
 #include "x11/meta-x11-display-private.h"

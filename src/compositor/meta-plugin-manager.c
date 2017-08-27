@@ -23,7 +23,7 @@
 #include "compositor-private.h"
 #include "meta-plugin-manager.h"
 #include <meta/prefs.h>
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include <meta/workspace.h>
 #include "meta-module.h"
 #include "window-private.h"

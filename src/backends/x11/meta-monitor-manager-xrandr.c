@@ -39,7 +39,7 @@
 
 #include "meta-backend-x11.h"
 #include <meta/main.h>
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "backends/meta-crtc.h"
 #include "backends/meta-monitor-config-manager.h"
 #include "backends/meta-logical-monitor.h"

@@ -39,7 +39,7 @@
 #include "frame.h"
 #include "display-private.h"
 #include "stack-tracker.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include <meta/util.h>
 
 #include <meta/compositor.h>
@@ -1001,7 +1001,7 @@ meta_stack_tracker_lower_below (MetaStackTracker *tracker,
         {
           serial = XNextRequest (x11_display->xdisplay);
 
-          meta_error_trap_push (x11_display);
+          meta_x11_error_trap_push (x11_display);
 
           changes.stack_mode = changes.sibling ? Below : Above;
 
@@ -1010,7 +1010,7 @@ meta_stack_tracker_lower_below (MetaStackTracker *tracker,
                             (changes.sibling ? CWSibling : 0) | CWStackMode,
                             &changes);
 
-          meta_error_trap_pop (x11_display);
+          meta_x11_error_trap_pop (x11_display);
         }
     }
 
@@ -1036,7 +1036,7 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
         {
           serial = XNextRequest (x11_display->xdisplay);
 
-          meta_error_trap_push (x11_display);
+          meta_x11_error_trap_push (x11_display);
 
           changes.stack_mode = changes.sibling ? Above : Below;
 
@@ -1045,7 +1045,7 @@ meta_stack_tracker_raise_above (MetaStackTracker *tracker,
                             (changes.sibling ? CWSibling : 0) | CWStackMode,
                             &changes);
 
-          meta_error_trap_pop (x11_display);
+          meta_x11_error_trap_pop (x11_display);
         }
     }
 

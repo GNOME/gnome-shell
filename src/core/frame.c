@@ -24,7 +24,7 @@
 #include <config.h>
 #include "frame.h"
 #include "bell.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "keybindings-private.h"
 #include "backends/x11/meta-backend-x11.h"
 #include "x11/meta-x11-display-private.h"
@@ -87,7 +87,7 @@ meta_window_ensure_frame (MetaWindow *window)
 
   meta_x11_display_register_x_window (x11_display, &frame->xwindow, window);
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   if (window->mapped)
     {
       window->mapped = FALSE; /* the reparent will unmap the window,
@@ -107,7 +107,7 @@ meta_window_ensure_frame (MetaWindow *window)
                    frame->child_x,
                    frame->child_y);
   /* FIXME handle this error */
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   /* stick frame to the window */
   window->frame = frame;
@@ -174,7 +174,7 @@ meta_window_destroy_frame (MetaWindow *window)
   /* Unparent the client window; it may be destroyed,
    * thus the error trap.
    */
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   if (window->mapped)
     {
       window->mapped = FALSE; /* Keep track of unmapping it, so we
@@ -197,7 +197,7 @@ meta_window_destroy_frame (MetaWindow *window)
                     */
                    window->frame->rect.x + borders.invisible.left,
                    window->frame->rect.y + borders.invisible.top);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   meta_ui_frame_unmanage (frame->ui_frame);
 

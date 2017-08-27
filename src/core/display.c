@@ -39,7 +39,7 @@
 #include "window-private.h"
 #include "boxes-private.h"
 #include "frame.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "keybindings-private.h"
 #include <meta/prefs.h>
 #include "workspace-private.h"

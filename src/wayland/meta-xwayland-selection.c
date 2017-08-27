@@ -34,7 +34,7 @@
 #include <X11/Xatom.h>
 #include <X11/extensions/Xfixes.h>
 
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "meta-xwayland.h"
 #include "meta-xwayland-private.h"
 #include "meta-xwayland-selection-private.h"
@@ -654,10 +654,10 @@ wayland_selection_data_free (WaylandSelectionData *data)
   /* Do *not* change the event mask on the root window, bugger! */
   if (!data->window && data->request_event.requestor != x11_display->xroot)
     {
-      meta_error_trap_push (x11_display);
+      meta_x11_error_trap_push (x11_display);
       XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
                     data->request_event.requestor, NoEventMask);
-      meta_error_trap_pop (x11_display);
+      meta_x11_error_trap_pop (x11_display);
     }
 
   g_cancellable_cancel (data->cancellable);

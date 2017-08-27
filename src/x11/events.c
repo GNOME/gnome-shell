@@ -28,7 +28,7 @@
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/shape.h>
 
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "meta/meta-backend.h"
 #include "bell.h"
 #include "display-private.h"
@@ -537,10 +537,10 @@ meta_spew_core_event (MetaX11Display *x11_display,
 
         name = "PropertyNotify";
 
-        meta_error_trap_push (x11_display);
+        meta_x11_error_trap_push (x11_display);
         str = XGetAtomName (x11_display->xdisplay,
                             event->xproperty.atom);
-        meta_error_trap_pop (x11_display);
+        meta_x11_error_trap_pop (x11_display);
 
         if (event->xproperty.state == PropertyNewValue)
           state = "PropertyNewValue";
@@ -571,10 +571,10 @@ meta_spew_core_event (MetaX11Display *x11_display,
       {
         char *str;
         name = "ClientMessage";
-        meta_error_trap_push (x11_display);
+        meta_x11_error_trap_push (x11_display);
         str = XGetAtomName (x11_display->xdisplay,
                             event->xclient.message_type);
-        meta_error_trap_pop (x11_display);
+        meta_x11_error_trap_pop (x11_display);
         extra = g_strdup_printf ("type: %s format: %d\n",
                                  str ? str : "(unknown atom)",
                                  event->xclient.format);
@@ -978,12 +978,12 @@ process_request_frame_extents (MetaX11Display *x11_display,
               "to top = %lu, left = %lu, bottom = %lu, right = %lu\n",
               xwindow, data[0], data[1], data[2], data[3]);
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   XChangeProperty (x11_display->xdisplay, xwindow,
                    x11_display->atom__NET_FRAME_EXTENTS,
                    XA_CARDINAL,
                    32, PropModeReplace, (guchar*) data, 4);
-  meta_error_trap_pop (x11_display);
+  meta_x11_error_trap_pop (x11_display);
 
   meta_XFree (hints);
 }
@@ -1004,7 +1004,7 @@ convert_property (MetaX11Display *x11_display,
   conversion_targets[2] = x11_display->atom_TIMESTAMP;
   conversion_targets[3] = x11_display->atom_VERSION;
 
-  meta_error_trap_push (x11_display);
+  meta_x11_error_trap_push (x11_display);
   if (target == x11_display->atom_TARGETS)
     XChangeProperty (x11_display->xdisplay, w, property,
 		     XA_ATOM, 32, PropModeReplace,
@@ -1019,11 +1019,11 @@ convert_property (MetaX11Display *x11_display,
 		     (unsigned char *)icccm_version, 2);
   else
     {
-      meta_error_trap_pop_with_return (x11_display);
+      meta_x11_error_trap_pop_with_return (x11_display);
       return FALSE;
     }
 
-  if (meta_error_trap_pop_with_return (x11_display) != Success)
+  if (meta_x11_error_trap_pop_with_return (x11_display) != Success)
     return FALSE;
 
   /* Be sure the PropertyNotify has arrived so we
@@ -1048,10 +1048,10 @@ process_selection_request (MetaX11Display *x11_display,
     {
       char *str;
 
-      meta_error_trap_push (x11_display);
+      meta_x11_error_trap_push (x11_display);
       str = XGetAtomName (x11_display->xdisplay,
                           event->xselectionrequest.selection);
-      meta_error_trap_pop (x11_display);
+      meta_x11_error_trap_pop (x11_display);
 
       meta_verbose ("Selection request with selection %s window 0x%lx not a WM_Sn selection we recognize\n",
                     str ? str : "(bad atom)", event->xselectionrequest.owner);
@@ -1078,18 +1078,18 @@ process_selection_request (MetaX11Display *x11_display,
           unsigned long num, rest;
           unsigned char *data;
 
-          meta_error_trap_push (x11_display);
+          meta_x11_error_trap_push (x11_display);
           if (XGetWindowProperty (x11_display->xdisplay,
                                   event->xselectionrequest.requestor,
                                   event->xselectionrequest.property, 0, 256, False,
                                   x11_display->atom_ATOM_PAIR,
                                   &type, &format, &num, &rest, &data) != Success)
             {
-              meta_error_trap_pop_with_return (x11_display);
+              meta_x11_error_trap_pop_with_return (x11_display);
               return;
             }
 
-          if (meta_error_trap_pop_with_return (x11_display) == Success)
+          if (meta_x11_error_trap_pop_with_return (x11_display) == Success)
             {
               /* FIXME: to be 100% correct, should deal with rest > 0,
                * but since we have 4 possible targets, we will hardly ever
@@ -1106,13 +1106,13 @@ process_selection_request (MetaX11Display *x11_display,
                   i += 2;
                 }
 
-              meta_error_trap_push (x11_display);
+              meta_x11_error_trap_push (x11_display);
               XChangeProperty (x11_display->xdisplay,
                                event->xselectionrequest.requestor,
                                event->xselectionrequest.property,
                                x11_display->atom_ATOM_PAIR,
                                32, PropModeReplace, data, num);
-              meta_error_trap_pop (x11_display);
+              meta_x11_error_trap_pop (x11_display);
               meta_XFree (data);
             }
         }
@@ -1145,10 +1145,10 @@ process_selection_clear (MetaX11Display *x11_display,
     {
       char *str;
 
-      meta_error_trap_push (x11_display);
+      meta_x11_error_trap_push (x11_display);
       str = XGetAtomName (x11_display->xdisplay,
                           event->xselectionclear.selection);
-      meta_error_trap_pop (x11_display);
+      meta_x11_error_trap_pop (x11_display);
 
       meta_verbose ("Selection clear with selection %s window 0x%lx not a WM_Sn selection we recognize\n",
                     str ? str : "(bad atom)", event->xselectionclear.window);
@@ -1312,9 +1312,9 @@ handle_other_xevent (MetaX11Display *x11_display,
             {
               meta_warning ("Unexpected destruction of frame 0x%lx, not sure if this should silently fail or be considered a bug\n",
                             window->frame->xwindow);
-              meta_error_trap_push (x11_display);
+              meta_x11_error_trap_push (x11_display);
               meta_window_destroy_frame (window->frame->window);
-              meta_error_trap_pop (x11_display);
+              meta_x11_error_trap_pop (x11_display);
             }
           else
             {
@@ -1451,10 +1451,10 @@ handle_other_xevent (MetaX11Display *x11_display,
 
           meta_verbose ("Configuring withdrawn window to %d,%d %dx%d border %d (some values may not be in mask)\n",
                         xwc.x, xwc.y, xwc.width, xwc.height, xwc.border_width);
-          meta_error_trap_push (x11_display);
+          meta_x11_error_trap_push (x11_display);
           XConfigureWindow (x11_display->xdisplay, event->xconfigurerequest.window,
                             xwcm, &xwc);
-          meta_error_trap_pop (x11_display);
+          meta_x11_error_trap_pop (x11_display);
         }
       else
         {

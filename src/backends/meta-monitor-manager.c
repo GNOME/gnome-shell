@@ -34,7 +34,7 @@
 
 #include <meta/main.h>
 #include "util-private.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "edid.h"
 #include "backends/meta-crtc.h"
 #include "backends/meta-logical-monitor.h"

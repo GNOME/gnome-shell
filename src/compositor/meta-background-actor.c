@@ -78,7 +78,7 @@
 
 #include "cogl-utils.h"
 #include "clutter-utils.h"
-#include <meta/errors.h>
+#include <meta/meta-x11-errors.h>
 #include "meta-background-actor-private.h"
 #include "meta-background-private.h"
 #include "meta-cullable.h"

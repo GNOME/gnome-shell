@@ -14,7 +14,6 @@ src/compositor/meta-background.c
 src/core/bell.c
 src/core/core.c
 src/core/display.c
-src/core/errors.c
 src/core/keybindings.c
 src/core/main.c
 src/core/meta-close-dialog-default.c
@@ -26,6 +25,7 @@ src/ui/frames.c
 src/ui/theme.c
 src/wayland/meta-wayland-tablet-pad.c
 src/x11/meta-x11-display.c
+src/x11/meta-x11-errors.c
 src/x11/session.c
 src/x11/window-props.c
 src/x11/xprops.c
