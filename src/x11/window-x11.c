@@ -1343,9 +1343,10 @@ meta_window_x11_update_struts (MetaWindow *window)
               strut_begin = struts[4+(i*2)];
               strut_end   = struts[4+(i*2)+1];
 
-              temp = g_new (MetaStrut, 1);
+              temp = g_new0 (MetaStrut, 1);
               temp->side = 1 << i; /* See MetaSide def.  Matches nicely, eh? */
-              temp->rect = window->display->rect;
+              meta_display_get_size (window->display,
+                                     &temp->rect.width, &temp->rect.height);
               switch (temp->side)
                 {
                 case META_SIDE_RIGHT:
@@ -1406,9 +1407,10 @@ meta_window_x11_update_struts (MetaWindow *window)
               if (thickness == 0)
                 continue;
 
-              temp = g_new (MetaStrut, 1);
+              temp = g_new0 (MetaStrut, 1);
               temp->side = 1 << i;
-              temp->rect = window->display->rect;
+              meta_display_get_size (window->display,
+                                     &temp->rect.width, &temp->rect.height);
               switch (temp->side)
                 {
                 case META_SIDE_RIGHT:

@@ -229,7 +229,6 @@ struct _MetaDisplay
 
   MetaStartupNotification *startup_notification;
 
-  MetaRectangle rect;  /* Size of screen; rect.x & rect.y are always 0 */
   MetaCursor current_cursor;
 
   MetaStack *stack;

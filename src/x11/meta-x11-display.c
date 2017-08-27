@@ -84,8 +84,8 @@ static const char *net_wm_name = "Mutter";
 static char *get_screen_name (Display *xdisplay,
                               int      number);
 
-static void on_monitors_changed (MetaDisplay    *display,
-                                 MetaX11Display *x11_display);
+static void on_monitors_changed_internal (MetaMonitorManager *monitor_manager,
+                                          MetaX11Display     *x11_display);
 
 static void update_cursor_theme (MetaX11Display *x11_display);
 static void unset_wm_check_hint (MetaX11Display *x11_display);
@@ -507,12 +507,15 @@ static void
 set_desktop_geometry_hint (MetaX11Display *x11_display)
 {
   unsigned long data[2];
+  int monitor_width, monitor_height;
 
   if (x11_display->display->closing > 0)
     return;
 
-  data[0] = x11_display->display->rect.width;
-  data[1] = x11_display->display->rect.height;
+  meta_display_get_size (x11_display->display, &monitor_width, &monitor_height);
+
+  data[0] = monitor_width;
+  data[1] = monitor_height;
 
   meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %lu, %lu\n", data[0], data[1]);
 
@@ -993,6 +996,9 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   GdkDisplay *gdk_display;
   const char *gdk_gl_env = NULL;
   const char *xdisplay_name;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
 
   xdisplay_name = g_getenv ("DISPLAY");
   if (!xdisplay_name)
@@ -1158,9 +1164,9 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   x11_display->group_prop_hooks = NULL;
   meta_x11_display_init_group_prop_hooks (x11_display);
 
-  g_signal_connect_object (display,
-                           "monitors-changed",
-                           G_CALLBACK (on_monitors_changed),
+  g_signal_connect_object (monitor_manager,
+                           "monitors-changed-internal",
+                           G_CALLBACK (on_monitors_changed_internal),
                            x11_display,
                            0);
 
@@ -1554,6 +1560,11 @@ create_guard_window (MetaX11Display *x11_display)
   XSetWindowAttributes attributes;
   Window guard_window;
   gulong create_serial;
+  int display_width, display_height;
+
+  meta_display_get_size (x11_display->display,
+                         &display_width,
+                         &display_height);
 
   attributes.event_mask = NoEventMask;
   attributes.override_redirect = True;
@@ -1566,8 +1577,8 @@ create_guard_window (MetaX11Display *x11_display)
                    x11_display->xroot,
                    0, /* x */
                    0, /* y */
-                   x11_display->display->rect.width,
-                   x11_display->display->rect.height,
+                   display_width,
+                   display_height,
                    0, /* border width */
                    0, /* depth */
                    InputOnly, /* class */
@@ -1618,9 +1629,15 @@ meta_x11_display_create_guard_window (MetaX11Display *x11_display)
 }
 
 static void
-on_monitors_changed (MetaDisplay    *display,
-                     MetaX11Display *x11_display)
+on_monitors_changed_internal (MetaMonitorManager *monitor_manager,
+                              MetaX11Display     *x11_display)
 {
+  int display_width, display_height;
+
+  meta_monitor_manager_get_screen_size (monitor_manager,
+                                        &display_width,
+                                        &display_height);
+
   set_desktop_geometry_hint (x11_display);
 
   /* Resize the guard window to fill the screen again. */
@@ -1630,8 +1647,8 @@ on_monitors_changed (MetaDisplay    *display,
 
       changes.x = 0;
       changes.y = 0;
-      changes.width = display->rect.width;
-      changes.height = display->rect.height;
+      changes.width = display_width;
+      changes.height = display_height;
 
       XConfigureWindow (x11_display->xdisplay,
                         x11_display->guard_window,

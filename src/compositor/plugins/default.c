@@ -26,6 +26,7 @@
 #include <meta/window.h>
 #include <meta/meta-background-group.h>
 #include <meta/meta-background-actor.h>
+#include <meta/meta-monitor-manager.h>
 #include <meta/util.h>
 #include <glib/gi18n-lib.h>
 
@@ -319,10 +320,12 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
 }
 
 static void
-on_monitors_changed (MetaDisplay *display,
-                     MetaPlugin  *plugin)
+on_monitors_changed (MetaMonitorManager *monitor_manager,
+                     MetaPlugin         *plugin)
 {
   MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
+  MetaDisplay *display = meta_plugin_get_display (plugin);
+
   int i, n;
   GRand *rand = g_rand_new_with_seed (123456);
 
@@ -374,15 +377,16 @@ start (MetaPlugin *plugin)
 {
   MetaDefaultPlugin *self = META_DEFAULT_PLUGIN (plugin);
   MetaDisplay *display = meta_plugin_get_display (plugin);
+  MetaMonitorManager *monitor_manager = meta_monitor_manager_get ();
 
   self->priv->background_group = meta_background_group_new ();
   clutter_actor_insert_child_below (meta_get_window_group_for_display (display),
                                     self->priv->background_group, NULL);
 
-  g_signal_connect (display, "monitors-changed",
+  g_signal_connect (monitor_manager, "monitors-changed",
                     G_CALLBACK (on_monitors_changed), plugin);
 
-  on_monitors_changed (display, plugin);
+  on_monitors_changed (monitor_manager, plugin);
 
   clutter_actor_show (meta_get_stage_for_display (display));
 }

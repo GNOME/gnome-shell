@@ -1064,14 +1064,18 @@ compute_resistance_and_snapping_edges (MetaDisplay *display)
         {
           GList *new_edges;
           MetaEdge *new_edge;
+          MetaRectangle display_rect = { 0 };
           MetaRectangle reduced;
+
+          meta_display_get_size (display,
+                                 &display_rect.width, &display_rect.height);
 
           /* We don't care about snapping to any portion of the window that
            * is offscreen (we also don't care about parts of edges covered
            * by other windows or DOCKS, but that's handled below).
            */
           meta_rectangle_intersect (&cur_rect,
-                                    &display->rect,
+                                    &display_rect,
                                     &reduced);
 
           new_edges = NULL;

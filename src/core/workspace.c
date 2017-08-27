@@ -794,6 +794,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   GList *windows;
   GList *tmp;
   GList *logical_monitors, *l;
+  MetaRectangle display_rect = { 0 };
   MetaRectangle work_area;
 
   if (!workspace->work_areas_invalid)
@@ -803,6 +804,10 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   g_assert (workspace->screen_region == NULL);
   g_assert (workspace->screen_edges == NULL);
   g_assert (workspace->monitor_edges == NULL);
+
+  meta_display_get_size (workspace->display,
+                         &display_rect.width,
+                         &display_rect.height);
 
   /* STEP 1: Get the list of struts */
 
@@ -846,13 +851,13 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
   workspace->screen_region =
     meta_rectangle_get_minimal_spanning_set_for_region (
-      &workspace->display->rect,
+      &display_rect,
       workspace->all_struts);
 
   /* STEP 3: Get the work areas (region-to-maximize-to) for the screen and
    *         monitors.
    */
-  work_area = workspace->display->rect;  /* start with the screen */
+  work_area = display_rect;  /* start with the screen */
   if (workspace->screen_region == NULL)
     work_area = meta_rect (0, 0, -1, -1);
   else
@@ -869,7 +874,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
                     work_area.width, MIN_SANE_AREA);
       if (work_area.width < 1)
         {
-          work_area.x = (workspace->display->rect.width - MIN_SANE_AREA)/2;
+          work_area.x = (display_rect.width - MIN_SANE_AREA)/2;
           work_area.width = MIN_SANE_AREA;
         }
       else
@@ -886,7 +891,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
                     work_area.height, MIN_SANE_AREA);
       if (work_area.height < 1)
         {
-          work_area.y = (workspace->display->rect.height - MIN_SANE_AREA)/2;
+          work_area.y = (display_rect.height - MIN_SANE_AREA)/2;
           work_area.height = MIN_SANE_AREA;
         }
       else
@@ -953,7 +958,7 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   g_assert (workspace->screen_edges    == NULL);
   g_assert (workspace->monitor_edges  == NULL);
   workspace->screen_edges =
-    meta_rectangle_find_onscreen_edges (&workspace->display->rect,
+    meta_rectangle_find_onscreen_edges (&display_rect,
                                         workspace->all_struts);
   tmp = NULL;
   for (l = logical_monitors; l; l = l->next)
@@ -1005,7 +1010,10 @@ meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
   MetaDisplay *display = workspace->display;
+  MetaRectangle display_rect = { 0 };
   GSList *l;
+
+  meta_display_get_size (display, &display_rect.width, &display_rect.height);
 
   for (l = struts; l; l = l->next)
     {
@@ -1033,7 +1041,7 @@ meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                                                  META_DISPLAY_DOWN))
             continue;
 
-          strut->rect.height = display->rect.height - strut->rect.y;
+          strut->rect.height = display_rect.height - strut->rect.y;
           break;
         case META_SIDE_LEFT:
           if (meta_monitor_manager_get_logical_monitor_neighbor (monitor_manager,
@@ -1050,7 +1058,7 @@ meta_workspace_set_builtin_struts (MetaWorkspace *workspace,
                                                                  META_DISPLAY_RIGHT))
             continue;
 
-          strut->rect.width = display->rect.width - strut->rect.x;
+          strut->rect.width = display_rect.width - strut->rect.x;
           break;
         }
     }

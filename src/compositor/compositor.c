@@ -949,11 +949,13 @@ get_top_visible_window_actor (MetaCompositor *compositor)
       MetaWindowActor *window_actor = l->data;
       MetaWindow *window = meta_window_actor_get_meta_window (window_actor);
       MetaRectangle buffer_rect;
+      MetaRectangle display_rect = { 0 };
 
       meta_window_get_buffer_rect (window, &buffer_rect);
+      meta_display_get_size (compositor->display,
+                             &display_rect.width, &display_rect.height);
 
-      if (meta_rectangle_overlap (&compositor->display->rect,
-                                  &buffer_rect))
+      if (meta_rectangle_overlap (&display_rect, &buffer_rect))
         return window_actor;
     }
 
