@@ -9,19 +9,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
-"&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-13 15:47+0000\n"
-"PO-Revision-Date: 2017-08-15 20:40+0200\n"
-"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-22 20:05+0200\n"
+"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
-"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -181,7 +182,7 @@ msgstr "Систем"
 
 #: data/50-mutter-system.xml:8
 msgid "Show the run command prompt"
-msgstr "Приказује промпт за покретање наредбе"
+msgstr "Приказује упит за извршавање наредбе"
 
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
@@ -197,11 +198,11 @@ msgstr "Активира мени прозора"
 
 #: data/50-mutter-windows.xml:10
 msgid "Toggle fullscreen mode"
-msgstr "Искључује/укључује приказ преко целог екрана"
+msgstr "Искључује или укључује приказ преко целог екрана"
 
 #: data/50-mutter-windows.xml:12
 msgid "Toggle maximization state"
-msgstr "Искључује/укључује стање увећања"
+msgstr "Искључује или укључује стање увећања"
 
 #: data/50-mutter-windows.xml:14
 msgid "Maximize window"
@@ -213,7 +214,7 @@ msgstr "Враћа величину прозора"
 
 #: data/50-mutter-windows.xml:18
 msgid "Toggle shaded state"
-msgstr "Искључује/укључује стање засенчености"
+msgstr "Искључује или укључује стање засенчености"
 
 #: data/50-mutter-windows.xml:20
 msgid "Close window"
@@ -410,43 +411,34 @@ msgid ""
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
-"monitor configuration system, aimed to replace the old one. This enables a "
-"higher level configuration API to be used by configuration applications, as "
-"well as the ability to configure per logical monitor scale. • “scale-monitor-"
-"framebuffer” — makes mutter default to layout logical monitors in a logical "
-"pixel coordinate space, while scaling monitor framebuffers instead of window "
-"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
-"“monitor-config-manager” is required for this feature to be enabled."
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
 msgstr ""
-"Да укључите експерименталне функције, додајте кључну реч функције на списак. "
-"Да ли функција захтева поновно покретање састављача зависи од дате функције. "
-"Није потребно да нека експериментална функција буде и даље доступна или "
-"подесива. Немојте очекивати да додавање било чега у овом подешавању буде "
-"будући доказ. Тренутно могуће кључне речи су: • „monitor-config-manager“ — "
-"користи нови систем подешавања монитора, који треба да замени стари. Ово "
-"омогућава да АПИ подешавања вишег нивоа буде коришћен програмима подешавања, "
-"као и могућност подешавања скале монитора на нивоу логике. • „scale-monitor-"
-"framebuffer“ — чини да матер пређе на распоред логичких монитора у логичком "
-"координатном простору пиксела, док врши сразмеравање оквира монитора уместо "
-"садржаја прозора, за управљање ХиДПИ мониторима. Не захтева поновно "
-"покретање. Такође је потребно укључити „monitor-config-manager“ да би ова "
-"функција била укључена."
+"Да укључите пробне функције, додајте кључну реч функције на списак. Да ли "
+"функција захтева поновно покретање састављача зависи од дате функције. Није "
+"потребно да нека пробна могућност буде и даље доступна или подесива. Немојте "
+"очекивати да додавање било чега у овом подешавању буде отпорно на будуће "
+"измене. Тренутно могуће кључне речи су: • „scale-monitor-framebuffer“ — чини "
+"да матер подразумевано распоређује логичке екране у логичком координантном "
+"простору пиксела, приликом промене величине спремишта кадрова екрана уместо "
+"садржаја прозора, зарад управљања екранима високе резолуције. Не захтева "
+"поновно покретање."
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Бира прозор из језичка искакања"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Отказивање језичка искакања"
 
-#: data/org.gnome.mutter.gschema.xml.in:161
-#| msgid "Switch monitor"
+#: data/org.gnome.mutter.gschema.xml.in:151
 msgid "Switch monitor configurations"
 msgstr "Мења подешавања монитора"
 
-#: data/org.gnome.mutter.gschema.xml.in:166
+#: data/org.gnome.mutter.gschema.xml.in:156
 msgid "Rotates the built-in monitor configuration"
 msgstr "Заокреће уграђена подешавања монитора"
 
@@ -505,7 +497,7 @@ msgstr "Поново укључивање пречица"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2118
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Режим прекидача (група %d)"
@@ -513,30 +505,30 @@ msgstr "Режим прекидача (група %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2141
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Промени монитор"
 
-#: src/backends/meta-input-settings.c:2143
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Прикажи помоћ на екрану"
 
-#: src/backends/meta-monitor-manager.c:927
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Уграђени дисплеј"
 
-#: src/backends/meta-monitor-manager.c:950
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Непознато"
 
-#: src/backends/meta-monitor-manager.c:952
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Непознат дисплеј"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:960
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
