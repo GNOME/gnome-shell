@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-07 09:58+0200\n"
-"PO-Revision-Date: 2017-08-07 10:00+0200\n"
+"POT-Creation-Date: 2017-08-28 19:35+0200\n"
+"PO-Revision-Date: 2017-08-28 19:38+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -336,7 +336,7 @@ msgstr "Prišlo je do napake med nalaganjem pogovornega okna z možnostmi za %s:
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
-#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:947
+#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:936
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -396,6 +396,72 @@ msgstr "Napaka overitve"
 #: js/gdm/util.js:478
 msgid "(or swipe finger)"
 msgstr "(ali pa povlecite prst)"
+
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:99
+msgctxt "search-result"
+msgid "Power off"
+msgstr "Izklop"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "power off;shutdown"
+msgstr "izklop;ugasni"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:106
+msgctxt "search-result"
+msgid "Lock screen"
+msgstr "Zakleni zaslon"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:109
+msgid "lock screen"
+msgstr "zaklep zaslona"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:113
+msgctxt "search-result"
+msgid "Log out"
+msgstr "Odjava"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:116
+msgid "logout;sign off"
+msgstr "odjava;izpis"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:120
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "V pripravljenost"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:123
+msgid "suspend;sleep"
+msgstr "v pripravljenost;v mirovanje"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:127
+msgctxt "search-result"
+msgid "Switch user"
+msgstr "Preklopi uporabnika"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:130
+msgid "switch user"
+msgstr "preklop uporabnika"
+
+#. Translators: The name of the lock orientation action in search
+#: js/misc/systemActions.js:134
+msgctxt "search-result"
+msgid "Lock orientation"
+msgstr "Zaklep usmerjenosti"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:137
+msgid "lock orientation"
+msgstr "zaklep usmerjenosti"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -567,35 +633,35 @@ msgstr "Zavrni dostop"
 msgid "Grant Access"
 msgstr "Dovoli dostop"
 
-#: js/ui/appDisplay.js:806
+#: js/ui/appDisplay.js:809
 msgid "Frequently used applications will appear here"
 msgstr "Pogosto uporabljeni programi bodo prikazani tu"
 
-#: js/ui/appDisplay.js:927
+#: js/ui/appDisplay.js:930
 msgid "Frequent"
 msgstr "Pogosti"
 
-#: js/ui/appDisplay.js:934
+#: js/ui/appDisplay.js:937
 msgid "All"
 msgstr "Vsi"
 
-#: js/ui/appDisplay.js:1895
+#: js/ui/appDisplay.js:1915
 msgid "New Window"
 msgstr "Novo okno"
 
-#: js/ui/appDisplay.js:1909
+#: js/ui/appDisplay.js:1929
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Zaženi z uporabo določene grafične kartice"
 
-#: js/ui/appDisplay.js:1936 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: js/ui/appDisplay.js:1942
+#: js/ui/appDisplay.js:1962
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
-#: js/ui/appDisplay.js:1952
+#: js/ui/appDisplay.js:1972
 msgid "Show Details"
 msgstr "Pokaži besedilo"
 
@@ -637,7 +703,7 @@ msgstr "Spremeni ozadje ..."
 msgid "Display Settings"
 msgstr "Nastavitve zaslona"
 
-#: js/ui/backgroundMenu.js:22 js/ui/status/system.js:407
+#: js/ui/backgroundMenu.js:22 js/ui/status/system.js:265
 msgid "Settings"
 msgstr "Nastavitve"
 
@@ -784,8 +850,8 @@ msgstr "Geslo:"
 msgid "Type again:"
 msgstr "Vpišite znova:"
 
-#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:272
-#: js/ui/status/network.js:366 js/ui/status/network.js:950
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:261
+#: js/ui/status/network.js:355 js/ui/status/network.js:939
 msgid "Connect"
 msgstr "Poveži"
 
@@ -860,7 +926,7 @@ msgstr "Geslo mobilnega širokopasovnega dostopa"
 msgid "A password is required to connect to “%s”."
 msgstr "Za povezavo z omrežjem »%s« je zahtevano geslo."
 
-#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1760
+#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
@@ -891,7 +957,7 @@ msgstr "Overitev je spodletela.. Poskusite znova."
 msgid "%s is now known as %s"
 msgstr "%s je sedaj znan kot v %s"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:179
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:186
 msgid "Windows"
 msgstr "Okna"
 
@@ -936,7 +1002,7 @@ msgstr "Vreme"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:281
+#: js/ui/dateMenu.js:286
 #, javascript-format
 msgid "%s all day."
 msgstr "%s – ves dan."
@@ -945,7 +1011,7 @@ msgstr "%s – ves dan."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:287
+#: js/ui/dateMenu.js:292
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, sledi %s."
@@ -954,30 +1020,30 @@ msgstr "%s, sledi %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:293
+#: js/ui/dateMenu.js:298
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, sledi %s, kasneje tudi %s."
 
-#: js/ui/dateMenu.js:300
+#: js/ui/dateMenu.js:309
 msgid "Select a location…"
 msgstr "Izbor mesta ..."
 
-#: js/ui/dateMenu.js:303
+#: js/ui/dateMenu.js:312
 msgid "Loading…"
 msgstr "Poteka nalaganje ..."
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:318
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Občuti se kot %s."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:321
 msgid "Go online for weather information"
 msgstr "Preglej splet za podrobnosti o vremenu."
 
-#: js/ui/dateMenu.js:314
+#: js/ui/dateMenu.js:323
 msgid "Weather information is currently unavailable"
 msgstr "Podatki o vremenu trenutno niso na voljo."
 
@@ -1152,40 +1218,32 @@ msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Ali želite prejeti in namestiti »%s« prek extensions.gnome.org?"
 
 #. Translators: %s is an application name like "Settings"
-#: js/ui/inhibitShortcutsDialog.js:54
+#: js/ui/inhibitShortcutsDialog.js:59
 #, javascript-format
 msgid "%s wants to inhibit shortcuts"
 msgstr "Program %s onemogočiti tipkovne bližnjice"
 
-#: js/ui/inhibitShortcutsDialog.js:55
+#: js/ui/inhibitShortcutsDialog.js:60
 msgid "Application wants to inhibit shortcuts"
 msgstr "Program poskuša onemogočiti tipkovne bližnjice"
 
-#: js/ui/inhibitShortcutsDialog.js:64
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:69
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
 msgstr "Tipkovne bližnjice je mogoče obnoviti s pritiskom na gumb %s."
 
-#: js/ui/inhibitShortcutsDialog.js:69
+#: js/ui/inhibitShortcutsDialog.js:74
 msgid "Deny"
 msgstr "Zavrni"
 
-#: js/ui/inhibitShortcutsDialog.js:75
+#: js/ui/inhibitShortcutsDialog.js:80
 msgid "Allow"
 msgstr "Dovoli"
 
 #: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Tipkovnica"
-
-#. translators: 'Hide' is a verb
-#: js/ui/legacyTray.js:65
-msgid "Hide tray"
-msgstr "Skrij sistemsko vrstico"
-
-#: js/ui/legacyTray.js:106
-msgid "Status Icons"
-msgstr "Ikone stanja"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1377,7 +1435,7 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: js/ui/screenShield.js:452 js/ui/status/system.js:415
+#: js/ui/screenShield.js:452 js/ui/status/system.js:284
 msgid "Lock"
 msgstr "Zakleni"
 
@@ -1408,10 +1466,14 @@ msgstr "Iskanje ..."
 msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
-#: js/ui/search.js:768
+#: js/ui/search.js:777
 #, javascript-format
 msgid "%d more"
-msgstr "še %d"
+msgid_plural "%d more"
+msgstr[0] "še %d"
+msgstr[1] "še %d"
+msgstr[2] "še %d"
+msgstr[3] "še %d"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1485,7 +1547,7 @@ msgstr "Veliko besedilo"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:638
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
@@ -1507,13 +1569,13 @@ msgstr "Nepovezano"
 msgid "On"
 msgstr "Povezano"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1310
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
 msgid "Turn On"
 msgstr "Omogoči"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:181
-#: js/ui/status/network.js:367 js/ui/status/network.js:1310
-#: js/ui/status/network.js:1429 js/ui/status/nightLight.js:47
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
+#: js/ui/status/network.js:356 js/ui/status/network.js:1299
+#: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Onemogoči"
@@ -1567,13 +1629,13 @@ msgid "<unknown>"
 msgstr "<neznano>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:465 js/ui/status/network.js:1339
+#: js/ui/status/network.js:454 js/ui/status/network.js:1328
 #, javascript-format
 msgid "%s Off"
 msgstr "%s izklopljeno"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:468
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s povezano"
@@ -1581,165 +1643,164 @@ msgstr "%s povezano"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:473
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s neupravljano"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:476
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s poteka prekinjanje povezave"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:483 js/ui/status/network.js:1331
+#: js/ui/status/network.js:472 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s poteka vzpostavljanje povezave"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:486
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s zahteva overitev"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:494
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Manjka strojna programska oprema za %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:498
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s ni na voljo"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:501
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s povezava je spodletela"
 
-#: js/ui/status/network.js:517
+#: js/ui/status/network.js:506
 msgid "Wired Settings"
 msgstr "Nastavitve žičnega omrežja"
 
-#: js/ui/status/network.js:559
+#: js/ui/status/network.js:548
 msgid "Mobile Broadband Settings"
 msgstr "Nastavitve mobilnega širokopasovnega dostopa"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:602 js/ui/status/network.js:1336
+#: js/ui/status/network.js:591 js/ui/status/network.js:1325
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s strojno onemogočeno"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:606
+#: js/ui/status/network.js:595
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s onemogočeno"
 
-#: js/ui/status/network.js:646
+#: js/ui/status/network.js:635
 msgid "Connect to Internet"
 msgstr "Poveži na internet"
 
-#: js/ui/status/network.js:844
+#: js/ui/status/network.js:833
 msgid "Airplane Mode is On"
 msgstr "Omogoči način letala"
 
-#: js/ui/status/network.js:845
+#: js/ui/status/network.js:834
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Naprava Wi-Fi je v načinu letala onemogočena."
 
-#: js/ui/status/network.js:846
+#: js/ui/status/network.js:835
 msgid "Turn Off Airplane Mode"
 msgstr "Onemogoči način letala"
 
-#: js/ui/status/network.js:855
+#: js/ui/status/network.js:844
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi je onemogočen"
 
-#: js/ui/status/network.js:856
+#: js/ui/status/network.js:845
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Napravo Wi-Fi je treba pred povezovanjem najprej omogočiti."
 
-#: js/ui/status/network.js:857
+#: js/ui/status/network.js:846
 msgid "Turn On Wi-Fi"
 msgstr "Omogoči Wi-Fi"
 
-#: js/ui/status/network.js:882
+#: js/ui/status/network.js:871
 msgid "Wi-Fi Networks"
 msgstr "Omrežja Wi-Fi"
 
-#: js/ui/status/network.js:884
+#: js/ui/status/network.js:873
 msgid "Select a network"
 msgstr "Izbor omrežja"
 
-#: js/ui/status/network.js:914
+#: js/ui/status/network.js:903
 msgid "No Networks"
 msgstr "Ni zaznanih omrežij"
 
-#: js/ui/status/network.js:935 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:924 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Uporabite strojni gumb za izklop"
 
-#: js/ui/status/network.js:1202
+#: js/ui/status/network.js:1191
 msgid "Select Network"
 msgstr "Izbor omrežja"
 
-#: js/ui/status/network.js:1208
+#: js/ui/status/network.js:1197
 msgid "Wi-Fi Settings"
 msgstr "Nastavitve Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1327
+#: js/ui/status/network.js:1316
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s vroča točka je dejavna"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1342
+#: js/ui/status/network.js:1331
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s brez povezave"
 
-#: js/ui/status/network.js:1446
+#: js/ui/status/network.js:1435
 msgid "connecting…"
 msgstr "vzpostavljanje povezave …"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1449
+#: js/ui/status/network.js:1438
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
-#: js/ui/status/network.js:1451
+#: js/ui/status/network.js:1440
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: js/ui/status/network.js:1517 js/ui/status/network.js:1612
-#: js/ui/status/rfkill.js:93
-msgid "Network Settings"
-msgstr "Omrežne nastavitve"
-
-#: js/ui/status/network.js:1519
+#: js/ui/status/network.js:1494
 msgid "VPN Settings"
 msgstr "Nastavitve VPN"
 
-#: js/ui/status/network.js:1538
+#: js/ui/status/network.js:1498
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1548
+#: js/ui/status/network.js:1508
 msgid "VPN Off"
 msgstr "Onemogočen VPN"
 
-#: js/ui/status/network.js:1643
+#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+msgid "Network Settings"
+msgstr "Omrežne nastavitve"
+
+#: js/ui/status/network.js:1603
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -1748,7 +1809,7 @@ msgstr[1] "%s žična povezava"
 msgstr[2] "%s žični povezavi"
 msgstr[3] "%s žične povezave"
 
-#: js/ui/status/network.js:1647
+#: js/ui/status/network.js:1607
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -1757,7 +1818,7 @@ msgstr[1] "%s povezava Wi-Fi"
 msgstr[2] "%s povezavi Wi-Fi"
 msgstr[3] "%s povezave Wi-Fi"
 
-#: js/ui/status/network.js:1651
+#: js/ui/status/network.js:1611
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -1766,11 +1827,11 @@ msgstr[1] "%s modemska povezava"
 msgstr[2] "%s modemski povezavi"
 msgstr[3] "%s modemske povezave"
 
-#: js/ui/status/network.js:1799
+#: js/ui/status/network.js:1759
 msgid "Connection failed"
 msgstr "Povezovanje je spodletelo"
 
-#: js/ui/status/network.js:1800
+#: js/ui/status/network.js:1760
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
@@ -1828,27 +1889,27 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "Letalski način je omogočen"
 
-#: js/ui/status/system.js:384
+#: js/ui/status/system.js:228
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: js/ui/status/system.js:389
+#: js/ui/status/system.js:240
 msgid "Log Out"
 msgstr "Odjava"
 
-#: js/ui/status/system.js:394
+#: js/ui/status/system.js:252
 msgid "Account Settings"
 msgstr "Nastavitve računa"
 
-#: js/ui/status/system.js:411
+#: js/ui/status/system.js:269
 msgid "Orientation Lock"
 msgstr "Zaklep položaja"
 
-#: js/ui/status/system.js:419
+#: js/ui/status/system.js:295
 msgid "Suspend"
 msgstr "V pripravljenost"
 
-#: js/ui/status/system.js:422
+#: js/ui/status/system.js:305
 msgid "Power Off"
 msgstr "Izklop"
 
@@ -1860,6 +1921,34 @@ msgstr "Glasnost je spremenjena"
 msgid "Volume"
 msgstr "Glasnost"
 
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:21
+msgid "Mirror"
+msgstr "Zrcaljenje zaslona"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:26
+msgid "Join Displays"
+msgstr "Združi zaslone"
+
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:31
+msgid "External Only"
+msgstr "Le zunanje"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:36
+msgid "Built-in Only"
+msgstr "Le vgrajeno"
+
 #: js/ui/unlockDialog.js:67
 msgid "Log in as another user"
 msgstr "Prijava kot drug uporabnik"
@@ -1868,11 +1957,11 @@ msgstr "Prijava kot drug uporabnik"
 msgid "Unlock Window"
 msgstr "Odkleni okno"
 
-#: js/ui/viewSelector.js:183
+#: js/ui/viewSelector.js:190
 msgid "Applications"
 msgstr "Programi"
 
-#: js/ui/viewSelector.js:187
+#: js/ui/viewSelector.js:194
 msgid "Search"
 msgstr "Poišči"
 
@@ -1881,22 +1970,22 @@ msgstr "Poišči"
 msgid "“%s” is ready"
 msgstr "Storitev “%s” je pripravljena"
 
-#: js/ui/windowManager.js:71
+#: js/ui/windowManager.js:72
 msgid "Do you want to keep these display settings?"
 msgstr "Ali želite ohraniti te nastavitve zaslona?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:83
+#: js/ui/windowManager.js:84
 msgid "Revert Settings"
 msgstr "Povrni nastavitve"
 
-#: js/ui/windowManager.js:86
+#: js/ui/windowManager.js:87
 msgid "Keep Changes"
 msgstr "Ohrani spremembe"
 
-#: js/ui/windowManager.js:104
+#: js/ui/windowManager.js:105
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1907,7 +1996,7 @@ msgstr[3] "Spremembe nastavitev bodo povrnjene v %d sekundah."
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:659
+#: js/ui/windowManager.js:660
 #, javascript-format
 msgid "%d × %d"
 msgstr "%d × %d"
@@ -1985,19 +2074,19 @@ msgstr "Koledar Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:372
+#: src/main.c:380
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: src/main.c:378
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM kot prijavni zaslon"
 
-#: src/main.c:384
+#: src/main.c:392
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Uporabi poseben način, na primer »gdm« za prijavni zaslon"
 
-#: src/main.c:390
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
@@ -2048,6 +2137,12 @@ msgstr[3] "%u dovodi naprave"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
+
+#~ msgid "Hide tray"
+#~ msgstr "Skrij sistemsko vrstico"
+
+#~ msgid "Status Icons"
+#~ msgstr "Ikone stanja"
 
 #~ msgid "GNOME Shell Extension Preferences"
 #~ msgstr "Možnosti razširitev lupine GNOME"
@@ -2103,9 +2198,6 @@ msgstr "Sistemski zvoki"
 
 #~ msgid "Not Connected"
 #~ msgstr "Ni vzpostavljene povezave"
-
-#~ msgid "Location"
-#~ msgstr "Mesto"
 
 #~ msgid "In Use"
 #~ msgstr "V uporabi"
@@ -2906,9 +2998,6 @@ msgstr "Sistemski zvoki"
 
 #~ msgid "Online Accounts"
 #~ msgstr "Spletni računi"
-
-#~ msgid "Lock Screen"
-#~ msgstr "Zakleni zaslon"
 
 #~ msgid "Log Out..."
 #~ msgstr "Odjava ..."
