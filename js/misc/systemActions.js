@@ -99,7 +99,7 @@ const SystemActions = new Lang.Class({
                             name: C_("search-result", "Power Off"),
                             iconName: 'system-shutdown-symbolic',
                             // Translators: A list of keywords that match the power-off action, separated by semicolons
-                            keywords: _("power off;shutdown").split(';'),
+                            keywords: _("power off;shutdown;reboot;restart").split(';'),
                             available: false });
         this._actions.set(LOCK_SCREEN_ACTION_ID,
                           { // Translators: The name of the lock screen action in search
@@ -134,7 +134,7 @@ const SystemActions = new Lang.Class({
                             name: C_("search-result", "Lock Orientation"),
                             iconName: '',
                             // Translators: A list of keywords that match the lock orientation action, separated by semicolons
-                            keywords: _("lock orientation").split(';'),
+                            keywords: _("lock orientation;screen;rotation").split(';'),
                             available: false });
 
         this._loginScreenSettings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
