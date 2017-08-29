@@ -1719,8 +1719,8 @@ meta_renderer_native_create_view (MetaRenderer       *renderer,
   else
     scale = 1.0;
 
-  width = logical_monitor->rect.width * scale;
-  height = logical_monitor->rect.height * scale;
+  width = roundf (logical_monitor->rect.width * scale);
+  height = roundf (logical_monitor->rect.height * scale);
 
   onscreen = meta_renderer_native_create_onscreen (META_RENDERER_NATIVE (renderer),
                                                    cogl_context,
