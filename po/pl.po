@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-21 04:46+0000\n"
-"PO-Revision-Date: 2017-08-23 04:15+0200\n"
+"POT-Creation-Date: 2017-08-29 16:09+0000\n"
+"PO-Revision-Date: 2017-08-29 18:14+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -422,7 +422,10 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
 "Aby włączyć eksperymentalne funkcje, należy dodać słowo kluczowe funkcji do "
 "tej listy. Niektóre funkcje wymagają ponownego uruchomienia menedżera okien. "
@@ -431,21 +434,24 @@ msgstr ""
 "„scale-monitor-framebuffer” — sprawia, że menedżer okien do zarządzania "
 "monitorami o wysokiej rozdzielczości domyślnie układa logiczne monitory "
 "w przestrzeni współrzędnych logicznych pikseli, jednocześnie skalując bufory "
-"ramki monitorów zamiast zawartości okien. Nie wymaga ponownego uruchomienia."
+"ramki monitorów zamiast zawartości okien. Nie wymaga ponownego uruchomienia. "
+"• „remote-desktop” — włącza obsługę zdalnego pulpitu. Aby dodać "
+"udostępnianie ekranu, należy włączyć także opcję „screen-cast”. • "
+"„screen-cast” — włącza obsługę nagrywania ekranu."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Wybór okna z wyskakującego okna dla tabulacji"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Anulowanie wyskakującego okna dla tabulacji"
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:155
 msgid "Switch monitor configurations"
 msgstr "Przełączenie konfiguracji monitorów"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:160
 msgid "Rotates the built-in monitor configuration"
 msgstr "Obrócenie wbudowanego monitora"
 
