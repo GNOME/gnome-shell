@@ -122,7 +122,7 @@
                                         require a restart.
         • “remote-desktop”            — enables remote desktop support. To support
                                         remote desktop with screen sharing,
-                                        "screen-cast" must also be enabled.
+                                        “screen-cast” must also be enabled.
         • “screen-cast”               — enables screen cast support.
       </description>
     </key>
