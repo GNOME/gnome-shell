@@ -53,11 +53,6 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/x11/meta-backend-x11.h"
 
-struct _MetaWindowX11Class
-{
-  MetaWindowClass parent_class;
-};
-
 G_DEFINE_TYPE_WITH_PRIVATE (MetaWindowX11, meta_window_x11, META_TYPE_WINDOW)
 
 static void

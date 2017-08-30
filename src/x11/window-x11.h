@@ -41,6 +41,8 @@ GType meta_window_x11_get_type (void);
 typedef struct _MetaWindowX11      MetaWindowX11;
 typedef struct _MetaWindowX11Class MetaWindowX11Class;
 
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (MetaWindowX11, g_object_unref)
+
 MetaWindow * meta_window_x11_new           (MetaDisplay        *display,
                                             Window              xwindow,
                                             gboolean            must_be_viewable,

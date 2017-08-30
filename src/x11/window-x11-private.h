@@ -30,6 +30,11 @@ G_BEGIN_DECLS
 
 typedef struct _MetaWindowX11Private MetaWindowX11Private;
 
+struct _MetaWindowX11Class
+{
+  MetaWindowClass parent_class;
+};
+
 struct _MetaWindowX11
 {
   MetaWindow parent;

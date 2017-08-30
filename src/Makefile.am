@@ -437,6 +437,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	wayland/meta-wayland-xdg-foreign.h     	\
 	wayland/meta-window-wayland.c		\
 	wayland/meta-window-wayland.h		\
+	wayland/meta-window-xwayland.c		\
+	wayland/meta-window-xwayland.h		\
 	wayland/meta-wayland-xdg-shell.c	\
 	wayland/meta-wayland-xdg-shell.h	\
 	wayland/meta-wayland-wl-shell.c		\

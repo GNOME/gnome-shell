@@ -58,6 +58,7 @@
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-window-wayland.h"
+#include "wayland/meta-window-xwayland.h"
 #include "wayland/meta-wayland-surface.h"
 #include "wayland/meta-wayland-private.h"
 #endif
@@ -942,9 +943,11 @@ _meta_window_shared_new (MetaDisplay         *display,
                 "IsUnviewable" :
                 "(unknown)");
 
-  if (client_type == META_WINDOW_CLIENT_TYPE_X11)
+  if (client_type == META_WINDOW_CLIENT_TYPE_X11 && !meta_is_wayland_compositor ())
     window = g_object_new (META_TYPE_WINDOW_X11, NULL);
 #ifdef HAVE_WAYLAND
+  else if (client_type == META_WINDOW_CLIENT_TYPE_X11)
+    window = g_object_new (META_TYPE_WINDOW_XWAYLAND, NULL);
   else if (client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
     window = g_object_new (META_TYPE_WINDOW_WAYLAND, NULL);
 #endif
