@@ -12,10 +12,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-03-13 11:15+0000\n"
-"PO-Revision-Date: 2015-03-13 17:52+0200\n"
+"POT-Creation-Date: 2017-08-29 16:09+0000\n"
+"PO-Revision-Date: 2017-08-30 19:16+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -24,282 +24,288 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-POT-Import-Date: 2012-02-19 15:25:23+0000\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
-#: ../data/50-mutter-navigation.xml.in.h:1
+#: data/50-mutter-navigation.xml:6
 msgid "Navigation"
 msgstr "Navigointi"
 
-#: ../data/50-mutter-navigation.xml.in.h:2
+#: data/50-mutter-navigation.xml:9
 msgid "Move window to workspace 1"
 msgstr "Siirrä ikkuna työtilaan 1"
 
-#: ../data/50-mutter-navigation.xml.in.h:3
+#: data/50-mutter-navigation.xml:12
 msgid "Move window to workspace 2"
 msgstr "Siirrä ikkuna työtilaan 2"
 
-#: ../data/50-mutter-navigation.xml.in.h:4
+#: data/50-mutter-navigation.xml:15
 msgid "Move window to workspace 3"
 msgstr "Siirrä ikkuna työtilaan 3"
 
-#: ../data/50-mutter-navigation.xml.in.h:5
+#: data/50-mutter-navigation.xml:18
 msgid "Move window to workspace 4"
 msgstr "Siirrä ikkuna työtilaan 4"
 
-#: ../data/50-mutter-navigation.xml.in.h:6
+#: data/50-mutter-navigation.xml:21
 msgid "Move window to last workspace"
 msgstr "Siirrä ikkuna viimeiseen työtilaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:7
+#: data/50-mutter-navigation.xml:24
 msgid "Move window one workspace to the left"
 msgstr "Siirrä ikkunaa yksi työtila vasemmalle"
 
-#: ../data/50-mutter-navigation.xml.in.h:8
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace to the right"
 msgstr "Siirrä ikkunaa yksi työtila oikealle"
 
-#: ../data/50-mutter-navigation.xml.in.h:9
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Siirrä ikkunaa yksi työtila ylös"
 
-#: ../data/50-mutter-navigation.xml.in.h:10
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one workspace down"
 msgstr "Siirrä ikkunaa yksi työtila alas"
 
-#: ../data/50-mutter-navigation.xml.in.h:11
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor to the left"
 msgstr "Siirrä ikkuna yhden näytön verran vasemmalle"
 
-#: ../data/50-mutter-navigation.xml.in.h:12
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor to the right"
 msgstr "Siirrä ikkuna yhden näytön verran oikealle"
 
-#: ../data/50-mutter-navigation.xml.in.h:13
+#: data/50-mutter-navigation.xml:42
 msgid "Move window one monitor up"
 msgstr "Siirrä ikkuna yhden näytön verran ylös"
 
-#: ../data/50-mutter-navigation.xml.in.h:14
+#: data/50-mutter-navigation.xml:45
 msgid "Move window one monitor down"
 msgstr "Siirrä ikkuna yhden näytön verran alas"
 
-#: ../data/50-mutter-navigation.xml.in.h:15
+#: data/50-mutter-navigation.xml:49
 msgid "Switch applications"
 msgstr "Vaihda sovelluksia"
 
-#: ../data/50-mutter-navigation.xml.in.h:16
+#: data/50-mutter-navigation.xml:54
 msgid "Switch to previous application"
 msgstr "Vaihda edelliseen sovellukseen"
 
-#: ../data/50-mutter-navigation.xml.in.h:17
+#: data/50-mutter-navigation.xml:58
 msgid "Switch windows"
 msgstr "Vaihda ikkunoita"
 
-#: ../data/50-mutter-navigation.xml.in.h:18
+#: data/50-mutter-navigation.xml:63
 msgid "Switch to previous window"
 msgstr "Vaihda edelliseen ikkunaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:19
+#: data/50-mutter-navigation.xml:67
 msgid "Switch windows of an application"
 msgstr "Vaihda sovelluksen ikkunoiden välillä"
 
-#: ../data/50-mutter-navigation.xml.in.h:20
+#: data/50-mutter-navigation.xml:72
 msgid "Switch to previous window of an application"
 msgstr "Vaihda sovelluksen edelliseen ikkunaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:21
+#: data/50-mutter-navigation.xml:76
 #, fuzzy
 msgid "Switch system controls"
 msgstr "Vaihda järjestelmän kontrolleja"
 
-#: ../data/50-mutter-navigation.xml.in.h:22
+#: data/50-mutter-navigation.xml:81
 #, fuzzy
 msgid "Switch to previous system control"
 msgstr "Vaihda järjestelmän kontrolleja"
 
-#: ../data/50-mutter-navigation.xml.in.h:23
+#: data/50-mutter-navigation.xml:85
 msgid "Switch windows directly"
 msgstr "Vaihda ikkunoita suoraan"
 
-#: ../data/50-mutter-navigation.xml.in.h:24
+#: data/50-mutter-navigation.xml:90
 msgid "Switch directly to previous window"
 msgstr "Vaihda suoraan edelliseen ikkunaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:25
+#: data/50-mutter-navigation.xml:94
 msgid "Switch windows of an app directly"
 msgstr "Vaihda sovelluksen ikkunoiden välillä suoraan"
 
-#: ../data/50-mutter-navigation.xml.in.h:26
+#: data/50-mutter-navigation.xml:99
 #, fuzzy
 #| msgid "Switch windows of an application"
 msgid "Switch directly to previous window of an app"
 msgstr "Vaihda sovelluksen ikkunoiden välillä"
 
-#: ../data/50-mutter-navigation.xml.in.h:27
+#: data/50-mutter-navigation.xml:103
 #, fuzzy
 msgid "Switch system controls directly"
 msgstr "Vaihda järjestelmän kontrolleja suoraan"
 
-#: ../data/50-mutter-navigation.xml.in.h:28
+#: data/50-mutter-navigation.xml:108
 #, fuzzy
 msgid "Switch directly to previous system control"
 msgstr "Vaihda järjestelmän kontrolleja"
 
-#: ../data/50-mutter-navigation.xml.in.h:29
+#: data/50-mutter-navigation.xml:111
 msgid "Hide all normal windows"
 msgstr "Piilota kaikki tavalliset ikkunat"
 
-#: ../data/50-mutter-navigation.xml.in.h:30
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 1"
 msgstr "Siirry työtilaan 1"
 
-#: ../data/50-mutter-navigation.xml.in.h:31
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 2"
 msgstr "Siirry työtilaan 2"
 
-#: ../data/50-mutter-navigation.xml.in.h:32
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to workspace 3"
 msgstr "Siirry työtilaan 3"
 
-#: ../data/50-mutter-navigation.xml.in.h:33
+#: data/50-mutter-navigation.xml:123
 msgid "Switch to workspace 4"
 msgstr "Siirry työtilaan 4"
 
-#: ../data/50-mutter-navigation.xml.in.h:34
+#: data/50-mutter-navigation.xml:126
 msgid "Switch to last workspace"
 msgstr "Siirry viimeiseen työtilaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:35
+#: data/50-mutter-navigation.xml:129
 msgid "Move to workspace left"
 msgstr "Siirrä vasemmalla olevaan työtilaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:36
+#: data/50-mutter-navigation.xml:132
 msgid "Move to workspace right"
 msgstr "Siirrä oikealla olevaan työtilaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:37
+#: data/50-mutter-navigation.xml:135
 msgid "Move to workspace above"
 msgstr "Siirrä yllä olevaan työtilaan"
 
-#: ../data/50-mutter-navigation.xml.in.h:38
+#: data/50-mutter-navigation.xml:138
 msgid "Move to workspace below"
 msgstr "Siirrä alla olevaan työtilaan"
 
-#: ../data/50-mutter-system.xml.in.h:1
+#: data/50-mutter-system.xml:6
 msgid "System"
 msgstr "Järjestelmä"
 
-#: ../data/50-mutter-system.xml.in.h:2
+#: data/50-mutter-system.xml:8
 msgid "Show the run command prompt"
 msgstr "Näytä komennonsuorituskehote"
 
-#: ../data/50-mutter-system.xml.in.h:3
+#: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Näytä toimintojen yleisnäkymä"
 
-#: ../data/50-mutter-windows.xml.in.h:1
+#: data/50-mutter-windows.xml:6
 msgid "Windows"
 msgstr "Ikkunat"
 
-#: ../data/50-mutter-windows.xml.in.h:2
+#: data/50-mutter-windows.xml:8
 msgid "Activate the window menu"
 msgstr "Aktivoi ikkunavalikko"
 
-#: ../data/50-mutter-windows.xml.in.h:3
+#: data/50-mutter-windows.xml:10
 msgid "Toggle fullscreen mode"
 msgstr "Vaihda koko näytön tilaan tai pois"
 
-#: ../data/50-mutter-windows.xml.in.h:4
+#: data/50-mutter-windows.xml:12
 #, fuzzy
 msgid "Toggle maximization state"
 msgstr "Vaihda suurennustilaa"
 
-#: ../data/50-mutter-windows.xml.in.h:5
+#: data/50-mutter-windows.xml:14
 msgid "Maximize window"
 msgstr "Suurenna ikkuna"
 
-#: ../data/50-mutter-windows.xml.in.h:6
+#: data/50-mutter-windows.xml:16
 msgid "Restore window"
 msgstr "Palauta ikkunan koko"
 
-#: ../data/50-mutter-windows.xml.in.h:7
+#: data/50-mutter-windows.xml:18
 #, fuzzy
 msgid "Toggle shaded state"
 msgstr "Vaihda rullaustilaa"
 
-#: ../data/50-mutter-windows.xml.in.h:8
+#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Sulje ikkuna"
 
-#: ../data/50-mutter-windows.xml.in.h:9
+#: data/50-mutter-windows.xml:22
 msgid "Hide window"
 msgstr "Piilota ikkuna"
 
-#: ../data/50-mutter-windows.xml.in.h:10
+#: data/50-mutter-windows.xml:24
 msgid "Move window"
 msgstr "Siirrä ikkunaa"
 
-#: ../data/50-mutter-windows.xml.in.h:11
+#: data/50-mutter-windows.xml:26
 msgid "Resize window"
 msgstr "Muuta ikkunan kokoa"
 
-#: ../data/50-mutter-windows.xml.in.h:12
+#: data/50-mutter-windows.xml:29
 #, fuzzy
 msgid "Toggle window on all workspaces or one"
 msgstr "Valitse onko ikkuna yhdessä vai kaikissa työtiloissa"
 
-#: ../data/50-mutter-windows.xml.in.h:13
+#: data/50-mutter-windows.xml:31
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Nosta ikkuna, jos se on peittynyt, muuten laske se"
 
-#: ../data/50-mutter-windows.xml.in.h:14
+#: data/50-mutter-windows.xml:33
 msgid "Raise window above other windows"
 msgstr "Nosta ikkuna muiden päälle"
 
-#: ../data/50-mutter-windows.xml.in.h:15
+#: data/50-mutter-windows.xml:35
 msgid "Lower window below other windows"
 msgstr "Laske ikkuna muiden alle"
 
-#: ../data/50-mutter-windows.xml.in.h:16
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window vertically"
 msgstr "Suurenna ikkuna pystysuunnassa"
 
-#: ../data/50-mutter-windows.xml.in.h:17
+#: data/50-mutter-windows.xml:39
 msgid "Maximize window horizontally"
 msgstr "Suurenna ikkuna vaakasuunnassa"
 
-#: ../data/50-mutter-windows.xml.in.h:18
+#: data/50-mutter-windows.xml:43
 msgid "View split on left"
 msgstr ""
 
-#: ../data/50-mutter-windows.xml.in.h:19
+#: data/50-mutter-windows.xml:47
 msgid "View split on right"
 msgstr ""
 
-#: ../data/mutter.desktop.in.h:1
+#: data/mutter.desktop.in:4
 msgid "Mutter"
 msgstr "Mutter"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:1
+#: data/org.gnome.mutter.gschema.xml.in:7
 msgid "Modifier to use for extended window management operations"
 msgstr "Muunnosnäppäin laajennettuja ikkunoidenhallintatoimintoja varten"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:2
+#: data/org.gnome.mutter.gschema.xml.in:8
+#, fuzzy
+#| msgid ""
+#| "This key will initiate the \"overlay\", which is a combination window "
+#| "overview and application launching system. The default is intended to be "
+#| "the \"Windows key\" on PC hardware. It's expected that this binding "
+#| "either the default or set to the empty string."
 msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
 msgstr ""
 "Tämä avain asettaa ”overlay”-tilan (peite), joka on yhdistelmä "
 "ikkunoidenhallintaa ja sovellusten käynnistämisjärjestelmää. Oletuksena "
 "käytetään ”Windows”-näppäintä PC-tietokoneissa. Odotuksena on, että tämä "
 "näppäinsidos on joko oletus tai sen arvona on tyhjä."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:3
+#: data/org.gnome.mutter.gschema.xml.in:20
 msgid "Attach modal dialogs"
 msgstr "Liitä modaalisia valintaikkunoita"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:4
+#: data/org.gnome.mutter.gschema.xml.in:21
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -309,33 +315,33 @@ msgstr ""
 "liitetään pääikkunan otsikkopalkkiin ja niitä siirretään yhdessä pääikkunan "
 "kanssa."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:5
+#: data/org.gnome.mutter.gschema.xml.in:30
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:6
+#: data/org.gnome.mutter.gschema.xml.in:31
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:7
+#: data/org.gnome.mutter.gschema.xml.in:40
 msgid "Workspaces are managed dynamically"
 msgstr "Työtilat hallitaan dynaamisesti"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:8
+#: data/org.gnome.mutter.gschema.xml.in:41
 msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
+"Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:9
+#: data/org.gnome.mutter.gschema.xml.in:50
 msgid "Workspaces only on primary"
 msgstr "Työtilat vain ensisijaisella"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:10
+#: data/org.gnome.mutter.gschema.xml.in:51
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -343,222 +349,289 @@ msgstr ""
 "Määrittää tapahtuuko työtilan vaihto ikkunoille kaikilla näytöillä vaiko "
 "vain ikkunoille ensisijaisella näytöllä."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:11
+#: data/org.gnome.mutter.gschema.xml.in:59
 msgid "No tab popup"
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:12
+#: data/org.gnome.mutter.gschema.xml.in:60
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:13
+#: data/org.gnome.mutter.gschema.xml.in:68
 msgid "Delay focus changes until the pointer stops moving"
 msgstr ""
 "Viivästytä kohdistuksen vaihtumista, kunnes osoitin lopettaa liikkumisen"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:14
+#: data/org.gnome.mutter.gschema.xml.in:69
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focus will not be changed immediately when entering a window, but only "
-"after the pointer stops moving."
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:15
+#: data/org.gnome.mutter.gschema.xml.in:79
 msgid "Draggable border width"
 msgstr "Raahattava reunaleveys"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:16
+#: data/org.gnome.mutter.gschema.xml.in:80
+#, fuzzy
+#| msgid ""
+#| "The amount of total draggable borders. If the theme's visible borders are "
+#| "not enough, invisible borders will be added to meet this value."
 msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
+"The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 "Raahattavien reunojen määrä yhteensä. Mikäli teeman näkyvät reunat eivät "
 "riitä, näkymätöntä reunaa lisätään täyttämään tämä arvo."
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:17
+#: data/org.gnome.mutter.gschema.xml.in:89
 msgid "Auto maximize nearly monitor sized windows"
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:18
+#: data/org.gnome.mutter.gschema.xml.in:90
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:19
+#: data/org.gnome.mutter.gschema.xml.in:98
 msgid "Place new windows in the center"
 msgstr "Aseta uudet ikkunat keskelle näyttöä"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:20
+#: data/org.gnome.mutter.gschema.xml.in:99
 msgid ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
 msgstr ""
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:21
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Ota käyttöön kokeelliset ominaisuudet"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
+msgstr ""
+
+#: data/org.gnome.mutter.gschema.xml.in:145
 #, fuzzy
 msgid "Select window from tab popup"
 msgstr "Poista ikkuna päältä"
 
-#: ../data/org.gnome.mutter.gschema.xml.in.h:22
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr ""
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:1
+#: data/org.gnome.mutter.gschema.xml.in:155
+#, fuzzy
+#| msgid "Switch applications"
+msgid "Switch monitor configurations"
+msgstr "Vaihda sovelluksia"
+
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr ""
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
 msgstr "Siirry virtuaalikonsoliin 1"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:2
+#: data/org.gnome.mutter.wayland.gschema.xml.in:10
 msgid "Switch to VT 2"
 msgstr "Siirry virtuaalikonsoliin 2"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:3
+#: data/org.gnome.mutter.wayland.gschema.xml.in:14
 msgid "Switch to VT 3"
 msgstr "Siirry virtuaalikonsoliin 3"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:4
+#: data/org.gnome.mutter.wayland.gschema.xml.in:18
 msgid "Switch to VT 4"
 msgstr "Siirry virtuaalikonsoliin 4"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:5
+#: data/org.gnome.mutter.wayland.gschema.xml.in:22
 msgid "Switch to VT 5"
 msgstr "Siirry virtuaalikonsoliin 5"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:6
+#: data/org.gnome.mutter.wayland.gschema.xml.in:26
 msgid "Switch to VT 6"
 msgstr "Siirry virtuaalikonsoliin 6"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:7
+#: data/org.gnome.mutter.wayland.gschema.xml.in:30
 msgid "Switch to VT 7"
 msgstr "Siirry virtuaalikonsoliin 7"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:8
-#| msgid "Switch to VT 1"
+#: data/org.gnome.mutter.wayland.gschema.xml.in:34
 msgid "Switch to VT 8"
 msgstr "Siirry virtuaalikonsoliin 8"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:9
-#| msgid "Switch to VT 1"
+#: data/org.gnome.mutter.wayland.gschema.xml.in:38
 msgid "Switch to VT 9"
 msgstr "Siirry virtuaalikonsoliin 9"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:10
-#| msgid "Switch to VT 1"
+#: data/org.gnome.mutter.wayland.gschema.xml.in:42
 msgid "Switch to VT 10"
 msgstr "Siirry virtuaalikonsoliin 10"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:11
-#| msgid "Switch to VT 1"
+#: data/org.gnome.mutter.wayland.gschema.xml.in:46
 msgid "Switch to VT 11"
 msgstr "Siirry virtuaalikonsoliin 11"
 
-#: ../data/org.gnome.mutter.wayland.gschema.xml.in.h:12
-#| msgid "Switch to VT 1"
+#: data/org.gnome.mutter.wayland.gschema.xml.in:50
 msgid "Switch to VT 12"
 msgstr "Siirry virtuaalikonsoliin 12"
 
-#: ../src/backends/meta-monitor-manager.c:364
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr ""
+
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: src/backends/meta-input-settings.c:2151
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr ""
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: src/backends/meta-input-settings.c:2174
+#, fuzzy
+msgid "Switch monitor"
+msgstr "Vaihda järjestelmän kontrolleja"
+
+#: src/backends/meta-input-settings.c:2176
+msgid "Show on-screen help"
+msgstr ""
+
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Sisäänrakennettu näyttö"
 
-#: ../src/backends/meta-monitor-manager.c:391
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: ../src/backends/meta-monitor-manager.c:393
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Tuntematon näyttö"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:401
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:456
-#, c-format
+#: src/compositor/compositor.c:476
+#, fuzzy, c-format
+#| msgid ""
+#| "Another compositing manager is already running on screen %i on display "
+#| "\"%s\"."
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
 "Näytön ”%2$s” ruudullä %1$d on jo käynnissä toinen ikkunoidenladontaohjelman."
 
-#: ../src/core/bell.c:185
+#: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Äänimerkki"
 
-#: ../src/core/delete.c:127
+#: src/core/display.c:608
+#, c-format
+msgid "Failed to open X Window System display “%s”\n"
+msgstr "X-ikkunointijärjestelmän näytön “%s” avaaminen epäonnistui\n"
+
+#: src/core/main.c:189
+msgid "Disable connection to session manager"
+msgstr "Estä yhteys sessionhallintaan"
+
+#: src/core/main.c:195
+msgid "Replace the running window manager"
+msgstr "Vaihda käytössä oleva ikkunanhallinta"
+
+#: src/core/main.c:201
+msgid "Specify session management ID"
+msgstr "Anna sessionhallinnan ID"
+
+#: src/core/main.c:206
+msgid "X Display to use"
+msgstr "Käytettävä X-näyttö"
+
+#: src/core/main.c:212
+msgid "Initialize session from savefile"
+msgstr "Alusta sessio tiedostosta"
+
+#: src/core/main.c:218
+msgid "Make X calls synchronous"
+msgstr "Käytä synkronisia X-kutsuja"
+
+#: src/core/main.c:225
+msgid "Run as a wayland compositor"
+msgstr "Suorita wayland-koostajana"
+
+#: src/core/main.c:231
+#, fuzzy
+#| msgid "Run as a wayland compositor"
+msgid "Run as a nested compositor"
+msgstr "Suorita wayland-koostajana"
+
+#: src/core/main.c:239
+msgid "Run as a full display server, rather than nested"
+msgstr ""
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
 #, c-format
 msgid "“%s” is not responding."
 msgstr "\"%s\" ei vastaa."
 
-#: ../src/core/delete.c:129
+#: src/core/meta-close-dialog-default.c:149
 msgid "Application is not responding."
 msgstr "Sovellus ei vastaa."
 
-#: ../src/core/delete.c:134
+#: src/core/meta-close-dialog-default.c:154
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
 "Voit odottaa sovellusta vielä hetken tai sulkea sovelluksen väkisin heti."
 
-#: ../src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Odota"
-
-#: ../src/core/delete.c:141
+#: src/core/meta-close-dialog-default.c:161
 msgid "_Force Quit"
 msgstr "Sulje _väkisin"
 
-#: ../src/core/display.c:562
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "X-ikkunointijärjestelmän näytön ”%s” avaaminen epäonnistui\n"
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Odota"
 
-#: ../src/core/main.c:176
-msgid "Disable connection to session manager"
-msgstr "Estä yhteys sessionhallintaan"
-
-#: ../src/core/main.c:182
-msgid "Replace the running window manager"
-msgstr "Vaihda käytössä oleva ikkunanhallinta"
-
-#: ../src/core/main.c:188
-msgid "Specify session management ID"
-msgstr "Anna sessionhallinnan ID"
-
-#: ../src/core/main.c:193
-msgid "X Display to use"
-msgstr "Käytettävä X-näyttö"
-
-#: ../src/core/main.c:199
-msgid "Initialize session from savefile"
-msgstr "Alusta sessio tiedostosta"
-
-#: ../src/core/main.c:205
-msgid "Make X calls synchronous"
-msgstr "Käytä synkronisia X-kutsuja"
-
-#: ../src/core/main.c:212
-msgid "Run as a wayland compositor"
-msgstr "Suorita wayland-koostajana"
-
-#: ../src/core/main.c:220
-msgid "Run as a full display server, rather than nested"
-msgstr ""
-
-#: ../src/core/mutter.c:39
-#, c-format
+#: src/core/mutter.c:39
+#, fuzzy, c-format
+#| msgid ""
+#| "mutter %s\n"
+#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+#| "This is free software; see the source for copying conditions.\n"
+#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
@@ -569,49 +642,59 @@ msgstr ""
 "Ei MINKÄÄNLAISTA takuuta: ei edes takuuta MYYNTIKELPOISUUDESTA tai\n"
 "SOPIVUUDESTA JOHONKIN KÄYTTÖÖN.\n"
 
-#: ../src/core/mutter.c:53
+#: src/core/mutter.c:53
 msgid "Print version"
 msgstr "Näytä versio"
 
-#: ../src/core/mutter.c:59
+#: src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Käytettävä Mutter-liitännäinen"
 
-#: ../src/core/prefs.c:2004
+#: src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
 
-#: ../src/core/screen.c:525
-#, c-format
+#: src/core/screen.c:580
+#, fuzzy, c-format
 #| msgid ""
-#| "Screen %d on display \"%s\" already has a window manager; try using the --"
-#| "replace option to replace the current window manager.\n"
+#| "Display \"%s\" already has a window manager; try using the --replace "
+#| "option to replace the current window manager."
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "Näytöllä ”%s” on jo ikkunointiohjelma: kokeile valitsinta --replace, jos "
 "haluat korvata nykyisen ikkunointiohjelman."
 
-#: ../src/core/screen.c:607
-#, c-format
-msgid "Screen %d on display '%s' is invalid\n"
+#: src/core/screen.c:665
+#, fuzzy, c-format
+#| msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Näytön ”%2$s” ruutu %1$d ei ole kelvollinen\n"
 
-#: ../src/core/util.c:118
+#: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter on käännetty ilman tukea monisanaisille ilmoituksille\n"
 
-#: ../src/x11/session.c:1815
+#: src/wayland/meta-wayland-tablet-pad.c:563
+#, c-format
+msgid "Mode Switch: Mode %d"
+msgstr ""
+
+#: src/x11/session.c:1815
+#, fuzzy
+#| msgid ""
+#| "These windows do not support &quot;save current setup&quot; and will have "
+#| "to be restarted manually next time you log in."
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
 "Nämä ikkunat eivät ymmärrä ”tallenna nykyinen tila”-komentoa, ja ne täytyy "
 "käynnistää käsin uudelleen kun kirjaudut seuraavan kerran sisään."
 
-#: ../src/x11/window-props.c:549
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s @ %s"
