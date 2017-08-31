@@ -5,7 +5,7 @@
 # Hendrik Richter <hendrikr@gnome.org>, 2005, 2006, 2007, 2008.
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2010-2013, 2016-2017.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009, 2011, 2012.
-# Wolfgang Stöggl <c72578@yahoo.de> 2011.
+# Wolfgang Stöggl <c72578@yahoo.de> 2011, 2017.
 # Tobias Endrigkeit <tobiasendrigkeit@googlemail.com>, 2012.
 #
 msgid ""
@@ -13,16 +13,16 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-05-10 19:07+0000\n"
-"PO-Revision-Date: 2017-05-12 17:35+0200\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2017-08-29 16:09+0000\n"
+"PO-Revision-Date: 2017-08-30 17:07+0200\n"
+"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -134,7 +134,7 @@ msgstr "Systemsteuerungen sofort umschalten"
 
 #: data/50-mutter-navigation.xml:108
 msgid "Switch directly to previous system control"
-msgstr "Direkt zur vorherigen Systemsteuerungen wechselen"
+msgstr "Direkt zur vorherigen Systemsteuerungen wechseln"
 
 #: data/50-mutter-navigation.xml:111
 msgid "Hide all normal windows"
@@ -412,7 +412,6 @@ msgid "Enable experimental features"
 msgstr "Experimentelle Funktionsmerkmale aktivieren"
 
 #: data/org.gnome.mutter.gschema.xml.in:108
-#, fuzzy
 msgid ""
 "To enable experimental features, add the feature keyword to the list. "
 "Whether the feature requires restarting the compositor depends on the given "
@@ -421,22 +420,42 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
 "Um experimentelle Funktionsmerkmale zu aktivieren, fügen Sie das "
 "entsprechende Schlüsselwort zur Liste hinzu. Möglicherweise muss der "
-"Compositor neu gestartet werden, um es zu aktivieren. Für diese "
-"experimentellen Funktionsmerkmale gilt, dass sie nicht unbedingt dauerhaft "
-"verfügbar sein werden, oder Einstellungen möglich sind. Derzeit mögliche "
-"Schlüsselwörter: • “scale-monitor-framebuffer” — "
+"Compositor neu gestartet werden, um es zu aktivieren, dies ist vom "
+"Funktionsmerkmal abhängig. Für diese experimentellen Funktionsmerkmale gilt, "
+"dass sie nicht unbedingt dauerhaft verfügbar sein werden, oder Einstellungen "
+"möglich sind. Derzeit mögliche Schlüsselwörter: • »scale-monitor-"
+"framebuffer« – weist Mutter an, in der Voreinstellung logische Bildschirme "
+"in einem logischen Pixel-Koordinatensystem anzuordnen, wobei die Bildschirm-"
+"Framebuffer anstelle der Fensterinhalte skaliert werden, um HiDPI-"
+"Bildschirme besser versorgen zu können. Dafür ist kein Neustart "
+"erforderlich. • »remote-desktop« – aktiviert Remotedesktop-Unterstützung. Um "
+"das Teilen von Bildschirmen mittels Remotedesktop zu unterstützen, muss "
+"»screen-cast« ebenfalls aktiviert sein. • »screen-cast« – aktiviert »screen "
+"cast«-Unterstützung."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Fenster aus Tab-Anzeige auswählen"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Tab-Anzeige abbrechen"
+
+#: data/org.gnome.mutter.gschema.xml.in:155
+msgid "Switch monitor configurations"
+msgstr "Bildschirmkonfigurationen wechseln"
+
+# Ich denke nicht, dass »rotate« hier die Bildschirmdrehung meint, sondern eher eine Liste aus Konfigurationen rotiert (d.h. umgewälzt) wird.
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr "Wechselt die Konfiguration des eingebauten Bildschirms"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -486,10 +505,14 @@ msgstr "Zum virtuellen Terminal 11 wechseln"
 msgid "Switch to VT 12"
 msgstr "Zum virtuellen Terminal 12 wechseln"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Tastenkombinationen erneut aktivieren"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1848
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Moduswechsel (Gruppe %d)"
@@ -497,37 +520,37 @@ msgstr "Moduswechsel (Gruppe %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1870
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Bildschirm wechseln"
 
-#: src/backends/meta-input-settings.c:1872
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Bildschirmhilfe anzeigen"
 
-#: src/backends/meta-monitor-manager.c:783
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Eingebaute Anzeige"
 
-#: src/backends/meta-monitor-manager.c:806
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: src/backends/meta-monitor-manager.c:808
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Unbekannte Anzeige"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:816
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:474
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -538,32 +561,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Klangereignis"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "»%s« antwortet nicht."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Die Anwendung antwortet nicht."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Sie können der Anwendung noch etwas Zeit geben oder ein sofortiges Beenden "
-"erzwingen."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Beenden erzwingen"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Warten"
 
 #: src/core/display.c:608
 #, c-format
@@ -605,6 +602,32 @@ msgstr "Als eingebetteten Compositor ausführen"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Als vollwertigen Display-Server verwenden (nicht eingebettet)"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "»%s« antwortet nicht."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Die Anwendung antwortet nicht."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Sie können der Anwendung noch etwas Zeit geben oder ein sofortiges Beenden "
+"erzwingen."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Beenden erzwingen"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Warten"
 
 # CHECK
 # c-format
