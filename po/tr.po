@@ -7,18 +7,18 @@
 # İlker DAĞLI <ilker@ilkerdagli.info>, 2011.
 # Muhammed EKEN <gnome@m-eken.com>, 2011.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-13 15:47+0000\n"
-"PO-Revision-Date: 2017-08-13 18:55+0300\n"
-"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
-"Language-Team: Turkish <gnometurk@gnome.org>\n"
+"POT-Creation-Date: 2017-08-29 16:09+0000\n"
+"PO-Revision-Date: 2017-08-29 23:17+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -386,15 +386,15 @@ msgstr ""
 
 #: data/org.gnome.mutter.gschema.xml.in:89
 msgid "Auto maximize nearly monitor sized windows"
-msgstr "Ekran boyutuna yakın pencereleri otomatik ekranı kaplat"
+msgstr "Ekran boyutuna yakın pencereleri kendiliğinden ekranı kaplattır"
 
 #: data/org.gnome.mutter.gschema.xml.in:90
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
 msgstr ""
-"Etkinleştirildiğinde ekran boyutunda başlayan yeni pencereler otomatik "
-"olarak ekranı kaplar."
+"Etkinleştirildiğinde ekran boyutunda başlayan yeni pencereler kendiliğinden "
+"ekranı kaplar."
 
 #: data/org.gnome.mutter.gschema.xml.in:98
 msgid "Place new windows in the center"
@@ -413,19 +413,32 @@ msgid "Enable experimental features"
 msgstr "Deneysel özellikleri etkinleştir"
 
 #: data/org.gnome.mutter.gschema.xml.in:108
+#| msgid ""
+#| "To enable experimental features, add the feature keyword to the list. "
+#| "Whether the feature requires restarting the compositor depends on the "
+#| "given feature. Any experimental feature is not required to still be "
+#| "available, or configurable. Don’t expect adding anything in this setting "
+#| "to be future proof. Currently possible keywords: • “monitor-config-"
+#| "manager” — use the new monitor configuration system, aimed to replace the "
+#| "old one. This enables a higher level configuration API to be used by "
+#| "configuration applications, as well as the ability to configure per "
+#| "logical monitor scale. • “scale-monitor-framebuffer” — makes mutter "
+#| "default to layout logical monitors in a logical pixel coordinate space, "
+#| "while scaling monitor framebuffers instead of window content, to manage "
+#| "HiDPI monitors. Does not require a restart. Also enabling “monitor-config-"
+#| "manager” is required for this feature to be enabled."
 msgid ""
 "To enable experimental features, add the feature keyword to the list. "
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
-"monitor configuration system, aimed to replace the old one. This enables a "
-"higher level configuration API to be used by configuration applications, as "
-"well as the ability to configure per logical monitor scale. • “scale-monitor-"
-"framebuffer” — makes mutter default to layout logical monitors in a logical "
-"pixel coordinate space, while scaling monitor framebuffers instead of window "
-"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
-"“monitor-config-manager” is required for this feature to be enabled."
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
 "Deneysel özellikleri etkinleştirmek için özelliğin anahtar sözcüğünü listeye "
 "ekleyin. Özelliğin yeniden başlatmayı gerektirip gerektirmeyeceği verilen "
@@ -435,26 +448,29 @@ msgstr ""
 "anda kullanılabilir anahtar sözcükler: • “monitor-config-manager” — "
 "eskisinin yerini alması amaçlanan yeni monitör yapılandırma sistemini "
 "kullan. Bu, yapılandırma uygulamaları tarafından kullanılmak üzere daha "
-"yüksek düzeyde bir yapılandırma API'sini etkinleştirir ve ayrıca mantıksal "
+"yüksek düzeyde bir yapılandırma API’sini etkinleştirir ve ayrıca mantıksal "
 "monitör ölçeğinde yapılandırma yapmaya olanak tanır.• “scale-monitor-"
 "framebuffer” — mutter’in HiDPI monitörleri yönetmesi için pencere içeriği "
 "yerine monitör çerçeve arabelleğini ölçeklendirirken, mantıksal monitörleri "
-"mantıksal piksel koordinat aralığına yerleştirmesini öntanımlı yapar."
+"mantıksal piksel koordinat aralığına yerleştirmesini öntanımlı yapar. "
+"Yeniden başlatma gerektirmez. • “remote-desktop” — uzak masaüstü desteğini "
+"etkinleştirir. Uzak masaüstünü ekran paylaşmayla desteklemek için “screen-"
+"cast” mutlaka etkinleştirilmelidir. • “screen-cast” — ekran kaydı desteğini "
+"etkinleştirir."
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Pencereyi, sekme açılır penceresinden seç"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Sekmeyi yeni pencerede açmayı iptal et"
 
-#: data/org.gnome.mutter.gschema.xml.in:161
+#: data/org.gnome.mutter.gschema.xml.in:155
 msgid "Switch monitor configurations"
 msgstr "Monitör yapılandırmaları arasında geçiş yap"
 
-#: data/org.gnome.mutter.gschema.xml.in:166
-#| msgid "Switch monitor configurations"
+#: data/org.gnome.mutter.gschema.xml.in:160
 msgid "Rotates the built-in monitor configuration"
 msgstr "Yerleşik monitör yapılandırmaları arasında geçiş yapar"
 
@@ -508,12 +524,12 @@ msgstr "VT 12’ye geç"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:54
 msgid "Re-enable shortcuts"
-msgstr ""
+msgstr "Kısayolları yeniden etkinleştir"
 
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2118
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Kip anahtarı (Group %d)"
@@ -521,30 +537,30 @@ msgstr "Kip anahtarı (Group %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2141
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Monitör değiştir"
 
-#: src/backends/meta-input-settings.c:2143
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Ekranda yardımı göster"
 
-#: src/backends/meta-monitor-manager.c:927
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Yerleşik ekran"
 
-#: src/backends/meta-monitor-manager.c:950
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: src/backends/meta-monitor-manager.c:952
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:960
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -612,19 +628,19 @@ msgstr "“%s” yanıt vermiyor."
 
 #: src/core/meta-close-dialog-default.c:149
 msgid "Application is not responding."
-msgstr "Uygulama cevap vermiyor"
+msgstr "Uygulama yanıt vermiyor"
 
 #: src/core/meta-close-dialog-default.c:154
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Uygulamanın devam etmesi için bir müddet bekleyi seçebilirsiniz ya da "
-"uygulamanın tamamen çıkması için onu zorlayabilirsiniz."
+"Uygulamanın devam etmesi için bir süre beklemeyi seçebilir veya tümüyle "
+"çıkması için zorlayabilirsiniz."
 
 #: src/core/meta-close-dialog-default.c:161
 msgid "_Force Quit"
-msgstr "_Sonlandır"
+msgstr "_Zorla Çık"
 
 #: src/core/meta-close-dialog-default.c:161
 msgid "_Wait"
@@ -688,7 +704,7 @@ msgid ""
 "restarted manually next time you log in."
 msgstr ""
 "Bu pencereler, “geçerli ayarları kaydet” özelliğini desteklemiyor ve bir "
-"dahaki girişinizde elle yeniden başlatılmak zorunda."
+"dahaki girişinizde elle yeniden başlatılmak zorundadır."
 
 #: src/x11/window-props.c:559
 #, c-format
