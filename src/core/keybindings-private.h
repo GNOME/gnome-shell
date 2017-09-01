@@ -116,8 +116,8 @@ typedef struct
   int n_iso_next_group_combos;
 
   /*
-   * A primary layout, and an optional secondary layout that is
-   * not yet used.
+   * A primary layout, and an optional secondary layout for when the
+   * primary layout does not use the latin alphabet.
    */
   MetaKeyBindingKeyboardLayout active_layouts[2];
 

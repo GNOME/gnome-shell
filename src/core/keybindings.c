@@ -622,6 +622,86 @@ binding_reload_combos_foreach (gpointer key,
   index_binding (keys, binding);
 }
 
+typedef struct _FindLatinKeysymsState
+{
+  MetaKeyBindingKeyboardLayout *layout;
+  gboolean *required_keysyms_found;
+  int n_required_keysyms;
+} FindLatinKeysymsState;
+
+static void
+find_latin_keysym (struct xkb_keymap *keymap,
+                   xkb_keycode_t      key,
+                   void              *data)
+{
+  FindLatinKeysymsState *state = data;
+  int n_keysyms, i;
+  const xkb_keysym_t *keysyms;
+
+  n_keysyms = xkb_keymap_key_get_syms_by_level (state->layout->keymap,
+                                                key,
+                                                state->layout->index,
+                                                0,
+                                                &keysyms);
+  for (i = 0; i < n_keysyms; i++)
+    {
+      xkb_keysym_t keysym = keysyms[i];
+
+      if (keysym >= XKB_KEY_a && keysym <= XKB_KEY_z)
+        {
+          unsigned int keysym_index = keysym - XKB_KEY_a;
+
+          if (!state->required_keysyms_found[keysym_index])
+            {
+              state->required_keysyms_found[keysym_index] = TRUE;
+              state->n_required_keysyms--;
+            }
+        }
+    }
+}
+
+static gboolean
+needs_secondary_layout (MetaKeyBindingKeyboardLayout *layout)
+{
+  gboolean required_keysyms_found[] = {
+    FALSE, /* XKB_KEY_a */
+    FALSE, /* XKB_KEY_b */
+    FALSE, /* XKB_KEY_c */
+    FALSE, /* XKB_KEY_d */
+    FALSE, /* XKB_KEY_e */
+    FALSE, /* XKB_KEY_f */
+    FALSE, /* XKB_KEY_g */
+    FALSE, /* XKB_KEY_h */
+    FALSE, /* XKB_KEY_i */
+    FALSE, /* XKB_KEY_j */
+    FALSE, /* XKB_KEY_k */
+    FALSE, /* XKB_KEY_l */
+    FALSE, /* XKB_KEY_m */
+    FALSE, /* XKB_KEY_n */
+    FALSE, /* XKB_KEY_o */
+    FALSE, /* XKB_KEY_p */
+    FALSE, /* XKB_KEY_q */
+    FALSE, /* XKB_KEY_r */
+    FALSE, /* XKB_KEY_s */
+    FALSE, /* XKB_KEY_t */
+    FALSE, /* XKB_KEY_u */
+    FALSE, /* XKB_KEY_v */
+    FALSE, /* XKB_KEY_w */
+    FALSE, /* XKB_KEY_x */
+    FALSE, /* XKB_KEY_y */
+    FALSE, /* XKB_KEY_z */
+  };
+  FindLatinKeysymsState state = {
+    .layout = layout,
+    .required_keysyms_found = required_keysyms_found,
+    .n_required_keysyms = G_N_ELEMENTS (required_keysyms_found),
+  };
+
+  xkb_keymap_key_for_each (layout->keymap, find_latin_keysym, &state);
+
+  return state.n_required_keysyms != 0;
+}
+
 static void
 clear_active_keyboard_layouts (MetaKeyBindingManager *keys)
 {
@@ -636,22 +716,55 @@ clear_active_keyboard_layouts (MetaKeyBindingManager *keys)
     }
 }
 
+static MetaKeyBindingKeyboardLayout
+create_us_layout (void)
+{
+  struct xkb_rule_names names;
+  struct xkb_keymap *keymap;
+  struct xkb_context *context;
+
+  names.rules = DEFAULT_XKB_RULES_FILE;
+  names.model = DEFAULT_XKB_MODEL;
+  names.layout = "us";
+  names.variant = "";
+  names.options = "";
+
+  context = xkb_context_new (XKB_CONTEXT_NO_FLAGS);
+  keymap = xkb_keymap_new_from_names (context, &names, XKB_KEYMAP_COMPILE_NO_FLAGS);
+  xkb_context_unref (context);
+
+  return (MetaKeyBindingKeyboardLayout) {
+    .keymap = keymap,
+    .n_levels = calculate_n_layout_levels (keymap, 0),
+  };
+}
+
 static void
 reload_active_keyboard_layouts (MetaKeyBindingManager *keys)
 {
   struct xkb_keymap *keymap;
   xkb_layout_index_t layout_index;
+  MetaKeyBindingKeyboardLayout primary_layout;
 
   clear_active_keyboard_layouts (keys);
 
   keymap = meta_backend_get_keymap (keys->backend);
   layout_index = meta_backend_get_keymap_layout_group (keys->backend);
-
-  keys->active_layouts[META_KEY_BINDING_PRIMARY_LAYOUT] = (MetaKeyBindingKeyboardLayout) {
+  primary_layout = (MetaKeyBindingKeyboardLayout) {
     .keymap = xkb_keymap_ref (keymap),
     .index = layout_index,
     .n_levels = calculate_n_layout_levels (keymap, layout_index),
   };
+
+  keys->active_layouts[META_KEY_BINDING_PRIMARY_LAYOUT] = primary_layout;
+
+  if (needs_secondary_layout (&primary_layout))
+    {
+      MetaKeyBindingKeyboardLayout us_layout;
+
+      us_layout = create_us_layout ();
+      keys->active_layouts[META_KEY_BINDING_SECONDARY_LAYOUT] = us_layout;
+    }
 }
 
 static void
