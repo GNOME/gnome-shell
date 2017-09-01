@@ -91,6 +91,8 @@ typedef struct
 
 typedef struct
 {
+  MetaBackend *backend;
+
   GHashTable *key_bindings;
   GHashTable *key_bindings_index;
   xkb_mod_mask_t ignored_modifier_mask;

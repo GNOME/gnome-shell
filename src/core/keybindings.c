@@ -229,8 +229,7 @@ key_combo_key (MetaResolvedKeyCombo *resolved_combo,
 static void
 reload_modmap (MetaKeyBindingManager *keys)
 {
-  MetaBackend *backend = meta_get_backend ();
-  struct xkb_keymap *keymap = meta_backend_get_keymap (backend);
+  struct xkb_keymap *keymap = meta_backend_get_keymap (keys->backend);
   struct xkb_state *scratch_state;
   xkb_mod_mask_t scroll_lock_mask;
   xkb_mod_mask_t dummy_mask;
@@ -347,7 +346,6 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
                          int                     keysym,
                          MetaResolvedKeyCombo   *resolved_combo)
 {
-  MetaBackend *backend = meta_get_backend ();
   struct xkb_keymap *keymap;
   xkb_layout_index_t layout_index;
   xkb_level_index_t layout_level;
@@ -364,8 +362,8 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
       goto out;
     }
 
-  keymap = meta_backend_get_keymap (backend);
-  layout_index = meta_backend_get_keymap_layout_group (backend);
+  keymap = meta_backend_get_keymap (keys->backend);
+  layout_index = meta_backend_get_keymap_layout_group (keys->backend);
 
   for (layout_level = 0; layout_level < keys->keymap_num_levels; layout_level++)
     {
@@ -405,8 +403,7 @@ determine_keymap_num_levels_iter (struct xkb_keymap *keymap,
 static void
 determine_keymap_num_levels (MetaKeyBindingManager *keys)
 {
-  MetaBackend *backend = meta_get_backend ();
-  struct xkb_keymap *keymap = meta_backend_get_keymap (backend);
+  struct xkb_keymap *keymap = meta_backend_get_keymap (keys->backend);
 
   keys->keymap_num_levels = 0;
   xkb_keymap_key_for_each (keymap, determine_keymap_num_levels_iter, &keys->keymap_num_levels);
@@ -996,7 +993,7 @@ meta_change_button_grab (MetaKeyBindingManager *keys,
   if (meta_is_wayland_compositor ())
     return;
 
-  MetaBackendX11 *backend = META_BACKEND_X11 (meta_get_backend ());
+  MetaBackendX11 *backend = META_BACKEND_X11 (keys->backend);
   Display *xdisplay = meta_backend_x11_get_xdisplay (backend);
 
   unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
@@ -1767,7 +1764,7 @@ process_overlay_key (MetaDisplay *display,
                      MetaWindow *window)
 {
   MetaKeyBindingManager *keys = &display->key_binding_manager;
-  MetaBackend *backend = meta_get_backend ();
+  MetaBackend *backend = keys->backend;
   Display *xdisplay;
 
   if (META_IS_BACKEND_X11 (backend))
@@ -4163,6 +4160,8 @@ meta_display_init_keys (MetaDisplay *display)
   MetaKeyBindingManager *keys = &display->key_binding_manager;
   MetaBackend *backend = meta_get_backend ();
   MetaKeyHandler *handler;
+
+  keys->backend = backend;
 
   /* Keybindings */
   keys->ignored_modifier_mask = 0;
