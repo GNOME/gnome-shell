@@ -89,6 +89,13 @@ typedef struct
   gboolean      builtin:1;
 } MetaKeyPref;
 
+typedef struct _MetaKeyBindingKeyboardLayout
+{
+  struct xkb_keymap *keymap;
+  xkb_layout_index_t index;
+  xkb_level_index_t n_levels;
+} MetaKeyBindingKeyboardLayout;
+
 typedef struct
 {
   MetaBackend *backend;
@@ -108,7 +115,11 @@ typedef struct
   MetaResolvedKeyCombo iso_next_group_combo[2];
   int n_iso_next_group_combos;
 
-  xkb_level_index_t keymap_num_levels;
+  /*
+   * A primary layout, and an optional secondary layout that is
+   * not yet used.
+   */
+  MetaKeyBindingKeyboardLayout active_layouts[2];
 
   /* Alt+click button grabs */
   ClutterModifierType window_grab_modifiers;

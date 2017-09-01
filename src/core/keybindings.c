@@ -57,6 +57,9 @@
 #define SCHEMA_MUTTER_KEYBINDINGS "org.gnome.mutter.keybindings"
 #define SCHEMA_MUTTER_WAYLAND_KEYBINDINGS "org.gnome.mutter.wayland.keybindings"
 
+#define META_KEY_BINDING_PRIMARY_LAYOUT 0
+#define META_KEY_BINDING_SECONDARY_LAYOUT 1
+
 static gboolean add_builtin_keybinding (MetaDisplay          *display,
                                         const char           *name,
                                         GSettings            *settings,
@@ -339,6 +342,27 @@ get_keycodes_for_keysym_iter (struct xkb_keymap *keymap,
     }
 }
 
+static void
+add_keysym_keycodes_from_layout (int                           keysym,
+                                 MetaKeyBindingKeyboardLayout *layout,
+                                 GArray                       *keycodes)
+{
+  xkb_level_index_t layout_level;
+
+  for (layout_level = 0; layout_level < layout->n_levels; layout_level++)
+    {
+      FindKeysymData search_data = (FindKeysymData) {
+        .keycodes = keycodes,
+        .keysym = keysym,
+        .layout = layout->index,
+        .level = layout_level
+      };
+      xkb_keymap_key_for_each (layout->keymap,
+                               get_keycodes_for_keysym_iter,
+                               &search_data);
+    }
+}
+
 /* Original code from gdk_x11_keymap_get_entries_for_keyval() in
  * gdkkeys-x11.c */
 static void
@@ -346,9 +370,7 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
                          int                     keysym,
                          MetaResolvedKeyCombo   *resolved_combo)
 {
-  struct xkb_keymap *keymap;
-  xkb_layout_index_t layout_index;
-  xkb_level_index_t layout_level;
+  unsigned int i;
   GArray *keycodes;
   int keycode;
 
@@ -362,19 +384,14 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
       goto out;
     }
 
-  keymap = meta_backend_get_keymap (keys->backend);
-  layout_index = meta_backend_get_keymap_layout_group (keys->backend);
-
-  for (layout_level = 0; layout_level < keys->keymap_num_levels; layout_level++)
+  for (i = 0; i < G_N_ELEMENTS (keys->active_layouts); i++)
     {
-      FindKeysymData search_data = (FindKeysymData) {
-        .keycodes = keycodes,
-        .keysym = keysym,
-        .layout = layout_index,
-        .level = layout_level
-      };
-      xkb_keymap_key_for_each (keymap, get_keycodes_for_keysym_iter,
-                               &search_data);
+      MetaKeyBindingKeyboardLayout *layout = &keys->active_layouts[i];
+
+      if (!layout->keymap)
+        continue;
+
+      add_keysym_keycodes_from_layout (keysym, layout, keycodes);
     }
 
  out:
@@ -384,29 +401,44 @@ get_keycodes_for_keysym (MetaKeyBindingManager  *keys,
                                     keycodes->len == 0 ? TRUE : FALSE);
 }
 
-static void
-determine_keymap_num_levels_iter (struct xkb_keymap *keymap,
-                                  xkb_keycode_t      keycode,
-                                  void              *data)
+typedef struct _CalculateLayoutLevelsState
 {
-  xkb_level_index_t *num_levels = data;
-  xkb_layout_index_t i;
+  struct xkb_keymap *keymap;
+  xkb_layout_index_t layout_index;
 
-  for (i = 0; i < xkb_keymap_num_layouts_for_key (keymap, keycode); i++)
-    {
-      xkb_level_index_t level = xkb_keymap_num_levels_for_key (keymap, keycode, i);
-      if (level > *num_levels)
-        *num_levels = level;
-    }
+  xkb_level_index_t out_n_levels;
+} CalculateLayoutLevelState;
+
+static void
+calculate_n_layout_levels_iter (struct xkb_keymap *keymap,
+                                xkb_keycode_t      keycode,
+                                void              *data)
+{
+  CalculateLayoutLevelState *state = data;
+  xkb_level_index_t n_levels;
+
+  n_levels = xkb_keymap_num_levels_for_key (keymap,
+                                            keycode,
+                                            state->layout_index);
+
+  state->out_n_levels = MAX (n_levels, state->out_n_levels);
 }
 
-static void
-determine_keymap_num_levels (MetaKeyBindingManager *keys)
-{
-  struct xkb_keymap *keymap = meta_backend_get_keymap (keys->backend);
+static xkb_level_index_t
+calculate_n_layout_levels (struct xkb_keymap *keymap,
+                           xkb_layout_index_t layout_index)
 
-  keys->keymap_num_levels = 0;
-  xkb_keymap_key_for_each (keymap, determine_keymap_num_levels_iter, &keys->keymap_num_levels);
+{
+  CalculateLayoutLevelState state = {
+    .keymap = keymap,
+    .layout_index = layout_index,
+
+    .out_n_levels = 0
+  };
+
+  xkb_keymap_key_for_each (keymap, calculate_n_layout_levels_iter, &state);
+
+  return state.out_n_levels;
 }
 
 static void
@@ -591,11 +623,43 @@ binding_reload_combos_foreach (gpointer key,
 }
 
 static void
+clear_active_keyboard_layouts (MetaKeyBindingManager *keys)
+{
+  unsigned int i;
+
+  for (i = 0; i < G_N_ELEMENTS (keys->active_layouts); i++)
+    {
+      MetaKeyBindingKeyboardLayout *layout = &keys->active_layouts[i];
+
+      g_clear_pointer (&layout->keymap, xkb_keymap_unref);
+      *layout = (MetaKeyBindingKeyboardLayout) { 0 };
+    }
+}
+
+static void
+reload_active_keyboard_layouts (MetaKeyBindingManager *keys)
+{
+  struct xkb_keymap *keymap;
+  xkb_layout_index_t layout_index;
+
+  clear_active_keyboard_layouts (keys);
+
+  keymap = meta_backend_get_keymap (keys->backend);
+  layout_index = meta_backend_get_keymap_layout_group (keys->backend);
+
+  keys->active_layouts[META_KEY_BINDING_PRIMARY_LAYOUT] = (MetaKeyBindingKeyboardLayout) {
+    .keymap = xkb_keymap_ref (keymap),
+    .index = layout_index,
+    .n_levels = calculate_n_layout_levels (keymap, layout_index),
+  };
+}
+
+static void
 reload_combos (MetaKeyBindingManager *keys)
 {
   g_hash_table_remove_all (keys->key_bindings_index);
 
-  determine_keymap_num_levels (keys);
+  reload_active_keyboard_layouts (keys);
 
   resolve_key_combo (keys,
                      &keys->overlay_key_combo,
@@ -1196,6 +1260,8 @@ meta_display_shutdown_keys (MetaDisplay *display)
 
   g_hash_table_destroy (keys->key_bindings_index);
   g_hash_table_destroy (keys->key_bindings);
+
+  clear_active_keyboard_layouts (keys);
 }
 
 /* Grab/ungrab, ignoring all annoying modifiers like NumLock etc. */
