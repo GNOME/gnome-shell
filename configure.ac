@@ -225,10 +225,10 @@ AC_MSG_CHECKING([gudev])
 if test x$with_gudev = xno ; then
   AC_MSG_RESULT([disabled])
 else
-  if $PKG_CONFIG --exists gudev-1.0; then
+  if $PKG_CONFIG --exists "gudev-1.0 >= 232"; then
     have_gudev=yes
     AC_MSG_RESULT(yes)
-    MUTTER_PC_MODULES="$MUTTER_PC_MODULES gudev-1.0"
+    MUTTER_PC_MODULES="$MUTTER_PC_MODULES gudev-1.0 >= 232"
     AC_DEFINE([HAVE_LIBGUDEV], 1, [Building with gudev for device type detection])
   else
     AC_MSG_RESULT(no)
