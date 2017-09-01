@@ -105,6 +105,7 @@ MUTTER_PC_MODULES="
    xcb-randr
    xcb-res
 "
+XWAYLAND_GRAB_DEFAULT_ACCESS_RULES="gnome-boxes,remote-viewer,virt-viewer,virt-manager,vinagre,vncviewer,Xephyr"
 
 GLIB_GSETTINGS
 
@@ -311,6 +312,21 @@ AS_IF([test "$have_wayland" = "yes"], [
   AC_SUBST(WAYLAND_PROTOCOLS_DATADIR, $ac_wayland_protocols_pkgdatadir)
 ])
 AM_CONDITIONAL([HAVE_WAYLAND],[test "$have_wayland" = "yes"])
+
+AC_ARG_WITH([xwayland-grab-default-access-rules],
+    [AS_HELP_STRING([--with-xwayland-grab-default-access-rules="app-res1,app-res2,..."],
+        [comma delimited list of applications ressources or class allowed to issue X11 grabs in Xwayland"])],
+    [with_XWAYLAND_GRAB_DEFAULT_ACCESS_RULES="$withval"],
+    [with_XWAYLAND_GRAB_DEFAULT_ACCESS_RULES="$XWAYLAND_GRAB_DEFAULT_ACCESS_RULES"])
+
+case "$with_XWAYLAND_GRAB_DEFAULT_ACCESS_RULES" in
+    yes) with_XWAYLAND_GRAB_DEFAULT_ACCESS_RULES="$XWAYLAND_GRAB_DEFAULT_ACCESS_RULES" ;;
+    no) with_XWAYLAND_GRAB_DEFAULT_ACCESS_RULES='' ;;
+esac
+AC_DEFINE_UNQUOTED([XWAYLAND_GRAB_DEFAULT_ACCESS_RULES],
+                    "$with_XWAYLAND_GRAB_DEFAULT_ACCESS_RULES",
+                    [Xwayland applications allowed to issue keyboard grabs])
+AC_SUBST(XWAYLAND_GRAB_DEFAULT_ACCESS_RULES)
 
 PKG_CHECK_EXISTS([xi >= 1.6.99.1],
                  AC_DEFINE([HAVE_XI23],[1],[Define if you have support for XInput 2.3 or greater]))

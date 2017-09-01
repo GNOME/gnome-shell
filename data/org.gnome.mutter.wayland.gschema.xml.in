@@ -54,4 +54,48 @@
       <summary>Re-enable shortcuts</summary>
     </key>
   </schema>
+
+
+  <schema id="org.gnome.mutter.wayland" path="/org/gnome/mutter/wayland/"
+          gettext-domain="@GETTEXT_DOMAIN@">
+
+    <key name="xwayland-allow-grabs" type="b">
+      <default>false</default>
+      <summary>Allow grabs with Xwayland</summary>
+      <description>
+        Allow keyboard grabs issued by X11 applications running in Xwayland
+        to be taken into account.
+
+        For a X11 grab to be taken into account under Wayland, the client must
+        also either send a specific X11 ClientMessage to the root window or be
+        among the applications white-listed in key “xwayland-grab-access-rules“.
+      </description>
+    </key>
+
+    <key name="xwayland-grab-access-rules" type="as">
+      <default>[]</default>
+      <summary>Xwayland applications allowed to issue keyboard grabs</summary>
+      <description>
+        List the resource names or resource class of X11 windows either
+        allowed or not allowed to issue X11 keyboard grabs under Xwayland.
+
+        The resource name or resource class of a given X11 window can be
+        obtained using the command “xprop WM_CLASS“.
+
+        Wildcards '*' and jokers '?' in the values are supported.
+
+        Values starting with '!' are blacklisted, which has precedence over
+        the whitelist, to revoke applications from the default system list.
+
+        The default system list includes the following applications:
+
+        “@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@“
+
+        Users can break an existing grab by using the specific keyboard
+        short-cut defined by the keybinding key “restore-shortcuts“.
+      </description>
+    </key>
+
+  </schema>
+
 </schemalist>

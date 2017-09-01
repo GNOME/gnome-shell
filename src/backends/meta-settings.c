@@ -30,6 +30,11 @@
 #include "backends/meta-monitor-manager-private.h"
 #include "ui/theme-private.h"
 
+#ifndef XWAYLAND_GRAB_DEFAULT_ACCESS_RULES
+# warning "XWAYLAND_GRAB_DEFAULT_ACCESS_RULES is not set"
+# define  XWAYLAND_GRAB_DEFAULT_ACCESS_RULES ""
+#endif
+
 enum
 {
   UI_SCALING_FACTOR_CHANGED,
@@ -50,6 +55,7 @@ struct _MetaSettings
 
   GSettings *interface_settings;
   GSettings *mutter_settings;
+  GSettings *wayland_settings;
 
   int ui_scaling_factor;
   int global_scaling_factor;
@@ -58,6 +64,10 @@ struct _MetaSettings
 
   MetaExperimentalFeature experimental_features;
   gboolean experimental_features_overridden;
+
+  gboolean xwayland_allow_grabs;
+  GPtrArray *xwayland_grab_whitelist_patterns;
+  GPtrArray *xwayland_grab_blacklist_patterns;
 };
 
 G_DEFINE_TYPE (MetaSettings, meta_settings, G_TYPE_OBJECT)
@@ -299,6 +309,105 @@ mutter_settings_changed (GSettings    *mutter_settings,
                    (unsigned int) old_experimental_features);
 }
 
+static void
+xwayland_grab_list_add_item (MetaSettings *settings,
+                             char         *item)
+{
+  /* If first character is '!', it's a blacklisted item */
+  if (item[0] != '!')
+    g_ptr_array_add (settings->xwayland_grab_whitelist_patterns,
+                     g_pattern_spec_new (item));
+  else if (item[1] != 0)
+    g_ptr_array_add (settings->xwayland_grab_blacklist_patterns,
+                     g_pattern_spec_new (&item[1]));
+}
+
+static gboolean
+xwayland_grab_access_rules_handler (GVariant *variant,
+                                    gpointer *result,
+                                    gpointer  data)
+{
+  MetaSettings *settings = data;
+  GVariantIter iter;
+  char *item;
+
+  /* Create a GPatternSpec for each element */
+  g_variant_iter_init (&iter, variant);
+  while (g_variant_iter_loop (&iter, "s", &item))
+    xwayland_grab_list_add_item (settings, item);
+
+  *result = GINT_TO_POINTER (TRUE);
+
+  return TRUE;
+}
+
+static void
+update_xwayland_grab_access_rules (MetaSettings *settings)
+{
+  gchar **system_defaults;
+  int i;
+
+  /* Free previous patterns and create new arrays */
+  g_ptr_array_free (settings->xwayland_grab_whitelist_patterns, TRUE);
+  settings->xwayland_grab_whitelist_patterns =
+    g_ptr_array_new_with_free_func ((GDestroyNotify) g_pattern_spec_free);
+
+  g_ptr_array_free (settings->xwayland_grab_blacklist_patterns, TRUE);
+  settings->xwayland_grab_blacklist_patterns =
+    g_ptr_array_new_with_free_func ((GDestroyNotify) g_pattern_spec_free);
+
+  /* Add system defaults values */
+  system_defaults = g_strsplit (XWAYLAND_GRAB_DEFAULT_ACCESS_RULES, ",", -1);
+  for (i = 0; system_defaults[i]; i++)
+    xwayland_grab_list_add_item (settings, system_defaults[i]);
+  g_strfreev (system_defaults);
+
+  /* Then add gsettings values */
+  g_settings_get_mapped (settings->wayland_settings,
+                         "xwayland-grab-access-rules",
+                         xwayland_grab_access_rules_handler,
+                         settings);
+}
+
+static void
+update_xwayland_allow_grabs (MetaSettings *settings)
+{
+  settings->xwayland_allow_grabs =
+    g_settings_get_boolean (settings->wayland_settings,
+                            "xwayland-allow-grabs");
+}
+
+static void
+wayland_settings_changed (GSettings    *wayland_settings,
+                          gchar        *key,
+                          MetaSettings *settings)
+{
+
+  if (g_str_equal (key, "xwayland-allow-grabs"))
+    {
+      update_xwayland_allow_grabs (settings);
+    }
+  else if (g_str_equal (key, "xwayland-grab-access-rules"))
+    {
+      update_xwayland_grab_access_rules (settings);
+    }
+}
+
+void
+meta_settings_get_xwayland_grab_patterns (MetaSettings  *settings,
+                                          GPtrArray    **whitelist_patterns,
+                                          GPtrArray    **blacklist_patterns)
+{
+  *whitelist_patterns = settings->xwayland_grab_whitelist_patterns;
+  *blacklist_patterns = settings->xwayland_grab_blacklist_patterns;
+}
+
+gboolean
+ meta_settings_are_xwayland_grabs_allowed (MetaSettings *settings)
+{
+  return (settings->xwayland_allow_grabs);
+}
+
 MetaSettings *
 meta_settings_new (MetaBackend *backend)
 {
@@ -317,6 +426,11 @@ meta_settings_dispose (GObject *object)
 
   g_clear_object (&settings->mutter_settings);
   g_clear_object (&settings->interface_settings);
+  g_clear_object (&settings->wayland_settings);
+  g_clear_pointer (&settings->xwayland_grab_whitelist_patterns,
+                   g_ptr_array_unref);
+  g_clear_pointer (&settings->xwayland_grab_blacklist_patterns,
+                   g_ptr_array_unref);
 
   G_OBJECT_CLASS (meta_settings_parent_class)->dispose (object);
 }
@@ -332,6 +446,10 @@ meta_settings_init (MetaSettings *settings)
   g_signal_connect (settings->mutter_settings, "changed",
                     G_CALLBACK (mutter_settings_changed),
                     settings);
+  settings->wayland_settings = g_settings_new ("org.gnome.mutter.wayland");
+  g_signal_connect (settings->wayland_settings, "changed",
+                    G_CALLBACK (wayland_settings_changed),
+                    settings);
 
   /* Chain up inter-dependent settings. */
   g_signal_connect (settings, "global-scaling-factor-changed",
@@ -341,6 +459,8 @@ meta_settings_init (MetaSettings *settings)
 
   update_global_scaling_factor (settings);
   update_experimental_features (settings);
+  update_xwayland_grab_access_rules (settings);
+  update_xwayland_allow_grabs (settings);
 }
 
 static void

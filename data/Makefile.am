@@ -24,6 +24,7 @@ gsettings_SCHEMAS = $(gschema_in_files:.xml.in=.xml)
 
 %.gschema.xml: %.gschema.xml.in Makefile
 	$(AM_V_GEN) sed -e 's|@GETTEXT_DOMAIN[@]|$(GETTEXT_PACKAGE)|g' \
+	                -e 's|@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES[@]|$(XWAYLAND_GRAB_DEFAULT_ACCESS_RULES)|g' \
 	$< > $@ || rm $@
 
 @GSETTINGS_RULES@
