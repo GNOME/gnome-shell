@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-21 04:46+0000\n"
-"PO-Revision-Date: 2017-08-21 13:42+0700\n"
+"POT-Creation-Date: 2017-08-29 16:09+0000\n"
+"PO-Revision-Date: 2017-08-30 10:46+0700\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -411,7 +411,10 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
 "Untuk mengaktifkan fitur eksperimental, tambahkan kata kunci fitur ke dalam "
 "daftar. Apakah fitur memerlukan nyala ulang kompositor tergantung pada fitur "
@@ -421,21 +424,24 @@ msgstr ""
 "mungkin: • “scale-monitor-framebuffer” — membuat bawaan mutter untuk tata "
 "letak monitor logikal dalam ruang koordinat pixel logikal, sambil "
 "menskalakan framebuffer monitor alih-alih konten jendela, untuk mengelola "
-"monitor HiDPI. Tidak perlu mulai ulang."
+"monitor HiDPI. Tidak perlu mulai ulang. • “remote-desktop” — aktifkan "
+"dukungan destop jauh. Untuk mendukung destop jauh dengan berbagi layar, "
+"“screen-cast” juga harus diaktifkan. • “screen-cast” — aktifkan dukungan "
+"screen cast."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Pilih jendela dari popup tab"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Batalkan popup tab"
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:155
 msgid "Switch monitor configurations"
 msgstr "Tukar konfigurasi monitor bawaan"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:160
 msgid "Rotates the built-in monitor configuration"
 msgstr "Memutar konfigurasi monitor bawaan"
 
