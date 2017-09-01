@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-04-21 21:33+0000\n"
-"PO-Revision-Date: 2017-04-23 16:56+0300\n"
+"POT-Creation-Date: 2017-08-29 16:09+0000\n"
+"PO-Revision-Date: 2017-09-01 18:44+0300\n"
 "Last-Translator: Yuras Shumovich <shumovichy@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -409,7 +409,10 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
 "Каб уключыць эксперыментальныя функцыі, дадайце адпаведнае ключавое слова ў "
 "гэты ліст. Некаторыя функцыі могуць патрабаваць перазапуску кампазітара. "
@@ -418,15 +421,26 @@ msgstr ""
 "\"scale-monitor-framebuffer\" - прымушае mutter прадвызначана размяшчаць "
 "лагічныя маніторы ў лагічнай прасторы каардынат пікселаў, пры гэтым "
 "маштабаваць кадравы буфер, а не змесціва акна, для падтрымкі HiDPI "
-"манітораў. Не патрабуе перазапуску."
+"манітораў. Не патрабуе перазапуску. • \"remote-desktop\" - уключае падтрымку "
+"аддаленых манітораў. Для падтрымкі аддаленых манітораў з супольным доступам "
+"да экрана трэба таксама ўключыць \"screen-cast\". • \"screen-cast\" - "
+"уключае падтрымку скрынкасту."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Выбраць акно з выплыўнога акенца"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Закрыць выплыўное акенца"
+
+#: data/org.gnome.mutter.gschema.xml.in:155
+msgid "Switch monitor configurations"
+msgstr "Пераключыць канфігурацыі манітора"
+
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr "Паварочвае убудаваны манітор"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -476,10 +490,14 @@ msgstr "Перайсці ў віртуальны тэрмінал 11"
 msgid "Switch to VT 12"
 msgstr "Перайсці ў віртуальны тэрмінал 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Уключыць назад клавіятурныя скароты"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1848
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Пераключыць рэжым (група %d)"
@@ -487,37 +505,37 @@ msgstr "Пераключыць рэжым (група %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1870
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Пераключыць манітор"
 
-#: src/backends/meta-input-settings.c:1872
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Паказаць экранную даведку"
 
-#: src/backends/meta-monitor-manager.c:783
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Убудаваны дысплей"
 
-#: src/backends/meta-monitor-manager.c:806
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Невядомы"
 
-#: src/backends/meta-monitor-manager.c:808
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Невядомы дысплей"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:816
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:474
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -527,31 +545,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Падзея з сігналам"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "\"%s\" не адказвае на запыты."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Праграма не адказвае на запыты."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Вы можаце альбо крыху пачакаць адказу, альбо змусіць праграму да выхаду."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Змусіць да выхаду"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Пачакаць"
 
 #: src/core/display.c:608
 #, c-format
@@ -593,6 +586,31 @@ msgstr "Запусціць у якасці ўложанага кампазіта
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Запусціць у якасці паўнавартаснага сервера дысплея, я не як уложаны "
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "\"%s\" не адказвае на запыты."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Праграма не адказвае на запыты."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Вы можаце альбо крыху пачакаць адказу, альбо змусіць праграму да выхаду."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Змусіць да выхаду"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Пачакаць"
 
 #: src/core/mutter.c:39
 #, c-format
