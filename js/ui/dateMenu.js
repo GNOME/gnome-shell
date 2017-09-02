@@ -391,6 +391,7 @@ class IndicatorPad extends St.Widget {
     _init(actor) {
         this._source = actor;
         this._source.connect('notify::visible', () => { this.queue_relayout(); });
+        this._source.connect('notify::size', () => { this.queue_relayout(); });
         super._init();
     }
 
