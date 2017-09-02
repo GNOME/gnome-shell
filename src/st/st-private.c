@@ -430,14 +430,20 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
                                        ClutterActor *actor)
 {
   CoglPipeline *shadow_pipeline = NULL;
+  float resource_scale;
   float width, height;
 
   g_return_val_if_fail (clutter_actor_has_allocation (actor), NULL);
 
   clutter_actor_get_size (actor, &width, &height);
-
   if (width == 0 || height == 0)
     return NULL;
+
+  if (!clutter_actor_get_resource_scale (actor, &resource_scale))
+    return NULL;
+
+  width *= resource_scale;
+  height *= resource_scale;
 
   if (CLUTTER_IS_TEXTURE (actor))
     {
@@ -487,6 +493,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       G_GNUC_END_IGNORE_DEPRECATIONS;
 
       cogl_framebuffer_clear (fb, COGL_BUFFER_BIT_COLOR, &clear_color);
+      cogl_framebuffer_scale (fb, resource_scale, resource_scale, 1);
       cogl_framebuffer_translate (fb, -x, -y, 0);
       cogl_framebuffer_orthographic (fb, 0, 0, width, height, 0, 1.0);
 
