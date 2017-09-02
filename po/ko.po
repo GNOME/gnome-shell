@@ -18,8 +18,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-28 06:20+0000\n"
-"PO-Revision-Date: 2017-03-04 03:25+0900\n"
+"POT-Creation-Date: 2017-08-29 16:09+0000\n"
+"PO-Revision-Date: 2017-09-02 12:57+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
@@ -397,13 +397,49 @@ msgid ""
 "screen of the monitor."
 msgstr "참이면, 새로운 창은 항상 사용 중인 모니터 화면의 중앙에 놓습니다."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "실험적인 기능 사용"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
+msgstr ""
+"실험적인 기능을 사용하려면, 해당 기능 키워드를 목록에 추가하십시오. 기능에 따"
+"라 컴포지터를 다시 시작해야 할 수도 있습니다. 실험적인 기능은 사용할 수 없을 "
+"수도 있고, 설정할 수 없을 수도 있습니다. 이 설정에 추가한 사항이 앞으로 버전"
+"에서도 동작할 거라고 기대하지 마십시오. 현재 가능한 값은: • “scale-monitor-"
+"framebuffer” — 머터에서 논리적인 모니터를 논리적인 픽셀 좌표계로 배치합니다. "
+"창의 내용의 크기를 조정하지 않고 모니터 프레임버퍼 크기를 조정합니다. 재시작"
+"은 필요하지 않습니다. • “remote-desktop” — 원격 데스크톱 기능을 사용합니다.  "
+"원격 데스크톱을 화면 공유와 같이 사용하려면, “screen-cast” 설정도 켜져 있어"
+"야 합니다. • “screen-cast” — 화면 전송 기능을 사용합니다."
+
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "탭 팝업에서 창 선택"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "탭 팝업 취소"
+
+#: data/org.gnome.mutter.gschema.xml.in:155
+msgid "Switch monitor configurations"
+msgstr "모니터 설정 전환"
+
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr "내장된 모니터 설정을 돌아가면서 전환합니다"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -453,10 +489,14 @@ msgstr "가상 터미널 11로 이동"
 msgid "Switch to VT 12"
 msgstr "가상 터미널 12로 이동"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "바로 가기 다시 사용하기"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "모드 전환 (그룹 %d)"
@@ -464,37 +504,37 @@ msgstr "모드 전환 (그룹 %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "모니터 전환"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "화면 도움말 표시"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "내장 디스플레이"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "알 수 없는 디스플레이"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -505,30 +545,6 @@ msgstr ""
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "삑소리 이벤트"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "“%s” 창이 반응하지 않습니다."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "프로그램이 반응하지 않습니다."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "좀 더 기다리거나 해당 프로그램을 강제로 끝낼 수 있습니다."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "강제로 끝내기(_F)"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "기다리기(_W)"
 
 #: src/core/display.c:608
 #, c-format
@@ -570,6 +586,30 @@ msgstr "내장 컴포지터로 실행합니다"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "전체 디스플레이 서버로 실행, 내장 프로그램 아님"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "“%s” 창이 반응하지 않습니다."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "프로그램이 반응하지 않습니다."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr "좀 더 기다리거나 해당 프로그램을 강제로 끝낼 수 있습니다."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "강제로 끝내기(_F)"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "기다리기(_W)"
 
 #: src/core/mutter.c:39
 #, c-format
