@@ -197,32 +197,50 @@ st_label_paint (ClutterActor *actor)
 
   if (shadow_spec)
     {
-      ClutterActorBox allocation;
-      float width, height;
+      float resource_scale;
 
-      clutter_actor_get_allocation_box (priv->label, &allocation);
-      clutter_actor_box_get_size (&allocation, &width, &height);
-
-      if (priv->text_shadow_pipeline == NULL ||
-          width != priv->shadow_width ||
-          height != priv->shadow_height)
+      if (clutter_actor_get_resource_scale (priv->label, &resource_scale))
         {
-          g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+          ClutterActorBox allocation;
+          float width, height;
 
-          priv->shadow_width = width;
-          priv->shadow_height = height;
-          priv->text_shadow_pipeline = _st_create_shadow_pipeline_from_actor (shadow_spec, priv->label);
+          clutter_actor_get_allocation_box (priv->label, &allocation);
+          clutter_actor_box_get_size (&allocation, &width, &height);
+
+          width *= resource_scale;
+          height *= resource_scale;
+
+          if (priv->text_shadow_pipeline == NULL ||
+              width != priv->shadow_width ||
+              height != priv->shadow_height)
+            {
+              g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
+
+              priv->shadow_width = width;
+              priv->shadow_height = height;
+              priv->text_shadow_pipeline =
+                _st_create_shadow_pipeline_from_actor (shadow_spec,
+                                                       priv->label);
+            }
+
+          if (priv->text_shadow_pipeline != NULL)
+            _st_paint_shadow_with_opacity (shadow_spec,
+                                           cogl_get_draw_framebuffer (),
+                                           priv->text_shadow_pipeline,
+                                           &allocation,
+                                           clutter_actor_get_paint_opacity (priv->label));
         }
-
-      if (priv->text_shadow_pipeline != NULL)
-        _st_paint_shadow_with_opacity (shadow_spec,
-                                       cogl_get_draw_framebuffer (),
-                                       priv->text_shadow_pipeline,
-                                       &allocation,
-                                       clutter_actor_get_paint_opacity (priv->label));
     }
 
   clutter_actor_paint (priv->label);
+}
+
+static void
+st_label_resource_scale_changed (StWidget *widget)
+{
+  StLabelPrivate *priv = ST_LABEL (widget)->priv;
+
+  g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
 }
 
 static void
@@ -243,6 +261,7 @@ st_label_class_init (StLabelClass *klass)
   actor_class->get_preferred_height = st_label_get_preferred_height;
 
   widget_class->style_changed = st_label_style_changed;
+  widget_class->resource_scale_changed = st_label_resource_scale_changed;
   widget_class->get_accessible_type = st_label_accessible_get_type;
 
   pspec = g_param_spec_object ("clutter-text",
