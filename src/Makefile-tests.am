@@ -63,7 +63,6 @@ mutter_test_unit_tests_LDADD = $(MUTTER_LIBS) libmutter-$(LIBMUTTER_API_VERSION)
 
 mutter_test_headless_start_test_SOURCES = \
 	tests/headless-start-test.c \
-	tests/headless-start-test.h \
 	tests/meta-backend-test.c \
 	tests/meta-backend-test.h \
 	tests/meta-monitor-manager-test.c \
