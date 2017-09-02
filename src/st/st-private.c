@@ -431,6 +431,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 {
   ClutterContent *image = NULL;
   CoglPipeline *shadow_pipeline = NULL;
+  float resource_scale;
   float width, height;
 
   g_return_val_if_fail (clutter_actor_has_allocation (actor), NULL);
@@ -439,6 +440,12 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 
   if (width == 0 || height == 0)
     return NULL;
+
+  if (!clutter_actor_get_resource_scale (actor, &resource_scale))
+    return NULL;
+
+  width *= resource_scale;
+  height *= resource_scale;
 
   image = clutter_actor_get_content (actor);
   if (image && CLUTTER_IS_IMAGE (image))
@@ -491,6 +498,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       cogl_framebuffer_clear (fb, COGL_BUFFER_BIT_COLOR, &clear_color);
       cogl_framebuffer_translate (fb, -x, -y, 0);
       cogl_framebuffer_orthographic (fb, 0, 0, width, height, 0, 1.0);
+      cogl_framebuffer_scale (fb, resource_scale, resource_scale, 1);
 
       clutter_actor_set_opacity_override (actor, 255);
       clutter_actor_paint (actor);
