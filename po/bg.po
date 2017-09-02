@@ -1,10 +1,10 @@
 # Bulgarian translation of mutter po-file.
 # Copyright (C) 2002, 2004, 2006, 2007, 2008 Free Software Foundation, Inc.
 # Copyright (C) 2009, 2010, 2011, 2012, 2013 Free Software Foundation, Inc.
-# Copyright (C) 2014, 2015, 2016 Free Software Foundation, Inc.
+# Copyright (C) 2014, 2015, 2016, 2017 Free Software Foundation, Inc.
 # Alexander Shopov <ash@kambanaria.org>, 2002, 2006, 2007, 2009, 2010.
 # Alexander Shopov <ash@kambanaria.org>, 2011, 2012, 2013, 2014, 2015.
-# Alexander Shopov <ash@kambanaria.org>, 2016.
+# Alexander Shopov <ash@kambanaria.org>, 2016, 2017.
 # Vladimir Petkov <kaladan@gmail.com>, 2004. 
 # Rostislav Raykov <zbrox@i-space.org>, 2004.
 # Yavor Doganov <yavor@gnu.org>, 2008.
@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-09-08 06:33+0300\n"
-"PO-Revision-Date: 2016-09-05 16:27+0300\n"
+"POT-Creation-Date: 2017-09-02 09:32+0300\n"
+"PO-Revision-Date: 2017-08-31 21:26+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -24,57 +24,111 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/backends/meta-input-settings.c:1707
+#. TRANSLATORS: This string refers to a button that switches between
+#. * different modes.
+#.
+#: ../src/backends/meta-input-settings.c:2151
+#, c-format
+msgid "Mode Switch (Group %d)"
+msgstr "Смяна на режима (режим %d)"
+
+#. TRANSLATORS: This string refers to an action, cycles drawing tablets'
+#. * mapping through the available outputs.
+#.
+#: ../src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Смяна на екрана"
 
-#: ../src/backends/meta-input-settings.c:1709
+#: ../src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Показване на помощта на екрана"
 
-#: ../src/backends/meta-monitor-manager.c:514
+#: ../src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Вграден екран"
 
-#: ../src/backends/meta-monitor-manager.c:537
+#: ../src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Непознат"
 
-#: ../src/backends/meta-monitor-manager.c:539
+#: ../src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Непознат екран"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:547
+#: ../src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:463
+#: ../src/compositor/compositor.c:476
 #, c-format
 msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
+"Another compositing manager is already running on screen %i on display “%s”."
 msgstr "На екран %i от дисплея „%s“ вече има мениджър за наслагване."
 
 #: ../src/core/bell.c:194
 msgid "Bell event"
 msgstr "Събитие за звънец"
 
-#: ../src/core/delete.c:127
+#: ../src/core/display.c:608
+#, c-format
+msgid "Failed to open X Window System display “%s”\n"
+msgstr "Неуспешно отваряне на дисплея на X Window „%s“\n"
+
+#: ../src/core/main.c:189
+msgid "Disable connection to session manager"
+msgstr "Прекъсване на връзката към мениджъра на сесиите"
+
+#: ../src/core/main.c:195
+msgid "Replace the running window manager"
+msgstr "Замяна на текущия мениджър на прозорци"
+
+#: ../src/core/main.c:201
+msgid "Specify session management ID"
+msgstr "Определяне на идентификатор за управлението на сесии"
+
+#: ../src/core/main.c:206
+msgid "X Display to use"
+msgstr "X дисплеят, който да се използва"
+
+# Ако „запазено“ не се членува, низът се събира на един ред без
+# пренасяне.
+#: ../src/core/main.c:212
+msgid "Initialize session from savefile"
+msgstr "Инициализиране на сесия от файл със запазено състояние"
+
+#: ../src/core/main.c:218
+msgid "Make X calls synchronous"
+msgstr "Извикванията на X да са синхронни"
+
+#: ../src/core/main.c:225
+msgid "Run as a wayland compositor"
+msgstr "Wayland да е мениджър за наслагване"
+
+#: ../src/core/main.c:231
+msgid "Run as a nested compositor"
+msgstr "Изпълнение като вложен сървър за изобразяване"
+
+#: ../src/core/main.c:239
+msgid "Run as a full display server, rather than nested"
+msgstr "Изпълнение като самостоятелен, а не вложен сървър за изобразяване"
+
+#. Translators: %s is a window title
+#: ../src/core/meta-close-dialog-default.c:147
 #, c-format
 msgid "“%s” is not responding."
 msgstr "„%s“ не отговаря на съобщенията."
 
-#: ../src/core/delete.c:129
+#: ../src/core/meta-close-dialog-default.c:149
 msgid "Application is not responding."
 msgstr "Програмата не отговаря на съобщенията."
 
-#: ../src/core/delete.c:134
+#: ../src/core/meta-close-dialog-default.c:154
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -82,62 +136,19 @@ msgstr ""
 "Можете да изчакате малко, преди изрично да накарате програмата да спре "
 "работата си."
 
-#: ../src/core/delete.c:141
-msgid "_Wait"
-msgstr "Из_чакване"
-
-#: ../src/core/delete.c:141
+#: ../src/core/meta-close-dialog-default.c:161
 msgid "_Force Quit"
 msgstr "_Принудително спиране"
 
-#: ../src/core/display.c:590
-#, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "Неуспешно отваряне на дисплея на X Window „%s“\n"
-
-#: ../src/core/main.c:182
-msgid "Disable connection to session manager"
-msgstr "Прекъсване на връзката към мениджъра на сесиите"
-
-#: ../src/core/main.c:188
-msgid "Replace the running window manager"
-msgstr "Замяна на текущия мениджър на прозорци"
-
-#: ../src/core/main.c:194
-msgid "Specify session management ID"
-msgstr "Определяне на идентификатор за управлението на сесии"
-
-#: ../src/core/main.c:199
-msgid "X Display to use"
-msgstr "X дисплеят, който да се използва"
-
-# Ако „запазено“ не се членува, низът се събира на един ред без
-# пренасяне.
-#: ../src/core/main.c:205
-msgid "Initialize session from savefile"
-msgstr "Инициализиране на сесия от файл със запазено състояние"
-
-#: ../src/core/main.c:211
-msgid "Make X calls synchronous"
-msgstr "Извикванията на X да са синхронни"
-
-#: ../src/core/main.c:218
-msgid "Run as a wayland compositor"
-msgstr "Wayland да е мениджър за наслагване"
-
-#: ../src/core/main.c:224
-msgid "Run as a nested compositor"
-msgstr "Изпълнение като вложен сървър за изобразяване"
-
-#: ../src/core/main.c:232
-msgid "Run as a full display server, rather than nested"
-msgstr "Изпълнение като самостоятелен, а не вложен сървър за изобразяване"
+#: ../src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "Из_чакване"
 
 #: ../src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
-"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
@@ -162,38 +173,38 @@ msgstr "Приставка, която да се ползва"
 msgid "Workspace %d"
 msgstr "Работен плот %d"
 
-#: ../src/core/screen.c:521
+#: ../src/core/screen.c:580
 #, c-format
 msgid ""
-"Display \"%s\" already has a window manager; try using the --replace option "
-"to replace the current window manager."
+"Display “%s” already has a window manager; try using the --replace option to "
+"replace the current window manager."
 msgstr ""
 "Вече има мениджър на прозорци на дисплей „%s“. Пробвайте да го замените с "
 "опцията „--replace“."
 
-#: ../src/core/screen.c:606
+#: ../src/core/screen.c:665
 #, c-format
-msgid "Screen %d on display '%s' is invalid\n"
+msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Екранът %d на дисплей „%s“ е невалиден\n"
 
 #: ../src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter е компилиран без поддръжка на подробен режим\n"
 
-#: ../src/wayland/meta-wayland-tablet-pad.c:595
+#: ../src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Смяна на режима: режим %d"
 
 #: ../src/x11/session.c:1815
 msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
+"These windows do not support “save current setup” and will have to be "
+"restarted manually next time you log in."
 msgstr ""
 "Тези прозорци не поддържат операцията по записване на текущото състояние и "
 "ще трябва да се стартират ръчно при следващото ви влизане."
 
-#: ../src/x11/window-props.c:548
+#: ../src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (от %s)"
