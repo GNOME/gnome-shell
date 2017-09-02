@@ -386,6 +386,7 @@ var IndicatorPad = new Lang.Class({
     _init(actor) {
         this._source = actor;
         this._source.connect('notify::visible', () => { this.queue_relayout(); });
+        this._source.connect('notify::size', () => { this.queue_relayout(); });
         this.parent();
     },
 
