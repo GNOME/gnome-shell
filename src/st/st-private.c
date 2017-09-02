@@ -415,9 +415,14 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 {
   CoglPipeline *shadow_pipeline = NULL;
   ClutterActorBox box;
+  float resource_scale;
   float width, height;
 
+  if (!clutter_actor_get_resource_scale (actor, &resource_scale))
+    return NULL;
+
   clutter_actor_get_allocation_box (actor, &box);
+  clutter_actor_box_scale (&box, resource_scale);
   clutter_actor_box_get_size (&box, &width, &height);
 
   if (width == 0 || height == 0)
@@ -470,6 +475,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
       G_GNUC_END_IGNORE_DEPRECATIONS;
 
       cogl_framebuffer_clear (fb, COGL_BUFFER_BIT_COLOR, &clear_color);
+      cogl_framebuffer_scale (fb, resource_scale, resource_scale, 1);
       cogl_framebuffer_translate (fb, -box.x1, -box.y1, 0);
       cogl_framebuffer_orthographic (fb, 0, 0, width, height, 0, 1.0);
 
