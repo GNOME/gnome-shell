@@ -90,7 +90,7 @@ enum
   PROP_BACKGROUND,
   PROP_VIGNETTE,
   PROP_VIGNETTE_SHARPNESS,
-  PROP_BRIGHTNESS
+  PROP_VIGNETTE_BRIGHTNESS
 };
 
 typedef enum {
@@ -133,7 +133,7 @@ struct _MetaBackgroundActorPrivate
   MetaBackground *background;
 
   gboolean vignette;
-  double brightness;
+  double vignette_brightness;
   double vignette_sharpness;
 
   ChangedFlags changed;
@@ -329,7 +329,7 @@ setup_pipeline (MetaBackgroundActor   *self,
 
   if (priv->vignette)
     {
-      color_component = priv->brightness * opacity / 255.;
+      color_component = priv->vignette_brightness * opacity / 255.;
 
       if (!clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
         {
@@ -492,16 +492,16 @@ meta_background_actor_set_property (GObject      *object,
     case PROP_VIGNETTE:
       meta_background_actor_set_vignette (self,
                                           g_value_get_boolean (value),
-                                          priv->brightness,
+                                          priv->vignette_brightness,
                                           priv->vignette_sharpness);
       break;
     case PROP_VIGNETTE_SHARPNESS:
       meta_background_actor_set_vignette (self,
                                           priv->vignette,
-                                          priv->brightness,
+                                          priv->vignette_brightness,
                                           g_value_get_double (value));
       break;
-    case PROP_BRIGHTNESS:
+    case PROP_VIGNETTE_BRIGHTNESS:
       meta_background_actor_set_vignette (self,
                                           priv->vignette,
                                           g_value_get_double (value),
@@ -535,8 +535,8 @@ meta_background_actor_get_property (GObject      *object,
     case PROP_VIGNETTE:
       g_value_set_boolean (value, priv->vignette);
       break;
-    case PROP_BRIGHTNESS:
-      g_value_set_double (value, priv->brightness);
+    case PROP_VIGNETTE_BRIGHTNESS:
+      g_value_set_double (value, priv->vignette_brightness);
       break;
     case PROP_VIGNETTE_SHARPNESS:
       g_value_set_double (value, priv->vignette_sharpness);
@@ -606,13 +606,13 @@ meta_background_actor_class_init (MetaBackgroundActorClass *klass)
                                    param_spec);
 
   param_spec = g_param_spec_double ("brightness",
-                                    "Brightness",
+                                    "Vignette Brightness",
                                     "Brightness of vignette effect",
                                     0.0, 1.0, 1.0,
                                     G_PARAM_READWRITE);
 
   g_object_class_install_property (object_class,
-                                   PROP_BRIGHTNESS,
+                                   PROP_VIGNETTE_BRIGHTNESS,
                                    param_spec);
 
   param_spec = g_param_spec_double ("vignette-sharpness",
@@ -636,7 +636,7 @@ meta_background_actor_init (MetaBackgroundActor *self)
                                                    MetaBackgroundActorPrivate);
 
   priv->vignette = FALSE;
-  priv->brightness = 1.0;
+  priv->vignette_brightness = 1.0;
   priv->vignette_sharpness = 0.0;
 }
 
@@ -775,9 +775,9 @@ meta_background_actor_set_vignette (MetaBackgroundActor *self,
       changed = TRUE;
     }
 
-  if (brightness != priv->brightness || sharpness != priv->vignette_sharpness)
+  if (brightness != priv->vignette_brightness || sharpness != priv->vignette_sharpness)
     {
-      priv->brightness = brightness;
+      priv->vignette_brightness = brightness;
       priv->vignette_sharpness = sharpness;
       invalidate_pipeline (self, CHANGED_VIGNETTE_PARAMETERS);
       changed = TRUE;
