@@ -376,10 +376,13 @@ meta_wayland_init (void)
     }
   else
     {
-      compositor->display_name =
-        wl_display_add_socket_auto (compositor->wayland_display);
-      if (compositor->display_name == NULL)
+      const char *display_name;
+
+      display_name = wl_display_add_socket_auto (compositor->wayland_display);
+      if (!display_name)
         g_error ("Failed to create socket");
+
+      compositor->display_name = g_strdup (display_name);
     }
 
   set_gnome_env ("DISPLAY", meta_wayland_get_xwayland_display_name (compositor));
