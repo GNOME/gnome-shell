@@ -82,6 +82,8 @@ mutter_built_sources += \
 	linux-dmabuf-unstable-v1-server-protocol.h				\
 	keyboard-shortcuts-inhibit-unstable-v1-protocol.c		\
 	keyboard-shortcuts-inhibit-unstable-v1-server-protocol.h	\
+	xdg-output-unstable-v1-protocol.c				\
+	xdg-output-unstable-v1-server-protocol.h			\
 	$(NULL)
 endif
 
@@ -741,4 +743,8 @@ endef
 keyboard-shortcuts-inhibit-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
 keyboard-shortcuts-inhibit-unstable-v1-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
+xdg-output-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/xdg-output/xdg-output-unstable-v1.xml
+	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
+xdg-output-unstable-v1-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/xdg-output/xdg-output-unstable-v1.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@

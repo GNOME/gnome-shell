@@ -43,6 +43,7 @@ struct _MetaWaylandOutput
   gint                      scale;
 
   GList                    *resources;
+  GList                    *xdg_output_resources;
 };
 
 void meta_wayland_outputs_init (MetaWaylandCompositor *compositor);

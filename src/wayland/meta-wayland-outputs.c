@@ -29,6 +29,7 @@
 #include "meta-wayland-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "meta-monitor-manager-private.h"
+#include "xdg-output-unstable-v1-server-protocol.h"
 
 #include <string.h>
 
@@ -41,6 +42,13 @@ enum {
 static guint signals[LAST_SIGNAL];
 
 G_DEFINE_TYPE (MetaWaylandOutput, meta_wayland_output, G_TYPE_OBJECT)
+
+static void
+send_xdg_output_events (struct wl_resource *resource,
+                        MetaWaylandOutput  *wayland_output,
+                        MetaLogicalMonitor *logical_monitor,
+                        gboolean            need_all_events,
+                        gboolean           *pending_done_event);
 
 static void
 output_resource_destroy (struct wl_resource *res)
@@ -124,7 +132,8 @@ static void
 send_output_events (struct wl_resource *resource,
                     MetaWaylandOutput  *wayland_output,
                     MetaLogicalMonitor *logical_monitor,
-                    gboolean            need_all_events)
+                    gboolean            need_all_events,
+                    gboolean           *pending_done_event)
 {
   int version = wl_resource_get_version (resource);
   MetaMonitor *monitor;
@@ -221,10 +230,16 @@ send_output_events (struct wl_resource *resource,
           wl_output_send_scale (resource, scale);
           need_done = TRUE;
         }
-
-      if (need_done)
-        wl_output_send_done (resource);
     }
+
+  if (need_all_events && version >= WL_OUTPUT_DONE_SINCE_VERSION)
+    {
+      wl_output_send_done (resource);
+      need_done = FALSE;
+    }
+
+  if (pending_done_event && need_done)
+    *pending_done_event = TRUE;
 }
 
 static void
@@ -253,7 +268,7 @@ bind_output (struct wl_client *client,
                 logical_monitor->rect.width, logical_monitor->rect.height,
                 wayland_output->refresh_rate);
 
-  send_output_events (resource, wayland_output, logical_monitor, TRUE);
+  send_output_events (resource, wayland_output, logical_monitor, TRUE, NULL);
 }
 
 static void
@@ -291,13 +306,37 @@ wayland_output_update_for_output (MetaWaylandOutput  *wayland_output,
                                   MetaLogicalMonitor *logical_monitor)
 {
   GList *iter;
+  gboolean pending_done_event;
 
+  pending_done_event = FALSE;
   for (iter = wayland_output->resources; iter; iter = iter->next)
     {
       struct wl_resource *resource = iter->data;
-      send_output_events (resource, wayland_output, logical_monitor, FALSE);
+      send_output_events (resource, wayland_output, logical_monitor, FALSE, &pending_done_event);
     }
 
+  for (iter = wayland_output->xdg_output_resources; iter; iter = iter->next)
+    {
+      struct wl_resource *xdg_output = iter->data;
+      send_xdg_output_events (xdg_output, wayland_output, logical_monitor, FALSE, &pending_done_event);
+    }
+
+  /* Send the "done" events if needed */
+  if (pending_done_event)
+    {
+      for (iter = wayland_output->resources; iter; iter = iter->next)
+        {
+          struct wl_resource *resource = iter->data;
+          if (wl_resource_get_version (resource) >= WL_OUTPUT_DONE_SINCE_VERSION)
+            wl_output_send_done (resource);
+        }
+
+      for (iter = wayland_output->xdg_output_resources; iter; iter = iter->next)
+        {
+          struct wl_resource *xdg_output = iter->data;
+          zxdg_output_v1_send_done (xdg_output);
+        }
+    }
   /* It's very important that we change the output pointer here, as
      the old structure is about to be freed by MetaMonitorManager */
   meta_wayland_output_set_logical_monitor (wayland_output, logical_monitor);
@@ -398,6 +437,15 @@ meta_wayland_output_finalize (GObject *object)
 
   g_list_free (wayland_output->resources);
 
+  for (l = wayland_output->xdg_output_resources; l; l = l->next)
+    {
+      struct wl_resource *xdg_output_resource = l->data;
+
+      wl_resource_set_user_data (xdg_output_resource, NULL);
+    }
+
+  g_list_free (wayland_output->xdg_output_resources);
+
   G_OBJECT_CLASS (meta_wayland_output_parent_class)->finalize (object);
 }
 
@@ -416,6 +464,139 @@ meta_wayland_output_class_init (MetaWaylandOutputClass *klass)
                                             G_TYPE_NONE, 0);
 }
 
+static void
+meta_xdg_output_destructor (struct wl_resource *resource)
+{
+  MetaWaylandOutput *wayland_output;
+
+  wayland_output = wl_resource_get_user_data (resource);
+  if (!wayland_output)
+    return;
+
+  wayland_output->xdg_output_resources =
+    g_list_remove (wayland_output->xdg_output_resources, resource);
+}
+
+static void
+meta_xdg_output_destroy (struct wl_client   *client,
+                         struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static const struct zxdg_output_v1_interface
+  meta_xdg_output_interface = {
+    meta_xdg_output_destroy,
+  };
+
+static void
+send_xdg_output_events (struct wl_resource *resource,
+                        MetaWaylandOutput  *wayland_output,
+                        MetaLogicalMonitor *logical_monitor,
+                        gboolean            need_all_events,
+                        gboolean           *pending_done_event)
+{
+  MetaRectangle new_layout;
+  MetaRectangle old_layout;
+  MetaLogicalMonitor *old_logical_monitor;
+  gboolean need_done;
+
+  need_done = FALSE;
+  old_logical_monitor = wayland_output->logical_monitor;
+  old_layout = meta_logical_monitor_get_layout (old_logical_monitor);
+  new_layout = meta_logical_monitor_get_layout (logical_monitor);
+
+  if (need_all_events ||
+      old_layout.x != new_layout.x ||
+      old_layout.y != new_layout.y)
+    {
+      zxdg_output_v1_send_logical_position (resource,
+                                            new_layout.x,
+                                            new_layout.y);
+      need_done = TRUE;
+    }
+
+  if (need_all_events ||
+      old_layout.width != new_layout.width ||
+      old_layout.height != new_layout.height)
+    {
+      zxdg_output_v1_send_logical_position (resource,
+                                            new_layout.width,
+                                            new_layout.height);
+      need_done = TRUE;
+    }
+
+  if (need_all_events)
+    {
+      zxdg_output_v1_send_done (resource);
+      need_done = FALSE;
+    }
+
+  if (pending_done_event && need_done)
+    *pending_done_event = TRUE;
+}
+
+static void
+meta_xdg_output_manager_get_xdg_output (struct wl_client   *client,
+                                        struct wl_resource *resource,
+                                        uint32_t            id,
+                                        struct wl_resource *output)
+{
+  struct wl_resource *xdg_output_resource;
+  MetaWaylandOutput *wayland_output;
+
+  xdg_output_resource = wl_resource_create (client,
+                                            &zxdg_output_v1_interface,
+                                            wl_resource_get_version (resource),
+                                            id);
+
+  wl_resource_set_implementation (xdg_output_resource,
+                                  &meta_xdg_output_interface,
+                                  NULL, meta_xdg_output_destructor);
+
+  wayland_output = wl_resource_get_user_data (output);
+  if (!wayland_output)
+    return;
+
+  wayland_output->xdg_output_resources =
+    g_list_prepend (wayland_output->xdg_output_resources, xdg_output_resource);
+
+  send_xdg_output_events (xdg_output_resource,
+                          wayland_output,
+                          wayland_output->logical_monitor,
+                          TRUE, NULL);
+}
+
+static void
+meta_xdg_output_manager_destroy (struct wl_client   *client,
+                                 struct wl_resource *resource)
+{
+  wl_resource_destroy (resource);
+}
+
+static const struct zxdg_output_manager_v1_interface
+  meta_xdg_output_manager_interface = {
+    meta_xdg_output_manager_destroy,
+    meta_xdg_output_manager_get_xdg_output,
+  };
+
+static void
+bind_xdg_output_manager (struct wl_client *client,
+                         void             *data,
+                         uint32_t          version,
+                         uint32_t          id)
+{
+  struct wl_resource *resource;
+
+  resource = wl_resource_create (client,
+                                 &zxdg_output_manager_v1_interface,
+                                 version, id);
+
+  wl_resource_set_implementation (resource,
+                                  &meta_xdg_output_manager_interface,
+                                  NULL, NULL);
+}
+
 void
 meta_wayland_outputs_init (MetaWaylandCompositor *compositor)
 {
@@ -427,4 +608,10 @@ meta_wayland_outputs_init (MetaWaylandCompositor *compositor)
 
   compositor->outputs = g_hash_table_new_full (NULL, NULL, NULL, wayland_output_destroy_notify);
   compositor->outputs = meta_wayland_compositor_update_outputs (compositor, monitors);
+
+  wl_global_create (compositor->wayland_display,
+                    &zxdg_output_manager_v1_interface,
+                    META_ZXDG_OUTPUT_V1_VERSION,
+                    NULL,
+                    bind_xdg_output_manager);
 }
