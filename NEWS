@@ -1,3 +1,25 @@
+3.25.92
+=======
+* Add screencast and remote desktop support [Jonas; #784199]
+* Support running with no attached monitors [Jonas; #730551]
+* Add a vertical gradient effect to background actor [Alessandro; #786618]
+* Misc. bug fixes [Mario, Daniel, Piotr, Jonas, Bastien; #786619, #786677,
+  #772218, #786918, #760670]
+
+Contributors:
+  Jonas Ådahl, Alessandro Bono, Piotr Drąg, Bastien Nocera,
+  Mario Sanchez Prada, Daniel Stone
+
+Translations:
+  Marek Cernocky [cs], Aurimas Černius [lt], Piotr Drąg [pl],
+  Fran Dieguez [gl], gogo [hr], Dušan Kazik [sk], Milo Casagrande [it],
+  Jordi Mas [ca], Cheng-Chia Tseng [zh_TW], Марко Костић [sr],
+  Милош Поповић [sr@latin], Rūdolfs Mazurs [lv], Matej Urbančič [sl],
+  Ask Hjorth Larsen [da], Piotr Drąg [it, lt], Jiri Grönroos [fi],
+  Emin Tufan Çetin [tr], Wolfgang Stöggl [de], Kukuh Syafaat [id],
+  Yuras Shumovich [be], Changwoo Ryu [ko], Alexander Shopov [bg],
+  Rafael Fontenelle [pt_BR], Balázs Úr [hu]
+
 3.25.91
 =======
 * Reduce memory use of suspended instances [Jonas; #786299]
