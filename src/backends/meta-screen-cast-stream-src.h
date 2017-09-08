@@ -26,7 +26,6 @@
 #include <glib-object.h>
 
 #include "clutter/clutter.h"
-#include "mutter/meta/boxes.h"
 
 typedef struct _MetaScreenCastStream MetaScreenCastStream;
 
