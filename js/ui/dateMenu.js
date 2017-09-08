@@ -237,12 +237,12 @@ var WeatherSection = new Lang.Class({
         let options = capitalize ? GWeather.FormatOptions.SENTENCE_CAPITALIZATION
                                  : GWeather.FormatOptions.NO_CAPITALIZATION;
 
-        let [ok, phenom, qualifier] = info.get_value_conditions();
+        let [ok, phenomenon, qualifier] = info.get_value_conditions();
         if (ok)
-            return GWeather.conditions_to_string_full(phenom, qualifier, options);
+            return new GWeather.Conditions({ phenomenon, qualifier}).to_string_full(options);
 
         let [, sky] = info.get_value_sky();
-        return GWeather.sky_to_string_full(sky, options);
+        return GWeather.Sky.to_string_full(sky, options);
     },
 
     _sameSummary: function(info1, info2) {
