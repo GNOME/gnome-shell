@@ -21,8 +21,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-22 11:17+0000\n"
-"PO-Revision-Date: 2017-09-02 17:11+0100\n"
+"POT-Creation-Date: 2017-09-02 09:10+0000\n"
+"PO-Revision-Date: 2017-09-08 17:11+0100\n"
 "Last-Translator: Alain Lojewski <allomervan@gmail.com>\n"
 "Language-Team: français <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -63,11 +63,11 @@ msgstr "Extensions Shell"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:5
 msgid "Configure GNOME Shell Extensions"
-msgstr "Configurer les extensions GNOME Shell"
+msgstr "Configurer les extensions Shell de GNOME"
 
 #: data/org.gnome.Shell.desktop.in.in:4
 msgid "GNOME Shell"
-msgstr "GNOME Shell"
+msgstr "Shell de GNOME"
 
 #: data/org.gnome.Shell.desktop.in.in:5
 msgid "Window management and application launching"
@@ -637,7 +637,9 @@ msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
-"La connexion à ce point d’accès n’est pas sécurisée. Les mots de passe et les autres informations que vous saisissez sur cette page peuvent être interceptés par des personnes autour de vous."
+"La connexion à ce point d’accès n’est pas sécurisée. Les mots de passe et "
+"les autres informations que vous saisissez sur cette page peuvent être "
+"interceptés par des personnes autour de vous."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -681,12 +683,12 @@ msgstr "Ajouter aux favoris"
 msgid "Show Details"
 msgstr "Afficher les détails"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:141
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s a été ajouté à vos favoris."
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:175
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s a été supprimé de vos favoris."
@@ -849,7 +851,8 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Vous pouvez soit attendre un peu pour continuer, soit forcer l’application à quitter."
+"Vous pouvez soit attendre un peu pour continuer, soit forcer l’application à "
+"quitter."
 
 #: js/ui/closeDialog.js:61
 msgid "Force Quit"
@@ -1260,8 +1263,7 @@ msgstr "L’application veut neutraliser les raccourcis"
 #: js/ui/inhibitShortcutsDialog.js:69
 #, javascript-format
 msgid "You can restore shortcuts by pressing %s."
-msgstr ""
-"Pour restaurer les raccourcis, appuyez sur %s."
+msgstr "Pour restaurer les raccourcis, appuyez sur %s."
 
 #: js/ui/inhibitShortcutsDialog.js:74
 msgid "Deny"
@@ -2148,4 +2150,3 @@ msgstr[1] "%u entrées"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sons système"
-
