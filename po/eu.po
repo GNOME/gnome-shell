@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 01:44+0000\n"
-"PO-Revision-Date: 2017-02-16 22:07+0100\n"
+"POT-Creation-Date: 2017-08-21 04:46+0000\n"
+"PO-Revision-Date: 2017-08-27 16:47+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -270,11 +270,6 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Aldatzailea leihoak kudeatzeko eragiketa hedatuetan erabiltzeko"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
-#| msgid ""
-#| "This key will initiate the \"overlay\", which is a combination window "
-#| "overview and application launching system. The default is intended to be "
-#| "the \"Windows key\" on PC hardware. It's expected that this binding "
-#| "either the default or set to the empty string."
 msgid ""
 "This key will initiate the “overlay”, which is a combination window overview "
 "and application launching system. The default is intended to be the “Windows "
@@ -320,10 +315,6 @@ msgid "Workspaces are managed dynamically"
 msgstr "Laneko areak dinamikoki kudeatzen dira"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
-#| msgid ""
-#| "Determines whether workspaces are managed dynamically or whether there's "
-#| "a static number of workspaces (determined by the num-workspaces key in "
-#| "org.gnome.desktop.wm.preferences)."
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
@@ -362,10 +353,6 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Atzeratu fokuaren aldaketa erakuslea mugitzeari utzi arte"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focus will not be changed immediately when entering a window, but "
-#| "only after the pointer stops moving."
 msgid ""
 "If set to true, and the focus mode is either “sloppy” or “mouse” then the "
 "focus will not be changed immediately when entering a window, but only after "
@@ -380,9 +367,6 @@ msgid "Draggable border width"
 msgstr "Ertz arrastragarriaren zabalera"
 
 #: data/org.gnome.mutter.gschema.xml.in:80
-#| msgid ""
-#| "The amount of total draggable borders. If the theme's visible borders are "
-#| "not enough, invisible borders will be added to meet this value."
 msgid ""
 "The amount of total draggable borders. If the theme’s visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -414,13 +398,49 @@ msgstr ""
 "TRUE (egia) denean, leiho berriak beti jarriko dira monitorearen pantaila "
 "aktiboaren zentroan."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Gaitu eginbide esperimentalak"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart."
+msgstr ""
+"Eginbide esperimentalak gaitzeko, gehitu eginbidearen gakoa zerrendari. "
+"Eginbideak osatzailea berrabiaraztea behar duen edo ez emandako eginbidearen "
+"arabera dago. Ez da derrigorrezkoa edozer eginbide esperimental eskuragarri "
+"edo konfiguragarria egotea. Ez uste ezarpen honetan edozer gehitzeak "
+"etorkizuneko "
+"proba izango denik. Gako erabilgarriak: "
+"• “scale-monitor-framebuffer” — honek mutter monitoreen diseinu logikoetara "
+"lehenesten du espazioaren koordenatuko pixel logikoetan (leihoaren edukiaren "
+"ordez "
+"monitorearen framebufferra eskalatzean) HiDPI monitoreak kudeatzeko. Ez du "
+"berrabiaraztea eskatzen."
+
+#: data/org.gnome.mutter.gschema.xml.in:141
 msgid "Select window from tab popup"
 msgstr "Hautatu leihoa laster-fitxatik"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:146
 msgid "Cancel tab popup"
 msgstr "Utzi laster-fitxa"
+
+#: data/org.gnome.mutter.gschema.xml.in:151
+#| msgid "Switch monitor"
+msgid "Switch monitor configurations"
+msgstr "Aldatu monitorearen konfigurazioak"
+
+#: data/org.gnome.mutter.gschema.xml.in:156
+msgid "Rotates the built-in monitor configuration"
+msgstr "Biratu barneko monitorearen konfigurazioa"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -470,92 +490,65 @@ msgstr "Aldatu 11. TBra"
 msgid "Switch to VT 12"
 msgstr "Aldatu 12. TBra"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Gaitu berriro laster-teklak"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1759
+#: src/backends/meta-input-settings.c:2151
 #, c-format
-#| msgid "Mode Switch: Mode %d"
 msgid "Mode Switch (Group %d)"
 msgstr "Modu aldaketa (%d taldea)"
 
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1781
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Aldatu monitorea"
 
-#: src/backends/meta-input-settings.c:1783
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Erakutsi pantailako laguntza"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Bertako pantaila"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Pantaila ezezaguna"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
-#| msgid ""
-#| "Another compositing manager is already running on screen %i on display "
-#| "\"%s\"."
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
 msgstr ""
-"Dagoeneko beste konposatze-kudeatzailea ari da exekutatzen “%2$s“ "
-"pantailako %1$i. monitorean."
+"Dagoeneko beste konposatze-kudeatzailea ari da exekutatzen “%2$s“ pantailako "
+"%1$i. monitorean."
 
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Soinuaren gertaera"
 
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "'%s'(e)k ez du erantzuten."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Aplikazioak ez du erantzuten."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Aukeratu piskatean zai egotea aplikazioak jarraitzeko edo derrigortu "
-"aplikazioa erabat ixtea."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Behartu ixtera"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Itxaron"
-
 #: src/core/display.c:608
 #, c-format
-#| msgid "Failed to open X Window System display '%s'\n"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Huts egin du X Window sistemaren “%s“ pantaila irekitzean\n"
 
@@ -595,14 +588,34 @@ msgstr "Exekutatu habiaratutako konposatzaile gisa"
 msgid "Run as a full display server, rather than nested"
 msgstr "Exekutatu pantaila-zerbitzari oso bezala, habiaratuta baino"
 
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "'%s'(e)k ez du erantzuten."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Aplikazioak ez du erantzuten."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Aukeratu piskatean zai egotea aplikazioak jarraitzeko edo derrigortu "
+"aplikazioa erabat ixtea."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Behartu ixtera"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Itxaron"
+
 #: src/core/mutter.c:39
 #, c-format
-#| msgid ""
-#| "mutter %s\n"
-#| "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
 msgid ""
 "mutter %s\n"
 "Copyright © 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
@@ -631,9 +644,6 @@ msgstr "%d. laneko area"
 
 #: src/core/screen.c:580
 #, c-format
-#| msgid ""
-#| "Display \"%s\" already has a window manager; try using the --replace "
-#| "option to replace the current window manager."
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
 "replace the current window manager."
@@ -643,7 +653,6 @@ msgstr ""
 
 #: src/core/screen.c:665
 #, c-format
-#| msgid "Screen %d on display '%s' is invalid\n"
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "“%2$s“ bistaratzeko %1$d pantaila ez da baliozkoa\n"
 
@@ -657,9 +666,6 @@ msgid "Mode Switch: Mode %d"
 msgstr "Modu aldaketa: %d modua"
 
 #: src/x11/session.c:1815
-#| msgid ""
-#| "These windows do not support &quot;save current setup&quot; and will have "
-#| "to be restarted manually next time you log in."
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
