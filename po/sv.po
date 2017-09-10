@@ -9,17 +9,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 21:09+0000\n"
-"PO-Revision-Date: 2017-02-21 01:20+0100\n"
+"POT-Creation-Date: 2017-09-04 14:39+0000\n"
+"PO-Revision-Date: 2017-09-05 00:14+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -397,13 +397,53 @@ msgstr ""
 "När satt till \"true\", kommer nya fönster alltid att placeras centrerat på "
 "den aktiva skärmen."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Aktivera experimentella funktioner"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
+msgstr ""
+"För att aktivera experimentella funktioner, lägg till funktionens nyckelord "
+"till listan. Huruvida funktionen kräver att kompositionshanteraren startas "
+"om beror på den angivna funktionen. En experimentell funktion har inget krav "
+"på sig att fortfarande vara tillgänglig eller konfigurerbar. Förvänta dig "
+"inte att något som läggs till i denna inställning garanterat kommer att "
+"fungera i framtiden. För närvarande möjliga nyckelord: • ”scale-monitor-"
+"framebuffer” — gör så att mutter som standard använder en layout med logiska "
+"skärmar i en rymd av logiska bildpunktskoordinater, medan skärmars "
+"rambuffert skalas i stället för fönsterinnehållet, för att hantera HiDPI-"
+"skärmar. Kräver inte en omstart. • ”remote-desktop” — aktiverar stöd för "
+"fjärrskrivbord. För stöd för fjärrskrivbord med skärmdelning måste “screen-"
+"cast” också vara aktiverat. • “screen-cast” — aktiverar stöd för "
+"skärminspelning."
+
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Välj fönster från flik-popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Avbryt flik-popup"
+
+#: data/org.gnome.mutter.gschema.xml.in:155
+msgid "Switch monitor configurations"
+msgstr "Växla skärmkonfiguration"
+
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr "Roterar den inbyggda skärmkonfigurationen"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -453,10 +493,14 @@ msgstr "Växla till VT 11"
 msgid "Switch to VT 12"
 msgstr "Växla till VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Återaktivera genvägar"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Lägesväxel (grupp %d)"
@@ -464,37 +508,37 @@ msgstr "Lägesväxel (grupp %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Växla skärm"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Visa hjälp på skärmen"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Inbyggd display"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Okänd"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Okänd display"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -503,32 +547,6 @@ msgstr "En annan kompositionshanterare körs redan på skärm %i på display ”
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Ljudsignalhändelse"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "”%s” svarar inte."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Programmet svarar inte."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Du kan välja att vänta en kort stund på det för att fortsätta eller tvinga "
-"programmet att helt avslutas."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Tvinga avslut"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Vänta"
 
 #: src/core/display.c:608
 #, c-format
@@ -570,6 +588,32 @@ msgstr "Kör som en nästlad kompositionshanterare"
 #: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Kör som en full display-tjänst, i stället för nästlad"
+
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "”%s” svarar inte."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Programmet svarar inte."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Du kan välja att vänta en kort stund på det för att fortsätta eller tvinga "
+"programmet att helt avslutas."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Tvinga avslut"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Vänta"
 
 #: src/core/mutter.c:39
 #, c-format
