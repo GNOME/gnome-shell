@@ -12,10 +12,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-09-02 09:32+0300\n"
-"PO-Revision-Date: 2017-08-31 21:26+0200\n"
+"POT-Creation-Date: 2017-09-10 11:09+0000\n"
+"PO-Revision-Date: 2017-09-10 17:41+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -24,10 +24,487 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: data/50-mutter-navigation.xml:6
+msgid "Navigation"
+msgstr "Навигация"
+
+#: data/50-mutter-navigation.xml:9
+msgid "Move window to workspace 1"
+msgstr "Преместване на прозореца на работен плот 1"
+
+#: data/50-mutter-navigation.xml:12
+msgid "Move window to workspace 2"
+msgstr "Преместване на прозореца на работен плот 2"
+
+#: data/50-mutter-navigation.xml:15
+msgid "Move window to workspace 3"
+msgstr "Преместване на прозореца на работен плот 3"
+
+#: data/50-mutter-navigation.xml:18
+msgid "Move window to workspace 4"
+msgstr "Преместване на прозореца на работен плот 4"
+
+#: data/50-mutter-navigation.xml:21
+msgid "Move window to last workspace"
+msgstr "Преместване на прозореца на последния работен плот"
+
+#: data/50-mutter-navigation.xml:24
+msgid "Move window one workspace to the left"
+msgstr "Преместване на прозореца един работен плот наляво"
+
+#: data/50-mutter-navigation.xml:27
+msgid "Move window one workspace to the right"
+msgstr "Преместване на прозореца един работен плот надясно"
+
+#: data/50-mutter-navigation.xml:30
+msgid "Move window one workspace up"
+msgstr "Преместване на прозореца един работен плот нагоре"
+
+#: data/50-mutter-navigation.xml:33
+msgid "Move window one workspace down"
+msgstr "Преместване на прозореца един работен плот надолу"
+
+#: data/50-mutter-navigation.xml:36
+msgid "Move window one monitor to the left"
+msgstr "Преместване на прозореца един екран наляво"
+
+#: data/50-mutter-navigation.xml:39
+msgid "Move window one monitor to the right"
+msgstr "Преместване на прозореца един екран надясно"
+
+#: data/50-mutter-navigation.xml:42
+msgid "Move window one monitor up"
+msgstr "Преместване на прозореца един екран нагоре"
+
+#: data/50-mutter-navigation.xml:45
+msgid "Move window one monitor down"
+msgstr "Преместване на прозореца един екран надолу"
+
+#: data/50-mutter-navigation.xml:49
+msgid "Switch applications"
+msgstr "Преместване на фокуса между програмите"
+
+#: data/50-mutter-navigation.xml:54
+msgid "Switch to previous application"
+msgstr "Преместване на фокуса към предишната програма"
+
+#: data/50-mutter-navigation.xml:58
+msgid "Switch windows"
+msgstr "Преместване на фокуса между прозорците"
+
+#: data/50-mutter-navigation.xml:63
+msgid "Switch to previous window"
+msgstr "Преместване на фокуса към предишния прозорец"
+
+#: data/50-mutter-navigation.xml:67
+msgid "Switch windows of an application"
+msgstr "Преместване на фокуса между прозорците на една програма"
+
+#: data/50-mutter-navigation.xml:72
+msgid "Switch to previous window of an application"
+msgstr "Преместване на фокуса към предишния прозорец на програма"
+
+#: data/50-mutter-navigation.xml:76
+msgid "Switch system controls"
+msgstr "Към следващия служебен обект"
+
+#: data/50-mutter-navigation.xml:81
+msgid "Switch to previous system control"
+msgstr "Към предишния служебен обект"
+
+#: data/50-mutter-navigation.xml:85
+msgid "Switch windows directly"
+msgstr "Незабавно преместване на фокуса между прозорците"
+
+#: data/50-mutter-navigation.xml:90
+msgid "Switch directly to previous window"
+msgstr "Незабавно преместване на фокуса към предишния прозорец"
+
+#: data/50-mutter-navigation.xml:94
+msgid "Switch windows of an app directly"
+msgstr "Незабавно преместване на фокуса между прозорците на една програма"
+
+#: data/50-mutter-navigation.xml:99
+msgid "Switch directly to previous window of an app"
+msgstr ""
+"Незабавно преместване на фокуса към предишния прозорец на една програма"
+
+#: data/50-mutter-navigation.xml:103
+msgid "Switch system controls directly"
+msgstr "Незабавно преместване на фокуса между служебните обекти"
+
+#: data/50-mutter-navigation.xml:108
+msgid "Switch directly to previous system control"
+msgstr "Незабавно преместване на фокуса към предишния служебен обект"
+
+#: data/50-mutter-navigation.xml:111
+msgid "Hide all normal windows"
+msgstr "Скриване на всички обикновени прозорци"
+
+#: data/50-mutter-navigation.xml:114
+msgid "Switch to workspace 1"
+msgstr "Превключване към работен плот 1"
+
+#: data/50-mutter-navigation.xml:117
+msgid "Switch to workspace 2"
+msgstr "Превключване към работен плот 2"
+
+#: data/50-mutter-navigation.xml:120
+msgid "Switch to workspace 3"
+msgstr "Превключване към работен плот 3"
+
+#: data/50-mutter-navigation.xml:123
+msgid "Switch to workspace 4"
+msgstr "Превключване към работен плот 4"
+
+#: data/50-mutter-navigation.xml:126
+msgid "Switch to last workspace"
+msgstr "Превключване към последния работен плот"
+
+#: data/50-mutter-navigation.xml:129
+msgid "Move to workspace left"
+msgstr "Преместване на левия работен плот"
+
+#: data/50-mutter-navigation.xml:132
+msgid "Move to workspace right"
+msgstr "Преместване на десния работен плот"
+
+#: data/50-mutter-navigation.xml:135
+msgid "Move to workspace above"
+msgstr "Преместване на горния работен плот"
+
+#: data/50-mutter-navigation.xml:138
+msgid "Move to workspace below"
+msgstr "Преместване на долния работен плот"
+
+#: data/50-mutter-system.xml:6
+msgid "System"
+msgstr "Система"
+
+#: data/50-mutter-system.xml:8
+msgid "Show the run command prompt"
+msgstr "Показване на прозореца за стартиране на команда"
+
+#: data/50-mutter-system.xml:10
+msgid "Show the activities overview"
+msgstr "Преглед на дейностите"
+
+#: data/50-mutter-windows.xml:6
+msgid "Windows"
+msgstr "Прозорци"
+
+#: data/50-mutter-windows.xml:8
+msgid "Activate the window menu"
+msgstr "Задействане на менюто за прозорците"
+
+#: data/50-mutter-windows.xml:10
+msgid "Toggle fullscreen mode"
+msgstr "Превключване на режима за цял екран"
+
+#: data/50-mutter-windows.xml:12
+msgid "Toggle maximization state"
+msgstr "Превключване на състоянието на максимизиране"
+
+#: data/50-mutter-windows.xml:14
+msgid "Maximize window"
+msgstr "Максимизиране на прозорец"
+
+#: data/50-mutter-windows.xml:16
+msgid "Restore window"
+msgstr "Възстановяване на прозорец"
+
+#: data/50-mutter-windows.xml:18
+msgid "Toggle shaded state"
+msgstr "Превключване на състоянието на навиване"
+
+#: data/50-mutter-windows.xml:20
+msgid "Close window"
+msgstr "Затваряне на прозореца"
+
+#: data/50-mutter-windows.xml:22
+msgid "Hide window"
+msgstr "Скриване на прозорец"
+
+#: data/50-mutter-windows.xml:24
+msgid "Move window"
+msgstr "Преместване на прозорец"
+
+#: data/50-mutter-windows.xml:26
+msgid "Resize window"
+msgstr "Оразмеряване на прозорец"
+
+#: data/50-mutter-windows.xml:29
+msgid "Toggle window on all workspaces or one"
+msgstr "Превключване на появата на прозореца на всички работни места"
+
+#: data/50-mutter-windows.xml:31
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Ако прозорецът е под друг, го издига, иначе го понижава"
+
+#: data/50-mutter-windows.xml:33
+msgid "Raise window above other windows"
+msgstr "Издигане на прозореца над другите"
+
+#: data/50-mutter-windows.xml:35
+msgid "Lower window below other windows"
+msgstr "Понижаване на прозореца под другите прозорци"
+
+#: data/50-mutter-windows.xml:37
+msgid "Maximize window vertically"
+msgstr "Максимизиране на прозореца вертикално"
+
+#: data/50-mutter-windows.xml:39
+msgid "Maximize window horizontally"
+msgstr "Максимизиране на прозореца хоризонтално"
+
+#: data/50-mutter-windows.xml:43
+msgid "View split on left"
+msgstr "Изглед разделен отляво"
+
+#: data/50-mutter-windows.xml:47
+msgid "View split on right"
+msgstr "Изглед разделен отдясно"
+
+#: data/mutter.desktop.in:4
+msgid "Mutter"
+msgstr "Mutter"
+
+#: data/org.gnome.mutter.gschema.xml.in:7
+msgid "Modifier to use for extended window management operations"
+msgstr ""
+"Модификатор, който да се ползва за допълнителните действия по прозорците"
+
+#: data/org.gnome.mutter.gschema.xml.in:8
+msgid ""
+"This key will initiate the “overlay”, which is a combination window overview "
+"and application launching system. The default is intended to be the “Windows "
+"key” on PC hardware. It’s expected that this binding either the default or "
+"set to the empty string."
+msgstr ""
+"Този клавиш стартира наслагването, което е комбинация от прозорец и система "
+"за стартиране на програми. Стандартно клавишът е „Windows“ при системите "
+"съвместими с PC. Очаква се да е или стандартната стойност или празен низ."
+
+#: data/org.gnome.mutter.gschema.xml.in:20
+msgid "Attach modal dialogs"
+msgstr "Прилепени модални диалогови прозорци"
+
+#: data/org.gnome.mutter.gschema.xml.in:21
+msgid ""
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
+msgstr ""
+"Когато е ключът е истина, модалните диалогови прозорци прилепват към "
+"заглавната лента на родителския си прозорец и се местят с него, вместо да са "
+"отделни и да имат собствена заглавна лента."
+
+#: data/org.gnome.mutter.gschema.xml.in:30
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+"Включване на прилепването и максимизирането на прозорците по границите на "
+"екрана"
+
+#: data/org.gnome.mutter.gschema.xml.in:31
+msgid ""
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
+msgstr ""
+"Ако е включено, прозорците ще се максимизират по вертикала и ще заемат "
+"половината площ по хоризонтала при поставянето им край вертикалните граници "
+"на екрана. При поставянето им край горната граница прозорците ще се "
+"максимизират изцяло."
+
+#: data/org.gnome.mutter.gschema.xml.in:40
+msgid "Workspaces are managed dynamically"
+msgstr "Динамично управление на работните места"
+
+#: data/org.gnome.mutter.gschema.xml.in:41
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there’s a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"Определя дали се ползва динамично управление на работните места или броят им "
+"е установено число (зададено чрез ключа „num-workspaces“ в „org.gnome."
+"desktop.wm.preferences“)."
+
+#: data/org.gnome.mutter.gschema.xml.in:50
+msgid "Workspaces only on primary"
+msgstr "Работни плотове само на основния екран"
+
+#: data/org.gnome.mutter.gschema.xml.in:51
+msgid ""
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
+msgstr ""
+"Дали смяната на работни плотове да се извършва на всички екрани или само на "
+"основния."
+
+#: data/org.gnome.mutter.gschema.xml.in:59
+msgid "No tab popup"
+msgstr "Без изскачащ прозорец при обхождане"
+
+#: data/org.gnome.mutter.gschema.xml.in:60
+msgid ""
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
+msgstr ""
+"Дали отбелязването на рамка и изскачащият прозорец при обхождане на "
+"прозорците да се изключат."
+
+#: data/org.gnome.mutter.gschema.xml.in:68
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Смяната на фокуса да изчака спирането на показалеца"
+
+#: data/org.gnome.mutter.gschema.xml.in:69
+msgid ""
+"If set to true, and the focus mode is either “sloppy” or “mouse” then the "
+"focus will not be changed immediately when entering a window, but only after "
+"the pointer stops moving."
+msgstr ""
+"Ако е включено и начинът за фокусиране е „sloppy“ (мързеливо) или "
+"„mouse“ (под мишката), тогава фокусът няма да се предава веднага при "
+"навлизането в прозорец, а едва след като показалецът спре да се движи."
+
+#: data/org.gnome.mutter.gschema.xml.in:79
+msgid "Draggable border width"
+msgstr "Широчина на границата за влачене"
+
+#: data/org.gnome.mutter.gschema.xml.in:80
+msgid ""
+"The amount of total draggable borders. If the theme’s visible borders are "
+"not enough, invisible borders will be added to meet this value."
+msgstr ""
+"Общ размер на границите за влачене. Ако видимите граници на темата са по-"
+"малки, се добавят невидими граници, за да се достигне тази величина."
+
+#: data/org.gnome.mutter.gschema.xml.in:89
+msgid "Auto maximize nearly monitor sized windows"
+msgstr ""
+"Автоматично максимизиране на прозорци с размер близък до този на екрана"
+
+#: data/org.gnome.mutter.gschema.xml.in:90
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+"Ако е включено, новите прозорци, чийто размер е близък на този на екрана, "
+"автоматично ще се максимизират."
+
+#: data/org.gnome.mutter.gschema.xml.in:98
+msgid "Place new windows in the center"
+msgstr "Поставяне на новите прозорци в центъра на екрана"
+
+#: data/org.gnome.mutter.gschema.xml.in:99
+msgid ""
+"When true, the new windows will always be put in the center of the active "
+"screen of the monitor."
+msgstr "Ако е включено, новите прозорци ще се поставят в центъра на екрана."
+
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Включване на експерименталните възможности"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
+msgstr ""
+"За да включите експерименталните възможности, добавете ги към списъка. В "
+"някои случаи това изисква рестартиране на мениджъра за наслагване. "
+"Експерименталните възможности може да не са инсталирани или може да не се "
+"настройват. Тази секция не гарантира никаква бъдеща съвместимост. Възможните "
+"стойности са: • „scale-monitor-framebuffer“ — обединяване на всички монитори "
+"в съвместно графично пространство с логически координати на пикселите, при "
+"което се мащабират буферите за кадри, а не съдържанието на прозорците — за "
+"управление на мониторите с висока разделителна способност, не изисква "
+"рестартиране. • „remote-desktop“ — поддръжка на отдалечено работно място. "
+"Отдалеченото работно място изиска и предаването на екрана със „screen-cast“. "
+"• „screen-cast“ — предаване на екрана."
+
+#: data/org.gnome.mutter.gschema.xml.in:145
+msgid "Select window from tab popup"
+msgstr "Избиране при обхождане чрез изскачащ прозорец"
+
+#: data/org.gnome.mutter.gschema.xml.in:150
+msgid "Cancel tab popup"
+msgstr "Без изскачащ прозорец при обхождане"
+
+#: data/org.gnome.mutter.gschema.xml.in:155
+msgid "Switch monitor configurations"
+msgstr "Смяна на настройките на екрана"
+
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr "Завъртане на вградения екран"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:6
+msgid "Switch to VT 1"
+msgstr "Превключване към виртуална графична конзола 1"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:10
+msgid "Switch to VT 2"
+msgstr "Превключване към виртуална графична конзола 2"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:14
+msgid "Switch to VT 3"
+msgstr "Превключване към виртуална графична конзола 3"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:18
+msgid "Switch to VT 4"
+msgstr "Превключване към виртуална графична конзола 4"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:22
+msgid "Switch to VT 5"
+msgstr "Превключване към виртуална графична конзола 5"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:26
+msgid "Switch to VT 6"
+msgstr "Превключване към виртуална графична конзола 6"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:30
+msgid "Switch to VT 7"
+msgstr "Превключване към виртуална графична конзола 7"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:34
+msgid "Switch to VT 8"
+msgstr "Превключване към виртуална графична конзола 8"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:38
+msgid "Switch to VT 9"
+msgstr "Превключване към виртуална графична конзола 9"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:42
+msgid "Switch to VT 10"
+msgstr "Превключване към виртуална графична конзола 10"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:46
+msgid "Switch to VT 11"
+msgstr "Превключване към виртуална графична конзола 11"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:50
+msgid "Switch to VT 12"
+msgstr "Превключване към виртуална графична конзола 12"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Включване на клавишните комбинации"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: ../src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2151
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Смяна на режима (режим %d)"
@@ -35,100 +512,100 @@ msgstr "Смяна на режима (режим %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: ../src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2174
 msgid "Switch monitor"
 msgstr "Смяна на екрана"
 
-#: ../src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2176
 msgid "Show on-screen help"
 msgstr "Показване на помощта на екрана"
 
-#: ../src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:903
 msgid "Built-in display"
 msgstr "Вграден екран"
 
-#: ../src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:926
 msgid "Unknown"
 msgstr "Непознат"
 
-#: ../src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:928
 msgid "Unknown Display"
 msgstr "Непознат екран"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: ../src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:936
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:476
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
 msgstr "На екран %i от дисплея „%s“ вече има мениджър за наслагване."
 
-#: ../src/core/bell.c:194
+#: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Събитие за звънец"
 
-#: ../src/core/display.c:608
+#: src/core/display.c:608
 #, c-format
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Неуспешно отваряне на дисплея на X Window „%s“\n"
 
-#: ../src/core/main.c:189
+#: src/core/main.c:189
 msgid "Disable connection to session manager"
 msgstr "Прекъсване на връзката към мениджъра на сесиите"
 
-#: ../src/core/main.c:195
+#: src/core/main.c:195
 msgid "Replace the running window manager"
 msgstr "Замяна на текущия мениджър на прозорци"
 
-#: ../src/core/main.c:201
+#: src/core/main.c:201
 msgid "Specify session management ID"
 msgstr "Определяне на идентификатор за управлението на сесии"
 
-#: ../src/core/main.c:206
+#: src/core/main.c:206
 msgid "X Display to use"
 msgstr "X дисплеят, който да се използва"
 
 # Ако „запазено“ не се членува, низът се събира на един ред без
 # пренасяне.
-#: ../src/core/main.c:212
+#: src/core/main.c:212
 msgid "Initialize session from savefile"
 msgstr "Инициализиране на сесия от файл със запазено състояние"
 
-#: ../src/core/main.c:218
+#: src/core/main.c:218
 msgid "Make X calls synchronous"
 msgstr "Извикванията на X да са синхронни"
 
-#: ../src/core/main.c:225
+#: src/core/main.c:225
 msgid "Run as a wayland compositor"
 msgstr "Wayland да е мениджър за наслагване"
 
-#: ../src/core/main.c:231
+#: src/core/main.c:231
 msgid "Run as a nested compositor"
 msgstr "Изпълнение като вложен сървър за изобразяване"
 
-#: ../src/core/main.c:239
+#: src/core/main.c:239
 msgid "Run as a full display server, rather than nested"
 msgstr "Изпълнение като самостоятелен, а не вложен сървър за изобразяване"
 
 #. Translators: %s is a window title
-#: ../src/core/meta-close-dialog-default.c:147
+#: src/core/meta-close-dialog-default.c:147
 #, c-format
 msgid "“%s” is not responding."
 msgstr "„%s“ не отговаря на съобщенията."
 
-#: ../src/core/meta-close-dialog-default.c:149
+#: src/core/meta-close-dialog-default.c:149
 msgid "Application is not responding."
 msgstr "Програмата не отговаря на съобщенията."
 
-#: ../src/core/meta-close-dialog-default.c:154
+#: src/core/meta-close-dialog-default.c:154
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -136,15 +613,15 @@ msgstr ""
 "Можете да изчакате малко, преди изрично да накарате програмата да спре "
 "работата си."
 
-#: ../src/core/meta-close-dialog-default.c:161
+#: src/core/meta-close-dialog-default.c:161
 msgid "_Force Quit"
 msgstr "_Принудително спиране"
 
-#: ../src/core/meta-close-dialog-default.c:161
+#: src/core/meta-close-dialog-default.c:161
 msgid "_Wait"
 msgstr "Из_чакване"
 
-#: ../src/core/mutter.c:39
+#: src/core/mutter.c:39
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -160,20 +637,20 @@ msgstr ""
 "Тази програма се разпространява БЕЗ НИКАКВИ ГАРАНЦИИ, дори и за ПРОДАЖБА или "
 "СЪОТВЕТСТВИЕ С КАКВАТО И ДА Е УПОТРЕБА.\n"
 
-#: ../src/core/mutter.c:53
+#: src/core/mutter.c:53
 msgid "Print version"
 msgstr "Отпечатване на версията на програмата"
 
-#: ../src/core/mutter.c:59
+#: src/core/mutter.c:59
 msgid "Mutter plugin to use"
 msgstr "Приставка, която да се ползва"
 
-#: ../src/core/prefs.c:1997
+#: src/core/prefs.c:1997
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
 
-#: ../src/core/screen.c:580
+#: src/core/screen.c:580
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -182,21 +659,21 @@ msgstr ""
 "Вече има мениджър на прозорци на дисплей „%s“. Пробвайте да го замените с "
 "опцията „--replace“."
 
-#: ../src/core/screen.c:665
+#: src/core/screen.c:665
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Екранът %d на дисплей „%s“ е невалиден\n"
 
-#: ../src/core/util.c:120
+#: src/core/util.c:120
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter е компилиран без поддръжка на подробен режим\n"
 
-#: ../src/wayland/meta-wayland-tablet-pad.c:563
+#: src/wayland/meta-wayland-tablet-pad.c:563
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Смяна на режима: режим %d"
 
-#: ../src/x11/session.c:1815
+#: src/x11/session.c:1815
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -204,345 +681,7 @@ msgstr ""
 "Тези прозорци не поддържат операцията по записване на текущото състояние и "
 "ще трябва да се стартират ръчно при следващото ви влизане."
 
-#: ../src/x11/window-props.c:559
+#: src/x11/window-props.c:559
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (от %s)"
-
-#~ msgid "Navigation"
-#~ msgstr "Навигация"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Преместване на прозореца на работен плот 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Преместване на прозореца на работен плот 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Преместване на прозореца на работен плот 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Преместване на прозореца на работен плот 4"
-
-#~ msgid "Move window to last workspace"
-#~ msgstr "Преместване на прозореца на последния работен плот"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Преместване на прозореца един работен плот наляво"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Преместване на прозореца един работен плот надясно"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Преместване на прозореца един работен плот нагоре"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Преместване на прозореца един работен плот надолу"
-
-#~ msgid "Move window one monitor to the left"
-#~ msgstr "Преместване на прозореца един екран наляво"
-
-#~ msgid "Move window one monitor to the right"
-#~ msgstr "Преместване на прозореца един екран надясно"
-
-#~ msgid "Move window one monitor up"
-#~ msgstr "Преместване на прозореца един екран нагоре"
-
-#~ msgid "Move window one monitor down"
-#~ msgstr "Преместване на прозореца един екран надолу"
-
-#~ msgid "Switch applications"
-#~ msgstr "Преместване на фокуса между програмите"
-
-#~ msgid "Switch to previous application"
-#~ msgstr "Преместване на фокуса към предишната програма"
-
-#~ msgid "Switch windows"
-#~ msgstr "Преместване на фокуса между прозорците"
-
-#~ msgid "Switch to previous window"
-#~ msgstr "Преместване на фокуса към предишния прозорец"
-
-#~ msgid "Switch windows of an application"
-#~ msgstr "Преместване на фокуса между прозорците на една програма"
-
-#~ msgid "Switch to previous window of an application"
-#~ msgstr "Преместване на фокуса към предишния прозорец на програма"
-
-#~ msgid "Switch to previous system control"
-#~ msgstr "Преместване на фокуса към предишния служебен обект"
-
-#~ msgid "Switch windows directly"
-#~ msgstr "Незабавно преместване на фокуса между прозорците"
-
-#~ msgid "Switch directly to previous window"
-#~ msgstr "Незабавно преместване на фокуса към предишния прозорец"
-
-#~ msgid "Switch windows of an app directly"
-#~ msgstr "Незабавно преместване на фокуса между прозорците на една програма"
-
-#~ msgid "Switch directly to previous window of an app"
-#~ msgstr ""
-#~ "Незабавно преместване на фокуса към предишния прозорец на една програма"
-
-#~ msgid "Switch system controls directly"
-#~ msgstr "Незабавно преместване на фокуса между служебните обекти"
-
-#~ msgid "Switch directly to previous system control"
-#~ msgstr "Незабавно преместване на фокуса към предишния служебен обект"
-
-#~ msgid "Hide all normal windows"
-#~ msgstr "Скриване на всички обикновени прозорци"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Превключване към работен плот 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Превключване към работен плот 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Превключване към работен плот 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Превключване към работен плот 4"
-
-#~ msgid "Switch to last workspace"
-#~ msgstr "Превключване към последния работен плот"
-
-#~ msgid "Move to workspace left"
-#~ msgstr "Преместване на левия работен плот"
-
-#~ msgid "Move to workspace right"
-#~ msgstr "Преместване на десния работен плот"
-
-#~ msgid "Move to workspace above"
-#~ msgstr "Преместване на горния работен плот"
-
-#~ msgid "Move to workspace below"
-#~ msgstr "Преместване на долния работен плот"
-
-#~ msgid "System"
-#~ msgstr "Система"
-
-#~ msgid "Show the run command prompt"
-#~ msgstr "Показване на прозореца за стартиране на команда"
-
-#~ msgid "Show the activities overview"
-#~ msgstr "Преглед на дейностите"
-
-#~ msgid "Windows"
-#~ msgstr "Прозорци"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "Задействане на менюто за прозорците"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Превключване на режима за цял екран"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Превключване на състоянието на максимизиране"
-
-#~ msgid "Maximize window"
-#~ msgstr "Максимизиране на прозорец"
-
-#~ msgid "Restore window"
-#~ msgstr "Възстановяване на прозорец"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Превключване на състоянието на навиване"
-
-#~ msgid "Close window"
-#~ msgstr "Затваряне на прозореца"
-
-#~ msgid "Hide window"
-#~ msgstr "Скриване на прозорец"
-
-#~ msgid "Move window"
-#~ msgstr "Преместване на прозорец"
-
-#~ msgid "Resize window"
-#~ msgstr "Оразмеряване на прозорец"
-
-#~ msgid "Toggle window on all workspaces or one"
-#~ msgstr "Превключване на появата на прозореца на всички работни места"
-
-#~ msgid "Raise window if covered, otherwise lower it"
-#~ msgstr "Ако прозорецът е под друг, го издига, иначе го понижава"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Издигане на прозореца над другите"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Понижаване на прозореца под другите прозорци"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Максимизиране на прозореца вертикално"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Максимизиране на прозореца хоризонтално"
-
-#~ msgid "View split on left"
-#~ msgstr "Изглед разделен отляво"
-
-#~ msgid "View split on right"
-#~ msgstr "Изглед разделен отдясно"
-
-#~ msgid "Mutter"
-#~ msgstr "Mutter"
-
-#~ msgid "Modifier to use for extended window management operations"
-#~ msgstr ""
-#~ "Модификатор, който да се ползва за допълнителните действия по прозорците"
-
-#~ msgid ""
-#~ "This key will initiate the \"overlay\", which is a combination window "
-#~ "overview and application launching system. The default is intended to be "
-#~ "the \"Windows key\" on PC hardware. It's expected that this binding "
-#~ "either the default or set to the empty string."
-#~ msgstr ""
-#~ "Този клавиш стартира наслагването, което е комбинация от прозорец и "
-#~ "система за стартиране на програми. Стандартно клавишът е „Windows“ при "
-#~ "системите съвместими с PC. Очаква се да е или стандартната стойност или "
-#~ "празен низ."
-
-#~ msgid "Attach modal dialogs"
-#~ msgstr "Прилепени модални диалогови прозорци"
-
-#~ msgid ""
-#~ "When true, instead of having independent titlebars, modal dialogs appear "
-#~ "attached to the titlebar of the parent window and are moved together with "
-#~ "the parent window."
-#~ msgstr ""
-#~ "Когато е ключът е истина, модалните диалогови прозорци прилепват към "
-#~ "заглавната лента на родителския си прозорец и се местят с него, вместо да "
-#~ "са отделни и да имат собствена заглавна лента."
-
-#~ msgid "Enable edge tiling when dropping windows on screen edges"
-#~ msgstr ""
-#~ "Включване на прилепването и максимизирането на прозорците по границите на "
-#~ "екрана"
-
-#~ msgid ""
-#~ "If enabled, dropping windows on vertical screen edges maximizes them "
-#~ "vertically and resizes them horizontally to cover half of the available "
-#~ "area. Dropping windows on the top screen edge maximizes them completely."
-#~ msgstr ""
-#~ "Ако е включено, прозорците ще се максимизират по вертикала и ще заемат "
-#~ "половината площ по хоризонтала при поставянето им край вертикалните "
-#~ "граници на екрана. При поставянето им край горната граница прозорците ще "
-#~ "се максимизират изцяло."
-
-#~ msgid "Workspaces are managed dynamically"
-#~ msgstr "Динамично управление на работните места"
-
-#~ msgid ""
-#~ "Determines whether workspaces are managed dynamically or whether there's "
-#~ "a static number of workspaces (determined by the num-workspaces key in "
-#~ "org.gnome.desktop.wm.preferences)."
-#~ msgstr ""
-#~ "Определя дали се ползва динамично управление на работните места или броят "
-#~ "им е установено число (зададено чрез ключа „num-workspaces“ в „org.gnome."
-#~ "desktop.wm.preferences“)."
-
-#~ msgid "Workspaces only on primary"
-#~ msgstr "Работни плотове само на основния екран"
-
-#~ msgid ""
-#~ "Determines whether workspace switching should happen for windows on all "
-#~ "monitors or only for windows on the primary monitor."
-#~ msgstr ""
-#~ "Дали смяната на работни плотове да се извършва на всички екрани или само "
-#~ "на основния."
-
-#~ msgid "No tab popup"
-#~ msgstr "Без изскачащ прозорец при обхождане"
-
-#~ msgid ""
-#~ "Determines whether the use of popup and highlight frame should be "
-#~ "disabled for window cycling."
-#~ msgstr ""
-#~ "Дали отбелязването на рамка и изскачащият прозорец при обхождане на "
-#~ "прозорците да се изключат."
-
-#~ msgid "Delay focus changes until the pointer stops moving"
-#~ msgstr "Смяната на фокуса да изчака спирането на показалеца"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focus will not be changed immediately when entering a window, but "
-#~ "only after the pointer stops moving."
-#~ msgstr ""
-#~ "Ако е включено и начинът за фокусиране е „sloppy“ (мързеливо) или "
-#~ "„mouse“ (под мишката), тогава фокусът няма да се предава веднага при "
-#~ "навлизането в прозорец, а едва след като показалецът спре да се движи."
-
-#~ msgid "Draggable border width"
-#~ msgstr "Широчина на границата за влачене"
-
-#~ msgid ""
-#~ "The amount of total draggable borders. If the theme's visible borders are "
-#~ "not enough, invisible borders will be added to meet this value."
-#~ msgstr ""
-#~ "Общ размер на границите за влачене. Ако видимите граници на темата са по-"
-#~ "малки, се добавят невидими граници, за да се достигне тази величина."
-
-#~ msgid "Auto maximize nearly monitor sized windows"
-#~ msgstr ""
-#~ "Автоматично максимизиране на прозорци с размер близък до този на екрана"
-
-#~ msgid ""
-#~ "If enabled, new windows that are initially the size of the monitor "
-#~ "automatically get maximized."
-#~ msgstr ""
-#~ "Ако е включено, новите прозорци, чийто размер е близък на този на екрана, "
-#~ "автоматично ще се максимизират."
-
-#~ msgid "Place new windows in the center"
-#~ msgstr "Поставяне на новите прозорци в центъра на екрана"
-
-#~ msgid ""
-#~ "When true, the new windows will always be put in the center of the active "
-#~ "screen of the monitor."
-#~ msgstr "Ако е включено, новите прозорци ще се поставят в центъра на екрана."
-
-#~ msgid "Select window from tab popup"
-#~ msgstr "Избиране при обхождане чрез изскачащ прозорец"
-
-#~ msgid "Cancel tab popup"
-#~ msgstr "Без изскачащ прозорец при обхождане"
-
-#~ msgid "Switch to VT 1"
-#~ msgstr "Превключване към виртуална графична конзола 1"
-
-#~ msgid "Switch to VT 2"
-#~ msgstr "Превключване към виртуална графична конзола 2"
-
-#~ msgid "Switch to VT 3"
-#~ msgstr "Превключване към виртуална графична конзола 3"
-
-#~ msgid "Switch to VT 4"
-#~ msgstr "Превключване към виртуална графична конзола 4"
-
-#~ msgid "Switch to VT 5"
-#~ msgstr "Превключване към виртуална графична конзола 5"
-
-#~ msgid "Switch to VT 6"
-#~ msgstr "Превключване към виртуална графична конзола 6"
-
-#~ msgid "Switch to VT 7"
-#~ msgstr "Превключване към виртуална графична конзола 7"
-
-#~ msgid "Switch to VT 8"
-#~ msgstr "Превключване към виртуална графична конзола 8"
-
-#~ msgid "Switch to VT 9"
-#~ msgstr "Превключване към виртуална графична конзола 9"
-
-#~ msgid "Switch to VT 10"
-#~ msgstr "Превключване към виртуална графична конзола 10"
-
-#~ msgid "Switch to VT 11"
-#~ msgstr "Превключване към виртуална графична конзола 11"
-
-#~ msgid "Switch to VT 12"
-#~ msgstr "Превключване към виртуална графична конзола 12"
