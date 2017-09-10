@@ -2,7 +2,7 @@
 # Copyright (C) 2009 Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>
 # This file is distributed under the same license as the gnome-shell package.
 # Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>, 2009.
-# Jordi Serratosa <jordis@softcatala.cat>, 2012.
+# Jordi Serratosa <jordis@softcatala.cat>, 2012, 2017.
 # Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2013, 2014, 2016.
 # Jordi Mas i Hernàndez <jmas@softcatala.org>, 2017
 #
@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-22 11:17+0000\n"
+"POT-Creation-Date: 2017-08-23 08:01+0000\n"
 "PO-Revision-Date: 2017-08-23 09:48+0200\n"
 "Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -199,7 +199,7 @@ msgid ""
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
 msgstr ""
-"El Shell només mostrà una entrada de menú Bluetooth si un adaptador Bluetooh "
+"El Shell només mostrà una entrada de menú Bluetooth si un adaptador Bluetooth "
 "està engegat, o si hi ha dispositius configurats associats a l'adaptador "
 "predeterminat. Això es reiniciarà si l'adaptador predeterminat té "
 "dispositius associats."
@@ -318,7 +318,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:206
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
-"Habilita la tesselització a les vores en deixar anar les finestres a les "
+"Habilita la tessel·lització a les vores en deixar anar les finestres a les "
 "vores de la pantalla"
 
 #: data/org.gnome.shell.gschema.xml.in:214
@@ -358,7 +358,7 @@ msgstr "Cancel·la"
 
 #: js/gdm/authPrompt.js:171 js/gdm/authPrompt.js:218 js/gdm/authPrompt.js:450
 msgid "Next"
-msgstr "Següent"
+msgstr "Següent"
 
 #: js/gdm/authPrompt.js:214 js/ui/shellMountOperation.js:348
 #: js/ui/unlockDialog.js:59
@@ -636,7 +636,7 @@ msgstr "Denega l'accés"
 
 #: js/ui/accessDialog.js:64 js/ui/status/location.js:398
 msgid "Grant Access"
-msgstr "Permetre l'accés"
+msgstr "Permet l'accés"
 
 #: js/ui/appDisplay.js:809
 msgid "Frequently used applications will appear here"
@@ -1852,13 +1852,13 @@ msgstr "S'està estimant la durada…"
 #: js/ui/status/power.js:98
 #, javascript-format
 msgid "%d∶%02d Remaining (%d %%)"
-msgstr "%d∶%02d queda (%d %%)"
+msgstr "Queden %d∶%02d (%d %%)"
 
 #. Translators: this is <hours>:<minutes> Until Full (<percentage>)
 #: js/ui/status/power.js:103
 #, javascript-format
 msgid "%d∶%02d Until Full (%d %%)"
-msgstr "%d∶%02d per completar la carrega (%d %%)"
+msgstr "%d∶%02d per completar la càrrega (%d %%)"
 
 #: js/ui/status/power.js:131 js/ui/status/power.js:133
 #, javascript-format
