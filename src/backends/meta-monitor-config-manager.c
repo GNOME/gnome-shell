@@ -1190,6 +1190,8 @@ meta_monitors_config_finalize (GObject *object)
   meta_monitors_config_key_free (config->key);
   g_list_free_full (config->logical_monitor_configs,
                     (GDestroyNotify) meta_logical_monitor_config_free);
+
+  G_OBJECT_CLASS (meta_monitors_config_parent_class)->finalize (object);
 }
 
 static void

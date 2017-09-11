@@ -1407,6 +1407,8 @@ meta_monitor_config_store_constructed (GObject *object)
     }
 
   g_free (user_file_path);
+
+  G_OBJECT_CLASS (meta_monitor_config_store_parent_class)->constructed (object);
 }
 
 static void

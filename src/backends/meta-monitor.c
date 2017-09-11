@@ -355,6 +355,8 @@ meta_monitor_finalize (GObject *object)
   g_list_free_full (priv->modes, (GDestroyNotify) meta_monitor_mode_free);
   g_clear_pointer (&priv->outputs, g_list_free);
   meta_monitor_spec_free (priv->spec);
+
+  G_OBJECT_CLASS (meta_monitor_parent_class)->finalize (object);
 }
 
 static void
@@ -1190,6 +1192,8 @@ meta_monitor_tiled_finalize (GObject *object)
 
   meta_monitor_manager_tiled_monitor_removed (monitor_priv->monitor_manager,
                                               monitor);
+
+  G_OBJECT_CLASS (meta_monitor_tiled_parent_class)->finalize (object);
 }
 
 static void
