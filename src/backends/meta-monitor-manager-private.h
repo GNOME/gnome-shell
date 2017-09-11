@@ -93,12 +93,6 @@ typedef enum _MetaLogicalMonitorLayoutMode
   META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL = 2
 } MetaLogicalMonitorLayoutMode;
 
-typedef enum _MetaMonitorManagerDeriveFlag
-{
-  META_MONITOR_MANAGER_DERIVE_FLAG_NONE = 0,
-  META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE = (1 << 0)
-} MetaMonitorManagerDeriveFlag;
-
 typedef enum
 {
   META_MONITOR_TRANSFORM_NORMAL,
@@ -422,8 +416,8 @@ struct _MetaMonitorManagerClass
 
 void                meta_monitor_manager_rebuild (MetaMonitorManager *manager,
                                                   MetaMonitorsConfig *config);
-void                meta_monitor_manager_rebuild_derived (MetaMonitorManager          *manager,
-                                                          MetaMonitorManagerDeriveFlag flags);
+void                meta_monitor_manager_rebuild_derived (MetaMonitorManager *manager,
+                                                          MetaMonitorsConfig *config);
 
 int                 meta_monitor_manager_get_num_logical_monitors (MetaMonitorManager *manager);
 
@@ -500,8 +494,8 @@ MetaMonitorsConfig * meta_monitor_manager_ensure_configured (MetaMonitorManager 
 
 void               meta_monitor_manager_update_logical_state (MetaMonitorManager *manager,
                                                               MetaMonitorsConfig *config);
-void               meta_monitor_manager_update_logical_state_derived (MetaMonitorManager          *manager,
-                                                                      MetaMonitorManagerDeriveFlag flags);
+void               meta_monitor_manager_update_logical_state_derived (MetaMonitorManager *manager,
+                                                                      MetaMonitorsConfig *config);
 
 gboolean           meta_monitor_manager_is_lid_closed (MetaMonitorManager *manager);
 
@@ -534,6 +528,9 @@ gboolean           meta_monitor_manager_get_max_screen_size (MetaMonitorManager 
 
 MetaLogicalMonitorLayoutMode
                    meta_monitor_manager_get_default_layout_mode (MetaMonitorManager *manager);
+
+MetaMonitorConfigManager *
+                   meta_monitor_manager_get_config_manager (MetaMonitorManager *manager);
 
 void meta_monitor_manager_rotate_monitor (MetaMonitorManager *manager);
 

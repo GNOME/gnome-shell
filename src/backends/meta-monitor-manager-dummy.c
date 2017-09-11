@@ -353,12 +353,7 @@ meta_monitor_manager_dummy_ensure_initial_config (MetaMonitorManager *manager)
   if (meta_is_stage_views_enabled ())
     meta_monitor_manager_update_logical_state (manager, config);
   else
-    {
-      MetaMonitorManagerDeriveFlag flags =
-        META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
-
-      meta_monitor_manager_update_logical_state_derived (manager, flags);
-    }
+    meta_monitor_manager_update_logical_state_derived (manager, NULL);
 }
 
 static void

@@ -123,10 +123,7 @@ meta_monitor_manager_test_ensure_initial_config (MetaMonitorManager *manager)
     }
   else
     {
-      MetaMonitorManagerDeriveFlag flags =
-        META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
-
-      meta_monitor_manager_update_logical_state_derived (manager, flags);
+      meta_monitor_manager_update_logical_state_derived (manager, NULL);
     }
 }
 
@@ -280,16 +277,9 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manage
       manager->screen_height = META_MONITOR_MANAGER_MIN_SCREEN_HEIGHT;
 
       if (meta_is_stage_views_enabled ())
-        {
-          meta_monitor_manager_rebuild (manager, NULL);
-        }
+        meta_monitor_manager_rebuild (manager, NULL);
       else
-        {
-          MetaMonitorManagerDeriveFlag flags =
-            META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
-
-          meta_monitor_manager_rebuild_derived (manager, flags);
-        }
+        meta_monitor_manager_rebuild_derived (manager, config);
 
       return TRUE;
     }
@@ -319,16 +309,9 @@ meta_monitor_manager_test_apply_monitors_config (MetaMonitorManager      *manage
   update_screen_size (manager, config);
 
   if (meta_is_stage_views_enabled ())
-    {
-      meta_monitor_manager_rebuild (manager, config);
-    }
+    meta_monitor_manager_rebuild (manager, config);
   else
-    {
-      MetaMonitorManagerDeriveFlag flags =
-        META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
-
-      meta_monitor_manager_rebuild_derived (manager, flags);
-    }
+    meta_monitor_manager_rebuild_derived (manager, config);
 
   return TRUE;
 }

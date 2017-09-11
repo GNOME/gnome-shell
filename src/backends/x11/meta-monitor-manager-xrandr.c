@@ -1464,7 +1464,9 @@ apply_crtc_assignments (MetaMonitorManager *manager,
 static void
 meta_monitor_manager_xrandr_ensure_initial_config (MetaMonitorManager *manager)
 {
-  MetaMonitorManagerDeriveFlag flags;
+  MetaMonitorConfigManager *config_manager =
+    meta_monitor_manager_get_config_manager (manager);
+  MetaMonitorsConfig *config;
 
   meta_monitor_manager_ensure_configured (manager);
 
@@ -1475,8 +1477,8 @@ meta_monitor_manager_xrandr_ensure_initial_config (MetaMonitorManager *manager)
    */
   meta_monitor_manager_read_current_state (manager);
 
-  flags = META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
-  meta_monitor_manager_update_logical_state_derived (manager, flags);
+  config = meta_monitor_config_manager_get_current (config_manager);
+  meta_monitor_manager_update_logical_state_derived (manager, config);
 }
 
 static gboolean
@@ -1490,10 +1492,7 @@ meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager      *mana
 
   if (!config)
     {
-      MetaMonitorManagerDeriveFlag flags =
-        META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
-
-      meta_monitor_manager_rebuild_derived (manager, flags);
+      meta_monitor_manager_rebuild_derived (manager, NULL);
       return TRUE;
     }
 
@@ -1527,11 +1526,7 @@ meta_monitor_manager_xrandr_apply_monitors_config (MetaMonitorManager      *mana
         }
       else
         {
-          MetaMonitorManagerDeriveFlag flags;
-
-          flags = (META_MONITOR_MANAGER_DERIVE_FLAG_NONE |
-                   META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE);
-          meta_monitor_manager_rebuild_derived (manager, flags);
+          meta_monitor_manager_rebuild_derived (manager, config);
         }
     }
 
@@ -1940,13 +1935,21 @@ meta_monitor_manager_xrandr_handle_xevent (MetaMonitorManagerXrandr *manager_xra
     }
   else
     {
-      MetaMonitorManagerDeriveFlag flags =
-        META_MONITOR_MANAGER_DERIVE_FLAG_NONE;
+      MetaMonitorsConfig *config;
 
       if (is_our_configuration)
-        flags |= META_MONITOR_MANAGER_DERIVE_FLAG_CONFIGURED_SCALE;
+        {
+          MetaMonitorConfigManager *config_manager =
+            meta_monitor_manager_get_config_manager (manager);
 
-      meta_monitor_manager_rebuild_derived (manager, flags);
+          config = meta_monitor_config_manager_get_current (config_manager);
+        }
+      else
+        {
+          config = NULL;
+        }
+
+      meta_monitor_manager_rebuild_derived (manager, config);
     }
 
   return TRUE;
