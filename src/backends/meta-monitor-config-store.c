@@ -1230,9 +1230,10 @@ saved_cb (GObject      *object,
   if (!g_file_replace_contents_finish (G_FILE (object), result, NULL, &error))
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        g_warning ("Saving monitor configuration failed: %s\n", error->message);
-      else
-        g_clear_object (&data->config_store->save_cancellable);
+        {
+          g_warning ("Saving monitor configuration failed: %s\n", error->message);
+          g_clear_object (&data->config_store->save_cancellable);
+        }
 
       g_error_free (error);
     }
