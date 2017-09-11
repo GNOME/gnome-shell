@@ -4,6 +4,7 @@ theme_sources = files([
   'gnome-shell-sass/_colors.scss',
   'gnome-shell-sass/_common.scss',
   'gnome-shell-sass/_drawing.scss',
+  'gnome-shell-sass/_endless.scss',
   'gnome-shell-sass/_high-contrast-colors.scss',
   'gnome-shell-sass/_widgets.scss',
   'gnome-shell-sass/widgets/_a11y.scss',

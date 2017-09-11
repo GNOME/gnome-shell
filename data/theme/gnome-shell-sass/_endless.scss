@@ -1,0 +1,18 @@
+// Endless-specific overrides and definitions
+//
+// All the definitions here will be processed AFTER _common.scss and other SASS
+// source files, meaning that they will override the relevant rules in the
+// generated CSS files, just as doing it in "raw" CSS would do.
+//
+// However, be aware that overriding here the values of SASS variables defined in
+// those other files won't override the end result for rules already declared in
+// those files as well, which will still be using the original value as they are
+// pre-processed before _endless.css. In those cases, modifying those files directly
+// is probably the best way forward (e.g. modifying _common.css for $font-family)).
+
+
+// Lock screen
+
+#lockDialogGroup {
+  background: #12282e;
+}
