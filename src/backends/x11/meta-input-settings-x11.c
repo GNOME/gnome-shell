@@ -589,7 +589,7 @@ device_query_area (ClutterInputDevice *device,
   *width = *height = 0;
   device_id = clutter_input_device_get_device_id (device);
   info = XIQueryDevice (xdisplay, device_id, &n_devices);
-  if (n_devices == 0)
+  if (n_devices <= 0 || !info)
     return FALSE;
 
   abs_x = XInternAtom (xdisplay, "Abs X", True);
