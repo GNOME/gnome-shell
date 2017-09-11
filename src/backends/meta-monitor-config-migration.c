@@ -949,7 +949,6 @@ derive_logical_monitor_configs (MetaLegacyMonitorsConfig *config,
                                 GError                  **error)
 {
   GList *logical_monitor_configs = NULL;
-  GList *monitor_configs = NULL;
   unsigned int i;
 
   for (i = 0; i < config->n_outputs; i++)
@@ -994,8 +993,8 @@ derive_logical_monitor_configs (MetaLegacyMonitorsConfig *config,
                 }
               else
                 {
-                  g_list_free_full (monitor_configs,
-                                    (GDestroyNotify) meta_monitor_config_free);
+                  g_list_free_full (logical_monitor_configs,
+                                    (GDestroyNotify) meta_logical_monitor_config_free);
                   return NULL;
                 }
             }
@@ -1008,8 +1007,8 @@ derive_logical_monitor_configs (MetaLegacyMonitorsConfig *config,
 
       if (!monitor_config)
         {
-          g_list_free_full (monitor_configs,
-                            (GDestroyNotify) meta_monitor_config_free);
+          g_list_free_full (logical_monitor_configs,
+                            (GDestroyNotify) meta_logical_monitor_config_free);
           return NULL;
         }
 
