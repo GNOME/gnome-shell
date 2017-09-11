@@ -102,4 +102,5 @@ js/ui/endlessButton.js
 js/ui/forceAppExitDialog.js
 js/ui/hotCorner.js
 js/ui/iconGridLayout.js
+js/ui/internetSearch.js
 js/ui/userMenu.js

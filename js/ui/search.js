@@ -5,6 +5,7 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 
 const AppDisplay = imports.ui.appDisplay;
 const IconGrid = imports.ui.iconGrid;
+const InternetSearch = imports.ui.internetSearch;
 const Main = imports.ui.main;
 const RemoteSearch = imports.ui.remoteSearch;
 const Util = imports.misc.util;
@@ -485,6 +486,11 @@ var SearchResultsView = GObject.registerClass({
 
         let appSystem = Shell.AppSystem.get_default();
         appSystem.connect('installed-changed', this._reloadRemoteProviders.bind(this));
+
+        this._internetProvider = InternetSearch.getInternetSearchProvider();
+        if (this._internetProvider)
+            this._registerProvider(this._internetProvider);
+
         this._reloadRemoteProviders();
     }
 

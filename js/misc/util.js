@@ -1,11 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported findUrls, spawn, spawnCommandLine, spawnApp, trySpawnCommandLine,
             formatTime, formatTimeSpan, createTimeLabel, insertSorted,
-            makeCloseButton, ensureActorVisibleInScrollView, wiggle */
+            makeCloseButton, ensureActorVisibleInScrollView, wiggle,
+            getSearchEngineName, findSearchUrls, getBrowserApp */
 
 const { Clutter, Gio, GLib, GObject, Shell, St, GnomeDesktop } = imports.gi;
 const Gettext = imports.gettext;
 
+const Json = imports.gi.Json;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
@@ -14,6 +16,9 @@ var SCROLL_TIME = 100;
 const WIGGLE_OFFSET = 6;
 const WIGGLE_DURATION = 65;
 const N_WIGGLES = 3;
+
+const FALLBACK_BROWSER_ID = 'chromium-browser.desktop';
+const GOOGLE_CHROME_ID = 'google-chrome.desktop';
 
 // http://daringfireball.net/2010/07/improved_regex_for_matching_urls
 const _balancedParens = '\\([^\\s()<>]+\\)';
@@ -479,4 +484,141 @@ function wiggle(actor, params) {
             });
         },
     });
+}
+
+// http://stackoverflow.com/questions/4691070/validate-url-without-www-or-http
+const _searchUrlRegexp = new RegExp(
+    '^([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+.*)\\.+[A-Za-z0-9\.\/%&=\?\-_]+$',
+    'gi');
+
+const supportedSearchSchemes = ['http', 'https', 'ftp'];
+
+// findSearchUrls:
+// @terms: list of searchbar terms to find URLs in
+// @maxLength: maximum number of characters in each non-URI term to match against, defaults
+//             to 32 characters to prevent hogging the CPU with too long generic strings.
+//
+// Similar to "findUrls", but adapted for use only with terms from the searchbar.
+//
+// In order not to be too CPU-expensive, this function is implemented in the following way:
+//   1. If the term is a valid URI in that it's possible to parse at least
+//      its scheme and host fields, it's considered a valid URL "as-is".
+//   2. Else, if the term is a generic string exceeding the maximum length
+//      specified then we simply ignore it and move onto the next term.
+//   3. In any other case (non-URI term, valid length) we match the term
+//      passed against the regular expression to determine if it's a URL.
+//
+// Note that the regex for these URLs matches strings such as "google.com" (no need to the
+// specify a preceding scheme), which is why we have to limit its execution to a certain
+// maximum length, as the term can be pretty free-form. By default, this maximum length
+// is 32 characters, which should be a good compromise considering that "many of the world's
+// most visited web sites have domain names of between 6 - 10 characters" (see [1][2]).
+//
+// [1] https://www.domainregistration.com.au/news/2013/1301-domain-length.php
+// [2] https://www.domainregistration.com.au/infocentre/info-domain-length.php
+//
+// Return value: the list of URLs found in the string
+function findSearchUrls(terms, maxLength = 32) {
+    let res = [], match;
+    for (let term of terms) {
+        if (GLib.uri_parse_scheme(term)) {
+            let supportedScheme = false;
+            for (let scheme of supportedSearchSchemes) {
+                if (term.startsWith('%s://'.format(scheme))) {
+                    supportedScheme = true;
+                    break;
+                }
+            }
+
+            // Check that there's a valid host after the scheme part.
+            if (supportedScheme && term.split('://')[1]) {
+                res.push(term);
+                continue;
+            }
+        }
+
+        // Try to save CPU cycles from regexp-matching too long strings.
+        if (term.length > maxLength)
+            continue;
+
+        while ((match = _searchUrlRegexp.exec(term)))
+            res.push(match[0]);
+    }
+    return res;
+}
+
+function getBrowserId() {
+    let id = FALLBACK_BROWSER_ID;
+    let app = Gio.app_info_get_default_for_type('x-scheme-handler/http', true);
+    if (app)
+        id = app.get_id();
+    return id;
+}
+
+function getBrowserApp() {
+    let id = getBrowserId();
+    let appSystem = Shell.AppSystem.get_default();
+    let browserApp = appSystem.lookup_app(id);
+    return browserApp;
+}
+
+function _getJsonSearchEngine(folder) {
+    let path = GLib.build_filenamev([GLib.get_user_config_dir(), folder, 'Default', 'Preferences']);
+    let parser = new Json.Parser();
+
+    /*
+     * Translators: this is the name of the search engine that shows in the
+     * Shell's desktop search entry.
+     */
+    let defaultString = _('Google');
+
+    try {
+        parser.load_from_file(path);
+    } catch (e) {
+        if (e.matches(GLib.FileError, GLib.FileError.NOENT))
+            return defaultString;
+
+        logError(e, 'error while parsing %s'.format(path));
+        return null;
+    }
+
+    let root = parser.get_root().get_object();
+
+    let searchProviderDataNode = root.get_member('default_search_provider_data');
+    if (!searchProviderDataNode || searchProviderDataNode.get_node_type() !== Json.NodeType.OBJECT)
+        return defaultString;
+
+    let searchProviderData = searchProviderDataNode.get_object();
+    if (!searchProviderData)
+        return defaultString;
+
+    let templateUrlDataNode = searchProviderData.get_member('template_url_data');
+    if (!templateUrlDataNode || templateUrlDataNode.get_node_type() !== Json.NodeType.OBJECT)
+        return defaultString;
+
+    let templateUrlData = templateUrlDataNode.get_object();
+    if (!templateUrlData)
+        return defaultString;
+
+    let shortNameNode = templateUrlData.get_member('short_name');
+    if (!shortNameNode || shortNameNode.get_node_type() !== Json.NodeType.VALUE)
+        return defaultString;
+
+    return shortNameNode.get_string();
+}
+
+// getSearchEngineName:
+//
+// Retrieves the current search engine from
+// the default browser.
+function getSearchEngineName() {
+    let browser = getBrowserId();
+
+    if (browser === FALLBACK_BROWSER_ID)
+        return _getJsonSearchEngine('chromium');
+
+    if (browser === GOOGLE_CHROME_ID)
+        return _getJsonSearchEngine('google-chrome');
+
+    return null;
 }
