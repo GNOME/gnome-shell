@@ -1434,6 +1434,14 @@ meta_monitor_config_store_dispose (GObject *object)
 {
   MetaMonitorConfigStore *config_store = META_MONITOR_CONFIG_STORE (object);
 
+  if (config_store->save_cancellable)
+    {
+      g_cancellable_cancel (config_store->save_cancellable);
+      g_clear_object (&config_store->save_cancellable);
+
+      meta_monitor_config_store_save_sync (config_store);
+    }
+
   g_clear_pointer (&config_store->configs, g_hash_table_destroy);
 
   g_clear_object (&config_store->user_file);
