@@ -1248,6 +1248,37 @@ saved_cb (GObject      *object,
 }
 
 static void
+meta_monitor_config_store_save_sync (MetaMonitorConfigStore *config_store)
+{
+  GError *error = NULL;
+  GFile *file;
+  GString *buffer;
+
+  if (config_store->custom_write_file)
+    file = config_store->custom_write_file;
+  else
+    file = config_store->user_file;
+
+  buffer = generate_config_xml (config_store);
+
+  if (!g_file_replace_contents (file,
+                                buffer->str, buffer->len,
+                                NULL,
+                                FALSE,
+                                G_FILE_CREATE_REPLACE_DESTINATION,
+                                NULL,
+                                NULL,
+                                &error))
+    {
+      g_warning ("Saving monitor configuration failed: %s\n",
+                 error->message);
+      g_error_free (error);
+    }
+
+  g_string_free (buffer, TRUE);
+}
+
+static void
 meta_monitor_config_store_save (MetaMonitorConfigStore *config_store)
 {
   GString *buffer;
@@ -1259,6 +1290,17 @@ meta_monitor_config_store_save (MetaMonitorConfigStore *config_store)
       g_clear_object (&config_store->save_cancellable);
     }
 
+  /*
+   * Custom write file is only ever used by the test suite, and the test suite
+   * will want to have be able to read back the content immediately, so for
+   * custom write files, do the content replacement synchronously.
+   */
+  if (config_store->custom_write_file)
+    {
+      meta_monitor_config_store_save_sync (config_store);
+      return;
+    }
+
   config_store->save_cancellable = g_cancellable_new ();
 
   buffer = generate_config_xml (config_store);
@@ -1268,31 +1310,6 @@ meta_monitor_config_store_save (MetaMonitorConfigStore *config_store)
     .config_store = g_object_ref (config_store),
     .buffer = buffer
   };
-
-  /*
-   * Custom write file is only ever used by the test suite, and the test suite
-   * will want to have be able to read back the content immediately, so for
-   * custom write files, do the content replacement synchronously.
-   */
-  if (config_store->custom_write_file)
-    {
-      GError *error = NULL;
-
-      if (!g_file_replace_contents (config_store->custom_write_file,
-                                    buffer->str, buffer->len,
-                                    NULL,
-                                    FALSE,
-                                    G_FILE_CREATE_REPLACE_DESTINATION,
-                                    NULL,
-                                    NULL,
-                                    &error))
-        {
-          g_warning ("Saving monitor configuration failed: %s\n",
-                     error->message);
-          g_error_free (error);
-        }
-      return;
-    }
 
   g_file_replace_contents_async (config_store->user_file,
                                  buffer->str, buffer->len,
