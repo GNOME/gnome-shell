@@ -16,3 +16,45 @@
 #lockDialogGroup {
   background: #12282e;
 }
+
+// Force Apps dialog
+
+.force-app-exit-dialog {
+    max-height: 500px;
+    min-height: 450px;
+    min-width: 470px;
+    border: 1px solid rgba(238, 238, 236, 0.2);
+
+    .modal-dialog-content-box {
+        spacing: 20px;
+        padding: 20px 17px;
+
+        .force-app-exit-dialog-header {
+            font-weight: bold;
+        }
+
+        .force-app-exit-dialog-subtitle {
+            color: #ccc;
+            font-size: 12pt;
+            max-width: 370px;
+        }
+
+        .force-app-exit-dialog-scroll-view {
+            border: 2px solid #666;
+            border-radius: 6px;
+            height: 288px;
+
+            .force-app-exit-dialog-item {
+                border: solid #242424;
+                padding: 16px;
+                spacing: 16px;
+                border-bottom-width: 1px;
+                &:hover { background-color: rgba(255,255,255,0.1); }
+                &:selected {
+                    background-color: $selected_bg_color;
+                    color: $selected_fg_color;
+                }
+            }
+        }
+    }
+}

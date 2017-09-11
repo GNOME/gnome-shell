@@ -138,5 +138,9 @@
     <file>ui/status/screencast.js</file>
     <file>ui/status/system.js</file>
     <file>ui/status/thunderbolt.js</file>
+
+    <!-- Endless-specific files beyond this point -->
+
+    <file>ui/forceAppExitDialog.js</file>
   </gresource>
 </gresources>

@@ -6,6 +6,7 @@ const { Clutter, Gio, GLib, GObject, Meta, Shell, St } = imports.gi;
 const AltTab = imports.ui.altTab;
 const AppFavorites = imports.ui.appFavorites;
 const Dialog = imports.ui.dialog;
+const ForceAppExitDialog = imports.ui.forceAppExitDialog;
 const WorkspaceSwitcherPopup = imports.ui.workspaceSwitcherPopup;
 const InhibitShortcutsDialog = imports.ui.inhibitShortcutsDialog;
 const Main = imports.ui.main;
@@ -788,6 +789,13 @@ var WindowManager = class {
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
                                         this._startSwitcher.bind(this));
+
+        this.addKeybinding('show-force-app-exit-dialog',
+                           new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
+                           Meta.KeyBindingFlags.NONE,
+                           Shell.ActionMode.NORMAL |
+                           Shell.ActionMode.OVERVIEW,
+                           this._showForceAppExitDialog.bind(this));
 
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
@@ -2042,6 +2050,14 @@ var WindowManager = class {
         let app = apps[target - 1];
         if (app)
             app.activate();
+    }
+
+    _showForceAppExitDialog() {
+        if (!Main.sessionMode.hasOverview)
+            return;
+
+        let dialog = new ForceAppExitDialog.ForceAppExitDialog();
+        dialog.open();
     }
 
     _toggleAppMenu() {

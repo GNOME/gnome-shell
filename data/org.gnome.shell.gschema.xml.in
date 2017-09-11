@@ -186,6 +186,14 @@
       <default>["&lt;Super&gt;9"]</default>
       <summary>Switch to application 9</summary>
     </key>
+
+    <!-- Endless-specific keys beyond this point -->
+
+    <key name="show-force-app-exit-dialog" type="as">
+      <default>["&lt;Ctrl&gt;&lt;Alt&gt;Delete"]</default>
+      <summary>Keybinding that shows the force app exit dialog</summary>
+      <description></description>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.app-switcher"
