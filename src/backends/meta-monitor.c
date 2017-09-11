@@ -1550,6 +1550,14 @@ meta_monitor_calculate_supported_scales (MetaMonitor                *monitor,
         }
     }
 
+  if (supported_scales->len == 0)
+    {
+      float fallback_scale;
+
+      fallback_scale = 1.0;
+      g_array_append_val (supported_scales, fallback_scale);
+    }
+
   *n_supported_scales = supported_scales->len;
   return (float *) g_array_free (supported_scales, FALSE);
 }
