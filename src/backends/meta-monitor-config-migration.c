@@ -1111,7 +1111,6 @@ meta_migrate_old_monitors_config (MetaMonitorConfigStore *config_store,
     return FALSE;
 
   g_hash_table_foreach (configs, migrate_config, config_store);
-  g_hash_table_destroy (configs);
 
   return TRUE;
 }
