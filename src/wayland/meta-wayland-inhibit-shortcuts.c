@@ -49,7 +49,7 @@ zwp_keyboard_shortcuts_inhibit_destroy (struct wl_client   *client,
   shortcut_inhibit = wl_resource_get_user_data (resource);
   if (shortcut_inhibit->surface)
     {
-      meta_wayland_surface_hide_inhibit_shortcuts_dialog (shortcut_inhibit->surface);
+      meta_wayland_surface_cancel_inhibit_shortcuts_dialog (shortcut_inhibit->surface);
 
       g_signal_handler_disconnect (shortcut_inhibit->surface,
                                    shortcut_inhibit->surface_destroyed_handler);

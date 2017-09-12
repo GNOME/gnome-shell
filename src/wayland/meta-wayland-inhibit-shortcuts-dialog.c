@@ -32,6 +32,7 @@ typedef struct _InhibitShortcutsData
   MetaInhibitShortcutsDialog        *dialog;
   gulong                             response_handler_id;
   gboolean                           has_last_response;
+  gboolean                           request_canceled;
   MetaInhibitShortcutsDialogResponse last_response;
 } InhibitShortcutsData;
 
@@ -93,7 +94,10 @@ inhibit_shortcuts_dialog_response_cb (MetaInhibitShortcutsDialog        *dialog,
 {
   data->last_response = response;
   data->has_last_response = TRUE;
-  inhibit_shortcuts_dialog_response_apply (data);
+
+  /* If the request was canceled, we don't need to apply the choice made */
+  if (!data->request_canceled)
+    inhibit_shortcuts_dialog_response_apply (data);
 
   meta_inhibit_shortcuts_dialog_hide (data->dialog);
   surface_inhibit_shortcuts_data_destroy_dialog (data);
@@ -154,11 +158,14 @@ meta_wayland_surface_show_inhibit_shortcuts_dialog (MetaWaylandSurface *surface,
     }
 
   data = meta_wayland_surface_ensure_inhibit_shortcuts_dialog (surface, seat);
+  /* This is a new request */
+  data->request_canceled = FALSE;
+
   meta_inhibit_shortcuts_dialog_show (data->dialog);
 }
 
 void
-meta_wayland_surface_hide_inhibit_shortcuts_dialog (MetaWaylandSurface *surface)
+meta_wayland_surface_cancel_inhibit_shortcuts_dialog (MetaWaylandSurface *surface)
 {
   InhibitShortcutsData *data;
 
@@ -168,8 +175,8 @@ meta_wayland_surface_hide_inhibit_shortcuts_dialog (MetaWaylandSurface *surface)
   data = surface_inhibit_shortcuts_data_get (surface);
   g_return_if_fail (data);
 
-  if (data->dialog)
-    meta_inhibit_shortcuts_dialog_hide (data->dialog);
+  /* Keep the dialog on screen, but mark the request as canceled */
+  data->request_canceled = TRUE;
 }
 
 void

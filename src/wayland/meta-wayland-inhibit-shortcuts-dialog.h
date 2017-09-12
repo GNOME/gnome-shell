@@ -24,7 +24,7 @@
 void     meta_wayland_surface_show_inhibit_shortcuts_dialog (MetaWaylandSurface *surface,
                                                              MetaWaylandSeat    *seat);
 
-void     meta_wayland_surface_hide_inhibit_shortcuts_dialog (MetaWaylandSurface *surface);
+void     meta_wayland_surface_cancel_inhibit_shortcuts_dialog (MetaWaylandSurface *surface);
 
 void     meta_wayland_surface_inhibit_shortcuts_dialog_init (void);
 
