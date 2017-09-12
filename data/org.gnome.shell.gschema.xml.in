@@ -1,6 +1,11 @@
 <schemalist>
   <!-- Keep Endless-specific enumerations at the top of the file -->
 
+  <enum id="org.gnome.shell.PasswordResetPolicy">
+    <value nick="default" value="-1"/>
+    <value nick="disable" value="0"/>
+    <value nick="enable" value="1"/>
+  </enum>
   <enum id="org.gnome.shell.watermark.Position">
     <value nick="center" value="0"/>
     <value nick="bottom-left" value="1"/>
@@ -122,12 +127,6 @@
     </key>
 
     <!-- Endless-specific keys beyond this point -->
-
-    <enum id="org.gnome.shell.PasswordResetPolicy">
-      <value nick="default" value="-1"/>
-      <value nick="disable" value="0"/>
-      <value nick="enable" value="1"/>
-    </enum>
 
     <key name="enable-tray-area" type="b">
       <default>true</default>
