@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Overview */
 
-const { Clutter, GLib, GObject, Meta, Shell, St } = imports.gi;
+const { Clutter, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
 const Background = imports.ui.background;
@@ -10,6 +10,7 @@ const LayoutManager = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const ModalDialog = imports.ui.modalDialog;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const ViewSelector = imports.ui.viewSelector;
@@ -26,6 +27,8 @@ var SHADE_ANIMATION_TIME = 200;
 var DND_WINDOW_SWITCH_TIMEOUT = 750;
 
 var OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
+
+var NO_WINDOWS_OPEN_DIALOG_TIMEOUT = 2000; // ms
 
 var ShellInfo = class {
     constructor() {
@@ -94,6 +97,58 @@ var ShellInfo = class {
     }
 };
 
+var NoWindowsDialog = GObject.registerClass(
+class NoWindowsDialog extends ModalDialog.ModalDialog {
+    _init() {
+        super._init({
+            styleClass: 'prompt-dialog',
+            shellReactive: true,
+            destroyOnClose: false,
+        });
+
+        this._timeoutId = 0;
+
+        let descriptionLabel = new St.Label({
+            style_class: 'prompt-dialog-headline headline',
+            text: _('No apps are open'),
+            x_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+        });
+        descriptionLabel.clutter_text.line_wrap = true;
+        descriptionLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+
+        this.contentLayout.add_child(descriptionLabel);
+
+        this.connect('key-press-event', () => {
+            this.close(global.get_current_time());
+            return Clutter.EVENT_PROPAGATE;
+        });
+    }
+
+    popup() {
+        if (this._timeoutId !== 0)
+            GLib.source_remove(this._timeoutId);
+
+        this._timeoutId =
+            GLib.timeout_add(
+                GLib.PRIORITY_DEFAULT,
+                NO_WINDOWS_OPEN_DIALOG_TIMEOUT,
+                () => {
+                    this.popdown();
+                    return GLib.SOURCE_REMOVE;
+                });
+        this.open(global.get_current_time());
+    }
+
+    popdown() {
+        if (this._timeoutId !== 0) {
+            GLib.source_remove(this._timeoutId);
+            this._timeoutId = 0;
+        }
+        this.close(global.get_current_time());
+    }
+});
+
 var OverviewActor = GObject.registerClass(
 class OverviewActor extends St.BoxLayout {
     _init() {
@@ -152,6 +207,8 @@ var Overview = class {
     constructor() {
         this._initCalled = false;
         this._visible = false;
+
+        this._noWindowsDialog = new NoWindowsDialog();
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
@@ -532,6 +589,11 @@ var Overview = class {
             return;
         }
 
+        if (!Main.workspaceMonitor.hasActiveWindows) {
+            this._noWindowsDialog.popup();
+            return;
+        }
+
         if (!Main.workspaceMonitor.hasVisibleWindows) {
             // There are active windows but all of them are hidden, so activate
             // the most recently used one before hiding the overview.
@@ -549,8 +611,17 @@ var Overview = class {
         if (this.isDummy)
             return;
 
-        if (!this.visible ||
-            this.viewSelector.getActivePage() !== ViewSelector.ViewPage.WINDOWS) {
+        if (!this.visible) {
+            this.showWindows();
+            return;
+        }
+
+        if (!Main.workspaceMonitor.hasActiveWindows) {
+            this._noWindowsDialog.popup();
+            return;
+        }
+
+        if (this.viewSelector.getActivePage() !== ViewSelector.ViewPage.WINDOWS) {
             this.showWindows();
             return;
         }
@@ -704,6 +775,9 @@ var Overview = class {
         }
 
         this._shown = false;
+
+        // Hide the 'No windows dialog' in case it is open
+        this._noWindowsDialog.popdown();
 
         this._animateNotVisible();
         this._syncGrab();
