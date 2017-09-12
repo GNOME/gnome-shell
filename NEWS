@@ -1,3 +1,24 @@
+3.26.0
+======
+* Misc. bug fixes [Ray, Michael, Jonas; #786332] #786783, #786886, #786868]
+
+Contributors:
+  Jonas Ådahl, Michael Catanzaro, Sebastian Keller, Ray Strode
+
+Translations:
+  Daniel Mustieles [es], Fran Dieguez [gl], Baurzhan Muftakhidinov [kk],
+  Marek Cernocky [cs], Andika Triwidada [id], Aurimas Černius [lt],
+  Piotr Drąg [pl], Trần Ngọc Quân [vi], Jordi Mas [ca], Fabio Tomat [fur],
+  gogo [hr], Dušan Kazik [sk], Piotr Drąg [ne], Emin Tufan Çetin [tr],
+  Ask Hjorth Larsen [da], Cheng-Chia Tseng [zh_TW], Rūdolfs Mazurs [lv],
+  Balázs Meskó [hu], Matej Urbančič [sl], Jiri Grönroos [fi],
+  Милош Поповић [sr], Милош Поповић [sr@latin], Rafael Fontenelle [pt_BR],
+  Wolfgang Stöggl [de], Milo Casagrande [it], hanniedu [nl],
+  Yuras Shumovich [be], Changwoo Ryu [ko], Alain Lojewski [fr],
+  Alexander Shopov [bg], Daniel Korostil [uk], Kris Thomsen [da],
+  A S Alam [pa], Sebastian Rasmussen [sv], Inaki Larranaga Murgoitio [eu],
+  Jiro Matsuzawa [ja]
+
 3.25.91
 =======
 * Open context menu of highlighted search result on Shift+F10 [Florian; #675315]
