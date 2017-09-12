@@ -1106,7 +1106,7 @@ st_entry_get_text (StEntry *entry)
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
 
   priv = st_entry_get_instance_private (entry);
-  if (clutter_actor_is_visible (priv->hint_actor))
+  if (priv->hint_actor != NULL && clutter_actor_is_visible (priv->hint_actor))
     return "";
   else
     return clutter_text_get_text (CLUTTER_TEXT (priv->entry));
