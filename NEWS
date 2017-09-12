@@ -1,3 +1,13 @@
+3.26.0
+======
+Contributors:
+  Florian Müllner
+
+Translations:
+  Trần Ngọc Quân [vi], Inaki Larranaga Murgoitio [eu], Jordi Mas [ca],
+  Anders Jonsson [sv], Alexander Shopov [bg], Ask Hjorth Larsen [da],
+  Jean-Baptiste Holcroft [fr], A S Alam [pa]
+
 3.25.92
 =======
 * Add screencast and remote desktop support [Jonas; #784199]
