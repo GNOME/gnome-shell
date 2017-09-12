@@ -122,6 +122,7 @@ function start() {
     sessionMode.connect('updated', _sessionUpdated);
     Gtk.Settings.get_default().connect('notify::gtk-theme-name',
                                        _loadDefaultStylesheet);
+    Gtk.IconTheme.get_default().add_resource_path('/org/gnome/shell/theme/icons');
     _initializeUI();
 
     shellAccessDialogDBusService = new AccessDialog.AccessDialogDBus();

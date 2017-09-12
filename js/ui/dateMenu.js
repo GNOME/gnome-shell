@@ -337,8 +337,10 @@ var MessagesIndicator = new Lang.Class({
     Name: 'MessagesIndicator',
 
     _init: function() {
-        this.actor = new St.Label({ text: '⚫', visible: false, y_expand: true,
-                                    y_align: Clutter.ActorAlign.CENTER });
+        this.actor = new St.Icon({ icon_name: 'message-indicator-symbolic',
+                                   icon_size: 16,
+                                   visible: false, y_expand: true,
+                                   y_align: Clutter.ActorAlign.CENTER });
 
         this._sources = [];
 
