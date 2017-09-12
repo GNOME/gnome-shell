@@ -54,6 +54,7 @@ const STICKY_KEYS_ENABLE = 'stickykeys-enable';
 const LOG_DOMAIN = 'GNOME Shell';
 const GNOMESHELL_STARTED_MESSAGE_ID = 'f3ea493c22934e26811cd62abe8e203a';
 
+var appStore = null;
 var componentManager = null;
 var extensionManager = null;
 var panel = null;

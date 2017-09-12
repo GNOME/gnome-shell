@@ -34,7 +34,9 @@ function shouldHideOtherWindows(metaWindow) {
  * @returns {bool} Whether the side component was launched from the desktop
  */
 function launchedFromDesktop(metaWindow) {
-    return false;
+    return isSideComponentWindow(metaWindow) &&
+        metaWindow.get_wm_class() === 'Eos-app-store' &&
+        Main.appStore.launchedFromDesktop;
 }
 
 var SideComponent = GObject.registerClass(
