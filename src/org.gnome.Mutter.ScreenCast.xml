@@ -102,6 +102,19 @@
       <arg name="node_id" type="u" direction="out" />
     </signal>
 
+    <!--
+	Parameters:
+	@short_description: Optional stream parameters
+
+	Available parameters include:
+
+	* "position" (ii): Position of the source of the stream in the
+	                   compositor coordinate space.
+	* "size" (ii): Size of the source of the stream in the compositor
+		       coordinate space.
+    -->
+    <property name="Parameters" type="a{sv}" access="read" />
+
   </interface>
 
 </node>

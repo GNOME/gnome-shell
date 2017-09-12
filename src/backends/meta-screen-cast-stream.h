@@ -39,6 +39,8 @@ struct _MetaScreenCastStreamClass
 
   MetaScreenCastStreamSrc * (* create_src) (MetaScreenCastStream *stream,
                                             GError              **error);
+  void (* set_parameters) (MetaScreenCastStream *stream,
+                           GVariantBuilder      *parameters_builder);
 };
 
 gboolean meta_screen_cast_stream_start (MetaScreenCastStream *stream,

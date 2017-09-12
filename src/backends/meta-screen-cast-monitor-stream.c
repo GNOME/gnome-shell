@@ -27,6 +27,13 @@
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-screen-cast-monitor-stream-src.h"
 
+enum
+{
+  PROP_0,
+
+  PROP_MONITOR,
+};
+
 struct _MetaScreenCastMonitorStream
 {
   MetaScreenCastStream parent;
@@ -105,10 +112,8 @@ meta_screen_cast_monitor_stream_new (GDBusConnection     *connection,
                                      GError             **error)
 {
   MetaScreenCastMonitorStream *monitor_stream;
-  MetaLogicalMonitor *logical_monitor;
 
-  logical_monitor = meta_monitor_get_logical_monitor (monitor);
-  if (!logical_monitor)
+  if (!meta_monitor_is_active (monitor))
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Monitor not active");
       return NULL;
@@ -118,12 +123,11 @@ meta_screen_cast_monitor_stream_new (GDBusConnection     *connection,
                                    NULL,
                                    error,
                                    "connection", connection,
+                                   "monitor", monitor,
                                    NULL);
   if (!monitor_stream)
     return NULL;
 
-  g_set_object (&monitor_stream->monitor, monitor);
-  g_set_object (&monitor_stream->logical_monitor, logical_monitor);
   monitor_stream->stage = stage;
 
   g_signal_connect_object (monitor_manager, "monitors-changed",
@@ -150,6 +154,70 @@ meta_screen_cast_monitor_stream_create_src (MetaScreenCastStream  *stream,
 }
 
 static void
+meta_screen_cast_monitor_stream_set_parameters (MetaScreenCastStream *stream,
+                                                GVariantBuilder      *parameters_builder)
+{
+  MetaScreenCastMonitorStream *monitor_stream =
+    META_SCREEN_CAST_MONITOR_STREAM (stream);
+  MetaRectangle logical_monitor_layout;
+
+  logical_monitor_layout =
+    meta_logical_monitor_get_layout (monitor_stream->logical_monitor);
+
+  g_variant_builder_add (parameters_builder, "{sv}",
+                         "position",
+                         g_variant_new ("(ii)",
+                                        logical_monitor_layout.x,
+                                        logical_monitor_layout.y));
+  g_variant_builder_add (parameters_builder, "{sv}",
+                         "size",
+                         g_variant_new ("(ii)",
+                                        logical_monitor_layout.width,
+                                        logical_monitor_layout.height));
+}
+
+static void
+meta_screen_cast_monitor_stream_set_property (GObject      *object,
+                                              guint         prop_id,
+                                              const GValue *value,
+                                              GParamSpec   *pspec)
+{
+  MetaScreenCastMonitorStream *monitor_stream =
+    META_SCREEN_CAST_MONITOR_STREAM (object);
+  MetaLogicalMonitor *logical_monitor;
+
+  switch (prop_id)
+    {
+    case PROP_MONITOR:
+      g_set_object (&monitor_stream->monitor, g_value_get_object (value));
+      logical_monitor = meta_monitor_get_logical_monitor (monitor_stream->monitor);
+      g_set_object (&monitor_stream->logical_monitor, logical_monitor);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
+meta_screen_cast_monitor_stream_get_property (GObject    *object,
+                                              guint       prop_id,
+                                              GValue     *value,
+                                              GParamSpec *pspec)
+{
+  MetaScreenCastMonitorStream *monitor_stream =
+    META_SCREEN_CAST_MONITOR_STREAM (object);
+
+  switch (prop_id)
+    {
+    case PROP_MONITOR:
+      g_value_set_object (value, monitor_stream->monitor);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+    }
+}
+
+static void
 meta_screen_cast_monitor_stream_finalize (GObject *object)
 {
   MetaScreenCastMonitorStream *monitor_stream =
@@ -173,7 +241,20 @@ meta_screen_cast_monitor_stream_class_init (MetaScreenCastMonitorStreamClass *kl
   MetaScreenCastStreamClass *stream_class =
     META_SCREEN_CAST_STREAM_CLASS (klass);
 
+  object_class->set_property = meta_screen_cast_monitor_stream_set_property;
+  object_class->get_property = meta_screen_cast_monitor_stream_get_property;
   object_class->finalize = meta_screen_cast_monitor_stream_finalize;
 
   stream_class->create_src = meta_screen_cast_monitor_stream_create_src;
+  stream_class->set_parameters = meta_screen_cast_monitor_stream_set_parameters;
+
+  g_object_class_install_property (object_class,
+                                   PROP_MONITOR,
+                                   g_param_spec_object ("monitor",
+                                                        "monitor",
+                                                        "MetaMonitor",
+                                                        META_TYPE_MONITOR,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }

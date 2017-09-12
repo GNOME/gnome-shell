@@ -69,6 +69,14 @@ meta_screen_cast_stream_create_src (MetaScreenCastStream  *stream,
 }
 
 static void
+meta_screen_cast_stream_set_parameters (MetaScreenCastStream *stream,
+                                        GVariantBuilder      *parameters_builder)
+{
+  META_SCREEN_CAST_STREAM_GET_CLASS (stream)->set_parameters (stream,
+                                                              parameters_builder);
+}
+
+static void
 on_stream_src_closed (MetaScreenCastStreamSrc *src,
                       MetaScreenCastStream    *stream)
 {
@@ -189,9 +197,18 @@ meta_screen_cast_stream_initable_init (GInitable     *initable,
                                        GError       **error)
 {
   MetaScreenCastStream *stream = META_SCREEN_CAST_STREAM (initable);
+  MetaDBusScreenCastStream *skeleton = META_DBUS_SCREEN_CAST_STREAM (stream);
   MetaScreenCastStreamPrivate *priv =
     meta_screen_cast_stream_get_instance_private (stream);
+  GVariantBuilder parameters_builder;
+  GVariant *parameters_variant;
   static unsigned int global_stream_number = 0;
+
+  g_variant_builder_init (&parameters_builder, G_VARIANT_TYPE_VARDICT);
+  meta_screen_cast_stream_set_parameters (stream, &parameters_builder);
+
+  parameters_variant = g_variant_builder_end (&parameters_builder);
+  meta_dbus_screen_cast_stream_set_parameters (skeleton, parameters_variant);
 
   priv->object_path =
     g_strdup_printf (META_SCREEN_CAST_STREAM_DBUS_PATH "/u%u",
