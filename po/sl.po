@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-27 22:38+0200\n"
-"PO-Revision-Date: 2017-08-27 22:38+0200\n"
+"POT-Creation-Date: 2017-09-08 11:30+0200\n"
+"PO-Revision-Date: 2017-09-08 11:36+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -412,32 +412,35 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
-"Za omogočanje preizkusnih možnosti, dodajte ključno besedo možnosti na "
-"seznam. Ali zahteva možnost ponovni zagon sestavljalnika, je odvisno od "
-"posamezne možnosti. Te možnosti niso zahtevane niti nastavljive. Trenutno so "
-"na voljo ključne besede: • »monitor-config-manager« – uporablja nov sistem "
-"nastavitev, ki naj bi zamenjal obstoječega. Omogoča večjo nastavljivost API, "
-"za uporabo pri prigramih za nastavitve lastnosti zaslona. • »scale-monitor-"
-"framebuffer« – določi privzeto rabo sistema mutter za logične zaslone v "
-"logičnem točkovnem koordinatnem prostoru, pri čemer prilagaja predpomnilnik "
-"in ne vsebine za upravljanje z zasloni HiDPI. Možnost ne zahteva ponovnega "
-"zagona."
+"Za omogočanje preizkusnih možnosti, dodajte na seznam ključne besedo "
+"možnosti. Ali vpisana možnost zahteva ponovni zagon sestavljalnika, je "
+"odvisno od posamezne možnosti. Te možnosti niso zahtevane niti nastavljive. "
+"Trenutno so na voljo ključne besede: • »scale-monitor-framebuffer« – določi "
+"privzeto rabo sistema mutter za logične zaslone v logičnem točkovnem "
+"koordinatnem prostoru, pri čemer prilagaja predpomnilnik in ne vsebine za "
+"upravljanje z zasloni HiDPI. Možnost ne zahteva ponovnega zagona. • »remote-"
+"desktop« – omogoči podporo oddaljenim namizjem. Za souporabo zaslona mora "
+"biti omogočena tudi možnost »screen-cast«. • »screen-cast« – omogoči podporo "
+"objavljanja na zaslon."
 
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Izbor okna iz pojavnega zavihka"
 
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Prekliči pojavni zavihek"
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:155
 msgid "Switch monitor configurations"
 msgstr "Nastavitve nadzornika preklopa"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:160
 msgid "Rotates the built-in monitor configuration"
 msgstr "Zavrti vgrajene nastavitve zaslona"
 
