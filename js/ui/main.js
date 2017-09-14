@@ -219,7 +219,7 @@ function _initializeUI() {
 
     global.display.connect('overlay-key', () => {
         if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))
-            overview.toggle();
+            overview.toggleApps();
     });
 
     global.connect('locate-pointer', () => {
