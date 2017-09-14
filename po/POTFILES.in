@@ -98,4 +98,5 @@ subprojects/extensions-tool/src/main.c
 subprojects/gvc/gvc-mixer-control.c
 # Endless-specific files beyond this point
 js/ui/appIconBar.js
+js/ui/endlessButton.js
 js/ui/forceAppExitDialog.js

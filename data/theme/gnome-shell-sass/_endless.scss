@@ -214,3 +214,35 @@
         }
     }
 }
+
+// Endless Button
+
+%endless-button-hover {
+    color: #f15a22;
+    background-gradient-start: rgba(255, 255, 255, 0.12);
+    transition: 300ms;
+}
+
+%endless-button-clicked {
+    @extend %endless-button-hover;
+    color: white;
+    box-shadow: none;
+}
+
+.endless-button {
+    color: rgba(255, 255, 255, 0.8);
+    background-gradient-start: rgba(255, 255, 255, 0.08);
+    background-gradient-end: transparent;
+    background-gradient-direction: radial;
+    background-gradient-position: 0 20px;
+    background-gradient-radius: 65px;
+    background-gradient-stop: 63px;
+    height: 40px;
+    width: 65px;
+    padding: 0px;
+
+    .single-icon-button { icon-size: 34px; }
+
+    &:hover { @extend %endless-button-hover; }
+    &:clicked { @extend %endless-button-clicked; }
+}
