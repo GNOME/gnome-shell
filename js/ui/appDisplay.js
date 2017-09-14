@@ -402,8 +402,6 @@ class AppDisplay extends BaseAppView {
         this._lastOvershootY = -1;
         this._lastOvershootTimeoutId = 0;
 
-        Main.overview.connect('hidden', () => this.goToPage(0));
-
         this._redisplayWorkId = Main.initializeDeferredWork(this, this._redisplay.bind(this));
 
         Shell.AppSystem.get_default().connect('installed-changed', () => {
