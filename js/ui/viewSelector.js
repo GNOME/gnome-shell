@@ -398,10 +398,13 @@ var ViewSelector = GObject.registerClass({
         let symbol = event.get_key_symbol();
 
         if (symbol === Clutter.KEY_Escape) {
-            if (this._searchActive)
+            if (this._activePage == this._workspacesPage)
+                Main.overview.toggleWindows();
+            else if (this._searchActive)
                 this.reset();
             else
                 Main.overview.hide();
+
             return Clutter.EVENT_STOP;
         } else if (this._shouldTriggerSearch(symbol)) {
             this.startSearch(event);
