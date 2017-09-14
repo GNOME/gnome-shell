@@ -148,5 +148,6 @@
     <file>ui/hotCorner.js</file>
     <file>ui/monitor.js</file>
     <file>ui/sideComponent.js</file>
+    <file>ui/status/orientation.js</file>
   </gresource>
 </gresources>

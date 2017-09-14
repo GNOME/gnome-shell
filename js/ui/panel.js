@@ -739,6 +739,7 @@ class AggregateMenu extends PanelMenu.Button {
         this._screencast = new imports.ui.status.screencast.Indicator();
         this._location = new imports.ui.status.location.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
+        this._orientation = new imports.ui.status.orientation.Indicator();
         this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
         this._indicators.add_child(this._thunderbolt.indicators);
@@ -777,6 +778,7 @@ class AggregateMenu extends PanelMenu.Button {
         }
         this.menu.addMenuItem(this._remoteAccess.menu);
         this.menu.addMenuItem(this._location.menu);
+        this.menu.addMenuItem(this._orientation.menu);
         this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(this._nightLight.menu);
@@ -787,6 +789,7 @@ class AggregateMenu extends PanelMenu.Button {
         this.menu.addMenuItem(this._brightness.menu);
 
         menuLayout.addSizeChild(this._location.menu.actor);
+        menuLayout.addSizeChild(this._orientation.menu.actor);
         menuLayout.addSizeChild(this._rfkill.menu.actor);
         menuLayout.addSizeChild(this._power.menu.actor);
     }

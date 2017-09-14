@@ -242,21 +242,6 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         }
         item.add(this._settingsAction, { expand: true, x_fill: false });
 
-        this._orientationLockAction = this._createActionButton('', _("Orientation Lock"));
-        this._orientationLockAction.connect('clicked', () => {
-            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-            this._systemActions.activateLockOrientation();
-        });
-        item.add(this._orientationLockAction, { expand: true, x_fill: false });
-        this._systemActions.bind_property('can-lock-orientation',
-                                          this._orientationLockAction,
-                                          'visible',
-                                          bindFlags);
-        this._systemActions.bind_property('orientation-lock-icon',
-                                          this._orientationLockAction.child,
-                                          'icon-name',
-                                          bindFlags);
-
         this._lockScreenAction = this._createActionButton('changes-prevent', _("Lock"));
         this._lockScreenAction.connect('clicked', () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
@@ -295,7 +280,6 @@ var Indicator = class extends PanelMenu.SystemIndicator {
 
         let visibilityGroup = [
             this._settingsAction,
-            this._orientationLockAction,
             this._lockScreenAction,
             this._altSwitcher.actor,
         ];
