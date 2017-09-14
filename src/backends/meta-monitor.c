@@ -32,6 +32,7 @@
 #define MAXIMUM_SCALE_FACTOR 4.0f
 #define MINIMUM_LOGICAL_WIDTH 800
 #define MINIMUM_LOGICAL_HEIGHT 600
+#define MAXIMUM_REFRESH_RATE_DIFF 0.001
 
 #define HANDLED_CRTC_MODE_FLAGS (META_CRTC_MODE_FLAG_INTERLACE)
 
@@ -1252,8 +1253,8 @@ meta_monitor_mode_spec_equals (MetaMonitorModeSpec *monitor_mode_spec,
 {
   return (monitor_mode_spec->width == other_monitor_mode_spec->width &&
           monitor_mode_spec->height == other_monitor_mode_spec->height &&
-          (monitor_mode_spec->refresh_rate ==
-           other_monitor_mode_spec->refresh_rate) &&
+          ABS (monitor_mode_spec->refresh_rate -
+               other_monitor_mode_spec->refresh_rate) < MAXIMUM_REFRESH_RATE_DIFF &&
           monitor_mode_spec->flags == other_monitor_mode_spec->flags);
 }
 
