@@ -1214,8 +1214,7 @@ notify_continuous_axis (ClutterSeatEvdev              *seat,
 
   clutter_seat_evdev_notify_scroll_continuous (seat, device, time_us,
                                                dx, dy,
-                                               scroll_source,
-                                               CLUTTER_SCROLL_FINISHED_NONE);
+                                               scroll_source, finish_flags);
 }
 
 static void
