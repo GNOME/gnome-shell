@@ -1,3 +1,12 @@
+gnome-shell (3.24.3-0endless1) eos; urgency=medium
+
+  * New upstream release.
+  * debian/control, debian/control.in:
+    - Bumped dependencies: require mutter 3.24 and gjs 1.48
+  https://phabricator.endlessm.com/T18781
+
+ -- Mario Sanchez Prada <mario@endlessm.com>  Thu, 14 Sep 2017 20:51:30 +0100
+
 gnome-shell (3.22.3-2) unstable; urgency=medium
 
   * d/control: Drop dependency on telepathy-mission-control-5. GNOME Shell
