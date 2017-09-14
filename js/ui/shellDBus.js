@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GnomeShell, ScreenSaverDBus */
 
-const { Gio, GLib, Meta, Shell } = imports.gi;
+const { EosMetrics, Gio, GLib, Meta, Shell } = imports.gi;
 
 const Config = imports.misc.config;
 const ExtensionDownloader = imports.ui.extensionDownloader;
@@ -390,17 +390,28 @@ var AppStoreService = class {
     }
 
     AddApplication(id) {
+        let eventRecorder = EosMetrics.EventRecorder.get_default();
+        let appId = new GLib.Variant('s', id);
+        eventRecorder.record_event(SHELL_APP_ADDED_EVENT, appId);
+
         if (!IconGridLayout.layout.iconIsFolder(id))
             IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
     }
 
     AddAppIfNotVisible(id) {
+        let visibleIcons = IconGridLayout.layout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
+        let isIconVisible = visibleIcons.indexOf(id) !== -1;
+
+        if (!isIconVisible) {
+            let eventRecorder = EosMetrics.EventRecorder.get_default();
+            let appId = new GLib.Variant('s', id);
+            eventRecorder.record_event(SHELL_APP_ADDED_EVENT, appId);
+        }
+
         if (IconGridLayout.layout.iconIsFolder(id))
             return;
 
-        let visibleIcons = IconGridLayout.layout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
-        if (visibleIcons.indexOf(id) == -1)
-            IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+        IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
     }
 
     RemoveApplication(id) {
