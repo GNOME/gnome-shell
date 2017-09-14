@@ -408,7 +408,6 @@ var AllView = class AllView extends BaseAppView {
         this._availWidth = 0;
         this._availHeight = 0;
 
-        Main.overview.connect('hidden', () => this.goToPage(0));
         this._grid.connect('space-opened', () => {
             let fadeEffect = this._scrollView.get_effect('fade');
             if (fadeEffect)
