@@ -78,7 +78,7 @@
 
 .popup-menu {
     .popup-menu-item.selected {
-        background-color: rgba(95, 95, 95, 1.0);
+        background-color: #2f2f2f;
     }
 
     &.panel-menu {
@@ -252,6 +252,51 @@ popup-separator-menu-item {
 
 .user-menu-items {
     margin: 6px 0px;
+}
+
+// System Menu
+
+.system-menu-action-container {
+    spacing: 10px;
+
+    .system-menu-action {
+        color: #888;
+        background-color: transparent;
+        border: 1px solid #888;
+        padding: 13px;
+
+        &:hover, &:focus {
+            color: white;
+            border: 1px solid #ddd;
+        }
+
+        &:clicked {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #444;
+        }
+
+        &.poweroff-button {
+            color: black;
+            background-color: #888;
+            border: 1px solid #888;
+
+            &:hover, &:focus {
+                background-color: #dddddd;
+                border: 1px solid #dddddd;
+            }
+
+            &:clicked {
+                background-color: #444;
+                border: 1px solid #444;
+            }
+        }
+    }
+
+    .system-menu-action-desc {
+            color: #ccc;
+            font-size: 9pt;
+        }
 }
 
 // Endless Button

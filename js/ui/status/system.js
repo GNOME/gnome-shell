@@ -105,6 +105,24 @@ var AltSwitcher = class {
         this._sync();
         return true;
     }
+
+    getWidth() {
+        let standardVisible = this._standard.visible;
+        let alternateVisible = this._alternate.visible;
+
+        this._standard.visible = true;
+        this._alternate.visible = false;
+        let width = this._standard.get_size()[0];
+
+        this._standard.visible = false;
+        this._alternate.visible = true;
+        width = Math.max(width, this._alternate.get_size()[0]);
+
+        this._standard.visible = standardVisible;
+        this._alternate.visible = alternateVisible;
+
+        return width;
+    }
 };
 
 var Indicator = class extends PanelMenu.SystemIndicator {
@@ -161,30 +179,81 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             this._switchUserSubMenu.label.text = this._user.get_user_name();
     }
 
-    _createActionButtonBase(accessibleName) {
+    _updateActionsSubMenu() {
+        let actors = [
+            this._logoutAction,
+            this._lockScreenAction,
+            this._altSwitcher.actor,
+        ];
+
+        // First, reset any size we may have previously forced
+        actors.forEach(actor => actor.set_width(-1));
+
+        // Now, calculate the largest visible label
+        let width = actors.filter(actor => actor.visible).reduce((acc, actor) => {
+            let actorWidth;
+            if (actor == this._altSwitcher.actor)
+                actorWidth = this._altSwitcher.getWidth();
+            else
+                actorWidth = actor.get_size()[0];
+
+            return Math.max(acc, actorWidth);
+        }, 0);
+
+        // Set it on all actors
+        actors.forEach(actor => actor.set_size(width, -1));
+    }
+
+    _createActionButtonBase(accessibleName, callback, customClass) {
+        let box = new St.BoxLayout({
+            vertical: true,
+            style_class: 'system-menu-action-container',
+        });
+
         let button = new St.Button({
             reactive: true,
             can_focus: true,
             track_hover: true,
+            x_expand: false,
+            x_align: Clutter.ActorAlign.CENTER,
             accessible_name: accessibleName,
             style_class: 'system-menu-action',
         });
-        return button;
+
+        if (customClass)
+            button.add_style_class_name(customClass);
+
+        box.add(button, { expand: true, x_fill: false });
+
+        let label = new St.Label({
+            text: accessibleName,
+            x_align: Clutter.ActorAlign.CENTER,
+            style_class: 'system-menu-action-desc',
+        });
+        box.add_child(label);
+
+        box._button = button;
+        box._label = label;
+
+        if (callback)
+            button.connect('clicked', callback);
+
+        return box;
     }
 
-    _createActionButton(iconName, accessibleName) {
-        let button = this._createActionButtonBase(accessibleName);
-        button.child = new St.Icon({ icon_name: iconName });
-        return button;
+    _createActionButton(iconName, accessibleName, callback, customClass) {
+        let box = this._createActionButtonBase(accessibleName, callback, customClass);
+        box._button.child = new St.Icon({ icon_name: iconName, x_expand: false });
+        return box;
     }
 
-    _createActionButtonForIconPath(iconPath, accessibleName) {
+    _createActionButtonForIconPath(iconPath, accessibleName, callback, customClass) {
         let iconFile = Gio.File.new_for_uri('resource:///org/gnome/shell' + iconPath);
         let gicon = new Gio.FileIcon({ file: iconFile });
 
-        let button = this._createActionButtonBase(accessibleName);
-        button.child = new St.Icon({ gicon: gicon });
-        return button;
+        let box = this._createActionButtonBase(accessibleName, callback, customClass);
+        box._button.child = new St.Icon({ gicon: gicon, x_expand: false });
+        return box;
     }
 
     _createSubMenu() {
@@ -199,8 +268,10 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         // or notify::width without creating layout cycles, simply update the
         // label whenever the menu is opened.
         this.menu.connect('open-state-changed', (menu, isOpen) => {
-            if (isOpen)
+            if (isOpen) {
                 this._updateSwitchUserSubMenu();
+                this._updateActionsSubMenu();
+            }
         });
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
@@ -239,15 +310,13 @@ var Indicator = class extends PanelMenu.SystemIndicator {
                                                  can_focus: false });
         this.buttonGroup = item;
 
-        this._logoutAction = this._createActionButtonForIconPath('/theme/system-logout.png', _("Log Out"));
-        this._logoutAction.connect('clicked',  () => {
+        this._logoutAction = this._createActionButtonForIconPath('/theme/system-logout.png', _("Log Out"), () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateLogout();
         });
         item.actor.add(this._logoutAction, { expand: true, x_fill: false });
 
-        this._lockScreenAction = this._createActionButton('changes-prevent', _("Lock"));
-        this._lockScreenAction.connect('clicked', () => {
+        this._lockScreenAction = this._createActionButton('changes-prevent', _("Lock"), () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateLockScreen();
         });
@@ -257,8 +326,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
                                           'visible',
                                           bindFlags);
 
-        this._suspendAction = this._createActionButton('media-playback-pause', _("Suspend"));
-        this._suspendAction.connect('clicked', () => {
+        this._suspendAction = this._createActionButton('media-playback-pause', _("Suspend"), () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activateSuspend();
         });
@@ -267,11 +335,10 @@ var Indicator = class extends PanelMenu.SystemIndicator {
                                           'visible',
                                           bindFlags);
 
-        this._powerOffAction = this._createActionButton('system-shutdown', _("Power Off"));
-        this._powerOffAction.connect('clicked', () => {
+        this._powerOffAction = this._createActionButton('system-shutdown', _("Power Off"), () => {
             this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._systemActions.activatePowerOff();
-        });
+        }, 'poweroff-button');
         this._systemActions.bind_property('can-power-off',
                                           this._powerOffAction,
                                           'visible',
