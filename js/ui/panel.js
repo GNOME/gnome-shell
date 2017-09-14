@@ -1084,8 +1084,6 @@ var Panel = new Lang.Class({
             let indicator = this.statusArea[role];
             if (!indicator)
                 continue;
-            if (indicator.menu)
-                indicator.menu.close();
             indicator.container.hide();
         }
     },

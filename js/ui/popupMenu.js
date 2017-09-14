@@ -465,6 +465,7 @@ var PopupMenuBase = new Lang.Class({
 
     _sessionUpdated: function() {
         this._setSettingsVisibility(Main.sessionMode.allowSettings);
+        this.close();
     },
 
     addAction: function(title, callback, icon) {
