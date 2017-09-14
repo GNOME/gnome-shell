@@ -34,6 +34,7 @@
 
     <!-- Endless-specific resources beyond this point -->
 
+    <file>endless-button-symbolic.svg</file>
     <file>mini-icon-active-indicator.png</file>
   </gresource>
 </gresources>
