@@ -63,7 +63,16 @@ const RENAMED_DESKTOP_IDS = {
 class AppFavorites {
     constructor() {
         this.FAVORITE_APPS_KEY = 'favorite-apps';
+        this.TASKBAR_PINS_KEY_DEPRECATED = 'taskbar-pins';
         this._favorites = {};
+
+        // Handle deprecated taskbar-pins key gracefully, if present.
+        let oldIds = global.settings.get_strv(this.TASKBAR_PINS_KEY_DEPRECATED);
+        if (oldIds.length > 0) {
+            global.settings.set_strv(this.FAVORITE_APPS_KEY, oldIds);
+            global.settings.set_strv(this.TASKBAR_PINS_KEY_DEPRECATED, []);
+        }
+
         global.settings.connect(`changed::${this.FAVORITE_APPS_KEY}`, this._onFavsChanged.bind(this));
         this.reload();
     }

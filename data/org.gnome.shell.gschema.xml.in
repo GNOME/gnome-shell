@@ -124,7 +124,16 @@
         when a window is minimized.
       </description>
     </key>
-
+    <key name="taskbar-pins" type="as">
+      <default>[]</default>
+      <summary>List of desktop file IDs for applications pinned to taskbar (DEPRECATED)</summary>
+      <description>
+        The applications corresponding to these identifiers will be displayed in
+        the taskbar at the bottom of the Endless desktop. THIS IS DEPRECATED NOW:
+        any value in here will be automatically copied over to the favorite-apps
+        key by the shell on start, and then cleared from here.
+      </description>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
   </schema>
 
