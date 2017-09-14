@@ -221,7 +221,7 @@ var ViewSelector = GObject.registerClass({
                               Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
-                              this._toggleAppsPage.bind(this));
+                              Main.overview.toggleApps.bind(this));
 
         Main.wm.addKeybinding('toggle-overview',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
@@ -258,10 +258,6 @@ var ViewSelector = GObject.registerClass({
             Main.overview.show();
     }
 
-    _toggleAppsPage() {
-        Main.overview.show();
-    }
-
     showApps() {
         Main.overview.show();
     }
@@ -269,11 +265,8 @@ var ViewSelector = GObject.registerClass({
     show() {
         this.reset();
         this._workspacesDisplay.show(true);
-        this._activePage = null;
-        this._showPage(this._appsPage);
 
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeOutDesktop();
+        this._showPage(this._appsPage);
     }
 
     animateFromOverview() {
@@ -282,9 +275,6 @@ var ViewSelector = GObject.registerClass({
         this._workspacesPage.opacity = 255;
 
         this._workspacesDisplay.animateFromOverview(this._activePage != this._workspacesPage);
-
-        if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
-            Main.overview.fadeInDesktop();
     }
 
     setWorkspacesFullGeometry(geom) {
@@ -578,6 +568,17 @@ var ViewSelector = GObject.registerClass({
         return Clutter.EVENT_PROPAGATE;
     }
 
+    _pageFromViewPage(viewPage) {
+        let page;
+
+        if (viewPage === ViewPage.WINDOWS)
+            page = this._workspacesPage;
+        else
+            page = this._appsPage;
+
+        return page;
+    }
+
     getActivePage() {
         if (this._activePage == this._workspacesPage)
             return ViewPage.WINDOWS;
@@ -585,5 +586,25 @@ var ViewSelector = GObject.registerClass({
             return ViewPage.APPS;
         else
             return ViewPage.SEARCH;
+    }
+
+    setActivePage(viewPage) {
+        this._showPage(this._pageFromViewPage(viewPage));
+    }
+
+    fadeIn() {
+        this._activePage.ease({
+            opacity: 255,
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
+    }
+
+    fadeHalf() {
+        this._activePage.ease({
+            opacity: 128,
+            duration: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        });
     }
 });

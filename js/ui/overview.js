@@ -12,6 +12,7 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
+const ViewSelector = imports.ui.viewSelector;
 const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Time for initial animation going into Overview mode
@@ -457,6 +458,27 @@ var Overview = class {
         this._overview.searchEntry.grab_key_focus();
     }
 
+    _showOrSwitchPage(page) {
+        if (this.visible)
+            this.viewSelector.setActivePage(page);
+        else
+            this.show();
+    }
+
+    showApps() {
+        if (this.isDummy)
+            return;
+
+        this._showOrSwitchPage(ViewSelector.ViewPage.APPS);
+    }
+
+    showWindows() {
+        if (this.isDummy)
+            return;
+
+        this._showOrSwitchPage(ViewSelector.ViewPage.WINDOWS);
+    }
+
     fadeInDesktop() {
         this._desktopFade.opacity = 0;
         this._desktopFade.show();
@@ -483,6 +505,29 @@ var Overview = class {
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: ANIMATION_TIME,
         });
+    }
+
+    toggleApps() {
+        if (this.isDummy)
+            return;
+
+        if (!this.visible ||
+            this.viewSelector.getActivePage() !== ViewSelector.ViewPage.APPS) {
+            this.showApps();
+            return;
+        }
+
+        if (!Main.workspaceMonitor.hasVisibleWindows) {
+            // There are active windows but all of them are hidden, so activate
+            // the most recently used one before hiding the overview.
+            let appSystem = Shell.AppSystem.get_default();
+            let runningApps = appSystem.get_running();
+            if (runningApps.length > 0)
+                runningApps[0].activate();
+        }
+
+        // Toggle to the currently open window
+        this.hide();
     }
 
     // Checks if the Activities button is currently sensitive to
