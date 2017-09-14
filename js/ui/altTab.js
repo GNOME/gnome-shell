@@ -158,7 +158,10 @@ var AppSwitcherPopup = new Lang.Class({
 
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
-            this._select(this._selectedIndex, this._nextWindow());
+            if (!this._thumbnailsFocused)
+                this._select(this._selectedIndex, 0);
+            else
+                this._select(this._selectedIndex, this._nextWindow());
         } else if (action == Meta.KeyBindingAction.SWITCH_GROUP_BACKWARD) {
             this._select(this._selectedIndex, this._previousWindow());
         } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS) {
