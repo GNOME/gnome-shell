@@ -1,11 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported GnomeShell, ScreenSaverDBus */
 
-const { Gio, GLib, Meta } = imports.gi;
+const { EosMetrics, Gio, GLib, Meta } = imports.gi;
 
 const Config = imports.misc.config;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
+const IconGridLayout = imports.ui.iconGridLayout;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 
@@ -14,6 +15,9 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 const GnomeShellIface = loadInterfaceXML('org.gnome.Shell');
 const ScreenSaverIface = loadInterfaceXML('org.gnome.ScreenSaver');
 
+// Occurs when an application is added to the app grid.
+const SHELL_APP_ADDED_EVENT = '51640a4e-79aa-47ac-b7e2-d3106a06e129';
+
 var GnomeShell = class {
     constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
@@ -21,6 +25,11 @@ var GnomeShell = class {
 
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
+
+        this._appstoreService = null;
+
+        Main.sessionMode.connect('updated', this._sessionModeChanged.bind(this));
+        this._sessionModeChanged();
 
         this._grabbedAccelerators = new Map();
         this._grabbers = new Map();
@@ -35,6 +44,17 @@ var GnomeShell = class {
                               this._checkOverviewVisibleChanged.bind(this));
         Main.overview.connect('hidden',
                               this._checkOverviewVisibleChanged.bind(this));
+    }
+
+    _sessionModeChanged() {
+        // These two D-Bus interfaces are only useful if a user is logged in
+        // and can run apps or has a desktop.
+        if (Main.sessionMode.isGreeter !== true) {
+            if (!this._appstoreService)
+                this._appstoreService = new AppStoreService();
+        } else {
+            this._appstoreService = null;
+        }
     }
 
     /**
@@ -406,5 +426,93 @@ var ScreenSaverDBus = class {
             return Math.floor((GLib.get_monotonic_time() - started) / 1000000);
         else
             return 0;
+    }
+};
+
+function _iconIsVisibleOnDesktop(id) {
+    const iconGridLayout = IconGridLayout.getDefault();
+    let visibleIcons = iconGridLayout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
+    return visibleIcons.indexOf(id) !== -1;
+}
+
+function _reportAppAddedMetric(id) {
+    let eventRecorder = EosMetrics.EventRecorder.get_default();
+    let appId = new GLib.Variant('s', id);
+    eventRecorder.record_event(SHELL_APP_ADDED_EVENT, appId);
+}
+
+const AppStoreIface = loadInterfaceXML('org.gnome.Shell.AppStore');
+
+var AppStoreService = class {
+    constructor() {
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(AppStoreIface, this);
+        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+        this._iconGridLayout = IconGridLayout.getDefault();
+
+        this._iconGridLayout.connect(
+            'layout-changed',
+            this._emitApplicationsChanged.bind(this));
+    }
+
+    AddApplication(id) {
+        let eventRecorder = EosMetrics.EventRecorder.get_default();
+        let appId = new GLib.Variant('s', id);
+        eventRecorder.record_event(SHELL_APP_ADDED_EVENT, appId);
+
+        if (!this._iconGridLayout.iconIsFolder(id))
+            this._iconGridLayout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+    }
+
+    AddAppIfNotVisible(id) {
+        if (this._iconGridLayout.iconIsFolder(id))
+            return;
+
+        if (!_iconIsVisibleOnDesktop(id)) {
+            this._iconGridLayout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+            _reportAppAddedMetric(id);
+        }
+    }
+
+    ReplaceApplication(originalId, replacementId) {
+        // Can't replace a folder
+        if (this._iconGridLayout.iconIsFolder(originalId))
+            return;
+
+        // We can just replace the app icon directly now,
+        // since the replace operation degenerates to
+        // append if the source icon was not available
+        this._iconGridLayout.replaceIcon(originalId, replacementId, IconGridLayout.DESKTOP_GRID_ID);
+
+        // We only care about reporting a metric if the replacement id was visible
+        if (!_iconIsVisibleOnDesktop(replacementId))
+            _reportAppAddedMetric(replacementId);
+    }
+
+    RemoveApplication(id) {
+        if (!this._iconGridLayout.iconIsFolder(id))
+            this._iconGridLayout.removeIcon(id, false);
+    }
+
+    AddFolder(id) {
+        if (this._iconGridLayout.iconIsFolder(id))
+            this._iconGridLayout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+    }
+
+    RemoveFolder(id) {
+        if (this._iconGridLayout.iconIsFolder(id))
+            this._iconGridLayout.removeIcon(id, false);
+    }
+
+    ResetDesktop() {
+        this._iconGridLayout.resetDesktop();
+    }
+
+    ListApplications() {
+        return this._iconGridLayout.listApplications();
+    }
+
+    _emitApplicationsChanged() {
+        let allApps = this._iconGridLayout.listApplications();
+        this._dbusImpl.emit_signal('ApplicationsChanged', GLib.Variant.new('(as)', [allApps]));
     }
 };

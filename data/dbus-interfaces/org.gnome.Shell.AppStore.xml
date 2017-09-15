@@ -1,0 +1,30 @@
+<node>
+  <interface name="org.gnome.Shell.AppStore">
+    <method name="AddApplication">
+      <arg type="s" direction="in" name="id" />
+    </method>
+    <method name="AddAppIfNotVisible">
+      <arg type="s" direction="in" name="id" />
+    </method>
+    <method name="ReplaceApplication">
+      <arg type="s" direction="in" name="originalId" />
+      <arg type="s" direction="in" name="replacementId" />
+    </method>
+    <method name="RemoveApplication">
+      <arg type="s" direction="in" name="id" />
+    </method>
+    <method name="ListApplications">
+      <arg type="as" direction="out" name="applications" />
+    </method>
+    <method name="AddFolder">
+      <arg type="s" direction="in" name="id" />
+    </method>
+    <method name="RemoveFolder">
+      <arg type="s" direction="in" name="id" />
+    </method>
+    <method name="ResetDesktop" />
+    <signal name="ApplicationsChanged">
+      <arg type="as" name="applications" />
+    </signal>
+  </interface>
+</node>
