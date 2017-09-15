@@ -4856,11 +4856,9 @@ capture_view_into (ClutterStage          *stage,
   cogl_object_unref (bitmap);
 }
 
-void
-clutter_stage_capture_into (ClutterStage          *stage,
-                            gboolean               paint,
-                            cairo_rectangle_int_t *rect,
-                            uint8_t               *data)
+static ClutterStageView *
+get_view_at_rect (ClutterStage          *stage,
+                  cairo_rectangle_int_t *rect)
 {
   ClutterStagePrivate *priv = stage->priv;
   GList *views = _clutter_stage_window_get_views (priv->impl);
@@ -4872,8 +4870,6 @@ clutter_stage_capture_into (ClutterStage          *stage,
       cairo_rectangle_int_t view_layout;
       cairo_region_t *region;
       cairo_rectangle_int_t view_capture_rect;
-      int offset;
-      const int bpp = 4;
 
       clutter_stage_view_get_layout (view, &view_layout);
       region = cairo_region_create_rectangle (&view_layout);
@@ -4884,8 +4880,23 @@ clutter_stage_capture_into (ClutterStage          *stage,
       if (view_capture_rect.width == 0 || view_capture_rect.height == 0)
         continue;
 
-      offset = bpp * (view_capture_rect.y * rect->width + view_capture_rect.x);
-      capture_view_into (stage, paint, view, &view_capture_rect,
-                         data + offset, rect->width * bpp);
+      g_assert (view_capture_rect.width == rect->width &&
+                view_capture_rect.height == rect->height);
+      return view;
     }
+
+  return NULL;
+}
+
+void
+clutter_stage_capture_into (ClutterStage          *stage,
+                            gboolean               paint,
+                            cairo_rectangle_int_t *rect,
+                            uint8_t               *data)
+{
+  ClutterStageView *view;
+  int bpp = 4;
+
+  view = get_view_at_rect (stage, rect);
+  capture_view_into (stage, paint, view, rect, data, rect->width * bpp);
 }
