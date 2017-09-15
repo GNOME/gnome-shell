@@ -952,15 +952,11 @@ shell_app_sync_running_state (ShellApp *app)
 {
   g_return_if_fail (app->running_state != NULL);
 
-  if (app->state != SHELL_APP_STATE_STARTING)
-    {
-      if (app->running_state->interesting_windows == 0)
-        shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
-      else
-        shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
-    }
+  if (app->running_state->interesting_windows > 0)
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+  else if (app->state != SHELL_APP_STATE_STARTING)
+    shell_app_state_transition (app, SHELL_APP_STATE_STOPPED);
 }
-
 
 static void
 shell_app_on_skip_taskbar_changed (MetaWindow *window,
