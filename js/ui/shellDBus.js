@@ -6,6 +6,7 @@ const { Gio, GLib, Meta, Shell } = imports.gi;
 const Config = imports.misc.config;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
+const IconGridLayout = imports.ui.iconGridLayout;
 const Main = imports.ui.main;
 const Screenshot = imports.ui.screenshot;
 
@@ -21,6 +22,8 @@ var GnomeShell = class {
 
         this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
+
+        this._appstoreService = new AppStoreService();
 
         this._grabbedAccelerators = new Map();
         this._grabbers = new Map();
@@ -373,5 +376,58 @@ var ScreenSaverDBus = class {
             return Math.floor((GLib.get_monotonic_time() - started) / 1000000);
         else
             return 0;
+    }
+};
+
+const AppStoreIface = loadInterfaceXML('org.gnome.Shell.AppStore');
+
+var AppStoreService = class {
+    constructor() {
+        this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(AppStoreIface, this);
+        this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
+
+        IconGridLayout.layout.connect('changed', this._emitApplicationsChanged.bind(this));
+    }
+
+    AddApplication(id) {
+        if (!IconGridLayout.layout.iconIsFolder(id))
+            IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+    }
+
+    AddAppIfNotVisible(id) {
+        if (IconGridLayout.layout.iconIsFolder(id))
+            return;
+
+        let visibleIcons = IconGridLayout.layout.getIcons(IconGridLayout.DESKTOP_GRID_ID);
+        if (visibleIcons.indexOf(id) == -1)
+            IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+    }
+
+    RemoveApplication(id) {
+        if (!IconGridLayout.layout.iconIsFolder(id))
+            IconGridLayout.layout.removeIcon(id, false);
+    }
+
+    AddFolder(id) {
+        if (IconGridLayout.layout.iconIsFolder(id))
+            IconGridLayout.layout.appendIcon(id, IconGridLayout.DESKTOP_GRID_ID);
+    }
+
+    RemoveFolder(id) {
+        if (IconGridLayout.layout.iconIsFolder(id))
+            IconGridLayout.layout.removeIcon(id, false);
+    }
+
+    ResetDesktop() {
+        IconGridLayout.layout.resetDesktop();
+    }
+
+    ListApplications() {
+        return IconGridLayout.layout.listApplications();
+    }
+
+    _emitApplicationsChanged() {
+        let allApps = IconGridLayout.layout.listApplications();
+        this._dbusImpl.emit_signal('ApplicationsChanged', GLib.Variant.new('(as)', [allApps]));
     }
 };
