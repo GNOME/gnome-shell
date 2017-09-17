@@ -1782,7 +1782,7 @@ meta_monitor_manager_kms_is_transform_handled (MetaMonitorManager  *manager,
 {
   MetaCrtcKms *crtc_kms = crtc->driver_private;
 
-  if ((1 << crtc->transform) & crtc_kms->all_hw_transforms)
+  if ((1 << transform) & crtc_kms->all_hw_transforms)
     return TRUE;
   else
     return FALSE;
