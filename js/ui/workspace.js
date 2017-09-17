@@ -1090,6 +1090,7 @@ var Workspace = new Lang.Class({
         // do some simple aspect ratio like math to fit the layout calculated
         // for the full geometry into this area.
         this._actualGeometry = null;
+        this._actualGeometryLater = 0;
 
         this._currentLayout = null;
 

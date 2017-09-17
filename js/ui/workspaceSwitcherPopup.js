@@ -31,6 +31,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._itemSpacing = 0;
         this._childHeight = 0;
         this._childWidth = 0;
+        this._timeoutId = 0;
         this._list.connect('style-changed', Lang.bind(this, function() {
                                                         this._itemSpacing = this._list.get_theme_node().get_length('spacing');
                                                      }));
