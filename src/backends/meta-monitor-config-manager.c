@@ -764,6 +764,14 @@ create_for_builtin_display_rotation (MetaMonitorConfigManager *config_manager,
   logical_monitor_config->monitor_configs = g_list_append (NULL, monitor_config);
   logical_monitor_config->transform = transform;
 
+  if (meta_monitor_transform_is_rotated (current_logical_monitor_config->transform) !=
+      meta_monitor_transform_is_rotated (logical_monitor_config->transform))
+    {
+      int temp = logical_monitor_config->layout.width;
+      logical_monitor_config->layout.width = logical_monitor_config->layout.height;
+      logical_monitor_config->layout.height = temp;
+    }
+
   return meta_monitors_config_new (g_list_append (NULL, logical_monitor_config),
                                    config_manager->current_config->layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
