@@ -255,7 +255,11 @@ var AutorunDispatcher = new Lang.Class({
         if (!shouldAutorunMount(mount))
             return;
 
-        let setting = this._getAutorunSettingForType(contentTypes[0]);
+        let setting;
+        if (contentTypes.length > 0)
+            setting = this._getAutorunSettingForType(contentTypes[0]);
+        else
+            setting = AutorunSetting.ASK;
 
         // check at the settings for the first content type
         // to see whether we should ask
