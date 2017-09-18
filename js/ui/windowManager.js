@@ -516,7 +516,7 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
             return Clutter.EVENT_PROPAGATE;
 
         if (event.get_gesture_phase() == Clutter.TouchpadGesturePhase.UPDATE) {
-            let [dx, dy] = event.get_gesture_motion_delta(event);
+            let [dx, dy] = event.get_gesture_motion_delta();
 
             this._dx += dx;
             this._dy += dy;
