@@ -268,7 +268,7 @@ executable('gnome-shell-perf-helper', 'shell-perf-helper.c',
 )
 
 executable('run-js-test', 'run-js-test.c',
-  dependencies: [mutter_dep, gio_dep, gjs_dep],
+  dependencies: [mutter_dep, gio_dep, gi_dep, gjs_dep],
   include_directories: [conf_inc],
   link_with: libshell,
   build_rpath: mutter_typelibdir,
