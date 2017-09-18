@@ -38,10 +38,10 @@ var DragDropResult = {
     SUCCESS:  1,
     CONTINUE: 2
 };
+var dragMonitors = [];
 
 let eventHandlerActor = null;
 let currentDraggable = null;
-let dragMonitors = [];
 
 function _getEventHandlerActor() {
     if (!eventHandlerActor) {
