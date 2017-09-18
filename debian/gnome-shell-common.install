@@ -5,6 +5,7 @@ usr/share/gnome-control-center
 usr/share/gnome-shell
 usr/share/gtk-doc
 usr/share/locale
+usr/share/polkit-1
 
 # This is a hack for #853018. Remove this after Debian stretch is released.
 debian/jessie-upgrade/process-working.svg /usr/share/gnome-shell/theme
