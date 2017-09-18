@@ -801,6 +801,7 @@ meta_input_settings_find_logical_monitor (MetaInputSettings  *input_settings,
 {
   MetaInputSettingsPrivate *priv;
   MetaMonitorManager *monitor_manager;
+  MetaLogicalMonitor *ret = NULL;
   guint n_values;
   GList *logical_monitors;
   GList *l;
@@ -815,11 +816,11 @@ meta_input_settings_find_logical_monitor (MetaInputSettings  *input_settings,
       g_warning ("EDID configuration for device '%s' "
                  "is incorrect, must have 3 values",
                  clutter_input_device_get_device_name (device));
-      return NULL;
+      goto out;
     }
 
   if (!*edid[0] && !*edid[1] && !*edid[2])
-    return NULL;
+    goto out;
 
   monitor_manager = priv->monitor_manager;
   logical_monitors =
@@ -833,10 +834,15 @@ meta_input_settings_find_logical_monitor (MetaInputSettings  *input_settings,
                                        edid[0],
                                        edid[1],
                                        edid[2]))
-        return logical_monitor;
+        {
+          ret = logical_monitor;
+          break;
+        }
     }
 
-  return NULL;
+out:
+  g_strfreev (edid);
+  return ret;
 }
 
 static void
