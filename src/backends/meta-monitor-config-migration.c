@@ -652,6 +652,7 @@ load_config_file (GFile   *file,
         g_array_free (parser.output_array, TRUE);
 
       free_output_key (&parser.key);
+      g_free (parser.output_field);
       g_hash_table_destroy (parser.configs);
 
       return NULL;
