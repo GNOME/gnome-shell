@@ -98,6 +98,13 @@ function loadRemoteSearchProviders(searchSettings, callback) {
                 return;
             }
 
+            let autoStart = true;
+            try {
+                autoStart = keyfile.get_boolean(group, 'AutoStart');
+            } catch(e) {
+                // ignore error
+            }
+
             let version = '1';
             try {
                 version = keyfile.get_string(group, 'Version');
@@ -106,20 +113,13 @@ function loadRemoteSearchProviders(searchSettings, callback) {
             }
 
             if (version >= 2)
-                remoteProvider = new RemoteSearchProvider2(appInfo, busName, objectPath);
+                remoteProvider = new RemoteSearchProvider2(appInfo, busName, objectPath, autoStart);
             else
-                remoteProvider = new RemoteSearchProvider(appInfo, busName, objectPath);
+                remoteProvider = new RemoteSearchProvider(appInfo, busName, objectPath, autoStart);
 
             remoteProvider.defaultEnabled = true;
             try {
                 remoteProvider.defaultEnabled = !keyfile.get_boolean(group, 'DefaultDisabled');
-            } catch(e) {
-                // ignore error
-            }
-
-            remoteProvider.autoStart = true;
-            try {
-                remoteProvider.autoStart = keyfile.get_boolean(group, 'AutoStart');
             } catch(e) {
                 // ignore error
             }
@@ -191,12 +191,12 @@ function loadRemoteSearchProviders(searchSettings, callback) {
 var RemoteSearchProvider = new Lang.Class({
     Name: 'RemoteSearchProvider',
 
-    _init: function(appInfo, dbusName, dbusPath, proxyInfo) {
+    _init: function(appInfo, dbusName, dbusPath, autoStart, proxyInfo) {
         if (!proxyInfo)
             proxyInfo = SearchProviderProxyInfo;
 
         let g_flags = Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES;
-        if (remoteProvider.autoStart)
+        if (autoStart)
             g_flags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START_AT_CONSTRUCTION;
         else
             g_flags |= Gio.DBusProxyFlags.DO_NOT_AUTO_START;
@@ -319,8 +319,8 @@ var RemoteSearchProvider2 = new Lang.Class({
     Name: 'RemoteSearchProvider2',
     Extends: RemoteSearchProvider,
 
-    _init: function(appInfo, dbusName, dbusPath) {
-        this.parent(appInfo, dbusName, dbusPath, SearchProvider2ProxyInfo);
+    _init: function(appInfo, dbusName, dbusPath, autoStart) {
+        this.parent(appInfo, dbusName, dbusPath, autoStart, SearchProvider2ProxyInfo);
 
         this.canLaunchSearch = true;
     },
