@@ -1244,11 +1244,6 @@ var FolderView = class FolderView extends BaseAppView {
         Util.ensureActorVisibleInScrollView(this.actor, actor);
     }
 
-    // Overridden from BaseAppView
-    animate(animationDirection) {
-        this._grid.animatePulse(animationDirection);
-    }
-
     createFolderIcon(size) {
         let layout = new Clutter.GridLayout();
         let icon = new St.Widget({ layout_manager: layout,
