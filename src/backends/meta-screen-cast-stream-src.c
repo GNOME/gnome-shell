@@ -535,7 +535,13 @@ meta_screen_cast_stream_src_initable_init (GInitable     *initable,
       return FALSE;
     }
 
+#if PIPEWIRE_VERSION_MICRO  == 4
   priv->pipewire_remote = pw_remote_new (priv->pipewire_core, NULL);
+#elif PIPEWIRE_VERSION_MICRO  >= 5
+  priv->pipewire_remote = pw_remote_new (priv->pipewire_core, NULL, 0);
+#else
+  priv->pipewire_remote = NULL;
+#endif
   if (!priv->pipewire_remote)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
