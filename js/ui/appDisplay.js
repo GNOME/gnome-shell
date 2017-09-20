@@ -16,6 +16,7 @@ const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
+const ViewSelector = imports.ui.viewSelector;
 const Search = imports.ui.search;
 const Params = imports.misc.params;
 const Util = imports.misc.util;
@@ -2361,6 +2362,6 @@ Signals.addSignalMethods(AppIconMenu.prototype);
 var SystemActionIcon = class SystemActionIcon extends Search.GridSearchResult {
     activate() {
         SystemActions.getDefault().activateAction(this.metaInfo['id']);
-        Main.overview.hide();
+        Main.overview.viewSelector.show(ViewSelector.ViewPage.APPS);
     }
 };
