@@ -5,11 +5,13 @@ const { Clutter, Gio, GLib, GObject, Pango, Shell, St } = imports.gi;
 
 const Animation = imports.ui.animation;
 const CheckBox = imports.ui.checkBox;
+const Keyboard = imports.ui.status.keyboard;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
 const Params = imports.misc.params;
+const PopupMenu = imports.ui.popupMenu;
 const ShellEntry = imports.ui.shellEntry;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
@@ -335,12 +337,17 @@ var ShellMountPasswordDialog = GObject.registerClass({
             animate: true,
         });
 
+        this._inputSourceManager = Keyboard.getInputSourceManager();
+        this._inputSourceIndicator = new Keyboard.InputSourceIndicator(this, false);
+
         if (rtl) {
             passwordGridLayout.attach(this._workSpinner, 0, curGridRow, 1, 1);
             passwordGridLayout.attach(this._passwordEntry, 1, curGridRow, 1, 1);
+            passwordGridLayout.attach(this._inputSourceIndicator.container, 2, curGridRow, 1, 1);
         } else {
-            passwordGridLayout.attach(this._passwordEntry, 0, curGridRow, 1, 1);
-            passwordGridLayout.attach(this._workSpinner, 1, curGridRow, 1, 1);
+            passwordGridLayout.attach(this._inputSourceIndicator.container, 0, curGridRow, 1, 1);
+            passwordGridLayout.attach(this._passwordEntry, 1, curGridRow, 1, 1);
+            passwordGridLayout.attach(this._workSpinner, 2, curGridRow, 1, 1);
         }
         curGridRow += 1;
 
@@ -348,6 +355,10 @@ var ShellMountPasswordDialog = GObject.registerClass({
 
         let capsLockWarning = new ShellEntry.CapsLockWarning();
         warningBox.add_child(capsLockWarning);
+
+        let manager = new PopupMenu.PopupMenuManager(this._inputSourceIndicator.container);
+        manager.addMenu(this._inputSourceIndicator.menu);
+        this._inputSourceManager.passwordModeEnabled = true;
 
         this._errorMessageLabel = new St.Label({
             style_class: 'prompt-dialog-error-label',
@@ -406,10 +417,12 @@ var ShellMountPasswordDialog = GObject.registerClass({
     }
 
     _onCancelButton() {
+        this._inputSourceManager.passwordModeEnabled = false;
         this.emit('response', -1, '', false, false, false, 0);
     }
 
     _onUnlockButton() {
+        this._inputSourceManager.passwordModeEnabled = false;
         this._onEntryActivate();
     }
 

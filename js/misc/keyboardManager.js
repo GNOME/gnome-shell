@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported getKeyboardManager, holdKeyboard, releaseKeyboard */
 
-const { GLib, GnomeDesktop, Meta } = imports.gi;
+const { GLib, GnomeDesktop, Meta, Shell } = imports.gi;
 
 const Main = imports.ui.main;
 
@@ -155,5 +155,15 @@ var KeyboardManager = class {
     _buildOptionsString() {
         let options = this._xkbOptions.join(',');
         return options;
+    }
+
+    isLatinLayout(id) {
+        let info = this._layoutInfos[id];
+        if (!info)
+            return false;
+        let options = this._buildOptionsString();
+        let [_layouts, variants] = this._buildGroupStrings(info.group);
+        let [_found, , , layout, _variant] = this._xkbInfo.get_layout_info(id);
+        return !Shell.util_needs_secondary_layout(layout, variants, options);
     }
 };

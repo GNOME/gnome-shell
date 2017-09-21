@@ -4,10 +4,12 @@
 const { Clutter, Gio, GLib, GObject, NM, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const Keyboard = imports.ui.status.keyboard;
 const Dialog = imports.ui.dialog;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
+const PopupMenu = imports.ui.popupMenu;
 const ShellEntry = imports.ui.shellEntry;
 
 Gio._promisify(Shell.NetworkAgent.prototype,
@@ -38,6 +40,12 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
             description: this._content.message,
         });
 
+        this._inputSourceManager = Keyboard.getInputSourceManager();
+        this._inputSourceIndicator = new Keyboard.InputSourceIndicator(this, false);
+        let manager = new PopupMenu.PopupMenuManager(this._inputSourceIndicator.container);
+        manager.addMenu(this._inputSourceIndicator.menu);
+        this._inputSourceManager.passwordModeEnabled = true;
+
         let initialFocusSet = false;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
@@ -51,12 +59,24 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 reactive,
                 x_align: Clutter.ActorAlign.CENTER,
             };
-            if (secret.password)
+
+            if (secret.password) {
                 secret.entry = new St.PasswordEntry(entryParams);
-            else
+
+                if (!this._inputSourceIndicator.container.get_parent()) {
+                    secret.box = new St.BoxLayout();
+                    secret.box.add_child(secret.entry);
+                    secret.box.add_child(this._inputSourceIndicator.container);
+                }
+            } else {
                 secret.entry = new St.Entry(entryParams);
+            }
             ShellEntry.addContextMenu(secret.entry);
-            contentBox.add_child(secret.entry);
+
+            if (secret.box)
+                contentBox.add_child(secret.box);
+            else
+                contentBox.add_child(secret.entry);
 
             if (secret.validate)
                 secret.valid = secret.validate(secret);
@@ -252,6 +272,8 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
                 this._agent.set_password(this._requestId, secret.key, secret.value);
         }
 
+        this._inputSourceManager.passwordModeEnabled = false;
+
         if (valid) {
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
 
@@ -301,6 +323,8 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
     }
 
     cancel() {
+        this._inputSourceManager.passwordModeEnabled = false;
+
         this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
         this.close(global.get_current_time());
     }
