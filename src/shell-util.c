@@ -23,6 +23,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <meta/display.h>
 #include <meta/meta-x11-display.h>
+#include <xkbcommon/xkbcommon.h>
 
 #include <locale.h>
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
@@ -36,6 +37,15 @@
 #define sd_notify(u, m)            do {} while (0)
 #define sd_notifyf(u, m, ...)      do {} while (0)
 #endif
+
+#define DEFAULT_XKB_RULES_FILE "evdev"
+#define DEFAULT_XKB_MODEL "pc105"
+
+typedef struct _FindLatinKeysymsState
+{
+  gboolean *required_keysyms_found;
+  int n_required_keysyms;
+} FindLatinKeysymsState;
 
 static void
 stop_pick (ClutterActor *actor)
@@ -780,4 +790,93 @@ shell_util_get_boottime (void)
              g_strerror (errno));
 
   return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+}
+
+static void
+find_latin_keysym (struct xkb_keymap *keymap,
+                   xkb_keycode_t      key,
+                   void              *data)
+{
+  FindLatinKeysymsState *state = data;
+  int n_keysyms, i;
+  const xkb_keysym_t *keysyms;
+
+  n_keysyms = xkb_keymap_key_get_syms_by_level (keymap,
+                                                key,
+                                                0,
+                                                0,
+                                                &keysyms);
+  for (i = 0; i < n_keysyms; i++)
+    {
+      xkb_keysym_t keysym = keysyms[i];
+      if (keysym >= XKB_KEY_a && keysym <= XKB_KEY_z)
+        {
+          unsigned int keysym_index = keysym - XKB_KEY_a;
+          if (!state->required_keysyms_found[keysym_index])
+            {
+              state->required_keysyms_found[keysym_index] = TRUE;
+              state->n_required_keysyms--;
+            }
+        }
+    }
+}
+
+static struct xkb_keymap *
+create_keymap (struct xkb_context *context,
+               const char         *layouts,
+               const char         *variants,
+               const char         *options)
+{
+    struct xkb_keymap *keymap;
+    struct xkb_rule_names rmlvo = {
+        .rules = DEFAULT_XKB_RULES_FILE,
+        .model = DEFAULT_XKB_MODEL,
+        .layout = layouts,
+        .variant = variants,
+        .options = options
+    };
+
+    if (!layouts || !variants || !options)
+        keymap = xkb_keymap_new_from_names (context, NULL, 0);
+    else
+        keymap = xkb_keymap_new_from_names (context, &rmlvo, 0);
+    if (!keymap)
+      {
+        fprintf (stderr,
+                 "Failed to compile RMLVO: '%s', '%s', '%s'\n",
+                 layouts, variants, options);
+        return NULL;
+      }
+
+    return keymap;
+}
+
+gboolean
+shell_util_needs_secondary_layout (const char *layouts,
+                                   const char *variants,
+                                   const char *options)
+{
+  gboolean required_keysyms_found[26];
+  FindLatinKeysymsState state = {
+    .required_keysyms_found = required_keysyms_found,
+    .n_required_keysyms = G_N_ELEMENTS (required_keysyms_found),
+  };
+  struct xkb_keymap *keymap;
+  struct xkb_context *ctx;
+  enum xkb_context_flags ctx_flags;
+
+  memset (required_keysyms_found, FALSE, sizeof (gboolean) * 26);
+
+  ctx_flags = XKB_CONTEXT_NO_DEFAULT_INCLUDES;
+  ctx = xkb_context_new (ctx_flags);
+  xkb_context_include_path_append_default (ctx);
+
+  keymap = create_keymap (ctx, layouts, variants, options);
+
+  xkb_keymap_key_for_each (keymap, find_latin_keysym, &state);
+
+  xkb_keymap_unref (keymap);
+  xkb_context_unref (ctx);
+
+  return state.n_required_keysyms != 0;
 }

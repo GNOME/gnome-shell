@@ -1,0 +1,5 @@
+<node>
+  <interface name="org.gnome.Shell.InputSourceManager">
+    <property name="PasswordModeEnabled" type="b" access="readwrite" />
+  </interface>
+</node>

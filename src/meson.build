@@ -60,6 +60,7 @@ gnome_shell_deps = [
   libsystemd_dep,
   eosmetrics_dep,
   libanimation_glib_dep,
+  xkbcommon_dep,
 ]
 
 gnome_shell_deps += nm_deps

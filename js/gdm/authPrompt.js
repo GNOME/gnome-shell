@@ -10,6 +10,7 @@ const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
 const Util = imports.misc.util;
 const Main = imports.ui.main;
+const Keyboard = imports.ui.status.keyboard;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
@@ -102,6 +103,10 @@ var AuthPrompt = GObject.registerClass({
 
         this._initEntryRow();
 
+        // for setting passwords we enable a password mode for kbd layouts
+        this._inputSourceManager = Keyboard.getInputSourceManager();
+        this._inputSourceManager.passwordModeEnabled = true;
+
         let capsLockPlaceholder = new St.Label();
         this.add_child(capsLockPlaceholder);
 
@@ -169,6 +174,7 @@ var AuthPrompt = GObject.registerClass({
     _onDestroy() {
         this._userVerifier.destroy();
         this._userVerifier = null;
+        this._inputSourceManager.passwordModeEnabled = false;
     }
 
     vfunc_key_press_event(keyPressEvent) {

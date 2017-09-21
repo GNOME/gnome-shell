@@ -120,6 +120,9 @@ m_dep = cc.find_library('m', required: false)
 # Endless-specific: Metrics
 eosmetrics_dep = dependency('eosmetrics-0')
 
+# Endless-specific: Required for keyboard layout switcher in password entries
+xkbcommon_dep = dependency('xkbcommon')
+
 # Endless-specific: parental controls
 malcontent_dep = dependency('malcontent-0', version: malcontent_req, required: true)
 

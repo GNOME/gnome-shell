@@ -82,6 +82,10 @@ gint shell_util_get_uid (void);
 
 gint64 shell_util_get_boottime (void);
 
+gboolean shell_util_needs_secondary_layout (const char *layouts,
+                                            const char *variants,
+                                            const char *options);
+
 G_END_DECLS
 
 #endif /* __SHELL_UTIL_H__ */
