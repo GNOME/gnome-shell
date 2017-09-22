@@ -823,8 +823,11 @@ class Panel extends St.Widget {
         });
 
         Main.layoutManager.panelBox.add(this);
-        Main.ctrlAltTabManager.addGroup(this, _("Top Bar"), 'focus-top-bar-symbolic',
-                                        { sortGroup: CtrlAltTab.SortGroup.TOP });
+        Main.ctrlAltTabManager.addGroup(
+            this, _("Bottom Bar"), 'focus-top-bar-symbolic', {
+                sortGroup: CtrlAltTab.SortGroup.TOP,
+                flipVertical: true
+        });
 
         Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 
