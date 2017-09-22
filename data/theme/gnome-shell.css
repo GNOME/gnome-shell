@@ -1025,12 +1025,12 @@ StScrollBar {
   background-image: url("resource:///org/gnome/shell/theme/close-window.svg");
   background-size: 32px;
   height: 32px;
-  width: 32px; }
-
-.window-close {
+  width: 32px;
   -shell-close-overlap: 16px; }
-  .window-close:rtl {
-    -st-background-image-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5); }
+  .window-close:hover {
+    background-image: url("resource:///org/gnome/shell/theme/close-window-hover.svg"); }
+  .window-close:active {
+    background-image: url("resource:///org/gnome/shell/theme/close-window-active.svg"); }
 
 /* NETWORK DIALOGS */
 .nm-dialog {
