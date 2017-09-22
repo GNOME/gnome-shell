@@ -26,7 +26,8 @@ var CtrlAltTabManager = class CtrlAltTabManager {
     addGroup(root, name, icon, params) {
         let item = Params.parse(params, { sortGroup: SortGroup.MIDDLE,
                                           proxy: root,
-                                          focusCallback: null });
+                                          focusCallback: null,
+                                          flipVertical: false });
 
         item.root = root;
         item.name = name;
@@ -177,6 +178,14 @@ class CtrlAltTabSwitcher extends SwitcherPopup.SwitcherList {
             icon = new St.Icon({ icon_name: item.iconName,
                                  icon_size: POPUP_APPICON_SIZE });
         }
+
+        // We need this for the bottom bar's icon, based on the one
+        // from upstream for the top bar.
+        if (item.flipVertical) {
+            icon.set_pivot_point(0.5, 0.5);
+            icon.set_rotation_angle(Clutter.RotateAxis.X_AXIS, 180);
+        }
+
         box.add(icon, { x_fill: false, y_fill: false } );
 
         let text = new St.Label({ text: item.name });
