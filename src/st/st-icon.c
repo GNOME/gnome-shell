@@ -275,14 +275,7 @@ st_icon_update_shadow_pipeline (StIcon *icon)
   g_clear_pointer (&priv->shadow_pipeline, cogl_object_unref);
 
   if (priv->shadow_spec)
-   {
-     gint width, height;
-
-     clutter_texture_get_base_size (CLUTTER_TEXTURE (priv->icon_texture),
-                                    &width, &height);
-
-     priv->shadow_pipeline = _st_create_shadow_pipeline_from_actor (priv->shadow_spec, priv->icon_texture);
-   }
+   priv->shadow_pipeline = _st_create_shadow_pipeline_from_actor (priv->shadow_spec, priv->icon_texture);
 }
 
 static void
