@@ -4965,6 +4965,290 @@ meta_test_monitor_migrated_rotated (void)
 }
 
 static void
+meta_test_monitor_migrated_wiggle_discard (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 800,
+          .height = 600,
+          .refresh_rate = 59.0
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .refresh_rate = 59.0,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .scale = 1,
+          .transform = META_MONITOR_TRANSFORM_NORMAL
+        },
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        }
+      },
+      .n_crtcs = 1,
+      .screen_width = 800,
+      .screen_height = 600,
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorConfigManager *config_manager = monitor_manager->config_manager;
+  MetaMonitorConfigStore *config_store =
+    meta_monitor_config_manager_get_store (config_manager);
+  g_autofree char *migrated_path = NULL;
+  const char *old_config_path;
+  g_autoptr (GFile) old_config_file = NULL;
+  GError *error = NULL;
+  const char *expected_path;
+  g_autofree char *migrated_data = NULL;
+  g_autofree char *expected_data = NULL;
+  g_autoptr (GFile) migrated_file = NULL;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+
+  migrated_path = g_build_filename (g_get_tmp_dir (),
+                                    "test-finished-migrated-monitors.xml",
+                                    NULL);
+  if (!meta_monitor_config_store_set_custom (config_store,
+                                             "/dev/null",
+                                             migrated_path,
+                                             &error))
+    g_error ("Failed to set custom config store files: %s", error->message);
+
+  old_config_path = g_test_get_filename (G_TEST_DIST,
+                                         "tests", "migration",
+                                         "wiggle-old.xml",
+                                         NULL);
+  old_config_file = g_file_new_for_path (old_config_path);
+  if (!meta_migrate_old_monitors_config (config_store,
+                                         old_config_file,
+                                         &error))
+    g_error ("Failed to migrate config: %s", error->message);
+
+  g_test_expect_message (G_LOG_DOMAIN, G_LOG_LEVEL_WARNING,
+                         "Failed to finish monitors config migration: "
+                         "Mode not available on monitor");
+  emulate_hotplug (test_setup);
+  g_test_assert_expected_messages ();
+
+  check_monitor_configuration (&test_case);
+
+  expected_path = g_test_get_filename (G_TEST_DIST,
+                                       "tests", "migration",
+                                       "wiggle-new-discarded.xml",
+                                       NULL);
+  expected_data = read_file (expected_path);
+  migrated_data = read_file (migrated_path);
+
+  g_assert_nonnull (expected_data);
+  g_assert_nonnull (migrated_data);
+
+  g_assert (strcmp (expected_data, migrated_data) == 0);
+
+  migrated_file = g_file_new_for_path (migrated_path);
+  if (!g_file_delete (migrated_file, NULL, &error))
+    g_error ("Failed to remove test data output file: %s", error->message);
+}
+
+static void
+meta_test_monitor_migrated_wiggle (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 800,
+          .height = 600,
+          .refresh_rate = 60.0
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .refresh_rate = 60.0,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 600, .height = 800 },
+          .scale = 1,
+          .transform = META_MONITOR_TRANSFORM_90
+        },
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        }
+      },
+      .n_crtcs = 1,
+      .screen_width = 600,
+      .screen_height = 800,
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorConfigManager *config_manager = monitor_manager->config_manager;
+  MetaMonitorConfigStore *config_store =
+    meta_monitor_config_manager_get_store (config_manager);
+  g_autofree char *migrated_path = NULL;
+  const char *old_config_path;
+  g_autoptr (GFile) old_config_file = NULL;
+  GError *error = NULL;
+  const char *expected_path;
+  g_autofree char *migrated_data = NULL;
+  g_autofree char *expected_data = NULL;
+  g_autoptr (GFile) migrated_file = NULL;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+
+  migrated_path = g_build_filename (g_get_tmp_dir (),
+                                    "test-finished-migrated-monitors.xml",
+                                    NULL);
+  if (!meta_monitor_config_store_set_custom (config_store,
+                                             "/dev/null",
+                                             migrated_path,
+                                             &error))
+    g_error ("Failed to set custom config store files: %s", error->message);
+
+  old_config_path = g_test_get_filename (G_TEST_DIST,
+                                         "tests", "migration",
+                                         "wiggle-old.xml",
+                                         NULL);
+  old_config_file = g_file_new_for_path (old_config_path);
+  if (!meta_migrate_old_monitors_config (config_store,
+                                         old_config_file,
+                                         &error))
+    g_error ("Failed to migrate config: %s", error->message);
+
+  emulate_hotplug (test_setup);
+
+  check_monitor_configuration (&test_case);
+
+  expected_path = g_test_get_filename (G_TEST_DIST,
+                                       "tests", "migration",
+                                       "wiggle-new-finished.xml",
+                                       NULL);
+  expected_data = read_file (expected_path);
+  migrated_data = read_file (migrated_path);
+
+  g_assert_nonnull (expected_data);
+  g_assert_nonnull (migrated_data);
+
+  g_assert (strcmp (expected_data, migrated_data) == 0);
+
+  migrated_file = g_file_new_for_path (migrated_path);
+  if (!g_file_delete (migrated_file, NULL, &error))
+    g_error ("Failed to remove test data output file: %s", error->message);
+}
+
+static void
 test_case_setup (void       **fixture,
                  const void   *data)
 {
@@ -5062,6 +5346,10 @@ init_monitor_tests (void)
 
   add_monitor_test ("/backends/monitor/migrated/rotated",
                     meta_test_monitor_migrated_rotated);
+  add_monitor_test ("/backends/monitor/migrated/wiggle",
+                    meta_test_monitor_migrated_wiggle);
+  add_monitor_test ("/backends/monitor/migrated/wiggle-discard",
+                    meta_test_monitor_migrated_wiggle_discard);
 }
 
 void

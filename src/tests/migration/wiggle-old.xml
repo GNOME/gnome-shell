@@ -1,0 +1,21 @@
+<monitors version="1">
+  <configuration>
+    <clone>no</clone>
+    <output name="DP-1">
+      <vendor>MetaProduct's Inc.</vendor>
+      <product>MetaMonitor</product>
+      <serial>0x123456</serial>
+      <width>600</width>
+      <height>800</height>
+      <rate>60.000801086425781</rate>
+      <x>0</x>
+      <y>0</y>
+      <rotation>left</rotation>
+      <reflect_x>no</reflect_x>
+      <reflect_y>no</reflect_y>
+      <primary>yes</primary>
+      <presentation>no</presentation>
+      <underscanning>no</underscanning>
+    </output>
+  </configuration>
+</monitors>
