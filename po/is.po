@@ -5,12 +5,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-01-18 22:03+0000\n"
-"PO-Revision-Date: 2017-03-02 17:50+0000\n"
+"POT-Creation-Date: 2017-08-22 11:17+0000\n"
+"PO-Revision-Date: 2017-09-25 17:02+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
-"Language-Team: Icelandic <translation-team-is@lists.sourceforge.org>\n"
+"Language-Team: Icelandic <translation-team-is@lists.sourceforge.net>\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,8 +43,10 @@ msgid "Open the application menu"
 msgstr "Birta forritavalmynd"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
-msgid "GNOME Shell Extension Preferences"
-msgstr "Kjörstillingar GNOME Shell Extension skeljarviðbóta"
+#: js/extensionPrefs/main.js:152
+#| msgid "GNOME Shell Extensions"
+msgid "Shell Extensions"
+msgstr "Shell Extension skeljarviðbætur"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:5
 msgid "Configure GNOME Shell Extensions"
@@ -81,72 +83,83 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:26
+msgid "Disable user extensions"
+msgstr "Gera skeljaviðbætur notanda óvirkar"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+
+#: data/org.gnome.shell.gschema.xml.in:34
 msgid "Disables the validation of extension version compatibility"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:27
+#: data/org.gnome.shell.gschema.xml.in:35
 msgid ""
 "GNOME Shell will only load extensions that claim to support the current "
 "running version. Enabling this option will disable this check and try to "
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:35
+#: data/org.gnome.shell.gschema.xml.in:43
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:36
+#: data/org.gnome.shell.gschema.xml.in:44
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:43
+#: data/org.gnome.shell.gschema.xml.in:51
 msgid "App Picker View"
 msgstr "Forritavalssýn"
 
-#: data/org.gnome.shell.gschema.xml.in:44
+#: data/org.gnome.shell.gschema.xml.in:52
 msgid "Index of the currently selected view in the application picker."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:50
+#: data/org.gnome.shell.gschema.xml.in:58
 msgid "History for command (Alt-F2) dialog"
 msgstr "Ferill skipanalínuglugga (Alt+F2)"
 
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
-#: data/org.gnome.shell.gschema.xml.in:55
+#: data/org.gnome.shell.gschema.xml.in:63
 msgid "History for the looking glass dialog"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:59
-msgid "Always show the 'Log out' menu item in the user menu."
+#: data/org.gnome.shell.gschema.xml.in:67
+#| msgid "Always show the 'Log out' menu item in the user menu."
+msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Alltaf sýna \"Skrá út\" atriðið í notandavalmyndinni."
 
-#: data/org.gnome.shell.gschema.xml.in:60
+#: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
-"This key overrides the automatic hiding of the 'Log out' menu item in single-"
+"This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:67
+#: data/org.gnome.shell.gschema.xml.in:75
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:68
+#: data/org.gnome.shell.gschema.xml.in:76
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
-"'Remember Password' checkbox will be present. This key sets the default "
+"“Remember Password” checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:77
+#: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
 "Whether the default Bluetooth adapter had set up devices associated to it"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:78
+#: data/org.gnome.shell.gschema.xml.in:86
 msgid ""
 "The shell will only show a Bluetooth menu item if a Bluetooth adapter is "
 "powered, or if there were devices set up associated with the default "
@@ -154,67 +167,71 @@ msgid ""
 "devices associated to it."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:93
+#: data/org.gnome.shell.gschema.xml.in:101
 msgid "Keybinding to open the application menu"
 msgstr "Lyklasamsetning til að opna forritavalmyndina"
 
-#: data/org.gnome.shell.gschema.xml.in:94
+#: data/org.gnome.shell.gschema.xml.in:102
 msgid "Keybinding to open the application menu."
 msgstr "Lyklasamsetning til að opna forritavalmyndina."
 
-#: data/org.gnome.shell.gschema.xml.in:100
-msgid "Keybinding to open the \"Show Applications\" view"
+#: data/org.gnome.shell.gschema.xml.in:108
+#| msgid "Keybinding to open the \"Show Applications\" view"
+msgid "Keybinding to open the “Show Applications” view"
 msgstr "Lyklasamsetning til að opna \"Birta forrit\" sýnina"
 
-#: data/org.gnome.shell.gschema.xml.in:101
+#: data/org.gnome.shell.gschema.xml.in:109
+#| msgid ""
+#| "Keybinding to open the \"Show Applications\" view of the Activities "
+#| "Overview."
 msgid ""
-"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+"Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
 "Lyklasamsetning til að opna \"Birta forrit\" sýnina í virkniyfirlitinu."
 
-#: data/org.gnome.shell.gschema.xml.in:108
+#: data/org.gnome.shell.gschema.xml.in:116
 msgid "Keybinding to open the overview"
 msgstr "Lyklasamsetning til að opna yfirlitið"
 
-#: data/org.gnome.shell.gschema.xml.in:109
+#: data/org.gnome.shell.gschema.xml.in:117
 msgid "Keybinding to open the Activities Overview."
 msgstr "Lyklasamsetning til að opna virkniyfirlitið."
 
-#: data/org.gnome.shell.gschema.xml.in:115
+#: data/org.gnome.shell.gschema.xml.in:123
 msgid "Keybinding to toggle the visibility of the notification list"
 msgstr "Lyklasamsetning til að víxla sýnileika tilkynningalistans"
 
-#: data/org.gnome.shell.gschema.xml.in:116
+#: data/org.gnome.shell.gschema.xml.in:124
 msgid "Keybinding to toggle the visibility of the notification list."
 msgstr "Lyklasamsetning til að víxla sýnileika tilkynningalistans."
 
-#: data/org.gnome.shell.gschema.xml.in:122
+#: data/org.gnome.shell.gschema.xml.in:130
 msgid "Keybinding to focus the active notification"
 msgstr "Lyklasamsetning til að setja virkni á virka tilkynningu"
 
-#: data/org.gnome.shell.gschema.xml.in:123
+#: data/org.gnome.shell.gschema.xml.in:131
 msgid "Keybinding to focus the active notification."
 msgstr "Lyklasamsetning til að setja virkni á virka tilkynningu."
 
-#: data/org.gnome.shell.gschema.xml.in:129
+#: data/org.gnome.shell.gschema.xml.in:137
 msgid ""
 "Keybinding that pauses and resumes all running tweens, for debugging purposes"
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:138
+#: data/org.gnome.shell.gschema.xml.in:146
 msgid "Which keyboard to use"
 msgstr "Hvaða lyklaborð á að nota"
 
-#: data/org.gnome.shell.gschema.xml.in:139
+#: data/org.gnome.shell.gschema.xml.in:147
 msgid "The type of keyboard to use."
 msgstr "Tegund lyklaborðs sem á að nota."
 
-#: data/org.gnome.shell.gschema.xml.in:150
-#: data/org.gnome.shell.gschema.xml.in:177
+#: data/org.gnome.shell.gschema.xml.in:158
+#: data/org.gnome.shell.gschema.xml.in:185
 msgid "Limit switcher to current workspace."
 msgstr "Takmarka fletti við núverandi vinnusvæði."
 
-#: data/org.gnome.shell.gschema.xml.in:151
+#: data/org.gnome.shell.gschema.xml.in:159
 msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
@@ -222,18 +239,18 @@ msgstr ""
 "Ef þetta er satt, verða eingöngu birt forrit sem eru með glugga á núverandi "
 "vinnusvæði í flettinum.Annars eru öll forrit höfð með."
 
-#: data/org.gnome.shell.gschema.xml.in:168
+#: data/org.gnome.shell.gschema.xml.in:176
 msgid "The application icon mode."
 msgstr "Táknmyndinahamur forrits."
 
-#: data/org.gnome.shell.gschema.xml.in:169
+#: data/org.gnome.shell.gschema.xml.in:177
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
-"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-"only' (shows only the application icon) or 'both'."
+"are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
+"only” (shows only the application icon) or “both”."
 msgstr ""
 
-#: data/org.gnome.shell.gschema.xml.in:178
+#: data/org.gnome.shell.gschema.xml.in:186
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
@@ -241,34 +258,34 @@ msgstr ""
 "Ef þetta er satt, verða eingöngu birtir gluggar frá núverandi vinnusvæði í "
 "flettinum.Annars eru allir gluggar hafðir með."
 
-#: data/org.gnome.shell.gschema.xml.in:189
+#: data/org.gnome.shell.gschema.xml.in:197
 msgid "Attach modal dialog to the parent window"
 msgstr "Festa kvaðningarglugga við yfirglugga"
 
-#: data/org.gnome.shell.gschema.xml.in:190
-#: data/org.gnome.shell.gschema.xml.in:199
+#: data/org.gnome.shell.gschema.xml.in:198
 #: data/org.gnome.shell.gschema.xml.in:207
 #: data/org.gnome.shell.gschema.xml.in:215
 #: data/org.gnome.shell.gschema.xml.in:223
+#: data/org.gnome.shell.gschema.xml.in:231
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Þetta hefur forgang fram yfir lykilinn í kjörstillingum org.gnome.mutter "
 "þegar GNOME-skelin er keyrð."
 
-#: data/org.gnome.shell.gschema.xml.in:198
+#: data/org.gnome.shell.gschema.xml.in:206
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Virkja flísalögn við jaðra þegar gluggum er sleppt á skjájaðra"
 
-#: data/org.gnome.shell.gschema.xml.in:206
+#: data/org.gnome.shell.gschema.xml.in:214
 msgid "Workspaces are managed dynamically"
 msgstr "Vinnusvæðum er stýrt eftir þörfum"
 
-#: data/org.gnome.shell.gschema.xml.in:214
+#: data/org.gnome.shell.gschema.xml.in:222
 msgid "Workspaces only on primary monitor"
 msgstr "Vinnusvæði einungis á aðalskjá"
 
-#: data/org.gnome.shell.gschema.xml.in:222
+#: data/org.gnome.shell.gschema.xml.in:230
 msgid "Delay focus changes in mouse mode until the pointer stops moving"
 msgstr ""
 "Fresta breytingum á virkni í músarham þar til bendillinn hefur stöðvast"
@@ -279,54 +296,49 @@ msgstr "Innskráning á neti"
 
 #. Translators: Do NOT translate or transliterate this text (this is an icon file name)!
 #: data/org.gnome.Shell.PortalHelper.desktop.in.in:9
-#| msgid "Network error"
 msgid "network-workgroup"
 msgstr "network-workgroup"
 
-#: js/extensionPrefs/main.js:117
+#: js/extensionPrefs/main.js:120
 #, javascript-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Villa kom upp við ræsingu kjörstillingaglugga fyrir %s:"
 
-#: js/extensionPrefs/main.js:149
-msgid "GNOME Shell Extensions"
-msgstr "GNOME Shell Extension skeljarviðbætur"
-
-#: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:145 js/ui/components/polkitAgent.js:179
-#: js/ui/endSessionDialog.js:483 js/ui/extensionDownloader.js:195
-#: js/ui/shellMountOperation.js:399 js/ui/status/network.js:926
+#: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
+#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:936
 msgid "Cancel"
 msgstr "Hætta við"
 
-#: js/gdm/authPrompt.js:169 js/gdm/authPrompt.js:216 js/gdm/authPrompt.js:448
+#: js/gdm/authPrompt.js:171 js/gdm/authPrompt.js:218 js/gdm/authPrompt.js:450
 msgid "Next"
 msgstr "Næsta"
 
-#: js/gdm/authPrompt.js:212 js/ui/shellMountOperation.js:403
+#: js/gdm/authPrompt.js:214 js/ui/shellMountOperation.js:348
 #: js/ui/unlockDialog.js:59
 msgid "Unlock"
 msgstr "Aflæsa"
 
-#: js/gdm/authPrompt.js:214
+#: js/gdm/authPrompt.js:216
 msgctxt "button"
 msgid "Sign In"
 msgstr "Skrá inn"
 
-#: js/gdm/loginDialog.js:285
+#: js/gdm/loginDialog.js:308
 msgid "Choose Session"
 msgstr "Veldu setu"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:435
+#: js/gdm/loginDialog.js:458
 msgid "Not listed?"
 msgstr "Ekki á listanum?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:859
+#: js/gdm/loginDialog.js:888
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(t.d., notandi eða %s)"
@@ -334,16 +346,16 @@ msgstr "(t.d., notandi eða %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:864 js/ui/components/networkAgent.js:271
-#: js/ui/components/networkAgent.js:289
+#: js/gdm/loginDialog.js:893 js/ui/components/networkAgent.js:243
+#: js/ui/components/networkAgent.js:261
 msgid "Username: "
 msgstr "Notandanafn:"
 
-#: js/gdm/loginDialog.js:1201
+#: js/gdm/loginDialog.js:1236
 msgid "Login Window"
 msgstr "Innskráningargluggi"
 
-#: js/gdm/util.js:341
+#: js/gdm/util.js:346
 msgid "Authentication error"
 msgstr "Auðkenningarvilla"
 
@@ -352,40 +364,165 @@ msgstr "Auðkenningarvilla"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:473
+#: js/gdm/util.js:478
 msgid "(or swipe finger)"
 msgstr "(eða strjúka fingri)"
 
-#: js/misc/util.js:119
+#. Translators: The name of the power-off action in search
+#: js/misc/systemActions.js:99
+#| msgid "Power Off"
+msgctxt "search-result"
+msgid "Power off"
+msgstr "Slökkva"
+
+#. Translators: A list of keywords that match the power-off action, separated by semicolons
+#: js/misc/systemActions.js:102
+msgid "power off;shutdown"
+msgstr "slökkva;hætta"
+
+#. Translators: The name of the lock screen action in search
+#: js/misc/systemActions.js:106
+msgctxt "search-result"
+msgid "Lock screen"
+msgstr "Læsa skjá"
+
+#. Translators: A list of keywords that match the lock screen action, separated by semicolons
+#: js/misc/systemActions.js:109
+msgid "lock screen"
+msgstr "læsa skjá"
+
+#. Translators: The name of the logout action in search
+#: js/misc/systemActions.js:113
+#| msgid "Log Out"
+msgctxt "search-result"
+msgid "Log out"
+msgstr "Skrá út"
+
+#. Translators: A list of keywords that match the logout action, separated by semicolons
+#: js/misc/systemActions.js:116
+msgid "logout;sign off"
+msgstr "Útskráning;skrá út"
+
+#. Translators: The name of the suspend action in search
+#: js/misc/systemActions.js:120
+#| msgid "Suspend"
+msgctxt "search-result"
+msgid "Suspend"
+msgstr "Setja í bið"
+
+#. Translators: A list of keywords that match the suspend action, separated by semicolons
+#: js/misc/systemActions.js:123
+#| msgid "Suspend"
+msgid "suspend;sleep"
+msgstr "hvíla;svæfa"
+
+#. Translators: The name of the switch user action in search
+#: js/misc/systemActions.js:127
+#| msgid "Switch User"
+msgctxt "search-result"
+msgid "Switch user"
+msgstr "Skipta um notanda"
+
+#. Translators: A list of keywords that match the switch user action, separated by semicolons
+#: js/misc/systemActions.js:130
+#| msgid "Switch User"
+msgid "switch user"
+msgstr "skipta um notanda"
+
+#. Translators: The name of the lock orientation action in search
+#: js/misc/systemActions.js:134
+#| msgid "Orientation Lock"
+msgctxt "search-result"
+msgid "Lock orientation"
+msgstr "Stefnulás"
+
+#. Translators: A list of keywords that match the lock orientation action, separated by semicolons
+#: js/misc/systemActions.js:137
+#| msgid "Orientation Lock"
+msgid "lock orientation"
+msgstr "stefnulás"
+
+#: js/misc/util.js:122
 msgid "Command not found"
 msgstr "Skipun fannst ekki"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: js/misc/util.js:152
+#: js/misc/util.js:155
 msgid "Could not parse command:"
 msgstr "Gat ekki þáttað skipun:"
 
-#: js/misc/util.js:160
+#: js/misc/util.js:163
 #, javascript-format
 msgid "Execution of “%s” failed:"
 msgstr "Keyrsla '“%s' mistókst:"
 
+#: js/misc/util.js:180
+msgid "Just now"
+msgstr "Í þessum töluðu orðum"
+
+#: js/misc/util.js:182
+#, javascript-format
+msgid "%d minute ago"
+msgid_plural "%d minutes ago"
+msgstr[0] "fyrir %d mínútu síðan"
+msgstr[1] "fyrir %d mínútu síðan"
+
+#: js/misc/util.js:185
+#, javascript-format
+msgid "%d hour ago"
+msgid_plural "%d hours ago"
+msgstr[0] "fyrir %d klukkustund síðan"
+msgstr[1] "fyrir %d klukkustundum síðan"
+
+#: js/misc/util.js:188
+#| msgid "Yesterday, %H∶%M"
+msgid "Yesterday"
+msgstr "Í gær"
+
+#: js/misc/util.js:190
+#, javascript-format
+msgid "%d day ago"
+msgid_plural "%d days ago"
+msgstr[0] "fyrir %d degi"
+msgstr[1] "fyrir %d dögum síðan"
+
+#: js/misc/util.js:193
+#, javascript-format
+msgid "%d week ago"
+msgid_plural "%d weeks ago"
+msgstr[0] "fyrir %d viku"
+msgstr[1] "fyrir %d vikum síðan"
+
+#: js/misc/util.js:196
+#, javascript-format
+msgid "%d month ago"
+msgid_plural "%d months ago"
+msgstr[0] "fyrir %d mánuði"
+msgstr[1] "fyrir %d mánuðum"
+
+#: js/misc/util.js:198
+#, javascript-format
+msgid "%d year ago"
+msgid_plural "%d years ago"
+msgstr[0] "fyrir %d ári"
+msgstr[1] "fyrir %d árum"
+
 #. Translators: Time in 24h format
-#: js/misc/util.js:191
+#: js/misc/util.js:228
 msgid "%H∶%M"
 msgstr "%H∶%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 24h format. i.e. "Yesterday, 14:30"
-#: js/misc/util.js:197
+#: js/misc/util.js:234
 #, no-c-format
 msgid "Yesterday, %H∶%M"
 msgstr "Í gær klukkan H:∶%M"
 
 #. Translators: this is the week day name followed by a time
 #. string in 24h format. i.e. "Monday, 14:30"
-#: js/misc/util.js:203
+#: js/misc/util.js:240
 #, no-c-format
 msgid "%A, %H∶%M"
 msgstr "%A, klukkan %H∶%M"
@@ -393,7 +530,7 @@ msgstr "%A, klukkan %H∶%M"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
-#: js/misc/util.js:209
+#: js/misc/util.js:246
 #, no-c-format
 msgid "%B %d, %H∶%M"
 msgstr "%d. %B, kl. %H∶%M"
@@ -401,26 +538,26 @@ msgstr "%d. %B, kl. %H∶%M"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
-#: js/misc/util.js:215
+#: js/misc/util.js:252
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
 msgstr "%d. %B %Y, kl. %H∶%M"
 
 #. Translators: Time in 12h format
-#: js/misc/util.js:220
+#: js/misc/util.js:257
 msgid "%l∶%M %p"
 msgstr "%l:%M"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
-#: js/misc/util.js:226
+#: js/misc/util.js:263
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
 msgstr "í gær, kl. %I:%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
-#: js/misc/util.js:232
+#: js/misc/util.js:269
 #, no-c-format
 msgid "%A, %l∶%M %p"
 msgstr "%A, %l∶%M %p"
@@ -428,7 +565,7 @@ msgstr "%A, %l∶%M %p"
 #. Translators: this is the month name and day number
 #. followed by a time string in 12h format.
 #. i.e. "May 25, 2:30 pm"
-#: js/misc/util.js:238
+#: js/misc/util.js:275
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
 msgstr "%d. %B, kl. %H∶%M %p"
@@ -436,61 +573,71 @@ msgstr "%d. %B, kl. %H∶%M %p"
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 12h format.
 #. i.e. "May 25 2012, 2:30 pm"
-#: js/misc/util.js:244
+#: js/misc/util.js:281
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
 msgstr "%d. %B %Y, kl. %H∶%M %p"
 
-#. TRANSLATORS: this is the title of the wifi captive portal login
-#. * window, until we know the title of the actual login page
-#: js/portalHelper/main.js:85
-msgid "Web Authentication Redirect"
-msgstr "Endurbeining á vefauðkenningu"
+#. TRANSLATORS: this is the title of the wifi captive portal login window
+#: js/portalHelper/main.js:66
+#| msgid "Network Login"
+msgid "Hotspot Login"
+msgstr "Innskráning á tengipunkt (hotspot)"
+
+#: js/portalHelper/main.js:112
+msgid ""
+"Your connection to this hotspot login is not secure. Passwords or other "
+"information you enter on this page can be viewed by people nearby."
+msgstr ""
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
-#: js/ui/accessDialog.js:62 js/ui/status/location.js:426
+#: js/ui/accessDialog.js:63 js/ui/status/location.js:395
 msgid "Deny Access"
 msgstr "Hafna aðgangi"
 
-#: js/ui/accessDialog.js:63 js/ui/status/location.js:429
+#: js/ui/accessDialog.js:64 js/ui/status/location.js:398
 msgid "Grant Access"
 msgstr "Veita aðgang"
 
-#: js/ui/appDisplay.js:794
+#: js/ui/appDisplay.js:809
 msgid "Frequently used applications will appear here"
 msgstr "Oftast notuð forrit munu birtast hér"
 
-#: js/ui/appDisplay.js:914
+#: js/ui/appDisplay.js:930
 msgid "Frequent"
 msgstr "Algengt"
 
-#: js/ui/appDisplay.js:921
+#: js/ui/appDisplay.js:937
 msgid "All"
 msgstr "Allt"
 
-#: js/ui/appDisplay.js:1853
+#: js/ui/appDisplay.js:1915
 msgid "New Window"
 msgstr "Nýr gluggi"
 
-#: js/ui/appDisplay.js:1881 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1929
+msgid "Launch using Dedicated Graphics Card"
+msgstr ""
+
+#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Fjarlægja úr Eftirlæti"
 
-#: js/ui/appDisplay.js:1887
+#: js/ui/appDisplay.js:1962
 msgid "Add to Favorites"
 msgstr "Bæta í Eftirlæti"
 
-#: js/ui/appDisplay.js:1897
+#: js/ui/appDisplay.js:1972
 msgid "Show Details"
 msgstr "Sýna ítarlegri upplýsingar"
 
-#: js/ui/appFavorites.js:135
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s var bætt við sem eftirlætisforrit."
 
-#: js/ui/appFavorites.js:169
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s var fjarlægt úr eftirlætisforritum."
@@ -511,7 +658,7 @@ msgstr "Heyrnartól"
 msgid "Headset"
 msgstr "Heyrnartól með hljóðnema"
 
-#: js/ui/audioDeviceSelection.js:82 js/ui/status/volume.js:213
+#: js/ui/audioDeviceSelection.js:82 js/ui/status/volume.js:221
 msgid "Microphone"
 msgstr "Hljóðnemi"
 
@@ -519,11 +666,11 @@ msgstr "Hljóðnemi"
 msgid "Change Background…"
 msgstr "Breyta _bakgrunni skjáborðs…"
 
-#: js/ui/backgroundMenu.js:21
+#: js/ui/backgroundMenu.js:21 js/ui/status/nightLight.js:51
 msgid "Display Settings"
 msgstr "Birtingarstillingar"
 
-#: js/ui/backgroundMenu.js:22 js/ui/status/system.js:374
+#: js/ui/backgroundMenu.js:22 js/ui/status/system.js:265
 msgid "Settings"
 msgstr "Stillingar"
 
@@ -600,36 +747,55 @@ msgstr "Vika %V"
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:721
+#: js/ui/calendar.js:729
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Allan daginn"
 
-#: js/ui/calendar.js:836
-msgid "Events"
-msgstr "Atburðir"
-
-#: js/ui/calendar.js:845
+#: js/ui/calendar.js:862
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: js/ui/calendar.js:849
+#: js/ui/calendar.js:866
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: js/ui/calendar.js:931
-msgid "Notifications"
-msgstr "Tilkynningar"
-
-#: js/ui/calendar.js:1082
+#: js/ui/calendar.js:1086
 msgid "No Notifications"
 msgstr "Engar tilkynningar"
 
-#: js/ui/calendar.js:1085
+#: js/ui/calendar.js:1089
 msgid "No Events"
 msgstr "Engir atburðir"
+
+#: js/ui/calendar.js:1117
+msgid "Clear All"
+msgstr "Hreinsa allt"
+
+#. Translators: %s is an application name
+#: js/ui/closeDialog.js:44
+#, javascript-format
+#| msgid "“%s” is ready"
+msgid "“%s” is not responding."
+msgstr "“%s” svarar ekki."
+
+#: js/ui/closeDialog.js:45
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Þú getur annað hvort hinkrað augnablik og leyft forritinu að halda áfram eða "
+"þú getur þvingað forritið til að slökkva algjörlega á sér."
+
+#: js/ui/closeDialog.js:61
+msgid "Force Quit"
+msgstr "Þvinga til að hætta"
+
+#: js/ui/closeDialog.js:64
+msgid "Wait"
+msgstr "Bíða"
 
 #: js/ui/components/automountManager.js:91
 msgid "External drive connected"
@@ -639,53 +805,53 @@ msgstr "Utanáliggjandi drif tengt"
 msgid "External drive disconnected"
 msgstr "Utanáliggjandi drif aftengt"
 
-#: js/ui/components/autorunManager.js:355
+#: js/ui/components/autorunManager.js:354
 #, javascript-format
 msgid "Open with %s"
 msgstr "Opna með %s"
 
-#: js/ui/components/keyring.js:120 js/ui/components/polkitAgent.js:315
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
 msgid "Password:"
 msgstr "Lykilorð:"
 
-#: js/ui/components/keyring.js:153
+#: js/ui/components/keyring.js:140
 msgid "Type again:"
 msgstr "Skrifaðu aftur:"
 
-#: js/ui/components/networkAgent.js:140 js/ui/status/network.js:270
-#: js/ui/status/network.js:353 js/ui/status/network.js:929
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:261
+#: js/ui/status/network.js:355 js/ui/status/network.js:939
 msgid "Connect"
 msgstr "Tengjast"
 
 #. Cisco LEAP
-#: js/ui/components/networkAgent.js:233 js/ui/components/networkAgent.js:245
-#: js/ui/components/networkAgent.js:273 js/ui/components/networkAgent.js:293
-#: js/ui/components/networkAgent.js:303
+#: js/ui/components/networkAgent.js:205 js/ui/components/networkAgent.js:217
+#: js/ui/components/networkAgent.js:245 js/ui/components/networkAgent.js:265
+#: js/ui/components/networkAgent.js:275
 msgid "Password: "
 msgstr "Lykilorð:"
 
 #. static WEP
-#: js/ui/components/networkAgent.js:238
+#: js/ui/components/networkAgent.js:210
 msgid "Key: "
 msgstr "Lykill:"
 
-#: js/ui/components/networkAgent.js:277
+#: js/ui/components/networkAgent.js:249
 msgid "Identity: "
 msgstr "Auðkenni:"
 
-#: js/ui/components/networkAgent.js:279
+#: js/ui/components/networkAgent.js:251
 msgid "Private key password: "
 msgstr "Lykilorð einkalykils:"
 
-#: js/ui/components/networkAgent.js:291
+#: js/ui/components/networkAgent.js:263
 msgid "Service: "
 msgstr "Þjónusta: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:666
+#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:638
 msgid "Authentication required by wireless network"
 msgstr "Auðkenningar er krafist af þráðlausu neti"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:667
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:639
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -694,54 +860,54 @@ msgstr ""
 "Lykilorða eða dulritunarlykla er krafist til að fá aðgang að þráðlausa "
 "netinu “%s”."
 
-#: js/ui/components/networkAgent.js:325 js/ui/components/networkAgent.js:670
+#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:642
 msgid "Wired 802.1X authentication"
 msgstr "Kapaltengd 802.1X auðkenning"
 
-#: js/ui/components/networkAgent.js:327
+#: js/ui/components/networkAgent.js:299
 msgid "Network name: "
 msgstr "Heiti netkerfis:"
 
-#: js/ui/components/networkAgent.js:332 js/ui/components/networkAgent.js:674
+#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:646
 msgid "DSL authentication"
 msgstr "DSL auðkenning"
 
-#: js/ui/components/networkAgent.js:339 js/ui/components/networkAgent.js:680
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:652
 msgid "PIN code required"
 msgstr "Krafist er PIN-númers"
 
-#: js/ui/components/networkAgent.js:340 js/ui/components/networkAgent.js:681
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:653
 msgid "PIN code is needed for the mobile broadband device"
 msgstr ""
 "Þú þarft að slá inn PIN númer til að þess að tengjast við símaþjónustuna"
 
-#: js/ui/components/networkAgent.js:341
+#: js/ui/components/networkAgent.js:313
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:348 js/ui/components/networkAgent.js:687
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:659
 msgid "Mobile broadband network password"
 msgstr "Lykilorð fyrir þráðlaust breiðbandsnet"
 
-#: js/ui/components/networkAgent.js:349 js/ui/components/networkAgent.js:671
-#: js/ui/components/networkAgent.js:675 js/ui/components/networkAgent.js:688
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:643
+#: js/ui/components/networkAgent.js:647 js/ui/components/networkAgent.js:660
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Það er nauðsynlegt að gefa upp lykilorð til að tengjast við “%s”."
 
-#: js/ui/components/networkAgent.js:655 js/ui/status/network.js:1672
+#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
 msgid "Network Manager"
 msgstr "Netstjórnun"
 
-#: js/ui/components/polkitAgent.js:60
+#: js/ui/components/polkitAgent.js:43
 msgid "Authentication Required"
 msgstr "Auðkenningar krafist"
 
-#: js/ui/components/polkitAgent.js:102
+#: js/ui/components/polkitAgent.js:71
 msgid "Administrator"
 msgstr "Kerfisstjóri"
 
-#: js/ui/components/polkitAgent.js:182
+#: js/ui/components/polkitAgent.js:151
 msgid "Authenticate"
 msgstr "Auðkenna"
 
@@ -749,18 +915,19 @@ msgstr "Auðkenna"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:301 js/ui/shellMountOperation.js:383
-msgid "Sorry, that didn't work. Please try again."
+#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:328
+#| msgid "Sorry, that didn't work. Please try again."
+msgid "Sorry, that didn’t work. Please try again."
 msgstr "Æ, þetta virkaði ekki. Endilega reyndu aftur."
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: js/ui/components/telepathyClient.js:765
+#: js/ui/components/telepathyClient.js:799
 #, javascript-format
 msgid "%s is now known as %s"
 msgstr "%s er nú þekkt(ur) sem %s"
 
-#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:155
+#: js/ui/ctrlAltTab.js:29 js/ui/viewSelector.js:186
 msgid "Windows"
 msgstr "Gluggar"
 
@@ -777,7 +944,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:73
+#: js/ui/dateMenu.js:75
 msgid "%B %e %Y"
 msgstr "%e. %B %Y"
 
@@ -785,17 +952,72 @@ msgstr "%e. %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:80
+#: js/ui/dateMenu.js:82
 msgid "%A %B %e %Y"
 msgstr "%A %e. %B, %Y"
 
-#: js/ui/dateMenu.js:160
+#: js/ui/dateMenu.js:144
 msgid "Add world clocks…"
 msgstr "Bæta við heimsklukkum…"
 
-#: js/ui/dateMenu.js:161
+#: js/ui/dateMenu.js:145
 msgid "World Clocks"
 msgstr "Heimsklukkur"
+
+#: js/ui/dateMenu.js:224
+msgid "Weather"
+msgstr "Veður"
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:286
+#, javascript-format
+msgid "%s all day."
+msgstr "%s allan daginn."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:292
+#, javascript-format
+msgid "%s, then %s later."
+msgstr "%s, síðan %s."
+
+#. Translators: %s is a weather condition like "Clear sky"; see
+#. libgweather for the possible condition strings. If at all
+#. possible, the sentence should match the grammatical case etc. of
+#. the inserted conditions.
+#: js/ui/dateMenu.js:298
+#, javascript-format
+msgid "%s, then %s, followed by %s later."
+msgstr "%s, síðan %s, en snýst svo upp í %s síðar."
+
+#: js/ui/dateMenu.js:309
+#| msgid "Select a network"
+msgid "Select a location…"
+msgstr "Veldu staðsetningu…"
+
+#: js/ui/dateMenu.js:312
+#| msgid "Searching…"
+msgid "Loading…"
+msgstr "Hleð inn..."
+
+#. Translators: %s is a temperature with unit, e.g. "23℃"
+#: js/ui/dateMenu.js:318
+#, javascript-format
+msgid "Feels like %s."
+msgstr "Með vindkælingu %s."
+
+#: js/ui/dateMenu.js:321
+msgid "Go online for weather information"
+msgstr "Fara á netið eftir veðurupplýsingum"
+
+#: js/ui/dateMenu.js:323
+msgid "Weather information is currently unavailable"
+msgstr "Veðurupplýsingar eru ekki tiltækar í augnablikinu"
 
 #: js/ui/endSessionDialog.js:64
 #, javascript-format
@@ -902,8 +1124,6 @@ msgid "Power off after updates are installed"
 msgstr "Slökkva á vélinni eftir að uppfærslur hafa verið settar inn"
 
 #: js/ui/endSessionDialog.js:137
-#| msgctxt "title"
-#| msgid "Restart & Install Updates"
 msgctxt "title"
 msgid "Restart & Install Upgrade"
 msgstr "Endurræsa og setja inn uppfærslur"
@@ -933,111 +1153,120 @@ msgid "Other users are logged in."
 msgstr "Aðrir notendur eru skráðir inn."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
-#: js/ui/endSessionDialog.js:671
+#: js/ui/endSessionDialog.js:670
 #, javascript-format
 msgid "%s (remote)"
 msgstr "%s (fjartengt)"
 
 #. Translators: Console here refers to a tty like a VT console
-#: js/ui/endSessionDialog.js:674
+#: js/ui/endSessionDialog.js:673
 #, javascript-format
 msgid "%s (console)"
 msgstr "%s (villuskjár)"
 
-#: js/ui/extensionDownloader.js:199
+#: js/ui/extensionDownloader.js:201
 msgid "Install"
 msgstr "Setja inn"
 
-#: js/ui/extensionDownloader.js:204
+#: js/ui/extensionDownloader.js:206
 #, javascript-format
 msgid "Download and install “%s” from extensions.gnome.org?"
 msgstr "Sækja og setja upp '%s' frá extensions.gnome.org?"
 
-#: js/ui/keyboard.js:742 js/ui/status/keyboard.js:782
+#. Translators: %s is an application name like "Settings"
+#: js/ui/inhibitShortcutsDialog.js:59
+#, javascript-format
+msgid "%s wants to inhibit shortcuts"
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:60
+msgid "Application wants to inhibit shortcuts"
+msgstr ""
+
+#. Translators: %s is a keyboard shortcut like "Super+x"
+#: js/ui/inhibitShortcutsDialog.js:69
+#, javascript-format
+msgid "You can restore shortcuts by pressing %s."
+msgstr ""
+
+#: js/ui/inhibitShortcutsDialog.js:74
+msgid "Deny"
+msgstr "Hafna"
+
+#: js/ui/inhibitShortcutsDialog.js:80
+msgid "Allow"
+msgstr "Leyfa"
+
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
 msgid "Keyboard"
 msgstr "Lyklaborð"
 
-#. translators: 'Hide' is a verb
-#: js/ui/legacyTray.js:65
-msgid "Hide tray"
-msgstr "Fela kerfisbakka"
-
-#: js/ui/legacyTray.js:106
-msgid "Status Icons"
-msgstr "Táknmyndir fyrir stöðu"
-
-#: js/ui/lookingGlass.js:643
+#: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
 msgstr "Engar viðbætur uppsettar"
 
 #. Translators: argument is an extension UUID.
-#: js/ui/lookingGlass.js:697
+#: js/ui/lookingGlass.js:696
 #, javascript-format
 msgid "%s has not emitted any errors."
 msgstr "%s gaf ekki frá sér neinar villur."
 
-#: js/ui/lookingGlass.js:703
+#: js/ui/lookingGlass.js:702
 msgid "Hide Errors"
 msgstr "Fela villur"
 
-#: js/ui/lookingGlass.js:707 js/ui/lookingGlass.js:767
+#: js/ui/lookingGlass.js:706 js/ui/lookingGlass.js:766
 msgid "Show Errors"
 msgstr "Birta villur"
 
-#: js/ui/lookingGlass.js:716
+#: js/ui/lookingGlass.js:715
 msgid "Enabled"
 msgstr "Virkt"
 
 #. translators:
 #. * The device has been disabled
-#: js/ui/lookingGlass.js:719 src/gvc/gvc-mixer-control.c:1866
+#: js/ui/lookingGlass.js:718 subprojects/gvc/gvc-mixer-control.c:1866
 msgid "Disabled"
 msgstr "Óvirkt"
 
-#: js/ui/lookingGlass.js:721
+#: js/ui/lookingGlass.js:720
 msgid "Error"
 msgstr "Villa"
 
-#: js/ui/lookingGlass.js:723
+#: js/ui/lookingGlass.js:722
 msgid "Out of date"
 msgstr "Útrunnið"
 
-#: js/ui/lookingGlass.js:725
+#: js/ui/lookingGlass.js:724
 msgid "Downloading"
 msgstr "Hala inn"
 
-#: js/ui/lookingGlass.js:749
+#: js/ui/lookingGlass.js:748
 msgid "View Source"
 msgstr "Skoða frumtexta"
 
-#: js/ui/lookingGlass.js:758
+#: js/ui/lookingGlass.js:757
 msgid "Web Page"
 msgstr "Vefsíða"
 
-#: js/ui/messageList.js:543
-msgid "Clear section"
-msgstr "Hreinsa kafla"
-
-#: js/ui/messageTray.js:1486
+#: js/ui/messageTray.js:1493
 msgid "System Information"
 msgstr "Kerfisupplýsingar"
 
-#: js/ui/mpris.js:194
+#: js/ui/mpris.js:211
 msgid "Unknown artist"
 msgstr "Óþekktur flytjandi"
 
-#: js/ui/mpris.js:195
+#: js/ui/mpris.js:212
 msgid "Unknown title"
 msgstr "Óþekktur titill"
-
-#: js/ui/mpris.js:217
-msgid "Media"
-msgstr "Gagnamiðill"
 
 #: js/ui/overview.js:84
 msgid "Undo"
 msgstr "Afturkalla"
 
+#. Translators: This is the main view to select
+#. activities. See also note for "Activities" string.
 #: js/ui/overview.js:113
 msgid "Overview"
 msgstr "Yfirlit"
@@ -1049,6 +1278,52 @@ msgstr "Yfirlit"
 #: js/ui/overview.js:240
 msgid "Type to search…"
 msgstr "Skrifaðu hér til að leita..."
+
+#: js/ui/padOsd.js:103
+msgid "New shortcut…"
+msgstr "Nýr flýtilykill..."
+
+#: js/ui/padOsd.js:152
+#| msgid "Applications"
+msgid "Application defined"
+msgstr "Forrit skilgreint"
+
+#: js/ui/padOsd.js:153
+msgid "Show on-screen help"
+msgstr "Birta upplýsingar á skjá"
+
+#: js/ui/padOsd.js:154
+#| msgid "Switch User"
+msgid "Switch monitor"
+msgstr "Skipta um skjá"
+
+#: js/ui/padOsd.js:155
+msgid "Assign keystroke"
+msgstr "Úthluta lyklaslætti"
+
+#: js/ui/padOsd.js:220
+msgid "Done"
+msgstr "Lokið"
+
+#: js/ui/padOsd.js:734
+msgid "Edit…"
+msgstr "Breyta…"
+
+#: js/ui/padOsd.js:774 js/ui/padOsd.js:879
+msgid "None"
+msgstr "Ekkert"
+
+#: js/ui/padOsd.js:833
+msgid "Press a button to configure"
+msgstr "Ýttu á hnapp til að stilla"
+
+#: js/ui/padOsd.js:834
+msgid "Press Esc to exit"
+msgstr "Ýttu á ESC til að hætta"
+
+#: js/ui/padOsd.js:837
+msgid "Press any key to exit"
+msgstr "Ýttu á einhvern lykil til að hætta"
 
 #: js/ui/panel.js:358
 msgid "Quit"
@@ -1065,7 +1340,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Kerfið"
 
-#: js/ui/panel.js:807
+#: js/ui/panel.js:812
 msgid "Top Bar"
 msgstr "Toppstika"
 
@@ -1074,7 +1349,7 @@ msgstr "Toppstika"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: js/ui/popupMenu.js:289
+#: js/ui/popupMenu.js:291
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1082,12 +1357,11 @@ msgstr "toggle-switch-intl"
 msgid "Enter a Command"
 msgstr "Settu inn skipun"
 
-#: js/ui/runDialog.js:111 js/ui/windowMenu.js:162
+#: js/ui/runDialog.js:111 js/ui/windowMenu.js:160
 msgid "Close"
 msgstr "Loka"
 
 #: js/ui/runDialog.js:277
-#| msgid "Encryption is not available"
 msgid "Restart is not available on Wayland"
 msgstr "Endurræsing er ekki tiltæk á Wayland"
 
@@ -1097,29 +1371,29 @@ msgstr "Endurræsi…"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: js/ui/screenShield.js:85
+#: js/ui/screenShield.js:88
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: js/ui/screenShield.js:144
+#: js/ui/screenShield.js:147
 #, javascript-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nýtt skilaboð"
 msgstr[1] "%d ný skilaboð"
 
-#: js/ui/screenShield.js:146
+#: js/ui/screenShield.js:149
 #, javascript-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d ný skilaboð"
 msgstr[1] "%d ný skilaboð"
 
-#: js/ui/screenShield.js:449 js/ui/status/system.js:382
+#: js/ui/screenShield.js:452 js/ui/status/system.js:284
 msgid "Lock"
 msgstr "Læsa"
 
-#: js/ui/screenShield.js:704
+#: js/ui/screenShield.js:715
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME þarf að læsa skjánum"
 
@@ -1130,21 +1404,28 @@ msgstr "GNOME þarf að læsa skjánum"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:825 js/ui/screenShield.js:1292
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
 msgid "Unable to lock"
 msgstr "Gat ekki læst skjá"
 
-#: js/ui/screenShield.js:826 js/ui/screenShield.js:1293
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
 msgid "Lock was blocked by an application"
 msgstr "Læsing var hindruð af öðru forriti"
 
-#: js/ui/search.js:617
+#: js/ui/search.js:651
 msgid "Searching…"
 msgstr "Leita..."
 
-#: js/ui/search.js:619
+#: js/ui/search.js:653
 msgid "No results."
 msgstr "Engar niðurstöður."
+
+#: js/ui/search.js:777
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d til viðbótar"
+msgstr[1] "%d til viðbótar"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
@@ -1162,11 +1443,11 @@ msgstr "Sýna texta"
 msgid "Hide Text"
 msgstr "Fela texta"
 
-#: js/ui/shellMountOperation.js:370
+#: js/ui/shellMountOperation.js:315
 msgid "Password"
 msgstr "Lykilorð"
 
-#: js/ui/shellMountOperation.js:391
+#: js/ui/shellMountOperation.js:336
 msgid "Remember Password"
 msgstr "Muna lykilorð"
 
@@ -1218,7 +1499,7 @@ msgstr "Stór texti"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:625
+#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Stillingar Bluetooth"
 
@@ -1235,17 +1516,17 @@ msgid "Off"
 msgstr "Slökkt"
 
 #: js/ui/status/bluetooth.js:140
-msgid "Not In Use"
-msgstr "Ekki í notkun"
+msgid "On"
+msgstr "Á"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1289
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
 msgid "Turn On"
 msgstr "Kveikja á"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:179
-#: js/ui/status/network.js:354 js/ui/status/network.js:1289
-#: js/ui/status/network.js:1404 js/ui/status/rfkill.js:90
-#: js/ui/status/rfkill.js:117
+#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
+#: js/ui/status/network.js:356 js/ui/status/network.js:1299
+#: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
+#: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
 msgid "Turn Off"
 msgstr "Slökkva"
 
@@ -1257,54 +1538,54 @@ msgstr "Birtustig"
 msgid "Show Keyboard Layout"
 msgstr "Birta lyklaborðsuppsetningu"
 
-#: js/ui/status/location.js:107 js/ui/status/location.js:215
+#: js/ui/status/location.js:89 js/ui/status/location.js:197
 msgid "Location Enabled"
 msgstr "Staðsetning virk"
 
-#: js/ui/status/location.js:108 js/ui/status/location.js:216
+#: js/ui/status/location.js:90 js/ui/status/location.js:198
 msgid "Disable"
 msgstr "Gera óvirkt"
 
-#: js/ui/status/location.js:109
+#: js/ui/status/location.js:91
 msgid "Privacy Settings"
 msgstr "Stillingar á friðhelgi"
 
-#: js/ui/status/location.js:214
+#: js/ui/status/location.js:196
 msgid "Location In Use"
 msgstr "Staðsetning í notkun"
 
-#: js/ui/status/location.js:218
+#: js/ui/status/location.js:200
 msgid "Location Disabled"
 msgstr "Staðsetning óvirk"
 
-#: js/ui/status/location.js:219
+#: js/ui/status/location.js:201
 msgid "Enable"
 msgstr "Virkja"
 
 #. Translators: %s is an application name
-#: js/ui/status/location.js:435
+#: js/ui/status/location.js:388
 #, javascript-format
 msgid "Give %s access to your location?"
 msgstr "Á að gefa %s aðgang að staðsetningunni þinni?"
 
-#: js/ui/status/location.js:437
+#: js/ui/status/location.js:389
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr ""
 "Hægt er að breyta aðgangi að staðsetningu hvenær sem er með því að fara í "
 "stillingaforritið fyrir gagnaleynd."
 
-#: js/ui/status/network.js:102
+#: js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<óþekkt>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:452 js/ui/status/network.js:1318
+#: js/ui/status/network.js:454 js/ui/status/network.js:1328
 #, javascript-format
 msgid "%s Off"
 msgstr "%s slökkt"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:455
+#: js/ui/status/network.js:457
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s tengt"
@@ -1312,170 +1593,211 @@ msgstr "%s tengt"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:460
+#: js/ui/status/network.js:462
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s óstýrt"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:463
+#: js/ui/status/network.js:465
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s aftengist"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:470 js/ui/status/network.js:1310
+#: js/ui/status/network.js:472 js/ui/status/network.js:1320
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s tengist"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:473
+#: js/ui/status/network.js:475
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s krefst auðkenningar"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:481
+#: js/ui/status/network.js:483
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Grunnhugbúnað (firmware) vantar fyrir %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:485
+#: js/ui/status/network.js:487
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s er ekki tiltækt"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:488
+#: js/ui/status/network.js:490
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s tenging mistókst"
 
-#: js/ui/status/network.js:504
+#: js/ui/status/network.js:506
 msgid "Wired Settings"
 msgstr "Stillingar nets um kapal"
 
-#: js/ui/status/network.js:546
+#: js/ui/status/network.js:548
 msgid "Mobile Broadband Settings"
 msgstr "Stillingar ferðabreiðbands"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:589 js/ui/status/network.js:1315
+#: js/ui/status/network.js:591 js/ui/status/network.js:1325
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s vélbúnaður óvirkur"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:593
+#: js/ui/status/network.js:595
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s óvirkt"
 
-#: js/ui/status/network.js:633
+#: js/ui/status/network.js:635
 msgid "Connect to Internet"
 msgstr "Tengjast internetinu"
 
-#: js/ui/status/network.js:823
+#: js/ui/status/network.js:833
 msgid "Airplane Mode is On"
 msgstr "Flugvélahamur virkur"
 
-#: js/ui/status/network.js:824
+#: js/ui/status/network.js:834
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Þráðlaust Wi-Fi net er óvirkt þegar flugvélahamur er virkur."
 
-#: js/ui/status/network.js:825
+#: js/ui/status/network.js:835
 msgid "Turn Off Airplane Mode"
 msgstr "Slökkva á flugvélaham"
 
-#: js/ui/status/network.js:834
+#: js/ui/status/network.js:844
 msgid "Wi-Fi is Off"
 msgstr "Slökkt á þráðlausu neti"
 
-#: js/ui/status/network.js:835
+#: js/ui/status/network.js:845
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Kveikja verður á þráðlausu Wi-Fi neti til að tengjast netkerfi."
 
-#: js/ui/status/network.js:836
+#: js/ui/status/network.js:846
 msgid "Turn On Wi-Fi"
 msgstr "Kveikja á þráðlausu neti"
 
-#: js/ui/status/network.js:861
+#: js/ui/status/network.js:871
 msgid "Wi-Fi Networks"
 msgstr "Þráðlaus Wi-Fi netkerfi"
 
-#: js/ui/status/network.js:863
+#: js/ui/status/network.js:873
 msgid "Select a network"
 msgstr "Veldu netkerfi"
 
-#: js/ui/status/network.js:893
+#: js/ui/status/network.js:903
 msgid "No Networks"
 msgstr "Engin netkerfi"
 
-#: js/ui/status/network.js:914 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:924 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Nota vélbúnaðarrofa til að slökkva."
 
-#: js/ui/status/network.js:1181
+#: js/ui/status/network.js:1191
 msgid "Select Network"
 msgstr "Veldu netkerfi"
 
-#: js/ui/status/network.js:1187
+#: js/ui/status/network.js:1197
 msgid "Wi-Fi Settings"
 msgstr "Stillingar þráðlauss netkerfis"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1306
+#: js/ui/status/network.js:1316
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "Þráðlausi tengipunkturinn %s virkur"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1321
+#: js/ui/status/network.js:1331
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s ekki tengdur"
 
-#: js/ui/status/network.js:1421
-msgid "connecting..."
+#: js/ui/status/network.js:1435
+#| msgid "connecting..."
+msgid "connecting…"
 msgstr "tengist..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1424
+#: js/ui/status/network.js:1438
 msgid "authentication required"
 msgstr "auðkenningar krafist"
 
-#: js/ui/status/network.js:1426
+#: js/ui/status/network.js:1440
 msgid "connection failed"
 msgstr "tenging mistókst"
-
-#: js/ui/status/network.js:1492 js/ui/status/rfkill.js:93
-msgid "Network Settings"
-msgstr "Stillingar nets"
 
 #: js/ui/status/network.js:1494
 msgid "VPN Settings"
 msgstr "VPN stillingar"
 
-#: js/ui/status/network.js:1513
+#: js/ui/status/network.js:1498
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1523
+#: js/ui/status/network.js:1508
 msgid "VPN Off"
 msgstr "Slökkt á VPN"
 
-#: js/ui/status/network.js:1711
+#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+msgid "Network Settings"
+msgstr "Stillingar nets"
+
+#: js/ui/status/network.js:1603
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Wired Connection"
+msgid_plural "%s Wired Connections"
+msgstr[0] "%s þráðlaus tenging"
+msgstr[1] "%s þráðlausar tengingar"
+
+#: js/ui/status/network.js:1607
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Wi-Fi Connection"
+msgid_plural "%s Wi-Fi Connections"
+msgstr[0] "%s Wi-Fi tenging"
+msgstr[1] "%s Wi-Fi tengingar"
+
+#: js/ui/status/network.js:1611
+#, javascript-format
+#| msgid "%s Connecting"
+msgid "%s Modem Connection"
+msgid_plural "%s Modem Connections"
+msgstr[0] "%s mótaldstenging"
+msgstr[1] "%s mótaldstengingar"
+
+#: js/ui/status/network.js:1759
 msgid "Connection failed"
 msgstr "Tenging mistókst"
 
-#: js/ui/status/network.js:1712
+#: js/ui/status/network.js:1760
 msgid "Activation of network connection failed"
 msgstr "Mistókst að virkja nettengingu"
+
+#: js/ui/status/nightLight.js:68
+msgid "Night Light Disabled"
+msgstr "Næturlýsing óvirk"
+
+#: js/ui/status/nightLight.js:69
+msgid "Night Light On"
+msgstr "Næturlýsing á"
+
+#: js/ui/status/nightLight.js:70
+msgid "Resume"
+msgstr "Halda áfram"
+
+#: js/ui/status/nightLight.js:71
+msgid "Disable Until Tomorrow"
+msgstr "Óvirkt þar til á morgun"
 
 #: js/ui/status/power.js:61
 msgid "Power Settings"
@@ -1515,37 +1837,66 @@ msgstr "%d %%"
 msgid "Airplane Mode On"
 msgstr "Flugvélahamur virkur"
 
-#: js/ui/status/system.js:351
+#: js/ui/status/system.js:228
 msgid "Switch User"
 msgstr "Skipta um notanda"
 
-#: js/ui/status/system.js:356
+#: js/ui/status/system.js:240
 msgid "Log Out"
 msgstr "Skrá út"
 
-#: js/ui/status/system.js:361
+#: js/ui/status/system.js:252
 msgid "Account Settings"
 msgstr "Stillingar aðgangs"
 
-#: js/ui/status/system.js:378
+#: js/ui/status/system.js:269
 msgid "Orientation Lock"
 msgstr "Stefnulás"
 
-#: js/ui/status/system.js:386
+#: js/ui/status/system.js:295
 msgid "Suspend"
 msgstr "Hvíla"
 
-#: js/ui/status/system.js:389
+#: js/ui/status/system.js:305
 msgid "Power Off"
 msgstr "Slökkva"
 
-#: js/ui/status/volume.js:127
+#: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Hljóðstyrkur breyttist"
 
-#: js/ui/status/volume.js:162
+#: js/ui/status/volume.js:170
 msgid "Volume"
 msgstr "Hljóðstyrkur"
+
+#. Translators: this is for display mirroring i.e. cloning.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:21
+#| msgid "Error"
+msgid "Mirror"
+msgstr "Spegla"
+
+#. Translators: this is for the desktop spanning displays.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:26
+msgid "Join Displays"
+msgstr "Tengja skjái"
+
+#. Translators: this is for using only an external display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:31
+msgid "External Only"
+msgstr "Einungis utanáliggjandi"
+
+#. Translators: this is for using only the laptop display.
+#. * Try to keep it under around 15 characters.
+#.
+#: js/ui/switchMonitor.js:36
+msgid "Built-in Only"
+msgstr "Einungis innbyggt"
 
 #: js/ui/unlockDialog.js:67
 msgid "Log in as another user"
@@ -1555,11 +1906,11 @@ msgstr "Skrá inn sem annar notandi"
 msgid "Unlock Window"
 msgstr "Aflæsa glugga"
 
-#: js/ui/viewSelector.js:159
+#: js/ui/viewSelector.js:190
 msgid "Applications"
 msgstr "Forrit"
 
-#: js/ui/viewSelector.js:163
+#: js/ui/viewSelector.js:194
 msgid "Search"
 msgstr "Leita"
 
@@ -1568,22 +1919,22 @@ msgstr "Leita"
 msgid "“%s” is ready"
 msgstr "“%s' er tilbúið"
 
-#: js/ui/windowManager.js:63
+#: js/ui/windowManager.js:72
 msgid "Do you want to keep these display settings?"
 msgstr "Viltu halda þessum skjástillingum?"
 
 #. Translators: this and the following message should be limited in lenght,
 #. to avoid ellipsizing the labels.
 #.
-#: js/ui/windowManager.js:82
+#: js/ui/windowManager.js:84
 msgid "Revert Settings"
 msgstr "Afturkalla stillingar"
 
-#: js/ui/windowManager.js:85
+#: js/ui/windowManager.js:87
 msgid "Keep Changes"
 msgstr "Halda breytingum"
 
-#: js/ui/windowManager.js:103
+#: js/ui/windowManager.js:105
 #, javascript-format
 msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
@@ -1592,10 +1943,10 @@ msgstr[1] "Breytingar á stillingum verða afturkallaðar eftir %d sekúndur"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
-#: js/ui/windowManager.js:658
+#: js/ui/windowManager.js:660
 #, javascript-format
-msgid "%d x %d"
-msgstr "%d x %d"
+msgid "%d × %d"
+msgstr "%d × %d"
 
 #: js/ui/windowMenu.js:34
 msgid "Minimize"
@@ -1629,35 +1980,35 @@ msgstr "Alltaf efst"
 msgid "Always on Visible Workspace"
 msgstr "Alltaf á sjáanlegu vinnusvæði"
 
-#: js/ui/windowMenu.js:105
+#: js/ui/windowMenu.js:103
 msgid "Move to Workspace Left"
 msgstr "Flytja á vinnusvæðið til vinstri"
 
-#: js/ui/windowMenu.js:110
+#: js/ui/windowMenu.js:108
 msgid "Move to Workspace Right"
 msgstr "Flytja á vinnusvæðið til hægri"
 
-#: js/ui/windowMenu.js:115
+#: js/ui/windowMenu.js:113
 msgid "Move to Workspace Up"
 msgstr "Færa yfir á vinnusvæði fyrir ofan"
 
-#: js/ui/windowMenu.js:120
+#: js/ui/windowMenu.js:118
 msgid "Move to Workspace Down"
 msgstr "Færa yfir á vinnusvæði fyrir neðan"
 
-#: js/ui/windowMenu.js:136
+#: js/ui/windowMenu.js:134
 msgid "Move to Monitor Up"
 msgstr "Færa á skjá fyrir ofan"
 
-#: js/ui/windowMenu.js:142
+#: js/ui/windowMenu.js:140
 msgid "Move to Monitor Down"
 msgstr "Færa á skjá fyrir neðan"
 
-#: js/ui/windowMenu.js:148
+#: js/ui/windowMenu.js:146
 msgid "Move to Monitor Left"
 msgstr "Færa á skjá til vinstri"
 
-#: js/ui/windowMenu.js:154
+#: js/ui/windowMenu.js:152
 msgid "Move to Monitor Right"
 msgstr "Færa á skjá til hægri"
 
@@ -1670,41 +2021,20 @@ msgstr "Evolution dagatal"
 msgid "evolution"
 msgstr "evolution"
 
-#. translators:
-#. * The number of sound outputs on a particular device
-#: src/gvc/gvc-mixer-control.c:1873
-#, c-format
-msgid "%u Output"
-msgid_plural "%u Outputs"
-msgstr[0] "%u úttak"
-msgstr[1] "%u úttök"
-
-#. translators:
-#. * The number of sound inputs on a particular device
-#: src/gvc/gvc-mixer-control.c:1883
-#, c-format
-msgid "%u Input"
-msgid_plural "%u Inputs"
-msgstr[0] "%u inntak"
-msgstr[1] "%u inntök"
-
-#: src/gvc/gvc-mixer-control.c:2738
-msgid "System Sounds"
-msgstr "Kerfishljóð"
-
-#: src/main.c:381
+#: src/main.c:380
 msgid "Print version"
 msgstr "Prenta útgáfunúmer"
 
-#: src/main.c:387
+#: src/main.c:386
 msgid "Mode used by GDM for login screen"
 msgstr "Hamur sem GDM notar fyrir innskráningarglugga"
 
-#: src/main.c:393
-msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+#: src/main.c:392
+#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Nota sérstakan ham, t.d. \"gdm\" fyrir innskráningarskjá"
 
-#: src/main.c:399
+#: src/main.c:398
 msgid "List possible modes"
 msgstr "Sýna alla mögulega hami"
 
@@ -1729,6 +2059,58 @@ msgstr "Lykilorðið getur ekki verið autt"
 #: src/shell-polkit-authentication-agent.c:353
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Notandi hafnaði auðkenningarglugga"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1873
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u úttak"
+msgstr[1] "%u úttök"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: subprojects/gvc/gvc-mixer-control.c:1883
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u inntak"
+msgstr[1] "%u inntök"
+
+#: subprojects/gvc/gvc-mixer-control.c:2738
+msgid "System Sounds"
+msgstr "Kerfishljóð"
+
+#~ msgid "GNOME Shell Extension Preferences"
+#~ msgstr "Kjörstillingar GNOME Shell Extension skeljarviðbóta"
+
+#~ msgid "Web Authentication Redirect"
+#~ msgstr "Endurbeining á vefauðkenningu"
+
+#~ msgid "Events"
+#~ msgstr "Atburðir"
+
+#~ msgid "Notifications"
+#~ msgstr "Tilkynningar"
+
+#~ msgid "Hide tray"
+#~ msgstr "Fela kerfisbakka"
+
+#~ msgid "Status Icons"
+#~ msgstr "Táknmyndir fyrir stöðu"
+
+#~ msgid "Clear section"
+#~ msgstr "Hreinsa kafla"
+
+#~ msgid "Media"
+#~ msgstr "Gagnamiðill"
+
+#~ msgid "Not In Use"
+#~ msgstr "Ekki í notkun"
+
+#~ msgid "%d x %d"
+#~ msgstr "%d x %d"
 
 #~ msgid "Show the week date in the calendar"
 #~ msgstr "Sýna vikudag í dagatali"
@@ -1760,9 +2142,6 @@ msgstr "Notandi hafnaði auðkenningarglugga"
 
 #~ msgid "Airplane Mode"
 #~ msgstr "Flugvélahamur"
-
-#~ msgid "On"
-#~ msgstr "Á"
 
 #~ msgid "Show the message tray"
 #~ msgstr "Birta skilaboðabakka"
