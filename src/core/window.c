@@ -2904,6 +2904,9 @@ meta_window_is_screen_sized (MetaWindow *window)
 gboolean
 meta_window_is_monitor_sized (MetaWindow *window)
 {
+  if (!window->monitor)
+    return FALSE;
+
   if (window->fullscreen)
     return TRUE;
 
