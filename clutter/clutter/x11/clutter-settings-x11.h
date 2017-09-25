@@ -14,7 +14,6 @@ static const struct {
   { "Xft/HintStyle",           "font-hint-style" },
   { "Xft/RGBA",                "font-subpixel-order" },
   { "Fontconfig/Timestamp",    "fontconfig-timestamp" },
-  { "Gdk/UnscaledDPI",         "unscaled-font-dpi" },
 };
 
 static const gint _n_clutter_settings_map = G_N_ELEMENTS (_clutter_settings_map);
