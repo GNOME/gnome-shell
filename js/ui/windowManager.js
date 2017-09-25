@@ -985,7 +985,8 @@ var WindowManager = new Lang.Class({
         gesture.connect('activated', Lang.bind(this, this._switchApp));
         global.stage.add_action(gesture);
 
-        gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, Shell.ActionMode.ALL);
+        let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
+        gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
         gesture.connect('activated', Lang.bind(this, function() {
             Main.keyboard.show(Main.layoutManager.bottomIndex);
         }));
