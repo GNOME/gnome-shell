@@ -1208,6 +1208,13 @@ meta_finish_monitors_config_migration (MetaMonitorManager *monitor_manager,
       monitor_mode_spec = monitor_config->mode_spec;
       monitor_mode = meta_monitor_get_mode_from_spec (monitor,
                                                       monitor_mode_spec);
+      if (!monitor_mode)
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Mode not available on monitor");
+          return FALSE;
+        }
+
       scale = meta_monitor_calculate_mode_scale (monitor, monitor_mode);
 
       logical_monitor_config->scale = scale;
