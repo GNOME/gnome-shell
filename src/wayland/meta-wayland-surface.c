@@ -462,7 +462,7 @@ meta_wayland_surface_unref_buffer_use_count (MetaWaylandSurface *surface)
   g_return_if_fail (buffer);
 
   if (surface->buffer_ref.use_count == 0 && buffer->resource)
-    wl_resource_queue_event (buffer->resource, WL_BUFFER_RELEASE);
+    wl_buffer_send_release (buffer->resource);
 }
 
 static void
