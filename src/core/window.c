@@ -71,6 +71,8 @@
  */
 #define MAX_UNMAXIMIZED_WINDOW_AREA .8
 
+#define SNAP_SECURITY_LABEL_PREFIX "snap."
+
 static int destroying_windows_disallowed = 0;
 
 /* Each window has a "stamp" which is a non-recycled 64-bit ID. They
@@ -294,7 +296,7 @@ meta_window_finalize (GObject *object)
   g_free (window->res_name);
   g_free (window->title);
   g_free (window->desc);
-  g_free (window->flatpak_id);
+  g_free (window->sandboxed_app_id);
   g_free (window->gtk_theme_variant);
   g_free (window->gtk_application_id);
   g_free (window->gtk_unique_bus_name);
@@ -766,25 +768,94 @@ sync_client_window_mapped (MetaWindow *window)
   meta_error_trap_pop (window->display);
 }
 
-static void
-meta_window_update_flatpak_id (MetaWindow *window)
+static gboolean
+meta_window_update_flatpak_id (MetaWindow *window,
+                               uint32_t    pid)
 {
-  uint32_t pid = meta_window_get_client_pid (window);
   g_autoptr(GKeyFile) key_file = NULL;
   g_autofree char *info_filename = NULL;
 
-  g_clear_pointer (&window->flatpak_id, g_free);
-
-  if (pid == 0)
-    return;
+  g_return_val_if_fail (pid != 0, FALSE);
+  g_return_val_if_fail (window->sandboxed_app_id == NULL, FALSE);
 
   key_file = g_key_file_new ();
   info_filename = g_strdup_printf ("/proc/%u/root/.flatpak-info", pid);
 
   if (!g_key_file_load_from_file (key_file, info_filename, G_KEY_FILE_NONE, NULL))
+    return FALSE;
+
+  window->sandboxed_app_id = g_key_file_get_string (key_file, "Application", "name", NULL);
+
+  return TRUE;
+}
+
+static gboolean
+meta_window_update_snap_id (MetaWindow *window,
+                            uint32_t    pid)
+{
+  g_autofree char *security_label_filename = NULL;
+  g_autofree char *security_label_contents = NULL;
+  gsize i, security_label_contents_size = 0;
+  char *contents_start;
+  char *contents_end;
+  char *sandboxed_app_id;
+
+  g_return_val_if_fail (pid != 0, FALSE);
+  g_return_val_if_fail (window->sandboxed_app_id == NULL, FALSE);
+
+  security_label_filename = g_strdup_printf ("/proc/%u/attr/current", pid);
+
+  if (!g_file_get_contents (security_label_filename,
+                            &security_label_contents,
+                            &security_label_contents_size,
+                            NULL))
+    return FALSE;
+
+  if (!g_str_has_prefix (security_label_contents, SNAP_SECURITY_LABEL_PREFIX))
+    return FALSE;
+
+  /* We need to translate the security profile into the desktop-id.
+   * The profile is in the form of 'snap.name-space.binary-name (current)'
+   * while the desktop id will be name-space_binary-name.
+   */
+  security_label_contents_size -= sizeof (SNAP_SECURITY_LABEL_PREFIX) - 1;
+  contents_start = security_label_contents + sizeof (SNAP_SECURITY_LABEL_PREFIX) - 1;
+  contents_end = strchr (contents_start, ' ');
+
+  if (contents_end)
+    security_label_contents_size = contents_end - contents_start;
+
+  for (i = 0; i < security_label_contents_size; ++i)
+    {
+      if (contents_start[i] == '.')
+        contents_start[i] = '_';
+    }
+
+  sandboxed_app_id = g_malloc0 (security_label_contents_size + 1);
+  memcpy (sandboxed_app_id, contents_start, security_label_contents_size);
+
+  window->sandboxed_app_id = sandboxed_app_id;
+
+  return TRUE;
+}
+
+static void
+meta_window_update_sandboxed_app_id (MetaWindow *window)
+{
+  uint32_t pid;
+
+  g_clear_pointer (&window->sandboxed_app_id, g_free);
+
+  pid = meta_window_get_client_pid (window);
+
+  if (pid == 0)
     return;
 
-  window->flatpak_id = g_key_file_get_string (key_file, "Application", "name", NULL);
+  if (meta_window_update_flatpak_id (window, pid))
+    return;
+
+  if (meta_window_update_snap_id (window, pid))
+    return;
 }
 
 static void
@@ -897,7 +968,7 @@ _meta_window_shared_new (MetaDisplay         *display,
 
   window->screen = screen;
 
-  meta_window_update_flatpak_id (window);
+  meta_window_update_sandboxed_app_id (window);
   meta_window_update_desc (window);
 
   window->override_redirect = attrs->override_redirect;
@@ -7005,7 +7076,9 @@ meta_window_get_wm_class_instance (MetaWindow *window)
 const char *
 meta_window_get_flatpak_id (MetaWindow *window)
 {
-  return window->flatpak_id;
+  /* We're abusing this API here not to break the gnome shell assumptions
+   * or adding a new function, to be renamed to generic names in new versions */
+  return window->sandboxed_app_id;
 }
 
 /**
