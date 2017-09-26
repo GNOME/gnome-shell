@@ -1205,8 +1205,9 @@ var MessageTray = new Lang.Class({
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
-        this.actor.visible = !this._bannerBlocked && this._banner != null;
-        if (this._bannerBlocked)
+        let hasMonitor = Main.layoutManager.primaryMonitor != null;
+        this.actor.visible = !this._bannerBlocked && hasMonitor && this._banner != null;
+        if (this._bannerBlocked || !hasMonitor)
             return;
 
         // If our state changes caused _updateState to be called,
