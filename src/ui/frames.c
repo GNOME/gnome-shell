@@ -1621,6 +1621,9 @@ get_control (MetaUIFrame *frame, int root_x, int root_y)
   has_vert = (flags & META_FRAME_ALLOWS_VERTICAL_RESIZE) != 0;
   has_horiz = (flags & META_FRAME_ALLOWS_HORIZONTAL_RESIZE) != 0;
 
+  if (flags & META_FRAME_TILED_LEFT || flags & META_FRAME_TILED_RIGHT)
+    has_vert = has_horiz = FALSE;
+
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
     {
       if (has_vert && y <= TOP_RESIZE_HEIGHT && has_north_resize)
@@ -1693,12 +1696,12 @@ get_control (MetaUIFrame *frame, int root_x, int root_y)
     }
   else if (x <= fgeom.borders.total.left)
     {
-      if (has_horiz)
+      if (has_horiz || flags & META_FRAME_TILED_RIGHT)
         return META_FRAME_CONTROL_RESIZE_W;
     }
   else if (x >= (fgeom.width - fgeom.borders.total.right))
     {
-      if (has_horiz)
+      if (has_horiz || flags & META_FRAME_TILED_LEFT)
         return META_FRAME_CONTROL_RESIZE_E;
     }
 

@@ -2239,7 +2239,10 @@ process_mouse_move_resize_grab (MetaDisplay     *display,
       if (window->shaken_loose || tile_mode == META_TILE_MAXIMIZED)
         meta_window_maximize (window, META_MAXIMIZE_BOTH);
       else if (tile_mode != META_TILE_NONE)
-        meta_window_tile (window, tile_mode);
+        meta_window_restore_tile (window,
+                                  tile_mode,
+                                  display->grab_initial_window_pos.width,
+                                  display->grab_initial_window_pos.height);
       else
         meta_window_move_resize_frame (display->grab_window,
                                        TRUE,

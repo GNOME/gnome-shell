@@ -207,6 +207,8 @@ struct _MetaWindow
   int tile_monitor_number;
   int preferred_output_winsys_id;
 
+  double tile_hfraction;
+
   /* Whether we're shaded */
   guint shaded : 1;
 
@@ -557,7 +559,7 @@ struct _MetaWindowClass
 #define META_WINDOW_TILED_MAXIMIZED(w)(META_WINDOW_MAXIMIZED(w) && \
                                        (w)->tile_mode == META_TILE_MAXIMIZED)
 #define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->fullscreen)
-#define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !META_WINDOW_MAXIMIZED (w) && !META_WINDOW_TILED_SIDE_BY_SIDE(w) && !(w)->fullscreen && !(w)->shaded)
+#define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !META_WINDOW_MAXIMIZED (w) && !(w)->fullscreen && !(w)->shaded)
 #define META_WINDOW_ALLOWS_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) &&                \
                                         (((w)->size_hints.min_width < (w)->size_hints.max_width) ||  \
                                          ((w)->size_hints.min_height < (w)->size_hints.max_height)))
@@ -579,6 +581,10 @@ void        meta_window_queue              (MetaWindow  *window,
                                             guint queuebits);
 void        meta_window_tile               (MetaWindow        *window,
                                             MetaTileMode       mode);
+void        meta_window_restore_tile       (MetaWindow        *window,
+                                            MetaTileMode       mode,
+                                            int                width,
+                                            int                height);
 void        meta_window_maximize_internal  (MetaWindow        *window,
                                             MetaMaximizeFlags  directions,
                                             MetaRectangle     *saved_rect);

@@ -1017,6 +1017,7 @@ _meta_window_shared_new (MetaDisplay         *display,
   window->on_all_workspaces_requested = FALSE;
   window->tile_mode = META_TILE_NONE;
   window->tile_monitor_number = -1;
+  window->tile_hfraction = -1.;
   window->shaded = FALSE;
   window->initially_iconic = FALSE;
   window->minimized = FALSE;
@@ -2968,6 +2969,42 @@ meta_window_requested_dont_bypass_compositor (MetaWindow *window)
   return window->bypass_compositor == _NET_WM_BYPASS_COMPOSITOR_HINT_OFF;
 }
 
+static void
+meta_window_get_tile_fraction (MetaWindow   *window,
+                               MetaTileMode  tile_mode,
+                               double       *fraction)
+{
+  if (tile_mode == META_TILE_NONE)
+    *fraction = -1.;
+  else if (tile_mode == META_TILE_MAXIMIZED)
+    *fraction = 1.;
+  else if (META_WINDOW_TILED_SIDE_BY_SIDE (window))
+    {
+      if (window->tile_mode != tile_mode)
+        *fraction = 1. - window->tile_hfraction;
+      else
+        *fraction = window->tile_hfraction;
+    }
+  else
+    *fraction = .5;
+}
+
+static void
+meta_window_update_tile_fraction (MetaWindow *window,
+                                  int         new_w,
+                                  int         new_h)
+{
+  MetaRectangle work_area;
+
+  if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
+    return;
+
+  meta_window_get_work_area_for_monitor (window,
+                                         window->tile_monitor_number,
+                                         &work_area);
+  window->tile_hfraction = (double)new_w / work_area.width;
+}
+
 void
 meta_window_tile (MetaWindow   *window,
                   MetaTileMode  tile_mode)
@@ -2975,6 +3012,7 @@ meta_window_tile (MetaWindow   *window,
   MetaMaximizeFlags directions;
   MetaRectangle old_frame_rect, old_buffer_rect;
 
+  meta_window_get_tile_fraction (window, tile_mode, &window->tile_hfraction);
   window->tile_mode = tile_mode;
 
   /* Don't do anything if no tiling is requested */
@@ -3005,6 +3043,16 @@ meta_window_tile (MetaWindow   *window,
 
   if (window->frame)
     meta_frame_queue_draw (window->frame);
+}
+
+void
+meta_window_restore_tile (MetaWindow   *window,
+                          MetaTileMode  mode,
+                          int           width,
+                          int           height)
+{
+  meta_window_update_tile_fraction (window, width, height);
+  meta_window_tile (window, mode);
 }
 
 static gboolean
@@ -4025,6 +4073,9 @@ meta_window_resize_frame_with_gravity (MetaWindow *window,
 
   rect.width = w;
   rect.height = h;
+
+  if (user_op)
+    meta_window_update_tile_fraction (window, w, h);
 
   flags = (user_op ? META_MOVE_RESIZE_USER_ACTION : 0) | META_MOVE_RESIZE_RESIZE_ACTION;
   meta_window_move_resize_internal (window, flags, gravity, rect);
@@ -6349,19 +6400,22 @@ meta_window_get_tile_area (MetaWindow    *window,
                            MetaTileMode   tile_mode,
                            MetaRectangle *tile_area)
 {
+  MetaRectangle work_area;
   int tile_monitor_number;
+  double fraction;
 
   g_return_if_fail (tile_mode != META_TILE_NONE);
 
   tile_monitor_number = meta_window_get_current_tile_monitor_number (window);
 
-  meta_window_get_work_area_for_monitor (window, tile_monitor_number, tile_area);
+  meta_window_get_work_area_for_monitor (window, tile_monitor_number, &work_area);
+  meta_window_get_tile_fraction (window, tile_mode, &fraction);
 
-  if (tile_mode == META_TILE_LEFT  || tile_mode == META_TILE_RIGHT)
-    tile_area->width /= 2;
+  *tile_area = work_area;
+  tile_area->width = round (tile_area->width * fraction);
 
   if (tile_mode == META_TILE_RIGHT)
-    tile_area->x += tile_area->width;
+    tile_area->x += work_area.width - tile_area->width;
 }
 
 gboolean
