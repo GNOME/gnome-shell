@@ -2969,10 +2969,13 @@ meta_window_requested_dont_bypass_compositor (MetaWindow *window)
 }
 
 void
-meta_window_tile (MetaWindow *window)
+meta_window_tile (MetaWindow   *window,
+                  MetaTileMode  tile_mode)
 {
   MetaMaximizeFlags directions;
   MetaRectangle old_frame_rect, old_buffer_rect;
+
+  window->tile_mode = tile_mode;
 
   /* Don't do anything if no tiling is requested */
   if (window->tile_mode == META_TILE_NONE)
@@ -6123,9 +6126,8 @@ end_grab_op (MetaWindow *window,
     {
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
-          window->tile_mode = window->screen->preview_tile_mode;
-          if (window->tile_mode != META_TILE_NONE)
-            meta_window_tile (window);
+          if (window->screen->preview_tile_mode != META_TILE_NONE)
+            meta_window_tile (window, window->screen->preview_tile_mode);
           else
             update_move (window,
                          modifiers & CLUTTER_SHIFT_MASK,
