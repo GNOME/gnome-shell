@@ -199,9 +199,7 @@ struct _MetaWindow
   guint maximize_vertically_after_placement : 1;
   guint minimize_after_placement : 1;
 
-  /* The current or requested tile mode. If maximized_vertically is true,
-   * this is the current mode. If not, it is the mode which will be
-   * requested after the window grab is released */
+  /* The current tile mode */
   guint tile_mode : 2;
   /* The last "full" maximized/unmaximized state. We need to keep track of
    * that to toggle between normal/tiled or maximized/tiled states. */
@@ -648,8 +646,9 @@ void meta_window_get_work_area_for_logical_monitor (MetaWindow         *window,
                                                     MetaRectangle      *area);
 
 int meta_window_get_current_tile_monitor_number (MetaWindow *window);
-void meta_window_get_current_tile_area         (MetaWindow    *window,
-                                                MetaRectangle *tile_area);
+void meta_window_get_tile_area                  (MetaWindow    *window,
+                                                 MetaTileMode   mode,
+                                                 MetaRectangle *tile_area);
 
 
 gboolean meta_window_same_application (MetaWindow *window,

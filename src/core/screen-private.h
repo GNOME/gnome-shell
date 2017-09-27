@@ -56,6 +56,7 @@ struct _MetaScreen
   MetaUI *ui;
 
   guint tile_preview_timeout_id;
+  guint preview_tile_mode : 2;
 
   MetaWorkspace *active_workspace;
 

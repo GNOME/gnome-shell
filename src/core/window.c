@@ -3102,6 +3102,9 @@ meta_window_unmaximize (MetaWindow        *window,
       meta_window_get_frame_rect (window, &old_frame_rect);
       meta_window_get_buffer_rect (window, &old_buffer_rect);
 
+      if (unmaximize_vertically)
+        window->tile_mode = META_TILE_NONE;
+
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Unmaximizing %s%s\n",
                   window->desc,
@@ -5713,6 +5716,7 @@ update_move_maybe_tile (MetaWindow *window,
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
   MetaLogicalMonitor *logical_monitor;
+  MetaScreen *screen = window->screen;
   MetaRectangle work_area;
 
   /* For side-by-side tiling we are interested in the inside vertical
@@ -5742,18 +5746,18 @@ update_move_maybe_tile (MetaWindow *window,
    */
   if (meta_window_can_tile_side_by_side (window) &&
       x >= logical_monitor->rect.x && x < (work_area.x + shake_threshold))
-    window->tile_mode = META_TILE_LEFT;
+    screen->preview_tile_mode = META_TILE_LEFT;
   else if (meta_window_can_tile_side_by_side (window) &&
            x >= work_area.x + work_area.width - shake_threshold &&
            x < (logical_monitor->rect.x + logical_monitor->rect.width))
-    window->tile_mode = META_TILE_RIGHT;
+    screen->preview_tile_mode = META_TILE_RIGHT;
   else if (meta_window_can_tile_maximized (window) &&
            y >= logical_monitor->rect.y && y <= work_area.y)
-    window->tile_mode = META_TILE_MAXIMIZED;
+    screen->preview_tile_mode = META_TILE_MAXIMIZED;
   else
-    window->tile_mode = META_TILE_NONE;
+    screen->preview_tile_mode = META_TILE_NONE;
 
-  if (window->tile_mode != META_TILE_NONE)
+  if (screen->preview_tile_mode != META_TILE_NONE)
     window->tile_monitor_number = logical_monitor->number;
 }
 
@@ -5768,6 +5772,7 @@ update_move (MetaWindow  *window,
   MetaRectangle old;
   int shake_threshold;
   MetaDisplay *display = window->display;
+  MetaScreen *screen = window->screen;
 
   display->grab_latest_motion_x = x;
   display->grab_latest_motion_y = y;
@@ -5805,7 +5810,7 @@ update_move (MetaWindow  *window,
     {
       /* We don't want to tile while snapping. Also, clear any previous tile
          request. */
-      window->tile_mode = META_TILE_NONE;
+      screen->preview_tile_mode = META_TILE_NONE;
       window->tile_monitor_number = -1;
     }
   else if (meta_prefs_get_edge_tiling () &&
@@ -5921,8 +5926,8 @@ update_move (MetaWindow  *window,
    * trigger it unwittingly, e.g. when shaking loose the window or moving
    * it to another monitor.
    */
-  meta_screen_update_tile_preview (window->screen,
-                                   window->tile_mode != META_TILE_NONE);
+  meta_screen_update_tile_preview (screen,
+                                   screen->preview_tile_mode != META_TILE_NONE);
 
   meta_window_get_frame_rect (window, &old);
 
@@ -6118,6 +6123,7 @@ end_grab_op (MetaWindow *window,
     {
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
+          window->tile_mode = window->screen->preview_tile_mode;
           if (window->tile_mode != META_TILE_NONE)
             meta_window_tile (window);
           else
@@ -6133,6 +6139,7 @@ end_grab_op (MetaWindow *window,
                          TRUE);
         }
     }
+  window->screen->preview_tile_mode = META_TILE_NONE;
   meta_display_end_grab_op (window->display, clutter_event_get_time (event));
 }
 
@@ -6336,22 +6343,22 @@ meta_window_get_current_tile_monitor_number (MetaWindow *window)
 }
 
 void
-meta_window_get_current_tile_area (MetaWindow    *window,
-                                   MetaRectangle *tile_area)
+meta_window_get_tile_area (MetaWindow    *window,
+                           MetaTileMode   tile_mode,
+                           MetaRectangle *tile_area)
 {
   int tile_monitor_number;
 
-  g_return_if_fail (window->tile_mode != META_TILE_NONE);
+  g_return_if_fail (tile_mode != META_TILE_NONE);
 
   tile_monitor_number = meta_window_get_current_tile_monitor_number (window);
 
   meta_window_get_work_area_for_monitor (window, tile_monitor_number, tile_area);
 
-  if (window->tile_mode == META_TILE_LEFT  ||
-      window->tile_mode == META_TILE_RIGHT)
+  if (tile_mode == META_TILE_LEFT  || tile_mode == META_TILE_RIGHT)
     tile_area->width /= 2;
 
-  if (window->tile_mode == META_TILE_RIGHT)
+  if (tile_mode == META_TILE_RIGHT)
     tile_area->x += tile_area->width;
 }
 

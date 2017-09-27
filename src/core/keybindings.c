@@ -2222,7 +2222,7 @@ process_mouse_move_resize_grab (MetaDisplay     *display,
   if (event->keyval == CLUTTER_KEY_Escape)
     {
       /* Hide the tiling preview if necessary */
-      if (window->tile_mode != META_TILE_NONE)
+      if (screen->preview_tile_mode != META_TILE_NONE)
         meta_screen_hide_tile_preview (screen);
 
       /* Restore the original tile mode */
