@@ -4696,6 +4696,135 @@ meta_test_monitor_custom_interlaced_config (void)
 }
 
 static void
+meta_test_monitor_custom_oneoff (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 800,
+          .height = 600,
+          .refresh_rate = 60.0
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0, 1 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125
+        },
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0, 1 },
+          .n_possible_crtcs = 2,
+          .width_mm = 222,
+          .height_mm = 125,
+          .serial = "0x654321"
+        }
+      },
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .refresh_rate = 60.0,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125
+        },
+        {
+          .outputs = { 1 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .refresh_rate = 60.0,
+              .crtc_modes = {
+                {
+                  .output = 1,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = -1,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_monitors = 2,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .scale = 1,
+          .transform = META_MONITOR_TRANSFORM_NORMAL
+        },
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 2,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = -1,
+        }
+      },
+      .n_crtcs = 2,
+      .screen_width = 800,
+      .screen_height = 600,
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  set_custom_monitor_config ("oneoff.xml");
+  emulate_hotplug (test_setup);
+
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_migrated_rotated (void)
 {
   MonitorTestCase test_case = {
@@ -4928,6 +5057,8 @@ init_monitor_tests (void)
                     meta_test_monitor_custom_second_rotated_nonnative_config);
   add_monitor_test ("/backends/monitor/custom/interlaced-config",
                     meta_test_monitor_custom_interlaced_config);
+  add_monitor_test ("/backends/monitor/custom/oneoff-config",
+                    meta_test_monitor_custom_oneoff);
 
   add_monitor_test ("/backends/monitor/migrated/rotated",
                     meta_test_monitor_migrated_rotated);
