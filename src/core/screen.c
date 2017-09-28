@@ -1480,6 +1480,7 @@ meta_screen_hide_tile_preview (MetaScreen *screen)
 {
   if (screen->tile_preview_timeout_id > 0)
     g_source_remove (screen->tile_preview_timeout_id);
+  screen->tile_preview_timeout_id = 0;
 
   meta_compositor_hide_tile_preview (screen->display->compositor);
 }
