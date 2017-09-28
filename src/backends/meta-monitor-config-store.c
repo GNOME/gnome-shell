@@ -159,6 +159,8 @@ typedef struct
   ParserState state;
   MetaMonitorConfigStore *config_store;
 
+  ParserState monitor_spec_parent_state;
+
   gboolean current_was_migrated;
   GList *current_logical_monitor_configs;
   MetaMonitorSpec *current_monitor_spec;
@@ -351,7 +353,7 @@ handle_start_element (GMarkupParseContext  *context,
         if (g_str_equal (element_name, "monitorspec"))
           {
             parser->current_monitor_spec = g_new0 (MetaMonitorSpec, 1);
-
+            parser->monitor_spec_parent_state = STATE_MONITOR;
             parser->state = STATE_MONITOR_SPEC;
           }
         else if (g_str_equal (element_name, "mode"))
@@ -514,6 +516,25 @@ derive_logical_monitor_layout (MetaLogicalMonitorConfig    *logical_monitor_conf
 }
 
 static void
+finish_monitor_spec (ConfigParser *parser)
+{
+  switch (parser->monitor_spec_parent_state)
+    {
+    case STATE_MONITOR:
+      {
+        parser->current_monitor_config->monitor_spec =
+          parser->current_monitor_spec;
+        parser->current_monitor_spec = NULL;
+
+        return;
+      }
+
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+static void
 handle_end_element (GMarkupParseContext  *context,
                     const char           *element_name,
                     gpointer              user_data,
@@ -575,11 +596,9 @@ handle_end_element (GMarkupParseContext  *context,
         if (!meta_verify_monitor_spec (parser->current_monitor_spec, error))
           return;
 
-        parser->current_monitor_config->monitor_spec =
-          parser->current_monitor_spec;
-        parser->current_monitor_spec = NULL;
+        finish_monitor_spec (parser);
 
-        parser->state = STATE_MONITOR;
+        parser->state = parser->monitor_spec_parent_state;
         return;
       }
 
@@ -1059,6 +1078,27 @@ meta_monitor_config_store_lookup (MetaMonitorConfigStore *config_store,
 }
 
 static void
+append_monitor_spec (GString         *buffer,
+                     MetaMonitorSpec *monitor_spec,
+                     const char      *indentation)
+{
+  g_string_append_printf (buffer, "%s<monitorspec>\n", indentation);
+  g_string_append_printf (buffer, "%s  <connector>%s</connector>\n",
+                          indentation,
+                          monitor_spec->connector);
+  g_string_append_printf (buffer, "%s  <vendor>%s</vendor>\n",
+                          indentation,
+                          monitor_spec->vendor);
+  g_string_append_printf (buffer, "%s  <product>%s</product>\n",
+                          indentation,
+                          monitor_spec->product);
+  g_string_append_printf (buffer, "%s  <serial>%s</serial>\n",
+                          indentation,
+                          monitor_spec->serial);
+  g_string_append_printf (buffer, "%s</monitorspec>\n", indentation);
+}
+
+static void
 append_monitors (GString *buffer,
                  GList   *monitor_configs)
 {
@@ -1073,16 +1113,7 @@ append_monitors (GString *buffer,
                       monitor_config->mode_spec->refresh_rate);
 
       g_string_append (buffer, "      <monitor>\n");
-      g_string_append (buffer, "        <monitorspec>\n");
-      g_string_append_printf (buffer, "          <connector>%s</connector>\n",
-                              monitor_config->monitor_spec->connector);
-      g_string_append_printf (buffer, "          <vendor>%s</vendor>\n",
-                              monitor_config->monitor_spec->vendor);
-      g_string_append_printf (buffer, "          <product>%s</product>\n",
-                              monitor_config->monitor_spec->product);
-      g_string_append_printf (buffer, "          <serial>%s</serial>\n",
-                              monitor_config->monitor_spec->serial);
-      g_string_append (buffer, "        </monitorspec>\n");
+      append_monitor_spec (buffer, monitor_config->monitor_spec, "        ");
       g_string_append (buffer, "        <mode>\n");
       g_string_append_printf (buffer, "          <width>%d</width>\n",
                               monitor_config->mode_spec->width);
