@@ -109,6 +109,7 @@ typedef struct _MonitorTestCaseOutput
   float scale;
   gboolean is_laptop_panel;
   gboolean is_underscanning;
+  const char *serial;
 } MonitorTestCaseOutput;
 
 typedef struct _MonitorTestCaseCrtc
@@ -907,6 +908,7 @@ create_monitor_test_setup (MonitorTestCase *test_case,
       int n_possible_crtcs;
       int scale;
       gboolean is_laptop_panel;
+      const char *serial;
 
       crtc_index = test_case->setup.outputs[i].crtc;
       if (crtc_index == -1)
@@ -952,6 +954,10 @@ create_monitor_test_setup (MonitorTestCase *test_case,
 
       is_laptop_panel = test_case->setup.outputs[i].is_laptop_panel;
 
+      serial = test_case->setup.outputs[i].serial;
+      if (!serial)
+        serial = "0x123456";
+
       test_setup->outputs[i] = (MetaOutput) {
         .crtc = crtc,
         .winsys_id = i,
@@ -961,7 +967,7 @@ create_monitor_test_setup (MonitorTestCase *test_case,
                                                     ++n_normal_panels)),
         .vendor = g_strdup ("MetaProduct's Inc."),
         .product = g_strdup ("MetaMonitor"),
-        .serial = g_strdup ("0x123456"),
+        .serial = g_strdup (serial),
         .suggested_x = -1,
         .suggested_y = -1,
         .hotplug_mode_update = hotplug_mode_update,
