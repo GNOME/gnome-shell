@@ -15,6 +15,7 @@ var Dialog = new Lang.Class({
         this.parent({ layout_manager: new Clutter.BinLayout() });
         this.connect('destroy', Lang.bind(this, this._onDestroy));
 
+        this._initialKeyFocus = null;
         this._pressedKey = null;
         this._buttonKeys = {};
         this._createDialog();
@@ -86,6 +87,10 @@ var Dialog = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
+    get initialKeyFocus() {
+        return this._initialKeyFocus || this;
+    },
+
     addContent: function (actor) {
         this.contentLayout.add (actor, { expand: true });
     },
@@ -116,7 +121,7 @@ var Dialog = new Lang.Class({
         if (isDefault)
             button.add_style_pseudo_class('default');
 
-        if (!this._initialKeyFocusDestroyId)
+        if (this._initialKeyFocus == null || isDefault)
             this._initialKeyFocus = button;
 
         for (let i in keys)

@@ -84,7 +84,7 @@ var ModalDialog = new Lang.Class({
         }
 
         global.focus_manager.add_group(this.dialogLayout);
-        this._initialKeyFocus = this.dialogLayout;
+        this._initialKeyFocus = null;
         this._initialKeyFocusDestroyId = 0;
         this._savedKeyFocus = null;
     },
@@ -157,7 +157,7 @@ var ModalDialog = new Lang.Class({
         this._initialKeyFocus = actor;
 
         this._initialKeyFocusDestroyId = actor.connect('destroy', Lang.bind(this, function() {
-            this._initialKeyFocus = this.dialogLayout;
+            this._initialKeyFocus = null;
             this._initialKeyFocusDestroyId = 0;
         }));
     },
@@ -237,7 +237,8 @@ var ModalDialog = new Lang.Class({
             this._savedKeyFocus.grab_key_focus();
             this._savedKeyFocus = null;
         } else {
-            this._initialKeyFocus.grab_key_focus();
+            let focus = this._initialKeyFocus || this.dialogLayout.initialKeyFocus;
+            focus.grab_key_focus();
         }
 
         if (!this._shellReactive)
