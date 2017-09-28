@@ -132,6 +132,7 @@ struct _MetaRendererNative
   CoglClosure *swap_notify_idle;
 
   int64_t frame_counter;
+  gboolean pending_unset_disabled_crtcs;
 
   gboolean no_add_fb2;
 };
@@ -1396,6 +1397,8 @@ meta_renderer_native_queue_modes_reset (MetaRendererNative *renderer_native)
 
       onscreen_native->pending_set_crtc = TRUE;
     }
+
+  renderer_native->pending_unset_disabled_crtcs = TRUE;
 }
 
 static CoglOnscreen *
@@ -1778,6 +1781,29 @@ void
 meta_renderer_native_finish_frame (MetaRendererNative *renderer_native)
 {
   renderer_native->frame_counter++;
+
+  if (renderer_native->pending_unset_disabled_crtcs)
+    {
+      MetaBackend *backend = meta_get_backend ();
+      MetaMonitorManager *monitor_manager =
+        meta_backend_get_monitor_manager (backend);
+      MetaMonitorManagerKms *monitor_manager_kms =
+        META_MONITOR_MANAGER_KMS (monitor_manager);
+      unsigned int i;
+
+      for (i = 0; i < monitor_manager->n_crtcs; i++)
+        {
+          MetaCrtc *crtc = &monitor_manager->crtcs[i];
+
+          if (crtc->current_mode)
+            continue;
+
+          meta_monitor_manager_kms_apply_crtc_mode (monitor_manager_kms,
+                                                    crtc, 0, 0, 0);
+        }
+
+      renderer_native->pending_unset_disabled_crtcs = FALSE;
+    }
 }
 
 int64_t

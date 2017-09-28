@@ -160,6 +160,7 @@ meta_stage_native_rebuild_views (MetaStageNative *stage_native)
   MetaRenderer *renderer = meta_backend_get_renderer (backend);
 
   meta_renderer_rebuild_views (renderer);
+  meta_renderer_native_queue_modes_reset (META_RENDERER_NATIVE (renderer));
   ensure_frame_callbacks (stage_native);
 }
 
