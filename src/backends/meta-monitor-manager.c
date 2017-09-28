@@ -1934,7 +1934,9 @@ meta_monitor_manager_handle_apply_monitors_config (MetaDBusDisplayConfig *skelet
                                                logical_monitor_config);
     }
 
-  config = meta_monitors_config_new (logical_monitor_configs, layout_mode,
+  config = meta_monitors_config_new (manager,
+                                     logical_monitor_configs,
+                                     layout_mode,
                                      META_MONITORS_CONFIG_FLAG_NONE);
   if (!meta_verify_monitors_config (config, manager, &error))
     {

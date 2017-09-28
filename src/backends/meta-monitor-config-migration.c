@@ -1056,6 +1056,35 @@ generate_config_name (MetaLegacyMonitorsConfig *config)
   return key_name;
 }
 
+static GList *
+find_disabled_monitor_specs (MetaLegacyMonitorsConfig *legacy_config)
+{
+  GList *disabled_monitors = NULL;
+  unsigned int i;
+
+  for (i = 0; i < legacy_config->n_outputs; i++)
+    {
+      MetaOutputKey *output_key = &legacy_config->keys[i];
+      MetaOutputConfig *output_config = &legacy_config->outputs[i];
+      MetaMonitorSpec *monitor_spec;
+
+      if (output_config->enabled)
+        continue;
+
+      monitor_spec = g_new0 (MetaMonitorSpec, 1);
+      *monitor_spec = (MetaMonitorSpec) {
+        .connector = output_key->connector,
+        .vendor = output_key->vendor,
+        .product = output_key->product,
+        .serial = output_key->serial
+      };
+
+      disabled_monitors = g_list_prepend (disabled_monitors, monitor_spec);
+    }
+
+  return disabled_monitors;
+}
+
 static void
 migrate_config (gpointer key,
                 gpointer value,
@@ -1068,6 +1097,7 @@ migrate_config (gpointer key,
   GList *logical_monitor_configs;
   MetaLogicalMonitorLayoutMode layout_mode;
   GError *error = NULL;
+  GList *disabled_monitor_specs;
   MetaMonitorsConfig *config;
 
   logical_monitor_configs = derive_logical_monitor_configs (legacy_config,
@@ -1083,9 +1113,13 @@ migrate_config (gpointer key,
       return;
     }
 
+  disabled_monitor_specs = find_disabled_monitor_specs (legacy_config);
+
   layout_mode = META_LOGICAL_MONITOR_LAYOUT_MODE_PHYSICAL;
-  config = meta_monitors_config_new (logical_monitor_configs, layout_mode,
-                                     META_MONITORS_CONFIG_FLAG_MIGRATED);
+  config = meta_monitors_config_new_full (logical_monitor_configs,
+                                          disabled_monitor_specs,
+                                          layout_mode,
+                                          META_MONITORS_CONFIG_FLAG_MIGRATED);
   if (!meta_verify_monitors_config (config, monitor_manager, &error))
     {
       g_autofree char *config_name = NULL;

@@ -83,6 +83,14 @@
  *       </monitor>
  *       <presentation>yes</presentation>
  *     </logicalmonitor>
+ *     <disabled>
+ *       <monitorspec>
+ *         <connector>LVDS3</connector>
+ *         <vendor>Vendor C</vendor>
+ *         <product>Product C</product>
+ *         <serial>Serial C</serial>
+ *       </monitorspec>
+ *     </disabled>
  *   </configuration>
  * </monitors>
  *
@@ -151,7 +159,8 @@ typedef enum
   STATE_MONITOR_MODE_HEIGHT,
   STATE_MONITOR_MODE_RATE,
   STATE_MONITOR_MODE_FLAG,
-  STATE_MONITOR_UNDERSCANNING
+  STATE_MONITOR_UNDERSCANNING,
+  STATE_DISABLED,
 } ParserState;
 
 typedef struct
@@ -169,6 +178,7 @@ typedef struct
   MetaMonitorModeSpec *current_monitor_mode_spec;
   MetaMonitorConfig *current_monitor_config;
   MetaLogicalMonitorConfig *current_logical_monitor_config;
+  GList *current_disabled_monitor_specs;
 } ConfigParser;
 
 G_DEFINE_TYPE (MetaMonitorConfigStore, meta_monitor_config_store,
@@ -255,6 +265,10 @@ handle_start_element (GMarkupParseContext  *context,
             parser->current_was_migrated = TRUE;
 
             parser->state = STATE_MIGRATED;
+          }
+        else if (g_str_equal (element_name, "disabled"))
+          {
+            parser->state = STATE_DISABLED;
           }
         else
           {
@@ -458,6 +472,22 @@ handle_start_element (GMarkupParseContext  *context,
                      "Invalid element '%s' under underscanning", element_name);
         return;
       }
+
+    case STATE_DISABLED:
+      {
+        if (!g_str_equal (element_name, "monitorspec"))
+          {
+            g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
+                         "Invalid element '%s' under disabled", element_name);
+            return;
+          }
+
+        parser->current_monitor_spec = g_new0 (MetaMonitorSpec, 1);
+        parser->monitor_spec_parent_state = STATE_DISABLED;
+        parser->state = STATE_MONITOR_SPEC;
+
+        return;
+      }
     }
 }
 
@@ -524,6 +554,15 @@ finish_monitor_spec (ConfigParser *parser)
       {
         parser->current_monitor_config->monitor_spec =
           parser->current_monitor_spec;
+        parser->current_monitor_spec = NULL;
+
+        return;
+      }
+    case STATE_DISABLED:
+      {
+        parser->current_disabled_monitor_specs =
+          g_list_prepend (parser->current_disabled_monitor_specs,
+                          parser->current_monitor_spec);
         parser->current_monitor_spec = NULL;
 
         return;
@@ -684,6 +723,14 @@ handle_end_element (GMarkupParseContext  *context,
         return;
       }
 
+    case STATE_DISABLED:
+      {
+        g_assert (g_str_equal (element_name, "disabled"));
+
+        parser->state = STATE_CONFIGURATION;
+        return;
+      }
+
     case STATE_CONFIGURATION:
       {
         MetaMonitorConfigStore *store = parser->config_store;
@@ -720,11 +767,13 @@ handle_end_element (GMarkupParseContext  *context,
           config_flags |= META_MONITORS_CONFIG_FLAG_MIGRATED;
 
         config =
-          meta_monitors_config_new (parser->current_logical_monitor_configs,
-                                    layout_mode,
-                                    config_flags);
+          meta_monitors_config_new_full (parser->current_logical_monitor_configs,
+                                         parser->current_disabled_monitor_specs,
+                                         layout_mode,
+                                         config_flags);
 
         parser->current_logical_monitor_configs = NULL;
+        parser->current_disabled_monitor_specs = NULL;
 
         if (!meta_verify_monitors_config (config, store->monitor_manager,
                                           error))
@@ -868,6 +917,7 @@ handle_text (GMarkupParseContext *context,
     case STATE_MONITOR_SPEC:
     case STATE_MONITOR_MODE:
     case STATE_TRANSFORM:
+    case STATE_DISABLED:
       {
         if (!is_all_whitespace (text, text_len))
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
@@ -1234,6 +1284,18 @@ generate_config_xml (MetaMonitorConfigStore *config_store)
           MetaLogicalMonitorConfig *logical_monitor_config = l->data;
 
           append_logical_monitor_xml (buffer, config, logical_monitor_config);
+        }
+
+      if (config->disabled_monitor_specs)
+        {
+          g_string_append (buffer, "    <disabled>\n");
+          for (l = config->disabled_monitor_specs; l; l = l->next)
+            {
+              MetaMonitorSpec *monitor_spec = l->data;
+
+              append_monitor_spec (buffer, monitor_spec, "      ");
+            }
+          g_string_append (buffer, "    </disabled>\n");
         }
 
       g_string_append (buffer, "  </configuration>\n");

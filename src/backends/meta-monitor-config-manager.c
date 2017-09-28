@@ -612,7 +612,9 @@ meta_monitor_config_manager_create_linear (MetaMonitorConfigManager *config_mana
       x += logical_monitor_config->layout.width;
     }
 
-  return meta_monitors_config_new (logical_monitor_configs, layout_mode,
+  return meta_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
+                                   layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
 }
 
@@ -641,7 +643,9 @@ meta_monitor_config_manager_create_fallback (MetaMonitorConfigManager *config_ma
   logical_monitor_configs = g_list_append (NULL,
                                            primary_logical_monitor_config);
 
-  return meta_monitors_config_new (logical_monitor_configs, layout_mode,
+  return meta_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
+                                   layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
 }
 
@@ -717,7 +721,9 @@ meta_monitor_config_manager_create_suggested (MetaMonitorConfigManager *config_m
   if (!logical_monitor_configs)
     return NULL;
 
-  return meta_monitors_config_new (logical_monitor_configs, layout_mode,
+  return meta_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
+                                   layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
 }
 
@@ -726,8 +732,11 @@ create_for_builtin_display_rotation (MetaMonitorConfigManager *config_manager,
                                      gboolean                  rotate,
                                      MetaMonitorTransform      transform)
 {
+  MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
   MetaLogicalMonitorConfig *logical_monitor_config;
   MetaLogicalMonitorConfig *current_logical_monitor_config;
+  GList *logical_monitor_configs;
+  MetaLogicalMonitorLayoutMode layout_mode;
   MetaMonitorConfig *monitor_config;
   MetaMonitorConfig *current_monitor_config;
 
@@ -772,8 +781,11 @@ create_for_builtin_display_rotation (MetaMonitorConfigManager *config_manager,
       logical_monitor_config->layout.height = temp;
     }
 
-  return meta_monitors_config_new (g_list_append (NULL, logical_monitor_config),
-                                   config_manager->current_config->layout_mode,
+  logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
+  layout_mode = config_manager->current_config->layout_mode;
+  return meta_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
+                                   layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
 }
 
@@ -796,6 +808,7 @@ create_for_switch_config_all_mirror (MetaMonitorConfigManager *config_manager)
   MetaMonitorManager *monitor_manager = config_manager->monitor_manager;
   MetaLogicalMonitorLayoutMode layout_mode;
   MetaLogicalMonitorConfig *logical_monitor_config = NULL;
+  GList *logical_monitor_configs;
   GList *monitor_configs = NULL;
   gint common_mode_w = 0, common_mode_h = 0;
   float best_scale = 1.0;
@@ -893,8 +906,10 @@ create_for_switch_config_all_mirror (MetaMonitorConfigManager *config_manager)
     .monitor_configs = monitor_configs
   };
 
+  logical_monitor_configs = g_list_append (NULL, logical_monitor_config);
   layout_mode = meta_monitor_manager_get_default_layout_mode (monitor_manager);
-  return meta_monitors_config_new (g_list_append (NULL, logical_monitor_config),
+  return meta_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
                                    layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
 }
@@ -935,7 +950,9 @@ create_for_switch_config_external (MetaMonitorConfigManager *config_manager)
       x += logical_monitor_config->layout.width;
     }
 
-  return meta_monitors_config_new (logical_monitor_configs, layout_mode,
+  return meta_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
+                                   layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
 }
 
@@ -964,7 +981,9 @@ create_for_switch_config_builtin (MetaMonitorConfigManager *config_manager)
   logical_monitor_configs = g_list_append (NULL,
                                            primary_logical_monitor_config);
 
-  return meta_monitors_config_new (logical_monitor_configs, layout_mode,
+  return meta_monitors_config_new (monitor_manager,
+                                   logical_monitor_configs,
+                                   layout_mode,
                                    META_MONITORS_CONFIG_FLAG_NONE);
 }
 
@@ -1087,7 +1106,8 @@ meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor_conf
 }
 
 static MetaMonitorsConfigKey *
-meta_monitors_config_key_new (GList *logical_monitor_configs)
+meta_monitors_config_key_new (GList *logical_monitor_configs,
+                              GList *disabled_monitor_specs)
 {
   MetaMonitorsConfigKey *config_key;
   GList *monitor_specs;
@@ -1107,6 +1127,14 @@ meta_monitors_config_key_new (GList *logical_monitor_configs)
           monitor_spec = meta_monitor_spec_clone (monitor_config->monitor_spec);
           monitor_specs = g_list_prepend (monitor_specs, monitor_spec);
         }
+    }
+
+  for (l = disabled_monitor_specs; l; l = l->next)
+    {
+      MetaMonitorSpec *monitor_spec = l->data;
+
+      monitor_spec = meta_monitor_spec_clone (monitor_spec);
+      monitor_specs = g_list_prepend (monitor_specs, monitor_spec);
     }
 
   monitor_specs = g_list_sort (monitor_specs,
@@ -1175,19 +1203,54 @@ meta_monitors_config_key_equal (gconstpointer data_a,
 }
 
 MetaMonitorsConfig *
-meta_monitors_config_new (GList                       *logical_monitor_configs,
-                          MetaLogicalMonitorLayoutMode layout_mode,
-                          MetaMonitorsConfigFlag       flags)
+meta_monitors_config_new_full (GList                        *logical_monitor_configs,
+                               GList                        *disabled_monitor_specs,
+                               MetaLogicalMonitorLayoutMode  layout_mode,
+                               MetaMonitorsConfigFlag        flags)
 {
   MetaMonitorsConfig *config;
 
   config = g_object_new (META_TYPE_MONITORS_CONFIG, NULL);
   config->logical_monitor_configs = logical_monitor_configs;
-  config->key = meta_monitors_config_key_new (logical_monitor_configs);
+  config->disabled_monitor_specs = disabled_monitor_specs;
+  config->key = meta_monitors_config_key_new (logical_monitor_configs,
+                                              disabled_monitor_specs);
   config->layout_mode = layout_mode;
   config->flags = flags;
 
   return config;
+}
+
+MetaMonitorsConfig *
+meta_monitors_config_new (MetaMonitorManager           *monitor_manager,
+                          GList                        *logical_monitor_configs,
+                          MetaLogicalMonitorLayoutMode  layout_mode,
+                          MetaMonitorsConfigFlag        flags)
+{
+  GList *disabled_monitor_specs = NULL;
+  GList *monitors;
+  GList *l;
+
+  monitors = meta_monitor_manager_get_monitors (monitor_manager);
+  for (l = monitors; l; l = l->next)
+    {
+      MetaMonitor *monitor = l->data;
+      MetaMonitorSpec *monitor_spec;
+
+      monitor_spec = meta_monitor_get_spec (monitor);
+      if (meta_logical_monitor_configs_have_monitor (logical_monitor_configs,
+                                                     monitor_spec))
+        continue;
+
+      disabled_monitor_specs =
+        g_list_prepend (disabled_monitor_specs,
+                        meta_monitor_spec_clone (monitor_spec));
+    }
+
+  return meta_monitors_config_new_full (logical_monitor_configs,
+                                        disabled_monitor_specs,
+                                        layout_mode,
+                                        flags);
 }
 
 static void
@@ -1198,6 +1261,8 @@ meta_monitors_config_finalize (GObject *object)
   meta_monitors_config_key_free (config->key);
   g_list_free_full (config->logical_monitor_configs,
                     (GDestroyNotify) meta_logical_monitor_config_free);
+  g_list_free_full (config->disabled_monitor_specs,
+                    (GDestroyNotify) meta_monitor_spec_free);
 
   G_OBJECT_CLASS (meta_monitors_config_parent_class)->finalize (object);
 }
@@ -1376,6 +1441,38 @@ has_adjecent_neighbour (MetaMonitorsConfig       *config,
 }
 
 gboolean
+meta_logical_monitor_configs_have_monitor (GList           *logical_monitor_configs,
+                                           MetaMonitorSpec *monitor_spec)
+{
+  GList *l;
+
+  for (l = logical_monitor_configs; l; l = l->next)
+    {
+      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
+      GList *k;
+
+      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
+        {
+          MetaMonitorConfig *monitor_config = k->data;
+
+          if (meta_monitor_spec_equals (monitor_spec,
+                                        monitor_config->monitor_spec))
+            return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+static gboolean
+meta_monitors_config_is_monitor_enabled (MetaMonitorsConfig *config,
+                                         MetaMonitorSpec    *monitor_spec)
+{
+  return meta_logical_monitor_configs_have_monitor (config->logical_monitor_configs,
+                                                    monitor_spec);
+}
+
+gboolean
 meta_verify_monitors_config (MetaMonitorsConfig *config,
                              MetaMonitorManager *monitor_manager,
                              GError            **error)
@@ -1455,6 +1552,18 @@ meta_verify_monitors_config (MetaMonitorsConfig *config,
     }
 
   g_list_free (region);
+
+  for (l = config->disabled_monitor_specs; l; l = l->next)
+    {
+      MetaMonitorSpec *monitor_spec = l->data;
+
+      if (meta_monitors_config_is_monitor_enabled (config, monitor_spec))
+        {
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                       "Assigned monitor explicitly disabled");
+          return FALSE;
+        }
+    }
 
   if (min_x != 0 || min_y != 0)
     {

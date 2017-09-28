@@ -64,6 +64,8 @@ struct _MetaMonitorsConfig
   MetaMonitorsConfigKey *key;
   GList *logical_monitor_configs;
 
+  GList *disabled_monitor_specs;
+
   MetaMonitorsConfigFlag flags;
 
   MetaLogicalMonitorLayoutMode layout_mode;
@@ -112,9 +114,15 @@ void meta_monitor_config_manager_clear_history (MetaMonitorConfigManager *config
 
 void meta_monitor_config_manager_save_current (MetaMonitorConfigManager *config_manager);
 
-MetaMonitorsConfig * meta_monitors_config_new (GList                       *logical_monitor_configs,
-                                               MetaLogicalMonitorLayoutMode layout_mode,
-                                               MetaMonitorsConfigFlag       flags);
+MetaMonitorsConfig * meta_monitors_config_new_full (GList                        *logical_monitor_configs,
+                                                    GList                        *disabled_monitors,
+                                                    MetaLogicalMonitorLayoutMode  layout_mode,
+                                                    MetaMonitorsConfigFlag        flags);
+
+MetaMonitorsConfig * meta_monitors_config_new (MetaMonitorManager           *monitor_manager,
+                                               GList                        *logical_monitor_configs,
+                                               MetaLogicalMonitorLayoutMode  layout_mode,
+                                               MetaMonitorsConfigFlag        flags);
 
 unsigned int meta_monitors_config_key_hash (gconstpointer config_key);
 
@@ -126,6 +134,9 @@ void meta_monitors_config_key_free (MetaMonitorsConfigKey *config_key);
 void meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor_config);
 
 void meta_monitor_config_free (MetaMonitorConfig *monitor_config);
+
+gboolean meta_logical_monitor_configs_have_monitor (GList           *logical_monitor_configs,
+                                                    MetaMonitorSpec *monitor_spec);
 
 gboolean meta_verify_monitor_mode_spec (MetaMonitorModeSpec *monitor_mode_spec,
                                         GError             **error);
