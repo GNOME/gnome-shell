@@ -918,17 +918,17 @@ StScrollBar {
     background-color: #454c4c; }
 
 .message-icon-bin {
-  padding: 10px 3px 10px 10px; }
+  padding: 0.68em 0.2em 0.68em 0.68em; }
   .message-icon-bin:rtl {
-    padding: 10px 10px 10px 3px; }
+    padding: 0.68em 0.68em 0.68em 0.2em; }
 
 .message-icon-bin > StIcon {
   color: #bebeb6;
-  icon-size: 16px;
+  icon-size: 1.09em;
   -st-icon-style: symbolic; }
 
 .message-secondary-bin {
-  padding: 0 12px; }
+  padding: 0 0.82em; }
 
 .message-secondary-bin > .event-time {
   color: #8e8e80;
@@ -938,7 +938,7 @@ StScrollBar {
   padding-bottom: 0.13em; }
 
 .message-secondary-bin > StIcon {
-  icon-size: 16px; }
+  icon-size: 1.09em; }
 
 .message-title {
   color: #e2e2df; }

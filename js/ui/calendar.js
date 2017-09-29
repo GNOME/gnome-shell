@@ -20,7 +20,7 @@ var MSECS_IN_DAY = 24 * 60 * 60 * 1000;
 var SHOW_WEEKDATE_KEY = 'show-weekdate';
 var ELLIPSIS_CHAR = '\u2026';
 
-var MESSAGE_ICON_SIZE = 16;
+var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
 // alias to prevent xgettext from picking up strings translated in GTK+
 const gtk30_ = Gettext_gtk30.gettext;
