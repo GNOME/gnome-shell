@@ -6728,6 +6728,30 @@ meta_window_stack_just_below (MetaWindow *window,
     }
 }
 
+void
+meta_window_stack_just_above (MetaWindow *window,
+                              MetaWindow *above_this_one)
+{
+  g_return_if_fail (window         != NULL);
+  g_return_if_fail (above_this_one != NULL);
+
+  if (window->stack_position < above_this_one->stack_position)
+    {
+      meta_topic (META_DEBUG_STACK,
+                  "Setting stack position of window %s to %d (making it above window %s).\n",
+                  window->desc,
+                  above_this_one->stack_position,
+                  above_this_one->desc);
+      meta_window_set_stack_position (window, above_this_one->stack_position);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_STACK,
+                  "Window %s  was already above window %s.\n",
+                  window->desc, above_this_one->desc);
+    }
+}
+
 /**
  * meta_window_get_user_time:
  * @window: a #MetaWindow

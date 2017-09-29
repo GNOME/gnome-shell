@@ -682,6 +682,9 @@ void meta_window_frame_size_changed (MetaWindow *window);
 void meta_window_stack_just_below (MetaWindow *window,
                                    MetaWindow *below_this_one);
 
+void meta_window_stack_just_above (MetaWindow *window,
+                                   MetaWindow *above_this_one);
+
 void meta_window_set_user_time (MetaWindow *window,
                                 guint32     timestamp);
 

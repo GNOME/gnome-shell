@@ -176,6 +176,7 @@ item(_NET_WM_OPAQUE_REGION)
 item(_NET_WM_FRAME_DRAWN)
 item(_NET_WM_FRAME_TIMINGS)
 item(_NET_WM_WINDOW_OPACITY)
+item(_NET_RESTACK_WINDOW)
 
 /* eof atomnames.h */
 
