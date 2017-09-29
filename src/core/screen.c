@@ -72,8 +72,6 @@ static void prefs_changed_callback (MetaPreference pref,
 
 static void set_desktop_geometry_hint (MetaScreen *screen);
 static void set_desktop_viewport_hint (MetaScreen *screen);
-static void set_number_of_spaces_hint (MetaScreen *screen,
-                                       int         n_spaces);
 
 static void on_monitors_changed (MetaMonitorManager *manager,
                                  MetaScreen         *screen);
@@ -773,7 +771,6 @@ meta_screen_new (MetaDisplay *display,
    * so create that required workspace.
    */
   meta_workspace_new (screen);
-  set_number_of_spaces_hint (screen, g_list_length (screen->workspaces));
 
   screen->keys_grabbed = FALSE;
   meta_screen_grab_keys (screen);
