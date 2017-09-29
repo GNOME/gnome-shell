@@ -1215,7 +1215,11 @@ update_num_workspaces (MetaScreen *screen,
   g_assert (new_num > 0);
 
   if (g_list_length (screen->workspaces) == (guint) new_num)
-    return;
+    {
+      if (screen->display->display_opening)
+        set_number_of_spaces_hint (screen, new_num);
+      return;
+    }
 
   last_remaining = NULL;
   extras = NULL;
