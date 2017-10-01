@@ -6088,23 +6088,6 @@ update_resize (MetaWindow *window,
     g_get_current_time (&window->display->grab_last_moveresize_time);
 }
 
-static void
-update_tile_mode (MetaWindow *window)
-{
-  switch (window->tile_mode)
-    {
-      case META_TILE_LEFT:
-      case META_TILE_RIGHT:
-          if (!META_WINDOW_TILED_SIDE_BY_SIDE (window))
-              window->tile_mode = META_TILE_NONE;
-          break;
-      case META_TILE_MAXIMIZED:
-          if (!META_WINDOW_MAXIMIZED (window))
-              window->tile_mode = META_TILE_NONE;
-          break;
-    }
-}
-
 void
 meta_window_update_resize (MetaWindow *window,
                            gboolean    snap,
@@ -6148,15 +6131,6 @@ end_grab_op (MetaWindow *window,
                          modifiers & CLUTTER_SHIFT_MASK,
                          x, y,
                          TRUE);
-
-          /* If a tiled window has been dragged free with a
-           * mouse resize without snapping back to the tiled
-           * state, it will end up with an inconsistent tile
-           * mode on mouse release; cleaning the mode earlier
-           * would break the ability to snap back to the tiled
-           * state, so we wait until mouse release.
-           */
-          update_tile_mode (window);
         }
     }
   meta_display_end_grab_op (window->display, clutter_event_get_time (event));
