@@ -473,12 +473,19 @@ send_modifiers (struct wl_resource *resource,
   gboolean ret;
   int i;
 
+  zwp_linux_dmabuf_v1_send_format (resource, format);
+
+  /* The modifier event was only added in v3; v1 and v2 only have the format
+   * event. */
+  if (wl_resource_get_version (resource) < ZWP_LINUX_DMABUF_V1_MODIFIER_SINCE_VERSION)
+    return;
+
   /* First query the number of available modifiers, then allocate an array,
    * then fill the array. */
   ret = meta_egl_query_dma_buf_modifiers (egl, egl_display, format, 0, NULL,
                                           NULL, &num_modifiers, NULL);
   if (!ret || num_modifiers == 0)
-     return;
+    return;
 
   modifiers = g_new0 (uint64_t, num_modifiers);
   ret = meta_egl_query_dma_buf_modifiers (egl, egl_display, format,
