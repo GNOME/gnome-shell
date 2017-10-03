@@ -362,14 +362,6 @@ GList *             meta_monitor_manager_get_monitors      (MetaMonitorManager *
 
 GList *             meta_monitor_manager_get_outputs       (MetaMonitorManager *manager);
 
-void                meta_monitor_manager_get_resources     (MetaMonitorManager  *manager,
-                                                            MetaCrtcMode       **modes,
-                                                            unsigned int        *n_modes,
-                                                            MetaCrtc           **crtcs,
-                                                            unsigned int        *n_crtcs,
-                                                            MetaOutput         **outputs,
-                                                            unsigned int        *n_outputs);
-
 void                meta_monitor_manager_get_screen_size   (MetaMonitorManager *manager,
                                                             int                *width,
                                                             int                *height);
