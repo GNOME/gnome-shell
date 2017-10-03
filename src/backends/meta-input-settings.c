@@ -1308,7 +1308,17 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
 {
   MetaInputSettingsPrivate *priv;
   DeviceMappingInfo *info;
+  ClutterInputDeviceType device_type;
   GSettings *settings;
+
+  device_type = clutter_input_device_get_device_type (device);
+
+  if ((device_type == CLUTTER_TABLET_DEVICE ||
+       device_type == CLUTTER_PEN_DEVICE ||
+       device_type == CLUTTER_ERASER_DEVICE ||
+       device_type == CLUTTER_PAD_DEVICE) &&
+      g_getenv ("MUTTER_DISABLE_WACOM_CONFIGURATION") != NULL)
+    return FALSE;
 
   settings = lookup_device_settings (device);
 
@@ -1323,8 +1333,8 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
   info->settings = settings;
 
 #ifdef HAVE_LIBWACOM
-  if (clutter_input_device_get_device_type (device) == CLUTTER_TABLET_DEVICE ||
-      clutter_input_device_get_device_type (device) == CLUTTER_PAD_DEVICE)
+  if (device_type == CLUTTER_TABLET_DEVICE ||
+      device_type == CLUTTER_PAD_DEVICE)
     {
       WacomError *error = libwacom_error_new ();
 
@@ -1342,7 +1352,7 @@ check_add_mappable_device (MetaInputSettings  *input_settings,
     }
 #endif
 
-  if (clutter_input_device_get_device_type (device) == CLUTTER_PAD_DEVICE)
+  if (device_type == CLUTTER_PAD_DEVICE)
     {
       info->group_modes =
         g_new0 (guint, clutter_input_device_get_n_mode_groups (device));
