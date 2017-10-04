@@ -240,7 +240,9 @@ var WeatherSection = new Lang.Class({
 
         let [ok, phenomenon, qualifier] = info.get_value_conditions();
         if (ok)
-            return new GWeather.Conditions({ phenomenon, qualifier}).to_string_full(options);
+            return new GWeather.Conditions({ significant: true,
+                                             phenomenon,
+                                             qualifier }).to_string_full(options);
 
         let [, sky] = info.get_value_sky();
         return GWeather.Sky.to_string_full(sky, options);
