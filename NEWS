@@ -1,3 +1,29 @@
+3.26.1
+======
+* Fix crash when respawning shortcut inhibitor dialog [Olivier; #787568]
+* Fix crash during monitor configuration migration [Carlos, Jonas; #787668]
+* Fix multihead regressions in X11 session [Jonas; #787477]
+* Fix screen rotation regressions [Hans; #787836]
+* Fix keybindings not being resolved with non-latin layouts [Jonas; #787016]
+* Support snap packages for sandboxed app IDs [Marco; #788217]
+* Fix crash when reconnecting tablet device [Jason; #787649]
+* Support running headless [Jonas; #730551, #787637]
+* Support _NET_RESTACK_WINDOW and ConfigureRequest siblings [Vasilis; #786365]
+* Fix monitor layout not being remembered across sessions [Jonas; #787629]
+* Make sure to export _NET_NUMBER_OF_DESKTOPS [Florian; #760651]
+* Allow resizing of tiled windows [Georges, Florian; #645153]
+* Export tiling information to clients [Georges; #751857]
+* Misc. bug fixes [Jonas, Florian, Jeremy, Rico; #787570, #787715, #787953,
+  #788049, #788199, #788292, #788197]
+
+Contributors:
+  Jonas Ådahl, Andrea Azzarone, Georges Basile Stavracas Neto, Hans de Goede,
+  Olivier Fourdan, Carlos Garnacho, Jason Gerecke, Vasilis Liaskovitis,
+  Rui Matos, Florian Müllner, Jeremy Soller, Marco Trevisan, Rico Tzschichholz
+
+Translations:
+  Matej Urbančič [sl], gogo [hr], Cheng-Chia Tseng [zh_TW]
+
 3.26.0
 ======
 Contributors:
