@@ -176,7 +176,7 @@ for (let i = 0; i < testsModifyScope.length; i++) {
 
         let matches = text.match(/(.*)\.(.*)/);
         if (matches) {
-            [expr, base, attrHead] = matches;
+            let [expr, base, attrHead] = matches;
 
             if (!JsParse.isUnsafeExpression(base)) {
                 with (obj) {
