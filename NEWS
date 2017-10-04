@@ -1,3 +1,29 @@
+3.26.1
+======
+* Don't detach launched apps to not break pkexec and friends [Florian; #763531]
+* Allow search providers to not autostart [Bastien, Florian; #785380, #787986]
+* Fix crash when tray icons are hidden/shown in quick succession [Ray; #787361]
+* Make window group switcher more consistent [Didier; #786009]
+* Improve legibility of the top bar when translucent [Jakub; #787940]
+* Don't crash when running outside a logind session [Florian; #788046]
+* Allow to run headless [Mario, Jonas; #730551]
+* Update calendar on timezone changes [Martin; #678507]
+* Improve keyboard navigation of window previews [Florian; #786546]
+* Run unit tests on `meson test` [Florian; #786497]
+* Misc. bug fixes [Florian, Marc-Antoine, Mario, Jakub, Krzesimir; #787423,
+  #766368, #787580, #787907, #787901, #788039, #788003, #786343, #787902,
+  #788265, #788339, #787905, #788282, #787676]
+
+Contributors:
+  Martin Andersson, Florian Müllner, Bastien Nocera, Krzesimir Nowak,
+  Marc-Antoine Perennou, Didier Roche, Mario Sanchez Prada, Jakub Steiner,
+  Ray Strode
+
+Translations:
+  Efstathios Iosifidis [el], Khaled Hosny [ar], Stas Solovey [ru],
+  Arash Mousavi [fa], Sveinn í Felli [is], Athul R T [ml],
+  Cheng-Chia Tseng [zh_TW], Anders Jonsson [sv]
+
 3.26.0
 ======
 * Misc. bug fixes [Ray, Michael, Jonas; #786332] #786783, #786886, #786868]
