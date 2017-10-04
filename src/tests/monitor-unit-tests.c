@@ -4941,7 +4941,7 @@ meta_test_monitor_migrated_rotated (void)
   if (!meta_migrate_old_monitors_config (config_store,
                                          old_config_file,
                                          &error))
-    g_error ("Failed to migrated config: %s", error->message);
+    g_error ("Failed to migrate config: %s", error->message);
 
   emulate_hotplug (test_setup);
 
