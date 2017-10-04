@@ -245,16 +245,33 @@ meta_input_settings_native_set_scroll_button (MetaInputSettings  *settings,
                                               guint               button)
 {
   struct libinput_device *libinput_device;
+  enum libinput_config_scroll_method method;
+  guint evcode;
 
   libinput_device = clutter_evdev_input_device_get_libinput_device (device);
   if (!libinput_device)
     return;
 
-  if (!device_set_scroll_method (libinput_device,
-                                 LIBINPUT_CONFIG_SCROLL_ON_BUTTON_DOWN))
+  if (button == 0)
+    {
+      method = LIBINPUT_CONFIG_SCROLL_NO_SCROLL;
+      evcode = 0;
+    }
+  else
+    {
+      /* Compensate for X11 scroll buttons */
+      if (button > 7)
+        button -= 4;
+
+      /* Button is 1-indexed */
+      evcode = (BTN_LEFT - 1) + button;
+      method = LIBINPUT_CONFIG_SCROLL_ON_BUTTON_DOWN;
+    }
+
+  if (!device_set_scroll_method (libinput_device, method))
     return;
 
-  libinput_device_config_scroll_set_button (libinput_device, button);
+  libinput_device_config_scroll_set_button (libinput_device, evcode);
 }
 
 static void
