@@ -16,6 +16,7 @@ var Dialog = new Lang.Class({
         this.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._initialKeyFocus = null;
+        this._initialKeyFocusDestroyId = 0;
         this._pressedKey = null;
         this._buttonKeys = {};
         this._createDialog();
@@ -87,6 +88,18 @@ var Dialog = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
+    _setInitialKeyFocus: function(actor) {
+        if (this._initialKeyFocus)
+            this._initialKeyFocus.disconnect(this._initialKeyFocusDestroyId);
+
+        this._initialKeyFocus = actor;
+
+        this._initialKeyFocusDestroyId = actor.connect('destroy', () => {
+            this._initialKeyFocus = null;
+            this._initialKeyFocusDestroyId = 0;
+        });
+    },
+
     get initialKeyFocus() {
         return this._initialKeyFocus || this;
     },
@@ -122,7 +135,7 @@ var Dialog = new Lang.Class({
             button.add_style_pseudo_class('default');
 
         if (this._initialKeyFocus == null || isDefault)
-            this._initialKeyFocus = button;
+            this._setInitialKeyFocus(button);
 
         for (let i in keys)
             this._buttonKeys[keys[i]] = buttonInfo;
