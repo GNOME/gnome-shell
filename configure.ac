@@ -245,6 +245,10 @@ AC_ARG_ENABLE(remote-desktop,
 )
 AS_IF([test "$enable_remote_desktop" = "yes"], [
   MUTTER_PC_MODULES="$MUTTER_PC_MODULES libpipewire-0.1 >= 0.1.4"
+  PKG_CHECK_EXISTS([libpipewire-0.1], [
+    pw_micro=`$PKG_CONFIG --modversion libpipewire-0.1 | cut -d. -f3`
+    AC_DEFINE_UNQUOTED([PIPEWIRE_VERSION_MICRO],[$pw_micro], [Pipewire micro version used])
+  ])
   AC_DEFINE([HAVE_REMOTE_DESKTOP],[1], [Defined if screen cast and remote desktop support is enabled])
 ])
 AM_CONDITIONAL([HAVE_REMOTE_DESKTOP],[test "$enable_remote_desktop" = "yes"])
