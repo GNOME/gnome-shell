@@ -593,8 +593,8 @@ meta_screen_cast_stream_src_finalize (GObject *object)
     meta_screen_cast_stream_src_disable (src);
 
   g_clear_pointer (&priv->pipewire_stream, (GDestroyNotify) pw_stream_destroy);
-  pw_remote_destroy (priv->pipewire_remote);
-  pw_core_destroy (priv->pipewire_core);
+  g_clear_pointer (&priv->pipewire_remote, (GDestroyNotify) pw_remote_destroy);
+  g_clear_pointer (&priv->pipewire_core, (GDestroyNotify) pw_core_destroy);
   g_source_destroy (&priv->pipewire_source->base);
 
   G_OBJECT_CLASS (meta_screen_cast_stream_src_parent_class)->finalize (object);
