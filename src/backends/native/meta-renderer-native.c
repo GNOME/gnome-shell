@@ -3052,16 +3052,9 @@ MetaRendererNative *
 meta_renderer_native_new (MetaMonitorManagerKms *monitor_manager_kms,
                           GError               **error)
 {
-  MetaRendererNative *renderer_native;
-
-  renderer_native = g_object_new (META_TYPE_RENDERER_NATIVE,
-                                  "monitor-manager", monitor_manager_kms,
-                                  NULL);
-  if (!g_initable_init (G_INITABLE (renderer_native), NULL, error))
-    {
-      g_object_unref (renderer_native);
-      return NULL;
-    }
-
-  return renderer_native;
+  return g_initable_new (META_TYPE_RENDERER_NATIVE,
+                         NULL,
+                         error,
+                         "monitor-manager", monitor_manager_kms,
+                         NULL);
 }
