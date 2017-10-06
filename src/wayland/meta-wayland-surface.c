@@ -182,6 +182,13 @@ static void
 surface_actor_allocation_notify (MetaSurfaceActorWayland *surface_actor,
                                  GParamSpec              *pspec,
                                  MetaWaylandSurface      *surface);
+static void
+surface_actor_position_notify (MetaSurfaceActorWayland *surface_actor,
+                               GParamSpec              *pspec,
+                               MetaWaylandSurface      *surface);
+static void
+window_position_changed (MetaWindow         *window,
+                         MetaWaylandSurface *surface);
 
 static void
 unset_param_value (GParameter *param)
@@ -421,13 +428,6 @@ meta_wayland_surface_destroy_window (MetaWaylandSurface *surface)
     {
       MetaDisplay *display = meta_get_display ();
       guint32 timestamp = meta_display_get_current_time_roundtrip (display);
-
-      g_signal_handlers_disconnect_by_func (surface->surface_actor,
-                                            surface_actor_mapped_notify,
-                                            surface);
-      g_signal_handlers_disconnect_by_func (surface->surface_actor,
-                                            surface_actor_allocation_notify,
-                                            surface);
 
       meta_window_unmanage (surface->window, timestamp);
     }
@@ -1272,11 +1272,32 @@ meta_wayland_surface_update_outputs (MetaWaylandSurface *surface)
                         surface);
 }
 
+static void
+meta_wayland_surface_update_outputs_recursively (MetaWaylandSurface *surface)
+{
+  GList *l;
+
+  meta_wayland_surface_update_outputs (surface);
+
+  for (l = surface->subsurfaces; l != NULL; l = l->next)
+    meta_wayland_surface_update_outputs_recursively (l->data);
+}
+
 void
 meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                  MetaWindow         *window)
 {
   gboolean was_unmapped = surface->window && !window;
+
+  if (surface->window == window)
+    return;
+
+  if (surface->window)
+    {
+      g_signal_handlers_disconnect_by_func (surface->window,
+                                            window_position_changed,
+                                            surface);
+    }
 
   surface->window = window;
   sync_reactive (surface);
@@ -1284,6 +1305,14 @@ meta_wayland_surface_set_window (MetaWaylandSurface *surface,
 
   if (was_unmapped)
     g_signal_emit (surface, surface_signals[SURFACE_UNMAPPED], 0);
+
+  if (window)
+    {
+      g_signal_connect_object (window,
+                               "position-changed",
+                               G_CALLBACK (window_position_changed),
+                               surface, 0);
+    }
 }
 
 static void
@@ -1320,6 +1349,15 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->input_region)
     cairo_region_destroy (surface->input_region);
 
+  g_signal_handlers_disconnect_by_func (surface->surface_actor,
+                                        surface_actor_mapped_notify,
+                                        surface);
+  g_signal_handlers_disconnect_by_func (surface->surface_actor,
+                                        surface_actor_allocation_notify,
+                                        surface);
+  g_signal_handlers_disconnect_by_func (surface->surface_actor,
+                                        surface_actor_position_notify,
+                                        surface);
   g_object_unref (surface->surface_actor);
 
   meta_wayland_compositor_destroy_frame_callbacks (compositor, surface);
@@ -1348,7 +1386,7 @@ surface_actor_mapped_notify (MetaSurfaceActorWayland *surface_actor,
                              GParamSpec              *pspec,
                              MetaWaylandSurface      *surface)
 {
-  meta_wayland_surface_update_outputs (surface);
+  meta_wayland_surface_update_outputs_recursively (surface);
 }
 
 static void
@@ -1356,7 +1394,22 @@ surface_actor_allocation_notify (MetaSurfaceActorWayland *surface_actor,
                                  GParamSpec              *pspec,
                                  MetaWaylandSurface      *surface)
 {
-  meta_wayland_surface_update_outputs (surface);
+  meta_wayland_surface_update_outputs_recursively (surface);
+}
+
+static void
+surface_actor_position_notify (MetaSurfaceActorWayland *surface_actor,
+                               GParamSpec              *pspec,
+                               MetaWaylandSurface      *surface)
+{
+  meta_wayland_surface_update_outputs_recursively (surface);
+}
+
+static void
+window_position_changed (MetaWindow         *window,
+                         MetaWaylandSurface *surface)
+{
+  meta_wayland_surface_update_outputs_recursively (surface);
 }
 
 MetaWaylandSurface *
@@ -1380,6 +1433,10 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   g_signal_connect_object (surface->surface_actor,
                            "notify::allocation",
                            G_CALLBACK (surface_actor_allocation_notify),
+                           surface, 0);
+  g_signal_connect_object (surface->surface_actor,
+                           "notify::position",
+                           G_CALLBACK (surface_actor_position_notify),
                            surface, 0);
   g_signal_connect_object (surface->surface_actor,
                            "notify::mapped",
