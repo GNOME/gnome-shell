@@ -465,6 +465,7 @@ cursor_over_transformed_logical_monitor (MetaCursorRenderer *renderer,
       MetaRectangle logical_monitor_layout;
       ClutterRect logical_monitor_rect;
       MetaMonitorTransform transform;
+      GList *monitors, *l_mon;
 
       logical_monitor_layout =
         meta_logical_monitor_get_layout (logical_monitor);
@@ -475,9 +476,17 @@ cursor_over_transformed_logical_monitor (MetaCursorRenderer *renderer,
                                       NULL))
         continue;
 
-      transform = meta_logical_monitor_get_transform (logical_monitor);
-      if (transform != META_MONITOR_TRANSFORM_NORMAL)
-        return TRUE;
+      monitors = meta_logical_monitor_get_monitors (logical_monitor);
+      for (l_mon = monitors; l_mon; l_mon = l_mon->next)
+        {
+          MetaMonitor *monitor = l_mon->data;
+
+          transform = meta_logical_monitor_get_transform (logical_monitor);
+          /* Get transform corrected for LCD panel-orientation. */
+          transform = meta_monitor_logical_to_crtc_transform (monitor, transform);
+          if (transform != META_MONITOR_TRANSFORM_NORMAL)
+            return TRUE;
+        }
     }
 
   return FALSE;
