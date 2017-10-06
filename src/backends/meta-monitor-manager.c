@@ -2856,6 +2856,7 @@ multiply_matrix (float a[6],
 
 gboolean
 meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
+                                         MetaMonitor        *monitor,
                                          MetaLogicalMonitor *logical_monitor,
                                          gfloat              matrix[6])
 {
@@ -2865,7 +2866,9 @@ meta_monitor_manager_get_monitor_matrix (MetaMonitorManager *manager,
   if (!calculate_viewport_matrix (manager, logical_monitor, viewport))
     return FALSE;
 
+  /* Get transform corrected for LCD panel-orientation. */
   transform = logical_monitor->transform;
+  transform = meta_monitor_logical_to_crtc_transform (monitor, transform);
   multiply_matrix (viewport, transform_matrices[transform],
                    matrix);
   return TRUE;

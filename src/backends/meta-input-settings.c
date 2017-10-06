@@ -772,12 +772,11 @@ update_keyboard_repeat (MetaInputSettings *input_settings)
                                              repeat, delay, interval);
 }
 
-static gboolean
-logical_monitor_has_monitor (MetaMonitorManager *monitor_manager,
-                             MetaLogicalMonitor *logical_monitor,
-                             const char         *vendor,
-                             const char         *product,
-                             const char         *serial)
+static MetaMonitor *
+logical_monitor_find_monitor (MetaLogicalMonitor *logical_monitor,
+                              const char         *vendor,
+                              const char         *product,
+                              const char         *serial)
 {
   GList *monitors;
   GList *l;
@@ -790,20 +789,22 @@ logical_monitor_has_monitor (MetaMonitorManager *monitor_manager,
       if (g_strcmp0 (meta_monitor_get_vendor (monitor), vendor) == 0 &&
           g_strcmp0 (meta_monitor_get_product (monitor), product) == 0 &&
           g_strcmp0 (meta_monitor_get_serial (monitor), serial) == 0)
-        return TRUE;
+        return monitor;
     }
 
-  return FALSE;
+  return NULL;
 }
 
-static MetaLogicalMonitor *
-meta_input_settings_find_logical_monitor (MetaInputSettings  *input_settings,
-                                          GSettings          *settings,
-                                          ClutterInputDevice *device)
+static void
+meta_input_settings_find_monitor (MetaInputSettings   *input_settings,
+                                  GSettings           *settings,
+                                  ClutterInputDevice  *device,
+                                  MetaMonitor        **out_monitor,
+                                  MetaLogicalMonitor **out_logical_monitor)
 {
   MetaInputSettingsPrivate *priv;
   MetaMonitorManager *monitor_manager;
-  MetaLogicalMonitor *ret = NULL;
+  MetaMonitor *monitor;
   guint n_values;
   GList *logical_monitors;
   GList *l;
@@ -831,20 +832,20 @@ meta_input_settings_find_logical_monitor (MetaInputSettings  *input_settings,
     {
       MetaLogicalMonitor *logical_monitor = l->data;
 
-      if (logical_monitor_has_monitor (monitor_manager,
-                                       logical_monitor,
-                                       edid[0],
-                                       edid[1],
-                                       edid[2]))
+      monitor = logical_monitor_find_monitor (logical_monitor,
+                                              edid[0], edid[1], edid[2]);
+      if (monitor)
         {
-          ret = logical_monitor;
+          if (out_monitor)
+            *out_monitor = monitor;
+          if (out_logical_monitor)
+            *out_logical_monitor = logical_monitor;
           break;
         }
     }
 
 out:
   g_strfreev (edid);
-  return ret;
 }
 
 static void
@@ -880,9 +881,8 @@ update_tablet_keep_aspect (MetaInputSettings  *input_settings,
       CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE)
     {
       keep_aspect = g_settings_get_boolean (settings, "keep-aspect");
-      logical_monitor = meta_input_settings_find_logical_monitor (input_settings,
-                                                                  settings,
-                                                                  device);
+      meta_input_settings_find_monitor (input_settings, settings, device,
+                                        NULL, &logical_monitor);
     }
   else
     {
@@ -901,7 +901,8 @@ update_device_display (MetaInputSettings  *input_settings,
   MetaInputSettingsClass *input_settings_class;
   MetaInputSettingsPrivate *priv;
   gfloat matrix[6] = { 1, 0, 0, 0, 1, 0 };
-  MetaLogicalMonitor *logical_monitor;
+  MetaMonitor *monitor = NULL;
+  MetaLogicalMonitor *logical_monitor = NULL;
 
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
       clutter_input_device_get_device_type (device) != CLUTTER_PEN_DEVICE &&
@@ -916,15 +917,12 @@ update_device_display (MetaInputSettings  *input_settings,
   if (clutter_input_device_get_device_type (device) == CLUTTER_TOUCHSCREEN_DEVICE ||
       clutter_input_device_get_mapping_mode (device) ==
       CLUTTER_INPUT_DEVICE_MAPPING_ABSOLUTE)
-    logical_monitor = meta_input_settings_find_logical_monitor (input_settings,
-                                                                settings,
-                                                                device);
-  else
-    logical_monitor = NULL;
+    meta_input_settings_find_monitor (input_settings, settings, device,
+                                      &monitor, &logical_monitor);
 
-  if (logical_monitor)
+  if (monitor)
     meta_monitor_manager_get_monitor_matrix (priv->monitor_manager,
-                                             logical_monitor, matrix);
+                                             monitor, logical_monitor, matrix);
 
   input_settings_class->set_matrix (input_settings, device, matrix);
 
@@ -1745,6 +1743,7 @@ MetaLogicalMonitor *
 meta_input_settings_get_tablet_logical_monitor (MetaInputSettings  *settings,
                                                 ClutterInputDevice *device)
 {
+  MetaLogicalMonitor *logical_monitor = NULL;
   MetaInputSettingsPrivate *priv;
   DeviceMappingInfo *info;
 
@@ -1756,9 +1755,9 @@ meta_input_settings_get_tablet_logical_monitor (MetaInputSettings  *settings,
   if (!info)
     return NULL;
 
-  return meta_input_settings_find_logical_monitor (settings,
-                                                   info->settings,
-                                                   device);
+  meta_input_settings_find_monitor (settings, info->settings, device,
+                                    NULL, &logical_monitor);
+  return logical_monitor;
 }
 
 GDesktopTabletMapping
@@ -1862,7 +1861,7 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
 {
   MetaInputSettingsPrivate *priv;
   DeviceMappingInfo *info;
-  MetaLogicalMonitor *logical_monitor;
+  MetaLogicalMonitor *logical_monitor = NULL;
   const gchar *edid[4] = { 0 }, *pretty_name = NULL;
 
   g_return_if_fail (META_IS_INPUT_SETTINGS (input_settings));
@@ -1885,9 +1884,9 @@ meta_input_settings_cycle_tablet_output (MetaInputSettings  *input_settings,
     }
 #endif
 
-  logical_monitor = meta_input_settings_find_logical_monitor (input_settings,
-                                                              info->settings,
-                                                              device);
+  meta_input_settings_find_monitor (input_settings, info->settings, device,
+                                    NULL, &logical_monitor);
+
   if (!cycle_logical_monitors (input_settings,
                                logical_monitor,
                                &logical_monitor))
