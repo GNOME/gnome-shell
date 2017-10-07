@@ -2664,6 +2664,13 @@ meta_test_monitor_no_outputs (void)
 
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
+
+  /* Also check that we handle going headless -> headless */
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
 }
 
 static void
