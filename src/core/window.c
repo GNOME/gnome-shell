@@ -3793,7 +3793,7 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
   new = find_monitor_by_winsys_id (window, window->preferred_output_winsys_id);
 
   /* Otherwise, try to find the old output on a new monitor */
-  if (!new)
+  if (old && !new)
     new = find_monitor_by_winsys_id (window, old->winsys_id);
 
   /* Fall back to primary if everything else failed */
