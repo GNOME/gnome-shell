@@ -247,7 +247,7 @@ blur_pixels (guchar  *pixels_in,
              gint    *rowstride_out)
 {
   guchar *pixels_out;
-  float   sigma;
+  gdouble sigma;
 
   /* The CSS specification defines (or will define) the blur radius as twice
    * the Gaussian standard deviation. See:
