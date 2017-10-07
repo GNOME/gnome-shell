@@ -351,6 +351,9 @@ var LayoutManager = new Lang.Class({
                 this._loadBackground();
                 this._pendingLoadBackground = false;
             }
+        } else {
+            this.primaryMonitor = null;
+            this.bottomMonitor = null;
         }
     },
 
