@@ -920,11 +920,13 @@ update_gtk_edge_constraints (MetaWindow *window)
 
   meta_verbose ("Setting _GTK_EDGE_CONSTRAINTS to %lu\n", data[0]);
 
+  meta_error_trap_push (window->display);
   XChangeProperty (window->display->xdisplay,
                    window->xwindow,
                    window->display->atom__GTK_EDGE_CONSTRAINTS,
                    XA_CARDINAL, 32, PropModeReplace,
                    (guchar*) data, 1);
+  meta_error_trap_pop (window->display);
 }
 
 static gboolean
