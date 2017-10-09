@@ -168,6 +168,9 @@ var Keyboard = new Lang.Class({
         this._caretTrackingEnabled = false;
         this._updateCaretPositionId = 0;
 
+        this._enableKeyboard = false; // a11y settings value
+        this._enabled = false; // enabled state (by setting or device type)
+
         this._keyboardSettings = new Gio.Settings({ schema_id: KEYBOARD_SCHEMA });
         this._keyboardSettings.connect('changed', Lang.bind(this, this._sync));
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
@@ -305,14 +308,14 @@ var Keyboard = new Lang.Class({
     },
 
     _syncEnabled: function () {
-        this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD) ||
-                               this._lastDeviceIsTouchscreen();
-        if (!this._enableKeyboard && !this._keyboard)
+        this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
+        this._enabled = this._enableKeyboard || this._lastDeviceIsTouchscreen();
+        if (!this._enabled && !this._keyboard)
             return;
 
-        this._setCaretTrackerEnabled(this._enableKeyboard);
+        this._setCaretTrackerEnabled(this._enabled);
 
-        if (this._enableKeyboard) {
+        if (this._enabled) {
             if (!this._keyboard)
                 this._setupKeyboard();
             else
@@ -509,7 +512,7 @@ var Keyboard = new Lang.Class({
     },
 
     _redraw: function () {
-        if (!this._enableKeyboard)
+        if (!this._enabled)
             return;
 
         let monitor = Main.layoutManager.keyboardMonitor;
@@ -614,7 +617,7 @@ var Keyboard = new Lang.Class({
     },
 
     show: function (monitor) {
-        if (!this._enableKeyboard)
+        if (!this._enabled)
             return;
 
         this._clearShowIdle();
@@ -650,7 +653,7 @@ var Keyboard = new Lang.Class({
     },
 
     hide: function () {
-        if (!this._enableKeyboard)
+        if (!this._enabled)
             return;
 
         this._clearShowIdle();
@@ -713,14 +716,14 @@ var Keyboard = new Lang.Class({
     },
 
     setCursorLocation: function(x, y, w, h) {
-        if (!this._enableKeyboard)
+        if (!this._enabled)
             return;
 
 //        this._setLocation(x, y);
     },
 
     setEntryLocation: function(x, y, w, h) {
-        if (!this._enableKeyboard)
+        if (!this._enabled)
             return;
 
 //        this._setLocation(x, y);
