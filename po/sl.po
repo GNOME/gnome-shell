@@ -363,7 +363,7 @@ msgstr "Izbor seje"
 #. manually entering the username.
 #: js/gdm/loginDialog.js:458
 msgid "Not listed?"
-msgstr "Ali je ni na seznamu?"
+msgstr "Ali uporabniškeg imena ni na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
