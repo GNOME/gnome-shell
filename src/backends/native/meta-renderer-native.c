@@ -1792,6 +1792,7 @@ meta_renderer_native_create_surface_egl_device (CoglOnscreen       *onscreen,
 
   return TRUE;
 }
+#endif /* HAVE_EGL_DEVICE */
 
 static gboolean
 init_dumb_fb (MetaDumbBuffer  *dumb_fb,
@@ -1928,7 +1929,6 @@ release_dumb_fb (MetaDumbBuffer *dumb_fb,
   };
   drmIoctl (kms_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &destroy_arg);
 }
-#endif /* HAVE_EGL_DEVICE */
 
 static gboolean
 meta_renderer_native_init_onscreen (CoglOnscreen *onscreen,
