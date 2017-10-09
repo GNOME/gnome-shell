@@ -80,6 +80,7 @@ CANBERRA_GTK_VERSION=0.26
 LIBWACOM_VERSION=0.13
 
 MUTTER_PC_MODULES="
+   gl
    egl
    gtk+-3.0 >= 3.19.8
    gio-unix-2.0 >= 2.35.1
