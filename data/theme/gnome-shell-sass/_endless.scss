@@ -17,6 +17,22 @@
   background: #12282e url(resource:///org/gnome/shell/theme/noise-texture.png);
 }
 
+.screen-shield-clock-time {
+  font-family: Metropolis Medium, sans-serif;
+  font-weight: 500; /* Medium */
+  font-size: 100px;
+  text-shadow: 5px 0px 7px rgba(0, 0, 0, 0.25);
+  color: rgba(246, 246, 246, 0.7);
+}
+
+.screen-shield-clock-date {
+  font-family: Metropolis Semibold, sans-serif;
+  font-weight: 600; /* Semibold */
+  font-size: 36px;
+  text-shadow: 5px 0px 7px rgba(0, 0, 0, 0.35);
+  color: rgba(246, 246, 246, 0.7);
+}
+
 // Force Apps dialog
 
 .force-app-exit-dialog {

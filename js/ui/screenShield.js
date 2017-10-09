@@ -417,6 +417,30 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
+var ArrowContainerConstraint = GObject.registerClass(
+class ArrowContainerConstraint extends Clutter.Constraint {
+    _init(contentsActor, clockActor) {
+        super._init();
+
+        this._contentsActor = contentsActor;
+        this._clockActor = clockActor;
+    }
+
+    vfunc_update_allocation(actor, actorBox) {
+        let [clockActorPosX, clockActorPosY] = this._clockActor.get_transformed_position();
+        let [clockActorWidth, clockActorHeight] = this._clockActor.get_transformed_size();
+
+        let availableHeight = this._contentsActor.get_height() - Main.panel.actor.get_height();
+        let clockActorBottom = clockActorPosY + clockActorHeight;
+        let arrowsContainerHeight = availableHeight - clockActorBottom;
+        let verticalPadding = Math.max(0, arrowsContainerHeight - actorBox.get_height()) / 2.0;
+
+        // Center vertically between the clock actor and the bottom panel.
+        actorBox.init_rect(actorBox.get_x(), clockActorBottom + verticalPadding,
+                           actorBox.get_width(), actorBox.get_height());
+    }
+});
+
 /**
  * If you are setting org.gnome.desktop.session.idle-delay directly in dconf,
  * rather than through System Settings, you also need to set
@@ -458,24 +482,6 @@ var ScreenShield = class {
 
         this._updateBackgrounds();
         Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
-
-        this._arrowAnimationId = 0;
-        this._arrowWatchId = 0;
-        this._arrowActiveWatchId = 0;
-        this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
-                                                  vertical: true,
-                                                  x_align: Clutter.ActorAlign.CENTER,
-                                                  y_align: Clutter.ActorAlign.END,
-                                                  // HACK: without these, ClutterBinLayout
-                                                  // ignores alignment properties on the actor
-                                                  x_expand: true,
-                                                  y_expand: true });
-
-        for (let i = 0; i < N_ARROWS; i++) {
-            let arrow = new Arrow({ opacity: 0 });
-            this._arrowContainer.add_actor(arrow);
-        }
-        this._lockScreenContents.add_actor(this._arrowContainer);
 
         this._dragAction = new Clutter.GestureAction();
         this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
@@ -1146,6 +1152,21 @@ var ScreenShield = class {
         this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
                                                                         y_fill: true,
                                                                         expand: true });
+
+        this._arrowAnimationId = 0;
+        this._arrowWatchId = 0;
+        this._arrowActiveWatchId = 0;
+        this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
+                                                  vertical: true,
+                                                  x_align: Clutter.ActorAlign.CENTER,
+                                                  x_expand: true});
+
+        for (let i = 0; i < N_ARROWS; i++) {
+            let arrow = new Arrow({ opacity: 0 });
+            this._arrowContainer.add_actor(arrow);
+        }
+        this._lockScreenContents.add_actor(this._arrowContainer);
+        this._arrowContainer.add_constraint(new ArrowContainerConstraint(this._lockScreenContents, this._clock.actor));
 
         this._hasLockScreen = true;
     }
