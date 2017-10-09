@@ -660,7 +660,6 @@ var WindowOverlay = new Lang.Class({
         if (this._hidden)
             return;
 
-        this._windowClone.actor.grab_key_focus();
         this._animateVisible();
         this.emit('show-close-button');
     },
@@ -1852,7 +1851,12 @@ var Workspace = new Lang.Class({
 
         this.actor.add_actor(clone.actor);
 
-        overlay.connect('show-close-button', this._onShowOverlayClose.bind(this));
+        overlay.connect('show-close-button', () => {
+            let focus = global.stage.key_focus;
+            if (focus == null || this.actor.contains(focus))
+                clone.actor.grab_key_focus();
+            this._onShowOverlayClose(overlay);
+        });
 
         if (this._windows.length == 0)
             clone.setStackAbove(null);
