@@ -65,6 +65,7 @@ struct _ShellGlobal {
   MetaScreen *meta_screen;
 
   char *session_mode;
+  char *override_schema;
 
   XserverRegion input_region;
 
@@ -96,6 +97,7 @@ enum {
   PROP_0,
 
   PROP_SESSION_MODE,
+  PROP_OVERRIDE_SCHEMA,
   PROP_SCREEN,
   PROP_DISPLAY,
   PROP_SCREEN_WIDTH,
@@ -138,6 +140,10 @@ shell_global_set_property(GObject         *object,
       g_clear_pointer (&global->session_mode, g_free);
       global->session_mode = g_ascii_strdown (g_value_get_string (value), -1);
       break;
+    case PROP_OVERRIDE_SCHEMA:
+      g_clear_pointer (&global->override_schema, g_free);
+      global->override_schema = g_value_dup_string (value);
+      break;
     case PROP_FRAME_TIMESTAMPS:
       global->frame_timestamps = g_value_get_boolean (value);
       break;
@@ -162,6 +168,9 @@ shell_global_get_property(GObject         *object,
     {
     case PROP_SESSION_MODE:
       g_value_set_string (value, shell_global_get_session_mode (global));
+      break;
+    case PROP_OVERRIDE_SCHEMA:
+      g_value_set_string (value, global->override_schema);
       break;
     case PROP_SCREEN:
       g_value_set_object (value, global->meta_screen);
@@ -368,6 +377,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                    g_param_spec_string ("session-mode",
                                                         "Session Mode",
                                                         "The session mode to use",
+                                                        NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+  g_object_class_install_property (gobject_class,
+                                   PROP_OVERRIDE_SCHEMA,
+                                   g_param_spec_string ("override-schema",
+                                                        "Override Schema",
+                                                        "The override schema to use",
                                                         "user",
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (gobject_class,
@@ -1360,7 +1376,9 @@ shell_global_get_overrides_settings (ShellGlobal *global)
 
   if (!settings)
     {
-      if (strcmp (global->session_mode, "classic") == 0)
+      if (global->override_schema != NULL)
+        schema = global->override_schema;
+      else if (strcmp (global->session_mode, "classic") == 0)
         schema = "org.gnome.shell.extensions.classic-overrides";
       else if (strcmp (global->session_mode, "user") == 0)
         schema = "org.gnome.shell.overrides";
