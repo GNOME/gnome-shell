@@ -3750,11 +3750,15 @@ maybe_move_attached_dialog (MetaWindow *window,
  *
  * Gets index of the monitor that this window is on.
  *
- * Return Value: The index of the monitor in the screens monitor list
+ * Return Value: The index of the monitor in the screens monitor list, or -1
+ * if the window has been recently unmanaged and does not have a monitor.
  */
 int
 meta_window_get_monitor (MetaWindow *window)
 {
+  if (!window->monitor)
+    return -1;
+
   return window->monitor->number;
 }
 
