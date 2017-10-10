@@ -111,7 +111,8 @@ struct _MetaInputSettingsClass
                                   ClutterInputDevice         *device,
                                   ClutterInputDeviceTool     *tool,
                                   GDesktopStylusButtonAction  primary,
-                                  GDesktopStylusButtonAction  secondary);
+                                  GDesktopStylusButtonAction  secondary,
+                                  GDesktopStylusButtonAction  tertiary);
   gboolean (* has_two_finger_scroll) (MetaInputSettings  *settings,
                                       ClutterInputDevice *device);
 };

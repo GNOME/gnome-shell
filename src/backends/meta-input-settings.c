@@ -1525,7 +1525,7 @@ update_stylus_buttonmap (MetaInputSettings      *input_settings,
                          ClutterInputDeviceTool *tool)
 {
   MetaInputSettingsClass *input_settings_class;
-  GDesktopStylusButtonAction primary, secondary;
+  GDesktopStylusButtonAction primary, secondary, tertiary;
   GSettings *tool_settings;
 
   if (clutter_input_device_get_device_type (device) != CLUTTER_TABLET_DEVICE &&
@@ -1540,10 +1540,11 @@ update_stylus_buttonmap (MetaInputSettings      *input_settings,
 
   primary = g_settings_get_enum (tool_settings, "button-action");
   secondary = g_settings_get_enum (tool_settings, "secondary-button-action");
+  tertiary = g_settings_get_enum (tool_settings, "tertiary-button-action");
 
   input_settings_class = META_INPUT_SETTINGS_GET_CLASS (input_settings);
   input_settings_class->set_stylus_button_map (input_settings, device, tool,
-                                               primary, secondary);
+                                               primary, secondary, tertiary);
 }
 
 static void

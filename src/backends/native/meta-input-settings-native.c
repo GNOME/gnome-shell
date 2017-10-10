@@ -547,12 +547,15 @@ meta_input_settings_native_set_stylus_button_map (MetaInputSettings          *se
                                                   ClutterInputDevice         *device,
                                                   ClutterInputDeviceTool     *tool,
                                                   GDesktopStylusButtonAction  primary,
-                                                  GDesktopStylusButtonAction  secondary)
+                                                  GDesktopStylusButtonAction  secondary,
+                                                  GDesktopStylusButtonAction  tertiary)
 {
   clutter_evdev_input_device_tool_set_button_code (tool, CLUTTER_BUTTON_MIDDLE,
                                                    action_to_evcode (primary));
   clutter_evdev_input_device_tool_set_button_code (tool, CLUTTER_BUTTON_SECONDARY,
                                                    action_to_evcode (secondary));
+  clutter_evdev_input_device_tool_set_button_code (tool, 8, /* Back */
+                                                   action_to_evcode (tertiary));
 }
 
 static void

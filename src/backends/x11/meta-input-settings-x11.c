@@ -732,7 +732,8 @@ meta_input_settings_x11_set_stylus_button_map (MetaInputSettings          *setti
                                                ClutterInputDevice         *device,
                                                ClutterInputDeviceTool     *tool,
                                                GDesktopStylusButtonAction  primary,
-                                               GDesktopStylusButtonAction  secondary)
+                                               GDesktopStylusButtonAction  secondary,
+                                               GDesktopStylusButtonAction  tertiary)
 {
   MetaDisplay *display = meta_get_display ();
   MetaBackend *backend = meta_get_backend ();
@@ -748,10 +749,15 @@ meta_input_settings_x11_set_stylus_button_map (MetaInputSettings          *setti
   xdev = XOpenDevice (xdisplay, device_id);
   if (xdev)
     {
-      guchar map[3] = {
+      guchar map[8] = {
         CLUTTER_BUTTON_PRIMARY,
         action_to_button (primary, CLUTTER_BUTTON_MIDDLE),
         action_to_button (secondary, CLUTTER_BUTTON_SECONDARY),
+        4,
+        5,
+        6,
+        7,
+        action_to_button (tertiary, 8), /* "Back" */
       };
 
       XSetDeviceButtonMapping (xdisplay, xdev, map, G_N_ELEMENTS (map));
