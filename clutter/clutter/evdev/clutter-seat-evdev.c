@@ -45,6 +45,10 @@
 
 #define DISCRETE_SCROLL_STEP 10.0
 
+#ifndef BTN_STYLUS3
+#define BTN_STYLUS3 0x149 /* Linux 4.15 */
+#endif
+
 void
 clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev     *seat,
                                       struct libinput_seat *libinput_seat)
@@ -490,6 +494,10 @@ clutter_seat_evdev_notify_button (ClutterSeatEvdev   *seat,
     case BTN_MIDDLE:
     case BTN_STYLUS2:
       button_nr = CLUTTER_BUTTON_MIDDLE;
+      break;
+
+    case 0x149: /* BTN_STYLUS3 */
+      button_nr = 8;
       break;
 
     default:
