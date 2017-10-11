@@ -16,6 +16,7 @@ const InputSourceManager = imports.ui.status.keyboard;
 const BoxPointer = imports.ui.boxpointer;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 
 var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
 var KEY_LONG_PRESS_TIME = 250;
@@ -417,6 +418,8 @@ var Keyboard = new Lang.Class({
         this._currentAccessible = null;
         this._caretTrackingEnabled = false;
         this._updateCaretPositionId = 0;
+        this._currentFocusWindow = null;
+        this._originalWindowY = null;
 
         this._enableKeyboard = false; // a11y settings value
         this._enabled = false; // enabled state (by setting or device type)
@@ -448,6 +451,13 @@ var Keyboard = new Lang.Class({
         this._keyboardRestingId = 0;
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
+        //Main.inputMethod.connect('cursor-location-changed', Lang.bind(this, function(o, rect) {
+        //    if (this._keyboardVisible) {
+        //        let currentWindow = global.screen.get_display().focus_window;
+        //        this.setCursorLocation(currentWindow, rect.get_x(), rect.get_y(),
+        //                               rect.get_width(), rect.get_height());
+        //    }
+        //}));
     },
 
     get visible() {
@@ -472,12 +482,16 @@ var Keyboard = new Lang.Class({
     _updateCaretPosition: function (accessible) {
         if (this._updateCaretPositionId)
             GLib.source_remove(this._updateCaretPositionId);
+        if (!this._keyboardRequested)
+            return;
         this._updateCaretPositionId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, Lang.bind(this, function() {
             this._updateCaretPositionId = 0;
 
             let currentWindow = global.screen.get_display().focus_window;
-            if (!currentWindow)
+            if (!currentWindow) {
+                this.setCursorLocation(null);
                 return GLib.SOURCE_REMOVE;
+            }
 
             let windowRect = currentWindow.get_frame_rect();
             let text = accessible.get_text_iface();
@@ -488,16 +502,10 @@ var Keyboard = new Lang.Class({
                 let caretRect = text.get_character_extents(caretOffset, Atspi.CoordType.WINDOW);
                 let focusRect = component.get_extents(Atspi.CoordType.WINDOW);
 
-                caretRect.x += windowRect.x;
-                caretRect.y += windowRect.y;
-                focusRect.x += windowRect.x;
-                focusRect.y += windowRect.y;
-
                 if (caretRect.width == 0 && caretRect.height == 0)
                     caretRect = focusRect;
 
-                this.setEntryLocation(focusRect.x, focusRect.y, focusRect.width, focusRect.height);
-                this.setCursorLocation(caretRect.x, caretRect.y, caretRect.width, caretRect.height);
+                this.setCursorLocation(currentWindow, caretRect.x, caretRect.y, caretRect.width, caretRect.height);
             } catch (e) {
                 log('Error updating caret position for OSK: ' + e.message);
             }
@@ -565,6 +573,8 @@ var Keyboard = new Lang.Class({
 
         if (this._enabled && !this._keyboardController)
             this._setupKeyboard();
+        else if (!this._enabled)
+            this.setCursorLocation(null);
 
         if (!this._enabled && wasEnabled)
             Main.layoutManager.hideKeyboard(true);
@@ -896,6 +906,8 @@ var Keyboard = new Lang.Class({
         if (!this._keyboardRequested)
             return;
 
+        if (this._currentAccessible)
+            this._updateCaretPosition(this._currentAccessible);
         Main.layoutManager.keyboardIndex = monitor;
         this._relayout();
         Main.layoutManager.showKeyboard();
@@ -927,6 +939,7 @@ var Keyboard = new Lang.Class({
             return;
 
         Main.layoutManager.hideKeyboard();
+        this.setCursorLocation(null);
     },
 
     resetSuggestions: function(suggestions) {
@@ -943,20 +956,6 @@ var Keyboard = new Lang.Class({
         this._suggestions.actor.show();
     },
 
-    _moveTemporarily: function () {
-        let currentWindow = global.screen.get_display().focus_window;
-        let rect = currentWindow.get_frame_rect();
-
-        let newX = rect.x;
-        let newY = 3 * this.actor.height / 2;
-        currentWindow.move_frame(true, newX, newY);
-    },
-
-    _setLocation: function (x, y) {
-        if (y >= 2 * this.actor.height)
-            this._moveTemporarily();
-    },
-
     _clearShowIdle: function() {
         if (!this._showIdleId)
             return;
@@ -964,18 +963,65 @@ var Keyboard = new Lang.Class({
         this._showIdleId = 0;
     },
 
-    setCursorLocation: function(x, y, w, h) {
-        if (!this._enabled)
-            return;
-
-//        this._setLocation(x, y);
+    _windowSlideAnimationComplete: function(window, delta) {
+        // Synchronize window and actor positions again.
+        let windowActor = window.get_compositor_private();
+        let frameRect = window.get_frame_rect();
+        frameRect.y += delta;
+        window.move_frame(true, frameRect.x, frameRect.y);
     },
 
-    setEntryLocation: function(x, y, w, h) {
-        if (!this._enabled)
+    _animateWindow: function(window, show, deltaY) {
+        let windowActor = window.get_compositor_private();
+        if (!windowActor)
             return;
 
-//        this._setLocation(x, y);
+        if (show) {
+            Tweener.addTween(windowActor,
+                             { y: windowActor.y - deltaY,
+                               time: Layout.KEYBOARD_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: this._windowSlideAnimationComplete,
+                               onCompleteParams: [window, -deltaY] });
+        } else {
+            Tweener.addTween(windowActor,
+                             { y: windowActor.y + deltaY,
+                               time: Layout.KEYBOARD_ANIMATION_TIME,
+                               transition: 'easeInQuad',
+                               onComplete: this._windowSlideAnimationComplete,
+                               onCompleteParams: [window, deltaY] });
+        }
+    },
+
+    setCursorLocation: function(window, x, y , w, h) {
+        if (window == this._oskFocusWindow)
+            return;
+
+        if (this._oskFocusWindow) {
+            let display = global.screen.get_display();
+
+            if (display.get_grab_op() == Meta.GrabOp.NONE ||
+                display.get_focus_window() != this._oskFocusWindow)
+                this._animateWindow(this._oskFocusWindow, false, this._oskFocusWindowDelta);
+
+            this._oskFocusWindow = null;
+            this._oskFocusWindowDelta = null;
+        }
+
+        if (window) {
+            let monitor = Main.layoutManager.keyboardMonitor;
+            let keyboardHeight = Main.layoutManager.keyboardBox.height;
+            let frameRect = window.get_frame_rect();
+            let windowActor = window.get_compositor_private();
+            let delta = 0;
+
+            if (frameRect.y + y + h >= monitor.height - keyboardHeight)
+                delta = keyboardHeight;
+
+            this._animateWindow(window, true, delta);
+            this._oskFocusWindow = window;
+            this._oskFocusWindowDelta = delta;
+        }
     },
 });
 
