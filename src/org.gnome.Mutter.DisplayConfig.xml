@@ -394,6 +394,10 @@
 				       always use the same scale. Absence of
 				       this means logical monitor scales can
 				       differ.
+	* "legacy-ui-scaling-factor" (i): The legacy scaling factor traditionally
+				          used to scale X11 clients (commonly
+					  communicated via the
+					  Gdk/WindowScalingFactor XSetting entry).
     -->
     <method name="GetCurrentState">
       <arg name="serial" direction="out" type="u" />

@@ -1261,12 +1261,14 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                                                GDBusMethodInvocation *invocation)
 {
   MetaMonitorManager *manager = META_MONITOR_MANAGER (skeleton);
+  MetaSettings *settings = meta_backend_get_settings (manager->backend);
   GVariantBuilder monitors_builder;
   GVariantBuilder logical_monitors_builder;
   GVariantBuilder properties_builder;
   GList *l;
   int i;
   MetaMonitorManagerCapability capabilities;
+  int ui_scaling_factor;
   int max_screen_width, max_screen_height;
 
   g_variant_builder_init (&monitors_builder,
@@ -1443,6 +1445,11 @@ meta_monitor_manager_handle_get_current_state (MetaDBusDisplayConfig *skeleton,
                              "global-scale-required",
                              g_variant_new_boolean (TRUE));
     }
+
+  ui_scaling_factor = meta_settings_get_ui_scaling_factor (settings);
+  g_variant_builder_add (&properties_builder, "{sv}",
+                         "legacy-ui-scaling-factor",
+                         g_variant_new_int32 (ui_scaling_factor));
 
   if (meta_monitor_manager_get_max_screen_size (manager,
                                                 &max_screen_width,
