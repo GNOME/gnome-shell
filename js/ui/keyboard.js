@@ -939,9 +939,12 @@ var Keyboard = new Lang.Class({
         if (this.actor == null)
             return;
         let monitor = Main.layoutManager.keyboardMonitor;
-        let maxHeight = monitor.height / 3;
-        this.actor.width = monitor.width;
-        this.actor.height = maxHeight;
+
+        if (monitor) {
+            let maxHeight = monitor.height / 3;
+            this.actor.width = monitor.width;
+            this.actor.height = maxHeight;
+        }
     },
 
     _onGroupChanged() {
@@ -1000,6 +1003,8 @@ var Keyboard = new Lang.Class({
     show(monitor) {
         if (!this._enabled)
             return;
+
+       
 
         this._clearShowIdle();
         this._keyboardRequested = true;
