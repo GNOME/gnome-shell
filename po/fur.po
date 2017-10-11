@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-22 11:17+0000\n"
-"PO-Revision-Date: 2017-08-23 17:01+0200\n"
+"POT-Creation-Date: 2017-10-04 18:03+0000\n"
+"PO-Revision-Date: 2017-10-11 08:34+0200\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -659,12 +659,12 @@ msgstr "Zonte tai preferîts"
 msgid "Show Details"
 msgstr "Mostre Detais"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:141
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s al è stât zontât tai tiei preferîts."
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:175
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s al è stât gjavât dai tiei preferîts."
@@ -753,51 +753,51 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: js/ui/calendar.js:442
+#: js/ui/calendar.js:449
 msgid "Previous month"
 msgstr "Mês indaûr"
 
-#: js/ui/calendar.js:452
+#: js/ui/calendar.js:459
 msgid "Next month"
 msgstr "Prossim mês"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "Setemane %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Dut il dì"
 
-#: js/ui/calendar.js:862
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d di %B"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d di %B dal %Y"
 
-#: js/ui/calendar.js:1086
+#: js/ui/calendar.js:1093
 msgid "No Notifications"
 msgstr "Nissune notifiche"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1096
 msgid "No Events"
 msgstr "Nissun event"
 
-#: js/ui/calendar.js:1117
+#: js/ui/calendar.js:1124
 msgid "Clear All"
 msgstr "Nete dut"
 
@@ -831,7 +831,7 @@ msgstr "Dispositîf esterni tacât"
 msgid "External drive disconnected"
 msgstr "Dispositîf esterni distacât"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:358
 #, javascript-format
 msgid "Open with %s"
 msgstr "Vierç cun %s"
@@ -968,7 +968,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:76
 msgid "%B %e %Y"
 msgstr "%e di %B dal %Y"
 
@@ -976,19 +976,19 @@ msgstr "%e di %B dal %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%A %e di %B dal %Y"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:145
 msgid "Add world clocks…"
 msgstr "Zonte orlois mondiâi..."
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:146
 msgid "World Clocks"
 msgstr "Orlois mondiâi"
 
-#: js/ui/dateMenu.js:224
+#: js/ui/dateMenu.js:225
 msgid "Weather"
 msgstr "Timp"
 
@@ -996,7 +996,7 @@ msgstr "Timp"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:286
+#: js/ui/dateMenu.js:289
 #, javascript-format
 msgid "%s all day."
 msgstr "%s dut il dì."
@@ -1005,7 +1005,7 @@ msgstr "%s dut il dì."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:292
+#: js/ui/dateMenu.js:295
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, plui tart %s."
@@ -1014,30 +1014,30 @@ msgstr "%s, plui tart %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:298
+#: js/ui/dateMenu.js:301
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, chi di un pôc %s, e plui tart %s."
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:312
 msgid "Select a location…"
 msgstr "Selezione une posizion..."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:315
 msgid "Loading…"
 msgstr "Daûr a cjariâ..."
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:318
+#: js/ui/dateMenu.js:321
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Si sint %s."
 
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:324
 msgid "Go online for weather information"
 msgstr "Va in rêt pes informazions sul timp"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:326
 msgid "Weather information is currently unavailable"
 msgstr "Lis informazions sul timp al moment no son disponibilis"
 
@@ -1276,7 +1276,7 @@ msgstr "Viôt sorzint"
 msgid "Web Page"
 msgstr "Pagjine Web"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1494
 msgid "System Information"
 msgstr "Informazion di sisteme"
 
@@ -1449,12 +1449,11 @@ msgstr "Nissun risultât."
 
 # o ancjemò %d
 #: js/ui/search.js:777
-#, fuzzy, javascript-format
-#| msgid "%d more"
+#, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
-msgstr[0] "Ancjemò %d"
-msgstr[1] "Ancjemò %d"
+msgstr[0] "%d altri"
+msgstr[1] "%d altris"
 
 #: js/ui/shellEntry.js:25
 msgid "Copy"
