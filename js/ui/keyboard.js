@@ -924,9 +924,11 @@ var Keyboard = new Lang.Class({
     },
 
     _relayout() {
-        if (this.actor == null)
-            return;
         let monitor = Main.layoutManager.keyboardMonitor;
+
+        if (this.actor == null || monitor == null)
+            return;
+
         let maxHeight = monitor.height / 3;
         this.actor.width = monitor.width;
         this.actor.height = maxHeight;
