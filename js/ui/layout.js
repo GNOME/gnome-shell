@@ -556,10 +556,6 @@ var LayoutManager = new Lang.Class({
         return i;
     },
 
-    get focusMonitor() {
-        return this.monitors[this.focusIndex];
-    },
-
     set keyboardIndex(v) {
         this._keyboardIndex = v;
         this._updateKeyboardBox();
