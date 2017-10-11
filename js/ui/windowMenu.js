@@ -128,10 +128,9 @@ var WindowMenu = new Lang.Class({
 
         let screen = global.screen;
         let nMonitors = screen.get_n_monitors();
-        if (nMonitors > 1) {
+        let monitorIndex = window.get_monitor();
+        if (nMonitors > 1 && monitorIndex >= 0) {
             this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-            let monitorIndex = window.get_monitor();
 
             let dir = Meta.ScreenDirection.UP;
             let upMonitorIndex =
