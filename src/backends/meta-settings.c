@@ -67,23 +67,14 @@ calculate_ui_scaling_factor (MetaSettings *settings)
 {
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (settings->backend);
-  GList *logical_monitors;
-  GList *l;
-  float max_scale = 1.0;
+  MetaLogicalMonitor *primary_logical_monitor;
 
-  logical_monitors =
-    meta_monitor_manager_get_logical_monitors (monitor_manager);
-  for (l = logical_monitors; l; l = l->next)
-    {
-      MetaLogicalMonitor *logical_monitor = l->data;
+  primary_logical_monitor =
+    meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
+  if (!primary_logical_monitor)
+    return 1;
 
-      max_scale = MAX (meta_logical_monitor_get_scale (logical_monitor),
-                       max_scale);
-    }
-
-  g_warn_if_fail (fmodf (max_scale, 1.0) == 0.0);
-
-  return (int) max_scale;
+  return (int) meta_logical_monitor_get_scale (primary_logical_monitor);
 }
 
 static gboolean
