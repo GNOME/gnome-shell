@@ -54,6 +54,16 @@ enum {
 
 static GParamSpec *obj_props[N_PROPS] = { 0 };
 
+typedef struct _SlowKeysEventPending
+{
+  ClutterInputDeviceEvdev *device;
+  ClutterEvent *event;
+  ClutterEmitInputDeviceEvent emit_event_func;
+  guint timer;
+} SlowKeysEventPending;
+
+static void clear_slow_keys      (ClutterInputDeviceEvdev *device);
+
 static void
 clutter_input_device_evdev_finalize (GObject *object)
 {
@@ -66,6 +76,8 @@ clutter_input_device_evdev_finalize (GObject *object)
     libinput_device_unref (device_evdev->libinput_device);
 
   _clutter_device_manager_evdev_release_device_id (manager_evdev, device);
+
+  clear_slow_keys (device_evdev);
 
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
 }
@@ -210,6 +222,130 @@ clutter_input_device_evdev_is_grouped (ClutterInputDevice *device,
 }
 
 static void
+clutter_input_device_evdev_bell_notify (void)
+{
+  ClutterBackend *backend;
+
+  backend = clutter_get_default_backend ();
+  clutter_backend_bell_notify (backend);
+}
+
+static void
+clutter_input_device_evdev_free_pending_slow_key (gpointer data)
+{
+  SlowKeysEventPending *slow_keys_event = data;
+
+  clutter_event_free (slow_keys_event->event);
+  if (slow_keys_event->timer)
+    g_source_remove (slow_keys_event->timer);
+  g_free (slow_keys_event);
+}
+
+static void
+clear_slow_keys (ClutterInputDeviceEvdev *device)
+{
+  g_list_free_full (device->slow_keys_list, clutter_input_device_evdev_free_pending_slow_key);
+  g_list_free (device->slow_keys_list);
+  device->slow_keys_list = NULL;
+}
+
+static guint
+get_slow_keys_delay (ClutterInputDevice *device)
+{
+  ClutterKbdA11ySettings a11y_settings;
+
+  clutter_device_manager_get_kbd_a11y_settings (device->device_manager,
+                                                &a11y_settings);
+  /* Settings use int, we use uint, make sure we dont go negative */
+  return MAX (0, a11y_settings.slowkeys_delay);
+}
+
+static gboolean
+trigger_slow_keys (gpointer data)
+{
+  SlowKeysEventPending *slow_keys_event = data;
+  ClutterInputDeviceEvdev *device = slow_keys_event->device;
+  ClutterKeyEvent *key_event = (ClutterKeyEvent *) slow_keys_event->event;
+
+  /* Alter timestamp and emit the event */
+  key_event->time = us2ms (g_get_monotonic_time ());
+  slow_keys_event->emit_event_func (slow_keys_event->event,
+                                    CLUTTER_INPUT_DEVICE (device));
+
+  /* Then remote the pending event */
+  device->slow_keys_list = g_list_remove (device->slow_keys_list, slow_keys_event);
+  clutter_input_device_evdev_free_pending_slow_key (slow_keys_event);
+
+  if (device->a11y_flags & CLUTTER_A11Y_SLOW_KEYS_BEEP_ACCEPT)
+    clutter_input_device_evdev_bell_notify ();
+
+  return G_SOURCE_REMOVE;
+}
+
+static gint
+find_pending_event_by_keycode (gconstpointer a,
+                               gconstpointer b)
+{
+  const SlowKeysEventPending *pa = a;
+  const ClutterKeyEvent *ka = (ClutterKeyEvent *) pa->event;
+  const ClutterKeyEvent *kb = b;
+
+  return kb->hardware_keycode - ka->hardware_keycode;
+}
+
+static void
+start_slow_keys (ClutterEvent               *event,
+                 ClutterInputDeviceEvdev    *device,
+                 ClutterEmitInputDeviceEvent emit_event_func)
+{
+  SlowKeysEventPending *slow_keys_event;
+  ClutterKeyEvent *key_event = (ClutterKeyEvent *) event;
+
+  /* Synthetic key events are for autorepeat, ignore those... */
+  if (key_event->flags & CLUTTER_EVENT_FLAG_SYNTHETIC)
+    return;
+
+  slow_keys_event = g_new0 (SlowKeysEventPending, 1);
+  slow_keys_event->device = device;
+  slow_keys_event->event = clutter_event_copy (event);
+  slow_keys_event->emit_event_func = emit_event_func;
+  slow_keys_event->timer =
+    clutter_threads_add_timeout (get_slow_keys_delay (CLUTTER_INPUT_DEVICE (device)),
+                                 trigger_slow_keys,
+                                 slow_keys_event);
+  device->slow_keys_list = g_list_append (device->slow_keys_list, slow_keys_event);
+
+  if (device->a11y_flags & CLUTTER_A11Y_SLOW_KEYS_BEEP_PRESS)
+    clutter_input_device_evdev_bell_notify ();
+}
+
+static void
+stop_slow_keys (ClutterEvent               *event,
+                ClutterInputDeviceEvdev    *device,
+                ClutterEmitInputDeviceEvent emit_event_func)
+{
+  GList *item;
+
+  /* Check if we have a slow key event queued for this key event */
+  item = g_list_find_custom (device->slow_keys_list, event, find_pending_event_by_keycode);
+  if (item)
+    {
+      SlowKeysEventPending *slow_keys_event = item->data;
+
+      device->slow_keys_list = g_list_delete_link (device->slow_keys_list, item);
+      clutter_input_device_evdev_free_pending_slow_key (slow_keys_event);
+
+      if (device->a11y_flags & CLUTTER_A11Y_SLOW_KEYS_BEEP_REJECT)
+        clutter_input_device_evdev_bell_notify ();
+
+      return;
+    }
+
+  /* If no key press event was pending, just emit the key release as-is */
+  emit_event_func (event, CLUTTER_INPUT_DEVICE (device));
+}
+
+static void
 clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *event,
                                                    ClutterInputDevice         *device,
                                                    ClutterEmitInputDeviceEvent emit_event_func)
@@ -219,6 +355,17 @@ clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *e
   if (!device_evdev->a11y_flags & CLUTTER_A11Y_KEYBOARD_ENABLED)
     goto emit_event;
 
+  if ((device_evdev->a11y_flags & CLUTTER_A11Y_SLOW_KEYS_ENABLED) &&
+      (get_slow_keys_delay (device) != 0))
+    {
+      if (event->type == CLUTTER_KEY_PRESS)
+        start_slow_keys (event, device_evdev, emit_event_func);
+      else if (event->type == CLUTTER_KEY_RELEASE)
+        stop_slow_keys (event, device_evdev, emit_event_func);
+
+      return;
+    }
+
 emit_event:
   emit_event_func (event, device);
 }
@@ -227,6 +374,11 @@ void
 clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *device,
                                                     ClutterKbdA11ySettings  *settings)
 {
+  ClutterKeyboardA11yFlags changed_flags = (device->a11y_flags ^ settings->controls);
+
+  if (changed_flags & (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_SLOW_KEYS_ENABLED))
+    clear_slow_keys (device);
+
   /* Keep our own copy of keyboard a11y features flags to see what changes */
   device->a11y_flags = settings->controls;
 }
