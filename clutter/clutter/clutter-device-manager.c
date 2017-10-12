@@ -54,6 +54,9 @@ struct _ClutterDeviceManagerPrivate
 {
   /* back-pointer to the backend */
   ClutterBackend *backend;
+
+  /* Keyboard a11y */
+  ClutterKbdA11ySettings kbd_a11y_settings;
 };
 
 enum
@@ -486,4 +489,44 @@ _clutter_device_manager_compress_motion (ClutterDeviceManager *device_manager,
     return;
 
   manager_class->compress_motion (device_manager, event, to_discard);
+}
+
+static gboolean
+are_kbd_a11y_settings_equal (ClutterKbdA11ySettings *a,
+                             ClutterKbdA11ySettings *b)
+{
+  return (a->controls == b->controls &&
+          a->slowkeys_delay == b->slowkeys_delay &&
+          a->debounce_delay == b->debounce_delay &&
+          a->timeout_delay == b->timeout_delay &&
+          a->mousekeys_init_delay == b->mousekeys_init_delay &&
+          a->mousekeys_max_speed == b->mousekeys_max_speed &&
+          a->mousekeys_accel_time == b->mousekeys_accel_time);
+}
+
+void
+clutter_device_manager_set_kbd_a11y_settings (ClutterDeviceManager   *device_manager,
+                                              ClutterKbdA11ySettings *settings)
+{
+  ClutterDeviceManagerClass *manager_class;
+
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
+
+  if (are_kbd_a11y_settings_equal (&device_manager->priv->kbd_a11y_settings, settings))
+    return;
+
+  device_manager->priv->kbd_a11y_settings = *settings;
+
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  if (manager_class->apply_kbd_a11y_settings)
+    manager_class->apply_kbd_a11y_settings (device_manager, settings);
+}
+
+void
+clutter_device_manager_get_kbd_a11y_settings (ClutterDeviceManager   *device_manager,
+                                              ClutterKbdA11ySettings *settings)
+{
+  g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager));
+
+  *settings = device_manager->priv->kbd_a11y_settings;
 }
