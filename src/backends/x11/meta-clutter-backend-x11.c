@@ -33,6 +33,7 @@
 #include "clutter/clutter.h"
 #include "clutter/clutter-mutter.h"
 #include "meta/meta-backend.h"
+#include "core/bell.h"
 
 struct _MetaClutterBackendX11
 {
@@ -79,6 +80,14 @@ meta_clutter_backend_x11_create_stage (ClutterBackend  *backend,
 }
 
 static void
+meta_clutter_backend_x11_bell_notify (ClutterBackend  *backend)
+{
+  MetaDisplay *display = meta_get_display ();
+
+  meta_bell_notify (display, NULL);
+}
+
+static void
 meta_clutter_backend_x11_init (MetaClutterBackendX11 *clutter_backend_x11)
 {
 }
@@ -90,4 +99,5 @@ meta_clutter_backend_x11_class_init (MetaClutterBackendX11Class *klass)
 
   clutter_backend_class->get_renderer = meta_clutter_backend_x11_get_renderer;
   clutter_backend_class->create_stage = meta_clutter_backend_x11_create_stage;
+  clutter_backend_class->bell_notify = meta_clutter_backend_x11_bell_notify;
 }
