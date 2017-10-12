@@ -74,6 +74,8 @@ struct _ClutterInputDeviceEvdev
   /* Keyboard a11y */
   ClutterKeyboardA11yFlags a11y_flags;
   GList *slow_keys_list;
+  guint debounce_timer;
+  guint16 debounce_key;
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;

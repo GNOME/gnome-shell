@@ -63,6 +63,7 @@ typedef struct _SlowKeysEventPending
 } SlowKeysEventPending;
 
 static void clear_slow_keys      (ClutterInputDeviceEvdev *device);
+static void stop_bounce_keys     (ClutterInputDeviceEvdev *device);
 
 static void
 clutter_input_device_evdev_finalize (GObject *object)
@@ -78,6 +79,7 @@ clutter_input_device_evdev_finalize (GObject *object)
   _clutter_device_manager_evdev_release_device_id (manager_evdev, device);
 
   clear_slow_keys (device_evdev);
+  stop_bounce_keys (device_evdev);
 
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
 }
@@ -345,6 +347,65 @@ stop_slow_keys (ClutterEvent               *event,
   emit_event_func (event, CLUTTER_INPUT_DEVICE (device));
 }
 
+static guint
+get_debounce_delay (ClutterInputDevice *device)
+{
+  ClutterKbdA11ySettings a11y_settings;
+
+  clutter_device_manager_get_kbd_a11y_settings (device->device_manager,
+                                                &a11y_settings);
+  /* Settings use int, we use uint, make sure we dont go negative */
+  return MAX (0, a11y_settings.debounce_delay);
+}
+
+static gboolean
+clear_bounce_keys (gpointer data)
+{
+  ClutterInputDeviceEvdev *device = data;
+
+  device->debounce_key = 0;
+  device->debounce_timer = 0;
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+start_bounce_keys (ClutterEvent            *event,
+                   ClutterInputDeviceEvdev *device)
+{
+  stop_bounce_keys (device);
+
+  device->debounce_key = ((ClutterKeyEvent *) event)->hardware_keycode;
+  device->debounce_timer =
+    clutter_threads_add_timeout (get_debounce_delay (CLUTTER_INPUT_DEVICE (device)),
+                                 clear_bounce_keys,
+                                 device);
+}
+
+static void
+stop_bounce_keys (ClutterInputDeviceEvdev *device)
+{
+  if (device->debounce_timer)
+    {
+      g_source_remove (device->debounce_timer);
+      device->debounce_timer = 0;
+    }
+}
+
+static void
+notify_bounce_keys_reject (ClutterInputDeviceEvdev *device)
+{
+  if (device->a11y_flags & CLUTTER_A11Y_BOUNCE_KEYS_BEEP_REJECT)
+    clutter_input_device_evdev_bell_notify ();
+}
+
+static gboolean
+debounce_key (ClutterEvent            *event,
+              ClutterInputDeviceEvdev *device)
+{
+  return (device->debounce_key == ((ClutterKeyEvent *) event)->hardware_keycode);
+}
+
 static void
 clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *event,
                                                    ClutterInputDevice         *device,
@@ -354,6 +415,19 @@ clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *e
 
   if (!device_evdev->a11y_flags & CLUTTER_A11Y_KEYBOARD_ENABLED)
     goto emit_event;
+
+  if ((device_evdev->a11y_flags & CLUTTER_A11Y_BOUNCE_KEYS_ENABLED) &&
+      (get_debounce_delay (device) != 0))
+    {
+      if ((event->type == CLUTTER_KEY_PRESS) && debounce_key (event, device_evdev))
+        {
+          notify_bounce_keys_reject (device_evdev);
+
+          return;
+        }
+      else if (event->type == CLUTTER_KEY_RELEASE)
+        start_bounce_keys (event, device_evdev);
+    }
 
   if ((device_evdev->a11y_flags & CLUTTER_A11Y_SLOW_KEYS_ENABLED) &&
       (get_slow_keys_delay (device) != 0))
@@ -378,6 +452,9 @@ clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *dev
 
   if (changed_flags & (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_SLOW_KEYS_ENABLED))
     clear_slow_keys (device);
+
+  if (changed_flags & (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_BOUNCE_KEYS_ENABLED))
+    device->debounce_key = 0;
 
   /* Keep our own copy of keyboard a11y features flags to see what changes */
   device->a11y_flags = settings->controls;
