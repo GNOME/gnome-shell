@@ -1363,3 +1363,13 @@ clutter_set_allowed_drivers (const char *drivers)
 
   allowed_drivers = g_strdup (drivers);
 }
+
+void
+clutter_backend_bell_notify (ClutterBackend *backend)
+{
+  ClutterBackendClass *klass;
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (klass->bell_notify)
+    klass->bell_notify (backend);
+}

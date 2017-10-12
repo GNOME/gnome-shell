@@ -74,6 +74,9 @@ const cairo_font_options_t *    clutter_backend_get_font_options        (Clutter
 CLUTTER_AVAILABLE_IN_1_8
 CoglContext *                   clutter_backend_get_cogl_context        (ClutterBackend             *backend);
 
+CLUTTER_AVAILABLE_IN_ALL
+void                            clutter_backend_bell_notify             (ClutterBackend             *backend);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_H__ */

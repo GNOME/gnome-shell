@@ -100,6 +100,8 @@ struct _ClutterBackendClass
 
   PangoDirection        (* get_keymap_direction) (ClutterBackend   *backend);
 
+  void                  (* bell_notify)          (ClutterBackend   *backend);
+
   /* signals */
   void (* resolution_changed) (ClutterBackend *backend);
   void (* font_changed)       (ClutterBackend *backend);
