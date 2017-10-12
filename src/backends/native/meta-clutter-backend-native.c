@@ -32,6 +32,7 @@
 #include "backends/native/meta-stage-native.h"
 #include "clutter/clutter.h"
 #include "meta/meta-backend.h"
+#include "core/bell.h"
 
 struct _MetaClutterBackendNative
 {
@@ -80,6 +81,14 @@ meta_clutter_backend_native_create_stage (ClutterBackend  *backend,
 }
 
 static void
+meta_clutter_backend_native_bell_notify (ClutterBackend  *backend)
+{
+  MetaDisplay *display = meta_get_display ();
+
+  meta_bell_notify (display, NULL);
+}
+
+static void
 meta_clutter_backend_native_init (MetaClutterBackendNative *clutter_backend_nativen)
 {
 }
@@ -91,4 +100,5 @@ meta_clutter_backend_native_class_init (MetaClutterBackendNativeClass *klass)
 
   clutter_backend_class->get_renderer = meta_clutter_backend_native_get_renderer;
   clutter_backend_class->create_stage = meta_clutter_backend_native_create_stage;
+  clutter_backend_class->bell_notify = meta_clutter_backend_native_bell_notify;
 }
