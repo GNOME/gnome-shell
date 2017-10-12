@@ -2089,6 +2089,21 @@ emit_keyboard_event (ClutterEvent       *event,
     }
 }
 
+static inline void
+process_key_event (ClutterEvent       *event,
+                   ClutterInputDevice *device)
+{
+  ClutterInputDeviceClass *device_class = CLUTTER_INPUT_DEVICE_GET_CLASS (device);
+
+  if (device_class->process_kbd_a11y_event)
+    {
+      device_class->process_kbd_a11y_event (event, device, emit_keyboard_event);
+      return;
+    }
+
+  emit_keyboard_event (event, device);
+}
+
 static gboolean
 is_off_stage (ClutterActor *stage,
               gfloat        x,
@@ -2176,7 +2191,7 @@ _clutter_process_event_details (ClutterActor        *stage,
                 }
             }
 
-          emit_keyboard_event (event, device);
+          process_key_event (event, device);
         }
         break;
 
