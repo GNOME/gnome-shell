@@ -1617,7 +1617,7 @@ meta_input_settings_init (MetaInputSettings *settings)
     g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) device_mapping_info_free);
 
   priv->monitor_manager = g_object_ref (meta_monitor_manager_get ());
-  g_signal_connect (priv->monitor_manager, "monitors-changed",
+  g_signal_connect (priv->monitor_manager, "monitors-changed-internal",
                     G_CALLBACK (monitors_changed_cb), settings);
 
 #ifdef HAVE_LIBWACOM

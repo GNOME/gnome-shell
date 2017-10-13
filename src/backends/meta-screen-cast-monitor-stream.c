@@ -130,7 +130,7 @@ meta_screen_cast_monitor_stream_new (GDBusConnection     *connection,
 
   monitor_stream->stage = stage;
 
-  g_signal_connect_object (monitor_manager, "monitors-changed",
+  g_signal_connect_object (monitor_manager, "monitors-changed-internal",
                            G_CALLBACK (on_monitors_changed),
                            monitor_stream, 0);
 

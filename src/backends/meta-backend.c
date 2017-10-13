@@ -196,8 +196,6 @@ meta_backend_monitors_changed (MetaBackend *backend)
           priv->is_pointer_position_initialized = TRUE;
         }
     }
-
-  meta_settings_update_ui_scaling_factor (priv->settings);
 }
 
 void

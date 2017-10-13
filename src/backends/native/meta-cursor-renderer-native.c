@@ -1071,7 +1071,7 @@ meta_cursor_renderer_native_new (MetaBackend *backend)
   priv =
     meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
 
-  g_signal_connect_object (monitor_manager, "monitors-changed",
+  g_signal_connect_object (monitor_manager, "monitors-changed-internal",
                            G_CALLBACK (on_monitors_changed),
                            cursor_renderer_native, 0);
 

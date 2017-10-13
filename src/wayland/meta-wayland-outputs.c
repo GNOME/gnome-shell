@@ -422,7 +422,7 @@ meta_wayland_outputs_init (MetaWaylandCompositor *compositor)
   MetaMonitorManager *monitors;
 
   monitors = meta_monitor_manager_get ();
-  g_signal_connect (monitors, "monitors-changed",
+  g_signal_connect (monitors, "monitors-changed-internal",
                     G_CALLBACK (on_monitors_changed), compositor);
 
   compositor->outputs = g_hash_table_new_full (NULL, NULL, NULL, wayland_output_destroy_notify);

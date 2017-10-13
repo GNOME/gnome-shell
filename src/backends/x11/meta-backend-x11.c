@@ -454,7 +454,7 @@ meta_backend_x11_post_init (MetaBackend *backend)
   META_BACKEND_CLASS (meta_backend_x11_parent_class)->post_init (backend);
 
   monitor_manager = meta_backend_get_monitor_manager (backend);
-  g_signal_connect (monitor_manager, "monitors-changed",
+  g_signal_connect (monitor_manager, "monitors-changed-internal",
                     G_CALLBACK (on_monitors_changed), backend);
 }
 

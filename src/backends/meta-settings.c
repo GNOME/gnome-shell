@@ -343,11 +343,25 @@ meta_settings_init (MetaSettings *settings)
   update_experimental_features (settings);
 }
 
+static void
+on_monitors_changed (MetaMonitorManager *monitor_manager,
+                     MetaSettings       *settings)
+{
+  meta_settings_update_ui_scaling_factor (settings);
+}
+
 void
 meta_settings_post_init (MetaSettings *settings)
 {
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (settings->backend);
+
   update_ui_scaling_factor (settings);
   update_font_dpi (settings);
+
+  g_signal_connect_object (monitor_manager, "monitors-changed-internal",
+                           G_CALLBACK (on_monitors_changed),
+                           settings, G_CONNECT_AFTER);
 }
 
 static void
