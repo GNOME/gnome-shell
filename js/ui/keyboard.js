@@ -324,10 +324,8 @@ var Keyboard = new Lang.Class({
 
     _sync: function () {
         if (this._keyboard &&
-            this._keyboard.keyboard_type != this._keyboardSettings.get_string(KEYBOARD_TYPE)) {
+            this._keyboard.keyboard_type != this._keyboardSettings.get_string(KEYBOARD_TYPE))
             this._destroyKeyboard();
-            this._setupKeyboard();
-        }
 
         this._syncEnabled();
     },
