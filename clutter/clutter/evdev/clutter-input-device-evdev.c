@@ -210,6 +210,28 @@ clutter_input_device_evdev_is_grouped (ClutterInputDevice *device,
 }
 
 static void
+clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *event,
+                                                   ClutterInputDevice         *device,
+                                                   ClutterEmitInputDeviceEvent emit_event_func)
+{
+  ClutterInputDeviceEvdev *device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
+
+  if (!device_evdev->a11y_flags & CLUTTER_A11Y_KEYBOARD_ENABLED)
+    goto emit_event;
+
+emit_event:
+  emit_event_func (event, device);
+}
+
+void
+clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *device,
+                                                    ClutterKbdA11ySettings  *settings)
+{
+  /* Keep our own copy of keyboard a11y features flags to see what changes */
+  device->a11y_flags = settings->controls;
+}
+
+static void
 clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -223,6 +245,7 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
   klass->is_mode_switch_button = clutter_input_device_evdev_is_mode_switch_button;
   klass->get_group_n_modes = clutter_input_device_evdev_get_group_n_modes;
   klass->is_grouped = clutter_input_device_evdev_is_grouped;
+  klass->process_kbd_a11y_event = clutter_input_device_evdev_process_kbd_a11y_event;
 
   obj_props[PROP_DEVICE_MATRIX] =
     g_param_spec_boxed ("device-matrix",

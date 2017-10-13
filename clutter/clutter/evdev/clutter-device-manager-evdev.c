@@ -1923,6 +1923,18 @@ clutter_device_manager_evdev_compress_motion (ClutterDeviceManager *device_mange
                                             dy_unaccel + dst_dy_unaccel);
 }
 
+static void
+clutter_device_manager_evdev_apply_kbd_a11y_settings (ClutterDeviceManager   *device_manager,
+                                                      ClutterKbdA11ySettings *settings)
+{
+  ClutterInputDevice *device;
+
+  device = clutter_device_manager_evdev_get_core_device (device_manager, CLUTTER_KEYBOARD_DEVICE);
+  if (device)
+    clutter_input_device_evdev_apply_kbd_a11y_settings (CLUTTER_INPUT_DEVICE_EVDEV (device),
+                                                        settings);
+}
+
 /*
  * GObject implementation
  */
@@ -2065,6 +2077,7 @@ clutter_device_manager_evdev_class_init (ClutterDeviceManagerEvdevClass *klass)
   manager_class->get_device = clutter_device_manager_evdev_get_device;
   manager_class->create_virtual_device = clutter_device_manager_evdev_create_virtual_device;
   manager_class->compress_motion = clutter_device_manager_evdev_compress_motion;
+  manager_class->apply_kbd_a11y_settings = clutter_device_manager_evdev_apply_kbd_a11y_settings;
 }
 
 static void

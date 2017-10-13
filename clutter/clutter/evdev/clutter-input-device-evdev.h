@@ -70,6 +70,9 @@ struct _ClutterInputDeviceEvdev
   cairo_matrix_t device_matrix;
   gdouble device_aspect_ratio; /* w:h */
   gdouble output_ratio;        /* w:h */
+
+  /* Keyboard a11y */
+  ClutterKeyboardA11yFlags a11y_flags;
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;
@@ -110,6 +113,9 @@ void                      clutter_input_device_evdev_translate_coordinates (Clut
                                                                             ClutterStage       *stage,
                                                                             gfloat             *x,
                                                                             gfloat             *y);
+
+void                      clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *device,
+                                                                              ClutterKbdA11ySettings  *settings);
 
 G_END_DECLS
 
