@@ -2345,7 +2345,7 @@ MetaLogicalMonitor *
 meta_monitor_manager_get_logical_monitor_from_number (MetaMonitorManager *manager,
                                                       int                 number)
 {
-  g_assert ((unsigned int) number < g_list_length (manager->logical_monitors));
+  g_return_val_if_fail ((unsigned int) number < g_list_length (manager->logical_monitors), NULL);
 
   return g_list_nth (manager->logical_monitors, number)->data;
 }
