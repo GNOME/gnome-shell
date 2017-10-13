@@ -196,6 +196,8 @@ meta_backend_monitors_changed (MetaBackend *backend)
           priv->is_pointer_position_initialized = TRUE;
         }
     }
+
+  meta_cursor_renderer_force_update (priv->cursor_renderer);
 }
 
 void

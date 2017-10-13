@@ -2273,9 +2273,6 @@ static void
 on_monitors_changed_internal (MetaMonitorManager *manager,
                               MetaScreen         *screen)
 {
-  MetaBackend *backend;
-  MetaCursorRenderer *cursor_renderer;
-
   meta_monitor_manager_get_screen_size (manager,
                                         &screen->rect.width,
                                         &screen->rect.height);
@@ -2306,10 +2303,6 @@ on_monitors_changed_internal (MetaMonitorManager *manager,
   meta_screen_foreach_window (screen, META_LIST_DEFAULT, meta_screen_resize_func, 0);
 
   meta_screen_queue_check_fullscreen (screen);
-
-  backend = meta_get_backend ();
-  cursor_renderer = meta_backend_get_cursor_renderer (backend);
-  meta_cursor_renderer_force_update (cursor_renderer);
 }
 
 static void
