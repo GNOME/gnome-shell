@@ -919,6 +919,8 @@ meta_monitor_manager_xrandr_constructed (GObject *object)
       meta_monitor_manager_xrandr_init_monitors (manager_xrandr);
 #endif
     }
+
+  G_OBJECT_CLASS (meta_monitor_manager_xrandr_parent_class)->constructed (object);
 }
 
 static void
