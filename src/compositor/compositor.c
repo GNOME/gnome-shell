@@ -923,6 +923,32 @@ sync_actor_stacking (MetaCompositor *compositor)
   g_list_free (backgrounds);
 }
 
+/*
+ * Find the top most window that is visible on the screen. The intention of
+ * this is to avoid offscreen windows that isn't actually part of the visible
+ * desktop (such as the UI frames override redirect window).
+ */
+static MetaWindowActor *
+get_top_visible_window_actor (MetaCompositor *compositor)
+{
+  GList *l;
+
+  for (l = g_list_last (compositor->windows); l; l = l->prev)
+    {
+      MetaWindowActor *window_actor = l->data;
+      MetaWindow *window = meta_window_actor_get_meta_window (window_actor);
+      MetaRectangle buffer_rect;
+
+      meta_window_get_buffer_rect (window, &buffer_rect);
+
+      if (meta_rectangle_overlap (&compositor->display->screen->rect,
+                                  &buffer_rect))
+        return window_actor;
+    }
+
+  return NULL;
+}
+
 void
 meta_compositor_sync_stack (MetaCompositor  *compositor,
 			    GList	    *stack)
@@ -1009,6 +1035,8 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
     }
 
   sync_actor_stacking (compositor);
+
+  compositor->top_window_actor = get_top_visible_window_actor (compositor);
 }
 
 void
@@ -1065,19 +1093,26 @@ static gboolean
 meta_pre_paint_func (gpointer data)
 {
   GList *l;
-  MetaWindowActor *top_window;
+  MetaWindowActor *top_window_actor;
   MetaCompositor *compositor = data;
 
   if (compositor->windows == NULL)
     return TRUE;
 
-  top_window = g_list_last (compositor->windows)->data;
-
-  if (meta_window_actor_should_unredirect (top_window) &&
+  top_window_actor = compositor->top_window_actor;
+  if (top_window_actor &&
+      meta_window_actor_should_unredirect (top_window_actor) &&
       compositor->disable_unredirect_count == 0)
-    set_unredirected_window (compositor, meta_window_actor_get_meta_window (top_window));
+    {
+      MetaWindow *top_window;
+
+      top_window = meta_window_actor_get_meta_window (top_window_actor);
+      set_unredirected_window (compositor, top_window);
+    }
   else
-    set_unredirected_window (compositor, NULL);
+    {
+      set_unredirected_window (compositor, NULL);
+    }
 
   for (l = compositor->windows; l; l = l->next)
     meta_window_actor_pre_paint (l->data);
