@@ -763,7 +763,6 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'appMenu': AppMenuButton,
     'dateMenu': imports.ui.dateMenu.DateMenuButton,
     'a11y': imports.ui.status.accessibility.ATIndicator,
-    'a11yGreeter': imports.ui.status.accessibility.ATGreeterIndicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
 };
 

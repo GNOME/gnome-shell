@@ -212,12 +212,3 @@ var ATIndicator = new Lang.Class({
         return widget;
     }
 });
-
-var ATGreeterIndicator = new Lang.Class({
-    Name: 'ATGreeterIndicator',
-    Extends: ATIndicator,
-
-    // Override visibility handling to be always visible
-    _syncMenuVisibility: function() { },
-    _queueSyncMenuVisibility: function() { }
-});
