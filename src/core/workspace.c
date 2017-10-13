@@ -1099,12 +1099,15 @@ meta_workspace_get_work_area_for_monitor (MetaWorkspace *workspace,
   MetaLogicalMonitor *logical_monitor;
   MetaWorkspaceLogicalMonitorData *data;
 
-  ensure_work_areas_validated (workspace);
-
   logical_monitor =
     meta_monitor_manager_get_logical_monitor_from_number (monitor_manager,
                                                           which_monitor);
+  g_return_if_fail (logical_monitor != NULL);
+
+  ensure_work_areas_validated (workspace);
   data = meta_workspace_get_logical_monitor_data (workspace, logical_monitor);
+
+  g_return_if_fail (data != NULL);
 
   *area = data->logical_monitor_work_area;
 }
