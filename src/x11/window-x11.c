@@ -3039,6 +3039,12 @@ meta_window_x11_new (MetaDisplay       *display,
       goto error;
     }
 
+  if (attrs.class == InputOnly)
+    {
+      meta_verbose ("Not managing InputOnly windows\n");
+      goto error;
+    }
+
   if (is_our_xwindow (display, screen, xwindow, &attrs))
     {
       meta_verbose ("Not managing our own windows\n");
