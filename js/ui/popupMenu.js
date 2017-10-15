@@ -405,7 +405,7 @@ var PopupImageMenuItem = new Lang.Class({
 
     setIcon: function(icon) {
         // The 'icon' parameter can be either a Gio.Icon or a string.
-        if (GObject.type_is_a(icon, Gio.Icon))
+        if (icon instanceof GObject.Object && GObject.type_is_a(icon, Gio.Icon))
             this._icon.gicon = icon;
         else
             this._icon.icon_name = icon;
