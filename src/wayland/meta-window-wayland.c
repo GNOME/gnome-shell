@@ -67,6 +67,8 @@ G_DEFINE_TYPE (MetaWindowWayland, meta_window_wayland, META_TYPE_WINDOW)
 static int
 get_window_geometry_scale_for_logical_monitor (MetaLogicalMonitor *logical_monitor)
 {
+  g_assert (logical_monitor);
+
   if (meta_is_stage_views_scaled ())
     return 1;
   else
@@ -79,8 +81,7 @@ meta_window_wayland_manage (MetaWindow *window)
   MetaWindowWayland *wl_window = META_WINDOW_WAYLAND (window);
   MetaDisplay *display = window->display;
 
-  wl_window->geometry_scale =
-    get_window_geometry_scale_for_logical_monitor (window->monitor);
+  wl_window->geometry_scale = meta_window_wayland_get_geometry_scale (window);
 
   meta_display_register_wayland_window (display, window);
 
@@ -634,6 +635,9 @@ should_do_pending_move (MetaWindowWayland *wl_window,
 int
 meta_window_wayland_get_geometry_scale (MetaWindow *window)
 {
+  if (!window->monitor)
+    return 1;
+
   return get_window_geometry_scale_for_logical_monitor (window->monitor);
 }
 
