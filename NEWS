@@ -1,3 +1,21 @@
+3.27.1
+======
+* Work with clients that require older linux_dmabuf protocol [Daniel; #788558]
+* Support hybrid GPU systems [Jonas; #785381]
+* Prevent crash when closing maximized windows [Jonni; #788666]
+* Use the correct monitor for HiDPI scaling of shell chrome [Jonas; #788820]
+* Fix unredirection of fullscreen windows [Rui, Jonas; #788493]
+* Fix list of supported monitor scales on X11 [Jonas; #788901]
+* Misc. bug fixes [Florian, Jonas, Marco; #788572, #788569, #788607, #788860,
+  #788921]
+
+Contributors:
+  Jonas Ådahl, Carlos Garnacho, Rui Matos, Florian Müllner, Daniel Stone,
+  Marco Trevisan, Jonni Westphalen
+
+Translations:
+  Xavi Ivars [ca@valencia]
+
 3.26.1
 ======
 * Fix crash when respawning shortcut inhibitor dialog [Olivier; #787568]
