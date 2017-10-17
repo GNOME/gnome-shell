@@ -1,3 +1,14 @@
+3.27.1
+======
+* Fix using icon-name strings with PopupImageMenuItems [Florian; #789018]
+* Misc. bug fixes [Jonas, Florian; #788607, #788943]
+
+Contributors:
+  Jonas Ådahl, Florian Müllner
+
+Translations:
+  Xavi Ivars [ca@valencia], Matej Urbančič [sl], Fabio Tomat [fur]
+
 3.26.1
 ======
 * Don't detach launched apps to not break pkexec and friends [Florian; #763531]
