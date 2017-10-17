@@ -15,6 +15,7 @@ const RfkillManagerInterface = '<node> \
 <interface name="org.gnome.SettingsDaemon.Rfkill"> \
 <property name="BluetoothAirplaneMode" type="b" access="readwrite" /> \
 <property name="BluetoothHasAirplaneMode" type="b" access="read" /> \
+<property name="BluetoothHardwareAirplaneMode" type="b" access="readwrite" /> \
 </interface> \
 </node>';
 
