@@ -132,14 +132,17 @@ var Indicator = new Lang.Class({
         else
             this._item.actor.visible = this._proxy.BluetoothHasAirplaneMode && !this._proxy.BluetoothAirplaneMode;
 
+        // Bluetooth will be considered 'Off' if either the adapter
+        // is not available or it's set in irplane mode.
+        let isBluetoothOff = nConnectedDevices == -1 || this._proxy.BluetoothAirplaneMode;
         if (nConnectedDevices > 0)
             /* Translators: this is the number of connected bluetooth devices */
             this._item.label.text = ngettext("%d Connected", "%d Connected", nConnectedDevices).format(nConnectedDevices);
-        else if (nConnectedDevices == -1)
+        else if (isBluetoothOff)
             this._item.label.text = _("Off");
         else
             this._item.label.text = _("On");
 
-        this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _("Turn On") : _("Turn Off");
+        this._toggleItem.label.text = isBluetoothOff ? _("Turn On") : _("Turn Off");
     },
 });
