@@ -50,6 +50,8 @@ typedef struct _MetaMonitorCrtcMode
   MetaCrtcMode *crtc_mode;
 } MetaMonitorCrtcMode;
 
+#define HANDLED_CRTC_MODE_FLAGS (META_CRTC_MODE_FLAG_INTERLACE)
+
 typedef gboolean (* MetaMonitorModeFunc) (MetaMonitor         *monitor,
                                           MetaMonitorMode     *mode,
                                           MetaMonitorCrtcMode *monitor_crtc_mode,

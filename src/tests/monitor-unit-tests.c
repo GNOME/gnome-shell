@@ -430,7 +430,7 @@ check_monitor_mode (MetaMonitor         *monitor,
       flags = meta_monitor_mode_get_flags (mode);
 
       g_assert_cmpfloat (refresh_rate, ==, crtc_mode->refresh_rate);
-      g_assert_cmpint (flags, ==, crtc_mode->flags);
+      g_assert_cmpint (flags, ==, (crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS));
     }
 
   data->expect_crtc_mode_iter++;
@@ -2753,6 +2753,101 @@ meta_test_monitor_underscanning_config (void)
       .n_crtcs = 1,
       .screen_width = 1024,
       .screen_height = 768
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
+static void
+meta_test_monitor_preferred_non_first_mode (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 800,
+          .height = 600,
+          .refresh_rate = 60.0,
+          .flags = META_CRTC_MODE_FLAG_NHSYNC,
+        },
+        {
+          .width = 800,
+          .height = 600,
+          .refresh_rate = 60.0,
+          .flags = META_CRTC_MODE_FLAG_PHSYNC,
+        },
+      },
+      .n_modes = 2,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0, 1 },
+          .n_modes = 2,
+          .preferred_mode = 1,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 1
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 800,
+              .height = 600,
+              .refresh_rate = 60.0,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 1
+                }
+              }
+            },
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125
+        }
+      },
+      .n_monitors = 1,
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 800, .height = 600 },
+          .scale = 1
+        },
+      },
+      .n_logical_monitors = 1,
+      .primary_logical_monitor = 0,
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 1,
+        }
+      },
+      .n_crtcs = 1,
+      .screen_width = 800,
+      .screen_height = 600,
     }
   };
   MetaMonitorTestSetup *test_setup;
@@ -5350,6 +5445,8 @@ init_monitor_tests (void)
                     meta_test_monitor_no_outputs);
   add_monitor_test ("/backends/monitor/underscanning-config",
                     meta_test_monitor_underscanning_config);
+  add_monitor_test ("/backends/monitor/preferred-non-first-mode",
+                    meta_test_monitor_preferred_non_first_mode);
 
   add_monitor_test ("/backends/monitor/custom/vertical-config",
                     meta_test_monitor_custom_vertical_config);

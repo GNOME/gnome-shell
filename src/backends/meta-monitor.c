@@ -37,8 +37,6 @@
 #define MINIMUM_LOGICAL_HEIGHT 600
 #define MAXIMUM_REFRESH_RATE_DIFF 0.001
 
-#define HANDLED_CRTC_MODE_FLAGS (META_CRTC_MODE_FLAG_INTERLACE)
-
 typedef struct _MetaMonitorMode
 {
   char *id;
