@@ -405,16 +405,22 @@ generate_mode_id (MetaMonitorModeSpec *monitor_mode_spec)
 
 static gboolean
 meta_monitor_add_mode (MetaMonitor     *monitor,
-                       MetaMonitorMode *monitor_mode)
+                       MetaMonitorMode *monitor_mode,
+                       gboolean         replace)
 {
   MetaMonitorPrivate *priv = meta_monitor_get_instance_private (monitor);
+  MetaMonitorMode *existing_mode;
 
-  if (g_hash_table_lookup (priv->mode_ids,
-                           meta_monitor_mode_get_id (monitor_mode)))
+  existing_mode = g_hash_table_lookup (priv->mode_ids,
+                                       meta_monitor_mode_get_id (monitor_mode));
+  if (existing_mode && !replace)
     return FALSE;
 
+  if (existing_mode)
+    priv->modes = g_list_remove (priv->modes, existing_mode);
+
   priv->modes = g_list_append (priv->modes, monitor_mode);
-  g_hash_table_insert (priv->mode_ids, monitor_mode->id, monitor_mode);
+  g_hash_table_replace (priv->mode_ids, monitor_mode->id, monitor_mode);
 
   return TRUE;
 }
@@ -426,13 +432,17 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
   MetaOutput *output;
+  MetaCrtcModeFlag preferred_mode_flags;
   unsigned int i;
 
   output = meta_monitor_get_main_output (monitor);
+  preferred_mode_flags = output->preferred_mode->flags;
+
   for (i = 0; i < output->n_modes; i++)
     {
       MetaCrtcMode *crtc_mode = output->modes[i];
       MetaMonitorMode *mode;
+      gboolean replace;
 
       mode = g_new0 (MetaMonitorMode, 1);
       mode->spec = (MetaMonitorModeSpec) {
@@ -448,13 +458,26 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
         .crtc_mode = crtc_mode
       };
 
+      /*
+       * We don't distinguish between all available mode flags, just the ones
+       * that are configurable. We still need to pick some mode though, so
+       * prefer ones that has the same set of flags as the preferred mode;
+       * otherwise take the first one in the list. This guarantees that the
+       * preferred mode is always added.
+       */
+      replace = crtc_mode->flags == preferred_mode_flags;
+
+      if (!meta_monitor_add_mode (monitor, mode, replace))
+        {
+          g_assert (crtc_mode != output->preferred_mode);
+          meta_monitor_mode_free (mode);
+          continue;
+        }
+
       if (crtc_mode == output->preferred_mode)
         monitor_priv->preferred_mode = mode;
       if (output->crtc && crtc_mode == output->crtc->current_mode)
         monitor_priv->current_mode = mode;
-
-      if (!meta_monitor_add_mode (monitor, mode))
-        meta_monitor_mode_free (mode);
     }
 }
 
@@ -838,7 +861,7 @@ generate_tiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
 
       tiled_modes = g_list_remove_link (tiled_modes, l);
 
-      if (!meta_monitor_add_mode (monitor, mode))
+      if (!meta_monitor_add_mode (monitor, mode, FALSE))
         {
           meta_monitor_mode_free (mode);
           continue;
@@ -980,7 +1003,7 @@ generate_untiled_monitor_modes (MetaMonitorTiled *monitor_tiled)
       if (!mode)
         continue;
 
-      if (!meta_monitor_add_mode (monitor, mode))
+      if (!meta_monitor_add_mode (monitor, mode, FALSE))
         {
           meta_monitor_mode_free (mode);
           continue;
