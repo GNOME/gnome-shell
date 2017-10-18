@@ -875,7 +875,8 @@ st_entry_paint (ClutterActor *actor)
             cogl_handle_unref (priv->text_shadow_material);
 
           material = _st_create_shadow_pipeline_from_actor (shadow_spec,
-                                                            priv->entry);
+                                                            priv->entry,
+                                                            ST_SHADOW_ANY_MODE);
 
           priv->shadow_width = width;
           priv->shadow_height = height;
