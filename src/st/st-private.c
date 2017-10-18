@@ -411,12 +411,15 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
 
 CoglPipeline *
 _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
-                                       ClutterActor *actor)
+                                       ClutterActor *actor,
+                                       StPrivateShadowCreateFlags flags)
 {
   CoglPipeline *shadow_pipeline = NULL;
   ClutterActorBox box;
   float resource_scale;
   float width, height;
+
+  g_return_val_if_fail (clutter_actor_has_allocation (actor), NULL);
 
   if (!clutter_actor_get_resource_scale (actor, &resource_scale))
     return NULL;
@@ -431,18 +434,26 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   width = ceilf (width);
   height = ceilf (height);
 
-  if (CLUTTER_IS_TEXTURE (actor))
+  if (CLUTTER_IS_TEXTURE (actor) && (flags & ST_SHADOW_TEXTURE_MODE))
     {
       CoglTexture *texture;
 
       texture = clutter_texture_get_cogl_texture (CLUTTER_TEXTURE (actor));
-      if (texture &&
-          cogl_texture_get_width (texture) == width &&
-          cogl_texture_get_height (texture) == height)
-        shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, texture);
+
+      if (texture)
+        {
+          guint texture_width = cogl_texture_get_width (texture);
+          guint texture_height = cogl_texture_get_height (texture);
+
+          if (texture_width == 0 || texture_height == 0)
+            return NULL;
+
+          if (texture_width == width && texture_height == height)
+            shadow_pipeline = _st_create_shadow_pipeline (shadow_spec, texture);
+        }
     }
 
-  if (shadow_pipeline == NULL)
+  if (shadow_pipeline == NULL && (flags & ST_SHADOW_OFFSCREEN_MODE))
     {
       CoglTexture *buffer;
       CoglOffscreen *offscreen;
