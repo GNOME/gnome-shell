@@ -231,7 +231,9 @@ st_shadow_helper_update (StShadowHelper *helper,
       if (helper->pipeline)
         cogl_object_unref (helper->pipeline);
 
-      helper->pipeline = _st_create_shadow_pipeline_from_actor (helper->shadow, source);
+      helper->pipeline = _st_create_shadow_pipeline_from_actor (helper->shadow,
+                                                                source,
+                                                                ST_SHADOW_ANY_MODE);
       helper->width = width;
       helper->height = height;
     }
