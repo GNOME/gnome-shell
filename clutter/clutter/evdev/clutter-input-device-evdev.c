@@ -65,6 +65,7 @@ typedef struct _SlowKeysEventPending
 
 static void clear_slow_keys      (ClutterInputDeviceEvdev *device);
 static void stop_bounce_keys     (ClutterInputDeviceEvdev *device);
+static void stop_toggle_slowkeys (ClutterInputDeviceEvdev *device);
 
 static void
 clutter_input_device_evdev_finalize (GObject *object)
@@ -81,6 +82,7 @@ clutter_input_device_evdev_finalize (GObject *object)
 
   clear_slow_keys (device_evdev);
   stop_bounce_keys (device_evdev);
+  stop_toggle_slowkeys (device_evdev);
 
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
 }
@@ -519,11 +521,40 @@ set_stickykeys_off (ClutterInputDeviceEvdev *device)
 }
 
 static void
+set_stickykeys_on (ClutterInputDeviceEvdev *device)
+{
+  device->a11y_flags |= CLUTTER_A11Y_STICKY_KEYS_ENABLED;
+  notify_stickykeys_change (device);
+}
+
+static void
 clear_stickykeys_event (ClutterEvent            *event,
                         ClutterInputDeviceEvdev *device)
 {
   set_stickykeys_off (device);
   update_stickykeys_event (event, device, 0, 0);
+}
+
+static void
+set_slowkeys_off (ClutterInputDeviceEvdev *device)
+{
+  device->a11y_flags &= ~CLUTTER_A11Y_SLOW_KEYS_ENABLED;
+
+  g_signal_emit_by_name (CLUTTER_INPUT_DEVICE (device)->device_manager,
+                         "kbd-a11y-flags-changed",
+                         device->a11y_flags,
+                         CLUTTER_A11Y_SLOW_KEYS_ENABLED);
+}
+
+static void
+set_slowkeys_on (ClutterInputDeviceEvdev *device)
+{
+  device->a11y_flags |= CLUTTER_A11Y_SLOW_KEYS_ENABLED;
+
+  g_signal_emit_by_name (CLUTTER_INPUT_DEVICE (device)->device_manager,
+                         "kbd-a11y-flags-changed",
+                         device->a11y_flags,
+                         CLUTTER_A11Y_SLOW_KEYS_ENABLED);
 }
 
 static void
@@ -591,6 +622,90 @@ handle_stickykeys_release (ClutterEvent            *event,
   update_stickykeys_event (event, device, 0, device->stickykeys_locked_mask);
 }
 
+static gboolean
+trigger_toggle_slowkeys (gpointer data)
+{
+  ClutterInputDeviceEvdev *device = data;
+
+  device->toggle_slowkeys_timer = 0;
+
+  if (device->a11y_flags & CLUTTER_A11Y_FEATURE_STATE_CHANGE_BEEP)
+    clutter_input_device_evdev_bell_notify ();
+
+  if (device->a11y_flags & CLUTTER_A11Y_SLOW_KEYS_ENABLED)
+    set_slowkeys_off (device);
+  else
+    set_slowkeys_on (device);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+start_toggle_slowkeys (ClutterInputDeviceEvdev *device)
+{
+  if (device->toggle_slowkeys_timer != 0)
+    return;
+
+  device->toggle_slowkeys_timer =
+    clutter_threads_add_timeout (8 * 1000 /* 8 secs */,
+                                 trigger_toggle_slowkeys,
+                                 device);
+}
+
+static void
+stop_toggle_slowkeys (ClutterInputDeviceEvdev *device)
+{
+  if (device->toggle_slowkeys_timer)
+    {
+      g_source_remove (device->toggle_slowkeys_timer);
+      device->toggle_slowkeys_timer = 0;
+    }
+}
+
+static void
+handle_togglekeys_press (ClutterEvent            *event,
+                         ClutterInputDeviceEvdev *device)
+{
+  if (event->key.keyval == XKB_KEY_Shift_L || event->key.keyval == XKB_KEY_Shift_R)
+    {
+      start_toggle_slowkeys (device);
+
+      if (event->key.time > device->last_shift_time + 15 * 1000 /* 15 secs  */)
+        device->shift_count = 1;
+      else
+        device->shift_count++;
+
+      device->last_shift_time = event->key.time;
+    }
+  else
+    {
+      device->shift_count = 0;
+      stop_toggle_slowkeys (device);
+    }
+}
+
+static void
+handle_togglekeys_release (ClutterEvent            *event,
+                           ClutterInputDeviceEvdev *device)
+{
+  if (event->key.keyval == XKB_KEY_Shift_L || event->key.keyval == XKB_KEY_Shift_R)
+    {
+      stop_toggle_slowkeys (device);
+      if (device->shift_count >= 5)
+        {
+          device->shift_count = 0;
+
+          if (device->a11y_flags & CLUTTER_A11Y_FEATURE_STATE_CHANGE_BEEP)
+            clutter_input_device_evdev_bell_notify ();
+
+          if (device->a11y_flags & CLUTTER_A11Y_STICKY_KEYS_ENABLED)
+            set_stickykeys_off (device);
+          else
+            set_stickykeys_on (device);
+        }
+    }
+}
+
 static void
 clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *event,
                                                    ClutterInputDevice         *device,
@@ -600,6 +715,14 @@ clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *e
 
   if (!device_evdev->a11y_flags & CLUTTER_A11Y_KEYBOARD_ENABLED)
     goto emit_event;
+
+  if (device_evdev->a11y_flags & CLUTTER_A11Y_TOGGLE_KEYS_ENABLED)
+    {
+      if (event->type == CLUTTER_KEY_PRESS)
+        handle_togglekeys_press (event, device_evdev);
+      else
+        handle_togglekeys_release (event, device_evdev);
+    }
 
   if ((device_evdev->a11y_flags & CLUTTER_A11Y_BOUNCE_KEYS_ENABLED) &&
       (get_debounce_delay (device) != 0))
@@ -653,6 +776,13 @@ clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *dev
     {
       device->stickykeys_depressed_mask = 0;
       update_internal_xkb_state (device, 0, 0);
+    }
+
+  if (changed_flags & (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_TOGGLE_KEYS_ENABLED))
+    {
+      device->toggle_slowkeys_timer = 0;
+      device->shift_count = 0;
+      device->last_shift_time = 0;
     }
 
   /* Keep our own copy of keyboard a11y features flags to see what changes */

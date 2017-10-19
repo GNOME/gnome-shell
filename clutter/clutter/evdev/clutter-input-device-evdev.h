@@ -79,6 +79,9 @@ struct _ClutterInputDeviceEvdev
   xkb_mod_mask_t stickykeys_depressed_mask;
   xkb_mod_mask_t stickykeys_latched_mask;
   xkb_mod_mask_t stickykeys_locked_mask;
+  guint toggle_slowkeys_timer;
+  guint16 shift_count;
+  guint32 last_shift_time;
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;
