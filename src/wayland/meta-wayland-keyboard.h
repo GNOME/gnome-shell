@@ -93,6 +93,8 @@ struct _MetaWaylandKeyboard
 
   MetaWaylandXkbInfo xkb_info;
   enum xkb_state_component mods_changed;
+  xkb_mod_mask_t kbd_a11y_latched_mods;
+  xkb_mod_mask_t kbd_a11y_locked_mods;
 
   MetaWaylandKeyboardGrab *grab;
   MetaWaylandKeyboardGrab default_grab;

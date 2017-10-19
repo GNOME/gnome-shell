@@ -218,6 +218,33 @@ err_keymap_str:
   return;
 }
 
+static xkb_mod_mask_t
+kbd_a11y_apply_mask (MetaWaylandKeyboard *keyboard)
+{
+  xkb_mod_mask_t latched, locked, depressed, group;
+  xkb_mod_mask_t update_mask = 0;
+
+  depressed = xkb_state_serialize_mods(keyboard->xkb_info.state, XKB_STATE_DEPRESSED);
+  latched = xkb_state_serialize_mods (keyboard->xkb_info.state, XKB_STATE_MODS_LATCHED);
+  locked = xkb_state_serialize_mods (keyboard->xkb_info.state, XKB_STATE_MODS_LOCKED);
+  group = xkb_state_serialize_layout (keyboard->xkb_info.state, XKB_STATE_LAYOUT_EFFECTIVE);
+
+  if ((latched & keyboard->kbd_a11y_latched_mods) != keyboard->kbd_a11y_latched_mods)
+    update_mask |= XKB_STATE_MODS_LATCHED;
+
+  if ((locked & keyboard->kbd_a11y_locked_mods) != keyboard->kbd_a11y_locked_mods)
+    update_mask |= XKB_STATE_MODS_LOCKED;
+
+  if (update_mask)
+    {
+      latched |= keyboard->kbd_a11y_latched_mods;
+      locked |= keyboard->kbd_a11y_locked_mods;
+      xkb_state_update_mask (keyboard->xkb_info.state, depressed, latched, locked, 0, 0, group);
+    }
+
+  return update_mask;
+}
+
 static void
 on_keymap_changed (MetaBackend *backend,
                    gpointer     data)
@@ -245,6 +272,7 @@ on_keymap_layout_group_changed (MetaBackend *backend,
   locked_mods = xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED);
 
   xkb_state_update_mask (state, depressed_mods, latched_mods, locked_mods, 0, 0, idx);
+  kbd_a11y_apply_mask (keyboard);
 
   notify_modifiers (keyboard);
 }
@@ -470,6 +498,7 @@ meta_wayland_keyboard_set_numlock (MetaWaylandKeyboard *keyboard,
     locked &= ~numlock;
 
   xkb_state_update_mask (xkb_info->state, depressed, latched, locked, 0, 0, group);
+  kbd_a11y_apply_mask (keyboard);
 
   notify_modifiers (keyboard);
 }
@@ -496,6 +525,37 @@ meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard)
 
   if (latched || locked)
     xkb_state_update_mask (xkb_info->state, 0, latched, locked, 0, 0, 0);
+
+  kbd_a11y_apply_mask (keyboard);
+}
+
+static void
+on_kbd_a11y_mask_changed (ClutterDeviceManager   *device_manager,
+                          xkb_mod_mask_t          new_latched_mods,
+                          xkb_mod_mask_t          new_locked_mods,
+                          MetaWaylandKeyboard    *keyboard)
+{
+  xkb_mod_mask_t latched, locked, depressed, group;
+
+  if (keyboard->xkb_info.state == NULL)
+    return;
+
+  depressed = xkb_state_serialize_mods(keyboard->xkb_info.state, XKB_STATE_DEPRESSED);
+  latched = xkb_state_serialize_mods (keyboard->xkb_info.state, XKB_STATE_MODS_LATCHED);
+  locked = xkb_state_serialize_mods (keyboard->xkb_info.state, XKB_STATE_MODS_LOCKED);
+  group = xkb_state_serialize_layout (keyboard->xkb_info.state, XKB_STATE_LAYOUT_EFFECTIVE);
+
+  /* Clear previous masks */
+  latched &= ~keyboard->kbd_a11y_latched_mods;
+  locked &= ~keyboard->kbd_a11y_locked_mods;
+  xkb_state_update_mask (keyboard->xkb_info.state, depressed, latched, locked, 0, 0, group);
+
+  /* Apply new masks */
+  keyboard->kbd_a11y_latched_mods = new_latched_mods;
+  keyboard->kbd_a11y_locked_mods = new_locked_mods;
+  kbd_a11y_apply_mask (keyboard);
+
+  notify_modifiers (keyboard);
 }
 
 static void
@@ -633,6 +693,10 @@ meta_wayland_keyboard_enable (MetaWaylandKeyboard *keyboard)
                     G_CALLBACK (on_keymap_changed), keyboard);
   g_signal_connect (backend, "keymap-layout-group-changed",
                     G_CALLBACK (on_keymap_layout_group_changed), keyboard);
+
+  g_signal_connect (clutter_device_manager_get_default (), "kbd-a11y-mods-state-changed",
+                    G_CALLBACK (on_kbd_a11y_mask_changed), keyboard);
+
   meta_wayland_keyboard_take_keymap (keyboard, meta_backend_get_keymap (backend));
 
   maybe_restore_numlock_state (keyboard);
@@ -708,6 +772,7 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
   keyboard->mods_changed = xkb_state_update_key (keyboard->xkb_info.state,
                                                  event->hardware_keycode,
                                                  is_press ? XKB_KEY_DOWN : XKB_KEY_UP);
+  keyboard->mods_changed |= kbd_a11y_apply_mask (keyboard);
 }
 
 gboolean
@@ -768,6 +833,7 @@ meta_wayland_keyboard_update_key_state (MetaWaylandKeyboard *keyboard,
                                             set ? XKB_KEY_DOWN : XKB_KEY_UP);
     }
 
+  mods_changed |= kbd_a11y_apply_mask (keyboard);
   if (mods_changed)
     notify_modifiers (keyboard);
 }
@@ -869,6 +935,9 @@ meta_wayland_keyboard_set_focus (MetaWaylandKeyboard *keyboard,
       move_resources_for_client (&keyboard->focus_resource_list,
                                  &keyboard->resource_list,
                                  wl_resource_get_client (focus_surface_resource));
+
+      /* Make sure a11y masks are applied before braodcasting modifiers */
+      kbd_a11y_apply_mask (keyboard);
 
       if (!wl_list_empty (&keyboard->focus_resource_list))
         {
