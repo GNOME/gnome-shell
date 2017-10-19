@@ -28,6 +28,7 @@
 #endif
 
 #include "clutter/clutter-device-manager-private.h"
+#include "clutter/clutter-event-private.h"
 #include "clutter-private.h"
 #include "clutter-evdev.h"
 #include "clutter-input-device-tool-evdev.h"
@@ -406,6 +407,190 @@ debounce_key (ClutterEvent            *event,
   return (device->debounce_key == ((ClutterKeyEvent *) event)->hardware_keycode);
 }
 
+static gboolean
+key_event_is_modifier (ClutterEvent *event)
+{
+  switch (event->key.keyval)
+    {
+    case XKB_KEY_Shift_L:
+    case XKB_KEY_Shift_R:
+    case XKB_KEY_Control_L:
+    case XKB_KEY_Control_R:
+    case XKB_KEY_Alt_L:
+    case XKB_KEY_Alt_R:
+    case XKB_KEY_Meta_L:
+    case XKB_KEY_Meta_R:
+    case XKB_KEY_Super_L:
+    case XKB_KEY_Super_R:
+    case XKB_KEY_Hyper_L:
+    case XKB_KEY_Hyper_R:
+      return TRUE;
+    default:
+      return FALSE;
+    }
+}
+
+static void
+notify_stickykeys_mask (ClutterInputDeviceEvdev *device)
+{
+  g_signal_emit_by_name (CLUTTER_INPUT_DEVICE (device)->device_manager,
+                         "kbd-a11y-mods-state-changed",
+                         device->stickykeys_latched_mask,
+                         device->stickykeys_locked_mask);
+}
+
+static void
+update_internal_xkb_state (ClutterInputDeviceEvdev *device,
+                           xkb_mod_mask_t           new_latched_mask,
+                           xkb_mod_mask_t           new_locked_mask)
+{
+  ClutterSeatEvdev *seat = device->seat;
+  xkb_mod_mask_t depressed_mods;
+  xkb_mod_mask_t latched_mods;
+  xkb_mod_mask_t locked_mods;
+  xkb_mod_mask_t group_mods;
+
+  depressed_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_DEPRESSED);
+  latched_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_LATCHED);
+  locked_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_LOCKED);
+
+  latched_mods &= ~device->stickykeys_latched_mask;
+  locked_mods &= ~device->stickykeys_locked_mask;
+
+  device->stickykeys_latched_mask = new_latched_mask;
+  device->stickykeys_locked_mask = new_locked_mask;
+
+  latched_mods |= device->stickykeys_latched_mask;
+  locked_mods |= device->stickykeys_locked_mask;
+
+  group_mods = xkb_state_serialize_layout (seat->xkb, XKB_STATE_LAYOUT_EFFECTIVE);
+
+  xkb_state_update_mask (seat->xkb,
+                         depressed_mods,
+                         latched_mods,
+                         locked_mods,
+                         0, 0, group_mods);
+  notify_stickykeys_mask (device);
+}
+
+static void
+update_stickykeys_event (ClutterEvent            *event,
+                         ClutterInputDeviceEvdev *device,
+                         xkb_mod_mask_t           new_latched_mask,
+                         xkb_mod_mask_t           new_locked_mask)
+{
+  ClutterSeatEvdev *seat = device->seat;
+  xkb_mod_mask_t effective_mods;
+  xkb_mod_mask_t latched_mods;
+  xkb_mod_mask_t locked_mods;
+
+  update_internal_xkb_state (device, new_latched_mask, new_locked_mask);
+
+  effective_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_EFFECTIVE);
+  latched_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_LATCHED);
+  locked_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_LOCKED);
+
+  _clutter_event_set_state_full (event,
+                                 seat->button_state,
+                                 device->stickykeys_depressed_mask,
+                                 latched_mods,
+                                 locked_mods,
+                                 effective_mods | seat->button_state);
+}
+
+static void
+notify_stickykeys_change (ClutterInputDeviceEvdev *device)
+{
+  /* Everytime sticky keys setting is changed, clear the masks */
+  device->stickykeys_depressed_mask = 0;
+  update_internal_xkb_state (device, 0, 0);
+
+  g_signal_emit_by_name (CLUTTER_INPUT_DEVICE (device)->device_manager,
+                         "kbd-a11y-flags-changed",
+                         device->a11y_flags,
+                         CLUTTER_A11Y_STICKY_KEYS_ENABLED);
+}
+
+static void
+set_stickykeys_off (ClutterInputDeviceEvdev *device)
+{
+  device->a11y_flags &= ~CLUTTER_A11Y_STICKY_KEYS_ENABLED;
+  notify_stickykeys_change (device);
+}
+
+static void
+clear_stickykeys_event (ClutterEvent            *event,
+                        ClutterInputDeviceEvdev *device)
+{
+  set_stickykeys_off (device);
+  update_stickykeys_event (event, device, 0, 0);
+}
+
+static void
+handle_stickykeys_press (ClutterEvent            *event,
+                         ClutterInputDeviceEvdev *device)
+{
+  ClutterSeatEvdev *seat = device->seat;
+  xkb_mod_mask_t depressed_mods;
+  xkb_mod_mask_t new_latched_mask;
+  xkb_mod_mask_t new_locked_mask;
+
+  if (!key_event_is_modifier (event))
+    return;
+
+  if (device->stickykeys_depressed_mask &&
+      (device->a11y_flags & CLUTTER_A11Y_STICKY_KEYS_TWO_KEY_OFF))
+    {
+      clear_stickykeys_event (event, device);
+      return;
+    }
+
+  depressed_mods = xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_DEPRESSED);
+  new_latched_mask = device->stickykeys_latched_mask;
+  new_locked_mask = device->stickykeys_locked_mask;
+
+  device->stickykeys_depressed_mask = depressed_mods;
+
+  if (new_locked_mask & depressed_mods)
+    {
+      new_locked_mask &= ~depressed_mods;
+    }
+  else if (new_latched_mask & depressed_mods)
+    {
+      new_locked_mask |= depressed_mods;
+      new_latched_mask &= ~depressed_mods;
+    }
+  else
+    {
+      new_latched_mask |= depressed_mods;
+    }
+
+  update_stickykeys_event (event, device, new_latched_mask, new_locked_mask);
+}
+
+static void
+handle_stickykeys_release (ClutterEvent            *event,
+                           ClutterInputDeviceEvdev *device)
+{
+  ClutterSeatEvdev *seat = device->seat;
+
+  device->stickykeys_depressed_mask =
+    xkb_state_serialize_mods (seat->xkb, XKB_STATE_MODS_DEPRESSED);
+
+  if (key_event_is_modifier (event))
+    {
+      if (device->a11y_flags & CLUTTER_A11Y_STICKY_KEYS_BEEP)
+        clutter_input_device_evdev_bell_notify ();
+
+      return;
+    }
+
+  if (device->stickykeys_latched_mask == 0)
+    return;
+
+  update_stickykeys_event (event, device, 0, device->stickykeys_locked_mask);
+}
+
 static void
 clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *event,
                                                    ClutterInputDevice         *device,
@@ -440,6 +625,14 @@ clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *e
       return;
     }
 
+  if (device_evdev->a11y_flags & CLUTTER_A11Y_STICKY_KEYS_ENABLED)
+    {
+      if (event->type == CLUTTER_KEY_PRESS)
+        handle_stickykeys_press (event, device_evdev);
+      else if (event->type == CLUTTER_KEY_RELEASE)
+        handle_stickykeys_release (event, device_evdev);
+    }
+
 emit_event:
   emit_event_func (event, device);
 }
@@ -455,6 +648,12 @@ clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *dev
 
   if (changed_flags & (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_BOUNCE_KEYS_ENABLED))
     device->debounce_key = 0;
+
+  if (changed_flags & (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_STICKY_KEYS_ENABLED))
+    {
+      device->stickykeys_depressed_mask = 0;
+      update_internal_xkb_state (device, 0, 0);
+    }
 
   /* Keep our own copy of keyboard a11y features flags to see what changes */
   device->a11y_flags = settings->controls;
