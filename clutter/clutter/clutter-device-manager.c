@@ -75,6 +75,8 @@ enum
   DEVICE_ADDED,
   DEVICE_REMOVED,
   TOOL_CHANGED,
+  KBD_A11Y_MASK_CHANGED,
+  KBD_A11Y_FLAGS_CHANGED,
 
   LAST_SIGNAL
 };
@@ -199,6 +201,46 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
                   G_TYPE_NONE, 2,
                   CLUTTER_TYPE_INPUT_DEVICE,
                   CLUTTER_TYPE_INPUT_DEVICE_TOOL);
+
+  /**
+   * ClutterDeviceManager::kbd-a11y-mods-state-changed:
+   * @manager: the #ClutterDeviceManager that emitted the signal
+   * @latched_mask: the latched modifier mask from stickykeys
+   * @locked_mask:  the locked modifier mask from stickykeys
+   *
+   * The ::kbd-a11y-mods-state-changed signal is emitted each time either the
+   * latched modifiers mask or locked modifiers mask are changed as the
+   * result of keyboard accessibilty's sticky keys operations.
+   */
+  manager_signals[KBD_A11Y_MASK_CHANGED] =
+    g_signal_new (I_("kbd-a11y-mods-state-changed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  _clutter_marshal_VOID__UINT_UINT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_UINT,
+                  G_TYPE_UINT);
+
+  /**
+   * ClutterDeviceManager::kbd-a11y-flags-changed:
+   * @manager: the #ClutterDeviceManager that emitted the signal
+   * @settings_flags: the new ClutterKeyboardA11yFlags configuration
+   * @changed_mask: the ClutterKeyboardA11yFlags changed
+   *
+   * The ::kbd-a11y-flags-changed signal is emitted each time the
+   * ClutterKeyboardA11yFlags configuration is changed as the result of
+   * keyboard accessibilty operations.
+   */
+  manager_signals[KBD_A11Y_FLAGS_CHANGED] =
+    g_signal_new (I_("kbd-a11y-flags-changed"),
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  _clutter_marshal_VOID__UINT_UINT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_UINT,
+                  G_TYPE_UINT);
 }
 
 static void
