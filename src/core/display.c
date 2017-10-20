@@ -1326,24 +1326,14 @@ meta_display_get_current_time_roundtrip (MetaDisplay *display)
     {
       XEvent property_event;
 
-      meta_error_trap_push (display);
-
       XChangeProperty (display->xdisplay, display->timestamp_pinging_window,
                        display->atom__MUTTER_TIMESTAMP_PING,
                        XA_STRING, 8, PropModeAppend, NULL, 0);
-
-      if (meta_error_trap_pop_with_return (display) == Success)
-        {
-          meta_error_trap_push (display);
-
-          XIfEvent (display->xdisplay,
-                    &property_event,
-                    find_timestamp_predicate,
-                    (XPointer) display);
-
-          if (meta_error_trap_pop_with_return (display) == Success)
-            timestamp = property_event.xproperty.time;
-        }
+      XIfEvent (display->xdisplay,
+                &property_event,
+                find_timestamp_predicate,
+                (XPointer) display);
+      timestamp = property_event.xproperty.time;
     }
 
   meta_display_sanity_check_timestamps (display, timestamp);
