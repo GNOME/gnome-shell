@@ -1076,9 +1076,6 @@ start_simple_effect (MetaWindowActor  *self,
   gint *counter = NULL;
   gboolean use_freeze_thaw = FALSE;
 
-  if (!compositor->plugin_mgr)
-    return FALSE;
-
   switch (event)
   {
   case META_PLUGIN_NONE:
