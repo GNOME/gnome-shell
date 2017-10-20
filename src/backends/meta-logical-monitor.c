@@ -253,8 +253,21 @@ meta_logical_monitor_init (MetaLogicalMonitor *logical_monitor)
 }
 
 static void
+meta_logical_monitor_finalize (GObject *object)
+{
+  MetaLogicalMonitor *logical_monitor = META_LOGICAL_MONITOR (object);
+
+  g_list_free (logical_monitor->monitors);
+
+  G_OBJECT_CLASS (meta_logical_monitor_parent_class)->finalize (object);
+}
+
+static void
 meta_logical_monitor_class_init (MetaLogicalMonitorClass *klass)
 {
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->finalize = meta_logical_monitor_finalize;
 }
 
 gboolean
