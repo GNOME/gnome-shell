@@ -37,4 +37,8 @@ meta_xwayland_handle_wl_surface_id (MetaWindow *window,
 gboolean
 meta_xwayland_is_xwayland_surface (MetaWaylandSurface *surface);
 
+void
+meta_xwayland_handle_xwayland_grab (MetaWindow *window,
+                                    gboolean    allow);
+
 #endif /* META_XWAYLAND_H */

@@ -1515,6 +1515,13 @@ handle_other_xevent (MetaDisplay *display,
               guint32 surface_id = event->xclient.data.l[0];
               meta_xwayland_handle_wl_surface_id (window, surface_id);
             }
+          else if (event->xclient.message_type == display->atom__XWAYLAND_MAY_GRAB_KEYBOARD)
+            {
+              if (meta_is_wayland_compositor ())
+                g_object_set (G_OBJECT (window),
+                              "xwayland-may-grab-keyboard", (event->xclient.data.l[0] != 0),
+                              NULL);
+            }
           else
 #endif
           if (!frame_was_receiver)
