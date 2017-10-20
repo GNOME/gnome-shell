@@ -38,12 +38,14 @@ extern GType gnome_shell_plugin_get_type (void);
 
 static gboolean is_gdm_mode = FALSE;
 static char *session_mode = NULL;
+static int caught_signal = 0;
 
 #define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
 #define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER 4
 
 enum {
   SHELL_DEBUG_BACKTRACE_WARNINGS = 1,
+  SHELL_DEBUG_BACKTRACE_SEGFAULTS = 2,
 };
 static int _shell_debug;
 
@@ -290,7 +292,8 @@ static void
 shell_init_debug (const char *debug_env)
 {
   static const GDebugKey keys[] = {
-    { "backtrace-warnings", SHELL_DEBUG_BACKTRACE_WARNINGS }
+    { "backtrace-warnings", SHELL_DEBUG_BACKTRACE_WARNINGS },
+    { "backtrace-segfaults", SHELL_DEBUG_BACKTRACE_SEGFAULTS },
   };
 
   _shell_debug = g_parse_debug_string (debug_env, keys,
@@ -326,6 +329,52 @@ shut_up (const char     *domain,
          const char     *message,
          gpointer        user_data)
 {
+}
+
+static void
+dump_gjs_stack_alarm_sigaction (int        signo,
+                                siginfo_t *info,
+                                void      *data)
+{
+  g_warning ("Failed to dump Javascript stack, got stuck");
+
+  raise (caught_signal);
+}
+
+static void
+dump_gjs_stack_on_signal_handler (int signo)
+{
+  /* Waiting at least 5 seconds for the dumpstack, if it fails, we raise the error */
+  struct sigaction sa;
+
+  caught_signal = signo;
+  memset (&sa, 0, sizeof (sigaction));
+  sigemptyset (&sa.sa_mask);
+
+  sa.sa_flags     = SA_SIGINFO;
+  sa.sa_sigaction = dump_gjs_stack_alarm_sigaction;
+
+  sigaction (SIGALRM, &sa, NULL);
+
+  alarm (5);
+  gjs_dumpstack ();
+  alarm (0);
+
+  raise (signo);
+}
+
+static void
+dump_gjs_stack_on_signal (int signo)
+{
+  struct sigaction sa;
+
+  memset (&sa, 0, sizeof (sigaction));
+  sigemptyset (&sa.sa_mask);
+
+  sa.sa_flags   = SA_RESETHAND;
+  sa.sa_handler = dump_gjs_stack_on_signal_handler;
+
+  sigaction (signo, &sa, NULL);
 }
 
 static gboolean
@@ -458,6 +507,17 @@ main (int argc, char **argv)
   _shell_global_init ("session-mode", session_mode, NULL);
 
   shell_prefs_init ();
+
+  dump_gjs_stack_on_signal (SIGABRT);
+  dump_gjs_stack_on_signal (SIGFPE);
+  dump_gjs_stack_on_signal (SIGIOT);
+  dump_gjs_stack_on_signal (SIGTRAP);
+
+  if ((_shell_debug & SHELL_DEBUG_BACKTRACE_SEGFAULTS))
+    {
+      dump_gjs_stack_on_signal (SIGBUS);
+      dump_gjs_stack_on_signal (SIGSEGV);
+    }
 
   ecode = meta_run ();
 
