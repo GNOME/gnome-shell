@@ -110,8 +110,8 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
    */
   fade_area_topleft[0] = content_box.x1 + (verts[0].x - paint_box.x1);
   fade_area_topleft[1] = content_box.y1 + (verts[0].y - paint_box.y1);
-  fade_area_bottomright[0] = content_box.x2 + (verts[3].x - paint_box.x2);
-  fade_area_bottomright[1] = content_box.y2 + (verts[3].y - paint_box.y2);
+  fade_area_bottomright[0] = content_box.x2 + (verts[3].x - paint_box.x2) + 1;
+  fade_area_bottomright[1] = content_box.y2 + (verts[3].y - paint_box.y2) + 1;
 
   g_object_get (ST_SCROLL_VIEW (self->actor),
                 "hscrollbar-visible", &h_scroll_visible,
