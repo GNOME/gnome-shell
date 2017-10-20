@@ -153,17 +153,10 @@ meta_plugin_manager_event_simple (MetaPluginManager *plugin_mgr,
                                   MetaWindowActor   *actor,
                                   MetaPluginEffect   event)
 {
-  MetaPlugin *plugin;
-  MetaPluginClass *klass;
-  MetaDisplay *display;
-  gboolean retval;
-
-  g_return_val_if_fail (plugin_mgr, FALSE);
-
-  plugin = plugin_mgr->plugin;
-  klass = META_PLUGIN_GET_CLASS (plugin);
-  display = plugin_mgr->compositor->display;
-  retval = FALSE;
+  MetaPlugin *plugin = plugin_mgr->plugin;
+  MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
+  MetaDisplay *display = plugin_mgr->compositor->display;
+  gboolean retval = FALSE;
 
   if (display->display_opening)
     return FALSE;
