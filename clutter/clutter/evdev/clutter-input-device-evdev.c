@@ -27,6 +27,8 @@
 #include "clutter-build-config.h"
 #endif
 
+#include <math.h>
+
 #include "clutter/clutter-device-manager-private.h"
 #include "clutter/clutter-event-private.h"
 #include "clutter-private.h"
@@ -66,6 +68,7 @@ typedef struct _SlowKeysEventPending
 static void clear_slow_keys      (ClutterInputDeviceEvdev *device);
 static void stop_bounce_keys     (ClutterInputDeviceEvdev *device);
 static void stop_toggle_slowkeys (ClutterInputDeviceEvdev *device);
+static void stop_mousekeys_move  (ClutterInputDeviceEvdev *device);
 
 static void
 clutter_input_device_evdev_finalize (GObject *object)
@@ -83,6 +86,7 @@ clutter_input_device_evdev_finalize (GObject *object)
   clear_slow_keys (device_evdev);
   stop_bounce_keys (device_evdev);
   stop_toggle_slowkeys (device_evdev);
+  stop_mousekeys_move (device_evdev);
 
   G_OBJECT_CLASS (clutter_input_device_evdev_parent_class)->finalize (object);
 }
@@ -706,6 +710,408 @@ handle_togglekeys_release (ClutterEvent            *event,
     }
 }
 
+static int
+get_button_index (gint button)
+{
+  switch (button)
+    {
+    case BTN_LEFT:
+      return 0;
+    case BTN_MIDDLE:
+      return 1;
+    case BTN_RIGHT:
+      return 2;
+    default:
+      break;
+    }
+
+  g_warn_if_reached ();
+  return 0;
+}
+
+static void
+emulate_button_press (ClutterInputDeviceEvdev *device)
+{
+  gint btn = device->mousekeys_btn;
+
+  if (device->mousekeys_btn_states[get_button_index (btn)])
+    return;
+
+  clutter_virtual_input_device_notify_button (device->mousekeys_virtual_device,
+                                              g_get_monotonic_time (), btn,
+                                              CLUTTER_BUTTON_STATE_PRESSED);
+  device->mousekeys_btn_states[get_button_index (btn)] = CLUTTER_BUTTON_STATE_PRESSED;
+}
+
+static void
+emulate_button_release (ClutterInputDeviceEvdev *device)
+{
+  gint btn = device->mousekeys_btn;
+
+  if (device->mousekeys_btn_states[get_button_index (btn)] == CLUTTER_BUTTON_STATE_RELEASED)
+    return;
+
+  clutter_virtual_input_device_notify_button (device->mousekeys_virtual_device,
+                                              g_get_monotonic_time (), btn,
+                                              CLUTTER_BUTTON_STATE_RELEASED);
+  device->mousekeys_btn_states[get_button_index (btn)] = CLUTTER_BUTTON_STATE_RELEASED;
+}
+
+static void
+emulate_button_click (ClutterInputDeviceEvdev *device)
+{
+  emulate_button_press (device);
+  emulate_button_release (device);
+}
+
+#define MOUSEKEYS_CURVE (1.0 + (((double) 50.0) * 0.001))
+
+static void
+update_mousekeys_params (ClutterInputDeviceEvdev *device,
+                         ClutterKbdA11ySettings  *settings)
+{
+  /* Prevent us from broken settings values */
+  device->mousekeys_max_speed = MAX (1, settings->mousekeys_max_speed);
+  device->mousekeys_accel_time = MAX (1, settings->mousekeys_accel_time);
+  device->mousekeys_init_delay = MAX (0, settings->mousekeys_init_delay);
+
+  device->mousekeys_curve_factor =
+    (((gdouble) device->mousekeys_max_speed) /
+      pow ((gdouble) device->mousekeys_accel_time, MOUSEKEYS_CURVE));
+}
+
+static gdouble
+mousekeys_get_speed_factor (ClutterInputDeviceEvdev *device,
+                            gint64                   time_us)
+{
+  guint32 time;
+  gint64 delta_t;
+  gint64 init_time;
+  gdouble speed;
+
+  time = us2ms (time_us);
+
+  if (device->mousekeys_first_motion_time == 0)
+    {
+      /* Start acceleration _after_ the first move, so take
+       * mousekeys_init_delay into account for t0
+       */
+      device->mousekeys_first_motion_time = time + device->mousekeys_init_delay;
+      device->mousekeys_last_motion_time = device->mousekeys_first_motion_time;
+      return 1.0;
+    }
+
+  init_time = time - device->mousekeys_first_motion_time;
+  delta_t = time - device->mousekeys_last_motion_time;
+
+  if (delta_t < 0)
+    return 0.0;
+
+  if (init_time < device->mousekeys_accel_time)
+    speed = (double) (device->mousekeys_curve_factor *
+                      pow ((double) init_time, MOUSEKEYS_CURVE) * delta_t / 1000.0);
+  else
+    speed = (double) (device->mousekeys_max_speed * delta_t / 1000.0);
+
+  device->mousekeys_last_motion_time = time;
+
+  return speed;
+}
+
+#undef MOUSEKEYS_CURVE
+
+static void
+emulate_pointer_motion (ClutterInputDeviceEvdev *device,
+                        gint                     dx,
+                        gint                     dy)
+{
+  gdouble dx_motion;
+  gdouble dy_motion;
+  gdouble speed;
+  gint64 time_us;
+
+  time_us = g_get_monotonic_time ();
+  speed = mousekeys_get_speed_factor (device, time_us);
+
+  if (dx < 0)
+    dx_motion = floor (((gdouble) dx) * speed);
+  else
+    dx_motion = ceil (((gdouble) dx) * speed);
+
+  if (dy < 0)
+    dy_motion = floor (((gdouble) dy) * speed);
+  else
+    dy_motion = ceil (((gdouble) dy) * speed);
+
+  clutter_virtual_input_device_notify_relative_motion (device->mousekeys_virtual_device,
+                                                       time_us, dx_motion, dy_motion);
+}
+
+static void
+enable_mousekeys (ClutterInputDeviceEvdev *device)
+{
+  ClutterDeviceManager *manager;
+
+  device->mousekeys_btn = BTN_LEFT;
+  device->move_mousekeys_timer = 0;
+  device->mousekeys_first_motion_time = 0;
+  device->mousekeys_last_motion_time = 0;
+  device->last_mousekeys_key = 0;
+
+  if (device->mousekeys_virtual_device)
+    return;
+
+  manager = CLUTTER_INPUT_DEVICE (device)->device_manager;
+  device->mousekeys_virtual_device =
+    clutter_device_manager_create_virtual_device (manager,
+                                                  CLUTTER_POINTER_DEVICE);
+}
+
+static void
+disable_mousekeys (ClutterInputDeviceEvdev *device)
+{
+  stop_mousekeys_move (device);
+
+  /* Make sure we don't leave button pressed behind... */
+  if (device->mousekeys_btn_states[get_button_index (BTN_LEFT)])
+    {
+      device->mousekeys_btn = BTN_LEFT;
+      emulate_button_release (device);
+    }
+
+  if (device->mousekeys_btn_states[get_button_index (BTN_MIDDLE)])
+    {
+      device->mousekeys_btn = BTN_MIDDLE;
+      emulate_button_release (device);
+    }
+
+  if (device->mousekeys_btn_states[get_button_index (BTN_RIGHT)])
+    {
+      device->mousekeys_btn = BTN_RIGHT;
+      emulate_button_release (device);
+    }
+
+  if (device->mousekeys_virtual_device)
+    g_clear_object (&device->mousekeys_virtual_device);
+}
+
+static gboolean
+trigger_mousekeys_move (gpointer data)
+{
+  ClutterInputDeviceEvdev *device = data;
+  gint dx = 0;
+  gint dy = 0;
+
+  if (device->mousekeys_first_motion_time == 0)
+    {
+      /* This is the first move, Secdule at mk_init_delay */
+      device->move_mousekeys_timer =
+        clutter_threads_add_timeout (device->mousekeys_init_delay,
+                                     trigger_mousekeys_move,
+                                     device);
+
+    }
+  else
+    {
+      /* More moves, reschedule at mk_interval */
+      device->move_mousekeys_timer =
+        clutter_threads_add_timeout (100, /* msec between mousekey events */
+                                     trigger_mousekeys_move,
+                                     device);
+    }
+
+  /* Pointer motion */
+  switch (device->last_mousekeys_key)
+    {
+    case XKB_KEY_KP_Home:
+    case XKB_KEY_KP_7:
+    case XKB_KEY_KP_Up:
+    case XKB_KEY_KP_8:
+    case XKB_KEY_KP_Page_Up:
+    case XKB_KEY_KP_9:
+       dy = -1;
+       break;
+    case XKB_KEY_KP_End:
+    case XKB_KEY_KP_1:
+    case XKB_KEY_KP_Down:
+    case XKB_KEY_KP_2:
+    case XKB_KEY_KP_Page_Down:
+    case XKB_KEY_KP_3:
+       dy = 1;
+       break;
+    default:
+       break;
+    }
+
+  switch (device->last_mousekeys_key)
+    {
+    case XKB_KEY_KP_Home:
+    case XKB_KEY_KP_7:
+    case XKB_KEY_KP_Left:
+    case XKB_KEY_KP_4:
+    case XKB_KEY_KP_End:
+    case XKB_KEY_KP_1:
+       dx = -1;
+       break;
+    case XKB_KEY_KP_Page_Up:
+    case XKB_KEY_KP_9:
+    case XKB_KEY_KP_Right:
+    case XKB_KEY_KP_6:
+    case XKB_KEY_KP_Page_Down:
+    case XKB_KEY_KP_3:
+       dx = 1;
+       break;
+    default:
+       break;
+    }
+
+  if (dx != 0 || dy != 0)
+    emulate_pointer_motion (device, dx, dy);
+
+  /* We reschedule each time */
+  return G_SOURCE_REMOVE;
+}
+
+static void
+stop_mousekeys_move (ClutterInputDeviceEvdev *device)
+{
+  device->mousekeys_first_motion_time = 0;
+  device->mousekeys_last_motion_time = 0;
+
+  if (device->move_mousekeys_timer)
+    {
+      g_source_remove (device->move_mousekeys_timer);
+      device->move_mousekeys_timer = 0;
+    }
+}
+
+static void
+start_mousekeys_move (ClutterEvent            *event,
+                      ClutterInputDeviceEvdev *device)
+{
+  device->last_mousekeys_key = event->key.keyval;
+
+  if (device->move_mousekeys_timer != 0)
+    return;
+
+  trigger_mousekeys_move (device);
+}
+
+static gboolean
+handle_mousekeys_press (ClutterEvent            *event,
+                        ClutterInputDeviceEvdev *device)
+{
+  if (!(event->key.flags & CLUTTER_EVENT_FLAG_SYNTHETIC))
+    stop_mousekeys_move (device);
+
+  /* Button selection */
+  switch (event->key.keyval)
+    {
+    case XKB_KEY_KP_Divide:
+      device->mousekeys_btn = BTN_LEFT;
+      return TRUE;
+    case XKB_KEY_KP_Multiply:
+      device->mousekeys_btn = BTN_MIDDLE;
+      return TRUE;
+    case XKB_KEY_KP_Subtract:
+      device->mousekeys_btn = BTN_RIGHT;
+      return TRUE;
+    default:
+      break;
+    }
+
+  /* Button events */
+  switch (event->key.keyval)
+    {
+    case XKB_KEY_KP_Begin:
+    case XKB_KEY_KP_5:
+      emulate_button_click (device);
+      return TRUE;
+    case XKB_KEY_KP_Insert:
+    case XKB_KEY_KP_0:
+      emulate_button_press (device);
+      return TRUE;
+    case XKB_KEY_KP_Decimal:
+    case XKB_KEY_KP_Delete:
+      emulate_button_release (device);
+      return TRUE;
+    case XKB_KEY_KP_Add:
+      emulate_button_click (device);
+      emulate_button_click (device);
+      return TRUE;
+    default:
+      break;
+    }
+
+  /* Pointer motion */
+  switch (event->key.keyval)
+    {
+    case XKB_KEY_KP_1:
+    case XKB_KEY_KP_2:
+    case XKB_KEY_KP_3:
+    case XKB_KEY_KP_4:
+    case XKB_KEY_KP_6:
+    case XKB_KEY_KP_7:
+    case XKB_KEY_KP_8:
+    case XKB_KEY_KP_9:
+    case XKB_KEY_KP_Down:
+    case XKB_KEY_KP_End:
+    case XKB_KEY_KP_Home:
+    case XKB_KEY_KP_Left:
+    case XKB_KEY_KP_Page_Down:
+    case XKB_KEY_KP_Page_Up:
+    case XKB_KEY_KP_Right:
+    case XKB_KEY_KP_Up:
+      start_mousekeys_move (event, device);
+      return TRUE;
+    default:
+      break;
+    }
+
+  return FALSE;
+}
+
+static gboolean
+handle_mousekeys_release (ClutterEvent            *event,
+                          ClutterInputDeviceEvdev *device)
+{
+  switch (event->key.keyval)
+    {
+    case XKB_KEY_KP_0:
+    case XKB_KEY_KP_1:
+    case XKB_KEY_KP_2:
+    case XKB_KEY_KP_3:
+    case XKB_KEY_KP_4:
+    case XKB_KEY_KP_5:
+    case XKB_KEY_KP_6:
+    case XKB_KEY_KP_7:
+    case XKB_KEY_KP_8:
+    case XKB_KEY_KP_9:
+    case XKB_KEY_KP_Add:
+    case XKB_KEY_KP_Begin:
+    case XKB_KEY_KP_Decimal:
+    case XKB_KEY_KP_Delete:
+    case XKB_KEY_KP_Divide:
+    case XKB_KEY_KP_Down:
+    case XKB_KEY_KP_End:
+    case XKB_KEY_KP_Home:
+    case XKB_KEY_KP_Insert:
+    case XKB_KEY_KP_Left:
+    case XKB_KEY_KP_Multiply:
+    case XKB_KEY_KP_Page_Down:
+    case XKB_KEY_KP_Page_Up:
+    case XKB_KEY_KP_Right:
+    case XKB_KEY_KP_Subtract:
+    case XKB_KEY_KP_Up:
+      stop_mousekeys_move (device);
+      return TRUE;
+    default:
+       break;
+    }
+
+  return FALSE;
+}
+
 static void
 clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *event,
                                                    ClutterInputDevice         *device,
@@ -715,6 +1121,16 @@ clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *e
 
   if (!device_evdev->a11y_flags & CLUTTER_A11Y_KEYBOARD_ENABLED)
     goto emit_event;
+
+  if (device_evdev->a11y_flags & CLUTTER_A11Y_MOUSE_KEYS_ENABLED)
+    {
+      if (event->type == CLUTTER_KEY_PRESS &&
+          handle_mousekeys_press (event, device_evdev))
+        return; /* swallow event */
+      if (event->type == CLUTTER_KEY_RELEASE &&
+          handle_mousekeys_release (event, device_evdev))
+        return; /* swallow event */
+    }
 
   if (device_evdev->a11y_flags & CLUTTER_A11Y_TOGGLE_KEYS_ENABLED)
     {
@@ -784,6 +1200,16 @@ clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *dev
       device->shift_count = 0;
       device->last_shift_time = 0;
     }
+
+  if (changed_flags & (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_MOUSE_KEYS_ENABLED))
+    {
+      if (settings->controls &
+          (CLUTTER_A11Y_KEYBOARD_ENABLED | CLUTTER_A11Y_MOUSE_KEYS_ENABLED))
+        enable_mousekeys (device);
+      else
+        disable_mousekeys (device);
+    }
+  update_mousekeys_params (device, settings);
 
   /* Keep our own copy of keyboard a11y features flags to see what changes */
   device->a11y_flags = settings->controls;

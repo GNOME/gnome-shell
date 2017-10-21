@@ -82,6 +82,17 @@ struct _ClutterInputDeviceEvdev
   guint toggle_slowkeys_timer;
   guint16 shift_count;
   guint32 last_shift_time;
+  gint mousekeys_btn;
+  gboolean mousekeys_btn_states[3];
+  guint32 mousekeys_first_motion_time; /* ms */
+  guint32 mousekeys_last_motion_time; /* ms */
+  guint mousekeys_init_delay;
+  guint mousekeys_accel_time;
+  guint mousekeys_max_speed;
+  gdouble mousekeys_curve_factor;
+  guint move_mousekeys_timer;
+  guint16 last_mousekeys_key;
+  ClutterVirtualInputDevice *mousekeys_virtual_device;
 };
 
 GType                     _clutter_input_device_evdev_get_type        (void) G_GNUC_CONST;
