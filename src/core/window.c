@@ -7293,13 +7293,16 @@ meta_window_get_wm_class_instance (MetaWindow *window)
 }
 
 /**
- * meta_window_get_flatpak_id:
+ * meta_window_get_sandboxed_app_id:
  * @window: a #MetaWindow
  *
- * Return value: (transfer none): the Flatpak application ID or %NULL
+ * Gets an unique id for a sandboxed app (currently flatpaks and snaps are
+ * supported).
+ *
+ * Return value: (transfer none): the sandboxed application ID or %NULL
  **/
 const char *
-meta_window_get_flatpak_id (MetaWindow *window)
+meta_window_get_sandboxed_app_id (MetaWindow *window)
 {
   /* We're abusing this API here not to break the gnome shell assumptions
    * or adding a new function, to be renamed to generic names in new versions */
