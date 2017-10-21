@@ -407,7 +407,8 @@ test_scale_center (TestState *state)
   g_assert (scale_x == 4.0);
   g_assert (scale_y == 2.0);
   g_assert (gravity == CLUTTER_GRAVITY_NONE);
-  assert_notifications (NOTIFY_SCALE_CENTER_X | NOTIFY_SCALE_CENTER_Y
+  assert_notifications (NOTIFY_SCALE_X | NOTIFY_SCALE_Y
+                        | NOTIFY_SCALE_CENTER_X | NOTIFY_SCALE_CENTER_Y
                         | NOTIFY_SCALE_GRAVITY);
   assert_coords (state, 100 + 10 - 10 * 4, 200 + 20 - 20 * 2,
                  100 + 10 + (RECT_WIDTH - 10) * 4,
