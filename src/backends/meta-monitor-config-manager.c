@@ -754,6 +754,20 @@ create_for_builtin_display_rotation (MetaMonitorConfigManager *config_manager,
 
   if (rotate)
     transform = (current_logical_monitor_config->transform + 1) % META_MONITOR_TRANSFORM_FLIPPED;
+  else
+    {
+      /*
+       * The transform coming from the accelerometer should be applied to
+       * the crtc as is, without taking panel-orientation into account, this
+       * is done so that non panel-orientation aware desktop environments do the
+       * right thing. Mutter corrects for panel-orientation when applying the
+       * transform from a logical-monitor-config, so we must convert here.
+       */
+      MetaMonitor *panel =
+        meta_monitor_manager_get_laptop_panel (config_manager->monitor_manager);
+
+      transform = meta_monitor_crtc_to_logical_transform (panel, transform);
+    }
 
   if (current_logical_monitor_config->transform == transform)
     return NULL;
