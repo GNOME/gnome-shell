@@ -384,4 +384,11 @@ meta_monitor_transform_is_rotated (MetaMonitorTransform transform)
   return (transform % 2);
 }
 
+/* Returns true if transform involves flipping */
+static inline gboolean
+meta_monitor_transform_is_flipped (MetaMonitorTransform transform)
+{
+  return (transform >= META_MONITOR_TRANSFORM_FLIPPED);
+}
+
 #endif /* META_MONITOR_MANAGER_PRIVATE_H */

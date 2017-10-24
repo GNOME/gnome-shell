@@ -78,6 +78,7 @@ struct _MetaOutput
   CoglSubpixelOrder subpixel_order;
 
   MetaConnectorType connector_type;
+  MetaMonitorTransform panel_orientation_transform;
 
   MetaCrtcMode *preferred_mode;
   MetaCrtcMode **modes;

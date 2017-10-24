@@ -103,7 +103,8 @@ derive_monitor_transform (MetaMonitor *monitor)
 
   main_output = meta_monitor_get_main_output (monitor);
 
-  return main_output->crtc->transform;
+  return meta_monitor_crtc_to_logical_transform (monitor,
+                                                 main_output->crtc->transform);
 }
 
 MetaLogicalMonitor *

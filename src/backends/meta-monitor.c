@@ -354,6 +354,37 @@ meta_monitor_get_connector_type (MetaMonitor *monitor)
   return output->connector_type;
 }
 
+MetaMonitorTransform
+meta_monitor_logical_to_crtc_transform (MetaMonitor          *monitor,
+                                        MetaMonitorTransform  transform)
+{
+  MetaOutput *output = meta_monitor_get_main_output (monitor);
+  MetaMonitorTransform new_transform;
+
+  new_transform = (transform + output->panel_orientation_transform) %
+                  META_MONITOR_TRANSFORM_FLIPPED;
+  if (meta_monitor_transform_is_flipped (transform))
+    new_transform += META_MONITOR_TRANSFORM_FLIPPED;
+
+  return new_transform;
+}
+
+MetaMonitorTransform
+meta_monitor_crtc_to_logical_transform (MetaMonitor          *monitor,
+                                        MetaMonitorTransform  transform)
+{
+  MetaOutput *output = meta_monitor_get_main_output (monitor);
+  MetaMonitorTransform new_transform;
+
+  new_transform = (transform + META_MONITOR_TRANSFORM_FLIPPED -
+                   output->panel_orientation_transform) %
+                  META_MONITOR_TRANSFORM_FLIPPED;
+  if (meta_monitor_transform_is_flipped (transform))
+    new_transform += META_MONITOR_TRANSFORM_FLIPPED;
+
+  return new_transform;
+}
+
 static void
 meta_monitor_finalize (GObject *object)
 {
@@ -423,6 +454,29 @@ meta_monitor_add_mode (MetaMonitor     *monitor,
   return TRUE;
 }
 
+static MetaMonitorModeSpec
+meta_monitor_create_spec (MetaMonitor  *monitor,
+                          int           width,
+                          int           height,
+                          MetaCrtcMode *crtc_mode)
+{
+  MetaOutput *output = meta_monitor_get_main_output (monitor);
+
+  if (meta_monitor_transform_is_rotated (output->panel_orientation_transform))
+    {
+      int temp = width;
+      width = height;
+      height = temp;
+    }
+
+  return (MetaMonitorModeSpec) {
+    .width = width,
+    .height = height,
+    .refresh_rate = crtc_mode->refresh_rate,
+    .flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS
+  };
+}
+
 static void
 meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
 {
@@ -443,12 +497,10 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
       gboolean replace;
 
       mode = g_new0 (MetaMonitorMode, 1);
-      mode->spec = (MetaMonitorModeSpec) {
-        .width = crtc_mode->width,
-        .height = crtc_mode->height,
-        .refresh_rate = crtc_mode->refresh_rate,
-        .flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS
-      },
+      mode->spec = meta_monitor_create_spec (monitor,
+                                             crtc_mode->width,
+                                             crtc_mode->height,
+                                             crtc_mode);
       mode->id = generate_mode_id (&mode->spec);
       mode->crtc_modes = g_new (MetaMonitorCrtcMode, 1);
       mode->crtc_modes[0] = (MetaMonitorCrtcMode) {
@@ -780,12 +832,8 @@ create_tiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   mode->is_tiled = TRUE;
   meta_monitor_tiled_calculate_tiled_size (monitor, &width, &height);
 
-  mode->parent.spec = (MetaMonitorModeSpec) {
-    .width = width,
-    .height = height,
-    .refresh_rate = reference_crtc_mode->refresh_rate,
-    .flags = reference_crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS
-  };
+  mode->parent.spec =
+    meta_monitor_create_spec (monitor, width, height, reference_crtc_mode);
   mode->parent.id = generate_mode_id (&mode->parent.spec);
 
   mode->parent.crtc_modes = g_new0 (MetaMonitorCrtcMode,
@@ -895,12 +943,10 @@ create_untiled_monitor_mode (MetaMonitorTiled *monitor_tiled,
   mode = g_new0 (MetaMonitorModeTiled, 1);
 
   mode->is_tiled = FALSE;
-  mode->parent.spec = (MetaMonitorModeSpec) {
-    .width = crtc_mode->width,
-    .height = crtc_mode->height,
-    .refresh_rate = crtc_mode->refresh_rate,
-    .flags = crtc_mode->flags & HANDLED_CRTC_MODE_FLAGS
-  };
+  mode->parent.spec = meta_monitor_create_spec (monitor,
+                                                crtc_mode->width,
+                                                crtc_mode->height,
+                                                crtc_mode);
   mode->parent.id = generate_mode_id (&mode->parent.spec);
   mode->parent.crtc_modes = g_new0 (MetaMonitorCrtcMode,
                                     g_list_length (monitor_priv->outputs));

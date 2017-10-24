@@ -229,9 +229,37 @@ meta_output_kms_read_edid (MetaOutput *output)
 }
 
 static void
-find_connector_properties (MetaGpuKms    *gpu_kms,
-                           MetaOutputKms *output_kms)
+handle_panel_orientation (MetaOutput        *output,
+                          drmModePropertyPtr prop,
+                          int                orientation)
 {
+  const char *name = prop->enums[orientation].name;
+
+  if (strcmp (name, "Upside Down") == 0)
+    {
+      output->panel_orientation_transform = META_MONITOR_TRANSFORM_180;
+    }
+  else if (strcmp (name, "Left Side Up") == 0)
+    {
+      /* Left side up, rotate 90 degrees counter clockwise to correct */
+      output->panel_orientation_transform = META_MONITOR_TRANSFORM_90;
+    }
+  else if (strcmp (name, "Right Side Up") == 0)
+    {
+      /* Right side up, rotate 270 degrees counter clockwise to correct */
+      output->panel_orientation_transform = META_MONITOR_TRANSFORM_270;
+    }
+  else
+    {
+      output->panel_orientation_transform = META_MONITOR_TRANSFORM_NORMAL;
+    }
+}
+
+static void
+find_connector_properties (MetaGpuKms    *gpu_kms,
+                           MetaOutput    *output)
+{
+  MetaOutputKms *output_kms = output->driver_private;
   drmModeConnector *connector = output_kms->connector;
   int fd;
   int i;
@@ -268,6 +296,10 @@ find_connector_properties (MetaGpuKms    *gpu_kms,
         output_kms->hotplug_mode_update = connector->prop_values[i];
       else if (strcmp (prop->name, "scaling mode") == 0)
         output_kms->has_scaling = TRUE;
+      else if ((prop->flags & DRM_MODE_PROP_ENUM) &&
+               strcmp (prop->name, "panel orientation") == 0)
+        handle_panel_orientation (output, prop,
+                                  output_kms->connector->prop_values[i]);
 
       drmModeFreeProperty (prop);
     }
@@ -469,7 +501,7 @@ meta_create_kms_output (MetaGpuKms       *gpu_kms,
     }
 
   output_kms->connector = connector;
-  find_connector_properties (gpu_kms, output_kms);
+  find_connector_properties (gpu_kms, output);
 
   init_output_modes (output, gpu_kms);
 

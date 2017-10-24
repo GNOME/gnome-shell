@@ -604,6 +604,38 @@ output_get_connector_type (MetaOutput *output)
   return META_CONNECTOR_TYPE_Unknown;
 }
 
+static gint
+output_get_panel_orientation_transform (MetaOutput *output)
+{
+  Display *xdisplay = xdisplay_from_output (output);
+  unsigned long nitems, bytes_after;
+  Atom atom, actual_type;
+  int actual_format;
+  g_autofree unsigned char *buffer = NULL;
+  g_autofree char *str = NULL;
+
+  atom = XInternAtom (xdisplay, "panel orientation", False);
+  XRRGetOutputProperty (xdisplay, (XID)output->winsys_id, atom,
+                        0, G_MAXLONG, False, False, XA_ATOM,
+                        &actual_type, &actual_format,
+                        &nitems, &bytes_after, &buffer);
+
+  if (actual_type != XA_ATOM || actual_format != 32 || nitems < 1)
+    return META_MONITOR_TRANSFORM_NORMAL;
+
+  str = XGetAtomName (xdisplay, *(Atom *)buffer);
+  if (strcmp (str, "Upside Down") == 0)
+    return META_MONITOR_TRANSFORM_180;
+
+  if (strcmp (str, "Left Side Up") == 0)
+    return META_MONITOR_TRANSFORM_90;
+
+  if (strcmp (str, "Right Side Up") == 0)
+    return META_MONITOR_TRANSFORM_270;
+
+  return META_MONITOR_TRANSFORM_NORMAL;
+}
+
 static void
 output_get_tile_info (MetaOutput *output)
 {
@@ -744,6 +776,8 @@ meta_create_xrandr_output (MetaGpuXrandr *gpu_xrandr,
   output->suggested_x = output_get_suggested_x (output);
   output->suggested_y = output_get_suggested_y (output);
   output->connector_type = output_get_connector_type (output);
+  output->panel_orientation_transform =
+    output_get_panel_orientation_transform (output);
 
   output_get_tile_info (output);
   output_get_modes (output, xrandr_output);

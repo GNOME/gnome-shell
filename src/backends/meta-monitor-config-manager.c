@@ -152,11 +152,10 @@ assign_monitor_crtc (MetaMonitor         *monitor,
     }
 
   transform = data->logical_monitor_config->transform;
-  if (meta_monitor_manager_is_transform_handled (data->monitor_manager,
-                                                 crtc,
-                                                 transform))
-    crtc_transform = transform;
-  else
+  crtc_transform = meta_monitor_logical_to_crtc_transform (monitor, transform);
+  if (!meta_monitor_manager_is_transform_handled (data->monitor_manager,
+                                                  crtc,
+                                                  crtc_transform))
     crtc_transform = META_MONITOR_TRANSFORM_NORMAL;
 
   meta_monitor_calculate_crtc_pos (monitor, mode, output, crtc_transform,
