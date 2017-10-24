@@ -601,11 +601,21 @@ init_modes (MetaGpuKms *gpu_kms,
 
   g_hash_table_destroy (modes_table);
 
-  for (i = 0; i < G_N_ELEMENTS (meta_default_drm_mode_infos); i++)
+  for (i = 0; i < G_N_ELEMENTS (meta_default_landscape_drm_mode_infos); i++)
     {
       MetaCrtcMode *mode;
 
-      mode = create_mode (&meta_default_drm_mode_infos[i], (long) mode_id);
+      mode = create_mode (&meta_default_landscape_drm_mode_infos[i], mode_id);
+      modes = g_list_append (modes, mode);
+
+      mode_id++;
+    }
+
+  for (i = 0; i < G_N_ELEMENTS (meta_default_portrait_drm_mode_infos); i++)
+    {
+      MetaCrtcMode *mode;
+
+      mode = create_mode (&meta_default_portrait_drm_mode_infos[i], mode_id);
       modes = g_list_append (modes, mode);
 
       mode_id++;

@@ -357,7 +357,10 @@ static void
 add_common_modes (MetaOutput *output,
                   MetaGpuKms *gpu_kms)
 {
+  const drmModeModeInfo *drm_mode;
+  MetaCrtcMode *crtc_mode;
   GPtrArray *array;
+  float refresh_rate;
   unsigned i;
   unsigned max_hdisplay = 0;
   unsigned max_vdisplay = 0;
@@ -365,9 +368,6 @@ add_common_modes (MetaOutput *output,
 
   for (i = 0; i < output->n_modes; i++)
     {
-      const drmModeModeInfo *drm_mode;
-      float refresh_rate;
-
       drm_mode = output->modes[i]->driver_private;
       refresh_rate = meta_calculate_drm_mode_refresh_rate (drm_mode);
       max_hdisplay = MAX (max_hdisplay, drm_mode->hdisplay);
@@ -379,22 +379,37 @@ add_common_modes (MetaOutput *output,
   max_refresh_rate *= (1 + SYNC_TOLERANCE);
 
   array = g_ptr_array_new ();
-  for (i = 0; i < G_N_ELEMENTS (meta_default_drm_mode_infos); i++)
+  if (max_hdisplay > max_vdisplay)
     {
-      const drmModeModeInfo *drm_mode;
-      float refresh_rate;
-      MetaCrtcMode *crtc_mode;
+      for (i = 0; i < G_N_ELEMENTS (meta_default_landscape_drm_mode_infos); i++)
+        {
+          drm_mode = &meta_default_landscape_drm_mode_infos[i];
+          refresh_rate = meta_calculate_drm_mode_refresh_rate (drm_mode);
+          if (drm_mode->hdisplay > max_hdisplay ||
+              drm_mode->vdisplay > max_vdisplay ||
+              refresh_rate > max_refresh_rate)
+            continue;
 
-      drm_mode = &meta_default_drm_mode_infos[i];
-      refresh_rate = meta_calculate_drm_mode_refresh_rate (drm_mode);
-      if (drm_mode->hdisplay > max_hdisplay ||
-          drm_mode->vdisplay > max_vdisplay ||
-          refresh_rate > max_refresh_rate)
-        continue;
+          crtc_mode = meta_gpu_kms_get_mode_from_drm_mode (gpu_kms,
+                                                           drm_mode);
+          g_ptr_array_add (array, crtc_mode);
+        }
+    }
+  else
+    {
+      for (i = 0; i < G_N_ELEMENTS (meta_default_portrait_drm_mode_infos); i++)
+        {
+          drm_mode = &meta_default_portrait_drm_mode_infos[i];
+          refresh_rate = meta_calculate_drm_mode_refresh_rate (drm_mode);
+          if (drm_mode->hdisplay > max_hdisplay ||
+              drm_mode->vdisplay > max_vdisplay ||
+              refresh_rate > max_refresh_rate)
+            continue;
 
-      crtc_mode = meta_gpu_kms_get_mode_from_drm_mode (gpu_kms,
-                                                       drm_mode);
-      g_ptr_array_add (array, crtc_mode);
+          crtc_mode = meta_gpu_kms_get_mode_from_drm_mode (gpu_kms,
+                                                           drm_mode);
+          g_ptr_array_add (array, crtc_mode);
+        }
     }
 
   output->modes = g_renew (MetaCrtcMode *, output->modes,
