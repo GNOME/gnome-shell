@@ -2048,11 +2048,15 @@ shell_global_get_debug_flags (ShellGlobal *global)
 /**
  * shell_global_set_debug_flags:
  * @global: a #ShellGlobal
- * @debug_flags: (nullable): A string for debugging flags
+ * @debug_flags: (nullable): A comma-separated string of debugging flags
  *
  * Updates the debugging flags at runtime as the one set using the SHELL_DEBUG
- * environment variables. Currently we support 'backtrace-warnings' and
- * 'backtrace-segfaults' keys.
+ * environment variables. Currently we support these keys:
+ *  - 'backtrace-warnings'
+ *  - 'backtrace-segfaults'
+ *  - 'backtrace-aborts'
+ *  - 'backtrace-math-errors'
+ *  - 'all'
  */
 void
 shell_global_set_debug_flags (ShellGlobal  *global,
