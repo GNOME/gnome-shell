@@ -67,6 +67,7 @@ struct _ShellGlobal {
   GdkScreen *gdk_screen;
 
   char *session_mode;
+  char *debug_flags;
 
   XserverRegion input_region;
 
@@ -114,6 +115,7 @@ enum {
   PROP_FOCUS_MANAGER,
   PROP_FRAME_TIMESTAMPS,
   PROP_FRAME_FINISH_TIMESTAMP,
+  PROP_DEBUG_FLAGS,
 };
 
 /* Signals */
@@ -146,6 +148,9 @@ shell_global_set_property(GObject         *object,
       break;
     case PROP_FRAME_FINISH_TIMESTAMP:
       global->frame_finish_timestamp = g_value_get_boolean (value);
+      break;
+    case PROP_DEBUG_FLAGS:
+      shell_global_set_debug_flags (global, g_value_get_string (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -223,6 +228,9 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_FRAME_FINISH_TIMESTAMP:
       g_value_set_boolean (value, global->frame_finish_timestamp);
+      break;
+    case PROP_DEBUG_FLAGS:
+      g_value_set_string (value, global->debug_flags);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -490,6 +498,13 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                          "Whether at the end of a frame to call glFinish and log paintCompletedTimestamp",
                                                          FALSE,
                                                          G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class,
+                                   PROP_DEBUG_FLAGS,
+                                   g_param_spec_string ("debug-flags",
+                                                        "Debug Flags",
+                                                        "The debugging flags",
+                                                        NULL,
+                                                        G_PARAM_READWRITE));
 }
 
 /*
@@ -2014,4 +2029,41 @@ shell_global_get_persistent_state (ShellGlobal  *global,
                                    const char   *property_name)
 {
   return load_variant (global->userdatadir_path, property_type, property_name);
+}
+
+/**
+ * shell_global_get_debug_flags:
+ * @global: a #ShellGlobal
+ *
+ * Returns: (transfer none): The current debug flags
+ */
+const gchar *
+shell_global_get_debug_flags (ShellGlobal *global)
+{
+  g_return_if_fail (SHELL_IS_GLOBAL (global));
+
+  return global->debug_flags;
+}
+
+/**
+ * shell_global_set_debug_flags:
+ * @global: a #ShellGlobal
+ * @debug_flags: (nullable): A string for debugging flags
+ *
+ * Updates the debugging flags at runtime as the one set using the SHELL_DEBUG
+ * environment variables. Currently we support 'backtrace-warnings' and
+ * 'backtrace-segfaults' keys.
+ */
+void
+shell_global_set_debug_flags (ShellGlobal  *global,
+                              const char   *debug_flags)
+{
+  g_return_if_fail (SHELL_IS_GLOBAL (global));
+
+  if (g_strcmp0 (global->debug_flags, debug_flags) != 0)
+    {
+      g_free (global->debug_flags);
+      global->debug_flags = g_strdup (debug_flags);
+      g_object_notify (G_OBJECT (global), "debug-flags");
+    }
 }
