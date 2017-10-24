@@ -125,6 +125,9 @@ void     shell_global_set_persistent_state      (ShellGlobal  *global,
 GVariant * shell_global_get_persistent_state    (ShellGlobal  *global,
                                                  const char   *property_type,
                                                  const char   *property_name);
+const char * shell_global_get_debug_flags       (ShellGlobal  *global);
+void     shell_global_set_debug_flags           (ShellGlobal  *global,
+                                                 const char   *debug_flags);
 
 G_END_DECLS
 
