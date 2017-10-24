@@ -48,6 +48,7 @@ enum {
   SHELL_DEBUG_BACKTRACE_SEGFAULTS = 2,
 };
 static int _shell_debug;
+static gboolean _tracked_signals[NSIG] = { 0 };
 
 static void
 shell_dbus_acquire_name (GDBusProxy  *bus,
@@ -332,11 +333,11 @@ shut_up (const char     *domain,
 }
 
 static void
-dump_gjs_stack_alarm_sigaction (int        signo,
-                                siginfo_t *info,
-                                void      *data)
+dump_gjs_stack_alarm_sigaction (int signo)
 {
+  g_log_set_default_handler (g_log_default_handler, NULL);
   g_warning ("Failed to dump Javascript stack, got stuck");
+  g_log_set_default_handler (default_log_handler, NULL);
 
   raise (caught_signal);
 }
@@ -344,16 +345,24 @@ dump_gjs_stack_alarm_sigaction (int        signo,
 static void
 dump_gjs_stack_on_signal_handler (int signo)
 {
+  struct sigaction sa = { 0 };
+  gsize i;
+
+  /* Ignore all the signals starting this point, a part the one we'll raise
+   * (which is implicitly ignored here through SA_RESETHAND), this is needed
+   * not to get this handler being called by other signals that we were
+   * tracking and that might be emitted by code called starting from now.
+   */
+  for (i = 0; i < G_N_ELEMENTS (_tracked_signals); ++i)
+    {
+      if (_tracked_signals[i] && i != signo)
+        signal (i, SIG_IGN);
+    }
+
   /* Waiting at least 5 seconds for the dumpstack, if it fails, we raise the error */
-  struct sigaction sa;
-
   caught_signal = signo;
-  memset (&sa, 0, sizeof (sigaction));
+  sa.sa_handler = dump_gjs_stack_alarm_sigaction;
   sigemptyset (&sa.sa_mask);
-
-  sa.sa_flags     = SA_SIGINFO;
-  sa.sa_sigaction = dump_gjs_stack_alarm_sigaction;
-
   sigaction (SIGALRM, &sa, NULL);
 
   alarm (5);
@@ -366,15 +375,14 @@ dump_gjs_stack_on_signal_handler (int signo)
 static void
 dump_gjs_stack_on_signal (int signo)
 {
-  struct sigaction sa;
+  struct sigaction sa = { 0 };
 
-  memset (&sa, 0, sizeof (sigaction));
+  sa.sa_flags   = SA_RESETHAND | SA_NODEFER;
+  sa.sa_handler = dump_gjs_stack_on_signal_handler;
   sigemptyset (&sa.sa_mask);
 
-  sa.sa_flags   = SA_RESETHAND;
-  sa.sa_handler = dump_gjs_stack_on_signal_handler;
-
   sigaction (signo, &sa, NULL);
+  _tracked_signals[signo] = TRUE;
 }
 
 static gboolean
