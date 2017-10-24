@@ -1156,8 +1156,8 @@ meta_monitor_tiled_get_main_output (MetaMonitor *monitor)
 }
 
 static void
-meta_monitor_derived_derive_layout (MetaMonitor   *monitor,
-                                    MetaRectangle *layout)
+meta_monitor_tiled_derive_layout (MetaMonitor   *monitor,
+                                  MetaRectangle *layout)
 {
   MetaMonitorPrivate *monitor_priv =
     meta_monitor_get_instance_private (monitor);
@@ -1248,7 +1248,7 @@ meta_monitor_tiled_class_init (MetaMonitorTiledClass *klass)
   object_class->finalize = meta_monitor_tiled_finalize;
 
   monitor_class->get_main_output = meta_monitor_tiled_get_main_output;
-  monitor_class->derive_layout = meta_monitor_derived_derive_layout;
+  monitor_class->derive_layout = meta_monitor_tiled_derive_layout;
   monitor_class->calculate_crtc_pos = meta_monitor_tiled_calculate_crtc_pos;
   monitor_class->get_suggested_position = meta_monitor_tiled_get_suggested_position;
 }
