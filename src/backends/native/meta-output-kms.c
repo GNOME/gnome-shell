@@ -489,8 +489,6 @@ meta_create_kms_output (MetaGpuKms       *gpu_kms,
   output->gpu = gpu;
   output->winsys_id = connector->connector_id;
   output->name = make_output_name (connector);
-  output->width_mm = connector->mmWidth;
-  output->height_mm = connector->mmHeight;
 
   switch (connector->subpixel)
     {
@@ -517,6 +515,17 @@ meta_create_kms_output (MetaGpuKms       *gpu_kms,
 
   output_kms->connector = connector;
   find_connector_properties (gpu_kms, output);
+
+  if (meta_monitor_transform_is_rotated (output->panel_orientation_transform))
+    {
+      output->width_mm = connector->mmHeight;
+      output->height_mm = connector->mmWidth;
+    }
+  else
+    {
+      output->width_mm = connector->mmWidth;
+      output->height_mm = connector->mmHeight;
+    }
 
   init_output_modes (output, gpu_kms);
 
