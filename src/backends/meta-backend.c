@@ -337,6 +337,8 @@ on_device_removed (ClutterDeviceManager *device_manager,
       gboolean has_touchscreen, has_pointing_device;
       ClutterInputDeviceType device_type;
 
+      priv->current_device_id = 0;
+
       device_type = clutter_input_device_get_device_type (device);
       has_touchscreen = check_has_slave_touchscreen (device_manager);
 
