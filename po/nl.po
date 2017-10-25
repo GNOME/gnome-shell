@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-s"
 "hell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-31 02:16+0000\n"
-"PO-Revision-Date: 2017-09-01 10:25+0100\n"
+"POT-Creation-Date: 2017-10-23 10:13+0000\n"
+"PO-Revision-Date: 2017-10-25 10:55+0100\n"
 "Last-Translator: Hannie Dumoleyn <hannie@ubuntu-nl.org>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
@@ -71,16 +71,16 @@ msgstr "Vensterbeheer en toepassingen starten"
 #: data/org.gnome.shell.gschema.xml.in:6
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
-"Interne hulpprogramma's inschakelen die nuttig zijn voor ontwikkwlaars en"
-" testers via Alt-F2"
+"Interne hulpprogramma's inschakelen die nuttig zijn voor ontwikkwlaars en "
+"testers via Alt-F2"
 
 #: data/org.gnome.shell.gschema.xml.in:9
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Geeft toegang tot interne debugging- en observatieprogramma's met behulp van"
-" het Alt-F2-dialoogvenster."
+"Geeft toegang tot interne debugging- en observatieprogramma's met behulp van "
+"het Alt-F2-dialoogvenster."
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
@@ -107,8 +107,8 @@ msgid ""
 "Disable all extensions the user has enabled without affecting the “enabled-"
 "extension” setting."
 msgstr ""
-"Schakel alle door de gebruiker ingeschakelde uitbreidingen uit, zonder de"
-" instelling ‘enabled-extension’ te wijzigen."
+"Schakel alle door de gebruiker ingeschakelde uitbreidingen uit, zonder de "
+"instelling ‘enabled-extension’ te wijzigen."
 
 #: data/org.gnome.shell.gschema.xml.in:34
 msgid "Disables the validation of extension version compatibility"
@@ -122,8 +122,8 @@ msgid ""
 msgstr ""
 "Gnome Shell zal alleen uitbreidingen laden die aangeven de huidige versie te "
 "ondersteunen. Door deze optie in te schakelen wordt deze controle "
-"overgeslagen en worden alle uitbreidingen geladen, ongeacht de versies die ze"
-" zouden moeten ondersteunen."
+"overgeslagen en worden alle uitbreidingen geladen, ongeacht de versies die "
+"ze zouden moeten ondersteunen."
 
 #: data/org.gnome.shell.gschema.xml.in:43
 msgid "List of desktop file IDs for favorite applications"
@@ -134,8 +134,8 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"De toepassingen die aan deze identifiers voldoen worden in het"
-" favorietengebied weergegeven."
+"De toepassingen die aan deze identifiers voldoen worden in het "
+"favorietengebied weergegeven."
 
 #: data/org.gnome.shell.gschema.xml.in:51
 msgid "App Picker View"
@@ -171,8 +171,8 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
-"Of wachtwoorden voor versleutelde bestandssystemen of bestandssystemen op"
-" afstand onthouden moeten worden"
+"Of wachtwoorden voor versleutelde bestandssystemen of bestandssystemen op "
+"afstand onthouden moeten worden"
 
 #: data/org.gnome.shell.gschema.xml.in:76
 msgid ""
@@ -310,8 +310,8 @@ msgstr "Deze waarde overschrijft de waarde in org.gnome.mutter in Gnome Shell."
 #: data/org.gnome.shell.gschema.xml.in:206
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
-"Vensters langs de randen positioneren bij verslepen naar de rand van het"
-" scherm"
+"Vensters langs de randen positioneren bij verslepen naar de rand van het "
+"scherm"
 
 #: data/org.gnome.shell.gschema.xml.in:214
 msgid "Workspaces are managed dynamically"
@@ -755,51 +755,51 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "Z"
 
-#: js/ui/calendar.js:442
+#: js/ui/calendar.js:449
 msgid "Previous month"
 msgstr "Vorige maand"
 
-#: js/ui/calendar.js:452
+#: js/ui/calendar.js:459
 msgid "Next month"
 msgstr "Volgende maand"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "Week %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Gehele dag"
 
-#: js/ui/calendar.js:862
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%a %d %B"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%a %d %B %Y"
 
-#: js/ui/calendar.js:1086
+#: js/ui/calendar.js:1093
 msgid "No Notifications"
 msgstr "Geen notificaties"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1096
 msgid "No Events"
 msgstr "Geen gebeurtenissen"
 
-#: js/ui/calendar.js:1117
+#: js/ui/calendar.js:1124
 msgid "Clear All"
 msgstr "Alles wissen"
 
@@ -814,8 +814,8 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"U kan even wachten tot de toepassing weer reageert, of ze dwingen"
-" onmiddellijk af te sluiten."
+"U kan even wachten tot de toepassing weer reageert, of ze dwingen "
+"onmiddellijk af te sluiten."
 
 #: js/ui/closeDialog.js:61
 msgid "Force Quit"
@@ -833,7 +833,7 @@ msgstr "Verbinding met externe schijf gemaakt"
 msgid "External drive disconnected"
 msgstr "Verbinding met externe schijf verbroken"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:358
 #, javascript-format
 msgid "Open with %s"
 msgstr "Openen met %s"
@@ -972,7 +972,7 @@ msgstr "Zijbalk"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:76
 msgid "%B %e %Y"
 msgstr "%e %B %Y"
 
@@ -980,19 +980,19 @@ msgstr "%e %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:145
 msgid "Add world clocks…"
 msgstr "Wereldklokken toevoegen…"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:146
 msgid "World Clocks"
 msgstr "Wereldklokken"
 
-#: js/ui/dateMenu.js:224
+#: js/ui/dateMenu.js:225
 msgid "Weather"
 msgstr "Weer"
 
@@ -1000,7 +1000,7 @@ msgstr "Weer"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:286
+#: js/ui/dateMenu.js:289
 #, javascript-format
 msgid "%s all day."
 msgstr "De hele dag %s."
@@ -1009,7 +1009,7 @@ msgstr "De hele dag %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:292
+#: js/ui/dateMenu.js:295
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, daarna %s."
@@ -1018,30 +1018,30 @@ msgstr "%s, daarna %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:298
+#: js/ui/dateMenu.js:301
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, daarna %s, gevolgd door %s."
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:312
 msgid "Select a location…"
 msgstr "Selecteer een locatie…"
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:315
 msgid "Loading…"
 msgstr "Laden…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:318
+#: js/ui/dateMenu.js:321
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Voelt aan als %s."
 
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:324
 msgid "Go online for weather information"
 msgstr "Ga online voor informatie over het weer"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:326
 msgid "Weather information is currently unavailable"
 msgstr "Informatie over het weer is momenteel niet beschikbaar"
 
@@ -1278,7 +1278,7 @@ msgstr "Broncode weergeven"
 msgid "Web Page"
 msgstr "Webpagina"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1494
 msgid "System Information"
 msgstr "Systeeminformatie"
 
@@ -1369,7 +1369,7 @@ msgstr "Systeem"
 
 #: js/ui/panel.js:812
 msgid "Top Bar"
-msgstr "Bovenbalk"
+msgstr "Menubalk"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
@@ -2042,19 +2042,19 @@ msgstr "Evolution-agenda"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:429
 msgid "Print version"
 msgstr "Versie weergeven"
 
-#: src/main.c:386
+#: src/main.c:435
 msgid "Mode used by GDM for login screen"
 msgstr "De modus die door GDM voor het aanmeldscherm gebruikt wordt"
 
-#: src/main.c:392
+#: src/main.c:441
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Specifieke modus gebruiken, bijv. “gdm” voor het aanmeldscherm"
 
-#: src/main.c:398
+#: src/main.c:447
 msgid "List possible modes"
 msgstr "Mogelijke modi tonen"
 
