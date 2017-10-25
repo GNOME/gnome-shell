@@ -50,11 +50,12 @@ typedef struct
   char *lock_file;
   int abstract_fd;
   int unix_fd;
-  pid_t pid;
   struct wl_client *client;
   struct wl_resource *xserver_resource;
   char *display_name;
 
+  GCancellable *xserver_died_cancellable;
+  GSubprocess *proc;
   GMainLoop *init_loop;
 
   MetaXWaylandSelection *selection_data;

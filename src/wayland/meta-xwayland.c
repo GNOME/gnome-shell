@@ -392,8 +392,15 @@ xserver_died (GObject      *source,
               gpointer      user_data)
 {
   GSubprocess *proc = G_SUBPROCESS (source);
+  GError *error = NULL;
 
-  if (!g_subprocess_get_successful (proc))
+  if (!g_subprocess_wait_finish (proc, result, &error))
+    {
+      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        g_error ("Failed to finish waiting for Xwayland: %s", error->message);
+      g_clear_error (&error);
+    }
+  else if (!g_subprocess_get_successful (proc))
     g_error ("X Wayland crashed; aborting");
   else
     {
@@ -508,7 +515,6 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   gboolean started = FALSE;
   g_autoptr(GSubprocessLauncher) launcher = NULL;
   GSubprocessFlags flags;
-  GSubprocess *proc;
   GError *error = NULL;
 
   if (!choose_xdisplay (manager))
@@ -545,20 +551,31 @@ meta_xwayland_start (MetaXWaylandManager *manager,
   g_subprocess_launcher_take_fd (launcher, displayfd[1], 6);
 
   g_subprocess_launcher_setenv (launcher, "WAYLAND_SOCKET", "3", TRUE);
-  proc = g_subprocess_launcher_spawn (launcher, &error,
-                                      XWAYLAND_PATH, manager->display_name,
-                                      "-rootless", "-noreset",
-                                      "-listen", "4",
-                                      "-listen", "5",
-                                      "-displayfd", "6",
-                                      NULL);
-  if (!proc)
+
+  /* Use the -terminate parameter to ensure that Xwayland exits cleanly
+   * after the last client disconnects. Fortunately that includes the window
+   * manager so it won't exit prematurely either. This ensures that Xwayland
+   * won't try to reconnect and crash, leaving uninteresting core dumps. We do
+   * want core dumps from Xwayland but only if a real bug occurs...
+   */
+  manager->proc = g_subprocess_launcher_spawn (launcher, &error,
+                                               XWAYLAND_PATH, manager->display_name,
+                                               "-rootless",
+                                               "-terminate",
+                                               "-core",
+                                               "-listen", "4",
+                                               "-listen", "5",
+                                               "-displayfd", "6",
+                                               NULL);
+  if (!manager->proc)
     {
       g_error ("Failed to spawn Xwayland: %s", error->message);
       goto out;
     }
 
-  g_subprocess_wait_async  (proc, NULL, xserver_died, NULL);
+  manager->xserver_died_cancellable = g_cancellable_new ();
+  g_subprocess_wait_async (manager->proc, manager->xserver_died_cancellable,
+                           xserver_died, NULL);
   g_unix_fd_add (displayfd[0], G_IO_IN, on_displayfd_ready, manager);
   manager->client = wl_client_create (wl_display, xwayland_client_fd[0]);
 
@@ -598,7 +615,10 @@ meta_xwayland_stop (MetaXWaylandManager *manager)
 {
   char path[256];
 
+  g_cancellable_cancel (manager->xserver_died_cancellable);
   meta_xwayland_shutdown_selection ();
+  g_clear_object (&manager->proc);
+  g_clear_object (&manager->xserver_died_cancellable);
 
   snprintf (path, sizeof path, "/tmp/.X11-unix/X%d", manager->display_index);
   unlink (path);
