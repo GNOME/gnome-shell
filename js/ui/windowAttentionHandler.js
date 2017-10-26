@@ -79,7 +79,7 @@ var Source = new Lang.Class({
         this.signalIDs = [];
     },
 
-    _createPoliy: function() {
+    _createPolicy: function() {
         if (this._app && this._app.get_app_info()) {
             let id = this._app.get_id().replace(/\.desktop$/,'');
             return new MessageTray.NotificationApplicationPolicy(id);
