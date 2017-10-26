@@ -428,6 +428,9 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   if (width == 0 || height == 0)
     return NULL;
 
+  width = ceilf (width);
+  height = ceilf (height);
+
   if (CLUTTER_IS_TEXTURE (actor))
     {
       CoglTexture *texture;
