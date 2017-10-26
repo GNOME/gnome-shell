@@ -112,6 +112,7 @@ typedef struct _MonitorTestCaseOutput
   gboolean is_laptop_panel;
   gboolean is_underscanning;
   const char *serial;
+  MetaMonitorTransform panel_orientation_transform;
 } MonitorTestCaseOutput;
 
 typedef struct _MonitorTestCaseCrtc
@@ -1009,6 +1010,8 @@ create_monitor_test_setup (MonitorTestCase *test_case,
                                          : META_CONNECTOR_TYPE_DisplayPort);
       output->tile_info = test_case->setup.outputs[i].tile_info;
       output->is_underscanning = test_case->setup.outputs[i].is_underscanning;
+      output->panel_orientation_transform =
+        test_case->setup.outputs[i].panel_orientation_transform;
       output->driver_private = output_test;
       output->driver_notify = (GDestroyNotify) meta_output_test_destroy_notify;
 
