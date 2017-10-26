@@ -1339,6 +1339,10 @@ StScrollBar {
   border-radius: 9px 0 0 9px; }
   .workspace-thumbnails:rtl {
     border-radius: 0 9px 9px 0; }
+  .workspace-thumbnails .placeholder {
+    background-image: url("resource:///org/gnome/shell/theme/dash-placeholder.svg");
+    background-size: contain;
+    height: 24px; }
 
 .workspace-thumbnail-indicator {
   border: 4px solid #215d9c;
