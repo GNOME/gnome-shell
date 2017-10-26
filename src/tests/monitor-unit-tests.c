@@ -3094,6 +3094,39 @@ meta_test_monitor_preferred_non_first_mode (void)
 }
 
 static void
+meta_test_monitor_non_upright_panel (void)
+{
+  MonitorTestCase test_case = initial_test_case;
+  MetaMonitorTestSetup *test_setup;
+
+  test_case.setup.modes[1] = (MonitorTestCaseMode) {
+    .width = 768,
+    .height = 1024,
+    .refresh_rate = 60.0,
+  };
+  test_case.setup.n_modes = 2;  
+  test_case.setup.outputs[0].modes[0] = 1;
+  test_case.setup.outputs[0].preferred_mode = 1;
+  test_case.setup.outputs[0].panel_orientation_transform =
+    META_MONITOR_TRANSFORM_90;
+  /*
+   * Note we do not swap outputs[0].width_mm and height_mm, because these get
+   * swapped for rotated panels inside the xrandr / kms code and we directly
+   * create a dummy output here, skipping this code.
+   */
+  test_case.setup.crtcs[0].current_mode = 1;
+
+  test_case.expect.monitors[0].modes[0].crtc_modes[0].crtc_mode = 1;
+  test_case.expect.crtcs[0].current_mode = 1;
+  test_case.expect.crtcs[0].transform = META_MONITOR_TRANSFORM_90;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_custom_vertical_config (void)
 {
   MonitorTestCase test_case = {
@@ -5887,6 +5920,8 @@ init_monitor_tests (void)
                     meta_test_monitor_underscanning_config);
   add_monitor_test ("/backends/monitor/preferred-non-first-mode",
                     meta_test_monitor_preferred_non_first_mode);
+  add_monitor_test ("/backends/monitor/non-upright-panel",
+                    meta_test_monitor_non_upright_panel);
 
   add_monitor_test ("/backends/monitor/custom/vertical-config",
                     meta_test_monitor_custom_vertical_config);
