@@ -442,8 +442,8 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   if (!clutter_actor_get_resource_scale (actor, &resource_scale))
     return NULL;
 
-  width *= resource_scale;
-  height *= resource_scale;
+  width = ceilf (width * resource_scale);
+  height = ceilf (height * resource_scale);
 
   if (CLUTTER_IS_TEXTURE (actor))
     {
