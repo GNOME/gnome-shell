@@ -1156,25 +1156,13 @@ cogl_texture_get_data (CoglTexture *texture,
       tg_data.success = FALSE;
     }
 
-  /* XXX: In some cases _cogl_texture_2d_download_from_gl may fail
-   * to read back the texture data; such as for GLES which doesn't
-   * support glGetTexImage, so here we fallback to drawing the
-   * texture and reading the pixels from the framebuffer. */
+  /* XXX: In some cases this api may fail to read back the texture
+   * data; such as for GLES which doesn't support glGetTexImage
+   */
   if (!tg_data.success)
     {
-      if (!_cogl_texture_draw_and_read (texture, target_bmp,
-                                        closest_gl_format,
-                                        closest_gl_type,
-                                        &ignore_error))
-        {
-          /* We have no more fallbacks so we just give up and
-           * hope for the best */
-          g_warning ("Failed to read texture since draw-and-read "
-                     "fallback failed: %s", ignore_error->message);
-          cogl_error_free (ignore_error);
-          cogl_object_unref (target_bmp);
-          return 0;
-        }
+      cogl_object_unref (target_bmp);
+      return 0;
     }
 
   /* Was intermediate used? */
