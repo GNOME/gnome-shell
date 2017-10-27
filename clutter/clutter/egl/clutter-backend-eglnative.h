@@ -61,6 +61,9 @@ struct _ClutterBackendEglNative
 
   /* event timer */
   GTimer *event_timer;
+
+  /* "xsettings" is still the defacto place for Xft settings, even in Wayland */
+  GSettings *xsettings;
 };
 
 struct _ClutterBackendEglNativeClass

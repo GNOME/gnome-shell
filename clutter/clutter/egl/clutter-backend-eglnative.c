@@ -48,6 +48,7 @@
 #include "clutter-private.h"
 #include "clutter-main.h"
 #include "clutter-stage-private.h"
+#include "clutter-settings-private.h"
 
 #ifdef COGL_HAS_EGL_SUPPORT
 #include "clutter-egl.h"
@@ -59,6 +60,8 @@ static void
 clutter_backend_egl_native_dispose (GObject *gobject)
 {
   ClutterBackendEglNative *backend_egl_native = CLUTTER_BACKEND_EGL_NATIVE (gobject);
+
+  g_clear_object (&backend_egl_native->xsettings);
 
   if (backend_egl_native->event_timer != NULL)
     {
@@ -77,9 +80,181 @@ clutter_backend_egl_native_class_init (ClutterBackendEglNativeClass *klass)
   gobject_class->dispose = clutter_backend_egl_native_dispose;
 }
 
+typedef struct
+{
+  cairo_antialias_t cairo_antialias;
+  gint clutter_font_antialias;
+
+  cairo_hint_style_t cairo_hint_style;
+  const char *clutter_font_hint_style;
+
+  cairo_subpixel_order_t cairo_subpixel_order;
+  const char *clutter_font_subpixel_order;
+} FontSettings;
+
+static void
+get_font_gsettings (GSettings    *xsettings,
+                    FontSettings *output)
+{
+  /* org.gnome.settings-daemon.GsdFontAntialiasingMode */
+  static const struct
+  {
+    cairo_antialias_t cairo_antialias;
+    gint clutter_font_antialias;
+  }
+  antialiasings[] =
+  {
+    /* none=0      */ {CAIRO_ANTIALIAS_NONE,     0},
+    /* grayscale=1 */ {CAIRO_ANTIALIAS_GRAY,     1},
+    /* rgba=2      */ {CAIRO_ANTIALIAS_SUBPIXEL, 1},
+  };
+
+  /* org.gnome.settings-daemon.GsdFontHinting */
+  static const struct
+  {
+    cairo_hint_style_t cairo_hint_style;
+    const char *clutter_font_hint_style;
+  }
+  hintings[] =
+  {
+    /* none=0   */ {CAIRO_HINT_STYLE_NONE,   "hintnone"},
+    /* slight=1 */ {CAIRO_HINT_STYLE_SLIGHT, "hintslight"},
+    /* medium=2 */ {CAIRO_HINT_STYLE_MEDIUM, "hintmedium"},
+    /* full=3   */ {CAIRO_HINT_STYLE_FULL,   "hintfull"},
+  };
+
+  /* org.gnome.settings-daemon.GsdFontRgbaOrder */
+  static const struct
+  {
+    cairo_subpixel_order_t cairo_subpixel_order;
+    const char *clutter_font_subpixel_order;
+  }
+  rgba_orders[] =
+  {
+    /* rgba=0 */ {CAIRO_SUBPIXEL_ORDER_RGB,  "rgb"}, /* XXX what is 'rgba'? */
+    /* rgb=1  */ {CAIRO_SUBPIXEL_ORDER_RGB,  "rgb"},
+    /* bgr=2  */ {CAIRO_SUBPIXEL_ORDER_BGR,  "bgr"},
+    /* vrgb=3 */ {CAIRO_SUBPIXEL_ORDER_VRGB, "vrgb"},
+    /* vbgr=4 */ {CAIRO_SUBPIXEL_ORDER_VBGR, "vbgr"},
+  };
+  guint i;
+
+  i = g_settings_get_enum (xsettings, "hinting");
+  if (i < G_N_ELEMENTS (hintings))
+    {
+      output->cairo_hint_style = hintings[i].cairo_hint_style;
+      output->clutter_font_hint_style = hintings[i].clutter_font_hint_style;
+    }
+  else
+    {
+      output->cairo_hint_style = CAIRO_HINT_STYLE_DEFAULT;
+      output->clutter_font_hint_style = NULL;
+    }
+
+  i = g_settings_get_enum (xsettings, "antialiasing");
+  if (i < G_N_ELEMENTS (antialiasings))
+    {
+      output->cairo_antialias = antialiasings[i].cairo_antialias;
+      output->clutter_font_antialias = antialiasings[i].clutter_font_antialias;
+    }
+  else
+    {
+      output->cairo_antialias = CAIRO_ANTIALIAS_DEFAULT;
+      output->clutter_font_antialias = -1;
+    }
+
+  i = g_settings_get_enum (xsettings, "rgba-order");
+  if (i < G_N_ELEMENTS (rgba_orders))
+    {
+      output->cairo_subpixel_order = rgba_orders[i].cairo_subpixel_order;
+      output->clutter_font_subpixel_order = rgba_orders[i].clutter_font_subpixel_order;
+    }
+  else
+    {
+      output->cairo_subpixel_order = CAIRO_SUBPIXEL_ORDER_DEFAULT;
+      output->clutter_font_subpixel_order = NULL;
+    }
+
+  if (output->cairo_antialias == CAIRO_ANTIALIAS_GRAY)
+    output->clutter_font_subpixel_order = "none";
+}
+
+static void
+init_font_options (ClutterBackendEglNative *backend_egl_native)
+{
+  GSettings *xsettings = backend_egl_native->xsettings;
+  cairo_font_options_t *options = cairo_font_options_create ();
+  FontSettings fs;
+
+  get_font_gsettings (xsettings, &fs);
+
+  cairo_font_options_set_hint_style (options, fs.cairo_hint_style);
+  cairo_font_options_set_antialias (options, fs.cairo_antialias);
+  cairo_font_options_set_subpixel_order (options, fs.cairo_subpixel_order);
+
+  clutter_backend_set_font_options (CLUTTER_BACKEND (backend_egl_native),
+                                    options);
+
+  cairo_font_options_destroy (options);
+}
+
+static gboolean
+on_xsettings_change_event (GSettings *xsettings,
+                           gpointer   keys,
+                           gint       n_keys,
+                           gpointer   user_data)
+{
+  /*
+   * A simpler alternative to this function that does not update the screen
+   * immediately (like macOS :P):
+   *
+   *   init_font_options (CLUTTER_BACKEND_EGL_NATIVE (user_data));
+   *
+   * which has the added benefit of eliminating the need for all the
+   * FontSettings.clutter_ fields. However the below approach is better for
+   * testing settings and more consistent with the existing x11 backend...
+   */
+  ClutterSettings *csettings = clutter_settings_get_default ();
+  FontSettings fs;
+  gint hinting;
+
+  get_font_gsettings (xsettings, &fs);
+  hinting = fs.cairo_hint_style == CAIRO_HINT_STYLE_NONE ? 0 : 1;
+  g_object_set (csettings,
+                "font-hinting",        hinting,
+                "font-hint-style",     fs.clutter_font_hint_style,
+                "font-antialias",      fs.clutter_font_antialias,
+                "font-subpixel-order", fs.clutter_font_subpixel_order,
+                NULL);
+
+  return FALSE;
+}
+
 static void
 clutter_backend_egl_native_init (ClutterBackendEglNative *backend_egl_native)
 {
+  static const gchar xsettings_path[] = "org.gnome.settings-daemon.plugins.xsettings";
+  GSettingsSchemaSource *source = g_settings_schema_source_get_default ();
+  GSettingsSchema *schema = g_settings_schema_source_lookup (source,
+                                                             xsettings_path,
+                                                             FALSE);
+
+  if (!schema)
+    {
+      g_warning ("Failed to find schema: %s", xsettings_path);
+    }
+  else
+    {
+      backend_egl_native->xsettings = g_settings_new_full (schema, NULL, NULL);
+      if (backend_egl_native->xsettings)
+        {
+          init_font_options (backend_egl_native);
+          g_signal_connect (backend_egl_native->xsettings, "change-event",
+                            G_CALLBACK (on_xsettings_change_event),
+                            backend_egl_native);
+        }
+    }
+
   backend_egl_native->event_timer = g_timer_new ();
 }
 
