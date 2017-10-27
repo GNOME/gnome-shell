@@ -388,6 +388,7 @@ x11_source_c = \
 	x11/clutter-keymap-x11.c		\
 	x11/clutter-stage-x11.c		\
 	x11/clutter-x11-texture-pixmap.c	\
+	x11/clutter-xkb-a11y-x11.c		\
 	$(NULL)
 
 x11_source_h = \
@@ -402,6 +403,7 @@ x11_source_h_priv = \
 	x11/clutter-keymap-x11.h		\
 	x11/clutter-settings-x11.h		\
 	x11/clutter-stage-x11.h		\
+	x11/clutter-xkb-a11y-x11.h		\
 	$(NULL)
 
 x11_source_c_priv = \
