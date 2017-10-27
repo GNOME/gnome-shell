@@ -1324,6 +1324,16 @@ wl_surface_destructor (struct wl_resource *resource)
 
   g_signal_emit (surface, surface_signals[SURFACE_DESTROY], 0);
 
+  g_signal_handlers_disconnect_by_func (surface->surface_actor,
+                                        surface_actor_mapped_notify,
+                                        surface);
+  g_signal_handlers_disconnect_by_func (surface->surface_actor,
+                                        surface_actor_allocation_notify,
+                                        surface);
+  g_signal_handlers_disconnect_by_func (surface->surface_actor,
+                                        surface_actor_position_notify,
+                                        surface);
+
   g_clear_object (&surface->role);
 
   /* If we still have a window at the time of destruction, that means that
@@ -1349,15 +1359,6 @@ wl_surface_destructor (struct wl_resource *resource)
   if (surface->input_region)
     cairo_region_destroy (surface->input_region);
 
-  g_signal_handlers_disconnect_by_func (surface->surface_actor,
-                                        surface_actor_mapped_notify,
-                                        surface);
-  g_signal_handlers_disconnect_by_func (surface->surface_actor,
-                                        surface_actor_allocation_notify,
-                                        surface);
-  g_signal_handlers_disconnect_by_func (surface->surface_actor,
-                                        surface_actor_position_notify,
-                                        surface);
   g_object_unref (surface->surface_actor);
 
   meta_wayland_compositor_destroy_frame_callbacks (compositor, surface);
