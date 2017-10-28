@@ -782,7 +782,8 @@ var LoginDialog = GObject.registerClass({
             let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
             this._logoBin.add_child(this._textureCache.load_file_async(this._logoFile,
                                                                        -1, _LOGO_ICON_HEIGHT,
-                                                                       scaleFactor));
+                                                                       scaleFactor,
+                                                                       1));
         }
     }
 
