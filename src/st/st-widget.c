@@ -444,7 +444,11 @@ st_widget_paint_background (StWidget *widget)
   StWidgetPrivate *priv = st_widget_get_instance_private (widget);
   StThemeNode *theme_node;
   ClutterActorBox allocation;
+  float resource_scale;
   guint8 opacity;
+
+  if (!st_widget_get_resource_scale (widget, &resource_scale))
+    return;
 
   theme_node = st_widget_get_theme_node (widget);
 
@@ -455,13 +459,15 @@ st_widget_paint_background (StWidget *widget)
   if (priv->transition_animation)
     st_theme_node_transition_paint (priv->transition_animation,
                                     &allocation,
-                                    opacity);
+                                    opacity,
+                                    resource_scale);
   else
     st_theme_node_paint (theme_node,
                          current_paint_state (widget),
                          cogl_get_draw_framebuffer (),
                          &allocation,
-                         opacity);
+                         opacity,
+                         resource_scale);
 }
 
 static void
@@ -1519,7 +1525,16 @@ st_widget_resource_scale_notify (StWidget   *widget,
                                  GParamSpec *pspec,
                                  gpointer    data)
 {
+  StWidgetPrivate *priv = st_widget_get_instance_private (widget);
+  int i;
+
+  for (i = 0; i < G_N_ELEMENTS (priv->paint_states); i++)
+    st_theme_node_paint_state_invalidate (&priv->paint_states[i]);
+
   g_signal_emit (widget, signals[RESOURCE_SCALE_CHANGED], 0);
+
+  if (clutter_actor_is_mapped (CLUTTER_ACTOR (widget)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (widget));
 }
 
 static void
