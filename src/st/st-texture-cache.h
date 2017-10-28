@@ -58,7 +58,8 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
                                     GFile          *file,
                                     gint            grid_width,
                                     gint            grid_height,
-                                    gint            scale,
+                                    gint            paint_scale,
+                                    gfloat          resource_scale,
                                     GFunc           load_callback,
                                     gpointer        user_data);
 
@@ -77,15 +78,18 @@ ClutterActor *st_texture_cache_load_file_async (StTextureCache    *cache,
                                                 GFile             *file,
                                                 int                available_width,
                                                 int                available_height,
-                                                int                scale);
+                                                int                paint_scale,
+                                                gfloat             resource_scale);
 
 CoglTexture     *st_texture_cache_load_file_to_cogl_texture (StTextureCache *cache,
                                                              GFile          *file,
-                                                             gint            scale);
+                                                             gint            paint_scale,
+                                                             gfloat          resource_scale);
 
 cairo_surface_t *st_texture_cache_load_file_to_cairo_surface (StTextureCache *cache,
                                                               GFile          *file,
-                                                              gint            scale);
+                                                              gint            paint_scale,
+                                                              gfloat          resource_scale);
 
 /**
  * StTextureCacheLoader: (skip)
