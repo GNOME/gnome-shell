@@ -529,6 +529,7 @@ var InputSourceManager = new Lang.Class({
         let sources = this._settings.inputSources;
         let nSources = sources.length;
 
+        this._currentSource = null;
         this._inputSources = {};
         this._ibusSources = {};
 
@@ -826,6 +827,9 @@ var InputSourceIndicator = new Lang.Class({
             this._menuItems[i].destroy();
         for (let i in this._indicatorLabels)
             this._indicatorLabels[i].destroy();
+
+        this._menuItems = {};
+        this._indicatorLabels = {};
 
         let menuIndex = 0;
         for (let i in this._inputSourceManager.inputSources) {
