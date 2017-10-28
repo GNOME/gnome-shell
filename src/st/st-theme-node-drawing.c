@@ -648,7 +648,9 @@ create_cairo_pattern_of_background_image (StThemeNode *node,
   texture_cache = st_texture_cache_get_default ();
 
   g_object_get (node->context, "scale-factor", &scale_factor, NULL);
-  surface = st_texture_cache_load_file_to_cairo_surface (texture_cache, file, scale_factor);
+  surface = st_texture_cache_load_file_to_cairo_surface (texture_cache, file,
+                                                         scale_factor,
+                                                         resource_scale);
 
   if (surface == NULL)
     return NULL;
@@ -1310,7 +1312,8 @@ st_theme_node_prerender_background (StThemeNode *node,
   if (interior_path != NULL)
     cairo_path_destroy (interior_path);
 
-  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx, texture_width,
+  texture = COGL_TEXTURE (cogl_texture_2d_new_from_data (ctx,
+                                                         texture_width,
                                                          texture_height,
                                                          CLUTTER_CAIRO_FORMAT_ARGB32,
                                                          rowstride,
@@ -1343,7 +1346,8 @@ st_theme_node_invalidate_border_image (StThemeNode *node)
 }
 
 static gboolean
-st_theme_node_load_border_image (StThemeNode *node)
+st_theme_node_load_border_image (StThemeNode *node,
+                                 gfloat       resource_scale)
 {
   if (node->border_slices_texture == NULL)
     {
@@ -1360,7 +1364,8 @@ st_theme_node_load_border_image (StThemeNode *node)
       g_object_get (node->context, "scale-factor", &scale_factor, NULL);
 
       node->border_slices_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
-                                                                                file, scale_factor);
+                                                                                file, scale_factor,
+                                                                                resource_scale);
       if (node->border_slices_texture == NULL)
         goto out;
 
@@ -1380,7 +1385,8 @@ st_theme_node_invalidate_background_image (StThemeNode *node)
 }
 
 static gboolean
-st_theme_node_load_background_image (StThemeNode *node)
+st_theme_node_load_background_image (StThemeNode *node,
+                                     gfloat       resource_scale)
 {
   if (node->background_texture == NULL)
     {
@@ -1396,7 +1402,8 @@ st_theme_node_load_background_image (StThemeNode *node)
 
       background_image_shadow_spec = st_theme_node_get_background_image_shadow (node);
       node->background_texture = st_texture_cache_load_file_to_cogl_texture (st_texture_cache_get_default (),
-                                                                             background_image, scale_factor);
+                                                                             background_image, scale_factor,
+                                                                             resource_scale);
       if (node->background_texture == NULL)
         goto out;
 
@@ -1546,7 +1553,7 @@ st_theme_node_render_resources (StThemeNodePaintState *state,
 
   if (box_shadow_spec && !has_inset_box_shadow)
     {
-      if (st_theme_node_load_border_image (node))
+      if (st_theme_node_load_border_image (node, resource_scale))
         state->box_shadow_pipeline = _st_create_shadow_pipeline (box_shadow_spec,
                                                                  node->border_slices_texture);
       else if (state->prerendered_texture != NULL)
@@ -1618,7 +1625,7 @@ st_theme_node_update_resources (StThemeNodePaintState *state,
       for (corner_id = 0; corner_id < 4; corner_id++)
         if (state->corner_material[corner_id] == NULL)
           state->corner_material[corner_id] =
-            st_theme_node_lookup_corner (node, width, resource_scale, height, corner_id);
+            st_theme_node_lookup_corner (node, width, height, resource_scale, corner_id);
     }
 
   if (had_box_shadow)
@@ -2612,7 +2619,7 @@ st_theme_node_paint (StThemeNode           *node,
     }
 
   if (state->prerendered_pipeline != NULL ||
-      st_theme_node_load_border_image (node))
+      st_theme_node_load_border_image (node, resource_scale))
     {
       if (state->prerendered_pipeline != NULL)
         {
@@ -2640,7 +2647,7 @@ st_theme_node_paint (StThemeNode           *node,
   st_theme_node_paint_outline (node, framebuffer, box, paint_opacity);
 
   if (state->prerendered_pipeline == NULL &&
-      st_theme_node_load_background_image (node))
+      st_theme_node_load_background_image (node, resource_scale))
     {
       ClutterActorBox background_box;
       ClutterActorBox texture_coords;
