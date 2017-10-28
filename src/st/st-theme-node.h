@@ -104,6 +104,8 @@ struct _StThemeNodePaintState {
   float box_shadow_width;
   float box_shadow_height;
 
+  float resource_scale;
+
   CoglPipeline *box_shadow_pipeline;
   CoglPipeline *prerendered_texture;
   CoglPipeline *prerendered_pipeline;
@@ -279,7 +281,8 @@ void st_theme_node_paint (StThemeNode            *node,
                           StThemeNodePaintState  *state,
                           CoglFramebuffer        *framebuffer,
                           const ClutterActorBox  *box,
-                          guint8                  paint_opacity);
+                          guint8                  paint_opacity,
+                          float                   resource_scale);
 
 void st_theme_node_invalidate_background_image (StThemeNode *node);
 void st_theme_node_invalidate_border_image (StThemeNode *node);
