@@ -19,6 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <math.h>
+
 #include "st-theme-node-transition.h"
 
 enum {
@@ -237,7 +239,8 @@ st_theme_node_transition_get_paint_box (StThemeNodeTransition *transition,
 
 static gboolean
 setup_framebuffers (StThemeNodeTransition *transition,
-                    const ClutterActorBox *allocation)
+                    const ClutterActorBox *allocation,
+                    float                  resource_scale)
 {
   StThemeNodeTransitionPrivate *priv = transition->priv;
   CoglContext *ctx;
@@ -248,8 +251,8 @@ setup_framebuffers (StThemeNodeTransition *transition,
   static CoglPipeline *material_template = NULL;
 
   ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
-  width  = priv->offscreen_box.x2 - priv->offscreen_box.x1;
-  height = priv->offscreen_box.y2 - priv->offscreen_box.y1;
+  width  = ceilf ((priv->offscreen_box.x2 - priv->offscreen_box.x1) * resource_scale);
+  height = ceilf ((priv->offscreen_box.y2 - priv->offscreen_box.y1) * resource_scale);
 
   g_return_val_if_fail (width  > 0, FALSE);
   g_return_val_if_fail (height > 0, FALSE);
@@ -320,7 +323,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
                                  priv->offscreen_box.y2, 0.0, 1.0);
 
   st_theme_node_paint (priv->old_theme_node, &priv->old_paint_state,
-                       priv->old_offscreen, allocation, 255);
+                       priv->old_offscreen, allocation, 255, resource_scale);
 
   cogl_framebuffer_clear4f (priv->new_offscreen, COGL_BUFFER_BIT_COLOR,
                             0, 0, 0, 0);
@@ -330,7 +333,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
                                  priv->offscreen_box.x2,
                                  priv->offscreen_box.y2, 0.0, 1.0);
   st_theme_node_paint (priv->new_theme_node, &priv->new_paint_state,
-                       priv->new_offscreen, allocation, 255);
+                       priv->new_offscreen, allocation, 255, resource_scale);
 
   return TRUE;
 }
@@ -339,7 +342,8 @@ void
 st_theme_node_transition_paint (StThemeNodeTransition *transition,
                                 CoglFramebuffer       *framebuffer,
                                 ClutterActorBox       *allocation,
-                                guint8                 paint_opacity)
+                                guint8                 paint_opacity,
+                                float                  resource_scale)
 {
   StThemeNodeTransitionPrivate *priv = transition->priv;
 
@@ -360,7 +364,8 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
       priv->last_allocation = *allocation;
 
       calculate_offscreen_box (transition, allocation);
-      priv->needs_setup = !setup_framebuffers (transition, allocation);
+      priv->needs_setup = !setup_framebuffers (transition, allocation,
+                                               resource_scale);
 
       if (priv->needs_setup) /* setting up framebuffers failed */
         return;
