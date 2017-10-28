@@ -1009,6 +1009,7 @@ st_theme_node_prerender_background (StThemeNode *node,
   ClutterActorBox paint_box;
   cairo_path_t *interior_path = NULL;
   float width, height;
+  float real_x_resource_scale, real_y_resource_scale;
   guint texture_width;
   guint texture_height;
 
@@ -1040,6 +1041,8 @@ st_theme_node_prerender_background (StThemeNode *node,
 
   texture_width = ceilf (width * resource_scale);
   texture_height = ceilf (height * resource_scale);
+  real_x_resource_scale = (float) texture_width / width;
+  real_y_resource_scale = (float) texture_height / height;
 
   rowstride = cairo_format_stride_for_width (CAIRO_FORMAT_ARGB32, texture_width);
   data = g_new0 (guchar, texture_height * rowstride);
@@ -1053,7 +1056,7 @@ st_theme_node_prerender_background (StThemeNode *node,
                                                  CAIRO_FORMAT_ARGB32,
                                                  texture_width, texture_height,
                                                  rowstride);
-  cairo_surface_set_device_scale (surface, resource_scale, resource_scale);
+  cairo_surface_set_device_scale (surface, real_x_resource_scale, real_y_resource_scale);
   cr = cairo_create (surface);
 
   /* TODO - support non-uniform border colors */
