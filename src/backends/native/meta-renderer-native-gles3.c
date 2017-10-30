@@ -27,12 +27,12 @@
 #include "backends/native/meta-renderer-native-gles3.h"
 
 #include <errno.h>
+#include <gio/gio.h>
 #include <GLES3/gl3.h>
+#include <string.h>
 
-#include "backends/meta-backend-private.h"
 #include "backends/meta-gles3.h"
 #include "backends/meta-gles3-table.h"
-#include "backends/native/meta-renderer-native.h"
 
 static EGLImageKHR
 create_egl_image (MetaEgl       *egl,
