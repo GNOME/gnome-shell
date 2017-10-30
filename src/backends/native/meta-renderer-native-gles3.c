@@ -34,6 +34,14 @@
 #include "backends/meta-gles3.h"
 #include "backends/meta-gles3-table.h"
 
+/*
+ * GL/gl.h being included may conflit with gl3.h on some architectures.
+ * Make sure that hasn't happened on any architecture.
+ */
+#ifdef GL_VERSION_1_1
+#error "Somehow included OpenGL headers when we shouldn't have"
+#endif
+
 static EGLImageKHR
 create_egl_image (MetaEgl       *egl,
                   EGLDisplay     egl_display,
