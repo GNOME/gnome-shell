@@ -103,7 +103,6 @@ paint_egl_image (MetaGles3   *gles3,
 gboolean
 meta_renderer_native_gles3_blit_shared_bo (MetaEgl        *egl,
                                            MetaGles3      *gles3,
-                                           MetaGpuKms     *gpu_kms,
                                            EGLDisplay      egl_display,
                                            EGLContext      egl_context,
                                            EGLSurface      egl_surface,

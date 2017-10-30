@@ -27,11 +27,9 @@
 
 #include "backends/meta-egl.h"
 #include "backends/meta-gles3.h"
-#include "backends/native/meta-gpu-kms.h"
 
 gboolean meta_renderer_native_gles3_blit_shared_bo (MetaEgl       *egl,
                                                     MetaGles3     *gles3,
-                                                    MetaGpuKms    *gpu_kms,
                                                     EGLDisplay     egl_display,
                                                     EGLContext     egl_context,
                                                     EGLSurface     egl_surface,

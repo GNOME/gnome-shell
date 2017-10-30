@@ -1356,7 +1356,6 @@ copy_shared_framebuffer_gpu (CoglOnscreen                        *onscreen,
 
   if (!meta_renderer_native_gles3_blit_shared_bo (egl,
                                                   renderer_native->gles3,
-                                                  secondary_gpu_state->gpu_kms,
                                                   renderer_gpu_data->egl_display,
                                                   renderer_gpu_data->secondary.egl_context,
                                                   secondary_gpu_state->egl_surface,
