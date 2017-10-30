@@ -37,6 +37,7 @@
 #include "clutter-event-translator.h"
 #include "clutter-stage-private.h"
 #include "clutter-private.h"
+#include "clutter-xkb-a11y-x11.h"
 
 enum
 {
@@ -352,9 +353,11 @@ static void
 clutter_device_manager_x11_constructed (GObject *gobject)
 {
   ClutterDeviceManagerX11 *manager_x11;
+  ClutterDeviceManager *manager;
   ClutterBackendX11 *backend_x11;
 
   manager_x11 = CLUTTER_DEVICE_MANAGER_X11 (gobject);
+  manager = CLUTTER_DEVICE_MANAGER (gobject);
 
   g_object_get (gobject, "backend", &backend_x11, NULL);
   g_assert (backend_x11 != NULL);
@@ -388,6 +391,8 @@ clutter_device_manager_x11_constructed (GObject *gobject)
                                                manager_x11->core_keyboard);
   _clutter_input_device_set_associated_device (manager_x11->core_keyboard,
                                                manager_x11->core_pointer);
+
+  clutter_device_manager_x11_a11y_init (manager);
 
   if (G_OBJECT_CLASS (clutter_device_manager_x11_parent_class)->constructed)
     G_OBJECT_CLASS (clutter_device_manager_x11_parent_class)->constructed (gobject);
@@ -532,6 +537,7 @@ clutter_device_manager_x11_class_init (ClutterDeviceManagerX11Class *klass)
   manager_class->get_core_device = clutter_device_manager_x11_get_core_device;
   manager_class->get_device = clutter_device_manager_x11_get_device;
   manager_class->create_virtual_device = clutter_device_manager_x11_create_virtual_device;
+  manager_class->apply_kbd_a11y_settings = clutter_device_manager_x11_apply_kbd_a11y_settings;
 }
 
 static void

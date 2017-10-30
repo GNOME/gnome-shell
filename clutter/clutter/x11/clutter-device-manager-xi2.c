@@ -40,6 +40,7 @@
 #include "clutter-event-translator.h"
 #include "clutter-stage-private.h"
 #include "clutter-private.h"
+#include "clutter-xkb-a11y-x11.h"
 
 #include <X11/extensions/XInput2.h>
 
@@ -1987,6 +1988,8 @@ clutter_device_manager_xi2_constructed (GObject *gobject)
 
   XSync (backend_x11->xdpy, False);
 
+  clutter_device_manager_x11_a11y_init (manager);
+
   if (G_OBJECT_CLASS (clutter_device_manager_xi2_parent_class)->constructed)
     G_OBJECT_CLASS (clutter_device_manager_xi2_parent_class)->constructed (gobject);
 }
@@ -2049,6 +2052,7 @@ clutter_device_manager_xi2_class_init (ClutterDeviceManagerXI2Class *klass)
   manager_class->get_device = clutter_device_manager_xi2_get_device;
   manager_class->select_stage_events = clutter_device_manager_xi2_select_stage_events;
   manager_class->create_virtual_device = clutter_device_manager_xi2_create_virtual_device;
+  manager_class->apply_kbd_a11y_settings = clutter_device_manager_x11_apply_kbd_a11y_settings;
 }
 
 static void
