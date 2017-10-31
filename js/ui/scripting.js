@@ -40,16 +40,14 @@ const Params = imports.misc.params;
 function sleep(milliseconds) {
     let cb;
 
-    let id = Mainloop.timeout_add(milliseconds, function() {
-                             if (cb)
-                                 cb();
-                             return GLib.SOURCE_REMOVE;
-                         });
+    let id = Mainloop.timeout_add(milliseconds, () => {
+        if (cb)
+            cb();
+        return GLib.SOURCE_REMOVE;
+    });
     GLib.Source.set_name_by_id(id, '[gnome-shell] sleep');
 
-    return function(callback) {
-        cb = callback;
-    };
+    return callback => { cb = callback; };
 }
 
 /**
@@ -62,14 +60,12 @@ function sleep(milliseconds) {
 function waitLeisure() {
     let cb;
 
-    global.run_at_leisure(function() {
-                             if (cb)
-                                 cb();
-                          });
+    global.run_at_leisure(() => {
+       if (cb)
+           cb();
+    });
 
-    return function(callback) {
-        cb = callback;
-    };
+    return callback => { cb = callback; };
 }
 
 const PerfHelperIface = '<node> \
@@ -103,19 +99,19 @@ function _callRemote(obj, method, ...args) {
     let cb;
     let errcb;
 
-    args.push(function(result, excp) {
-                  if (excp) {
-                      if (errcb)
-                          errcb(excp);
-                  } else {
-                      if (cb)
-                          cb();
-                  }
-             });
+    args.push((result, excp) => {
+         if (excp) {
+             if (errcb)
+                 errcb(excp);
+         } else {
+             if (cb)
+                 cb();
+         }
+    });
 
     method.apply(obj, args);
 
-    return function(callback, error_callback) {
+    return (callback, error_callback) => {
         cb = callback;
         errcb = error_callback;
     };
@@ -213,10 +209,10 @@ function collectStatistics() {
 function _step(g, finish, onError) {
     try {
         let waitFunction = g.next();
-        waitFunction(function() {
+        waitFunction(() => {
                          _step(g, finish, onError);
                      },
-                     function(err) {
+                     err => {
                          if (onError)
                              onError(err);
                      });
@@ -239,7 +235,7 @@ function _collect(scriptModule, outputFile) {
     }
 
     Shell.PerfLog.get_default().replay(
-        function(time, eventName, signature, arg) {
+        (time, eventName, signature, arg) => {
             if (eventName in eventHandlers)
                 eventHandlers[eventName](time, arg);
         });
@@ -370,7 +366,7 @@ function runPerfScript(scriptModule, outputFile) {
     let g = scriptModule.run();
 
     _step(g,
-          function() {
+          () => {
               try {
                   _collect(scriptModule, outputFile);
               } catch (err) {
@@ -379,7 +375,7 @@ function runPerfScript(scriptModule, outputFile) {
               }
               Meta.exit(Meta.ExitCode.SUCCESS);
           },
-         function(err) {
+         err => {
              log("Script failed: " + err + "\n" + err.stack);
              Meta.exit(Meta.ExitCode.ERROR);
          });

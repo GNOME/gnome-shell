@@ -290,14 +290,14 @@ var EndSessionDialog = new Lang.Class({
         this._pkOfflineProxy = new PkOfflineProxy(Gio.DBus.system,
                                                   'org.freedesktop.PackageKit',
                                                   '/org/freedesktop/PackageKit',
-                                                  Lang.bind(this, function(proxy, error) {
+                                                  (proxy, error) => {
                                                       if (error)
                                                           log(error.message);
-                                                  }));
+                                                  });
         this._powerProxy = new UPowerProxy(Gio.DBus.system,
                                            'org.freedesktop.UPower',
                                            '/org/freedesktop/UPower',
-                                           Lang.bind(this, function(proxy, error) {
+                                           (proxy, error) => {
                                                if (error) {
                                                    log(error.message);
                                                    return;
@@ -305,7 +305,7 @@ var EndSessionDialog = new Lang.Class({
                                                this._powerProxy.connect('g-properties-changed',
                                                                         Lang.bind(this, this._sync));
                                                this._sync();
-                                           }));
+                                           });
 
         this._secondsLeft = 0;
         this._totalSecondsToStayOpen = 0;
@@ -485,14 +485,13 @@ var EndSessionDialog = new Lang.Class({
         for (let i = 0; i < dialogContent.confirmButtons.length; i++) {
             let signal = dialogContent.confirmButtons[i].signal;
             let label = dialogContent.confirmButtons[i].label;
-            buttons.push({ action: Lang.bind(this, function() {
-                                       this.close(true);
-                                       let signalId = this.connect('closed',
-                                                                   Lang.bind(this, function() {
-                                                                       this.disconnect(signalId);
-                                                                       this._confirm(signal);
-                                                                   }));
-                                   }),
+            buttons.push({ action: () => {
+                               this.close(true);
+                               let signalId = this.connect('closed', () => {
+                                   this.disconnect(signalId);
+                                   this._confirm(signal);
+                               });
+                           },
                            label: label });
         }
 
@@ -513,11 +512,11 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _confirm(signal) {
-        let callback = Lang.bind(this, function() {
+        let callback = () => {
             this._fadeOutDialog();
             this._stopTimer();
             this._dbusImpl.emit_signal(signal, null);
-        });
+        };
 
         // Offline update not available; just emit the signal
         if (!this._checkBox.actor.visible) {
@@ -552,8 +551,7 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _triggerOfflineUpdateReboot(callback) {
-        this._pkOfflineProxy.TriggerRemote('reboot',
-                                           function (result, error) {
+        this._pkOfflineProxy.TriggerRemote('reboot', (result, error) => {
             if (error)
                 log(error.message);
 
@@ -562,8 +560,7 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _triggerOfflineUpdateShutdown(callback) {
-        this._pkOfflineProxy.TriggerRemote('power-off',
-                                           function (result, error) {
+        this._pkOfflineProxy.TriggerRemote('power-off', (result, error) => {
             if (error)
                 log(error.message);
 
@@ -572,7 +569,7 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _triggerOfflineUpdateCancel(callback) {
-        this._pkOfflineProxy.CancelRemote(function (result, error) {
+        this._pkOfflineProxy.CancelRemote((result, error) => {
             if (error)
                 log(error.message);
 
@@ -584,24 +581,23 @@ var EndSessionDialog = new Lang.Class({
         let startTime = GLib.get_monotonic_time();
         this._secondsLeft = this._totalSecondsToStayOpen;
 
-        this._timerId = Mainloop.timeout_add_seconds(1, Lang.bind(this,
-            function() {
-                let currentTime = GLib.get_monotonic_time();
-                let secondsElapsed = ((currentTime - startTime) / 1000000);
+        this._timerId = Mainloop.timeout_add_seconds(1, () => {
+            let currentTime = GLib.get_monotonic_time();
+            let secondsElapsed = ((currentTime - startTime) / 1000000);
 
-                this._secondsLeft = this._totalSecondsToStayOpen - secondsElapsed;
-                if (this._secondsLeft > 0) {
-                    this._sync();
-                    return GLib.SOURCE_CONTINUE;
-                }
+            this._secondsLeft = this._totalSecondsToStayOpen - secondsElapsed;
+            if (this._secondsLeft > 0) {
+                this._sync();
+                return GLib.SOURCE_CONTINUE;
+            }
 
-                let dialogContent = DialogContent[this._type];
-                let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
-                this._confirm(button.signal);
-                this._timerId = 0;
+            let dialogContent = DialogContent[this._type];
+            let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
+            this._confirm(button.signal);
+            this._timerId = 0;
 
-                return GLib.SOURCE_REMOVE;
-            }));
+            return GLib.SOURCE_REMOVE;
+        });
         GLib.Source.set_name_by_id(this._timerId, '[gnome-shell] this._confirm');
     },
 
@@ -689,7 +685,7 @@ var EndSessionDialog = new Lang.Class({
     },
 
     _loadSessions() {
-        this._loginManager.listSessions(Lang.bind(this, function(result) {
+        this._loginManager.listSessions(result => {
             let n = 0;
             for (let i = 0; i < result.length; i++) {
                 let[id, uid, userName, seat, sessionPath] = result[i];
@@ -720,7 +716,7 @@ var EndSessionDialog = new Lang.Class({
             }
 
             this._sync();
-        }));
+        });
     },
 
     OpenAsync(parameters, invocation) {
@@ -750,9 +746,9 @@ var EndSessionDialog = new Lang.Class({
         let dialogContent = DialogContent[this._type];
 
         for (let i = 0; i < inhibitorObjectPaths.length; i++) {
-            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], Lang.bind(this, function(proxy, error) {
+            let inhibitor = new GnomeSession.Inhibitor(inhibitorObjectPaths[i], (proxy, error) => {
                 this._onInhibitorLoaded(proxy);
-            }));
+            });
 
             this._applications.push(inhibitor);
         }
@@ -787,11 +783,10 @@ var EndSessionDialog = new Lang.Class({
 
         this._sync();
 
-        let signalId = this.connect('opened',
-                                    Lang.bind(this, function() {
-                                        invocation.return_value(null);
-                                        this.disconnect(signalId);
-                                    }));
+        let signalId = this.connect('opened', () => {
+            invocation.return_value(null);
+            this.disconnect(signalId);
+        });
     },
 
     Close(parameters, invocation) {

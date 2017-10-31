@@ -49,10 +49,9 @@ function _getEventHandlerActor() {
         Main.uiGroup.add_actor(eventHandlerActor);
         // We connect to 'event' rather than 'captured-event' because the capturing phase doesn't happen
         // when you've grabbed the pointer.
-        eventHandlerActor.connect('event',
-                                  function(actor, event) {
-                                      return currentDraggable._onEvent(actor, event);
-                                  });
+        eventHandlerActor.connect('event', (actor, event) => {
+            return currentDraggable._onEvent(actor, event);
+        });
     }
     return eventHandlerActor;
 }
@@ -86,13 +85,13 @@ var _Draggable = new Lang.Class({
                                Lang.bind(this, this._onTouchEvent));
         }
 
-        this.actor.connect('destroy', Lang.bind(this, function() {
+        this.actor.connect('destroy', () => {
             this._actorDestroyed = true;
 
             if (this._dragInProgress && this._dragCancellable)
                 this._cancelDrag(global.get_current_time());
             this.disconnectAll();
-        }));
+        });
         this._onEventId = null;
         this._touchSequence = null;
 

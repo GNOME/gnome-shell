@@ -126,7 +126,7 @@ var IBusManager = new Lang.Class({
             } catch (e) {
             }
             // If an engine is already active we need to get its properties
-            this._ibus.get_global_engine_async(-1, null, Lang.bind(this, function(i, result) {
+            this._ibus.get_global_engine_async(-1, null, (i, result) => {
                 let engine;
                 try {
                     engine = this._ibus.get_global_engine_async_finish(result);
@@ -136,7 +136,7 @@ var IBusManager = new Lang.Class({
                     return;
                 }
                 this._engineChanged(this._ibus, engine.get_name());
-            }));
+            });
             this._updateReadiness();
         } else {
             this._clear();
@@ -159,7 +159,7 @@ var IBusManager = new Lang.Class({
             return;
 
         this._registerPropertiesId =
-            this._panelService.connect('register-properties', Lang.bind(this, function(p, props) {
+            this._panelService.connect('register-properties', (p, props) => {
                 if (!props.get(0))
                     return;
 
@@ -167,7 +167,7 @@ var IBusManager = new Lang.Class({
                 this._registerPropertiesId = 0;
 
                 this.emit('properties-registered', this._currentEngineName, props);
-            }));
+            });
     },
 
     _updateProperty(panel, prop) {
@@ -214,7 +214,7 @@ var IBusManager = new Lang.Class({
 
         this._preloadEnginesId =
             Mainloop.timeout_add_seconds(this._PRELOAD_ENGINES_DELAY_TIME,
-                                         Lang.bind(this, function() {
+                                         () => {
                                              this._ibus.preload_engines_async(
                                                  ids,
                                                  -1,
@@ -222,7 +222,7 @@ var IBusManager = new Lang.Class({
                                                  null);
                                              this._preloadEnginesId = 0;
                                              return GLib.SOURCE_REMOVE;
-                                         }));
+                                         });
     },
 });
 Signals.addSignalMethods(IBusManager.prototype);

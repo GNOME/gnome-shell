@@ -85,10 +85,10 @@ var EntryMenu = new Lang.Class({
     },
 
     _updatePasteItem() {
-        this._clipboard.get_text(St.ClipboardType.CLIPBOARD, Lang.bind(this,
-            function(clipboard, text) {
+        this._clipboard.get_text(St.ClipboardType.CLIPBOARD,
+            (clipboard, text) => {
                 this._pasteItem.setSensitive(text && text != '');
-            }));
+            });
     },
 
     _updatePasswordItem() {
@@ -105,14 +105,14 @@ var EntryMenu = new Lang.Class({
     },
 
     _onPasteActivated() {
-        this._clipboard.get_text(St.ClipboardType.CLIPBOARD, Lang.bind(this,
-            function(clipboard, text) {
+        this._clipboard.get_text(St.ClipboardType.CLIPBOARD,
+            (clipboard, text) => {
                 if (!text)
                     return;
                 this._entry.clutter_text.delete_selection();
                 let pos = this._entry.clutter_text.get_cursor_position();
                 this._entry.clutter_text.insert_text(text, pos);
-            }));
+            });
     },
 
     _onPasswordActivated() {
@@ -166,7 +166,7 @@ function addContextMenu(entry, params) {
 
     entry.connect('popup-menu', Lang.bind(null, _onPopup, entry));
 
-    entry.connect('destroy', function() {
+    entry.connect('destroy', () => {
         entry.menu.destroy();
         entry.menu = null;
         entry._menuManager = null;

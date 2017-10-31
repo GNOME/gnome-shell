@@ -133,13 +133,12 @@ var Indicator = new Lang.Class({
         // settings (disable-log-out) and Polkit policy - the latter doesn't
         // notify, so we update the menu item each time the menu opens or
         // the lockdown setting changes, which should be close enough.
-        this.menu.connect('open-state-changed', Lang.bind(this,
-            function(menu, open) {
-                if (!open)
-                    return;
+        this.menu.connect('open-state-changed', (menu, open) => {
+            if (!open)
+                return;
 
-                this._systemActions.forceUpdate();
-            }));
+            this._systemActions.forceUpdate();
+        });
         this._updateMultiUser();
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
@@ -220,10 +219,10 @@ var Indicator = new Lang.Class({
         // the popup menu, and we can't easily connect on allocation-changed
         // or notify::width without creating layout cycles, simply update the
         // label whenever the menu is opened.
-        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
+        this.menu.connect('open-state-changed', (menu, isOpen) => {
             if (isOpen)
                 this._updateSwitchUserSubMenu();
-        }));
+        });
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', () => {

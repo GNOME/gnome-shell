@@ -142,11 +142,10 @@ var ModalDialog = new Lang.Class({
                          { opacity: 255,
                            time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME : 0,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                               function() {
-                                   this.state = State.OPENED;
-                                   this.emit('opened');
-                               })
+                           onComplete: () => {
+                               this.state = State.OPENED;
+                               this.emit('opened');
+                           }
                          });
     },
 
@@ -156,10 +155,10 @@ var ModalDialog = new Lang.Class({
 
         this._initialKeyFocus = actor;
 
-        this._initialKeyFocusDestroyId = actor.connect('destroy', Lang.bind(this, function() {
+        this._initialKeyFocusDestroyId = actor.connect('destroy', () => {
             this._initialKeyFocus = null;
             this._initialKeyFocusDestroyId = 0;
-        }));
+        });
     },
 
     open(timestamp, onPrimary) {
@@ -269,10 +268,9 @@ var ModalDialog = new Lang.Class({
                          { opacity: 0,
                            time:    FADE_OUT_DIALOG_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                               function() {
-                                   this.state = State.FADED_OUT;
-                               })
+                           onComplete: () => {
+                               this.state = State.FADED_OUT;
+                           }
                          });
     }
 });

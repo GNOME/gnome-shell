@@ -69,7 +69,7 @@ var BoxPointer = new Lang.Class({
     _muteInput() {
         if (this._capturedEventId == 0)
             this._capturedEventId = this.actor.connect('captured-event',
-                                                       function() { return Clutter.EVENT_STOP; });
+                                                       () => Clutter.EVENT_STOP);
     },
 
     _unmuteInput() {
@@ -112,11 +112,11 @@ var BoxPointer = new Lang.Class({
                                  xOffset: 0,
                                  yOffset: 0,
                                  transition: 'linear',
-                                 onComplete: Lang.bind(this, function() {
+                                 onComplete: () => {
                                      this._unmuteInput();
                                      if (onComplete)
                                          onComplete();
-                                 }),
+                                 },
                                  time: animationTime });
     },
 
@@ -156,14 +156,14 @@ var BoxPointer = new Lang.Class({
                                  yOffset: yOffset,
                                  transition: 'linear',
                                  time: animationTime,
-                                 onComplete: Lang.bind(this, function () {
+                                 onComplete: () => {
                                      this.actor.hide();
                                      this.opacity = 0;
                                      this.xOffset = 0;
                                      this.yOffset = 0;
                                      if (onComplete)
                                          onComplete();
-                                 })
+                                 }
                                });
     },
 
@@ -623,10 +623,10 @@ var BoxPointer = new Lang.Class({
         if (this._arrowSide != arrowSide) {
             this._arrowSide = arrowSide;
             this._reposition();
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._container.queue_relayout();
                 return false;
-            }));
+            });
 
             this.emit('arrow-side-changed');
         }

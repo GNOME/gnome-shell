@@ -137,13 +137,13 @@ var ShellMountOperation = new Lang.Class({
         this._closeExistingDialog();
         this._dialog = new ShellMountQuestionDialog(this._gicon);
 
-        this._dialogId = this._dialog.connect('response', Lang.bind(this,
-            function(object, choice) {
+        this._dialogId = this._dialog.connect('response',
+            (object, choice) => {
                 this.mountOp.set_choice(choice);
                 this.mountOp.reply(Gio.MountOperationResult.HANDLED);
 
                 this.close();
-            }));
+            });
 
         this._dialog.update(message, choices);
         this._dialog.open();
@@ -157,8 +157,8 @@ var ShellMountOperation = new Lang.Class({
             this._dialog = new ShellMountPasswordDialog(message, this._gicon, flags);
         }
 
-        this._dialogId = this._dialog.connect('response', Lang.bind(this,
-            function(object, choice, password, remember) {
+        this._dialogId = this._dialog.connect('response',
+            (object, choice, password, remember) => {
                 if (choice == -1) {
                     this.mountOp.reply(Gio.MountOperationResult.ABORTED);
                 } else {
@@ -170,7 +170,7 @@ var ShellMountOperation = new Lang.Class({
                     this.mountOp.set_password(password);
                     this.mountOp.reply(Gio.MountOperationResult.HANDLED);
                 }
-            }));
+            });
         this._dialog.open();
     },
 
@@ -200,8 +200,8 @@ var ShellMountOperation = new Lang.Class({
             this._processesDialog = new ShellProcessesDialog(this._gicon);
             this._dialog = this._processesDialog;
 
-            this._dialogId = this._processesDialog.connect('response', Lang.bind(this,
-                function(object, choice) {
+            this._dialogId = this._processesDialog.connect('response',
+                (object, choice) => {
                     if (choice == -1) {
                         this.mountOp.reply(Gio.MountOperationResult.ABORTED);
                     } else {
@@ -210,7 +210,7 @@ var ShellMountOperation = new Lang.Class({
                     }
 
                     this.close();
-                }));
+                });
             this._processesDialog.open();
         }
 
@@ -397,24 +397,22 @@ var ShellProcessesDialog = new Lang.Class({
         this._applicationList = new St.BoxLayout({ vertical: true });
         scrollView.add_actor(this._applicationList);
 
-        this._applicationList.connect('actor-added',
-                                      Lang.bind(this, function() {
-                                          if (this._applicationList.get_n_children() == 1)
-                                              scrollView.show();
-                                      }));
+        this._applicationList.connect('actor-added', () => {
+            if (this._applicationList.get_n_children() == 1)
+                scrollView.show();
+        });
 
-        this._applicationList.connect('actor-removed',
-                                      Lang.bind(this, function() {
-                                          if (this._applicationList.get_n_children() == 0)
-                                              scrollView.hide();
-                                      }));
+        this._applicationList.connect('actor-removed', () => {
+            if (this._applicationList.get_n_children() == 0)
+                scrollView.hide();
+        });
     },
 
     _setAppsForPids(pids) {
         // remove all the items
         this._applicationList.destroy_all_children();
 
-        pids.forEach(Lang.bind(this, function(pid) {
+        pids.forEach(pid => {
             let tracker = Shell.WindowTracker.get_default();
             let app = tracker.get_app_from_pid(pid);
 
@@ -424,12 +422,11 @@ var ShellProcessesDialog = new Lang.Class({
             let item = new ListItem(app);
             this._applicationList.add(item.actor, { x_fill: true });
 
-            item.connect('activate',
-                         Lang.bind(this, function() {
-                             // use -1 to indicate Cancel
-                             this.emit('response', -1);
-                         }));
-        }));
+            item.connect('activate', () => {
+                // use -1 to indicate Cancel
+                this.emit('response', -1);
+            });
+        });
     },
 
     update(message, processes, choices) {
@@ -572,8 +569,8 @@ var GnomeShellMountOpHandler = new Lang.Class({
         this._closeDialog();
 
         this._dialog = new ShellMountPasswordDialog(message, this._createGIcon(iconName), flags);
-        this._dialog.connect('response', Lang.bind(this,
-            function(object, choice, password, remember) {
+        this._dialog.connect('response',
+            (object, choice, password, remember) => {
                 let details = {};
                 let response;
 
@@ -588,7 +585,7 @@ var GnomeShellMountOpHandler = new Lang.Class({
                 }
 
                 this._clearCurrentRequest(response, details);
-            }));
+            });
         this._dialog.open();
     },
 
@@ -621,11 +618,10 @@ var GnomeShellMountOpHandler = new Lang.Class({
         this._closeDialog();
 
         this._dialog = new ShellMountQuestionDialog(this._createGIcon(iconName), message);
-        this._dialog.connect('response', Lang.bind(this,
-            function(object, choice) {
-                this._clearCurrentRequest(Gio.MountOperationResult.HANDLED,
-                                          { choice: GLib.Variant.new('i', choice) });
-            }));
+        this._dialog.connect('response', (object, choice) => {
+            this._clearCurrentRequest(Gio.MountOperationResult.HANDLED,
+                                      { choice: GLib.Variant.new('i', choice) });
+        });
 
         this._dialog.update(message, choices);
         this._dialog.open();
@@ -661,20 +657,19 @@ var GnomeShellMountOpHandler = new Lang.Class({
         this._closeDialog();
 
         this._dialog = new ShellProcessesDialog(this._createGIcon(iconName));
-        this._dialog.connect('response', Lang.bind(this,
-            function(object, choice) {
-                let response;
-                let details = {};
+        this._dialog.connect('response', (object, choice) => {
+            let response;
+            let details = {};
 
-                if (choice == -1) {
-                    response = Gio.MountOperationResult.ABORTED;
-                } else {
-                    response = Gio.MountOperationResult.HANDLED;
-                    details['choice'] = GLib.Variant.new('i', choice);
-                }
+            if (choice == -1) {
+                response = Gio.MountOperationResult.ABORTED;
+            } else {
+                response = Gio.MountOperationResult.HANDLED;
+                details['choice'] = GLib.Variant.new('i', choice);
+            }
 
-                this._clearCurrentRequest(response, details);
-            }));
+            this._clearCurrentRequest(response, details);
+        });
 
         this._dialog.update(message, applicationPids, choices);
         this._dialog.open();

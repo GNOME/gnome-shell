@@ -31,48 +31,48 @@ var WindowMenu = new Lang.Class({
 
         let item;
 
-        item = this.addAction(_("Minimize"), Lang.bind(this, function(event) {
+        item = this.addAction(_("Minimize"), () => {
             window.minimize();
-        }));
+        });
         if (!window.can_minimize())
             item.setSensitive(false);
 
         if (window.get_maximized()) {
-            item = this.addAction(_("Unmaximize"), Lang.bind(this, function() {
+            item = this.addAction(_("Unmaximize"), () => {
                 window.unmaximize(Meta.MaximizeFlags.BOTH);
-            }));
+            });
         } else {
-            item = this.addAction(_("Maximize"), Lang.bind(this, function() {
+            item = this.addAction(_("Maximize"), () => {
                 window.maximize(Meta.MaximizeFlags.BOTH);
-            }));
+            });
         }
         if (!window.can_maximize())
             item.setSensitive(false);
 
-        item = this.addAction(_("Move"), Lang.bind(this, function(event) {
+        item = this.addAction(_("Move"), event => {
             window.begin_grab_op(Meta.GrabOp.KEYBOARD_MOVING, true, event.get_time());
-        }));
+        });
         if (!window.allows_move())
             item.setSensitive(false);
 
-        item = this.addAction(_("Resize"), Lang.bind(this, function(event) {
+        item = this.addAction(_("Resize"), event => {
             window.begin_grab_op(Meta.GrabOp.KEYBOARD_RESIZING_UNKNOWN, true, event.get_time());
-        }));
+        });
         if (!window.allows_resize())
             item.setSensitive(false);
 
         if (!window.titlebar_is_onscreen() && type != Meta.WindowType.DOCK && type != Meta.WindowType.DESKTOP) {
-            this.addAction(_("Move Titlebar Onscreen"), Lang.bind(this, function(event) {
+            this.addAction(_("Move Titlebar Onscreen"), () => {
                 window.shove_titlebar_onscreen();
-            }));
+            });
         }
 
-        item = this.addAction(_("Always on Top"), Lang.bind(this, function() {
+        item = this.addAction(_("Always on Top"), () => {
             if (window.is_above())
                 window.unmake_above();
             else
                 window.make_above();
-        }));
+        });
         if (window.is_above())
             item.setOrnament(PopupMenu.Ornament.CHECK);
         if (window.get_maximized() == Meta.MaximizeFlags.BOTH ||
@@ -86,12 +86,12 @@ var WindowMenu = new Lang.Class({
              window.is_on_primary_monitor())) {
             let isSticky = window.is_on_all_workspaces();
 
-            item = this.addAction(_("Always on Visible Workspace"), Lang.bind(this, function() {
+            item = this.addAction(_("Always on Visible Workspace"), () => {
                 if (isSticky)
                     window.unstick();
                 else
                     window.stick();
-            }));
+            });
             if (isSticky)
                 item.setOrnament(PopupMenu.Ornament.CHECK);
             if (window.is_always_on_all_workspaces())
@@ -100,24 +100,28 @@ var WindowMenu = new Lang.Class({
             if (!isSticky) {
                 let workspace = window.get_workspace();
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.LEFT)) {
-                     this.addAction(_("Move to Workspace Left"), Lang.bind(this, function(event) {
-                        window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.LEFT));
-                    }));
+                    this.addAction(_("Move to Workspace Left"), () => {
+                        let dir = Meta.MotionDirection.LEFT;
+                        window.change_workspace(workspace.get_neighbor(dir));
+                    });
                 }
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.RIGHT)) {
-                     this.addAction(_("Move to Workspace Right"), Lang.bind(this, function(event) {
-                        window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.RIGHT));
-                    }));
+                    this.addAction(_("Move to Workspace Right"), () => {
+                        let dir = Meta.MotionDirection.RIGHT;
+                        window.change_workspace(workspace.get_neighbor(dir));
+                    });
                 }
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.UP)) {
-                    this.addAction(_("Move to Workspace Up"), Lang.bind(this, function(event) {
-                        window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.UP));
-                    }));
+                    this.addAction(_("Move to Workspace Up"), () => {
+                        let dir = Meta.MotionDirection.UP;
+                        window.change_workspace(workspace.get_neighbor(dir));
+                    });
                 }
                 if (workspace != workspace.get_neighbor(Meta.MotionDirection.DOWN)) {
-                     this.addAction(_("Move to Workspace Down"), Lang.bind(this, function(event) {
-                        window.change_workspace(workspace.get_neighbor(Meta.MotionDirection.DOWN));
-                    }));
+                    this.addAction(_("Move to Workspace Down"), () => {
+                        let dir = Meta.MotionDirection.DOWN;
+                        window.change_workspace(workspace.get_neighbor(dir));
+                    });
                 }
             }
         }
@@ -125,41 +129,52 @@ var WindowMenu = new Lang.Class({
         let screen = global.screen;
         let nMonitors = screen.get_n_monitors();
         if (nMonitors > 1) {
-          this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+            this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-          let monitorIndex = window.get_monitor();
+            let monitorIndex = window.get_monitor();
 
-          let upMonitorIndex = screen.get_monitor_neighbor_index(monitorIndex, Meta.ScreenDirection.UP);
-          if (upMonitorIndex != -1) {
-            this.addAction(_("Move to Monitor Up"), Lang.bind(this, function(event) {
-              window.move_to_monitor(upMonitorIndex);
-            }));
-          }
-          let downMonitorIndex = screen.get_monitor_neighbor_index(monitorIndex, Meta.ScreenDirection.DOWN);
-          if (downMonitorIndex != -1) {
-            this.addAction(_("Move to Monitor Down"), Lang.bind(this, function(event) {
-              window.move_to_monitor(downMonitorIndex);
-            }));
-          }
-          let leftMonitorIndex = screen.get_monitor_neighbor_index(monitorIndex, Meta.ScreenDirection.LEFT);
-          if (leftMonitorIndex != -1) {
-            this.addAction(_("Move to Monitor Left"), Lang.bind(this, function(event) {
-              window.move_to_monitor(leftMonitorIndex);
-            }));
-          }
-          let rightMonitorIndex = screen.get_monitor_neighbor_index(monitorIndex, Meta.ScreenDirection.RIGHT);
-          if (rightMonitorIndex != -1) {
-            this.addAction(_("Move to Monitor Right"), Lang.bind(this, function(event) {
-              window.move_to_monitor(rightMonitorIndex);
-            }));
-          }
+            let dir = Meta.ScreenDirection.UP;
+            let upMonitorIndex =
+                screen.get_monitor_neighbor_index(monitorIndex, dir);
+            if (upMonitorIndex != -1) {
+                this.addAction(_("Move to Monitor Up"), () => {
+                    window.move_to_monitor(upMonitorIndex);
+                });
+            }
+
+            dir = Meta.ScreenDirection.DOWN;
+            let downMonitorIndex =
+                screen.get_monitor_neighbor_index(monitorIndex, dir);
+            if (downMonitorIndex != -1) {
+                this.addAction(_("Move to Monitor Down"), () => {
+                    window.move_to_monitor(downMonitorIndex);
+                });
+            }
+
+            dir = Meta.ScreenDirection.LEFT;
+            let leftMonitorIndex =
+                screen.get_monitor_neighbor_index(monitorIndex, dir);
+            if (leftMonitorIndex != -1) {
+                this.addAction(_("Move to Monitor Left"), () => {
+                    window.move_to_monitor(leftMonitorIndex);
+                });
+            }
+
+            dir = Meta.ScreenDirection.RIGHT;
+            let rightMonitorIndex =
+                screen.get_monitor_neighbor_index(monitorIndex, dir);
+            if (rightMonitorIndex != -1) {
+                this.addAction(_("Move to Monitor Right"), () => {
+                    window.move_to_monitor(rightMonitorIndex);
+                });
+            }
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        item = this.addAction(_("Close"), Lang.bind(this, function(event) {
+        item = this.addAction(_("Close"), event => {
             window.delete(event.get_time());
-        }));
+        });
         if (!window.can_close())
             item.setSensitive(false);
     }
@@ -191,10 +206,9 @@ var WindowMenuManager = new Lang.Class({
         this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
 
         this._sourceActor = new St.Widget({ reactive: true, visible: false });
-        this._sourceActor.connect('button-press-event', Lang.bind(this,
-            function() {
-                this._manager.activeMenu.toggle();
-            }));
+        this._sourceActor.connect('button-press-event', () => {
+            this._manager.activeMenu.toggle();
+        });
         Main.uiGroup.add_actor(this._sourceActor);
     },
 
@@ -204,13 +218,12 @@ var WindowMenuManager = new Lang.Class({
 
         this._manager.addMenu(menu);
 
-        menu.connect('activate', function() {
+        menu.connect('activate', () => {
             window.check_alive(global.get_current_time());
         });
-        let destroyId = window.connect('unmanaged',
-            function() {
-                menu.close();
-            });
+        let destroyId = window.connect('unmanaged', () => {
+            menu.close();
+        });
 
         this._sourceActor.set_size(Math.max(1, rect.width), Math.max(1, rect.height));
         this._sourceActor.set_position(rect.x, rect.y);
@@ -218,13 +231,13 @@ var WindowMenuManager = new Lang.Class({
 
         menu.open(BoxPointer.PopupAnimation.NONE);
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-        menu.connect('open-state-changed', Lang.bind(this, function(menu_, isOpen) {
+        menu.connect('open-state-changed', (menu_, isOpen) => {
             if (isOpen)
                 return;
 
             this._sourceActor.hide();
             menu.destroy();
             window.disconnect(destroyId);
-        }));
+        });
     }
 });

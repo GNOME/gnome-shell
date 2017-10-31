@@ -111,7 +111,7 @@ var Magnifier = new Lang.Class({
     setActive(activate) {
         let isActive = this.isActive();
 
-        this._zoomRegions.forEach (function(zoomRegion, index, array) {
+        this._zoomRegions.forEach ((zoomRegion, index, array) => {
             zoomRegion.setActive(activate);
         });
 
@@ -189,7 +189,7 @@ var Magnifier = new Lang.Class({
             this.yMouse = yMouse;
 
             let sysMouseOverAny = false;
-            this._zoomRegions.forEach(function(zoomRegion, index, array) {
+            this._zoomRegions.forEach((zoomRegion, index, array) => {
                 if (zoomRegion.scrollToMousePos())
                     sysMouseOverAny = true;
             });
@@ -287,7 +287,7 @@ var Magnifier = new Lang.Class({
         this.setCrosshairsClip(clip);
 
         let theCrossHairs = this._crossHairs;
-        this._zoomRegions.forEach (function(zoomRegion, index, array) {
+        this._zoomRegions.forEach ((zoomRegion, index, array) => {
             zoomRegion.addCrosshairs(theCrossHairs);
         });
     },
@@ -447,10 +447,9 @@ var Magnifier = new Lang.Class({
         this._appSettings = new Gio.Settings({ schema_id: APPLICATIONS_SCHEMA });
         this._settings = new Gio.Settings({ schema_id: MAGNIFIER_SCHEMA });
 
-        this._appSettings.connect('changed::' + SHOW_KEY,
-                                  Lang.bind(this, function() {
+        this._appSettings.connect('changed::' + SHOW_KEY, () => {
             this.setActive(this._appSettings.get_boolean(SHOW_KEY));
-        }));
+        });
 
         this._settings.connect('changed::' + SCREEN_POSITION_KEY,
                                Lang.bind(this, this._updateScreenPosition));
@@ -486,35 +485,29 @@ var Magnifier = new Lang.Class({
         this._settings.connect('changed::' + CONTRAST_BLUE_KEY,
                                Lang.bind(this, this._updateContrast));
 
-        this._settings.connect('changed::' + SHOW_CROSS_HAIRS_KEY,
-                               Lang.bind(this, function() {
+        this._settings.connect('changed::' + SHOW_CROSS_HAIRS_KEY, () => {
             this.setCrosshairsVisible(this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY));
-        }));
+        });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_THICKNESS_KEY,
-                               Lang.bind(this, function() {
+        this._settings.connect('changed::' + CROSS_HAIRS_THICKNESS_KEY, () => {
             this.setCrosshairsThickness(this._settings.get_int(CROSS_HAIRS_THICKNESS_KEY));
-        }));
+        });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_COLOR_KEY,
-                               Lang.bind(this, function() {
+        this._settings.connect('changed::' + CROSS_HAIRS_COLOR_KEY, () => {
             this.setCrosshairsColor(this._settings.get_string(CROSS_HAIRS_COLOR_KEY));
-        }));
+        });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_OPACITY_KEY,
-                               Lang.bind(this, function() {
+        this._settings.connect('changed::' + CROSS_HAIRS_OPACITY_KEY, () => {
             this.setCrosshairsOpacity(this._settings.get_double(CROSS_HAIRS_OPACITY_KEY));
-        }));
+        });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_LENGTH_KEY,
-                               Lang.bind(this, function() {
+        this._settings.connect('changed::' + CROSS_HAIRS_LENGTH_KEY, () => {
             this.setCrosshairsLength(this._settings.get_int(CROSS_HAIRS_LENGTH_KEY));
-        }));
+        });
 
-        this._settings.connect('changed::' + CROSS_HAIRS_CLIP_KEY,
-                               Lang.bind(this, function() {
+        this._settings.connect('changed::' + CROSS_HAIRS_CLIP_KEY, () => {
             this.setCrosshairsClip(this._settings.get_boolean(CROSS_HAIRS_CLIP_KEY));
-        }));
+        });
 
         if (zoomRegion) {
             // Mag factor is accurate to two decimal places.
@@ -1088,10 +1081,10 @@ var ZoomRegion = new Lang.Class({
         }
 
         this._clearScrollContentsTimer();
-        this._scrollContentsTimerId = Mainloop.timeout_add(POINTER_REST_TIME, Lang.bind(this, function() {
+        this._scrollContentsTimerId = Mainloop.timeout_add(POINTER_REST_TIME, () => {
             this._scrollContentsToDelayed(x, y);
             return GLib.SOURCE_REMOVE;
-        }));
+        });
     },
 
     /**

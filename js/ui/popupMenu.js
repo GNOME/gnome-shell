@@ -476,25 +476,25 @@ var PopupMenuBase = new Lang.Class({
             menuItem = new PopupMenuItem(title);
 
         this.addMenuItem(menuItem);
-        menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
+        menuItem.connect('activate', (menuItem, event) => {
             callback(event);
-        }));
+        });
 
         return menuItem;
     },
 
     addSettingsAction(title, desktopFile) {
-        let menuItem = this.addAction(title, function() {
-                           let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
+        let menuItem = this.addAction(title, () => {
+            let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
-                           if (!app) {
-                               log('Settings panel for desktop file ' + desktopFile + ' could not be loaded!');
-                               return;
-                           }
+            if (!app) {
+                log('Settings panel for desktop file ' + desktopFile + ' could not be loaded!');
+                return;
+            }
 
-                           Main.overview.hide();
-                           app.activate();
-                       });
+            Main.overview.hide();
+            app.activate();
+        });
 
         menuItem.actor.visible = Main.sessionMode.allowSettings;
         this._settingsActions[desktopFile] = menuItem;
@@ -510,7 +510,7 @@ var PopupMenuBase = new Lang.Class({
     },
 
     isEmpty() {
-        let hasVisibleChildren = this.box.get_children().some(function(child) {
+        let hasVisibleChildren = this.box.get_children().some(child => {
             if (child._delegate instanceof PopupSeparatorMenuItem)
                 return false;
             return isPopupMenuItemVisible(child);
@@ -534,7 +534,7 @@ var PopupMenuBase = new Lang.Class({
     },
 
     _connectItemSignals(menuItem) {
-        menuItem._activeChangeId = menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
+        menuItem._activeChangeId = menuItem.connect('active-changed', (menuItem, active) => {
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
                     this._activeMenuItem.setActive(false);
@@ -544,8 +544,8 @@ var PopupMenuBase = new Lang.Class({
                 this._activeMenuItem = null;
                 this.emit('active-changed', null);
             }
-        }));
-        menuItem._sensitiveChangeId = menuItem.connect('sensitive-changed', Lang.bind(this, function() {
+        });
+        menuItem._sensitiveChangeId = menuItem.connect('sensitive-changed', () => {
             let sensitive = menuItem.getSensitive();
             if (!sensitive && this._activeMenuItem == menuItem) {
                 if (!this.actor.navigate_focus(menuItem.actor,
@@ -556,21 +556,21 @@ var PopupMenuBase = new Lang.Class({
                 if (global.stage.get_key_focus() == this.actor)
                     menuItem.actor.grab_key_focus();
             }
-        }));
-        menuItem._activateId = menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
+        });
+        menuItem._activateId = menuItem.connect('activate', (menuItem, event) => {
             this.emit('activate', menuItem);
             this.itemActivated(BoxPointer.PopupAnimation.FULL);
-        }));
+        });
 
-        menuItem._parentSensitiveChangeId = this.connect('sensitive-changed', Lang.bind(this, function() {
+        menuItem._parentSensitiveChangeId = this.connect('sensitive-changed', () => {
             menuItem.syncSensitive();
-        }));
+        });
 
         // the weird name is to avoid a conflict with some random property
         // the menuItem may have, called destroyId
         // (FIXME: in the future it may make sense to have container objects
         // like PopupMenuManager does)
-        menuItem._popupMenuDestroyId = menuItem.connect('destroy', Lang.bind(this, function(menuItem) {
+        menuItem._popupMenuDestroyId = menuItem.connect('destroy', menuItem => {
             menuItem.disconnect(menuItem._popupMenuDestroyId);
             menuItem.disconnect(menuItem._activateId);
             menuItem.disconnect(menuItem._activeChangeId);
@@ -578,7 +578,7 @@ var PopupMenuBase = new Lang.Class({
             this.disconnect(menuItem._parentSensitiveChangeId);
             if (menuItem == this._activeMenuItem)
                 this._activeMenuItem = null;
-        }));
+        });
     },
 
     _updateSeparatorVisibility(menuItem) {
@@ -652,26 +652,26 @@ var PopupMenuBase = new Lang.Class({
         if (menuItem instanceof PopupMenuSection) {
             let activeChangeId = menuItem.connect('active-changed', Lang.bind(this, this._subMenuActiveChanged));
 
-            let parentOpenStateChangedId = this.connect('open-state-changed', function(self, open) {
+            let parentOpenStateChangedId = this.connect('open-state-changed', (self, open) => {
                 if (open)
                     menuItem.open();
                 else
                     menuItem.close();
             });
-            let parentClosingId = this.connect('menu-closed', function() {
+            let parentClosingId = this.connect('menu-closed', () => {
                 menuItem.emit('menu-closed');
             });
-            let subMenuSensitiveChangedId = this.connect('sensitive-changed', Lang.bind(this, function() {
+            let subMenuSensitiveChangedId = this.connect('sensitive-changed', () => {
                 menuItem.emit('sensitive-changed');
-            }));
+            });
 
-            menuItem.connect('destroy', Lang.bind(this, function() {
+            menuItem.connect('destroy', () => {
                 menuItem.disconnect(activeChangeId);
                 this.disconnect(subMenuSensitiveChangedId);
                 this.disconnect(parentOpenStateChangedId);
                 this.disconnect(parentClosingId);
                 this.length--;
-            }));
+            });
         } else if (menuItem instanceof PopupSubMenuMenuItem) {
             if (before_item == null)
                 this.box.add(menuItem.menu.actor);
@@ -680,14 +680,14 @@ var PopupMenuBase = new Lang.Class({
 
             this._connectItemSignals(menuItem);
             let subMenuActiveChangeId = menuItem.menu.connect('active-changed', Lang.bind(this, this._subMenuActiveChanged));
-            let closingId = this.connect('menu-closed', function() {
+            let closingId = this.connect('menu-closed', () => {
                 menuItem.menu.close(BoxPointer.PopupAnimation.NONE);
             });
 
-            menuItem.connect('destroy', Lang.bind(this, function() {
+            menuItem.connect('destroy', () => {
                 menuItem.menu.disconnect(subMenuActiveChangeId);
                 this.disconnect(closingId);
-            }));
+            });
         } else if (menuItem instanceof PopupSeparatorMenuItem) {
             this._connectItemSignals(menuItem);
 
@@ -695,11 +695,13 @@ var PopupMenuBase = new Lang.Class({
             // separator's adjacent siblings change visibility or position.
             // open-state-changed isn't exactly that, but doing it in more
             // precise ways would require a lot more bookkeeping.
-            let openStateChangeId = this.connect('open-state-changed', Lang.bind(this, function() { this._updateSeparatorVisibility(menuItem); }));
-            let destroyId = menuItem.connect('destroy', Lang.bind(this, function() {
+            let openStateChangeId = this.connect('open-state-changed', () => {
+                this._updateSeparatorVisibility(menuItem);
+            });
+            let destroyId = menuItem.connect('destroy', () => {
                 this.disconnect(openStateChangeId);
                 menuItem.disconnect(destroyId);
-            }));
+            });
         } else if (menuItem instanceof PopupBaseMenuItem)
             this._connectItemSignals(menuItem);
         else
@@ -711,9 +713,7 @@ var PopupMenuBase = new Lang.Class({
     },
 
     _getMenuItems() {
-        return this.box.get_children().map(function (actor) {
-            return actor._delegate;
-        }).filter(function(item) {
+        return this.box.get_children().map(a => a._delegate).filter(item => {
             return item instanceof PopupBaseMenuItem || item instanceof PopupMenuSection;
         });
     },
@@ -875,9 +875,9 @@ var PopupMenu = new Lang.Class({
             this._activeMenuItem.setActive(false);
 
         if (this._boxPointer.actor.visible) {
-            this._boxPointer.hide(animate, Lang.bind(this, function() {
+            this._boxPointer.hide(animate, () => {
                 this.emit('menu-closed');
-            }));
+            });
         }
 
         if (!this.isOpen)
@@ -1234,8 +1234,11 @@ var PopupMenuManager = new Lang.Class({
         if (source) {
             if (!menu.blockSourceEvents)
                 this._grabHelper.addActor(source);
-            menudata.enterId = source.connect('enter-event', Lang.bind(this, function() { return this._onMenuSourceEnter(menu); }));
-            menudata.focusInId = source.connect('key-focus-in', Lang.bind(this, function() { this._onMenuSourceEnter(menu); }));
+            menudata.enterId = source.connect('enter-event',
+                () => this._onMenuSourceEnter(menu));
+            menudata.focusInId = source.connect('key-focus-in', () => {
+                this._onMenuSourceEnter(menu);
+            });
         }
 
         if (position == undefined)

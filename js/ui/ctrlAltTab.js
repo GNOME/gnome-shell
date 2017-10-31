@@ -41,7 +41,7 @@ var CtrlAltTabManager = new Lang.Class({
         item.iconName = icon;
 
         this._items.push(item);
-        root.connect('destroy', Lang.bind(this, function() { this.removeGroup(root); }));
+        root.connect('destroy', () => { this.removeGroup(root); });
         if (root instanceof St.Widget)
             global.focus_manager.add_group(root);
     },
@@ -81,7 +81,7 @@ var CtrlAltTabManager = new Lang.Class({
 
     popup(backward, binding, mask) {
         // Start with the set of focus groups that are currently mapped
-        let items = this._items.filter(function (item) { return item.proxy.mapped; });
+        let items = this._items.filter(item => item.proxy.mapped);
 
         // And add the windows metacity would show in its Ctrl-Alt-Tab list
         if (Main.sessionMode.hasWindows && !Main.overview.visible) {
@@ -125,9 +125,9 @@ var CtrlAltTabManager = new Lang.Class({
             this._popup.show(backward, binding, mask);
 
             this._popup.actor.connect('destroy',
-                                      Lang.bind(this, function() {
+                                      () => {
                                           this._popup = null;
-                                      }));
+                                      });
         }
     },
 

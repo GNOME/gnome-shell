@@ -127,9 +127,7 @@ var Application = new Lang.Class({
         errortext += 'Stack trace:\n';
 
         // Indent stack trace.
-        errortext += exc.stack.split('\n').map(function(line) {
-            return '  ' + line;
-        }).join('\n');
+        errortext += exc.stack.split('\n').map(line => '  ' + line).join('\n');
 
         let scroll = new Gtk.ScrolledWindow({ vexpand: true });
         let buffer = new Gtk.TextBuffer({ text: errortext });
@@ -171,10 +169,10 @@ var Application = new Lang.Class({
 
 
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
-        this._shellProxy.connectSignal('ExtensionStatusChanged', Lang.bind(this, function(proxy, senderName, [uuid, state, error]) {
+        this._shellProxy.connectSignal('ExtensionStatusChanged', (proxy, senderName, [uuid, state, error]) => {
             if (ExtensionUtils.extensions[uuid] !== undefined)
                 this._scanExtensions();
-        }));
+        });
 
         this._window.show_all();
     },
@@ -204,10 +202,9 @@ var Application = new Lang.Class({
         let row = new ExtensionRow(extension.uuid);
 
         row.prefsButton.visible = this._extensionAvailable(row.uuid);
-        row.prefsButton.connect('clicked', Lang.bind(this,
-            function() {
-                this._selectExtension(row.uuid);
-            }));
+        row.prefsButton.connect('clicked', () => {
+            this._selectExtension(row.uuid);
+        });
 
         row.show_all();
         this._extensionSelector.add(row);
@@ -275,18 +272,17 @@ var ExtensionRow = new Lang.Class({
         this.uuid = uuid;
 
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-        this._settings.connect('changed::enabled-extensions', Lang.bind(this,
-            function() {
-                this._switch.state = this._isEnabled();
-            }));
+        this._settings.connect('changed::enabled-extensions', () => {
+            this._switch.state = this._isEnabled();
+        });
         this._settings.connect('changed::disable-extension-version-validation',
-            Lang.bind(this, function() {
+            () => {
                 this._switch.sensitive = this._canEnable();
-            }));
+            });
         this._settings.connect('changed::disable-user-extensions',
-            Lang.bind(this, function() {
+            () => {
                 this._switch.sensitive = this._canEnable();
-            }));
+            });
 
         this._buildUI();
     },
@@ -328,14 +324,13 @@ var ExtensionRow = new Lang.Class({
         this._switch = new Gtk.Switch({ valign: Gtk.Align.CENTER,
                                         sensitive: this._canEnable(),
                                         state: this._isEnabled() });
-        this._switch.connect('notify::active', Lang.bind(this,
-            function() {
-                if (this._switch.active)
-                    this._enable();
-                else
-                    this._disable();
-            }));
-        this._switch.connect('state-set', function() { return true; });
+        this._switch.connect('notify::active', () => {
+            if (this._switch.active)
+                this._enable();
+            else
+                this._disable();
+        });
+        this._switch.connect('state-set', () => true);
         hbox.add(this._switch);
     },
 

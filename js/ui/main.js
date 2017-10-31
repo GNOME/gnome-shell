@@ -119,7 +119,9 @@ function start() {
     global.log = window.log;
 
     // Chain up async errors reported from C
-    global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
+    global.connect('notify-error', (global, msg, detail) => {
+        notifyError(msg, detail);
+    });
 
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
@@ -190,17 +192,17 @@ function _initializeUI() {
 
     _a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
 
-    global.display.connect('overlay-key', Lang.bind(overview, function () {
+    global.display.connect('overlay-key', () => {
         if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))
             overview.toggle();
-    }));
+    });
 
-    global.display.connect('show-restart-message', function(display, message) {
+    global.display.connect('show-restart-message', (display, message) => {
         showRestartMessage(message);
         return true;
     });
 
-    global.display.connect('restart', function() {
+    global.display.connect('restart', () => {
         global.reexec_self();
         return true;
     });
@@ -227,12 +229,12 @@ function _initializeUI() {
     ExtensionSystem.init();
 
     if (sessionMode.isGreeter && screenShield) {
-        layoutManager.connect('startup-prepared', function() {
+        layoutManager.connect('startup-prepared', () => {
             screenShield.showDialog();
         });
     }
 
-    layoutManager.connect('startup-complete', function() {
+    layoutManager.connect('startup-complete', () => {
         if (actionMode == Shell.ActionMode.NONE) {
             actionMode = Shell.ActionMode.NORMAL;
         }
@@ -423,7 +425,7 @@ function pushModal(actor, params) {
     }
 
     modalCount += 1;
-    let actorDestroyId = actor.connect('destroy', function() {
+    let actorDestroyId = actor.connect('destroy', () => {
         let index = _findModal(actor);
         if (index >= 0)
             popModal(actor);
@@ -432,7 +434,7 @@ function pushModal(actor, params) {
     let prevFocus = global.stage.get_key_focus();
     let prevFocusDestroyId;
     if (prevFocus != null) {
-        prevFocusDestroyId = prevFocus.connect('destroy', function() {
+        prevFocusDestroyId = prevFocus.connect('destroy', () => {
             let index = _findModal(actor);
             if (index >= 0)
                 modalActorFocusStack[index].prevFocus = null;
@@ -606,7 +608,7 @@ function _runBeforeRedrawQueue() {
 function _queueBeforeRedraw(workId) {
     _beforeRedrawQueue.push(workId);
     if (_beforeRedrawQueue.length == 1) {
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, function () {
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
             _runBeforeRedrawQueue();
             return false;
         });
@@ -636,12 +638,12 @@ function initializeDeferredWork(actor, callback, props) {
     let workId = '' + (++_deferredWorkSequence);
     _deferredWorkData[workId] = { 'actor': actor,
                                   'callback': callback };
-    actor.connect('notify::mapped', function () {
+    actor.connect('notify::mapped', () => {
         if (!(actor.mapped && _deferredWorkQueue.indexOf(workId) >= 0))
             return;
         _queueBeforeRedraw(workId);
     });
-    actor.connect('destroy', function() {
+    actor.connect('destroy', () => {
         let index = _deferredWorkQueue.indexOf(workId);
         if (index >= 0)
             _deferredWorkQueue.splice(index, 1);
@@ -673,7 +675,7 @@ function queueDeferredWork(workId) {
         _queueBeforeRedraw(workId);
         return;
     } else if (_deferredTimeoutId == 0) {
-        _deferredTimeoutId = Mainloop.timeout_add_seconds(DEFERRED_TIMEOUT_SECONDS, function () {
+        _deferredTimeoutId = Mainloop.timeout_add_seconds(DEFERRED_TIMEOUT_SECONDS, () => {
             _runAllDeferredWork();
             _deferredTimeoutId = 0;
             return GLib.SOURCE_REMOVE;

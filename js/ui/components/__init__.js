@@ -16,17 +16,17 @@ var ComponentManager = new Lang.Class({
     _sessionUpdated() {
         let newEnabledComponents = Main.sessionMode.components;
 
-        newEnabledComponents.filter(Lang.bind(this, function(name) {
-            return this._enabledComponents.indexOf(name) == -1;
-        })).forEach(Lang.bind(this, function(name) {
+        newEnabledComponents.filter(
+            name => this._enabledComponents.indexOf(name) == -1
+        ).forEach(name => {
             this._enableComponent(name);
-        }));
+        });
 
-        this._enabledComponents.filter(Lang.bind(this, function(name) {
-            return newEnabledComponents.indexOf(name) == -1;
-        })).forEach(Lang.bind(this, function(name) {
+        this._enabledComponents.filter(
+            name => newEnabledComponents.indexOf(name) == -1
+        ).forEach(name => {
             this._disableComponent(name);
-        }));
+        });
 
         this._enabledComponents = newEnabledComponents;
     },

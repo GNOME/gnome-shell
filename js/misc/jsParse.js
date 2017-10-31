@@ -23,9 +23,9 @@ function getCompletions(text, commandHeader, globalCompletionList) {
         if (matches) {
             [expr, base, attrHead] = matches;
 
-            methods = getPropertyNamesFromExpression(base, commandHeader).filter(function(attr) {
-                return attr.slice(0, attrHead.length) == attrHead;
-            });
+            methods = getPropertyNamesFromExpression(base, commandHeader).filter(
+                attr => attr.slice(0, attrHead.length) == attrHead
+            );
         }
 
         // Look for the empty expression or partially entered words
@@ -33,9 +33,9 @@ function getCompletions(text, commandHeader, globalCompletionList) {
         matches = text.match(/^(\w*)$/);
         if (text == '' || matches) {
             [expr, attrHead] = matches;
-            methods = globalCompletionList.filter(function(attr) {
-                return attr.slice(0, attrHead.length) == attrHead;
-            });
+            methods = globalCompletionList.filter(
+                attr => attr.slice(0, attrHead.length) == attrHead
+            );
         }
     }
 
@@ -175,7 +175,7 @@ function getPropertyNamesFromExpression(expr, commandHeader) {
 
         // Make sure propsUnique contains one key for every
         // property so we end up with a unique list of properties
-        allProps.map(function(p){ propsUnique[p] = null; });
+        allProps.map(p => propsUnique[p] = null);
     }
     return Object.keys(propsUnique).sort();
 }
@@ -233,7 +233,7 @@ function isUnsafeExpression(str) {
 // Returns a list of global keywords derived from str
 function getDeclaredConstants(str) {
     let ret = [];
-    str.split(';').forEach(function(s) {
+    str.split(';').forEach(s => {
         let base, keyword;
         let match = s.match(/const\s+(\w+)\s*=/);
         if (match) {

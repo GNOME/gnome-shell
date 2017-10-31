@@ -21,7 +21,7 @@ var ELLIPSIS_CHAR = '\u2026';
 
 var MESSAGE_ICON_SIZE = -1; // pick up from CSS
 
-var NC_ = function(context, str) { return context + '\u0004' + str; };
+var NC_ = (context, str) => context + '\u0004' + str;
 
 function sameYear(dateA, dateB) {
     return (dateA.getYear() == dateB.getYear());
@@ -188,14 +188,13 @@ var DBusEventSource = new Lang.Class({
 
         let savedState = global.get_persistent_state('as', 'ignored_events');
         if (savedState)
-            savedState.deep_unpack().forEach(Lang.bind(this,
-                function(eventId) {
-                    this._ignoredEvents.set(eventId, true);
-                }));
+            savedState.deep_unpack().forEach(eventId => {
+                this._ignoredEvents.set(eventId, true);
+            });
 
         this._initialized = false;
         this._dbusProxy = new CalendarServer();
-        this._dbusProxy.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(object, result) {
+        this._dbusProxy.init_async(GLib.PRIORITY_DEFAULT, null, (object, result) => {
             let loaded = false;
 
             try {
@@ -218,23 +217,23 @@ var DBusEventSource = new Lang.Class({
 
             this._dbusProxy.connectSignal('Changed', Lang.bind(this, this._onChanged));
 
-            this._dbusProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
+            this._dbusProxy.connect('notify::g-name-owner', () => {
                 if (this._dbusProxy.g_name_owner)
                     this._onNameAppeared();
                 else
                     this._onNameVanished();
-            }));
+            });
 
-            this._dbusProxy.connect('g-properties-changed', Lang.bind(this, function() {
+            this._dbusProxy.connect('g-properties-changed', () => {
                 this.emit('notify::has-calendars');
-            }));
+            });
 
             this._initialized = loaded;
             if (loaded) {
                 this.emit('notify::has-calendars');
                 this._onNameAppeared();
             }
-        }));
+        });
     },
 
     destroy() {
@@ -283,9 +282,7 @@ var DBusEventSource = new Lang.Class({
                 let event = new CalendarEvent(id, date, end, summary, allDay);
                 newEvents.push(event);
             }
-            newEvents.sort(function(event1, event2) {
-                return event1.date.getTime() - event2.date.getTime();
-            });
+            newEvents.sort((ev1, ev2) => ev1.date.getTime() - ev2.date.getTime());
         }
 
         this._events = newEvents;
@@ -340,7 +337,7 @@ var DBusEventSource = new Lang.Class({
                 result.push(event);
             }
         }
-        result.sort(function(event1, event2) {
+        result.sort((event1, event2) => {
             // sort events by end time on ending day
             let d1 = event1.date < begin && event1.end <= end ? event1.end : event1.date;
             let d2 = event2.date < begin && event2.end <= end ? event2.end : event2.date;
@@ -410,10 +407,10 @@ var Calendar = new Lang.Class({
     // requestRange(), getEvents(), hasEvents() methods and the ::changed signal.
     setEventSource(eventSource) {
         this._eventSource = eventSource;
-        this._eventSource.connect('changed', Lang.bind(this, function() {
+        this._eventSource.connect('changed', () => {
             this._rebuildCalendar();
             this._update();
-        }));
+        });
         this._rebuildCalendar();
         this._update();
     },
@@ -617,11 +614,11 @@ var Calendar = new Lang.Class({
                 button.reactive = false;
 
             button._date = new Date(iter);
-            button.connect('clicked', Lang.bind(this, function() {
+            button.connect('clicked', () => {
                 this._shouldDateGrabFocus = true;
                 this.setDate(button._date);
                 this._shouldDateGrabFocus = false;
-            }));
+            });
 
             let hasEvents = this._eventSource.hasEvents(iter);
             let styleClass = 'calendar-day-base calendar-day';
@@ -691,7 +688,7 @@ var Calendar = new Lang.Class({
         if (!this._calendarBegin || !sameMonth(this._selectedDate, this._calendarBegin) || !sameDay(now, this._markedAsToday))
             this._rebuildCalendar();
 
-        this._buttons.forEach(Lang.bind(this, function(button) {
+        this._buttons.forEach(button => {
             if (sameDay(button._date, this._selectedDate)) {
                 button.add_style_pseudo_class('selected');
                 if (this._shouldDateGrabFocus)
@@ -699,7 +696,7 @@ var Calendar = new Lang.Class({
             }
             else
                 button.remove_style_pseudo_class('selected');
-        }));
+        });
     }
 });
 Signals.addSignalMethods(Calendar.prototype);
@@ -773,16 +770,14 @@ var NotificationMessage = new Lang.Class({
 
         this.setIcon(this._getIcon());
 
-        this.connect('close', Lang.bind(this,
-            function() {
-                this._closed = true;
-                this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
-            }));
-        this._destroyId = notification.connect('destroy', Lang.bind(this,
-            function() {
-                if (!this._closed)
-                    this.close();
-            }));
+        this.connect('close', () => {
+            this._closed = true;
+            this.notification.destroy(MessageTray.NotificationDestroyedReason.DISMISSED);
+        });
+        this._destroyId = notification.connect('destroy', () => {
+            if (!this._closed)
+                this.close();
+        });
         this._updatedId = notification.connect('updated',
                                                Lang.bind(this, this._onUpdated));
     },
@@ -890,9 +885,9 @@ var EventsSection = new Lang.Class({
             let event = events[i];
 
             let message = new EventMessage(event, this._date);
-            message.connect('close', Lang.bind(this, function() {
+            message.connect('close', () => {
                 this._ignoreEvent(event);
-            }));
+            });
             this.addMessage(message, false);
         }
 
@@ -912,7 +907,7 @@ var EventsSection = new Lang.Class({
         let apps = Gio.AppInfo.get_recommended_for_type('text/calendar');
         if (apps && (apps.length > 0)) {
             let app = Gio.AppInfo.get_default_for_type('text/calendar', false);
-            let defaultInRecommended = apps.some(function(a) { return a.equal(app); });
+            let defaultInRecommended = apps.some(a => a.equal(app));
             this._calendarApp = defaultInRecommended ? app : apps[0];
         } else {
             this._calendarApp = null;
@@ -959,9 +954,9 @@ var NotificationSection = new Lang.Class({
         this._nUrgent = 0;
 
         Main.messageTray.connect('source-added', Lang.bind(this, this._sourceAdded));
-        Main.messageTray.getSources().forEach(Lang.bind(this, function(source) {
+        Main.messageTray.getSources().forEach(source => {
             this._sourceAdded(Main.messageTray, source);
-        }));
+        });
 
         this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
     },
@@ -988,9 +983,9 @@ var NotificationSection = new Lang.Class({
             notificationAddedId: 0,
         };
 
-        obj.destroyId = source.connect('destroy', Lang.bind(this, function(source) {
+        obj.destroyId = source.connect('destroy', source => {
             this._onSourceDestroy(source, obj);
-        }));
+        });
         obj.notificationAddedId = source.connect('notification-added',
                                                  Lang.bind(this, this._onNotificationAdded));
 
@@ -1003,18 +998,16 @@ var NotificationSection = new Lang.Class({
 
         let isUrgent = notification.urgency == MessageTray.Urgency.CRITICAL;
 
-        let updatedId = notification.connect('updated', Lang.bind(this,
-            function() {
-                message.setSecondaryActor(this._createTimeLabel(notification.datetime));
-                this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.actor.mapped);
-            }));
-        let destroyId = notification.connect('destroy', Lang.bind(this,
-            function() {
-                notification.disconnect(destroyId);
-                notification.disconnect(updatedId);
-                if (isUrgent)
-                    this._nUrgent--;
-            }));
+        let updatedId = notification.connect('updated', () => {
+            message.setSecondaryActor(this._createTimeLabel(notification.datetime));
+            this.moveMessage(message, isUrgent ? 0 : this._nUrgent, this.actor.mapped);
+        });
+        let destroyId = notification.connect('destroy', () => {
+            notification.disconnect(destroyId);
+            notification.disconnect(updatedId);
+            if (isUrgent)
+                this._nUrgent--;
+        });
 
         if (isUrgent) {
             // Keep track of urgent notifications to keep them on top
@@ -1157,10 +1150,9 @@ var CalendarMessageList = new Lang.Class({
             canClearChangedId: 0,
             keyFocusId: 0
         };
-        obj.destroyId = section.actor.connect('destroy', Lang.bind(this,
-            function() {
-                this._removeSection(section);
-            }));
+        obj.destroyId = section.actor.connect('destroy', () => {
+            this._removeSection(section);
+        });
         obj.visibleId = section.actor.connect('notify::visible',
                                               Lang.bind(this, this._sync));
         obj.emptyChangedId = section.connect('empty-changed',
@@ -1194,22 +1186,16 @@ var CalendarMessageList = new Lang.Class({
 
     _sync() {
         let sections = [...this._sections.keys()];
-        let visible = sections.some(function(s) {
-            return s.allowed;
-        });
+        let visible = sections.some(s => s.allowed);
         this.actor.visible = visible;
         if (!visible)
             return;
 
-        let empty = sections.every(function(s) {
-            return s.empty || !s.actor.visible;
-        });
+        let empty = sections.every(s => s.empty || !s.actor.visible);
         this._placeholder.actor.visible = empty;
         this._clearButton.visible = !empty;
 
-        let canClear = sections.some(function(s) {
-            return s.canClear && s.actor.visible;
-        });
+        let canClear = sections.some(s => s.canClear && s.actor.visible);
         this._clearButton.reactive = canClear;
     },
 

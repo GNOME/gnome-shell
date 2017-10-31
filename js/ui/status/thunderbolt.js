@@ -132,7 +132,7 @@ var Client = new Lang.Class({
 
     enrollDevice(id, policy, callback) {
 	this._proxy.EnrollDeviceRemote(id, policy, AuthFlags.NONE,
-				       Lang.bind(this, function (res, error) {
+                                       (res, error) => {
 	    if (error) {
 		callback(null, error);
 		return;
@@ -143,7 +143,7 @@ var Client = new Lang.Class({
 					     BOLT_DBUS_NAME,
 					     path);
 	    callback(device, null);
-	}));
+	});
     }
 
 });
@@ -271,9 +271,7 @@ var Indicator = new Lang.Class({
         if (!this._source) {
             this._source = new MessageTray.Source(_("Thunderbolt"),
                                                   'thunderbolt-symbolic');
-            this._source.connect('destroy', Lang.bind(this, function() {
-                this._source = null;
-            }));
+            this._source.connect('destroy', () => { this._source = null; });
 
             Main.messageTray.add(this._source);
         }
@@ -289,7 +287,7 @@ var Indicator = new Lang.Class({
 
 	this._notification = new MessageTray.Notification(source, title, body);
 	this._notification.setUrgency(MessageTray.Urgency.HIGH);
-        this._notification.connect('destroy', function() {
+        this._notification.connect('destroy', () => {
             this._notification = null;
         });
         this._notification.connect('activated', () => {

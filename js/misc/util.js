@@ -136,7 +136,7 @@ function trySpawn(argv)
     // Dummy child watch; we don't want to double-fork internally
     // because then we lose the parent-child relationship, which
     // can break polkit.  See https://bugzilla.redhat.com//show_bug.cgi?id=819275
-    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function () {});
+    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, () => {});
 }
 
 // trySpawnCommandLine:
@@ -291,12 +291,10 @@ function createTimeLabel(date, params) {
         _desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
 
     let label = new St.Label({ text: formatTime(date, params) });
-    let id = _desktopSettings.connect('changed::clock-format', function() {
+    let id = _desktopSettings.connect('changed::clock-format', () => {
         label.text = formatTime(date, params);
     });
-    label.connect('destroy', function() {
-        _desktopSettings.disconnect(id);
-    });
+    label.connect('destroy', () => { _desktopSettings.disconnect(id); });
     return label;
 }
 
@@ -316,7 +314,7 @@ function createTimeLabel(date, params) {
 
 function lowerBound(array, val, cmp) {
     let min, max, mid, v;
-    cmp = cmp || function(a, b) { return a - b; };
+    cmp = cmp || ((a, b) => a - b);
 
     if (array.length == 0)
         return 0;
