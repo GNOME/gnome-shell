@@ -160,12 +160,12 @@ var SwitcherPopup = new Lang.Class({
         // We delay showing the popup so that fast Alt+Tab users aren't
         // disturbed by the popup briefly flashing.
         this._initialDelayTimeoutId = Mainloop.timeout_add(POPUP_DELAY_TIMEOUT,
-                                                           Lang.bind(this, function () {
+                                                           () => {
                                                                Main.osdWindowManager.hideAll();
                                                                this.actor.opacity = 255;
                                                                this._initialDelayTimeoutId = 0;
                                                                return GLib.SOURCE_REMOVE;
-                                                           }));
+                                                           });
         GLib.Source.set_name_by_id(this._initialDelayTimeoutId, '[gnome-shell] Main.osdWindow.cancel');
         return true;
     },
@@ -268,11 +268,11 @@ var SwitcherPopup = new Lang.Class({
             Mainloop.source_remove(this._noModsTimeoutId);
 
         this._noModsTimeoutId = Mainloop.timeout_add(NO_MODS_TIMEOUT,
-                                                     Lang.bind(this, function () {
+                                                     () => {
                                                          this._finish(global.get_current_time());
                                                          this._noModsTimeoutId = 0;
                                                          return GLib.SOURCE_REMOVE;
-                                                     }));
+                                                     });
     },
 
     _popModal() {
@@ -289,10 +289,9 @@ var SwitcherPopup = new Lang.Class({
                              { opacity: 0,
                                time: POPUP_FADE_OUT_TIME,
                                transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this,
-                                   function() {
-                                       this.actor.destroy();
-                                   })
+                               onComplete: () => {
+                                   this.actor.destroy();
+                               }
                              });
         } else
             this.actor.destroy();
@@ -332,9 +331,9 @@ var SwitcherList = new Lang.Class({
         // children to have the same width.
         this._list = new Shell.GenericContainer({ style_class: 'switcher-list-item-container' });
         this._list.spacing = 0;
-        this._list.connect('style-changed', Lang.bind(this, function() {
-                                                        this._list.spacing = this._list.get_theme_node().get_length('spacing');
-                                                     }));
+        this._list.connect('style-changed', () => {
+            this._list.spacing = this._list.get_theme_node().get_length('spacing');
+        });
 
         this._list.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -352,12 +351,14 @@ var SwitcherList = new Lang.Class({
         // Those arrows indicate whether scrolling in one direction is possible
         this._leftArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
                                                pseudo_class: 'highlighted' });
-        this._leftArrow.connect('repaint', Lang.bind(this,
-            function() { drawArrow(this._leftArrow, St.Side.LEFT); }));
+        this._leftArrow.connect('repaint', () => {
+            drawArrow(this._leftArrow, St.Side.LEFT);
+        });
         this._rightArrow = new St.DrawingArea({ style_class: 'switcher-arrow',
                                                 pseudo_class: 'highlighted' });
-        this._rightArrow.connect('repaint', Lang.bind(this,
-            function() { drawArrow(this._rightArrow, St.Side.RIGHT); }));
+        this._rightArrow.connect('repaint', () => {
+            drawArrow(this._rightArrow, St.Side.RIGHT);
+        });
 
         this.actor.add_actor(this._leftArrow);
         this.actor.add_actor(this._rightArrow);
@@ -408,8 +409,8 @@ var SwitcherList = new Lang.Class({
         this._list.add_actor(bbox);
 
         let n = this._items.length;
-        bbox.connect('clicked', Lang.bind(this, function() { this._onItemClicked(n); }));
-        bbox.connect('motion-event', Lang.bind(this, function() { return this._onItemEnter(n); }));
+        bbox.connect('clicked', () => { this._onItemClicked(n); });
+        bbox.connect('motion-event', () => this._onItemEnter(n));
 
         bbox.label_actor = label;
 
@@ -474,11 +475,11 @@ var SwitcherList = new Lang.Class({
                          { value: value,
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function () {
+                           onComplete: () => {
                                 if (this._highlighted == 0)
                                     this._scrollableLeft = false;
                                 this.actor.queue_relayout();
-                           })
+                           }
                           });
     },
 
@@ -498,11 +499,11 @@ var SwitcherList = new Lang.Class({
                          { value: value,
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function () {
+                           onComplete: () => {
                                 if (this._highlighted == this._items.length - 1)
                                     this._scrollableRight = false;
                                 this.actor.queue_relayout();
-                            })
+                            }
                           });
     },
 

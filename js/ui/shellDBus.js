@@ -92,10 +92,10 @@ var GnomeShell = new Lang.Class({
         this._grabbedAccelerators = new Map();
         this._grabbers = new Map();
 
-        global.display.connect('accelerator-activated', Lang.bind(this,
-            function(display, action, deviceid, timestamp) {
+        global.display.connect('accelerator-activated',
+            (display, action, deviceid, timestamp) => {
                 this._emitAcceleratorActivated(action, deviceid, timestamp);
-            }));
+            });
 
         this._cachedOverviewVisible = false;
         Main.overview.connect('showing',
@@ -357,7 +357,7 @@ var GnomeShellExtensions = new Lang.Class({
         // Only serialize the properties that we actually need.
         const serializedProperties = ["type", "state", "path", "error", "hasPrefs"];
 
-        serializedProperties.forEach(function(prop) {
+        serializedProperties.forEach(prop => {
             obj[prop] = extension[prop];
         });
 
@@ -439,12 +439,12 @@ var ScreenSaverDBus = new Lang.Class({
         this.parent();
 
         this._screenShield = screenShield;
-        screenShield.connect('active-changed', Lang.bind(this, function(shield) {
+        screenShield.connect('active-changed', shield => {
             this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
-        }));
-        screenShield.connect('wake-up-screen', Lang.bind(this, function(shield) {
+        });
+        screenShield.connect('wake-up-screen', shield => {
             this._dbusImpl.emit_signal('WakeUpScreen', null);
-        }));
+        });
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
@@ -453,11 +453,11 @@ var ScreenSaverDBus = new Lang.Class({
     },
 
     LockAsync(parameters, invocation) {
-        let tmpId = this._screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
+        let tmpId = this._screenShield.connect('lock-screen-shown', () => {
             this._screenShield.disconnect(tmpId);
 
             invocation.return_value(null);
-        }));
+        });
 
         this._screenShield.lock(true);
     },

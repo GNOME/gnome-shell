@@ -47,7 +47,7 @@ var Indicator = new Lang.Class({
         this.indicators.add_style_class_name('power-status');
 
         this._proxy = new PowerManagerProxy(Gio.DBus.system, BUS_NAME, OBJECT_PATH,
-                                            Lang.bind(this, function(proxy, error) {
+                                            (proxy, error) => {
                                                 if (error) {
                                                     log(error.message);
                                                     return;
@@ -55,7 +55,7 @@ var Indicator = new Lang.Class({
                                                 this._proxy.connect('g-properties-changed',
                                                                     Lang.bind(this, this._sync));
                                                 this._sync();
-                                            }));
+                                            });
 
         this._item = new PopupMenu.PopupSubMenuMenuItem("", true);
         this._item.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');

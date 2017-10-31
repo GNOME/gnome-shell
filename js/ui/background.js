@@ -154,13 +154,13 @@ var BackgroundCache = new Lang.Class({
 
         let monitor = file.monitor(Gio.FileMonitorFlags.NONE, null);
         monitor.connect('changed',
-                        Lang.bind(this, function(obj, file, otherFile, eventType) {
+                        (obj, file, otherFile, eventType) => {
                             // Ignore CHANGED and CREATED events, since in both cases
                             // we'll get a CHANGES_DONE_HINT event when done.
                             if (eventType != Gio.FileMonitorEvent.CHANGED &&
                                 eventType != Gio.FileMonitorEvent.CREATED)
                                 this.emit('file-changed', file);
-                        }));
+                        });
 
         this._fileMonitors[key] = monitor;
     },
@@ -173,10 +173,10 @@ var BackgroundCache = new Lang.Class({
         let animation = this._animations[params.settingsSchema];
         if (animation && _fileEqual0(animation.file, params.file)) {
             if (params.onLoaded) {
-                let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+                let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
                     params.onLoaded(this._animations[params.settingsSchema]);
                     return GLib.SOURCE_REMOVE;
-                }));
+                });
                 GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
             }
             return;
@@ -184,17 +184,17 @@ var BackgroundCache = new Lang.Class({
 
         animation = new Animation({ file: params.file });
 
-        animation.load(Lang.bind(this, function() {
-                           this._animations[params.settingsSchema] = animation;
+        animation.load(() => {
+            this._animations[params.settingsSchema] = animation;
 
-                           if (params.onLoaded) {
-                               let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
-                                   params.onLoaded(this._animations[params.settingsSchema]);
-                                   return GLib.SOURCE_REMOVE;
-                               }));
-                               GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
-                           }
-                       }));
+            if (params.onLoaded) {
+                let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                    params.onLoaded(this._animations[params.settingsSchema]);
+                    return GLib.SOURCE_REMOVE;
+                });
+                GLib.Source.set_name_by_id(id, '[gnome-shell] params.onLoaded');
+            }
+        });
     },
 
     getBackgroundSource(layoutManager, settingsSchema) {
@@ -254,10 +254,10 @@ var Background = new Lang.Class({
 
         this._clock = new GnomeDesktop.WallClock();
         this._timezoneChangedId = this._clock.connect('notify::timezone',
-            Lang.bind(this, function() {
+            () => {
                 if (this._animation)
                     this._loadAnimation(this._animation.file);
-            }));
+            });
 
         let loginManager = LoginManager.getLoginManager();
         this._prepareForSleepId = loginManager.connect('prepare-for-sleep',
@@ -267,9 +267,9 @@ var Background = new Lang.Class({
                 this._refreshAnimation();
             });
 
-        this._settingsChangedSignalId = this._settings.connect('changed', Lang.bind(this, function() {
-                                            this.emit('changed');
-                                        }));
+        this._settingsChangedSignalId = this._settings.connect('changed', () => {
+            this.emit('changed');
+        });
 
         this._load();
     },
@@ -319,10 +319,10 @@ var Background = new Lang.Class({
 
         this.isLoaded = true;
 
-        let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+        let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
             this.emit('loaded');
             return GLib.SOURCE_REMOVE;
-        }));
+        });
         GLib.Source.set_name_by_id(id, '[gnome-shell] this.emit');
     },
 
@@ -349,13 +349,13 @@ var Background = new Lang.Class({
 
         this._cache.monitorFile(file);
         let signalId = this._cache.connect('file-changed',
-                                           Lang.bind(this, function(cache, changedFile) {
+                                           (cache, changedFile) => {
                                                if (changedFile.equal(file)) {
                                                    let imageCache = Meta.BackgroundImageCache.get_default();
                                                    imageCache.purge(changedFile);
                                                    this.emit('changed');
                                                }
-                                           }));
+                                           });
         this._fileWatches[key] = signalId;
     },
 
@@ -372,7 +372,7 @@ var Background = new Lang.Class({
         this._animation.update(this._layoutManager.monitors[this._monitorIndex]);
         let files = this._animation.keyFrameFiles;
 
-        let finish = Lang.bind(this, function() {
+        let finish = () => {
             this._setLoaded();
             if (files.length > 1) {
                 this.background.set_blend(files[0], files[1],
@@ -384,7 +384,7 @@ var Background = new Lang.Class({
                 this.background.set_file(null, this._style);
             }
             this._queueUpdateAnimation();
-        });
+        };
 
         let cache = Meta.BackgroundImageCache.get_default();
         let numPendingImages = files.length;
@@ -396,13 +396,12 @@ var Background = new Lang.Class({
                 if (numPendingImages == 0)
                     finish();
             } else {
-                let id = image.connect('loaded',
-                                       Lang.bind(this, function() {
-                                           image.disconnect(id);
-                                           numPendingImages--;
-                                           if (numPendingImages == 0)
-                                               finish();
-                                       }));
+                let id = image.connect('loaded', () => {
+                    image.disconnect(id);
+                    numPendingImages--;
+                    if (numPendingImages == 0)
+                        finish();
+                });
             }
         }
     },
@@ -428,18 +427,18 @@ var Background = new Lang.Class({
 
         this._updateAnimationTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                       interval,
-                                                      Lang.bind(this, function() {
-                                                                    this._updateAnimationTimeoutId = 0;
-                                                                    this._updateAnimation();
-                                                                    return GLib.SOURCE_REMOVE;
-                                                                }));
+                                                      () => {
+                                                          this._updateAnimationTimeoutId = 0;
+                                                          this._updateAnimation();
+                                                          return GLib.SOURCE_REMOVE;
+                                                      });
         GLib.Source.set_name_by_id(this._updateAnimationTimeoutId, '[gnome-shell] this._updateAnimation');
     },
 
     _loadAnimation(file) {
         this._cache.getAnimation({ file: file,
                                    settingsSchema: this._settings.schema_id,
-                                   onLoaded: Lang.bind(this, function(animation) {
+                                   onLoaded: animation => {
                                        this._animation = animation;
 
                                        if (!this._animation || this._cancellable.is_cancelled()) {
@@ -449,7 +448,7 @@ var Background = new Lang.Class({
 
                                        this._updateAnimation();
                                        this._watchFile(file);
-                                   })
+                                   }
                                  });
     },
 
@@ -462,11 +461,10 @@ var Background = new Lang.Class({
         if (image.is_loaded())
             this._setLoaded();
         else {
-            let id = image.connect('loaded',
-                                   Lang.bind(this, function() {
-                                       this._setLoaded();
-                                       image.disconnect(id);
-                                   }));
+            let id = image.connect('loaded', () => {
+                this._setLoaded();
+                image.disconnect(id);
+            });
         }
     },
 
@@ -514,18 +512,17 @@ var SystemBackground = new Lang.Class({
         let image = cache.load(file);
         if (image.is_loaded()) {
             image = null;
-            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
                 this.emit('loaded');
                 return GLib.SOURCE_REMOVE;
-            }));
+            });
             GLib.Source.set_name_by_id(id, '[gnome-shell] SystemBackground.loaded');
         } else {
-            let id = image.connect('loaded',
-                                   Lang.bind(this, function() {
-                                       this.emit('loaded');
-                                       image.disconnect(id);
-                                       image = null;
-                                   }));
+            let id = image.connect('loaded', () => {
+                this.emit('loaded');
+                image.disconnect(id);
+                image = null;
+            });
         }
     },
 });
@@ -594,11 +591,11 @@ var BackgroundSource = new Lang.Class({
                 style: style
             });
 
-            background._changedId = background.connect('changed', Lang.bind(this, function() {
+            background._changedId = background.connect('changed', () => {
                 background.disconnect(background._changedId);
                 background.destroy();
                 delete this._backgrounds[monitorIndex];
-            }));
+            });
 
             this._backgrounds[monitorIndex] = background;
         }
@@ -635,13 +632,11 @@ var Animation = new Lang.Class({
     load(callback) {
         this._show = new GnomeDesktop.BGSlideShow({ filename: this.file.get_path() });
 
-        this._show.load_async(null,
-                              Lang.bind(this,
-                                        function(object, result) {
-                                            this.loaded = true;
-                                            if (callback)
-                                                callback();
-                                        }));
+        this._show.load_async(null, (object, result) => {
+            this.loaded = true;
+            if (callback)
+                callback();
+        });
     },
 
     update(monitor) {
@@ -745,13 +740,12 @@ var BackgroundManager = new Lang.Class({
             this._swapBackgroundActor();
         } else {
             newBackgroundActor.loadedSignalId = background.connect('loaded',
-                Lang.bind(this, function() {
+                () => {
                     background.disconnect(newBackgroundActor.loadedSignalId);
                     newBackgroundActor.loadedSignalId = 0;
 
                     this._swapBackgroundActor();
-
-                }));
+                });
         }
     },
 
@@ -775,19 +769,19 @@ var BackgroundManager = new Lang.Class({
             backgroundActor.lower_bottom();
         }
 
-        let changeSignalId = background.connect('changed', Lang.bind(this, function() {
+        let changeSignalId = background.connect('changed', () => {
             background.disconnect(changeSignalId);
             changeSignalId = null;
             this._updateBackgroundActor();
-        }));
+        });
 
-        backgroundActor.connect('destroy', Lang.bind(this, function() {
+        backgroundActor.connect('destroy', () => {
             if (changeSignalId)
                 background.disconnect(changeSignalId);
 
             if (backgroundActor.loadedSignalId)
                 background.disconnect(backgroundActor.loadedSignalId);
-        }));
+        });
 
         return backgroundActor;
     },

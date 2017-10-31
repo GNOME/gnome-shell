@@ -47,7 +47,7 @@ var RemoteMenuSeparatorItemMapper = new Lang.Class({
         this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
         this._updateLabel();
 
-        this.menuItem.connect('destroy', function() {
+        this.menuItem.connect('destroy', () => {
             trackerItem.run_dispose();
         });
     },
@@ -89,15 +89,15 @@ var RemoteMenuSubmenuItemMapper = new Lang.Class({
                                                                _insertItem.bind(null, this.menuItem.menu),
                                                                _removeItem.bind(null, this.menuItem.menu));
 
-        this.menuItem.connect('request-open', Lang.bind(this, function(menu, open) {
+        this.menuItem.connect('request-open', (menu, open) => {
             this._trackerItem.request_submenu_shown(open);
-        }));
+        });
 
-        this._trackerItem.connect('notify::submenu-shown', Lang.bind(this, function() {
+        this._trackerItem.connect('notify::submenu-shown', () => {
             this.menuItem.setSubmenuShown(this._trackerItem.get_submenu_shown());
-        }));
+        });
 
-        this.menuItem.connect('destroy', function() {
+        this.menuItem.connect('destroy', () => {
             trackerItem.run_dispose();
         });
     },
@@ -123,9 +123,9 @@ var RemoteMenuItemMapper = new Lang.Class({
         this.menuItem.actor.add_child(this._label);
         this.menuItem.actor.label_actor = this._label;
 
-        this.menuItem.connect('activate', Lang.bind(this, function() {
+        this.menuItem.connect('activate', () => {
             this._trackerItem.activated();
-        }));
+        });
 
         this._trackerItem.bind_property('visible', this.menuItem.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
 
@@ -138,7 +138,7 @@ var RemoteMenuItemMapper = new Lang.Class({
         this._updateSensitivity();
         this._updateRole();
 
-        this.menuItem.connect('destroy', function() {
+        this.menuItem.connect('destroy', () => {
             trackerItem.run_dispose();
         });
     },

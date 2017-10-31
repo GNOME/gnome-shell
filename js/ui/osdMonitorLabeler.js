@@ -82,9 +82,9 @@ var OsdMonitorLabeler = new Lang.Class({
 
         this._client = client;
         this._clientWatchId = Gio.bus_watch_name(Gio.BusType.SESSION, client, 0, null,
-                                                 Lang.bind(this, function(c, name) {
+                                                 (c, name) => {
                                                      this.hide(name);
-                                                 }));
+                                                 });
         return true;
     },
 

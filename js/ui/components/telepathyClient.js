@@ -47,7 +47,7 @@ var NotificationDirection = {
     RECEIVED: 'chat-received'
 };
 
-var N_ = function(s) { return s; };
+var N_ = s => s;
 
 function makeMessageFromTpMessage(tpMessage, direction) {
     let [text, flags] = tpMessage.to_text();
@@ -188,10 +188,9 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         let source = new ChatSource(account, conn, channel, contact, this);
 
         this._chatSources[channel.get_object_path()] = source;
-        source.connect('destroy', Lang.bind(this,
-                       function() {
-                           delete this._chatSources[channel.get_object_path()];
-                       }));
+        source.connect('destroy', () => {
+            delete this._chatSources[channel.get_object_path()];
+        });
     },
 
     vfunc_handle_channels(account, conn, channels, requests,
@@ -262,14 +261,14 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         }
 
         // Approve private text channels right away as we are going to handle it
-        dispatchOp.claim_with_async(this, Lang.bind(this, function(dispatchOp, result) {
+        dispatchOp.claim_with_async(this, (dispatchOp, result) => {
             try {
                 dispatchOp.claim_with_finish(result);
                 this._handlingChannels(account, conn, [channel], false);
             } catch (err) {
                 log('Failed to Claim channel: ' + err);
             }
-        }));
+        });
 
         context.accept();
     },
@@ -322,15 +321,13 @@ var ChatSource = new Lang.Class({
 
         this._notification = new ChatNotification(this);
         this._notification.connect('activated', Lang.bind(this, this.open));
-        this._notification.connect('updated', Lang.bind(this,
-            function() {
-                if (this._banner && this._banner.expanded)
-                    this._ackMessages();
-            }));
-        this._notification.connect('destroy', Lang.bind(this,
-            function() {
-                this._notification = null;
-            }));
+        this._notification.connect('updated', () => {
+            if (this._banner && this._banner.expanded)
+                this._ackMessages();
+        });
+        this._notification.connect('destroy', () => {
+            this._notification = null;
+        });
         this.pushNotification(this._notification);
     },
 
@@ -345,11 +342,10 @@ var ChatSource = new Lang.Class({
 
         // We ack messages when the user expands the new notification
         let id = this._banner.connect('expanded', Lang.bind(this, this._ackMessages));
-        this._banner.actor.connect('destroy', Lang.bind(this,
-            function() {
-                this._banner.disconnect(id);
-                this._banner = null;
-            }));
+        this._banner.actor.connect('destroy', () => {
+            this._banner.disconnect(id);
+            this._banner = null;
+        });
 
         return this._banner;
     },
@@ -504,7 +500,7 @@ var ChatSource = new Lang.Class({
             this._ackMessages();
             // The chat box has been destroyed so it can't
             // handle the channel any more.
-            this._channel.close_async(function(channel, result) {
+            this._channel.close_async((channel, result) => {
                 channel.close_finish(result);
             });
         } else {
@@ -602,9 +598,9 @@ var ChatSource = new Lang.Class({
         }
 
         let msg = Tp.ClientMessage.new_text(type, text);
-        this._channel.send_message_async(msg, 0, Lang.bind(this, function (src, result) {
+        this._channel.send_message_async(msg, 0, (src, result) => {
             this._channel.send_message_finish(result); 
-        }));
+        });
     },
 
     setChatState(state) {
@@ -722,7 +718,7 @@ var ChatNotification = new Lang.Class({
         let maxLength = (lastMessageTime < currentTime - SCROLLBACK_RECENT_TIME) ?
             SCROLLBACK_IDLE_LENGTH : SCROLLBACK_RECENT_LENGTH;
 
-        let filteredHistory = this.messages.filter(function(item) { return item.realMessage });
+        let filteredHistory = this.messages.filter(item => item.realMessage);
         if (filteredHistory.length > maxLength) {
             let lastMessageToKeep = filteredHistory[maxLength];
             let expired = this.messages.splice(this.messages.indexOf(lastMessageToKeep));
@@ -830,13 +826,13 @@ var ChatNotificationBanner = new Lang.Class({
         this._responseEntry.clutter_text.connect('text-changed', Lang.bind(this, this._onEntryChanged));
         this.setActionArea(this._responseEntry);
 
-        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, function() {
+        this._responseEntry.clutter_text.connect('key-focus-in', () => {
             this.focused = true;
-        }));
-        this._responseEntry.clutter_text.connect('key-focus-out', Lang.bind(this, function() {
+        });
+        this._responseEntry.clutter_text.connect('key-focus-out', () => {
             this.focused = false;
             this.emit('unfocused');
-        }));
+        });
 
         this._scrollArea = new St.ScrollView({ style_class: 'chat-scrollview vfade',
                                                vscrollbar_policy: Gtk.PolicyType.AUTOMATIC,
@@ -855,11 +851,11 @@ var ChatNotificationBanner = new Lang.Class({
         // force a scroll to the bottom if things change while we were at the
         // bottom
         this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
-        this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
+        this._scrollArea.vscroll.adjustment.connect('changed', adjustment => {
             if (adjustment.value == this._oldMaxScrollValue)
                 this.scrollTo(St.Side.BOTTOM);
             this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
-        }));
+        });
 
         this._inputHistory = new History.HistoryManager({ entry: this._responseEntry.clutter_text });
 
@@ -868,19 +864,19 @@ var ChatNotificationBanner = new Lang.Class({
         this._messageActors = new Map();
 
         this._messageAddedId = this.notification.connect('message-added',
-            Lang.bind(this, function(n, message) {
+            (n, message) => {
                 this._addMessage(message);
-            }));
+            });
         this._messageRemovedId = this.notification.connect('message-removed',
-            Lang.bind(this, function(n, message) {
+            (n, message) => {
                 let actor = this._messageActors.get(message);
                 if (this._messageActors.delete(message))
                     actor.destroy();
-            }));
+            });
         this._timestampChangedId = this.notification.connect('timestamp-changed',
-            Lang.bind(this, function(n, message) {
+            (n, message) => {
                 this._updateTimestamp(message);
-            }));
+            });
 
         for (let i = this.notification.messages.length - 1; i >= 0; i--)
             this._addMessage(this.notification.messages[i]);

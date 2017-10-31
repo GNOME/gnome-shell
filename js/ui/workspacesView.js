@@ -112,11 +112,10 @@ var WorkspacesView = new Lang.Class({
         this._updateWorkspacesId = global.screen.connect('notify::n-workspaces', Lang.bind(this, this._updateWorkspaces));
 
         this._overviewShownId =
-            Main.overview.connect('shown',
-                                 Lang.bind(this, function() {
+            Main.overview.connect('shown', () => {
                 this.actor.set_clip(this._fullGeometry.x, this._fullGeometry.y,
                                     this._fullGeometry.width, this._fullGeometry.height);
-        }));
+            });
 
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
@@ -200,11 +199,10 @@ var WorkspacesView = new Lang.Class({
                 // matter which tween we use, so we pick the first one ...
                 if (w == 0) {
                     this._updateVisibility();
-                    params.onComplete = Lang.bind(this,
-                        function() {
-                            this._animating = false;
-                            this._updateVisibility();
-                        });
+                    params.onComplete = () => {
+                        this._animating = false;
+                        this._updateVisibility();
+                    };
                 }
                 Tweener.addTween(workspace.actor, params);
             } else {
@@ -241,10 +239,9 @@ var WorkspacesView = new Lang.Class({
             value: index,
             time: WORKSPACE_SWITCH_TIME,
             transition: 'easeOutQuad',
-            onComplete: Lang.bind(this,
-                                  function() {
-                                      this._animatingScroll = false;
-                                  })
+            onComplete: () => {
+                this._animatingScroll = false;
+            }
         });
     },
 
@@ -421,7 +418,7 @@ var WorkspacesDisplay = new Lang.Class({
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
 
         let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', Lang.bind(this, function(action) {
+        clickAction.connect('clicked', action => {
             // Only switch to the workspace when there's no application
             // windows open. The problem is that it's too easy to miss
             // an app window and get the wrong one focused.
@@ -430,13 +427,13 @@ var WorkspacesDisplay = new Lang.Class({
             if ((action.get_button() == 1 || action.get_button() == 0) &&
                 this._workspacesViews[index].getActiveWorkspace().isEmpty())
                 Main.overview.hide();
-        }));
+        });
         Main.overview.addAction(clickAction);
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
         panAction.connect('pan', Lang.bind(this, this._onPan));
-        panAction.connect('gesture-begin', Lang.bind(this, function() {
+        panAction.connect('gesture-begin', () => {
             if (this._workspacesOnlyOnPrimary) {
                 let event = Clutter.get_current_event();
                 if (this._getMonitorIndexForEvent(event) != this._primaryIndex)
@@ -446,17 +443,17 @@ var WorkspacesDisplay = new Lang.Class({
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].startSwipeScroll();
             return true;
-        }));
-        panAction.connect('gesture-cancel', Lang.bind(this, function() {
+        });
+        panAction.connect('gesture-cancel', () => {
             clickAction.release();
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].endSwipeScroll();
-        }));
-        panAction.connect('gesture-end', Lang.bind(this, function() {
+        });
+        panAction.connect('gesture-end', () => {
             clickAction.release();
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].endSwipeScroll();
-        }));
+        });
         Main.overview.addAction(panAction);
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
@@ -615,25 +612,23 @@ var WorkspacesDisplay = new Lang.Class({
             oldParent.disconnect(this._notifyOpacityId);
         this._notifyOpacityId = 0;
 
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
-            function() {
-                let newParent = this.actor.get_parent();
-                if (!newParent)
-                    return;
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+            let newParent = this.actor.get_parent();
+            if (!newParent)
+                return;
 
-                // This is kinda hackish - we want the primary view to
-                // appear as parent of this.actor, though in reality it
-                // is added directly to Main.layoutManager.overviewGroup
-                this._notifyOpacityId = newParent.connect('notify::opacity',
-                    Lang.bind(this, function() {
-                        let opacity = this.actor.get_parent().opacity;
-                        let primaryView = this._getPrimaryView();
-                        if (!primaryView)
-                            return;
-                        primaryView.actor.opacity = opacity;
-                        primaryView.actor.visible = opacity != 0;
-                    }));
-        }));
+            // This is kinda hackish - we want the primary view to
+            // appear as parent of this.actor, though in reality it
+            // is added directly to Main.layoutManager.overviewGroup
+            this._notifyOpacityId = newParent.connect('notify::opacity', () => {
+                let opacity = this.actor.get_parent().opacity;
+                let primaryView = this._getPrimaryView();
+                if (!primaryView)
+                    return;
+                primaryView.actor.opacity = opacity;
+                primaryView.actor.visible = opacity != 0;
+            });
+        });
     },
 
     // This geometry should always be the fullest geometry

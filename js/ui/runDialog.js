@@ -40,30 +40,29 @@ var RunDialog = new Lang.Class({
 
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
         this._terminalSettings = new Gio.Settings({ schema_id: TERMINAL_SCHEMA });
-        global.settings.connect('changed::development-tools', Lang.bind(this, function () {
+        global.settings.connect('changed::development-tools', () => {
             this._enableInternalCommands = global.settings.get_boolean('development-tools');
-        }));
+        });
         this._enableInternalCommands = global.settings.get_boolean('development-tools');
 
-        this._internalCommands = { 'lg':
-                                   Lang.bind(this, function() {
+        this._internalCommands = { 'lg': () => {
                                        Main.createLookingGlass().open();
-                                   }),
+                                   },
 
                                    'r': Lang.bind(this, this._restart),
 
                                    // Developer brain backwards compatibility
                                    'restart': Lang.bind(this, this._restart),
 
-                                   'debugexit': Lang.bind(this, function() {
+                                   'debugexit': () => {
                                        Meta.quit(Meta.ExitCode.ERROR);
-                                   }),
+                                   },
 
                                    // rt is short for "reload theme"
-                                   'rt': Lang.bind(this, function() {
+                                   'rt': () => {
                                        Main.reloadThemeResource();
                                        Main.loadTheme();
-                                   })
+                                   }
                                  };
 
 
@@ -115,7 +114,7 @@ var RunDialog = new Lang.Class({
 
         this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY,
                                                      entry: this._entryText });
-        this._entryText.connect('key-press-event', Lang.bind(this, function(o, e) {
+        this._entryText.connect('key-press-event', (o, e) => {
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
                 this.popModal();
@@ -142,7 +141,7 @@ var RunDialog = new Lang.Class({
                 return Clutter.EVENT_STOP;
             }
             return Clutter.EVENT_PROPAGATE;
-        }));
+        });
     },
 
     _getCommandCompletion(text) {
@@ -162,7 +161,7 @@ var RunDialog = new Lang.Class({
 
         let paths = GLib.getenv('PATH').split(':');
         paths.push(GLib.get_home_dir());
-        let someResults = paths.map(function(path) {
+        let someResults = paths.map(path => {
             let results = [];
             try {
                 let file = Gio.File.new_for_path(path);
@@ -180,9 +179,7 @@ var RunDialog = new Lang.Class({
                 return results;
             }
         });
-        let results = someResults.reduce(function(a, b) {
-            return a.concat(b);
-        }, []);
+        let results = someResults.reduce((a, b) => a.concat(b), []);
 
         if (!results.length)
             return null;
@@ -263,11 +260,10 @@ var RunDialog = new Lang.Class({
                              { height: parentActor.height + errorBoxNaturalHeight,
                                time: DIALOG_GROW_TIME,
                                transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this,
-                                                     function() {
-                                                         parentActor.set_height(-1);
-                                                         this._errorBox.show();
-                                                     })
+                               onComplete: () => {
+                                   parentActor.set_height(-1);
+                                   this._errorBox.show();
+                               }
                              });
         }
     },

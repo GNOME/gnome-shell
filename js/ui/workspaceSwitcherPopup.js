@@ -32,9 +32,9 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._childHeight = 0;
         this._childWidth = 0;
         this._timeoutId = 0;
-        this._list.connect('style-changed', Lang.bind(this, function() {
-                                                        this._itemSpacing = this._list.get_theme_node().get_length('spacing');
-                                                     }));
+        this._list.connect('style-changed', () => {
+           this._itemSpacing = this._list.get_theme_node().get_length('spacing');
+        });
 
         this._list.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));

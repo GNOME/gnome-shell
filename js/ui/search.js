@@ -214,9 +214,9 @@ var SearchResultsBase = new Lang.Class({
     },
 
     _ensureResultActors(results, callback) {
-        let metasNeeded = results.filter(Lang.bind(this, function(resultId) {
-            return this._resultDisplays[resultId] === undefined;
-        }));
+        let metasNeeded = results.filter(
+            resultId => this._resultDisplays[resultId] === undefined
+        );
 
         if (metasNeeded.length === 0) {
             callback(true);
@@ -224,30 +224,28 @@ var SearchResultsBase = new Lang.Class({
             this._cancellable.cancel();
             this._cancellable.reset();
 
-            this.provider.getResultMetas(metasNeeded, Lang.bind(this, function(metas) {
+            this.provider.getResultMetas(metasNeeded, metas => {
                 if (metas.length != metasNeeded.length) {
                     log('Wrong number of result metas returned by search provider ' + this.provider.id +
                         ': expected ' + metasNeeded.length + ' but got ' + metas.length);
                     callback(false);
                     return;
                 }
-                if (metas.some(function(meta) {
-                    return !meta.name || !meta.id;
-                })) {
+                if (metas.some(meta => !meta.name || !meta.id)) {
                     log('Invalid result meta returned from search provider ' + this.provider.id);
                     callback(false);
                     return;
                 }
 
-                metasNeeded.forEach(Lang.bind(this, function(resultId, i) {
+                metasNeeded.forEach((resultId, i) => {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
                     display.connect('activate', Lang.bind(this, this._activateResult));
                     display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
                     this._resultDisplays[resultId] = display;
-                }));
+                });
                 callback(true);
-            }), this._cancellable);
+            }, this._cancellable);
         }
     },
 
@@ -262,7 +260,7 @@ var SearchResultsBase = new Lang.Class({
             let results = this.provider.filterResults(providerResults, maxResults);
             let moreCount = Math.max(providerResults.length - results.length, 0);
 
-            this._ensureResultActors(results, Lang.bind(this, function(successful) {
+            this._ensureResultActors(results, successful => {
                 if (!successful) {
                     this._clearResultDisplay();
                     callback();
@@ -274,13 +272,13 @@ var SearchResultsBase = new Lang.Class({
                 // content while filling in the results.
                 this.actor.hide();
                 this._clearResultDisplay();
-                results.forEach(Lang.bind(this, function(resultId) {
+                results.forEach(resultId => {
                     this._addItem(this._resultDisplays[resultId]);
-                }));
+                });
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.actor.show();
                 callback();
-            }));
+            });
         }
     }
 });
@@ -295,12 +293,11 @@ var ListSearchResults = new Lang.Class({
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerInfo = new ProviderInfo(provider);
         this.providerInfo.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
-        this.providerInfo.connect('clicked', Lang.bind(this,
-            function() {
-                this.providerInfo.animateLaunch();
-                provider.launchSearch(this._terms);
-                Main.overview.toggle();
-            }));
+        this.providerInfo.connect('clicked', () => {
+            this.providerInfo.animateLaunch();
+            provider.launchSearch(this._terms);
+            Main.overview.toggle();
+        });
 
         this._container.add(this.providerInfo, { x_fill: false,
                                                  y_fill: false,
@@ -457,16 +454,14 @@ var SearchResults = new Lang.Class({
     },
 
     _reloadRemoteProviders() {
-        let remoteProviders = this._providers.filter(function(provider) {
-            return provider.isRemoteProvider;
-        });
-        remoteProviders.forEach(Lang.bind(this, function(provider) {
+        let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
+        remoteProviders.forEach(provider => {
             this._unregisterProvider(provider);
-        }));
+        });
 
-        RemoteSearch.loadRemoteSearchProviders(this._searchSettings, Lang.bind(this, function(providers) {
+        RemoteSearch.loadRemoteSearchProviders(this._searchSettings, providers => {
             providers.forEach(Lang.bind(this, this._registerProvider));
-        }));
+        });
     },
 
     _registerProvider (provider) {
@@ -511,7 +506,7 @@ var SearchResults = new Lang.Class({
         let previousResults = this._results;
         this._results = {};
 
-        this._providers.forEach(Lang.bind(this, function(provider) {
+        this._providers.forEach(provider => {
             provider.searchInProgress = true;
 
             let previousProviderResults = previousResults[provider.id];
@@ -519,7 +514,7 @@ var SearchResults = new Lang.Class({
                 provider.getSubsearchResultSet(previousProviderResults, this._terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
             else
                 provider.getInitialResultSet(this._terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
-        }));
+        });
 
         this._updateSearchProgress();
 
@@ -597,7 +592,7 @@ var SearchResults = new Lang.Class({
     },
 
     _clearDisplay() {
-        this._providers.forEach(function(provider) {
+        this._providers.forEach(provider => {
             provider.display.clear();
         });
     },
@@ -632,13 +627,11 @@ var SearchResults = new Lang.Class({
         if (this._startingSearch)
             return true;
 
-        return this._providers.some(function(provider) {
-            return provider.searchInProgress;
-        });
+        return this._providers.some(p => p.searchInProgress);
     },
 
     _updateSearchProgress () {
-        let haveResults = this._providers.some(function(provider) {
+        let haveResults = this._providers.some(provider => {
             let display = provider.display;
             return (display.getFirstResult() != null);
         });
@@ -659,12 +652,12 @@ var SearchResults = new Lang.Class({
         let terms = this._terms;
         let display = provider.display;
 
-        display.updateSearch(results, terms, Lang.bind(this, function() {
+        display.updateSearch(results, terms, () => {
             provider.searchInProgress = false;
 
             this._maybeSetInitialSelection();
             this._updateSearchProgress();
-        }));
+        });
     },
 
     activateDefault() {

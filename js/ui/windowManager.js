@@ -296,24 +296,24 @@ var WorkspaceTracker = new Lang.Class({
         if (workspace._keepAliveId)
             Mainloop.source_remove(workspace._keepAliveId);
 
-        workspace._keepAliveId = Mainloop.timeout_add(duration, Lang.bind(this, function() {
+        workspace._keepAliveId = Mainloop.timeout_add(duration, () => {
             workspace._keepAliveId = 0;
             this._queueCheckWorkspaces();
             return GLib.SOURCE_REMOVE;
-        }));
+        });
         GLib.Source.set_name_by_id(workspace._keepAliveId, '[gnome-shell] this._queueCheckWorkspaces');
     },
 
     _windowRemoved(workspace, window) {
         workspace._lastRemovedWindow = window;
         this._queueCheckWorkspaces();
-        let id = Mainloop.timeout_add(LAST_WINDOW_GRACE_TIME, Lang.bind(this, function() {
+        let id = Mainloop.timeout_add(LAST_WINDOW_GRACE_TIME, () => {
             if (workspace._lastRemovedWindow == window) {
                 workspace._lastRemovedWindow = null;
                 this._queueCheckWorkspaces();
             }
             return GLib.SOURCE_REMOVE;
-        }));
+        });
         GLib.Source.set_name_by_id(id, '[gnome-shell] this._queueCheckWorkspaces');
     },
 
@@ -378,7 +378,7 @@ var WorkspaceTracker = new Lang.Class({
             }
 
             let lostWorkspaces = this._workspaces.splice(removedIndex, removedNum);
-            lostWorkspaces.forEach(function(workspace) {
+            lostWorkspaces.forEach(workspace => {
                 workspace.disconnect(workspace._windowAddedId);
                 workspace.disconnect(workspace._windowRemovedId);
             });
@@ -545,9 +545,9 @@ var WorkspaceSwitchAction = new Lang.Class({
         this.set_n_touch_points(4);
         this.set_threshold_trigger_distance(MOTION_THRESHOLD, MOTION_THRESHOLD);
 
-        global.display.connect('grab-op-begin', Lang.bind(this, function() {
+        global.display.connect('grab-op-begin', () => {
             this.cancel();
-        }));
+        });
     },
 
     vfunc_gesture_prepare (actor) {
@@ -584,9 +584,9 @@ var AppSwitchAction = new Lang.Class({
         this.parent();
         this.set_n_touch_points(3);
 
-        global.display.connect('grab-op-begin', Lang.bind(this, function() {
+        global.display.connect('grab-op-begin', () => {
             this.cancel();
-        }));
+        });
     },
 
     vfunc_gesture_prepare (action, actor) {
@@ -693,12 +693,12 @@ var WindowManager = new Lang.Class({
 
         this._switchData = null;
         this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
-        this._shellwm.connect('kill-window-effects', Lang.bind(this, function (shellwm, actor) {
+        this._shellwm.connect('kill-window-effects', (shellwm, actor) => {
             this._minimizeWindowDone(shellwm, actor);
             this._mapWindowDone(shellwm, actor);
             this._destroyWindowDone(shellwm, actor);
             this._sizeChangeWindowDone(shellwm, actor);
-        }));
+        });
 
         this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
         this._shellwm.connect('show-tile-preview', Lang.bind(this, this._showTilePreview));
@@ -927,21 +927,21 @@ var WindowManager = new Lang.Class({
 
         global.display.connect('show-resize-popup', Lang.bind(this, this._showResizePopup));
         global.display.connect('show-pad-osd', Lang.bind(this, this._showPadOsd));
-        global.display.connect('show-osd', Lang.bind(this, function (display, monitorIndex, iconName, label) {
+        global.display.connect('show-osd', (display, monitorIndex, iconName, label) => {
             let icon = Gio.Icon.new_for_string(iconName);
             Main.osdWindowManager.show(monitorIndex, icon, label, null);
-        }));
+        });
 
         this._gsdWacomProxy = new GsdWacomProxy(Gio.DBus.session, GSD_WACOM_BUS_NAME,
                                                 GSD_WACOM_OBJECT_PATH,
-                                                Lang.bind(this, function(proxy, error) {
+                                                (proxy, error) => {
                                                     if (error) {
                                                         log(error.message);
                                                         return;
                                                     }
-                                                }));
+                                                });
 
-        global.display.connect('pad-mode-switch', Lang.bind(this, function (display, pad, group, mode) {
+        global.display.connect('pad-mode-switch', (display, pad, group, mode) => {
             let labels = [];
 
             //FIXME: Fix num buttons
@@ -954,16 +954,16 @@ var WindowManager = new Lang.Class({
                 this._gsdWacomProxy.SetOLEDLabelsRemote(pad.get_device_node(), labels);
                 this._gsdWacomProxy.SetGroupModeLEDRemote(pad.get_device_node(), group, mode);
             }
-        }));
+        });
 
-        Main.overview.connect('showing', Lang.bind(this, function() {
+        Main.overview.connect('showing', () => {
             for (let i = 0; i < this._dimmedWindows.length; i++)
                 this._undimWindow(this._dimmedWindows[i]);
-        }));
-        Main.overview.connect('hiding', Lang.bind(this, function() {
+        });
+        Main.overview.connect('hiding', () => {
             for (let i = 0; i < this._dimmedWindows.length; i++)
                 this._dimWindow(this._dimmedWindows[i]);
-        }));
+        });
 
         this._windowMenuManager = new WindowMenu.WindowMenuManager();
 
@@ -987,15 +987,15 @@ var WindowManager = new Lang.Class({
 
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;
         gesture = new EdgeDragAction.EdgeDragAction(St.Side.BOTTOM, mode);
-        gesture.connect('activated', Lang.bind(this, function() {
+        gesture.connect('activated', () => {
             Main.keyboard.show(Main.layoutManager.bottomIndex);
-        }));
+        });
         global.stage.add_action(gesture);
     },
 
     _showPadOsd (display, device, settings, imagePath, editionMode, monitorIndex) {
         this._currentPadOsd = new PadOsd.PadOsd(device, settings, imagePath, editionMode, monitorIndex);
-        this._currentPadOsd.connect('closed', Lang.bind(this, function() { this._currentPadOsd = null }));
+        this._currentPadOsd.connect('closed', () => { this._currentPadOsd = null });
 
         return this._currentPadOsd.actor;
     },
@@ -1015,11 +1015,11 @@ var WindowManager = new Lang.Class({
     },
 
     _switchApp  () {
-        let windows = global.get_window_actors().filter(Lang.bind(this, function(actor) {
+        let windows = global.get_window_actors().filter(actor => {
             let win = actor.metaWindow;
             return (!win.is_override_redirect() &&
                     win.located_on_workspace(global.screen.get_active_workspace()));
-        }));
+        });
 
         if (windows.length == 0)
             return;
@@ -1047,14 +1047,12 @@ var WindowManager = new Lang.Class({
 
         global.screen.append_new_workspace(false, global.get_current_time());
 
-        let windows = global.get_window_actors().map(function(winActor) {
-            return winActor.meta_window;
-        });
+        let windows = global.get_window_actors().map(a => a.meta_window);
 
         // To create a new workspace, we slide all the windows on workspaces
         // below us to the next workspace, leaving a blank workspace for us
         // to recycle.
-        windows.forEach(function(window) {
+        windows.forEach(window => {
             // If the window is attached to an ancestor, we don't need/want
             // to move it
             if (window.get_transient_for() != null)
@@ -1406,7 +1404,7 @@ var WindowManager = new Lang.Class({
 
     _hasAttachedDialogs(window, ignoreWindow) {
         var count = 0;
-        window.foreach_transient(function(win) {
+        window.foreach_transient(win => {
             if (win != ignoreWindow &&
                 win.is_attached_dialog() &&
                 win.get_transient_for() == window) {
@@ -1427,9 +1425,8 @@ var WindowManager = new Lang.Class({
             this._dimWindow(window);
         } else if (!shouldDim && window._dimmed) {
             window._dimmed = false;
-            this._dimmedWindows = this._dimmedWindows.filter(function(win) {
-                                                                 return win != window;
-                                                             });
+            this._dimmedWindows =
+                this._dimmedWindows.filter(win => win != window);
             this._undimWindow(window);
         }
     },
@@ -1469,24 +1466,25 @@ var WindowManager = new Lang.Class({
 
     _mapWindow (shellwm, actor) {
         actor._windowType = actor.meta_window.get_window_type();
-        actor._notifyWindowTypeSignalId = actor.meta_window.connect('notify::window-type', Lang.bind(this, function () {
-            let type = actor.meta_window.get_window_type();
-            if (type == actor._windowType)
-                return;
-            if (type == Meta.WindowType.MODAL_DIALOG ||
-                actor._windowType == Meta.WindowType.MODAL_DIALOG) {
-                let parent = actor.get_meta_window().get_transient_for();
-                if (parent)
-                    this._checkDimming(parent);
-            }
+        actor._notifyWindowTypeSignalId =
+            actor.meta_window.connect('notify::window-type', () => {
+                let type = actor.meta_window.get_window_type();
+                if (type == actor._windowType)
+                    return;
+                if (type == Meta.WindowType.MODAL_DIALOG ||
+                    actor._windowType == Meta.WindowType.MODAL_DIALOG) {
+                    let parent = actor.get_meta_window().get_transient_for();
+                    if (parent)
+                        this._checkDimming(parent);
+                }
 
-            actor._windowType = type;
-        }));
-        actor.meta_window.connect('unmanaged', Lang.bind(this, function(window) {
-                let parent = window.get_transient_for();
-                if (parent)
-                    this._checkDimming(parent);
-        }));
+                actor._windowType = type;
+            });
+        actor.meta_window.connect('unmanaged', window => {
+            let parent = window.get_transient_for();
+            if (parent)
+                this._checkDimming(parent);
+        });
 
         if (actor.meta_window.is_attached_dialog())
             this._checkDimming(actor.get_meta_window().get_transient_for());
@@ -1576,9 +1574,8 @@ var WindowManager = new Lang.Class({
             actor._notifyWindowTypeSignalId = 0;
         }
         if (window._dimmed) {
-            this._dimmedWindows = this._dimmedWindows.filter(function(win) {
-                                                                 return win != window;
-                                                             });
+            this._dimmedWindows =
+                this._dimmedWindows.filter(win => win != window);
         }
 
         if (window.is_attached_dialog())
@@ -1618,10 +1615,10 @@ var WindowManager = new Lang.Class({
 
             if (window.is_attached_dialog()) {
                 let parent = window.get_transient_for();
-                actor._parentDestroyId = parent.connect('unmanaged', Lang.bind(this, function () {
+                actor._parentDestroyId = parent.connect('unmanaged', () => {
                     Tweener.removeTweens(actor);
                     this._destroyWindowDone(shellwm, actor);
-                }));
+                });
             }
 
             Tweener.addTween(actor,
@@ -1940,11 +1937,11 @@ var WindowManager = new Lang.Class({
             if (this._workspaceSwitcherPopup == null) {
                 this._workspaceTracker.blockUpdates();
                 this._workspaceSwitcherPopup = new WorkspaceSwitcherPopup.WorkspaceSwitcherPopup();
-                this._workspaceSwitcherPopup.connect('destroy', Lang.bind(this, function() {
+                this._workspaceSwitcherPopup.connect('destroy', () => {
                     this._workspaceTracker.unblockUpdates();
                     this._workspaceSwitcherPopup = null;
                     this._isWorkspacePrepended = false;
-                }));
+                });
             }
             this._workspaceSwitcherPopup.display(direction, newWs.index());
         }

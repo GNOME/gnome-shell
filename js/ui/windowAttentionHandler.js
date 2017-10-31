@@ -40,17 +40,17 @@ var WindowAttentionHandler = new Lang.Class({
         let [title, banner] = this._getTitleAndBanner(app, window);
 
         let notification = new MessageTray.Notification(source, title, banner);
-        notification.connect('activated', function() {
+        notification.connect('activated', () => {
             source.open();
         });
         notification.setForFeedback(true);
 
         source.notify(notification);
 
-        source.signalIDs.push(window.connect('notify::title', Lang.bind(this, function() {
+        source.signalIDs.push(window.connect('notify::title', () => {
             let [title, banner] = this._getTitleAndBanner(app, window);
             notification.update(title, banner);
-        })));
+        }));
     }
 });
 
@@ -65,9 +65,12 @@ var Source = new Lang.Class({
         this.parent(app.get_name());
 
         this.signalIDs = [];
-        this.signalIDs.push(this._window.connect('notify::demands-attention', Lang.bind(this, function() { this.destroy(); })));
-        this.signalIDs.push(this._window.connect('focus', Lang.bind(this, function() { this.destroy(); })));
-        this.signalIDs.push(this._window.connect('unmanaged', Lang.bind(this, function() { this.destroy(); })));
+        this.signalIDs.push(this._window.connect('notify::demands-attention',
+                                                 () => { this.destroy(); }));
+        this.signalIDs.push(this._window.connect('focus',
+                                                 () => { this.destroy(); }));
+        this.signalIDs.push(this._window.connect('unmanaged',
+                                                 () => { this.destroy(); }));
 
         this.connect('destroy', Lang.bind(this, this._onDestroy));
     },

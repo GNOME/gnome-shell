@@ -89,7 +89,7 @@ var WindowCloneLayout = new Lang.Class({
     },
 
     vfunc_allocate(container, box, flags) {
-        container.get_children().forEach(Lang.bind(this, function (child) {
+        container.get_children().forEach(child => {
             let realWindow;
             if (child == container._delegate._windowClone)
                 realWindow = container._delegate.realWindow;
@@ -98,7 +98,7 @@ var WindowCloneLayout = new Lang.Class({
 
             child.allocate(this._makeBoxForWindow(realWindow.meta_window),
                            flags);
-        }));
+        });
     }
 });
 
@@ -139,12 +139,14 @@ var WindowClone = new Lang.Class({
 
         this._windowClone._updateId = this.metaWindow.connect('size-changed',
             Lang.bind(this, this._onRealWindowSizeChanged));
-        this._windowClone._destroyId = this.realWindow.connect('destroy', Lang.bind(this, function() {
-            // First destroy the clone and then destroy everything
-            // This will ensure that we never see it in the _disconnectSignals loop
-            this._windowClone.destroy();
-            this.destroy();
-        }));
+        this._windowClone._destroyId =
+            this.realWindow.connect('destroy', () => {
+                // First destroy the clone and then destroy everything
+                // This will ensure that we never see it in the
+                // _disconnectSignals loop
+                this._windowClone.destroy();
+                this.destroy();
+            });
 
         this._updateAttachedDialogs();
         this._computeBoundingBox();
@@ -214,21 +216,21 @@ var WindowClone = new Lang.Class({
 
     _doAddAttachedDialog(metaWin, realWin) {
         let clone = new Clutter.Clone({ source: realWin });
-        clone._updateId = metaWin.connect('size-changed', Lang.bind(this, function() {
+        clone._updateId = metaWin.connect('size-changed', () => {
             this._computeBoundingBox();
             this.emit('size-changed');
-        }));
-        clone._destroyId = realWin.connect('destroy', Lang.bind(this, function() {
+        });
+        clone._destroyId = realWin.connect('destroy', () => {
             clone.destroy();
 
             this._computeBoundingBox();
             this.emit('size-changed');
-        }));
+        });
         this.actor.add_child(clone);
     },
 
     _updateAttachedDialogs() {
-        let iter = Lang.bind(this, function(win) {
+        let iter = win => {
             let actor = win.get_compositor_private();
 
             if (!actor)
@@ -239,7 +241,7 @@ var WindowClone = new Lang.Class({
             this._doAddAttachedDialog(win, actor);
             win.foreach_transient(iter);
             return true;
-        });
+        };
         this.metaWindow.foreach_transient(iter);
     },
 
@@ -262,7 +264,7 @@ var WindowClone = new Lang.Class({
     _computeBoundingBox() {
         let rect = this.metaWindow.get_frame_rect();
 
-        this.actor.get_children().forEach(function (child) {
+        this.actor.get_children().forEach(child => {
             let realWindow;
             if (child == this._windowClone)
                 realWindow = this.realWindow;
@@ -271,7 +273,7 @@ var WindowClone = new Lang.Class({
 
             let metaWindow = realWindow.meta_window;
             rect = rect.union(metaWindow.get_frame_rect());
-        }, this);
+        });
 
         // Convert from a MetaRectangle to a native JS object
         this._boundingBox = { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
@@ -312,7 +314,7 @@ var WindowClone = new Lang.Class({
     },
 
     _disconnectSignals() {
-        this.actor.get_children().forEach(Lang.bind(this, function (child) {
+        this.actor.get_children().forEach(child => {
             let realWindow;
             if (child == this._windowClone)
                 realWindow = this.realWindow;
@@ -321,7 +323,7 @@ var WindowClone = new Lang.Class({
 
             realWindow.meta_window.disconnect(child._updateId);
             realWindow.disconnect(child._destroyId);
-        }));
+        });
     },
 
     _onRealWindowSizeChanged() {
@@ -373,14 +375,13 @@ var WindowClone = new Lang.Class({
 
             // A click cancels a long-press before any click handler is
             // run - make sure to not start a drag in that case
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
-                function() {
-                    if (this._selected)
-                        return;
-                    let [x, y] = action.get_coords();
-                    action.release();
-                    this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence);
-                }));
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                if (this._selected)
+                    return;
+                let [x, y] = action.get_coords();
+                action.release();
+                this._draggable.startDrag(x, y, global.get_current_time(), this._dragTouchSequence);
+            });
         } else {
             this.emit('show-chrome');
         }
@@ -450,11 +451,10 @@ var WindowOverlay = new Lang.Class({
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         windowClone.actor.label_actor = title;
 
-        this._updateCaptionId = metaWindow.connect('notify::title',
-            Lang.bind(this, function(w) {
-                this.title.text = w.title;
-                this.relayout(false);
-            }));
+        this._updateCaptionId = metaWindow.connect('notify::title', w => {
+            this.title.text = w.title;
+            this.relayout(false);
+        });
 
         let button = new St.Button({ style_class: 'window-close' });
         button._overlap = 0;
@@ -603,11 +603,10 @@ var WindowOverlay = new Lang.Class({
 
             // use an idle handler to avoid mapping problems -
             // see comment in Workspace._windowAdded
-            let id = Mainloop.idle_add(Lang.bind(this,
-                                            function() {
-                                                this._windowClone.emit('selected');
-                                                return GLib.SOURCE_REMOVE;
-                                            }));
+            let id = Mainloop.idle_add(() => {
+                this._windowClone.emit('selected');
+                return GLib.SOURCE_REMOVE;
+            });
             GLib.Source.set_name_by_id(id, '[gnome-shell] this._windowClone.emit');
         }
     },
@@ -990,9 +989,7 @@ var UnalignedLayoutStrategy = new Lang.Class({
 
     _sortRow(row) {
         // Sort windows horizontally to minimize travel distance
-        row.windows.sort(function(a, b) {
-            return a.realWindow.x - b.realWindow.x;
-        });
+        row.windows.sort((a, b) => a.realWindow.x - b.realWindow.x);
     },
 
     computeLayout(windows, layout) {
@@ -1161,10 +1158,10 @@ var Workspace = new Lang.Class({
         this._positionWindowsFlags = 0;
         this._positionWindowsId = 0;
 
-        this.actor.connect('notify::mapped', Lang.bind(this, function() {
+        this.actor.connect('notify::mapped', () => {
             if (this.actor.mapped)
                 this._syncActualGeometry();
-        }));
+        });
     },
 
     setFullGeometry(geom) {
@@ -1194,7 +1191,7 @@ var Workspace = new Lang.Class({
         if (!this._actualGeometry)
             return;
 
-        this._actualGeometryLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+        this._actualGeometryLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
             this._actualGeometryLater = 0;
             if (!this.actor.mapped)
                 return false;
@@ -1206,7 +1203,7 @@ var Workspace = new Lang.Class({
             this._updateWindowPositions(Main.overview.animationInProgress ? WindowPositionFlags.ANIMATE : WindowPositionFlags.NONE);
 
             return false;
-        }));
+        });
     },
 
     _lookupIndex (metaWindow) {
@@ -1247,12 +1244,12 @@ var Workspace = new Lang.Class({
         if (this._positionWindowsId > 0)
             return;
 
-        this._positionWindowsId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+        this._positionWindowsId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
             this._realRecalculateWindowPositions(this._positionWindowsFlags);
             this._positionWindowsFlags = 0;
             this._positionWindowsId = 0;
             return false;
-        }));
+        });
     },
 
     _realRecalculateWindowPositions(flags) {
@@ -1265,7 +1262,7 @@ var Workspace = new Lang.Class({
         if (clones.length == 0)
             return;
 
-        clones.sort(function(a, b) {
+        clones.sort((a, b) => {
             return a.metaWindow.get_stable_sequence() - b.metaWindow.get_stable_sequence();
         });
 
@@ -1366,7 +1363,11 @@ var Workspace = new Lang.Class({
 
     syncStacking(stackIndices) {
         let clones = this._windows.slice();
-        clones.sort(function (a, b) { return stackIndices[a.metaWindow.get_stable_sequence()] - stackIndices[b.metaWindow.get_stable_sequence()]; });
+        clones.sort((a, b) => {
+            let indexA = stackIndices[a.metaWindow.get_stable_sequence()];
+            let indexB = stackIndices[b.metaWindow.get_stable_sequence()];
+            return indexA - indexB;
+        });
 
         for (let i = 0; i < clones.length; i++) {
             let clone = clones[i];
@@ -1388,9 +1389,9 @@ var Workspace = new Lang.Class({
                            scale_y: scale,
                            time: Overview.ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
+                           onComplete: () => {
                                this._showWindowOverlay(clone, overlay);
-                           })
+                           }
                          });
 
         clone.overlay.relayout(true);
@@ -1492,14 +1493,13 @@ var Workspace = new Lang.Class({
         if (!win) {
             // Newly-created windows are added to a workspace before
             // the compositor finds out about them...
-            let id = Mainloop.idle_add(Lang.bind(this,
-                                            function () {
-                                                if (this.actor &&
-                                                    metaWin.get_compositor_private() &&
-                                                    metaWin.get_workspace() == this.metaWorkspace)
-                                                    this._doAddWindow(metaWin);
-                                                return GLib.SOURCE_REMOVE;
-                                            }));
+            let id = Mainloop.idle_add(() => {
+                if (this.actor &&
+                    metaWin.get_compositor_private() &&
+                    metaWin.get_workspace() == this.metaWorkspace)
+                    this._doAddWindow(metaWin);
+                return GLib.SOURCE_REMOVE;
+            });
             GLib.Source.set_name_by_id(id, '[gnome-shell] this._doAddWindow');
             return;
         }
@@ -1839,24 +1839,20 @@ var Workspace = new Lang.Class({
 
         clone.connect('selected',
                       Lang.bind(this, this._onCloneSelected));
-        clone.connect('drag-begin',
-                      Lang.bind(this, function() {
-                          Main.overview.beginWindowDrag(clone.metaWindow);
-                          overlay.hide();
-                      }));
-        clone.connect('drag-cancelled',
-                      Lang.bind(this, function() {
-                          Main.overview.cancelledWindowDrag(clone.metaWindow);
-                      }));
-        clone.connect('drag-end',
-                      Lang.bind(this, function() {
-                          Main.overview.endWindowDrag(clone.metaWindow);
-                          overlay.show();
-                      }));
-        clone.connect('size-changed',
-                      Lang.bind(this, function() {
-                          this._recalculateWindowPositions(WindowPositionFlags.NONE);
-                      }));
+        clone.connect('drag-begin', () => {
+            Main.overview.beginWindowDrag(clone.metaWindow);
+            overlay.hide();
+        });
+        clone.connect('drag-cancelled', () => {
+            Main.overview.cancelledWindowDrag(clone.metaWindow);
+        });
+        clone.connect('drag-end', () => {
+            Main.overview.endWindowDrag(clone.metaWindow);
+            overlay.show();
+        });
+        clone.connect('size-changed', () => {
+            this._recalculateWindowPositions(WindowPositionFlags.NONE);
+        });
 
         this.actor.add_actor(clone.actor);
 

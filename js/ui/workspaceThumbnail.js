@@ -70,12 +70,12 @@ var WindowClone = new Lang.Class({
 
         this.clone._updateId = this.metaWindow.connect('position-changed',
                                                        Lang.bind(this, this._onPositionChanged));
-        this.clone._destroyId = this.realWindow.connect('destroy', Lang.bind(this, function() {
+        this.clone._destroyId = this.realWindow.connect('destroy', () => {
             // First destroy the clone and then destroy everything
             // This will ensure that we never see it in the _disconnectSignals loop
             this.clone.destroy();
             this.destroy();
-        }));
+        });
         this._onPositionChanged();
 
         this.actor.connect('button-release-event',
@@ -94,7 +94,7 @@ var WindowClone = new Lang.Class({
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
 
-        let iter = Lang.bind(this, function(win) {
+        let iter = win => {
             let actor = win.get_compositor_private();
 
             if (!actor)
@@ -106,7 +106,7 @@ var WindowClone = new Lang.Class({
             win.foreach_transient(iter);
 
             return true;
-        });
+        };
         this.metaWindow.foreach_transient(iter);
     },
 
@@ -155,9 +155,9 @@ var WindowClone = new Lang.Class({
 
         clone._updateId = metaDialog.connect('position-changed',
                                              Lang.bind(this, this._updateDialogPosition, clone));
-        clone._destroyId = realDialog.connect('destroy', Lang.bind(this, function() {
+        clone._destroyId = realDialog.connect('destroy', () => {
             clone.destroy();
-        }));
+        });
         this.actor.add_child(clone);
     },
 
@@ -175,7 +175,7 @@ var WindowClone = new Lang.Class({
     },
 
     _disconnectSignals() {
-        this.actor.get_children().forEach(function(child) {
+        this.actor.get_children().forEach(child => {
             let realWindow = child.source;
 
             realWindow.meta_window.disconnect(child._updateId);
@@ -277,10 +277,10 @@ var WorkspaceThumbnail = new Lang.Class({
         let monitor = Main.layoutManager.primaryMonitor;
         this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
 
-        let windows = global.get_window_actors().filter(Lang.bind(this, function(actor) {
+        let windows = global.get_window_actors().filter(actor => {
             let win = actor.meta_window;
             return win.located_on_workspace(metaWorkspace);
-        }));
+        });
 
         // Create clones for windows that should be visible in the Overview
         this._windows = [];
@@ -337,7 +337,11 @@ var WorkspaceThumbnail = new Lang.Class({
     },
 
     syncStacking(stackIndices) {
-        this._windows.sort(function (a, b) { return stackIndices[a.metaWindow.get_stable_sequence()] - stackIndices[b.metaWindow.get_stable_sequence()]; });
+        this._windows.sort((a, b) => {
+            let indexA = stackIndices[a.metaWindow.get_stable_sequence()];
+            let indexB = stackIndices[b.metaWindow.get_stable_sequence()];
+            return indexA - indexB;
+        });
 
         for (let i = 0; i < this._windows.length; i++) {
             let clone = this._windows[i];
@@ -393,14 +397,13 @@ var WorkspaceThumbnail = new Lang.Class({
         if (!win) {
             // Newly-created windows are added to a workspace before
             // the compositor finds out about them...
-            let id = Mainloop.idle_add(Lang.bind(this,
-                                       function () {
-                                            if (!this._removed &&
-                                                metaWin.get_compositor_private() &&
-                                                metaWin.get_workspace() == this.metaWorkspace)
-                                                this._doAddWindow(metaWin);
-                                            return GLib.SOURCE_REMOVE;
-                                        }));
+            let id = Mainloop.idle_add(() => {
+                if (!this._removed &&
+                    metaWin.get_compositor_private() &&
+                    metaWin.get_workspace() == this.metaWorkspace)
+                    this._doAddWindow(metaWin);
+                return GLib.SOURCE_REMOVE;
+            });
             GLib.Source.set_name_by_id(id, '[gnome-shell] this._doAddWindow');
             return;
         }
@@ -523,22 +526,18 @@ var WorkspaceThumbnail = new Lang.Class({
     _addWindowClone (win) {
         let clone = new WindowClone(win);
 
-        clone.connect('selected',
-                      Lang.bind(this, function(clone, time) {
-                          this.activate(time);
-                      }));
-        clone.connect('drag-begin',
-                      Lang.bind(this, function() {
-                          Main.overview.beginWindowDrag(clone.metaWindow);
-                      }));
-        clone.connect('drag-cancelled',
-                      Lang.bind(this, function() {
-                          Main.overview.cancelledWindowDrag(clone.metaWindow);
-                      }));
-        clone.connect('drag-end',
-                      Lang.bind(this, function() {
-                          Main.overview.endWindowDrag(clone.metaWindow);
-                      }));
+        clone.connect('selected', (clone, time) => {
+            this.activate(time);
+        });
+        clone.connect('drag-begin', () => {
+            Main.overview.beginWindowDrag(clone.metaWindow);
+        });
+        clone.connect('drag-cancelled', () => {
+            Main.overview.cancelledWindowDrag(clone.metaWindow);
+        });
+        clone.connect('drag-end', () => {
+            Main.overview.endWindowDrag(clone.metaWindow);
+        });
         this._contents.add_actor(clone.actor);
 
         if (this._windows.length == 0)
@@ -651,7 +650,7 @@ var ThumbnailsBox = new Lang.Class({
 
         this._thumbnails = [];
 
-        this.actor.connect('button-press-event', function() { return Clutter.EVENT_STOP; });
+        this.actor.connect('button-press-event', () => Clutter.EVENT_STOP);
         this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
         this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
 
@@ -677,11 +676,11 @@ var ThumbnailsBox = new Lang.Class({
         this._settings.connect('changed::dynamic-workspaces',
             Lang.bind(this, this._updateSwitcherVisibility));
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, function() {
+        Main.layoutManager.connect('monitors-changed', () => {
             this._destroyThumbnails();
             if (Main.overview.visible)
                 this._createThumbnails();
-        }));
+        });
     },
 
     _updateSwitcherVisibility() {
@@ -910,9 +909,8 @@ var ThumbnailsBox = new Lang.Class({
     },
 
     _workspacesChanged() {
-        let validThumbnails = this._thumbnails.filter(function(t) {
-            return t.state <= ThumbnailState.NORMAL;
-        });
+        let validThumbnails =
+            this._thumbnails.filter(t => t.state <= ThumbnailState.NORMAL);
         let oldNumWorkspaces = validThumbnails.length;
         let newNumWorkspaces = global.screen.n_workspaces;
         let active = global.screen.get_active_workspace_index();
@@ -1043,48 +1041,44 @@ var ThumbnailsBox = new Lang.Class({
             return;
 
         // Then slide out any thumbnails that have been destroyed
-        this._iterateStateThumbnails(ThumbnailState.REMOVING,
-            function(thumbnail) {
-                this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_OUT);
+        this._iterateStateThumbnails(ThumbnailState.REMOVING, thumbnail => {
+            this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_OUT);
 
-                Tweener.addTween(thumbnail,
-                                 { slidePosition: 1,
-                                   time: SLIDE_ANIMATION_TIME,
-                                   transition: 'linear',
-                                   onComplete() {
-                                       this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
-                                       this._queueUpdateStates();
-                                   },
-                                   onCompleteScope: this
-                                 });
-            });
+            Tweener.addTween(thumbnail,
+                             { slidePosition: 1,
+                               time: SLIDE_ANIMATION_TIME,
+                               transition: 'linear',
+                               onComplete: () => {
+                                   this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
+                                   this._queueUpdateStates();
+                               }
+                             });
+        });
 
         // As long as things are sliding out, don't proceed
         if (this._stateCounts[ThumbnailState.ANIMATING_OUT] > 0)
             return;
 
         // Once that's complete, we can start scaling to the new size and collapse any removed thumbnails
-        this._iterateStateThumbnails(ThumbnailState.ANIMATED_OUT,
-            function(thumbnail) {
-                this.actor.set_skip_paint(thumbnail.actor, true);
-                this._setThumbnailState(thumbnail, ThumbnailState.COLLAPSING);
-                Tweener.addTween(thumbnail,
-                                 { collapseFraction: 1,
-                                   time: RESCALE_ANIMATION_TIME,
-                                   transition: 'easeOutQuad',
-                                   onComplete() {
-                                       this._stateCounts[thumbnail.state]--;
-                                       thumbnail.state = ThumbnailState.DESTROYED;
+        this._iterateStateThumbnails(ThumbnailState.ANIMATED_OUT, thumbnail => {
+            this.actor.set_skip_paint(thumbnail.actor, true);
+            this._setThumbnailState(thumbnail, ThumbnailState.COLLAPSING);
+            Tweener.addTween(thumbnail,
+                             { collapseFraction: 1,
+                               time: RESCALE_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: () => {
+                                   this._stateCounts[thumbnail.state]--;
+                                   thumbnail.state = ThumbnailState.DESTROYED;
 
-                                       let index = this._thumbnails.indexOf(thumbnail);
-                                       this._thumbnails.splice(index, 1);
-                                       thumbnail.destroy();
+                                   let index = this._thumbnails.indexOf(thumbnail);
+                                   this._thumbnails.splice(index, 1);
+                                   thumbnail.destroy();
 
-                                       this._queueUpdateStates();
-                                   },
-                                   onCompleteScope: this
-                                 });
-                });
+                                   this._queueUpdateStates();
+                               }
+                             });
+        });
 
         if (this._pendingScaleUpdate) {
             this._tweenScale();
@@ -1096,19 +1090,17 @@ var ThumbnailsBox = new Lang.Class({
             return;
 
         // And then slide in any new thumbnails
-        this._iterateStateThumbnails(ThumbnailState.NEW,
-            function(thumbnail) {
-                this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_IN);
-                Tweener.addTween(thumbnail,
-                                 { slidePosition: 0,
-                                   time: SLIDE_ANIMATION_TIME,
-                                   transition: 'easeOutQuad',
-                                   onComplete() {
-                                       this._setThumbnailState(thumbnail, ThumbnailState.NORMAL);
-                                   },
-                                   onCompleteScope: this
-                                 });
-            });
+        this._iterateStateThumbnails(ThumbnailState.NEW, thumbnail => {
+            this._setThumbnailState(thumbnail, ThumbnailState.ANIMATING_IN);
+            Tweener.addTween(thumbnail,
+                             { slidePosition: 0,
+                               time: SLIDE_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: () => {
+                                   this._setThumbnailState(thumbnail, ThumbnailState.NORMAL);
+                               }
+                             });
+        });
     },
 
     _queueUpdateStates() {
@@ -1235,9 +1227,9 @@ var ThumbnailsBox = new Lang.Class({
         let y = box.y1;
 
         if (this._dropPlaceholderPos == -1) {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._dropPlaceholder.hide();
-            }));
+            });
         }
 
         let childBox = new Clutter.ActorBox();
@@ -1264,9 +1256,9 @@ var ThumbnailsBox = new Lang.Class({
                 childBox.y1 = Math.round(y);
                 childBox.y2 = Math.round(y + placeholderHeight);
                 this._dropPlaceholder.allocate(childBox, flags);
-                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                     this._dropPlaceholder.show();
-                }));
+                });
                 y += placeholderHeight + spacing;
             }
 

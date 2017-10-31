@@ -209,7 +209,7 @@ var InputSourceSystemSettings = new Lang.Class({
                              'GetAll',
                              new GLib.Variant('(s)', [this._BUS_IFACE]),
                              null, Gio.DBusCallFlags.NONE, -1, null,
-                             Lang.bind(this, function(conn, result) {
+                             (conn, result) => {
                                  let props;
                                  try {
                                      props = conn.call_finish(result).deep_unpack()[0];
@@ -231,7 +231,7 @@ var InputSourceSystemSettings = new Lang.Class({
                                      this._options = options;
                                      this._emitKeyboardOptionsChanged();
                                  }
-                             }));
+                             });
     },
 
     get inputSources() {
@@ -485,7 +485,7 @@ var InputSourceManager = new Lang.Class({
         for (let i in this._inputSources)
             sourcesList.push(this._inputSources[i]);
 
-        this._keyboardManager.setUserLayouts(sourcesList.map(function(x) { return x.xkbId; }));
+        this._keyboardManager.setUserLayouts(sourcesList.map(x => x.xkbId));
 
         if (!this._disableIBus && this._mruSourcesBackup) {
             this._mruSources = this._mruSourcesBackup;
@@ -733,9 +733,7 @@ var InputSourceManager = new Lang.Class({
             Main.overview.disconnect(this._overviewHiddenId);
             this._overviewHiddenId = 0;
 
-            let windows = global.get_window_actors().map(function(w) {
-                return w.meta_window;
-            });
+            let windows = global.get_window_actors().map(w => w.meta_window);
             for (let i = 0; i < windows.length; ++i) {
                 delete windows[i]._inputSources;
                 delete windows[i]._currentSource;
@@ -836,16 +834,14 @@ var InputSourceIndicator = new Lang.Class({
             let is = this._inputSourceManager.inputSources[i];
 
             let menuItem = new LayoutMenuItem(is.displayName, is.shortName);
-            menuItem.connect('activate', function() {
-                is.activate(true);
-            });
+            menuItem.connect('activate', () => { is.activate(true); });
 
             let indicatorLabel = new St.Label({ text: is.shortName,
                                                 visible: false });
 
             this._menuItems[i] = menuItem;
             this._indicatorLabels[i] = indicatorLabel;
-            is.connect('changed', function() {
+            is.connect('changed', () => {
                 menuItem.indicator.set_text(is.shortName);
                 indicatorLabel.set_text(is.shortName);
             });
@@ -939,7 +935,7 @@ var InputSourceIndicator = new Lang.Class({
                 item.radioGroup = radioGroup;
                 item.setOrnament(prop.get_state() == IBus.PropState.CHECKED ?
                                  PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
-                item.connect('activate', Lang.bind(this, function() {
+                item.connect('activate', () => {
                     if (item.prop.get_state() == IBus.PropState.CHECKED)
                         return;
 
@@ -957,13 +953,13 @@ var InputSourceIndicator = new Lang.Class({
                                                          IBus.PropState.UNCHECKED);
                         }
                     }
-                }));
+                });
                 break;
 
             case IBus.PropType.TOGGLE:
                 item = new PopupMenu.PopupSwitchMenuItem(prop.get_label().get_text(), prop.get_state() == IBus.PropState.CHECKED);
                 item.prop = prop;
-                item.connect('toggled', Lang.bind(this, function() {
+                item.connect('toggled', () => {
                     if (item.state) {
                         item.prop.set_state(IBus.PropState.CHECKED);
                         ibusManager.activateProperty(item.prop.get_key(),
@@ -973,16 +969,16 @@ var InputSourceIndicator = new Lang.Class({
                         ibusManager.activateProperty(item.prop.get_key(),
                                                      IBus.PropState.UNCHECKED);
                     }
-                }));
+                });
                 break;
 
             case IBus.PropType.NORMAL:
                 item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
                 item.prop = prop;
-                item.connect('activate', Lang.bind(this, function() {
+                item.connect('activate', () => {
                     ibusManager.activateProperty(item.prop.get_key(),
                                                  item.prop.get_state());
-                }));
+                });
                 break;
 
             case IBus.PropType.SEPARATOR:

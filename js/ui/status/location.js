@@ -116,11 +116,11 @@ var Indicator = new Lang.Class({
                                            this._permStoreProxy,
                                            this._getMaxAccuracyLevel());
 
-        authorizer.authorize(Lang.bind(this, function(accuracyLevel) {
+        authorizer.authorize(accuracyLevel => {
             let ret = (accuracyLevel != GeoclueAccuracyLevel.NONE);
             invocation.return_value(GLib.Variant.new('(bu)',
                                                      [ret, accuracyLevel]));
-        }));
+        });
     },
 
     _syncIndicator() {
@@ -331,12 +331,11 @@ var AppAuthorizer = new Lang.Class({
                                              reason,
                                              this.reqAccuracyLevel);
 
-        let responseId = this._dialog.connect('response', Lang.bind(this,
-            function(dialog, level) {
-                this._dialog.disconnect(responseId);
-                this._accuracyLevel = level;
-                this._completeAuth();
-            }));
+        let responseId = this._dialog.connect('response', (dialog, level) => {
+            this._dialog.disconnect(responseId);
+            this._accuracyLevel = level;
+            this._completeAuth();
+        });
 
         this._dialog.open();
     },
@@ -367,7 +366,7 @@ var AppAuthorizer = new Lang.Class({
                                        APP_PERMISSIONS_ID,
                                        this._permissions,
                                        data,
-                                       function (result, error) {
+                                       (result, error) => {
             if (error != null)
                 log(error.message);
         });

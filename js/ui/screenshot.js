@@ -114,9 +114,9 @@ var ScreenshotService = new Lang.Class({
         if (result) {
             if (flash) {
                 let flashspot = new Flashspot(area);
-                flashspot.fire(Lang.bind(this, function() {
+                flashspot.fire(() => {
                     this._removeShooterForSender(invocation.get_sender());
-                }));
+                });
             }
             else
                 this._removeShooterForSender(invocation.get_sender());
@@ -184,18 +184,17 @@ var ScreenshotService = new Lang.Class({
     SelectAreaAsync (params, invocation) {
         let selectArea = new SelectArea();
         selectArea.show();
-        selectArea.connect('finished', Lang.bind(this,
-            function(selectArea, areaRectangle) {
-                if (areaRectangle) {
-                    let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
-                        areaRectangle.width, areaRectangle.height);
-                    let retval = GLib.Variant.new('(iiii)', retRectangle);
-                    invocation.return_value(retval);
-                } else {
-                    invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                        "Operation was cancelled");
-                }
-            }));
+        selectArea.connect('finished', (selectArea, areaRectangle) => {
+            if (areaRectangle) {
+                let retRectangle = this._unscaleArea(areaRectangle.x, areaRectangle.y,
+                    areaRectangle.width, areaRectangle.height);
+                let retval = GLib.Variant.new('(iiii)', retRectangle);
+                invocation.return_value(retval);
+            } else {
+                invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
+                    "Operation was cancelled");
+            }
+        });
     },
 
     FlashAreaAsync(params, invocation) {
@@ -317,10 +316,9 @@ var SelectArea = new Lang.Class({
                          { opacity: 0,
                            time: 0.2,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this,
-                               function() {
-                                   this._grabHelper.ungrab();
-                               })
+                           onComplete: () => {
+                               this._grabHelper.ungrab();
+                           }
                          });
         return Clutter.EVENT_PROPAGATE;
     },
@@ -329,11 +327,10 @@ var SelectArea = new Lang.Class({
         global.screen.set_cursor(Meta.Cursor.DEFAULT);
         this.emit('finished', this._result);
 
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this,
-            function() {
-                this._group.destroy();
-                return GLib.SOURCE_REMOVE;
-            }));
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+            this._group.destroy();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 });
 Signals.addSignalMethods(SelectArea.prototype);
@@ -360,11 +357,11 @@ var Flashspot = new Lang.Class({
                          { opacity: 0,
                            time: FLASHSPOT_ANIMATION_OUT_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
+                           onComplete: () => {
                                if (doneCallback)
                                    doneCallback();
                                this.destroy();
-                           })
+                           }
                          });
     }
 });

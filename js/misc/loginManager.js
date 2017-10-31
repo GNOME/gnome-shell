@@ -125,21 +125,20 @@ var LoginManagerSystemd = new Lang.Class({
             return;
         }
 
-        this._proxy.GetSessionRemote(sessionId, Lang.bind(this,
-            function(result, error) {
-                if (error) {
-                    logError(error, 'Could not get a proxy for the current session');
-                } else {
-                    this._currentSession = new SystemdLoginSession(Gio.DBus.system,
-                                                                   'org.freedesktop.login1',
-                                                                   result[0]);
-                    callback(this._currentSession);
-                }
-            }));
+        this._proxy.GetSessionRemote(sessionId, (result, error) => {
+            if (error) {
+                logError(error, 'Could not get a proxy for the current session');
+            } else {
+                this._currentSession = new SystemdLoginSession(Gio.DBus.system,
+                                                               'org.freedesktop.login1',
+                                                               result[0]);
+                callback(this._currentSession);
+            }
+        });
     },
 
     canSuspend(asyncCallback) {
-        this._proxy.CanSuspendRemote(function(result, error) {
+        this._proxy.CanSuspendRemote((result, error) => {
             if (error) {
                 asyncCallback(false, false);
             } else {
@@ -151,7 +150,7 @@ var LoginManagerSystemd = new Lang.Class({
     },
 
     listSessions(asyncCallback) {
-        this._proxy.ListSessionsRemote(function(result, error) {
+        this._proxy.ListSessionsRemote((result, error) => {
             if (error)
                 asyncCallback([]);
             else
@@ -170,7 +169,7 @@ var LoginManagerSystemd = new Lang.Class({
                                           reason,
                                           'delay']);
         this._proxy.call_with_unix_fd_list('Inhibit', inVariant, 0, -1, null, null,
-            Lang.bind(this, function(proxy, result) {
+            (proxy, result) => {
                 let fd = -1;
                 try {
                     let [outVariant, fdList] = proxy.call_with_unix_fd_list_finish(result);
@@ -180,7 +179,7 @@ var LoginManagerSystemd = new Lang.Class({
                     logError(e, "Error getting systemd inhibitor");
                     callback(null);
                 }
-            }));
+            });
     },
 
     _prepareForSleep(proxy, sender, [aboutToSuspend]) {

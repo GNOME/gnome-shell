@@ -189,19 +189,19 @@ var LanguageSelectionPopup = new Lang.Class({
         for (let i in inputSources) {
             let is = inputSources[i];
 
-            this.addAction(is.displayName, Lang.bind(this, () => {
+            this.addAction(is.displayName, () => {
                 inputSourceManager.activateInputSource(is, true);
-            }));
+            });
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.addAction(_("Region & Language Settings"), Lang.bind(this, this._launchSettings));
         this._capturedEventId = 0;
 
-        this._unmapId = actor.connect('notify::mapped', Lang.bind(this, function() {
+        this._unmapId = actor.connect('notify::mapped', () => {
             if (!actor.is_mapped())
                 this.close(true);
-        }));
+        });
     },
 
     _launchSettings() {
@@ -301,7 +301,7 @@ var Key = new Lang.Class({
         } else if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                     KEY_LONG_PRESS_TIME,
-                                                    Lang.bind(this, function() {
+                                                    () => {
                                                         this.actor.set_hover(false);
                                                         this.actor.fake_release();
                                                         this._pressTimeoutId = 0;
@@ -309,7 +309,7 @@ var Key = new Lang.Class({
                                                         this._ensureExtendedKeysPopup();
                                                         this._showSubkeys();
                                                         return GLib.SOURCE_REMOVE;
-                                                    }));
+                                                    });
         }
     },
 
@@ -345,10 +345,10 @@ var Key = new Lang.Class({
         this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
         this._capturedEventId = global.stage.connect('captured-event',
                                                      Lang.bind(this, this._onCapturedEvent));
-        this._unmapId = this.actor.connect('notify::mapped', Lang.bind(this, function() {
+        this._unmapId = this.actor.connect('notify::mapped', () => {
             if (!this.actor.is_mapped())
                 this._hideSubkeys();
-        }));
+        });
     },
 
     _hideSubkeys() {
@@ -371,45 +371,42 @@ var Key = new Lang.Class({
                                       style_class: 'keyboard-key' });
 
         button.keyWidth = 1;
-        button.connect('button-press-event', Lang.bind(this,
-            function () {
+        button.connect('button-press-event', () => {
+            this._press(key);
+            return Clutter.EVENT_PROPAGATE;
+        });
+        button.connect('button-release-event', () => {
+            this._release(key);
+            return Clutter.EVENT_PROPAGATE;
+        });
+        button.connect('touch-event', (actor, event) => {
+            let device = event.get_device();
+            let sequence = event.get_event_sequence();
+
+            // We only handle touch events here on wayland. On X11
+            // we do get emulated pointer events, which already works
+            // for single-touch cases. Besides, the X11 passive touch grab
+            // set up by Mutter will make us see first the touch events
+            // and later the pointer events, so it will look like two
+            // unrelated series of events, we want to avoid double handling
+            // in these cases.
+            if (!Meta.is_wayland_compositor())
+                return Clutter.EVENT_PROPAGATE;
+
+            if (!this._touchPressed &&
+                event.type() == Clutter.EventType.TOUCH_BEGIN) {
+                device.sequence_grab(sequence, actor);
+                this._touchPressed = true;
                 this._press(key);
-                return Clutter.EVENT_PROPAGATE;
-            }));
-        button.connect('button-release-event', Lang.bind(this,
-            function () {
+            } else if (this._touchPressed &&
+                       event.type() == Clutter.EventType.TOUCH_END &&
+                       device.sequence_get_grabbed_actor(sequence) == actor) {
+                device.sequence_ungrab(sequence);
+                this._touchPressed = false;
                 this._release(key);
-                return Clutter.EVENT_PROPAGATE;
-            }));
-        button.connect('touch-event', Lang.bind(this,
-            function (actor, event) {
-                let device = event.get_device();
-                let sequence = event.get_event_sequence();
-
-                // We only handle touch events here on wayland. On X11
-                // we do get emulated pointer events, which already works
-                // for single-touch cases. Besides, the X11 passive touch grab
-                // set up by Mutter will make us see first the touch events
-                // and later the pointer events, so it will look like two
-                // unrelated series of events, we want to avoid double handling
-                // in these cases.
-                if (!Meta.is_wayland_compositor())
-                    return Clutter.EVENT_PROPAGATE;
-
-                if (!this._touchPressed &&
-                    event.type() == Clutter.EventType.TOUCH_BEGIN) {
-                    device.sequence_grab(sequence, actor);
-                    this._touchPressed = true;
-                    this._press(key);
-                } else if (this._touchPressed &&
-                           event.type() == Clutter.EventType.TOUCH_END &&
-                           device.sequence_get_grabbed_actor(sequence) == actor) {
-                    device.sequence_ungrab(sequence);
-                    this._touchPressed = false;
-                    this._release(key);
-                }
-                return Clutter.EVENT_PROPAGATE;
-            }));
+            }
+            return Clutter.EVENT_PROPAGATE;
+        });
 
         return button;
     },
@@ -492,8 +489,8 @@ var Keyboard = new Lang.Class({
         this._lastDeviceId = null;
         this._suggestions = null;
 
-        Meta.get_backend().connect('last-device-changed', Lang.bind(this,
-            function (backend, deviceId) {
+        Meta.get_backend().connect('last-device-changed', 
+            (backend, deviceId) => {
                 let manager = Clutter.DeviceManager.get_default();
                 let device = manager.get_device(deviceId);
 
@@ -501,26 +498,26 @@ var Keyboard = new Lang.Class({
                     this._lastDeviceId = deviceId;
                     this._syncEnabled();
                 }
-            }));
+            });
         this._syncEnabled();
 
         this._showIdleId = 0;
 
         this._keyboardVisible = false;
-        Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, function(o, visible) {
+        Main.layoutManager.connect('keyboard-visible-changed', (o, visible) => {
             this._keyboardVisible = visible;
-        }));
+        });
         this._keyboardRequested = false;
         this._keyboardRestingId = 0;
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
-        //Main.inputMethod.connect('cursor-location-changed', Lang.bind(this, function(o, rect) {
+        //Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
         //    if (this._keyboardVisible) {
         //        let currentWindow = global.screen.get_display().focus_window;
         //        this.setCursorLocation(currentWindow, rect.get_x(), rect.get_y(),
         //                               rect.get_width(), rect.get_height());
         //    }
-        //}));
+        //});
     },
 
     get visible() {
@@ -547,7 +544,7 @@ var Keyboard = new Lang.Class({
             GLib.source_remove(this._updateCaretPositionId);
         if (!this._keyboardRequested)
             return;
-        this._updateCaretPositionId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, Lang.bind(this, function() {
+        this._updateCaretPositionId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             this._updateCaretPositionId = 0;
 
             let currentWindow = global.screen.get_display().focus_window;
@@ -574,7 +571,7 @@ var Keyboard = new Lang.Class({
             }
 
             return GLib.SOURCE_REMOVE;
-        }));
+        });
 
         GLib.Source.set_name_by_id(this._updateCaretPositionId, '[gnome-shell] this._updateCaretPosition');
     },
@@ -673,9 +670,9 @@ var Keyboard = new Lang.Class({
         this._current_page = null;
 
         this._suggestions = new Suggestions();
-        this._suggestions.connect('suggestion-clicked', Lang.bind(this, function(suggestions, str) {
+        this._suggestions.connect('suggestion-clicked', (suggestions, str) => {
             this._keyboardController.commitString(str);
-        }));
+        });
         this.actor.add(this._suggestions.actor,
                        { x_align: St.Align.MIDDLE,
                          x_fill: false });
@@ -713,11 +710,10 @@ var Keyboard = new Lang.Class({
         }
 
         if (!this._showIdleId) {
-          this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE,
-                                           Lang.bind(this, function() {
-                                               this.show(Main.layoutManager.focusIndex);
-                                               return GLib.SOURCE_REMOVE;
-                                           }));
+          this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+              this.show(Main.layoutManager.focusIndex);
+              return GLib.SOURCE_REMOVE;
+          });
           GLib.Source.set_name_by_id(this._showIdleId, '[gnome-shell] this.show');
         }
     },
@@ -759,7 +755,7 @@ var Keyboard = new Lang.Class({
             if (button.key == ' ')
                 button.setWidth(keys.length <= 3 ? 5 : 3);
 
-            button.connect('pressed', Lang.bind(this, function(actor, keyval, str) {
+            button.connect('pressed', (actor, keyval, str) => {
                 if (!Main.inputMethod.currentFocus ||
                     !this._keyboardController.commitString(str, true)) {
                     if (keyval != 0) {
@@ -767,14 +763,14 @@ var Keyboard = new Lang.Class({
                         button._keyvalPress = true;
                     }
                 }
-            }));
-            button.connect('released', Lang.bind(this, function(actor, keyval, str) {
+            });
+            button.connect('released', (actor, keyval, str) => {
                 if (keyval != 0) {
                     if (button._keyvalPress)
                         this._keyboardController.keyvalRelease(keyval);
                     button._keyvalPress = false;
                 }
-            }));
+            });
 
             layout.appendKey(button.container, button.actor.keyWidth);
         }
@@ -807,20 +803,20 @@ var Keyboard = new Lang.Class({
 
             let actor = extraButton.actor;
 
-            extraButton.connect('released', Lang.bind(this, function() {
+            extraButton.connect('released', () => {
                 if (switchToLevel != null)
                     this._onLevelChanged(switchToLevel);
                 else if (keyval != null)
                     this._keyboardController.keyvalPress(keyval);
-            }));
-            extraButton.connect('released', Lang.bind(this, function() {
+            });
+            extraButton.connect('released', () => {
                 if (keyval != null)
                     this._keyboardController.keyvalRelease(keyval);
                 else if (action == 'hide')
                     this.hide();
                 else if (action == 'languageMenu')
                     this._popupLanguageMenu(actor);
-            }));
+            });
 
             /* Fixup default keys based on the number of levels/keys */
             if (key.label == '⇧' && numLevels == 3) {
@@ -976,11 +972,11 @@ var Keyboard = new Lang.Class({
         this._clearKeyboardRestTimer();
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                    KEYBOARD_REST_TIME,
-                                                   Lang.bind(this, function() {
+                                                   () => {
                                                        this._clearKeyboardRestTimer();
                                                        this._show(monitor);
                                                        return GLib.SOURCE_REMOVE;
-                                                   }));
+                                                   });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     },
 
@@ -1008,11 +1004,11 @@ var Keyboard = new Lang.Class({
         this._clearKeyboardRestTimer();
         this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                    KEYBOARD_REST_TIME,
-                                                   Lang.bind(this, function() {
+                                                   () => {
                                                        this._clearKeyboardRestTimer();
                                                        this._hide();
                                                        return GLib.SOURCE_REMOVE;
-                                                   }));
+                                                   });
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     },
 
@@ -1134,7 +1130,9 @@ var KeyboardController = new Lang.Class({
 
         Main.inputMethod.connect('notify::content-purpose', Lang.bind(this, this._onContentPurposeHintsChanged));
         Main.inputMethod.connect('notify::content-hints', Lang.bind(this, this._onContentPurposeHintsChanged));
-        Main.inputMethod.connect('input-panel-state', Lang.bind(this, function(o, state) { this.emit('panel-state', state); }));
+        Main.inputMethod.connect('input-panel-state', (o, state) => {
+            this.emit('panel-state', state);
+        });
     },
 
     _onSourcesModified() {

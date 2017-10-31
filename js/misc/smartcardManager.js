@@ -43,15 +43,15 @@ var SmartcardManager = new Lang.Class({
         for (let i = 0; i < tokens.length; i++)
             this._addToken(tokens[i]);
 
-        this._objectManager.connect('interface-added', Lang.bind(this, function(objectManager, interfaceName, proxy) {
+        this._objectManager.connect('interface-added', (objectManager, interfaceName, proxy) => {
             if (interfaceName == 'org.gnome.SettingsDaemon.Smartcard.Token')
                 this._addToken(proxy);
-        }));
+        });
 
-        this._objectManager.connect('interface-removed', Lang.bind(this, function(objectManager, interfaceName, proxy) {
+        this._objectManager.connect('interface-removed', (objectManager, interfaceName, proxy) => {
             if (interfaceName == 'org.gnome.SettingsDaemon.Smartcard.Token')
                 this._removeToken(proxy);
-        }));
+        });
     },
 
     _updateToken(token) {
@@ -69,18 +69,17 @@ var SmartcardManager = new Lang.Class({
     _addToken(token) {
         this._updateToken(token);
 
-        token.connect('g-properties-changed',
-                      Lang.bind(this, function(proxy, properties) {
-                          if ('IsInserted' in properties.deep_unpack()) {
-                              this._updateToken(token);
+        token.connect('g-properties-changed', (proxy, properties) => {
+            if ('IsInserted' in properties.deep_unpack()) {
+                this._updateToken(token);
 
-                              if (token.IsInserted) {
-                                  this.emit('smartcard-inserted', token);
-                              } else {
-                                  this.emit('smartcard-removed', token);
-                              }
-                          }
-                      }));
+                if (token.IsInserted) {
+                    this.emit('smartcard-inserted', token);
+                } else {
+                    this.emit('smartcard-removed', token);
+                }
+            }
+        });
 
         // Emit a smartcard-inserted at startup if it's already plugged in
         if (token.IsInserted)

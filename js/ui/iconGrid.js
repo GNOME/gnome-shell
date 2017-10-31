@@ -321,11 +321,7 @@ var IconGrid = new Lang.Class({
     },
 
     _getVisibleChildren() {
-        let children = this._grid.get_children();
-        children = children.filter(function(actor) {
-            return actor.visible;
-        });
-        return children;
+        return this._grid.get_children().filter(actor => actor.visible);
     },
 
     _getPreferredHeight (grid, forWidth, alloc) {
@@ -462,19 +458,19 @@ var IconGrid = new Lang.Class({
                               delay: delay,
                               scale_x: ANIMATION_BOUNCE_ICON_SCALE,
                               scale_y: ANIMATION_BOUNCE_ICON_SCALE,
-                              onComplete: Lang.bind(this, function() {
+                              onComplete: () => {
                                   Tweener.addTween(actor,
                                                    { time: ANIMATION_TIME_IN - bounceUpTime,
                                                      transition: 'easeInOutQuad',
                                                      scale_x: 1,
                                                      scale_y: 1,
-                                                     onComplete: Lang.bind(this, function() {
+                                                     onComplete: () => {
                                                         if (isLastItem)
                                                             this._animationDone();
                                                         actor.reactive = true;
-                                                    })
+                                                    }
                                                    });
-                              })
+                              }
                             });
         }
     },
@@ -495,15 +491,15 @@ var IconGrid = new Lang.Class({
         // Design decision, 1/2 of the source actor size.
         let [sourceScaledWidth, sourceScaledHeight] = [sourceWidth / 2, sourceHeight / 2];
 
-        actors.forEach(function(actor) {
+        actors.forEach(actor => {
             let [actorX, actorY] = actor._transformedPosition = actor.get_transformed_position();
             let [x, y] = [actorX - sourceX, actorY - sourceY];
             actor._distance = Math.sqrt(x * x + y * y);
         });
-        let maxDist = actors.reduce(function(prev, cur) {
+        let maxDist = actors.reduce((prev, cur) => {
             return Math.max(prev, cur._distance);
         }, 0);
-        let minDist = actors.reduce(function(prev, cur) {
+        let minDist = actors.reduce((prev, cur) => {
             return Math.min(prev, cur._distance);
         }, Infinity);
         let normalization = maxDist - minDist;
@@ -541,14 +537,14 @@ var IconGrid = new Lang.Class({
                                    y: finalY,
                                    scale_x: 1,
                                    scale_y: 1,
-                                   onComplete: Lang.bind(this, function() {
+                                   onComplete: () => {
                                        if (isLastItem)
                                            this._animationDone();
 
                                        actor.opacity = 255;
                                        actor.reactive = true;
                                        actorClone.destroy();
-                                   })};
+                                   }};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                                transition: 'easeInOutQuad',
                                delay: delay,
@@ -567,14 +563,14 @@ var IconGrid = new Lang.Class({
                                    y: adjustedSourcePositionY,
                                    scale_x: scaleX,
                                    scale_y: scaleY,
-                                   onComplete: Lang.bind(this, function() {
+                                   onComplete: () => {
                                        if (isLastItem) {
                                            this._animationDone();
                                            this._restoreItemsOpacity();
                                        }
                                        actor.reactive = true;
                                        actorClone.destroy();
-                                   })};
+                                   }};
                 fadeParams = { time: ANIMATION_FADE_IN_TIME_FOR_ITEM,
                                transition: 'easeInOutQuad',
                                delay: ANIMATION_TIME_OUT + delay - ANIMATION_FADE_IN_TIME_FOR_ITEM,
@@ -1000,10 +996,7 @@ var PaginatedIconGrid = new Lang.Class({
                            transition: 'easeInOutQuad'
                          };
             if (i == (children.length - 1))
-                params.onComplete = Lang.bind(this,
-                    function() {
-                        this.emit('space-opened');
-                    });
+                params.onComplete = () => { this.emit('space-opened'); };
             Tweener.addTween(children[i], params);
         }
     },
@@ -1021,10 +1014,7 @@ var PaginatedIconGrid = new Lang.Class({
                              { translation_y: 0,
                                time: EXTRA_SPACE_ANIMATION_TIME,
                                transition: 'easeInOutQuad',
-                               onComplete: Lang.bind(this,
-                                   function() {
-                                       this.emit('space-closed');
-                                   })
+                               onComplete: () => { this.emit('space-closed'); }
                              });
         }
     }

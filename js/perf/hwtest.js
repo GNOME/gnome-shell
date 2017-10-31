@@ -42,35 +42,29 @@ function waitAndDraw(milliseconds) {
     let timeline = new Clutter.Timeline({ duration: milliseconds });
     timeline.start();
 
-    timeline.connect('new-frame',
-        function(timeline, frame) {
-            global.stage.queue_redraw();
-        });
+    timeline.connect('new-frame', (timeline, frame) => {
+        global.stage.queue_redraw();
+    });
 
-    timeline.connect('completed',
-        function() {
-            timeline.stop();
-            if (cb)
-                cb();
-        });
+    timeline.connect('completed', () => {
+        timeline.stop();
+        if (cb)
+            cb();
+    });
 
-    return function(callback) {
-        cb = callback;
-    };
+    return callback => { cb = callback; };
 }
 
 function waitSignal(object, signal) {
     let cb;
 
-    let id = object.connect(signal, function() {
+    let id = object.connect(signal, () => {
         object.disconnect(id);
         if (cb)
             cb();
     });
 
-    return function(callback) {
-        cb = callback;
-    };
+    return callback => { cb = callback; };
 }
 
 function extractBootTimestamp() {
@@ -270,7 +264,7 @@ function script_redrawTestDone(time) {
 function script_collectTimings(time) {
     for (let timing in redrawTimes) {
         let times = redrawTimes[timing];
-        times.sort(function(a, b) { return a - b });
+        times.sort((a, b) => a - b);
 
         let len = times.length;
         let median;

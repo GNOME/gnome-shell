@@ -53,7 +53,9 @@ var AUTO_COMPLETE_GLOBAL_KEYWORDS = _getAutoCompleteGlobalKeywords();
 function _getAutoCompleteGlobalKeywords() {
     const keywords = ['true', 'false', 'null', 'new'];
     // Don't add the private properties of window (i.e., ones starting with '_')
-    const windowProperties = Object.getOwnPropertyNames(window).filter(function(a){ return a.charAt(0) != '_' });
+    const windowProperties = Object.getOwnPropertyNames(window).filter(
+        a => a.charAt(0) != '_'
+    );
     const headerProperties = JsParse.getDeclaredConstants(commandHeader);
 
     return keywords.concat(windowProperties).concat(headerProperties);
@@ -142,10 +144,10 @@ var Notebook = new Lang.Class({
                                           reactive: true,
                                           track_hover: true });
         let label = new St.Button({ label: name });
-        label.connect('clicked', Lang.bind(this, function () {
+        label.connect('clicked', () => {
             this.selectChild(child);
             return true;
-        }));
+        });
         labelBox.add(label, { expand: true });
         this.tabControls.add(labelBox);
 
@@ -163,8 +165,8 @@ var Notebook = new Lang.Class({
         this.actor.add(scrollview, { expand: true });
 
         let vAdjust = scrollview.vscroll.adjustment;
-        vAdjust.connect('changed', Lang.bind(this, function () { this._onAdjustScopeChanged(tabData); }));
-        vAdjust.connect('notify::value', Lang.bind(this, function() { this._onAdjustValueChanged(tabData); }));
+        vAdjust.connect('changed', () => { this._onAdjustScopeChanged(tabData); });
+        vAdjust.connect('notify::value', () => { this._onAdjustValueChanged(tabData); });
 
         if (this._selectedIndex == -1)
             this.selectIndex(0);
@@ -821,34 +823,34 @@ var LookingGlass = new Lang.Class({
                                         icon_size: 24 });
         toolbar.add_actor(inspectIcon);
         inspectIcon.reactive = true;
-        inspectIcon.connect('button-press-event', Lang.bind(this, function () {
+        inspectIcon.connect('button-press-event', () => {
             let inspector = new Inspector(this);
-            inspector.connect('target', Lang.bind(this, function(i, target, stageX, stageY) {
+            inspector.connect('target', (i, target, stageX, stageY) => {
                 this._pushResult('inspect(' + Math.round(stageX) + ', ' + Math.round(stageY) + ')', target);
-            }));
-            inspector.connect('closed', Lang.bind(this, function() {
+            });
+            inspector.connect('closed', () => {
                 this.actor.show();
                 global.stage.set_key_focus(this._entry);
-            }));
+            });
             this.actor.hide();
             return Clutter.EVENT_STOP;
-        }));
+        });
 
         let gcIcon = new St.Icon({ icon_name: 'user-trash-full',
                                    icon_size: 24 });
         toolbar.add_actor(gcIcon);
         gcIcon.reactive = true;
-        gcIcon.connect('button-press-event', Lang.bind(this, function () {
+        gcIcon.connect('button-press-event', () => {
            gcIcon.icon_name = 'user-trash';
            System.gc();
-           this._timeoutId = Mainloop.timeout_add(500, Lang.bind(this, function () {
+           this._timeoutId = Mainloop.timeout_add(500, () => {
                 gcIcon.icon_name = 'user-trash-full';
                 this._timeoutId = 0;
                 return GLib.SOURCE_REMOVE;
-           }));
+           });
            GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] gcIcon.icon_name = \'user-trash-full\'');
            return Clutter.EVENT_PROPAGATE;
-        }));
+        });
 
         let notebook = new Notebook();
         this._notebook = notebook;
@@ -880,7 +882,7 @@ var LookingGlass = new Lang.Class({
         this._extensions = new Extensions(this);
         notebook.appendPage('Extensions', this._extensions.actor);
 
-        this._entry.clutter_text.connect('activate', Lang.bind(this, function (o, e) {
+        this._entry.clutter_text.connect('activate', (o, e) => {
             // Hide any completions we are currently showing
             this._hideCompletions();
 
@@ -894,21 +896,21 @@ var LookingGlass = new Lang.Class({
                 return true;
             this._evaluate(text);
             return true;
-        }));
+        });
 
         this._history = new History.HistoryManager({ gsettingsKey: HISTORY_KEY, 
                                                      entry: this._entry.clutter_text });
 
         this._autoComplete = new AutoComplete(this._entry);
-        this._autoComplete.connect('suggest', Lang.bind(this, function(a,e) {
+        this._autoComplete.connect('suggest', (a, e) => {
             this._showCompletions(e.completions);
-        }));
+        });
         // If a completion is completed unambiguously, the currently-displayed completion
         // suggestions become irrelevant.
-        this._autoComplete.connect('completion', Lang.bind(this, function(a,e) {
+        this._autoComplete.connect('completion', (a, e) => {
             if (e.type == 'whole-word')
                 this._hideCompletions();
-        }));
+        });
 
         this._resize();
     },
@@ -987,9 +989,9 @@ var LookingGlass = new Lang.Class({
                                                       transition: 'easeOutQuad',
                                                       height: 0,
                                                       opacity: 0,
-                                                      onComplete: Lang.bind(this, function () {
+                                                      onComplete: () => {
                                                           this._completionActor.hide();
-                                                      })
+                                                      }
                                                     });
         }
     },
@@ -1030,8 +1032,7 @@ var LookingGlass = new Lang.Class({
     },
 
     _queueResize() {
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                       Lang.bind(this, function () { this._resize(); }));
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => { this._resize(); });
     },
 
     _resize() {
@@ -1120,9 +1121,9 @@ var LookingGlass = new Lang.Class({
         Tweener.addTween(this.actor, { time: Math.min(0.5 / St.get_slow_down_factor(), 0.5),
                                        transition: 'easeOutQuad',
                                        y: this._hiddenY,
-                                       onComplete: Lang.bind(this, function () {
+                                       onComplete: () => {
                                            this.actor.hide();
-                                       })
+                                       }
                                      });
     }
 });

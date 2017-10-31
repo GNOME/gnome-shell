@@ -101,16 +101,18 @@ var MonitorConstraint = new Lang.Class({
     vfunc_set_actor(actor) {
         if (actor) {
             if (!this._monitorsChangedId) {
-                this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', Lang.bind(this, function() {
-                    this.actor.queue_relayout();
-                }));
+                this._monitorsChangedId =
+                    Main.layoutManager.connect('monitors-changed', () => {
+                        this.actor.queue_relayout();
+                    });
             }
 
             if (!this._workareasChangedId) {
-                this._workareasChangedId = global.screen.connect('workareas-changed', Lang.bind(this, function() {
-                    if (this._workArea)
-                        this.actor.queue_relayout();
-                }));
+                this._workareasChangedId =
+                    global.screen.connect('workareas-changed', () => {
+                        if (this._workArea)
+                            this.actor.queue_relayout();
+                    });
             }
         } else {
             if (this._monitorsChangedId)
@@ -201,22 +203,19 @@ var LayoutManager = new Lang.Class({
 
         // Set up stage hierarchy to group all UI actors under one container.
         this.uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
-        this.uiGroup.connect('allocate',
-                        function (actor, box, flags) {
-                            let children = actor.get_children();
-                            for (let i = 0; i < children.length; i++)
-                                children[i].allocate_preferred_size(flags);
-                        });
-        this.uiGroup.connect('get-preferred-width',
-                        function(actor, forHeight, alloc) {
-                            let width = global.stage.width;
-                            [alloc.min_size, alloc.natural_size] = [width, width];
-                        });
-        this.uiGroup.connect('get-preferred-height',
-                        function(actor, forWidth, alloc) {
-                            let height = global.stage.height;
-                            [alloc.min_size, alloc.natural_size] = [height, height];
-                        });
+        this.uiGroup.connect('allocate', (actor, box, flags) => {
+            let children = actor.get_children();
+            for (let i = 0; i < children.length; i++)
+                children[i].allocate_preferred_size(flags);
+        });
+        this.uiGroup.connect('get-preferred-width', (actor, forHeight, alloc) => {
+            let width = global.stage.width;
+            [alloc.min_size, alloc.natural_size] = [width, width];
+        });
+        this.uiGroup.connect('get-preferred-height', (actor, forWidth, alloc) => {
+            let height = global.stage.height;
+            [alloc.min_size, alloc.natural_size] = [height, height];
+        });
 
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
@@ -285,11 +284,11 @@ var LayoutManager = new Lang.Class({
         // https://bugzilla.gnome.org/show_bug.cgi?id=739178
         if (Shell.util_need_background_refresh()) {
             LoginManager.getLoginManager().connect('prepare-for-sleep',
-                                                   function(lm, suspending) {
-                                                       if (suspending)
-                                                           return;
-                                                       Meta.Background.refresh_all();
-                                                   });
+                (lm, suspending) => {
+                    if (suspending)
+                        return;
+                    Meta.Background.refresh_all();
+                });
         }
     },
 
@@ -359,7 +358,7 @@ var LayoutManager = new Lang.Class({
 
     _updateHotCorners() {
         // destroy old hot corners
-        this.hotCorners.forEach(function(corner) {
+        this.hotCorners.forEach(corner => {
             if (corner)
                 corner.destroy();
         });
@@ -487,7 +486,7 @@ var LayoutManager = new Lang.Class({
         this._updatePanelBarrier();
 
         let size = this.panelBox.height;
-        this.hotCorners.forEach(function(corner) {
+        this.hotCorners.forEach(corner => {
             if (corner)
                 corner.setBarrierSize(size);
         });
@@ -584,13 +583,13 @@ var LayoutManager = new Lang.Class({
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this._systemBackground.actor.add_constraint(constraint);
 
-        let signalId = this._systemBackground.connect('loaded', Lang.bind(this, function() {
+        let signalId = this._systemBackground.connect('loaded', () => {
             this._systemBackground.disconnect(signalId);
             this._systemBackground.actor.show();
             global.stage.show();
 
             this._prepareStartupAnimation();
-        }));
+        });
     },
 
     // Startup Animations
@@ -652,10 +651,10 @@ var LayoutManager = new Lang.Class({
         // until the event loop is uncontended and idle.
         // This helps to prevent us from running the animation
         // when the system is bogged down
-        let id = GLib.idle_add(GLib.PRIORITY_LOW, Lang.bind(this, function() {
+        let id = GLib.idle_add(GLib.PRIORITY_LOW, () => {
             this._startupAnimation();
             return GLib.SOURCE_REMOVE;
-        }));
+        });
         GLib.Source.set_name_by_id(id, '[gnome-shell] this._startupAnimation');
     },
 
@@ -727,9 +726,9 @@ var LayoutManager = new Lang.Class({
         // anchor point changes
         this._updateRegions();
 
-        this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', Lang.bind(this, function () {
+        this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', () => {
             this.keyboardBox.anchor_y = this.keyboardBox.height;
-        }));
+        });
     },
 
     hideKeyboard (immediate) {
@@ -940,7 +939,7 @@ var LayoutManager = new Lang.Class({
     },
 
     _getWindowActorsForWorkspace(workspace) {
-        return global.get_window_actors().filter(function (actor) {
+        return global.get_window_actors().filter(actor => {
             let win = actor.meta_window;
             return win.located_on_workspace(workspace);
         });
@@ -1359,7 +1358,7 @@ var PressureBarrier = new Lang.Class({
 
     _onBarrierLeft(barrier, event) {
         barrier._isHit = false;
-        if (this._barriers.every(function(b) { return !b._isHit; })) {
+        if (this._barriers.every(b => !b._isHit)) {
             this._reset();
             this._isTriggered = false;
         }

@@ -337,10 +337,10 @@ var AppSwitcherPopup = new Lang.Class({
                          { opacity: 0,
                            time: THUMBNAIL_FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
-                                                            thumbnailsActor.destroy();
-                                                            this.thumbnailsVisible = false;
-                                                        })
+                           onComplete: () => {
+                               thumbnailsActor.destroy();
+                               this.thumbnailsVisible = false;
+                           }
                          });
         this._thumbnails = null;
         this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
@@ -362,7 +362,7 @@ var AppSwitcherPopup = new Lang.Class({
                          { opacity: 255,
                            time: THUMBNAIL_FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function () { this.thumbnailsVisible = true; })
+                           onComplete: () => { this.thumbnailsVisible = true; }
                          });
 
         this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
@@ -627,9 +627,9 @@ var AppSwitcher = new Lang.Class({
             let appIcon = new AppIcon(apps[i]);
             // Cache the window list now; we don't handle dynamic changes here,
             // and we don't want to be continually retrieving it
-            appIcon.cachedWindows = allWindows.filter(function(w) {
-                return windowTracker.get_window_app (w) == appIcon.app;
-            });
+            appIcon.cachedWindows = allWindows.filter(
+                w => windowTracker.get_window_app (w) == appIcon.app
+            );
             if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
         }
@@ -666,9 +666,7 @@ var AppSwitcher = new Lang.Class({
         let availWidth = primary.width - parentPadding - this.actor.get_theme_node().get_horizontal_padding();
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let iconSizes = baseIconSizes.map(function(s) {
-            return s * scaleFactor;
-        });
+        let iconSizes = baseIconSizes.map(s => s * scaleFactor);
 
         if (this._items.length == 1) {
             this._iconSize = baseIconSizes[0];
@@ -720,11 +718,11 @@ var AppSwitcher = new Lang.Class({
             Mainloop.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
             this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
-                                                        Lang.bind(this, function () {
-                                                                            this._enterItem(index);
-                                                                            this._mouseTimeOutId = 0;
-                                                                            return GLib.SOURCE_REMOVE;
-                                                        }));
+                                                        () => {
+                                                            this._enterItem(index);
+                                                            this._mouseTimeOutId = 0;
+                                                            return GLib.SOURCE_REMOVE;
+                                                        });
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
         } else
            this._itemEntered(index);
@@ -769,7 +767,7 @@ var AppSwitcher = new Lang.Class({
 
         let n = this._arrows.length;
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
-        arrow.connect('repaint', function() { SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM); });
+        arrow.connect('repaint', () => { SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM); });
         this._list.add_actor(arrow);
         this._arrows.push(arrow);
 
