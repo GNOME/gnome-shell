@@ -102,9 +102,7 @@ endif
 
 nm_deps = []
 if get_option('networkmanager')
-  nm_deps += dependency('libnm-glib', version: nm_req)
-  nm_deps += dependency('libnm-util', version: nm_req)
-  nm_deps += dependency('libnm-gtk', version: nm_req)
+  nm_deps += dependency('libnm', version: nm_req)
   nm_deps += dependency('libsecret-1', version: secret_req)
 
   have_networkmanager = true

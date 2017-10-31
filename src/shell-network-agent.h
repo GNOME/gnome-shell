@@ -4,8 +4,8 @@
 
 #include <glib-object.h>
 #include <glib.h>
-#include <nm-connection.h>
-#include <nm-secret-agent.h>
+#include <NetworkManager.h>
+#include <nm-secret-agent-old.h>
 
 G_BEGIN_DECLS
 
@@ -29,7 +29,7 @@ typedef struct _ShellNetworkAgentPrivate  ShellNetworkAgentPrivate;
 struct _ShellNetworkAgent
 {
   /*< private >*/
-  NMSecretAgent parent_instance;
+  NMSecretAgentOld parent_instance;
 
   ShellNetworkAgentPrivate *priv;
 };
@@ -37,7 +37,7 @@ struct _ShellNetworkAgent
 struct _ShellNetworkAgentClass
 {
   /*< private >*/
-  NMSecretAgentClass parent_class;
+  NMSecretAgentOldClass parent_class;
 };
 
 /* used by SHELL_TYPE_NETWORK_AGENT */

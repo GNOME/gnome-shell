@@ -2,6 +2,7 @@
 /*
  * Copyright 2011 Red Hat, Inc.
  *           2011 Giovanni Campagna <scampa.giovanni@gmail.com>
+ *           2017 Lubomir Rintel <lkundrak@v3.sk>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +22,6 @@
 
 #include "config.h"
 #include <string.h>
-#include <dbus/dbus-glib.h>
 
 #include <libsecret/secret.h>
 
@@ -36,21 +36,18 @@ enum {
 static gint signals[SIGNAL_LAST];
 
 typedef struct {
-  GCancellable *                 cancellable;
-  ShellNetworkAgent             *self;
+  GCancellable *                    cancellable;
+  ShellNetworkAgent                *self;
 
-  gchar                         *request_id;
-  NMConnection                  *connection;
-  gchar                         *setting_name;
-  gchar                        **hints;
-  NMSecretAgentGetSecretsFlags   flags;
-  NMSecretAgentGetSecretsFunc    callback;
-  gpointer                       callback_data;
+  gchar                            *request_id;
+  NMConnection                     *connection;
+  gchar                            *setting_name;
+  gchar                           **hints;
+  NMSecretAgentGetSecretsFlags      flags;
+  NMSecretAgentOldGetSecretsFunc    callback;
+  gpointer                          callback_data;
 
-  /* <gchar *setting_key, gchar *secret> */
-  GHashTable                    *entries;
-  GHashTable                    *vpn_entries;
-  gboolean                       is_vpn;
+  GVariantDict                     *entries;
 } ShellAgentRequest;
 
 struct _ShellNetworkAgentPrivate {
@@ -58,7 +55,7 @@ struct _ShellNetworkAgentPrivate {
   GHashTable *requests;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT)
+G_DEFINE_TYPE_WITH_PRIVATE (ShellNetworkAgent, shell_network_agent, NM_TYPE_SECRET_AGENT_OLD)
 
 static const SecretSchema network_agent_schema = {
     "org.freedesktop.NetworkManager.Connection",
@@ -82,7 +79,7 @@ shell_agent_request_free (gpointer data)
   g_object_unref (request->connection);
   g_free (request->setting_name);
   g_strfreev (request->hints);
-  g_hash_table_destroy (request->entries);
+  g_clear_pointer (&request->entries, g_variant_dict_unref);
 
   g_slice_free (ShellAgentRequest, request);
 }
@@ -98,7 +95,7 @@ shell_agent_request_cancel (ShellAgentRequest *request)
   error = g_error_new (NM_SECRET_AGENT_ERROR,
                        NM_SECRET_AGENT_ERROR_AGENT_CANCELED,
                        "Canceled by NetworkManager");
-  request->callback (NM_SECRET_AGENT (self), request->connection,
+  request->callback (NM_SECRET_AGENT_OLD (self), request->connection,
                      NULL, error, request->callback_data);
 
   g_signal_emit (self, signals[SIGNAL_CANCEL_REQUEST], 0, request->request_id);
@@ -135,7 +132,7 @@ shell_network_agent_finalize (GObject *object)
     {
       ShellAgentRequest *request = value;
 
-      request->callback (NM_SECRET_AGENT (object),
+      request->callback (NM_SECRET_AGENT_OLD (object),
                          request->connection,
                          NULL, error,
                          request->callback_data);
@@ -233,14 +230,6 @@ is_connection_always_ask (NMConnection *connection)
 }
 
 static void
-gvalue_destroy_notify (gpointer data)
-{
-  GValue *value = data;
-  g_value_unset (value);
-  g_slice_free (GValue, value);
-}
-
-static void
 get_secrets_keyring_cb (GObject            *source,
                         GAsyncResult       *result,
                         gpointer            user_data)
@@ -252,8 +241,9 @@ get_secrets_keyring_cb (GObject            *source,
   GError *error = NULL;
   GList *items;
   GList *l;
-  GHashTable *outer;
   gboolean secrets_found = FALSE;
+  GVariantBuilder builder_setting, builder_connection;
+  GVariant *setting;
 
   items = secret_service_search_finish (NULL, result, &secret_error);
 
@@ -271,13 +261,15 @@ get_secrets_keyring_cb (GObject            *source,
     {
       g_set_error (&error,
                    NM_SECRET_AGENT_ERROR,
-                   NM_SECRET_AGENT_ERROR_INTERNAL_ERROR,
+                   NM_SECRET_AGENT_ERROR_FAILED,
                    "Internal error while retrieving secrets from the keyring (%s)", secret_error->message);
       g_error_free (secret_error);
-      closure->callback (NM_SECRET_AGENT (closure->self), closure->connection, NULL, error, closure->callback_data);
+      closure->callback (NM_SECRET_AGENT_OLD (closure->self), closure->connection, NULL, error, closure->callback_data);
 
       goto out;
     }
+
+  g_variant_builder_init (&builder_setting, NM_VARIANT_TYPE_SETTING);
 
   for (l = items; l; l = g_list_next (l))
     {
@@ -297,18 +289,8 @@ get_secrets_keyring_cb (GObject            *source,
         {
           if (g_strcmp0 (name, SHELL_KEYRING_SK_TAG) == 0)
             {
-              gchar *secret_name = g_strdup (attribute);
-
-              if (!closure->is_vpn)
-                {
-                  GValue *secret_value = g_slice_new0 (GValue);
-                  g_value_init (secret_value, G_TYPE_STRING);
-                  g_value_set_string (secret_value, secret_value_get (secret, NULL));
-
-                  g_hash_table_insert (closure->entries, secret_name, secret_value);
-                }
-              else
-                g_hash_table_insert (closure->vpn_entries, secret_name, g_strdup (secret_value_get (secret, NULL)));
+              g_variant_builder_add (&builder_setting, "{sv}", attribute,
+                                     g_variant_new_string (secret_value_get (secret, NULL)));
 
               secrets_found = TRUE;
 
@@ -321,6 +303,7 @@ get_secrets_keyring_cb (GObject            *source,
     }
 
   g_list_free_full (items, g_object_unref);
+  setting = g_variant_builder_end (&builder_setting);
 
   /* All VPN requests get sent to the VPN's auth dialog, since it knows better
    * than the agent about what secrets are required.  Otherwise, if no secrets
@@ -328,21 +311,24 @@ get_secrets_keyring_cb (GObject            *source,
    * NetworkManager will fail the connection if not secrets are returned
    * instead of asking again with REQUEST_NEW.
    */
-  if (closure->is_vpn ||
+  if (strcmp(closure->setting_name, NM_SETTING_VPN_SETTING_NAME) == 0 ||
       (!secrets_found && (closure->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION)))
     {
-      nm_connection_update_secrets (closure->connection, closure->setting_name, closure->entries, NULL);
+      nm_connection_update_secrets (closure->connection, closure->setting_name,
+                                    setting, NULL);
 
+      closure->entries = g_variant_dict_new (setting);
       request_secrets_from_ui (closure);
       return;
     }
 
-  outer = g_hash_table_new (g_str_hash, g_str_equal);
-  g_hash_table_insert (outer, closure->setting_name, closure->entries);
+  g_variant_builder_init (&builder_connection, NM_VARIANT_TYPE_CONNECTION);
+  g_variant_builder_add (&builder_connection, "{s@a{sv}}",
+                         closure->setting_name, setting);
 
-  closure->callback (NM_SECRET_AGENT (closure->self), closure->connection, outer, NULL, closure->callback_data);
-
-  g_hash_table_destroy (outer);
+  closure->callback (NM_SECRET_AGENT_OLD (closure->self), closure->connection,
+                     g_variant_builder_end (&builder_connection), NULL,
+                     closure->callback_data);
 
  out:
   g_hash_table_remove (priv->requests, closure->request_id);
@@ -350,14 +336,14 @@ get_secrets_keyring_cb (GObject            *source,
 }
 
 static void
-shell_network_agent_get_secrets (NMSecretAgent                 *agent,
-				 NMConnection                  *connection,
-				 const gchar                   *connection_path,
-				 const gchar                   *setting_name,
-				 const gchar                  **hints,
-				 NMSecretAgentGetSecretsFlags   flags,
-				 NMSecretAgentGetSecretsFunc    callback,
-				 gpointer                       callback_data)
+shell_network_agent_get_secrets (NMSecretAgentOld                 *agent,
+				 NMConnection                     *connection,
+				 const gchar                      *connection_path,
+				 const gchar                      *setting_name,
+				 const gchar                     **hints,
+				 NMSecretAgentGetSecretsFlags      flags,
+				 NMSecretAgentOldGetSecretsFunc    callback,
+				 gpointer                          callback_data)
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (agent);
   ShellAgentRequest *request;
@@ -374,7 +360,7 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
       shell_agent_request_cancel (request);
     }
 
-  request = g_slice_new (ShellAgentRequest);
+  request = g_slice_new0 (ShellAgentRequest);
   request->self = g_object_ref (self);
   request->cancellable = g_cancellable_new ();
   request->connection = g_object_ref (connection);
@@ -383,22 +369,6 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
   request->flags = flags;
   request->callback = callback;
   request->callback_data = callback_data;
-  request->is_vpn = !strcmp(setting_name, NM_SETTING_VPN_SETTING_NAME);
-  request->entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, gvalue_destroy_notify);
-
-  if (request->is_vpn)
-    {
-      GValue *secret_value;
-
-      request->vpn_entries = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
-
-      secret_value = g_slice_new0 (GValue);
-      g_value_init (secret_value, dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_STRING));
-      g_value_take_boxed (secret_value, request->vpn_entries);
-      g_hash_table_insert (request->entries, g_strdup(NM_SETTING_VPN_SECRETS), secret_value);
-    }
-  else
-    request->vpn_entries = NULL;
 
   request->request_id = request_id;
   g_hash_table_replace (self->priv->requests, request->request_id, request);
@@ -407,6 +377,7 @@ shell_network_agent_get_secrets (NMSecretAgent                 *agent,
       ((flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION)
        && is_connection_always_ask (request->connection)))
     {
+      request->entries = g_variant_dict_new (NULL);
       request_secrets_from_ui (request);
       return;
     }
@@ -431,7 +402,6 @@ shell_network_agent_set_password (ShellNetworkAgent *self,
 {
   ShellNetworkAgentPrivate *priv;
   ShellAgentRequest *request;
-  GValue *value;
 
   g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
 
@@ -439,18 +409,7 @@ shell_network_agent_set_password (ShellNetworkAgent *self,
   request = g_hash_table_lookup (priv->requests, request_id);
   g_return_if_fail (request != NULL);
 
-  if (!request->is_vpn)
-    {
-      value = g_slice_new0 (GValue);
-      g_value_init (value, G_TYPE_STRING);
-      g_value_set_string (value, setting_value);
-
-      g_hash_table_replace (request->entries, g_strdup (setting_key), value);
-    }
-  else
-    {
-      g_hash_table_replace (request->vpn_entries, g_strdup (setting_key), g_strdup (setting_value));
-    }
+  g_variant_dict_insert (request->entries, setting_key, "s", setting_value);
 }
 
 void
@@ -460,7 +419,8 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 {
   ShellNetworkAgentPrivate *priv;
   ShellAgentRequest *request;
-  GHashTable *outer;
+  GVariantBuilder builder_connection;
+  GVariant *setting;
 
   g_return_if_fail (SHELL_IS_NETWORK_AGENT (self));
 
@@ -474,7 +434,7 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
                                    NM_SECRET_AGENT_ERROR_USER_CANCELED,
                                    "Network dialog was canceled by the user");
 
-      request->callback (NM_SECRET_AGENT (self), request->connection, NULL, error, request->callback_data);
+      request->callback (NM_SECRET_AGENT_OLD (self), request->connection, NULL, error, request->callback_data);
       g_error_free (error);
       g_hash_table_remove (priv->requests, request_id);
       return;
@@ -483,10 +443,10 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
   if (response == SHELL_NETWORK_AGENT_INTERNAL_ERROR)
     {
       GError *error = g_error_new (NM_SECRET_AGENT_ERROR,
-                                   NM_SECRET_AGENT_ERROR_INTERNAL_ERROR,
+                                   NM_SECRET_AGENT_ERROR_FAILED,
                                    "An internal error occurred while processing the request.");
 
-      request->callback (NM_SECRET_AGENT (self), request->connection, NULL, error, request->callback_data);
+      request->callback (NM_SECRET_AGENT_OLD (self), request->connection, NULL, error, request->callback_data);
       g_error_free (error);
       g_hash_table_remove (priv->requests, request_id);
       return;
@@ -494,30 +454,34 @@ shell_network_agent_respond (ShellNetworkAgent         *self,
 
   /* response == SHELL_NETWORK_AGENT_CONFIRMED */
 
+  setting = g_variant_dict_end (request->entries);
+
   /* Save any updated secrets */
   if ((request->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_ALLOW_INTERACTION) ||
       (request->flags & NM_SECRET_AGENT_GET_SECRETS_FLAG_REQUEST_NEW))
     {
-      NMConnection *dup = nm_connection_duplicate (request->connection);
+      NMConnection *dup = nm_simple_connection_new_clone (request->connection);
 
-      nm_connection_update_secrets (dup, request->setting_name, request->entries, NULL);
-      nm_secret_agent_save_secrets (NM_SECRET_AGENT (self), dup, NULL, NULL);
+      nm_connection_update_secrets (dup, request->setting_name, setting, NULL);
+      nm_secret_agent_old_save_secrets (NM_SECRET_AGENT_OLD (self), dup, NULL, NULL);
       g_object_unref (dup);
     }
 
-  outer = g_hash_table_new (g_str_hash, g_str_equal);
-  g_hash_table_insert (outer, request->setting_name, request->entries);
+  g_variant_builder_init (&builder_connection, NM_VARIANT_TYPE_CONNECTION);
+  g_variant_builder_add (&builder_connection, "{s@a{sv}}",
+                         request->setting_name, setting);
 
-  request->callback (NM_SECRET_AGENT (self), request->connection, outer, NULL, request->callback_data);
+  request->callback (NM_SECRET_AGENT_OLD (self), request->connection,
+                     g_variant_builder_end (&builder_connection), NULL,
+                     request->callback_data);
 
-  g_hash_table_destroy (outer);
   g_hash_table_remove (priv->requests, request_id);
 }
 
 static void
-shell_network_agent_cancel_get_secrets (NMSecretAgent *agent,
-                                        const gchar   *connection_path,
-                                        const gchar   *setting_name)
+shell_network_agent_cancel_get_secrets (NMSecretAgentOld *agent,
+                                        const gchar      *connection_path,
+                                        const gchar      *setting_name)
 {
   ShellNetworkAgent *self = SHELL_NETWORK_AGENT (agent);
   ShellNetworkAgentPrivate *priv = self->priv;
@@ -582,12 +546,12 @@ create_keyring_add_attr_list (NMConnection *connection,
 typedef struct
 {
   /* Sort of ref count, indicates the number of secrets we still need to save */
-  gint           n_secrets;
+  gint              n_secrets;
 
-  NMSecretAgent *self;
-  NMConnection  *connection;
-  gpointer       callback;
-  gpointer       callback_data;
+  NMSecretAgentOld *self;
+  NMConnection     *connection;
+  gpointer          callback;
+  gpointer          callback_data;
 } KeyringRequest;
 
 static void
@@ -605,7 +569,7 @@ save_secret_cb (GObject           *source,
                 gpointer           user_data)
 {
   KeyringRequest *call = user_data;
-  NMSecretAgentSaveSecretsFunc callback = call->callback;
+  NMSecretAgentOldSaveSecretsFunc callback = call->callback;
 
   call->n_secrets--;
 
@@ -702,6 +666,9 @@ write_one_secret_to_keyring (NMSetting    *setting,
     }
   else
     {
+      if (!G_VALUE_HOLDS_STRING (value))
+        return;
+
       secret = g_value_get_string (value);
       if (secret && strlen (secret))
         save_one_secret (r, setting, key, secret, NULL);
@@ -709,10 +676,10 @@ write_one_secret_to_keyring (NMSetting    *setting,
 }
 
 static void
-save_delete_cb (NMSecretAgent *agent,
-                NMConnection  *connection,
-                GError        *error,
-                gpointer       user_data)
+save_delete_cb (NMSecretAgentOld *agent,
+                NMConnection     *connection,
+                GError           *error,
+                gpointer          user_data)
 {
   KeyringRequest *r = user_data;
 
@@ -727,17 +694,17 @@ save_delete_cb (NMSecretAgent *agent,
   if (r->n_secrets == 0)
     {
       if (r->callback)
-        ((NMSecretAgentSaveSecretsFunc)r->callback) (agent, connection, NULL, r->callback_data);
+        ((NMSecretAgentOldSaveSecretsFunc)r->callback) (agent, connection, NULL, r->callback_data);
       keyring_request_free (r);
     }
 }
 
 static void
-shell_network_agent_save_secrets (NMSecretAgent                *agent,
-                                  NMConnection                 *connection,
-                                  const gchar                  *connection_path,
-                                  NMSecretAgentSaveSecretsFunc  callback,
-                                  gpointer                      callback_data)
+shell_network_agent_save_secrets (NMSecretAgentOld                *agent,
+                                  NMConnection                    *connection,
+                                  const gchar                     *connection_path,
+                                  NMSecretAgentOldSaveSecretsFunc  callback,
+                                  gpointer                         callback_data)
 {
   KeyringRequest *r;
 
@@ -749,7 +716,7 @@ shell_network_agent_save_secrets (NMSecretAgent                *agent,
   r->callback_data = callback_data;
 
   /* First delete any existing items in the keyring */
-  nm_secret_agent_delete_secrets (agent, connection, save_delete_cb, r);
+  nm_secret_agent_old_delete_secrets (agent, connection, save_delete_cb, r);
 }
 
 static void
@@ -760,13 +727,13 @@ delete_items_cb (GObject *source,
   KeyringRequest *r = user_data;
   GError *secret_error = NULL;
   GError *error = NULL;
-  NMSecretAgentDeleteSecretsFunc callback = r->callback;
+  NMSecretAgentOldDeleteSecretsFunc callback = r->callback;
 
   secret_password_clear_finish (result, &secret_error);
   if (secret_error != NULL)
     {
       error = g_error_new (NM_SECRET_AGENT_ERROR,
-                           NM_SECRET_AGENT_ERROR_INTERNAL_ERROR,
+                           NM_SECRET_AGENT_ERROR_FAILED,
                            "The request could not be completed.  Keyring result: %s",
                            secret_error->message);
       g_error_free (secret_error);
@@ -778,11 +745,11 @@ delete_items_cb (GObject *source,
 }
 
 static void
-shell_network_agent_delete_secrets (NMSecretAgent                  *agent,
-                                    NMConnection                   *connection,
-                                    const gchar                    *connection_path,
-                                    NMSecretAgentDeleteSecretsFunc  callback,
-                                    gpointer                        callback_data)
+shell_network_agent_delete_secrets (NMSecretAgentOld                  *agent,
+                                    NMConnection                      *connection,
+                                    const gchar                       *connection_path,
+                                    NMSecretAgentOldDeleteSecretsFunc  callback,
+                                    gpointer                           callback_data)
 {
   KeyringRequest *r;
   NMSettingConnection *s_con;
@@ -809,7 +776,7 @@ void
 shell_network_agent_class_init (ShellNetworkAgentClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  NMSecretAgentClass *agent_class = NM_SECRET_AGENT_CLASS (klass);
+  NMSecretAgentOldClass *agent_class = NM_SECRET_AGENT_OLD_CLASS (klass);
 
   gobject_class->finalize = shell_network_agent_finalize;
 

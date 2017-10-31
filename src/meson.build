@@ -226,7 +226,7 @@ libshell_gir_includes = [
 ]
 
 if have_networkmanager
-  libshell_gir_includes += ['NetworkManager-1.0', 'NMClient-1.0']
+  libshell_gir_includes += ['NM-1.0']
 endif
 
 libshell_gir_includes += [

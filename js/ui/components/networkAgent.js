@@ -5,8 +5,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
-const NetworkManager = imports.gi.NetworkManager;
-const NMClient = imports.gi.NMClient;
+const NM = imports.gi.NM;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -173,7 +172,7 @@ var NetworkSecretDialog = new Lang.Class({
 
     _validateStaticWep: function(secret) {
         let value = secret.value;
-        if (secret.wep_key_type == NetworkManager.WepKeyType.KEY) {
+        if (secret.wep_key_type == NM.WepKeyType.KEY) {
             if (value.length == 10 || value.length == 26) {
 		for (let i = 0; i < value.length; i++) {
                     if (!((value[i] >= 'a' && value[i] <= 'f')
@@ -189,7 +188,7 @@ var NetworkSecretDialog = new Lang.Class({
                 }
             } else
                 return false;
-	} else if (secret.wep_key_type == NetworkManager.WepKeyType.PASSPHRASE) {
+	} else if (secret.wep_key_type == NM.WepKeyType.PASSPHRASE) {
 	    if (value.length < 0 || value.length > 64)
 	        return false;
 	}
@@ -288,7 +287,7 @@ var NetworkSecretDialog = new Lang.Class({
         switch (connectionType) {
         case '802-11-wireless':
             wirelessSetting = this._connection.get_setting_wireless();
-            ssid = NetworkManager.utils_ssid_to_utf8(wirelessSetting.get_ssid());
+            ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
             content.title = _("Authentication required by wireless network");
             content.message = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             this._getWirelessSecrets(content.secrets, wirelessSetting);
@@ -351,9 +350,9 @@ var VPNRequestHandler = new Lang.Class({
                    ];
         if (authHelper.externalUIMode)
             argv.push('--external-ui-mode');
-        if (flags & NMClient.SecretAgentGetSecretsFlags.ALLOW_INTERACTION)
+        if (flags & NM.SecretAgentGetSecretsFlags.ALLOW_INTERACTION)
             argv.push('-i');
-        if (flags & NMClient.SecretAgentGetSecretsFlags.REQUEST_NEW)
+        if (flags & NM.SecretAgentGetSecretsFlags.REQUEST_NEW)
             argv.push('-r');
         if (authHelper.supportsHints) {
             for (let i = 0; i < hints.length; i++) {
@@ -580,7 +579,7 @@ var NetworkAgent = new Lang.Class({
 
     _init: function() {
         this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent',
-                                                capabilities: NMClient.SecretAgentCapabilities.VPN_HINTS
+                                                capabilities: NM.SecretAgentCapabilities.VPN_HINTS
                                               });
 
         this._dialogs = { };
@@ -597,6 +596,12 @@ var NetworkAgent = new Lang.Class({
 
         this._native.connect('new-request', Lang.bind(this, this._newRequest));
         this._native.connect('cancel-request', Lang.bind(this, this._cancelRequest));
+        try {
+            this._native.init(null);
+        } catch(e) {
+            this._native = null;
+            logError(e, 'error initializing the NetworkManager Agent');
+        }
 
         this._enabled = false;
     },
@@ -634,7 +639,7 @@ var NetworkAgent = new Lang.Class({
         switch (connectionType) {
         case '802-11-wireless':
             let wirelessSetting = connection.get_setting_wireless();
-            let ssid = NetworkManager.utils_ssid_to_utf8(wirelessSetting.get_ssid());
+            let ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid());
             title = _("Authentication required by wireless network");
             body = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
             break;
@@ -689,7 +694,7 @@ var NetworkAgent = new Lang.Class({
             return;
         }
 
-        if (!(flags & NMClient.SecretAgentGetSecretsFlags.USER_REQUESTED))
+        if (!(flags & NM.SecretAgentGetSecretsFlags.USER_REQUESTED))
             this._showNotification(requestId, connection, settingName, hints, flags);
         else
             this._handleRequest(requestId, connection, settingName, hints, flags);
