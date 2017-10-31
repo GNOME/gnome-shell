@@ -143,7 +143,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
     // Special case gnome-control-center to be always active and always first
     sortOrder.unshift('gnome-control-center.desktop');
 
-    loadedProviders = loadedProviders.filter(function(provider) {
+    loadedProviders = loadedProviders.filter(provider => {
         let appId = provider.appInfo.get_id();
 
         if (provider.defaultEnabled) {
@@ -155,7 +155,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
         }
     });
 
-    loadedProviders.sort(function(providerA, providerB) {
+    loadedProviders.sort((providerA, providerB) => {
         let idxA, idxB;
         let appIdA, appIdB;
 
@@ -240,8 +240,8 @@ var RemoteSearchProvider = new Lang.Class({
         if (results.length <= maxNumber)
             return results;
 
-        let regularResults = results.filter(function(r) { return !r.startsWith('special:'); });
-        let specialResults = results.filter(function(r) { return r.startsWith('special:'); });
+        let regularResults = results.filter(r => !r.startsWith('special:'));
+        let specialResults = results.filter(r => r.startsWith('special:'));
 
         return regularResults.slice(0, maxNumber).concat(specialResults.slice(0, maxNumber));
     },

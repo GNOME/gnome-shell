@@ -62,14 +62,14 @@ function test() {
 
     resize_animated(label1);
     resize_animated(label2);
-    Mainloop.timeout_add(DELAY, Lang.bind(this, function() {
+    Mainloop.timeout_add(DELAY, () => {
         log(label1 + label1.get_size());
         resize_animated(label1);
         resize_animated(label2);
         return true;
-    }));
+    });
 
-    Mainloop.timeout_add(2 * DELAY, Lang.bind(this, function() {
+    Mainloop.timeout_add(2 * DELAY, () => {
         iter += 1;
         iter %= shadowStyles.length;
         label1.set_style(get_css_style(shadowStyles[iter]));
@@ -77,7 +77,7 @@ function test() {
         label2.set_style(get_css_style(shadowStyles[iter]));
         label2.set_text(shadowStyles[iter]);
         return true;
-    }));
+    });
 
     UI.main(stage);
 }

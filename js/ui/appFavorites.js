@@ -66,7 +66,7 @@ var AppFavorites = new Lang.Class({
 
         // Map old desktop file names to the current ones
         let updated = false;
-        ids = ids.map(function (id) {
+        ids = ids.map(id => {
             let newId = RENAMED_DESKTOP_IDS[id];
             if (newId !== undefined &&
                 appSys.lookup_app(newId) != null) {
@@ -79,11 +79,8 @@ var AppFavorites = new Lang.Class({
         if (updated)
             global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
 
-        let apps = ids.map(function (id) {
-                return appSys.lookup_app(id);
-            }).filter(function (app) {
-                return app != null;
-            });
+        let apps = ids.map(id => appSys.lookup_app(id))
+                      .filter(app => app != null);
         this._favorites = {};
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
@@ -140,9 +137,9 @@ var AppFavorites = new Lang.Class({
 
         Main.overview.setMessage(_("%s has been added to your favorites.").format(app.get_name()),
                                  { forFeedback: true,
-                                   undoCallback: Lang.bind(this, function () {
-                                                               this._removeFavorite(appId);
-                                                           })
+                                   undoCallback: () => {
+                                       this._removeFavorite(appId);
+                                   }
                                  });
     },
 
@@ -159,7 +156,7 @@ var AppFavorites = new Lang.Class({
         if (!appId in this._favorites)
             return false;
 
-        let ids = this._getIds().filter(function (id) { return id != appId; });
+        let ids = this._getIds().filter(id => id != appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         return true;
     },
@@ -174,9 +171,9 @@ var AppFavorites = new Lang.Class({
 
         Main.overview.setMessage(_("%s has been removed from your favorites.").format(app.get_name()),
                                  { forFeedback: true,
-                                   undoCallback: Lang.bind(this, function () {
-                                                               this._addFavorite(appId, pos);
-                                                           })
+                                   undoCallback: () => {
+                                       this._addFavorite(appId, pos);
+                                   }
                                  });
     }
 });

@@ -190,11 +190,11 @@ var FdoNotificationDaemon = new Lang.Class({
         source = new FdoNotificationDaemonSource(title, pid, sender, appId);
 
         this._sources.push(source);
-        source.connect('destroy', Lang.bind(this, function() {
+        source.connect('destroy', () => {
             let index = this._sources.indexOf(source);
             if (index >= 0)
                 this._sources.splice(index, 1);
-        }));
+        });
 
         Main.messageTray.add(source);
         return source;
@@ -220,11 +220,10 @@ var FdoNotificationDaemon = new Lang.Class({
             // Ignore replacesId since we already sent back a
             // NotificationClosed for that id.
             id = this._nextNotificationId++;
-            let idle_id = Mainloop.idle_add(Lang.bind(this,
-                                            function () {
-                                                this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
-                                                return GLib.SOURCE_REMOVE;
-                                            }));
+            let idle_id = Mainloop.idle_add(() => {
+                this._emitNotificationClosed(id, NotificationClosedReason.DISMISSED);
+                return GLib.SOURCE_REMOVE;
+            });
             GLib.Source.set_name_by_id(idle_id, '[gnome-shell] this._emitNotificationClosed');
             return invocation.return_value(GLib.Variant.new('(u)', [id]));
         }
@@ -285,7 +284,7 @@ var FdoNotificationDaemon = new Lang.Class({
             return invocation.return_value(GLib.Variant.new('(u)', [id]));;
         }
 
-        this._busProxy.GetConnectionUnixProcessIDRemote(sender, Lang.bind(this, function (result, excp) {
+        this._busProxy.GetConnectionUnixProcessIDRemote(sender, (result, excp) => {
             // The app may have updated or removed the notification
             ndata = this._notifications[id];
             if (!ndata)
@@ -300,11 +299,11 @@ var FdoNotificationDaemon = new Lang.Class({
             source = this._getSource(appName, pid, ndata, sender, null);
 
             this._senderToPid[sender] = pid;
-            source.connect('destroy', Lang.bind(this, function() {
+            source.connect('destroy', () => {
                 delete this._senderToPid[sender];
-            }));
+            });
             this._notifyForSource(source, ndata);
-        }));
+        });
 
         return invocation.return_value(GLib.Variant.new('(u)', [id]));
     },
@@ -317,23 +316,22 @@ var FdoNotificationDaemon = new Lang.Class({
         if (notification == null) {
             notification = new MessageTray.Notification(source);
             ndata.notification = notification;
-            notification.connect('destroy', Lang.bind(this,
-                function(n, reason) {
-                    delete this._notifications[ndata.id];
-                    let notificationClosedReason;
-                    switch (reason) {
-                        case MessageTray.NotificationDestroyedReason.EXPIRED:
-                            notificationClosedReason = NotificationClosedReason.EXPIRED;
-                            break;
-                        case MessageTray.NotificationDestroyedReason.DISMISSED:
-                            notificationClosedReason = NotificationClosedReason.DISMISSED;
-                            break;
-                        case MessageTray.NotificationDestroyedReason.SOURCE_CLOSED:
-                            notificationClosedReason = NotificationClosedReason.APP_CLOSED;
-                            break;
-                    }
-                    this._emitNotificationClosed(ndata.id, notificationClosedReason);
-                }));
+            notification.connect('destroy', (n, reason) => {
+                delete this._notifications[ndata.id];
+                let notificationClosedReason;
+                switch (reason) {
+                    case MessageTray.NotificationDestroyedReason.EXPIRED:
+                        notificationClosedReason = NotificationClosedReason.EXPIRED;
+                        break;
+                    case MessageTray.NotificationDestroyedReason.DISMISSED:
+                        notificationClosedReason = NotificationClosedReason.DISMISSED;
+                        break;
+                    case MessageTray.NotificationDestroyedReason.SOURCE_CLOSED:
+                        notificationClosedReason = NotificationClosedReason.APP_CLOSED;
+                        break;
+                }
+                this._emitNotificationClosed(ndata.id, notificationClosedReason);
+            });
         }
 
         let gicon = this._iconForNotificationData(icon, hints);
@@ -365,20 +363,20 @@ var FdoNotificationDaemon = new Lang.Class({
                 if (actionId == 'default')
                     hasDefaultAction = true;
                 else
-                    notification.addAction(label, Lang.bind(this, function() {
+                    notification.addAction(label, () => {
                         this._emitActionInvoked(ndata.id, actionId);
-                    }));
+                    });
             }
         }
 
         if (hasDefaultAction) {
-            notification.connect('activated', Lang.bind(this, function() {
+            notification.connect('activated', () => {
                 this._emitActionInvoked(ndata.id, 'default');
-            }));
+            });
         } else {
-            notification.connect('activated', Lang.bind(this, function() {
+            notification.connect('activated', () => {
                 source.open();
-            }));
+            });
         }
 
         switch (hints.urgency) {
@@ -615,10 +613,10 @@ var GtkNotificationDaemonNotification = new Lang.Class({
         }
 
         if (buttons) {
-            buttons.deep_unpack().forEach(Lang.bind(this, function(button) {
+            buttons.deep_unpack().forEach(button => {
                 this.addAction(button.label.unpack(),
                                Lang.bind(this, this._onButtonClicked, button));
-            }));
+            });
         }
 
         this._defaultAction = defaultAction ? defaultAction.unpack() : null;
@@ -713,7 +711,7 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
     },
 
     activateAction(actionId, target) {
-        this._createApp(function (app, error) {
+        this._createApp((app, error) => {
             if (error == null)
                 app.ActivateActionRemote(actionId, target ? [target] : [], getPlatformData());
             else
@@ -724,7 +722,7 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
     },
 
     open() {
-        this._createApp(function (app, error) {
+        this._createApp((app, error) => {
             if (error == null)
                 app.ActivateRemote(getPlatformData());
             else
@@ -741,9 +739,9 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
             this._notifications[notificationId].destroy();
 
         let notification = new GtkNotificationDaemonNotification(this, notificationParams);
-        notification.connect('destroy', Lang.bind(this, function() {
+        notification.connect('destroy', () => {
             delete this._notifications[notificationId];
-        }));
+        });
         this._notifications[notificationId] = notification;
 
         if (showBanner)
@@ -809,10 +807,10 @@ var GtkNotificationDaemon = new Lang.Class({
 
         let source = new GtkNotificationDaemonAppSource(appId);
 
-        source.connect('destroy', Lang.bind(this, function() {
+        source.connect('destroy', () => {
             delete this._sources[appId];
             this._saveNotifications();
-        }));
+        });
         source.connect('count-updated', Lang.bind(this, this._saveNotifications));
         Main.messageTray.add(source);
         this._sources[appId] = source;
@@ -825,7 +823,7 @@ var GtkNotificationDaemon = new Lang.Class({
         let value = global.get_persistent_state('a(sa(sv))', 'notifications');
         if (value) {
             let sources = value.deep_unpack();
-            sources.forEach(Lang.bind(this, function([appId, notifications]) {
+            sources.forEach(([appId, notifications]) => {
                 if (notifications.length == 0)
                     return;
 
@@ -836,10 +834,10 @@ var GtkNotificationDaemon = new Lang.Class({
                     return;
                 }
 
-                notifications.forEach(function([notificationId, notification]) {
+                notifications.forEach(([notificationId, notification]) => {
                     source.addNotification(notificationId, notification.deep_unpack(), false);
                 });
-            }));
+            });
         }
 
         this._isLoading = false;

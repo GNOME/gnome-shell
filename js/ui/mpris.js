@@ -60,19 +60,19 @@ var MediaMessage = new Lang.Class({
         this.setIcon(this._icon);
 
         this._prevButton = this.addMediaControl('media-skip-backward-symbolic',
-            Lang.bind(this, function() {
+            () => {
                 this._player.previous();
-            }));
+            });
 
         this._playPauseButton = this.addMediaControl(null,
-            Lang.bind(this, function() {
+            () => {
                 this._player.playPause();
-            }));
+            });
 
         this._nextButton = this.addMediaControl('media-skip-forward-symbolic',
-            Lang.bind(this, function() {
+            () => {
                 this._player.next();
-            }));
+            });
 
         this._player.connect('changed', Lang.bind(this, this._update));
         this._player.connect('closed', Lang.bind(this, this.close));
@@ -191,10 +191,10 @@ var MprisPlayer = new Lang.Class({
 
     _onMprisProxyReady() {
         this._ownerNotifyId = this._mprisProxy.connect('notify::g-name-owner',
-            Lang.bind(this, function() {
+            () => {
                 if (!this._mprisProxy.g_name_owner)
                     this._close();
-            }));
+            });
     },
 
     _onPlayerProxyReady() {
@@ -250,29 +250,27 @@ var MediaSection = new Lang.Class({
             return;
 
         let player = new MprisPlayer(busName);
-        player.connect('closed', Lang.bind(this,
-            function() {
+        player.connect('closed',
+            () => {
                 this._players.delete(busName);
-            }));
-        player.connect('show', Lang.bind(this,
-            function() {
+            });
+        player.connect('show',
+            () => {
                 let message = new MediaMessage(player);
                 this.addMessage(message, true);
-            }));
+            });
         this._players.set(busName, player);
     },
 
     _onProxyReady() {
-        this._proxy.ListNamesRemote(Lang.bind(this,
-            function([names]) {
-                names.forEach(Lang.bind(this,
-                    function(name) {
-                        if (!name.startsWith(MPRIS_PLAYER_PREFIX))
-                            return;
+        this._proxy.ListNamesRemote(([names]) => {
+            names.forEach(name => {
+                if (!name.startsWith(MPRIS_PLAYER_PREFIX))
+                    return;
 
-                        this._addPlayer(name);
-                    }));
-            }));
+                this._addPlayer(name);
+            });
+        });
         this._proxy.connectSignal('NameOwnerChanged',
                                   Lang.bind(this, this._onNameOwnerChanged));
     },

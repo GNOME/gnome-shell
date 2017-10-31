@@ -35,23 +35,23 @@ var Indicator = new Lang.Class({
         this._hadSetupDevices = global.settings.get_boolean(HAD_BLUETOOTH_DEVICES_SETUP);
 
         this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                             Lang.bind(this, function(proxy, error) {
+                                             (proxy, error) => {
                                                  if (error) {
                                                      log(error.message);
                                                      return;
                                                  }
 
                                                  this._sync();
-                                             }));
+                                             });
         this._proxy.connect('g-properties-changed', Lang.bind(this, this._sync));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
         this._item.icon.icon_name = 'bluetooth-active-symbolic';
 
         this._toggleItem = new PopupMenu.PopupMenuItem('');
-        this._toggleItem.connect('activate', Lang.bind(this, function() {
+        this._toggleItem.connect('activate', () => {
             this._proxy.BluetoothAirplaneMode = !this._proxy.BluetoothAirplaneMode;
-        }));
+        });
         this._item.menu.addMenuItem(this._toggleItem);
 
         this._item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');

@@ -214,9 +214,7 @@ var SystemIndicator = new Lang.Class({
     },
 
     _syncIndicatorsVisible() {
-        this.indicators.visible = this.indicators.get_children().some(function(actor) {
-            return actor.visible;
-        });
+        this.indicators.visible = this.indicators.get_children().some(a => a.visible);
     },
 
     _addIndicator() {

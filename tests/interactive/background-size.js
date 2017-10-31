@@ -35,7 +35,7 @@ function test() {
         if (useCairo)
             obin.style = 'border: 3px solid green;';
         else
-            obin.connect_after('paint', function(actor) {
+            obin.connect_after('paint', actor => {
                 Cogl.set_source_color4f(0, 1, 0, 1);
 
                 let geom = actor.get_allocation_geometry();

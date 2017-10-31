@@ -23,7 +23,7 @@ function test() {
     let v = new St.ScrollView();
     vbox.add(v, { expand: true });
 
-    toggle.connect('notify::checked', function () {
+    toggle.connect('notify::checked', () => {
         v.set_policy(toggle.checked ? Gtk.PolicyType.AUTOMATIC
                      : Gtk.PolicyType.NEVER,
                      Gtk.PolicyType.AUTOMATIC);

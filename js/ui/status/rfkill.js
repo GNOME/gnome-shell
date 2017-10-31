@@ -26,7 +26,7 @@ var RfkillManager = new Lang.Class({
 
     _init() {
         this._proxy = new RfkillManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                             Lang.bind(this, function(proxy, error) {
+                                             (proxy, error) => {
                                                  if (error) {
                                                      log(error.message);
                                                      return;
@@ -34,7 +34,7 @@ var RfkillManager = new Lang.Class({
                                                  this._proxy.connect('g-properties-changed',
                                                                      Lang.bind(this, this._changed));
                                                  this._changed();
-                                             }));
+                                             });
     },
 
     get airplaneMode() {
@@ -87,9 +87,9 @@ var Indicator = new Lang.Class({
         // changing the menu contents.
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Airplane Mode On"), true);
         this._item.icon.icon_name = 'airplane-mode-symbolic';
-        this._offItem = this._item.menu.addAction(_("Turn Off"), Lang.bind(this, function() {
+        this._offItem = this._item.menu.addAction(_("Turn Off"), () => {
             this._manager.airplaneMode = false;
-        }));
+        });
         this._item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
         this.menu.addMenuItem(this._item);
 

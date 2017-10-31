@@ -84,9 +84,9 @@ var ShowOverviewAction = new Lang.Class({
         this.parent();
         this.set_n_touch_points(3);
 
-        global.display.connect('grab-op-begin', Lang.bind(this, function() {
+        global.display.connect('grab-op-begin', () => {
             this.cancel();
-        }));
+        });
     },
 
     vfunc_gesture_prepare(action, actor) {
@@ -157,12 +157,12 @@ var ViewSelector = new Lang.Class({
         this._text = this._entry.clutter_text;
         this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
         this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
-        this._text.connect('key-focus-in', Lang.bind(this, function() {
+        this._text.connect('key-focus-in', () => {
             this._searchResults.highlightDefault(true);
-        }));
-        this._text.connect('key-focus-out', Lang.bind(this, function() {
+        });
+        this._text.connect('key-focus-out', () => {
             this._searchResults.highlightDefault(false);
-        }));
+        });
         this._entry.connect('popup-menu', () => {
             if (!this._searchActive)
                 return;
@@ -198,38 +198,35 @@ var ViewSelector = new Lang.Class({
         // dummy widget as the last results container child so that we can
         // include the entry in the keynav tab path
         this._focusTrap = new FocusTrap({ can_focus: true });
-        this._focusTrap.connect('key-focus-in', Lang.bind(this, function() {
+        this._focusTrap.connect('key-focus-in', () => {
             this._entry.grab_key_focus();
-        }));
+        });
         this._searchResults.actor.add_actor(this._focusTrap);
 
         global.focus_manager.add_group(this._searchResults.actor);
 
         this._stageKeyPressId = 0;
-        Main.overview.connect('showing', Lang.bind(this,
-            function () {
-                this._stageKeyPressId = global.stage.connect('key-press-event',
-                                                             Lang.bind(this, this._onStageKeyPress));
-            }));
-        Main.overview.connect('hiding', Lang.bind(this,
-            function () {
-                if (this._stageKeyPressId != 0) {
-                    global.stage.disconnect(this._stageKeyPressId);
-                    this._stageKeyPressId = 0;
-                }
-            }));
-        Main.overview.connect('shown', Lang.bind(this,
-            function() {
-                // If we were animating from the desktop view to the
-                // apps page the workspace page was visible, allowing
-                // the windows to animate, but now we no longer want to
-                // show it given that we are now on the apps page or
-                // search page.
-                if (this._activePage != this._workspacesPage) {
-                    this._workspacesPage.opacity = 0;
-                    this._workspacesPage.hide();
-                }
-            }));
+        Main.overview.connect('showing', () => {
+            this._stageKeyPressId = global.stage.connect('key-press-event',
+                                                         Lang.bind(this, this._onStageKeyPress));
+        });
+        Main.overview.connect('hiding', () => {
+            if (this._stageKeyPressId != 0) {
+                global.stage.disconnect(this._stageKeyPressId);
+                this._stageKeyPressId = 0;
+            }
+        });
+        Main.overview.connect('shown', () => {
+            // If we were animating from the desktop view to the
+            // apps page the workspace page was visible, allowing
+            // the windows to animate, but now we no longer want to
+            // show it given that we are now on the apps page or
+            // search page.
+            if (this._activePage != this._workspacesPage) {
+                this._workspacesPage.opacity = 0;
+                this._workspacesPage.hide();
+            }
+        });
 
         Main.wm.addKeybinding('toggle-application-view',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
@@ -252,12 +249,12 @@ var ViewSelector = new Lang.Class({
             side = St.Side.LEFT;
         let gesture = new EdgeDragAction.EdgeDragAction(side,
                                                         Shell.ActionMode.NORMAL);
-        gesture.connect('activated', Lang.bind(this, function() {
+        gesture.connect('activated', () => {
             if (Main.overview.visible)
                 Main.overview.hide();
             else
                 this.showApps();
-        }));
+        });
         global.stage.add_action(gesture);
 
         gesture = new ShowOverviewAction();
@@ -330,10 +327,9 @@ var ViewSelector = new Lang.Class({
         else
             Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon,
                                             { proxy: this.actor,
-                                              focusCallback: Lang.bind(this,
-                                                  function() {
-                                                      this._a11yFocusPage(page);
-                                                  })
+                                              focusCallback: () => {
+                                                  this._a11yFocusPage(page);
+                                              }
                                             });;
         page.hide();
         this.actor.add_actor(page);
@@ -354,9 +350,9 @@ var ViewSelector = new Lang.Class({
                          { opacity: 0,
                            time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
+                           onComplete: () => {
                                this._animateIn(oldPage);
-                           })
+                           }
                          });
     },
 
@@ -382,10 +378,9 @@ var ViewSelector = new Lang.Class({
         if (page == this._appsPage &&
             this._activePage == this._workspacesPage &&
             !Main.overview.animationInProgress) {
-            this.appDisplay.animate(IconGrid.AnimationDirection.OUT, Lang.bind(this,
-                function() {
-                    this._animateIn(oldPage)
-                }));
+            this.appDisplay.animate(IconGrid.AnimationDirection.OUT, () => {
+                this._animateIn(oldPage)
+            });
         } else {
             this._fadePageOut(page);
         }
