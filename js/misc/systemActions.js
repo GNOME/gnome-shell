@@ -87,7 +87,7 @@ const SystemActions = new Lang.Class({
                                                           null)
     },
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this._canHavePowerOff = true;
@@ -218,7 +218,7 @@ const SystemActions = new Lang.Class({
         return this._actions.get(LOCK_ORIENTATION_ACTION_ID).iconName;
     },
 
-    _sensorProxyAppeared: function() {
+    _sensorProxyAppeared() {
         this._sensorProxy = new SensorProxy(Gio.DBus.system, SENSOR_BUS_NAME, SENSOR_OBJECT_PATH,
             (proxy, error)  => {
                 if (error) {
@@ -231,7 +231,7 @@ const SystemActions = new Lang.Class({
             });
     },
 
-    _updateOrientationLock: function() {
+    _updateOrientationLock() {
         let available = false;
         if (this._sensorProxy)
             available = this._sensorProxy.HasAccelerometer &&
@@ -242,7 +242,7 @@ const SystemActions = new Lang.Class({
         this.notify('can-lock-orientation');
     },
 
-    _updateOrientationLockIcon: function() {
+    _updateOrientationLockIcon() {
         let locked = this._orientationSettings.get_boolean('orientation-lock');
         let iconName = locked ? 'rotation-locked-symbolic'
                               : 'rotation-allowed-symbolic';
@@ -251,14 +251,14 @@ const SystemActions = new Lang.Class({
         this.notify('orientation-lock-icon');
     },
 
-    _sessionUpdated: function() {
+    _sessionUpdated() {
         this._updateLockScreen();
         this._updatePowerOff();
         this._updateSuspend();
         this._updateMultiUser();
     },
 
-    forceUpdate: function() {
+    forceUpdate() {
         // Whether those actions are available or not depends on both lockdown
         // settings and Polkit policy - we don't get change notifications for the
         // latter, so their value may be outdated; force an update now
@@ -266,7 +266,7 @@ const SystemActions = new Lang.Class({
         this._updateHaveSuspend();
     },
 
-    getMatchingActions: function(terms) {
+    getMatchingActions(terms) {
         // terms is a list of strings
         terms = terms.map((term) => { return term.toLowerCase(); });
 
@@ -279,15 +279,15 @@ const SystemActions = new Lang.Class({
         return results;
     },
 
-    getName: function(id) {
+    getName(id) {
         return this._actions.get(id).name;
     },
 
-    getIconName: function(id) {
+    getIconName(id) {
         return this._actions.get(id).iconName;
     },
 
-    activateAction: function(id) {
+    activateAction(id) {
         switch (id) {
             case POWER_OFF_ACTION_ID:
                 this.activatePowerOff();
@@ -317,7 +317,7 @@ const SystemActions = new Lang.Class({
         this.notify('can-lock-screen');
     },
 
-    _updateHaveShutdown: function() {
+    _updateHaveShutdown() {
         this._session.CanShutdownRemote((result, error) => {
             if (error)
                 return;
@@ -327,7 +327,7 @@ const SystemActions = new Lang.Class({
         });
     },
 
-    _updatePowerOff: function() {
+    _updatePowerOff() {
         let disabled = Main.sessionMode.isLocked ||
                        (Main.sessionMode.isGreeter &&
                         this._loginScreenSettings.get_boolean(DISABLE_RESTART_KEY));
@@ -335,7 +335,7 @@ const SystemActions = new Lang.Class({
         this.notify('can-power-off');
     },
 
-    _updateHaveSuspend: function() {
+    _updateHaveSuspend() {
         this._loginManager.canSuspend(
             (canSuspend, needsAuth) => {
                 this._canHaveSuspend = canSuspend;
@@ -344,7 +344,7 @@ const SystemActions = new Lang.Class({
             });
     },
 
-    _updateSuspend: function() {
+    _updateSuspend() {
         let disabled = (Main.sessionMode.isLocked &&
                         this._suspendNeedsAuth) ||
                        (Main.sessionMode.isGreeter &&
@@ -353,12 +353,12 @@ const SystemActions = new Lang.Class({
         this.notify('can-suspend');
     },
 
-    _updateMultiUser: function() {
+    _updateMultiUser() {
         this._updateLogout();
         this._updateSwitchUser();
     },
 
-    _updateSwitchUser: function() {
+    _updateSwitchUser() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
         let multiUser = this._userManager.can_switch() && this._userManager.has_multiple_users;
         let shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
@@ -370,7 +370,7 @@ const SystemActions = new Lang.Class({
         return visible;
     },
 
-    _updateLogout: function() {
+    _updateLogout() {
         let user = this._userManager.get_user(GLib.get_user_name());
 
         let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
@@ -388,7 +388,7 @@ const SystemActions = new Lang.Class({
         return visible;
     },
 
-    activateLockOrientation: function() {
+    activateLockOrientation() {
         if (!this._actions.get(LOCK_ORIENTATION_ACTION_ID).available)
             throw new Error('The lock-orientation action is not available!');
 
@@ -396,14 +396,14 @@ const SystemActions = new Lang.Class({
         this._orientationSettings.set_boolean('orientation-lock', !locked);
     },
 
-    activateLockScreen: function() {
+    activateLockScreen() {
         if (!this._actions.get(LOCK_SCREEN_ACTION_ID).available)
             throw new Error('The lock-screen action is not available!');
 
         Main.screenShield.lock(true);
     },
 
-    activateSwitchUser: function() {
+    activateSwitchUser() {
         if (!this._actions.get(SWITCH_USER_ACTION_ID).available)
             throw new Error('The switch-user action is not available!');
 
@@ -416,7 +416,7 @@ const SystemActions = new Lang.Class({
         });
     },
 
-    activateLogout: function() {
+    activateLogout() {
         if (!this._actions.get(LOGOUT_ACTION_ID).available)
             throw new Error('The logout action is not available!');
 
@@ -424,14 +424,14 @@ const SystemActions = new Lang.Class({
         this._session.LogoutRemote(0);
     },
 
-    activatePowerOff: function() {
+    activatePowerOff() {
         if (!this._actions.get(POWER_OFF_ACTION_ID).available)
             throw new Error('The power-off action is not available!');
 
         this._session.ShutdownRemote(0);
     },
 
-    activateSuspend: function() {
+    activateSuspend() {
         if (!this._actions.get(SUSPEND_ACTION_ID).available)
             throw new Error('The suspend action is not available!');
 

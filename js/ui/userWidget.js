@@ -22,7 +22,7 @@ var AVATAR_ICON_SIZE = 64;
 var Avatar = new Lang.Class({
     Name: 'Avatar',
 
-    _init: function(user, params) {
+    _init(user, params) {
         this._user = user;
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
@@ -41,12 +41,12 @@ var Avatar = new Lang.Class({
         themeContext.connect('notify::scale-factor', Lang.bind(this, this.update));
     },
 
-    setSensitive: function(sensitive) {
+    setSensitive(sensitive) {
         this.actor.can_focus = sensitive;
         this.actor.reactive = sensitive;
     },
 
-    update: function() {
+    update() {
         let iconFile = this._user.get_icon_file();
         if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
             iconFile = null;
@@ -70,7 +70,7 @@ var UserWidgetLabel = new Lang.Class({
     Name: 'UserWidgetLabel',
     Extends: St.Widget,
 
-    _init: function(user) {
+    _init(user) {
         this.parent({ layout_manager: new Clutter.BinLayout() });
 
         this._user = user;
@@ -97,7 +97,7 @@ var UserWidgetLabel = new Lang.Class({
         this.connect('destroy', Lang.bind(this, this._onDestroy));
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
             this._userLoadedId = 0;
@@ -109,7 +109,7 @@ var UserWidgetLabel = new Lang.Class({
         }
     },
 
-    vfunc_allocate: function(box, flags) {
+    vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
 
         let availWidth = box.x2 - box.x1;
@@ -136,11 +136,11 @@ var UserWidgetLabel = new Lang.Class({
         this._currentLabel.allocate(childBox, flags);
     },
 
-    vfunc_paint: function() {
+    vfunc_paint() {
         this._currentLabel.paint();
     },
 
-    _updateUser: function() {
+    _updateUser() {
         if (this._user.is_loaded) {
             this._realNameLabel.text = this._user.get_real_name();
             this._userNameLabel.text = this._user.get_user_name();
@@ -154,7 +154,7 @@ var UserWidgetLabel = new Lang.Class({
 var UserWidget = new Lang.Class({
     Name: 'UserWidget',
 
-    _init: function(user) {
+    _init(user) {
         this._user = user;
 
         this.actor = new St.BoxLayout({ style_class: 'user-widget',
@@ -175,7 +175,7 @@ var UserWidget = new Lang.Class({
         this._updateUser();
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
             this._userLoadedId = 0;
@@ -187,7 +187,7 @@ var UserWidget = new Lang.Class({
         }
     },
 
-    _updateUser: function() {
+    _updateUser() {
         this._avatar.update();
     }
 });

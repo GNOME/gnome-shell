@@ -25,7 +25,7 @@ var NetworkSecretDialog = new Lang.Class({
     Name: 'NetworkSecretDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(agent, requestId, connection, settingName, hints, contentOverride) {
+    _init(agent, requestId, connection, settingName, hints, contentOverride) {
         this.parent({ styleClass: 'prompt-dialog' });
 
         this._agent = agent;
@@ -123,7 +123,7 @@ var NetworkSecretDialog = new Lang.Class({
         this._updateOkButton();
     },
 
-    _updateOkButton: function() {
+    _updateOkButton() {
         let valid = true;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
@@ -134,7 +134,7 @@ var NetworkSecretDialog = new Lang.Class({
         this._okButton.button.can_focus = valid;
     },
 
-    _onOk: function() {
+    _onOk() {
         let valid = true;
         for (let i = 0; i < this._content.secrets.length; i++) {
             let secret = this._content.secrets[i];
@@ -150,12 +150,12 @@ var NetworkSecretDialog = new Lang.Class({
         // do nothing if not valid
     },
 
-    cancel: function() {
+    cancel() {
         this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
         this.close(global.get_current_time());
     },
 
-    _validateWpaPsk: function(secret) {
+    _validateWpaPsk(secret) {
         let value = secret.value;
         if (value.length == 64) {
             // must be composed of hexadecimal digits only
@@ -171,7 +171,7 @@ var NetworkSecretDialog = new Lang.Class({
         return (value.length >= 8 && value.length <= 63);
     },
 
-    _validateStaticWep: function(secret) {
+    _validateStaticWep(secret) {
         let value = secret.value;
         if (secret.wep_key_type == NM.WepKeyType.KEY) {
             if (value.length == 10 || value.length == 26) {
@@ -196,7 +196,7 @@ var NetworkSecretDialog = new Lang.Class({
         return true;
     },
 
-    _getWirelessSecrets: function(secrets, wirelessSetting) {
+    _getWirelessSecrets(secrets, wirelessSetting) {
         let wirelessSecuritySetting = this._connection.get_setting_wireless_security();
         switch (wirelessSecuritySetting.key_mgmt) {
         // First the easy ones
@@ -227,7 +227,7 @@ var NetworkSecretDialog = new Lang.Class({
         }
     },
 
-    _get8021xSecrets: function(secrets) {
+    _get8021xSecrets(secrets) {
         let ieee8021xSetting = this._connection.get_setting_802_1x();
         let phase2method;
 
@@ -256,7 +256,7 @@ var NetworkSecretDialog = new Lang.Class({
         }
     },
 
-    _getPPPoESecrets: function(secrets) {
+    _getPPPoESecrets(secrets) {
         let pppoeSetting = this._connection.get_setting_pppoe();
         secrets.push({ label: _("Username: "), key: 'username',
                        value: pppoeSetting.username || '', password: false });
@@ -266,7 +266,7 @@ var NetworkSecretDialog = new Lang.Class({
                        value: pppoeSetting.password || '', password: true });
     },
 
-    _getMobileSecrets: function(secrets, connectionType) {
+    _getMobileSecrets(secrets, connectionType) {
         let setting;
         if (connectionType == 'bluetooth')
             setting = this._connection.get_setting_cdma() || this._connection.get_setting_gsm();
@@ -276,7 +276,7 @@ var NetworkSecretDialog = new Lang.Class({
                        value: setting.value || '', password: true });
     },
 
-    _getContent: function() {
+    _getContent() {
         let connectionSetting = this._connection.get_setting_connection();
         let connectionType = connectionSetting.get_connection_type();
         let wirelessSetting;
@@ -332,7 +332,7 @@ var NetworkSecretDialog = new Lang.Class({
 var VPNRequestHandler = new Lang.Class({
     Name: 'VPNRequestHandler',
 
-    _init: function(agent, requestId, authHelper, serviceType, connection, hints, flags) {
+    _init(agent, requestId, authHelper, serviceType, connection, hints, flags) {
         this._agent = agent;
         this._requestId = requestId;
         this._connection = connection;
@@ -394,7 +394,7 @@ var VPNRequestHandler = new Lang.Class({
         }
     },
 
-    cancel: function(respond) {
+    cancel(respond) {
         if (respond)
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
 
@@ -410,7 +410,7 @@ var VPNRequestHandler = new Lang.Class({
         this.destroy();
     },
 
-    destroy: function() {
+    destroy() {
         if (this._destroyed)
             return;
 
@@ -424,7 +424,7 @@ var VPNRequestHandler = new Lang.Class({
         this._destroyed = true;
     },
 
-    _vpnChildFinished: function(pid, status, requestObj) {
+    _vpnChildFinished(pid, status, requestObj) {
         this._childWatch = 0;
         if (this._newStylePlugin) {
             // For new style plugin, all work is done in the async reading functions
@@ -445,7 +445,7 @@ var VPNRequestHandler = new Lang.Class({
         this.destroy();
     },
 
-    _vpnChildProcessLineOldStyle: function(line) {
+    _vpnChildProcessLineOldStyle(line) {
         if (this._previousLine != undefined) {
             // Two consecutive newlines mean that the child should be closed
             // (the actual newlines are eaten by Gio.DataInputStream)
@@ -463,7 +463,7 @@ var VPNRequestHandler = new Lang.Class({
         }
     },
 
-    _readStdoutOldStyle: function() {
+    _readStdoutOldStyle() {
         this._dataStdout.read_line_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(stream, result) {
             let [line, len] = this._dataStdout.read_line_finish_utf8(result);
 
@@ -480,7 +480,7 @@ var VPNRequestHandler = new Lang.Class({
         }));
     },
 
-    _readStdoutNewStyle: function() {
+    _readStdoutNewStyle() {
         this._dataStdout.fill_async(-1, GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(stream, result) {
             let cnt = this._dataStdout.fill_finish(result);
 
@@ -498,7 +498,7 @@ var VPNRequestHandler = new Lang.Class({
         }));
     },
 
-    _showNewStyleDialog: function() {
+    _showNewStyleDialog() {
         let keyfile = new GLib.KeyFile();
         let data;
         let contentOverride;
@@ -558,7 +558,7 @@ var VPNRequestHandler = new Lang.Class({
         }
     },
 
-    _writeConnection: function() {
+    _writeConnection() {
         let vpnSetting = this._connection.get_setting_vpn();
 
         try {
@@ -584,7 +584,7 @@ Signals.addSignalMethods(VPNRequestHandler.prototype);
 var NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
 
-    _init: function() {
+    _init() {
         this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent',
                                                 capabilities: NM.SecretAgentCapabilities.VPN_HINTS,
                                                 auto_register: false
@@ -612,7 +612,7 @@ var NetworkAgent = new Lang.Class({
         }
     },
 
-    enable: function() {
+    enable() {
         if (!this._native)
             return;
 
@@ -621,7 +621,7 @@ var NetworkAgent = new Lang.Class({
             this._native.register_async(null, null);
     },
 
-    disable: function() {
+    disable() {
         let requestId;
 
         for (requestId in this._dialogs)
@@ -644,7 +644,7 @@ var NetworkAgent = new Lang.Class({
             this._native.unregister_async(null, null);
     },
 
-    _showNotification: function(requestId, connection, settingName, hints, flags) {
+    _showNotification(requestId, connection, settingName, hints, flags) {
         let source = new MessageTray.Source(_("Network Manager"), 'network-transmit-receive');
         source.policy = new MessageTray.NotificationApplicationPolicy('gnome-network-panel');
 
@@ -704,14 +704,14 @@ var NetworkAgent = new Lang.Class({
         source.notify(notification);
     },
 
-    _newRequest:  function(agent, requestId, connection, settingName, hints, flags) {
+    _newRequest(agent, requestId, connection, settingName, hints, flags) {
         if (!(flags & NM.SecretAgentGetSecretsFlags.USER_REQUESTED))
             this._showNotification(requestId, connection, settingName, hints, flags);
         else
             this._handleRequest(requestId, connection, settingName, hints, flags);
     },
 
-    _handleRequest: function(requestId, connection, settingName, hints, flags) {
+    _handleRequest(requestId, connection, settingName, hints, flags) {
         if (settingName == 'vpn') {
             this._vpnRequest(requestId, connection, hints, flags);
             return;
@@ -725,7 +725,7 @@ var NetworkAgent = new Lang.Class({
         dialog.open(global.get_current_time());
     },
 
-    _cancelRequest: function(agent, requestId) {
+    _cancelRequest(agent, requestId) {
         if (this._dialogs[requestId]) {
             this._dialogs[requestId].close(global.get_current_time());
             this._dialogs[requestId].destroy();
@@ -736,7 +736,7 @@ var NetworkAgent = new Lang.Class({
         }
     },
 
-    _vpnRequest: function(requestId, connection, hints, flags) {
+    _vpnRequest(requestId, connection, hints, flags) {
         let vpnSetting = connection.get_setting_vpn();
         let serviceType = vpnSetting.service_type;
 
@@ -758,7 +758,7 @@ var NetworkAgent = new Lang.Class({
         this._vpnRequests[requestId] = vpnRequest;
     },
 
-    _buildVPNServiceCache: function() {
+    _buildVPNServiceCache() {
         if (this._vpnCacheBuilt)
             return;
 

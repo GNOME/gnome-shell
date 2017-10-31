@@ -62,7 +62,7 @@ const Realm = Gio.DBusProxy.makeProxyWrapper(RealmIface);
 var Manager = new Lang.Class({
     Name: 'Manager',
 
-    _init: function(parentActor) {
+    _init(parentActor) {
         this._aggregateProvider = Provider(Gio.DBus.system,
                                            'org.freedesktop.realmd',
                                            '/org/freedesktop/realmd',
@@ -76,7 +76,7 @@ var Manager = new Lang.Class({
                                         }));
     },
 
-    _reloadRealms: function() {
+    _reloadRealms() {
         let realmPaths = this._aggregateProvider.Realms;
 
         if (!realmPaths)
@@ -90,7 +90,7 @@ var Manager = new Lang.Class({
         }
     },
 
-    _reloadRealm: function(realm) {
+    _reloadRealm(realm) {
         if (!realm.Configured) {
             if (this._realms[realm.get_object_path()])
                 delete this._realms[realm.get_object_path()];
@@ -103,7 +103,7 @@ var Manager = new Lang.Class({
         this._updateLoginFormat();
     },
 
-    _onRealmLoaded: function(realm, error) {
+    _onRealmLoaded(realm, error) {
         if (error)
             return;
 
@@ -116,7 +116,7 @@ var Manager = new Lang.Class({
                                 }));
     },
 
-    _updateLoginFormat: function() {
+    _updateLoginFormat() {
         let newLoginFormat;
 
         for (let realmPath in this._realms) {
@@ -142,7 +142,7 @@ var Manager = new Lang.Class({
         return this._loginFormat;
     },
 
-    release: function() {
+    release() {
         Service(Gio.DBus.system,
                 'org.freedesktop.realmd',
                 '/org/freedesktop/realmd',

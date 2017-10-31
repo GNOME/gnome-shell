@@ -11,7 +11,7 @@ var Dialog = new Lang.Class({
     Name: 'Dialog',
     Extends: St.Widget,
 
-    _init: function (parentActor, styleClass) {
+    _init(parentActor, styleClass) {
         this.parent({ layout_manager: new Clutter.BinLayout() });
         this.connect('destroy', Lang.bind(this, this._onDestroy));
 
@@ -30,7 +30,7 @@ var Dialog = new Lang.Class({
         this._parentActor.add_child(this);
     },
 
-    _createDialog: function () {
+    _createDialog() {
         this._dialog = new St.BoxLayout({ style_class: 'modal-dialog',
                                           x_align:     Clutter.ActorAlign.CENTER,
                                           y_align:     Clutter.ActorAlign.CENTER,
@@ -56,13 +56,13 @@ var Dialog = new Lang.Class({
                            y_align: St.Align.START });
     },
 
-    _onDestroy: function () {
+    _onDestroy() {
         if (this._eventId != 0)
             this._parentActor.disconnect(this._eventId);
         this._eventId = 0;
     },
 
-    _modalEventHandler: function (actor, event) {
+    _modalEventHandler(actor, event) {
         if (event.type() == Clutter.EventType.KEY_PRESS) {
             this._pressedKey = event.get_key_symbol();
         } else if (event.type() == Clutter.EventType.KEY_RELEASE) {
@@ -88,7 +88,7 @@ var Dialog = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _setInitialKeyFocus: function(actor) {
+    _setInitialKeyFocus(actor) {
         if (this._initialKeyFocus)
             this._initialKeyFocus.disconnect(this._initialKeyFocusDestroyId);
 
@@ -104,11 +104,11 @@ var Dialog = new Lang.Class({
         return this._initialKeyFocus || this;
     },
 
-    addContent: function (actor) {
+    addContent(actor) {
         this.contentLayout.add (actor, { expand: true });
     },
 
-    addButton: function (buttonInfo) {
+    addButton(buttonInfo) {
         let { label, action, key } = buttonInfo;
         let isDefault = buttonInfo['default'];
         let keys;
@@ -145,7 +145,7 @@ var Dialog = new Lang.Class({
         return button;
     },
 
-    clearButtons: function () {
+    clearButtons() {
         this.buttonLayout.destroy_all_children();
         this._buttonKeys = {};
     },
@@ -173,7 +173,7 @@ var MessageDialogContent = new Lang.Class({
                                          null)
     },
 
-    _init: function(params) {
+    _init(params) {
         this._icon = new St.Icon({ y_align: Clutter.ActorAlign.START });
         this._title = new St.Label({ style_class: 'headline' });
         this._subtitle = new St.Label();
@@ -243,7 +243,7 @@ var MessageDialogContent = new Lang.Class({
         this.notify(prop);
     },
 
-    insertBeforeBody: function(actor) {
+    insertBeforeBody(actor) {
         this.messageBox.insert_child_below(actor, this._body);
     }
 });

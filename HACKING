@@ -136,13 +136,13 @@ GObjects, although this feature isn't used very often in the Shell itself.
         Name: 'IconLabelMenuItem',
         Extends: PopupMenu.PopupMenuBaseItem,
 
-        _init: function(icon, label) {
+        _init(icon, label) {
             this.parent({ reactive: false });
             this.actor.add_child(icon);
             this.actor.add_child(label);
         },
 
-        open: function() {
+        open() {
             log("menu opened!");
         }
     });
@@ -173,15 +173,15 @@ you to inherit from a type to use it, you can do so:
         Name: 'MyClutterActor',
         Extends: Clutter.Actor,
 
-        vfunc_get_preferred_width: function(actor, forHeight) {
+        vfunc_get_preferred_width(actor, forHeight) {
              return [100, 100];
         },
 
-        vfunc_get_preferred_height: function(actor, forWidth) {
+        vfunc_get_preferred_height(actor, forWidth) {
              return [100, 100];
         },
 
-        vfunc_paint: function(actor) {
+        vfunc_paint(actor) {
              let alloc = this.get_allocation_box();
              Cogl.set_source_color4ub(255, 0, 0, 255);
              Cogl.rectangle(alloc.x1, alloc.y1,
@@ -218,14 +218,14 @@ the actor itself:
     var MyClass = new Lang.Class({
         Name: 'MyClass',
 
-        _init: function() {
+        _init() {
             this.actor = new St.Button({ text: "This is a button" });
             this.actor._delegate = this;
 
             this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         },
 
-        _onClicked: function(actor) {
+        _onClicked(actor) {
             actor.set_label("You clicked the button!");
         }
     });
@@ -265,12 +265,12 @@ prototype:
     const FnorbLib = imports.fborbLib;
 
     var MyClass = new Lang.Class({
-        _init: function() {
+        _init() {
             let fnorb = new FnorbLib.Fnorb();
             fnorb.connect('frobate', Lang.bind(this, this._onFnorbFrobate));
         },
 
-        _onFnorbFrobate: function(fnorb) {
+        _onFnorbFrobate(fnorb) {
             this._updateFnorb();
         }
     });
@@ -309,7 +309,7 @@ property.
     var MyClass = new Lang.Class({
         Name: 'MyClass',
 
-        _init: function() {
+        _init() {
             this.actor = new St.BoxLayout();
             this._position = 0;
         },

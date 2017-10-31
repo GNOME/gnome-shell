@@ -102,7 +102,7 @@ function ensureActiveConnectionProps(active, client) {
 var NMConnectionItem = new Lang.Class({
     Name: 'NMConnectionItem',
 
-    _init: function(section, connection) {
+    _init(section, connection) {
         this._section = section;
         this._connection = connection;
         this._activeConnection = null;
@@ -112,7 +112,7 @@ var NMConnectionItem = new Lang.Class({
         this._sync();
     },
 
-    _buildUI: function() {
+    _buildUI() {
         this.labelItem = new PopupMenu.PopupMenuItem('');
         this.labelItem.connect('activate', Lang.bind(this, this._toggle));
 
@@ -120,12 +120,12 @@ var NMConnectionItem = new Lang.Class({
         this.radioItem.connect('activate', Lang.bind(this, this._activate));
     },
 
-    destroy: function() {
+    destroy() {
         this.labelItem.destroy();
         this.radioItem.destroy();
     },
 
-    updateForConnection: function(connection) {
+    updateForConnection(connection) {
         // connection should always be the same object
         // (and object path) as this._connection, but
         // this can be false if NetworkManager was restarted
@@ -138,25 +138,25 @@ var NMConnectionItem = new Lang.Class({
         this.emit('name-changed');
     },
 
-    getName: function() {
+    getName() {
         return this._connection.get_id();
     },
 
-    isActive: function() {
+    isActive() {
         if (this._activeConnection == null)
             return false;
 
         return this._activeConnection.state <= NM.ActiveConnectionState.ACTIVATED;
     },
 
-    _sync: function() {
+    _sync() {
         let isActive = this.isActive();
         this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
         this.radioItem.setOrnament(isActive ? PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
         this.emit('icon-changed');
     },
 
-    _toggle: function() {
+    _toggle() {
         if (this._activeConnection == null)
             this._section.activateConnection(this._connection);
         else
@@ -165,18 +165,18 @@ var NMConnectionItem = new Lang.Class({
         this._sync();
     },
 
-    _activate: function() {
+    _activate() {
         if (this._activeConnection == null)
             this._section.activateConnection(this._connection);
 
         this._sync();
     },
 
-    _connectionStateChanged: function(ac, newstate, reason) {
+    _connectionStateChanged(ac, newstate, reason) {
         this._sync();
     },
 
-    setActiveConnection: function(activeConnection) {
+    setActiveConnection(activeConnection) {
         if (this._activeConnectionChangedId > 0) {
             this._activeConnection.disconnect(this._activeConnectionChangedId);
             this._activeConnectionChangedId = 0;
@@ -197,7 +197,7 @@ var NMConnectionSection = new Lang.Class({
     Name: 'NMConnectionSection',
     Abstract: true,
 
-    _init: function(client) {
+    _init(client) {
         this._client = client;
 
         this._connectionItems = new Map();
@@ -213,7 +213,7 @@ var NMConnectionSection = new Lang.Class({
         this._notifyConnectivityId = this._client.connect('notify::connectivity', Lang.bind(this, this._iconChanged));
     },
 
-    destroy: function() {
+    destroy() {
         if (this._notifyConnectivityId != 0) {
             this._client.disconnect(this._notifyConnectivityId);
             this._notifyConnectivityId = 0;
@@ -222,12 +222,12 @@ var NMConnectionSection = new Lang.Class({
         this.item.destroy();
     },
 
-    _iconChanged: function() {
+    _iconChanged() {
         this._sync();
         this.emit('icon-changed');
     },
 
-    _sync: function() {
+    _sync() {
         let nItems = this._connectionItems.size;
 
         this._radioSection.actor.visible = (nItems > 1);
@@ -237,27 +237,27 @@ var NMConnectionSection = new Lang.Class({
         this.item.icon.icon_name = this._getMenuIcon();
     },
 
-    _getMenuIcon: function() {
+    _getMenuIcon() {
         return this.getIndicatorIcon();
     },
 
-    getConnectLabel: function() {
+    getConnectLabel() {
         return _("Connect");
     },
 
-    _connectionValid: function(connection) {
+    _connectionValid(connection) {
         return true;
     },
 
-    _connectionSortFunction: function(one, two) {
+    _connectionSortFunction(one, two) {
         return GLib.utf8_collate(one.get_id(), two.get_id());
     },
 
-    _makeConnectionItem: function(connection) {
+    _makeConnectionItem(connection) {
         return new NMConnectionItem(this, connection);
     },
 
-    checkConnection: function(connection) {
+    checkConnection(connection) {
         if (!this._connectionValid(connection))
             return;
 
@@ -277,7 +277,7 @@ var NMConnectionSection = new Lang.Class({
             this._addConnection(connection);
     },
 
-    _updateForConnection: function(item, connection) {
+    _updateForConnection(item, connection) {
         let pos = this._connections.indexOf(connection);
 
         this._connections.splice(pos, 1);
@@ -288,7 +288,7 @@ var NMConnectionSection = new Lang.Class({
         item.updateForConnection(connection);
     },
 
-    _addConnection: function(connection) {
+    _addConnection(connection) {
         let item = this._makeConnectionItem(connection);
         if (!item)
             return;
@@ -308,7 +308,7 @@ var NMConnectionSection = new Lang.Class({
         this._sync();
     },
 
-    removeConnection: function(connection) {
+    removeConnection(connection) {
         let uuid = connection.get_uuid();
         let item = this._connectionItems.get(uuid);
         if (item == undefined)
@@ -330,7 +330,7 @@ var NMConnectionDevice = new Lang.Class({
     Extends: NMConnectionSection,
     Abstract: true,
 
-    _init: function(client, device) {
+    _init(client, device) {
         this.parent(client);
         this._device = device;
         this._description = '';
@@ -342,19 +342,19 @@ var NMConnectionDevice = new Lang.Class({
         this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
     },
 
-    _canReachInternet: function() {
+    _canReachInternet() {
         if (this._client.primary_connection != this._device.active_connection)
             return true;
 
         return this._client.connectivity == NM.ConnectivityState.FULL;
     },
 
-    _autoConnect: function() {
+    _autoConnect() {
         let connection = new NM.SimpleConnection();
         this._client.add_and_activate_connection_async(connection, this._device, null, null, null);
     },
 
-    destroy: function() {
+    destroy() {
         if (this._stateChangedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._stateChangedId);
             this._stateChangedId = 0;
@@ -367,7 +367,7 @@ var NMConnectionDevice = new Lang.Class({
         this.parent();
     },
 
-    _activeConnectionChanged: function() {
+    _activeConnectionChanged() {
         if (this._activeConnection) {
             let item = this._connectionItems.get(this._activeConnection.connection.get_uuid());
             item.setActiveConnection(null);
@@ -377,7 +377,7 @@ var NMConnectionDevice = new Lang.Class({
         this._sync();
     },
 
-    _deviceStateChanged: function(device, newstate, oldstate, reason) {
+    _deviceStateChanged(device, newstate, oldstate, reason) {
         if (newstate == oldstate) {
             log('device emitted state-changed without actually changing state');
             return;
@@ -394,28 +394,28 @@ var NMConnectionDevice = new Lang.Class({
         this._sync();
     },
 
-    _connectionValid: function(connection) {
+    _connectionValid(connection) {
         return this._device.connection_valid(connection);
     },
 
-    activateConnection: function(connection) {
+    activateConnection(connection) {
         this._client.activate_connection_async(connection, this._device, null, null, null);
     },
 
-    deactivateConnection: function(activeConnection) {
+    deactivateConnection(activeConnection) {
         this._device.disconnect(null);
     },
 
-    setDeviceDescription: function(desc) {
+    setDeviceDescription(desc) {
         this._description = desc;
         this._sync();
     },
 
-    _getDescription: function() {
+    _getDescription() {
         return this._description;
     },
 
-    _sync: function() {
+    _sync() {
         let nItems = this._connectionItems.size;
         this._autoConnectItem.actor.visible = (nItems == 0);
         this._deactivateItem.actor.visible = this._device.state > NM.DeviceState.DISCONNECTED;
@@ -433,7 +433,7 @@ var NMConnectionDevice = new Lang.Class({
         this.parent();
     },
 
-    _getStatus: function() {
+    _getStatus() {
         if (!this._device)
             return '';
 
@@ -489,25 +489,25 @@ var NMDeviceWired = new Lang.Class({
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WIRED,
 
-    _init: function(client, device) {
+    _init(client, device) {
         this.parent(client, device);
 
         this.item.menu.addSettingsAction(_("Wired Settings"), 'gnome-network-panel.desktop');
     },
 
-    _hasCarrier: function() {
+    _hasCarrier() {
         if (this._device instanceof NM.DeviceEthernet)
             return this._device.carrier;
         else
             return true;
     },
 
-    _sync: function() {
+    _sync() {
         this.item.actor.visible = this._hasCarrier();
         this.parent();
     },
 
-    getIndicatorIcon: function() {
+    getIndicatorIcon() {
         if (this._device.active_connection) {
             let state = this._device.active_connection.state;
 
@@ -531,7 +531,7 @@ var NMDeviceModem = new Lang.Class({
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
 
-    _init: function(client, device) {
+    _init(client, device) {
         this.parent(client, device);
 
         this.item.menu.addSettingsAction(_("Mobile Broadband Settings"), 'gnome-network-panel.desktop');
@@ -556,12 +556,12 @@ var NMDeviceModem = new Lang.Class({
         }
     },
 
-    _autoConnect: function() {
+    _autoConnect() {
         Util.spawn(['gnome-control-center', 'network',
                     'connect-3g', this._device.get_path()]);
     },
 
-    destroy: function() {
+    destroy() {
         if (this._operatorNameId) {
             this._mobileDevice.disconnect(this._operatorNameId);
             this._operatorNameId = 0;
@@ -574,7 +574,7 @@ var NMDeviceModem = new Lang.Class({
         this.parent();
     },
 
-    _getStatus: function() {
+    _getStatus() {
         if (!this._client.wwan_hardware_enabled)
             /* Translators: %s is a network identifier */
             return _("%s Hardware Disabled").format(this._getDescription());
@@ -589,7 +589,7 @@ var NMDeviceModem = new Lang.Class({
             return this.parent();
     },
 
-    getIndicatorIcon: function() {
+    getIndicatorIcon() {
         if (this._device.active_connection) {
             if (this._device.active_connection.state == NM.ActiveConnectionState.ACTIVATING)
                 return 'network-cellular-acquiring-symbolic';
@@ -600,7 +600,7 @@ var NMDeviceModem = new Lang.Class({
         }
     },
 
-    _getSignalIcon: function() {
+    _getSignalIcon() {
         return 'network-cellular-signal-' + signalToIcon(this._mobileDevice.signal_quality) + '-symbolic';
     },
 });
@@ -610,21 +610,21 @@ var NMDeviceBluetooth = new Lang.Class({
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
 
-    _init: function(client, device) {
+    _init(client, device) {
         this.parent(client, device);
 
         this.item.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-network-panel.desktop');
     },
 
-    _getDescription: function() {
+    _getDescription() {
         return this._device.name;
     },
 
-    getConnectLabel: function() {
+    getConnectLabel() {
         return _("Connect to Internet");
     },
 
-    getIndicatorIcon: function() {
+    getIndicatorIcon() {
         if (this._device.active_connection) {
             let state = this._device.active_connection.state;
             if (state == NM.ActiveConnectionState.ACTIVATING)
@@ -642,7 +642,7 @@ var NMDeviceBluetooth = new Lang.Class({
 var NMWirelessDialogItem = new Lang.Class({
     Name: 'NMWirelessDialogItem',
 
-    _init: function(network) {
+    _init(network) {
         this._network = network;
         this._ap = network.accessPoints[0];
 
@@ -682,20 +682,20 @@ var NMWirelessDialogItem = new Lang.Class({
         this._sync();
     },
 
-    _sync: function() {
+    _sync() {
         this._signalIcon.icon_name = this._getSignalIcon();
     },
 
-    updateBestAP: function(ap) {
+    updateBestAP(ap) {
         this._ap = ap;
         this._sync();
     },
 
-    setActive: function(isActive) {
+    setActive(isActive) {
         this._selectedIcon.opacity = isActive ? 255 : 0;
     },
 
-    _getSignalIcon: function() {
+    _getSignalIcon() {
         if (this._ap.mode == NM80211Mode.ADHOC)
             return 'network-workgroup-symbolic';
         else
@@ -708,7 +708,7 @@ var NMWirelessDialog = new Lang.Class({
     Name: 'NMWirelessDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(client, device) {
+    _init(client, device) {
         this.parent({ styleClass: 'nm-dialog' });
 
         this._client = client;
@@ -757,7 +757,7 @@ var NMWirelessDialog = new Lang.Class({
         });
     },
 
-    destroy: function() {
+    destroy() {
         if (this._apAddedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._apAddedId);
             this._apAddedId = 0;
@@ -787,12 +787,12 @@ var NMWirelessDialog = new Lang.Class({
         this.parent();
     },
 
-    _onScanTimeout: function() {
+    _onScanTimeout() {
         this._device.request_scan_async(null, null);
         return GLib.SOURCE_CONTINUE;
     },
 
-    _activeApChanged: function() {
+    _activeApChanged() {
         if (this._activeNetwork)
             this._activeNetwork.item.setActive(false);
 
@@ -808,13 +808,13 @@ var NMWirelessDialog = new Lang.Class({
         this._updateSensitivity();
     },
 
-    _updateSensitivity: function() {
+    _updateSensitivity() {
         let connectSensitive = this._client.wireless_enabled && this._selectedNetwork && (this._selectedNetwork != this._activeNetwork);
         this._connectButton.reactive = connectSensitive;
         this._connectButton.can_focus = connectSensitive;
     },
 
-    _syncView: function() {
+    _syncView() {
         if (this._rfkill.airplaneMode) {
             this._airplaneBox.show();
 
@@ -849,7 +849,7 @@ var NMWirelessDialog = new Lang.Class({
             this._noNetworksSpinner.stop();
     },
 
-    _buildLayout: function() {
+    _buildLayout() {
         let headline = new St.BoxLayout({ style_class: 'nm-dialog-header-hbox' });
 
         let icon = new St.Icon({ style_class: 'nm-dialog-header-icon',
@@ -929,7 +929,7 @@ var NMWirelessDialog = new Lang.Class({
                                                key: Clutter.Return });
     },
 
-    _connect: function() {
+    _connect() {
         let network = this._selectedNetwork;
         if (network.connections.length > 0) {
             let connection = network.connections[0];
@@ -951,7 +951,7 @@ var NMWirelessDialog = new Lang.Class({
         this.close();
     },
 
-    _notifySsidCb: function(accessPoint) {
+    _notifySsidCb(accessPoint) {
         if (accessPoint.get_ssid() != null) {
             accessPoint.disconnect(accessPoint._notifySsidId);
             accessPoint._notifySsidId = 0;
@@ -959,7 +959,7 @@ var NMWirelessDialog = new Lang.Class({
         }
     },
 
-    _getApSecurityType: function(accessPoint) {
+    _getApSecurityType(accessPoint) {
         if (accessPoint._secType)
             return accessPoint._secType;
 
@@ -990,7 +990,7 @@ var NMWirelessDialog = new Lang.Class({
         return type;
     },
 
-    _networkSortFunction: function(one, two) {
+    _networkSortFunction(one, two) {
         let oneHasConnection = one.connections.length != 0;
         let twoHasConnection = two.connections.length != 0;
 
@@ -1023,7 +1023,7 @@ var NMWirelessDialog = new Lang.Class({
         return GLib.utf8_collate(one.ssidText, two.ssidText);
     },
 
-    _networkCompare: function(network, accessPoint) {
+    _networkCompare(network, accessPoint) {
         if (!network.ssid.equal (accessPoint.get_ssid()))
             return false;
         if (network.mode != accessPoint.mode)
@@ -1034,7 +1034,7 @@ var NMWirelessDialog = new Lang.Class({
         return true;
     },
 
-    _findExistingNetwork: function(accessPoint) {
+    _findExistingNetwork(accessPoint) {
         for (let i = 0; i < this._networks.length; i++) {
             let network = this._networks[i];
             for (let j = 0; j < network.accessPoints.length; j++) {
@@ -1046,7 +1046,7 @@ var NMWirelessDialog = new Lang.Class({
         return null;
     },
 
-    _findNetwork: function(accessPoint) {
+    _findNetwork(accessPoint) {
         if (accessPoint.get_ssid() == null)
             return -1;
 
@@ -1057,7 +1057,7 @@ var NMWirelessDialog = new Lang.Class({
         return -1;
     },
 
-    _checkConnections: function(network, accessPoint) {
+    _checkConnections(network, accessPoint) {
         this._connections.forEach(function(connection) {
             if (accessPoint.connection_valid(connection) &&
                 network.connections.indexOf(connection) == -1) {
@@ -1066,7 +1066,7 @@ var NMWirelessDialog = new Lang.Class({
         });
     },
 
-    _accessPointAdded: function(device, accessPoint) {
+    _accessPointAdded(device, accessPoint) {
         if (accessPoint.get_ssid() == null) {
             // This access point is not visible yet
             // Wait for it to get a ssid
@@ -1110,7 +1110,7 @@ var NMWirelessDialog = new Lang.Class({
         this._syncView();
     },
 
-    _accessPointRemoved: function(device, accessPoint) {
+    _accessPointRemoved(device, accessPoint) {
         let res = this._findExistingNetwork(accessPoint);
 
         if (res == null) {
@@ -1132,7 +1132,7 @@ var NMWirelessDialog = new Lang.Class({
         this._syncView();
     },
 
-    _resortItems: function() {
+    _resortItems() {
         let adjustment = this._scrollView.vscroll.adjustment;
         let scrollValue = adjustment.value;
 
@@ -1144,7 +1144,7 @@ var NMWirelessDialog = new Lang.Class({
         adjustment.value = scrollValue;
     },
 
-    _selectNetwork: function(network) {
+    _selectNetwork(network) {
         if (this._selectedNetwork)
             this._selectedNetwork.item.actor.remove_style_pseudo_class('selected');
 
@@ -1155,7 +1155,7 @@ var NMWirelessDialog = new Lang.Class({
             this._selectedNetwork.item.actor.add_style_pseudo_class('selected');
     },
 
-    _createNetworkItem: function(network) {
+    _createNetworkItem(network) {
         network.item = new NMWirelessDialogItem(network);
         network.item.setActive(network == this._selectedNetwork);
         network.item.connect('selected', Lang.bind(this, function() {
@@ -1169,7 +1169,7 @@ var NMDeviceWireless = new Lang.Class({
     Name: 'NMDeviceWireless',
     category: NMConnectionCategory.WIRELESS,
 
-    _init: function(client, device) {
+    _init(client, device) {
         this._client = client;
         this._device = device;
 
@@ -1193,12 +1193,12 @@ var NMDeviceWireless = new Lang.Class({
         this._sync();
     },
 
-    _iconChanged: function() {
+    _iconChanged() {
         this._sync();
         this.emit('icon-changed');
     },
 
-    destroy: function() {
+    destroy() {
         if (this._activeApChangedId) {
             GObject.Object.prototype.disconnect.call(this._device, this._activeApChangedId);
             this._activeApChangedId = 0;
@@ -1231,7 +1231,7 @@ var NMDeviceWireless = new Lang.Class({
         this.item.destroy();
     },
 
-    _deviceStateChanged: function(device, newstate, oldstate, reason) {
+    _deviceStateChanged(device, newstate, oldstate, reason) {
         if (newstate == oldstate) {
             log('device emitted state-changed without actually changing state');
             return;
@@ -1248,26 +1248,26 @@ var NMDeviceWireless = new Lang.Class({
         this._sync();
     },
 
-    _toggleWifi: function() {
+    _toggleWifi() {
         this._client.wireless_enabled = !this._client.wireless_enabled;
     },
 
-    _showDialog: function() {
+    _showDialog() {
         this._dialog = new NMWirelessDialog(this._client, this._device);
         this._dialog.connect('closed', Lang.bind(this, this._dialogClosed));
         this._dialog.open();
     },
 
-    _dialogClosed: function() {
+    _dialogClosed() {
         this._dialog.destroy();
         this._dialog = null;
     },
 
-    _strengthChanged: function() {
+    _strengthChanged() {
         this._iconChanged();
     },
 
-    _activeApChanged: function() {
+    _activeApChanged() {
         if (this._activeAccessPoint) {
             this._activeAccessPoint.disconnect(this._strengthChangedId);
             this._strengthChangedId = 0;
@@ -1283,7 +1283,7 @@ var NMDeviceWireless = new Lang.Class({
         this._sync();
     },
 
-    _sync: function() {
+    _sync() {
         this._toggleItem.label.text = this._client.wireless_enabled ? _("Turn Off") : _("Turn On");
         this._toggleItem.actor.visible = this._client.wireless_hardware_enabled;
 
@@ -1291,12 +1291,12 @@ var NMDeviceWireless = new Lang.Class({
         this.item.label.text = this._getStatus();
     },
 
-    setDeviceDescription: function(desc) {
+    setDeviceDescription(desc) {
         this._description = desc;
         this._sync();
     },
 
-    _getStatus: function() {
+    _getStatus() {
         let ap = this._device.active_access_point;
 
         if (this._isHotSpotMaster())
@@ -1321,21 +1321,21 @@ var NMDeviceWireless = new Lang.Class({
             return '';
     },
 
-    _getMenuIcon: function() {
+    _getMenuIcon() {
         if (this._device.active_connection)
             return this.getIndicatorIcon();
         else
             return 'network-wireless-signal-none-symbolic';
     },
 
-    _canReachInternet: function() {
+    _canReachInternet() {
         if (this._client.primary_connection != this._device.active_connection)
             return true;
 
         return this._client.connectivity == NM.ConnectivityState.FULL;
     },
 
-    _isHotSpotMaster: function() {
+    _isHotSpotMaster() {
         if (!this._device.active_connection)
             return false;
 
@@ -1350,7 +1350,7 @@ var NMDeviceWireless = new Lang.Class({
         return ip4config.get_method() == NM.SETTING_IP4_CONFIG_METHOD_SHARED;
     },
 
-    getIndicatorIcon: function() {
+    getIndicatorIcon() {
         if (this._device.state < NM.DeviceState.PREPARE)
             return 'network-wireless-disconnected-symbolic';
         if (this._device.state < NM.DeviceState.ACTIVATED)
@@ -1382,14 +1382,14 @@ var NMVpnConnectionItem = new Lang.Class({
     Name: 'NMVpnConnectionItem',
     Extends: NMConnectionItem,
 
-    isActive: function() {
+    isActive() {
         if (this._activeConnection == null)
             return false;
 
         return this._activeConnection.vpn_state != NM.VpnConnectionState.DISCONNECTED;
     },
 
-    _buildUI: function() {
+    _buildUI() {
         this.labelItem = new PopupMenu.PopupMenuItem('');
         this.labelItem.connect('activate', Lang.bind(this, this._toggle));
 
@@ -1397,7 +1397,7 @@ var NMVpnConnectionItem = new Lang.Class({
         this.radioItem.connect('toggled', Lang.bind(this, this._toggle));
     },
 
-    _sync: function() {
+    _sync() {
         let isActive = this.isActive();
         this.labelItem.label.text = isActive ? _("Turn Off") : this._section.getConnectLabel();
         this.radioItem.setToggleState(isActive);
@@ -1405,7 +1405,7 @@ var NMVpnConnectionItem = new Lang.Class({
         this.emit('icon-changed');
     },
 
-    _getStatus: function() {
+    _getStatus() {
         if (this._activeConnection == null)
             return null;
 
@@ -1427,7 +1427,7 @@ var NMVpnConnectionItem = new Lang.Class({
         }
     },
 
-    _connectionStateChanged: function(ac, newstate, reason) {
+    _connectionStateChanged(ac, newstate, reason) {
         if (newstate == NM.VpnConnectionState.FAILED &&
             reason != NM.VpnConnectionStateReason.NO_SECRETS) {
             // FIXME: if we ever want to show something based on reason,
@@ -1440,7 +1440,7 @@ var NMVpnConnectionItem = new Lang.Class({
         this.parent();
     },
 
-    setActiveConnection: function(activeConnection) {
+    setActiveConnection(activeConnection) {
         if (this._activeConnectionChangedId > 0) {
             this._activeConnection.disconnect(this._activeConnectionChangedId);
             this._activeConnectionChangedId = 0;
@@ -1455,7 +1455,7 @@ var NMVpnConnectionItem = new Lang.Class({
         this._sync();
     },
 
-    getIndicatorIcon: function() {
+    getIndicatorIcon() {
         if (this._activeConnection) {
             if (this._activeConnection.vpn_state < NM.VpnConnectionState.ACTIVATED)
                 return 'network-vpn-acquiring-symbolic';
@@ -1472,7 +1472,7 @@ var NMVpnSection = new Lang.Class({
     Extends: NMConnectionSection,
     category: NMConnectionCategory.VPN,
 
-    _init: function(client) {
+    _init(client) {
         this.parent(client);
 
         this.item.menu.addSettingsAction(_("VPN Settings"), 'gnome-network-panel.desktop');
@@ -1480,18 +1480,18 @@ var NMVpnSection = new Lang.Class({
         this._sync();
     },
 
-    _sync: function() {
+    _sync() {
         let nItems = this._connectionItems.size;
         this.item.actor.visible = (nItems > 0);
 
         this.parent();
     },
 
-    _getDescription: function() {
+    _getDescription() {
         return _("VPN");
     },
 
-    _getStatus: function() {
+    _getStatus() {
         let values = this._connectionItems.values();
         for (let item of values) {
             if (item.isActive())
@@ -1501,19 +1501,19 @@ var NMVpnSection = new Lang.Class({
         return _("VPN Off");
     },
 
-    _getMenuIcon: function() {
+    _getMenuIcon() {
         return this.getIndicatorIcon() || 'network-vpn-symbolic';
     },
 
-    activateConnection: function(connection) {
+    activateConnection(connection) {
         this._client.activate_connection_async(connection, null, null, null, null);
     },
 
-    deactivateConnection: function(activeConnection) {
+    deactivateConnection(activeConnection) {
         this._client.deactivate_connection(activeConnection, null);
     },
 
-    setActiveConnections: function(vpnConnections) {
+    setActiveConnections(vpnConnections) {
         let connections = this._connectionItems.values();
         for (let item of connections) {
             item.setActiveConnection(null);
@@ -1526,11 +1526,11 @@ var NMVpnSection = new Lang.Class({
         }));
     },
 
-    _makeConnectionItem: function(connection) {
+    _makeConnectionItem(connection) {
         return new NMVpnConnectionItem(this, connection);
     },
 
-    getIndicatorIcon: function() {
+    getIndicatorIcon() {
         let items = this._connectionItems.values();
         for (let item of items) {
             let icon = item.getIndicatorIcon();
@@ -1546,7 +1546,7 @@ var DeviceCategory = new Lang.Class({
     Name: 'DeviceCategory',
     Extends: PopupMenu.PopupMenuSection,
 
-    _init: function(category) {
+    _init(category) {
         this.parent();
 
         this._category = category;
@@ -1568,7 +1568,7 @@ var DeviceCategory = new Lang.Class({
 
     },
 
-    _sync: function() {
+    _sync() {
         let nDevices = this.section.box.get_children().reduce(
             function(prev, child) {
                 return prev + (child.visible ? 1 : 0);
@@ -1579,7 +1579,7 @@ var DeviceCategory = new Lang.Class({
         this.section.actor.visible = !shouldSummarize;
     },
 
-    _getSummaryIcon: function() {
+    _getSummaryIcon() {
         switch(this._category) {
             case NMConnectionCategory.WIRED:
                 return 'network-wired-symbolic';
@@ -1590,7 +1590,7 @@ var DeviceCategory = new Lang.Class({
         return '';
     },
 
-    _getSummaryLabel: function(nDevices) {
+    _getSummaryLabel(nDevices) {
         switch(this._category) {
             case NMConnectionCategory.WIRED:
                 return ngettext("%s Wired Connection",
@@ -1613,7 +1613,7 @@ var NMApplet = new Lang.Class({
     Name: 'NMApplet',
     Extends: PanelMenu.SystemIndicator,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this._primaryIndicator = this._addIndicator();
@@ -1638,7 +1638,7 @@ var NMApplet = new Lang.Class({
         NM.Client.new_async(null, Lang.bind(this, this._clientGot));
     },
 
-    _clientGot: function(obj, result) {
+    _clientGot(obj, result) {
         this._client = NM.Client.new_finish(result);
 
         this._activeConnections = [ ];
@@ -1689,12 +1689,12 @@ var NMApplet = new Lang.Class({
         this._sessionUpdated();
     },
 
-    _sessionUpdated: function() {
+    _sessionUpdated() {
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         this.menu.setSensitive(sensitive);
     },
 
-    _ensureSource: function() {
+    _ensureSource() {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Network Manager"),
                                                   'network-transmit-receive');
@@ -1707,7 +1707,7 @@ var NMApplet = new Lang.Class({
         }
     },
 
-    _readDevices: function() {
+    _readDevices() {
         let devices = this._client.get_devices() || [ ];
         for (let i = 0; i < devices.length; ++i) {
             this._deviceAdded(this._client, devices[i], true);
@@ -1715,7 +1715,7 @@ var NMApplet = new Lang.Class({
         this._syncDeviceNames();
     },
 
-    _notify: function(iconName, title, text, urgency) {
+    _notify(iconName, title, text, urgency) {
         if (this._notification)
             this._notification.destroy();
 
@@ -1731,7 +1731,7 @@ var NMApplet = new Lang.Class({
         this._source.notify(this._notification);
     },
 
-    _onActivationFailed: function(device, reason) {
+    _onActivationFailed(device, reason) {
         // XXX: nm-applet has no special text depending on reason
         // but I'm not sure of this generic message
         this._notify('network-error-symbolic',
@@ -1740,7 +1740,7 @@ var NMApplet = new Lang.Class({
                      MessageTray.Urgency.HIGH);
     },
 
-    _syncDeviceNames: function() {
+    _syncDeviceNames() {
         let names = NM.Device.disambiguate_names(this._nmDevices);
         for (let i = 0; i < this._nmDevices.length; i++) {
             let device = this._nmDevices[i];
@@ -1750,7 +1750,7 @@ var NMApplet = new Lang.Class({
         }
     },
 
-    _deviceAdded: function(client, device, skipSyncDeviceNames) {
+    _deviceAdded(client, device, skipSyncDeviceNames) {
         if (device._delegate) {
             // already seen, not adding again
             return;
@@ -1774,7 +1774,7 @@ var NMApplet = new Lang.Class({
         }
     },
 
-    _addDeviceWrapper: function(wrapper) {
+    _addDeviceWrapper(wrapper) {
         wrapper._activationFailedId = wrapper.connect('activation-failed',
                                                       Lang.bind(this, this._onActivationFailed));
 
@@ -1785,7 +1785,7 @@ var NMApplet = new Lang.Class({
         devices.push(wrapper);
     },
 
-    _deviceRemoved: function(client, device) {
+    _deviceRemoved(client, device) {
         let pos = this._nmDevices.indexOf(device);
         if (pos != -1) {
             this._nmDevices.splice(pos, 1);
@@ -1801,7 +1801,7 @@ var NMApplet = new Lang.Class({
         this._removeDeviceWrapper(wrapper);
     },
 
-    _removeDeviceWrapper: function(wrapper) {
+    _removeDeviceWrapper(wrapper) {
         wrapper.disconnect(wrapper._activationFailedId);
         wrapper.destroy();
 
@@ -1810,7 +1810,7 @@ var NMApplet = new Lang.Class({
         devices.splice(pos, 1);
     },
 
-    _getMainConnection: function() {
+    _getMainConnection() {
         let connection;
 
         connection = this._client.get_primary_connection();
@@ -1828,7 +1828,7 @@ var NMApplet = new Lang.Class({
         return null;
     },
 
-    _syncMainConnection: function() {
+    _syncMainConnection() {
         if (this._mainConnectionIconChangedId > 0) {
             this._mainConnection._primaryDevice.disconnect(this._mainConnectionIconChangedId);
             this._mainConnectionIconChangedId = 0;
@@ -1852,7 +1852,7 @@ var NMApplet = new Lang.Class({
         this._syncConnectivity();
     },
 
-    _syncVpnConnections: function() {
+    _syncVpnConnections() {
         let activeConnections = this._client.get_active_connections() || [];
         let vpnConnections = activeConnections.filter(function(a) {
             return (a instanceof NM.VpnConnection);
@@ -1865,12 +1865,12 @@ var NMApplet = new Lang.Class({
         this._updateIcon();
     },
 
-    _mainConnectionStateChanged: function() {
+    _mainConnectionStateChanged() {
         if (this._mainConnection.state == NM.ActiveConnectionState.ACTIVATED && this._notification)
             this._notification.destroy();
     },
 
-    _ignoreConnection: function(connection) {
+    _ignoreConnection(connection) {
         let setting = connection.get_setting_connection();
         if (!setting)
             return true;
@@ -1882,7 +1882,7 @@ var NMApplet = new Lang.Class({
         return false;
     },
 
-    _addConnection: function(connection) {
+    _addConnection(connection) {
         if (this._ignoreConnection(connection))
             return;
         if (connection._updatedId) {
@@ -1896,16 +1896,16 @@ var NMApplet = new Lang.Class({
         this._connections.push(connection);
     },
 
-    _readConnections: function() {
+    _readConnections() {
         let connections = this._client.get_connections();
         connections.forEach(Lang.bind(this, this._addConnection));
     },
 
-    _connectionAdded: function(client, connection) {
+    _connectionAdded(client, connection) {
         this._addConnection(connection);
     },
 
-    _connectionRemoved: function(client, connection) {
+    _connectionRemoved(client, connection) {
         let pos = this._connections.indexOf(connection);
         if (pos != -1)
             this._connections.splice(pos, 1);
@@ -1929,7 +1929,7 @@ var NMApplet = new Lang.Class({
         connection._updatedId = 0;
     },
 
-    _updateConnection: function(connection) {
+    _updateConnection(connection) {
         let connectionSettings = connection.get_setting_by_name(NM.SETTING_CONNECTION_SETTING_NAME);
         connection._type = connectionSettings.type;
         connection._section = this._ctypes[connection._type] || NMConnectionCategory.INVALID;
@@ -1950,14 +1950,14 @@ var NMApplet = new Lang.Class({
         }
     },
 
-    _syncNMState: function() {
+    _syncNMState() {
         this.indicators.visible = this._client.nm_running;
         this.menu.actor.visible = this._client.networking_enabled;
 
         this._syncConnectivity();
     },
 
-    _flushConnectivityQueue: function() {
+    _flushConnectivityQueue() {
         if (this._portalHelperProxy) {
             for (let item of this._connectivityQueue)
                 this._portalHelperProxy.CloseRemote(item);
@@ -1966,7 +1966,7 @@ var NMApplet = new Lang.Class({
         this._connectivityQueue = [];
     },
 
-    _closeConnectivityCheck: function(path) {
+    _closeConnectivityCheck(path) {
         let index = this._connectivityQueue.indexOf(path);
 
         if (index >= 0) {
@@ -1977,7 +1977,7 @@ var NMApplet = new Lang.Class({
         }
     },
 
-    _portalHelperDone: function(proxy, emitter, parameters) {
+    _portalHelperDone(proxy, emitter, parameters) {
         let [path, result] = parameters;
 
         if (result == PortalHelperResult.CANCELLED) {
@@ -2001,7 +2001,7 @@ var NMApplet = new Lang.Class({
         }
     },
 
-    _syncConnectivity: function() {
+    _syncConnectivity() {
         if (this._mainConnection == null ||
             this._mainConnection.state != NM.ActiveConnectionState.ACTIVATED) {
             this._flushConnectivityQueue();
@@ -2046,7 +2046,7 @@ var NMApplet = new Lang.Class({
         this._connectivityQueue.push(path);
     },
 
-    _updateIcon: function() {
+    _updateIcon() {
         if (!this._client.networking_enabled) {
             this._primaryIndicator.visible = false;
         } else {

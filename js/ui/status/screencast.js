@@ -9,7 +9,7 @@ var Indicator = new Lang.Class({
     Name: 'ScreencastIndicator',
     Extends: PanelMenu.SystemIndicator,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this._indicator = this._addIndicator();
@@ -20,7 +20,7 @@ var Indicator = new Lang.Class({
         Main.screencastService.connect('updated', Lang.bind(this, this._sync));
     },
 
-    _sync: function() {
+    _sync() {
         this._indicator.visible = Main.screencastService.isRecording;
     },
 });

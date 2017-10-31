@@ -354,7 +354,7 @@ var CloseButton = new Lang.Class({
     Name: 'CloseButton',
     Extends: St.Button,
 
-    _init: function(boxpointer) {
+    _init(boxpointer) {
         this.parent({ style_class: 'notification-close'});
 
         // This is a bit tricky. St.Bin has its own x-align/y-align properties
@@ -374,7 +374,7 @@ var CloseButton = new Lang.Class({
             this._boxPointer.connect('arrow-side-changed', Lang.bind(this, this._sync));
     },
 
-    _computeBoxPointerOffset: function() {
+    _computeBoxPointerOffset() {
         if (!this._boxPointer || !this._boxPointer.actor.get_stage())
             return 0;
 
@@ -385,7 +385,7 @@ var CloseButton = new Lang.Class({
             return 0;
     },
 
-    _sync: function() {
+    _sync() {
         let themeNode = this.get_theme_node();
 
         let offY = this._computeBoxPointerOffset();
@@ -393,7 +393,7 @@ var CloseButton = new Lang.Class({
         this.translation_y = themeNode.get_length('-shell-close-overlap-y') + offY;
     },
 
-    vfunc_style_changed: function() {
+    vfunc_style_changed() {
         this._sync();
         this.parent();
     },
@@ -442,7 +442,7 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
 var AppSettingsMonitor = new Lang.Class({
     Name: 'AppSettingsMonitor',
 
-    _init: function(appId, schemaId) {
+    _init(appId, schemaId) {
         this._appId = appId;
         this._schemaId = schemaId;
 
@@ -462,19 +462,19 @@ var AppSettingsMonitor = new Lang.Class({
         return this._app != null && this._settings != null;
     },
 
-    activateApp: function() {
+    activateApp() {
         if (this._app)
             this._app.activate();
     },
 
-    watchSetting: function(key, callback) {
+    watchSetting(key, callback) {
         let handler = { id: 0, key: key, callback: callback };
         this._handlers.push(handler);
 
         this._connectHandler(handler);
     },
 
-    _connectHandler: function(handler) {
+    _connectHandler(handler) {
         if (!this._settings || handler.id > 0)
             return;
 
@@ -483,13 +483,13 @@ var AppSettingsMonitor = new Lang.Class({
         handler.callback(this._settings, handler.key);
     },
 
-    _disconnectHandler: function(handler) {
+    _disconnectHandler(handler) {
         if (this._settings && handler.id > 0)
             this._settings.disconnect(handler.id);
         handler.id = 0;
     },
 
-    _onInstalledChanged: function() {
+    _onInstalledChanged() {
         let hadApp = (this._app != null);
         this._app = this._appSystem.lookup_app(this._appId);
         let haveApp = (this._app != null);
@@ -503,7 +503,7 @@ var AppSettingsMonitor = new Lang.Class({
             this._setSettings(null);
     },
 
-    _setSettings: function(settings) {
+    _setSettings(settings) {
         this._handlers.forEach((handler) => { this._disconnectHandler(handler); });
 
         let hadSettings = (this._settings != null);
@@ -516,7 +516,7 @@ var AppSettingsMonitor = new Lang.Class({
             this.emit('available-changed');
     },
 
-    _checkSettings: function() {
+    _checkSettings() {
         let schema = this._schemaSource.lookup(this._schemaId, true);
         if (schema) {
             this._setSettings(new Gio.Settings({ settings_schema: schema }));
