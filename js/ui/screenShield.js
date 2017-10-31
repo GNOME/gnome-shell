@@ -6,8 +6,8 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GnomeDesktop = imports.gi.GnomeDesktop;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -340,12 +340,10 @@ var NotificationsBox = class {
 };
 Signals.addSignalMethods(NotificationsBox.prototype);
 
-var Arrow = new Lang.Class({
-    Name: 'Arrow',
-    Extends: St.Bin,
-
+var Arrow = GObject.registerClass(
+class ScreenShieldArrow extends St.Bin {
     _init(params) {
-        this.parent(params);
+        super._init(params);
         this.x_fill = this.y_fill = true;
 
         this._drawingArea = new St.DrawingArea();
@@ -354,7 +352,7 @@ var Arrow = new Lang.Class({
 
         this._shadowHelper = null;
         this._shadowWidth = this._shadowHeight = 0;
-    },
+    }
 
     _drawArrow(arrow) {
         let cr = arrow.get_context();
@@ -372,10 +370,10 @@ var Arrow = new Lang.Class({
         cr.lineTo(w - thickness / 2, h - thickness / 2);
         cr.stroke();
         cr.$dispose();
-    },
+    }
 
     vfunc_get_paint_volume(volume) {
-        if (!this.parent(volume))
+        if (!super.vfunc_get_paint_volume(volume))
             return false;
 
         if (!this._shadow)
@@ -388,7 +386,7 @@ var Arrow = new Lang.Class({
         volume.set_height(Math.max(shadow_box.y2 - shadow_box.y1, volume.get_height()));
 
         return true;
-    },
+    }
 
     vfunc_style_changed() {
         let node = this.get_theme_node();
@@ -398,8 +396,8 @@ var Arrow = new Lang.Class({
         else
             this._shadowHelper = null;
 
-        this.parent();
-    },
+        super.vfunc_style_changed();
+    }
 
     vfunc_paint() {
         if (this._shadowHelper) {

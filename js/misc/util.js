@@ -4,7 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Gettext = imports.gettext;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -348,12 +348,10 @@ function insertSorted(array, val, cmp) {
     return pos;
 }
 
-var CloseButton = new Lang.Class({
-    Name: 'CloseButton',
-    Extends: St.Button,
-
+var CloseButton = GObject.registerClass(
+class CloseButton extends St.Button {
     _init(boxpointer) {
-        this.parent({ style_class: 'notification-close'});
+        super._init({ style_class: 'notification-close'});
 
         // This is a bit tricky. St.Bin has its own x-align/y-align properties
         // that compete with Clutter's properties. This should be fixed for
@@ -370,7 +368,7 @@ var CloseButton = new Lang.Class({
         this._boxPointer = boxpointer;
         if (boxpointer)
             this._boxPointer.connect('arrow-side-changed', this._sync.bind(this));
-    },
+    }
 
     _computeBoxPointerOffset() {
         if (!this._boxPointer || !this._boxPointer.actor.get_stage())
@@ -381,7 +379,7 @@ var CloseButton = new Lang.Class({
             return this._boxPointer.getArrowHeight();
         else
             return 0;
-    },
+    }
 
     _sync() {
         let themeNode = this.get_theme_node();
@@ -389,12 +387,12 @@ var CloseButton = new Lang.Class({
         let offY = this._computeBoxPointerOffset();
         this.translation_x = themeNode.get_length('-shell-close-overlap-x')
         this.translation_y = themeNode.get_length('-shell-close-overlap-y') + offY;
-    },
+    }
 
     vfunc_style_changed() {
         this._sync();
-        this.parent();
-    },
+        super.vfunc_style_changed();
+    }
 });
 
 function makeCloseButton(boxpointer) {

@@ -3,7 +3,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const Meta = imports.gi.Meta;
@@ -160,14 +159,12 @@ var URLHighlighter = class URLHighlighter {
     }
 };
 
-var ScaleLayout = new Lang.Class({
-    Name: 'ScaleLayout',
-    Extends: Clutter.BinLayout,
-
+var ScaleLayout = new GObject.registerClass(
+class ScaleLayout extends Clutter.BinLayout {
     _init(params) {
         this._container = null;
-        this.parent(params);
-    },
+        super._init(params);
+    }
 
     _connectContainer(container) {
         if (this._container == container)
@@ -187,45 +184,43 @@ var ScaleLayout = new Lang.Class({
                 });
                 this._signals.push(id);
             }
-    },
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         this._connectContainer(container);
 
-        let [min, nat] = this.parent(container, forHeight);
+        let [min, nat] = super.vfunc_get_preferred_width(container, forHeight);
         return [Math.floor(min * container.scale_x),
                 Math.floor(nat * container.scale_x)];
-    },
+    }
 
     vfunc_get_preferred_height(container, forWidth) {
         this._connectContainer(container);
 
-        let [min, nat] = this.parent(container, forWidth);
+        let [min, nat] = super.vfunc_get_preferred_height(container, forWidth);
         return [Math.floor(min * container.scale_y),
                 Math.floor(nat * container.scale_y)];
     }
 });
 
-var LabelExpanderLayout = new Lang.Class({
-    Name: 'LabelExpanderLayout',
-    Extends: Clutter.LayoutManager,
+var LabelExpanderLayout = GObject.registerClass({
     Properties: { 'expansion': GObject.ParamSpec.double('expansion',
                                                         'Expansion',
                                                         'Expansion of the layout, between 0 (collapsed) ' +
                                                         'and 1 (fully expanded',
                                                          GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
                                                          0, 1, 0)},
-
+}, class LabelExpanderLayout extends Clutter.LayoutManager {
     _init(params) {
         this._expansion = 0;
         this._expandLines = DEFAULT_EXPAND_LINES;
 
-        this.parent(params);
-    },
+        super._init(params);
+    }
 
     get expansion() {
         return this._expansion;
-    },
+    }
 
     set expansion(v) {
         if (v == this._expansion)
@@ -238,7 +233,7 @@ var LabelExpanderLayout = new Lang.Class({
             this._container.get_child_at_index(i).visible = (i == visibleIndex);
 
         this.layout_changed();
-    },
+    }
 
     set expandLines(v) {
         if (v == this._expandLines)
@@ -246,11 +241,11 @@ var LabelExpanderLayout = new Lang.Class({
         this._expandLines = v;
         if (this._expansion > 0)
             this.layout_changed();
-    },
+    }
 
     vfunc_set_container(container) {
         this._container = container;
-    },
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         let [min, nat] = [0, 0];
@@ -265,7 +260,7 @@ var LabelExpanderLayout = new Lang.Class({
         }
 
         return [min, nat];
-    },
+    }
 
     vfunc_get_preferred_height(container, forWidth) {
         let [min, nat] = [0, 0];
@@ -283,7 +278,7 @@ var LabelExpanderLayout = new Lang.Class({
         }
 
         return [min, nat];
-    },
+    }
 
     vfunc_allocate(container, box, flags) {
         for (let i = 0; i < container.get_n_children(); i++) {

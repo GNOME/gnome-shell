@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
@@ -16,31 +15,29 @@ var FROZEN_WINDOW_BRIGHTNESS = -0.3
 var DIALOG_TRANSITION_TIME = 0.15
 var ALIVE_TIMEOUT = 5000;
 
-var CloseDialog = new Lang.Class({
-    Name: 'CloseDialog',
-    Extends: GObject.Object,
+var CloseDialog = GObject.registerClass({
     Implements: [ Meta.CloseDialog ],
     Properties: {
         'window': GObject.ParamSpec.override('window', Meta.CloseDialog)
     },
-
+}, class CloseDialog extends GObject.Object {
     _init(window) {
-        this.parent();
+        super._init();
         this._window = window;
         this._dialog = null;
         this._tracked = undefined;
         this._timeoutId = 0;
         this._windowFocusChangedId = 0;
         this._keyFocusChangedId = 0;
-    },
+    }
 
     get window() {
         return this._window;
-    },
+    }
 
     set window(window) {
         this._window = window;
-    },
+    }
 
     _createDialogContent() {
         let tracker = Shell.WindowTracker.get_default();
@@ -52,7 +49,7 @@ var CloseDialog = new Lang.Class({
                          "continue or force the application to quit entirely.");
         let icon = new Gio.ThemedIcon({ name: 'dialog-warning-symbolic' });
         return new Dialog.MessageDialogContent({ icon, title, subtitle });
-    },
+    }
 
     _initDialog() {
         if (this._dialog)
@@ -72,7 +69,7 @@ var CloseDialog = new Lang.Class({
                                  key:    Clutter.Escape });
 
         global.focus_manager.add_group(this._dialog);
-    },
+    }
 
     _addWindowEffect() {
         // We set the effect on the surface actor, so the dialog itself
@@ -83,21 +80,21 @@ var CloseDialog = new Lang.Class({
         let effect = new Clutter.BrightnessContrastEffect();
         effect.set_brightness(FROZEN_WINDOW_BRIGHTNESS);
         surfaceActor.add_effect_with_name("gnome-shell-frozen-window", effect);
-    },
+    }
 
     _removeWindowEffect() {
         let windowActor = this._window.get_compositor_private();
         let surfaceActor = windowActor.get_first_child();
         surfaceActor.remove_effect_by_name("gnome-shell-frozen-window");
-    },
+    }
 
     _onWait() {
         this.response(Meta.CloseDialogResponse.WAIT);
-    },
+    }
 
     _onClose() {
         this.response(Meta.CloseDialogResponse.FORCE_CLOSE);
-    },
+    }
 
     _onFocusChanged() {
         if (Meta.is_wayland_compositor())
@@ -128,7 +125,7 @@ var CloseDialog = new Lang.Class({
         });
 
         this._tracked = shouldTrack;
-    },
+    }
 
     vfunc_show() {
         if (this._dialog != null)
@@ -162,7 +159,7 @@ var CloseDialog = new Lang.Class({
                            time: DIALOG_TRANSITION_TIME,
                            onComplete: this._onFocusChanged.bind(this)
                          });
-    },
+    }
 
     vfunc_hide() {
         if (this._dialog == null)
@@ -191,7 +188,7 @@ var CloseDialog = new Lang.Class({
                                dialog.destroy();
                            }
                          });
-    },
+    }
 
     vfunc_focus() {
         if (this._dialog)

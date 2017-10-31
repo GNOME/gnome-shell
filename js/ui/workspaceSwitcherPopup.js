@@ -2,7 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
 const Meta  = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -15,12 +15,10 @@ const Tweener = imports.ui.tweener;
 var ANIMATION_TIME = 0.1;
 var DISPLAY_TIMEOUT = 600;
 
-var WorkspaceSwitcherPopupList = new Lang.Class({
-    Name: 'WorkspaceSwitcherPopupList',
-    Extends: St.Widget,
-
+var WorkspaceSwitcherPopupList = GObject.registerClass(
+class WorkspaceSwitcherPopupList extends St.Widget {
     _init() {
-        this.parent({ style_class: 'workspace-switcher' });
+        super._init({ style_class: 'workspace-switcher' });
 
         this._itemSpacing = 0;
         this._childHeight = 0;
@@ -29,7 +27,7 @@ var WorkspaceSwitcherPopupList = new Lang.Class({
         this.connect('style-changed', () => {
            this._itemSpacing = this.get_theme_node().get_length('spacing');
         });
-    },
+    }
 
     vfunc_get_preferred_height(forWidth) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
@@ -53,14 +51,14 @@ var WorkspaceSwitcherPopupList = new Lang.Class({
         this._childHeight = (height - spacing) / workspaceManager.n_workspaces;
 
         return themeNode.adjust_preferred_height(height, height);
-    },
+    }
 
     vfunc_get_preferred_width(forHeight) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         this._childWidth = Math.round(this._childHeight * workArea.width / workArea.height);
 
         return [this._childWidth, this._childWidth];
-    },
+    }
 
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
@@ -81,15 +79,13 @@ var WorkspaceSwitcherPopupList = new Lang.Class({
             prevChildBoxY2 = childBox.y2;
             child.allocate(childBox, flags);
         }
-    },
+    }
 });
 
-var WorkspaceSwitcherPopup = new Lang.Class({
-    Name: 'WorkspaceSwitcherPopup',
-    Extends: St.Widget,
-
+var WorkspaceSwitcherPopup = GObject.registerClass(
+class WorkspaceSwitcherPopup extends St.Widget {
     _init() {
-        this.parent({ x: 0,
+        super._init({ x: 0,
                       y: 0,
                       width: global.screen_width,
                       height: global.screen_height,
@@ -119,7 +115,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
                                                                     this._redisplay.bind(this)));
 
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
     _redisplay() {
         let workspaceManager = global.workspace_manager;
@@ -145,7 +141,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         let [containerMinWidth, containerNatWidth] = this._container.get_preferred_width(containerNatHeight);
         this._container.x = workArea.x + Math.floor((workArea.width - containerNatWidth) / 2);
         this._container.y = workArea.y + Math.floor((workArea.height - containerNatHeight) / 2);
-    },
+    }
 
     _show() {
         Tweener.addTween(this._container, { opacity: 255,
@@ -153,7 +149,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
                                             transition: 'easeOutQuad'
                                            });
         this.actor.show();
-    },
+    }
 
     display(direction, activeWorkspaceIndex) {
         this._direction = direction;
@@ -165,7 +161,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, this._onTimeout.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
         this._show();
-    },
+    }
 
     _onTimeout() {
         Mainloop.source_remove(this._timeoutId);
@@ -177,7 +173,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
                                             onCompleteScope: this
                                            });
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     _onDestroy() {
         if (this._timeoutId)

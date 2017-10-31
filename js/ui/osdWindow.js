@@ -2,10 +2,10 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const St = imports.gi.St;
 
 const BarLevel = imports.ui.barLevel;
-const Lang = imports.lang;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
@@ -49,20 +49,18 @@ var LevelBar = class extends BarLevel.BarLevel {
     }
 };
 
-var OsdWindowConstraint = new Lang.Class({
-    Name: 'OsdWindowConstraint',
-    Extends: Clutter.Constraint,
-
+var OsdWindowConstraint = GObject.registerClass(
+class OsdWindowConstraint extends Clutter.Constraint {
     _init(props) {
         this._minSize = 0;
-        this.parent(props);
-    },
+        super._init(props);
+    }
 
     set minSize(v) {
         this._minSize = v;
         if (this.actor)
             this.actor.queue_relayout();
-    },
+    }
 
     vfunc_update_allocation(actor, actorBox) {
         // Clutter will adjust the allocation for margins,
