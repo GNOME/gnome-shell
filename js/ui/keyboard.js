@@ -5,7 +5,6 @@ const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const GObject = imports.gi.GObject;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -56,15 +55,13 @@ const defaultKeysPost = [
       [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
 ];
 
-var KeyContainer = new Lang.Class({
-    Name: 'KeyContainer',
-    Extends: St.Widget,
-
+var KeyContainer = new GObject.registerClass(
+class KeyContainer extends St.Widget {
     _init() {
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                   column_homogeneous: true,
                                                   row_homogeneous: true });
-        this.parent({ layout_manager: gridLayout });
+        super._init({ layout_manager: gridLayout });
         this._gridLayout = gridLayout;
         this._currentRow = 0;
         this._currentCol = 0;
@@ -72,7 +69,7 @@ var KeyContainer = new Lang.Class({
 
         this._currentRow = null;
         this._rows = [];
-    },
+    }
 
     appendRow(length) {
         this._currentRow++;
@@ -82,7 +79,7 @@ var KeyContainer = new Lang.Class({
         row.keys = [];
         row.width = 0;
         this._rows.push(row);
-    },
+    }
 
     appendKey(key, width = 1, height = 1) {
         let keyInfo = {
@@ -99,7 +96,7 @@ var KeyContainer = new Lang.Class({
 
         this._currentCol += width;
         this._maxCols = Math.max(this._currentCol, this._maxCols);
-    },
+    }
 
     vfunc_allocate(box, flags) {
         if (box.get_width() > 0 && box.get_height() > 0 && this._maxCols > 0) {
@@ -123,8 +120,8 @@ var KeyContainer = new Lang.Class({
             }
         }
 
-        this.parent (box, flags);
-    },
+        super.vfunc_allocate(box, flags);
+    }
 
     layoutButtons() {
         let nCol = 0, nRow = 0;

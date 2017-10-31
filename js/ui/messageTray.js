@@ -6,7 +6,6 @@ const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Atk = imports.gi.Atk;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
@@ -568,12 +567,10 @@ class NotificationBanner extends Calendar.NotificationMessage {
     }
 };
 
-var SourceActor = new Lang.Class({
-    Name: 'SourceActor',
-    Extends: St.Widget,
-
+var SourceActor = GObject.registerClass(
+class SourceActor extends St.Widget {
     _init(source, size) {
-        this.parent();
+        super._init();
 
         this._source = source;
         this._size = size;
@@ -595,12 +592,12 @@ var SourceActor = new Lang.Class({
 
         this._iconUpdatedId = this._source.connect('icon-updated', this._updateIcon.bind(this));
         this._updateIcon();
-    },
+    }
 
     setIcon(icon) {
         this._iconBin.child = icon;
         this._iconSet = true;
-    },
+    }
 
     _updateIcon() {
         if (this._actorDestroyed)
@@ -611,12 +608,10 @@ var SourceActor = new Lang.Class({
     }
 });
 
-var SourceActorWithLabel = new Lang.Class({
-    Name: 'SourceActorWithLabel',
-    Extends: SourceActor,
-
+var SourceActorWithLabel = GObject.registerClass(
+class SourceActorWithLabel extends SourceActor {
     _init(source, size) {
-        this.parent(source, size);
+        super._init(source, size);
 
         this._counterLabel = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
                                             x_expand: true,
@@ -642,10 +637,10 @@ var SourceActorWithLabel = new Lang.Class({
         this.connect('destroy', () => {
             this._source.disconnect(this._countUpdatedId);
         });
-    },
+    }
 
     vfunc_allocate(box, flags) {
-        this.parent(box, flags);
+        super.vfunc_allocate(box, flags);
 
         let childBox = new Clutter.ActorBox();
 
@@ -666,7 +661,7 @@ var SourceActorWithLabel = new Lang.Class({
         childBox.y2 = box.y2;
 
         this._counterBin.allocate(childBox, flags);
-    },
+    }
 
     _updateCount() {
         if (this._actorDestroyed)

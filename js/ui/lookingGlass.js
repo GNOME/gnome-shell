@@ -11,7 +11,6 @@ const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const System = imports.system;
 
@@ -462,10 +461,8 @@ var ObjInspector = class ObjInspector {
     }
 };
 
-var RedBorderEffect = new Lang.Class({
-    Name: 'RedBorderEffect',
-    Extends: Clutter.Effect,
-
+var RedBorderEffect = GObject.registerClass(
+class RedBorderEffect extends Clutter.Effect {
     vfunc_paint() {
         let actor = this.get_actor();
         actor.continue_paint();
@@ -485,17 +482,15 @@ var RedBorderEffect = new Lang.Class({
                        geom.width - width, geom.height - width);
         Cogl.rectangle(0, geom.height - width,
                        width, width);
-    },
+    }
 });
 
-var Inspector = new Lang.Class({
-    Name: 'Inspector',
-    Extends: Clutter.Actor,
+var Inspector = GObject.registerClass({
     Signals: { 'closed': {},
                'target': { param_types: [Clutter.Actor.$gtype, GObject.TYPE_DOUBLE, GObject.TYPE_DOUBLE] } },
-
+}, class Inspector extends Clutter.Actor {
     _init(lookingGlass) {
-        this.parent({ width: 0,
+        super._init({ width: 0,
                       height: 0 });
 
         Main.uiGroup.add_actor(this);
@@ -524,7 +519,7 @@ var Inspector = new Lang.Class({
         this._pointerTarget = null;
 
         this._lookingGlass = lookingGlass;
-    },
+    }
 
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
@@ -543,7 +538,7 @@ var Inspector = new Lang.Class({
         childBox.y1 = primary.y + Math.floor((primary.height - natHeight) / 2);
         childBox.y2 = childBox.y1 + natHeight;
         this._eventHandler.allocate(childBox, flags);
-    },
+    }
 
     _close() {
         Clutter.ungrab_pointer();
@@ -551,13 +546,13 @@ var Inspector = new Lang.Class({
         this._eventHandler.destroy();
         this._eventHandler = null;
         this.emit('closed');
-    },
+    }
 
     _onKeyPressEvent(actor, event) {
         if (event.get_key_symbol() == Clutter.Escape)
             this._close();
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onButtonPressEvent(actor, event) {
         if (this._target) {
@@ -566,7 +561,7 @@ var Inspector = new Lang.Class({
         }
         this._close();
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onScrollEvent(actor, event) {
         switch (event.get_scroll_direction()) {
@@ -600,12 +595,12 @@ var Inspector = new Lang.Class({
             break;
         }
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onMotionEvent(actor, event) {
         this._update(event);
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _update(event) {
         let [stageX, stageY] = event.get_coords();

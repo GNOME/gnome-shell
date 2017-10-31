@@ -1,7 +1,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 const Dialog = imports.ui.dialog;
 const ModalDialog = imports.ui.modalDialog;
 
@@ -9,17 +8,17 @@ const KEYBOARD_A11Y_SCHEMA    = 'org.gnome.desktop.a11y.keyboard';
 const KEY_STICKY_KEYS_ENABLED = 'stickykeys-enable';
 const KEY_SLOW_KEYS_ENABLED   = 'slowkeys-enable';
 
-var KbdA11yDialog = new Lang.Class({
-    Name: 'KbdA11yDialog',
-    Extends: GObject.Object,
-
+var KbdA11yDialog = new GObject.registerClass(
+class KbdA11yDialog extends GObject.Object {
     _init() {
+        super._init();
+
         this._a11ySettings = new Gio.Settings({ schema_id: KEYBOARD_A11Y_SCHEMA });
 
         let deviceManager = Clutter.DeviceManager.get_default();
         deviceManager.connect('kbd-a11y-flags-changed',
                               this._showKbdA11yDialog.bind(this));
-    },
+    }
 
     _showKbdA11yDialog(deviceManager, newFlags, whatChanged) {
         let dialog = new ModalDialog.ModalDialog();

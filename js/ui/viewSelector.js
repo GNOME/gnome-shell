@@ -7,7 +7,6 @@ const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const GObject = imports.gi.GObject;
@@ -32,14 +31,12 @@ var ViewPage = {
     SEARCH: 3
 };
 
-var FocusTrap = new Lang.Class({
-    Name: 'FocusTrap',
-    Extends: St.Widget,
-
+var FocusTrap = GObject.registerClass(
+class FocusTrap extends St.Widget {
     vfunc_navigate_focus(from, direction) {
         if (direction == Gtk.DirectionType.TAB_FORWARD ||
             direction == Gtk.DirectionType.TAB_BACKWARD)
-            return this.parent(from, direction);
+            return super.vfunc_navigate_focus(from, direction);
         return false;
     }
 });
@@ -73,24 +70,22 @@ var TouchpadShowOverviewAction = class {
 };
 Signals.addSignalMethods(TouchpadShowOverviewAction.prototype);
 
-var ShowOverviewAction = new Lang.Class({
-    Name: 'ShowOverviewAction',
-    Extends: Clutter.GestureAction,
+var ShowOverviewAction = GObject.registerClass({
     Signals: { 'activated': { param_types: [GObject.TYPE_DOUBLE] } },
-
+}, class ShowOverviewAction extends Clutter.GestureAction {
     _init() {
-        this.parent();
+        super._init();
         this.set_n_touch_points(3);
 
         global.display.connect('grab-op-begin', () => {
             this.cancel();
         });
-    },
+    }
 
     vfunc_gesture_prepare(action, actor) {
         return Main.actionMode == Shell.ActionMode.NORMAL &&
                this.get_n_current_points() == this.get_n_touch_points();
-    },
+    }
 
     _getBoundingRect(motion) {
         let minX, minY, maxX, maxY;
@@ -119,12 +114,12 @@ var ShowOverviewAction = new Lang.Class({
                                     y: minY,
                                     width: maxX - minX,
                                     height: maxY - minY });
-    },
+    }
 
     vfunc_gesture_begin(action, actor) {
         this._initialRect = this._getBoundingRect(false);
         return true;
-    },
+    }
 
     vfunc_gesture_end(action, actor) {
         let rect = this._getBoundingRect(true);

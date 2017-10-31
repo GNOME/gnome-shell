@@ -2,7 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
@@ -40,24 +40,22 @@ function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
 
-var WindowCloneLayout = new Lang.Class({
-    Name: 'WindowCloneLayout',
-    Extends: Clutter.LayoutManager,
-
+var WindowCloneLayout = GObject.registerClass(
+class WindowCloneLayout extends Clutter.LayoutManager {
     _init(boundingBox) {
-        this.parent();
+        super._init();
 
         this._boundingBox = boundingBox;
-    },
+    }
 
     get boundingBox() {
         return this._boundingBox;
-    },
+    }
 
     set boundingBox(b) {
         this._boundingBox = b;
         this.layout_changed();
-    },
+    }
 
     _makeBoxForWindow(window) {
         // We need to adjust the position of the actor because of the
@@ -78,15 +76,15 @@ var WindowCloneLayout = new Lang.Class({
         box.set_size(inputRect.width, inputRect.height);
 
         return box;
-    },
+    }
 
     vfunc_get_preferred_height(container, forWidth) {
         return [this._boundingBox.height, this._boundingBox.height];
-    },
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         return [this._boundingBox.width, this._boundingBox.width];
-    },
+    }
 
     vfunc_allocate(container, box, flags) {
         container.get_children().forEach(child => {
@@ -1072,10 +1070,8 @@ function rectEqual(one, two) {
             one.height == two.height);
 }
 
-const WorkspaceActor = new Lang.Class({
-    Name: 'WorkspaceActor',
-    Extends: St.Widget,
-
+const WorkspaceActor = GObject.registerClass(
+class WorkspaceActor extends St.Widget {
     vfunc_get_focus_chain() {
         return this.get_children().filter(c => c.visible).sort((a,b) => {
             let cloneA = (a._delegate && a._delegate instanceof WindowClone) ? a._delegate: null;
