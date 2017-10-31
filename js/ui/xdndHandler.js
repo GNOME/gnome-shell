@@ -11,7 +11,7 @@ const DND = imports.ui.dnd;
 var XdndHandler = new Lang.Class({
     Name: 'XdndHandler',
 
-    _init: function() {
+    _init() {
         // Used to display a clone of the cursor window when the
         // window group is hidden (like it happens in the overview)
         this._cursorWindowClone = null;
@@ -33,7 +33,7 @@ var XdndHandler = new Lang.Class({
     },
 
     // Called when the user cancels the drag (i.e release the button)
-    _onLeave: function() {
+    _onLeave() {
         if (this._windowGroupVisibilityHandlerId != 0) {
             global.window_group.disconnect(this._windowGroupVisibilityHandlerId);
             this._windowGroupVisibilityHandlerId = 0;
@@ -46,7 +46,7 @@ var XdndHandler = new Lang.Class({
         this.emit('drag-end');
     },
 
-    _onEnter: function() {
+    _onEnter() {
         this._windowGroupVisibilityHandlerId  =
                 global.window_group.connect('notify::visible',
                     Lang.bind(this, this._onWindowGroupVisibilityChanged));
@@ -54,7 +54,7 @@ var XdndHandler = new Lang.Class({
         this.emit('drag-begin', global.get_current_time());
     },
 
-    _onWindowGroupVisibilityChanged: function() {
+    _onWindowGroupVisibilityChanged() {
         if (!global.window_group.visible) {
             if (this._cursorWindowClone)
                 return;
@@ -82,7 +82,7 @@ var XdndHandler = new Lang.Class({
         }
     },
 
-    _onPositionChanged: function(obj, x, y) {
+    _onPositionChanged(obj, x, y) {
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
 
         // Make sure that the cursor window is on top

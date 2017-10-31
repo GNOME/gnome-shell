@@ -38,7 +38,7 @@ var ATIndicator = new Lang.Class({
     Name: 'ATIndicator',
     Extends: PanelMenu.Button,
 
-    _init: function() {
+    _init() {
         this.parent(0.0, _("Accessibility"));
 
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
@@ -87,7 +87,7 @@ var ATIndicator = new Lang.Class({
         this._syncMenuVisibility();
     },
 
-    _syncMenuVisibility: function() {
+    _syncMenuVisibility() {
         this._syncMenuVisibilityIdle = 0;
 
         let alwaysShow = this._a11ySettings.get_boolean(KEY_ALWAYS_SHOW);
@@ -98,7 +98,7 @@ var ATIndicator = new Lang.Class({
         return GLib.SOURCE_REMOVE;
     },
 
-    _queueSyncMenuVisibility: function() {
+    _queueSyncMenuVisibility() {
         if (this._syncMenuVisibilityIdle)
             return;
 
@@ -106,7 +106,7 @@ var ATIndicator = new Lang.Class({
         GLib.Source.set_name_by_id(this._syncMenuVisibilityIdle, '[gnome-shell] this._syncMenuVisibility');
     },
 
-    _buildItemExtended: function(string, initial_value, writable, on_set) {
+    _buildItemExtended(string, initial_value, writable, on_set) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initial_value);
         if (!writable)
             widget.actor.reactive = false;
@@ -117,7 +117,7 @@ var ATIndicator = new Lang.Class({
         return widget;
     },
 
-    _buildItem: function(string, schema, key) {
+    _buildItem(string, schema, key) {
         let settings = new Gio.Settings({ schema_id: schema });
         settings.connect('changed::'+key, Lang.bind(this, function() {
             widget.setToggleState(settings.get_boolean(key));
@@ -134,7 +134,7 @@ var ATIndicator = new Lang.Class({
         return widget;
     },
 
-    _buildHCItem: function() {
+    _buildHCItem() {
         let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let wmSettings = new Gio.Settings({ schema_id: WM_SCHEMA });
         interfaceSettings.connect('changed::' + KEY_GTK_THEME, Lang.bind(this, function() {
@@ -187,7 +187,7 @@ var ATIndicator = new Lang.Class({
         return highContrast;
     },
 
-    _buildFontItem: function() {
+    _buildFontItem() {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, Lang.bind(this, function() {
             let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);

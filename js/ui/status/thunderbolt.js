@@ -75,7 +75,7 @@ const BOLT_DBUS_PATH = '/org/freedesktop/bolt';
 var Client = new Lang.Class({
     Name: 'BoltClient',
 
-    _init: function() {
+    _init() {
 
 	this._proxy = null;
         new BoltClientProxy(
@@ -88,7 +88,7 @@ var Client = new Lang.Class({
 	this.probing = false;
     },
 
-    _onProxyReady: function(proxy, error) {
+    _onProxyReady(proxy, error) {
 	if (error !== null) {
 	    log('error creating bolt proxy: %s'.format(error.message));
 	    return;
@@ -103,7 +103,7 @@ var Client = new Lang.Class({
 
     },
 
-    _onPropertiesChanged: function(proxy, properties) {
+    _onPropertiesChanged(proxy, properties) {
         let unpacked = properties.deep_unpack();
         if (!('Probing' in unpacked))
 	    return;
@@ -112,7 +112,7 @@ var Client = new Lang.Class({
 	this.emit('probing-changed', this.probing);
     },
 
-    _onDeviceAdded: function(proxy, emitter, params) {
+    _onDeviceAdded(proxy, emitter, params) {
 	let [path] = params;
 	let device = new BoltDeviceProxy(Gio.DBus.system,
 					 BOLT_DBUS_NAME,
@@ -121,7 +121,7 @@ var Client = new Lang.Class({
     },
 
     /* public methods */
-    close: function() {
+    close() {
         if (!this._proxy)
             return;
 
@@ -130,7 +130,7 @@ var Client = new Lang.Class({
 	this._proxy = null;
     },
 
-    enrollDevice: function(id, policy, callback) {
+    enrollDevice(id, policy, callback) {
 	this._proxy.EnrollDeviceRemote(id, policy, AuthFlags.NONE,
 				       Lang.bind(this, function (res, error) {
 	    if (error) {
@@ -154,7 +154,7 @@ Signals.addSignalMethods(Client.prototype);
 var AuthRobot = new Lang.Class({
     Name: 'BoltAuthRobot',
 
-    _init: function(client) {
+    _init(client) {
 
 	this._client = client;
 
@@ -164,7 +164,7 @@ var AuthRobot = new Lang.Class({
 	this._client.connect('device-added', Lang.bind(this, this._onDeviceAdded));
     },
 
-    close: function() {
+    close() {
 	this.disconnectAll();
 	this._client = null;
     },
@@ -173,7 +173,7 @@ var AuthRobot = new Lang.Class({
      * device that is not currently stored in the database. We are
      * only interested in those devices, because all known devices
      * will be handled by the user himself */
-    _onDeviceAdded: function(cli, dev) {
+    _onDeviceAdded(cli, dev) {
 	if (dev.Status !== Status.CONNECTED)
 	    return;
 
@@ -195,7 +195,7 @@ var AuthRobot = new Lang.Class({
      *     calling itself as long as there a devices to be
      *     enrolled.
      */
-    _enrollDevices: function() {
+    _enrollDevices() {
 	if (this._enrolling)
 	    return;
 
@@ -204,7 +204,7 @@ var AuthRobot = new Lang.Class({
 		      Lang.bind(this, this._enrollDevicesIdle));
     },
 
-    _onEnrollDone: function(device, error) {
+    _onEnrollDone(device, error) {
 	if (error)
 	    this.emit('enroll-failed', error, device);
 
@@ -219,7 +219,7 @@ var AuthRobot = new Lang.Class({
 			  Lang.bind(this, this._enrollDevicesIdle));
     },
 
-    _enrollDevicesIdle: function() {
+    _enrollDevicesIdle() {
 	let devices = this._devicesToEnroll;
 
 	let dev = devices.shift();
@@ -242,7 +242,7 @@ var Indicator = new Lang.Class({
     Name: 'ThunderboltIndicator',
     Extends: PanelMenu.SystemIndicator,
 
-    _init: function() {
+    _init() {
         this.parent();
 
 	this._indicator = this._addIndicator();
@@ -262,12 +262,12 @@ var Indicator = new Lang.Class({
 	this._source = null;
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         this._robot.close();
 	this._client.close();
     },
 
-    _ensureSource: function() {
+    _ensureSource() {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Thunderbolt"),
                                                   'thunderbolt-symbolic');
@@ -281,7 +281,7 @@ var Indicator = new Lang.Class({
         return this._source;
     },
 
-    _notify: function(title, body) {
+    _notify(title, body) {
         if (this._notification)
             this._notification.destroy();
 
@@ -301,14 +301,14 @@ var Indicator = new Lang.Class({
     },
 
     /* Session callbacks */
-    _sync: function() {
+    _sync() {
         let active = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 	this._indicator.visible = active && this._client.probing;
     },
 
 
     /* Bolt.Client callbacks */
-    _onProbing: function(cli, probing) {
+    _onProbing(cli, probing) {
 	if (probing)
 	    this._indicator.icon_name = 'thunderbolt-acquiring-symbolic';
 	else
@@ -319,7 +319,7 @@ var Indicator = new Lang.Class({
 
 
     /* AuthRobot callbacks */
-    _onEnrollDevice: function(obj, device, policy) {
+    _onEnrollDevice(obj, device, policy) {
 	let auth = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 	policy[0] = auth;
 
@@ -332,7 +332,7 @@ var Indicator = new Lang.Class({
 	this._notify(title, body);
     },
 
-    _onEnrollFailed: function (obj, device, error) {
+    _onEnrollFailed(obj, device, error) {
 	const title = _('Thunderbolt authorization error');
 	const body = _('Could not authorize the thunderbolt device: %s'.format(error.message));
 	this._notify(title, body);

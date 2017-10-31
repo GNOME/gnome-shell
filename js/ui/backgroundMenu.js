@@ -13,7 +13,7 @@ var BackgroundMenu = new Lang.Class({
     Name: 'BackgroundMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(layoutManager) {
+    _init(layoutManager) {
         this.parent(layoutManager.dummyCursor, 0, St.Side.TOP);
 
         this.addSettingsAction(_("Change Background…"), 'gnome-background-panel.desktop');

@@ -686,7 +686,7 @@ var RestartMessage = new Lang.Class({
     Name: 'RestartMessage',
     Extends: ModalDialog.ModalDialog,
 
-    _init : function(message) {
+    _init(message) {
         this.parent({ shellReactive: true,
                       styleClass: 'restart-message headline',
                       shouldFadeIn: false,

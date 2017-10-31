@@ -41,7 +41,7 @@ function _removeItem(menu, position) {
 var RemoteMenuSeparatorItemMapper = new Lang.Class({
     Name: 'RemoteMenuSeparatorItemMapper',
 
-    _init: function(trackerItem) {
+    _init(trackerItem) {
         this._trackerItem = trackerItem;
         this.menuItem = new PopupMenu.PopupSeparatorMenuItem();
         this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
@@ -52,7 +52,7 @@ var RemoteMenuSeparatorItemMapper = new Lang.Class({
         });
     },
 
-    _updateLabel: function() {
+    _updateLabel() {
         this.menuItem.label.text = stripMnemonics(this._trackerItem.label);
     },
 });
@@ -61,17 +61,17 @@ var RequestSubMenu = new Lang.Class({
     Name: 'RequestSubMenu',
     Extends: PopupMenu.PopupSubMenuMenuItem,
 
-    _init: function() {
+    _init() {
         this.parent('');
         this._requestOpen = false;
     },
 
-    _setOpenState: function(open) {
+    _setOpenState(open) {
         this.emit('request-open', open);
         this._requestOpen = open;
     },
 
-    _getOpenState: function() {
+    _getOpenState() {
         return this._requestOpen;
     },
 });
@@ -79,7 +79,7 @@ var RequestSubMenu = new Lang.Class({
 var RemoteMenuSubmenuItemMapper = new Lang.Class({
     Name: 'RemoteMenuSubmenuItemMapper',
 
-    _init: function(trackerItem) {
+    _init(trackerItem) {
         this._trackerItem = trackerItem;
         this.menuItem = new RequestSubMenu();
         this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
@@ -102,12 +102,12 @@ var RemoteMenuSubmenuItemMapper = new Lang.Class({
         });
     },
 
-    destroy: function() {
+    destroy() {
         this._tracker.destroy();
         this.parent();
     },
 
-    _updateLabel: function() {
+    _updateLabel() {
         this.menuItem.label.text = stripMnemonics(this._trackerItem.label);
     },
 });
@@ -115,7 +115,7 @@ var RemoteMenuSubmenuItemMapper = new Lang.Class({
 var RemoteMenuItemMapper = new Lang.Class({
     Name: 'RemoteMenuItemMapper',
 
-    _init: function(trackerItem) {
+    _init(trackerItem) {
         this._trackerItem = trackerItem;
 
         this.menuItem = new PopupMenu.PopupBaseMenuItem();
@@ -143,15 +143,15 @@ var RemoteMenuItemMapper = new Lang.Class({
         });
     },
 
-    _updateLabel: function() {
+    _updateLabel() {
         this._label.text = stripMnemonics(this._trackerItem.label);
     },
 
-    _updateSensitivity: function() {
+    _updateSensitivity() {
         this.menuItem.setSensitive(this._trackerItem.sensitive);
     },
 
-    _updateDecoration: function() {
+    _updateDecoration() {
         let ornamentForRole = {};
         ornamentForRole[ShellMenu.MenuTrackerItemRole.RADIO] = PopupMenu.Ornament.DOT;
         ornamentForRole[ShellMenu.MenuTrackerItemRole.CHECK] = PopupMenu.Ornament.CHECK;
@@ -163,7 +163,7 @@ var RemoteMenuItemMapper = new Lang.Class({
         this.menuItem.setOrnament(ornament);
     },
 
-    _updateRole: function() {
+    _updateRole() {
         let a11yRoles = {};
         a11yRoles[ShellMenu.MenuTrackerItemRole.NORMAL] = Atk.Role.MENU_ITEM;
         a11yRoles[ShellMenu.MenuTrackerItemRole.RADIO] = Atk.Role.RADIO_MENU_ITEM;
@@ -180,7 +180,7 @@ var RemoteMenu = new Lang.Class({
     Name: 'RemoteMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(sourceActor, model, actionGroup) {
+    _init(sourceActor, model, actionGroup) {
         this.parent(sourceActor, 0.0, St.Side.TOP);
 
         this._model = model;
@@ -196,7 +196,7 @@ var RemoteMenu = new Lang.Class({
         return this._actionGroup;
     },
 
-    destroy: function() {
+    destroy() {
         this._tracker.destroy();
         this.parent();
     },

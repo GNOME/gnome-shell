@@ -64,7 +64,7 @@ function _createIcon(gicon) {
 var ListItem = new Lang.Class({
     Name: 'ListItem',
 
-    _init: function(app) {
+    _init(app) {
         this._app = app;
 
         let layout = new St.BoxLayout({ vertical: false});
@@ -91,7 +91,7 @@ var ListItem = new Lang.Class({
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
     },
 
-    _onClicked: function() {
+    _onClicked() {
         this.emit('activate');
         this._app.activate();
     }
@@ -101,7 +101,7 @@ Signals.addSignalMethods(ListItem.prototype);
 var ShellMountOperation = new Lang.Class({
     Name: 'ShellMountOperation',
 
-    _init: function(source, params) {
+    _init(source, params) {
         params = Params.parse(params, { existingDialog: null });
 
         this._dialog = null;
@@ -125,7 +125,7 @@ var ShellMountOperation = new Lang.Class({
         this._gicon = source.get_icon();
     },
 
-    _closeExistingDialog: function() {
+    _closeExistingDialog() {
         if (!this._existingDialog)
             return;
 
@@ -133,7 +133,7 @@ var ShellMountOperation = new Lang.Class({
         this._existingDialog = null;
     },
 
-    _onAskQuestion: function(op, message, choices) {
+    _onAskQuestion(op, message, choices) {
         this._closeExistingDialog();
         this._dialog = new ShellMountQuestionDialog(this._gicon);
 
@@ -149,7 +149,7 @@ var ShellMountOperation = new Lang.Class({
         this._dialog.open();
     },
 
-    _onAskPassword: function(op, message, defaultUser, defaultDomain, flags) {
+    _onAskPassword(op, message, defaultUser, defaultDomain, flags) {
         if (this._existingDialog) {
             this._dialog = this._existingDialog;
             this._dialog.reaskPassword();
@@ -174,7 +174,7 @@ var ShellMountOperation = new Lang.Class({
         this._dialog.open();
     },
 
-    close: function(op) {
+    close(op) {
         this._closeExistingDialog();
         this._processesDialog = null;
 
@@ -189,7 +189,7 @@ var ShellMountOperation = new Lang.Class({
         }
     },
 
-    _onShowProcesses2: function(op) {
+    _onShowProcesses2(op) {
         this._closeExistingDialog();
 
         let processes = op.get_show_processes_pids();
@@ -217,7 +217,7 @@ var ShellMountOperation = new Lang.Class({
         this._processesDialog.update(message, processes, choices);
     },
 
-    _onShowUnmountProgress: function(op, message, timeLeft, bytesLeft) {
+    _onShowUnmountProgress(op, message, timeLeft, bytesLeft) {
         if (!this._notifier)
             this._notifier = new ShellUnmountNotifier();
             
@@ -227,7 +227,7 @@ var ShellMountOperation = new Lang.Class({
             this._notifier.show(message);
     },
 
-    borrowDialog: function() {
+    borrowDialog() {
         if (this._dialogId != 0) {
             this._dialog.disconnect(this._dialogId);
             this._dialogId = 0;
@@ -241,14 +241,14 @@ var ShellUnmountNotifier = new Lang.Class({
     Name: 'ShellUnmountNotifier',
     Extends: MessageTray.Source,
 
-    _init: function() {
+    _init() {
         this.parent('', 'media-removable');
 
         this._notification = null;
         Main.messageTray.add(this);
     },
 
-    show: function(message) {
+    show(message) {
         let [header, text] = message.split('\n', 2);
 
         if (!this._notification) {
@@ -262,7 +262,7 @@ var ShellUnmountNotifier = new Lang.Class({
         this.notify(this._notification);
     },
 
-    done: function(message) {
+    done(message) {
         if (this._notification) {
             this._notification.destroy();
             this._notification = null;
@@ -281,14 +281,14 @@ var ShellMountQuestionDialog = new Lang.Class({
     Name: 'ShellMountQuestionDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(icon) {
+    _init(icon) {
         this.parent({ styleClass: 'mount-dialog' });
 
         this._content = new Dialog.MessageDialogContent({ icon });
         this.contentLayout.add(this._content, { x_fill: true, y_fill: false });
     },
 
-    update: function(message, choices) {
+    update(message, choices) {
         _setLabelsForMessage(this._content, message);
         _setButtonsForChoices(this, choices);
     }
@@ -299,7 +299,7 @@ var ShellMountPasswordDialog = new Lang.Class({
     Name: 'ShellMountPasswordDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(message, icon, flags) {
+    _init(message, icon, flags) {
         let strings = message.split('\n');
         let title = strings.shift() || null;
         let body = strings.shift() || null;
@@ -353,20 +353,20 @@ var ShellMountPasswordDialog = new Lang.Class({
         this.setButtons(buttons);
     },
 
-    reaskPassword: function() {
+    reaskPassword() {
         this._passwordEntry.set_text('');
         this._errorMessageLabel.show();
     },
 
-    _onCancelButton: function() {
+    _onCancelButton() {
         this.emit('response', -1, '', false);
     },
 
-    _onUnlockButton: function() {
+    _onUnlockButton() {
         this._onEntryActivate();
     },
 
-    _onEntryActivate: function() {
+    _onEntryActivate() {
         global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
             this._rememberChoice && this._rememberChoice.actor.checked);
         this.emit('response', 1,
@@ -380,7 +380,7 @@ var ShellProcessesDialog = new Lang.Class({
     Name: 'ShellProcessesDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(icon) {
+    _init(icon) {
         this.parent({ styleClass: 'mount-dialog' });
 
         this._content = new Dialog.MessageDialogContent({ icon });
@@ -410,7 +410,7 @@ var ShellProcessesDialog = new Lang.Class({
                                       }));
     },
 
-    _setAppsForPids: function(pids) {
+    _setAppsForPids(pids) {
         // remove all the items
         this._applicationList.destroy_all_children();
 
@@ -432,7 +432,7 @@ var ShellProcessesDialog = new Lang.Class({
         }));
     },
 
-    update: function(message, processes, choices) {
+    update(message, processes, choices) {
         this._setAppsForPids(processes);
         _setLabelsForMessage(this._content, message);
         _setButtonsForChoices(this, choices);
@@ -483,7 +483,7 @@ var ShellMountOperationType = {
 var GnomeShellMountOpHandler = new Lang.Class({
     Name: 'GnomeShellMountOpHandler',
 
-    _init: function() {
+    _init() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellMountOpIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gtk/MountOperationHandler');
         Gio.bus_own_name_on_connection(Gio.DBus.session, 'org.gtk.MountOperationHandler',
@@ -495,13 +495,13 @@ var GnomeShellMountOpHandler = new Lang.Class({
         this._ensureEmptyRequest();
     },
 
-    _ensureEmptyRequest: function() {
+    _ensureEmptyRequest() {
         this._currentId = null;
         this._currentInvocation = null;
         this._currentType = ShellMountOperationType.NONE;
     },
 
-    _clearCurrentRequest: function(response, details) {
+    _clearCurrentRequest(response, details) {
         if (this._currentInvocation) {
             this._currentInvocation.return_value(
                 GLib.Variant.new('(ua{sv})', [response, details]));
@@ -510,7 +510,7 @@ var GnomeShellMountOpHandler = new Lang.Class({
         this._ensureEmptyRequest();
     },
 
-    _setCurrentRequest: function(invocation, id, type) {
+    _setCurrentRequest(invocation, id, type) {
         let oldId = this._currentId;
         let oldType = this._currentType;
         let requestId = id + '@' + invocation.get_sender();
@@ -527,14 +527,14 @@ var GnomeShellMountOpHandler = new Lang.Class({
         return false;
     },
 
-    _closeDialog: function() {
+    _closeDialog() {
         if (this._dialog) {
             this._dialog.close();
             this._dialog = null;
         }
     },
 
-    _createGIcon: function(iconName) {
+    _createGIcon(iconName) {
         let realIconName = iconName ? iconName : 'drive-harddisk';
         return new Gio.ThemedIcon({ name: realIconName,
                                     use_default_fallbacks: true });
@@ -561,7 +561,7 @@ var GnomeShellMountOpHandler = new Lang.Class({
      * the existing dialog and update it with a message indicating the previous
      * attempt went wrong.
      */
-    AskPasswordAsync: function(params, invocation) {
+    AskPasswordAsync(params, invocation) {
         let [id, message, iconName, defaultUser, defaultDomain, flags] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_PASSWORD)) {
@@ -610,7 +610,7 @@ var GnomeShellMountOpHandler = new Lang.Class({
      * Calling AskQuestion again for the same id will have the effect to clear
      * update the dialog with the new question.
      */
-    AskQuestionAsync: function(params, invocation) {
+    AskQuestionAsync(params, invocation) {
         let [id, message, iconName, choices] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.ASK_QUESTION)) {
@@ -650,7 +650,7 @@ var GnomeShellMountOpHandler = new Lang.Class({
      * the existing dialog and update it with the new message and the new list
      * of processes.
      */
-    ShowProcessesAsync: function(params, invocation) {
+    ShowProcessesAsync(params, invocation) {
         let [id, message, iconName, applicationPids, choices] = params;
 
         if (this._setCurrentRequest(invocation, id, ShellMountOperationType.SHOW_PROCESSES)) {
@@ -686,7 +686,7 @@ var GnomeShellMountOpHandler = new Lang.Class({
      * Closes a dialog previously opened by AskPassword, AskQuestion or ShowProcesses.
      * If no dialog is open, does nothing.
      */
-    Close: function(params, invocation) {
+    Close(params, invocation) {
         this._clearCurrentRequest(Gio.MountOperationResult.UNHANDLED, {});
         this._closeDialog();
     }

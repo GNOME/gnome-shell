@@ -22,7 +22,7 @@ var CloseDialog = new Lang.Class({
         'window': GObject.ParamSpec.override('window', Meta.CloseDialog)
     },
 
-    _init: function (window) {
+    _init(window) {
         this.parent();
         this._window = window;
         this._dialog = null;
@@ -36,7 +36,7 @@ var CloseDialog = new Lang.Class({
         this._window = window;
     },
 
-    _createDialogContent: function () {
+    _createDialogContent() {
         let tracker = Shell.WindowTracker.get_default();
         let windowApp = tracker.get_window_app(this._window);
 
@@ -48,7 +48,7 @@ var CloseDialog = new Lang.Class({
         return new Dialog.MessageDialogContent({ icon, title, subtitle });
     },
 
-    _initDialog: function () {
+    _initDialog() {
         if (this._dialog)
             return;
 
@@ -68,7 +68,7 @@ var CloseDialog = new Lang.Class({
         global.focus_manager.add_group(this._dialog);
     },
 
-    _addWindowEffect: function () {
+    _addWindowEffect() {
         // We set the effect on the surface actor, so the dialog itself
         // (which is a child of the MetaWindowActor) does not get the
         // effect applied itself.
@@ -79,21 +79,21 @@ var CloseDialog = new Lang.Class({
         surfaceActor.add_effect_with_name("gnome-shell-frozen-window", effect);
     },
 
-    _removeWindowEffect: function () {
+    _removeWindowEffect() {
         let windowActor = this._window.get_compositor_private();
         let surfaceActor = windowActor.get_first_child();
         surfaceActor.remove_effect_by_name("gnome-shell-frozen-window");
     },
 
-    _onWait: function () {
+    _onWait() {
         this.response(Meta.CloseDialogResponse.WAIT);
     },
 
-    _onClose: function () {
+    _onClose() {
         this.response(Meta.CloseDialogResponse.FORCE_CLOSE);
     },
 
-    vfunc_show: function () {
+    vfunc_show() {
         if (this._dialog != null)
             return;
 
@@ -113,7 +113,7 @@ var CloseDialog = new Lang.Class({
                          });
     },
 
-    vfunc_hide: function () {
+    vfunc_hide() {
         if (this._dialog == null)
             return;
 
@@ -131,7 +131,7 @@ var CloseDialog = new Lang.Class({
                          });
     },
 
-    vfunc_focus: function () {
+    vfunc_focus() {
         if (this._dialog)
             this._dialog.grab_key_focus();
     }

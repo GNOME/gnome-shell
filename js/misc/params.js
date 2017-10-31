@@ -2,7 +2,7 @@
 
 // parse:
 // @params: caller-provided parameter object, or %null
-// @defaults: function-provided defaults object
+// @defaults-provided defaults object
 // @allowExtras: whether or not to allow properties not in @default
 //
 // Examines @params and fills in default values from @defaults for

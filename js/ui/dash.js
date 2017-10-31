@@ -37,7 +37,7 @@ var DashItemContainer = new Lang.Class({
     Name: 'DashItemContainer',
     Extends: St.Widget,
 
-    _init: function() {
+    _init() {
         this.parent({ style_class: 'dash-item-container' });
 
         this._labelText = "";
@@ -56,7 +56,7 @@ var DashItemContainer = new Lang.Class({
         });
     },
 
-    vfunc_allocate: function(box, flags) {
+    vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
 
         if (this.child == null)
@@ -80,7 +80,7 @@ var DashItemContainer = new Lang.Class({
         this.child.allocate(childBox, flags);
     },
 
-    vfunc_get_preferred_height: function(forWidth) {
+    vfunc_get_preferred_height(forWidth) {
         let themeNode = this.get_theme_node();
 
         if (this.child == null)
@@ -92,7 +92,7 @@ var DashItemContainer = new Lang.Class({
                                                  natHeight * this.child.scale_y);
     },
 
-    vfunc_get_preferred_width: function(forHeight) {
+    vfunc_get_preferred_width(forHeight) {
         let themeNode = this.get_theme_node();
 
         if (this.child == null)
@@ -104,7 +104,7 @@ var DashItemContainer = new Lang.Class({
                                                 natWidth * this.child.scale_y);
     },
 
-    showLabel: function() {
+    showLabel() {
         if (!this._labelText)
             return;
 
@@ -138,12 +138,12 @@ var DashItemContainer = new Lang.Class({
                          });
     },
 
-    setLabelText: function(text) {
+    setLabelText(text) {
         this._labelText = text;
         this.child.accessible_name = text;
     },
 
-    hideLabel: function () {
+    hideLabel() {
         Tweener.addTween(this.label,
                          { opacity: 0,
                            time: DASH_ITEM_LABEL_HIDE_TIME,
@@ -154,7 +154,7 @@ var DashItemContainer = new Lang.Class({
                          });
     },
 
-    setChild: function(actor) {
+    setChild(actor) {
         if (this.child == actor)
             return;
 
@@ -168,7 +168,7 @@ var DashItemContainer = new Lang.Class({
         this.child.set_opacity(this._childOpacity);
     },
 
-    show: function(animate) {
+    show(animate) {
         if (this.child == null)
             return;
 
@@ -181,7 +181,7 @@ var DashItemContainer = new Lang.Class({
                          });
     },
 
-    animateOutAndDestroy: function() {
+    animateOutAndDestroy() {
         this.label.hide();
 
         if (this.child == null) {
@@ -235,7 +235,7 @@ var ShowAppsIcon = new Lang.Class({
     Name: 'ShowAppsIcon',
     Extends: DashItemContainer,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this.toggleButton = new St.Button({ style_class: 'show-apps',
@@ -254,7 +254,7 @@ var ShowAppsIcon = new Lang.Class({
         this.setDragApp(null);
     },
 
-    _createIcon: function(size) {
+    _createIcon(size) {
         this._iconActor = new St.Icon({ icon_name: 'view-app-grid-symbolic',
                                         icon_size: size,
                                         style_class: 'show-apps-icon',
@@ -262,7 +262,7 @@ var ShowAppsIcon = new Lang.Class({
         return this._iconActor;
     },
 
-    _canRemoveApp: function(app) {
+    _canRemoveApp(app) {
         if (app == null)
             return false;
 
@@ -274,7 +274,7 @@ var ShowAppsIcon = new Lang.Class({
         return isFavorite;
     },
 
-    setDragApp: function(app) {
+    setDragApp(app) {
         let canRemove = this._canRemoveApp(app);
 
         this.toggleButton.set_hover(canRemove);
@@ -287,14 +287,14 @@ var ShowAppsIcon = new Lang.Class({
             this.setLabelText(_("Show Applications"));
     },
 
-    handleDragOver: function(source, actor, x, y, time) {
+    handleDragOver(source, actor, x, y, time) {
         if (!this._canRemoveApp(getAppFromSource(source)))
             return DND.DragMotionResult.NO_DROP;
 
         return DND.DragMotionResult.MOVE_DROP;
     },
 
-    acceptDrop: function(source, actor, x, y, time) {
+    acceptDrop(source, actor, x, y, time) {
         let app = getAppFromSource(source);
         if (!this._canRemoveApp(app))
             return false;
@@ -315,7 +315,7 @@ var DragPlaceholderItem = new Lang.Class({
     Name: 'DragPlaceholderItem',
     Extends: DashItemContainer,
 
-    _init: function() {
+    _init() {
         this.parent();
         this.setChild(new St.Bin({ style_class: 'placeholder' }));
     }
@@ -325,7 +325,7 @@ var EmptyDropTargetItem = new Lang.Class({
     Name: 'EmptyDropTargetItem',
     Extends: DashItemContainer,
 
-    _init: function() {
+    _init() {
         this.parent();
         this.setChild(new St.Bin({ style_class: 'empty-dash-drop-target' }));
     }
@@ -335,14 +335,14 @@ var DashActor = new Lang.Class({
     Name: 'DashActor',
     Extends: St.Widget,
 
-    _init: function() {
+    _init() {
         let layout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.VERTICAL });
         this.parent({ name: 'dash',
                       layout_manager: layout,
                       clip_to_allocation: true });
     },
 
-    vfunc_allocate: function(box, flags) {
+    vfunc_allocate(box, flags) {
         let contentBox = this.get_theme_node().get_content_box(box);
         let availWidth = contentBox.x2 - contentBox.x1;
 
@@ -363,7 +363,7 @@ var DashActor = new Lang.Class({
         showAppsButton.allocate(childBox, flags);
     },
 
-    vfunc_get_preferred_height: function(forWidth) {
+    vfunc_get_preferred_height(forWidth) {
         // We want to request the natural height of all our children
         // as our natural height, so we chain up to StWidget (which
         // then calls BoxLayout), but we only request the showApps
@@ -386,7 +386,7 @@ const baseIconSizes = [ 16, 22, 24, 32, 48, 64 ];
 var Dash = new Lang.Class({
     Name: 'Dash',
 
-    _init : function() {
+    _init() {
         this._maxHeight = -1;
         this.iconSize = 64;
         this._shownInitially = false;
@@ -445,7 +445,7 @@ var Dash = new Lang.Class({
         Main.ctrlAltTabManager.addGroup(this.actor, _("Dash"), 'user-bookmarks-symbolic');
     },
 
-    _onDragBegin: function() {
+    _onDragBegin() {
         this._dragCancelled = false;
         this._dragMonitor = {
             dragMotion: Lang.bind(this, this._onDragMotion)
@@ -459,26 +459,26 @@ var Dash = new Lang.Class({
         }
     },
 
-    _onDragCancelled: function() {
+    _onDragCancelled() {
         this._dragCancelled = true;
         this._endDrag();
     },
 
-    _onDragEnd: function() {
+    _onDragEnd() {
         if (this._dragCancelled)
             return;
 
         this._endDrag();
     },
 
-    _endDrag: function() {
+    _endDrag() {
         this._clearDragPlaceholder();
         this._clearEmptyDropTarget();
         this._showAppsIcon.setDragApp(null);
         DND.removeDragMonitor(this._dragMonitor);
     },
 
-    _onDragMotion: function(dragEvent) {
+    _onDragMotion(dragEvent) {
         let app = getAppFromSource(dragEvent.source);
         if (app == null)
             return DND.DragMotionResult.CONTINUE;
@@ -497,18 +497,18 @@ var Dash = new Lang.Class({
         return DND.DragMotionResult.CONTINUE;
     },
 
-    _appIdListToHash: function(apps) {
+    _appIdListToHash(apps) {
         let ids = {};
         for (let i = 0; i < apps.length; i++)
             ids[apps[i].get_id()] = apps[i];
         return ids;
     },
 
-    _queueRedisplay: function () {
+    _queueRedisplay() {
         Main.queueDeferredWork(this._workId);
     },
 
-    _hookUpLabel: function(item, appIcon) {
+    _hookUpLabel(item, appIcon) {
         item.child.connect('notify::hover', Lang.bind(this, function() {
             this._syncLabel(item, appIcon);
         }));
@@ -528,7 +528,7 @@ var Dash = new Lang.Class({
         }
     },
 
-    _createAppItem: function(app) {
+    _createAppItem(app) {
         let appIcon = new AppDisplay.AppIcon(app,
                                              { setSizeManually: true,
                                                showLabel: false });
@@ -562,7 +562,7 @@ var Dash = new Lang.Class({
         return item;
     },
 
-    _itemMenuStateChanged: function(item, opened) {
+    _itemMenuStateChanged(item, opened) {
         // When the menu closes, it calls sync_hover, which means
         // that the notify::hover handler does everything we need to.
         if (opened) {
@@ -575,7 +575,7 @@ var Dash = new Lang.Class({
         }
     },
 
-    _syncLabel: function (item, appIcon) {
+    _syncLabel(item, appIcon) {
         let shouldShow = appIcon ? appIcon.shouldShowTooltip() : item.child.get_hover();
 
         if (shouldShow) {
@@ -611,7 +611,7 @@ var Dash = new Lang.Class({
         }
     },
 
-    _adjustIconSize: function() {
+    _adjustIconSize() {
         // For the icon size, we only consider children which are "proper"
         // icons (i.e. ignoring drag placeholders) and which are not
         // animating out (which means they will be destroyed at the end of
@@ -703,7 +703,7 @@ var Dash = new Lang.Class({
         }
     },
 
-    _redisplay: function () {
+    _redisplay() {
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
 
         let running = this._appSystem.get_running();
@@ -834,7 +834,7 @@ var Dash = new Lang.Class({
         this._box.queue_relayout();
     },
 
-    _clearDragPlaceholder: function() {
+    _clearDragPlaceholder() {
         if (this._dragPlaceholder) {
             this._animatingPlaceholdersCount++;
             this._dragPlaceholder.animateOutAndDestroy();
@@ -847,14 +847,14 @@ var Dash = new Lang.Class({
         this._dragPlaceholderPos = -1;
     },
 
-    _clearEmptyDropTarget: function() {
+    _clearEmptyDropTarget() {
         if (this._emptyDropTarget) {
             this._emptyDropTarget.animateOutAndDestroy();
             this._emptyDropTarget = null;
         }
     },
 
-    handleDragOver : function(source, actor, x, y, time) {
+    handleDragOver(source, actor, x, y, time) {
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
@@ -932,7 +932,7 @@ var Dash = new Lang.Class({
     },
 
     // Draggable target interface
-    acceptDrop : function(source, actor, x, y, time) {
+    acceptDrop(source, actor, x, y, time) {
         let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps

@@ -22,7 +22,7 @@ var AUTORUN_EXPIRE_TIMEOUT_SECS = 10;
 var AutomountManager = new Lang.Class({
     Name: 'AutomountManager',
 
-    _init: function() {
+    _init() {
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
         this._volumeQueue = [];
         this._session = new GnomeSession.SessionManager();
@@ -35,7 +35,7 @@ var AutomountManager = new Lang.Class({
         this._volumeMonitor = Gio.VolumeMonitor.get();
     },
 
-    enable: function() {
+    enable() {
         this._volumeAddedId = this._volumeMonitor.connect('volume-added', Lang.bind(this, this._onVolumeAdded));
         this._volumeRemovedId = this._volumeMonitor.connect('volume-removed', Lang.bind(this, this._onVolumeRemoved));
         this._driveConnectedId = this._volumeMonitor.connect('drive-connected', Lang.bind(this, this._onDriveConnected));
@@ -46,7 +46,7 @@ var AutomountManager = new Lang.Class({
         GLib.Source.set_name_by_id(this._mountAllId, '[gnome-shell] this._startupMountAll');
     },
 
-    disable: function() {
+    disable() {
         this._volumeMonitor.disconnect(this._volumeAddedId);
         this._volumeMonitor.disconnect(this._volumeRemovedId);
         this._volumeMonitor.disconnect(this._driveConnectedId);
@@ -59,7 +59,7 @@ var AutomountManager = new Lang.Class({
         }
     },
 
-    _InhibitorsChanged: function(object, senderName, [inhibtor]) {
+    _InhibitorsChanged(object, senderName, [inhibtor]) {
         this._session.IsInhibitedRemote(GNOME_SESSION_AUTOMOUNT_INHIBIT,
             Lang.bind(this,
                 function(result, error) {
@@ -69,7 +69,7 @@ var AutomountManager = new Lang.Class({
                 }));
     },
 
-    _startupMountAll: function() {
+    _startupMountAll() {
         let volumes = this._volumeMonitor.get_volumes();
         volumes.forEach(Lang.bind(this, function(volume) {
             this._checkAndMountVolume(volume, { checkSession: false,
@@ -81,7 +81,7 @@ var AutomountManager = new Lang.Class({
         return GLib.SOURCE_REMOVE;
     },
 
-    _onDriveConnected: function() {
+    _onDriveConnected() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
         if (!this._session.SessionIsActive)
@@ -92,7 +92,7 @@ var AutomountManager = new Lang.Class({
                                 null);
     },
 
-    _onDriveDisconnected: function() {
+    _onDriveDisconnected() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
         if (!this._session.SessionIsActive)
@@ -103,7 +103,7 @@ var AutomountManager = new Lang.Class({
                                 null);
     },
 
-    _onDriveEjectButton: function(monitor, drive) {
+    _onDriveEjectButton(monitor, drive) {
         // TODO: this code path is not tested, as the GVfs volume monitor
         // doesn't emit this signal just yet.
         if (!this._session.SessionIsActive)
@@ -134,11 +134,11 @@ var AutomountManager = new Lang.Class({
         }
     },
 
-    _onVolumeAdded: function(monitor, volume) {
+    _onVolumeAdded(monitor, volume) {
         this._checkAndMountVolume(volume);
     },
 
-    _checkAndMountVolume: function(volume, params) {
+    _checkAndMountVolume(volume, params) {
         params = Params.parse(params, { checkSession: true,
                                         useMountOp: true,
                                         allowAutorun: true });
@@ -178,7 +178,7 @@ var AutomountManager = new Lang.Class({
         }
     },
 
-    _mountVolume: function(volume, operation, allowAutorun) {
+    _mountVolume(volume, operation, allowAutorun) {
         if (allowAutorun)
             this._allowAutorun(volume);
 
@@ -189,7 +189,7 @@ var AutomountManager = new Lang.Class({
                      Lang.bind(this, this._onVolumeMounted));
     },
 
-    _onVolumeMounted: function(volume, res) {
+    _onVolumeMounted(volume, res) {
         this._allowAutorunExpire(volume);
 
         try {
@@ -210,14 +210,14 @@ var AutomountManager = new Lang.Class({
         }
     },
 
-    _onVolumeRemoved: function(monitor, volume) {
+    _onVolumeRemoved(monitor, volume) {
         this._volumeQueue = 
             this._volumeQueue.filter(function(element) {
                 return (element != volume);
             });
     },
 
-    _reaskPassword: function(volume) {
+    _reaskPassword(volume) {
         let existingDialog = volume._operation ? volume._operation.borrowDialog() : null;
         let operation = 
             new ShellMountOperation.ShellMountOperation(volume,
@@ -225,16 +225,16 @@ var AutomountManager = new Lang.Class({
         this._mountVolume(volume, operation);
     },
 
-    _closeOperation: function(volume) {
+    _closeOperation(volume) {
         if (volume._operation)
             volume._operation.close();
     },
 
-    _allowAutorun: function(volume) {
+    _allowAutorun(volume) {
         volume.allowAutorun = true;
     },
 
-    _allowAutorunExpire: function(volume) {
+    _allowAutorunExpire(volume) {
         let id = Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, function() {
             volume.allowAutorun = false;
             return GLib.SOURCE_REMOVE;

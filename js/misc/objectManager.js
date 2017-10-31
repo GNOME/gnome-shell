@@ -28,7 +28,7 @@ const ObjectManagerInfo = Gio.DBusInterfaceInfo.new_for_xml(ObjectManagerIface);
 
 var ObjectManager = new Lang.Class({
     Name: 'ObjectManager',
-    _init: function(params) {
+    _init(params) {
         params = Params.parse(params, { connection: null,
                                         name: null,
                                         objectPath: null,
@@ -64,7 +64,7 @@ var ObjectManager = new Lang.Class({
                                       Lang.bind(this, this._onManagerProxyLoaded));
     },
 
-    _tryToCompleteLoad: function() {
+    _tryToCompleteLoad() {
         if (this._numLoadInhibitors == 0)
             return;
 
@@ -75,7 +75,7 @@ var ObjectManager = new Lang.Class({
         }
     },
 
-    _addInterface: function(objectPath, interfaceName, onFinished) {
+    _addInterface(objectPath, interfaceName, onFinished) {
         let info = this._interfaceInfos[interfaceName];
 
         if (!info) {
@@ -130,7 +130,7 @@ var ObjectManager = new Lang.Class({
         }));
     },
 
-    _removeInterface: function(objectPath, interfaceName) {
+    _removeInterface(objectPath, interfaceName) {
         if (!this._objects[objectPath])
             return;
 
@@ -156,7 +156,7 @@ var ObjectManager = new Lang.Class({
         }
     },
 
-    _onManagerProxyLoaded: function(initable, result) {
+    _onManagerProxyLoaded(initable, result) {
         let error = null;
         try {
             initable.init_finish(result);
@@ -195,7 +195,7 @@ var ObjectManager = new Lang.Class({
             this._onNameAppeared();
     },
 
-    _onNameAppeared: function() {
+    _onNameAppeared() {
         this._managerProxy.GetManagedObjectsRemote(Lang.bind(this, function(result, error) {
             if (!result) {
                 if (error) {
@@ -233,7 +233,7 @@ var ObjectManager = new Lang.Class({
         }));
     },
 
-    _onNameVanished: function() {
+    _onNameVanished() {
         let objectPaths = Object.keys(this._objects);
         for (let i = 0; i < objectPaths.length; i++) {
             let object = this._objects[objectPaths];
@@ -248,14 +248,14 @@ var ObjectManager = new Lang.Class({
         }
     },
 
-    _registerInterfaces: function(interfaces) {
+    _registerInterfaces(interfaces) {
         for (let i = 0; i < interfaces.length; i++) {
             let info = Gio.DBusInterfaceInfo.new_for_xml(interfaces[i]);
             this._interfaceInfos[info.name] = info;
         }
     },
 
-    getProxy: function(objectPath, interfaceName) {
+    getProxy(objectPath, interfaceName) {
         let object = this._objects[objectPath];
 
         if (!object)
@@ -264,7 +264,7 @@ var ObjectManager = new Lang.Class({
         return object[interfaceName];
     },
 
-    getProxiesForInterface: function(interfaceName) {
+    getProxiesForInterface(interfaceName) {
         let proxyList = this._interfaces[interfaceName];
 
         if (!proxyList)
@@ -273,7 +273,7 @@ var ObjectManager = new Lang.Class({
         return proxyList;
     },
 
-    getAllProxies: function() {
+    getAllProxies() {
         let proxies = [];
 
         let objectPaths = Object.keys(this._objects);

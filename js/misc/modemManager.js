@@ -133,7 +133,7 @@ const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
 var ModemGsm = new Lang.Class({
     Name: 'ModemGsm',
 
-    _init: function(path) {
+    _init(path) {
         this._proxy = new ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
         this.signal_quality = 0;
@@ -175,7 +175,7 @@ Signals.addSignalMethods(ModemGsm.prototype);
 var ModemCdma = new Lang.Class({
     Name: 'ModemCdma',
 
-    _init: function(path) {
+    _init(path) {
         this._proxy = new ModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
         this.signal_quality = 0;
@@ -201,7 +201,7 @@ var ModemCdma = new Lang.Class({
         }));
     },
 
-    _refreshServingSystem: function() {
+    _refreshServingSystem() {
         this._proxy.GetServingSystemRemote(Lang.bind(this, function([result], err) {
             if (err) {
                 // it will return an error if the device is not connected
@@ -247,7 +247,7 @@ const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdm
 var BroadbandModem = new Lang.Class({
     Name: 'BroadbandModem',
 
-    _init: function(path, capabilities) {
+    _init(path, capabilities) {
         this._proxy = new BroadbandModemProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
         this._proxy_3gpp = new BroadbandModem3gppProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
         this._proxy_cdma = new BroadbandModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
@@ -274,13 +274,13 @@ var BroadbandModem = new Lang.Class({
         this._reloadCdmaOperatorName();
     },
 
-    _reloadSignalQuality: function() {
+    _reloadSignalQuality() {
         let [quality, recent] = this._proxy.SignalQuality;
         this.signal_quality = quality;
         this.emit('notify::signal-quality');
     },
 
-    _reloadOperatorName: function() {
+    _reloadOperatorName() {
         let new_name = "";
         if (this.operator_name_3gpp && this.operator_name_3gpp.length > 0)
             new_name += this.operator_name_3gpp;
@@ -295,14 +295,14 @@ var BroadbandModem = new Lang.Class({
         this.emit('notify::operator-name');
     },
 
-    _reload3gppOperatorName: function() {
+    _reload3gppOperatorName() {
         let name = this._proxy_3gpp.OperatorName;
         let code = this._proxy_3gpp.OperatorCode;
         this.operator_name_3gpp = _findProviderForMccMnc(name, code);
         this._reloadOperatorName();
     },
 
-    _reloadCdmaOperatorName: function() {
+    _reloadCdmaOperatorName() {
         let sid = this._proxy_cdma.Sid;
         this.operator_name_cdma = _findProviderForSid(sid);
         this._reloadOperatorName();

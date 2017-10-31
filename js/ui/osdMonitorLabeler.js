@@ -14,7 +14,7 @@ var FADE_TIME = 0.1;
 var OsdMonitorLabel = new Lang.Class({
     Name: 'OsdMonitorLabel',
 
-    _init: function(monitor, label) {
+    _init(monitor, label) {
         this._actor = new St.Widget({ x_expand: true,
                                       y_expand: true });
 
@@ -35,7 +35,7 @@ var OsdMonitorLabel = new Lang.Class({
         Meta.disable_unredirect_for_screen(global.screen);
     },
 
-    _position: function() {
+    _position() {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor);
 
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
@@ -46,7 +46,7 @@ var OsdMonitorLabel = new Lang.Class({
         this._box.y = workArea.y;
     },
 
-    destroy: function() {
+    destroy() {
         this._actor.destroy();
         Meta.enable_unredirect_for_screen(global.screen);
     }
@@ -55,7 +55,7 @@ var OsdMonitorLabel = new Lang.Class({
 var OsdMonitorLabeler = new Lang.Class({
     Name: 'OsdMonitorLabeler',
 
-    _init: function() {
+    _init() {
         this._monitorManager = Meta.MonitorManager.get();
         this._client = null;
         this._clientWatchId = 0;
@@ -66,7 +66,7 @@ var OsdMonitorLabeler = new Lang.Class({
         this._reset();
     },
 
-    _reset: function() {
+    _reset() {
         for (let i in this._osdLabels)
             this._osdLabels[i].destroy();
         this._osdLabels = [];
@@ -76,7 +76,7 @@ var OsdMonitorLabeler = new Lang.Class({
             this._monitorLabels.set(monitors[i].index, []);
     },
 
-    _trackClient: function(client) {
+    _trackClient(client) {
         if (this._client)
             return (this._client == client);
 
@@ -88,7 +88,7 @@ var OsdMonitorLabeler = new Lang.Class({
         return true;
     },
 
-    _untrackClient: function(client) {
+    _untrackClient(client) {
         if (!this._client || this._client != client)
             return false;
 
@@ -98,7 +98,7 @@ var OsdMonitorLabeler = new Lang.Class({
         return true;
     },
 
-    show: function(client, params) {
+    show(client, params) {
         if (!this._trackClient(client))
             return;
 
@@ -120,7 +120,7 @@ var OsdMonitorLabeler = new Lang.Class({
         }
     },
 
-    show2: function(client, params) {
+    show2(client, params) {
         if (!this._trackClient(client))
             return;
 
@@ -139,7 +139,7 @@ var OsdMonitorLabeler = new Lang.Class({
         }
     },
 
-    hide: function(client) {
+    hide(client) {
         if (!this._untrackClient(client))
             return;
 

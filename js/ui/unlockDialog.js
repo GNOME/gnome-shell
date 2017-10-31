@@ -31,7 +31,7 @@ const IDLE_TIMEOUT = 2 * 60;
 var UnlockDialog = new Lang.Class({
     Name: 'UnlockDialog',
 
-    _init: function(parentActor) {
+    _init(parentActor) {
         this.actor = new St.Widget({ accessible_role: Atk.Role.WINDOW,
                                      style_class: 'login-dialog',
                                      layout_manager: new Clutter.BoxLayout(),
@@ -87,7 +87,7 @@ var UnlockDialog = new Lang.Class({
         this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
     },
 
-    _updateSensitivity: function(sensitive) {
+    _updateSensitivity(sensitive) {
         this._authPrompt.updateSensitivity(sensitive);
 
         if (this._otherUserButton) {
@@ -96,11 +96,11 @@ var UnlockDialog = new Lang.Class({
         }
     },
 
-    _fail: function() {
+    _fail() {
         this.emit('failed');
     },
 
-    _onReset: function(authPrompt, beginRequest) {
+    _onReset(authPrompt, beginRequest) {
         let userName;
         if (beginRequest == AuthPrompt.BeginRequestType.PROVIDE_USERNAME) {
             this._authPrompt.setUser(this._user);
@@ -112,18 +112,18 @@ var UnlockDialog = new Lang.Class({
         this._authPrompt.begin({ userName: userName });
     },
 
-    _escape: function() {
+    _escape() {
         if (this.allowCancel)
             this._authPrompt.cancel();
     },
 
-    _otherUserClicked: function(button, event) {
+    _otherUserClicked(button, event) {
         Gdm.goto_login_session_sync(null);
 
         this._authPrompt.cancel();
     },
 
-    destroy: function() {
+    destroy() {
         this.popModal();
         this.actor.destroy();
 
@@ -133,21 +133,21 @@ var UnlockDialog = new Lang.Class({
         }
     },
 
-    cancel: function() {
+    cancel() {
         this._authPrompt.cancel();
 
         this.destroy();
     },
 
-    addCharacter: function(unichar) {
+    addCharacter(unichar) {
         this._authPrompt.addCharacter(unichar);
     },
 
-    finish: function(onComplete) {
+    finish(onComplete) {
         this._authPrompt.finish(onComplete);
     },
 
-    open: function(timestamp) {
+    open(timestamp) {
         this.actor.show();
 
         if (this._isModal)
@@ -162,7 +162,7 @@ var UnlockDialog = new Lang.Class({
         return true;
     },
 
-    popModal: function(timestamp) {
+    popModal(timestamp) {
         if (this._isModal) {
             Main.popModal(this.actor, timestamp);
             this._isModal = false;
