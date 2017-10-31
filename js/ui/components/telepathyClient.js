@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -111,10 +112,8 @@ var TelepathyComponent = class {
     }
 };
 
-var TelepathyClient = HAVE_TP ? new Lang.Class({
-    Name: 'TelepathyClient',
-    Extends: Tp.BaseClient,
-
+var TelepathyClient = HAVE_TP ? GObject.registerClass(
+class TelepathyClient extends Tp.BaseClient {
     _init() {
         // channel path -> ChatSource
         this._chatSources = {};
@@ -138,7 +137,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
-        this.parent({ name: 'GnomeShell',
+        super._init({ name: 'GnomeShell',
                       account_manager: this._accountManager,
                       uniquify_name: true });
 
@@ -156,7 +155,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         // needed
         this.set_delegated_channels_callback(
             this._delegatedChannelsCb.bind(this));
-    },
+    }
 
     vfunc_observe_channels(account, conn, channels,
                                      dispatchOp, requests, context) {
@@ -177,7 +176,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         }
 
         context.accept();
-    },
+    }
 
     _createChatSource(account, conn, channel, contact) {
         if (this._chatSources[channel.get_object_path()])
@@ -189,13 +188,13 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         source.connect('destroy', () => {
             delete this._chatSources[channel.get_object_path()];
         });
-    },
+    }
 
     vfunc_handle_channels(account, conn, channels, requests,
                                     user_action_time, context) {
         this._handlingChannels(account, conn, channels, true);
         context.accept();
-    },
+    }
 
     _handlingChannels(account, conn, channels, notify) {
         let len = channels.length;
@@ -229,7 +228,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
                     source.notify();
             }
         }
-    },
+    }
 
     vfunc_add_dispatch_operation(account, conn, channels,
                                            dispatchOp, context) {
@@ -247,7 +246,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         else
             context.fail(new Tp.Error({ code: Tp.Error.INVALID_ARGUMENT,
                                         message: 'Unsupported channel type' }));
-    },
+    }
 
     _approveTextChannel(account, conn, channel, dispatchOp, context) {
         let [targetHandle, targetHandleType] = channel.get_handle();
@@ -269,12 +268,12 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         });
 
         context.accept();
-    },
+    }
 
     _delegatedChannelsCb(client, channels) {
         // Nothing to do as we don't make a distinction between observed and
         // handled channels.
-    },
+    }
 }) : null;
 
 var ChatSource = class extends MessageTray.Source {
@@ -794,12 +793,10 @@ var ChatNotification = class extends MessageTray.Notification {
     }
 };
 
-var ChatLineBox = new Lang.Class({
-    Name: 'ChatLineBox',
-    Extends: St.BoxLayout,
-
+var ChatLineBox = GObject.registerClass(
+class ChatLineBox extends St.BoxLayout {
     vfunc_get_preferred_height(forWidth) {
-        let [, natHeight] = this.parent(forWidth);
+        let [, natHeight] = super.vfunc_get_preferred_height(forWidth);
         return [natHeight, natHeight];
     }
 });

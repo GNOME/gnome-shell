@@ -1,9 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Lang = imports.lang;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
@@ -24,10 +24,8 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 var MAX_LIST_SEARCH_RESULTS_ROWS = 5;
 var MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
-var MaxWidthBin = new Lang.Class({
-    Name: 'MaxWidthBin',
-    Extends: St.Bin,
-
+var MaxWidthBin = GObject.registerClass(
+class MaxWidthBin extends St.Bin {
     vfunc_allocate(box, flags) {
         let themeNode = this.get_theme_node();
         let maxWidth = themeNode.get_max_width();
@@ -40,7 +38,7 @@ var MaxWidthBin = new Lang.Class({
             adjustedBox.x2 -= Math.floor(excessWidth / 2);
         }
 
-        this.parent(adjustedBox, flags);
+        super.vfunc_allocate(adjustedBox, flags);
     }
 });
 
@@ -724,15 +722,11 @@ var SearchResults = class {
 };
 Signals.addSignalMethods(SearchResults.prototype);
 
-var ProviderInfo = new Lang.Class({
-    Name: 'ProviderInfo',
-    Extends: St.Button,
-
-    PROVIDER_ICON_SIZE: 32,
-
+var ProviderInfo = GObject.registerClass(
+class ProviderInfo extends St.Button {
     _init(provider) {
         this.provider = provider;
-        this.parent({ style_class: 'search-provider-icon',
+        super._init({ style_class: 'search-provider-icon',
                       reactive: true,
                       can_focus: true,
                       accessible_name: provider.appInfo.get_name(),
@@ -760,14 +754,18 @@ var ProviderInfo = new Lang.Class({
 
         this._content.add_actor(icon);
         this._content.add_actor(detailsBox);
-    },
+    }
+
+    get PROVIDER_ICON_SIZE() {
+        return 32;
+    }
 
     animateLaunch() {
         let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
         if (app.state == Shell.AppState.STOPPED)
             IconGrid.zoomOutActor(this._content);
-    },
+    }
 
     setMoreCount(count) {
         this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);

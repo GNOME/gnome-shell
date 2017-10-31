@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
@@ -285,9 +284,7 @@ var ActionEditor = class {
 };
 Signals.addSignalMethods(ActionEditor.prototype);
 
-var PadDiagram = new Lang.Class({
-    Name: 'PadDiagram',
-    Extends: St.DrawingArea,
+var PadDiagram = GObject.registerClass({
     Properties: { 'left-handed': GObject.ParamSpec.boolean('left-handed',
                                                            'left-handed', 'Left handed',
                                                            GObject.ParamFlags.READWRITE |
@@ -303,7 +300,7 @@ var PadDiagram = new Lang.Class({
                                                            GObject.ParamFlags.READWRITE |
                                                            GObject.ParamFlags.CONSTRUCT_ONLY,
                                                            Clutter.Actor.$gtype) },
-
+}, class PadDiagram extends St.DrawingArea {
     _init(params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
         let [success, css, etag] = file.load_contents(null);
@@ -314,20 +311,20 @@ var PadDiagram = new Lang.Class({
         this._css = css;
         this._labels = [];
         this._activeButtons = [];
-        this.parent(params);
-    },
+        super._init(params);
+    }
 
     get left_handed() {
         return this._leftHanded;
-    },
+    }
 
     set left_handed(leftHanded) {
         this._leftHanded = leftHanded;
-    },
+    }
 
     get image() {
         return this._imagePath;
-    },
+    }
 
     set image(imagePath) {
         let originalHandle = Rsvg.Handle.new_from_file(imagePath);
@@ -337,17 +334,17 @@ var PadDiagram = new Lang.Class({
 
         this._imagePath = imagePath;
         this._handle = this._composeStyledDiagram();
-    },
+    }
 
     get editor_actor() {
         return this._editorActor;
-    },
+    }
 
     set editor_actor(actor) {
         actor.hide();
         this._editorActor = actor;
         this.add_actor(actor);
-    },
+    }
 
     _wrappingSvgHeader() {
         return ('<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
@@ -355,13 +352,13 @@ var PadDiagram = new Lang.Class({
                 'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
                 'width="' + this._imageWidth + '" height="' + this._imageHeight + '"> ' +
                 '<style type="text/css">');
-    },
+    }
 
     _wrappingSvgFooter() {
         return ('</style>' +
                 '<xi:include href="' + this._imagePath + '" />' +
                 '</svg>');
-    },
+    }
 
     _cssString() {
         let css = this._css;
@@ -375,7 +372,7 @@ var PadDiagram = new Lang.Class({
         }
 
         return css;
-    },
+    }
 
     _composeStyledDiagram() {
         let svgData = '';
@@ -393,7 +390,7 @@ var PadDiagram = new Lang.Class({
         handle.close();
 
         return handle;
-    },
+    }
 
     _updateDiagramScale() {
         if (this._handle == null)
@@ -404,7 +401,7 @@ var PadDiagram = new Lang.Class({
         let scaleX = this._actorWidth / dimensions.width;
         let scaleY = this._actorHeight / dimensions.height;
         this._scale = Math.min(scaleX, scaleY);
-    },
+    }
 
     _allocateChild(child, x, y, direction) {
         let [prefHeight, natHeight] = child.get_preferred_height(-1);
@@ -422,10 +419,10 @@ var PadDiagram = new Lang.Class({
         childBox.y1 = y - natHeight / 2;
         childBox.y2 = y + natHeight / 2;
         child.allocate(childBox, 0);
-    },
+    }
 
     vfunc_allocate(box, flags) {
-        this.parent(box, flags);
+        super.vfunc_allocate(box, flags);
         this._updateDiagramScale();
 
         for (let i = 0; i < this._labels.length; i++) {
@@ -439,7 +436,7 @@ var PadDiagram = new Lang.Class({
             let [found, x, y, arrangement] = this.getLabelCoords(action, idx, dir);
             this._allocateChild(this._editorActor, x, y, arrangement);
         }
-    },
+    }
 
     vfunc_repaint() {
         if (this._handle == null)
@@ -461,7 +458,7 @@ var PadDiagram = new Lang.Class({
         this._handle.render_cairo(cr);
         cr.restore();
         cr.$dispose();
-    },
+    }
 
     _transformPoint(x, y) {
         if (this._handle == null || this._scale == null)
@@ -472,7 +469,7 @@ var PadDiagram = new Lang.Class({
         x = x * this._scale + this._actorWidth / 2 - dimensions.width / 2 * this._scale;
         y = y * this._scale + this._actorHeight / 2 - dimensions.height / 2 * this._scale;;
         return [Math.round(x), Math.round(y)];
-    },
+    }
 
     _getItemLabelCoords(labelName, leaderName) {
         if (this._handle == null)
@@ -504,7 +501,7 @@ var PadDiagram = new Lang.Class({
         let [x, y] = this._transformPoint(pos.x, pos.y)
 
         return [true, x, y, direction];
-    },
+    }
 
     getButtonLabelCoords(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
@@ -512,7 +509,7 @@ var PadDiagram = new Lang.Class({
         let leaderName = 'Leader' + ch;
 
         return this._getItemLabelCoords(labelName, leaderName);
-    },
+    }
 
     getRingLabelCoords(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
@@ -521,7 +518,7 @@ var PadDiagram = new Lang.Class({
         let leaderName = 'LeaderRing' + numStr + dirStr;
 
         return this._getItemLabelCoords(labelName, leaderName);
-    },
+    }
 
     getStripLabelCoords(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
@@ -530,7 +527,7 @@ var PadDiagram = new Lang.Class({
         let leaderName = 'LeaderStrip' + numStr + dirStr;
 
         return this._getItemLabelCoords(labelName, leaderName);
-    },
+    }
 
     getLabelCoords(action, idx, dir) {
         if (action == Meta.PadActionType.BUTTON)
@@ -541,19 +538,19 @@ var PadDiagram = new Lang.Class({
             return this.getStripLabelCoords(idx, dir);
 
         return [false];
-    },
+    }
 
     _invalidateSvg() {
         if (this._handle == null)
             return;
         this._handle = this._composeStyledDiagram();
         this.queue_repaint();
-    },
+    }
 
     activateButton(button) {
         this._activeButtons.push(button);
         this._invalidateSvg();
-    },
+    }
 
     deactivateButton(button) {
         for (let i = 0; i < this._activeButtons.length; i++) {
@@ -561,12 +558,12 @@ var PadDiagram = new Lang.Class({
                 this._activeButtons.splice(i, 1);
         }
         this._invalidateSvg();
-    },
+    }
 
     addLabel(label, type, idx, dir) {
         this._labels.push([label, type, idx, dir]);
         this.add_actor(label);
-    },
+    }
 
     _applyLabel(label, action, idx, dir, str) {
         if (str != null) {
@@ -576,7 +573,7 @@ var PadDiagram = new Lang.Class({
             this._allocateChild(label, x, y, arrangement);
         }
         label.show();
-    },
+    }
 
     stopEdition(continues, str) {
         this._editorActor.hide();
@@ -594,7 +591,7 @@ var PadDiagram = new Lang.Class({
                 this._prevEdited = this._curEdited;
             this._curEdited = null;
         }
-    },
+    }
 
     startEdition(action, idx, dir) {
         let editedLabel;

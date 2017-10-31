@@ -6,7 +6,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Shell = imports.gi.Shell;
-const Lang = imports.lang;
 const Signals = imports.signals;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
@@ -247,26 +246,24 @@ class BaseAppView {
 };
 Signals.addSignalMethods(BaseAppView.prototype);
 
-var PageIndicatorsActor = new Lang.Class({
-    Name:'PageIndicatorsActor',
-    Extends: St.BoxLayout,
-
+var PageIndicatorsActor = GObject.registerClass(
+class PageIndicatorsActor extends St.BoxLayout {
     _init() {
-        this.parent({ style_class: 'page-indicators',
+        super._init({ style_class: 'page-indicators',
                       vertical: true,
                       x_expand: true, y_expand: true,
                       x_align: Clutter.ActorAlign.END,
                       y_align: Clutter.ActorAlign.CENTER,
                       reactive: true,
                       clip_to_allocation: true });
-    },
+    }
 
     vfunc_get_preferred_height(forWidth) {
         // We want to request the natural height of all our children as our
         // natural height, so we chain up to St.BoxLayout, but we only request 0
         // as minimum height, since it's not that important if some indicators
         // are not shown
-        let [, natHeight] = this.parent(forWidth);
+        let [, natHeight] = super.vfunc_get_preferred_height(forWidth);
         return [0, natHeight];
     }
 });
@@ -843,10 +840,8 @@ var Views = {
     ALL: 1
 };
 
-var ControlsBoxLayout = Lang.Class({
-    Name: 'ControlsBoxLayout',
-    Extends: Clutter.BoxLayout,
-
+var ControlsBoxLayout = GObject.registerClass(
+class ControlsBoxLayout extends Clutter.BoxLayout {
     /**
      * Override the BoxLayout behavior to use the maximum preferred width of all
      * buttons for each child
@@ -868,19 +863,17 @@ var ControlsBoxLayout = Lang.Class({
     }
 });
 
-var ViewStackLayout = new Lang.Class({
-    Name: 'ViewStackLayout',
-    Extends: Clutter.BinLayout,
+var ViewStackLayout = GObject.registerClass({
     Signals: { 'allocated-size-changed': { param_types: [GObject.TYPE_INT,
                                                          GObject.TYPE_INT] } },
-
+}, class ViewStackLayout extends Clutter.BinLayout {
     vfunc_allocate(actor, box, flags) {
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
         // Prepare children of all views for the upcoming allocation, calculate all
         // the needed values to adapt available size
         this.emit('allocated-size-changed', availWidth, availHeight);
-        this.parent(actor, box, flags);
+        super.vfunc_allocate(actor, box, flags);
     }
 });
 

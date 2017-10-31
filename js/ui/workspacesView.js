@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -403,13 +402,11 @@ var ExtraWorkspaceView = class extends WorkspacesViewBase {
     }
 };
 
-var DelegateFocusNavigator = new Lang.Class({
-    Name: 'DelegateFocusNavigator',
-    Extends: St.Widget,
-
+var DelegateFocusNavigator = GObject.registerClass(
+class DelegateFocusNavigator extends St.Widget {
     vfunc_navigate_focus(from, direction) {
         return this._delegate.navigateFocus(from, direction);
-    },
+    }
 });
 
 var WorkspacesDisplay = class {

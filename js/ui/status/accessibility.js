@@ -3,7 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
+const GObject = imports.gi.GObject;
 const Mainloop = imports.mainloop;
 const St = imports.gi.St;
 
@@ -34,12 +34,10 @@ const KEY_TEXT_SCALING_FACTOR       = 'text-scaling-factor';
 
 const HIGH_CONTRAST_THEME           = 'HighContrast';
 
-var ATIndicator = new Lang.Class({
-    Name: 'ATIndicator',
-    Extends: PanelMenu.Button,
-
+var ATIndicator = GObject.registerClass(
+class ATIndicator extends PanelMenu.Button {
     _init() {
-        this.parent(0.0, _("Accessibility"));
+        super._init(0.0, _("Accessibility"));
 
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._hbox.add_child(new St.Icon({ style_class: 'system-status-icon',
@@ -85,7 +83,7 @@ var ATIndicator = new Lang.Class({
         this.menu.addMenuItem(mouseKeys);
 
         this._syncMenuVisibility();
-    },
+    }
 
     _syncMenuVisibility() {
         this._syncMenuVisibilityIdle = 0;
@@ -96,7 +94,7 @@ var ATIndicator = new Lang.Class({
         this.actor.visible = alwaysShow || items.some(f => !!f.state);
 
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     _queueSyncMenuVisibility() {
         if (this._syncMenuVisibilityIdle)
@@ -104,7 +102,7 @@ var ATIndicator = new Lang.Class({
 
         this._syncMenuVisibilityIdle = Mainloop.idle_add(this._syncMenuVisibility.bind(this));
         GLib.Source.set_name_by_id(this._syncMenuVisibilityIdle, '[gnome-shell] this._syncMenuVisibility');
-    },
+    }
 
     _buildItemExtended(string, initial_value, writable, on_set) {
         let widget = new PopupMenu.PopupSwitchMenuItem(string, initial_value);
@@ -115,7 +113,7 @@ var ATIndicator = new Lang.Class({
                 on_set(item.state);
             });
         return widget;
-    },
+    }
 
     _buildItem(string, schema, key) {
         let settings = new Gio.Settings({ schema_id: schema });
@@ -130,7 +128,7 @@ var ATIndicator = new Lang.Class({
             settings.is_writable(key),
             enabled => settings.set_boolean(key, enabled));
         return widget;
-    },
+    }
 
     _buildHCItem() {
         let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
@@ -183,7 +181,7 @@ var ATIndicator = new Lang.Class({
                 }
             });
         return highContrast;
-    },
+    }
 
     _buildFontItem() {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });

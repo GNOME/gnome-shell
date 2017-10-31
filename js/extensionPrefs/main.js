@@ -1,4 +1,3 @@
-const Lang = imports.lang;
 const Gettext = imports.gettext;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
@@ -240,24 +239,20 @@ var Application = class {
     }
 };
 
-var DescriptionLabel = new Lang.Class({
-    Name: 'DescriptionLabel',
-    Extends: Gtk.Label,
-
+var DescriptionLabel = GObject.registerClass(
+class DescriptionLabel extends Gtk.Label {
     vfunc_get_preferred_height_for_width(width) {
         // Hack: Request the maximum height allowed by the line limit
         if (this.lines > 0)
-            return this.parent(0);
-        return this.parent(width);
+            return super.vfunc_get_preferred_height_for_width(0);
+        return super.vfunc_get_preferred_height_for_width(width);
     }
 });
 
-var ExtensionRow = new Lang.Class({
-    Name: 'ExtensionRow',
-    Extends: Gtk.ListBoxRow,
-
+var ExtensionRow = GObject.registerClass(
+class ExtensionRow extends Gtk.ListBoxRow {
     _init(uuid) {
-        this.parent();
+        super._init();
 
         this.uuid = uuid;
 
@@ -275,7 +270,7 @@ var ExtensionRow = new Lang.Class({
             });
 
         this._buildUI();
-    },
+    }
 
     _buildUI() {
         let extension = ExtensionUtils.extensions[this.uuid];
@@ -322,7 +317,7 @@ var ExtensionRow = new Lang.Class({
         });
         this._switch.connect('state-set', () => true);
         hbox.add(this._switch);
-    },
+    }
 
     _canEnable() {
         let extension = ExtensionUtils.extensions[this.uuid];
@@ -330,12 +325,12 @@ var ExtensionRow = new Lang.Class({
 
         return !this._settings.get_boolean('disable-user-extensions') &&
                !(checkVersion && ExtensionUtils.isOutOfDate(extension));
-    },
+    }
 
     _isEnabled() {
         let extensions = this._settings.get_strv('enabled-extensions');
         return extensions.indexOf(this.uuid) != -1;
-    },
+    }
 
     _enable() {
         let extensions = this._settings.get_strv('enabled-extensions');
@@ -344,7 +339,7 @@ var ExtensionRow = new Lang.Class({
 
         extensions.push(this.uuid);
         this._settings.set_strv('enabled-extensions', extensions);
-    },
+    }
 
     _disable() {
         let extensions = this._settings.get_strv('enabled-extensions');
