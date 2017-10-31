@@ -49,7 +49,7 @@ function _popGrabHelper(grabHelper) {
 var GrabHelper = new Lang.Class({
     Name: 'GrabHelper',
 
-    _init: function(owner, params) {
+    _init(owner, params) {
         this._owner = owner;
         this._modalParams = params;
 
@@ -66,7 +66,7 @@ var GrabHelper = new Lang.Class({
     //
     // Adds @actor to the set of actors that are allowed to process events
     // during a grab.
-    addActor: function(actor) {
+    addActor(actor) {
         actor.__grabHelperDestroyId = actor.connect('destroy', Lang.bind(this, function() { this.removeActor(actor); }));
         this._actors.push(actor);
     },
@@ -76,7 +76,7 @@ var GrabHelper = new Lang.Class({
     //
     // Removes @actor from the set of actors that are allowed to
     // process events during a grab.
-    removeActor: function(actor) {
+    removeActor(actor) {
         let index = this._actors.indexOf(actor);
         if (index != -1)
             this._actors.splice(index, 1);
@@ -86,7 +86,7 @@ var GrabHelper = new Lang.Class({
         }
     },
 
-    _isWithinGrabbedActor: function(actor) {
+    _isWithinGrabbedActor(actor) {
         let currentActor = this.currentGrab.actor;
         while (actor) {
             if (this._actors.indexOf(actor) != -1)
@@ -110,7 +110,7 @@ var GrabHelper = new Lang.Class({
         return this._grabStack;
     },
 
-    _findStackIndex: function(actor) {
+    _findStackIndex(actor) {
         if (!actor)
             return -1;
 
@@ -121,7 +121,7 @@ var GrabHelper = new Lang.Class({
         return -1;
     },
 
-    _actorInGrabStack: function(actor) {
+    _actorInGrabStack(actor) {
         while (actor) {
             let idx = this._findStackIndex(actor);
             if (idx >= 0)
@@ -131,7 +131,7 @@ var GrabHelper = new Lang.Class({
         return -1;
     },
 
-    isActorGrabbed: function(actor) {
+    isActorGrabbed(actor) {
         return this._findStackIndex(actor) >= 0;
     },
 
@@ -166,7 +166,7 @@ var GrabHelper = new Lang.Class({
     // to that actor instead of navigating in @params.actor. This is for
     // use cases like menus, where we want to grab the menu actor, but keep
     // focus on the clicked on menu item.
-    grab: function(params) {
+    grab(params) {
         params = Params.parse(params, { actor: null,
                                         focus: null,
                                         onUngrab: null });
@@ -195,7 +195,7 @@ var GrabHelper = new Lang.Class({
         return true;
     },
 
-    _takeModalGrab: function() {
+    _takeModalGrab() {
         let firstGrab = (this._modalCount == 0);
         if (firstGrab) {
             if (!Main.pushModal(this._owner, this._modalParams))
@@ -208,7 +208,7 @@ var GrabHelper = new Lang.Class({
         return true;
     },
 
-    _releaseModalGrab: function() {
+    _releaseModalGrab() {
         this._modalCount--;
         if (this._modalCount > 0)
             return;
@@ -227,7 +227,7 @@ var GrabHelper = new Lang.Class({
     // capture event handler returns false. This is designed for things
     // like the ComboBoxMenu that go away on press, but need to eat
     // the next release event.
-    ignoreRelease: function() {
+    ignoreRelease() {
         this._ignoreUntilRelease = true;
     },
 
@@ -242,7 +242,7 @@ var GrabHelper = new Lang.Class({
     // popped until the grabbed actor is at the top of the grab stack.
     // The onUngrab callback for every grab is called for every popped
     // grab with the parameter %false.
-    ungrab: function(params) {
+    ungrab(params) {
         params = Params.parse(params, { actor: this.currentGrab.actor,
                                         isUser: false });
 
@@ -274,7 +274,7 @@ var GrabHelper = new Lang.Class({
         }
     },
 
-    onCapturedEvent: function(event) {
+    onCapturedEvent(event) {
         let type = event.type();
 
         if (type == Clutter.EventType.KEY_PRESS &&

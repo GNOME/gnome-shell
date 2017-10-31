@@ -14,7 +14,7 @@ var EntryMenu = new Lang.Class({
     Name: 'ShellEntryMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(entry) {
+    _init(entry) {
         this.parent(entry, 0, St.Side.TOP);
 
         this._entry = entry;
@@ -38,7 +38,7 @@ var EntryMenu = new Lang.Class({
         this.actor.hide();
     },
 
-    _makePasswordItem: function() {
+    _makePasswordItem() {
         let item = new PopupMenu.PopupMenuItem('');
         item.connect('activate', Lang.bind(this,
                                            this._onPasswordActivated));
@@ -64,7 +64,7 @@ var EntryMenu = new Lang.Class({
         }
     },
 
-    open: function(animate) {
+    open(animate) {
         this._updatePasteItem();
         this._updateCopyItem();
         if (this._passwordItem)
@@ -78,20 +78,20 @@ var EntryMenu = new Lang.Class({
             this.actor.grab_key_focus();
     },
 
-    _updateCopyItem: function() {
+    _updateCopyItem() {
         let selection = this._entry.clutter_text.get_selection();
         this._copyItem.setSensitive(!this._entry.clutter_text.password_char &&
                                     selection && selection != '');
     },
 
-    _updatePasteItem: function() {
+    _updatePasteItem() {
         this._clipboard.get_text(St.ClipboardType.CLIPBOARD, Lang.bind(this,
             function(clipboard, text) {
                 this._pasteItem.setSensitive(text && text != '');
             }));
     },
 
-    _updatePasswordItem: function() {
+    _updatePasswordItem() {
         let textHidden = (this._entry.clutter_text.password_char);
         if (textHidden)
             this._passwordItem.label.set_text(_("Show Text"));
@@ -99,12 +99,12 @@ var EntryMenu = new Lang.Class({
             this._passwordItem.label.set_text(_("Hide Text"));
     },
 
-    _onCopyActivated: function() {
+    _onCopyActivated() {
         let selection = this._entry.clutter_text.get_selection();
         this._clipboard.set_text(St.ClipboardType.CLIPBOARD, selection);
     },
 
-    _onPasteActivated: function() {
+    _onPasteActivated() {
         this._clipboard.get_text(St.ClipboardType.CLIPBOARD, Lang.bind(this,
             function(clipboard, text) {
                 if (!text)
@@ -115,7 +115,7 @@ var EntryMenu = new Lang.Class({
             }));
     },
 
-    _onPasswordActivated: function() {
+    _onPasswordActivated() {
         let visible = !!(this._entry.clutter_text.password_char);
         this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
     }

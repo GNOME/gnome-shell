@@ -42,7 +42,7 @@ var AccessDialog = new Lang.Class({
     Name: 'AccessDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(invocation, handle, title, subtitle, body, options) {
+    _init(invocation, handle, title, subtitle, body, options) {
         this.parent({ styleClass: 'access-dialog' });
 
         this._invocation = invocation;
@@ -57,7 +57,7 @@ var AccessDialog = new Lang.Class({
         this._buildLayout(title, subtitle, body, options);
     },
 
-    _buildLayout: function(title, subtitle, body, options) {
+    _buildLayout(title, subtitle, body, options) {
         // No support for non-modal system dialogs, so ignore the option
         //let modal = options['modal'] || true;
         let denyLabel = options['deny_label'] || _("Deny Access");
@@ -97,14 +97,14 @@ var AccessDialog = new Lang.Class({
                          }});
     },
 
-    open: function() {
+    open() {
         this.parent();
 
         let connection = this._invocation.get_connection();
         this._requestExported = this._request.export(connection, this._handle);
     },
 
-    CloseAsync: function(invocation, params) {
+    CloseAsync(invocation, params) {
         if (this._invocation.get_sender() != invocation.get_sender()) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.ACCESS_DENIED,
@@ -115,7 +115,7 @@ var AccessDialog = new Lang.Class({
         this._sendResponse(DialogResponse.CLOSED);
     },
 
-    _sendResponse: function(response) {
+    _sendResponse(response) {
         if (this._requestExported)
             this._request.unexport();
         this._requestExported = false;
@@ -140,7 +140,7 @@ var AccessDialog = new Lang.Class({
 var AccessDialogDBus = new Lang.Class({
     Name: 'AccessDialogDBus',
 
-    _init: function() {
+    _init() {
         this._accessDialog = null;
 
         this._windowTracker = Shell.WindowTracker.get_default();
@@ -151,7 +151,7 @@ var AccessDialogDBus = new Lang.Class({
         Gio.DBus.session.own_name('org.freedesktop.impl.portal.desktop.gnome', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
-    AccessDialogAsync: function(params, invocation) {
+    AccessDialogAsync(params, invocation) {
         if (this._accessDialog) {
             invocation.return_error_literal(Gio.DBusError,
                                             Gio.DBusError.LIMITS_EXCEEDED,

@@ -191,7 +191,7 @@ function loadRemoteSearchProviders(searchSettings, callback) {
 var RemoteSearchProvider = new Lang.Class({
     Name: 'RemoteSearchProvider',
 
-    _init: function(appInfo, dbusName, dbusPath, autoStart, proxyInfo) {
+    _init(appInfo, dbusName, dbusPath, autoStart, proxyInfo) {
         if (!proxyInfo)
             proxyInfo = SearchProviderProxyInfo;
 
@@ -215,7 +215,7 @@ var RemoteSearchProvider = new Lang.Class({
         this.canLaunchSearch = false;
     },
 
-    createIcon: function(size, meta) {
+    createIcon(size, meta) {
         let gicon = null;
         let icon = null;
 
@@ -236,7 +236,7 @@ var RemoteSearchProvider = new Lang.Class({
         return icon;
     },
 
-    filterResults: function(results, maxNumber) {
+    filterResults(results, maxNumber) {
         if (results.length <= maxNumber)
             return results;
 
@@ -246,7 +246,7 @@ var RemoteSearchProvider = new Lang.Class({
         return regularResults.slice(0, maxNumber).concat(specialResults.slice(0, maxNumber));
     },
 
-    _getResultsFinished: function(results, error, callback) {
+    _getResultsFinished(results, error, callback) {
         if (error) {
             if (error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 return;
@@ -259,19 +259,19 @@ var RemoteSearchProvider = new Lang.Class({
         callback(results[0]);
     },
 
-    getInitialResultSet: function(terms, callback, cancellable) {
+    getInitialResultSet(terms, callback, cancellable) {
         this.proxy.GetInitialResultSetRemote(terms,
                                              Lang.bind(this, this._getResultsFinished, callback),
                                              cancellable);
     },
 
-    getSubsearchResultSet: function(previousResults, newTerms, callback, cancellable) {
+    getSubsearchResultSet(previousResults, newTerms, callback, cancellable) {
         this.proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
                                                Lang.bind(this, this._getResultsFinished, callback),
                                                cancellable);
     },
 
-    _getResultMetasFinished: function(results, error, callback) {
+    _getResultMetasFinished(results, error, callback) {
         if (error) {
             if (!error.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
                 log('Received error from DBus search provider %s during GetResultMetas: %s'.format(this.id, String(error)));
@@ -297,17 +297,17 @@ var RemoteSearchProvider = new Lang.Class({
         callback(resultMetas);
     },
 
-    getResultMetas: function(ids, callback, cancellable) {
+    getResultMetas(ids, callback, cancellable) {
         this.proxy.GetResultMetasRemote(ids,
                                         Lang.bind(this, this._getResultMetasFinished, callback),
                                         cancellable);
     },
 
-    activateResult: function(id) {
+    activateResult(id) {
         this.proxy.ActivateResultRemote(id);
     },
 
-    launchSearch: function(terms) {
+    launchSearch(terms) {
         // the provider is not compatible with the new version of the interface, launch
         // the app itself but warn so we can catch the error in logs
         log('Search provider ' + this.appInfo.get_id() + ' does not implement LaunchSearch');
@@ -319,17 +319,17 @@ var RemoteSearchProvider2 = new Lang.Class({
     Name: 'RemoteSearchProvider2',
     Extends: RemoteSearchProvider,
 
-    _init: function(appInfo, dbusName, dbusPath, autoStart) {
+    _init(appInfo, dbusName, dbusPath, autoStart) {
         this.parent(appInfo, dbusName, dbusPath, autoStart, SearchProvider2ProxyInfo);
 
         this.canLaunchSearch = true;
     },
 
-    activateResult: function(id, terms) {
+    activateResult(id, terms) {
         this.proxy.ActivateResultRemote(id, terms, global.get_current_time());
     },
 
-    launchSearch: function(terms) {
+    launchSearch(terms) {
         this.proxy.LaunchSearchRemote(terms, global.get_current_time());
     }
 });

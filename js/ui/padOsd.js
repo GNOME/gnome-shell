@@ -33,7 +33,7 @@ const DOWN = 1;
 var PadChooser = new Lang.Class({
     Name: 'PadChooser',
 
-    _init: function (device, groupDevices) {
+    _init(device, groupDevices) {
         this.actor = new St.Button({ style_class: 'pad-chooser-button',
                                      toggle_mode: true,
                                      x_fill: false,
@@ -62,7 +62,7 @@ var PadChooser = new Lang.Class({
         }));
     },
 
-    _ensureMenu: function (devices) {
+    _ensureMenu(devices) {
         this._padChooserMenu =  new PopupMenu.PopupMenu(this.actor, 0.5, St.Side.TOP);
         this._padChooserMenu.connect('menu-closed', Lang.bind(this, function() { this.actor.set_checked(false); }));
         this._padChooserMenu.actor.hide();
@@ -79,18 +79,18 @@ var PadChooser = new Lang.Class({
         }
     },
 
-    _onDestroy: function () {
+    _onDestroy() {
         this._padChooserMenu.destroy();
     },
 
-    update: function (devices) {
+    update(devices) {
         if (this._padChooserMenu)
             this._padChooserMenu.actor.destroy();
         this.actor.set_checked(false);
         this._ensureMenu(devices);
     },
 
-    destroy: function () {
+    destroy() {
         this.actor.destroy();
     },
 });
@@ -99,13 +99,13 @@ Signals.addSignalMethods(PadChooser.prototype);
 var KeybindingEntry = new Lang.Class({
     Name: 'KeybindingEntry',
 
-    _init: function () {
+    _init() {
         this.actor = new St.Entry({ hint_text: _("New shortcut…"),
                                     style: 'width: 10em' });
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
     },
 
-    _onCapturedEvent: function (actor, event) {
+    _onCapturedEvent(actor, event) {
         if (event.type() != Clutter.EventType.KEY_PRESS)
             return Clutter.EVENT_PROPAGATE;
 
@@ -123,7 +123,7 @@ Signals.addSignalMethods(KeybindingEntry.prototype);
 var ActionComboBox = new Lang.Class({
     Name: 'ActionComboBox',
 
-    _init: function () {
+    _init() {
         this.actor = new St.Button({ style_class: 'button' });
         this.actor.connect('clicked', Lang.bind(this, this._onButtonClicked));
         this.actor.set_toggle_mode(true);
@@ -169,32 +169,32 @@ var ActionComboBox = new Lang.Class({
         this.setAction(GDesktopEnums.PadButtonAction.NONE);
     },
 
-    _onActionSelected: function (action) {
+    _onActionSelected(action) {
         this.setAction(action);
         this.popdown();
         this.emit('action-selected', action);
     },
 
-    setAction: function (action) {
+    setAction(action) {
         this._label.set_text(this._actionLabels.get(action));
     },
 
-    popup: function () {
+    popup() {
         this._editMenu.open(true);
     },
 
-    popdown: function () {
+    popdown() {
         this._editMenu.close(true);
     },
 
-    _onButtonClicked: function () {
+    _onButtonClicked() {
         if (this.actor.get_checked())
             this.popup();
         else
             this.popdown();
     },
 
-    setButtonActionsActive: function (active) {
+    setButtonActionsActive(active) {
         this._buttonItems.forEach(item => { item.setSensitive(active); });
     }
 });
@@ -203,7 +203,7 @@ Signals.addSignalMethods(ActionComboBox.prototype);
 var ActionEditor = new Lang.Class({
     Name: 'ActionEditor',
 
-    _init: function () {
+    _init() {
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                 spacing: 12 });
 
@@ -224,7 +224,7 @@ var ActionEditor = new Lang.Class({
         this.actor.add_actor(this._doneButton);
     },
 
-    _updateKeybindingEntryState: function () {
+    _updateKeybindingEntryState() {
         if (this._currentAction == GDesktopEnums.PadButtonAction.KEYBINDING) {
             this._keybindingEdit.actor.set_text(this._currentKeybinding);
             this._keybindingEdit.actor.show();
@@ -234,7 +234,7 @@ var ActionEditor = new Lang.Class({
         }
     },
 
-    setSettings: function (settings, action) {
+    setSettings(settings, action) {
         this._buttonSettings = settings;
 
         this._currentAction = this._buttonSettings.get_enum('action');
@@ -246,21 +246,21 @@ var ActionEditor = new Lang.Class({
         this._actionComboBox.setButtonActionsActive(isButton);
     },
 
-    close: function() {
+    close() {
         this._actionComboBox.popdown();
         this.actor.hide();
     },
 
-    _onKeybindingEdited: function (entry, keybinding) {
+    _onKeybindingEdited(entry, keybinding) {
         this._currentKeybinding = keybinding;
     },
 
-    _onActionSelected: function (menu, action) {
+    _onActionSelected(menu, action) {
         this._currentAction = action;
         this._updateKeybindingEntryState();
     },
 
-    _storeSettings: function () {
+    _storeSettings() {
         if (!this._buttonSettings)
             return;
 
@@ -277,7 +277,7 @@ var ActionEditor = new Lang.Class({
             this._buttonSettings.reset('keybinding');
     },
 
-    _onEditingDone: function () {
+    _onEditingDone() {
         this._storeSettings();
         this.close();
         this.emit('done');
@@ -304,7 +304,7 @@ var PadDiagram = new Lang.Class({
                                                            GObject.ParamFlags.CONSTRUCT_ONLY,
                                                            Clutter.Actor.$gtype) },
 
-    _init: function (params) {
+    _init(params) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/pad-osd.css');
         let [success, css, etag] = file.load_contents(null);
         this._curEdited = null;
@@ -347,7 +347,7 @@ var PadDiagram = new Lang.Class({
         this.add_actor(actor);
     },
 
-    _wrappingSvgHeader: function () {
+    _wrappingSvgHeader() {
         return ('<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
                 '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" ' +
                 'xmlns:xi="http://www.w3.org/2001/XInclude" ' +
@@ -355,13 +355,13 @@ var PadDiagram = new Lang.Class({
                 '<style type="text/css">');
     },
 
-    _wrappingSvgFooter: function () {
+    _wrappingSvgFooter() {
         return ('</style>' +
                 '<xi:include href="' + this._imagePath + '" />' +
                 '</svg>');
     },
 
-    _cssString: function () {
+    _cssString() {
         let css = this._css;
 
         for (let i = 0; i < this._activeButtons.length; i++) {
@@ -375,7 +375,7 @@ var PadDiagram = new Lang.Class({
         return css;
     },
 
-    _composeStyledDiagram: function () {
+    _composeStyledDiagram() {
         let svgData = '';
 
         if (!GLib.file_test(this._imagePath, GLib.FileTest.EXISTS))
@@ -393,7 +393,7 @@ var PadDiagram = new Lang.Class({
         return handle;
     },
 
-    _updateDiagramScale: function () {
+    _updateDiagramScale() {
         if (this._handle == null)
             return;
 
@@ -404,7 +404,7 @@ var PadDiagram = new Lang.Class({
         this._scale = Math.min(scaleX, scaleY);
     },
 
-    _allocateChild: function (child, x, y, direction) {
+    _allocateChild(child, x, y, direction) {
         let [prefHeight, natHeight] = child.get_preferred_height(-1);
         let [prefWidth, natWidth] = child.get_preferred_width(natHeight);
         let childBox = new Clutter.ActorBox();
@@ -422,7 +422,7 @@ var PadDiagram = new Lang.Class({
         child.allocate(childBox, 0);
     },
 
-    vfunc_allocate: function (box, flags) {
+    vfunc_allocate(box, flags) {
         this.parent(box, flags);
         this._updateDiagramScale();
 
@@ -439,7 +439,7 @@ var PadDiagram = new Lang.Class({
         }
     },
 
-    vfunc_repaint: function () {
+    vfunc_repaint() {
         if (this._handle == null)
             return;
 
@@ -461,7 +461,7 @@ var PadDiagram = new Lang.Class({
         cr.$dispose();
     },
 
-    _transformPoint: function (x, y) {
+    _transformPoint(x, y) {
         if (this._handle == null || this._scale == null)
             return [x, y];
 
@@ -472,7 +472,7 @@ var PadDiagram = new Lang.Class({
         return [Math.round(x), Math.round(y)];
     },
 
-    _getItemLabelCoords: function (labelName, leaderName) {
+    _getItemLabelCoords(labelName, leaderName) {
         if (this._handle == null)
             return [false];
 
@@ -504,7 +504,7 @@ var PadDiagram = new Lang.Class({
         return [true, x, y, direction];
     },
 
-    getButtonLabelCoords: function (button) {
+    getButtonLabelCoords(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
         let labelName = 'Label' + ch;
         let leaderName = 'Leader' + ch;
@@ -512,7 +512,7 @@ var PadDiagram = new Lang.Class({
         return this._getItemLabelCoords(labelName, leaderName);
     },
 
-    getRingLabelCoords: function (number, dir) {
+    getRingLabelCoords(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == CW ? 'CW' : 'CCW';
         let labelName = 'LabelRing' + numStr + dirStr;
@@ -521,7 +521,7 @@ var PadDiagram = new Lang.Class({
         return this._getItemLabelCoords(labelName, leaderName);
     },
 
-    getStripLabelCoords: function (number, dir) {
+    getStripLabelCoords(number, dir) {
         let numStr = number > 0 ? (number + 1).toString() : '';
         let dirStr = dir == UP ? 'Up' : 'Down';
         let labelName = 'LabelStrip' + numStr + dirStr;
@@ -530,7 +530,7 @@ var PadDiagram = new Lang.Class({
         return this._getItemLabelCoords(labelName, leaderName);
     },
 
-    getLabelCoords: function (action, idx, dir) {
+    getLabelCoords(action, idx, dir) {
         if (action == Meta.PadActionType.BUTTON)
             return this.getButtonLabelCoords(idx);
         else if (action == Meta.PadActionType.RING)
@@ -541,19 +541,19 @@ var PadDiagram = new Lang.Class({
         return [false];
     },
 
-    _invalidateSvg: function () {
+    _invalidateSvg() {
         if (this._handle == null)
             return;
         this._handle = this._composeStyledDiagram();
         this.queue_repaint();
     },
 
-    activateButton: function (button) {
+    activateButton(button) {
         this._activeButtons.push(button);
         this._invalidateSvg();
     },
 
-    deactivateButton: function (button) {
+    deactivateButton(button) {
         for (let i = 0; i < this._activeButtons.length; i++) {
             if (this._activeButtons[i] == button)
                 this._activeButtons.splice(i, 1);
@@ -561,12 +561,12 @@ var PadDiagram = new Lang.Class({
         this._invalidateSvg();
     },
 
-    addLabel: function (label, type, idx, dir) {
+    addLabel(label, type, idx, dir) {
         this._labels.push([label, type, idx, dir]);
         this.add_actor(label);
     },
 
-    _applyLabel: function(label, action, idx, dir, str) {
+    _applyLabel(label, action, idx, dir, str) {
         if (str != null) {
             label.set_text(str);
 
@@ -576,7 +576,7 @@ var PadDiagram = new Lang.Class({
         label.show();
     },
 
-    stopEdition: function (continues, str) {
+    stopEdition(continues, str) {
         this._editorActor.hide();
 
         if (this._prevEdited) {
@@ -594,7 +594,7 @@ var PadDiagram = new Lang.Class({
         }
     },
 
-    startEdition: function(action, idx, dir) {
+    startEdition(action, idx, dir) {
         let editedLabel;
 
         if (this._curEdited)
@@ -622,7 +622,7 @@ var PadDiagram = new Lang.Class({
 var PadOsd = new Lang.Class({
     Name: 'PadOsd',
 
-    _init: function (padDevice, settings, imagePath, editionMode, monitorIndex) {
+    _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
         this.padDevice = padDevice;
         this._groupPads = [ padDevice ];
         this._settings = settings;
@@ -742,7 +742,7 @@ var PadOsd = new Lang.Class({
         Main.pushModal(this.actor);
     },
 
-    _updatePadChooser: function () {
+    _updatePadChooser() {
         if (this._groupPads.length > 1) {
             if (this._padChooser == null) {
                 this._padChooser = new PadChooser(this.padDevice, this._groupPads)
@@ -759,7 +759,7 @@ var PadOsd = new Lang.Class({
         }
     },
 
-    _requestForOtherPad: function (pad) {
+    _requestForOtherPad(pad) {
         if (pad == this.padDevice ||
             this._groupPads.indexOf(pad) == -1)
             return;
@@ -769,13 +769,13 @@ var PadOsd = new Lang.Class({
         global.display.request_pad_osd(pad, editionMode);
     },
 
-    _createLabel: function (type, number, dir) {
+    _createLabel(type, number, dir) {
         let str = global.display.get_pad_action_label(this.padDevice, type, number);
         let label = new St.Label({ text: str ? str : _("None") });
         this._padDiagram.addLabel(label, type, number, dir);
     },
 
-    _onCapturedEvent : function (actor, event) {
+    _onCapturedEvent(actor, event) {
         if (event.type() == Clutter.EventType.PAD_BUTTON_PRESS &&
             event.get_source_device() == this.padDevice) {
             this._padDiagram.activateButton(event.get_button());
@@ -820,7 +820,7 @@ var PadOsd = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _syncEditionMode: function () {
+    _syncEditionMode() {
         this._editButton.set_reactive(!this._editionMode);
         this._editButton.save_easing_state();
         this._editButton.set_easing_duration(200);
@@ -840,7 +840,7 @@ var PadOsd = new Lang.Class({
         this._titleLabel.clutter_text.set_markup('<span size="larger"><b>' + title + '</b></span>');
     },
 
-    _isEditedAction: function (type, number, dir) {
+    _isEditedAction(type, number, dir) {
         if (!this._editedAction)
             return false;
 
@@ -849,7 +849,7 @@ var PadOsd = new Lang.Class({
                 this._editedAction.dir == dir);
     },
 
-    _followUpActionEdition: function (str) {
+    _followUpActionEdition(str) {
         let { type, dir, number, mode } = this._editedAction;
         let hasNextAction = (type == Meta.PadActionType.RING && dir == CCW ||
                              type == Meta.PadActionType.STRIP && dir == UP);
@@ -866,7 +866,7 @@ var PadOsd = new Lang.Class({
         return true;
     },
 
-    _endActionEdition: function () {
+    _endActionEdition() {
         this._actionEditor.close();
 
         if (this._editedAction != null) {
@@ -883,7 +883,7 @@ var PadOsd = new Lang.Class({
         this._editedActionSettings = null;
     },
 
-    _startActionEdition: function (key, type, number, dir, mode) {
+    _startActionEdition(key, type, number, dir, mode) {
         if (this._isEditedAction(type, number, dir))
             return;
 
@@ -897,25 +897,25 @@ var PadOsd = new Lang.Class({
         this._padDiagram.startEdition(type, number, dir);
     },
 
-    _startButtonActionEdition: function (button) {
+    _startButtonActionEdition(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
         let key = 'button' + ch;
         this._startActionEdition(key, Meta.PadActionType.BUTTON, button);
     },
 
-    _startRingActionEdition: function (ring, dir, mode) {
+    _startRingActionEdition(ring, dir, mode) {
         let ch = String.fromCharCode('A'.charCodeAt() + ring);
         let key = 'ring%s-%s-mode-%d'.format(ch, dir == CCW ? 'ccw' : 'cw', mode);
         this._startActionEdition(key, Meta.PadActionType.RING, ring, dir, mode);
     },
 
-    _startStripActionEdition: function (strip, dir, mode) {
+    _startStripActionEdition(strip, dir, mode) {
         let ch = String.fromCharCode('A'.charCodeAt() + strip);
         let key = 'strip%s-%s-mode-%d'.format(ch, dir == UP ? 'up' : 'down', mode);
         this._startActionEdition(key, Meta.PadActionType.STRIP, strip, dir, mode);
     },
 
-    setEditionMode: function (editionMode) {
+    setEditionMode(editionMode) {
         if (this._editionMode == editionMode)
             return;
 
@@ -923,11 +923,11 @@ var PadOsd = new Lang.Class({
         this._syncEditionMode();
     },
 
-    destroy: function () {
+    destroy() {
         this.actor.destroy();
     },
 
-    _onDestroy: function () {
+    _onDestroy() {
         Main.popModal(this.actor);
         this._actionEditor.close();
 
@@ -964,13 +964,13 @@ const PadOsdIface = '<node> \
 var PadOsdService = new Lang.Class({
     Name: 'PadOsdService',
 
-    _init: function() {
+    _init() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(PadOsdIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Wacom');
         Gio.DBus.session.own_name('org.gnome.Shell.Wacom.PadOsd', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
-    ShowAsync: function(params, invocation) {
+    ShowAsync(params, invocation) {
         let [deviceNode, editionMode] = params;
         let deviceManager = Clutter.DeviceManager.get_default();
         let devices = deviceManager.list_devices();

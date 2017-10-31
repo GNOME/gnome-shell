@@ -7,7 +7,7 @@ const Lang = imports.lang;
 var CheckBox = new Lang.Class({
     Name: 'CheckBox',
 
-    _init: function(label) {
+    _init(label) {
         let container = new St.BoxLayout();
         this.actor = new St.Button({ style_class: 'check-box',
                                      child: container,
@@ -30,11 +30,11 @@ var CheckBox = new Lang.Class({
             this.setLabel(label);
     },
 
-    setLabel: function(label) {
+    setLabel(label) {
         this._label.set_text(label);
     },
 
-    getLabelActor: function() {
+    getLabelActor() {
         return this._label;
     }
 });

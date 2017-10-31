@@ -12,7 +12,7 @@ var ANIMATED_ICON_UPDATE_TIMEOUT = 16;
 var Animation = new Lang.Class({
     Name: 'Animation',
 
-    _init: function(file, width, height, speed) {
+    _init(file, width, height, speed) {
         this.actor = new St.Bin();
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this._speed = speed;
@@ -28,7 +28,7 @@ var Animation = new Lang.Class({
         this.actor.set_child(this._animations);
     },
 
-    play: function() {
+    play() {
         if (this._isLoaded && this._timeoutId == 0) {
             if (this._frame == 0)
                 this._showFrame(0);
@@ -40,7 +40,7 @@ var Animation = new Lang.Class({
         this._isPlaying = true;
     },
 
-    stop: function() {
+    stop() {
         if (this._timeoutId > 0) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
@@ -49,7 +49,7 @@ var Animation = new Lang.Class({
         this._isPlaying = false;
     },
 
-    _showFrame: function(frame) {
+    _showFrame(frame) {
         let oldFrameActor = this._animations.get_child_at_index(this._frame);
         if (oldFrameActor)
             oldFrameActor.hide();
@@ -61,19 +61,19 @@ var Animation = new Lang.Class({
             newFrameActor.show();
     },
 
-    _update: function() {
+    _update() {
         this._showFrame(this._frame + 1);
         return GLib.SOURCE_CONTINUE;
     },
 
-    _animationsLoaded: function() {
+    _animationsLoaded() {
         this._isLoaded = this._animations.get_n_children() > 0;
 
         if (this._isPlaying)
             this.play();
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         this.stop();
     }
 });
@@ -82,7 +82,7 @@ var AnimatedIcon = new Lang.Class({
     Name: 'AnimatedIcon',
     Extends: Animation,
 
-    _init: function(file, size) {
+    _init(file, size) {
         this.parent(file, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
     }
 });

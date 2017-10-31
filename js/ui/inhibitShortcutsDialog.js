@@ -24,7 +24,7 @@ var InhibitShortcutsDialog = new Lang.Class({
         'window': GObject.ParamSpec.override('window', Meta.InhibitShortcutsDialog)
     },
 
-    _init: function(window) {
+    _init(window) {
         this.parent();
         this._window = window;
 
@@ -45,14 +45,14 @@ var InhibitShortcutsDialog = new Lang.Class({
         return windowTracker.get_window_app(this._window);
     },
 
-    _getRestoreAccel: function() {
+    _getRestoreAccel() {
         let settings = new Gio.Settings({ schema_id: WAYLAND_KEYBINDINGS_SCHEMA });
         let accel = settings.get_strv('restore-shortcuts')[0] || '';
         return Gtk.accelerator_get_label.apply(null,
                                                Gtk.accelerator_parse(accel));
     },
 
-    _buildLayout: function() {
+    _buildLayout() {
         let name = this._app ? this._app.get_name() : this._window.title;
 
         /* Translators: %s is an application name like "Settings" */
@@ -84,19 +84,19 @@ var InhibitShortcutsDialog = new Lang.Class({
                                  default: true });
     },
 
-    _emitResponse: function(response) {
+    _emitResponse(response) {
         this.emit('response', response);
         this._dialog.close();
     },
 
-    vfunc_show: function() {
+    vfunc_show() {
         if (this._app && APP_WHITELIST.indexOf(this._app.get_id()) != -1)
             this._emitResponse(DialogResponse.ALLOW);
         else
             this._dialog.open();
     },
 
-    vfunc_hide: function() {
+    vfunc_hide() {
         this._dialog.close();
     }
 });

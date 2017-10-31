@@ -152,7 +152,7 @@ function listModes() {
 var SessionMode = new Lang.Class({
     Name: 'SessionMode',
 
-    _init: function() {
+    _init() {
         _loadModes();
         let isPrimary = (_modes[global.session_mode] &&
                          _modes[global.session_mode].isPrimary);
@@ -161,19 +161,19 @@ var SessionMode = new Lang.Class({
         this._sync();
     },
 
-    pushMode: function(mode) {
+    pushMode(mode) {
         this._modeStack.push(mode);
         this._sync();
     },
 
-    popMode: function(mode) {
+    popMode(mode) {
         if (this.currentMode != mode || this._modeStack.length === 1)
             throw new Error("Invalid SessionMode.popMode");
         this._modeStack.pop();
         this._sync();
     },
 
-    switchMode: function(to) {
+    switchMode(to) {
         if (this.currentMode == to)
             return;
         this._modeStack[this._modeStack.length - 1] = to;
@@ -184,7 +184,7 @@ var SessionMode = new Lang.Class({
         return this._modeStack[this._modeStack.length - 1];
     },
 
-    _sync: function() {
+    _sync() {
         let params = _modes[this.currentMode];
         let defaults;
         if (params.parentMode)

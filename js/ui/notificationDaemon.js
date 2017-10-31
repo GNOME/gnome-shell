@@ -94,7 +94,7 @@ const rewriteRules = {
 var FdoNotificationDaemon = new Lang.Class({
     Name: 'FdoNotificationDaemon',
 
-    _init: function() {
+    _init() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(FdoNotificationsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/freedesktop/Notifications');
 
@@ -111,7 +111,7 @@ var FdoNotificationDaemon = new Lang.Class({
             Lang.bind(this, this._onFocusAppChanged));
     },
 
-    _imageForNotificationData: function(hints) {
+    _imageForNotificationData(hints) {
         if (hints['image-data']) {
             let [width, height, rowStride, hasAlpha,
                  bitsPerSample, nChannels, data] = hints['image-data'];
@@ -123,7 +123,7 @@ var FdoNotificationDaemon = new Lang.Class({
         return null;
     },
 
-    _fallbackIconForNotificationData: function(hints) {
+    _fallbackIconForNotificationData(hints) {
         let stockIcon;
         switch (hints.urgency) {
             case Urgency.LOW:
@@ -137,7 +137,7 @@ var FdoNotificationDaemon = new Lang.Class({
         return new Gio.ThemedIcon({ name: stockIcon });
     },
 
-    _iconForNotificationData: function(icon) {
+    _iconForNotificationData(icon) {
         if (icon) {
             if (icon.substr(0, 7) == 'file://')
                 return new Gio.FileIcon({ file: Gio.File.new_for_uri(icon) });
@@ -149,7 +149,7 @@ var FdoNotificationDaemon = new Lang.Class({
         return null;
     },
 
-    _lookupSource: function(title, pid) {
+    _lookupSource(title, pid) {
         for (let i = 0; i < this._sources.length; i++) {
             let source = this._sources[i];
             if (source.pid == pid && source.initialTitle == title)
@@ -169,7 +169,7 @@ var FdoNotificationDaemon = new Lang.Class({
     //
     // Either a pid or ndata.notification is needed to retrieve or
     // create a source.
-    _getSource: function(title, pid, ndata, sender) {
+    _getSource(title, pid, ndata, sender) {
         if (!pid && !(ndata && ndata.notification))
             return null;
 
@@ -200,7 +200,7 @@ var FdoNotificationDaemon = new Lang.Class({
         return source;
     },
 
-    NotifyAsync: function(params, invocation) {
+    NotifyAsync(params, invocation) {
         let [appName, replacesId, icon, summary, body, actions, hints, timeout] = params;
         let id;
 
@@ -309,7 +309,7 @@ var FdoNotificationDaemon = new Lang.Class({
         return invocation.return_value(GLib.Variant.new('(u)', [id]));
     },
 
-    _notifyForSource: function(source, ndata) {
+    _notifyForSource(source, ndata) {
         let [id, icon, summary, body, actions, hints, notification] =
             [ndata.id, ndata.icon, ndata.summary, ndata.body,
              ndata.actions, ndata.hints, ndata.notification];
@@ -401,7 +401,7 @@ var FdoNotificationDaemon = new Lang.Class({
         source.processNotification(notification, sourceGIcon);
     },
 
-    CloseNotification: function(id) {
+    CloseNotification(id) {
         let ndata = this._notifications[id];
         if (ndata) {
             if (ndata.notification)
@@ -410,7 +410,7 @@ var FdoNotificationDaemon = new Lang.Class({
         }
     },
 
-    GetCapabilities: function() {
+    GetCapabilities() {
         return [
             'actions',
             // 'action-icons',
@@ -425,7 +425,7 @@ var FdoNotificationDaemon = new Lang.Class({
         ];
     },
 
-    GetServerInformation: function() {
+    GetServerInformation() {
         return [
             Config.PACKAGE_NAME,
             'GNOME',
@@ -434,7 +434,7 @@ var FdoNotificationDaemon = new Lang.Class({
         ];
     },
 
-    _onFocusAppChanged: function() {
+    _onFocusAppChanged() {
         let tracker = Shell.WindowTracker.get_default();
         if (!tracker.focus_app)
             return;
@@ -448,12 +448,12 @@ var FdoNotificationDaemon = new Lang.Class({
         }
     },
 
-    _emitNotificationClosed: function(id, reason) {
+    _emitNotificationClosed(id, reason) {
         this._dbusImpl.emit_signal('NotificationClosed',
                                    GLib.Variant.new('(uu)', [id, reason]));
     },
 
-    _emitActionInvoked: function(id, action) {
+    _emitActionInvoked(id, action) {
         this._dbusImpl.emit_signal('ActionInvoked',
                                    GLib.Variant.new('(us)', [id, action]));
     }
@@ -463,7 +463,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
     Name: 'FdoNotificationDaemonSource',
     Extends: MessageTray.Source,
 
-    _init: function(title, pid, sender, appId) {
+    _init(title, pid, sender, appId) {
         // Need to set the app before chaining up, so
         // methods called from the parent constructor can find it
         this.pid = pid;
@@ -487,7 +487,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
             this._nameWatcherId = 0;
     },
 
-    _createPolicy: function() {
+    _createPolicy() {
         if (this.app && this.app.get_app_info()) {
             let id = this.app.get_id().replace(/\.desktop$/,'');
             return new MessageTray.NotificationApplicationPolicy(id);
@@ -496,7 +496,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
         }
     },
 
-    _onNameVanished: function() {
+    _onNameVanished() {
         // Destroy the notification source when its sender is removed from DBus.
         // Only do so if this.app is set to avoid removing "notify-send" sources, senders
         // of which аre removed from DBus immediately.
@@ -506,7 +506,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
             this.destroy();
     },
 
-    processNotification: function(notification, gicon) {
+    processNotification(notification, gicon) {
         if (gicon)
             this._gicon = gicon;
         this.iconUpdated();
@@ -518,7 +518,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
             this.notify(notification);
     },
 
-    _getApp: function(appId) {
+    _getApp(appId) {
         let app;
 
         app = Shell.WindowTracker.get_default().get_app_from_pid(this.pid);
@@ -534,7 +534,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
         return null;
     },
 
-    setTitle: function(title) {
+    setTitle(title) {
         // Do nothing if .app is set, we don't want to override the
         // app name with whatever is provided through libnotify (usually
         // garbage)
@@ -544,12 +544,12 @@ var FdoNotificationDaemonSource = new Lang.Class({
         this.parent(title);
     },
 
-    open: function() {
+    open() {
         this.openApp();
         this.destroyNonResidentNotifications();
     },
 
-    openApp: function() {
+    openApp() {
         if (this.app == null)
             return;
 
@@ -558,7 +558,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
         Main.panel.closeCalendar();
     },
 
-    destroy: function() {
+    destroy() {
         if (this._nameWatcherId) {
             Gio.DBus.session.unwatch_name(this._nameWatcherId);
             this._nameWatcherId = 0;
@@ -567,7 +567,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
         this.parent();
     },
 
-    createIcon: function(size) {
+    createIcon(size) {
         if (this.app) {
             return this.app.create_icon_texture(size);
         } else if (this._gicon) {
@@ -590,7 +590,7 @@ var GtkNotificationDaemonNotification = new Lang.Class({
     Name: 'GtkNotificationDaemonNotification',
     Extends: MessageTray.Notification,
 
-    _init: function(source, notification) {
+    _init(source, notification) {
         this.parent(source);
         this._serialized = GLib.Variant.new('a{sv}', notification);
 
@@ -629,7 +629,7 @@ var GtkNotificationDaemonNotification = new Lang.Class({
                       datetime : time ? GLib.DateTime.new_from_unix_local(time.unpack()) : null });
     },
 
-    _activateAction: function(namespacedActionId, target) {
+    _activateAction(namespacedActionId, target) {
         if (namespacedActionId) {
             if (namespacedActionId.startsWith('app.')) {
                 let actionId = namespacedActionId.slice('app.'.length);
@@ -640,17 +640,17 @@ var GtkNotificationDaemonNotification = new Lang.Class({
         }
     },
 
-    _onButtonClicked: function(button) {
+    _onButtonClicked(button) {
         let { 'action': action, 'target': actionTarget } = button;
         this._activateAction(action.unpack(), actionTarget);
     },
 
-    activate: function() {
+    activate() {
         this._activateAction(this._defaultAction, this._defaultActionTarget);
         this.parent();
     },
 
-    serialize: function() {
+    serialize() {
         return this._serialized;
     },
 });
@@ -684,7 +684,7 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
     Name: 'GtkNotificationDaemonAppSource',
     Extends: MessageTray.Source,
 
-    _init: function(appId) {
+    _init(appId) {
         this._appId = appId;
         this._objectPath = objectPathFromAppId(appId);
         if (!GLib.Variant.is_object_path(this._objectPath))
@@ -700,19 +700,19 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
         this.parent(this._app.get_name());
     },
 
-    createIcon: function(size) {
+    createIcon(size) {
         return this._app.create_icon_texture(size);
     },
 
-    _createPolicy: function() {
+    _createPolicy() {
         return new MessageTray.NotificationApplicationPolicy(this._appId);
     },
 
-    _createApp: function(callback) {
+    _createApp(callback) {
         return new FdoApplicationProxy(Gio.DBus.session, this._appId, this._objectPath, callback);
     },
 
-    activateAction: function(actionId, target) {
+    activateAction(actionId, target) {
         this._createApp(function (app, error) {
             if (error == null)
                 app.ActivateActionRemote(actionId, target ? [target] : [], getPlatformData());
@@ -723,7 +723,7 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
         Main.panel.closeCalendar();
     },
 
-    open: function() {
+    open() {
         this._createApp(function (app, error) {
             if (error == null)
                 app.ActivateRemote(getPlatformData());
@@ -734,7 +734,7 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
         Main.panel.closeCalendar();
     },
 
-    addNotification: function(notificationId, notificationParams, showBanner) {
+    addNotification(notificationId, notificationParams, showBanner) {
         this._notificationPending = true;
 
         if (this._notifications[notificationId])
@@ -754,18 +754,18 @@ var GtkNotificationDaemonAppSource = new Lang.Class({
         this._notificationPending = false;
     },
 
-    destroy: function(reason) {
+    destroy(reason) {
         if (this._notificationPending)
             return;
         this.parent(reason);
     },
 
-    removeNotification: function(notificationId) {
+    removeNotification(notificationId) {
         if (this._notifications[notificationId])
             this._notifications[notificationId].destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
     },
 
-    serialize: function() {
+    serialize() {
         let notifications = [];
         for (let notificationId in this._notifications) {
             let notification = this._notifications[notificationId];
@@ -792,7 +792,7 @@ const GtkNotificationsIface = '<node> \
 var GtkNotificationDaemon = new Lang.Class({
     Name: 'GtkNotificationDaemon',
 
-    _init: function() {
+    _init() {
         this._sources = {};
 
         this._loadNotifications();
@@ -803,7 +803,7 @@ var GtkNotificationDaemon = new Lang.Class({
         Gio.DBus.session.own_name('org.gtk.Notifications', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
-    _ensureAppSource: function(appId) {
+    _ensureAppSource(appId) {
         if (this._sources[appId])
             return this._sources[appId];
 
@@ -819,7 +819,7 @@ var GtkNotificationDaemon = new Lang.Class({
         return source;
     },
 
-    _loadNotifications: function() {
+    _loadNotifications() {
         this._isLoading = true;
 
         let value = global.get_persistent_state('a(sa(sv))', 'notifications');
@@ -845,7 +845,7 @@ var GtkNotificationDaemon = new Lang.Class({
         this._isLoading = false;
     },
 
-    _saveNotifications: function() {
+    _saveNotifications() {
         if (this._isLoading)
             return;
 
@@ -858,7 +858,7 @@ var GtkNotificationDaemon = new Lang.Class({
         global.set_persistent_state('notifications', new GLib.Variant('a(sa(sv))', sources));
     },
 
-    AddNotificationAsync: function(params, invocation) {
+    AddNotificationAsync(params, invocation) {
         let [appId, notificationId, notification] = params;
 
         let source;
@@ -877,7 +877,7 @@ var GtkNotificationDaemon = new Lang.Class({
         invocation.return_value(null);
     },
 
-    RemoveNotificationAsync: function(params, invocation) {
+    RemoveNotificationAsync(params, invocation) {
         let [appId, notificationId] = params;
         let source = this._sources[appId];
         if (source)
@@ -890,7 +890,7 @@ var GtkNotificationDaemon = new Lang.Class({
 var NotificationDaemon = new Lang.Class({
     Name: 'NotificationDaemon',
 
-    _init: function() {
+    _init() {
         this._fdoNotificationDaemon = new FdoNotificationDaemon();
         this._gtkNotificationDaemon = new GtkNotificationDaemon();
     },

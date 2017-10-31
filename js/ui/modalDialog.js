@@ -34,7 +34,7 @@ var State = {
 var ModalDialog = new Lang.Class({
     Name: 'ModalDialog',
 
-    _init: function(params) {
+    _init(params) {
         params = Params.parse(params, { shellReactive: false,
                                         styleClass: null,
                                         actionMode: Shell.ActionMode.SYSTEM_MODAL,
@@ -89,15 +89,15 @@ var ModalDialog = new Lang.Class({
         this._savedKeyFocus = null;
     },
 
-    destroy: function() {
+    destroy() {
         this._group.destroy();
     },
 
-    clearButtons: function() {
+    clearButtons() {
         this.dialogLayout.clearButtons();
     },
 
-    setButtons: function(buttons) {
+    setButtons(buttons) {
         this.clearButtons();
 
         for (let i = 0; i < buttons.length; i++) {
@@ -117,15 +117,15 @@ var ModalDialog = new Lang.Class({
         }
     },
 
-    addButton: function (buttonInfo) {
+    addButton(buttonInfo) {
         return this.dialogLayout.addButton(buttonInfo);
     },
 
-    _onGroupDestroy: function() {
+    _onGroupDestroy() {
         this.emit('destroy');
     },
 
-    _fadeOpen: function(onPrimary) {
+    _fadeOpen(onPrimary) {
         if (onPrimary)
             this._monitorConstraint.primary = true;
         else
@@ -150,7 +150,7 @@ var ModalDialog = new Lang.Class({
                          });
     },
 
-    setInitialKeyFocus: function(actor) {
+    setInitialKeyFocus(actor) {
         if (this._initialKeyFocusDestroyId)
             this._initialKeyFocus.disconnect(this._initialKeyFocusDestroyId);
 
@@ -162,7 +162,7 @@ var ModalDialog = new Lang.Class({
         }));
     },
 
-    open: function(timestamp, onPrimary) {
+    open(timestamp, onPrimary) {
         if (this.state == State.OPENED || this.state == State.OPENING)
             return true;
 
@@ -173,7 +173,7 @@ var ModalDialog = new Lang.Class({
         return true;
     },
 
-    _closeComplete: function() {
+    _closeComplete() {
         this.state = State.CLOSED;
         this._group.hide();
         this.emit('closed');
@@ -182,7 +182,7 @@ var ModalDialog = new Lang.Class({
             this.destroy();
     },
 
-    close: function(timestamp) {
+    close(timestamp) {
         if (this.state == State.CLOSED || this.state == State.CLOSING)
             return;
 
@@ -205,7 +205,7 @@ var ModalDialog = new Lang.Class({
     // Drop modal status without closing the dialog; this makes the
     // dialog insensitive as well, so it needs to be followed shortly
     // by either a close() or a pushModal()
-    popModal: function(timestamp) {
+    popModal(timestamp) {
         if (!this._hasModal)
             return;
 
@@ -222,7 +222,7 @@ var ModalDialog = new Lang.Class({
             this._eventBlocker.raise_top();
     },
 
-    pushModal: function (timestamp) {
+    pushModal(timestamp) {
         if (this._hasModal)
             return true;
 
@@ -257,7 +257,7 @@ var ModalDialog = new Lang.Class({
     // e.g., if a user clicked "Log Out" then the dialog should go away
     // imediately, but the lightbox should remain until the logout is
     // complete.
-    _fadeOutDialog: function(timestamp) {
+    _fadeOutDialog(timestamp) {
         if (this.state == State.CLOSED || this.state == State.CLOSING)
             return;
 

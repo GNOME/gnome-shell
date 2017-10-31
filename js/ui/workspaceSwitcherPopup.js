@@ -18,7 +18,7 @@ var DISPLAY_TIMEOUT = 600;
 var WorkspaceSwitcherPopup = new Lang.Class({
     Name: 'WorkspaceSwitcherPopup',
 
-    _init : function() {
+    _init() {
         this.actor = new St.Widget({ x: 0,
                                      y: 0,
                                      width: global.screen_width,
@@ -52,7 +52,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._globalSignals.push(global.screen.connect('workspace-removed', Lang.bind(this, this._redisplay)));
     },
 
-    _getPreferredHeight : function (actor, forWidth, alloc) {
+    _getPreferredHeight(actor, forWidth, alloc) {
         let children = this._list.get_children();
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
 
@@ -78,7 +78,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         alloc.natural_size = height;
     },
 
-    _getPreferredWidth : function (actor, forHeight, alloc) {
+    _getPreferredWidth(actor, forHeight, alloc) {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         this._childWidth = Math.round(this._childHeight * workArea.width / workArea.height);
 
@@ -86,7 +86,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         alloc.natural_size = this._childWidth;
     },
 
-    _allocate : function (actor, box, flags) {
+    _allocate(actor, box, flags) {
         let children = this._list.get_children();
         let childBox = new Clutter.ActorBox();
 
@@ -103,7 +103,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         }
     },
 
-    _redisplay: function() {
+    _redisplay() {
         this._list.destroy_all_children();
 
         for (let i = 0; i < global.screen.n_workspaces; i++) {
@@ -127,7 +127,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._container.y = workArea.y + Math.floor((workArea.height - containerNatHeight) / 2);
     },
 
-    _show : function() {
+    _show() {
         Tweener.addTween(this._container, { opacity: 255,
                                             time: ANIMATION_TIME,
                                             transition: 'easeOutQuad'
@@ -135,7 +135,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this.actor.show();
     },
 
-    display : function(direction, activeWorkspaceIndex) {
+    display(direction, activeWorkspaceIndex) {
         this._direction = direction;
         this._activeWorkspaceIndex = activeWorkspaceIndex;
 
@@ -147,19 +147,19 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._show();
     },
 
-    _onTimeout : function() {
+    _onTimeout() {
         Mainloop.source_remove(this._timeoutId);
         this._timeoutId = 0;
         Tweener.addTween(this._container, { opacity: 0.0,
                                             time: ANIMATION_TIME,
                                             transition: 'easeOutQuad',
-                                            onComplete: function() { this.destroy(); },
+                                            onComplete() { this.destroy(); },
                                             onCompleteScope: this
                                            });
         return GLib.SOURCE_REMOVE;
     },
 
-    destroy: function() {
+    destroy() {
         if (this._timeoutId)
             Mainloop.source_remove(this._timeoutId);
         this._timeoutId = 0;

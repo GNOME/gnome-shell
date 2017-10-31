@@ -15,7 +15,7 @@ var WindowMenu = new Lang.Class({
     Name: 'WindowMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(window, sourceActor) {
+    _init(window, sourceActor) {
         this.parent(sourceActor, 0, St.Side.TOP);
 
         this.actor.add_style_class_name('window-menu');
@@ -26,7 +26,7 @@ var WindowMenu = new Lang.Class({
         this._buildMenu(window);
     },
 
-    _buildMenu: function(window) {
+    _buildMenu(window) {
         let type = window.get_window_type();
 
         let item;
@@ -169,7 +169,7 @@ var AppMenu = new Lang.Class({
     Name: 'AppMenu',
     Extends: RemoteMenu.RemoteMenu,
 
-    _init: function(window, sourceActor) {
+    _init(window, sourceActor) {
         let app = Shell.WindowTracker.get_default().get_window_app(window);
 
         this.parent(sourceActor, app.menu, app.action_group);
@@ -187,7 +187,7 @@ var AppMenu = new Lang.Class({
 var WindowMenuManager = new Lang.Class({
     Name: 'WindowMenuManager',
 
-    _init: function() {
+    _init() {
         this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
 
         this._sourceActor = new St.Widget({ reactive: true, visible: false });
@@ -198,7 +198,7 @@ var WindowMenuManager = new Lang.Class({
         Main.uiGroup.add_actor(this._sourceActor);
     },
 
-    showWindowMenuForWindow: function(window, type, rect) {
+    showWindowMenuForWindow(window, type, rect) {
         let menuType = (type == Meta.WindowMenuType.WM) ? WindowMenu : AppMenu;
         let menu = new menuType(window, this._sourceActor);
 

@@ -51,7 +51,7 @@ var MediaMessage = new Lang.Class({
     Name: 'MediaMessage',
     Extends: MessageList.Message,
 
-    _init: function(player) {
+    _init(player) {
         this._player = player;
 
         this.parent('', '');
@@ -79,16 +79,16 @@ var MediaMessage = new Lang.Class({
         this._update();
     },
 
-    _onClicked: function() {
+    _onClicked() {
         this._player.raise();
         Main.panel.closeCalendar();
     },
 
-    _updateNavButton: function(button, sensitive) {
+    _updateNavButton(button, sensitive) {
         button.reactive = sensitive;
     },
 
-    _update: function() {
+    _update() {
         this.setTitle(this._player.trackArtists.join(', '));
         this.setBody(this._player.trackTitle);
 
@@ -114,7 +114,7 @@ var MediaMessage = new Lang.Class({
 var MprisPlayer = new Lang.Class({
     Name: 'MprisPlayer',
 
-    _init: function(busName) {
+    _init(busName) {
         this._mprisProxy = new MprisProxy(Gio.DBus.session, busName,
                                           '/org/mpris/MediaPlayer2',
                                           Lang.bind(this, this._onMprisProxyReady));
@@ -144,7 +144,7 @@ var MprisPlayer = new Lang.Class({
         return this._trackCoverUrl;
     },
 
-    playPause: function() {
+    playPause() {
         this._playerProxy.PlayPauseRemote();
     },
 
@@ -152,7 +152,7 @@ var MprisPlayer = new Lang.Class({
         return this._playerProxy.CanGoNext;
     },
 
-    next: function() {
+    next() {
         this._playerProxy.NextRemote();
     },
 
@@ -160,11 +160,11 @@ var MprisPlayer = new Lang.Class({
         return this._playerProxy.CanGoPrevious;
     },
 
-    previous: function() {
+    previous() {
         this._playerProxy.PreviousRemote();
     },
 
-    raise: function() {
+    raise() {
         // The remote Raise() method may run into focus stealing prevention,
         // so prefer activating the app via .desktop file if possible
         let app = null;
@@ -179,7 +179,7 @@ var MprisPlayer = new Lang.Class({
             this._mprisProxy.RaiseRemote();
     },
 
-    _close: function() {
+    _close() {
         this._mprisProxy.disconnect(this._ownerNotifyId);
         this._mprisProxy = null;
 
@@ -189,7 +189,7 @@ var MprisPlayer = new Lang.Class({
         this.emit('closed');
     },
 
-    _onMprisProxyReady: function() {
+    _onMprisProxyReady() {
         this._ownerNotifyId = this._mprisProxy.connect('notify::g-name-owner',
             Lang.bind(this, function() {
                 if (!this._mprisProxy.g_name_owner)
@@ -197,13 +197,13 @@ var MprisPlayer = new Lang.Class({
             }));
     },
 
-    _onPlayerProxyReady: function() {
+    _onPlayerProxyReady() {
         this._propsChangedId = this._playerProxy.connect('g-properties-changed',
                                                          Lang.bind(this, this._updateState));
         this._updateState();
     },
 
-    _updateState: function() {
+    _updateState() {
         let metadata = {};
         for (let prop in this._playerProxy.Metadata)
             metadata[prop] = this._playerProxy.Metadata[prop].deep_unpack();
@@ -230,7 +230,7 @@ var MediaSection = new Lang.Class({
     Name: 'MediaSection',
     Extends: MessageList.MessageListSection,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this._players = new Map();
@@ -241,11 +241,11 @@ var MediaSection = new Lang.Class({
                                     Lang.bind(this, this._onProxyReady));
     },
 
-    _shouldShow: function() {
+    _shouldShow() {
         return !this.empty && Calendar.isToday(this._date);
     },
 
-    _addPlayer: function(busName) {
+    _addPlayer(busName) {
         if (this._players.get(busName))
             return;
 
@@ -262,7 +262,7 @@ var MediaSection = new Lang.Class({
         this._players.set(busName, player);
     },
 
-    _onProxyReady: function() {
+    _onProxyReady() {
         this._proxy.ListNamesRemote(Lang.bind(this,
             function([names]) {
                 names.forEach(Lang.bind(this,
@@ -277,7 +277,7 @@ var MediaSection = new Lang.Class({
                                   Lang.bind(this, this._onNameOwnerChanged));
     },
 
-    _onNameOwnerChanged: function(proxy, sender, [name, oldOwner, newOwner]) {
+    _onNameOwnerChanged(proxy, sender, [name, oldOwner, newOwner]) {
         if (!name.startsWith(MPRIS_PLAYER_PREFIX))
             return;
 
