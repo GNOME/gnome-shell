@@ -2,7 +2,6 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
@@ -151,40 +150,38 @@ function listModes() {
     Mainloop.run('listModes');
 }
 
-var SessionMode = new Lang.Class({
-    Name: 'SessionMode',
-
-    _init() {
+var SessionMode = class {
+    constructor() {
         _loadModes();
         let isPrimary = (_modes[global.session_mode] &&
                          _modes[global.session_mode].isPrimary);
         let mode = isPrimary ? global.session_mode : 'user';
         this._modeStack = [mode];
         this._sync();
-    },
+    }
 
     pushMode(mode) {
         this._modeStack.push(mode);
         this._sync();
-    },
+    }
 
     popMode(mode) {
         if (this.currentMode != mode || this._modeStack.length === 1)
             throw new Error("Invalid SessionMode.popMode");
         this._modeStack.pop();
         this._sync();
-    },
+    }
 
     switchMode(to) {
         if (this.currentMode == to)
             return;
         this._modeStack[this._modeStack.length - 1] = to;
         this._sync();
-    },
+    }
 
     get currentMode() {
         return this._modeStack[this._modeStack.length - 1];
-    },
+    }
 
     _sync() {
         let params = _modes[this.currentMode];
@@ -205,5 +202,5 @@ var SessionMode = new Lang.Class({
 
         this.emit('updated');
     }
-});
+};
 Signals.addSignalMethods(SessionMode.prototype);

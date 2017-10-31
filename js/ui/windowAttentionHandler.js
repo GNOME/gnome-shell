@@ -1,27 +1,24 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 
-var WindowAttentionHandler = new Lang.Class({
-    Name: 'WindowAttentionHandler',
-
-    _init() {
+var WindowAttentionHandler = class {
+    constructor() {
         this._tracker = Shell.WindowTracker.get_default();
         this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
                                                                 this._onWindowDemandsAttention.bind(this));
         this._windowMarkedUrgentId = global.display.connect('window-marked-urgent',
                                                                 this._onWindowDemandsAttention.bind(this));
-    },
+    }
 
     _getTitleAndBanner(app, window) {
         let title = app.get_name();
         let banner = _("“%s” is ready").format(window.get_title());
         return [title, banner]
-    },
+    }
 
     _onWindowDemandsAttention(display, window) {
         // We don't want to show the notification when the window is already focused,
@@ -54,17 +51,14 @@ var WindowAttentionHandler = new Lang.Class({
             notification.update(title, banner);
         }));
     }
-});
+};
 
-var Source = new Lang.Class({
-    Name: 'WindowAttentionSource',
-    Extends: MessageTray.Source,
+var Source = class WindowAttentionSource extends MessageTray.Source {
+    constructor(app, window) {
+        super(app.get_name());
 
-    _init(app, window) {
         this._window = window;
         this._app = app;
-
-        this.parent(app.get_name());
 
         this.signalIDs = [];
         this.signalIDs.push(this._window.connect('notify::demands-attention',
@@ -77,20 +71,20 @@ var Source = new Lang.Class({
                                                  () => { this.destroy(); }));
 
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
     _sync() {
         if (this._window.demands_attention || this._window.urgent)
             return;
         this.destroy();
-    },
+    }
 
     _onDestroy() {
         for(let i = 0; i < this.signalIDs.length; i++) {
            this._window.disconnect(this.signalIDs[i]);
         }
         this.signalIDs = [];
-    },
+    }
 
     _createPolicy() {
         if (this._app && this._app.get_app_info()) {
@@ -99,14 +93,14 @@ var Source = new Lang.Class({
         } else {
             return new MessageTray.NotificationGenericPolicy();
         }
-    },
+    }
 
     createIcon(size) {
         return this._app.create_icon_texture(size);
-    },
+    }
 
     open() {
         Main.activateWindow(this._window);
         this.destroy();
     }
-});
+};

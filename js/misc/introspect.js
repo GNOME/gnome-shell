@@ -1,6 +1,5 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 
@@ -12,10 +11,8 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const IntrospectDBusIface = loadInterfaceXML('org.gnome.Shell.Introspect');
 
-var IntrospectService = new Lang.Class({
-    Name: 'IntrospectService',
-
-    _init() {
+var IntrospectService = class {
+    constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(IntrospectDBusIface,
                                                              this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Introspect');
@@ -45,21 +42,21 @@ var IntrospectService = new Lang.Class({
                         });
 
         this._syncRunningApplications();
-    },
+    }
 
     _isStandaloneApp(app) {
         let windows = app.get_windows();
 
         return app.get_windows().some(w => w.transient_for == null);
-    },
+    }
 
     _isIntrospectEnabled() {
        return this._settings.get_boolean(INTROSPECT_KEY);
-    },
+    }
 
     _isSenderWhitelisted(sender) {
        return APP_WHITELIST.includes(sender);
-    },
+    }
 
     _syncRunningApplications() {
         let tracker = Shell.WindowTracker.get_default();
@@ -95,7 +92,7 @@ var IntrospectService = new Lang.Class({
         }
         this._runningApplicationsDirty = false;
         this._activeApplicationDirty = false;
-    },
+    }
 
     _isEligibleWindow(window) {
         if (window.is_override_redirect())
@@ -106,7 +103,7 @@ var IntrospectService = new Lang.Class({
                 type == Meta.WindowType.DIALOG ||
                 type == Meta.WindowType.MODAL_DIALOG ||
                 type == Meta.WindowType.UTILITY);
-    },
+    }
 
     GetRunningApplicationsAsync(params, invocation) {
         if (!this._isIntrospectEnabled() &&
@@ -118,7 +115,7 @@ var IntrospectService = new Lang.Class({
         }
 
         invocation.return_value(new GLib.Variant('(a{sa{sv}})', [this._runningApplications]));
-    },
+    }
 
     GetWindowsAsync(params, invocation) {
         let focusWindow = global.display.get_focus_window();
@@ -163,4 +160,4 @@ var IntrospectService = new Lang.Class({
         }
         invocation.return_value(new GLib.Variant('(a{ta{sv}})', [windowsList]));
     }
-});
+};

@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 const NMA = imports.gi.NMA;
 const Signals = imports.signals;
 
@@ -100,10 +99,8 @@ const ModemGsmNetworkProxy = Gio.DBusProxy.makeProxyWrapper(ModemGsmNetworkInter
 const ModemCdmaInterface = loadInterfaceXML('org.freedesktop.ModemManager.Modem.Cdma');
 const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
 
-var ModemGsm = new Lang.Class({
-    Name: 'ModemGsm',
-
-    _init(path) {
+var ModemGsm = class {
+    constructor(path) {
         this._proxy = new ModemGsmNetworkProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
         this.signal_quality = 0;
@@ -139,13 +136,11 @@ var ModemGsm = new Lang.Class({
             this.emit('notify::signal-quality');
         });
     }
-});
+};
 Signals.addSignalMethods(ModemGsm.prototype);
 
-var ModemCdma = new Lang.Class({
-    Name: 'ModemCdma',
-
-    _init(path) {
+var ModemCdma = class {
+    constructor(path) {
         this._proxy = new ModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager', path);
 
         this.signal_quality = 0;
@@ -169,7 +164,7 @@ var ModemCdma = new Lang.Class({
             }
             this.emit('notify::signal-quality');
         });
-    },
+    }
 
     _refreshServingSystem() {
         this._proxy.GetServingSystemRemote(([result], err) => {
@@ -184,7 +179,7 @@ var ModemCdma = new Lang.Class({
             this.emit('notify::operator-name');
         });
     }
-});
+};
 Signals.addSignalMethods(ModemCdma.prototype);
 
 
@@ -201,10 +196,8 @@ const BroadbandModem3gppProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModem3gp
 const BroadbandModemCdmaInterface = loadInterfaceXML('org.freedesktop.ModemManager1.Modem.ModemCdma');
 const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdmaInterface);
 
-var BroadbandModem = new Lang.Class({
-    Name: 'BroadbandModem',
-
-    _init(path, capabilities) {
+var BroadbandModem = class {
+    constructor(path, capabilities) {
         this._proxy = new BroadbandModemProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
         this._proxy_3gpp = new BroadbandModem3gppProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
         this._proxy_cdma = new BroadbandModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
@@ -229,13 +222,13 @@ var BroadbandModem = new Lang.Class({
                 this._reloadCdmaOperatorName();
         });
         this._reloadCdmaOperatorName();
-    },
+    }
 
     _reloadSignalQuality() {
         let [quality, recent] = this._proxy.SignalQuality;
         this.signal_quality = quality;
         this.emit('notify::signal-quality');
-    },
+    }
 
     _reloadOperatorName() {
         let new_name = "";
@@ -250,19 +243,19 @@ var BroadbandModem = new Lang.Class({
 
         this.operator_name = new_name;
         this.emit('notify::operator-name');
-    },
+    }
 
     _reload3gppOperatorName() {
         let name = this._proxy_3gpp.OperatorName;
         let code = this._proxy_3gpp.OperatorCode;
         this.operator_name_3gpp = _findProviderForMccMnc(name, code);
         this._reloadOperatorName();
-    },
+    }
 
     _reloadCdmaOperatorName() {
         let sid = this._proxy_cdma.Sid;
         this.operator_name_cdma = _findProviderForSid(sid);
         this._reloadOperatorName();
     }
-});
+};
 Signals.addSignalMethods(BroadbandModem.prototype);

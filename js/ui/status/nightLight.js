@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -15,12 +14,9 @@ const OBJECT_PATH = '/org/gnome/SettingsDaemon/Color';
 const ColorInterface = loadInterfaceXML('org.gnome.SettingsDaemon.Color');
 const ColorProxy = Gio.DBusProxy.makeProxyWrapper(ColorInterface);
 
-var Indicator = new Lang.Class({
-    Name: 'NightLightIndicator',
-    Extends: PanelMenu.SystemIndicator,
-
-    _init() {
-        this.parent();
+var Indicator = class extends PanelMenu.SystemIndicator {
+    constructor() {
+        super();
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'night-light-symbolic';
@@ -50,12 +46,12 @@ var Indicator = new Lang.Class({
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
         this._sync();
-    },
+    }
 
     _sessionUpdated() {
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         this.menu.setSensitive(sensitive);
-    },
+    }
 
     _sync() {
         let visible = this._proxy.NightLightActive;
@@ -67,4 +63,4 @@ var Indicator = new Lang.Class({
                                                 : _("Disable Until Tomorrow");
         this._item.actor.visible = this._indicator.visible = visible;
     }
-});
+};

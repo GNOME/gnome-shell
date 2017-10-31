@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -162,12 +161,8 @@ function registerSpecialPropertySplitter(name, splitFunction, parameters) {
 // time updates; even better is to pay attention to the vertical
 // vblank and sync to that when possible.)
 //
-var ClutterFrameTicker = new Lang.Class({
-    Name: 'ClutterFrameTicker',
-
-    FRAME_RATE : 60,
-
-    _init() {
+var ClutterFrameTicker = class {
+    constructor() {
         // We don't have a finite duration; tweener will tell us to stop
         // when we need to stop, so use 1000 seconds as "infinity", and
         // set the timeline to loop. Doing this means we have to track
@@ -189,7 +184,11 @@ var ClutterFrameTicker = new Lang.Class({
         perf_log.define_event("tweener.framePrepareDone",
                               "Finished preparing frame",
                               "");
-    },
+    }
+
+    get FRAME_RATE() {
+        return 60;
+    }
 
     _onNewFrame(frame) {
         // If there is a lot of setup to start the animation, then
@@ -206,18 +205,18 @@ var ClutterFrameTicker = new Lang.Class({
         perf_log.event("tweener.framePrepareStart");
         this.emit('prepare-frame');
         perf_log.event("tweener.framePrepareDone");
-    },
+    }
 
     getTime() {
         return this._currentTime;
-    },
+    }
 
     start() {
         if (St.get_slow_down_factor() > 0)
             Tweener.setTimeScale(1 / St.get_slow_down_factor());
         this._timeline.start();
         global.begin_work();
-    },
+    }
 
     stop() {
         this._timeline.stop();
@@ -225,6 +224,5 @@ var ClutterFrameTicker = new Lang.Class({
         this._currentTime = -1;
         global.end_work();
     }
-});
-
+};
 Signals.addSignalMethods(ClutterFrameTicker.prototype);

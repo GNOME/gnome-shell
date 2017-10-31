@@ -3,7 +3,6 @@
 // Common utils for the extension system and the extension
 // preferences tool
 
-const Lang = imports.lang;
 const Signals = imports.signals;
 
 const Gio = imports.gi.Gio;
@@ -160,9 +159,7 @@ function installImporter(extension) {
     imports.searchPath = oldSearchPath;
 }
 
-var ExtensionFinder = new Lang.Class({
-    Name: 'ExtensionFinder',
-
+var ExtensionFinder = class {
     _loadExtension(extensionDir, info, perUserDir) {
         let fileType = info.get_file_type();
         if (fileType != Gio.FileType.DIRECTORY)
@@ -184,7 +181,7 @@ var ExtensionFinder = new Lang.Class({
             return;
         }
         this.emit('extension-found', extension);
-    },
+    }
 
     scanExtensions() {
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
@@ -192,5 +189,5 @@ var ExtensionFinder = new Lang.Class({
             this._loadExtension(dir, info, perUserDir);
         });
     }
-});
+};
 Signals.addSignalMethods(ExtensionFinder.prototype);

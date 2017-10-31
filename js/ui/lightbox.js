@@ -91,10 +91,8 @@ var RadialShaderQuad = new Lang.Class({
  * @container and will track any changes in its size. You can override
  * this by passing an explicit width and height in @params.
  */
-var Lightbox = new Lang.Class({
-    Name: 'Lightbox',
-
-    _init(container, params) {
+var Lightbox = class Lightbox {
+    constructor(container, params) {
         params = Params.parse(params, { inhibitEvents: false,
                                         width: null,
                                         height: null,
@@ -137,7 +135,7 @@ var Lightbox = new Lang.Class({
         this._actorRemovedSignalId = container.connect('actor-removed', this._actorRemoved.bind(this));
 
         this._highlighted = null;
-    },
+    }
 
     _actorAdded(container, newChild) {
         let children = this._container.get_children();
@@ -159,7 +157,7 @@ var Lightbox = new Lang.Class({
             if (prevChild != -1) // paranoia
                 this._children.splice(prevChild + 1, 0, newChild);
         }
-    },
+    }
 
     show(fadeInTime) {
         fadeInTime = fadeInTime || 0;
@@ -189,7 +187,7 @@ var Lightbox = new Lang.Class({
         }
 
         this.actor.show();
-    },
+    }
 
     hide(fadeOutTime) {
         fadeOutTime = fadeOutTime || 0;
@@ -217,7 +215,7 @@ var Lightbox = new Lang.Class({
                                }
                              });
         }
-    },
+    }
 
     _actorRemoved(container, child) {
         let index = this._children.indexOf(child);
@@ -226,7 +224,7 @@ var Lightbox = new Lang.Class({
 
         if (child == this._highlighted)
             this._highlighted = null;
-    },
+    }
 
     /**
      * highlight:
@@ -257,7 +255,7 @@ var Lightbox = new Lang.Class({
         }
 
         this._highlighted = window;
-    },
+    }
 
     /**
      * destroy:
@@ -266,7 +264,7 @@ var Lightbox = new Lang.Class({
      */
     destroy() {
         this.actor.destroy();
-    },
+    }
 
     /**
      * _onDestroy:
@@ -280,5 +278,5 @@ var Lightbox = new Lang.Class({
 
         this.highlight(null);
     }
-});
+};
 Signals.addSignalMethods(Lightbox.prototype);

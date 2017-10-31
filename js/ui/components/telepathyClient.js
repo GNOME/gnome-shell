@@ -79,17 +79,15 @@ function makeMessageFromTplEvent(event) {
     };
 }
 
-var TelepathyComponent = new Lang.Class({
-    Name: 'TelepathyComponent',
-
-    _init() {
+var TelepathyComponent = class {
+    constructor() {
         this._client = null;
 
         if (!HAVE_TP)
             return; // Telepathy isn't available
 
         this._client = new TelepathyClient();
-    },
+    }
 
     enable() {
         if (!this._client)
@@ -103,7 +101,7 @@ var TelepathyComponent = new Lang.Class({
 
         if (!this._client.account_manager.is_prepared(Tp.AccountManager.get_feature_quark_core()))
             this._client.account_manager.prepare_async(null, null);
-    },
+    }
 
     disable() {
         if (!this._client)
@@ -111,7 +109,7 @@ var TelepathyComponent = new Lang.Class({
 
         this._client.unregister();
     }
-});
+};
 
 var TelepathyClient = HAVE_TP ? new Lang.Class({
     Name: 'TelepathyClient',
@@ -279,16 +277,13 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
     },
 }) : null;
 
-var ChatSource = new Lang.Class({
-    Name: 'ChatSource',
-    Extends: MessageTray.Source,
+var ChatSource = class extends MessageTray.Source {
+    constructor(account, conn, channel, contact, client) {
+        super(contact.get_alias());
 
-    _init(account, conn, channel, contact, client) {
         this._account = account;
         this._contact = contact;
         this._client = client;
-
-        this.parent(contact.get_alias());
 
         this.isChat = true;
         this._pendingMessages = [];
@@ -313,7 +308,7 @@ var ChatSource = new Lang.Class({
         Main.messageTray.add(this);
 
         this._getLogMessages();
-    },
+    }
 
     _ensureNotification() {
         if (this._notification)
@@ -329,13 +324,13 @@ var ChatSource = new Lang.Class({
             this._notification = null;
         });
         this.pushNotification(this._notification);
-    },
+    }
 
     _createPolicy() {
         if (this._account.protocol_name == 'irc')
             return new MessageTray.NotificationApplicationPolicy('org.gnome.Polari');
         return new MessageTray.NotificationApplicationPolicy('empathy');
-    },
+    }
 
     createBanner() {
         this._banner = new ChatNotificationBanner(this._notification);
@@ -348,7 +343,7 @@ var ChatSource = new Lang.Class({
         });
 
         return this._banner;
-    },
+    }
 
     _updateAlias() {
         let oldAlias = this.title;
@@ -360,7 +355,7 @@ var ChatSource = new Lang.Class({
         this.setTitle(newAlias);
         if (this._notification)
             this._notification.appendAliasChange(oldAlias, newAlias);
-    },
+    }
 
     getIcon() {
         let file = this._contact.get_avatar_file();
@@ -369,7 +364,7 @@ var ChatSource = new Lang.Class({
         } else {
             return new Gio.ThemedIcon({ name: 'avatar-default' });
         }
-    },
+    }
 
     getSecondaryIcon() {
         let iconName;
@@ -398,7 +393,7 @@ var ChatSource = new Lang.Class({
                 iconName = 'user-offline';
        }
        return new Gio.ThemedIcon({ name: iconName });
-    },
+    }
 
     _updateAvatarIcon() {
         this.iconUpdated();
@@ -406,7 +401,7 @@ var ChatSource = new Lang.Class({
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,
                                       { gicon: this.getIcon() });
-    },
+    }
 
     open() {
         Main.overview.hide();
@@ -431,7 +426,7 @@ var ChatSource = new Lang.Class({
 
             cd.present_channel_async(this._channel, global.get_current_time(), null);
         }
-    },
+    }
 
     _getLogMessages() {
         let logManager = Tpl.LogManager.dup_singleton();
@@ -440,7 +435,7 @@ var ChatSource = new Lang.Class({
         logManager.get_filtered_events_async(this._account, entity,
                                              Tpl.EventTypeMask.TEXT, SCROLLBACK_HISTORY_LINES,
                                              null, this._displayPendingMessages.bind(this));
-    },
+    }
 
     _displayPendingMessages(logManager, result) {
         let [success, events] = logManager.get_filtered_events_finish(result);
@@ -493,7 +488,7 @@ var ChatSource = new Lang.Class({
 
         if (pendingMessages.length > 0)
             this.notify();
-    },
+    }
 
     destroy(reason) {
         if (this._client.is_handling_channel(this._channel)) {
@@ -527,25 +522,25 @@ var ChatSource = new Lang.Class({
         this._contact.disconnect(this._notifyAvatarId);
         this._contact.disconnect(this._presenceChangedId);
 
-        this.parent(reason);
-    },
+        super.destroy(reason);
+    }
 
     _channelClosed() {
         this.destroy(MessageTray.NotificationDestroyedReason.SOURCE_CLOSED);
-    },
+    }
 
     /* All messages are new messages for Telepathy sources */
     get count() {
         return this._pendingMessages.length;
-    },
+    }
 
     get unseenCount() {
         return this.count;
-    },
+    }
 
     get countVisible() {
         return this.count > 0;
-    },
+    }
 
     _messageReceived(channel, message) {
         if (message.get_message_type() == Tp.ChannelTextMessageType.DELIVERY_REPORT)
@@ -565,7 +560,7 @@ var ChatSource = new Lang.Class({
         this._notifyTimeoutId = Mainloop.timeout_add(500,
             this._notifyTimeout.bind(this));
         GLib.Source.set_name_by_id(this._notifyTimeoutId, '[gnome-shell] this._notifyTimeout');
-    },
+    }
 
     _notifyTimeout() {
         if (this._pendingMessages.length != 0)
@@ -574,7 +569,7 @@ var ChatSource = new Lang.Class({
         this._notifyTimeoutId = 0;
 
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     // This is called for both messages we send from
     // our client and other clients as well.
@@ -582,11 +577,11 @@ var ChatSource = new Lang.Class({
         this._ensureNotification();
         message = makeMessageFromTpMessage(message, NotificationDirection.SENT);
         this._notification.appendMessage(message);
-    },
+    }
 
     notify() {
-        this.parent(this._notification);
-    },
+        super.notify(this._notification);
+    }
 
     respond(text) {
         let type;
@@ -601,7 +596,7 @@ var ChatSource = new Lang.Class({
         this._channel.send_message_async(msg, 0, (src, result) => {
             this._channel.send_message_finish(result); 
         });
-    },
+    }
 
     setChatState(state) {
         // We don't want to send COMPOSING every time a letter is typed into
@@ -614,14 +609,14 @@ var ChatSource = new Lang.Class({
           this._chatState = state;
           this._channel.set_chat_state_async(state, null);
         }
-    },
+    }
 
     _presenceChanged(contact, presence, status, message) {
         if (this._notification)
             this._notification.update(this._notification.title,
                                       this._notification.bannerBodyText,
                                       { secondaryGIcon: this.getSecondaryIcon() });
-    },
+    }
 
     _pendingRemoved(channel, message) {
         let idx = this._pendingMessages.indexOf(message);
@@ -634,35 +629,32 @@ var ChatSource = new Lang.Class({
         if (this._pendingMessages.length == 0 &&
             this._banner && !this._banner.expanded)
             this._banner.hide();
-    },
+    }
 
     _ackMessages() {
         // Don't clear our messages here, tp-glib will send a
         // 'pending-message-removed' for each one.
         this._channel.ack_all_pending_messages_async(null);
     }
-});
+};
 
-var ChatNotification = new Lang.Class({
-    Name: 'ChatNotification',
-    Extends: MessageTray.Notification,
-
-    _init(source) {
-        this.parent(source, source.title, null,
-                    { secondaryGIcon: source.getSecondaryIcon() });
+var ChatNotification = class extends MessageTray.Notification {
+    constructor(source) {
+        super(source, source.title, null,
+              { secondaryGIcon: source.getSecondaryIcon() });
         this.setUrgency(MessageTray.Urgency.HIGH);
         this.setResident(true);
 
         this.messages = [];
         this._timestampTimeoutId = 0;
-    },
+    }
 
     destroy(reason) {
         if (this._timestampTimeoutId)
             Mainloop.source_remove(this._timestampTimeoutId);
         this._timestampTimeoutId = 0;
-        this.parent(reason);
-    },
+        super.destroy(reason);
+    }
 
     /**
      * appendMessage:
@@ -700,7 +692,7 @@ var ChatNotification = new Lang.Class({
                        styles: styles,
                        timestamp: message.timestamp,
                        noTimestamp: noTimestamp });
-    },
+    }
 
     _filterMessages() {
         if (this.messages.length < 1)
@@ -725,7 +717,7 @@ var ChatNotification = new Lang.Class({
             for (let i = 0; i < expired.length; i++)
                 this.emit('message-removed', expired[i]);
         }
-    },
+    }
 
     /**
      * _append:
@@ -773,7 +765,7 @@ var ChatNotification = new Lang.Class({
         }
 
         this._filterMessages();
-    },
+    }
 
     appendTimestamp() {
         this._timestampTimeoutId = 0;
@@ -784,7 +776,7 @@ var ChatNotification = new Lang.Class({
         this._filterMessages();
 
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     appendAliasChange(oldAlias, newAlias) {
         oldAlias = GLib.markup_escape_text(oldAlias, -1);
@@ -800,7 +792,7 @@ var ChatNotification = new Lang.Class({
 
         this._filterMessages();
     }
-});
+};
 
 var ChatLineBox = new Lang.Class({
     Name: 'ChatLineBox',
@@ -812,12 +804,9 @@ var ChatLineBox = new Lang.Class({
     }
 });
 
-var ChatNotificationBanner = new Lang.Class({
-    Name: 'ChatNotificationBanner',
-    Extends: MessageTray.NotificationBanner,
-
-    _init(notification) {
-        this.parent(notification);
+var ChatNotificationBanner = class extends MessageTray.NotificationBanner {
+    constructor(notification) {
+        super(notification);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
                                              x_expand: true,
@@ -880,14 +869,14 @@ var ChatNotificationBanner = new Lang.Class({
 
         for (let i = this.notification.messages.length - 1; i >= 0; i--)
             this._addMessage(this.notification.messages[i]);
-    },
+    }
 
     _onDestroy() {
-        this.parent();
+        super._onDestroy();
         this.notification.disconnect(this._messageAddedId);
         this.notification.disconnect(this._messageRemovedId);
         this.notification.disconnect(this._timestampChangedId);
-    },
+    }
 
     scrollTo(side) {
         let adjustment = this._scrollArea.vscroll.adjustment;
@@ -895,11 +884,11 @@ var ChatNotificationBanner = new Lang.Class({
             adjustment.value = adjustment.lower;
         else if (side == St.Side.BOTTOM)
             adjustment.value = adjustment.upper;
-    },
+    }
 
     hide() {
         this.emit('done-displaying');
-    },
+    }
 
     _addMessage(message) {
         let highlighter = new MessageList.URLHighlighter(message.body, true, true);
@@ -921,7 +910,7 @@ var ChatNotificationBanner = new Lang.Class({
         this._messageActors.set(message, lineBox);
 
         this._updateTimestamp(message);
-    },
+    }
 
     _updateTimestamp(message) {
         let actor = this._messageActors.get(message);
@@ -942,7 +931,7 @@ var ChatNotificationBanner = new Lang.Class({
 
             actor.add_actor(timeLabel);
         }
-    },
+    }
 
     _onEntryActivated() {
         let text = this._responseEntry.get_text();
@@ -955,7 +944,7 @@ var ChatNotificationBanner = new Lang.Class({
         // see Source._messageSent
         this._responseEntry.set_text('');
         this.notification.source.respond(text);
-    },
+    }
 
     _composingStopTimeout() {
         this._composingTimeoutId = 0;
@@ -963,7 +952,7 @@ var ChatNotificationBanner = new Lang.Class({
         this.notification.source.setChatState(Tp.ChannelChatState.PAUSED);
 
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     _onEntryChanged() {
         let text = this._responseEntry.get_text();
@@ -990,6 +979,6 @@ var ChatNotificationBanner = new Lang.Class({
             this.notification.source.setChatState(Tp.ChannelChatState.ACTIVE);
         }
     }
-});
+};
 
 var Component = TelepathyComponent;

@@ -4,17 +4,14 @@ const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
-const Lang = imports.lang;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const Meta = imports.gi.Meta;
 
 var FADE_TIME = 0.1;
 
-var OsdMonitorLabel = new Lang.Class({
-    Name: 'OsdMonitorLabel',
-
-    _init(monitor, label) {
+var OsdMonitorLabel = class {
+    constructor(monitor, label) {
         this._actor = new St.Widget({ x_expand: true,
                                       y_expand: true });
 
@@ -33,7 +30,7 @@ var OsdMonitorLabel = new Lang.Class({
         this._position();
 
         Meta.disable_unredirect_for_display(global.display);
-    },
+    }
 
     _position() {
         let workArea = Main.layoutManager.getWorkAreaForMonitor(this._monitor);
@@ -44,18 +41,16 @@ var OsdMonitorLabel = new Lang.Class({
             this._box.x = workArea.x;
 
         this._box.y = workArea.y;
-    },
+    }
 
     destroy() {
         this._actor.destroy();
         Meta.enable_unredirect_for_display(global.display);
     }
-});
+};
 
-var OsdMonitorLabeler = new Lang.Class({
-    Name: 'OsdMonitorLabeler',
-
-    _init() {
+var OsdMonitorLabeler = class {
+    constructor() {
         this._monitorManager = Meta.MonitorManager.get();
         this._client = null;
         this._clientWatchId = 0;
@@ -64,7 +59,7 @@ var OsdMonitorLabeler = new Lang.Class({
         Main.layoutManager.connect('monitors-changed',
                                     this._reset.bind(this));
         this._reset();
-    },
+    }
 
     _reset() {
         for (let i in this._osdLabels)
@@ -74,7 +69,7 @@ var OsdMonitorLabeler = new Lang.Class({
         let monitors = Main.layoutManager.monitors;
         for (let i in monitors)
             this._monitorLabels.set(monitors[i].index, []);
-    },
+    }
 
     _trackClient(client) {
         if (this._client)
@@ -86,7 +81,7 @@ var OsdMonitorLabeler = new Lang.Class({
                                                      this.hide(name);
                                                  });
         return true;
-    },
+    }
 
     _untrackClient(client) {
         if (!this._client || this._client != client)
@@ -96,7 +91,7 @@ var OsdMonitorLabeler = new Lang.Class({
         this._clientWatchId = 0;
         this._client = null;
         return true;
-    },
+    }
 
     show(client, params) {
         if (!this._trackClient(client))
@@ -118,7 +113,7 @@ var OsdMonitorLabeler = new Lang.Class({
             labels.sort();
             this._osdLabels.push(new OsdMonitorLabel(monitor, labels.join(' ')));
         }
-    },
+    }
 
     show2(client, params) {
         if (!this._trackClient(client))
@@ -137,7 +132,7 @@ var OsdMonitorLabeler = new Lang.Class({
             labels.sort();
             this._osdLabels.push(new OsdMonitorLabel(monitor, labels.join(' ')));
         }
-    },
+    }
 
     hide(client) {
         if (!this._untrackClient(client))
@@ -145,4 +140,4 @@ var OsdMonitorLabeler = new Lang.Class({
 
         this._reset();
     }
-});
+};

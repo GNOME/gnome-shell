@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
@@ -10,12 +9,9 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
-var EntryMenu = new Lang.Class({
-    Name: 'ShellEntryMenu',
-    Extends: PopupMenu.PopupMenu,
-
-    _init(entry) {
-        this.parent(entry, 0, St.Side.TOP);
+var EntryMenu = class extends PopupMenu.PopupMenu {
+    constructor(entry) {
+        super(entry, 0, St.Side.TOP);
 
         this._entry = entry;
         this._clipboard = St.Clipboard.get_default();
@@ -36,18 +32,18 @@ var EntryMenu = new Lang.Class({
 
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
-    },
+    }
 
     _makePasswordItem() {
         let item = new PopupMenu.PopupMenuItem('');
         item.connect('activate', this._onPasswordActivated.bind(this));
         this.addMenuItem(item);
         this._passwordItem = item;
-    },
+    }
 
     get isPassword() {
         return this._passwordItem != null;
-    },
+    }
 
     set isPassword(v) {
         if (v == this.isPassword)
@@ -61,7 +57,7 @@ var EntryMenu = new Lang.Class({
             this._passwordItem = null;
             this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
         }
-    },
+    }
 
     open(animate) {
         this._updatePasteItem();
@@ -69,26 +65,26 @@ var EntryMenu = new Lang.Class({
         if (this._passwordItem)
             this._updatePasswordItem();
 
-        this.parent(animate);
+        super.open(animate);
         this._entry.add_style_pseudo_class('focus');
 
         let direction = Gtk.DirectionType.TAB_FORWARD;
         if (!this.actor.navigate_focus(null, direction, false))
             this.actor.grab_key_focus();
-    },
+    }
 
     _updateCopyItem() {
         let selection = this._entry.clutter_text.get_selection();
         this._copyItem.setSensitive(!this._entry.clutter_text.password_char &&
                                     selection && selection != '');
-    },
+    }
 
     _updatePasteItem() {
         this._clipboard.get_text(St.ClipboardType.CLIPBOARD,
             (clipboard, text) => {
                 this._pasteItem.setSensitive(text && text != '');
             });
-    },
+    }
 
     _updatePasswordItem() {
         let textHidden = (this._entry.clutter_text.password_char);
@@ -96,12 +92,12 @@ var EntryMenu = new Lang.Class({
             this._passwordItem.label.set_text(_("Show Text"));
         else
             this._passwordItem.label.set_text(_("Hide Text"));
-    },
+    }
 
     _onCopyActivated() {
         let selection = this._entry.clutter_text.get_selection();
         this._clipboard.set_text(St.ClipboardType.CLIPBOARD, selection);
-    },
+    }
 
     _onPasteActivated() {
         this._clipboard.get_text(St.ClipboardType.CLIPBOARD,
@@ -112,13 +108,13 @@ var EntryMenu = new Lang.Class({
                 let pos = this._entry.clutter_text.get_cursor_position();
                 this._entry.clutter_text.insert_text(text, pos);
             });
-    },
+    }
 
     _onPasswordActivated() {
         let visible = !!(this._entry.clutter_text.password_char);
         this._entry.clutter_text.set_password_char(visible ? '' : '\u25cf');
     }
-});
+};
 
 function _setMenuAlignment(entry, stageX) {
     let [success, entryX, entryY] = entry.transform_stage_point(stageX, 0);
