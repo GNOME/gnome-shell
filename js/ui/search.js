@@ -28,7 +28,7 @@ var MaxWidthBin = new Lang.Class({
     Name: 'MaxWidthBin',
     Extends: St.Bin,
 
-    vfunc_allocate: function(box, flags) {
+    vfunc_allocate(box, flags) {
         let themeNode = this.get_theme_node();
         let maxWidth = themeNode.get_max_width();
         let availWidth = box.x2 - box.x1;
@@ -47,7 +47,7 @@ var MaxWidthBin = new Lang.Class({
 var SearchResult = new Lang.Class({
     Name: 'SearchResult',
 
-    _init: function(provider, metaInfo, resultsView) {
+    _init(provider, metaInfo, resultsView) {
         this.provider = provider;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
@@ -62,7 +62,7 @@ var SearchResult = new Lang.Class({
         this.actor.connect('clicked', Lang.bind(this, this.activate));
     },
 
-    activate: function() {
+    activate() {
         this.emit('activate', this.metaInfo.id);
     }
 });
@@ -74,7 +74,7 @@ var ListSearchResult = new Lang.Class({
 
     ICON_SIZE: 24,
 
-    _init: function(provider, metaInfo, resultsView) {
+    _init(provider, metaInfo, resultsView) {
         this.parent(provider, metaInfo, resultsView);
 
         this.actor.style_class = 'list-search-result';
@@ -124,12 +124,12 @@ var ListSearchResult = new Lang.Class({
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
     },
 
-    _highlightTerms: function() {
+    _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._termsChangedId)
             this._resultsView.disconnect(this._termsChangedId);
         this._termsChangedId = 0;
@@ -140,7 +140,7 @@ var GridSearchResult = new Lang.Class({
     Name: 'GridSearchResult',
     Extends: SearchResult,
 
-    _init: function(provider, metaInfo, resultsView) {
+    _init(provider, metaInfo, resultsView) {
         this.parent(provider, metaInfo, resultsView);
 
         this.actor.style_class = 'grid-search-result';
@@ -156,7 +156,7 @@ var GridSearchResult = new Lang.Class({
 var SearchResultsBase = new Lang.Class({
     Name: 'SearchResultsBase',
 
-    _init: function(provider, resultsView) {
+    _init(provider, resultsView) {
         this.provider = provider;
         this._resultsView = resultsView;
 
@@ -179,19 +179,19 @@ var SearchResultsBase = new Lang.Class({
         this._cancellable = new Gio.Cancellable();
     },
 
-    destroy: function() {
+    destroy() {
         this.actor.destroy();
         this._terms = [];
     },
 
-    _createResultDisplay: function(meta) {
+    _createResultDisplay(meta) {
         if (this.provider.createResultObject)
             return this.provider.createResultObject(meta, this._resultsView);
 
         return null;
     },
 
-    clear: function() {
+    clear() {
         for (let resultId in this._resultDisplays)
             this._resultDisplays[resultId].actor.destroy();
         this._resultDisplays = {};
@@ -199,21 +199,21 @@ var SearchResultsBase = new Lang.Class({
         this.actor.hide();
     },
 
-    _keyFocusIn: function(actor) {
+    _keyFocusIn(actor) {
         this.emit('key-focus-in', actor);
     },
 
-    _activateResult: function(result, id) {
+    _activateResult(result, id) {
         this.provider.activateResult(id, this._terms);
         if (result.metaInfo.clipboardText)
             this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
         Main.overview.toggle();
     },
 
-    _setMoreCount: function(count) {
+    _setMoreCount(count) {
     },
 
-    _ensureResultActors: function(results, callback) {
+    _ensureResultActors(results, callback) {
         let metasNeeded = results.filter(Lang.bind(this, function(resultId) {
             return this._resultDisplays[resultId] === undefined;
         }));
@@ -251,7 +251,7 @@ var SearchResultsBase = new Lang.Class({
         }
     },
 
-    updateSearch: function(providerResults, terms, callback) {
+    updateSearch(providerResults, terms, callback) {
         this._terms = terms;
         if (providerResults.length == 0) {
             this._clearResultDisplay();
@@ -289,7 +289,7 @@ var ListSearchResults = new Lang.Class({
     Name: 'ListSearchResults',
     Extends: SearchResultsBase,
 
-    _init: function(provider, resultsView) {
+    _init(provider, resultsView) {
         this.parent(provider, resultsView);
 
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
@@ -314,28 +314,28 @@ var ListSearchResults = new Lang.Class({
         this._resultDisplayBin.set_child(this._container);
     },
 
-    _setMoreCount: function(count) {
+    _setMoreCount(count) {
         this.providerInfo.setMoreCount(count);
     },
 
-    _getMaxDisplayedResults: function() {
+    _getMaxDisplayedResults() {
         return MAX_LIST_SEARCH_RESULTS_ROWS;
     },
 
-    _clearResultDisplay: function () {
+    _clearResultDisplay() {
         this._content.remove_all_children();
     },
 
-    _createResultDisplay: function(meta) {
+    _createResultDisplay(meta) {
         return this.parent(meta, this._resultsView) ||
                new ListSearchResult(this.provider, meta, this._resultsView);
     },
 
-    _addItem: function(display) {
+    _addItem(display) {
         this._content.add_actor(display.actor);
     },
 
-    getFirstResult: function() {
+    getFirstResult() {
         if (this._content.get_n_children() > 0)
             return this._content.get_child_at_index(0)._delegate;
         else
@@ -348,7 +348,7 @@ var GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
     Extends: SearchResultsBase,
 
-    _init: function(provider, resultsView) {
+    _init(provider, resultsView) {
         this.parent(provider, resultsView);
         // We need to use the parent container to know how much results we can show.
         // None of the actors in this class can be used for that, since the main actor
@@ -365,26 +365,26 @@ var GridSearchResults = new Lang.Class({
         this._resultDisplayBin.set_child(this._bin);
     },
 
-    _getMaxDisplayedResults: function() {
+    _getMaxDisplayedResults() {
         let parentThemeNode = this._parentContainer.get_theme_node();
         let availableWidth = parentThemeNode.adjust_for_width(this._parentContainer.width);
         return this._grid.columnsForWidth(availableWidth) * this._grid.getRowLimit();
     },
 
-    _clearResultDisplay: function () {
+    _clearResultDisplay() {
         this._grid.removeAll();
     },
 
-    _createResultDisplay: function(meta) {
+    _createResultDisplay(meta) {
         return this.parent(meta, this._resultsView) ||
                new GridSearchResult(this.provider, meta, this._resultsView);
     },
 
-    _addItem: function(display) {
+    _addItem(display) {
         this._grid.addItem(display);
     },
 
-    getFirstResult: function() {
+    getFirstResult() {
         if (this._grid.visibleItemsCount() > 0)
             return this._grid.getItemAtIndex(0)._delegate;
         else
@@ -396,7 +396,7 @@ Signals.addSignalMethods(GridSearchResults.prototype);
 var SearchResults = new Lang.Class({
     Name: 'SearchResults',
 
-    _init: function() {
+    _init() {
         this.actor = new St.BoxLayout({ name: 'searchResults',
                                         vertical: true });
 
@@ -456,7 +456,7 @@ var SearchResults = new Lang.Class({
         this._reloadRemoteProviders();
     },
 
-    _reloadRemoteProviders: function() {
+    _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(function(provider) {
             return provider.isRemoteProvider;
         });
@@ -469,12 +469,12 @@ var SearchResults = new Lang.Class({
         }));
     },
 
-    _registerProvider: function (provider) {
+    _registerProvider(provider) {
         this._providers.push(provider);
         this._ensureProviderDisplay(provider);
     },
 
-    _unregisterProvider: function (provider) {
+    _unregisterProvider(provider) {
         let index = this._providers.indexOf(provider);
         this._providers.splice(index, 1);
 
@@ -482,19 +482,19 @@ var SearchResults = new Lang.Class({
             provider.display.destroy();
     },
 
-    _gotResults: function(results, provider) {
+    _gotResults(results, provider) {
         this._results[provider.id] = results;
         this._updateResults(provider, results);
     },
 
-    _clearSearchTimeout: function() {
+    _clearSearchTimeout() {
         if (this._searchTimeoutId > 0) {
             GLib.source_remove(this._searchTimeoutId);
             this._searchTimeoutId = 0;
         }
     },
 
-    _reset: function() {
+    _reset() {
         this._terms = [];
         this._results = {};
         this._clearDisplay();
@@ -505,7 +505,7 @@ var SearchResults = new Lang.Class({
         this._updateSearchProgress();
     },
 
-    _doSearch: function() {
+    _doSearch() {
         this._startingSearch = false;
 
         let previousResults = this._results;
@@ -526,13 +526,13 @@ var SearchResults = new Lang.Class({
         this._clearSearchTimeout();
     },
 
-    _onSearchTimeout: function() {
+    _onSearchTimeout() {
         this._searchTimeoutId = 0;
         this._doSearch();
         return GLib.SOURCE_REMOVE;
     },
 
-    setTerms: function(terms) {
+    setTerms(terms) {
         // Check for the case of making a duplicate previous search before
         // setting state of the current search or cancelling the search.
         // This will prevent incorrect state being as a result of a duplicate
@@ -569,18 +569,18 @@ var SearchResults = new Lang.Class({
         this.emit('terms-changed');
     },
 
-    _onPan: function(action) {
+    _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollView.vscroll.adjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
     },
 
-    _keyFocusIn: function(provider, actor) {
+    _keyFocusIn(provider, actor) {
         Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     },
 
-    _ensureProviderDisplay: function(provider) {
+    _ensureProviderDisplay(provider) {
         if (provider.display)
             return;
 
@@ -596,13 +596,13 @@ var SearchResults = new Lang.Class({
         provider.display = providerDisplay;
     },
 
-    _clearDisplay: function() {
+    _clearDisplay() {
         this._providers.forEach(function(provider) {
             provider.display.clear();
         });
     },
 
-    _maybeSetInitialSelection: function() {
+    _maybeSetInitialSelection() {
         let newDefaultResult = null;
 
         let providers = this._providers;
@@ -637,7 +637,7 @@ var SearchResults = new Lang.Class({
         });
     },
 
-    _updateSearchProgress: function () {
+    _updateSearchProgress() {
         let haveResults = this._providers.some(function(provider) {
             let display = provider.display;
             return (display.getFirstResult() != null);
@@ -655,7 +655,7 @@ var SearchResults = new Lang.Class({
         }
     },
 
-    _updateResults: function(provider, results) {
+    _updateResults(provider, results) {
         let terms = this._terms;
         let display = provider.display;
 
@@ -667,7 +667,7 @@ var SearchResults = new Lang.Class({
         }));
     },
 
-    activateDefault: function() {
+    activateDefault() {
         // If we have a search queued up, force the search now.
         if (this._searchTimeoutId > 0)
             this._doSearch();
@@ -676,12 +676,12 @@ var SearchResults = new Lang.Class({
             this._defaultResult.activate();
     },
 
-    highlightDefault: function(highlight) {
+    highlightDefault(highlight) {
         this._highlightDefault = highlight;
         this._setSelected(this._defaultResult, highlight);
     },
 
-    popupMenuDefault: function() {
+    popupMenuDefault() {
         // If we have a search queued up, force the search now.
         if (this._searchTimeoutId > 0)
             this._doSearch();
@@ -690,7 +690,7 @@ var SearchResults = new Lang.Class({
             this._defaultResult.actor.popup_menu();
     },
 
-    navigateFocus: function(direction) {
+    navigateFocus(direction) {
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
         if (direction == Gtk.DirectionType.TAB_BACKWARD ||
             direction == (rtl ? Gtk.DirectionType.RIGHT
@@ -704,7 +704,7 @@ var SearchResults = new Lang.Class({
         this.actor.navigate_focus(from, direction, false);
     },
 
-    _setSelected: function(result, selected) {
+    _setSelected(result, selected) {
         if (!result)
             return;
 
@@ -716,7 +716,7 @@ var SearchResults = new Lang.Class({
         }
     },
 
-    highlightTerms: function(description) {
+    highlightTerms(description) {
         if (!description)
             return '';
 
@@ -734,7 +734,7 @@ var ProviderInfo = new Lang.Class({
 
     PROVIDER_ICON_SIZE: 32,
 
-    _init: function(provider) {
+    _init(provider) {
         this.provider = provider;
         this.parent({ style_class: 'search-provider-icon',
                       reactive: true,
@@ -766,14 +766,14 @@ var ProviderInfo = new Lang.Class({
         this._content.add_actor(detailsBox);
     },
 
-    animateLaunch: function() {
+    animateLaunch() {
         let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
         if (app.state == Shell.AppState.STOPPED)
             IconGrid.zoomOutActor(this._content);
     },
 
-    setMoreCount: function(count) {
+    setMoreCount(count) {
         this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);
         this._moreLabel.visible = count > 0;
     }

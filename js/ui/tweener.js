@@ -167,7 +167,7 @@ var ClutterFrameTicker = new Lang.Class({
 
     FRAME_RATE : 60,
 
-    _init : function() {
+    _init() {
         // We don't have a finite duration; tweener will tell us to stop
         // when we need to stop, so use 1000 seconds as "infinity", and
         // set the timeline to loop. Doing this means we have to track
@@ -192,7 +192,7 @@ var ClutterFrameTicker = new Lang.Class({
                               "");
     },
 
-    _onNewFrame : function(frame) {
+    _onNewFrame(frame) {
         // If there is a lot of setup to start the animation, then
         // first frame number we get from clutter might be a long ways
         // into the animation (or the animation might even be done).
@@ -209,18 +209,18 @@ var ClutterFrameTicker = new Lang.Class({
         perf_log.event("tweener.framePrepareDone");
     },
 
-    getTime : function() {
+    getTime() {
         return this._currentTime;
     },
 
-    start : function() {
+    start() {
         if (St.get_slow_down_factor() > 0)
             Tweener.setTimeScale(1 / St.get_slow_down_factor());
         this._timeline.start();
         global.begin_work();
     },
 
-    stop : function() {
+    stop() {
         this._timeline.stop();
         this._startTime = -1;
         this._currentTime = -1;

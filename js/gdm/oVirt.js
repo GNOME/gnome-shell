@@ -29,7 +29,7 @@ function OVirtCredentials() {
 
 var OVirtCredentialsManager = new Lang.Class({
     Name: 'OVirtCredentialsManager',
-    _init: function() {
+    _init() {
         this._token = null;
 
         this._credentials = new OVirtCredentials();
@@ -37,20 +37,20 @@ var OVirtCredentialsManager = new Lang.Class({
                                         Lang.bind(this, this._onUserAuthenticated));
     },
 
-    _onUserAuthenticated: function(proxy, sender, [token]) {
+    _onUserAuthenticated(proxy, sender, [token]) {
         this._token = token;
         this.emit('user-authenticated', token);
     },
 
-    hasToken: function() {
+    hasToken() {
         return this._token != null;
     },
 
-    getToken: function() {
+    getToken() {
         return this._token;
     },
 
-    resetToken: function() {
+    resetToken() {
         this._token = null;
     }
 });

@@ -35,7 +35,7 @@ const ScreencastIface = '<node> \
 var ScreencastService = new Lang.Class({
     Name: 'ScreencastService',
 
-    _init: function() {
+    _init() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreencastIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Screencast');
 
@@ -52,7 +52,7 @@ var ScreencastService = new Lang.Class({
         return this._recorders.size > 0;
     },
 
-    _ensureRecorderForSender: function(sender) {
+    _ensureRecorderForSender(sender) {
         let recorder = this._recorders.get(sender);
         if (!recorder) {
             recorder = new Shell.Recorder({ stage: global.stage,
@@ -66,7 +66,7 @@ var ScreencastService = new Lang.Class({
         return recorder;
     },
 
-    _sessionUpdated: function() {
+    _sessionUpdated() {
         if (Main.sessionMode.allowScreencast)
             return;
 
@@ -74,11 +74,11 @@ var ScreencastService = new Lang.Class({
             this._stopRecordingForSender(sender);
     },
 
-    _onNameVanished: function(connection, name) {
+    _onNameVanished(connection, name) {
         this._stopRecordingForSender(name);
     },
 
-    _stopRecordingForSender: function(sender) {
+    _stopRecordingForSender(sender) {
         let recorder = this._recorders.get(sender);
         if (!recorder)
             return false;
@@ -91,7 +91,7 @@ var ScreencastService = new Lang.Class({
         return true;
     },
 
-    _applyOptionalParameters: function(recorder, options) {
+    _applyOptionalParameters(recorder, options) {
         for (let option in options)
             options[option] = options[option].deep_unpack();
 
@@ -103,7 +103,7 @@ var ScreencastService = new Lang.Class({
             recorder.set_draw_cursor(options['draw-cursor']);
     },
 
-    ScreencastAsync: function(params, invocation) {
+    ScreencastAsync(params, invocation) {
         let returnValue = [false, ''];
         if (!Main.sessionMode.allowScreencast ||
             this._lockdownSettings.get_boolean('disable-save-to-disk')) {
@@ -127,7 +127,7 @@ var ScreencastService = new Lang.Class({
         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
     },
 
-    ScreencastAreaAsync: function(params, invocation) {
+    ScreencastAreaAsync(params, invocation) {
         let returnValue = [false, ''];
         if (!Main.sessionMode.allowScreencast ||
             this._lockdownSettings.get_boolean('disable-save-to-disk')) {
@@ -163,7 +163,7 @@ var ScreencastService = new Lang.Class({
         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
     },
 
-    StopScreencastAsync: function(params, invocation) {
+    StopScreencastAsync(params, invocation) {
         let success = this._stopRecordingForSender(invocation.get_sender());
         invocation.return_value(GLib.Variant.new('(b)', [success]));
     }

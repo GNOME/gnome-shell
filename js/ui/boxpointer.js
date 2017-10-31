@@ -35,7 +35,7 @@ var POPUP_ANIMATION_TIME = 0.15;
 var BoxPointer = new Lang.Class({
     Name: 'BoxPointer',
 
-    _init: function(arrowSide, binProperties) {
+    _init(arrowSide, binProperties) {
         this._arrowSide = arrowSide;
         this._userArrowSide = arrowSide;
         this._arrowOrigin = 0;
@@ -66,20 +66,20 @@ var BoxPointer = new Lang.Class({
         return this._arrowSide;
     },
 
-    _muteInput: function() {
+    _muteInput() {
         if (this._capturedEventId == 0)
             this._capturedEventId = this.actor.connect('captured-event',
                                                        function() { return Clutter.EVENT_STOP; });
     },
 
-    _unmuteInput: function() {
+    _unmuteInput() {
         if (this._capturedEventId != 0) {
             this.actor.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
     },
 
-    show: function(animate, onComplete) {
+    show(animate, onComplete) {
         let themeNode = this.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
         let animationTime = (animate & PopupAnimation.FULL) ? POPUP_ANIMATION_TIME : 0;
@@ -120,7 +120,7 @@ var BoxPointer = new Lang.Class({
                                  time: animationTime });
     },
 
-    hide: function(animate, onComplete) {
+    hide(animate, onComplete) {
         if (!this.actor.visible)
             return;
 
@@ -167,7 +167,7 @@ var BoxPointer = new Lang.Class({
                                });
     },
 
-    _adjustAllocationForArrow: function(isWidth, alloc) {
+    _adjustAllocationForArrow(isWidth, alloc) {
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         alloc.min_size += borderWidth * 2;
@@ -180,14 +180,14 @@ var BoxPointer = new Lang.Class({
         }
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
+    _getPreferredWidth(actor, forHeight, alloc) {
         let [minInternalSize, natInternalSize] = this.bin.get_preferred_width(forHeight);
         alloc.min_size = minInternalSize;
         alloc.natural_size = natInternalSize;
         this._adjustAllocationForArrow(true, alloc);
     },
 
-    _getPreferredHeight: function(actor, forWidth, alloc) {
+    _getPreferredHeight(actor, forWidth, alloc) {
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let [minSize, naturalSize] = this.bin.get_preferred_height(forWidth - 2 * borderWidth);
@@ -196,7 +196,7 @@ var BoxPointer = new Lang.Class({
         this._adjustAllocationForArrow(false, alloc);
     },
 
-    _allocate: function(actor, box, flags) {
+    _allocate(actor, box, flags) {
         let themeNode = this.actor.get_theme_node();
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let rise = themeNode.get_length('-arrow-rise');
@@ -236,7 +236,7 @@ var BoxPointer = new Lang.Class({
         }
     },
 
-    _drawBorder: function(area) {
+    _drawBorder(area) {
         let themeNode = this.actor.get_theme_node();
 
         if (this._arrowActor) {
@@ -418,7 +418,7 @@ var BoxPointer = new Lang.Class({
         cr.$dispose();
     },
 
-    setPosition: function(sourceActor, alignment) {
+    setPosition(sourceActor, alignment) {
         // We need to show it now to force an allocation,
         // so that we can query the correct size.
         this.actor.show();
@@ -430,7 +430,7 @@ var BoxPointer = new Lang.Class({
         this._updateFlip();
     },
 
-    setSourceAlignment: function(alignment) {
+    setSourceAlignment(alignment) {
         this._sourceAlignment = alignment;
 
         if (!this._sourceActor)
@@ -439,7 +439,7 @@ var BoxPointer = new Lang.Class({
         this.setPosition(this._sourceActor, this._arrowAlignment);
     },
 
-    _reposition: function() {
+    _reposition() {
         let sourceActor = this._sourceActor;
         let alignment = this._arrowAlignment;
 
@@ -556,7 +556,7 @@ var BoxPointer = new Lang.Class({
     // @origin: Coordinate specifying middle of the arrow, along
     // the Y axis for St.Side.LEFT, St.Side.RIGHT from the top and X axis from
     // the left for St.Side.TOP and St.Side.BOTTOM.
-    setArrowOrigin: function(origin) {
+    setArrowOrigin(origin) {
         if (this._arrowOrigin != origin) {
             this._arrowOrigin = origin;
             this._border.queue_repaint();
@@ -566,14 +566,14 @@ var BoxPointer = new Lang.Class({
     // @actor: an actor relative to which the arrow is positioned.
     // Differently from setPosition, this will not move the boxpointer itself,
     // on the arrow
-    setArrowActor: function(actor) {
+    setArrowActor(actor) {
         if (this._arrowActor != actor) {
             this._arrowActor = actor;
             this._border.queue_repaint();
         }
     },
 
-    _shiftActor : function() {
+    _shiftActor() {
         // Since the position of the BoxPointer depends on the allocated size
         // of the BoxPointer and the position of the source actor, trying
         // to position the BoxPointer via the x/y properties will result in
@@ -584,7 +584,7 @@ var BoxPointer = new Lang.Class({
                                     -(this._yPosition + this._yOffset));
     },
 
-    _calculateArrowSide: function(arrowSide) {
+    _calculateArrowSide(arrowSide) {
         let sourceAllocation = Shell.util_get_transformed_allocation(this._sourceActor);
         let [minWidth, minHeight, boxWidth, boxHeight] = this._container.get_preferred_size();
         let monitorActor = this.sourceActor;
@@ -618,7 +618,7 @@ var BoxPointer = new Lang.Class({
         return arrowSide;
     },
 
-    _updateFlip: function() {
+    _updateFlip() {
         let arrowSide = this._calculateArrowSide(this._userArrowSide);
         if (this._arrowSide != arrowSide) {
             this._arrowSide = arrowSide;
@@ -658,18 +658,18 @@ var BoxPointer = new Lang.Class({
         return this.actor.opacity;
     },
 
-    updateArrowSide: function(side) {
+    updateArrowSide(side) {
         this._arrowSide = side;
         this._border.queue_repaint();
 
         this.emit('arrow-side-changed');
     },
 
-    getPadding: function(side) {
+    getPadding(side) {
         return this.bin.get_theme_node().get_padding(side);
     },
 
-    getArrowHeight: function() {
+    getArrowHeight() {
         return this.actor.get_theme_node().get_length('-arrow-rise');
     }
 });

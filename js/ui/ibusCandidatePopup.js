@@ -17,7 +17,7 @@ var DEFAULT_INDEX_LABELS = [ '1', '2', '3', '4', '5', '6', '7', '8',
 var CandidateArea = new Lang.Class({
     Name: 'CandidateArea',
 
-    _init: function() {
+    _init() {
         this.actor = new St.BoxLayout({ vertical: true,
                                         reactive: true,
                                         visible: false });
@@ -76,7 +76,7 @@ var CandidateArea = new Lang.Class({
         this._cursorPosition = 0;
     },
 
-    setOrientation: function(orientation) {
+    setOrientation(orientation) {
         if (this._orientation == orientation)
             return;
 
@@ -97,7 +97,7 @@ var CandidateArea = new Lang.Class({
         }
     },
 
-    setCandidates: function(indexes, candidates, cursorPosition, cursorVisible) {
+    setCandidates(indexes, candidates, cursorPosition, cursorVisible) {
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
             let visible = i < candidates.length;
             let box = this._candidateBoxes[i];
@@ -116,7 +116,7 @@ var CandidateArea = new Lang.Class({
             this._candidateBoxes[cursorPosition].add_style_pseudo_class('selected');
     },
 
-    updateButtons: function(wrapsAround, page, nPages) {
+    updateButtons(wrapsAround, page, nPages) {
         if (nPages < 2) {
             this._buttonBox.hide();
             return;
@@ -131,7 +131,7 @@ Signals.addSignalMethods(CandidateArea.prototype);
 var CandidatePopup = new Lang.Class({
     Name: 'CandidatePopup',
 
-    _init: function() {
+    _init() {
         this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
         this._boxPointer.actor.visible = false;
         this._boxPointer.actor.style_class = 'candidate-popup-boxpointer';
@@ -173,7 +173,7 @@ var CandidatePopup = new Lang.Class({
         this._panelService = null;
     },
 
-    setPanelService: function(panelService) {
+    setPanelService(panelService) {
         this._panelService = panelService;
         if (!panelService)
             return;
@@ -289,13 +289,13 @@ var CandidatePopup = new Lang.Class({
                              }));
     },
 
-    _setDummyCursorGeometry: function(x, y, w, h) {
+    _setDummyCursorGeometry(x, y, w, h) {
         Main.layoutManager.setDummyCursorGeometry(x, y, w, h);
         if (this._boxPointer.actor.visible)
             this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
     },
 
-    _updateVisibility: function() {
+    _updateVisibility() {
         let isVisible = (!Main.keyboard.visible &&
                          (this._preeditText.visible ||
                           this._auxText.visible ||
@@ -310,7 +310,7 @@ var CandidatePopup = new Lang.Class({
         }
     },
 
-    _setTextAttributes: function(clutterText, ibusAttrList) {
+    _setTextAttributes(clutterText, ibusAttrList) {
         let attr;
         for (let i = 0; attr = ibusAttrList.get(i); ++i)
             if (attr.get_attr_type() == IBus.AttrType.BACKGROUND)

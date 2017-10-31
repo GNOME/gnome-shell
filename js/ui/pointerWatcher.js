@@ -25,7 +25,7 @@ function getPointerWatcher() {
 var PointerWatch = new Lang.Class({
     Name: 'PointerWatch',
 
-    _init: function(watcher, interval, callback) {
+    _init(watcher, interval, callback) {
         this.watcher = watcher;
         this.interval = interval;
         this.callback = callback;
@@ -34,7 +34,7 @@ var PointerWatch = new Lang.Class({
     // remove:
     // remove this watch. This function may safely be called
     // while the callback is executing.
-    remove: function() {
+    remove() {
         this.watcher._removeWatch(this);
     }
 });
@@ -42,7 +42,7 @@ var PointerWatch = new Lang.Class({
 var PointerWatcher = new Lang.Class({
     Name: 'PointerWatcher',
 
-    _init: function() {
+    _init() {
         this._idleMonitor = Meta.IdleMonitor.get_core();
         this._idleMonitor.add_idle_watch(IDLE_TIME, Lang.bind(this, this._onIdleMonitorBecameIdle));
         this._idle = this._idleMonitor.get_idletime() > IDLE_TIME;
@@ -55,12 +55,12 @@ var PointerWatcher = new Lang.Class({
     // @interval: hint as to the time resolution needed. When the user is
     //   not idle, the position of the pointer will be queried at least
     //   once every this many milliseconds.
-    // @callback: function to call when the pointer position changes - takes
+    // @callback to call when the pointer position changes - takes
     //   two arguments, X and Y.
     //
     // Set up a watch on the position of the mouse pointer. Returns a
     // PointerWatch object which has a remove() method to remove the watch.
-    addWatch: function(interval, callback) {
+    addWatch(interval, callback) {
         // Avoid unreliably calling the watch for the current position
         this._updatePointer();
 
@@ -70,7 +70,7 @@ var PointerWatcher = new Lang.Class({
         return watch;
     },
 
-    _removeWatch: function(watch) {
+    _removeWatch(watch) {
         for (let i = 0; i < this._watches.length; i++) {
             if (this._watches[i] == watch) {
                 this._watches.splice(i, 1);
@@ -80,19 +80,19 @@ var PointerWatcher = new Lang.Class({
         }
     },
 
-    _onIdleMonitorBecameActive: function(monitor) {
+    _onIdleMonitorBecameActive(monitor) {
         this._idle = false;
         this._updatePointer();
         this._updateTimeout();
     },
 
-    _onIdleMonitorBecameIdle: function(monitor) {
+    _onIdleMonitorBecameIdle(monitor) {
         this._idle = true;
         this._idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
         this._updateTimeout();
     },
 
-    _updateTimeout: function() {
+    _updateTimeout() {
         if (this._timeoutId) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
@@ -110,12 +110,12 @@ var PointerWatcher = new Lang.Class({
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
     },
 
-    _onTimeout: function() {
+    _onTimeout() {
         this._updatePointer();
         return GLib.SOURCE_CONTINUE;
     },
 
-    _updatePointer: function() {
+    _updatePointer() {
         let [x, y, mods] = global.get_pointer();
         if (this.pointerX == x && this.pointerY == y)
             return;

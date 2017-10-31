@@ -59,7 +59,7 @@ var KeyContainer = new Lang.Class({
     Name: 'KeyContainer',
     Extends: St.Widget,
 
-    _init: function() {
+    _init() {
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                   column_homogeneous: true,
                                                   row_homogeneous: true });
@@ -73,7 +73,7 @@ var KeyContainer = new Lang.Class({
         this._rows = [];
     },
 
-    appendRow: function(length) {
+    appendRow(length) {
         this._currentRow++;
         this._currentCol = 0;
 
@@ -83,7 +83,7 @@ var KeyContainer = new Lang.Class({
         this._rows.push(row);
     },
 
-    appendKey: function(key, width = 1, height = 1) {
+    appendKey(key, width = 1, height = 1) {
         let keyInfo = {
             key,
             left: this._currentCol,
@@ -100,7 +100,7 @@ var KeyContainer = new Lang.Class({
         this._maxCols = Math.max(this._currentCol, this._maxCols);
     },
 
-    vfunc_allocate: function(box, flags) {
+    vfunc_allocate(box, flags) {
         if (box.get_width() > 0 && box.get_height() > 0 && this._maxCols > 0) {
             let keyboardRatio = this._maxCols / this._rows.length;
             let sizeRatio = box.get_width() / box.get_height();
@@ -125,7 +125,7 @@ var KeyContainer = new Lang.Class({
         this.parent (box, flags);
     },
 
-    layoutButtons: function() {
+    layoutButtons() {
         let nCol = 0, nRow = 0;
 
         for (let i = 0; i < this._rows.length; i++) {
@@ -158,19 +158,19 @@ var KeyContainer = new Lang.Class({
 var Suggestions = new Lang.Class({
     Name: 'Suggestions',
 
-    _init: function() {
+    _init() {
         this.actor = new St.BoxLayout({ style_class: 'word-suggestions',
                                         vertical: false });
         this.actor.show();
     },
 
-    add: function(word, callback) {
+    add(word, callback) {
         let button = new St.Button({ label: word });
         button.connect('clicked', callback);
         this.actor.add(button);
     },
 
-    clear: function() {
+    clear() {
         this.actor.remove_all_children();
     },
 });
@@ -180,7 +180,7 @@ var LanguageSelectionPopup = new Lang.Class({
     Name: 'LanguageSelectionPopup',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(actor) {
+    _init(actor) {
         this.parent(actor, 0.5, St.Side.BOTTOM);
 
         let inputSourceManager = InputSourceManager.getInputSourceManager();
@@ -204,12 +204,12 @@ var LanguageSelectionPopup = new Lang.Class({
         }));
     },
 
-    _launchSettings: function() {
+    _launchSettings() {
         Util.spawn(['gnome-control-center', 'region']);
         this.close(true);
     },
 
-    _onCapturedEvent: function(actor, event) {
+    _onCapturedEvent(actor, event) {
         if (event.get_source() == this.actor ||
             this.actor.contains(event.get_source()))
             return Clutter.EVENT_PROPAGATE;
@@ -220,13 +220,13 @@ var LanguageSelectionPopup = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    open: function(animate) {
+    open(animate) {
         this.parent(animate);
         this._capturedEventId = global.stage.connect('captured-event',
                                                      Lang.bind(this, this._onCapturedEvent));
     },
 
-    close: function(animate) {
+    close(animate) {
         this.parent(animate);
         if (this._capturedEventId != 0) {
             global.stage.disconnect(this._capturedEventId);
@@ -234,7 +234,7 @@ var LanguageSelectionPopup = new Lang.Class({
         }
     },
 
-    destroy: function() {
+    destroy() {
         if (this._capturedEventId != 0)
             global.stage.disconnect(this._capturedEventId);
         if (this._unmapId != 0)
@@ -246,7 +246,7 @@ var LanguageSelectionPopup = new Lang.Class({
 var Key = new Lang.Class({
     Name: 'Key',
 
-    _init : function(key, extendedKeys) {
+    _init(key, extendedKeys) {
         this.key = key || "";
         this.keyButton = this._makeKey(this.key);
 
@@ -266,14 +266,14 @@ var Key = new Lang.Class({
         this._longPress = false;
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._boxPointer) {
             this._boxPointer.actor.destroy();
             this._boxPointer = null;
         }
     },
 
-    _ensureExtendedKeysPopup: function() {
+    _ensureExtendedKeysPopup() {
         if (this._extended_keys.length == 0)
             return;
 
@@ -291,12 +291,12 @@ var Key = new Lang.Class({
         this.keyButton._extended_keys = this._extended_keyboard;
     },
 
-    _getKeyval: function(key) {
+    _getKeyval(key) {
         let unicode = String.charCodeAt(key, 0);
         return Gdk.unicode_to_keyval(unicode);
     },
 
-    _press: function(key) {
+    _press(key) {
         if (key != this.key || this._extended_keys.length == 0) {
             this.emit('pressed', this._getKeyval(key), key);
         }
@@ -323,7 +323,7 @@ var Key = new Lang.Class({
         }
     },
 
-    _release: function(key) {
+    _release(key) {
         if (this._pressTimeoutId != 0) {
             GLib.source_remove(this._pressTimeoutId);
             this._pressTimeoutId = 0;
@@ -337,7 +337,7 @@ var Key = new Lang.Class({
         this._longPress = false;
     },
 
-    _onCapturedEvent: function(actor, event) {
+    _onCapturedEvent(actor, event) {
         let type = event.type();
         let press = (type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN);
         let release = (type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END);
@@ -354,7 +354,7 @@ var Key = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _showSubkeys: function() {
+    _showSubkeys() {
         this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
         this._capturedEventId = global.stage.connect('captured-event',
                                                      Lang.bind(this, this._onCapturedEvent));
@@ -364,7 +364,7 @@ var Key = new Lang.Class({
         }));
     },
 
-    _hideSubkeys: function() {
+    _hideSubkeys() {
         if (this._boxPointer)
             this._boxPointer.hide(BoxPointer.PopupAnimation.FULL);
         if (this._capturedEventId) {
@@ -378,7 +378,7 @@ var Key = new Lang.Class({
         this._capturedPress = false;
     },
 
-    _makeKey: function (key) {
+    _makeKey(key) {
         let label = GLib.markup_escape_text(key, -1);
         let button = new St.Button ({ label: label,
                                       style_class: 'keyboard-key' });
@@ -427,7 +427,7 @@ var Key = new Lang.Class({
         return button;
     },
 
-    _getExtendedKeys: function () {
+    _getExtendedKeys() {
         this._extended_keyboard = new St.BoxLayout({ style_class: 'key-container',
                                                      vertical: false });
         for (let i = 0; i < this._extended_keys.length; ++i) {
@@ -447,11 +447,11 @@ var Key = new Lang.Class({
         return this._boxPointer;
     },
 
-    setWidth: function (width) {
+    setWidth(width) {
         this.keyButton.keyWidth = width;
     },
 
-    setLatched: function (latched) {
+    setLatched(latched) {
         if (latched)
             this.keyButton.add_style_pseudo_class('latched');
         else
@@ -463,7 +463,7 @@ Signals.addSignalMethods(Key.prototype);
 var KeyboardModel = new Lang.Class({
     Name: 'KeyboardModel',
 
-    _init: function (groupName) {
+    _init(groupName) {
         try {
             this._model = this._loadModel(groupName);
         } catch (e) {
@@ -471,18 +471,18 @@ var KeyboardModel = new Lang.Class({
         }
     },
 
-    _loadModel: function(groupName) {
+    _loadModel(groupName) {
         let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/%s.json'.format(groupName));
         let [success, contents] = file.load_contents(null);
 
         return JSON.parse(contents);
     },
 
-    getLevels: function() {
+    getLevels() {
         return this._model.levels;
     },
 
-    getKeysForLevel: function(levelName) {
+    getKeysForLevel(levelName) {
         return this._model.levels.find(level => level == levelName);
     }
 });
@@ -490,7 +490,7 @@ var KeyboardModel = new Lang.Class({
 var Keyboard = new Lang.Class({
     Name: 'Keyboard',
 
-    _init: function () {
+    _init() {
         this.actor = null;
         this._focusInExtendedKeys = false;
 
@@ -548,7 +548,7 @@ var Keyboard = new Lang.Class({
         return this._keyboardVisible;
     },
 
-    _setCaretTrackerEnabled: function (enabled) {
+    _setCaretTrackerEnabled(enabled) {
         if (this._caretTrackingEnabled == enabled)
             return;
 
@@ -563,7 +563,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _updateCaretPosition: function (accessible) {
+    _updateCaretPosition(accessible) {
         if (this._updateCaretPositionId)
             GLib.source_remove(this._updateCaretPositionId);
         if (!this._keyboardRequested)
@@ -600,7 +600,7 @@ var Keyboard = new Lang.Class({
         GLib.Source.set_name_by_id(this._updateCaretPositionId, '[gnome-shell] this._updateCaretPosition');
     },
 
-    _focusIsTextEntry: function (accessible) {
+    _focusIsTextEntry(accessible) {
         try {
             let role = accessible.get_role();
             let stateSet = accessible.get_state_set();
@@ -611,7 +611,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _onFocusChanged: function (caretTracker, event) {
+    _onFocusChanged(caretTracker, event) {
         let accessible = event.source;
         if (!this._focusIsTextEntry(accessible))
             return;
@@ -627,13 +627,13 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _onCaretMoved: function (caretTracker, event) {
+    _onCaretMoved(caretTracker, event) {
         let accessible = event.source;
         if (this._currentAccessible == accessible)
             this._updateCaretPosition(accessible);
     },
 
-    _lastDeviceIsTouchscreen: function () {
+    _lastDeviceIsTouchscreen() {
         if (!this._lastDeviceId)
             return false;
 
@@ -646,7 +646,7 @@ var Keyboard = new Lang.Class({
         return device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE;
     },
 
-    _syncEnabled: function () {
+    _syncEnabled() {
         let wasEnabled = this._enabled;
         this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
         this._enabled = this._enableKeyboard || this._lastDeviceIsTouchscreen();
@@ -664,7 +664,7 @@ var Keyboard = new Lang.Class({
             Main.layoutManager.hideKeyboard(true);
     },
 
-    _destroyKeyboard: function() {
+    _destroyKeyboard() {
         if (this._keyboardNotifyId)
             this._keyboardController.disconnect(this._keyboardNotifyId);
         if (this._keyboardGroupsChangedId)
@@ -683,7 +683,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _setupKeyboard: function() {
+    _setupKeyboard() {
         this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
         Main.layoutManager.keyboardBox.add_actor(this.actor);
         Main.layoutManager.trackChrome(this.actor);
@@ -717,7 +717,7 @@ var Keyboard = new Lang.Class({
         this._relayout();
     },
 
-    _onKeyFocusChanged: function () {
+    _onKeyFocusChanged() {
         let focus = global.stage.key_focus;
 
         // Showing an extended key popup and clicking a key from the extended keys
@@ -743,7 +743,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _createLayersForGroup: function (groupName) {
+    _createLayersForGroup(groupName) {
         let keyboardModel = new KeyboardModel(groupName);
         let layers = {};
         let levels = keyboardModel.getLevels();
@@ -768,12 +768,12 @@ var Keyboard = new Lang.Class({
         return layers;
     },
 
-    _ensureKeysForGroup: function(group) {
+    _ensureKeysForGroup(group) {
         if (!this._groups[group])
             this._groups[group] = this._createLayersForGroup(group);
     },
 
-    _addRowKeys : function (keys, layout) {
+    _addRowKeys(keys, layout) {
         for (let i = 0; i < keys.length; ++i) {
             let key = keys[i];
             let button = new Key(key.shift(), key);
@@ -806,7 +806,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _popupLanguageMenu: function(keyActor) {
+    _popupLanguageMenu(keyActor) {
         if (this._languagePopup)
             this._languagePopup.destroy();
 
@@ -815,7 +815,7 @@ var Keyboard = new Lang.Class({
         this._languagePopup.open(true);
     },
 
-    _loadDefaultKeys: function(keys, layout, numLevels, numKeys) {
+    _loadDefaultKeys(keys, layout, numLevels, numKeys) {
         let extraButton;
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i];
@@ -880,14 +880,14 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _setCurrentLevelLatched: function(layout, latched) {
+    _setCurrentLevelLatched(layout, latched) {
         for (let i = 0; layout.shiftKeys[i]; i++) {
             let key = layout.shiftKeys[i];
             key.setLatched(latched);
         }
     },
 
-    _getDefaultKeysForRow: function(row, numRows, level) {
+    _getDefaultKeysForRow(row, numRows, level) {
         let pre, post;
 
         /* The first 2 rows in defaultKeysPre/Post belong together with
@@ -905,7 +905,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _mergeRowKeys: function (layout, pre, row, post, numLevels) {
+    _mergeRowKeys(layout, pre, row, post, numLevels) {
         if (pre != null)
             this._loadDefaultKeys(pre, layout, numLevels, row.length);
 
@@ -915,7 +915,7 @@ var Keyboard = new Lang.Class({
             this._loadDefaultKeys(post, layout, numLevels, row.length);
     },
 
-    _loadRows : function (model, level, numLevels, layout) {
+    _loadRows(model, level, numLevels, layout) {
         let rows = model.rows;
         for (let i = 0; i < rows.length; ++i) {
             layout.appendRow();
@@ -924,7 +924,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _getGridSlots: function() {
+    _getGridSlots() {
         let numOfHorizSlots = 0, numOfVertSlots;
         let rows = this._current_page.get_children();
         numOfVertSlots = rows.length;
@@ -939,7 +939,7 @@ var Keyboard = new Lang.Class({
         return [numOfHorizSlots, numOfVertSlots];
     },
 
-    _relayout: function () {
+    _relayout() {
         if (this.actor == null)
             return;
         let monitor = Main.layoutManager.keyboardMonitor;
@@ -948,17 +948,17 @@ var Keyboard = new Lang.Class({
         this.actor.height = maxHeight;
     },
 
-    _onGroupChanged: function () {
+    _onGroupChanged() {
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
         this._setActiveLayer(0);
     },
 
-    _onKeyboardGroupsChanged: function(keyboard) {
+    _onKeyboardGroupsChanged(keyboard) {
         this._groups = [];
         this._onGroupChanged();
     },
 
-    _onKeyboardStateChanged: function(controller, state) {
+    _onKeyboardStateChanged(controller, state) {
         let enabled;
         if (state == Clutter.InputPanelState.OFF)
             enabled = false;
@@ -975,7 +975,7 @@ var Keyboard = new Lang.Class({
             this.hide();
     },
 
-    _setActiveLayer: function (activeLevel) {
+    _setActiveLayer(activeLevel) {
         let activeGroupName = this._keyboardController.getCurrentGroup();
         let layers = this._groups[activeGroupName];
 
@@ -988,20 +988,20 @@ var Keyboard = new Lang.Class({
         this._current_page.show();
     },
 
-    shouldTakeEvent: function(event) {
+    shouldTakeEvent(event) {
         let actor = event.get_source();
         return Main.layoutManager.keyboardBox.contains(actor) ||
                !!actor._extended_keys || !!actor.extended_key;
     },
 
-    _clearKeyboardRestTimer: function() {
+    _clearKeyboardRestTimer() {
         if (!this._keyboardRestingId)
             return;
         GLib.source_remove(this._keyboardRestingId);
         this._keyboardRestingId = 0;
     },
 
-    show: function (monitor) {
+    show(monitor) {
         if (!this._enabled)
             return;
 
@@ -1027,7 +1027,7 @@ var Keyboard = new Lang.Class({
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     },
 
-    _show: function(monitor) {
+    _show(monitor) {
         if (!this._keyboardRequested)
             return;
 
@@ -1038,7 +1038,7 @@ var Keyboard = new Lang.Class({
         Main.layoutManager.showKeyboard();
     },
 
-    hide: function () {
+    hide() {
         if (!this._enabled)
             return;
 
@@ -1059,7 +1059,7 @@ var Keyboard = new Lang.Class({
         GLib.Source.set_name_by_id(this._keyboardRestingId, '[gnome-shell] this._clearKeyboardRestTimer');
     },
 
-    _hide: function() {
+    _hide() {
         if (this._keyboardRequested)
             return;
 
@@ -1067,7 +1067,7 @@ var Keyboard = new Lang.Class({
         this.setCursorLocation(null);
     },
 
-    _hideSubkeys: function() {
+    _hideSubkeys() {
         if (this._subkeysBoxPointer) {
             this._subkeysBoxPointer.hide(BoxPointer.PopupAnimation.FULL);
             this._subkeysBoxPointer = null;
@@ -1079,26 +1079,26 @@ var Keyboard = new Lang.Class({
         this._capturedPress = false;
     },
 
-    resetSuggestions: function() {
+    resetSuggestions() {
         if (this._suggestions)
             this._suggestions.clear();
     },
 
-    addSuggestion: function(text, callback) {
+    addSuggestion(text, callback) {
         if (!this._suggestions)
             return;
         this._suggestions.add(text, callback);
         this._suggestions.actor.show();
     },
 
-    _clearShowIdle: function() {
+    _clearShowIdle() {
         if (!this._showIdleId)
             return;
         GLib.source_remove(this._showIdleId);
         this._showIdleId = 0;
     },
 
-    _windowSlideAnimationComplete: function(window, delta) {
+    _windowSlideAnimationComplete(window, delta) {
         // Synchronize window and actor positions again.
         let windowActor = window.get_compositor_private();
         let frameRect = window.get_frame_rect();
@@ -1106,7 +1106,7 @@ var Keyboard = new Lang.Class({
         window.move_frame(true, frameRect.x, frameRect.y);
     },
 
-    _animateWindow: function(window, show, deltaY) {
+    _animateWindow(window, show, deltaY) {
         let windowActor = window.get_compositor_private();
         if (!windowActor)
             return;
@@ -1128,7 +1128,7 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    setCursorLocation: function(window, x, y , w, h) {
+    setCursorLocation(window, x, y , w, h) {
         if (window == this._oskFocusWindow)
             return;
 
@@ -1163,7 +1163,7 @@ var Keyboard = new Lang.Class({
 var KeyboardController = new Lang.Class({
     Name: 'KeyboardController',
 
-    _init: function () {
+    _init() {
         this.parent();
         let deviceManager = Clutter.DeviceManager.get_default();
         this._virtualDevice = deviceManager.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
@@ -1180,24 +1180,24 @@ var KeyboardController = new Lang.Class({
         Main.inputMethod.connect('input-panel-state', Lang.bind(this, function(o, state) { this.emit('panel-state', state); }));
     },
 
-    _onSourcesModified: function () {
+    _onSourcesModified() {
         this.emit('groups-changed');
     },
 
-    _onSourceChanged: function (inputSourceManager, oldSource) {
+    _onSourceChanged(inputSourceManager, oldSource) {
         let source = inputSourceManager.currentSource;
         this._currentSource = source;
         this.emit('active-group', source.id);
     },
 
-    _onContentPurposeHintsChanged: function(method) {
+    _onContentPurposeHintsChanged(method) {
         let hints = method.content_hints;
         let purpose = method.content_purpose;
 
         // XXX: hook numeric/emoji/etc special keyboards
     },
 
-    getGroups: function () {
+    getGroups() {
         let inputSources = this._inputSourceManager.inputSources;
         let groups = []
 
@@ -1209,11 +1209,11 @@ var KeyboardController = new Lang.Class({
         return groups;
     },
 
-    getCurrentGroup: function () {
+    getCurrentGroup() {
         return this._currentSource.xkbId;
     },
 
-    commitString: function(string, fromKey) {
+    commitString(string, fromKey) {
         if (string == null)
             return false;
         /* Let ibus methods fall through keyval emission */
@@ -1224,12 +1224,12 @@ var KeyboardController = new Lang.Class({
         return true;
     },
 
-    keyvalPress: function(keyval) {
+    keyvalPress(keyval) {
         this._virtualDevice.notify_keyval(Clutter.get_current_event_time(),
                                           keyval, Clutter.KeyState.PRESSED);
     },
 
-    keyvalRelease: function(keyval) {
+    keyvalRelease(keyval) {
         this._virtualDevice.notify_keyval(Clutter.get_current_event_time(),
                                           keyval, Clutter.KeyState.RELEASED);
     },

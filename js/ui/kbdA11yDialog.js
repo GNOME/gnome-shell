@@ -13,7 +13,7 @@ var KbdA11yDialog = new Lang.Class({
     Name: 'KbdA11yDialog',
     Extends: GObject.Object,
 
-    _init: function() {
+    _init() {
         this._a11ySettings = new Gio.Settings({ schema_id: KEYBOARD_A11Y_SCHEMA });
 
         let deviceManager = Clutter.DeviceManager.get_default();
@@ -21,7 +21,7 @@ var KbdA11yDialog = new Lang.Class({
                               Lang.bind(this, this._showKbdA11yDialog));
     },
 
-    _showKbdA11yDialog: function(deviceManager, newFlags, whatChanged) {
+    _showKbdA11yDialog(deviceManager, newFlags, whatChanged) {
         let dialog = new ModalDialog.ModalDialog();
         let title, body;
         let key, enabled;

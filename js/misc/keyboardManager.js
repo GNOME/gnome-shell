@@ -47,24 +47,24 @@ var KeyboardManager = new Lang.Class({
     // even as a Wayland compositor, we can't bump this.
     MAX_LAYOUTS_PER_GROUP: 4,
 
-    _init: function() {
+    _init() {
         this._xkbInfo = getXkbInfo();
         this._current = null;
         this._localeLayoutInfo = this._getLocaleLayout();
         this._layoutInfos = {};
     },
 
-    _applyLayoutGroup: function(group) {
+    _applyLayoutGroup(group) {
         let options = this._buildOptionsString();
         let [layouts, variants] = this._buildGroupStrings(group);
         Meta.get_backend().set_keymap(layouts, variants, options);
     },
 
-    _applyLayoutGroupIndex: function(idx) {
+    _applyLayoutGroupIndex(idx) {
         Meta.get_backend().lock_layout_group(idx);
     },
 
-    apply: function(id) {
+    apply(id) {
         let info = this._layoutInfos[id];
         if (!info)
             return;
@@ -80,7 +80,7 @@ var KeyboardManager = new Lang.Class({
         this._current = info;
     },
 
-    reapply: function() {
+    reapply() {
         if (!this._current)
             return;
 
@@ -88,7 +88,7 @@ var KeyboardManager = new Lang.Class({
         this._applyLayoutGroupIndex(this._current.groupIndex);
     },
 
-    setUserLayouts: function(ids) {
+    setUserLayouts(ids) {
         this._current = null;
         this._layoutInfos = {};
 
@@ -119,7 +119,7 @@ var KeyboardManager = new Lang.Class({
         }
     },
 
-    _getLocaleLayout: function() {
+    _getLocaleLayout() {
         let locale = GLib.get_language_names()[0];
         if (locale.indexOf('_') == -1)
             locale = DEFAULT_LOCALE;
@@ -136,18 +136,18 @@ var KeyboardManager = new Lang.Class({
             return { layout: DEFAULT_LAYOUT, variant: DEFAULT_VARIANT };
     },
 
-    _buildGroupStrings: function(_group) {
+    _buildGroupStrings(_group) {
         let group = _group.concat(this._localeLayoutInfo);
         let layouts = group.map(function(g) { return g.layout; }).join(',');
         let variants = group.map(function(g) { return g.variant; }).join(',');
         return [layouts, variants];
     },
 
-    setKeyboardOptions: function(options) {
+    setKeyboardOptions(options) {
         this._xkbOptions = options;
     },
 
-    _buildOptionsString: function() {
+    _buildOptionsString() {
         let options = this._xkbOptions.join(',');
         return options;
     }

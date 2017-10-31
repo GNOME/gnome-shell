@@ -37,7 +37,7 @@ function FlowedBoxes() {
 }
 
 FlowedBoxes.prototype = {
-    _init: function() {
+    _init() {
 	this.actor = new Shell.GenericContainer();
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -50,7 +50,7 @@ FlowedBoxes.prototype = {
 	}
     },
 
-    _getPreferredWidth: function (actor, forHeight, alloc) {
+    _getPreferredWidth(actor, forHeight, alloc) {
         let children = this.actor.get_children();
 
 	let maxMinWidth = 0;
@@ -69,7 +69,7 @@ FlowedBoxes.prototype = {
 	alloc.natural_size = totalNaturalWidth;
     },
 
-    _layoutChildren: function(forWidth, callback) {
+    _layoutChildren(forWidth, callback) {
         let children = this.actor.get_children();
 
 	let x = 0;
@@ -99,7 +99,7 @@ FlowedBoxes.prototype = {
 
     },
 
-    _getPreferredHeight: function (actor, forWidth, alloc) {
+    _getPreferredHeight(actor, forWidth, alloc) {
 	let height = 0;
 	this._layoutChildren(forWidth,
            function(child, x1, y1, x2, y2) {
@@ -109,7 +109,7 @@ FlowedBoxes.prototype = {
 	alloc.min_size = alloc.natural_size = height;
     },
 
-    _allocate: function (actor, box, flags) {
+    _allocate(actor, box, flags) {
 	this._layoutChildren(box.x2 - box.x1,
            function(child, x1, y1, x2, y2) {
 	       child.allocate(new Clutter.ActorBox({ x1: x1, y1: y1, x2: x2, y2: y2 }),
@@ -132,7 +132,7 @@ function SizingIllustrator() {
 }
 
 SizingIllustrator.prototype = {
-    _init: function() {
+    _init() {
 	this.actor = new Shell.GenericContainer();
 
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -167,13 +167,13 @@ SizingIllustrator.prototype = {
 	this.height = 300;
     },
 
-    add: function(child) {
+    add(child) {
 	this.child = child;
 	this.actor.add_actor(this.child);
 	this.child.lower_bottom();
     },
 
-    _getPreferredWidth: function (actor, forHeight, alloc) {
+    _getPreferredWidth(actor, forHeight, alloc) {
         let children = this.actor.get_children();
 	for (let i = 0; i < children.length; i++) {
 	    let child = children[i];
@@ -188,7 +188,7 @@ SizingIllustrator.prototype = {
 	alloc.natural_size = 400;
     },
 
-    _getPreferredHeight: function (actor, forWidth, alloc) {
+    _getPreferredHeight(actor, forWidth, alloc) {
         let children = this.actor.get_children();
 	for (let i = 0; i < children.length; i++) {
 	    let child = children[i];
@@ -204,7 +204,7 @@ SizingIllustrator.prototype = {
 	alloc.natural_size = 400;
     },
 
-    _allocate: function (actor, box, flags) {
+    _allocate(actor, box, flags) {
 	let allocWidth = box.x2 - box.x1;
 	let allocHeight = box.y2 - box.y1;
 
@@ -223,7 +223,7 @@ SizingIllustrator.prototype = {
 	alloc(this.handle, this.width, this.height, this.width + 10, this.height + 10);
     },
 
-    _handlePressed: function(handle, event) {
+    _handlePressed(handle, event) {
 	if (event.get_button() == 1) {
 	    this._inDrag = true;
 	    let [handleX, handleY] = handle.get_transformed_position();
@@ -234,14 +234,14 @@ SizingIllustrator.prototype = {
 	}
     },
 
-    _handleReleased: function(handle, event) {
+    _handleReleased(handle, event) {
 	if (event.get_button() == 1) {
 	    this._inDrag = false;
 	    Clutter.ungrab_pointer(handle);
 	}
     },
 
-    _handleMotion: function(handle, event) {
+    _handleMotion(handle, event) {
 	if (this._inDrag) {
 	    let [x, y] = event.get_coords();
 	    let [actorX, actorY] = this.actor.get_transformed_position();

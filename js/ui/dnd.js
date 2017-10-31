@@ -72,7 +72,7 @@ function removeDragMonitor(monitor) {
 var _Draggable = new Lang.Class({
     Name: 'Draggable',
 
-    _init : function(actor, params) {
+    _init(actor, params) {
         params = Params.parse(params, { manualMode: false,
                                         restoreOnSuccess: false,
                                         dragActorMaxSize: undefined,
@@ -108,7 +108,7 @@ var _Draggable = new Lang.Class({
         this._eventsGrabbed = false;
     },
 
-    _onButtonPress : function (actor, event) {
+    _onButtonPress(actor, event) {
         if (event.get_button() != 1)
             return Clutter.EVENT_PROPAGATE;
 
@@ -125,7 +125,7 @@ var _Draggable = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onTouchEvent: function (actor, event) {
+    _onTouchEvent(actor, event) {
         if (event.type() != Clutter.EventType.TOUCH_BEGIN ||
             !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
             return Clutter.EVENT_PROPAGATE;
@@ -145,7 +145,7 @@ var _Draggable = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _grabDevice: function(actor) {
+    _grabDevice(actor) {
         let manager = Clutter.DeviceManager.get_default();
         let pointer = manager.get_core_device(Clutter.InputDeviceType.POINTER_DEVICE);
 
@@ -157,7 +157,7 @@ var _Draggable = new Lang.Class({
         this._grabbedDevice = pointer;
     },
 
-    _ungrabDevice: function() {
+    _ungrabDevice() {
         if (this._touchSequence)
             this._grabbedDevice.sequence_ungrab (this._touchSequence);
         else
@@ -167,13 +167,13 @@ var _Draggable = new Lang.Class({
         this._grabbedDevice = null;
     },
 
-    _grabActor: function() {
+    _grabActor() {
         this._grabDevice(this.actor);
         this._onEventId = this.actor.connect('event',
                                              Lang.bind(this, this._onEvent));
     },
 
-    _ungrabActor: function() {
+    _ungrabActor() {
         if (!this._onEventId)
             return;
 
@@ -182,7 +182,7 @@ var _Draggable = new Lang.Class({
         this._onEventId = null;
     },
 
-    _grabEvents: function() {
+    _grabEvents() {
         if (!this._eventsGrabbed) {
             this._eventsGrabbed = Main.pushModal(_getEventHandlerActor());
             if (this._eventsGrabbed)
@@ -190,7 +190,7 @@ var _Draggable = new Lang.Class({
         }
     },
 
-    _ungrabEvents: function() {
+    _ungrabEvents() {
         if (this._eventsGrabbed) {
             this._ungrabDevice();
             Main.popModal(_getEventHandlerActor());
@@ -198,7 +198,7 @@ var _Draggable = new Lang.Class({
         }
     },
 
-    _onEvent: function(actor, event) {
+    _onEvent(actor, event) {
         // We intercept BUTTON_RELEASE event to know that the button was released in case we
         // didn't start the drag, to drop the draggable in case the drag was in progress, and
         // to complete the drag and ensure that whatever happens to be under the pointer does
@@ -249,7 +249,7 @@ var _Draggable = new Lang.Class({
      * actors for other purposes (for example if you're using
      * PopupMenu.ignoreRelease())
      */
-    fakeRelease: function() {
+    fakeRelease() {
         this._buttonDown = false;
         this._ungrabActor();
     },
@@ -264,7 +264,7 @@ var _Draggable = new Lang.Class({
      * This function is useful to call if you've specified manualMode
      * for the draggable.
      */
-    startDrag: function (stageX, stageY, time, sequence) {
+    startDrag(stageX, stageY, time, sequence) {
         currentDraggable = this;
         this._dragInProgress = true;
 
@@ -371,7 +371,7 @@ var _Draggable = new Lang.Class({
                                    scale_y: scale * origScale,
                                    time: SCALE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
-                                   onUpdate: function() {
+                                   onUpdate() {
                                        let currentScale = this._dragActor.scale_x / origScale;
                                        this._dragOffsetX = currentScale * origDragOffsetX;
                                        this._dragOffsetY = currentScale * origDragOffsetY;
@@ -383,7 +383,7 @@ var _Draggable = new Lang.Class({
         }
     },
 
-    _maybeStartDrag:  function(event) {
+    _maybeStartDrag(event) {
         let [stageX, stageY] = event.get_coords();
 
         // See if the user has moved the mouse enough to trigger a drag
@@ -397,7 +397,7 @@ var _Draggable = new Lang.Class({
         return true;
     },
 
-    _updateDragHover : function () {
+    _updateDragHover() {
         this._updateHoverId = 0;
         let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
                                                                   this._dragX, this._dragY);
@@ -441,7 +441,7 @@ var _Draggable = new Lang.Class({
         return GLib.SOURCE_REMOVE;
     },
 
-    _queueUpdateDragHover: function() {
+    _queueUpdateDragHover() {
         if (this._updateHoverId)
             return;
 
@@ -450,7 +450,7 @@ var _Draggable = new Lang.Class({
         GLib.Source.set_name_by_id(this._updateHoverId, '[gnome-shell] this._updateDragHover');
     },
 
-    _updateDragPosition : function (event) {
+    _updateDragPosition(event) {
         let [stageX, stageY] = event.get_coords();
         this._dragX = stageX;
         this._dragY = stageY;
@@ -461,7 +461,7 @@ var _Draggable = new Lang.Class({
         return true;
     },
 
-    _dragActorDropped: function(event) {
+    _dragActorDropped(event) {
         let [dropX, dropY] = event.get_coords();
         let target = this._dragActor.get_stage().get_actor_at_pos(Clutter.PickMode.ALL,
                                                                   dropX, dropY);
@@ -524,7 +524,7 @@ var _Draggable = new Lang.Class({
         return true;
     },
 
-    _getRestoreLocation: function() {
+    _getRestoreLocation() {
         let x, y, scale;
 
         if (this._dragActorSource && this._dragActorSource.visible) {
@@ -556,7 +556,7 @@ var _Draggable = new Lang.Class({
         return [x, y, scale];
     },
 
-    _cancelDrag: function(eventTime) {
+    _cancelDrag(eventTime) {
         this.emit('drag-cancelled', eventTime);
         this._dragInProgress = false;
         let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
@@ -581,7 +581,7 @@ var _Draggable = new Lang.Class({
                              });
     },
 
-    _restoreDragActor: function(eventTime) {
+    _restoreDragActor(eventTime) {
         this._dragInProgress = false;
         let [restoreX, restoreY, restoreScale] = this._getRestoreLocation();
 
@@ -594,7 +594,7 @@ var _Draggable = new Lang.Class({
                              { time: REVERT_ANIMATION_TIME });
     },
 
-    _animateDragEnd: function (eventTime, params) {
+    _animateDragEnd(eventTime, params) {
         this._animationInProgress = true;
 
         // finish animation if the actor gets destroyed
@@ -613,7 +613,7 @@ var _Draggable = new Lang.Class({
         Tweener.addTween(this._dragActor, params)
     },
 
-    _finishAnimation : function () {
+    _finishAnimation() {
         if (!this._animationInProgress)
             return
 
@@ -624,7 +624,7 @@ var _Draggable = new Lang.Class({
         global.screen.set_cursor(Meta.Cursor.DEFAULT);
     },
 
-    _onAnimationComplete : function (dragActor, eventTime) {
+    _onAnimationComplete(dragActor, eventTime) {
         dragActor.disconnect(this._dragActorDestroyId);
         this._dragActorDestroyId = 0;
 
@@ -641,7 +641,7 @@ var _Draggable = new Lang.Class({
         this._finishAnimation();
     },
 
-    _dragComplete: function() {
+    _dragComplete() {
         if (!this._actorDestroyed)
             Shell.util_set_hidden_from_pick(this._dragActor, false);
 

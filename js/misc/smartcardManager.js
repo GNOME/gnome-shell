@@ -27,7 +27,7 @@ function getSmartcardManager() {
 
 var SmartcardManager = new Lang.Class({
     Name: 'SmartcardManager',
-    _init: function() {
+    _init() {
         this._objectManager = new ObjectManager.ObjectManager({ connection: Gio.DBus.session,
                                                                 name: "org.gnome.SettingsDaemon.Smartcard",
                                                                 objectPath: '/org/gnome/SettingsDaemon/Smartcard',
@@ -37,7 +37,7 @@ var SmartcardManager = new Lang.Class({
         this._loginToken = null;
     },
 
-    _onLoaded: function() {
+    _onLoaded() {
         let tokens = this._objectManager.getProxiesForInterface('org.gnome.SettingsDaemon.Smartcard.Token');
 
         for (let i = 0; i < tokens.length; i++)
@@ -54,7 +54,7 @@ var SmartcardManager = new Lang.Class({
         }));
     },
 
-    _updateToken: function(token) {
+    _updateToken(token) {
         let objectPath = token.get_object_path();
 
         delete this._insertedTokens[objectPath];
@@ -66,7 +66,7 @@ var SmartcardManager = new Lang.Class({
             this._loginToken = token;
     },
 
-    _addToken: function(token) {
+    _addToken(token) {
         this._updateToken(token);
 
         token.connect('g-properties-changed',
@@ -87,7 +87,7 @@ var SmartcardManager = new Lang.Class({
             this.emit('smartcard-inserted', token);
     },
 
-    _removeToken: function(token) {
+    _removeToken(token) {
         let objectPath = token.get_object_path();
 
         if (this._insertedTokens[objectPath] == token) {
@@ -101,11 +101,11 @@ var SmartcardManager = new Lang.Class({
         token.disconnectAll();
     },
 
-    hasInsertedTokens: function() {
+    hasInsertedTokens() {
         return Object.keys(this._insertedTokens).length > 0;
     },
 
-    hasInsertedLoginToken: function() {
+    hasInsertedLoginToken() {
         if (!this._loginToken)
             return false;
 

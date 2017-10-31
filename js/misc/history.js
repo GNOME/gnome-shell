@@ -10,7 +10,7 @@ var DEFAULT_LIMIT = 512;
 var HistoryManager = new Lang.Class({
     Name: 'HistoryManager',
 
-    _init: function(params) {
+    _init(params) {
         params = Params.parse(params, { gsettingsKey: null,
                                         limit: DEFAULT_LIMIT,
                                         entry: null });
@@ -36,12 +36,12 @@ var HistoryManager = new Lang.Class({
         }
     },
 
-    _historyChanged: function() {
+    _historyChanged() {
         this._history = global.settings.get_strv(this._key);
         this._historyIndex = this._history.length;
     },
 
-    _setPrevItem: function(text) {
+    _setPrevItem(text) {
         if (this._historyIndex <= 0)
             return false;
 
@@ -52,7 +52,7 @@ var HistoryManager = new Lang.Class({
         return true;
     },
 
-    _setNextItem: function(text) {
+    _setNextItem(text) {
         if (this._historyIndex >= this._history.length)
             return false;
 
@@ -63,7 +63,7 @@ var HistoryManager = new Lang.Class({
         return true;
     },
 
-    lastItem: function() {
+    lastItem() {
         if (this._historyIndex != this._history.length) {
             this._historyIndex = this._history.length;
             this._indexChanged();
@@ -72,7 +72,7 @@ var HistoryManager = new Lang.Class({
         return this._historyIndex ? this._history[this._historyIndex -1] : null;
     },
 
-    addItem: function(input) {
+    addItem(input) {
         if (this._history.length == 0 ||
             this._history[this._history.length - 1] != input) {
 
@@ -82,7 +82,7 @@ var HistoryManager = new Lang.Class({
         this._historyIndex = this._history.length;
     },
 
-    _onEntryKeyPress: function(entry, event) {
+    _onEntryKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Up) {
             return this._setPrevItem(entry.get_text());
@@ -92,7 +92,7 @@ var HistoryManager = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _indexChanged: function() {
+    _indexChanged() {
         let current = this._history[this._historyIndex] || '';
         this.emit('changed', current);
 
@@ -100,7 +100,7 @@ var HistoryManager = new Lang.Class({
             this._entry.set_text(current);
     },
 
-    _save: function() {
+    _save() {
         if (this._history.length > this._limit)
             this._history.splice(0, this._history.length - this._limit);
 
