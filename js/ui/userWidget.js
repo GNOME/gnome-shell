@@ -7,7 +7,6 @@ const AccountsService = imports.gi.AccountsService;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Lang = imports.lang;
 const St = imports.gi.St;
 
 const Params = imports.misc.params;
@@ -64,12 +63,10 @@ var Avatar = class {
     }
 };
 
-var UserWidgetLabel = new Lang.Class({
-    Name: 'UserWidgetLabel',
-    Extends: St.Widget,
-
+var UserWidgetLabel = GObject.registerClass(
+class UserWidgetLabel extends St.Widget {
     _init(user) {
-        this.parent({ layout_manager: new Clutter.BinLayout() });
+        super._init({ layout_manager: new Clutter.BinLayout() });
 
         this._user = user;
 
@@ -93,7 +90,7 @@ var UserWidgetLabel = new Lang.Class({
         // the actor is destroyed (which is guaranteed to be as part of a normal
         // destroy() call from JS, possibly from some ancestor)
         this.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
     _onDestroy() {
         if (this._userLoadedId != 0) {
@@ -105,7 +102,7 @@ var UserWidgetLabel = new Lang.Class({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
-    },
+    }
 
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
@@ -132,11 +129,11 @@ var UserWidgetLabel = new Lang.Class({
         childBox.y2 = availHeight;
 
         this._currentLabel.allocate(childBox, flags);
-    },
+    }
 
     vfunc_paint() {
         this._currentLabel.paint();
-    },
+    }
 
     _updateUser() {
         if (this._user.is_loaded) {
@@ -146,7 +143,7 @@ var UserWidgetLabel = new Lang.Class({
             this._realNameLabel.text = '';
             this._userNameLabel.text = '';
         }
-    },
+    }
 });
 
 var UserWidget = class {

@@ -2,7 +2,6 @@
 
 const GObject = imports.gi.GObject;
 const Clutter = imports.gi.Clutter;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
@@ -30,17 +29,15 @@ var SlideDirection = {
     RIGHT: 1
 };
 
-var SlideLayout = new Lang.Class({
-    Name: 'SlideLayout',
-    Extends: Clutter.FixedLayout,
-
+var SlideLayout = GObject.registerClass(
+class SlideLayout extends Clutter.FixedLayout {
     _init(params) {
         this._slideX = 1;
         this._translationX = undefined;
         this._direction = SlideDirection.LEFT;
 
-        this.parent(params);
-    },
+        super._init(params);
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         let child = container.get_first_child();
@@ -51,7 +48,7 @@ var SlideLayout = new Lang.Class({
         natWidth *= this._slideX;
 
         return [minWidth, natWidth];
-    },
+    }
 
     vfunc_allocate(container, box, flags) {
         let child = container.get_first_child();
@@ -74,34 +71,34 @@ var SlideLayout = new Lang.Class({
         actorBox.y2 = actorBox.y1 + availHeight;
 
         child.allocate(actorBox, flags);
-    },
+    }
 
     set slideX(value) {
         this._slideX = value;
         this.layout_changed();
-    },
+    }
 
     get slideX() {
         return this._slideX;
-    },
+    }
 
     set slideDirection(direction) {
         this._direction = direction;
         this.layout_changed();
-    },
+    }
 
     get slideDirection() {
         return this._direction;
-    },
+    }
 
     set translationX(value) {
         this._translationX = value;
         this.layout_changed();
-    },
+    }
 
     get translationX() {
         return this._translationX;
-    },
+    }
 });
 
 var SlidingControl = class {
@@ -354,15 +351,13 @@ var DashSlider = class extends SlidingControl {
     }
 };
 
-var DashSpacer = new Lang.Class({
-    Name: 'DashSpacer',
-    Extends: St.Widget,
-
+var DashSpacer = GObject.registerClass(
+class DashSpacer extends St.Widget {
     _init(params) {
-        this.parent(params);
+        super._init(params);
 
         this._bindConstraint = null;
-    },
+    }
 
     setDashActor(dashActor) {
         if (this._bindConstraint) {
@@ -375,30 +370,28 @@ var DashSpacer = new Lang.Class({
                                                                 coordinate: Clutter.BindCoordinate.SIZE });
             this.add_constraint(this._bindConstraint);
         }
-    },
+    }
 
     vfunc_get_preferred_width(forHeight) {
         let box = this.get_allocation_box();
-        let minWidth = this.parent(forHeight)[0];
+        let minWidth = super.vfunc_get_preferred_width(forHeight)[0];
         let natWidth = box.x2 - box.x1;
         return [minWidth, natWidth];
-    },
+    }
 
     vfunc_get_preferred_height(forWidth) {
         let box = this.get_allocation_box();
-        let minHeight = this.parent(forWidth)[0];
+        let minHeight = super.vfunc_get_preferred_height(forWidth)[0];
         let natHeight = box.y2 - box.y1;
         return [minHeight, natHeight];
     }
 });
 
-var ControlsLayout = new Lang.Class({
-    Name: 'ControlsLayout',
-    Extends: Clutter.BinLayout,
+var ControlsLayout = GObject.registerClass({
     Signals: { 'allocation-changed': { flags: GObject.SignalFlags.RUN_LAST } },
-
+}, class ControlsLayout extends Clutter.BinLayout {
     vfunc_allocate(container, box, flags) {
-        this.parent(container, box, flags);
+        super.vfunc_allocate(container, box, flags);
         this.emit('allocation-changed');
     }
 });

@@ -3,8 +3,8 @@
 const UI = imports.testcommon.ui;
 
 const Clutter = imports.gi.Clutter;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
@@ -32,19 +32,17 @@ const BOX_WIDTHS = [
 
 const SPACING = 10;
 
-var FlowedBoxes = new Lang.Class({
-    Name: 'FlowedBoxes',
-    Extends: St.Widget,
-
+var FlowedBoxes = GObject.registerClass(
+class FlowedBoxes extends St.Widget {
     _init() {
-        this.parent();
+        super._init();
 
 	for (let i = 0; i < BOX_WIDTHS.length; i++) {
 	    let child = new St.Bin({ width: BOX_WIDTHS[i], height: BOX_HEIGHT,
 	                             style: 'border: 1px solid #444444; background: #00aa44' })
 	    this.add_actor(child);
 	}
-    },
+    }
 
     vfunc_get_preferred_width(forHeight) {
         let children = this.get_children();
@@ -62,7 +60,7 @@ var FlowedBoxes = new Lang.Class({
 	}
 
         return [maxMinWidth, totalNaturalWidth];
-    },
+    }
 
     _layoutChildren(forWidth, callback) {
         let children = this.get_children();
@@ -92,7 +90,7 @@ var FlowedBoxes = new Lang.Class({
 	    x = x2;
 	}
 
-    },
+    }
 
     vfunc_get_preferred_height(forWidth) {
 	let height = 0;
@@ -102,7 +100,7 @@ var FlowedBoxes = new Lang.Class({
 	   });
 
         return [height, height];
-    },
+    }
 
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
@@ -124,12 +122,10 @@ var FlowedBoxes = new Lang.Class({
 //
 // This is currently only written for the case where the child is height-for-width
 
-var SizingIllustrator = new Lang.Class({
-    Name: 'SizingIllustrator',
-    Extends: St.Widget,
-
+var SizingIllustrator = GObject.registerClass(
+class SizingIllustrator extends St.Widget {
     _init() {
-        this.parent();
+        super._init();
 
 	this.minWidthLine = new St.Bin({ style: 'background: red' });
         this.add_actor(this.minWidthLine);
@@ -157,13 +153,13 @@ var SizingIllustrator = new Lang.Class({
 
 	this.width = 300;
 	this.height = 300;
-    },
+    }
 
     add(child) {
         this.child = child;
         this.add_child(child);
         this.child.lower_bottom();
-    },
+    }
 
     vfunc_get_preferred_width(forHeight) {
         let children = this.get_children();
@@ -177,7 +173,7 @@ var SizingIllustrator = new Lang.Class({
 	}
 
         return [0, 400];
-    },
+    }
 
     vfunc_get_preferred_height(forWidth) {
         let children = this.get_children();
@@ -191,7 +187,7 @@ var SizingIllustrator = new Lang.Class({
 	}
 
         return [0, 400];
-    },
+    }
 
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
@@ -214,7 +210,7 @@ var SizingIllustrator = new Lang.Class({
 	alloc(this.naturalHeightLine, 0, this.naturalHeight, allocWidth, this.naturalHeight + 1);
 	alloc(this.currentHeightLine, 0, this.height, allocWidth, this.height + 1);
 	alloc(this.handle, this.width, this.height, this.width + 10, this.height + 10);
-    },
+    }
 
     _handlePressed(handle, event) {
 	if (event.get_button() == 1) {
@@ -225,14 +221,14 @@ var SizingIllustrator = new Lang.Class({
 	    this._dragY = y - handleY;
 	    Clutter.grab_pointer(handle);
 	}
-    },
+    }
 
     _handleReleased(handle, event) {
 	if (event.get_button() == 1) {
 	    this._inDrag = false;
 	    Clutter.ungrab_pointer(handle);
 	}
-    },
+    }
 
     _handleMotion(handle, event) {
 	if (this._inDrag) {

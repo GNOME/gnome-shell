@@ -3,8 +3,8 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const IBus = imports.gi.IBus;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -73,18 +73,16 @@ var InputSource = class {
 };
 Signals.addSignalMethods(InputSource.prototype);
 
-var InputSourcePopup = new Lang.Class({
-    Name: 'InputSourcePopup',
-    Extends: SwitcherPopup.SwitcherPopup,
-
+var InputSourcePopup = GObject.registerClass(
+class InputSourcePopup extends SwitcherPopup.SwitcherPopup {
     _init(items, action, actionBackward) {
-        this.parent(items);
+        super._init(items);
 
         this._action = action;
         this._actionBackward = actionBackward;
 
         this._switcherList = new InputSourceSwitcher(this._items);
-    },
+    }
 
     _keyPressHandler(keysym, action) {
         if (action == this._action)
@@ -99,25 +97,23 @@ var InputSourcePopup = new Lang.Class({
             return Clutter.EVENT_PROPAGATE;
 
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _finish() {
-        this.parent();
+        super._finish();
 
         this._items[this._selectedIndex].activate(true);
-    },
+    }
 });
 
-var InputSourceSwitcher = new Lang.Class({
-    Name: 'InputSourceSwitcher',
-    Extends: SwitcherPopup.SwitcherList,
-
+var InputSourceSwitcher = GObject.registerClass(
+class InputSourceSwitcher extends SwitcherPopup.SwitcherList {
     _init(items) {
-        this.parent(true);
+        super._init(true);
 
         for (let i = 0; i < items.length; i++)
             this._addIcon(items[i]);
-    },
+    }
 
     _addIcon(item) {
         let box = new St.BoxLayout({ vertical: true });
@@ -780,9 +776,8 @@ function getInputSourceManager() {
     return _inputSourceManager;
 }
 
-var InputSourceIndicatorContainer = new Lang.Class({
-    Name: 'InputSourceIndicatorContainer',
-    Extends: St.Widget,
+var InputSourceIndicatorContainer = GObject.registerClass(
+class InputSourceIndicatorContainer extends St.Widget {
 
     vfunc_get_preferred_width(forHeight) {
         // Here, and in vfunc_get_preferred_height, we need to query
@@ -793,7 +788,7 @@ var InputSourceIndicatorContainer = new Lang.Class({
             return [Math.max(maxWidth[0], width[0]),
                     Math.max(maxWidth[1], width[1])];
         }, [0, 0]);
-    },
+    }
 
     vfunc_get_preferred_height(forWidth) {
         return this.get_children().reduce((maxHeight, child) => {
@@ -801,7 +796,7 @@ var InputSourceIndicatorContainer = new Lang.Class({
             return [Math.max(maxHeight[0], height[0]),
                     Math.max(maxHeight[1], height[1])];
         }, [0, 0]);
-    },
+    }
 
     vfunc_allocate(box, flags) {
         this.set_allocation(box, flags);
@@ -818,12 +813,10 @@ var InputSourceIndicatorContainer = new Lang.Class({
     }
 });
 
-var InputSourceIndicator = new Lang.Class({
-    Name: 'InputSourceIndicator',
-    Extends: PanelMenu.Button,
-
+var InputSourceIndicator = GObject.registerClass(
+class InputSourceIndicator extends PanelMenu.Button {
     _init() {
-        this.parent(0.0, _("Keyboard"));
+        super._init(0.0, _("Keyboard"));
 
         this._menuItems = {};
         this._indicatorLabels = {};
@@ -852,7 +845,7 @@ var InputSourceIndicator = new Lang.Class({
         this._inputSourceManager.connect('sources-changed', this._sourcesChanged.bind(this));
         this._inputSourceManager.connect('current-source-changed', this._currentSourceChanged.bind(this));
         this._inputSourceManager.reload();
-    },
+    }
 
     _sessionUpdated() {
         // re-using "allowSettings" for the keyboard layout is a bit shady,
@@ -860,7 +853,7 @@ var InputSourceIndicator = new Lang.Class({
         // from shell menus"; we can always add a separate sessionMode
         // option if need arises.
         this._showLayoutItem.actor.visible = Main.sessionMode.allowSettings;
-    },
+    }
 
     _sourcesChanged() {
         for (let i in this._menuItems)
@@ -891,7 +884,7 @@ var InputSourceIndicator = new Lang.Class({
             this.menu.addMenuItem(menuItem, menuIndex++);
             this._container.add_actor(indicatorLabel);
         }
-    },
+    }
 
     _currentSourceChanged(manager, oldSource) {
         let nVisibleSources = Object.keys(this._inputSourceManager.inputSources).length;
@@ -920,7 +913,7 @@ var InputSourceIndicator = new Lang.Class({
 
         this._menuItems[newSource.index].setOrnament(PopupMenu.Ornament.DOT);
         this._indicatorLabels[newSource.index].show();
-    },
+    }
 
     _buildPropSection(properties) {
         this._propSeparator.actor.hide();
@@ -933,7 +926,7 @@ var InputSourceIndicator = new Lang.Class({
             this._propSection.actor.show();
             this._propSeparator.actor.show();
         }
-    },
+    }
 
     _buildPropSubMenu(menu, props) {
         if (!props)
@@ -1035,7 +1028,7 @@ var InputSourceIndicator = new Lang.Class({
             item.setSensitive(prop.get_sensitive());
             menu.addMenuItem(item);
         }
-    },
+    }
 
     _showLayout() {
         Main.overview.hide();
@@ -1062,5 +1055,5 @@ var InputSourceIndicator = new Lang.Class({
             description = description + '\t' + xkbVariant;
 
         Util.spawn(['gkbd-keyboard-display', '-l', description]);
-    },
+    }
 });

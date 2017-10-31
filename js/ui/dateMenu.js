@@ -6,7 +6,6 @@ const GnomeDesktop = imports.gi.GnomeDesktop;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const GWeather = imports.gi.GWeather;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Pango = imports.gi.Pango;
 const Cairo = imports.cairo;
@@ -371,21 +370,19 @@ var MessagesIndicator = class MessagesIndicator {
     }
 };
 
-var IndicatorPad = new Lang.Class({
-    Name: 'IndicatorPad',
-    Extends: St.Widget,
-
+var IndicatorPad = GObject.registerClass(
+class IndicatorPad extends St.Widget {
     _init(actor) {
         this._source = actor;
         this._source.connect('notify::visible', () => { this.queue_relayout(); });
-        this.parent();
-    },
+        super._init();
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         if (this._source.visible)
             return this._source.get_preferred_width(forHeight);
         return [0, 0];
-    },
+    }
 
     vfunc_get_preferred_height(container, forWidth) {
         if (this._source.visible)
@@ -394,17 +391,15 @@ var IndicatorPad = new Lang.Class({
     }
 });
 
-var FreezableBinLayout = new Lang.Class({
-    Name: 'FreezableBinLayout',
-    Extends: Clutter.BinLayout,
-
+var FreezableBinLayout = GObject.registerClass(
+class FreezableBinLayout extends Clutter.BinLayout {
     _init() {
-        this.parent();
+        super._init();
 
         this._frozen = false;
         this._savedWidth = [NaN, NaN];
         this._savedHeight = [NaN, NaN];
-    },
+    }
 
     set frozen(v) {
         if (this._frozen == v)
@@ -413,22 +408,22 @@ var FreezableBinLayout = new Lang.Class({
         this._frozen = v;
         if (!this._frozen)
             this.layout_changed();
-    },
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         if (!this._frozen || this._savedWidth.some(isNaN))
-            return this.parent(container, forHeight);
+            return super.vfunc_get_preferred_width(container, forHeight);
         return this._savedWidth;
-    },
+    }
 
     vfunc_get_preferred_height(container, forWidth) {
         if (!this._frozen || this._savedHeight.some(isNaN))
-            return this.parent(container, forWidth);
+            return super.vfunc_get_preferred_height(container, forWidth);
         return this._savedHeight;
-    },
+    }
 
     vfunc_allocate(container, allocation, flags) {
-        this.parent(container, allocation, flags);
+        super.vfunc_allocate(container, allocation, flags);
 
         let [width, height] = allocation.get_size();
         this._savedWidth = [width, width];
@@ -436,26 +431,22 @@ var FreezableBinLayout = new Lang.Class({
     }
 });
 
-var CalendarColumnLayout = new Lang.Class({
-    Name: 'CalendarColumnLayout',
-    Extends: Clutter.BoxLayout,
-
+var CalendarColumnLayout = GObject.registerClass(
+class CalendarColumnLayout extends Clutter.BoxLayout {
     _init(actor) {
-        this.parent({ orientation: Clutter.Orientation.VERTICAL });
+        super._init({ orientation: Clutter.Orientation.VERTICAL });
         this._calActor = actor;
-    },
+    }
 
     vfunc_get_preferred_width(container, forHeight) {
         if (!this._calActor || this._calActor.get_parent() != container)
-            return this.parent(container, forHeight);
+            return super.vfunc_get_preferred_width(container, forHeight);
         return this._calActor.get_preferred_width(forHeight);
     }
 });
 
-var DateMenuButton = new Lang.Class({
-    Name: 'DateMenuButton',
-    Extends: PanelMenu.Button,
-
+var DateMenuButton = GObject.registerClass(
+class DateMenuButton extends PanelMenu.Button {
     _init() {
         let item;
         let hbox;
@@ -464,7 +455,7 @@ var DateMenuButton = new Lang.Class({
         let menuAlignment = 0.5;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             menuAlignment = 1.0 - menuAlignment;
-        this.parent(menuAlignment);
+        super._init(menuAlignment);
 
         this._clockDisplay = new St.Label({ y_align: Clutter.ActorAlign.CENTER });
         this._indicator = new MessagesIndicator();
@@ -545,11 +536,11 @@ var DateMenuButton = new Lang.Class({
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
-    },
+    }
 
     _getEventSource() {
         return new Calendar.DBusEventSource();
-    },
+    }
 
     _setEventSource(eventSource) {
         if (this._eventSource)
@@ -559,7 +550,7 @@ var DateMenuButton = new Lang.Class({
         this._messageList.setEventSource(eventSource);
 
         this._eventSource = eventSource;
-    },
+    }
 
     _updateTimeZone() {
         // SpiderMonkey caches the time zone so we must explicitly clear it
@@ -568,7 +559,7 @@ var DateMenuButton = new Lang.Class({
         System.clearDateCaches();
 
         this._calendar.updateTimeZone();
-    },
+    }
 
     _sessionUpdated() {
         let eventSource;
@@ -584,5 +575,5 @@ var DateMenuButton = new Lang.Class({
         // but the corresponding app (clocks, weather); however we can consider
         // that display-specific settings, so re-use "allowSettings" here ...
         this._displaysSection.visible = Main.sessionMode.allowSettings;
-    },
+    }
 });
