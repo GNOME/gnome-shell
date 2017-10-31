@@ -27,7 +27,7 @@ var Indicator = new Lang.Class({
     Name: 'BTIndicator',
     Extends: PanelMenu.SystemIndicator,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this._indicator = this._addIndicator();
@@ -66,7 +66,7 @@ var Indicator = new Lang.Class({
         this._sync();
     },
 
-    _getDefaultAdapter: function() {
+    _getDefaultAdapter() {
         let [ret, iter] = this._model.get_iter_first();
         while (ret) {
             let isDefault = this._model.get_value(iter,
@@ -87,7 +87,7 @@ var Indicator = new Lang.Class({
     //
     // nConnectedDevices is the number of devices connected to the default
     // adapter if one exists and is powered, or -1 if it's not available.
-    _getNDevices: function() {
+    _getNDevices() {
         let adapter = this._getDefaultAdapter();
         if (!adapter)
             return [ this._hadSetupDevices ? 1 : -1, -1 ];
@@ -118,7 +118,7 @@ var Indicator = new Lang.Class({
         return [ nDevices, nConnectedDevices];
     },
 
-    _sync: function() {
+    _sync() {
         let [ nDevices, nConnectedDevices ] = this._getNDevices();
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 

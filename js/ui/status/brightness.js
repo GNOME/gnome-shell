@@ -23,7 +23,7 @@ var Indicator = new Lang.Class({
     Name: 'BrightnessIndicator',
     Extends: PanelMenu.SystemIndicator,
 
-    _init: function() {
+    _init() {
         this.parent('display-brightness-symbolic');
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                           Lang.bind(this, function(proxy, error) {
@@ -56,12 +56,12 @@ var Indicator = new Lang.Class({
 
     },
 
-    _sliderChanged: function(slider, value) {
+    _sliderChanged(slider, value) {
         let percent = value * 100;
         this._proxy.Brightness = percent;
     },
 
-    _sync: function() {
+    _sync() {
         let visible = this._proxy.Brightness >= 0;
         this._item.actor.visible = visible;
         if (visible)

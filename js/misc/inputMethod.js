@@ -9,7 +9,7 @@ var InputMethod = new Lang.Class({
     Name: 'InputMethod',
     Extends: Clutter.InputMethod,
 
-    _init: function() {
+    _init() {
         this.parent();
         this._hints = 0;
         this._purpose = 0;
@@ -33,7 +33,7 @@ var InputMethod = new Lang.Class({
         return this._currentFocus;
     },
 
-    _updateCapabilities: function() {
+    _updateCapabilities() {
         let caps = 0;
 
         if (this.can_show_preedit)
@@ -48,16 +48,16 @@ var InputMethod = new Lang.Class({
             this._context.set_capabilities(caps);
     },
 
-    _onSourceChanged: function() {
+    _onSourceChanged() {
         this._currentSource = this._inputSourceManager.currentSource;
     },
 
-    _onConnected: function() {
+    _onConnected() {
         this._ibus.create_input_context_async ('gnome-shell', -1, null,
                                                Lang.bind(this, this._setContext));
     },
 
-    _setContext: function(bus, res) {
+    _setContext(bus, res) {
         this._context = this._ibus.create_input_context_async_finish(res);
         this._context.connect('enabled', Lang.bind(this, function () { this._enabled = true }));
         this._context.connect('disabled', Lang.bind(this, function () { this._enabled = false }));
@@ -68,27 +68,27 @@ var InputMethod = new Lang.Class({
         this._updateCapabilities();
     },
 
-    _clear: function() {
+    _clear() {
         this._context = null;
         this._hints = 0;
         this._purpose = 0;
         this._enabled = false;
     },
 
-    _emitRequestSurrounding: function() {
+    _emitRequestSurrounding() {
         if (this._context.needs_surrounding_text())
             this.emit('request-surrounding');
     },
 
-    _onCommitText: function(context, text) {
+    _onCommitText(context, text) {
         this.commit(text.get_text());
     },
 
-    _onDeleteSurroundingText: function (context) {
+    _onDeleteSurroundingText(context) {
         this.delete_surrounding();
     },
 
-    _onUpdatePreeditText: function (context, text, pos, visible) {
+    _onUpdatePreeditText(context, text, pos, visible) {
         let str = null;
         if (visible && text != null)
             str = text.get_text();
@@ -96,7 +96,7 @@ var InputMethod = new Lang.Class({
         this.set_preedit_text(str, pos);
     },
 
-    vfunc_focus_in: function(focus) {
+    vfunc_focus_in(focus) {
         this._currentFocus = focus;
         if (this._context) {
             this._context.focus_in();
@@ -105,7 +105,7 @@ var InputMethod = new Lang.Class({
         }
     },
 
-    vfunc_focus_out: function() {
+    vfunc_focus_out() {
         this._currentFocus = null;
         if (this._context) {
             this._context.focus_out();
@@ -116,7 +116,7 @@ var InputMethod = new Lang.Class({
         this.set_preedit_text(null, 0);
     },
 
-    vfunc_reset: function() {
+    vfunc_reset() {
         if (this._context) {
             this._context.reset();
             this._emitRequestSurrounding();
@@ -126,7 +126,7 @@ var InputMethod = new Lang.Class({
         this.set_preedit_text(null, 0);
     },
 
-    vfunc_set_cursor_location: function(rect) {
+    vfunc_set_cursor_location(rect) {
         if (this._context) {
             this._context.set_cursor_location(rect.get_x(), rect.get_y(),
                                               rect.get_width(), rect.get_height());
@@ -134,12 +134,12 @@ var InputMethod = new Lang.Class({
         }
     },
 
-    vfunc_set_surrounding: function(text, cursor, anchor) {
+    vfunc_set_surrounding(text, cursor, anchor) {
         if (this._context)
             this._context.set_surrounding_text(text, cursor, anchor);
     },
 
-    vfunc_update_content_hints: function(hints) {
+    vfunc_update_content_hints(hints) {
         let ibusHints = 0;
         if (hints & Clutter.InputContentHintFlags.COMPLETION)
             ibusHints |= IBus.InputHints.WORD_COMPLETION;
@@ -159,7 +159,7 @@ var InputMethod = new Lang.Class({
             this._context.set_content_type(this._purpose, this._hints);
     },
 
-    vfunc_update_content_purpose: function(purpose) {
+    vfunc_update_content_purpose(purpose) {
         let ibusPurpose = 0;
         if (purpose == Clutter.InputContentPurpose.NORMAL)
             ibusPurpose = IBus.InputPurpose.FREE_FORM;
@@ -185,7 +185,7 @@ var InputMethod = new Lang.Class({
             this._context.set_content_type(this._purpose, this._hints);
     },
 
-    vfunc_filter_key_event: function(event) {
+    vfunc_filter_key_event(event) {
         if (!this._context || !this._enabled)
             return false;
         if (!this._currentSource ||

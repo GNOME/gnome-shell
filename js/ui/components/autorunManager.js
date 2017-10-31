@@ -93,12 +93,12 @@ function HotplugSniffer() {
 var ContentTypeDiscoverer = new Lang.Class({
     Name: 'ContentTypeDiscoverer',
 
-    _init: function(callback) {
+    _init(callback) {
         this._callback = callback;
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
     },
 
-    guessContentTypes: function(mount) {
+    guessContentTypes(mount) {
         let autorunEnabled = !this._settings.get_boolean(SETTING_DISABLE_AUTORUN);
         let shouldScan = autorunEnabled && !isMountNonLocal(mount);
 
@@ -112,7 +112,7 @@ var ContentTypeDiscoverer = new Lang.Class({
         }
     },
 
-    _onContentTypeGuessed: function(mount, res) {
+    _onContentTypeGuessed(mount, res) {
         let contentTypes = [];
 
         try {
@@ -135,7 +135,7 @@ var ContentTypeDiscoverer = new Lang.Class({
         }
     },
 
-    _emitCallback: function(mount, contentTypes) {
+    _emitCallback(mount, contentTypes) {
         if (!contentTypes)
             contentTypes = [];
 
@@ -162,24 +162,24 @@ var ContentTypeDiscoverer = new Lang.Class({
 var AutorunManager = new Lang.Class({
     Name: 'AutorunManager',
 
-    _init: function() {
+    _init() {
         this._session = new GnomeSession.SessionManager();
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
         this._dispatcher = new AutorunDispatcher(this);
     },
 
-    enable: function() {
+    enable() {
         this._mountAddedId = this._volumeMonitor.connect('mount-added', Lang.bind(this, this._onMountAdded));
         this._mountRemovedId = this._volumeMonitor.connect('mount-removed', Lang.bind(this, this._onMountRemoved));
     },
 
-    disable: function() {
+    disable() {
         this._volumeMonitor.disconnect(this._mountAddedId);
         this._volumeMonitor.disconnect(this._mountRemovedId);
     },
 
-    _onMountAdded: function(monitor, mount) {
+    _onMountAdded(monitor, mount) {
         // don't do anything if our session is not the currently
         // active one
         if (!this._session.SessionIsActive)
@@ -191,7 +191,7 @@ var AutorunManager = new Lang.Class({
         discoverer.guessContentTypes(mount);
     },
 
-    _onMountRemoved: function(monitor, mount) {
+    _onMountRemoved(monitor, mount) {
         this._dispatcher.removeMount(mount);
     }
 });
@@ -199,13 +199,13 @@ var AutorunManager = new Lang.Class({
 var AutorunDispatcher = new Lang.Class({
     Name: 'AutorunDispatcher',
 
-    _init: function(manager) {
+    _init(manager) {
         this._manager = manager;
         this._sources = [];
         this._settings = new Gio.Settings({ schema_id: SETTINGS_SCHEMA });
     },
 
-    _getAutorunSettingForType: function(contentType) {
+    _getAutorunSettingForType(contentType) {
         let runApp = this._settings.get_strv(SETTING_START_APP);
         if (runApp.indexOf(contentType) != -1)
             return AutorunSetting.RUN;
@@ -221,7 +221,7 @@ var AutorunDispatcher = new Lang.Class({
         return AutorunSetting.ASK;
     },
 
-    _getSourceForMount: function(mount) {
+    _getSourceForMount(mount) {
         let filtered =
             this._sources.filter(function (source) {
                 return (source.mount == mount);
@@ -236,7 +236,7 @@ var AutorunDispatcher = new Lang.Class({
         return null;
     },
 
-    _addSource: function(mount, apps) {
+    _addSource(mount, apps) {
         // if we already have a source showing for this 
         // mount, return
         if (this._getSourceForMount(mount))
@@ -246,7 +246,7 @@ var AutorunDispatcher = new Lang.Class({
         this._sources.push(new AutorunSource(this._manager, mount, apps));
     },
 
-    addMount: function(mount, apps, contentTypes) {
+    addMount(mount, apps, contentTypes) {
         // if autorun is disabled globally, return
         if (this._settings.get_boolean(SETTING_DISABLE_AUTORUN))
             return;
@@ -284,7 +284,7 @@ var AutorunDispatcher = new Lang.Class({
             this._addSource(mount, apps);
     },
 
-    removeMount: function(mount) {
+    removeMount(mount) {
         let source = this._getSourceForMount(mount);
         
         // if we aren't tracking this mount, don't do anything
@@ -300,7 +300,7 @@ var AutorunSource = new Lang.Class({
     Name: 'AutorunSource',
     Extends: MessageTray.Source,
 
-    _init: function(manager, mount, apps) {
+    _init(manager, mount, apps) {
         this._manager = manager;
         this.mount = mount;
         this.apps = apps;
@@ -314,11 +314,11 @@ var AutorunSource = new Lang.Class({
         this.notify(this._notification);
     },
 
-    getIcon: function() {
+    getIcon() {
         return this.mount.get_icon();
     },
 
-    _createPolicy: function() {
+    _createPolicy() {
         return new MessageTray.NotificationApplicationPolicy('org.gnome.Nautilus');
     }
 });
@@ -327,14 +327,14 @@ var AutorunNotification = new Lang.Class({
     Name: 'AutorunNotification',
     Extends: MessageTray.Notification,
 
-    _init: function(manager, source) {
+    _init(manager, source) {
         this.parent(source, source.title);
 
         this._manager = manager;
         this._mount = source.mount;
     },
 
-    createBanner: function() {
+    createBanner() {
         let banner = new MessageTray.NotificationBanner(this);
 
         this.source.apps.forEach(Lang.bind(this, function (app) {
@@ -347,7 +347,7 @@ var AutorunNotification = new Lang.Class({
         return banner;
     },
 
-    _buttonForApp: function(app) {
+    _buttonForApp(app) {
         let box = new St.BoxLayout();
         let icon = new St.Icon({ gicon: app.get_icon(),
                                  style_class: 'hotplug-notification-item-icon' });
@@ -374,7 +374,7 @@ var AutorunNotification = new Lang.Class({
         return button;
     },
 
-    activate: function() {
+    activate() {
         this.parent();
 
         let app = Gio.app_info_get_default_for_type('inode/directory', false);

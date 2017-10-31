@@ -18,7 +18,7 @@ var LEVEL_ANIMATION_TIME = 0.1;
 var LevelBar = new Lang.Class({
     Name: 'LevelBar',
 
-    _init: function() {
+    _init() {
         this._level = 0;
 
         this.actor = new St.Bin({ style_class: 'level',
@@ -49,7 +49,7 @@ var OsdWindowConstraint = new Lang.Class({
     Name: 'OsdWindowConstraint',
     Extends: Clutter.Constraint,
 
-    _init: function(props) {
+    _init(props) {
         this._minSize = 0;
         this.parent(props);
     },
@@ -60,7 +60,7 @@ var OsdWindowConstraint = new Lang.Class({
             this.actor.queue_relayout();
     },
 
-    vfunc_update_allocation: function(actor, actorBox) {
+    vfunc_update_allocation(actor, actorBox) {
         // Clutter will adjust the allocation for margins,
         // so add it to our minimum size
         let minSize = this._minSize + actor.margin_top + actor.margin_bottom;
@@ -80,7 +80,7 @@ var OsdWindowConstraint = new Lang.Class({
 var OsdWindow = new Lang.Class({
     Name: 'OsdWindow',
 
-    _init: function(monitorIndex) {
+    _init(monitorIndex) {
         this.actor = new St.Widget({ x_expand: true,
                                      y_expand: true,
                                      x_align: Clutter.ActorAlign.CENTER,
@@ -117,17 +117,17 @@ var OsdWindow = new Lang.Class({
         Main.uiGroup.add_child(this.actor);
     },
 
-    setIcon: function(icon) {
+    setIcon(icon) {
         this._icon.gicon = icon;
     },
 
-    setLabel: function(label) {
+    setLabel(label) {
         this._label.visible = (label != undefined);
         if (label)
             this._label.text = label;
     },
 
-    setLevel: function(level) {
+    setLevel(level) {
         this._level.actor.visible = (level != undefined);
         if (level != undefined) {
             if (this.actor.visible)
@@ -140,7 +140,7 @@ var OsdWindow = new Lang.Class({
         }
     },
 
-    show: function() {
+    show() {
         if (!this._icon.gicon)
             return;
 
@@ -163,7 +163,7 @@ var OsdWindow = new Lang.Class({
         GLib.Source.set_name_by_id(this._hideTimeoutId, '[gnome-shell] this._hide');
     },
 
-    cancel: function() {
+    cancel() {
         if (!this._hideTimeoutId)
             return;
 
@@ -171,7 +171,7 @@ var OsdWindow = new Lang.Class({
         this._hide();
     },
 
-    _hide: function() {
+    _hide() {
         this._hideTimeoutId = 0;
         Tweener.addTween(this.actor,
                          { opacity: 0,
@@ -185,13 +185,13 @@ var OsdWindow = new Lang.Class({
         return GLib.SOURCE_REMOVE;
     },
 
-    _reset: function() {
+    _reset() {
         this.actor.hide();
         this.setLabel(null);
         this.setLevel(null);
     },
 
-    _relayout: function() {
+    _relayout() {
         /* assume 110x110 on a 640x480 display and scale from there */
         let monitor = Main.layoutManager.monitors[this._monitorIndex];
         if (!monitor)
@@ -212,14 +212,14 @@ var OsdWindow = new Lang.Class({
 var OsdWindowManager = new Lang.Class({
     Name: 'OsdWindowManager',
 
-    _init: function() {
+    _init() {
         this._osdWindows = [];
         Main.layoutManager.connect('monitors-changed',
                                     Lang.bind(this, this._monitorsChanged));
         this._monitorsChanged();
     },
 
-    _monitorsChanged: function() {
+    _monitorsChanged() {
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
             if (this._osdWindows[i] == undefined)
                 this._osdWindows[i] = new OsdWindow(i);
@@ -233,14 +233,14 @@ var OsdWindowManager = new Lang.Class({
         this._osdWindows.length = Main.layoutManager.monitors.length;
     },
 
-    _showOsdWindow: function(monitorIndex, icon, label, level) {
+    _showOsdWindow(monitorIndex, icon, label, level) {
         this._osdWindows[monitorIndex].setIcon(icon);
         this._osdWindows[monitorIndex].setLabel(label);
         this._osdWindows[monitorIndex].setLevel(level);
         this._osdWindows[monitorIndex].show();
     },
 
-    show: function(monitorIndex, icon, label, level) {
+    show(monitorIndex, icon, label, level) {
         if (monitorIndex != -1) {
             for (let i = 0; i < this._osdWindows.length; i++) {
                 if (i == monitorIndex)
@@ -254,7 +254,7 @@ var OsdWindowManager = new Lang.Class({
         }
     },
 
-    hideAll: function() {
+    hideAll() {
         for (let i = 0; i < this._osdWindows.length; i++)
             this._osdWindows[i].cancel();
     }

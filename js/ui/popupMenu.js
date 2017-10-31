@@ -61,7 +61,7 @@ function arrowIcon(side) {
 var PopupBaseMenuItem = new Lang.Class({
     Name: 'PopupBaseMenuItem',
 
-    _init: function (params) {
+    _init (params) {
         params = Params.parse (params, { reactive: true,
                                          activate: true,
                                          hover: true,
@@ -105,30 +105,30 @@ var PopupBaseMenuItem = new Lang.Class({
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
     },
 
-    _getTopMenu: function() {
+    _getTopMenu() {
         if (this._parent)
             return this._parent._getTopMenu();
         else
             return this;
     },
 
-    _setParent: function(parent) {
+    _setParent(parent) {
         this._parent = parent;
     },
 
-    _onButtonPressEvent: function (actor, event) {
+    _onButtonPressEvent (actor, event) {
         // This is the CSS active state
         this.actor.add_style_pseudo_class ('active');
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onButtonReleaseEvent: function (actor, event) {
+    _onButtonReleaseEvent (actor, event) {
         this.actor.remove_style_pseudo_class ('active');
         this.activate(event);
         return Clutter.EVENT_STOP;
     },
 
-    _onTouchEvent: function (actor, event) {
+    _onTouchEvent (actor, event) {
         if (event.type() == Clutter.EventType.TOUCH_END) {
             this.actor.remove_style_pseudo_class ('active');
             this.activate(event);
@@ -140,7 +140,7 @@ var PopupBaseMenuItem = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onKeyPressEvent: function (actor, event) {
+    _onKeyPressEvent (actor, event) {
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.KEY_space || symbol == Clutter.KEY_Return) {
@@ -150,23 +150,23 @@ var PopupBaseMenuItem = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onKeyFocusIn: function (actor) {
+    _onKeyFocusIn (actor) {
         this.setActive(true);
     },
 
-    _onKeyFocusOut: function (actor) {
+    _onKeyFocusOut (actor) {
         this.setActive(false);
     },
 
-    _onHoverChanged: function (actor) {
+    _onHoverChanged (actor) {
         this.setActive(actor.hover);
     },
 
-    activate: function (event) {
+    activate (event) {
         this.emit('activate', event);
     },
 
-    setActive: function (active) {
+    setActive (active) {
         let activeChanged = active != this.active;
         if (activeChanged) {
             this.active = active;
@@ -187,7 +187,7 @@ var PopupBaseMenuItem = new Lang.Class({
         }
     },
 
-    syncSensitive: function() {
+    syncSensitive() {
         let sensitive = this.getSensitive();
         this.actor.reactive = sensitive;
         this.actor.can_focus = sensitive;
@@ -195,12 +195,12 @@ var PopupBaseMenuItem = new Lang.Class({
         return sensitive;
     },
 
-    getSensitive: function() {
+    getSensitive() {
         let parentSensitive = this._parent ? this._parent.getSensitive() : true;
         return this._activatable && this._sensitive && parentSensitive;
     },
 
-    setSensitive: function(sensitive) {
+    setSensitive(sensitive) {
         if (this._sensitive == sensitive)
             return;
 
@@ -208,15 +208,15 @@ var PopupBaseMenuItem = new Lang.Class({
         this.syncSensitive();
     },
 
-    destroy: function() {
+    destroy() {
         this.actor.destroy();
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         this.emit('destroy');
     },
 
-    setOrnament: function(ornament) {
+    setOrnament(ornament) {
         if (ornament == this._ornament)
             return;
 
@@ -240,7 +240,7 @@ var PopupMenuItem = new Lang.Class({
     Name: 'PopupMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function (text, params) {
+    _init (text, params) {
         this.parent(params);
 
         this.label = new St.Label({ text: text });
@@ -253,7 +253,7 @@ var PopupSeparatorMenuItem = new Lang.Class({
     Name: 'PopupSeparatorMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function (text) {
+    _init (text) {
         this.parent({ reactive: false,
                       can_focus: false});
 
@@ -271,7 +271,7 @@ var PopupSeparatorMenuItem = new Lang.Class({
         this.actor.add(this._separator, { expand: true });
     },
 
-    _syncVisibility: function() {
+    _syncVisibility() {
         this.label.visible = this.label.text != '';
     }
 });
@@ -279,7 +279,7 @@ var PopupSeparatorMenuItem = new Lang.Class({
 var Switch = new Lang.Class({
     Name: 'Switch',
 
-    _init: function(state) {
+    _init(state) {
         this.actor = new St.Bin({ style_class: 'toggle-switch',
                                   accessible_role: Atk.Role.CHECK_BOX,
                                   can_focus: true });
@@ -292,7 +292,7 @@ var Switch = new Lang.Class({
         this.setToggleState(state);
     },
 
-    setToggleState: function(state) {
+    setToggleState(state) {
         if (state)
             this.actor.add_style_pseudo_class('checked');
         else
@@ -300,7 +300,7 @@ var Switch = new Lang.Class({
         this.state = state;
     },
 
-    toggle: function() {
+    toggle() {
         this.setToggleState(!this.state);
     }
 });
@@ -309,7 +309,7 @@ var PopupSwitchMenuItem = new Lang.Class({
     Name: 'PopupSwitchMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function(text, active, params) {
+    _init(text, active, params) {
         this.parent(params);
 
         this.label = new St.Label({ text: text });
@@ -330,7 +330,7 @@ var PopupSwitchMenuItem = new Lang.Class({
         this._statusBin.child = this._switch.actor;
     },
 
-    setStatus: function(text) {
+    setStatus(text) {
         if (text != null) {
             this._statusLabel.text = text;
             this._statusBin.child = this._statusLabel;
@@ -344,7 +344,7 @@ var PopupSwitchMenuItem = new Lang.Class({
         this.checkAccessibleState();
     },
 
-    activate: function(event) {
+    activate(event) {
         if (this._switch.actor.mapped) {
             this.toggle();
         }
@@ -358,7 +358,7 @@ var PopupSwitchMenuItem = new Lang.Class({
         this.parent(event);
     },
 
-    toggle: function() {
+    toggle() {
         this._switch.toggle();
         this.emit('toggled', this._switch.state);
         this.checkAccessibleState();
@@ -368,12 +368,12 @@ var PopupSwitchMenuItem = new Lang.Class({
         return this._switch.state;
     },
 
-    setToggleState: function(state) {
+    setToggleState(state) {
         this._switch.setToggleState(state);
         this.checkAccessibleState();
     },
 
-    checkAccessibleState: function() {
+    checkAccessibleState() {
         switch (this.actor.accessible_role) {
         case Atk.Role.CHECK_MENU_ITEM:
             if (this._switch.state)
@@ -391,7 +391,7 @@ var PopupImageMenuItem = new Lang.Class({
     Name: 'PopupImageMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function (text, icon, params) {
+    _init (text, icon, params) {
         this.parent(params);
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
@@ -403,7 +403,7 @@ var PopupImageMenuItem = new Lang.Class({
         this.setIcon(icon);
     },
 
-    setIcon: function(icon) {
+    setIcon(icon) {
         // The 'icon' parameter can be either a Gio.Icon or a string.
         if (icon instanceof GObject.Object && GObject.type_is_a(icon, Gio.Icon))
             this._icon.gicon = icon;
@@ -416,7 +416,7 @@ var PopupMenuBase = new Lang.Class({
     Name: 'PopupMenuBase',
     Abstract: true,
 
-    _init: function(sourceActor, styleClass) {
+    _init(sourceActor, styleClass) {
         this.sourceActor = sourceActor;
         this._parent = null;
 
@@ -442,33 +442,33 @@ var PopupMenuBase = new Lang.Class({
         this._sessionUpdatedId = Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
     },
 
-    _getTopMenu: function() {
+    _getTopMenu() {
         if (this._parent)
             return this._parent._getTopMenu();
         else
             return this;
     },
 
-    _setParent: function(parent) {
+    _setParent(parent) {
         this._parent = parent;
     },
 
-    getSensitive: function() {
+    getSensitive() {
         let parentSensitive = this._parent ? this._parent.getSensitive() : true;
         return this._sensitive && parentSensitive;
     },
 
-    setSensitive: function(sensitive) {
+    setSensitive(sensitive) {
         this._sensitive = sensitive;
         this.emit('sensitive-changed');
     },
 
-    _sessionUpdated: function() {
+    _sessionUpdated() {
         this._setSettingsVisibility(Main.sessionMode.allowSettings);
         this.close();
     },
 
-    addAction: function(title, callback, icon) {
+    addAction(title, callback, icon) {
         let menuItem;
         if (icon != undefined)
             menuItem = new PopupImageMenuItem(title, icon);
@@ -483,7 +483,7 @@ var PopupMenuBase = new Lang.Class({
         return menuItem;
     },
 
-    addSettingsAction: function(title, desktopFile) {
+    addSettingsAction(title, desktopFile) {
         let menuItem = this.addAction(title, function() {
                            let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
@@ -502,14 +502,14 @@ var PopupMenuBase = new Lang.Class({
         return menuItem;
     },
 
-    _setSettingsVisibility: function(visible) {
+    _setSettingsVisibility(visible) {
         for (let id in this._settingsActions) {
             let item = this._settingsActions[id];
             item.actor.visible = visible;
         }
     },
 
-    isEmpty: function() {
+    isEmpty() {
         let hasVisibleChildren = this.box.get_children().some(function(child) {
             if (child._delegate instanceof PopupSeparatorMenuItem)
                 return false;
@@ -519,21 +519,21 @@ var PopupMenuBase = new Lang.Class({
         return !hasVisibleChildren;
     },
 
-    itemActivated: function(animate) {
+    itemActivated(animate) {
         if (animate == undefined)
             animate = BoxPointer.PopupAnimation.FULL;
 
         this._getTopMenu().close(animate);
     },
 
-    _subMenuActiveChanged: function(submenu, submenuItem) {
+    _subMenuActiveChanged(submenu, submenuItem) {
         if (this._activeMenuItem && this._activeMenuItem != submenuItem)
             this._activeMenuItem.setActive(false);
         this._activeMenuItem = submenuItem;
         this.emit('active-changed', submenuItem);
     },
 
-    _connectItemSignals: function(menuItem) {
+    _connectItemSignals(menuItem) {
         menuItem._activeChangeId = menuItem.connect('active-changed', Lang.bind(this, function (menuItem, active) {
             if (active && this._activeMenuItem != menuItem) {
                 if (this._activeMenuItem)
@@ -581,7 +581,7 @@ var PopupMenuBase = new Lang.Class({
         }));
     },
 
-    _updateSeparatorVisibility: function(menuItem) {
+    _updateSeparatorVisibility(menuItem) {
         if (menuItem.label.text)
             return;
 
@@ -617,7 +617,7 @@ var PopupMenuBase = new Lang.Class({
         menuItem.actor.show();
     },
 
-    moveMenuItem: function(menuItem, position) {
+    moveMenuItem(menuItem, position) {
         let items = this._getMenuItems();
         let i = 0;
 
@@ -635,7 +635,7 @@ var PopupMenuBase = new Lang.Class({
         }
     },
 
-    addMenuItem: function(menuItem, position) {
+    addMenuItem(menuItem, position) {
         let before_item = null;
         if (position == undefined) {
             this.box.add(menuItem.actor);
@@ -710,7 +710,7 @@ var PopupMenuBase = new Lang.Class({
         this.length++;
     },
 
-    _getMenuItems: function() {
+    _getMenuItems() {
         return this.box.get_children().map(function (actor) {
             return actor._delegate;
         }).filter(function(item) {
@@ -730,7 +730,7 @@ var PopupMenuBase = new Lang.Class({
         return this._getMenuItems().length;
     },
 
-    removeAll: function() {
+    removeAll() {
         let children = this._getMenuItems();
         for (let i = 0; i < children.length; i++) {
             let item = children[i];
@@ -738,14 +738,14 @@ var PopupMenuBase = new Lang.Class({
         }
     },
 
-    toggle: function() {
+    toggle() {
         if (this.isOpen)
             this.close(BoxPointer.PopupAnimation.FULL);
         else
             this.open(BoxPointer.PopupAnimation.FULL);
     },
 
-    destroy: function() {
+    destroy() {
         this.close();
         this.removeAll();
         this.actor.destroy();
@@ -762,7 +762,7 @@ var PopupMenu = new Lang.Class({
     Name: 'PopupMenu',
     Extends: PopupMenuBase,
 
-    _init: function(sourceActor, arrowAlignment, arrowSide) {
+    _init(sourceActor, arrowAlignment, arrowSide) {
         this.parent(sourceActor, 'popup-menu-content');
 
         this._arrowAlignment = arrowAlignment;
@@ -789,14 +789,14 @@ var PopupMenu = new Lang.Class({
         this._openedSubMenu = null;
     },
 
-    _setOpenedSubMenu: function(submenu) {
+    _setOpenedSubMenu(submenu) {
         if (this._openedSubMenu)
             this._openedSubMenu.close(true);
 
         this._openedSubMenu = submenu;
     },
 
-    _onKeyPress: function(actor, event) {
+    _onKeyPress(actor, event) {
         // Disable toggling the menu by keyboard
         // when it cannot be toggled by pointer
         if (!actor.reactive)
@@ -845,15 +845,15 @@ var PopupMenu = new Lang.Class({
     },
 
 
-    setArrowOrigin: function(origin) {
+    setArrowOrigin(origin) {
         this._boxPointer.setArrowOrigin(origin);
     },
 
-    setSourceAlignment: function(alignment) {
+    setSourceAlignment(alignment) {
         this._boxPointer.setSourceAlignment(alignment);
     },
 
-    open: function(animate) {
+    open(animate) {
         if (this.isOpen)
             return;
 
@@ -870,7 +870,7 @@ var PopupMenu = new Lang.Class({
         this.emit('open-state-changed', true);
     },
 
-    close: function(animate) {
+    close(animate) {
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
@@ -887,7 +887,7 @@ var PopupMenu = new Lang.Class({
         this.emit('open-state-changed', false);
     },
 
-    destroy: function() {
+    destroy() {
         if (this._keyPressId)
             this.sourceActor.disconnect(this._keyPressId);
         this.parent();
@@ -897,20 +897,20 @@ var PopupMenu = new Lang.Class({
 var PopupDummyMenu = new Lang.Class({
     Name: 'PopupDummyMenu',
 
-    _init: function(sourceActor) {
+    _init(sourceActor) {
         this.sourceActor = sourceActor;
         this.actor = sourceActor;
         this.actor._delegate = this;
     },
 
-    getSensitive: function() {
+    getSensitive() {
         return true;
     },
 
-    open: function() { this.emit('open-state-changed', true); },
-    close: function() { this.emit('open-state-changed', false); },
-    toggle: function() {},
-    destroy: function() {
+    open() { this.emit('open-state-changed', true); },
+    close() { this.emit('open-state-changed', false); },
+    toggle() {},
+    destroy() {
         this.emit('destroy');
     },
 });
@@ -920,7 +920,7 @@ var PopupSubMenu = new Lang.Class({
     Name: 'PopupSubMenu',
     Extends: PopupMenuBase,
 
-    _init: function(sourceActor, sourceArrow) {
+    _init(sourceActor, sourceArrow) {
         this.parent(sourceActor);
 
         this._arrow = sourceArrow;
@@ -939,7 +939,7 @@ var PopupSubMenu = new Lang.Class({
         this.actor.hide();
     },
 
-    _needsScrollbar: function() {
+    _needsScrollbar() {
         let topMenu = this._getTopMenu();
         let [topMinHeight, topNaturalHeight] = topMenu.actor.get_preferred_height(-1);
         let topThemeNode = topMenu.actor.get_theme_node();
@@ -948,11 +948,11 @@ var PopupSubMenu = new Lang.Class({
         return topMaxHeight >= 0 && topNaturalHeight >= topMaxHeight;
     },
 
-    getSensitive: function() {
+    getSensitive() {
         return this._sensitive && this.sourceActor._delegate.getSensitive();
     },
 
-    open: function(animate) {
+    open(animate) {
         if (this.isOpen)
             return;
 
@@ -995,11 +995,11 @@ var PopupSubMenu = new Lang.Class({
                                height: naturalHeight,
                                time: 0.25,
                                onUpdateScope: this,
-                               onUpdate: function() {
+                               onUpdate() {
                                    this._arrow.rotation_angle_z = this.actor._arrowRotation;
                                },
                                onCompleteScope: this,
-                               onComplete: function() {
+                               onComplete() {
                                    this.actor.set_height(-1);
                                }
                              });
@@ -1008,7 +1008,7 @@ var PopupSubMenu = new Lang.Class({
         }
     },
 
-    close: function(animate) {
+    close(animate) {
         if (!this.isOpen)
             return;
 
@@ -1028,11 +1028,11 @@ var PopupSubMenu = new Lang.Class({
                                height: 0,
                                time: 0.25,
                                onUpdateScope: this,
-                               onUpdate: function() {
+                               onUpdate() {
                                    this._arrow.rotation_angle_z = this.actor._arrowRotation;
                                },
                                onCompleteScope: this,
-                               onComplete: function() {
+                               onComplete() {
                                    this.actor.hide();
                                    this.actor.set_height(-1);
                                },
@@ -1043,7 +1043,7 @@ var PopupSubMenu = new Lang.Class({
         }
     },
 
-    _onKeyPressEvent: function(actor, event) {
+    _onKeyPressEvent(actor, event) {
         // Move focus back to parent menu if the user types Left.
 
         if (this.isOpen && event.get_key_symbol() == Clutter.KEY_Left) {
@@ -1068,7 +1068,7 @@ var PopupMenuSection = new Lang.Class({
     Name: 'PopupMenuSection',
     Extends: PopupMenuBase,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this.actor = this.box;
@@ -1078,15 +1078,15 @@ var PopupMenuSection = new Lang.Class({
 
     // deliberately ignore any attempt to open() or close(), but emit the
     // corresponding signal so children can still pick it up
-    open: function() { this.emit('open-state-changed', true); },
-    close: function() { this.emit('open-state-changed', false); },
+    open() { this.emit('open-state-changed', true); },
+    close() { this.emit('open-state-changed', false); },
 });
 
 var PopupSubMenuMenuItem = new Lang.Class({
     Name: 'PopupSubMenuMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function(text, wantIcon) {
+    _init(text, wantIcon) {
         this.parent();
 
         this.actor.add_style_class_name('popup-submenu-menu-item');
@@ -1119,19 +1119,19 @@ var PopupSubMenuMenuItem = new Lang.Class({
         this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
     },
 
-    _setParent: function(parent) {
+    _setParent(parent) {
         this.parent(parent);
         this.menu._setParent(parent);
     },
 
-    syncSensitive: function() {
+    syncSensitive() {
         let sensitive = this.parent();
         this._triangle.visible = sensitive;
         if (!sensitive)
             this.menu.close(false);
     },
 
-    _subMenuOpenStateChanged: function(menu, open) {
+    _subMenuOpenStateChanged(menu, open) {
         if (open) {
             this.actor.add_style_pseudo_class('open');
             this._getTopMenu()._setOpenedSubMenu(this.menu);
@@ -1145,28 +1145,28 @@ var PopupSubMenuMenuItem = new Lang.Class({
         }
     },
 
-    destroy: function() {
+    destroy() {
         this.menu.destroy();
 
         this.parent();
     },
 
-    setSubmenuShown: function(open) {
+    setSubmenuShown(open) {
         if (open)
             this.menu.open(BoxPointer.PopupAnimation.FULL);
         else
             this.menu.close(BoxPointer.PopupAnimation.FULL);
     },
 
-    _setOpenState: function(open) {
+    _setOpenState(open) {
         this.setSubmenuShown(open);
     },
 
-    _getOpenState: function() {
+    _getOpenState() {
         return this.menu.isOpen;
     },
 
-    _onKeyPressEvent: function(actor, event) {
+    _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.KEY_Right) {
@@ -1181,11 +1181,11 @@ var PopupSubMenuMenuItem = new Lang.Class({
         return this.parent(actor, event);
     },
 
-    activate: function(event) {
+    activate(event) {
         this._setOpenState(true);
     },
 
-    _onButtonReleaseEvent: function(actor) {
+    _onButtonReleaseEvent(actor) {
         // Since we override the parent, we need to manage what the parent does
         // with the active style class
         this.actor.remove_style_pseudo_class ('active');
@@ -1193,7 +1193,7 @@ var PopupSubMenuMenuItem = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onTouchEvent: function(actor, event) {
+    _onTouchEvent(actor, event) {
         if (event.type() == Clutter.EventType.TOUCH_END) {
             // Since we override the parent, we need to manage what the parent does
             // with the active style class
@@ -1210,7 +1210,7 @@ var PopupSubMenuMenuItem = new Lang.Class({
 var PopupMenuManager = new Lang.Class({
     Name: 'PopupMenuManager',
 
-    _init: function(owner, grabParams) {
+    _init(owner, grabParams) {
         grabParams = Params.parse(grabParams,
                                   { actionMode: Shell.ActionMode.POPUP });
         this._owner = owner;
@@ -1218,7 +1218,7 @@ var PopupMenuManager = new Lang.Class({
         this._menus = [];
     },
 
-    addMenu: function(menu, position) {
+    addMenu(menu, position) {
         if (this._findMenu(menu) > -1)
             return;
 
@@ -1244,7 +1244,7 @@ var PopupMenuManager = new Lang.Class({
             this._menus.splice(position, 0, menudata);
     },
 
-    removeMenu: function(menu) {
+    removeMenu(menu) {
         if (menu == this.activeMenu)
             this._closeMenu(false, menu);
 
@@ -1274,11 +1274,11 @@ var PopupMenuManager = new Lang.Class({
             return null;
     },
 
-    ignoreRelease: function() {
+    ignoreRelease() {
         return this._grabHelper.ignoreRelease();
     },
 
-    _onMenuOpenState: function(menu, open) {
+    _onMenuOpenState(menu, open) {
         if (open) {
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
@@ -1289,12 +1289,12 @@ var PopupMenuManager = new Lang.Class({
         }
     },
 
-    _changeMenu: function(newMenu) {
+    _changeMenu(newMenu) {
         newMenu.open(this.activeMenu ? BoxPointer.PopupAnimation.FADE
                                      : BoxPointer.PopupAnimation.FULL);
     },
 
-    _onMenuSourceEnter: function(menu) {
+    _onMenuSourceEnter(menu) {
         if (!this._grabHelper.grabbed)
             return Clutter.EVENT_PROPAGATE;
 
@@ -1305,11 +1305,11 @@ var PopupMenuManager = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onMenuDestroy: function(menu) {
+    _onMenuDestroy(menu) {
         this.removeMenu(menu);
     },
 
-    _findMenu: function(item) {
+    _findMenu(item) {
         for (let i = 0; i < this._menus.length; i++) {
             let menudata = this._menus[i];
             if (item == menudata.menu)
@@ -1318,7 +1318,7 @@ var PopupMenuManager = new Lang.Class({
         return -1;
     },
 
-    _closeMenu: function(isUser, menu) {
+    _closeMenu(isUser, menu) {
         // If this isn't a user action, we called close()
         // on the BoxPointer ourselves, so we shouldn't
         // reanimate.

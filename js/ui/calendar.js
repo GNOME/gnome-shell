@@ -92,7 +92,7 @@ function _getCalendarDayAbbreviation(dayNumber) {
 var CalendarEvent = new Lang.Class({
     Name: 'CalendarEvent',
 
-    _init: function(id, date, end, summary, allDay) {
+    _init(id, date, end, summary, allDay) {
         this.id = id;
         this.date = date;
         this.end = end;
@@ -108,27 +108,27 @@ var CalendarEvent = new Lang.Class({
 var EmptyEventSource = new Lang.Class({
     Name: 'EmptyEventSource',
 
-    _init: function() {
+    _init() {
         this.isLoading = false;
         this.isDummy = true;
         this.hasCalendars = false;
     },
 
-    destroy: function() {
+    destroy() {
     },
 
-    ignoreEvent: function(event) {
+    ignoreEvent(event) {
     },
 
-    requestRange: function(begin, end) {
+    requestRange(begin, end) {
     },
 
-    getEvents: function(begin, end) {
+    getEvents(begin, end) {
         let result = [];
         return result;
     },
 
-    hasEvents: function(day) {
+    hasEvents(day) {
         return false;
     }
 });
@@ -179,7 +179,7 @@ function _dateIntervalsOverlap(a0, a1, b0, b1)
 var DBusEventSource = new Lang.Class({
     Name: 'DBusEventSource',
 
-    _init: function() {
+    _init() {
         this._resetCache();
         this.isLoading = false;
         this.isDummy = false;
@@ -237,7 +237,7 @@ var DBusEventSource = new Lang.Class({
         }));
     },
 
-    destroy: function() {
+    destroy() {
         this._dbusProxy.run_dispose();
     },
 
@@ -248,28 +248,28 @@ var DBusEventSource = new Lang.Class({
             return false;
     },
 
-    _resetCache: function() {
+    _resetCache() {
         this._events = [];
         this._lastRequestBegin = null;
         this._lastRequestEnd = null;
     },
 
-    _onNameAppeared: function(owner) {
+    _onNameAppeared(owner) {
         this._initialized = true;
         this._resetCache();
         this._loadEvents(true);
     },
 
-    _onNameVanished: function(oldOwner) {
+    _onNameVanished(oldOwner) {
         this._resetCache();
         this.emit('changed');
     },
 
-    _onChanged: function() {
+    _onChanged() {
         this._loadEvents(false);
     },
 
-    _onEventsReceived: function(results, error) {
+    _onEventsReceived(results, error) {
         let newEvents = [];
         let appointments = results ? results[0] : null;
         if (appointments != null) {
@@ -293,7 +293,7 @@ var DBusEventSource = new Lang.Class({
         this.emit('changed');
     },
 
-    _loadEvents: function(forceReload) {
+    _loadEvents(forceReload) {
         // Ignore while loading
         if (!this._initialized)
             return;
@@ -307,7 +307,7 @@ var DBusEventSource = new Lang.Class({
         }
     },
 
-    ignoreEvent: function(event) {
+    ignoreEvent(event) {
         if (this._ignoredEvents.get(event.id))
             return;
 
@@ -317,7 +317,7 @@ var DBusEventSource = new Lang.Class({
         this.emit('changed');
     },
 
-    requestRange: function(begin, end) {
+    requestRange(begin, end) {
         if (!(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
             this.isLoading = true;
             this._lastRequestBegin = begin;
@@ -328,7 +328,7 @@ var DBusEventSource = new Lang.Class({
         }
     },
 
-    getEvents: function(begin, end) {
+    getEvents(begin, end) {
         let result = [];
         for(let n = 0; n < this._events.length; n++) {
             let event = this._events[n];
@@ -349,7 +349,7 @@ var DBusEventSource = new Lang.Class({
         return result;
     },
 
-    hasEvents: function(day) {
+    hasEvents(day) {
         let dayBegin = _getBeginningOfDay(day);
         let dayEnd = _getEndOfDay(day);
 
@@ -366,7 +366,7 @@ Signals.addSignalMethods(DBusEventSource.prototype);
 var Calendar = new Lang.Class({
     Name: 'Calendar',
 
-    _init: function() {
+    _init() {
         this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
 
@@ -408,7 +408,7 @@ var Calendar = new Lang.Class({
 
     // @eventSource: is an object implementing the EventSource API, e.g. the
     // requestRange(), getEvents(), hasEvents() methods and the ::changed signal.
-    setEventSource: function(eventSource) {
+    setEventSource(eventSource) {
         this._eventSource = eventSource;
         this._eventSource.connect('changed', Lang.bind(this, function() {
             this._rebuildCalendar();
@@ -419,7 +419,7 @@ var Calendar = new Lang.Class({
     },
 
     // Sets the calendar to show a specific date
-    setDate: function(date) {
+    setDate(date) {
         if (sameDay(date, this._selectedDate))
             return;
 
@@ -428,14 +428,14 @@ var Calendar = new Lang.Class({
         this.emit('selected-date-changed', new Date(this._selectedDate));
     },
 
-    updateTimeZone: function() {
+    updateTimeZone() {
         // The calendar need to be rebuilt after a time zone update because
         // the date might have changed.
         this._rebuildCalendar();
         this._update();
     },
 
-    _buildHeader: function() {
+    _buildHeader() {
         let layout = this.actor.layout_manager;
         let offsetCols = this._useWeekdate ? 1 : 0;
         this.actor.destroy_all_children();
@@ -490,7 +490,7 @@ var Calendar = new Lang.Class({
         this._firstDayIndex = this.actor.get_n_children();
     },
 
-    _onScroll : function(actor, event) {
+    _onScroll (actor, event) {
         switch (event.get_scroll_direction()) {
         case Clutter.ScrollDirection.UP:
         case Clutter.ScrollDirection.LEFT:
@@ -504,7 +504,7 @@ var Calendar = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onPrevMonthButtonClicked: function() {
+    _onPrevMonthButtonClicked() {
         let newDate = new Date(this._selectedDate);
         let oldMonth = newDate.getMonth();
         if (oldMonth == 0) {
@@ -528,7 +528,7 @@ var Calendar = new Lang.Class({
         this.setDate(newDate);
     },
 
-    _onNextMonthButtonClicked: function() {
+    _onNextMonthButtonClicked() {
         let newDate = new Date(this._selectedDate);
         let oldMonth = newDate.getMonth();
         if (oldMonth == 11) {
@@ -552,14 +552,14 @@ var Calendar = new Lang.Class({
         this.setDate(newDate);
     },
 
-    _onSettingsChange: function() {
+    _onSettingsChange() {
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
         this._buildHeader();
         this._rebuildCalendar();
         this._update();
     },
 
-    _rebuildCalendar: function() {
+    _rebuildCalendar() {
         let now = new Date();
 
         // Remove everything but the topBox and the weekday labels
@@ -680,7 +680,7 @@ var Calendar = new Lang.Class({
         this._eventSource.requestRange(beginDate, iter);
     },
 
-    _update: function() {
+    _update() {
         let now = new Date();
 
         if (sameYear(this._selectedDate, now))
@@ -708,7 +708,7 @@ var EventMessage = new Lang.Class({
     Name: 'EventMessage',
     Extends: MessageList.Message,
 
-    _init: function(event, date) {
+    _init(event, date) {
         this._event = event;
         this._date = date;
 
@@ -723,7 +723,7 @@ var EventMessage = new Lang.Class({
         });
     },
 
-    _formatEventTime: function() {
+    _formatEventTime() {
         let periodBegin = _getBeginningOfDay(this._date);
         let periodEnd = _getEndOfDay(this._date);
         let allDay = (this._event.allDay || (this._event.date <= periodBegin &&
@@ -756,7 +756,7 @@ var EventMessage = new Lang.Class({
         return title;
     },
 
-    canClose: function() {
+    canClose() {
         return isToday(this._date);
     }
 });
@@ -765,7 +765,7 @@ var NotificationMessage = new Lang.Class({
     Name: 'NotificationMessage',
     Extends: MessageList.Message,
 
-    _init: function(notification) {
+    _init(notification) {
         this.notification = notification;
 
         this.parent(notification.title, notification.bannerBodyText);
@@ -787,7 +787,7 @@ var NotificationMessage = new Lang.Class({
                                                Lang.bind(this, this._onUpdated));
     },
 
-    _getIcon: function() {
+    _getIcon() {
         if (this.notification.gicon)
             return new St.Icon({ gicon: this.notification.gicon,
                                  icon_size: MESSAGE_ICON_SIZE });
@@ -795,18 +795,18 @@ var NotificationMessage = new Lang.Class({
             return this.notification.source.createIcon(MESSAGE_ICON_SIZE);
     },
 
-    _onUpdated: function(n, clear) {
+    _onUpdated(n, clear) {
         this.setIcon(this._getIcon());
         this.setTitle(n.title);
         this.setBody(n.bannerBodyText);
         this.setUseBodyMarkup(n.bannerBodyMarkup);
     },
 
-    _onClicked: function() {
+    _onClicked() {
         this.notification.activate();
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._updatedId)
             this.notification.disconnect(this._updatedId);
         this._updatedId = 0;
@@ -821,7 +821,7 @@ var EventsSection = new Lang.Class({
     Name: 'EventsSection',
     Extends: MessageList.MessageListSection,
 
-    _init: function() {
+    _init() {
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._reloadEvents));
         this._eventSource = new EmptyEventSource();
@@ -842,11 +842,11 @@ var EventsSection = new Lang.Class({
         this._appInstalledChanged();
     },
 
-    _ignoreEvent: function(event) {
+    _ignoreEvent(event) {
         this._eventSource.ignoreEvent(event);
     },
 
-    setEventSource: function(eventSource) {
+    setEventSource(eventSource) {
         this._eventSource = eventSource;
         this._eventSource.connect('changed', Lang.bind(this, this._reloadEvents));
     },
@@ -855,7 +855,7 @@ var EventsSection = new Lang.Class({
         return Main.sessionMode.showCalendarEvents;
     },
 
-    _updateTitle: function() {
+    _updateTitle() {
         this._title.visible = !isToday(this._date);
 
         if (!this._title.visible)
@@ -874,7 +874,7 @@ var EventsSection = new Lang.Class({
         this._title.label = this._date.toLocaleFormat(dayFormat);
     },
 
-    _reloadEvents: function() {
+    _reloadEvents() {
         if (this._eventSource.isLoading)
             return;
 
@@ -900,12 +900,12 @@ var EventsSection = new Lang.Class({
         this._sync();
     },
 
-    _appInstalledChanged: function() {
+    _appInstalledChanged() {
         this._calendarApp = undefined;
         this._title.reactive = (this._getCalendarApp() != null);
     },
 
-    _getCalendarApp: function() {
+    _getCalendarApp() {
         if (this._calendarApp !== undefined)
             return this._calendarApp;
 
@@ -920,7 +920,7 @@ var EventsSection = new Lang.Class({
         return this._calendarApp;
     },
 
-    _onTitleClicked: function() {
+    _onTitleClicked() {
         Main.overview.hide();
         Main.panel.closeCalendar();
 
@@ -930,17 +930,17 @@ var EventsSection = new Lang.Class({
         app.launch([], global.create_app_launch_context(0, -1));
     },
 
-    setDate: function(date) {
+    setDate(date) {
         this.parent(date);
         this._updateTitle();
         this._reloadEvents();
     },
 
-    _shouldShow: function() {
+    _shouldShow() {
         return !this.empty || !isToday(this._date);
     },
 
-    _sync: function() {
+    _sync() {
         if (this._reloading)
             return;
 
@@ -952,7 +952,7 @@ var NotificationSection = new Lang.Class({
     Name: 'NotificationSection',
     Extends: MessageList.MessageListSection,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this._sources = new Map();
@@ -971,7 +971,7 @@ var NotificationSection = new Lang.Class({
                !Main.sessionMode.isGreeter;
     },
 
-    _createTimeLabel: function(datetime) {
+    _createTimeLabel(datetime) {
         let label = new St.Label({ style_class: 'event-time',
                                    x_align: Clutter.ActorAlign.START,
                                    y_align: Clutter.ActorAlign.END });
@@ -982,7 +982,7 @@ var NotificationSection = new Lang.Class({
         return label;
     },
 
-    _sourceAdded: function(tray, source) {
+    _sourceAdded(tray, source) {
         let obj = {
             destroyId: 0,
             notificationAddedId: 0,
@@ -997,7 +997,7 @@ var NotificationSection = new Lang.Class({
         this._sources.set(source, obj);
     },
 
-    _onNotificationAdded: function(source, notification) {
+    _onNotificationAdded(source, notification) {
         let message = new NotificationMessage(notification);
         message.setSecondaryActor(this._createTimeLabel(notification.datetime));
 
@@ -1030,14 +1030,14 @@ var NotificationSection = new Lang.Class({
         this.addMessageAtIndex(message, index, this.actor.mapped);
     },
 
-    _onSourceDestroy: function(source, obj) {
+    _onSourceDestroy(source, obj) {
         source.disconnect(obj.destroyId);
         source.disconnect(obj.notificationAddedId);
 
         this._sources.delete(source);
     },
 
-    _onMapped: function() {
+    _onMapped() {
         if (!this.actor.mapped)
             return;
 
@@ -1046,7 +1046,7 @@ var NotificationSection = new Lang.Class({
                 message.notification.acknowledged = true;
     },
 
-    _shouldShow: function() {
+    _shouldShow() {
         return !this.empty && isToday(this._date);
     }
 });
@@ -1054,7 +1054,7 @@ var NotificationSection = new Lang.Class({
 var Placeholder = new Lang.Class({
     Name: 'Placeholder',
 
-    _init: function() {
+    _init() {
         this.actor = new St.BoxLayout({ style_class: 'message-list-placeholder',
                                         vertical: true });
 
@@ -1074,14 +1074,14 @@ var Placeholder = new Lang.Class({
         this._sync();
     },
 
-    setDate: function(date) {
+    setDate(date) {
         if (sameDay(this._date, date))
             return;
         this._date = date;
         this._sync();
     },
 
-    _sync: function() {
+    _sync() {
         let today = isToday(this._date);
         if (today && this._icon.gicon == this._todayIcon)
             return;
@@ -1101,7 +1101,7 @@ var Placeholder = new Lang.Class({
 var CalendarMessageList = new Lang.Class({
     Name: 'CalendarMessageList',
 
-    _init: function() {
+    _init() {
         this.actor = new St.Widget({ style_class: 'message-list',
                                      layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
@@ -1149,7 +1149,7 @@ var CalendarMessageList = new Lang.Class({
         Main.sessionMode.connect('updated', Lang.bind(this, this._sync));
     },
 
-    _addSection: function(section) {
+    _addSection(section) {
         let obj = {
             destroyId: 0,
             visibleId:  0,
@@ -1175,7 +1175,7 @@ var CalendarMessageList = new Lang.Class({
         this._sync();
     },
 
-    _removeSection: function(section) {
+    _removeSection(section) {
         let obj = this._sections.get(section);
         section.actor.disconnect(obj.destroyId);
         section.actor.disconnect(obj.visibleId);
@@ -1188,11 +1188,11 @@ var CalendarMessageList = new Lang.Class({
         this._sync();
     },
 
-    _onKeyFocusIn: function(section, actor) {
+    _onKeyFocusIn(section, actor) {
         Util.ensureActorVisibleInScrollView(this._scrollView, actor);
     },
 
-    _sync: function() {
+    _sync() {
         let sections = [...this._sections.keys()];
         let visible = sections.some(function(s) {
             return s.allowed;
@@ -1213,11 +1213,11 @@ var CalendarMessageList = new Lang.Class({
         this._clearButton.reactive = canClear;
     },
 
-    setEventSource: function(eventSource) {
+    setEventSource(eventSource) {
         this._eventsSection.setEventSource(eventSource);
     },
 
-    setDate: function(date) {
+    setDate(date) {
         for (let section of this._sections.keys())
             section.setDate(date);
         this._placeholder.setDate(date);

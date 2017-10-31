@@ -32,7 +32,7 @@ var AudioDeviceSelectionDialog = new Lang.Class({
     Name: 'AudioDeviceSelectionDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(devices) {
+    _init(devices) {
         this.parent({ styleClass: 'audio-device-selection-dialog' });
 
         this._deviceItems = {};
@@ -50,11 +50,11 @@ var AudioDeviceSelectionDialog = new Lang.Class({
             throw new Error('Too few devices for a selection');
     },
 
-    destroy: function() {
+    destroy() {
         this.parent();
     },
 
-    _buildLayout: function(devices) {
+    _buildLayout(devices) {
         let title = new St.Label({ style_class: 'audio-selection-title',
                                    text: _("Select Audio Device"),
                                    x_align: Clutter.ActorAlign.CENTER });
@@ -72,7 +72,7 @@ var AudioDeviceSelectionDialog = new Lang.Class({
                          key: Clutter.Escape });
     },
 
-    _getDeviceLabel: function(device) {
+    _getDeviceLabel(device) {
         switch(device) {
             case AudioDevice.HEADPHONES:
                 return _("Headphones");
@@ -85,7 +85,7 @@ var AudioDeviceSelectionDialog = new Lang.Class({
         }
     },
 
-    _getDeviceIcon: function(device) {
+    _getDeviceIcon(device) {
         switch(device) {
             case AudioDevice.HEADPHONES:
                 return 'audio-headphones-symbolic';
@@ -98,7 +98,7 @@ var AudioDeviceSelectionDialog = new Lang.Class({
         }
     },
 
-    _addDevice: function(device) {
+    _addDevice(device) {
         let box = new St.BoxLayout({ style_class: 'audio-selection-device-box',
                                      vertical: true });
         box.connect('notify::height',
@@ -131,7 +131,7 @@ var AudioDeviceSelectionDialog = new Lang.Class({
             }));
     },
 
-    _openSettings: function() {
+    _openSettings() {
         let desktopFile = 'gnome-sound-panel.desktop'
         let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
@@ -149,7 +149,7 @@ var AudioDeviceSelectionDialog = new Lang.Class({
 var AudioDeviceSelectionDBus = new Lang.Class({
     Name: 'AudioDeviceSelectionDBus',
 
-    _init: function() {
+    _init() {
         this._audioSelectionDialog = null;
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(AudioDeviceSelectionIface, this);
@@ -158,11 +158,11 @@ var AudioDeviceSelectionDBus = new Lang.Class({
         Gio.DBus.session.own_name('org.gnome.Shell.AudioDeviceSelection', Gio.BusNameOwnerFlags.REPLACE, null, null);
     },
 
-    _onDialogClosed: function() {
+    _onDialogClosed() {
         this._audioSelectionDialog = null;
     },
 
-    _onDeviceSelected: function(dialog, device) {
+    _onDeviceSelected(dialog, device) {
         let connection = this._dbusImpl.get_connection();
         let info = this._dbusImpl.get_info();
         let deviceName = Object.keys(AudioDevice).filter(
@@ -176,7 +176,7 @@ var AudioDeviceSelectionDBus = new Lang.Class({
                                GLib.Variant.new('(s)', [deviceName]));
     },
 
-    OpenAsync: function(params, invocation) {
+    OpenAsync(params, invocation) {
         if (this._audioSelectionDialog) {
             invocation.return_value(null);
             return;
@@ -206,7 +206,7 @@ var AudioDeviceSelectionDBus = new Lang.Class({
         invocation.return_value(null);
     },
 
-    CloseAsync: function(params, invocation) {
+    CloseAsync(params, invocation) {
         if (this._audioSelectionDialog &&
             this._audioSelectionDialog._sender == invocation.get_sender())
             this._audioSelectionDialog.close();

@@ -54,7 +54,7 @@ var PortalHeaderBar = new Lang.Class({
     Name: 'PortalHeaderBar',
     Extends: Gtk.HeaderBar,
 
-    _init: function() {
+    _init() {
         this.parent({ show_close_button: true });
 
         // See ephy-title-box.c in epiphany for the layout
@@ -92,11 +92,11 @@ var PortalHeaderBar = new Lang.Class({
         vbox.show_all();
     },
 
-    setSubtitle: function(label) {
+    setSubtitle(label) {
         this.subtitleLabel.set_text(label);
     },
 
-    setSecurityIcon: function(securityLevel) {
+    setSecurityIcon(securityLevel) {
         switch (securityLevel) {
         case PortalHelperSecurityLevel.NOT_YET_DETERMINED:
             this._lockImage.hide();
@@ -119,7 +119,7 @@ var PortalWindow = new Lang.Class({
     Name: 'PortalWindow',
     Extends: Gtk.ApplicationWindow,
 
-    _init: function(application, url, timestamp, doneCallback) {
+    _init(application, url, timestamp, doneCallback) {
         this.parent({ application: application });
 
         this.connect('delete-event', Lang.bind(this, this.destroyWindow));
@@ -163,11 +163,11 @@ var PortalWindow = new Lang.Class({
         this.application.set_accels_for_action('app.quit', ['<Primary>q', '<Primary>w']);
     },
 
-    destroyWindow: function() {
+    destroyWindow() {
         this.destroy();
     },
 
-    _syncUri: function() {
+    _syncUri() {
         let uri = this._webView.uri;
         if (uri)
             this._headerBar.setSubtitle(GLib.uri_unescape_string(uri, null));
@@ -175,12 +175,12 @@ var PortalWindow = new Lang.Class({
             this._headerBar.setSubtitle('');
     },
 
-    refresh: function() {
+    refresh() {
         this._everSeenRedirect = false;
         this._webView.load_uri(this._originalUrl);
     },
 
-    vfunc_delete_event: function(event) {
+    vfunc_delete_event(event) {
         if (this._recheckAtExit)
             this._doneCallback(PortalHelperResult.RECHECK);
         else
@@ -188,7 +188,7 @@ var PortalWindow = new Lang.Class({
         return false;
     },
 
-    _onLoadChanged: function(view, loadEvent) {
+    _onLoadChanged(view, loadEvent) {
         if (loadEvent == WebKit.LoadEvent.STARTED) {
             this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
         } else if (loadEvent == WebKit.LoadEvent.COMMITTED) {
@@ -202,11 +202,11 @@ var PortalWindow = new Lang.Class({
         }
     },
 
-    _onInsecureContentDetected: function () {
+    _onInsecureContentDetected () {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
     },
 
-    _onLoadFailedWithTlsErrors: function (view, failingURI, certificate, errors) {
+    _onLoadFailedWithTlsErrors (view, failingURI, certificate, errors) {
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.INSECURE);
         let uri = new Soup.URI(failingURI);
         this._webContext.allow_tls_certificate_for_host(certificate, uri.get_host());
@@ -214,7 +214,7 @@ var PortalWindow = new Lang.Class({
         return true;
     },
 
-    _onDecidePolicy: function(view, decision, type) {
+    _onDecidePolicy(view, decision, type) {
         if (type == WebKit.PolicyDecisionType.NEW_WINDOW_ACTION) {
             let navigationAction = decision.get_navigation_action();
             if (navigationAction.is_user_gesture()) {
@@ -286,7 +286,7 @@ var WebPortalHelper = new Lang.Class({
     Name: 'WebPortalHelper',
     Extends: Gtk.Application,
 
-    _init: function() {
+    _init() {
         this.parent({ application_id: 'org.gnome.Shell.PortalHelper',
                       flags: Gio.ApplicationFlags.IS_SERVICE,
                       inactivity_timeout: 30000 });
@@ -299,30 +299,30 @@ var WebPortalHelper = new Lang.Class({
         this.add_action(action);
     },
 
-    vfunc_dbus_register: function(connection, path) {
+    vfunc_dbus_register(connection, path) {
         this._dbusImpl.export(connection, path);
         this.parent(connection, path);
         return true;
     },
 
-    vfunc_dbus_unregister: function(connection, path) {
+    vfunc_dbus_unregister(connection, path) {
         this._dbusImpl.unexport_from_connection(connection);
         this.parent(connection, path);
     },
 
-    vfunc_activate: function() {
+    vfunc_activate() {
         // If launched manually (for example for testing), force a dummy authentication
         // session with the default url
         this.Authenticate('/org/gnome/dummy', '', 0);
     },
 
-    Authenticate: function(connection, url, timestamp) {
+    Authenticate(connection, url, timestamp) {
         this._queue.push({ connection: connection, url: url, timestamp: timestamp });
 
         this._processQueue();
     },
 
-    Close: function(connection) {
+    Close(connection) {
         for (let i = 0; i < this._queue.length; i++) {
             let obj = this._queue[i];
 
@@ -337,7 +337,7 @@ var WebPortalHelper = new Lang.Class({
         this._processQueue();
     },
 
-    Refresh: function(connection) {
+    Refresh(connection) {
         for (let i = 0; i < this._queue.length; i++) {
             let obj = this._queue[i];
 
@@ -349,7 +349,7 @@ var WebPortalHelper = new Lang.Class({
         }
     },
 
-    _processQueue: function() {
+    _processQueue() {
         if (this._queue.length == 0)
             return;
 

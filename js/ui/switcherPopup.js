@@ -41,7 +41,7 @@ var SwitcherPopup = new Lang.Class({
     Name: 'SwitcherPopup',
     Abstract: true,
 
-    _init: function(items) {
+    _init(items) {
         this._switcherList = null;
 
         this._items = items || [];
@@ -69,21 +69,21 @@ var SwitcherPopup = new Lang.Class({
         this._disableHover();
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
+    _getPreferredWidth(actor, forHeight, alloc) {
         let primary = Main.layoutManager.primaryMonitor;
 
         alloc.min_size = primary.width;
         alloc.natural_size = primary.width;
     },
 
-    _getPreferredHeight: function(actor, forWidth, alloc) {
+    _getPreferredHeight(actor, forWidth, alloc) {
         let primary = Main.layoutManager.primaryMonitor;
 
         alloc.min_size = primary.height;
         alloc.natural_size = primary.height;
     },
 
-    _allocate: function(actor, box, flags) {
+    _allocate(actor, box, flags) {
         let childBox = new Clutter.ActorBox();
         let primary = Main.layoutManager.primaryMonitor;
 
@@ -102,7 +102,7 @@ var SwitcherPopup = new Lang.Class({
         this._switcherList.actor.allocate(childBox, flags);
     },
 
-    _initialSelection: function(backward, binding) {
+    _initialSelection(backward, binding) {
         if (backward)
             this._select(this._items.length - 1);
         else if (this._items.length == 1)
@@ -111,7 +111,7 @@ var SwitcherPopup = new Lang.Class({
             this._select(1);
     },
 
-    show: function(backward, binding, mask) {
+    show(backward, binding, mask) {
         if (this._items.length == 0)
             return false;
 
@@ -170,19 +170,19 @@ var SwitcherPopup = new Lang.Class({
         return true;
     },
 
-    _next: function() {
+    _next() {
         return mod(this._selectedIndex + 1, this._items.length);
     },
 
-    _previous: function() {
+    _previous() {
         return mod(this._selectedIndex - 1, this._items.length);
     },
 
-    _keyPressHandler: function(keysym, action) {
+    _keyPressHandler(keysym, action) {
         throw new Error('Not implemented');
     },
 
-    _keyPressEvent: function(actor, event) {
+    _keyPressEvent(actor, event) {
         let keysym = event.get_key_symbol();
         let action = global.display.get_keybinding_action(event.get_key_code(), event.get_state());
 
@@ -197,7 +197,7 @@ var SwitcherPopup = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _keyReleaseEvent: function(actor, event) {
+    _keyReleaseEvent(actor, event) {
         if (this._modifierMask) {
             let [x, y, mods] = global.get_pointer();
             let state = mods & this._modifierMask;
@@ -211,43 +211,43 @@ var SwitcherPopup = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _clickedOutside: function(actor, event) {
+    _clickedOutside(actor, event) {
         this.destroy();
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _scrollHandler: function(direction) {
+    _scrollHandler(direction) {
         if (direction == Clutter.ScrollDirection.UP)
             this._select(this._previous());
         else if (direction == Clutter.ScrollDirection.DOWN)
             this._select(this._next());
     },
 
-    _scrollEvent: function(actor, event) {
+    _scrollEvent(actor, event) {
         this._scrollHandler(event.get_scroll_direction());
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _itemActivatedHandler: function(n) {
+    _itemActivatedHandler(n) {
         this._select(n);
     },
 
-    _itemActivated: function(switcher, n) {
+    _itemActivated(switcher, n) {
         this._itemActivatedHandler(n);
         this._finish(global.get_current_time());
     },
 
-    _itemEnteredHandler: function(n) {
+    _itemEnteredHandler(n) {
         this._select(n);
     },
 
-    _itemEntered: function(switcher, n) {
+    _itemEntered(switcher, n) {
         if (!this.mouseActive)
             return;
         this._itemEnteredHandler(n);
     },
 
-    _disableHover: function() {
+    _disableHover() {
         this.mouseActive = false;
 
         if (this._motionTimeoutId != 0)
@@ -257,13 +257,13 @@ var SwitcherPopup = new Lang.Class({
         GLib.Source.set_name_by_id(this._motionTimeoutId, '[gnome-shell] this._mouseTimedOut');
     },
 
-    _mouseTimedOut: function() {
+    _mouseTimedOut() {
         this._motionTimeoutId = 0;
         this.mouseActive = true;
         return GLib.SOURCE_REMOVE;
     },
 
-    _resetNoModsTimeout: function() {
+    _resetNoModsTimeout() {
         if (this._noModsTimeoutId != 0)
             Mainloop.source_remove(this._noModsTimeoutId);
 
@@ -275,14 +275,14 @@ var SwitcherPopup = new Lang.Class({
                                                      }));
     },
 
-    _popModal: function() {
+    _popModal() {
         if (this._haveModal) {
             Main.popModal(this.actor);
             this._haveModal = false;
         }
     },
 
-    destroy: function() {
+    destroy() {
         this._popModal();
         if (this.actor.visible) {
             Tweener.addTween(this.actor,
@@ -298,11 +298,11 @@ var SwitcherPopup = new Lang.Class({
             this.actor.destroy();
     },
 
-    _finish: function(timestamp) {
+    _finish(timestamp) {
         this.destroy();
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         this._popModal();
 
         if (this._motionTimeoutId != 0)
@@ -313,7 +313,7 @@ var SwitcherPopup = new Lang.Class({
             Mainloop.source_remove(this._noModsTimeoutId);
     },
 
-    _select: function(num) {
+    _select(num) {
         this._selectedIndex = num;
         this._switcherList.highlight(num);
     }
@@ -322,7 +322,7 @@ var SwitcherPopup = new Lang.Class({
 var SwitcherList = new Lang.Class({
     Name: 'SwitcherList',
 
-    _init : function(squareItems) {
+    _init (squareItems) {
         this.actor = new Shell.GenericContainer({ style_class: 'switcher-list' });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -370,7 +370,7 @@ var SwitcherList = new Lang.Class({
         this._scrollableLeft = false;
     },
 
-    _allocateTop: function(actor, box, flags) {
+    _allocateTop(actor, box, flags) {
         let leftPadding = this.actor.get_theme_node().get_padding(St.Side.LEFT);
         let rightPadding = this.actor.get_theme_node().get_padding(St.Side.RIGHT);
 
@@ -400,7 +400,7 @@ var SwitcherList = new Lang.Class({
         this._rightArrow.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
     },
 
-    addItem : function(item, label) {
+    addItem (item, label) {
         let bbox = new St.Button({ style_class: 'item-box',
                                    reactive: true });
 
@@ -418,11 +418,11 @@ var SwitcherList = new Lang.Class({
         return bbox;
     },
 
-    _onItemClicked: function (index) {
+    _onItemClicked (index) {
         this._itemActivated(index);
     },
 
-    _onItemEnter: function (index) {
+    _onItemEnter (index) {
         // Avoid reentrancy
         if (index != this._currentItemEntered) {
             this._currentItemEntered = index;
@@ -431,7 +431,7 @@ var SwitcherList = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    highlight: function(index, justOutline) {
+    highlight(index, justOutline) {
         if (this._highlighted != -1) {
             this._items[this._highlighted].remove_style_pseudo_class('outlined');
             this._items[this._highlighted].remove_style_pseudo_class('selected');
@@ -458,7 +458,7 @@ var SwitcherList = new Lang.Class({
 
     },
 
-    _scrollToLeft : function() {
+    _scrollToLeft () {
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
 
@@ -482,7 +482,7 @@ var SwitcherList = new Lang.Class({
                           });
     },
 
-    _scrollToRight : function() {
+    _scrollToRight () {
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
 
@@ -506,15 +506,15 @@ var SwitcherList = new Lang.Class({
                           });
     },
 
-    _itemActivated: function(n) {
+    _itemActivated(n) {
         this.emit('item-activated', n);
     },
 
-    _itemEntered: function(n) {
+    _itemEntered(n) {
         this.emit('item-entered', n);
     },
 
-    _maxChildWidth: function (forHeight) {
+    _maxChildWidth (forHeight) {
         let maxChildMin = 0;
         let maxChildNat = 0;
 
@@ -533,7 +533,7 @@ var SwitcherList = new Lang.Class({
         return [maxChildMin, maxChildNat];
     },
 
-    _getPreferredWidth: function (actor, forHeight, alloc) {
+    _getPreferredWidth (actor, forHeight, alloc) {
         let [maxChildMin, maxChildNat] = this._maxChildWidth(forHeight);
 
         let totalSpacing = Math.max(this._list.spacing * (this._items.length - 1), 0);
@@ -542,7 +542,7 @@ var SwitcherList = new Lang.Class({
         this._minSize = alloc.min_size;
     },
 
-    _getPreferredHeight: function (actor, forWidth, alloc) {
+    _getPreferredHeight (actor, forWidth, alloc) {
         let maxChildMin = 0;
         let maxChildNat = 0;
 
@@ -562,7 +562,7 @@ var SwitcherList = new Lang.Class({
         alloc.natural_size = maxChildNat;
     },
 
-    _allocate: function (actor, box, flags) {
+    _allocate (actor, box, flags) {
         let childHeight = box.y2 - box.y1;
 
         let [maxChildMin, maxChildNat] = this._maxChildWidth(childHeight);

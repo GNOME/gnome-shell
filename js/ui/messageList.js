@@ -42,7 +42,7 @@ function _fixMarkup(text, allowMarkup) {
 var URLHighlighter = new Lang.Class({
     Name: 'URLHighlighter',
 
-    _init: function(text, lineWrap, allowMarkup) {
+    _init(text, lineWrap, allowMarkup) {
         if (!text)
             text = '';
         this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter',
@@ -115,7 +115,7 @@ var URLHighlighter = new Lang.Class({
         }));
     },
 
-    setMarkup: function(text, allowMarkup) {
+    setMarkup(text, allowMarkup) {
         text = text ? _fixMarkup(text, allowMarkup) : '';
         this._text = text;
 
@@ -125,7 +125,7 @@ var URLHighlighter = new Lang.Class({
         this._highlightUrls();
     },
 
-    _highlightUrls: function() {
+    _highlightUrls() {
         // text here contain markup
         let urls = Util.findUrls(this._text);
         let markup = '';
@@ -140,7 +140,7 @@ var URLHighlighter = new Lang.Class({
         this.actor.clutter_text.set_markup(markup);
     },
 
-    _findUrlAtPos: function(event) {
+    _findUrlAtPos(event) {
         let success;
         let [x, y] = event.get_coords();
         [success, x, y] = this.actor.transform_stage_point(x, y);
@@ -165,12 +165,12 @@ var ScaleLayout = new Lang.Class({
     Name: 'ScaleLayout',
     Extends: Clutter.BinLayout,
 
-    _init: function(params) {
+    _init(params) {
         this._container = null;
         this.parent(params);
     },
 
-    _connectContainer: function(container) {
+    _connectContainer(container) {
         if (this._container == container)
             return;
 
@@ -191,7 +191,7 @@ var ScaleLayout = new Lang.Class({
             }
     },
 
-    vfunc_get_preferred_width: function(container, forHeight) {
+    vfunc_get_preferred_width(container, forHeight) {
         this._connectContainer(container);
 
         let [min, nat] = this.parent(container, forHeight);
@@ -199,7 +199,7 @@ var ScaleLayout = new Lang.Class({
                 Math.floor(nat * container.scale_x)];
     },
 
-    vfunc_get_preferred_height: function(container, forWidth) {
+    vfunc_get_preferred_height(container, forWidth) {
         this._connectContainer(container);
 
         let [min, nat] = this.parent(container, forWidth);
@@ -218,7 +218,7 @@ var LabelExpanderLayout = new Lang.Class({
                                                          GObject.ParamFlags.READABLE | GObject.ParamFlags.WRITABLE,
                                                          0, 1, 0)},
 
-    _init: function(params) {
+    _init(params) {
         this._expansion = 0;
         this._expandLines = DEFAULT_EXPAND_LINES;
 
@@ -250,11 +250,11 @@ var LabelExpanderLayout = new Lang.Class({
             this.layout_changed();
     },
 
-    vfunc_set_container: function(container) {
+    vfunc_set_container(container) {
         this._container = container;
     },
 
-    vfunc_get_preferred_width: function(container, forHeight) {
+    vfunc_get_preferred_width(container, forHeight) {
         let [min, nat] = [0, 0];
 
         for (let i = 0; i < container.get_n_children(); i++) {
@@ -269,7 +269,7 @@ var LabelExpanderLayout = new Lang.Class({
         return [min, nat];
     },
 
-    vfunc_get_preferred_height: function(container, forWidth) {
+    vfunc_get_preferred_height(container, forWidth) {
         let [min, nat] = [0, 0];
 
         let children = container.get_children();
@@ -287,7 +287,7 @@ var LabelExpanderLayout = new Lang.Class({
         return [min, nat];
     },
 
-    vfunc_allocate: function(container, box, flags) {
+    vfunc_allocate(container, box, flags) {
         for (let i = 0; i < container.get_n_children(); i++) {
             let child = container.get_child_at_index(i);
 
@@ -301,7 +301,7 @@ var LabelExpanderLayout = new Lang.Class({
 var Message = new Lang.Class({
     Name: 'Message',
 
-    _init: function(title, body) {
+    _init(title, body) {
         this.expanded = false;
 
         this._useBodyMarkup = false;
@@ -369,25 +369,25 @@ var Message = new Lang.Class({
         this._sync();
     },
 
-    close: function() {
+    close() {
         this.emit('close');
     },
 
-    setIcon: function(actor) {
+    setIcon(actor) {
         this._iconBin.child = actor;
         this._iconBin.visible = (actor != null);
     },
 
-    setSecondaryActor: function(actor) {
+    setSecondaryActor(actor) {
         this._secondaryBin.child = actor;
     },
 
-    setTitle: function(text) {
+    setTitle(text) {
         let title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
         this.titleLabel.clutter_text.set_markup(title);
     },
 
-    setBody: function(text) {
+    setBody(text) {
         this._bodyText = text;
         this.bodyLabel.setMarkup(text ? text.replace(/\n/g, ' ') : '',
                                  this._useBodyMarkup);
@@ -395,7 +395,7 @@ var Message = new Lang.Class({
             this._expandedLabel.setMarkup(text, this._useBodyMarkup);
     },
 
-    setUseBodyMarkup: function(enable) {
+    setUseBodyMarkup(enable) {
         if (this._useBodyMarkup === enable)
             return;
         this._useBodyMarkup = enable;
@@ -403,7 +403,7 @@ var Message = new Lang.Class({
             this.setBody(this._bodyText);
     },
 
-    setActionArea: function(actor) {
+    setActionArea(actor) {
         if (actor == null) {
             if (this._actionBin.get_n_children() > 0)
                 this._actionBin.get_child_at_index(0).destroy();
@@ -417,7 +417,7 @@ var Message = new Lang.Class({
         this._actionBin.visible = this.expanded;
     },
 
-    addMediaControl: function(iconName, callback) {
+    addMediaControl(iconName, callback) {
         let icon = new St.Icon({ icon_name: iconName, icon_size: 16 });
         let button = new St.Button({ style_class: 'message-media-control',
                                      child: icon });
@@ -426,7 +426,7 @@ var Message = new Lang.Class({
         return button;
     },
 
-    setExpandedBody: function(actor) {
+    setExpandedBody(actor) {
         if (actor == null) {
             if (this._bodyStack.get_n_children() > 1)
                 this._bodyStack.get_child_at_index(1).destroy();
@@ -439,11 +439,11 @@ var Message = new Lang.Class({
         this._bodyStack.insert_child_at_index(actor, 1);
     },
 
-    setExpandedLines: function(nLines) {
+    setExpandedLines(nLines) {
         this._bodyStack.layout_manager.expandLines = nLines;
     },
 
-    expand: function(animate) {
+    expand(animate) {
         this.expanded = true;
 
         this._actionBin.visible = (this._actionBin.get_n_children() > 0);
@@ -472,7 +472,7 @@ var Message = new Lang.Class({
         this.emit('expanded');
     },
 
-    unexpand: function(animate) {
+    unexpand(animate) {
         if (animate) {
             Tweener.addTween(this._bodyStack.layout_manager,
                              { expansion: 0,
@@ -483,7 +483,7 @@ var Message = new Lang.Class({
                                time: MessageTray.ANIMATION_TIME,
                                transition: 'easeOutQuad',
                                onCompleteScope: this,
-                               onComplete: function() {
+                               onComplete() {
                                    this._actionBin.hide();
                                    this.expanded = false;
                                }});
@@ -496,22 +496,22 @@ var Message = new Lang.Class({
         this.emit('unexpanded');
     },
 
-    canClose: function() {
+    canClose() {
         return this._mediaControls.get_n_children() == 0;
     },
 
-    _sync: function() {
+    _sync() {
         let visible = this.actor.hover && this.canClose();
         this._closeButton.opacity = visible ? 255 : 0;
     },
 
-    _onClicked: function() {
+    _onClicked() {
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
     },
 
-    _onKeyPressed: function(a, event) {
+    _onKeyPressed(a, event) {
         let keysym = event.get_key_symbol();
 
         if (keysym == Clutter.KEY_Delete ||
@@ -527,7 +527,7 @@ Signals.addSignalMethods(Message.prototype);
 var MessageListSection = new Lang.Class({
     Name: 'MessageListSection',
 
-    _init: function() {
+    _init() {
         this.actor = new St.BoxLayout({ style_class: 'message-list-section',
                                         clip_to_allocation: true,
                                         x_expand: true, vertical: true });
@@ -552,7 +552,7 @@ var MessageListSection = new Lang.Class({
         this._sync();
     },
 
-    _onKeyFocusIn: function(actor) {
+    _onKeyFocusIn(actor) {
         this.emit('key-focus-in', actor);
     },
 
@@ -560,18 +560,18 @@ var MessageListSection = new Lang.Class({
         return true;
     },
 
-    setDate: function(date) {
+    setDate(date) {
         if (Calendar.sameDay(date, this._date))
             return;
         this._date = date;
         this._sync();
     },
 
-    addMessage: function(message, animate) {
+    addMessage(message, animate) {
         this.addMessageAtIndex(message, -1, animate);
     },
 
-    addMessageAtIndex: function(message, index, animate) {
+    addMessageAtIndex(message, index, animate) {
         let obj = {
             container: null,
             destroyId: 0,
@@ -606,7 +606,7 @@ var MessageListSection = new Lang.Class({
                                               transition: 'easeOutQuad' });
     },
 
-    moveMessage: function(message, index, animate) {
+    moveMessage(message, index, animate) {
         let obj = this._messages.get(message);
 
         if (!animate) {
@@ -628,7 +628,7 @@ var MessageListSection = new Lang.Class({
                                           onComplete: onComplete });
     },
 
-    removeMessage: function(message, animate) {
+    removeMessage(message, animate) {
         let obj = this._messages.get(message);
 
         message.actor.disconnect(obj.destroyId);
@@ -641,7 +641,7 @@ var MessageListSection = new Lang.Class({
             Tweener.addTween(obj.container, { scale_x: 0, scale_y: 0,
                                               time: MESSAGE_ANIMATION_TIME,
                                               transition: 'easeOutQuad',
-                                              onComplete: function() {
+                                              onComplete() {
                                                   obj.container.destroy();
                                                   global.sync_pointer();
                                               }});
@@ -651,7 +651,7 @@ var MessageListSection = new Lang.Class({
         }
     },
 
-    clear: function() {
+    clear() {
         let messages = [...this._messages.keys()].filter(function(message) {
             return message.canClose();
         });
@@ -674,25 +674,25 @@ var MessageListSection = new Lang.Class({
                                    time: MESSAGE_ANIMATION_TIME,
                                    delay: i * delay,
                                    transition: 'easeOutQuad',
-                                   onComplete: function() {
+                                   onComplete() {
                                        message.close();
                                    }});
             }
         }
     },
 
-    _canClear: function() {
+    _canClear() {
         for (let message of this._messages.keys())
             if (message.canClose())
                 return true;
         return false;
     },
 
-    _shouldShow: function() {
+    _shouldShow() {
         return !this.empty;
     },
 
-    _sync: function() {
+    _sync() {
         let empty = this._list.get_n_children() == 0;
         let changed = this.empty !== empty;
         this.empty = empty;

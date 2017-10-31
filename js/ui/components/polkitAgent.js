@@ -31,7 +31,7 @@ var AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(actionId, body, cookie, userNames) {
+    _init(actionId, body, cookie, userNames) {
         this.parent({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
@@ -158,7 +158,7 @@ var AuthenticationDialog = new Lang.Class({
         this._cookie = cookie;
     },
 
-    _setWorking: function(working) {
+    _setWorking(working) {
         Tweener.removeTweens(this._workSpinner.actor);
         if (working) {
             this._workSpinner.play();
@@ -174,7 +174,7 @@ var AuthenticationDialog = new Lang.Class({
                                time: WORK_SPINNER_ANIMATION_TIME,
                                transition: 'linear',
                                onCompleteScope: this,
-                               onComplete: function() {
+                               onComplete() {
                                    if (this._workSpinner)
                                        this._workSpinner.stop();
                                }
@@ -182,7 +182,7 @@ var AuthenticationDialog = new Lang.Class({
         }
     },
 
-    performAuthentication: function() {
+    performAuthentication() {
         this.destroySession();
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
@@ -193,7 +193,7 @@ var AuthenticationDialog = new Lang.Class({
         this._session.initiate();
     },
 
-    _ensureOpen: function() {
+    _ensureOpen() {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
         // already open - it just returns true without side-effects
         if (!this.open(global.get_current_time())) {
@@ -215,14 +215,14 @@ var AuthenticationDialog = new Lang.Class({
         }
     },
 
-    _emitDone: function(dismissed) {
+    _emitDone(dismissed) {
         if (!this._doneEmitted) {
             this._doneEmitted = true;
             this.emit('done', dismissed);
         }
     },
 
-    _updateSensitivity: function(sensitive) {
+    _updateSensitivity(sensitive) {
         this._passwordEntry.reactive = sensitive;
         this._passwordEntry.clutter_text.editable = sensitive;
 
@@ -231,7 +231,7 @@ var AuthenticationDialog = new Lang.Class({
         this._setWorking(!sensitive);
     },
 
-    _onEntryActivate: function() {
+    _onEntryActivate() {
         let response = this._passwordEntry.get_text();
         this._updateSensitivity(false);
         this._session.response(response);
@@ -242,11 +242,11 @@ var AuthenticationDialog = new Lang.Class({
         this._nullMessageLabel.show();
     },
 
-    _onAuthenticateButtonPressed: function() {
+    _onAuthenticateButtonPressed() {
         this._onEntryActivate();
     },
 
-    _onSessionCompleted: function(session, gainedAuthorization) {
+    _onSessionCompleted(session, gainedAuthorization) {
         if (this._completed || this._doneEmitted)
             return;
 
@@ -278,7 +278,7 @@ var AuthenticationDialog = new Lang.Class({
         }
     },
 
-    _onSessionRequest: function(session, request, echo_on) {
+    _onSessionRequest(session, request, echo_on) {
         // Cheap localization trick
         if (request == 'Password:' || request == 'Password: ')
             this._passwordLabel.set_text(_("Password:"));
@@ -297,7 +297,7 @@ var AuthenticationDialog = new Lang.Class({
         this._ensureOpen();
     },
 
-    _onSessionShowError: function(session, text) {
+    _onSessionShowError(session, text) {
         this._passwordEntry.set_text('');
         this._errorMessageLabel.set_text(text);
         this._errorMessageLabel.show();
@@ -306,7 +306,7 @@ var AuthenticationDialog = new Lang.Class({
         this._ensureOpen();
     },
 
-    _onSessionShowInfo: function(session, text) {
+    _onSessionShowInfo(session, text) {
         this._passwordEntry.set_text('');
         this._infoMessageLabel.set_text(text);
         this._infoMessageLabel.show();
@@ -315,7 +315,7 @@ var AuthenticationDialog = new Lang.Class({
         this._ensureOpen();
     },
 
-    destroySession: function() {
+    destroySession() {
         if (this._session) {
             if (!this._completed)
                 this._session.cancel();
@@ -324,14 +324,14 @@ var AuthenticationDialog = new Lang.Class({
         }
     },
 
-    _onUserChanged: function() {
+    _onUserChanged() {
         if (this._user.is_loaded && this._userAvatar) {
             this._userAvatar.update();
             this._userAvatar.actor.show();
         }
     },
 
-    cancel: function() {
+    cancel() {
         this._wasDismissed = true;
         this.close(global.get_current_time());
         this._emitDone(true);
@@ -342,7 +342,7 @@ Signals.addSignalMethods(AuthenticationDialog.prototype);
 var AuthenticationAgent = new Lang.Class({
     Name: 'AuthenticationAgent',
 
-    _init: function() {
+    _init() {
         this._currentDialog = null;
         this._handle = null;
         this._native = new Shell.PolkitAuthenticationAgent();
@@ -350,7 +350,7 @@ var AuthenticationAgent = new Lang.Class({
         this._native.connect('cancel', Lang.bind(this, this._onCancel));
     },
 
-    enable: function() {
+    enable() {
         try {
             this._native.register();
         } catch(e) {
@@ -358,7 +358,7 @@ var AuthenticationAgent = new Lang.Class({
         }
     },
 
-    disable: function() {
+    disable() {
         try {
             this._native.unregister();
         } catch(e) {
@@ -366,7 +366,7 @@ var AuthenticationAgent = new Lang.Class({
         }
     },
 
-    _onInitiate: function(nativeAgent, actionId, message, iconName, cookie, userNames) {
+    _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
         this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
 
         // We actually don't want to open the dialog until we know for
@@ -383,15 +383,15 @@ var AuthenticationAgent = new Lang.Class({
         this._currentDialog.performAuthentication();
     },
 
-    _onCancel: function(nativeAgent) {
+    _onCancel(nativeAgent) {
         this._completeRequest(false);
     },
 
-    _onDialogDone: function(dialog, dismissed) {
+    _onDialogDone(dialog, dismissed) {
         this._completeRequest(dismissed);
     },
 
-    _completeRequest: function(dismissed) {
+    _completeRequest(dismissed) {
         this._currentDialog.close();
         this._currentDialog.destroySession();
         this._currentDialog = null;

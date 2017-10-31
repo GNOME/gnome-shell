@@ -16,7 +16,7 @@ var EdgeDragAction = new Lang.Class({
     Extends: Clutter.GestureAction,
     Signals: { 'activated': {} },
 
-    _init : function(side, allowedModes) {
+    _init (side, allowedModes) {
         this.parent();
         this._side = side;
         this._allowedModes = allowedModes;
@@ -27,14 +27,14 @@ var EdgeDragAction = new Lang.Class({
         }));
     },
 
-    _getMonitorRect : function (x, y) {
+    _getMonitorRect  (x, y) {
         let rect = new Meta.Rectangle({ x: x - 1, y: y - 1, width: 1, height: 1 });
         let monitorIndex = global.screen.get_monitor_index_for_rect(rect);
 
         return global.screen.get_monitor_geometry(monitorIndex);
     },
 
-    vfunc_gesture_prepare : function(action, actor) {
+    vfunc_gesture_prepare (action, actor) {
         if (this.get_n_current_points() == 0)
             return false;
 
@@ -50,7 +50,7 @@ var EdgeDragAction = new Lang.Class({
                 (this._side == St.Side.BOTTOM && y > monitorRect.y + monitorRect.height - EDGE_THRESHOLD));
     },
 
-    vfunc_gesture_progress : function (action, actor) {
+    vfunc_gesture_progress  (action, actor) {
         let [startX, startY] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
         let offsetX = Math.abs (x - startX);
@@ -70,7 +70,7 @@ var EdgeDragAction = new Lang.Class({
         return true;
     },
 
-    vfunc_gesture_end : function (action, actor) {
+    vfunc_gesture_end  (action, actor) {
         let [startX, startY] = this.get_press_coords(0);
         let [x, y] = this.get_motion_coords(0);
         let monitorRect = this._getMonitorRect(startX, startY);

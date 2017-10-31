@@ -54,7 +54,7 @@ const _MAX_BOTTOM_MENU_ITEMS = 5;
 var UserListItem = new Lang.Class({
     Name: 'UserListItem',
 
-    _init: function(user) {
+    _init(user) {
         this.user = user;
         this._userChangedId = this.user.connect('changed',
                                                  Lang.bind(this, this._onUserChanged));
@@ -94,26 +94,26 @@ var UserListItem = new Lang.Class({
         this._onUserChanged();
     },
 
-    _onUserChanged: function() {
+    _onUserChanged() {
         this._updateLoggedIn();
     },
 
-    _updateLoggedIn: function() {
+    _updateLoggedIn() {
         if (this.user.is_logged_in())
             this.actor.add_style_pseudo_class('logged-in');
         else
             this.actor.remove_style_pseudo_class('logged-in');
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         this.user.disconnect(this._userChangedId);
     },
 
-    _onClicked: function() {
+    _onClicked() {
         this.emit('activate');
     },
 
-    _setSelected: function(selected) {
+    _setSelected(selected) {
         if (selected) {
             this.actor.add_style_pseudo_class('selected');
             this.actor.grab_key_focus();
@@ -122,7 +122,7 @@ var UserListItem = new Lang.Class({
         }
     },
 
-    showTimedLoginIndicator: function(time) {
+    showTimedLoginIndicator(time) {
         let hold = new Batch.Hold();
 
         this.hideTimedLoginIndicator();
@@ -130,7 +130,7 @@ var UserListItem = new Lang.Class({
                          { scale_x: 1.,
                            time: time,
                            transition: 'linear',
-                           onComplete: function() {
+                           onComplete() {
                                hold.release();
                            },
                            onCompleteScope: this
@@ -138,7 +138,7 @@ var UserListItem = new Lang.Class({
         return hold;
     },
 
-    hideTimedLoginIndicator: function() {
+    hideTimedLoginIndicator() {
         Tweener.removeTweens(this._timedLoginIndicator);
         this._timedLoginIndicator.scale_x = 0.;
     }
@@ -148,7 +148,7 @@ Signals.addSignalMethods(UserListItem.prototype);
 var UserList = new Lang.Class({
     Name: 'UserList',
 
-    _init: function() {
+    _init() {
         this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view'});
         this.actor.set_policy(Gtk.PolicyType.NEVER,
                               Gtk.PolicyType.AUTOMATIC);
@@ -163,7 +163,7 @@ var UserList = new Lang.Class({
         this.actor.connect('key-focus-in', Lang.bind(this, this._moveFocusToItems));
     },
 
-    _moveFocusToItems: function() {
+    _moveFocusToItems() {
         let hasItems = Object.keys(this._items).length > 0;
 
         if (!hasItems)
@@ -181,11 +181,11 @@ var UserList = new Lang.Class({
         }
     },
 
-    _onItemActivated: function(activatedItem) {
+    _onItemActivated(activatedItem) {
         this.emit('activate', activatedItem);
     },
 
-    updateStyle: function(isExpanded) {
+    updateStyle(isExpanded) {
         let tasks = [];
 
         if (isExpanded)
@@ -199,7 +199,7 @@ var UserList = new Lang.Class({
         }
     },
 
-    scrollToItem: function(item) {
+    scrollToItem(item) {
         let box = item.actor.get_allocation_box();
 
         let adjustment = this.actor.get_vscroll_bar().get_adjustment();
@@ -212,7 +212,7 @@ var UserList = new Lang.Class({
                             transition: 'easeOutQuad' });
     },
 
-    jumpToItem: function(item) {
+    jumpToItem(item) {
         let box = item.actor.get_allocation_box();
 
         let adjustment = this.actor.get_vscroll_bar().get_adjustment();
@@ -222,7 +222,7 @@ var UserList = new Lang.Class({
         adjustment.set_value(value);
     },
 
-    getItemFromUserName: function(userName) {
+    getItemFromUserName(userName) {
         let item = this._items[userName];
 
         if (!item)
@@ -231,11 +231,11 @@ var UserList = new Lang.Class({
         return item;
     },
 
-    containsUser: function(user) {
+    containsUser(user) {
         return this._items[user.get_user_name()] != null;
     },
 
-    addUser: function(user) {
+    addUser(user) {
         if (!user.is_loaded)
             return;
 
@@ -272,7 +272,7 @@ var UserList = new Lang.Class({
         this.emit('item-added', item);
     },
 
-    removeUser: function(user) {
+    removeUser(user) {
         if (!user.is_loaded)
             return;
 
@@ -290,7 +290,7 @@ var UserList = new Lang.Class({
         delete this._items[userName];
     },
 
-    numItems: function() {
+    numItems() {
         return Object.keys(this._items).length;
     }
 });
@@ -299,7 +299,7 @@ Signals.addSignalMethods(UserList.prototype);
 var SessionMenuButton = new Lang.Class({
     Name: 'SessionMenuButton',
 
-    _init: function() {
+    _init() {
         let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
         this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
                                        reactive: true,
@@ -344,13 +344,13 @@ var SessionMenuButton = new Lang.Class({
         this._populate();
     },
 
-    updateSensitivity: function(sensitive) {
+    updateSensitivity(sensitive) {
         this._button.reactive = sensitive;
         this._button.can_focus = sensitive;
         this._menu.close(BoxPointer.PopupAnimation.NONE);
     },
 
-    _updateOrnament: function() {
+    _updateOrnament() {
         let itemIds = Object.keys(this._items);
         for (let i = 0; i < itemIds.length; i++) {
             if (itemIds[i] == this._activeSessionId)
@@ -360,7 +360,7 @@ var SessionMenuButton = new Lang.Class({
         }
     },
 
-    setActiveSession: function(sessionId) {
+    setActiveSession(sessionId) {
          if (sessionId == this._activeSessionId)
              return;
 
@@ -370,11 +370,11 @@ var SessionMenuButton = new Lang.Class({
          this.emit('session-activated', this._activeSessionId);
     },
 
-    close: function() {
+    close() {
         this._menu.close();
     },
 
-    _populate: function() {
+    _populate() {
         let ids = Gdm.get_session_ids();
         ids.sort();
 
@@ -405,7 +405,7 @@ Signals.addSignalMethods(SessionMenuButton.prototype);
 var LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
 
-    _init: function(parentActor) {
+    _init(parentActor) {
         this.actor = new Shell.GenericContainer({ style_class: 'login-dialog',
                                                   visible: false });
         this.actor.get_accessible().set_role(Atk.Role.WINDOW);
@@ -527,7 +527,7 @@ var LoginDialog = new Lang.Class({
                                                              Lang.bind(this, this._updateDisableUserList));
     },
 
-    _getBannerAllocation: function (dialogBox) {
+    _getBannerAllocation (dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
         let [minWidth, minHeight, natWidth, natHeight] = this._bannerView.get_preferred_size();
@@ -541,7 +541,7 @@ var LoginDialog = new Lang.Class({
         return actorBox;
     },
 
-    _getLogoBinAllocation: function (dialogBox) {
+    _getLogoBinAllocation (dialogBox) {
         let actorBox = new Clutter.ActorBox();
 
         let [minWidth, minHeight, natWidth, natHeight] = this._logoBin.get_preferred_size();
@@ -555,7 +555,7 @@ var LoginDialog = new Lang.Class({
         return actorBox;
     },
 
-    _getCenterActorAllocation: function (dialogBox, actor) {
+    _getCenterActorAllocation (dialogBox, actor) {
         let actorBox = new Clutter.ActorBox();
 
         let [minWidth, minHeight, natWidth, natHeight] = actor.get_preferred_size();
@@ -573,7 +573,7 @@ var LoginDialog = new Lang.Class({
         return actorBox;
     },
 
-    _onAllocate: function (actor, dialogBox, flags) {
+    _onAllocate (actor, dialogBox, flags) {
         let dialogWidth = dialogBox.x2 - dialogBox.x1;
         let dialogHeight = dialogBox.y2 - dialogBox.y1;
 
@@ -711,7 +711,7 @@ var LoginDialog = new Lang.Class({
             this._logoBin.allocate(logoAllocation, flags);
     },
 
-    _ensureUserListLoaded: function() {
+    _ensureUserListLoaded() {
         if (!this._userManager.is_loaded) {
             this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
                                                                   Lang.bind(this, function() {
@@ -727,7 +727,7 @@ var LoginDialog = new Lang.Class({
         }
     },
 
-    _updateDisableUserList: function() {
+    _updateDisableUserList() {
         let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
 
         // Disable user list when there are no users.
@@ -742,7 +742,7 @@ var LoginDialog = new Lang.Class({
         }
     },
 
-    _updateCancelButton: function() {
+    _updateCancelButton() {
         let cancelVisible;
 
         // Hide the cancel button if the user list is disabled and we're asking for
@@ -755,7 +755,7 @@ var LoginDialog = new Lang.Class({
         this._authPrompt.cancelButton.visible = cancelVisible;
     },
 
-    _updateBanner: function() {
+    _updateBanner() {
         let enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
         let text = this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
 
@@ -767,7 +767,7 @@ var LoginDialog = new Lang.Class({
         }
     },
 
-    _fadeInBannerView: function() {
+    _fadeInBannerView() {
         this._bannerView.show();
         Tweener.addTween(this._bannerView,
                          { opacity: 255,
@@ -775,13 +775,13 @@ var LoginDialog = new Lang.Class({
                            transition: 'easeOutQuad' });
     },
 
-    _hideBannerView: function() {
+    _hideBannerView() {
         Tweener.removeTweens(this._bannerView);
         this._bannerView.opacity = 0;
         this._bannerView.hide();
     },
 
-    _updateLogoTexture: function(cache, file) {
+    _updateLogoTexture(cache, file) {
         if (this._logoFile && !this._logoFile.equal(file))
             return;
 
@@ -794,14 +794,14 @@ var LoginDialog = new Lang.Class({
         }
     },
 
-    _updateLogo: function() {
+    _updateLogo() {
         let path = this._settings.get_string(GdmUtil.LOGO_KEY);
 
         this._logoFile = path ? Gio.file_new_for_path(path) : null;
         this._updateLogoTexture(this._textureCache, this._logoFile);
     },
 
-    _onPrompted: function() {
+    _onPrompted() {
         if (this._shouldShowSessionMenuButton()) {
             this._sessionMenuButton.updateSensitivity(true);
             this._authPrompt.setActorInDefaultButtonWell(this._sessionMenuButton.actor);
@@ -811,7 +811,7 @@ var LoginDialog = new Lang.Class({
         this._showPrompt();
     },
 
-    _resetGreeterProxy: function() {
+    _resetGreeterProxy() {
         if (GLib.getenv('GDM_GREETER_TEST') != '1') {
             if (this._greeter) {
                 this._greeter.run_dispose();
@@ -827,7 +827,7 @@ var LoginDialog = new Lang.Class({
         }
     },
 
-    _onReset: function(authPrompt, beginRequest) {
+    _onReset(authPrompt, beginRequest) {
         this._resetGreeterProxy();
         this._sessionMenuButton.updateSensitivity(true);
 
@@ -848,11 +848,11 @@ var LoginDialog = new Lang.Class({
         }
     },
 
-    _onDefaultSessionChanged: function(client, sessionId) {
+    _onDefaultSessionChanged(client, sessionId) {
         this._sessionMenuButton.setActiveSession(sessionId);
     },
 
-    _shouldShowSessionMenuButton: function() {
+    _shouldShowSessionMenuButton() {
         if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFYING &&
             this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED)
           return false;
@@ -863,7 +863,7 @@ var LoginDialog = new Lang.Class({
         return true;
     },
 
-    _showPrompt: function() {
+    _showPrompt() {
         if (this._authPrompt.actor.visible)
             return;
         this._authPrompt.actor.opacity = 0;
@@ -875,7 +875,7 @@ var LoginDialog = new Lang.Class({
         this._fadeInBannerView();
     },
 
-    _showRealmLoginHint: function(realmManager, hint) {
+    _showRealmLoginHint(realmManager, hint) {
         if (!hint)
             return;
 
@@ -888,7 +888,7 @@ var LoginDialog = new Lang.Class({
         this._authPrompt.setMessage(_("(e.g., user or %s)").format(hint), GdmUtil.MessageType.HINT);
     },
 
-    _askForUsernameAndBeginVerification: function() {
+    _askForUsernameAndBeginVerification() {
         this._authPrompt.setPasswordChar('');
         this._authPrompt.setQuestion(_("Username: "));
 
@@ -915,7 +915,7 @@ var LoginDialog = new Lang.Class({
         this._showPrompt();
     },
 
-    _loginScreenSessionActivated: function() {
+    _loginScreenSessionActivated() {
         if (this.actor.opacity == 255 && this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
             return;
 
@@ -923,7 +923,7 @@ var LoginDialog = new Lang.Class({
                          { opacity: 255,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onUpdate: function() {
+                           onUpdate() {
                                let children = Main.layoutManager.uiGroup.get_children();
 
                                for (let i = 0; i < children.length; i++) {
@@ -932,14 +932,14 @@ var LoginDialog = new Lang.Class({
                                }
                            },
                            onUpdateScope: this,
-                           onComplete: function() {
+                           onComplete() {
                                if (this._authPrompt.verificationStatus != AuthPrompt.AuthPromptStatus.NOT_VERIFYING)
                                    this._authPrompt.reset();
                            },
                            onCompleteScope: this });
     },
 
-    _gotGreeterSessionProxy: function(proxy) {
+    _gotGreeterSessionProxy(proxy) {
         this._greeterSessionProxy = proxy;
         this._greeterSessionProxyChangedId =
             proxy.connect('g-properties-changed', Lang.bind(this, function() {
@@ -948,12 +948,12 @@ var LoginDialog = new Lang.Class({
             }));
     },
 
-    _startSession: function(serviceName) {
+    _startSession(serviceName) {
         Tweener.addTween(this.actor,
                          { opacity: 0,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onUpdate: function() {
+                           onUpdate() {
                                let children = Main.layoutManager.uiGroup.get_children();
 
                                for (let i = 0; i < children.length; i++) {
@@ -962,19 +962,19 @@ var LoginDialog = new Lang.Class({
                                }
                            },
                            onUpdateScope: this,
-                           onComplete: function() {
+                           onComplete() {
                                this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
                            },
                            onCompleteScope: this });
     },
 
-    _onSessionOpened: function(client, serviceName) {
+    _onSessionOpened(client, serviceName) {
         this._authPrompt.finish(Lang.bind(this, function() {
             this._startSession(serviceName);
         }));
     },
 
-    _waitForItemForUser: function(userName) {
+    _waitForItemForUser(userName) {
         let item = this._userList.getItemFromUserName(userName);
 
         if (item)
@@ -996,12 +996,12 @@ var LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _showTimedLoginAnimation: function() {
+    _showTimedLoginAnimation() {
         this._timedLoginItem.actor.grab_key_focus();
         return this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime);
     },
 
-    _blockTimedLoginUntilIdle: function() {
+    _blockTimedLoginUntilIdle() {
         // This blocks timed login from starting until a few
         // seconds after the user stops interacting with the
         // login screen.
@@ -1023,7 +1023,7 @@ var LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _startTimedLogin: function(userName, delay) {
+    _startTimedLogin(userName, delay) {
         this._timedLoginItem = null;
         this._timedLoginDelay = delay;
         this._timedLoginAnimationTime = delay;
@@ -1062,7 +1062,7 @@ var LoginDialog = new Lang.Class({
         return this._timedLoginBatch.run();
     },
 
-    _resetTimedLogin: function() {
+    _resetTimedLogin() {
         if (this._timedLoginBatch) {
             this._timedLoginBatch.cancel();
             this._timedLoginBatch = null;
@@ -1077,7 +1077,7 @@ var LoginDialog = new Lang.Class({
             this._startTimedLogin(userName, this._timedLoginDelay);
     },
 
-    _onTimedLoginRequested: function(client, userName, seconds) {
+    _onTimedLoginRequested(client, userName, seconds) {
         this._startTimedLogin(userName, seconds);
 
         global.stage.connect('captured-event',
@@ -1100,28 +1100,28 @@ var LoginDialog = new Lang.Class({
                              }));
     },
 
-    _setUserListExpanded: function(expanded) {
+    _setUserListExpanded(expanded) {
         this._userList.updateStyle(expanded);
         this._userSelectionBox.visible = expanded;
     },
 
-    _hideUserList: function() {
+    _hideUserList() {
         this._setUserListExpanded(false);
         if (this._userSelectionBox.visible)
             GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
     },
 
-    _hideUserListAskForUsernameAndBeginVerification: function() {
+    _hideUserListAskForUsernameAndBeginVerification() {
         this._hideUserList();
         this._askForUsernameAndBeginVerification();
     },
 
-    _hideUserListAndBeginVerification: function() {
+    _hideUserListAndBeginVerification() {
         this._hideUserList();
         this._authPrompt.begin();
     },
 
-    _showUserList: function() {
+    _showUserList() {
         this._ensureUserListLoaded();
         this._authPrompt.hide();
         this._hideBannerView();
@@ -1131,7 +1131,7 @@ var LoginDialog = new Lang.Class({
         this._userList.actor.grab_key_focus();
     },
 
-    _beginVerificationForItem: function(item) {
+    _beginVerificationForItem(item) {
         this._authPrompt.setUser(item.user);
 
         let userName = item.user.get_user_name();
@@ -1142,7 +1142,7 @@ var LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _onUserListActivated: function(activatedItem) {
+    _onUserListActivated(activatedItem) {
         this._user = activatedItem.user;
 
         this._updateCancelButton();
@@ -1152,7 +1152,7 @@ var LoginDialog = new Lang.Class({
         batch.run();
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._userManagerLoadedId) {
             this._userManager.disconnect(this._userManagerLoadedId);
             this._userManagerLoadedId = 0;
@@ -1193,7 +1193,7 @@ var LoginDialog = new Lang.Class({
         }
     },
 
-    _loadUserList: function() {
+    _loadUserList() {
         if (this._userListLoaded)
             return GLib.SOURCE_REMOVE;
 
@@ -1231,7 +1231,7 @@ var LoginDialog = new Lang.Class({
         return GLib.SOURCE_REMOVE;
     },
 
-    open: function() {
+    open() {
         Main.ctrlAltTabManager.addGroup(this.actor,
                                         _("Login Window"),
                                         'dialog-password-symbolic',
@@ -1250,20 +1250,20 @@ var LoginDialog = new Lang.Class({
         return true;
     },
 
-    close: function() {
+    close() {
         Main.popModal(this.actor);
         Main.ctrlAltTabManager.removeGroup(this.actor);
     },
 
-    cancel: function() {
+    cancel() {
         this._authPrompt.cancel();
     },
 
-    addCharacter: function(unichar) {
+    addCharacter(unichar) {
         // Don't allow type ahead at the login screen
     },
 
-    finish: function(onComplete) {
+    finish(onComplete) {
         this._authPrompt.finish(onComplete);
     },
 });

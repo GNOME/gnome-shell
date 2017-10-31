@@ -39,17 +39,17 @@ var PrimaryActorLayout = new Lang.Class({
     Name: 'PrimaryActorLayout',
     Extends: Clutter.FixedLayout,
 
-    _init: function(primaryActor) {
+    _init(primaryActor) {
         this.parent();
 
         this.primaryActor = primaryActor;
     },
 
-    vfunc_get_preferred_width: function(container, forHeight) {
+    vfunc_get_preferred_width(container, forHeight) {
         return this.primaryActor.get_preferred_width(forHeight);
     },
 
-    vfunc_get_preferred_height: function(container, forWidth) {
+    vfunc_get_preferred_height(container, forWidth) {
         return this.primaryActor.get_preferred_height(forWidth);
     },
 });
@@ -57,7 +57,7 @@ var PrimaryActorLayout = new Lang.Class({
 var WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
-    _init : function(realWindow) {
+    _init (realWindow) {
         this.clone = new Clutter.Clone({ source: realWindow });
 
         /* Can't use a Shell.GenericContainer because of DND and reparenting... */
@@ -112,7 +112,7 @@ var WindowClone = new Lang.Class({
 
     // Find the actor just below us, respecting reparenting done
     // by DND code
-    getActualStackAbove: function() {
+    getActualStackAbove() {
         if (this._stackAbove == null)
             return null;
 
@@ -126,7 +126,7 @@ var WindowClone = new Lang.Class({
         }
     },
 
-    setStackAbove: function (actor) {
+    setStackAbove (actor) {
         this._stackAbove = actor;
 
         // Don't apply the new stacking now, it will be applied
@@ -141,15 +141,15 @@ var WindowClone = new Lang.Class({
             this.actor.raise(actualAbove);
     },
 
-    destroy: function () {
+    destroy () {
         this.actor.destroy();
     },
 
-    addAttachedDialog: function(win) {
+    addAttachedDialog(win) {
         this._doAddAttachedDialog(win, win.get_compositor_private());
     },
 
-    _doAddAttachedDialog: function(metaDialog, realDialog) {
+    _doAddAttachedDialog(metaDialog, realDialog) {
         let clone = new Clutter.Clone({ source: realDialog });
         this._updateDialogPosition(realDialog, clone);
 
@@ -161,7 +161,7 @@ var WindowClone = new Lang.Class({
         this.actor.add_child(clone);
     },
 
-    _updateDialogPosition: function(realDialog, cloneDialog) {
+    _updateDialogPosition(realDialog, cloneDialog) {
         let metaDialog = realDialog.meta_window;
         let dialogRect = metaDialog.get_frame_rect();
         let rect = this.metaWindow.get_frame_rect();
@@ -169,12 +169,12 @@ var WindowClone = new Lang.Class({
         cloneDialog.set_position(dialogRect.x - rect.x, dialogRect.y - rect.y);
     },
 
-    _onPositionChanged: function() {
+    _onPositionChanged() {
         let rect = this.metaWindow.get_frame_rect();
         this.actor.set_position(this.realWindow.x, this.realWindow.y);
     },
 
-    _disconnectSignals: function() {
+    _disconnectSignals() {
         this.actor.get_children().forEach(function(child) {
             let realWindow = child.source;
 
@@ -183,7 +183,7 @@ var WindowClone = new Lang.Class({
         });
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         this._disconnectSignals();
 
         this.actor._delegate = null;
@@ -196,13 +196,13 @@ var WindowClone = new Lang.Class({
         this.disconnectAll();
     },
 
-    _onButtonRelease : function (actor, event) {
+    _onButtonRelease  (actor, event) {
         this.emit('selected', event.get_time());
 
         return Clutter.EVENT_STOP;
     },
 
-    _onTouchEvent : function (actor, event) {
+    _onTouchEvent  (actor, event) {
         if (event.type() != Clutter.EventType.TOUCH_END ||
             !global.display.is_pointer_emulating_sequence(event.get_event_sequence()))
             return Clutter.EVENT_PROPAGATE;
@@ -211,16 +211,16 @@ var WindowClone = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _onDragBegin : function (draggable, time) {
+    _onDragBegin  (draggable, time) {
         this.inDrag = true;
         this.emit('drag-begin');
     },
 
-    _onDragCancelled : function (draggable, time) {
+    _onDragCancelled  (draggable, time) {
         this.emit('drag-cancelled');
     },
 
-    _onDragEnd : function (draggable, time, snapback) {
+    _onDragEnd  (draggable, time, snapback) {
         this.inDrag = false;
 
         // We may not have a parent if DnD completed successfully, in
@@ -257,7 +257,7 @@ const ThumbnailState = {
 var WorkspaceThumbnail = new Lang.Class({
     Name: 'WorkspaceThumbnail',
 
-    _init : function(metaWorkspace) {
+    _init (metaWorkspace) {
         this.metaWorkspace = metaWorkspace;
         this.monitorIndex = Main.layoutManager.primaryIndex;
 
@@ -314,20 +314,20 @@ var WorkspaceThumbnail = new Lang.Class({
         this._collapseFraction = 0; // Not collapsed
     },
 
-    _createBackground: function() {
+    _createBackground() {
         this._bgManager = new Background.BackgroundManager({ monitorIndex: Main.layoutManager.primaryIndex,
                                                              container: this._contents,
                                                              vignette: false });
     },
 
-    setPorthole: function(x, y, width, height) {
+    setPorthole(x, y, width, height) {
         this._portholeX = x;
         this._portholeY = y;
         this.actor.set_size(width, height);
         this._contents.set_position(-x, -y);
     },
 
-    _lookupIndex: function (metaWindow) {
+    _lookupIndex (metaWindow) {
         for (let i = 0; i < this._windows.length; i++) {
             if (this._windows[i].metaWindow == metaWindow) {
                 return i;
@@ -336,7 +336,7 @@ var WorkspaceThumbnail = new Lang.Class({
         return -1;
     },
 
-    syncStacking: function(stackIndices) {
+    syncStacking(stackIndices) {
         this._windows.sort(function (a, b) { return stackIndices[a.metaWindow.get_stable_sequence()] - stackIndices[b.metaWindow.get_stable_sequence()]; });
 
         for (let i = 0; i < this._windows.length; i++) {
@@ -369,7 +369,7 @@ var WorkspaceThumbnail = new Lang.Class({
         return this._collapseFraction;
     },
 
-    _doRemoveWindow : function(metaWin) {
+    _doRemoveWindow (metaWin) {
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
@@ -384,7 +384,7 @@ var WorkspaceThumbnail = new Lang.Class({
         clone.destroy();
     },
 
-    _doAddWindow : function(metaWin) {
+    _doAddWindow (metaWin) {
         if (this._removed)
             return;
 
@@ -440,11 +440,11 @@ var WorkspaceThumbnail = new Lang.Class({
         }
     },
 
-    _windowAdded : function(metaWorkspace, metaWin) {
+    _windowAdded (metaWorkspace, metaWin) {
         this._doAddWindow(metaWin);
     },
 
-    _windowRemoved : function(metaWorkspace, metaWin) {
+    _windowRemoved (metaWorkspace, metaWin) {
         let index = this._allWindows.indexOf(metaWin);
         if (index != -1) {
             metaWin.disconnect(this._minimizedChangedIds[index]);
@@ -455,31 +455,31 @@ var WorkspaceThumbnail = new Lang.Class({
         this._doRemoveWindow(metaWin);
     },
 
-    _windowEnteredMonitor : function(metaScreen, monitorIndex, metaWin) {
+    _windowEnteredMonitor (metaScreen, monitorIndex, metaWin) {
         if (monitorIndex == this.monitorIndex) {
             this._doAddWindow(metaWin);
         }
     },
 
-    _windowLeftMonitor : function(metaScreen, monitorIndex, metaWin) {
+    _windowLeftMonitor (metaScreen, monitorIndex, metaWin) {
         if (monitorIndex == this.monitorIndex) {
             this._doRemoveWindow(metaWin);
         }
     },
 
-    _updateMinimized: function(metaWin) {
+    _updateMinimized(metaWin) {
         if (metaWin.minimized)
             this._doRemoveWindow(metaWin);
         else
             this._doAddWindow(metaWin);
     },
 
-    destroy : function() {
+    destroy () {
         if (this.actor)
           this.actor.destroy();
     },
 
-    workspaceRemoved : function() {
+    workspaceRemoved () {
         if (this._removed)
             return;
 
@@ -494,7 +494,7 @@ var WorkspaceThumbnail = new Lang.Class({
             this._allWindows[i].disconnect(this._minimizedChangedIds[i]);
     },
 
-    _onDestroy: function(actor) {
+    _onDestroy(actor) {
         this.workspaceRemoved();
 
         if (this._bgManager) {
@@ -507,20 +507,20 @@ var WorkspaceThumbnail = new Lang.Class({
     },
 
     // Tests if @actor belongs to this workspace and monitor
-    _isMyWindow : function (actor) {
+    _isMyWindow  (actor) {
         let win = actor.meta_window;
         return win.located_on_workspace(this.metaWorkspace) &&
             (win.get_monitor() == this.monitorIndex);
     },
 
     // Tests if @win should be shown in the Overview
-    _isOverviewWindow : function (win) {
+    _isOverviewWindow  (win) {
         return !win.get_meta_window().skip_taskbar &&
                win.get_meta_window().showing_on_its_workspace();
     },
 
     // Create a clone of a (non-desktop) window and add it to the window list
-    _addWindowClone : function(win) {
+    _addWindowClone (win) {
         let clone = new WindowClone(win);
 
         clone.connect('selected',
@@ -551,7 +551,7 @@ var WorkspaceThumbnail = new Lang.Class({
         return clone;
     },
 
-    activate : function (time) {
+    activate  (time) {
         if (this.state > ThumbnailState.NORMAL)
             return;
 
@@ -563,7 +563,7 @@ var WorkspaceThumbnail = new Lang.Class({
     },
 
     // Draggable target interface used only by ThumbnailsBox
-    handleDragOverInternal : function(source, time) {
+    handleDragOverInternal (source, time) {
         if (source == Main.xdndHandler) {
             this.metaWorkspace.activate(time);
             return DND.DragMotionResult.CONTINUE;
@@ -580,7 +580,7 @@ var WorkspaceThumbnail = new Lang.Class({
         return DND.DragMotionResult.CONTINUE;
     },
 
-    acceptDropInternal : function(source, time) {
+    acceptDropInternal (source, time) {
         if (this.state > ThumbnailState.NORMAL)
             return false;
 
@@ -615,7 +615,7 @@ Signals.addSignalMethods(WorkspaceThumbnail.prototype);
 var ThumbnailsBox = new Lang.Class({
     Name: 'ThumbnailsBox',
 
-    _init: function() {
+    _init() {
         this.actor = new Shell.GenericContainer({ reactive: true,
                                                   style_class: 'workspace-thumbnails',
                                                   request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
@@ -684,13 +684,13 @@ var ThumbnailsBox = new Lang.Class({
         }));
     },
 
-    _updateSwitcherVisibility: function() {
+    _updateSwitcherVisibility() {
         this.actor.visible =
             this._settings.get_boolean('dynamic-workspaces') ||
                 global.screen.n_workspaces > 1;
     },
 
-    _activateThumbnailAtPoint: function (stageX, stageY, time) {
+    _activateThumbnailAtPoint (stageX, stageY, time) {
         let [r, x, y] = this.actor.transform_stage_point(stageX, stageY);
 
         for (let i = 0; i < this._thumbnails.length; i++) {
@@ -703,13 +703,13 @@ var ThumbnailsBox = new Lang.Class({
         }
     },
 
-    _onButtonRelease: function(actor, event) {
+    _onButtonRelease(actor, event) {
         let [stageX, stageY] = event.get_coords();
         this._activateThumbnailAtPoint(stageX, stageY, event.get_time());
         return Clutter.EVENT_STOP;
     },
 
-    _onTouchEvent: function (actor, event) {
+    _onTouchEvent (actor, event) {
         if (event.type() == Clutter.EventType.TOUCH_END &&
             global.display.is_pointer_emulating_sequence(event.get_event_sequence())) {
             let [stageX, stageY] = event.get_coords();
@@ -719,7 +719,7 @@ var ThumbnailsBox = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _onDragBegin: function() {
+    _onDragBegin() {
         this._dragCancelled = false;
         this._dragMonitor = {
             dragMotion: Lang.bind(this, this._onDragMotion)
@@ -727,34 +727,34 @@ var ThumbnailsBox = new Lang.Class({
         DND.addDragMonitor(this._dragMonitor);
     },
 
-    _onDragEnd: function() {
+    _onDragEnd() {
         if (this._dragCancelled)
             return;
 
         this._endDrag();
     },
 
-    _onDragCancelled: function() {
+    _onDragCancelled() {
         this._dragCancelled = true;
         this._endDrag();
     },
 
-    _endDrag: function() {
+    _endDrag() {
         this._clearDragPlaceholder();
         DND.removeDragMonitor(this._dragMonitor);
     },
 
-    _onDragMotion: function(dragEvent) {
+    _onDragMotion(dragEvent) {
         if (!this.actor.contains(dragEvent.targetActor))
             this._onLeave();
         return DND.DragMotionResult.CONTINUE;
     },
 
-    _onLeave: function() {
+    _onLeave() {
         this._clearDragPlaceholder();
     },
 
-    _clearDragPlaceholder: function() {
+    _clearDragPlaceholder() {
         if (this._dropPlaceholderPos == -1)
             return;
 
@@ -763,7 +763,7 @@ var ThumbnailsBox = new Lang.Class({
     },
 
     // Draggable target interface
-    handleDragOver : function(source, actor, x, y, time) {
+    handleDragOver (source, actor, x, y, time) {
         if (!source.realWindow && !source.shellWorkspaceLaunch && source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
@@ -817,7 +817,7 @@ var ThumbnailsBox = new Lang.Class({
             return DND.DragMotionResult.CONTINUE;
     },
 
-    acceptDrop: function(source, actor, x, y, time) {
+    acceptDrop(source, actor, x, y, time) {
         if (this._dropWorkspace != -1) {
             return this._thumbnails[this._dropWorkspace].acceptDropInternal(source, time);
         } else if (this._dropPlaceholderPos != -1) {
@@ -863,7 +863,7 @@ var ThumbnailsBox = new Lang.Class({
         }
     },
 
-    _createThumbnails: function() {
+    _createThumbnails() {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
@@ -888,7 +888,7 @@ var ThumbnailsBox = new Lang.Class({
         this._updateSwitcherVisibility();
     },
 
-    _destroyThumbnails: function() {
+    _destroyThumbnails() {
         if (this._switchWorkspaceNotifyId > 0) {
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
             this._switchWorkspaceNotifyId = 0;
@@ -909,7 +909,7 @@ var ThumbnailsBox = new Lang.Class({
         this._porthole = null;
     },
 
-    _workspacesChanged: function() {
+    _workspacesChanged() {
         let validThumbnails = this._thumbnails.filter(function(t) {
             return t.state <= ThumbnailState.NORMAL;
         });
@@ -936,7 +936,7 @@ var ThumbnailsBox = new Lang.Class({
         this._updateSwitcherVisibility();
     },
 
-    addThumbnails: function(start, count) {
+    addThumbnails(start, count) {
         if (!this._ensurePorthole())
             return;
         for (let k = start; k < start + count; k++) {
@@ -968,7 +968,7 @@ var ThumbnailsBox = new Lang.Class({
         this._spliceIndex = -1;
     },
 
-    removeThumbnails: function(start, count) {
+    removeThumbnails(start, count) {
         let currentPos = 0;
         for (let k = 0; k < this._thumbnails.length; k++) {
             let thumbnail = this._thumbnails[k];
@@ -987,7 +987,7 @@ var ThumbnailsBox = new Lang.Class({
         this._queueUpdateStates();
     },
 
-    _syncStacking: function(overview, stackIndices) {
+    _syncStacking(overview, stackIndices) {
         for (let i = 0; i < this._thumbnails.length; i++)
             this._thumbnails[i].syncStacking(stackIndices);
     },
@@ -1010,13 +1010,13 @@ var ThumbnailsBox = new Lang.Class({
         return this._indicatorY;
     },
 
-    _setThumbnailState: function(thumbnail, state) {
+    _setThumbnailState(thumbnail, state) {
         this._stateCounts[thumbnail.state]--;
         thumbnail.state = state;
         this._stateCounts[thumbnail.state]++;
     },
 
-    _iterateStateThumbnails: function(state, callback) {
+    _iterateStateThumbnails(state, callback) {
         if (this._stateCounts[state] == 0)
             return;
 
@@ -1026,7 +1026,7 @@ var ThumbnailsBox = new Lang.Class({
         }
     },
 
-    _tweenScale: function() {
+    _tweenScale() {
         Tweener.addTween(this,
                          { scale: this._targetScale,
                            time: RESCALE_ANIMATION_TIME,
@@ -1035,7 +1035,7 @@ var ThumbnailsBox = new Lang.Class({
                            onCompleteScope: this });
     },
 
-    _updateStates: function() {
+    _updateStates() {
         this._stateUpdateQueued = false;
 
         // If we are animating the indicator, wait
@@ -1051,7 +1051,7 @@ var ThumbnailsBox = new Lang.Class({
                                  { slidePosition: 1,
                                    time: SLIDE_ANIMATION_TIME,
                                    transition: 'linear',
-                                   onComplete: function() {
+                                   onComplete() {
                                        this._setThumbnailState(thumbnail, ThumbnailState.ANIMATED_OUT);
                                        this._queueUpdateStates();
                                    },
@@ -1072,7 +1072,7 @@ var ThumbnailsBox = new Lang.Class({
                                  { collapseFraction: 1,
                                    time: RESCALE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
-                                   onComplete: function() {
+                                   onComplete() {
                                        this._stateCounts[thumbnail.state]--;
                                        thumbnail.state = ThumbnailState.DESTROYED;
 
@@ -1103,7 +1103,7 @@ var ThumbnailsBox = new Lang.Class({
                                  { slidePosition: 0,
                                    time: SLIDE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
-                                   onComplete: function() {
+                                   onComplete() {
                                        this._setThumbnailState(thumbnail, ThumbnailState.NORMAL);
                                    },
                                    onCompleteScope: this
@@ -1111,7 +1111,7 @@ var ThumbnailsBox = new Lang.Class({
             });
     },
 
-    _queueUpdateStates: function() {
+    _queueUpdateStates() {
         if (this._stateUpdateQueued)
             return;
 
@@ -1121,7 +1121,7 @@ var ThumbnailsBox = new Lang.Class({
         this._stateUpdateQueued = true;
     },
 
-    _getPreferredHeight: function(actor, forWidth, alloc) {
+    _getPreferredHeight(actor, forWidth, alloc) {
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.
@@ -1142,7 +1142,7 @@ var ThumbnailsBox = new Lang.Class({
         alloc.natural_size = totalSpacing + nWorkspaces * this._porthole.height * MAX_THUMBNAIL_SCALE;
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
+    _getPreferredWidth(actor, forHeight, alloc) {
         if (!this._ensurePorthole()) {
             alloc.min_size = -1;
             alloc.natural_size = -1;
@@ -1167,7 +1167,7 @@ var ThumbnailsBox = new Lang.Class({
 
     // The "porthole" is the portion of the screen that we show in the
     // workspaces
-    _ensurePorthole: function() {
+    _ensurePorthole() {
         if (!Main.layoutManager.primaryMonitor)
             return false;
 
@@ -1177,7 +1177,7 @@ var ThumbnailsBox = new Lang.Class({
         return true;
     },
 
-    _allocate: function(actor, box, flags) {
+    _allocate(actor, box, flags) {
         let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
         if (this._thumbnails.length == 0) // not visible
@@ -1313,7 +1313,7 @@ var ThumbnailsBox = new Lang.Class({
         this._indicator.allocate(childBox, flags);
     },
 
-    _activeWorkspaceChanged: function(wm, from, to, direction) {
+    _activeWorkspaceChanged(wm, from, to, direction) {
         let thumbnail;
         let activeWorkspace = global.screen.get_active_workspace();
         for (let i = 0; i < this._thumbnails.length; i++) {
@@ -1331,7 +1331,7 @@ var ThumbnailsBox = new Lang.Class({
                          { indicatorY: thumbnail.actor.allocation.y1,
                            time: WorkspacesView.WORKSPACE_SWITCH_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: function() {
+                           onComplete() {
                                this._animatingIndicator = false;
                                this._queueUpdateStates();
                            },

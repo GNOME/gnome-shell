@@ -187,7 +187,7 @@ var InstallExtensionDialog = new Lang.Class({
     Name: 'InstallExtensionDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init: function(uuid, info, invocation) {
+    _init(uuid, info, invocation) {
         this.parent({ styleClass: 'extension-dialog' });
 
         this._uuid = uuid;
@@ -218,12 +218,12 @@ var InstallExtensionDialog = new Lang.Class({
         box.add(label);
     },
 
-    _onCancelButtonPressed: function(button, event) {
+    _onCancelButtonPressed(button, event) {
         this.close();
         this._invocation.return_value(GLib.Variant.new('(s)', ['cancelled']));
     },
 
-    _onInstallButtonPressed: function(button, event) {
+    _onInstallButtonPressed(button, event) {
         let params = { shell_version: Config.PACKAGE_VERSION };
 
         let url = REPOSITORY_URL_DOWNLOAD.format(this._uuid);

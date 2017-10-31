@@ -9,19 +9,19 @@ const MessageTray = imports.ui.messageTray;
 var WindowAttentionHandler = new Lang.Class({
     Name: 'WindowAttentionHandler',
 
-    _init : function() {
+    _init () {
         this._tracker = Shell.WindowTracker.get_default();
         this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
                                                                 Lang.bind(this, this._onWindowDemandsAttention));
     },
 
-    _getTitleAndBanner: function(app, window) {
+    _getTitleAndBanner(app, window) {
         let title = app.get_name();
         let banner = _("“%s” is ready").format(window.get_title());
         return [title, banner]
     },
 
-    _onWindowDemandsAttention : function(display, window) {
+    _onWindowDemandsAttention (display, window) {
         // We don't want to show the notification when the window is already focused,
         // because this is rather pointless.
         // Some apps (like GIMP) do things like setting the urgency hint on the
@@ -58,7 +58,7 @@ var Source = new Lang.Class({
     Name: 'WindowAttentionSource',
     Extends: MessageTray.Source,
 
-    _init: function(app, window) {
+    _init(app, window) {
         this._window = window;
         this._app = app;
 
@@ -72,14 +72,14 @@ var Source = new Lang.Class({
         this.connect('destroy', Lang.bind(this, this._onDestroy));
     },
 
-    _onDestroy : function() {
+    _onDestroy () {
         for(let i = 0; i < this.signalIDs.length; i++) {
            this._window.disconnect(this.signalIDs[i]);
         }
         this.signalIDs = [];
     },
 
-    _createPolicy: function() {
+    _createPolicy() {
         if (this._app && this._app.get_app_info()) {
             let id = this._app.get_id().replace(/\.desktop$/,'');
             return new MessageTray.NotificationApplicationPolicy(id);
@@ -88,11 +88,11 @@ var Source = new Lang.Class({
         }
     },
 
-    createIcon : function(size) {
+    createIcon (size) {
         return this._app.create_icon_texture(size);
     },
 
-    open: function() {
+    open() {
         Main.activateWindow(this._window);
         this.destroy();
     }

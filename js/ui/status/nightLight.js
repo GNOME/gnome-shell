@@ -23,7 +23,7 @@ var Indicator = new Lang.Class({
     Name: 'NightLightIndicator',
     Extends: PanelMenu.SystemIndicator,
 
-    _init: function() {
+    _init() {
         this.parent();
 
         this._indicator = this._addIndicator();
@@ -56,12 +56,12 @@ var Indicator = new Lang.Class({
         this._sync();
     },
 
-    _sessionUpdated: function() {
+    _sessionUpdated() {
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         this.menu.setSensitive(sensitive);
     },
 
-    _sync: function() {
+    _sync() {
         let visible = this._proxy.NightLightActive;
         let disabled = this._proxy.DisabledUntilTomorrow;
 

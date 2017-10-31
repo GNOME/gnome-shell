@@ -24,14 +24,14 @@ var SortGroup = {
 var CtrlAltTabManager = new Lang.Class({
     Name: 'CtrlAltTabManager',
 
-    _init: function() {
+    _init() {
         this._items = [];
         this.addGroup(global.window_group, _("Windows"),
                       'focus-windows-symbolic', { sortGroup: SortGroup.TOP,
                                                   focusCallback: Lang.bind(this, this._focusWindows) });
     },
 
-    addGroup: function(root, name, icon, params) {
+    addGroup(root, name, icon, params) {
         let item = Params.parse(params, { sortGroup: SortGroup.MIDDLE,
                                           proxy: root,
                                           focusCallback: null });
@@ -46,7 +46,7 @@ var CtrlAltTabManager = new Lang.Class({
             global.focus_manager.add_group(root);
     },
 
-    removeGroup: function(root) {
+    removeGroup(root) {
         if (root instanceof St.Widget)
             global.focus_manager.remove_group(root);
         for (let i = 0; i < this._items.length; i++) {
@@ -57,7 +57,7 @@ var CtrlAltTabManager = new Lang.Class({
         }
     },
 
-    focusGroup: function(item, timestamp) {
+    focusGroup(item, timestamp) {
         if (item.focusCallback)
             item.focusCallback(timestamp);
         else
@@ -68,7 +68,7 @@ var CtrlAltTabManager = new Lang.Class({
     // and everything else in between, sorted by X coordinate, so that
     // they will have the same left-to-right ordering in the
     // Ctrl-Alt-Tab dialog as they do onscreen.
-    _sortItems: function(a, b) {
+    _sortItems(a, b) {
         if (a.sortGroup != b.sortGroup)
             return a.sortGroup - b.sortGroup;
 
@@ -79,7 +79,7 @@ var CtrlAltTabManager = new Lang.Class({
         return ax - bx;
     },
 
-    popup: function(backward, binding, mask) {
+    popup(backward, binding, mask) {
         // Start with the set of focus groups that are currently mapped
         let items = this._items.filter(function (item) { return item.proxy.mapped; });
 
@@ -131,7 +131,7 @@ var CtrlAltTabManager = new Lang.Class({
         }
     },
 
-    _focusWindows: function(timestamp) {
+    _focusWindows(timestamp) {
         global.screen.focus_default_window(timestamp);
     }
 });
@@ -140,13 +140,13 @@ var CtrlAltTabPopup = new Lang.Class({
     Name: 'CtrlAltTabPopup',
     Extends: SwitcherPopup.SwitcherPopup,
 
-    _init: function(items) {
+    _init(items) {
         this.parent(items);
 
         this._switcherList = new CtrlAltTabSwitcher(this._items);
     },
 
-    _keyPressHandler: function(keysym, action) {
+    _keyPressHandler(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_PANELS)
             this._select(this._next());
         else if (action == Meta.KeyBindingAction.SWITCH_PANELS_BACKWARD)
@@ -161,7 +161,7 @@ var CtrlAltTabPopup = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _finish : function(time) {
+    _finish (time) {
         this.parent(time);
         Main.ctrlAltTabManager.focusGroup(this._items[this._selectedIndex], time);
     },
@@ -171,14 +171,14 @@ var CtrlAltTabSwitcher = new Lang.Class({
     Name: 'CtrlAltTabSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init : function(items) {
+    _init (items) {
         this.parent(true);
 
         for (let i = 0; i < items.length; i++)
             this._addIcon(items[i]);
     },
 
-    _addIcon : function(item) {
+    _addIcon (item) {
         let box = new St.BoxLayout({ style_class: 'alt-tab-app',
                                      vertical: true });
 

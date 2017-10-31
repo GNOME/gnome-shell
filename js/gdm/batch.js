@@ -50,7 +50,7 @@ const Signals = imports.signals;
 var Task = new Lang.Class({
     Name: 'Task',
 
-    _init: function(scope, handler) {
+    _init(scope, handler) {
         if (scope)
             this.scope = scope;
         else
@@ -59,7 +59,7 @@ var Task = new Lang.Class({
         this.handler = handler;
     },
 
-    run: function() {
+    run() {
         if (this.handler)
             return this.handler.call(this.scope);
 
@@ -72,7 +72,7 @@ var Hold = new Lang.Class({
     Name: 'Hold',
     Extends: Task,
 
-    _init: function() {
+    _init() {
         this.parent(this, function () {
             return this;
         });
@@ -80,13 +80,13 @@ var Hold = new Lang.Class({
         this._acquisitions = 1;
     },
 
-    acquire: function() {
+    acquire() {
         if (this._acquisitions <= 0)
             throw new Error("Cannot acquire hold after it's been released");
         this._acquisitions++;
     },
 
-    acquireUntilAfter: function(hold) {
+    acquireUntilAfter(hold) {
         if (!hold.isAcquired())
             return;
 
@@ -97,14 +97,14 @@ var Hold = new Lang.Class({
                                     }));
     },
 
-    release: function() {
+    release() {
         this._acquisitions--;
 
         if (this._acquisitions == 0)
             this.emit('release');
     },
 
-    isAcquired: function() {
+    isAcquired() {
         return this._acquisitions > 0;
     }
 });
@@ -114,7 +114,7 @@ var Batch = new Lang.Class({
     Name: 'Batch',
     Extends: Task,
 
-    _init: function(scope, tasks) {
+    _init(scope, tasks) {
         this.parent();
 
         this.tasks = [];
@@ -134,11 +134,11 @@ var Batch = new Lang.Class({
         }
     },
 
-    process: function() {
+    process() {
         throw new Error('Not implemented');
     },
 
-    runTask: function() {
+    runTask() {
         if (!(this._currentTaskIndex in this.tasks)) {
             return null;
         }
@@ -146,11 +146,11 @@ var Batch = new Lang.Class({
         return this.tasks[this._currentTaskIndex].run();
     },
 
-    _finish: function() {
+    _finish() {
         this.hold.release();
     },
 
-    nextTask: function() {
+    nextTask() {
         this._currentTaskIndex++;
 
         // if the entire batch of tasks is finished, release
@@ -163,7 +163,7 @@ var Batch = new Lang.Class({
         this.process();
     },
 
-    _start: function() {
+    _start() {
         // acquire a hold to get released when the entire
         // batch of tasks is finished
         this.hold = new Hold();
@@ -171,7 +171,7 @@ var Batch = new Lang.Class({
         this.process();
     },
 
-    run: function() {
+    run() {
         this._start();
 
         // hold may be destroyed at this point
@@ -179,7 +179,7 @@ var Batch = new Lang.Class({
         return this.hold;
     },
 
-    cancel: function() {
+    cancel() {
         this.tasks = this.tasks.splice(0, this._currentTaskIndex + 1);
     }
 });
@@ -189,7 +189,7 @@ var ConcurrentBatch = new Lang.Class({
     Name: 'ConcurrentBatch',
     Extends: Batch,
 
-    process: function() {
+    process() {
        let hold = this.runTask();
 
        if (hold) {
@@ -208,7 +208,7 @@ var ConsecutiveBatch = new Lang.Class({
     Name: 'ConsecutiveBatch',
     Extends: Batch,
 
-    process: function() {
+    process() {
        let hold = this.runTask();
 
        if (hold && hold.isAcquired()) {

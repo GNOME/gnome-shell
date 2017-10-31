@@ -161,7 +161,7 @@ function installImporter(extension) {
 var ExtensionFinder = new Lang.Class({
     Name: 'ExtensionFinder',
 
-    _loadExtension: function(extensionDir, info, perUserDir) {
+    _loadExtension(extensionDir, info, perUserDir) {
         let fileType = info.get_file_type();
         if (fileType != Gio.FileType.DIRECTORY)
             return;
@@ -184,7 +184,7 @@ var ExtensionFinder = new Lang.Class({
         this.emit('extension-found', extension);
     },
 
-    scanExtensions: function() {
+    scanExtensions() {
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
         FileUtils.collectFromDatadirs('extensions', true, Lang.bind(this, this._loadExtension, perUserDir));
     }

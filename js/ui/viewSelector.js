@@ -36,7 +36,7 @@ var FocusTrap = new Lang.Class({
     Name: 'FocusTrap',
     Extends: St.Widget,
 
-    vfunc_navigate_focus: function(from, direction) {
+    vfunc_navigate_focus(from, direction) {
         if (direction == Gtk.DirectionType.TAB_FORWARD ||
             direction == Gtk.DirectionType.TAB_BACKWARD)
             return this.parent(from, direction);
@@ -56,11 +56,11 @@ function getTermsForSearchString(searchString) {
 var TouchpadShowOverviewAction = new Lang.Class({
     Name: 'TouchpadShowOverviewAction',
 
-    _init: function(actor) {
+    _init(actor) {
         actor.connect('captured-event', Lang.bind(this, this._handleEvent));
     },
 
-    _handleEvent: function(actor, event) {
+    _handleEvent(actor, event) {
         if (event.type() != Clutter.EventType.TOUCHPAD_PINCH)
             return Clutter.EVENT_PROPAGATE;
 
@@ -80,7 +80,7 @@ var ShowOverviewAction = new Lang.Class({
     Extends: Clutter.GestureAction,
     Signals: { 'activated': { param_types: [GObject.TYPE_DOUBLE] } },
 
-    _init : function() {
+    _init () {
         this.parent();
         this.set_n_touch_points(3);
 
@@ -89,12 +89,12 @@ var ShowOverviewAction = new Lang.Class({
         }));
     },
 
-    vfunc_gesture_prepare : function(action, actor) {
+    vfunc_gesture_prepare (action, actor) {
         return Main.actionMode == Shell.ActionMode.NORMAL &&
                this.get_n_current_points() == this.get_n_touch_points();
     },
 
-    _getBoundingRect : function(motion) {
+    _getBoundingRect (motion) {
         let minX, minY, maxX, maxY;
 
         for (let i = 0; i < this.get_n_current_points(); i++) {
@@ -123,12 +123,12 @@ var ShowOverviewAction = new Lang.Class({
                                     height: maxY - minY });
     },
 
-    vfunc_gesture_begin : function(action, actor) {
+    vfunc_gesture_begin (action, actor) {
         this._initialRect = this._getBoundingRect(false);
         return true;
     },
 
-    vfunc_gesture_end : function(action, actor) {
+    vfunc_gesture_end (action, actor) {
         let rect = this._getBoundingRect(true);
         let oldArea = this._initialRect.width * this._initialRect.height;
         let newArea = rect.width * rect.height;
@@ -141,7 +141,7 @@ var ShowOverviewAction = new Lang.Class({
 var ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
 
-    _init : function(searchEntry, showAppsButton) {
+    _init (searchEntry, showAppsButton) {
         this.actor = new Shell.Stack({ name: 'viewSelector' });
 
         this._showAppsButton = showAppsButton;
@@ -268,22 +268,22 @@ var ViewSelector = new Lang.Class({
         gesture.connect('activated', Lang.bind(this, this._pinchGestureActivated));
     },
 
-    _pinchGestureActivated: function(action, scale) {
+    _pinchGestureActivated(action, scale) {
         if (scale < PINCH_GESTURE_THRESHOLD)
             Main.overview.show();
     },
 
-    _toggleAppsPage: function() {
+    _toggleAppsPage() {
         this._showAppsButton.checked = !this._showAppsButton.checked;
         Main.overview.show();
     },
 
-    showApps: function() {
+    showApps() {
         this._showAppsButton.checked = true;
         Main.overview.show();
     },
 
-    show: function() {
+    show() {
         this.reset();
         this._workspacesDisplay.show(this._showAppsButton.checked);
         this._activePage = null;
@@ -296,7 +296,7 @@ var ViewSelector = new Lang.Class({
             Main.overview.fadeOutDesktop();
     },
 
-    animateFromOverview: function() {
+    animateFromOverview() {
         // Make sure workspace page is fully visible to allow
         // workspace.js do the animation of the windows
         this._workspacesPage.opacity = 255;
@@ -309,15 +309,15 @@ var ViewSelector = new Lang.Class({
             Main.overview.fadeInDesktop();
     },
 
-    setWorkspacesFullGeometry: function(geom) {
+    setWorkspacesFullGeometry(geom) {
         this._workspacesDisplay.setWorkspacesFullGeometry(geom);
     },
 
-    hide: function() {
+    hide() {
         this._workspacesDisplay.hide();
     },
 
-    _addPage: function(actor, name, a11yIcon, params) {
+    _addPage(actor, name, a11yIcon, params) {
         params = Params.parse(params, { a11yFocus: null });
 
         let page = new St.Bin({ child: actor,
@@ -340,7 +340,7 @@ var ViewSelector = new Lang.Class({
         return page;
     },
 
-    _fadePageIn: function() {
+    _fadePageIn() {
         Tweener.addTween(this._activePage,
                          { opacity: 255,
                            time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
@@ -348,7 +348,7 @@ var ViewSelector = new Lang.Class({
                          });
     },
 
-    _fadePageOut: function(page) {
+    _fadePageOut(page) {
         let oldPage = page;
         Tweener.addTween(page,
                          { opacity: 0,
@@ -360,7 +360,7 @@ var ViewSelector = new Lang.Class({
                          });
     },
 
-    _animateIn: function(oldPage) {
+    _animateIn(oldPage) {
         if (oldPage)
             oldPage.hide();
 
@@ -377,7 +377,7 @@ var ViewSelector = new Lang.Class({
         }
     },
 
-    _animateOut: function(page) {
+    _animateOut(page) {
         let oldPage = page;
         if (page == this._appsPage &&
             this._activePage == this._workspacesPage &&
@@ -391,7 +391,7 @@ var ViewSelector = new Lang.Class({
         }
     },
 
-    _showPage: function(page) {
+    _showPage(page) {
         if (!Main.overview.visible)
             return;
 
@@ -408,17 +408,17 @@ var ViewSelector = new Lang.Class({
             this._animateIn();
     },
 
-    _a11yFocusPage: function(page) {
+    _a11yFocusPage(page) {
         this._showAppsButton.checked = page == this._appsPage;
         page.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
-    _onShowAppsButtonToggled: function() {
+    _onShowAppsButtonToggled() {
         this._showPage(this._showAppsButton.checked ?
                        this._appsPage : this._workspacesPage);
     },
 
-    _onStageKeyPress: function(actor, event) {
+    _onStageKeyPress(actor, event) {
         // Ignore events while anything but the overview has
         // pushed a modal (system modals, looking glass, ...)
         if (Main.modalCount > 1)
@@ -449,7 +449,7 @@ var ViewSelector = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _searchCancelled: function() {
+    _searchCancelled() {
         this._showPage(this._showAppsButton.checked ? this._appsPage
                                                     : this._workspacesPage);
 
@@ -463,7 +463,7 @@ var ViewSelector = new Lang.Class({
             this.reset();
     },
 
-    reset: function () {
+    reset () {
         global.stage.set_key_focus(null);
 
         this._entry.text = '';
@@ -472,7 +472,7 @@ var ViewSelector = new Lang.Class({
         this._text.set_selection(0, 0);
     },
 
-    _onStageKeyFocusChanged: function() {
+    _onStageKeyFocusChanged() {
         let focus = global.stage.get_key_focus();
         let appearFocused = (this._entry.contains(focus) ||
                              this._searchResults.actor.contains(focus));
@@ -485,7 +485,7 @@ var ViewSelector = new Lang.Class({
             this._entry.remove_style_pseudo_class('focus');
     },
 
-    _onMapped: function() {
+    _onMapped() {
         if (this._entry.mapped) {
             // Enable 'find-as-you-type'
             this._capturedEventId = global.stage.connect('captured-event',
@@ -500,7 +500,7 @@ var ViewSelector = new Lang.Class({
         }
     },
 
-    _shouldTriggerSearch: function(symbol) {
+    _shouldTriggerSearch(symbol) {
         if (symbol == Clutter.Multi_key)
             return true;
 
@@ -517,7 +517,7 @@ var ViewSelector = new Lang.Class({
         return false;
     },
 
-    startSearch: function(event) {
+    startSearch(event) {
         global.stage.set_key_focus(this._text);
 
         let synthEvent = event.copy();
@@ -526,11 +526,11 @@ var ViewSelector = new Lang.Class({
     },
 
     // the entry does not show the hint
-    _isActivated: function() {
+    _isActivated() {
         return this._text.text == this._entry.get_text();
     },
 
-    _onTextChanged: function (se, prop) {
+    _onTextChanged (se, prop) {
         let terms = getTermsForSearchString(this._entry.get_text());
 
         this._searchActive = (terms.length > 0);
@@ -555,7 +555,7 @@ var ViewSelector = new Lang.Class({
         }
     },
 
-    _onKeyPress: function(entry, event) {
+    _onKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.Escape) {
             if (this._isActivated()) {
@@ -594,7 +594,7 @@ var ViewSelector = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    _onCapturedEvent: function(actor, event) {
+    _onCapturedEvent(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS) {
             let source = event.get_source();
             if (source != this._text &&
@@ -620,7 +620,7 @@ var ViewSelector = new Lang.Class({
         return Clutter.EVENT_PROPAGATE;
     },
 
-    getActivePage: function() {
+    getActivePage() {
         if (this._activePage == this._workspacesPage)
             return ViewPage.WINDOWS;
         else if (this._activePage == this._appsPage)
@@ -629,7 +629,7 @@ var ViewSelector = new Lang.Class({
             return ViewPage.SEARCH;
     },
 
-    fadeIn: function() {
+    fadeIn() {
         let actor = this._activePage;
         Tweener.addTween(actor, { opacity: 255,
                                   time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
@@ -637,7 +637,7 @@ var ViewSelector = new Lang.Class({
                                 });
     },
 
-    fadeHalf: function() {
+    fadeHalf() {
         let actor = this._activePage;
         Tweener.addTween(actor, { opacity: 128,
                                   time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,

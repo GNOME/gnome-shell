@@ -34,7 +34,7 @@ function stripPrefix(string, prefix) {
 
 var Application = new Lang.Class({
     Name: 'Application',
-    _init: function() {
+    _init() {
         GLib.set_prgname('gnome-shell-extension-prefs');
         this.application = new Gtk.Application({
             application_id: 'org.gnome.shell.ExtensionPrefs',
@@ -52,7 +52,7 @@ var Application = new Lang.Class({
         this._skipMainWindow = false;
     },
 
-    _extensionAvailable: function(uuid) {
+    _extensionAvailable(uuid) {
         let extension = ExtensionUtils.extensions[uuid];
 
         if (!extension)
@@ -64,7 +64,7 @@ var Application = new Lang.Class({
         return true;
     },
 
-    _getExtensionPrefsModule: function(extension) {
+    _getExtensionPrefsModule(extension) {
         let uuid = extension.metadata.uuid;
 
         if (this._extensionPrefsModules.hasOwnProperty(uuid))
@@ -79,7 +79,7 @@ var Application = new Lang.Class({
         return prefsModule;
     },
 
-    _selectExtension: function(uuid) {
+    _selectExtension(uuid) {
         if (!this._extensionAvailable(uuid))
             return;
 
@@ -114,7 +114,7 @@ var Application = new Lang.Class({
         dialog.show();
     },
 
-    _buildErrorUI: function(extension, exc) {
+    _buildErrorUI(extension, exc) {
         let box = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
         let label = new Gtk.Label({
             label: _("There was an error loading the preferences dialog for %s:").format(extension.metadata.name)
@@ -142,7 +142,7 @@ var Application = new Lang.Class({
         return box;
     },
 
-    _buildUI: function(app) {
+    _buildUI(app) {
         this._window = new Gtk.ApplicationWindow({ application: app,
                                                    window_position: Gtk.WindowPosition.CENTER });
 
@@ -179,13 +179,13 @@ var Application = new Lang.Class({
         this._window.show_all();
     },
 
-    _sortList: function(row1, row2) {
+    _sortList(row1, row2) {
         let name1 = ExtensionUtils.extensions[row1.uuid].metadata.name;
         let name2 = ExtensionUtils.extensions[row2.uuid].metadata.name;
         return name1.localeCompare(name2);
     },
 
-    _updateHeader: function(row, before) {
+    _updateHeader(row, before) {
         if (!before || row.get_header())
             return;
 
@@ -193,14 +193,14 @@ var Application = new Lang.Class({
         row.set_header(sep);
     },
 
-    _scanExtensions: function() {
+    _scanExtensions() {
         let finder = new ExtensionUtils.ExtensionFinder();
         finder.connect('extension-found', Lang.bind(this, this._extensionFound));
         finder.scanExtensions();
         this._extensionsLoaded();
     },
 
-    _extensionFound: function(finder, extension) {
+    _extensionFound(finder, extension) {
         let row = new ExtensionRow(extension.uuid);
 
         row.prefsButton.visible = this._extensionAvailable(row.uuid);
@@ -213,7 +213,7 @@ var Application = new Lang.Class({
         this._extensionSelector.add(row);
     },
 
-    _extensionsLoaded: function() {
+    _extensionsLoaded() {
         if (this._startupUuid && this._extensionAvailable(this._startupUuid))
             this._selectExtension(this._startupUuid);
         this._startupUuid = null;
@@ -221,16 +221,16 @@ var Application = new Lang.Class({
         this._loaded = true;
     },
 
-    _onActivate: function() {
+    _onActivate() {
         this._window.present();
     },
 
-    _onStartup: function(app) {
+    _onStartup(app) {
         this._buildUI(app);
         this._scanExtensions();
     },
 
-    _onCommandLine: function(app, commandLine) {
+    _onCommandLine(app, commandLine) {
         app.activate();
         let args = commandLine.get_arguments();
 
@@ -257,7 +257,7 @@ var DescriptionLabel = new Lang.Class({
     Name: 'DescriptionLabel',
     Extends: Gtk.Label,
 
-    vfunc_get_preferred_height_for_width: function(width) {
+    vfunc_get_preferred_height_for_width(width) {
         // Hack: Request the maximum height allowed by the line limit
         if (this.lines > 0)
             return this.parent(0);
@@ -269,7 +269,7 @@ var ExtensionRow = new Lang.Class({
     Name: 'ExtensionRow',
     Extends: Gtk.ListBoxRow,
 
-    _init: function(uuid) {
+    _init(uuid) {
         this.parent();
 
         this.uuid = uuid;
@@ -291,7 +291,7 @@ var ExtensionRow = new Lang.Class({
         this._buildUI();
     },
 
-    _buildUI: function() {
+    _buildUI() {
         let extension = ExtensionUtils.extensions[this.uuid];
 
         let hbox = new Gtk.Box({ orientation: Gtk.Orientation.HORIZONTAL,
@@ -339,7 +339,7 @@ var ExtensionRow = new Lang.Class({
         hbox.add(this._switch);
     },
 
-    _canEnable: function() {
+    _canEnable() {
         let extension = ExtensionUtils.extensions[this.uuid];
         let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
@@ -347,12 +347,12 @@ var ExtensionRow = new Lang.Class({
                !(checkVersion && ExtensionUtils.isOutOfDate(extension));
     },
 
-    _isEnabled: function() {
+    _isEnabled() {
         let extensions = this._settings.get_strv('enabled-extensions');
         return extensions.indexOf(this.uuid) != -1;
     },
 
-    _enable: function() {
+    _enable() {
         let extensions = this._settings.get_strv('enabled-extensions');
         if (extensions.indexOf(this.uuid) != -1)
             return;
@@ -361,7 +361,7 @@ var ExtensionRow = new Lang.Class({
         this._settings.set_strv('enabled-extensions', extensions);
     },
 
-    _disable: function() {
+    _disable() {
         let extensions = this._settings.get_strv('enabled-extensions');
         let pos = extensions.indexOf(this.uuid);
         if (pos == -1)
@@ -378,11 +378,11 @@ function initEnvironment() {
     // Monkey-patch in a "global" object that fakes some Shell utilities
     // that ExtensionUtils depends on.
     window.global = {
-        log: function() {
+        log() {
             print([].join.call(arguments, ', '));
         },
 
-        logError: function(s) {
+        logError(s) {
             log('ERROR: ' + s);
         },
 

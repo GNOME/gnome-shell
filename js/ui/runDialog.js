@@ -34,7 +34,7 @@ var RunDialog = new Lang.Class({
     Name: 'RunDialog',
     Extends: ModalDialog.ModalDialog,
 
-    _init : function() {
+    _init () {
         this.parent({ styleClass: 'run-dialog',
                       destroyOnClose: false });
 
@@ -145,7 +145,7 @@ var RunDialog = new Lang.Class({
         }));
     },
 
-    _getCommandCompletion: function(text) {
+    _getCommandCompletion(text) {
         function _getCommon(s1, s2) {
             if (s1 == null)
                 return s2;
@@ -191,7 +191,7 @@ var RunDialog = new Lang.Class({
         return common.substr(text.length);
     },
 
-    _getCompletion : function(text) {
+    _getCompletion (text) {
         if (text.indexOf('/') != -1) {
             return this._pathCompleter.get_completion_suffix(text);
         } else {
@@ -199,7 +199,7 @@ var RunDialog = new Lang.Class({
         }
     },
 
-    _run : function(input, inTerminal) {
+    _run (input, inTerminal) {
         let command = input;
 
         this._history.addItem(input);
@@ -250,7 +250,7 @@ var RunDialog = new Lang.Class({
         }
     },
 
-    _showError : function(message) {
+    _showError (message) {
         this._commandError = true;
 
         this._errorMessage.set_text(message);
@@ -272,7 +272,7 @@ var RunDialog = new Lang.Class({
         }
     },
 
-    _restart: function() {
+    _restart() {
         if (Meta.is_wayland_compositor()) {
             this._showError(_("Restart is not available on Wayland"));
             return;
@@ -282,7 +282,7 @@ var RunDialog = new Lang.Class({
         Meta.restart(_("Restarting…"));
     },
 
-    open: function() {
+    open() {
         this._history.lastItem();
         this._errorBox.hide();
         this._entryText.set_text('');

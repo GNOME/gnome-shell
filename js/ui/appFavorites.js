@@ -49,18 +49,18 @@ var AppFavorites = new Lang.Class({
 
     FAVORITE_APPS_KEY: 'favorite-apps',
 
-    _init: function() {
+    _init() {
         this._favorites = {};
         global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, Lang.bind(this, this._onFavsChanged));
         this.reload();
     },
 
-    _onFavsChanged: function() {
+    _onFavsChanged() {
         this.reload();
         this.emit('changed');
     },
 
-    reload: function() {
+    reload() {
         let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
         let appSys = Shell.AppSystem.get_default();
 
@@ -91,29 +91,29 @@ var AppFavorites = new Lang.Class({
         }
     },
 
-    _getIds: function() {
+    _getIds() {
         let ret = [];
         for (let id in this._favorites)
             ret.push(id);
         return ret;
     },
 
-    getFavoriteMap: function() {
+    getFavoriteMap() {
         return this._favorites;
     },
 
-    getFavorites: function() {
+    getFavorites() {
         let ret = [];
         for (let id in this._favorites)
             ret.push(this._favorites[id]);
         return ret;
     },
 
-    isFavorite: function(appId) {
+    isFavorite(appId) {
         return appId in this._favorites;
     },
 
-    _addFavorite: function(appId, pos) {
+    _addFavorite(appId, pos) {
         if (appId in this._favorites)
             return false;
 
@@ -132,7 +132,7 @@ var AppFavorites = new Lang.Class({
         return true;
     },
 
-    addFavoriteAtPos: function(appId, pos) {
+    addFavoriteAtPos(appId, pos) {
         if (!this._addFavorite(appId, pos))
             return;
 
@@ -146,16 +146,16 @@ var AppFavorites = new Lang.Class({
                                  });
     },
 
-    addFavorite: function(appId) {
+    addFavorite(appId) {
         this.addFavoriteAtPos(appId, -1);
     },
 
-    moveFavoriteToPos: function(appId, pos) {
+    moveFavoriteToPos(appId, pos) {
         this._removeFavorite(appId);
         this._addFavorite(appId, pos);
     },
 
-    _removeFavorite: function(appId) {
+    _removeFavorite(appId) {
         if (!appId in this._favorites)
             return false;
 
@@ -164,7 +164,7 @@ var AppFavorites = new Lang.Class({
         return true;
     },
 
-    removeFavorite: function(appId) {
+    removeFavorite(appId) {
         let ids = this._getIds();
         let pos = ids.indexOf(appId);
 

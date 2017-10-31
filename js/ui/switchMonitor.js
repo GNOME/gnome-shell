@@ -13,7 +13,7 @@ var SwitchMonitorPopup = new Lang.Class({
     Name: 'SwitchMonitorPopup',
     Extends: SwitcherPopup.SwitcherPopup,
 
-    _init: function() {
+    _init() {
         let items = [{ icon:  'view-mirror-symbolic',
                        /* Translators: this is for display mirroring i.e. cloning.
                         * Try to keep it under around 15 characters.
@@ -40,20 +40,20 @@ var SwitchMonitorPopup = new Lang.Class({
         this._switcherList = new SwitchMonitorSwitcher(items);
     },
 
-    show: function(backward, binding, mask) {
+    show(backward, binding, mask) {
         if (!Meta.MonitorManager.get().can_switch_config())
             return false;
 
         return this.parent(backward, binding, mask);
     },
 
-    _initialSelection: function() {
+    _initialSelection() {
         let currentConfig = Meta.MonitorManager.get().get_switch_config();
         currentConfig %= Meta.MonitorSwitchConfigType.UNKNOWN;
         this._select(currentConfig);
     },
 
-    _keyPressHandler: function(keysym, action) {
+    _keyPressHandler(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_MONITOR)
             this._select(this._next());
         else if (keysym == Clutter.Left)
@@ -66,7 +66,7 @@ var SwitchMonitorPopup = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _finish : function() {
+    _finish () {
         this.parent();
 
         Meta.MonitorManager.get().switch_config(this._selectedIndex);
@@ -77,14 +77,14 @@ var SwitchMonitorSwitcher = new Lang.Class({
     Name: 'SwitchMonitorSwitcher',
     Extends: SwitcherPopup.SwitcherList,
 
-    _init: function(items) {
+    _init(items) {
         this.parent(true);
 
         for (let i = 0; i < items.length; i++)
             this._addIcon(items[i]);
     },
 
-    _addIcon: function(item) {
+    _addIcon(item) {
         let box = new St.BoxLayout({ style_class: 'alt-tab-app',
                                      vertical: true });
 

@@ -37,7 +37,7 @@ var APPICON_ANIMATION_OUT_TIME = 0.25;
 var BaseIcon = new Lang.Class({
     Name: 'BaseIcon',
 
-    _init : function(label, params) {
+    _init (label, params) {
         params = Params.parse(params, { createIcon: null,
                                         setSizeManually: false,
                                         showLabel: true });
@@ -88,7 +88,7 @@ var BaseIcon = new Lang.Class({
         this._iconThemeChangedId = cache.connect('icon-theme-changed', Lang.bind(this, this._onIconThemeChanged));
     },
 
-    _allocate: function(actor, box, flags) {
+    _allocate(actor, box, flags) {
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
@@ -122,11 +122,11 @@ var BaseIcon = new Lang.Class({
         this._iconBin.allocate(childBox, flags);
     },
 
-    _getPreferredWidth: function(actor, forHeight, alloc) {
+    _getPreferredWidth(actor, forHeight, alloc) {
         this._getPreferredHeight(actor, -1, alloc);
     },
 
-    _getPreferredHeight: function(actor, forWidth, alloc) {
+    _getPreferredHeight(actor, forWidth, alloc) {
         let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(forWidth);
         alloc.min_size = iconMinHeight;
         alloc.natural_size = iconNatHeight;
@@ -140,11 +140,11 @@ var BaseIcon = new Lang.Class({
 
     // This can be overridden by a subclass, or by the createIcon
     // parameter to _init()
-    createIcon: function(size) {
+    createIcon(size) {
         throw new Error('no implementation of createIcon in ' + this);
     },
 
-    setIconSize: function(size) {
+    setIconSize(size) {
         if (!this._setSizeManually)
             throw new Error('setSizeManually has to be set to use setIconsize');
 
@@ -154,7 +154,7 @@ var BaseIcon = new Lang.Class({
         this._createIconTexture(size);
     },
 
-    _createIconTexture: function(size) {
+    _createIconTexture(size) {
         if (this.icon)
             this.icon.destroy();
         this.iconSize = size;
@@ -163,7 +163,7 @@ var BaseIcon = new Lang.Class({
         this._iconBin.child = this.icon;
     },
 
-    _onStyleChanged: function() {
+    _onStyleChanged() {
         let node = this.actor.get_theme_node();
         this._spacing = node.get_length('spacing');
 
@@ -181,7 +181,7 @@ var BaseIcon = new Lang.Class({
         this._createIconTexture(size);
     },
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._iconThemeChangedId > 0) {
             let cache = St.TextureCache.get_default();
             cache.disconnect(this._iconThemeChangedId);
@@ -189,11 +189,11 @@ var BaseIcon = new Lang.Class({
         }
     },
 
-    _onIconThemeChanged: function() {
+    _onIconThemeChanged() {
         this._createIconTexture(this.iconSize);
     },
 
-    animateZoomOut: function() {
+    animateZoomOut() {
         // Animate only the child instead of the entire actor, so the
         // styles like hover and running are not applied while
         // animating.
@@ -234,7 +234,7 @@ function zoomOutActor(actor) {
                        translation_y: containedY - scaledY,
                        opacity: 0,
                        transition: 'easeOutQuad',
-                       onComplete: function() {
+                       onComplete() {
                            actorClone.destroy();
                        }
                     });
@@ -243,7 +243,7 @@ function zoomOutActor(actor) {
 var IconGrid = new Lang.Class({
     Name: 'IconGrid',
 
-    _init: function(params) {
+    _init(params) {
         params = Params.parse(params, { rowLimit: null,
                                         columnLimit: null,
                                         minRows: 1,
@@ -290,19 +290,19 @@ var IconGrid = new Lang.Class({
         this._grid.connect('actor-removed', Lang.bind(this, this._childRemoved));
     },
 
-    _keyFocusIn: function(actor) {
+    _keyFocusIn(actor) {
         this.emit('key-focus-in', actor);
     },
 
-    _childAdded: function(grid, child) {
+    _childAdded(grid, child) {
         child._iconGridKeyFocusInId = child.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
     },
 
-    _childRemoved: function(grid, child) {
+    _childRemoved(grid, child) {
         child.disconnect(child._iconGridKeyFocusInId);
     },
 
-    _getPreferredWidth: function (grid, forHeight, alloc) {
+    _getPreferredWidth (grid, forHeight, alloc) {
         if (this._fillParent)
             // Ignore all size requests of children and request a size of 0;
             // later we'll allocate as many children as fit the parent
@@ -320,7 +320,7 @@ var IconGrid = new Lang.Class({
         alloc.natural_size = nColumns * this._getHItemSize() + totalSpacing + this.leftPadding + this.rightPadding;
     },
 
-    _getVisibleChildren: function() {
+    _getVisibleChildren() {
         let children = this._grid.get_children();
         children = children.filter(function(actor) {
             return actor.visible;
@@ -328,7 +328,7 @@ var IconGrid = new Lang.Class({
         return children;
     },
 
-    _getPreferredHeight: function (grid, forWidth, alloc) {
+    _getPreferredHeight (grid, forWidth, alloc) {
         if (this._fillParent)
             // Ignore all size requests of children and request a size of 0;
             // later we'll allocate as many children as fit the parent
@@ -354,7 +354,7 @@ var IconGrid = new Lang.Class({
         alloc.natural_size = height;
     },
 
-    _allocate: function (grid, box, flags) {
+    _allocate (grid, box, flags) {
         if (this._fillParent) {
             // Reset the passed in box to fill the parent
             let parentBox = this.actor.get_parent().allocation;
@@ -414,21 +414,21 @@ var IconGrid = new Lang.Class({
      * Intended to be override by subclasses if they need a different
      * set of items to be animated.
      */
-    _getChildrenToAnimate: function() {
+    _getChildrenToAnimate() {
         return this._getVisibleChildren();
     },
 
-    _cancelAnimation: function() {
+    _cancelAnimation() {
         this._clonesAnimating.forEach(clone => { clone.destroy(); });
         this._clonesAnimating = [];
     },
 
-    _animationDone: function() {
+    _animationDone() {
         this._clonesAnimating = [];
         this.emit('animation-done');
     },
 
-    animatePulse: function(animationDirection) {
+    animatePulse(animationDirection) {
         if (animationDirection != AnimationDirection.IN)
             throw new Error("Pulse animation only implements 'in' animation direction");
 
@@ -479,7 +479,7 @@ var IconGrid = new Lang.Class({
         }
     },
 
-    animateSpring: function(animationDirection, sourceActor) {
+    animateSpring(animationDirection, sourceActor) {
         this._cancelAnimation();
 
         let actors = this._getChildrenToAnimate();
@@ -587,13 +587,13 @@ var IconGrid = new Lang.Class({
         }
     },
 
-    _restoreItemsOpacity: function() {
+    _restoreItemsOpacity() {
         for (let index = 0; index < this._items.length; index++) {
             this._items[index].actor.opacity = 255;
         }
     },
 
-    _getAllocatedChildSizeAndSpacing: function(child) {
+    _getAllocatedChildSizeAndSpacing(child) {
         let [,, natWidth, natHeight] = child.get_preferred_size();
         let width = Math.min(this._getHItemSize(), natWidth);
         let xSpacing = Math.max(0, width - natWidth) / 2;
@@ -602,7 +602,7 @@ var IconGrid = new Lang.Class({
         return [width, height, xSpacing, ySpacing];
     },
 
-    _calculateChildBox: function(child, x, y, box) {
+    _calculateChildBox(child, x, y, box) {
         /* Center the item in its allocation horizontally */
         let [width, height, childXSpacing, childYSpacing] =
             this._getAllocatedChildSizeAndSpacing(child);
@@ -620,15 +620,15 @@ var IconGrid = new Lang.Class({
         return childBox;
     },
 
-    columnsForWidth: function(rowWidth) {
+    columnsForWidth(rowWidth) {
         return this._computeLayout(rowWidth)[0];
     },
 
-    getRowLimit: function() {
+    getRowLimit() {
         return this._rowLimit;
     },
 
-    _computeLayout: function (forWidth) {
+    _computeLayout (forWidth) {
         let nColumns = 0;
         let usedWidth = this.leftPadding + this.rightPadding;
         let spacing = this._getSpacing();
@@ -645,7 +645,7 @@ var IconGrid = new Lang.Class({
         return [nColumns, usedWidth];
     },
 
-    _onStyleChanged: function() {
+    _onStyleChanged() {
         let themeNode = this.actor.get_theme_node();
         this._spacing = themeNode.get_length('spacing');
         this._hItemSize = themeNode.get_length('-shell-grid-horizontal-item-size') || ICON_SIZE;
@@ -653,7 +653,7 @@ var IconGrid = new Lang.Class({
         this._grid.queue_relayout();
     },
 
-    nRows: function(forWidth) {
+    nRows(forWidth) {
         let children = this._getVisibleChildren();
         let nColumns = (forWidth < 0) ? children.length : this._computeLayout(forWidth)[0];
         let nRows = (nColumns > 0) ? Math.ceil(children.length / nColumns) : 0;
@@ -662,35 +662,35 @@ var IconGrid = new Lang.Class({
         return nRows;
     },
 
-    rowsForHeight: function(forHeight) {
+    rowsForHeight(forHeight) {
         return Math.floor((forHeight - (this.topPadding + this.bottomPadding) + this._getSpacing()) / (this._getVItemSize() + this._getSpacing()));
     },
 
-    usedHeightForNRows: function(nRows) {
+    usedHeightForNRows(nRows) {
         return (this._getVItemSize() + this._getSpacing()) * nRows - this._getSpacing() + this.topPadding + this.bottomPadding;
     },
 
-    usedWidth: function(forWidth) {
+    usedWidth(forWidth) {
         return this.usedWidthForNColumns(this.columnsForWidth(forWidth));
     },
 
-    usedWidthForNColumns: function(columns) {
+    usedWidthForNColumns(columns) {
         let usedWidth = columns  * (this._getHItemSize() + this._getSpacing());
         usedWidth -= this._getSpacing();
         return usedWidth + this.leftPadding + this.rightPadding;
     },
 
-    removeAll: function() {
+    removeAll() {
         this._items = [];
         this._grid.remove_all_children();
     },
 
-    destroyAll: function() {
+    destroyAll() {
         this._items = [];
         this._grid.destroy_all_children();
     },
 
-    addItem: function(item, index) {
+    addItem(item, index) {
         if (!item.icon instanceof BaseIcon)
             throw new Error('Only items with a BaseIcon icon property can be added to IconGrid');
 
@@ -701,35 +701,35 @@ var IconGrid = new Lang.Class({
             this._grid.add_actor(item.actor);
     },
 
-    removeItem: function(item) {
+    removeItem(item) {
         this._grid.remove_child(item.actor);
     },
 
-    getItemAtIndex: function(index) {
+    getItemAtIndex(index) {
         return this._grid.get_child_at_index(index);
     },
 
-    visibleItemsCount: function() {
+    visibleItemsCount() {
         return this._grid.get_n_children() - this._grid.get_n_skip_paint();
     },
 
-    setSpacing: function(spacing) {
+    setSpacing(spacing) {
         this._fixedSpacing = spacing;
     },
 
-    _getSpacing: function() {
+    _getSpacing() {
         return this._fixedSpacing ? this._fixedSpacing : this._spacing;
     },
 
-    _getHItemSize: function() {
+    _getHItemSize() {
         return this._fixedHItemSize ? this._fixedHItemSize : this._hItemSize;
     },
 
-    _getVItemSize: function() {
+    _getVItemSize() {
         return this._fixedVItemSize ? this._fixedVItemSize : this._vItemSize;
     },
 
-    _updateSpacingForSize: function(availWidth, availHeight) {
+    _updateSpacingForSize(availWidth, availHeight) {
         let maxEmptyVArea = availHeight - this._minRows * this._getVItemSize();
         let maxEmptyHArea = availWidth - this._minColumns * this._getHItemSize();
         let maxHSpacing, maxVSpacing;
@@ -766,7 +766,7 @@ var IconGrid = new Lang.Class({
      * This function must to be called before iconGrid allocation,
      * to know how much spacing can the grid has
      */
-    adaptToSize: function(availWidth, availHeight) {
+    adaptToSize(availWidth, availHeight) {
         this._fixedHItemSize = this._hItemSize;
         this._fixedVItemSize = this._vItemSize;
         this._updateSpacingForSize(availWidth, availHeight);
@@ -788,7 +788,7 @@ var IconGrid = new Lang.Class({
     },
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
-    _updateIconSizes: function() {
+    _updateIconSizes() {
         let scale = Math.min(this._fixedHItemSize, this._fixedVItemSize) / Math.max(this._hItemSize, this._vItemSize);
         let newIconSize = Math.floor(ICON_SIZE * scale);
         for (let i in this._items) {
@@ -802,7 +802,7 @@ var PaginatedIconGrid = new Lang.Class({
     Name: 'PaginatedIconGrid',
     Extends: IconGrid,
 
-    _init: function(params) {
+    _init(params) {
         this.parent(params);
         this._nPages = 0;
         this.currentPage = 0;
@@ -811,12 +811,12 @@ var PaginatedIconGrid = new Lang.Class({
         this._childrenPerPage = 0;
     },
 
-    _getPreferredHeight: function (grid, forWidth, alloc) {
+    _getPreferredHeight (grid, forWidth, alloc) {
         alloc.min_size = (this._availableHeightPerPageForItems() + this.bottomPadding + this.topPadding) * this._nPages + this._spaceBetweenPages * this._nPages;
         alloc.natural_size = (this._availableHeightPerPageForItems() + this.bottomPadding + this.topPadding) * this._nPages + this._spaceBetweenPages * this._nPages;
     },
 
-    _allocate: function (grid, box, flags) {
+    _allocate (grid, box, flags) {
          if (this._childrenPerPage == 0)
             log('computePages() must be called before allocate(); pagination will not work.');
 
@@ -870,7 +870,7 @@ var PaginatedIconGrid = new Lang.Class({
     },
 
     // Overriden from IconGrid
-    _getChildrenToAnimate: function() {
+    _getChildrenToAnimate() {
         let children = this._getVisibleChildren();
         let firstIndex = this._childrenPerPage * this.currentPage;
         let lastIndex = firstIndex + this._childrenPerPage;
@@ -878,7 +878,7 @@ var PaginatedIconGrid = new Lang.Class({
         return children.slice(firstIndex, lastIndex);
     },
 
-    _computePages: function (availWidthPerPage, availHeightPerPage) {
+    _computePages (availWidthPerPage, availHeightPerPage) {
         let [nColumns, usedWidth] = this._computeLayout(availWidthPerPage);
         let nRows;
         let children = this._getVisibleChildren();
@@ -897,24 +897,24 @@ var PaginatedIconGrid = new Lang.Class({
         this._childrenPerPage = nColumns * this._rowsPerPage;
     },
 
-    adaptToSize: function(availWidth, availHeight) {
+    adaptToSize(availWidth, availHeight) {
         this.parent(availWidth, availHeight);
         this._computePages(availWidth, availHeight);
     },
 
-    _availableHeightPerPageForItems: function() {
+    _availableHeightPerPageForItems() {
         return this.usedHeightForNRows(this._rowsPerPage) - (this.topPadding + this.bottomPadding);
     },
 
-    nPages: function() {
+    nPages() {
         return this._nPages;
     },
 
-    getPageHeight: function() {
+    getPageHeight() {
         return this._availableHeightPerPageForItems();
     },
 
-    getPageY: function(pageNumber) {
+    getPageY(pageNumber) {
         if (!this._nPages)
             return 0;
 
@@ -923,7 +923,7 @@ var PaginatedIconGrid = new Lang.Class({
         return childBox.y1 - this.topPadding;
     },
 
-    getItemPage: function(item) {
+    getItemPage(item) {
         let children = this._getVisibleChildren();
         let index = children.indexOf(item);
         if (index == -1) {
@@ -941,7 +941,7 @@ var PaginatedIconGrid = new Lang.Class({
     *
     * Pan view to create extra space for @nRows above or below @sourceItem.
     */
-    openExtraSpace: function(sourceItem, side, nRows) {
+    openExtraSpace(sourceItem, side, nRows) {
         let children = this._getVisibleChildren();
         let index = children.indexOf(sourceItem.actor);
         if (index == -1) {
@@ -985,7 +985,7 @@ var PaginatedIconGrid = new Lang.Class({
         }
     },
 
-    _translateChildren: function(children, direction, nRows) {
+    _translateChildren(children, direction, nRows) {
         let translationY = nRows * (this._getVItemSize() + this._getSpacing());
         if (translationY == 0)
             return;
@@ -1008,7 +1008,7 @@ var PaginatedIconGrid = new Lang.Class({
         }
     },
 
-    closeExtraSpace: function() {
+    closeExtraSpace() {
         if (!this._translatedChildren || !this._translatedChildren.length) {
             this.emit('space-closed');
             return;

@@ -31,7 +31,7 @@ var RadialShaderQuad = new Lang.Class({
     Name: 'RadialShaderQuad',
     Extends: Shell.GLSLQuad,
 
-    _init: function(params) {
+    _init(params) {
         this.parent(params);
 
         this._brightnessLocation = this.get_uniform_location('brightness');
@@ -41,7 +41,7 @@ var RadialShaderQuad = new Lang.Class({
         this.vignetteSharpness = 0.0;
     },
 
-    vfunc_build_pipeline: function() {
+    vfunc_build_pipeline() {
         this.add_glsl_snippet(Shell.SnippetHook.FRAGMENT,
                               VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
     },
@@ -94,7 +94,7 @@ var RadialShaderQuad = new Lang.Class({
 var Lightbox = new Lang.Class({
     Name: 'Lightbox',
 
-    _init : function(container, params) {
+    _init (container, params) {
         params = Params.parse(params, { inhibitEvents: false,
                                         width: null,
                                         height: null,
@@ -139,7 +139,7 @@ var Lightbox = new Lang.Class({
         this._highlighted = null;
     },
 
-    _actorAdded : function(container, newChild) {
+    _actorAdded (container, newChild) {
         let children = this._container.get_children();
         let myIndex = children.indexOf(this.actor);
         let newChildIndex = children.indexOf(newChild);
@@ -161,7 +161,7 @@ var Lightbox = new Lang.Class({
         }
     },
 
-    show: function(fadeInTime) {
+    show(fadeInTime) {
         fadeInTime = fadeInTime || 0;
 
         Tweener.removeTweens(this.actor);
@@ -191,7 +191,7 @@ var Lightbox = new Lang.Class({
         this.actor.show();
     },
 
-    hide: function(fadeOutTime) {
+    hide(fadeOutTime) {
         fadeOutTime = fadeOutTime || 0;
 
         this.shown = false;
@@ -219,7 +219,7 @@ var Lightbox = new Lang.Class({
         }
     },
 
-    _actorRemoved : function(container, child) {
+    _actorRemoved (container, child) {
         let index = this._children.indexOf(child);
         if (index != -1) // paranoia
             this._children.splice(index, 1);
@@ -236,7 +236,7 @@ var Lightbox = new Lang.Class({
      * currently-highlighted actor. With no arguments or a false/null
      * argument, all actors will be unhighlighted.
      */
-    highlight : function(window) {
+    highlight (window) {
         if (this._highlighted == window)
             return;
 
@@ -264,7 +264,7 @@ var Lightbox = new Lang.Class({
      *
      * Destroys the lightbox.
      */
-    destroy : function() {
+    destroy () {
         this.actor.destroy();
     },
 
@@ -274,7 +274,7 @@ var Lightbox = new Lang.Class({
      * This is called when the lightbox' actor is destroyed, either
      * by destroying its container or by explicitly calling this.destroy().
      */
-    _onDestroy: function() {
+    _onDestroy() {
         this._container.disconnect(this._actorAddedSignalId);
         this._container.disconnect(this._actorRemovedSignalId);
 

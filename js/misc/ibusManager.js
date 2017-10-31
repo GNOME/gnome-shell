@@ -40,7 +40,7 @@ var IBusManager = new Lang.Class({
     _MAX_INPUT_SOURCE_ACTIVATION_TIME: 4000, // ms
     _PRELOAD_ENGINES_DELAY_TIME: 30, // sec
 
-    _init: function() {
+    _init() {
         IBus.init();
 
         this._candidatePopup = new IBusCandidatePopup.CandidatePopup();
@@ -62,7 +62,7 @@ var IBusManager = new Lang.Class({
         this._spawn();
     },
 
-    _spawn: function() {
+    _spawn() {
         try {
             Gio.Subprocess.new(['ibus-daemon', '--xim', '--panel', 'disable'],
                                Gio.SubprocessFlags.NONE);
@@ -71,7 +71,7 @@ var IBusManager = new Lang.Class({
         }
     },
 
-    _clear: function() {
+    _clear() {
         if (this._panelService)
             this._panelService.destroy();
 
@@ -87,7 +87,7 @@ var IBusManager = new Lang.Class({
         this._spawn();
     },
 
-    _onConnected: function() {
+    _onConnected() {
         this._ibus.list_engines_async(-1, null, Lang.bind(this, this._initEngines));
         this._ibus.request_name_async(IBus.SERVICE_PANEL,
                                       IBus.BusNameFlag.REPLACE_EXISTING,
@@ -95,7 +95,7 @@ var IBusManager = new Lang.Class({
                                       Lang.bind(this, this._initPanelService));
     },
 
-    _initEngines: function(ibus, result) {
+    _initEngines(ibus, result) {
         let enginesList = this._ibus.list_engines_async_finish(result);
         if (enginesList) {
             for (let i = 0; i < enginesList.length; ++i) {
@@ -108,7 +108,7 @@ var IBusManager = new Lang.Class({
         }
     },
 
-    _initPanelService: function(ibus, result) {
+    _initPanelService(ibus, result) {
         let success = this._ibus.request_name_async_finish(result);
         if (success) {
             this._panelService = new IBus.PanelService({ connection: this._ibus.get_connection(),
@@ -143,13 +143,13 @@ var IBusManager = new Lang.Class({
         }
     },
 
-    _updateReadiness: function() {
+    _updateReadiness() {
         this._ready = (Object.keys(this._engines).length > 0 &&
                        this._panelService != null);
         this.emit('ready', this._ready);
     },
 
-    _engineChanged: function(bus, engineName) {
+    _engineChanged(bus, engineName) {
         if (!this._ready)
             return;
 
@@ -170,26 +170,26 @@ var IBusManager = new Lang.Class({
             }));
     },
 
-    _updateProperty: function(panel, prop) {
+    _updateProperty(panel, prop) {
         this.emit('property-updated', this._currentEngineName, prop);
     },
 
-    _setContentType: function(panel, purpose, hints) {
+    _setContentType(panel, purpose, hints) {
         this.emit('set-content-type', purpose, hints);
     },
 
-    activateProperty: function(key, state) {
+    activateProperty(key, state) {
         this._panelService.property_activate(key, state);
     },
 
-    getEngineDesc: function(id) {
+    getEngineDesc(id) {
         if (!this._ready || !this._engines.hasOwnProperty(id))
             return null;
 
         return this._engines[id];
     },
 
-    setEngine: function(id, callback) {
+    setEngine(id, callback) {
         // Send id even if id == this._currentEngineName
         // because 'properties-registered' signal can be emitted
         // while this._ibusSources == null on a lock screen.
@@ -203,7 +203,7 @@ var IBusManager = new Lang.Class({
                                            null, callback);
     },
 
-    preloadEngines: function(ids) {
+    preloadEngines(ids) {
         if (!this._ibus || ids.length == 0)
             return;
 
