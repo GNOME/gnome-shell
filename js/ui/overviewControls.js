@@ -431,20 +431,17 @@ var ControlsManager = new Lang.Class({
         layout.connect('allocation-changed', Lang.bind(this, this._updateWorkspacesGeometry));
 
         Main.overview.connect('showing', Lang.bind(this, this._updateSpacerVisibility));
-        Main.overview.connect('item-drag-begin', Lang.bind(this,
-            function() {
-                let activePage = this.viewSelector.getActivePage();
-                if (activePage != ViewSelector.ViewPage.WINDOWS)
-                    this.viewSelector.fadeHalf();
-            }));
-        Main.overview.connect('item-drag-end', Lang.bind(this,
-            function() {
-                this.viewSelector.fadeIn();
-            }));
-        Main.overview.connect('item-drag-cancelled', Lang.bind(this,
-            function() {
-                this.viewSelector.fadeIn();
-            }));
+        Main.overview.connect('item-drag-begin', () => {
+            let activePage = this.viewSelector.getActivePage();
+            if (activePage != ViewSelector.ViewPage.WINDOWS)
+                this.viewSelector.fadeHalf();
+        });
+        Main.overview.connect('item-drag-end', () => {
+            this.viewSelector.fadeIn();
+        });
+        Main.overview.connect('item-drag-cancelled', () => {
+            this.viewSelector.fadeIn();
+        });
     },
 
     _updateWorkspacesGeometry() {

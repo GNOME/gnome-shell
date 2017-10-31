@@ -47,14 +47,14 @@ function _patchContainerClass(containerClass) {
 function _patchLayoutClass(layoutClass, styleProps) {
     if (styleProps)
         layoutClass.prototype.hookup_style = function(container) {
-            container.connect('style-changed', Lang.bind(this, function() {
+            container.connect('style-changed', () => {
                 let node = container.get_theme_node();
                 for (let prop in styleProps) {
                     let [found, length] = node.lookup_length(styleProps[prop], false);
                     if (found)
                         this[prop] = length;
                 }
-            }));
+            });
         };
     layoutClass.prototype.child_set = function(actor, props) {
         let meta = this.get_child_meta(actor.get_parent(), actor);
@@ -88,7 +88,7 @@ function init() {
     window._ = Gettext.gettext;
     window.C_ = Gettext.pgettext;
     window.ngettext = Gettext.ngettext;
-    window.N_ = function(s) { return s; };
+    window.N_ = s => s;
 
     // Miscellaneous monkeypatching
     _patchContainerClass(St.BoxLayout);

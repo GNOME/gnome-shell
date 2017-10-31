@@ -67,7 +67,9 @@ var GrabHelper = new Lang.Class({
     // Adds @actor to the set of actors that are allowed to process events
     // during a grab.
     addActor(actor) {
-        actor.__grabHelperDestroyId = actor.connect('destroy', Lang.bind(this, function() { this.removeActor(actor); }));
+        actor.__grabHelperDestroyId = actor.connect('destroy', () => {
+            this.removeActor(actor);
+        });
         this._actors.push(actor);
     },
 

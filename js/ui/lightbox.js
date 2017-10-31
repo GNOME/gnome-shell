@@ -171,20 +171,20 @@ var Lightbox = new Lang.Class({
                                vignetteSharpness: VIGNETTE_SHARPNESS,
                                time: fadeInTime,
                                transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this, function() {
+                               onComplete: () => {
                                    this.shown = true;
                                    this.emit('shown');
-                               })
+                               }
                              });
         } else {
             Tweener.addTween(this.actor,
                              { opacity: 255 * this._fadeFactor,
                                time: fadeInTime,
                                transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this, function() {
+                               onComplete: () => {
                                    this.shown = true;
                                    this.emit('shown');
-                               })
+                               }
                              });
         }
 
@@ -203,18 +203,18 @@ var Lightbox = new Lang.Class({
                                opacity: 0,
                                time: fadeOutTime,
                                transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this, function() {
+                               onComplete: () => {
                                    this.actor.hide();
-                               })
+                               }
                              });
         } else {
             Tweener.addTween(this.actor,
                              { opacity: 0,
                                time: fadeOutTime,
                                transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this, function() {
+                               onComplete: () => {
                                    this.actor.hide();
-                               })
+                               }
                              });
         }
     },

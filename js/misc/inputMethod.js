@@ -59,8 +59,8 @@ var InputMethod = new Lang.Class({
 
     _setContext(bus, res) {
         this._context = this._ibus.create_input_context_async_finish(res);
-        this._context.connect('enabled', Lang.bind(this, function () { this._enabled = true }));
-        this._context.connect('disabled', Lang.bind(this, function () { this._enabled = false }));
+        this._context.connect('enabled', () => { this._enabled = true });
+        this._context.connect('disabled', () => { this._enabled = false });
         this._context.connect('commit-text', Lang.bind(this, this._onCommitText));
         this._context.connect('delete-surrounding-text', Lang.bind(this, this._onDeleteSurroundingText));
         this._context.connect('update-preedit-text', Lang.bind(this, this._onUpdatePreeditText));
@@ -201,14 +201,14 @@ var InputMethod = new Lang.Class({
         this._context.process_key_event_async(event.get_key_symbol(),
                                               event.get_key_code() - 8, // Convert XKB keycodes to evcodes
                                               state, -1, null,
-                                              Lang.bind(this, (context, res) => {
+                                              (context, res) => {
                                                   try {
                                                       let retval = context.process_key_event_async_finish(res);
                                                       this.notify_key_event(event, retval);
                                                   } catch (e) {
                                                       log('Error processing key on IM: ' + e.message);
                                                   }
-                                              }));
+                                              });
         return true;
     },
 });

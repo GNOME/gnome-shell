@@ -129,9 +129,9 @@ var ContentTypeDiscoverer = new Lang.Class({
 
             let hotplugSniffer = new HotplugSniffer();
             hotplugSniffer.SniffURIRemote(root.get_uri(),
-                 Lang.bind(this, function([contentTypes]) {
+                 ([contentTypes]) => {
                      this._emitCallback(mount, contentTypes);
-                 }));
+                 });
         }
     },
 
@@ -140,12 +140,12 @@ var ContentTypeDiscoverer = new Lang.Class({
             contentTypes = [];
 
         // we're not interested in win32 software content types here
-        contentTypes = contentTypes.filter(function(type) {
-            return (type != 'x-content/win32-software');
-        });
+        contentTypes = contentTypes.filter(
+            type => (type != 'x-content/win32-software')
+        );
 
         let apps = [];
-        contentTypes.forEach(function(type) {
+        contentTypes.forEach(type => {
             let app = Gio.app_info_get_default_for_type(type, false);
 
             if (app)
@@ -185,9 +185,9 @@ var AutorunManager = new Lang.Class({
         if (!this._session.SessionIsActive)
             return;
 
-        let discoverer = new ContentTypeDiscoverer(Lang.bind(this, function(mount, apps, contentTypes) {
+        let discoverer = new ContentTypeDiscoverer((mount, apps, contentTypes) => {
             this._dispatcher.addMount(mount, apps, contentTypes);
-        }));
+        });
         discoverer.guessContentTypes(mount);
     },
 
@@ -222,10 +222,7 @@ var AutorunDispatcher = new Lang.Class({
     },
 
     _getSourceForMount(mount) {
-        let filtered =
-            this._sources.filter(function (source) {
-                return (source.mount == mount);
-            });
+        let filtered = this._sources.filter(source => (source.mount == mount));
 
         // we always make sure not to add two sources for the same
         // mount in addMount(), so it's safe to assume filtered.length
@@ -337,12 +334,12 @@ var AutorunNotification = new Lang.Class({
     createBanner() {
         let banner = new MessageTray.NotificationBanner(this);
 
-        this.source.apps.forEach(Lang.bind(this, function (app) {
+        this.source.apps.forEach(app => {
             let actor = this._buttonForApp(app);
 
             if (actor)
                 banner.addButton(actor);
-        }));
+        });
 
         return banner;
     },
@@ -366,10 +363,10 @@ var AutorunNotification = new Lang.Class({
                                      button_mask: St.ButtonMask.ONE,
                                      style_class: 'hotplug-notification-item button' });
 
-        button.connect('clicked', Lang.bind(this, function() {
+        button.connect('clicked', () => {
             startAppForMount(app, this._mount);
             this.destroy();
-        }));
+        });
 
         return button;
     },

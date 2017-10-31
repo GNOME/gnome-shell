@@ -112,9 +112,9 @@ var NotificationsBox = new Lang.Class({
         this.actor.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
 
         this._sources = new Map();
-        Main.messageTray.getSources().forEach(Lang.bind(this, function(source) {
+        Main.messageTray.getSources().forEach(source => {
             this._sourceAdded(Main.messageTray, source, true);
-        }));
+        });
         this._updateVisibility();
 
         this._sourceAddedId = Main.messageTray.connect('source-added', Lang.bind(this, this._sourceAdded));
@@ -135,9 +135,8 @@ var NotificationsBox = new Lang.Class({
     },
 
     _updateVisibility() {
-        this._notificationBox.visible = this._notificationBox.get_children().some(function(a) {
-            return a.visible;
-        });
+        this._notificationBox.visible =
+            this._notificationBox.get_children().some(a => a.visible);
 
         this.actor.visible = this._notificationBox.visible;
     },
@@ -235,21 +234,21 @@ var NotificationsBox = new Lang.Class({
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
 
-        obj.sourceCountChangedId = source.connect('count-updated', Lang.bind(this, function(source) {
+        obj.sourceCountChangedId = source.connect('count-updated', source => {
             this._countChanged(source, obj);
-        }));
-        obj.sourceTitleChangedId = source.connect('title-changed', Lang.bind(this, function(source) {
+        });
+        obj.sourceTitleChangedId = source.connect('title-changed', source => {
             this._titleChanged(source, obj);
-        }));
-        obj.policyChangedId = source.policy.connect('policy-changed', Lang.bind(this, function(policy, key) {
+        });
+        obj.policyChangedId = source.policy.connect('policy-changed', (policy, key) => {
             if (key == 'show-in-lock-screen')
                 this._visibleChanged(source, obj);
             else
                 this._detailedChanged(source, obj);
-        }));
-        obj.sourceDestroyId = source.connect('destroy', Lang.bind(this, function(source) {
+        });
+        obj.sourceDestroyId = source.connect('destroy', source => {
             this._onSourceDestroy(source, obj);
-        }));
+        });
 
         this._sources.set(source, obj);
 
@@ -499,47 +498,48 @@ var ScreenShield = new Lang.Class({
         this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);
 
-        this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
+        this._presence = new GnomeSession.Presence((proxy, error) => {
             if (error) {
                 logError(error, 'Error while reading gnome-session presence');
                 return;
             }
 
             this._onStatusChanged(proxy.status);
-        }));
-        this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
+        });
+        this._presence.connectSignal('StatusChanged', (proxy, senderName, [status]) => {
             this._onStatusChanged(status);
-        }));
+        });
 
         this._screenSaverDBus = new ShellDBus.ScreenSaverDBus(this);
 
         this._smartcardManager = SmartcardManager.getSmartcardManager();
         this._smartcardManager.connect('smartcard-inserted',
-                                       Lang.bind(this, function(manager, token) {
+                                       (manager, token) => {
                                            if (this._isLocked && token.UsedToLogin)
                                                this._liftShield(true, 0);
-                                       }));
+                                       });
 
         this._oVirtCredentialsManager = OVirt.getOVirtCredentialsManager();
         this._oVirtCredentialsManager.connect('user-authenticated',
-                                              Lang.bind(this, function() {
+                                              () => {
                                                   if (this._isLocked)
                                                       this._liftShield(true, 0);
-                                              }));
+                                              });
 
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.connect('prepare-for-sleep',
                                    Lang.bind(this, this._prepareForSleep));
 
         this._loginSession = null;
-        this._loginManager.getCurrentSessionProxy(Lang.bind(this,
-            function(sessionProxy) {
-                this._loginSession = sessionProxy;
-                this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
-                this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.deactivate(false); }));
-                this._loginSession.connect('g-properties-changed', Lang.bind(this, this._syncInhibitor));
-                this._syncInhibitor();
-            }));
+        this._loginManager.getCurrentSessionProxy(sessionProxy => {
+            this._loginSession = sessionProxy;
+            this._loginSession.connectSignal('Lock',
+                                             () => { this.lock(false); });
+            this._loginSession.connectSignal('Unlock',
+                                             () => { this.deactivate(false); });
+            this._loginSession.connect('g-properties-changed', Lang.bind(this, this._syncInhibitor));
+            this._syncInhibitor();
+        });
 
         this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
         this._settings.connect('changed::' + LOCK_ENABLED_KEY, Lang.bind(this, this._syncInhibitor));
@@ -713,11 +713,11 @@ var ScreenShield = new Lang.Class({
                        !this._isActive && lockEnabled && !lockLocked);
         if (inhibit) {
             this._loginManager.inhibit(_("GNOME needs to lock the screen"),
-                                       Lang.bind(this, function(inhibitor) {
-                                           if (this._inhibitor)
-                                               this._inhibitor.close(null);
-                                           this._inhibitor = inhibitor;
-                                       }));
+                inhibitor => {
+                    if (this._inhibitor)
+                        this._inhibitor.close(null);
+                    this._inhibitor = inhibitor;
+                });
         } else {
             if (this._inhibitor)
                 this._inhibitor.close(null);
@@ -846,11 +846,11 @@ var ScreenShield = new Lang.Class({
         if (shouldLock) {
             let lockTimeout = Math.max(STANDARD_FADE_TIME, this._settings.get_uint(LOCK_DELAY_KEY));
             this._lockTimeoutId = Mainloop.timeout_add(lockTimeout * 1000,
-                                                       Lang.bind(this, function() {
+                                                       () => {
                                                            this._lockTimeoutId = 0;
                                                            this.lock(false);
                                                            return GLib.SOURCE_REMOVE;
-                                                       }));
+                                                       });
             GLib.Source.set_name_by_id(this._lockTimeoutId, '[gnome-shell] this.lock');
         }
 
@@ -1094,14 +1094,14 @@ var ScreenShield = new Lang.Class({
 
         this._checkArrowAnimation();
 
-        let motionId = global.stage.connect('captured-event', Lang.bind(this, function(stage, event) {
+        let motionId = global.stage.connect('captured-event', (stage, event) => {
             if (event.type() == Clutter.EventType.MOTION) {
                 this._cursorTracker.set_pointer_visible(true);
                 global.stage.disconnect(motionId);
             }
 
             return Clutter.EVENT_PROPAGATE;
-        }));
+        });
         this._cursorTracker.set_pointer_visible(false);
 
         this._lockScreenState = MessageTray.State.SHOWN;
@@ -1111,10 +1111,10 @@ var ScreenShield = new Lang.Class({
         if (params.fadeToBlack && params.animateFade) {
             // Take a beat
 
-            let id = Mainloop.timeout_add(1000 * MANUAL_FADE_TIME, Lang.bind(this, function() {
+            let id = Mainloop.timeout_add(1000 * MANUAL_FADE_TIME, () => {
                 this._activateFade(this._shortLightbox, MANUAL_FADE_TIME);
                 return GLib.SOURCE_REMOVE;
-            }));
+            });
             GLib.Source.set_name_by_id(id, '[gnome-shell] this._activateFade');
         } else {
             if (params.fadeToBlack)
@@ -1192,9 +1192,7 @@ var ScreenShield = new Lang.Class({
 
     deactivate(animate) {
         if (this._dialog)
-            this._dialog.finish(Lang.bind(this, function() {
-                this._continueDeactivate(animate);
-            }));
+            this._dialog.finish(() => { this._continueDeactivate(animate); });
         else
             this._continueDeactivate(animate);
     },
@@ -1339,9 +1337,9 @@ var ScreenShield = new Lang.Class({
         let wasLocked = global.get_runtime_state('b', LOCKED_STATE_STR);
         if (wasLocked === null)
             return;
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
             this.lock(false);
-        }));
+        });
     }
 });
 Signals.addSignalMethods(ScreenShield.prototype);

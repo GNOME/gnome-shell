@@ -177,10 +177,10 @@ var OsdWindow = new Lang.Class({
                          { opacity: 0,
                            time: FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
+                           onComplete: () => {
                               this._reset();
                               Meta.enable_unredirect_for_screen(global.screen);
-                           })
+                           }
                          });
         return GLib.SOURCE_REMOVE;
     },

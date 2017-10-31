@@ -101,13 +101,11 @@ var AudioDeviceSelectionDialog = new Lang.Class({
     _addDevice(device) {
         let box = new St.BoxLayout({ style_class: 'audio-selection-device-box',
                                      vertical: true });
-        box.connect('notify::height',
-            function() {
-                Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                    function() {
-                        box.width = box.height;
-                    });
+        box.connect('notify::height', () => {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
+                box.width = box.height;
             });
+        });
 
         let icon = new St.Icon({ style_class: 'audio-selection-device-icon',
                                  icon_name: this._getDeviceIcon(device) });
@@ -123,12 +121,11 @@ var AudioDeviceSelectionDialog = new Lang.Class({
                                      child: box });
         this._selectionBox.add(button);
 
-        button.connect('clicked', Lang.bind(this,
-            function() {
-                this.emit('device-selected', device);
-                this.close();
-                Main.overview.hide();
-            }));
+        button.connect('clicked', () => {
+            this.emit('device-selected', device);
+            this.close();
+            Main.overview.hide();
+        });
     },
 
     _openSettings() {
@@ -166,9 +163,8 @@ var AudioDeviceSelectionDBus = new Lang.Class({
         let connection = this._dbusImpl.get_connection();
         let info = this._dbusImpl.get_info();
         let deviceName = Object.keys(AudioDevice).filter(
-            function(dev) {
-                return AudioDevice[dev] == device;
-            })[0].toLowerCase();
+            dev => AudioDevice[dev] == device
+        )[0].toLowerCase();
         connection.emit_signal(this._audioSelectionDialog._sender,
                                this._dbusImpl.get_object_path(),
                                info ? info.name : null,
@@ -184,9 +180,7 @@ var AudioDeviceSelectionDBus = new Lang.Class({
 
         let [deviceNames] = params;
         let devices = 0;
-        deviceNames.forEach(function(n) {
-            devices |= AudioDevice[n.toUpperCase()];
-        });
+        deviceNames.forEach(n => { devices |= AudioDevice[n.toUpperCase()]; });
 
         let dialog;
         try {

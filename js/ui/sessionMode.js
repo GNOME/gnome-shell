@@ -138,7 +138,7 @@ function _loadModes() {
 
 function listModes() {
     _loadModes();
-    let id = Mainloop.idle_add(function() {
+    let id = Mainloop.idle_add(() => {
         let names = Object.getOwnPropertyNames(_modes);
         for (let i = 0; i < names.length; i++)
             if (_modes[names[i]].isPrimary)

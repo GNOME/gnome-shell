@@ -504,14 +504,13 @@ var NotificationBanner = new Lang.Class({
         this._addActions();
         this._addSecondaryIcon();
 
-        this._activatedId = this.notification.connect('activated',
-            Lang.bind(this, function() {
-                // We hide all types of notifications once the user clicks on
-                // them because the common outcome of clicking should be the
-                // relevant window being brought forward and the user's
-                // attention switching to the window.
-                this.emit('done-displaying');
-            }));
+        this._activatedId = this.notification.connect('activated', () => {
+            // We hide all types of notifications once the user clicks on
+            // them because the common outcome of clicking should be the
+            // relevant window being brought forward and the user's
+            // attention switching to the window.
+            this.emit('done-displaying');
+        });
     },
 
     _onDestroy() {
@@ -533,10 +532,9 @@ var NotificationBanner = new Lang.Class({
     },
 
     _addActions() {
-        this.notification.actions.forEach(Lang.bind(this,
-            function(action) {
-                this.addAction(action.label, action.callback);
-            }));
+        this.notification.actions.forEach(action => {
+            this.addAction(action.label, action.callback);
+        });
     },
 
     _addSecondaryIcon() {
@@ -559,7 +557,7 @@ var NotificationBanner = new Lang.Class({
             return null;
 
         this._buttonBox.add(button);
-        button.connect('clicked', Lang.bind(this, function() {
+        button.connect('clicked', () => {
             callback();
 
             if (!this.notification.resident) {
@@ -570,7 +568,7 @@ var NotificationBanner = new Lang.Class({
                 this.emit('done-displaying');
                 this.notification.destroy();
             }
-        }));
+        });
 
         return button;
     },
@@ -596,10 +594,10 @@ var SourceActor = new Lang.Class({
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
-        this.actor.connect('destroy', Lang.bind(this, function() {
+        this.actor.connect('destroy', () => {
             this._source.disconnect(this._iconUpdatedId);
             this._actorDestroyed = true;
-        }));
+        });
         this._actorDestroyed = false;
 
         let scale_factor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -659,18 +657,18 @@ var SourceActorWithLabel = new Lang.Class({
                                         layout_manager: new Clutter.BinLayout() });
         this._counterBin.hide();
 
-        this._counterBin.connect('style-changed', Lang.bind(this, function() {
+        this._counterBin.connect('style-changed', () => {
             let themeNode = this._counterBin.get_theme_node();
             this._counterBin.translation_x = themeNode.get_length('-shell-counter-overlap-x');
             this._counterBin.translation_y = themeNode.get_length('-shell-counter-overlap-y');
-        }));
+        });
 
         this.actor.add_actor(this._counterBin);
 
         this._countUpdatedId = this._source.connect('count-updated', Lang.bind(this, this._updateCount));
         this._updateCount();
 
-        this.actor.connect('destroy', function() {
+        this.actor.connect('destroy', () => {
             this._source.disconnect(this._countUpdatedId);
         });
     },
@@ -736,7 +734,7 @@ var Source = new Lang.Class({
     },
 
     get unseenCount() {
-        return this.notifications.filter(function(n) { return !n.acknowledged; }).length;
+        return this.notifications.filter(n => !n.acknowledged).length;
     },
 
     get countVisible() {
@@ -844,26 +842,25 @@ var MessageTray = new Lang.Class({
     Name: 'MessageTray',
 
     _init() {
-        this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
+        this._presence = new GnomeSession.Presence((proxy, error) => {
             this._onStatusChanged(proxy.status);
-        }));
+        });
         this._busy = false;
         this._bannerBlocked = false;
-        this._presence.connectSignal('StatusChanged', Lang.bind(this, function(proxy, senderName, [status]) {
+        this._presence.connectSignal('StatusChanged', (proxy, senderName, [status]) => {
             this._onStatusChanged(status);
-        }));
+        });
 
-        global.stage.connect('enter-event', Lang.bind(this,
-            function(a, ev) {
-                // HACK: St uses ClutterInputDevice for hover tracking, which
-                // misses relevant X11 events when untracked actors are
-                // involved (read: the notification banner in normal mode),
-                // so fix up Clutter's view of the pointer position in
-                // that case.
-                let related = ev.get_related();
-                if (!related || this.actor.contains(related))
-                    global.sync_pointer();
-            }));
+        global.stage.connect('enter-event', (a, ev) => {
+            // HACK: St uses ClutterInputDevice for hover tracking, which
+            // misses relevant X11 events when untracked actors are
+            // involved (read: the notification banner in normal mode),
+            // so fix up Clutter's view of the pointer position in
+            // that case.
+            let related = ev.get_related();
+            if (!related || this.actor.contains(related))
+                global.sync_pointer();
+        });
 
         this.actor = new St.Widget({ visible: false,
                                      clip_to_allocation: true,
@@ -1093,9 +1090,9 @@ var MessageTray = new Lang.Class({
                 notification.connect('destroy',
                                      Lang.bind(this, this._onNotificationDestroy));
                 this._notificationQueue.push(notification);
-                this._notificationQueue.sort(function(notification1, notification2) {
-                    return (notification2.urgency - notification1.urgency);
-                });
+                this._notificationQueue.sort(
+                    (n1, n2) => n2.urgency - n1.urgency
+                );
                 this.emit('queue-changed');
             }
         }
@@ -1219,7 +1216,7 @@ var MessageTray = new Lang.Class({
 
         // Filter out acknowledged notifications.
         let changed = false;
-        this._notificationQueue = this._notificationQueue.filter(function(n) {
+        this._notificationQueue = this._notificationQueue.filter(n => {
             changed = changed || n.acknowledged;
             return !n.acknowledged;
         });
@@ -1310,9 +1307,9 @@ var MessageTray = new Lang.Class({
         this._banner = this._notification.createBanner();
         this._bannerClickedId = this._banner.connect('done-displaying',
                                                      Lang.bind(this, this._escapeTray));
-        this._bannerUnfocusedId = this._banner.connect('unfocused', Lang.bind(this, function() {
+        this._bannerUnfocusedId = this._banner.connect('unfocused', () => {
             this._updateState();
-        }));
+        });
 
         this._bannerBin.add_actor(this._banner.actor);
 

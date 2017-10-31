@@ -273,17 +273,17 @@ function onEnabledExtensionsChanged() {
 
     // Find and enable all the newly enabled extensions: UUIDs found in the
     // new setting, but not in the old one.
-    newEnabledExtensions.filter(function(uuid) {
-        return enabledExtensions.indexOf(uuid) == -1;
-    }).forEach(function(uuid) {
+    newEnabledExtensions.filter(
+        uuid => !enabledExtensions.includes(uuid)
+    ).forEach(uuid => {
         enableExtension(uuid);
     });
 
     // Find and disable all the newly disabled extensions: UUIDs found in the
     // old setting, but not in the new one.
-    enabledExtensions.filter(function(item) {
-        return newEnabledExtensions.indexOf(item) == -1;
-    }).forEach(function(uuid) {
+    enabledExtensions.filter(
+        item => !newEnabledExtensions.includes(item)
+    ).forEach(uuid => {
         disableExtension(uuid);
     });
 
@@ -300,7 +300,7 @@ function _onVersionValidationChanged() {
     enabledExtensions = getEnabledExtensions();
 
     if (Main.sessionMode.allowExtensions) {
-        enabledExtensions.forEach(function(uuid) {
+        enabledExtensions.forEach(uuid => {
             enableExtension(uuid);
         });
     }
@@ -314,7 +314,7 @@ function _loadExtensions() {
     enabledExtensions = getEnabledExtensions();
 
     let finder = new ExtensionUtils.ExtensionFinder();
-    finder.connect('extension-found', function(finder, extension) {
+    finder.connect('extension-found', (finder, extension) => {
         loadExtension(extension);
     });
     finder.scanExtensions();
@@ -328,7 +328,7 @@ function enableAllExtensions() {
         _loadExtensions();
         initted = true;
     } else {
-        enabledExtensions.forEach(function(uuid) {
+        enabledExtensions.forEach(uuid => {
             enableExtension(uuid);
         });
     }
@@ -340,7 +340,7 @@ function disableAllExtensions() {
         return;
 
     if (initted) {
-        extensionOrder.slice().reverse().forEach(function(uuid) {
+        extensionOrder.slice().reverse().forEach(uuid => {
             disableExtension(uuid);
         });
     }

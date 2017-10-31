@@ -30,7 +30,7 @@ function installExtension(uuid, invocation) {
 
     let message = Soup.form_request_new_from_hash('GET', REPOSITORY_URL_INFO, params);
 
-    _httpSession.queue_message(message, function(session, message) {
+    _httpSession.queue_message(message, (session, message) => {
         if (message.status_code != Soup.KnownStatusCode.OK) {
             ExtensionSystem.logExtensionError(uuid, 'downloading info: ' + message.status_code);
             invocation.return_dbus_error('org.gnome.Shell.DownloadInfoError', message.status_code.toString());
@@ -96,7 +96,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
         return;
     }
 
-    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, function(pid, status) {
+    GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, (pid, status) => {
         GLib.spawn_close_pid(pid);
 
         if (status != 0)
@@ -119,8 +119,8 @@ function updateExtension(uuid) {
     let url = REPOSITORY_URL_DOWNLOAD.format(uuid);
     let message = Soup.form_request_new_from_hash('GET', url, params);
 
-    _httpSession.queue_message(message, Lang.bind(this, function(session, message) {
-        gotExtensionZipFile(session, message, uuid, newExtensionTmpDir, function() {
+    _httpSession.queue_message(message, (session, message) => {
+        gotExtensionZipFile(session, message, uuid, newExtensionTmpDir, () => {
             let oldExtension = ExtensionUtils.extensions[uuid];
             let extensionDir = oldExtension.dir;
 
@@ -151,10 +151,10 @@ function updateExtension(uuid) {
             }
 
             FileUtils.recursivelyDeleteDir(oldExtensionTmpDir, true);
-        }, function(code, message) {
+        }, (code, message) => {
             log('Error while updating extension %s: %s (%s)'.format(uuid, code, message ? message : ''));
         });
-    }));
+    });
 }
 
 function checkForUpdates() {
@@ -168,7 +168,7 @@ function checkForUpdates() {
 
     let url = REPOSITORY_URL_UPDATE;
     let message = Soup.form_request_new_from_hash('GET', url, params);
-    _httpSession.queue_message(message, function(session, message) {
+    _httpSession.queue_message(message, (session, message) => {
         if (message.status_code != Soup.KnownStatusCode.OK)
             return;
 
@@ -258,9 +258,9 @@ var InstallExtensionDialog = new Lang.Class({
             invocation.return_value(GLib.Variant.new('(s)', ['successful']));
         }
 
-        _httpSession.queue_message(message, Lang.bind(this, function(session, message) {
+        _httpSession.queue_message(message, (session, message) => {
             gotExtensionZipFile(session, message, uuid, dir, callback, errback);
-        }));
+        });
 
         this.close();
     }

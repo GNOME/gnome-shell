@@ -50,7 +50,7 @@ var PadChooser = new Lang.Class({
         this._ensureMenu(groupDevices);
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('clicked', Lang.bind(this, function (actor) {
+        this.actor.connect('clicked', actor => {
             if (actor.get_checked()) {
                 if (this._padChooserMenu != null)
                     this._padChooserMenu.open(true);
@@ -59,12 +59,14 @@ var PadChooser = new Lang.Class({
             } else {
                 this._padChooserMenu.close(true);
             }
-        }));
+        });
     },
 
     _ensureMenu(devices) {
         this._padChooserMenu =  new PopupMenu.PopupMenu(this.actor, 0.5, St.Side.TOP);
-        this._padChooserMenu.connect('menu-closed', Lang.bind(this, function() { this.actor.set_checked(false); }));
+        this._padChooserMenu.connect('menu-closed', () => {
+            this.actor.set_checked(false);
+        });
         this._padChooserMenu.actor.hide();
         Main.uiGroup.add_actor(this._padChooserMenu.actor);
 
@@ -144,7 +146,9 @@ var ActionComboBox = new Lang.Class({
         box.add_child(arrow);
 
         this._editMenu = new PopupMenu.PopupMenu(this.actor, 0, St.Side.TOP);
-        this._editMenu.connect('menu-closed', Lang.bind(this, function() { this.actor.set_checked(false); }));
+        this._editMenu.connect('menu-closed', () => {
+            this.actor.set_checked(false);
+        });
         this._editMenu.actor.hide();
         Main.uiGroup.add_actor(this._editMenu.actor);
 
@@ -158,7 +162,9 @@ var ActionComboBox = new Lang.Class({
 
         for (let [action, label] of this._actionLabels.entries()) {
             let selectedAction = action;
-            let item = this._editMenu.addAction(label, Lang.bind(this, function() { this._onActionSelected(selectedAction) }));
+            let item = this._editMenu.addAction(label, () => {
+                this._onActionSelected(selectedAction);
+            });
 
             /* These actions only apply to pad buttons */
             if (selectedAction == GDesktopEnums.PadButtonAction.HELP ||
@@ -632,14 +638,14 @@ var PadOsd = new Lang.Class({
         this._padChooser = null;
 
         let deviceManager = Clutter.DeviceManager.get_default();
-        this._deviceAddedId = deviceManager.connect('device-added', Lang.bind(this, function (manager, device) {
+        this._deviceAddedId = deviceManager.connect('device-added', (manager, device) => {
             if (device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
                 this.padDevice.is_grouped(device)) {
                 this._groupPads.push(device);
                 this._updatePadChooser();
             }
-        }));
-        this._deviceRemovedId = deviceManager.connect('device-removed', Lang.bind(this, function (manager, device) {
+        });
+        this._deviceRemovedId = deviceManager.connect('device-removed', (manager, device) => {
             // If the device is being removed, destroy the padOsd.
             if (device == this.padDevice) {
                 this.destroy();
@@ -650,14 +656,14 @@ var PadOsd = new Lang.Class({
                 this._updatePadChooser();
 
             }
-        }));
+        });
 
-        deviceManager.list_devices().forEach(Lang.bind(this, function(device) {
+        deviceManager.list_devices().forEach(device => {
             if (device != this.padDevice &&
                 device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE &&
                 this.padDevice.is_grouped(device))
                 this._groupPads.push(device);
-        }));
+        });
 
         this.actor = new St.BoxLayout({ style_class: 'pad-osd-window',
                                         x_expand: true,
@@ -735,7 +741,9 @@ var PadOsd = new Lang.Class({
                                            style_class: 'button',
                                            x_align: Clutter.ActorAlign.CENTER,
                                            can_focus: true });
-        this._editButton.connect('clicked', Lang.bind(this, function () { this.setEditionMode(true) }));
+        this._editButton.connect('clicked', () => {
+            this.setEditionMode(true);
+        });
         buttonBox.add_actor(this._editButton);
 
         this._syncEditionMode();
@@ -746,9 +754,9 @@ var PadOsd = new Lang.Class({
         if (this._groupPads.length > 1) {
             if (this._padChooser == null) {
                 this._padChooser = new PadChooser(this.padDevice, this._groupPads)
-                this._padChooser.connect('pad-selected', Lang.bind(this, function (chooser, pad) {
+                this._padChooser.connect('pad-selected', (chooser, pad) => {
                     this._requestForOtherPad(pad);
-                }));
+                });
                 this._titleBox.add_child(this._padChooser.actor);
             } else {
                 this._padChooser.update(this._groupPads);
@@ -976,11 +984,11 @@ var PadOsdService = new Lang.Class({
         let devices = deviceManager.list_devices();
         let padDevice = null;
 
-        devices.forEach(Lang.bind(this, function(device) {
+        devices.forEach(device => {
             if (deviceNode == device.get_device_node() &&
                 device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE)
                 padDevice = device;
-        }));
+        });
 
         if (padDevice == null) {
             invocation.return_error_literal(Gio.IOErrorEnum,

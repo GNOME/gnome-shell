@@ -75,9 +75,9 @@ function run() {
     // Enable recording of timestamps for different points in the frame cycle
     global.frame_timestamps = true;
 
-    Main.overview.connect('shown', function() {
-                              Scripting.scriptEvent('overviewShowDone');
-                          });
+    Main.overview.connect('shown', () => {
+        Scripting.scriptEvent('overviewShowDone');
+    });
 
     yield Scripting.sleep(1000);
 

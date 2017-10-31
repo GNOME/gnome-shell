@@ -61,21 +61,20 @@ var AutomountManager = new Lang.Class({
 
     _InhibitorsChanged(object, senderName, [inhibtor]) {
         this._session.IsInhibitedRemote(GNOME_SESSION_AUTOMOUNT_INHIBIT,
-            Lang.bind(this,
-                function(result, error) {
-                    if (!error) {
-                        this._inhibited = result[0];
-                    }
-                }));
+            (result, error) => {
+                if (!error) {
+                    this._inhibited = result[0];
+                }
+            });
     },
 
     _startupMountAll() {
         let volumes = this._volumeMonitor.get_volumes();
-        volumes.forEach(Lang.bind(this, function(volume) {
+        volumes.forEach(volume => {
             this._checkAndMountVolume(volume, { checkSession: false,
                                                 useMountOp: false,
                                                 allowAutorun: false });
-        }));
+        });
 
         this._mountAllId = 0;
         return GLib.SOURCE_REMOVE;
@@ -114,23 +113,23 @@ var AutomountManager = new Lang.Class({
         if (drive.can_stop()) {
             drive.stop
                 (Gio.MountUnmountFlags.FORCE, null, null,
-                 Lang.bind(this, function(drive, res) {
+                 (drive, res) => {
                      try {
                          drive.stop_finish(res);
                      } catch (e) {
                          log("Unable to stop the drive after drive-eject-button " + e.toString());
                      }
-                 }));
+                 });
         } else if (drive.can_eject()) {
             drive.eject_with_operation 
                 (Gio.MountUnmountFlags.FORCE, null, null,
-                 Lang.bind(this, function(drive, res) {
+                 (drive, res) => {
                      try {
                          drive.eject_with_operation_finish(res);
                      } catch (e) {
                          log("Unable to eject the drive after drive-eject-button " + e.toString());
                      }
-                 }));
+                 });
         }
     },
 
@@ -212,9 +211,7 @@ var AutomountManager = new Lang.Class({
 
     _onVolumeRemoved(monitor, volume) {
         this._volumeQueue = 
-            this._volumeQueue.filter(function(element) {
-                return (element != volume);
-            });
+            this._volumeQueue.filter(element => (element != volume));
     },
 
     _reaskPassword(volume) {
@@ -235,7 +232,7 @@ var AutomountManager = new Lang.Class({
     },
 
     _allowAutorunExpire(volume) {
-        let id = Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, function() {
+        let id = Mainloop.timeout_add_seconds(AUTORUN_EXPIRE_TIMEOUT_SECS, () => {
             volume.allowAutorun = false;
             return GLib.SOURCE_REMOVE;
         });

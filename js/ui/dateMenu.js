@@ -43,10 +43,9 @@ var TodayButton = new Lang.Class({
                                      can_focus: true,
                                      reactive: false
                                    });
-        this.actor.connect('clicked', Lang.bind(this,
-            function() {
-                this._calendar.setDate(new Date(), false);
-            }));
+        this.actor.connect('clicked', () => {
+            this._calendar.setDate(new Date(), false);
+        });
 
         let hbox = new St.BoxLayout({ vertical: true });
         this.actor.add_actor(hbox);
@@ -59,12 +58,11 @@ var TodayButton = new Lang.Class({
         hbox.add_actor(this._dateLabel);
 
         this._calendar = calendar;
-        this._calendar.connect('selected-date-changed', Lang.bind(this,
-            function(calendar, date) {
-                // Make the button reactive only if the selected date is not the
-                // current date.
-                this.actor.reactive = !_isToday(date)
-            }));
+        this._calendar.connect('selected-date-changed', (calendar, date) => {
+            // Make the button reactive only if the selected date is not the
+            // current date.
+            this.actor.reactive = !_isToday(date)
+        });
     },
 
     setDate(date) {
@@ -97,13 +95,12 @@ var WorldClocksSection = new Lang.Class({
         this.actor = new St.Button({ style_class: 'world-clocks-button',
                                      x_fill: true,
                                      can_focus: true });
-        this.actor.connect('clicked', Lang.bind(this,
-            function() {
-                this._clockAppMon.activateApp();
+        this.actor.connect('clicked', () => {
+            this._clockAppMon.activateApp();
 
-                Main.overview.hide();
-                Main.panel.closeCalendar();
-            }));
+            Main.overview.hide();
+            Main.panel.closeCalendar();
+        });
 
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
         this._grid = new St.Widget({ style_class: 'world-clocks-grid',
@@ -139,7 +136,7 @@ var WorldClocksSection = new Lang.Class({
                 this._locations.push({ location: l });
         }
 
-        this._locations.sort(function(a, b) {
+        this._locations.sort((a, b) => {
             return a.location.get_timezone().get_offset() -
                    b.location.get_timezone().get_offset();
         });
@@ -355,7 +352,7 @@ var MessagesIndicator = new Lang.Class({
         Main.messageTray.connect('queue-changed', Lang.bind(this, this._updateCount));
 
         let sources = Main.messageTray.getSources();
-        sources.forEach(Lang.bind(this, function(source) { this._onSourceAdded(null, source); }));
+        sources.forEach(source => { this._onSourceAdded(null, source); });
     },
 
     _onSourceAdded(tray, source) {
@@ -371,10 +368,7 @@ var MessagesIndicator = new Lang.Class({
 
     _updateCount() {
         let count = 0;
-        this._sources.forEach(Lang.bind(this,
-            function(source) {
-                count += source.unseenCount;
-            }));
+        this._sources.forEach(source => { count += source.unseenCount; });
         count -= Main.messageTray.queueCount;
 
         this.actor.visible = (count > 0);
@@ -500,12 +494,12 @@ var DateMenuButton = new Lang.Class({
 
         this._calendar = new Calendar.Calendar();
         this._calendar.connect('selected-date-changed',
-                               Lang.bind(this, function(calendar, date) {
+                               (calendar, date) => {
                                    layout.frozen = !_isToday(date);
                                    this._messageList.setDate(date);
-                               }));
+                               });
 
-        this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
+        this.menu.connect('open-state-changed', (menu, isOpen) => {
             // Whenever the menu is opened, select today
             if (isOpen) {
                 let now = new Date();
@@ -513,7 +507,7 @@ var DateMenuButton = new Lang.Class({
                 this._date.setDate(now);
                 this._messageList.setDate(now);
             }
-        }));
+        });
 
         // Fill up the first column
         this._messageList = new Calendar.CalendarMessageList();

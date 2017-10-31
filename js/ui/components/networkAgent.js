@@ -83,14 +83,14 @@ var NetworkSecretDialog = new Lang.Class({
                 }
 
                 secret.entry.clutter_text.connect('activate', Lang.bind(this, this._onOk));
-                secret.entry.clutter_text.connect('text-changed', Lang.bind(this, function() {
+                secret.entry.clutter_text.connect('text-changed', () => {
                     secret.value = secret.entry.get_text();
                     if (secret.validate)
                         secret.valid = secret.validate(secret);
                     else
                         secret.valid = secret.value.length > 0;
                     this._updateOkButton();
-                }));
+                });
             } else
                 secret.valid = true;
 
@@ -464,7 +464,7 @@ var VPNRequestHandler = new Lang.Class({
     },
 
     _readStdoutOldStyle() {
-        this._dataStdout.read_line_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(stream, result) {
+        this._dataStdout.read_line_async(GLib.PRIORITY_DEFAULT, null, (stream, result) => {
             let [line, len] = this._dataStdout.read_line_finish_utf8(result);
 
             if (line == null) {
@@ -477,11 +477,11 @@ var VPNRequestHandler = new Lang.Class({
 
             // try to read more!
             this._readStdoutOldStyle();
-        }));
+        });
     },
 
     _readStdoutNewStyle() {
-        this._dataStdout.fill_async(-1, GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(stream, result) {
+        this._dataStdout.fill_async(-1, GLib.PRIORITY_DEFAULT, null, (stream, result) => {
             let cnt = this._dataStdout.fill_finish(result);
 
             if (cnt == 0) {
@@ -495,7 +495,7 @@ var VPNRequestHandler = new Lang.Class({
             // Try to read more
             this._dataStdout.set_buffer_size(2 * this._dataStdout.get_buffer_size());
             this._readStdoutNewStyle();
-        }));
+        });
     },
 
     _showNewStyleDialog() {
@@ -562,14 +562,14 @@ var VPNRequestHandler = new Lang.Class({
         let vpnSetting = this._connection.get_setting_vpn();
 
         try {
-            vpnSetting.foreach_data_item(Lang.bind(this, function(key, value) {
+            vpnSetting.foreach_data_item((key, value) => {
                 this._stdin.write('DATA_KEY=' + key + '\n', null);
                 this._stdin.write('DATA_VAL=' + (value || '') + '\n\n', null);
-            }));
-            vpnSetting.foreach_secret(Lang.bind(this, function(key, value) {
+            });
+            vpnSetting.foreach_secret((key, value) => {
                 this._stdin.write('SECRET_KEY=' + key + '\n', null);
                 this._stdin.write('SECRET_VAL=' + (value || '') + '\n\n', null);
-            }));
+            });
             this._stdin.write('DONE\n\n', null);
         } catch(e) {
             logError(e, 'internal error while writing connection to helper');
@@ -688,17 +688,17 @@ var NetworkAgent = new Lang.Class({
 
         let notification = new MessageTray.Notification(source, title, body);
 
-        notification.connect('activated', Lang.bind(this, function() {
+        notification.connect('activated', () => {
             notification.answered = true;
             this._handleRequest(requestId, connection, settingName, hints, flags);
-        }));
+        });
 
         this._notifications[requestId] = notification;
-        notification.connect('destroy', Lang.bind(this, function() {
+        notification.connect('destroy', () => {
             if (!notification.answered)
                 this._native.respond(requestId, Shell.NetworkAgentResponse.USER_CANCELED);
             delete this._notifications[requestId];
-        }));
+        });
 
         Main.messageTray.add(source);
         source.notify(notification);
@@ -718,9 +718,9 @@ var NetworkAgent = new Lang.Class({
         }
 
         let dialog = new NetworkSecretDialog(this._native, requestId, connection, settingName, hints);
-        dialog.connect('destroy', Lang.bind(this, function() {
+        dialog.connect('destroy', () => {
             delete this._dialogs[requestId];
-        }));
+        });
         this._dialogs[requestId] = dialog;
         dialog.open(global.get_current_time());
     },
@@ -752,9 +752,9 @@ var NetworkAgent = new Lang.Class({
         }
 
         let vpnRequest = new VPNRequestHandler(this._native, requestId, binary, serviceType, connection, hints, flags);
-        vpnRequest.connect('destroy', Lang.bind(this, function() {
+        vpnRequest.connect('destroy', () => {
             delete this._vpnRequests[requestId];
-        }));
+        });
         this._vpnRequests[requestId] = vpnRequest;
     },
 

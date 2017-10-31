@@ -107,9 +107,9 @@ var CloseDialog = new Lang.Class({
                          { scale_y: 1,
                            transition: 'linear',
                            time: DIALOG_TRANSITION_TIME,
-                           onComplete: Lang.bind(this, function () {
+                           onComplete: () => {
                                Main.layoutManager.trackChrome(this._dialog, { affectsInputRegion: true });
-                           })
+                           }
                          });
     },
 
@@ -125,9 +125,9 @@ var CloseDialog = new Lang.Class({
                          { scale_y: 0,
                            transition: 'linear',
                            time: DIALOG_TRANSITION_TIME,
-                           onComplete: Lang.bind(this, function () {
+                           onComplete: () => {
                                dialog.destroy();
-                           })
+                           }
                          });
     },
 

@@ -93,7 +93,7 @@ var ATIndicator = new Lang.Class({
         let alwaysShow = this._a11ySettings.get_boolean(KEY_ALWAYS_SHOW);
         let items = this.menu._getMenuItems();
 
-        this.actor.visible = alwaysShow || items.some(function(f) { return !!f.state; });
+        this.actor.visible = alwaysShow || items.some(f => !!f.state);
 
         return GLib.SOURCE_REMOVE;
     },
@@ -111,7 +111,7 @@ var ATIndicator = new Lang.Class({
         if (!writable)
             widget.actor.reactive = false;
         else
-            widget.connect('toggled', function(item) {
+            widget.connect('toggled', item => {
                 on_set(item.state);
             });
         return widget;
@@ -119,25 +119,23 @@ var ATIndicator = new Lang.Class({
 
     _buildItem(string, schema, key) {
         let settings = new Gio.Settings({ schema_id: schema });
-        settings.connect('changed::'+key, Lang.bind(this, function() {
+        settings.connect('changed::'+key, () => {
             widget.setToggleState(settings.get_boolean(key));
 
             this._queueSyncMenuVisibility();
-        }));
+        });
 
         let widget = this._buildItemExtended(string,
             settings.get_boolean(key),
             settings.is_writable(key),
-            function(enabled) {
-                return settings.set_boolean(key, enabled);
-            });
+            enabled => settings.set_boolean(key, enabled));
         return widget;
     },
 
     _buildHCItem() {
         let interfaceSettings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
         let wmSettings = new Gio.Settings({ schema_id: WM_SCHEMA });
-        interfaceSettings.connect('changed::' + KEY_GTK_THEME, Lang.bind(this, function() {
+        interfaceSettings.connect('changed::' + KEY_GTK_THEME, () => {
             let value = interfaceSettings.get_string(KEY_GTK_THEME);
             if (value == HIGH_CONTRAST_THEME) {
                 highContrast.setToggleState(true);
@@ -147,13 +145,13 @@ var ATIndicator = new Lang.Class({
             }
 
             this._queueSyncMenuVisibility();
-        }));
-        interfaceSettings.connect('changed::' + KEY_ICON_THEME, function() {
+        });
+        interfaceSettings.connect('changed::' + KEY_ICON_THEME, () => {
             let value = interfaceSettings.get_string(KEY_ICON_THEME);
             if (value != HIGH_CONTRAST_THEME)
                 iconTheme = value;
         });
-        wmSettings.connect('changed::' + KEY_WM_THEME, function() {
+        wmSettings.connect('changed::' + KEY_WM_THEME, () => {
             let value = wmSettings.get_string(KEY_WM_THEME);
             if (value != HIGH_CONTRAST_THEME)
                 wmTheme = value;
@@ -169,7 +167,7 @@ var ATIndicator = new Lang.Class({
             interfaceSettings.is_writable(KEY_GTK_THEME) &&
             interfaceSettings.is_writable(KEY_ICON_THEME) &&
             wmSettings.is_writable(KEY_WM_THEME),
-            function (enabled) {
+            enabled => {
                 if (enabled) {
                     interfaceSettings.set_string(KEY_GTK_THEME, HIGH_CONTRAST_THEME);
                     interfaceSettings.set_string(KEY_ICON_THEME, HIGH_CONTRAST_THEME);
@@ -189,20 +187,20 @@ var ATIndicator = new Lang.Class({
 
     _buildFontItem() {
         let settings = new Gio.Settings({ schema_id: DESKTOP_INTERFACE_SCHEMA });
-        settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, Lang.bind(this, function() {
+        settings.connect('changed::' + KEY_TEXT_SCALING_FACTOR, () => {
             let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
             let active = (factor > 1.0);
             widget.setToggleState(active);
 
             this._queueSyncMenuVisibility();
-        }));
+        });
 
         let factor = settings.get_double(KEY_TEXT_SCALING_FACTOR);
         let initial_setting = (factor > 1.0);
         let widget = this._buildItemExtended(_("Large Text"),
             initial_setting,
             settings.is_writable(KEY_TEXT_SCALING_FACTOR),
-            function (enabled) {
+            enabled => {
                 if (enabled)
                     settings.set_double(KEY_TEXT_SCALING_FACTOR,
                                         DPI_FACTOR_LARGE);
