@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -16,10 +15,8 @@ const Service = Gio.DBusProxy.makeProxyWrapper(ServiceIface);
 const RealmIface = loadInterfaceXML("org.freedesktop.realmd.Realm");
 const Realm = Gio.DBusProxy.makeProxyWrapper(RealmIface);
 
-var Manager = new Lang.Class({
-    Name: 'Manager',
-
-    _init(parentActor) {
+var Manager = class {
+    constructor(parentActor) {
         this._aggregateProvider = Provider(Gio.DBus.system,
                                            'org.freedesktop.realmd',
                                            '/org/freedesktop/realmd',
@@ -31,7 +28,7 @@ var Manager = new Lang.Class({
                 if ('Realms' in properties.deep_unpack())
                     this._reloadRealms();
             });
-    },
+    }
 
     _reloadRealms() {
         let realmPaths = this._aggregateProvider.Realms;
@@ -45,7 +42,7 @@ var Manager = new Lang.Class({
                               realmPaths[i],
                               this._onRealmLoaded.bind(this));
         }
-    },
+    }
 
     _reloadRealm(realm) {
         if (!realm.Configured) {
@@ -58,7 +55,7 @@ var Manager = new Lang.Class({
         this._realms[realm.get_object_path()] = realm;
 
         this._updateLoginFormat();
-    },
+    }
 
     _onRealmLoaded(realm, error) {
         if (error)
@@ -70,7 +67,7 @@ var Manager = new Lang.Class({
             if ('Configured' in properties.deep_unpack())
                 this._reloadRealm(realm);
         });
-    },
+    }
 
     _updateLoginFormat() {
         let newLoginFormat;
@@ -87,7 +84,7 @@ var Manager = new Lang.Class({
             this._loginFormat = newLoginFormat;
             this.emit('login-format-changed', newLoginFormat);
         }
-    },
+    }
 
     get loginFormat() {
         if (this._loginFormat !== undefined)
@@ -96,7 +93,7 @@ var Manager = new Lang.Class({
         this._updateLoginFormat();
 
         return this._loginFormat;
-    },
+    }
 
     release() {
         Service(Gio.DBus.system,
@@ -107,5 +104,5 @@ var Manager = new Lang.Class({
         this._realms = { };
         this._updateLoginFormat();
     }
-});
+};
 Signals.addSignalMethods(Manager.prototype)

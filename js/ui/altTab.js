@@ -411,10 +411,8 @@ var AppSwitcherPopup = new Lang.Class({
     }
 });
 
-var CyclerHighlight = new Lang.Class({
-    Name: 'CyclerHighlight',
-
-    _init() {
+class CyclerHighlight {
+    constructor() {
         this._window = null;
 
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout() });
@@ -434,7 +432,7 @@ var CyclerHighlight = new Lang.Class({
         this.actor.connect('notify::allocation',
                            this._onAllocationChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
 
     set window(w) {
         if (this._window == w)
@@ -452,7 +450,7 @@ var CyclerHighlight = new Lang.Class({
             windowActor.hide();
 
         this._clone.source = windowActor;
-    },
+    }
 
     _onAllocationChanged() {
         if (!this._window) {
@@ -465,12 +463,12 @@ var CyclerHighlight = new Lang.Class({
             this._highlight.set_position(rect.x - x, rect.y - y);
             this._highlight.show();
         }
-    },
+    }
 
     _onDestroy() {
         this.window = null;
     }
-});
+};
 
 // We don't show an actual popup, so just provide what SwitcherPopup
 // expects instead of inheriting from SwitcherList

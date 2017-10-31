@@ -2,7 +2,6 @@
 
 const Gio = imports.gi.Gio;
 const GnomeBluetooth = imports.gi.GnomeBluetooth;
-const Lang = imports.lang;
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -18,12 +17,9 @@ const RfkillManagerProxy = Gio.DBusProxy.makeProxyWrapper(RfkillManagerInterface
 
 const HAD_BLUETOOTH_DEVICES_SETUP = 'had-bluetooth-devices-setup';
 
-var Indicator = new Lang.Class({
-    Name: 'BTIndicator',
-    Extends: PanelMenu.SystemIndicator,
-
-    _init() {
-        this.parent();
+var Indicator = class extends PanelMenu.SystemIndicator {
+    constructor() {
+        super();
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'bluetooth-active-symbolic';
@@ -59,7 +55,7 @@ var Indicator = new Lang.Class({
         this._model.connect('row-inserted', this._sync.bind(this));
         Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
-    },
+    }
 
     _getDefaultAdapter() {
         let [ret, iter] = this._model.get_iter_first();
@@ -73,7 +69,7 @@ var Indicator = new Lang.Class({
             ret = this._model.iter_next(iter);
         }
         return null;
-    },
+    }
 
     // nDevices is the number of devices setup for the current default
     // adapter if one exists and is powered. If unpowered or unavailable,
@@ -111,7 +107,7 @@ var Indicator = new Lang.Class({
         }
 
         return [ nDevices, nConnectedDevices];
-    },
+    }
 
     _sync() {
         let [ nDevices, nConnectedDevices ] = this._getNDevices();
@@ -136,5 +132,5 @@ var Indicator = new Lang.Class({
             this._item.label.text = _("On");
 
         this._toggleItem.label.text = this._proxy.BluetoothAirplaneMode ? _("Turn On") : _("Turn Off");
-    },
-});
+    }
+};

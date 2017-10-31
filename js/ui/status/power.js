@@ -3,7 +3,6 @@
 const Gio = imports.gi.Gio;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
-const Lang = imports.lang;
 const UPower = imports.gi.UPowerGlib;
 
 const Main = imports.ui.main;
@@ -20,12 +19,9 @@ const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(DisplayDeviceInterface)
 
 const SHOW_BATTERY_PERCENTAGE       = 'show-battery-percentage';
 
-var Indicator = new Lang.Class({
-    Name: 'PowerIndicator',
-    Extends: PanelMenu.SystemIndicator,
-
-    _init() {
-        this.parent();
+var Indicator = class extends PanelMenu.SystemIndicator {
+    constructor() {
+        super();
 
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed::' + SHOW_BATTERY_PERCENTAGE,
@@ -54,12 +50,12 @@ var Indicator = new Lang.Class({
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
-    },
+    }
 
     _sessionUpdated() {
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         this.menu.setSensitive(sensitive);
-    },
+    }
 
     _getStatus() {
         let seconds = 0;
@@ -97,7 +93,7 @@ var Indicator = new Lang.Class({
         }
 
         return null;
-    },
+    }
 
     _sync() {
         // Do we have batteries or a UPS?
@@ -128,5 +124,5 @@ var Indicator = new Lang.Class({
 
         // The status label
         this._item.label.text = this._getStatus();
-    },
-});
+    }
+};

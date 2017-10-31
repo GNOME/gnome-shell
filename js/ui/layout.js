@@ -153,21 +153,19 @@ var MonitorConstraint = new Lang.Class({
     }
 });
 
-var Monitor = new Lang.Class({
-    Name: 'Monitor',
-
-    _init(index, geometry) {
+var Monitor = class Monitor {
+    constructor(index, geometry) {
         this.index = index;
         this.x = geometry.x;
         this.y = geometry.y;
         this.width = geometry.width;
         this.height = geometry.height;
-    },
+    }
 
     get inFullscreen() {
         return global.display.get_monitor_in_fullscreen(this.index);
     }
-})
+};
 
 const defaultParams = {
     trackFullscreen: false,
@@ -1083,10 +1081,8 @@ var LayoutManager = new Lang.Class({
 //
 // This class manages a "hot corner" that can toggle switching to
 // overview.
-var HotCorner = new Lang.Class({
-    Name: 'HotCorner',
-
-    _init(layoutManager, monitor, x, y) {
+var HotCorner = class HotCorner {
+    constructor(layoutManager, monitor, x, y) {
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
@@ -1114,7 +1110,7 @@ var HotCorner = new Lang.Class({
         layoutManager.uiGroup.add_actor(this._ripple1);
         layoutManager.uiGroup.add_actor(this._ripple2);
         layoutManager.uiGroup.add_actor(this._ripple3);
-    },
+    }
 
     setBarrierSize(size) {
         if (this._verticalBarrier) {
@@ -1149,7 +1145,7 @@ var HotCorner = new Lang.Class({
             this._pressureBarrier.addBarrier(this._verticalBarrier);
             this._pressureBarrier.addBarrier(this._horizontalBarrier);
         }
-    },
+    }
 
     _setupFallbackCornerIfNeeded(layoutManager) {
         if (!global.display.supports_extended_barriers()) {
@@ -1184,7 +1180,7 @@ var HotCorner = new Lang.Class({
             this._corner.connect('leave-event',
                                  this._onCornerLeft.bind(this));
         }
-    },
+    }
 
     destroy() {
         this.setBarrierSize(0);
@@ -1193,7 +1189,7 @@ var HotCorner = new Lang.Class({
 
         if (this.actor)
             this.actor.destroy();
-    },
+    }
 
     _animRipple(ripple, delay, time, startScale, startOpacity, finalScale) {
         // We draw a ripple by using a source image and animating it scaling
@@ -1223,7 +1219,7 @@ var HotCorner = new Lang.Class({
                                    transition: 'linear',
                                    onUpdate() { ripple.opacity = 255 * Math.sqrt(ripple._opacity); },
                                    onComplete() { ripple.visible = false; } });
-    },
+    }
 
     _rippleAnimation() {
         // Show three concentric ripples expanding outwards; the exact
@@ -1234,7 +1230,7 @@ var HotCorner = new Lang.Class({
         this._animRipple(this._ripple1, 0.0,   0.83,  0.25,  1.0,     1.5);
         this._animRipple(this._ripple2, 0.05,  1.0,   0.0,   0.7,     1.25);
         this._animRipple(this._ripple3, 0.35,  1.0,   0.0,   0.3,     1);
-    },
+    }
 
     _toggleOverview() {
         if (this._monitor.inFullscreen && !Main.overview.visible)
@@ -1244,7 +1240,7 @@ var HotCorner = new Lang.Class({
             this._rippleAnimation();
             Main.overview.toggle();
         }
-    },
+    }
 
     handleDragOver(source, actor, x, y, time) {
         if (source != Main.xdndHandler)
@@ -1253,7 +1249,7 @@ var HotCorner = new Lang.Class({
         this._toggleOverview();
 
         return DND.DragMotionResult.CONTINUE;
-    },
+    }
 
     _onCornerEntered() {
         if (!this._entered) {
@@ -1261,26 +1257,24 @@ var HotCorner = new Lang.Class({
             this._toggleOverview();
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onCornerLeft(actor, event) {
         if (event.get_related() != this.actor)
             this._entered = false;
         // Consume event, otherwise this will confuse onEnvironsLeft
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onEnvironsLeft(actor, event) {
         if (event.get_related() != this._corner)
             this._entered = false;
         return Clutter.EVENT_PROPAGATE;
     }
-});
+};
 
-var PressureBarrier = new Lang.Class({
-    Name: 'PressureBarrier',
-
-    _init(threshold, timeout, actionMode) {
+var PressureBarrier = class PressureBarrier {
+    constructor(threshold, timeout, actionMode) {
         this._threshold = threshold;
         this._timeout = timeout;
         this._actionMode = actionMode;
@@ -1289,57 +1283,57 @@ var PressureBarrier = new Lang.Class({
 
         this._isTriggered = false;
         this._reset();
-    },
+    }
 
     addBarrier(barrier) {
         barrier._pressureHitId = barrier.connect('hit', this._onBarrierHit.bind(this));
         barrier._pressureLeftId = barrier.connect('left', this._onBarrierLeft.bind(this));
 
         this._barriers.push(barrier);
-    },
+    }
 
     _disconnectBarrier(barrier) {
         barrier.disconnect(barrier._pressureHitId);
         barrier.disconnect(barrier._pressureLeftId);
-    },
+    }
 
     removeBarrier(barrier) {
         this._disconnectBarrier(barrier);
         this._barriers.splice(this._barriers.indexOf(barrier), 1);
-    },
+    }
 
     destroy() {
         this._barriers.forEach(this._disconnectBarrier.bind(this));
         this._barriers = [];
-    },
+    }
 
     setEventFilter(filter) {
         this._eventFilter = filter;
-    },
+    }
 
     _reset() {
         this._barrierEvents = [];
         this._currentPressure = 0;
         this._lastTime = 0;
-    },
+    }
 
     _isHorizontal(barrier) {
         return barrier.y1 == barrier.y2;
-    },
+    }
 
     _getDistanceAcrossBarrier(barrier, event) {
         if (this._isHorizontal(barrier))
             return Math.abs(event.dy);
         else
             return Math.abs(event.dx);
-    },
+    }
 
     _getDistanceAlongBarrier(barrier, event) {
         if (this._isHorizontal(barrier))
             return Math.abs(event.dx);
         else
             return Math.abs(event.dy);
-    },
+    }
 
     _trimBarrierEvents() {
         // Events are guaranteed to be sorted in time order from
@@ -1363,7 +1357,7 @@ var PressureBarrier = new Lang.Class({
         }
 
         this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
-    },
+    }
 
     _onBarrierLeft(barrier, event) {
         barrier._isHit = false;
@@ -1371,13 +1365,13 @@ var PressureBarrier = new Lang.Class({
             this._reset();
             this._isTriggered = false;
         }
-    },
+    }
 
     _trigger() {
         this._isTriggered = true;
         this.emit('trigger');
         this._reset();
-    },
+    }
 
     _onBarrierHit(barrier, event) {
         barrier._isHit = true;
@@ -1419,5 +1413,5 @@ var PressureBarrier = new Lang.Class({
         if (this._currentPressure >= this._threshold)
             this._trigger();
     }
-});
+};
 Signals.addSignalMethods(PressureBarrier.prototype);

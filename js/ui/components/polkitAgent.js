@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const AccountsService = imports.gi.AccountsService;
@@ -26,12 +25,9 @@ var DIALOG_ICON_SIZE = 48;
 
 var WORK_SPINNER_ICON_SIZE = 16;
 
-var AuthenticationDialog = new Lang.Class({
-    Name: 'AuthenticationDialog',
-    Extends: ModalDialog.ModalDialog,
-
-    _init(actionId, body, cookie, userNames) {
-        this.parent({ styleClass: 'prompt-dialog' });
+var AuthenticationDialog = class extends ModalDialog.ModalDialog {
+    constructor(actionId, body, cookie, userNames) {
+        super({ styleClass: 'prompt-dialog' });
 
         this.actionId = actionId;
         this.message = body;
@@ -156,14 +152,14 @@ var AuthenticationDialog = new Lang.Class({
 
         this._identityToAuth = Polkit.UnixUser.new_for_name(userName);
         this._cookie = cookie;
-    },
+    }
 
     _setWorking(working) {
         if (working)
             this._workSpinner.play();
         else
             this._workSpinner.stop();
-    },
+    }
 
     performAuthentication() {
         this.destroySession();
@@ -174,15 +170,15 @@ var AuthenticationDialog = new Lang.Class({
         this._session.connect('show-error', this._onSessionShowError.bind(this));
         this._session.connect('show-info', this._onSessionShowInfo.bind(this));
         this._session.initiate();
-    },
+    }
 
     close(timestamp) {
-        this.parent(timestamp);
+        super.close(timestamp);
 
         if (this._sessionUpdatedId)
             Main.sessionMode.disconnect(this._sessionUpdatedId);
         this._sessionUpdatedId = 0;
-    },
+    }
 
     _ensureOpen() {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
@@ -204,14 +200,14 @@ var AuthenticationDialog = new Lang.Class({
                 ' cookie ' + this._cookie);
             this._emitDone(true);
         }
-    },
+    }
 
     _emitDone(dismissed) {
         if (!this._doneEmitted) {
             this._doneEmitted = true;
             this.emit('done', dismissed);
         }
-    },
+    }
 
     _updateSensitivity(sensitive) {
         this._passwordEntry.reactive = sensitive;
@@ -220,7 +216,7 @@ var AuthenticationDialog = new Lang.Class({
         this._okButton.can_focus = sensitive;
         this._okButton.reactive = sensitive;
         this._setWorking(!sensitive);
-    },
+    }
 
     _onEntryActivate() {
         let response = this._passwordEntry.get_text();
@@ -231,11 +227,11 @@ var AuthenticationDialog = new Lang.Class({
         this._errorMessageLabel.hide();
         this._infoMessageLabel.hide();
         this._nullMessageLabel.show();
-    },
+    }
 
     _onAuthenticateButtonPressed() {
         this._onEntryActivate();
-    },
+    }
 
     _onSessionCompleted(session, gainedAuthorization) {
         if (this._completed || this._doneEmitted)
@@ -267,7 +263,7 @@ var AuthenticationDialog = new Lang.Class({
             /* Try and authenticate again */
             this.performAuthentication();
         }
-    },
+    }
 
     _onSessionRequest(session, request, echo_on) {
         // Cheap localization trick
@@ -286,7 +282,7 @@ var AuthenticationDialog = new Lang.Class({
         this._passwordEntry.grab_key_focus();
         this._updateSensitivity(true);
         this._ensureOpen();
-    },
+    }
 
     _onSessionShowError(session, text) {
         this._passwordEntry.set_text('');
@@ -295,7 +291,7 @@ var AuthenticationDialog = new Lang.Class({
         this._infoMessageLabel.hide();
         this._nullMessageLabel.hide();
         this._ensureOpen();
-    },
+    }
 
     _onSessionShowInfo(session, text) {
         this._passwordEntry.set_text('');
@@ -304,7 +300,7 @@ var AuthenticationDialog = new Lang.Class({
         this._errorMessageLabel.hide();
         this._nullMessageLabel.hide();
         this._ensureOpen();
-    },
+    }
 
     destroySession() {
         if (this._session) {
@@ -313,34 +309,32 @@ var AuthenticationDialog = new Lang.Class({
             this._completed = false;
             this._session = null;
         }
-    },
+    }
 
     _onUserChanged() {
         if (this._user.is_loaded && this._userAvatar) {
             this._userAvatar.update();
             this._userAvatar.actor.show();
         }
-    },
+    }
 
     cancel() {
         this._wasDismissed = true;
         this.close(global.get_current_time());
         this._emitDone(true);
-    },
-});
+    }
+};
 Signals.addSignalMethods(AuthenticationDialog.prototype);
 
-var AuthenticationAgent = new Lang.Class({
-    Name: 'AuthenticationAgent',
-
-    _init() {
+var AuthenticationAgent = class {
+    constructor() {
         this._currentDialog = null;
         this._handle = null;
         this._native = new Shell.PolkitAuthenticationAgent();
         this._native.connect('initiate', this._onInitiate.bind(this));
         this._native.connect('cancel', this._onCancel.bind(this));
         this._sessionUpdatedId = 0;
-    },
+    }
 
     enable() {
         try {
@@ -348,7 +342,7 @@ var AuthenticationAgent = new Lang.Class({
         } catch(e) {
             log('Failed to register AuthenticationAgent');
         }
-    },
+    }
 
     disable() {
         try {
@@ -356,7 +350,7 @@ var AuthenticationAgent = new Lang.Class({
         } catch(e) {
             log('Failed to unregister AuthenticationAgent');
         }
-    },
+    }
 
     _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
         // Don't pop up a dialog while locked
@@ -384,15 +378,15 @@ var AuthenticationAgent = new Lang.Class({
 
         this._currentDialog.connect('done', this._onDialogDone.bind(this));
         this._currentDialog.performAuthentication();
-    },
+    }
 
     _onCancel(nativeAgent) {
         this._completeRequest(false);
-    },
+    }
 
     _onDialogDone(dialog, dismissed) {
         this._completeRequest(dismissed);
-    },
+    }
 
     _completeRequest(dismissed) {
         this._currentDialog.close();
@@ -404,7 +398,7 @@ var AuthenticationAgent = new Lang.Class({
         this._sessionUpdatedId = 0;
 
         this._native.complete(dismissed);
-    },
-});
+    }
+};
 
 var Component = AuthenticationAgent;

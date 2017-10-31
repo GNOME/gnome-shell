@@ -4,7 +4,6 @@ const AccountsService = imports.gi.AccountsService;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const GObject = imports.gi.GObject;
@@ -16,10 +15,8 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 
-var AltSwitcher = new Lang.Class({
-    Name: 'AltSwitcher',
-
-    _init(standard, alternate) {
+var AltSwitcher = class {
+    constructor(standard, alternate) {
         this._standard = standard;
         this._standard.connect('notify::visible', this._sync.bind(this));
         if (this._standard instanceof St.Button)
@@ -42,7 +39,7 @@ var AltSwitcher = new Lang.Class({
         this.actor = new St.Bin();
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => { this._flipped = false; });
-    },
+    }
 
     _sync() {
         let childToShow = null;
@@ -83,14 +80,14 @@ var AltSwitcher = new Lang.Class({
         }
 
         this.actor.show();
-    },
+    }
 
     _onDestroy() {
         if (this._capturedEventId > 0) {
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
-    },
+    }
 
     _onCapturedEvent(actor, event) {
         let type = event.type();
@@ -101,7 +98,7 @@ var AltSwitcher = new Lang.Class({
         }
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onLongPress(action, actor, state) {
         if (state == Clutter.LongPressState.QUERY ||
@@ -112,14 +109,11 @@ var AltSwitcher = new Lang.Class({
         this._sync();
         return true;
     }
-});
+};
 
-var Indicator = new Lang.Class({
-    Name: 'SystemIndicator',
-    Extends: PanelMenu.SystemIndicator,
-
-    _init() {
-        this.parent();
+var Indicator = class extends PanelMenu.SystemIndicator {
+    constructor() {
+        super();
 
         let userManager = AccountsService.UserManager.get_default();
         this._user = userManager.get_user(GLib.get_user_name());
@@ -146,7 +140,7 @@ var Indicator = new Lang.Class({
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
-    },
+    }
 
     _updateActionsVisibility() {
         let visible = (this._settingsAction.visible ||
@@ -155,18 +149,18 @@ var Indicator = new Lang.Class({
                        this._altSwitcher.actor.visible);
 
         this._actionsItem.actor.visible = visible;
-    },
+    }
 
     _sessionUpdated() {
         this._settingsAction.visible = Main.sessionMode.allowSettings;
-    },
+    }
 
     _updateMultiUser() {
         let hasSwitchUser = this._loginScreenItem.actor.visible;
         let hasLogout = this._logoutItem.actor.visible;
 
         this._switchUserSubMenu.actor.visible = hasSwitchUser || hasLogout;
-    },
+    }
 
     _updateSwitchUserSubMenu() {
         this._switchUserSubMenu.label.text = this._user.get_real_name();
@@ -199,7 +193,7 @@ var Indicator = new Lang.Class({
             this._switchUserSubMenu.icon.add_style_class_name('default-icon');
             this._switchUserSubMenu.icon.remove_style_class_name('user-icon');
         }
-    },
+    }
 
     _createActionButton(iconName, accessibleName) {
         let icon = new St.Button({ reactive: true,
@@ -209,7 +203,7 @@ var Indicator = new Lang.Class({
                                    style_class: 'system-menu-action' });
         icon.child = new St.Icon({ icon_name: iconName });
         return icon;
-    },
+    }
 
     _createSubMenu() {
         let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
@@ -340,11 +334,11 @@ var Indicator = new Lang.Class({
                                        () => { this._updateActionsVisibility(); });
         this._altSwitcher.actor.connect('notify::visible',
                                         () => { this._updateActionsVisibility(); });
-    },
+    }
 
     _onSettingsClicked() {
         this.menu.itemActivated();
         Main.overview.hide();
         this._settingsApp.activate();
     }
-});
+};

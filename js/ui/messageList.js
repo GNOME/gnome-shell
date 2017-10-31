@@ -40,10 +40,8 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
-var URLHighlighter = new Lang.Class({
-    Name: 'URLHighlighter',
-
-    _init(text, lineWrap, allowMarkup) {
+var URLHighlighter = class URLHighlighter {
+    constructor(text, lineWrap, allowMarkup) {
         if (!text)
             text = '';
         this.actor = new St.Label({ reactive: true, style_class: 'url-highlighter',
@@ -114,7 +112,7 @@ var URLHighlighter = new Lang.Class({
             }
             return Clutter.EVENT_PROPAGATE;
         });
-    },
+    }
 
     setMarkup(text, allowMarkup) {
         text = text ? _fixMarkup(text, allowMarkup) : '';
@@ -124,7 +122,7 @@ var URLHighlighter = new Lang.Class({
         /* clutter_text.text contain text without markup */
         this._urls = Util.findUrls(this.actor.clutter_text.text);
         this._highlightUrls();
-    },
+    }
 
     _highlightUrls() {
         // text here contain markup
@@ -139,7 +137,7 @@ var URLHighlighter = new Lang.Class({
         }
         markup += this._text.substr(pos);
         this.actor.clutter_text.set_markup(markup);
-    },
+    }
 
     _findUrlAtPos(event) {
         let success;
@@ -160,7 +158,7 @@ var URLHighlighter = new Lang.Class({
         }
         return -1;
     }
-});
+};
 
 var ScaleLayout = new Lang.Class({
     Name: 'ScaleLayout',
@@ -298,10 +296,8 @@ var LabelExpanderLayout = new Lang.Class({
     }
 });
 
-var Message = new Lang.Class({
-    Name: 'Message',
-
-    _init(title, body) {
+var Message = class Message {
+    constructor(title, body) {
         this.expanded = false;
 
         this._useBodyMarkup = false;
@@ -368,25 +364,25 @@ var Message = new Lang.Class({
         this.actor.connect('clicked', this._onClicked.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._sync();
-    },
+    }
 
     close() {
         this.emit('close');
-    },
+    }
 
     setIcon(actor) {
         this._iconBin.child = actor;
         this._iconBin.visible = (actor != null);
-    },
+    }
 
     setSecondaryActor(actor) {
         this._secondaryBin.child = actor;
-    },
+    }
 
     setTitle(text) {
         let title = text ? _fixMarkup(text.replace(/\n/g, ' '), false) : '';
         this.titleLabel.clutter_text.set_markup(title);
-    },
+    }
 
     setBody(text) {
         this._bodyText = text;
@@ -394,7 +390,7 @@ var Message = new Lang.Class({
                                  this._useBodyMarkup);
         if (this._expandedLabel)
             this._expandedLabel.setMarkup(text, this._useBodyMarkup);
-    },
+    }
 
     setUseBodyMarkup(enable) {
         if (this._useBodyMarkup === enable)
@@ -402,7 +398,7 @@ var Message = new Lang.Class({
         this._useBodyMarkup = enable;
         if (this.bodyLabel)
             this.setBody(this._bodyText);
-    },
+    }
 
     setActionArea(actor) {
         if (actor == null) {
@@ -416,7 +412,7 @@ var Message = new Lang.Class({
 
         this._actionBin.add_actor(actor);
         this._actionBin.visible = this.expanded;
-    },
+    }
 
     addMediaControl(iconName, callback) {
         let icon = new St.Icon({ icon_name: iconName, icon_size: 16 });
@@ -425,7 +421,7 @@ var Message = new Lang.Class({
         button.connect('clicked', callback);
         this._mediaControls.add_actor(button);
         return button;
-    },
+    }
 
     setExpandedBody(actor) {
         if (actor == null) {
@@ -438,11 +434,11 @@ var Message = new Lang.Class({
             throw new Error('Message already has an expanded body actor');
 
         this._bodyStack.insert_child_at_index(actor, 1);
-    },
+    }
 
     setExpandedLines(nLines) {
         this._bodyStack.layout_manager.expandLines = nLines;
-    },
+    }
 
     expand(animate) {
         this.expanded = true;
@@ -471,7 +467,7 @@ var Message = new Lang.Class({
         }
 
         this.emit('expanded');
-    },
+    }
 
     unexpand(animate) {
         if (animate) {
@@ -495,23 +491,23 @@ var Message = new Lang.Class({
         }
 
         this.emit('unexpanded');
-    },
+    }
 
     canClose() {
         return false;
-    },
+    }
 
     _sync() {
         let visible = this.actor.hover && this.canClose();
         this._closeButton.opacity = visible ? 255 : 0;
         this._closeButton.reactive = visible;
-    },
+    }
 
     _onClicked() {
-    },
+    }
 
     _onDestroy() {
-    },
+    }
 
     _onKeyPressed(a, event) {
         let keysym = event.get_key_symbol();
@@ -523,13 +519,11 @@ var Message = new Lang.Class({
         }
         return Clutter.EVENT_PROPAGATE;
     }
-});
+};
 Signals.addSignalMethods(Message.prototype);
 
-var MessageListSection = new Lang.Class({
-    Name: 'MessageListSection',
-
-    _init() {
+var MessageListSection = class MessageListSection {
+    constructor() {
         this.actor = new St.BoxLayout({ style_class: 'message-list-section',
                                         clip_to_allocation: true,
                                         x_expand: true, vertical: true });
@@ -552,26 +546,26 @@ var MessageListSection = new Lang.Class({
         this.empty = true;
         this.canClear = false;
         this._sync();
-    },
+    }
 
     _onKeyFocusIn(actor) {
         this.emit('key-focus-in', actor);
-    },
+    }
 
     get allowed() {
         return true;
-    },
+    }
 
     setDate(date) {
         if (Calendar.sameDay(date, this._date))
             return;
         this._date = date;
         this._sync();
-    },
+    }
 
     addMessage(message, animate) {
         this.addMessageAtIndex(message, -1, animate);
-    },
+    }
 
     addMessageAtIndex(message, index, animate) {
         let obj = {
@@ -604,7 +598,7 @@ var MessageListSection = new Lang.Class({
                                               scale_y: 1,
                                               time: MESSAGE_ANIMATION_TIME,
                                               transition: 'easeOutQuad' });
-    },
+    }
 
     moveMessage(message, index, animate) {
         let obj = this._messages.get(message);
@@ -626,7 +620,7 @@ var MessageListSection = new Lang.Class({
                                           time: MESSAGE_ANIMATION_TIME,
                                           transition: 'easeOutQuad',
                                           onComplete: onComplete });
-    },
+    }
 
     removeMessage(message, animate) {
         let obj = this._messages.get(message);
@@ -649,7 +643,7 @@ var MessageListSection = new Lang.Class({
             obj.container.destroy();
             global.sync_pointer();
         }
-    },
+    }
 
     clear() {
         let messages = [...this._messages.keys()].filter(msg => msg.canClose());
@@ -677,18 +671,18 @@ var MessageListSection = new Lang.Class({
                                    }});
             }
         }
-    },
+    }
 
     _canClear() {
         for (let message of this._messages.keys())
             if (message.canClose())
                 return true;
         return false;
-    },
+    }
 
     _shouldShow() {
         return !this.empty;
-    },
+    }
 
     _sync() {
         let empty = this._list.get_n_children() == 0;
@@ -707,5 +701,5 @@ var MessageListSection = new Lang.Class({
 
         this.actor.visible = this.allowed && this._shouldShow();
     }
-});
+};
 Signals.addSignalMethods(MessageListSection.prototype);

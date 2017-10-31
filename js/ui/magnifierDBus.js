@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 const Main = imports.ui.main;
 
 const { loadInterfaceXML } = imports.misc.fileUtils;
@@ -22,15 +21,13 @@ const ZoomRegionIface = loadInterfaceXML('org.gnome.Magnifier.ZoomRegion');
 // '/org/gnome/Magnifier/ZoomRegion/zoomer1', etc.
 let _zoomRegionInstanceCount = 0;
 
-var ShellMagnifier = new Lang.Class({
-    Name: 'ShellMagnifier',
-
-    _init() {
+var ShellMagnifier = class ShellMagnifier {
+    constructor() {
         this._zoomers = {};
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(MagnifierIface, this);
         this._dbusImpl.export(Gio.DBus.session, MAG_SERVICE_PATH);
-    },
+    }
 
     /**
      * setActive:
@@ -38,7 +35,7 @@ var ShellMagnifier = new Lang.Class({
      */
     setActive(activate) {
         Main.magnifier.setActive(activate);
-    },
+    }
 
     /**
      * isActive:
@@ -46,7 +43,7 @@ var ShellMagnifier = new Lang.Class({
      */
     isActive() {
         return Main.magnifier.isActive();
-    },
+    }
 
     /**
      * showCursor:
@@ -54,7 +51,7 @@ var ShellMagnifier = new Lang.Class({
      */
     showCursor() {
         Main.magnifier.showSystemCursor();
-    },
+    }
 
     /**
      * hideCursor:
@@ -62,7 +59,7 @@ var ShellMagnifier = new Lang.Class({
      */
     hideCursor() {
         Main.magnifier.hideSystemCursor();
-    },
+    }
 
     /**
      * createZoomRegion:
@@ -97,7 +94,7 @@ var ShellMagnifier = new Lang.Class({
         proxyAndZoomRegion.zoomRegion = realZoomRegion;
         this._zoomers[objectPath] = proxyAndZoomRegion;
         return objectPath;
-    },
+    }
 
     /**
      * addZoomRegion:
@@ -112,7 +109,7 @@ var ShellMagnifier = new Lang.Class({
         }
         else
             return false;
-    },
+    }
 
     /**
      * getZoomRegions:
@@ -150,7 +147,7 @@ var ShellMagnifier = new Lang.Class({
             }
         });
         return objectPaths;
-    },
+    }
 
     /**
      * clearAllZoomRegions:
@@ -166,7 +163,7 @@ var ShellMagnifier = new Lang.Class({
             delete this._zoomers[objectPath];
         }
         this._zoomers = {};
-    },
+    }
 
     /**
      * fullScreenCapable:
@@ -175,7 +172,7 @@ var ShellMagnifier = new Lang.Class({
      */
     fullScreenCapable() {
         return true;
-    },
+    }
 
     /**
      * setCrosswireSize:
@@ -184,7 +181,7 @@ var ShellMagnifier = new Lang.Class({
      */
      setCrosswireSize(size) {
         Main.magnifier.setCrosshairsThickness(size);
-     },
+     }
 
     /**
      * getCrosswireSize:
@@ -193,7 +190,7 @@ var ShellMagnifier = new Lang.Class({
      */
      getCrosswireSize() {
         return Main.magnifier.getCrosshairsThickness();
-     },
+     }
 
     /**
      * setCrosswireLength:
@@ -202,7 +199,7 @@ var ShellMagnifier = new Lang.Class({
      */
      setCrosswireLength(length) {
         Main.magnifier.setCrosshairsLength(length);
-     },
+     }
 
     /**
      * setCrosswireSize:
@@ -211,7 +208,7 @@ var ShellMagnifier = new Lang.Class({
      */
      getCrosswireLength() {
         return Main.magnifier.getCrosshairsLength();
-     },
+     }
 
     /**
      * setCrosswireClip:
@@ -220,7 +217,7 @@ var ShellMagnifier = new Lang.Class({
      */
      setCrosswireClip(clip) {
         Main.magnifier.setCrosshairsClip(clip);
-     },
+     }
 
     /**
      * getCrosswireClip:
@@ -229,7 +226,7 @@ var ShellMagnifier = new Lang.Class({
      */
      getCrosswireClip() {
         return Main.magnifier.getCrosshairsClip();
-     },
+     }
 
     /**
      * setCrosswireColor:
@@ -238,7 +235,7 @@ var ShellMagnifier = new Lang.Class({
      */
      setCrosswireColor(color) {
         Main.magnifier.setCrosshairsColor('#%08x'.format(color));
-     },
+     }
 
     /**
      * getCrosswireClip:
@@ -250,7 +247,7 @@ var ShellMagnifier = new Lang.Class({
         // Drop the leading '#'.
         return parseInt(colorString.slice(1), 16);
      }
-});
+};
 
 /**
  * ShellMagnifierZoomRegion:
@@ -258,15 +255,13 @@ var ShellMagnifier = new Lang.Class({
  * @zoomerObjectPath:   String that is the path to a DBus ZoomRegion.
  * @zoomRegion:         The actual zoom region associated with the object path.
  */
-var ShellMagnifierZoomRegion = new Lang.Class({
-    Name: 'ShellMagnifierZoomRegion',
-
-    _init(zoomerObjectPath, zoomRegion) {
+var ShellMagnifierZoomRegion = class ShellMagnifierZoomRegion {
+    constructor(zoomerObjectPath, zoomRegion) {
         this._zoomRegion = zoomRegion;
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ZoomRegionIface, this);
         this._dbusImpl.export(Gio.DBus.session, zoomerObjectPath);
-    },
+    }
 
     /**
      * setMagFactor:
@@ -278,7 +273,7 @@ var ShellMagnifierZoomRegion = new Lang.Class({
      */
     setMagFactor(xMagFactor, yMagFactor) {
         this._zoomRegion.setMagFactor(xMagFactor, yMagFactor);
-    },
+    }
 
     /**
      * getMagFactor:
@@ -289,7 +284,7 @@ var ShellMagnifierZoomRegion = new Lang.Class({
      */
     getMagFactor() {
         return this._zoomRegion.getMagFactor();
-    },
+    }
 
     /**
      * setRoi:
@@ -301,7 +296,7 @@ var ShellMagnifierZoomRegion = new Lang.Class({
     setRoi(roi) {
         let roiObject = { x: roi[0], y: roi[1], width: roi[2] - roi[0], height: roi[3] - roi[1] };
         this._zoomRegion.setROI(roiObject);
-    },
+    }
 
     /**
      * getRoi:
@@ -316,7 +311,7 @@ var ShellMagnifierZoomRegion = new Lang.Class({
         roi[2] += roi[0];
         roi[3] += roi[1];
         return roi;
-    },
+    }
 
     /**
      * Set the "region of interest" by centering the given screen coordinate
@@ -329,7 +324,7 @@ var ShellMagnifierZoomRegion = new Lang.Class({
     shiftContentsTo(x, y) {
         this._zoomRegion.scrollContentsTo(x, y);
         return true;
-    },
+    }
 
     /**
      * moveResize
@@ -340,9 +335,9 @@ var ShellMagnifierZoomRegion = new Lang.Class({
     moveResize(viewPort) {
         let viewRect = { x: viewPort[0], y: viewPort[1], width: viewPort[2] - viewPort[0], height: viewPort[3] - viewPort[1] };
         this._zoomRegion.setViewPort(viewRect);
-    },
+    }
 
     destroy() {
         this._dbusImpl.unexport();
     }
-});
+};

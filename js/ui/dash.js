@@ -347,10 +347,8 @@ var DashActor = new Lang.Class({
 
 const baseIconSizes = [ 16, 22, 24, 32, 48, 64 ];
 
-var Dash = new Lang.Class({
-    Name: 'Dash',
-
-    _init() {
+var Dash = class Dash {
+    constructor() {
         this._maxHeight = -1;
         this.iconSize = 64;
         this._shownInitially = false;
@@ -407,7 +405,7 @@ var Dash = new Lang.Class({
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
         Main.ctrlAltTabManager.addGroup(this.actor, _("Dash"), 'user-bookmarks-symbolic');
-    },
+    }
 
     _onDragBegin() {
         this._dragCancelled = false;
@@ -421,26 +419,26 @@ var Dash = new Lang.Class({
             this._box.insert_child_at_index(this._emptyDropTarget, 0);
             this._emptyDropTarget.show(true);
         }
-    },
+    }
 
     _onDragCancelled() {
         this._dragCancelled = true;
         this._endDrag();
-    },
+    }
 
     _onDragEnd() {
         if (this._dragCancelled)
             return;
 
         this._endDrag();
-    },
+    }
 
     _endDrag() {
         this._clearDragPlaceholder();
         this._clearEmptyDropTarget();
         this._showAppsIcon.setDragApp(null);
         DND.removeDragMonitor(this._dragMonitor);
-    },
+    }
 
     _onDragMotion(dragEvent) {
         let app = getAppFromSource(dragEvent.source);
@@ -459,18 +457,18 @@ var Dash = new Lang.Class({
             this._showAppsIcon.setDragApp(null);
 
         return DND.DragMotionResult.CONTINUE;
-    },
+    }
 
     _appIdListToHash(apps) {
         let ids = {};
         for (let i = 0; i < apps.length; i++)
             ids[apps[i].get_id()] = apps[i];
         return ids;
-    },
+    }
 
     _queueRedisplay() {
         Main.queueDeferredWork(this._workId);
-    },
+    }
 
     _hookUpLabel(item, appIcon) {
         item.child.connect('notify::hover', () => {
@@ -490,7 +488,7 @@ var Dash = new Lang.Class({
                 this._syncLabel(item, appIcon);
             });
         }
-    },
+    }
 
     _createAppItem(app) {
         let appIcon = new AppDisplay.AppIcon(app,
@@ -524,7 +522,7 @@ var Dash = new Lang.Class({
         this._hookUpLabel(item, appIcon);
 
         return item;
-    },
+    }
 
     _itemMenuStateChanged(item, opened) {
         // When the menu closes, it calls sync_hover, which means
@@ -537,7 +535,7 @@ var Dash = new Lang.Class({
 
             item.hideLabel();
         }
-    },
+    }
 
     _syncLabel(item, appIcon) {
         let shouldShow = appIcon ? appIcon.shouldShowTooltip() : item.child.get_hover();
@@ -573,7 +571,7 @@ var Dash = new Lang.Class({
                 GLib.Source.set_name_by_id(this._resetHoverTimeoutId, '[gnome-shell] this._labelShowing');
             }
         }
-    },
+    }
 
     _adjustIconSize() {
         // For the icon size, we only consider children which are "proper"
@@ -663,7 +661,7 @@ var Dash = new Lang.Class({
                                transition: 'easeOutQuad',
                              });
         }
-    },
+    }
 
     _redisplay() {
         let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
@@ -792,7 +790,7 @@ var Dash = new Lang.Class({
         // Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=692744
         // Without it, StBoxLayout may use a stale size cache
         this._box.queue_relayout();
-    },
+    }
 
     _clearDragPlaceholder() {
         if (this._dragPlaceholder) {
@@ -804,14 +802,14 @@ var Dash = new Lang.Class({
             this._dragPlaceholder = null;
         }
         this._dragPlaceholderPos = -1;
-    },
+    }
 
     _clearEmptyDropTarget() {
         if (this._emptyDropTarget) {
             this._emptyDropTarget.animateOutAndDestroy();
             this._emptyDropTarget = null;
         }
-    },
+    }
 
     handleDragOver(source, actor, x, y, time) {
         let app = getAppFromSource(source);
@@ -888,7 +886,7 @@ var Dash = new Lang.Class({
             return DND.DragMotionResult.MOVE_DROP;
 
         return DND.DragMotionResult.COPY_DROP;
-    },
+    }
 
     // Draggable target interface
     acceptDrop(source, actor, x, y, time) {
@@ -938,6 +936,5 @@ var Dash = new Lang.Class({
 
         return true;
     }
-});
-
+};
 Signals.addSignalMethods(Dash.prototype);

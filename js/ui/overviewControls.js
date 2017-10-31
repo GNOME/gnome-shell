@@ -104,10 +104,8 @@ var SlideLayout = new Lang.Class({
     },
 });
 
-var SlidingControl = new Lang.Class({
-    Name: 'SlidingControl',
-
-    _init(params) {
+var SlidingControl = class {
+    constructor(params) {
         params = Params.parse(params, { slideDirection: SlideDirection.LEFT });
 
         this._visible = true;
@@ -128,23 +126,23 @@ var SlidingControl = new Lang.Class({
         Main.overview.connect('window-drag-begin', this._onWindowDragBegin.bind(this));
         Main.overview.connect('window-drag-cancelled', this._onWindowDragEnd.bind(this));
         Main.overview.connect('window-drag-end', this._onWindowDragEnd.bind(this));
-    },
+    }
 
     _getSlide() {
         throw new Error('getSlide() must be overridden');
-    },
+    }
 
     _updateSlide() {
         Tweener.addTween(this.layout, { slideX: this._getSlide(),
                                         time: SIDE_CONTROLS_ANIMATION_TIME,
                                         transition: 'easeOutQuad' });
-    },
+    }
 
     getVisibleWidth() {
         let child = this.actor.get_first_child();
         let [, , natWidth, ] = child.get_preferred_size();
         return natWidth;
-    },
+    }
 
     _getTranslation() {
         let child = this.actor.get_first_child();
@@ -155,7 +153,7 @@ var SlidingControl = new Lang.Class({
             return - visibleWidth;
         else
             return visibleWidth;
-    },
+    }
 
     _updateTranslation() {
         let translationStart = 0;
@@ -176,57 +174,57 @@ var SlidingControl = new Lang.Class({
         Tweener.addTween(this.layout, { translationX: translationEnd,
                                         time: SIDE_CONTROLS_ANIMATION_TIME,
                                         transition: 'easeOutQuad' });
-    },
+    }
 
     _onOverviewHiding() {
         // We need to explicitly slideOut since showing pages
         // doesn't imply sliding out, instead, hiding the overview does.
         this.slideOut();
-    },
+    }
 
     _onWindowDragBegin() {
         this._onDragBegin();
-    },
+    }
 
     _onWindowDragEnd() {
         this._onDragEnd();
-    },
+    }
 
     _onDragBegin() {
         this._inDrag = true;
         this._updateTranslation();
         this._updateSlide();
-    },
+    }
 
     _onDragEnd() {
         this._inDrag = false;
         this._updateSlide();
-    },
+    }
 
     fadeIn() {
         Tweener.addTween(this.actor, { opacity: 255,
                                        time: SIDE_CONTROLS_ANIMATION_TIME / 2,
                                        transition: 'easeInQuad'
                                      });
-    },
+    }
 
     fadeHalf() {
         Tweener.addTween(this.actor, { opacity: 128,
                                        time: SIDE_CONTROLS_ANIMATION_TIME / 2,
                                        transition: 'easeOutQuad'
                                      });
-    },
+    }
 
     slideIn() {
         this._visible = true;
         // we will update slideX and the translation from pageEmpty
-    },
+    }
 
     slideOut() {
         this._visible = false;
         this._updateTranslation();
         // we will update slideX from pageEmpty
-    },
+    }
 
     pageEmpty() {
         // When pageEmpty is received, there's no visible view in the
@@ -236,14 +234,11 @@ var SlidingControl = new Lang.Class({
         this.layout.slideX = this._getSlide();
         this._updateTranslation();
     }
-});
+};
 
-var ThumbnailsSlider = new Lang.Class({
-    Name: 'ThumbnailsSlider',
-    Extends: SlidingControl,
-
-    _init(thumbnailsBox) {
-        this.parent({ slideDirection: SlideDirection.RIGHT });
+var ThumbnailsSlider = class extends SlidingControl {
+    constructor(thumbnailsBox) {
+        super({ slideDirection: SlideDirection.RIGHT });
 
         this._thumbnailsBox = thumbnailsBox;
 
@@ -259,7 +254,7 @@ var ThumbnailsSlider = new Lang.Class({
                                          this._updateSlide.bind(this));
         this.actor.connect('notify::hover', this._updateSlide.bind(this));
         this._thumbnailsBox.bind_property('visible', this.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
-    },
+    }
 
     _getAlwaysZoomOut() {
         // Always show the pager on hover, during a drag, or if workspaces are
@@ -287,17 +282,17 @@ var ThumbnailsSlider = new Lang.Class({
         }
 
         return alwaysZoomOut;
-    },
+    }
 
     getNonExpandedWidth() {
         let child = this.actor.get_first_child();
         return child.get_theme_node().get_length('visible-width');
-    },
+    }
 
     _onDragEnd() {
         this.actor.sync_hover();
-        this.parent();
-    },
+        super._onDragEnd();
+    }
 
     _getSlide() {
         if (!this._visible)
@@ -312,23 +307,20 @@ var ThumbnailsSlider = new Lang.Class({
         let expandedWidth = child.get_preferred_width(preferredHeight)[1];
 
         return this.getNonExpandedWidth() / expandedWidth;
-    },
+    }
 
     getVisibleWidth() {
         let alwaysZoomOut = this._getAlwaysZoomOut();
         if (alwaysZoomOut)
-            return this.parent();
+            return super.getVisibleWidth();
         else
             return this.getNonExpandedWidth();
     }
-});
+};
 
-var DashSlider = new Lang.Class({
-    Name: 'DashSlider',
-    Extends: SlidingControl,
-
-    _init(dash) {
-        this.parent({ slideDirection: SlideDirection.LEFT });
+var DashSlider = class extends SlidingControl {
+    constructor(dash) {
+        super({ slideDirection: SlideDirection.LEFT });
 
         this._dash = dash;
 
@@ -344,23 +336,23 @@ var DashSlider = new Lang.Class({
         this.actor.add_actor(this._dash.actor);
 
         this._dash.connect('icon-size-changed', this._updateSlide.bind(this));
-    },
+    }
 
     _getSlide() {
         if (this._visible || this._inDrag)
             return 1;
         else
             return 0;
-    },
+    }
 
     _onWindowDragBegin() {
         this.fadeHalf();
-    },
+    }
 
     _onWindowDragEnd() {
         this.fadeIn();
     }
-});
+};
 
 var DashSpacer = new Lang.Class({
     Name: 'DashSpacer',
@@ -411,10 +403,8 @@ var ControlsLayout = new Lang.Class({
     }
 });
 
-var ControlsManager = new Lang.Class({
-    Name: 'ControlsManager',
-
-    _init(searchEntry) {
+var ControlsManager = class {
+    constructor(searchEntry) {
         this.dash = new Dash.Dash();
         this._dashSlider = new DashSlider(this.dash);
         this._dashSpacer = new DashSpacer();
@@ -457,7 +447,7 @@ var ControlsManager = new Lang.Class({
         Main.overview.connect('item-drag-cancelled', () => {
             this.viewSelector.fadeIn();
         });
-    },
+    }
 
     _updateWorkspacesGeometry() {
         let [x, y] = this.actor.get_transformed_position();
@@ -477,7 +467,7 @@ var ControlsManager = new Lang.Class({
             geometry.x += thumbnailsWidth;
 
         this.viewSelector.setWorkspacesFullGeometry(geometry);
-    },
+    }
 
     _setVisibility() {
         // Ignore the case when we're leaving the overview, since
@@ -502,7 +492,7 @@ var ControlsManager = new Lang.Class({
             this._thumbnailsSlider.slideIn();
         else
             this._thumbnailsSlider.slideOut();
-    },
+    }
 
     _updateSpacerVisibility() {
         if (Main.overview.animationInProgress && !Main.overview.visibleTarget)
@@ -510,7 +500,7 @@ var ControlsManager = new Lang.Class({
 
         let activePage = this.viewSelector.getActivePage();
         this._dashSpacer.visible = (activePage == ViewSelector.ViewPage.WINDOWS);
-    },
+    }
 
     _onPageEmpty() {
         this._dashSlider.pageEmpty();
@@ -518,4 +508,4 @@ var ControlsManager = new Lang.Class({
 
         this._updateSpacerVisibility();
     }
-});
+};

@@ -32,10 +32,8 @@ const CCW = 1;
 const UP = 0;
 const DOWN = 1;
 
-var PadChooser = new Lang.Class({
-    Name: 'PadChooser',
-
-    _init(device, groupDevices) {
+var PadChooser = class {
+    constructor(device, groupDevices) {
         this.actor = new St.Button({ style_class: 'pad-chooser-button',
                                      toggle_mode: true,
                                      x_fill: false,
@@ -62,7 +60,7 @@ var PadChooser = new Lang.Class({
                 this._padChooserMenu.close(true);
             }
         });
-    },
+    }
 
     _ensureMenu(devices) {
         this._padChooserMenu =  new PopupMenu.PopupMenu(this.actor, 0.5, St.Side.TOP);
@@ -81,33 +79,31 @@ var PadChooser = new Lang.Class({
                 this.emit('pad-selected', device);
             });
         }
-    },
+    }
 
     _onDestroy() {
         this._padChooserMenu.destroy();
-    },
+    }
 
     update(devices) {
         if (this._padChooserMenu)
             this._padChooserMenu.actor.destroy();
         this.actor.set_checked(false);
         this._ensureMenu(devices);
-    },
+    }
 
     destroy() {
         this.actor.destroy();
-    },
-});
+    }
+};
 Signals.addSignalMethods(PadChooser.prototype);
 
-var KeybindingEntry = new Lang.Class({
-    Name: 'KeybindingEntry',
-
-    _init() {
+var KeybindingEntry = class {
+    constructor() {
         this.actor = new St.Entry({ hint_text: _("New shortcut…"),
                                     style: 'width: 10em' });
         this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
-    },
+    }
 
     _onCapturedEvent(actor, event) {
         if (event.type() != Clutter.EventType.KEY_PRESS)
@@ -121,13 +117,11 @@ var KeybindingEntry = new Lang.Class({
         this.emit('keybinding-edited', str);
         return Clutter.EVENT_STOP;
     }
-});
+};
 Signals.addSignalMethods(KeybindingEntry.prototype);
 
-var ActionComboBox = new Lang.Class({
-    Name: 'ActionComboBox',
-
-    _init() {
+var ActionComboBox = class {
+    constructor() {
         this.actor = new St.Button({ style_class: 'button' });
         this.actor.connect('clicked', this._onButtonClicked.bind(this));
         this.actor.set_toggle_mode(true);
@@ -175,43 +169,41 @@ var ActionComboBox = new Lang.Class({
         }
 
         this.setAction(GDesktopEnums.PadButtonAction.NONE);
-    },
+    }
 
     _onActionSelected(action) {
         this.setAction(action);
         this.popdown();
         this.emit('action-selected', action);
-    },
+    }
 
     setAction(action) {
         this._label.set_text(this._actionLabels.get(action));
-    },
+    }
 
     popup() {
         this._editMenu.open(true);
-    },
+    }
 
     popdown() {
         this._editMenu.close(true);
-    },
+    }
 
     _onButtonClicked() {
         if (this.actor.get_checked())
             this.popup();
         else
             this.popdown();
-    },
+    }
 
     setButtonActionsActive(active) {
         this._buttonItems.forEach(item => { item.setSensitive(active); });
     }
-});
+};
 Signals.addSignalMethods(ActionComboBox.prototype);
 
-var ActionEditor = new Lang.Class({
-    Name: 'ActionEditor',
-
-    _init() {
+var ActionEditor = class {
+    constructor() {
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                 spacing: 12 });
 
@@ -230,7 +222,7 @@ var ActionEditor = new Lang.Class({
                                            x_expand: false});
         this._doneButton.connect('clicked', this._onEditingDone.bind(this));
         this.actor.add_actor(this._doneButton);
-    },
+    }
 
     _updateKeybindingEntryState() {
         if (this._currentAction == GDesktopEnums.PadButtonAction.KEYBINDING) {
@@ -240,7 +232,7 @@ var ActionEditor = new Lang.Class({
         } else {
             this._keybindingEdit.actor.hide();
         }
-    },
+    }
 
     setSettings(settings, action) {
         this._buttonSettings = settings;
@@ -252,21 +244,21 @@ var ActionEditor = new Lang.Class({
 
         let isButton = (action == Meta.PadActionType.BUTTON);
         this._actionComboBox.setButtonActionsActive(isButton);
-    },
+    }
 
     close() {
         this._actionComboBox.popdown();
         this.actor.hide();
-    },
+    }
 
     _onKeybindingEdited(entry, keybinding) {
         this._currentKeybinding = keybinding;
-    },
+    }
 
     _onActionSelected(menu, action) {
         this._currentAction = action;
         this._updateKeybindingEntryState();
-    },
+    }
 
     _storeSettings() {
         if (!this._buttonSettings)
@@ -283,14 +275,14 @@ var ActionEditor = new Lang.Class({
             this._buttonSettings.set_string('keybinding', keybinding);
         else
             this._buttonSettings.reset('keybinding');
-    },
+    }
 
     _onEditingDone() {
         this._storeSettings();
         this.close();
         this.emit('done');
     }
-});
+};
 Signals.addSignalMethods(ActionEditor.prototype);
 
 var PadDiagram = new Lang.Class({
@@ -629,10 +621,8 @@ var PadDiagram = new Lang.Class({
     }
 });
 
-var PadOsd = new Lang.Class({
-    Name: 'PadOsd',
-
-    _init(padDevice, settings, imagePath, editionMode, monitorIndex) {
+var PadOsd = class {
+    constructor(padDevice, settings, imagePath, editionMode, monitorIndex) {
         this.padDevice = padDevice;
         this._groupPads = [ padDevice ];
         this._settings = settings;
@@ -752,7 +742,7 @@ var PadOsd = new Lang.Class({
 
         this._syncEditionMode();
         Main.pushModal(this.actor);
-    },
+    }
 
     _updatePadChooser() {
         if (this._groupPads.length > 1) {
@@ -769,7 +759,7 @@ var PadOsd = new Lang.Class({
             this._padChooser.destroy();
             this._padChooser = null;
         }
-    },
+    }
 
     _requestForOtherPad(pad) {
         if (pad == this.padDevice ||
@@ -779,13 +769,13 @@ var PadOsd = new Lang.Class({
         let editionMode = this._editionMode;
         this.destroy();
         global.display.request_pad_osd(pad, editionMode);
-    },
+    }
 
     _createLabel(type, number, dir) {
         let str = global.display.get_pad_action_label(this.padDevice, type, number);
         let label = new St.Label({ text: str ? str : _("None") });
         this._padDiagram.addLabel(label, type, number, dir);
-    },
+    }
 
     _onCapturedEvent(actor, event) {
         if (event.type() == Clutter.EventType.PAD_BUTTON_PRESS &&
@@ -830,7 +820,7 @@ var PadOsd = new Lang.Class({
         }
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _syncEditionMode() {
         this._editButton.set_reactive(!this._editionMode);
@@ -850,7 +840,7 @@ var PadOsd = new Lang.Class({
         }
 
         this._titleLabel.clutter_text.set_markup('<span size="larger"><b>' + title + '</b></span>');
-    },
+    }
 
     _isEditedAction(type, number, dir) {
         if (!this._editedAction)
@@ -859,7 +849,7 @@ var PadOsd = new Lang.Class({
         return (this._editedAction.type == type &&
                 this._editedAction.number == number &&
                 this._editedAction.dir == dir);
-    },
+    }
 
     _followUpActionEdition(str) {
         let { type, dir, number, mode } = this._editedAction;
@@ -876,7 +866,7 @@ var PadOsd = new Lang.Class({
             this._startStripActionEdition(number, DOWN, mode);
 
         return true;
-    },
+    }
 
     _endActionEdition() {
         this._actionEditor.close();
@@ -893,7 +883,7 @@ var PadOsd = new Lang.Class({
         }
 
         this._editedActionSettings = null;
-    },
+    }
 
     _startActionEdition(key, type, number, dir, mode) {
         if (this._isEditedAction(type, number, dir))
@@ -907,25 +897,25 @@ var PadOsd = new Lang.Class({
                                                                 settingsPath);
         this._actionEditor.setSettings(this._editedActionSettings, type);
         this._padDiagram.startEdition(type, number, dir);
-    },
+    }
 
     _startButtonActionEdition(button) {
         let ch = String.fromCharCode('A'.charCodeAt() + button);
         let key = 'button' + ch;
         this._startActionEdition(key, Meta.PadActionType.BUTTON, button);
-    },
+    }
 
     _startRingActionEdition(ring, dir, mode) {
         let ch = String.fromCharCode('A'.charCodeAt() + ring);
         let key = 'ring%s-%s-mode-%d'.format(ch, dir == CCW ? 'ccw' : 'cw', mode);
         this._startActionEdition(key, Meta.PadActionType.RING, ring, dir, mode);
-    },
+    }
 
     _startStripActionEdition(strip, dir, mode) {
         let ch = String.fromCharCode('A'.charCodeAt() + strip);
         let key = 'strip%s-%s-mode-%d'.format(ch, dir == UP ? 'up' : 'down', mode);
         this._startActionEdition(key, Meta.PadActionType.STRIP, strip, dir, mode);
-    },
+    }
 
     setEditionMode(editionMode) {
         if (this._editionMode == editionMode)
@@ -933,11 +923,11 @@ var PadOsd = new Lang.Class({
 
         this._editionMode = editionMode;
         this._syncEditionMode();
-    },
+    }
 
     destroy() {
         this.actor.destroy();
-    },
+    }
 
     _onDestroy() {
         Main.popModal(this.actor);
@@ -961,19 +951,17 @@ var PadOsd = new Lang.Class({
         this.actor = null;
         this.emit('closed');
     }
-});
+};
 Signals.addSignalMethods(PadOsd.prototype);
 
 const PadOsdIface = loadInterfaceXML('org.gnome.Shell.Wacom.PadOsd');
 
-var PadOsdService = new Lang.Class({
-    Name: 'PadOsdService',
-
-    _init() {
+var PadOsdService = class {
+    constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(PadOsdIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Wacom');
         Gio.DBus.session.own_name('org.gnome.Shell.Wacom.PadOsd', Gio.BusNameOwnerFlags.REPLACE, null, null);
-    },
+    }
 
     ShowAsync(params, invocation) {
         let [deviceNode, editionMode] = params;
@@ -997,5 +985,5 @@ var PadOsdService = new Lang.Class({
         global.display.request_pad_osd(padDevice, editionMode);
         invocation.return_value(null);
     }
-});
+};
 Signals.addSignalMethods(PadOsdService.prototype);

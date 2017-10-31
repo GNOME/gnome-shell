@@ -2,7 +2,6 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Signals = imports.signals;
 const St = imports.gi.St;
@@ -38,10 +37,8 @@ var BeginRequestType = {
     DONT_PROVIDE_USERNAME: 1
 };
 
-var AuthPrompt = new Lang.Class({
-    Name: 'AuthPrompt',
-
-    _init(gdmClient, mode) {
+var AuthPrompt = class {
+    constructor(gdmClient, mode) {
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
 
         this._gdmClient = gdmClient;
@@ -131,12 +128,12 @@ var AuthPrompt = new Lang.Class({
         this._spinner.actor.opacity = 0;
         this._spinner.actor.show();
         this._defaultButtonWell.add_child(this._spinner.actor);
-    },
+    }
 
     _onDestroy() {
         this._userVerifier.destroy();
         this._userVerifier = null;
-    },
+    }
 
     _initButtons() {
         this.cancelButton = new St.Button({ style_class: 'modal-dialog-button button',
@@ -184,7 +181,7 @@ var AuthPrompt = new Lang.Class({
             if (this.nextButton.reactive)
                 this.emit('next');
         });
-    },
+    }
 
     _onAskQuestion(verifier, serviceName, question, passwordChar) {
         if (this._queryingService)
@@ -210,12 +207,12 @@ var AuthPrompt = new Lang.Class({
 
         this.updateSensitivity(true);
         this.emit('prompted');
-    },
+    }
 
     _onOVirtUserAuthenticated() {
         if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
-    },
+    }
 
     _onSmartcardStatusChanged() {
         this.smartcardDetected = this._userVerifier.smartcardDetected;
@@ -234,12 +231,12 @@ var AuthPrompt = new Lang.Class({
 
         if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
             this.reset();
-    },
+    }
 
     _onShowMessage(userVerifier, message, type) {
         this.setMessage(message, type);
         this.emit('prompted');
-    },
+    }
 
     _onVerificationFailed(userVerifier, canRetry) {
         this._queryingService = null;
@@ -248,22 +245,22 @@ var AuthPrompt = new Lang.Class({
         this.updateSensitivity(canRetry);
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_FAILED;
-    },
+    }
 
     _onVerificationComplete() {
         this.setActorInDefaultButtonWell(null);
         this.verificationStatus = AuthPromptStatus.VERIFICATION_SUCCEEDED;
         this.cancelButton.reactive = false;
-    },
+    }
 
     _onReset() {
         this.verificationStatus = AuthPromptStatus.NOT_VERIFYING;
         this.reset();
-    },
+    }
 
     addActorToDefaultButtonWell(actor) {
         this._defaultButtonWell.add_child(actor);
-    },
+    }
 
     setActorInDefaultButtonWell(actor, animate) {
         if (!this._defaultButtonWellActor &&
@@ -327,25 +324,25 @@ var AuthPrompt = new Lang.Class({
         }
 
         this._defaultButtonWellActor = actor;
-    },
+    }
 
     startSpinning() {
         this.setActorInDefaultButtonWell(this._spinner.actor, true);
-    },
+    }
 
     stopSpinning() {
         this.setActorInDefaultButtonWell(null, false);
-    },
+    }
 
     clear() {
         this._entry.text = '';
         this.stopSpinning();
-    },
+    }
 
     setPasswordChar(passwordChar) {
         this._entry.clutter_text.set_password_char(passwordChar);
         this._entry.menu.isPassword = passwordChar != '';
-    },
+    }
 
     setQuestion(question) {
         this._label.set_text(question);
@@ -354,7 +351,7 @@ var AuthPrompt = new Lang.Class({
         this._entry.show();
 
         this._entry.grab_key_focus();
-    },
+    }
 
     getAnswer() {
         let text;
@@ -367,7 +364,7 @@ var AuthPrompt = new Lang.Class({
         }
 
         return text;
-    },
+    }
 
     _fadeOutMessage() {
         if (this._message.opacity == 0)
@@ -378,7 +375,7 @@ var AuthPrompt = new Lang.Class({
                            time: MESSAGE_FADE_OUT_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
-    },
+    }
 
     setMessage(message, type) {
         if (type == GdmUtil.MessageType.ERROR)
@@ -398,18 +395,18 @@ var AuthPrompt = new Lang.Class({
         } else {
             this._message.opacity = 0;
         }
-    },
+    }
 
     _updateNextButtonSensitivity(sensitive) {
         this.nextButton.reactive = sensitive;
         this.nextButton.can_focus = sensitive;
-    },
+    }
 
     updateSensitivity(sensitive) {
         this._updateNextButtonSensitivity(sensitive && (this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING));
         this._entry.reactive = sensitive;
         this._entry.clutter_text.editable = sensitive;
-    },
+    }
 
     hide() {
         this.setActorInDefaultButtonWell(null, true);
@@ -420,7 +417,7 @@ var AuthPrompt = new Lang.Class({
 
         this.updateSensitivity(true);
         this._entry.set_text('');
-    },
+    }
 
     setUser(user) {
         let oldChild = this._userWell.get_child();
@@ -431,7 +428,7 @@ var AuthPrompt = new Lang.Class({
             let userWidget = new UserWidget.UserWidget(user);
             this._userWell.set_child(userWidget.actor);
         }
-    },
+    }
 
     reset() {
         let oldStatus = this.verificationStatus;
@@ -469,7 +466,7 @@ var AuthPrompt = new Lang.Class({
         }
 
         this.emit('reset', beginRequestType);
-    },
+    }
 
     addCharacter(unichar) {
         if (!this._entry.visible)
@@ -477,7 +474,7 @@ var AuthPrompt = new Lang.Class({
 
         this._entry.grab_key_focus();
         this._entry.clutter_text.insert_unichar(unichar);
-    },
+    }
 
     begin(params) {
         params = Params.parse(params, { userName: null,
@@ -491,7 +488,7 @@ var AuthPrompt = new Lang.Class({
 
         this._userVerifier.begin(params.userName, hold);
         this.verificationStatus = AuthPromptStatus.VERIFYING;
-    },
+    }
 
     finish(onComplete) {
         if (!this._userVerifier.hasPendingMessages) {
@@ -505,7 +502,7 @@ var AuthPrompt = new Lang.Class({
             this._userVerifier.clear();
             onComplete();
         });
-    },
+    }
 
     cancel() {
         if (this.verificationStatus == AuthPromptStatus.VERIFICATION_SUCCEEDED) {
@@ -514,5 +511,5 @@ var AuthPrompt = new Lang.Class({
         this.reset();
         this.emit('cancelled');
     }
-});
+};
 Signals.addSignalMethods(AuthPrompt.prototype);

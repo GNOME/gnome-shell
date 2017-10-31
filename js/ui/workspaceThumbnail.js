@@ -54,10 +54,8 @@ var PrimaryActorLayout = new Lang.Class({
     },
 });
 
-var WindowClone = new Lang.Class({
-    Name: 'WindowClone',
-
-    _init(realWindow) {
+var WindowClone = class {
+    constructor(realWindow) {
         this.clone = new Clutter.Clone({ source: realWindow });
 
         /* Can't use a Shell.GenericContainer because of DND and reparenting... */
@@ -108,7 +106,7 @@ var WindowClone = new Lang.Class({
             return true;
         };
         this.metaWindow.foreach_transient(iter);
-    },
+    }
 
     // Find the actor just below us, respecting reparenting done
     // by DND code
@@ -124,7 +122,7 @@ var WindowClone = new Lang.Class({
         } else {
             return this._stackAbove;
         }
-    },
+    }
 
     setStackAbove(actor) {
         this._stackAbove = actor;
@@ -139,15 +137,15 @@ var WindowClone = new Lang.Class({
             this.actor.lower_bottom();
         else
             this.actor.raise(actualAbove);
-    },
+    }
 
     destroy() {
         this.actor.destroy();
-    },
+    }
 
     addAttachedDialog(win) {
         this._doAddAttachedDialog(win, win.get_compositor_private());
-    },
+    }
 
     _doAddAttachedDialog(metaDialog, realDialog) {
         let clone = new Clutter.Clone({ source: realDialog });
@@ -160,7 +158,7 @@ var WindowClone = new Lang.Class({
             clone.destroy();
         });
         this.actor.add_child(clone);
-    },
+    }
 
     _updateDialogPosition(realDialog, cloneDialog) {
         let metaDialog = realDialog.meta_window;
@@ -168,11 +166,11 @@ var WindowClone = new Lang.Class({
         let rect = this.metaWindow.get_frame_rect();
 
         cloneDialog.set_position(dialogRect.x - rect.x, dialogRect.y - rect.y);
-    },
+    }
 
     _onPositionChanged() {
         this.actor.set_position(this.realWindow.x, this.realWindow.y);
-    },
+    }
 
     _disconnectSignals() {
         this.actor.get_children().forEach(child => {
@@ -181,7 +179,7 @@ var WindowClone = new Lang.Class({
             realWindow.disconnect(child._updateId);
             realWindow.disconnect(child._destroyId);
         });
-    },
+    }
 
     _onDestroy() {
         this._disconnectSignals();
@@ -194,13 +192,13 @@ var WindowClone = new Lang.Class({
         }
 
         this.disconnectAll();
-    },
+    }
 
     _onButtonRelease(actor, event) {
         this.emit('selected', event.get_time());
 
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onTouchEvent(actor, event) {
         if (event.type() != Clutter.EventType.TOUCH_END ||
@@ -209,16 +207,16 @@ var WindowClone = new Lang.Class({
 
         this.emit('selected', event.get_time());
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onDragBegin(draggable, time) {
         this.inDrag = true;
         this.emit('drag-begin');
-    },
+    }
 
     _onDragCancelled(draggable, time) {
         this.emit('drag-cancelled');
-    },
+    }
 
     _onDragEnd(draggable, time, snapback) {
         this.inDrag = false;
@@ -236,7 +234,7 @@ var WindowClone = new Lang.Class({
 
         this.emit('drag-end');
     }
-});
+};
 Signals.addSignalMethods(WindowClone.prototype);
 
 
@@ -254,10 +252,8 @@ var ThumbnailState = {
 /**
  * @metaWorkspace: a #Meta.Workspace
  */
-var WorkspaceThumbnail = new Lang.Class({
-    Name: 'WorkspaceThumbnail',
-
-    _init(metaWorkspace) {
+var WorkspaceThumbnail = class {
+    constructor(metaWorkspace) {
         this.metaWorkspace = metaWorkspace;
         this.monitorIndex = Main.layoutManager.primaryIndex;
 
@@ -311,18 +307,18 @@ var WorkspaceThumbnail = new Lang.Class({
         this.state = ThumbnailState.NORMAL;
         this._slidePosition = 0; // Fully slid in
         this._collapseFraction = 0; // Not collapsed
-    },
+    }
 
     _createBackground() {
         this._bgManager = new Background.BackgroundManager({ monitorIndex: Main.layoutManager.primaryIndex,
                                                              container: this._contents,
                                                              vignette: false });
-    },
+    }
 
     setPorthole(x, y, width, height) {
         this.actor.set_size(width, height);
         this._contents.set_position(-x, -y);
-    },
+    }
 
     _lookupIndex(metaWindow) {
         for (let i = 0; i < this._windows.length; i++) {
@@ -331,7 +327,7 @@ var WorkspaceThumbnail = new Lang.Class({
             }
         }
         return -1;
-    },
+    }
 
     syncStacking(stackIndices) {
         this._windows.sort((a, b) => {
@@ -350,31 +346,31 @@ var WorkspaceThumbnail = new Lang.Class({
                 clone.setStackAbove(previousClone.actor);
             }
         }
-    },
+    }
 
     set slidePosition(slidePosition) {
         this._slidePosition = slidePosition;
         this.actor.queue_relayout();
-    },
+    }
 
     get slidePosition() {
         return this._slidePosition;
-    },
+    }
 
     set collapseFraction(collapseFraction) {
         this._collapseFraction = collapseFraction;
         this.actor.queue_relayout();
-    },
+    }
 
     get collapseFraction() {
         return this._collapseFraction;
-    },
+    }
 
     _doRemoveWindow(metaWin) {
         let clone = this._removeWindowClone(metaWin);
         if (clone)
             clone.destroy();
-    },
+    }
 
     _doAddWindow(metaWin) {
         if (this._removed)
@@ -428,11 +424,11 @@ var WorkspaceThumbnail = new Lang.Class({
             let clone = this._windows[idx];
             clone.addAttachedDialog(metaWin);
         }
-    },
+    }
 
     _windowAdded(metaWorkspace, metaWin) {
         this._doAddWindow(metaWin);
-    },
+    }
 
     _windowRemoved(metaWorkspace, metaWin) {
         let index = this._allWindows.indexOf(metaWin);
@@ -443,31 +439,31 @@ var WorkspaceThumbnail = new Lang.Class({
         }
 
         this._doRemoveWindow(metaWin);
-    },
+    }
 
     _windowEnteredMonitor(metaDisplay, monitorIndex, metaWin) {
         if (monitorIndex == this.monitorIndex) {
             this._doAddWindow(metaWin);
         }
-    },
+    }
 
     _windowLeftMonitor(metaDisplay, monitorIndex, metaWin) {
         if (monitorIndex == this.monitorIndex) {
             this._doRemoveWindow(metaWin);
         }
-    },
+    }
 
     _updateMinimized(metaWin) {
         if (metaWin.minimized)
             this._doRemoveWindow(metaWin);
         else
             this._doAddWindow(metaWin);
-    },
+    }
 
     destroy() {
         if (this.actor)
           this.actor.destroy();
-    },
+    }
 
     workspaceRemoved() {
         if (this._removed)
@@ -482,7 +478,7 @@ var WorkspaceThumbnail = new Lang.Class({
 
         for (let i = 0; i < this._allWindows.length; i++)
             this._allWindows[i].disconnect(this._minimizedChangedIds[i]);
-    },
+    }
 
     _onDestroy(actor) {
         this.workspaceRemoved();
@@ -494,20 +490,20 @@ var WorkspaceThumbnail = new Lang.Class({
 
         this._windows = [];
         this.actor = null;
-    },
+    }
 
     // Tests if @actor belongs to this workspace and monitor
     _isMyWindow(actor) {
         let win = actor.meta_window;
         return win.located_on_workspace(this.metaWorkspace) &&
             (win.get_monitor() == this.monitorIndex);
-    },
+    }
 
     // Tests if @win should be shown in the Overview
     _isOverviewWindow(win) {
         return !win.get_meta_window().skip_taskbar &&
                win.get_meta_window().showing_on_its_workspace();
-    },
+    }
 
     // Create a clone of a (non-desktop) window and add it to the window list
     _addWindowClone(win) {
@@ -538,7 +534,7 @@ var WorkspaceThumbnail = new Lang.Class({
         this._windows.push(clone);
 
         return clone;
-    },
+    }
 
     _removeWindowClone(metaWin) {
         // find the position of the window in our list
@@ -548,7 +544,7 @@ var WorkspaceThumbnail = new Lang.Class({
             return null;
 
         return this._windows.splice(index, 1).pop();
-    },
+    }
 
     activate(time) {
         if (this.state > ThumbnailState.NORMAL)
@@ -561,7 +557,7 @@ var WorkspaceThumbnail = new Lang.Class({
             Main.overview.hide();
         else
             this.metaWorkspace.activate(time);
-    },
+    }
 
     // Draggable target interface used only by ThumbnailsBox
     handleDragOverInternal(source, time) {
@@ -579,7 +575,7 @@ var WorkspaceThumbnail = new Lang.Class({
             return DND.DragMotionResult.COPY_DROP;
 
         return DND.DragMotionResult.CONTINUE;
-    },
+    }
 
     acceptDropInternal(source, time) {
         if (this.state > ThumbnailState.NORMAL)
@@ -608,8 +604,7 @@ var WorkspaceThumbnail = new Lang.Class({
 
         return false;
     }
-});
-
+};
 Signals.addSignalMethods(WorkspaceThumbnail.prototype);
 
 

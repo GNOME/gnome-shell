@@ -3,7 +3,6 @@
 const Atk = imports.gi.Atk;
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
-const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
 
@@ -11,18 +10,15 @@ const BarLevel = imports.ui.barLevel;
 
 var SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 
-var Slider = new Lang.Class({
-    Name: "Slider",
-    Extends: BarLevel.BarLevel,
-
-    _init(value) {
+var Slider = class extends BarLevel.BarLevel {
+    constructor(value) {
         let params = {
             styleClass: 'slider',
             canFocus: true,
             reactive: true,
             accessibleRole: Atk.Role.SLIDER,
         }
-        this.parent(value, params)
+        super(value, params)
 
         this.actor.connect('button-press-event', this._startDragging.bind(this));
         this.actor.connect('touch-event', this._touchDragging.bind(this));
@@ -33,10 +29,10 @@ var Slider = new Lang.Class({
         this._dragging = false;
 
         this._customAccessible.connect('get-minimum-increment', this._getMinimumIncrement.bind(this));
-    },
+    }
 
     _barLevelRepaint(area) {
-        this.parent(area);
+        super._barLevelRepaint(area);
 
         // Add handle
         let cr = area.get_context();
@@ -64,11 +60,11 @@ var Slider = new Lang.Class({
             cr.stroke();
         }
         cr.$dispose();
-    },
+    }
 
     _startDragging(actor, event) {
         return this.startDragging(event);
-    },
+    }
 
     startDragging(event) {
         if (this._dragging)
@@ -100,7 +96,7 @@ var Slider = new Lang.Class({
         [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _endDragging() {
         if (this._dragging) {
@@ -121,7 +117,7 @@ var Slider = new Lang.Class({
             this.emit('drag-end');
         }
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _touchDragging(actor, event) {
         let device = event.get_device();
@@ -139,7 +135,7 @@ var Slider = new Lang.Class({
         }
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     scroll(event) {
         let direction = event.get_scroll_direction();
@@ -164,18 +160,18 @@ var Slider = new Lang.Class({
         this.actor.queue_repaint();
         this.emit('value-changed', this._value);
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onScrollEvent(actor, event) {
         return this.scroll(event);
-    },
+    }
 
     _motionEvent(actor, event) {
         let absX, absY;
         [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
         return Clutter.EVENT_STOP;
-    },
+    }
 
     onKeyPressEvent(actor, event) {
         let key = event.get_key_symbol();
@@ -189,7 +185,7 @@ var Slider = new Lang.Class({
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _moveHandle(absX, absY) {
         let relX, relY, sliderX, sliderY;
@@ -210,11 +206,10 @@ var Slider = new Lang.Class({
         this._value = newvalue * this._maxValue;
         this.actor.queue_repaint();
         this.emit('value-changed', this._value);
-    },
+    }
 
     _getMinimumIncrement(actor) {
         return 0.1;
-    },
-});
-
+    }
+};
 Signals.addSignalMethods(Slider.prototype);

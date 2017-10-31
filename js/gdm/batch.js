@@ -44,45 +44,39 @@
  * replaced by something else.
  */
 
-const Lang = imports.lang;
 const Signals = imports.signals;
 
-var Task = new Lang.Class({
-    Name: 'Task',
-
-    _init(scope, handler) {
+var Task = class {
+    constructor(scope, handler) {
         if (scope)
             this.scope = scope;
         else
             this.scope = this;
 
         this.handler = handler;
-    },
+    }
 
     run() {
         if (this.handler)
             return this.handler.call(this.scope);
 
         return null;
-    },
-});
+    }
+};
 Signals.addSignalMethods(Task.prototype);
 
-var Hold = new Lang.Class({
-    Name: 'Hold',
-    Extends: Task,
-
-    _init() {
-        this.parent(this, () => this);
+var Hold = class extends Task {
+    constructor() {
+        super(null, () => this);
 
         this._acquisitions = 1;
-    },
+    }
 
     acquire() {
         if (this._acquisitions <= 0)
             throw new Error("Cannot acquire hold after it's been released");
         this._acquisitions++;
-    },
+    }
 
     acquireUntilAfter(hold) {
         if (!hold.isAcquired())
@@ -93,27 +87,24 @@ var Hold = new Lang.Class({
             hold.disconnect(signalId);
             this.release();
         });
-    },
+    }
 
     release() {
         this._acquisitions--;
 
         if (this._acquisitions == 0)
             this.emit('release');
-    },
+    }
 
     isAcquired() {
         return this._acquisitions > 0;
     }
-});
+};
 Signals.addSignalMethods(Hold.prototype);
 
-var Batch = new Lang.Class({
-    Name: 'Batch',
-    Extends: Task,
-
-    _init(scope, tasks) {
-        this.parent();
+var Batch = class extends Task {
+    constructor(scope, tasks) {
+        super();
 
         this.tasks = [];
 
@@ -130,11 +121,11 @@ var Batch = new Lang.Class({
 
             this.tasks.push(task);
         }
-    },
+    }
 
     process() {
         throw new Error('Not implemented');
-    },
+    }
 
     runTask() {
         if (!(this._currentTaskIndex in this.tasks)) {
@@ -142,11 +133,11 @@ var Batch = new Lang.Class({
         }
 
         return this.tasks[this._currentTaskIndex].run();
-    },
+    }
 
     _finish() {
         this.hold.release();
-    },
+    }
 
     nextTask() {
         this._currentTaskIndex++;
@@ -159,7 +150,7 @@ var Batch = new Lang.Class({
         }
 
         this.process();
-    },
+    }
 
     _start() {
         // acquire a hold to get released when the entire
@@ -167,7 +158,7 @@ var Batch = new Lang.Class({
         this.hold = new Hold();
         this._currentTaskIndex = 0;
         this.process();
-    },
+    }
 
     run() {
         this._start();
@@ -175,18 +166,15 @@ var Batch = new Lang.Class({
         // hold may be destroyed at this point
         // if we're already done running
         return this.hold;
-    },
+    }
 
     cancel() {
         this.tasks = this.tasks.splice(0, this._currentTaskIndex + 1);
     }
-});
+};
 Signals.addSignalMethods(Batch.prototype);
 
-var ConcurrentBatch = new Lang.Class({
-    Name: 'ConcurrentBatch',
-    Extends: Batch,
-
+var ConcurrentBatch = class extends Batch {
     process() {
        let hold = this.runTask();
 
@@ -199,13 +187,10 @@ var ConcurrentBatch = new Lang.Class({
        // concurrently.
        this.nextTask();
     }
-});
+};
 Signals.addSignalMethods(ConcurrentBatch.prototype);
 
-var ConsecutiveBatch = new Lang.Class({
-    Name: 'ConsecutiveBatch',
-    Extends: Batch,
-
+var ConsecutiveBatch = class extends Batch {
     process() {
        let hold = this.runTask();
 
@@ -222,5 +207,5 @@ var ConsecutiveBatch = new Lang.Class({
            this.nextTask();
        }
     }
-});
+};
 Signals.addSignalMethods(ConsecutiveBatch.prototype);

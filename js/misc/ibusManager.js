@@ -2,7 +2,6 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
@@ -32,16 +31,15 @@ function getIBusManager() {
     return _ibusManager;
 }
 
-var IBusManager = new Lang.Class({
-    Name: 'IBusManager',
-
-    // This is the longest we'll keep the keyboard frozen until an input
-    // source is active.
-    _MAX_INPUT_SOURCE_ACTIVATION_TIME: 4000, // ms
-    _PRELOAD_ENGINES_DELAY_TIME: 30, // sec
-
-    _init() {
+var IBusManager = class {
+    constructor() {
         IBus.init();
+
+        // This is the longest we'll keep the keyboard frozen until an input
+        // source is active.
+        this._MAX_INPUT_SOURCE_ACTIVATION_TIME = 4000; // ms
+        this._PRELOAD_ENGINES_DELAY_TIME = 30; // sec
+
 
         this._candidatePopup = new IBusCandidatePopup.CandidatePopup();
 
@@ -60,7 +58,7 @@ var IBusManager = new Lang.Class({
         this._ibus.connect('global-engine-changed', this._engineChanged.bind(this));
 
         this._spawn();
-    },
+    }
 
     _spawn() {
         try {
@@ -69,7 +67,7 @@ var IBusManager = new Lang.Class({
         } catch(e) {
             log('Failed to launch ibus-daemon: ' + e.message);
         }
-    },
+    }
 
     _clear() {
         if (this._panelService)
@@ -85,7 +83,7 @@ var IBusManager = new Lang.Class({
         this.emit('ready', false);
 
         this._spawn();
-    },
+    }
 
     _onConnected() {
         this._ibus.list_engines_async(-1, null, this._initEngines.bind(this));
@@ -93,7 +91,7 @@ var IBusManager = new Lang.Class({
                                       IBus.BusNameFlag.REPLACE_EXISTING,
                                       -1, null,
                                       this._initPanelService.bind(this));
-    },
+    }
 
     _initEngines(ibus, result) {
         let enginesList = this._ibus.list_engines_async_finish(result);
@@ -106,7 +104,7 @@ var IBusManager = new Lang.Class({
         } else {
             this._clear();
         }
-    },
+    }
 
     _initPanelService(ibus, result) {
         let success = this._ibus.request_name_async_finish(result);
@@ -151,13 +149,13 @@ var IBusManager = new Lang.Class({
         } else {
             this._clear();
         }
-    },
+    }
 
     _updateReadiness() {
         this._ready = (Object.keys(this._engines).length > 0 &&
                        this._panelService != null);
         this.emit('ready', this._ready);
-    },
+    }
 
     _engineChanged(bus, engineName) {
         if (!this._ready)
@@ -178,26 +176,26 @@ var IBusManager = new Lang.Class({
 
                 this.emit('properties-registered', this._currentEngineName, props);
             });
-    },
+    }
 
     _updateProperty(panel, prop) {
         this.emit('property-updated', this._currentEngineName, prop);
-    },
+    }
 
     _setContentType(panel, purpose, hints) {
         this.emit('set-content-type', purpose, hints);
-    },
+    }
 
     activateProperty(key, state) {
         this._panelService.property_activate(key, state);
-    },
+    }
 
     getEngineDesc(id) {
         if (!this._ready || !this._engines.hasOwnProperty(id))
             return null;
 
         return this._engines[id];
-    },
+    }
 
     setEngine(id, callback) {
         // Send id even if id == this._currentEngineName
@@ -211,7 +209,7 @@ var IBusManager = new Lang.Class({
 
         this._ibus.set_global_engine_async(id, this._MAX_INPUT_SOURCE_ACTIVATION_TIME,
                                            null, callback || null);
-    },
+    }
 
     preloadEngines(ids) {
         if (!this._ibus || ids.length == 0)
@@ -233,6 +231,6 @@ var IBusManager = new Lang.Class({
                                              this._preloadEnginesId = 0;
                                              return GLib.SOURCE_REMOVE;
                                          });
-    },
-});
+    }
+};
 Signals.addSignalMethods(IBusManager.prototype);

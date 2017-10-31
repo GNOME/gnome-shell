@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Gio = imports.gi.Gio;
-const Lang = imports.lang;
 const Signals = imports.signals;
 
 const OVirtCredentialsIface = `
@@ -28,33 +27,32 @@ function OVirtCredentials() {
     return self;
 }
 
-var OVirtCredentialsManager = new Lang.Class({
-    Name: 'OVirtCredentialsManager',
-    _init() {
+var OVirtCredentialsManager = class {
+    constructor() {
         this._token = null;
 
         this._credentials = new OVirtCredentials();
         this._credentials.connectSignal('UserAuthenticated',
                                         this._onUserAuthenticated.bind(this));
-    },
+    }
 
     _onUserAuthenticated(proxy, sender, [token]) {
         this._token = token;
         this.emit('user-authenticated', token);
-    },
+    }
 
     hasToken() {
         return this._token != null;
-    },
+    }
 
     getToken() {
         return this._token;
-    },
+    }
 
     resetToken() {
         this._token = null;
     }
-});
+};
 Signals.addSignalMethods(OVirtCredentialsManager.prototype);
 
 function getOVirtCredentialsManager() {

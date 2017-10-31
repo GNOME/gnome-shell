@@ -210,19 +210,17 @@ var Button = new Lang.Class({
  * of an icon and a menu section, which will be composed into the
  * aggregate menu.
  */
-var SystemIndicator = new Lang.Class({
-    Name: 'SystemIndicator',
-
-    _init() {
+var SystemIndicator = class {
+    constructor() {
         this.indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box',
                                              reactive: true });
         this.indicators.hide();
         this.menu = new PopupMenu.PopupMenuSection();
-    },
+    }
 
     _syncIndicatorsVisible() {
         this.indicators.visible = this.indicators.get_children().some(a => a.visible);
-    },
+    }
 
     _addIndicator() {
         let icon = new St.Icon({ style_class: 'system-status-icon' });
@@ -231,5 +229,5 @@ var SystemIndicator = new Lang.Class({
         this._syncIndicatorsVisible();
         return icon;
     }
-});
+};
 Signals.addSignalMethods(SystemIndicator.prototype);
