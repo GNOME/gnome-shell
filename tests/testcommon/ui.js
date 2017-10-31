@@ -22,7 +22,7 @@ function init(stage) {
 
 function main(stage) {
     stage.show();
-    stage.connect('destroy', function() {
+    stage.connect('destroy', () => {
         Clutter.main_quit();
     });
     Clutter.main();

@@ -42,12 +42,12 @@ var StreamSlider = new Lang.Class({
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.actor.add(this._icon);
         this.item.actor.add(this._slider.actor, { expand: true });
-        this.item.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+        this.item.actor.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
-        }));
-        this.item.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
+        });
+        this.item.actor.connect('key-press-event', (actor, event) => {
             return this._slider.onKeyPressEvent(actor, event);
-        }));
+        });
 
         this._stream = null;
     },
@@ -270,9 +270,9 @@ var VolumeMenu = new Lang.Class({
         this._control.connect('default-source-changed', Lang.bind(this, this._readInput));
 
         this._output = new OutputStreamSlider(this._control);
-        this._output.connect('stream-updated', Lang.bind(this, function() {
+        this._output.connect('stream-updated', () => {
             this.emit('icon-changed');
-        }));
+        });
         this.addMenuItem(this._output.item);
 
         this._input = new InputStreamSlider(this._control);
@@ -324,7 +324,7 @@ var Indicator = new Lang.Class({
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
-        this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu) {
+        this._volumeMenu.connect('icon-changed', menu => {
             let icon = this._volumeMenu.getIcon();
 
             if (icon != null) {
@@ -333,7 +333,7 @@ var Indicator = new Lang.Class({
             } else {
                 this.indicators.hide();
             }
-        }));
+        });
 
         this.menu.addMenuItem(this._volumeMenu);
 

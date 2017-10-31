@@ -93,7 +93,7 @@ var ObjectManager = new Lang.Class({
 
         proxy.init_async(GLib.PRIORITY_DEFAULT,
                          this._cancellable,
-                         Lang.bind(this, function(initable, result) {
+                         (initable, result) => {
                let error = null;
                try {
                    initable.init_finish(result);
@@ -127,7 +127,7 @@ var ObjectManager = new Lang.Class({
 
                if (onFinished)
                    onFinished();
-        }));
+        });
     },
 
     _removeInterface(objectPath, interfaceName) {
@@ -168,35 +168,35 @@ var ObjectManager = new Lang.Class({
         }
 
         this._managerProxy.connectSignal('InterfacesAdded',
-                                         Lang.bind(this, function(objectManager, sender, [objectPath, interfaces]) {
+                                         (objectManager, sender, [objectPath, interfaces]) => {
                                              let interfaceNames = Object.keys(interfaces);
                                              for (let i = 0; i < interfaceNames.length; i++)
                                                  this._addInterface(objectPath, interfaceNames[i]);
-                                         }));
+                                         });
         this._managerProxy.connectSignal('InterfacesRemoved',
-                                         Lang.bind(this, function(objectManager, sender, [objectPath, interfaceNames]) {
+                                         (objectManager, sender, [objectPath, interfaceNames]) => {
                                              for (let i = 0; i < interfaceNames.length; i++)
                                                  this._removeInterface(objectPath, interfaceNames[i]);
-                                         }));
+                                         });
 
         if (Object.keys(this._interfaceInfos).length == 0) {
             this._tryToCompleteLoad();
             return;
         }
 
-        this._managerProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
+        this._managerProxy.connect('notify::g-name-owner', () => {
             if (this._managerProxy.g_name_owner)
                 this._onNameAppeared();
             else
                 this._onNameVanished();
-        }));
+        });
 
         if (this._managerProxy.g_name_owner)
             this._onNameAppeared();
     },
 
     _onNameAppeared() {
-        this._managerProxy.GetManagedObjectsRemote(Lang.bind(this, function(result, error) {
+        this._managerProxy.GetManagedObjectsRemote((result, error) => {
             if (!result) {
                 if (error) {
                    logError(error, 'could not get remote objects for service ' + this._serviceName + ' path ' + this._managerPath);
@@ -230,7 +230,7 @@ var ObjectManager = new Lang.Class({
                 }
             }
             this._tryToCompleteLoad();
-        }));
+        });
     },
 
     _onNameVanished() {

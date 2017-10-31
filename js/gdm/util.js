@@ -230,11 +230,10 @@ var ShellUserVerifier = new Lang.Class({
         if (!this.hasPendingMessages) {
             this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
         } else {
-            let signalId = this.connect('no-more-messages',
-                                        Lang.bind(this, function() {
-                                            this.disconnect(signalId);
-                                            this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
-                                        }));
+            let signalId = this.connect('no-more-messages', () => {
+                this.disconnect(signalId);
+                this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+            });
         }
     },
 
@@ -268,11 +267,11 @@ var ShellUserVerifier = new Lang.Class({
 
         this._messageQueueTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                        message.interval,
-                                                       Lang.bind(this, function() {
+                                                       () => {
                                                            this._messageQueueTimeoutId = 0;
                                                            this._queueMessageTimeout();
                                                            return GLib.SOURCE_REMOVE;
-                                                       }));
+                                                       });
         GLib.Source.set_name_by_id(this._messageQueueTimeoutId, '[gnome-shell] this._queueMessageTimeout');
     },
 
@@ -303,13 +302,13 @@ var ShellUserVerifier = new Lang.Class({
             return;
         }
 
-        this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, this._cancellable, Lang.bind(this,
-            function(device, error) {
+        this._fprintManager.GetDefaultDeviceRemote(Gio.DBusCallFlags.NONE, this._cancellable,
+            (device, error) => {
                 if (!error && device) {
                     this._haveFingerprintReader = true;
                     this._updateDefaultService();
                 }
-            }));
+            });
     },
 
     _oVirtUserAuthenticated(token) {
@@ -432,7 +431,7 @@ var ShellUserVerifier = new Lang.Class({
            this._userVerifier.call_begin_verification_for_user(serviceName,
                                                                this._userName,
                                                                this._cancellable,
-                                                               Lang.bind(this, function(obj, result) {
+                                                               (obj, result) => {
                try {
                    obj.call_begin_verification_for_user_finish(result);
                } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
@@ -443,11 +442,11 @@ var ShellUserVerifier = new Lang.Class({
                }
 
                this._hold.release();
-           }));
+           });
         } else {
            this._userVerifier.call_begin_verification(serviceName,
                                                       this._cancellable,
-                                                      Lang.bind(this, function(obj, result) {
+                                                      (obj, result) => {
                try {
                    obj.call_begin_verification_finish(result);
                } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
@@ -458,7 +457,7 @@ var ShellUserVerifier = new Lang.Class({
                }
 
                this._hold.release();
-           }));
+           });
         }
     },
 
@@ -546,22 +545,20 @@ var ShellUserVerifier = new Lang.Class({
             if (!this.hasPendingMessages) {
                 this._retry();
             } else {
-                let signalId = this.connect('no-more-messages',
-                                            Lang.bind(this, function() {
-                                                this.disconnect(signalId);
-                                                if (this._cancellable && !this._cancellable.is_cancelled())
-                                                    this._retry();
-                                            }));
+                let signalId = this.connect('no-more-messages', () => {
+                    this.disconnect(signalId);
+                    if (this._cancellable && !this._cancellable.is_cancelled())
+                        this._retry();
+                });
             }
         } else {
             if (!this.hasPendingMessages) {
                 this._cancelAndReset();
             } else {
-                let signalId = this.connect('no-more-messages',
-                                            Lang.bind(this, function() {
-                                                this.disconnect(signalId);
-                                                this._cancelAndReset();
-                                            }));
+                let signalId = this.connect('no-more-messages', () => {
+                    this.disconnect(signalId);
+                    this._cancelAndReset();
+                });
             }
         }
 

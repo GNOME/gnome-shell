@@ -73,9 +73,7 @@ var Hold = new Lang.Class({
     Extends: Task,
 
     _init() {
-        this.parent(this, function () {
-            return this;
-        });
+        this.parent(this, () => this);
 
         this._acquisitions = 1;
     },
@@ -91,10 +89,10 @@ var Hold = new Lang.Class({
             return;
 
         this.acquire();
-        let signalId = hold.connect('release', Lang.bind(this, function() {
-                                        hold.disconnect(signalId);
-                                        this.release();
-                                    }));
+        let signalId = hold.connect('release', () => {
+            hold.disconnect(signalId);
+            this.release();
+        });
     },
 
     release() {
@@ -214,11 +212,10 @@ var ConsecutiveBatch = new Lang.Class({
        if (hold && hold.isAcquired()) {
            // This task is inhibiting the batch. Wait on it
            // before processing the next one.
-           let signalId = hold.connect('release',
-                                       Lang.bind(this, function() {
-                                           hold.disconnect(signalId);
-                                           this.nextTask();
-                                       }));
+           let signalId = hold.connect('release', () => {
+               hold.disconnect(signalId);
+               this.nextTask();
+           });
            return;
        } else {
            // This task finished, process the next one

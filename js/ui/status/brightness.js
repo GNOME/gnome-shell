@@ -26,7 +26,7 @@ var Indicator = new Lang.Class({
     _init() {
         this.parent('display-brightness-symbolic');
         this._proxy = new BrightnessProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
-                                          Lang.bind(this, function(proxy, error) {
+                                          (proxy, error) => {
                                               if (error) {
                                                   log(error.message);
                                                   return;
@@ -34,7 +34,7 @@ var Indicator = new Lang.Class({
 
                                               this._proxy.connect('g-properties-changed', Lang.bind(this, this._sync));
                                               this._sync();
-                                          }));
+                                          });
 
         this._item = new PopupMenu.PopupBaseMenuItem({ activate: false });
         this.menu.addMenuItem(this._item);
@@ -47,12 +47,12 @@ var Indicator = new Lang.Class({
                                  style_class: 'popup-menu-icon' });
         this._item.actor.add(icon);
         this._item.actor.add(this._slider.actor, { expand: true });
-        this._item.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+        this._item.actor.connect('button-press-event', (actor, event) => {
             return this._slider.startDragging(event);
-        }));
-        this._item.actor.connect('key-press-event', Lang.bind(this, function(actor, event) {
+        });
+        this._item.actor.connect('key-press-event', (actor, event) => {
             return this._slider.onKeyPressEvent(actor, event);
-        }));
+        });
 
     },
 

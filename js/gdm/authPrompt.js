@@ -64,26 +64,24 @@ var AuthPrompt = new Lang.Class({
         this._userVerifier.connect('ovirt-user-authenticated', Lang.bind(this, this._onOVirtUserAuthenticated));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
-        this.connect('next', Lang.bind(this, function() {
-                         this.updateSensitivity(false);
-                         this.startSpinning();
-                         if (this._queryingService) {
-                             this._userVerifier.answerQuery(this._queryingService, this._entry.text);
-                         } else {
-                             this._preemptiveAnswer = this._entry.text;
-                         }
-                     }));
+        this.connect('next', () => {
+                this.updateSensitivity(false);
+                this.startSpinning();
+                if (this._queryingService) {
+                    this._userVerifier.answerQuery(this._queryingService, this._entry.text);
+                } else {
+                    this._preemptiveAnswer = this._entry.text;
+                }
+            });
 
         this.actor = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
                                         vertical: true });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('key-press-event',
-                           Lang.bind(this, function(actor, event) {
-                               if (event.get_key_symbol() == Clutter.KEY_Escape) {
-                                   this.cancel();
-                               }
-                               return Clutter.EVENT_PROPAGATE;
-                           }));
+        this.actor.connect('key-press-event', (actor, event) => {
+                if (event.get_key_symbol() == Clutter.KEY_Escape)
+                    this.cancel();
+                return Clutter.EVENT_PROPAGATE;
+            });
 
         this._userWell = new St.Bin({ x_fill: true,
                                       x_align: St.Align.START });
@@ -147,10 +145,7 @@ var AuthPrompt = new Lang.Class({
                                             reactive: true,
                                             can_focus: true,
                                             label: _("Cancel") });
-        this.cancelButton.connect('clicked',
-                                   Lang.bind(this, function() {
-                                       this.cancel();
-                                   }));
+        this.cancelButton.connect('clicked', () => { this.cancel(); });
         this._buttonBox.add(this.cancelButton,
                             { expand: false,
                               x_fill: false,
@@ -169,10 +164,7 @@ var AuthPrompt = new Lang.Class({
                                           reactive: true,
                                           can_focus: true,
                                           label: _("Next") });
-        this.nextButton.connect('clicked',
-                                 Lang.bind(this, function() {
-                                     this.emit('next');
-                                 }));
+        this.nextButton.connect('clicked', () => { this.emit('next'); });
         this.nextButton.add_style_pseudo_class('default');
         this._buttonBox.add(this.nextButton,
                             { expand: false,
@@ -183,17 +175,16 @@ var AuthPrompt = new Lang.Class({
 
         this._updateNextButtonSensitivity(this._entry.text.length > 0);
 
-        this._entry.clutter_text.connect('text-changed',
-                                         Lang.bind(this, function() {
-                                             if (!this._userVerifier.hasPendingMessages)
-                                                 this._fadeOutMessage();
+        this._entry.clutter_text.connect('text-changed', () => {
+            if (!this._userVerifier.hasPendingMessages)
+                this._fadeOutMessage();
 
-                                             this._updateNextButtonSensitivity(this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING);
-                                         }));
-        this._entry.clutter_text.connect('activate', Lang.bind(this, function() {
+            this._updateNextButtonSensitivity(this._entry.text.length > 0 || this.verificationStatus == AuthPromptStatus.VERIFYING);
+        });
+        this._entry.clutter_text.connect('activate', () => {
             if (this.nextButton.reactive)
                 this.emit('next');
-        }));
+        });
     },
 
     _onAskQuestion(verifier, serviceName, question, passwordChar) {
@@ -509,12 +500,11 @@ var AuthPrompt = new Lang.Class({
             return;
         }
 
-        let signalId = this._userVerifier.connect('no-more-messages',
-                                                  Lang.bind(this, function() {
-                                                      this._userVerifier.disconnect(signalId);
-                                                      this._userVerifier.clear();
-                                                      onComplete();
-                                                  }));
+        let signalId = this._userVerifier.connect('no-more-messages', () => {
+            this._userVerifier.disconnect(signalId);
+            this._userVerifier.clear();
+            onComplete();
+        });
     },
 
     cancel() {

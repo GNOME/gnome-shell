@@ -321,8 +321,8 @@ function test() {
         scrollView.set_policy(Gtk.PolicyType[hpolicy.label], Gtk.PolicyType[vpolicy.label]);
     }
 
-    hpolicy.connect('clicked', function() { togglePolicy(hpolicy); });
-    vpolicy.connect('clicked', function() { togglePolicy(vpolicy); });
+    hpolicy.connect('clicked', () => { togglePolicy(hpolicy); });
+    vpolicy.connect('clicked', () => { togglePolicy(vpolicy); });
 
     let fadeBox = new St.BoxLayout({ vertical: false });
     mainBox.add(fadeBox);
@@ -361,7 +361,7 @@ function test() {
             scrollView.style += (button.label == 'Yes' ? 'padding: 10px;' : 'padding: 0;');
     }
 
-    paddingButton.connect('clicked', function() { togglePadding(paddingButton); });
+    paddingButton.connect('clicked', () => { togglePadding(paddingButton); });
 
     function toggleBorders(button) {
         switch(button.label) {
@@ -378,7 +378,7 @@ function test() {
             scrollView.style += (button.label == 'Yes' ? 'border: 2px solid red;' : 'border: 0;');
     }
 
-    borderButton.connect('clicked', function() { toggleBorders(borderButton); });
+    borderButton.connect('clicked', () => { toggleBorders(borderButton); });
 
     function toggleFade(button) {
         switch(button.label) {
@@ -392,7 +392,7 @@ function test() {
         scrollView.set_style_class_name(button.label == 'Yes' ? 'vfade' : '');
     }
 
-    vfade.connect('clicked', function() { toggleFade(vfade); });
+    vfade.connect('clicked', () => { toggleFade(vfade); });
     toggleFade(vfade);
 
     function toggleOverlay(button) {
@@ -407,7 +407,7 @@ function test() {
         scrollView.overlay_scrollbars = (button.label == 'Yes');
     }
 
-    overlay.connect('clicked', function() { toggleOverlay(overlay); });
+    overlay.connect('clicked', () => { toggleOverlay(overlay); });
 
     UI.main(stage);
 }

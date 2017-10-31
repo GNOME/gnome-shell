@@ -30,14 +30,14 @@ function test() {
 
     button = new St.Button ({ label: 'Smaller', style_class: 'push-button' });
     hbox.add (button);
-    button.connect('clicked', function() {
+    button.connect('clicked', () => {
         size /= 1.2;
         update_size ();
     });
 
     button = new St.Button ({ label: 'Bigger', style_class: 'push-button' });
     hbox.add (button);
-    button.connect('clicked', function() {
+    button.connect('clicked', () => {
         size *= 1.2;
         update_size ();
     });

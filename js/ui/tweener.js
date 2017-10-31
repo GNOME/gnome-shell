@@ -49,7 +49,7 @@ function _wrapTweening(target, tweeningParameters) {
             state.destroyedId = target.connect('destroy', _actorDestroyed);
         } else if (target.actor && target.actor instanceof Clutter.Actor) {
             state.actor = target.actor;
-            state.destroyedId = target.actor.connect('destroy', function() { _actorDestroyed(target); });
+            state.destroyedId = target.actor.connect('destroy', () => { _actorDestroyed(target); });
         }
     }
 
@@ -87,12 +87,12 @@ function _addHandler(target, params, name, handler) {
         let oldParams = params[name + 'Params'];
         let eventScope = oldScope ? oldScope : target;
 
-        params[name] = function () {
+        params[name] = () => {
             oldHandler.apply(eventScope, oldParams);
             handler(target);
         };
     } else
-        params[name] = function () { handler(target); };
+        params[name] = () => { handler(target); };
 }
 
 function _actorDestroyed(target) {
@@ -178,10 +178,9 @@ var ClutterFrameTicker = new Lang.Class({
         this._startTime = -1;
         this._currentTime = -1;
 
-        this._timeline.connect('new-frame', Lang.bind(this,
-            function(timeline, frame) {
-                this._onNewFrame(frame);
-            }));
+        this._timeline.connect('new-frame', (timeline, frame) => {
+            this._onNewFrame(frame);
+        });
 
         let perf_log = Shell.PerfLog.get_default();
         perf_log.define_event("tweener.framePrepareStart",

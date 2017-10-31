@@ -31,7 +31,7 @@ function main() {
     Gdk.set_program_class('test-gjsgapp');
 
     let app = new Gtk.Application({ application_id: 'org.gnome.Shell.GtkApplicationTest' });
-    app.connect('activate', function() {
+    app.connect('activate', () => {
         print ("Activated");
     });
 
@@ -95,11 +95,11 @@ function main() {
 
     let window = null;
 
-    app.connect_after('startup', function(app) {
+    app.connect_after('startup', app => {
         app.set_app_menu(menu);
         window = new Gtk.ApplicationWindow({ title: "Test Application", application: app });
     });
-    app.connect('activate', function(app) {
+    app.connect('activate', app => {
         window.present();
     });
 

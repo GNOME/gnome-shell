@@ -129,20 +129,19 @@ var UserListItem = new Lang.Class({
 
         let startTime = GLib.get_monotonic_time();
 
-        this._timedLoginTimeoutId = GLib.timeout_add (GLib.PRIORITY_DEFAULT,
-                                                      33,
-                                                      Lang.bind(this, function() {
-                                                          let currentTime = GLib.get_monotonic_time();
-                                                          let elapsedTime = (currentTime - startTime) / GLib.USEC_PER_SEC;
-                                                          this._timedLoginIndicator.scale_x = elapsedTime / time;
-                                                          if (elapsedTime >= time) {
-                                                              this._timedLoginTimeoutId = 0;
-                                                              hold.release();
-                                                              return GLib.SOURCE_REMOVE;
-                                                          }
+        this._timedLoginTimeoutId = GLib.timeout_add (GLib.PRIORITY_DEFAULT, 33,
+            () => {
+                let currentTime = GLib.get_monotonic_time();
+                let elapsedTime = (currentTime - startTime) / GLib.USEC_PER_SEC;
+                this._timedLoginIndicator.scale_x = elapsedTime / time;
+                if (elapsedTime >= time) {
+                    this._timedLoginTimeoutId = 0;
+                    hold.release();
+                    return GLib.SOURCE_REMOVE;
+                }
 
-                                                          return GLib.SOURCE_CONTINUE;
-                                                      }));
+                return GLib.SOURCE_CONTINUE;
+            });
 
         GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginTimeoutId');
 
@@ -188,10 +187,10 @@ var UserList = new Lang.Class({
 
         let focusSet = this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         if (!focusSet) {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
                 this._moveFocusToItems();
                 return false;
-            }));
+            });
         }
     },
 
@@ -275,11 +274,7 @@ var UserList = new Lang.Class({
                      Lang.bind(this, this._onItemActivated));
 
         // Try to keep the focused item front-and-center
-        item.actor.connect('key-focus-in',
-                           Lang.bind(this,
-                                     function() {
-                                         this.scrollToItem(item);
-                                     }));
+        item.actor.connect('key-focus-in', () => { this.scrollToItem(item); });
 
         this._moveFocusToItems();
 
@@ -338,20 +333,17 @@ var SessionMenuButton = new Lang.Class({
         Main.uiGroup.add_actor(this._menu.actor);
         this._menu.actor.hide();
 
-        this._menu.connect('open-state-changed',
-                           Lang.bind(this, function(menu, isOpen) {
-                                if (isOpen)
-                                    this._button.add_style_pseudo_class('active');
-                                else
-                                    this._button.remove_style_pseudo_class('active');
-                           }));
+        this._menu.connect('open-state-changed', (menu, isOpen) => {
+             if (isOpen)
+                 this._button.add_style_pseudo_class('active');
+             else
+                 this._button.remove_style_pseudo_class('active');
+        });
 
         this._manager = new PopupMenu.PopupMenuManager({ actor: this._button });
         this._manager.addMenu(this._menu);
 
-        this._button.connect('clicked', Lang.bind(this, function() {
-            this._menu.toggle();
-        }));
+        this._button.connect('clicked', () => { this._menu.toggle(); });
 
         this._items = {};
         this._activeSessionId = null;
@@ -403,10 +395,10 @@ var SessionMenuButton = new Lang.Class({
             this._menu.addMenuItem(item);
             this._items[id] = item;
 
-            item.connect('activate', Lang.bind(this, function() {
+            item.connect('activate', () => {
                 this.setActiveSession(id);
                 this.emit('session-activated', this._activeSessionId);
-            }));
+            });
         }
     }
 });
@@ -506,17 +498,16 @@ var LoginDialog = new Lang.Class({
         this.actor.add_child(this._logoBin);
         this._updateLogo();
 
-        this._userList.connect('activate',
-                               Lang.bind(this, function(userList, item) {
-                                   this._onUserListActivated(item);
-                               }));
+        this._userList.connect('activate', (userList, item) => {
+            this._onUserListActivated(item);
+        });
 
 
         this._sessionMenuButton = new SessionMenuButton();
         this._sessionMenuButton.connect('session-activated',
-                                  Lang.bind(this, function(list, sessionId) {
-                                                this._greeter.call_select_session_sync (sessionId, null);
-                                            }));
+            (list, sessionId) => {
+                this._greeter.call_select_session_sync (sessionId, null);
+            });
         this._sessionMenuButton.actor.opacity = 0;
         this._sessionMenuButton.actor.show();
         this._authPrompt.addActorToDefaultButtonWell(this._sessionMenuButton.actor);
@@ -724,13 +715,13 @@ var LoginDialog = new Lang.Class({
     _ensureUserListLoaded() {
         if (!this._userManager.is_loaded) {
             this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
-                                                                  Lang.bind(this, function() {
-                                                                      if (this._userManager.is_loaded) {
-                                                                          this._loadUserList();
-                                                                          this._userManager.disconnect(this._userManagerLoadedId);
-                                                                          this._userManagerLoadedId = 0;
-                                                                      }
-                                                                  }));
+                () => {
+                    if (this._userManager.is_loaded) {
+                        this._loadUserList();
+                        this._userManager.disconnect(this._userManagerLoadedId);
+                        this._userManagerLoadedId = 0;
+                    }
+                });
         } else {
             let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
             GLib.Source.set_name_by_id(id, '[gnome-shell] _loadUserList');
@@ -907,17 +898,17 @@ var LoginDialog = new Lang.Class({
         if (this._nextSignalId)
             this._authPrompt.disconnect(this._nextSignalId);
         this._nextSignalId = this._authPrompt.connect('next',
-                                                      Lang.bind(this, function() {
-                                                          this._authPrompt.disconnect(this._nextSignalId);
-                                                          this._nextSignalId = 0;
-                                                          this._authPrompt.updateSensitivity(false);
-                                                          let answer = this._authPrompt.getAnswer();
-                                                          this._user = this._userManager.get_user(answer);
-                                                          this._authPrompt.clear();
-                                                          this._authPrompt.startSpinning();
-                                                          this._authPrompt.begin({ userName: answer });
-                                                          this._updateCancelButton();
-                                                      }));
+            () => {
+                this._authPrompt.disconnect(this._nextSignalId);
+                this._nextSignalId = 0;
+                this._authPrompt.updateSensitivity(false);
+                let answer = this._authPrompt.getAnswer();
+                this._user = this._userManager.get_user(answer);
+                this._authPrompt.clear();
+                this._authPrompt.startSpinning();
+                this._authPrompt.begin({ userName: answer });
+                this._updateCancelButton();
+            });
         this._updateCancelButton();
 
         this._sessionMenuButton.updateSensitivity(false);
@@ -952,10 +943,10 @@ var LoginDialog = new Lang.Class({
     _gotGreeterSessionProxy(proxy) {
         this._greeterSessionProxy = proxy;
         this._greeterSessionProxyChangedId =
-            proxy.connect('g-properties-changed', Lang.bind(this, function() {
+            proxy.connect('g-properties-changed', () => {
                 if (proxy.Active)
                     this._loginScreenSessionActivated();
-            }));
+            });
     },
 
     _startSession(serviceName) {
@@ -979,9 +970,7 @@ var LoginDialog = new Lang.Class({
     },
 
     _onSessionOpened(client, serviceName) {
-        this._authPrompt.finish(Lang.bind(this, function() {
-            this._startSession(serviceName);
-        }));
+        this._authPrompt.finish(() => { this._startSession(serviceName); });
     },
 
     _waitForItemForUser(userName) {
@@ -992,16 +981,14 @@ var LoginDialog = new Lang.Class({
 
         let hold = new Batch.Hold();
         let signalId = this._userList.connect('item-added',
-                                              Lang.bind(this, function() {
-                                                  let item = this._userList.getItemFromUserName(userName);
+            () => {
+                let item = this._userList.getItemFromUserName(userName);
 
-                                                  if (item)
-                                                      hold.release();
-                                              }));
+                if (item)
+                    hold.release();
+            });
 
-        hold.connect('release', Lang.bind(this, function() {
-                         this._userList.disconnect(signalId);
-                     }));
+        hold.connect('release', () => { this._userList.disconnect(signalId); });
 
         return hold;
     },
@@ -1024,11 +1011,11 @@ var LoginDialog = new Lang.Class({
         let hold = new Batch.Hold();
 
         this._timedLoginIdleTimeOutId = Mainloop.timeout_add_seconds(_TIMED_LOGIN_IDLE_THRESHOLD,
-                                                                     function() {
-                                                                         this._timedLoginAnimationTime -= _TIMED_LOGIN_IDLE_THRESHOLD;
-                                                                         hold.release();
-                                                                         return GLib.SOURCE_REMOVE;
-                                                                     });
+            () => {
+                this._timedLoginAnimationTime -= _TIMED_LOGIN_IDLE_THRESHOLD;
+                hold.release();
+                return GLib.SOURCE_REMOVE;
+            });
         GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginAnimationTime');
         return hold;
     },
@@ -1038,15 +1025,13 @@ var LoginDialog = new Lang.Class({
         this._timedLoginDelay = delay;
         this._timedLoginAnimationTime = delay;
 
-        let tasks = [function() {
-                         return this._waitForItemForUser(userName);
-                     },
+        let tasks = [() => this._waitForItemForUser(userName),
 
-                     function() {
+                     () => {
                          this._timedLoginItem = this._userList.getItemFromUserName(userName);
                      },
 
-                     function() {
+                     () => {
                          // If we're just starting out, start on the right
                          // item.
                          if (!this._userManager.is_loaded) {
@@ -1056,13 +1041,13 @@ var LoginDialog = new Lang.Class({
 
                      this._blockTimedLoginUntilIdle,
 
-                     function() {
+                     () => {
                          this._userList.scrollToItem(this._timedLoginItem);
                      },
 
                      this._showTimedLoginAnimation,
 
-                     function() {
+                     () => {
                          this._timedLoginBatch = null;
                          this._greeter.call_begin_auto_login_sync(userName, null);
                      }];
@@ -1090,24 +1075,23 @@ var LoginDialog = new Lang.Class({
     _onTimedLoginRequested(client, userName, seconds) {
         this._startTimedLogin(userName, seconds);
 
-        global.stage.connect('captured-event',
-                             Lang.bind(this, function(actor, event) {
-                                if (this._timedLoginDelay == undefined)
-                                    return Clutter.EVENT_PROPAGATE;
+        global.stage.connect('captured-event', (actor, event) => {
+           if (this._timedLoginDelay == undefined)
+               return Clutter.EVENT_PROPAGATE;
 
-                                if (event.type() == Clutter.EventType.KEY_PRESS ||
-                                    event.type() == Clutter.EventType.BUTTON_PRESS) {
-                                    if (this._timedLoginBatch) {
-                                        this._timedLoginBatch.cancel();
-                                        this._timedLoginBatch = null;
-                                    }
-                                } else if (event.type() == Clutter.EventType.KEY_RELEASE ||
-                                           event.type() == Clutter.EventType.BUTTON_RELEASE) {
-                                    this._resetTimedLogin();
-                                }
+           if (event.type() == Clutter.EventType.KEY_PRESS ||
+               event.type() == Clutter.EventType.BUTTON_PRESS) {
+               if (this._timedLoginBatch) {
+                   this._timedLoginBatch.cancel();
+                   this._timedLoginBatch = null;
+               }
+           } else if (event.type() == Clutter.EventType.KEY_RELEASE ||
+                      event.type() == Clutter.EventType.BUTTON_RELEASE) {
+               this._resetTimedLogin();
+           }
 
-                                return Clutter.EVENT_PROPAGATE;
-                             }));
+           return Clutter.EVENT_PROPAGATE;
+        });
     },
 
     _setUserListExpanded(expanded) {
@@ -1218,25 +1202,25 @@ var LoginDialog = new Lang.Class({
         this._updateDisableUserList();
 
         this._userAddedId = this._userManager.connect('user-added',
-                                                      Lang.bind(this, function(userManager, user) {
-                                                          this._userList.addUser(user);
-                                                          this._updateDisableUserList();
-                                                      }));
+            (userManager, user) => {
+                this._userList.addUser(user);
+                this._updateDisableUserList();
+            });
 
         this._userRemovedId = this._userManager.connect('user-removed',
-                                                        Lang.bind(this, function(userManager, user) {
-                                                            this._userList.removeUser(user);
-                                                            this._updateDisableUserList();
-                                                        }));
+            (userManager, user) => {
+                this._userList.removeUser(user);
+                this._updateDisableUserList();
+            });
 
         this._userChangedId = this._userManager.connect('user-changed',
-                                                        Lang.bind(this, function(userManager, user) {
-                                                            if (this._userList.containsUser(user) && user.locked)
-                                                                this._userList.removeUser(user);
-                                                            else if (!this._userList.containsUser(user) && !user.locked)
-                                                                this._userList.addUser(user);
-                                                            this._updateDisableUserList();
-                                                        }));
+            (userManager, user) => {
+                if (this._userList.containsUser(user) && user.locked)
+                    this._userList.removeUser(user);
+                else if (!this._userList.containsUser(user) && !user.locked)
+                    this._userList.addUser(user);
+                this._updateDisableUserList();
+            });
 
         return GLib.SOURCE_REMOVE;
     },

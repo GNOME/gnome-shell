@@ -138,8 +138,8 @@ var KeyboardManager = new Lang.Class({
 
     _buildGroupStrings(_group) {
         let group = _group.concat(this._localeLayoutInfo);
-        let layouts = group.map(function(g) { return g.layout; }).join(',');
-        let variants = group.map(function(g) { return g.variant; }).join(',');
+        let layouts = group.map(g => g.layout).join(',');
+        let variants = group.map(g => g.variant).join(',');
         return [layouts, variants];
     },
 

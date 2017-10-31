@@ -240,13 +240,10 @@ var AppMenuButton = new Lang.Class({
 
     _onAppStateChanged(appSys, app) {
         let state = app.state;
-        if (state != Shell.AppState.STARTING) {
-            this._startingApps = this._startingApps.filter(function(a) {
-                return a != app;
-            });
-        } else if (state == Shell.AppState.STARTING) {
+        if (state != Shell.AppState.STARTING)
+            this._startingApps = this._startingApps.filter(a => a != app);
+        else if (state == Shell.AppState.STARTING)
             this._startingApps.push(app);
-        }
         // For now just resync on all running state changes; this is mainly to handle
         // cases where the focused window's application changes without the focus
         // changing.  An example case is how we map OpenOffice.org based on the window
@@ -343,10 +340,10 @@ var AppMenuButton = new Lang.Class({
                 return;
 
             menu = new RemoteMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
-            menu.connect('activate', Lang.bind(this, function() {
+            menu.connect('activate', () => {
                 let win = this._targetApp.get_windows()[0];
                 win.check_alive(global.get_current_time());
-            }));
+            });
 
         } else {
             if (this.menu && this.menu.isDummyQuitMenu)
@@ -355,9 +352,9 @@ var AppMenuButton = new Lang.Class({
             // fallback to older menu
             menu = new PopupMenu.PopupMenu(this.actor, 0.0, St.Side.TOP, 0);
             menu.isDummyQuitMenu = true;
-            menu.addAction(_("Quit"), Lang.bind(this, function() {
+            menu.addAction(_("Quit"), () => {
                 this._targetApp.request_quit();
-            }));
+            });
         }
 
         this.setMenu(menu);
@@ -420,14 +417,14 @@ var ActivitiesButton = new Lang.Class({
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
         this.actor.connect_after('key-release-event', Lang.bind(this, this._onKeyRelease));
 
-        Main.overview.connect('showing', Lang.bind(this, function() {
+        Main.overview.connect('showing', () => {
             this.actor.add_style_pseudo_class('overview');
             this.actor.add_accessible_state (Atk.StateType.CHECKED);
-        }));
-        Main.overview.connect('hiding', Lang.bind(this, function() {
+        });
+        Main.overview.connect('hiding', () => {
             this.actor.remove_style_pseudo_class('overview');
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
-        }));
+        });
 
         this._xdndTimeOut = 0;
     },
@@ -574,20 +571,19 @@ var PanelCorner = new Lang.Class({
 
             this._button = button;
 
-            button.connect('destroy', Lang.bind(this,
-                function() {
-                    if (this._button == button) {
-                        this._button = null;
-                        this._buttonStyleChangedSignalId = 0;
-                    }
-                }));
+            button.connect('destroy', () => {
+                if (this._button == button) {
+                    this._button = null;
+                    this._buttonStyleChangedSignalId = 0;
+                }
+            });
 
             // Synchronize the locate button's pseudo classes with this corner
-            this._buttonStyleChangedSignalId = button.connect('style-changed', Lang.bind(this,
-                function(actor) {
+            this._buttonStyleChangedSignalId = button.connect('style-changed',
+                actor => {
                     let pseudoClass = button.get_style_pseudo_class();
                     this.actor.set_style_pseudo_class(pseudoClass);
-                }));
+                });
 
             // The corner doesn't support theme transitions, so override
             // the .panel-button default
@@ -801,14 +797,14 @@ var Panel = new Lang.Class({
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
 
-        Main.overview.connect('showing', Lang.bind(this, function () {
+        Main.overview.connect('showing', () => {
             this.actor.add_style_pseudo_class('overview');
             this._updateSolidStyle();
-        }));
-        Main.overview.connect('hiding', Lang.bind(this, function () {
+        });
+        Main.overview.connect('hiding', () => {
             this.actor.remove_style_pseudo_class('overview');
             this._updateSolidStyle();
-        }));
+        });
 
         Main.layoutManager.panelBox.add(this.actor);
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'focus-top-bar-symbolic',
@@ -1079,7 +1075,7 @@ var Panel = new Lang.Class({
 
         /* Get all the windows in the active workspace that are in the primary monitor and visible */
         let activeWorkspace = global.screen.get_active_workspace();
-        let windows = activeWorkspace.list_windows().filter(function(metaWindow) {
+        let windows = activeWorkspace.list_windows().filter(metaWindow => {
             return metaWindow.is_on_primary_monitor() &&
                    metaWindow.showing_on_its_workspace() &&
                    metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
@@ -1089,10 +1085,10 @@ var Panel = new Lang.Class({
         let [, panelTop] = this.actor.get_transformed_position();
         let panelBottom = panelTop + this.actor.get_height();
         let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let isNearEnough = windows.some(Lang.bind(this, function(metaWindow) {
+        let isNearEnough = windows.some(metaWindow => {
             let verticalPosition = metaWindow.get_frame_rect().y;
             return verticalPosition < panelBottom + 5 * scale;
-        }));
+        });
 
         if (isNearEnough)
             this._addStyleClassName('solid');
@@ -1150,11 +1146,11 @@ var Panel = new Lang.Class({
         if (indicator.menu)
             this.menuManager.addMenu(indicator.menu);
         this.statusArea[role] = indicator;
-        let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
+        let destroyId = indicator.connect('destroy', emitter => {
             delete this.statusArea[role];
             emitter.disconnect(destroyId);
             container.destroy();
-        }));
+        });
         indicator.connect('menu-set', Lang.bind(this, this._onMenuSet));
         this._onMenuSet(indicator);
     },
@@ -1195,7 +1191,7 @@ var Panel = new Lang.Class({
             return;
 
         indicator.menu._openChangedId = indicator.menu.connect('open-state-changed',
-            Lang.bind(this, function(menu, isOpen) {
+            (menu, isOpen) => {
                 let boxAlignment;
                 if (this._leftBox.contains(indicator.container))
                     boxAlignment = Clutter.ActorAlign.START;
@@ -1206,6 +1202,6 @@ var Panel = new Lang.Class({
 
                 if (boxAlignment == Main.messageTray.bannerAlignment)
                     Main.messageTray.bannerBlocked = isOpen;
-            }));
+            });
     }
 });

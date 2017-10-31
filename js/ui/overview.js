@@ -62,10 +62,9 @@ var ShellInfo = new Lang.Class({
 
         if (this._source == null) {
             this._source = new MessageTray.SystemNotificationSource();
-            this._source.connect('destroy', Lang.bind(this,
-                function() {
-                    this._source = null;
-                }));
+            this._source.connect('destroy', () => {
+                this._source = null;
+            });
             Main.messageTray.add(this._source);
         }
 
@@ -141,7 +140,7 @@ var Overview = new Lang.Class({
         this._coverPane = new Clutter.Actor({ opacity: 0,
                                               reactive: true });
         Main.layoutManager.overviewGroup.add_child(this._coverPane);
-        this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return Clutter.EVENT_STOP; }));
+        this._coverPane.connect('event', () => Clutter.EVENT_STOP);
 
         Main.layoutManager.overviewGroup.add_child(this._overview);
 
@@ -254,10 +253,9 @@ var Overview = new Lang.Class({
 
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
-        this._dash.connect('icon-size-changed',
-                           Lang.bind(this, function() {
-                               this.dashIconSize = this._dash.iconSize;
-                           }));
+        this._dash.connect('icon-size-changed', () => {
+            this.dashIconSize = this._dash.iconSize;
+        });
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
@@ -343,15 +341,15 @@ var Overview = new Lang.Class({
         if (targetIsWindow) {
             this._lastHoveredWindow = dragEvent.targetActor._delegate.metaWindow;
             this._windowSwitchTimeoutId = Mainloop.timeout_add(DND_WINDOW_SWITCH_TIMEOUT,
-                                            Lang.bind(this, function() {
-                                                this._windowSwitchTimeoutId = 0;
-                                                this._needsFakePointerEvent = true;
-                                                Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
-                                                                    this._windowSwitchTimestamp);
-                                                this.hide();
-                                                this._lastHoveredWindow = null;
-                                                return GLib.SOURCE_REMOVE;
-                                            }));
+                () => {
+                    this._windowSwitchTimeoutId = 0;
+                    this._needsFakePointerEvent = true;
+                    Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
+                                        this._windowSwitchTimestamp);
+                    this.hide();
+                    this._lastHoveredWindow = null;
+                    return GLib.SOURCE_REMOVE;
+                });
             GLib.Source.set_name_by_id(this._windowSwitchTimeoutId, '[gnome-shell] Main.activateWindow');
         }
 
@@ -371,18 +369,18 @@ var Overview = new Lang.Class({
     },
 
     _getDesktopClone() {
-        let windows = global.get_window_actors().filter(function(w) {
-            return w.meta_window.get_window_type() == Meta.WindowType.DESKTOP;
-        });
+        let windows = global.get_window_actors().filter(
+            w => w.meta_window.get_window_type() == Meta.WindowType.DESKTOP
+        );
         if (windows.length == 0)
             return null;
 
         let window = windows[0];
         let clone = new Clutter.Clone({ source: window,
                                         x: window.x, y: window.y });
-        clone.source.connect('destroy', Lang.bind(this, function() {
+        clone.source.connect('destroy', () => {
             clone.destroy();
-        }));
+        });
         return clone;
     },
 
