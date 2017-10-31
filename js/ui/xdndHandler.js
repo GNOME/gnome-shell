@@ -1,17 +1,14 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Lang = imports.lang;
 const Main = imports.ui.main;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const DND = imports.ui.dnd;
 
-var XdndHandler = new Lang.Class({
-    Name: 'XdndHandler',
-
-    _init() {
+var XdndHandler = class {
+    constructor() {
         // Used to display a clone of the cursor window when the
         // window group is hidden (like it happens in the overview)
         this._cursorWindowClone = null;
@@ -30,7 +27,7 @@ var XdndHandler = new Lang.Class({
         dnd.connect('dnd-leave', this._onLeave.bind(this));
 
         this._windowGroupVisibilityHandlerId = 0;
-    },
+    }
 
     // Called when the user cancels the drag (i.e release the button)
     _onLeave() {
@@ -44,7 +41,7 @@ var XdndHandler = new Lang.Class({
         }
 
         this.emit('drag-end');
-    },
+    }
 
     _onEnter() {
         this._windowGroupVisibilityHandlerId  =
@@ -52,7 +49,7 @@ var XdndHandler = new Lang.Class({
                     this._onWindowGroupVisibilityChanged.bind(this));
 
         this.emit('drag-begin', global.get_current_time());
-    },
+    }
 
     _onWindowGroupVisibilityChanged() {
         if (!global.window_group.visible) {
@@ -80,7 +77,7 @@ var XdndHandler = new Lang.Class({
                 this._cursorWindowClone = null;
             }
         }
-    },
+    }
 
     _onPositionChanged(obj, x, y) {
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
@@ -120,6 +117,5 @@ var XdndHandler = new Lang.Class({
                 pickedActor = pickedActor.get_parent();
         }
     }
-});
-
+};
 Signals.addSignalMethods(XdndHandler.prototype);

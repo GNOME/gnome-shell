@@ -108,11 +108,11 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
-var BaseAppView = new Lang.Class({
-    Name: 'BaseAppView',
-    Abstract: true,
+class BaseAppView {
+    constructor(params, gridParams) {
+        if (new.target === BaseAppView)
+            throw new TypeError('Cannot instantiate abstract class ' + new.target.name);
 
-    _init(params, gridParams) {
         gridParams = Params.parse(gridParams, { xAlign: St.Align.MIDDLE,
                                                 columnLimit: MAX_COLUMNS,
                                                 minRows: MIN_ROWS,
@@ -134,26 +134,26 @@ var BaseAppView = new Lang.Class({
 
         this._items = {};
         this._allItems = [];
-    },
+    }
 
     _childFocused(actor) {
         // Nothing by default
-    },
+    }
 
     removeAll() {
         this._grid.destroyAll();
         this._items = {};
         this._allItems = [];
-    },
+    }
 
     _redisplay() {
         this.removeAll();
         this._loadApps();
-    },
+    }
 
     getAllItems() {
         return this._allItems;
-    },
+    }
 
     addItem(icon) {
         let id = icon.id;
@@ -162,24 +162,24 @@ var BaseAppView = new Lang.Class({
 
         this._allItems.push(icon);
         this._items[id] = icon;
-    },
+    }
 
     _compareItems(a, b) {
         return a.name.localeCompare(b.name);
-    },
+    }
 
     loadGrid() {
         this._allItems.sort(this._compareItems);
         this._allItems.forEach(item => { this._grid.addItem(item); });
         this.emit('view-loaded');
-    },
+    }
 
     _selectAppInternal(id) {
         if (this._items[id])
             this._items[id].actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         else
             log('No such application ' + id);
-    },
+    }
 
     selectApp(id) {
         if (this._items[id] && this._items[id].actor.mapped) {
@@ -200,13 +200,13 @@ var BaseAppView = new Lang.Class({
                 this.selectApp(id);
             });
         }
-    },
+    }
 
     _doSpringAnimation(animationDirection) {
         this._grid.opacity = 255;
         this._grid.animateSpring(animationDirection,
                                  Main.overview.getShowAppsButton());
-    },
+    }
 
     animate(animationDirection, onComplete) {
         if (onComplete) {
@@ -224,7 +224,7 @@ var BaseAppView = new Lang.Class({
         } else {
             this._doSpringAnimation(animationDirection);
         }
-    },
+    }
 
     animateSwitch(animationDirection) {
         Tweener.removeTweens(this.actor);
@@ -244,7 +244,7 @@ var BaseAppView = new Lang.Class({
 
         Tweener.addTween(this._grid, params);
     }
-});
+};
 Signals.addSignalMethods(BaseAppView.prototype);
 
 var PageIndicatorsActor = new Lang.Class({
@@ -271,10 +271,8 @@ var PageIndicatorsActor = new Lang.Class({
     }
 });
 
-var PageIndicators = new Lang.Class({
-    Name:'PageIndicators',
-
-    _init() {
+class PageIndicators {
+    constructor() {
         this.actor = new PageIndicatorsActor();
         this._nPages = 0;
         this._currentPage = undefined;
@@ -282,7 +280,7 @@ var PageIndicators = new Lang.Class({
         this.actor.connect('notify::mapped', () => {
             this.animateIndicators(IconGrid.AnimationDirection.IN);
         });
-    },
+    }
 
     setNPages(nPages) {
         if (this._nPages == nPages)
@@ -311,7 +309,7 @@ var PageIndicators = new Lang.Class({
         }
         this._nPages = nPages;
         this.actor.visible = (this._nPages > 1);
-    },
+    }
 
     setCurrentPage(currentPage) {
         this._currentPage = currentPage;
@@ -319,7 +317,7 @@ var PageIndicators = new Lang.Class({
         let children = this.actor.get_children();
         for (let i = 0; i < children.length; i++)
             children[i].set_checked(i == this._currentPage);
-    },
+    }
 
     animateIndicators(animationDirection) {
         if (!this.actor.mapped)
@@ -358,15 +356,12 @@ var PageIndicators = new Lang.Class({
                              });
         }
     }
-});
+};
 Signals.addSignalMethods(PageIndicators.prototype);
 
-var AllView = new Lang.Class({
-    Name: 'AllView',
-    Extends: BaseAppView,
-
-    _init() {
-        this.parent({ usePagination: true }, null);
+var AllView = class AllView extends BaseAppView {
+    constructor() {
+        super({ usePagination: true }, null);
         this._scrollView = new St.ScrollView({ style_class: 'all-apps',
                                                x_expand: true,
                                                y_expand: true,
@@ -462,12 +457,12 @@ var AllView = new Lang.Class({
         this._folderSettings.connect('changed::folder-children', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
         });
-    },
+    }
 
     removeAll() {
         this.folderIcons = [];
-        this.parent();
-    },
+        super.removeAll();
+    }
 
     _itemNameChanged(item) {
         // If an item's name changed, we can pluck it out of where it's
@@ -478,7 +473,7 @@ var AllView = new Lang.Class({
 
         this._grid.removeItem(item);
         this._grid.addItem(item, newIdx);
-    },
+    }
 
     _refilterApps() {
         this._allItems.forEach(icon => {
@@ -493,7 +488,7 @@ var AllView = new Lang.Class({
                 appIcon.actor.visible = false;
             });
         });
-    },
+    }
 
     _loadApps() {
         let apps = Gio.AppInfo.get_all().filter(appInfo => {
@@ -535,7 +530,7 @@ var AllView = new Lang.Class({
 
         this.loadGrid();
         this._refilterApps();
-    },
+    }
 
     // Overriden from BaseAppView
     animate(animationDirection, onComplete) {
@@ -551,21 +546,17 @@ var AllView = new Lang.Class({
             this._currentPopup.popdown();
             let spaceClosedId = this._grid.connect('space-closed', () => {
                 this._grid.disconnect(spaceClosedId);
-                // Given that we can't call this.parent() inside the
-                // signal handler, call again animate which will
-                // call the parent given that popup is already
-                // closed.
-                this.animate(animationDirection, completionFunc);
+                super.animate(animationDirection, completionFunc);
             });
         } else {
-            this.parent(animationDirection, completionFunc);
+            super.animate(animationDirection, completionFunc);
             if (animationDirection == IconGrid.AnimationDirection.OUT)
                 this._pageIndicators.animateIndicators(animationDirection);
         }
-    },
+    }
 
     animateSwitch(animationDirection) {
-        this.parent(animationDirection);
+        super.animateSwitch(animationDirection);
 
         if (this._currentPopup && this._displayingPopup &&
             animationDirection == IconGrid.AnimationDirection.OUT)
@@ -579,11 +570,11 @@ var AllView = new Lang.Class({
 
         if (animationDirection == IconGrid.AnimationDirection.OUT)
             this._pageIndicators.animateIndicators(animationDirection);
-    },
+    }
 
     getCurrentPageY() {
         return this._grid.getPageY(this._grid.currentPage);
-    },
+    }
 
     goToPage(pageNumber) {
         pageNumber = clamp(pageNumber, 0, this._grid.nPages() - 1);
@@ -625,18 +616,18 @@ var AllView = new Lang.Class({
                            time: time,
                            transition: 'easeOutQuad' });
         this._pageIndicators.setCurrentPage(pageNumber);
-    },
+    }
 
     _diffToPage(pageNumber) {
         let currentScrollPosition = this._adjustment.value;
         return Math.abs(currentScrollPosition - this._grid.getPageY(pageNumber));
-    },
+    }
 
     openSpaceForPopup(item, side, nRows) {
         this._updateIconOpacities(true);
         this._displayingPopup = true;
         this._grid.openExtraSpace(item, side, nRows);
-    },
+    }
 
     _closeSpaceForPopup() {
         this._updateIconOpacities(false);
@@ -646,7 +637,7 @@ var AllView = new Lang.Class({
             fadeEffect.enabled = true;
 
         this._grid.closeExtraSpace();
-    },
+    }
 
     _onScroll(actor, event) {
         if (this._displayingPopup || !this._scrollView.reactive)
@@ -659,7 +650,7 @@ var AllView = new Lang.Class({
             this.goToPage(this._grid.currentPage + 1);
 
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onPan(action) {
         if (this._displayingPopup)
@@ -670,7 +661,7 @@ var AllView = new Lang.Class({
         let adjustment = this._adjustment;
         adjustment.value -= (dy / this._scrollView.height) * adjustment.page_size;
         return false;
-    },
+    }
 
     _onPanEnd(action) {
          if (this._displayingPopup)
@@ -689,7 +680,7 @@ var AllView = new Lang.Class({
         this.goToPage(closestPage);
 
         this._panning = false;
-    },
+    }
 
     _onKeyPressEvent(actor, event) {
         if (this._displayingPopup)
@@ -704,7 +695,7 @@ var AllView = new Lang.Class({
         }
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     addFolderPopup(popup) {
         this._stack.add_actor(popup.actor);
@@ -715,12 +706,12 @@ var AllView = new Lang.Class({
             if(!isOpen)
                 this._closeSpaceForPopup();
         });
-    },
+    }
 
     _childFocused(icon) {
         let itemPage = this._grid.getItemPage(icon);
         this.goToPage(itemPage);
-    },
+    }
 
     _updateIconOpacities(folderOpen) {
         for (let id in this._items) {
@@ -734,7 +725,7 @@ var AllView = new Lang.Class({
                        transition: 'easeOutQuad' };
             Tweener.addTween(this._items[id].actor, params);
         }
-    },
+    }
 
     // Called before allocation to calculate dynamic spacing
     adaptToSize(width, height) {
@@ -773,15 +764,12 @@ var AllView = new Lang.Class({
         for (let i = 0; i < this.folderIcons.length; i++)
             this.folderIcons[i].adaptToSize(availWidth, availHeight);
     }
-});
+};
 Signals.addSignalMethods(AllView.prototype);
 
-var FrequentView = new Lang.Class({
-    Name: 'FrequentView',
-    Extends: BaseAppView,
-
-    _init() {
-        this.parent(null, { fillParent: true });
+var FrequentView = class FrequentView extends BaseAppView {
+    constructor() {
+        super(null, { fillParent: true });
 
         this.actor = new St.Widget({ style_class: 'frequent-apps',
                                      layout_manager: new Clutter.BinLayout(),
@@ -806,11 +794,11 @@ var FrequentView = new Lang.Class({
             if (this.actor.mapped)
                 this._redisplay();
         });
-    },
+    }
 
     hasUsefulData() {
         return this._usage.get_most_used().length >= MIN_FREQUENT_APPS_COUNT;
-    },
+    }
 
     _loadApps() {
         let mostUsed = this._usage.get_most_used();
@@ -834,7 +822,7 @@ var FrequentView = new Lang.Class({
                                       { isDraggable: favoritesWritable });
             this._grid.addItem(appIcon, -1);
         }
-    },
+    }
 
     // Called before allocation to calculate dynamic spacing
     adaptToSize(width, height) {
@@ -848,7 +836,7 @@ var FrequentView = new Lang.Class({
         let availHeight = box.y2 - box.y1;
         this._grid.adaptToSize(availWidth, availHeight);
     }
-});
+};
 
 var Views = {
     FREQUENT: 0,
@@ -896,10 +884,8 @@ var ViewStackLayout = new Lang.Class({
     }
 });
 
-var AppDisplay = new Lang.Class({
-    Name: 'AppDisplay',
-
-    _init() {
+var AppDisplay = class AppDisplay {
+    constructor() {
         this._privacySettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.privacy' });
         this._privacySettings.connect('changed::remember-app-usage',
                                       this._updateFrequentVisibility.bind(this));
@@ -972,14 +958,14 @@ var AppDisplay = new Lang.Class({
                                        this._switcherooProxy = null;
                                        this._updateDiscreteGpuAvailable();
                                    });
-    },
+    }
 
     _updateDiscreteGpuAvailable() {
         if (!this._switcherooProxy)
             discreteGpuAvailable = false;
         else
             discreteGpuAvailable = this._switcherooProxy.HasDualGpu;
-    },
+    }
 
     _switcherooProxyAppeared() {
         this._switcherooProxy = new SwitcherooProxy(Gio.DBus.system, SWITCHEROO_BUS_NAME, SWITCHEROO_OBJECT_PATH,
@@ -990,7 +976,7 @@ var AppDisplay = new Lang.Class({
                 }
                 this._updateDiscreteGpuAvailable();
             });
-    },
+    }
 
     animate(animationDirection, onComplete) {
         let currentView = this._views.filter(v => v.control.has_style_pseudo_class('checked')).pop().view;
@@ -1013,7 +999,7 @@ var AppDisplay = new Lang.Class({
                           });
 
         currentView.animate(animationDirection, onComplete);
-    },
+    }
 
     _showView(activeIndex) {
         for (let i = 0; i < this._views.length; i++) {
@@ -1026,7 +1012,7 @@ var AppDisplay = new Lang.Class({
                                                         IconGrid.AnimationDirection.OUT;
             this._views[i].view.animateSwitch(animationDirection);
         }
-    },
+    }
 
     _updateFrequentVisibility() {
         let enabled = this._privacySettings.get_boolean('remember-app-usage');
@@ -1037,12 +1023,12 @@ var AppDisplay = new Lang.Class({
 
         if (!enabled && this._views[Views.FREQUENT].view.actor.visible)
             this._showView(Views.ALL);
-    },
+    }
 
     selectApp(id) {
         this._showView(Views.ALL);
         this._views[Views.ALL].view.selectApp(id);
-    },
+    }
 
     _onAllocatedSizeChanged(actor, width, height) {
         let box = new Clutter.ActorBox();
@@ -1055,19 +1041,17 @@ var AppDisplay = new Lang.Class({
         for (let i = 0; i < this._views.length; i++)
             this._views[i].view.adaptToSize(availWidth, availHeight);
     }
-})
+};
 
-var AppSearchProvider = new Lang.Class({
-    Name: 'AppSearchProvider',
-
-    _init() {
+var AppSearchProvider = class AppSearchProvider {
+    constructor() {
         this._appSys = Shell.AppSystem.get_default();
         this.id = 'applications';
         this.isRemoteProvider = false;
         this.canLaunchSearch = false;
 
         this._systemActions = new SystemActions.getDefault();
-    },
+    }
 
     getResultMetas(apps, callback) {
         let metas = [];
@@ -1095,11 +1079,11 @@ var AppSearchProvider = new Lang.Class({
         }
 
         callback(metas);
-    },
+    }
 
     filterResults(results, maxNumber) {
         return results.slice(0, maxNumber);
-    },
+    }
 
     getInitialResultSet(terms, callback, cancellable) {
         let query = terms.join(' ');
@@ -1119,11 +1103,11 @@ var AppSearchProvider = new Lang.Class({
         results = results.concat(this._systemActions.getMatchingActions(terms));
 
         callback(results);
-    },
+    }
 
     getSubsearchResultSet(previousResults, terms, callback, cancellable) {
         this.getInitialResultSet(terms, callback, cancellable);
-    },
+    }
 
     createResultObject(resultMeta) {
         if (resultMeta.id.endsWith('.desktop'))
@@ -1131,14 +1115,11 @@ var AppSearchProvider = new Lang.Class({
         else
             return new SystemActionIcon(this, resultMeta);
     }
-});
+};
 
-var FolderView = new Lang.Class({
-    Name: 'FolderView',
-    Extends: BaseAppView,
-
-    _init() {
-        this.parent(null, null);
+var FolderView = class FolderView extends BaseAppView {
+    constructor() {
+        super(null, null);
         // If it not expand, the parent doesn't take into account its preferred_width when allocating
         // the second time it allocates, so we apply the "Standard hack for ClutterBinLayout"
         this._grid.x_expand = true;
@@ -1152,16 +1133,16 @@ var FolderView = new Lang.Class({
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', this._onPan.bind(this));
         this.actor.add_action(action);
-    },
+    }
 
     _childFocused(actor) {
         Util.ensureActorVisibleInScrollView(this.actor, actor);
-    },
+    }
 
     // Overriden from BaseAppView
     animate(animationDirection) {
         this._grid.animatePulse(animationDirection);
-    },
+    }
 
     createFolderIcon(size) {
         let layout = new Clutter.GridLayout();
@@ -1181,14 +1162,14 @@ var FolderView = new Lang.Class({
         }
 
         return icon;
-    },
+    }
 
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this.actor.vscroll.adjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
-    },
+    }
 
     adaptToSize(width, height) {
         this._parentAvailableWidth = width;
@@ -1212,7 +1193,7 @@ var FolderView = new Lang.Class({
 
         this.actor.set_width(this.usedWidth());
         this.actor.set_height(this.usedHeight());
-    },
+    }
 
     _getPageAvailableSize() {
         let pageBox = new Clutter.ActorBox();
@@ -1224,32 +1205,30 @@ var FolderView = new Lang.Class({
         // We only can show icons inside the collection view boxPointer
         // so we have to substract the required padding etc of the boxpointer
         return [(contentBox.x2 - contentBox.x1) - 2 * this._offsetForEachSide, (contentBox.y2 - contentBox.y1) - 2 * this._offsetForEachSide];
-    },
+    }
 
     usedWidth() {
         let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
         return this._grid.usedWidth(availWidthPerPage);
-    },
+    }
 
     usedHeight() {
         return this._grid.usedHeightForNRows(this.nRowsDisplayedAtOnce());
-    },
+    }
 
     nRowsDisplayedAtOnce() {
         let [availWidthPerPage, availHeightPerPage] = this._getPageAvailableSize();
         let maxRows = this._grid.rowsForHeight(availHeightPerPage) - 1;
         return Math.min(this._grid.nRows(availWidthPerPage), maxRows);
-    },
+    }
 
     setPaddingOffsets(offset) {
         this._offsetForEachSide = offset;
     }
-});
+};
 
-var FolderIcon = new Lang.Class({
-    Name: 'FolderIcon',
-
-    _init(id, path, parentView) {
+var FolderIcon = class FolderIcon {
+    constructor(id, path, parentView) {
         this.id = id;
         this.name = '';
         this._parentView = parentView;
@@ -1284,11 +1263,11 @@ var FolderIcon = new Lang.Class({
 
         this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
-    },
+    }
 
     getAppIds() {
         return this.view.getAllItems().map(item => item.id);
-    },
+    }
 
     _updateName() {
         let name = _getFolderName(this._folder);
@@ -1298,7 +1277,7 @@ var FolderIcon = new Lang.Class({
         this.name = name;
         this.icon.label.text = this.name;
         this.emit('name-changed');
-    },
+    }
 
     _redisplay() {
         this._updateName();
@@ -1340,16 +1319,16 @@ var FolderIcon = new Lang.Class({
         this.actor.visible = this.view.getAllItems().length > 0;
         this.view.loadGrid();
         this.emit('apps-changed');
-    },
+    }
 
     _createIcon(iconSize) {
         return this.view.createFolderIcon(iconSize, this);
-    },
+    }
 
     _popupHeight() {
         let usedHeight = this.view.usedHeight() + this._popup.getOffset(St.Side.TOP) + this._popup.getOffset(St.Side.BOTTOM);
         return usedHeight;
-    },
+    }
 
     _openSpaceForPopup() {
         let id = this._parentView.connect('space-ready', () => {
@@ -1358,14 +1337,14 @@ var FolderIcon = new Lang.Class({
             this._updatePopupPosition();
         });
         this._parentView.openSpaceForPopup(this, this._boxPointerArrowside, this.view.nRowsDisplayedAtOnce());
-    },
+    }
 
     _calculateBoxPointerArrowSide() {
         let spaceTop = this.actor.y - this._parentView.getCurrentPageY();
         let spaceBottom = this._parentView.actor.height - (spaceTop + this.actor.height);
 
         return spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
-    },
+    }
 
     _updatePopupSize() {
         // StWidget delays style calculation until needed, make sure we use the correct values
@@ -1377,7 +1356,7 @@ var FolderIcon = new Lang.Class({
         // Add extra padding to prevent boxpointer decorations and close button being cut off
         this.view.setPaddingOffsets(offsetForEachSide);
         this.view.adaptToSize(this._parentAvailableWidth, this._parentAvailableHeight);
-    },
+    }
 
     _updatePopupPosition() {
         if (!this._popup)
@@ -1387,7 +1366,7 @@ var FolderIcon = new Lang.Class({
             this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y - this._popupHeight();
         else
             this._popup.actor.y = this.actor.allocation.y1 + this.actor.translation_y + this.actor.height;
-    },
+    }
 
     _ensurePopup() {
         if (this._popup && !this._popupInvalidated)
@@ -1406,7 +1385,7 @@ var FolderIcon = new Lang.Class({
         this._updatePopupSize();
         this._updatePopupPosition();
         this._popupInvalidated = false;
-    },
+    }
 
     adaptToSize(width, height) {
         this._parentAvailableWidth = width;
@@ -1414,14 +1393,12 @@ var FolderIcon = new Lang.Class({
         if(this._popup)
             this.view.adaptToSize(width, height);
         this._popupInvalidated = true;
-    },
-});
+    }
+};
 Signals.addSignalMethods(FolderIcon.prototype);
 
-var AppFolderPopup = new Lang.Class({
-    Name: 'AppFolderPopup',
-
-    _init(source, side) {
+var AppFolderPopup = class AppFolderPopup {
+    constructor(source, side) {
         this._source = source;
         this._view = source.view;
         this._arrowSide = side;
@@ -1467,7 +1444,7 @@ var AppFolderPopup = new Lang.Class({
         });
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
         this.actor.connect('key-press-event', this._onKeyPress.bind(this));
-    },
+    }
 
     _onKeyPress(actor, event) {
         if (global.stage.get_key_focus() != actor)
@@ -1511,14 +1488,14 @@ var AppFolderPopup = new Lang.Class({
                 return Clutter.EVENT_PROPAGATE;
         }
         return actor.navigate_focus(null, direction, false);
-    },
+    }
 
     toggle() {
         if (this._isOpen)
             this.popdown();
         else
             this.popup();
-    },
+    }
 
     popup() {
         if (this._isOpen)
@@ -1545,7 +1522,7 @@ var AppFolderPopup = new Lang.Class({
             });
 
         this.emit('open-state-changed', true);
-    },
+    }
 
     popdown() {
         if (!this._isOpen)
@@ -1557,30 +1534,28 @@ var AppFolderPopup = new Lang.Class({
                                BoxPointer.PopupAnimation.SLIDE);
         this._isOpen = false;
         this.emit('open-state-changed', false);
-    },
+    }
 
     getCloseButtonOverlap() {
         return this.closeButton.get_theme_node().get_length('-shell-close-overlap-y');
-    },
+    }
 
     getOffset(side) {
         let offset = this._boxPointer.getPadding(side);
         if (this._arrowSide == side)
             offset += this._boxPointer.getArrowHeight();
         return offset;
-    },
+    }
 
     updateArrowSide(side) {
         this._arrowSide = side;
         this._boxPointer.updateArrowSide(side);
     }
-});
+};
 Signals.addSignalMethods(AppFolderPopup.prototype);
 
-var AppIcon = new Lang.Class({
-    Name: 'AppIcon',
-
-    _init(app, iconParams) {
+var AppIcon = class AppIcon {
+    constructor(app, iconParams) {
         this.app = app;
         this.id = app.get_id();
         this.name = app.get_name();
@@ -1651,32 +1626,32 @@ var AppIcon = new Lang.Class({
             this._updateRunningStyle();
         });
         this._updateRunningStyle();
-    },
+    }
 
     _onDestroy() {
         if (this._stateChangedId > 0)
             this.app.disconnect(this._stateChangedId);
         this._stateChangedId = 0;
         this._removeMenuTimeout();
-    },
+    }
 
     _createIcon(iconSize) {
         return this.app.create_icon_texture(iconSize);
-    },
+    }
 
     _removeMenuTimeout() {
         if (this._menuTimeoutId > 0) {
             Mainloop.source_remove(this._menuTimeoutId);
             this._menuTimeoutId = 0;
         }
-    },
+    }
 
     _updateRunningStyle() {
         if (this.app.state != Shell.AppState.STOPPED)
             this._dot.show();
         else
             this._dot.hide();
-    },
+    }
 
     _setPopupTimeout() {
         this._removeMenuTimeout();
@@ -1686,12 +1661,12 @@ var AppIcon = new Lang.Class({
             return GLib.SOURCE_REMOVE;
         });
         GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
-    },
+    }
 
     _onLeaveEvent(actor, event) {
         this.actor.fake_release();
         this._removeMenuTimeout();
-    },
+    }
 
     _onButtonPress(actor, event) {
         let button = event.get_button();
@@ -1702,28 +1677,28 @@ var AppIcon = new Lang.Class({
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onTouchEvent(actor, event) {
         if (event.type() == Clutter.EventType.TOUCH_BEGIN)
             this._setPopupTimeout();
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onClicked(actor, button) {
         this._removeMenuTimeout();
         this.activate(button);
-    },
+    }
 
     _onKeyboardPopupMenu() {
         this.popupMenu();
         this._menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-    },
+    }
 
     getId() {
         return this.app.get_id();
-    },
+    }
 
     popupMenu() {
         this._removeMenuTimeout();
@@ -1759,7 +1734,7 @@ var AppIcon = new Lang.Class({
         this.emit('sync-tooltip');
 
         return false;
-    },
+    }
 
     activateWindow(metaWindow) {
         if (metaWindow) {
@@ -1767,12 +1742,12 @@ var AppIcon = new Lang.Class({
         } else {
             Main.overview.hide();
         }
-    },
+    }
 
     _onMenuPoppedDown() {
         this.actor.sync_hover();
         this.emit('menu-state-changed', false);
-    },
+    }
 
     activate(button) {
         let event = Clutter.get_current_event();
@@ -1792,45 +1767,42 @@ var AppIcon = new Lang.Class({
             this.app.activate();
 
         Main.overview.hide();
-    },
+    }
 
     animateLaunch() {
         this.icon.animateZoomOut();
-    },
+    }
 
     shellWorkspaceLaunch(params) {
         params = Params.parse(params, { workspace: -1,
                                         timestamp: 0 });
 
         this.app.open_new_window(params.workspace);
-    },
+    }
 
     getDragActor() {
         return this.app.create_icon_texture(Main.overview.dashIconSize);
-    },
+    }
 
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource() {
         return this.icon.icon;
-    },
+    }
 
     shouldShowTooltip() {
         return this.actor.hover && (!this._menu || !this._menu.isOpen);
-    },
-});
+    }
+};
 Signals.addSignalMethods(AppIcon.prototype);
 
-var AppIconMenu = new Lang.Class({
-    Name: 'AppIconMenu',
-    Extends: PopupMenu.PopupMenu,
-
-    _init(source) {
+var AppIconMenu = class AppIconMenu extends PopupMenu.PopupMenu {
+    constructor(source) {
         let side = St.Side.LEFT;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
             side = St.Side.RIGHT;
 
-        this.parent(source.actor, 0.5, side);
+        super(source.actor, 0.5, side);
 
         // We want to keep the item hovered while the menu is up
         this.blockSourceEvents = true;
@@ -1850,7 +1822,7 @@ var AppIconMenu = new Lang.Class({
         });
 
         Main.uiGroup.add_actor(this.actor);
-    },
+    }
 
     _redisplay() {
         this.removeAll();
@@ -1960,33 +1932,30 @@ var AppIconMenu = new Lang.Class({
                 });
             }
         }
-    },
+    }
 
     _appendSeparator() {
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         this.addMenuItem(separator);
-    },
+    }
 
     _appendMenuItem(labelText) {
         // FIXME: app-well-menu-item style
         let item = new PopupMenu.PopupMenuItem(labelText);
         this.addMenuItem(item);
         return item;
-    },
+    }
 
     popup(activatingButton) {
         this._redisplay();
         this.open();
     }
-});
+};
 Signals.addSignalMethods(AppIconMenu.prototype);
 
-var SystemActionIcon = new Lang.Class({
-    Name: 'SystemActionIcon',
-    Extends: Search.GridSearchResult,
-
+var SystemActionIcon = class SystemActionIcon extends Search.GridSearchResult {
     activate() {
         SystemActions.getDefault().activateAction(this.metaInfo['id']);
         Main.overview.hide();
     }
-});
+};

@@ -437,10 +437,8 @@ function ensureActorVisibleInScrollView(scrollView, actor) {
                        transition: 'easeOutQuad' });
 }
 
-var AppSettingsMonitor = new Lang.Class({
-    Name: 'AppSettingsMonitor',
-
-    _init(appId, schemaId) {
+var AppSettingsMonitor = class {
+    constructor(appId, schemaId) {
         this._appId = appId;
         this._schemaId = schemaId;
 
@@ -454,23 +452,23 @@ var AppSettingsMonitor = new Lang.Class({
         this._appSystem.connect('installed-changed',
                                 this._onInstalledChanged.bind(this));
         this._onInstalledChanged();
-    },
+    }
 
     get available() {
         return this._app != null && this._settings != null;
-    },
+    }
 
     activateApp() {
         if (this._app)
             this._app.activate();
-    },
+    }
 
     watchSetting(key, callback) {
         let handler = { id: 0, key: key, callback: callback };
         this._handlers.push(handler);
 
         this._connectHandler(handler);
-    },
+    }
 
     _connectHandler(handler) {
         if (!this._settings || handler.id > 0)
@@ -479,13 +477,13 @@ var AppSettingsMonitor = new Lang.Class({
         handler.id = this._settings.connect('changed::' + handler.key,
                                             handler.callback);
         handler.callback(this._settings, handler.key);
-    },
+    }
 
     _disconnectHandler(handler) {
         if (this._settings && handler.id > 0)
             this._settings.disconnect(handler.id);
         handler.id = 0;
-    },
+    }
 
     _onInstalledChanged() {
         let hadApp = (this._app != null);
@@ -499,7 +497,7 @@ var AppSettingsMonitor = new Lang.Class({
             this._checkSettings();
         else
             this._setSettings(null);
-    },
+    }
 
     _setSettings(settings) {
         this._handlers.forEach((handler) => { this._disconnectHandler(handler); });
@@ -512,7 +510,7 @@ var AppSettingsMonitor = new Lang.Class({
 
         if (hadSettings != haveSettings)
             this.emit('available-changed');
-    },
+    }
 
     _checkSettings() {
         let schema = this._schemaSource.lookup(this._schemaId, true);
@@ -525,5 +523,5 @@ var AppSettingsMonitor = new Lang.Class({
             });
         }
     }
-});
+};
 Signals.addSignalMethods(AppSettingsMonitor.prototype);

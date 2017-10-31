@@ -44,10 +44,8 @@ var MaxWidthBin = new Lang.Class({
     }
 });
 
-var SearchResult = new Lang.Class({
-    Name: 'SearchResult',
-
-    _init(provider, metaInfo, resultsView) {
+var SearchResult = class {
+    constructor(provider, metaInfo, resultsView) {
         this.provider = provider;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
@@ -60,22 +58,18 @@ var SearchResult = new Lang.Class({
 
         this.actor._delegate = this;
         this.actor.connect('clicked', this.activate.bind(this));
-    },
+    }
 
     activate() {
         this.emit('activate', this.metaInfo.id);
     }
-});
+};
 Signals.addSignalMethods(SearchResult.prototype);
 
-var ListSearchResult = new Lang.Class({
-    Name: 'ListSearchResult',
-    Extends: SearchResult,
+var ListSearchResult = class extends SearchResult {
 
-    ICON_SIZE: 24,
-
-    _init(provider, metaInfo, resultsView) {
-        this.parent(provider, metaInfo, resultsView);
+    constructor(provider, metaInfo, resultsView) {
+        super(provider, metaInfo, resultsView);
 
         this.actor.style_class = 'list-search-result';
         this.actor.x_fill = true;
@@ -122,26 +116,27 @@ var ListSearchResult = new Lang.Class({
         }
 
         this.actor.connect('destroy', this._onDestroy.bind(this));
-    },
+    }
+
+    get ICON_SIZE() {
+        return 24;
+    }
 
     _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
-    },
+    }
 
     _onDestroy() {
         if (this._termsChangedId)
             this._resultsView.disconnect(this._termsChangedId);
         this._termsChangedId = 0;
     }
-});
+};
 
-var GridSearchResult = new Lang.Class({
-    Name: 'GridSearchResult',
-    Extends: SearchResult,
-
-    _init(provider, metaInfo, resultsView) {
-        this.parent(provider, metaInfo, resultsView);
+var GridSearchResult = class extends SearchResult {
+    constructor(provider, metaInfo, resultsView) {
+        super(provider, metaInfo, resultsView);
 
         this.actor.style_class = 'grid-search-result';
 
@@ -151,12 +146,10 @@ var GridSearchResult = new Lang.Class({
         this.actor.set_child(content);
         this.actor.label_actor = this.icon.label;
     }
-});
+};
 
-var SearchResultsBase = new Lang.Class({
-    Name: 'SearchResultsBase',
-
-    _init(provider, resultsView) {
+var SearchResultsBase = class {
+    constructor(provider, resultsView) {
         this.provider = provider;
         this._resultsView = resultsView;
 
@@ -177,19 +170,19 @@ var SearchResultsBase = new Lang.Class({
         this._clipboard = St.Clipboard.get_default();
 
         this._cancellable = new Gio.Cancellable();
-    },
+    }
 
     destroy() {
         this.actor.destroy();
         this._terms = [];
-    },
+    }
 
     _createResultDisplay(meta) {
         if (this.provider.createResultObject)
             return this.provider.createResultObject(meta, this._resultsView);
 
         return null;
-    },
+    }
 
     clear() {
         this._cancellable.cancel();
@@ -198,21 +191,21 @@ var SearchResultsBase = new Lang.Class({
         this._resultDisplays = {};
         this._clearResultDisplay();
         this.actor.hide();
-    },
+    }
 
     _keyFocusIn(actor) {
         this.emit('key-focus-in', actor);
-    },
+    }
 
     _activateResult(result, id) {
         this.provider.activateResult(id, this._terms);
         if (result.metaInfo.clipboardText)
             this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
         Main.overview.toggle();
-    },
+    }
 
     _setMoreCount(count) {
-    },
+    }
 
     _ensureResultActors(results, callback) {
         let metasNeeded = results.filter(
@@ -254,7 +247,7 @@ var SearchResultsBase = new Lang.Class({
                 callback(true);
             }, this._cancellable);
         }
-    },
+    }
 
     updateSearch(providerResults, terms, callback) {
         this._terms = terms;
@@ -288,14 +281,11 @@ var SearchResultsBase = new Lang.Class({
             });
         }
     }
-});
+};
 
-var ListSearchResults = new Lang.Class({
-    Name: 'ListSearchResults',
-    Extends: SearchResultsBase,
-
-    _init(provider, resultsView) {
-        this.parent(provider, resultsView);
+var ListSearchResults = class extends SearchResultsBase {
+    constructor(provider, resultsView) {
+        super(provider, resultsView);
 
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerInfo = new ProviderInfo(provider);
@@ -316,28 +306,28 @@ var ListSearchResults = new Lang.Class({
         this._container.add(this._content, { expand: true });
 
         this._resultDisplayBin.set_child(this._container);
-    },
+    }
 
     _setMoreCount(count) {
         this.providerInfo.setMoreCount(count);
-    },
+    }
 
     _getMaxDisplayedResults() {
         return MAX_LIST_SEARCH_RESULTS_ROWS;
-    },
+    }
 
     _clearResultDisplay() {
         this._content.remove_all_children();
-    },
+    }
 
     _createResultDisplay(meta) {
-        return this.parent(meta, this._resultsView) ||
+        return super._createResultDisplay(meta, this._resultsView) ||
                new ListSearchResult(this.provider, meta, this._resultsView);
-    },
+    }
 
     _addItem(display) {
         this._content.add_actor(display.actor);
-    },
+    }
 
     getFirstResult() {
         if (this._content.get_n_children() > 0)
@@ -345,15 +335,12 @@ var ListSearchResults = new Lang.Class({
         else
             return null;
     }
-});
+};
 Signals.addSignalMethods(ListSearchResults.prototype);
 
-var GridSearchResults = new Lang.Class({
-    Name: 'GridSearchResults',
-    Extends: SearchResultsBase,
-
-    _init(provider, resultsView) {
-        this.parent(provider, resultsView);
+var GridSearchResults = class extends SearchResultsBase {
+    constructor(provider, resultsView) {
+        super(provider, resultsView);
         // We need to use the parent container to know how much results we can show.
         // None of the actors in this class can be used for that, since the main actor
         // goes hidden when no results are displayed, and then it lost its allocation.
@@ -368,26 +355,26 @@ var GridSearchResults = new Lang.Class({
         this._bin.set_child(this._grid);
 
         this._resultDisplayBin.set_child(this._bin);
-    },
+    }
 
     _getMaxDisplayedResults() {
         let parentThemeNode = this._parentContainer.get_theme_node();
         let availableWidth = parentThemeNode.adjust_for_width(this._parentContainer.width);
         return this._grid.columnsForWidth(availableWidth) * this._grid.getRowLimit();
-    },
+    }
 
     _clearResultDisplay() {
         this._grid.removeAll();
-    },
+    }
 
     _createResultDisplay(meta) {
-        return this.parent(meta, this._resultsView) ||
+        return super._createResultDisplay(meta, this._resultsView) ||
                new GridSearchResult(this.provider, meta, this._resultsView);
-    },
+    }
 
     _addItem(display) {
         this._grid.addItem(display);
-    },
+    }
 
     getFirstResult() {
         if (this._grid.visibleItemsCount() > 0)
@@ -395,13 +382,11 @@ var GridSearchResults = new Lang.Class({
         else
             return null;
     }
-});
+};
 Signals.addSignalMethods(GridSearchResults.prototype);
 
-var SearchResults = new Lang.Class({
-    Name: 'SearchResults',
-
-    _init() {
+var SearchResults = class {
+    constructor() {
         this.actor = new St.BoxLayout({ name: 'searchResults',
                                         vertical: true });
 
@@ -459,7 +444,7 @@ var SearchResults = new Lang.Class({
 
         this._registerProvider(new AppDisplay.AppSearchProvider());
         this._reloadRemoteProviders();
-    },
+    }
 
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
@@ -470,13 +455,13 @@ var SearchResults = new Lang.Class({
         RemoteSearch.loadRemoteSearchProviders(this._searchSettings, providers => {
             providers.forEach(this._registerProvider.bind(this));
         });
-    },
+    }
 
     _registerProvider(provider) {
         provider.searchInProgress = false;
         this._providers.push(provider);
         this._ensureProviderDisplay(provider);
-    },
+    }
 
     _unregisterProvider(provider) {
         let index = this._providers.indexOf(provider);
@@ -484,19 +469,19 @@ var SearchResults = new Lang.Class({
 
         if (provider.display)
             provider.display.destroy();
-    },
+    }
 
     _gotResults(results, provider) {
         this._results[provider.id] = results;
         this._updateResults(provider, results);
-    },
+    }
 
     _clearSearchTimeout() {
         if (this._searchTimeoutId > 0) {
             GLib.source_remove(this._searchTimeoutId);
             this._searchTimeoutId = 0;
         }
-    },
+    }
 
     _reset() {
         this._terms = [];
@@ -507,7 +492,7 @@ var SearchResults = new Lang.Class({
         this._startingSearch = false;
 
         this._updateSearchProgress();
-    },
+    }
 
     _doSearch() {
         this._startingSearch = false;
@@ -537,13 +522,13 @@ var SearchResults = new Lang.Class({
         this._updateSearchProgress();
 
         this._clearSearchTimeout();
-    },
+    }
 
     _onSearchTimeout() {
         this._searchTimeoutId = 0;
         this._doSearch();
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     setTerms(terms) {
         // Check for the case of making a duplicate previous search before
@@ -580,18 +565,18 @@ var SearchResults = new Lang.Class({
         this._highlightRegex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
 
         this.emit('terms-changed');
-    },
+    }
 
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollView.vscroll.adjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
-    },
+    }
 
     _keyFocusIn(provider, actor) {
         Util.ensureActorVisibleInScrollView(this._scrollView, actor);
-    },
+    }
 
     _ensureProviderDisplay(provider) {
         if (provider.display)
@@ -607,13 +592,13 @@ var SearchResults = new Lang.Class({
         providerDisplay.actor.hide();
         this._content.add(providerDisplay.actor);
         provider.display = providerDisplay;
-    },
+    }
 
     _clearDisplay() {
         this._providers.forEach(provider => {
             provider.display.clear();
         });
-    },
+    }
 
     _maybeSetInitialSelection() {
         let newDefaultResult = null;
@@ -639,14 +624,14 @@ var SearchResults = new Lang.Class({
 
             this._defaultResult = newDefaultResult;
         }
-    },
+    }
 
     get searchInProgress() {
         if (this._startingSearch)
             return true;
 
         return this._providers.some(p => p.searchInProgress);
-    },
+    }
 
     _updateSearchProgress() {
         let haveResults = this._providers.some(provider => {
@@ -664,7 +649,7 @@ var SearchResults = new Lang.Class({
                 this._statusText.set_text(_("No results."));
             }
         }
-    },
+    }
 
     _updateResults(provider, results) {
         let terms = this._terms;
@@ -676,7 +661,7 @@ var SearchResults = new Lang.Class({
             this._maybeSetInitialSelection();
             this._updateSearchProgress();
         });
-    },
+    }
 
     activateDefault() {
         // If we have a search queued up, force the search now.
@@ -685,12 +670,12 @@ var SearchResults = new Lang.Class({
 
         if (this._defaultResult)
             this._defaultResult.activate();
-    },
+    }
 
     highlightDefault(highlight) {
         this._highlightDefault = highlight;
         this._setSelected(this._defaultResult, highlight);
-    },
+    }
 
     popupMenuDefault() {
         // If we have a search queued up, force the search now.
@@ -699,7 +684,7 @@ var SearchResults = new Lang.Class({
 
         if (this._defaultResult)
             this._defaultResult.actor.popup_menu();
-    },
+    }
 
     navigateFocus(direction) {
         let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
@@ -713,7 +698,7 @@ var SearchResults = new Lang.Class({
 
         let from = this._defaultResult ? this._defaultResult.actor : null;
         this.actor.navigate_focus(from, direction, false);
-    },
+    }
 
     _setSelected(result, selected) {
         if (!result)
@@ -725,7 +710,7 @@ var SearchResults = new Lang.Class({
         } else {
             result.actor.remove_style_pseudo_class('selected');
         }
-    },
+    }
 
     highlightTerms(description) {
         if (!description)
@@ -736,7 +721,7 @@ var SearchResults = new Lang.Class({
 
         return description.replace(this._highlightRegex, '<b>$1</b>');
     }
-});
+};
 Signals.addSignalMethods(SearchResults.prototype);
 
 var ProviderInfo = new Lang.Class({

@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*
 
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
@@ -11,12 +10,9 @@ const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const RemoteMenu = imports.ui.remoteMenu;
 
-var WindowMenu = new Lang.Class({
-    Name: 'WindowMenu',
-    Extends: PopupMenu.PopupMenu,
-
-    _init(window, sourceActor) {
-        this.parent(sourceActor, 0, St.Side.TOP);
+var WindowMenu = class extends PopupMenu.PopupMenu {
+    constructor(window, sourceActor) {
+        super(sourceActor, 0, St.Side.TOP);
 
         this.actor.add_style_class_name('window-menu');
 
@@ -24,7 +20,7 @@ var WindowMenu = new Lang.Class({
         this.actor.hide();
 
         this._buildMenu(window);
-    },
+    }
 
     _buildMenu(window) {
         let type = window.get_window_type();
@@ -177,16 +173,13 @@ var WindowMenu = new Lang.Class({
         if (!window.can_close())
             item.setSensitive(false);
     }
-});
+};
 
-var AppMenu = new Lang.Class({
-    Name: 'AppMenu',
-    Extends: RemoteMenu.RemoteMenu,
-
-    _init(window, sourceActor) {
+var AppMenu = class extends RemoteMenu.RemoteMenu {
+    constructor(window, sourceActor) {
         let app = Shell.WindowTracker.get_default().get_window_app(window);
 
-        this.parent(sourceActor, app.menu, app.action_group);
+        super(sourceActor, app.menu, app.action_group);
 
         this.actor.add_style_class_name('fallback-app-menu');
         let variant = window.get_gtk_theme_variant();
@@ -196,12 +189,10 @@ var AppMenu = new Lang.Class({
         Main.layoutManager.uiGroup.add_actor(this.actor);
         this.actor.hide();
     }
-});
+};
 
-var WindowMenuManager = new Lang.Class({
-    Name: 'WindowMenuManager',
-
-    _init() {
+var WindowMenuManager = class {
+    constructor() {
         this._manager = new PopupMenu.PopupMenuManager({ actor: Main.layoutManager.dummyCursor });
 
         this._sourceActor = new St.Widget({ reactive: true, visible: false });
@@ -209,7 +200,7 @@ var WindowMenuManager = new Lang.Class({
             this._manager.activeMenu.toggle();
         });
         Main.uiGroup.add_actor(this._sourceActor);
-    },
+    }
 
     showWindowMenuForWindow(window, type, rect) {
         let menuType = (type == Meta.WindowMenuType.WM) ? WindowMenu : AppMenu;
@@ -239,4 +230,4 @@ var WindowMenuManager = new Lang.Class({
             window.disconnect(destroyId);
         });
     }
-});
+};

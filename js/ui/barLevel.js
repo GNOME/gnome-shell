@@ -3,14 +3,11 @@
 const Atk = imports.gi.Atk;
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
-const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
 
-var BarLevel = new Lang.Class({
-    Name: "BarLevel",
-
-    _init(value, params) {
+var BarLevel = class {
+    constructor(value, params) {
         if (isNaN(value))
             // Avoid spreading NaNs around
             throw TypeError('The bar level value must be a number');
@@ -40,7 +37,7 @@ var BarLevel = new Lang.Class({
         this._customAccessible.connect('set-current-value', this._setCurrentValue.bind(this));
 
         this.connect('value-changed', this._valueChanged.bind(this));
-    },
+    }
 
     setValue(value) {
         if (isNaN(value))
@@ -48,7 +45,7 @@ var BarLevel = new Lang.Class({
 
         this._value = Math.max(Math.min(value, this._maxValue), 0);
         this.actor.queue_repaint();
-    },
+    }
 
     setMaximumValue(value) {
         if (isNaN(value))
@@ -57,7 +54,7 @@ var BarLevel = new Lang.Class({
         this._maxValue = Math.max(value, 1);
         this._overdriveStart = Math.min(this._overdriveStart, this._maxValue);
         this.actor.queue_repaint();
-    },
+    }
 
     setOverdriveStart(value) {
         if (isNaN(value))
@@ -69,7 +66,7 @@ var BarLevel = new Lang.Class({
         this._overdriveStart = value;
         this._value = Math.max(Math.min(value, this._maxValue), 0);
         this.actor.queue_repaint();
-    },
+    }
 
     _barLevelRepaint(area) {
         let cr = area.get_context();
@@ -176,35 +173,34 @@ var BarLevel = new Lang.Class({
         }
 
         cr.$dispose();
-    },
+    }
 
     _getCurrentValue(actor) {
         return this._value;
-    },
+    }
 
     _getOverdriveStart(actor) {
         return this._overdriveStart;
-    },
+    }
 
     _getMinimumValue(actor) {
         return 0;
-    },
+    }
 
     _getMaximumValue(actor) {
         return this._maxValue;
-    },
+    }
 
     _setCurrentValue(actor, value) {
         this._value = value;
-    },
+    }
 
     _valueChanged(barLevel, value, property) {
         this._customAccessible.notify("accessible-value");
-    },
+    }
 
     get value() {
         return this._value;
     }
-});
-
+};
 Signals.addSignalMethods(BarLevel.prototype);

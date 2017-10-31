@@ -19,10 +19,8 @@ var AVATAR_ICON_SIZE = 64;
 // Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
 // Copyright (C) 2008,2009 Red Hat, Inc.
 
-var Avatar = new Lang.Class({
-    Name: 'Avatar',
-
-    _init(user, params) {
+var Avatar = class {
+    constructor(user, params) {
         this._user = user;
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
@@ -39,12 +37,12 @@ var Avatar = new Lang.Class({
         // Monitor the scaling factor to make sure we recreate the avatar when needed.
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         themeContext.connect('notify::scale-factor', this.update.bind(this));
-    },
+    }
 
     setSensitive(sensitive) {
         this.actor.can_focus = sensitive;
         this.actor.reactive = sensitive;
-    },
+    }
 
     update() {
         let iconFile = this._user.get_icon_file();
@@ -64,7 +62,7 @@ var Avatar = new Lang.Class({
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this.actor.set_size(this._iconSize * scaleFactor, this._iconSize * scaleFactor);
     }
-});
+};
 
 var UserWidgetLabel = new Lang.Class({
     Name: 'UserWidgetLabel',
@@ -151,10 +149,8 @@ var UserWidgetLabel = new Lang.Class({
     },
 });
 
-var UserWidget = new Lang.Class({
-    Name: 'UserWidget',
-
-    _init(user) {
+var UserWidget = class {
+    constructor(user) {
         this._user = user;
 
         this.actor = new St.BoxLayout({ style_class: 'user-widget',
@@ -173,7 +169,7 @@ var UserWidget = new Lang.Class({
         this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
         this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
         this._updateUser();
-    },
+    }
 
     _onDestroy() {
         if (this._userLoadedId != 0) {
@@ -185,9 +181,9 @@ var UserWidget = new Lang.Class({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
-    },
+    }
 
     _updateUser() {
         this._avatar.update();
     }
-});
+};

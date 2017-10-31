@@ -1,6 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Clutter = imports.gi.Clutter;
 const St = imports.gi.St;
@@ -18,12 +17,9 @@ const Tweener = imports.ui.tweener;
 
 var WORK_SPINNER_ICON_SIZE = 16;
 
-var KeyringDialog = new Lang.Class({
-    Name: 'KeyringDialog',
-    Extends: ModalDialog.ModalDialog,
-
-    _init() {
-        this.parent({ styleClass: 'prompt-dialog' });
+var KeyringDialog = class extends ModalDialog.ModalDialog {
+    constructor() {
+        super({ styleClass: 'prompt-dialog' });
 
         this.prompt = new Shell.KeyringPrompt();
         this.prompt.connect('show-password', this._onShowPassword.bind(this));
@@ -61,7 +57,7 @@ var KeyringDialog = new Lang.Class({
 
         this.prompt.bind_property('cancel-label', this._cancelButton, 'label', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('continue-label', this._continueButton, 'label', GObject.BindingFlags.SYNC_CREATE);
-    },
+    }
 
     _setWorking(working) {
         if (!this._workSpinner)
@@ -71,7 +67,7 @@ var KeyringDialog = new Lang.Class({
             this._workSpinner.play();
         else
             this._workSpinner.stop();
-    },
+    }
 
     _buildControlTable() {
         let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
@@ -162,7 +158,7 @@ var KeyringDialog = new Lang.Class({
 
         this._controlTable = table;
         this._content.messageBox.add(table, { x_fill: true, y_fill: true });
-    },
+    }
 
     _updateSensitivity(sensitive) {
         if (this._passwordEntry) {
@@ -178,7 +174,7 @@ var KeyringDialog = new Lang.Class({
         this._continueButton.can_focus = sensitive;
         this._continueButton.reactive = sensitive;
         this._setWorking(!sensitive);
-    },
+    }
 
     _ensureOpen() {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
@@ -196,65 +192,61 @@ var KeyringDialog = new Lang.Class({
             ' Dismissing prompt request');
         this.prompt.cancel()
         return false;
-    },
+    }
 
     _onShowPassword(prompt) {
         this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
         this._passwordEntry.grab_key_focus();
-    },
+    }
 
     _onShowConfirm(prompt) {
         this._buildControlTable();
         this._ensureOpen();
         this._updateSensitivity(true);
         this._continueButton.grab_key_focus();
-    },
+    }
 
     _onHidePrompt(prompt) {
         this.close();
-    },
+    }
 
     _onPasswordActivate() {
         if (this.prompt.confirm_visible)
             this._confirmEntry.grab_key_focus();
         else
             this._onContinueButton();
-    },
+    }
 
     _onConfirmActivate() {
         this._onContinueButton();
-    },
+    }
 
     _onContinueButton() {
         this._updateSensitivity(false);
         this.prompt.complete();
-    },
+    }
 
     _onCancelButton() {
         this.prompt.cancel();
-    },
-});
+    }
+};
 
-var KeyringDummyDialog = new Lang.Class({
-    Name: 'KeyringDummyDialog',
-
-    _init() {
+var KeyringDummyDialog = class {
+    constructor() {
         this.prompt = new Shell.KeyringPrompt();
         this.prompt.connect('show-password', this._cancelPrompt.bind(this));
         this.prompt.connect('show-confirm', this._cancelPrompt.bind(this));
-    },
+    }
 
     _cancelPrompt() {
         this.prompt.cancel();
     }
-});
+};
 
-var KeyringPrompter = new Lang.Class({
-    Name: 'KeyringPrompter',
-
-    _init() {
+var KeyringPrompter = class {
+    constructor() {
         this._prompter = new Gcr.SystemPrompter();
         this._prompter.connect('new-prompt', () => {
             let dialog = this._enabled ? new KeyringDialog()
@@ -266,7 +258,7 @@ var KeyringPrompter = new Lang.Class({
         this._registered = false;
         this._enabled = false;
         this._currentPrompt = null;
-    },
+    }
 
     enable() {
         if (!this._registered) {
@@ -276,7 +268,7 @@ var KeyringPrompter = new Lang.Class({
             this._registered = true;
         }
         this._enabled = true;
-    },
+    }
 
     disable() {
         this._enabled = false;
@@ -285,6 +277,6 @@ var KeyringPrompter = new Lang.Class({
             this._currentPrompt.cancel();
         this._currentPrompt = null;
     }
-});
+};
 
 var Component = KeyringPrompter;

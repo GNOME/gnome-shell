@@ -3,7 +3,6 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
@@ -30,13 +29,10 @@ const EXEC_ARG_KEY = 'exec-arg';
 
 var DIALOG_GROW_TIME = 0.1;
 
-var RunDialog = new Lang.Class({
-    Name: 'RunDialog',
-    Extends: ModalDialog.ModalDialog,
-
-    _init() {
-        this.parent({ styleClass: 'run-dialog',
-                      destroyOnClose: false });
+var RunDialog = class extends ModalDialog.ModalDialog {
+    constructor() {
+        super({ styleClass: 'run-dialog',
+                destroyOnClose: false });
 
         this._lockdownSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
         this._terminalSettings = new Gio.Settings({ schema_id: TERMINAL_SCHEMA });
@@ -144,7 +140,7 @@ var RunDialog = new Lang.Class({
             }
             return Clutter.EVENT_PROPAGATE;
         });
-    },
+    }
 
     _getCommandCompletion(text) {
         function _getCommon(s1, s2) {
@@ -189,7 +185,7 @@ var RunDialog = new Lang.Class({
 
         let common = results.reduce(_getCommon, null);
         return common.substr(text.length);
-    },
+    }
 
     _getCompletion(text) {
         if (text.indexOf('/') != -1) {
@@ -197,7 +193,7 @@ var RunDialog = new Lang.Class({
         } else {
             return this._getCommandCompletion(text);
         }
-    },
+    }
 
     _run(input, inTerminal) {
         let command = input;
@@ -248,7 +244,7 @@ var RunDialog = new Lang.Class({
                 }
             }
         }
-    },
+    }
 
     _showError(message) {
         this._commandError = true;
@@ -269,7 +265,7 @@ var RunDialog = new Lang.Class({
                                }
                              });
         }
-    },
+    }
 
     _restart() {
         if (Meta.is_wayland_compositor()) {
@@ -279,7 +275,7 @@ var RunDialog = new Lang.Class({
         this._shouldFadeOut = false;
         this.close();
         Meta.restart(_("Restarting…"));
-    },
+    }
 
     open() {
         this._history.lastItem();
@@ -290,7 +286,7 @@ var RunDialog = new Lang.Class({
         if (this._lockdownSettings.get_boolean(DISABLE_COMMAND_LINE_KEY))
             return;
 
-        this.parent();
-    },
-});
+        super.open();
+    }
+};
 Signals.addSignalMethods(RunDialog.prototype);

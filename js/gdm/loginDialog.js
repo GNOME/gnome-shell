@@ -50,10 +50,8 @@ const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 const _MAX_BOTTOM_MENU_ITEMS = 5;
 
-var UserListItem = new Lang.Class({
-    Name: 'UserListItem',
-
-    _init(user) {
+var UserListItem = class {
+    constructor(user) {
         this.user = user;
         this._userChangedId = this.user.connect('changed',
                                                  this._onUserChanged.bind(this));
@@ -91,26 +89,26 @@ var UserListItem = new Lang.Class({
 
         this.actor.connect('clicked', this._onClicked.bind(this));
         this._onUserChanged();
-    },
+    }
 
     _onUserChanged() {
         this._updateLoggedIn();
-    },
+    }
 
     _updateLoggedIn() {
         if (this.user.is_logged_in())
             this.actor.add_style_pseudo_class('logged-in');
         else
             this.actor.remove_style_pseudo_class('logged-in');
-    },
+    }
 
     _onDestroy() {
         this.user.disconnect(this._userChangedId);
-    },
+    }
 
     _onClicked() {
         this.emit('activate');
-    },
+    }
 
     _setSelected(selected) {
         if (selected) {
@@ -119,7 +117,7 @@ var UserListItem = new Lang.Class({
         } else {
             this.actor.remove_style_pseudo_class('selected');
         }
-    },
+    }
 
     showTimedLoginIndicator(time) {
         let hold = new Batch.Hold();
@@ -147,7 +145,7 @@ var UserListItem = new Lang.Class({
         GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginTimeoutId');
 
         return hold;
-    },
+    }
 
     hideTimedLoginIndicator() {
         if (this._timedLoginTimeoutId) {
@@ -158,13 +156,11 @@ var UserListItem = new Lang.Class({
         this._timedLoginIndicator.visible = false;
         this._timedLoginIndicator.scale_x = 0.;
     }
-});
+};
 Signals.addSignalMethods(UserListItem.prototype);
 
-var UserList = new Lang.Class({
-    Name: 'UserList',
-
-    _init() {
+var UserList = class {
+    constructor() {
         this.actor = new St.ScrollView({ style_class: 'login-dialog-user-list-view'});
         this.actor.set_policy(Gtk.PolicyType.NEVER,
                               Gtk.PolicyType.AUTOMATIC);
@@ -177,7 +173,7 @@ var UserList = new Lang.Class({
         this._items = {};
 
         this.actor.connect('key-focus-in', this._moveFocusToItems.bind(this));
-    },
+    }
 
     _moveFocusToItems() {
         let hasItems = Object.keys(this._items).length > 0;
@@ -195,11 +191,11 @@ var UserList = new Lang.Class({
                 return false;
             });
         }
-    },
+    }
 
     _onItemActivated(activatedItem) {
         this.emit('activate', activatedItem);
-    },
+    }
 
     updateStyle(isExpanded) {
         let tasks = [];
@@ -213,7 +209,7 @@ var UserList = new Lang.Class({
             let item = this._items[userName];
             item.actor.sync_hover();
         }
-    },
+    }
 
     scrollToItem(item) {
         let box = item.actor.get_allocation_box();
@@ -226,7 +222,7 @@ var UserList = new Lang.Class({
                           { value: value,
                             time: _SCROLL_ANIMATION_TIME,
                             transition: 'easeOutQuad' });
-    },
+    }
 
     jumpToItem(item) {
         let box = item.actor.get_allocation_box();
@@ -236,7 +232,7 @@ var UserList = new Lang.Class({
         let value = (box.y1 + adjustment.step_increment / 2.0) - (adjustment.page_size / 2.0);
 
         adjustment.set_value(value);
-    },
+    }
 
     getItemFromUserName(userName) {
         let item = this._items[userName];
@@ -245,11 +241,11 @@ var UserList = new Lang.Class({
             return null;
 
         return item;
-    },
+    }
 
     containsUser(user) {
         return this._items[user.get_user_name()] != null;
-    },
+    }
 
     addUser(user) {
         if (!user.is_loaded)
@@ -281,7 +277,7 @@ var UserList = new Lang.Class({
         this._moveFocusToItems();
 
         this.emit('item-added', item);
-    },
+    }
 
     removeUser(user) {
         if (!user.is_loaded)
@@ -299,18 +295,16 @@ var UserList = new Lang.Class({
 
         item.actor.destroy();
         delete this._items[userName];
-    },
+    }
 
     numItems() {
         return Object.keys(this._items).length;
     }
-});
+};
 Signals.addSignalMethods(UserList.prototype);
 
-var SessionMenuButton = new Lang.Class({
-    Name: 'SessionMenuButton',
-
-    _init() {
+var SessionMenuButton = class {
+    constructor() {
         let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
         this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
                                        reactive: true,
@@ -350,13 +344,13 @@ var SessionMenuButton = new Lang.Class({
         this._items = {};
         this._activeSessionId = null;
         this._populate();
-    },
+    }
 
     updateSensitivity(sensitive) {
         this._button.reactive = sensitive;
         this._button.can_focus = sensitive;
         this._menu.close(BoxPointer.PopupAnimation.NONE);
-    },
+    }
 
     _updateOrnament() {
         let itemIds = Object.keys(this._items);
@@ -366,7 +360,7 @@ var SessionMenuButton = new Lang.Class({
             else
                 this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NONE);
         }
-    },
+    }
 
     setActiveSession(sessionId) {
          if (sessionId == this._activeSessionId)
@@ -374,11 +368,11 @@ var SessionMenuButton = new Lang.Class({
 
          this._activeSessionId = sessionId;
          this._updateOrnament();
-    },
+    }
 
     close() {
         this._menu.close();
-    },
+    }
 
     _populate() {
         let ids = Gdm.get_session_ids();
@@ -403,7 +397,7 @@ var SessionMenuButton = new Lang.Class({
             });
         }
     }
-});
+};
 Signals.addSignalMethods(SessionMenuButton.prototype);
 
 var LoginDialog = new Lang.Class({

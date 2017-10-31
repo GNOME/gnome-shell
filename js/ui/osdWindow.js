@@ -16,44 +16,38 @@ var HIDE_TIMEOUT = 1500;
 var FADE_TIME = 0.1;
 var LEVEL_ANIMATION_TIME = 0.1;
 
-var LevelBar = new Lang.Class({
-    Name: 'LevelBar',
-    Extends: BarLevel.BarLevel,
+var LevelBar = class extends BarLevel.BarLevel {
+    constructor() {
+        super(0, { styleClass: 'level' });
 
-    _init() {
         this._level = 0;
         this._maxLevel = 100;
-
-        let params = {
-            styleClass: 'level',
-        }
-        this.parent(this._level, params);
 
         this.actor.accessible_name = _("Volume");
 
         this.actor.connect('notify::width', () => { this.level = this.level; });
-    },
+    }
 
     get level() {
         return this._level;
-    },
+    }
 
     set level(value) {
         this._level = Math.max(0, Math.min(value, this._maxLevel));
 
         this.setValue(this._level / 100);
-    },
+    }
 
     get maxLevel() {
         return this._maxLevel;
-    },
+    }
 
     set maxLevel(value) {
         this._maxLevel = Math.max(100, value);
 
         this.setMaximumValue(this._maxLevel / 100);
     }
-});
+};
 
 var OsdWindowConstraint = new Lang.Class({
     Name: 'OsdWindowConstraint',
@@ -87,10 +81,8 @@ var OsdWindowConstraint = new Lang.Class({
     }
 });
 
-var OsdWindow = new Lang.Class({
-    Name: 'OsdWindow',
-
-    _init(monitorIndex) {
+var OsdWindow = class {
+    constructor(monitorIndex) {
         this.actor = new St.Widget({ x_expand: true,
                                      y_expand: true,
                                      x_align: Clutter.ActorAlign.CENTER,
@@ -129,7 +121,7 @@ var OsdWindow = new Lang.Class({
                                  this._relayout.bind(this));
         this._relayout();
         Main.uiGroup.add_child(this.actor);
-    },
+    }
 
     _onDestroy() {
         if (this._monitorsChangedId)
@@ -140,17 +132,17 @@ var OsdWindow = new Lang.Class({
         if (this._scaleChangedId)
             themeContext.disconnect(this._scaleChangedId);
         this._scaleChangedId = 0;
-    },
+    }
 
     setIcon(icon) {
         this._icon.gicon = icon;
-    },
+    }
 
     setLabel(label) {
         this._label.visible = (label != undefined);
         if (label)
             this._label.text = label;
-    },
+    }
 
     setLevel(level) {
         this._level.actor.visible = (level != undefined);
@@ -163,13 +155,13 @@ var OsdWindow = new Lang.Class({
             else
                 this._level.level = level;
         }
-    },
+    }
 
     setMaxLevel(maxLevel) {
         if (maxLevel === undefined)
             maxLevel = 100;
         this._level.maxLevel = maxLevel;
-    },
+    }
 
     show() {
         if (!this._icon.gicon)
@@ -192,7 +184,7 @@ var OsdWindow = new Lang.Class({
         this._hideTimeoutId = Mainloop.timeout_add(HIDE_TIMEOUT,
                                                    this._hide.bind(this));
         GLib.Source.set_name_by_id(this._hideTimeoutId, '[gnome-shell] this._hide');
-    },
+    }
 
     cancel() {
         if (!this._hideTimeoutId)
@@ -200,7 +192,7 @@ var OsdWindow = new Lang.Class({
 
         Mainloop.source_remove(this._hideTimeoutId);
         this._hide();
-    },
+    }
 
     _hide() {
         this._hideTimeoutId = 0;
@@ -214,14 +206,14 @@ var OsdWindow = new Lang.Class({
                            }
                          });
         return GLib.SOURCE_REMOVE;
-    },
+    }
 
     _reset() {
         this.actor.hide();
         this.setLabel(null);
         this.setMaxLevel(null);
         this.setLevel(null);
-    },
+    }
 
     _relayout() {
         /* assume 110x110 on a 640x480 display and scale from there */
@@ -239,17 +231,15 @@ var OsdWindow = new Lang.Class({
         this._box.translation_y = Math.round(monitor.height / 4);
         this._boxConstraint.minSize = popupSize;
     }
-});
+};
 
-var OsdWindowManager = new Lang.Class({
-    Name: 'OsdWindowManager',
-
-    _init() {
+var OsdWindowManager = class {
+    constructor() {
         this._osdWindows = [];
         Main.layoutManager.connect('monitors-changed',
                                     this._monitorsChanged.bind(this));
         this._monitorsChanged();
-    },
+    }
 
     _monitorsChanged() {
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
@@ -263,7 +253,7 @@ var OsdWindowManager = new Lang.Class({
         }
 
         this._osdWindows.length = Main.layoutManager.monitors.length;
-    },
+    }
 
     _showOsdWindow(monitorIndex, icon, label, level, maxLevel) {
         this._osdWindows[monitorIndex].setIcon(icon);
@@ -271,7 +261,7 @@ var OsdWindowManager = new Lang.Class({
         this._osdWindows[monitorIndex].setMaxLevel(maxLevel);
         this._osdWindows[monitorIndex].setLevel(level);
         this._osdWindows[monitorIndex].show();
-    },
+    }
 
     show(monitorIndex, icon, label, level, maxLevel) {
         if (monitorIndex != -1) {
@@ -285,10 +275,10 @@ var OsdWindowManager = new Lang.Class({
             for (let i = 0; i < this._osdWindows.length; i++)
                 this._showOsdWindow(i, icon, label, level, maxLevel);
         }
-    },
+    }
 
     hideAll() {
         for (let i = 0; i < this._osdWindows.length; i++)
             this._osdWindows[i].cancel();
     }
-});
+};

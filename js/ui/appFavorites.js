@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Shell = imports.gi.Shell;
-const Lang = imports.lang;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -49,21 +48,18 @@ const RENAMED_DESKTOP_IDS = {
     'evince.desktop': 'org.gnome.Evince.desktop',
 };
 
-var AppFavorites = new Lang.Class({
-    Name: 'AppFavorites',
-
-    FAVORITE_APPS_KEY: 'favorite-apps',
-
-    _init() {
+class AppFavorites {
+    constructor() {
+        this.FAVORITE_APPS_KEY = 'favorite-apps';
         this._favorites = {};
         global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, this._onFavsChanged.bind(this));
         this.reload();
-    },
+    }
 
     _onFavsChanged() {
         this.reload();
         this.emit('changed');
-    },
+    }
 
     reload() {
         let ids = global.settings.get_strv(this.FAVORITE_APPS_KEY);
@@ -91,29 +87,29 @@ var AppFavorites = new Lang.Class({
             let app = apps[i];
             this._favorites[app.get_id()] = app;
         }
-    },
+    }
 
     _getIds() {
         let ret = [];
         for (let id in this._favorites)
             ret.push(id);
         return ret;
-    },
+    }
 
     getFavoriteMap() {
         return this._favorites;
-    },
+    }
 
     getFavorites() {
         let ret = [];
         for (let id in this._favorites)
             ret.push(this._favorites[id]);
         return ret;
-    },
+    }
 
     isFavorite(appId) {
         return appId in this._favorites;
-    },
+    }
 
     _addFavorite(appId, pos) {
         if (appId in this._favorites)
@@ -131,7 +127,7 @@ var AppFavorites = new Lang.Class({
             ids.splice(pos, 0, appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         return true;
-    },
+    }
 
     addFavoriteAtPos(appId, pos) {
         if (!this._addFavorite(appId, pos))
@@ -145,16 +141,16 @@ var AppFavorites = new Lang.Class({
                                        this._removeFavorite(appId);
                                    }
                                  });
-    },
+    }
 
     addFavorite(appId) {
         this.addFavoriteAtPos(appId, -1);
-    },
+    }
 
     moveFavoriteToPos(appId, pos) {
         this._removeFavorite(appId);
         this._addFavorite(appId, pos);
-    },
+    }
 
     _removeFavorite(appId) {
         if (!appId in this._favorites)
@@ -163,7 +159,7 @@ var AppFavorites = new Lang.Class({
         let ids = this._getIds().filter(id => id != appId);
         global.settings.set_strv(this.FAVORITE_APPS_KEY, ids);
         return true;
-    },
+    }
 
     removeFavorite(appId) {
         let ids = this._getIds();
@@ -180,7 +176,7 @@ var AppFavorites = new Lang.Class({
                                    }
                                  });
     }
-});
+};
 Signals.addSignalMethods(AppFavorites.prototype);
 
 var appFavoritesInstance = null;

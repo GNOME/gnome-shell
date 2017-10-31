@@ -4,7 +4,6 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Polkit = imports.gi.Polkit;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -52,11 +51,8 @@ const BOLT_DBUS_CLIENT_IFACE = 'org.freedesktop.bolt1.Manager';
 const BOLT_DBUS_NAME = 'org.freedesktop.bolt';
 const BOLT_DBUS_PATH = '/org/freedesktop/bolt';
 
-var Client = new Lang.Class({
-    Name: 'BoltClient',
-
-    _init() {
-
+var Client = class {
+    constructor() {
 	this._proxy = null;
         let nodeInfo = Gio.DBusNodeInfo.new_for_xml(BoltClientInterface);
         Gio.DBusProxy.new(Gio.DBus.system,
@@ -69,7 +65,7 @@ var Client = new Lang.Class({
                           this._onProxyReady.bind(this));
 
 	this.probing = false;
-    },
+    }
 
     _onProxyReady(o, res) {
         try {
@@ -85,7 +81,7 @@ var Client = new Lang.Class({
 	if (this.probing)
 	    this.emit('probing-changed', this.probing);
 
-    },
+    }
 
     _onPropertiesChanged(proxy, properties) {
         let unpacked = properties.deep_unpack();
@@ -94,7 +90,7 @@ var Client = new Lang.Class({
 
 	this.probing = this._proxy.Probing;
 	this.emit('probing-changed', this.probing);
-    },
+    }
 
     _onDeviceAdded(proxy, emitter, params) {
 	let [path] = params;
@@ -102,7 +98,7 @@ var Client = new Lang.Class({
 					 BOLT_DBUS_NAME,
 					 path);
 	this.emit('device-added', device);
-    },
+    }
 
     /* public methods */
     close() {
@@ -112,7 +108,7 @@ var Client = new Lang.Class({
 	this._proxy.disconnectSignal(this._deviceAddedId);
 	this._proxy.disconnect(this._propsChangedId);
 	this._proxy = null;
-    },
+    }
 
     enrollDevice(id, policy, callback) {
 	this._proxy.EnrollDeviceRemote(id, policy, AuthCtrl.NONE,
@@ -129,34 +125,29 @@ var Client = new Lang.Class({
 					     path);
 	    callback(device, null);
 	});
-    },
+    }
 
     get authMode () {
         return this._proxy.AuthMode;
     }
-
-});
-
+};
 Signals.addSignalMethods(Client.prototype);
 
 /* helper class to automatically authorize new devices */
-var AuthRobot = new Lang.Class({
-    Name: 'BoltAuthRobot',
-
-    _init(client) {
-
+var AuthRobot = class {
+    constructor(client) {
 	this._client = client;
 
 	this._devicesToEnroll = [];
 	this._enrolling = false;
 
 	this._client.connect('device-added', this._onDeviceAdded.bind(this));
-    },
+    }
 
     close() {
 	this.disconnectAll();
 	this._client = null;
-    },
+    }
 
     /* the "device-added" signal will be emitted by boltd for every
      * device that is not currently stored in the database. We are
@@ -184,7 +175,7 @@ var AuthRobot = new Lang.Class({
 	 * of the list  */
 	this._devicesToEnroll.push(dev);
 	this._enrollDevices();
-    },
+    }
 
     /* The enrollment queue:
      *   - new devices will be added to the end of the array.
@@ -199,7 +190,7 @@ var AuthRobot = new Lang.Class({
 	this._enrolling = true;
 	GLib.idle_add(GLib.PRIORITY_DEFAULT,
 		      this._enrollDevicesIdle.bind(this));
-    },
+    }
 
     _onEnrollDone(device, error) {
 	if (error)
@@ -214,7 +205,7 @@ var AuthRobot = new Lang.Class({
 	if (this._enrolling)
 	    GLib.idle_add(GLib.PRIORITY_DEFAULT,
 			  this._enrollDevicesIdle.bind(this));
-    },
+    }
 
     _enrollDevicesIdle() {
 	let devices = this._devicesToEnroll;
@@ -228,19 +219,14 @@ var AuthRobot = new Lang.Class({
 				  this._onEnrollDone.bind(this));
 	return GLib.SOURCE_REMOVE;
     }
-
-});
-
+};
 Signals.addSignalMethods(AuthRobot.prototype);
 
 /* eof client.js  */
 
-var Indicator = new Lang.Class({
-    Name: 'ThunderboltIndicator',
-    Extends: PanelMenu.SystemIndicator,
-
-    _init() {
-        this.parent();
+var Indicator = class extends PanelMenu.SystemIndicator {
+    constructor() {
+        super();
 
 	this._indicator = this._addIndicator();
         this._indicator.icon_name = 'thunderbolt-symbolic';
@@ -266,12 +252,12 @@ var Indicator = new Lang.Class({
                 log('Failed to get PolKit permission: %s'.format(e.toString()));
             }
         });
-    },
+    }
 
     _onDestroy() {
         this._robot.close();
 	this._client.close();
-    },
+    }
 
     _ensureSource() {
         if (!this._source) {
@@ -283,7 +269,7 @@ var Indicator = new Lang.Class({
         }
 
         return this._source;
-    },
+    }
 
     _notify(title, body) {
         if (this._notification)
@@ -302,14 +288,13 @@ var Indicator = new Lang.Class({
                 app.activate();
         });
         this._source.notify(this._notification);
-    },
+    }
 
     /* Session callbacks */
     _sync() {
         let active = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
 	this._indicator.visible = active && this._client.probing;
-    },
-
+    }
 
     /* Bolt.Client callbacks */
     _onProbing(cli, probing) {
@@ -319,8 +304,7 @@ var Indicator = new Lang.Class({
 	    this._indicator.icon_name = 'thunderbolt-symbolic';
 
         this._sync();
-    },
-
+    }
 
     /* AuthRobot callbacks */
     _onEnrollDevice(obj, device, policy) {
@@ -346,12 +330,11 @@ var Indicator = new Lang.Class({
 	    const body = _("New device has been detected and needs to be authorized by an administrator.");
 	    this._notify(title, body);
         }
-    },
+    }
 
     _onEnrollFailed(obj, device, error) {
 	const title = _("Thunderbolt authorization error");
 	const body = _("Could not authorize the Thunderbolt device: %s".format(error.message));
 	this._notify(title, body);
     }
-
-});
+};

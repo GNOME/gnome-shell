@@ -26,10 +26,8 @@ var AnimationType = {
 
 const MUTTER_SCHEMA = 'org.gnome.mutter';
 
-var WorkspacesViewBase = new Lang.Class({
-    Name: 'WorkspacesViewBase',
-
-    _init(monitorIndex) {
+var WorkspacesViewBase = class {
+    constructor(monitorIndex) {
         this.actor = new St.Widget({ style_class: 'workspaces-view',
                                      reactive: true });
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -46,7 +44,7 @@ var WorkspacesViewBase = new Lang.Class({
         this._inDrag = false;
         this._windowDragBeginId = Main.overview.connect('window-drag-begin', this._dragBegin.bind(this));
         this._windowDragEndId = Main.overview.connect('window-drag-end', this._dragEnd.bind(this));
-    },
+    }
 
     _onDestroy() {
         this._dragEnd();
@@ -59,41 +57,38 @@ var WorkspacesViewBase = new Lang.Class({
             Main.overview.disconnect(this._windowDragEndId);
             this._windowDragEndId = 0;
         }
-    },
+    }
 
     _dragBegin(overview, window) {
         this._inDrag = true;
         this._setReservedSlot(window);
-    },
+    }
 
     _dragEnd() {
         this._inDrag = false;
         this._setReservedSlot(null);
-    },
+    }
 
     destroy() {
         this.actor.destroy();
-    },
+    }
 
     setFullGeometry(geom) {
         this._fullGeometry = geom;
         this._syncFullGeometry();
-    },
+    }
 
     setActualGeometry(geom) {
         this._actualGeometry = geom;
         this._syncActualGeometry();
-    },
-});
+    }
+};
 
-var WorkspacesView = new Lang.Class({
-    Name: 'WorkspacesView',
-    Extends: WorkspacesViewBase,
-
-    _init(monitorIndex) {
+var WorkspacesView = class extends WorkspacesViewBase {
+    constructor(monitorIndex) {
         let workspaceManager = global.workspace_manager;
 
-        this.parent(monitorIndex);
+        super(monitorIndex);
 
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
@@ -124,28 +119,28 @@ var WorkspacesView = new Lang.Class({
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           this._activeWorkspaceChanged.bind(this));
-    },
+    }
 
     _setReservedSlot(window) {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setReservedSlot(window);
-    },
+    }
 
     _syncFullGeometry() {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setFullGeometry(this._fullGeometry);
-    },
+    }
 
     _syncActualGeometry() {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setActualGeometry(this._actualGeometry);
-    },
+    }
 
     getActiveWorkspace() {
         let workspaceManager = global.workspace_manager;
         let active = workspaceManager.get_active_workspace_index();
         return this._workspaces[active];
-    },
+    }
 
     animateToOverview(animationType) {
         for (let w = 0; w < this._workspaces.length; w++) {
@@ -155,7 +150,7 @@ var WorkspacesView = new Lang.Class({
                 this._workspaces[w].fadeToOverview();
         }
         this._updateWorkspaceActors(false);
-    },
+    }
 
     animateFromOverview(animationType) {
         this.actor.remove_clip();
@@ -166,12 +161,12 @@ var WorkspacesView = new Lang.Class({
             else
                 this._workspaces[w].fadeFromOverview();
         }
-    },
+    }
 
     syncStacking(stackIndices) {
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].syncStacking(stackIndices);
-    },
+    }
 
     _scrollToActive() {
         let workspaceManager = global.workspace_manager;
@@ -179,7 +174,7 @@ var WorkspacesView = new Lang.Class({
 
         this._updateWorkspaceActors(true);
         this._updateScrollAdjustment(active);
-    },
+    }
 
     // Update workspace actors parameters
     // @showAnimation: iff %true, transition between states
@@ -218,7 +213,7 @@ var WorkspacesView = new Lang.Class({
                     this._updateVisibility();
             }
         }
-    },
+    }
 
     _updateVisibility() {
         let workspaceManager = global.workspace_manager;
@@ -235,7 +230,7 @@ var WorkspacesView = new Lang.Class({
                     workspace.actor.visible = (w == active);
             }
         }
-    },
+    }
 
     _updateScrollAdjustment(index) {
         if (this._scrolling)
@@ -251,7 +246,7 @@ var WorkspacesView = new Lang.Class({
                 this._animatingScroll = false;
             }
         });
-    },
+    }
 
     _updateWorkspaces() {
         let workspaceManager = global.workspace_manager;
@@ -284,28 +279,28 @@ var WorkspacesView = new Lang.Class({
         }
         if (this._actualGeometry)
             this._syncActualGeometry();
-    },
+    }
 
     _activeWorkspaceChanged(wm, from, to, direction) {
         if (this._scrolling)
             return;
 
         this._scrollToActive();
-    },
+    }
 
     _onDestroy() {
-        this.parent();
+        super._onDestroy();
 
         this.scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
         let workspaceManager = global.workspace_manager;
         workspaceManager.disconnect(this._updateWorkspacesId);
-    },
+    }
 
     startSwipeScroll() {
         this._scrolling = true;
-    },
+    }
 
     endSwipeScroll() {
         this._scrolling = false;
@@ -313,7 +308,7 @@ var WorkspacesView = new Lang.Class({
         // Make sure title captions etc are shown as necessary
         this._scrollToActive();
         this._updateVisibility();
-    },
+    }
 
     // sync the workspaces' positions to the value of the scroll adjustment
     // and change the active workspace if appropriate
@@ -356,59 +351,57 @@ var WorkspacesView = new Lang.Class({
             this._workspaces[i].actor.visible = Math.abs(i - adj.value) <= 1;
             this._workspaces[i].actor.y += dy;
         }
-    },
-});
+    }
+};
 Signals.addSignalMethods(WorkspacesView.prototype);
 
-var ExtraWorkspaceView = new Lang.Class({
-    Name: 'ExtraWorkspaceView',
-    Extends: WorkspacesViewBase,
-
-    _init(monitorIndex) {
-        this.parent(monitorIndex);
+var ExtraWorkspaceView = class extends WorkspacesViewBase {
+    constructor(monitorIndex) {
+        super(monitorIndex);
         this._workspace = new Workspace.Workspace(null, monitorIndex);
         this.actor.add_actor(this._workspace.actor);
-    },
+    }
 
     _setReservedSlot(window) {
         this._workspace.setReservedSlot(window);
-    },
+    }
 
     _syncFullGeometry() {
         this._workspace.setFullGeometry(this._fullGeometry);
-    },
+    }
 
     _syncActualGeometry() {
         this._workspace.setActualGeometry(this._actualGeometry);
-    },
+    }
 
     getActiveWorkspace() {
         return this._workspace;
-    },
+    }
 
     animateToOverview(animationType) {
         if (animationType == AnimationType.ZOOM)
             this._workspace.zoomToOverview();
         else
             this._workspace.fadeToOverview();
-    },
+    }
 
     animateFromOverview(animationType) {
         if (animationType == AnimationType.ZOOM)
             this._workspace.zoomFromOverview();
         else
             this._workspace.fadeFromOverview();
-    },
+    }
 
     syncStacking(stackIndices) {
         this._workspace.syncStacking(stackIndices);
-    },
+    }
 
     startSwipeScroll() {
-    },
+    }
+
     endSwipeScroll() {
-    },
-});
+    }
+};
 
 var DelegateFocusNavigator = new Lang.Class({
     Name: 'DelegateFocusNavigator',
@@ -419,10 +412,8 @@ var DelegateFocusNavigator = new Lang.Class({
     },
 });
 
-var WorkspacesDisplay = new Lang.Class({
-    Name: 'WorkspacesDisplay',
-
-    _init() {
+var WorkspacesDisplay = class {
+    constructor() {
         this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
         this.actor._delegate = this;
         this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
@@ -486,18 +477,18 @@ var WorkspacesDisplay = new Lang.Class({
         this._keyPressEventId = 0;
 
         this._fullGeometry = null;
-    },
+    }
 
     _onPan(action) {
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this._scrollAdjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
         return false;
-    },
+    }
 
     navigateFocus(from, direction) {
         return this._getPrimaryView().actor.navigate_focus(from, direction, false);
-    },
+    }
 
     show(fadeOnPrimary) {
         this._updateWorkspacesViews();
@@ -518,7 +509,7 @@ var WorkspacesDisplay = new Lang.Class({
 
         if (this._keyPressEventId == 0)
             this._keyPressEventId = global.stage.connect('key-press-event', this._onKeyPressEvent.bind(this));
-    },
+    }
 
     animateFromOverview(fadeOnPrimary) {
         for (let i = 0; i < this._workspacesViews.length; i++) {
@@ -529,7 +520,7 @@ var WorkspacesDisplay = new Lang.Class({
                 animationType = AnimationType.ZOOM;
             this._workspacesViews[i].animateFromOverview(animationType);
         }
-    },
+    }
 
     hide() {
         if (this._restackedNotifyId > 0){
@@ -547,7 +538,7 @@ var WorkspacesDisplay = new Lang.Class({
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
         this._workspacesViews = [];
-    },
+    }
 
     _workspacesOnlyOnPrimaryChanged() {
         this._workspacesOnlyOnPrimary = this._settings.get_boolean('workspaces-only-on-primary');
@@ -556,7 +547,7 @@ var WorkspacesDisplay = new Lang.Class({
             return;
 
         this._updateWorkspacesViews();
-    },
+    }
 
     _updateWorkspacesViews() {
         for (let i = 0; i < this._workspacesViews.length; i++)
@@ -585,7 +576,7 @@ var WorkspacesDisplay = new Lang.Class({
 
         this._updateWorkspacesFullGeometry();
         this._updateWorkspacesActualGeometry();
-    },
+    }
 
     _scrollValueChanged() {
         for (let i = 0; i < this._workspacesViews.length; i++) {
@@ -600,23 +591,23 @@ var WorkspacesDisplay = new Lang.Class({
             // values map directly
             adjustment.value = this._scrollAdjustment.value;
         }
-    },
+    }
 
     _getMonitorIndexForEvent(event) {
         let [x, y] = event.get_coords();
         let rect = new Meta.Rectangle({ x: x, y: y, width: 1, height: 1 });
         return global.display.get_monitor_index_for_rect(rect);
-    },
+    }
 
     _getPrimaryView() {
         if (!this._workspacesViews.length)
             return null;
         return this._workspacesViews[this._primaryIndex];
-    },
+    }
 
     activeWorkspaceHasMaximizedWindows() {
         return this._getPrimaryView().getActiveWorkspace().hasMaximizedWindows();
-    },
+    }
 
     _parentSet(actor, oldParent) {
         if (oldParent && this._notifyOpacityId)
@@ -640,7 +631,7 @@ var WorkspacesDisplay = new Lang.Class({
                 primaryView.actor.visible = opacity != 0;
             });
         });
-    },
+    }
 
     // This geometry should always be the fullest geometry
     // the workspaces switcher can ever be allocated, as if
@@ -648,7 +639,7 @@ var WorkspacesDisplay = new Lang.Class({
     setWorkspacesFullGeometry(geom) {
         this._fullGeometry = geom;
         this._updateWorkspacesFullGeometry();
-    },
+    }
 
     _updateWorkspacesFullGeometry() {
         if (!this._workspacesViews.length)
@@ -659,7 +650,7 @@ var WorkspacesDisplay = new Lang.Class({
             let geometry = (i == this._primaryIndex) ? this._fullGeometry : monitors[i];
             this._workspacesViews[i].setFullGeometry(geometry);
         }
-    },
+    }
 
     _updateWorkspacesActualGeometry() {
         if (!this._workspacesViews.length)
@@ -676,12 +667,12 @@ var WorkspacesDisplay = new Lang.Class({
             let geometry = (i == this._primaryIndex) ? primaryGeometry : monitors[i];
             this._workspacesViews[i].setActualGeometry(geometry);
         }
-    },
+    }
 
     _onRestacked(overview, stackIndices) {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].syncStacking(stackIndices);
-    },
+    }
 
     _onScrollEvent(actor, event) {
         if (!this.actor.mapped)
@@ -706,7 +697,7 @@ var WorkspacesDisplay = new Lang.Class({
         }
         Main.wm.actionMoveWorkspace(ws);
         return Clutter.EVENT_STOP;
-    },
+    }
 
     _onKeyPressEvent(actor, event) {
         if (!this.actor.mapped)
@@ -727,5 +718,5 @@ var WorkspacesDisplay = new Lang.Class({
         Main.wm.actionMoveWorkspace(ws);
         return Clutter.EVENT_STOP;
     }
-});
+};
 Signals.addSignalMethods(WorkspacesDisplay.prototype);

@@ -4,7 +4,6 @@ const Clutter = imports.gi.Clutter;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
@@ -31,10 +30,8 @@ var State = {
     FADED_OUT: 4
 };
 
-var ModalDialog = new Lang.Class({
-    Name: 'ModalDialog',
-
-    _init(params) {
+var ModalDialog = class {
+    constructor(params) {
         params = Params.parse(params, { shellReactive: false,
                                         styleClass: null,
                                         actionMode: Shell.ActionMode.SYSTEM_MODAL,
@@ -87,30 +84,30 @@ var ModalDialog = new Lang.Class({
         this._initialKeyFocus = null;
         this._initialKeyFocusDestroyId = 0;
         this._savedKeyFocus = null;
-    },
+    }
 
     destroy() {
         this._group.destroy();
-    },
+    }
 
     clearButtons() {
         this.dialogLayout.clearButtons();
-    },
+    }
 
     setButtons(buttons) {
         this.clearButtons();
 
         for (let buttonInfo of buttons)
             this.addButton(buttonInfo);
-    },
+    }
 
     addButton(buttonInfo) {
         return this.dialogLayout.addButton(buttonInfo);
-    },
+    }
 
     _onGroupDestroy() {
         this.emit('destroy');
-    },
+    }
 
     _fadeOpen(onPrimary) {
         if (onPrimary)
@@ -134,7 +131,7 @@ var ModalDialog = new Lang.Class({
                                this.emit('opened');
                            }
                          });
-    },
+    }
 
     setInitialKeyFocus(actor) {
         if (this._initialKeyFocusDestroyId)
@@ -146,7 +143,7 @@ var ModalDialog = new Lang.Class({
             this._initialKeyFocus = null;
             this._initialKeyFocusDestroyId = 0;
         });
-    },
+    }
 
     open(timestamp, onPrimary) {
         if (this.state == State.OPENED || this.state == State.OPENING)
@@ -157,7 +154,7 @@ var ModalDialog = new Lang.Class({
 
         this._fadeOpen(onPrimary);
         return true;
-    },
+    }
 
     _closeComplete() {
         this.state = State.CLOSED;
@@ -166,7 +163,7 @@ var ModalDialog = new Lang.Class({
 
         if (this._destroyOnClose)
             this.destroy();
-    },
+    }
 
     close(timestamp) {
         if (this.state == State.CLOSED || this.state == State.CLOSING)
@@ -185,7 +182,7 @@ var ModalDialog = new Lang.Class({
                              })
         else
             this._closeComplete();
-    },
+    }
 
     // Drop modal status without closing the dialog; this makes the
     // dialog insensitive as well, so it needs to be followed shortly
@@ -205,7 +202,7 @@ var ModalDialog = new Lang.Class({
 
         if (!this._shellReactive)
             this._eventBlocker.raise_top();
-    },
+    }
 
     pushModal(timestamp) {
         if (this._hasModal)
@@ -229,7 +226,7 @@ var ModalDialog = new Lang.Class({
         if (!this._shellReactive)
             this._eventBlocker.lower_bottom();
         return true;
-    },
+    }
 
     // This method is like close, but fades the dialog out much slower,
     // and leaves the lightbox in place. Once in the faded out state,
@@ -259,5 +256,5 @@ var ModalDialog = new Lang.Class({
                            }
                          });
     }
-});
+};
 Signals.addSignalMethods(ModalDialog.prototype);

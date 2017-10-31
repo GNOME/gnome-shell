@@ -1,16 +1,13 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
 const Signals = imports.signals;
 const Clutter = imports.gi.Clutter;
 const Params = imports.misc.params;
 
 var DEFAULT_LIMIT = 512;
 
-var HistoryManager = new Lang.Class({
-    Name: 'HistoryManager',
-
-    _init(params) {
+var HistoryManager = class {
+    constructor(params) {
         params = Params.parse(params, { gsettingsKey: null,
                                         limit: DEFAULT_LIMIT,
                                         entry: null });
@@ -34,12 +31,12 @@ var HistoryManager = new Lang.Class({
             this._entry.connect('key-press-event', 
                                 this._onEntryKeyPress.bind(this));
         }
-    },
+    }
 
     _historyChanged() {
         this._history = global.settings.get_strv(this._key);
         this._historyIndex = this._history.length;
-    },
+    }
 
     _setPrevItem(text) {
         if (this._historyIndex <= 0)
@@ -50,7 +47,7 @@ var HistoryManager = new Lang.Class({
         this._historyIndex--;
         this._indexChanged();
         return true;
-    },
+    }
 
     _setNextItem(text) {
         if (this._historyIndex >= this._history.length)
@@ -61,7 +58,7 @@ var HistoryManager = new Lang.Class({
         this._historyIndex++;
         this._indexChanged();
         return true;
-    },
+    }
 
     lastItem() {
         if (this._historyIndex != this._history.length) {
@@ -70,7 +67,7 @@ var HistoryManager = new Lang.Class({
         }
 
         return this._historyIndex ? this._history[this._historyIndex -1] : null;
-    },
+    }
 
     addItem(input) {
         if (this._history.length == 0 ||
@@ -81,7 +78,7 @@ var HistoryManager = new Lang.Class({
             this._save();
         }
         this._historyIndex = this._history.length;
-    },
+    }
 
     _onEntryKeyPress(entry, event) {
         let symbol = event.get_key_symbol();
@@ -91,7 +88,7 @@ var HistoryManager = new Lang.Class({
             return this._setNextItem(entry.get_text());
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _indexChanged() {
         let current = this._history[this._historyIndex] || '';
@@ -99,7 +96,7 @@ var HistoryManager = new Lang.Class({
 
         if (this._entry)
             this._entry.set_text(current);
-    },
+    }
 
     _save() {
         if (this._history.length > this._limit)
@@ -108,5 +105,5 @@ var HistoryManager = new Lang.Class({
         if (this._key)
             global.settings.set_strv(this._key, this._history);
     }
-});
+};
 Signals.addSignalMethods(HistoryManager.prototype);

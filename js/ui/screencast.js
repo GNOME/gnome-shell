@@ -2,7 +2,6 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
@@ -12,10 +11,8 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const ScreencastIface = loadInterfaceXML('org.gnome.Shell.Screencast');
 
-var ScreencastService = new Lang.Class({
-    Name: 'ScreencastService',
-
-    _init() {
+var ScreencastService = class {
+    constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreencastIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Screencast');
 
@@ -26,11 +23,11 @@ var ScreencastService = new Lang.Class({
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-    },
+    }
 
     get isRecording() {
         return this._recorders.size > 0;
-    },
+    }
 
     _ensureRecorderForSender(sender) {
         let recorder = this._recorders.get(sender);
@@ -44,7 +41,7 @@ var ScreencastService = new Lang.Class({
             this.emit('updated');
         }
         return recorder;
-    },
+    }
 
     _sessionUpdated() {
         if (Main.sessionMode.allowScreencast)
@@ -52,11 +49,11 @@ var ScreencastService = new Lang.Class({
 
         for (let sender of this._recorders.keys())
             this._stopRecordingForSender(sender);
-    },
+    }
 
     _onNameVanished(connection, name) {
         this._stopRecordingForSender(name);
-    },
+    }
 
     _stopRecordingForSender(sender) {
         let recorder = this._recorders.get(sender);
@@ -69,7 +66,7 @@ var ScreencastService = new Lang.Class({
         this.emit('updated');
 
         return true;
-    },
+    }
 
     _applyOptionalParameters(recorder, options) {
         for (let option in options)
@@ -81,7 +78,7 @@ var ScreencastService = new Lang.Class({
             recorder.set_framerate(options['framerate']);
         if ('draw-cursor' in options)
             recorder.set_draw_cursor(options['draw-cursor']);
-    },
+    }
 
     ScreencastAsync(params, invocation) {
         let returnValue = [false, ''];
@@ -105,7 +102,7 @@ var ScreencastService = new Lang.Class({
         }
 
         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
-    },
+    }
 
     ScreencastAreaAsync(params, invocation) {
         let returnValue = [false, ''];
@@ -141,11 +138,11 @@ var ScreencastService = new Lang.Class({
         }
 
         invocation.return_value(GLib.Variant.new('(bs)', returnValue));
-    },
+    }
 
     StopScreencastAsync(params, invocation) {
         let success = this._stopRecordingForSender(invocation.get_sender());
         invocation.return_value(GLib.Variant.new('(b)', [success]));
     }
-});
+};
 Signals.addSignalMethods(ScreencastService.prototype);

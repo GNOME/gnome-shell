@@ -5,7 +5,6 @@ const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
-const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -20,10 +19,8 @@ const { loadInterfaceXML } = imports.misc.fileUtils;
 
 const ScreenshotIface = loadInterfaceXML('org.gnome.Shell.Screenshot');
 
-var ScreenshotService = new Lang.Class({
-    Name: 'ScreenshotService',
-
-    _init() {
+var ScreenshotService = class {
+    constructor() {
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenshotIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell/Screenshot');
 
@@ -32,7 +29,7 @@ var ScreenshotService = new Lang.Class({
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
         Gio.DBus.session.own_name('org.gnome.Shell.Screenshot', Gio.BusNameOwnerFlags.REPLACE, null, null);
-    },
+    }
 
     _createScreenshot(invocation, needsDisk=true) {
         let lockedDown = false;
@@ -53,11 +50,11 @@ var ScreenshotService = new Lang.Class({
         this._screenShooter.set(sender, shooter);
 
         return shooter;
-    },
+    }
 
     _onNameVanished(connection, name) {
         this._removeShooterForSender(name);
-    },
+    }
 
     _removeShooterForSender(sender) {
         let shooter = this._screenShooter.get(sender);
@@ -66,14 +63,14 @@ var ScreenshotService = new Lang.Class({
 
         Gio.bus_unwatch_name(shooter._watchNameId);
         this._screenShooter.delete(sender);
-    },
+    }
 
     _checkArea(x, y, width, height) {
         return x >= 0 && y >= 0 &&
                width > 0 && height > 0 &&
                x + width <= global.screen_width &&
                y + height <= global.screen_height;
-    },
+    }
 
     _onScreenshotComplete(result, area, filenameUsed, flash, invocation) {
         if (result) {
@@ -89,7 +86,7 @@ var ScreenshotService = new Lang.Class({
 
         let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
         invocation.return_value(retval);
-    },
+    }
 
     _scaleArea(x, y, width, height) {
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -98,7 +95,7 @@ var ScreenshotService = new Lang.Class({
         width *= scaleFactor;
         height *= scaleFactor;
         return [x, y, width, height];
-    },
+    }
 
     _unscaleArea(x, y, width, height) {
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
@@ -107,7 +104,7 @@ var ScreenshotService = new Lang.Class({
         width /= scaleFactor;
         height /= scaleFactor;
         return [x, y, width, height];
-    },
+    }
 
     ScreenshotAreaAsync(params, invocation) {
         let [x, y, width, height, flash, filename, callback] = params;
@@ -132,7 +129,7 @@ var ScreenshotService = new Lang.Class({
                     invocation.return_gerror (e);
                 }
             });
-    },
+    }
 
     ScreenshotWindowAsync(params, invocation) {
         let [include_frame, include_cursor, flash, filename] = params;
@@ -150,7 +147,7 @@ var ScreenshotService = new Lang.Class({
                     invocation.return_gerror (e);
                 }
             });
-    },
+    }
 
     ScreenshotAsync(params, invocation) {
         let [include_cursor, flash, filename] = params;
@@ -168,7 +165,7 @@ var ScreenshotService = new Lang.Class({
                     invocation.return_gerror (e);
                 }
             });
-    },
+    }
 
     SelectAreaAsync(params, invocation) {
         let selectArea = new SelectArea();
@@ -184,7 +181,7 @@ var ScreenshotService = new Lang.Class({
                     "Operation was cancelled");
             }
         });
-    },
+    }
 
     FlashAreaAsync(params, invocation) {
         let [x, y, width, height] = params;
@@ -198,7 +195,7 @@ var ScreenshotService = new Lang.Class({
         let flashspot = new Flashspot({ x : x, y : y, width: width, height: height});
         flashspot.fire();
         invocation.return_value(null);
-    },
+    }
 
     PickColorAsync(params, invocation) {
         let pickPixel = new PickPixel();
@@ -227,12 +224,10 @@ var ScreenshotService = new Lang.Class({
             }
         });
     }
-});
+};
 
-var SelectArea = new Lang.Class({
-    Name: 'SelectArea',
-
-    _init() {
+var SelectArea = class {
+    constructor() {
         this._startX = -1;
         this._startY = -1;
         this._lastX = 0;
@@ -265,7 +260,7 @@ var SelectArea = new Lang.Class({
                                                    border_width: 1,
                                                    border_color: this._border });
         this._group.add_actor(this._rubberband);
-    },
+    }
 
     show() {
         if (!this._grabHelper.grab({ actor: this._group,
@@ -275,7 +270,7 @@ var SelectArea = new Lang.Class({
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         Main.uiGroup.set_child_above_sibling(this._group, null);
         this._group.visible = true;
-    },
+    }
 
     _initRubberbandColors() {
         function colorFromRGBA(rgba) {
@@ -294,14 +289,14 @@ var SelectArea = new Lang.Class({
 
         this._background = colorFromRGBA(context.get_background_color(Gtk.StateFlags.NORMAL));
         this._border = colorFromRGBA(context.get_border_color(Gtk.StateFlags.NORMAL));
-    },
+    }
 
     _getGeometry() {
         return { x: Math.min(this._startX, this._lastX),
                  y: Math.min(this._startY, this._lastY),
                  width: Math.abs(this._startX - this._lastX) + 1,
                  height: Math.abs(this._startY - this._lastY) + 1 };
-    },
+    }
 
     _onMotionEvent(actor, event) {
         if (this._startX == -1 || this._startY == -1)
@@ -316,7 +311,7 @@ var SelectArea = new Lang.Class({
         this._rubberband.set_size(geometry.width, geometry.height);
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onButtonPress(actor, event) {
         [this._startX, this._startY] = event.get_coords();
@@ -325,7 +320,7 @@ var SelectArea = new Lang.Class({
         this._rubberband.set_position(this._startX, this._startY);
 
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onButtonRelease(actor, event) {
         this._result = this._getGeometry();
@@ -338,7 +333,7 @@ var SelectArea = new Lang.Class({
                            }
                          });
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onUngrab() {
         global.display.set_cursor(Meta.Cursor.DEFAULT);
@@ -349,13 +344,11 @@ var SelectArea = new Lang.Class({
             return GLib.SOURCE_REMOVE;
         });
     }
-});
+};
 Signals.addSignalMethods(SelectArea.prototype);
 
-var PickPixel = new Lang.Class({
-    Name: 'PickPixel',
-
-    _init() {
+var PickPixel = class {
+    constructor() {
         this._result = null;
 
         this._group = new St.Widget({ visible: false,
@@ -370,7 +363,7 @@ var PickPixel = new Lang.Class({
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this._group.add_constraint(constraint);
-    },
+    }
 
     show() {
         if (!this._grabHelper.grab({ actor: this._group,
@@ -380,13 +373,13 @@ var PickPixel = new Lang.Class({
         global.display.set_cursor(Meta.Cursor.CROSSHAIR);
         Main.uiGroup.set_child_above_sibling(this._group, null);
         this._group.visible = true;
-    },
+    }
 
     _onButtonRelease(actor, event) {
         this._result = event.get_coords();
         this._grabHelper.ungrab();
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
     _onUngrab() {
         global.display.set_cursor(Meta.Cursor.DEFAULT);
@@ -397,23 +390,20 @@ var PickPixel = new Lang.Class({
             return GLib.SOURCE_REMOVE;
         });
     }
-});
+};
 Signals.addSignalMethods(PickPixel.prototype);
 
 var FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
 
-var Flashspot = new Lang.Class({
-    Name: 'Flashspot',
-    Extends: Lightbox.Lightbox,
-
-    _init(area) {
-        this.parent(Main.uiGroup, { inhibitEvents: true,
-                                    width: area.width,
-                                    height: area.height });
+var Flashspot = class extends Lightbox.Lightbox {
+    constructor(area) {
+        super(Main.uiGroup, { inhibitEvents: true,
+                              width: area.width,
+                              height: area.height });
 
         this.actor.style_class = 'flashspot';
         this.actor.set_position(area.x, area.y);
-    },
+    }
 
     fire(doneCallback) {
         this.actor.show();
@@ -429,4 +419,4 @@ var Flashspot = new Lang.Class({
                            }
                          });
     }
-});
+};

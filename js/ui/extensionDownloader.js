@@ -1,7 +1,5 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Lang = imports.lang;
-
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
@@ -183,12 +181,10 @@ function checkForUpdates() {
     });
 }
 
-var InstallExtensionDialog = new Lang.Class({
-    Name: 'InstallExtensionDialog',
-    Extends: ModalDialog.ModalDialog,
-
-    _init(uuid, info, invocation) {
-        this.parent({ styleClass: 'extension-dialog' });
+var InstallExtensionDialog =
+class InstallExtensionDialog extends ModalDialog.ModalDialog {
+    constructor(uuid, info, invocation) {
+        super({ styleClass: 'extension-dialog' });
 
         this._uuid = uuid;
         this._info = info;
@@ -216,12 +212,12 @@ var InstallExtensionDialog = new Lang.Class({
         let label = new St.Label({ style_class: 'message-dialog-title headline',
                                    text: message });
         box.add(label);
-    },
+    }
 
     _onCancelButtonPressed(button, event) {
         this.close();
         this._invocation.return_value(GLib.Variant.new('(s)', ['cancelled']));
-    },
+    }
 
     _onInstallButtonPressed(button, event) {
         let params = { shell_version: Config.PACKAGE_VERSION };
@@ -264,7 +260,7 @@ var InstallExtensionDialog = new Lang.Class({
 
         this.close();
     }
-});
+};
 
 function init() {
     _httpSession = new Soup.SessionAsync({ ssl_use_system_ca_file: true });
