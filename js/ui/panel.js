@@ -797,6 +797,7 @@ var Panel = new Lang.Class({
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
 
         Main.overview.connect('showing', Lang.bind(this, function () {
             this.actor.add_style_pseudo_class('overview');
@@ -962,6 +963,16 @@ var Panel = new Lang.Class({
                                      stageX, stageY);
 
         return Clutter.EVENT_STOP;
+    },
+
+    _onKeyPress: function(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_Escape) {
+            global.screen.focus_default_window(event.get_time());
+            return Clutter.EVENT_STOP;
+        }
+
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _toggleMenu: function(indicator) {
