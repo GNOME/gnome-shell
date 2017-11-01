@@ -647,7 +647,7 @@ StScrollBar {
   border: 1px solid #215d9c; }
 
 .tile-preview-left.on-primary {
-  border-radius: 6px 6px 0 0; }
+  border-radius: 6px 0 0 0; }
 
 .tile-preview-right.on-primary {
   border-radius: 0 6px 0 0; }
