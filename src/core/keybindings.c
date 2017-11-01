@@ -350,7 +350,9 @@ add_keysym_keycodes_from_layout (int                           keysym,
 {
   xkb_level_index_t layout_level;
 
-  for (layout_level = 0; layout_level < layout->n_levels; layout_level++)
+  for (layout_level = 0;
+       layout_level < layout->n_levels && keycodes->len == 0;
+       layout_level++)
     {
       FindKeysymData search_data = (FindKeysymData) {
         .keycodes = keycodes,
