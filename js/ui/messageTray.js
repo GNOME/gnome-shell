@@ -701,7 +701,13 @@ var Source = new Lang.Class({
 
         this.notifications = [];
 
-        this.policy = this._createPolicy();
+        this._policy = null;
+    },
+
+    get policy() {
+        if (!this._policy)
+            this._policy = this._createPolicy();
+        return this._policy;
     },
 
     get count() {
