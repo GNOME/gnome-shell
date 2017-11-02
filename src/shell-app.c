@@ -283,6 +283,15 @@ shell_app_get_name (ShellApp *app)
 }
 
 const char *
+shell_app_get_generic_name (ShellApp *app)
+{
+  if (app->info)
+    return g_desktop_app_info_get_generic_name (G_DESKTOP_APP_INFO (app->info));
+  else
+    return NULL;
+}
+
+const char *
 shell_app_get_description (ShellApp *app)
 {
   if (app->info)
