@@ -1,3 +1,16 @@
+3.26.2
+======
+* Dump javascript stack on aborts, traps and segfaults [Marco; #789237]
+* Misc. bug fixes [Jonas, Florian, Alessandro; #788607, #789018, #789231,
+  #788542, #789103]
+
+Contributors:
+  Jonas Ådahl, Alessandro Bono, Florian Müllner, Marco Trevisan (Treviño)
+
+Translations:
+  Xavi Ivars [ca@valencia], Fabio Tomat [fur], Matej Urbančič [sl],
+  Hannie Dumoleyn [nl]
+
 3.26.1
 ======
 * Don't detach launched apps to not break pkexec and friends [Florian; #763531]
