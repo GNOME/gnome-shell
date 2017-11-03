@@ -1045,6 +1045,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
       GVariantBuilder crtcs, modes, clones, properties;
       GBytes *edid;
       char *edid_file;
+      MetaCrtc *crtc;
       int crtc_index;
 
       g_variant_builder_init (&crtcs, G_VARIANT_TYPE ("au"));
@@ -1138,8 +1139,8 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                                                 output->tile_info.tile_h));
         }
 
-      crtc_index = output->crtc ? g_list_index (combined_crtcs, output->crtc)
-                                : -1;
+      crtc = meta_output_get_assigned_crtc (output);
+      crtc_index = crtc ? g_list_index (combined_crtcs, crtc) : -1;
       g_variant_builder_add (&output_builder, "(uxiausauaua{sv})",
                              i, /* ID */
                              (gint64)output->winsys_id,
@@ -2907,11 +2908,7 @@ meta_monitor_manager_get_monitor_for_connector (MetaMonitorManager *manager,
 
       if (meta_monitor_is_active (monitor) &&
           g_str_equal (connector, meta_monitor_get_connector (monitor)))
-        {
-          MetaOutput *main_output = meta_monitor_get_main_output (monitor);
-
-          return main_output->crtc->logical_monitor->number;
-        }
+        return meta_monitor_get_logical_monitor (monitor)->number;
     }
 
   return -1;

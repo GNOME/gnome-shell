@@ -449,22 +449,24 @@ check_current_monitor_mode (MetaMonitor         *monitor,
   CheckMonitorModeData *data = user_data;
   MetaMonitorManager *monitor_manager = data->monitor_manager;
   MetaOutput *output;
+  MetaCrtc *crtc;
 
   output = output_from_winsys_id (monitor_manager,
                                   data->expect_crtc_mode_iter->output);
+  crtc = meta_output_get_assigned_crtc (output);
 
   if (data->expect_crtc_mode_iter->crtc_mode == -1)
     {
-      g_assert_null (output->crtc);
+      g_assert_null (crtc);
     }
   else
     {
       MetaLogicalMonitor *logical_monitor;
 
-      g_assert_nonnull (output->crtc);
-      g_assert (monitor_crtc_mode->crtc_mode == output->crtc->current_mode);
+      g_assert_nonnull (crtc);
+      g_assert (monitor_crtc_mode->crtc_mode == crtc->current_mode);
 
-      logical_monitor = output->crtc->logical_monitor;
+      logical_monitor = crtc->logical_monitor;
       g_assert_nonnull (logical_monitor);
     }
 
@@ -553,6 +555,7 @@ check_logical_monitor (MonitorTestCase               *test_case,
       for (l_output = outputs; l_output; l_output = l_output->next)
         {
           MetaOutput *output = l_output->data;
+          MetaCrtc *crtc;
 
           if (output->is_primary)
             {
@@ -560,8 +563,8 @@ check_logical_monitor (MonitorTestCase               *test_case,
               primary_output = output;
             }
 
-          g_assert (!output->crtc ||
-                    output->crtc->logical_monitor == logical_monitor);
+          crtc = meta_output_get_assigned_crtc (output);
+          g_assert (!crtc || crtc->logical_monitor == logical_monitor);
           g_assert_cmpint (logical_monitor->is_presentation,
                            ==,
                            output->is_presentation);
@@ -983,7 +986,8 @@ create_monitor_test_setup (MonitorTestCase *test_case,
 
       output = g_object_new (META_TYPE_OUTPUT, NULL);
 
-      output->crtc = crtc;
+      if (crtc)
+        meta_output_assign_crtc (output, crtc);
       output->winsys_id = i;
       output->name = (is_laptop_panel ? g_strdup_printf ("eDP-%d",
                                                   ++n_laptop_panels)

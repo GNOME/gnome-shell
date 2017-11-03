@@ -209,7 +209,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
               output = ((MetaOutput**)crtc_info->outputs->pdata)[j];
 
               output->is_dirty = TRUE;
-              output->crtc = crtc;
+              meta_output_assign_crtc (output, crtc);
             }
         }
     }
@@ -255,7 +255,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
           continue;
         }
 
-      output->crtc = NULL;
+      meta_output_unassign_crtc (output);
       output->is_primary = FALSE;
     }
 }

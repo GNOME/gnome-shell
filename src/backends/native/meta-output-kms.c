@@ -64,11 +64,13 @@ typedef struct _MetaOutputKms
 void
 meta_output_kms_set_underscan (MetaOutput *output)
 {
-  if (!output->crtc)
+  MetaCrtc *crtc;
+
+  crtc = meta_output_get_assigned_crtc (output);
+  if (!crtc)
     return;
 
-  meta_crtc_kms_set_underscan (output->crtc,
-                               output->is_underscanning);
+  meta_crtc_kms_set_underscan (crtc, output->is_underscanning);
 }
 
 void
@@ -600,14 +602,14 @@ meta_create_kms_output (MetaGpuKms        *gpu_kms,
 
           if (crtc->crtc_id == output_kms->current_encoder->crtc_id)
             {
-              output->crtc = crtc;
+              meta_output_assign_crtc (output, crtc);
               break;
             }
         }
     }
   else
     {
-      output->crtc = NULL;
+      meta_output_unassign_crtc (output);
     }
 
   if (old_output)

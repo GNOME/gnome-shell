@@ -304,6 +304,7 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
     data->in_cursor_renderer_native;
   MetaCursorRendererNativePrivate *priv =
     meta_cursor_renderer_native_get_instance_private (cursor_renderer_native);
+  MetaCrtc *crtc;
   MetaMonitorTransform transform;
   ClutterRect scaled_crtc_rect;
   float scale;
@@ -343,6 +344,8 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
     },
   };
 
+  crtc = meta_output_get_assigned_crtc (monitor_crtc_mode->output);
+
   if (priv->has_hw_cursor &&
       clutter_rect_intersection (&scaled_crtc_rect,
                                  &data->in_local_cursor_rect,
@@ -353,7 +356,7 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
       float crtc_cursor_x, crtc_cursor_y;
 
       set_crtc_cursor (data->in_cursor_renderer_native,
-                       monitor_crtc_mode->output->crtc,
+                       crtc,
                        data->in_cursor_sprite);
 
       gpu_kms = META_GPU_KMS (meta_monitor_get_gpu (monitor));
@@ -363,7 +366,7 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
       crtc_cursor_y = (data->in_local_cursor_rect.origin.y -
                        scaled_crtc_rect.origin.y) * scale;
       drmModeMoveCursor (kms_fd,
-                         monitor_crtc_mode->output->crtc->crtc_id,
+                         crtc->crtc_id,
                          roundf (crtc_cursor_x),
                          roundf (crtc_cursor_y));
 
@@ -371,8 +374,7 @@ update_monitor_crtc_cursor (MetaMonitor         *monitor,
     }
   else
     {
-      set_crtc_cursor (data->in_cursor_renderer_native,
-                       monitor_crtc_mode->output->crtc, NULL);
+      set_crtc_cursor (data->in_cursor_renderer_native, crtc, NULL);
     }
 
   return TRUE;

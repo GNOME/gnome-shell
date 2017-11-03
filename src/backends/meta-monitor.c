@@ -204,10 +204,12 @@ gboolean
 meta_monitor_is_active (MetaMonitor *monitor)
 {
   MetaOutput *output;
+  MetaCrtc *crtc;
 
   output = meta_monitor_get_main_output (monitor);
+  crtc = meta_output_get_assigned_crtc (output);
 
-  return output->crtc && output->crtc->current_mode;
+  return crtc && crtc->current_mode;
 }
 
 gboolean
@@ -493,6 +495,7 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
   for (i = 0; i < output->n_modes; i++)
     {
       MetaCrtcMode *crtc_mode = output->modes[i];
+      MetaCrtc *crtc;
       MetaMonitorMode *mode;
       gboolean replace;
 
@@ -526,7 +529,9 @@ meta_monitor_normal_generate_modes (MetaMonitorNormal *monitor_normal)
 
       if (crtc_mode == output->preferred_mode)
         monitor_priv->preferred_mode = mode;
-      if (output->crtc && crtc_mode == output->crtc->current_mode)
+
+      crtc = meta_output_get_assigned_crtc (output);
+      if (crtc && crtc_mode == crtc->current_mode)
         monitor_priv->current_mode = mode;
     }
 }
@@ -568,13 +573,15 @@ meta_monitor_normal_derive_layout (MetaMonitor   *monitor,
                                    MetaRectangle *layout)
 {
   MetaOutput *output;
+  MetaCrtc *crtc;
 
   output = meta_monitor_get_main_output (monitor);
+  crtc = meta_output_get_assigned_crtc (output);
   *layout = (MetaRectangle) {
-    .x = output->crtc->rect.x,
-    .y = output->crtc->rect.y,
-    .width = output->crtc->rect.width,
-    .height = output->crtc->rect.height
+    .x = crtc->rect.x,
+    .y = crtc->rect.y,
+    .width = crtc->rect.width,
+    .height = crtc->rect.height
   };
 }
 
@@ -764,12 +771,13 @@ is_monitor_mode_assigned (MetaMonitor     *monitor,
     {
       MetaOutput *output = l->data;
       MetaMonitorCrtcMode *monitor_crtc_mode = &mode->crtc_modes[i];
+      MetaCrtc *crtc;
 
+      crtc = meta_output_get_assigned_crtc (output);
       if (monitor_crtc_mode->crtc_mode &&
-          (!output->crtc ||
-           output->crtc->current_mode != monitor_crtc_mode->crtc_mode))
+          (!crtc || crtc->current_mode != monitor_crtc_mode->crtc_mode))
         return FALSE;
-      else if (!monitor_crtc_mode->crtc_mode && output->crtc)
+      else if (!monitor_crtc_mode->crtc_mode && crtc)
         return FALSE;
     }
 
@@ -1217,14 +1225,16 @@ meta_monitor_tiled_derive_layout (MetaMonitor   *monitor,
   for (l = monitor_priv->outputs; l; l = l->next)
     {
       MetaOutput *output = l->data;
+      MetaCrtc *crtc;
 
-      if (!output->crtc)
+      crtc = meta_output_get_assigned_crtc (output);
+      if (!crtc)
         continue;
 
-      min_x = MIN (output->crtc->rect.x, min_x);
-      min_y = MIN (output->crtc->rect.y, min_y);
-      max_x = MAX (output->crtc->rect.x + output->crtc->rect.width, max_x);
-      max_y = MAX (output->crtc->rect.y + output->crtc->rect.height, max_y);
+      min_x = MIN (crtc->rect.x, min_x);
+      min_y = MIN (crtc->rect.y, min_y);
+      max_x = MAX (crtc->rect.x + crtc->rect.width, max_x);
+      max_y = MAX (crtc->rect.y + crtc->rect.height, max_y);
     }
 
   *layout = (MetaRectangle) {
@@ -1318,10 +1328,14 @@ meta_monitor_get_spec (MetaMonitor *monitor)
 MetaLogicalMonitor *
 meta_monitor_get_logical_monitor (MetaMonitor *monitor)
 {
-  MetaOutput *output = meta_monitor_get_main_output (monitor);
+  MetaOutput *output;
+  MetaCrtc *crtc;
 
-  if (output->crtc)
-    return output->crtc->logical_monitor;
+  output = meta_monitor_get_main_output (monitor);
+  crtc = meta_output_get_assigned_crtc (output);
+
+  if (crtc)
+    return crtc->logical_monitor;
   else
     return NULL;
 }

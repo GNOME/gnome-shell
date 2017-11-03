@@ -225,8 +225,10 @@ is_crtc_assignment_changed (MetaCrtc      *crtc,
       for (j = 0; j < crtc_info->outputs->len; j++)
         {
           MetaOutput *output = ((MetaOutput**) crtc_info->outputs->pdata)[j];
+          MetaCrtc *assigned_crtc;
 
-          if (output->crtc != crtc)
+          assigned_crtc = meta_output_get_assigned_crtc (output);
+          if (assigned_crtc != crtc)
             return TRUE;
         }
 
@@ -243,6 +245,7 @@ is_output_assignment_changed (MetaOutput      *output,
                               MetaOutputInfo **output_infos,
                               unsigned int     n_output_infos)
 {
+  MetaCrtc *assigned_crtc;
   gboolean output_is_found = FALSE;
   unsigned int i;
 
@@ -265,8 +268,10 @@ is_output_assignment_changed (MetaOutput      *output,
       output_is_found = TRUE;
     }
 
+  assigned_crtc = meta_output_get_assigned_crtc (output);
+
   if (!output_is_found)
-    return output->crtc != NULL;
+    return assigned_crtc != NULL;
 
   for (i = 0; i < n_crtc_infos; i++)
     {
@@ -279,7 +284,7 @@ is_output_assignment_changed (MetaOutput      *output,
             ((MetaOutput**) crtc_info->outputs->pdata)[j];
 
           if (crtc_info_output == output &&
-              crtc_info->crtc == output->crtc)
+              crtc_info->crtc == assigned_crtc)
             return FALSE;
         }
     }
@@ -455,7 +460,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
               output = ((MetaOutput**)crtc_info->outputs->pdata)[j];
 
               output->is_dirty = TRUE;
-              output->crtc = crtc;
+              meta_output_assign_crtc (output, crtc);
 
               output_ids[j] = output->winsys_id;
             }
@@ -521,7 +526,7 @@ apply_crtc_assignments (MetaMonitorManager *manager,
           continue;
         }
 
-      output->crtc = NULL;
+      meta_output_unassign_crtc (output);
       output->is_primary = FALSE;
     }
 

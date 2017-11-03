@@ -21,12 +21,45 @@
 
 #include "backends/meta-output.h"
 
-G_DEFINE_TYPE (MetaOutput, meta_output, G_TYPE_OBJECT)
+typedef struct _MetaOutputPrivate
+{
+  /* The CRTC driving this output, NULL if the output is not enabled */
+  MetaCrtc *crtc;
+} MetaOutputPrivate;
+
+G_DEFINE_TYPE_WITH_PRIVATE (MetaOutput, meta_output, G_TYPE_OBJECT)
 
 MetaGpu *
 meta_output_get_gpu (MetaOutput *output)
 {
   return output->gpu;
+}
+
+void
+meta_output_assign_crtc (MetaOutput *output,
+                         MetaCrtc   *crtc)
+{
+  MetaOutputPrivate *priv = meta_output_get_instance_private (output);
+
+  g_assert (crtc);
+
+  priv->crtc = crtc;
+}
+
+void
+meta_output_unassign_crtc (MetaOutput *output)
+{
+  MetaOutputPrivate *priv = meta_output_get_instance_private (output);
+
+  priv->crtc = NULL;
+}
+
+MetaCrtc *
+meta_output_get_assigned_crtc (MetaOutput *output)
+{
+  MetaOutputPrivate *priv = meta_output_get_instance_private (output);
+
+  return priv->crtc;
 }
 
 static void

@@ -110,8 +110,10 @@ get_crtc_drm_connectors (MetaGpu       *gpu,
   for (l = meta_gpu_get_outputs (gpu); l; l = l->next)
     {
       MetaOutput *output = l->data;
+      MetaCrtc *assigned_crtc;
 
-      if (output->crtc == crtc)
+      assigned_crtc = meta_output_get_assigned_crtc (output);
+      if (assigned_crtc == crtc)
         g_array_append_val (connectors_array, output->winsys_id);
     }
 
@@ -191,8 +193,10 @@ meta_gpu_kms_is_crtc_active (MetaGpuKms *gpu_kms,
   for (l = meta_gpu_get_outputs (gpu); l; l = l->next)
     {
       MetaOutput *output = l->data;
+      MetaCrtc *assigned_crtc;
 
-      if (output->crtc == crtc)
+      assigned_crtc = meta_output_get_assigned_crtc (output);
+      if (assigned_crtc == crtc)
         {
           connected_crtc_found = TRUE;
           break;

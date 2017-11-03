@@ -113,7 +113,7 @@ draw_crtc (MetaMonitor         *monitor,
   CoglTexture *texture = data->texture;
   MetaLogicalMonitor *logical_monitor = data->logical_monitor;
   MetaOutput *output = monitor_crtc_mode->output;
-  MetaCrtc *crtc = output->crtc;
+  MetaCrtc *crtc;
   MetaRendererView *renderer_view = META_RENDERER_VIEW (data->view);
   MetaMonitorTransform view_transform;
   MetaMonitorTransform layout_transform = META_MONITOR_TRANSFORM_NORMAL;
@@ -128,6 +128,8 @@ draw_crtc (MetaMonitor         *monitor,
 
   texture_width = cogl_texture_get_width (texture);
   texture_height = cogl_texture_get_height (texture);
+
+  crtc = meta_output_get_assigned_crtc (output);
 
   clutter_stage_view_get_layout (data->view, &view_layout);
   sample_x = crtc->rect.x - view_layout.x;

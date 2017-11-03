@@ -64,9 +64,6 @@ struct _MetaOutput
 
   MetaGpu *gpu;
 
-  /* The CRTC driving this output, NULL if the output is not enabled */
-  MetaCrtc *crtc;
-
   /* The low-level ID of this output, used to apply back configuration */
   glong winsys_id;
   char *name;
@@ -121,5 +118,12 @@ struct _MetaOutput
 G_DECLARE_FINAL_TYPE (MetaOutput, meta_output, META, OUTPUT, GObject)
 
 MetaGpu * meta_output_get_gpu (MetaOutput *output);
+
+void meta_output_assign_crtc (MetaOutput *output,
+                              MetaCrtc   *crtc);
+
+void meta_output_unassign_crtc (MetaOutput *output);
+
+MetaCrtc * meta_output_get_assigned_crtc (MetaOutput *output);
 
 #endif /* META_OUTPUT_H */
