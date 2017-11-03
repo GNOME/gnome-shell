@@ -43,7 +43,7 @@ meta_output_assign_crtc (MetaOutput *output,
 
   g_assert (crtc);
 
-  priv->crtc = crtc;
+  g_set_object (&priv->crtc, crtc);
 }
 
 void
@@ -51,7 +51,7 @@ meta_output_unassign_crtc (MetaOutput *output)
 {
   MetaOutputPrivate *priv = meta_output_get_instance_private (output);
 
-  priv->crtc = NULL;
+  g_clear_object (&priv->crtc);
 }
 
 MetaCrtc *
@@ -60,6 +60,17 @@ meta_output_get_assigned_crtc (MetaOutput *output)
   MetaOutputPrivate *priv = meta_output_get_instance_private (output);
 
   return priv->crtc;
+}
+
+static void
+meta_output_dispose (GObject *object)
+{
+  MetaOutput *output = META_OUTPUT (object);
+  MetaOutputPrivate *priv = meta_output_get_instance_private (output);
+
+  g_clear_object (&priv->crtc);
+
+  G_OBJECT_CLASS (meta_output_parent_class)->dispose (object);
 }
 
 static void
@@ -91,5 +102,6 @@ meta_output_class_init (MetaOutputClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
+  object_class->dispose = meta_output_dispose;
   object_class->finalize = meta_output_finalize;
 }
