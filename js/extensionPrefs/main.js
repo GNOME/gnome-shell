@@ -19,6 +19,14 @@ const GnomeShellIface = '<node> \
 <method name="ListExtensions"> \
     <arg type="a{sa{sv}}" direction="out" name="extensions" /> \
 </method> \
+<method name="EnableExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
+<method name="DisableExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
 <signal name="ExtensionStatusChanged"> \
     <arg type="s" name="uuid"/> \
     <arg type="i" name="state"/> \
@@ -241,6 +249,8 @@ var Application = new Lang.Class({
     _extensionFound: function(extension) {
         let row = new ExtensionRow(extension.uuid);
 
+        row.AttachShellProxy(this._shellProxy);
+
         row.prefsButton.visible = this._extensionAvailable(row.uuid);
         row.prefsButton.connect('clicked', Lang.bind(this,
             function() {
@@ -382,33 +392,26 @@ var ExtensionRow = new Lang.Class({
         let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
 
         return !this._settings.get_boolean('disable-user-extensions') &&
-               !(checkVersion && ExtensionUtils.isOutOfDate(extension));
+               !(checkVersion && extension.state === ExtensionUtils.ExtensionState.OUT_OF_DATE);
     },
 
     _isEnabled: function() {
-        let extensions = this._settings.get_strv('enabled-extensions');
-        return extensions.indexOf(this.uuid) != -1;
+        return ExtensionUtils.extensions[this.uuid].state === ExtensionUtils.ExtensionState.ENABLED;
     },
 
     _enable: function() {
-        let extensions = this._settings.get_strv('enabled-extensions');
-        if (extensions.indexOf(this.uuid) != -1)
+        if (ExtensionUtils.extensions[this.uuid].state === ExtensionUtils.ExtensionState.ENABLED)
             return;
 
-        extensions.push(this.uuid);
-        this._settings.set_strv('enabled-extensions', extensions);
+        this._shellProxy.EnableExtensionSync(this.uuid);
     },
 
     _disable: function() {
-        let extensions = this._settings.get_strv('enabled-extensions');
-        let pos = extensions.indexOf(this.uuid);
-        if (pos == -1)
-            return;
-        do {
-            extensions.splice(pos, 1);
-            pos = extensions.indexOf(this.uuid);
-        } while (pos != -1);
-        this._settings.set_strv('enabled-extensions', extensions);
+        this._shellProxy.DisableExtensionSync(this.uuid);
+    },
+
+    AttachShellProxy: function(proxy) {
+        this._shellProxy = proxy;
     }
 });
 
