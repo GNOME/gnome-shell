@@ -331,6 +331,17 @@ popup-separator-menu-item {
     &:clicked { @extend %endless-button-clicked; }
 }
 
+// Calendar Menu
+
+#calendarArea {
+    .message-list {
+        .message-list-clear-button.button {
+            box-shadow: none;
+            border: 1px solid #454f52;
+        }
+    }
+}
+
 // Hot Corner
 
 #panel {
