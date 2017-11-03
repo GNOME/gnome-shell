@@ -135,6 +135,8 @@ void meta_logical_monitor_config_free (MetaLogicalMonitorConfig *logical_monitor
 
 void meta_monitor_config_free (MetaMonitorConfig *monitor_config);
 
+MetaMonitorsConfigKey * meta_create_monitors_config_key_for_current_state (MetaMonitorManager *monitor_manager);
+
 gboolean meta_logical_monitor_configs_have_monitor (GList           *logical_monitor_configs,
                                                     MetaMonitorSpec *monitor_spec);
 

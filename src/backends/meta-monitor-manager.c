@@ -1590,35 +1590,19 @@ static gboolean
 meta_monitor_manager_is_config_complete (MetaMonitorManager *manager,
                                          MetaMonitorsConfig *config)
 {
-  GList *l;
-  unsigned int configured_monitor_count = 0;
-  unsigned int expected_monitor_count = 0;
+  MetaMonitorsConfigKey *current_state_key;
+  gboolean is_config_complete;
 
-  for (l = config->logical_monitor_configs; l; l = l->next)
-    {
-      MetaLogicalMonitorConfig *logical_monitor_config = l->data;
-      GList *k;
+  current_state_key =
+    meta_create_monitors_config_key_for_current_state (manager);
+  if (!current_state_key)
+    return FALSE;
 
-      for (k = logical_monitor_config->monitor_configs; k; k = k->next)
-        configured_monitor_count++;
-    }
+  is_config_complete = meta_monitors_config_key_equal (current_state_key,
+                                                       config->key);
+  meta_monitors_config_key_free (current_state_key);
 
-  for (l = manager->monitors; l; l = l->next)
-    {
-      MetaMonitor *monitor = l->data;
-
-      if (meta_monitor_is_laptop_panel (monitor))
-        {
-          if (!meta_monitor_manager_is_lid_closed (manager))
-            expected_monitor_count++;
-        }
-      else
-        {
-          expected_monitor_count++;
-        }
-    }
-
-  if (configured_monitor_count != expected_monitor_count)
+  if (!is_config_complete)
     return FALSE;
 
   return meta_monitor_manager_is_config_applicable (manager, config, NULL);

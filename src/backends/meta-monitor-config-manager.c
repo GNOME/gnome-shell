@@ -327,8 +327,8 @@ meta_monitor_config_manager_assign (MetaMonitorManager *manager,
   return TRUE;
 }
 
-static MetaMonitorsConfigKey *
-create_key_for_current_state (MetaMonitorManager *monitor_manager)
+MetaMonitorsConfigKey *
+meta_create_monitors_config_key_for_current_state (MetaMonitorManager *monitor_manager)
 {
   MetaMonitorsConfigKey *config_key;
   GList *l;
@@ -370,7 +370,8 @@ meta_monitor_config_manager_get_stored (MetaMonitorConfigManager *config_manager
   MetaMonitorsConfig *config;
   GError *error = NULL;
 
-  config_key = create_key_for_current_state (monitor_manager);
+  config_key =
+    meta_create_monitors_config_key_for_current_state (monitor_manager);
   if (!config_key)
     return NULL;
 
