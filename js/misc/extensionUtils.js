@@ -138,15 +138,20 @@ function createExtensionObject(uuid, dir, type) {
         throw new Error('uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + uuid + '"');
     }
 
+    return registerExtensionObject(meta.uuid, meta, type, dir.get_path(),
+                                   dir.get_child('prefs.js').query_exists(null));
+}
+
+function registerExtensionObject(uuid, meta, type, path, hasPrefs) {
     let extension = {};
 
     extension.metadata = meta;
     extension.uuid = meta.uuid;
     extension.type = type;
-    extension.dir = dir;
-    extension.path = dir.get_path();
+    extension.dir = Gio.File.new_for_path(path);
+    extension.path = path;
     extension.error = '';
-    extension.hasPrefs = dir.get_child('prefs.js').query_exists(null);
+    extension.hasPrefs = hasPrefs;
 
     extensions[uuid] = extension;
 

@@ -16,6 +16,9 @@ const ExtensionUtils = imports.misc.extensionUtils;
 
 const GnomeShellIface = '<node> \
 <interface name="org.gnome.Shell.Extensions"> \
+<method name="ListExtensions"> \
+    <arg type="a{sa{sv}}" direction="out" name="extensions" /> \
+</method> \
 <signal name="ExtensionStatusChanged"> \
     <arg type="s" name="uuid"/> \
     <arg type="i" name="state"/> \
@@ -194,13 +197,48 @@ var Application = new Lang.Class({
     },
 
     _scanExtensions: function() {
-        let finder = new ExtensionUtils.ExtensionFinder();
-        finder.connect('extension-found', Lang.bind(this, this._extensionFound));
-        finder.scanExtensions();
+        let extensionsProx;
+        [extensionsProx] = this._shellProxy.ListExtensionsSync();
+        for (let uuid in extensionsProx) {
+            let type, path, hasPrefs, state, error;
+
+            let meta = { 'uuid': uuid };
+
+            for (let prop in extensionsProx[uuid]) {
+                switch (prop) {
+                    case 'uuid':
+                        uuid
+                        break;
+                    case 'type':
+                        type = extensionsProx[uuid].type.unpack()
+                        break;
+                    case 'path':
+                        path = extensionsProx[uuid].path.unpack()
+                        break;
+                    case 'hasPrefs':
+                        hasPrefs = extensionsProx[uuid].hasPrefs.unpack()
+                        break;
+                    case 'state':
+                        state = extensionsProx[uuid].state.unpack()
+                        break;
+                    case 'error':
+                        error = extensionsProx[uuid].error.unpack()
+                        break;
+                    default:
+                        meta[prop] = extensionsProx[uuid][prop].unpack();
+                }
+            }
+            let extension = ExtensionUtils.registerExtensionObject(uuid, meta, type, path, hasPrefs);
+            // update live state
+            extension.state = state;
+            extension.error = error;
+
+            this._extensionFound(extension);
+        }
         this._extensionsLoaded();
     },
 
-    _extensionFound: function(finder, extension) {
+    _extensionFound: function(extension) {
         let row = new ExtensionRow(extension.uuid);
 
         row.prefsButton.visible = this._extensionAvailable(row.uuid);
