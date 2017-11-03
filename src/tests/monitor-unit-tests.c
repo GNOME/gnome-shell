@@ -2637,6 +2637,174 @@ meta_test_monitor_lid_closed_no_external (void)
 }
 
 static void
+meta_test_monitor_lid_closed_with_hotplugged_external (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.0
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .is_laptop_panel = TRUE
+        },
+        {
+          .crtc = -1,
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 1 },
+          .n_possible_crtcs = 1,
+          .width_mm = 220,
+          .height_mm = 124
+        }
+      },
+      .n_outputs = 1, /* Second is hotplugged later */
+      .crtcs = {
+        {
+          .current_mode = -1
+        },
+        {
+          .current_mode = -1
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .refresh_rate = 60.0,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125
+        },
+        {
+          .outputs = { 1 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .refresh_rate = 60.0,
+              .crtc_modes = {
+                {
+                  .output = 1,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 220,
+          .height_mm = 124
+        }
+      },
+      .n_monitors = 1, /* Second is hotplugged later */
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+        },
+        {
+          .monitors = { 1 },
+          .n_monitors = 1,
+          .layout = { .x = 1024, .y = 0, .width = 1024, .height = 768 },
+          .scale = 1
+        }
+      },
+      .n_logical_monitors = 1, /* Second is hotplugged later */
+      .primary_logical_monitor = 0,
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = -1,
+        }
+      },
+      .n_crtcs = 2,
+      .n_tiled_monitors = 0,
+      .screen_width = 1024,
+      .screen_height = 768
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerTest *monitor_manager_test =
+    META_MONITOR_MANAGER_TEST (monitor_manager);
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, FALSE);
+
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* External monitor connected */
+
+  test_case.setup.n_outputs = 2;
+  test_case.expect.n_outputs = 2;
+  test_case.expect.n_monitors = 2;
+  test_case.expect.n_logical_monitors = 2;
+  test_case.expect.crtcs[1].current_mode = 0;
+  test_case.expect.screen_width = 1024 * 2;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* Lid closed */
+
+  test_case.expect.monitors[0].current_mode = -1;
+  test_case.expect.logical_monitors[0].monitors[0] = 1,
+  test_case.expect.n_logical_monitors = 1;
+  test_case.expect.crtcs[0].current_mode = -1;
+  test_case.expect.screen_width = 1024;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_no_outputs (void)
 {
   MonitorTestCase test_case = {
@@ -5441,6 +5609,8 @@ init_monitor_tests (void)
                     meta_test_monitor_lid_opened_config);
   add_monitor_test ("/backends/monitor/lid-closed-no-external",
                     meta_test_monitor_lid_closed_no_external);
+  add_monitor_test ("/backends/monitor/lid-closed-with-hotplugged-external",
+                    meta_test_monitor_lid_closed_with_hotplugged_external);
   add_monitor_test ("/backends/monitor/no-outputs",
                     meta_test_monitor_no_outputs);
   add_monitor_test ("/backends/monitor/underscanning-config",
