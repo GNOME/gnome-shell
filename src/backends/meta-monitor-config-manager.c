@@ -1238,6 +1238,10 @@ meta_monitors_config_new (MetaMonitorManager           *monitor_manager,
       MetaMonitor *monitor = l->data;
       MetaMonitorSpec *monitor_spec;
 
+      if (meta_monitor_manager_is_lid_closed (monitor_manager) &&
+          meta_monitor_is_laptop_panel (monitor))
+        continue;
+
       monitor_spec = meta_monitor_get_spec (monitor);
       if (meta_logical_monitor_configs_have_monitor (logical_monitor_configs,
                                                      monitor_spec))
