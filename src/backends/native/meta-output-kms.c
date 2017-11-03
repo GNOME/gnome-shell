@@ -438,9 +438,10 @@ compare_modes (const void *one,
   return g_strcmp0 (b->name, a->name);
 }
 
-static void
-init_output_modes (MetaOutput *output,
-                   MetaGpuKms *gpu_kms)
+static gboolean
+init_output_modes (MetaOutput  *output,
+                   MetaGpuKms  *gpu_kms,
+                   GError     **error)
 {
   MetaOutputKms *output_kms = output->driver_private;
   unsigned int i;
@@ -460,15 +461,35 @@ init_output_modes (MetaOutput *output,
         output->preferred_mode = output->modes[i];
     }
 
+  /* FIXME: MSC feature bit? */
+  /* Presume that if the output supports scaling, then we have
+   * a panel fitter capable of adjusting any mode to suit.
+   */
+  if (output_kms->has_scaling)
+    add_common_modes (output, gpu_kms);
+
+  if (!output->modes)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "No modes available");
+      return FALSE;
+    }
+
+  qsort (output->modes, output->n_modes,
+         sizeof (MetaCrtcMode *), compare_modes);
+
   if (!output->preferred_mode)
     output->preferred_mode = output->modes[0];
+
+  return TRUE;
 }
 
 MetaOutput *
-meta_create_kms_output (MetaGpuKms       *gpu_kms,
-                        drmModeConnector *connector,
-                        MetaKmsResources *resources,
-                        MetaOutput       *old_output)
+meta_create_kms_output (MetaGpuKms        *gpu_kms,
+                        drmModeConnector  *connector,
+                        MetaKmsResources  *resources,
+                        MetaOutput        *old_output,
+                        GError           **error)
 {
   MetaGpu *gpu = META_GPU (gpu_kms);
   MetaOutput *output;
@@ -527,17 +548,11 @@ meta_create_kms_output (MetaGpuKms       *gpu_kms,
       output->height_mm = connector->mmHeight;
     }
 
-  init_output_modes (output, gpu_kms);
-
-  /* FIXME: MSC feature bit? */
-  /* Presume that if the output supports scaling, then we have
-   * a panel fitter capable of adjusting any mode to suit.
-   */
-  if (output_kms->has_scaling)
-    add_common_modes (output, gpu_kms);
-
-  qsort (output->modes, output->n_modes,
-         sizeof (MetaCrtcMode *), compare_modes);
+  if (!init_output_modes (output, gpu_kms, error))
+    {
+      g_object_unref (output);
+      return NULL;
+    }
 
   output_kms->n_encoders = connector->count_encoders;
   output_kms->encoders = g_new0 (drmModeEncoderPtr, output_kms->n_encoders);

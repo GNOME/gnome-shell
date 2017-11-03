@@ -35,9 +35,10 @@ gboolean meta_output_kms_can_clone (MetaOutput *output,
 
 GBytes * meta_output_kms_read_edid (MetaOutput *output);
 
-MetaOutput * meta_create_kms_output (MetaGpuKms       *gpu_kms,
-                                     drmModeConnector *connector,
-                                     MetaKmsResources *resources,
-                                     MetaOutput       *old_output);
+MetaOutput * meta_create_kms_output (MetaGpuKms        *gpu_kms,
+                                     drmModeConnector  *connector,
+                                     MetaKmsResources  *resources,
+                                     MetaOutput        *old_output,
+                                     GError           **error);
 
 #endif /* META_OUTPUT_KMS_H */

@@ -675,11 +675,21 @@ init_outputs (MetaGpuKms       *gpu_kms,
         {
           MetaOutput *output;
           MetaOutput *old_output;
+          GError *error = NULL;
 
           old_output = find_output_by_id (old_outputs, connector->connector_id);
           output = meta_create_kms_output (gpu_kms, connector, resources,
-                                           old_output);
-          outputs = g_list_prepend (outputs, output);
+                                           old_output,
+                                           &error);
+          if (!output)
+            {
+              g_warning ("Failed to create KMS output: %s", error->message);
+              g_error_free (error);
+            }
+          else
+            {
+              outputs = g_list_prepend (outputs, output);
+            }
         }
     }
 
