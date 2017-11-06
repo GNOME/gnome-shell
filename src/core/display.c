@@ -1138,6 +1138,7 @@ meta_display_close (MetaDisplay *display,
    */
   g_hash_table_destroy (display->xids);
   g_hash_table_destroy (display->wayland_windows);
+  g_hash_table_destroy (display->stamps);
 
   if (display->leader_window != None)
     XDestroyWindow (display->xdisplay, display->leader_window);

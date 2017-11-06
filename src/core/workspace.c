@@ -99,6 +99,7 @@ workspace_logical_monitor_data_free (MetaWorkspaceLogicalMonitorData *data)
 {
   g_clear_pointer (&data->logical_monitor_region,
                    meta_rectangle_free_list_and_elements);
+  g_free (data);
 }
 
 static MetaWorkspaceLogicalMonitorData *
