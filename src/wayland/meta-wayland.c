@@ -277,9 +277,13 @@ set_gnome_env (const char *name,
 			       -1, NULL, &error);
   if (error)
     {
-      if (g_strcmp0 (g_dbus_error_get_remote_error (error), "org.gnome.SessionManager.NotInInitialization") != 0)
+      char *remote_error;
+
+      remote_error = g_dbus_error_get_remote_error (error);
+      if (g_strcmp0 (remote_error, "org.gnome.SessionManager.NotInInitialization") != 0)
         meta_warning ("Failed to set environment variable %s for gnome-session: %s\n", name, error->message);
 
+      g_free (remote_error);
       g_error_free (error);
     }
 }
