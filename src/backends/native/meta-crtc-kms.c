@@ -304,6 +304,8 @@ find_crtc_properties (MetaCrtc   *crtc,
 
       drmModeFreeProperty (prop);
     }
+
+  drmModeFreeObjectProperties (props);
 }
 
 static void

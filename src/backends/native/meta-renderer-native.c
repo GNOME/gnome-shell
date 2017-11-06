@@ -243,6 +243,7 @@ meta_renderer_native_gpu_data_free (MetaRendererNativeGpuData *renderer_gpu_data
   if (renderer_gpu_data->egl_display != EGL_NO_DISPLAY)
     meta_egl_terminate (egl, renderer_gpu_data->egl_display, NULL);
 
+  g_clear_pointer (&renderer_gpu_data->gbm.device, gbm_device_destroy);
   g_free (renderer_gpu_data);
 }
 

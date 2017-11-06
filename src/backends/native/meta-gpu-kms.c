@@ -141,6 +141,7 @@ meta_gpu_kms_apply_crtc_mode (MetaGpuKms *gpu_kms,
                       mode) != 0)
     {
       g_warning ("Failed to set CRTC mode %s: %m", crtc->current_mode->name);
+      g_free (connectors);
       return FALSE;
     }
 
@@ -224,6 +225,7 @@ meta_gpu_kms_flip_crtc (MetaGpuKms *gpu_kms,
 
   get_crtc_drm_connectors (gpu, crtc, &connectors, &n_connectors);
   g_assert (n_connectors > 0);
+  g_free (connectors);
 
   if (!gpu_kms->page_flips_not_supported)
     {
