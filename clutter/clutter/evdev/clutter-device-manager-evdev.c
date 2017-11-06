@@ -2185,7 +2185,7 @@ _clutter_device_manager_evdev_acquire_device_id (ClutterDeviceManagerEvdev *mana
 
   first = g_list_first (priv->free_device_ids);
   next_id = GPOINTER_TO_INT (first->data);
-  priv->free_device_ids = g_list_remove_link (priv->free_device_ids, first);
+  priv->free_device_ids = g_list_delete_link (priv->free_device_ids, first);
 
   return next_id;
 }

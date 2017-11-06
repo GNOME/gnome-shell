@@ -307,6 +307,7 @@ _clutter_input_device_evdev_new (ClutterDeviceManager *manager,
   libinput_device_ref (libinput_device);
   g_free (vendor);
   g_free (product);
+  g_free (node_path);
 
   if (libinput_device_get_size (libinput_device, &width, &height) == 0)
     device->device_aspect_ratio = width / height;
