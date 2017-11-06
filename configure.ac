@@ -240,8 +240,7 @@ else
 fi
 
 AC_ARG_ENABLE(remote-desktop,
-  AS_HELP_STRING([--enable-remote-desktop], [enable support for remote desktop and screen cast]),
-  enable_remote_desktop=yes,
+  AS_HELP_STRING([--enable-remote-desktop], [enable support for remote desktop and screen cast]),,
   enable_remote_desktop=no
 )
 AS_IF([test "$enable_remote_desktop" = "yes"], [
@@ -283,8 +282,7 @@ AS_IF([test "$have_native_backend" = "yes"], [
 AM_CONDITIONAL([HAVE_NATIVE_BACKEND],[test "$have_native_backend" = "yes"])
 
 AC_ARG_ENABLE(egl-device,
-  AS_HELP_STRING([--enable-egl-device], [enable support for EGLDevice on top of KMS]),
-  enable_egl_device=yes,
+  AS_HELP_STRING([--enable-egl-device], [enable support for EGLDevice on top of KMS]),,
   enable_egl_device=no
 )
 AS_IF([test "$enable_egl_device" = "yes"], [
