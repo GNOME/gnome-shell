@@ -163,7 +163,7 @@ set_screen (MetaBackground *self,
                                             self);
     }
 
-  priv->screen = screen;
+  g_set_object (&priv->screen, screen);
 
   if (priv->screen != NULL)
     {
