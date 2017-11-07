@@ -32,6 +32,7 @@ js/ui/endSessionDialog.js
 js/ui/extensionDownloader.js
 js/ui/extensionSystem.js
 js/ui/inhibitShortcutsDialog.js
+js/ui/kbdA11yDialog.js
 js/ui/keyboard.js
 js/ui/lookingGlass.js
 js/ui/main.js
