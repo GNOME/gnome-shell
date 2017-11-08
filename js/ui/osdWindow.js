@@ -1,10 +1,12 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const St = imports.gi.St;
 
 const Lang = imports.lang;
+const BarWithOverdrive = imports.ui.barWithOverdrive;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
@@ -17,17 +19,19 @@ var LEVEL_ANIMATION_TIME = 0.1;
 
 var LevelBar = new Lang.Class({
     Name: 'LevelBar',
+    Extends: BarWithOverdrive.BarWithOverdrive,
 
     _init: function() {
         this._level = 0;
+        this._max_level = 100;
 
-        this.actor = new St.Bin({ style_class: 'level',
-                                  x_align: St.Align.START,
-                                  y_fill: true });
-        this._bar = new St.Widget({ style_class: 'level-bar' });
+        params = {
+            'style-class': 'level',
+            'accessible-role': Atk.Role.LEVEL_BAR,
+        }
+        this.parent(this._level, params);
 
-        this.actor.set_child(this._bar);
-
+        this.actor.accessible_name = _("Volume");
         this.actor.connect('notify::width', () => { this.level = this.level; });
     },
 
@@ -36,12 +40,19 @@ var LevelBar = new Lang.Class({
     },
 
     set level(value) {
-        this._level = Math.max(0, Math.min(value, 100));
+        this._level = Math.max(0, Math.min(value, this._max_level));
 
-        let alloc = this.actor.get_allocation_box();
-        let newWidth = Math.round((alloc.x2 - alloc.x1) * this._level / 100);
-        if (newWidth != this._bar.width)
-            this._bar.width = newWidth;
+        this.setValue(this._level / 100);
+    },
+
+    get max_level() {
+        return this._max_level;
+    },
+
+    set max_level(value) {
+        this._max_level = Math.max(100, value);
+
+        this.setMaximumValue(this._max_level / 100);
     }
 });
 
@@ -127,6 +138,12 @@ var OsdWindow = new Lang.Class({
             this._label.text = label;
     },
 
+    setMaxLevel: function(maxLevel) {
+        if (!(maxLevel != undefined))
+            maxLevel = 100;
+        this._level.max_level = maxLevel;
+    },
+
     setLevel: function(level) {
         this._level.actor.visible = (level != undefined);
         if (level != undefined) {
@@ -188,6 +205,7 @@ var OsdWindow = new Lang.Class({
     _reset: function() {
         this.actor.hide();
         this.setLabel(null);
+        this.setMaxLevel(null);
         this.setLevel(null);
     },
 
@@ -233,24 +251,25 @@ var OsdWindowManager = new Lang.Class({
         this._osdWindows.length = Main.layoutManager.monitors.length;
     },
 
-    _showOsdWindow: function(monitorIndex, icon, label, level) {
+    _showOsdWindow: function(monitorIndex, icon, label, level, maxLevel) {
         this._osdWindows[monitorIndex].setIcon(icon);
         this._osdWindows[monitorIndex].setLabel(label);
+        this._osdWindows[monitorIndex].setMaxLevel(maxLevel);
         this._osdWindows[monitorIndex].setLevel(level);
         this._osdWindows[monitorIndex].show();
     },
 
-    show: function(monitorIndex, icon, label, level) {
+    show: function(monitorIndex, icon, label, level, maxLevel) {
         if (monitorIndex != -1) {
             for (let i = 0; i < this._osdWindows.length; i++) {
                 if (i == monitorIndex)
-                    this._showOsdWindow(i, icon, label, level);
+                    this._showOsdWindow(i, icon, label, level, maxLevel);
                 else
                     this._osdWindows[i].cancel();
             }
         } else {
             for (let i = 0; i < this._osdWindows.length; i++)
-                this._showOsdWindow(i, icon, label, level);
+                this._showOsdWindow(i, icon, label, level, maxLevel);
         }
     },
 
