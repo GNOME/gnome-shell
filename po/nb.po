@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.26.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-02-16 21:09+0000\n"
-"PO-Revision-Date: 2017-11-06 13:42+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-10-04 18:04+0000\n"
+"PO-Revision-Date: 2017-11-08 20:15+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -392,13 +392,40 @@ msgstr ""
 "Når denne er «true» vil mye vinduer alltid plasseres midt på aktivt område "
 "på skjermen."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Slå på eksperimentelle funksjoner"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
+msgstr ""
+
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Fjern vindu fra tabulatordialog"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Avbryt tabulatordialog"
+
+#: data/org.gnome.mutter.gschema.xml.in:155
+msgid "Switch monitor configurations"
+msgstr "Bytt skjermkonfigurasjon"
+
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr "Roterer mellom innebyggede skjermkonfigurasjoner"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -448,10 +475,14 @@ msgstr "Bytt til VT 11"
 msgid "Switch to VT 12"
 msgstr "Bytt til VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Slå på snarveier igjen"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1800
+#: src/backends/meta-input-settings.c:2167
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Modusbytte: (Gruppe %d)"
@@ -459,37 +490,37 @@ msgstr "Modusbytte: (Gruppe %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1822
+#: src/backends/meta-input-settings.c:2190
 msgid "Switch monitor"
 msgstr "Bytt skjerm"
 
-#: src/backends/meta-input-settings.c:1824
+#: src/backends/meta-input-settings.c:2192
 msgid "Show on-screen help"
 msgstr "Vis hjelp på skjermen"
 
-#: src/backends/meta-monitor-manager.c:675
+#: src/backends/meta-monitor-manager.c:894
 msgid "Built-in display"
 msgstr "Innebygget skjerm"
 
-#: src/backends/meta-monitor-manager.c:698
+#: src/backends/meta-monitor-manager.c:917
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: src/backends/meta-monitor-manager.c:700
+#: src/backends/meta-monitor-manager.c:919
 msgid "Unknown Display"
 msgstr "Ukjent skjerm"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:708
+#: src/backends/meta-monitor-manager.c:927
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:471
+#: src/compositor/compositor.c:476
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -498,32 +529,6 @@ msgstr "En annen compositing manager kjører skjerm %i på display «%s»."
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "Klokkehendelse"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "«%s» svarer ikke."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "Programmet svarer ikke."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge "
-"programmet til å avslutte helt."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_Tvungen nedstenging"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "_Vent"
 
 #: src/core/display.c:608
 #, c-format
@@ -566,6 +571,32 @@ msgstr "Kjør som en nøstet kompositør"
 msgid "Run as a full display server, rather than nested"
 msgstr "Kjør som en full skjermtjener, heller enn nøstet"
 
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "«%s» svarer ikke."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "Programmet svarer ikke."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge "
+"programmet til å avslutte helt."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_Tvungen nedstenging"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "_Vent"
+
 #: src/core/mutter.c:39
 #, c-format
 msgid ""
@@ -578,7 +609,8 @@ msgstr ""
 "mutter %s\n"
 "Opphavsrett © 2001-%d Havoc Pennington, Red Hat, Inc, og andre\n"
 "Dette er fri programvare; se i kildekoden for kopibetingelser.\n"
-"Det gis INGEN garanti; ikke en gang for SALGBARHET eller PASSENDE FOR ET BESTEMT FORMÅL.\n"
+"Det gis INGEN garanti; ikke en gang for SALGBARHET eller PASSENDE FOR ET "
+"BESTEMT FORMÅL.\n"
 
 #: src/core/mutter.c:53
 msgid "Print version"
@@ -593,7 +625,7 @@ msgstr "Mutter-tillegg som skal brukes"
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:581
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -602,7 +634,7 @@ msgstr ""
 "Skjerm «%s» har allerede en vindushåndterer; prøv å bruke flagget --replace "
 "for å erstatte aktiv vindushåndterer."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:666
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
@@ -620,7 +652,9 @@ msgstr "Modusbytte: Modus %d"
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
-msgstr "Disse vinduene støtter ikke «lagre aktiv konfigurasjon», og vil måtte startes på nytt manuelt neste gang du logger inn."
+msgstr ""
+"Disse vinduene støtter ikke «lagre aktiv konfigurasjon», og vil måtte "
+"startes på nytt manuelt neste gang du logger inn."
 
 #: src/x11/window-props.c:559
 #, c-format
