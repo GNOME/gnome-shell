@@ -1486,10 +1486,11 @@ _clutter_stage_do_pick_on_view (ClutterStage     *stage,
                 priv->viewport[1] * fb_scale - viewport_offset_y,
                 priv->viewport[2] * fb_scale,
                 priv->viewport[3] * fb_scale);
-  cogl_set_viewport (priv->viewport[0] * fb_scale - viewport_offset_x,
-                     priv->viewport[1] * fb_scale - viewport_offset_y,
-                     priv->viewport[2] * fb_scale,
-                     priv->viewport[3] * fb_scale);
+  cogl_framebuffer_set_viewport (fb,
+                                 priv->viewport[0] * fb_scale - viewport_offset_x,
+                                 priv->viewport[1] * fb_scale - viewport_offset_y,
+                                 priv->viewport[2] * fb_scale,
+                                 priv->viewport[3] * fb_scale);
 
   read_x = dirty_x * fb_scale;
   read_y = dirty_y * fb_scale;
@@ -3617,6 +3618,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage     *stage,
                                      ClutterStageView *view)
 {
   ClutterStagePrivate *priv = stage->priv;
+  CoglFramebuffer *fb = clutter_stage_view_get_framebuffer (view);
 
   if (clutter_stage_view_is_dirty_viewport (view))
     {
@@ -3637,10 +3639,11 @@ _clutter_stage_maybe_setup_viewport (ClutterStage     *stage,
 
       viewport_offset_x = view_layout.x * fb_scale;
       viewport_offset_y = view_layout.y * fb_scale;
-      cogl_set_viewport (priv->viewport[0] * fb_scale - viewport_offset_x,
-                         priv->viewport[1] * fb_scale - viewport_offset_y,
-                         priv->viewport[2] * fb_scale,
-                         priv->viewport[3] * fb_scale);
+      cogl_framebuffer_set_viewport (fb,
+                                     priv->viewport[0] * fb_scale - viewport_offset_x,
+                                     priv->viewport[1] * fb_scale - viewport_offset_y,
+                                     priv->viewport[2] * fb_scale,
+                                     priv->viewport[3] * fb_scale);
 
       perspective = priv->perspective;
 
@@ -3679,7 +3682,7 @@ _clutter_stage_maybe_setup_viewport (ClutterStage     *stage,
 
   if (clutter_stage_view_is_dirty_projection (view))
     {
-      cogl_set_projection_matrix (&priv->projection);
+      cogl_framebuffer_set_projection_matrix (fb, &priv->projection);
 
       clutter_stage_view_set_dirty_projection (view, FALSE);
     }
