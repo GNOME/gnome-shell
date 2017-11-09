@@ -5192,6 +5192,203 @@ meta_test_monitor_custom_oneoff (void)
 }
 
 static void
+meta_test_monitor_custom_lid_switch_config (void)
+{
+  MonitorTestCase test_case = {
+    .setup = {
+      .modes = {
+        {
+          .width = 1024,
+          .height = 768,
+          .refresh_rate = 60.000495910644531
+        }
+      },
+      .n_modes = 1,
+      .outputs = {
+        {
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 0 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+          .is_laptop_panel = TRUE
+        },
+        {
+          .modes = { 0 },
+          .n_modes = 1,
+          .preferred_mode = 0,
+          .possible_crtcs = { 1 },
+          .n_possible_crtcs = 1,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_outputs = 1, /* Second one hot plugged later */
+      .crtcs = {
+        {
+          .current_mode = 0,
+        },
+        {
+          .current_mode = 0
+        }
+      },
+      .n_crtcs = 2
+    },
+
+    .expect = {
+      .monitors = {
+        {
+          .outputs = { 0 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .refresh_rate = 60.000495910644531,
+              .crtc_modes = {
+                {
+                  .output = 0,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        },
+        {
+          .outputs = { 1 },
+          .n_outputs = 1,
+          .modes = {
+            {
+              .width = 1024,
+              .height = 768,
+              .refresh_rate = 60.000495910644531,
+              .crtc_modes = {
+                {
+                  .output = 1,
+                  .crtc_mode = 0
+                }
+              }
+            }
+          },
+          .n_modes = 1,
+          .current_mode = 0,
+          .width_mm = 222,
+          .height_mm = 125,
+        }
+      },
+      .n_monitors = 1, /* Second one hot plugged later */
+      .logical_monitors = {
+        {
+          .monitors = { 0 },
+          .n_monitors = 1,
+          .layout = { .x = 0, .y = 0, .width = 768, .height = 1024 },
+          .scale = 1,
+          .transform = META_MONITOR_TRANSFORM_270
+        },
+        {
+          .monitors = { 1 },
+          .n_monitors = 1,
+          .layout = { .x = 1024, .y = 0, .width = 768, .height = 1024 },
+          .scale = 1
+        }
+      },
+      .n_logical_monitors = 1, /* Second one hot plugged later */
+      .primary_logical_monitor = 0,
+      .n_outputs = 1,
+      .crtcs = {
+        {
+          .current_mode = 0,
+          .transform = META_MONITOR_TRANSFORM_270
+        },
+        {
+          .current_mode = -1,
+        }
+      },
+      .n_crtcs = 2,
+      .screen_width = 768,
+      .screen_height = 1024
+    }
+  };
+  MetaMonitorTestSetup *test_setup;
+  MetaBackend *backend = meta_get_backend ();
+  MetaMonitorManager *monitor_manager =
+    meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerTest *monitor_manager_test =
+    META_MONITOR_MANAGER_TEST (monitor_manager);
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  set_custom_monitor_config ("lid-switch.xml");
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* External monitor connected */
+
+  test_case.setup.n_outputs = 2;
+  test_case.expect.n_monitors = 2;
+  test_case.expect.n_outputs = 2;
+  test_case.expect.crtcs[0].transform = META_MONITOR_TRANSFORM_NORMAL;
+  test_case.expect.crtcs[1].current_mode = 0;
+  test_case.expect.crtcs[1].transform = META_MONITOR_TRANSFORM_270;
+  test_case.expect.logical_monitors[0].layout =
+    (MetaRectangle) { .width = 1024, .height = 768 };
+  test_case.expect.logical_monitors[0].transform = META_MONITOR_TRANSFORM_NORMAL;
+  test_case.expect.logical_monitors[1].transform = META_MONITOR_TRANSFORM_270;
+  test_case.expect.n_logical_monitors = 2;
+  test_case.expect.screen_width = 1024 + 768;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* Lid was closed */
+
+  test_case.expect.crtcs[0].current_mode = -1;
+  test_case.expect.crtcs[1].transform = META_MONITOR_TRANSFORM_90;
+  test_case.expect.monitors[0].current_mode = -1;
+  test_case.expect.logical_monitors[0].layout =
+    (MetaRectangle) { .width = 768, .height = 1024 };
+  test_case.expect.logical_monitors[0].monitors[0] = 1;
+  test_case.expect.logical_monitors[0].transform = META_MONITOR_TRANSFORM_90;
+  test_case.expect.n_logical_monitors = 1;
+  test_case.expect.screen_width = 768;
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* Lid was opened */
+
+  test_case.expect.crtcs[0].current_mode = 0;
+  test_case.expect.crtcs[0].transform = META_MONITOR_TRANSFORM_NORMAL;
+  test_case.expect.crtcs[1].current_mode = 0;
+  test_case.expect.crtcs[1].transform = META_MONITOR_TRANSFORM_270;
+  test_case.expect.monitors[0].current_mode = 0;
+  test_case.expect.logical_monitors[0].layout =
+    (MetaRectangle) { .width = 1024, .height = 768 };
+  test_case.expect.logical_monitors[0].monitors[0] = 0;
+  test_case.expect.logical_monitors[0].transform = META_MONITOR_TRANSFORM_NORMAL;
+  test_case.expect.logical_monitors[1].transform = META_MONITOR_TRANSFORM_270;
+  test_case.expect.n_logical_monitors = 2;
+  test_case.expect.screen_width = 1024 + 768;
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, FALSE);
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NONE);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+}
+
+static void
 meta_test_monitor_migrated_rotated (void)
 {
   MonitorTestCase test_case = {
@@ -5720,6 +5917,8 @@ init_monitor_tests (void)
                     meta_test_monitor_custom_interlaced_config);
   add_monitor_test ("/backends/monitor/custom/oneoff-config",
                     meta_test_monitor_custom_oneoff);
+  add_monitor_test ("/backends/monitor/custom/lid-switch-config",
+                    meta_test_monitor_custom_lid_switch_config);
 
   add_monitor_test ("/backends/monitor/migrated/rotated",
                     meta_test_monitor_migrated_rotated);
