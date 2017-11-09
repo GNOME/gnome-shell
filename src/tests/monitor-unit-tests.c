@@ -5265,6 +5265,7 @@ meta_test_monitor_migrated_rotated (void)
       .crtcs = {
         {
           .current_mode = 0,
+          .transform = META_MONITOR_TRANSFORM_270
         }
       },
       .n_crtcs = 1,
@@ -5549,6 +5550,7 @@ meta_test_monitor_migrated_wiggle (void)
       .crtcs = {
         {
           .current_mode = 0,
+          .transform = META_MONITOR_TRANSFORM_90
         }
       },
       .n_crtcs = 1,
@@ -5622,8 +5624,12 @@ test_case_setup (void       **fixture,
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
+  MetaMonitorManagerTest *monitor_manager_test =
+    META_MONITOR_MANAGER_TEST (monitor_manager);
   MetaMonitorConfigManager *config_manager = monitor_manager->config_manager;
 
+  meta_monitor_manager_test_set_handles_transforms (monitor_manager_test,
+                                                    TRUE);
   meta_monitor_config_manager_set_current (config_manager, NULL);
   meta_monitor_config_manager_clear_history (config_manager);
 }
