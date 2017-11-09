@@ -89,6 +89,8 @@ function loadRemoteSearchProviders(searchSettings, callback) {
             try {
                 let desktopId = keyfile.get_string(group, 'DesktopId');
                 appInfo = Gio.DesktopAppInfo.new(desktopId);
+                if (!appInfo.should_show())
+                    return;
             } catch (e) {
                 log('Ignoring search provider ' + path + ': missing DesktopId');
                 return;
