@@ -2768,6 +2768,13 @@ meta_test_monitor_lid_closed_with_hotplugged_external (void)
   MetaMonitorManagerTest *monitor_manager_test =
     META_MONITOR_MANAGER_TEST (monitor_manager);
 
+  /*
+   * The first part of this test emulate the following:
+   *  1) Start with the lid open
+   *  2) Connect external monitor
+   *  3) Close lid
+   */
+
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
   meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, FALSE);
@@ -2800,6 +2807,63 @@ meta_test_monitor_lid_closed_with_hotplugged_external (void)
   test_setup = create_monitor_test_setup (&test_case,
                                           MONITOR_TEST_FLAG_NO_STORED);
   meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /*
+   * The second part of this test emulate the following:
+   *  1) Open lid
+   *  2) Disconnect external monitor
+   *  3) Close lid
+   *  4) Open lid
+   */
+
+  /* Lid opened */
+
+  test_case.expect.monitors[0].current_mode = 0;
+  test_case.expect.logical_monitors[0].monitors[0] = 0,
+  test_case.expect.logical_monitors[1].monitors[0] = 1,
+  test_case.expect.n_logical_monitors = 2;
+  test_case.expect.crtcs[0].current_mode = 0;
+  test_case.expect.screen_width = 1024 * 2;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, FALSE);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* External monitor disconnected */
+
+  test_case.setup.n_outputs = 1;
+  test_case.expect.n_outputs = 1;
+  test_case.expect.n_monitors = 1;
+  test_case.expect.n_logical_monitors = 1;
+  test_case.expect.crtcs[1].current_mode = -1;
+  test_case.expect.screen_width = 1024;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* Lid closed */
+
+  test_case.expect.logical_monitors[0].monitors[0] = 0,
+  test_case.expect.n_logical_monitors = 1;
+  test_case.expect.screen_width = 1024;
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, TRUE);
+  emulate_hotplug (test_setup);
+  check_monitor_configuration (&test_case);
+
+  /* Lid opened */
+
+  test_setup = create_monitor_test_setup (&test_case,
+                                          MONITOR_TEST_FLAG_NO_STORED);
+  meta_monitor_manager_test_set_is_lid_closed (monitor_manager_test, FALSE);
   emulate_hotplug (test_setup);
   check_monitor_configuration (&test_case);
 }
