@@ -8,6 +8,7 @@ ChangeLog
 INSTALL
 aclocal.m4
 autom4te.cache
+data/.osk-layout-workbench
 data/org.gnome.Shell.desktop
 data/org.gnome.Shell.desktop.in
 data/gnome-shell-extension-prefs.desktop
