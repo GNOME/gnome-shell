@@ -384,8 +384,10 @@ var Indicator = new Lang.Class({
             return result;
 
         let gicon = new Gio.ThemedIcon({ name: this._volumeMenu.getIcon() });
-        let level = this._volumeMenu.getLevel();
-        Main.osdWindowManager.show(-1, gicon, null, level);
+        // the D-BUS API is triggering the OSD giving *level as int, mimick it.
+        let level = parseInt(this._volumeMenu.getLevel());
+        let max_level = parseInt(this._volumeMenu.getMaxLevel());
+        Main.osdWindowManager.show(-1, gicon, null, level, max_level);
         return result;
     }
 });
