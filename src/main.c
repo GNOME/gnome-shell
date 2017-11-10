@@ -168,11 +168,6 @@ shell_dbus_init (gboolean replace)
   /* ...and the org.freedesktop.Notifications service. */
                             "org.freedesktop.Notifications", FALSE,
                             NULL);
-  /* ...and the on-screen keyboard service */
-  shell_dbus_acquire_name (bus,
-                           G_BUS_NAME_OWNER_FLAGS_REPLACE,
-                           &request_name_result,
-                           "org.gnome.Caribou.Keyboard", FALSE);
   g_object_unref (bus);
   g_object_unref (session);
 }
