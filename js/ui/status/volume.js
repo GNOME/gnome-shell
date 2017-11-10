@@ -158,17 +158,24 @@ var StreamSlider = new Lang.Class({
         if (!this._stream)
             return null;
 
+        let icons = ["audio-volume-muted-symbolic",
+                     "audio-volume-low-symbolic",
+                     "audio-volume-medium-symbolic",
+                     "audio-volume-high-symbolic",
+                     "audio-volume-uptoeleven-symbolic"];
+
         let volume = this._stream.volume;
+        let n;
         if (this._stream.is_muted || volume <= 0) {
-            return 'audio-volume-muted-symbolic';
+            n = 0;
         } else {
-            let n = Math.floor(3 * volume / this._control.get_vol_max_norm()) + 1;
-            if (n < 2)
-                return 'audio-volume-low-symbolic';
-            if (n >= 3)
-                return 'audio-volume-high-symbolic';
-            return 'audio-volume-medium-symbolic';
+            n = Math.ceil(3 * volume / this._control.get_vol_max_norm());
+            if (n < 1)
+                n = 1;
+            else if (n > 3)
+                n = 4;
         }
+        return icons[n];
     },
 
     getMaxLevel: function () {
