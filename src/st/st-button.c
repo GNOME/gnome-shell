@@ -765,7 +765,13 @@ st_button_fake_release (StButton *button)
   g_return_if_fail (ST_IS_BUTTON (button));
 
   priv = st_button_get_instance_private (button);
-  if (priv->pressed)
+  if (priv->device && priv->press_sequence)
+    {
+      clutter_input_device_sequence_ungrab (priv->device,
+                                            priv->press_sequence);
+    }
+
+  if (priv->pressed || priv->press_sequence)
     st_button_release (button, priv->device,
                        priv->pressed, 0, NULL);
 
@@ -773,14 +779,6 @@ st_button_fake_release (StButton *button)
     {
       priv->grabbed = 0;
       clutter_ungrab_pointer ();
-    }
-
-  if (priv->device &&
-      priv->press_sequence)
-    {
-      clutter_input_device_sequence_ungrab (priv->device,
-                                            priv->press_sequence);
-      priv->press_sequence = NULL;
     }
 
   priv->device = NULL;
