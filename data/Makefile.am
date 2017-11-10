@@ -12,6 +12,11 @@ xml_DATA = \
         50-mutter-system.xml \
         50-mutter-windows.xml
 
+if HAVE_WAYLAND
+xml_DATA += \
+        50-mutter-wayland.xml
+endif
+
 gschema_in_files = \
 	org.gnome.mutter.gschema.xml.in	\
 	org.gnome.mutter.wayland.gschema.xml.in

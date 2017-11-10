@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.mutter.wayland.keybindings"
+                group="system"
+                name="System"
+                wm_name="Mutter"
+                package="mutter">
+
+	<KeyListEntry name="restore-shortcuts" description="Restore the keyboard shortcuts"/>
+
+</KeyListEntries>
