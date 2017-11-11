@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter 3.26.x\n"
+"Project-Id-Version: mutter 3.27.x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-10-04 18:04+0000\n"
-"PO-Revision-Date: 2017-11-08 20:15+0100\n"
+"POT-Creation-Date: 2017-11-10 18:31+0000\n"
+"PO-Revision-Date: 2017-11-11 18:19+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: nb\n"
@@ -167,7 +167,7 @@ msgstr "Flytt til arbeidsområdet over"
 msgid "Move to workspace below"
 msgstr "Flytt til arbeidsområdet under"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "System"
 
@@ -178,6 +178,10 @@ msgstr "Vis kommandolinje"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Vis oversikt over aktiviteter"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Gjenopprett tastatursnarveier"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -498,22 +502,22 @@ msgstr "Bytt skjerm"
 msgid "Show on-screen help"
 msgstr "Vis hjelp på skjermen"
 
-#: src/backends/meta-monitor-manager.c:894
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "Innebygget skjerm"
 
-#: src/backends/meta-monitor-manager.c:917
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: src/backends/meta-monitor-manager.c:919
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "Ukjent skjerm"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:927
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -625,7 +629,7 @@ msgstr "Mutter-tillegg som skal brukes"
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: src/core/screen.c:581
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -634,7 +638,7 @@ msgstr ""
 "Skjerm «%s» har allerede en vindushåndterer; prøv å bruke flagget --replace "
 "for å erstatte aktiv vindushåndterer."
 
-#: src/core/screen.c:666
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
