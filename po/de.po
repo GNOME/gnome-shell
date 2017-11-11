@@ -13,16 +13,16 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-29 16:09+0000\n"
-"PO-Revision-Date: 2017-08-30 17:07+0200\n"
-"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
+"POT-Creation-Date: 2017-11-10 18:18+0000\n"
+"PO-Revision-Date: 2017-11-11 17:57+0100\n"
+"Last-Translator: Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -176,7 +176,7 @@ msgstr "Auf Arbeitsfläche darüber verschieben"
 msgid "Move to workspace below"
 msgstr "Auf Arbeitsfläche darunter verschieben"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "System"
 
@@ -187,6 +187,10 @@ msgstr "Den »Befehl ausführen«-Dialog anzeigen"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Aktivitäten-Übersicht anzeigen"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Die Tastenkombinationen wiederherstellen"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -512,7 +516,7 @@ msgstr "Tastenkombinationen erneut aktivieren"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2167
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Moduswechsel (Gruppe %d)"
@@ -520,30 +524,30 @@ msgstr "Moduswechsel (Gruppe %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2190
 msgid "Switch monitor"
 msgstr "Bildschirm wechseln"
 
-#: src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2192
 msgid "Show on-screen help"
 msgstr "Bildschirmhilfe anzeigen"
 
-#: src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:908
 msgid "Built-in display"
 msgstr "Eingebaute Anzeige"
 
-#: src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:931
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:933
 msgid "Unknown Display"
 msgstr "Unbekannte Anzeige"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:941
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -660,7 +664,7 @@ msgstr "Zu benutzendes Mutter-Plugin"
 msgid "Workspace %d"
 msgstr "Arbeitsfläche %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -669,7 +673,7 @@ msgstr ""
 "Bildschirm »%s« hat bereits einen Fensterverwalter. Versuchen Sie die Option "
 "»--replace«, um den aktuellen Fensterverwalter zu ersetzen."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Bildschirm %d auf Anzeige »%s« ist ungültig\n"
