@@ -11,15 +11,15 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-09-04 14:39+0000\n"
-"PO-Revision-Date: 2017-09-05 00:14+0200\n"
+"POT-Creation-Date: 2017-11-10 18:18+0000\n"
+"PO-Revision-Date: 2017-11-14 00:43+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -173,7 +173,7 @@ msgstr "Flytta till arbetsyta ovanför"
 msgid "Move to workspace below"
 msgstr "Flytta till arbetsyta nedanför"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "System"
 
@@ -184,6 +184,10 @@ msgstr "Visa Kör kommando-dialogen"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Visa aktivitetsöversikt"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Återställ tangentbordsgenvägarna"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -500,7 +504,7 @@ msgstr "Återaktivera genvägar"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2167
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Lägesväxel (grupp %d)"
@@ -508,30 +512,30 @@ msgstr "Lägesväxel (grupp %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2190
 msgid "Switch monitor"
 msgstr "Växla skärm"
 
-#: src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2192
 msgid "Show on-screen help"
 msgstr "Visa hjälp på skärmen"
 
-#: src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:908
 msgid "Built-in display"
 msgstr "Inbyggd display"
 
-#: src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:931
 msgid "Unknown"
 msgstr "Okänd"
 
-#: src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:933
 msgid "Unknown Display"
 msgstr "Okänd display"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:941
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -643,7 +647,7 @@ msgstr "Mutter-insticksmodul att använda"
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -652,7 +656,7 @@ msgstr ""
 "Display ”%s” har redan en fönsterhanterare; försök med flaggan --replace för "
 "att ersätta den aktuella fönsterhanteraren."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Skärm %d på display ”%s” är ogiltig\n"
