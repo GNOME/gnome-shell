@@ -1573,6 +1573,13 @@ meta_monitor_manager_is_config_applicable (MetaMonitorManager *manager,
               return FALSE;
             }
 
+          if (meta_monitor_is_laptop_panel (monitor) &&
+              meta_monitor_manager_is_lid_closed (manager))
+            {
+              g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           "Refusing to activate a closed laptop panel");
+              return FALSE;
+            }
         }
     }
 
