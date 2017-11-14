@@ -47,6 +47,12 @@ typedef struct _MetaKmsSource
   MetaGpuKms *gpu_kms;
 } MetaKmsSource;
 
+typedef struct _MetaGpuKmsFlipClosureContainer
+{
+  GClosure *flip_closure;
+  MetaGpuKms *gpu_kms;
+} MetaGpuKmsFlipClosureContainer;
+
 struct _MetaGpuKms
 {
   MetaGpu parent;
@@ -199,11 +205,26 @@ meta_gpu_kms_is_crtc_active (MetaGpuKms *gpu_kms,
   return TRUE;
 }
 
-typedef struct _GpuClosureContainer
+MetaGpuKmsFlipClosureContainer *
+meta_gpu_kms_wrap_flip_closure (MetaGpuKms *gpu_kms,
+                                GClosure   *flip_closure)
 {
-  GClosure *flip_closure;
-  MetaGpuKms *gpu_kms;
-} GpuClosureContainer;
+  MetaGpuKmsFlipClosureContainer *closure_container;
+
+  closure_container = g_new0 (MetaGpuKmsFlipClosureContainer, 1);
+  *closure_container = (MetaGpuKmsFlipClosureContainer) {
+    .flip_closure = flip_closure,
+    .gpu_kms = gpu_kms
+  };
+
+  return closure_container;
+}
+
+void
+meta_gpu_kms_flip_closure_container_free (MetaGpuKmsFlipClosureContainer *closure_container)
+{
+  g_free (closure_container);
+}
 
 gboolean
 meta_gpu_kms_flip_crtc (MetaGpuKms *gpu_kms,
@@ -229,14 +250,11 @@ meta_gpu_kms_flip_crtc (MetaGpuKms *gpu_kms,
 
   if (!gpu_kms->page_flips_not_supported)
     {
-      GpuClosureContainer *closure_container;
+      MetaGpuKmsFlipClosureContainer *closure_container;
       int kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
-      closure_container = g_new0 (GpuClosureContainer, 1);
-      *closure_container = (GpuClosureContainer) {
-        .flip_closure = flip_closure,
-        .gpu_kms = gpu_kms
-      };
+      closure_container = meta_gpu_kms_wrap_flip_closure (gpu_kms,
+                                                          flip_closure);
 
       ret = drmModePageFlip (kms_fd,
                              crtc->crtc_id,
@@ -245,7 +263,7 @@ meta_gpu_kms_flip_crtc (MetaGpuKms *gpu_kms,
                              closure_container);
       if (ret != 0 && ret != -EACCES)
         {
-          g_free (closure_container);
+          meta_gpu_kms_flip_closure_container_free (closure_container);
           g_warning ("Failed to flip: %s", strerror (-ret));
           gpu_kms->page_flips_not_supported = TRUE;
         }
@@ -276,12 +294,12 @@ page_flip_handler (int           fd,
                    unsigned int  usec,
                    void         *user_data)
 {
-  GpuClosureContainer *closure_container = user_data;
+  MetaGpuKmsFlipClosureContainer *closure_container = user_data;
   GClosure *flip_closure = closure_container->flip_closure;
   MetaGpuKms *gpu_kms = closure_container->gpu_kms;
 
   invoke_flip_closure (flip_closure, gpu_kms);
-  g_free (closure_container);
+  meta_gpu_kms_flip_closure_container_free (closure_container);
 }
 
 gboolean
