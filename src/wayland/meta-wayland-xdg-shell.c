@@ -798,6 +798,12 @@ finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
   xdg_popup->setup.parent_surface = NULL;
   xdg_popup->setup.grab_seat = NULL;
 
+  if (!parent_surface->window)
+    {
+      zxdg_popup_v6_send_popup_done (xdg_popup->resource);
+      return;
+    }
+
   if (seat)
     {
       MetaWaylandSurface *top_popup;
