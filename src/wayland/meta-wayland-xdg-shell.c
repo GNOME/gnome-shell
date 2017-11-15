@@ -1553,6 +1553,14 @@ xdg_surface_constructor_get_popup (struct wl_client   *client,
       return;
     }
 
+  if (!META_IS_WAYLAND_XDG_SURFACE (parent_surface->role))
+    {
+      wl_resource_post_error (xdg_shell_resource,
+                              ZXDG_SHELL_V6_ERROR_INVALID_POPUP_PARENT,
+                              "Invalid popup parent role");
+      return;
+    }
+
   xdg_popup = META_WAYLAND_XDG_POPUP (surface->role);
   xdg_popup->resource = wl_resource_create (client,
                                             &zxdg_popup_v6_interface,
