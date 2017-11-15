@@ -50,6 +50,7 @@ enum
   GET_MAXIMUM_VALUE,
   GET_MINIMUM_VALUE,
   SET_CURRENT_VALUE,
+  GET_OVERDRIVE_VALUE,
   GET_MINIMUM_INCREMENT,
   LAST_SIGNAL
 };
@@ -112,6 +113,24 @@ st_generic_accessible_class_init (StGenericAccessibleClass *klass)
    */
   st_generic_accessible_signals[GET_MINIMUM_VALUE] =
     g_signal_new ("get-minimum-value",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_DOUBLE, 0);
+
+    /**
+   * StGenericAccessible::get-overdrive-value:
+   * @self: the #StGenericAccessible
+   *
+   * Emitted when atk_value_get_overdrive_value() is called on
+   * @self. Right now we only care about doubles, so the value is
+   * directly returned by the signal.
+   *
+   * Return value: overdrive value of the accessible.
+   */
+  st_generic_accessible_signals[GET_OVERDRIVE_VALUE] =
+    g_signal_new ("get-overdrive-value",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
@@ -196,6 +215,17 @@ st_generic_accessible_get_minimum_increment (AtkValue *obj,
 
   g_value_init (value, G_TYPE_DOUBLE);
   g_signal_emit (G_OBJECT (obj), st_generic_accessible_signals[GET_MINIMUM_INCREMENT], 0, &current_value);
+  g_value_set_double (value, current_value);
+}
+
+static void
+st_generic_accessible_get_overdrive_value (AtkValue *obj,
+                                           GValue   *value)
+{
+  gdouble current_value = 0;
+
+  g_value_init (value, G_TYPE_DOUBLE);
+  g_signal_emit (G_OBJECT (obj), st_generic_accessible_signals[GET_OVERDRIVE_VALUE], 0, &current_value);
   g_value_set_double (value, current_value);
 }
 
