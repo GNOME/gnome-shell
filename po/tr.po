@@ -7,17 +7,17 @@
 # İlker DAĞLI <ilker@ilkerdagli.info>, 2011.
 # Muhammed EKEN <gnome@m-eken.com>, 2011.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017.
-# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017.
+# Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-29 16:09+0000\n"
-"PO-Revision-Date: 2017-08-29 23:17+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2017-11-10 18:18+0000\n"
+"PO-Revision-Date: 2017-11-15 23:49+0300\n"
+"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -179,7 +179,7 @@ msgstr "Üstteki çalışma alanına taşı"
 msgid "Move to workspace below"
 msgstr "Alttaki çalışma alanına taşı"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "Sistem"
 
@@ -190,6 +190,10 @@ msgstr "Komut çalıştırma istemini göster"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Etkinlik genel görünümünü göster"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Klavye kısayollarını geri yükle"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -413,20 +417,6 @@ msgid "Enable experimental features"
 msgstr "Deneysel özellikleri etkinleştir"
 
 #: data/org.gnome.mutter.gschema.xml.in:108
-#| msgid ""
-#| "To enable experimental features, add the feature keyword to the list. "
-#| "Whether the feature requires restarting the compositor depends on the "
-#| "given feature. Any experimental feature is not required to still be "
-#| "available, or configurable. Don’t expect adding anything in this setting "
-#| "to be future proof. Currently possible keywords: • “monitor-config-"
-#| "manager” — use the new monitor configuration system, aimed to replace the "
-#| "old one. This enables a higher level configuration API to be used by "
-#| "configuration applications, as well as the ability to configure per "
-#| "logical monitor scale. • “scale-monitor-framebuffer” — makes mutter "
-#| "default to layout logical monitors in a logical pixel coordinate space, "
-#| "while scaling monitor framebuffers instead of window content, to manage "
-#| "HiDPI monitors. Does not require a restart. Also enabling “monitor-config-"
-#| "manager” is required for this feature to be enabled."
 msgid ""
 "To enable experimental features, add the feature keyword to the list. "
 "Whether the feature requires restarting the compositor depends on the given "
@@ -529,7 +519,7 @@ msgstr "Kısayolları yeniden etkinleştir"
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2167
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Kip anahtarı (Group %d)"
@@ -537,30 +527,30 @@ msgstr "Kip anahtarı (Group %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2190
 msgid "Switch monitor"
 msgstr "Monitör değiştir"
 
-#: src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2192
 msgid "Show on-screen help"
 msgstr "Ekranda yardımı göster"
 
-#: src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:908
 msgid "Built-in display"
 msgstr "Yerleşik ekran"
 
-#: src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:931
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:933
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:941
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -674,7 +664,7 @@ msgstr "Kullanılacak Mutter eklentisi"
 msgid "Workspace %d"
 msgstr "Çalışma Alanı %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -684,7 +674,7 @@ msgstr ""
 "yöneticisinin yerine bir başkasını koymak için --replace seçeneğini "
 "kullanmayı deneyin."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "“%2$s” monitöründeki %1$d ekranı geçersiz\n"
