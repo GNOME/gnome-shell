@@ -448,7 +448,6 @@ xdg_popup_grab (struct wl_client   *client,
     META_WAYLAND_XDG_POPUP (wl_resource_get_user_data (resource));
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *parent_surface;
-  MetaWaylandSurface *top_popup;
 
   parent_surface = xdg_popup->setup.parent_surface;
   if (!parent_surface)
@@ -456,21 +455,6 @@ xdg_popup_grab (struct wl_client   *client,
       wl_resource_post_error (resource,
                               ZXDG_POPUP_V6_ERROR_INVALID_GRAB,
                               "tried to grab after popup was mapped");
-      return;
-    }
-
-  top_popup = meta_wayland_pointer_get_top_popup (seat->pointer);
-  if ((top_popup == NULL &&
-       !META_IS_WAYLAND_XDG_SURFACE (parent_surface->role)) ||
-      (top_popup != NULL && parent_surface != top_popup))
-    {
-      MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_popup);
-      struct wl_resource *xdg_shell_resource =
-        meta_wayland_xdg_surface_get_shell_resource (xdg_surface);
-
-      wl_resource_post_error (xdg_shell_resource,
-                              ZXDG_SHELL_V6_ERROR_NOT_THE_TOPMOST_POPUP,
-                              "parent not top most surface");
       return;
     }
 
@@ -794,7 +778,10 @@ scale_placement_rule (MetaPlacementRule  *placement_rule,
 static void
 finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
 {
+  MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_popup);
   MetaWaylandSurfaceRole *surface_role = META_WAYLAND_SURFACE_ROLE (xdg_popup);
+  struct wl_resource *xdg_shell_resource =
+    meta_wayland_xdg_surface_get_shell_resource (xdg_surface);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWaylandSurface *parent_surface;
@@ -813,9 +800,20 @@ finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
 
   if (seat)
     {
+      MetaWaylandSurface *top_popup;
+
       if (!meta_wayland_seat_can_popup (seat, serial))
         {
           zxdg_popup_v6_send_popup_done (xdg_popup->resource);
+          return;
+        }
+
+      top_popup = meta_wayland_pointer_get_top_popup (seat->pointer);
+      if (top_popup && parent_surface != top_popup)
+        {
+          wl_resource_post_error (xdg_shell_resource,
+                                  ZXDG_SHELL_V6_ERROR_NOT_THE_TOPMOST_POPUP,
+                                  "parent not top most surface");
           return;
         }
     }
