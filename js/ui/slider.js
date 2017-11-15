@@ -17,6 +17,7 @@ var Slider = new Lang.Class({
             // Avoid spreading NaNs around
             throw TypeError('The slider value must be a number');
         this._max_value = 1;
+        this._overdrive_value = 1;
         this._value = Math.max(Math.min(value, this._max_value), 0);
         this._sliderWidth = 0;
 
@@ -42,6 +43,7 @@ var Slider = new Lang.Class({
         this._customAccessible.connect('get-current-value', Lang.bind(this, this._getCurrentValue));
         this._customAccessible.connect('get-minimum-value', Lang.bind(this, this._getMinimumValue));
         this._customAccessible.connect('get-maximum-value', Lang.bind(this, this._getMaximumValue));
+        this._customAccessible.connect('get-overdrive-value', Lang.bind(this, this._getOverdriveValue));
         this._customAccessible.connect('get-minimum-increment', Lang.bind(this, this._getMinimumIncrement));
         this._customAccessible.connect('set-current-value', Lang.bind(this, this._setCurrentValue));
 
@@ -60,7 +62,18 @@ var Slider = new Lang.Class({
         if (isNaN(value))
             throw TypeError('The slider max value must be a number');
 
-        this._max_value = Math.max(value, 1);
+        this._max_value = Math.max(value, this._overdrive_value);
+        this.actor.queue_repaint();
+    },
+
+    setOverdriveValue: function (value) {
+        if (isNaN(value))
+            throw TypeError('The overdrive limit value must be a number');
+        if (value > this._max_value)
+            throw new Error(`You should set a maximum value higer than overdrive value ` +
+                            `before calling setOverdriveValue(): max value is ${this._max_value} ` +
+                            `where overdrive value was going to be set to ${value}`);
+        this._overdrive_value = value;
         this.actor.queue_repaint();
     },
 
@@ -94,8 +107,8 @@ var Slider = new Lang.Class({
         const TAU = Math.PI * 2;
 
         let handleX = handleRadius + (width - 2 * handleRadius) * this._value / this._max_value;
-        let overdriveSeparatorX = handleRadius + (width - 2 * handleRadius) * 1 / this._max_value;
-        let overdriveActive = this._max_value > 1;
+        let overdriveSeparatorX = handleRadius + (width - 2 * handleRadius) * this._overdrive_value / this._max_value;
+        let overdriveActive = this._max_value > this._overdrive_value;
         let overdriveSeparatorWidth = 0;
         if (overdriveActive)
             overdriveSeparatorWidth = themeNode.get_length('-slider-overdrive-separator-width');
@@ -125,7 +138,7 @@ var Slider = new Lang.Class({
 
         /* overdrive progress bar */
         x = Math.min(handleX, overdriveSeparatorX) + overdriveSeparatorWidth / 2;
-        if (this._value > 1) {
+        if (this._value > this._overdrive_value) {
             cr.moveTo(x, (height - sliderHeight) / 2);
             cr.lineTo(handleX, (height - sliderHeight) / 2);
             cr.lineTo(handleX, (height + sliderHeight) / 2);
@@ -145,7 +158,7 @@ var Slider = new Lang.Class({
             cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, (height + sliderHeight) / 2);
             cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height + sliderHeight) / 2);
             cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - sliderHeight) / 2);
-            if (this._value <= 1)
+            if (this._value <= this._overdrive_value)
                 Clutter.cairo_set_source_color(cr, fgColor);
             else
                 Clutter.cairo_set_source_color(cr, sliderColor);
@@ -312,6 +325,10 @@ var Slider = new Lang.Class({
 
     _getCurrentValue: function (actor) {
         return this._value;
+    },
+
+    _getOverdriveValue: function (actor) {
+        return this._overdrive_value;
     },
 
     _getMinimumValue: function (actor) {
