@@ -79,16 +79,21 @@ var BarWithOverdrive = new Lang.Class({
         let barBorderRadius = Math.min(width, barHeight) / 2;
         let fgColor = themeNode.get_foreground_color();
 
-        let barBorderWidth = themeNode.get_length('-bar-border-width');
-
-        let barBorderColor = themeNode.get_color('-bar-border-color');
         let barColor = themeNode.get_color('-bar-background-color');
-
-        let barActiveBorderColor = themeNode.get_color('-bar-active-border-color');
         let barActiveColor = themeNode.get_color('-bar-active-background-color');
-
         let barOverdriveColor = themeNode.get_color('-bar-overdrive-color');
-        let barOverdriveBorderColor = themeNode.get_color('-bar-overdrive-border-color');
+
+        let barBorderColor = barColor;
+        let barActiveBorderColor = barActiveColor;
+        let barOverdriveBorderColor = barOverdriveColor;
+        let [hasCustomBorder, barBorderWidth] = themeNode.lookup_length('-bar-border-width', false);
+        /* we want to have the bar lines itself drawn */
+        barBorderWidth = Math.min(barBorderWidth, 1);
+        if (hasCustomBorder) {
+            barBorderColor = themeNode.get_color('-bar-border-color');
+            barActiveBorderColor = themeNode.get_color('-bar-active-border-color');
+            barOverdriveBorderColor = themeNode.get_color('-bar-overdrive-border-color');
+        }
 
         const TAU = Math.PI * 2;
 
