@@ -14,6 +14,8 @@ const Slider = imports.ui.slider;
 
 var VOLUME_NOTIFY_ID = 1;
 
+const ALLOW_AMPLIFIED_VOLUME_KEY = 'allow-volume-above-100-percent';
+
 // Each Gvc.MixerControl is a connection to PulseAudio,
 // so it's better to make it a singleton
 let _mixerControl;
@@ -36,6 +38,11 @@ var StreamSlider = new Lang.Class({
         this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
 
         this._slider = new Slider.Slider(0);
+
+        this._soundSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.sound' });
+        this._soundSettings.connect('changed::' + ALLOW_AMPLIFIED_VOLUME_KEY, Lang.bind(this, this._amplifySettingsChanged));
+        this._amplifySettingsChanged();
+
         this._slider.connect('value-changed', Lang.bind(this, this._sliderChanged));
         this._slider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
 
@@ -135,6 +142,18 @@ var StreamSlider = new Lang.Class({
         this.emit('stream-updated');
     },
 
+    _amplifySettingsChanged: function() {
+        this._allow_volume_above_100_percent = this._soundSettings.get_boolean(ALLOW_AMPLIFIED_VOLUME_KEY)
+
+        if (this._allow_volume_above_100_percent)
+            this._slider.setMaximumValue(this.getMaxLevel() / 100);
+        else
+            this._slider.setMaximumValue(1);
+
+        if (this._stream)
+            this._updateVolume();
+    },
+
     getIcon: function() {
         if (!this._stream)
             return null;
@@ -150,6 +169,14 @@ var StreamSlider = new Lang.Class({
                 return 'audio-volume-high-symbolic';
             return 'audio-volume-medium-symbolic';
         }
+    },
+
+    getMaxLevel: function () {
+        let max_volume = this._control.get_vol_max_norm();
+        if (this._allow_volume_above_100_percent)
+            max_volume = this._control.get_vol_max_amplified();
+
+        return 100 * max_volume / this._control.get_vol_max_norm();
     },
 
     getLevel: function() {
@@ -306,6 +333,10 @@ var VolumeMenu = new Lang.Class({
 
     getIcon: function() {
         return this._output.getIcon();
+    },
+
+    getMaxLevel: function() {
+        return this._output.getMaxLevel();
     },
 
     getLevel: function() {

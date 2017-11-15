@@ -25,7 +25,7 @@ gtk_req = '>= 3.15.0'
 json_glib_req = '>= 0.13.2'
 mutter_req = '>= 3.26.0'
 polkit_req = '>= 0.100'
-schemas_req = '>= 3.21.3'
+schemas_req = '>= 3.27.2'
 startup_req = '>= 0.11'
 
 bt_req = '>= 3.9.0'
