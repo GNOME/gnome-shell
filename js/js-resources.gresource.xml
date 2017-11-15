@@ -42,6 +42,7 @@
     <file>ui/audioDeviceSelection.js</file>
     <file>ui/backgroundMenu.js</file>
     <file>ui/background.js</file>
+    <file>ui/barWithOverdrive.js</file>
     <file>ui/boxpointer.js</file>
     <file>ui/calendar.js</file>
     <file>ui/checkBox.js</file>

@@ -142,15 +142,15 @@ StScrollBar {
 /* Slider */
 .slider {
   height: 1em;
-  -slider-height: 0.3em;
-  -slider-background-color: #0e0e0e;
-  -slider-border-color: black;
-  -slider-active-background-color: #215d9c;
-  -slider-active-border-color: #184472;
-  -slider-overdrive-color: #d51010;
-  -slider-overdrive-border-color: #a60c0c;
-  -slider-overdrive-separator-width: 0.2em;
-  -slider-border-width: 1px;
+  -bar-height: 0.3em;
+  -bar-background-color: #0e0e0e;
+  -bar-border-color: black;
+  -bar-active-background-color: #215d9c;
+  -bar-active-border-color: #184472;
+  -bar-overdrive-color: #d51010;
+  -bar-overdrive-border-color: #a60c0c;
+  -bar-overdrive-separator-width: 0.2em;
+  -bar-border-width: 1px;
   -slider-handle-radius: 6px; }
 
 /* Check Boxes */

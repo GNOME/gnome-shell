@@ -7,165 +7,58 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
 
+const BarWithOverdrive = imports.ui.barWithOverdrive;
+
 var SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 
 var Slider = new Lang.Class({
     Name: "Slider",
+    Extends: BarWithOverdrive.BarWithOverdrive,
 
-    _init: function(value) {
-        if (isNaN(value))
-            // Avoid spreading NaNs around
-            throw TypeError('The slider value must be a number');
-        this._max_value = 1;
-        this._overdrive_value = 1;
-        this._value = Math.max(Math.min(value, this._max_value), 0);
-        this._sliderWidth = 0;
+    _init: function(value, params) {
 
-        this.actor = new St.DrawingArea({ style_class: 'slider',
-                                          can_focus: true,
-                                          reactive: true,
-                                          accessible_role: Atk.Role.SLIDER });
-        this.actor.connect('repaint', Lang.bind(this, this._sliderRepaint));
+        params = {
+            'style-class': 'slider',
+            'can-focus': true,
+            'reactive': true,
+            'accessible-role': Atk.Role.SLIDER,
+        }
+        this.parent(value, params)
+
         this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
         this.actor.connect('touch-event', Lang.bind(this, this._touchDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         this.actor.connect('key-press-event', Lang.bind(this, this.onKeyPressEvent));
-        this.actor.connect('allocation-changed', (actor, box) => {
-            this._sliderWidth = box.get_width();
-        });
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
 
-        this._customAccessible = St.GenericAccessible.new_for_actor(this.actor);
-        this.actor.set_accessible(this._customAccessible);
-
-        this._customAccessible.connect('get-current-value', Lang.bind(this, this._getCurrentValue));
-        this._customAccessible.connect('get-minimum-value', Lang.bind(this, this._getMinimumValue));
-        this._customAccessible.connect('get-maximum-value', Lang.bind(this, this._getMaximumValue));
-        this._customAccessible.connect('get-overdrive-value', Lang.bind(this, this._getOverdriveValue));
         this._customAccessible.connect('get-minimum-increment', Lang.bind(this, this._getMinimumIncrement));
-        this._customAccessible.connect('set-current-value', Lang.bind(this, this._setCurrentValue));
-
-        this.connect('value-changed', Lang.bind(this, this._valueChanged));
     },
 
-    setValue: function(value) {
-        if (isNaN(value))
-            throw TypeError('The slider value must be a number');
+    _barRepaint: function(area) {
+        this.parent(area);
 
-        this._value = Math.max(Math.min(value, this._max_value), 0);
-        this.actor.queue_repaint();
-    },
-
-    setMaximumValue: function (value) {
-        if (isNaN(value))
-            throw TypeError('The slider max value must be a number');
-
-        this._max_value = Math.max(value, this._overdrive_value);
-        this.actor.queue_repaint();
-    },
-
-    setOverdriveValue: function (value) {
-        if (isNaN(value))
-            throw TypeError('The overdrive limit value must be a number');
-        if (value > this._max_value)
-            throw new Error(`You should set a maximum value higer than overdrive value ` +
-                            `before calling setOverdriveValue(): max value is ${this._max_value} ` +
-                            `where overdrive value was going to be set to ${value}`);
-        this._overdrive_value = value;
-        this.actor.queue_repaint();
-    },
-
-    _sliderRepaint: function(area) {
+        // Add handler
         let cr = area.get_context();
         let themeNode = area.get_theme_node();
         let [width, height] = area.get_surface_size();
 
         let handleRadius = themeNode.get_length('-slider-handle-radius');
-
         let handleBorderWidth = themeNode.get_length('-slider-handle-border-width');
         let [hasHandleColor, handleBorderColor] =
             themeNode.lookup_color('-slider-handle-border-color', false);
 
-        let sliderHeight = themeNode.get_length('-slider-height');
+        let barHeight = themeNode.get_length('-bar-height');
+        let barBorderRadius = Math.min(width, barHeight) / 2;
 
         let fgColor = themeNode.get_foreground_color();
-
-        let sliderBorderWidth = themeNode.get_length('-slider-border-width');
-        let sliderBorderRadius = Math.min(width, sliderHeight) / 2;
-
-        let sliderBorderColor = themeNode.get_color('-slider-border-color');
-        let sliderColor = themeNode.get_color('-slider-background-color');
-
-        let sliderActiveBorderColor = themeNode.get_color('-slider-active-border-color');
-        let sliderActiveColor = themeNode.get_color('-slider-active-background-color');
-
-        let sliderOverdriveColor = themeNode.get_color('-slider-overdrive-color');
-        let sliderOverdriveBorderColor = themeNode.get_color('-slider-overdrive-border-color');
 
         const TAU = Math.PI * 2;
 
         let handleX = handleRadius + (width - 2 * handleRadius) * this._value / this._max_value;
-        let overdriveSeparatorX = handleRadius + (width - 2 * handleRadius) * this._overdrive_value / this._max_value;
-        let overdriveActive = this._max_value > this._overdrive_value;
-        let overdriveSeparatorWidth = 0;
-        if (overdriveActive)
-            overdriveSeparatorWidth = themeNode.get_length('-slider-overdrive-separator-width');
-
-        /* background bar */
-        cr.arc(width - sliderBorderRadius - sliderBorderWidth, height / 2, sliderBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
-        cr.lineTo(handleX, (height + sliderHeight) / 2);
-        cr.lineTo(handleX, (height - sliderHeight) / 2);
-        cr.lineTo(width - sliderBorderRadius - sliderBorderWidth, (height - sliderHeight) / 2);
-        Clutter.cairo_set_source_color(cr, sliderColor);
-        cr.fillPreserve();
-        Clutter.cairo_set_source_color(cr, sliderBorderColor);
-        cr.setLineWidth(sliderBorderWidth);
-        cr.stroke();
-
-        /* normal slider progress bar */
-        let x = Math.min(handleX, overdriveSeparatorX - overdriveSeparatorWidth / 2);
-        cr.arc(sliderBorderRadius + sliderBorderWidth, height / 2, sliderBorderRadius, TAU * 1/4, TAU * 3/4);
-        cr.lineTo(x, (height - sliderHeight) / 2);
-        cr.lineTo(x, (height + sliderHeight) / 2);
-        cr.lineTo(sliderBorderRadius + sliderBorderWidth, (height + sliderHeight) / 2);
-        Clutter.cairo_set_source_color(cr, sliderActiveColor);
-        cr.fillPreserve();
-        Clutter.cairo_set_source_color(cr, sliderActiveBorderColor);
-        cr.setLineWidth(sliderBorderWidth);
-        cr.stroke();
-
-        /* overdrive progress bar */
-        x = Math.min(handleX, overdriveSeparatorX) + overdriveSeparatorWidth / 2;
-        if (this._value > this._overdrive_value) {
-            cr.moveTo(x, (height - sliderHeight) / 2);
-            cr.lineTo(handleX, (height - sliderHeight) / 2);
-            cr.lineTo(handleX, (height + sliderHeight) / 2);
-            cr.lineTo(x, (height + sliderHeight) / 2);
-            cr.lineTo(x, (height - sliderHeight) / 2);
-            Clutter.cairo_set_source_color(cr, sliderOverdriveColor);
-            cr.fillPreserve();
-            Clutter.cairo_set_source_color(cr, sliderOverdriveBorderColor);
-            cr.setLineWidth(sliderBorderWidth);
-            cr.stroke();
-        }
-
-        /* draw overdrive separator */
-        if (overdriveActive) {
-            cr.moveTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - sliderHeight) / 2);
-            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, (height - sliderHeight) / 2);
-            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, (height + sliderHeight) / 2);
-            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height + sliderHeight) / 2);
-            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - sliderHeight) / 2);
-            if (this._value <= this._overdrive_value)
-                Clutter.cairo_set_source_color(cr, fgColor);
-            else
-                Clutter.cairo_set_source_color(cr, sliderColor);
-            cr.fill();
-        }
-
         let handleY = height / 2;
+
         Clutter.cairo_set_source_color(cr, fgColor);
         cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
         cr.fillPreserve();
@@ -308,7 +201,7 @@ var Slider = new Lang.Class({
         relX = absX - sliderX;
         relY = absY - sliderY;
 
-        let width = this._sliderWidth;
+        let width = this._barWidth;
         let handleRadius = this.actor.get_theme_node().get_length('-slider-handle-radius');
 
         let newvalue;
@@ -323,37 +216,10 @@ var Slider = new Lang.Class({
         this.emit('value-changed', this._value);
     },
 
-    _getCurrentValue: function (actor) {
-        return this._value;
-    },
-
-    _getOverdriveValue: function (actor) {
-        return this._overdrive_value;
-    },
-
-    _getMinimumValue: function (actor) {
-        return 0;
-    },
-
-    _getMaximumValue: function (actor) {
-        return this._max_value;
-    },
-
     _getMinimumIncrement: function (actor) {
         return 0.1;
     },
 
-    _setCurrentValue: function (actor, value) {
-        this._value = value;
-    },
-
-    _valueChanged: function (slider, value, property) {
-        this._customAccessible.notify ("accessible-value");
-    },
-
-    get value() {
-        return this._value;
-    }
 });
 
 Signals.addSignalMethods(Slider.prototype);
