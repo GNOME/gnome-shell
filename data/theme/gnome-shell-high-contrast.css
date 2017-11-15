@@ -147,6 +147,9 @@ StScrollBar {
   -slider-border-color: black;
   -slider-active-background-color: #215d9c;
   -slider-active-border-color: #184472;
+  -slider-overdrive-color: #d51010;
+  -slider-overdrive-border-color: #a60c0c;
+  -slider-overdrive-separator-width: 0.2em;
   -slider-border-width: 1px;
   -slider-handle-radius: 6px; }
 
