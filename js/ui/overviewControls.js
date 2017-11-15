@@ -371,7 +371,13 @@ class ControlsManager extends St.Widget {
             if (this._a11ySettings.get_boolean('stickykeys-enable'))
                 return;
 
-            Main.overview.toggle();
+            const { initialState, finalState, transitioning } =
+                this._stateAdjustment.getStateTransitionParams();
+
+            if (transitioning && finalState > initialState)
+                this._shiftState(Meta.MotionDirection.UP);
+            else
+                Main.overview.toggle();
         });
 
         Main.wm.addKeybinding(
