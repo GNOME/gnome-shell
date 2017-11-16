@@ -53,6 +53,13 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
+static void
+cursor_texture_updated (MetaCursorSprite  *cursor,
+                        MetaCursorTracker *tracker)
+{
+  g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
+}
+
 static gboolean
 update_displayed_cursor (MetaCursorTracker *tracker)
 {
@@ -71,7 +78,12 @@ update_displayed_cursor (MetaCursorTracker *tracker)
   if (tracker->displayed_cursor == cursor)
     return FALSE;
 
+  g_signal_handlers_disconnect_by_func (tracker->displayed_cursor,
+                                        cursor_texture_updated,
+                                        tracker);
   g_set_object (&tracker->displayed_cursor, cursor);
+  g_signal_connect (tracker->displayed_cursor, "texture-changed",
+                    G_CALLBACK (cursor_texture_updated), tracker);
   return TRUE;
 }
 
