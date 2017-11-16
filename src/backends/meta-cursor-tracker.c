@@ -53,47 +53,57 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
-static MetaCursorSprite *
-get_displayed_cursor (MetaCursorTracker *tracker)
+static gboolean
+update_displayed_cursor (MetaCursorTracker *tracker)
 {
   MetaDisplay *display = meta_get_display ();
+  MetaCursorSprite *cursor = NULL;
 
-  if (!tracker->is_showing)
-    return NULL;
-
-  if (meta_display_windows_are_interactable (display))
+  if (display && meta_display_windows_are_interactable (display))
     {
       if (tracker->has_window_cursor)
-        return tracker->window_cursor;
+        cursor = tracker->window_cursor;
     }
 
-  return tracker->root_cursor;
+  if (!cursor)
+    cursor = tracker->root_cursor;
+
+  if (tracker->displayed_cursor == cursor)
+    return FALSE;
+
+  g_set_object (&tracker->displayed_cursor, cursor);
+  return TRUE;
+}
+
+static gboolean
+update_effective_cursor (MetaCursorTracker *tracker)
+{
+  MetaCursorSprite *cursor = NULL;
+
+  if (tracker->is_showing)
+    cursor = tracker->displayed_cursor;
+
+  return g_set_object (&tracker->effective_cursor, cursor);
 }
 
 static void
-update_displayed_cursor (MetaCursorTracker *tracker)
+change_cursor_renderer (MetaCursorTracker *tracker)
 {
   MetaBackend *backend = meta_get_backend ();
   MetaCursorRenderer *cursor_renderer =
     meta_backend_get_cursor_renderer (backend);
 
-  meta_cursor_renderer_set_cursor (cursor_renderer, tracker->displayed_cursor);
+  meta_cursor_renderer_set_cursor (cursor_renderer, tracker->effective_cursor);
 }
 
 static void
 sync_cursor (MetaCursorTracker *tracker)
 {
-  MetaCursorSprite *displayed_cursor = get_displayed_cursor (tracker);
+  if (update_displayed_cursor (tracker))
+    g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
 
-  if (tracker->displayed_cursor == displayed_cursor)
-    return;
-
-  g_clear_object (&tracker->displayed_cursor);
-  if (displayed_cursor)
-    tracker->displayed_cursor = g_object_ref (displayed_cursor);
-
-  update_displayed_cursor (tracker);
-  g_signal_emit (tracker, signals[CURSOR_CHANGED], 0);
+  if (update_effective_cursor (tracker))
+    change_cursor_renderer (tracker);
 }
 
 static void
@@ -107,6 +117,8 @@ meta_cursor_tracker_finalize (GObject *object)
 {
   MetaCursorTracker *self = META_CURSOR_TRACKER (object);
 
+  if (self->effective_cursor)
+    g_object_unref (self->effective_cursor);
   if (self->displayed_cursor)
     g_object_unref (self->displayed_cursor);
   if (self->root_cursor)
@@ -282,9 +294,14 @@ meta_cursor_tracker_get_sprite (MetaCursorTracker *tracker)
     }
 
   if (cursor_sprite)
-    return meta_cursor_sprite_get_cogl_texture (cursor_sprite);
+    {
+      meta_cursor_sprite_realize_texture (cursor_sprite);
+      return meta_cursor_sprite_get_cogl_texture (cursor_sprite);
+    }
   else
-    return NULL;
+    {
+      return NULL;
+    }
 }
 
 /**

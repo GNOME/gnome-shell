@@ -32,6 +32,7 @@ struct _MetaCursorTracker {
 
   gboolean is_showing;
 
+  MetaCursorSprite *effective_cursor; /* May be NULL when hidden */
   MetaCursorSprite *displayed_cursor;
 
   /* Wayland clients can set a NULL buffer as their cursor
