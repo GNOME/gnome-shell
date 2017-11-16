@@ -417,7 +417,7 @@ var Overview = new Lang.Class({
 
     beginItemDrag: function(source) {
         this.emit('item-drag-begin');
-        this._inDrag = true;
+        this._inItemDrag = true;
     },
 
     cancelledItemDrag: function(source) {
@@ -425,13 +425,15 @@ var Overview = new Lang.Class({
     },
 
     endItemDrag: function(source) {
+        if (!this._inItemDrag)
+            return;
         this.emit('item-drag-end');
-        this._inDrag = false;
+        this._inItemDrag = false;
     },
 
     beginWindowDrag: function(window) {
         this.emit('window-drag-begin', window);
-        this._inDrag = true;
+        this._inWindowDrag = true;
     },
 
     cancelledWindowDrag: function(window) {
@@ -439,8 +441,10 @@ var Overview = new Lang.Class({
     },
 
     endWindowDrag: function(window) {
+        if (!this._inWindowDrag)
+            return;
         this.emit('window-drag-end', window);
-        this._inDrag = false;
+        this._inWindowDrag = false;
     },
 
     focusSearch: function() {
@@ -484,7 +488,7 @@ var Overview = new Lang.Class({
     shouldToggleByCornerOrButton: function() {
         if (this.animationInProgress)
             return false;
-        if (this._inDrag)
+        if (this._inItemDrag || this._inWindowDrag)
             return false;
         if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > OVERVIEW_ACTIVATION_TIMEOUT)
             return true;
