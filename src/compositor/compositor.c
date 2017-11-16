@@ -420,7 +420,10 @@ meta_end_modal_for_plugin (MetaCompositor *compositor,
   meta_backend_ungrab_device (backend, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
 
   if (meta_is_wayland_compositor ())
-    meta_display_sync_wayland_input_focus (display);
+    {
+      meta_dnd_wayland_handle_end_modal (compositor);
+      meta_display_sync_wayland_input_focus (display);
+    }
 }
 
 static void

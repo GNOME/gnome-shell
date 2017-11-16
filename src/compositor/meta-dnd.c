@@ -218,20 +218,9 @@ meta_dnd_wayland_end_notify (ClutterActor *actor,
                              MetaDnd      *dnd)
 {
   MetaDndPrivate *priv = meta_dnd_get_instance_private (dnd);
-  unsigned int i;
 
   meta_wayland_data_device_end_drag (&priv->wl_compositor->seat->data_device);
-
-  for (i = 0; i < G_N_ELEMENTS (priv->handler_id); i++)
-    {
-      g_signal_handler_disconnect (priv->compositor->stage, priv->handler_id[i]);
-      priv->handler_id[i] = 0;
-    }
-
-  priv->compositor = NULL;
-  priv->wl_compositor = NULL;
-
-  meta_dnd_notify_dnd_leave (dnd);
+  meta_dnd_wayland_handle_end_modal (priv->compositor);
 }
 
 static void
@@ -285,5 +274,28 @@ meta_dnd_wayland_handle_begin_modal (MetaCompositor *compositor)
 
       meta_dnd_notify_dnd_enter (dnd);
     }
+}
+
+void
+meta_dnd_wayland_handle_end_modal (MetaCompositor *compositor)
+{
+  MetaWaylandCompositor *wl_compositor = meta_wayland_compositor_get_default ();
+  MetaDnd *dnd = meta_backend_get_dnd (meta_get_backend ());
+  MetaDndPrivate *priv = meta_dnd_get_instance_private (dnd);
+  unsigned int i;
+
+  if (!priv->compositor)
+    return;
+
+  for (i = 0; i < G_N_ELEMENTS (priv->handler_id); i++)
+    {
+      g_signal_handler_disconnect (priv->compositor->stage, priv->handler_id[i]);
+      priv->handler_id[i] = 0;
+    }
+
+  priv->compositor = NULL;
+  priv->wl_compositor = NULL;
+
+  meta_dnd_notify_dnd_leave (dnd);
 }
 #endif
