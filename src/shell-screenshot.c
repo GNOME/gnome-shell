@@ -31,6 +31,8 @@ struct _ShellScreenshotPrivate
   char *filename;
   char *filename_used;
 
+  GDateTime *datetime;
+
   cairo_surface_t *image;
   cairo_rectangle_int_t screenshot_area;
 
@@ -72,6 +74,7 @@ on_screenshot_written (GObject      *source,
   g_clear_pointer (&priv->image, cairo_surface_destroy);
   g_clear_pointer (&priv->filename, g_free);
   g_clear_pointer (&priv->filename_used, g_free);
+  g_clear_pointer (&priv->datetime, g_date_time_unref);
 
   meta_enable_unredirect_for_screen (shell_global_get_screen (priv->global));
 }
@@ -175,6 +178,7 @@ write_screenshot_thread (GTask        *result,
   GOutputStream *stream;
   ShellScreenshot *screenshot = SHELL_SCREENSHOT (object);
   ShellScreenshotPrivate *priv;
+  char *creation_time;
 
   g_assert (screenshot != NULL);
 
@@ -193,14 +197,18 @@ write_screenshot_thread (GTask        *result,
                                             0, 0,
                                             cairo_image_surface_get_width (priv->image),
                                             cairo_image_surface_get_height (priv->image));
+      creation_time = g_date_time_format (priv->datetime, "%c");
 
       if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
-                                    "tEXt::Software", "gnome-screenshot", NULL))
+                                     "tEXt::Software", "gnome-screenshot",
+                                     "tEXt::Creation Time", creation_time,
+                                     NULL))
         status = CAIRO_STATUS_SUCCESS;
       else
         status = CAIRO_STATUS_WRITE_ERROR;
 
       g_object_unref (pixbuf);
+      g_free (creation_time);
     }
 
 
@@ -241,6 +249,7 @@ do_grab_screenshot (ShellScreenshot *screenshot,
                                                        n_captures,
                                                        x, y,
                                                        width, height);
+  priv->datetime = g_date_time_new_now_local ();
 
   for (i = 0; i < n_captures; i++)
     cairo_surface_destroy (captures[i].image);
@@ -432,6 +441,7 @@ grab_window_screenshot (ClutterActor *stage,
 
   stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
   priv->image = meta_shaped_texture_get_image (stex, &clip);
+  priv->datetime = g_date_time_new_now_local ();
 
   settings = g_settings_new (A11Y_APPS_SCHEMA);
   if (priv->include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
