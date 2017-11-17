@@ -229,6 +229,8 @@ meta_cursor_sprite_load_from_theme (MetaCursorSprite *self)
 
   g_assert (self->cursor != META_CURSOR_NONE);
 
+  self->theme_dirty = FALSE;
+
   /* We might be reloading with a different scale. If so clear the old data. */
   if (self->xcursor_images)
     {
@@ -244,8 +246,6 @@ meta_cursor_sprite_load_from_theme (MetaCursorSprite *self)
 
   image = meta_cursor_sprite_get_current_frame_image (self);
   meta_cursor_sprite_load_from_xcursor_image (self, image);
-
-  self->theme_dirty = FALSE;
 }
 
 MetaCursorSprite *
