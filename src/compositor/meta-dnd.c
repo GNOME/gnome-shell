@@ -279,7 +279,6 @@ meta_dnd_wayland_handle_begin_modal (MetaCompositor *compositor)
 void
 meta_dnd_wayland_handle_end_modal (MetaCompositor *compositor)
 {
-  MetaWaylandCompositor *wl_compositor = meta_wayland_compositor_get_default ();
   MetaDnd *dnd = meta_backend_get_dnd (meta_get_backend ());
   MetaDndPrivate *priv = meta_dnd_get_instance_private (dnd);
   unsigned int i;
