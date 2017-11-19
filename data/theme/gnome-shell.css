@@ -987,6 +987,14 @@ StScrollBar {
   min-width: 21em; }
   .aggregate-menu .popup-menu-icon {
     padding: 0 4px; }
+  .aggregate-menu .popup-sub-menu .popup-menu-item :first-child:ltr {
+    /* 12px spacing + 2*4px padding */
+    padding-left: 20px;
+    margin-left: 1.09em; }
+  .aggregate-menu .popup-sub-menu .popup-menu-item :first-child:rtl {
+    /* 12px spacing + 2*4px padding */
+    padding-right: 20px;
+    margin-right: 1.09em; }
 
 .system-menu-action {
   color: #eeeeec;
