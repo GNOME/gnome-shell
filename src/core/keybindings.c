@@ -1949,6 +1949,15 @@ process_overlay_key (MetaDisplay *display,
   MetaBackend *backend = keys->backend;
   Display *xdisplay;
 
+  if (display->focus_window && !keys->overlay_key_only_pressed)
+    {
+      ClutterInputDevice *source;
+
+      source = clutter_event_get_source_device ((ClutterEvent *) event);
+      if (meta_window_shortcuts_inhibited (display->focus_window, source))
+        return FALSE;
+    }
+
   if (META_IS_BACKEND_X11 (backend))
     xdisplay = meta_backend_x11_get_xdisplay (META_BACKEND_X11 (backend));
   else
