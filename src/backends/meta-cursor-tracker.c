@@ -66,13 +66,10 @@ update_displayed_cursor (MetaCursorTracker *tracker)
   MetaDisplay *display = meta_get_display ();
   MetaCursorSprite *cursor = NULL;
 
-  if (display && meta_display_windows_are_interactable (display))
-    {
-      if (tracker->has_window_cursor)
-        cursor = tracker->window_cursor;
-    }
-
-  if (!cursor)
+  if (display && meta_display_windows_are_interactable (display) &&
+      tracker->has_window_cursor)
+    cursor = tracker->window_cursor;
+  else
     cursor = tracker->root_cursor;
 
   if (tracker->displayed_cursor == cursor)
