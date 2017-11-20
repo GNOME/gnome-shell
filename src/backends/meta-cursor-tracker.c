@@ -75,12 +75,21 @@ update_displayed_cursor (MetaCursorTracker *tracker)
   if (tracker->displayed_cursor == cursor)
     return FALSE;
 
-  g_signal_handlers_disconnect_by_func (tracker->displayed_cursor,
-                                        cursor_texture_updated,
-                                        tracker);
+  if (tracker->displayed_cursor)
+    {
+      g_signal_handlers_disconnect_by_func (tracker->displayed_cursor,
+                                            cursor_texture_updated,
+                                            tracker);
+    }
+
   g_set_object (&tracker->displayed_cursor, cursor);
-  g_signal_connect (tracker->displayed_cursor, "texture-changed",
-                    G_CALLBACK (cursor_texture_updated), tracker);
+
+  if (cursor)
+    {
+      g_signal_connect (cursor, "texture-changed",
+                        G_CALLBACK (cursor_texture_updated), tracker);
+    }
+
   return TRUE;
 }
 
