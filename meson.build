@@ -102,7 +102,7 @@ if enable_recorder
 endif
 
 nm_deps = []
-enable_networkmanager = get_option('enable-networkmanager')
+enable_networkmanager = get_option('networkmanager')
 if enable_networkmanager != 'no'
   want_networkmanager = enable_networkmanager == 'yes'
 
@@ -131,7 +131,7 @@ else
   have_networkmanager = false
 endif
 
-enable_systemd = get_option('enable-systemd')
+enable_systemd = get_option('systemd')
 if enable_systemd != 'no'
   want_systemd = enable_systemd == 'yes'
   systemd_dep = dependency('libsystemd', required: want_systemd)
@@ -141,15 +141,13 @@ else
   have_systemd = false
 endif
 
-enable_plugin = get_option('enable-browser-plugin')
-if enable_plugin
+if get_option('browser_plugin')
   json_glib_dep = dependency('json-glib-1.0', version: json_glib_req)
 
   subdir('browser-plugin')
 endif
 
-enable_man = get_option('enable-man')
-if enable_man
+if get_option('man')
   xsltproc = find_program('xsltproc')
 
   subdir('man')
@@ -204,6 +202,6 @@ subdir('po')
 subdir('data')
 subdir('tests')
 
-if get_option('enable-documentation')
+if get_option('gtk_doc')
   subdir('docs/reference')
 endif
