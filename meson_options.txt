@@ -17,15 +17,13 @@ option('man',
 )
 
 option('networkmanager',
-  type: 'combo',
-  choices: ['yes', 'no', 'auto'],
-  value: 'auto',
+  type: 'boolean',
+  value: true,
   description: 'Enable NetworkManager support'
 )
 
 option('systemd',
-  type: 'combo',
-  choices: ['yes', 'no', 'auto'],
-  value: 'auto',
+  type: 'boolean',
+  value: true,
   description: 'Enable systemd integration'
 )

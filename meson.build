@@ -102,39 +102,19 @@ if enable_recorder
 endif
 
 nm_deps = []
-enable_networkmanager = get_option('networkmanager')
-if enable_networkmanager != 'no'
-  want_networkmanager = enable_networkmanager == 'yes'
-
-  nm_deps += dependency('libnm-glib',
-    version: nm_req, required: want_networkmanager
-  )
-  nm_deps += dependency('libnm-util',
-    version: nm_req, required: want_networkmanager
-  )
-  nm_deps += dependency('libnm-gtk',
-    version: nm_req, required: want_networkmanager
-  )
-  nm_deps += dependency('libsecret-1',
-    version: secret_req, required: want_networkmanager
-  )
+if get_option('networkmanager')
+  nm_deps += dependency('libnm-glib', version: nm_req)
+  nm_deps += dependency('libnm-util', version: nm_req)
+  nm_deps += dependency('libnm-gtk', version: nm_req)
+  nm_deps += dependency('libsecret-1', version: secret_req)
 
   have_networkmanager = true
-  foreach dep : nm_deps
-    have_networkmanager = have_networkmanager and dep.found()
-  endforeach
-
-  if not have_networkmanager
-    nm_deps = []
-  endif
 else
   have_networkmanager = false
 endif
 
-enable_systemd = get_option('systemd')
-if enable_systemd != 'no'
-  want_systemd = enable_systemd == 'yes'
-  systemd_dep = dependency('libsystemd', required: want_systemd)
+if get_option('systemd')
+  systemd_dep = dependency('libsystemd')
   have_systemd = systemd_dep.found()
 else
   systemd_dep = []
