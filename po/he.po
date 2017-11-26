@@ -3,25 +3,24 @@
 # This file is distributed under the same license as the gnome-shell package.
 # liel <lielft@gmail.com>, 2009.
 # Yaron Shahrabani <sh.yaron@gmail.com>, 2010.
-#
-# Yosef Or Boczko <yoseforb@gnome.org>, 2013, 2014.
+# Yosef Or Boczko <yoseforb@gnome.org>, 2013, 2014, 2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-11-26 21:59+0200\n"
-"PO-Revision-Date: 2017-11-26 22:19+0200\n"
+"POT-Creation-Date: 2017-11-26 22:25+0200\n"
+"PO-Revision-Date: 2017-11-26 22:32+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n>2||n==0) ? 1 : 2;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../js/extensionPrefs/main.js:120
 #, javascript-format
@@ -189,6 +188,7 @@ msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "לפני דקה"
 msgstr[1] "לפני %d דקות"
+msgstr[2] "לפני שתי דקות"
 
 #: ../js/misc/util.js:185
 #, javascript-format
@@ -196,6 +196,7 @@ msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "לפני שעה"
 msgstr[1] "לפני %d שעות"
+msgstr[2] "לפני שעתיים"
 
 #: ../js/misc/util.js:188
 msgid "Yesterday"
@@ -207,6 +208,7 @@ msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "לפני יום"
 msgstr[1] "לפני %d ימים"
+msgstr[2] "לפני יומיים"
 
 #: ../js/misc/util.js:193
 #, javascript-format
@@ -214,6 +216,7 @@ msgid "%d week ago"
 msgid_plural "%d weeks ago"
 msgstr[0] "לפני שבוע"
 msgstr[1] "לפני %d שבועות"
+msgstr[2] "לפני שבועיים"
 
 #: ../js/misc/util.js:196
 #, javascript-format
@@ -221,6 +224,7 @@ msgid "%d month ago"
 msgid_plural "%d months ago"
 msgstr[0] "לפני חודש"
 msgstr[1] "לפני %d חודשים"
+msgstr[2] "לפני חודשיים"
 
 #: ../js/misc/util.js:198
 #, javascript-format
@@ -228,6 +232,7 @@ msgid "%d year ago"
 msgid_plural "%d years ago"
 msgstr[0] "לפני שנה"
 msgstr[1] "לפני %d שנים"
+msgstr[2] "לפני שנתיים"
 
 #. Translators: Time in 24h format
 #: ../js/misc/util.js:228
@@ -308,7 +313,9 @@ msgstr "התחברות לנקודה חמה"
 msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
-msgstr "ההתחברות שלך לנקודה חמה זו אינה בטוחה. ססמאות ומידע אחר שהזנת עשויים להיות גלויים לאנשים בקרבת מקום."
+msgstr ""
+"ההתחברות שלך לנקודה חמה זו אינה בטוחה. ססמאות ומידע אחר שהזנת עשויים להיות "
+"גלויים לאנשים בקרבת מקום."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -758,6 +765,7 @@ msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "המשתמש %s ייצא אוטומטית בעוד שנייה."
 msgstr[1] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
+msgstr[2] "המשתמש %s ייצא אוטומטית בעוד %d שניות."
 
 #: ../js/ui/endSessionDialog.js:72
 #, javascript-format
@@ -765,6 +773,7 @@ msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "אתה תצא אוטומטית בעוד שנייה."
 msgstr[1] "אתה תצא אוטומטית בעוד %d שניות."
+msgstr[2] "אתה תצא אוטומטית בעוד %d שניות."
 
 #: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
@@ -787,6 +796,7 @@ msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "המערכת תכבה אוטומטית בעוד שנייה."
 msgstr[1] "המערכת תכבה אוטומטית בעוד %d שניות."
+msgstr[2] "המערכת תכבה אוטומטית בעוד %d שניות."
 
 #: ../js/ui/endSessionDialog.js:91
 msgctxt "checkbox"
@@ -814,6 +824,7 @@ msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "המערכת תופעל מחדש בעוד שנייה."
 msgstr[1] "המערכת תופעל מחדש בעוד %d שניות."
+msgstr[2] "המערכת תופעל מחדש בעוד %d שניות."
 
 #: ../js/ui/endSessionDialog.js:119
 msgctxt "title"
@@ -827,6 +838,7 @@ msgid_plural ""
 "The system will automatically restart and install updates in %d seconds."
 msgstr[0] "המערכת תופעל מחדש ותתקין עדכונים בעוד שנייה."
 msgstr[1] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
+msgstr[2] "המערכת תופעל מחדש ותקין עדכונים בעוד %d שניות."
 
 #: ../js/ui/endSessionDialog.js:127 ../js/ui/endSessionDialog.js:147
 msgctxt "button"
@@ -1100,6 +1112,7 @@ msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "הודעה חדשה אחת"
 msgstr[1] "%d הודעות חדשות"
+msgstr[2] "שתי הודעות חדשות"
 
 # javascript-format
 #: ../js/ui/screenShield.js:149
@@ -1108,6 +1121,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "התרעה חדשה אחת"
 msgstr[1] "%d התרעות חדשות"
+msgstr[2] "שתי התרעות חדשות"
 
 #: ../js/ui/screenShield.js:452 ../js/ui/status/system.js:284
 msgid "Lock"
@@ -1230,6 +1244,7 @@ msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "אחד מחובר"
 msgstr[1] "%d מחוברים"
+msgstr[2] "שניים מחוברים"
 
 #: ../js/ui/status/bluetooth.js:139
 msgid "Off"
@@ -1654,6 +1669,7 @@ msgid "Settings changes will revert in %d second"
 msgid_plural "Settings changes will revert in %d seconds"
 msgstr[0] "שינויי הגדרות ישוחזרו בעוד שנייה"
 msgstr[1] "שינויי הגדרות ישוחזרו בעוד %d שניות"
+msgstr[2] "שינויי הגדרות ישוחזרו בעוד %d שניות"
 
 #. Translators: This represents the size of a window. The first number is
 #. * the width of the window and the second is the height.
@@ -1772,6 +1788,7 @@ msgid "%u Output"
 msgid_plural "%u Outputs"
 msgstr[0] "פלט אחד"
 msgstr[1] "%u פלטים"
+msgstr[2] "שני פלטים"
 
 #. translators:
 #. * The number of sound inputs on a particular device
@@ -1781,6 +1798,7 @@ msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "קלט אחד"
 msgstr[1] "%u קלטים"
+msgstr[2] "שני קלטים"
 
 #: ../subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
