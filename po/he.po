@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-03-30 18:41+0300\n"
-"PO-Revision-Date: 2017-03-30 18:46+0300\n"
+"POT-Creation-Date: 2017-11-26 17:12+0200\n"
+"PO-Revision-Date: 2017-11-26 17:14+0200\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: עברית <>\n"
 "Language: he\n"
@@ -174,7 +174,7 @@ msgstr "העברה למרחב העבודה שמלמעלה"
 msgid "Move to workspace below"
 msgstr "העברה למרחב העבודה שמלמטה"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "מערכת"
 
@@ -185,6 +185,10 @@ msgstr "הצגת החלונית להרצת פקודה"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "הצגת סקירת הפעילויות"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "שחזור צירופי מקשים"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -271,7 +275,6 @@ msgid "Modifier to use for extended window management operations"
 msgstr "Modifier to use for extended window management operations"
 
 #: data/org.gnome.mutter.gschema.xml.in:8
-#, 
 msgid ""
 "This key will initiate the “overlay”, which is a combination window overview "
 "and application launching system. The default is intended to be the “Windows "
@@ -316,7 +319,6 @@ msgid "Workspaces are managed dynamically"
 msgstr "Workspaces are managed dynamically"
 
 #: data/org.gnome.mutter.gschema.xml.in:41
-#, 
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there’s a "
 "static number of workspaces (determined by the num-workspaces key in org."
@@ -355,7 +357,6 @@ msgid "Delay focus changes until the pointer stops moving"
 msgstr "Delay focus changes until the pointer stops moving"
 
 #: data/org.gnome.mutter.gschema.xml.in:69
-#, 
 msgid ""
 "If set to true, and the focus mode is either “sloppy” or “mouse” then the "
 "focus will not be changed immediately when entering a window, but only after "
@@ -401,13 +402,51 @@ msgstr ""
 "When true, the new windows will always be put in the center of the active "
 "screen of the monitor."
 
-#: data/org.gnome.mutter.gschema.xml.in:120
+#: data/org.gnome.mutter.gschema.xml.in:107
+msgid "Enable experimental features"
+msgstr "Enable experimental features"
+
+#: data/org.gnome.mutter.gschema.xml.in:108
+msgid ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
+msgstr ""
+"To enable experimental features, add the feature keyword to the list. "
+"Whether the feature requires restarting the compositor depends on the given "
+"feature. Any experimental feature is not required to still be available, or "
+"configurable. Don’t expect adding anything in this setting to be future "
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
+
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Select window from tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:125
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Cancel tab popup"
+
+#: data/org.gnome.mutter.gschema.xml.in:155
+msgid "Switch monitor configurations"
+msgstr "החלפה בין תצורות צגים"
+
+#: data/org.gnome.mutter.gschema.xml.in:160
+msgid "Rotates the built-in monitor configuration"
+msgstr "Rotates the built-in monitor configuration"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:6
 msgid "Switch to VT 1"
@@ -457,10 +496,14 @@ msgstr "מעבר ל־VT ‏11"
 msgid "Switch to VT 12"
 msgstr "מעבר ל־VT ‏12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "לאפשר מחדש צירופי מקשים"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:1848
+#: src/backends/meta-input-settings.c:2260
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "מצב העברה (קבוצה %d)"
@@ -468,37 +511,37 @@ msgstr "מצב העברה (קבוצה %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:1870
+#: src/backends/meta-input-settings.c:2283
 msgid "Switch monitor"
 msgstr "החלפה בין צגים"
 
-#: src/backends/meta-input-settings.c:1872
+#: src/backends/meta-input-settings.c:2285
 msgid "Show on-screen help"
 msgstr "הצגת עזרה על המסך"
 
-#: src/backends/meta-monitor-manager.c:630
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "תצוגה מובנית"
 
-#: src/backends/meta-monitor-manager.c:653
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: src/backends/meta-monitor-manager.c:655
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "תצוגה לא ידועה"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:663
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:474
+#: src/compositor/compositor.c:479
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -507,31 +550,6 @@ msgstr "מנהל תצוגת חלונות אחר כבר פועל במסך %i בת
 #: src/core/bell.c:194
 msgid "Bell event"
 msgstr "אירוע פעמון"
-
-#. Translators: %s is a window title
-#: src/core/delete.c:127
-#, c-format
-msgid "“%s” is not responding."
-msgstr "„%s“ אינו מגיב."
-
-#: src/core/delete.c:129
-msgid "Application is not responding."
-msgstr "היישום אינו מגיב."
-
-#: src/core/delete.c:134
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"באפשרותך להמתין זמן קצר ולתת ליישום להמשיך או להכריח את היישום להסתיים."
-
-#: src/core/delete.c:141
-msgid "_Force Quit"
-msgstr "_אילוץ סגירה"
-
-#: src/core/delete.c:141
-msgid "_Wait"
-msgstr "ה_מתנה"
 
 #: src/core/display.c:608
 #, c-format
@@ -574,6 +592,31 @@ msgstr "Run as a nested compositor"
 msgid "Run as a full display server, rather than nested"
 msgstr "Run as a full display server, rather than nested"
 
+#. Translators: %s is a window title
+#: src/core/meta-close-dialog-default.c:147
+#, c-format
+msgid "“%s” is not responding."
+msgstr "„%s“ אינו מגיב."
+
+#: src/core/meta-close-dialog-default.c:149
+msgid "Application is not responding."
+msgstr "היישום אינו מגיב."
+
+#: src/core/meta-close-dialog-default.c:154
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"באפשרותך להמתין זמן קצר ולתת ליישום להמשיך או להכריח את היישום להסתיים."
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Force Quit"
+msgstr "_אילוץ סגירה"
+
+#: src/core/meta-close-dialog-default.c:161
+msgid "_Wait"
+msgstr "ה_מתנה"
+
 #: src/core/mutter.c:39
 #, c-format
 msgid ""
@@ -601,7 +644,7 @@ msgstr "תוסף ה־mutter לשימוש"
 msgid "Workspace %d"
 msgstr "מרחב עבודה %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -610,7 +653,7 @@ msgstr ""
 "Display “%s” already has a window manager; try using the --replace option to "
 "replace the current window manager."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Screen %d on display “%s” is invalid\n"
@@ -629,8 +672,8 @@ msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"חלונות אלו אינם תומכים ב„שמירת ההגדרות הנוכחיות”, ויהיה צורך "
-"באתחול ידני בכניסה הבאה שלך."
+"חלונות אלו אינם תומכים ב„שמירת ההגדרות הנוכחיות”, ויהיה צורך באתחול ידני "
+"בכניסה הבאה שלך."
 
 #: src/x11/window-props.c:559
 #, c-format
