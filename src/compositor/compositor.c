@@ -674,9 +674,6 @@ meta_compositor_remove_window (MetaCompositor *compositor,
   if (compositor->unredirected_window == window)
     set_unredirected_window (compositor, NULL);
 
-  if (compositor->top_window_actor == window_actor)
-    compositor->top_window_actor = NULL;
-
   meta_window_actor_destroy (window_actor);
 }
 
@@ -955,6 +952,16 @@ get_top_visible_window_actor (MetaCompositor *compositor)
   return NULL;
 }
 
+static void
+on_top_window_actor_destroyed (MetaWindowActor *window_actor,
+                               MetaCompositor  *compositor)
+{
+  compositor->top_window_actor = NULL;
+  compositor->windows = g_list_remove (compositor->windows, window_actor);
+
+  meta_stack_tracker_queue_sync_stack (compositor->display->screen->stack_tracker);
+}
+
 void
 meta_compositor_sync_stack (MetaCompositor  *compositor,
 			    GList	    *stack)
@@ -1042,7 +1049,17 @@ meta_compositor_sync_stack (MetaCompositor  *compositor,
 
   sync_actor_stacking (compositor);
 
+  if (compositor->top_window_actor)
+    g_signal_handlers_disconnect_by_func (compositor->top_window_actor,
+                                          on_top_window_actor_destroyed,
+                                          compositor);
+
   compositor->top_window_actor = get_top_visible_window_actor (compositor);
+
+  if (compositor->top_window_actor)
+    g_signal_connect (compositor->top_window_actor, "destroy",
+                      G_CALLBACK (on_top_window_actor_destroyed),
+                      compositor);
 }
 
 void
