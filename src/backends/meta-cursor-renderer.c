@@ -70,7 +70,7 @@ queue_redraw (MetaCursorRenderer *renderer,
   MetaBackend *backend = meta_get_backend ();
   ClutterActor *stage = meta_backend_get_stage (backend);
   CoglTexture *texture;
-  ClutterRect rect = { 0 };
+  ClutterRect rect = CLUTTER_RECT_INIT_ZERO;
 
   if (cursor_sprite)
     rect = meta_cursor_renderer_calculate_rect (renderer, cursor_sprite);
@@ -173,7 +173,7 @@ meta_cursor_renderer_calculate_rect (MetaCursorRenderer *renderer,
 
   texture = meta_cursor_sprite_get_cogl_texture (cursor_sprite);
   if (!texture)
-    return (ClutterRect) { 0 };
+    return (ClutterRect) CLUTTER_RECT_INIT_ZERO;
 
   meta_cursor_sprite_get_hotspot (cursor_sprite, &hot_x, &hot_y);
   texture_scale = meta_cursor_sprite_get_texture_scale (cursor_sprite);
