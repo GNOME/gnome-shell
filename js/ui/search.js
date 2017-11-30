@@ -431,6 +431,9 @@ var SearchResults = class {
         this._cancellable = new Gio.Cancellable();
 
         this._registerProvider(new AppDisplay.AppSearchProvider());
+
+        let appSystem = Shell.AppSystem.get_default();
+        appSystem.connect('installed-changed', this._reloadRemoteProviders.bind(this));
         this._reloadRemoteProviders();
     }
 
