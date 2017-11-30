@@ -14,7 +14,12 @@ var Animation = new Lang.Class({
 
     _init: function(file, width, height, speed) {
         this.actor = new St.Bin();
+        this.actor.set_size(width, height);
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('notify::size', () => { this._syncAnimationSize(); });
+        this.actor.connect('resource-scale-changed', (actor) => {
+            this._loadFile(file, width, height);
+        });
         this._speed = speed;
 
         this._isLoaded = false;
@@ -22,10 +27,7 @@ var Animation = new Lang.Class({
         this._timeoutId = 0;
         this._frame = 0;
 
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        this._animations = St.TextureCache.get_default().load_sliced_image (file, width, height, scaleFactor,
-                                                                            Lang.bind(this, this._animationsLoaded));
-        this.actor.set_child(this._animations);
+        this._loadFile(file, width, height);
     },
 
     play: function() {
@@ -49,6 +51,21 @@ var Animation = new Lang.Class({
         this._isPlaying = false;
     },
 
+    _loadFile: function(file, width, height) {
+        this._isLoaded = false;
+        this.actor.destroy_all_children();
+
+        if (this.actor.resource_scale <= 0)
+            return;
+
+        let texture_cache = St.TextureCache.get_default();
+        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._animations = texture_cache.load_sliced_image(file, width, height, scaleFactor,
+                                                           this.actor.resource_scale,
+                                                           Lang.bind(this, this._animationsLoaded));
+        this.actor.set_child(this._animations);
+    },
+
     _showFrame: function(frame) {
         let oldFrameActor = this._animations.get_child_at_index(this._frame);
         if (oldFrameActor)
@@ -66,8 +83,20 @@ var Animation = new Lang.Class({
         return GLib.SOURCE_CONTINUE;
     },
 
+    _syncAnimationSize: function() {
+        if (!this._isLoaded)
+            return;
+
+        let [width, height] = this.actor.get_size();
+
+        for (let i = 0; i < this._animations.get_n_children(); ++i)
+            this._animations.get_child_at_index(i).set_size(width, height);
+    },
+
     _animationsLoaded: function() {
         this._isLoaded = this._animations.get_n_children() > 0;
+
+        this._syncAnimationSize();
 
         if (this._isPlaying)
             this.play();
