@@ -1080,6 +1080,7 @@ typedef struct {
   gint   paint_scale;
   gfloat resource_scale;
   ClutterActor *actor;
+  GCancellable *cancellable;
   GFunc load_callback;
   gpointer load_callback_data;
 } AsyncImageData;
@@ -1090,7 +1091,18 @@ on_data_destroy (gpointer data)
   AsyncImageData *d = (AsyncImageData *)data;
   g_object_unref (d->gfile);
   g_object_unref (d->actor);
+  g_object_unref (d->cancellable);
   g_free (d);
+}
+
+static void
+on_sliced_image_actor_destroyed (ClutterActor *actor,
+                                 gpointer data)
+{
+  GTask *task = data;
+  GCancellable *cancellable = g_task_get_cancellable (task);
+
+  g_cancellable_cancel (cancellable);
 }
 
 static void
@@ -1103,7 +1115,7 @@ on_sliced_image_loaded (GObject *source_object,
   GTask *task = G_TASK (res);
   GList *list, *pixbufs;
 
-  if (g_task_had_error (task))
+  if (g_task_had_error (task) || g_cancellable_is_cancelled (data->cancellable))
     return;
 
   pixbufs = g_task_propagate_pointer (task, NULL);
@@ -1118,6 +1130,10 @@ on_sliced_image_loaded (GObject *source_object,
     }
 
   g_list_free_full (pixbufs, g_object_unref);
+
+  g_signal_handlers_disconnect_by_func (data->actor,
+                                        on_sliced_image_actor_destroyed,
+                                        task);
 
   if (data->load_callback != NULL)
     data->load_callback (cache, data->load_callback_data);
@@ -1157,7 +1173,7 @@ load_sliced_image (GTask        *result,
   gchar *buffer = NULL;
   gsize length;
 
-  g_assert (!cancellable);
+  g_assert (cancellable);
 
   data = task_data;
   g_assert (data);
@@ -1165,7 +1181,7 @@ load_sliced_image (GTask        *result,
   loader = gdk_pixbuf_loader_new ();
   g_signal_connect (loader, "size-prepared", G_CALLBACK (on_loader_size_prepared), data);
 
-  if (!g_file_load_contents (data->gfile, NULL, &buffer, &length, NULL, &error))
+  if (!g_file_load_contents (data->gfile, cancellable, &buffer, &length, NULL, &error))
     {
       g_warning ("Failed to open sliced image: %s", error->message);
       goto out;
@@ -1235,6 +1251,7 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
   AsyncImageData *data;
   GTask *result;
   ClutterActor *actor = clutter_actor_new ();
+  GCancellable *cancellable = g_cancellable_new ();
 
   g_return_val_if_fail (G_IS_FILE (file), NULL);
   g_assert (paint_scale > 0);
@@ -1247,11 +1264,16 @@ st_texture_cache_load_sliced_image (StTextureCache *cache,
   data->resource_scale = resource_scale;
   data->gfile = g_object_ref (file);
   data->actor = actor;
+  data->cancellable = cancellable;
   data->load_callback = load_callback;
   data->load_callback_data = user_data;
   g_object_ref (G_OBJECT (actor));
 
-  result = g_task_new (cache, NULL, on_sliced_image_loaded, data);
+  result = g_task_new (cache, cancellable, on_sliced_image_loaded, data);
+
+  g_signal_connect (actor, "destroy",
+                    G_CALLBACK (on_sliced_image_actor_destroyed), result);
+
   g_task_set_task_data (result, data, on_data_destroy);
   g_task_run_in_thread (result, load_sliced_image);
 
