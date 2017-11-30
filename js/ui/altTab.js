@@ -321,8 +321,7 @@ var AppSwitcherPopup = new Lang.Class({
         } else if (this._items[this._selectedIndex].cachedWindows.length > 1 &&
                    !forceAppFocus) {
             this._thumbnailTimeoutId = Mainloop.timeout_add (
-                THUMBNAIL_POPUP_TIME,
-                Lang.bind(this, this._timeoutPopupThumbnails));
+                THUMBNAIL_POPUP_TIME, () => { this._timeoutPopupThumbnails(); });
             GLib.Source.set_name_by_id(this._thumbnailTimeoutId, '[gnome-shell] this._timeoutPopupThumbnails');
         }
     },
@@ -341,10 +340,11 @@ var AppSwitcherPopup = new Lang.Class({
                          { opacity: 0,
                            time: THUMBNAIL_FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
-                                                            thumbnailsActor.destroy();
-                                                            this.thumbnailsVisible = false;
-                                                        })
+                           onComplete: () => {
+                               thumbnailsActor.destroy();
+                               this.thumbnailsVisible = false;
+                           },
+                           onCompleteScope: this
                          });
         this._thumbnails = null;
         this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
@@ -352,12 +352,12 @@ var AppSwitcherPopup = new Lang.Class({
 
     _createThumbnails : function() {
         this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
-        this._thumbnails.connect('item-activated', Lang.bind(this, this._windowActivated));
-        this._thumbnails.connect('item-entered', Lang.bind(this, this._windowEntered));
-        this._thumbnails.actor.connect('destroy', Lang.bind(this, function() {
+        this._thumbnails.connect('item-activated', (thumbnailList, n) => { this._windowActivated(thumbnailList, n); });
+        this._thumbnails.connect('item-entered', (thumbnailList, n) => { this._windowEntered(thumbnailList, n); });
+        this._thumbnails.actor.connect('destroy', () => {
             this._thumbnails = null;
             this._thumbnailsFocused = false;
-        }));
+        });
 
         this.actor.add_actor(this._thumbnails.actor);
 
@@ -370,7 +370,8 @@ var AppSwitcherPopup = new Lang.Class({
                          { opacity: 255,
                            time: THUMBNAIL_FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function () { this.thumbnailsVisible = true; })
+                           onComplete: () => { this.thumbnailsVisible = true; },
+                           onCompleteScope: this
                          });
 
         this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
@@ -397,9 +398,8 @@ var CyclerHighlight = new Lang.Class({
 
         this.actor.add_constraint(constraint);
 
-        this.actor.connect('notify::allocation',
-                           Lang.bind(this, this._onAllocationChanged));
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('notify::allocation', () => { this._onAllocationChanged(); });
+        this.actor.connect('destroy', () => { this._onDestroy(); });
     },
 
     set window(w) {
@@ -457,7 +457,7 @@ var CyclerPopup = new Lang.Class({
         // We don't show an actual popup, so just provide what SwitcherPopup
         // expects instead of inheriting from SwitcherList
         this._switcherList = { actor: new St.Widget(),
-                               highlight: Lang.bind(this, this._highlightItem),
+                               highlight: (index, justOutline) => { this._highlightItem(index, justOutline); },
                                connect: function() {} };
     },
 
@@ -647,7 +647,7 @@ var AppSwitcher = new Lang.Class({
         this._altTabPopup = altTabPopup;
         this._mouseTimeOutId = 0;
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', () => { this._onDestroy(); });
     },
 
     _onDestroy: function() {
@@ -730,12 +730,11 @@ var AppSwitcher = new Lang.Class({
         if (this._mouseTimeOutId != 0)
             Mainloop.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
-            this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
-                                                        Lang.bind(this, function () {
-                                                                            this._enterItem(index);
-                                                                            this._mouseTimeOutId = 0;
-                                                                            return GLib.SOURCE_REMOVE;
-                                                        }));
+            this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT, () => {
+                this._enterItem(index);
+                this._mouseTimeOutId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
         } else
            this._itemEntered(index);
@@ -778,11 +777,10 @@ var AppSwitcher = new Lang.Class({
         this.icons.push(appIcon);
         let item = this.addItem(appIcon.actor, appIcon.label);
 
-        appIcon._stateChangedId = appIcon.app.connect('notify::state',
-            Lang.bind(this, function(app) {
-                if (app.state != Shell.AppState.RUNNING)
-                    this._removeIcon(app);
-            }));
+        appIcon._stateChangedId = appIcon.app.connect('notify::state', (app) => {
+            if (app.state != Shell.AppState.RUNNING)
+                this._removeIcon(app);
+        });
 
         let n = this._arrows.length;
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
@@ -849,7 +847,7 @@ var ThumbnailList = new Lang.Class({
 
         }
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', () => { this._onDestroy(); });
     },
 
     addClones : function (availHeight) {
@@ -875,8 +873,7 @@ var ThumbnailList = new Lang.Class({
             this._thumbnailBins[i].set_height(binHeight);
             this._thumbnailBins[i].add_actor(clone);
 
-            clone._destroyId = mutterWindow.connect('destroy',
-                                                    Lang.bind(this, this._removeThumbnail, clone));
+            clone._destroyId = mutterWindow.connect('destroy', () => { this._removeThumbnail(clone); });
             this._clones.push(clone);
         }
 
