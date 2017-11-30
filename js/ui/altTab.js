@@ -254,11 +254,12 @@ var AppSwitcherPopup = new Lang.Class({
 
     _finish : function(timestamp) {
         let appIcon = this._items[this._selectedIndex];
-        if (this._currentWindow < 0)
-            appIcon.app.activate_window(appIcon.cachedWindows[0], timestamp);
-        else if (appIcon.cachedWindows[this._currentWindow])
-            Main.activateWindow(appIcon.cachedWindows[this._currentWindow], timestamp);
-
+        if (appIcon) {
+            if (this._currentWindow < 0)
+                appIcon.app.activate_window(appIcon.cachedWindows[0], timestamp);
+            else if (appIcon.cachedWindows[this._currentWindow])
+                Main.activateWindow(appIcon.cachedWindows[this._currentWindow], timestamp);
+        }
         this.parent();
     },
 
