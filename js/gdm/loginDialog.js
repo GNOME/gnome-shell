@@ -493,6 +493,8 @@ var LoginDialog = new Lang.Class({
         this._logoBin = new St.Widget({ style_class: 'login-dialog-logo-bin',
                                         x_align: Clutter.ActorAlign.CENTER,
                                         y_align: Clutter.ActorAlign.END });
+        this._logoBin.connect('resource-scale-changed',
+                              Lang.bind(this, this._updateLogo));
         this.actor.add_child(this._logoBin);
         this._updateLogo();
 
@@ -786,11 +788,12 @@ var LoginDialog = new Lang.Class({
             return;
 
         this._logoBin.destroy_all_children();
-        if (this._logoFile) {
+        if (this._logoFile && this._logoBin.resource_scale > 0) {
             let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
             this._logoBin.add_child(this._textureCache.load_file_async(this._logoFile,
                                                                        -1, _LOGO_ICON_HEIGHT,
-                                                                       scaleFactor));
+                                                                       scaleFactor,
+                                                                       this._logoBin.resource_scale));
         }
     },
 
