@@ -674,7 +674,7 @@ meta_compositor_remove_window (MetaCompositor *compositor,
   if (compositor->unredirected_window == window)
     set_unredirected_window (compositor, NULL);
 
-  meta_window_actor_destroy (window_actor);
+  meta_window_actor_queue_destroy (window_actor);
 }
 
 void

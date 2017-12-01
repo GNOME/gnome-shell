@@ -12,7 +12,7 @@
 
 MetaWindowActor *meta_window_actor_new (MetaWindow *window);
 
-void meta_window_actor_destroy   (MetaWindowActor *self);
+void meta_window_actor_queue_destroy   (MetaWindowActor *self);
 
 void meta_window_actor_show (MetaWindowActor *self,
                              MetaCompEffect   effect);

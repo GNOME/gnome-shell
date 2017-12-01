@@ -1238,7 +1238,7 @@ meta_window_actor_set_unredirected (MetaWindowActor *self,
 }
 
 void
-meta_window_actor_destroy (MetaWindowActor *self)
+meta_window_actor_queue_destroy (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaWindow *window = priv->window;
