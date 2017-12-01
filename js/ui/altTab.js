@@ -156,6 +156,17 @@ var AppSwitcherPopup = new Lang.Class({
                                  this._items[this._selectedIndex].cachedWindows.length);
     },
 
+    _quitApplication: function(appIndex) {
+        let appIcon = this._items[appIndex];
+        if (!appIcon)
+            return;
+
+        // Make sure the list of thumbnails is hidden before quitting the
+        // application, not to keep an empty list of windows showing up.
+        this._select(appIndex, null, false);
+        appIcon.app.request_quit();
+    },
+
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
             if (!this._thumbnailsFocused)
@@ -176,7 +187,7 @@ var AppSwitcherPopup = new Lang.Class({
             else if (keysym == Clutter.Up)
                 this._select(this._selectedIndex, null, true);
             else if (keysym == Clutter.q)
-                this._items[this._selectedIndex].app.request_quit();
+                this._quitApplication(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;
         } else {
@@ -187,7 +198,7 @@ var AppSwitcherPopup = new Lang.Class({
             else if (keysym == Clutter.Down)
                 this._select(this._selectedIndex, 0);
             else if (keysym == Clutter.q)
-                this._items[this._selectedIndex].app.request_quit();
+                this._quitApplication(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;
         }
