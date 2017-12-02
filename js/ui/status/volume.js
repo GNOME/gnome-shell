@@ -36,8 +36,8 @@ var StreamSlider = new Lang.Class({
         this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
 
         this._slider = new Slider.Slider(0);
-        this._slider.connect('value-changed', Lang.bind(this, this._sliderChanged));
-        this._slider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
+        this._slider.connect('value-changed', this._sliderChanged.bind(this));
+        this._slider.connect('drag-end', this._notifyVolumeChange.bind(this));
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.actor.add(this._icon);
@@ -81,8 +81,8 @@ var StreamSlider = new Lang.Class({
     },
 
     _connectStream(stream) {
-        this._mutedChangedId = stream.connect('notify::is-muted', Lang.bind(this, this._updateVolume));
-        this._volumeChangedId = stream.connect('notify::volume', Lang.bind(this, this._updateVolume));
+        this._mutedChangedId = stream.connect('notify::is-muted', this._updateVolume.bind(this));
+        this._volumeChangedId = stream.connect('notify::volume', this._updateVolume.bind(this));
     },
 
     _shouldBeVisible() {
@@ -172,7 +172,7 @@ var OutputStreamSlider = new Lang.Class({
 
     _connectStream(stream) {
         this.parent(stream);
-        this._portChangedId = stream.connect('notify::port', Lang.bind(this, this._portChanged));
+        this._portChangedId = stream.connect('notify::port', this._portChanged.bind(this));
         this._portChanged();
     },
 
@@ -219,8 +219,8 @@ var InputStreamSlider = new Lang.Class({
     _init(control) {
         this.parent(control);
         this._slider.actor.accessible_name = _("Microphone");
-        this._control.connect('stream-added', Lang.bind(this, this._maybeShowInput));
-        this._control.connect('stream-removed', Lang.bind(this, this._maybeShowInput));
+        this._control.connect('stream-added', this._maybeShowInput.bind(this));
+        this._control.connect('stream-removed', this._maybeShowInput.bind(this));
         this._icon.icon_name = 'audio-input-microphone-symbolic';
     },
 
@@ -265,9 +265,9 @@ var VolumeMenu = new Lang.Class({
         this.hasHeadphones = false;
 
         this._control = control;
-        this._control.connect('state-changed', Lang.bind(this, this._onControlStateChanged));
-        this._control.connect('default-sink-changed', Lang.bind(this, this._readOutput));
-        this._control.connect('default-source-changed', Lang.bind(this, this._readInput));
+        this._control.connect('state-changed', this._onControlStateChanged.bind(this));
+        this._control.connect('default-sink-changed', this._readOutput.bind(this));
+        this._control.connect('default-source-changed', this._readInput.bind(this));
 
         this._output = new OutputStreamSlider(this._control);
         this._output.connect('stream-updated', () => {
@@ -337,7 +337,7 @@ var Indicator = new Lang.Class({
 
         this.menu.addMenuItem(this._volumeMenu);
 
-        this.indicators.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+        this.indicators.connect('scroll-event', this._onScrollEvent.bind(this));
     },
 
     _onScrollEvent(actor, event) {

@@ -79,7 +79,7 @@ var Magnifier = new Lang.Class({
         let showAtLaunch = this._settingsInit(aZoomRegion);
         aZoomRegion.scrollContentsTo(this.xMouse, this.yMouse);
 
-        cursorTracker.connect('cursor-changed', Lang.bind(this, this._updateMouseSprite));
+        cursorTracker.connect('cursor-changed', this._updateMouseSprite.bind(this));
         this._cursorTracker = cursorTracker;
 
         // Export to dbus.
@@ -153,7 +153,7 @@ var Magnifier = new Lang.Class({
      */
     startTrackingMouse() {
         if (!this._pointerWatch)
-            this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(MOUSE_POLL_FREQUENCY, Lang.bind(this, this.scrollToMousePos));
+            this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(MOUSE_POLL_FREQUENCY, this.scrollToMousePos.bind(this));
     },
 
     /**
@@ -452,38 +452,38 @@ var Magnifier = new Lang.Class({
         });
 
         this._settings.connect('changed::' + SCREEN_POSITION_KEY,
-                               Lang.bind(this, this._updateScreenPosition));
+                               this._updateScreenPosition.bind(this));
         this._settings.connect('changed::' + MAG_FACTOR_KEY,
-                               Lang.bind(this, this._updateMagFactor));
+                               this._updateMagFactor.bind(this));
         this._settings.connect('changed::' + LENS_MODE_KEY,
-                               Lang.bind(this, this._updateLensMode));
+                               this._updateLensMode.bind(this));
         this._settings.connect('changed::' + CLAMP_MODE_KEY,
-                               Lang.bind(this, this._updateClampMode));
+                               this._updateClampMode.bind(this));
         this._settings.connect('changed::' + MOUSE_TRACKING_KEY,
-                               Lang.bind(this, this._updateMouseTrackingMode));
+                               this._updateMouseTrackingMode.bind(this));
         this._settings.connect('changed::' + FOCUS_TRACKING_KEY,
-                               Lang.bind(this, this._updateFocusTrackingMode));
+                               this._updateFocusTrackingMode.bind(this));
         this._settings.connect('changed::' + CARET_TRACKING_KEY,
-                               Lang.bind(this, this._updateCaretTrackingMode));
+                               this._updateCaretTrackingMode.bind(this));
 
         this._settings.connect('changed::' + INVERT_LIGHTNESS_KEY,
-                               Lang.bind(this, this._updateInvertLightness));
+                               this._updateInvertLightness.bind(this));
         this._settings.connect('changed::' + COLOR_SATURATION_KEY,
-                               Lang.bind(this, this._updateColorSaturation));
+                               this._updateColorSaturation.bind(this));
 
         this._settings.connect('changed::' + BRIGHT_RED_KEY,
-                               Lang.bind(this, this._updateBrightness));
+                               this._updateBrightness.bind(this));
         this._settings.connect('changed::' + BRIGHT_GREEN_KEY,
-                               Lang.bind(this, this._updateBrightness));
+                               this._updateBrightness.bind(this));
         this._settings.connect('changed::' + BRIGHT_BLUE_KEY,
-                               Lang.bind(this, this._updateBrightness));
+                               this._updateBrightness.bind(this));
 
         this._settings.connect('changed::' + CONTRAST_RED_KEY,
-                               Lang.bind(this, this._updateContrast));
+                               this._updateContrast.bind(this));
         this._settings.connect('changed::' + CONTRAST_GREEN_KEY,
-                               Lang.bind(this, this._updateContrast));
+                               this._updateContrast.bind(this));
         this._settings.connect('changed::' + CONTRAST_BLUE_KEY,
-                               Lang.bind(this, this._updateContrast));
+                               this._updateContrast.bind(this));
 
         this._settings.connect('changed::' + SHOW_CROSS_HAIRS_KEY, () => {
             this.setCrosshairsVisible(this._settings.get_boolean(SHOW_CROSS_HAIRS_KEY));
@@ -709,11 +709,11 @@ var ZoomRegion = new Lang.Class({
         this._scrollContentsTimerId = 0;
 
         Main.layoutManager.connect('monitors-changed',
-                                   Lang.bind(this, this._monitorsChanged));
+                                   this._monitorsChanged.bind(this));
         this._focusCaretTracker.connect('caret-moved',
-                                    Lang.bind(this, this._updateCaret));
+                                    this._updateCaret.bind(this));
         this._focusCaretTracker.connect('focus-changed',
-                                    Lang.bind(this, this._updateFocus));
+                                    this._updateFocus.bind(this));
     },
 
     _updateFocus(caller, event) {
@@ -1558,7 +1558,7 @@ var Crosshairs = new Lang.Class({
         this.reCenter();
 
         Main.layoutManager.connect('monitors-changed',
-                                   Lang.bind(this, this._monitorsChanged));
+                                   this._monitorsChanged.bind(this));
     },
 
     _monitorsChanged() {

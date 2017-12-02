@@ -55,13 +55,13 @@ var AuthPrompt = new Lang.Class({
 
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._gdmClient, { reauthenticationOnly: reauthenticationOnly });
 
-        this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
-        this._userVerifier.connect('show-message', Lang.bind(this, this._onShowMessage));
-        this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
-        this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
-        this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
-        this._userVerifier.connect('smartcard-status-changed', Lang.bind(this, this._onSmartcardStatusChanged));
-        this._userVerifier.connect('ovirt-user-authenticated', Lang.bind(this, this._onOVirtUserAuthenticated));
+        this._userVerifier.connect('ask-question', this._onAskQuestion.bind(this));
+        this._userVerifier.connect('show-message', this._onShowMessage.bind(this));
+        this._userVerifier.connect('verification-failed', this._onVerificationFailed.bind(this));
+        this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
+        this._userVerifier.connect('reset', this._onReset.bind(this));
+        this._userVerifier.connect('smartcard-status-changed', this._onSmartcardStatusChanged.bind(this));
+        this._userVerifier.connect('ovirt-user-authenticated', this._onOVirtUserAuthenticated.bind(this));
         this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('next', () => {
@@ -76,7 +76,7 @@ var AuthPrompt = new Lang.Class({
 
         this.actor = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
                                         vertical: true });
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         this.actor.connect('key-press-event', (actor, event) => {
                 if (event.get_key_symbol() == Clutter.KEY_Escape)
                     this.cancel();

@@ -21,26 +21,26 @@ var AltSwitcher = new Lang.Class({
 
     _init(standard, alternate) {
         this._standard = standard;
-        this._standard.connect('notify::visible', Lang.bind(this, this._sync));
+        this._standard.connect('notify::visible', this._sync.bind(this));
         if (this._standard instanceof St.Button)
             this._standard.connect('clicked',
                                    () => { this._clickAction.release(); });
 
         this._alternate = alternate;
-        this._alternate.connect('notify::visible', Lang.bind(this, this._sync));
+        this._alternate.connect('notify::visible', this._sync.bind(this));
         if (this._alternate instanceof St.Button)
             this._alternate.connect('clicked',
                                     () => { this._clickAction.release(); });
 
-        this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+        this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
 
         this._flipped = false;
 
         this._clickAction = new Clutter.ClickAction();
-        this._clickAction.connect('long-press', Lang.bind(this, this._onLongPress));
+        this._clickAction.connect('long-press', this._onLongPress.bind(this));
 
         this.actor = new St.Bin();
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         this.actor.connect('notify::mapped', () => { this._flipped = false; });
     },
 
@@ -141,7 +141,7 @@ var Indicator = new Lang.Class({
         });
         this._updateMultiUser();
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
     },
 
@@ -251,8 +251,8 @@ var Indicator = new Lang.Class({
         this._switchUserSubMenu.menu.addSettingsAction(_("Account Settings"),
                                                        'gnome-user-accounts-panel.desktop');
 
-        this._user.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUserSubMenu));
-        this._user.connect('changed', Lang.bind(this, this._updateSwitchUserSubMenu));
+        this._user.connect('notify::is-loaded', this._updateSwitchUserSubMenu.bind(this));
+        this._user.connect('changed', this._updateSwitchUserSubMenu.bind(this));
 
         this.menu.addMenuItem(this._switchUserSubMenu);
 

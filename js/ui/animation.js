@@ -14,7 +14,7 @@ var Animation = new Lang.Class({
 
     _init(file, width, height, speed) {
         this.actor = new St.Bin();
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         this._speed = speed;
 
         this._isLoaded = false;
@@ -24,7 +24,7 @@ var Animation = new Lang.Class({
 
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         this._animations = St.TextureCache.get_default().load_sliced_image (file, width, height, scaleFactor,
-                                                                            Lang.bind(this, this._animationsLoaded));
+                                                                            this._animationsLoaded.bind(this));
         this.actor.set_child(this._animations);
     },
 
@@ -33,7 +33,7 @@ var Animation = new Lang.Class({
             if (this._frame == 0)
                 this._showFrame(0);
 
-            this._timeoutId = GLib.timeout_add(GLib.PRIORITY_LOW, this._speed, Lang.bind(this, this._update));
+            this._timeoutId = GLib.timeout_add(GLib.PRIORITY_LOW, this._speed, this._update.bind(this));
             GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._update');
         }
 

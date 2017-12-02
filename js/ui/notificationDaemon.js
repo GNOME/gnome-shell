@@ -106,9 +106,9 @@ var FdoNotificationDaemon = new Lang.Class({
         this._nextNotificationId = 1;
 
         Shell.WindowTracker.get_default().connect('notify::focus-app',
-            Lang.bind(this, this._onFocusAppChanged));
+            this._onFocusAppChanged.bind(this));
         Main.overview.connect('hidden',
-            Lang.bind(this, this._onFocusAppChanged));
+            this._onFocusAppChanged.bind(this));
     },
 
     _imageForNotificationData(hints) {
@@ -480,7 +480,7 @@ var FdoNotificationDaemonSource = new Lang.Class({
             this._nameWatcherId = Gio.DBus.session.watch_name(sender,
                                                               Gio.BusNameWatcherFlags.NONE,
                                                               null,
-                                                              Lang.bind(this, this._onNameVanished));
+                                                              this._onNameVanished.bind(this));
         else
             this._nameWatcherId = 0;
     },
@@ -614,8 +614,9 @@ var GtkNotificationDaemonNotification = new Lang.Class({
 
         if (buttons) {
             buttons.deep_unpack().forEach(button => {
-                this.addAction(button.label.unpack(),
-                               Lang.bind(this, this._onButtonClicked, button));
+                this.addAction(button.label.unpack(), () => {
+                    this._onButtonClicked(button);
+                });
             });
         }
 
@@ -811,7 +812,7 @@ var GtkNotificationDaemon = new Lang.Class({
             delete this._sources[appId];
             this._saveNotifications();
         });
-        source.connect('count-updated', Lang.bind(this, this._saveNotifications));
+        source.connect('count-updated', this._saveNotifications.bind(this));
         Main.messageTray.add(source);
         this._sources[appId] = source;
         return source;

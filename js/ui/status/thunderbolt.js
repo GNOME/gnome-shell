@@ -82,7 +82,7 @@ var Client = new Lang.Class({
 	    Gio.DBus.system,
 	    BOLT_DBUS_NAME,
 	    BOLT_DBUS_PATH,
-	    Lang.bind(this, this._onProxyReady)
+	    this._onProxyReady.bind(this)
 	);
 
 	this.probing = false;
@@ -94,8 +94,8 @@ var Client = new Lang.Class({
 	    return;
 	}
 	this._proxy = proxy;
-	this._propsChangedId = this._proxy.connect('g-properties-changed', Lang.bind(this, this._onPropertiesChanged));
-	this._deviceAddedId = this._proxy.connectSignal('DeviceAdded', Lang.bind(this, this._onDeviceAdded), true);
+	this._propsChangedId = this._proxy.connect('g-properties-changed', this._onPropertiesChanged.bind(this));
+	this._deviceAddedId = this._proxy.connectSignal('DeviceAdded', this._onDeviceAdded.bind(this));
 
 	this.probing = this._proxy.Probing;
 	if (this.probing)
@@ -161,7 +161,7 @@ var AuthRobot = new Lang.Class({
 	this._devicesToEnroll = [];
 	this._enrolling = false;
 
-	this._client.connect('device-added', Lang.bind(this, this._onDeviceAdded));
+	this._client.connect('device-added', this._onDeviceAdded.bind(this));
     },
 
     close() {
@@ -201,7 +201,7 @@ var AuthRobot = new Lang.Class({
 
 	this.enrolling = true;
 	GLib.idle_add(GLib.PRIORITY_DEFAULT,
-		      Lang.bind(this, this._enrollDevicesIdle));
+		      this._enrollDevicesIdle.bind(this));
     },
 
     _onEnrollDone(device, error) {
@@ -216,7 +216,7 @@ var AuthRobot = new Lang.Class({
 
 	if (this._enrolling)
 	    GLib.idle_add(GLib.PRIORITY_DEFAULT,
-			  Lang.bind(this, this._enrollDevicesIdle));
+			  this._enrollDevicesIdle.bind(this));
     },
 
     _enrollDevicesIdle() {
@@ -228,7 +228,7 @@ var AuthRobot = new Lang.Class({
 
 	this._client.enrollDevice(dev.Uid,
 				  Policy.DEFAULT,
-				  Lang.bind(this, this._onEnrollDone));
+				  this._onEnrollDone.bind(this));
 	return GLib.SOURCE_REMOVE;
     }
 
@@ -249,14 +249,14 @@ var Indicator = new Lang.Class({
         this._indicator.icon_name = 'thunderbolt-symbolic';
 
 	this._client = new Client();
-	this._client.connect('probing-changed', Lang.bind(this, this._onProbing));
+	this._client.connect('probing-changed', this._onProbing.bind(this));
 
 	this._robot =  new AuthRobot(this._client);
 
-	this._robot.connect('enroll-device', Lang.bind(this, this._onEnrollDevice));
-	this._robot.connect('enroll-failed', Lang.bind(this, this._onEnrollFailed));
+	this._robot.connect('enroll-device', this._onEnrollDevice.bind(this));
+	this._robot.connect('enroll-failed', this._onEnrollFailed.bind(this));
 
-	Main.sessionMode.connect('updated', Lang.bind(this, this._sync));
+	Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
 
 	this._source = null;

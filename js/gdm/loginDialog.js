@@ -57,7 +57,7 @@ var UserListItem = new Lang.Class({
     _init(user) {
         this.user = user;
         this._userChangedId = this.user.connect('changed',
-                                                 Lang.bind(this, this._onUserChanged));
+                                                 this._onUserChanged.bind(this));
 
         let layout = new St.BoxLayout({ vertical: true });
         this.actor = new St.Button({ style_class: 'login-dialog-user-list-item',
@@ -67,8 +67,7 @@ var UserListItem = new Lang.Class({
                                      reactive: true,
                                      x_align: St.Align.START,
                                      x_fill: true });
-        this.actor.connect('destroy',
-                           Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this.actor.connect('key-focus-in', () => {
             this._setSelected(true);
@@ -90,7 +89,7 @@ var UserListItem = new Lang.Class({
                                                  scale_x: 0 });
         layout.add(this._timedLoginIndicator);
 
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('clicked', this._onClicked.bind(this));
         this._onUserChanged();
     },
 
@@ -160,7 +159,7 @@ var UserList = new Lang.Class({
         this.actor.add_actor(this._box);
         this._items = {};
 
-        this.actor.connect('key-focus-in', Lang.bind(this, this._moveFocusToItems));
+        this.actor.connect('key-focus-in', this._moveFocusToItems.bind(this));
     },
 
     _moveFocusToItems() {
@@ -257,8 +256,7 @@ var UserList = new Lang.Class({
 
         this._items[userName] = item;
 
-        item.connect('activate',
-                     Lang.bind(this, this._onItemActivated));
+        item.connect('activate', this._onItemActivated.bind(this));
 
         // Try to keep the focused item front-and-center
         item.actor.connect('key-focus-in', () => { this.scrollToItem(item); });
@@ -402,8 +400,8 @@ var LoginDialog = new Lang.Class({
         this.actor.get_accessible().set_role(Atk.Role.WINDOW);
 
         this.actor.add_constraint(new Layout.MonitorConstraint({ primary: true }));
-        this.actor.connect('allocate', Lang.bind(this, this._onAllocate));
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('allocate', this._onAllocate.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         parentActor.add_child(this.actor);
 
         this._userManager = AccountsService.UserManager.get_default()
@@ -412,17 +410,17 @@ var LoginDialog = new Lang.Class({
         this._settings = new Gio.Settings({ schema_id: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
         this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_KEY,
-                               Lang.bind(this, this._updateBanner));
+                               this._updateBanner.bind(this));
         this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_TEXT_KEY,
-                               Lang.bind(this, this._updateBanner));
+                               this._updateBanner.bind(this));
         this._settings.connect('changed::' + GdmUtil.DISABLE_USER_LIST_KEY,
-                               Lang.bind(this, this._updateDisableUserList));
+                               this._updateDisableUserList.bind(this));
         this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
-                               Lang.bind(this, this._updateLogo));
+                               this._updateLogo.bind(this));
 
         this._textureCache = St.TextureCache.get_default();
         this._updateLogoTextureId = this._textureCache.connect('texture-file-changed',
-                                                               Lang.bind(this, this._updateLogoTexture));
+                                                               this._updateLogoTexture.bind(this));
 
         this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
                                                     x_align: Clutter.ActorAlign.CENTER,
@@ -438,8 +436,8 @@ var LoginDialog = new Lang.Class({
                                      y_fill: true });
 
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
-        this._authPrompt.connect('prompted', Lang.bind(this, this._onPrompted));
-        this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
+        this._authPrompt.connect('prompted', this._onPrompted.bind(this));
+        this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.hide();
         this.actor.add_child(this._authPrompt.actor);
 
@@ -456,7 +454,7 @@ var LoginDialog = new Lang.Class({
                                                 x_align: St.Align.START,
                                                 x_fill: true });
 
-        this._notListedButton.connect('clicked', Lang.bind(this, this._hideUserListAskForUsernameAndBeginVerification));
+        this._notListedButton.connect('clicked', this._hideUserListAskForUsernameAndBeginVerification.bind(this));
 
         this._notListedButton.hide();
 
@@ -506,15 +504,15 @@ var LoginDialog = new Lang.Class({
 
         this._realmManager = new Realmd.Manager();
         this._realmSignalId = this._realmManager.connect('login-format-changed',
-                                                         Lang.bind(this, this._showRealmLoginHint));
+                                                         this._showRealmLoginHint.bind(this));
 
-        LoginManager.getLoginManager().getCurrentSessionProxy(Lang.bind(this, this._gotGreeterSessionProxy));
+        LoginManager.getLoginManager().getCurrentSessionProxy(this._gotGreeterSessionProxy.bind(this));
 
         // If the user list is enabled, it should take key focus; make sure the
         // screen shield is initialized first to prevent it from stealing the
         // focus later
         this._startupCompleteId = Main.layoutManager.connect('startup-complete',
-                                                             Lang.bind(this, this._updateDisableUserList));
+                                                             this._updateDisableUserList.bind(this));
     },
 
     _getBannerAllocation(dialogBox) {
@@ -712,7 +710,7 @@ var LoginDialog = new Lang.Class({
                     }
                 });
         } else {
-            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, this._loadUserList));
+            let id = GLib.idle_add(GLib.PRIORITY_DEFAULT, this._loadUserList.bind(this));
             GLib.Source.set_name_by_id(id, '[gnome-shell] _loadUserList');
         }
     },
@@ -809,11 +807,11 @@ var LoginDialog = new Lang.Class({
             this._greeter = this._gdmClient.get_greeter_sync(null);
 
             this._defaultSessionChangedId = this._greeter.connect('default-session-name-changed',
-                                                                  Lang.bind(this, this._onDefaultSessionChanged));
+                                                                  this._onDefaultSessionChanged.bind(this));
             this._sessionOpenedId = this._greeter.connect('session-opened',
-                                                          Lang.bind(this, this._onSessionOpened));
+                                                          this._onSessionOpened.bind(this));
             this._timedLoginRequestedId = this._greeter.connect('timed-login-requested',
-                                                                Lang.bind(this, this._onTimedLoginRequested));
+                                                                this._onTimedLoginRequested.bind(this));
         }
     },
 

@@ -17,7 +17,7 @@ var Indicator = new Lang.Class({
         this._indicator.add_style_class_name('screencast-indicator');
         this._sync();
 
-        Main.screencastService.connect('updated', Lang.bind(this, this._sync));
+        Main.screencastService.connect('updated', this._sync.bind(this));
     },
 
     _sync() {

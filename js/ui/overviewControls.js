@@ -119,15 +119,15 @@ var SlidingControl = new Lang.Class({
                                      style_class: 'overview-controls',
                                      clip_to_allocation: true });
 
-        Main.overview.connect('hiding', Lang.bind(this, this._onOverviewHiding));
+        Main.overview.connect('hiding', this._onOverviewHiding.bind(this));
 
-        Main.overview.connect('item-drag-begin', Lang.bind(this, this._onDragBegin));
-        Main.overview.connect('item-drag-end', Lang.bind(this, this._onDragEnd));
-        Main.overview.connect('item-drag-cancelled', Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('item-drag-begin', this._onDragBegin.bind(this));
+        Main.overview.connect('item-drag-end', this._onDragEnd.bind(this));
+        Main.overview.connect('item-drag-cancelled', this._onDragEnd.bind(this));
 
-        Main.overview.connect('window-drag-begin', Lang.bind(this, this._onWindowDragBegin));
-        Main.overview.connect('window-drag-cancelled', Lang.bind(this, this._onWindowDragEnd));
-        Main.overview.connect('window-drag-end', Lang.bind(this, this._onWindowDragEnd));
+        Main.overview.connect('window-drag-begin', this._onWindowDragBegin.bind(this));
+        Main.overview.connect('window-drag-cancelled', this._onWindowDragEnd.bind(this));
+        Main.overview.connect('window-drag-end', this._onWindowDragEnd.bind(this));
     },
 
     _getSlide() {
@@ -252,8 +252,8 @@ var ThumbnailsSlider = new Lang.Class({
         this.actor.track_hover = true;
         this.actor.add_actor(this._thumbnailsBox.actor);
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateSlide));
-        this.actor.connect('notify::hover', Lang.bind(this, this._updateSlide));
+        Main.layoutManager.connect('monitors-changed', this._updateSlide.bind(this));
+        this.actor.connect('notify::hover', this._updateSlide.bind(this));
         this._thumbnailsBox.actor.bind_property('visible', this.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
     },
 
@@ -328,7 +328,7 @@ var DashSlider = new Lang.Class({
 
         this.actor.add_actor(this._dash.actor);
 
-        this._dash.connect('icon-size-changed', Lang.bind(this, this._updateSlide));
+        this._dash.connect('icon-size-changed', this._updateSlide.bind(this));
     },
 
     _getSlide() {
@@ -410,8 +410,8 @@ var ControlsManager = new Lang.Class({
 
         this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
                                                           this.dash.showAppsButton);
-        this.viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
-        this.viewSelector.connect('page-empty', Lang.bind(this, this._onPageEmpty));
+        this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
+        this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
 
         let layout = new ControlsLayout();
         this.actor = new St.Widget({ layout_manager: layout,
@@ -428,9 +428,9 @@ var ControlsManager = new Lang.Class({
                                                    expand: true });
         this._group.add_actor(this._thumbnailsSlider.actor);
 
-        layout.connect('allocation-changed', Lang.bind(this, this._updateWorkspacesGeometry));
+        layout.connect('allocation-changed', this._updateWorkspacesGeometry.bind(this));
 
-        Main.overview.connect('showing', Lang.bind(this, this._updateSpacerVisibility));
+        Main.overview.connect('showing', this._updateSpacerVisibility.bind(this));
         Main.overview.connect('item-drag-begin', () => {
             let activePage = this.viewSelector.getActivePage();
             if (activePage != ViewSelector.ViewPage.WINDOWS)

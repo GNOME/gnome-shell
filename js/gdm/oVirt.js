@@ -34,7 +34,7 @@ var OVirtCredentialsManager = new Lang.Class({
 
         this._credentials = new OVirtCredentials();
         this._credentials.connectSignal('UserAuthenticated',
-                                        Lang.bind(this, this._onUserAuthenticated));
+                                        this._onUserAuthenticated.bind(this));
     },
 
     _onUserAuthenticated(proxy, sender, [token]) {

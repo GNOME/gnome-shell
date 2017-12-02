@@ -25,11 +25,11 @@ var ButtonBox = new Lang.Class({
                                       x_fill: true,
                                       child: this.actor });
 
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocate.bind(this));
 
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        this.actor.connect('style-changed', this._onStyleChanged.bind(this));
         this._minHPadding = this._natHPadding = 0.0;
     },
 
@@ -100,8 +100,8 @@ var Button = new Lang.Class({
                       accessible_name: nameText ? nameText : "",
                       accessible_role: Atk.Role.MENU });
 
-        this.actor.connect('event', Lang.bind(this, this._onEvent));
-        this.actor.connect('notify::visible', Lang.bind(this, this._onVisibilityChanged));
+        this.actor.connect('event', this._onEvent.bind(this));
+        this.actor.connect('notify::visible', this._onVisibilityChanged.bind(this));
 
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this.actor);
@@ -122,8 +122,8 @@ var Button = new Lang.Class({
         this.menu = menu;
         if (this.menu) {
             this.menu.actor.add_style_class_name('panel-menu');
-            this.menu.connect('open-state-changed', Lang.bind(this, this._onOpenStateChanged));
-            this.menu.actor.connect('key-press-event', Lang.bind(this, this._onMenuKeyPress));
+            this.menu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
+            this.menu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
 
             Main.uiGroup.add_actor(this.menu.actor);
             this.menu.actor.hide();
@@ -220,7 +220,7 @@ var SystemIndicator = new Lang.Class({
     _addIndicator() {
         let icon = new St.Icon({ style_class: 'system-status-icon' });
         this.indicators.add_actor(icon);
-        icon.connect('notify::visible', Lang.bind(this, this._syncIndicatorsVisible));
+        icon.connect('notify::visible', this._syncIndicatorsVisible.bind(this));
         this._syncIndicatorsVisible();
         return icon;
     }
