@@ -74,8 +74,8 @@ var MediaMessage = new Lang.Class({
                 this._player.next();
             });
 
-        this._player.connect('changed', Lang.bind(this, this._update));
-        this._player.connect('closed', Lang.bind(this, this.close));
+        this._player.connect('changed', this._update.bind(this));
+        this._player.connect('closed', this.close.bind(this));
         this._update();
     },
 
@@ -117,10 +117,10 @@ var MprisPlayer = new Lang.Class({
     _init(busName) {
         this._mprisProxy = new MprisProxy(Gio.DBus.session, busName,
                                           '/org/mpris/MediaPlayer2',
-                                          Lang.bind(this, this._onMprisProxyReady));
+                                          this._onMprisProxyReady.bind(this));
         this._playerProxy = new MprisPlayerProxy(Gio.DBus.session, busName,
                                                  '/org/mpris/MediaPlayer2',
-                                                 Lang.bind(this, this._onPlayerProxyReady));
+                                                 this._onPlayerProxyReady.bind(this));
 
         this._visible = false;
         this._trackArtists = [];
@@ -199,7 +199,7 @@ var MprisPlayer = new Lang.Class({
 
     _onPlayerProxyReady() {
         this._propsChangedId = this._playerProxy.connect('g-properties-changed',
-                                                         Lang.bind(this, this._updateState));
+                                                         this._updateState.bind(this));
         this._updateState();
     },
 
@@ -238,7 +238,7 @@ var MediaSection = new Lang.Class({
         this._proxy = new DBusProxy(Gio.DBus.session,
                                     'org.freedesktop.DBus',
                                     '/org/freedesktop/DBus',
-                                    Lang.bind(this, this._onProxyReady));
+                                    this._onProxyReady.bind(this));
     },
 
     _shouldShow() {
@@ -272,7 +272,7 @@ var MediaSection = new Lang.Class({
             });
         });
         this._proxy.connectSignal('NameOwnerChanged',
-                                  Lang.bind(this, this._onNameOwnerChanged));
+                                  this._onNameOwnerChanged.bind(this));
     },
 
     _onNameOwnerChanged(proxy, sender, [name, oldOwner, newOwner]) {

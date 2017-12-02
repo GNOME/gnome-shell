@@ -57,7 +57,7 @@ var TouchpadShowOverviewAction = new Lang.Class({
     Name: 'TouchpadShowOverviewAction',
 
     _init(actor) {
-        actor.connect('captured-event', Lang.bind(this, this._handleEvent));
+        actor.connect('captured-event', this._handleEvent.bind(this));
     },
 
     _handleEvent(actor, event) {
@@ -145,7 +145,7 @@ var ViewSelector = new Lang.Class({
         this.actor = new Shell.Stack({ name: 'viewSelector' });
 
         this._showAppsButton = showAppsButton;
-        this._showAppsButton.connect('notify::checked', Lang.bind(this, this._onShowAppsButtonToggled));
+        this._showAppsButton.connect('notify::checked', this._onShowAppsButtonToggled.bind(this));
 
         this._activePage = null;
 
@@ -155,8 +155,8 @@ var ViewSelector = new Lang.Class({
         ShellEntry.addContextMenu(this._entry);
 
         this._text = this._entry.clutter_text;
-        this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
-        this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+        this._text.connect('text-changed', this._onTextChanged.bind(this));
+        this._text.connect('key-press-event', this._onKeyPress.bind(this));
         this._text.connect('key-focus-in', () => {
             this._searchResults.highlightDefault(true);
         });
@@ -170,8 +170,8 @@ var ViewSelector = new Lang.Class({
             this._entry.menu.close();
             this._searchResults.popupMenuDefault();
         });
-        this._entry.connect('notify::mapped', Lang.bind(this, this._onMapped));
-        global.stage.connect('notify::key-focus', Lang.bind(this, this._onStageKeyFocusChanged));
+        this._entry.connect('notify::mapped', this._onMapped.bind(this));
+        global.stage.connect('notify::key-focus', this._onStageKeyFocusChanged.bind(this));
 
         this._entry.set_primary_icon(new St.Icon({ style_class: 'search-entry-icon',
                                                    icon_name: 'edit-find-symbolic' }));
@@ -208,7 +208,7 @@ var ViewSelector = new Lang.Class({
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', () => {
             this._stageKeyPressId = global.stage.connect('key-press-event',
-                                                         Lang.bind(this, this._onStageKeyPress));
+                                                         this._onStageKeyPress.bind(this));
         });
         Main.overview.connect('hiding', () => {
             if (this._stageKeyPressId != 0) {
@@ -233,14 +233,14 @@ var ViewSelector = new Lang.Class({
                               Meta.KeyBindingFlags.NONE,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
-                              Lang.bind(this, this._toggleAppsPage));
+                              this._toggleAppsPage.bind(this));
 
         Main.wm.addKeybinding('toggle-overview',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
-                              Lang.bind(Main.overview, Main.overview.toggle));
+                              Main.overview.toggle.bind(Main.overview));
 
         let side;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
@@ -258,11 +258,11 @@ var ViewSelector = new Lang.Class({
         global.stage.add_action(gesture);
 
         gesture = new ShowOverviewAction();
-        gesture.connect('activated', Lang.bind(this, this._pinchGestureActivated));
+        gesture.connect('activated', this._pinchGestureActivated.bind(this));
         global.stage.add_action(gesture);
 
         gesture = new TouchpadShowOverviewAction(global.stage);
-        gesture.connect('activated', Lang.bind(this, this._pinchGestureActivated));
+        gesture.connect('activated', this._pinchGestureActivated.bind(this));
     },
 
     _pinchGestureActivated(action, scale) {
@@ -484,7 +484,7 @@ var ViewSelector = new Lang.Class({
         if (this._entry.mapped) {
             // Enable 'find-as-you-type'
             this._capturedEventId = global.stage.connect('captured-event',
-                                 Lang.bind(this, this._onCapturedEvent));
+                                 this._onCapturedEvent.bind(this));
             this._text.set_cursor_visible(true);
             this._text.set_selection(0, 0);
         } else {
@@ -538,7 +538,7 @@ var ViewSelector = new Lang.Class({
 
             if (this._iconClickedId == 0)
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
-                    Lang.bind(this, this.reset));
+                    this.reset.bind(this));
         } else {
             if (this._iconClickedId > 0) {
                 this._entry.disconnect(this._iconClickedId);

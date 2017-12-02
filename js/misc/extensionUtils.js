@@ -186,7 +186,9 @@ var ExtensionFinder = new Lang.Class({
 
     scanExtensions() {
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
-        FileUtils.collectFromDatadirs('extensions', true, Lang.bind(this, this._loadExtension, perUserDir));
+        FileUtils.collectFromDatadirs('extensions', true, (dir, info) => {
+            this._loadExtension(dir, info, perUserDir);
+        });
     }
 });
 Signals.addSignalMethods(ExtensionFinder.prototype);

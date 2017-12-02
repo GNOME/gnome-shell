@@ -51,7 +51,7 @@ var AppFavorites = new Lang.Class({
 
     _init() {
         this._favorites = {};
-        global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, Lang.bind(this, this._onFavsChanged));
+        global.settings.connect('changed::' + this.FAVORITE_APPS_KEY, this._onFavsChanged.bind(this));
         this.reload();
     },
 

@@ -43,7 +43,7 @@ var Indicator = new Lang.Class({
 
                                                  this._sync();
                                              });
-        this._proxy.connect('g-properties-changed', Lang.bind(this, this._sync));
+        this._proxy.connect('g-properties-changed', this._sync.bind(this));
 
         this._item = new PopupMenu.PopupSubMenuMenuItem(_("Bluetooth"), true);
         this._item.icon.icon_name = 'bluetooth-active-symbolic';
@@ -59,10 +59,10 @@ var Indicator = new Lang.Class({
 
         this._client = new GnomeBluetooth.Client();
         this._model = this._client.get_model();
-        this._model.connect('row-changed', Lang.bind(this, this._sync));
-        this._model.connect('row-deleted', Lang.bind(this, this._sync));
-        this._model.connect('row-inserted', Lang.bind(this, this._sync));
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sync));
+        this._model.connect('row-changed', this._sync.bind(this));
+        this._model.connect('row-deleted', this._sync.bind(this));
+        this._model.connect('row-inserted', this._sync.bind(this));
+        Main.sessionMode.connect('updated', this._sync.bind(this));
         this._sync();
     },
 

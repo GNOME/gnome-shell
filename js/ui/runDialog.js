@@ -49,10 +49,10 @@ var RunDialog = new Lang.Class({
                                        Main.createLookingGlass().open();
                                    },
 
-                                   'r': Lang.bind(this, this._restart),
+                                   'r': this._restart.bind(this),
 
                                    // Developer brain backwards compatibility
-                                   'restart': Lang.bind(this, this._restart),
+                                   'restart': this._restart.bind(this),
 
                                    'debugexit': () => {
                                        Meta.quit(Meta.ExitCode.ERROR);
@@ -106,7 +106,7 @@ var RunDialog = new Lang.Class({
 
         this._errorBox.hide();
 
-        this.setButtons([{ action: Lang.bind(this, this.close),
+        this.setButtons([{ action: this.close.bind(this),
                            label: _("Close"),
                            key: Clutter.Escape }]);
 

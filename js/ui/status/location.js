@@ -73,9 +73,9 @@ var Indicator = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema_id: LOCATION_SCHEMA });
         this._settings.connect('changed::' + ENABLED,
-                               Lang.bind(this, this._onMaxAccuracyLevelChanged));
+                               this._onMaxAccuracyLevelChanged.bind(this));
         this._settings.connect('changed::' + MAX_ACCURACY_LEVEL,
-                               Lang.bind(this, this._onMaxAccuracyLevelChanged));
+                               this._onMaxAccuracyLevelChanged.bind(this));
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'find-location-symbolic';
@@ -87,7 +87,7 @@ var Indicator = new Lang.Class({
         this._agent.export(Gio.DBus.system, '/org/freedesktop/GeoClue2/Agent');
 
         this._item.label.text = _("Location Enabled");
-        this._onOffAction = this._item.menu.addAction(_("Disable"), Lang.bind(this, this._onOnOffAction));
+        this._onOffAction = this._item.menu.addAction(_("Disable"), this._onOnOffAction.bind(this));
         this._item.menu.addSettingsAction(_("Privacy Settings"), 'gnome-privacy-panel.desktop');
 
         this.menu.addMenuItem(this._item);
@@ -95,9 +95,9 @@ var Indicator = new Lang.Class({
         this._watchId = Gio.bus_watch_name(Gio.BusType.SYSTEM,
                                            'org.freedesktop.GeoClue2',
                                            0,
-                                           Lang.bind(this, this._connectToGeoclue),
-                                           Lang.bind(this, this._onGeoclueVanished));
-        Main.sessionMode.connect('updated', Lang.bind(this, this._onSessionUpdated));
+                                           this._connectToGeoclue.bind(this),
+                                           this._onGeoclueVanished.bind(this));
+        Main.sessionMode.connect('updated', this._onSessionUpdated.bind(this));
         this._onSessionUpdated();
         this._onMaxAccuracyLevelChanged();
         this._connectToGeoclue();
@@ -143,7 +143,7 @@ var Indicator = new Lang.Class({
         new GeoclueManager(Gio.DBus.system,
                            'org.freedesktop.GeoClue2',
                            '/org/freedesktop/GeoClue2/Manager',
-                           Lang.bind(this, this._onManagerProxyReady));
+                           this._onManagerProxyReady.bind(this));
         return true;
     },
 
@@ -156,11 +156,11 @@ var Indicator = new Lang.Class({
 
         this._managerProxy = proxy;
         this._propertiesChangedId = this._managerProxy.connect('g-properties-changed',
-                                                        Lang.bind(this, this._onGeocluePropsChanged));
+                                                        this._onGeocluePropsChanged.bind(this));
 
         this._syncIndicator();
 
-        this._managerProxy.AddAgentRemote('gnome-shell', Lang.bind(this, this._onAgentRegistered));
+        this._managerProxy.AddAgentRemote('gnome-shell', this._onAgentRegistered.bind(this));
     },
 
     _onAgentRegistered(result, error) {
@@ -235,7 +235,7 @@ var Indicator = new Lang.Class({
 
     _connectToPermissionStore() {
         this._permStoreProxy = null;
-        new PermissionStore.PermissionStore(Lang.bind(this, this._onPermStoreProxyReady), null);
+        new PermissionStore.PermissionStore(this._onPermStoreProxyReady.bind(this));
     },
 
     _onPermStoreProxyReady(proxy, error) {
@@ -281,8 +281,7 @@ var AppAuthorizer = new Lang.Class({
 
         this._permStoreProxy.LookupRemote(APP_PERMISSIONS_TABLE,
                                           APP_PERMISSIONS_ID,
-                                          Lang.bind(this,
-                                                    this._onPermLookupDone));
+                                          this._onPermLookupDone.bind(this));
     },
 
     _onPermLookupDone(result, error) {
@@ -392,10 +391,10 @@ var GeolocationDialog = new Lang.Class({
         this.contentLayout.add_actor(content);
 
         let button = this.addButton({ label: _("Deny Access"),
-                                      action: Lang.bind(this, this._onDenyClicked),
+                                      action: this._onDenyClicked.bind(this),
                                       key: Clutter.KEY_Escape });
         this.addButton({ label: _("Grant Access"),
-                         action: Lang.bind(this, this._onGrantClicked) });
+                         action: this._onGrantClicked.bind(this) });
 
         this.setInitialKeyFocus(button);
     },

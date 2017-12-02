@@ -83,7 +83,7 @@ var ScreenshotService = new Lang.Class({
         let shooter = new Shell.Screenshot();
         shooter._watchNameId =
                         Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
-                                           Lang.bind(this, this._onNameVanished));
+                                           this._onNameVanished.bind(this));
 
         this._screenShooter.set(sender, shooter);
 
@@ -157,8 +157,10 @@ var ScreenshotService = new Lang.Class({
         if (!screenshot)
             return;
         screenshot.screenshot_area (x, y, width, height, filename,
-                                Lang.bind(this, this._onScreenshotComplete,
-                                          flash, invocation));
+            (obj, result, area, filenameUsed) => {
+                this._onScreenshotComplete(obj, result, area, filenameUsed,
+                                           flash, invocation);
+            });
     },
 
     ScreenshotWindowAsync(params, invocation) {
@@ -167,8 +169,10 @@ var ScreenshotService = new Lang.Class({
         if (!screenshot)
             return;
         screenshot.screenshot_window (include_frame, include_cursor, filename,
-                                  Lang.bind(this, this._onScreenshotComplete,
-                                            flash, invocation));
+            (obj, result, area, filenameUsed) => {
+                this._onScreenshotComplete(obj, result, area, filenameUsed,
+                                           flash, invocation);
+            });
     },
 
     ScreenshotAsync(params, invocation) {
@@ -177,8 +181,10 @@ var ScreenshotService = new Lang.Class({
         if (!screenshot)
             return;
         screenshot.screenshot(include_cursor, filename,
-                          Lang.bind(this, this._onScreenshotComplete,
-                                    flash, invocation));
+            (obj, result, area, filenameUsed) => {
+                this._onScreenshotComplete(obj, result, area, filenameUsed,
+                                           flash, invocation);
+            });
     },
 
     SelectAreaAsync(params, invocation) {
@@ -233,11 +239,11 @@ var SelectArea = new Lang.Class({
         this._grabHelper = new GrabHelper.GrabHelper(this._group);
 
         this._group.connect('button-press-event',
-                            Lang.bind(this, this._onButtonPress));
+                            this._onButtonPress.bind(this));
         this._group.connect('button-release-event',
-                            Lang.bind(this, this._onButtonRelease));
+                            this._onButtonRelease.bind(this));
         this._group.connect('motion-event',
-                            Lang.bind(this, this._onMotionEvent));
+                            this._onMotionEvent.bind(this));
 
         let constraint = new Clutter.BindConstraint({ source: global.stage,
                                                       coordinate: Clutter.BindCoordinate.ALL });
@@ -252,7 +258,7 @@ var SelectArea = new Lang.Class({
 
     show() {
         if (!this._grabHelper.grab({ actor: this._group,
-                                     onUngrab: Lang.bind(this, this._onUngrab) }))
+                                     onUngrab: this._onUngrab.bind(this) }))
             return;
 
         global.screen.set_cursor(Meta.Cursor.CROSSHAIR);

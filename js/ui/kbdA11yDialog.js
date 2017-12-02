@@ -18,7 +18,7 @@ var KbdA11yDialog = new Lang.Class({
 
         let deviceManager = Clutter.DeviceManager.get_default();
         deviceManager.connect('kbd-a11y-flags-changed',
-                              Lang.bind(this, this._showKbdA11yDialog));
+                              this._showKbdA11yDialog.bind(this));
     },
 
     _showKbdA11yDialog(deviceManager, newFlags, whatChanged) {

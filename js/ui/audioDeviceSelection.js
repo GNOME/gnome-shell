@@ -65,9 +65,9 @@ var AudioDeviceSelectionDialog = new Lang.Class({
         this._selectionBox = new St.BoxLayout({ style_class: 'audio-selection-box' });
         this.contentLayout.add(this._selectionBox, { expand: true });
 
-        this.addButton({ action: Lang.bind(this, this._openSettings),
+        this.addButton({ action: this._openSettings.bind(this),
                          label: _("Sound Settings") });
-        this.addButton({ action: Lang.bind(this, this.close),
+        this.addButton({ action: this.close.bind(this),
                          label: _("Cancel"),
                          key: Clutter.Escape });
     },
@@ -191,9 +191,9 @@ var AudioDeviceSelectionDBus = new Lang.Class({
         }
         dialog._sender = invocation.get_sender();
 
-        dialog.connect('closed', Lang.bind(this, this._onDialogClosed));
+        dialog.connect('closed', this._onDialogClosed.bind(this));
         dialog.connect('device-selected',
-                       Lang.bind(this, this._onDeviceSelected));
+                       this._onDeviceSelected.bind(this));
         dialog.open();
 
         this._audioSelectionDialog = dialog;

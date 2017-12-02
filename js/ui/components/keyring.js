@@ -28,9 +28,9 @@ var KeyringDialog = new Lang.Class({
         this.parent({ styleClass: 'prompt-dialog' });
 
         this.prompt = new Shell.KeyringPrompt();
-        this.prompt.connect('show-password', Lang.bind(this, this._onShowPassword));
-        this.prompt.connect('show-confirm', Lang.bind(this, this._onShowConfirm));
-        this.prompt.connect('prompt-close', Lang.bind(this, this._onHidePrompt));
+        this.prompt.connect('show-password', this._onShowPassword.bind(this));
+        this.prompt.connect('show-confirm', this._onShowConfirm.bind(this));
+        this.prompt.connect('prompt-close', this._onHidePrompt.bind(this));
 
         let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
         this._content = new Dialog.MessageDialogContent({ icon });
@@ -55,10 +55,10 @@ var KeyringDialog = new Lang.Class({
         this._controlTable = null;
 
         this._cancelButton = this.addButton({ label: '',
-                                              action: Lang.bind(this, this._onCancelButton),
+                                              action: this._onCancelButton.bind(this),
                                               key: Clutter.Escape });
         this._continueButton = this.addButton({ label: '',
-                                                action: Lang.bind(this, this._onContinueButton),
+                                                action: this._onContinueButton.bind(this),
                                                 default: true });
 
         this.prompt.bind_property('cancel-label', this._cancelButton, 'label', GObject.BindingFlags.SYNC_CREATE);
@@ -112,7 +112,7 @@ var KeyringDialog = new Lang.Class({
                                                  x_expand: true });
             this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
             ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
-            this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onPasswordActivate));
+            this._passwordEntry.clutter_text.connect('activate', this._onPasswordActivate.bind(this));
 
             let spinnerIcon = Gio.File.new_for_uri('resource:///org/gnome/shell/theme/process-working.svg');
             this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
@@ -144,7 +144,7 @@ var KeyringDialog = new Lang.Class({
                                                 x_expand: true });
             this._confirmEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
             ShellEntry.addContextMenu(this._confirmEntry, { isPassword: true });
-            this._confirmEntry.clutter_text.connect('activate', Lang.bind(this, this._onConfirmActivate));
+            this._confirmEntry.clutter_text.connect('activate', this._onConfirmActivate.bind(this));
             if (rtl) {
                 layout.attach(this._confirmEntry, 0, row, 1, 1);
                 layout.attach(label, 1, row, 1, 1);
@@ -263,10 +263,8 @@ var KeyringDummyDialog = new Lang.Class({
 
     _init() {
         this.prompt = new Shell.KeyringPrompt();
-        this.prompt.connect('show-password',
-                            Lang.bind(this, this._cancelPrompt));
-        this.prompt.connect('show-confirm', Lang.bind(this,
-                            this._cancelPrompt));
+        this.prompt.connect('show-password', this._cancelPrompt.bind(this));
+        this.prompt.connect('show-confirm', this._cancelPrompt.bind(this));
     },
 
     _cancelPrompt() {

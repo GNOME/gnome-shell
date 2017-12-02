@@ -32,7 +32,7 @@ var SmartcardManager = new Lang.Class({
                                                                 name: "org.gnome.SettingsDaemon.Smartcard",
                                                                 objectPath: '/org/gnome/SettingsDaemon/Smartcard',
                                                                 knownInterfaces: [ SmartcardTokenIface ],
-                                                                onLoaded: Lang.bind(this, this._onLoaded) });
+                                                                onLoaded: this._onLoaded.bind(this) });
         this._insertedTokens = {};
         this._loginToken = null;
     },

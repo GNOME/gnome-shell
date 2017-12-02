@@ -310,7 +310,7 @@ var Message = new Lang.Class({
                                      can_focus: true,
                                      x_expand: true, x_fill: true });
         this.actor.connect('key-press-event',
-                           Lang.bind(this, this._onKeyPressed));
+                           this._onKeyPressed.bind(this));
 
         let vbox = new St.BoxLayout({ vertical: true });
         this.actor.set_child(vbox);
@@ -361,10 +361,10 @@ var Message = new Lang.Class({
         this._bodyStack.add_actor(this.bodyLabel.actor);
         this.setBody(body);
 
-        this._closeButton.connect('clicked', Lang.bind(this, this.close));
-        this.actor.connect('notify::hover', Lang.bind(this, this._sync));
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this._closeButton.connect('clicked', this.close.bind(this));
+        this.actor.connect('notify::hover', this._sync.bind(this));
+        this.actor.connect('clicked', this._onClicked.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         this._sync();
     },
 
@@ -535,11 +535,11 @@ var MessageListSection = new Lang.Class({
                                         vertical: true });
         this.actor.add_actor(this._list);
 
-        this._list.connect('actor-added', Lang.bind(this, this._sync));
-        this._list.connect('actor-removed', Lang.bind(this, this._sync));
+        this._list.connect('actor-added', this._sync.bind(this));
+        this._list.connect('actor-removed', this._sync.bind(this));
 
         let id = Main.sessionMode.connect('updated',
-                                          Lang.bind(this, this._sync));
+                                          this._sync.bind(this));
         this.actor.connect('destroy', () => {
             Main.sessionMode.disconnect(id);
         });
@@ -583,7 +583,7 @@ var MessageListSection = new Lang.Class({
                                         pivot_point: pivot,
                                         scale_x: scale, scale_y: scale });
         obj.keyFocusId = message.actor.connect('key-focus-in',
-            Lang.bind(this, this._onKeyFocusIn));
+            this._onKeyFocusIn.bind(this));
         obj.destroyId = message.actor.connect('destroy', () => {
             this.removeMessage(message, false);
         });

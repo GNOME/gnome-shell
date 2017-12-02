@@ -62,7 +62,7 @@ var OsdMonitorLabeler = new Lang.Class({
         this._osdLabels = [];
         this._monitorLabels = null;
         Main.layoutManager.connect('monitors-changed',
-                                    Lang.bind(this, this._reset));
+                                    this._reset.bind(this));
         this._reset();
     },
 

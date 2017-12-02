@@ -50,10 +50,10 @@ var SwitcherPopup = new Lang.Class({
         this.actor = new Shell.GenericContainer({ style_class: 'switcher-popup',
                                                   reactive: true,
                                                   visible: false });
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocate.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         Main.uiGroup.add_actor(this.actor);
 
@@ -124,16 +124,16 @@ var SwitcherPopup = new Lang.Class({
         this._haveModal = true;
         this._modifierMask = primaryModifier(mask);
 
-        this.actor.connect('key-press-event', Lang.bind(this, this._keyPressEvent));
-        this.actor.connect('key-release-event', Lang.bind(this, this._keyReleaseEvent));
+        this.actor.connect('key-press-event', this._keyPressEvent.bind(this));
+        this.actor.connect('key-release-event', this._keyReleaseEvent.bind(this));
 
-        this.actor.connect('button-press-event', Lang.bind(this, this._clickedOutside));
-        this.actor.connect('scroll-event', Lang.bind(this, this._scrollEvent));
+        this.actor.connect('button-press-event', this._clickedOutside.bind(this));
+        this.actor.connect('scroll-event', this._scrollEvent.bind(this));
 
         this.actor.add_actor(this._switcherList.actor);
-        this._switcherList.connect('item-activated', Lang.bind(this, this._itemActivated));
-        this._switcherList.connect('item-entered', Lang.bind(this, this._itemEntered));
-        this._switcherList.connect('item-removed', Lang.bind(this, this._itemRemoved));
+        this._switcherList.connect('item-activated', this._itemActivated.bind(this));
+        this._switcherList.connect('item-entered', this._itemEntered.bind(this));
+        this._switcherList.connect('item-removed', this._itemRemoved.bind(this));
 
         // Need to force an allocation so we can figure out whether we
         // need to scroll when selecting
@@ -267,7 +267,7 @@ var SwitcherPopup = new Lang.Class({
         if (this._motionTimeoutId != 0)
             Mainloop.source_remove(this._motionTimeoutId);
 
-        this._motionTimeoutId = Mainloop.timeout_add(DISABLE_HOVER_TIMEOUT, Lang.bind(this, this._mouseTimedOut));
+        this._motionTimeoutId = Mainloop.timeout_add(DISABLE_HOVER_TIMEOUT, this._mouseTimedOut.bind(this));
         GLib.Source.set_name_by_id(this._motionTimeoutId, '[gnome-shell] this._mouseTimedOut');
     },
 
@@ -337,9 +337,9 @@ var SwitcherList = new Lang.Class({
 
     _init(squareItems) {
         this.actor = new Shell.GenericContainer({ style_class: 'switcher-list' });
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocateTop));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocateTop.bind(this));
 
         // Here we use a GenericContainer so that we can force all the
         // children to have the same width.
@@ -349,9 +349,9 @@ var SwitcherList = new Lang.Class({
             this._list.spacing = this._list.get_theme_node().get_length('spacing');
         });
 
-        this._list.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._list.connect('allocate', Lang.bind(this, this._allocate));
+        this._list.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this._list.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this._list.connect('allocate', this._allocate.bind(this));
 
         this._scrollView = new St.ScrollView({ style_class: 'hfade',
                                                enable_mouse_scrolling: false });

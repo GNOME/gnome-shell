@@ -41,9 +41,9 @@ var Application = new Lang.Class({
             flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE
         });
 
-        this.application.connect('activate', Lang.bind(this, this._onActivate));
-        this.application.connect('command-line', Lang.bind(this, this._onCommandLine));
-        this.application.connect('startup', Lang.bind(this, this._onStartup));
+        this.application.connect('activate', this._onActivate.bind(this));
+        this.application.connect('command-line', this._onCommandLine.bind(this));
+        this.application.connect('startup', this._onStartup.bind(this));
 
         this._extensionPrefsModules = {};
 
@@ -162,8 +162,8 @@ var Application = new Lang.Class({
         this._window.add(scroll);
 
         this._extensionSelector = new Gtk.ListBox({ selection_mode: Gtk.SelectionMode.NONE });
-        this._extensionSelector.set_sort_func(Lang.bind(this, this._sortList));
-        this._extensionSelector.set_header_func(Lang.bind(this, this._updateHeader));
+        this._extensionSelector.set_sort_func(this._sortList.bind(this));
+        this._extensionSelector.set_header_func(this._updateHeader.bind(this));
 
         scroll.add(this._extensionSelector);
 
@@ -193,7 +193,7 @@ var Application = new Lang.Class({
 
     _scanExtensions() {
         let finder = new ExtensionUtils.ExtensionFinder();
-        finder.connect('extension-found', Lang.bind(this, this._extensionFound));
+        finder.connect('extension-found', this._extensionFound.bind(this));
         finder.scanExtensions();
         this._extensionsLoaded();
     },

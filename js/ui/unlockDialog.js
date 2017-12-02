@@ -52,9 +52,9 @@ var UnlockDialog = new Lang.Class({
         this.actor.add_child(this._promptBox);
 
         this._authPrompt = new AuthPrompt.AuthPrompt(new Gdm.Client(), AuthPrompt.AuthPromptMode.UNLOCK_ONLY);
-        this._authPrompt.connect('failed', Lang.bind(this, this._fail));
-        this._authPrompt.connect('cancelled', Lang.bind(this, this._fail));
-        this._authPrompt.connect('reset', Lang.bind(this, this._onReset));
+        this._authPrompt.connect('failed', this._fail.bind(this));
+        this._authPrompt.connect('cancelled', this._fail.bind(this));
+        this._authPrompt.connect('reset', this._onReset.bind(this));
         this._authPrompt.setPasswordChar('\u25cf');
         this._authPrompt.nextButton.label = _("Unlock");
 
@@ -72,7 +72,7 @@ var UnlockDialog = new Lang.Class({
                                                     reactive: true,
                                                     x_align: St.Align.START,
                                                     x_fill: false });
-            this._otherUserButton.connect('clicked', Lang.bind(this, this._otherUserClicked));
+            this._otherUserButton.connect('clicked', this._otherUserClicked.bind(this));
             this._promptBox.add_child(this._otherUserButton);
         } else {
             this._otherUserButton = null;
@@ -84,7 +84,7 @@ var UnlockDialog = new Lang.Class({
         Main.ctrlAltTabManager.addGroup(this.actor, _("Unlock Window"), 'dialog-password-symbolic');
 
         this._idleMonitor = Meta.IdleMonitor.get_core();
-        this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
+        this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, this._escape.bind(this));
     },
 
     _updateSensitivity(sensitive) {

@@ -96,7 +96,7 @@ function _sessionUpdated() {
     wm.setCustomKeybindingHandler('panel-main-menu',
                                   Shell.ActionMode.NORMAL |
                                   Shell.ActionMode.OVERVIEW,
-                                  sessionMode.hasOverview ? Lang.bind(overview, overview.toggle) : null);
+                                  sessionMode.hasOverview ? overview.toggle.bind(overview) : null);
     wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
                                       Shell.ActionMode.OVERVIEW);
 

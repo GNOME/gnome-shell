@@ -36,9 +36,9 @@ var WorkspaceSwitcherPopup = new Lang.Class({
            this._itemSpacing = this._list.get_theme_node().get_length('spacing');
         });
 
-        this._list.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._list.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._list.connect('allocate', Lang.bind(this, this._allocate));
+        this._list.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this._list.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this._list.connect('allocate', this._allocate.bind(this));
         this._container.add(this._list);
 
         this.actor.add_actor(this._container);
@@ -48,8 +48,8 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this.actor.hide();
 
         this._globalSignals = [];
-        this._globalSignals.push(global.screen.connect('workspace-added', Lang.bind(this, this._redisplay)));
-        this._globalSignals.push(global.screen.connect('workspace-removed', Lang.bind(this, this._redisplay)));
+        this._globalSignals.push(global.screen.connect('workspace-added', this._redisplay.bind(this)));
+        this._globalSignals.push(global.screen.connect('workspace-removed', this._redisplay.bind(this)));
     },
 
     _getPreferredHeight(actor, forWidth, alloc) {
@@ -142,7 +142,7 @@ var WorkspaceSwitcherPopup = new Lang.Class({
         this._redisplay();
         if (this._timeoutId != 0)
             Mainloop.source_remove(this._timeoutId);
-        this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, Lang.bind(this, this._onTimeout));
+        this._timeoutId = Mainloop.timeout_add(DISPLAY_TIMEOUT, this._onTimeout.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
         this._show();
     },

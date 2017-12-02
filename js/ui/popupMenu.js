@@ -92,17 +92,17 @@ var PopupBaseMenuItem = new Lang.Class({
             this.actor.add_style_class_name(params.style_class);
 
         if (this._activatable) {
-            this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
-            this.actor.connect('button-release-event', Lang.bind(this, this._onButtonReleaseEvent));
-            this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
-            this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
+            this.actor.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.actor.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+            this.actor.connect('touch-event', this._onTouchEvent.bind(this));
+            this.actor.connect('key-press-event', this._onKeyPressEvent.bind(this));
         }
         if (params.reactive && params.hover)
-            this.actor.connect('notify::hover', Lang.bind(this, this._onHoverChanged));
+            this.actor.connect('notify::hover', this._onHoverChanged.bind(this));
 
-        this.actor.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
-        this.actor.connect('key-focus-out', Lang.bind(this, this._onKeyFocusOut));
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('key-focus-in', this._onKeyFocusIn.bind(this));
+        this.actor.connect('key-focus-out', this._onKeyFocusOut.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
     _getTopMenu() {
@@ -262,7 +262,7 @@ var PopupSeparatorMenuItem = new Lang.Class({
         this.actor.label_actor = this.label;
 
         this.label.connect('notify::text',
-                           Lang.bind(this, this._syncVisibility));
+                           this._syncVisibility.bind(this));
         this._syncVisibility();
 
         this._separator = new St.Widget({ style_class: 'popup-separator-menu-item',
@@ -439,7 +439,7 @@ var PopupMenuBase = new Lang.Class({
 
         this._sensitive = true;
 
-        this._sessionUpdatedId = Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdatedId = Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
     },
 
     _getTopMenu() {
@@ -650,7 +650,7 @@ var PopupMenuBase = new Lang.Class({
         }
 
         if (menuItem instanceof PopupMenuSection) {
-            let activeChangeId = menuItem.connect('active-changed', Lang.bind(this, this._subMenuActiveChanged));
+            let activeChangeId = menuItem.connect('active-changed', this._subMenuActiveChanged.bind(this));
 
             let parentOpenStateChangedId = this.connect('open-state-changed', (self, open) => {
                 if (open)
@@ -679,7 +679,7 @@ var PopupMenuBase = new Lang.Class({
                 this.box.insert_child_below(menuItem.menu.actor, before_item);
 
             this._connectItemSignals(menuItem);
-            let subMenuActiveChangeId = menuItem.menu.connect('active-changed', Lang.bind(this, this._subMenuActiveChanged));
+            let subMenuActiveChangeId = menuItem.menu.connect('active-changed', this._subMenuActiveChanged.bind(this));
             let closingId = this.connect('menu-closed', () => {
                 menuItem.menu.close(BoxPointer.PopupAnimation.NONE);
             });
@@ -784,7 +784,7 @@ var PopupMenu = new Lang.Class({
 
         if (this.sourceActor)
             this._keyPressId = this.sourceActor.connect('key-press-event',
-                                                        Lang.bind(this, this._onKeyPress));
+                                                        this._onKeyPress.bind(this));
 
         this._openedSubMenu = null;
     },
@@ -935,7 +935,7 @@ var PopupSubMenu = new Lang.Class({
         this.actor.add_actor(this.box);
         this.actor._delegate = this;
         this.actor.clip_to_allocation = true;
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
+        this.actor.connect('key-press-event', this._onKeyPressEvent.bind(this));
         this.actor.hide();
     },
 
@@ -1116,7 +1116,7 @@ var PopupSubMenuMenuItem = new Lang.Class({
         this.actor.add_accessible_state (Atk.StateType.EXPANDABLE);
 
         this.menu = new PopupSubMenu(this.actor, this._triangle);
-        this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
+        this.menu.connect('open-state-changed', this._subMenuOpenStateChanged.bind(this));
     },
 
     _setParent(parent) {
@@ -1224,8 +1224,8 @@ var PopupMenuManager = new Lang.Class({
 
         let menudata = {
             menu:              menu,
-            openStateChangeId: menu.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState)),
-            destroyId:         menu.connect('destroy', Lang.bind(this, this._onMenuDestroy)),
+            openStateChangeId: menu.connect('open-state-changed', this._onMenuOpenState.bind(this)),
+            destroyId:         menu.connect('destroy', this._onMenuDestroy.bind(this)),
             enterId:           0,
             focusInId:         0
         };
@@ -1286,7 +1286,9 @@ var PopupMenuManager = new Lang.Class({
             if (this.activeMenu)
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
             this._grabHelper.grab({ actor: menu.actor, focus: menu.sourceActor,
-                                    onUngrab: Lang.bind(this, this._closeMenu, menu) });
+                                    onUngrab: isUser => {
+                                        this._closeMenu(isUser, menu);
+                                    } });
         } else {
             this._grabHelper.ungrab({ actor: menu.actor });
         }

@@ -112,9 +112,9 @@ var WorldClocksSection = new Lang.Class({
         this._clockAppMon = new Util.AppSettingsMonitor('org.gnome.clocks.desktop',
                                                         'org.gnome.clocks');
         this._clockAppMon.connect('available-changed',
-                                  Lang.bind(this, this._sync));
+                                  this._sync.bind(this));
         this._clockAppMon.watchSetting('world-clocks',
-                                       Lang.bind(this, this._clocksChanged));
+                                       this._clocksChanged.bind(this));
         this._sync();
     },
 
@@ -176,7 +176,7 @@ var WorldClocksSection = new Lang.Class({
         if (this._grid.get_n_children() > 1) {
             if (!this._clockNotifyId)
                 this._clockNotifyId =
-                    this._clock.connect('notify::clock', Lang.bind(this, this._updateLabels));
+                    this._clock.connect('notify::clock', this._updateLabels.bind(this));
             this._updateLabels();
         } else {
             if (this._clockNotifyId)
@@ -230,7 +230,7 @@ var WeatherSection = new Lang.Class({
         this._conditionsLabel.clutter_text.line_wrap = true;
         box.add_child(this._conditionsLabel);
 
-        this._weatherClient.connect('changed', Lang.bind(this, this._sync));
+        this._weatherClient.connect('changed', this._sync.bind(this));
         this._sync();
     },
 
@@ -347,16 +347,16 @@ var MessagesIndicator = new Lang.Class({
 
         this._sources = [];
 
-        Main.messageTray.connect('source-added', Lang.bind(this, this._onSourceAdded));
-        Main.messageTray.connect('source-removed', Lang.bind(this, this._onSourceRemoved));
-        Main.messageTray.connect('queue-changed', Lang.bind(this, this._updateCount));
+        Main.messageTray.connect('source-added', this._onSourceAdded.bind(this));
+        Main.messageTray.connect('source-removed', this._onSourceRemoved.bind(this));
+        Main.messageTray.connect('queue-changed', this._updateCount.bind(this));
 
         let sources = Main.messageTray.getSources();
         sources.forEach(source => { this._onSourceAdded(null, source); });
     },
 
     _onSourceAdded(tray, source) {
-        source.connect('count-updated', Lang.bind(this, this._updateCount));
+        source.connect('count-updated', this._updateCount.bind(this));
         this._sources.push(source);
         this._updateCount();
     },
@@ -545,9 +545,9 @@ var DateMenuButton = new Lang.Class({
 
         this._clock = new GnomeDesktop.WallClock();
         this._clock.bind_property('clock', this._clockDisplay, 'text', GObject.BindingFlags.SYNC_CREATE);
-        this._clock.connect('notify::timezone', Lang.bind(this, this._updateTimeZone));
+        this._clock.connect('notify::timezone', this._updateTimeZone.bind(this));
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
     },
 

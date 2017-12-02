@@ -66,7 +66,7 @@ var Manager = new Lang.Class({
         this._aggregateProvider = Provider(Gio.DBus.system,
                                            'org.freedesktop.realmd',
                                            '/org/freedesktop/realmd',
-                                           Lang.bind(this, this._reloadRealms))
+                                           this._reloadRealms.bind(this))
         this._realms = {};
 
         this._signalId = this._aggregateProvider.connect('g-properties-changed',
@@ -86,7 +86,7 @@ var Manager = new Lang.Class({
             let realm = Realm(Gio.DBus.system,
                               'org.freedesktop.realmd',
                               realmPaths[i],
-                              Lang.bind(this, this._onRealmLoaded));
+                              this._onRealmLoaded.bind(this));
         }
     },
 

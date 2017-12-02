@@ -80,9 +80,9 @@ var _Draggable = new Lang.Class({
         this.actor = actor;
         if (!params.manualMode) {
             this.actor.connect('button-press-event',
-                               Lang.bind(this, this._onButtonPress));
+                               this._onButtonPress.bind(this));
             this.actor.connect('touch-event',
-                               Lang.bind(this, this._onTouchEvent));
+                               this._onTouchEvent.bind(this));
         }
 
         this.actor.connect('destroy', () => {
@@ -169,7 +169,7 @@ var _Draggable = new Lang.Class({
     _grabActor() {
         this._grabDevice(this.actor);
         this._onEventId = this.actor.connect('event',
-                                             Lang.bind(this, this._onEvent));
+                                             this._onEvent.bind(this));
     },
 
     _ungrabActor() {
@@ -445,7 +445,7 @@ var _Draggable = new Lang.Class({
             return;
 
         this._updateHoverId = GLib.idle_add(GLib.PRIORITY_DEFAULT,
-                                            Lang.bind(this, this._updateDragHover));
+                                            this._updateDragHover.bind(this));
         GLib.Source.set_name_by_id(this._updateHoverId, '[gnome-shell] this._updateDragHover');
     },
 
@@ -600,7 +600,7 @@ var _Draggable = new Lang.Class({
         // during it
         this._dragActorDestroyId =
             this._dragActor.connect('destroy',
-                                    Lang.bind(this, this._finishAnimation));
+                                    this._finishAnimation.bind(this));
 
         params['opacity']          = this._dragOrigOpacity;
         params['transition']       = 'easeOutQuad';

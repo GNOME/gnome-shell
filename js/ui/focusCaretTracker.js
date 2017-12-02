@@ -32,7 +32,7 @@ var FocusCaretTracker = new Lang.Class({
     Name: 'FocusCaretTracker',
 
     _init() {
-        this._atspiListener = Atspi.EventListener.new(Lang.bind(this, this._onChanged));
+        this._atspiListener = Atspi.EventListener.new(this._onChanged.bind(this));
 
         this._atspiInited = false;
         this._focusListenerRegistered = false;
