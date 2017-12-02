@@ -53,11 +53,11 @@ var IBusManager = new Lang.Class({
         this._preloadEnginesId = 0;
 
         this._ibus = IBus.Bus.new_async();
-        this._ibus.connect('connected', Lang.bind(this, this._onConnected));
-        this._ibus.connect('disconnected', Lang.bind(this, this._clear));
+        this._ibus.connect('connected', this._onConnected.bind(this));
+        this._ibus.connect('disconnected', this._clear.bind(this));
         // Need to set this to get 'global-engine-changed' emitions
         this._ibus.set_watch_ibus_signal(true);
-        this._ibus.connect('global-engine-changed', Lang.bind(this, this._engineChanged));
+        this._ibus.connect('global-engine-changed', this._engineChanged.bind(this));
 
         this._spawn();
     },
@@ -88,11 +88,11 @@ var IBusManager = new Lang.Class({
     },
 
     _onConnected() {
-        this._ibus.list_engines_async(-1, null, Lang.bind(this, this._initEngines));
+        this._ibus.list_engines_async(-1, null, this._initEngines.bind(this));
         this._ibus.request_name_async(IBus.SERVICE_PANEL,
                                       IBus.BusNameFlag.REPLACE_EXISTING,
                                       -1, null,
-                                      Lang.bind(this, this._initPanelService));
+                                      this._initPanelService.bind(this));
     },
 
     _initEngines(ibus, result) {
@@ -114,7 +114,7 @@ var IBusManager = new Lang.Class({
             this._panelService = new IBus.PanelService({ connection: this._ibus.get_connection(),
                                                          object_path: IBus.PATH_PANEL });
             this._candidatePopup.setPanelService(this._panelService);
-            this._panelService.connect('update-property', Lang.bind(this, this._updateProperty));
+            this._panelService.connect('update-property', this._updateProperty.bind(this));
             try {
                 // IBus versions older than 1.5.10 have a bug which
                 // causes spurious set-content-type emissions when
@@ -122,7 +122,7 @@ var IBusManager = new Lang.Class({
                 // and hints defeating its intended semantics and
                 // confusing users. We thus don't use it in that case.
                 _checkIBusVersion(1, 5, 10);
-                this._panelService.connect('set-content-type', Lang.bind(this, this._setContentType));
+                this._panelService.connect('set-content-type', this._setContentType.bind(this));
             } catch (e) {
             }
             // If an engine is already active we need to get its properties

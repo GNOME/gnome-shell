@@ -85,7 +85,7 @@ var FocusGrabber = new Lang.Class({
 
         this._prevKeyFocusActor = global.stage.get_key_focus();
 
-        this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
+        this._focusActorChangedId = global.stage.connect('notify::key-focus', this._focusActorChanged.bind(this));
 
         if (!this._actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
             this._actor.grab_key_focus();
@@ -164,7 +164,7 @@ var NotificationGenericPolicy = new Lang.Class({
         this.id = 'generic';
 
         this._masterSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications' });
-        this._masterSettings.connect('changed', Lang.bind(this, this._changed));
+        this._masterSettings.connect('changed', this._changed.bind(this));
     },
 
     store() { },
@@ -217,8 +217,8 @@ var NotificationApplicationPolicy = new Lang.Class({
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.notifications.application',
                                             path: '/org/gnome/desktop/notifications/application/' + this._canonicalId + '/' });
 
-        this._masterSettings.connect('changed', Lang.bind(this, this._changed));
-        this._settings.connect('changed', Lang.bind(this, this._changed));
+        this._masterSettings.connect('changed', this._changed.bind(this));
+        this._settings.connect('changed', this._changed.bind(this));
     },
 
     store() {
@@ -591,9 +591,9 @@ var SourceActor = new Lang.Class({
         this._size = size;
 
         this.actor = new Shell.GenericContainer();
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocate.bind(this));
         this.actor.connect('destroy', () => {
             this._source.disconnect(this._iconUpdatedId);
             this._actorDestroyed = true;
@@ -607,7 +607,7 @@ var SourceActor = new Lang.Class({
 
         this.actor.add_actor(this._iconBin);
 
-        this._iconUpdatedId = this._source.connect('icon-updated', Lang.bind(this, this._updateIcon));
+        this._iconUpdatedId = this._source.connect('icon-updated', this._updateIcon.bind(this));
         this._updateIcon();
     },
 
@@ -665,7 +665,7 @@ var SourceActorWithLabel = new Lang.Class({
 
         this.actor.add_actor(this._counterBin);
 
-        this._countUpdatedId = this._source.connect('count-updated', Lang.bind(this, this._updateCount));
+        this._countUpdatedId = this._source.connect('count-updated', this._updateCount.bind(this));
         this._updateCount();
 
         this.actor.connect('destroy', () => {
@@ -789,8 +789,8 @@ var Source = new Lang.Class({
         while (this.notifications.length >= MAX_NOTIFICATIONS_PER_SOURCE)
             this.notifications.shift().destroy(NotificationDestroyedReason.EXPIRED);
 
-        notification.connect('destroy', Lang.bind(this, this._onNotificationDestroy));
-        notification.connect('acknowledged-changed', Lang.bind(this, this.countUpdated));
+        notification.connect('destroy', this._onNotificationDestroy.bind(this));
+        notification.connect('acknowledged-changed', this.countUpdated.bind(this));
         this.notifications.push(notification);
         this.emit('notification-added', notification);
 
@@ -880,9 +880,9 @@ var MessageTray = new Lang.Class({
                                           x_expand: true,
                                           layout_manager: new Clutter.BinLayout() });
         this._bannerBin.connect('key-release-event',
-                                Lang.bind(this, this._onNotificationKeyRelease));
+                                this._onNotificationKeyRelease.bind(this));
         this._bannerBin.connect('notify::hover',
-                                Lang.bind(this, this._onNotificationHoverChanged));
+                                this._onNotificationHoverChanged.bind(this));
         this.actor.add_actor(this._bannerBin);
 
         this._notificationFocusGrabber = new FocusGrabber(this._bannerBin);
@@ -915,35 +915,35 @@ var MessageTray = new Lang.Class({
         Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._bannerBin, { affectsInputRegion: true });
 
-        global.screen.connect('in-fullscreen-changed', Lang.bind(this, this._updateState));
+        global.screen.connect('in-fullscreen-changed', this._updateState.bind(this));
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
         Main.overview.connect('window-drag-begin',
-                              Lang.bind(this, this._onDragBegin));
+                              this._onDragBegin.bind(this));
         Main.overview.connect('window-drag-cancelled',
-                              Lang.bind(this, this._onDragEnd));
+                              this._onDragEnd.bind(this));
         Main.overview.connect('window-drag-end',
-                              Lang.bind(this, this._onDragEnd));
+                              this._onDragEnd.bind(this));
 
         Main.overview.connect('item-drag-begin',
-                              Lang.bind(this, this._onDragBegin));
+                              this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-cancelled',
-                              Lang.bind(this, this._onDragEnd));
+                              this._onDragEnd.bind(this));
         Main.overview.connect('item-drag-end',
-                              Lang.bind(this, this._onDragEnd));
+                              this._onDragEnd.bind(this));
 
         Main.xdndHandler.connect('drag-begin',
-                                 Lang.bind(this, this._onDragBegin));
+                                 this._onDragBegin.bind(this));
         Main.xdndHandler.connect('drag-end',
-                                 Lang.bind(this, this._onDragEnd));
+                                 this._onDragEnd.bind(this));
 
         Main.wm.addKeybinding('focus-active-notification',
                               new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
-                              Lang.bind(this, this._expandActiveNotification));
+                              this._expandActiveNotification.bind(this));
 
         this._sources = new Map();
 
@@ -1008,8 +1008,10 @@ var MessageTray = new Lang.Class({
         // Register that we got a notification for this source
         source.policy.store();
 
-        source.policy.connect('enable-changed', Lang.bind(this, this._onSourceEnableChanged, source));
-        source.policy.connect('policy-changed', Lang.bind(this, this._updateState));
+        source.policy.connect('enable-changed', () => {
+            this._onSourceEnableChanged(source.policy, source);
+        });
+        source.policy.connect('policy-changed', this._updateState.bind(this));
         this._onSourceEnableChanged(source.policy, source);
     },
 
@@ -1022,8 +1024,8 @@ var MessageTray = new Lang.Class({
 
         this._sources.set(source, obj);
 
-        obj.notifyId = source.connect('notify', Lang.bind(this, this._onNotify));
-        obj.destroyId = source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
+        obj.notifyId = source.connect('notify', this._onNotify.bind(this));
+        obj.destroyId = source.connect('destroy', this._onSourceDestroy.bind(this));
 
         this.emit('source-added', source);
     },
@@ -1088,7 +1090,7 @@ var MessageTray = new Lang.Class({
             let full = (this.queueCount + bannerCount >= MAX_NOTIFICATIONS_IN_QUEUE);
             if (!full || notification.urgency == Urgency.CRITICAL) {
                 notification.connect('destroy',
-                                     Lang.bind(this, this._onNotificationDestroy));
+                                     this._onNotificationDestroy.bind(this));
                 this._notificationQueue.push(notification);
                 this._notificationQueue.sort(
                     (n1, n2) => n2.urgency - n1.urgency
@@ -1148,7 +1150,7 @@ var MessageTray = new Lang.Class({
             // We wait for a longer period if the notification popped up where the mouse pointer was already positioned.
             // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
             let timeout = this._useLongerNotificationLeftTimeout ? LONGER_HIDE_TIMEOUT * 1000 : HIDE_TIMEOUT * 1000;
-            this._notificationLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onNotificationLeftTimeout));
+            this._notificationLeftTimeoutId = Mainloop.timeout_add(timeout, this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         }
     },
@@ -1178,7 +1180,7 @@ var MessageTray = new Lang.Class({
             x > this._notificationLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
             this._notificationLeftMouseX = -1;
             this._notificationLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT * 1000,
-                                                             Lang.bind(this, this._onNotificationLeftTimeout));
+                                                             this._onNotificationLeftTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationLeftTimeoutId, '[gnome-shell] this._onNotificationLeftTimeout');
         } else {
             this._notificationLeftTimeoutId = 0;
@@ -1301,12 +1303,12 @@ var MessageTray = new Lang.Class({
         if (!this._userActiveWhileNotificationShown) {
             // If the user isn't active, set up a watch to let us know
             // when the user becomes active.
-            this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
+            this.idleMonitor.add_user_active_watch(this._onIdleMonitorBecameActive.bind(this));
         }
 
         this._banner = this._notification.createBanner();
         this._bannerClickedId = this._banner.connect('done-displaying',
-                                                     Lang.bind(this, this._escapeTray));
+                                                     this._escapeTray.bind(this));
         this._bannerUnfocusedId = this._banner.connect('unfocused', () => {
             this._updateState();
         });
@@ -1384,7 +1386,7 @@ var MessageTray = new Lang.Class({
         if (timeout > 0) {
             this._notificationTimeoutId =
                 Mainloop.timeout_add(timeout,
-                                     Lang.bind(this, this._notificationTimeout));
+                                     this._notificationTimeout.bind(this));
             GLib.Source.set_name_by_id(this._notificationTimeoutId, '[gnome-shell] this._notificationTimeout');
         }
     },

@@ -32,7 +32,7 @@ var Indicator = new Lang.Class({
                                                   return;
                                               }
 
-                                              this._proxy.connect('g-properties-changed', Lang.bind(this, this._sync));
+                                              this._proxy.connect('g-properties-changed', this._sync.bind(this));
                                               this._sync();
                                           });
 
@@ -40,7 +40,7 @@ var Indicator = new Lang.Class({
         this.menu.addMenuItem(this._item);
 
         this._slider = new Slider.Slider(0);
-        this._slider.connect('value-changed', Lang.bind(this, this._sliderChanged));
+        this._slider.connect('value-changed', this._sliderChanged.bind(this));
         this._slider.actor.accessible_name = _("Brightness");
 
         let icon = new St.Icon({ icon_name: 'display-brightness-symbolic',

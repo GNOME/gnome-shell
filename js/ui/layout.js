@@ -239,7 +239,7 @@ var LayoutManager = new Lang.Class({
         this.addChrome(this.panelBox, { affectsStruts: true,
                                         trackFullscreen: true });
         this.panelBox.connect('allocation-changed',
-                              Lang.bind(this, this._panelBoxChanged));
+                              this._panelBoxChanged.bind(this));
 
         this.modalDialogGroup = new St.Widget({ name: 'modalDialogGroup',
                                                 layout_manager: new Clutter.BinLayout() });
@@ -270,13 +270,13 @@ var LayoutManager = new Lang.Class({
 
         // Need to update struts on new workspaces when they are added
         global.screen.connect('notify::n-workspaces',
-                              Lang.bind(this, this._queueUpdateRegions));
+                              this._queueUpdateRegions.bind(this));
         global.screen.connect('restacked',
-                              Lang.bind(this, this._windowsRestacked));
+                              this._windowsRestacked.bind(this));
         global.screen.connect('monitors-changed',
-                              Lang.bind(this, this._monitorsChanged));
+                              this._monitorsChanged.bind(this));
         global.screen.connect('in-fullscreen-changed',
-                              Lang.bind(this, this._updateFullscreen));
+                              this._updateFullscreen.bind(this));
         this._monitorsChanged();
 
         // NVIDIA drivers don't preserve FBO contents across
@@ -294,7 +294,7 @@ var LayoutManager = new Lang.Class({
 
     // This is called by Main after everything else is constructed
     init() {
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
         this._loadBackground();
     },
@@ -424,7 +424,7 @@ var LayoutManager = new Lang.Class({
                                                            layoutManager: this,
                                                            monitorIndex: monitorIndex });
 
-        bgManager.connect('changed', Lang.bind(this, this._addBackgroundMenu));
+        bgManager.connect('changed', this._addBackgroundMenu.bind(this));
         this._addBackgroundMenu(bgManager);
 
         return bgManager;
@@ -859,11 +859,11 @@ var LayoutManager = new Lang.Class({
         let actorData = Params.parse(params, defaultParams);
         actorData.actor = actor;
         actorData.visibleId = actor.connect('notify::visible',
-                                            Lang.bind(this, this._queueUpdateRegions));
+                                            this._queueUpdateRegions.bind(this));
         actorData.allocationId = actor.connect('notify::allocation',
-                                               Lang.bind(this, this._queueUpdateRegions));
+                                               this._queueUpdateRegions.bind(this));
         actorData.destroyId = actor.connect('destroy',
-                                            Lang.bind(this, this._untrackActor));
+                                            this._untrackActor.bind(this));
         // Note that destroying actor will unset its parent, so we don't
         // need to connect to 'destroy' too.
 
@@ -903,7 +903,7 @@ var LayoutManager = new Lang.Class({
         global.window_group.visible = windowsVisible;
         global.top_window_group.visible = windowsVisible;
 
-        this._trackedActors.forEach(Lang.bind(this, this._updateActorVisibility));
+        this._trackedActors.forEach(this._updateActorVisibility.bind(this));
     },
 
     getWorkAreaForMonitor(monitorIndex) {
@@ -935,7 +935,7 @@ var LayoutManager = new Lang.Class({
 
         if (!this._updateRegionIdle)
             this._updateRegionIdle = Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                                                    Lang.bind(this, this._updateRegions));
+                                                    this._updateRegions.bind(this));
     },
 
     _getWindowActorsForWorkspace(workspace) {
@@ -1095,7 +1095,7 @@ var HotCorner = new Lang.Class({
                                                     HOT_CORNER_PRESSURE_TIMEOUT,
                                                     Shell.ActionMode.NORMAL |
                                                     Shell.ActionMode.OVERVIEW);
-        this._pressureBarrier.connect('trigger', Lang.bind(this, this._toggleOverview));
+        this._pressureBarrier.connect('trigger', this._toggleOverview.bind(this));
 
         // Cache the three ripples instead of dynamically creating and destroying them.
         this._ripple1 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
@@ -1168,12 +1168,12 @@ var HotCorner = new Lang.Class({
             }
 
             this.actor.connect('leave-event',
-                               Lang.bind(this, this._onEnvironsLeft));
+                               this._onEnvironsLeft.bind(this));
 
             this._corner.connect('enter-event',
-                                 Lang.bind(this, this._onCornerEntered));
+                                 this._onCornerEntered.bind(this));
             this._corner.connect('leave-event',
-                                 Lang.bind(this, this._onCornerLeft));
+                                 this._onCornerLeft.bind(this));
         }
     },
 
@@ -1283,8 +1283,8 @@ var PressureBarrier = new Lang.Class({
     },
 
     addBarrier(barrier) {
-        barrier._pressureHitId = barrier.connect('hit', Lang.bind(this, this._onBarrierHit));
-        barrier._pressureLeftId = barrier.connect('left', Lang.bind(this, this._onBarrierLeft));
+        barrier._pressureHitId = barrier.connect('hit', this._onBarrierHit.bind(this));
+        barrier._pressureLeftId = barrier.connect('left', this._onBarrierLeft.bind(this));
 
         this._barriers.push(barrier);
     },
@@ -1300,7 +1300,7 @@ var PressureBarrier = new Lang.Class({
     },
 
     destroy() {
-        this._barriers.forEach(Lang.bind(this, this._disconnectBarrier));
+        this._barriers.forEach(this._disconnectBarrier.bind(this));
         this._barriers = [];
     },
 

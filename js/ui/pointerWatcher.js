@@ -44,7 +44,7 @@ var PointerWatcher = new Lang.Class({
 
     _init() {
         this._idleMonitor = Meta.IdleMonitor.get_core();
-        this._idleMonitor.add_idle_watch(IDLE_TIME, Lang.bind(this, this._onIdleMonitorBecameIdle));
+        this._idleMonitor.add_idle_watch(IDLE_TIME, this._onIdleMonitorBecameIdle.bind(this));
         this._idle = this._idleMonitor.get_idletime() > IDLE_TIME;
         this._watches = [];
         this.pointerX = null;
@@ -88,7 +88,7 @@ var PointerWatcher = new Lang.Class({
 
     _onIdleMonitorBecameIdle(monitor) {
         this._idle = true;
-        this._idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
+        this._idleMonitor.add_user_active_watch(this._onIdleMonitorBecameActive.bind(this));
         this._updateTimeout();
     },
 
@@ -106,7 +106,7 @@ var PointerWatcher = new Lang.Class({
             minInterval = Math.min(this._watches[i].interval, minInterval);
 
         this._timeoutId = Mainloop.timeout_add(minInterval,
-                                               Lang.bind(this, this._onTimeout));
+                                               this._onTimeout.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._onTimeout');
     },
 

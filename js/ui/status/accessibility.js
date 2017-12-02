@@ -49,7 +49,7 @@ var ATIndicator = new Lang.Class({
         this.actor.add_child(this._hbox);
 
         this._a11ySettings = new Gio.Settings({ schema_id: A11Y_SCHEMA });
-        this._a11ySettings.connect('changed::' + KEY_ALWAYS_SHOW, Lang.bind(this, this._queueSyncMenuVisibility));
+        this._a11ySettings.connect('changed::' + KEY_ALWAYS_SHOW, this._queueSyncMenuVisibility.bind(this));
 
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);
@@ -102,7 +102,7 @@ var ATIndicator = new Lang.Class({
         if (this._syncMenuVisibilityIdle)
             return;
 
-        this._syncMenuVisibilityIdle = Mainloop.idle_add(Lang.bind(this, this._syncMenuVisibility));
+        this._syncMenuVisibilityIdle = Mainloop.idle_add(this._syncMenuVisibility.bind(this));
         GLib.Source.set_name_by_id(this._syncMenuVisibilityIdle, '[gnome-shell] this._syncMenuVisibility');
     },
 

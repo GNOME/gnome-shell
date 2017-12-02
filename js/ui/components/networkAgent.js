@@ -82,7 +82,7 @@ var NetworkSecretDialog = new Lang.Class({
                     initialFocusSet = true;
                 }
 
-                secret.entry.clutter_text.connect('activate', Lang.bind(this, this._onOk));
+                secret.entry.clutter_text.connect('activate', this._onOk.bind(this));
                 secret.entry.clutter_text.connect('text-changed', () => {
                     secret.value = secret.entry.get_text();
                     if (secret.validate)
@@ -110,12 +110,12 @@ var NetworkSecretDialog = new Lang.Class({
         contentBox.messageBox.add(secretTable);
 
         this._okButton = { label:  _("Connect"),
-                           action: Lang.bind(this, this._onOk),
+                           action: this._onOk.bind(this),
                            default: true
                          };
 
         this.setButtons([{ label: _("Cancel"),
-                           action: Lang.bind(this, this.cancel),
+                           action: this.cancel.bind(this),
                            key:    Clutter.KEY_Escape,
                          },
                          this._okButton]);
@@ -384,7 +384,7 @@ var VPNRequestHandler = new Lang.Class({
                 this._readStdoutOldStyle();
 
             this._childWatch = GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid,
-                                                    Lang.bind(this, this._vpnChildFinished));
+                                                    this._vpnChildFinished.bind(this));
 
             this._writeConnection();
         } catch(e) {
@@ -602,8 +602,8 @@ var NetworkAgent = new Lang.Class({
             log('Failed to create monitor for VPN plugin dir: ' + e.message);
         }
 
-        this._native.connect('new-request', Lang.bind(this, this._newRequest));
-        this._native.connect('cancel-request', Lang.bind(this, this._cancelRequest));
+        this._native.connect('new-request', this._newRequest.bind(this));
+        this._native.connect('cancel-request', this._cancelRequest.bind(this));
         try {
             this._native.init(null);
         } catch(e) {

@@ -50,19 +50,17 @@ var BaseIcon = new Lang.Class({
                                   x_fill: true,
                                   y_fill: true });
         this.actor._delegate = this;
-        this.actor.connect('style-changed',
-                           Lang.bind(this, this._onStyleChanged));
-        this.actor.connect('destroy',
-                           Lang.bind(this, this._onDestroy));
+        this.actor.connect('style-changed', this._onStyleChanged.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._spacing = 0;
 
         let box = new Shell.GenericContainer();
-        box.connect('allocate', Lang.bind(this, this._allocate));
+        box.connect('allocate', this._allocate.bind(this));
         box.connect('get-preferred-width',
-                    Lang.bind(this, this._getPreferredWidth));
+                    this._getPreferredWidth.bind(this));
         box.connect('get-preferred-height',
-                    Lang.bind(this, this._getPreferredHeight));
+                    this._getPreferredHeight.bind(this));
         this.actor.set_child(box);
 
         this.iconSize = ICON_SIZE;
@@ -85,7 +83,7 @@ var BaseIcon = new Lang.Class({
         this.icon = null;
 
         let cache = St.TextureCache.get_default();
-        this._iconThemeChangedId = cache.connect('icon-theme-changed', Lang.bind(this, this._onIconThemeChanged));
+        this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
     },
 
     _allocate(actor, box, flags) {
@@ -274,7 +272,7 @@ var IconGrid = new Lang.Class({
         this._fixedHItemSize = this._fixedVItemSize = undefined;
         this._grid = new Shell.GenericContainer();
         this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        this.actor.connect('style-changed', this._onStyleChanged.bind(this));
 
         // Cancel animations when hiding the overview, to avoid icons
         // swarming into the void ...
@@ -283,11 +281,11 @@ var IconGrid = new Lang.Class({
                 this._cancelAnimation();
         });
 
-        this._grid.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._grid.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._grid.connect('allocate', Lang.bind(this, this._allocate));
-        this._grid.connect('actor-added', Lang.bind(this, this._childAdded));
-        this._grid.connect('actor-removed', Lang.bind(this, this._childRemoved));
+        this._grid.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this._grid.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this._grid.connect('allocate', this._allocate.bind(this));
+        this._grid.connect('actor-added', this._childAdded.bind(this));
+        this._grid.connect('actor-removed', this._childRemoved.bind(this));
     },
 
     _keyFocusIn(actor) {
@@ -295,7 +293,7 @@ var IconGrid = new Lang.Class({
     },
 
     _childAdded(grid, child) {
-        child._iconGridKeyFocusInId = child.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+        child._iconGridKeyFocusInId = child.connect('key-focus-in', this._keyFocusIn.bind(this));
     },
 
     _childRemoved(grid, child) {
@@ -780,7 +778,7 @@ var IconGrid = new Lang.Class({
             this._updateSpacingForSize(availWidth, availHeight);
         }
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                       Lang.bind(this, this._updateIconSizes));
+                       this._updateIconSizes.bind(this));
     },
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up

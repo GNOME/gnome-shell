@@ -38,7 +38,7 @@ var Avatar = new Lang.Class({
 
         // Monitor the scaling factor to make sure we recreate the avatar when needed.
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        themeContext.connect('notify::scale-factor', Lang.bind(this, this.update));
+        themeContext.connect('notify::scale-factor', this.update.bind(this));
     },
 
     setSensitive(sensitive) {
@@ -85,8 +85,8 @@ var UserWidgetLabel = new Lang.Class({
 
         this._currentLabel = null;
 
-        this._userLoadedId = this._user.connect('notify::is-loaded', Lang.bind(this, this._updateUser));
-        this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUser));
+        this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
+        this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
         this._updateUser();
 
         // We can't override the destroy vfunc because that might be called during
@@ -94,7 +94,7 @@ var UserWidgetLabel = new Lang.Class({
         // so we use a signal, that will be disconnected by GObject the first time
         // the actor is destroyed (which is guaranteed to be as part of a normal
         // destroy() call from JS, possibly from some ancestor)
-        this.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     _onDestroy() {
@@ -159,7 +159,7 @@ var UserWidget = new Lang.Class({
 
         this.actor = new St.BoxLayout({ style_class: 'user-widget',
                                         vertical: false });
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._avatar = new Avatar(user);
         this.actor.add_child(this._avatar.actor);
@@ -170,8 +170,8 @@ var UserWidget = new Lang.Class({
         this._label.bind_property('label-actor', this.actor, 'label-actor',
                                   GObject.BindingFlags.SYNC_CREATE);
 
-        this._userLoadedId = this._user.connect('notify::is-loaded', Lang.bind(this, this._updateUser));
-        this._userChangedId = this._user.connect('changed', Lang.bind(this, this._updateUser));
+        this._userLoadedId = this._user.connect('notify::is-loaded', this._updateUser.bind(this));
+        this._userChangedId = this._user.connect('changed', this._updateUser.bind(this));
         this._updateUser();
     },
 

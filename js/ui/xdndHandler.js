@@ -25,9 +25,9 @@ var XdndHandler = new Lang.Class({
             global.init_xdnd();
 
         var dnd = Meta.get_backend().get_dnd();
-        dnd.connect('dnd-enter', Lang.bind(this, this._onEnter));
-        dnd.connect('dnd-position-change', Lang.bind(this, this._onPositionChanged));
-        dnd.connect('dnd-leave', Lang.bind(this, this._onLeave));
+        dnd.connect('dnd-enter', this._onEnter.bind(this));
+        dnd.connect('dnd-position-change', this._onPositionChanged.bind(this));
+        dnd.connect('dnd-leave', this._onLeave.bind(this));
 
         this._windowGroupVisibilityHandlerId = 0;
     },
@@ -49,7 +49,7 @@ var XdndHandler = new Lang.Class({
     _onEnter() {
         this._windowGroupVisibilityHandlerId  =
                 global.window_group.connect('notify::visible',
-                    Lang.bind(this, this._onWindowGroupVisibilityChanged));
+                    this._onWindowGroupVisibilityChanged.bind(this));
 
         this.emit('drag-begin', global.get_current_time());
     },

@@ -59,10 +59,10 @@ var CloseDialog = new Lang.Class({
 
         this._dialog.addContent(this._createDialogContent());
         this._dialog.addButton({ label:   _('Force Quit'),
-                                 action:  Lang.bind(this, this._onClose),
+                                 action:  this._onClose.bind(this),
                                  default: true });
         this._dialog.addButton({ label:  _('Wait'),
-                                 action: Lang.bind(this, this._onWait),
+                                 action: this._onWait.bind(this),
                                  key:    Clutter.Escape });
 
         global.focus_manager.add_group(this._dialog);

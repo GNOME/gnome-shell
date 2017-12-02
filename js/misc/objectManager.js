@@ -61,7 +61,7 @@ var ObjectManager = new Lang.Class({
         this._numLoadInhibitors = 1;
         this._managerProxy.init_async(GLib.PRIORITY_DEFAULT,
                                       this._cancellable,
-                                      Lang.bind(this, this._onManagerProxyLoaded));
+                                      this._onManagerProxyLoaded.bind(this));
     },
 
     _tryToCompleteLoad() {
@@ -226,7 +226,7 @@ var ObjectManager = new Lang.Class({
                     this._numLoadInhibitors++;
                     this._addInterface(objectPath,
                                        interfaceName,
-                                       Lang.bind(this, this._tryToCompleteLoad));
+                                       this._tryToCompleteLoad.bind(this));
                 }
             }
             this._tryToCompleteLoad();

@@ -32,7 +32,7 @@ var RfkillManager = new Lang.Class({
                                                      return;
                                                  }
                                                  this._proxy.connect('g-properties-changed',
-                                                                     Lang.bind(this, this._changed));
+                                                                     this._changed.bind(this));
                                                  this._changed();
                                              });
     },
@@ -76,7 +76,7 @@ var Indicator = new Lang.Class({
         this.parent();
 
         this._manager = getRfkillManager();
-        this._manager.connect('airplane-mode-changed', Lang.bind(this, this._sync));
+        this._manager.connect('airplane-mode-changed', this._sync.bind(this));
 
         this._indicator = this._addIndicator();
         this._indicator.icon_name = 'airplane-mode-symbolic';
@@ -93,7 +93,7 @@ var Indicator = new Lang.Class({
         this._item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
         this.menu.addMenuItem(this._item);
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
     },
 
