@@ -195,11 +195,11 @@ var InstallExtensionDialog = new Lang.Class({
         this._invocation = invocation;
 
         this.setButtons([{ label: _("Cancel"),
-                           action: Lang.bind(this, this._onCancelButtonPressed),
+                           action: this._onCancelButtonPressed.bind(this),
                            key:    Clutter.Escape
                          },
                          { label:  _("Install"),
-                           action: Lang.bind(this, this._onInstallButtonPressed),
+                           action: this._onInstallButtonPressed.bind(this),
                            default: true
                          }]);
 

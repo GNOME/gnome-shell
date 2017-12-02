@@ -195,7 +195,7 @@ var LanguageSelectionPopup = new Lang.Class({
         }
 
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.addAction(_("Region & Language Settings"), Lang.bind(this, this._launchSettings));
+        this.addAction(_("Region & Language Settings"), this._launchSettings.bind(this));
         this._capturedEventId = 0;
 
         this._unmapId = actor.connect('notify::mapped', () => {
@@ -223,7 +223,7 @@ var LanguageSelectionPopup = new Lang.Class({
     open(animate) {
         this.parent(animate);
         this._capturedEventId = global.stage.connect('captured-event',
-                                                     Lang.bind(this, this._onCapturedEvent));
+                                                     this._onCapturedEvent.bind(this));
     },
 
     close(animate) {
@@ -255,7 +255,7 @@ var Key = new Lang.Class({
          */
         this.actor = new St.BoxLayout ({ style_class: 'key-container' });
         this.actor.add(this.keyButton, { expand: true, x_fill: true });
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._extended_keys = extendedKeys;
         this._extended_keyboard = null;
@@ -357,7 +357,7 @@ var Key = new Lang.Class({
     _showSubkeys() {
         this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
         this._capturedEventId = global.stage.connect('captured-event',
-                                                     Lang.bind(this, this._onCapturedEvent));
+                                                     this._onCapturedEvent.bind(this));
         this._unmapId = this.keyButton.connect('notify::mapped', () => {
             if (!this.keyButton.is_mapped())
                 this._hideSubkeys();
@@ -492,8 +492,8 @@ var Keyboard = new Lang.Class({
         this._focusInExtendedKeys = false;
 
         this._focusCaretTracker = new FocusCaretTracker.FocusCaretTracker();
-        this._focusCaretTracker.connect('focus-changed', Lang.bind(this, this._onFocusChanged));
-        this._focusCaretTracker.connect('caret-moved', Lang.bind(this, this._onCaretMoved));
+        this._focusCaretTracker.connect('focus-changed', this._onFocusChanged.bind(this));
+        this._focusCaretTracker.connect('caret-moved', this._onCaretMoved.bind(this));
         this._languagePopup = null;
         this._currentAccessible = null;
         this._caretTrackingEnabled = false;
@@ -506,7 +506,7 @@ var Keyboard = new Lang.Class({
         this._latched = false; // current level is latched
 
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
-        this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._syncEnabled));
+        this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
         this._lastDeviceId = null;
         this._suggestions = null;
 
@@ -531,7 +531,7 @@ var Keyboard = new Lang.Class({
         this._keyboardRequested = false;
         this._keyboardRestingId = 0;
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
+        Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
         //Main.inputMethod.connect('cursor-location-changed', (o, rect) => {
         //    if (this._keyboardVisible) {
         //        let currentWindow = global.screen.get_display().focus_window;
@@ -706,10 +706,10 @@ var Keyboard = new Lang.Class({
         // keyboard on RTL locales.
         this.actor.text_direction = Clutter.TextDirection.LTR;
 
-        this._keyboardNotifyId = this._keyboardController.connect('active-group', Lang.bind(this, this._onGroupChanged));
-        this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', Lang.bind(this, this._onKeyboardGroupsChanged));
-        this._keyboardStateId = this._keyboardController.connect('panel-state', Lang.bind(this, this._onKeyboardStateChanged));
-        this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
+        this._keyboardNotifyId = this._keyboardController.connect('active-group', this._onGroupChanged.bind(this));
+        this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', this._onKeyboardGroupsChanged.bind(this));
+        this._keyboardStateId = this._keyboardController.connect('panel-state', this._onKeyboardStateChanged.bind(this));
+        this._focusNotifyId = global.stage.connect('notify::key-focus', this._onKeyFocusChanged.bind(this));
 
         this._relayout();
     },
@@ -1166,13 +1166,15 @@ var KeyboardController = new Lang.Class({
 
         this._inputSourceManager = InputSourceManager.getInputSourceManager();
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
-                                                                 Lang.bind(this, this._onSourceChanged));
+                                                                 this._onSourceChanged.bind(this));
         this._sourcesModifiedId = this._inputSourceManager.connect ('sources-changed',
-                                                                    Lang.bind(this, this._onSourcesModified));
+                                                                    this._onSourcesModified.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
 
-        Main.inputMethod.connect('notify::content-purpose', Lang.bind(this, this._onContentPurposeHintsChanged));
-        Main.inputMethod.connect('notify::content-hints', Lang.bind(this, this._onContentPurposeHintsChanged));
+        Main.inputMethod.connect('notify::content-purpose',
+                                 this._onContentPurposeHintsChanged.bind(this));
+        Main.inputMethod.connect('notify::content-hints',
+                                 this._onContentPurposeHintsChanged.bind(this));
         Main.inputMethod.connect('input-panel-state', (o, state) => {
             this.emit('panel-state', state);
         });

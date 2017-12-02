@@ -39,9 +39,9 @@ function FlowedBoxes() {
 FlowedBoxes.prototype = {
     _init() {
 	this.actor = new Shell.GenericContainer();
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocate.bind(this));
 
 	for (let i = 0; i < BOX_WIDTHS.length; i++) {
 	    let child = new St.Bin({ width: BOX_WIDTHS[i], height: BOX_HEIGHT,
@@ -135,9 +135,9 @@ SizingIllustrator.prototype = {
     _init() {
 	this.actor = new Shell.GenericContainer();
 
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocate.bind(this));
 
 	this.minWidthLine = new St.Bin({ style: 'background: red' });
 	this.actor.add_actor(this.minWidthLine);
@@ -156,9 +156,9 @@ SizingIllustrator.prototype = {
 
 	this.handle = new St.Bin({ style: 'background: yellow; border: 1px solid black;',
 				   reactive: true });
-	this.handle.connect('button-press-event', Lang.bind(this, this._handlePressed));
-	this.handle.connect('button-release-event', Lang.bind(this, this._handleReleased));
-	this.handle.connect('motion-event', Lang.bind(this, this._handleMotion));
+	this.handle.connect('button-press-event', this._handlePressed.bind(this));
+	this.handle.connect('button-release-event', this._handleReleased.bind(this));
+	this.handle.connect('motion-event', this._handleMotion.bind(this));
 	this.actor.add_actor(this.handle);
 
 	this._inDrag = false;

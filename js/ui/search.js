@@ -59,7 +59,7 @@ var SearchResult = new Lang.Class({
                                      y_fill: true });
 
         this.actor._delegate = this;
-        this.actor.connect('clicked', Lang.bind(this, this.activate));
+        this.actor.connect('clicked', this.activate.bind(this));
     },
 
     activate() {
@@ -116,12 +116,12 @@ var ListSearchResult = new Lang.Class({
 
             this._termsChangedId =
                 this._resultsView.connect('terms-changed',
-                                          Lang.bind(this, this._highlightTerms));
+                                          this._highlightTerms.bind(this));
 
             this._highlightTerms();
         }
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
     _highlightTerms() {
@@ -240,8 +240,8 @@ var SearchResultsBase = new Lang.Class({
                 metasNeeded.forEach((resultId, i) => {
                     let meta = metas[i];
                     let display = this._createResultDisplay(meta);
-                    display.connect('activate', Lang.bind(this, this._activateResult));
-                    display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+                    display.connect('activate', this._activateResult.bind(this));
+                    display.actor.connect('key-focus-in', this._keyFocusIn.bind(this));
                     this._resultDisplays[resultId] = display;
                 });
                 callback(true);
@@ -292,7 +292,7 @@ var ListSearchResults = new Lang.Class({
 
         this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerInfo = new ProviderInfo(provider);
-        this.providerInfo.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+        this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('clicked', () => {
             this.providerInfo.animateLaunch();
             provider.launchSearch(this._terms);
@@ -414,7 +414,7 @@ var SearchResults = new Lang.Class({
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this._scrollView.add_actor(scrollChild);
         let action = new Clutter.PanAction({ interpolate: true });
-        action.connect('pan', Lang.bind(this, this._onPan));
+        action.connect('pan', this._onPan.bind(this));
         this._scrollView.add_action(action);
 
         this.actor.add(this._scrollView, { x_fill: true,
@@ -441,10 +441,10 @@ var SearchResults = new Lang.Class({
         this._highlightRegex = null;
 
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
-        this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::enabled', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
-        this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
+        this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
+        this._searchSettings.connect('changed::enabled', this._reloadRemoteProviders.bind(this));
+        this._searchSettings.connect('changed::disable-external', this._reloadRemoteProviders.bind(this));
+        this._searchSettings.connect('changed::sort-order', this._reloadRemoteProviders.bind(this));
 
         this._searchTimeoutId = 0;
         this._cancellable = new Gio.Cancellable();
@@ -460,7 +460,7 @@ var SearchResults = new Lang.Class({
         });
 
         RemoteSearch.loadRemoteSearchProviders(this._searchSettings, providers => {
-            providers.forEach(Lang.bind(this, this._registerProvider));
+            providers.forEach(this._registerProvider.bind(this));
         });
     },
 
@@ -511,9 +511,18 @@ var SearchResults = new Lang.Class({
 
             let previousProviderResults = previousResults[provider.id];
             if (this._isSubSearch && previousProviderResults)
-                provider.getSubsearchResultSet(previousProviderResults, this._terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+                provider.getSubsearchResultSet(previousProviderResults,
+                                               this._terms,
+                                               results => {
+                                                   this._gotResults(results, provider);
+                                               },
+                                               this._cancellable);
             else
-                provider.getInitialResultSet(this._terms, Lang.bind(this, this._gotResults, provider), this._cancellable);
+                provider.getInitialResultSet(this._terms,
+                                             results => {
+                                                 this._gotResults(results, provider);
+                                             },
+                                             this._cancellable);
         });
 
         this._updateSearchProgress();
@@ -556,7 +565,7 @@ var SearchResults = new Lang.Class({
         this._updateSearchProgress();
 
         if (this._searchTimeoutId == 0)
-            this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, Lang.bind(this, this._onSearchTimeout));
+            this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, this._onSearchTimeout.bind(this));
 
         let escapedTerms = this._terms.map(term => Shell.util_regex_escape(term));
         this._highlightRegex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
@@ -585,7 +594,7 @@ var SearchResults = new Lang.Class({
         else
             providerDisplay = new GridSearchResults(provider, this);
 
-        providerDisplay.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+        providerDisplay.connect('key-focus-in', this._keyFocusIn.bind(this));
         providerDisplay.actor.hide();
         this._content.add(providerDisplay.actor);
         provider.display = providerDisplay;

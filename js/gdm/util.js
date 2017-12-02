@@ -133,7 +133,7 @@ var ShellUserVerifier = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema_id: LOGIN_SCREEN_SCHEMA });
         this._settings.connect('changed',
-                               Lang.bind(this, this._updateDefaultService));
+                               this._updateDefaultService.bind(this));
         this._updateDefaultService();
 
         this._fprintManager = Fprint.FprintManager();
@@ -147,9 +147,9 @@ var ShellUserVerifier = new Lang.Class({
         this._checkForSmartcard();
 
         this._smartcardInsertedId = this._smartcardManager.connect('smartcard-inserted',
-                                                                   Lang.bind(this, this._checkForSmartcard));
+                                                                   this._checkForSmartcard.bind(this));
         this._smartcardRemovedId = this._smartcardManager.connect('smartcard-removed',
-                                                                  Lang.bind(this, this._checkForSmartcard));
+                                                                  this._checkForSmartcard.bind(this));
 
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
@@ -164,7 +164,7 @@ var ShellUserVerifier = new Lang.Class({
             this._oVirtUserAuthenticated(this._oVirtCredentialsManager.getToken());
 
         this._oVirtUserAuthenticatedId = this._oVirtCredentialsManager.connect('user-authenticated',
-                                                                               Lang.bind(this, this._oVirtUserAuthenticated));
+                                                                               this._oVirtUserAuthenticated.bind(this));
     },
 
     begin(userName, hold) {
@@ -179,9 +179,9 @@ var ShellUserVerifier = new Lang.Class({
             // If possible, reauthenticate an already running session,
             // so any session specific credentials get updated appropriately
             this._client.open_reauthentication_channel(userName, this._cancellable,
-                                                       Lang.bind(this, this._reauthenticationChannelOpened));
+                                                       this._reauthenticationChannelOpened.bind(this));
         } else {
-            this._client.get_user_verifier(this._cancellable, Lang.bind(this, this._userVerifierGot));
+            this._client.get_user_verifier(this._cancellable, this._userVerifierGot.bind(this));
         }
     },
 
@@ -357,7 +357,7 @@ var ShellUserVerifier = new Lang.Class({
             // Gdm emits org.freedesktop.DBus.Error.AccessDenied when there is
             // no session to reauthenticate. Fall back to performing verification
             // from this login session
-            client.get_user_verifier(this._cancellable, Lang.bind(this, this._userVerifierGot));
+            client.get_user_verifier(this._cancellable, this._userVerifierGot.bind(this));
             return;
         } catch(e) {
             this._reportInitError('Failed to open reauthentication channel', e);
@@ -387,13 +387,13 @@ var ShellUserVerifier = new Lang.Class({
     },
 
     _connectSignals() {
-        this._userVerifier.connect('info', Lang.bind(this, this._onInfo));
-        this._userVerifier.connect('problem', Lang.bind(this, this._onProblem));
-        this._userVerifier.connect('info-query', Lang.bind(this, this._onInfoQuery));
-        this._userVerifier.connect('secret-info-query', Lang.bind(this, this._onSecretInfoQuery));
-        this._userVerifier.connect('conversation-stopped', Lang.bind(this, this._onConversationStopped));
-        this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
-        this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
+        this._userVerifier.connect('info', this._onInfo.bind(this));
+        this._userVerifier.connect('problem', this._onProblem.bind(this));
+        this._userVerifier.connect('info-query', this._onInfoQuery.bind(this));
+        this._userVerifier.connect('secret-info-query', this._onSecretInfoQuery.bind(this));
+        this._userVerifier.connect('conversation-stopped', this._onConversationStopped.bind(this));
+        this._userVerifier.connect('reset', this._onReset.bind(this));
+        this._userVerifier.connect('verification-complete', this._onVerificationComplete.bind(this));
     },
 
     _getForegroundService() {

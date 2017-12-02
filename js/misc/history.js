@@ -22,7 +22,7 @@ var HistoryManager = new Lang.Class({
         if (this._key) {
             this._history = global.settings.get_strv(this._key);
             global.settings.connect('changed::' + this._key,
-                                    Lang.bind(this, this._historyChanged));
+                                    this._historyChanged.bind(this));
 
         } else {
             this._history = [];
@@ -32,7 +32,7 @@ var HistoryManager = new Lang.Class({
 
         if (this._entry) {
             this._entry.connect('key-press-event', 
-                                Lang.bind(this, this._onEntryKeyPress));
+                                this._onEntryKeyPress.bind(this));
         }
     },
 

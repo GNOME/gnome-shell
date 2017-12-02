@@ -261,13 +261,17 @@ var RemoteSearchProvider = new Lang.Class({
 
     getInitialResultSet(terms, callback, cancellable) {
         this.proxy.GetInitialResultSetRemote(terms,
-                                             Lang.bind(this, this._getResultsFinished, callback),
+                                             (results, error) => {
+                                                 this._getResultsFinished(results, error, callback);
+                                             },
                                              cancellable);
     },
 
     getSubsearchResultSet(previousResults, newTerms, callback, cancellable) {
         this.proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
-                                               Lang.bind(this, this._getResultsFinished, callback),
+                                               (results, error) => {
+                                                   this._getResultsFinished(results, error, callback);
+                                               },
                                                cancellable);
     },
 
@@ -290,8 +294,9 @@ var RemoteSearchProvider = new Lang.Class({
             resultMetas.push({ id: metas[i]['id'],
                                name: metas[i]['name'],
                                description: metas[i]['description'],
-                               createIcon: Lang.bind(this,
-                                                     this.createIcon, metas[i]),
+                               createIcon: size => {
+                                   this.createIcon(size, metas[i]);
+                               },
                                clipboardText: metas[i]['clipboardText'] });
         }
         callback(resultMetas);
@@ -299,7 +304,9 @@ var RemoteSearchProvider = new Lang.Class({
 
     getResultMetas(ids, callback, cancellable) {
         this.proxy.GetResultMetasRemote(ids,
-                                        Lang.bind(this, this._getResultMetasFinished, callback),
+                                        (results, error) => {
+                                            this._getResultMetasFinished(results, error, callback);
+                                        },
                                         cancellable);
     },
 

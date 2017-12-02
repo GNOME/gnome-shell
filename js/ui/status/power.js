@@ -38,7 +38,7 @@ var Indicator = new Lang.Class({
 
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed::' + SHOW_BATTERY_PERCENTAGE,
-                                      Lang.bind(this, this._sync));
+                                      this._sync.bind(this));
 
         this._indicator = this._addIndicator();
         this._percentageLabel = new St.Label({ y_expand: true,
@@ -53,7 +53,7 @@ var Indicator = new Lang.Class({
                                                     return;
                                                 }
                                                 this._proxy.connect('g-properties-changed',
-                                                                    Lang.bind(this, this._sync));
+                                                                    this._sync.bind(this));
                                                 this._sync();
                                             });
 
@@ -61,7 +61,7 @@ var Indicator = new Lang.Class({
         this._item.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
         this.menu.addMenuItem(this._item);
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
     },
 

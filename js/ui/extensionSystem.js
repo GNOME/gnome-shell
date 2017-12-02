@@ -34,8 +34,8 @@ var extensionOrder = [];
 var _signals = {};
 Signals.addSignalMethods(_signals);
 
-var connect = Lang.bind(_signals, _signals.connect);
-var disconnect = Lang.bind(_signals, _signals.disconnect);
+var connect = _signals.connect.bind(_signals);
+var disconnect = _signals.disconnect.bind(_signals);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';

@@ -369,7 +369,7 @@ var CloseButton = new Lang.Class({
 
         this._boxPointer = boxpointer;
         if (boxpointer)
-            this._boxPointer.connect('arrow-side-changed', Lang.bind(this, this._sync));
+            this._boxPointer.connect('arrow-side-changed', this._sync.bind(this));
     },
 
     _computeBoxPointerOffset() {
@@ -452,7 +452,7 @@ var AppSettingsMonitor = new Lang.Class({
 
         this._appSystem = Shell.AppSystem.get_default();
         this._appSystem.connect('installed-changed',
-                                Lang.bind(this, this._onInstalledChanged));
+                                this._onInstalledChanged.bind(this));
         this._onInstalledChanged();
     },
 

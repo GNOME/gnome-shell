@@ -215,7 +215,7 @@ var DBusEventSource = new Lang.Class({
                 }
             }
 
-            this._dbusProxy.connectSignal('Changed', Lang.bind(this, this._onChanged));
+            this._dbusProxy.connectSignal('Changed', this._onChanged.bind(this));
 
             this._dbusProxy.connect('notify::g-name-owner', () => {
                 if (this._dbusProxy.g_name_owner)
@@ -299,7 +299,7 @@ var DBusEventSource = new Lang.Class({
             this._dbusProxy.GetEventsRemote(this._curRequestBegin.getTime() / 1000,
                                             this._curRequestEnd.getTime() / 1000,
                                             forceReload,
-                                            Lang.bind(this, this._onEventsReceived),
+                                            this._onEventsReceived.bind(this),
                                             Gio.DBusCallFlags.NONE);
         }
     },
@@ -367,7 +367,7 @@ var Calendar = new Lang.Class({
         this._weekStart = Shell.util_get_week_start();
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.calendar' });
 
-        this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
+        this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, this._onSettingsChange.bind(this));
         this._useWeekdate = this._settings.get_boolean(SHOW_WEEKDATE_KEY);
 
         /**
@@ -398,7 +398,7 @@ var Calendar = new Lang.Class({
                                      reactive: true });
 
         this.actor.connect('scroll-event',
-                           Lang.bind(this, this._onScroll));
+                           this._onScroll.bind(this));
 
         this._buildHeader ();
     },
@@ -446,7 +446,7 @@ var Calendar = new Lang.Class({
                                            accessible_name: _("Previous month"),
                                            can_focus: true });
         this._topBox.add(this._backButton);
-        this._backButton.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
+        this._backButton.connect('clicked', this._onPrevMonthButtonClicked.bind(this));
 
         this._monthLabel = new St.Label({style_class: 'calendar-month-label',
                                          can_focus: true });
@@ -456,7 +456,7 @@ var Calendar = new Lang.Class({
                                               accessible_name: _("Next month"),
                                               can_focus: true });
         this._topBox.add(this._forwardButton);
-        this._forwardButton.connect('clicked', Lang.bind(this, this._onNextMonthButtonClicked));
+        this._forwardButton.connect('clicked', this._onNextMonthButtonClicked.bind(this));
 
         // Add weekday labels...
         //
@@ -779,7 +779,7 @@ var NotificationMessage = new Lang.Class({
                 this.close();
         });
         this._updatedId = notification.connect('updated',
-                                               Lang.bind(this, this._onUpdated));
+                                               this._onUpdated.bind(this));
     },
 
     _getIcon() {
@@ -818,7 +818,7 @@ var EventsSection = new Lang.Class({
 
     _init() {
         this._desktopSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
-        this._desktopSettings.connect('changed', Lang.bind(this, this._reloadEvents));
+        this._desktopSettings.connect('changed', this._reloadEvents.bind(this));
         this._eventSource = new EmptyEventSource();
 
         this.parent();
@@ -829,11 +829,11 @@ var EventsSection = new Lang.Class({
                                       can_focus: true });
         this.actor.insert_child_below(this._title, null);
 
-        this._title.connect('clicked', Lang.bind(this, this._onTitleClicked));
-        this._title.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+        this._title.connect('clicked', this._onTitleClicked.bind(this));
+        this._title.connect('key-focus-in', this._onKeyFocusIn.bind(this));
 
         Shell.AppSystem.get_default().connect('installed-changed',
-                                              Lang.bind(this, this._appInstalledChanged));
+                                              this._appInstalledChanged.bind(this));
         this._appInstalledChanged();
     },
 
@@ -843,7 +843,7 @@ var EventsSection = new Lang.Class({
 
     setEventSource(eventSource) {
         this._eventSource = eventSource;
-        this._eventSource.connect('changed', Lang.bind(this, this._reloadEvents));
+        this._eventSource.connect('changed', this._reloadEvents.bind(this));
     },
 
     get allowed() {
@@ -953,12 +953,12 @@ var NotificationSection = new Lang.Class({
         this._sources = new Map();
         this._nUrgent = 0;
 
-        Main.messageTray.connect('source-added', Lang.bind(this, this._sourceAdded));
+        Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
         Main.messageTray.getSources().forEach(source => {
             this._sourceAdded(Main.messageTray, source);
         });
 
-        this.actor.connect('notify::mapped', Lang.bind(this, this._onMapped));
+        this.actor.connect('notify::mapped', this._onMapped.bind(this));
     },
 
     get allowed() {
@@ -987,7 +987,7 @@ var NotificationSection = new Lang.Class({
             this._onSourceDestroy(source, obj);
         });
         obj.notificationAddedId = source.connect('notification-added',
-                                                 Lang.bind(this, this._onNotificationAdded));
+                                                 this._onNotificationAdded.bind(this));
 
         this._sources.set(source, obj);
     },
@@ -1139,7 +1139,7 @@ var CalendarMessageList = new Lang.Class({
         this._eventsSection = new EventsSection();
         this._addSection(this._eventsSection);
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sync));
+        Main.sessionMode.connect('updated', this._sync.bind(this));
     },
 
     _addSection(section) {
@@ -1154,13 +1154,13 @@ var CalendarMessageList = new Lang.Class({
             this._removeSection(section);
         });
         obj.visibleId = section.actor.connect('notify::visible',
-                                              Lang.bind(this, this._sync));
+                                              this._sync.bind(this));
         obj.emptyChangedId = section.connect('empty-changed',
-                                             Lang.bind(this, this._sync));
+                                             this._sync.bind(this));
         obj.canClearChangedId = section.connect('can-clear-changed',
-                                                Lang.bind(this, this._sync));
+                                                this._sync.bind(this));
         obj.keyFocusId = section.connect('key-focus-in',
-                                         Lang.bind(this, this._onKeyFocusIn));
+                                         this._onKeyFocusIn.bind(this));
 
         this._sections.set(section, obj);
         this._sectionList.add_actor(section.actor);

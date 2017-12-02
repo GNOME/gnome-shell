@@ -99,9 +99,9 @@ var GnomeShell = new Lang.Class({
 
         this._cachedOverviewVisible = false;
         Main.overview.connect('showing',
-                              Lang.bind(this, this._checkOverviewVisibleChanged));
+                              this._checkOverviewVisibleChanged.bind(this));
         Main.overview.connect('hidden',
-                              Lang.bind(this, this._checkOverviewVisibleChanged));
+                              this._checkOverviewVisibleChanged.bind(this));
     },
 
     /**
@@ -224,7 +224,7 @@ var GnomeShell = new Lang.Class({
 
         if (!this._grabbers.has(sender)) {
             let id = Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
-                                        Lang.bind(this, this._onGrabberBusNameVanished));
+                                        this._onGrabberBusNameVanished.bind(this));
             this._grabbers.set(sender, id);
         }
 
@@ -333,7 +333,7 @@ var GnomeShellExtensions = new Lang.Class({
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellExtensionsIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
         ExtensionSystem.connect('extension-state-changed',
-                                Lang.bind(this, this._extensionStateChanged));
+                                this._extensionStateChanged.bind(this));
     },
 
 

@@ -60,7 +60,7 @@ var ModalDialog = new Lang.Class({
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this._group.add_constraint(constraint);
 
-        this._group.connect('destroy', Lang.bind(this, this._onGroupDestroy));
+        this._group.connect('destroy', this._onGroupDestroy.bind(this));
 
         this.backgroundStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._backgroundBin = new St.Bin({ child: this.backgroundStack,
@@ -194,8 +194,7 @@ var ModalDialog = new Lang.Class({
                              { opacity: 0,
                                time: OPEN_AND_CLOSE_TIME,
                                transition: 'easeOutQuad',
-                               onComplete: Lang.bind(this,
-                                                     this._closeComplete)
+                               onComplete: this._closeComplete.bind(this)
                              })
         else
             this._closeComplete();

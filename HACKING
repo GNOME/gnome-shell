@@ -222,7 +222,7 @@ the actor itself:
             this.actor = new St.Button({ text: "This is a button" });
             this.actor._delegate = this;
 
-            this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+            this.actor.connect('clicked', this._onClicked.bind(this));
         },
 
         _onClicked(actor) {
@@ -252,11 +252,13 @@ invoked, not to the value of this where the closure is created, because "this"
 is a keyword with a value passed in at function invocation time, it is not a
 variable that can be captured in closures.
 
-All closures should be wrapped with a Lang.bind.
+All closures should be wrapped with Function.prototype.bind or use arrow
+notation.
 
     const Lang = imports.lang;
 
-    let closure = Lang.bind(this, function() { this._fnorbate(); });
+    let closure1 = () => { this._fnorbate(); };
+    let closure2 = this._fnorbate.bind(this);
 
 A more realistic example would be connecting to a signal on a method of a
 prototype:
@@ -267,7 +269,7 @@ prototype:
     var MyClass = new Lang.Class({
         _init() {
             let fnorb = new FnorbLib.Fnorb();
-            fnorb.connect('frobate', Lang.bind(this, this._onFnorbFrobate));
+            fnorb.connect('frobate', this._onFnorbFrobate.bind(this));
         },
 
         _onFnorbFrobate(fnorb) {

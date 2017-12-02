@@ -46,11 +46,11 @@ var WeatherClient = new Lang.Class({
             });
         });
         this._permStore.connectSignal('Changed',
-                                      Lang.bind(this, this._onPermStoreChanged));
+                                      this._onPermStoreChanged.bind(this));
 
         this._locationSettings = new Gio.Settings({ schema_id: 'org.gnome.system.location' });
         this._locationSettings.connect('changed::enabled',
-                                       Lang.bind(this, this._updateAutoLocation));
+                                       this._updateAutoLocation.bind(this));
 
         this._world = GWeather.Location.get_world();
 
@@ -68,9 +68,9 @@ var WeatherClient = new Lang.Class({
                                                           'org.gnome.Weather.Application');
         this._weatherAppMon.connect('available-changed', () => { this.emit('changed'); });
         this._weatherAppMon.watchSetting('automatic-location',
-                                         Lang.bind(this, this._onAutomaticLocationChanged));
+                                         this._onAutomaticLocationChanged.bind(this));
         this._weatherAppMon.watchSetting('locations',
-                                         Lang.bind(this, this._onLocationsChanged));
+                                         this._onLocationsChanged.bind(this));
     },
 
     get available() {
@@ -157,7 +157,7 @@ var WeatherClient = new Lang.Class({
 
             this._gclueLocationChangedId =
                 this._gclueService.connect('notify::location',
-                                           Lang.bind(this, this._onGClueLocationChanged));
+                                           this._onGClueLocationChanged.bind(this));
             this._onGClueLocationChanged();
         } else {
             if (this._gclueLocationChangedId)

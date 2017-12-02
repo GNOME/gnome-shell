@@ -138,7 +138,7 @@ var WindowClone = new Lang.Class({
         this._stackAbove = null;
 
         this._windowClone._updateId = this.metaWindow.connect('size-changed',
-            Lang.bind(this, this._onRealWindowSizeChanged));
+            this._onRealWindowSizeChanged.bind(this));
         this._windowClone._destroyId =
             this.realWindow.connect('destroy', () => {
                 // First destroy the clone and then destroy everything
@@ -154,11 +154,11 @@ var WindowClone = new Lang.Class({
         this.actor.y = this._boundingBox.y;
 
         let clickAction = new Clutter.ClickAction();
-        clickAction.connect('clicked', Lang.bind(this, this._onClicked));
-        clickAction.connect('long-press', Lang.bind(this, this._onLongPress));
+        clickAction.connect('clicked', this._onClicked.bind(this));
+        clickAction.connect('long-press', this._onLongPress.bind(this));
         this.actor.add_action(clickAction);
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.actor.connect('key-press-event', this._onKeyPress.bind(this));
 
         this.actor.connect('enter-event', () => { this.emit('show-chrome'); });
         this.actor.connect('key-focus-in', () => { this.emit('show-chrome'); });
@@ -171,9 +171,9 @@ var WindowClone = new Lang.Class({
                                               manualMode: true,
                                               dragActorMaxSize: WINDOW_DND_SIZE,
                                               dragActorOpacity: DRAGGING_WINDOW_OPACITY });
-        this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
-        this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
-        this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
+        this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
         this.inDrag = false;
 
         this._selected = false;
@@ -460,11 +460,11 @@ var WindowOverlay = new Lang.Class({
         button._overlap = 0;
 
         this._idleToggleCloseId = 0;
-        button.connect('clicked', Lang.bind(this, this._closeWindow));
+        button.connect('clicked', this._closeWindow.bind(this));
 
-        windowClone.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        windowClone.connect('show-chrome', Lang.bind(this, this._onShowChrome));
-        windowClone.connect('hide-chrome', Lang.bind(this, this._onHideChrome));
+        windowClone.actor.connect('destroy', this._onDestroy.bind(this));
+        windowClone.connect('show-chrome', this._onShowChrome.bind(this));
+        windowClone.connect('hide-chrome', this._onHideChrome.bind(this));
 
         this._windowAddedId = 0;
 
@@ -482,10 +482,10 @@ var WindowOverlay = new Lang.Class({
         parentActor.add_actor(this.title);
         parentActor.add_actor(this.closeButton);
         title.connect('style-changed',
-                      Lang.bind(this, this._onStyleChanged));
+                      this._onStyleChanged.bind(this));
         button.connect('style-changed',
-                       Lang.bind(this, this._onStyleChanged));
-        this.border.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+                       this._onStyleChanged.bind(this));
+        this.border.connect('style-changed', this._onStyleChanged.bind(this));
         // force a style change if we are already on a stage - otherwise
         // the signal will be emitted normally when we are added
         if (parentActor.get_stage())
@@ -583,8 +583,7 @@ var WindowOverlay = new Lang.Class({
         this._workspace = metaWindow.get_workspace();
 
         this._windowAddedId = this._workspace.connect('window-added',
-                                                      Lang.bind(this,
-                                                                this._onWindowAdded));
+                                                      this._onWindowAdded.bind(this));
 
         this._windowClone.deleteAll();
     },
@@ -668,7 +667,7 @@ var WindowOverlay = new Lang.Class({
 
     _onHideChrome() {
         if (this._idleToggleCloseId == 0) {
-            this._idleToggleCloseId = Mainloop.timeout_add(750, Lang.bind(this, this._idleToggleCloseButton));
+            this._idleToggleCloseId = Mainloop.timeout_add(750, this._idleToggleCloseButton.bind(this));
             GLib.Source.set_name_by_id(this._idleToggleCloseId, '[gnome-shell] this._idleToggleCloseButton');
         }
     },
@@ -1126,7 +1125,7 @@ var Workspace = new Lang.Class({
         this.actor.add_actor(this._dropRect);
         this.actor.add_actor(this._windowOverlaysGroup);
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         let windows = global.get_window_actors().filter(this._isMyWindow, this);
 
@@ -1143,14 +1142,14 @@ var Workspace = new Lang.Class({
         // Track window changes
         if (this.metaWorkspace) {
             this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                             Lang.bind(this, this._windowAdded));
+                                                             this._windowAdded.bind(this));
             this._windowRemovedId = this.metaWorkspace.connect('window-removed',
-                                                               Lang.bind(this, this._windowRemoved));
+                                                               this._windowRemoved.bind(this));
         }
         this._windowEnteredMonitorId = global.screen.connect('window-entered-monitor',
-                                                             Lang.bind(this, this._windowEnteredMonitor));
+                                                             this._windowEnteredMonitor.bind(this));
         this._windowLeftMonitorId = global.screen.connect('window-left-monitor',
-                                                          Lang.bind(this, this._windowLeftMonitor));
+                                                          this._windowLeftMonitor.bind(this));
         this._repositionWindowsId = 0;
 
         this.leavingOverview = false;
@@ -1480,7 +1479,7 @@ var Workspace = new Lang.Class({
 
         this._currentLayout = null;
         this._repositionWindowsId = Mainloop.timeout_add(750,
-            Lang.bind(this, this._delayedWindowRepositioning));
+            this._delayedWindowRepositioning.bind(this));
         GLib.Source.set_name_by_id(this._repositionWindowsId, '[gnome-shell] this._delayedWindowRepositioning');
     },
 
@@ -1586,8 +1585,7 @@ var Workspace = new Lang.Class({
     fadeToOverview() {
         // We don't want to reposition windows while animating in this way.
         this._animatingWindowsFade = true;
-        this._overviewShownId = Main.overview.connect('shown', Lang.bind(this,
-                                                                         this._doneShowingOverview));
+        this._overviewShownId = Main.overview.connect('shown', this._doneShowingOverview.bind(this));
         if (this._windows.length == 0)
             return;
 
@@ -1633,8 +1631,7 @@ var Workspace = new Lang.Class({
 
     fadeFromOverview() {
         this.leavingOverview = true;
-        this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
-                                                                           this._doneLeavingOverview));
+        this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
         if (this._windows.length == 0)
             return;
 
@@ -1731,8 +1728,7 @@ var Workspace = new Lang.Class({
             Mainloop.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
         }
-        this._overviewHiddenId = Main.overview.connect('hidden', Lang.bind(this,
-                                                                           this._doneLeavingOverview));
+        this._overviewHiddenId = Main.overview.connect('hidden', this._doneLeavingOverview.bind(this));
 
         if (this.metaWorkspace != null && this.metaWorkspace != currentWorkspace)
             return;
@@ -1838,7 +1834,7 @@ var Workspace = new Lang.Class({
         clone.positioned = positioned;
 
         clone.connect('selected',
-                      Lang.bind(this, this._onCloneSelected));
+                      this._onCloneSelected.bind(this));
         clone.connect('drag-begin', () => {
             Main.overview.beginWindowDrag(clone.metaWindow);
             overlay.hide();
@@ -1856,7 +1852,7 @@ var Workspace = new Lang.Class({
 
         this.actor.add_actor(clone.actor);
 
-        overlay.connect('show-close-button', Lang.bind(this, this._onShowOverlayClose));
+        overlay.connect('show-close-button', this._onShowOverlayClose.bind(this));
 
         if (this._windows.length == 0)
             clone.setStackAbove(null);

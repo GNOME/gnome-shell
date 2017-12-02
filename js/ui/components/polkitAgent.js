@@ -60,9 +60,9 @@ var AuthenticationDialog = new Lang.Class({
         this._user = AccountsService.UserManager.get_default().get_user(userName);
         let userRealName = this._user.get_real_name()
         this._userLoadedId = this._user.connect('notify::is_loaded',
-                                                Lang.bind(this, this._onUserChanged));
+                                                this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed',
-                                                 Lang.bind(this, this._onUserChanged));
+                                                 this._onUserChanged.bind(this));
 
         // Special case 'root'
         let userIsRoot = false;
@@ -108,7 +108,7 @@ var AuthenticationDialog = new Lang.Class({
                                              text: "",
                                              can_focus: true});
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
-        this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
+        this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordBox.add(this._passwordEntry,
                               { expand: true });
 
@@ -146,10 +146,10 @@ var AuthenticationDialog = new Lang.Class({
         this._nullMessageLabel.show();
 
         this._cancelButton = this.addButton({ label: _("Cancel"),
-                                              action: Lang.bind(this, this.cancel),
+                                              action: this.cancel.bind(this),
                                               key: Clutter.Escape });
         this._okButton = this.addButton({ label:  _("Authenticate"),
-                                          action: Lang.bind(this, this._onAuthenticateButtonPressed),
+                                          action: this._onAuthenticateButtonPressed.bind(this),
                                           default: true });
 
         this._doneEmitted = false;
@@ -186,10 +186,10 @@ var AuthenticationDialog = new Lang.Class({
         this.destroySession();
         this._session = new PolkitAgent.Session({ identity: this._identityToAuth,
                                                   cookie: this._cookie });
-        this._session.connect('completed', Lang.bind(this, this._onSessionCompleted));
-        this._session.connect('request', Lang.bind(this, this._onSessionRequest));
-        this._session.connect('show-error', Lang.bind(this, this._onSessionShowError));
-        this._session.connect('show-info', Lang.bind(this, this._onSessionShowInfo));
+        this._session.connect('completed', this._onSessionCompleted.bind(this));
+        this._session.connect('request', this._onSessionRequest.bind(this));
+        this._session.connect('show-error', this._onSessionShowError.bind(this));
+        this._session.connect('show-info', this._onSessionShowInfo.bind(this));
         this._session.initiate();
     },
 
@@ -346,8 +346,8 @@ var AuthenticationAgent = new Lang.Class({
         this._currentDialog = null;
         this._handle = null;
         this._native = new Shell.PolkitAuthenticationAgent();
-        this._native.connect('initiate', Lang.bind(this, this._onInitiate));
-        this._native.connect('cancel', Lang.bind(this, this._onCancel));
+        this._native.connect('initiate', this._onInitiate.bind(this));
+        this._native.connect('cancel', this._onCancel.bind(this));
     },
 
     enable() {
@@ -379,7 +379,7 @@ var AuthenticationAgent = new Lang.Class({
         // See https://bugzilla.gnome.org/show_bug.cgi?id=643062 for more
         // discussion.
 
-        this._currentDialog.connect('done', Lang.bind(this, this._onDialogDone));
+        this._currentDialog.connect('done', this._onDialogDone.bind(this));
         this._currentDialog.performAuthentication();
     },
 

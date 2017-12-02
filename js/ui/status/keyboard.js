@@ -199,7 +199,7 @@ var InputSourceSystemSettings = new Lang.Class({
                                          this._BUS_PATH,
                                          null,
                                          Gio.DBusSignalFlags.NONE,
-                                         Lang.bind(this, this._reload));
+                                         this._reload.bind(this));
     },
 
     _reload() {
@@ -265,9 +265,9 @@ var InputSourceSessionSettings = new Lang.Class({
 
     _init() {
         this._settings = new Gio.Settings({ schema_id: this._DESKTOP_INPUT_SOURCES_SCHEMA });
-        this._settings.connect('changed::' + this._KEY_INPUT_SOURCES, Lang.bind(this, this._emitInputSourcesChanged));
-        this._settings.connect('changed::' + this._KEY_KEYBOARD_OPTIONS, Lang.bind(this, this._emitKeyboardOptionsChanged));
-        this._settings.connect('changed::' + this._KEY_PER_WINDOW, Lang.bind(this, this._emitPerWindowChanged));
+        this._settings.connect('changed::' + this._KEY_INPUT_SOURCES, this._emitInputSourcesChanged.bind(this));
+        this._settings.connect('changed::' + this._KEY_KEYBOARD_OPTIONS, this._emitKeyboardOptionsChanged.bind(this));
+        this._settings.connect('changed::' + this._KEY_PER_WINDOW, this._emitPerWindowChanged.bind(this));
     },
 
     _getSourcesList(key) {
@@ -327,37 +327,37 @@ var InputSourceManager = new Lang.Class({
                                   new Gio.Settings({ schema_id: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.NONE,
                                   Shell.ActionMode.ALL,
-                                  Lang.bind(this, this._switchInputSource));
+                                  this._switchInputSource.bind(this));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
                                   new Gio.Settings({ schema_id: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.IS_REVERSED,
                                   Shell.ActionMode.ALL,
-                                  Lang.bind(this, this._switchInputSource));
+                                  this._switchInputSource.bind(this));
         if (Main.sessionMode.isGreeter)
             this._settings = new InputSourceSystemSettings();
         else
             this._settings = new InputSourceSessionSettings();
-        this._settings.connect('input-sources-changed', Lang.bind(this, this._inputSourcesChanged));
-        this._settings.connect('keyboard-options-changed', Lang.bind(this, this._keyboardOptionsChanged));
+        this._settings.connect('input-sources-changed', this._inputSourcesChanged.bind(this));
+        this._settings.connect('keyboard-options-changed', this._keyboardOptionsChanged.bind(this));
 
         this._xkbInfo = KeyboardManager.getXkbInfo();
         this._keyboardManager = KeyboardManager.getKeyboardManager();
 
         this._ibusReady = false;
         this._ibusManager = IBusManager.getIBusManager();
-        this._ibusManager.connect('ready', Lang.bind(this, this._ibusReadyCallback));
-        this._ibusManager.connect('properties-registered', Lang.bind(this, this._ibusPropertiesRegistered));
-        this._ibusManager.connect('property-updated', Lang.bind(this, this._ibusPropertyUpdated));
-        this._ibusManager.connect('set-content-type', Lang.bind(this, this._ibusSetContentType));
+        this._ibusManager.connect('ready', this._ibusReadyCallback.bind(this));
+        this._ibusManager.connect('properties-registered', this._ibusPropertiesRegistered.bind(this));
+        this._ibusManager.connect('property-updated', this._ibusPropertyUpdated.bind(this));
+        this._ibusManager.connect('set-content-type', this._ibusSetContentType.bind(this));
 
-        global.display.connect('modifiers-accelerator-activated', Lang.bind(this, this._modifiersSwitcher));
+        global.display.connect('modifiers-accelerator-activated', this._modifiersSwitcher.bind(this));
 
         this._sourcesPerWindow = false;
         this._focusWindowNotifyId = 0;
         this._overviewShowingId = 0;
         this._overviewHiddenId = 0;
-        this._settings.connect('per-window-changed', Lang.bind(this, this._sourcesPerWindowChanged));
+        this._settings.connect('per-window-changed', this._sourcesPerWindowChanged.bind(this));
         this._sourcesPerWindowChanged();
         this._disableIBus = false;
     },
@@ -578,7 +578,7 @@ var InputSourceManager = new Lang.Class({
                                      infosList[i].displayName,
                                      infosList[i].shortName,
                                      i);
-            is.connect('activate', Lang.bind(this, this.activateInputSource));
+            is.connect('activate', this.activateInputSource.bind(this));
 
             if (!(is.shortName in inputSourcesByShortName))
                 inputSourcesByShortName[is.shortName] = [];
@@ -720,11 +720,11 @@ var InputSourceManager = new Lang.Class({
 
         if (this._sourcesPerWindow && this._focusWindowNotifyId == 0) {
             this._focusWindowNotifyId = global.display.connect('notify::focus-window',
-                                                               Lang.bind(this, this._setPerWindowInputSource));
+                                                               this._setPerWindowInputSource.bind(this));
             this._overviewShowingId = Main.overview.connect('showing',
-                                                            Lang.bind(this, this._setPerWindowInputSource));
+                                                            this._setPerWindowInputSource.bind(this));
             this._overviewHiddenId = Main.overview.connect('hidden',
-                                                           Lang.bind(this, this._setPerWindowInputSource));
+                                                           this._setPerWindowInputSource.bind(this));
         } else if (!this._sourcesPerWindow && this._focusWindowNotifyId != 0) {
             global.display.disconnect(this._focusWindowNotifyId);
             this._focusWindowNotifyId = 0;
@@ -784,9 +784,9 @@ var InputSourceIndicator = new Lang.Class({
         this._indicatorLabels = {};
 
         this._container = new Shell.GenericContainer();
-        this._container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
-        this._container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
-        this._container.connect('allocate', Lang.bind(this, this._containerAllocate));
+        this._container.connect('get-preferred-width', this._containerGetPreferredWidth.bind(this));
+        this._container.connect('get-preferred-height', this._containerGetPreferredHeight.bind(this));
+        this._container.connect('allocate', this._containerAllocate.bind(this));
 
         this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._hbox.add_child(this._container);
@@ -801,14 +801,14 @@ var InputSourceIndicator = new Lang.Class({
         this._propSection.actor.hide();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
+        this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), this._showLayout.bind(this));
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
 
         this._inputSourceManager = getInputSourceManager();
-        this._inputSourceManager.connect('sources-changed', Lang.bind(this, this._sourcesChanged));
-        this._inputSourceManager.connect('current-source-changed', Lang.bind(this, this._currentSourceChanged));
+        this._inputSourceManager.connect('sources-changed', this._sourcesChanged.bind(this));
+        this._inputSourceManager.connect('current-source-changed', this._currentSourceChanged.bind(this));
         this._inputSourceManager.reload();
     },
 

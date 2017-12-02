@@ -27,22 +27,22 @@ var AutomountManager = new Lang.Class({
         this._volumeQueue = [];
         this._session = new GnomeSession.SessionManager();
         this._session.connectSignal('InhibitorAdded',
-                                    Lang.bind(this, this._InhibitorsChanged));
+                                    this._InhibitorsChanged.bind(this));
         this._session.connectSignal('InhibitorRemoved',
-                                    Lang.bind(this, this._InhibitorsChanged));
+                                    this._InhibitorsChanged.bind(this));
         this._inhibited = false;
 
         this._volumeMonitor = Gio.VolumeMonitor.get();
     },
 
     enable() {
-        this._volumeAddedId = this._volumeMonitor.connect('volume-added', Lang.bind(this, this._onVolumeAdded));
-        this._volumeRemovedId = this._volumeMonitor.connect('volume-removed', Lang.bind(this, this._onVolumeRemoved));
-        this._driveConnectedId = this._volumeMonitor.connect('drive-connected', Lang.bind(this, this._onDriveConnected));
-        this._driveDisconnectedId = this._volumeMonitor.connect('drive-disconnected', Lang.bind(this, this._onDriveDisconnected));
-        this._driveEjectButtonId = this._volumeMonitor.connect('drive-eject-button', Lang.bind(this, this._onDriveEjectButton));
+        this._volumeAddedId = this._volumeMonitor.connect('volume-added', this._onVolumeAdded.bind(this));
+        this._volumeRemovedId = this._volumeMonitor.connect('volume-removed', this._onVolumeRemoved.bind(this));
+        this._driveConnectedId = this._volumeMonitor.connect('drive-connected', this._onDriveConnected.bind(this));
+        this._driveDisconnectedId = this._volumeMonitor.connect('drive-disconnected', this._onDriveDisconnected.bind(this));
+        this._driveEjectButtonId = this._volumeMonitor.connect('drive-eject-button', this._onDriveEjectButton.bind(this));
 
-        this._mountAllId = Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
+        this._mountAllId = Mainloop.idle_add(this._startupMountAll.bind(this));
         GLib.Source.set_name_by_id(this._mountAllId, '[gnome-shell] this._startupMountAll');
     },
 
@@ -185,7 +185,7 @@ var AutomountManager = new Lang.Class({
         volume._operation = operation;
 
         volume.mount(0, mountOp, null,
-                     Lang.bind(this, this._onVolumeMounted));
+                     this._onVolumeMounted.bind(this));
     },
 
     _onVolumeMounted(volume, res) {
