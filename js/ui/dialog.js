@@ -13,7 +13,7 @@ var Dialog = new Lang.Class({
 
     _init (parentActor, styleClass) {
         this.parent({ layout_manager: new Clutter.BinLayout() });
-        this.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.connect('destroy', this._onDestroy.bind(this));
 
         this._initialKeyFocus = null;
         this._initialKeyFocusDestroyId = 0;
@@ -26,7 +26,7 @@ var Dialog = new Lang.Class({
             this._dialog.add_style_class_name(styleClass);
 
         this._parentActor = parentActor;
-        this._eventId = this._parentActor.connect('event', Lang.bind(this, this._modalEventHandler));
+        this._eventId = this._parentActor.connect('event', this._modalEventHandler.bind(this));
         this._parentActor.add_child(this);
     },
 

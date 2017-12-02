@@ -44,7 +44,7 @@ var RemoteMenuSeparatorItemMapper = new Lang.Class({
     _init(trackerItem) {
         this._trackerItem = trackerItem;
         this.menuItem = new PopupMenu.PopupSeparatorMenuItem();
-        this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
+        this._trackerItem.connect('notify::label', this._updateLabel.bind(this));
         this._updateLabel();
 
         this.menuItem.connect('destroy', () => {
@@ -82,7 +82,7 @@ var RemoteMenuSubmenuItemMapper = new Lang.Class({
     _init(trackerItem) {
         this._trackerItem = trackerItem;
         this.menuItem = new RequestSubMenu();
-        this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
+        this._trackerItem.connect('notify::label', this._updateLabel.bind(this));
         this._updateLabel();
 
         this._tracker = Shell.MenuTracker.new_for_item_submenu(this._trackerItem,
@@ -129,10 +129,10 @@ var RemoteMenuItemMapper = new Lang.Class({
 
         this._trackerItem.bind_property('visible', this.menuItem.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
 
-        this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
-        this._trackerItem.connect('notify::sensitive', Lang.bind(this, this._updateSensitivity));
-        this._trackerItem.connect('notify::role', Lang.bind(this, this._updateRole));
-        this._trackerItem.connect('notify::toggled', Lang.bind(this, this._updateDecoration));
+        this._trackerItem.connect('notify::label', this._updateLabel.bind(this));
+        this._trackerItem.connect('notify::sensitive', this._updateSensitivity.bind(this));
+        this._trackerItem.connect('notify::role', this._updateRole.bind(this));
+        this._trackerItem.connect('notify::toggled', this._updateDecoration.bind(this));
 
         this._updateLabel();
         this._updateSensitivity();

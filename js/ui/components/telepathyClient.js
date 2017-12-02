@@ -157,7 +157,7 @@ var TelepathyClient = HAVE_TP ? new Lang.Class({
         // Allow other clients (such as Empathy) to pre-empt our channels if
         // needed
         this.set_delegated_channels_callback(
-            Lang.bind(this, this._delegatedChannelsCb));
+            this._delegatedChannelsCb.bind(this));
     },
 
     vfunc_observe_channels(account, conn, channels,
@@ -295,19 +295,19 @@ var ChatSource = new Lang.Class({
 
         this._conn = conn;
         this._channel = channel;
-        this._closedId = this._channel.connect('invalidated', Lang.bind(this, this._channelClosed));
+        this._closedId = this._channel.connect('invalidated', this._channelClosed.bind(this));
 
         this._notifyTimeoutId = 0;
 
         this._presence = contact.get_presence_type();
 
-        this._sentId = this._channel.connect('message-sent', Lang.bind(this, this._messageSent));
-        this._receivedId = this._channel.connect('message-received', Lang.bind(this, this._messageReceived));
-        this._pendingId = this._channel.connect('pending-message-removed', Lang.bind(this, this._pendingRemoved));
+        this._sentId = this._channel.connect('message-sent', this._messageSent.bind(this));
+        this._receivedId = this._channel.connect('message-received', this._messageReceived.bind(this));
+        this._pendingId = this._channel.connect('pending-message-removed', this._pendingRemoved.bind(this));
 
-        this._notifyAliasId = this._contact.connect('notify::alias', Lang.bind(this, this._updateAlias));
-        this._notifyAvatarId = this._contact.connect('notify::avatar-file', Lang.bind(this, this._updateAvatarIcon));
-        this._presenceChangedId = this._contact.connect('presence-changed', Lang.bind(this, this._presenceChanged));
+        this._notifyAliasId = this._contact.connect('notify::alias', this._updateAlias.bind(this));
+        this._notifyAvatarId = this._contact.connect('notify::avatar-file', this._updateAvatarIcon.bind(this));
+        this._presenceChangedId = this._contact.connect('presence-changed', this._presenceChanged.bind(this));
 
         // Add ourselves as a source.
         Main.messageTray.add(this);
@@ -320,7 +320,7 @@ var ChatSource = new Lang.Class({
             return;
 
         this._notification = new ChatNotification(this);
-        this._notification.connect('activated', Lang.bind(this, this.open));
+        this._notification.connect('activated', this.open.bind(this));
         this._notification.connect('updated', () => {
             if (this._banner && this._banner.expanded)
                 this._ackMessages();
@@ -341,7 +341,7 @@ var ChatSource = new Lang.Class({
         this._banner = new ChatNotificationBanner(this._notification);
 
         // We ack messages when the user expands the new notification
-        let id = this._banner.connect('expanded', Lang.bind(this, this._ackMessages));
+        let id = this._banner.connect('expanded', this._ackMessages.bind(this));
         this._banner.actor.connect('destroy', () => {
             this._banner.disconnect(id);
             this._banner = null;
@@ -439,7 +439,7 @@ var ChatSource = new Lang.Class({
 
         logManager.get_filtered_events_async(this._account, entity,
                                              Tpl.EventTypeMask.TEXT, SCROLLBACK_HISTORY_LINES,
-                                             null, Lang.bind(this, this._displayPendingMessages));
+                                             null, this._displayPendingMessages.bind(this));
     },
 
     _displayPendingMessages(logManager, result) {
@@ -563,7 +563,7 @@ var ChatSource = new Lang.Class({
         if (this._notifyTimeoutId != 0)
             Mainloop.source_remove(this._notifyTimeoutId);
         this._notifyTimeoutId = Mainloop.timeout_add(500,
-            Lang.bind(this, this._notifyTimeout));
+            this._notifyTimeout.bind(this));
         GLib.Source.set_name_by_id(this._notifyTimeoutId, '[gnome-shell] this._notifyTimeout');
     },
 
@@ -767,7 +767,7 @@ var ChatNotification = new Lang.Class({
                 // from the timestamp of the message.
                 this._timestampTimeoutId = Mainloop.timeout_add_seconds(
                     SCROLLBACK_IMMEDIATE_TIME - (currentTime - timestamp),
-                    Lang.bind(this, this.appendTimestamp));
+                    this.appendTimestamp.bind(this));
                 GLib.Source.set_name_by_id(this._timestampTimeoutId, '[gnome-shell] this.appendTimestamp');
             }
         }
@@ -822,8 +822,8 @@ var ChatNotificationBanner = new Lang.Class({
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
                                              x_expand: true,
                                              can_focus: true });
-        this._responseEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivated));
-        this._responseEntry.clutter_text.connect('text-changed', Lang.bind(this, this._onEntryChanged));
+        this._responseEntry.clutter_text.connect('activate', this._onEntryActivated.bind(this));
+        this._responseEntry.clutter_text.connect('text-changed', this._onEntryChanged.bind(this));
         this.setActionArea(this._responseEntry);
 
         this._responseEntry.clutter_text.connect('key-focus-in', () => {
@@ -984,7 +984,7 @@ var ChatNotificationBanner = new Lang.Class({
 
             this._composingTimeoutId = Mainloop.timeout_add_seconds(
                 COMPOSING_STOP_TIMEOUT,
-                Lang.bind(this, this._composingStopTimeout));
+                this._composingStopTimeout.bind(this));
             GLib.Source.set_name_by_id(this._composingTimeoutId, '[gnome-shell] this._composingStopTimeout');
         } else {
             this.notification.source.setChatState(Tp.ChannelChatState.ACTIVE);

@@ -49,7 +49,7 @@ var PadChooser = new Lang.Class({
         this.actor.set_child(arrow);
         this._ensureMenu(groupDevices);
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         this.actor.connect('clicked', actor => {
             if (actor.get_checked()) {
                 if (this._padChooserMenu != null)
@@ -104,7 +104,7 @@ var KeybindingEntry = new Lang.Class({
     _init () {
         this.actor = new St.Entry({ hint_text: _("New shortcut…"),
                                     style: 'width: 10em' });
-        this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
     },
 
     _onCapturedEvent (actor, event) {
@@ -127,7 +127,7 @@ var ActionComboBox = new Lang.Class({
 
     _init () {
         this.actor = new St.Button({ style_class: 'button' });
-        this.actor.connect('clicked', Lang.bind(this, this._onButtonClicked));
+        this.actor.connect('clicked', this._onButtonClicked.bind(this));
         this.actor.set_toggle_mode(true);
 
         let boxLayout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.HORIZONTAL,
@@ -216,17 +216,17 @@ var ActionEditor = new Lang.Class({
         this.actor = new St.Widget({ layout_manager: boxLayout });
 
         this._actionComboBox = new ActionComboBox();
-        this._actionComboBox.connect('action-selected', Lang.bind(this, this._onActionSelected));
+        this._actionComboBox.connect('action-selected', this._onActionSelected.bind(this));
         this.actor.add_actor(this._actionComboBox.actor);
 
         this._keybindingEdit = new KeybindingEntry();
-        this._keybindingEdit.connect('keybinding-edited', Lang.bind(this, this._onKeybindingEdited));
+        this._keybindingEdit.connect('keybinding-edited', this._onKeybindingEdited.bind(this));
         this.actor.add_actor(this._keybindingEdit.actor);
 
         this._doneButton = new St.Button({ label: _("Done"),
                                            style_class: 'button',
                                            x_expand: false});
-        this._doneButton.connect('clicked', Lang.bind(this, this._onEditingDone));
+        this._doneButton.connect('clicked', this._onEditingDone.bind(this));
         this.actor.add_actor(this._doneButton);
     },
 
@@ -634,7 +634,7 @@ var PadOsd = new Lang.Class({
         this._settings = settings;
         this._imagePath = imagePath;
         this._editionMode = editionMode;
-        this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+        this._capturedEventId = global.stage.connect('captured-event', this._onCapturedEvent.bind(this));
         this._padChooser = null;
 
         let deviceManager = Clutter.DeviceManager.get_default();
@@ -670,7 +670,7 @@ var PadOsd = new Lang.Class({
                                         y_expand: true,
                                         vertical: true,
                                         reactive: true });
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         Main.uiGroup.add_actor(this.actor);
 
         this._monitorIndex = monitorIndex;
@@ -698,7 +698,7 @@ var PadOsd = new Lang.Class({
         this._updatePadChooser();
 
         this._actionEditor = new ActionEditor();
-        this._actionEditor.connect('done', Lang.bind(this, this._endActionEdition));
+        this._actionEditor.connect('done', this._endActionEdition.bind(this));
 
         this._padDiagram = new PadDiagram({ image: this._imagePath,
                                             left_handed: settings.get_boolean('left-handed'),

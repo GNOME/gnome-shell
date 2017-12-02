@@ -23,11 +23,11 @@ var Slider = new Lang.Class({
                                           can_focus: true,
                                           reactive: true,
                                           accessible_role: Atk.Role.SLIDER });
-        this.actor.connect('repaint', Lang.bind(this, this._sliderRepaint));
-        this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
-        this.actor.connect('touch-event', Lang.bind(this, this._touchDragging));
-        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-        this.actor.connect('key-press-event', Lang.bind(this, this.onKeyPressEvent));
+        this.actor.connect('repaint', this._sliderRepaint.bind(this));
+        this.actor.connect('button-press-event', this._startDragging.bind(this));
+        this.actor.connect('touch-event', this._touchDragging.bind(this));
+        this.actor.connect('scroll-event', this._onScrollEvent.bind(this));
+        this.actor.connect('key-press-event', this.onKeyPressEvent.bind(this));
         this.actor.connect('allocation-changed', (actor, box) => {
             this._sliderWidth = box.get_width();
         });
@@ -38,13 +38,13 @@ var Slider = new Lang.Class({
         this._customAccessible = St.GenericAccessible.new_for_actor(this.actor);
         this.actor.set_accessible(this._customAccessible);
 
-        this._customAccessible.connect('get-current-value', Lang.bind(this, this._getCurrentValue));
-        this._customAccessible.connect('get-minimum-value', Lang.bind(this, this._getMinimumValue));
-        this._customAccessible.connect('get-maximum-value', Lang.bind(this, this._getMaximumValue));
-        this._customAccessible.connect('get-minimum-increment', Lang.bind(this, this._getMinimumIncrement));
-        this._customAccessible.connect('set-current-value', Lang.bind(this, this._setCurrentValue));
+        this._customAccessible.connect('get-current-value', this._getCurrentValue.bind(this));
+        this._customAccessible.connect('get-minimum-value', this._getMinimumValue.bind(this));
+        this._customAccessible.connect('get-maximum-value', this._getMaximumValue.bind(this));
+        this._customAccessible.connect('get-minimum-increment', this._getMinimumIncrement.bind(this));
+        this._customAccessible.connect('set-current-value', this._setCurrentValue.bind(this));
 
-        this.connect('value-changed', Lang.bind(this, this._valueChanged));
+        this.connect('value-changed', this._valueChanged.bind(this));
     },
 
     setValue(value) {
@@ -137,8 +137,8 @@ var Slider = new Lang.Class({
         this._grabbedSequence = sequence;
 
         if (sequence == null) {
-            this._releaseId = this.actor.connect('button-release-event', Lang.bind(this, this._endDragging));
-            this._motionId = this.actor.connect('motion-event', Lang.bind(this, this._motionEvent));
+            this._releaseId = this.actor.connect('button-release-event', this._endDragging.bind(this));
+            this._motionId = this.actor.connect('motion-event', this._motionEvent.bind(this));
         }
 
         // We need to emit 'drag-begin' before moving the handle to make

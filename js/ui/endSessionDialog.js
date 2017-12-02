@@ -303,7 +303,7 @@ var EndSessionDialog = new Lang.Class({
                                                    return;
                                                }
                                                this._powerProxy.connect('g-properties-changed',
-                                                                        Lang.bind(this, this._sync));
+                                                                        this._sync.bind(this));
                                                this._sync();
                                            });
 
@@ -313,12 +313,12 @@ var EndSessionDialog = new Lang.Class({
         this._sessions = [];
 
         this.connect('destroy',
-                     Lang.bind(this, this._onDestroy));
+                     this._onDestroy.bind(this));
         this.connect('opened',
-                     Lang.bind(this, this._onOpened));
+                     this._onOpened.bind(this));
 
-        this._userLoadedId = this._user.connect('notify::is_loaded', Lang.bind(this, this._sync));
-        this._userChangedId = this._user.connect('changed', Lang.bind(this, this._sync));
+        this._userLoadedId = this._user.connect('notify::is_loaded', this._sync.bind(this));
+        this._userChangedId = this._user.connect('changed', this._sync.bind(this));
 
         let mainContentLayout = new St.BoxLayout({ vertical: false });
         this.contentLayout.add(mainContentLayout,
@@ -354,7 +354,7 @@ var EndSessionDialog = new Lang.Class({
                             y_align: St.Align.START });
 
         this._checkBox = new CheckBox.CheckBox();
-        this._checkBox.actor.connect('clicked', Lang.bind(this, this._sync));
+        this._checkBox.actor.connect('clicked', this._sync.bind(this));
         messageLayout.add(this._checkBox.actor);
 
         this._batteryWarning = new St.Label({ style_class: 'end-session-dialog-warning',
@@ -478,7 +478,7 @@ var EndSessionDialog = new Lang.Class({
 
     _updateButtons() {
         let dialogContent = DialogContent[this._type];
-        let buttons = [{ action: Lang.bind(this, this.cancel),
+        let buttons = [{ action: this.cancel.bind(this),
                          label:  _("Cancel"),
                          key:    Clutter.Escape }];
 

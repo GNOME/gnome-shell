@@ -318,7 +318,7 @@ var AppSwitcherPopup = new Lang.Class({
                    !forceAppFocus) {
             this._thumbnailTimeoutId = Mainloop.timeout_add (
                 THUMBNAIL_POPUP_TIME,
-                Lang.bind(this, this._timeoutPopupThumbnails));
+                this._timeoutPopupThumbnails.bind(this));
             GLib.Source.set_name_by_id(this._thumbnailTimeoutId, '[gnome-shell] this._timeoutPopupThumbnails');
         }
     },
@@ -348,8 +348,8 @@ var AppSwitcherPopup = new Lang.Class({
 
     _createThumbnails () {
         this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
-        this._thumbnails.connect('item-activated', Lang.bind(this, this._windowActivated));
-        this._thumbnails.connect('item-entered', Lang.bind(this, this._windowEntered));
+        this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
+        this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
 
         this.actor.add_actor(this._thumbnails.actor);
 
@@ -390,8 +390,8 @@ var CyclerHighlight = new Lang.Class({
         this.actor.add_constraint(constraint);
 
         this.actor.connect('notify::allocation',
-                           Lang.bind(this, this._onAllocationChanged));
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+                           this._onAllocationChanged.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
     set window(w) {
@@ -449,7 +449,7 @@ var CyclerPopup = new Lang.Class({
         // We don't show an actual popup, so just provide what SwitcherPopup
         // expects instead of inheriting from SwitcherList
         this._switcherList = { actor: new St.Widget(),
-                               highlight: Lang.bind(this, this._highlightItem),
+                               highlight: this._highlightItem.bind(this),
                                connect() {} };
     },
 
@@ -639,7 +639,7 @@ var AppSwitcher = new Lang.Class({
         this._altTabPopup = altTabPopup;
         this._mouseTimeOutId = 0;
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
     },
 
     _onDestroy() {

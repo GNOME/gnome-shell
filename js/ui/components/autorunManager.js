@@ -105,8 +105,7 @@ var ContentTypeDiscoverer = new Lang.Class({
         if (shouldScan) {
             // guess mount's content types using GIO
             mount.guess_content_type(false, null,
-                                     Lang.bind(this,
-                                               this._onContentTypeGuessed));
+                                     this._onContentTypeGuessed.bind(this));
         } else {
             this._emitCallback(mount, []);
         }
@@ -170,8 +169,8 @@ var AutorunManager = new Lang.Class({
     },
 
     enable() {
-        this._mountAddedId = this._volumeMonitor.connect('mount-added', Lang.bind(this, this._onMountAdded));
-        this._mountRemovedId = this._volumeMonitor.connect('mount-removed', Lang.bind(this, this._onMountRemoved));
+        this._mountAddedId = this._volumeMonitor.connect('mount-added', this._onMountAdded.bind(this));
+        this._mountRemovedId = this._volumeMonitor.connect('mount-removed', this._onMountRemoved.bind(this));
     },
 
     disable() {

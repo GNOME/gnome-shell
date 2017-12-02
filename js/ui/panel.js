@@ -102,7 +102,7 @@ var AppMenuButton = new Lang.Class({
         this._busyNotifyId = 0;
 
         let bin = new St.Bin({ name: 'appMenu' });
-        bin.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        bin.connect('style-changed', this._onStyleChanged.bind(this));
         this.actor.add_actor(bin);
 
         this.actor.bind_property("reactive", this.actor, "can-focus", 0);
@@ -113,7 +113,7 @@ var AppMenuButton = new Lang.Class({
 
         let textureCache = St.TextureCache.get_default();
         textureCache.connect('icon-theme-changed',
-                             Lang.bind(this, this._onIconThemeChanged));
+                             this._onIconThemeChanged.bind(this));
 
         this._iconBox = new St.Bin({ style_class: 'app-menu-icon' });
         this._container.add_actor(this._iconBox);
@@ -128,10 +128,10 @@ var AppMenuButton = new Lang.Class({
                         !Main.overview.visible;
         if (!this._visible)
             this.actor.hide();
-        this._overviewHidingId = Main.overview.connect('hiding', Lang.bind(this, this._sync));
-        this._overviewShowingId = Main.overview.connect('showing', Lang.bind(this, this._sync));
+        this._overviewHidingId = Main.overview.connect('hiding', this._sync.bind(this));
+        this._overviewShowingId = Main.overview.connect('showing', this._sync.bind(this));
         this._showsAppMenuId = this._gtkSettings.connect('notify::gtk-shell-shows-app-menu',
-                                                         Lang.bind(this, this._sync));
+                                                         this._sync.bind(this));
 
         this._stop = true;
 
@@ -140,11 +140,11 @@ var AppMenuButton = new Lang.Class({
         let tracker = Shell.WindowTracker.get_default();
         let appSys = Shell.AppSystem.get_default();
         this._focusAppNotifyId =
-            tracker.connect('notify::focus-app', Lang.bind(this, this._focusAppChanged));
+            tracker.connect('notify::focus-app', this._focusAppChanged.bind(this));
         this._appStateChangedSignalId =
-            appSys.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
+            appSys.connect('app-state-changed', this._onAppStateChanged.bind(this));
         this._switchWorkspaceNotifyId =
-            global.window_manager.connect('switch-workspace', Lang.bind(this, this._sync));
+            global.window_manager.connect('switch-workspace', this._sync.bind(this));
 
         this._sync();
     },
@@ -298,9 +298,9 @@ var AppMenuButton = new Lang.Class({
             this._targetApp = targetApp;
 
             if (this._targetApp) {
-                this._appMenuNotifyId = this._targetApp.connect('notify::menu', Lang.bind(this, this._sync));
-                this._actionGroupNotifyId = this._targetApp.connect('notify::action-group', Lang.bind(this, this._sync));
-                this._busyNotifyId = this._targetApp.connect('notify::busy', Lang.bind(this, this._sync));
+                this._appMenuNotifyId = this._targetApp.connect('notify::menu', this._sync.bind(this));
+                this._actionGroupNotifyId = this._targetApp.connect('notify::action-group', this._sync.bind(this));
+                this._busyNotifyId = this._targetApp.connect('notify::busy', this._sync.bind(this));
                 this._label.set_text(this._targetApp.get_name());
                 this.actor.set_accessible_name(this._targetApp.get_name());
             }
@@ -414,8 +414,8 @@ var ActivitiesButton = new Lang.Class({
 
         this.actor.label_actor = this._label;
 
-        this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-        this.actor.connect_after('key-release-event', Lang.bind(this, this._onKeyRelease));
+        this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
+        this.actor.connect_after('key-release-event', this._onKeyRelease.bind(this));
 
         Main.overview.connect('showing', () => {
             this.actor.add_style_pseudo_class('overview');
@@ -435,8 +435,9 @@ var ActivitiesButton = new Lang.Class({
 
         if (this._xdndTimeOut != 0)
             Mainloop.source_remove(this._xdndTimeOut);
-        this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
-                                                 Lang.bind(this, this._xdndToggleOverview, actor));
+        this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT, () => {
+            this._xdndToggleOverview(actor);
+        });
         GLib.Source.set_name_by_id(this._xdndTimeOut, '[gnome-shell] this._xdndToggleOverview');
 
         return DND.DragMotionResult.CONTINUE;
@@ -491,8 +492,8 @@ var PanelCorner = new Lang.Class({
         this._side = side;
 
         this.actor = new St.DrawingArea({ style_class: 'panel-corner' });
-        this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
-        this.actor.connect('repaint', Lang.bind(this, this._repaint));
+        this.actor.connect('style-changed', this._styleChanged.bind(this));
+        this.actor.connect('repaint', this._repaint.bind(this));
     },
 
     _findRightmostButton(container) {
@@ -791,11 +792,11 @@ var Panel = new Lang.Class({
         this._rightCorner = new PanelCorner(St.Side.RIGHT);
         this.actor.add_actor(this._rightCorner.actor);
 
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocate.bind(this));
+        this.actor.connect('button-press-event', this._onButtonPress.bind(this));
+        this.actor.connect('key-press-event', this._onKeyPress.bind(this));
 
         Main.overview.connect('showing', () => {
             this.actor.add_style_pseudo_class('overview');
@@ -810,12 +811,12 @@ var Panel = new Lang.Class({
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'focus-top-bar-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._updatePanel));
+        Main.sessionMode.connect('updated', this._updatePanel.bind(this));
 
         this._trackedWindows = new Map();
-        global.window_group.connect('actor-added', Lang.bind(this, this._onWindowActorAdded));
-        global.window_group.connect('actor-removed', Lang.bind(this, this._onWindowActorRemoved));
-        global.window_manager.connect('switch-workspace', Lang.bind(this, this._updateSolidStyle));
+        global.window_group.connect('actor-added', this._onWindowActorAdded.bind(this));
+        global.window_group.connect('actor-removed', this._onWindowActorRemoved.bind(this));
+        global.window_manager.connect('switch-workspace', this._updateSolidStyle.bind(this));
 
         global.screen.connect('workareas-changed', () => { this.actor.queue_relayout(); });
         this._updatePanel();
@@ -824,7 +825,7 @@ var Panel = new Lang.Class({
     _onWindowActorAdded(container, metaWindowActor) {
         let signalIds = [];
         ['allocation-changed', 'notify::visible'].forEach(s => {
-            signalIds.push(metaWindowActor.connect(s, Lang.bind(this, this._updateSolidStyle)));
+            signalIds.push(metaWindowActor.connect(s, this._updateSolidStyle.bind(this)));
         });
         this._trackedWindows.set(metaWindowActor, signalIds);
     },
@@ -1151,7 +1152,7 @@ var Panel = new Lang.Class({
             emitter.disconnect(destroyId);
             container.destroy();
         });
-        indicator.connect('menu-set', Lang.bind(this, this._onMenuSet));
+        indicator.connect('menu-set', this._onMenuSet.bind(this));
         this._onMenuSet(indicator);
     },
 

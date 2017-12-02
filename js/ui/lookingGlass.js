@@ -40,9 +40,9 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                      * in the shell core code too. */
                     'const stage = global.stage; ' +
                     /* Special lookingGlass functions */
-                    'const inspect = Lang.bind(Main.lookingGlass, Main.lookingGlass.inspect); ' +
+                    'const inspect = Main.lookingGlass.inspect.bind(Main.lookingGlass); ' +
                     'const it = Main.lookingGlass.getIt(); ' +
-                    'const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ';
+                    'const r = Main.lookingGlass.getResult.bind(Main.lookingGlass); ';
 
 const HISTORY_KEY = 'looking-glass-history';
 // Time between tabs for them to count as a double-tab event
@@ -66,7 +66,7 @@ var AutoComplete = new Lang.Class({
 
     _init(entry) {
         this._entry = entry;
-        this._entry.connect('key-press-event', Lang.bind(this, this._entryKeyPressEvent));
+        this._entry.connect('key-press-event', this._entryKeyPressEvent.bind(this));
         this._lastTabTime = global.get_current_time();
     },
 
@@ -282,7 +282,7 @@ var ObjLink = new Lang.Class({
                                      style_class: 'shell-link',
                                      label: text });
         this.actor.get_child().single_line_mode = true;
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('clicked', this._onClicked.bind(this));
 
         this._lookingGlass = lookingGlass;
     },
@@ -321,9 +321,9 @@ var WindowList = new Lang.Class({
     _init(lookingGlass) {
         this.actor = new St.BoxLayout({ name: 'Windows', vertical: true, style: 'spacing: 8px' });
         let tracker = Shell.WindowTracker.get_default();
-        this._updateId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._updateWindowList));
-        global.display.connect('window-created', Lang.bind(this, this._updateWindowList));
-        tracker.connect('tracked-windows-changed', Lang.bind(this, this._updateWindowList));
+        this._updateId = Main.initializeDeferredWork(this.actor, this._updateWindowList.bind(this));
+        global.display.connect('window-created', this._updateWindowList.bind(this));
+        tracker.connect('tracked-windows-changed', this._updateWindowList.bind(this));
 
         this._lookingGlass = lookingGlass;
     },
@@ -336,7 +336,7 @@ var WindowList = new Lang.Class({
             let metaWindow = windows[i].metaWindow;
             // Avoid multiple connections
             if (!metaWindow._lookingGlassManaged) {
-                metaWindow.connect('unmanaged', Lang.bind(this, this._updateWindowList));
+                metaWindow.connect('unmanaged', this._updateWindowList.bind(this));
                 metaWindow._lookingGlassManaged = true;
             }
             let box = new St.BoxLayout({ vertical: true });
@@ -399,17 +399,17 @@ var ObjInspector = new Lang.Class({
         label.single_line_mode = true;
         hbox.add(label, { expand: true, y_fill: false });
         let button = new St.Button({ label: 'Insert', style_class: 'lg-obj-inspector-button' });
-        button.connect('clicked', Lang.bind(this, this._onInsert));
+        button.connect('clicked', this._onInsert.bind(this));
         hbox.add(button);
 
         if (this._previousObj != null) {
             button = new St.Button({ label: 'Back', style_class: 'lg-obj-inspector-button' });
-            button.connect('clicked', Lang.bind(this, this._onBack));
+            button.connect('clicked', this._onBack.bind(this));
             hbox.add(button);
         }
 
         button = new St.Button({ style_class: 'window-close' });
-        button.connect('clicked', Lang.bind(this, this.close));
+        button.connect('clicked', this.close.bind(this));
         hbox.add(button);
         if (typeof(obj) == typeof({})) {
             let properties = [];
@@ -505,7 +505,7 @@ var Inspector = new Lang.Class({
     _init(lookingGlass) {
         let container = new Shell.GenericContainer({ width: 0,
                                                      height: 0 });
-        container.connect('allocate', Lang.bind(this, this._allocate));
+        container.connect('allocate', this._allocate.bind(this));
         Main.uiGroup.add_actor(container);
 
         let eventHandler = new St.BoxLayout({ name: 'LookingGlassDialog',
@@ -516,10 +516,10 @@ var Inspector = new Lang.Class({
         this._displayText = new St.Label();
         eventHandler.add(this._displayText, { expand: true });
 
-        eventHandler.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
-        eventHandler.connect('button-press-event', Lang.bind(this, this._onButtonPressEvent));
-        eventHandler.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-        eventHandler.connect('motion-event', Lang.bind(this, this._onMotionEvent));
+        eventHandler.connect('key-press-event', this._onKeyPressEvent.bind(this));
+        eventHandler.connect('button-press-event', this._onButtonPressEvent.bind(this));
+        eventHandler.connect('scroll-event', this._onScrollEvent.bind(this));
+        eventHandler.connect('motion-event', this._onMotionEvent.bind(this));
         Clutter.grab_pointer(eventHandler);
         Clutter.grab_keyboard(eventHandler);
 
@@ -652,7 +652,7 @@ var Extensions = new Lang.Class({
             this._loadExtension(null, uuid);
 
         ExtensionSystem.connect('extension-loaded',
-                                Lang.bind(this, this._loadExtension));
+                                this._loadExtension.bind(this));
     },
 
     _loadExtension(o, uuid) {
@@ -749,7 +749,7 @@ var Extensions = new Lang.Class({
                                          style_class: 'shell-link',
                                          label: _("View Source") });
         viewsource._extension = extension;
-        viewsource.connect('clicked', Lang.bind(this, this._onViewSource));
+        viewsource.connect('clicked', this._onViewSource.bind(this));
         metaBox.add(viewsource);
 
         if (extension.metadata.url) {
@@ -758,7 +758,7 @@ var Extensions = new Lang.Class({
                                           style_class: 'shell-link',
                                           label: _("Web Page") });
             webpage._extension = extension;
-            webpage.connect('clicked', Lang.bind(this, this._onWebPage));
+            webpage.connect('clicked', this._onWebPage.bind(this));
             metaBox.add(webpage);
         }
 
@@ -769,7 +769,7 @@ var Extensions = new Lang.Class({
         viewerrors._extension = extension;
         viewerrors._parentBox = box;
         viewerrors._isShowing = false;
-        viewerrors.connect('clicked', Lang.bind(this, this._onViewErrors));
+        viewerrors.connect('clicked', this._onViewErrors.bind(this));
         metaBox.add(viewerrors);
 
         return box;
@@ -797,11 +797,11 @@ var LookingGlass = new Lang.Class({
                                         vertical: true,
                                         visible: false,
                                         reactive: true });
-        this.actor.connect('key-press-event', Lang.bind(this, this._globalKeyPressEvent));
+        this.actor.connect('key-press-event', this._globalKeyPressEvent.bind(this));
 
         this._interfaceSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.interface' });
         this._interfaceSettings.connect('changed::monospace-font-name',
-                                        Lang.bind(this, this._updateFont));
+                                        this._updateFont.bind(this));
         this._updateFont();
 
         // We want it to appear to slide out from underneath the panel
@@ -809,9 +809,9 @@ var LookingGlass = new Lang.Class({
         Main.uiGroup.set_child_below_sibling(this.actor,
                                              Main.layoutManager.panelBox);
         Main.layoutManager.panelBox.connect('allocation-changed',
-                                            Lang.bind(this, this._queueResize));
+                                            this._queueResize.bind(this));
         Main.layoutManager.keyboardBox.connect('allocation-changed',
-                                               Lang.bind(this, this._queueResize));
+                                               this._queueResize.bind(this));
 
         this._objInspector = new ObjInspector(this);
         Main.uiGroup.add_actor(this._objInspector.actor);

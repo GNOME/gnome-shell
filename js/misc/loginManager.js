@@ -110,7 +110,7 @@ var LoginManagerSystemd = new Lang.Class({
                                               'org.freedesktop.login1',
                                               '/org/freedesktop/login1');
         this._proxy.connectSignal('PrepareForSleep',
-                                  Lang.bind(this, this._prepareForSleep));
+                                  this._prepareForSleep.bind(this));
     },
 
     getCurrentSessionProxy(callback) {

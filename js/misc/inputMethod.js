@@ -16,13 +16,13 @@ var InputMethod = new Lang.Class({
         this._enabled = true;
         this._currentFocus = null;
         this._ibus = IBus.Bus.new_async();
-        this._ibus.connect('connected', Lang.bind(this, this._onConnected));
-        this._ibus.connect('disconnected', Lang.bind(this, this._clear));
-        this.connect('notify::can-show-preedit', Lang.bind(this, this._updateCapabilities));
+        this._ibus.connect('connected', this._onConnected.bind(this));
+        this._ibus.connect('disconnected', this._clear.bind(this));
+        this.connect('notify::can-show-preedit', this._updateCapabilities.bind(this));
 
         this._inputSourceManager = Keyboard.getInputSourceManager();
         this._sourceChangedId = this._inputSourceManager.connect('current-source-changed',
-                                                                 Lang.bind(this, this._onSourceChanged));
+                                                                 this._onSourceChanged.bind(this));
         this._currentSource = this._inputSourceManager.currentSource;
 
         if (this._ibus.is_connected())
@@ -54,16 +54,16 @@ var InputMethod = new Lang.Class({
 
     _onConnected() {
         this._ibus.create_input_context_async ('gnome-shell', -1, null,
-                                               Lang.bind(this, this._setContext));
+                                               this._setContext.bind(this));
     },
 
     _setContext(bus, res) {
         this._context = this._ibus.create_input_context_async_finish(res);
         this._context.connect('enabled', () => { this._enabled = true });
         this._context.connect('disabled', () => { this._enabled = false });
-        this._context.connect('commit-text', Lang.bind(this, this._onCommitText));
-        this._context.connect('delete-surrounding-text', Lang.bind(this, this._onDeleteSurroundingText));
-        this._context.connect('update-preedit-text', Lang.bind(this, this._onUpdatePreeditText));
+        this._context.connect('commit-text', this._onCommitText.bind(this));
+        this._context.connect('delete-surrounding-text', this._onDeleteSurroundingText.bind(this));
+        this._context.connect('update-preedit-text', this._onUpdatePreeditText.bind(this));
 
         this._updateCapabilities();
     },

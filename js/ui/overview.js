@@ -80,7 +80,7 @@ var ShellInfo = new Lang.Class({
 
         this._undoCallback = undoCallback;
         if (undoCallback)
-            notification.addAction(_("Undo"), Lang.bind(this, this._onUndoClicked));
+            notification.addAction(_("Undo"), this._onUndoClicked.bind(this));
 
         this._source.notify(notification);
     }
@@ -93,7 +93,7 @@ var Overview = new Lang.Class({
         this._overviewCreated = false;
         this._initCalled = false;
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
     },
 
@@ -148,16 +148,16 @@ var Overview = new Lang.Class({
 
         // XDND
         this._dragMonitor = {
-            dragMotion: Lang.bind(this, this._onDragMotion)
+            dragMotion: this._onDragMotion.bind(this)
         };
 
 
         Main.layoutManager.overviewGroup.connect('scroll-event',
-                                                 Lang.bind(this, this._onScrollEvent));
-        Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
-        Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
+                                                 this._onScrollEvent.bind(this));
+        Main.xdndHandler.connect('drag-begin', this._onDragBegin.bind(this));
+        Main.xdndHandler.connect('drag-end', this._onDragEnd.bind(this));
 
-        global.screen.connect('restacked', Lang.bind(this, this._onRestacked));
+        global.screen.connect('restacked', this._onRestacked.bind(this));
 
         this._windowSwitchTimeoutId = 0;
         this._windowSwitchTimestamp = 0;
@@ -257,7 +257,7 @@ var Overview = new Lang.Class({
             this.dashIconSize = this._dash.iconSize;
         });
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
+        Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
         this._relayout();
     },
 

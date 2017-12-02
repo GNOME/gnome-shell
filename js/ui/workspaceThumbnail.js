@@ -69,7 +69,7 @@ var WindowClone = new Lang.Class({
         this.metaWindow = realWindow.meta_window;
 
         this.clone._updateId = this.metaWindow.connect('position-changed',
-                                                       Lang.bind(this, this._onPositionChanged));
+                                                       this._onPositionChanged.bind(this));
         this.clone._destroyId = this.realWindow.connect('destroy', () => {
             // First destroy the clone and then destroy everything
             // This will ensure that we never see it in the _disconnectSignals loop
@@ -79,19 +79,19 @@ var WindowClone = new Lang.Class({
         this._onPositionChanged();
 
         this.actor.connect('button-release-event',
-                           Lang.bind(this, this._onButtonRelease));
+                           this._onButtonRelease.bind(this));
         this.actor.connect('touch-event',
-                           Lang.bind(this, this._onTouchEvent));
+                           this._onTouchEvent.bind(this));
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._draggable = DND.makeDraggable(this.actor,
                                             { restoreOnSuccess: true,
                                               dragActorMaxSize: Workspace.WINDOW_DND_SIZE,
                                               dragActorOpacity: Workspace.DRAGGING_WINDOW_OPACITY });
-        this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
-        this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
-        this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
+        this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
         this.inDrag = false;
 
         let iter = win => {
@@ -153,8 +153,9 @@ var WindowClone = new Lang.Class({
         let clone = new Clutter.Clone({ source: realDialog });
         this._updateDialogPosition(realDialog, clone);
 
-        clone._updateId = metaDialog.connect('position-changed',
-                                             Lang.bind(this, this._updateDialogPosition, clone));
+        clone._updateId = metaDialog.connect('position-changed', dialog => {
+            this._updateDialogPosition(dialog, clone);
+        });
         clone._destroyId = realDialog.connect('destroy', () => {
             clone.destroy();
         });
@@ -270,7 +271,7 @@ var WorkspaceThumbnail = new Lang.Class({
         this._contents = new Clutter.Actor();
         this.actor.add_child(this._contents);
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._createBackground();
 
@@ -289,8 +290,7 @@ var WorkspaceThumbnail = new Lang.Class({
         for (let i = 0; i < windows.length; i++) {
             let minimizedChangedId =
                 windows[i].meta_window.connect('notify::minimized',
-                                               Lang.bind(this,
-                                                         this._updateMinimized));
+                                               this._updateMinimized.bind(this));
             this._allWindows.push(windows[i].meta_window);
             this._minimizedChangedIds.push(minimizedChangedId);
 
@@ -301,13 +301,13 @@ var WorkspaceThumbnail = new Lang.Class({
 
         // Track window changes
         this._windowAddedId = this.metaWorkspace.connect('window-added',
-                                                          Lang.bind(this, this._windowAdded));
+                                                          this._windowAdded.bind(this));
         this._windowRemovedId = this.metaWorkspace.connect('window-removed',
-                                                           Lang.bind(this, this._windowRemoved));
+                                                           this._windowRemoved.bind(this));
         this._windowEnteredMonitorId = global.screen.connect('window-entered-monitor',
-                                                           Lang.bind(this, this._windowEnteredMonitor));
+                                                           this._windowEnteredMonitor.bind(this));
         this._windowLeftMonitorId = global.screen.connect('window-left-monitor',
-                                                           Lang.bind(this, this._windowLeftMonitor));
+                                                           this._windowLeftMonitor.bind(this));
 
         this.state = ThumbnailState.NORMAL;
         this._slidePosition = 0; // Fully slid in
@@ -410,8 +410,7 @@ var WorkspaceThumbnail = new Lang.Class({
 
         if (this._allWindows.indexOf(metaWin) == -1) {
             let minimizedChangedId = metaWin.connect('notify::minimized',
-                                                     Lang.bind(this,
-                                                               this._updateMinimized));
+                                                     this._updateMinimized.bind(this));
             this._allWindows.push(metaWin);
             this._minimizedChangedIds.push(minimizedChangedId);
         }
@@ -618,9 +617,9 @@ var ThumbnailsBox = new Lang.Class({
         this.actor = new Shell.GenericContainer({ reactive: true,
                                                   style_class: 'workspace-thumbnails',
                                                   request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
+        this.actor.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this.actor.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this.actor.connect('allocate', this._allocate.bind(this));
         this.actor._delegate = this;
 
         let indicator = new St.Bin({ style_class: 'workspace-thumbnail-indicator' });
@@ -651,30 +650,30 @@ var ThumbnailsBox = new Lang.Class({
         this._thumbnails = [];
 
         this.actor.connect('button-press-event', () => Clutter.EVENT_STOP);
-        this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
-        this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
+        this.actor.connect('button-release-event', this._onButtonRelease.bind(this));
+        this.actor.connect('touch-event', this._onTouchEvent.bind(this));
 
         Main.overview.connect('showing',
-                              Lang.bind(this, this._createThumbnails));
+                              this._createThumbnails.bind(this));
         Main.overview.connect('hidden',
-                              Lang.bind(this, this._destroyThumbnails));
+                              this._destroyThumbnails.bind(this));
 
         Main.overview.connect('item-drag-begin',
-                              Lang.bind(this, this._onDragBegin));
+                              this._onDragBegin.bind(this));
         Main.overview.connect('item-drag-end',
-                              Lang.bind(this, this._onDragEnd));
+                              this._onDragEnd.bind(this));
         Main.overview.connect('item-drag-cancelled',
-                              Lang.bind(this, this._onDragCancelled));
+                              this._onDragCancelled.bind(this));
         Main.overview.connect('window-drag-begin',
-                              Lang.bind(this, this._onDragBegin));
+                              this._onDragBegin.bind(this));
         Main.overview.connect('window-drag-end',
-                              Lang.bind(this, this._onDragEnd));
+                              this._onDragEnd.bind(this));
         Main.overview.connect('window-drag-cancelled',
-                              Lang.bind(this, this._onDragCancelled));
+                              this._onDragCancelled.bind(this));
 
         this._settings = new Gio.Settings({ schema_id: OVERRIDE_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
-            Lang.bind(this, this._updateSwitcherVisibility));
+            this._updateSwitcherVisibility.bind(this));
 
         Main.layoutManager.connect('monitors-changed', () => {
             this._destroyThumbnails();
@@ -721,7 +720,7 @@ var ThumbnailsBox = new Lang.Class({
     _onDragBegin() {
         this._dragCancelled = false;
         this._dragMonitor = {
-            dragMotion: Lang.bind(this, this._onDragMotion)
+            dragMotion: this._onDragMotion.bind(this)
         };
         DND.addDragMonitor(this._dragMonitor);
     },
@@ -865,13 +864,13 @@ var ThumbnailsBox = new Lang.Class({
     _createThumbnails() {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
-                                          Lang.bind(this, this._activeWorkspaceChanged));
+                                          this._activeWorkspaceChanged.bind(this));
         this._nWorkspacesNotifyId =
             global.screen.connect('notify::n-workspaces',
-                                  Lang.bind(this, this._workspacesChanged));
+                                  this._workspacesChanged.bind(this));
         this._syncStackingId =
             Main.overview.connect('windows-restacked',
-                                  Lang.bind(this, this._syncStacking));
+                                  this._syncStacking.bind(this));
 
         this._targetScale = 0;
         this._scale = 0;
@@ -1108,7 +1107,7 @@ var ThumbnailsBox = new Lang.Class({
             return;
 
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                       Lang.bind(this, this._updateStates));
+                       this._updateStates.bind(this));
 
         this._stateUpdateQueued = true;
     },

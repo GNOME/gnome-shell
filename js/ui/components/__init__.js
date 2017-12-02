@@ -9,7 +9,7 @@ var ComponentManager = new Lang.Class({
         this._allComponents = {};
         this._enabledComponents = [];
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
     },
 

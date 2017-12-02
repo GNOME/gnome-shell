@@ -82,13 +82,13 @@ var DisplayChangeDialog = new Lang.Class({
            to avoid ellipsizing the labels.
         */
         this._cancelButton = this.addButton({ label: _("Revert Settings"),
-                                              action: Lang.bind(this, this._onFailure),
+                                              action: this._onFailure.bind(this),
                                               key: Clutter.Escape });
         this._okButton = this.addButton({ label:  _("Keep Changes"),
-                                          action: Lang.bind(this, this._onSuccess),
+                                          action: this._onSuccess.bind(this),
                                           default: true });
 
-        this._timeoutId = Mainloop.timeout_add(ONE_SECOND, Lang.bind(this, this._tick));
+        this._timeoutId = Mainloop.timeout_add(ONE_SECOND, this._tick.bind(this));
         GLib.Source.set_name_by_id(this._timeoutId, '[gnome-shell] this._tick');
     },
 
@@ -198,17 +198,17 @@ var WorkspaceTracker = new Lang.Class({
         this._pauseWorkspaceCheck = false;
 
         let tracker = Shell.WindowTracker.get_default();
-        tracker.connect('startup-sequence-changed', Lang.bind(this, this._queueCheckWorkspaces));
+        tracker.connect('startup-sequence-changed', this._queueCheckWorkspaces.bind(this));
 
-        global.screen.connect('notify::n-workspaces', Lang.bind(this, this._nWorkspacesChanged));
-        global.window_manager.connect('switch-workspace', Lang.bind(this, this._queueCheckWorkspaces));
+        global.screen.connect('notify::n-workspaces', this._nWorkspacesChanged.bind(this));
+        global.window_manager.connect('switch-workspace', this._queueCheckWorkspaces.bind(this));
 
-        global.screen.connect('window-entered-monitor', Lang.bind(this, this._windowEnteredMonitor));
-        global.screen.connect('window-left-monitor', Lang.bind(this, this._windowLeftMonitor));
-        global.screen.connect('restacked', Lang.bind(this, this._windowsRestacked));
+        global.screen.connect('window-entered-monitor', this._windowEnteredMonitor.bind(this));
+        global.screen.connect('window-left-monitor', this._windowLeftMonitor.bind(this));
+        global.screen.connect('restacked', this._windowsRestacked.bind(this));
 
         this._workspaceSettings = this._getWorkspaceSettings();
-        this._workspaceSettings.connect('changed::dynamic-workspaces', Lang.bind(this, this._queueCheckWorkspaces));
+        this._workspaceSettings.connect('changed::dynamic-workspaces', this._queueCheckWorkspaces.bind(this));
 
         this._nWorkspacesChanged();
     },
@@ -340,7 +340,7 @@ var WorkspaceTracker = new Lang.Class({
 
     _queueCheckWorkspaces() {
         if (this._checkWorkspacesId == 0)
-            this._checkWorkspacesId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, this._checkWorkspaces));
+            this._checkWorkspacesId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, this._checkWorkspaces.bind(this));
     },
 
     _nWorkspacesChanged() {
@@ -360,8 +360,8 @@ var WorkspaceTracker = new Lang.Class({
 
             for (w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 let workspace = this._workspaces[w];
-                workspace._windowAddedId = workspace.connect('window-added', Lang.bind(this, this._queueCheckWorkspaces));
-                workspace._windowRemovedId = workspace.connect('window-removed', Lang.bind(this, this._windowRemoved));
+                workspace._windowAddedId = workspace.connect('window-added', this._queueCheckWorkspaces.bind(this));
+                workspace._windowRemovedId = workspace.connect('window-removed', this._windowRemoved.bind(this));
             }
 
         } else {
@@ -454,7 +454,7 @@ var TilePreview = new Lang.Class({
                          { opacity: 0,
                            time: WINDOW_ANIMATION_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, this._reset)
+                           onComplete: this._reset.bind(this)
                          });
     },
 
@@ -483,7 +483,7 @@ var TouchpadWorkspaceSwitchAction = new Lang.Class({
     _init(actor) {
         this._dx = 0;
         this._dy = 0;
-        actor.connect('captured-event', Lang.bind(this, this._handleEvent));
+        actor.connect('captured-event', this._handleEvent.bind(this));
     },
 
     _checkActivated() {
@@ -692,7 +692,7 @@ var WindowManager = new Lang.Class({
         this._isWorkspacePrepended = false;
 
         this._switchData = null;
-        this._shellwm.connect('kill-switch-workspace', Lang.bind(this, this._switchWorkspaceDone));
+        this._shellwm.connect('kill-switch-workspace', this._switchWorkspaceDone.bind(this));
         this._shellwm.connect('kill-window-effects', (shellwm, actor) => {
             this._minimizeWindowDone(shellwm, actor);
             this._mapWindowDone(shellwm, actor);
@@ -700,21 +700,21 @@ var WindowManager = new Lang.Class({
             this._sizeChangeWindowDone(shellwm, actor);
         });
 
-        this._shellwm.connect('switch-workspace', Lang.bind(this, this._switchWorkspace));
-        this._shellwm.connect('show-tile-preview', Lang.bind(this, this._showTilePreview));
-        this._shellwm.connect('hide-tile-preview', Lang.bind(this, this._hideTilePreview));
-        this._shellwm.connect('show-window-menu', Lang.bind(this, this._showWindowMenu));
-        this._shellwm.connect('minimize', Lang.bind(this, this._minimizeWindow));
-        this._shellwm.connect('unminimize', Lang.bind(this, this._unminimizeWindow));
-        this._shellwm.connect('size-change', Lang.bind(this, this._sizeChangeWindow));
-        this._shellwm.connect('size-changed', Lang.bind(this, this._sizeChangedWindow));
-        this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
-        this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
-        this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
-        this._shellwm.connect('confirm-display-change', Lang.bind(this, this._confirmDisplayChange));
-        this._shellwm.connect('create-close-dialog', Lang.bind(this, this._createCloseDialog));
-        this._shellwm.connect('create-inhibit-shortcuts-dialog', Lang.bind(this, this._createInhibitShortcutsDialog));
-        global.screen.connect('restacked', Lang.bind(this, this._syncStacking));
+        this._shellwm.connect('switch-workspace', this._switchWorkspace.bind(this));
+        this._shellwm.connect('show-tile-preview', this._showTilePreview.bind(this));
+        this._shellwm.connect('hide-tile-preview', this._hideTilePreview.bind(this));
+        this._shellwm.connect('show-window-menu', this._showWindowMenu.bind(this));
+        this._shellwm.connect('minimize', this._minimizeWindow.bind(this));
+        this._shellwm.connect('unminimize', this._unminimizeWindow.bind(this));
+        this._shellwm.connect('size-change', this._sizeChangeWindow.bind(this));
+        this._shellwm.connect('size-changed', this._sizeChangedWindow.bind(this));
+        this._shellwm.connect('map', this._mapWindow.bind(this));
+        this._shellwm.connect('destroy', this._destroyWindow.bind(this));
+        this._shellwm.connect('filter-keybinding', this._filterKeybinding.bind(this));
+        this._shellwm.connect('confirm-display-change', this._confirmDisplayChange.bind(this));
+        this._shellwm.connect('create-close-dialog', this._createCloseDialog.bind(this));
+        this._shellwm.connect('create-inhibit-shortcuts-dialog', this._createInhibitShortcutsDialog.bind(this));
+        global.screen.connect('restacked', this._syncStacking.bind(this));
 
         this._workspaceSwitcherPopup = null;
         this._tilePreview = null;
@@ -735,187 +735,187 @@ var WindowManager = new Lang.Class({
         this.setCustomKeybindingHandler('switch-to-workspace-left',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-right',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-up',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-down',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-last',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-left',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-right',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-up',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-down',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-1',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-2',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-3',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-4',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-5',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-6',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-7',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-8',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-9',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-10',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-11',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-to-workspace-12',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-1',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-2',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-3',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-4',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-5',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-6',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-7',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-8',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-9',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-10',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-11',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-12',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('move-to-workspace-last',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._showWorkspaceSwitcher));
+                                        this._showWorkspaceSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-applications',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-group',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-applications-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-group-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-windows',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-windows-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('cycle-windows',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('cycle-windows-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('cycle-group',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('cycle-group-backward',
                                         Shell.ActionMode.NORMAL,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-panels',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW |
                                         Shell.ActionMode.LOCK_SCREEN |
                                         Shell.ActionMode.UNLOCK_SCREEN |
                                         Shell.ActionMode.LOGIN_SCREEN,
-                                        Lang.bind(this, this._startA11ySwitcher));
+                                        this._startA11ySwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-panels-backward',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW |
                                         Shell.ActionMode.LOCK_SCREEN |
                                         Shell.ActionMode.UNLOCK_SCREEN |
                                         Shell.ActionMode.LOGIN_SCREEN,
-                                        Lang.bind(this, this._startA11ySwitcher));
+                                        this._startA11ySwitcher.bind(this));
         this.setCustomKeybindingHandler('switch-monitor',
                                         Shell.ActionMode.NORMAL |
                                         Shell.ActionMode.OVERVIEW,
-                                        Lang.bind(this, this._startSwitcher));
+                                        this._startSwitcher.bind(this));
 
         this.addKeybinding('pause-resume-tweens',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.ActionMode.ALL,
-                           Lang.bind(this, this._toggleTweens));
+                           this._toggleTweens.bind(this));
 
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.POPUP,
-                           Lang.bind(this, this._toggleAppMenu));
+                           this._toggleAppMenu.bind(this));
 
         this.addKeybinding('toggle-message-tray',
                            new Gio.Settings({ schema_id: SHELL_KEYBINDINGS_SCHEMA }),
@@ -923,10 +923,10 @@ var WindowManager = new Lang.Class({
                            Shell.ActionMode.NORMAL |
                            Shell.ActionMode.OVERVIEW |
                            Shell.ActionMode.POPUP,
-                           Lang.bind(this, this._toggleCalendar));
+                           this._toggleCalendar.bind(this));
 
-        global.display.connect('show-resize-popup', Lang.bind(this, this._showResizePopup));
-        global.display.connect('show-pad-osd', Lang.bind(this, this._showPadOsd));
+        global.display.connect('show-resize-popup', this._showResizePopup.bind(this));
+        global.display.connect('show-pad-osd', this._showPadOsd.bind(this));
         global.display.connect('show-osd', (display, monitorIndex, iconName, label) => {
             let icon = Gio.Icon.new_for_string(iconName);
             Main.osdWindowManager.show(monitorIndex, icon, label, null);
@@ -974,15 +974,15 @@ var WindowManager = new Lang.Class({
                                                 false, -1, 1);
 
         let gesture = new WorkspaceSwitchAction();
-        gesture.connect('activated', Lang.bind(this, this._actionSwitchWorkspace));
+        gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
         global.stage.add_action(gesture);
 
         // This is not a normal Clutter.GestureAction, doesn't need add_action()
         gesture = new TouchpadWorkspaceSwitchAction(global.stage);
-        gesture.connect('activated', Lang.bind(this, this._actionSwitchWorkspace));
+        gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
 
         gesture = new AppSwitchAction();
-        gesture.connect('activated', Lang.bind(this, this._switchApp));
+        gesture.connect('activated', this._switchApp.bind(this));
         global.stage.add_action(gesture);
 
         let mode = Shell.ActionMode.ALL & ~Shell.ActionMode.LOCK_SCREEN;

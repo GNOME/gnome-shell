@@ -39,9 +39,8 @@ function _setButtonsForChoices(dialog, choices) {
     for (let idx = 0; idx < choices.length; idx++) {
         let button = idx;
         buttons.unshift({ label: choices[idx],
-                          action: Lang.bind(dialog, function() {
-                              dialog.emit('response', button);
-                          })});
+                          action: () => { dialog.emit('response', button); }
+                        });
     }
 
     dialog.setButtons(buttons);
@@ -88,7 +87,7 @@ var ListItem = new Lang.Class({
                                     child: this._nameLabel });
         layout.add(labelBin);
 
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this.actor.connect('clicked', this._onClicked.bind(this));
     },
 
     _onClicked() {
@@ -112,15 +111,15 @@ var ShellMountOperation = new Lang.Class({
         this.mountOp = new Shell.MountOperation();
 
         this.mountOp.connect('ask-question',
-                             Lang.bind(this, this._onAskQuestion));
+                             this._onAskQuestion.bind(this));
         this.mountOp.connect('ask-password',
-                             Lang.bind(this, this._onAskPassword));
+                             this._onAskPassword.bind(this));
         this.mountOp.connect('show-processes-2',
-                             Lang.bind(this, this._onShowProcesses2));
+                             this._onShowProcesses2.bind(this));
         this.mountOp.connect('aborted',
-                             Lang.bind(this, this.close));
+                             this.close.bind(this));
         this.mountOp.connect('show-unmount-progress',
-                             Lang.bind(this, this._onShowUnmountProgress));
+                             this._onShowUnmountProgress.bind(this));
 
         this._gicon = source.get_icon();
     },
@@ -319,7 +318,7 @@ var ShellMountPasswordDialog = new Lang.Class({
                                              text: "",
                                              can_focus: true});
         ShellEntry.addContextMenu(this._passwordEntry, { isPassword: true });
-        this._passwordEntry.clutter_text.connect('activate', Lang.bind(this, this._onEntryActivate));
+        this._passwordEntry.clutter_text.connect('activate', this._onEntryActivate.bind(this));
         this._passwordEntry.clutter_text.set_password_char('\u25cf'); // ● U+25CF BLACK CIRCLE
         this._passwordBox.add(this._passwordEntry, {expand: true });
         this.setInitialKeyFocus(this._passwordEntry);
@@ -342,11 +341,11 @@ var ShellMountPasswordDialog = new Lang.Class({
         }
 
         let buttons = [{ label: _("Cancel"),
-                         action: Lang.bind(this, this._onCancelButton),
+                         action: this._onCancelButton.bind(this),
                          key:    Clutter.Escape
                        },
                        { label: _("Unlock"),
-                         action: Lang.bind(this, this._onUnlockButton),
+                         action: this._onUnlockButton.bind(this),
                          default: true
                        }];
 

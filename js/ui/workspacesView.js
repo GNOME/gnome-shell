@@ -32,7 +32,7 @@ var WorkspacesViewBase = new Lang.Class({
     _init(monitorIndex) {
         this.actor = new St.Widget({ style_class: 'workspaces-view',
                                      reactive: true });
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         global.focus_manager.add_group(this.actor);
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
@@ -44,8 +44,8 @@ var WorkspacesViewBase = new Lang.Class({
         this._actualGeometry = null;
 
         this._inDrag = false;
-        this._windowDragBeginId = Main.overview.connect('window-drag-begin', Lang.bind(this, this._dragBegin));
-        this._windowDragEndId = Main.overview.connect('window-drag-end', Lang.bind(this, this._dragEnd));
+        this._windowDragBeginId = Main.overview.connect('window-drag-begin', this._dragBegin.bind(this));
+        this._windowDragEndId = Main.overview.connect('window-drag-end', this._dragEnd.bind(this));
     },
 
     _onDestroy() {
@@ -105,11 +105,11 @@ var WorkspacesView = new Lang.Class({
                                                     step_increment: 0,
                                                     upper: global.screen.n_workspaces });
         this.scrollAdjustment.connect('notify::value',
-                                      Lang.bind(this, this._onScroll));
+                                      this._onScroll.bind(this));
 
         this._workspaces = [];
         this._updateWorkspaces();
-        this._updateWorkspacesId = global.screen.connect('notify::n-workspaces', Lang.bind(this, this._updateWorkspaces));
+        this._updateWorkspacesId = global.screen.connect('notify::n-workspaces', this._updateWorkspaces.bind(this));
 
         this._overviewShownId =
             Main.overview.connect('shown', () => {
@@ -119,7 +119,7 @@ var WorkspacesView = new Lang.Class({
 
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
-                                          Lang.bind(this, this._activeWorkspaceChanged));
+                                          this._activeWorkspaceChanged.bind(this));
     },
 
     _setReservedSlot(window) {
@@ -414,8 +414,8 @@ var WorkspacesDisplay = new Lang.Class({
     _init() {
         this.actor = new DelegateFocusNavigator({ clip_to_allocation: true });
         this.actor._delegate = this;
-        this.actor.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesActualGeometry));
-        this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
+        this.actor.connect('notify::allocation', this._updateWorkspacesActualGeometry.bind(this));
+        this.actor.connect('parent-set', this._parentSet.bind(this));
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', action => {
@@ -432,7 +432,7 @@ var WorkspacesDisplay = new Lang.Class({
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
-        panAction.connect('pan', Lang.bind(this, this._onPan));
+        panAction.connect('pan', this._onPan.bind(this));
         panAction.connect('gesture-begin', () => {
             if (this._workspacesOnlyOnPrimary) {
                 let event = Clutter.get_current_event();
@@ -464,8 +464,7 @@ var WorkspacesDisplay = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema_id: OVERRIDE_SCHEMA });
         this._settings.connect('changed::workspaces-only-on-primary',
-                               Lang.bind(this,
-                                         this._workspacesOnlyOnPrimaryChanged));
+                               this._workspacesOnlyOnPrimaryChanged.bind(this));
         this._workspacesOnlyOnPrimaryChanged();
 
         this._switchWorkspaceNotifyId = 0;
@@ -501,12 +500,12 @@ var WorkspacesDisplay = new Lang.Class({
 
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
-                                  Lang.bind(this, this._onRestacked));
+                                  this._onRestacked.bind(this));
         if (this._scrollEventId == 0)
-            this._scrollEventId = Main.overview.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+            this._scrollEventId = Main.overview.connect('scroll-event', this._onScrollEvent.bind(this));
 
         if (this._keyPressEventId == 0)
-            this._keyPressEventId = global.stage.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
+            this._keyPressEventId = global.stage.connect('key-press-event', this._onKeyPressEvent.bind(this));
     },
 
     animateFromOverview(fadeOnPrimary) {
@@ -561,11 +560,11 @@ var WorkspacesDisplay = new Lang.Class({
             else
                 view = new WorkspacesView(i);
 
-            view.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+            view.actor.connect('scroll-event', this._onScrollEvent.bind(this));
             if (i == this._primaryIndex) {
                 this._scrollAdjustment = view.scrollAdjustment;
                 this._scrollAdjustment.connect('notify::value',
-                                               Lang.bind(this, this._scrollValueChanged));
+                                               this._scrollValueChanged.bind(this));
             }
 
             this._workspacesViews.push(view);

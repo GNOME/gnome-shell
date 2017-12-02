@@ -109,10 +109,10 @@ var OsdWindow = new Lang.Class({
         this._reset();
 
         Main.layoutManager.connect('monitors-changed',
-                                   Lang.bind(this, this._relayout));
+                                   this._relayout.bind(this));
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         themeContext.connect('notify::scale-factor',
-                             Lang.bind(this, this._relayout));
+                             this._relayout.bind(this));
         this._relayout();
         Main.uiGroup.add_child(this.actor);
     },
@@ -159,7 +159,7 @@ var OsdWindow = new Lang.Class({
         if (this._hideTimeoutId)
             Mainloop.source_remove(this._hideTimeoutId);
         this._hideTimeoutId = Mainloop.timeout_add(HIDE_TIMEOUT,
-                                                   Lang.bind(this, this._hide));
+                                                   this._hide.bind(this));
         GLib.Source.set_name_by_id(this._hideTimeoutId, '[gnome-shell] this._hide');
     },
 
@@ -215,7 +215,7 @@ var OsdWindowManager = new Lang.Class({
     _init() {
         this._osdWindows = [];
         Main.layoutManager.connect('monitors-changed',
-                                    Lang.bind(this, this._monitorsChanged));
+                                    this._monitorsChanged.bind(this));
         this._monitorsChanged();
     },
 

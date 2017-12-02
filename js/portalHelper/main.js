@@ -122,7 +122,7 @@ var PortalWindow = new Lang.Class({
     _init(application, url, timestamp, doneCallback) {
         this.parent({ application: application });
 
-        this.connect('delete-event', Lang.bind(this, this.destroyWindow));
+        this.connect('delete-event', this.destroyWindow.bind(this));
         this._headerBar = new PortalHeaderBar();
         this._headerBar.setSecurityIcon(PortalHelperSecurityLevel.NOT_YET_DETERMINED);
         this.set_titlebar(this._headerBar);
@@ -146,12 +146,12 @@ var PortalWindow = new Lang.Class({
         this._webContext.set_network_proxy_settings(WebKit.NetworkProxyMode.NO_PROXY, null);
 
         this._webView = WebKit.WebView.new_with_context(this._webContext);
-        this._webView.connect('decide-policy', Lang.bind(this, this._onDecidePolicy));
-        this._webView.connect('load-changed', Lang.bind(this, this._onLoadChanged));
-        this._webView.connect('insecure-content-detected', Lang.bind(this, this._onInsecureContentDetected));
-        this._webView.connect('load-failed-with-tls-errors', Lang.bind(this, this._onLoadFailedWithTlsErrors));
+        this._webView.connect('decide-policy', this._onDecidePolicy.bind(this));
+        this._webView.connect('load-changed', this._onLoadChanged.bind(this));
+        this._webView.connect('insecure-content-detected', this._onInsecureContentDetected.bind(this));
+        this._webView.connect('load-failed-with-tls-errors', this._onLoadFailedWithTlsErrors.bind(this));
         this._webView.load_uri(url);
-        this._webView.connect('notify::uri', Lang.bind(this, this._syncUri));
+        this._webView.connect('notify::uri', this._syncUri.bind(this));
         this._syncUri();
 
         this.add(this._webView);

@@ -12,7 +12,7 @@ var WindowAttentionHandler = new Lang.Class({
     _init () {
         this._tracker = Shell.WindowTracker.get_default();
         this._windowDemandsAttentionId = global.display.connect('window-demands-attention',
-                                                                Lang.bind(this, this._onWindowDemandsAttention));
+                                                                this._onWindowDemandsAttention.bind(this));
     },
 
     _getTitleAndBanner(app, window) {
@@ -72,7 +72,7 @@ var Source = new Lang.Class({
         this.signalIDs.push(this._window.connect('unmanaged',
                                                  () => { this.destroy(); }));
 
-        this.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.connect('destroy', this._onDestroy.bind(this));
     },
 
     _onDestroy () {

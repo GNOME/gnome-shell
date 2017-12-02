@@ -122,7 +122,7 @@ var Lightbox = new Lang.Class({
         this.actor.hide();
         this.shown = false;
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         if (params.width && params.height) {
             this.actor.width = params.width;
@@ -133,8 +133,8 @@ var Lightbox = new Lang.Class({
             this.actor.add_constraint(constraint);
         }
 
-        this._actorAddedSignalId = container.connect('actor-added', Lang.bind(this, this._actorAdded));
-        this._actorRemovedSignalId = container.connect('actor-removed', Lang.bind(this, this._actorRemoved));
+        this._actorAddedSignalId = container.connect('actor-added', this._actorAdded.bind(this));
+        this._actorRemovedSignalId = container.connect('actor-removed', this._actorRemoved.bind(this));
 
         this._highlighted = null;
     },

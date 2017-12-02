@@ -390,7 +390,7 @@ var AllView = new Lang.Class({
             (indicators, pageIndex) => {
                 this.goToPage(pageIndex);
             });
-        this._pageIndicators.actor.connect('scroll-event', Lang.bind(this, this._onScroll));
+        this._pageIndicators.actor.connect('scroll-event', this._onScroll.bind(this));
         this.actor.add_actor(this._pageIndicators.actor);
 
         this.folderIcons = [];
@@ -406,12 +406,12 @@ var AllView = new Lang.Class({
         box.add_actor(this._stack);
         this._scrollView.add_actor(box);
 
-        this._scrollView.connect('scroll-event', Lang.bind(this, this._onScroll));
+        this._scrollView.connect('scroll-event', this._onScroll.bind(this));
 
         let panAction = new Clutter.PanAction({ interpolate: false });
-        panAction.connect('pan', Lang.bind(this, this._onPan));
-        panAction.connect('gesture-cancel', Lang.bind(this, this._onPanEnd));
-        panAction.connect('gesture-end', Lang.bind(this, this._onPanEnd));
+        panAction.connect('pan', this._onPan.bind(this));
+        panAction.connect('gesture-cancel', this._onPanEnd.bind(this));
+        panAction.connect('gesture-end', this._onPanEnd.bind(this));
         this._panAction = panAction;
         this._scrollView.add_action(panAction);
         this._panning = false;
@@ -448,7 +448,7 @@ var AllView = new Lang.Class({
             if (this.actor.mapped) {
                 this._keyPressEventId =
                     global.stage.connect('key-press-event',
-                                         Lang.bind(this, this._onKeyPressEvent));
+                                         this._onKeyPressEvent.bind(this));
             } else {
                 if (this._keyPressEventId)
                     global.stage.disconnect(this._keyPressEventId);
@@ -456,7 +456,7 @@ var AllView = new Lang.Class({
             }
         });
 
-        this._redisplayWorkId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
+        this._redisplayWorkId = Main.initializeDeferredWork(this.actor, this._redisplay.bind(this));
 
         Shell.AppSystem.get_default().connect('installed-changed', () => {
             Main.queueDeferredWork(this._redisplayWorkId);
@@ -514,8 +514,8 @@ var AllView = new Lang.Class({
         folders.forEach(id => {
             let path = this._folderSettings.path + 'folders/' + id + '/';
             let icon = new FolderIcon(id, path, this);
-            icon.connect('name-changed', Lang.bind(this, this._itemNameChanged));
-            icon.connect('apps-changed', Lang.bind(this, this._refilterApps));
+            icon.connect('name-changed', this._itemNameChanged.bind(this));
+            icon.connect('apps-changed', this._refilterApps.bind(this));
             this.addItem(icon);
             this.folderIcons.push(icon);
         });
@@ -905,7 +905,7 @@ var AppDisplay = new Lang.Class({
     _init() {
         this._privacySettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.privacy' });
         this._privacySettings.connect('changed::remember-app-usage',
-                                      Lang.bind(this, this._updateFrequentVisibility));
+                                      this._updateFrequentVisibility.bind(this));
 
         this._views = [];
 
@@ -930,7 +930,7 @@ var AppDisplay = new Lang.Class({
         this._viewStackLayout = new ViewStackLayout();
         this._viewStack = new St.Widget({ x_expand: true, y_expand: true,
                                           layout_manager: this._viewStackLayout });
-        this._viewStackLayout.connect('allocated-size-changed', Lang.bind(this, this._onAllocatedSizeChanged));
+        this._viewStackLayout.connect('allocated-size-changed', this._onAllocatedSizeChanged.bind(this));
         this.actor.add_actor(this._viewStack);
         let layout = new ControlsBoxLayout({ homogeneous: true });
         this._controls = new St.Widget({ style_class: 'app-view-controls',
@@ -970,7 +970,7 @@ var AppDisplay = new Lang.Class({
 
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
                                    Gio.BusNameWatcherFlags.NONE,
-                                   Lang.bind(this, this._switcherooProxyAppeared),
+                                   this._switcherooProxyAppeared.bind(this),
                                    () => {
                                        this._switcherooProxy = null;
                                        this._updateDiscreteGpuAvailable();
@@ -1153,7 +1153,7 @@ var FolderView = new Lang.Class({
         this.actor.add_actor(scrollableContainer);
 
         let action = new Clutter.PanAction({ interpolate: true });
-        action.connect('pan', Lang.bind(this, this._onPan));
+        action.connect('pan', this._onPan.bind(this));
         this.actor.add_action(action);
     },
 
@@ -1268,7 +1268,7 @@ var FolderIcon = new Lang.Class({
         // whether we need to update arrow side, position etc.
         this._popupInvalidated = false;
 
-        this.icon = new IconGrid.BaseIcon('', { createIcon: Lang.bind(this, this._createIcon), setSizeManually: true });
+        this.icon = new IconGrid.BaseIcon('', { createIcon: this._createIcon.bind(this), setSizeManually: true });
         this.actor.set_child(this.icon.actor);
         this.actor.label_actor = this.icon.label;
 
@@ -1284,7 +1284,7 @@ var FolderIcon = new Lang.Class({
                 this._popup.popdown();
         });
 
-        this._folder.connect('changed', Lang.bind(this, this._redisplay));
+        this._folder.connect('changed', this._redisplay.bind(this));
         this._redisplay();
     },
 
@@ -1455,7 +1455,7 @@ var AppFolderPopup = new Lang.Class({
         this._boxPointer.bin.set_child(this._view.actor);
 
         this.closeButton = Util.makeCloseButton(this._boxPointer);
-        this.closeButton.connect('clicked', Lang.bind(this, this.popdown));
+        this.closeButton.connect('clicked', this.popdown.bind(this));
         this.actor.add_actor(this.closeButton);
 
         this._boxPointer.actor.bind_property('opacity', this.closeButton, 'opacity',
@@ -1466,7 +1466,7 @@ var AppFolderPopup = new Lang.Class({
         source.actor.connect('destroy', () => { this.actor.destroy(); });
         this._grabHelper = new GrabHelper.GrabHelper(this.actor);
         this._grabHelper.addActor(Main.layoutManager.overviewGroup);
-        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+        this.actor.connect('key-press-event', this._onKeyPress.bind(this));
     },
 
     _onKeyPress(actor, event) {
@@ -1525,7 +1525,7 @@ var AppFolderPopup = new Lang.Class({
             return;
 
         this._isOpen = this._grabHelper.grab({ actor: this.actor,
-                                               onUngrab: Lang.bind(this, this.popdown) });
+                                               onUngrab: this.popdown.bind(this) });
 
         if (!this._isOpen)
             return;
@@ -1614,18 +1614,18 @@ var AppIcon = new Lang.Class({
         let isDraggable = appIconParams['isDraggable'];
         delete iconParams['isDraggable'];
 
-        iconParams['createIcon'] = Lang.bind(this, this._createIcon);
+        iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = true;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon.actor);
 
         this.actor.label_actor = this.icon.label;
 
-        this.actor.connect('leave-event', Lang.bind(this, this._onLeaveEvent));
-        this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-        this.actor.connect('touch-event', Lang.bind(this, this._onTouchEvent));
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-        this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
+        this.actor.connect('leave-event', this._onLeaveEvent.bind(this));
+        this.actor.connect('button-press-event', this._onButtonPress.bind(this));
+        this.actor.connect('touch-event', this._onTouchEvent.bind(this));
+        this.actor.connect('clicked', this._onClicked.bind(this));
+        this.actor.connect('popup-menu', this._onKeyboardPopupMenu.bind(this));
 
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
@@ -1644,7 +1644,7 @@ var AppIcon = new Lang.Class({
             });
         }
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {

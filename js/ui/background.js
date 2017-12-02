@@ -539,7 +539,7 @@ var BackgroundSource = new Lang.Class({
         this._backgrounds = [];
 
         this._monitorsChangedId = global.screen.connect('monitors-changed',
-                                                        Lang.bind(this, this._onMonitorsChanged));
+                                                        this._onMonitorsChanged.bind(this));
     },
 
     _onMonitorsChanged() {

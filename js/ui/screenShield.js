@@ -74,7 +74,7 @@ var Clock = new Lang.Class({
         this.actor.add(this._date, { x_align: St.Align.MIDDLE });
 
         this._wallClock = new GnomeDesktop.WallClock({ time_only: true });
-        this._wallClock.connect('notify::clock', Lang.bind(this, this._updateClock));
+        this._wallClock.connect('notify::clock', this._updateClock.bind(this));
 
         this._updateClock();
     },
@@ -117,7 +117,7 @@ var NotificationsBox = new Lang.Class({
         });
         this._updateVisibility();
 
-        this._sourceAddedId = Main.messageTray.connect('source-added', Lang.bind(this, this._sourceAdded));
+        this._sourceAddedId = Main.messageTray.connect('source-added', this._sourceAdded.bind(this));
     },
 
     destroy() {
@@ -353,7 +353,7 @@ var Arrow = new Lang.Class({
         this.x_fill = this.y_fill = true;
 
         this._drawingArea = new St.DrawingArea();
-        this._drawingArea.connect('repaint', Lang.bind(this, this._drawArrow));
+        this._drawingArea.connect('repaint', this._drawArrow.bind(this));
         this.child = this._drawingArea;
 
         this._shadowHelper = null;
@@ -445,9 +445,9 @@ var ScreenShield = new Lang.Class({
                                                 visible: false,
                                               });
         this._lockScreenGroup.connect('key-press-event',
-                                      Lang.bind(this, this._onLockScreenKeyPress));
+                                      this._onLockScreenKeyPress.bind(this));
         this._lockScreenGroup.connect('scroll-event',
-                                      Lang.bind(this, this._onLockScreenScroll));
+                                      this._onLockScreenScroll.bind(this));
         Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
 
         this._lockScreenContents = new St.Widget({ layout_manager: new Clutter.BinLayout(),
@@ -463,7 +463,7 @@ var ScreenShield = new Lang.Class({
         this._bgManagers = [];
 
         this._updateBackgrounds();
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateBackgrounds));
+        Main.layoutManager.connect('monitors-changed', this._updateBackgrounds.bind(this));
 
         this._arrowAnimationId = 0;
         this._arrowWatchId = 0;
@@ -484,9 +484,9 @@ var ScreenShield = new Lang.Class({
         this._lockScreenContents.add_actor(this._arrowContainer);
 
         this._dragAction = new Clutter.GestureAction();
-        this._dragAction.connect('gesture-begin', Lang.bind(this, this._onDragBegin));
-        this._dragAction.connect('gesture-progress', Lang.bind(this, this._onDragMotion));
-        this._dragAction.connect('gesture-end', Lang.bind(this, this._onDragEnd));
+        this._dragAction.connect('gesture-begin', this._onDragBegin.bind(this));
+        this._dragAction.connect('gesture-progress', this._onDragMotion.bind(this));
+        this._dragAction.connect('gesture-end', this._onDragEnd.bind(this));
         this._lockScreenGroup.add_action(this._dragAction);
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
@@ -528,7 +528,7 @@ var ScreenShield = new Lang.Class({
 
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.connect('prepare-for-sleep',
-                                   Lang.bind(this, this._prepareForSleep));
+                                   this._prepareForSleep.bind(this));
 
         this._loginSession = null;
         this._loginManager.getCurrentSessionProxy(sessionProxy => {
@@ -537,15 +537,15 @@ var ScreenShield = new Lang.Class({
                                              () => { this.lock(false); });
             this._loginSession.connectSignal('Unlock',
                                              () => { this.deactivate(false); });
-            this._loginSession.connect('g-properties-changed', Lang.bind(this, this._syncInhibitor));
+            this._loginSession.connect('g-properties-changed', this._syncInhibitor.bind(this));
             this._syncInhibitor();
         });
 
         this._settings = new Gio.Settings({ schema_id: SCREENSAVER_SCHEMA });
-        this._settings.connect('changed::' + LOCK_ENABLED_KEY, Lang.bind(this, this._syncInhibitor));
+        this._settings.connect('changed::' + LOCK_ENABLED_KEY, this._syncInhibitor.bind(this));
 
         this._lockSettings = new Gio.Settings({ schema_id: LOCKDOWN_SCHEMA });
-        this._lockSettings.connect('changed::' + DISABLE_LOCK_KEY, Lang.bind(this, this._syncInhibitor));
+        this._lockSettings.connect('changed::' + DISABLE_LOCK_KEY, this._syncInhibitor.bind(this));
 
         this._isModal = false;
         this._hasLockScreen = false;
@@ -563,11 +563,11 @@ var ScreenShield = new Lang.Class({
         this._longLightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                    { inhibitEvents: true,
                                                      fadeFactor: 1 });
-        this._longLightbox.connect('shown', Lang.bind(this, this._onLongLightboxShown));
+        this._longLightbox.connect('shown', this._onLongLightboxShown.bind(this));
         this._shortLightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                     { inhibitEvents: true,
                                                       fadeFactor: 1 });
-        this._shortLightbox.connect('shown', Lang.bind(this, this._onShortLightboxShown));
+        this._shortLightbox.connect('shown', this._onShortLightboxShown.bind(this));
 
         this.idleMonitor = Meta.IdleMonitor.get_core();
         this._cursorTracker = Meta.CursorTracker.get_for_screen(global.screen);
@@ -862,7 +862,7 @@ var ScreenShield = new Lang.Class({
         lightbox.show(time);
 
         if (this._becameActiveId == 0)
-            this._becameActiveId = this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onUserBecameActive));
+            this._becameActiveId = this.idleMonitor.add_user_active_watch(this._onUserBecameActive.bind(this));
     },
 
     _onUserBecameActive() {
@@ -954,7 +954,7 @@ var ScreenShield = new Lang.Class({
                              { y: -h,
                                time: time,
                                transition: 'easeInQuad',
-                               onComplete: Lang.bind(this, this._hideLockScreenComplete),
+                               onComplete: this._hideLockScreenComplete.bind(this),
                              });
         } else {
             this._hideLockScreenComplete();
@@ -984,7 +984,7 @@ var ScreenShield = new Lang.Class({
                 return false;
             }
 
-            this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
+            this._dialog.connect('failed', this._onUnlockFailed.bind(this));
         }
 
         this._dialog.allowCancel = allowCancel;
@@ -1042,14 +1042,14 @@ var ScreenShield = new Lang.Class({
         this._arrowActiveWatchId = 0;
 
         if (!this._arrowAnimationId) {
-            this._arrowAnimationId = Mainloop.timeout_add(6000, Lang.bind(this, this._animateArrows));
+            this._arrowAnimationId = Mainloop.timeout_add(6000, this._animateArrows.bind(this));
             GLib.Source.set_name_by_id(this._arrowAnimationId, '[gnome-shell] this._animateArrows');
             this._animateArrows();
         }
 
         if (!this._arrowWatchId)
             this._arrowWatchId = this.idleMonitor.add_idle_watch(ARROW_IDLE_TIME,
-                                                                 Lang.bind(this, this._pauseArrowAnimation));
+                                                                 this._pauseArrowAnimation.bind(this));
     },
 
     _pauseArrowAnimation() {
@@ -1059,7 +1059,7 @@ var ScreenShield = new Lang.Class({
         }
 
         if (!this._arrowActiveWatchId)
-            this._arrowActiveWatchId = this.idleMonitor.add_user_active_watch(Lang.bind(this, this._startArrowAnimation));
+            this._arrowActiveWatchId = this.idleMonitor.add_user_active_watch(this._startArrowAnimation.bind(this));
     },
 
     _stopArrowAnimation() {
@@ -1148,7 +1148,7 @@ var ScreenShield = new Lang.Class({
         this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
         this._notificationsBox = new NotificationsBox();
-        this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', Lang.bind(this, this._wakeUpScreen));
+        this._wakeUpScreenId = this._notificationsBox.connect('wake-up-screen', this._wakeUpScreen.bind(this));
         this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
                                                                         y_fill: true,
                                                                         expand: true });
@@ -1234,7 +1234,7 @@ var ScreenShield = new Lang.Class({
             scale_y: 0,
             time: animate ? Overview.ANIMATION_TIME : 0,
             transition: 'easeOutQuad',
-            onComplete: Lang.bind(this, this._completeDeactivate),
+            onComplete: this._completeDeactivate.bind(this),
             onCompleteScope: this
         });
     },

@@ -28,7 +28,7 @@ var CtrlAltTabManager = new Lang.Class({
         this._items = [];
         this.addGroup(global.window_group, _("Windows"),
                       'focus-windows-symbolic', { sortGroup: SortGroup.TOP,
-                                                  focusCallback: Lang.bind(this, this._focusWindows) });
+                                                  focusCallback: this._focusWindows.bind(this) });
     },
 
     addGroup(root, name, icon, params) {
@@ -105,10 +105,9 @@ var CtrlAltTabManager = new Lang.Class({
 
                 items.push({ name: windows[i].title,
                              proxy: windows[i].get_compositor_private(),
-                             focusCallback: Lang.bind(windows[i],
-                                 function(timestamp) {
-                                     Main.activateWindow(this, timestamp);
-                                 }),
+                             focusCallback: function(timestamp) {
+                                 Main.activateWindow(this, timestamp);
+                             }.bind(windows[i]),
                              iconActor: icon,
                              iconName: iconName,
                              sortGroup: SortGroup.MIDDLE });
@@ -118,7 +117,7 @@ var CtrlAltTabManager = new Lang.Class({
         if (!items.length)
             return;
 
-        items.sort(Lang.bind(this, this._sortItems));
+        items.sort(this._sortItems.bind(this));
 
         if (!this._popup) {
             this._popup = new CtrlAltTabPopup(items);

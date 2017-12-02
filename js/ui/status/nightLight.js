@@ -35,7 +35,7 @@ var Indicator = new Lang.Class({
                                              return;
                                          }
                                          this._proxy.connect('g-properties-changed',
-                                                             Lang.bind(this, this._sync));
+                                                             this._sync.bind(this));
                                          this._sync();
                                      });
 
@@ -51,7 +51,7 @@ var Indicator = new Lang.Class({
         this._item.menu.addSettingsAction(_("Display Settings"), 'gnome-display-panel.desktop');
         this.menu.addMenuItem(this._item);
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
         this._sync();
     },

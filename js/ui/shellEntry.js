@@ -23,12 +23,12 @@ var EntryMenu = new Lang.Class({
         // Populate menu
         let item;
         item = new PopupMenu.PopupMenuItem(_("Copy"));
-        item.connect('activate', Lang.bind(this, this._onCopyActivated));
+        item.connect('activate', this._onCopyActivated.bind(this));
         this.addMenuItem(item);
         this._copyItem = item;
 
         item = new PopupMenu.PopupMenuItem(_("Paste"));
-        item.connect('activate', Lang.bind(this, this._onPasteActivated));
+        item.connect('activate', this._onPasteActivated.bind(this));
         this.addMenuItem(item);
         this._pasteItem = item;
 
@@ -40,8 +40,7 @@ var EntryMenu = new Lang.Class({
 
     _makePasswordItem() {
         let item = new PopupMenu.PopupMenuItem('');
-        item.connect('activate', Lang.bind(this,
-                                           this._onPasswordActivated));
+        item.connect('activate', this._onPasswordActivated.bind(this));
         this.addMenuItem(item);
         this._passwordItem = item;
     },
@@ -161,10 +160,14 @@ function addContextMenu(entry, params) {
     // Add an event handler to both the entry and its clutter_text; the former
     // so padding is included in the clickable area, the latter because the
     // event processing of ClutterText prevents event-bubbling.
-    entry.clutter_text.connect('button-press-event', Lang.bind(null, _onButtonPressEvent, entry));
-    entry.connect('button-press-event', Lang.bind(null, _onButtonPressEvent, entry));
+    entry.clutter_text.connect('button-press-event', (actor, event) => {
+        _onButtonPressEvent(actor, event, entry);
+    });
+    entry.connect('button-press-event', (actor, event) => {
+        _onButtonPressEvent(actor, event, entry);
+    });
 
-    entry.connect('popup-menu', Lang.bind(null, _onPopup, entry));
+    entry.connect('popup-menu', actor => { _onPopup(actor, entry); });
 
     entry.connect('destroy', () => {
         entry.menu.destroy();

@@ -44,13 +44,13 @@ var BoxPointer = new Lang.Class({
                                   y_fill: true });
         this._container = new Shell.GenericContainer();
         this.actor.set_child(this._container);
-        this._container.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this._container.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this._container.connect('allocate', Lang.bind(this, this._allocate));
+        this._container.connect('get-preferred-width', this._getPreferredWidth.bind(this));
+        this._container.connect('get-preferred-height', this._getPreferredHeight.bind(this));
+        this._container.connect('allocate', this._allocate.bind(this));
         this.bin = new St.Bin(binProperties);
         this._container.add_actor(this.bin);
         this._border = new St.DrawingArea();
-        this._border.connect('repaint', Lang.bind(this, this._drawBorder));
+        this._border.connect('repaint', this._drawBorder.bind(this));
         this._container.add_actor(this._border);
         this.bin.raise(this._border);
         this._xOffset = 0;

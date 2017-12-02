@@ -45,7 +45,7 @@ var ScreencastService = new Lang.Class({
 
         this._lockdownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
     },
 
     get isRecording() {
@@ -59,7 +59,7 @@ var ScreencastService = new Lang.Class({
                                             screen: global.screen });
             recorder._watchNameId =
                 Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
-                                   Lang.bind(this, this._onNameVanished));
+                                   this._onNameVanished.bind(this));
             this._recorders.set(sender, recorder);
             this.emit('updated');
         }
