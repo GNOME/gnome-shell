@@ -795,18 +795,13 @@ var AppSwitcher = new Lang.Class({
     },
 
     _removeIcon: function(app) {
-        for (let i = 0; i < this.icons.length; i++)
-            if (this.icons[i].app == app) {
-                this.icons.splice(i, 1);
-                this.removeItem(i);
-                if (this._curApp == i)
-                    this._curApp = SwitcherPopup.mod(i, this.icons.length);
-                if (this.icons.length > 0)
-                    this.highlight(this._curApp);
-                else
-                    this.actor.destroy();
-                return;
-            }
+        for (let i = 0; i < this.icons.length; i++) {
+            if (this.icons[i].app != app)
+                continue;
+
+            this.icons.splice(i, 1);
+            this.removeItem(i);
+        }
     },
 });
 

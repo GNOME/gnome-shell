@@ -133,6 +133,7 @@ var SwitcherPopup = new Lang.Class({
         this.actor.add_actor(this._switcherList.actor);
         this._switcherList.connect('item-activated', Lang.bind(this, this._itemActivated));
         this._switcherList.connect('item-entered', Lang.bind(this, this._itemEntered));
+        this._switcherList.connect('item-removed', Lang.bind(this, this._itemRemoved));
 
         // Need to force an allocation so we can figure out whether we
         // need to scroll when selecting
@@ -245,6 +246,19 @@ var SwitcherPopup = new Lang.Class({
         if (!this.mouseActive)
             return;
         this._itemEnteredHandler(n);
+    },
+
+    _itemRemovedHandler: function(n) {
+        if (this._items.length > 0) {
+            let newIndex = Math.min(n, this._items.length - 1);
+            this._select(newIndex);
+        } else {
+            this.actor.destroy();
+        }
+    },
+
+    _itemRemoved: function(switcher, n) {
+        this._itemRemovedHandler(n);
     },
 
     _disableHover: function() {
@@ -421,6 +435,7 @@ var SwitcherList = new Lang.Class({
     removeItem: function(index) {
         let item = this._items.splice(index, 1);
         item[0].destroy();
+        this.emit('item-removed', index);
     },
 
     _onItemClicked: function (index) {
