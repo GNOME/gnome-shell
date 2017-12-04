@@ -135,7 +135,8 @@ var WorldClocksSection = new Lang.Class({
             if (!clocks[i].location)
                 continue;
             let l = world.deserialize(clocks[i].location);
-            this._locations.push({ location: l });
+            if (l)
+                this._locations.push({ location: l });
         }
 
         this._locations.sort(function(a, b) {
