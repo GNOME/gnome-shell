@@ -156,6 +156,14 @@ var AppSwitcherPopup = new Lang.Class({
                                  this._items[this._selectedIndex].cachedWindows.length);
     },
 
+    _quitApplication: function(appIndex) {
+        let appIcon = this._items[appIndex];
+        if (!appIcon)
+            return;
+
+        appIcon.app.request_quit();
+    },
+
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_GROUP) {
             if (!this._thumbnailsFocused)
@@ -176,7 +184,7 @@ var AppSwitcherPopup = new Lang.Class({
             else if (keysym == Clutter.Up)
                 this._select(this._selectedIndex, null, true);
             else if (keysym == Clutter.q)
-                this._items[this._selectedIndex].app.request_quit();
+                this._quitApplication(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;
         } else {
@@ -187,7 +195,7 @@ var AppSwitcherPopup = new Lang.Class({
             else if (keysym == Clutter.Down)
                 this._select(this._selectedIndex, 0);
             else if (keysym == Clutter.q)
-                this._items[this._selectedIndex].app.request_quit();
+                this._quitApplication(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;
         }
@@ -347,7 +355,8 @@ var AppSwitcherPopup = new Lang.Class({
                            onCompleteScope: this
                          });
         this._thumbnails = null;
-        this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
+        if  (this._switcherList._items[this._selectedIndex])
+            this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
     },
 
     _createThumbnails : function() {
@@ -755,7 +764,7 @@ var AppSwitcher = new Lang.Class({
     // show a dim arrow, but show a bright arrow when they are
     // highlighted.
     highlight : function(n, justOutline) {
-        if (this._curApp != -1) {
+        if (this.icons[this._curApp]) {
             if (this.icons[this._curApp].cachedWindows.length == 1)
                 this._arrows[this._curApp].hide();
             else
