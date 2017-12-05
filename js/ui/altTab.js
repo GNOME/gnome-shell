@@ -552,6 +552,14 @@ var WindowSwitcherPopup = new Lang.Class({
         return getWindows(workspace);
     },
 
+    _closeWindow: function(windowIndex) {
+        let windowIcon = this._items[windowIndex];
+        if (!windowIcon)
+            return;
+
+        windowIcon.window.delete(global.get_current_time());
+    },
+
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
             this._select(this._next());
@@ -562,6 +570,8 @@ var WindowSwitcherPopup = new Lang.Class({
                 this._select(this._previous());
             else if (keysym == Clutter.Right)
                 this._select(this._next());
+            else if (keysym == Clutter.q)
+                this._closeWindow(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;
         }
@@ -987,7 +997,18 @@ var WindowList = new Lang.Class({
 
             this.addItem(icon.actor, icon.label);
             this.icons.push(icon);
+
+            icon._unmanagedSignalId = icon.window.connect('unmanaged', (window) => {
+                this._removeWindow(window)
+            });
         }
+
+        this.actor.connect('destroy', () => { this._onDestroy(); });
+    },
+
+    _onDestroy: function() {
+        for (let i = 0; i < this.icons.length; i++)
+            this.icons[i].window.disconnect(this.icons[i]._unmanagedSignalId);
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
@@ -1016,5 +1037,15 @@ var WindowList = new Lang.Class({
         this.parent(index, justOutline);
 
         this._label.set_text(index == -1 ? '' : this.icons[index].label.text);
+    },
+
+    _removeWindow: function(window) {
+        for (let i = 0; i < this.icons.length; i++) {
+            if (this.icons[i].window != window)
+                continue;
+
+            this.icons.splice(i, 1);
+            this.removeItem(i);
+        }
     }
 });
