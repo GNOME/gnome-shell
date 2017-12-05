@@ -421,10 +421,6 @@ var Keyboard = new Lang.Class({
         this._groups = {};
         this._current_page = null;
 
-        // Initialize keyboard key measurements
-        this._numOfHorizKeys = 0;
-        this._numOfVertKeys = 0;
-
         this._addKeys();
 
         // Keyboard models are defined in LTR, we must override
@@ -632,9 +628,6 @@ var Keyboard = new Lang.Class({
         let rows = model.rows;
         for (let i = 0; i < rows.length; ++i) {
             let row = rows[i];
-            if (this._numOfVertKeys == 0)
-                this._numOfVertKeys = rows.length;
-
             let keyboardRow = new St.BoxLayout({ style_class: 'keyboard-row',
                                                  x_expand: false,
                                                  x_align: Clutter.ActorAlign.END });
@@ -642,11 +635,22 @@ var Keyboard = new Lang.Class({
 
             let [pre, post] = this._getDefaultKeysForRow(i, rows.length, level);
             this._mergeRowKeys (keyboardRow, pre, row, post, numLevels);
+        }
+    },
 
-            this._numOfHorizKeys = Math.max(this._numOfHorizKeys, keyboardRow.get_n_children());
+    _getGridSlots: function() {
+        let numOfHorizSlots = 0, numOfVertSlots;
+        let rows = this._current_page.get_children();
+        numOfVertSlots = rows.length;
+
+        for (let i = 0; i < rows.length; ++i) {
+            let keyboard_row = rows[i];
+            let keys = keyboard_row.get_children();
+
+            numOfHorizSlots = Math.max(numOfHorizSlots, keys.length);
         }
 
-        this._numOfVertKeys = Math.max(this._numOfVertKeys, rows.length);
+        return [numOfHorizSlots, numOfVertSlots];
     },
 
     _redraw: function () {
@@ -661,16 +665,18 @@ var Keyboard = new Lang.Class({
         let verticalSpacing = layout.get_theme_node().get_length('spacing');
         let padding = layout.get_theme_node().get_length('padding');
 
+        let [numOfHorizSlots, numOfVertSlots] = this._getGridSlots ();
+
         let box = layout.get_children()[0].get_children()[0];
         let horizontalSpacing = box.get_theme_node().get_length('spacing');
-        let allHorizontalSpacing = (this._numOfHorizKeys - 1) * horizontalSpacing;
-        let keyWidth = Math.floor((this.actor.width - allHorizontalSpacing - 2 * padding) / this._numOfHorizKeys);
+        let allHorizontalSpacing = (numOfHorizSlots - 1) * horizontalSpacing;
+        let keyWidth = Math.floor((this.actor.width - allHorizontalSpacing - 2 * padding) / numOfHorizSlots);
 
-        let allVerticalSpacing = (this._numOfVertKeys - 1) * verticalSpacing;
-        let keyHeight = Math.floor((maxHeight - allVerticalSpacing - 2 * padding) / this._numOfVertKeys);
+        let allVerticalSpacing = (numOfVertSlots - 1) * verticalSpacing;
+        let keyHeight = Math.floor((maxHeight - allVerticalSpacing - 2 * padding) / numOfVertSlots);
 
         let keySize = Math.min(keyWidth, keyHeight);
-        this.actor.height = keySize * this._numOfVertKeys + allVerticalSpacing + 2 * padding;
+        this.actor.height = keySize * numOfVertSlots + allVerticalSpacing + 2 * padding;
 
         let rows = this._current_page.get_children();
         for (let i = 0; i < rows.length; ++i) {
