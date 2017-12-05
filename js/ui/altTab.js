@@ -156,6 +156,18 @@ var AppSwitcherPopup = new Lang.Class({
                                  this._items[this._selectedIndex].cachedWindows.length);
     },
 
+    _closeAppWindow: function(appIndex, windowIndex) {
+        let appIcon = this._items[appIndex];
+        if (!appIcon)
+            return;
+
+        let window = appIcon.cachedWindows[windowIndex];
+        if (!window)
+            return;
+
+        window.delete(global.get_current_time());
+    },
+
     _quitApplication: function(appIndex) {
         let appIcon = this._items[appIndex];
         if (!appIcon)
@@ -185,6 +197,8 @@ var AppSwitcherPopup = new Lang.Class({
                 this._select(this._selectedIndex, this._nextWindow());
             else if (keysym == Clutter.Up)
                 this._select(this._selectedIndex, null, true);
+            else if (keysym == Clutter.w || keysym == Clutter.F4)
+                this._closeAppWindow(this._selectedIndex, this._currentWindow);
             else
                 return Clutter.EVENT_PROPAGATE;
         } else {
@@ -256,6 +270,17 @@ var AppSwitcherPopup = new Lang.Class({
             return;
 
         this._select(this._selectedIndex, n);
+    },
+
+    _windowRemoved : function(thumbnailList, n) {
+        let appIcon = this._items[this._selectedIndex];
+        if (!appIcon)
+            return;
+
+        if (appIcon.cachedWindows.length > 0) {
+            let newIndex = Math.min(n, appIcon.cachedWindows.length - 1);
+            this._select(this._selectedIndex, newIndex);
+        }
     },
 
     _finish : function(timestamp) {
@@ -361,6 +386,7 @@ var AppSwitcherPopup = new Lang.Class({
         this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
         this._thumbnails.connect('item-activated', Lang.bind(this, this._windowActivated));
         this._thumbnails.connect('item-entered', Lang.bind(this, this._windowEntered));
+        this._thumbnails.connect('item-removed', Lang.bind(this, this._windowRemoved));
         this._thumbnails.actor.connect('destroy', () => {
             this._thumbnails = null;
             this._thumbnailsFocused = false;
@@ -550,6 +576,14 @@ var WindowSwitcherPopup = new Lang.Class({
         return getWindows(workspace);
     },
 
+    _closeWindow: function(windowIndex) {
+        let windowIcon = this._items[windowIndex];
+        if (!windowIcon)
+            return;
+
+        windowIcon.window.delete(global.get_current_time());
+    },
+
     _keyPressHandler: function(keysym, action) {
         if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
             this._select(this._next());
@@ -560,6 +594,8 @@ var WindowSwitcherPopup = new Lang.Class({
                 this._select(this._previous());
             else if (keysym == Clutter.Right)
                 this._select(this._next());
+            else if (keysym == Clutter.w || keysym == Clutter.F4)
+                this._closeWindow(this._selectedIndex);
             else
                 return Clutter.EVENT_PROPAGATE;
         }
@@ -988,7 +1024,19 @@ var WindowList = new Lang.Class({
 
             this.addItem(icon.actor, icon.label);
             this.icons.push(icon);
+
+            icon._unmanagedSignalId = icon.window.connect('unmanaged', (window) => {
+                this._removeWindow(window)
+            });
         }
+
+        this.actor.connect('destroy', () => { this._onDestroy(); });
+    },
+
+    _onDestroy: function() {
+        this.icons.forEach(icon => {
+            icon.window.disconnect(icon._unmanagedSignalId);
+        });
     },
 
     _getPreferredHeight: function(actor, forWidth, alloc) {
@@ -1017,5 +1065,16 @@ var WindowList = new Lang.Class({
         this.parent(index, justOutline);
 
         this._label.set_text(index == -1 ? '' : this.icons[index].label.text);
+    },
+
+    _removeWindow: function(window) {
+        let index = this.icons.findIndex(icon => {
+            return icon.window == window;
+        });
+        if (index === -1)
+            return;
+
+        this.icons.splice(index, 1);
+        this.removeItem(index);
     }
 });
