@@ -50,6 +50,10 @@ var DashItemContainer = new Lang.Class({
         this._childScale = 0;
         this._childOpacity = 0;
         this.animatingOut = false;
+
+        this.connect('destroy', () => {
+            this.label.destroy();
+        });
     },
 
     vfunc_allocate: function(box, flags) {
@@ -175,11 +179,6 @@ var DashItemContainer = new Lang.Class({
                            time: time,
                            transition: 'easeOutQuad'
                          });
-    },
-
-    destroy: function() {
-        this.label.destroy();
-        this.parent();
     },
 
     animateOutAndDestroy: function() {
