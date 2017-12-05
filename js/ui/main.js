@@ -19,6 +19,7 @@ const EndSessionDialog = imports.ui.endSessionDialog;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
+const InputMethod = imports.misc.inputMethod;
 const Keyboard = imports.ui.keyboard;
 const MessageTray = imports.ui.messageTray;
 const ModalDialog = imports.ui.modalDialog;
@@ -80,6 +81,7 @@ var xdndHandler = null;
 var keyboard = null;
 var layoutManager = null;
 var kbdA11yDialog = null;
+var inputMethod = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -172,6 +174,9 @@ function _initializeUI() {
     magnifier = new Magnifier.Magnifier();
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();
+
+    inputMethod = new InputMethod.InputMethod();
+    Clutter.get_default_backend().set_input_method(inputMethod);
 
     messageTray = new MessageTray.MessageTray();
     panel = new Panel.Panel();
