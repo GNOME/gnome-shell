@@ -66,30 +66,61 @@ function _getTweenState(target) {
     return target.__ShellTweenerState;
 }
 
+function _ensureHandlers(target) {
+    if (!target.__ShellTweenerHandlers)
+        target.__ShellTweenerHandlers = new Map();
+    return target.__ShellTweenerHandlers;
+}
+
 function _resetTweenState(target) {
     let state = target.__ShellTweenerState;
 
     if (state) {
-        if (state.destroyedId)
+        if (state.destroyedId) {
             state.actor.disconnect(state.destroyedId);
+            delete state.destroyedId;
+        }
     }
 
+    _removeHandler(target, 'onComplete', _tweenCompleted);
     target.__ShellTweenerState = {};
 }
 
 function _addHandler(target, params, name, handler) {
-    if (params[name]) {
-        let oldHandler = params[name];
-        let oldScope = params[`${name}Scope`];
-        let oldParams = params[`${name}Params`];
-        let eventScope = oldScope ? oldScope : target;
+    let wrapperNeeded = false;
+    let tweenerHandlers = _ensureHandlers(target);
 
-        params[name] = () => {
-            oldHandler.apply(eventScope, oldParams);
-            handler(target);
-        };
-    } else {
-        params[name] = () => handler(target);
+    if (!tweenerHandlers.has(name)) {
+        tweenerHandlers.set(name, []);
+        wrapperNeeded = true;
+    }
+
+    let handlers = tweenerHandlers.get(name);
+    handlers.push(handler);
+
+    if (wrapperNeeded) {
+        if (params[name]) {
+            let oldHandler = params[name];
+            let oldScope = params[`${name}Scope`];
+            let oldParams = params[`${name}Params`];
+            let eventScope = oldScope ? oldScope : target;
+
+            params[name] = () => {
+                oldHandler.apply(eventScope, oldParams);
+                handlers.forEach(h => h(target));
+            };
+        } else {
+            params[name] = () => handlers.forEach(h => h(target));
+        }
+    }
+}
+
+function _removeHandler(target, name, handler) {
+    let tweenerHandlers = _ensureHandlers(target);
+
+    if (tweenerHandlers.has(name)) {
+        let handlers = tweenerHandlers.get(name).filter(h => h != handler);
+        tweenerHandlers.set(name, handlers);
     }
 }
 
