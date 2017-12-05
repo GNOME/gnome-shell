@@ -100,7 +100,7 @@ var Key = new Lang.Class({
 
     _press: function(key) {
         if (key != this.key || this._extended_keys.length == 0) {
-            this.emit('pressed', this._getKeyval(key));
+            this.emit('pressed', this._getKeyval(key), key);
         } else if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                     KEY_LONG_PRESS_TIME,
@@ -122,10 +122,10 @@ var Key = new Lang.Class({
         if (this._pressTimeoutId != 0) {
             GLib.source_remove(this._pressTimeoutId);
             this._pressTimeoutId = 0;
-            this.emit('pressed', this._getKeyval(key));
+            this.emit('pressed', this._getKeyval(key), key);
         }
 
-        this.emit('released', this._getKeyval(key));
+        this.emit('released', this._getKeyval(key), key);
     },
 
     _makeKey: function (key) {
@@ -402,6 +402,8 @@ var Keyboard = new Lang.Class({
             this._keyboardController.disconnect(this._keyboardNotifyId);
         if (this._keyboardGroupsChangedId)
             this._keyboardController.disconnect(this._keyboardGroupsChangedId);
+        if (this._keyboardStateId)
+            this._keyboardController.disconnect(this._keyboardStateId);
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
         this._keyboard = null;
@@ -432,6 +434,7 @@ var Keyboard = new Lang.Class({
 
         this._keyboardNotifyId = this._keyboardController.connect('active-group', Lang.bind(this, this._onGroupChanged));
         this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', Lang.bind(this, this._onKeyboardGroupsChanged));
+        this._keyboardStateId = this._keyboardController.connect('panel-state', Lang.bind(this, this._onKeyboardStateChanged));
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
     },
 
@@ -527,15 +530,23 @@ var Keyboard = new Lang.Class({
             button.connect('hide-subkeys', Lang.bind(this, function() {
                 this._hideSubkeys();
             }));
-            button.connect('pressed', Lang.bind(this, function(actor, keyval) {
+            button.connect('pressed', Lang.bind(this, function(actor, keyval, str) {
                 this._hideSubkeys();
-                if (keyval != 0)
-                    this._keyboardController.keyvalPress(keyval);
+                if (!Main.inputMethod.currentFocus ||
+                    !this._keyboardController.commitString(str, true)) {
+                    if (keyval != 0) {
+                        this._keyboardController.keyvalPress(keyval);
+                        button._keyvalPress = true;
+                    }
+                }
             }));
-            button.connect('released', Lang.bind(this, function(actor, keyval) {
+            button.connect('released', Lang.bind(this, function(actor, keyval, str) {
                 this._hideSubkeys();
-                if (keyval != 0)
-                    this._keyboardController.keyvalRelease(keyval);
+                if (keyval != 0) {
+                    if (button._keyvalPress)
+                        this._keyboardController.keyvalRelease(keyval);
+                    button._keyvalPress = false;
+                }
             }));
 
             keyboardRow.add(button.container, { expand: true, x_fill: false, x_align: St.Align.END });
@@ -695,6 +706,23 @@ var Keyboard = new Lang.Class({
         this._addKeys();
     },
 
+    _onKeyboardStateChanged: function(controller, state) {
+        let enabled;
+        if (state == Clutter.InputPanelState.OFF)
+            enabled = false;
+        else if (state == Clutter.InputPanelState.ON)
+            enabled = true;
+        else if (state == Clutter.InputPanelState.TOGGLE)
+            enabled = (this._keyboardVisible == false);
+        else
+            return;
+
+        if (enabled)
+            this.show(Main.layoutManager.focusIndex);
+        else
+            this.hide();
+    },
+
     _setActiveLayer: function (activeLevel) {
         let activeGroupName = this._keyboardController.getCurrentGroup();
         let layers = this._groups[activeGroupName];
@@ -847,6 +875,10 @@ var KeyboardController = new Lang.Class({
         this._sourcesModifiedId = this._inputSourceManager.connect ('sources-changed',
                                                                     Lang.bind(this, this._onSourcesModified));
         this._currentSource = this._inputSourceManager.currentSource;
+
+        Main.inputMethod.connect('notify::content-purpose', Lang.bind(this, this._onContentPurposeHintsChanged));
+        Main.inputMethod.connect('notify::content-hints', Lang.bind(this, this._onContentPurposeHintsChanged));
+        Main.inputMethod.connect('input-panel-state', Lang.bind(this, function(o, state) { this.emit('panel-state', state); }));
     },
 
     _onSourcesModified: function () {
@@ -857,6 +889,13 @@ var KeyboardController = new Lang.Class({
         let source = inputSourceManager.currentSource;
         this._currentSource = source;
         this.emit('active-group', source.id);
+    },
+
+    _onContentPurposeHintsChanged: function(method) {
+        let hints = method.content_hints;
+        let purpose = method.content_purpose;
+
+        // XXX: hook numeric/emoji/etc special keyboards
     },
 
     getGroups: function () {
@@ -873,6 +912,17 @@ var KeyboardController = new Lang.Class({
 
     getCurrentGroup: function () {
         return this._currentSource.xkbId;
+    },
+
+    commitString: function(string, fromKey) {
+        if (string == null)
+            return false;
+        /* Let ibus methods fall through keyval emission */
+        if (fromKey && this._currentSource.type == InputSourceManager.INPUT_SOURCE_TYPE_IBUS)
+            return false;
+
+        Main.inputMethod.commit(string);
+        return true;
     },
 
     keyvalPress: function(keyval) {
