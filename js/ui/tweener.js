@@ -69,30 +69,72 @@ function _getTweenState(target) {
     return target.__ShellTweenerState;
 }
 
+function _getExtraHandlers(target) {
+    if (!target.__ShellTweenerHandlers)
+        target.__ShellTweenerHandlers = {};
+    return target.__ShellTweenerHandlers;
+}
+
 function _resetTweenState(target) {
     let state = target.__ShellTweenerState;
 
     if (state) {
-        if (state.destroyedId)
+        if (state.destroyedId) {
             state.actor.disconnect(state.destroyedId);
+            delete state.destroyedId;
+        }
     }
 
+    _removeHandler(target, 'onComplete', _tweenCompleted);
     target.__ShellTweenerState = {};
 }
 
 function _addHandler(target, params, name, handler) {
-    if (params[name]) {
-        let oldHandler = params[name];
-        let oldScope = params[name + 'Scope'];
-        let oldParams = params[name + 'Params'];
-        let eventScope = oldScope ? oldScope : target;
+    let wrapperNeeded = false;
+    let extraHandlers = _getExtraHandlers(target);
 
-        params[name] = function () {
-            oldHandler.apply(eventScope, oldParams);
-            handler(target);
-        };
-    } else
-        params[name] = function () { handler(target); };
+    if (!(name in extraHandlers))
+        extraHandlers[name] = [];
+        wrapperNeeded = true;
+
+    let handlers = extraHandlers[name];
+    handlers.push(handler);
+
+    if (wrapperNeeded) {
+        if (params[name]) {
+            let oldHandler = params[name];
+            let oldScope = params[name + 'Scope'];
+            let oldParams = params[name + 'Params'];
+            let eventScope = oldScope ? oldScope : target;
+
+            params[name] = function () {
+                oldHandler.apply(eventScope, oldParams);
+                handlers.forEach((h) => h(target));
+            };
+        } else
+            params[name] = function () { handlers.forEach((h) => h(target)); };
+    }
+}
+
+function _removeHandler(target, name, handler) {
+    let extraHandlers = _getExtraHandlers(target);
+
+    if (name in extraHandlers) {
+        let handlers = extraHandlers[name];
+        let handlerIndex = handlers.indexOf(handler);
+
+        while (handlerIndex > -1) {
+            handlers.splice(handlerIndex, 1);
+            handlerIndex = handlers.indexOf(handler);
+        }
+    }
+}
+
+function _removeHandlers(target) {
+    let extraHandlers = _getExtraHandlers(target);
+
+    for (let name in extraHandlers)
+        extraHandlers[name].length = 0;
 }
 
 function _actorDestroyed(target) {
