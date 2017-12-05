@@ -292,6 +292,21 @@ shell_app_get_description (ShellApp *app)
 }
 
 /**
+ * shell_app_get_icon:
+ * @app: a #ShellApp
+ *
+ * Returns: (transfer none): The #GIcon associated with this app, or %NULL if none is available.
+ */
+GIcon *
+shell_app_get_icon (ShellApp *app)
+{
+  if (app->info)
+    return g_app_info_get_icon (G_APP_INFO (app->info));
+  else
+    return NULL;
+}
+
+/**
  * shell_app_is_window_backed:
  *
  * A window backed application is one which represents just an open
