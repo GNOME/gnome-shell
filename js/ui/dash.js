@@ -178,15 +178,12 @@ var DashItemContainer = new Lang.Class({
     },
 
     destroy: function() {
-        if (this.label)
-            this.label.destroy();
-
+        this.label.destroy();
         this.parent();
     },
 
     animateOutAndDestroy: function() {
-        if (this.label)
-            this.label.destroy();
+        this.label.hide();
 
         if (this.child == null) {
             this.destroy();
