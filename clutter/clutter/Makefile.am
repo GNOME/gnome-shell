@@ -87,6 +87,8 @@ source_h =					\
 	clutter-image.h		\
 	clutter-input-device.h	\
 	clutter-input-device-tool.h	\
+	clutter-input-focus.h	\
+	clutter-input-method.h	\
         clutter-interval.h            \
 	clutter-keyframe-transition.h	\
 	clutter-keysyms.h 		\
@@ -169,6 +171,8 @@ source_c = \
 	clutter-image.c		\
 	clutter-input-device.c	\
 	clutter-input-device-tool.c	\
+	clutter-input-focus.c	\
+	clutter-input-method.c	\
 	clutter-virtual-input-device.c	\
 	clutter-interval.c            \
 	clutter-keyframe-transition.c	\
@@ -229,6 +233,8 @@ source_h_priv = \
 	clutter-flatten-effect.h		\
 	clutter-gesture-action-private.h	\
 	clutter-id-pool.h 			\
+	clutter-input-focus-private.h		\
+	clutter-input-method-private.h		\
 	clutter-master-clock.h			\
 	clutter-master-clock-default.h		\
 	clutter-offscreen-effect-private.h	\
