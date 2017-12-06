@@ -1872,11 +1872,14 @@ var AppIconMenu = new Lang.Class({
         this.actor.add_style_class_name('app-well-menu');
 
         // Chain our visibility and lifecycle to that of the source
-        source.actor.connect('notify::mapped', Lang.bind(this, function () {
+        this._sourceMappedId = source.actor.connect('notify::mapped', () => {
             if (!source.actor.mapped)
                 this.close();
-        }));
-        source.actor.connect('destroy', Lang.bind(this, this.destroy));
+        });
+        source.actor.connect('destroy', () => {
+            source.actor.disconnect(this._sourceMappedId);
+            this.destroy();
+        });
 
         Main.uiGroup.add_actor(this.actor);
     },
