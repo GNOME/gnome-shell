@@ -127,6 +127,7 @@ clutter_backend_finalize (GObject *gobject)
 
   g_free (backend->font_name);
   clutter_backend_set_font_options (backend, NULL);
+  g_clear_object (&backend->input_method);
 
   G_OBJECT_CLASS (clutter_backend_parent_class)->finalize (gobject);
 }
@@ -1372,4 +1373,32 @@ clutter_backend_bell_notify (ClutterBackend *backend)
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->bell_notify)
     klass->bell_notify (backend);
+}
+
+/**
+ * clutter_backend_get_input_method:
+ * @backend: the #CLutterBackend
+ *
+ * Returns the input method used by Clutter
+ *
+ * Returns: (transfer none): the input method
+ **/
+ClutterInputMethod *
+clutter_backend_get_input_method (ClutterBackend *backend)
+{
+  return backend->input_method;
+}
+
+/**
+ * clutter_backend_set_input_method:
+ * @backend: the #ClutterBackend
+ * @method: the input method
+ *
+ * Sets the input method to be used by Clutter
+ **/
+void
+clutter_backend_set_input_method (ClutterBackend     *backend,
+                                  ClutterInputMethod *method)
+{
+  g_set_object (&backend->input_method, method);
 }

@@ -58,6 +58,8 @@ struct _ClutterBackend
   gint32 units_serial;
 
   GList *event_translators;
+
+  ClutterInputMethod *input_method;
 };
 
 struct _ClutterBackendClass
