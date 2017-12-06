@@ -253,9 +253,17 @@ var CandidatePopup = new Lang.Class({
                                  for (let i = 0; indexLabel = lookupTable.get_label(i); ++i)
                                       indexes.push(indexLabel.get_text());
 
+                                 Main.keyboard.resetSuggestions();
+
                                  let candidates = [];
-                                 for (let i = startIndex; i < endIndex; ++i)
+                                 for (let i = startIndex; i < endIndex; ++i) {
                                      candidates.push(lookupTable.get_candidate(i).get_text());
+
+                                     Main.keyboard.addSuggestion(lookupTable.get_candidate(i).get_text(), Lang.bind(this, function() {
+                                         let index = i;
+                                         this._panelService.candidate_clicked(index, 1, 0);
+                                     }));
+                                 }
 
                                  this._candidateArea.setCandidates(indexes,
                                                                    candidates,
@@ -277,6 +285,7 @@ var CandidatePopup = new Lang.Class({
         panelService.connect('focus-out',
                              Lang.bind(this, function(ps) {
                                  this._boxPointer.hide(BoxPointer.PopupAnimation.NONE);
+                                 Main.keyboard.resetSuggestions();
                              }));
     },
 
@@ -287,9 +296,10 @@ var CandidatePopup = new Lang.Class({
     },
 
     _updateVisibility: function() {
-        let isVisible = (this._preeditText.visible ||
-                         this._auxText.visible ||
-                         this._candidateArea.actor.visible);
+        let isVisible = (!Main.keyboard.visible &&
+                         (this._preeditText.visible ||
+                          this._auxText.visible ||
+                          this._candidateArea.actor.visible));
 
         if (isVisible) {
             this._boxPointer.setPosition(Main.layoutManager.dummyCursor, 0);
