@@ -586,7 +586,8 @@ var NetworkAgent = new Lang.Class({
 
     _init: function() {
         this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent',
-                                                capabilities: NM.SecretAgentCapabilities.VPN_HINTS
+                                                capabilities: NM.SecretAgentCapabilities.VPN_HINTS,
+                                                auto_register: false
                                               });
 
         this._dialogs = { };
@@ -609,12 +610,15 @@ var NetworkAgent = new Lang.Class({
             this._native = null;
             logError(e, 'error initializing the NetworkManager Agent');
         }
-
-        this._enabled = false;
     },
 
     enable: function() {
-        this._enabled = true;
+        if (!this._native)
+            return;
+
+        this._native.auto_register = true;
+        if (!this._native.registered)
+            this._native.register_async(null, null);
     },
 
     disable: function() {
@@ -632,7 +636,12 @@ var NetworkAgent = new Lang.Class({
             this._notifications[requestId].destroy();
         this._notifications = { };
 
-        this._enabled = false;
+        if (!this._native)
+            return;
+
+        this._native.auto_register = false;
+        if (this._native.registered)
+            this._native.unregister_async(null, null);
     },
 
     _showNotification: function(requestId, connection, settingName, hints, flags) {
@@ -696,11 +705,6 @@ var NetworkAgent = new Lang.Class({
     },
 
     _newRequest:  function(agent, requestId, connection, settingName, hints, flags) {
-        if (!this._enabled) {
-            agent.respond(requestId, Shell.NetworkAgentResponse.USER_CANCELED);
-            return;
-        }
-
         if (!(flags & NM.SecretAgentGetSecretsFlags.USER_REQUESTED))
             this._showNotification(requestId, connection, settingName, hints, flags);
         else
