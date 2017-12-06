@@ -259,6 +259,9 @@ bind_output (struct wl_client *client,
   wl_resource_set_user_data (resource, wayland_output);
   wl_resource_set_destructor (resource, output_resource_destroy);
 
+  if (!logical_monitor)
+    return;
+
   monitor = pick_main_monitor (logical_monitor);
 
   meta_verbose ("Binding monitor %p/%s (%u, %u, %u, %u) x %f\n",
@@ -361,6 +364,22 @@ meta_wayland_output_new (MetaWaylandCompositor *compositor,
   return wayland_output;
 }
 
+static void
+nullify_logical_monitor (gpointer key,
+                         gpointer value,
+                         gpointer data)
+{
+  MetaWaylandOutput *wayland_output = value;
+  wayland_output->logical_monitor = NULL;
+}
+
+static gboolean
+delayed_destroy_outputs (gpointer data)
+{
+  g_hash_table_destroy (data);
+  return G_SOURCE_REMOVE;
+}
+
 static GHashTable *
 meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
                                         MetaMonitorManager    *monitor_manager)
@@ -401,7 +420,9 @@ meta_wayland_compositor_update_outputs (MetaWaylandCompositor *compositor,
                            wayland_output);
     }
 
-  g_hash_table_destroy (compositor->outputs);
+  g_hash_table_foreach (compositor->outputs, nullify_logical_monitor, NULL);
+  g_timeout_add_seconds (10, delayed_destroy_outputs, compositor->outputs);
+
   return new_table;
 }
 
