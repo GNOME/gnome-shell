@@ -8,6 +8,7 @@ const Lang = imports.lang;
 const NM = imports.gi.NM;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Config = imports.misc.config;
@@ -413,7 +414,9 @@ var VPNRequestHandler = new Lang.Class({
         if (this._destroyed)
             return;
 
-        GLib.source_remove(this._childWatch);
+        this.emit('destroy');
+        if (this._childWatch)
+            GLib.source_remove(this._childWatch);
 
         this._stdin.close(null);
         // Stdout is closed when we finish reading from it
@@ -540,6 +543,7 @@ var VPNRequestHandler = new Lang.Class({
                 logError(e, 'error while reading VPN plugin output keyfile');
 
                 this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+                this.destroy();
                 return;
             }
         }
@@ -550,6 +554,7 @@ var VPNRequestHandler = new Lang.Class({
             this._shellDialog.open(global.get_current_time());
         } else {
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.CONFIRMED);
+            this.destroy();
         }
     },
 
@@ -570,9 +575,11 @@ var VPNRequestHandler = new Lang.Class({
             logError(e, 'internal error while writing connection to helper');
 
             this._agent.respond(this._requestId, Shell.NetworkAgentResponse.INTERNAL_ERROR);
+            this.destroy();
         }
     },
 });
+Signals.addSignalMethods(VPNRequestHandler.prototype);
 
 var NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
@@ -740,7 +747,11 @@ var NetworkAgent = new Lang.Class({
             return;
         }
 
-        this._vpnRequests[requestId] = new VPNRequestHandler(this._native, requestId, binary, serviceType, connection, hints, flags);
+        let vpnRequest = new VPNRequestHandler(this._native, requestId, binary, serviceType, connection, hints, flags);
+        vpnRequest.connect('destroy', Lang.bind(this, function() {
+            delete this._vpnRequests[requestId];
+        }));
+        this._vpnRequests[requestId] = vpnRequest;
     },
 
     _buildVPNServiceCache: function() {
