@@ -86,6 +86,8 @@ mutter_built_sources += \
 	xdg-output-unstable-v1-server-protocol.h			\
 	xwayland-keyboard-grab-unstable-v1-protocol.c			\
 	xwayland-keyboard-grab-unstable-v1-server-protocol.h		\
+	gtk-text-input-protocol.c					\
+	gtk-text-input-server-protocol.h				\
 	$(NULL)
 endif
 
