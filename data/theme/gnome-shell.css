@@ -1503,6 +1503,10 @@ StScrollBar {
     border-width: 0; }
 
 /* On-screen Keyboard */
+.word-suggestions {
+  font-size: 14pt;
+  spacing: 12px; }
+
 #keyboard {
   background-color: rgba(46, 52, 54, 0.7); }
 

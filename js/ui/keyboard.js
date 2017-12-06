@@ -49,6 +49,29 @@ const defaultKeysPost = [
       [{ label: '🌐', width: 1.5 }, { label: '⌨', width: 1.5, action: 'hide' }] ],
 ];
 
+var Suggestions = new Lang.Class({
+    Name: 'Suggestions',
+
+    _init: function() {
+        this.actor = new St.BoxLayout({ style_class: 'word-suggestions',
+                                        vertical: false });
+        this.actor.hide();
+    },
+
+    add: function(word, callback) {
+        let button = new St.Button({ label: word });
+        button.connect('clicked', callback);
+        this.actor.add(button);
+        this.actor.show();
+    },
+
+    clear: function() {
+        this.actor.remove_all_children();
+        this.actor.hide();
+    },
+});
+Signals.addSignalMethods(Suggestions.prototype);
+
 var Key = new Lang.Class({
     Name: 'Key',
 
@@ -256,6 +279,7 @@ var Keyboard = new Lang.Class({
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._syncEnabled));
         this._lastDeviceId = null;
+        this._suggestions = null;
 
         Meta.get_backend().connect('last-device-changed', Lang.bind(this,
             function (backend, deviceId) {
@@ -426,6 +450,14 @@ var Keyboard = new Lang.Class({
 
         this._groups = {};
         this._current_page = null;
+
+        this._suggestions = new Suggestions();
+        this._suggestions.connect('suggestion-clicked', Lang.bind(this, function(suggestions, str) {
+            this._keyboardController.commitString(str);
+        }));
+        this.actor.add(this._suggestions.actor,
+                       { x_align: St.Align.MIDDLE,
+                         x_fill: false });
 
         this._addKeys();
 
@@ -678,7 +710,7 @@ var Keyboard = new Lang.Class({
         let keyHeight = Math.floor((maxHeight - allVerticalSpacing - 2 * padding) / numOfVertSlots);
 
         let keySize = Math.min(keyWidth, keyHeight);
-        this.actor.height = keySize * numOfVertSlots + allVerticalSpacing + 2 * padding;
+        layout.height = keySize * numOfVertSlots + allVerticalSpacing + 2 * padding;
 
         let rows = this._current_page.get_children();
         for (let i = 0; i < rows.length; ++i) {
@@ -831,6 +863,20 @@ var Keyboard = new Lang.Class({
             this._capturedEventId = 0;
         }
         this._capturedPress = false;
+    },
+
+    resetSuggestions: function(suggestions) {
+        if (!this._suggestions)
+            return;
+        this._suggestions.clear();
+        this._suggestions.actor.hide();
+    },
+
+    addSuggestion: function(text, callback) {
+        if (!this._suggestions)
+            return;
+        this._suggestions.add(text, callback);
+        this._suggestions.actor.show();
     },
 
     _moveTemporarily: function () {
