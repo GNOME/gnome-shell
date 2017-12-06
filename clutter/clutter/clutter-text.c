@@ -63,6 +63,7 @@
 #include "clutter-units.h"
 #include "clutter-paint-volume-private.h"
 #include "clutter-scriptable.h"
+#include "clutter-input-focus.h"
 
 /* cursor width in pixels */
 #define DEFAULT_CURSOR_SIZE     2
@@ -96,6 +97,12 @@ struct _LayoutCache
    * new layout is needed the last used cache is replaced)
    */
   guint age;
+};
+
+struct _ClutterTextInputFocus
+{
+  ClutterInputFocus parent_instance;
+  ClutterText *text;
 };
 
 struct _ClutterTextPrivate
@@ -175,6 +182,8 @@ struct _ClutterTextPrivate
 
   /* Signal handler for when the :text-direction changes */
   guint direction_changed_id;
+
+  ClutterInputFocus *input_focus;
 
   /* bitfields */
   guint alignment               : 2;
@@ -269,6 +278,111 @@ static const ClutterColor default_selected_text_color = {   0,   0,   0, 255 };
 static ClutterAnimatableIface *parent_animatable_iface = NULL;
 static ClutterScriptableIface *parent_scriptable_iface = NULL;
 
+/* ClutterTextInputFocus */
+#define CLUTTER_TYPE_TEXT_INPUT_FOCUS (clutter_text_input_focus_get_type ())
+
+G_DECLARE_FINAL_TYPE (ClutterTextInputFocus, clutter_text_input_focus,
+                      CLUTTER, TEXT_INPUT_FOCUS, ClutterInputFocus)
+G_DEFINE_TYPE (ClutterTextInputFocus, clutter_text_input_focus,
+               CLUTTER_TYPE_INPUT_FOCUS)
+
+static void
+clutter_text_input_focus_request_surrounding (ClutterInputFocus *focus)
+{
+  ClutterText *clutter_text = CLUTTER_TEXT_INPUT_FOCUS (focus)->text;
+  ClutterTextBuffer *buffer;
+  const gchar *text;
+  gint anchor_pos, cursor_pos;
+
+  buffer = clutter_text_get_buffer (clutter_text);
+  text = clutter_text_buffer_get_text (buffer);
+
+  cursor_pos = clutter_text_get_cursor_position (clutter_text);
+  if (cursor_pos < 0)
+    cursor_pos = clutter_text_buffer_get_length (buffer);
+
+  anchor_pos = clutter_text_get_selection_bound (clutter_text);
+  if (anchor_pos < 0)
+    anchor_pos = cursor_pos;
+
+  clutter_input_focus_set_surrounding (focus, text,
+                                       g_utf8_offset_to_pointer (text, cursor_pos) - text,
+                                       g_utf8_offset_to_pointer (text, anchor_pos) - text);
+}
+
+static void
+clutter_text_input_focus_delete_surrounding (ClutterInputFocus *focus,
+                                             guint              offset,
+                                             guint              len)
+{
+  ClutterText *clutter_text = CLUTTER_TEXT_INPUT_FOCUS (focus)->text;
+
+  if (clutter_text_get_editable (clutter_text))
+    clutter_text_delete_text (clutter_text, offset, len);
+}
+
+static void
+clutter_text_input_focus_commit_text (ClutterInputFocus *focus,
+                                      const gchar       *text)
+{
+  ClutterText *clutter_text = CLUTTER_TEXT_INPUT_FOCUS (focus)->text;
+
+  if (clutter_text_get_editable (clutter_text))
+    {
+      clutter_text_delete_selection (clutter_text);
+      clutter_text_insert_text (clutter_text, text,
+                                clutter_text_get_cursor_position (clutter_text));
+    }
+}
+
+static void
+clutter_text_input_focus_set_preedit_text (ClutterInputFocus *focus,
+                                           const gchar       *preedit_text,
+                                           guint              cursor_pos)
+{
+  ClutterText *clutter_text = CLUTTER_TEXT_INPUT_FOCUS (focus)->text;
+
+  if (clutter_text_get_editable (clutter_text))
+    {
+      PangoAttrList *list;
+
+      list = pango_attr_list_new ();
+      pango_attr_list_insert (list, pango_attr_underline_new (PANGO_UNDERLINE_SINGLE));
+      clutter_text_set_preedit_string (clutter_text,
+                                       preedit_text, list,
+                                       cursor_pos);
+      pango_attr_list_unref (list);
+    }
+}
+
+static void
+clutter_text_input_focus_class_init (ClutterTextInputFocusClass *klass)
+{
+  ClutterInputFocusClass *focus_class = CLUTTER_INPUT_FOCUS_CLASS (klass);
+
+  focus_class->request_surrounding = clutter_text_input_focus_request_surrounding;
+  focus_class->delete_surrounding = clutter_text_input_focus_delete_surrounding;
+  focus_class->commit_text = clutter_text_input_focus_commit_text;
+  focus_class->set_preedit_text = clutter_text_input_focus_set_preedit_text;
+}
+
+static void
+clutter_text_input_focus_init (ClutterTextInputFocus *focus)
+{
+}
+
+static ClutterInputFocus *
+clutter_text_input_focus_new (ClutterText *text)
+{
+  ClutterTextInputFocus *focus;
+
+  focus = g_object_new (CLUTTER_TYPE_TEXT_INPUT_FOCUS, NULL);
+  focus->text = text;
+
+  return CLUTTER_INPUT_FOCUS (focus);
+}
+
+/* ClutterText */
 static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
 static void clutter_animatable_iface_init (ClutterAnimatableIface *iface);
 
@@ -1010,6 +1124,22 @@ clutter_text_position_to_coords (ClutterText *self,
 }
 
 static inline void
+update_cursor_location (ClutterText *self)
+{
+  ClutterTextPrivate *priv = self->priv;
+  ClutterRect rect;
+  float x, y;
+
+  if (!priv->editable)
+    return;
+
+  rect = priv->cursor_rect;
+  clutter_actor_get_transformed_position (CLUTTER_ACTOR (self), &x, &y);
+  clutter_rect_offset (&rect, x, y);
+  clutter_input_focus_set_cursor_location (priv->input_focus, &rect);
+}
+
+static inline void
 clutter_text_ensure_cursor_position (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
@@ -1057,6 +1187,8 @@ clutter_text_ensure_cursor_position (ClutterText *self)
       g_signal_emit (self, text_signals[CURSOR_EVENT], 0, &cursor_pos);
 
       g_signal_emit (self, text_signals[CURSOR_CHANGED], 0);
+
+      update_cursor_location (self);
     }
 }
 
@@ -1502,6 +1634,8 @@ clutter_text_finalize (GObject *gobject)
 
   clutter_text_set_buffer (self, NULL);
   g_free (priv->font_name);
+
+  g_clear_object (&priv->input_focus);
 
   G_OBJECT_CLASS (clutter_text_parent_class)->finalize (gobject);
 }
@@ -2085,9 +2219,11 @@ clutter_text_key_press (ClutterActor    *actor,
   g_assert (pool != NULL);
 
   /* we allow passing synthetic events that only contain
-   * the Unicode value and not the key symbol
+   * the Unicode value and not the key symbol, unless they
+   * contain the input method flag.
    */
-  if (event->keyval == 0 && (event->flags & CLUTTER_EVENT_FLAG_SYNTHETIC))
+  if (event->keyval == 0 && (event->flags & CLUTTER_EVENT_FLAG_SYNTHETIC) &&
+      !(event->flags & CLUTTER_EVENT_FLAG_INPUT_METHOD))
     res = FALSE;
   else
     res = clutter_binding_pool_activate (pool, event->keyval,
@@ -2104,6 +2240,9 @@ clutter_text_key_press (ClutterActor    *actor,
   else if ((event->modifier_state & CLUTTER_CONTROL_MASK) == 0)
     {
       gunichar key_unichar;
+
+      if (clutter_input_focus_filter_key_event (priv->input_focus, event))
+        return CLUTTER_EVENT_STOP;
 
       /* Skip keys when control is pressed */
       key_unichar = clutter_event_get_key_unicode ((ClutterEvent *) event);
@@ -2137,6 +2276,19 @@ clutter_text_key_press (ClutterActor    *actor,
           return CLUTTER_EVENT_STOP;
         }
     }
+
+  return CLUTTER_EVENT_PROPAGATE;
+}
+
+static gboolean
+clutter_text_key_release (ClutterActor    *actor,
+                          ClutterKeyEvent *event)
+{
+  ClutterText *self = CLUTTER_TEXT (actor);
+  ClutterTextPrivate *priv = self->priv;
+
+  if (clutter_input_focus_filter_key_event (priv->input_focus, event))
+    return CLUTTER_EVENT_STOP;
 
   return CLUTTER_EVENT_PROPAGATE;
 }
@@ -2663,6 +2815,11 @@ static void
 clutter_text_key_focus_in (ClutterActor *actor)
 {
   ClutterTextPrivate *priv = CLUTTER_TEXT (actor)->priv;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterInputMethod *method = clutter_backend_get_input_method (backend);
+
+  if (method && priv->editable)
+    clutter_input_method_focus_in (method, priv->input_focus);
 
   priv->has_focus = TRUE;
 
@@ -2673,8 +2830,13 @@ static void
 clutter_text_key_focus_out (ClutterActor *actor)
 {
   ClutterTextPrivate *priv = CLUTTER_TEXT (actor)->priv;
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterInputMethod *method = clutter_backend_get_input_method (backend);
 
   priv->has_focus = FALSE;
+
+  if (priv->editable && clutter_input_focus_is_focused (priv->input_focus))
+    clutter_input_method_focus_out (method);
 
   clutter_text_queue_redraw (actor);
 }
@@ -3369,6 +3531,7 @@ clutter_text_class_init (ClutterTextClass *klass)
   actor_class->get_preferred_height = clutter_text_get_preferred_height;
   actor_class->allocate = clutter_text_allocate;
   actor_class->key_press_event = clutter_text_key_press;
+  actor_class->key_release_event = clutter_text_key_release;
   actor_class->button_press_event = clutter_text_button_press;
   actor_class->button_release_event = clutter_text_button_release;
   actor_class->motion_event = clutter_text_motion;
@@ -4169,6 +4332,8 @@ clutter_text_init (ClutterText *self)
     g_signal_connect (self, "notify::text-direction",
                       G_CALLBACK (clutter_text_direction_changed_cb),
                       NULL);
+
+  priv->input_focus = clutter_text_input_focus_new (self);
 }
 
 /**
@@ -4459,6 +4624,8 @@ void
 clutter_text_set_editable (ClutterText *self,
                            gboolean     editable)
 {
+  ClutterBackend *backend = clutter_get_default_backend ();
+  ClutterInputMethod *method = clutter_backend_get_input_method (backend);
   ClutterTextPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_TEXT (self));
@@ -4468,6 +4635,14 @@ clutter_text_set_editable (ClutterText *self,
   if (priv->editable != editable)
     {
       priv->editable = editable;
+
+      if (method)
+        {
+          if (!priv->editable && clutter_input_focus_is_focused (priv->input_focus))
+            clutter_input_method_focus_out (method);
+          else if (priv->has_focus)
+            clutter_input_method_focus_in (method, priv->input_focus);
+        }
 
       clutter_text_queue_redraw (CLUTTER_ACTOR (self));
 
