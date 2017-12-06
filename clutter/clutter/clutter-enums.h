@@ -767,8 +767,9 @@ typedef enum { /*< prefix=CLUTTER_DRAG >*/
  * Since: 0.6
  */
 typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
-  CLUTTER_EVENT_NONE           = 0,
-  CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0
+  CLUTTER_EVENT_NONE              = 0,
+  CLUTTER_EVENT_FLAG_SYNTHETIC    = 1 << 0,
+  CLUTTER_EVENT_FLAG_INPUT_METHOD = 1 << 1
 } ClutterEventFlags;
 
 /**
