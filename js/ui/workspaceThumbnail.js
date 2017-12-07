@@ -137,6 +137,8 @@ var WindowClone = new Lang.Class({
     },
 
     destroy: function () {
+        this.emit('destroy');
+
         // First destroy the clone and then destroy everything
         // This will ensure that we never see it in the _disconnectSignals loop
         this.metaWindow.disconnect(this.clone._updateId);
@@ -285,6 +287,7 @@ var WorkspaceThumbnail = new Lang.Class({
 
         // Create clones for windows that should be visible in the Overview
         this._windows = [];
+        this._windowsDestroyedIds = [];
         this._allWindows = [];
         this._minimizedChangedIds = [];
         for (let i = 0; i < windows.length; i++) {
@@ -370,7 +373,7 @@ var WorkspaceThumbnail = new Lang.Class({
         return this._collapseFraction;
     },
 
-    _doRemoveWindow : function(metaWin) {
+    _doRemoveWindow : function(metaWin, {cloneDestroy}={cloneDestroy: true}) {
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
@@ -380,9 +383,13 @@ var WorkspaceThumbnail = new Lang.Class({
             return;
 
         let clone = this._windows[index];
-        this._windows.splice(index, 1);
+        clone.disconnect(this._windowsDestroyedIds[index]);
 
-        clone.destroy();
+        this._windows.splice(index, 1);
+        this._windowsDestroyedIds.splice(index, 1);
+
+        if (cloneDestroy)
+            clone.destroy();
     },
 
     _doAddWindow : function(metaWin) {
@@ -503,7 +510,11 @@ var WorkspaceThumbnail = new Lang.Class({
           this._bgManager = null;
         }
 
+        for (let index = 0; index < this._windows.length; ++index)
+            this._windows[index].disconnect(this._windowsDestroyedIds[index]);
+
         this._windows = [];
+        this._windowsDestroyedIds = [];
         this.actor = null;
     },
 
@@ -540,6 +551,10 @@ var WorkspaceThumbnail = new Lang.Class({
                       Lang.bind(this, function() {
                           Main.overview.endWindowDrag(clone.metaWindow);
                       }));
+        let cloneDestroyedId = clone.connect('destroy', () => {
+            this._doRemoveWindow(clone.metaWindow, {cloneDestroy: false});
+        });
+
         this._contents.add_actor(clone.actor);
 
         if (this._windows.length == 0)
@@ -548,6 +563,7 @@ var WorkspaceThumbnail = new Lang.Class({
             clone.setStackAbove(this._windows[this._windows.length - 1].actor);
 
         this._windows.push(clone);
+        this._windowsDestroyedIds.push(cloneDestroyedId);
 
         return clone;
     },
