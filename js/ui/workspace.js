@@ -139,12 +139,8 @@ var WindowClone = new Lang.Class({
 
         this._windowClone._updateId = this.metaWindow.connect('size-changed',
             Lang.bind(this, this._onRealWindowSizeChanged));
-        this._windowClone._destroyId = this.realWindow.connect('destroy', Lang.bind(this, function() {
-            // First destroy the clone and then destroy everything
-            // This will ensure that we never see it in the _disconnectSignals loop
-            this._windowClone.destroy();
-            this.destroy();
-        }));
+        this._windowClone._destroyId = this.realWindow.connect('destroy',
+            this.destroy.bind(this));
 
         this._updateAttachedDialogs();
         this._computeBoundingBox();
@@ -308,6 +304,12 @@ var WindowClone = new Lang.Class({
     },
 
     destroy: function () {
+        // First destroy the clone and then destroy everything
+        // This will ensure that we never see it in the _disconnectSignals loop
+        this.metaWindow.disconnect(this._windowClone._updateId);
+        this.realWindow.disconnect(this._windowClone._destroyId);
+        this._windowClone.destroy();
+
         this.actor.destroy();
     },
 
