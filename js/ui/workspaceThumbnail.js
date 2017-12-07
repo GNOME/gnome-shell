@@ -70,12 +70,7 @@ var WindowClone = new Lang.Class({
 
         this.clone._updateId = this.metaWindow.connect('position-changed',
                                                        this._onPositionChanged.bind(this));
-        this.clone._destroyId = this.realWindow.connect('destroy', () => {
-            // First destroy the clone and then destroy everything
-            // This will ensure that we never see it in the _disconnectSignals loop
-            this.clone.destroy();
-            this.destroy();
-        });
+        this.clone._destroyId = this.realWindow.connect('destroy', this.destroy.bind(this));
         this._onPositionChanged();
 
         this.actor.connect('button-release-event',
@@ -142,6 +137,12 @@ var WindowClone = new Lang.Class({
     },
 
     destroy() {
+        // First destroy the clone and then destroy everything
+        // This will ensure that we never see it in the _disconnectSignals loop
+        this.metaWindow.disconnect(this.clone._updateId);
+        this.realWindow.disconnect(this.clone._destroyId);
+        this.clone.destroy();
+
         this.actor.destroy();
     },
 
