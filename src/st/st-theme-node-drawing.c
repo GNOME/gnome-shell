@@ -605,11 +605,25 @@ create_cairo_pattern_of_background_gradient (StThemeNode *node,
     pattern = cairo_pattern_create_linear (0, 0, width, 0);
   else
     {
-      gdouble cx, cy;
+      gdouble cx, cy, radius;
 
-      cx = width / 2.;
-      cy = height / 2.;
-      pattern = cairo_pattern_create_radial (cx, cy, 0, cx, cy, MIN (cx, cy));
+      if (node->background_gradient_position_set)
+        {
+          cx = node->background_gradient_position_x;
+          cy = node->background_gradient_position_y;
+        }
+      else
+        {
+          cx = width / 2.;
+          cy = height / 2.;
+        }
+
+      if (node->background_gradient_radius != -1)
+        radius = node->background_gradient_radius;
+      else
+        radius = MIN (width / 2., height / 2.);
+
+      pattern = cairo_pattern_create_radial (cx, cy, 0, cx, cy, radius);
     }
 
   cairo_pattern_add_color_stop_rgba (pattern, 0,
@@ -617,6 +631,18 @@ create_cairo_pattern_of_background_gradient (StThemeNode *node,
                                      node->background_color.green / 255.,
                                      node->background_color.blue / 255.,
                                      node->background_color.alpha / 255.);
+
+  /* Add an intermediate stop when any is set */
+  if (node->background_gradient_stop_position != -1)
+    {
+      cairo_pattern_add_color_stop_rgba (pattern,
+                                         CLAMP (((float) node->background_gradient_stop_position) / width, 0., 1.),
+                                         node->background_color.red / 255.,
+                                         node->background_color.green / 255.,
+                                         node->background_color.blue / 255.,
+                                         node->background_color.alpha / 255.);
+    }
+
   cairo_pattern_add_color_stop_rgba (pattern, 1,
                                      node->background_gradient_end.red / 255.,
                                      node->background_gradient_end.green / 255.,
