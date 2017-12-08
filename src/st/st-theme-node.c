@@ -46,6 +46,8 @@ static void
 st_theme_node_init (StThemeNode *node)
 {
   node->transition_duration = -1;
+  node->background_gradient_stop_position = -1;
+  node->background_gradient_radius = -1;
 
   st_theme_node_paint_state_init (&node->cached_state);
 }
@@ -2148,6 +2150,45 @@ _st_theme_node_ensure_background (StThemeNode *node)
       else if (strcmp (property_name, "-gradient-end") == 0)
         {
           get_color_from_term (node, decl->value, &node->background_gradient_end);
+        }
+      else if (strcmp (property_name, "-gradient-position") == 0)
+        {
+          GetFromTermResult result = get_length_from_term_int (node, decl->value, FALSE, &node->background_gradient_position_x);
+          if (result == VALUE_NOT_FOUND)
+            {
+              node->background_gradient_position_set = FALSE;
+              continue;
+            }
+          else
+            node->background_gradient_position_set = TRUE;
+
+          result = get_length_from_term_int (node, decl->value->next, FALSE, &node->background_gradient_position_y);
+
+          if (result == VALUE_NOT_FOUND)
+            {
+              node->background_gradient_position_set = FALSE;
+              continue;
+            }
+          else
+            node->background_gradient_position_set = TRUE;
+        }
+      else if (strcmp (property_name, "-gradient-stop") == 0)
+        {
+          GetFromTermResult result = get_length_from_term_int (node, decl->value, FALSE, &node->background_gradient_stop_position);
+          if (result == VALUE_NOT_FOUND)
+            {
+              node->background_gradient_stop_position = -1;
+              continue;
+            }
+        }
+      else if (strcmp (property_name, "-gradient-radius") == 0)
+        {
+          GetFromTermResult result = get_length_from_term_int (node, decl->value, FALSE, &node->background_gradient_radius);
+          if (result == VALUE_NOT_FOUND)
+            {
+              node->background_gradient_radius = -1;
+              continue;
+            }
         }
     }
 }

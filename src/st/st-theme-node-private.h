@@ -44,6 +44,12 @@ struct _StThemeNode {
   StGradientType background_gradient_type;
   ClutterColor background_gradient_end;
 
+  guint background_gradient_position_set : 1;
+  int background_gradient_position_x;
+  int background_gradient_position_y;
+  int background_gradient_stop_position;
+  int background_gradient_radius;
+
   int background_position_x;
   int background_position_y;
 
