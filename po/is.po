@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-22 11:17+0000\n"
-"PO-Revision-Date: 2017-09-26 18:06+0000\n"
+"POT-Creation-Date: 2017-11-17 15:06+0000\n"
+"PO-Revision-Date: 2017-12-08 08:39+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.net>\n"
 "Language: is\n"
@@ -44,7 +44,6 @@ msgstr "Birta forritavalmynd"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:152
-#| msgid "GNOME Shell Extensions"
 msgid "Shell Extensions"
 msgstr "Shell Extension skeljarviðbætur"
 
@@ -105,7 +104,7 @@ msgstr ""
 
 #: data/org.gnome.shell.gschema.xml.in:43
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
+msgstr "Listi yfir auðkenni skjáborðsskráa fyrir uppáhaldsforrit"
 
 #: data/org.gnome.shell.gschema.xml.in:44
 msgid ""
@@ -128,10 +127,9 @@ msgstr "Ferill skipanalínuglugga (Alt+F2)"
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "History for the looking glass dialog"
-msgstr ""
+msgstr "Ferill looking-glass skipanalínuglugga (Alt+F)"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr "Alltaf sýna \"Skrá út\" atriðið í notandavalmyndinni."
 
@@ -177,14 +175,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Lyklasamsetning til að opna forritavalmyndina."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Lyklasamsetning til að opna \"Birta forrit\" sýnina"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -250,6 +244,9 @@ msgid ""
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 msgstr ""
+"Stillir hvernig gluggar birtast í skiptinum. Möguleg gildi eru "
+"'einungis-smámynd' (birtir smámynd gluggans), 'einungis-forritstákn' (birtir "
+"aðeins táknmynd forritsins) eða 'bæði'."
 
 #: data/org.gnome.shell.gschema.xml.in:186
 msgid ""
@@ -371,7 +368,6 @@ msgstr "(eða strjúka fingri)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
-#| msgid "Power Off"
 msgctxt "search-result"
 msgid "Power off"
 msgstr "Slökkva"
@@ -394,7 +390,6 @@ msgstr "læsa skjá"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
-#| msgid "Log Out"
 msgctxt "search-result"
 msgid "Log out"
 msgstr "Skrá út"
@@ -406,40 +401,34 @@ msgstr "Útskráning;skrá út"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:120
-#| msgid "Suspend"
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Setja í bið"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:123
-#| msgid "Suspend"
 msgid "suspend;sleep"
 msgstr "hvíla;svæfa"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
-#| msgid "Switch User"
 msgctxt "search-result"
 msgid "Switch user"
 msgstr "Skipta um notanda"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:130
-#| msgid "Switch User"
 msgid "switch user"
 msgstr "skipta um notanda"
 
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
-#| msgid "Orientation Lock"
 msgctxt "search-result"
 msgid "Lock orientation"
 msgstr "Stefnulás"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-#| msgid "Orientation Lock"
 msgid "lock orientation"
 msgstr "stefnulás"
 
@@ -477,7 +466,6 @@ msgstr[0] "fyrir %d klukkustund síðan"
 msgstr[1] "fyrir %d klukkustundum síðan"
 
 #: js/misc/util.js:188
-#| msgid "Yesterday, %H∶%M"
 msgid "Yesterday"
 msgstr "Í gær"
 
@@ -581,7 +569,6 @@ msgstr "%d. %B %Y, kl. %H∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:66
-#| msgid "Network Login"
 msgid "Hotspot Login"
 msgstr "Innskráning á tengipunkt (hotspot)"
 
@@ -590,6 +577,8 @@ msgid ""
 "Your connection to this hotspot login is not secure. Passwords or other "
 "information you enter on this page can be viewed by people nearby."
 msgstr ""
+"Tenging þín við þennan aðgangsstað er ekki örugg. Aðilar í næsta nágrenni "
+"geta séð lykilorð og aðrar upplýsingar sem þú setur inn á þessari síðu."
 
 #. No support for non-modal system dialogs, so ignore the option
 #. let modal = options['modal'] || true;
@@ -633,12 +622,12 @@ msgstr "Bæta í Eftirlæti"
 msgid "Show Details"
 msgstr "Sýna ítarlegri upplýsingar"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:141
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s var bætt við sem eftirlætisforrit."
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:175
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s var fjarlægt úr eftirlætisforritum."
@@ -727,58 +716,57 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "La"
 
-#: js/ui/calendar.js:442
+#: js/ui/calendar.js:449
 msgid "Previous month"
 msgstr "Fyrri mánuður"
 
-#: js/ui/calendar.js:452
+#: js/ui/calendar.js:459
 msgid "Next month"
 msgstr "Næsti mánuður"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "Vika %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Allan daginn"
 
-#: js/ui/calendar.js:862
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: js/ui/calendar.js:1086
+#: js/ui/calendar.js:1093
 msgid "No Notifications"
 msgstr "Engar tilkynningar"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1096
 msgid "No Events"
 msgstr "Engir atburðir"
 
-#: js/ui/calendar.js:1117
+#: js/ui/calendar.js:1124
 msgid "Clear All"
 msgstr "Hreinsa allt"
 
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-#| msgid "“%s” is ready"
 msgid "“%s” is not responding."
 msgstr "“%s” svarar ekki."
 
@@ -806,7 +794,7 @@ msgstr "Utanáliggjandi drif tengt"
 msgid "External drive disconnected"
 msgstr "Utanáliggjandi drif aftengt"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:358
 #, javascript-format
 msgid "Open with %s"
 msgstr "Opna með %s"
@@ -917,7 +905,6 @@ msgstr "Auðkenna"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:328
-#| msgid "Sorry, that didn't work. Please try again."
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Æ, þetta virkaði ekki. Endilega reyndu aftur."
 
@@ -945,7 +932,7 @@ msgstr "Dash"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:76
 msgid "%B %e %Y"
 msgstr "%e. %B %Y"
 
@@ -953,19 +940,19 @@ msgstr "%e. %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%A %e. %B, %Y"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:145
 msgid "Add world clocks…"
 msgstr "Bæta við heimsklukkum…"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:146
 msgid "World Clocks"
 msgstr "Heimsklukkur"
 
-#: js/ui/dateMenu.js:224
+#: js/ui/dateMenu.js:225
 msgid "Weather"
 msgstr "Veður"
 
@@ -973,7 +960,7 @@ msgstr "Veður"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:286
+#: js/ui/dateMenu.js:289
 #, javascript-format
 msgid "%s all day."
 msgstr "%s allan daginn."
@@ -982,7 +969,7 @@ msgstr "%s allan daginn."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:292
+#: js/ui/dateMenu.js:295
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, síðan %s."
@@ -991,32 +978,30 @@ msgstr "%s, síðan %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:298
+#: js/ui/dateMenu.js:301
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, síðan %s, en snýst svo upp í %s síðar."
 
-#: js/ui/dateMenu.js:309
-#| msgid "Select a network"
+#: js/ui/dateMenu.js:312
 msgid "Select a location…"
 msgstr "Veldu staðsetningu…"
 
-#: js/ui/dateMenu.js:312
-#| msgid "Searching…"
+#: js/ui/dateMenu.js:315
 msgid "Loading…"
 msgstr "Hleð inn..."
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:318
+#: js/ui/dateMenu.js:321
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Með vindkælingu %s."
 
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:324
 msgid "Go online for weather information"
 msgstr "Fara á netið eftir veðurupplýsingum"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:326
 msgid "Weather information is currently unavailable"
 msgstr "Veðurupplýsingar eru ekki tiltækar í augnablikinu"
 
@@ -1181,11 +1166,11 @@ msgstr "Sækja og setja upp '%s' frá extensions.gnome.org?"
 #: js/ui/inhibitShortcutsDialog.js:59
 #, javascript-format
 msgid "%s wants to inhibit shortcuts"
-msgstr ""
+msgstr "%s vill koma í veg fyrir notkun flýtilykla"
 
 #: js/ui/inhibitShortcutsDialog.js:60
 msgid "Application wants to inhibit shortcuts"
-msgstr ""
+msgstr "Forrit vill koma í veg fyrir notkun flýtilykla"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:69
@@ -1253,7 +1238,7 @@ msgstr "Skoða frumtexta"
 msgid "Web Page"
 msgstr "Vefsíða"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1494
 msgid "System Information"
 msgstr "Kerfisupplýsingar"
 
@@ -1288,7 +1273,6 @@ msgid "New shortcut…"
 msgstr "Nýr flýtilykill..."
 
 #: js/ui/padOsd.js:152
-#| msgid "Applications"
 msgid "Application defined"
 msgstr "Forrit skilgreint"
 
@@ -1297,7 +1281,6 @@ msgid "Show on-screen help"
 msgstr "Birta upplýsingar á skjá"
 
 #: js/ui/padOsd.js:154
-#| msgid "Switch User"
 msgid "Switch monitor"
 msgstr "Skipta um skjá"
 
@@ -1726,7 +1709,6 @@ msgid "%s Not Connected"
 msgstr "%s ekki tengdur"
 
 #: js/ui/status/network.js:1435
-#| msgid "connecting..."
 msgid "connecting…"
 msgstr "tengist..."
 
@@ -1757,7 +1739,6 @@ msgstr "Stillingar nets"
 
 #: js/ui/status/network.js:1603
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s þráðlaus tenging"
@@ -1765,7 +1746,6 @@ msgstr[1] "%s þráðlausar tengingar"
 
 #: js/ui/status/network.js:1607
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Wi-Fi tenging"
@@ -1773,7 +1753,6 @@ msgstr[1] "%s Wi-Fi tengingar"
 
 #: js/ui/status/network.js:1611
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s mótaldstenging"
@@ -1877,7 +1856,6 @@ msgstr "Hljóðstyrkur"
 #. * Try to keep it under around 15 characters.
 #.
 #: js/ui/switchMonitor.js:21
-#| msgid "Error"
 msgid "Mirror"
 msgstr "Spegla"
 
@@ -2025,20 +2003,19 @@ msgstr "Evolution dagatal"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:437
 msgid "Print version"
 msgstr "Prenta útgáfunúmer"
 
-#: src/main.c:386
+#: src/main.c:443
 msgid "Mode used by GDM for login screen"
 msgstr "Hamur sem GDM notar fyrir innskráningarglugga"
 
-#: src/main.c:392
-#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+#: src/main.c:449
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Nota sérstakan ham, t.d. \"gdm\" fyrir innskráningarskjá"
 
-#: src/main.c:398
+#: src/main.c:455
 msgid "List possible modes"
 msgstr "Sýna alla mögulega hami"
 
