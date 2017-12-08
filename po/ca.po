@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-23 08:01+0000\n"
+"POT-Creation-Date: 2017-12-02 17:48+0000\n"
 "PO-Revision-Date: 2017-08-23 09:48+0200\n"
 "Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -199,10 +199,10 @@ msgid ""
 "adapter. This will be reset if the default adapter is ever seen not to have "
 "devices associated to it."
 msgstr ""
-"El Shell només mostrà una entrada de menú Bluetooth si un adaptador Bluetooth "
-"està engegat, o si hi ha dispositius configurats associats a l'adaptador "
-"predeterminat. Això es reiniciarà si l'adaptador predeterminat té "
-"dispositius associats."
+"El Shell només mostrà una entrada de menú Bluetooth si un adaptador "
+"Bluetooth està engegat, o si hi ha dispositius configurats associats a "
+"l'adaptador predeterminat. Això es reiniciarà si l'adaptador predeterminat "
+"té dispositius associats."
 
 #: data/org.gnome.shell.gschema.xml.in:101
 msgid "Keybinding to open the application menu"
@@ -318,7 +318,7 @@ msgstr ""
 #: data/org.gnome.shell.gschema.xml.in:206
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
-"Habilita la tessel·lització a les vores en deixar anar les finestres a les "
+"Habilita el mòsaic a les vores en deixar anar les finestres a les "
 "vores de la pantalla"
 
 #: data/org.gnome.shell.gschema.xml.in:214
@@ -416,18 +416,18 @@ msgstr "(o passeu el dit)"
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
 msgctxt "search-result"
-msgid "Power off"
+msgid "Power Off"
 msgstr "Apaga"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:102
-msgid "power off;shutdown"
-msgstr "apaga;atura"
+msgid "power off;shutdown;reboot;"
+msgstr "apaga;atura;reinicia;"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
 msgctxt "search-result"
-msgid "Lock screen"
+msgid "Lock Screen"
 msgstr "Bloqueja la pantalla"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
@@ -438,8 +438,8 @@ msgstr "bloca la pantalla"
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
 msgctxt "search-result"
-msgid "Log out"
-msgstr "Desconnecta"
+msgid "Log Out"
+msgstr "Surt"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:116
@@ -460,7 +460,7 @@ msgstr "atura temporalment;dorm"
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
 msgctxt "search-result"
-msgid "Switch user"
+msgid "Switch User"
 msgstr "Canvia d'usuari"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
@@ -471,13 +471,13 @@ msgstr "canvia d'usuari"
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
 msgctxt "search-result"
-msgid "Lock orientation"
+msgid "Lock Orientation"
 msgstr "Bloqueja l'orientació"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-msgid "lock orientation"
-msgstr "bloqueja l'orientació"
+msgid "lock orientation;screen;rotation"
+msgstr "bloqueja l'orientació;pantalla;rotació"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -670,12 +670,12 @@ msgstr "Afegeix als preferits"
 msgid "Show Details"
 msgstr "Mostra els detalls"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:141
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "S'ha afegit %s als preferits."
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:175
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "S'ha suprimit %s dels preferits."
@@ -764,51 +764,51 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "Ds"
 
-#: js/ui/calendar.js:442
+#: js/ui/calendar.js:449
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: js/ui/calendar.js:452
+#: js/ui/calendar.js:459
 msgid "Next month"
 msgstr "Mes següent"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "Setmana %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Tot el dia"
 
-#: js/ui/calendar.js:862
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %d de %B"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %d de %B de %Y"
 
-#: js/ui/calendar.js:1086
+#: js/ui/calendar.js:1093
 msgid "No Notifications"
 msgstr "Cap notificació"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1096
 msgid "No Events"
 msgstr "Cap cita"
 
-#: js/ui/calendar.js:1117
+#: js/ui/calendar.js:1124
 msgid "Clear All"
 msgstr "Neteja-ho tot"
 
@@ -842,7 +842,7 @@ msgstr "S'ha connectat un dispositiu extern"
 msgid "External drive disconnected"
 msgstr "S'ha desconnectat un dispositiu extern"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:358
 #, javascript-format
 msgid "Open with %s"
 msgstr "Obre amb %s"
@@ -979,7 +979,7 @@ msgstr "Quadre d'aplicacions"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:76
 msgid "%B %e %Y"
 msgstr "%e de %B de %Y"
 
@@ -987,19 +987,19 @@ msgstr "%e de %B de %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%A, %e de %B de %Y"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:145
 msgid "Add world clocks…"
 msgstr "Afegeix rellotges del món…"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:146
 msgid "World Clocks"
 msgstr "Rellotges del món"
 
-#: js/ui/dateMenu.js:224
+#: js/ui/dateMenu.js:225
 msgid "Weather"
 msgstr "El temps"
 
@@ -1007,7 +1007,7 @@ msgstr "El temps"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:286
+#: js/ui/dateMenu.js:289
 #, javascript-format
 msgid "%s all day."
 msgstr "%s tot el dia."
@@ -1016,7 +1016,7 @@ msgstr "%s tot el dia."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:292
+#: js/ui/dateMenu.js:295
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, llavors %s més tard."
@@ -1025,30 +1025,30 @@ msgstr "%s, llavors %s més tard."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:298
+#: js/ui/dateMenu.js:301
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, llavors %s, seguit per %s més tard."
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:312
 msgid "Select a location…"
 msgstr "Trieu una ubicació…"
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:315
 msgid "Loading…"
 msgstr "S'està carregant…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:318
+#: js/ui/dateMenu.js:321
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Sensació tèrmica de %s."
 
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:324
 msgid "Go online for weather information"
 msgstr "Vés en línia per a informació sobre el temps"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:326
 msgid "Weather information is currently unavailable"
 msgstr "La informació sobre el temps no està disponible"
 
@@ -1237,7 +1237,7 @@ msgstr "Denega"
 msgid "Allow"
 msgstr "Permet"
 
-#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:783
 msgid "Keyboard"
 msgstr "Teclat"
 
@@ -1289,7 +1289,7 @@ msgstr "Mostra el codi font"
 msgid "Web Page"
 msgstr "Pàgina web"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1494
 msgid "System Information"
 msgstr "Informació de l'ordinador"
 
@@ -1533,35 +1533,35 @@ msgstr "Alt contrast"
 msgid "Large Text"
 msgstr "Text gran"
 
-#: js/ui/status/bluetooth.js:47
+#: js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
+#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Paràmetres del Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:136
+#: js/ui/status/bluetooth.js:137
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d connectat"
 msgstr[1] "%d connectats"
 
-#: js/ui/status/bluetooth.js:138
+#: js/ui/status/bluetooth.js:139
 msgid "Off"
 msgstr "Desactivat"
 
-#: js/ui/status/bluetooth.js:140
+#: js/ui/status/bluetooth.js:141
 msgid "On"
 msgstr "Activat"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
+#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:1299
 msgid "Turn On"
 msgstr "Activa"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
+#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:170
 #: js/ui/status/network.js:356 js/ui/status/network.js:1299
 #: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
@@ -1572,7 +1572,7 @@ msgstr "Desactiva"
 msgid "Brightness"
 msgstr "Brillantor"
 
-#: js/ui/status/keyboard.js:805
+#: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
 msgstr "Mostra la disposició del teclat"
 
@@ -2055,19 +2055,19 @@ msgstr "Calendari de l'Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:437
 msgid "Print version"
 msgstr "Mostra la versió"
 
-#: src/main.c:386
+#: src/main.c:443
 msgid "Mode used by GDM for login screen"
 msgstr "El mode que utilitzarà el GDM per a la pantalla d'entrada"
 
-#: src/main.c:392
+#: src/main.c:449
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Utilitza un mode específic, p. ex. «gdm» per la pantalla d'entrada"
 
-#: src/main.c:398
+#: src/main.c:455
 msgid "List possible modes"
 msgstr "Llista els modes possibles"
 
@@ -2114,6 +2114,18 @@ msgstr[1] "%u entrades"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sons del sistema"
+
+#~ msgctxt "search-result"
+#~ msgid "Power off"
+#~ msgstr "Apaga"
+
+#~ msgctxt "search-result"
+#~ msgid "Log out"
+#~ msgstr "Desconnecta"
+
+#~ msgctxt "search-result"
+#~ msgid "Switch user"
+#~ msgstr "Canvia d'usuari"
 
 #~ msgid "Hide tray"
 #~ msgstr "Oculta la Safata"
