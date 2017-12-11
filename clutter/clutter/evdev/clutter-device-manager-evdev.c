@@ -1459,6 +1459,8 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         slot = libinput_event_touch_get_slot (touch_event);
         time_us = libinput_event_touch_get_time_usec (touch_event);
         touch_state = clutter_seat_evdev_get_touch (seat, slot);
+        if (!touch_state)
+          break;
 
         notify_touch_event (device, CLUTTER_TOUCH_END, time_us, slot,
 			    touch_state->coords.x, touch_state->coords.y);
@@ -1497,6 +1499,9 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
                                                     stage_height);
 
         touch_state = clutter_seat_evdev_get_touch (seat, slot);
+        if (!touch_state)
+          break;
+
         touch_state->coords.x = x;
         touch_state->coords.y = y;
 
