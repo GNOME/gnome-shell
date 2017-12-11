@@ -43,7 +43,6 @@ datadir = join_paths(prefix, get_option('datadir'))
 libdir = join_paths(prefix, get_option('libdir'))
 libexecdir = join_paths(prefix, get_option('libexecdir'))
 mandir = join_paths(prefix, get_option('mandir'))
-sysconfdir = join_paths(prefix, get_option('sysconfdir'))
 
 pkgdatadir = join_paths(datadir, meson.project_name())
 pkglibdir = join_paths(libdir, meson.project_name())
@@ -111,6 +110,13 @@ if get_option('networkmanager')
   have_networkmanager = true
 else
   have_networkmanager = false
+endif
+
+networkmanager_dep = dependency('NetworkManager', required: false)
+if (networkmanager_dep.found())
+  nm_prefix = networkmanager_dep.get_pkgconfig_variable('prefix')
+else
+  nm_prefix = prefix
 endif
 
 if get_option('systemd')

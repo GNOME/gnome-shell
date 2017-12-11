@@ -13,7 +13,6 @@ script_data.set('libdir', libdir)
 script_data.set('libexecdir', libexecdir)
 script_data.set('pkgdatadir', pkgdatadir)
 script_data.set('pkglibdir', pkglibdir)
-script_data.set('sysconfdir', sysconfdir)
 script_data.set('PYTHON', python.path())
 script_data.set('VERSION', meson.project_version())
 

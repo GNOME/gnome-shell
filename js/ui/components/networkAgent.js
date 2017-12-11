@@ -587,7 +587,7 @@ var NetworkAgent = new Lang.Class({
         this._vpnRequests = { };
         this._notifications = { };
 
-        this._pluginDir = Gio.file_new_for_path(GLib.build_filenamev([Config.SYSCONFDIR, 'NetworkManager/VPN']));
+        this._pluginDir = Gio.file_new_for_path(GLib.build_filenamev([Config.NMPREFIXDIR, 'lib/NetworkManager/VPN']));
         try {
             let monitor = this._pluginDir.monitor(Gio.FileMonitorFlags.NONE, null);
             monitor.connect('changed', () => { this._vpnCacheBuilt = false; });
