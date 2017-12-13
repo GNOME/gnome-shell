@@ -580,8 +580,8 @@ is_new_size_hints_valid (MetaWindow              *window,
 }
 
 static void
-xdg_toplevel_role_commit (MetaWaylandSurfaceRole  *surface_role,
-                          MetaWaylandPendingState *pending)
+meta_wayland_xdg_toplevel_commit (MetaWaylandSurfaceRole  *surface_role,
+                                  MetaWaylandPendingState *pending)
 {
   MetaWaylandXdgToplevel *xdg_toplevel = META_WAYLAND_XDG_TOPLEVEL (surface_role);
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_toplevel);
@@ -649,18 +649,18 @@ xdg_toplevel_role_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 static MetaWaylandSurface *
-xdg_toplevel_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
+meta_wayland_xdg_toplevel_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 {
   return meta_wayland_surface_role_get_surface (surface_role);
 }
 
 static void
-xdg_toplevel_role_configure (MetaWaylandShellSurface *shell_surface,
-                             int                      new_x,
-                             int                      new_y,
-                             int                      new_width,
-                             int                      new_height,
-                             MetaWaylandSerial       *sent_serial)
+meta_wayland_xdg_toplevel_configure (MetaWaylandShellSurface *shell_surface,
+                                     int                      new_x,
+                                     int                      new_y,
+                                     int                      new_width,
+                                     int                      new_height,
+                                     MetaWaylandSerial       *sent_serial)
 {
   MetaWaylandXdgToplevel *xdg_toplevel =
     META_WAYLAND_XDG_TOPLEVEL (shell_surface);
@@ -680,13 +680,13 @@ xdg_toplevel_role_configure (MetaWaylandShellSurface *shell_surface,
 }
 
 static void
-xdg_toplevel_role_managed (MetaWaylandShellSurface *shell_surface,
-                           MetaWindow              *window)
+meta_wayland_xdg_toplevel_managed (MetaWaylandShellSurface *shell_surface,
+                                   MetaWindow              *window)
 {
 }
 
 static void
-xdg_toplevel_role_close (MetaWaylandShellSurface *shell_surface)
+meta_wayland_xdg_toplevel_close (MetaWaylandShellSurface *shell_surface)
 {
   MetaWaylandXdgToplevel *xdg_toplevel =
     META_WAYLAND_XDG_TOPLEVEL (shell_surface);
@@ -695,7 +695,7 @@ xdg_toplevel_role_close (MetaWaylandShellSurface *shell_surface)
 }
 
 static void
-xdg_toplevel_role_shell_client_destroyed (MetaWaylandXdgSurface *xdg_surface)
+meta_wayland_xdg_toplevel_shell_client_destroyed (MetaWaylandXdgSurface *xdg_surface)
 {
   MetaWaylandXdgToplevel *xdg_toplevel =
     META_WAYLAND_XDG_TOPLEVEL (xdg_surface);
@@ -718,7 +718,7 @@ xdg_toplevel_role_shell_client_destroyed (MetaWaylandXdgSurface *xdg_surface)
 }
 
 static void
-xdg_toplevel_role_finalize (GObject *object)
+meta_wayland_xdg_toplevel_finalize (GObject *object)
 {
   MetaWaylandXdgToplevel *xdg_toplevel = META_WAYLAND_XDG_TOPLEVEL (object);
 
@@ -741,20 +741,20 @@ meta_wayland_xdg_toplevel_class_init (MetaWaylandXdgToplevelClass *klass)
   MetaWaylandXdgSurfaceClass *xdg_surface_class;
 
   object_class = G_OBJECT_CLASS (klass);
-  object_class->finalize = xdg_toplevel_role_finalize;
+  object_class->finalize = meta_wayland_xdg_toplevel_finalize;
 
   surface_role_class = META_WAYLAND_SURFACE_ROLE_CLASS (klass);
-  surface_role_class->commit = xdg_toplevel_role_commit;
-  surface_role_class->get_toplevel = xdg_toplevel_role_get_toplevel;
+  surface_role_class->commit = meta_wayland_xdg_toplevel_commit;
+  surface_role_class->get_toplevel = meta_wayland_xdg_toplevel_get_toplevel;
 
   shell_surface_class = META_WAYLAND_SHELL_SURFACE_CLASS (klass);
-  shell_surface_class->configure = xdg_toplevel_role_configure;
-  shell_surface_class->managed = xdg_toplevel_role_managed;
-  shell_surface_class->close = xdg_toplevel_role_close;
+  shell_surface_class->configure = meta_wayland_xdg_toplevel_configure;
+  shell_surface_class->managed = meta_wayland_xdg_toplevel_managed;
+  shell_surface_class->close = meta_wayland_xdg_toplevel_close;
 
   xdg_surface_class = META_WAYLAND_XDG_SURFACE_CLASS (klass);
   xdg_surface_class->shell_client_destroyed =
-    xdg_toplevel_role_shell_client_destroyed;
+    meta_wayland_xdg_toplevel_shell_client_destroyed;
 }
 
 static void
@@ -869,8 +869,8 @@ finish_popup_setup (MetaWaylandXdgPopup *xdg_popup)
 }
 
 static void
-xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
-                       MetaWaylandPendingState *pending)
+meta_wayland_xdg_popup_commit (MetaWaylandSurfaceRole  *surface_role,
+                               MetaWaylandPendingState *pending)
 {
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (surface_role);
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (surface_role);
@@ -904,7 +904,7 @@ xdg_popup_role_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 static MetaWaylandSurface *
-xdg_popup_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
+meta_wayland_xdg_popup_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 {
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (surface_role);
 
@@ -915,12 +915,12 @@ xdg_popup_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 }
 
 static void
-xdg_popup_role_configure (MetaWaylandShellSurface *shell_surface,
-                          int                      new_x,
-                          int                      new_y,
-                          int                      new_width,
-                          int                      new_height,
-                          MetaWaylandSerial       *sent_serial)
+meta_wayland_xdg_popup_configure (MetaWaylandShellSurface *shell_surface,
+                                  int                      new_x,
+                                  int                      new_y,
+                                  int                      new_width,
+                                  int                      new_height,
+                                  MetaWaylandSerial       *sent_serial)
 {
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface);
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_popup);
@@ -948,8 +948,8 @@ xdg_popup_role_configure (MetaWaylandShellSurface *shell_surface,
 }
 
 static void
-xdg_popup_role_managed (MetaWaylandShellSurface *shell_surface,
-                        MetaWindow              *window)
+meta_wayland_xdg_popup_managed (MetaWaylandShellSurface *shell_surface,
+                                MetaWindow              *window)
 {
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface);
   MetaWaylandSurface *parent = xdg_popup->parent_surface;
@@ -961,7 +961,7 @@ xdg_popup_role_managed (MetaWaylandShellSurface *shell_surface,
 }
 
 static void
-xdg_popup_role_shell_client_destroyed (MetaWaylandXdgSurface *xdg_surface)
+meta_wayland_xdg_popup_shell_client_destroyed (MetaWaylandXdgSurface *xdg_surface)
 {
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (xdg_surface);
   struct wl_resource *xdg_shell_resource =
@@ -1033,7 +1033,7 @@ popup_surface_iface_init (MetaWaylandPopupSurfaceInterface *iface)
 }
 
 static void
-xdg_popup_role_finalize (GObject *object)
+meta_wayland_xdg_popup_finalize (GObject *object)
 {
   MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (object);
 
@@ -1056,19 +1056,19 @@ meta_wayland_xdg_popup_class_init (MetaWaylandXdgPopupClass *klass)
   MetaWaylandXdgSurfaceClass *xdg_surface_class;
 
   object_class = G_OBJECT_CLASS (klass);
-  object_class->finalize = xdg_popup_role_finalize;
+  object_class->finalize = meta_wayland_xdg_popup_finalize;
 
   surface_role_class = META_WAYLAND_SURFACE_ROLE_CLASS (klass);
-  surface_role_class->commit = xdg_popup_role_commit;
-  surface_role_class->get_toplevel = xdg_popup_role_get_toplevel;
+  surface_role_class->commit = meta_wayland_xdg_popup_commit;
+  surface_role_class->get_toplevel = meta_wayland_xdg_popup_get_toplevel;
 
   shell_surface_class = META_WAYLAND_SHELL_SURFACE_CLASS (klass);
-  shell_surface_class->configure = xdg_popup_role_configure;
-  shell_surface_class->managed = xdg_popup_role_managed;
+  shell_surface_class->configure = meta_wayland_xdg_popup_configure;
+  shell_surface_class->managed = meta_wayland_xdg_popup_managed;
 
   xdg_surface_class = META_WAYLAND_XDG_SURFACE_CLASS (klass);
   xdg_surface_class->shell_client_destroyed =
-    xdg_popup_role_shell_client_destroyed;
+    meta_wayland_xdg_popup_shell_client_destroyed;
 }
 
 static struct wl_resource *
@@ -1212,7 +1212,7 @@ static const struct zxdg_surface_v6_interface meta_wayland_xdg_surface_interface
 };
 
 static void
-xdg_surface_role_finalize (GObject *object)
+meta_wayland_xdg_surface_finalize (GObject *object)
 {
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (object);
   MetaWaylandXdgSurfacePrivate *priv =
@@ -1224,8 +1224,8 @@ xdg_surface_role_finalize (GObject *object)
 }
 
 static void
-xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
-                         MetaWaylandPendingState *pending)
+meta_wayland_xdg_surface_commit (MetaWaylandSurfaceRole  *surface_role,
+                                 MetaWaylandPendingState *pending)
 {
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (surface_role);
   MetaWaylandXdgSurfacePrivate *priv =
@@ -1293,7 +1293,7 @@ xdg_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 static void
-xdg_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
+meta_wayland_xdg_surface_assigned (MetaWaylandSurfaceRole *surface_role)
 {
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (surface_role);
   MetaWaylandXdgSurfacePrivate *priv =
@@ -1322,8 +1322,8 @@ xdg_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
 }
 
 static void
-xdg_surface_role_ping (MetaWaylandShellSurface *shell_surface,
-                       uint32_t                 serial)
+meta_wayland_xdg_surface_ping (MetaWaylandShellSurface *shell_surface,
+                               uint32_t                 serial)
 {
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (shell_surface);
   MetaWaylandXdgSurfacePrivate *priv =
@@ -1333,7 +1333,7 @@ xdg_surface_role_ping (MetaWaylandShellSurface *shell_surface,
 }
 
 static void
-xdg_surface_role_shell_client_destroyed (MetaWaylandXdgSurface *xdg_surface)
+meta_wayland_xdg_surface_real_shell_client_destroyed (MetaWaylandXdgSurface *xdg_surface)
 {
   MetaWaylandXdgSurfacePrivate *priv =
     meta_wayland_xdg_surface_get_instance_private (xdg_surface);
@@ -1413,18 +1413,19 @@ meta_wayland_xdg_surface_class_init (MetaWaylandXdgSurfaceClass *klass)
   GParamSpec *pspec;
 
   object_class = G_OBJECT_CLASS (klass);
-  object_class->finalize = xdg_surface_role_finalize;
+  object_class->finalize = meta_wayland_xdg_surface_finalize;
   object_class->set_property = meta_wayland_xdg_surface_set_property;
   object_class->get_property = meta_wayland_xdg_surface_get_property;
 
   surface_role_class = META_WAYLAND_SURFACE_ROLE_CLASS (klass);
-  surface_role_class->commit = xdg_surface_role_commit;
-  surface_role_class->assigned = xdg_surface_role_assigned;
+  surface_role_class->commit = meta_wayland_xdg_surface_commit;
+  surface_role_class->assigned = meta_wayland_xdg_surface_assigned;
 
   shell_surface_class = META_WAYLAND_SHELL_SURFACE_CLASS (klass);
-  shell_surface_class->ping = xdg_surface_role_ping;
+  shell_surface_class->ping = meta_wayland_xdg_surface_ping;
 
-  klass->shell_client_destroyed = xdg_surface_role_shell_client_destroyed;
+  klass->shell_client_destroyed =
+    meta_wayland_xdg_surface_real_shell_client_destroyed;
 
   pspec = g_param_spec_pointer ("shell-client",
                                 "MetaWaylandXdgShellClient",
