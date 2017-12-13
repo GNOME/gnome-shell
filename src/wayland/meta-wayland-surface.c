@@ -100,8 +100,8 @@ G_DEFINE_TYPE (MetaWaylandSurfaceRoleActorSurface,
                meta_wayland_surface_role_actor_surface,
                META_TYPE_WAYLAND_SURFACE_ROLE);
 
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleShellSurface,
-               meta_wayland_surface_role_shell_surface,
+G_DEFINE_TYPE (MetaWaylandShellSurface,
+               meta_wayland_shell_surface,
                META_TYPE_WAYLAND_SURFACE_ROLE_ACTOR_SURFACE);
 
 G_DEFINE_TYPE (MetaWaylandPendingState,
@@ -156,23 +156,23 @@ static MetaWaylandSurface *
 meta_wayland_surface_role_get_toplevel (MetaWaylandSurfaceRole *surface_role);
 
 static void
-meta_wayland_surface_role_shell_surface_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                                                   int                                 new_x,
-                                                   int                                 new_y,
-                                                   int                                 new_width,
-                                                   int                                 new_height,
-                                                   MetaWaylandSerial                  *sent_serial);
+meta_wayland_shell_surface_configure (MetaWaylandShellSurface *shell_surface,
+                                      int                      new_x,
+                                      int                      new_y,
+                                      int                      new_width,
+                                      int                      new_height,
+                                      MetaWaylandSerial       *sent_serial);
 
 static void
-meta_wayland_surface_role_shell_surface_ping (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                                              uint32_t                            serial);
+meta_wayland_shell_surface_ping (MetaWaylandShellSurface *shell_surface,
+                                 uint32_t                 serial);
 
 static void
-meta_wayland_surface_role_shell_surface_close (MetaWaylandSurfaceRoleShellSurface *shell_surface_role);
+meta_wayland_shell_surface_close (MetaWaylandShellSurface *shell_surface);
 
 static void
-meta_wayland_surface_role_shell_surface_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                                                 MetaWindow                         *window);
+meta_wayland_shell_surface_managed (MetaWaylandShellSurface *shell_surface,
+                                    MetaWindow              *window);
 
 static void
 surface_actor_mapped_notify (MetaSurfaceActorWayland *surface_actor,
@@ -1746,44 +1746,44 @@ meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
                                        int                 new_height,
                                        MetaWaylandSerial  *sent_serial)
 {
-  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
+  MetaWaylandShellSurface *shell_surface =
+    META_WAYLAND_SHELL_SURFACE (surface->role);
 
   g_signal_emit (surface, surface_signals[SURFACE_CONFIGURE], 0);
 
-  meta_wayland_surface_role_shell_surface_configure (shell_surface_role,
-                                                     new_x, new_y,
-                                                     new_width, new_height,
-                                                     sent_serial);
+  meta_wayland_shell_surface_configure (shell_surface,
+                                        new_x, new_y,
+                                        new_width, new_height,
+                                        sent_serial);
 }
 
 void
 meta_wayland_surface_ping (MetaWaylandSurface *surface,
                            guint32             serial)
 {
-  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
+  MetaWaylandShellSurface *shell_surface =
+    META_WAYLAND_SHELL_SURFACE (surface->role);
 
-  meta_wayland_surface_role_shell_surface_ping (shell_surface_role, serial);
+  meta_wayland_shell_surface_ping (shell_surface, serial);
 }
 
 void
 meta_wayland_surface_delete (MetaWaylandSurface *surface)
 {
-  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
+  MetaWaylandShellSurface *shell_surface =
+    META_WAYLAND_SHELL_SURFACE (surface->role);
 
-  meta_wayland_surface_role_shell_surface_close (shell_surface_role);
+  meta_wayland_shell_surface_close (shell_surface);
 }
 
 void
 meta_wayland_surface_window_managed (MetaWaylandSurface *surface,
                                      MetaWindow         *window)
 {
-  MetaWaylandSurfaceRoleShellSurface *shell_surface_role =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (surface->role);
+  MetaWaylandShellSurface *shell_surface =
+    META_WAYLAND_SHELL_SURFACE (surface->role);
 
-  meta_wayland_surface_role_shell_surface_managed (shell_surface_role, window);
+  meta_wayland_shell_surface_managed (shell_surface, window);
 }
 
 void
@@ -2088,51 +2088,51 @@ meta_wayland_surface_role_get_surface (MetaWaylandSurfaceRole *role)
 }
 
 static void
-meta_wayland_surface_role_shell_surface_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                                                   int                                 new_x,
-                                                   int                                 new_y,
-                                                   int                                 new_width,
-                                                   int                                 new_height,
-                                                   MetaWaylandSerial                  *sent_serial)
+meta_wayland_shell_surface_configure (MetaWaylandShellSurface *shell_surface,
+                                      int                      new_x,
+                                      int                      new_y,
+                                      int                      new_width,
+                                      int                      new_height,
+                                      MetaWaylandSerial       *sent_serial)
 {
-  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+  MetaWaylandShellSurfaceClass *shell_surface_class =
+    META_WAYLAND_SHELL_SURFACE_GET_CLASS (shell_surface);
 
-  shell_surface_role_class->configure (shell_surface_role,
-                                       new_x,
-                                       new_y,
-                                       new_width,
-                                       new_height,
-                                       sent_serial);
+  shell_surface_class->configure (shell_surface,
+                                  new_x,
+                                  new_y,
+                                  new_width,
+                                  new_height,
+                                  sent_serial);
 }
 
 static void
-meta_wayland_surface_role_shell_surface_ping (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                                              uint32_t                            serial)
+meta_wayland_shell_surface_ping (MetaWaylandShellSurface *shell_surface,
+                                 uint32_t                 serial)
 {
-  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+  MetaWaylandShellSurfaceClass *shell_surface_class =
+    META_WAYLAND_SHELL_SURFACE_GET_CLASS (shell_surface);
 
-  shell_surface_role_class->ping (shell_surface_role, serial);
+  shell_surface_class->ping (shell_surface, serial);
 }
 
 static void
-meta_wayland_surface_role_shell_surface_close (MetaWaylandSurfaceRoleShellSurface *shell_surface_role)
+meta_wayland_shell_surface_close (MetaWaylandShellSurface *shell_surface)
 {
-  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+  MetaWaylandShellSurfaceClass *shell_surface_class =
+    META_WAYLAND_SHELL_SURFACE_GET_CLASS (shell_surface);
 
-  shell_surface_role_class->close (shell_surface_role);
+  shell_surface_class->close (shell_surface);
 }
 
 static void
-meta_wayland_surface_role_shell_surface_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                                                 MetaWindow                         *window)
+meta_wayland_shell_surface_managed (MetaWaylandShellSurface *shell_surface,
+                                    MetaWindow              *window)
 {
-  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_GET_CLASS (shell_surface_role);
+  MetaWaylandShellSurfaceClass *shell_surface_class =
+    META_WAYLAND_SHELL_SURFACE_GET_CLASS (shell_surface);
 
-  shell_surface_role_class->managed (shell_surface_role, window);
+  shell_surface_class->managed (shell_surface, window);
 }
 
 void
@@ -2200,8 +2200,8 @@ meta_wayland_surface_role_actor_surface_class_init (MetaWaylandSurfaceRoleActorS
 }
 
 static void
-shell_surface_role_surface_commit (MetaWaylandSurfaceRole  *surface_role,
-                                   MetaWaylandPendingState *pending)
+meta_wayland_shell_surface_surface_commit (MetaWaylandSurfaceRole  *surface_role,
+                                           MetaWaylandPendingState *pending)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
@@ -2213,7 +2213,7 @@ shell_surface_role_surface_commit (MetaWaylandSurfaceRole  *surface_role,
   double scale;
 
   surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_shell_surface_parent_class);
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_shell_surface_parent_class);
   surface_role_class->commit (surface_role, pending);
 
   buffer = surface->buffer_ref.buffer;
@@ -2233,17 +2233,17 @@ shell_surface_role_surface_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 static void
-meta_wayland_surface_role_shell_surface_init (MetaWaylandSurfaceRoleShellSurface *role)
+meta_wayland_shell_surface_init (MetaWaylandShellSurface *role)
 {
 }
 
 static void
-meta_wayland_surface_role_shell_surface_class_init (MetaWaylandSurfaceRoleShellSurfaceClass *klass)
+meta_wayland_shell_surface_class_init (MetaWaylandShellSurfaceClass *klass)
 {
   MetaWaylandSurfaceRoleClass *surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
 
-  surface_role_class->commit = shell_surface_role_surface_commit;
+  surface_role_class->commit = meta_wayland_shell_surface_surface_commit;
 }
 
 static void

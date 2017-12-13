@@ -26,11 +26,11 @@
 G_DECLARE_DERIVABLE_TYPE (MetaWaylandXdgSurface,
                           meta_wayland_xdg_surface,
                           META, WAYLAND_XDG_SURFACE,
-                          MetaWaylandSurfaceRoleShellSurface);
+                          MetaWaylandShellSurface)
 
 struct _MetaWaylandXdgSurfaceClass
 {
-  MetaWaylandSurfaceRoleShellSurfaceClass parent_class;
+  MetaWaylandShellSurfaceClass parent_class;
 
   void (*shell_client_destroyed) (MetaWaylandXdgSurface *xdg_surface);
 };

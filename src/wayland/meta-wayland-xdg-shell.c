@@ -85,7 +85,7 @@ typedef struct _MetaWaylandXdgSurfacePrivate
 
 G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandXdgSurface,
                             meta_wayland_xdg_surface,
-                            META_TYPE_WAYLAND_SURFACE_ROLE_SHELL_SURFACE);
+                            META_TYPE_WAYLAND_SHELL_SURFACE);
 
 struct _MetaWaylandXdgToplevel
 {
@@ -655,15 +655,15 @@ xdg_toplevel_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 }
 
 static void
-xdg_toplevel_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                             int                                 new_x,
-                             int                                 new_y,
-                             int                                 new_width,
-                             int                                 new_height,
-                             MetaWaylandSerial                  *sent_serial)
+xdg_toplevel_role_configure (MetaWaylandShellSurface *shell_surface,
+                             int                      new_x,
+                             int                      new_y,
+                             int                      new_width,
+                             int                      new_height,
+                             MetaWaylandSerial       *sent_serial)
 {
   MetaWaylandXdgToplevel *xdg_toplevel =
-    META_WAYLAND_XDG_TOPLEVEL (shell_surface_role);
+    META_WAYLAND_XDG_TOPLEVEL (shell_surface);
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_toplevel);
   MetaWaylandXdgSurfacePrivate *xdg_surface_priv =
     meta_wayland_xdg_surface_get_instance_private (xdg_surface);
@@ -680,16 +680,16 @@ xdg_toplevel_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_r
 }
 
 static void
-xdg_toplevel_role_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                           MetaWindow                         *window)
+xdg_toplevel_role_managed (MetaWaylandShellSurface *shell_surface,
+                           MetaWindow              *window)
 {
 }
 
 static void
-xdg_toplevel_role_close (MetaWaylandSurfaceRoleShellSurface *shell_surface_role)
+xdg_toplevel_role_close (MetaWaylandShellSurface *shell_surface)
 {
   MetaWaylandXdgToplevel *xdg_toplevel =
-    META_WAYLAND_XDG_TOPLEVEL (shell_surface_role);
+    META_WAYLAND_XDG_TOPLEVEL (shell_surface);
 
   zxdg_toplevel_v6_send_close (xdg_toplevel->resource);
 }
@@ -737,7 +737,7 @@ meta_wayland_xdg_toplevel_class_init (MetaWaylandXdgToplevelClass *klass)
 {
   GObjectClass *object_class;
   MetaWaylandSurfaceRoleClass *surface_role_class;
-  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class;
+  MetaWaylandShellSurfaceClass *shell_surface_class;
   MetaWaylandXdgSurfaceClass *xdg_surface_class;
 
   object_class = G_OBJECT_CLASS (klass);
@@ -747,11 +747,10 @@ meta_wayland_xdg_toplevel_class_init (MetaWaylandXdgToplevelClass *klass)
   surface_role_class->commit = xdg_toplevel_role_commit;
   surface_role_class->get_toplevel = xdg_toplevel_role_get_toplevel;
 
-  shell_surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
-  shell_surface_role_class->configure = xdg_toplevel_role_configure;
-  shell_surface_role_class->managed = xdg_toplevel_role_managed;
-  shell_surface_role_class->close = xdg_toplevel_role_close;
+  shell_surface_class = META_WAYLAND_SHELL_SURFACE_CLASS (klass);
+  shell_surface_class->configure = xdg_toplevel_role_configure;
+  shell_surface_class->managed = xdg_toplevel_role_managed;
+  shell_surface_class->close = xdg_toplevel_role_close;
 
   xdg_surface_class = META_WAYLAND_XDG_SURFACE_CLASS (klass);
   xdg_surface_class->shell_client_destroyed =
@@ -916,14 +915,14 @@ xdg_popup_role_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 }
 
 static void
-xdg_popup_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                          int                                 new_x,
-                          int                                 new_y,
-                          int                                 new_width,
-                          int                                 new_height,
-                          MetaWaylandSerial                  *sent_serial)
+xdg_popup_role_configure (MetaWaylandShellSurface *shell_surface,
+                          int                      new_x,
+                          int                      new_y,
+                          int                      new_width,
+                          int                      new_height,
+                          MetaWaylandSerial       *sent_serial)
 {
-  MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface_role);
+  MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface);
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (xdg_popup);
   MetaWindow *parent_window = xdg_popup->parent_surface->window;
   int geometry_scale;
@@ -949,10 +948,10 @@ xdg_popup_role_configure (MetaWaylandSurfaceRoleShellSurface *shell_surface_role
 }
 
 static void
-xdg_popup_role_managed (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                        MetaWindow                         *window)
+xdg_popup_role_managed (MetaWaylandShellSurface *shell_surface,
+                        MetaWindow              *window)
 {
-  MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface_role);
+  MetaWaylandXdgPopup *xdg_popup = META_WAYLAND_XDG_POPUP (shell_surface);
   MetaWaylandSurface *parent = xdg_popup->parent_surface;
 
   g_assert (parent);
@@ -1053,7 +1052,7 @@ meta_wayland_xdg_popup_class_init (MetaWaylandXdgPopupClass *klass)
 {
   GObjectClass *object_class;
   MetaWaylandSurfaceRoleClass *surface_role_class;
-  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class;
+  MetaWaylandShellSurfaceClass *shell_surface_class;
   MetaWaylandXdgSurfaceClass *xdg_surface_class;
 
   object_class = G_OBJECT_CLASS (klass);
@@ -1063,10 +1062,9 @@ meta_wayland_xdg_popup_class_init (MetaWaylandXdgPopupClass *klass)
   surface_role_class->commit = xdg_popup_role_commit;
   surface_role_class->get_toplevel = xdg_popup_role_get_toplevel;
 
-  shell_surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
-  shell_surface_role_class->configure = xdg_popup_role_configure;
-  shell_surface_role_class->managed = xdg_popup_role_managed;
+  shell_surface_class = META_WAYLAND_SHELL_SURFACE_CLASS (klass);
+  shell_surface_class->configure = xdg_popup_role_configure;
+  shell_surface_class->managed = xdg_popup_role_managed;
 
   xdg_surface_class = META_WAYLAND_XDG_SURFACE_CLASS (klass);
   xdg_surface_class->shell_client_destroyed =
@@ -1324,11 +1322,10 @@ xdg_surface_role_assigned (MetaWaylandSurfaceRole *surface_role)
 }
 
 static void
-xdg_surface_role_ping (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                       uint32_t                            serial)
+xdg_surface_role_ping (MetaWaylandShellSurface *shell_surface,
+                       uint32_t                 serial)
 {
-  MetaWaylandXdgSurface *xdg_surface =
-    META_WAYLAND_XDG_SURFACE (shell_surface_role);
+  MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (shell_surface);
   MetaWaylandXdgSurfacePrivate *priv =
     meta_wayland_xdg_surface_get_instance_private (xdg_surface);
 
@@ -1412,7 +1409,7 @@ meta_wayland_xdg_surface_class_init (MetaWaylandXdgSurfaceClass *klass)
 {
   GObjectClass *object_class;
   MetaWaylandSurfaceRoleClass *surface_role_class;
-  MetaWaylandSurfaceRoleShellSurfaceClass *shell_surface_role_class;
+  MetaWaylandShellSurfaceClass *shell_surface_class;
   GParamSpec *pspec;
 
   object_class = G_OBJECT_CLASS (klass);
@@ -1424,9 +1421,8 @@ meta_wayland_xdg_surface_class_init (MetaWaylandXdgSurfaceClass *klass)
   surface_role_class->commit = xdg_surface_role_commit;
   surface_role_class->assigned = xdg_surface_role_assigned;
 
-  shell_surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_SHELL_SURFACE_CLASS (klass);
-  shell_surface_role_class->ping = xdg_surface_role_ping;
+  shell_surface_class = META_WAYLAND_SHELL_SURFACE_CLASS (klass);
+  shell_surface_class->ping = xdg_surface_role_ping;
 
   klass->shell_client_destroyed = xdg_surface_role_shell_client_destroyed;
 

@@ -26,7 +26,7 @@
 G_DECLARE_FINAL_TYPE (MetaWaylandWlShellSurface,
                       meta_wayland_wl_shell_surface,
                       META, WAYLAND_WL_SHELL_SURFACE,
-                      MetaWaylandSurfaceRoleShellSurface);
+                      MetaWaylandShellSurface);
 
 void meta_wayland_wl_shell_init (MetaWaylandCompositor *compositor);
 

@@ -81,27 +81,27 @@ struct _MetaWaylandSurfaceRoleActorSurfaceClass
   MetaWaylandSurfaceRoleClass parent_class;
 };
 
-#define META_TYPE_WAYLAND_SURFACE_ROLE_SHELL_SURFACE (meta_wayland_surface_role_shell_surface_get_type ())
-G_DECLARE_DERIVABLE_TYPE (MetaWaylandSurfaceRoleShellSurface,
-                          meta_wayland_surface_role_shell_surface,
-                          META, WAYLAND_SURFACE_ROLE_SHELL_SURFACE,
+#define META_TYPE_WAYLAND_SHELL_SURFACE (meta_wayland_shell_surface_get_type ())
+G_DECLARE_DERIVABLE_TYPE (MetaWaylandShellSurface,
+                          meta_wayland_shell_surface,
+                          META, WAYLAND_SHELL_SURFACE,
                           MetaWaylandSurfaceRoleActorSurface);
 
-struct _MetaWaylandSurfaceRoleShellSurfaceClass
+struct _MetaWaylandShellSurfaceClass
 {
   MetaWaylandSurfaceRoleActorSurfaceClass parent_class;
 
-  void (*configure) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                     int                                 new_x,
-                     int                                 new_y,
-                     int                                 new_width,
-                     int                                 new_height,
-                     MetaWaylandSerial                  *sent_serial);
-  void (*managed) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                   MetaWindow                         *window);
-  void (*ping) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role,
-                uint32_t                            serial);
-  void (*close) (MetaWaylandSurfaceRoleShellSurface *shell_surface_role);
+  void (*configure) (MetaWaylandShellSurface *shell_surface,
+                     int                      new_x,
+                     int                      new_y,
+                     int                      new_width,
+                     int                      new_height,
+                     MetaWaylandSerial       *sent_serial);
+  void (*managed) (MetaWaylandShellSurface *shell_surface,
+                   MetaWindow              *window);
+  void (*ping) (MetaWaylandShellSurface *shell_surface,
+                uint32_t                 serial);
+  void (*close) (MetaWaylandShellSurface *shell_surface);
 };
 
 #define META_TYPE_WAYLAND_SURFACE_ROLE_SUBSURFACE (meta_wayland_surface_role_subsurface_get_type ())
