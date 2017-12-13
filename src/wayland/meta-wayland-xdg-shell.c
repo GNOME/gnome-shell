@@ -1644,17 +1644,17 @@ meta_wayland_xdg_positioner_to_placement (MetaWaylandXdgPositioner *xdg_position
 }
 
 static void
-meta_wayland_xdg_positioner_destroy (struct wl_client   *client,
-                                     struct wl_resource *resource)
+xdg_positioner_destroy (struct wl_client   *client,
+                        struct wl_resource *resource)
 {
   wl_resource_destroy (resource);
 }
 
 static void
-meta_wayland_xdg_positioner_set_size (struct wl_client *client,
-                                      struct wl_resource *resource,
-                                      int32_t width,
-                                      int32_t height)
+xdg_positioner_set_size (struct wl_client   *client,
+                         struct wl_resource *resource,
+                         int32_t             width,
+                         int32_t             height)
 {
   MetaWaylandXdgPositioner *positioner = wl_resource_get_user_data (resource);
 
@@ -1670,12 +1670,12 @@ meta_wayland_xdg_positioner_set_size (struct wl_client *client,
 }
 
 static void
-meta_wayland_xdg_positioner_set_anchor_rect (struct wl_client   *client,
-                                             struct wl_resource *resource,
-                                             int32_t             x,
-                                             int32_t             y,
-                                             int32_t             width,
-                                             int32_t             height)
+xdg_positioner_set_anchor_rect (struct wl_client   *client,
+                                struct wl_resource *resource,
+                                int32_t             x,
+                                int32_t             y,
+                                int32_t             width,
+                                int32_t             height)
 {
   MetaWaylandXdgPositioner *positioner = wl_resource_get_user_data (resource);
 
@@ -1695,9 +1695,9 @@ meta_wayland_xdg_positioner_set_anchor_rect (struct wl_client   *client,
 }
 
 static void
-meta_wayland_xdg_positioner_set_anchor (struct wl_client   *client,
-                                        struct wl_resource *resource,
-                                        uint32_t            anchor)
+xdg_positioner_set_anchor (struct wl_client   *client,
+                           struct wl_resource *resource,
+                           uint32_t            anchor)
 {
   MetaWaylandXdgPositioner *positioner = wl_resource_get_user_data (resource);
 
@@ -1715,9 +1715,9 @@ meta_wayland_xdg_positioner_set_anchor (struct wl_client   *client,
 }
 
 static void
-meta_wayland_xdg_positioner_set_gravity (struct wl_client   *client,
-                                         struct wl_resource *resource,
-                                         uint32_t            gravity)
+xdg_positioner_set_gravity (struct wl_client   *client,
+                            struct wl_resource *resource,
+                            uint32_t            gravity)
 {
   MetaWaylandXdgPositioner *positioner = wl_resource_get_user_data (resource);
 
@@ -1735,9 +1735,9 @@ meta_wayland_xdg_positioner_set_gravity (struct wl_client   *client,
 }
 
 static void
-meta_wayland_xdg_positioner_set_constraint_adjustment (struct wl_client   *client,
-                                                      struct wl_resource *resource,
-                                                      uint32_t            constraint_adjustment)
+xdg_positioner_set_constraint_adjustment (struct wl_client   *client,
+                                          struct wl_resource *resource,
+                                          uint32_t            constraint_adjustment)
 {
   MetaWaylandXdgPositioner *positioner = wl_resource_get_user_data (resource);
   uint32_t all_adjustments = (ZXDG_POSITIONER_V6_CONSTRAINT_ADJUSTMENT_SLIDE_X |
@@ -1758,10 +1758,10 @@ meta_wayland_xdg_positioner_set_constraint_adjustment (struct wl_client   *clien
 }
 
 static void
-meta_wayland_xdg_positioner_set_offset (struct wl_client   *client,
-                                        struct wl_resource *resource,
-                                        int32_t             x,
-                                        int32_t             y)
+xdg_positioner_set_offset (struct wl_client   *client,
+                           struct wl_resource *resource,
+                           int32_t             x,
+                           int32_t             y)
 {
   MetaWaylandXdgPositioner *positioner = wl_resource_get_user_data (resource);
 
@@ -1770,13 +1770,13 @@ meta_wayland_xdg_positioner_set_offset (struct wl_client   *client,
 }
 
 static const struct zxdg_positioner_v6_interface meta_wayland_xdg_positioner_interface = {
-  meta_wayland_xdg_positioner_destroy,
-  meta_wayland_xdg_positioner_set_size,
-  meta_wayland_xdg_positioner_set_anchor_rect,
-  meta_wayland_xdg_positioner_set_anchor,
-  meta_wayland_xdg_positioner_set_gravity,
-  meta_wayland_xdg_positioner_set_constraint_adjustment,
-  meta_wayland_xdg_positioner_set_offset,
+  xdg_positioner_destroy,
+  xdg_positioner_set_size,
+  xdg_positioner_set_anchor_rect,
+  xdg_positioner_set_anchor,
+  xdg_positioner_set_gravity,
+  xdg_positioner_set_constraint_adjustment,
+  xdg_positioner_set_offset,
 };
 
 static void
