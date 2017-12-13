@@ -248,7 +248,7 @@ xdg_toplevel_move (struct wl_client   *client,
 {
   MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
   MetaWaylandSurface *surface = surface_from_xdg_toplevel_resource (resource);
-  gfloat x, y;
+  float x, y;
 
   if (!meta_wayland_seat_get_grab_info (seat, surface, serial, TRUE, &x, &y))
     return;
@@ -491,7 +491,8 @@ handle_popup_parent_destroyed (struct wl_listener *listener,
 }
 
 static void
-fill_states (struct wl_array *states, MetaWindow *window)
+fill_states (struct wl_array *states,
+             MetaWindow      *window)
 {
   uint32_t *s;
 
@@ -620,7 +621,8 @@ meta_wayland_xdg_toplevel_commit (MetaWaylandSurfaceRole  *surface_role,
     }
   else if (pending->dx != 0 || pending->dx != 0)
     {
-      g_warning ("XXX: Attach-initiated move without a new geometry. This is unimplemented right now.");
+      g_warning ("XXX: Attach-initiated move without a new geometry. "
+                 "This is unimplemented right now.");
     }
 
   /* When we get to this point, we ought to have valid size hints */
@@ -1375,7 +1377,7 @@ meta_wayland_xdg_surface_set_property (GObject      *object,
 }
 
 static void
-meta_wayland_xdg_surface_get_property (GObject      *object,
+meta_wayland_xdg_surface_get_property (GObject    *object,
                                        guint       prop_id,
                                        GValue     *value,
                                        GParamSpec *pspec)
@@ -1917,8 +1919,8 @@ xdg_shell_destructor (struct wl_resource *resource)
 static void
 bind_xdg_shell (struct wl_client *client,
                 void             *data,
-                guint32           version,
-                guint32           id)
+                uint32_t          version,
+                uint32_t          id)
 {
   MetaWaylandXdgShellClient *shell_client;
 
