@@ -191,31 +191,20 @@ window_position_changed (MetaWindow         *window,
                          MetaWaylandSurface *surface);
 
 static void
-unset_param_value (GParameter *param)
-{
-  g_value_unset (&param->value);
-}
-
-static GArray *
-role_assignment_valist_to_params (GType       role_type,
-                                  const char *first_property_name,
-                                  va_list     var_args)
+role_assignment_valist_to_properties (GType       role_type,
+                                      const char *first_property_name,
+                                      va_list     var_args,
+                                      GArray     *names,
+                                      GArray     *values)
 {
   GObjectClass *object_class;
   const char *property_name = first_property_name;
-  GArray *params;
 
   object_class = g_type_class_ref (role_type);
 
-  params = g_array_new (FALSE, FALSE, sizeof (GParameter));
-  g_array_set_clear_func (params, (GDestroyNotify) unset_param_value);
-
   while (property_name)
     {
-      GParameter param = {
-        .name = property_name,
-        .value = G_VALUE_INIT
-      };
+      GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
       GType ptype;
       gchar *error = NULL;
@@ -225,17 +214,16 @@ role_assignment_valist_to_params (GType       role_type,
       g_assert (pspec);
 
       ptype = G_PARAM_SPEC_VALUE_TYPE (pspec);
-      G_VALUE_COLLECT_INIT (&param.value, ptype, var_args, 0, &error);
+      G_VALUE_COLLECT_INIT (&value, ptype, var_args, 0, &error);
       g_assert (!error);
 
-      g_array_append_val (params, param);
+      g_array_append_val (names, property_name);
+      g_array_append_val (values, value);
 
       property_name = va_arg (var_args, const char *);
     }
 
   g_type_class_unref (object_class);
-
-  return params;
 }
 
 gboolean
@@ -250,27 +238,39 @@ meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
     {
       if (first_property_name)
         {
-          GArray *params;
-          GParameter param;
+          GArray *names;
+          GArray *values;
+          const char *surface_prop_name;
+          GValue surface_value = G_VALUE_INIT;
+          GObject *role_object;
+
+          names = g_array_new (FALSE, FALSE, sizeof (const char *));
+          values = g_array_new (FALSE, FALSE, sizeof (GValue));
+          g_array_set_clear_func (values, (GDestroyNotify) g_value_unset);
 
           va_start (var_args, first_property_name);
-          params = role_assignment_valist_to_params (role_type,
-                                                     first_property_name,
-                                                     var_args);
+          role_assignment_valist_to_properties (role_type,
+                                                first_property_name,
+                                                var_args,
+                                                names,
+                                                values);
           va_end (var_args);
 
-          param = (GParameter) {
-            .name = "surface",
-            .value = G_VALUE_INIT
-          };
-          g_value_init (&param.value, META_TYPE_WAYLAND_SURFACE);
-          g_value_set_object (&param.value, surface);
-          g_array_append_val (params, param);
+          surface_prop_name = "surface";
+          g_value_init (&surface_value, META_TYPE_WAYLAND_SURFACE);
+          g_value_set_object (&surface_value, surface);
+          g_array_append_val (names, surface_prop_name);
+          g_array_append_val (values, surface_value);
 
-          surface->role = g_object_newv (role_type, params->len,
-                                         (GParameter *) params->data);
+          role_object =
+            g_object_new_with_properties (role_type,
+                                          values->len,
+                                          (const char **) names->data,
+                                          (const GValue *) values->data);
+          surface->role = META_WAYLAND_SURFACE_ROLE (role_object);
 
-          g_array_unref (params);
+          g_array_free (names, FALSE);
+          g_array_free (values, TRUE);
         }
       else
         {
