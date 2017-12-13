@@ -402,6 +402,40 @@ var SessionMenuButton = new Lang.Class({
 });
 Signals.addSignalMethods(SessionMenuButton.prototype);
 
+var GuestUser = new Lang.Class({
+    Name: 'GuestUser',
+
+    _init: function() {
+        this.is_loaded = true;
+        this.locked = false;
+    },
+
+    connect: function() {
+    },
+    disconnect: function() {
+    },
+
+    is_system_account: function() {
+        return false;
+    },
+
+    get_icon_file: function() {
+        return null; // FIXME: Use an icon for guest?
+    },
+
+    get_real_name: function() {
+        return 'Guest'; // FIXME: Translatable
+    },
+
+    get_user_name: function() {
+        return '*guest'; // FIXME: No a real username...
+    },
+
+    is_logged_in: function() {
+        return false; // FIXME: Can be logged in..
+    }
+});
+
 var LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
 
@@ -445,6 +479,8 @@ var LoginDialog = new Lang.Class({
                                    { expand: true,
                                      x_fill: true,
                                      y_fill: true });
+
+        this._guestUser = new GuestUser();
 
         this._authPrompt = new AuthPrompt.AuthPrompt(this._gdmClient, AuthPrompt.AuthPromptMode.UNLOCK_OR_LOG_IN);
         this._authPrompt.connect('prompted', Lang.bind(this, this._onPrompted));
@@ -1204,6 +1240,7 @@ var LoginDialog = new Lang.Class({
         for (let i = 0; i < users.length; i++) {
             this._userList.addUser(users[i]);
         }
+        this._userList.addUser(this._guestUser);
 
         this._updateDisableUserList();
 

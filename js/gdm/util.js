@@ -423,7 +423,21 @@ var ShellUserVerifier = new Lang.Class({
 
     _startService: function(serviceName) {
         this._hold.acquire();
-        if (this._userName) {
+        if (this._userName == "*guest") {
+           this._userVerifier.call_begin_verification_for_guest(this._cancellable,
+                                                                Lang.bind(this, function(obj, result) {
+               try {
+                   obj.call_begin_verification_for_guest_finish(result);
+               } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                   return;
+               } catch(e) {
+                   this._reportInitError('Failed to start verification for guest', e);
+                   return;
+               }
+
+               this._hold.release();
+           }));
+        } else if (this._userName) {
            this._userVerifier.call_begin_verification_for_user(serviceName,
                                                                this._userName,
                                                                this._cancellable,
