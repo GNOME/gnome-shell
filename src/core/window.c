@@ -4958,13 +4958,7 @@ meta_window_raise (MetaWindow  *window)
    * the child windows appropriately.
    */
   if (window->screen->stack == ancestor->screen->stack)
-    {
-      /* If the window has a tile sibling, raise it before raising the window itself */
-      if (window->tile_match)
-        meta_stack_raise (window->tile_match->screen->stack, window->tile_match);
-
-      meta_stack_raise (window->screen->stack, ancestor);
-    }
+    meta_stack_raise (window->screen->stack, ancestor);
   else
     {
       meta_warning (
@@ -4995,10 +4989,6 @@ meta_window_lower (MetaWindow  *window)
 
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Lowering window %s\n", window->desc);
-
-  /* If the window has a tile sibling, lower it before loweting the window itself */
-  if (window->tile_match)
-    meta_stack_lower (window->tile_match->screen->stack, window->tile_match);
 
   meta_stack_lower (window->screen->stack, window);
 }
