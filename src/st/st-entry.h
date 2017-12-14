@@ -50,12 +50,13 @@ void            st_entry_set_hint_text      (StEntry        *entry,
                                              const gchar    *text);
 const gchar    *st_entry_get_hint_text      (StEntry        *entry);
 
-void            st_entry_set_input_purpose  (StEntry        *entry,
-                                             GtkInputPurpose purpose);
-GtkInputPurpose st_entry_get_input_purpose  (StEntry        *entry);
-void            st_entry_set_input_hints    (StEntry        *entry,
-                                             GtkInputHints   hints);
-GtkInputHints   st_entry_get_input_hints    (StEntry        *entry);
+void            st_entry_set_input_purpose  (StEntry                    *entry,
+                                             ClutterInputContentPurpose  purpose);
+void            st_entry_set_input_hints    (StEntry                      *entry,
+                                             ClutterInputContentHintFlags  hints);
+
+ClutterInputContentPurpose     st_entry_get_input_purpose  (StEntry *entry);
+ClutterInputContentHintFlags   st_entry_get_input_hints    (StEntry *entry);
 
 void            st_entry_set_primary_icon  (StEntry      *entry,
                                             ClutterActor *icon);

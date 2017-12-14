@@ -54,7 +54,6 @@
 
 #include "st-entry.h"
 
-#include "st-im-text.h"
 #include "st-icon.h"
 #include "st-label.h"
 #include "st-widget.h"
@@ -199,11 +198,11 @@ st_entry_get_property (GObject    *gobject,
       break;
 
     case PROP_INPUT_PURPOSE:
-      g_value_set_enum (value, st_im_text_get_input_purpose (ST_IM_TEXT (priv->entry)));
+      g_value_set_enum (value, clutter_text_get_input_purpose (CLUTTER_TEXT (priv->entry)));
       break;
 
     case PROP_INPUT_HINTS:
-      g_value_set_flags (value, st_im_text_get_input_hints (ST_IM_TEXT (priv->entry)));
+      g_value_set_flags (value, clutter_text_get_input_hints (CLUTTER_TEXT (priv->entry)));
       break;
 
     default:
@@ -980,8 +979,8 @@ st_entry_class_init (StEntryClass *klass)
   pspec = g_param_spec_enum ("input-purpose",
                              "Purpose",
                              "Purpose of the text field",
-                             GTK_TYPE_INPUT_PURPOSE,
-                             GTK_INPUT_PURPOSE_FREE_FORM,
+                             CLUTTER_TYPE_INPUT_CONTENT_PURPOSE,
+                             CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL,
                              G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class,
                                    PROP_INPUT_PURPOSE,
@@ -990,9 +989,8 @@ st_entry_class_init (StEntryClass *klass)
   pspec = g_param_spec_flags ("input-hints",
                               "hints",
                               "Hints for the text field behaviour",
-                              GTK_TYPE_INPUT_HINTS,
-                              GTK_INPUT_HINT_NONE,
-                              G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+                              CLUTTER_TYPE_INPUT_CONTENT_HINT_FLAGS,
+                              0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (gobject_class,
                                    PROP_INPUT_HINTS,
                                    pspec);
@@ -1034,7 +1032,7 @@ st_entry_init (StEntry *entry)
 
   priv = st_entry_get_instance_private (entry);
 
-  priv->entry = g_object_new (ST_TYPE_IM_TEXT,
+  priv->entry = g_object_new (CLUTTER_TYPE_TEXT,
                               "line-alignment", PANGO_ALIGN_LEFT,
                               "editable", TRUE,
                               "reactive", TRUE,
@@ -1208,20 +1206,20 @@ st_entry_get_hint_text (StEntry *entry)
  * methods to adjust their behaviour.
  */
 void
-st_entry_set_input_purpose (StEntry        *entry,
-                            GtkInputPurpose purpose)
+st_entry_set_input_purpose (StEntry                    *entry,
+                            ClutterInputContentPurpose  purpose)
 {
   StEntryPrivate *priv;
-  StIMText *imtext;
+  ClutterText *editable;
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
   priv = st_entry_get_instance_private (entry);
-  imtext = ST_IM_TEXT (priv->entry);
+  editable = CLUTTER_TEXT (priv->entry);
 
-  if (st_im_text_get_input_purpose (imtext) != purpose)
+  if (clutter_text_get_input_purpose (editable) != purpose)
     {
-      st_im_text_set_input_purpose (imtext, purpose);
+      clutter_text_set_input_purpose (editable, purpose);
 
       g_object_notify (G_OBJECT (entry), "input-purpose");
     }
@@ -1233,15 +1231,15 @@ st_entry_set_input_purpose (StEntry        *entry,
  *
  * Gets the value of the #StEntry:input-purpose property.
  */
-GtkInputPurpose
+ClutterInputContentPurpose
 st_entry_get_input_purpose (StEntry *entry)
 {
   StEntryPrivate *priv;
 
-  g_return_val_if_fail (ST_IS_ENTRY (entry), GTK_INPUT_PURPOSE_FREE_FORM);
+  g_return_val_if_fail (ST_IS_ENTRY (entry), CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL);
 
   priv = st_entry_get_instance_private (entry);
-  return st_im_text_get_input_purpose (ST_IM_TEXT (priv->entry));
+  return clutter_text_get_input_purpose (CLUTTER_TEXT (priv->entry));
 }
 
 /**
@@ -1253,20 +1251,20 @@ st_entry_get_input_purpose (StEntry *entry)
  * allows input methods to fine-tune their behaviour.
  */
 void
-st_entry_set_input_hints (StEntry      *entry,
-                          GtkInputHints hints)
+st_entry_set_input_hints (StEntry                      *entry,
+                          ClutterInputContentHintFlags  hints)
 {
   StEntryPrivate *priv;
-  StIMText *imtext;
+  ClutterText *editable;
 
   g_return_if_fail (ST_IS_ENTRY (entry));
 
   priv = st_entry_get_instance_private (entry);
-  imtext = ST_IM_TEXT (priv->entry);
+  editable = CLUTTER_TEXT (priv->entry);
 
-  if (st_im_text_get_input_hints (imtext) != hints)
+  if (clutter_text_get_input_hints (editable) != hints)
     {
-      st_im_text_set_input_hints (imtext, hints);
+      clutter_text_set_input_hints (editable, hints);
 
       g_object_notify (G_OBJECT (entry), "input-hints");
     }
@@ -1278,15 +1276,15 @@ st_entry_set_input_hints (StEntry      *entry,
  *
  * Gets the value of the #StEntry:input-hints property.
  */
-GtkInputHints
+ClutterInputContentHintFlags
 st_entry_get_input_hints (StEntry *entry)
 {
   StEntryPrivate *priv;
 
-  g_return_val_if_fail (ST_IS_ENTRY (entry), GTK_INPUT_HINT_NONE);
+  g_return_val_if_fail (ST_IS_ENTRY (entry), 0);
 
   priv = st_entry_get_instance_private (entry);
-  return st_im_text_get_input_hints (ST_IM_TEXT (priv->entry));
+  return clutter_text_get_input_hints (CLUTTER_TEXT (priv->entry));
 }
 
 static gboolean
@@ -1494,7 +1492,7 @@ st_entry_accessible_initialize (AtkObject *obj,
 {
   ATK_OBJECT_CLASS (st_entry_accessible_parent_class)->initialize (obj, data);
 
-  /* StEntry is behaving as a StImText container */
+  /* StEntry is behaving as a ClutterText container */
   atk_object_set_role (obj, ATK_ROLE_PANEL);
 }
 
