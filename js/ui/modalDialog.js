@@ -215,7 +215,7 @@ var ModalDialog = new Lang.Class({
         else
             this._savedKeyFocus = null;
         Main.popModal(this._group, timestamp);
-        global.gdk_screen.get_display().sync();
+        Gdk.Display.get_default().sync();
         this._hasModal = false;
 
         if (!this._shellReactive)
