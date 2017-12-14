@@ -63,7 +63,6 @@ struct _ShellGlobal {
   GdkDisplay *gdk_display;
   Display *xdisplay;
   MetaScreen *meta_screen;
-  GdkScreen *gdk_screen;
 
   char *session_mode;
 
@@ -98,7 +97,6 @@ enum {
 
   PROP_SESSION_MODE,
   PROP_SCREEN,
-  PROP_GDK_SCREEN,
   PROP_DISPLAY,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
@@ -167,9 +165,6 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_SCREEN:
       g_value_set_object (value, global->meta_screen);
-      break;
-    case PROP_GDK_SCREEN:
-      g_value_set_object (value, global->gdk_screen);
       break;
     case PROP_DISPLAY:
       g_value_set_object (value, global->meta_display);
@@ -377,14 +372,6 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Screen",
                                                         "Metacity screen object for the shell",
                                                         META_TYPE_SCREEN,
-                                                        G_PARAM_READABLE));
-
-  g_object_class_install_property (gobject_class,
-                                   PROP_GDK_SCREEN,
-                                   g_param_spec_object ("gdk-screen",
-                                                        "GdkScreen",
-                                                        "Gdk screen object for the shell",
-                                                        GDK_TYPE_SCREEN,
                                                         G_PARAM_READABLE));
 
   g_object_class_install_property (gobject_class,
@@ -696,19 +683,6 @@ shell_global_get_screen (ShellGlobal  *global)
 }
 
 /**
- * shell_global_get_gdk_screen:
- *
- * Return value: (transfer none): Gdk screen object for the shell
- */
-GdkScreen *
-shell_global_get_gdk_screen (ShellGlobal *global)
-{
-  g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
-
-  return global->gdk_screen;
-}
-
-/**
  * shell_global_get_display:
  *
  * Return value: (transfer none): The default #MetaDisplay
@@ -881,8 +855,6 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->xdisplay = meta_display_get_xdisplay (global->meta_display);
 
   global->gdk_display = gdk_x11_lookup_xdisplay (global->xdisplay);
-  global->gdk_screen = gdk_display_get_screen (global->gdk_display,
-                                               meta_screen_get_screen_number (global->meta_screen));
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_screen (global->meta_screen));
 
