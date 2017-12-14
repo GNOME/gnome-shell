@@ -17,7 +17,6 @@ ShellGlobal   *shell_global_get                       (void);
 
 ClutterStage  *shell_global_get_stage                 (ShellGlobal *global);
 MetaScreen    *shell_global_get_screen                (ShellGlobal *global);
-GdkScreen     *shell_global_get_gdk_screen            (ShellGlobal *global);
 MetaDisplay   *shell_global_get_display               (ShellGlobal *global);
 GList         *shell_global_get_window_actors         (ShellGlobal *global);
 GSettings     *shell_global_get_settings              (ShellGlobal *global);
