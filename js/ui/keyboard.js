@@ -309,6 +309,10 @@ var Keyboard = new Lang.Class({
         this._redraw();
     },
 
+    get visible() {
+        return this._keyboardVisible;
+    },
+
     _setCaretTrackerEnabled: function (enabled) {
         if (this._caretTrackingEnabled == enabled)
             return;
