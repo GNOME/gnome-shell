@@ -289,6 +289,8 @@ var Background = new Lang.Class({
             this._clock.disconnect(this._timezoneChangedId);
         this._timezoneChangedId = 0;
 
+        this._clock = null;
+
         if (this._prepareForSleepId != 0)
             LoginManager.getLoginManager().disconnect(this._prepareForSleepId);
         this._prepareForSleepId = 0;
