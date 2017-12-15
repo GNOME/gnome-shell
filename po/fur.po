@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-10-04 18:03+0000\n"
-"PO-Revision-Date: 2017-10-11 08:34+0200\n"
+"POT-Creation-Date: 2017-12-02 17:48+0000\n"
+"PO-Revision-Date: 2017-12-15 12:51+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -405,29 +405,29 @@ msgstr "(o passe cul dêt)"
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
 msgctxt "search-result"
-msgid "Power off"
+msgid "Power Off"
 msgstr "Distudâ"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:102
-msgid "power off;shutdown"
-msgstr "distudâ;studâ"
+msgid "power off;shutdown;reboot;restart"
+msgstr "distudâ;studâ;tornâ a inviâ"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
 msgctxt "search-result"
-msgid "Lock screen"
-msgstr "Blocâ il schermi"
+msgid "Lock Screen"
+msgstr "Bloc schermi"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:109
 msgid "lock screen"
-msgstr "blocâ schermi;blocâ"
+msgstr "bloc schermi"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
 msgctxt "search-result"
-msgid "Log out"
+msgid "Log Out"
 msgstr "Jessî"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
@@ -449,8 +449,8 @@ msgstr "sospindi;polse"
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
 msgctxt "search-result"
-msgid "Switch user"
-msgstr "Cambiâ utent"
+msgid "Switch User"
+msgstr "Cambi Utent"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:130
@@ -460,13 +460,13 @@ msgstr "cambiâ utent"
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
 msgctxt "search-result"
-msgid "Lock orientation"
-msgstr "Blocâ orientament"
+msgid "Lock Orientation"
+msgstr "Bloc orientament"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-msgid "lock orientation"
-msgstr "blocâ orientament"
+msgid "lock orientation;screen;rotation"
+msgstr "bloc orientament;schermi;rotazion"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -691,7 +691,7 @@ msgstr "Microfon"
 
 #: js/ui/backgroundMenu.js:19
 msgid "Change Background…"
-msgstr "Cambie sfont..."
+msgstr "Cambie sfont…"
 
 #: js/ui/backgroundMenu.js:21 js/ui/status/nightLight.js:51
 msgid "Display Settings"
@@ -982,7 +982,7 @@ msgstr "%A %e di %B dal %Y"
 
 #: js/ui/dateMenu.js:145
 msgid "Add world clocks…"
-msgstr "Zonte orlois mondiâi..."
+msgstr "Zonte orlois mondiâi…"
 
 #: js/ui/dateMenu.js:146
 msgid "World Clocks"
@@ -1021,11 +1021,11 @@ msgstr "%s, chi di un pôc %s, e plui tart %s."
 
 #: js/ui/dateMenu.js:312
 msgid "Select a location…"
-msgstr "Selezione une posizion..."
+msgstr "Selezione une posizion…"
 
 #: js/ui/dateMenu.js:315
 msgid "Loading…"
-msgstr "Daûr a cjariâ..."
+msgstr "Daûr a cjariâ…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
 #: js/ui/dateMenu.js:321
@@ -1224,7 +1224,7 @@ msgstr "Dinee"
 msgid "Allow"
 msgstr "Pemet"
 
-#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:783
 msgid "Keyboard"
 msgstr "Tastiere"
 
@@ -1304,11 +1304,11 @@ msgstr "Panoramiche"
 #. characters.
 #: js/ui/overview.js:240
 msgid "Type to search…"
-msgstr "Scrîf par cirî..."
+msgstr "Scrîf par cirî…"
 
 #: js/ui/padOsd.js:103
 msgid "New shortcut…"
-msgstr "Gnove scurte..."
+msgstr "Gnove scurte…"
 
 #: js/ui/padOsd.js:152
 msgid "Application defined"
@@ -1332,7 +1332,7 @@ msgstr "Fat"
 
 #: js/ui/padOsd.js:734
 msgid "Edit…"
-msgstr "Modifiche..."
+msgstr "Modifiche…"
 
 # masculin o feminin
 #: js/ui/padOsd.js:774 js/ui/padOsd.js:879
@@ -1394,7 +1394,7 @@ msgstr "Il tornâ a tacâ nol è disponibil in Wayland"
 
 #: js/ui/runDialog.js:282
 msgid "Restarting…"
-msgstr "Daûr a tornâ a inviâ..."
+msgstr "Daûr a tornâ a inviâ…"
 
 #. Translators: This is a time format for a date in
 #. long format
@@ -1422,7 +1422,7 @@ msgstr "Bloche"
 
 #: js/ui/screenShield.js:715
 msgid "GNOME needs to lock the screen"
-msgstr "GNOME al scugne blocâ il visôr"
+msgstr "GNOME al à di blocâ il visôr"
 
 #. We could not become modal, so we can't activate the
 #. screenshield. The user is probably very upset at this
@@ -1441,7 +1441,7 @@ msgstr "Il bloc al è stât dineât di une aplicazion"
 
 #: js/ui/search.js:651
 msgid "Searching…"
-msgstr "Daûr a cirî..."
+msgstr "Daûr a cirî…"
 
 #: js/ui/search.js:653
 msgid "No results."
@@ -1523,35 +1523,35 @@ msgstr "Contrast elevât"
 msgid "Large Text"
 msgstr "Test Larc"
 
-#: js/ui/status/bluetooth.js:47
+#: js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
+#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Impostazions Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:136
+#: js/ui/status/bluetooth.js:137
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d tacât"
 msgstr[1] "%d tacâts"
 
-#: js/ui/status/bluetooth.js:138
+#: js/ui/status/bluetooth.js:139
 msgid "Off"
 msgstr "Distudât"
 
-#: js/ui/status/bluetooth.js:140
+#: js/ui/status/bluetooth.js:141
 msgid "On"
 msgstr "Impiât"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
+#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:1299
 msgid "Turn On"
 msgstr "Impie"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
+#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:170
 #: js/ui/status/network.js:356 js/ui/status/network.js:1299
 #: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
@@ -1562,7 +1562,7 @@ msgstr "Distude"
 msgid "Brightness"
 msgstr "Luminositât"
 
-#: js/ui/status/keyboard.js:805
+#: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
 msgstr "Mostre la disposizion de tastiere"
 
@@ -1835,7 +1835,7 @@ msgstr "Cjarie"
 #. to estimate battery life
 #: js/ui/status/power.js:84 js/ui/status/power.js:90
 msgid "Estimating…"
-msgstr "In stime..."
+msgstr "In stime…"
 
 #. Translators: this is <hours>:<minutes> Remaining (<percentage>)
 #: js/ui/status/power.js:98
@@ -1875,7 +1875,7 @@ msgstr "Impostazions account"
 
 #: js/ui/status/system.js:269
 msgid "Orientation Lock"
-msgstr "Bloche Orientament"
+msgstr "Bloc Orientament"
 
 #: js/ui/status/system.js:295
 msgid "Suspend"
@@ -1940,7 +1940,7 @@ msgstr "Cîr"
 #: js/ui/windowAttentionHandler.js:20
 #, javascript-format
 msgid "“%s” is ready"
-msgstr "'%s' al è pront"
+msgstr "“%s” al è pront"
 
 #: js/ui/windowManager.js:72
 msgid "Do you want to keep these display settings?"
@@ -2046,19 +2046,19 @@ msgstr "Calendari di Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:437
 msgid "Print version"
 msgstr "Stampe version"
 
-#: src/main.c:386
+#: src/main.c:443
 msgid "Mode used by GDM for login screen"
 msgstr "Modalitât doprade da GDM pe videade di acès"
 
-#: src/main.c:392
+#: src/main.c:449
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Dopre une modalitât specifiche, par esempli “gdm” pe videade di acès"
 
-#: src/main.c:398
+#: src/main.c:455
 msgid "List possible modes"
 msgstr "Liste modalitâts pussibilis"
 
@@ -2105,6 +2105,18 @@ msgstr[1] "%u jentradis"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Suns di sisteme"
+
+#~ msgctxt "search-result"
+#~ msgid "Power off"
+#~ msgstr "Distudâ"
+
+#~ msgctxt "search-result"
+#~ msgid "Log out"
+#~ msgstr "Jessî"
+
+#~ msgctxt "search-result"
+#~ msgid "Switch user"
+#~ msgstr "Cambiâ utent"
 
 #~ msgid "Hide tray"
 #~ msgstr "Plate casset"
