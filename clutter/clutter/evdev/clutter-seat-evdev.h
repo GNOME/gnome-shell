@@ -58,6 +58,7 @@ struct _ClutterSeatEvdev
   xkb_led_index_t caps_lock_led;
   xkb_led_index_t num_lock_led;
   xkb_led_index_t scroll_lock_led;
+  xkb_layout_index_t layout_idx;
   uint32_t button_state;
   int button_count[KEY_CNT];
 

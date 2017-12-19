@@ -508,6 +508,8 @@ meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard)
 {
   MetaWaylandXkbInfo *xkb_info = &keyboard->xkb_info;
   xkb_mod_mask_t latched, locked;
+  MetaBackend *backend = meta_get_backend ();
+  xkb_layout_index_t layout_idx;
 
   /* Preserve latched/locked modifiers state */
   if (xkb_info->state)
@@ -523,8 +525,8 @@ meta_wayland_keyboard_update_xkb_state (MetaWaylandKeyboard *keyboard)
 
   xkb_info->state = xkb_state_new (xkb_info->keymap);
 
-  if (latched || locked)
-    xkb_state_update_mask (xkb_info->state, 0, latched, locked, 0, 0, 0);
+  layout_idx = meta_backend_get_keymap_layout_group (backend);
+  xkb_state_update_mask (xkb_info->state, 0, latched, locked, 0, 0, layout_idx);
 
   kbd_a11y_apply_mask (keyboard);
 }

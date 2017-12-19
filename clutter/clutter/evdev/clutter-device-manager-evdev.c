@@ -2317,7 +2317,7 @@ clutter_evdev_update_xkb_state (ClutterDeviceManagerEvdev *manager_evdev)
                              0, /* depressed */
                              latched_mods,
                              locked_mods,
-                             0, 0, 0);
+                             0, 0, seat->layout_idx);
 
       seat->caps_lock_led = xkb_keymap_led_get_index (priv->keymap, XKB_LED_NAME_CAPS);
       seat->num_lock_led = xkb_keymap_led_get_index (priv->keymap, XKB_LED_NAME_NUM);
@@ -2465,6 +2465,7 @@ clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
   xkb_mod_mask_t latched_mods;
   xkb_mod_mask_t locked_mods;
   struct xkb_state *state;
+  GSList *l;
 
   g_return_if_fail (CLUTTER_IS_DEVICE_MANAGER_EVDEV (evdev));
 
@@ -2476,6 +2477,12 @@ clutter_evdev_set_keyboard_layout_index (ClutterDeviceManager *evdev,
   locked_mods = xkb_state_serialize_mods (state, XKB_STATE_MODS_LOCKED);
 
   xkb_state_update_mask (state, depressed_mods, latched_mods, locked_mods, 0, 0, idx);
+  for (l = manager_evdev->priv->seats; l; l = l->next)
+    {
+      ClutterSeatEvdev *seat = l->data;
+
+      seat->layout_idx = idx;
+    }
 }
 
 /**
@@ -2485,12 +2492,9 @@ xkb_layout_index_t
 clutter_evdev_get_keyboard_layout_index (ClutterDeviceManager *evdev)
 {
   ClutterDeviceManagerEvdev *manager_evdev;
-  struct xkb_state *state;
 
   manager_evdev = CLUTTER_DEVICE_MANAGER_EVDEV (evdev);
-  state = manager_evdev->priv->main_seat->xkb;
-
-  return xkb_state_serialize_layout (state, XKB_STATE_LAYOUT_LOCKED);
+  return manager_evdev->priv->main_seat->layout_idx;
 }
 
 /**
