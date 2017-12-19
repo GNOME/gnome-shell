@@ -132,5 +132,6 @@
     <file>ui/status/bluetooth.js</file>
     <file>ui/status/screencast.js</file>
     <file>ui/status/system.js</file>
+    <file>ui/status/thunderbolt.js</file>
   </gresource>
 </gresources>
