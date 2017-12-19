@@ -720,7 +720,9 @@ var AggregateMenu = new Lang.Class({
         this._screencast = new imports.ui.status.screencast.Indicator();
         this._location = new imports.ui.status.location.Indicator();
         this._nightLight = new imports.ui.status.nightLight.Indicator();
+        this._thunderbolt = new imports.ui.status.thunderbolt.Indicator();
 
+        this._indicators.add_child(this._thunderbolt.indicators);
         this._indicators.add_child(this._screencast.indicators);
         this._indicators.add_child(this._location.indicators);
         this._indicators.add_child(this._nightLight.indicators);
