@@ -4726,8 +4726,8 @@ capture_view (ClutterStage          *stage,
 
   if (paint)
     {
-      _clutter_stage_maybe_setup_viewport (stage, view);
       cogl_push_framebuffer (framebuffer);
+      _clutter_stage_maybe_setup_viewport (stage, view);
       clutter_stage_do_paint_view (stage, view, rect);
     }
 
@@ -4829,8 +4829,8 @@ capture_view_into (ClutterStage          *stage,
 
   if (paint)
     {
-      _clutter_stage_maybe_setup_viewport (stage, view);
       cogl_push_framebuffer (framebuffer);
+      _clutter_stage_maybe_setup_viewport (stage, view);
       clutter_stage_do_paint_view (stage, view, rect);
     }
 
