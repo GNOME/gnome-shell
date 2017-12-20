@@ -23,6 +23,9 @@ var KEY_LONG_PRESS_TIME = 250;
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
+/* KeyContainer puts keys in a grid where a 1:1 key takes this size */
+const KEY_SIZE = 2;
+
 const defaultKeysPre = [
     [ [], [], [{ label: '⇧', width: 1.5, level: 1 }], [{ label: '?123', width: 1.5, level: 2 }] ],
     [ [], [], [{ label: '⇪', width: 1.5, level: 0 }], [{ label: '?123', width: 1.5, level: 2 }] ],
@@ -48,6 +51,105 @@ const defaultKeysPost = [
       [{ label: '?123', width: 3, level: 2, right: true }],
       [{ label: '🌐', width: 1.5 }, { label: '⌨', width: 1.5, action: 'hide' }] ],
 ];
+
+var KeyContainer = new Lang.Class({
+    Name: 'KeyContainer',
+    Extends: St.Widget,
+
+    _init: function() {
+        let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
+                                                  column_homogeneous: true,
+                                                  row_homogeneous: true });
+        this.parent({ layout_manager: gridLayout });
+        this._gridLayout = gridLayout;
+        this._currentRow = 0;
+        this._currentCol = 0;
+        this._maxCols = 0;
+
+        this._currentRow = null;
+        this._rows = [];
+    },
+
+    appendRow: function(length) {
+        this._currentRow++;
+        this._currentCol = 0;
+
+        let row = new Object();
+        row.keys = [];
+        row.width = 0;
+        this._rows.push(row);
+    },
+
+    appendKey: function(key, width = 1, height = 1) {
+        let keyInfo = new Object();
+        keyInfo.key = key;
+        keyInfo.left = this._currentCol;
+        keyInfo.top = this._currentRow;
+        keyInfo.width = width;
+        keyInfo.height = height;
+
+        let row = this._rows[this._rows.length - 1];
+        row.keys.push(keyInfo);
+        row.width += width;
+
+        this._currentCol += width;
+        this._maxCols = Math.max(this._currentCol, this._maxCols);
+    },
+
+    vfunc_allocate: function(box, flags) {
+        if (box.get_width() > 0 && box.get_height() > 0 && this._maxCols > 0) {
+            let keyboardRatio = this._maxCols / this._rows.length;
+            let sizeRatio = box.get_width() / box.get_height();
+
+            if (sizeRatio >= keyboardRatio) {
+                /* Restrict horizontally */
+                let width = box.get_height() * keyboardRatio;
+                let diff = box.get_width() - width;
+
+                box.x1 += Math.floor(diff / 2);
+                box.x2 -= Math.ceil(diff / 2);
+            } else {
+                /* Restrict vertically */
+                let height = box.get_width() / keyboardRatio;
+                let diff = box.get_height() - height;
+
+                box.y1 += Math.floor(diff / 2);
+                box.y2 -= Math.floor(diff / 2);
+            }
+        }
+
+        this.parent (box, flags);
+    },
+
+    layoutButtons: function() {
+        let nCol = 0, nRow = 0;
+
+        for (let i = 0; i < this._rows.length; i++) {
+            let row = this._rows[i];
+
+            /* When starting a new row, see if we need some padding */
+            if (nCol == 0) {
+                let diff = this._maxCols - row.width;
+                if (diff >= 1)
+                    nCol = diff * KEY_SIZE / 2;
+                else
+                    nCol = diff * KEY_SIZE;
+            }
+
+            for (let j = 0; j < row.keys.length; j++) {
+                let keyInfo = row.keys[j];
+                let width = keyInfo.width * KEY_SIZE;
+                let height = keyInfo.height * KEY_SIZE;
+
+                this._gridLayout.attach(keyInfo.key, nCol, nRow, width, height);
+                nCol += width;
+            }
+
+            nRow += KEY_SIZE;
+            nCol = 0;
+        }
+    }
+});
 
 var Suggestions = new Lang.Class({
     Name: 'Suggestions',
@@ -305,8 +407,7 @@ var Keyboard = new Lang.Class({
         this._keyboardRequested = false;
         this._keyboardRestingId = 0;
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._redraw));
-        this._redraw();
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
     },
 
     get visible() {
@@ -474,6 +575,8 @@ var Keyboard = new Lang.Class({
         this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', Lang.bind(this, this._onKeyboardGroupsChanged));
         this._keyboardStateId = this._keyboardController.connect('panel-state', Lang.bind(this, this._onKeyboardStateChanged));
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
+
+        this._relayout();
     },
 
     _onKeyFocusChanged: function () {
@@ -509,11 +612,12 @@ var Keyboard = new Lang.Class({
         for (let i = 0; i < levels.length; i++) {
             let currentLevel = levels[i];
             let level = (i >= 1 && levels.length == 3) ? i + 1 : i;
-            let layout = new St.BoxLayout({ style_class: 'keyboard-layout',
-                                            vertical: true });
+
+            let layout = new KeyContainer();
             this._loadRows(currentLevel, level, levels.length, layout);
             layers[level] = layout;
-            this.actor.add(layout, { x_fill: false });
+            this.actor.add(layout, { expand: true });
+            layout.layoutButtons();
 
             layout.hide();
         }
@@ -543,7 +647,7 @@ var Keyboard = new Lang.Class({
         return Clutter.EVENT_STOP;
     },
 
-    _addRowKeys : function (keys, keyboardRow) {
+    _addRowKeys : function (keys, layout) {
         for (let i = 0; i < keys.length; ++i) {
             let key = keys[i];
             let button = new Key(key.shift(), key);
@@ -583,11 +687,11 @@ var Keyboard = new Lang.Class({
                 }
             }));
 
-            keyboardRow.add(button.container, { expand: true, x_fill: false, x_align: St.Align.END });
+            layout.appendKey(button.container, button.actor.keyWidth);
         }
     },
 
-    _loadDefaultKeys: function(keys, rowActor, numLevels, numKeys) {
+    _loadDefaultKeys: function(keys, layout, numLevels, numKeys) {
         let extraButton;
         for (let i = 0; i < keys.length; i++) {
             let key = keys[i];
@@ -596,7 +700,6 @@ var Keyboard = new Lang.Class({
             let action = key.action;
 
             extraButton = new Key(key.label, []);
-            rowActor.add(extraButton.container);
 
             extraButton.actor.add_style_class_name('default-key');
             if (key.extraClassName != null)
@@ -631,6 +734,8 @@ var Keyboard = new Lang.Class({
             } else if (key.label == '⏎' && numKeys > 9) {
                 extraButton.setWidth(1.5);
             }
+
+            layout.appendKey(extraButton.container, extraButton.actor.keyWidth);
         }
     },
 
@@ -652,27 +757,22 @@ var Keyboard = new Lang.Class({
         }
     },
 
-    _mergeRowKeys: function (keyboardRow, pre, row, post, numLevels) {
+    _mergeRowKeys: function (layout, pre, row, post, numLevels) {
         if (pre != null)
-            this._loadDefaultKeys(pre, keyboardRow, numLevels, row.length);
+            this._loadDefaultKeys(pre, layout, numLevels, row.length);
 
-        this._addRowKeys(row, keyboardRow);
+        this._addRowKeys(row, layout);
 
         if (post != null)
-            this._loadDefaultKeys(post, keyboardRow, numLevels, row.length);
+            this._loadDefaultKeys(post, layout, numLevels, row.length);
     },
 
     _loadRows : function (model, level, numLevels, layout) {
         let rows = model.rows;
         for (let i = 0; i < rows.length; ++i) {
-            let row = rows[i];
-            let keyboardRow = new St.BoxLayout({ style_class: 'keyboard-row',
-                                                 x_expand: false,
-                                                 x_align: Clutter.ActorAlign.END });
-            layout.add(keyboardRow);
-
+            layout.appendRow();
             let [pre, post] = this._getDefaultKeysForRow(i, rows.length, level);
-            this._mergeRowKeys (keyboardRow, pre, row, post, numLevels);
+            this._mergeRowKeys (layout, pre, rows[i], post, numLevels);
         }
     },
 
@@ -691,50 +791,13 @@ var Keyboard = new Lang.Class({
         return [numOfHorizSlots, numOfVertSlots];
     },
 
-    _redraw: function () {
-        if (!this._enabled || !this._current_page)
+    _relayout: function () {
+        if (this.actor == null)
             return;
-
         let monitor = Main.layoutManager.keyboardMonitor;
         let maxHeight = monitor.height / 3;
         this.actor.width = monitor.width;
-
-        let layout = this._current_page;
-        let verticalSpacing = layout.get_theme_node().get_length('spacing');
-        let padding = layout.get_theme_node().get_length('padding');
-
-        let [numOfHorizSlots, numOfVertSlots] = this._getGridSlots ();
-
-        let box = layout.get_children()[0].get_children()[0];
-        let horizontalSpacing = box.get_theme_node().get_length('spacing');
-        let allHorizontalSpacing = (numOfHorizSlots - 1) * horizontalSpacing;
-        let keyWidth = Math.floor((this.actor.width - allHorizontalSpacing - 2 * padding) / numOfHorizSlots);
-
-        let allVerticalSpacing = (numOfVertSlots - 1) * verticalSpacing;
-        let keyHeight = Math.floor((maxHeight - allVerticalSpacing - 2 * padding) / numOfVertSlots);
-
-        let keySize = Math.min(keyWidth, keyHeight);
-        layout.height = keySize * numOfVertSlots + allVerticalSpacing + 2 * padding;
-
-        let rows = this._current_page.get_children();
-        for (let i = 0; i < rows.length; ++i) {
-            let keyboard_row = rows[i];
-            let keys = keyboard_row.get_children();
-            for (let j = 0; j < keys.length; ++j) {
-                let child = keys[j];
-                let keyActor = child.get_children()[0];
-                child.width = keySize * keyActor.keyWidth;
-                child.height = keySize;
-                if (keyActor._extended_keys) {
-                    let extended_keys = keyActor._extended_keys.get_children();
-                    for (let n = 0; n < extended_keys.length; ++n) {
-                        let extended_key = extended_keys[n];
-                        extended_key.width = keySize;
-                        extended_key.height = keySize;
-                    }
-                }
-            }
-        }
+        this.actor.height = maxHeight;
     },
 
     _onLevelChanged: function (level) {
@@ -776,7 +839,6 @@ var Keyboard = new Lang.Class({
         }
 
         this._current_page = layers[activeLevel];
-        this._redraw();
         this._current_page.show();
     },
 
@@ -803,7 +865,7 @@ var Keyboard = new Lang.Class({
         if (this._keyboardVisible) {
             if (monitor != Main.layoutManager.keyboardIndex) {
                 Main.layoutManager.keyboardIndex = monitor;
-                this._redraw();
+                this._relayout();
             }
             return;
         }
@@ -824,7 +886,7 @@ var Keyboard = new Lang.Class({
             return;
 
         Main.layoutManager.keyboardIndex = monitor;
-        this._redraw();
+        this._relayout();
         Main.layoutManager.showKeyboard();
     },
 
