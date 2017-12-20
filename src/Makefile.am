@@ -434,6 +434,12 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	wayland/meta-wayland-surface-role-cursor.h	\
 	wayland/meta-wayland-surface-role-tablet-cursor.c	\
 	wayland/meta-wayland-surface-role-tablet-cursor.h	\
+	wayland/meta-wayland-actor-surface.c	\
+	wayland/meta-wayland-actor-surface.h	\
+	wayland/meta-wayland-subsurface.c	\
+	wayland/meta-wayland-subsurface.h	\
+	wayland/meta-wayland-shell-surface.c	\
+	wayland/meta-wayland-shell-surface.h	\
 	wayland/meta-wayland-text-input.c	\
 	wayland/meta-wayland-text-input.h	\
 	wayland/meta-wayland-types.h		\

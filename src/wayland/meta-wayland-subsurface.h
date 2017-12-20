@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013-2015 Red Hat, Inc.
+ * Copyright (C) 2012,2013 Intel Corporation
+ * Copyright (C) 2013-2017 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,17 +18,19 @@
  * 02111-1307, USA.
  */
 
-#ifndef META_WAYLAND_WL_SHELL_H
-#define META_WAYLAND_WL_SHELL_H
+#ifndef META_WAYLAND_SUBSURFACE_H
+#define META_WAYLAND_SUBSURFACE_H
 
-#include "wayland/meta-wayland-shell-surface.h"
+#include "wayland/meta-wayland-actor-surface.h"
 
-#define META_TYPE_WAYLAND_WL_SHELL_SURFACE (meta_wayland_wl_shell_surface_get_type ())
-G_DECLARE_FINAL_TYPE (MetaWaylandWlShellSurface,
-                      meta_wayland_wl_shell_surface,
-                      META, WAYLAND_WL_SHELL_SURFACE,
-                      MetaWaylandShellSurface);
+#define META_TYPE_WAYLAND_SUBSURFACE (meta_wayland_subsurface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandSubsurface,
+                      meta_wayland_subsurface,
+                      META, WAYLAND_SUBSURFACE,
+                      MetaWaylandActorSurface)
 
-void meta_wayland_wl_shell_init (MetaWaylandCompositor *compositor);
+void meta_wayland_subsurface_parent_state_applied (MetaWaylandSubsurface *subsurface);
 
-#endif /* META_WAYLAND_WL_SHELL_H */
+void meta_wayland_subsurfaces_init (MetaWaylandCompositor *compositor);
+
+#endif /* META_WAYLAND_SUBSURFACE_H */

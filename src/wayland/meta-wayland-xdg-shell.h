@@ -20,7 +20,7 @@
 #ifndef META_WAYLAND_XDG_SHELL_H
 #define META_WAYLAND_XDG_SHELL_H
 
-#include "wayland/meta-wayland-surface.h"
+#include "wayland/meta-wayland-shell-surface.h"
 
 #define META_TYPE_WAYLAND_XDG_SURFACE (meta_wayland_xdg_surface_get_type ())
 G_DECLARE_DERIVABLE_TYPE (MetaWaylandXdgSurface,

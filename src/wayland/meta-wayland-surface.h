@@ -70,46 +70,6 @@ struct _MetaWaylandSerial {
   uint32_t value;
 };
 
-#define META_TYPE_WAYLAND_SURFACE_ROLE_ACTOR_SURFACE (meta_wayland_surface_role_actor_surface_get_type ())
-G_DECLARE_DERIVABLE_TYPE (MetaWaylandSurfaceRoleActorSurface,
-                          meta_wayland_surface_role_actor_surface,
-                          META, WAYLAND_SURFACE_ROLE_ACTOR_SURFACE,
-                          MetaWaylandSurfaceRole);
-
-struct _MetaWaylandSurfaceRoleActorSurfaceClass
-{
-  MetaWaylandSurfaceRoleClass parent_class;
-};
-
-#define META_TYPE_WAYLAND_SHELL_SURFACE (meta_wayland_shell_surface_get_type ())
-G_DECLARE_DERIVABLE_TYPE (MetaWaylandShellSurface,
-                          meta_wayland_shell_surface,
-                          META, WAYLAND_SHELL_SURFACE,
-                          MetaWaylandSurfaceRoleActorSurface);
-
-struct _MetaWaylandShellSurfaceClass
-{
-  MetaWaylandSurfaceRoleActorSurfaceClass parent_class;
-
-  void (*configure) (MetaWaylandShellSurface *shell_surface,
-                     int                      new_x,
-                     int                      new_y,
-                     int                      new_width,
-                     int                      new_height,
-                     MetaWaylandSerial       *sent_serial);
-  void (*managed) (MetaWaylandShellSurface *shell_surface,
-                   MetaWindow              *window);
-  void (*ping) (MetaWaylandShellSurface *shell_surface,
-                uint32_t                 serial);
-  void (*close) (MetaWaylandShellSurface *shell_surface);
-};
-
-#define META_TYPE_WAYLAND_SURFACE_ROLE_SUBSURFACE (meta_wayland_surface_role_subsurface_get_type ())
-G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleSubsurface,
-                      meta_wayland_surface_role_subsurface,
-                      META, WAYLAND_SURFACE_ROLE_SUBSURFACE,
-                      MetaWaylandSurfaceRoleActorSurface);
-
 #define META_TYPE_WAYLAND_SURFACE_ROLE_DND (meta_wayland_surface_role_dnd_get_type ())
 G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleDND,
                       meta_wayland_surface_role_dnd,
@@ -251,6 +211,11 @@ MetaWaylandSurface *meta_wayland_surface_create (MetaWaylandCompositor *composit
                                                  struct wl_client      *client,
                                                  struct wl_resource    *compositor_resource,
                                                  guint32                id);
+
+void                meta_wayland_surface_apply_pending_state (MetaWaylandSurface      *surface,
+                                                              MetaWaylandPendingState *pending);
+
+gboolean            meta_wayland_surface_is_effectively_synchronized (MetaWaylandSurface *surface);
 
 gboolean            meta_wayland_surface_assign_role (MetaWaylandSurface *surface,
                                                       GType               role_type,

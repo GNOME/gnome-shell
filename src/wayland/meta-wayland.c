@@ -39,6 +39,7 @@
 #include "meta-wayland-seat.h"
 #include "meta-wayland-outputs.h"
 #include "meta-wayland-data-device.h"
+#include "meta-wayland-subsurface.h"
 #include "meta-wayland-tablet-manager.h"
 #include "meta-wayland-xdg-foreign.h"
 #include "meta-wayland-dma-buf.h"
@@ -374,6 +375,7 @@ meta_wayland_init (void)
 
   meta_wayland_outputs_init (compositor);
   meta_wayland_data_device_manager_init (compositor);
+  meta_wayland_subsurfaces_init (compositor);
   meta_wayland_shell_init (compositor);
   meta_wayland_pointer_gestures_init (compositor);
   meta_wayland_tablet_manager_init (compositor);
