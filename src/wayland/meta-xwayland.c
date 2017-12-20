@@ -33,6 +33,7 @@
 #include <sys/un.h>
 
 #include "compositor/meta-surface-actor-wayland.h"
+#include "wayland/meta-wayland-actor-surface.h"
 
 enum {
   XWAYLAND_SURFACE_WINDOW_ASSOCIATED,
@@ -46,16 +47,16 @@ guint xwayland_surface_signals[XWAYLAND_SURFACE_LAST_SIGNAL];
 G_DECLARE_FINAL_TYPE (MetaWaylandSurfaceRoleXWayland,
                       meta_wayland_surface_role_xwayland,
                       META, WAYLAND_SURFACE_ROLE_XWAYLAND,
-                      MetaWaylandSurfaceRole);
+                      MetaWaylandActorSurface)
 
 struct _MetaWaylandSurfaceRoleXWayland
 {
-  MetaWaylandSurfaceRole parent;
+  MetaWaylandActorSurface parent;
 };
 
 G_DEFINE_TYPE (MetaWaylandSurfaceRoleXWayland,
                meta_wayland_surface_role_xwayland,
-               META_TYPE_WAYLAND_SURFACE_ROLE);
+               META_TYPE_WAYLAND_ACTOR_SURFACE)
 
 static void
 associate_window_with_surface (MetaWindow         *window,
@@ -638,6 +639,8 @@ xwayland_surface_assigned (MetaWaylandSurfaceRole *surface_role)
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandSurfaceRoleClass *surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_xwayland_parent_class);
 
   /* See comment in xwayland_surface_commit for why we reply even though the
    * surface may not be drawn the next frame.
@@ -645,6 +648,8 @@ xwayland_surface_assigned (MetaWaylandSurfaceRole *surface_role)
   wl_list_insert_list (&surface->compositor->frame_callbacks,
                        &surface->pending_frame_callback_list);
   wl_list_init (&surface->pending_frame_callback_list);
+
+  surface_role_class->assigned (surface_role);
 }
 
 static void
@@ -653,6 +658,8 @@ xwayland_surface_commit (MetaWaylandSurfaceRole  *surface_role,
 {
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandSurfaceRoleClass *surface_role_class =
+    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_surface_role_xwayland_parent_class);
 
   /* For Xwayland windows, throttling frames when the window isn't actually
    * drawn is less useful, because Xwayland still has to do the drawing sent
@@ -666,6 +673,8 @@ xwayland_surface_commit (MetaWaylandSurfaceRole  *surface_role,
    * user the initial black frame from when the window is mapped empty.
    */
   meta_wayland_surface_queue_pending_state_frame_callbacks (surface, pending);
+
+  surface_role_class->commit (surface_role, pending);
 }
 
 static MetaWaylandSurface *
