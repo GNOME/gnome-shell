@@ -184,6 +184,8 @@ struct _ClutterTextPrivate
   guint direction_changed_id;
 
   ClutterInputFocus *input_focus;
+  ClutterInputContentHintFlags input_hints;
+  ClutterInputContentPurpose input_purpose;
 
   /* bitfields */
   guint alignment               : 2;
@@ -245,6 +247,8 @@ enum
   PROP_SINGLE_LINE_MODE,
   PROP_SELECTED_TEXT_COLOR,
   PROP_SELECTED_TEXT_COLOR_SET,
+  PROP_INPUT_HINTS,
+  PROP_INPUT_PURPOSE,
 
   PROP_LAST
 };
@@ -4032,6 +4036,22 @@ clutter_text_class_init (ClutterTextClass *klass)
   obj_props[PROP_SELECTED_TEXT_COLOR_SET] = pspec;
   g_object_class_install_property (gobject_class, PROP_SELECTED_TEXT_COLOR_SET, pspec);
 
+  pspec = g_param_spec_flags ("input-hints",
+                              P_("Input hints"),
+                              P_("Input hints"),
+                              CLUTTER_TYPE_INPUT_CONTENT_HINT_FLAGS,
+                              0, CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_INPUT_HINTS] = pspec;
+  g_object_class_install_property (gobject_class, PROP_INPUT_HINTS, pspec);
+
+  pspec = g_param_spec_enum ("input-purpose",
+                             P_("Input purpose"),
+                             P_("Input purpose"),
+                             CLUTTER_TYPE_INPUT_CONTENT_PURPOSE,
+                             0, CLUTTER_PARAM_READWRITE);
+  obj_props[PROP_INPUT_PURPOSE] = pspec;
+  g_object_class_install_property (gobject_class, PROP_INPUT_PURPOSE, pspec);
+
   /**
    * ClutterText::text-changed:
    * @self: the #ClutterText that emitted the signal
@@ -6472,4 +6492,42 @@ clutter_text_get_cursor_rect (ClutterText *self,
   g_return_if_fail (rect != NULL);
 
   *rect = self->priv->cursor_rect;
+}
+
+void
+clutter_text_set_input_hints (ClutterText                  *self,
+                              ClutterInputContentHintFlags  hints)
+{
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  self->priv->input_hints = hints;
+  clutter_input_focus_set_content_hints (self->priv->input_focus, hints);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_INPUT_HINTS]);
+}
+
+ClutterInputContentHintFlags
+clutter_text_get_input_hints (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), 0);
+
+  return self->priv->input_hints;
+}
+
+void
+clutter_text_set_input_purpose (ClutterText                *self,
+                                ClutterInputContentPurpose  purpose)
+{
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+
+  self->priv->input_purpose = purpose;
+  clutter_input_focus_set_content_purpose (self->priv->input_focus, purpose);
+  g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_INPUT_PURPOSE]);
+}
+
+ClutterInputContentPurpose
+clutter_text_get_input_purpose (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), 0);
+
+  return self->priv->input_purpose;
 }

@@ -302,6 +302,17 @@ void                  clutter_text_get_layout_offsets   (ClutterText           *
                                                          gint                  *x,
                                                          gint                  *y);
 
+CLUTTER_AVAILABLE_IN_MUTTER
+void                  clutter_text_set_input_hints (ClutterText                  *self,
+                                                    ClutterInputContentHintFlags  hints);
+CLUTTER_AVAILABLE_IN_MUTTER
+void                  clutter_text_set_input_purpose (ClutterText                *self,
+                                                      ClutterInputContentPurpose  purpose);
+CLUTTER_AVAILABLE_IN_MUTTER
+ClutterInputContentHintFlags clutter_text_get_input_hints (ClutterText *self);
+CLUTTER_AVAILABLE_IN_MUTTER
+ClutterInputContentPurpose clutter_text_get_input_purpose (ClutterText *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TEXT_H__ */
