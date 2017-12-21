@@ -6531,3 +6531,11 @@ clutter_text_get_input_purpose (ClutterText *self)
 
   return self->priv->input_purpose;
 }
+
+gboolean
+clutter_text_has_preedit (ClutterText *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_TEXT (self), FALSE);
+
+  return self->priv->preedit_set;
+}

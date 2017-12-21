@@ -313,6 +313,9 @@ ClutterInputContentHintFlags clutter_text_get_input_hints (ClutterText *self);
 CLUTTER_AVAILABLE_IN_MUTTER
 ClutterInputContentPurpose clutter_text_get_input_purpose (ClutterText *self);
 
+CLUTTER_AVAILABLE_IN_MUTTER
+gboolean              clutter_text_has_preedit (ClutterText *self);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_TEXT_H__ */
