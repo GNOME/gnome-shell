@@ -56,6 +56,7 @@ struct _MetaWaylandTouchInfo
   gfloat x;
   gfloat y;
   guint updated : 1;
+  guint begin_delivered : 1;
 };
 
 static void
@@ -278,6 +279,8 @@ handle_touch_begin (MetaWaylandTouch   *touch,
                           wl_fixed_from_double (touch_info->x),
                           wl_fixed_from_double (touch_info->y));
     }
+
+  touch_info->begin_delivered = TRUE;
 }
 
 static void
@@ -292,7 +295,7 @@ handle_touch_update (MetaWaylandTouch   *touch,
   sequence = clutter_event_get_event_sequence (event);
   touch_info = touch_get_info (touch, sequence, FALSE);
 
-  if (!touch_info)
+  if (!touch_info || !touch_info->begin_delivered)
     return;
 
   l = &touch_info->touch_surface->resource_list;
@@ -321,12 +324,15 @@ handle_touch_end (MetaWaylandTouch   *touch,
   if (!touch_info)
     return;
 
-  l = &touch_info->touch_surface->resource_list;
-  wl_resource_for_each(resource, l)
+  if (touch_info->begin_delivered)
     {
-      wl_touch_send_up (resource, touch_info->slot_serial,
-                        clutter_event_get_time (event),
-                        touch_info->slot);
+      l = &touch_info->touch_surface->resource_list;
+      wl_resource_for_each(resource, l)
+        {
+          wl_touch_send_up (resource, touch_info->slot_serial,
+                            clutter_event_get_time (event),
+                            touch_info->slot);
+        }
     }
 
   g_hash_table_remove (touch->touches, sequence);
