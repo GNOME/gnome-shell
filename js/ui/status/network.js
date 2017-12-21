@@ -1492,6 +1492,15 @@ var NMVPNSection = new Lang.Class({
         this.parent(client);
 
         this.item.menu.addSettingsAction(_("VPN Settings"), 'gnome-network-panel.desktop');
+
+        this._sync();
+    },
+
+    _sync: function() {
+        let nItems = this._connectionItems.size;
+        this.item.actor.visible = (nItems > 0);
+
+        this.parent();
     },
 
     _getDescription: function() {
