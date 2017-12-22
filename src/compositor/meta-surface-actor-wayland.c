@@ -38,18 +38,22 @@
 #include "backends/meta-backend-private.h"
 #include "compositor/region-utils.h"
 
-struct _MetaSurfaceActorWaylandPrivate
+typedef struct _MetaSurfaceActorWaylandPrivate
 {
   MetaWaylandSurface *surface;
   struct wl_list frame_callback_list;
-};
-typedef struct _MetaSurfaceActorWaylandPrivate MetaSurfaceActorWaylandPrivate;
+} MetaSurfaceActorWaylandPrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (MetaSurfaceActorWayland, meta_surface_actor_wayland, META_TYPE_SURFACE_ACTOR)
+G_DEFINE_TYPE_WITH_PRIVATE (MetaSurfaceActorWayland,
+                            meta_surface_actor_wayland,
+                            META_TYPE_SURFACE_ACTOR)
 
 static void
 meta_surface_actor_wayland_process_damage (MetaSurfaceActor *actor,
-                                           int x, int y, int width, int height)
+                                           int               x,
+                                           int               y,
+                                           int               width,
+                                           int               height)
 {
 }
 
