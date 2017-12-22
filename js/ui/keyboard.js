@@ -190,6 +190,9 @@ var Key = new Lang.Class({
         this._extended_keys = extendedKeys;
         this._extended_keyboard = null;
         this._pressTimeoutId = 0;
+        this._capturedPress = false;
+        this._capturedEventId = 0;
+        this._unmapId = 0;
     },
 
     _onDestroy: function() {
@@ -236,7 +239,7 @@ var Key = new Lang.Class({
                                                         this._ensureExtendedKeysPopup();
                                                         this.actor.fake_release();
                                                         this.actor.set_hover(false);
-                                                        this.emit('show-subkeys');
+                                                        this._showSubkeys();
                                                         return GLib.SOURCE_REMOVE;
                                                     }));
         }
@@ -250,6 +253,48 @@ var Key = new Lang.Class({
         }
 
         this.emit('released', this._getKeyval(key), key);
+        this._hideSubkeys();
+    },
+
+    _onCapturedEvent: function(actor, event) {
+        let type = event.type();
+        let press = (type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN);
+        let release = (type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END);
+
+        if (event.get_source() == this._boxPointer.bin ||
+            this._boxPointer.bin.contains(event.get_source()))
+            return Clutter.EVENT_PROPAGATE;
+
+        if (press)
+            this._capturedPress = true;
+        else if (release && this._capturedPress)
+            this._hideSubkeys();
+
+        return Clutter.EVENT_STOP;
+    },
+
+    _showSubkeys: function() {
+        this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
+        this._capturedEventId = global.stage.connect('captured-event',
+                                                     Lang.bind(this, this._onCapturedEvent));
+        this._unmapId = this.actor.connect('notify::mapped', Lang.bind(this, function() {
+            if (!this.actor.is_mapped())
+                this._hideSubkeys();
+        }));
+    },
+
+    _hideSubkeys: function() {
+        if (this._boxPointer)
+            this._boxPointer.hide(BoxPointer.PopupAnimation.FULL);
+        if (this._capturedEventId) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+        if (this._unmapId) {
+            this.actor.disconnect(this._unmapId);
+            this._unmapId = 0;
+        }
+        this._capturedPress = false;
     },
 
     _makeKey: function (key) {
@@ -389,9 +434,6 @@ var Keyboard = new Lang.Class({
         this._syncEnabled();
 
         this._showIdleId = 0;
-        this._subkeysBoxPointer = null;
-        this._capturedEventId = 0;
-        this._capturedPress = false;
 
         this._keyboardVisible = false;
         Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, function(o, visible) {
@@ -519,10 +561,8 @@ var Keyboard = new Lang.Class({
         if (this._enabled && !this._keyboardController)
             this._setupKeyboard();
 
-        if (!this._enabled && wasEnabled) {
-            this._hideSubkeys();
+        if (!this._enabled && wasEnabled)
             Main.layoutManager.hideKeyboard(true);
-        }
     },
 
     _destroyKeyboard: function() {
@@ -631,19 +671,6 @@ var Keyboard = new Lang.Class({
         this._setActiveLayer(0);
     },
 
-    _onCapturedEvent: function(actor, event) {
-        let type = event.type();
-        let press = (type == Clutter.EventType.BUTTON_PRESS || type == Clutter.EventType.TOUCH_BEGIN);
-        let release = (type == Clutter.EventType.BUTTON_RELEASE || type == Clutter.EventType.TOUCH_END);
-
-        if (press)
-            this._capturedPress = true;
-        else if (release && this._capturedPress)
-            this._hideSubkeys();
-
-        return Clutter.EVENT_STOP;
-    },
-
     _addRowKeys : function (keys, layout) {
         for (let i = 0; i < keys.length; ++i) {
             let key = keys[i];
@@ -653,20 +680,7 @@ var Keyboard = new Lang.Class({
             if (button.key == ' ')
                 button.setWidth(keys.length <= 3 ? 5 : 3);
 
-            button.connect('show-subkeys', Lang.bind(this, function() {
-                if (this._subkeysBoxPointer)
-                    this._subkeysBoxPointer.hide(BoxPointer.PopupAnimation.FULL);
-                this._subkeysBoxPointer = button.subkeys;
-                this._subkeysBoxPointer.show(BoxPointer.PopupAnimation.FULL);
-                if (!this._capturedEventId)
-                    this._capturedEventId = this.actor.connect('captured-event',
-                                                               Lang.bind(this, this._onCapturedEvent));
-            }));
-            button.connect('hide-subkeys', Lang.bind(this, function() {
-                this._hideSubkeys();
-            }));
             button.connect('pressed', Lang.bind(this, function(actor, keyval, str) {
-                this._hideSubkeys();
                 if (!Main.inputMethod.currentFocus ||
                     !this._keyboardController.commitString(str, true)) {
                     if (keyval != 0) {
@@ -676,7 +690,6 @@ var Keyboard = new Lang.Class({
                 }
             }));
             button.connect('released', Lang.bind(this, function(actor, keyval, str) {
-                this._hideSubkeys();
                 if (keyval != 0) {
                     if (button._keyvalPress)
                         this._keyboardController.keyvalRelease(keyval);
@@ -912,7 +925,6 @@ var Keyboard = new Lang.Class({
         if (this._keyboardRequested)
             return;
 
-        this._hideSubkeys();
         Main.layoutManager.hideKeyboard();
     },
 
