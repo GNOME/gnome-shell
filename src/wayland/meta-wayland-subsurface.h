@@ -31,6 +31,11 @@ G_DECLARE_FINAL_TYPE (MetaWaylandSubsurface,
 
 void meta_wayland_subsurface_parent_state_applied (MetaWaylandSubsurface *subsurface);
 
+void meta_wayland_subsurface_union_geometry (MetaWaylandSubsurface *subsurface,
+                                             int                    parent_x,
+                                             int                    parent_y,
+                                             MetaRectangle         *out_geometry);
+
 void meta_wayland_subsurfaces_init (MetaWaylandCompositor *compositor);
 
 #endif /* META_WAYLAND_SUBSURFACE_H */

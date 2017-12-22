@@ -335,45 +335,6 @@ dnd_surface_commit (MetaWaylandSurfaceRole  *surface_role,
 }
 
 void
-meta_wayland_surface_calculate_window_geometry (MetaWaylandSurface *surface,
-                                                MetaRectangle      *total_geometry,
-                                                float               parent_x,
-                                                float               parent_y)
-{
-  MetaSurfaceActorWayland *surface_actor =
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
-  MetaRectangle subsurface_rect;
-  MetaRectangle geom;
-  GList *l;
-
-  /* Unmapped surfaces don't count. */
-  if (!CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (surface_actor)))
-    return;
-
-  if (!surface->buffer_ref.buffer)
-    return;
-
-  meta_surface_actor_wayland_get_subsurface_rect (surface_actor,
-                                                  &subsurface_rect);
-
-  geom.x = parent_x + subsurface_rect.x;
-  geom.y = parent_x + subsurface_rect.y;
-  geom.width = subsurface_rect.width;
-  geom.height = subsurface_rect.height;
-
-  meta_rectangle_union (total_geometry, &geom, total_geometry);
-
-  for (l = surface->subsurfaces; l != NULL; l = l->next)
-    {
-      MetaWaylandSurface *subsurface = l->data;
-      meta_wayland_surface_calculate_window_geometry (subsurface,
-                                                      total_geometry,
-                                                      subsurface_rect.x,
-                                                      subsurface_rect.y);
-    }
-}
-
-void
 meta_wayland_surface_destroy_window (MetaWaylandSurface *surface)
 {
   if (surface->window)

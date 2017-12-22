@@ -26,10 +26,52 @@
 #include "compositor/meta-surface-actor-wayland.h"
 #include "wayland/meta-wayland-actor-surface.h"
 #include "wayland/meta-wayland-buffer.h"
+#include "wayland/meta-wayland-subsurface.h"
+#include "wayland/meta-wayland-surface.h"
+#include "wayland/meta-window-wayland.h"
 
 G_DEFINE_TYPE (MetaWaylandShellSurface,
                meta_wayland_shell_surface,
                META_TYPE_WAYLAND_ACTOR_SURFACE)
+
+void
+meta_wayland_shell_surface_calculate_geometry (MetaWaylandShellSurface *shell_surface,
+                                               MetaRectangle           *out_geometry)
+{
+  MetaWaylandSurfaceRole *surface_role =
+    META_WAYLAND_SURFACE_ROLE (shell_surface);
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandBuffer *buffer;
+  CoglTexture *texture;
+  MetaRectangle geometry;
+  GList *l;
+
+  buffer = surface->buffer_ref.buffer;
+  if (!buffer)
+    return;
+
+  texture = meta_wayland_buffer_get_texture (buffer);
+  geometry = (MetaRectangle) {
+    .x = 0,
+    .y = 0,
+    .width = cogl_texture_get_width (texture) / surface->scale,
+    .height = cogl_texture_get_height (texture) / surface->scale,
+  };
+
+  for (l = surface->subsurfaces; l; l = l->next)
+    {
+      MetaWaylandSurface *subsurface_surface = l->data;
+      MetaWaylandSubsurface *subsurface =
+        META_WAYLAND_SUBSURFACE (subsurface_surface->role);
+
+      meta_wayland_subsurface_union_geometry (subsurface,
+                                              0, 0,
+                                              &geometry);
+    }
+
+  *out_geometry = geometry;
+}
 
 void
 meta_wayland_shell_surface_configure (MetaWaylandShellSurface *shell_surface,
@@ -83,13 +125,14 @@ static void
 meta_wayland_shell_surface_surface_commit (MetaWaylandSurfaceRole  *surface_role,
                                            MetaWaylandPendingState *pending)
 {
+  MetaWaylandActorSurface *actor_surface =
+    META_WAYLAND_ACTOR_SURFACE (surface_role);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWaylandSurfaceRoleClass *surface_role_class;
   MetaWindow *window;
   MetaWaylandBuffer *buffer;
   CoglTexture *texture;
-  MetaSurfaceActorWayland *surface_actor;
   double scale;
 
   surface_role_class =
@@ -104,8 +147,7 @@ meta_wayland_shell_surface_surface_commit (MetaWaylandSurfaceRole  *surface_role
   if (!window)
     return;
 
-  surface_actor = META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
-  scale = meta_surface_actor_wayland_get_scale (surface_actor);
+  scale = meta_wayland_actor_surface_calculate_scale (actor_surface);
   texture = meta_wayland_buffer_get_texture (buffer);
 
   window->buffer_rect.width = cogl_texture_get_width (texture) * scale;

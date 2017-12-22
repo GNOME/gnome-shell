@@ -32,6 +32,7 @@
 #include "window-private.h"
 #include "boxes-private.h"
 #include "stack-tracker.h"
+#include "meta-wayland-actor-surface.h"
 #include "meta-wayland-private.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-xdg-shell.h"
@@ -491,15 +492,13 @@ meta_window_wayland_main_monitor_changed (MetaWindow               *window,
                                         window,
                                         TRUE);
 
-  /* The surface actor needs to update the scale recursively for itself and all
-   * its subsurfaces */
   surface = window->surface;
   if (surface)
     {
-      MetaSurfaceActorWayland *actor =
-        META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
+      MetaWaylandActorSurface *actor_surface =
+        META_WAYLAND_ACTOR_SURFACE (surface->role);
 
-      meta_surface_actor_wayland_sync_state_recursive (actor);
+      meta_wayland_actor_surface_sync_actor_state (actor_surface);
     }
 
   wl_window->geometry_scale = geometry_scale;

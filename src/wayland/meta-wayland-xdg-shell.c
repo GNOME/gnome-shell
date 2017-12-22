@@ -32,6 +32,7 @@
 #include "wayland/meta-wayland-popup.h"
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-wayland-seat.h"
+#include "wayland/meta-wayland-shell-surface.h"
 #include "wayland/meta-wayland-surface.h"
 #include "wayland/meta-wayland-versions.h"
 #include "wayland/meta-window-wayland.h"
@@ -1230,6 +1231,8 @@ meta_wayland_xdg_surface_commit (MetaWaylandSurfaceRole  *surface_role,
                                  MetaWaylandPendingState *pending)
 {
   MetaWaylandXdgSurface *xdg_surface = META_WAYLAND_XDG_SURFACE (surface_role);
+  MetaWaylandShellSurface *shell_surface =
+    META_WAYLAND_SHELL_SURFACE (xdg_surface);
   MetaWaylandXdgSurfacePrivate *priv =
     meta_wayland_xdg_surface_get_instance_private (xdg_surface);
   MetaWaylandSurface *surface =
@@ -1283,9 +1286,8 @@ meta_wayland_xdg_surface_commit (MetaWaylandSurfaceRole  *surface_role,
       /* If the surface has never set any geometry, calculate
        * a default one unioning the surface and all subsurfaces together. */
 
-      meta_wayland_surface_calculate_window_geometry (surface,
-                                                      &new_geometry,
-                                                      0, 0);
+      meta_wayland_shell_surface_calculate_geometry (shell_surface,
+                                                     &new_geometry);
       if (!meta_rectangle_equal (&new_geometry, &priv->geometry))
         {
           pending->has_new_geometry = TRUE;

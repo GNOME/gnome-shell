@@ -32,6 +32,12 @@ G_DECLARE_DERIVABLE_TYPE (MetaWaylandActorSurface,
 struct _MetaWaylandActorSurfaceClass
 {
   MetaWaylandSurfaceRoleClass parent_class;
+
+  void (* sync_actor_state) (MetaWaylandActorSurface *actor_surface);
 };
+
+void meta_wayland_actor_surface_sync_actor_state (MetaWaylandActorSurface *actor_surface);
+
+double meta_wayland_actor_surface_calculate_scale (MetaWaylandActorSurface *actor_surface);
 
 #endif /* META_WAYLAND_ACTOR_SURFACE_H */

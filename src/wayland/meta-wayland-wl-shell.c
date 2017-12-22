@@ -30,6 +30,7 @@
 #include "wayland/meta-wayland-popup.h"
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-wayland-seat.h"
+#include "wayland/meta-wayland-shell-surface.h"
 #include "wayland/meta-wayland-surface.h"
 #include "wayland/meta-wayland-versions.h"
 #include "wayland/meta-window-wayland.h"
@@ -564,6 +565,8 @@ wl_shell_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
 {
   MetaWaylandWlShellSurface *wl_shell_surface =
     META_WAYLAND_WL_SHELL_SURFACE (surface_role);
+  MetaWaylandShellSurface *shell_surface =
+    META_WAYLAND_SHELL_SURFACE (wl_shell_surface);
   MetaWaylandSurfaceRoleClass *surface_role_class;
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
@@ -596,7 +599,7 @@ wl_shell_surface_role_commit (MetaWaylandSurfaceRole  *surface_role,
   if (!pending->newly_attached)
     return;
 
-  meta_wayland_surface_calculate_window_geometry (surface, &geom, 0, 0);
+  meta_wayland_shell_surface_calculate_geometry (shell_surface, &geom);
   meta_window_wayland_move_resize (window,
                                    NULL,
                                    geom, pending->dx, pending->dy);

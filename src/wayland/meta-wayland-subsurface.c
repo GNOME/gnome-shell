@@ -24,7 +24,10 @@
 
 #include "compositor/meta-surface-actor-wayland.h"
 #include "wayland/meta-wayland.h"
+#include "wayland/meta-wayland-actor-surface.h"
+#include "wayland/meta-wayland-buffer.h"
 #include "wayland/meta-wayland-surface.h"
+#include "wayland/meta-window-wayland.h"
 
 typedef enum
 {
@@ -48,10 +51,39 @@ G_DEFINE_TYPE (MetaWaylandSubsurface,
                meta_wayland_subsurface,
                META_TYPE_WAYLAND_ACTOR_SURFACE)
 
+static void
+sync_actor_subsurface_state (MetaWaylandSurface *surface)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (surface->surface_actor);
+  MetaWindow *toplevel_window;
+  int geometry_scale;
+  int x, y;
+
+  toplevel_window = meta_wayland_surface_get_toplevel_window (surface);
+  if (!toplevel_window)
+    return;
+
+  if (toplevel_window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    return;
+
+  geometry_scale = meta_window_wayland_get_geometry_scale (toplevel_window);
+  x = (surface->offset_x + surface->sub.x) * geometry_scale;
+  y = (surface->offset_y + surface->sub.y) * geometry_scale;
+
+  clutter_actor_set_position (actor, x, y);
+
+  if (surface->buffer_ref.buffer)
+    clutter_actor_show (actor);
+  else
+    clutter_actor_hide (actor);
+}
+
 void
 meta_wayland_subsurface_parent_state_applied (MetaWaylandSubsurface *subsurface)
 {
   MetaWaylandSurfaceRole *surface_role = META_WAYLAND_SURFACE_ROLE (subsurface);
+  MetaWaylandActorSurface *actor_surface =
+    META_WAYLAND_ACTOR_SURFACE (subsurface);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
 
@@ -108,27 +140,48 @@ meta_wayland_subsurface_parent_state_applied (MetaWaylandSubsurface *subsurface)
   if (meta_wayland_surface_is_effectively_synchronized (surface))
     meta_wayland_surface_apply_pending_state (surface, surface->sub.pending);
 
-  meta_surface_actor_wayland_sync_subsurface_state (
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor));
+  meta_wayland_actor_surface_sync_actor_state (actor_surface);
 }
 
-static void
-meta_wayland_subsurface_commit (MetaWaylandSurfaceRole  *surface_role,
-                                MetaWaylandPendingState *pending)
+void
+meta_wayland_subsurface_union_geometry (MetaWaylandSubsurface *subsurface,
+                                        int                    parent_x,
+                                        int                    parent_y,
+                                        MetaRectangle         *out_geometry)
 {
-  MetaWaylandSurfaceRoleClass *surface_role_class;
+  MetaWaylandSurfaceRole *surface_role = META_WAYLAND_SURFACE_ROLE (subsurface);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
-  ClutterActor *actor = CLUTTER_ACTOR (surface->surface_actor);
+  MetaWaylandBuffer *buffer;
+  CoglTexture *texture;
+  MetaRectangle geometry;
+  GList *l;
 
-  surface_role_class =
-    META_WAYLAND_SURFACE_ROLE_CLASS (meta_wayland_subsurface_parent_class);
-  surface_role_class->commit (surface_role, pending);
+  buffer = surface->buffer_ref.buffer;
+  if (!buffer)
+    return;
 
-  if (surface->buffer_ref.buffer != NULL)
-    clutter_actor_show (actor);
-  else
-    clutter_actor_hide (actor);
+  texture = meta_wayland_buffer_get_texture (buffer);
+  geometry = (MetaRectangle) {
+    .x = surface->offset_x + surface->sub.x,
+    .y = surface->offset_y + surface->sub.y,
+    .width = cogl_texture_get_width (texture) / surface->scale,
+    .height = cogl_texture_get_height (texture) / surface->scale,
+  };
+
+  meta_rectangle_union (out_geometry, &geometry, out_geometry);
+
+  for (l = surface->subsurfaces; l; l = l->next)
+    {
+      MetaWaylandSurface *subsurface_surface = l->data;
+      MetaWaylandSubsurface *subsurface =
+        META_WAYLAND_SUBSURFACE (subsurface_surface->role);
+
+      meta_wayland_subsurface_union_geometry (subsurface,
+                                              parent_x + geometry.x,
+                                              parent_y + geometry.y,
+                                              out_geometry);
+    }
 }
 
 static MetaWaylandSurface *
@@ -145,6 +198,21 @@ meta_wayland_subsurface_get_toplevel (MetaWaylandSurfaceRole *surface_role)
 }
 
 static void
+meta_wayland_subsurface_sync_actor_state (MetaWaylandActorSurface *actor_surface)
+{
+  MetaWaylandSurfaceRole *surface_role =
+    META_WAYLAND_SURFACE_ROLE (actor_surface);
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+  MetaWaylandActorSurfaceClass *actor_surface_class =
+    META_WAYLAND_ACTOR_SURFACE_CLASS (meta_wayland_subsurface_parent_class);
+
+  actor_surface_class->sync_actor_state (actor_surface);
+
+  sync_actor_subsurface_state (surface);
+}
+
+static void
 meta_wayland_subsurface_init (MetaWaylandSubsurface *role)
 {
 }
@@ -154,9 +222,13 @@ meta_wayland_subsurface_class_init (MetaWaylandSubsurfaceClass *klass)
 {
   MetaWaylandSurfaceRoleClass *surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
+  MetaWaylandActorSurfaceClass *actor_surface_class =
+    META_WAYLAND_ACTOR_SURFACE_CLASS (klass);
 
-  surface_role_class->commit = meta_wayland_subsurface_commit;
   surface_role_class->get_toplevel = meta_wayland_subsurface_get_toplevel;
+
+  actor_surface_class->sync_actor_state =
+    meta_wayland_subsurface_sync_actor_state;
 }
 
 static void
@@ -355,6 +427,7 @@ wl_subcompositor_get_subsurface (struct wl_client   *client,
 {
   MetaWaylandSurface *surface = wl_resource_get_user_data (surface_resource);
   MetaWaylandSurface *parent = wl_resource_get_user_data (parent_resource);
+  MetaWindow *toplevel_window;
 
   if (surface->wl_subsurface)
     {
@@ -373,6 +446,11 @@ wl_subcompositor_get_subsurface (struct wl_client   *client,
                               wl_resource_get_id (surface->resource));
       return;
     }
+
+  toplevel_window = meta_wayland_surface_get_toplevel_window (parent);
+  if (toplevel_window &&
+      toplevel_window->client_type == META_WINDOW_CLIENT_TYPE_X11)
+    g_warning ("XWayland subsurfaces not currently supported");
 
   surface->wl_subsurface =
     wl_resource_create (client,

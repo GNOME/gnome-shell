@@ -61,4 +61,7 @@ void meta_wayland_shell_surface_close (MetaWaylandShellSurface *shell_surface);
 void meta_wayland_shell_surface_managed (MetaWaylandShellSurface *shell_surface,
                                          MetaWindow              *window);
 
+void meta_wayland_shell_surface_calculate_geometry (MetaWaylandShellSurface *shell_surface,
+                                                    MetaRectangle           *out_geometry);
+
 #endif /* META_WAYLAND_SHELL_SURFACE_H */

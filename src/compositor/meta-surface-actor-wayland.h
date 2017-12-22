@@ -67,15 +67,6 @@ double meta_surface_actor_wayland_get_scale (MetaSurfaceActorWayland *actor);
 void meta_surface_actor_wayland_get_subsurface_rect (MetaSurfaceActorWayland *self,
                                                      MetaRectangle           *rect);
 
-void meta_surface_actor_wayland_sync_state (MetaSurfaceActorWayland *self);
-
-void meta_surface_actor_wayland_sync_state_recursive (MetaSurfaceActorWayland *self);
-
-void meta_surface_actor_wayland_sync_subsurface_state (MetaSurfaceActorWayland *self);
-
-gboolean meta_surface_actor_wayland_is_on_monitor (MetaSurfaceActorWayland *self,
-                                                   MetaLogicalMonitor      *logical_monitor);
-
 void meta_surface_actor_wayland_add_frame_callbacks (MetaSurfaceActorWayland *self,
                                                      struct wl_list *frame_callbacks);
 
