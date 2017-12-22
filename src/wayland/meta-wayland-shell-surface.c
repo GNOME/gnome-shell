@@ -74,6 +74,19 @@ meta_wayland_shell_surface_calculate_geometry (MetaWaylandShellSurface *shell_su
 }
 
 void
+meta_wayland_shell_surface_set_window (MetaWaylandShellSurface *shell_surface,
+                                       MetaWindow              *window)
+{
+  MetaWaylandSurfaceRole *surface_role =
+    META_WAYLAND_SURFACE_ROLE (shell_surface);
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (surface_role);
+
+  meta_wayland_surface_set_window (surface, window);
+  meta_window_update_monitor (window, FALSE);
+}
+
+void
 meta_wayland_shell_surface_configure (MetaWaylandShellSurface *shell_surface,
                                       int                      new_x,
                                       int                      new_y,
