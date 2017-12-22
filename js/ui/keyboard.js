@@ -238,8 +238,6 @@ var Key = new Lang.Class({
                                                         this._pressTimeoutId = 0;
                                                         this._touchPressed = false;
                                                         this._ensureExtendedKeysPopup();
-                                                        this.actor.fake_release();
-                                                        this.actor.set_hover(false);
                                                         this._showSubkeys();
                                                         return GLib.SOURCE_REMOVE;
                                                     }));
