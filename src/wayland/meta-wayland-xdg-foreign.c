@@ -32,6 +32,7 @@
 #include "wayland/meta-wayland-private.h"
 #include "wayland/meta-wayland-versions.h"
 #include "wayland/meta-wayland-xdg-shell.h"
+#include "wayland/meta-wayland-legacy-xdg-shell.h"
 
 #include "xdg-foreign-unstable-v1-server-protocol.h"
 
@@ -145,6 +146,7 @@ xdg_exporter_export (struct wl_client   *client,
 
   if (!surface->role ||
       !META_IS_WAYLAND_XDG_SURFACE (surface->role) ||
+      !META_IS_WAYLAND_ZXDG_SURFACE_V6 (surface->role) ||
       !surface->window)
     {
       wl_resource_post_error (resource,
@@ -252,6 +254,9 @@ is_valid_child (MetaWaylandSurface *surface)
     return FALSE;
 
   if (!META_IS_WAYLAND_XDG_SURFACE (surface->role))
+    return FALSE;
+
+  if (!META_IS_WAYLAND_ZXDG_SURFACE_V6 (surface->role))
     return FALSE;
 
   if (!surface->window)
@@ -376,7 +381,9 @@ xdg_importer_import (struct wl_client   *client,
                                   xdg_imported_destructor);
 
   exported = g_hash_table_lookup (foreign->exported_surfaces, handle);
-  if (!exported || !META_IS_WAYLAND_XDG_SURFACE (exported->surface->role))
+  if (!exported ||
+      (!META_IS_WAYLAND_XDG_SURFACE (exported->surface->role) &&
+       !META_IS_WAYLAND_ZXDG_SURFACE_V6 (exported->surface->role)))
     {
       zxdg_imported_v1_send_destroyed (resource);
       return;

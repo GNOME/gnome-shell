@@ -43,6 +43,7 @@
 #include "meta-wayland-data-device.h"
 #include "meta-wayland-outputs.h"
 #include "meta-wayland-xdg-shell.h"
+#include "meta-wayland-legacy-xdg-shell.h"
 #include "meta-wayland-wl-shell.h"
 #include "meta-wayland-gtk-shell.h"
 
@@ -1199,6 +1200,21 @@ window_position_changed (MetaWindow         *window,
   meta_wayland_surface_update_outputs_recursively (surface);
 }
 
+void
+meta_wayland_surface_create_surface_actor (MetaWaylandSurface *surface)
+{
+  MetaSurfaceActor *surface_actor;
+
+  surface_actor = meta_surface_actor_wayland_new (surface);
+  surface->surface_actor = g_object_ref_sink (surface_actor);
+}
+
+void
+meta_wayland_surface_clear_surface_actor (MetaWaylandSurface *surface)
+{
+  g_clear_object (&surface->surface_actor);
+}
+
 MetaWaylandSurface *
 meta_wayland_surface_create (MetaWaylandCompositor *compositor,
                              struct wl_client      *client,
@@ -1269,6 +1285,7 @@ void
 meta_wayland_shell_init (MetaWaylandCompositor *compositor)
 {
   meta_wayland_xdg_shell_init (compositor);
+  meta_wayland_legacy_xdg_shell_init (compositor);
   meta_wayland_wl_shell_init (compositor);
   meta_wayland_gtk_shell_init (compositor);
 }

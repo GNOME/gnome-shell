@@ -33,6 +33,7 @@ struct _MetaWaylandXdgSurfaceClass
   MetaWaylandShellSurfaceClass parent_class;
 
   void (*shell_client_destroyed) (MetaWaylandXdgSurface *xdg_surface);
+  void (*reset) (MetaWaylandXdgSurface *xdg_surface);
 };
 
 #define META_TYPE_WAYLAND_XDG_TOPLEVEL (meta_wayland_xdg_toplevel_get_type ())

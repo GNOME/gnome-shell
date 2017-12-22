@@ -68,6 +68,8 @@ mutter_built_sources += \
 	gtk-shell-server-protocol.h		\
 	gtk-primary-selection-protocol.c				\
 	gtk-primary-selection-server-protocol.h				\
+	xdg-shell-protocol.c						\
+	xdg-shell-server-protocol.h					\
 	xdg-shell-unstable-v6-protocol.c				\
 	xdg-shell-unstable-v6-server-protocol.h				\
 	relative-pointer-unstable-v1-protocol.c				\
@@ -454,6 +456,8 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=	\
 	wayland/meta-window-xwayland.h		\
 	wayland/meta-wayland-xdg-shell.c	\
 	wayland/meta-wayland-xdg-shell.h	\
+	wayland/meta-wayland-legacy-xdg-shell.c	\
+	wayland/meta-wayland-legacy-xdg-shell.h	\
 	wayland/meta-wayland-wl-shell.c		\
 	wayland/meta-wayland-wl-shell.h		\
 	wayland/meta-wayland-gtk-shell.c	\
@@ -742,7 +746,7 @@ backends/native/meta-default-modes.h: backends/native/gen-default-modes.py Makef
 .SECONDEXPANSION:
 
 define protostability
-$(shell echo $1 | sed 's/.*\(\<unstable\>\|\<stable\>\).*/\1/')
+$(if $(findstring unstable,$1),unstable,stable)
 endef
 
 define protoname

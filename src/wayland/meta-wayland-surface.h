@@ -231,6 +231,10 @@ void                meta_wayland_surface_unref_buffer_use_count (MetaWaylandSurf
 void                meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                                      MetaWindow         *window);
 
+void                meta_wayland_surface_create_surface_actor (MetaWaylandSurface *surface);
+
+void                meta_wayland_surface_clear_surface_actor (MetaWaylandSurface *surface);
+
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
                                                            int                 new_x,
                                                            int                 new_y,
