@@ -15,12 +15,15 @@ const IBusManager = imports.misc.ibusManager;
 const BoxPointer = imports.ui.boxpointer;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const PageIndicators = imports.ui.pageIndicators;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
 var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
 var KEY_LONG_PRESS_TIME = 250;
+var PANEL_SWITCH_ANIMATION_TIME = 0.5;
+var PANEL_SWITCH_RELATIVE_DISTANCE = 1 / 3; /* A third of the actor width */
 
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
@@ -39,22 +42,22 @@ const defaultKeysPost = [
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ width: 3, level: 1, right: true, extraClassName: 'shift-key-lowercase' }],
-      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
+      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ width: 3, level: 0, right: true, extraClassName: 'shift-key-uppercase' }],
-      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
+      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '=/<', width: 3, level: 3, right: true }],
-      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
+      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '?123', width: 3, level: 2, right: true }],
-      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
+      [{ label: '☻', action: 'emoji' }, { action: 'languageMenu', extraClassName: 'layout-key' }, { action: 'hide', extraClassName: 'hide-key' }] ],
 ];
 
-var AspectContainer = new GObject.registerClass(
+var AspectContainer = GObject.registerClass(
 class AspectContainer extends St.Widget {
     _init(params) {
         super._init(params);
@@ -91,13 +94,14 @@ class AspectContainer extends St.Widget {
     }
 });
 
-var KeyContainer = new GObject.registerClass(
+var KeyContainer = GObject.registerClass(
 class KeyContainer extends St.Widget {
     _init() {
         let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
                                                   column_homogeneous: true,
                                                   row_homogeneous: true });
-        super._init({ layout_manager: gridLayout });
+        super._init({ layout_manager: gridLayout,
+                      x_expand: true, y_expand: true });
         this._gridLayout = gridLayout;
         this._currentRow = 0;
         this._currentCol = 0;
@@ -272,6 +276,8 @@ var Key = class Key {
             this._boxPointer.destroy();
             this._boxPointer = null;
         }
+
+        this.cancel();
     }
 
     _ensureExtendedKeysPopup() {
@@ -293,11 +299,13 @@ var Key = class Key {
     }
 
     _getKeyval(key) {
-        let unicode = String.prototype.charCodeAt(key, 0);
+        let unicode = key.charCodeAt(0);
         return Clutter.unicode_to_keysym(unicode);
     }
 
     _press(key) {
+        this.emit('activated')
+
         if (key != this.key || this._extended_keys.length == 0) {
             this.emit('pressed', this._getKeyval(key), key);
         }
@@ -336,6 +344,16 @@ var Key = class Key {
         this.emit('released', this._getKeyval(key), key);
         this._hideSubkeys();
         this._longPress = false;
+    }
+
+    cancel() {
+        if (this._pressTimeoutId != 0) {
+            GLib.source_remove(this._pressTimeoutId);
+            this._pressTimeoutId = 0;
+        }
+        this._touchPressed = false;
+        this.keyButton.set_hover(false);
+        this.keyButton.fake_release();
     }
 
     _onCapturedEvent(actor, event) {
@@ -561,10 +579,414 @@ var FocusTracker = class {
 };
 Signals.addSignalMethods(FocusTracker.prototype);
 
+var EmojiPager = class EmojiPager {
+    constructor(sections, nCols, nRows) {
+        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                     reactive: true,
+                                     clip_to_allocation: true });
+        this._sections = sections;
+        this._nCols = nCols;
+        this._nRows = nRows;
+
+        this._pages = [];
+        this._panel = null;
+        this._curPage = null;
+        this._followingPage = null;
+        this._followingPanel = null;
+        this._currentKey = null;
+        this._delta = 0;
+        this._width = null;
+
+        this._initPagingInfo();
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', this._onPan.bind(this));
+        panAction.connect('gesture-begin', this._onPanBegin.bind(this));
+        panAction.connect('gesture-cancel', this._onPanCancel.bind(this));
+        panAction.connect('gesture-end', this._onPanEnd.bind(this));
+        this._panAction = panAction;
+        this.actor.add_action(panAction);
+    }
+
+    get delta() {
+        return this._delta;
+    }
+
+    set delta(value) {
+        if (value > this._width)
+            value = this._width;
+        else if (value < -this._width)
+            value = -this._width;
+
+        this._delta = value;
+
+        if (value == 0)
+            return;
+
+        let relValue = Math.abs(value / this._width);
+        let followingPage = this.getFollowingPage();
+
+        if (this._followingPage != followingPage) {
+            if (this._followingPanel) {
+                this._followingPanel.destroy();
+                this._followingPanel = null;
+            }
+
+            if (followingPage != null) {
+                this._followingPanel = this._generatePanel(followingPage);
+                this._followingPanel.set_pivot_point(0.5, 0.5);
+                this.actor.add_child(this._followingPanel);
+                this.actor.set_child_below_sibling(this._followingPanel, this._panel);
+            }
+
+            this._followingPage = followingPage;
+        }
+
+        this._panel.translation_x = value;
+        this._panel.opacity = 255 * (1 - Math.pow(relValue, 3));
+
+        if (this._followingPanel) {
+            this._followingPanel.scale_x = 0.8 + (0.2 * relValue);
+            this._followingPanel.scale_y = 0.8 + (0.2 * relValue);
+            this._followingPanel.opacity = 255 * relValue;
+        }
+    }
+
+    _prevPage(nPage) {
+        return (nPage + this._pages.length - 1) % this._pages.length;
+    }
+
+    _nextPage(nPage) {
+        return (nPage + 1) % this._pages.length;
+    }
+
+    getFollowingPage() {
+        if (this.delta == 0)
+            return null;
+
+        if ((this.delta < 0 && global.stage.text_direction == Clutter.TextDirection.LTR) ||
+            (this.delta > 0 && global.stage.text_direction == Clutter.TextDirection.RTL))
+            return this._nextPage(this._curPage);
+        else
+            return this._prevPage(this._curPage);
+    }
+
+    _onPan(action) {
+        let [dist, dx, dy] = action.get_motion_delta(0);
+        this.delta = this.delta + dx;
+
+        if (this._currentKey != null) {
+            this._currentKey.cancel();
+            this._currentKey = null;
+        }
+
+        return false;
+    }
+
+    _onPanBegin() {
+        this._width = this.actor.width;
+        return true;
+    }
+
+    _onPanEnd() {
+        if (Math.abs(this._delta) < this.actor.width * PANEL_SWITCH_RELATIVE_DISTANCE) {
+            this._onPanCancel()
+        } else {
+            let value;
+            if (this._delta > 0)
+                value = this._width;
+            else if (this._delta < 0)
+                value = -this._width;
+
+            let relDelta = Math.abs(this._delta - value) / this._width;
+            let time = PANEL_SWITCH_ANIMATION_TIME * Math.abs(relDelta);
+
+            Tweener.removeTweens(this);
+            Tweener.addTween(this,
+                             { delta: value,
+                               time: time,
+                               transition: 'easeInOutQuad',
+                               onComplete() {
+                                   this.setCurrentPage(this.getFollowingPage());
+                               }
+                             });
+        }
+    }
+
+    _onPanCancel() {
+        let relDelta = Math.abs(this._delta) / this.actor.width;
+        let time = PANEL_SWITCH_ANIMATION_TIME * Math.abs(relDelta);
+
+        Tweener.removeTweens(this);
+        Tweener.addTween(this,
+                         { delta: 0,
+                           time: time,
+                           transition: 'easeInOutQuad',
+                         });
+    }
+
+    _initPagingInfo() {
+        for (let i = 0; i < this._sections.length; i++) {
+            let section = this._sections[i];
+            let itemsPerPage = this._nCols * this._nRows;
+            let nPages = Math.ceil(section.keys.length / itemsPerPage);
+            let page = -1;
+            let pageKeys;
+
+            for (let j = 0; j < section.keys.length; j++) {
+                if (j % itemsPerPage == 0) {
+                    page++;
+                    pageKeys = [];
+                    this._pages.push({ pageKeys, nPages, page, section: this._sections[i] });
+                }
+
+                pageKeys.push(section.keys[j]);
+            }
+        }
+    }
+
+    _lookupSection(section, nPage) {
+        for (let i = 0; i < this._pages.length; i++) {
+            let page = this._pages[i];
+
+            if (page.section == section && page.page == nPage)
+                return i;
+        }
+
+        return -1;
+    }
+
+    _generatePanel(nPage) {
+        let gridLayout = new Clutter.GridLayout({ orientation: Clutter.Orientation.HORIZONTAL,
+                                                  column_homogeneous: true,
+                                                  row_homogeneous: true });
+        let panel = new St.Widget({ layout_manager: gridLayout,
+                                    style_class: 'emoji-page',
+                                    x_expand: true,
+                                    y_expand: true });
+
+        /* Set an expander actor so all proportions are right despite the panel
+         * not having all rows/cols filled in.
+         */
+        let expander = new Clutter.Actor();
+        gridLayout.attach(expander, 0, 0, this._nCols, this._nRows);
+
+        let page = this._pages[nPage];
+        let col = 0;
+        let row = 0;
+
+        for (let i = 0; i < page.pageKeys.length; i++) {
+            let modelKey = page.pageKeys[i];
+            let key = new Key(modelKey.label, modelKey.variants);
+
+            key.keyButton.set_button_mask(0);
+
+            key.connect('activated', () => {
+                this._currentKey = key;
+            });
+            key.connect('long-press', () => {
+                this._panAction.cancel();
+            });
+            key.connect('released', (actor, keyval, str) => {
+                if (this._currentKey != key)
+                    return;
+                this._currentKey = null;
+                this.emit('emoji', str);
+            });
+
+            gridLayout.attach(key.actor, col, row, 1, 1);
+
+            col++;
+            if (col >= this._nCols) {
+                col = 0;
+                row++;
+            }
+        }
+
+        return panel;
+    }
+
+    setCurrentPage(nPage) {
+        if (this._curPage == nPage)
+            return;
+
+        this._curPage = nPage;
+
+        if (this._panel) {
+            this._panel.destroy();
+            this._panel = null;
+        }
+
+        /* Reuse followingPage if possible */
+        if (nPage == this._followingPage) {
+            this._panel = this._followingPanel;
+            this._followingPanel = null;
+        }
+
+        if (this._followingPanel)
+            this._followingPanel.destroy();
+
+        this._followingPanel = null;
+        this._followingPage = null;
+        this._delta = 0;
+
+        if (!this._panel) {
+            this._panel = this._generatePanel(nPage);
+            this.actor.add_child(this._panel);
+        }
+
+        let page = this._pages[nPage];
+        this.emit('page-changed', page.section, page.page, page.nPages);
+    }
+
+    setCurrentSection(section, nPage) {
+        for (let i = 0; i < this._pages.length; i++) {
+            let page = this._pages[i];
+
+            if (page.section == section && page.page == nPage) {
+                this.setCurrentPage(i);
+                break;
+            }
+        }
+    }
+};
+Signals.addSignalMethods(EmojiPager.prototype);
+
+var EmojiSelection = class EmojiSelection {
+    constructor() {
+        this._sections = [
+            { first: 'grinning face', label: '🙂️' },
+            { first: 'selfie', label: '👍️' },
+            { first: 'monkey face', label: '🌷️' },
+            { first: 'grapes', label: '🍴️' },
+            { first: 'globe showing Europe-Africa', label: '✈️' },
+            { first: 'jack-o-lantern', label: '🏃️' },
+            { first: 'muted speaker', label: '🔔️' },
+            { first: 'ATM sign', label: '❤️' },
+            { first: 'chequered flag', label: '🚩️' },
+        ];
+
+        this._populateSections();
+
+        this.actor = new St.BoxLayout({ style_class: 'emoji-panel',
+                                        x_expand: true,
+                                        y_expand: true,
+                                        vertical: true });
+        this.actor.connect('notify::mapped', () => { this._emojiPager.setCurrentPage(0); });
+
+        this._emojiPager = new EmojiPager(this._sections, 11, 3);
+        this._emojiPager.connect('page-changed', (pager, section, page, nPages) => {
+            this._onPageChanged(section, page, nPages);
+        });
+        this._emojiPager.connect('emoji', (pager, str) => {
+            this.emit('emoji-selected', str);
+        });
+        this.actor.add(this._emojiPager.actor, { expand: true });
+
+        this._pageIndicator = new PageIndicators.PageIndicators(false);
+        this.actor.add(this._pageIndicator, { expand: true, x_fill: false, y_fill: false });
+        this._pageIndicator.setReactive(false);
+
+        let bottomRow = this._createBottomRow();
+        this.actor.add(bottomRow, { x_fill: true, y_fill: false });
+
+        this._emojiPager.setCurrentPage(0);
+    }
+
+    _onPageChanged(section, page, nPages) {
+        this._pageIndicator.setNPages(nPages);
+        this._pageIndicator.setCurrentPage(page);
+
+        for (let i = 0; i < this._sections.length; i++) {
+            let sect = this._sections[i];
+            sect.button.setLatched(section == sect);
+        }
+    }
+
+    _findSection(emoji) {
+        for (let i = 0; i < this._sections.length; i++) {
+            if (this._sections[i].first == emoji)
+                return this._sections[i];
+        }
+
+        return null;
+    }
+
+    _populateSections() {
+        let file = Gio.File.new_for_uri('resource:///org/gnome/shell/osk-layouts/emoji.json');
+        let [success, contents] = file.load_contents(null);
+
+        if (contents instanceof Uint8Array)
+            contents = imports.byteArray.toString(contents);
+        let emoji = JSON.parse(contents);
+
+        let pages = [];
+        let variants = [];
+        let currentKey = 0;
+        let currentSection = null;
+
+        for (let i = 0; i < emoji.length; i++) {
+            /* Group variants of a same emoji so they appear on the key popover */
+            if (emoji[i].name.startsWith(emoji[currentKey].name)) {
+                variants.push(emoji[i].char);
+                if (i < emoji.length - 1)
+                    continue;
+            }
+
+            let newSection = this._findSection(emoji[currentKey].name);
+            if (newSection != null) {
+                currentSection = newSection;
+                currentSection.keys = [];
+            }
+
+            /* Create the key */
+            let label = emoji[currentKey].char + String.fromCharCode(0xFE0F);
+            currentSection.keys.push({ label, variants });
+            currentKey = i;
+            variants = [];
+        }
+    }
+
+    _createBottomRow() {
+        let row = new KeyContainer();
+        let key;
+
+        row.appendRow();
+
+        key = new Key('ABC', []);
+        key.keyButton.add_style_class_name('default-key');
+        key.connect('released', () => { this.emit('toggle'); });
+        row.appendKey(key.actor, 1.5);
+
+        for (let i = 0; i < this._sections.length; i++) {
+            let section = this._sections[i];
+
+            key = new Key(section.label, []);
+            key.connect('released', () => { this._emojiPager.setCurrentSection(section, 0) });
+            row.appendKey(key.actor);
+
+            section.button = key;
+        }
+
+        key = new Key(null, []);
+        key.keyButton.add_style_class_name('default-key');
+        key.keyButton.add_style_class_name('hide-key');
+        key.connect('released', () => {
+            this.emit('hide');
+        });
+        row.appendKey(key.actor);
+        row.layoutButtons();
+
+        return row;
+    }
+};
+Signals.addSignalMethods(EmojiSelection.prototype);
+
 var Keyboard = class Keyboard {
     constructor() {
         this.actor = null;
         this._focusInExtendedKeys = false;
+        this._emojiActive = false;
 
         this._languagePopup = null;
         this._currentFocusWindow = null;
@@ -579,6 +1001,7 @@ var Keyboard = class Keyboard {
         this._a11yApplicationsSettings.connect('changed', this._syncEnabled.bind(this));
         this._lastDeviceId = null;
         this._suggestions = null;
+        this._emojiKeyVisible = true;
 
         this._focusTracker = new FocusTracker();
         this._focusTracker.connect('position-changed', this._onFocusPositionChanged.bind(this));
@@ -667,6 +1090,8 @@ var Keyboard = class Keyboard {
             this._keyboardController.disconnect(this._keyboardGroupsChangedId);
         if (this._keyboardStateId)
             this._keyboardController.disconnect(this._keyboardStateId);
+        if (this._emojiKeyVisibleId)
+            this._keyboardController.disconnect(this._emojiKeyVisibleId);
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
         this._keyboard = null;
@@ -695,7 +1120,17 @@ var Keyboard = class Keyboard {
                          x_fill: false });
 
         this._aspectContainer = new AspectContainer({ layout_manager: new Clutter.BinLayout() });
-        this.actor.add(this._aspectContainer, { expand: true, x_fill: true, y_fill: true });
+        this.actor.add(this._aspectContainer, { expand: true });
+
+        this._emojiSelection = new EmojiSelection();
+        this._emojiSelection.connect('toggle', this._toggleEmoji.bind(this));
+        this._emojiSelection.connect('hide', (selection) => { this.hide(); });
+        this._emojiSelection.connect('emoji-selected', (selection, emoji) => {
+            this._keyboardController.commitString(emoji);
+        });
+
+        this._aspectContainer.add_child(this._emojiSelection.actor);
+        this._emojiSelection.actor.hide();
 
         this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
         this._setActiveLayer(0);
@@ -708,6 +1143,7 @@ var Keyboard = class Keyboard {
         this._keyboardNotifyId = this._keyboardController.connect('active-group', this._onGroupChanged.bind(this));
         this._keyboardGroupsChangedId = this._keyboardController.connect('groups-changed', this._onKeyboardGroupsChanged.bind(this));
         this._keyboardStateId = this._keyboardController.connect('panel-state', this._onKeyboardStateChanged.bind(this));
+        this._emojiKeyVisibleId = this._keyboardController.connect('emoji-visible', this._onEmojiKeyVisible.bind(this));
         this._focusNotifyId = global.stage.connect('notify::key-focus', this._onKeyFocusChanged.bind(this));
 
         this._relayout();
@@ -759,6 +1195,7 @@ var Keyboard = class Keyboard {
 
             layout.hide();
         }
+
         return layers;
     }
 
@@ -817,6 +1254,10 @@ var Keyboard = class Keyboard {
             let switchToLevel = key.level;
             let action = key.action;
 
+            /* Skip emoji button if necessary */
+            if (!this._emojiKeyVisible && action == 'emoji')
+                continue;
+
             extraButton = new Key(key.label || '', []);
 
             extraButton.keyButton.add_style_class_name('default-key');
@@ -843,6 +1284,8 @@ var Keyboard = class Keyboard {
                     this.hide();
                 else if (action == 'languageMenu')
                     this._popupLanguageMenu(actor);
+                else if (action == 'emoji')
+                    this._toggleEmoji();
             });
 
             if (switchToLevel == 0) {
@@ -868,10 +1311,23 @@ var Keyboard = class Keyboard {
                 extraButton.setWidth(2);
             } else if (keyval == Clutter.KEY_Return && numKeys > 9) {
                 extraButton.setWidth(1.5);
+            } else if (!this._emojiKeyVisible && (action == 'hide' || action == 'languageMenu')) {
+                extraButton.setWidth(1.5);
             }
 
             layout.appendKey(extraButton.actor, extraButton.keyButton.keyWidth);
         }
+    }
+
+    _setEmojiActive(active) {
+        this._emojiActive = active;
+        this._emojiSelection.actor.visible = this._emojiActive;
+        if (this._current_page)
+            this._current_page.visible = !this._emojiActive;
+    }
+
+    _toggleEmoji() {
+        this._setEmojiActive(!this._emojiActive);
     }
 
     _setCurrentLevelLatched(layout, latched) {
@@ -954,6 +1410,15 @@ var Keyboard = class Keyboard {
         this._onGroupChanged();
     }
 
+    _onEmojiKeyVisible(controller, visible) {
+        if (visible == this._emojiKeyVisible)
+            return;
+
+        this._emojiKeyVisible = visible;
+        /* Rebuild keyboard widgetry to include emoji button */
+        this._onKeyboardGroupsChanged();
+    }
+
     _onKeyboardStateChanged(controller, state) {
         let enabled;
         if (state == Clutter.InputPanelState.OFF)
@@ -1030,6 +1495,8 @@ var Keyboard = class Keyboard {
         Main.layoutManager.keyboardIndex = monitor;
         this._relayout();
         Main.layoutManager.showKeyboard();
+
+        this._setEmojiActive(false);
 
         if (this._delayedAnimFocusWindow) {
             this._setAnimationWindow(this._delayedAnimFocusWindow);
@@ -1198,6 +1665,15 @@ var KeyboardController = class {
     _onContentPurposeHintsChanged(method) {
         let hints = method.content_hints;
         let purpose = method.content_purpose;
+        let emojiVisible = false;
+
+        if (purpose == Clutter.InputContentPurpose.NORMAL ||
+            purpose == Clutter.InputContentPurpose.ALPHA ||
+            purpose == Clutter.InputContentPurpose.PASSWORD ||
+            purpose == Clutter.InputContentPurpose.TERMINAL)
+            emojiVisible = true;
+
+        this.emit('emoji-visible', emojiVisible)
 
         // XXX: hook numeric/emoji/etc special keyboards
     }
