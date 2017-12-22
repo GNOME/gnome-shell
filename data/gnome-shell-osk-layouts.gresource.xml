@@ -54,5 +54,6 @@
     <file>us.json</file>
     <file>vn.json</file>
     <file>za.json</file>
+    <file>emoji.json</file>
   </gresource>
 </gresources>
