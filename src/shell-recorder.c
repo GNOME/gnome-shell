@@ -51,6 +51,7 @@ struct _ShellRecorder {
   cairo_rectangle_int_t area;
   int stage_width;
   int stage_height;
+  float scale;
 
   GdkScreen *gdk_screen;
 
@@ -432,10 +433,8 @@ recorder_record_frame (ShellRecorder *recorder,
     return;
   recorder->last_frame_time = now;
 
-  clutter_stage_capture (recorder->stage, paint, &recorder->area,
-                         &captures, &n_captures);
-
-  if (n_captures == 0)
+  if (!clutter_stage_capture (recorder->stage, paint, &recorder->area,
+                              &captures, &n_captures))
     return;
 
   if (n_captures == 1)
@@ -446,7 +445,8 @@ recorder_record_frame (ShellRecorder *recorder,
                                                  recorder->area.x,
                                                  recorder->area.y,
                                                  recorder->area.width,
-                                                 recorder->area.height);
+                                                 recorder->area.height,
+                                                 recorder->scale);
 
   data = cairo_image_surface_get_data (image);
   size = (cairo_image_surface_get_height (image) *
@@ -502,6 +502,8 @@ recorder_update_size (ShellRecorder *recorder)
       recorder->area.y = 0;
       recorder->area.width = recorder->stage_width;
       recorder->area.height = recorder->stage_height;
+      clutter_actor_get_resource_scale (CLUTTER_ACTOR (recorder->stage),
+                                        &recorder->scale);
     }
 }
 
@@ -619,6 +621,8 @@ recorder_connect_stage_callbacks (ShellRecorder *recorder)
   g_signal_connect (recorder->stage, "notify::width",
                     G_CALLBACK (recorder_on_stage_notify_size), recorder);
   g_signal_connect (recorder->stage, "notify::height",
+                    G_CALLBACK (recorder_on_stage_notify_size), recorder);
+  g_signal_connect (recorder->stage, "notify::resource-scale",
                     G_CALLBACK (recorder_on_stage_notify_size), recorder);
 }
 
@@ -877,6 +881,7 @@ shell_recorder_class_init (ShellRecorderClass *klass)
 static void
 recorder_pipeline_set_caps (RecorderPipeline *pipeline)
 {
+  ShellRecorder *recorder = pipeline->recorder;
   GstCaps *caps;
 
   /* The data is always native-endian xRGB; videoconvert
@@ -889,9 +894,9 @@ recorder_pipeline_set_caps (RecorderPipeline *pipeline)
 #else
                               "format", G_TYPE_STRING, "xRGB",
 #endif
-                              "framerate", GST_TYPE_FRACTION, pipeline->recorder->framerate, 1,
-                              "width", G_TYPE_INT, pipeline->recorder->area.width,
-                              "height", G_TYPE_INT, pipeline->recorder->area.height,
+                              "framerate", GST_TYPE_FRACTION, recorder->framerate, 1,
+                              "width", G_TYPE_INT, (int) roundf (recorder->area.width * recorder->scale),
+                              "height", G_TYPE_INT, (int) roundf (recorder->area.height * recorder->scale),
                               NULL);
   g_object_set (pipeline->src, "caps", caps, NULL);
   gst_caps_unref (caps);
@@ -1497,6 +1502,8 @@ shell_recorder_set_area (ShellRecorder *recorder,
                                 0, recorder->stage_width - recorder->area.x);
   recorder->area.height = CLAMP (height,
                                  0, recorder->stage_height - recorder->area.y);
+  clutter_stage_capture_get_scale (recorder->stage, &recorder->area,
+                                   &recorder->scale);
 
   /* This breaks the recording but tweaking the GStreamer pipeline a bit
    * might make it work, at least if the codec can handle a stream where
