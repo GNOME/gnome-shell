@@ -234,7 +234,8 @@ do_grab_screenshot (ShellScreenshot *screenshot,
   else
     {
       float target_scale;
-      clutter_stage_capture_get_scale (stage, &screenshot_rect, &target_scale);
+      clutter_stage_get_capture_final_size (stage, &screenshot_rect,
+                                            &width, &height, &target_scale);
       priv->image = shell_util_composite_capture_images (captures,
                                                          n_captures,
                                                          x, y,

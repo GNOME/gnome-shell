@@ -476,8 +476,8 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
                                      int              n_captures,
                                      int              x,
                                      int              y,
-                                     int              width,
-                                     int              height,
+                                     int              target_width,
+                                     int              target_height,
                                      float            target_scale)
 {
   int i;
@@ -489,9 +489,7 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
   g_assert (target_scale > 0.0f);
 
   format = cairo_image_surface_get_format (captures[0].image);
-  image = cairo_image_surface_create (format,
-                                      roundf (width * target_scale),
-                                      roundf (height * target_scale));
+  image = cairo_image_surface_create (format, target_width, target_height);
   cairo_surface_set_device_scale (image, target_scale, target_scale);
 
   cr = cairo_create (image);
