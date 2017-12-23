@@ -462,31 +462,20 @@ shell_util_composite_capture_images (ClutterCapture  *captures,
                                      int              n_captures,
                                      int              x,
                                      int              y,
-                                     int              width,
-                                     int              height)
+                                     int              target_width,
+                                     int              target_height,
+                                     float            target_scale)
 {
   int i;
-  double target_scale;
   cairo_format_t format;
   cairo_surface_t *image;
   cairo_t *cr;
 
   g_assert (n_captures > 0);
-
-  target_scale = 0.0;
-  for (i = 0; i < n_captures; i++)
-    {
-      ClutterCapture *capture = &captures[i];
-      double capture_scale = 1.0;
-
-      cairo_surface_get_device_scale (capture->image, &capture_scale, NULL);
-      target_scale = MAX (target_scale, capture_scale);
-    }
+  g_assert (target_scale > 0.0f);
 
   format = cairo_image_surface_get_format (captures[0].image);
-  image = cairo_image_surface_create (format,
-                                      width * target_scale,
-                                      height * target_scale);
+  image = cairo_image_surface_create (format, target_width, target_height);
   cairo_surface_set_device_scale (image, target_scale, target_scale);
 
   cr = cairo_create (image);
