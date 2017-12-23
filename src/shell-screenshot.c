@@ -222,29 +222,32 @@ do_grab_screenshot (ShellScreenshot *screenshot,
                     int               height)
 {
   ShellScreenshotPrivate *priv = screenshot->priv;
+  cairo_rectangle_int_t screenshot_rect = { x, y, width, height };
   ClutterCapture *captures;
   int n_captures;
   int i;
 
-  clutter_stage_capture (stage, FALSE,
-                         &(cairo_rectangle_int_t) {
-                           .x = x,
-                           .y = y,
-                           .width = width,
-                           .height = height
-                         },
-                         &captures,
-                         &n_captures);
-
-  if (n_captures == 0)
+  if (!clutter_stage_capture (stage, FALSE,
+                              &screenshot_rect,
+                              &captures,
+                              &n_captures))
     return;
-  else if (n_captures == 1)
+
+  if (n_captures == 1)
     priv->image = cairo_surface_reference (captures[0].image);
   else
-    priv->image = shell_util_composite_capture_images (captures,
-                                                       n_captures,
-                                                       x, y,
-                                                       width, height);
+    {
+      float target_scale;
+
+      clutter_stage_get_capture_final_size (stage, &screenshot_rect,
+                                            &width, &height, &target_scale);
+      priv->image = shell_util_composite_capture_images (captures,
+                                                         n_captures,
+                                                         x, y,
+                                                         width, height,
+                                                         target_scale);
+    }
+
   priv->datetime = g_date_time_new_now_local ();
 
   for (i = 0; i < n_captures; i++)
