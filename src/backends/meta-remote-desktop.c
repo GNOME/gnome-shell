@@ -37,7 +37,6 @@
 #include "backends/meta-cursor-renderer.h"
 #include "backends/meta-remote-desktop-session.h"
 #include "backends/native/meta-cursor-renderer-native.h"
-#include "meta/errors.h"
 #include "meta/meta-backend.h"
 
 #define META_REMOTE_DESKTOP_DBUS_SERVICE "org.gnome.Mutter.RemoteDesktop"
