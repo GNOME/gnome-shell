@@ -267,8 +267,6 @@ struct _MetaDisplayClass
   )
 
 gboolean      meta_display_open                (void);
-void          meta_display_close               (MetaDisplay *display,
-                                                guint32      timestamp);
 
 void meta_display_manage_all_windows (MetaDisplay *display);
 void meta_display_unmanage_windows   (MetaDisplay *display,

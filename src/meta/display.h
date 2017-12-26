@@ -76,6 +76,9 @@ GType meta_display_get_type (void) G_GNUC_CONST;
 
 gboolean meta_display_supports_extended_barriers (MetaDisplay *display);
 
+void meta_display_close (MetaDisplay *display,
+                         guint32      timestamp);
+
 MetaCompositor *meta_display_get_compositor  (MetaDisplay *display);
 MetaX11Display *meta_display_get_x11_display (MetaDisplay *display);
 
