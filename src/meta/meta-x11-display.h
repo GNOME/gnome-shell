@@ -30,6 +30,8 @@
 #define META_TYPE_X11_DISPLAY (meta_x11_display_get_type ())
 G_DECLARE_FINAL_TYPE (MetaX11Display, meta_x11_display, META, X11_DISPLAY, GObject)
 
+gboolean meta_x11_init_gdk_display (GError **error);
+
 int      meta_x11_display_get_screen_number (MetaX11Display *x11_display);
 Display *meta_x11_display_get_xdisplay      (MetaX11Display *x11_display);
 Window   meta_x11_display_get_xroot         (MetaX11Display *x11_display);

@@ -80,6 +80,8 @@ typedef struct _MetaX11DisplayLogicalMonitorData
   int xinerama_index;
 } MetaX11DisplayLogicalMonitorData;
 
+static GdkDisplay *prepared_gdk_display = NULL;
+
 static const char *gnome_wm_keybindings = "Mutter";
 static const char *net_wm_name = "Mutter";
 
@@ -972,6 +974,79 @@ meta_set_gnome_wm_keybindings (const char *wm_keybindings)
   gnome_wm_keybindings = wm_keybindings;
 }
 
+gboolean
+meta_x11_init_gdk_display (GError **error)
+{
+  const char *xdisplay_name;
+  GdkDisplay *gdk_display;
+  const char *gdk_gl_env = NULL;
+  Display *xdisplay;
+
+  xdisplay_name = g_getenv ("DISPLAY");
+  if (!xdisplay_name)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Unable to open display, DISPLAY not set");
+      return FALSE;
+    }
+
+  gdk_set_allowed_backends ("x11");
+
+  gdk_gl_env = g_getenv ("GDK_GL");
+  g_setenv ("GDK_GL", "disable", TRUE);
+
+  gdk_parse_args (NULL, NULL);
+  if (!gtk_parse_args (NULL, NULL))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to initialize gtk");
+      return FALSE;
+    }
+
+  gdk_display = gdk_display_open (xdisplay_name);
+
+  if (!gdk_display)
+    {
+      meta_warning (_("Failed to initialize GDK\n"));
+
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to initialize GDK");
+
+      return FALSE;
+    }
+
+  if (gdk_gl_env)
+    g_setenv("GDK_GL", gdk_gl_env, TRUE);
+  else
+    unsetenv("GDK_GL");
+
+  /* We need to be able to fully trust that the window and monitor sizes
+     that Gdk reports corresponds to the X ones, so we disable the automatic
+     scale handling */
+  gdk_x11_display_set_window_scale (gdk_display, 1);
+
+  meta_verbose ("Opening display '%s'\n", XDisplayName (NULL));
+
+  xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display);
+
+  if (xdisplay == NULL)
+    {
+      meta_warning (_("Failed to open X Window System display “%s”\n"),
+                    XDisplayName (NULL));
+
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "Failed to open X11 display");
+
+      gdk_display_close (gdk_display);
+
+      return FALSE;
+    }
+
+  prepared_gdk_display = gdk_display;
+
+  return TRUE;
+}
+
 /**
  * meta_x11_display_new:
  *
@@ -1000,46 +1075,9 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   Atom atom_restart_helper;
   Window restart_helper_window = None;
   GdkDisplay *gdk_display;
-  const char *gdk_gl_env = NULL;
-  const char *xdisplay_name;
   MetaBackend *backend = meta_get_backend ();
   MetaMonitorManager *monitor_manager =
     meta_backend_get_monitor_manager (backend);
-
-  xdisplay_name = g_getenv ("DISPLAY");
-  if (!xdisplay_name)
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Unable to open display, DISPLAY not set");
-      return FALSE;
-    }
-
-  gdk_set_allowed_backends ("x11");
-
-  gdk_gl_env = g_getenv ("GDK_GL");
-  g_setenv("GDK_GL", "disable", TRUE);
-
-  gdk_display = gdk_display_open (xdisplay_name);
-
-  if (!gdk_display)
-    {
-      meta_warning (_("Failed to initialize GDK\n"));
-
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Failed to initialize GDK");
-
-      return NULL;
-    }
-
-  if (gdk_gl_env)
-    g_setenv("GDK_GL", gdk_gl_env, TRUE);
-  else
-    unsetenv("GDK_GL");
-
-  /* We need to be able to fully trust that the window and monitor sizes
-     that Gdk reports corresponds to the X ones, so we disable the automatic
-     scale handling */
-  gdk_x11_display_set_window_scale (gdk_display, 1);
 
   /* A list of all atom names, so that we can intern them in one go. */
   const char *atom_names[] = {
@@ -1049,27 +1087,15 @@ meta_x11_display_new (MetaDisplay *display, GError **error)
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
 
-  meta_verbose ("Opening display '%s'\n", XDisplayName (NULL));
-
-  xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display);
-
-  if (xdisplay == NULL)
-    {
-      meta_warning (_("Failed to open X Window System display “%s”\n"),
-                    XDisplayName (NULL));
-
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   "Failed to open X11 display");
-
-      gdk_display_close (gdk_display);
-
-      return NULL;
-    }
+  g_assert (prepared_gdk_display);
+  gdk_display = g_steal_pointer (&prepared_gdk_display);
 
 #ifdef HAVE_WAYLAND
   if (meta_is_wayland_compositor ())
     meta_xwayland_complete_init (display);
 #endif
+
+  xdisplay = GDK_DISPLAY_XDISPLAY (gdk_display);
 
   if (meta_is_syncing ())
     XSynchronize (xdisplay, True);
