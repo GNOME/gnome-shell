@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-28 19:35+0200\n"
-"PO-Revision-Date: 2017-08-28 19:38+0200\n"
+"POT-Creation-Date: 2017-12-26 11:44+0000\n"
+"PO-Revision-Date: 2017-12-31 11:25+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -363,7 +363,7 @@ msgstr "Izbor seje"
 #. manually entering the username.
 #: js/gdm/loginDialog.js:458
 msgid "Not listed?"
-msgstr "Ali uporabniškeg imena ni na seznamu?"
+msgstr "Ali uporabniškega imena ni na seznamu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
@@ -400,18 +400,18 @@ msgstr "(ali pa povlecite prst)"
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
 msgctxt "search-result"
-msgid "Power off"
-msgstr "Izklop"
+msgid "Power Off"
+msgstr "Izklopi"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:102
-msgid "power off;shutdown"
-msgstr "izklop;ugasni"
+msgid "power off;shutdown;reboot;restart"
+msgstr "izklop;ugasni;ponovni zagon;reboot"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
 msgctxt "search-result"
-msgid "Lock screen"
+msgid "Lock Screen"
 msgstr "Zakleni zaslon"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
@@ -422,7 +422,7 @@ msgstr "zaklep zaslona"
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
 msgctxt "search-result"
-msgid "Log out"
+msgid "Log Out"
 msgstr "Odjava"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
@@ -444,8 +444,8 @@ msgstr "v pripravljenost;v mirovanje"
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
 msgctxt "search-result"
-msgid "Switch user"
-msgstr "Preklopi uporabnika"
+msgid "Switch User"
+msgstr "Preklop uporabnika"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:130
@@ -455,13 +455,13 @@ msgstr "preklop uporabnika"
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
 msgctxt "search-result"
-msgid "Lock orientation"
+msgid "Lock Orientation"
 msgstr "Zaklep usmerjenosti"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-msgid "lock orientation"
-msgstr "zaklep usmerjenosti"
+msgid "lock orientation;screen;rotation"
+msgstr "zaklep usmerjenosti;zaslon;rotacija;obrat;obračanje"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -653,7 +653,7 @@ msgstr "Novo okno"
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Zaženi z uporabo določene grafične kartice"
 
-#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1956 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
@@ -665,12 +665,12 @@ msgstr "Dodaj med priljubljene"
 msgid "Show Details"
 msgstr "Pokaži besedilo"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:141
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Program »%s« je dodan med priljubljeno."
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:175
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Program »%s« je odstranjen iz priljubljenih."
@@ -759,51 +759,51 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: js/ui/calendar.js:442
+#: js/ui/calendar.js:449
 msgid "Previous month"
 msgstr "Predhodni mesec"
 
-#: js/ui/calendar.js:452
+#: js/ui/calendar.js:459
 msgid "Next month"
 msgstr "Naslednji mesec"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "Teden %V"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celodnevno"
 
-#: js/ui/calendar.js:862
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: js/ui/calendar.js:1086
+#: js/ui/calendar.js:1093
 msgid "No Notifications"
 msgstr "Ni obvestil"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1096
 msgid "No Events"
 msgstr "Ni dogodkov"
 
-#: js/ui/calendar.js:1117
+#: js/ui/calendar.js:1124
 msgid "Clear All"
 msgstr "Počisti vse"
 
@@ -837,7 +837,7 @@ msgstr "Zunanji pogon je priklopljen"
 msgid "External drive disconnected"
 msgstr "Zunanji pogon je odklopljen"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:358
 #, javascript-format
 msgid "Open with %s"
 msgstr "Odpri s programom %s"
@@ -914,7 +914,7 @@ msgstr "Za napravo mobilnega širokopasovnega dostopa je zahtevana koda PIN."
 
 #: js/ui/components/networkAgent.js:313
 msgid "PIN: "
-msgstr "PIN: "
+msgstr "Koda PIN: "
 
 #: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:659
 msgid "Mobile broadband network password"
@@ -961,20 +961,20 @@ msgstr "%s je sedaj znan kot v %s"
 msgid "Windows"
 msgstr "Okna"
 
-#: js/ui/dash.js:250 js/ui/dash.js:291
+#: js/ui/dash.js:246 js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Pokaži programe"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:449
+#: js/ui/dash.js:445
 msgid "Dash"
 msgstr "Pregledna plošča"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:76
 msgid "%B %e %Y"
 msgstr "%B %e %Y"
 
@@ -982,19 +982,19 @@ msgstr "%B %e %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%A %B %e %Y"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:148
 msgid "Add world clocks…"
 msgstr "Dodaj svetovni čas ..."
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:149
 msgid "World Clocks"
 msgstr "Svetovni časi"
 
-#: js/ui/dateMenu.js:224
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Vreme"
 
@@ -1002,7 +1002,7 @@ msgstr "Vreme"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:286
+#: js/ui/dateMenu.js:292
 #, javascript-format
 msgid "%s all day."
 msgstr "%s – ves dan."
@@ -1011,7 +1011,7 @@ msgstr "%s – ves dan."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:292
+#: js/ui/dateMenu.js:298
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, sledi %s."
@@ -1020,30 +1020,30 @@ msgstr "%s, sledi %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:298
+#: js/ui/dateMenu.js:304
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, sledi %s, kasneje tudi %s."
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:315
 msgid "Select a location…"
 msgstr "Izbor mesta ..."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:318
 msgid "Loading…"
 msgstr "Poteka nalaganje ..."
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:318
+#: js/ui/dateMenu.js:324
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Občuti se kot %s."
 
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:327
 msgid "Go online for weather information"
 msgstr "Preglej splet za podrobnosti o vremenu."
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:329
 msgid "Weather information is currently unavailable"
 msgstr "Podatki o vremenu trenutno niso na voljo."
 
@@ -1241,7 +1241,7 @@ msgstr "Zavrni"
 msgid "Allow"
 msgstr "Dovoli"
 
-#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:783
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
@@ -1293,7 +1293,7 @@ msgstr "Poglej vir"
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1494
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1543,16 +1543,16 @@ msgstr "Visok kontrast"
 msgid "Large Text"
 msgstr "Veliko besedilo"
 
-#: js/ui/status/bluetooth.js:47
+#: js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
+#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:136
+#: js/ui/status/bluetooth.js:137
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1561,19 +1561,19 @@ msgstr[1] "%d povezano"
 msgstr[2] "%d povezano"
 msgstr[3] "%d povezano"
 
-#: js/ui/status/bluetooth.js:138
+#: js/ui/status/bluetooth.js:139
 msgid "Off"
 msgstr "Nepovezano"
 
-#: js/ui/status/bluetooth.js:140
+#: js/ui/status/bluetooth.js:141
 msgid "On"
 msgstr "Povezano"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
+#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:1299
 msgid "Turn On"
 msgstr "Omogoči"
 
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
+#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:170
 #: js/ui/status/network.js:356 js/ui/status/network.js:1299
 #: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
 #: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
@@ -1584,7 +1584,7 @@ msgstr "Onemogoči"
 msgid "Brightness"
 msgstr "Svetlost"
 
-#: js/ui/status/keyboard.js:805
+#: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
@@ -1951,7 +1951,7 @@ msgstr "Le vgrajeno"
 
 #: js/ui/unlockDialog.js:67
 msgid "Log in as another user"
-msgstr "Prijava kot drug uporabnik"
+msgstr "Prijavi z drugim uporabniškim imenom"
 
 #: js/ui/unlockDialog.js:84
 msgid "Unlock Window"
@@ -2074,19 +2074,19 @@ msgstr "Koledar Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:437
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: src/main.c:386
+#: src/main.c:443
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM kot prijavni zaslon"
 
-#: src/main.c:392
+#: src/main.c:449
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Uporabi poseben način, na primer »gdm« za prijavni zaslon"
 
-#: src/main.c:398
+#: src/main.c:455
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
@@ -2137,6 +2137,18 @@ msgstr[3] "%u dovodi naprave"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
+
+#~ msgctxt "search-result"
+#~ msgid "Power off"
+#~ msgstr "Izklop"
+
+#~ msgctxt "search-result"
+#~ msgid "Log out"
+#~ msgstr "Odjava"
+
+#~ msgctxt "search-result"
+#~ msgid "Switch user"
+#~ msgstr "Preklopi uporabnika"
 
 #~ msgid "Hide tray"
 #~ msgstr "Skrij sistemsko vrstico"
