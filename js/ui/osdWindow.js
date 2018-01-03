@@ -145,7 +145,7 @@ var OsdWindow = new Lang.Class({
             return;
 
         if (!this.actor.visible) {
-            Meta.disable_unredirect_for_screen(global.screen);
+            Meta.disable_unredirect_for_display(global.display);
             this.actor.show();
             this.actor.opacity = 0;
             this.actor.get_parent().set_child_above_sibling(this.actor, null);
@@ -179,7 +179,7 @@ var OsdWindow = new Lang.Class({
                            transition: 'easeOutQuad',
                            onComplete: () => {
                               this._reset();
-                              Meta.enable_unredirect_for_screen(global.screen);
+                              Meta.enable_unredirect_for_display(global.display);
                            }
                          });
         return GLib.SOURCE_REMOVE;

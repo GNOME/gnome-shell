@@ -7,6 +7,8 @@
 #include <glib/gi18n-lib.h>
 
 #include <meta/display.h>
+#include <meta/meta-workspace-manager.h>
+#include <meta/meta-x11-display.h>
 
 #include "shell-app-private.h"
 #include "shell-enum-types.h"
@@ -358,6 +360,17 @@ find_most_recent_transient_on_same_workspace (MetaDisplay *display,
   return result;
 }
 
+static MetaWorkspace *
+get_active_workspace (void)
+{
+  ShellGlobal *global = shell_global_get ();
+  MetaDisplay *display = shell_global_get_display (global);
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
+
+  return meta_workspace_manager_get_active_workspace (workspace_manager);
+}
+
 /**
  * shell_app_activate_window:
  * @app: a #ShellApp
@@ -391,9 +404,8 @@ shell_app_activate_window (ShellApp     *app,
     {
       GSList *windows_reversed, *iter;
       ShellGlobal *global = shell_global_get ();
-      MetaScreen *screen = shell_global_get_screen (global);
-      MetaDisplay *display = meta_screen_get_display (screen);
-      MetaWorkspace *active = meta_screen_get_active_workspace (screen);
+      MetaDisplay *display = shell_global_get_display (global);
+      MetaWorkspace *active = get_active_workspace ();
       MetaWorkspace *workspace = meta_window_get_workspace (window);
       guint32 last_user_timestamp = meta_display_get_last_user_time (display);
       MetaWindow *most_recent_transient;
@@ -686,7 +698,7 @@ shell_app_get_windows (ShellApp *app)
     {
       CompareWindowsData data;
       data.app = app;
-      data.active_workspace = meta_screen_get_active_workspace (shell_global_get_screen (shell_global_get ()));
+      data.active_workspace = get_active_workspace ();
       app->running_state->windows = g_slist_sort_with_data (app->running_state->windows, shell_app_compare_windows, &data);
       app->running_state->window_sort_stale = FALSE;
     }
@@ -922,11 +934,11 @@ shell_app_on_skip_taskbar_changed (MetaWindow *window,
 }
 
 static void
-shell_app_on_ws_switch (MetaScreen         *screen,
-                        int                 from,
-                        int                 to,
-                        MetaMotionDirection direction,
-                        gpointer            data)
+shell_app_on_ws_switch (MetaWorkspaceManager *workspace_manager,
+                        int                   from,
+                        int                   to,
+                        MetaMotionDirection   direction,
+                        gpointer              data)
 {
   ShellApp *app = SHELL_APP (data);
 
@@ -1115,12 +1127,12 @@ _shell_app_handle_startup_sequence (ShellApp          *app,
    */
   if (starting && shell_app_get_state (app) == SHELL_APP_STATE_STOPPED)
     {
-      MetaScreen *screen = shell_global_get_screen (shell_global_get ());
-      MetaDisplay *display = meta_screen_get_display (screen);
+      MetaDisplay *display = shell_global_get_display (shell_global_get ());
+      MetaX11Display *x11_display = meta_display_get_x11_display (display);
 
       shell_app_state_transition (app, SHELL_APP_STATE_STARTING);
-      meta_display_focus_the_no_focus_window (display, screen,
-                                              sn_startup_sequence_get_timestamp (sequence));
+      meta_x11_display_focus_the_no_focus_window (x11_display,
+                                                  sn_startup_sequence_get_timestamp (sequence));
       app->started_on_workspace = sn_startup_sequence_get_workspace (sequence);
     }
 
@@ -1290,15 +1302,17 @@ shell_app_get_app_info (ShellApp *app)
 static void
 create_running_state (ShellApp *app)
 {
-  MetaScreen *screen;
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
 
   g_assert (app->running_state == NULL);
 
-  screen = shell_global_get_screen (shell_global_get ());
   app->running_state = g_slice_new0 (ShellAppRunningState);
   app->running_state->refcount = 1;
   app->running_state->workspace_switch_id =
-    g_signal_connect (screen, "workspace-switched", G_CALLBACK(shell_app_on_ws_switch), app);
+    g_signal_connect (workspace_manager, "workspace-switched",
+                      G_CALLBACK (shell_app_on_ws_switch), app);
 
   app->running_state->session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
   g_assert (app->running_state->session != NULL);
@@ -1349,7 +1363,9 @@ shell_app_update_app_menu (ShellApp   *app,
 static void
 unref_running_state (ShellAppRunningState *state)
 {
-  MetaScreen *screen;
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
 
   g_assert (state->refcount > 0);
 
@@ -1357,8 +1373,7 @@ unref_running_state (ShellAppRunningState *state)
   if (state->refcount > 0)
     return;
 
-  screen = shell_global_get_screen (shell_global_get ());
-  g_signal_handler_disconnect (screen, state->workspace_switch_id);
+  g_signal_handler_disconnect (workspace_manager, state->workspace_switch_id);
 
   g_clear_object (&state->application_proxy);
 
