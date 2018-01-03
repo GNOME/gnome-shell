@@ -3606,6 +3606,12 @@ meta_display_focus_default_window (MetaDisplay *display,
                                        timestamp);
 }
 
+/**
+ * meta_display_get_workspace_manager:
+ * @display: a #MetaDisplay
+ *
+ * Returns: (transfer none) The workspace manager of the display
+ */
 MetaWorkspaceManager *
 meta_display_get_workspace_manager (MetaDisplay *display)
 {
