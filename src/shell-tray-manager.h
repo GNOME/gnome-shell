@@ -14,7 +14,6 @@ G_DECLARE_FINAL_TYPE (ShellTrayManager, shell_tray_manager,
 
 ShellTrayManager *shell_tray_manager_new          (void);
 void              shell_tray_manager_manage_screen (ShellTrayManager *manager,
-                                                    MetaScreen       *screen,
                                                     StWidget         *theme_widget);
 
 G_END_DECLS

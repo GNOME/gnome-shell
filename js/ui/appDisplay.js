@@ -1861,7 +1861,7 @@ var AppIconMenu = new Lang.Class({
 
         // Display the app windows menu items and the separator between windows
         // of the current desktop and other windows.
-        let activeWorkspace = global.screen.get_active_workspace();
+        let activeWorkspace = global.get_active_workspace();
         let separatorShown = windows.length > 0 && windows[0].get_workspace() != activeWorkspace;
 
         for (let i = 0; i < windows.length; i++) {

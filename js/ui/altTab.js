@@ -502,7 +502,7 @@ var CyclerPopup = new Lang.Class({
     _finish() {
         let window = this._items[this._selectedIndex];
         let ws = window.get_workspace();
-        let activeWs = global.screen.get_active_workspace();
+        let activeWs = global.get_active_workspace();
 
         if (window.minimized) {
             Main.wm.skipNextEffect(window.get_compositor_private());
@@ -572,7 +572,7 @@ var WindowSwitcherPopup = new Lang.Class({
     },
 
     _getWindowList() {
-        let workspace = this._settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
+        let workspace = this._settings.get_boolean('current-workspace-only') ? global.get_active_workspace() : null;
         return getWindows(workspace);
     },
 
@@ -620,7 +620,7 @@ var WindowCyclerPopup = new Lang.Class({
     },
 
     _getWindows() {
-        let workspace = this._settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace() : null;
+        let workspace = this._settings.get_boolean('current-workspace-only') ? global.get_active_workspace() : null;
         return getWindows(workspace);
     },
 
@@ -669,7 +669,7 @@ var AppSwitcher = new Lang.Class({
 
         let windowTracker = Shell.WindowTracker.get_default();
         let settings = new Gio.Settings({ schema_id: 'org.gnome.shell.app-switcher' });
-        let workspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace()
+        let workspace = settings.get_boolean('current-workspace-only') ? global.get_active_workspace()
                                                                        : null;
         let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, workspace);
 

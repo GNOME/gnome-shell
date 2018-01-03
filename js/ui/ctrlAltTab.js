@@ -85,9 +85,9 @@ var CtrlAltTabManager = new Lang.Class({
 
         // And add the windows metacity would show in its Ctrl-Alt-Tab list
         if (Main.sessionMode.hasWindows && !Main.overview.visible) {
-            let screen = global.screen;
-            let display = screen.get_display();
-            let windows = display.get_tab_list(Meta.TabList.DOCKS, screen.get_active_workspace ());
+            let display = global.display;
+            let windows = display.get_tab_list(Meta.TabList.DOCKS,
+                                               global.get_active_workspace());
             let windowTracker = Shell.WindowTracker.get_default();
             let textureCache = St.TextureCache.get_default();
             for (let i = 0; i < windows.length; i++) {
@@ -131,7 +131,7 @@ var CtrlAltTabManager = new Lang.Class({
     },
 
     _focusWindows(timestamp) {
-        global.screen.focus_default_window(timestamp);
+        global.display.focus_default_window(timestamp);
     }
 });
 

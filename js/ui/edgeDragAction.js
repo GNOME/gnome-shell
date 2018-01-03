@@ -27,9 +27,9 @@ var EdgeDragAction = new Lang.Class({
 
     _getMonitorRect(x, y) {
         let rect = new Meta.Rectangle({ x: x - 1, y: y - 1, width: 1, height: 1 });
-        let monitorIndex = global.screen.get_monitor_index_for_rect(rect);
+        let monitorIndex = global.display.get_monitor_index_for_rect(rect);
 
-        return global.screen.get_monitor_geometry(monitorIndex);
+        return global.display.get_monitor_geometry(monitorIndex);
     },
 
     vfunc_gesture_prepare(action, actor) {
