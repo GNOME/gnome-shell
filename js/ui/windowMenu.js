@@ -126,8 +126,8 @@ var WindowMenu = new Lang.Class({
             }
         }
 
-        let screen = global.screen;
-        let nMonitors = screen.get_n_monitors();
+        let display = global.display;
+        let nMonitors = display.get_n_monitors();
         if (nMonitors > 1) {
             this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -135,7 +135,7 @@ var WindowMenu = new Lang.Class({
 
             let dir = Meta.ScreenDirection.UP;
             let upMonitorIndex =
-                screen.get_monitor_neighbor_index(monitorIndex, dir);
+                display.get_monitor_neighbor_index(monitorIndex, dir);
             if (upMonitorIndex != -1) {
                 this.addAction(_("Move to Monitor Up"), () => {
                     window.move_to_monitor(upMonitorIndex);
@@ -144,7 +144,7 @@ var WindowMenu = new Lang.Class({
 
             dir = Meta.ScreenDirection.DOWN;
             let downMonitorIndex =
-                screen.get_monitor_neighbor_index(monitorIndex, dir);
+                display.get_monitor_neighbor_index(monitorIndex, dir);
             if (downMonitorIndex != -1) {
                 this.addAction(_("Move to Monitor Down"), () => {
                     window.move_to_monitor(downMonitorIndex);
@@ -153,7 +153,7 @@ var WindowMenu = new Lang.Class({
 
             dir = Meta.ScreenDirection.LEFT;
             let leftMonitorIndex =
-                screen.get_monitor_neighbor_index(monitorIndex, dir);
+                display.get_monitor_neighbor_index(monitorIndex, dir);
             if (leftMonitorIndex != -1) {
                 this.addAction(_("Move to Monitor Left"), () => {
                     window.move_to_monitor(leftMonitorIndex);
@@ -162,7 +162,7 @@ var WindowMenu = new Lang.Class({
 
             dir = Meta.ScreenDirection.RIGHT;
             let rightMonitorIndex =
-                screen.get_monitor_neighbor_index(monitorIndex, dir);
+                display.get_monitor_neighbor_index(monitorIndex, dir);
             if (rightMonitorIndex != -1) {
                 this.addAction(_("Move to Monitor Right"), () => {
                     window.move_to_monitor(rightMonitorIndex);

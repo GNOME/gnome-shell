@@ -47,9 +47,12 @@ var WorkspaceSwitcherPopup = new Lang.Class({
 
         this.actor.hide();
 
-        this._globalSignals = [];
-        this._globalSignals.push(global.screen.connect('workspace-added', this._redisplay.bind(this)));
-        this._globalSignals.push(global.screen.connect('workspace-removed', this._redisplay.bind(this)));
+        let workspaceManager = global.workspace_manager;
+        this._workspaceManagerSignals = [];
+        this._workspaceManagerSignals.push(workspaceManager.connect('workspace-added',
+                                                                    this._redisplay.bind(this)));
+        this._workspaceManagerSignals.push(workspaceManager.connect('workspace-removed',
+                                                                    this._redisplay.bind(this)));
     },
 
     _getPreferredHeight(actor, forWidth, alloc) {
@@ -68,11 +71,12 @@ var WorkspaceSwitcherPopup = new Lang.Class({
             height += childNaturalHeight * workArea.width / workArea.height;
         }
 
-        let spacing = this._itemSpacing * (global.screen.n_workspaces - 1);
+        let workspaceManager = global.workspace_manager;
+        let spacing = this._itemSpacing * (workspaceManager.n_workspaces - 1);
         height += spacing;
         height = Math.min(height, availHeight);
 
-        this._childHeight = (height - spacing) / global.screen.n_workspaces;
+        this._childHeight = (height - spacing) / workspaceManager.n_workspaces;
 
         alloc.min_size = height;
         alloc.natural_size = height;
@@ -104,9 +108,11 @@ var WorkspaceSwitcherPopup = new Lang.Class({
     },
 
     _redisplay() {
+        let workspaceManager = global.workspace_manager;
+
         this._list.destroy_all_children();
 
-        for (let i = 0; i < global.screen.n_workspaces; i++) {
+        for (let i = 0; i < workspaceManager.n_workspaces; i++) {
             let indicator = null;
 
            if (i == this._activeWorkspaceIndex && this._direction == Meta.MotionDirection.UP)
@@ -164,8 +170,9 @@ var WorkspaceSwitcherPopup = new Lang.Class({
             Mainloop.source_remove(this._timeoutId);
         this._timeoutId = 0;
 
-        for (let i = 0; i < this._globalSignals.length; i++)
-            global.screen.disconnect(this._globalSignals[i]);
+        let workspaceManager = global.workspace_manager;
+        for (let i = 0; i < this._workspaceManagerSignals.length; i++)
+            workspaceManager.disconnect(this._workspaceManagerSignals[i]);
 
         this.actor.destroy();
 

@@ -429,7 +429,7 @@ function pushModal(actor, params) {
             log('pushModal: invocation of begin_modal failed');
             return false;
         }
-        Meta.disable_unredirect_for_screen(global.screen);
+        Meta.disable_unredirect_for_display(global.display);
     }
 
     modalCount += 1;
@@ -528,7 +528,7 @@ function popModal(actor, timestamp) {
 
     layoutManager.modalEnded();
     global.end_modal(timestamp);
-    Meta.enable_unredirect_for_screen(global.screen);
+    Meta.enable_unredirect_for_display(global.display);
     actionMode = Shell.ActionMode.NORMAL;
 }
 
@@ -556,14 +556,15 @@ function openRunDialog() {
  * and switching out of the overview if it's currently active
  */
 function activateWindow(window, time, workspaceNum) {
-    let activeWorkspaceNum = global.screen.get_active_workspace_index();
+    let workspaceManager = global.workspace_manager;
+    let activeWorkspaceNum = workspaceManager.get_active_workspace_index();
     let windowWorkspaceNum = (workspaceNum !== undefined) ? workspaceNum : window.get_workspace().index();
 
     if (!time)
         time = global.get_current_time();
 
     if (windowWorkspaceNum != activeWorkspaceNum) {
-        let workspace = global.screen.get_workspace_by_index(windowWorkspaceNum);
+        let workspace = workspaceManager.get_workspace_by_index(windowWorkspaceNum);
         workspace.activate_with_focus(window, time);
     } else {
         window.activate(time);

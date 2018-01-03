@@ -116,7 +116,7 @@ var ModalDialog = new Lang.Class({
         if (onPrimary)
             this._monitorConstraint.primary = true;
         else
-            this._monitorConstraint.index = global.screen.get_current_monitor();
+            this._monitorConstraint.index = global.display.get_current_monitor();
 
         this.state = State.OPENING;
 

@@ -200,12 +200,18 @@ var WorkspaceTracker = new Lang.Class({
         let tracker = Shell.WindowTracker.get_default();
         tracker.connect('startup-sequence-changed', this._queueCheckWorkspaces.bind(this));
 
-        global.screen.connect('notify::n-workspaces', this._nWorkspacesChanged.bind(this));
-        global.window_manager.connect('switch-workspace', this._queueCheckWorkspaces.bind(this));
+        let workspaceManager = global.workspace_manager;
+        workspaceManager.connect('notify::n-workspaces',
+                                 this._nWorkspacesChanged.bind(this));
+        global.window_manager.connect('switch-workspace',
+                                      this._queueCheckWorkspaces.bind(this));
 
-        global.screen.connect('window-entered-monitor', this._windowEnteredMonitor.bind(this));
-        global.screen.connect('window-left-monitor', this._windowLeftMonitor.bind(this));
-        global.screen.connect('restacked', this._windowsRestacked.bind(this));
+        global.display.connect('window-entered-monitor',
+                               this._windowEnteredMonitor.bind(this));
+        global.display.connect('window-left-monitor',
+                               this._windowLeftMonitor.bind(this));
+        global.display.connect('restacked',
+                               this._windowsRestacked.bind(this));
 
         this._workspaceSettings = this._getWorkspaceSettings();
         this._workspaceSettings.connect('changed::dynamic-workspaces', this._queueCheckWorkspaces.bind(this));
@@ -230,6 +236,7 @@ var WorkspaceTracker = new Lang.Class({
     },
 
     _checkWorkspaces() {
+        let workspaceManager = global.workspace_manager;
         let i;
         let emptyWorkspaces = [];
 
@@ -257,7 +264,7 @@ var WorkspaceTracker = new Lang.Class({
         let sequences = Shell.WindowTracker.get_default().get_startup_sequences();
         for (i = 0; i < sequences.length; i++) {
             let index = sequences[i].get_workspace();
-            if (index >= 0 && index <= global.screen.n_workspaces)
+            if (index >= 0 && index <= workspaceManager.n_workspaces)
                 emptyWorkspaces[index] = false;
         }
 
@@ -275,17 +282,17 @@ var WorkspaceTracker = new Lang.Class({
 
         // If we don't have an empty workspace at the end, add one
         if (!emptyWorkspaces[emptyWorkspaces.length -1]) {
-            global.screen.append_new_workspace(false, global.get_current_time());
+            workspaceManager.append_new_workspace(false, global.get_current_time());
             emptyWorkspaces.push(false);
         }
 
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
         emptyWorkspaces[activeWorkspaceIndex] = false;
 
         // Delete other empty workspaces; do it from the end to avoid index changes
         for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
             if (emptyWorkspaces[i])
-                global.screen.remove_workspace(this._workspaces[i], global.get_current_time());
+                workspaceManager.remove_workspace(this._workspaces[i], global.get_current_time());
         }
 
         this._checkWorkspacesId = 0;
@@ -317,14 +324,14 @@ var WorkspaceTracker = new Lang.Class({
         GLib.Source.set_name_by_id(id, '[gnome-shell] this._queueCheckWorkspaces');
     },
 
-    _windowLeftMonitor(metaScreen, monitorIndex, metaWin) {
+    _windowLeftMonitor(metaDisplay, monitorIndex, metaWin) {
         // If the window left the primary monitor, that
         // might make that workspace empty
         if (monitorIndex == Main.layoutManager.primaryIndex)
             this._queueCheckWorkspaces();
     },
 
-    _windowEnteredMonitor(metaScreen, monitorIndex, metaWin) {
+    _windowEnteredMonitor(metaDisplay, monitorIndex, metaWin) {
         // If the window entered the primary monitor, that
         // might make that workspace non-empty
         if (monitorIndex == Main.layoutManager.primaryIndex)
@@ -344,8 +351,9 @@ var WorkspaceTracker = new Lang.Class({
     },
 
     _nWorkspacesChanged() {
+        let workspaceManager = global.workspace_manager;
         let oldNumWorkspaces = this._workspaces.length;
-        let newNumWorkspaces = global.screen.n_workspaces;
+        let newNumWorkspaces = workspaceManager.n_workspaces;
 
         if (oldNumWorkspaces == newNumWorkspaces)
             return false;
@@ -356,7 +364,7 @@ var WorkspaceTracker = new Lang.Class({
 
             // Assume workspaces are only added at the end
             for (w = oldNumWorkspaces; w < newNumWorkspaces; w++)
-                this._workspaces[w] = global.screen.get_workspace_by_index(w);
+                this._workspaces[w] = workspaceManager.get_workspace_by_index(w);
 
             for (w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 let workspace = this._workspaces[w];
@@ -370,7 +378,7 @@ var WorkspaceTracker = new Lang.Class({
             let removedIndex;
             let removedNum = oldNumWorkspaces - newNumWorkspaces;
             for (let w = 0; w < oldNumWorkspaces; w++) {
-                let workspace = global.screen.get_workspace_by_index(w);
+                let workspace = workspaceManager.get_workspace_by_index(w);
                 if (this._workspaces[w] != workspace) {
                     removedIndex = w;
                     break;
@@ -714,7 +722,7 @@ var WindowManager = new Lang.Class({
         this._shellwm.connect('confirm-display-change', this._confirmDisplayChange.bind(this));
         this._shellwm.connect('create-close-dialog', this._createCloseDialog.bind(this));
         this._shellwm.connect('create-inhibit-shortcuts-dialog', this._createInhibitShortcutsDialog.bind(this));
-        global.screen.connect('restacked', this._syncStacking.bind(this));
+        global.display.connect('restacked', this._syncStacking.bind(this));
 
         this._workspaceSwitcherPopup = null;
         this._tilePreview = null;
@@ -970,8 +978,8 @@ var WindowManager = new Lang.Class({
         if (Main.sessionMode.hasWorkspaces)
             this._workspaceTracker = new WorkspaceTracker(this);
 
-        global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
-                                                false, -1, 1);
+        global.workspace_manager.override_workspace_layout(Meta.DisplayCorner.TOPLEFT,
+                                                           false, -1, 1);
 
         let gesture = new WorkspaceSwitchAction();
         gesture.connect('activated', this._actionSwitchWorkspace.bind(this));
@@ -1001,7 +1009,9 @@ var WindowManager = new Lang.Class({
     },
 
     _actionSwitchWorkspace(action, direction) {
-            let newWs = global.screen.get_active_workspace().get_neighbor(direction);
+            let workspaceManager = global.workspace_manager;
+            let activeWorkspace = workspaceManager.get_active_workspace();
+            let newWs = activeWorkspace.get_neighbor(direction);
             this.actionMoveWorkspace(newWs);
     },
 
@@ -1017,8 +1027,10 @@ var WindowManager = new Lang.Class({
     _switchApp() {
         let windows = global.get_window_actors().filter(actor => {
             let win = actor.metaWindow;
+            let workspaceManager = global.workspace_manager;
+            let activeWorkspace = workspaceManager.get_active_workspace();
             return (!win.is_override_redirect() &&
-                    win.located_on_workspace(global.screen.get_active_workspace()));
+                    win.located_on_workspace(activeWorkspace));
         });
 
         if (windows.length == 0)
@@ -1042,10 +1054,12 @@ var WindowManager = new Lang.Class({
     },
 
     insertWorkspace(pos) {
+        let workspaceManager = global.workspace_manager;
+
         if (!Meta.prefs_get_dynamic_workspaces())
             return;
 
-        global.screen.append_new_workspace(false, global.get_current_time());
+        workspaceManager.append_new_workspace(false, global.get_current_time());
 
         let windows = global.get_window_actors().map(a => a.meta_window);
 
@@ -1069,9 +1083,9 @@ var WindowManager = new Lang.Class({
 
         // If the new workspace was inserted before the active workspace,
         // activate the workspace to which its windows went
-        let activeIndex = global.screen.get_active_workspace_index();
+        let activeIndex = workspaceManager.get_active_workspace_index();
         if (activeIndex >= pos) {
-            let newWs = global.screen.get_workspace_by_index(activeIndex + 1);
+            let newWs = workspaceManager.get_workspace_by_index(activeIndex + 1);
             this._blockAnimations = true;
             newWs.activate(global.get_current_time());
             this._blockAnimations = false;
@@ -1820,7 +1834,7 @@ var WindowManager = new Lang.Class({
         this._windowMenuManager.showWindowMenuForWindow(window, menu, rect);
     },
 
-    _startSwitcher(display, screen, window, binding) {
+    _startSwitcher(display, window, binding) {
         let constructor = null;
         switch (binding.get_name()) {
             case 'switch-applications':
@@ -1859,15 +1873,15 @@ var WindowManager = new Lang.Class({
             tabPopup.destroy();
     },
 
-    _startA11ySwitcher(display, screen, window, binding) {
+    _startA11ySwitcher(display, window, binding) {
         Main.ctrlAltTabManager.popup(binding.is_reversed(), binding.get_name(), binding.get_mask());
     },
 
-    _toggleAppMenu(display, screen, window, event, binding) {
+    _toggleAppMenu(display, window, event, binding) {
         Main.panel.toggleAppMenu();
     },
 
-    _toggleCalendar(display, screen, window, event, binding) {
+    _toggleCalendar(display, window, event, binding) {
         Main.panel.toggleCalendar();
     },
 
@@ -1880,11 +1894,13 @@ var WindowManager = new Lang.Class({
             OrigTweener.resumeAllTweens();
     },
 
-    _showWorkspaceSwitcher(display, screen, window, binding) {
+    _showWorkspaceSwitcher(display, window, binding) {
+        let workspaceManager = display.get_workspace_manager();
+
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        if (screen.n_workspaces == 1)
+        if (workspaceManager.n_workspaces == 1)
             return;
 
         let [action,,,target] = binding.get_name().split('-');
@@ -1903,22 +1919,22 @@ var WindowManager = new Lang.Class({
 
         if (target == 'last') {
             direction = Meta.MotionDirection.DOWN;
-            newWs = screen.get_workspace_by_index(screen.n_workspaces - 1);
+            newWs = workspaceManager.get_workspace_by_index(workspaceManager.n_workspaces - 1);
         } else if (isNaN(target)) {
             // Prepend a new workspace dynamically
-            if (screen.get_active_workspace_index() == 0 &&
+            if (workspaceManager.get_active_workspace_index() == 0 &&
                 action == 'move' && target == 'up' && this._isWorkspacePrepended == false) {
                 this.insertWorkspace(0);
                 this._isWorkspacePrepended = true;
             }
 
             direction = Meta.MotionDirection[target.toUpperCase()];
-            newWs = screen.get_active_workspace().get_neighbor(direction);
+            newWs = workspaceManager.get_active_workspace().get_neighbor(direction);
         } else if (target > 0) {
             target--;
-            newWs = screen.get_workspace_by_index(target);
+            newWs = workspaceManager.get_workspace_by_index(target);
 
-            if (screen.get_active_workspace().index() > target)
+            if (workspaceManager.get_active_workspace().index() > target)
                 direction = Meta.MotionDirection.UP;
             else
                 direction = Meta.MotionDirection.DOWN;
@@ -1951,7 +1967,8 @@ var WindowManager = new Lang.Class({
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        let activeWorkspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
 
         if (activeWorkspace != workspace)
             workspace.activate(global.get_current_time());
@@ -1961,7 +1978,8 @@ var WindowManager = new Lang.Class({
         if (!Main.sessionMode.hasWorkspaces)
             return;
 
-        let activeWorkspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
 
         if (activeWorkspace != workspace) {
             // This won't have any effect for "always sticky" windows

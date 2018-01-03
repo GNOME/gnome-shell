@@ -210,16 +210,13 @@ shell_tray_manager_style_changed (StWidget *theme_widget,
 
 void
 shell_tray_manager_manage_screen (ShellTrayManager *manager,
-                                  MetaScreen       *screen,
                                   StWidget         *theme_widget)
 {
   GdkDisplay *display;
   GdkScreen *gdk_screen;
-  int screen_number;
 
   display = gdk_display_get_default ();
-  screen_number = meta_screen_get_screen_number (screen);
-  gdk_screen = gdk_display_get_screen (display, screen_number);
+  gdk_screen = gdk_display_get_default_screen (display);
 
   na_tray_manager_manage_screen (manager->priv->na_manager, gdk_screen);
 
