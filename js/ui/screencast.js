@@ -56,7 +56,7 @@ var ScreencastService = new Lang.Class({
         let recorder = this._recorders.get(sender);
         if (!recorder) {
             recorder = new Shell.Recorder({ stage: global.stage,
-                                            screen: global.screen });
+                                            display: global.display });
             recorder._watchNameId =
                 Gio.bus_watch_name(Gio.BusType.SESSION, sender, 0, null,
                                    this._onNameVanished.bind(this));

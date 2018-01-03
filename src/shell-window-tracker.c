@@ -13,6 +13,7 @@
 #include <meta/group.h>
 #include <meta/util.h>
 #include <meta/window.h>
+#include <meta/meta-workspace-manager.h>
 
 #define SN_API_NOT_YET_FROZEN 1
 #include <libsn/sn.h>
@@ -587,13 +588,16 @@ shell_window_tracker_on_window_removed (MetaWorkspace   *workspace,
 static void
 load_initial_windows (ShellWindowTracker *tracker)
 {
-  GList *workspaces, *iter;
-  MetaScreen *screen = shell_global_get_screen (shell_global_get ());
-  workspaces = meta_screen_get_workspaces (screen);
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
+  GList *workspaces;
+  GList *l;
 
-  for (iter = workspaces; iter; iter = iter->next)
+  workspaces = meta_workspace_manager_get_workspaces (workspace_manager);
+  for (l = workspaces; l; l = l->next)
     {
-      MetaWorkspace *workspace = iter->data;
+      MetaWorkspace *workspace = l->data;
       GList *windows = meta_workspace_list_windows (workspace);
       GList *window_iter;
 
@@ -608,18 +612,18 @@ load_initial_windows (ShellWindowTracker *tracker)
 }
 
 static void
-shell_window_tracker_on_n_workspaces_changed (MetaScreen    *screen,
-                                           GParamSpec    *pspec,
-                                           gpointer       user_data)
+shell_window_tracker_on_n_workspaces_changed (MetaWorkspaceManager *workspace_manager,
+                                              GParamSpec           *pspec,
+                                              gpointer              user_data)
 {
   ShellWindowTracker *self = SHELL_WINDOW_TRACKER (user_data);
-  GList *workspaces, *iter;
+  GList *workspaces;
+  GList *l;
 
-  workspaces = meta_screen_get_workspaces (screen);
-
-  for (iter = workspaces; iter; iter = iter->next)
+  workspaces = meta_workspace_manager_get_workspaces (workspace_manager);
+  for (l = workspaces; l; l = l->next)
     {
-      MetaWorkspace *workspace = iter->data;
+      MetaWorkspace *workspace = l->data;
 
       /* This pair of disconnect/connect is idempotent if we were
        * already connected, while ensuring we get connected for
@@ -642,20 +646,20 @@ shell_window_tracker_on_n_workspaces_changed (MetaScreen    *screen,
 static void
 init_window_tracking (ShellWindowTracker *self)
 {
-  MetaDisplay *display;
-  MetaScreen *screen = shell_global_get_screen (shell_global_get ());
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
+  MetaWorkspaceManager *workspace_manager =
+    meta_display_get_workspace_manager (display);
 
-  g_signal_connect (screen, "notify::n-workspaces",
+  g_signal_connect (workspace_manager, "notify::n-workspaces",
                     G_CALLBACK (shell_window_tracker_on_n_workspaces_changed), self);
-  display = meta_screen_get_display (screen);
   g_signal_connect (display, "notify::focus-window",
                     G_CALLBACK (on_focus_window_changed), self);
 
-  shell_window_tracker_on_n_workspaces_changed (screen, NULL, self);
+  shell_window_tracker_on_n_workspaces_changed (workspace_manager, NULL, self);
 }
 
 static void
-on_startup_sequence_changed (MetaScreen            *screen,
+on_startup_sequence_changed (MetaDisplay           *display,
                              SnStartupSequence     *sequence,
                              ShellWindowTracker    *self)
 {
@@ -671,14 +675,13 @@ on_startup_sequence_changed (MetaScreen            *screen,
 static void
 shell_window_tracker_init (ShellWindowTracker *self)
 {
-  MetaScreen *screen;
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
 
   self->window_to_app = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                                NULL, (GDestroyNotify) g_object_unref);
 
-  screen = shell_global_get_screen (shell_global_get ());
 
-  g_signal_connect (G_OBJECT (screen), "startup-sequence-changed",
+  g_signal_connect (display, "startup-sequence-changed",
                     G_CALLBACK (on_startup_sequence_changed), self);
 
   load_initial_windows (self);
@@ -795,8 +798,9 @@ GSList *
 shell_window_tracker_get_startup_sequences (ShellWindowTracker *self)
 {
   ShellGlobal *global = shell_global_get ();
-  MetaScreen *screen = shell_global_get_screen (global);
-  return meta_screen_get_startup_sequences (screen);
+  MetaDisplay *display = shell_global_get_display (global);
+
+  return meta_display_get_startup_sequences (display);
 }
 
 /* sn_startup_sequence_ref returns void, so make a

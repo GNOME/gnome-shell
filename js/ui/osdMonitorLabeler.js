@@ -32,7 +32,7 @@ var OsdMonitorLabel = new Lang.Class({
         Main.uiGroup.set_child_above_sibling(this._actor, null);
         this._position();
 
-        Meta.disable_unredirect_for_screen(global.screen);
+        Meta.disable_unredirect_for_display(global.display);
     },
 
     _position() {
@@ -48,7 +48,7 @@ var OsdMonitorLabel = new Lang.Class({
 
     destroy() {
         this._actor.destroy();
-        Meta.enable_unredirect_for_screen(global.screen);
+        Meta.enable_unredirect_for_display(global.display);
     }
 });
 

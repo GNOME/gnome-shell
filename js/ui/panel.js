@@ -265,7 +265,8 @@ var AppMenuButton = new Lang.Class({
     },
 
     _findTargetApp() {
-        let workspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let workspace = workspaceManager.get_active_workspace();
         let tracker = Shell.WindowTracker.get_default();
         let focusedApp = tracker.focus_app;
         if (focusedApp && focusedApp.is_on_workspace(workspace))
@@ -818,7 +819,7 @@ var Panel = new Lang.Class({
         global.window_group.connect('actor-removed', this._onWindowActorRemoved.bind(this));
         global.window_manager.connect('switch-workspace', this._updateSolidStyle.bind(this));
 
-        global.screen.connect('workareas-changed', () => { this.actor.queue_relayout(); });
+        global.display.connect('workareas-changed', () => { this.actor.queue_relayout(); });
         this._updatePanel();
     },
 
@@ -961,8 +962,7 @@ var Panel = new Lang.Class({
         if (!allowDrag)
             return Clutter.EVENT_PROPAGATE;
 
-        global.display.begin_grab_op(global.screen,
-                                     dragWindow,
+        global.display.begin_grab_op(dragWindow,
                                      Meta.GrabOp.MOVING,
                                      false, /* pointer grab */
                                      true, /* frame action */
@@ -977,7 +977,7 @@ var Panel = new Lang.Class({
     _onKeyPress(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Escape) {
-            global.screen.focus_default_window(event.get_time());
+            global.display.focus_default_window(event.get_time());
             return Clutter.EVENT_STOP;
         }
 
@@ -1075,7 +1075,8 @@ var Panel = new Lang.Class({
             return;
 
         /* Get all the windows in the active workspace that are in the primary monitor and visible */
-        let activeWorkspace = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWorkspace = workspaceManager.get_active_workspace();
         let windows = activeWorkspace.list_windows().filter(metaWindow => {
             return metaWindow.is_on_primary_monitor() &&
                    metaWindow.showing_on_its_workspace() &&
