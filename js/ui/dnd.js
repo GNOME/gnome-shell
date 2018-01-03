@@ -280,7 +280,7 @@ var _Draggable = new Lang.Class({
 
         this._touchSequence = sequence;
         this._grabEvents();
-        global.screen.set_cursor(Meta.Cursor.DND_IN_DRAG);
+        global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
 
         this._dragX = this._dragStartX = stageX;
         this._dragY = this._dragStartY = stageY;
@@ -412,7 +412,7 @@ var _Draggable = new Lang.Class({
             if (motionFunc) {
                 let result = motionFunc(dragEvent);
                 if (result != DragMotionResult.CONTINUE) {
-                    global.screen.set_cursor(DRAG_CURSOR_MAP[result]);
+                    global.display.set_cursor(DRAG_CURSOR_MAP[result]);
                     return GLib.SOURCE_REMOVE;
                 }
             }
@@ -430,13 +430,13 @@ var _Draggable = new Lang.Class({
                                                              targY,
                                                              0);
                 if (result != DragMotionResult.CONTINUE) {
-                    global.screen.set_cursor(DRAG_CURSOR_MAP[result]);
+                    global.display.set_cursor(DRAG_CURSOR_MAP[result]);
                     return GLib.SOURCE_REMOVE;
                 }
             }
             target = target.get_parent();
         }
-        global.screen.set_cursor(Meta.Cursor.DND_IN_DRAG);
+        global.display.set_cursor(Meta.Cursor.DND_IN_DRAG);
         return GLib.SOURCE_REMOVE;
     },
 
@@ -509,7 +509,7 @@ var _Draggable = new Lang.Class({
                     }
 
                     this._dragInProgress = false;
-                    global.screen.set_cursor(Meta.Cursor.DEFAULT);
+                    global.display.set_cursor(Meta.Cursor.DEFAULT);
                     this.emit('drag-end', event.get_time(), true);
                     this._dragComplete();
                     return true;
@@ -561,7 +561,7 @@ var _Draggable = new Lang.Class({
         let [snapBackX, snapBackY, snapBackScale] = this._getRestoreLocation();
 
         if (this._actorDestroyed) {
-            global.screen.set_cursor(Meta.Cursor.DEFAULT);
+            global.display.set_cursor(Meta.Cursor.DEFAULT);
             if (!this._buttonDown)
                 this._dragComplete();
             this.emit('drag-end', eventTime, false);
@@ -620,7 +620,7 @@ var _Draggable = new Lang.Class({
         if (!this._buttonDown)
             this._dragComplete();
 
-        global.screen.set_cursor(Meta.Cursor.DEFAULT);
+        global.display.set_cursor(Meta.Cursor.DEFAULT);
     },
 
     _onAnimationComplete(dragActor, eventTime) {

@@ -568,7 +568,7 @@ var Keyboard = new Lang.Class({
         this._updateCaretPositionId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             this._updateCaretPositionId = 0;
 
-            let currentWindow = global.screen.get_display().focus_window;
+            let currentWindow = global.display.focus_window;
             if (!currentWindow) {
                 this.setCursorLocation(null);
                 return GLib.SOURCE_REMOVE;
@@ -1131,7 +1131,7 @@ var Keyboard = new Lang.Class({
             return;
 
         if (this._oskFocusWindow) {
-            let display = global.screen.get_display();
+            let display = global.display;
 
             if (display.get_grab_op() == Meta.GrabOp.NONE ||
                 display.get_focus_window() != this._oskFocusWindow)

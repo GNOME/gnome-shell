@@ -28,6 +28,8 @@
 #include <meta/meta-shaped-texture.h>
 #include <meta/meta-cursor-tracker.h>
 #include <meta/meta-settings.h>
+#include <meta/meta-workspace-manager.h>
+#include <meta/meta-x11-display.h>
 
 #ifdef HAVE_SYSTEMD
 #include <systemd/sd-journal.h>
@@ -60,9 +62,10 @@ struct _ShellGlobal {
   Window stage_xwindow;
 
   MetaDisplay *meta_display;
+  MetaWorkspaceManager *workspace_manager;
   GdkDisplay *gdk_display;
+  MetaX11Display *x11_display;
   Display *xdisplay;
-  MetaScreen *meta_screen;
 
   char *session_mode;
 
@@ -96,8 +99,8 @@ enum {
   PROP_0,
 
   PROP_SESSION_MODE,
-  PROP_SCREEN,
   PROP_DISPLAY,
+  PROP_WORKSPACE_MANAGER,
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
@@ -163,17 +166,17 @@ shell_global_get_property(GObject         *object,
     case PROP_SESSION_MODE:
       g_value_set_string (value, shell_global_get_session_mode (global));
       break;
-    case PROP_SCREEN:
-      g_value_set_object (value, global->meta_screen);
-      break;
     case PROP_DISPLAY:
       g_value_set_object (value, global->meta_display);
+      break;
+    case PROP_WORKSPACE_MANAGER:
+      g_value_set_object (value, global->workspace_manager);
       break;
     case PROP_SCREEN_WIDTH:
       {
         int width, height;
 
-        meta_screen_get_size (global->meta_screen, &width, &height);
+        meta_display_get_size (global->meta_display, &width, &height);
         g_value_set_int (value, width);
       }
       break;
@@ -181,7 +184,7 @@ shell_global_get_property(GObject         *object,
       {
         int width, height;
 
-        meta_screen_get_size (global->meta_screen, &width, &height);
+        meta_display_get_size (global->meta_display, &width, &height);
         g_value_set_int (value, height);
       }
       break;
@@ -189,10 +192,10 @@ shell_global_get_property(GObject         *object,
       g_value_set_object (value, global->stage);
       break;
     case PROP_WINDOW_GROUP:
-      g_value_set_object (value, meta_get_window_group_for_screen (global->meta_screen));
+      g_value_set_object (value, meta_get_window_group_for_display (global->meta_display));
       break;
     case PROP_TOP_WINDOW_GROUP:
-      g_value_set_object (value, meta_get_top_window_group_for_screen (global->meta_screen));
+      g_value_set_object (value, meta_get_top_window_group_for_display (global->meta_display));
       break;
     case PROP_WINDOW_MANAGER:
       g_value_set_object (value, global->wm);
@@ -370,13 +373,6 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "The session mode to use",
                                                         "user",
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (gobject_class,
-                                   PROP_SCREEN,
-                                   g_param_spec_object ("screen",
-                                                        "Screen",
-                                                        "Metacity screen object for the shell",
-                                                        META_TYPE_SCREEN,
-                                                        G_PARAM_READABLE));
 
   g_object_class_install_property (gobject_class,
                                    PROP_SCREEN_WIDTH,
@@ -399,6 +395,14 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Display",
                                                         "Metacity display object for the shell",
                                                         META_TYPE_DISPLAY,
+                                                        G_PARAM_READABLE));
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_WORKSPACE_MANAGER,
+                                   g_param_spec_object ("workspace-manager",
+                                                        "Workspace manager",
+                                                        "Workspace manager",
+                                                        META_TYPE_WORKSPACE_MANAGER,
                                                         G_PARAM_READABLE));
 
   g_object_class_install_property (gobject_class,
@@ -564,7 +568,7 @@ focus_window_changed (MetaDisplay *display,
 
   /* If the stage window became unfocused, drop the key focus
    * on Clutter's side. */
-  if (!meta_stage_is_focused (global->meta_screen))
+  if (!meta_stage_is_focused (global->meta_display))
     clutter_stage_set_key_focus (global->stage, NULL);
 }
 
@@ -594,14 +598,14 @@ sync_stage_window_focus (ShellGlobal *global)
   actor = get_key_focused_actor (global);
 
   /* An actor got key focus and the stage needs to be focused. */
-  if (actor != NULL && !meta_stage_is_focused (global->meta_screen))
-    meta_focus_stage_window (global->meta_screen,
+  if (actor != NULL && !meta_stage_is_focused (global->meta_display))
+    meta_focus_stage_window (global->meta_display,
                              get_current_time_maybe_roundtrip (global));
 
   /* An actor dropped key focus. Focus the default window. */
-  else if (actor == NULL && meta_stage_is_focused (global->meta_screen))
-    meta_screen_focus_default_window (global->meta_screen,
-                                      get_current_time_maybe_roundtrip (global));
+  else if (actor == NULL && meta_stage_is_focused (global->meta_display))
+    meta_display_focus_default_window (global->meta_display,
+                                       get_current_time_maybe_roundtrip (global));
 }
 
 static void
@@ -616,12 +620,12 @@ focus_actor_changed (ClutterStage *stage,
 static void
 sync_input_region (ShellGlobal *global)
 {
-  MetaScreen *screen = global->meta_screen;
+  MetaDisplay *display = global->meta_display;
 
   if (global->has_modal)
-    meta_set_stage_input_region (screen, None);
+    meta_set_stage_input_region (display, None);
   else
-    meta_set_stage_input_region (screen, global->input_region);
+    meta_set_stage_input_region (display, global->input_region);
 }
 
 /**
@@ -676,17 +680,6 @@ shell_global_get_stage (ShellGlobal  *global)
 }
 
 /**
- * shell_global_get_screen:
- *
- * Return value: (transfer none): The default #MetaScreen
- */
-MetaScreen *
-shell_global_get_screen (ShellGlobal  *global)
-{
-  return global->meta_screen;
-}
-
-/**
  * shell_global_get_display:
  *
  * Return value: (transfer none): The default #MetaDisplay
@@ -712,7 +705,7 @@ shell_global_get_window_actors (ShellGlobal *global)
 
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), NULL);
 
-  for (l = meta_get_window_actors (global->meta_screen); l; l = l->next)
+  for (l = meta_get_window_actors (global->meta_display); l; l = l->next)
     if (!meta_window_actor_is_destroyed (l->data))
       filtered = g_list_prepend (filtered, l->data);
 
@@ -838,13 +831,15 @@ entry_cursor_func (StEntry  *entry,
 {
   ShellGlobal *global = user_data;
 
-  meta_screen_set_cursor (global->meta_screen, use_ibeam ? META_CURSOR_IBEAM : META_CURSOR_DEFAULT);
+  meta_display_set_cursor (global->meta_display,
+                           use_ibeam ? META_CURSOR_IBEAM : META_CURSOR_DEFAULT);
 }
 
 void
 _shell_global_set_plugin (ShellGlobal *global,
                           MetaPlugin  *plugin)
 {
+  MetaDisplay *display;
   MetaBackend *backend;
   MetaSettings *settings;
 
@@ -854,13 +849,15 @@ _shell_global_set_plugin (ShellGlobal *global,
   global->plugin = plugin;
   global->wm = shell_wm_new (plugin);
 
-  global->meta_screen = meta_plugin_get_screen (plugin);
-  global->meta_display = meta_screen_get_display (global->meta_screen);
-  global->xdisplay = meta_display_get_xdisplay (global->meta_display);
+  display = meta_plugin_get_display (plugin);
+  global->meta_display = display;
+  global->workspace_manager = meta_display_get_workspace_manager (display);
+  global->x11_display = meta_display_get_x11_display (display);
+  global->xdisplay = meta_x11_display_get_xdisplay (global->x11_display);
 
   global->gdk_display = gdk_x11_lookup_xdisplay (global->xdisplay);
 
-  global->stage = CLUTTER_STAGE (meta_get_stage_for_screen (global->meta_screen));
+  global->stage = CLUTTER_STAGE (meta_get_stage_for_display (display));
 
   if (meta_is_wayland_compositor ())
     {
@@ -972,13 +969,13 @@ shell_global_end_modal (ShellGlobal *global,
 
   /* If the stage window is unfocused, ensure that there's no
    * actor focused on Clutter's side. */
-  if (!meta_stage_is_focused (global->meta_screen))
+  if (!meta_stage_is_focused (global->meta_display))
     clutter_stage_set_key_focus (global->stage, NULL);
 
   /* An actor dropped key focus. Focus the default window. */
-  else if (get_key_focused_actor (global) && meta_stage_is_focused (global->meta_screen))
-    meta_screen_focus_default_window (global->meta_screen,
-                                      get_current_time_maybe_roundtrip (global));
+  else if (get_key_focused_actor (global) && meta_stage_is_focused (global->meta_display))
+    meta_display_focus_default_window (global->meta_display,
+                                       get_current_time_maybe_roundtrip (global));
 
   sync_input_region (global);
 }
@@ -1159,9 +1156,8 @@ shell_global_reexec_self (ShellGlobal *global)
    */
   pre_exec_close_fds ();
 
-  meta_display_unmanage_screen (shell_global_get_display (global),
-                                shell_global_get_screen (global),
-                                shell_global_get_current_time (global));
+  meta_display_close (shell_global_get_display (global),
+                      shell_global_get_current_time (global));
 
   execvp (arr->pdata[0], (char**)arr->pdata);
   g_warning ("failed to reexec: %s", g_strerror (errno));
@@ -1246,7 +1242,7 @@ shell_global_notify_error (ShellGlobal  *global,
  */
 void shell_global_init_xdnd (ShellGlobal *global)
 {
-  Window output_window = meta_get_overlay_window (global->meta_screen);
+  Window output_window = meta_get_overlay_window (global->meta_display);
   long xdnd_version = 5;
 
   XChangeProperty (global->xdisplay, global->stage_xwindow,
@@ -1284,7 +1280,7 @@ shell_global_get_pointer (ShellGlobal         *global,
   ClutterModifierType raw_mods;
   MetaCursorTracker *tracker;
 
-  tracker = meta_cursor_tracker_get_for_screen (global->meta_screen);
+  tracker = meta_cursor_tracker_get_for_display (global->meta_display);
   meta_cursor_tracker_get_pointer (tracker, x, y, &raw_mods);
 
   *mods = raw_mods & CLUTTER_MODIFIER_MASK;
@@ -1432,7 +1428,12 @@ shell_global_create_app_launch_context (ShellGlobal *global,
   gdk_app_launch_context_set_timestamp (context, timestamp);
 
   if (workspace < 0)
-    workspace = meta_screen_get_active_workspace_index (global->meta_screen);
+    {
+      MetaWorkspaceManager *workspace_manager = global->workspace_manager;
+
+      workspace =
+        meta_workspace_manager_get_active_workspace_index (workspace_manager);
+    }
   gdk_app_launch_context_set_desktop (context, workspace);
 
   return (GAppLaunchContext *)context;

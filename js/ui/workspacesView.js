@@ -91,25 +91,29 @@ var WorkspacesView = new Lang.Class({
     Extends: WorkspacesViewBase,
 
     _init(monitorIndex) {
+        let workspaceManager = global.workspace_manager;
+
         this.parent(monitorIndex);
 
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
         this._animatingScroll = false; // programatically updating the adjustment
 
-        let activeWorkspaceIndex = global.screen.get_active_workspace_index();
+        let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
         this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
                                                     lower: 0,
                                                     page_increment: 1,
                                                     page_size: 1,
                                                     step_increment: 0,
-                                                    upper: global.screen.n_workspaces });
+                                                    upper: workspaceManager.n_workspaces });
         this.scrollAdjustment.connect('notify::value',
                                       this._onScroll.bind(this));
 
         this._workspaces = [];
         this._updateWorkspaces();
-        this._updateWorkspacesId = global.screen.connect('notify::n-workspaces', this._updateWorkspaces.bind(this));
+        this._updateWorkspacesId =
+            workspaceManager.connect('notify::n-workspaces',
+                                     this._updateWorkspaces.bind(this));
 
         this._overviewShownId =
             Main.overview.connect('shown', () => {
@@ -138,7 +142,8 @@ var WorkspacesView = new Lang.Class({
     },
 
     getActiveWorkspace() {
-        let active = global.screen.get_active_workspace_index();
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
         return this._workspaces[active];
     },
 
@@ -169,7 +174,8 @@ var WorkspacesView = new Lang.Class({
     },
 
     _scrollToActive() {
-        let active = global.screen.get_active_workspace_index();
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
 
         this._updateWorkspaceActors(true);
         this._updateScrollAdjustment(active);
@@ -178,7 +184,8 @@ var WorkspacesView = new Lang.Class({
     // Update workspace actors parameters
     // @showAnimation: iff %true, transition between states
     _updateWorkspaceActors(showAnimation) {
-        let active = global.screen.get_active_workspace_index();
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
 
         this._animating = showAnimation;
 
@@ -214,7 +221,8 @@ var WorkspacesView = new Lang.Class({
     },
 
     _updateVisibility() {
-        let active = global.screen.get_active_workspace_index();
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
 
         for (let w = 0; w < this._workspaces.length; w++) {
             let workspace = this._workspaces[w];
@@ -246,13 +254,14 @@ var WorkspacesView = new Lang.Class({
     },
 
     _updateWorkspaces() {
-        let newNumWorkspaces = global.screen.n_workspaces;
+        let workspaceManager = global.workspace_manager;
+        let newNumWorkspaces = workspaceManager.n_workspaces;
 
         this.scrollAdjustment.upper = newNumWorkspaces;
 
         let needsUpdate = false;
         for (let j = 0; j < newNumWorkspaces; j++) {
-            let metaWorkspace = global.screen.get_workspace_by_index(j);
+            let metaWorkspace = workspaceManager.get_workspace_by_index(j);
             let workspace;
 
             if (j >= this._workspaces.length) { /* added */
@@ -290,7 +299,8 @@ var WorkspacesView = new Lang.Class({
         this.scrollAdjustment.run_dispose();
         Main.overview.disconnect(this._overviewShownId);
         global.window_manager.disconnect(this._switchWorkspaceNotifyId);
-        global.screen.disconnect(this._updateWorkspacesId);
+        let workspaceManager = global.workspace_manager;
+        workspaceManager.disconnect(this._updateWorkspacesId);
     },
 
     startSwipeScroll() {
@@ -311,7 +321,8 @@ var WorkspacesView = new Lang.Class({
         if (this._animatingScroll)
             return;
 
-        let active = global.screen.get_active_workspace_index();
+        let workspaceManager = global.workspace_manager;
+        let active = workspaceManager.get_active_workspace_index();
         let current = Math.round(adj.value);
 
         if (active != current) {
@@ -593,7 +604,7 @@ var WorkspacesDisplay = new Lang.Class({
     _getMonitorIndexForEvent(event) {
         let [x, y] = event.get_coords();
         let rect = new Meta.Rectangle({ x: x, y: y, width: 1, height: 1 });
-        return global.screen.get_monitor_index_for_rect(rect);
+        return global.display.get_monitor_index_for_rect(rect);
     },
 
     _getPrimaryView() {
@@ -679,7 +690,8 @@ var WorkspacesDisplay = new Lang.Class({
             this._getMonitorIndexForEvent(event) != this._primaryIndex)
             return Clutter.EVENT_PROPAGATE;
 
-        let activeWs = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWs = workspaceManager.get_active_workspace();
         let ws;
         switch (event.get_scroll_direction()) {
         case Clutter.ScrollDirection.UP:
@@ -698,7 +710,8 @@ var WorkspacesDisplay = new Lang.Class({
     _onKeyPressEvent(actor, event) {
         if (!this.actor.mapped)
             return Clutter.EVENT_PROPAGATE;
-        let activeWs = global.screen.get_active_workspace();
+        let workspaceManager = global.workspace_manager;
+        let activeWs = workspaceManager.get_active_workspace();
         let ws;
         switch (event.get_key_symbol()) {
         case Clutter.KEY_Page_Up:
