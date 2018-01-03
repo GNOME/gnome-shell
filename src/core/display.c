@@ -448,46 +448,6 @@ meta_display_class_init (MetaDisplayClass *klass)
                   G_TYPE_INT,
                   META_TYPE_WINDOW);
 
-  display_signals[WORKSPACE_ADDED] =
-    g_signal_new ("workspace-added",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE,
-                  1,
-                  G_TYPE_INT);
-
-  display_signals[WORKSPACE_REMOVED] =
-    g_signal_new ("workspace-removed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE,
-                  1,
-                  G_TYPE_INT);
-
-  display_signals[WORKSPACE_SWITCHED] =
-    g_signal_new ("workspace-switched",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE,
-                  3,
-                  G_TYPE_INT,
-                  G_TYPE_INT,
-                  META_TYPE_MOTION_DIRECTION);
-
-  display_signals[ACTIVE_WORKSPACE_CHANGED] =
-    g_signal_new ("active-workspace-changed",
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST,
-                  0,
-                  NULL, NULL, NULL,
-                  G_TYPE_NONE, 0);
-
   display_signals[IN_FULLSCREEN_CHANGED] =
     g_signal_new ("in-fullscreen-changed",
                   G_TYPE_FROM_CLASS (klass),
