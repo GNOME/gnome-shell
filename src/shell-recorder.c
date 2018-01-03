@@ -15,8 +15,8 @@
 #include <gdk/gdk.h>
 
 #include <cogl/cogl.h>
-#include <meta/screen.h>
 #include <meta/meta-cursor-tracker.h>
+#include <meta/display.h>
 #include <meta/compositor-mutter.h>
 
 #include "shell-global.h"
@@ -112,7 +112,7 @@ static void recorder_remove_redraw_timeout (ShellRecorder *recorder);
 
 enum {
   PROP_0,
-  PROP_SCREEN,
+  PROP_DISPLAY,
   PROP_STAGE,
   PROP_FRAMERATE,
   PROP_PIPELINE,
@@ -670,12 +670,12 @@ recorder_set_stage (ShellRecorder *recorder,
 }
 
 static void
-recorder_set_screen (ShellRecorder *recorder,
-                     MetaScreen    *screen)
+recorder_set_display (ShellRecorder *recorder,
+                      MetaDisplay   *display)
 {
   MetaCursorTracker *tracker;
 
-  tracker = meta_cursor_tracker_get_for_screen (screen);
+  tracker = meta_cursor_tracker_get_for_display (display);
 
   if (tracker == recorder->cursor_tracker)
     return;
@@ -760,8 +760,8 @@ shell_recorder_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_SCREEN:
-      recorder_set_screen (recorder, g_value_get_object (value));
+    case PROP_DISPLAY:
+      recorder_set_display (recorder, g_value_get_object (value));
       break;
     case PROP_STAGE:
       recorder_set_stage (recorder, g_value_get_object (value));
@@ -825,11 +825,11 @@ shell_recorder_class_init (ShellRecorderClass *klass)
   gobject_class->set_property = shell_recorder_set_property;
 
   g_object_class_install_property (gobject_class,
-                                   PROP_SCREEN,
-                                   g_param_spec_object ("screen",
-                                                        "Screen",
-                                                        "Screen to record",
-                                                        META_TYPE_SCREEN,
+                                   PROP_DISPLAY,
+                                   g_param_spec_object ("display",
+                                                        "Display",
+                                                        "Display to record",
+                                                        META_TYPE_DISPLAY,
                                                         G_PARAM_WRITABLE));
 
   g_object_class_install_property (gobject_class,
@@ -1551,7 +1551,7 @@ shell_recorder_record (ShellRecorder  *recorder,
   recorder_add_update_pointer_timeout (recorder);
 
   /* Disable unredirection while we are recoring */
-  meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
+  meta_disable_unredirect_for_display (shell_global_get_display (shell_global_get ()));
 
   /* Set up repaint hook */
   recorder->repaint_hook_id = clutter_threads_add_repaint_func(recorder_repaint_hook, recorder->stage, NULL);
@@ -1602,7 +1602,7 @@ shell_recorder_close (ShellRecorder *recorder)
   recorder->state = RECORDER_STATE_CLOSED;
 
   /* Reenable after the recording */
-  meta_enable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
+  meta_enable_unredirect_for_display (shell_global_get_display (shell_global_get ()));
 
   /* Release the refcount we took when we started recording */
   g_object_unref (recorder);

@@ -398,7 +398,7 @@ var InputSourceManager = new Lang.Class({
         return true;
     },
 
-    _switchInputSource(display, screen, window, binding) {
+    _switchInputSource(display, window, binding) {
         if (this._mruSources.length < 2)
             return;
 
