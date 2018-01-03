@@ -917,7 +917,7 @@ var MessageTray = new Lang.Class({
         Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
         Main.layoutManager.trackChrome(this._bannerBin, { affectsInputRegion: true });
 
-        global.screen.connect('in-fullscreen-changed', this._updateState.bind(this));
+        global.display.connect('in-fullscreen-changed', this._updateState.bind(this));
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
 
