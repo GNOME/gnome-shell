@@ -474,10 +474,11 @@ create_wl_shell_surface_window (MetaWaylandSurface *surface)
   MetaWaylandWlShellSurface *wl_shell_surface =
     META_WAYLAND_WL_SHELL_SURFACE (surface->role);
   MetaWaylandSurface *parent;
+  MetaWindow *window;
   GList *l;
 
-  surface->window = meta_window_wayland_new (meta_get_display (), surface);
-  meta_wayland_surface_set_window (surface, surface->window);
+  window = meta_window_wayland_new (meta_get_display (), surface);
+  meta_wayland_surface_set_window (surface, window);
 
   if (wl_shell_surface->title)
     meta_window_set_title (surface->window, wl_shell_surface->title);
