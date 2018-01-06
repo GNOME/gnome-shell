@@ -442,6 +442,7 @@ maybe_restore_numlock_state (MetaWaylandKeyboard *keyboard)
 static void
 maybe_save_numlock_state (MetaWaylandKeyboard *keyboard)
 {
+#ifdef HAVE_NATIVE_BACKEND
   MetaWaylandXkbInfo *xkb_info = &keyboard->xkb_info;
   GsdKeyboardNumLockState numlock_state;
   int numlock_active;
@@ -474,6 +475,7 @@ maybe_save_numlock_state (MetaWaylandKeyboard *keyboard)
       break;
     }
   g_settings_set_enum (keyboard->gsd_settings, "numlock-state", numlock_state);
+#endif
 }
 
 static void
