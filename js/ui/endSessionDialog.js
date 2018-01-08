@@ -697,7 +697,14 @@ var EndSessionDialog = new Lang.Class({
                 if (proxy.State == 'closing')
                     continue;
 
-                if (proxy.Id == GLib.getenv('XDG_SESSION_ID'))
+                let sessionId = GLib.getenv('XDG_SESSION_ID');
+                if (!sessionId)
+                    this._loginManager.getCurrentSessionProxy(currentSessionProxy => {
+                        sessionId = currentSessionProxy.Id;
+                        log(`endSessionDialog: No XDG_SESSION_ID, fetched from logind: ${sessionId}`);
+                    });
+
+                if (proxy.Id == sessionId)
                     continue;
 
                 let session = { user: this._userManager.get_user(userName),
