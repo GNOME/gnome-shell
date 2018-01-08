@@ -40,14 +40,23 @@ const SystemdLoginSessionIface = '<node> \
 <signal name="Lock" /> \
 <signal name="Unlock" /> \
 <property name="Active" type="b" access="read" /> \
+<property name="Class" type="s" access="read" /> \
 <method name="SetLockedHint"> \
     <arg type="b" direction="in"/> \
 </method> \
 </interface> \
 </node>';
 
+const SystemdLoginUserIface = '<node> \
+<interface name="org.freedesktop.login1.User"> \
+<property name="Display" type="(so)" access="read" /> \
+<property name="Sessions" type="a(so)" access="read" /> \
+</interface> \
+</node>';
+
 const SystemdLoginManager = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIface);
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
+const SystemdLoginUser = Gio.DBusProxy.makeProxyWrapper(SystemdLoginUserIface);
 
 function haveSystemd() {
     return GLib.access("/run/systemd/seats", 0) >= 0;
@@ -109,6 +118,9 @@ var LoginManagerSystemd = new Lang.Class({
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
                                               'org.freedesktop.login1',
                                               '/org/freedesktop/login1');
+        this._userProxy = new SystemdLoginUser(Gio.DBus.system,
+                                               'org.freedesktop.login1',
+                                               '/org/freedesktop/login1/user/self');
         this._proxy.connectSignal('PrepareForSleep',
                                   this._prepareForSleep.bind(this));
     },
@@ -121,8 +133,31 @@ var LoginManagerSystemd = new Lang.Class({
 
         let sessionId = GLib.getenv('XDG_SESSION_ID');
         if (!sessionId) {
-            log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session.');
-            return;
+            log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
+            let [session, objectPath] = this._userProxy.Display;
+            if (session) {
+                log(`Will monitor session ${session}`);
+                sessionId = session;
+            } else {
+                log('Failed to find "Display" session; are we the greeter?');
+
+                for (let [session, objectPath] of this._userProxy.Sessions) {
+                    let sessionProxy = new SystemdLoginSession(Gio.DBus.system,
+                                                               'org.freedesktop.login1',
+                                                               objectPath);
+                    log(`Considering ${session}, class=${sessionProxy.Class}`);
+                    if (sessionProxy.Class == 'greeter') {
+                        log(`'Yes, will monitor session ${session}`);
+                        sessionId = session;
+                        break;
+                    }
+                }
+
+                if (!sessionId) {
+                    log('No, failed to get session from logind.');
+                    return;
+                }
+            }
         }
 
         this._proxy.GetSessionRemote(sessionId, (result, error) => {
