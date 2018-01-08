@@ -321,7 +321,7 @@ var AppAuthorizer = new Lang.Class({
     _userAuthorizeApp: function() {
         let name = this._app.get_name();
         let appInfo = this._app.get_app_info();
-        let reason = appInfo.get_string("X-Geoclue-Reason");
+        let reason = appInfo.get_locale_string("X-Geoclue-Reason");
 
         this._showAppAuthDialog(name, reason);
     },
