@@ -553,6 +553,7 @@ struct _MetaWindowClass
                                    ClutterInputDevice *source);
   gboolean (*shortcuts_inhibited) (MetaWindow         *window,
                                    ClutterInputDevice *source);
+  gboolean (*is_stackable)        (MetaWindow *window);
 };
 
 /* These differ from window->has_foo_func in that they consider
@@ -699,6 +700,8 @@ void meta_window_set_type (MetaWindow     *window,
 
 void meta_window_frame_size_changed (MetaWindow *window);
 
+gboolean meta_window_is_in_stack (MetaWindow *window);
+
 void meta_window_stack_just_below (MetaWindow *window,
                                    MetaWindow *below_this_one);
 
@@ -795,4 +798,5 @@ void meta_window_force_restore_shortcuts (MetaWindow         *window,
 
 gboolean meta_window_shortcuts_inhibited (MetaWindow         *window,
                                           ClutterInputDevice *source);
+gboolean meta_window_is_stackable (MetaWindow *window);
 #endif

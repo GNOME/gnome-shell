@@ -1549,6 +1549,12 @@ meta_window_x11_shortcuts_inhibited (MetaWindow         *window,
   return FALSE;
 }
 
+static gboolean
+meta_window_x11_is_stackable (MetaWindow *window)
+{
+  return !window->override_redirect;
+}
+
 static void
 meta_window_x11_class_init (MetaWindowX11Class *klass)
 {
@@ -1572,6 +1578,7 @@ meta_window_x11_class_init (MetaWindowX11Class *klass)
   window_class->get_client_pid = meta_window_x11_get_client_pid;
   window_class->force_restore_shortcuts = meta_window_x11_force_restore_shortcuts;
   window_class->shortcuts_inhibited = meta_window_x11_shortcuts_inhibited;
+  window_class->is_stackable = meta_window_x11_is_stackable;
 }
 
 void

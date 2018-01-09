@@ -543,6 +543,12 @@ meta_window_wayland_shortcuts_inhibited (MetaWindow         *window,
   return meta_wayland_compositor_is_shortcuts_inhibited (compositor, source);
 }
 
+static gboolean
+meta_window_wayland_is_stackable (MetaWindow *window)
+{
+  return meta_wayland_surface_get_buffer (window->surface) != NULL;
+}
+
 static void
 meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
 {
@@ -562,6 +568,7 @@ meta_window_wayland_class_init (MetaWindowWaylandClass *klass)
   window_class->get_client_pid = meta_window_wayland_get_client_pid;
   window_class->force_restore_shortcuts = meta_window_wayland_force_restore_shortcuts;
   window_class->shortcuts_inhibited = meta_window_wayland_shortcuts_inhibited;
+  window_class->is_stackable = meta_window_wayland_is_stackable;
 }
 
 MetaWindow *

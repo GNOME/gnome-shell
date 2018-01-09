@@ -1298,10 +1298,10 @@ _meta_window_shared_new (MetaDisplay         *display,
    * and thus constraints may try to auto-fullscreen it which also
    * means restacking it.
    */
-  if (!window->override_redirect)
+  if (meta_window_is_stackable (window))
     meta_stack_add (window->screen->stack,
                     window);
-  else
+  else if (window->override_redirect)
     window->layer = META_LAYER_OVERRIDE_REDIRECT; /* otherwise set by MetaStack */
 
   if (!window->override_redirect)
@@ -1535,7 +1535,7 @@ meta_window_unmanage (MetaWindow  *window,
       meta_window_main_monitor_changed (window, old);
     }
 
-  if (!window->override_redirect)
+  if (meta_window_is_in_stack (window))
     meta_stack_remove (window->screen->stack, window);
 
   /* If an undecorated window is being withdrawn, that will change the
@@ -1697,6 +1697,10 @@ implement_showing (MetaWindow *window,
   /* Actually show/hide the window */
   meta_verbose ("Implement showing = %d for window %s\n",
                 showing, window->desc);
+
+  /* Some windows are not stackable until being showed, so add those now. */
+  if (meta_window_is_stackable (window) && !meta_window_is_in_stack (window))
+    meta_stack_add (window->screen->stack, window);
 
   if (!showing)
     {
@@ -6897,6 +6901,12 @@ ensure_mru_position_after (MetaWindow *window,
     }
 }
 
+gboolean
+meta_window_is_in_stack (MetaWindow *window)
+{
+  return window->stack_position >= 0;
+}
+
 void
 meta_window_stack_just_below (MetaWindow *window,
                               MetaWindow *below_this_one)
@@ -8424,4 +8434,10 @@ meta_window_shortcuts_inhibited (MetaWindow         *window,
                                  ClutterInputDevice *source)
 {
   return META_WINDOW_GET_CLASS (window)->shortcuts_inhibited (window, source);
+}
+
+gboolean
+meta_window_is_stackable (MetaWindow *window)
+{
+  return META_WINDOW_GET_CLASS (window)->is_stackable (window);
 }

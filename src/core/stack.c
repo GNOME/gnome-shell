@@ -49,8 +49,6 @@
 #define WINDOW_TRANSIENT_FOR_WHOLE_GROUP(w)                     \
   (WINDOW_HAS_TRANSIENT_TYPE (w) && w->transient_for == NULL)
 
-#define WINDOW_IN_STACK(w) (w->stack_position >= 0)
-
 static void stack_sync_to_xserver (MetaStack *stack);
 static void meta_window_set_stack_position_no_sync (MetaWindow *window,
                                                     int         position);
@@ -102,11 +100,11 @@ void
 meta_stack_add (MetaStack  *stack,
                 MetaWindow *window)
 {
-  g_return_if_fail (!window->override_redirect);
+  g_return_if_fail (meta_window_is_stackable (window));
 
   meta_topic (META_DEBUG_STACK, "Adding window %s to the stack\n", window->desc);
 
-  if (window->stack_position >= 0)
+  if (meta_window_is_in_stack (window))
     meta_bug ("Window %s had stack position already\n", window->desc);
 
   stack->added = g_list_prepend (stack->added, window);
@@ -126,10 +124,6 @@ meta_stack_remove (MetaStack  *stack,
                    MetaWindow *window)
 {
   meta_topic (META_DEBUG_STACK, "Removing window %s from the stack\n", window->desc);
-
-  if (window->stack_position < 0)
-    meta_bug ("Window %s removed from stack but had no stack position\n",
-              window->desc);
 
   /* Set window to top position, so removing it will not leave gaps
    * in the set of positions
@@ -530,7 +524,7 @@ create_constraints (Constraint **constraints,
     {
       MetaWindow *w = tmp->data;
 
-      if (!WINDOW_IN_STACK (w))
+      if (!meta_window_is_in_stack (w))
         {
           meta_topic (META_DEBUG_STACK, "Window %s not in the stack, not constraining it\n",
                       w->desc);
@@ -557,7 +551,7 @@ create_constraints (Constraint **constraints,
             {
               MetaWindow *group_window = tmp2->data;
 
-              if (!WINDOW_IN_STACK (group_window) ||
+              if (!meta_window_is_in_stack (group_window) ||
                   w->screen != group_window->screen ||
                   group_window->override_redirect)
                 {
@@ -592,7 +586,7 @@ create_constraints (Constraint **constraints,
 
           parent = w->transient_for;
 
-          if (parent && WINDOW_IN_STACK (parent))
+          if (parent && meta_window_is_in_stack (parent))
             {
               meta_topic (META_DEBUG_STACK, "Constraining %s above %s due to transiency\n",
                           w->desc, parent->desc);
