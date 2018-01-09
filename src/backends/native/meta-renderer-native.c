@@ -103,8 +103,6 @@ typedef struct _MetaRendererNativeGpuData
 
   MetaRendererNativeMode mode;
 
-  gboolean no_add_fb2;
-
   EGLDisplay egl_display;
 
   /*
@@ -2181,14 +2179,15 @@ init_dumb_fb (MetaDumbBuffer  *dumb_fb,
               uint32_t         format,
               GError         **error)
 {
-  MetaRendererNative *renderer_native = meta_renderer_native_from_gpu (gpu_kms);
-  MetaRendererNativeGpuData *renderer_gpu_data;
   struct drm_mode_create_dumb create_arg;
   struct drm_mode_destroy_dumb destroy_arg;
   struct drm_mode_map_dumb map_arg;
   uint32_t fb_id = 0;
   void *map;
   int kms_fd;
+  uint32_t handles[4] = { 0, };
+  uint32_t pitches[4] = { 0, };
+  uint32_t offsets[4] = { 0, };
 
   kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
@@ -2206,25 +2205,18 @@ init_dumb_fb (MetaDumbBuffer  *dumb_fb,
       goto err_ioctl;
     }
 
-  renderer_gpu_data = meta_renderer_native_get_gpu_data (renderer_native,
-                                                         gpu_kms);
-  if (!renderer_gpu_data->no_add_fb2)
-    {
-      uint32_t handles[4] = { create_arg.handle, };
-      uint32_t pitches[4] = { create_arg.pitch, };
-      uint32_t offsets[4] = { 0 };
+  handles[0] = create_arg.handle;
+  pitches[0] = create_arg.pitch;
 
-      if (drmModeAddFB2 (kms_fd, width, height, format,
-                         handles, pitches, offsets,
-                         &fb_id, 0) != 0)
-        {
-          g_warning ("drmModeAddFB2 failed (%s), falling back to drmModeAddFB",
-                     g_strerror (errno));
-          renderer_gpu_data->no_add_fb2 = TRUE;
-        }
+  if (drmModeAddFB2 (kms_fd, width, height, format,
+                     handles, pitches, offsets,
+                     &fb_id, 0) != 0)
+    {
+      g_debug ("drmModeAddFB2 failed (%s), falling back to drmModeAddFB",
+               g_strerror (errno));
     }
 
-  if (renderer_gpu_data->no_add_fb2)
+  if (fb_id == 0)
     {
       if (drmModeAddFB (kms_fd, width, height,
                         24 /* depth of RGBX8888 */,
