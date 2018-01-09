@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-07-22 09:45+0000\n"
-"PO-Revision-Date: 2017-07-22 22:53+0200\n"
+"POT-Creation-Date: 2017-12-18 16:24+0000\n"
+"PO-Revision-Date: 2018-01-09 18:49+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -170,17 +170,21 @@ msgstr "Sposte il spazi di lavôr parsore"
 msgid "Move to workspace below"
 msgstr "Sposte il spazi di lavôr sot"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "Sisteme"
 
 #: data/50-mutter-system.xml:8
 msgid "Show the run command prompt"
-msgstr "Mostre la richieste \"eseguìs comant\""
+msgstr "Mostre la richieste “eseguìs comant”"
 
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Mostre la panoramiche ativitâts"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Ripristine lis scurtis di tastiere"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -405,14 +409,13 @@ msgid ""
 "Whether the feature requires restarting the compositor depends on the given "
 "feature. Any experimental feature is not required to still be available, or "
 "configurable. Don’t expect adding anything in this setting to be future "
-"proof. Currently possible keywords: • “monitor-config-manager” — use the new "
-"monitor configuration system, aimed to replace the old one. This enables a "
-"higher level configuration API to be used by configuration applications, as "
-"well as the ability to configure per logical monitor scale. • “scale-monitor-"
-"framebuffer” — makes mutter default to layout logical monitors in a logical "
-"pixel coordinate space, while scaling monitor framebuffers instead of window "
-"content, to manage HiDPI monitors. Does not require a restart. Also enabling "
-"“monitor-config-manager” is required for this feature to be enabled."
+"proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
+"mutter default to layout logical monitors in a logical pixel coordinate "
+"space, while scaling monitor framebuffers instead of window content, to "
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
 "Par abilitâ lis funzionalitâts sperimentâls, zonte la peraule clâf de "
 "funzionalitât ae liste. Il fat che la funzionalitât e vedi bisugne di tornâ "
@@ -420,30 +423,28 @@ msgstr ""
 "funzionalitât sperimentâl no je necessarie che e sedi disponibile o "
 "configurabile. No sta spietâti di zontâ alc in cheste impostazion e pensâ "
 "che e duredi tal timp. Atualmentri lis peraulis clâf pussibilis a son: • "
-"“monitor-config-manager” — al dopre il gnûf sisteme di configurazion dal "
-"visôr, fat par sostituî chel vecjo. Chest al abilite une API di nivel "
-"superiôr che e pues jessi doprade di aplicazions di configurazion, cussì "
-"come la capacitât di configurâ par scjale di monitor logjic. • “scale-"
-"monitor-framebuffer” — al rint come predefinît par mutter la disposizion dai "
-"visôrs logjics intun spazi logjic di coordenadis dai pixel, intant i "
-"framebuffer dai visôrs par scjalâ, invezit dal contignût dal barcon, a "
-"gjestissin i visôrs HiDPI. Nol covente tornâ a inviâ. In plui al è necessari "
-"abilitâ “monitor-config-manager” par fâ in mût che cheste funzionalitât e "
-"sedi abilitade."
+"“scale-monitor-framebuffer” — al rint come predefinît par mutter, la "
+"disposizion logjiche dai visôrs intun spazi logjic di coordenadis di pixel, "
+"in plui si fâs il scjalâ dai framebuffer dai visôrs invezit che il contignût "
+"dal barcon; dut chest par gjestî i visôrs HiDPI. Nol covente tornâ a inviâ. "
+"• “remote-desktop” — al abilite il supuart pal scritori rimot. Par podê "
+"supuartâ il scritori rimot cun la condivision dal schermi si scugne abilitâ "
+"ancje “screen-cast”. • “screen-cast” — al abilite il supuart pe trasmission "
+"dal schermi."
 
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Selezione barcon dal tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Anule tab popup"
 
-#: data/org.gnome.mutter.gschema.xml.in:161
+#: data/org.gnome.mutter.gschema.xml.in:155
 msgid "Switch monitor configurations"
 msgstr "Cambie configurazions visôr"
 
-#: data/org.gnome.mutter.gschema.xml.in:166
+#: data/org.gnome.mutter.gschema.xml.in:160
 msgid "Rotates the built-in monitor configuration"
 msgstr "Al volte la configurazion dal visôr integrât"
 
@@ -495,10 +496,61 @@ msgstr "Passe al VT 11"
 msgid "Switch to VT 12"
 msgstr "Passe al VT 12"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:54
+msgid "Re-enable shortcuts"
+msgstr "Torne abilite lis scurtis"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:64
+msgid "Allow grabs with Xwayland"
+msgstr "Permet cjapadis di control cun Xwayland"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:65
+msgid ""
+"Allow keyboard grabs issued by X11 applications running in Xwayland to be "
+"taken into account. For a X11 grab to be taken into account under Wayland, "
+"the client must also either send a specific X11 ClientMessage to the root "
+"window or be among the applications white-listed in key “xwayland-grab-"
+"access-rules”."
+msgstr ""
+"Permet che il cjapâ il control de tastiere emetût di aplicazions X11 che a "
+"zirin in Xwayland, di jessi tignûts in considerazion. Par une cjapade di "
+"control di X11, par che e sedi tignude in considerazion sot Wayland, il "
+"client al scugne ancje inviâ un specific messaç (X11 ClientMessage) al "
+"barcon lidrîs o jessi tra lis aplicazions metudis te liste blancje inte clâf "
+"“xwayland-grab-access-rules”."
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:77
+msgid "Xwayland applications allowed to issue keyboard grabs"
+msgstr "Aplicazions Xwayland che a puedin cjapâ la tastiere"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:78
+msgid ""
+"List the resource names or resource class of X11 windows either allowed or "
+"not allowed to issue X11 keyboard grabs under Xwayland. The resource name or "
+"resource class of a given X11 window can be obtained using the command "
+"“xprop WM_CLASS”. Wildcards “*” and jokers “?” in the values are supported. "
+"Values starting with “!” are blacklisted, which has precedence over the "
+"whitelist, to revoke applications from the default system list. The default "
+"system list includes the following applications: "
+"“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Users can break an existing grab by "
+"using the specific keyboard shortcut defined by the keybinding key “restore-"
+"shortcuts”."
+msgstr ""
+"Liste di nons di risorsis o classis di risorsis di barcons X11 che a puedin "
+"o no puedin cjapâ i segnâi di tastiere X11 sot di Xwayland. Il non de "
+"risorse o la classe de risorse di un dât barcon X11 al pues jessi otignût "
+"doprant il comant “xprop WM_CLASS”. I caratars “*” e “?” tai valôrs a son "
+"supuartâts. I valôrs che a tachin cun “!” a son metûts te liste nere, che e "
+"à precedence su la liste blancje, par revocâ lis aplicazions de liste di "
+"sisteme predefinide. La liste di sisteme predefinide e inclût lis "
+"aplicazions chi daurman: “@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” I utents a "
+"puedin interompi il control cjapât doprant la specifiche scurte di tastiere "
+"definide de clâf di associazion tast “restore-shortcuts”."
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2118
+#: src/backends/meta-input-settings.c:2260
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Cambie mût (Grup %d)"
@@ -506,37 +558,37 @@ msgstr "Cambie mût (Grup %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2141
+#: src/backends/meta-input-settings.c:2283
 msgid "Switch monitor"
 msgstr "Cambie visôr"
 
-#: src/backends/meta-input-settings.c:2143
+#: src/backends/meta-input-settings.c:2285
 msgid "Show on-screen help"
 msgstr "Mostre jutori a schermi"
 
-#: src/backends/meta-monitor-manager.c:925
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "Display integrât"
 
-#: src/backends/meta-monitor-manager.c:948
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "No cognossût"
 
-#: src/backends/meta-monitor-manager.c:950
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "Display no cognossût"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:958
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:476
+#: src/compositor/compositor.c:479
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -643,7 +695,7 @@ msgstr "Plugin Mutter di doprâ"
 msgid "Workspace %d"
 msgstr "Spazi di lavôr %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -652,7 +704,7 @@ msgstr ""
 "Il display “%s” al à za un window manager; prove dopre la opzion --replace "
 "par rimplaçâ chel atuâl."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Schermi %d su display “%s” no valit\n"
