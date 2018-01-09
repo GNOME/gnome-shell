@@ -819,6 +819,7 @@ var Panel = new Lang.Class({
         global.window_group.connect('actor-removed', Lang.bind(this, this._onWindowActorRemoved));
         global.window_manager.connect('switch-workspace', Lang.bind(this, this._updateSolidStyle));
 
+        global.screen.connect('workareas-changed', () => { this.actor.queue_relayout(); });
         this._updatePanel();
     },
 
@@ -865,7 +866,16 @@ var Panel = new Lang.Class({
 
         let sideWidth, centerWidth;
         centerWidth = centerNaturalWidth;
-        sideWidth = Math.max(0, (allocWidth - centerWidth) / 2);
+
+        // get workspace area and center date entry relative to it
+        let monitor = Main.layoutManager.findMonitorForActor(actor);
+        let centerOffset = 0;
+        if (monitor) {
+            let workArea = Main.layoutManager.getWorkAreaForMonitor(monitor);
+            centerOffset = 2 * (workArea.x - monitor.x) + workArea.width - monitor.width;
+        }
+
+        sideWidth = Math.max(0, (allocWidth - centerWidth + centerOffset) / 2);
 
         let childBox = new Clutter.ActorBox();
 
