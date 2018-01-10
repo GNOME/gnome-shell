@@ -239,7 +239,7 @@ meta_input_settings_x11_set_tap_and_drag_enabled (MetaInputSettings  *settings,
 {
   guchar value = (enabled) ? 1 : 0;
 
-  change_property (device, "libinput TappingDrag Enabled",
+  change_property (device, "libinput Tapping Drag Enabled",
                    XA_INTEGER, 8, &value, 1);
 }
 
