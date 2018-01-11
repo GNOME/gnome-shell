@@ -31,7 +31,7 @@ ibus_req = '>= 1.5.2'
 
 bt_req = '>= 3.9.0'
 gst_req = '>= 0.11.92'
-nm_req = '>= 0.9.8'
+nm_req = '>= 1.10.4'
 secret_req = '>= 0.18'
 
 gnome = import('gnome')
