@@ -751,14 +751,3 @@ endef
 	$(AM_V_GEN)$(WAYLAND_SCANNER) code $< $@
 %-server-protocol.h : $(srcdir)/wayland/protocol/%.xml
 	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header $< $@
-keyboard-shortcuts-inhibit-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
-keyboard-shortcuts-inhibit-unstable-v1-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/keyboard-shortcuts-inhibit/keyboard-shortcuts-inhibit-unstable-v1.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
-xdg-output-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/xdg-output/xdg-output-unstable-v1.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
-xdg-output-unstable-v1-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/xdg-output/xdg-output-unstable-v1.xml
-xwayland-keyboard-grab-unstable-v1-protocol.c : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/xwayland-keyboard-grab/xwayland-keyboard-grab-unstable-v1.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) code < $< > $@
-xwayland-keyboard-grab-unstable-v1-server-protocol.h : $(WAYLAND_PROTOCOLS_DATADIR)/unstable/xwayland-keyboard-grab/xwayland-keyboard-grab-unstable-v1.xml
-	$(AM_V_GEN)$(WAYLAND_SCANNER) server-header < $< > $@
