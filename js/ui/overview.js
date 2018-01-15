@@ -488,7 +488,8 @@ var Overview = new Lang.Class({
             return false;
         if (this._inItemDrag || this._inWindowDrag)
             return false;
-        if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > OVERVIEW_ACTIVATION_TIMEOUT)
+        if (this._activationTime == 0 ||
+            GLib.get_monotonic_time() / GLib.USEC_PER_SEC - this._activationTime > OVERVIEW_ACTIVATION_TIMEOUT)
             return true;
         return false;
     },
@@ -547,7 +548,7 @@ var Overview = new Lang.Class({
         this.visible = true;
         this.animationInProgress = true;
         this.visibleTarget = true;
-        this._activationTime = Date.now() / 1000;
+        this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
         Meta.disable_unredirect_for_screen(global.screen);
         this.viewSelector.show();
