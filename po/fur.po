@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-12-02 17:48+0000\n"
-"PO-Revision-Date: 2017-12-15 12:51+0100\n"
+"POT-Creation-Date: 2018-01-11 08:17+0000\n"
+"PO-Revision-Date: 2018-01-15 11:54+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -647,7 +647,7 @@ msgstr "Gnûf barcon"
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Invie doprant une schede grafiche dedicade"
 
-#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1956 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Gjave dai preferîts"
 
@@ -920,7 +920,7 @@ msgstr "Passowrd rêt mobil a bande largje"
 msgid "A password is required to connect to “%s”."
 msgstr "A covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
+#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1729
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
@@ -955,13 +955,13 @@ msgstr "L'utent %s al è cognossût cumò come %s"
 msgid "Windows"
 msgstr "Barcons"
 
-#: js/ui/dash.js:250 js/ui/dash.js:291
+#: js/ui/dash.js:246 js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Mostre Aplicazions"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:449
+#: js/ui/dash.js:445
 msgid "Dash"
 msgstr "Dash"
 
@@ -980,15 +980,15 @@ msgstr "%e di %B dal %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %e di %B dal %Y"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:148
 msgid "Add world clocks…"
 msgstr "Zonte orlois mondiâi…"
 
-#: js/ui/dateMenu.js:146
+#: js/ui/dateMenu.js:149
 msgid "World Clocks"
 msgstr "Orlois mondiâi"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Timp"
 
@@ -996,7 +996,7 @@ msgstr "Timp"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:292
 #, javascript-format
 msgid "%s all day."
 msgstr "%s dut il dì."
@@ -1005,7 +1005,7 @@ msgstr "%s dut il dì."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:298
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, plui tart %s."
@@ -1014,30 +1014,30 @@ msgstr "%s, plui tart %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:304
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, chi di un pôc %s, e plui tart %s."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:315
 msgid "Select a location…"
 msgstr "Selezione une posizion…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:318
 msgid "Loading…"
 msgstr "Daûr a cjariâ…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:324
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Si sint %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:327
 msgid "Go online for weather information"
 msgstr "Va in rêt pes informazions sul timp"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:329
 msgid "Weather information is currently unavailable"
 msgstr "Lis informazions sul timp al moment no son disponibilis"
 
@@ -1223,6 +1223,70 @@ msgstr "Dinee"
 #: js/ui/inhibitShortcutsDialog.js:80
 msgid "Allow"
 msgstr "Pemet"
+
+#: js/ui/kbdA11yDialog.js:33
+msgid "Slow Keys Turned On"
+msgstr "Tascj lents ativâts"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid "Slow Keys Turned Off"
+msgstr "Tascj lents disativâts"
+
+#: js/ui/kbdA11yDialog.js:35
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Si à apene tignût fracât par 8 seconts il tast Maiusc. Chê e je la scurte pe "
+"funzion tascj lents, che e determine il mût di lavorâ de tastiere."
+
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned On"
+msgstr "Tascj tacadiçs ativâts"
+
+#: js/ui/kbdA11yDialog.js:43
+msgid "Sticky Keys Turned Off"
+msgstr "Tascj tacadiçs disativâts"
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Si à apene fracât par 5 voltis, une daûr di chê altre, il tast Maiusc. Chê e "
+"je la scurte pe funzion Tascj singui/tacadiçs, che e determine il mût di "
+"lavorâ de tastiere."
+
+#: js/ui/kbdA11yDialog.js:47
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"A son stâts fracâts doi tascj adun o cinc voltis in file il tast Maiusc. "
+"Chest al disative la funzion tascj singui/tacadiçs, che al determine il mût "
+"di lavorâ de tastiere."
+
+#: js/ui/kbdA11yDialog.js:59
+msgid "Leave On"
+msgstr "Lasse ativât"
+
+#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:1299
+msgid "Turn On"
+msgstr "Impie"
+
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:170 js/ui/status/network.js:356
+#: js/ui/status/network.js:1299 js/ui/status/network.js:1418
+#: js/ui/status/nightLight.js:47 js/ui/status/rfkill.js:90
+#: js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Distude"
+
+#: js/ui/kbdA11yDialog.js:67
+msgid "Leave Off"
+msgstr "Lasse disativât"
 
 #: js/ui/keyboard.js:738 js/ui/status/keyboard.js:783
 msgid "Keyboard"
@@ -1547,17 +1611,6 @@ msgstr "Distudât"
 msgid "On"
 msgstr "Impiât"
 
-#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:1299
-msgid "Turn On"
-msgstr "Impie"
-
-#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:170
-#: js/ui/status/network.js:356 js/ui/status/network.js:1299
-#: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
-#: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "Distude"
-
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Luminositât"
@@ -1766,44 +1819,44 @@ msgstr "conession falide"
 msgid "VPN Settings"
 msgstr "Impostazions VPN"
 
-#: js/ui/status/network.js:1498
+#: js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1508
+#: js/ui/status/network.js:1517
 msgid "VPN Off"
 msgstr "VPN distudât"
 
-#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1581 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Impostazions rêt"
 
-#: js/ui/status/network.js:1603
+#: js/ui/status/network.js:1612
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conession cablade"
 msgstr[1] "%s conessions cabladis"
 
-#: js/ui/status/network.js:1607
+#: js/ui/status/network.js:1616
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conession cence fîi"
 msgstr[1] "%s conessions cence fîi"
 
-#: js/ui/status/network.js:1611
+#: js/ui/status/network.js:1620
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s conession modem"
 msgstr[1] "%s conessions modem"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1768
 msgid "Connection failed"
 msgstr "Conession falide"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1769
 msgid "Activation of network connection failed"
 msgstr "Ativazion de conession di rêt falide"
 
