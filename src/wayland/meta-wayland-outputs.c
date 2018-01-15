@@ -541,9 +541,9 @@ send_xdg_output_events (struct wl_resource *resource,
       old_layout.width != new_layout.width ||
       old_layout.height != new_layout.height)
     {
-      zxdg_output_v1_send_logical_position (resource,
-                                            new_layout.width,
-                                            new_layout.height);
+      zxdg_output_v1_send_logical_size (resource,
+                                        new_layout.width,
+                                        new_layout.height);
       need_done = TRUE;
     }
 
