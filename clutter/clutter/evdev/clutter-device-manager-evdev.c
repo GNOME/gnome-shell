@@ -432,7 +432,7 @@ notify_touch_event (ClutterInputDevice *input_device,
                                                     &event->touch.y);
 
   /* "NULL" sequences are special cased in clutter */
-  event->touch.sequence = GINT_TO_POINTER (slot + 1);
+  event->touch.sequence = GINT_TO_POINTER (MAX (1, slot + 1));
   _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
 
   if (evtype == CLUTTER_TOUCH_BEGIN ||
