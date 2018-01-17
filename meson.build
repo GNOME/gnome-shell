@@ -117,10 +117,12 @@ else
 endif
 
 if get_option('systemd')
-  systemd_dep = dependency('libsystemd')
+  libsystemd_dep = dependency('libsystemd')
+  systemd_dep = dependency('systemd')
+  have_libsystemd = libsystemd_dep.found()
   have_systemd = systemd_dep.found()
 else
-  systemd_dep = []
+  libsystemd_dep = []
   have_systemd = false
 endif
 
@@ -150,7 +152,7 @@ cdata.set_quoted('VERSION', meson.project_version())
 cdata.set_quoted('PACKAGE_VERSION', meson.project_version())
 
 cdata.set('HAVE_NETWORKMANAGER', have_networkmanager)
-cdata.set('HAVE_SYSTEMD', have_systemd)
+cdata.set('HAVE_SYSTEMD', have_libsystemd)
 
 cdata.set('HAVE_FDWALK', cc.has_function('fdwalk'))
 cdata.set('HAVE_MALLINFO', cc.has_function('mallinfo'))

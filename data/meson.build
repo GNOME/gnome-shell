@@ -93,6 +93,27 @@ schema = configure_file(
   install_dir: schemadir
 )
 
+unitconf = configuration_data()
+unitconf.set('bindir', bindir)
+
+if have_systemd
+  systemduserunitdir = systemd_dep.get_pkgconfig_variable('systemduserunitdir')
+else
+  systemduserunitdir = join_paths(libdir, 'systemd', 'user')
+endif
+
+unit = configure_file(
+  input: 'gnome-shell.service.in',
+  output: 'gnome-shell.service',
+  configuration: unitconf,
+  install_dir: systemduserunitdir
+)
+
+units = files('gnome-shell-wayland.target',
+              'gnome-shell-x11.target')
+
+install_data(units, install_dir: systemduserunitdir)
+
 # for unit tests - gnome.compile_schemas() only looks in srcdir
 custom_target('compile-schemas',
   input: schema,
