@@ -27,6 +27,7 @@ mutter_req = '>= 3.26.0'
 polkit_req = '>= 0.100'
 schemas_req = '>= 3.21.3'
 startup_req = '>= 0.11'
+ibus_req = '>= 1.5.2'
 
 bt_req = '>= 3.9.0'
 gst_req = '>= 0.11.92'
@@ -87,6 +88,7 @@ mutter_dep = dependency(libmutter_pc, version: mutter_req)
 polkit_dep = dependency('polkit-agent-1', version: polkit_req)
 soup_dep = dependency('libsoup-2.4')
 startup_dep = dependency('libstartup-notification-1.0', version: startup_req)
+ibus_dep = dependency('ibus-1.0', version: ibus_req)
 x11_dep = dependency('x11')
 schemas_dep = dependency('gsettings-desktop-schemas', version: schemas_req)
 
