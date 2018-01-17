@@ -38,6 +38,7 @@ var connect = _signals.connect.bind(_signals);
 var disconnect = _signals.disconnect.bind(_signals);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
+const DISABLED_EXTENSIONS_KEY = 'disabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
 
@@ -134,6 +135,53 @@ function enableExtension(uuid) {
         logExtensionError(uuid, e);
         return;
     }
+}
+
+
+function writeExtensionEnablementState(uuid, enabled) {
+    if (!ExtensionUtils.extensions[uuid]) {
+        return false;
+    }
+
+    let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+    let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+    let modeExtensions = [];
+
+    if (Array.isArray(Main.sessionMode.enabledExtensions)) {
+        modeExtensions = Main.sessionMode.enabledExtensions;
+    }
+
+    if (enabled) {
+        // always remove from the 'disabled-extensions' key
+        if (disabledExtensions.indexOf(uuid) !== -1) {
+            disabledExtensions = disabledExtensions.filter(item => {
+                return item !== uuid;
+            });
+            global.settings.set_strv(DISABLED_EXTENSIONS_KEY, disabledExtensions);
+        }
+
+        // Add extension to 'enabled-extensions' for the user, if it's not a mode extension
+        if ((enabledExtensions.indexOf(uuid) == -1) && (modeExtensions.indexOf(uuid) === -1)) {
+            enabledExtensions.push(uuid);
+            global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
+        }
+    } else {
+        // always remove from the 'enabled-extensions' key
+        if (enabledExtensions.indexOf(uuid) !== -1) {
+            enabledExtensions = enabledExtensions.filter(item => {
+                return item !== uuid;
+            });
+            global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
+        }
+
+        // Add extension to 'disabled-extensions' for the user, if it's a mode extension
+        if ((disabledExtensions.indexOf(uuid) == -1) && (modeExtensions.indexOf(uuid) !== -1)) {
+            disabledExtensions.push(uuid);
+            global.settings.set_strv(DISABLED_EXTENSIONS_KEY, disabledExtensions);
+        }
+    }
+
+    return true;
 }
 
 function logExtensionError(uuid, error) {
@@ -259,10 +307,16 @@ function getEnabledExtensions() {
     else
         extensions = [];
 
-    if (global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
-        return extensions;
+    if (!global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
+        extensions = extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
 
-    return extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
+    // filter out 'disabled-extensions' which takes precedence
+    let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+    extensions = extensions.filter(item => {
+        return disabledExtensions.indexOf(item) === -1;
+    });
+
+    return extensions;
 }
 
 function onEnabledExtensionsChanged() {
@@ -308,6 +362,7 @@ function _onVersionValidationChanged() {
 
 function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
+    global.settings.connect('changed::' + DISABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
 
