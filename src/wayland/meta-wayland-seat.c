@@ -374,17 +374,20 @@ meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
       if (meta_wayland_seat_has_pointer (seat))
         return meta_wayland_pointer_handle_event (seat->pointer, event);
 
+      break;
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
       if (meta_wayland_seat_has_keyboard (seat))
         return meta_wayland_keyboard_handle_event (seat->keyboard,
                                                    (const ClutterKeyEvent *) event);
+      break;
     case CLUTTER_TOUCH_BEGIN:
     case CLUTTER_TOUCH_UPDATE:
     case CLUTTER_TOUCH_END:
       if (meta_wayland_seat_has_touch (seat))
         return meta_wayland_touch_handle_event (seat->touch, event);
 
+      break;
     default:
       break;
     }
