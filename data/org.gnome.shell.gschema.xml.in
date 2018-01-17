@@ -21,6 +21,17 @@
         EnableExtension and DisableExtension D-Bus methods on org.gnome.Shell.
       </description>
     </key>
+    <key name="disabled-extensions" type="as">
+      <default>[]</default>
+      <summary>UUIDs of extensions to force disabling</summary>
+      <description>
+        GNOME Shell extensions have a UUID property; this key lists extensions
+        which should be disabled, even if loaded as part of the current mode.
+        You can also manipulate this list with the EnableExtension and
+        DisableExtension D-Bus methods on org.gnome.Shell.
+        This key takes precedence over the “enabled-extension” setting.
+      </description>
+    </key>
     <key name="disable-user-extensions" type="b">
       <default>false</default>
       <summary>Disable user extensions</summary>

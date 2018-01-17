@@ -38,6 +38,7 @@ var connect = _signals.connect.bind(_signals);
 var disconnect = _signals.disconnect.bind(_signals);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
+const DISABLED_EXTENSIONS_KEY = 'disabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
 
@@ -144,6 +145,46 @@ function enableExtension(uuid) {
         logExtensionError(uuid, e);
         return;
     }
+}
+
+function addToEnabledExtensions(uuid) {
+    if (!ExtensionUtils.extensions[uuid])
+        return false;
+
+    let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+    let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+
+    if (disabledExtensions.includes(uuid)) {
+        disabledExtensions = disabledExtensions.filter(item => item !== uuid);
+        global.settings.set_strv(DISABLED_EXTENSIONS_KEY, disabledExtensions);
+    }
+
+    if (!enabledExtensions.includes(uuid)) {
+        enabledExtensions.push(uuid);
+        global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
+    }
+
+    return true;
+}
+
+function removeFromEnabledExtensions(uuid) {
+    if (!ExtensionUtils.extensions[uuid])
+        return false;
+
+    let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+    let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+
+    if (enabledExtensions.includes(uuid)) {
+        enabledExtensions = enabledExtensions.filter(item => item !== uuid);
+        global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
+    }
+
+    if (!disabledExtensions.includes(uuid)) {
+        disabledExtensions.push(uuid);
+        global.settings.set_strv(DISABLED_EXTENSIONS_KEY, disabledExtensions);
+    }
+
+    return true;
 }
 
 function logExtensionError(uuid, error) {
@@ -269,10 +310,12 @@ function getEnabledExtensions() {
     else
         extensions = [];
 
-    if (global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
-        return extensions;
+    if (!global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
+        extensions = extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
 
-    return extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
+    // filter out 'disabled-extensions' which takes precedence
+    let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+    return extensions.filter(item => !disabledExtensions.includes(item));
 }
 
 function onEnabledExtensionsChanged() {
@@ -318,6 +361,7 @@ function _onVersionValidationChanged() {
 
 function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
+    global.settings.connect('changed::' + DISABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
 
