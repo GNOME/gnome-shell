@@ -736,7 +736,7 @@ StScrollBar {
     #panel.solid .panel-button {
       color: #ccc;
       text-shadow: none; }
-      #panel.solid .panel-button:hover {
+      #panel.solid .panel-button:hover, #panel.solid .panel-button:active, #panel.solid .panel-button:overview, #panel.solid .panel-button:focus, #panel.solid .panel-button:checked {
         color: white; }
     #panel.solid .system-status-icon,
     #panel.solid .app-menu-icon > StIcon,
