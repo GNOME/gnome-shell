@@ -320,6 +320,14 @@ var GnomeShellExtensions = class {
         return ExtensionDownloader.uninstallExtension(uuid);
     }
 
+    EnableExtension(uuid) {
+        return ExtensionSystem.addToEnabledExtensions(uuid);
+    }
+
+    DisableExtension(uuid) {
+        return ExtensionSystem.addToDisabledExtensions(uuid);
+    }
+
     LaunchExtensionPrefs(uuid) {
         let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app('gnome-shell-extension-prefs.desktop');
