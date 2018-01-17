@@ -53,7 +53,7 @@ gnome_shell_deps = [
   canberra_dep, canberra_gtk_dep,
   polkit_dep,
   gcr_dep,
-  systemd_dep
+  libsystemd_dep
 ]
 
 gnome_shell_deps += nm_deps
