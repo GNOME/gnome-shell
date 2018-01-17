@@ -1,0 +1,5 @@
+[Unit]
+Description=GNOME Shell (wayland sync point)
+After=gnome-shell.service
+BindsTo=gnome-shell.service
+Conflicts=gnome-shell-x11.target
