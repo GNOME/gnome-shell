@@ -10,6 +10,7 @@ const Main = imports.ui.main;
 const { ExtensionState, ExtensionType } = ExtensionUtils;
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
+const DISABLED_EXTENSIONS_KEY = 'disabled-extensions';
 const DISABLE_USER_EXTENSIONS_KEY = 'disable-user-extensions';
 const EXTENSION_DISABLE_VERSION_CHECK_KEY = 'disable-extension-version-validation';
 
@@ -144,6 +145,13 @@ var ExtensionManager = class {
             return false;
 
         let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+        let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+
+        if (disabledExtensions.includes(uuid)) {
+            disabledExtensions = disabledExtensions.filter(item => item !== uuid);
+            global.settings.set_strv(DISABLED_EXTENSIONS_KEY, disabledExtensions);
+        }
+
         if (!enabledExtensions.includes(uuid)) {
             enabledExtensions.push(uuid);
             global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
@@ -157,9 +165,16 @@ var ExtensionManager = class {
             return false;
 
         let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+        let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+
         if (enabledExtensions.includes(uuid)) {
             enabledExtensions = enabledExtensions.filter(item => item !== uuid);
             global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
+        }
+
+        if (!disabledExtensions.includes(uuid)) {
+            disabledExtensions.push(uuid);
+            global.settings.set_strv(DISABLED_EXTENSIONS_KEY, disabledExtensions);
         }
 
         return true;
@@ -343,19 +358,25 @@ var ExtensionManager = class {
         let isMode = this._getModeExtensions().includes(extension.uuid);
         let modeOnly = global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY);
 
+        let changeKey = isMode
+            ? DISABLE_USER_EXTENSIONS_KEY
+            : ENABLED_EXTENSIONS_KEY;
+
         extension.canChange =
             !hasError &&
-            global.settings.is_writable(ENABLED_EXTENSIONS_KEY) &&
+            global.settings.is_writable(changeKey) &&
             (isMode || !modeOnly);
     }
 
     _getEnabledExtensions() {
         let extensions = this._getModeExtensions();
 
-        if (global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
-            return extensions;
+        if (!global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
+            extensions = extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
 
-        return extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
+        // filter out 'disabled-extensions' which takes precedence
+        let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
+        return extensions.filter(item => !disabledExtensions.includes(item));
     }
 
     _onUserExtensionsEnabledChanged() {
@@ -417,11 +438,15 @@ var ExtensionManager = class {
     _loadExtensions() {
         global.settings.connect(`changed::${ENABLED_EXTENSIONS_KEY}`,
             this._onEnabledExtensionsChanged.bind(this));
+        global.settings.connect(`changed::${DISABLED_EXTENSIONS_KEY}`,
+            this._onEnabledExtensionsChanged.bind(this));
         global.settings.connect(`changed::${DISABLE_USER_EXTENSIONS_KEY}`,
             this._onUserExtensionsEnabledChanged.bind(this));
         global.settings.connect(`changed::${EXTENSION_DISABLE_VERSION_CHECK_KEY}`,
             this._onVersionValidationChanged.bind(this));
         global.settings.connect(`writable-changed::${ENABLED_EXTENSIONS_KEY}`,
+            this._onSettingsWritableChanged.bind(this));
+        global.settings.connect(`writable-changed::${DISABLED_EXTENSIONS_KEY}`,
             this._onSettingsWritableChanged.bind(this));
 
         this._enabledExtensions = this._getEnabledExtensions();
