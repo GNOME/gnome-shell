@@ -174,6 +174,30 @@
     </method>
 
     <!--
+        EnableExtension:
+        @uuid: The UUID of the extension
+        @success: Whether the operation was successful
+
+        Enable an extension.
+    -->
+    <method name="EnableExtension"> \
+      <arg type="s" direction="in" name="uuid"/> \
+      <arg type="b" direction="out" name="success"/> \
+    </method> \
+
+    <!--
+        DisableExtension:
+        @uuid: The UUID of the extension
+        @success: Whether the operation was successful
+
+        Disable an extension.
+    -->
+    <method name="DisableExtension"> \
+      <arg type="s" direction="in" name="uuid"/> \
+      <arg type="b" direction="out" name="success"/> \
+    </method> \
+
+    <!--
         LaunchExtensionPrefs:
         @uuid: The UUID of the extension
 

@@ -126,6 +126,32 @@ var ExtensionManager = class {
         }
     }
 
+    enableExtension(uuid) {
+        if (!ExtensionUtils.extensions[uuid])
+            return false;
+
+        let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+        if (!enabledExtensions.includes(uuid)) {
+            enabledExtensions.push(uuid);
+            global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
+        }
+
+        return true;
+    }
+
+    disableExtension(uuid) {
+        if (!ExtensionUtils.extensions[uuid])
+            return false;
+
+        let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+        if (enabledExtensions.includes(uuid)) {
+            enabledExtensions = enabledExtensions.filter(item => item !== uuid);
+            global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
+        }
+
+        return true;
+    }
+
     logExtensionError(uuid, error) {
         let extension = ExtensionUtils.extensions[uuid];
         if (!extension)

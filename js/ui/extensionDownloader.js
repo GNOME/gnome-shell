@@ -5,7 +5,6 @@ const { Clutter, Gio, GLib, GObject, Soup } = imports.gi;
 const Config = imports.misc.config;
 const Dialog = imports.ui.dialog;
 const ExtensionUtils = imports.misc.extensionUtils;
-const ExtensionSystem = imports.ui.extensionSystem;
 const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
@@ -225,16 +224,11 @@ class InstallExtensionDialog extends ModalDialog.ModalDialog {
         }
 
         function callback() {
-            // Add extension to 'enabled-extensions' for the user, always...
-            let enabledExtensions = global.settings.get_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY);
-            if (!enabledExtensions.includes(uuid)) {
-                enabledExtensions.push(uuid);
-                global.settings.set_strv(ExtensionSystem.ENABLED_EXTENSIONS_KEY, enabledExtensions);
-            }
-
             try {
                 let extension = ExtensionUtils.createExtensionObject(uuid, dir, ExtensionUtils.ExtensionType.PER_USER);
                 Main.extensionManager.loadExtension(extension);
+                if (!Main.extensionManager.enableExtension(uuid))
+                    throw new Error(`Cannot add ${uuid} to enabled extensions gsettings key`);
             } catch (e) {
                 uninstallExtension(uuid);
                 errback('LoadExtensionError', e);
