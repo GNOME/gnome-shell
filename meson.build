@@ -59,6 +59,13 @@ servicedir = join_paths(datadir, 'dbus-1', 'services')
 
 plugindir = get_variable('BROWSER_PLUGIN_DIR', mozplugindir)
 
+# XXX: Once https://github.com/systemd/systemd/issues/9595 is fixed and we can
+# depend on this version, replace with something like:
+# systemduserunitdir = systemd_dep.get_pkgconfig_variable('systemduserunitdir',
+#                                                         define_variable: ['prefix', prefix])
+# and uncomment systemd_dep below
+systemduserunitdir = join_paths(libdir, 'systemd', 'user')
+
 keybindings_dep = dependency('gnome-keybindings', required: false)
 if keybindings_dep.found()
   keysdir = keybindings_dep.get_pkgconfig_variable('keysdir')
@@ -117,10 +124,12 @@ else
 endif
 
 if get_option('systemd')
-  systemd_dep = dependency('libsystemd')
-  have_systemd = systemd_dep.found()
+  libsystemd_dep = dependency('libsystemd')
+  # XXX: see systemduserunitdir
+  # systemd_dep = dependency('systemd')
+  have_systemd = true
 else
-  systemd_dep = []
+  libsystemd_dep = []
   have_systemd = false
 endif
 

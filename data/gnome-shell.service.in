@@ -1,0 +1,11 @@
+[Unit]
+Description=GNOME Shell
+Wants=gnome-session.service
+After=graphical-session-pre.target gnome-session-bus.target
+PartOf=graphical-session.target
+
+[Service]
+Type=dbus
+ExecStart=@bindir@/gnome-shell
+Restart=on-failure
+BusName=org.gnome.Shell
