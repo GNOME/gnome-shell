@@ -314,6 +314,14 @@ const GnomeShellExtensionsIface = '<node> \
     <arg type="s" direction="in" name="uuid"/> \
     <arg type="b" direction="out" name="success"/> \
 </method> \
+<method name="EnableExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
+<method name="DisableExtension"> \
+    <arg type="s" direction="in" name="uuid"/> \
+    <arg type="b" direction="out" name="success"/> \
+</method> \
 <method name="LaunchExtensionPrefs"> \
     <arg type="s" direction="in" name="uuid"/> \
 </method> \
@@ -401,6 +409,14 @@ var GnomeShellExtensions = new Lang.Class({
 
     UninstallExtension: function(uuid) {
         return ExtensionDownloader.uninstallExtension(uuid);
+    },
+
+    EnableExtension: function(uuid) {
+        return ExtensionSystem.writeExtensionEnablementState(uuid, true);
+    },
+
+    DisableExtension: function (uuid) {
+        return ExtensionSystem.writeExtensionEnablementState(uuid, false);
     },
 
     LaunchExtensionPrefs: function(uuid) {
