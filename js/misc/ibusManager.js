@@ -6,15 +6,11 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
-let IBusCandidatePopup;
-try {
-    var IBus = imports.gi.IBus;
-    _checkIBusVersion(1, 5, 2);
-    IBusCandidatePopup = imports.ui.ibusCandidatePopup;
-} catch (e) {
-    var IBus = null;
-    log(e);
-}
+const IBus = imports.gi.IBus;
+const IBusCandidatePopup = imports.ui.ibusCandidatePopup;
+
+// Ensure runtime version matches
+_checkIBusVersion(1, 5, 2);
 
 let _ibusManager = null;
 
@@ -45,9 +41,6 @@ var IBusManager = new Lang.Class({
     _PRELOAD_ENGINES_DELAY_TIME: 30, // sec
 
     _init: function() {
-        if (!IBus)
-            return;
-
         IBus.init();
 
         this._candidatePopup = new IBusCandidatePopup.CandidatePopup();
@@ -190,7 +183,7 @@ var IBusManager = new Lang.Class({
     },
 
     getEngineDesc: function(id) {
-        if (!IBus || !this._ready || !this._engines.hasOwnProperty(id))
+        if (!this._ready || !this._engines.hasOwnProperty(id))
             return null;
 
         return this._engines[id];
@@ -200,7 +193,7 @@ var IBusManager = new Lang.Class({
         // Send id even if id == this._currentEngineName
         // because 'properties-registered' signal can be emitted
         // while this._ibusSources == null on a lock screen.
-        if (!IBus || !this._ready) {
+        if (!this._ready) {
             if (callback)
                 callback();
             return;
@@ -211,7 +204,7 @@ var IBusManager = new Lang.Class({
     },
 
     preloadEngines: function(ids) {
-        if (!IBus || !this._ibus || ids.length == 0)
+        if (!this._ibus || ids.length == 0)
             return;
 
         if (this._preloadEnginesId != 0) {
