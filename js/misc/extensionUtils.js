@@ -101,6 +101,10 @@ function isOutOfDate(extension) {
     return false;
 }
 
+function isModeExtension(uuid, modeExtensions) {
+    return modeExtensions.indexOf(uuid) !== -1;
+}
+
 function createExtensionObject(uuid, dir, type) {
     let info;
 
