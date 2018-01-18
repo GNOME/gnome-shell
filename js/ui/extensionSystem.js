@@ -145,11 +145,7 @@ function writeExtensionEnablementState(uuid, enabled) {
 
     let enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
     let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
-    let modeExtensions = [];
-
-    if (Array.isArray(Main.sessionMode.enabledExtensions)) {
-        modeExtensions = Main.sessionMode.enabledExtensions;
-    }
+    let modeExtensions = getModeExtensions();
 
     if (enabled) {
         // always remove from the 'disabled-extensions' key
@@ -159,7 +155,7 @@ function writeExtensionEnablementState(uuid, enabled) {
         }
 
         // Add extension to 'enabled-extensions' for the user, if it's not a mode extension
-        if ((enabledExtensions.indexOf(uuid) == -1) && (modeExtensions.indexOf(uuid) === -1)) {
+        if ((enabledExtensions.indexOf(uuid) == -1) && !ExtensionUtils.isModeExtension(uuid, modeExtensions)) {
             enabledExtensions.push(uuid);
             global.settings.set_strv(ENABLED_EXTENSIONS_KEY, enabledExtensions);
         }
@@ -171,7 +167,7 @@ function writeExtensionEnablementState(uuid, enabled) {
         }
 
         // Add extension to 'disabled-extensions' for the user, if it's a mode extension
-        if ((disabledExtensions.indexOf(uuid) == -1) && (modeExtensions.indexOf(uuid) !== -1)) {
+        if ((disabledExtensions.indexOf(uuid) == -1) && ExtensionUtils.isModeExtension(uuid, modeExtensions)) {
             disabledExtensions.push(uuid);
             global.settings.set_strv(DISABLED_EXTENSIONS_KEY, disabledExtensions);
         }
@@ -297,11 +293,7 @@ function initExtension(uuid) {
 }
 
 function getEnabledExtensions() {
-    let extensions;
-    if (Array.isArray(Main.sessionMode.enabledExtensions))
-        extensions = Main.sessionMode.enabledExtensions;
-    else
-        extensions = [];
+    let extensions = getModeExtensions();
 
     if (!global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
         extensions = extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
@@ -313,6 +305,12 @@ function getEnabledExtensions() {
     })
 
     return extensions;
+}
+
+function getModeExtensions() {
+    if (Array.isArray(Main.sessionMode.enabledExtensions))
+        return Main.sessionMode.enabledExtensions;
+    return [];
 }
 
 function onEnabledExtensionsChanged() {
