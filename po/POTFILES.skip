@@ -28,6 +28,7 @@ clutter/clutter/clutter-grid-layout.c
 clutter/clutter/clutter-image.c
 clutter/clutter/clutter-input-device.c
 clutter/clutter/clutter-input-device-tool.c
+clutter/clutter/clutter-input-method.c
 clutter/clutter/clutter-interval.c
 clutter/clutter/clutter-layout-manager.c
 clutter/clutter/clutter-layout-meta.c
