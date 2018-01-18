@@ -304,11 +304,7 @@ function initExtension(uuid) {
 }
 
 function getEnabledExtensions() {
-    let extensions;
-    if (Array.isArray(Main.sessionMode.enabledExtensions))
-        extensions = Main.sessionMode.enabledExtensions;
-    else
-        extensions = [];
+    let extensions = _getModeExtensions();
 
     if (!global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))
         extensions = extensions.concat(global.settings.get_strv(ENABLED_EXTENSIONS_KEY));
@@ -316,6 +312,12 @@ function getEnabledExtensions() {
     // filter out 'disabled-extensions' which takes precedence
     let disabledExtensions = global.settings.get_strv(DISABLED_EXTENSIONS_KEY);
     return extensions.filter(item => !disabledExtensions.includes(item));
+}
+
+function _getModeExtensions() {
+    if (Array.isArray(Main.sessionMode.enabledExtensions))
+        return Main.sessionMode.enabledExtensions;
+    return [];
 }
 
 function onEnabledExtensionsChanged() {
