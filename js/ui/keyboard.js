@@ -308,7 +308,7 @@ var Keyboard = new Lang.Class({
     },
 
     _syncEnabled: function () {
-        let wasEnabled = this._enableKeyboard;
+        let wasEnabled = this._enabled;
         this._enableKeyboard = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
         this._enabled = this._enableKeyboard || this._lastDeviceIsTouchscreen();
         if (!this._enabled && !this._keyboard)
@@ -319,9 +319,7 @@ var Keyboard = new Lang.Class({
         if (this._enabled && !this._keyboard)
             this._setupKeyboard();
 
-        if (this._enableKeyboard && !wasEnabled)
-            Main.layoutManager.showKeyboard();
-        else if (!this._enableKeyboard && wasEnabled)
+        if (!this._enabled && wasEnabled)
             Main.layoutManager.hideKeyboard(true);
     },
 
