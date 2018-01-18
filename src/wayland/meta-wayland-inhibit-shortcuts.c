@@ -148,7 +148,9 @@ zwp_keyboard_shortcuts_inhibit_manager_inhibit_shortcuts (struct wl_client   *cl
                       G_CALLBACK (surface_destroyed_cb),
                       shortcut_inhibit);
 
-  meta_wayland_surface_show_inhibit_shortcuts_dialog (surface, seat);
+  /* Cannot grant shortcuts to a surface without any window */
+  if (meta_wayland_surface_get_toplevel_window (surface))
+    meta_wayland_surface_show_inhibit_shortcuts_dialog (surface, seat);
 
   wl_resource_set_implementation (keyboard_shortcuts_inhibit_resource,
                                   &meta_keyboard_shortcuts_inhibit_interface,
