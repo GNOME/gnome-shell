@@ -363,7 +363,7 @@ var GnomeShellExtensions = new Lang.Class({
         Lang.copyProperties(extension.metadata, obj);
 
         // Only serialize the properties that we actually need.
-        const serializedProperties = ["type", "state", "path", "error", "hasPrefs"];
+        const serializedProperties = ["type", "state", "path", "error", "hasPrefs", "canEnable"];
 
         serializedProperties.forEach(function(prop) {
             obj[prop] = extension[prop];
@@ -444,7 +444,7 @@ var GnomeShellExtensions = new Lang.Class({
 
     _extensionStateChanged: function(_, newState) {
         this._dbusImpl.emit_signal('ExtensionStatusChanged',
-                                   GLib.Variant.new('(sis)', [newState.uuid, newState.state, newState.error]));
+                                   GLib.Variant.new('(siis)', [newState.uuid, newState.state, newState.canEnable, newState.error]));
     }
 });
 

@@ -30,6 +30,7 @@ const GnomeShellIface = '<node> \
 <signal name="ExtensionStatusChanged"> \
     <arg type="s" name="uuid"/> \
     <arg type="i" name="state"/> \
+    <arg type="i" name="canEnable"/> \
     <arg type="s" name="error"/> \
 </signal> \
 </interface> \
@@ -187,11 +188,12 @@ var Application = new Lang.Class({
         this._UISwitch.append_page(this._globalerror, null);
 
         this._shellProxy = new GnomeShellProxy(Gio.DBus.session, 'org.gnome.Shell', '/org/gnome/Shell');
-        this._shellProxy.connectSignal('ExtensionStatusChanged', Lang.bind(this, function(proxy, senderName, [uuid, state, error]) {
+        this._shellProxy.connectSignal('ExtensionStatusChanged', Lang.bind(this, function (proxy, senderName, [uuid, state, canEnable, error]) {
             if (ExtensionUtils.extensions[uuid] !== undefined) {
                 ExtensionUtils.extensions[uuid].state = state;
                 ExtensionUtils.extensions[uuid].error = error;
-                ExtensionUtils.extensions[uuid].row.updateState();
+                ExtensionUtils.extensions[uuid].canEnable = canEnable;
+                ExtensionUtils.extensions[uuid].row.updateStatus();
             }
         }));
 
@@ -225,7 +227,7 @@ var Application = new Lang.Class({
             return false;
         }
         for (let uuid in extensionsProx) {
-            let type, path, hasPrefs, state, error;
+            let type, path, hasPrefs, state, error, canEnable;
 
             let meta = { 'uuid': uuid };
 
@@ -249,6 +251,9 @@ var Application = new Lang.Class({
                     case 'error':
                         error = extensionsProx[uuid].error.unpack()
                         break;
+                    case 'canEnable':
+                        canEnable = extensionsProx[uuid].canEnable.unpack()
+                        break;
                     default:
                         meta[prop] = extensionsProx[uuid][prop].unpack();
                 }
@@ -257,6 +262,7 @@ var Application = new Lang.Class({
             // update live state
             extension.state = state;
             extension.error = error;
+            extension.canEnable = canEnable;
 
             this._extensionFound(extension);
         }
@@ -346,11 +352,11 @@ var ExtensionRow = new Lang.Class({
         this._settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
         this._settings.connect('changed::disable-extension-version-validation',
             Lang.bind(this, function() {
-                this._switch.sensitive = this._canEnable();
+                this._switch.sensitive = ExtensionUtils.extensions[this.uuid].canEnable;
             }));
         this._settings.connect('changed::disable-user-extensions',
             Lang.bind(this, function() {
-                this._switch.sensitive = this._canEnable();
+                this._switch.sensitive = ExtensionUtils.extensions[this.uuid].canEnable;
             }));
 
         this._buildUI();
@@ -391,7 +397,7 @@ var ExtensionRow = new Lang.Class({
         this.prefsButton = button;
 
         this._switch = new Gtk.Switch({ valign: Gtk.Align.CENTER,
-                                        sensitive: this._canEnable(),
+                                        sensitive: ExtensionUtils.extensions[this.uuid].canEnable,
                                         state: this._isEnabled() });
         this._switch.connect('notify::active', Lang.bind(this,
             function() {
@@ -404,16 +410,9 @@ var ExtensionRow = new Lang.Class({
         hbox.add(this._switch);
     },
 
-    updateState: function () {
+    updateStatus: function () {
         this._switch.state = this._isEnabled();
-    },
-
-    _canEnable: function() {
-        let extension = ExtensionUtils.extensions[this.uuid];
-        let checkVersion = !this._settings.get_boolean('disable-extension-version-validation');
-
-        return !this._settings.get_boolean('disable-user-extensions') &&
-               !(checkVersion && extension.state === ExtensionUtils.ExtensionState.OUT_OF_DATE);
+        this._switch.sensitive = ExtensionUtils.extensions[this.uuid].canEnable;
     },
 
     _isEnabled: function() {
