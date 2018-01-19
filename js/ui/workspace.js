@@ -304,6 +304,8 @@ var WindowClone = new Lang.Class({
     },
 
     destroy() {
+        this.emit('destroy');
+
         // First destroy the clone and then destroy everything
         // This will ensure that we never see it in the _disconnectSignals loop
         this.metaWindow.disconnect(this._windowClone._updateId);
@@ -1142,6 +1144,7 @@ var Workspace = new Lang.Class({
         // Create clones for windows that should be
         // visible in the Overview
         this._windows = [];
+        this._windowsDestroyedIds = [];
         this._windowOverlays = [];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverviewWindow(windows[i])) {
@@ -1440,7 +1443,7 @@ var Workspace = new Lang.Class({
         return GLib.SOURCE_REMOVE;
     },
 
-    _doRemoveWindow(metaWin) {
+    _doRemoveWindow(metaWin, {cloneDestroy}={cloneDestroy: true}) {
         let win = metaWin.get_compositor_private();
 
         // find the position of the window in our list
@@ -1450,8 +1453,10 @@ var Workspace = new Lang.Class({
             return;
 
         let clone = this._windows[index];
+        clone.disconnect(this._windowsDestroyedIds[index]);
 
         this._windows.splice(index, 1);
+        this._windowsDestroyedIds.splice(index, 1);
         this._windowOverlays.splice(index, 1);
 
         // If metaWin.get_compositor_private() returned non-NULL, that
@@ -1469,7 +1474,9 @@ var Workspace = new Lang.Class({
                 scale: stageWidth / clone.actor.width
             };
         }
-        clone.destroy();
+
+        if (cloneDestroy)
+            clone.destroy();
 
 
         // We need to reposition the windows; to avoid shuffling windows
@@ -1817,7 +1824,11 @@ var Workspace = new Lang.Class({
             this._actualGeometryLater = 0;
         }
 
+        for (let index = 0; index < this._windows.length; ++index)
+            this._windows[index].disconnect(this._windowsDestroyedIds[index]);
+
         this._windows = [];
+        this._windowsDestroyedIds = [];
     },
 
     // Sets this.leavingOverview flag to false.
@@ -1865,6 +1876,9 @@ var Workspace = new Lang.Class({
         clone.connect('size-changed', () => {
             this._recalculateWindowPositions(WindowPositionFlags.NONE);
         });
+        let cloneDestroyedId = clone.connect('destroy', () => {
+            this._doRemoveWindow(clone.metaWindow, {cloneDestroy: false});
+        });
 
         this.actor.add_actor(clone.actor);
 
@@ -1881,6 +1895,7 @@ var Workspace = new Lang.Class({
             clone.setStackAbove(this._windows[this._windows.length - 1].actor);
 
         this._windows.push(clone);
+        this._windowsDestroyedIds.push(cloneDestroyedId);
         this._windowOverlays.push(overlay);
 
         return [clone, overlay];
