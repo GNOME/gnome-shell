@@ -207,6 +207,12 @@ function loadExtension(extension) {
         }
     }
 
+    if (ExtensionUtils.isModeExtension(extension.uuid, getModeExtensions())) {
+        extension.canEnable = canEnableExtension(extension, global.settings.is_writable(DISABLED_EXTENSIONS_KEY));
+    } else {
+        extension.canEnable = canEnableExtension(extension, global.settings.is_writable(ENABLED_EXTENSIONS_KEY));
+    }
+
     _signals.emit('extension-state-changed', extension);
 }
 
@@ -306,6 +312,16 @@ function getModeExtensions() {
     return [];
 }
 
+function canEnableExtension(extension, enablement_key_writable) {
+    if (!enablement_key_writable ||
+        (extension.state === ExtensionUtils.ExtensionState.OUT_OF_DATE) ||
+        (extension.type === ExtensionUtils.ExtensionType.PER_USER && global.settings.get_boolean(DISABLE_USER_EXTENSIONS_KEY))) {
+        return false;
+    }
+
+    return true;
+}
+
 function onEnabledExtensionsChanged() {
     let newEnabledExtensions = getEnabledExtensions();
 
@@ -331,6 +347,25 @@ function onEnabledExtensionsChanged() {
     enabledExtensions = newEnabledExtensions;
 }
 
+function onExtensionEnablementKeysChanged() {
+    // extensions enablement gsettings keys may be now writable or not
+    // update the extensions status as permit
+    let modeExtensions = getModeExtensions();
+
+    let can_change_extension_enablement = global.settings.is_writable(ENABLED_EXTENSIONS_KEY);
+    let can_change_mode_extension_enablement = global.settings.is_writable(DISABLED_EXTENSIONS_KEY);
+
+    for (let uuid in ExtensionUtils.extensions) {
+        let extension = ExtensionUtils.extensions[uuid];
+        if (ExtensionUtils.isModeExtension(uuid, modeExtensions)) {
+            extension.canEnable = canEnableExtension(extension, can_change_mode_extension_enablement);
+        } else {
+            extension.canEnable = canEnableExtension(extension, can_change_extension_enablement);
+        }
+        _signals.emit('extension-state-changed', extension);
+    };
+}
+
 function _onVersionValidationChanged() {
     // we want to reload all extensions, but only enable
     // extensions when allowed by the sessionMode, so
@@ -351,7 +386,11 @@ function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + DISABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onEnabledExtensionsChanged);
+    global.settings.connect('changed::' + DISABLE_USER_EXTENSIONS_KEY, onExtensionEnablementKeysChanged);
     global.settings.connect('changed::' + EXTENSION_DISABLE_VERSION_CHECK_KEY, _onVersionValidationChanged);
+    global.settings.connect('writable-changed::' + ENABLED_EXTENSIONS_KEY, onExtensionEnablementKeysChanged);
+    global.settings.connect('writable-changed::' + DISABLED_EXTENSIONS_KEY, onExtensionEnablementKeysChanged);
+
 
     enabledExtensions = getEnabledExtensions();
 
