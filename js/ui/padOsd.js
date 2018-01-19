@@ -977,12 +977,12 @@ var PadOsdService = new Lang.Class({
         let padDevice = null;
 
         devices.forEach(Lang.bind(this, function(device) {
-            if (deviceNode == device.get_device_node())
+            if (deviceNode == device.get_device_node() &&
+                padDevice.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE)
                 padDevice = device;
         }));
 
-        if (padDevice == null ||
-            padDevice.get_device_type() != Clutter.InputDeviceType.PAD_DEVICE) {
+        if (padDevice == null) {
             invocation.return_error_literal(Gio.IOErrorEnum,
                                             Gio.IOErrorEnum.CANCELLED,
                                             "Invalid params");
