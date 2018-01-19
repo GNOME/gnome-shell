@@ -1168,7 +1168,7 @@ var ThumbnailsBox = new Lang.Class({
     // The "porthole" is the portion of the screen that we show in the
     // workspaces
     _ensurePorthole() {
-        if (!Main.layoutManager.primaryMonitor)
+        if (!Main.layoutManager.primaryMonitor || !Main.overview.visible)
             return false;
 
         if (!this._porthole)
