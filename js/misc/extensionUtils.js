@@ -165,6 +165,7 @@ function registerExtensionObject(uuid, meta, type, path, hasPrefs) {
     extension.path = path;
     extension.error = '';
     extension.hasPrefs = hasPrefs;
+    extension.canEnable = false;
 
     extensions[uuid] = extension;
 
