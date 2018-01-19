@@ -137,8 +137,10 @@ var WindowClone = new Lang.Class({
         this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
-        this._windowClone._updateId = this.metaWindow.connect('size-changed',
-            Lang.bind(this, this._onRealWindowSizeChanged));
+        this._windowClone._sizeChangedId = this.metaWindow.connect('size-changed',
+            this._onMetaWindowSizeChanged.bind(this));
+        this._windowClone._posChangedId = this.metaWindow.connect('position-changed',
+            this._computeBoundingBox.bind(this));
         this._windowClone._destroyId = this.realWindow.connect('destroy',
             this.destroy.bind(this));
 
@@ -210,7 +212,11 @@ var WindowClone = new Lang.Class({
 
     _doAddAttachedDialog: function(metaWin, realWin) {
         let clone = new Clutter.Clone({ source: realWin });
-        clone._updateId = metaWin.connect('size-changed', Lang.bind(this, function() {
+        clone._sizeChangedId = metaWin.connect('size-changed', Lang.bind(this, function() {
+            this._computeBoundingBox();
+            this.emit('size-changed');
+        }));
+        clone._posChangedId = metaWin.connect('position-changed', Lang.bind(this, function() {
             this._computeBoundingBox();
             this.emit('size-changed');
         }));
@@ -308,7 +314,8 @@ var WindowClone = new Lang.Class({
 
         // First destroy the clone and then destroy everything
         // This will ensure that we never see it in the _disconnectSignals loop
-        this.metaWindow.disconnect(this._windowClone._updateId);
+        this.metaWindow.disconnect(this._windowClone._sizeChangedId);
+        this.metaWindow.disconnect(this._windowClone._posChangedId);
         this.realWindow.disconnect(this._windowClone._destroyId);
         this._windowClone.destroy();
 
@@ -323,12 +330,13 @@ var WindowClone = new Lang.Class({
             else
                 realWindow = child.source;
 
-            realWindow.meta_window.disconnect(child._updateId);
+            realWindow.meta_window.disconnect(child._sizeChangedId);
+            realWindow.meta_window.disconnect(child._posChangedId);
             realWindow.disconnect(child._destroyId);
         }));
     },
 
-    _onRealWindowSizeChanged: function() {
+    _onMetaWindowSizeChanged: function() {
         this._computeBoundingBox();
         this.emit('size-changed');
     },
