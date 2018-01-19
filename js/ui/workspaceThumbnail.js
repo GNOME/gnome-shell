@@ -68,7 +68,7 @@ var WindowClone = new Lang.Class({
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
 
-        this.clone._updateId = this.metaWindow.connect('position-changed',
+        this.clone._updateId = this.realWindow.connect('notify::position',
                                                        this._onPositionChanged.bind(this));
         this.clone._destroyId = this.realWindow.connect('destroy', () => {
             // First destroy the clone and then destroy everything
@@ -153,7 +153,7 @@ var WindowClone = new Lang.Class({
         let clone = new Clutter.Clone({ source: realDialog });
         this._updateDialogPosition(realDialog, clone);
 
-        clone._updateId = metaDialog.connect('position-changed', dialog => {
+        clone._updateId = realDialog.connect('notify::position', dialog => {
             this._updateDialogPosition(dialog, clone);
         });
         clone._destroyId = realDialog.connect('destroy', () => {
@@ -171,7 +171,6 @@ var WindowClone = new Lang.Class({
     },
 
     _onPositionChanged() {
-        let rect = this.metaWindow.get_frame_rect();
         this.actor.set_position(this.realWindow.x, this.realWindow.y);
     },
 
@@ -179,7 +178,7 @@ var WindowClone = new Lang.Class({
         this.actor.get_children().forEach(child => {
             let realWindow = child.source;
 
-            realWindow.meta_window.disconnect(child._updateId);
+            realWindow.disconnect(child._updateId);
             realWindow.disconnect(child._destroyId);
         });
     },
