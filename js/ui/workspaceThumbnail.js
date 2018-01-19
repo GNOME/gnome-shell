@@ -274,8 +274,8 @@ var WorkspaceThumbnail = new Lang.Class({
 
         this._createBackground();
 
-        let monitor = Main.layoutManager.primaryMonitor;
-        this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(this.monitorIndex);
+        this.setPorthole(workArea.x, workArea.y, workArea.width, workArea.height);
 
         let windows = global.get_window_actors().filter(Lang.bind(this, function(actor) {
             let win = actor.meta_window;
@@ -321,8 +321,6 @@ var WorkspaceThumbnail = new Lang.Class({
     },
 
     setPorthole: function(x, y, width, height) {
-        this._portholeX = x;
-        this._portholeY = y;
         this.actor.set_size(width, height);
         this._contents.set_position(-x, -y);
     },
