@@ -151,7 +151,7 @@ AC_ARG_ENABLE([Bsymbolic],
                 saved_LDFLAGS="${LDFLAGS}"
                 AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
                 LDFLAGS=-Wl,-Bsymbolic-functions
-                AC_TRY_LINK([], [int main (void) { return 0; }],
+                AC_TRY_LINK([], [return 0],
                             [
                               AC_MSG_RESULT([yes])
                               enable_Bsymbolic=yes
@@ -172,7 +172,7 @@ dnl on other compilers, check if we can do -fvisibility=hidden
 SAVED_CFLAGS="${CFLAGS}"
 CFLAGS="-fvisibility=hidden"
 AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
-AC_TRY_COMPILE([], [int main (void) { return 0; }],
+AC_TRY_COMPILE([], [return 0],
 	       AC_MSG_RESULT(yes)
 	       enable_fvisibility_hidden=yes,
 	       AC_MSG_RESULT(no)
