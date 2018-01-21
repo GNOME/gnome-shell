@@ -105,16 +105,13 @@ if get_option('networkmanager')
   nm_deps += dependency('libnm', version: nm_req)
   nm_deps += dependency('libsecret-1', version: secret_req)
 
+  vpndir = nm_deps[0].get_pkgconfig_variable('vpnservicedir')
+
   have_networkmanager = true
 else
-  have_networkmanager = false
-endif
+  vpndir = prefix
 
-networkmanager_dep = dependency('NetworkManager', required: false)
-if (networkmanager_dep.found())
-  nm_prefix = networkmanager_dep.get_pkgconfig_variable('prefix')
-else
-  nm_prefix = prefix
+  have_networkmanager = false
 endif
 
 if get_option('systemd')
