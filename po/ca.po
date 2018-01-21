@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>, 2009.
 # Jordi Serratosa <jordis@softcatala.cat>, 2012, 2017.
-# Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2013, 2014, 2016.
+# Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2013, 2014, 2016, 2018.
 # Jordi Mas i Hernàndez <jmas@softcatala.org>, 2017
 #
 msgid ""
@@ -11,16 +11,16 @@ msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-01-19 23:04+0000\n"
-"PO-Revision-Date: 2017-08-23 09:48+0200\n"
-"Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
+"POT-Creation-Date: 2018-01-20 21:10+0000\n"
+"PO-Revision-Date: 2018-01-22 00:20+0100\n"
+"Last-Translator: Gil Forcada Codinachs <gil.gnome@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -1250,6 +1250,9 @@ msgid ""
 "You just held down the Shift key for 8 seconds. This is the shortcut for the "
 "Slow Keys feature, which affects the way your keyboard works."
 msgstr ""
+"Heu mantingut premuda la tecla de majúscules durant 8 segons. Aquesta és la "
+"drecera per a la funcionalitat «tecles lentes», que afecta la forma de "
+"funcionar del teclat."
 
 #: js/ui/kbdA11yDialog.js:42
 msgid "Sticky Keys Turned On"
@@ -1265,7 +1268,8 @@ msgid ""
 "the Sticky Keys feature, which affects the way your keyboard works."
 msgstr ""
 "Heu premut la tecla de majúscules 5 cops seguides. Aquesta és la drecera per "
-"la funcionalitat de les tecles enganxoses, que afecta la manera en què funciona el teclat."
+"la funcionalitat de les tecles enganxoses, que afecta la manera en què "
+"funciona el teclat."
 
 #: js/ui/kbdA11yDialog.js:47
 msgid ""
@@ -1273,8 +1277,9 @@ msgid ""
 "row. This turns off the Sticky Keys feature, which affects the way your "
 "keyboard works."
 msgstr ""
-"Heu premut dos tecles juntes, o la tecla de majúscules 5 cops seguides. Això desactiva "
-"la funcionalitat de les tecles enganxoses, que afecta la manera en què funciona el teclat."
+"Heu premut dos tecles juntes, o la tecla de majúscules 5 cops seguides. Això "
+"desactiva la funcionalitat de les tecles enganxoses, que afecta la manera en "
+"què funciona el teclat."
 
 #: js/ui/kbdA11yDialog.js:59
 msgid "Leave On"
