@@ -14,6 +14,6 @@ var GETTEXT_PACKAGE = '@GETTEXT_PACKAGE@';
 var LOCALEDIR = '@datadir@/locale';
 /* other standard directories */
 var LIBEXECDIR = '@libexecdir@';
-var NMPREFIXDIR = '@nmprefixdir@';
+var VPNDIR = '@vpndir@';
 /* g-i package versions */
 var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'
