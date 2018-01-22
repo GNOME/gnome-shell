@@ -348,11 +348,13 @@ update_xwayland_grab_access_rules (MetaSettings *settings)
   int i;
 
   /* Free previous patterns and create new arrays */
-  g_ptr_array_free (settings->xwayland_grab_whitelist_patterns, TRUE);
+  g_clear_pointer (&settings->xwayland_grab_whitelist_patterns,
+                   g_ptr_array_unref);
   settings->xwayland_grab_whitelist_patterns =
     g_ptr_array_new_with_free_func ((GDestroyNotify) g_pattern_spec_free);
 
-  g_ptr_array_free (settings->xwayland_grab_blacklist_patterns, TRUE);
+  g_clear_pointer (&settings->xwayland_grab_blacklist_patterns,
+                   g_ptr_array_unref);
   settings->xwayland_grab_blacklist_patterns =
     g_ptr_array_new_with_free_func ((GDestroyNotify) g_pattern_spec_free);
 
