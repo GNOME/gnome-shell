@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-22 11:17+0000\n"
-"PO-Revision-Date: 2017-08-23 19:48+0200\n"
+"POT-Creation-Date: 2018-01-11 08:17+0000\n"
+"PO-Revision-Date: 2018-01-22 20:41+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.5\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -422,18 +422,18 @@ msgstr "(alebo prejdite prstom)"
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
 msgctxt "search-result"
-msgid "Power off"
+msgid "Power Off"
 msgstr "Vypnúť"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:102
-msgid "power off;shutdown"
-msgstr "vypnúť;vypnutie"
+msgid "power off;shutdown;reboot;restart"
+msgstr "vypnúť;vypnutie;reštart;reštartovanie"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
 msgctxt "search-result"
-msgid "Lock screen"
+msgid "Lock Screen"
 msgstr "Uzamknúť obrazovku"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
@@ -444,7 +444,7 @@ msgstr "uzamknúť;zámok;obrazovku;obrazovky"
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
 msgctxt "search-result"
-msgid "Log out"
+msgid "Log Out"
 msgstr "Odhlásiť sa"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
@@ -466,7 +466,7 @@ msgstr "uspať;režim;spánku"
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
 msgctxt "search-result"
-msgid "Switch user"
+msgid "Switch User"
 msgstr "Prepnúť používateľa"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
@@ -478,13 +478,13 @@ msgstr "prepnúť;prepnutie;používateľa"
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
 msgctxt "search-result"
-msgid "Lock orientation"
+msgid "Lock Orientation"
 msgstr "Uzamknúť orientáciu"
 
 # action button
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-msgid "lock orientation"
+msgid "lock orientation;screen;rotation"
 msgstr "uzamknúť;zámok;orientáciu;orientácie"
 
 #: js/misc/util.js:122
@@ -675,7 +675,7 @@ msgstr "Nové okno"
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Spustiť pomocou prídavnej grafickej karty"
 
-#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1956 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Odstrániť z obľúbených"
 
@@ -687,12 +687,12 @@ msgstr "Pridať do obľúbených"
 msgid "Show Details"
 msgstr "Zobraziť podrobnosti"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:141
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Aplikácia %s bola pridaná medzi obľúbené."
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:175
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Aplikácia %s bola odstránená z obľúbených."
@@ -784,51 +784,51 @@ msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
 
-#: js/ui/calendar.js:442
+#: js/ui/calendar.js:449
 msgid "Previous month"
 msgstr "Predchádzajúci mesiac"
 
-#: js/ui/calendar.js:452
+#: js/ui/calendar.js:459
 msgid "Next month"
 msgstr "Nasledujúci mesiac"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "%V. týždeň"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celý deň"
 
-#: js/ui/calendar.js:862
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %e. %B"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %e. %B %Y"
 
-#: js/ui/calendar.js:1086
+#: js/ui/calendar.js:1093
 msgid "No Notifications"
 msgstr "Žiadne oznámenia"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1096
 msgid "No Events"
 msgstr "Žiadne udalosti"
 
-#: js/ui/calendar.js:1117
+#: js/ui/calendar.js:1124
 msgid "Clear All"
 msgstr "Vymazať všetko"
 
@@ -863,7 +863,7 @@ msgid "External drive disconnected"
 msgstr "Externá jednotka bola odpojená"
 
 # DK: doplnil som slovo "programu", aby to znelo prirodzenejsie. priklad:po pripojeni USB kluca bolo zobrazene "Otvoriť pomocou Súbory"
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:358
 #, javascript-format
 msgid "Open with %s"
 msgstr "Otvoriť pomocou aplikácie %s"
@@ -952,7 +952,7 @@ msgstr "Heslo k mobilnej širokopásmovej sieti"
 msgid "A password is required to connect to “%s”."
 msgstr "Na pripojenie k „%s“ sa požaduje heslo."
 
-#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
+#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1729
 msgid "Network Manager"
 msgstr "Správca siete"
 
@@ -989,20 +989,20 @@ msgid "Windows"
 msgstr "Okná"
 
 # tooltip
-#: js/ui/dash.js:250 js/ui/dash.js:291
+#: js/ui/dash.js:246 js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Zobrazí aplikácie"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:449
+#: js/ui/dash.js:445
 msgid "Dash"
 msgstr "Dok"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:76
 msgid "%B %e %Y"
 msgstr "%-e. %B %Y"
 
@@ -1010,19 +1010,19 @@ msgstr "%-e. %B %Y"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%A, %-e. %B %Y"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:148
 msgid "Add world clocks…"
 msgstr "Pridať svetové časy…"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:149
 msgid "World Clocks"
 msgstr "Svetové časy"
 
-#: js/ui/dateMenu.js:224
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Počasie"
 
@@ -1030,7 +1030,7 @@ msgstr "Počasie"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:286
+#: js/ui/dateMenu.js:292
 #, javascript-format
 msgid "%s all day."
 msgstr "%s celý deň."
@@ -1039,7 +1039,7 @@ msgstr "%s celý deň."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:292
+#: js/ui/dateMenu.js:298
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, potom bude %s."
@@ -1048,30 +1048,30 @@ msgstr "%s, potom bude %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:298
+#: js/ui/dateMenu.js:304
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, potom bude %s a následne neskôr bude %s."
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:315
 msgid "Select a location…"
 msgstr "Vyberte umiestnenie…"
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:318
 msgid "Loading…"
 msgstr "Načítava sa…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:318
+#: js/ui/dateMenu.js:324
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Pocitová teplota %s."
 
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:327
 msgid "Go online for weather information"
 msgstr "Aby sa mohli zobraziť informácie o počasí, musíte sa pripojiť"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:329
 msgid "Weather information is currently unavailable"
 msgstr "Informácie o počasí nie sú momentálne dostupné"
 
@@ -1262,7 +1262,74 @@ msgstr "Odmietnuť"
 msgid "Allow"
 msgstr "Povoliť"
 
-#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
+# z gnome control center
+#: js/ui/kbdA11yDialog.js:33
+msgid "Slow Keys Turned On"
+msgstr "Pomalé klávesy zapnuté"
+
+# z gnome control center
+#: js/ui/kbdA11yDialog.js:34
+msgid "Slow Keys Turned Off"
+msgstr "Pomalé klávesy vypnuté"
+
+#: js/ui/kbdA11yDialog.js:35
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Práve ste podržali stlačenú klávesu Shift po dobu 8 sekúnd. Je to skratka "
+"funkcie Pomalé klávesy, ktorá mení spôsob fungovania vašej klávesnice."
+
+# z gnome control center
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned On"
+msgstr "Lepkavé klávesy zapnuté"
+
+# z gnome control center
+#: js/ui/kbdA11yDialog.js:43
+msgid "Sticky Keys Turned Off"
+msgstr "Lepkavé klávesy vypnuté"
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Práve ste stlačili klávesu Shift 5krát za sebou. je to skratka funkcie "
+"Lepkavé klávesy, ktorá mení spôsob fungovania vašej klávesnice."
+
+#: js/ui/kbdA11yDialog.js:47
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Práve ste stlačili dve klávesy naraz, alebo ste stlačili klávesu Shift 5krát "
+"za sebou. Tým sa vypne funkcia Lepkavé klávesy, ktorá mení spôsob fungovania "
+"vašej klávesnice."
+
+#: js/ui/kbdA11yDialog.js:59
+msgid "Leave On"
+msgstr "Ponechať zapnuté"
+
+#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:1299
+msgid "Turn On"
+msgstr "Zapnúť"
+
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:170 js/ui/status/network.js:356
+#: js/ui/status/network.js:1299 js/ui/status/network.js:1418
+#: js/ui/status/nightLight.js:47 js/ui/status/rfkill.js:90
+#: js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Vypnúť"
+
+#: js/ui/kbdA11yDialog.js:67
+msgid "Leave Off"
+msgstr "Ponechať vypnuté"
+
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:783
 msgid "Keyboard"
 msgstr "Klávesnica"
 
@@ -1315,7 +1382,7 @@ msgstr "Zobraziť zdroj"
 msgid "Web Page"
 msgstr "Webová stránka"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1494
 msgid "System Information"
 msgstr "Informácie o systéme"
 
@@ -1569,16 +1636,16 @@ msgstr "Vysoký kontrast"
 msgid "Large Text"
 msgstr "Veľký text"
 
-#: js/ui/status/bluetooth.js:47
+#: js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
+#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:627
 msgid "Bluetooth Settings"
 msgstr "Nastavenia Bluetooth"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:136
+#: js/ui/status/bluetooth.js:137
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
@@ -1587,32 +1654,21 @@ msgstr[1] "%d pripojené"
 msgstr[2] "%d pripojených"
 
 # DK: pripojenie, zariadenie
-#: js/ui/status/bluetooth.js:138
+#: js/ui/status/bluetooth.js:139
 msgid "Off"
 msgstr "Vypnuté"
 
 # režim v lietadle
-#: js/ui/status/bluetooth.js:140
+#: js/ui/status/bluetooth.js:141
 msgid "On"
 msgstr "Zapnutý"
-
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
-msgid "Turn On"
-msgstr "Zapnúť"
-
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
-#: js/ui/status/network.js:356 js/ui/status/network.js:1299
-#: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
-#: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "Vypnúť"
 
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Jas"
 
 # menu item
-#: js/ui/status/keyboard.js:805
+#: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
 msgstr "Zobraziť rozloženie klávesnice"
 
@@ -1816,19 +1872,19 @@ msgstr "pripojenie zlyhalo"
 msgid "VPN Settings"
 msgstr "Nastavenia VPN"
 
-#: js/ui/status/network.js:1498
+#: js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1508
+#: js/ui/status/network.js:1517
 msgid "VPN Off"
 msgstr "Pripojenie VPN vypnuté"
 
-#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1581 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Nastavenia siete"
 
-#: js/ui/status/network.js:1603
+#: js/ui/status/network.js:1612
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
@@ -1836,7 +1892,7 @@ msgstr[0] "%s drôtové pripojenie"
 msgstr[1] "%s drôtové pripojenia"
 msgstr[2] "%s drôtových pripojení"
 
-#: js/ui/status/network.js:1607
+#: js/ui/status/network.js:1616
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
@@ -1844,7 +1900,7 @@ msgstr[0] "%s pripojenie k sieti Wi-Fi"
 msgstr[1] "%s pripojenia k sieti Wi-Fi"
 msgstr[2] "%s pripojení k sieti Wi-Fi"
 
-#: js/ui/status/network.js:1611
+#: js/ui/status/network.js:1620
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
@@ -1852,11 +1908,11 @@ msgstr[0] "%s pripojenie modemom"
 msgstr[1] "%s pripojenia modemom"
 msgstr[2] "%s pripojení modemom"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1768
 msgid "Connection failed"
 msgstr "Pripojenie zlyhalo"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1769
 msgid "Activation of network connection failed"
 msgstr "Aktivácia pripojenia k sieti zlyhala"
 
@@ -2101,19 +2157,19 @@ msgstr "Kalendár Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:437
 msgid "Print version"
 msgstr "Verzia pre tlač"
 
-#: src/main.c:386
+#: src/main.c:443
 msgid "Mode used by GDM for login screen"
 msgstr "Režim používaný správcom GDM pre prihlasovaciu obrazovku"
 
-#: src/main.c:392
+#: src/main.c:449
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Použitie zvláštneho režimu, napr. „gdm“  pre prihlasovaciu obrazovku"
 
-#: src/main.c:398
+#: src/main.c:455
 msgid "List possible modes"
 msgstr "Zoznam možných režimov"
 
@@ -2163,6 +2219,18 @@ msgstr[2] "%u vstupov"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "Systémové zvuky"
+
+#~ msgctxt "search-result"
+#~ msgid "Power off"
+#~ msgstr "Vypnúť"
+
+#~ msgctxt "search-result"
+#~ msgid "Log out"
+#~ msgstr "Odhlásiť sa"
+
+#~ msgctxt "search-result"
+#~ msgid "Switch user"
+#~ msgstr "Prepnúť používateľa"
 
 #~ msgid "Hide tray"
 #~ msgstr "Skryť lištu"
