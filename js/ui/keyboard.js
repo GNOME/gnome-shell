@@ -16,7 +16,9 @@ const InputSourceManager = imports.ui.status.keyboard;
 const BoxPointer = imports.ui.boxpointer;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 
 var KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
 var KEY_LONG_PRESS_TIME = 250;
@@ -38,19 +40,19 @@ const defaultKeysPost = [
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '⇧', width: 3, level: 1, right: true }],
-      [{ label: '🌐', width: 1.5 }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '⇪', width: 3, level: 0, right: true }],
-      [{ label: '🌐', width: 1.5 }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '=/<', width: 3, level: 3, right: true }],
-      [{ label: '🌐', width: 1.5 }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
       [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '?123', width: 3, level: 2, right: true }],
-      [{ label: '🌐', width: 1.5 }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
 ];
 
 var KeyContainer = new Lang.Class({
@@ -173,6 +175,73 @@ var Suggestions = new Lang.Class({
     },
 });
 Signals.addSignalMethods(Suggestions.prototype);
+
+var LanguageSelectionPopup = new Lang.Class({
+    Name: 'LanguageSelectionPopup',
+    Extends: PopupMenu.PopupMenu,
+
+    _init: function(actor) {
+        this.parent(actor, 0.5, St.Side.BOTTOM);
+
+        let inputSourceManager = InputSourceManager.getInputSourceManager();
+        let inputSources = inputSourceManager.inputSources;
+
+        for (let i in inputSources) {
+            let is = inputSources[i];
+
+            this.addAction(is.displayName, Lang.bind(this, () => {
+                inputSourceManager.activateInputSource(is, true);
+            }));
+        }
+
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.addAction(_("Region & Language Settings"), Lang.bind(this, this._launchSettings));
+        this._capturedEventId = 0;
+
+        this._unmapId = actor.connect('notify::mapped', Lang.bind(this, function() {
+            if (!actor.is_mapped())
+                this.close(true);
+        }));
+    },
+
+    _launchSettings: function() {
+        Util.spawn(['gnome-control-center', 'region']);
+        this.close(true);
+    },
+
+    _onCapturedEvent: function(actor, event) {
+        if (event.get_source() == this.actor ||
+            this.actor.contains(event.get_source()))
+            return Clutter.EVENT_PROPAGATE;
+
+        if (event.type() == Clutter.EventType.BUTTON_RELEASE || event.type() == Clutter.EventType.TOUCH_END)
+            this.close(true);
+
+        return Clutter.EVENT_STOP;
+    },
+
+    open: function(animate) {
+        this.parent(animate);
+        this._capturedEventId = global.stage.connect('captured-event',
+                                                     Lang.bind(this, this._onCapturedEvent));
+    },
+
+    close: function(animate) {
+        this.parent(animate);
+        if (this._capturedEventId != 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+    },
+
+    destroy: function() {
+        if (this._capturedEventId != 0)
+            global.stage.disconnect(this._capturedEventId);
+        if (this._unmapId != 0)
+            this.sourceActor.disconnect(this._unmapId);
+        this.parent();
+    },
+});
 
 var Key = new Lang.Class({
     Name: 'Key',
@@ -408,6 +477,7 @@ var Keyboard = new Lang.Class({
         this._focusCaretTracker = new FocusCaretTracker.FocusCaretTracker();
         this._focusCaretTracker.connect('focus-changed', Lang.bind(this, this._onFocusChanged));
         this._focusCaretTracker.connect('caret-moved', Lang.bind(this, this._onCaretMoved));
+        this._languagePopup = null;
         this._currentAccessible = null;
         this._caretTrackingEnabled = false;
         this._updateCaretPositionId = 0;
@@ -585,6 +655,11 @@ var Keyboard = new Lang.Class({
         this._keyboard = null;
         this.actor.destroy();
         this.actor = null;
+
+        if (this._languagePopup) {
+            this._languagePopup.destroy();
+            this._languagePopup = null;
+        }
     },
 
     _setupKeyboard: function() {
@@ -709,6 +784,15 @@ var Keyboard = new Lang.Class({
         }
     },
 
+    _popupLanguageMenu: function(keyActor) {
+        if (this._languagePopup)
+            this._languagePopup.destroy();
+
+        this._languagePopup = new LanguageSelectionPopup(keyActor);
+        Main.layoutManager.addChrome(this._languagePopup.actor);
+        this._languagePopup.open(true);
+    },
+
     _loadDefaultKeys: function(keys, layout, numLevels, numKeys) {
         let extraButton;
         for (let i = 0; i < keys.length; i++) {
@@ -725,6 +809,8 @@ var Keyboard = new Lang.Class({
             if (key.width != null)
                 extraButton.setWidth(key.width);
 
+            let actor = extraButton.actor;
+
             extraButton.connect('released', Lang.bind(this, function() {
                 if (switchToLevel != null)
                     this._onLevelChanged(switchToLevel);
@@ -736,6 +822,8 @@ var Keyboard = new Lang.Class({
                     this._keyboardController.keyvalRelease(keyval);
                 else if (action == 'hide')
                     this.hide();
+                else if (action == 'languageMenu')
+                    this._popupLanguageMenu(actor);
             }));
 
             /* Fixup default keys based on the number of levels/keys */
