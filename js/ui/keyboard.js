@@ -683,7 +683,8 @@ var Keyboard = new Lang.Class({
                        { x_align: St.Align.MIDDLE,
                          x_fill: false });
 
-        this._addKeys();
+        this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
+        this._setActiveLayer(0);
 
         // Keyboard models are defined in LTR, we must override
         // the locale setting in order to avoid flipping the
@@ -743,14 +744,9 @@ var Keyboard = new Lang.Class({
         return layers;
     },
 
-    _addKeys: function () {
-        let groups = this._keyboardController.getGroups();
-        for (let i = 0; i < groups.length; ++i) {
-             let gname = groups[i];
-             this._groups[gname] = this._createLayersForGroup(gname);
-        }
-
-        this._setActiveLayer(0);
+    _ensureKeysForGroup: function(group) {
+        if (!this._groups[group])
+            this._groups[group] = this._createLayersForGroup(group);
     },
 
     _addRowKeys : function (keys, layout) {
@@ -910,6 +906,7 @@ var Keyboard = new Lang.Class({
     },
 
     _onGroupChanged: function () {
+        this._ensureKeysForGroup(this._keyboardController.getCurrentGroup());
         this._setActiveLayer(0);
     },
 
