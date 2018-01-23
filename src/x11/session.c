@@ -950,7 +950,10 @@ save_state (void)
               fputs ("    <sticky/>\n", outfile);
             } else {
               int n;
-              n = meta_workspace_index (window->workspace);
+              if (window->workspace)
+                n = meta_workspace_index (window->workspace);
+              else
+                n = window->initial_workspace;
               fprintf (outfile,
                        "    <workspace index=\"%d\"/>\n", n);
             }
