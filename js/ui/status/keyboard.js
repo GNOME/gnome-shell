@@ -457,7 +457,7 @@ var InputSourceManager = new Lang.Class({
         this._changePerWindowSource();
     },
 
-    _activateInputSource: function(is, interactive) {
+    activateInputSource: function(is, interactive) {
         KeyboardManager.holdKeyboard();
         this._keyboardManager.apply(is.xkbId);
 
@@ -578,7 +578,7 @@ var InputSourceManager = new Lang.Class({
                                      infosList[i].displayName,
                                      infosList[i].shortName,
                                      i);
-            is.connect('activate', Lang.bind(this, this._activateInputSource));
+            is.connect('activate', Lang.bind(this, this.activateInputSource));
 
             if (!(is.shortName in inputSourcesByShortName))
                 inputSourcesByShortName[is.shortName] = [];
