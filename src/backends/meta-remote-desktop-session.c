@@ -392,7 +392,7 @@ handle_notify_pointer_axis_discrete (MetaDBusRemoteDesktopSession *skeleton,
       return TRUE;
     }
 
-  if (steps != -1 || steps != 1)
+  if (steps != -1 && steps != 1)
     g_warning ("Multiple steps at at once not yet implemented, treating as one.");
 
   /*
