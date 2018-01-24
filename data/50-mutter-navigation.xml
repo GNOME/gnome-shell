@@ -20,12 +20,6 @@
         <KeyListEntry name="move-to-workspace-last"
                       description="Move window to last workspace" />
 
-	<KeyListEntry name="move-to-workspace-left"
-	              description="Move window one workspace to the left" />
-
-	<KeyListEntry name="move-to-workspace-right"
-	              description="Move window one workspace to the right" />
-
 	<KeyListEntry name="move-to-workspace-up"
 	              description="Move window one workspace up" />
 
@@ -124,12 +118,6 @@
 
 	<KeyListEntry name="switch-to-workspace-last"
 	              description="Switch to last workspace" />
-
-	<KeyListEntry name="switch-to-workspace-left"
-	              description="Move to workspace left" />
-
-	<KeyListEntry name="switch-to-workspace-right"
-	              description="Move to workspace right" />
 
 	<KeyListEntry name="switch-to-workspace-up"
 	              description="Move to workspace above" />
