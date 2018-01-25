@@ -63,7 +63,7 @@ G_DEFINE_TYPE_WITH_PRIVATE (StIcon, st_icon, ST_TYPE_WIDGET)
 
 static void st_icon_update               (StIcon *icon);
 static gboolean st_icon_update_icon_size (StIcon *icon);
-static void st_icon_update_shadow_pipeline (StIcon *icon, StPrivateShadowCreateFlags flags);
+static void st_icon_update_shadow_pipeline (StIcon *icon);
 static void st_icon_clear_shadow_pipeline (StIcon *icon);
 
 #define DEFAULT_ICON_SIZE 48
@@ -159,18 +159,6 @@ st_icon_dispose (GObject *gobject)
 }
 
 static void
-st_icon_allocate (ClutterActor           *actor,
-                  const ClutterActorBox  *box,
-                  ClutterAllocationFlags  flags)
-{
-  StIcon *icon = ST_ICON (actor);
-
-  CLUTTER_ACTOR_CLASS (st_icon_parent_class)->allocate (actor, box, flags);
-
-  st_icon_update_shadow_pipeline (icon, ST_SHADOW_TEXTURE_MODE);
-}
-
-static void
 st_icon_paint (ClutterActor *actor)
 {
   StIcon *icon = ST_ICON (actor);
@@ -180,7 +168,7 @@ st_icon_paint (ClutterActor *actor)
 
   if (priv->icon_texture)
     {
-      st_icon_update_shadow_pipeline (icon, ST_SHADOW_ANY_MODE);
+      st_icon_update_shadow_pipeline (icon);
 
       if (priv->shadow_pipeline)
         {
@@ -234,7 +222,6 @@ st_icon_class_init (StIconClass *klass)
   object_class->set_property = st_icon_set_property;
   object_class->dispose = st_icon_dispose;
 
-  actor_class->allocate = st_icon_allocate;
   actor_class->paint = st_icon_paint;
 
   widget_class->style_changed = st_icon_style_changed;
@@ -293,8 +280,7 @@ st_icon_clear_shadow_pipeline (StIcon *icon)
 }
 
 static void
-st_icon_update_shadow_pipeline (StIcon *icon,
-                                StPrivateShadowCreateFlags shadow_flags)
+st_icon_update_shadow_pipeline (StIcon *icon)
 {
   StIconPrivate *priv = icon->priv;
 
@@ -314,8 +300,7 @@ st_icon_update_shadow_pipeline (StIcon *icon,
 
           priv->shadow_pipeline =
             _st_create_shadow_pipeline_from_actor (priv->shadow_spec,
-                                                   priv->icon_texture,
-                                                   shadow_flags);
+                                                   priv->icon_texture);
 
           if (priv->shadow_pipeline)
             clutter_size_init (&priv->shadow_size, width, height);
