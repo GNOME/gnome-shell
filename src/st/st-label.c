@@ -212,8 +212,7 @@ st_label_paint (ClutterActor *actor)
           priv->shadow_height = height;
           priv->text_shadow_pipeline =
             _st_create_shadow_pipeline_from_actor (shadow_spec,
-                                                   priv->label,
-                                                   ST_SHADOW_ANY_MODE);
+                                                   priv->label);
         }
 
       if (priv->text_shadow_pipeline != NULL)

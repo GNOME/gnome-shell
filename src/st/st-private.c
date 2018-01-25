@@ -411,8 +411,7 @@ _st_create_shadow_pipeline (StShadow    *shadow_spec,
 
 CoglPipeline *
 _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
-                                       ClutterActor *actor,
-                                       StPrivateShadowCreateFlags flags)
+                                       ClutterActor *actor)
 {
   CoglPipeline *shadow_pipeline = NULL;
   ClutterActorBox box;
@@ -426,7 +425,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   if (width == 0 || height == 0)
     return NULL;
 
-  if (CLUTTER_IS_TEXTURE (actor) && (flags & ST_SHADOW_TEXTURE_MODE))
+  if (CLUTTER_IS_TEXTURE (actor))
     {
       CoglTexture *texture;
 
@@ -445,7 +444,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
         }
     }
 
-  if (shadow_pipeline == NULL && (flags & ST_SHADOW_OFFSCREEN_MODE))
+  if (shadow_pipeline == NULL)
     {
       CoglTexture *buffer;
       CoglOffscreen *offscreen;

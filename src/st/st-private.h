@@ -43,13 +43,6 @@ G_BEGIN_DECLS
 
 G_END_DECLS
 
-typedef enum _StPrivateShadowCreateFlags
-{
-  ST_SHADOW_TEXTURE_MODE   = (1 << 0),
-  ST_SHADOW_OFFSCREEN_MODE = (1 << 1),
-  ST_SHADOW_ANY_MODE       = ST_SHADOW_OFFSCREEN_MODE | ST_SHADOW_TEXTURE_MODE
-} StPrivateShadowCreateFlags;
-
 ClutterActor *_st_widget_get_dnd_clone (StWidget *widget);
 
 void _st_actor_get_preferred_width  (ClutterActor *actor,
@@ -72,8 +65,7 @@ CoglPipeline * _st_create_texture_pipeline (CoglTexture *src_texture);
 CoglPipeline * _st_create_shadow_pipeline (StShadow    *shadow_spec,
                                            CoglTexture *src_texture);
 CoglPipeline * _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
-                                                      ClutterActor *actor,
-                                                      StPrivateShadowCreateFlags flags);
+                                                      ClutterActor *actor);
 cairo_pattern_t *_st_create_shadow_cairo_pattern (StShadow        *shadow_spec,
                                                   cairo_pattern_t *src_pattern);
 
