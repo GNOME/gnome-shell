@@ -769,6 +769,50 @@ clutter_seat_evdev_notify_discrete_scroll (ClutterSeatEvdev    *seat,
 }
 
 void
+clutter_seat_evdev_notify_touch_event (ClutterSeatEvdev   *seat,
+                                       ClutterInputDevice *input_device,
+                                       ClutterEventType    evtype,
+                                       uint64_t            time_us,
+                                       int                 slot,
+                                       double              x,
+                                       double              y)
+{
+  ClutterStage *stage;
+  ClutterEvent *event = NULL;
+
+  /* We can drop the event on the floor if no stage has been
+   * associated with the device yet. */
+  stage = _clutter_input_device_get_stage (input_device);
+  if (stage == NULL)
+    return;
+
+  event = clutter_event_new (evtype);
+
+  _clutter_evdev_event_set_time_usec (event, time_us);
+  event->touch.time = us2ms (time_us);
+  event->touch.stage = CLUTTER_STAGE (stage);
+  event->touch.device = seat->core_pointer;
+  event->touch.x = x;
+  event->touch.y = y;
+  clutter_input_device_evdev_translate_coordinates (input_device, stage,
+                                                    &event->touch.x,
+                                                    &event->touch.y);
+
+  /* "NULL" sequences are special cased in clutter */
+  event->touch.sequence = GINT_TO_POINTER (MAX (1, slot + 1));
+  _clutter_xkb_translate_state (event, seat->xkb, seat->button_state);
+
+  if (evtype == CLUTTER_TOUCH_BEGIN ||
+      evtype == CLUTTER_TOUCH_UPDATE)
+    event->touch.modifier_state |= CLUTTER_BUTTON1_MASK;
+
+  clutter_event_set_device (event, seat->core_pointer);
+  clutter_event_set_source_device (event, input_device);
+
+  queue_event (event);
+}
+
+void
 clutter_seat_evdev_free (ClutterSeatEvdev *seat)
 {
   GSList *iter;

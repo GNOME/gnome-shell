@@ -122,6 +122,14 @@ void clutter_seat_evdev_notify_discrete_scroll (ClutterSeatEvdev    *seat,
                                                 double               discrete_dy,
                                                 ClutterScrollSource  source);
 
+void clutter_seat_evdev_notify_touch_event (ClutterSeatEvdev   *seat,
+                                            ClutterInputDevice *input_device,
+                                            ClutterEventType    evtype,
+                                            uint64_t            time_us,
+                                            int                 slot,
+                                            double              x,
+                                            double              y);
+
 void clutter_seat_evdev_set_libinput_seat (ClutterSeatEvdev     *seat,
                                            struct libinput_seat *libinput_seat);
 
