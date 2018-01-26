@@ -92,32 +92,57 @@ clutter_touch_state_free (ClutterTouchState *touch_state)
   g_slice_free (ClutterTouchState, touch_state);
 }
 
-ClutterTouchState *
-clutter_seat_evdev_add_touch (ClutterSeatEvdev *seat,
-                              guint32           id)
+static void
+ensure_seat_slot_allocated (ClutterSeatEvdev *seat,
+                            int               seat_slot)
 {
-  ClutterTouchState *touch;
+  if (seat_slot >= seat->n_alloc_touch_states)
+    {
+      const int size_increase = 5;
+      int i;
 
-  touch = g_slice_new0 (ClutterTouchState);
-  touch->id = id;
+      seat->n_alloc_touch_states += size_increase;
+      seat->touch_states = g_realloc_n (seat->touch_states,
+                                        seat->n_alloc_touch_states,
+                                        sizeof (ClutterTouchState *));
+      for (i = 0; i < size_increase; i++)
+        seat->touch_states[seat->n_alloc_touch_states - (i + 1)] = NULL;
+    }
+}
 
-  g_hash_table_insert (seat->touches, GUINT_TO_POINTER (id), touch);
+ClutterTouchState *
+clutter_seat_evdev_acquire_touch_state (ClutterSeatEvdev *seat,
+                                        int               device_slot)
+{
+  ClutterTouchState *touch_state;
+  int seat_slot;
 
-  return touch;
+  for (seat_slot = 0; seat_slot < seat->n_alloc_touch_states; seat_slot++)
+    {
+      if (!seat->touch_states[seat_slot])
+        break;
+    }
+
+  ensure_seat_slot_allocated (seat, seat_slot);
+
+  touch_state = g_slice_new0 (ClutterTouchState);
+  *touch_state = (ClutterTouchState) {
+    .seat = seat,
+    .seat_slot = seat_slot,
+    .device_slot = device_slot,
+  };
+
+  seat->touch_states[seat_slot] = touch_state;
+
+  return touch_state;
 }
 
 void
-clutter_seat_evdev_remove_touch (ClutterSeatEvdev *seat,
-                                 guint32           id)
+clutter_seat_evdev_release_touch_state (ClutterSeatEvdev  *seat,
+                                        ClutterTouchState *touch_state)
 {
-  g_hash_table_remove (seat->touches, GUINT_TO_POINTER (id));
-}
-
-ClutterTouchState *
-clutter_seat_evdev_get_touch (ClutterSeatEvdev *seat,
-                              guint32           id)
-{
-  return g_hash_table_lookup (seat->touches, GUINT_TO_POINTER (id));
+  g_clear_pointer (&seat->touch_states[touch_state->seat_slot],
+                   (GDestroyNotify) clutter_touch_state_free);
 }
 
 ClutterSeatEvdev *
@@ -153,9 +178,6 @@ clutter_seat_evdev_new (ClutterDeviceManagerEvdev *manager_evdev)
   _clutter_input_device_set_stage (device, stage);
   _clutter_device_manager_add_device (manager, device);
   seat->core_keyboard = device;
-
-  seat->touches = g_hash_table_new_full (NULL, NULL, NULL,
-                                         (GDestroyNotify) clutter_touch_state_free);
 
   seat->repeat = TRUE;
   seat->repeat_delay = 250;     /* ms */
@@ -824,7 +846,7 @@ clutter_seat_evdev_free (ClutterSeatEvdev *seat)
       g_object_unref (device);
     }
   g_slist_free (seat->devices);
-  g_hash_table_unref (seat->touches);
+  g_free (seat->touch_states);
 
   xkb_state_unref (seat->xkb);
 

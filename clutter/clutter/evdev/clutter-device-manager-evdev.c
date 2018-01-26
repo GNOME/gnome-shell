@@ -1361,7 +1361,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 
     case LIBINPUT_EVENT_TOUCH_DOWN:
       {
-        gint32 slot;
+        int device_slot;
         guint64 time_us;
         double x, y;
         gfloat stage_width, stage_height;
@@ -1382,21 +1382,23 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
         stage_height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
 
-        slot = libinput_event_touch_get_slot (touch_event);
+        device_slot = libinput_event_touch_get_slot (touch_event);
         time_us = libinput_event_touch_get_time_usec (touch_event);
         x = libinput_event_touch_get_x_transformed (touch_event,
                                                     stage_width);
         y = libinput_event_touch_get_y_transformed (touch_event,
                                                     stage_height);
 
-        touch_state = clutter_seat_evdev_add_touch (seat, slot);
+        touch_state =
+          clutter_input_device_evdev_acquire_touch_state (device_evdev,
+                                                          device_slot);
         touch_state->coords.x = x;
         touch_state->coords.y = y;
 
         clutter_seat_evdev_notify_touch_event (seat, device,
                                                CLUTTER_TOUCH_BEGIN,
                                                time_us,
-                                               slot,
+                                               touch_state->seat_slot,
                                                touch_state->coords.x,
                                                touch_state->coords.y);
         break;
@@ -1404,7 +1406,7 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
 
     case LIBINPUT_EVENT_TOUCH_UP:
       {
-        gint32 slot;
+        int device_slot;
         guint64 time_us;
         ClutterSeatEvdev *seat;
         ClutterTouchState *touch_state;
@@ -1415,24 +1417,27 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
         seat = _clutter_input_device_evdev_get_seat (device_evdev);
 
-        slot = libinput_event_touch_get_slot (touch_event);
+        device_slot = libinput_event_touch_get_slot (touch_event);
         time_us = libinput_event_touch_get_time_usec (touch_event);
-        touch_state = clutter_seat_evdev_get_touch (seat, slot);
+        touch_state =
+          clutter_input_device_evdev_lookup_touch_state (device_evdev,
+                                                         device_slot);
         if (!touch_state)
           break;
 
         clutter_seat_evdev_notify_touch_event (seat, device,
                                                CLUTTER_TOUCH_END, time_us,
-                                               slot,
+                                               touch_state->seat_slot,
                                                touch_state->coords.x,
                                                touch_state->coords.y);
-        clutter_seat_evdev_remove_touch (seat, slot);
+        clutter_input_device_evdev_release_touch_state (device_evdev,
+                                                        touch_state);
         break;
       }
 
     case LIBINPUT_EVENT_TOUCH_MOTION:
       {
-        gint32 slot;
+        int device_slot;
         guint64 time_us;
         double x, y;
         gfloat stage_width, stage_height;
@@ -1453,14 +1458,16 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         stage_width = clutter_actor_get_width (CLUTTER_ACTOR (stage));
         stage_height = clutter_actor_get_height (CLUTTER_ACTOR (stage));
 
-        slot = libinput_event_touch_get_slot (touch_event);
+        device_slot = libinput_event_touch_get_slot (touch_event);
         time_us = libinput_event_touch_get_time_usec (touch_event);
         x = libinput_event_touch_get_x_transformed (touch_event,
                                                     stage_width);
         y = libinput_event_touch_get_y_transformed (touch_event,
                                                     stage_height);
 
-        touch_state = clutter_seat_evdev_get_touch (seat, slot);
+        touch_state =
+          clutter_input_device_evdev_lookup_touch_state (device_evdev,
+                                                         device_slot);
         if (!touch_state)
           break;
 
@@ -1470,33 +1477,22 @@ process_device_event (ClutterDeviceManagerEvdev *manager_evdev,
         clutter_seat_evdev_notify_touch_event (seat, device,
                                                CLUTTER_TOUCH_UPDATE,
                                                time_us,
-                                               slot,
+                                               touch_state->seat_slot,
                                                touch_state->coords.x,
                                                touch_state->coords.y);
         break;
       }
     case LIBINPUT_EVENT_TOUCH_CANCEL:
       {
-        ClutterTouchState *touch_state;
-        GHashTableIter iter;
         guint64 time_us;
         struct libinput_event_touch *touch_event =
           libinput_event_get_touch_event (event);
-        ClutterSeatEvdev *seat;
 
         device = libinput_device_get_user_data (libinput_device);
+        device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
         time_us = libinput_event_touch_get_time_usec (touch_event);
-        seat = _clutter_input_device_evdev_get_seat (CLUTTER_INPUT_DEVICE_EVDEV (device));
-        g_hash_table_iter_init (&iter, seat->touches);
 
-        while (g_hash_table_iter_next (&iter, NULL, (gpointer*) &touch_state))
-          {
-            clutter_seat_evdev_notify_touch_event (seat, device, CLUTTER_TOUCH_CANCEL,
-                                                   time_us, touch_state->id,
-                                                   touch_state->coords.x,
-                                                   touch_state->coords.y);
-            g_hash_table_iter_remove (&iter);
-          }
+        clutter_input_device_evdev_release_touch_slots (device_evdev, time_us);
 
         break;
       }

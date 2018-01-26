@@ -71,6 +71,8 @@ struct _ClutterInputDeviceEvdev
   gdouble device_aspect_ratio; /* w:h */
   gdouble output_ratio;        /* w:h */
 
+  GHashTable *touches;
+
   /* Keyboard a11y */
   ClutterKeyboardA11yFlags a11y_flags;
   GList *slow_keys_list;
@@ -136,6 +138,19 @@ void                      clutter_input_device_evdev_translate_coordinates (Clut
 
 void                      clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *device,
                                                                               ClutterKbdA11ySettings  *settings);
+
+ClutterTouchState *       clutter_input_device_evdev_acquire_touch_state (ClutterInputDeviceEvdev *device,
+                                                                          int                      device_slot);
+
+ClutterTouchState *       clutter_input_device_evdev_lookup_touch_state (ClutterInputDeviceEvdev *device,
+                                                                         int                      device_slot);
+
+void                      clutter_input_device_evdev_release_touch_state (ClutterInputDeviceEvdev *device,
+                                                                          ClutterTouchState       *touch_state);
+
+void                      clutter_input_device_evdev_release_touch_slots (ClutterInputDeviceEvdev *device_evdev,
+                                                                          uint64_t                 time_us);
+
 
 G_END_DECLS
 

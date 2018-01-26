@@ -81,6 +81,9 @@ clutter_input_device_evdev_finalize (GObject *object)
   if (device_evdev->libinput_device)
     libinput_device_unref (device_evdev->libinput_device);
 
+  clutter_input_device_evdev_release_touch_slots (device_evdev,
+                                                  g_get_monotonic_time ());
+
   _clutter_device_manager_evdev_release_device_id (manager_evdev, device);
 
   clear_slow_keys (device_evdev);
@@ -1216,6 +1219,44 @@ clutter_input_device_evdev_apply_kbd_a11y_settings (ClutterInputDeviceEvdev *dev
 }
 
 static void
+release_device_touch_slot (gpointer value)
+{
+  ClutterTouchState *touch_state = value;
+
+  clutter_seat_evdev_release_touch_state (touch_state->seat, touch_state);
+}
+
+ClutterTouchState *
+clutter_input_device_evdev_acquire_touch_state (ClutterInputDeviceEvdev *device,
+                                                int                      device_slot)
+{
+  ClutterTouchState *touch_state;
+
+  touch_state = clutter_seat_evdev_acquire_touch_state (device->seat,
+                                                        device_slot);
+  g_hash_table_insert (device->touches,
+                       GINT_TO_POINTER (device_slot),
+                       touch_state);
+
+  return touch_state;
+}
+
+ClutterTouchState *
+clutter_input_device_evdev_lookup_touch_state (ClutterInputDeviceEvdev *device,
+                                               int                      device_slot)
+{
+  return g_hash_table_lookup (device->touches, GINT_TO_POINTER (device_slot));
+}
+
+void
+clutter_input_device_evdev_release_touch_state (ClutterInputDeviceEvdev *device,
+                                                ClutterTouchState       *touch_state)
+{
+  g_hash_table_remove (device->touches,
+                       GINT_TO_POINTER (touch_state->device_slot));
+}
+
+static void
 clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -1253,6 +1294,9 @@ clutter_input_device_evdev_init (ClutterInputDeviceEvdev *self)
   cairo_matrix_init_identity (&self->device_matrix);
   self->device_aspect_ratio = 0;
   self->output_ratio = 0;
+
+  self->touches = g_hash_table_new_full (NULL, NULL,
+                                         NULL, release_device_touch_slot);
 }
 
 /*
@@ -1485,4 +1529,25 @@ clutter_input_device_evdev_translate_coordinates (ClutterInputDevice *device,
 
   *x = CLAMP (x_d, MIN (min_x, max_x), MAX (min_x, max_x)) * stage_width;
   *y = CLAMP (y_d, MIN (min_y, max_y), MAX (min_y, max_y)) * stage_height;
+}
+
+void
+clutter_input_device_evdev_release_touch_slots (ClutterInputDeviceEvdev *device_evdev,
+                                                uint64_t                 time_us)
+{
+  GHashTableIter iter;
+  ClutterTouchState *touch_state;
+
+  g_hash_table_iter_init (&iter, device_evdev->touches);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer *) &touch_state))
+    {
+      clutter_seat_evdev_notify_touch_event (touch_state->seat,
+                                             CLUTTER_INPUT_DEVICE (device_evdev),
+                                             CLUTTER_TOUCH_CANCEL,
+                                             time_us,
+                                             touch_state->seat_slot,
+                                             touch_state->coords.x,
+                                             touch_state->coords.y);
+      g_hash_table_iter_remove (&iter);
+    }
 }
