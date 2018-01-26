@@ -172,7 +172,8 @@ libgvc = subproject('gvc',
     'pkgdatadir=' + pkgdatadir,
     'pkglibdir=' + pkglibdir,
     'static=false',
-    'with-introspection=true'
+    'with-introspection=true',
+    'alsa=false'
   ]
 )
 libgvc_gir = libgvc.get_variable('libgvc_gir')
