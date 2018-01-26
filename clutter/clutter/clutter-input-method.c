@@ -318,8 +318,9 @@ clutter_input_method_request_surrounding (ClutterInputMethod *im)
 
 /**
  * clutter_input_method_set_preedit_text:
- * @method: a #ClutterInputMethod
+ * @im: a #ClutterInputMethod
  * @preedit: (nullable): the preedit text, or %NULL
+ * @cursor: the cursor
  *
  * Sets the preedit text on the current input focus.
  **/
