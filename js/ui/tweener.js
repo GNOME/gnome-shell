@@ -88,8 +88,8 @@ function _addHandler(target, params, name, handler) {
         let eventScope = oldScope ? oldScope : target;
 
         params[name] = function () {
-            oldHandler.apply(eventScope, oldParams);
             handler(target);
+            oldHandler.apply(eventScope, oldParams);
         };
     } else
         params[name] = function () { handler(target); };
