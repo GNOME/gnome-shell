@@ -131,6 +131,39 @@
       <arg name="y" type="d" direction="in" />
     </method>
 
+    <!--
+	NotifyTouchDown:
+
+	A absolute pointer motion event notification
+     -->
+    <method name="NotifyTouchDown">
+      <arg name="stream" type="s" direction="in" />
+      <arg name="slot" type="u" direction="in" />
+      <arg name="x" type="d" direction="in" />
+      <arg name="y" type="d" direction="in" />
+    </method>
+
+    <!--
+	NotifyTouchMotion:
+
+	A absolute pointer motion event notification
+     -->
+    <method name="NotifyTouchMotion">
+      <arg name="stream" type="s" direction="in" />
+      <arg name="slot" type="u" direction="in" />
+      <arg name="x" type="d" direction="in" />
+      <arg name="y" type="d" direction="in" />
+    </method>
+
+    <!--
+	NotifyTouchUp:
+
+	A absolute pointer motion event notification
+     -->
+    <method name="NotifyTouchUp">
+      <arg name="slot" type="u" direction="in" />
+    </method>
+
   </interface>
 
 </node>
