@@ -89,15 +89,6 @@ class OverviewActor extends St.BoxLayout {
 
         this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
 
-        // Add a clone of the panel to the overview so spacing and such is
-        // automatic
-        let panelGhost = new St.Bin({
-            child: new Clutter.Clone({ source: Main.panel }),
-            reactive: false,
-            opacity: 0,
-        });
-        this.add_actor(panelGhost);
-
         this._searchEntry = new St.Entry({
             style_class: 'search-entry',
             /* Translators: this is the text displayed
@@ -119,6 +110,15 @@ class OverviewActor extends St.BoxLayout {
 
         // Add our same-line elements after the search entry
         this.add_child(this._controls);
+
+        // Add a clone of the panel to the overview so spacing and such is
+        // automatic
+        let panelGhost = new St.Bin({
+            child: new Clutter.Clone({ source: Main.panel }),
+            reactive: false,
+            opacity: 0,
+        });
+        this.add_actor(panelGhost);
     }
 
     get dash() {

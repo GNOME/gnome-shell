@@ -105,7 +105,7 @@ var Button = GObject.registerClass({
         if (dontCreateMenu)
             this.menu = new PopupMenu.PopupDummyMenu(this);
         else
-            this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.TOP, 0));
+            this.setMenu(new PopupMenu.PopupMenu(this, menuAlignment, St.Side.BOTTOM, 0));
     }
 
     setSensitive(sensitive) {
