@@ -516,6 +516,21 @@ clutter_device_manager_create_virtual_device (ClutterDeviceManager   *device_man
                                                device_type);
 }
 
+/**
+ * clutter_device_manager_supported_virtua_device_types: (skip)
+ */
+ClutterVirtualDeviceType
+clutter_device_manager_get_supported_virtual_device_types (ClutterDeviceManager *device_manager)
+{
+  ClutterDeviceManagerClass *manager_class;
+
+  g_return_val_if_fail (CLUTTER_IS_DEVICE_MANAGER (device_manager),
+                        CLUTTER_VIRTUAL_DEVICE_TYPE_NONE);
+
+  manager_class = CLUTTER_DEVICE_MANAGER_GET_CLASS (device_manager);
+  return manager_class->get_supported_virtual_device_types (device_manager);
+}
+
 void
 _clutter_device_manager_compress_motion (ClutterDeviceManager *device_manager,
                                          ClutterEvent         *event,

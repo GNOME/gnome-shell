@@ -44,6 +44,16 @@ typedef struct _ClutterDeviceManager            ClutterDeviceManager;
 typedef struct _ClutterDeviceManagerPrivate     ClutterDeviceManagerPrivate;
 typedef struct _ClutterDeviceManagerClass       ClutterDeviceManagerClass;
 
+/**
+ * ClutterVirtualDeviceType:
+ */
+typedef enum _ClutterVirtualDeviceType
+{
+  CLUTTER_VIRTUAL_DEVICE_TYPE_NONE = 0,
+  CLUTTER_VIRTUAL_DEVICE_TYPE_KEYBOARD = 1 << 0,
+  CLUTTER_VIRTUAL_DEVICE_TYPE_POINTER = 1 << 1,
+  CLUTTER_VIRTUAL_DEVICE_TYPE_TOUCHSCREEN = 1 << 2,
+} ClutterVirtualDeviceType;
 
 /**
  * ClutterKbdA11ySettings:
@@ -104,6 +114,7 @@ struct _ClutterDeviceManagerClass
                                                ClutterStage       *stage);
   ClutterVirtualInputDevice *(* create_virtual_device) (ClutterDeviceManager  *device_manager,
                                                         ClutterInputDeviceType device_type);
+  ClutterVirtualDeviceType (* get_supported_virtual_device_types) (ClutterDeviceManager *device_manager);
   void                (* compress_motion) (ClutterDeviceManager *device_manger,
                                            ClutterEvent         *event,
                                            const ClutterEvent   *to_discard);
@@ -134,6 +145,9 @@ ClutterInputDevice *  clutter_device_manager_get_core_device (ClutterDeviceManag
 CLUTTER_AVAILABLE_IN_ALL
 ClutterVirtualInputDevice *clutter_device_manager_create_virtual_device (ClutterDeviceManager  *device_manager,
                                                                          ClutterInputDeviceType device_type);
+
+CLUTTER_AVAILABLE_IN_ALL
+ClutterVirtualDeviceType clutter_device_manager_get_supported_virtual_device_types (ClutterDeviceManager *device_manager);
 
 CLUTTER_AVAILABLE_IN_ALL
 void clutter_device_manager_set_kbd_a11y_settings (ClutterDeviceManager   *device_manager,
