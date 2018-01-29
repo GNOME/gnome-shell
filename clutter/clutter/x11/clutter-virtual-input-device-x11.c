@@ -48,6 +48,10 @@ clutter_virtual_input_device_x11_notify_relative_motion (ClutterVirtualInputDevi
                                                          double                     dx,
                                                          double                     dy)
 {
+  XTestFakeRelativeMotionEvent (clutter_x11_get_default_display (),
+                                (int) dx,
+                                (int) dy,
+                                0);
 }
 
 static void
@@ -56,6 +60,11 @@ clutter_virtual_input_device_x11_notify_absolute_motion (ClutterVirtualInputDevi
                                                          double                     x,
                                                          double                     y)
 {
+  XTestFakeMotionEvent (clutter_x11_get_default_display (),
+                        clutter_x11_get_default_screen (),
+                        (int) x,
+                        (int) y,
+                        0);
 }
 
 static void
