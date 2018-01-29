@@ -81,6 +81,29 @@ struct _ClutterVirtualInputDeviceClass
                                   uint64_t                   time_us,
                                   ClutterScrollDirection     direction,
                                   ClutterScrollSource        scroll_source);
+
+  void (*notify_scroll_continuous) (ClutterVirtualInputDevice *virtual_device,
+                                    uint64_t                   time_us,
+                                    double                     dx,
+                                    double                     dy,
+                                    ClutterScrollSource        scroll_source,
+                                    ClutterScrollFinishFlags   finish_flags);
+
+  void (*notify_touch_down) (ClutterVirtualInputDevice *virtual_device,
+                             uint64_t                   time_us,
+                             int                        slot,
+                             double                     x,
+                             double                     y);
+
+  void (*notify_touch_motion) (ClutterVirtualInputDevice *virtual_device,
+                               uint64_t                   time_us,
+                               int                        slot,
+                               double                     x,
+                               double                     y);
+
+  void (*notify_touch_up) (ClutterVirtualInputDevice *virtual_device,
+                           uint64_t                   time_us,
+                           int                        slot);
 };
 
 CLUTTER_AVAILABLE_IN_ALL
@@ -119,6 +142,32 @@ void clutter_virtual_input_device_notify_discrete_scroll (ClutterVirtualInputDev
                                                           ClutterScrollDirection     direction,
                                                           ClutterScrollSource        scroll_source);
 
+CLUTTER_AVAILABLE_IN_ALL
+void clutter_virtual_input_device_notify_scroll_continuous (ClutterVirtualInputDevice *virtual_device,
+                                                            uint64_t                   time_us,
+                                                            double                     dx,
+                                                            double                     dy,
+                                                            ClutterScrollSource        scroll_source,
+                                                            ClutterScrollFinishFlags   finish_flags);
+
+CLUTTER_AVAILABLE_IN_ALL
+void clutter_virtual_input_device_notify_touch_down (ClutterVirtualInputDevice *virtual_device,
+                                                     uint64_t                   time_us,
+                                                     int                        slot,
+                                                     double                     x,
+                                                     double                     y);
+
+CLUTTER_AVAILABLE_IN_ALL
+void clutter_virtual_input_device_notify_touch_motion (ClutterVirtualInputDevice *virtual_device,
+                                                       uint64_t                   time_us,
+                                                       int                        slot,
+                                                       double                     x,
+                                                       double                     y);
+
+CLUTTER_AVAILABLE_IN_ALL
+void clutter_virtual_input_device_notify_touch_up (ClutterVirtualInputDevice *virtual_device,
+                                                   uint64_t                   time_us,
+                                                   int                        slot);
 
 CLUTTER_AVAILABLE_IN_ALL
 ClutterDeviceManager * clutter_virtual_input_device_get_manager (ClutterVirtualInputDevice *virtual_device);

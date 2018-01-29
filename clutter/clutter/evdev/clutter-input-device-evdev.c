@@ -1393,6 +1393,9 @@ _clutter_input_device_evdev_new_virtual (ClutterDeviceManager *manager,
     case CLUTTER_POINTER_DEVICE:
       name = "Virtual pointer device for seat";
       break;
+    case CLUTTER_TOUCHSCREEN_DEVICE:
+      name = "Virtual touchscreen device for seat";
+      break;
     default:
       name = "Virtual device for seat";
       break;

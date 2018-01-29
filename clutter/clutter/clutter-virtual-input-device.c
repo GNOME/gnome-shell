@@ -128,6 +128,61 @@ clutter_virtual_input_device_notify_discrete_scroll (ClutterVirtualInputDevice *
                                  direction, scroll_source);
 }
 
+void
+clutter_virtual_input_device_notify_scroll_continuous (ClutterVirtualInputDevice *virtual_device,
+                                                       uint64_t                   time_us,
+                                                       double                     dx,
+                                                       double                     dy,
+                                                       ClutterScrollSource        scroll_source,
+                                                       ClutterScrollFinishFlags   finish_flags)
+{
+  ClutterVirtualInputDeviceClass *klass =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_GET_CLASS (virtual_device);
+
+  klass->notify_scroll_continuous (virtual_device, time_us,
+                                   dx, dy, scroll_source, finish_flags);
+}
+
+void
+clutter_virtual_input_device_notify_touch_down (ClutterVirtualInputDevice *virtual_device,
+                                                uint64_t                   time_us,
+                                                int                        slot,
+                                                double                     x,
+                                                double                     y)
+{
+  ClutterVirtualInputDeviceClass *klass =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_GET_CLASS (virtual_device);
+
+  klass->notify_touch_down (virtual_device, time_us,
+                            slot, x, y);
+}
+
+void
+clutter_virtual_input_device_notify_touch_motion (ClutterVirtualInputDevice *virtual_device,
+                                                  uint64_t                   time_us,
+                                                  int                        slot,
+                                                  double                     x,
+                                                  double                     y)
+{
+  ClutterVirtualInputDeviceClass *klass =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_GET_CLASS (virtual_device);
+
+  klass->notify_touch_motion (virtual_device, time_us,
+                              slot, x, y);
+}
+
+void
+clutter_virtual_input_device_notify_touch_up (ClutterVirtualInputDevice *virtual_device,
+                                              uint64_t                   time_us,
+                                              int                        slot)
+{
+  ClutterVirtualInputDeviceClass *klass =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_GET_CLASS (virtual_device);
+
+  klass->notify_touch_up (virtual_device, time_us,
+                          slot);
+}
+
 /**
  * clutter_virtual_input_device_get_manager:
  * @virtual_device: a virtual device

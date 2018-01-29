@@ -69,6 +69,48 @@ clutter_virtual_input_device_x11_notify_button (ClutterVirtualInputDevice *virtu
 }
 
 static void
+clutter_virtual_input_device_x11_notify_discrete_scroll (ClutterVirtualInputDevice *virtual_device,
+                                                         uint64_t                   time_us,
+                                                         ClutterScrollDirection     direction,
+                                                         ClutterScrollSource        scroll_source)
+{
+  Display *xdisplay = clutter_x11_get_default_display ();
+  int button;
+
+  switch (direction)
+    {
+    case CLUTTER_SCROLL_UP:
+      button = 4;
+      break;
+    case CLUTTER_SCROLL_DOWN:
+      button = 5;
+      break;
+    case CLUTTER_SCROLL_LEFT:
+      button = 6;
+      break;
+    case CLUTTER_SCROLL_RIGHT:
+      button = 7;
+      break;
+    default:
+      g_warn_if_reached ();
+      return;
+    }
+
+  XTestFakeButtonEvent (xdisplay, button, True, 0);
+  XTestFakeButtonEvent (xdisplay, button, False, 0);
+}
+
+static void
+clutter_virtual_input_device_x11_notify_scroll_continuous (ClutterVirtualInputDevice *virtual_device,
+                                                           uint64_t                   time_us,
+                                                           double                     dx,
+                                                           double                     dy,
+                                                           ClutterScrollSource        scroll_source,
+                                                           ClutterScrollFinishFlags   finish_flags)
+{
+}
+
+static void
 clutter_virtual_input_device_x11_notify_key (ClutterVirtualInputDevice *virtual_device,
                                              uint64_t                   time_us,
                                              uint32_t                   key,
@@ -92,6 +134,34 @@ clutter_virtual_input_device_x11_notify_keyval (ClutterVirtualInputDevice *virtu
 }
 
 static void
+clutter_virtual_input_device_x11_notify_touch_down (ClutterVirtualInputDevice *virtual_device,
+                                                    uint64_t                   time_us,
+                                                    int                        device_slot,
+                                                    double                     x,
+                                                    double                     y)
+{
+  g_warning ("Virtual touch motion not implemented under X11");
+}
+
+static void
+clutter_virtual_input_device_x11_notify_touch_motion (ClutterVirtualInputDevice *virtual_device,
+                                                      uint64_t                   time_us,
+                                                      int                        device_slot,
+                                                      double                     x,
+                                                      double                     y)
+{
+  g_warning ("Virtual touch motion not implemented under X11");
+}
+
+static void
+clutter_virtual_input_device_x11_notify_touch_up (ClutterVirtualInputDevice *virtual_device,
+                                                  uint64_t                   time_us,
+                                                  int                        device_slot)
+{
+  g_warning ("Virtual touch motion not implemented under X11");
+}
+
+static void
 clutter_virtual_input_device_x11_init (ClutterVirtualInputDeviceX11 *virtual_device_x11)
 {
 }
@@ -105,6 +175,11 @@ clutter_virtual_input_device_x11_class_init (ClutterVirtualInputDeviceX11Class *
   virtual_input_device_class->notify_relative_motion = clutter_virtual_input_device_x11_notify_relative_motion;
   virtual_input_device_class->notify_absolute_motion = clutter_virtual_input_device_x11_notify_absolute_motion;
   virtual_input_device_class->notify_button = clutter_virtual_input_device_x11_notify_button;
+  virtual_input_device_class->notify_discrete_scroll = clutter_virtual_input_device_x11_notify_discrete_scroll;
+  virtual_input_device_class->notify_scroll_continuous = clutter_virtual_input_device_x11_notify_scroll_continuous;
   virtual_input_device_class->notify_key = clutter_virtual_input_device_x11_notify_key;
   virtual_input_device_class->notify_keyval = clutter_virtual_input_device_x11_notify_keyval;
+  virtual_input_device_class->notify_touch_down = clutter_virtual_input_device_x11_notify_touch_down;
+  virtual_input_device_class->notify_touch_motion = clutter_virtual_input_device_x11_notify_touch_motion;
+  virtual_input_device_class->notify_touch_up = clutter_virtual_input_device_x11_notify_touch_up;
 }

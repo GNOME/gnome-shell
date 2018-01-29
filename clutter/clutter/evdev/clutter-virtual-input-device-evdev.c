@@ -449,6 +449,124 @@ clutter_virtual_input_device_evdev_notify_discrete_scroll (ClutterVirtualInputDe
 }
 
 static void
+clutter_virtual_input_device_evdev_notify_scroll_continuous (ClutterVirtualInputDevice *virtual_device,
+                                                             uint64_t                   time_us,
+                                                             double                     dx,
+                                                             double                     dy,
+                                                             ClutterScrollSource        scroll_source,
+                                                             ClutterScrollFinishFlags   finish_flags)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+
+  if (time_us == CLUTTER_CURRENT_TIME)
+    time_us = g_get_monotonic_time ();
+
+  clutter_seat_evdev_notify_scroll_continuous (virtual_evdev->seat,
+                                               virtual_evdev->device,
+                                               time_us,
+                                               dx, dy,
+                                               scroll_source,
+                                               CLUTTER_SCROLL_FINISHED_NONE);
+}
+
+static void
+clutter_virtual_input_device_evdev_notify_touch_down (ClutterVirtualInputDevice *virtual_device,
+                                                      uint64_t                   time_us,
+                                                      int                        device_slot,
+                                                      double                     x,
+                                                      double                     y)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+  ClutterInputDeviceEvdev *device_evdev =
+    CLUTTER_INPUT_DEVICE_EVDEV (virtual_evdev->device);
+  ClutterTouchState *touch_state;
+
+  if (time_us == CLUTTER_CURRENT_TIME)
+    time_us = g_get_monotonic_time ();
+
+  touch_state = clutter_input_device_evdev_acquire_touch_state (device_evdev,
+                                                                device_slot);
+  if (!touch_state)
+    return;
+
+  touch_state->coords.x = x;
+  touch_state->coords.y = y;
+
+  clutter_seat_evdev_notify_touch_event (virtual_evdev->seat,
+                                         virtual_evdev->device,
+                                         CLUTTER_TOUCH_BEGIN,
+                                         time_us,
+                                         touch_state->seat_slot,
+                                         touch_state->coords.x,
+                                         touch_state->coords.y);
+}
+
+static void
+clutter_virtual_input_device_evdev_notify_touch_motion (ClutterVirtualInputDevice *virtual_device,
+                                                        uint64_t                   time_us,
+                                                        int                        device_slot,
+                                                        double                     x,
+                                                        double                     y)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+  ClutterInputDeviceEvdev *device_evdev =
+    CLUTTER_INPUT_DEVICE_EVDEV (virtual_evdev->device);
+  ClutterTouchState *touch_state;
+
+  if (time_us == CLUTTER_CURRENT_TIME)
+    time_us = g_get_monotonic_time ();
+
+  touch_state = clutter_input_device_evdev_lookup_touch_state (device_evdev,
+                                                               device_slot);
+  if (!touch_state)
+    return;
+
+  touch_state->coords.x = x;
+  touch_state->coords.y = y;
+
+  clutter_seat_evdev_notify_touch_event (virtual_evdev->seat,
+                                         virtual_evdev->device,
+                                         CLUTTER_TOUCH_BEGIN,
+                                         time_us,
+                                         touch_state->seat_slot,
+                                         touch_state->coords.x,
+                                         touch_state->coords.y);
+}
+
+static void
+clutter_virtual_input_device_evdev_notify_touch_up (ClutterVirtualInputDevice *virtual_device,
+                                                    uint64_t                   time_us,
+                                                    int                        device_slot)
+{
+  ClutterVirtualInputDeviceEvdev *virtual_evdev =
+    CLUTTER_VIRTUAL_INPUT_DEVICE_EVDEV (virtual_device);
+  ClutterInputDeviceEvdev *device_evdev =
+    CLUTTER_INPUT_DEVICE_EVDEV (virtual_evdev->device);
+  ClutterTouchState *touch_state;
+
+  if (time_us == CLUTTER_CURRENT_TIME)
+    time_us = g_get_monotonic_time ();
+
+  touch_state = clutter_input_device_evdev_lookup_touch_state (device_evdev,
+                                                               device_slot);
+  if (!touch_state)
+    return;
+
+  clutter_seat_evdev_notify_touch_event (virtual_evdev->seat,
+                                         virtual_evdev->device,
+                                         CLUTTER_TOUCH_BEGIN,
+                                         time_us,
+                                         touch_state->seat_slot,
+                                         touch_state->coords.x,
+                                         touch_state->coords.y);
+
+  clutter_input_device_evdev_release_touch_state (device_evdev, touch_state);
+}
+
+static void
 clutter_virtual_input_device_evdev_get_property (GObject    *object,
                                                  guint       prop_id,
                                                  GValue     *value,
@@ -552,6 +670,10 @@ clutter_virtual_input_device_evdev_class_init (ClutterVirtualInputDeviceEvdevCla
   virtual_input_device_class->notify_key = clutter_virtual_input_device_evdev_notify_key;
   virtual_input_device_class->notify_keyval = clutter_virtual_input_device_evdev_notify_keyval;
   virtual_input_device_class->notify_discrete_scroll = clutter_virtual_input_device_evdev_notify_discrete_scroll;
+  virtual_input_device_class->notify_scroll_continuous = clutter_virtual_input_device_evdev_notify_scroll_continuous;
+  virtual_input_device_class->notify_touch_down = clutter_virtual_input_device_evdev_notify_touch_down;
+  virtual_input_device_class->notify_touch_motion = clutter_virtual_input_device_evdev_notify_touch_motion;
+  virtual_input_device_class->notify_touch_up = clutter_virtual_input_device_evdev_notify_touch_up;
 
   obj_props[PROP_SEAT] = g_param_spec_pointer ("seat",
                                                P_("ClutterSeatEvdev"),
