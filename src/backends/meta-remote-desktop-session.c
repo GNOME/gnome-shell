@@ -520,6 +520,8 @@ handle_notify_pointer_motion_absolute (MetaDBusRemoteDesktopSession *skeleton,
                                        double                        y)
 {
   MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
+  MetaScreenCastStream *stream;
+  double abs_x, abs_y;
 
   if (!check_permission (session, invocation))
     {
@@ -529,9 +531,29 @@ handle_notify_pointer_motion_absolute (MetaDBusRemoteDesktopSession *skeleton,
       return TRUE;
     }
 
+  if (!session->screen_cast_session)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_FAILED,
+                                             "No screen cast active");
+      return TRUE;
+    }
+
+  stream = meta_screen_cast_session_get_stream (session->screen_cast_session,
+                                                stream_path);
+  if (!stream)
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_FAILED,
+                                             "Unknown stream");
+      return TRUE;
+    }
+
+  meta_screen_cast_stream_transform_position (stream, x, y, &abs_x, &abs_y);
+
   clutter_virtual_input_device_notify_absolute_motion (session->virtual_pointer,
                                                        CLUTTER_CURRENT_TIME,
-                                                       x, y);
+                                                       abs_x, abs_y);
 
   meta_dbus_remote_desktop_session_complete_notify_pointer_motion_absolute (skeleton,
                                                                             invocation);
