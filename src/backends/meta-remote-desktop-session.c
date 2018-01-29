@@ -376,7 +376,7 @@ handle_notify_pointer_axis_discrete (MetaDBusRemoteDesktopSession *skeleton,
       return TRUE;
     }
 
-  if (axis <= 1)
+  if (axis > 1)
     {
       g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
                                              G_DBUS_ERROR_FAILED,
