@@ -111,6 +111,16 @@
     </method>
 
     <!--
+	NotifyPointerMotionRelative:
+
+	A absolute pointer motion event notification
+     -->
+    <method name="NotifyPointerMotionRelative">
+      <arg name="dx" type="d" direction="in" />
+      <arg name="dy" type="d" direction="in" />
+    </method>
+
+    <!--
 	NotifyPointerMotionAbsolute:
 
 	A absolute pointer motion event notification

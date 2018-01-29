@@ -487,6 +487,32 @@ handle_notify_pointer_axis_discrete (MetaDBusRemoteDesktopSession *skeleton,
 }
 
 static gboolean
+handle_notify_pointer_motion_relative (MetaDBusRemoteDesktopSession *skeleton,
+                                       GDBusMethodInvocation        *invocation,
+                                       double                        dx,
+                                       double                        dy)
+{
+  MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
+
+  clutter_virtual_input_device_notify_relative_motion (session->virtual_pointer,
+                                                       CLUTTER_CURRENT_TIME,
+                                                       dx, dy);
+
+  meta_dbus_remote_desktop_session_complete_notify_pointer_motion_relative (skeleton,
+                                                                            invocation);
+
+  return TRUE;
+}
+
+static gboolean
 handle_notify_pointer_motion_absolute (MetaDBusRemoteDesktopSession *skeleton,
                                        GDBusMethodInvocation        *invocation,
                                        const char                   *stream_path,
@@ -523,6 +549,7 @@ meta_remote_desktop_session_init_iface (MetaDBusRemoteDesktopSessionIface *iface
   iface->handle_notify_pointer_button = handle_notify_pointer_button;
   iface->handle_notify_pointer_axis = handle_notify_pointer_axis;
   iface->handle_notify_pointer_axis_discrete = handle_notify_pointer_axis_discrete;
+  iface->handle_notify_pointer_motion_relative = handle_notify_pointer_motion_relative;
   iface->handle_notify_pointer_motion_absolute = handle_notify_pointer_motion_absolute;
 }
 
