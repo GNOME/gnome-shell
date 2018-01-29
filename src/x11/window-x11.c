@@ -461,6 +461,7 @@ meta_window_apply_session_info (MetaWindow *window,
           MetaWorkspace *workspace = spaces->data;
 
           meta_window_change_workspace (window, workspace);
+          window->initial_workspace_set = TRUE;
 
           meta_topic (META_DEBUG_SM,
                       "Restoring saved window %s to workspace %d\n",
