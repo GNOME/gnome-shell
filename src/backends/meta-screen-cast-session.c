@@ -97,6 +97,24 @@ meta_screen_cast_session_close (MetaScreenCastSession *session)
   g_object_unref (session);
 }
 
+MetaScreenCastStream *
+meta_screen_cast_session_get_stream (MetaScreenCastSession *session,
+                                     const char            *path)
+{
+  GList *l;
+
+  for (l = session->streams; l; l = l->next)
+    {
+      MetaScreenCastStream *stream = l->data;
+
+      if (g_strcmp0 (meta_screen_cast_stream_get_object_path (stream),
+                     path) == 0)
+        return stream;
+    }
+
+  return NULL;
+}
+
 char *
 meta_screen_cast_session_get_object_path (MetaScreenCastSession *session)
 {
