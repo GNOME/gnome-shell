@@ -58,6 +58,16 @@
     <signal name="Closed" />
 
     <!--
+	NotifyKeyboardKeycode:
+
+	A key identified by a keysym was pressed or released
+     -->
+    <method name="NotifyKeyboardKeycode">
+      <arg name="keycode" type="u" direction="in" />
+      <arg name="state" type="b" direction="in" />
+    </method>
+
+    <!--
 	NotifyKeyboardKeysym:
 
 	A key identified by a keysym was pressed or released

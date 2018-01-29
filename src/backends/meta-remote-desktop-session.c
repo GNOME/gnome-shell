@@ -256,6 +256,38 @@ handle_stop (MetaDBusRemoteDesktopSession *skeleton,
 }
 
 static gboolean
+handle_notify_keyboard_keycode (MetaDBusRemoteDesktopSession *skeleton,
+                                GDBusMethodInvocation        *invocation,
+                                unsigned int                  keycode,
+                                gboolean                      pressed)
+{
+  MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
+  ClutterKeyState state;
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
+
+  if (pressed)
+    state = CLUTTER_KEY_STATE_PRESSED;
+  else
+    state = CLUTTER_KEY_STATE_RELEASED;
+
+  clutter_virtual_input_device_notify_key (session->virtual_keyboard,
+                                           CLUTTER_CURRENT_TIME,
+                                           keycode,
+                                           state);
+
+  meta_dbus_remote_desktop_session_complete_notify_keyboard_keycode (skeleton,
+                                                                     invocation);
+  return TRUE;
+}
+
+static gboolean
 handle_notify_keyboard_keysym (MetaDBusRemoteDesktopSession *skeleton,
                                GDBusMethodInvocation        *invocation,
                                unsigned int                  keysym,
@@ -445,6 +477,7 @@ meta_remote_desktop_session_init_iface (MetaDBusRemoteDesktopSessionIface *iface
 {
   iface->handle_start = handle_start;
   iface->handle_stop = handle_stop;
+  iface->handle_notify_keyboard_keycode = handle_notify_keyboard_keycode;
   iface->handle_notify_keyboard_keysym = handle_notify_keyboard_keysym;
   iface->handle_notify_pointer_button = handle_notify_pointer_button;
   iface->handle_notify_pointer_axis_discrete = handle_notify_pointer_axis_discrete;
