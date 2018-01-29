@@ -14,3 +14,5 @@ config_js = configure_file(
   output: 'config.js',
   configuration: jsconf
 )
+
+install_data('eos-launch.js', install_dir: pkgdatadir)

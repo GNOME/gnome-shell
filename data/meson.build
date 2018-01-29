@@ -1,5 +1,6 @@
 desktop_files = [
   'org.gnome.Shell.desktop',
+  'eos-launch.desktop',
 ]
 service_files = []
 
@@ -12,6 +13,7 @@ desktopconf = configuration_data()
 # We substitute in bindir so it works as an autostart
 # file when built in a non-system prefix
 desktopconf.set('bindir', bindir)
+desktopconf.set('pkgdatadir', pkgdatadir)
 desktopconf.set('systemd_hidden', have_systemd ? 'true' : 'false')
 
 foreach desktop_file : desktop_files

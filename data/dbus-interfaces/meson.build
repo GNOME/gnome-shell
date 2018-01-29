@@ -1,4 +1,5 @@
 dbus_interfaces = [
+  'org.gnome.Shell.AppLauncher.xml',
   'org.gnome.Shell.AppStore.xml',
   'org.gnome.Shell.Extensions.xml',
   'org.gnome.Shell.Introspect.xml',

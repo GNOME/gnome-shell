@@ -1,0 +1,16 @@
+<node>
+  <interface name="org.gnome.Shell.AppLauncher">
+    <method name="Launch">
+      <arg type="s" direction="in" name="name" />
+      <arg type="u" direction="in" name="timestamp" />
+    </method>
+    <method name="LaunchViaDBusCall">
+      <arg type="s" direction="in" name="name" />
+      <arg type="s" direction="in" name="busName" />
+      <arg type="s" direction="in" name="objectPath" />
+      <arg type="s" direction="in" name="interfaceName" />
+      <arg type="s" direction="in" name="methodName" />
+      <arg type="v" direction="in" name="args" />
+    </method>
+  </interface>
+</node>

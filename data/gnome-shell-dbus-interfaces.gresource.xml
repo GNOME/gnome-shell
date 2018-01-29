@@ -42,6 +42,7 @@
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Power.Screen.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Rfkill.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.SettingsDaemon.Wacom.xml</file>
+    <file preprocess="xml-stripblanks">org.gnome.Shell.AppLauncher.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.AppStore.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.AudioDeviceSelection.xml</file>
     <file preprocess="xml-stripblanks">org.gnome.Shell.CalendarServer.xml</file>
