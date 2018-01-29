@@ -6,6 +6,10 @@
   <!--
       org.gnome.Mutter.RemoteDesktop:
       @short_description: Remote desktop interface
+
+      This API is private and not intended to be used outside of the integrated
+      system that uses libmutter. No compatibility between versions are
+      promised.
   -->
   <interface name="org.gnome.Mutter.RemoteDesktop">
 
@@ -27,6 +31,12 @@
 	  4: touchscreen
     -->
     <property name="SupportedDeviceTypes" type="u" access="read" />
+
+    <!--
+	Version:
+	@short_description: API version
+    -->
+    <property name="Version" type="i" access="read" />
 
   </interface>
 

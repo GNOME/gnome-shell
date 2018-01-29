@@ -32,6 +32,7 @@
 
 #define META_SCREEN_CAST_DBUS_SERVICE "org.gnome.Mutter.ScreenCast"
 #define META_SCREEN_CAST_DBUS_PATH "/org/gnome/Mutter/ScreenCast"
+#define META_SCREEN_CAST_API_VERSION 1
 
 struct _MetaScreenCast
 {
@@ -264,6 +265,9 @@ meta_screen_cast_init (MetaScreenCast *screen_cast)
       pw_init (NULL, NULL);
       is_pipewire_initialized = TRUE;
     }
+
+  meta_dbus_screen_cast_set_version (META_DBUS_SCREEN_CAST (screen_cast),
+                                     META_SCREEN_CAST_API_VERSION);
 }
 
 static void

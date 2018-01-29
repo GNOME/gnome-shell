@@ -42,6 +42,7 @@
 
 #define META_REMOTE_DESKTOP_DBUS_SERVICE "org.gnome.Mutter.RemoteDesktop"
 #define META_REMOTE_DESKTOP_DBUS_PATH "/org/gnome/Mutter/RemoteDesktop"
+#define META_REMOTE_DESKTOP_API_VERSION 1
 
 typedef enum _MetaRemoteDesktopDeviceTypes
 {
@@ -262,6 +263,9 @@ meta_remote_desktop_init (MetaRemoteDesktop *remote_desktop)
   meta_dbus_remote_desktop_set_supported_device_types (
     META_DBUS_REMOTE_DESKTOP (remote_desktop),
     calculate_supported_device_types ());
+  meta_dbus_remote_desktop_set_version (
+    META_DBUS_REMOTE_DESKTOP (remote_desktop),
+    META_REMOTE_DESKTOP_API_VERSION);
 }
 
 static void
