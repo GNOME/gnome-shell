@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+_Name=Feedback
+_Comment=
+Type=Application
+Exec=chromium-browser chrome-extension://fpmnjlkappdkncfmjefheaidpmbmfdfk/index.html#feedback
+Icon=
+Categories=Utility;
+NoDisplay=true
+X-Endless-LaunchMaximized=false

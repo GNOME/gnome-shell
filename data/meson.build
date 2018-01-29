@@ -1,6 +1,7 @@
 desktop_files = [
   'org.gnome.Shell.desktop',
-  'gnome-shell-extension-prefs.desktop'
+  'gnome-shell-extension-prefs.desktop',
+  'eos-link-feedback.desktop'
 ]
 service_files = []
 
