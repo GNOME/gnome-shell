@@ -177,6 +177,24 @@ meta_screen_cast_monitor_stream_set_parameters (MetaScreenCastStream *stream,
 }
 
 static void
+meta_screen_cast_monitor_stream_transform_position (MetaScreenCastStream *stream,
+                                                    double                stream_x,
+                                                    double                stream_y,
+                                                    double               *x,
+                                                    double               *y)
+{
+  MetaScreenCastMonitorStream *monitor_stream =
+    META_SCREEN_CAST_MONITOR_STREAM (stream);
+  MetaRectangle logical_monitor_layout;
+
+  logical_monitor_layout =
+    meta_logical_monitor_get_layout (monitor_stream->logical_monitor);
+
+  *x = logical_monitor_layout.x + stream_x;
+  *y = logical_monitor_layout.y + stream_y;
+}
+
+static void
 meta_screen_cast_monitor_stream_set_property (GObject      *object,
                                               guint         prop_id,
                                               const GValue *value,
@@ -247,6 +265,7 @@ meta_screen_cast_monitor_stream_class_init (MetaScreenCastMonitorStreamClass *kl
 
   stream_class->create_src = meta_screen_cast_monitor_stream_create_src;
   stream_class->set_parameters = meta_screen_cast_monitor_stream_set_parameters;
+  stream_class->transform_position = meta_screen_cast_monitor_stream_transform_position;
 
   g_object_class_install_property (object_class,
                                    PROP_MONITOR,

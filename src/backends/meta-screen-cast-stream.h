@@ -41,6 +41,11 @@ struct _MetaScreenCastStreamClass
                                             GError              **error);
   void (* set_parameters) (MetaScreenCastStream *stream,
                            GVariantBuilder      *parameters_builder);
+  void (* transform_position) (MetaScreenCastStream *stream,
+                               double                stream_x,
+                               double                stream_y,
+                               double               *x,
+                               double               *y);
 };
 
 gboolean meta_screen_cast_stream_start (MetaScreenCastStream *stream,
@@ -49,5 +54,11 @@ gboolean meta_screen_cast_stream_start (MetaScreenCastStream *stream,
 void meta_screen_cast_stream_close (MetaScreenCastStream *stream);
 
 char * meta_screen_cast_stream_get_object_path (MetaScreenCastStream *stream);
+
+void meta_screen_cast_stream_transform_position (MetaScreenCastStream *stream,
+                                                 double                stream_x,
+                                                 double                stream_y,
+                                                 double               *x,
+                                                 double               *y);
 
 #endif /* META_SCREEN_CAST_STREAM_H */
