@@ -88,6 +88,19 @@
     </method>
 
     <!--
+	NotifyPointerAxis:
+
+	A smooth pointer axis event notification
+
+	Possible @flags:
+	  1: finish - scroll motion was finished (e.g. fingers lifted)
+     -->
+    <method name="NotifyPointerAxis">
+      <arg name="dx" type="d" direction="in" />
+      <arg name="dy" type="d" direction="in" />
+      <arg name="flags" type="u" direction="in" />
+    </method>
+    <!--
 	NotifyPointerAxisDiscrete:
 
 	A discrete pointer axis event notification

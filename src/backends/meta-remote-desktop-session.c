@@ -39,6 +39,11 @@
 
 #define META_REMOTE_DESKTOP_SESSION_DBUS_PATH "/org/gnome/Mutter/RemoteDesktop/Session"
 
+enum _MetaRemoteDesktopNotifyAxisFlags
+{
+  META_REMOTE_DESKTOP_NOTIFY_AXIS_FLAGS_FINISH = 1 << 0,
+} MetaRemoteDesktopNotifyAxisFlags;
+
 struct _MetaRemoteDesktopSession
 {
   MetaDBusRemoteDesktopSessionSkeleton parent;
@@ -376,6 +381,42 @@ handle_notify_pointer_button (MetaDBusRemoteDesktopSession *skeleton,
   return TRUE;
 }
 
+static gboolean
+handle_notify_pointer_axis (MetaDBusRemoteDesktopSession *skeleton,
+                            GDBusMethodInvocation        *invocation,
+                            double                        dx,
+                            double                        dy,
+                            uint32_t                      flags)
+{
+  MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
+  ClutterScrollFinishFlags finish_flags = CLUTTER_SCROLL_FINISHED_NONE;
+
+  if (!check_permission (session, invocation))
+    {
+      g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR,
+                                             G_DBUS_ERROR_ACCESS_DENIED,
+                                             "Permission denied");
+      return TRUE;
+    }
+
+  if (flags & META_REMOTE_DESKTOP_NOTIFY_AXIS_FLAGS_FINISH)
+    {
+      finish_flags |= (CLUTTER_SCROLL_FINISHED_HORIZONTAL |
+                       CLUTTER_SCROLL_FINISHED_VERTICAL);
+    }
+
+  clutter_virtual_input_device_notify_scroll_continuous (session->virtual_pointer,
+                                                         CLUTTER_CURRENT_TIME,
+                                                         dx, dy,
+                                                         CLUTTER_SCROLL_SOURCE_FINGER,
+                                                         finish_flags);
+
+  meta_dbus_remote_desktop_session_complete_notify_pointer_axis (skeleton,
+                                                                 invocation);
+
+  return TRUE;
+}
+
 static ClutterScrollDirection
 discrete_steps_to_scroll_direction (unsigned int axis,
                                     int          steps)
@@ -480,6 +521,7 @@ meta_remote_desktop_session_init_iface (MetaDBusRemoteDesktopSessionIface *iface
   iface->handle_notify_keyboard_keycode = handle_notify_keyboard_keycode;
   iface->handle_notify_keyboard_keysym = handle_notify_keyboard_keysym;
   iface->handle_notify_pointer_button = handle_notify_pointer_button;
+  iface->handle_notify_pointer_axis = handle_notify_pointer_axis;
   iface->handle_notify_pointer_axis_discrete = handle_notify_pointer_axis_discrete;
   iface->handle_notify_pointer_motion_absolute = handle_notify_pointer_motion_absolute;
 }
