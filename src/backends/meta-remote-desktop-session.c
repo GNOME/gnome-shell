@@ -26,6 +26,7 @@
 
 #include <linux/input.h>
 #include <xkbcommon/xkbcommon.h>
+#include <stdlib.h>
 
 #include "backends/meta-dbus-session-watcher.h"
 #include "backends/meta-screen-cast-session.h"
@@ -367,6 +368,7 @@ handle_notify_pointer_axis_discrete (MetaDBusRemoteDesktopSession *skeleton,
 {
   MetaRemoteDesktopSession *session = META_REMOTE_DESKTOP_SESSION (skeleton);
   ClutterScrollDirection direction;
+  int step_count;
 
   if (!check_permission (session, invocation))
     {
@@ -392,19 +394,18 @@ handle_notify_pointer_axis_discrete (MetaDBusRemoteDesktopSession *skeleton,
       return TRUE;
     }
 
-  if (steps != -1 && steps != 1)
-    g_warning ("Multiple steps at at once not yet implemented, treating as one.");
-
   /*
    * We don't have the actual scroll source, but only know they should be
    * considered as discrete steps. The device that produces such scroll events
    * is the scroll wheel, so pretend that is the scroll source.
    */
   direction = discrete_steps_to_scroll_direction (axis, steps);
-  clutter_virtual_input_device_notify_discrete_scroll (session->virtual_pointer,
-                                                       CLUTTER_CURRENT_TIME,
-                                                       direction,
-                                                       CLUTTER_SCROLL_SOURCE_WHEEL);
+
+  for (step_count = 0; step_count < abs (steps); step_count++)
+    clutter_virtual_input_device_notify_discrete_scroll (session->virtual_pointer,
+                                                         CLUTTER_CURRENT_TIME,
+                                                         direction,
+                                                         CLUTTER_SCROLL_SOURCE_WHEEL);
 
   meta_dbus_remote_desktop_session_complete_notify_pointer_axis_discrete (skeleton,
                                                                           invocation);
