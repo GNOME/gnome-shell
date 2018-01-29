@@ -17,6 +17,17 @@
       <arg name="session_path" type="o" direction="out" />
     </method>
 
+    <!--
+	SupportedDeviceTypes:
+	@short_description: Bit mask of supported device types
+
+	Device types:
+	  1: keyboard
+	  2: pointer
+	  4: touchscreen
+    -->
+    <property name="SupportedDeviceTypes" type="u" access="read" />
+
   </interface>
 
   <!--
