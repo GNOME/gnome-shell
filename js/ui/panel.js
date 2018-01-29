@@ -716,7 +716,15 @@ class AggregateMenu extends PanelMenu.Button {
         let menuLayout = new AggregateLayout();
         this.menu.box.set_layout_manager(menuLayout);
 
-        this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
+        this._indicators = new St.BoxLayout({
+            style_class: 'panel-status-indicators-box',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        let userMode = Main.sessionMode.hasOverview;
+        if (userMode)
+            this._indicators.add_style_class_name('user-mode-indicators-box');
+
         this.add_child(this._indicators);
 
         if (Config.HAVE_NETWORKMANAGER)
@@ -752,7 +760,8 @@ class AggregateMenu extends PanelMenu.Button {
         this._indicators.add_child(this._rfkill);
         this._indicators.add_child(this._volume);
         this._indicators.add_child(this._power);
-        this._indicators.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
+        if (!userMode)
+            this._indicators.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
 
         this.menu.addMenuItem(this._volume.menu);
         this.menu.addMenuItem(this._brightness.menu);

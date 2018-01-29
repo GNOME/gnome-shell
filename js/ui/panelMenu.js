@@ -136,6 +136,13 @@ var Button = GObject.registerClass({
              event.type() == Clutter.EventType.BUTTON_PRESS))
             this.menu.toggle();
 
+        if ((event.get_state() & Clutter.ModifierType.BUTTON1_MASK) ||
+            (event.get_state() & Clutter.ModifierType.BUTTON2_MASK) ||
+            (event.get_state() & Clutter.ModifierType.BUTTON3_MASK))
+            this.add_style_pseudo_class('clicked');
+        else
+            this.remove_style_pseudo_class('clicked');
+
         return Clutter.EVENT_PROPAGATE;
     }
 

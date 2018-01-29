@@ -61,9 +61,60 @@
 
 // Bottom panel
 
+#panel {
+    .clock-display {
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
+
 .popup-menu {
+    .popup-menu-item.selected {
+        background-color: rgba(95, 95, 95, 1.0);
+    }
+
     &.panel-menu {
         -boxpointer-gap: 0px;
         margin-bottom: 0px;
+    }
+}
+
+.popup-menu-boxpointer,
+.candidate-popup-boxpointer {
+    -arrow-background-color: #000000;
+}
+
+// System Indicators
+
+#panelRight {
+    .panel-button {
+        -natural-hpadding: 10px;
+        -minimum-hpadding: 10px;
+
+        .user-mode-indicators-box {
+            padding: 6px 4px;
+            color: rgba(255, 255, 255, 0.6);
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+        }
+
+        &:hover {
+            .user-mode-indicators-box {
+                background-color: rgba(255, 255, 255, 0.12);
+                color: white;
+            }
+        }
+
+        &:clicked {
+            .user-mode-indicators-box {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        &:active {
+            .user-mode-indicators-box {
+                color: white;
+            }
+        }
     }
 }
