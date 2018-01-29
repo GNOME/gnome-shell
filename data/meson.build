@@ -1,6 +1,7 @@
 desktop_files = [
   'org.gnome.Shell.desktop',
   'eos-launch.desktop',
+  'eos-link-feedback.desktop'
 ]
 service_files = []
 
