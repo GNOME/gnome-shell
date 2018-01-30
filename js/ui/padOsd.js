@@ -978,7 +978,7 @@ var PadOsdService = new Lang.Class({
 
         devices.forEach(Lang.bind(this, function(device) {
             if (deviceNode == device.get_device_node() &&
-                padDevice.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE)
+                device.get_device_type() == Clutter.InputDeviceType.PAD_DEVICE)
                 padDevice = device;
         }));
 
