@@ -167,12 +167,12 @@ conf_inc = include_directories('.')
 
 libgvc = subproject('gvc',
   default_options: [
-    'package-name=' + meson.project_name(),
-    'package-version=' + meson.project_version(),
+    'package_name=' + meson.project_name(),
+    'package_version=' + meson.project_version(),
     'pkgdatadir=' + pkgdatadir,
     'pkglibdir=' + pkglibdir,
     'static=false',
-    'with-introspection=true',
+    'introspection=true',
     'alsa=false'
   ]
 )
