@@ -363,7 +363,7 @@ var Indicator = new Lang.Class({
         if (!this._source) {
             this._source = new MessageTray.Source(_("Thunderbolt"),
                                                   'thunderbolt-symbolic');
-
+            this._source.policy = new MessageTray.NotificationApplicationPolicy('gnome-thunderbolt-panel');
             this._source.connect('destroy', Lang.bind(this, function() {
                 this._source = null;
             }));
