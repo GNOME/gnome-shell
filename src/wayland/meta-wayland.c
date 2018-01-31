@@ -466,9 +466,6 @@ meta_wayland_compositor_is_shortcuts_inhibited (MetaWaylandCompositor *composito
 {
   MetaWaylandKeyboard *keyboard;
 
-  if (clutter_input_device_get_device_type (source) != CLUTTER_KEYBOARD_DEVICE)
-    return FALSE;
-
   /* Clutter is not multi-seat aware yet, use the default seat instead */
   keyboard = compositor->seat->keyboard;
   if (keyboard && keyboard->focus_surface != NULL)
