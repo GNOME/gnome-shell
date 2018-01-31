@@ -89,19 +89,13 @@ static void
 shortcuts_inhibited_cb (MetaWaylandSurface                  *surface,
                         MetaWaylandKeyboardShotscutsInhibit *shortcut_inhibit)
 {
-  MetaWaylandKeyboard *keyboard = shortcut_inhibit->seat->keyboard;
-
-  /* Send active event only if the surface has keyboard focus */
-  if (keyboard->focus_surface == surface)
-    zwp_keyboard_shortcuts_inhibitor_v1_send_active (shortcut_inhibit->resource);
+  zwp_keyboard_shortcuts_inhibitor_v1_send_active (shortcut_inhibit->resource);
 }
 
 static void
-shortcuts_restored_cb (MetaWaylandSurface *surface,
-                       gpointer user_data)
+shortcuts_restored_cb (MetaWaylandSurface                  *surface,
+                       MetaWaylandKeyboardShotscutsInhibit *shortcut_inhibit)
 {
-  MetaWaylandKeyboardShotscutsInhibit *shortcut_inhibit = user_data;
-
   zwp_keyboard_shortcuts_inhibitor_v1_send_inactive (shortcut_inhibit->resource);
 }
 
