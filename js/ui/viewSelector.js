@@ -214,6 +214,11 @@ var ViewSelector = GObject.registerClass({
                 this._workspacesPage.opacity = 0;
                 this._workspacesPage.hide();
             }
+
+            // Make sure to hide the overview immediately if we're starting up
+            // coming from a previous session with apps running and visible.
+            if (Main.layoutManager.startingUp && Main.workspaceMonitor.hasVisibleWindows)
+                Main.overview.hide();
         });
 
         Main.wm.addKeybinding('toggle-application-view',
