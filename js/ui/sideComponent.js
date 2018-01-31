@@ -25,7 +25,8 @@ function isSideComponentWindow(metaWindow) {
  * @returns {bool} Whether other windows should be hidden while this one is open
  */
 function shouldHideOtherWindows(metaWindow) {
-    return isSideComponentWindow(metaWindow);
+    return isSideComponentWindow(metaWindow) &&
+        Main.discoveryFeed.launchedFromDesktop;
 }
 
 /**
@@ -35,8 +36,17 @@ function shouldHideOtherWindows(metaWindow) {
  */
 function launchedFromDesktop(metaWindow) {
     return isSideComponentWindow(metaWindow) &&
-        metaWindow.get_wm_class() === 'Eos-app-store' &&
-        Main.appStore.launchedFromDesktop;
+        ((metaWindow.get_wm_class() === 'Eos-app-store' && Main.appStore.launchedFromDesktop) ||
+         (isDiscoveryFeedWindow(metaWindow) && Main.discoveryFeed.launchedFromDesktop));
+}
+
+/**
+ * isDiscoveryFeedWindow:
+ * @param {Meta.Window} metaWindow an instance of #Meta.Window
+ * @returns {bool} whether the #Meta.Window is from the DiscoveryFeed application
+ */
+function isDiscoveryFeedWindow(metaWindow) {
+    return metaWindow && (metaWindow.get_wm_class() === 'Com.endlessm.DiscoveryFeed');
 }
 
 var SideComponent = GObject.registerClass(
