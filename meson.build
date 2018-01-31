@@ -112,11 +112,19 @@ if enable_recorder
   recorder_deps += [gst_dep, gst_base_dep, gtk_dep, x11_dep]
 endif
 
+cc = meson.get_compiler('c')
+
+m_dep = cc.find_library('m', required: false)
+
 # Endless-specific: Metrics
 eosmetrics_dep = dependency('eosmetrics-0')
 
 # Endless-specific: parental controls
 malcontent_dep = dependency('malcontent-0', version: malcontent_req, required: true)
+
+# Endless-specific: Custom animations
+libanimation_glib_dep = dependency('libanimation-glib-0')
+libeos_shell_fx_deps = [clutter_dep, libanimation_glib_dep, m_dep]
 
 nm_deps = []
 if get_option('networkmanager')
@@ -149,10 +157,6 @@ python = find_program('python3')
 sassc = find_program('sassc')
 gjs = find_program('gjs')
 appstream_util = find_program('appstream-util', required: false)
-
-cc = meson.get_compiler('c')
-
-m_dep = cc.find_library('m', required: false)
 
 cdata = configuration_data()
 cdata.set_quoted('GETTEXT_PACKAGE', meson.project_name())

@@ -9,6 +9,7 @@ run_test = configure_file(
 
 testenv = environment()
 testenv.set('GSETTINGS_SCHEMA_DIR', join_paths(meson.build_root(), 'data'))
+testenv.prepend('LD_LIBRARY_PATH', meson.build_root() + '/src')
 
 foreach test : ['insertSorted', 'jsParse', 'markup', 'params', 'url']
   test(test, run_test,

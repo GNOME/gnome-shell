@@ -59,6 +59,7 @@ gnome_shell_deps = [
   gcr_dep,
   libsystemd_dep,
   eosmetrics_dep,
+  libanimation_glib_dep,
 ]
 
 gnome_shell_deps += nm_deps
@@ -176,6 +177,34 @@ if enable_recorder
     libshell_private_headers += ['shell-recorder-src.h']
 endif
 
+libeos_shell_fx_sources = [
+  'wobbly-effect.c',
+  'wobbly-effect.h'
+]
+
+libeos_shell_fx = library('eos-shell-fx',
+  sources: libeos_shell_fx_sources,
+  dependencies: libeos_shell_fx_deps,
+  include_directories: conf_inc,
+  build_rpath: mutter_typelibdir,
+  install_rpath: mutter_typelibdir,
+  install_dir: pkglibdir,
+  install: true
+)
+
+libeos_shell_fx_gir = gnome.generate_gir(libeos_shell_fx,
+  sources: libeos_shell_fx_sources,
+  nsversion: '1.0',
+  namespace: 'EndlessShellFX',
+  includes: ['Clutter-@0@'.format(mutter_api_version)],
+  dependencies: [mutter_dep],
+  extra_args: ['--quiet'],
+  install_dir_gir: pkgdatadir,
+  install_dir_typelib: pkglibdir,
+  install: true
+)
+
+libeos_shell_fx_dep = declare_dependency(link_with: libeos_shell_fx)
 
 libshell_enums = gnome.mkenums_simple('shell-enum-types',
   sources: libshell_public_headers
@@ -207,7 +236,7 @@ libshell_no_gir_sources += dbus_generated
 
 libshell = library('gnome-shell',
   sources: libshell_gir_sources + libshell_no_gir_sources,
-  dependencies: gnome_shell_deps + [libshell_menu_dep, libst_dep, mutter_dep, gnome_desktop_dep, m_dep],
+  dependencies: gnome_shell_deps + [libeos_shell_fx_dep, libshell_menu_dep, libst_dep, mutter_dep, gnome_desktop_dep, m_dep],
   include_directories: [conf_inc, st_inc, include_directories('tray')],
   c_args: gnome_shell_cflags,
   link_with: [libtray],
