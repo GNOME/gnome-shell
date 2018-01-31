@@ -242,6 +242,7 @@ var Overview = class {
         });
 
         this.viewSelector.connect('page-changed', this._onPageChanged.bind(this));
+        Main.layoutManager.connect('startup-prepared', this._onStartupPrepared.bind(this));
         Main.layoutManager.connect('monitors-changed', this._relayout.bind(this));
         this._relayout();
     }
@@ -453,6 +454,10 @@ var Overview = class {
             return;
 
         this._showOrSwitchPage(ViewSelector.ViewPage.WINDOWS);
+    }
+
+    _onStartupPrepared() {
+        this.showApps();
     }
 
     fadeInDesktop() {
