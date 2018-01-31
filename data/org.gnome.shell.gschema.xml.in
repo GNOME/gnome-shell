@@ -168,7 +168,13 @@
         when a window is minimized.
       </description>
     </key>
-
+    <key name="icon-grid-layout" type="a{sas}">
+      <default>{}</default>
+      <summary>Layout of application launcher icons in the grid</summary>
+      <description>
+        This key specifies the exact order of the icons shown in the applications launcher view.
+      </description>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
   </schema>
 

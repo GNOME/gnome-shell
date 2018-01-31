@@ -17,3 +17,6 @@ var LIBEXECDIR = '@libexecdir@';
 var PKGDATADIR = '@datadir@/@PACKAGE_NAME@';
 /* g-i package versions */
 var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'
+/* used for the icongrid */
+var DATADIR = '@datadir@';
+var LOCALSTATEDIR = '@localstatedir@';
