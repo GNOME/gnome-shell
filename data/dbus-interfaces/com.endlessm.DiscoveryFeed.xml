@@ -1,0 +1,11 @@
+<node>
+  <interface name="com.endlessm.DiscoveryFeed">
+    <method name="show">
+      <arg type="u" direction="in" name="timestamp"/>
+    </method>
+    <method name="hide">
+      <arg type="u" direction="in" name="timestamp"/>
+    </method>
+    <property name="Visible" type="b" access="read"/>
+  </interface>
+</node>
