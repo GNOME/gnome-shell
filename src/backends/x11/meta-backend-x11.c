@@ -112,7 +112,7 @@ translate_device_event (MetaBackendX11 *x11,
 
   if (!device_event->send_event && device_event->time != CurrentTime)
     {
-      if (device_event->time < priv->latest_evtime)
+      if (XSERVER_TIME_IS_BEFORE (device_event->time, priv->latest_evtime))
         {
           /* Emulated pointer events received after XIRejectTouch is received
            * on a passive touch grab will contain older timestamps, update those
