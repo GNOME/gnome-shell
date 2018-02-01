@@ -8,10 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-12-02 17:48+0000\n"
-"PO-Revision-Date: 2017-12-05 14:26+0700\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2018-01-28 13:56+0000\n"
+"PO-Revision-Date: 2018-01-31 14:00+0700\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -19,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-DamnedLies-Scope: partial\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -343,7 +342,7 @@ msgstr "Ada galat saat memuat dialog preferensi bagi %s:"
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
-#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:936
+#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:925
 msgid "Cancel"
 msgstr "Batal"
 
@@ -635,23 +634,23 @@ msgstr "Sering"
 msgid "All"
 msgstr "Semua"
 
-#: js/ui/appDisplay.js:1915
+#: js/ui/appDisplay.js:1918
 msgid "New Window"
 msgstr "Jendela Baru"
 
-#: js/ui/appDisplay.js:1929
+#: js/ui/appDisplay.js:1932
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Luncurkan menggunakan Kartu Grafis Terdedikasi"
 
-#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1959 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Hapus dari Favorit"
 
-#: js/ui/appDisplay.js:1962
+#: js/ui/appDisplay.js:1965
 msgid "Add to Favorites"
 msgstr "Tambah ke Favorit"
 
-#: js/ui/appDisplay.js:1972
+#: js/ui/appDisplay.js:1975
 msgid "Show Details"
 msgstr "Tampilkan Rincian"
 
@@ -840,8 +839,8 @@ msgstr "Sandi:"
 msgid "Type again:"
 msgstr "Ketik lagi:"
 
-#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:261
-#: js/ui/status/network.js:355 js/ui/status/network.js:939
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:245
+#: js/ui/status/network.js:338 js/ui/status/network.js:928
 msgid "Connect"
 msgstr "Sambung"
 
@@ -869,11 +868,11 @@ msgstr "Sandi kunci privat: "
 msgid "Service: "
 msgstr "Layanan: "
 
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:638
+#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:659
 msgid "Authentication required by wireless network"
 msgstr "Otentikasi diperlukan oleh jaringan nirkabel"
 
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:639
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:660
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -882,7 +881,7 @@ msgstr ""
 "Sandi atau kunci enkripsi diperlukan untuk mengakses jaringan nirkabel \"%s"
 "\"."
 
-#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:642
+#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:663
 msgid "Wired 802.1X authentication"
 msgstr "Otentikasi 802.1X kabel"
 
@@ -890,15 +889,15 @@ msgstr "Otentikasi 802.1X kabel"
 msgid "Network name: "
 msgstr "Nama jaringan: "
 
-#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:646
+#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:667
 msgid "DSL authentication"
 msgstr "Otentikasi DSL"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:652
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:673
 msgid "PIN code required"
 msgstr "Perlu kode PIN"
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:653
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:674
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Kode PIN diperlukan untuk perangkat data seluler"
 
@@ -906,17 +905,17 @@ msgstr "Kode PIN diperlukan untuk perangkat data seluler"
 msgid "PIN: "
 msgstr "PIN: "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:680
 msgid "Mobile broadband network password"
 msgstr "Sandi jaringan data seluler"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:643
-#: js/ui/components/networkAgent.js:647 js/ui/components/networkAgent.js:660
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:664
+#: js/ui/components/networkAgent.js:668 js/ui/components/networkAgent.js:681
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "Perlu suatu sandi untuk menyambung ke \"%s\"."
 
-#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
+#: js/ui/components/networkAgent.js:648 js/ui/status/network.js:1699
 msgid "Network Manager"
 msgstr "Manajer Jaringan"
 
@@ -951,13 +950,13 @@ msgstr "%s sekarang dikenal sebagai %s"
 msgid "Windows"
 msgstr "Jendela"
 
-#: js/ui/dash.js:250 js/ui/dash.js:291
+#: js/ui/dash.js:246 js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Tampilkan Aplikasi"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:449
+#: js/ui/dash.js:445
 msgid "Dash"
 msgstr "Dash"
 
@@ -976,15 +975,15 @@ msgstr "%e %B %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %e %B %Y"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:148
 msgid "Add world clocks…"
 msgstr "Tambah jam dunia…"
 
-#: js/ui/dateMenu.js:146
+#: js/ui/dateMenu.js:149
 msgid "World Clocks"
 msgstr "Jam Dunia"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Cuaca"
 
@@ -992,7 +991,7 @@ msgstr "Cuaca"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:292
 #, javascript-format
 msgid "%s all day."
 msgstr "%s sepanjang hari."
@@ -1001,7 +1000,7 @@ msgstr "%s sepanjang hari."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:298
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, kemudian %s."
@@ -1010,30 +1009,30 @@ msgstr "%s, kemudian %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:304
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, kemudian %s, diikuti dengan %s nanti."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:315
 msgid "Select a location…"
 msgstr "Pilih lokasi…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:318
 msgid "Loading…"
 msgstr "Memuat…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:324
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Terasa seperti %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:327
 msgid "Go online for weather information"
 msgstr "Pergi daring untuk informasi cuaca"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:329
 msgid "Weather information is currently unavailable"
 msgstr "Informasi cuaca saat ini tidak tersedia"
 
@@ -1212,7 +1211,70 @@ msgstr "Tolak"
 msgid "Allow"
 msgstr "Izinkan"
 
-#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:783
+#: js/ui/kbdA11yDialog.js:33
+msgid "Slow Keys Turned On"
+msgstr "Tombol Lambat Dinyalakan"
+
+#: js/ui/kbdA11yDialog.js:34
+msgid "Slow Keys Turned Off"
+msgstr "Tombol Lambat Dimatikan"
+
+#: js/ui/kbdA11yDialog.js:35
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Anda hanya menahan tombol Shift selama 8 detik. Ini adalah pintasan untuk "
+"fitur Tombol Lambat, yang mempengaruhi cara kerja papan tik Anda."
+
+#: js/ui/kbdA11yDialog.js:42
+msgid "Sticky Keys Turned On"
+msgstr "Tombol Lengket Dinyalakan"
+
+#: js/ui/kbdA11yDialog.js:43
+msgid "Sticky Keys Turned Off"
+msgstr "Tombol Lengket Dimatikan"
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+"Anda hanya menekan tombol Shift 5 kali berturut-turut. Ini adalah pintasan "
+"untuk fitur Tombol Lengket, yang mempengaruhi cara kerja papan tik Anda."
+
+#: js/ui/kbdA11yDialog.js:47
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+"Anda hanya menekan dua tombol sekaligus, atau menekan tombol Shift 5 kali "
+"berturut-turut. Ini mematikan fitur Tombol Lengket, yang mempengaruhi cara "
+"kerja papan tik Anda."
+
+#: js/ui/kbdA11yDialog.js:59
+msgid "Leave On"
+msgstr "Biarkan Menyala"
+
+#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:1287
+msgid "Turn On"
+msgstr "Nyalakan"
+
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:154 js/ui/status/network.js:339
+#: js/ui/status/network.js:1287 js/ui/status/network.js:1402
+#: js/ui/status/nightLight.js:47 js/ui/status/rfkill.js:90
+#: js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "Matikan"
+
+#: js/ui/kbdA11yDialog.js:67
+msgid "Leave Off"
+msgstr "Biarkan Mati"
+
+#: js/ui/keyboard.js:739 js/ui/status/keyboard.js:783
 msgid "Keyboard"
 msgstr "Papan Ketik"
 
@@ -1510,7 +1572,7 @@ msgstr "Teks Besar"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:627
+#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:616
 msgid "Bluetooth Settings"
 msgstr "Pengaturan Bluetooth"
 
@@ -1528,17 +1590,6 @@ msgstr "Mati"
 #: js/ui/status/bluetooth.js:141
 msgid "On"
 msgstr "Hidup"
-
-#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:1299
-msgid "Turn On"
-msgstr "Nyalakan"
-
-#: js/ui/status/bluetooth.js:143 js/ui/status/network.js:170
-#: js/ui/status/network.js:356 js/ui/status/network.js:1299
-#: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
-#: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "Matikan"
 
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
@@ -1582,18 +1633,18 @@ msgstr "Beri %s akses ke lokasi Anda?"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "Akses lokasi dapat diubah setiap saat dari pengaturan privasi."
 
-#: js/ui/status/network.js:104
+#: js/ui/status/network.js:90
 msgid "<unknown>"
 msgstr "<tak dikenal>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:454 js/ui/status/network.js:1328
+#: js/ui/status/network.js:443 js/ui/status/network.js:1316
 #, javascript-format
 msgid "%s Off"
 msgstr "%s Mati"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:457
+#: js/ui/status/network.js:446
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s Tersambung"
@@ -1601,186 +1652,186 @@ msgstr "%s Tersambung"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:451
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s Tak Dikelola"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:465
+#: js/ui/status/network.js:454
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s Memutus"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:472 js/ui/status/network.js:1320
+#: js/ui/status/network.js:461 js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Connecting"
 msgstr "%s Menyambung"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:475
+#: js/ui/status/network.js:464
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s Memerlukan Otentikasi"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:483
+#: js/ui/status/network.js:472
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "Firmware Hilang Untuk %s"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:487
+#: js/ui/status/network.js:476
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s Tak tersedia"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:490
+#: js/ui/status/network.js:479
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "Koneksi %s Gagal"
 
-#: js/ui/status/network.js:506
+#: js/ui/status/network.js:495
 msgid "Wired Settings"
 msgstr "Pengaturan Kabel"
 
-#: js/ui/status/network.js:548
+#: js/ui/status/network.js:537
 msgid "Mobile Broadband Settings"
 msgstr "Pengaturan Data Seluler"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:591 js/ui/status/network.js:1325
+#: js/ui/status/network.js:580 js/ui/status/network.js:1313
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s Perangkat Keras Dinonaktifkan"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:595
+#: js/ui/status/network.js:584
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s Dinonaktifkan"
 
-#: js/ui/status/network.js:635
+#: js/ui/status/network.js:624
 msgid "Connect to Internet"
 msgstr "Sambungkan ke Internet"
 
-#: js/ui/status/network.js:833
+#: js/ui/status/network.js:822
 msgid "Airplane Mode is On"
 msgstr "Mode Pesawat Terbang Menyala"
 
-#: js/ui/status/network.js:834
+#: js/ui/status/network.js:823
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "Wi-Fi dinonaktifkan ketika mode pesawat terbang menyala."
 
-#: js/ui/status/network.js:835
+#: js/ui/status/network.js:824
 msgid "Turn Off Airplane Mode"
 msgstr "Matikan Mode Pesawat Terbang"
 
-#: js/ui/status/network.js:844
+#: js/ui/status/network.js:833
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi Mati"
 
-#: js/ui/status/network.js:845
+#: js/ui/status/network.js:834
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "Wi-Fi perlu dinyalakan untuk menyambung ke suatu jaringan."
 
-#: js/ui/status/network.js:846
+#: js/ui/status/network.js:835
 msgid "Turn On Wi-Fi"
 msgstr "Nyalakan Wi-Fi"
 
-#: js/ui/status/network.js:871
+#: js/ui/status/network.js:860
 msgid "Wi-Fi Networks"
 msgstr "Jaringan Wi-Fi"
 
-#: js/ui/status/network.js:873
+#: js/ui/status/network.js:862
 msgid "Select a network"
 msgstr "Pilih jaringan"
 
-#: js/ui/status/network.js:903
+#: js/ui/status/network.js:892
 msgid "No Networks"
 msgstr "Tiada Jaringan"
 
-#: js/ui/status/network.js:924 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:913 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "Pakai saklar perangkat keras untuk mematikan"
 
-#: js/ui/status/network.js:1191
+#: js/ui/status/network.js:1179
 msgid "Select Network"
 msgstr "Pilih Jaringan"
 
-#: js/ui/status/network.js:1197
+#: js/ui/status/network.js:1185
 msgid "Wi-Fi Settings"
 msgstr "Pengaturan Wi-Fi"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1316
+#: js/ui/status/network.js:1304
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s Hotspot Aktif"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1331
+#: js/ui/status/network.js:1319
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s Tak Tersambung"
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1419
 msgid "connecting…"
 msgstr "menghubungi..."
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1438
+#: js/ui/status/network.js:1422
 msgid "authentication required"
 msgstr "diperlukan otentikasi"
 
-#: js/ui/status/network.js:1440
+#: js/ui/status/network.js:1424
 msgid "connection failed"
 msgstr "koneksi gagal"
 
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1478
 msgid "VPN Settings"
 msgstr "Pengaturan VPN"
 
-#: js/ui/status/network.js:1498
+#: js/ui/status/network.js:1491
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1508
+#: js/ui/status/network.js:1501
 msgid "VPN Off"
 msgstr "VPN Mati"
 
-#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1565 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Pengaturan Jaringan"
 
-#: js/ui/status/network.js:1603
+#: js/ui/status/network.js:1596
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s Koneksi Kabel"
 
-#: js/ui/status/network.js:1607
+#: js/ui/status/network.js:1600
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s Koneksi Wi-Fi"
 
-#: js/ui/status/network.js:1611
+#: js/ui/status/network.js:1604
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s Koneksi Modem"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1738
 msgid "Connection failed"
 msgstr "Koneksi gagal"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1739
 msgid "Activation of network connection failed"
 msgstr "Aktivasi koneksi jaringan gagal"
 
