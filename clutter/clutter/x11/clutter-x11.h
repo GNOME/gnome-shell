@@ -161,9 +161,6 @@ gint clutter_x11_event_get_key_group (const ClutterEvent *event);
 CLUTTER_AVAILABLE_IN_ALL
 guint clutter_x11_event_sequence_get_touch_detail (const ClutterEventSequence *sequence);
 
-CLUTTER_AVAILABLE_IN_ALL
-void clutter_x11_request_reset_on_video_memory_purge (void);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_X11_H__ */

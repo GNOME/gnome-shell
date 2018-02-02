@@ -109,7 +109,6 @@ static const gchar *atom_names[] = {
 #define N_ATOM_NAMES G_N_ELEMENTS (atom_names)
 
 /* various flags corresponding to pre init setup calls */
-static gboolean _want_reset_on_video_memory_purge = FALSE;
 static gboolean _no_xevent_retrieval = FALSE;
 static gboolean clutter_enable_xinput = TRUE;
 static gboolean clutter_enable_argb = FALSE;
@@ -682,8 +681,7 @@ clutter_backend_x11_get_renderer (ClutterBackend  *backend,
 
   /* set the display object we're using */
   cogl_xlib_renderer_set_foreign_display (renderer, xdisplay);
-  cogl_xlib_renderer_request_reset_on_video_memory_purge (renderer,
-                                                          _want_reset_on_video_memory_purge);
+
   return renderer;
 }
 
@@ -1026,30 +1024,6 @@ gboolean
 clutter_x11_has_event_retrieval (void)
 {
   return !_no_xevent_retrieval;
-}
-
-/**
- * clutter_x11_request_reset_on_video_memory_purge:
- *
- * If the GL driver supports the NV_robustness_video_memory_purge
- * extension, this call lets applications request that it gets
- * initialized, thus allowing cogl_get_graphics_reset_status() to
- * report memory purged errors if they happen. Checking for the
- * graphics reset status is the application's responsibility.
- *
- * This function can only be called before calling clutter_init().
- */
-void
-clutter_x11_request_reset_on_video_memory_purge (void)
-{
-  if (_clutter_context_is_initialized ())
-    {
-      g_warning ("%s() can only be used before calling clutter_init()",
-                 G_STRFUNC);
-      return;
-    }
-
-  _want_reset_on_video_memory_purge = TRUE;
 }
 
 /**
