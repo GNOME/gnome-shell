@@ -74,6 +74,7 @@ meta_renderer_x11_create_cogl_renderer (MetaRenderer *renderer)
   cogl_renderer_set_custom_winsys (cogl_renderer, get_x11_cogl_winsys_vtable,
                                    NULL);
   cogl_xlib_renderer_set_foreign_display (cogl_renderer, xdisplay);
+  cogl_xlib_renderer_request_reset_on_video_memory_purge (cogl_renderer, TRUE);
 
   /* Set up things so that if the INTEL_swap_event extension is not present,
    * but the driver is known to have good thread support, we use an extra
