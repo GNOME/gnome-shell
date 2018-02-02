@@ -465,7 +465,8 @@ choose_xdisplay (MetaXWaylandManager *manager)
         {
           unlink (lock_file);
           close (manager->abstract_fd);
-          return FALSE;
+          display++;
+          continue;
         }
 
       break;
