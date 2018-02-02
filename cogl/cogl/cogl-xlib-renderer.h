@@ -168,7 +168,7 @@ cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
                                                 CoglBool enable);
 
 /**
- * cogl_xlib_renderer_set_threaded_swap_wait_enabled:
+ * cogl_xlib_renderer_set_threaded_swap_wait_enabled: (skip)
  * @renderer: a #CoglRenderer
  * @enable: The new value
  *
