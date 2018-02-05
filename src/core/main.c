@@ -181,6 +181,7 @@ static gboolean  opt_nested;
 #ifdef HAVE_NATIVE_BACKEND
 static gboolean  opt_display_server;
 #endif
+static gboolean  opt_x11;
 
 static GOptionEntry meta_options[] = {
   {
@@ -239,6 +240,11 @@ static GOptionEntry meta_options[] = {
     N_("Run as a full display server, rather than nested")
   },
 #endif
+  {
+    "x11", 0, 0, G_OPTION_ARG_NONE,
+    &opt_x11,
+    N_("Run with X11 backend")
+  },
   {NULL}
 };
 
@@ -424,7 +430,13 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
                                     GType              *backend_gtype)
 {
 #ifdef HAVE_WAYLAND
-  gboolean run_as_wayland_compositor = opt_wayland;
+  gboolean run_as_wayland_compositor = opt_wayland && !opt_x11;
+
+  if ((opt_wayland || opt_nested || opt_display_server) && opt_x11)
+    {
+      meta_warning ("Can't run both as Wayland compositor and X11 compositing manager\n");
+      meta_exit (META_EXIT_ERROR);
+    }
 
 #ifdef HAVE_NATIVE_BACKEND
   if (opt_nested && opt_display_server)
@@ -433,7 +445,7 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
       meta_exit (META_EXIT_ERROR);
     }
 
-  if (!run_as_wayland_compositor)
+  if (!run_as_wayland_compositor && !opt_x11)
     run_as_wayland_compositor = check_for_wayland_session_type ();
 #endif /* HAVE_NATIVE_BACKEND */
 
