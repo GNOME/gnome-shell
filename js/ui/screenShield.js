@@ -1283,7 +1283,10 @@ var ScreenShield = new Lang.Class({
 
         this._resetLockScreen({ animateLockScreen: animate,
                                 fadeToBlack: true });
-        global.set_runtime_state(LOCKED_STATE_STR, GLib.Variant.new('b', true));
+        // On wayland, a crash brings down the entire session, so we don't
+        // need to defend against being restarted unlocked
+        if (!Meta.is_wayland_compositor())
+            global.set_runtime_state(LOCKED_STATE_STR, GLib.Variant.new('b', true));
 
         // We used to set isActive and emit active-changed here,
         // but now we do that from lockScreenShown, which means
