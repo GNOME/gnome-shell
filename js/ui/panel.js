@@ -971,22 +971,11 @@ class Panel extends St.Widget {
         if (isPress && button != 1)
             return Clutter.EVENT_PROPAGATE;
 
-        let focusWindow = global.display.focus_window;
-        if (!focusWindow)
-            return Clutter.EVENT_PROPAGATE;
-
-        let dragWindow = focusWindow.is_attached_dialog() ? focusWindow.get_transient_for()
-                                                          : focusWindow;
-        if (!dragWindow)
-            return Clutter.EVENT_PROPAGATE;
-
-        let rect = dragWindow.get_frame_rect();
         let [stageX, stageY] = event.get_coords();
 
-        let allowDrag = dragWindow.maximized_vertically &&
-                        stageX > rect.x && stageX < rect.x + rect.width;
+        let dragWindow = this._getDraggableWindowForPosition(stageX);
 
-        if (!allowDrag)
+        if (!dragWindow)
             return Clutter.EVENT_PROPAGATE;
 
         global.display.begin_grab_op(dragWindow,
@@ -1195,5 +1184,22 @@ class Panel extends St.Widget {
                 if (boxAlignment == Main.messageTray.bannerAlignment)
                     Main.messageTray.bannerBlocked = isOpen;
             });
+    }
+
+    _getDraggableWindowForPosition(stageX) {
+        let workspaceManager = global.workspace_manager;
+        let workspace = workspaceManager.get_active_workspace()
+        let allWindowsByStacking = global.display.sort_windows_by_stacking(
+            workspace.list_windows()
+        ).reverse();
+
+        return allWindowsByStacking.find(metaWindow => {
+            let rect = metaWindow.get_frame_rect();
+            return metaWindow.is_on_primary_monitor() &&
+                   metaWindow.showing_on_its_workspace() &&
+                   metaWindow.get_window_type() != Meta.WindowType.DESKTOP &&
+                   metaWindow.maximized_vertically &&
+                   stageX > rect.x && stageX < rect.x + rect.width
+        });
     }
 });
