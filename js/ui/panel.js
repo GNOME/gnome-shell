@@ -943,23 +943,16 @@ var Panel = new Lang.Class({
         if (button != 1)
             return Clutter.EVENT_PROPAGATE;
 
-        let focusWindow = global.display.focus_window;
-        if (!focusWindow)
-            return Clutter.EVENT_PROPAGATE;
-
-        let dragWindow = focusWindow.is_attached_dialog() ? focusWindow.get_transient_for()
-                                                          : focusWindow;
-        if (!dragWindow)
-            return Clutter.EVENT_PROPAGATE;
-
-        let rect = dragWindow.get_frame_rect();
         let [stageX, stageY] = event.get_coords();
 
-        let allowDrag = dragWindow.maximized_vertically &&
-                        stageX > rect.x && stageX < rect.x + rect.width;
+        let visibleWindows = this._getVisibleWindows()
+        let dragWindow = global.display.sort_windows_by_stacking(visibleWindows).find(
+            (window) => this._windowIsConnectedAtPosition(window, stageX)
+        );
 
-        if (!allowDrag)
+        if (!dragWindow) {
             return Clutter.EVENT_PROPAGATE;
+        }
 
         global.display.begin_grab_op(global.screen,
                                      dragWindow,
@@ -1074,19 +1067,12 @@ var Panel = new Lang.Class({
         if (!Main.layoutManager.primaryMonitor)
             return;
 
-        /* Get all the windows in the active workspace that are in the primary monitor and visible */
-        let activeWorkspace = global.screen.get_active_workspace();
-        let windows = activeWorkspace.list_windows().filter(metaWindow => {
-            return metaWindow.is_on_primary_monitor() &&
-                   metaWindow.showing_on_its_workspace() &&
-                   metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
-        });
-
         /* Check if at least one window is near enough to the panel */
+        let visibleWindows = this._getVisibleWindows();
         let [, panelTop] = this.actor.get_transformed_position();
         let panelBottom = panelTop + this.actor.get_height();
         let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        let isNearEnough = windows.some(metaWindow => {
+        let isNearEnough = visibleWindows.some(metaWindow => {
             let verticalPosition = metaWindow.get_frame_rect().y;
             return verticalPosition < panelBottom + 5 * scale;
         });
@@ -1204,5 +1190,24 @@ var Panel = new Lang.Class({
                 if (boxAlignment == Main.messageTray.bannerAlignment)
                     Main.messageTray.bannerBlocked = isOpen;
             });
+    },
+
+    _getVisibleWindows() {
+        /* Get all the windows in the active workspace that are in the primary monitor and visible */
+        let activeWorkspace = global.screen.get_active_workspace();
+        return activeWorkspace.list_windows().filter(metaWindow => {
+            return metaWindow.is_on_primary_monitor() &&
+                   metaWindow.showing_on_its_workspace() &&
+                   metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
+        });
+    },
+
+    _windowIsConnectedAtPosition(window, stageX) {
+        if (!window.maximized_vertically) {
+            return false;
+        } else {
+            let rect = window.get_frame_rect();
+            return stageX > rect.x && stageX < rect.x + rect.width;
+        }
     }
 });
