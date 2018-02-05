@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-01-28 13:56+0000\n"
-"PO-Revision-Date: 2018-01-31 23:38+0100\n"
+"POT-Creation-Date: 2018-02-05 16:59+0000\n"
+"PO-Revision-Date: 2018-02-05 23:42+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -1280,9 +1280,9 @@ msgstr "Stäng av"
 msgid "Leave Off"
 msgstr "Lämna avstängd"
 
-#: js/ui/keyboard.js:739 js/ui/status/keyboard.js:783
-msgid "Keyboard"
-msgstr "Tangentbord"
+#: js/ui/keyboard.js:198
+msgid "Region & Language Settings"
+msgstr "Re­gion- & språkinställningar"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1603,6 +1603,10 @@ msgstr "På"
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Ljusstyrka"
+
+#: js/ui/status/keyboard.js:783
+msgid "Keyboard"
+msgstr "Tangentbord"
 
 #: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
@@ -2085,19 +2089,19 @@ msgstr "Evolution-kalender"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:437
+#: src/main.c:432
 msgid "Print version"
 msgstr "Skriv ut version"
 
-#: src/main.c:443
+#: src/main.c:438
 msgid "Mode used by GDM for login screen"
 msgstr "Läge som används av GDM för inloggningsskärmen"
 
-#: src/main.c:449
+#: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Använd ett specifikt läge, t.ex. ”gdm” för inloggningsskärm"
 
-#: src/main.c:455
+#: src/main.c:450
 msgid "List possible modes"
 msgstr "Lista möjliga lägen"
 
