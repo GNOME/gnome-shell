@@ -25,8 +25,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-01-31 22:39+0000\n"
-"PO-Revision-Date: 2018-02-03 14:03+0200\n"
+"POT-Creation-Date: 2018-02-06 01:15+0000\n"
+"PO-Revision-Date: 2018-02-06 23:41+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -1305,9 +1305,9 @@ msgstr "Sammuta"
 msgid "Leave Off"
 msgstr "Poista käytöstä"
 
-#: js/ui/keyboard.js:739 js/ui/status/keyboard.js:783
-msgid "Keyboard"
-msgstr "Näppäimistö"
+#: js/ui/keyboard.js:198
+msgid "Region & Language Settings"
+msgstr "Kielen & alueen asetukset"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1448,7 +1448,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Järjestelmä"
 
-#: js/ui/panel.js:812
+#: js/ui/panel.js:814
 msgid "Top Bar"
 msgstr "Yläpalkki"
 
@@ -1630,6 +1630,10 @@ msgstr "Päällä"
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Kirkkaus"
+
+#: js/ui/status/keyboard.js:783
+msgid "Keyboard"
+msgstr "Näppäimistö"
 
 #: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
@@ -1954,6 +1958,32 @@ msgstr "Valmiustila"
 msgid "Power Off"
 msgstr "Sammuta"
 
+#: js/ui/status/thunderbolt.js:272
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#. we are done
+#: js/ui/status/thunderbolt.js:330
+msgid "Unknown Thunderbolt device"
+msgstr "Tuntematon Thunderbolt-laite"
+
+#: js/ui/status/thunderbolt.js:331
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Uusi laite havaittiin, kun olit pois. Katkaise laitteen yhteys ja yhdistä se "
+"uudelleen, jotta voit aloittaa sen käyttämisen."
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "Thunderbolt-valtuutusvirhe"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the thunderbolt device: %s"
+msgstr "Ei voitu valtuuttaa thunderbolt-laitetta: %s"
+
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Äänenvoimakkuutta muutettu"
@@ -2113,19 +2143,19 @@ msgstr "Evolution-kalenteri"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:437
+#: src/main.c:432
 msgid "Print version"
 msgstr "Tulosta versio"
 
-#: src/main.c:443
+#: src/main.c:438
 msgid "Mode used by GDM for login screen"
 msgstr "GDM:n kirjautumisruudussa käyttämä tila"
 
-#: src/main.c:449
+#: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Käytä tiettyä tilaa (esim. “gdm”) kirjautumisnäkymää varten"
 
-#: src/main.c:455
+#: src/main.c:450
 msgid "List possible modes"
 msgstr "Listaa mahdolliset tilat"
 
@@ -2686,10 +2716,6 @@ msgstr "Järjestelmän äänet"
 
 #~ msgid "Mouse Settings"
 #~ msgstr "Hiiren asetukset"
-
-#~| msgid "Region and Language Settings"
-#~ msgid "Region & Language Settings"
-#~ msgstr "Kielen & alueen asetukset"
 
 #~ msgid "Volume, network, battery"
 #~ msgstr "Äänenvoimakkuus, verkko, akku"
