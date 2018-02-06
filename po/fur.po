@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-12-18 16:24+0000\n"
-"PO-Revision-Date: 2018-01-09 18:49+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
+"POT-Creation-Date: 2018-02-06 04:14+0000\n"
+"PO-Revision-Date: 2018-02-06 22:43+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -43,130 +42,114 @@ msgid "Move window to last workspace"
 msgstr "Sposte barcon tal ultin spazi di lavôr"
 
 #: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "Sposte barcon tal spazi di lavôr a çampe"
-
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "Sposte barcon tal spazi di lavôr a drete"
-
-#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Sposte barcon tal spazi di lavôr parsore"
 
-#: data/50-mutter-navigation.xml:33
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace down"
 msgstr "Sposte barcon tal spazi di lavôr sot"
 
-#: data/50-mutter-navigation.xml:36
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one monitor to the left"
 msgstr "Sposte barcon tal visôr a çampe"
 
-#: data/50-mutter-navigation.xml:39
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one monitor to the right"
 msgstr "Sposte barcon tal visôr a drete"
 
-#: data/50-mutter-navigation.xml:42
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor up"
 msgstr "Sposte barcon tal visôr parsore"
 
-#: data/50-mutter-navigation.xml:45
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor down"
 msgstr "Sposte barcon tal visôr sot"
 
-#: data/50-mutter-navigation.xml:49
+#: data/50-mutter-navigation.xml:43
 msgid "Switch applications"
 msgstr "Passâ di une aplicazion in chê altre"
 
-#: data/50-mutter-navigation.xml:54
+#: data/50-mutter-navigation.xml:48
 msgid "Switch to previous application"
 msgstr "Passe ae aplicazion prime"
 
-#: data/50-mutter-navigation.xml:58
+#: data/50-mutter-navigation.xml:52
 msgid "Switch windows"
 msgstr "Passâ di un barcon in chel altri"
 
-#: data/50-mutter-navigation.xml:63
+#: data/50-mutter-navigation.xml:57
 msgid "Switch to previous window"
 msgstr "Passe al barcon prime"
 
-#: data/50-mutter-navigation.xml:67
+#: data/50-mutter-navigation.xml:61
 msgid "Switch windows of an application"
 msgstr "Passâ di un barcon in chel altri di une aplicazion"
 
-#: data/50-mutter-navigation.xml:72
+#: data/50-mutter-navigation.xml:66
 msgid "Switch to previous window of an application"
 msgstr "Passe al barcon prime di une aplicazion"
 
-#: data/50-mutter-navigation.xml:76
+#: data/50-mutter-navigation.xml:70
 msgid "Switch system controls"
 msgstr "Passâ di un control di sisteme in chel altri"
 
-#: data/50-mutter-navigation.xml:81
+#: data/50-mutter-navigation.xml:75
 msgid "Switch to previous system control"
 msgstr "Passe al control di sisteme precedent"
 
-#: data/50-mutter-navigation.xml:85
+#: data/50-mutter-navigation.xml:79
 msgid "Switch windows directly"
 msgstr "Passe dret ai barcons"
 
-#: data/50-mutter-navigation.xml:90
+#: data/50-mutter-navigation.xml:84
 msgid "Switch directly to previous window"
 msgstr "Passe dret al barcon precedent"
 
-#: data/50-mutter-navigation.xml:94
+#: data/50-mutter-navigation.xml:88
 msgid "Switch windows of an app directly"
 msgstr "Passe dret a un barcon di une aplicazion"
 
-#: data/50-mutter-navigation.xml:99
+#: data/50-mutter-navigation.xml:93
 msgid "Switch directly to previous window of an app"
 msgstr "Passe dret al barcon precedent di une aplicazion"
 
-#: data/50-mutter-navigation.xml:103
+#: data/50-mutter-navigation.xml:97
 msgid "Switch system controls directly"
 msgstr "Passe dret ai controi dal sisteme"
 
-#: data/50-mutter-navigation.xml:108
+#: data/50-mutter-navigation.xml:102
 msgid "Switch directly to previous system control"
 msgstr "Passe dret al control precedent dal sisteme"
 
-#: data/50-mutter-navigation.xml:111
+#: data/50-mutter-navigation.xml:105
 msgid "Hide all normal windows"
 msgstr "Plate ducj i barcons normâi"
 
-#: data/50-mutter-navigation.xml:114
+#: data/50-mutter-navigation.xml:108
 msgid "Switch to workspace 1"
 msgstr "Passe al spazi di lavôr 1"
 
-#: data/50-mutter-navigation.xml:117
+#: data/50-mutter-navigation.xml:111
 msgid "Switch to workspace 2"
 msgstr "Passe al spazi di lavôr 2"
 
-#: data/50-mutter-navigation.xml:120
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 3"
 msgstr "Passe al spazi di lavôr 3"
 
-#: data/50-mutter-navigation.xml:123
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 4"
 msgstr "Passe al spazi di lavôr 4"
 
-#: data/50-mutter-navigation.xml:126
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to last workspace"
 msgstr "Passe al ultin spazi di lavôr"
 
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "Sposte il spazi di lavôr a çampe"
-
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "Sposte il spazi di lavôr a drete"
-
-#: data/50-mutter-navigation.xml:135
+#: data/50-mutter-navigation.xml:123
 msgid "Move to workspace above"
 msgstr "Sposte il spazi di lavôr parsore"
 
-#: data/50-mutter-navigation.xml:138
+#: data/50-mutter-navigation.xml:126
 msgid "Move to workspace below"
 msgstr "Sposte il spazi di lavôr sot"
 
@@ -211,54 +194,50 @@ msgid "Restore window"
 msgstr "Ripristine barcon"
 
 #: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "Ative/Disative stât inrodolât"
-
-#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Siere il barcon"
 
-#: data/50-mutter-windows.xml:22
+#: data/50-mutter-windows.xml:20
 msgid "Hide window"
 msgstr "Plate il barcon"
 
-#: data/50-mutter-windows.xml:24
+#: data/50-mutter-windows.xml:22
 msgid "Move window"
 msgstr "Sposte il barcon"
 
-#: data/50-mutter-windows.xml:26
+#: data/50-mutter-windows.xml:24
 msgid "Resize window"
 msgstr "Ridimensione barcon"
 
-#: data/50-mutter-windows.xml:29
+#: data/50-mutter-windows.xml:27
 msgid "Toggle window on all workspaces or one"
 msgstr "Ative/Disative barcon su ducj i spazis di lavôr o nome un"
 
-#: data/50-mutter-windows.xml:31
+#: data/50-mutter-windows.xml:29
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Tire sù il barcon se al è cuviert, se no sbassilu"
 
-#: data/50-mutter-windows.xml:33
+#: data/50-mutter-windows.xml:31
 msgid "Raise window above other windows"
 msgstr "Met il barcon parsore di chei altris"
 
-#: data/50-mutter-windows.xml:35
+#: data/50-mutter-windows.xml:33
 msgid "Lower window below other windows"
 msgstr "Bute il barcon sot di chei altris"
 
-#: data/50-mutter-windows.xml:37
+#: data/50-mutter-windows.xml:35
 msgid "Maximize window vertically"
 msgstr "Slargje il barcon par verticâl"
 
-#: data/50-mutter-windows.xml:39
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window horizontally"
 msgstr "Slargje il barcon par orizontâl"
 
-#: data/50-mutter-windows.xml:43
+#: data/50-mutter-windows.xml:41
 msgid "View split on left"
 msgstr "Slargje dividint ae çampe"
 
-#: data/50-mutter-windows.xml:47
+#: data/50-mutter-windows.xml:45
 msgid "View split on right"
 msgstr "Slargje dividint ae drete"
 
@@ -588,7 +567,7 @@ msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:479
+#: src/compositor/compositor.c:481
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -605,41 +584,45 @@ msgstr "Event cjampane"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Impussibil vierzi il display “%s” di X Window System\n"
 
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Disabilite la conession al gjestôr de session"
 
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Rimplace il window manager in vore"
 
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Specifiche il ID di gjestion session"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "Display X di doprâ"
 
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Inizialize session da file salvât"
 
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Fâs lis clamadis X sincronis"
 
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "Eseguìs come compositor wayland"
 
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
 msgstr "Eseguìs come compositor nidiât"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
 msgstr "Eseguìs come servidôr display complet, invezit che nidiât"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "Eseguìs cul backend X11"
 
 #. Translators: %s is a window title
 #: src/core/meta-close-dialog-default.c:147
@@ -718,7 +701,7 @@ msgstr "Mutter al è stât compilât cence supuart pe modalitât fetose\n"
 msgid "Mode Switch: Mode %d"
 msgstr "Cambie mût: mût %d"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -730,3 +713,18 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (su %s)"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Sposte barcon tal spazi di lavôr a çampe"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Sposte barcon tal spazi di lavôr a drete"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "Sposte il spazi di lavôr a çampe"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "Sposte il spazi di lavôr a drete"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "Ative/Disative stât inrodolât"
