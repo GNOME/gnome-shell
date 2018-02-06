@@ -48,7 +48,7 @@ function test() {
     function iconRow(icons, box_style) {
         let hb = new St.BoxLayout({ vertical: false, style: box_style });
 
-        for each (let iconName in icons) {
+        for (let iconName of icons) {
             hb.add(new St.Icon({ icon_name: iconName,
                                  icon_size: 48 }));
         }

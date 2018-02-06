@@ -81,16 +81,16 @@ function test() {
         tbox = new St.BoxLayout({ style: 'spacing: 20px;' });
         vbox.add(tbox);
 
-        for each (let s in backgroundSizes)
+        for (let s of backgroundSizes)
             addTestCase(image, size, s, false);
-        for each (let s in backgroundSizes)
+        for (let s of backgroundSizes)
             addTestCase(image, size, s, true);
     }
 
     function addTestImage(image) {
         const containerSizes = [[100, 100], [200, 200], [250, 250], [100, 250], [250, 100]];
 
-        for each (let size in containerSizes)
+        for (let size of containerSizes)
             addTestLine(image, size);
     }
 
