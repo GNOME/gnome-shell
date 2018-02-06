@@ -8,10 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2018-01-19 23:04+0000\n"
-"PO-Revision-Date: 2018-01-25 12:50+0100\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2018-02-06 01:15+0000\n"
+"PO-Revision-Date: 2018-02-06 13:22+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -1231,12 +1230,10 @@ msgid "Allow"
 msgstr "Permitir"
 
 #: js/ui/kbdA11yDialog.js:33
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned On"
 msgstr "Teclas lentas activadas"
 
 #: js/ui/kbdA11yDialog.js:34
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned Off"
 msgstr "Teclas lentas desactivadas"
 
@@ -1250,12 +1247,10 @@ msgstr ""
 "forma en que funciona el teclado."
 
 #: js/ui/kbdA11yDialog.js:42
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned On"
 msgstr "Teclas persistentes activadas"
 
 #: js/ui/kbdA11yDialog.js:43
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned Off"
 msgstr "Teclas persistentes desactivadas"
 
@@ -1299,9 +1294,9 @@ msgstr "Apagar"
 msgid "Leave Off"
 msgstr "Dejar desactivada"
 
-#: js/ui/keyboard.js:739 js/ui/status/keyboard.js:783
-msgid "Keyboard"
-msgstr "Teclado"
+#: js/ui/keyboard.js:198
+msgid "Region & Language Settings"
+msgstr "Configuración de región e idioma"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1440,7 +1435,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistema"
 
-#: js/ui/panel.js:812
+#: js/ui/panel.js:814
 msgid "Top Bar"
 msgstr "Barra superior"
 
@@ -1622,6 +1617,10 @@ msgstr "Encender"
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Brillo"
+
+#: js/ui/status/keyboard.js:783
+msgid "Keyboard"
+msgstr "Teclado"
 
 #: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
@@ -1946,6 +1945,32 @@ msgstr "Suspender"
 msgid "Power Off"
 msgstr "Apagar"
 
+#: js/ui/status/thunderbolt.js:272
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#. we are done
+#: js/ui/status/thunderbolt.js:330
+msgid "Unknown Thunderbolt device"
+msgstr "Dispositivo Thunderbolt desconocido"
+
+#: js/ui/status/thunderbolt.js:331
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Se ha detectado un dispositivo nuevo mientras estaba fuera. Desconéctelo y "
+"vuélvalo a conectar para empezar a usarlo."
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "Error de autorización de Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the thunderbolt device: %s"
+msgstr "No se pudo autorizar el dispositivo Thunderbolt: %s"
+
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Volumen modificado"
@@ -2105,21 +2130,21 @@ msgstr "Calendario de Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:437
+#: src/main.c:432
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: src/main.c:443
+#: src/main.c:438
 msgid "Mode used by GDM for login screen"
 msgstr "Modo usado por GDM para la pantalla de inicio"
 
-#: src/main.c:449
+#: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Usar un modo específico, por ejemplo, «gdm» para la pantalla de inicio de "
 "sesión"
 
-#: src/main.c:455
+#: src/main.c:450
 msgid "List possible modes"
 msgstr "Listar los modos posibles"
 
@@ -2717,9 +2742,6 @@ msgstr "Sonidos del sistema"
 
 #~ msgid "Mouse Settings"
 #~ msgstr "Configuración del ratón…"
-
-#~ msgid "Region & Language Settings"
-#~ msgstr "Configuración de región e idioma"
 
 #~ msgid "%d hour remaining"
 #~ msgid_plural "%d hours remaining"
