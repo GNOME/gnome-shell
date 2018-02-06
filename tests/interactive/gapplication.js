@@ -39,25 +39,25 @@ function main() {
     action.connect('activate', do_action);
     app.add_action(action);
 
-    let action = new Gio.SimpleAction({ name: 'two' });
+    action = new Gio.SimpleAction({ name: 'two' });
     action.connect('activate', do_action);
     app.add_action(action);
 
-    let action = new Gio.SimpleAction({ name: 'toggle', state: GLib.Variant.new('b', false) });
+    action = new Gio.SimpleAction({ name: 'toggle', state: GLib.Variant.new('b', false) });
     action.connect('activate', do_action_toggle);
     action.connect('notify::state', do_action_state_change);
     app.add_action(action);
 
-    let action = new Gio.SimpleAction({ name: 'disable', enabled: false });
+    action = new Gio.SimpleAction({ name: 'disable', enabled: false });
     action.set_enabled(false);
     action.connect('activate', do_action);
     app.add_action(action);
 
-    let action = new Gio.SimpleAction({ name: 'parameter-int', parameter_type: GLib.VariantType.new('u') });
+    action = new Gio.SimpleAction({ name: 'parameter-int', parameter_type: GLib.VariantType.new('u') });
     action.connect('activate', do_action_param);
     app.add_action(action);
 
-    let action = new Gio.SimpleAction({ name: 'parameter-string', parameter_type: GLib.VariantType.new('s') });
+    action = new Gio.SimpleAction({ name: 'parameter-string', parameter_type: GLib.VariantType.new('s') });
     action.connect('activate', do_action_param);
     app.add_action(action);
 
@@ -89,7 +89,7 @@ function main() {
     item.set_action_and_target_value('app.parameter-int', GLib.Variant.new('u', 42));
     menu.append_item(item);
 
-    let item = Gio.MenuItem.new('Say 43', null);
+    item = Gio.MenuItem.new('Say 43', null);
     item.set_action_and_target_value('app.parameter-int', GLib.Variant.new('u', 43));
     menu.append_item(item);
 

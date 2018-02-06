@@ -19,9 +19,9 @@ function test() {
     let scroll = new St.ScrollView();
     vbox.add(scroll, { expand: true });
 
-    let vbox = new St.BoxLayout({ vertical: true,
-                                  style: 'padding: 10px;'
-                                  + 'spacing: 20px;' });
+    vbox = new St.BoxLayout({ vertical: true,
+                              style: 'padding: 10px;'
+                              + 'spacing: 20px;' });
     scroll.add_actor(vbox);
 
     let tbox = null;
