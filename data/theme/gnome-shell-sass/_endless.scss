@@ -391,8 +391,13 @@ popup-separator-menu-item {
 }
 
 .icon-grid {
+    spacing: 10px;
+    -shell-grid-horizontal-item-size: 118px;
+    -shell-grid-vertical-item-size: 118px;
+
     .overview-icon {
         icon-size: 64px;
+        spacing: 8px;
         border-radius: 15px;
         font-weight: bold;
     }
