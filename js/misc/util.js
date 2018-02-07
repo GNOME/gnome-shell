@@ -511,6 +511,16 @@ function getBrowserApp() {
     return browserApp;
 }
 
+function blockClickEventsOnActor(actor) {
+    actor.reactive = true;
+    actor.connect('button-press-event', function (actor, event) {
+        return true;
+    });
+    actor.connect('button-release-event', function (actor, event) {
+        return true;
+    });
+}
+
 function _getJsonSearchEngine(folder) {
     let path = GLib.build_filenamev([GLib.get_user_config_dir(), folder, 'Default', 'Preferences']);
     let parser = new Json.Parser();

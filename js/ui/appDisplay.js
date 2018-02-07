@@ -1050,10 +1050,17 @@ var AppSearchProvider = class AppSearchProvider {
         this.getInitialResultSet(terms, callback, cancellable);
     }
 
+    activateResult(appId) {
+        let event = Clutter.get_current_event();
+        let app = this._appSys.lookup_app(appId);
+        let activationContext = new AppActivation.AppActivationContext(app);
+        activationContext.activate(event);
+    }
+
     createResultObject(resultMeta) {
-        if (resultMeta.id.endsWith('.desktop'))
-            return new AppIcon(this._appSys.lookup_app(resultMeta['id']));
-        else
+        // We only use this code path for SystemActions which, from the point
+        // of view of this method, are those NOT referenced with desktop IDs.
+        if (!resultMeta.id.endsWith('.desktop'))
             return new SystemActionIcon(this, resultMeta);
     }
 };
