@@ -390,6 +390,14 @@ popup-separator-menu-item {
     & > StBoxLayout { padding: 0px 70px; }
 }
 
+.icon-grid {
+    .overview-icon {
+        icon-size: 64px;
+        border-radius: 15px;
+        font-weight: bold;
+    }
+}
+
 // Desktop Search (text entry widget)
 
 #searchEntry {

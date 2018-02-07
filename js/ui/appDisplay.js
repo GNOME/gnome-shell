@@ -1218,7 +1218,7 @@ var FolderIcon = class FolderIcon {
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
-            setSizeManually: true
+            setSizeManually: false,
         });
         this.actor.set_child(this.icon);
         this.actor.label_actor = this.icon.label;
@@ -1825,7 +1825,7 @@ var AppIcon = class AppIcon {
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['createExtraIcons'] = this._createExtraIcons.bind(this);
-        iconParams['setSizeManually'] = true;
+        iconParams['setSizeManually'] = false;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 
