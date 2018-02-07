@@ -325,6 +325,9 @@ recorder_fetch_cursor_image (ShellRecorder *recorder)
   if (!texture)
     return;
 
+  meta_cursor_tracker_get_hot (recorder->cursor_tracker
+                               &recorder->cursor_hot_x, &recorder->cursor_hot_y);
+
   width = cogl_texture_get_width (texture);
   height = cogl_texture_get_height (texture);
   stride = 4 * width;
