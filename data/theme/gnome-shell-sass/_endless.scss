@@ -390,6 +390,56 @@ popup-separator-menu-item {
 
 // Icon Grid
 
+%app-well-icon {
+    width: 118px;
+    height: 118px;
+    padding: 6px 0 6px 0;
+    spacing: 4px;
+}
+
+.app-well-app {
+    .overview-icon { @extend %app-well-icon; }
+    & > .overview-icon.overview-icon-with-label {
+        /* Use defaults here to "remove" the values set in _common.scss */
+        padding: 0px;
+        spacing: 6px;
+    }
+}
+
+/* Need to declare this one outside of .app-folder for DnD */
+.app-folder-icon {
+    border-radius: 12px;
+    background: rgba(23, 25, 26, 0.3);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.app-folder,
+.app-well-app.app-folder {
+    background-color: transparent;
+
+    & .overview-icon,
+    &:active .overview-icon,
+    &:checked .overview-icon {
+        box-shadow: none;
+        border-radius: 15px;
+        font-weight: bold;
+    }
+
+    &:checked .app-folder-icon,
+    &:selected .app-folder-icon {
+        background: rgba(23, 25, 26, 0.6);
+        transition-duration: 250ms;
+        box-shadow: inset 0 3px 4px rgba(0, 0, 0, 0.7);
+    }
+}
+
+.overview-icon-label {
+    height: 46px;
+    text-shadow: black 0px 2px 2px;
+    border: none;
+    background-color: transparent;
+}
+
 %overview-icon {
     width: 118px;
     height: 118px;

@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported BaseIcon, IconGrid, PaginatedIconGrid, ANIMATION_MAX_DELAY_OUT_FOR_ITEM */
 
-const { Clutter, GObject, Graphene, Meta, St } = imports.gi;
+const { Clutter, GObject, Graphene, Meta, Pango, St } = imports.gi;
 
 const Params = imports.misc.params;
 const Main = imports.ui.main;
@@ -54,10 +54,15 @@ class BaseIcon extends St.Bin {
         this._box.add_actor(this._iconBin);
 
         if (params.showLabel) {
-            this.label = new St.Label({ text: label });
+            this.label = new St.Label({
+                text: label,
+                style_class: 'overview-icon-label',
+            });
             this.label.clutter_text.set({
                 x_align: Clutter.ActorAlign.CENTER,
                 y_align: Clutter.ActorAlign.CENTER,
+                line_wrap: true,
+                ellipsize: Pango.EllipsizeMode.END,
             });
             this._box.add_actor(this.label);
         } else {

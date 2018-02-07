@@ -1179,7 +1179,14 @@ var FolderIcon = GObject.registerClass({
             createIcon: this._createIcon.bind(this),
             setSizeManually: false,
         });
-        this.set_child(this.icon);
+        this._iconContainer = new St.Widget({
+            layout_manager: new Clutter.BinLayout(),
+            x_expand: true,
+            y_expand: true,
+        });
+        this._iconContainer.add_child(this.icon);
+
+        this.set_child(this._iconContainer);
         this.label_actor = this.icon.label;
 
         this.view = new FolderView(this._dirInfo, parentView);
