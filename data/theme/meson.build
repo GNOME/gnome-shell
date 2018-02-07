@@ -7,15 +7,21 @@ theme_sources = files([
   'gnome-shell-sass/_high-contrast-colors.scss'
 ])
 
+styles = [
+  'gnome-shell-high-contrast',
+  'gnome-shell'
+]
+
 theme_deps = []
 
 if sassc.found()
-  parse_sass = files('parse-sass.sh')
-
-  theme_deps += custom_target('update-theme',
-    output: 'theme-update.stamp',
-    depend_files: theme_sources,
-    command: [parse_sass, '@OUTPUT@'],
-    build_by_default: true
-  )
+  foreach style: styles
+    theme_deps += custom_target('style-' + style,
+                                input: '@0@.scss'.format(style),
+                                output: '@0@.css'.format(style),
+                                command: [
+                                  sassc, '-a', '@INPUT@', '@OUTPUT@'
+                                ],
+                                depend_files: theme_sources)
+  endforeach
 endif

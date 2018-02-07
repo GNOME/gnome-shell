@@ -138,7 +138,7 @@ endif
 
 mutter_typelibdir = mutter_dep.get_pkgconfig_variable('typelibdir')
 python = find_program('python3')
-sassc = find_program('sassc', required: false)
+sassc = find_program('sassc', required: true)
 
 cc = meson.get_compiler('c')
 
