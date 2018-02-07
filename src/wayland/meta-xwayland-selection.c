@@ -1238,7 +1238,7 @@ handle_incr_chunk (MetaWaylandCompositor *compositor,
 {
   if (selection->x11_selection &&
       selection->x11_selection->incr &&
-      event->window == selection->owner &&
+      event->window == selection->window &&
       event->state == PropertyNewValue &&
       event->atom == gdk_x11_get_xatom_by_name ("_META_SELECTION"))
     {
@@ -1248,8 +1248,8 @@ handle_incr_chunk (MetaWaylandCompositor *compositor,
     }
   else if (selection->wayland_selection &&
            selection->wayland_selection->incr &&
-           event->window == selection->window &&
            event->state == PropertyDelete &&
+           event->window == selection->wayland_selection->request_event.requestor &&
            event->atom == selection->wayland_selection->request_event.property)
     {
       /* Wayland to X11 */
