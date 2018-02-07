@@ -42,7 +42,7 @@ class BaseIcon extends St.Bin {
 
         super._init({ style_class: styleClass,
                       x_fill: true,
-                      y_fill: true });
+                      y_fill: false });
 
         this.connect('destroy', this._onDestroy.bind(this));
 

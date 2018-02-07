@@ -390,6 +390,29 @@ popup-separator-menu-item {
     & > StBoxLayout { padding: 0px 70px; }
 }
 
+%app-well-icon {
+    width: 118px;
+    height: 118px;
+    padding: 6px 1px 6px 1px;
+    spacing: 4px;
+}
+
+.app-well-app {
+    .overview-icon { @extend %app-well-icon; }
+}
+
+.app-folder,
+.app-well-app.app-folder {
+    & > .overview-icon {
+        @extend %app-well-icon;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+.app-folder-popup {
+    -arrow-background-color: rgba(0, 0, 0, 0.3);
+}
+
 .icon-grid {
     spacing: 10px;
     -shell-grid-horizontal-item-size: 118px;
