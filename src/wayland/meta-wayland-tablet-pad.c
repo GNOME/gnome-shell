@@ -277,9 +277,13 @@ meta_wayland_tablet_pad_notify (MetaWaylandTabletPad  *pad,
                                 struct wl_resource    *resource)
 {
   struct wl_client *client = wl_resource_get_client (resource);
+  const gchar *node_path;
   GList *l;
 
-  zwp_tablet_pad_v2_send_path (resource, clutter_input_device_get_device_node (pad->device));
+  node_path = clutter_input_device_get_device_node (pad->device);
+  if (node_path)
+    zwp_tablet_pad_v2_send_path (resource, node_path);
+
   zwp_tablet_pad_v2_send_buttons (resource, pad->n_buttons);
 
   for (l = pad->groups; l; l = l->next)
