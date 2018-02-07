@@ -668,47 +668,13 @@ var IconGrid = GObject.registerClass({
         return this._fixedVItemSize ? this._fixedVItemSize : this._vItemSize;
     }
 
-    _updateSpacingForSize(availWidth, availHeight) {
-        let maxEmptyVArea = availHeight - this._minRows * this._getVItemSize();
-        let maxEmptyHArea = availWidth - this._minColumns * this._getHItemSize();
-        let maxHSpacing, maxVSpacing;
-
-        if (this._padWithSpacing) {
-            // minRows + 1 because we want to put spacing before the first row, so it is like we have one more row
-            // to divide the empty space
-            maxVSpacing = Math.floor(maxEmptyVArea / (this._minRows + 1));
-            maxHSpacing = Math.floor(maxEmptyHArea / (this._minColumns + 1));
-        } else {
-            if (this._minRows <=  1)
-                maxVSpacing = maxEmptyVArea;
-            else
-                maxVSpacing = Math.floor(maxEmptyVArea / (this._minRows - 1));
-
-            if (this._minColumns <=  1)
-                maxHSpacing = maxEmptyHArea;
-            else
-                maxHSpacing = Math.floor(maxEmptyHArea / (this._minColumns - 1));
-        }
-
-        let maxSpacing = Math.min(maxHSpacing, maxVSpacing);
-        // Limit spacing to the item size
-        maxSpacing = Math.min(maxSpacing, Math.min(this._getVItemSize(), this._getHItemSize()));
-        // The minimum spacing, regardless of whether it satisfies the row/columng minima,
-        // is the spacing we get from CSS.
-        let spacing = Math.max(this._spacing, maxSpacing);
-        this.setSpacing(spacing);
-        if (this._padWithSpacing)
-            this.topPadding = this.rightPadding = this.bottomPadding = this.leftPadding = spacing;
-    }
-
     /*
      * This function must to be called before iconGrid allocation,
      * to know how much spacing can the grid has
      */
-    adaptToSize(availWidth, availHeight) {
+    adaptToSize() {
         this._fixedHItemSize = this._hItemSize;
         this._fixedVItemSize = this._vItemSize;
-        this._updateSpacingForSize(availWidth, availHeight);
     }
 });
 

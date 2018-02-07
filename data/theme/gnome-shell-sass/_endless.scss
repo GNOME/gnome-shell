@@ -403,6 +403,10 @@ popup-separator-menu-item {
 }
 
 .icon-grid {
+    spacing: 10px;
+    -shell-grid-horizontal-item-size: 118px;
+    -shell-grid-vertical-item-size: 118px;
+
     .overview-icon {
          @extend %overview-icon;
     }
