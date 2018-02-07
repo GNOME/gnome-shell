@@ -310,6 +310,7 @@ var OverviewEntry = GObject.registerClass({
 
     _stopSearch() {
         global.stage.set_key_focus(null);
+        this.setSpinning(false);
     }
 
     _startSearch(event) {

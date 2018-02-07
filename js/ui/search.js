@@ -14,6 +14,7 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 
 var MAX_LIST_SEARCH_RESULTS_ROWS = 5;
 var MAX_GRID_SEARCH_RESULTS_ROWS = 1;
+var MAX_GRID_SEARCH_RESULTS_COLS = 8;
 
 var MaxWidthBox = GObject.registerClass(
 class MaxWidthBox extends St.BoxLayout {
@@ -58,7 +59,25 @@ class SearchResult extends St.Button {
             St.Clipboard.get_default().set_text(
                 St.ClipboardType.CLIPBOARD, this.metaInfo.clipboardText);
         }
-        Main.overview.toggle();
+        Main.overview.hide();
+    }
+});
+
+var ListDescriptionBox = GObject.registerClass(
+class ListDescriptionBox extends St.BoxLayout {
+    vfunc_get_preferred_height(forWidth) {
+        // This container requests space for the title and description
+        // regardless of visibility, but allocates normally to visible actors.
+        // This allows us have a constant sized box, but still center the title
+        // label when the description is not present.
+        let min = 0, nat = 0;
+        let children = this.get_children();
+        for (let child of children) {
+            let [childMin, childNat] = child.get_preferred_height(forWidth);
+            min += childMin;
+            nat += childNat;
+        }
+        return [min, nat];
     }
 });
 
@@ -72,7 +91,6 @@ class ListSearchResult extends SearchResult {
         let content = new St.BoxLayout({
             style_class: 'list-search-result-content',
             vertical: false,
-            x_align: Clutter.ActorAlign.START,
             x_expand: true,
             y_expand: true,
         });
@@ -80,23 +98,25 @@ class ListSearchResult extends SearchResult {
 
         this._termsChangedId = 0;
 
-        let titleBox = new St.BoxLayout({
-            style_class: 'list-search-result-title',
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        content.add_child(titleBox);
-
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
         if (icon)
-            titleBox.add(icon);
+            content.add_child(icon);
 
-        let title = new St.Label({
-            text: this.metaInfo['name'],
+        let details = new ListDescriptionBox({
+            vertical: true,
+            x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
         });
-        titleBox.add_child(title);
+        content.add_child(details);
+
+        let title = new St.Label({
+            style_class: 'list-search-result-title',
+            text: this.metaInfo['name'],
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.START,
+        });
+        details.add_child(title);
 
         this.label_actor = title;
 
@@ -105,7 +125,7 @@ class ListSearchResult extends SearchResult {
                 style_class: 'list-search-result-description',
                 y_align: Clutter.ActorAlign.CENTER,
             });
-            content.add_child(this._descriptionLabel);
+            details.add_child(this._descriptionLabel);
 
             this._termsChangedId =
                 this._resultsView.connect('terms-changed',
@@ -113,6 +133,14 @@ class ListSearchResult extends SearchResult {
 
             this._highlightTerms();
         }
+
+        let hoverIcon = new St.Icon({
+            style_class: 'list-search-result-arrow-icon',
+            icon_name: 'go-next-symbolic',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.END,
+        });
+        content.add_child(hoverIcon);
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -215,9 +243,6 @@ var SearchResultsBase = GObject.registerClass({
         this.notify('focus-child');
     }
 
-    _setMoreCount(_count) {
-    }
-
     _ensureResultActors(results, callback) {
         let metasNeeded = results.filter(
             resultId => this._resultDisplays[resultId] === undefined
@@ -270,7 +295,6 @@ var SearchResultsBase = GObject.registerClass({
             let results = maxResults > -1
                 ? this.provider.filterResults(providerResults, maxResults)
                 : providerResults;
-            let moreCount = Math.max(providerResults.length - results.length, 0);
 
             this._ensureResultActors(results, successful => {
                 if (!successful) {
@@ -287,7 +311,6 @@ var SearchResultsBase = GObject.registerClass({
                 results.forEach(resultId => {
                     this._addItem(this._resultDisplays[resultId]);
                 });
-                this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.show();
                 callback();
             });
@@ -315,14 +338,11 @@ class ListSearchResults extends SearchResultsBase {
             style_class: 'list-search-results',
             vertical: true,
             x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
         });
         this._container.add_child(this._content);
 
         this._resultDisplayBin.set_child(this._container);
-    }
-
-    _setMoreCount(count) {
-        this.providerInfo.setMoreCount(count);
     }
 
     _getMaxDisplayedResults() {
@@ -356,7 +376,7 @@ class GridSearchResults extends SearchResultsBase {
         super._init(provider, resultsView);
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
-                                             xAlign: St.Align.START });
+                                             xAlign: St.Align.MIDDLE });
 
         this._bin = new St.Bin({ x_align: Clutter.ActorAlign.CENTER });
         this._bin.set_child(this._grid);
@@ -397,12 +417,7 @@ class GridSearchResults extends SearchResultsBase {
     }
 
     _getMaxDisplayedResults() {
-        let width = this.allocation.get_width();
-        if (width == 0)
-            return -1;
-
-        let nCols = this._grid.columnsForWidth(width);
-        return nCols * this._grid.getRowLimit();
+        return MAX_GRID_SEARCH_RESULTS_ROWS * MAX_GRID_SEARCH_RESULTS_COLS;
     }
 
     _clearResultDisplay() {
@@ -430,10 +445,26 @@ var SearchResultsView = GObject.registerClass({
     Signals: {
         'terms-changed': {},
         'search-progress-updated': {},
+        'search-close-clicked': {},
     },
 }, class SearchResultsView extends St.BoxLayout {
     _init() {
         super._init({ name: 'searchResults', vertical: true });
+
+        let closeIcon = new St.Icon({ icon_name: 'window-close-symbolic' });
+        let closeButton = new St.Button({
+            name: 'searchResultsCloseButton',
+            child: closeIcon,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.END,
+            y_expand: false,
+            y_align: Clutter.ActorAlign.START,
+        });
+        closeButton.connect('clicked', () => {
+            this.emit('search-close-clicked');
+        });
+
+        this.add_child(closeButton);
 
         this._content = new MaxWidthBox({
             name: 'searchResultsContent',
@@ -496,6 +527,21 @@ var SearchResultsView = GObject.registerClass({
             this._registerProvider(this._internetProvider);
 
         this._reloadRemoteProviders();
+    }
+
+    vfunc_allocate(box, flags) {
+        let themeNode = this.get_theme_node();
+        let maxWidth = themeNode.get_max_width();
+        let availWidth = box.x2 - box.x1;
+        let adjustedBox = box;
+
+        if (availWidth > maxWidth) {
+            let excessWidth = availWidth - maxWidth;
+            adjustedBox.x1 += Math.floor(excessWidth / 2);
+            adjustedBox.x2 -= Math.floor(excessWidth / 2);
+        }
+
+        super.vfunc_allocate(adjustedBox, flags);
     }
 
     get terms() {
@@ -819,32 +865,24 @@ class ProviderInfo extends St.Button {
             y_align: Clutter.ActorAlign.START,
         });
 
-        this._content = new St.BoxLayout({ vertical: false,
-                                           style_class: 'list-search-provider-content' });
-        this.set_child(this._content);
-
         let icon = new St.Icon({ icon_size: this.PROVIDER_ICON_SIZE,
                                  gicon: provider.appInfo.get_icon() });
 
-        let detailsBox = new St.BoxLayout({ style_class: 'list-search-provider-details',
-                                            vertical: true,
-                                            x_expand: true });
-
-        let nameLabel = new St.Label({ text: provider.appInfo.get_name(),
-                                       x_align: Clutter.ActorAlign.START });
-
-        this._moreLabel = new St.Label({ x_align: Clutter.ActorAlign.START });
-
-        detailsBox.add_actor(nameLabel);
-        detailsBox.add_actor(this._moreLabel);
-
-
+        this._content = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._content.add_actor(icon);
-        this._content.add_actor(detailsBox);
+
+        let box = new St.BoxLayout({ vertical: true, x_expand: false });
+        this.set_child(box);
+
+        box.add_actor(this._content);
+
+        let label = new St.Label({ text: provider.appInfo.get_name(),
+                                   style_class: 'search-provider-icon-label' });
+        box.add_actor(label);
     }
 
     get PROVIDER_ICON_SIZE() {
-        return 32;
+        return 64;
     }
 
     animateLaunch() {
@@ -852,10 +890,5 @@ class ProviderInfo extends St.Button {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
         if (app.state == Shell.AppState.STOPPED)
             IconGrid.zoomOutActor(this._content);
-    }
-
-    setMoreCount(count) {
-        this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);
-        this._moreLabel.visible = count > 0;
     }
 });
