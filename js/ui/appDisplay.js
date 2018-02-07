@@ -1175,7 +1175,7 @@ var FolderIcon = GObject.registerClass({
 
         this.icon = new IconGrid.BaseIcon('', {
             createIcon: this._createIcon.bind(this),
-            setSizeManually: true,
+            setSizeManually: false,
         });
         this.set_child(this.icon);
         this.label_actor = this.icon.label;
@@ -1711,7 +1711,7 @@ var AppIcon = GObject.registerClass({
         delete iconParams['isDraggable'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
-        iconParams['setSizeManually'] = true;
+        iconParams['setSizeManually'] = false;
         this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this._iconContainer.add_child(this.icon);
 

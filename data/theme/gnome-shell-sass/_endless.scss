@@ -387,3 +387,23 @@ popup-separator-menu-item {
         background-image: url("resource:///org/gnome/shell/theme/discovery-feed-tile-hover.png");
     }
 }
+
+// Icon Grid
+
+%overview-icon {
+    width: 118px;
+    height: 118px;
+    icon-size: 64px;
+    spacing: 4px;
+    padding: 6px 0 6px 0;
+    padding-bottom: 0px;
+    border-radius: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.icon-grid {
+    .overview-icon {
+         @extend %overview-icon;
+    }
+}
