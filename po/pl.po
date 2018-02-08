@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-01-27 16:33+0000\n"
-"PO-Revision-Date: 2018-02-04 23:35+0100\n"
+"POT-Creation-Date: 2018-02-06 01:15+0000\n"
+"PO-Revision-Date: 2018-02-08 01:30+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -1307,9 +1307,9 @@ msgstr "Wyłącz"
 msgid "Leave Off"
 msgstr "Pozostaw wyłączone"
 
-#: js/ui/keyboard.js:739 js/ui/status/keyboard.js:783
-msgid "Keyboard"
-msgstr "Klawiatura"
+#: js/ui/keyboard.js:198
+msgid "Region & Language Settings"
+msgstr "Ustawienia regionu i języka"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1448,7 +1448,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Menu systemowe"
 
-#: js/ui/panel.js:812
+#: js/ui/panel.js:814
 msgid "Top Bar"
 msgstr "Górny pasek"
 
@@ -1634,6 +1634,10 @@ msgstr "Włączone"
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Jasność"
+
+#: js/ui/status/keyboard.js:783
+msgid "Keyboard"
+msgstr "Klawiatura"
 
 #: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
@@ -1960,6 +1964,32 @@ msgstr "Uśpij"
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
+#: js/ui/status/thunderbolt.js:272
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#. we are done
+#: js/ui/status/thunderbolt.js:330
+msgid "Unknown Thunderbolt device"
+msgstr "Nieznane urządzenie Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:331
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Podczas nieobecności wykryto nowe urządzenie. Proszę je rozłączyć "
+"i podłączyć ponownie, aby zacząć je używać."
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "Błąd upoważnienia Thunderbolt"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the thunderbolt device: %s"
+msgstr "Nie można upoważnić urządzenia Thunderbolt: %s"
+
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Zmieniono głośność"
@@ -2120,19 +2150,19 @@ msgstr "Kalendarz programu Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:437
+#: src/main.c:432
 msgid "Print version"
 msgstr "Wyświetla wersję"
 
-#: src/main.c:443
+#: src/main.c:438
 msgid "Mode used by GDM for login screen"
 msgstr "Tryb używany przez GDM dla ekranu logowania"
 
-#: src/main.c:449
+#: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Używa podanego trybu, np. „gdm” dla ekranu logowania"
 
-#: src/main.c:455
+#: src/main.c:450
 msgid "List possible modes"
 msgstr "Wyświetla listę możliwych trybów"
 
