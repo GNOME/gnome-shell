@@ -585,13 +585,9 @@ StScrollBar {
   .osd-monitor-label { font-size: 3em; }
   .level {
     height: 0.6em;
-    border-radius: 0.3em;
-    background-color: transparentize(darken($osd_bg_color,15%),0.5);
-    color: $osd_fg_color;
-  }
-  .level-bar {
-    background-color: $osd_fg_color;
-    border-radius: 0.3em;
+    -barlevel-height: 0.6em;
+    -barlevel-background-color: transparentize(darken($osd_bg_color,15%),0.5);
+    -barlevel-active-background-color: $osd_fg_color;
   }
 }
 
