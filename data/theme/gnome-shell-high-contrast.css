@@ -543,12 +543,9 @@ StScrollBar {
     font-size: 3em; }
   .osd-window .level {
     height: 0.6em;
-    border-radius: 0.3em;
-    background-color: rgba(11, 12, 13, 0.5);
-    color: #eeeeec; }
-  .osd-window .level-bar {
-    background-color: #eeeeec;
-    border-radius: 0.3em; }
+    -barlevel-height: 0.6em;
+    -barlevel-background-color: rgba(11, 12, 13, 0.5);
+    -barlevel-active-background-color: #eeeeec; }
 
 /* Pad OSD */
 .pad-osd-window {
