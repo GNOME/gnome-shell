@@ -418,6 +418,11 @@ var SwitcherList = new Lang.Class({
         return bbox;
     },
 
+    removeItem: function(index) {
+        let item = this._items.splice(index, 1);
+        item[0].destroy();
+    },
+
     _onItemClicked: function (index) {
         this._itemActivated(index);
     },
@@ -432,7 +437,7 @@ var SwitcherList = new Lang.Class({
     },
 
     highlight: function(index, justOutline) {
-        if (this._highlighted != -1) {
+        if (this._items[this._highlighted]) {
             this._items[this._highlighted].remove_style_pseudo_class('outlined');
             this._items[this._highlighted].remove_style_pseudo_class('selected');
         }
