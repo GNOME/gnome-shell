@@ -812,13 +812,6 @@ var AppSwitcher = new Lang.Class({
 
         this.icons.splice(index, 1);
         this.removeItem(index);
-
-        if (this._curApp == index)
-            this._curApp = SwitcherPopup.mod(index, this.icons.length);
-        if (this.icons.length > 0)
-            this.highlight(this._curApp);
-        else
-            this.actor.destroy();
     },
 });
 
