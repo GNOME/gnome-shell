@@ -376,15 +376,20 @@ var Calendar = new Lang.Class({
         /**
          * Translators: The header displaying just the month name
          * standalone, when this is a month of the current year.
+         * "%OB" is the new format specifier introduced in glibc 2.27,
+         * in most cases you should not change it.
          */
-        this._headerFormatWithoutYear = _('%B');
+        this._headerFormatWithoutYear = _('%OB');
         /**
          * Translators: The header displaying the month name and the year
          * number, when this is a month of a different year.  You can
          * reorder the format specifiers or add other modifications
          * according to the requirements of your language.
+         * "%OB" is the new format specifier introduced in glibc 2.27,
+         * in most cases you should not use the old "%B" here unless you
+         * absolutely know what you are doing.
          */
-        this._headerFormat = _('%B %Y');
+        this._headerFormat = _('%OB %Y');
 
         // Start off with the current date
         this._selectedDate = new Date();
