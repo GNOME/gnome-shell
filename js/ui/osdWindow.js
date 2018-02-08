@@ -1,9 +1,11 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const St = imports.gi.St;
 
+const BarLevel = imports.ui.barLevel;
 const Lang = imports.lang;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
@@ -17,16 +19,18 @@ var LEVEL_ANIMATION_TIME = 0.1;
 
 var LevelBar = new Lang.Class({
     Name: 'LevelBar',
+    Extends: BarLevel.BarLevel,
 
     _init() {
         this._level = 0;
 
-        this.actor = new St.Bin({ style_class: 'level',
-                                  x_align: St.Align.START,
-                                  y_fill: true });
-        this._bar = new St.Widget({ style_class: 'level-bar' });
+        params = {
+            'style-class': 'level',
+            'accessible-role': Atk.Role.LEVEL_BAR,
+        }
+        this.parent(this._level, params);
 
-        this.actor.set_child(this._bar);
+        this.actor.accessible_name = _("Volume");
 
         this.actor.connect('notify::width', () => { this.level = this.level; });
     },
@@ -38,10 +42,7 @@ var LevelBar = new Lang.Class({
     set level(value) {
         this._level = Math.max(0, Math.min(value, 100));
 
-        let alloc = this.actor.get_allocation_box();
-        let newWidth = Math.round((alloc.x2 - alloc.x1) * this._level / 100);
-        if (newWidth != this._bar.width)
-            this._bar.width = newWidth;
+        this.setValue(this._level / 100);
     }
 });
 
