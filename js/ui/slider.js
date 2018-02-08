@@ -7,55 +7,39 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
 
+const BarLevel = imports.ui.barLevel;
+
 var SLIDER_SCROLL_STEP = 0.02; /* Slider scrolling step in % */
 
 var Slider = new Lang.Class({
     Name: "Slider",
+    Extends: BarLevel.BarLevel,
 
     _init: function(value) {
-        if (isNaN(value))
-            // Avoid spreading NaNs around
-            throw TypeError('The slider value must be a number');
-        this._value = Math.max(Math.min(value, 1), 0);
-        this._sliderWidth = 0;
 
-        this.actor = new St.DrawingArea({ style_class: 'slider',
-                                          can_focus: true,
-                                          reactive: true,
-                                          accessible_role: Atk.Role.SLIDER });
-        this.actor.connect('repaint', Lang.bind(this, this._sliderRepaint));
+        params = {
+            'style-class': 'slider',
+            'can-focus': true,
+            'reactive': true,
+            'accessible-role': Atk.Role.SLIDER,
+        }
+        this.parent(value, params)
+
         this.actor.connect('button-press-event', Lang.bind(this, this._startDragging));
         this.actor.connect('touch-event', Lang.bind(this, this._touchDragging));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
         this.actor.connect('key-press-event', Lang.bind(this, this.onKeyPressEvent));
-        this.actor.connect('allocation-changed', (actor, box) => {
-            this._sliderWidth = box.get_width();
-        });
 
         this._releaseId = this._motionId = 0;
         this._dragging = false;
 
-        this._customAccessible = St.GenericAccessible.new_for_actor(this.actor);
-        this.actor.set_accessible(this._customAccessible);
-
-        this._customAccessible.connect('get-current-value', Lang.bind(this, this._getCurrentValue));
-        this._customAccessible.connect('get-minimum-value', Lang.bind(this, this._getMinimumValue));
-        this._customAccessible.connect('get-maximum-value', Lang.bind(this, this._getMaximumValue));
         this._customAccessible.connect('get-minimum-increment', Lang.bind(this, this._getMinimumIncrement));
-        this._customAccessible.connect('set-current-value', Lang.bind(this, this._setCurrentValue));
-
-        this.connect('value-changed', Lang.bind(this, this._valueChanged));
     },
 
-    setValue: function(value) {
-        if (isNaN(value))
-            throw TypeError('The slider value must be a number');
+    _barLevelRepaint: function(area) {
+        this.parent(area);
 
-        this._value = Math.max(Math.min(value, 1), 0);
-        this.actor.queue_repaint();
-    },
-
-    _sliderRepaint: function(area) {
+        // Add handle
         let cr = area.get_context();
         let themeNode = area.get_theme_node();
         let [width, height] = area.get_surface_size();
@@ -66,41 +50,9 @@ var Slider = new Lang.Class({
         let [hasHandleColor, handleBorderColor] =
             themeNode.lookup_color('-slider-handle-border-color', false);
 
-        let sliderHeight = themeNode.get_length('-slider-height');
-
-        let sliderBorderWidth = themeNode.get_length('-slider-border-width');
-        let sliderBorderRadius = Math.min(width, sliderHeight) / 2;
-
-        let sliderBorderColor = themeNode.get_color('-slider-border-color');
-        let sliderColor = themeNode.get_color('-slider-background-color');
-
-        let sliderActiveBorderColor = themeNode.get_color('-slider-active-border-color');
-        let sliderActiveColor = themeNode.get_color('-slider-active-background-color');
-
         const TAU = Math.PI * 2;
 
         let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
-
-        cr.arc(sliderBorderRadius + sliderBorderWidth, height / 2, sliderBorderRadius, TAU * 1/4, TAU * 3/4);
-        cr.lineTo(handleX, (height - sliderHeight) / 2);
-        cr.lineTo(handleX, (height + sliderHeight) / 2);
-        cr.lineTo(sliderBorderRadius + sliderBorderWidth, (height + sliderHeight) / 2);
-        Clutter.cairo_set_source_color(cr, sliderActiveColor);
-        cr.fillPreserve();
-        Clutter.cairo_set_source_color(cr, sliderActiveBorderColor);
-        cr.setLineWidth(sliderBorderWidth);
-        cr.stroke();
-
-        cr.arc(width - sliderBorderRadius - sliderBorderWidth, height / 2, sliderBorderRadius, TAU * 3/4, TAU * 1/4);
-        cr.lineTo(handleX, (height + sliderHeight) / 2);
-        cr.lineTo(handleX, (height - sliderHeight) / 2);
-        cr.lineTo(width - sliderBorderRadius - sliderBorderWidth, (height - sliderHeight) / 2);
-        Clutter.cairo_set_source_color(cr, sliderColor);
-        cr.fillPreserve();
-        Clutter.cairo_set_source_color(cr, sliderBorderColor);
-        cr.setLineWidth(sliderBorderWidth);
-        cr.stroke();
-
         let handleY = height / 2;
 
         let color = themeNode.get_foreground_color();
@@ -246,7 +198,7 @@ var Slider = new Lang.Class({
         relX = absX - sliderX;
         relY = absY - sliderY;
 
-        let width = this._sliderWidth;
+        let width = this._barLevelWidth;
         let handleRadius = this.actor.get_theme_node().get_length('-slider-handle-radius');
 
         let newvalue;
@@ -261,33 +213,9 @@ var Slider = new Lang.Class({
         this.emit('value-changed', this._value);
     },
 
-    _getCurrentValue: function (actor) {
-        return this._value;
-    },
-
-    _getMinimumValue: function (actor) {
-        return 0;
-    },
-
-    _getMaximumValue: function (actor) {
-        return 1;
-    },
-
     _getMinimumIncrement: function (actor) {
         return 0.1;
     },
-
-    _setCurrentValue: function (actor, value) {
-        this._value = value;
-    },
-
-    _valueChanged: function (slider, value, property) {
-        this._customAccessible.notify ("accessible-value");
-    },
-
-    get value() {
-        return this._value;
-    }
 });
 
 Signals.addSignalMethods(Slider.prototype);
