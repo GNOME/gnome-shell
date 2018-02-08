@@ -60,9 +60,15 @@ var BarLevel = new Lang.Class({
         let barLevelColor = themeNode.get_color('-barlevel-background-color');
         let barLevelActiveColor = themeNode.get_color('-barlevel-active-background-color');
 
-        let barLevelBorderWidth = themeNode.get_length('-barlevel-border-width');
-        let barLevelBorderColor = themeNode.get_color('-barlevel-border-color');
-        let barLevelActiveBorderColor = themeNode.get_color('-barlevel-active-border-color');
+        let barLevelBorderWidth = Math.min(themeNode.get_length('-barlevel-border-width'), 1);
+        let [hasBorderColor, barLevelBorderColor] =
+            themeNode.lookup_color('-barlevel-border-color', false);
+        if (!hasBorderColor)
+            barLevelBorderColor = barLevelColor;
+        let [hasActiveBorderColor, barLevelActiveBorderColor] =
+            themeNode.lookup_color('-barlevel-active-border-color', false);
+        if (!hasActiveBorderColor)
+            barLevelActiveBorderColor = barLevelActiveColor;
 
         const TAU = Math.PI * 2;
 
