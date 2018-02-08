@@ -128,12 +128,12 @@ StScrollBar {
 
 .slider {
   height: 1em;
-  -slider-height: 0.3em;
-  -slider-background-color: $insensitive_bg_color; //background of the trough
-  -slider-border-color: $borders_color; //trough border color
-  -slider-active-background-color: $selected_bg_color; //active trough fill
-  -slider-active-border-color: darken($selected_bg_color,10%); //active trough border
-  -slider-border-width: 1px;
+  -barlevel-height: 0.3em;
+  -barlevel-background-color: $insensitive_bg_color; //background of the trough
+  -barlevel-border-color: $borders_color; //trough border color
+  -barlevel-active-background-color: $selected_bg_color; //active trough fill
+  -barlevel-active-border-color: darken($selected_bg_color,10%); //active trough border
+  -barlevel-border-width: 1px;
   -slider-handle-radius: 6px;
 }
 
