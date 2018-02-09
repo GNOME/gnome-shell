@@ -16,6 +16,7 @@ var BarLevel = new Lang.Class({
             throw TypeError('The bar level value must be a number');
         this._maxValue = 1;
         this._value = Math.max(Math.min(value, this._maxValue), 0);
+        this._overdriveValue = 1;
         this._barLevelWidth = 0;
 
         if (params == undefined)
@@ -36,6 +37,7 @@ var BarLevel = new Lang.Class({
         this._customAccessible.connect('get-current-value', this._getCurrentValue.bind(this));
         this._customAccessible.connect('get-minimum-value', this._getMinimumValue.bind(this));
         this._customAccessible.connect('get-maximum-value', this._getMaximumValue.bind(this));
+        this._customAccessible.connect('get-overdrive-value', this._getOverdriveValue.bind(this));
         this._customAccessible.connect('set-current-value', this._setCurrentValue.bind(this));
 
         this.connect('value-changed', this._valueChanged.bind(this));
@@ -54,6 +56,19 @@ var BarLevel = new Lang.Class({
             throw TypeError('The bar level max value must be a number');
 
         this._maxValue = Math.max(value, 0);
+        this._overdriveValue = Math.min(this._overdriveValue, this._maxValue);
+        this.actor.queue_repaint();
+    },
+
+    setOverdriveValue(value) {
+        if (isNaN(value))
+            throw TypeError('The overdrive limit value must be a number');
+        if (value > this._maxValue)
+            throw new Error(`Tried to set overdrive value to ${value}, ` +
+                `which is a number greater than the maximum allowed value ${this._maxValue}`);
+
+        this._overdriveValue = value;
+        this._value = Math.max(Math.min(value, this._maxValue), 0);
         this.actor.queue_repaint();
     },
 
@@ -68,6 +83,7 @@ var BarLevel = new Lang.Class({
 
         let barLevelColor = themeNode.get_color('-barlevel-background-color');
         let barLevelActiveColor = themeNode.get_color('-barlevel-active-background-color');
+        let barLevelOverdriveColor = themeNode.get_color('-barlevel-overdrive-color');
 
         let barLevelBorderWidth = Math.min(themeNode.get_length('-barlevel-border-width'), 1);
         let [hasBorderColor, barLevelBorderColor] =
@@ -78,10 +94,19 @@ var BarLevel = new Lang.Class({
             themeNode.lookup_color('-barlevel-active-border-color', false);
         if (!hasActiveBorderColor)
             barLevelActiveBorderColor = barLevelActiveColor;
+        let [hasOverdriveBorderColor, barLevelOverdriveBorderColor] =
+            themeNode.lookup_color('-barlevel-overdrive-border-color', false);
+        if (!hasOverdriveBorderColor)
+            barLevelOverdriveBorderColor = barLevelOverdriveColor;
 
         const TAU = Math.PI * 2;
 
         let endX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._value / this._maxValue;
+        let overdriveSeparatorX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._overdriveValue / this._maxValue;
+        let overdriveActive = this._overdriveValue !== this._maxValue;
+        let overdriveSeparatorWidth = 0;
+        if (overdriveActive)
+            overdriveSeparatorWidth = themeNode.get_length('-barlevel-overdrive-separator-width');
 
         /* background bar */
         cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
@@ -95,9 +120,10 @@ var BarLevel = new Lang.Class({
         cr.stroke();
 
         /* normal progress bar */
+        let x = Math.min(endX, overdriveSeparatorX - overdriveSeparatorWidth / 2);
         cr.arc(barLevelBorderRadius + barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * 1 / 4, TAU * 3 / 4);
-        cr.lineTo(endX, (height - barLevelHeight) / 2);
-        cr.lineTo(endX, (height + barLevelHeight) / 2);
+        cr.lineTo(x, (height - barLevelHeight) / 2);
+        cr.lineTo(x, (height + barLevelHeight) / 2);
         cr.lineTo(barLevelBorderRadius + barLevelBorderWidth, (height + barLevelHeight) / 2);
         Clutter.cairo_set_source_color(cr, barLevelActiveColor);
         cr.fillPreserve();
@@ -105,8 +131,26 @@ var BarLevel = new Lang.Class({
         cr.setLineWidth(barLevelBorderWidth);
         cr.stroke();
 
+        /* overdrive progress barLevel */
+        x = Math.min(endX, overdriveSeparatorX) + overdriveSeparatorWidth / 2;
+        if (this._value > this._overdriveValue) {
+            cr.moveTo(x, (height - barLevelHeight) / 2);
+            cr.lineTo(endX, (height - barLevelHeight) / 2);
+            cr.lineTo(endX, (height + barLevelHeight) / 2);
+            cr.lineTo(x, (height + barLevelHeight) / 2);
+            cr.lineTo(x, (height - barLevelHeight) / 2);
+            Clutter.cairo_set_source_color(cr, barLevelOverdriveColor);
+            cr.fillPreserve();
+            Clutter.cairo_set_source_color(cr, barLevelOverdriveBorderColor);
+            cr.setLineWidth(barLevelBorderWidth);
+            cr.stroke();
+        }
+
         /* end progress bar arc */
-        Clutter.cairo_set_source_color(cr, barLevelActiveColor);
+        if (this._value <= this._overdriveValue)
+            Clutter.cairo_set_source_color(cr, barLevelActiveColor);
+        else
+            Clutter.cairo_set_source_color(cr, barLevelOverdriveColor);
         cr.arc(endX, height / 2, barLevelBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
         cr.lineTo(Math.floor(endX), (height + barLevelHeight) / 2);
         cr.lineTo(Math.floor(endX), (height - barLevelHeight) / 2);
@@ -115,11 +159,29 @@ var BarLevel = new Lang.Class({
         cr.setLineWidth(barLevelBorderWidth);
         cr.stroke();
 
+        /* draw overdrive separator */
+        if (overdriveActive) {
+            cr.moveTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - barLevelHeight) / 2);
+            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, (height - barLevelHeight) / 2);
+            cr.lineTo(overdriveSeparatorX + overdriveSeparatorWidth / 2, (height + barLevelHeight) / 2);
+            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height + barLevelHeight) / 2);
+            cr.lineTo(overdriveSeparatorX - overdriveSeparatorWidth / 2, (height - barLevelHeight) / 2);
+            if (this._value <= this._overdriveValue)
+                Clutter.cairo_set_source_color(cr, fgColor);
+            else
+                Clutter.cairo_set_source_color(cr, barLevelColor);
+            cr.fill();
+        }
+
         cr.$dispose();
     },
 
     _getCurrentValue(actor) {
         return this._value;
+    },
+
+    _getOverdriveValue(actor) {
+        return this._overdriveValue;
     },
 
     _getMinimumValue(actor) {
