@@ -1,6 +1,3 @@
-[submodule "data/theme/gnome-shell-sass"]
-	path = data/theme/gnome-shell-sass
-	url = https://git.gnome.org/browse/gnome-shell-sass
 [submodule "subprojects/gvc"]
 	path = subprojects/gvc
 	url = https://git.gnome.org/browse/libgnome-volume-control
