@@ -14,7 +14,8 @@ var BarLevel = new Lang.Class({
         if (isNaN(value))
             // Avoid spreading NaNs around
             throw TypeError('The bar level value must be a number');
-        this._value = Math.max(Math.min(value, 1), 0);
+        this._maxValue = 1;
+        this._value = Math.max(Math.min(value, this._maxValue), 0);
         this._barLevelWidth = 0;
 
         if (params == undefined)
@@ -44,7 +45,15 @@ var BarLevel = new Lang.Class({
         if (isNaN(value))
             throw TypeError('The bar level value must be a number');
 
-        this._value = Math.max(Math.min(value, 1), 0);
+        this._value = Math.max(Math.min(value, this._maxValue), 0);
+        this.actor.queue_repaint();
+    },
+
+    setMaximumValue(value) {
+        if (isNaN(value))
+            throw TypeError('The bar level max value must be a number');
+
+        this._maxValue = Math.max(value, 1);
         this.actor.queue_repaint();
     },
 
@@ -72,7 +81,9 @@ var BarLevel = new Lang.Class({
 
         const TAU = Math.PI * 2;
 
-        let endX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._value;
+        let endX = 0;
+        if (this._maxValue > 0)
+            endX = barLevelBorderRadius + (width - 2 * barLevelBorderRadius) * this._value / this._maxValue;
 
         /* background bar */
         cr.arc(width - barLevelBorderRadius - barLevelBorderWidth, height / 2, barLevelBorderRadius, TAU * 3 / 4, TAU * 1 / 4);
@@ -118,7 +129,7 @@ var BarLevel = new Lang.Class({
     },
 
     _getMaximumValue(actor) {
-        return 1;
+        return this._maxValue;
     },
 
     _setCurrentValue(actor, value) {

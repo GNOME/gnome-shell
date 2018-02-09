@@ -51,7 +51,7 @@ var Slider = new Lang.Class({
 
         const TAU = Math.PI * 2;
 
-        let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
+        let handleX = handleRadius + (width - 2 * handleRadius) * this._value / this._maxValue;
         let handleY = height / 2;
 
         let color = themeNode.get_foreground_color();
@@ -159,7 +159,7 @@ var Slider = new Lang.Class({
             delta = -dy * SLIDER_SCROLL_STEP;
         }
 
-        this._value = Math.min(Math.max(0, this._value + delta), 1);
+        this._value = Math.min(Math.max(0, this._value + delta), this._maxValue);
 
         this.actor.queue_repaint();
         this.emit('value-changed', this._value);
@@ -181,7 +181,7 @@ var Slider = new Lang.Class({
         let key = event.get_key_symbol();
         if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
             let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
-            this._value = Math.max(0, Math.min(this._value + delta, 1));
+            this._value = Math.max(0, Math.min(this._value + delta, this._maxValue));
             this.actor.queue_repaint();
             this.emit('drag-begin');
             this.emit('value-changed', this._value);
@@ -207,7 +207,7 @@ var Slider = new Lang.Class({
             newvalue = 1;
         else
             newvalue = (relX - handleRadius) / (width - 2 * handleRadius);
-        this._value = newvalue;
+        this._value = newvalue * this._maxValue;
         this.actor.queue_repaint();
         this.emit('value-changed', this._value);
     },
