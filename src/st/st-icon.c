@@ -164,7 +164,7 @@ st_icon_paint (ClutterActor *actor)
 
   if (priv->icon_texture)
     {
-      if (priv->shadow_pipeline)
+      if (priv->shadow_spec && priv->shadow_pipeline)
         {
           ClutterActorBox allocation;
           float width, height;
