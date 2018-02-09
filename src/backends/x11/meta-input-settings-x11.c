@@ -813,9 +813,9 @@ meta_input_settings_x11_set_stylus_pressure (MetaInputSettings      *settings,
                                              ClutterInputDeviceTool *tool,
                                              const gint32            pressure[4])
 {
-  guchar values[4] = { pressure[0], pressure[1], pressure[2], pressure[3] };
+  guint32 values[4] = { pressure[0], pressure[1], pressure[2], pressure[3] };
 
-  change_property (device, "Wacom Pressurecurve", XA_INTEGER, 8,
+  change_property (device, "Wacom Pressurecurve", XA_INTEGER, 32,
                    &values, G_N_ELEMENTS (values));
 }
 
