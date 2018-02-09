@@ -147,7 +147,10 @@ StScrollBar {
   -barlevel-border-color: #1c1f1f;
   -barlevel-active-background-color: #215d9c;
   -barlevel-active-border-color: #184472;
+  -barlevel-overdrive-color: #d51010;
+  -barlevel-overdrive-border-color: #a60c0c;
   -barlevel-border-width: 1px;
+  -barlevel-overdrive-separator-width: 0.2em;
   -slider-handle-radius: 6px; }
 
 /* Check Boxes */
@@ -545,7 +548,9 @@ StScrollBar {
     height: 0.6em;
     -barlevel-height: 0.6em;
     -barlevel-background-color: rgba(11, 12, 13, 0.5);
-    -barlevel-active-background-color: #eeeeec; }
+    -barlevel-active-background-color: #eeeeec;
+    -barlevel-overdrive-color: #d51010;
+    -barlevel-overdrive-separator-width: 0.2em; }
 
 /* Pad OSD */
 .pad-osd-window {
