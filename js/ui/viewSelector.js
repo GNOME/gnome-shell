@@ -606,7 +606,7 @@ var ViewSelector = new Lang.Class({
                 // - cancel the search
                 this.reset();
             }
-        } else if (!this._text.has_key_focus() &&
+        } else if (!(global.stage.get_key_focus() instanceof Clutter.Text) &&
                    (event.type() == Clutter.EventType.KEY_PRESS ||
                     event.type() == Clutter.EventType.KEY_RELEASE)) {
             let unichar = event.get_key_unicode();
