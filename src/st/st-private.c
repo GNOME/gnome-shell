@@ -417,6 +417,11 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   ClutterActorBox box;
   float width, height;
 
+  /* Calling clutter_actor_get_allocation_box() can provoke a re-layout, which
+   * would invalidate the shadow_spec, so check this and early return if needed. */
+  if (!clutter_actor_has_allocation(actor))
+    return NULL;
+
   clutter_actor_get_allocation_box (actor, &box);
   clutter_actor_box_get_size (&box, &width, &height);
 
