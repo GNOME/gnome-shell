@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-01-28 13:56+0000\n"
-"PO-Revision-Date: 2018-01-31 14:00+0700\n"
+"POT-Creation-Date: 2018-02-08 16:48+0000\n"
+"PO-Revision-Date: 2018-02-09 16:50+0700\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -697,7 +697,7 @@ msgid "Settings"
 msgstr "Pengaturan"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:47
+#: js/ui/calendar.js:44
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -707,46 +707,69 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:73
 msgctxt "grid sunday"
 msgid "S"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:75
 msgctxt "grid monday"
 msgid "M"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:77
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:79
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "R"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:84
+#: js/ui/calendar.js:81
 msgctxt "grid thursday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:86
+#: js/ui/calendar.js:83
 msgctxt "grid friday"
 msgid "F"
 msgstr "J"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:88
+#: js/ui/calendar.js:85
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:382
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:392
+msgid "%OB %Y"
+msgstr "%OB %Y"
 
 #: js/ui/calendar.js:449
 msgid "Previous month"
@@ -1274,9 +1297,9 @@ msgstr "Matikan"
 msgid "Leave Off"
 msgstr "Biarkan Mati"
 
-#: js/ui/keyboard.js:739 js/ui/status/keyboard.js:783
-msgid "Keyboard"
-msgstr "Papan Ketik"
+#: js/ui/keyboard.js:198
+msgid "Region & Language Settings"
+msgstr "Pengaturan Wilayah & Bahasa"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1415,7 +1438,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Sistem"
 
-#: js/ui/panel.js:812
+#: js/ui/panel.js:814
 msgid "Top Bar"
 msgstr "Bar Atas"
 
@@ -1478,11 +1501,11 @@ msgstr "GNOME perlu mengunci layar"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1311
 msgid "Unable to lock"
 msgstr "Tak bisa mengunci"
 
-#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1312
 msgid "Lock was blocked by an application"
 msgstr "Kunci diblokir oleh suatu aplikasi"
 
@@ -1594,6 +1617,10 @@ msgstr "Hidup"
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Kecerahan"
+
+#: js/ui/status/keyboard.js:783
+msgid "Keyboard"
+msgstr "Papan Ketik"
 
 #: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
@@ -1913,6 +1940,32 @@ msgstr "Suspensi"
 msgid "Power Off"
 msgstr "Matikan"
 
+#: js/ui/status/thunderbolt.js:272
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#. we are done
+#: js/ui/status/thunderbolt.js:330
+msgid "Unknown Thunderbolt device"
+msgstr "Perangkat Thunderbolt tak dikenal"
+
+#: js/ui/status/thunderbolt.js:331
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Perangkat baru telah terdeteksi saat Anda pergi. Harap lepaskan dan "
+"sambungkan kembali perangkat untuk mulai menggunakannya."
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "Autorisasi Thunderbolt galat"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the thunderbolt device: %s"
+msgstr "Tidak dapat mengautorisasi perangkat thunderbolt: %s"
+
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Volume diubah"
@@ -2071,19 +2124,19 @@ msgstr "Evolution Kalender"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:437
+#: src/main.c:432
 msgid "Print version"
 msgstr "Versi Cetak"
 
-#: src/main.c:443
+#: src/main.c:438
 msgid "Mode used by GDM for login screen"
 msgstr "Mode yang dipakai oleh layar log masuk GDM"
 
-#: src/main.c:449
+#: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Menggunakan mode tertentu, mis. \"gdm\" untuk layar masuk"
 
-#: src/main.c:455
+#: src/main.c:450
 msgid "List possible modes"
 msgstr "Menampilkan mode yang mungkin"
 
