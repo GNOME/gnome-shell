@@ -180,10 +180,10 @@ enum {
   PROP_GTK_MENUBAR_OBJECT_PATH,
   PROP_ON_ALL_WORKSPACES,
 
-  LAST_PROP,
+  PROP_LAST,
 };
 
-static GParamSpec *obj_props[LAST_PROP];
+static GParamSpec *obj_props[PROP_LAST];
 
 enum
 {
@@ -589,7 +589,7 @@ meta_window_class_init (MetaWindowClass *klass)
                           FALSE,
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
 
-  g_object_class_install_properties (object_class, LAST_PROP, obj_props);
+  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
   window_signals[WORKSPACE_CHANGED] =
     g_signal_new ("workspace-changed",

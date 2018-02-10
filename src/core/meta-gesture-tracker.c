@@ -70,10 +70,10 @@ struct _MetaGestureTrackerPrivate
 enum {
   PROP_0,
   PROP_AUTODENY_TIMEOUT,
-  LAST_PROP,
+  PROP_LAST,
 };
 
-static GParamSpec *obj_props[LAST_PROP];
+static GParamSpec *obj_props[PROP_LAST];
 
 enum {
   STATE_CHANGED,
@@ -161,7 +161,7 @@ meta_gesture_tracker_class_init (MetaGestureTrackerClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY);
 
-  g_object_class_install_properties (object_class, LAST_PROP, obj_props);
+  g_object_class_install_properties (object_class, PROP_LAST, obj_props);
 
   signals[STATE_CHANGED] =
     g_signal_new ("state-changed",
