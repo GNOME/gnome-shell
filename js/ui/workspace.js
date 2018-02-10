@@ -556,6 +556,9 @@ var WindowOverlay = new Lang.Class({
         let borderWidth = cloneWidth + 2 * this.borderSize;
         let borderHeight = cloneHeight + 2 * this.borderSize;
 
+        if (title.width >= borderWidth)
+            title.width = borderWidth;
+
         if (animate) {
             this._animateOverlayActor(this.border, borderX, borderY,
                                       borderWidth, borderHeight);
