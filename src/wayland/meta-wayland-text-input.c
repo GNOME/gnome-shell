@@ -301,6 +301,8 @@ text_input_enable (struct wl_client   *client,
       input_method = clutter_backend_get_input_method (clutter_get_default_backend ());
       if (input_method)
         clutter_input_method_focus_in (input_method, focus);
+      else
+        return;
     }
 
   show_preedit = (flags & GTK_TEXT_INPUT_ENABLE_FLAGS_CAN_SHOW_PREEDIT) != 0;
