@@ -913,7 +913,7 @@ var Keyboard = new Lang.Class({
 
     _onKeyboardGroupsChanged: function(keyboard) {
         this._groups = [];
-        this._addKeys();
+        this._onGroupChanged();
     },
 
     _onKeyboardStateChanged: function(controller, state) {
