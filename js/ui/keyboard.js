@@ -248,14 +248,14 @@ var Key = new Lang.Class({
 
     _init : function(key, extendedKeys) {
         this.key = key;
-        this.actor = this._makeKey(this.key);
+        this.keyButton = this._makeKey(this.key);
 
         /* Add the key in a container, so keys can be padded without losing
          * logical proportions between those.
          */
-        this.container = new St.BoxLayout ({ style_class: 'key-container' });
-        this.container.add(this.actor, { expand: true, x_fill: true });
-        this.container.connect('destroy', Lang.bind(this, this._onDestroy));
+        this.actor = new St.BoxLayout ({ style_class: 'key-container' });
+        this.actor.add(this.keyButton, { expand: true, x_fill: true });
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._extended_keys = extendedKeys;
         this._extended_keyboard = null;
@@ -282,12 +282,12 @@ var Key = new Lang.Class({
                                                        x_align: St.Align.START });
         this._boxPointer.actor.hide();
         Main.layoutManager.addChrome(this._boxPointer.actor);
-        this._boxPointer.setPosition(this.actor, 0.5);
+        this._boxPointer.setPosition(this.keyButton, 0.5);
 
         // Adds style to existing keyboard style to avoid repetition
         this._boxPointer.actor.add_style_class_name('keyboard-subkeys');
         this._getExtendedKeys();
-        this.actor._extended_keys = this._extended_keyboard;
+        this.keyButton._extended_keys = this._extended_keyboard;
     },
 
     _getKeyval: function(key) {
@@ -302,8 +302,8 @@ var Key = new Lang.Class({
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                     KEY_LONG_PRESS_TIME,
                                                     Lang.bind(this, function() {
-                                                        this.actor.set_hover(false);
-                                                        this.actor.fake_release();
+                                                        this.keyButton.set_hover(false);
+                                                        this.keyButton.fake_release();
                                                         this._pressTimeoutId = 0;
                                                         this._touchPressed = false;
                                                         this._ensureExtendedKeysPopup();
@@ -345,8 +345,8 @@ var Key = new Lang.Class({
         this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
         this._capturedEventId = global.stage.connect('captured-event',
                                                      Lang.bind(this, this._onCapturedEvent));
-        this._unmapId = this.actor.connect('notify::mapped', Lang.bind(this, function() {
-            if (!this.actor.is_mapped())
+        this._unmapId = this.keyButton.connect('notify::mapped', Lang.bind(this, function() {
+            if (!this.keyButton.is_mapped())
                 this._hideSubkeys();
         }));
     },
@@ -359,7 +359,7 @@ var Key = new Lang.Class({
             this._capturedEventId = 0;
         }
         if (this._unmapId) {
-            this.actor.disconnect(this._unmapId);
+            this.keyButton.disconnect(this._unmapId);
             this._unmapId = 0;
         }
         this._capturedPress = false;
@@ -424,8 +424,8 @@ var Key = new Lang.Class({
             key.extended_key = extendedKey;
             this._extended_keyboard.add(key);
 
-            key.width = this.actor.width;
-            key.height = this.actor.height;
+            key.width = this.keyButton.width;
+            key.height = this.keyButton.height;
         }
         this._boxPointer.bin.add_actor(this._extended_keyboard);
     },
@@ -435,7 +435,7 @@ var Key = new Lang.Class({
     },
 
     setWidth: function (width) {
-        this.actor.keyWidth = width;
+        this.keyButton.keyWidth = width;
     },
 });
 Signals.addSignalMethods(Key.prototype);
@@ -776,7 +776,7 @@ var Keyboard = new Lang.Class({
                 }
             }));
 
-            layout.appendKey(button.container, button.actor.keyWidth);
+            layout.appendKey(button.actor, button.keyButton.keyWidth);
         }
     },
 
@@ -799,13 +799,13 @@ var Keyboard = new Lang.Class({
 
             extraButton = new Key(key.label, []);
 
-            extraButton.actor.add_style_class_name('default-key');
+            extraButton.keyButton.add_style_class_name('default-key');
             if (key.extraClassName != null)
-                extraButton.actor.add_style_class_name(key.extraClassName);
+                extraButton.keyButton.add_style_class_name(key.extraClassName);
             if (key.width != null)
                 extraButton.setWidth(key.width);
 
-            let actor = extraButton.actor;
+            let actor = extraButton.keyButton;
 
             extraButton.connect('released', Lang.bind(this, function() {
                 if (switchToLevel != null)
@@ -826,9 +826,9 @@ var Keyboard = new Lang.Class({
             if (key.label == '⇧' && numLevels == 3) {
                 if (key.right) {
                     /* Only hide the key actor, so the container still takes space */
-                    extraButton.actor.hide();
+                    extraButton.keyButton.hide();
                 } else {
-                    extraButton.container.hide();
+                    extraButton.actor.hide();
                 }
                 extraButton.setWidth(1.5);
             } else if (key.right && numKeys > 8) {
@@ -837,7 +837,7 @@ var Keyboard = new Lang.Class({
                 extraButton.setWidth(1.5);
             }
 
-            layout.appendKey(extraButton.container, extraButton.actor.keyWidth);
+            layout.appendKey(extraButton.actor, extraButton.keyButton.keyWidth);
         }
     },
 
