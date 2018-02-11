@@ -336,6 +336,7 @@ clutter_text_input_focus_commit_text (ClutterInputFocus *focus,
       clutter_text_delete_selection (clutter_text);
       clutter_text_insert_text (clutter_text, text,
                                 clutter_text_get_cursor_position (clutter_text));
+      clutter_text_set_preedit_string (clutter_text, NULL, NULL, 0);
     }
 }
 
@@ -2824,7 +2825,10 @@ clutter_text_key_focus_in (ClutterActor *actor)
   ClutterInputMethod *method = clutter_backend_get_input_method (backend);
 
   if (method && priv->editable)
-    clutter_input_method_focus_in (method, priv->input_focus);
+    {
+      clutter_input_method_focus_in (method, priv->input_focus);
+      update_cursor_location (CLUTTER_TEXT (actor));
+    }
 
   priv->has_focus = TRUE;
 
@@ -2841,7 +2845,10 @@ clutter_text_key_focus_out (ClutterActor *actor)
   priv->has_focus = FALSE;
 
   if (priv->editable && clutter_input_focus_is_focused (priv->input_focus))
-    clutter_input_method_focus_out (method);
+    {
+      clutter_text_set_preedit_string (CLUTTER_TEXT (actor), NULL, NULL, 0);
+      clutter_input_method_focus_out (method);
+    }
 
   clutter_text_queue_redraw (actor);
 }
