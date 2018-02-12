@@ -87,6 +87,7 @@ var kbdA11yDialog = null;
 var inputMethod = null;
 var introspectService = null;
 var locatePointer = null;
+var trayArea = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;

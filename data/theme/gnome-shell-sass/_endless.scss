@@ -268,3 +268,13 @@
     &:bl { background-image: url("corner-ripple-bl.png"); }
     &:br { background-image: url("corner-ripple-br.png"); }
 }
+
+// Tray Area
+
+#panel {
+    .tray-area {
+        margin_top: 2px;
+        margin_bottom: 2px;
+        spacing: 10px;
+    }
+}

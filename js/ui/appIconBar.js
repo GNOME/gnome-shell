@@ -618,7 +618,9 @@ const ScrolledIconList = GObject.registerClass({
                              app: app });
         }
 
-        let favorites = AppFavorites.getAppFavorites().getFavorites();
+        let appFavorites = AppFavorites.getAppFavorites();
+        appFavorites.connect('changed', this._onAppFavoritesChanged.bind(this));
+        let favorites = appFavorites.getFavorites();
         for (let i = 0; i < favorites.length; i++) {
             this._addButtonAnimated(favorites[i]);
         }
@@ -632,6 +634,7 @@ const ScrolledIconList = GObject.registerClass({
             this._addButtonAnimated(app);
         }
 
+        appSys.connect('installed-changed', this._onInstalledChanged.bind(this));
         appSys.connect('app-state-changed', this._onAppStateChanged.bind(this));
     }
 
@@ -791,7 +794,7 @@ const ScrolledIconList = GObject.registerClass({
         return -1;
     }
 
-    _addButtonAnimated(app) {
+    _addButtonAnimated(app, oldChild) {
         if (this._taskbarApps.has(app) || !this._isAppInteresting(app))
             return;
 
@@ -807,19 +810,63 @@ const ScrolledIconList = GObject.registerClass({
         });
         newChild.connect('app-icon-unpinned', () => {
             favorites.removeFavorite(app.get_id());
-            if (app.state == Shell.AppState.STOPPED) {
-                newActor.destroy();
-                this._taskbarApps.delete(app);
-                this._updatePage();
-            }
         });
         this._taskbarApps.set(app, newChild);
 
-        this._container.add_actor(newActor);
+        if (oldChild)
+            this._container.replace_child(oldChild, newChild);
+        else
+            this._container.add_actor(newChild);
     }
 
     _addButton(app) {
         this._addButtonAnimated(app);
+    }
+
+    _onAppFavoritesChanged(appFavorites) {
+        let favoriteMap = appFavorites.getFavoriteMap();
+        var changed = false;
+
+        // Update existing favorites, and add new ones.
+        for (let id in favoriteMap) {
+            let app = favoriteMap[id];
+            if (!this._taskbarApps.has(app)) {
+                var childToReplace = null;
+
+                for (let [oldApp, oldChild] of this._taskbarApps) {
+                    if (oldApp.get_id() === id) {
+                        this._taskbarApps.delete(oldApp);
+                        childToReplace = oldChild;
+                        break;
+                    }
+                }
+
+                // TODO: in the case where no existing app matches, put the new
+                // app at the right position, not the end.
+                this._addButtonAnimated(app, childToReplace);
+                if (childToReplace)
+                    childToReplace.destroy();
+                changed = true;
+            }
+        }
+
+        // Get rid of any removed favorites
+        for (let [oldApp, oldChild] of this._taskbarApps) {
+            if (!this._isAppInteresting(oldApp)) {
+                oldChild.destroy();
+                this._taskbarApps.delete(oldApp);
+                changed = true;
+            }
+        }
+
+        if (changed)
+            this._updatePage();
+    }
+
+    _onInstalledChanged(appSys) {
+        let appFavorites = AppFavorites.getAppFavorites();
+        appFavorites.reload();
+        this._onAppFavoritesChanged(appFavorites);
     }
 
     _onAppStateChanged(appSys, app) {
@@ -837,8 +884,7 @@ const ScrolledIconList = GObject.registerClass({
 
             let oldChild = this._taskbarApps.get(app);
             if (oldChild) {
-                let oldButton = this._taskbarApps.get(app);
-                this._container.remove_actor(oldButton);
+                this._container.remove_actor(oldChild);
                 this._taskbarApps.delete(app);
             }
 
@@ -892,6 +938,9 @@ class AppIconBarContainer extends St.Widget {
     }
 
     vfunc_get_preferred_width(forHeight) {
+        let themeNode = this.get_theme_node();
+
+        forHeight = themeNode.adjust_for_height(forHeight);
         let [minBackWidth, natBackWidth] = this._backButton.get_preferred_width(forHeight);
         let [minForwardWidth, natForwardWidth] = this._forwardButton.get_preferred_width(forHeight);
 
@@ -902,13 +951,16 @@ class AppIconBarContainer extends St.Widget {
         let minContentWidth = this._scrolledIconList.getMinContentWidth(forHeight);
         let [, natContentWidth] = this._scrolledIconList.get_preferred_width(forHeight);
 
-        let minSize = minBackWidth + minForwardWidth + 2 * this._spacing + minContentWidth;
-        let naturalSize = natBackWidth + natForwardWidth + 2 * this._spacing + natContentWidth;
-        
-        return [minSize, naturalSize];
+        let minWidth = minBackWidth + minForwardWidth + 2 * this._spacing + minContentWidth;
+        let natWidth = natBackWidth + natForwardWidth + 2 * this._spacing + natContentWidth;
+
+        return themeNode.adjust_preferred_width(minWidth, natWidth);
     }
 
     vfunc_get_preferred_height(forWidth) {
+        let themeNode = this.get_theme_node();
+
+        forWidth = themeNode.adjust_for_width(forWidth);
         let [minListHeight, natListHeight] = this._scrolledIconList.get_preferred_height(forWidth);
         let [minBackHeight, natBackHeight] = this._backButton.get_preferred_height(forWidth);
         let [minForwardHeight, natForwardHeight] = this._forwardButton.get_preferred_height(forWidth);
@@ -916,17 +968,22 @@ class AppIconBarContainer extends St.Widget {
         let minButtonHeight = Math.max(minBackHeight, minForwardHeight);
         let natButtonHeight = Math.max(natBackHeight, natForwardHeight);
 
-        let minSize = Math.max(minButtonHeight, minListHeight);
-        let naturalSize = Math.max(natButtonHeight, natListHeight);
-        
-        return [minSize, naturalSize];
+        let minHeight = Math.max(minButtonHeight, minListHeight);
+        let natHeight = Math.max(natButtonHeight, natListHeight);
+
+        return themeNode.adjust_preferred_height(minHeight, natHeight);
     }
 
     vfunc_style_changed() {
+        super.vfunc_style_changed();
         this._spacing = this.get_theme_node().get_length('spacing');
     }
 
     vfunc_allocate(box, flags) {
+        this.set_allocation(box, flags);
+
+        box = this.get_theme_node().get_content_box(box);
+
         let allocWidth = box.x2 - box.x1;
         let allocHeight = box.y2 - box.y1;
 

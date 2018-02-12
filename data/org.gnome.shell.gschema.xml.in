@@ -112,6 +112,17 @@
 
     <!-- Endless-specific keys beyond this point -->
 
+    <key name="enable-tray-area" type="b">
+      <default>true</default>
+      <summary>
+        Whether the Tray Area will be enabled
+      </summary>
+      <description>
+        This enables an area on the right side of the bottom panel where the
+        icons for those applications still relying on the tray area will display
+        their status icons (e.g. Steam, Dropbox, Skype...).
+      </description>
+    </key>
     <key name="hot-corner-enabled" type="b">
       <default>false</default>
       <summary>
