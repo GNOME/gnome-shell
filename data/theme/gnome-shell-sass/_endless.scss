@@ -657,3 +657,16 @@ popup-separator-menu-item {
   background-image: url("resource:///org/gnome/shell/theme/toggle-off-hc.svg");
   &:checked { background-image: url("resource:///org/gnome/shell/theme/toggle-on-hc.svg"); }
 }
+
+// Password Recovery & Hint
+
+.login-dialog-password-recovery-label {
+  @include fontsize($base_font_size - 1);
+  font-weight: bold;
+  color: darken($osd_fg_color,30%);
+
+  .login-dialog-password-recovery-button:focus &,
+  .login-dialog-password-recovery-button:hover & {
+    color: $osd_fg_color;
+  }
+}

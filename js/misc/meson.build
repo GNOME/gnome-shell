@@ -8,6 +8,7 @@ jsconf.set10('HAVE_NETWORKMANAGER', have_networkmanager)
 jsconf.set('datadir', datadir)
 jsconf.set('libexecdir', libexecdir)
 jsconf.set('localstatedir', localstatedir)
+jsconf.set('pkgdatadir', pkgdatadir)
 
 config_js = configure_file(
   input: 'config.js.in',

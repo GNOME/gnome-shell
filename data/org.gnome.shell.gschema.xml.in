@@ -1,4 +1,13 @@
 <schemalist>
+
+  <!-- Endless-specific enums beyond this point -->
+
+  <enum id="org.gnome.shell.PasswordResetPolicy">
+    <value nick="default" value="-1"/>
+    <value nick="disable" value="0"/>
+    <value nick="enable" value="1"/>
+  </enum>
+
   <schema id="org.gnome.shell" path="/org/gnome/shell/"
           gettext-domain="@GETTEXT_PACKAGE@">
     <key name="development-tools" type="b">
@@ -166,6 +175,18 @@
         Hides application splash screens, prevents applications from being forced
         to open maximized, and does not automatically switch to the app selector
         when a window is minimized.
+      </description>
+    </key>
+    <key name="password-reset-allowed" enum="org.gnome.shell.PasswordResetPolicy">
+      <default>'default'</default>
+      <summary>Whether password reset is allowed</summary>
+      <description>
+        This key controls whether to show the "Forgot Password?" button
+        on the login screen. 'default' tells GNOME Shell to use the vendor
+        default setting. 'enable' and 'disable' can be used to explicitly
+        enable or disable the reset button, respectively. Note that it
+        only makes sense to set this key for the Debian-gdm user; changing
+        it for your own user account will have no effect.
       </description>
     </key>
     <key name="icon-grid-layout" type="a{sas}">
