@@ -130,3 +130,7 @@ custom_target('compile-schemas',
   build_by_default: true)
 
 install_data('gnome-shell-overrides.convert', install_dir: convertdir)
+
+install_data('40-gdm.rules', install_dir: polkitrulesdir)
+
+install_data('vendor-customer-support.ini', install_dir: pkgdatadir)

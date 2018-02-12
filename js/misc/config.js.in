@@ -22,3 +22,5 @@ var LIBMUTTER_API_VERSION = '@LIBMUTTER_API_VERSION@'
 var LOCALSTATEDIR = '@localstatedir@';
 /* used for the icongrid */
 var DATADIR = '@datadir@';
+/* used by the password reset feature */
+var PKGDATADIR = '@pkgdatadir@';
