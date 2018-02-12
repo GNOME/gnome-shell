@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-02-08 16:48+0000\n"
+"POT-Creation-Date: 2018-02-10 15:05+0000\n"
 "PO-Revision-Date: 2018-02-09 21:52-0200\n"
 "Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
@@ -656,23 +656,23 @@ msgstr "Frequente"
 msgid "All"
 msgstr "Todos"
 
-#: js/ui/appDisplay.js:1918
+#: js/ui/appDisplay.js:1919
 msgid "New Window"
 msgstr "Nova janela"
 
-#: js/ui/appDisplay.js:1932
+#: js/ui/appDisplay.js:1933
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Inicia usando placa de vídeo dedicada"
 
-#: js/ui/appDisplay.js:1959 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1960 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Remover dos favoritos"
 
-#: js/ui/appDisplay.js:1965
+#: js/ui/appDisplay.js:1966
 msgid "Add to Favorites"
 msgstr "Adicionar aos favoritos"
 
-#: js/ui/appDisplay.js:1975
+#: js/ui/appDisplay.js:1976
 msgid "Show Details"
 msgstr "Mostrar detalhes"
 
@@ -791,7 +791,7 @@ msgstr "%OB"
 #.
 #: js/ui/calendar.js:392
 msgid "%OB %Y"
-msgstr "%OB %Y"
+msgstr "%OB de %Y"
 
 #: js/ui/calendar.js:449
 msgid "Previous month"
