@@ -106,9 +106,9 @@ create_egl_image (MetaEgl       *egl,
       attribs[atti++] = strides[1];
       if (has_modifier)
         {
-          attribs[atti++] = EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT;
+          attribs[atti++] = EGL_DMA_BUF_PLANE1_MODIFIER_LO_EXT;
           attribs[atti++] = modifiers[1] & 0xFFFFFFFF;
-          attribs[atti++] = EGL_DMA_BUF_PLANE0_MODIFIER_HI_EXT;
+          attribs[atti++] = EGL_DMA_BUF_PLANE1_MODIFIER_HI_EXT;
           attribs[atti++] = modifiers[1] >> 32;
         }
     }
@@ -123,9 +123,9 @@ create_egl_image (MetaEgl       *egl,
       attribs[atti++] = strides[2];
       if (has_modifier)
         {
-          attribs[atti++] = EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT;
+          attribs[atti++] = EGL_DMA_BUF_PLANE2_MODIFIER_LO_EXT;
           attribs[atti++] = modifiers[2] & 0xFFFFFFFF;
-          attribs[atti++] = EGL_DMA_BUF_PLANE0_MODIFIER_HI_EXT;
+          attribs[atti++] = EGL_DMA_BUF_PLANE2_MODIFIER_HI_EXT;
           attribs[atti++] = modifiers[2] >> 32;
         }
     }
@@ -190,9 +190,9 @@ meta_renderer_native_gles3_blit_shared_bo (MetaEgl        *egl,
   unsigned int width;
   unsigned int height;
   uint32_t i, n_planes;
-  uint32_t strides[4] = { 0, };
-  uint32_t offsets[4] = { 0, };
-  uint64_t modifiers[4] = { 0, };
+  uint32_t strides[4] = { 0 };
+  uint32_t offsets[4] = { 0 };
+  uint64_t modifiers[4] = { 0 };
   uint32_t format;
   EGLImageKHR egl_image;
 
