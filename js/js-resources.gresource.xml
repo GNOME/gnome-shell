@@ -145,6 +145,7 @@
     <file>ui/appIconBar.js</file>
     <file>ui/components/appStore.js</file>
     <file>ui/components/discoveryFeed.js</file>
+    <file>ui/discoveryFeedButton.js</file>
     <file>ui/endlessButton.js</file>
     <file>ui/forceAppExitDialog.js</file>
     <file>ui/hotCorner.js</file>

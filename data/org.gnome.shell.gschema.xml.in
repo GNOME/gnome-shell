@@ -175,6 +175,15 @@
         This key specifies the exact order of the icons shown in the applications launcher view.
       </description>
     </key>
+    <key name="discovery-feed-languages" type="as">
+      <default>['en', 'id']</default>
+      <summary>
+        Languages for which the discovery feed feature is enabled.
+      </summary>
+      <description>
+        If the system language matches any of these languages, the discovery feed will be enabled. You will need to restart the shell for changes to this setting to take effect.
+      </description>
+    </key>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
   </schema>
 

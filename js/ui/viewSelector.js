@@ -6,6 +6,7 @@ const { EosMetrics, Clutter, Gio,
 const Signals = imports.signals;
 
 const AppDisplay = imports.ui.appDisplay;
+const DiscoveryFeedButton = imports.ui.discoveryFeedButton;
 const LayoutManager = imports.ui.layout;
 const Main = imports.ui.main;
 const OverviewControls = imports.ui.overviewControls;
@@ -154,10 +155,11 @@ var ViewsDisplayLayout = GObject.registerClass({
             0, 1, 0),
     },
 }, class ViewsDisplayLayout extends Clutter.BoxLayout {
-    _init(entry, appDisplay, searchResultsActor) {
+    _init(entry, discoveryFeedButton, appDisplay, searchResultsActor) {
         super._init();
 
         this._entry = entry;
+        this._discoveryFeedButton = discoveryFeedButton;
         this._appDisplay = appDisplay;
         this._searchResultsActor = searchResultsActor;
 
@@ -216,6 +218,13 @@ var ViewsDisplayLayout = GObject.registerClass({
         entryBox.y1 = this._heightAboveEntry + entryTopMargin;
         entryBox.y2 = entryBox.y1 + entryHeight;
 
+        let discoveryFeedButtonBox = allocation.copy();
+        if (this._discoveryFeedButton) {
+            discoveryFeedButtonBox =
+                DiscoveryFeedButton.determineAllocationWithinBox(
+                    this._discoveryFeedButton, allocation, availWidth);
+        }
+
         let appDisplayBox = allocation.copy();
         // The grid container box should have the dimensions of this container but start
         // after the search entry and according to the calculated xplacement policies
@@ -235,13 +244,17 @@ var ViewsDisplayLayout = GObject.registerClass({
         // Step 2: pre-allocate to a smaller, but realistic, size
         this._appDisplay.adaptToSize(availWidth, appDisplayBox.get_height());
 
-        return [entryBox, appDisplayBox, searchResultsBox];
+        return [entryBox, discoveryFeedButtonBox, appDisplayBox, searchResultsBox];
     }
 
     vfunc_allocate(actor, box, flags) {
-        let [entryBox, appDisplayBox, searchResultsBox] = this._computeChildrenAllocation(box);
+        let [entryBox, discoveryFeedButtonBox, appDisplayBox, searchResultsBox] =
+            this._computeChildrenAllocation(box);
 
         this._entry.allocate(entryBox, flags);
+
+        if (this._discoveryFeedButton)
+            this._discoveryFeedButton.allocate(discoveryFeedButtonBox, flags);
 
         // Step 3: actually allocate the grid
         this._appDisplay.allocate(appDisplayBox, flags);
@@ -259,6 +272,11 @@ var ViewsDisplayLayout = GObject.registerClass({
 
         this._appDisplay.opacity = (1 - v) * 255;
         this._searchResultsActor.opacity = v * 255;
+
+        if (this._discoveryFeedButton) {
+            this._discoveryFeedButton.changeVisbilityState(v !== 1);
+            this._discoveryFeedButton.opacity = (1 - v) * 255;
+        }
 
         let entryTranslation = -this._heightAboveEntry * v;
         this._entry.translation_y = entryTranslation;
@@ -301,7 +319,8 @@ class ViewsClone extends St.Widget {
         const appDisplayClone = new AppDisplay.AppDisplay();
         appDisplayClone._eventBlocker.visible = true;
 
-        let layoutManager = new ViewsDisplayLayout(entry, appDisplayClone, null);
+        let discoveryFeedButton = DiscoveryFeedButton.maybeCreateInactiveButton();
+        let layoutManager = new ViewsDisplayLayout(entry, discoveryFeedButton, appDisplayClone, null);
         super._init({
             layout_manager: layoutManager,
             x_expand: true,
@@ -318,6 +337,8 @@ class ViewsClone extends St.Widget {
         let cloneAdjustment = appDisplayClone.scrollView.vscroll.adjustment;
         originalAdjustment.bind_property('value', cloneAdjustment, 'value', GObject.BindingFlags.SYNC_CREATE);
 
+        if (discoveryFeedButton)
+            this.add_child(discoveryFeedButton);
         this.add_child(entry);
         this.add_child(appDisplayClone);
 
@@ -420,13 +441,21 @@ class ViewsDisplay extends St.Widget {
         this._searchResults.bind_property('mapped', clickAction,
             'enabled', GObject.BindingFlags.SYNC_CREATE);
 
+        let discoveryFeedButton = DiscoveryFeedButton.maybeCreateButton();
+
         super._init({
-            layout_manager: new ViewsDisplayLayout(this._entry, this._appDisplay, this._searchResults),
+            layout_manager: new ViewsDisplayLayout(
+                this._entry,
+                discoveryFeedButton,
+                this._appDisplay,
+                this._searchResults),
             x_expand: true,
             y_expand: true,
         });
 
         this.add_child(this._entry);
+        if (discoveryFeedButton)
+            this.add_child(discoveryFeedButton);
         this.add_actor(this._appDisplay);
         this.add_child(this._searchResults);
     }

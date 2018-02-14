@@ -2056,6 +2056,11 @@ var WindowManager = class {
                     this._showOtherWindows(actor, false);
             }
 
+            // If this is the Discovery Feed, notify it that it has
+            // finished closing now
+            if (SideComponent.isDiscoveryFeedWindow(actor.meta_window))
+                Main.discoveryFeed.notifyHideAnimationCompleted();
+
             shellwm.completed_destroy(actor);
         }
     }
