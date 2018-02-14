@@ -223,7 +223,7 @@ var ViewSelector = class {
                               Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                               Shell.ActionMode.NORMAL |
                               Shell.ActionMode.OVERVIEW,
-                              Main.overview.toggle.bind(Main.overview));
+                              Main.overview.toggleWindows.bind(Main.overview));
 
         let side;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
@@ -258,11 +258,11 @@ var ViewSelector = class {
         Main.overview.show();
     }
 
-    show() {
+    show(viewPage) {
         this.reset();
         this._workspacesDisplay.show(true);
 
-        this._showPage(this._appsPage);
+        this._showPage(this._pageFromViewPage(viewPage));
     }
 
     animateFromOverview() {
