@@ -9,14 +9,13 @@
 # Mancomún - Centro de Referencia e Servizos de Software Libre <g11n@mancomun.org>, 2009.
 # Fran Diéguez <frandieguez@gnome.org>, 2009, 2010, 2011, 2012.
 # Leandro Regueiro <leandro.regueiro@gmail.com>, 2012.
-# Fran Dieguez <frandieguez@gnome.org>, 2012, 2013, 2014, 2015, 2016, 2017.
+# Fran Dieguez <frandieguez@gnome.org>, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
-"&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-29 16:09+0000\n"
-"PO-Revision-Date: 2017-08-30 22:29+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
+"POT-Creation-Date: 2018-02-06 04:14+0000\n"
+"PO-Revision-Date: 2018-02-14 23:45+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician\n"
 "Language: gl\n"
@@ -52,134 +51,118 @@ msgid "Move window to last workspace"
 msgstr "Mover xanela ao último espazo de traballo"
 
 #: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "Mover xanela un espazo de traballo cara á esquerda"
-
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "Mover xanela un espazo de traballo cara á dereita"
-
-#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Mover xanela un espazo de traballo cara a arriba"
 
-#: data/50-mutter-navigation.xml:33
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace down"
 msgstr "Mover xanela un espazo de traballo cara a abaixo"
 
-#: data/50-mutter-navigation.xml:36
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one monitor to the left"
 msgstr "Mover xanela un monitor á esquerda"
 
-#: data/50-mutter-navigation.xml:39
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one monitor to the right"
 msgstr "Mover xanela un monitor á dereita"
 
-#: data/50-mutter-navigation.xml:42
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor up"
 msgstr "Mover xanela un monitor arriba"
 
-#: data/50-mutter-navigation.xml:45
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor down"
 msgstr "Mover xanela un espazo de traballo abaixo"
 
-#: data/50-mutter-navigation.xml:49
+#: data/50-mutter-navigation.xml:43
 msgid "Switch applications"
 msgstr "Cambiar entre aplicativos"
 
-#: data/50-mutter-navigation.xml:54
+#: data/50-mutter-navigation.xml:48
 msgid "Switch to previous application"
 msgstr "Cambiar ao aplicativo aplicativos"
 
-#: data/50-mutter-navigation.xml:58
+#: data/50-mutter-navigation.xml:52
 msgid "Switch windows"
 msgstr "Cambiar xanelas"
 
-#: data/50-mutter-navigation.xml:63
+#: data/50-mutter-navigation.xml:57
 msgid "Switch to previous window"
 msgstr "Cambiar á xanela anterior"
 
-#: data/50-mutter-navigation.xml:67
+#: data/50-mutter-navigation.xml:61
 msgid "Switch windows of an application"
 msgstr "Cambiar entre as xanelas dun aplicativo"
 
-#: data/50-mutter-navigation.xml:72
+#: data/50-mutter-navigation.xml:66
 msgid "Switch to previous window of an application"
 msgstr "Cambia á xanela anterior dun aplicativo"
 
-#: data/50-mutter-navigation.xml:76
+#: data/50-mutter-navigation.xml:70
 msgid "Switch system controls"
 msgstr "Cambiar entre os controles do sistema"
 
-#: data/50-mutter-navigation.xml:81
+#: data/50-mutter-navigation.xml:75
 msgid "Switch to previous system control"
 msgstr "Cambia ao control do sistema anterior"
 
-#: data/50-mutter-navigation.xml:85
+#: data/50-mutter-navigation.xml:79
 msgid "Switch windows directly"
 msgstr "Cambiar xanelas directamente"
 
-#: data/50-mutter-navigation.xml:90
+#: data/50-mutter-navigation.xml:84
 msgid "Switch directly to previous window"
 msgstr "Cambia directamente á xanela anterior"
 
-#: data/50-mutter-navigation.xml:94
+#: data/50-mutter-navigation.xml:88
 msgid "Switch windows of an app directly"
 msgstr "Cambiar entre as xanelas dun aplicativo directamente"
 
-#: data/50-mutter-navigation.xml:99
+#: data/50-mutter-navigation.xml:93
 msgid "Switch directly to previous window of an app"
 msgstr "Cambia directamente á xanela anterior do aplicativo"
 
-#: data/50-mutter-navigation.xml:103
+#: data/50-mutter-navigation.xml:97
 msgid "Switch system controls directly"
 msgstr "Cambiar entre os controles do sistema directamente"
 
-#: data/50-mutter-navigation.xml:108
+#: data/50-mutter-navigation.xml:102
 msgid "Switch directly to previous system control"
 msgstr "Cambiar directamente ao control do sistema anterior"
 
-#: data/50-mutter-navigation.xml:111
+#: data/50-mutter-navigation.xml:105
 msgid "Hide all normal windows"
 msgstr "Ocultar todas as xanelas normais"
 
-#: data/50-mutter-navigation.xml:114
+#: data/50-mutter-navigation.xml:108
 msgid "Switch to workspace 1"
 msgstr "Cambiar ao espazo de traballo 1"
 
-#: data/50-mutter-navigation.xml:117
+#: data/50-mutter-navigation.xml:111
 msgid "Switch to workspace 2"
 msgstr "Cambiar ao espazo de traballo 2"
 
-#: data/50-mutter-navigation.xml:120
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 3"
 msgstr "Cambiar ao espazo de traballo 3"
 
-#: data/50-mutter-navigation.xml:123
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 4"
 msgstr "Cambiar ao espazo de traballo 4"
 
-#: data/50-mutter-navigation.xml:126
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to last workspace"
 msgstr "Cambiar ao último espazo de traballo"
 
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "Mover ao espazo da esquerda"
-
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "Mover ao espazo da dereita"
-
-#: data/50-mutter-navigation.xml:135
+#: data/50-mutter-navigation.xml:123
 msgid "Move to workspace above"
 msgstr "Mover ao espazo de arriba"
 
-#: data/50-mutter-navigation.xml:138
+#: data/50-mutter-navigation.xml:126
 msgid "Move to workspace below"
 msgstr "Mover ao espazo de traballo de abaixo"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "Sistema"
 
@@ -190,6 +173,10 @@ msgstr "Mostrar o diálogo de executar orde"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Mostrar a vista xeral de actividades"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Restaurar os atallos de teclado"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -216,54 +203,50 @@ msgid "Restore window"
 msgstr "Restaurar xanela"
 
 #: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "Trocar o estado ensombrecido"
-
-#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Pechar xanela"
 
-#: data/50-mutter-windows.xml:22
+#: data/50-mutter-windows.xml:20
 msgid "Hide window"
 msgstr "Ocultar xanela"
 
-#: data/50-mutter-windows.xml:24
+#: data/50-mutter-windows.xml:22
 msgid "Move window"
 msgstr "Mover xanela"
 
-#: data/50-mutter-windows.xml:26
+#: data/50-mutter-windows.xml:24
 msgid "Resize window"
 msgstr "Redimensionar xanela"
 
-#: data/50-mutter-windows.xml:29
+#: data/50-mutter-windows.xml:27
 msgid "Toggle window on all workspaces or one"
 msgstr "Trocar que a xanela apareza en tódolos espazos de traballo ou nun"
 
-#: data/50-mutter-windows.xml:31
+#: data/50-mutter-windows.xml:29
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Elevar a xanela se está cuberta por outra, en caso contrario baixala"
 
-#: data/50-mutter-windows.xml:33
+#: data/50-mutter-windows.xml:31
 msgid "Raise window above other windows"
 msgstr "Subir a xanela por enriba doutras xanelas"
 
-#: data/50-mutter-windows.xml:35
+#: data/50-mutter-windows.xml:33
 msgid "Lower window below other windows"
 msgstr "Baixar xanela debaixo doutras xanelas"
 
-#: data/50-mutter-windows.xml:37
+#: data/50-mutter-windows.xml:35
 msgid "Maximize window vertically"
 msgstr "Maximizar xanela verticalmente"
 
-#: data/50-mutter-windows.xml:39
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window horizontally"
 msgstr "Maximizar xanela horizontalmente"
 
-#: data/50-mutter-windows.xml:43
+#: data/50-mutter-windows.xml:41
 msgid "View split on left"
 msgstr "Dividir vista á esquerda"
 
-#: data/50-mutter-windows.xml:47
+#: data/50-mutter-windows.xml:45
 msgid "View split on right"
 msgstr "Dividir vista á dereita"
 
@@ -411,16 +394,6 @@ msgid "Enable experimental features"
 msgstr "Activar as características experimentais"
 
 #: data/org.gnome.mutter.gschema.xml.in:108
-#| msgid ""
-#| "To enable experimental features, add the feature keyword to the list. "
-#| "Whether the feature requires restarting the compositor depends on the "
-#| "given feature. Any experimental feature is not required to still be "
-#| "available, or configurable. Don’t expect adding anything in this setting "
-#| "to be future proof. Currently possible keywords: • “scale-monitor-"
-#| "framebuffer” — makes mutter default to layout logical monitors in a "
-#| "logical pixel coordinate space, while scaling monitor framebuffers "
-#| "instead of window content, to manage HiDPI monitors. Does not require a "
-#| "restart."
 msgid ""
 "To enable experimental features, add the feature keyword to the list. "
 "Whether the feature requires restarting the compositor depends on the given "
@@ -516,10 +489,41 @@ msgstr "Cambiar á VT 12"
 msgid "Re-enable shortcuts"
 msgstr "Reactivar os atallos"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:64
+msgid "Allow grabs with Xwayland"
+msgstr ""
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:65
+msgid ""
+"Allow keyboard grabs issued by X11 applications running in Xwayland to be "
+"taken into account. For a X11 grab to be taken into account under Wayland, "
+"the client must also either send a specific X11 ClientMessage to the root "
+"window or be among the applications white-listed in key “xwayland-grab-"
+"access-rules”."
+msgstr ""
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:77
+msgid "Xwayland applications allowed to issue keyboard grabs"
+msgstr ""
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:78
+msgid ""
+"List the resource names or resource class of X11 windows either allowed or "
+"not allowed to issue X11 keyboard grabs under Xwayland. The resource name or "
+"resource class of a given X11 window can be obtained using the command "
+"“xprop WM_CLASS”. Wildcards “*” and jokers “?” in the values are supported. "
+"Values starting with “!” are blacklisted, which has precedence over the "
+"whitelist, to revoke applications from the default system list. The default "
+"system list includes the following applications: "
+"“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Users can break an existing grab by "
+"using the specific keyboard shortcut defined by the keybinding key “restore-"
+"shortcuts”."
+msgstr ""
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2260
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Modo conmutador (Grupo %d)"
@@ -527,37 +531,37 @@ msgstr "Modo conmutador (Grupo %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2283
 msgid "Switch monitor"
 msgstr "Cambiar monitor"
 
-#: src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2285
 msgid "Show on-screen help"
 msgstr "Mostrar axuda en pantalla"
 
-#: src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "Pantalla embebida"
 
-#: src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "Descoñecido"
 
-#: src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "Pantalla descoñecida"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:476
+#: src/compositor/compositor.c:481
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -574,41 +578,45 @@ msgstr "Evento de campá"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
 
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Desactivar a conexión ao xestor de sesión"
 
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Substituír o xestor de xanelas en execución"
 
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Especificar o ID de xestión de sesión"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "Pantalla X que se vai usar"
 
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Inicializar sesión desde o ficheiro de salvagarda"
 
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "Executar como compositor de wayland"
 
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
 msgstr "Executar como compositor anidado"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
 msgstr "Executar como un servidor de pantalla completo, fronte a un aniñado"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "Executar coa infraestructura de X11"
 
 #. Translators: %s is a window title
 #: src/core/meta-close-dialog-default.c:147
@@ -664,7 +672,7 @@ msgstr "Engadido de mutter que usar"
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -673,7 +681,7 @@ msgstr ""
 "A pantalla «%s» ten xa un xestor de xanelas, tente usar a opción --replace "
 "para substituír o xestor de xanelas."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "A pantalla %d na visualización «%s» non é válida\n"
@@ -687,7 +695,7 @@ msgstr "Mutter foi compilado sen compatibilidade para o modo detallado\n"
 msgid "Mode Switch: Mode %d"
 msgstr "Modo conmutador: Modo %d"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -699,6 +707,21 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (en %s)"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Mover xanela un espazo de traballo cara á esquerda"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Mover xanela un espazo de traballo cara á dereita"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "Mover ao espazo da esquerda"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "Mover ao espazo da dereita"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "Trocar o estado ensombrecido"
 
 #~ msgid "background texture could not be created from file"
 #~ msgstr "a textura do fondo non puido crearse desde o ficheiro"
