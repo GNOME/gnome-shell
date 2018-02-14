@@ -1191,42 +1191,60 @@ class FolderView extends BaseAppView {
     }
 });
 
-var FolderIcon = GObject.registerClass({
-    Signals: {
-        'apps-changed': {},
-        'name-changed': {},
-    },
-}, class FolderIcon extends St.Button {
-    _init(dirInfo, parentView) {
-        super._init({
-            style_class: 'app-well-app app-folder',
-            button_mask: St.ButtonMask.ONE,
-            toggle_mode: true,
+var ViewIcon = GObject.registerClass(
+class ViewIcon extends St.Button {
+    _init(buttonParams, iconParams) {
+        buttonParams = Params.parse(buttonParams, {
+            style_class: 'app-well-app',
+            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
+            button_mask: St.ButtonMask.ONE |
+                         St.ButtonMask.TWO |
+                         St.ButtonMask.THREE,
+            toggle_mode: false,
             can_focus: true,
-        });
-        this.name = '';
-        this._parentView = parentView;
+            x_fill: true,
+            y_fill: true
+        }, true);
 
-        this.id = dirInfo.get_id();
-        this._dirInfo = dirInfo;
+        super._init(buttonParams);
+
+        iconParams = Params.parse(iconParams, {
+            showLabel: true,
+        }, true);
+
+        // Might be changed once the createIcon() method is called.
+        this._iconSize = IconGrid.ICON_SIZE;
 
         this._delegate = this;
 
-        this.icon = new IconGrid.BaseIcon('', {
-            createIcon: this._createIcon.bind(this),
-            setSizeManually: false,
-        });
-        this._iconContainer = new St.Widget({
-            layout_manager: new Clutter.BinLayout(),
-            x_expand: true,
-            y_expand: true,
-        });
-        this._iconContainer.add_child(this.icon);
+        // Get the isDraggable property without passing it on to the BaseIcon:
+        let appIconParams = Params.parse(iconParams, {
+            isDraggable: true,
+        }, true);
+        let isDraggable = appIconParams['isDraggable'];
+        delete iconParams['isDraggable'];
 
-        this.set_child(this._iconContainer);
+        this.icon = new IconGrid.BaseIcon(this.name, iconParams);
         this.label_actor = this.icon.label;
 
-        this.view = new FolderView(this._dirInfo, parentView);
+        if (isDraggable) {
+            this._draggable = DND.makeDraggable(this);
+            this._draggable.connect('drag-begin', () => {
+                this._dragging = true;
+                this.scaleAndFade();
+                this._removeMenuTimeout();
+                Main.overview.beginItemDrag(this);
+            });
+            this._draggable.connect('drag-cancelled', () => {
+                this._dragging = false;
+                Main.overview.cancelledItemDrag(this);
+            });
+            this._draggable.connect('drag-end', () => {
+                this._dragging = false;
+                this.undoScaleAndFade();
+                Main.overview.endItemDrag(this);
+            });
+        }
 
         this._itemDragBeginId = Main.overview.connect(
             'item-drag-begin', this._onDragBegin.bind(this));
@@ -1234,18 +1252,122 @@ var FolderIcon = GObject.registerClass({
             'item-drag-end', this._onDragEnd.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    scaleAndFade() {
+        this.reactive = false;
+        this.ease({
+            scale_x: 0.75,
+            scale_y: 0.75,
+            opacity: 128,
+        });
+    }
+
+    undoScaleAndFade() {
+        this.reactive = true;
+        this.ease({
+            scale_x: 1.0,
+            scale_y: 1.0,
+            opacity: 255,
+        });
+    }
+
+    _onLabelUpdate() {
+        // Do nothing by default
+    }
+
+    _onLabelCancel() {
+        this.icon.actor.sync_hover();
+    }
+
+    _onDestroy() {
+        if (this._itemDragBeginId) {
+            Main.overview.disconnect(this._itemDragBeginId);
+            delete this._itemDragBeginId;
+        }
+        if (this._itemDragEndId) {
+            Main.overview.disconnect(this._itemDragEndId);
+            delete this._itemDragEndId;
+        }
+
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            delete this._dragMonitor;
+        }
+
+        this._delegate = null;
+    }
+
+    getDragActor() {
+        // Each subclass creates the actor returned here in different ways
+        throw new Error('Not implemented');
+    }
+
+    // Returns the original actor that should align with the actor
+    // we show as the item is being dragged.
+    getDragActorSource() {
+        return this.icon.icon;
+    }
+
+    set iconState(iconState) {
+        if (this._iconState == iconState)
+            return;
+
+        this._iconState = iconState;
+        this.icon.reloadIcon();
+    }
+
+    get iconState() {
+        return this._iconState;
+    }
+});
+
+var FolderIcon = GObject.registerClass({
+    Signals: {
+        'apps-changed': {},
+        'name-changed': {},
+     },
+}, class FolderIcon extends ViewIcon {
+    _init(dirInfo, parentView) {
+        this._dirInfo = dirInfo;
+        this._id = dirInfo.get_id();
+        this._name = dirInfo.get_name();
+
+        super._init({
+            button_mask: St.ButtonMask.ONE,
+            toggle_mode: true,
+        }, {
+            isDraggable: false,
+            createIcon: this._createIcon.bind(this),
+            setSizeManually: false,
+        });
+
+        this._parentView = parentView;
+
+        this.add_style_class_name('app-folder');
+        this.set_child(this.icon);
+        this.label_actor = this.icon.label;
+
+        this.view = new FolderView(this._dirInfo, parentView);
 
         this._sync();
     }
 
     _onDestroy() {
-        Main.overview.disconnect(this._itemDragBeginId);
-        Main.overview.disconnect(this._itemDragEndId);
-
         this.view.destroy();
 
         if (this._dialog)
             this._dialog.destroy();
+
+        super._onDestroy();
     }
 
     vfunc_clicked() {
@@ -1259,14 +1381,13 @@ var FolderIcon = GObject.registerClass({
         super.vfunc_unmap();
     }
 
+    _removeMenuTimeout() {
+    }
+
     open() {
         this._ensureFolderDialog();
         this.view._scrollView.vscroll.adjustment.value = 0;
         this._dialog.popup();
-    }
-
-    getAppIds() {
-        return this.view.getAllItems().map(item => item.id);
     }
 
     _onDragBegin() {
@@ -1289,7 +1410,10 @@ var FolderIcon = GObject.registerClass({
 
     _onDragEnd() {
         this.remove_style_pseudo_class('drop');
-        DND.removeDragMonitor(this._dragMonitor);
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            delete this._dragMonitor;
+        }
     }
 
     _canAccept(source) {
@@ -1327,11 +1451,11 @@ var FolderIcon = GObject.registerClass({
 
     _updateName() {
         let name = this._dirInfo.get_name();
-        if (this.name == name)
+        if (this._name === name)
             return;
 
-        this.name = name;
-        this.icon.label.text = this.name;
+        this._name = name;
+        this.icon.label.text = this._name;
         this.emit('name-changed');
     }
 
@@ -1727,45 +1851,39 @@ var AppIcon = GObject.registerClass({
         'menu-state-changed': { param_types: [GObject.TYPE_BOOLEAN] },
         'sync-tooltip': {},
     },
-}, class AppIcon extends St.Button {
+}, class AppDisplayIcon extends ViewIcon  {
     _init(app, iconParams = {}) {
-        super._init({
-            style_class: 'app-well-app',
-            pivot_point: new Graphene.Point({ x: 0.5, y: 0.5 }),
-            reactive: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
-            can_focus: true,
-        });
-
         this.app = app;
-        this.id = app.get_id();
-        this.name = app.get_name();
-
-        this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                              x_expand: true, y_expand: true });
-
-        this.set_child(this._iconContainer);
-
-        this._delegate = this;
-
-        this._hasDndHover = false;
-        this._folderPreviewId = 0;
+        this._id = app.get_id();
+        this._name = app.get_name();
 
         // Get the isDraggable property without passing it on to the BaseIcon:
         let appIconParams = Params.parse(iconParams, {
-            isDraggable: true,
             showMenu: true,
         }, true);
-        let isDraggable = appIconParams['isDraggable'];
-        delete iconParams['isDraggable'];
 
         this._showMenu = appIconParams['showMenu'];
         delete iconParams['showMenu'];
 
         iconParams['createIcon'] = this._createIcon.bind(this);
         iconParams['setSizeManually'] = false;
-        this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
+
+        super._init({
+            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+        }, iconParams);
+
+        let buttonParams = { button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO };
+        iconParams = Params.parse(iconParams, {
+            createIcon: this._createIcon.bind(this),
+        }, true);
+
+        this._iconContainer = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                              x_expand: true, y_expand: true });
         this._iconContainer.add_child(this.icon);
+        this.set_child(this._iconContainer);
+
+        this._hasDndHover = false;
+        this._folderPreviewId = 0;
 
         this._dot = new St.Widget({
             style_class: 'app-well-app-running-dot',
@@ -1784,31 +1902,6 @@ var AppIcon = GObject.registerClass({
         this._menu = null;
         this._menuManager = new PopupMenu.PopupMenuManager(this);
 
-        if (isDraggable) {
-            this._draggable = DND.makeDraggable(this);
-            this._draggable.connect('drag-begin', () => {
-                this._dragging = true;
-                this.scaleAndFade();
-                this._removeMenuTimeout();
-                Main.overview.beginItemDrag(this);
-            });
-            this._draggable.connect('drag-cancelled', () => {
-                this._dragging = false;
-                Main.overview.cancelledItemDrag(this);
-            });
-            this._draggable.connect('drag-end', () => {
-                this._dragging = false;
-                this.undoScaleAndFade();
-                Main.overview.endItemDrag(this);
-            });
-        }
-
-        this._dragMonitor = null;
-        this._itemDragBeginId = Main.overview.connect(
-            'item-drag-begin', this._onDragBegin.bind(this));
-        this._itemDragEndId = Main.overview.connect(
-            'item-drag-end', this._onDragEnd.bind(this));
-
         this._menuTimeoutId = 0;
         this._stateChangedId = this.app.connect('notify::state', () => {
             this._updateRunningStyle();
@@ -1819,9 +1912,6 @@ var AppIcon = GObject.registerClass({
     }
 
     _onDestroy() {
-        Main.overview.disconnect(this._itemDragBeginId);
-        Main.overview.disconnect(this._itemDragEndId);
-
         if (this._folderPreviewId > 0) {
             GLib.source_remove(this._folderPreviewId);
             this._folderPreviewId = 0;
@@ -1841,6 +1931,8 @@ var AppIcon = GObject.registerClass({
         }
         this._stateChangedId = 0;
         this._removeMenuTimeout();
+
+        super._onDestroy();
     }
 
     _createIcon(iconSize) {
@@ -1906,10 +1998,6 @@ var AppIcon = GObject.registerClass({
     _onKeyboardPopupMenu() {
         this.popupMenu();
         this._menu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-    }
-
-    getId() {
-        return this.app.get_id();
     }
 
     popupMenu() {
@@ -2002,37 +2090,11 @@ var AppIcon = GObject.registerClass({
     }
 
     getDragActor() {
-        // This is a temporary change not to depend on the dash while
-        // we don't implement our own Drag'n'Drop mechanism in EOS.
-        return this.app.create_icon_texture(IconGrid.ICON_SIZE);
-    }
-
-    // Returns the original actor that should align with the actor
-    // we show as the item is being dragged.
-    getDragActorSource() {
-        return this.icon.icon;
+        return this.app.create_icon_texture(this._iconSize);
     }
 
     shouldShowTooltip() {
         return this.hover && (!this._menu || !this._menu.isOpen);
-    }
-
-    scaleAndFade() {
-        this.reactive = false;
-        this.ease({
-            scale_x: 0.75,
-            scale_y: 0.75,
-            opacity: 128,
-        });
-    }
-
-    undoScaleAndFade() {
-        this.reactive = true;
-        this.ease({
-            scale_x: 1.0,
-            scale_y: 1.0,
-            opacity: 255,
-        });
     }
 
     _showFolderPreview() {
@@ -2104,7 +2166,10 @@ var AppIcon = GObject.registerClass({
 
     _onDragEnd() {
         this.remove_style_pseudo_class('drop');
-        DND.removeDragMonitor(this._dragMonitor);
+        if (this._dragMonitor) {
+            DND.removeDragMonitor(this._dragMonitor);
+            delete this._dragMonitor;
+        }
     }
 
     handleDragOver(source) {
