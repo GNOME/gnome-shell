@@ -277,20 +277,8 @@ var Overview = class {
 
         this._shellInfo = new ShellInfo();
 
-        this._searchEntry = new St.Entry({ style_class: 'search-entry',
-                                           /* Translators: this is the text displayed
-                                              in the search entry when no search is
-                                              active; it should not exceed ~30
-                                              characters. */
-                                           hint_text: _("Type to search…"),
-                                           track_hover: true,
-                                           can_focus: true });
-        this._searchEntryBin = new St.Bin({ child: this._searchEntry,
-                                            x_align: St.Align.MIDDLE });
-        this._overview.add_actor(this._searchEntryBin);
-
         // Create controls
-        this._controls = new OverviewControls.ControlsManager(this._searchEntry);
+        this._controls = new OverviewControls.ControlsManager();
         this.viewSelector = this._controls.viewSelector;
 
         // Add our same-line elements after the search entry
@@ -500,7 +488,6 @@ var Overview = class {
 
     focusSearch() {
         this.show();
-        this._searchEntry.grab_key_focus();
     }
 
     _showOrSwitchPage(page) {
