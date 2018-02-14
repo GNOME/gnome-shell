@@ -95,6 +95,11 @@
     -arrow-background-color: #000000;
 }
 
+popup-separator-menu-item {
+  margin: 12px 0;
+  padding: 0;
+}
+
 // Apps Icon Bar
 
 #appIconBar {
@@ -213,6 +218,43 @@
             }
         }
     }
+}
+
+// User Menu
+
+.user-menu-button-icon {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 17px;
+    background-size: 34px;
+    padding: 0px;
+
+    &:hover {
+        border-radius: 18px;
+        background-size: 36px;
+    }
+}
+
+.user-menu-avatar {
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-color: rgba(50, 50, 50, 0.80);
+    border-radius: 30px;
+    border: 1px solid #000;
+
+    &:hover {
+        border: 1px solid #555;
+    }
+}
+
+.user-menu-name {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+
+.user-menu-items {
+    margin: 6px 0px;
 }
 
 // Endless Button
