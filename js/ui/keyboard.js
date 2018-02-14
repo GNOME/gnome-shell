@@ -813,7 +813,7 @@ var Keyboard = new Lang.Class({
             }));
             extraButton.connect('released', Lang.bind(this, function() {
                 if (switchToLevel != null)
-                    this._onLevelChanged(switchToLevel);
+                    this._setActiveLayer(switchToLevel);
                 else if (keyval != null)
                     this._keyboardController.keyvalRelease(keyval);
                 else if (action == 'hide')
@@ -900,10 +900,6 @@ var Keyboard = new Lang.Class({
         let maxHeight = monitor.height / 3;
         this.actor.width = monitor.width;
         this.actor.height = maxHeight;
-    },
-
-    _onLevelChanged: function (level) {
-        this._setActiveLayer(level);
     },
 
     _onGroupChanged: function () {
