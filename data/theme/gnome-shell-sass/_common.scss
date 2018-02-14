@@ -908,6 +908,7 @@ StScrollBar {
 
     .datemenu-today-button .date-label {
       font-size: 1.5em;
+      font-weight: 300;
     }
 
     .world-clocks-header,
@@ -1843,17 +1844,20 @@ StScrollBar {
 .screen-shield-clock {
   color: white;
   text-shadow: 0px 1px 2px rgba(0,0,0,0.6);
-  font-weight: bold;
   text-align: center;
   padding-bottom: 1.5em;
 }
 
 .screen-shield-clock-time {
   font-size: 72pt;
+  font-weight: 300;
   text-shadow: 0px 2px 2px rgba(0,0,0,0.4);
 }
 
-.screen-shield-clock-date { font-size: 28pt; }
+.screen-shield-clock-date { 
+  font-size: 16pt;
+  font-weight: normal;
+}
 
 .screen-shield-notifications-container {
   spacing: 6px;
