@@ -807,14 +807,14 @@ var Keyboard = new Lang.Class({
 
             let actor = extraButton.keyButton;
 
+            extraButton.connect('pressed', Lang.bind(this, function() {
+                if (keyval != null)
+                    this._keyboardController.keyvalPress(keyval);
+            }));
             extraButton.connect('released', Lang.bind(this, function() {
                 if (switchToLevel != null)
                     this._onLevelChanged(switchToLevel);
                 else if (keyval != null)
-                    this._keyboardController.keyvalPress(keyval);
-            }));
-            extraButton.connect('released', Lang.bind(this, function() {
-                if (keyval != null)
                     this._keyboardController.keyvalRelease(keyval);
                 else if (action == 'hide')
                     this.hide();
