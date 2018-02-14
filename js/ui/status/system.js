@@ -1,7 +1,8 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { AccountsService, Clutter, GLib, GObject, Shell, St } = imports.gi;
+const { AccountsService, Clutter, Gio,
+        GLib, GObject, Shell, St } = imports.gi;
 
 const BoxPointer = imports.ui.boxpointer;
 const SystemActions = imports.misc.systemActions;
@@ -132,9 +133,6 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             this._systemActions.forceUpdate();
         });
         this._updateMultiUser();
-
-        Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
-        this._sessionUpdated();
     }
 
     _sessionUpdated() {
@@ -163,14 +161,30 @@ var Indicator = class extends PanelMenu.SystemIndicator {
             this._switchUserSubMenu.label.text = this._user.get_user_name();
     }
 
+    _createActionButtonBase(accessibleName) {
+        let button = new St.Button({
+            reactive: true,
+            can_focus: true,
+            track_hover: true,
+            accessible_name: accessibleName,
+            style_class: 'system-menu-action',
+        });
+        return button;
+    }
+
     _createActionButton(iconName, accessibleName) {
-        let icon = new St.Button({ reactive: true,
-                                   can_focus: true,
-                                   track_hover: true,
-                                   accessible_name: accessibleName,
-                                   style_class: 'system-menu-action' });
-        icon.child = new St.Icon({ icon_name: iconName });
-        return icon;
+        let button = this._createActionButtonBase(accessibleName);
+        button.child = new St.Icon({ icon_name: iconName });
+        return button;
+    }
+
+    _createActionButtonForIconPath(iconPath, accessibleName) {
+        let iconFile = Gio.File.new_for_uri('resource:///org/gnome/shell' + iconPath);
+        let gicon = new Gio.FileIcon({ file: iconFile });
+
+        let button = this._createActionButtonBase(accessibleName);
+        button.child = new St.Icon({ gicon: gicon });
+        return button;
     }
 
     _createSubMenu() {
@@ -219,28 +233,18 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this._user.connect('notify::is-loaded', this._updateSwitchUserSubMenu.bind(this));
         this._user.connect('changed', this._updateSwitchUserSubMenu.bind(this));
 
-        this.menu.addMenuItem(this._switchUserSubMenu);
-
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
                                                  can_focus: false });
         this.buttonGroup = item;
 
-        let app = this._settingsApp = Shell.AppSystem.get_default().lookup_app(
-            'gnome-control-center.desktop'
-        );
-        if (app) {
-            let [icon, name] = [app.app_info.get_icon().names[0],
-                                app.get_name()];
-            this._settingsAction = this._createActionButton(icon, name);
-            this._settingsAction.connect('clicked',
-                                         this._onSettingsClicked.bind(this));
-        } else {
-            log('Missing required core component Settings, expect trouble…');
-            this._settingsAction = new St.Widget();
-        }
-        item.add(this._settingsAction, { expand: true, x_fill: false });
+        this._logoutAction = this._createActionButtonForIconPath('/theme/system-logout.png', _("Log Out"));
+        this._logoutAction.connect('clicked',  () => {
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
+            this._systemActions.activateLogout();
+        });
+        item.actor.add(this._logoutAction, { expand: true, x_fill: false });
 
         this._lockScreenAction = this._createActionButton('changes-prevent', _("Lock"));
         this._lockScreenAction.connect('clicked', () => {
@@ -279,7 +283,7 @@ var Indicator = class extends PanelMenu.SystemIndicator {
         this.menu.addMenuItem(item);
 
         let visibilityGroup = [
-            this._settingsAction,
+            this._logoutAction,
             this._lockScreenAction,
             this._altSwitcher.actor,
         ];
@@ -289,11 +293,5 @@ var Indicator = class extends PanelMenu.SystemIndicator {
                 this.buttonGroup.visible = visibilityGroup.some(a => a.visible);
             });
         }
-    }
-
-    _onSettingsClicked() {
-        this.menu.itemActivated();
-        Main.overview.hide();
-        this._settingsApp.activate();
     }
 };

@@ -502,7 +502,7 @@ var PopupMenuBase = class {
         return menuItem;
     }
 
-    addSettingsAction(title, desktopFile) {
+    addSettingsAction(title, desktopFile, icon) {
         let menuItem = this.addAction(title, () => {
             let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
@@ -513,7 +513,7 @@ var PopupMenuBase = class {
 
             Main.overview.hide();
             app.activate();
-        });
+        }, icon);
 
         menuItem.visible = Main.sessionMode.allowSettings;
         this._settingsActions[desktopFile] = menuItem;

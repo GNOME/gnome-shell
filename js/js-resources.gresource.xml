@@ -149,5 +149,6 @@
     <file>ui/monitor.js</file>
     <file>ui/sideComponent.js</file>
     <file>ui/status/orientation.js</file>
+    <file>ui/userMenu.js</file>
   </gresource>
 </gresources>
