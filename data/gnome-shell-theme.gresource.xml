@@ -34,7 +34,13 @@
 
     <!-- Endless-specific resources beyond this point -->
 
+    <file>corner-ripple-bl.png</file>
+    <file>corner-ripple-br.png</file>
+    <file>corner-ripple-tl.png</file>
+    <file>corner-ripple-tr.png</file>
     <file>endless-button-symbolic.svg</file>
+    <file>hot-corner-symbolic.svg</file>
+    <file>hot-corner-rtl-symbolic.svg</file>
     <file>mini-icon-active-indicator.png</file>
   </gresource>
 </gresources>

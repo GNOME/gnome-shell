@@ -89,7 +89,7 @@ const _modes = {
         panel: {
             left: ['endlessButton', 'appIcons'],
             center: [],
-            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu', 'dateMenu'],
+            right: ['dwellClick', 'a11y', 'keyboard', 'aggregateMenu', 'dateMenu', 'hotCorner'],
         },
     },
 };

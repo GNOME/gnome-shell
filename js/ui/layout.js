@@ -17,6 +17,17 @@ var STARTUP_ANIMATION_TIME = 500;
 var KEYBOARD_ANIMATION_TIME = 150;
 var BACKGROUND_FADE_ANIMATION_TIME = 1000;
 
+// Gsettings keys to determine position of hot corner
+// and whether or not it is enabled.
+const HOT_CORNER_ENABLED_KEY = 'hot-corner-enabled';
+const HOT_CORNER_ON_RIGHT_KEY = 'hot-corner-on-right';
+const HOT_CORNER_ON_BOTTOM_KEY = 'hot-corner-on-bottom';
+
+// Gsettings key for the size of the hot corner target.
+// When using a VirtualBox VM, may need to set to at least 3 pixels,
+// since the VM may "steal" two rows from the guest OS display.
+const HOT_CORNER_SIZE_KEY = 'hot-corner-size';
+
 var HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
 var HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
 
@@ -294,6 +305,14 @@ var LayoutManager = GObject.registerClass({
         let monitorManager = Meta.MonitorManager.get();
         monitorManager.connect('monitors-changed',
                                this._monitorsChanged.bind(this));
+
+        global.settings.connect('changed::' + HOT_CORNER_ENABLED_KEY,
+                                this._updateHotCorners.bind(this));
+        global.settings.connect('changed::' + HOT_CORNER_ON_RIGHT_KEY,
+                                this._updateHotCorners.bind(this));
+        global.settings.connect('changed::' + HOT_CORNER_ON_BOTTOM_KEY,
+                                this._updateHotCorners.bind(this));
+
         this._monitorsChanged();
 
         // NVIDIA drivers don't preserve FBO contents across
@@ -377,6 +396,12 @@ var LayoutManager = GObject.registerClass({
     }
 
     _updateHotCorners() {
+        let cornerRightSetting = global.settings.get_boolean(HOT_CORNER_ON_RIGHT_KEY);
+        let textDirection = Clutter.get_default_text_direction();
+        this._cornerOnRight = (cornerRightSetting && textDirection == Clutter.TextDirection.LTR) ||
+            (!cornerRightSetting && textDirection == Clutter.TextDirection.RTL);
+        this._cornerOnBottom  = global.settings.get_boolean(HOT_CORNER_ON_BOTTOM_KEY);
+
         // destroy old hot corners
         this.hotCorners.forEach(corner => {
             if (corner)
@@ -394,19 +419,28 @@ var LayoutManager = GObject.registerClass({
         // build new hot corners
         for (let i = 0; i < this.monitors.length; i++) {
             let monitor = this.monitors[i];
-            let cornerX = this._rtl ? monitor.x + monitor.width : monitor.x;
+            let cornerX = monitor.x;
             let cornerY = monitor.y;
+            if (this._cornerOnRight)
+                cornerX += monitor.width;
 
-            let haveTopLeftCorner = true;
+            if (this._cornerOnBottom)
+                cornerY += monitor.height;
+
+            let haveHotCorner = true;
 
             if (i != this.primaryIndex) {
-                // Check if we have a top left (right for RTL) corner.
-                // I.e. if there is no monitor directly above or to the left(right)
-                let besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
+                // Check if we have the specified corner.
+                // I.e. if there is no monitor directly above/below
+                // or beside (to the left/right)
+                let besideX = this._cornerOnRight ? cornerX + 1 : cornerX - 1;
                 let besideY = cornerY;
-                let aboveX = cornerX;
-                let aboveY = cornerY - 1;
+                let aboveOrBelowX = cornerX;
+                let aboveOrBelowY = this._cornerOnBottom ? cornerY + 1 : cornerY - 1;
 
+                // Iterate through all other monitors, and see if any of them
+                // contain the point that is one pixel diagonally further
+                // outside the corner point of interest.
                 for (let j = 0; j < this.monitors.length; j++) {
                     if (i == j)
                         continue;
@@ -415,20 +449,20 @@ var LayoutManager = GObject.registerClass({
                         besideX < otherMonitor.x + otherMonitor.width &&
                         besideY >= otherMonitor.y &&
                         besideY < otherMonitor.y + otherMonitor.height) {
-                        haveTopLeftCorner = false;
+                        haveHotCorner = false;
                         break;
                     }
-                    if (aboveX >= otherMonitor.x &&
-                        aboveX < otherMonitor.x + otherMonitor.width &&
-                        aboveY >= otherMonitor.y &&
-                        aboveY < otherMonitor.y + otherMonitor.height) {
-                        haveTopLeftCorner = false;
+                    if (aboveOrBelowX >= otherMonitor.x &&
+                        aboveOrBelowX < otherMonitor.x + otherMonitor.width &&
+                        aboveOrBelowY >= otherMonitor.y &&
+                        aboveOrBelowY < otherMonitor.y + otherMonitor.height) {
+                        haveHotCorner = false;
                         break;
                     }
                 }
             }
 
-            if (haveTopLeftCorner) {
+            if (haveHotCorner) {
                 let corner = new HotCorner(this, monitor, cornerX, cornerY);
                 corner.setBarrierSize(size);
                 this.hotCorners.push(corner);
@@ -1127,13 +1161,23 @@ class HotCorner extends Clutter.Actor {
         this._x = x;
         this._y = y;
 
+        let cornerRightSetting = global.settings.get_boolean(HOT_CORNER_ON_RIGHT_KEY);
+        let textDirection = Clutter.get_default_text_direction();
+        this._cornerOnRight = (cornerRightSetting && textDirection == Clutter.TextDirection.LTR) ||
+            (!cornerRightSetting && textDirection == Clutter.TextDirection.RTL);
+        this._cornerOnBottom = global.settings.get_boolean(HOT_CORNER_ON_BOTTOM_KEY);
+        this._targetSize = global.settings.get_int(HOT_CORNER_SIZE_KEY);
+
         this._setupFallbackCornerIfNeeded(layoutManager);
 
         this._pressureBarrier = new PressureBarrier(HOT_CORNER_PRESSURE_THRESHOLD,
                                                     HOT_CORNER_PRESSURE_TIMEOUT,
                                                     Shell.ActionMode.NORMAL |
                                                     Shell.ActionMode.OVERVIEW);
-        this._pressureBarrier.connect('trigger', this._toggleOverview.bind(this));
+        this._pressureBarrier.connect('trigger', () => {
+            if (this.isEnabled())
+                this._toggleOverview();
+        });
 
         let px = 0.0;
         let py = 0.0;
@@ -1146,6 +1190,10 @@ class HotCorner extends Clutter.Actor {
         this._ripples.addTo(layoutManager.uiGroup);
 
         this.connect('destroy', this._onDestroy.bind(this));
+    }
+
+    isEnabled() {
+        return global.settings.get_boolean(HOT_CORNER_ENABLED_KEY);
     }
 
     setBarrierSize(size) {
@@ -1162,21 +1210,38 @@ class HotCorner extends Clutter.Actor {
         }
 
         if (size > 0) {
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
-                this._verticalBarrier = new Meta.Barrier({ display: global.display,
-                                                           x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
-                                                           directions: Meta.BarrierDirection.NEGATIVE_X });
-                this._horizontalBarrier = new Meta.Barrier({ display: global.display,
-                                                             x1: this._x - size, x2: this._x, y1: this._y, y2: this._y,
-                                                             directions: Meta.BarrierDirection.POSITIVE_Y });
+            // The corner itself is at (this._x, this._y).
+            // Extend the barrier by size towards the center of the screen.
+
+            let x1, x2, y1, y2;
+            let xDir, yDir;
+
+            if (this._cornerOnRight) {
+                x1 = this._x - size;
+                x2 = this._x;
+                xDir = Meta.BarrierDirection.NEGATIVE_X;
             } else {
-                this._verticalBarrier = new Meta.Barrier({ display: global.display,
-                                                           x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
-                                                           directions: Meta.BarrierDirection.POSITIVE_X });
-                this._horizontalBarrier = new Meta.Barrier({ display: global.display,
-                                                             x1: this._x, x2: this._x + size, y1: this._y, y2: this._y,
-                                                             directions: Meta.BarrierDirection.POSITIVE_Y });
+                x1 = this._x;
+                x2 = this._x + size;
+                xDir = Meta.BarrierDirection.POSITIVE_X;
             }
+
+            if (this._cornerOnBottom) {
+                y1 = this._y - size;
+                y2 = this._y;
+                yDir = Meta.BarrierDirection.NEGATIVE_Y;
+            } else {
+                y1 = this._y;
+                y2 = this._y + size;
+                yDir = Meta.BarrierDirection.POSITIVE_Y;
+            }
+
+            this._verticalBarrier = new Meta.Barrier({ display: global.display,
+                                                       x1: this._x, x2: this._x, y1: y1, y2: y2,
+                                                       directions: xDir });
+            this._horizontalBarrier = new Meta.Barrier({ display: global.display,
+                                                         x1: x1, x2: x2, y1: this._y, y2: this._y,
+                                                         directions: yDir });
 
             this._pressureBarrier.addBarrier(this._verticalBarrier);
             this._pressureBarrier.addBarrier(this._horizontalBarrier);
@@ -1195,8 +1260,8 @@ class HotCorner extends Clutter.Actor {
             });
 
             this._corner = new Clutter.Actor({ name: 'hot-corner',
-                                               width: 1,
-                                               height: 1,
+                                               width: this._targetSize,
+                                               height: this._targetSize,
                                                opacity: 0,
                                                reactive: true });
             this._corner._delegate = this;
@@ -1204,11 +1269,26 @@ class HotCorner extends Clutter.Actor {
             this.add_child(this._corner);
             layoutManager.addChrome(this);
 
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
-                this._corner.set_position(this.width - this._corner.width, 0);
-                this.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-            } else {
-                this._corner.set_position(0, 0);
+            if (this._cornerOnRight) {
+                if (this._cornerOnBottom) {
+                    // Bottom-right corner
+                    this._corner.set_position(this.width - this._corner.width, this.height - this._corner.height);
+                    this.set_anchor_point_from_gravity(Clutter.Gravity.SOUTH_EAST);
+                } else {
+                    // Top-right corner
+                    this._corner.set_position(this.width - this._corner.width, 0);
+                    this.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+                }
+            } else if (this._cornerOnLeft) {
+                if (this._cornerOnBottom) {
+                    // Bottom-left corner
+                    this._corner.set_position(0, this.height - this._corner.height);
+                    this.set_anchor_point_from_gravity(Clutter.Gravity.SOUTH_WEST);
+                } else {
+                    // Top-left corner
+                    this._corner.set_position(0, 0);
+                    // Default gravity is north-west
+                }
             }
 
             this._corner.connect('enter-event',
@@ -1240,7 +1320,8 @@ class HotCorner extends Clutter.Actor {
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
-        this._toggleOverview();
+        if (this.isEnabled())
+            this._toggleOverview();
 
         return DND.DragMotionResult.CONTINUE;
     }

@@ -824,6 +824,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
     'dwellClick': imports.ui.status.dwellClick.DwellClickIndicator,
+    'hotCorner': imports.ui.hotCorner.HotCorner,
     'powerMenu': PowerMenu,
 };
 

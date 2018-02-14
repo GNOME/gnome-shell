@@ -3,6 +3,12 @@
 
 const { Clutter, St } = imports.gi;
 
+// Gsettings keys to determine position of hot corner
+// and whether or not it is enabled.
+const HOT_CORNER_ENABLED_KEY = 'hot-corner-enabled';
+const HOT_CORNER_ON_RIGHT_KEY = 'hot-corner-on-right';
+const HOT_CORNER_ON_BOTTOM_KEY = 'hot-corner-on-bottom';
+
 // Shamelessly copied from the layout "hotcorner" ripples implementation
 var Ripples = class Ripples {
     constructor(px, py, styleClass) {
@@ -32,6 +38,46 @@ var Ripples = class Ripples {
                                            reactive: false,
                                            visible: false });
         this._ripple3.set_pivot_point(px, py);
+
+        let cornerRightSetting = global.settings.get_boolean(HOT_CORNER_ON_RIGHT_KEY);
+        let textDirection = Clutter.get_default_text_direction();
+        this._cornerOnRight = (cornerRightSetting && textDirection == Clutter.TextDirection.LTR) ||
+            (!cornerRightSetting && textDirection == Clutter.TextDirection.RTL);
+        this._cornerOnBottom = global.settings.get_boolean(HOT_CORNER_ON_BOTTOM_KEY);
+
+        // Remove all existing style pseudo-classes
+        // (note: top-left is default and does not use a pseudo-class)
+        let corners = ['tr', 'bl', 'br'];
+        let ripples = [this._ripple1, this._ripple2, this._ripple3];
+        for (let corner of corners) {
+            for (let ripple of ripples)
+                ripple.remove_style_pseudo_class(corner);
+        }
+
+        // Add the style pseudo-class for the selected ripple corner
+        let addCorner = null;
+        if (this._cornerOnRight) {
+            if (this._cornerOnBottom) {
+                // Bottom-right corner
+                addCorner = 'br';
+            } else {
+                // Top-right corner
+                addCorner = 'tr';
+            }
+        } else {
+            if (this._cornerOnBottom) {
+                // Bottom-left corner
+                addCorner = 'bl';
+            } else {
+                // Top-left corner
+                // No style pseudo-class to add
+            }
+        }
+
+        if (addCorner) {
+            for (let ripple of ripples)
+                ripple.add_style_pseudo_class(addCorner);
+        }
     }
 
     destroy() {

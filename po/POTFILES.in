@@ -100,3 +100,4 @@ subprojects/gvc/gvc-mixer-control.c
 js/ui/appIconBar.js
 js/ui/endlessButton.js
 js/ui/forceAppExitDialog.js
+js/ui/hotCorner.js

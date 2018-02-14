@@ -246,3 +246,28 @@
     &:hover { @extend %endless-button-hover; }
     &:clicked { @extend %endless-button-clicked; }
 }
+
+// Hot Corner
+
+#panel {
+    .hot-corner {
+        -minimum-hpadding: 0px;
+        -natural-hpadding: 0px;
+        color: #777;
+        height: 40px;
+
+        .single-icon-button {
+            icon-size: 18px;
+            padding: 0px;
+        }
+
+        &:hover { color: white; }
+    }
+}
+
+.ripple-box {
+    background-image: url("corner-ripple-tl.png");
+    &:tr { background-image: url("corner-ripple-tr.png"); }
+    &:bl { background-image: url("corner-ripple-bl.png"); }
+    &:br { background-image: url("corner-ripple-br.png"); }
+}

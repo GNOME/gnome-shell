@@ -112,6 +112,50 @@
 
     <!-- Endless-specific keys beyond this point -->
 
+    <key name="hot-corner-enabled" type="b">
+      <default>false</default>
+      <summary>
+        Enables the hot corner for the window picker
+      </summary>
+      <description>
+        By default, the hot corner for the window picker is enabled.
+        Set false to disable the hot corner.
+      </description>
+    </key>
+    <key name="hot-corner-on-right" type="b">
+      <default>true</default>
+      <summary>
+        Set the left/right position of the hot corner for the window picker
+      </summary>
+      <description>
+        Default position of the hot corner is in a right corner.
+        Set false to move the hot corner to a left corner.
+        The position is not affected by the RTL vs. LTR text direction.
+      </description>
+    </key>
+    <key name="hot-corner-on-bottom" type="b">
+      <default>true</default>
+      <summary>
+        Set the top/bottom position of the hot corner for the window picker
+      </summary>
+      <description>
+        Default position of the hot corner is in a bottom corner.
+        Set false to move the hot corner to a top corner.
+      </description>
+    </key>
+    <key name="hot-corner-size" type="i">
+      <default>1</default>
+      <summary>
+        Set the size of the hot corner target
+      </summary>
+      <description>
+        Number of pixels in one dimension of the square target
+        for the hot corner.
+        Default is for a single pixel in the very corner.
+        For some virtual machines, this value may need to be set
+        larger than the default.
+      </description>
+    </key>
     <key name="no-default-maximize" type="b">
       <default>false</default>
       <summary>
