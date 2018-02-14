@@ -97,4 +97,5 @@ subprojects/extensions-tool/src/main.c
 # Please do not remove this file from POTFILES.in. Run "git submodule init && git submodule update" to get it.
 subprojects/gvc/gvc-mixer-control.c
 # Endless-specific files beyond this point
+js/ui/appIconBar.js
 js/ui/forceAppExitDialog.js

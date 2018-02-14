@@ -817,6 +817,7 @@ class PopoverMenu extends PanelMenu.SingleIconButton {
 const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
     'aggregateMenu': AggregateMenu,
+    'appIcons': imports.ui.appIconBar.AppIconBar,
     'appMenu': AppMenuButton,
     'dateMenu': imports.ui.dateMenu.DateMenuButton,
     'a11y': imports.ui.status.accessibility.ATIndicator,

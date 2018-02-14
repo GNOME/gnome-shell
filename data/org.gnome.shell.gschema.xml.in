@@ -210,6 +210,69 @@
       <summary>Keybinding that shows the force app exit dialog</summary>
       <description></description>
     </key>
+    <key name="activate-icon-1" type="as">
+      <default>["&lt;Super&gt;1"]</default>
+      <summary>Keybinding to activate the first app in the icon bar.</summary>
+      <description>
+        Keybinding to open the first app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-icon-2" type="as">
+      <default>["&lt;Super&gt;2"]</default>
+      <summary>Keybinding to activate the second app in the icon bar.</summary>
+      <description>
+        Keybinding to open the second app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-icon-3" type="as">
+      <default>["&lt;Super&gt;3"]</default>
+      <summary>Keybinding to activate the third app in the icon bar.</summary>
+      <description>
+        Keybinding to open the third app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-icon-4" type="as">
+      <default>["&lt;Super&gt;4"]</default>
+      <summary>Keybinding to activate the fourth app in the icon bar.</summary>
+      <description>
+        Keybinding to open the fourth app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-icon-5" type="as">
+      <default>["&lt;Super&gt;5"]</default>
+      <summary>Keybinding to activate the fifth app in the icon bar.</summary>
+      <description>
+        Keybinding to open the fifth app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-icon-6" type="as">
+      <default>["&lt;Super&gt;6"]</default>
+      <summary>Keybinding to activate the sixth app in the icon bar.</summary>
+      <description>
+        Keybinding to open the sixth app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-icon-7" type="as">
+      <default>["&lt;Super&gt;7"]</default>
+      <summary>Keybinding to activate the seventh app in the icon bar.</summary>
+      <description>
+        Keybinding to open the seventh app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-icon-8" type="as">
+      <default>["&lt;Super&gt;8"]</default>
+      <summary>Keybinding to activate the eighth app in the icon bar.</summary>
+      <description>
+        Keybinding to open the eighth app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
+    <key name="activate-last-icon" type="as">
+      <default>["&lt;Super&gt;9"]</default>
+      <summary>Keybinding to activate the last app in the icon bar.</summary>
+      <description>
+        Keybinding to open the last app in the icon bar, or switch to the app if already open.
+      </description>
+    </key>
   </schema>
 
   <schema id="org.gnome.shell.app-switcher"

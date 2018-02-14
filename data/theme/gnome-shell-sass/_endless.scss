@@ -62,6 +62,8 @@
 // Bottom panel
 
 #panel {
+    height: 40px;
+
     .clock-display {
         font-size: 14px;
         font-weight: bold;
@@ -69,6 +71,11 @@
 
     .powermenu {
         margin-left: 16px;
+    }
+
+    &.panel-button {
+        -minimum-hpadding: 6px;
+        -natural-hpadding: 6px;
     }
 }
 
@@ -86,6 +93,91 @@
 .popup-menu-boxpointer,
 .candidate-popup-boxpointer {
     -arrow-background-color: #000000;
+}
+
+// Apps Icon Bar
+
+#appIconBar {
+    padding-left: 2px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+
+    #appIconBarContainer {
+        spacing: 10px;
+        min-height: 40px;
+
+        .app-bar-nav-icon {
+            icon-size: 16px;
+            color: #555;
+            transition-duration: 100ms;
+        }
+
+        .app-bar-nav-button {
+            &:active .app-bar-nav-icon,
+            &:hover:active .app-bar-nav-icon { color: #383838; }
+            &:hover .app-bar-nav-icon { color: #aaa; }
+        }
+    }
+}
+
+.app-icon-bar {
+    &.panel-button {
+        -minimum-hpadding: 6px;
+        -natural-hpadding: 6px;
+    }
+}
+
+.app-icon-button {
+    background: none;
+    &:highlighted {
+        background-image: url("resource:///org/gnome/shell/theme/mini-icon-active-indicator.png");
+        background-position: 2px 34px;
+    }
+}
+
+.app-icon-hover-label {
+    -label-offset-x: 4px;
+    -label-offset-y: 37px;
+    font-size: 11pt;
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 4px;
+}
+
+.app-icon-menu,
+.panel-menu {
+    -boxpointer-gap: 4px;
+}
+
+.panel-window-menu-item {
+    .panel-window-menu-item-clone:indented { padding-left: 6px; }
+    .panel-window-menu-item-label { max-width: 256px; }
+}
+
+.panel-window-menu-workspace-label {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #999;
+}
+
+.scrolled-icon-list {
+    .scrolled-icon-spacer {
+        padding-right: 10px;
+
+        .scrolled-icon-container {
+            -icon-size: 24px;
+            height: 30px;
+            spacing: 10px;
+        }
+
+        &:rtl { padding-left: 10px; }
+    }
+
+    &.hfade { -st-hfade-offset: 10px; }
 }
 
 // System Indicators
