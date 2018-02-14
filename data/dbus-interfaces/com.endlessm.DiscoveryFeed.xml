@@ -1,5 +1,6 @@
 <node>
   <interface name="com.endlessm.DiscoveryFeed">
+    <method name="notifyHideAnimationCompleted" />
     <method name="show">
       <arg type="u" direction="in" name="timestamp"/>
     </method>

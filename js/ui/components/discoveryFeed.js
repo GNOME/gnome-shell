@@ -28,6 +28,10 @@ class DiscoveryFeed extends SideComponent.SideComponent {
         Main.discoveryFeed = null;
     }
 
+    notifyHideAnimationCompleted() {
+        this.proxy.notifyHideAnimationCompletedRemote();
+    }
+
     callShow(timestamp) {
         this.proxy.showRemote(timestamp);
     }
