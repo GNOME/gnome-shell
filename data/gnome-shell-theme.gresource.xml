@@ -31,5 +31,9 @@
     <file>toggle-on.svg</file>
     <file>toggle-on-dark.svg</file>
     <file>toggle-on-hc.svg</file>
+
+    <!-- Endless-specific resources beyond this point -->
+
+    <file>mini-icon-active-indicator.png</file>
   </gresource>
 </gresources>
