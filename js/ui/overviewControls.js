@@ -332,7 +332,7 @@ var ControlsLayout = GObject.registerClass({
 
 var ControlsManager = GObject.registerClass(
 class ControlsManager extends St.Widget {
-    _init(searchEntry) {
+    _init() {
         let layout = new ControlsLayout();
         super._init({
             layout_manager: layout,
@@ -361,8 +361,7 @@ class ControlsManager extends St.Widget {
             new WorkspaceThumbnail.ThumbnailsBox(this._workspaceAdjustment);
         this._thumbnailsSlider = new ThumbnailsSlider(this._thumbnailsBox);
 
-        this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
-            this._workspaceAdjustment);
+        this.viewSelector = new ViewSelector.ViewSelector(this._workspaceAdjustment);
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
 

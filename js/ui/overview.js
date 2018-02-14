@@ -164,23 +164,6 @@ class OverviewActor extends St.BoxLayout {
     init() {
         this.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
 
-        this._searchEntry = new St.Entry({
-            style_class: 'search-entry',
-            /* Translators: this is the text displayed
-               in the search entry when no search is
-               active; it should not exceed ~30
-               characters. */
-            hint_text: _('Type to search'),
-            track_hover: true,
-            can_focus: true,
-        });
-        this._searchEntry.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
-        let searchEntryBin = new St.Bin({
-            child: this._searchEntry,
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        this.add_actor(searchEntryBin);
-
         this._controls = new OverviewControls.ControlsManager(this._searchEntry);
 
         // Add our same-line elements after the search entry
@@ -537,7 +520,6 @@ var Overview = class {
 
     focusSearch() {
         this.show();
-        this._overview.searchEntry.grab_key_focus();
     }
 
     _showOrSwitchPage(page) {
