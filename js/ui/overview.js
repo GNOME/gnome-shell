@@ -520,6 +520,7 @@ var Overview = class {
 
     focusSearch() {
         this.show();
+        this.viewSelector.focusSearch();
     }
 
     _showOrSwitchPage(page) {

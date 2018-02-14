@@ -446,6 +446,7 @@ var ViewSelector = GObject.registerClass({
         }));
 
         this.appDisplay = this._viewsDisplay.appDisplay;
+        this._entry = this._viewsDisplay.entry;
 
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', () => {
@@ -525,7 +526,14 @@ var ViewSelector = GObject.registerClass({
         Main.overview.show();
     }
 
+    _clearSearch() {
+        this._entry.resetSearch();
+        this._viewsDisplay.showPage(ViewsDisplayPage.APP_GRID, false);
+    }
+
     show(viewPage) {
+        this._clearSearch();
+
         // We're always starting up to the APPS page, so avoid making the workspacesDisplay
         // (used for the Windows picker) visible to prevent situations where that actor
         // would intercept clicks meant for the desktop's icons grid.
@@ -549,6 +557,11 @@ var ViewSelector = GObject.registerClass({
 
     hide() {
         this._workspacesDisplay.hide();
+    }
+
+    focusSearch() {
+        if (this._activePage === this._appsPage)
+            this._entry.grab_key_focus();
     }
 
     _addPage(actor, name, a11yIcon, params) {
@@ -617,6 +630,13 @@ var ViewSelector = GObject.registerClass({
         }
     }
 
+    _pageChanged() {
+        if (this._activePage !== this._appsPage)
+            this._clearSearch();
+
+        this._pageChanged();
+    }
+
     _showPage(page) {
         if (!Main.overview.visible)
             return;
@@ -650,6 +670,12 @@ var ViewSelector = GObject.registerClass({
             Main.overview.toggleWindows();
             return Clutter.EVENT_STOP;
         }
+
+        if (this._entry.handleStageEvent(event))
+            return Clutter.EVENT_STOP;
+
+        if (this._entry.active)
+            return Clutter.EVENT_PROPAGATE;
 
         if (!global.stage.key_focus) {
             if (symbol === Clutter.KEY_Tab || symbol === Clutter.KEY_Down) {
