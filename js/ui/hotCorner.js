@@ -49,7 +49,7 @@ class HotCorner extends PanelMenu.SingleIconButton {
              event.type() === Clutter.EventType.BUTTON_PRESS)) {
             let button = event.get_button();
             if (button === Gdk.BUTTON_PRIMARY && Main.overview.shouldToggleByCornerOrButton())
-                Main.overview.toggle();
+                Main.overview.toggleWindows();
             else if (button === Gdk.BUTTON_SECONDARY)
                 this.menu.toggle();
         }

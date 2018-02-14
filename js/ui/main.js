@@ -108,7 +108,7 @@ function _sessionUpdated() {
     wm.setCustomKeybindingHandler('panel-main-menu',
                                   Shell.ActionMode.NORMAL |
                                   Shell.ActionMode.OVERVIEW,
-                                  sessionMode.hasOverview ? overview.toggle.bind(overview) : null);
+                                  sessionMode.hasOverview ? overview.toggleWindows.bind(overview) : null);
     wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
                                       Shell.ActionMode.OVERVIEW);
 

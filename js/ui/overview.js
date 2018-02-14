@@ -196,6 +196,8 @@ var Overview = class {
 
         this._visible = false;          // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
+        this._toggleToHidden = false;   // Whether to hide the overview when either toggle function is called
+        this._targetPage = null;        // do we have a target page to animate to?
         this._modal = false;            // have a modal grab
         this._animationInProgress = false;
         this._visibleTarget = false;
@@ -295,6 +297,8 @@ var Overview = class {
     }
 
     _onPageChanged() {
+        this._toggleToHidden = false;
+
         // SideComponent hooks on this signal but can't connect directly to
         // viewSelector since it won't be created at the time the component
         // is enabled, so rely on the overview and re-issue it from here.
@@ -459,10 +463,12 @@ var Overview = class {
     }
 
     _showOrSwitchPage(page) {
-        if (this.visible)
+        if (this.visible) {
             this.viewSelector.setActivePage(page);
-        else
+        } else {
+            this._targetPage = page;
             this.show();
+        }
     }
 
     showApps() {
@@ -524,6 +530,32 @@ var Overview = class {
             let runningApps = appSystem.get_running();
             if (runningApps.length > 0)
                 runningApps[0].activate();
+        }
+
+        // Toggle to the currently open window
+        this.hide();
+    }
+
+    toggleWindows() {
+        if (this.isDummy)
+            return;
+
+        if (!this.visible ||
+            this.viewSelector.getActivePage() !== ViewSelector.ViewPage.WINDOWS) {
+            this.showWindows();
+            return;
+        }
+
+        if (!this._toggleToHidden) {
+            this.showApps();
+            return;
+        }
+
+        if (!Main.workspaceMonitor.hasVisibleWindows) {
+            // There are active windows but all of them are
+            // hidden, so we get back to show the icons grid.
+            this.showApps();
+            return;
         }
 
         // Toggle to the currently open window
@@ -603,7 +635,16 @@ var Overview = class {
         this._activationTime = GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
 
         Meta.disable_unredirect_for_display(global.display);
-        this.viewSelector.show();
+
+        if (!this._targetPage)
+            this._targetPage = ViewSelector.ViewPage.WINDOWS;
+
+        this.viewSelector.show(this._targetPage);
+        this._targetPage = null;
+
+        // Since the overview is just becoming visible, we should toggle back
+        // the hidden state
+        this._toggleToHidden = true;
 
         this._overview.opacity = 0;
         this._overview.ease({
