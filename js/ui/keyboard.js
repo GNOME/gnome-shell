@@ -30,29 +30,29 @@ const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 const KEY_SIZE = 2;
 
 const defaultKeysPre = [
-    [ [], [], [{ label: '⇧', width: 1.5, level: 1 }], [{ label: '?123', width: 1.5, level: 2 }] ],
-    [ [], [], [{ label: '⇪', width: 1.5, level: 0 }], [{ label: '?123', width: 1.5, level: 2 }] ],
+    [ [], [], [{ width: 1.5, level: 1, extraClassName: 'shift-key-lowercase' }], [{ label: '?123', width: 1.5, level: 2 }] ],
+    [ [], [], [{ width: 1.5, level: 0, extraClassName: 'shift-key-uppercase' }], [{ label: '?123', width: 1.5, level: 2 }] ],
     [ [], [], [{ label: '=/<', width: 1.5, level: 3 }], [{ label: 'ABC', width: 1.5, level: 0 }] ],
     [ [], [], [{ label: '?123', width: 1.5, level: 2 }], [{ label: 'ABC', width: 1.5, level: 0 }] ],
 ];
 
 const defaultKeysPost = [
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
-      [{ label: '⇧', width: 3, level: 1, right: true }],
-      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+      [{ width: 3, level: 1, right: true, extraClassName: 'shift-key-lowercase' }],
+      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
-      [{ label: '⇪', width: 3, level: 0, right: true }],
-      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+      [{ width: 3, level: 0, right: true, extraClassName: 'shift-key-uppercase' }],
+      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '=/<', width: 3, level: 3, right: true }],
-      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
     [ [{ label: '⌫', width: 1.5, keyval: Clutter.KEY_BackSpace }],
-      [{ label: '⏎', width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
+      [{ width: 2, keyval: Clutter.KEY_Return, extraClassName: 'enter-key' }],
       [{ label: '?123', width: 3, level: 2, right: true }],
-      [{ label: '🌐', width: 1.5, action: 'languageMenu' }, { label: '⌨', width: 1.5, action: 'hide' }] ],
+      [{ width: 1.5, action: 'languageMenu', extraClassName: 'layout-key' }, { width: 1.5, action: 'hide', extraClassName: 'hide-key' }] ],
 ];
 
 var KeyContainer = new Lang.Class({
@@ -247,7 +247,7 @@ var Key = new Lang.Class({
     Name: 'Key',
 
     _init : function(key, extendedKeys) {
-        this.key = key;
+        this.key = key || "";
         this.keyButton = this._makeKey(this.key);
 
         /* Add the key in a container, so keys can be padded without losing
