@@ -138,10 +138,6 @@ class OverviewActor extends St.BoxLayout {
         this.add_actor(panelGhost);
     }
 
-    get dash() {
-        return this._controls.dash;
-    }
-
     get searchEntry() {
         return this._searchEntry;
     }
@@ -158,16 +154,6 @@ var Overview = class {
 
         Main.sessionMode.connect('updated', this._sessionUpdated.bind(this));
         this._sessionUpdated();
-    }
-
-    get dash() {
-        return this._overview.dash;
-    }
-
-    get dashIconSize() {
-        logError(new Error('Usage of Overview.\'dashIconSize\' is deprecated, ' +
-            'use \'dash.iconSize\' property instead'));
-        return this.dash.iconSize;
     }
 
     get viewSelector() {
@@ -684,13 +670,6 @@ var Overview = class {
 
     getActivePage() {
         return this.viewSelector.getActivePage();
-    }
-
-    getShowAppsButton() {
-        logError(new Error('Usage of Overview.\'getShowAppsButton\' is deprecated, ' +
-            'use \'dash.showAppsButton\' property instead'));
-
-        return this.dash.showAppsButton;
     }
 
     get searchEntry() {

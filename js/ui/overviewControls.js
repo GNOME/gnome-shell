@@ -3,7 +3,6 @@
 
 const { Clutter, GObject, Meta, St } = imports.gi;
 
-const Dash = imports.ui.dash;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const ViewSelector = imports.ui.viewSelector;
@@ -322,77 +321,6 @@ class ThumbnailsSlider extends SlidingControl {
     }
 });
 
-var DashSlider = GObject.registerClass(
-class DashSlider extends SlidingControl {
-    _init(dash) {
-        super._init({ slideDirection: SlideDirection.LEFT });
-
-        this._dash = dash;
-
-        // SlideLayout reads the actor's expand flags to decide
-        // whether to allocate the natural size to its child, or the whole
-        // available allocation
-        this._dash.x_expand = true;
-
-        this.x_expand = true;
-        this.x_align = Clutter.ActorAlign.START;
-        this.y_expand = true;
-
-        this.add_actor(this._dash);
-
-        this._dash.connect('icon-size-changed', this._updateSlide.bind(this));
-    }
-
-    _getSlide() {
-        if (this._visible || this._inDrag)
-            return 1;
-        else
-            return 0;
-    }
-
-    _onWindowDragBegin() {
-        this.fadeHalf();
-    }
-
-    _onWindowDragEnd() {
-        this.fadeIn();
-    }
-});
-
-var DashSpacer = GObject.registerClass(
-class DashSpacer extends St.Widget {
-    _init(params) {
-        super._init(params);
-
-        this._bindConstraint = null;
-    }
-
-    setDashActor(dashActor) {
-        if (this._bindConstraint) {
-            this.remove_constraint(this._bindConstraint);
-            this._bindConstraint = null;
-        }
-
-        if (dashActor) {
-            this._bindConstraint = new Clutter.BindConstraint({ source: dashActor,
-                                                                coordinate: Clutter.BindCoordinate.SIZE });
-            this.add_constraint(this._bindConstraint);
-        }
-    }
-
-    vfunc_get_preferred_width(forHeight) {
-        if (this._bindConstraint)
-            return this._bindConstraint.source.get_preferred_width(forHeight);
-        return super.vfunc_get_preferred_width(forHeight);
-    }
-
-    vfunc_get_preferred_height(forWidth) {
-        if (this._bindConstraint)
-            return this._bindConstraint.source.get_preferred_height(forWidth);
-        return super.vfunc_get_preferred_height(forWidth);
-    }
-});
-
 var ControlsLayout = GObject.registerClass({
     Signals: { 'allocation-changed': { flags: GObject.SignalFlags.RUN_LAST } },
 }, class ControlsLayout extends Clutter.BinLayout {
@@ -412,11 +340,6 @@ class ControlsManager extends St.Widget {
             y_expand: true,
             clip_to_allocation: true,
         });
-
-        this.dash = new Dash.Dash();
-        this._dashSlider = new DashSlider(this.dash);
-        this._dashSpacer = new DashSpacer();
-        this._dashSpacer.setDashActor(this._dashSlider);
 
         let workspaceManager = global.workspace_manager;
         let activeWorkspaceIndex = workspaceManager.get_active_workspace_index();
@@ -439,7 +362,7 @@ class ControlsManager extends St.Widget {
         this._thumbnailsSlider = new ThumbnailsSlider(this._thumbnailsBox);
 
         this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
-            this._workspaceAdjustment, this.dash.showAppsButton);
+            this._workspaceAdjustment);
         this.viewSelector.connect('page-changed', this._setVisibility.bind(this));
         this.viewSelector.connect('page-empty', this._onPageEmpty.bind(this));
 
@@ -447,15 +370,10 @@ class ControlsManager extends St.Widget {
                                          x_expand: true, y_expand: true });
         this.add_actor(this._group);
 
-        this.add_actor(this._dashSlider);
-
-        this._group.add_actor(this._dashSpacer);
         this._group.add_child(this.viewSelector);
         this._group.add_actor(this._thumbnailsSlider);
 
         layout.connect('allocation-changed', this._updateWorkspacesGeometry.bind(this));
-
-        Main.overview.connect('showing', this._updateSpacerVisibility.bind(this));
 
         this.connect('destroy', this._onDestroy.bind(this));
     }
@@ -482,15 +400,11 @@ class ControlsManager extends St.Widget {
         let geometry = { x, y, width, height };
 
         let spacing = this.get_theme_node().get_length('spacing');
-        let dashWidth = this._dashSlider.getVisibleWidth() + spacing;
         let thumbnailsWidth = this._thumbnailsSlider.getNonExpandedWidth() + spacing;
 
-        geometry.width -= dashWidth;
         geometry.width -= thumbnailsWidth;
 
-        if (this.get_text_direction() == Clutter.TextDirection.LTR)
-            geometry.x += dashWidth;
-        else
+        if (this.get_text_direction() == Clutter.TextDirection.RTL)
             geometry.x += thumbnailsWidth;
 
         this.viewSelector.setWorkspacesFullGeometry(geometry);
@@ -506,14 +420,7 @@ class ControlsManager extends St.Widget {
             return;
 
         let activePage = this.viewSelector.getActivePage();
-        let dashVisible = activePage == ViewSelector.ViewPage.WINDOWS ||
-                           activePage == ViewSelector.ViewPage.APPS;
         let thumbnailsVisible = activePage == ViewSelector.ViewPage.WINDOWS;
-
-        if (dashVisible)
-            this._dashSlider.slideIn();
-        else
-            this._dashSlider.slideOut();
 
         if (thumbnailsVisible)
             this._thumbnailsSlider.slideIn();
@@ -521,18 +428,7 @@ class ControlsManager extends St.Widget {
             this._thumbnailsSlider.slideOut();
     }
 
-    _updateSpacerVisibility() {
-        if (Main.overview.animationInProgress && !Main.overview.visibleTarget)
-            return;
-
-        let activePage = this.viewSelector.getActivePage();
-        this._dashSpacer.visible = activePage == ViewSelector.ViewPage.WINDOWS;
-    }
-
     _onPageEmpty() {
-        this._dashSlider.pageEmpty();
         this._thumbnailsSlider.pageEmpty();
-
-        this._updateSpacerVisibility();
     }
 });

@@ -126,8 +126,6 @@ function *run() {
     yield Scripting.sleep(1000);
 
     Scripting.scriptEvent('applicationsShowStart');
-    // eslint-disable-next-line require-atomic-updates
-    Main.overview.dash.showAppsButton.checked = true;
 
     yield Scripting.waitLeisure();
     Scripting.scriptEvent('applicationsShowDone');

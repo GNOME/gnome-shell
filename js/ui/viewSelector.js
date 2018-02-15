@@ -128,14 +128,11 @@ var ViewSelector = GObject.registerClass({
         'page-empty': {},
     },
 }, class ViewSelector extends Shell.Stack {
-    _init(searchEntry, workspaceAdjustment, showAppsButton) {
+    _init(searchEntry, workspaceAdjustment) {
         super._init({
             name: 'viewSelector',
             x_expand: true,
         });
-
-        this._showAppsButton = showAppsButton;
-        this._showAppsButton.connect('notify::checked', this._onShowAppsButtonToggled.bind(this));
 
         this._activePage = null;
 
@@ -262,23 +259,17 @@ var ViewSelector = GObject.registerClass({
     }
 
     _toggleAppsPage() {
-        this._showAppsButton.checked = !this._showAppsButton.checked;
         Main.overview.show();
     }
 
     showApps() {
-        this._showAppsButton.checked = true;
         Main.overview.show();
     }
 
     show() {
         this.reset();
-        this._workspacesDisplay.show(this._showAppsButton.checked);
+        this._workspacesDisplay.show(true);
         this._activePage = null;
-        if (this._showAppsButton.checked)
-            this._showPage(this._appsPage);
-        else
-            this._showPage(this._workspacesPage);
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
@@ -290,8 +281,6 @@ var ViewSelector = GObject.registerClass({
         this._workspacesPage.opacity = 255;
 
         this._workspacesDisplay.animateFromOverview(this._activePage != this._workspacesPage);
-
-        this._showAppsButton.checked = false;
 
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeInDesktop();
@@ -390,13 +379,7 @@ var ViewSelector = GObject.registerClass({
     }
 
     _a11yFocusPage(page) {
-        this._showAppsButton.checked = page == this._appsPage;
         page.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-    }
-
-    _onShowAppsButtonToggled() {
-        this._showPage(this._showAppsButton.checked
-            ? this._appsPage : this._workspacesPage);
     }
 
     _onStageKeyPress(actor, event) {
@@ -410,8 +393,6 @@ var ViewSelector = GObject.registerClass({
         if (symbol === Clutter.KEY_Escape) {
             if (this._searchActive)
                 this.reset();
-            else if (this._showAppsButton.checked)
-                this._showAppsButton.checked = false;
             else
                 Main.overview.hide();
             return Clutter.EVENT_STOP;
@@ -430,9 +411,7 @@ var ViewSelector = GObject.registerClass({
     }
 
     _searchCancelled() {
-        this._showPage(this._showAppsButton.checked
-            ? this._appsPage
-            : this._workspacesPage);
+        this._showPage(this._appsPage);
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits
