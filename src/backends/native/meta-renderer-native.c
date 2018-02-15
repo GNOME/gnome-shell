@@ -1854,17 +1854,17 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
   frame_info = g_queue_peek_tail (&onscreen->pending_frame_infos);
   frame_info->global_frame_counter = renderer_native->frame_counter;
 
-  /*
-   * Wait for the flip callback before continuing, as we might have started the
-   * animation earlier due to the animation being driven by some other monitor.
-   */
-  wait_for_pending_flips (onscreen);
-
   update_secondary_gpu_state_pre_swap_buffers (onscreen);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
                                                     n_rectangles);
+
+  /*
+   * Wait for the flip callback before continuing, as we might have started the
+   * animation earlier due to the animation being driven by some other monitor.
+   */
+  wait_for_pending_flips (onscreen);
 
   renderer_gpu_data = meta_renderer_native_get_gpu_data (renderer_native,
                                                          render_gpu);
