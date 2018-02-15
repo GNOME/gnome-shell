@@ -4,6 +4,7 @@
 const { Clutter, GLib, GObject, Meta, Pango, Shell, St } = imports.gi;
 const Signals = imports.signals;
 
+const AppDisplay = imports.ui.appDisplay;
 const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const LayoutManager = imports.ui.layout;
@@ -191,6 +192,15 @@ var Overview = class {
         this._overview._delegate = this;
         this._allMonitorsGroup.add_actor(this._overview);
 
+        // this effect takes care of animating the saturation when entering
+        // or leaving the overview
+        this._overviewSaturation = new Clutter.DesaturateEffect({
+            name: 'saturation',
+            factor: AppDisplay.EOS_ACTIVE_GRID_SATURATION,
+            enabled: false,
+        });
+        this._overview.add_effect(this._overviewSaturation);
+
         // The main Background actors are inside global.window_group which are
         // hidden when displaying the overview, so we create a new
         // one. Instances of this class share a single CoglTexture behind the
@@ -213,6 +223,7 @@ var Overview = class {
         this._modal = false;            // have a modal grab
         this.animationInProgress = false;
         this.visibleTarget = false;
+        this.opacityPrepared = false;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -698,17 +709,39 @@ var Overview = class {
         // the hidden state
         this._toggleToHidden = true;
 
-        this._overview.opacity = 0;
-        this._overview.ease({
-            opacity: 255,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            duration: ANIMATION_TIME,
-            onComplete: () => this._showDone()
-        });
-
         this._coverPane.raise_top();
         this._coverPane.show();
         this.emit('showing');
+
+        if (Main.layoutManager.startingUp || this.opacityPrepared) {
+            this._overview.opacity = AppDisplay.EOS_ACTIVE_GRID_OPACITY;
+            this.opacityPrepared = false;
+            this._showDone();
+            return;
+        }
+
+        if (this.viewSelector.getActivePage() == ViewSelector.ViewPage.APPS)
+            this._overview.opacity = AppDisplay.EOS_INACTIVE_GRID_OPACITY;
+        else
+            this._overview.opacity = 0;
+
+        this._overview.ease({
+            opacity: AppDisplay.EOS_ACTIVE_GRID_OPACITY,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            duration: ANIMATION_TIME,
+            onComplete: () => this._showDone(),
+        });
+
+        this._overviewSaturation.factor = AppDisplay.EOS_INACTIVE_GRID_SATURATION;
+        this._overviewSaturation.enabled = true;
+        this._overview.ease_property(
+            '@effects.saturation.factor',
+            AppDisplay.EOS_ACTIVE_GRID_SATURATION, {
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                duration: ANIMATION_TIME,
+                onComplete: () => this._overviewSaturation.enabled = false,
+            }
+        );
     }
 
     _showDone() {
@@ -760,12 +793,28 @@ var Overview = class {
 
         this.animationInProgress = true;
         this.visibleTarget = false;
+        this.emit('hiding');
+
+        let hidingFromApps = (this.viewSelector.getActivePage() == ViewSelector.ViewPage.APPS);
+        if (hidingFromApps)
+            this._overview.opacity = AppDisplay.EOS_INACTIVE_GRID_OPACITY;
+
+        if (hidingFromApps || this.opacityPrepared) {
+            // When we're hiding from the apps page, we want to instantaneously
+            // switch to the application, so don't fade anything. We'll tween
+            // the grid clone in the background separately - see comment in
+            // viewSelector.js::ViewsClone.
+            this._overview.opacity = AppDisplay.EOS_INACTIVE_GRID_OPACITY;
+            this.opacityPrepared = false;
+            this._hideDone();
+            return;
+        }
 
         this.viewSelector.animateFromOverview();
 
         // Make other elements fade out.
         this._overview.ease({
-            opacity: 0,
+            opacity: AppDisplay.EOS_INACTIVE_GRID_OPACITY,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             duration: ANIMATION_TIME,
             onComplete: () => this._hideDone()
@@ -773,7 +822,6 @@ var Overview = class {
 
         this._coverPane.raise_top();
         this._coverPane.show();
-        this.emit('hiding');
     }
 
     _hideDone() {
