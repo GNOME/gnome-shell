@@ -263,6 +263,7 @@ var Key = new Lang.Class({
         this._capturedPress = false;
         this._capturedEventId = 0;
         this._unmapId = 0;
+        this._longPress = false;
     },
 
     _onDestroy: function() {
@@ -298,16 +299,25 @@ var Key = new Lang.Class({
     _press: function(key) {
         if (key != this.key || this._extended_keys.length == 0) {
             this.emit('pressed', this._getKeyval(key), key);
-        } else if (key == this.key) {
+        }
+
+        if (key == this.key) {
             this._pressTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                     KEY_LONG_PRESS_TIME,
                                                     Lang.bind(this, function() {
-                                                        this.keyButton.set_hover(false);
-                                                        this.keyButton.fake_release();
+                                                        this._longPress = true;
                                                         this._pressTimeoutId = 0;
-                                                        this._touchPressed = false;
-                                                        this._ensureExtendedKeysPopup();
-                                                        this._showSubkeys();
+
+                                                        this.emit('long-press');
+
+                                                        if (this._extended_keys.length > 0) {
+                                                            this._touchPressed = false;
+                                                            this.keyButton.set_hover(false);
+                                                            this.keyButton.fake_release();
+                                                            this._ensureExtendedKeysPopup();
+                                                            this._showSubkeys();
+                                                        }
+
                                                         return GLib.SOURCE_REMOVE;
                                                     }));
         }
@@ -317,11 +327,14 @@ var Key = new Lang.Class({
         if (this._pressTimeoutId != 0) {
             GLib.source_remove(this._pressTimeoutId);
             this._pressTimeoutId = 0;
-            this.emit('pressed', this._getKeyval(key), key);
         }
+
+        if (!this._longPress && key == this.key && this._extended_keys.length > 0)
+            this.emit('pressed', this._getKeyval(key), key);
 
         this.emit('released', this._getKeyval(key), key);
         this._hideSubkeys();
+        this._longPress = false;
     },
 
     _onCapturedEvent: function(actor, event) {
