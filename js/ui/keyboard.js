@@ -450,6 +450,13 @@ var Key = new Lang.Class({
     setWidth: function (width) {
         this.keyButton.keyWidth = width;
     },
+
+    setLatched: function (latched) {
+        if (latched)
+            this.keyButton.add_style_pseudo_class('latched');
+        else
+            this.keyButton.remove_style_pseudo_class('latched');
+    },
 });
 Signals.addSignalMethods(Key.prototype);
 
@@ -749,6 +756,8 @@ var Keyboard = new Lang.Class({
             let level = (i >= 1 && levels.length == 3) ? i + 1 : i;
 
             let layout = new KeyContainer();
+            layout.shiftKeys = [];
+
             this._loadRows(currentLevel, level, levels.length, layout);
             layers[level] = layout;
             this.actor.add(layout, { expand: true });
@@ -842,9 +851,12 @@ var Keyboard = new Lang.Class({
                     this._popupLanguageMenu(actor);
             }));
 
-            if (switchToLevel == 1) {
+            if (switchToLevel == 0) {
+                layout.shiftKeys.push(extraButton);
+            } else if (switchToLevel == 1) {
                 extraButton.connect('long-press', Lang.bind(this, function() {
                     this._latched = true;
+                    this._setCurrentLevelLatched(this._current_page, this._latched);
                 }));
             }
 
@@ -865,6 +877,13 @@ var Keyboard = new Lang.Class({
             }
 
             layout.appendKey(extraButton.actor, extraButton.keyButton.keyWidth);
+        }
+    },
+
+    _setCurrentLevelLatched: function(layout, latched) {
+        for (let i = 0; layout.shiftKeys[i]; i++) {
+            let key = layout.shiftKeys[i];
+            key.setLatched(latched);
         }
     },
 
@@ -961,6 +980,7 @@ var Keyboard = new Lang.Class({
         let layers = this._groups[activeGroupName];
 
         if (this._current_page != null) {
+            this._setCurrentLevelLatched(this._current_page, false);
             this._current_page.hide();
         }
 
