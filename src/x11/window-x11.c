@@ -1933,11 +1933,11 @@ meta_window_x11_update_shape_region (MetaWindow *window)
        * this is simply the client area.
        */
       cairo_region_intersect_rectangle (region, &client_area);
-
       /* Some applications might explicitly set their bounding region
        * to the client area. Detect these cases, and throw out the
-       * bounding region in this case. */
-      if (cairo_region_contains_rectangle (region, &client_area) == CAIRO_REGION_OVERLAP_IN)
+       * bounding region in this case for decorated windows. */
+      if (window->decorated &&
+          cairo_region_contains_rectangle (region, &client_area) == CAIRO_REGION_OVERLAP_IN)
         g_clear_pointer (&region, cairo_region_destroy);
     }
 
