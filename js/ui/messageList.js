@@ -770,7 +770,7 @@ class NotificationMessage extends Message {
     }
 });
 
-const MediaMessage = GObject.registerClass(
+export const MediaMessage = GObject.registerClass(
 class MediaMessage extends Message {
     constructor(player) {
         super(player.source);
