@@ -432,7 +432,11 @@ calculate_compositor_configuration (MetaCompositorType *compositor_type,
 #ifdef HAVE_WAYLAND
   gboolean run_as_wayland_compositor = opt_wayland && !opt_x11;
 
+#ifdef HAVE_NATIVE_BACKEND
   if ((opt_wayland || opt_nested || opt_display_server) && opt_x11)
+#else
+  if ((opt_wayland || opt_nested) && opt_x11)
+#endif
     {
       meta_warning ("Can't run both as Wayland compositor and X11 compositing manager\n");
       meta_exit (META_EXIT_ERROR);
