@@ -849,7 +849,8 @@ var Keyboard = new Lang.Class({
             }
 
             /* Fixup default keys based on the number of levels/keys */
-            if (key.label == '⇧' && numLevels == 3) {
+            if (switchToLevel == 1 && numLevels == 3) {
+                // Hide shift key if the keymap has no uppercase level
                 if (key.right) {
                     /* Only hide the key actor, so the container still takes space */
                     extraButton.keyButton.hide();
@@ -859,7 +860,7 @@ var Keyboard = new Lang.Class({
                 extraButton.setWidth(1.5);
             } else if (key.right && numKeys > 8) {
                 extraButton.setWidth(2);
-            } else if (key.label == '⏎' && numKeys > 9) {
+            } else if (keyval == Clutter.KEY_Return && numKeys > 9) {
                 extraButton.setWidth(1.5);
             }
 
