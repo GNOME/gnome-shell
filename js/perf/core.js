@@ -126,12 +126,8 @@ function *run() {
 
     for (let i = 0; i < 2; i++) {
         Scripting.scriptEvent('applicationsShowStart');
-        // eslint-disable-next-line require-atomic-updates
-        Main.overview._dash.showAppsButton.checked = true;
         yield Scripting.waitLeisure();
         Scripting.scriptEvent('applicationsShowDone');
-        // eslint-disable-next-line require-atomic-updates
-        Main.overview._dash.showAppsButton.checked = false;
         yield Scripting.waitLeisure();
     }
 }

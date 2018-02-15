@@ -124,11 +124,8 @@ var ShowOverviewAction = GObject.registerClass({
 });
 
 var ViewSelector = class {
-    constructor(searchEntry, showAppsButton) {
+    constructor(searchEntry) {
         this.actor = new Shell.Stack({ name: 'viewSelector' });
-
-        this._showAppsButton = showAppsButton;
-        this._showAppsButton.connect('notify::checked', this._onShowAppsButtonToggled.bind(this));
 
         this._activePage = null;
 
@@ -259,7 +256,6 @@ var ViewSelector = class {
     }
 
     showApps() {
-        this._showAppsButton.checked = true;
         Main.overview.show();
     }
 
@@ -270,7 +266,7 @@ var ViewSelector = class {
         // (used for the Windows picker) visible to prevent situations where that actor
         // would intercept clicks meant for the desktop's icons grid.
         if (!Main.layoutManager.startingUp)
-            this._workspacesDisplay.show(true);
+            this._workspacesDisplay.show(viewPage == ViewPage.APPS);
 
         this._showPage(this._pageFromViewPage(viewPage));
     }
@@ -281,8 +277,6 @@ var ViewSelector = class {
         this._workspacesPage.opacity = 255;
 
         this._workspacesDisplay.animateFromOverview(this._activePage != this._workspacesPage);
-
-        this._showAppsButton.checked = false;
     }
 
     setWorkspacesFullGeometry(geom) {
@@ -380,13 +374,7 @@ var ViewSelector = class {
     }
 
     _a11yFocusPage(page) {
-        this._showAppsButton.checked = page == this._appsPage;
         page.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
-    }
-
-    _onShowAppsButtonToggled() {
-        this._showPage(this._showAppsButton.checked
-            ? this._appsPage : this._workspacesPage);
     }
 
     _onStageKeyPress(actor, event) {
@@ -400,8 +388,6 @@ var ViewSelector = class {
         if (symbol == Clutter.Escape) {
             if (this._searchActive)
                 this.reset();
-            else if (this._showAppsButton.checked)
-                this._showAppsButton.checked = false;
             else
                 Main.overview.hide();
             return Clutter.EVENT_STOP;
@@ -420,9 +406,7 @@ var ViewSelector = class {
     }
 
     _searchCancelled() {
-        this._showPage(this._showAppsButton.checked
-            ? this._appsPage
-            : this._workspacesPage);
+        this._showPage(this._appsPage);
 
         // Leave the entry focused when it doesn't have any text;
         // when replacing a selected search term, Clutter emits
