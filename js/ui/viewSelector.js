@@ -269,7 +269,12 @@ var ViewSelector = GObject.registerClass({
 
     show(viewPage) {
         this.reset();
-        this._workspacesDisplay.show(true);
+
+        // We're always starting up to the APPS page, so avoid making the workspacesDisplay
+        // (used for the Windows picker) visible to prevent situations where that actor
+        // would intercept clicks meant for the desktop's icons grid.
+        if (!Main.layoutManager.startingUp)
+            this._workspacesDisplay.show(true);
 
         this._showPage(this._pageFromViewPage(viewPage));
     }
