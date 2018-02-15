@@ -19,6 +19,12 @@
     <file>filter-selected-rtl.svg</file>
     <file>gnome-shell.css</file>
     <file>gnome-shell-high-contrast.css</file>
+    <file>key-enter.svg</file>
+    <file>key-hide.svg</file>
+    <file>key-layout.svg</file>
+    <file>key-shift.svg</file>
+    <file>key-shift-uppercase.svg</file>
+    <file>key-shift-latched-uppercase.svg</file>
     <file>logged-in-indicator.svg</file>
     <file alias="icons/message-indicator-symbolic.svg">message-indicator-symbolic.svg</file>
     <file>no-events.svg</file>

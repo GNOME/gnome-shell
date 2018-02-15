@@ -1643,7 +1643,7 @@ StScrollBar {
     background-color: #393f3f;
     min-height: 2em;
     min-width: 2em;
-    font-size: 14pt;
+    font-size: 16pt;
     border-radius: 3px;
     border: 1px solid #464d4d;
     color: #e5e5e5;
@@ -1658,16 +1658,32 @@ StScrollBar {
     &.default-key {
       border-color: #2d3232;
       background-color: #1d2020;
+      background-size: 20px;
     }
     &.enter-key {
       border-color: #005684;
       background-color: #006098;
+      background-image: url("resource:///org/gnome/shell/theme/key-enter.svg");
+    }
+    &.shift-key-lowercase {
+      background-image: url("resource:///org/gnome/shell/theme/key-shift.svg");
+    }
+    &.shift-key-uppercase {
+      background-image: url("resource:///org/gnome/shell/theme/key-shift-uppercase.svg");
+    }
+    &.shift-key-uppercase:latched {
+      background-image: url("resource:///org/gnome/shell/theme/key-shift-latched-uppercase.svg");
+    }
+    &.hide-key {
+      background-image: url("resource:///org/gnome/shell/theme/key-hide.svg");
+    }
+    &.layout-key {
+      background-image: url("resource:///org/gnome/shell/theme/key-layout.svg");
     }
   }
 
   .keyboard-subkeys { //long press on a key popup
     color: white;
-    padding: 5px;
     -arrow-border-radius: 10px;
     -arrow-background-color: transparentize($osd_bg_color, 0.3);
     -arrow-border-width: 2px;
