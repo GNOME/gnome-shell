@@ -499,6 +499,7 @@ var Keyboard = new Lang.Class({
 
         this._enableKeyboard = false; // a11y settings value
         this._enabled = false; // enabled state (by setting or device type)
+        this._latched = false; // current level is latched
 
         this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._syncEnabled));
@@ -787,6 +788,9 @@ var Keyboard = new Lang.Class({
                         this._keyboardController.keyvalRelease(keyval);
                     button._keyvalPress = false;
                 }
+
+                if (!this._latched)
+                    this._setActiveLayer(0);
             }));
 
             layout.appendKey(button.actor, button.keyButton.keyWidth);
@@ -821,19 +825,28 @@ var Keyboard = new Lang.Class({
             let actor = extraButton.keyButton;
 
             extraButton.connect('pressed', Lang.bind(this, function() {
-                if (keyval != null)
+                if (switchToLevel != null) {
+                    this._setActiveLayer(switchToLevel);
+                    // Shift only gets latched on long press
+                    this._latched = (switchToLevel != 1);
+                } else if (keyval != null) {
                     this._keyboardController.keyvalPress(keyval);
+                }
             }));
             extraButton.connect('released', Lang.bind(this, function() {
-                if (switchToLevel != null)
-                    this._setActiveLayer(switchToLevel);
-                else if (keyval != null)
+                if (keyval != null)
                     this._keyboardController.keyvalRelease(keyval);
                 else if (action == 'hide')
                     this.hide();
                 else if (action == 'languageMenu')
                     this._popupLanguageMenu(actor);
             }));
+
+            if (switchToLevel == 1) {
+                extraButton.connect('long-press', Lang.bind(this, function() {
+                    this._latched = true;
+                }));
+            }
 
             /* Fixup default keys based on the number of levels/keys */
             if (key.label == '⇧' && numLevels == 3) {
