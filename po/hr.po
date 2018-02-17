@@ -4,10 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-29 16:09+0000\n"
-"PO-Revision-Date: 2017-09-22 20:51+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
+"POT-Creation-Date: 2018-02-06 04:14+0000\n"
+"PO-Revision-Date: 2018-02-17 16:00+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "Language: hr\n"
@@ -17,7 +16,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Launchpad-Export-Date: 2008-05-28 13:28+0000\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -44,134 +43,118 @@ msgid "Move window to last workspace"
 msgstr "Premjesti prozor posljednji radni prostor"
 
 #: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "Premjesti prozor jedan radni prostor nalijevo"
-
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "Premjesti prozor jedan radni prostor udesno"
-
-#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Premjesti prozor jedan radni prostor gore"
 
-#: data/50-mutter-navigation.xml:33
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace down"
 msgstr "Premjesti prozor jedan radni prostor dolje"
 
-#: data/50-mutter-navigation.xml:36
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one monitor to the left"
 msgstr "Premjesti prozor jedan zaslon nalijevo"
 
-#: data/50-mutter-navigation.xml:39
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one monitor to the right"
 msgstr "Premjesti prozor jedan zaslon udesno"
 
-#: data/50-mutter-navigation.xml:42
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor up"
 msgstr "Premjesti prozor jedan zaslon gore"
 
-#: data/50-mutter-navigation.xml:45
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor down"
 msgstr "Premjesti prozor jedan zaslon dolje"
 
-#: data/50-mutter-navigation.xml:49
+#: data/50-mutter-navigation.xml:43
 msgid "Switch applications"
 msgstr "Prebacivanje aplikacija"
 
-#: data/50-mutter-navigation.xml:54
+#: data/50-mutter-navigation.xml:48
 msgid "Switch to previous application"
 msgstr "Prebaci na prijašnju aplikaciju"
 
-#: data/50-mutter-navigation.xml:58
+#: data/50-mutter-navigation.xml:52
 msgid "Switch windows"
 msgstr "Prebacivanje prozora"
 
-#: data/50-mutter-navigation.xml:63
+#: data/50-mutter-navigation.xml:57
 msgid "Switch to previous window"
 msgstr "Prebaci na prijašnji prozor"
 
-#: data/50-mutter-navigation.xml:67
+#: data/50-mutter-navigation.xml:61
 msgid "Switch windows of an application"
 msgstr "Prebacivanje prozora aplikacija"
 
-#: data/50-mutter-navigation.xml:72
+#: data/50-mutter-navigation.xml:66
 msgid "Switch to previous window of an application"
 msgstr "Prebaci na prijašnji prozor aplikacije"
 
-#: data/50-mutter-navigation.xml:76
+#: data/50-mutter-navigation.xml:70
 msgid "Switch system controls"
 msgstr "Prebacivanje upravljanja sustavom"
 
-#: data/50-mutter-navigation.xml:81
+#: data/50-mutter-navigation.xml:75
 msgid "Switch to previous system control"
 msgstr "Prebaci na prijašnje upravljanje sustavom"
 
-#: data/50-mutter-navigation.xml:85
+#: data/50-mutter-navigation.xml:79
 msgid "Switch windows directly"
 msgstr "Prebacivanje izravno na prozor"
 
-#: data/50-mutter-navigation.xml:90
+#: data/50-mutter-navigation.xml:84
 msgid "Switch directly to previous window"
 msgstr "Prebaci izravno na prijašnji prozor"
 
-#: data/50-mutter-navigation.xml:94
+#: data/50-mutter-navigation.xml:88
 msgid "Switch windows of an app directly"
 msgstr "Prebacivanje prozora aplikacije izravno"
 
-#: data/50-mutter-navigation.xml:99
+#: data/50-mutter-navigation.xml:93
 msgid "Switch directly to previous window of an app"
 msgstr "Prebaci izravno na prijašnji prozor aplikacije"
 
-#: data/50-mutter-navigation.xml:103
+#: data/50-mutter-navigation.xml:97
 msgid "Switch system controls directly"
 msgstr "Prebacivanje upravljanja sustavom izravno"
 
-#: data/50-mutter-navigation.xml:108
+#: data/50-mutter-navigation.xml:102
 msgid "Switch directly to previous system control"
 msgstr "Prebaci izravno na prijašnje upravljanje sustavom"
 
-#: data/50-mutter-navigation.xml:111
+#: data/50-mutter-navigation.xml:105
 msgid "Hide all normal windows"
 msgstr "Sakrij sve normalne prozore"
 
-#: data/50-mutter-navigation.xml:114
+#: data/50-mutter-navigation.xml:108
 msgid "Switch to workspace 1"
 msgstr "Prebaci se na radni prostor 1"
 
-#: data/50-mutter-navigation.xml:117
+#: data/50-mutter-navigation.xml:111
 msgid "Switch to workspace 2"
 msgstr "Prebaci se na radni prostor 2"
 
-#: data/50-mutter-navigation.xml:120
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 3"
 msgstr "Prebaci se na radni prostor 3"
 
-#: data/50-mutter-navigation.xml:123
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 4"
 msgstr "Prebaci se na radni prostor 4"
 
-#: data/50-mutter-navigation.xml:126
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to last workspace"
 msgstr "Prebaci na prijašnji radni prostor"
 
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "Premjesti na lijevi radni prostor"
-
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "Premjesti na desni radni prostor"
-
-#: data/50-mutter-navigation.xml:135
+#: data/50-mutter-navigation.xml:123
 msgid "Move to workspace above"
 msgstr "Premjesti na gornji radni prostor"
 
-#: data/50-mutter-navigation.xml:138
+#: data/50-mutter-navigation.xml:126
 msgid "Move to workspace below"
 msgstr "Premjesti na donji radni prostor"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "Sustav"
 
@@ -182,6 +165,10 @@ msgstr "Prikaži dijalog pokretanja naredbe"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Prikaži pregled aktivnosti"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Vrati izvorne prečace tipkovnice"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -208,54 +195,50 @@ msgid "Restore window"
 msgstr "Vrati prozor"
 
 #: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "Uklj/Isklj stanje zasjenjenosti"
-
-#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Zatvori prozor"
 
-#: data/50-mutter-windows.xml:22
+#: data/50-mutter-windows.xml:20
 msgid "Hide window"
 msgstr "Sakrij prozor"
 
-#: data/50-mutter-windows.xml:24
+#: data/50-mutter-windows.xml:22
 msgid "Move window"
 msgstr "Premjesti prozor"
 
-#: data/50-mutter-windows.xml:26
+#: data/50-mutter-windows.xml:24
 msgid "Resize window"
 msgstr "Promijeni veličinu prozora"
 
-#: data/50-mutter-windows.xml:29
+#: data/50-mutter-windows.xml:27
 msgid "Toggle window on all workspaces or one"
 msgstr "Uklj/Isklj prozor na svim radnim prostorima"
 
-#: data/50-mutter-windows.xml:31
+#: data/50-mutter-windows.xml:29
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Podigni prekriven prozor, u suprotnome smanji"
 
-#: data/50-mutter-windows.xml:33
+#: data/50-mutter-windows.xml:31
 msgid "Raise window above other windows"
 msgstr "Podigni prozor iznad ostalih prozora"
 
-#: data/50-mutter-windows.xml:35
+#: data/50-mutter-windows.xml:33
 msgid "Lower window below other windows"
 msgstr "Spusti prozor ispod ostalih prozora"
 
-#: data/50-mutter-windows.xml:37
+#: data/50-mutter-windows.xml:35
 msgid "Maximize window vertically"
 msgstr "Uvećaj prozor okomito"
 
-#: data/50-mutter-windows.xml:39
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window horizontally"
 msgstr "Uvećaj prozor vodoravno"
 
-#: data/50-mutter-windows.xml:43
+#: data/50-mutter-windows.xml:41
 msgid "View split on left"
 msgstr "Podijeli pogled ulijevo"
 
-#: data/50-mutter-windows.xml:47
+#: data/50-mutter-windows.xml:45
 msgid "View split on right"
 msgstr "Podijeli pogled udesno"
 
@@ -493,10 +476,55 @@ msgstr "Prebaci na VT 12"
 msgid "Re-enable shortcuts"
 msgstr "Ponovno omogući prečace"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:64
+msgid "Allow grabs with Xwayland"
+msgstr "Dopusti hvatanje sa Xwaylandom"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:65
+msgid ""
+"Allow keyboard grabs issued by X11 applications running in Xwayland to be "
+"taken into account. For a X11 grab to be taken into account under Wayland, "
+"the client must also either send a specific X11 ClientMessage to the root "
+"window or be among the applications white-listed in key “xwayland-grab-"
+"access-rules”."
+msgstr ""
+"Dopusti hvatanje tipkovnicom aplikacije izdane za X11 pokrenute u Xwaylandu "
+"kako bi se obuhvatile u računu. Kako bi X11 hvatanje bilo obuhvaćeno računom "
+"u Waylandu, klijent mora poslati ili određenu X11 poruku klijenta u "
+"korijenski prozor ili mora biti naveden među aplikacijama dopuštenim u "
+"ključu “xwayland-grab-access-rules”."
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:77
+msgid "Xwayland applications allowed to issue keyboard grabs"
+msgstr "Xwayland aplikacije dopuštene za izdavanje hvatanja tipkovnice"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:78
+msgid ""
+"List the resource names or resource class of X11 windows either allowed or "
+"not allowed to issue X11 keyboard grabs under Xwayland. The resource name or "
+"resource class of a given X11 window can be obtained using the command "
+"“xprop WM_CLASS”. Wildcards “*” and jokers “?” in the values are supported. "
+"Values starting with “!” are blacklisted, which has precedence over the "
+"whitelist, to revoke applications from the default system list. The default "
+"system list includes the following applications: "
+"“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Users can break an existing grab by "
+"using the specific keyboard shortcut defined by the keybinding key “restore-"
+"shortcuts”."
+msgstr ""
+"Popis naziva ili razreda resursa X11 prozora koji dopuštaju ili nedopuštaju "
+"izdavanje X11 hvatanja tipkovnice u Xwaylandu. Popis naziva ili razreda "
+"resursa danog X11 prozora može se omogućiti naredbom “xprop WM_CLASS”. "
+"Zvjezdice “*” i upitnici “?” u vrijednostima su podržani. Vrijednosti koje "
+"počinju sa “!” nisu dopuštene, a imaju prednost nad dopuštenim, kako bi "
+"opozvali aplikaciju iz zadanog popisa sustavom. Zadani popis sustava "
+"uključuje sljedeće aplikacije: “@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” "
+"Korisnici mogu prekinuti postojeće hvatanje koristeći određeni prečac "
+"tipkovnice određen ključem prečaca tipkovnice “restore-shortcuts”."
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2260
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Način prebacivanja (Grupa %d)"
@@ -504,37 +532,37 @@ msgstr "Način prebacivanja (Grupa %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2283
 msgid "Switch monitor"
 msgstr "Prebaci zaslon"
 
-#: src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2285
 msgid "Show on-screen help"
 msgstr "Prikaži zaslonsku pomoć"
 
-#: src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "Ugrađeni zaslon"
 
-#: src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "Nepoznat"
 
-#: src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "Nepoznat zaslon"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:476
+#: src/compositor/compositor.c:481
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -550,41 +578,45 @@ msgstr "Događaj zvona"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Neuspjelo otvaranje sustava prikaza X prozora \"%s\"\n"
 
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Onemogući povezivanje sa upraviteljem sesija"
 
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Zamijeni pokrenutoga upravitelja porozora"
 
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Odredite ID upravljanja sesijama"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "X Prikaz za korištenje"
 
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Pokreni sesiju iz spremljene datoteke"
 
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Napravi X pozive usklađenim"
 
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "Pokreni wayland kompozitor"
 
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
 msgstr "Pokreni kao ugrađeni kompozitor"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
 msgstr "Pokreni kao potpuni poslužitelj zaslona, radije nego ugrađeni"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "Pokreni s X11 pozadinskim programom"
 
 #. Translators: %s is a window title
 #: src/core/meta-close-dialog-default.c:147
@@ -640,7 +672,7 @@ msgstr "Mutter priključak koji se koristi"
 msgid "Workspace %d"
 msgstr "Radni prostor %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -649,7 +681,7 @@ msgstr ""
 "Prikaz \"%s\" već ima upravitelja prozora; pokušajte koristiti --replace "
 "mogućnost za zamjenu trenutnog upravitelja prozora."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Zaslon %d na prikazu '%s' je neispravan\n"
@@ -663,7 +695,7 @@ msgstr "Mutter je kompiliran bez podrške za opširan način rada\n"
 msgid "Mode Switch: Mode %d"
 msgstr "Način prebacivanja: Način %d"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -675,6 +707,21 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Premjesti prozor jedan radni prostor nalijevo"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Premjesti prozor jedan radni prostor udesno"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "Premjesti na lijevi radni prostor"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "Premjesti na desni radni prostor"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "Uklj/Isklj stanje zasjenjenosti"
 
 #~ msgid "Desktop"
 #~ msgstr "Radna površina"
