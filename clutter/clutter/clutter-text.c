@@ -2247,7 +2247,8 @@ clutter_text_key_press (ClutterActor    *actor,
     {
       gunichar key_unichar;
 
-      if (clutter_input_focus_filter_key_event (priv->input_focus, event))
+      if (clutter_input_focus_is_focused (priv->input_focus) &&
+          clutter_input_focus_filter_key_event (priv->input_focus, event))
         return CLUTTER_EVENT_STOP;
 
       /* Skip keys when control is pressed */
@@ -2293,7 +2294,8 @@ clutter_text_key_release (ClutterActor    *actor,
   ClutterText *self = CLUTTER_TEXT (actor);
   ClutterTextPrivate *priv = self->priv;
 
-  if (clutter_input_focus_filter_key_event (priv->input_focus, event))
+  if (clutter_input_focus_is_focused (priv->input_focus) &&
+      clutter_input_focus_filter_key_event (priv->input_focus, event))
     return CLUTTER_EVENT_STOP;
 
   return CLUTTER_EVENT_PROPAGATE;
