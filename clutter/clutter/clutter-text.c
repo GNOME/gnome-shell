@@ -4512,15 +4512,34 @@ buffer_deleted_text (ClutterTextBuffer *buffer,
 }
 
 static void
+clutter_text_queue_redraw_or_relayout (ClutterText *self)
+{
+  ClutterActor *actor = CLUTTER_ACTOR (self);
+  gfloat preferred_width;
+  gfloat preferred_height;
+
+  clutter_text_dirty_cache (self);
+
+  /* we're using our private implementations here to avoid the caching done by ClutterActor */
+  clutter_text_get_preferred_width (actor, -1, NULL, &preferred_width);
+  clutter_text_get_preferred_height (actor, preferred_width, NULL, &preferred_height);
+
+  if (clutter_actor_has_allocation (actor) &&
+      (fabsf (preferred_width - clutter_actor_get_width (actor)) > 0.001 ||
+       fabsf (preferred_height - clutter_actor_get_height (actor)) > 0.001))
+    clutter_actor_queue_relayout (actor);
+  else
+    clutter_text_queue_redraw (actor);
+}
+
+static void
 buffer_notify_text (ClutterTextBuffer *buffer,
                     GParamSpec        *spec,
                     ClutterText       *self)
 {
   g_object_freeze_notify (G_OBJECT (self));
 
-  clutter_text_dirty_cache (self);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+  clutter_text_queue_redraw_or_relayout (self);
 
   g_signal_emit (self, text_signals[TEXT_CHANGED], 0);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_TEXT]);
@@ -4872,8 +4891,7 @@ clutter_text_set_cursor_visible (ClutterText *self,
     {
       priv->cursor_visible = cursor_visible;
 
-      clutter_text_dirty_cache (self);
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+      clutter_text_queue_redraw_or_relayout (self);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_VISIBLE]);
     }
@@ -5774,9 +5792,7 @@ clutter_text_set_line_alignment (ClutterText    *self,
     {
       priv->alignment = alignment;
 
-      clutter_text_dirty_cache (self);
-
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+      clutter_text_queue_redraw_or_relayout (self);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LINE_ALIGNMENT]);
     }
@@ -5831,9 +5847,7 @@ clutter_text_set_use_markup (ClutterText *self,
   if (setting)
     clutter_text_set_markup_internal (self, text);
 
-  clutter_text_dirty_cache (self);
-
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+  clutter_text_queue_redraw_or_relayout (self);
 }
 
 /**
@@ -5880,9 +5894,7 @@ clutter_text_set_justify (ClutterText *self,
     {
       priv->justify = justify;
 
-      clutter_text_dirty_cache (self);
-
-      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+      clutter_text_queue_redraw_or_relayout (self);
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_JUSTIFY]);
     }
@@ -6449,8 +6461,7 @@ clutter_text_set_preedit_string (ClutterText   *self,
       priv->preedit_set = TRUE;
     }
 
-  clutter_text_dirty_cache (self);
-  clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
+  clutter_text_queue_redraw_or_relayout (self);
 }
 
 
