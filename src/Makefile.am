@@ -94,6 +94,7 @@ endif
 wayland_protocols =				\
 	wayland/protocol/gtk-shell.xml		\
 	wayland/protocol/gtk-primary-selection.xml	\
+	wayland/protocol/gtk-text-input.xml	\
 	$(NULL)
 
 libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
