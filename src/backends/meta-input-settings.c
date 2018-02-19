@@ -41,6 +41,16 @@ static GQuark quark_tool_settings = 0;
 
 typedef struct _MetaInputSettingsPrivate MetaInputSettingsPrivate;
 typedef struct _DeviceMappingInfo DeviceMappingInfo;
+typedef struct _CurrentToolInfo CurrentToolInfo;
+
+struct _CurrentToolInfo
+{
+  MetaInputSettings *input_settings;
+  ClutterInputDevice *device;
+  ClutterInputDeviceTool *tool;
+  GSettings *settings;
+  guint changed_id;
+};
 
 struct _DeviceMappingInfo
 {
@@ -68,6 +78,8 @@ struct _MetaInputSettingsPrivate
   GSettings *a11y_settings;
 
   GHashTable *mappable_devices;
+
+  GHashTable *current_tools;
 
   ClutterVirtualInputDevice *virtual_pad_keyboard;
 
@@ -146,6 +158,7 @@ meta_input_settings_dispose (GObject *object)
   g_clear_object (&priv->gsd_settings);
   g_clear_object (&priv->a11y_settings);
   g_clear_pointer (&priv->mappable_devices, g_hash_table_unref);
+  g_clear_pointer (&priv->current_tools, g_hash_table_unref);
 
   if (priv->monitors_changed_id && priv->monitor_manager)
     {
@@ -1596,10 +1609,47 @@ meta_input_settings_device_removed (ClutterDeviceManager *device_manager,
 
   priv = meta_input_settings_get_instance_private (input_settings);
   g_hash_table_remove (priv->mappable_devices, device);
+  g_hash_table_remove (priv->current_tools, device);
 
   if (g_hash_table_remove (priv->two_finger_devices, device) &&
       g_hash_table_size (priv->two_finger_devices) == 0)
     apply_device_settings (input_settings, NULL);
+}
+
+static void
+current_tool_changed_cb (GSettings  *settings,
+                         const char *key,
+                         gpointer    user_data)
+{
+  CurrentToolInfo *info = user_data;
+
+  apply_stylus_settings (info->input_settings, info->device, info->tool);
+}
+
+static CurrentToolInfo *
+current_tool_info_new (MetaInputSettings      *input_settings,
+                       ClutterInputDevice     *device,
+                       ClutterInputDeviceTool *tool)
+{
+  CurrentToolInfo *info;
+
+  info = g_new0 (CurrentToolInfo, 1);
+  info->input_settings = input_settings;
+  info->device = device;
+  info->tool = tool;
+  info->settings = lookup_tool_settings (tool, device);
+  info->changed_id =
+    g_signal_connect (info->settings, "changed",
+                      G_CALLBACK (current_tool_changed_cb),
+                      info);
+  return info;
+}
+
+static void
+current_tool_info_free (CurrentToolInfo *info)
+{
+  g_signal_handler_disconnect (info->settings, info->changed_id);
+  g_free (info);
 }
 
 static void
@@ -1608,10 +1658,22 @@ meta_input_settings_tool_changed (ClutterDeviceManager   *device_manager,
                                   ClutterInputDeviceTool *tool,
                                   MetaInputSettings      *input_settings)
 {
-  if (!tool)
-    return;
+  MetaInputSettingsPrivate *priv;
 
-  apply_stylus_settings (input_settings, device, tool);
+  priv = meta_input_settings_get_instance_private (input_settings);
+
+  if (tool)
+    {
+      CurrentToolInfo *current_tool;
+
+      current_tool = current_tool_info_new (input_settings, device, tool);
+      g_hash_table_insert (priv->current_tools, device, current_tool);
+      apply_stylus_settings (input_settings, device, tool);
+    }
+  else
+    {
+      g_hash_table_remove (priv->current_tools, device);
+    }
 }
 
 static void
@@ -1707,6 +1769,9 @@ meta_input_settings_init (MetaInputSettings *settings)
 
   priv->mappable_devices =
     g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) device_mapping_info_free);
+
+  priv->current_tools =
+    g_hash_table_new_full (NULL, NULL, NULL, (GDestroyNotify) current_tool_info_free);
 
   priv->monitor_manager = g_object_ref (meta_monitor_manager_get ());
   g_signal_connect (priv->monitor_manager, "monitors-changed-internal",
