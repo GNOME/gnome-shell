@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-02-08 16:48+0000\n"
-"PO-Revision-Date: 2018-02-10 00:35+0100\n"
+"POT-Creation-Date: 2018-02-10 15:05+0000\n"
+"PO-Revision-Date: 2018-02-19 13:40+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -638,23 +638,23 @@ msgstr "Dispès"
 msgid "All"
 msgstr "Dutis"
 
-#: js/ui/appDisplay.js:1918
+#: js/ui/appDisplay.js:1919
 msgid "New Window"
 msgstr "Gnûf barcon"
 
-#: js/ui/appDisplay.js:1932
+#: js/ui/appDisplay.js:1933
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Invie doprant une schede grafiche dedicade"
 
-#: js/ui/appDisplay.js:1959 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1960 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Gjave dai preferîts"
 
-#: js/ui/appDisplay.js:1965
+#: js/ui/appDisplay.js:1966
 msgid "Add to Favorites"
 msgstr "Zonte tai preferîts"
 
-#: js/ui/appDisplay.js:1975
+#: js/ui/appDisplay.js:1976
 msgid "Show Details"
 msgstr "Mostre Detais"
 
@@ -1053,7 +1053,7 @@ msgstr "Daûr a cjariâ…"
 #: js/ui/dateMenu.js:324
 #, javascript-format
 msgid "Feels like %s."
-msgstr "Si sint %s."
+msgstr "Si sintin %s."
 
 #: js/ui/dateMenu.js:327
 msgid "Go online for weather information"
