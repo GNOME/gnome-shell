@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: video-subtitles master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-10-04 18:03+0000\n"
-"PO-Revision-Date: 2017-10-11 08:34+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2018-02-10 09:15+0000\n"
+"PO-Revision-Date: 2018-02-19 13:42+0100\n"
 "Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <fur@li.org>\n"
 "Language: fur\n"
@@ -639,23 +638,23 @@ msgstr "Dispès"
 msgid "All"
 msgstr "Dutis"
 
-#: js/ui/appDisplay.js:1915
+#: js/ui/appDisplay.js:1918
 msgid "New Window"
 msgstr "Gnûf barcon"
 
-#: js/ui/appDisplay.js:1929
+#: js/ui/appDisplay.js:1932
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Invie doprant une schede grafiche dedicade"
 
-#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1959 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Gjave dai preferîts"
 
-#: js/ui/appDisplay.js:1962
+#: js/ui/appDisplay.js:1965
 msgid "Add to Favorites"
 msgstr "Zonte tai preferîts"
 
-#: js/ui/appDisplay.js:1972
+#: js/ui/appDisplay.js:1975
 msgid "Show Details"
 msgstr "Mostre Detais"
 
@@ -920,7 +919,7 @@ msgstr "Passowrd rêt mobil a bande largje"
 msgid "A password is required to connect to “%s”."
 msgstr "A covente une password par tacâsi a '%s'."
 
-#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
+#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1729
 msgid "Network Manager"
 msgstr "Ministradôr di rêt"
 
@@ -955,13 +954,13 @@ msgstr "L'utent %s al è cognossût cumò come %s"
 msgid "Windows"
 msgstr "Barcons"
 
-#: js/ui/dash.js:250 js/ui/dash.js:291
+#: js/ui/dash.js:246 js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "Mostre Aplicazions"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:449
+#: js/ui/dash.js:445
 msgid "Dash"
 msgstr "Dash"
 
@@ -980,15 +979,15 @@ msgstr "%e di %B dal %Y"
 msgid "%A %B %e %Y"
 msgstr "%A %e di %B dal %Y"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:148
 msgid "Add world clocks…"
 msgstr "Zonte orlois mondiâi..."
 
-#: js/ui/dateMenu.js:146
+#: js/ui/dateMenu.js:149
 msgid "World Clocks"
 msgstr "Orlois mondiâi"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "Timp"
 
@@ -996,7 +995,7 @@ msgstr "Timp"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:292
 #, javascript-format
 msgid "%s all day."
 msgstr "%s dut il dì."
@@ -1005,7 +1004,7 @@ msgstr "%s dut il dì."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:298
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, plui tart %s."
@@ -1014,30 +1013,30 @@ msgstr "%s, plui tart %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:304
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, chi di un pôc %s, e plui tart %s."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:315
 msgid "Select a location…"
 msgstr "Selezione une posizion..."
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:318
 msgid "Loading…"
 msgstr "Daûr a cjariâ..."
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:324
 #, javascript-format
 msgid "Feels like %s."
-msgstr "Si sint %s."
+msgstr "Si sintin %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:327
 msgid "Go online for weather information"
 msgstr "Va in rêt pes informazions sul timp"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:329
 msgid "Weather information is currently unavailable"
 msgstr "Lis informazions sul timp al moment no son disponibilis"
 
@@ -1224,7 +1223,7 @@ msgstr "Dinee"
 msgid "Allow"
 msgstr "Pemet"
 
-#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
+#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:783
 msgid "Keyboard"
 msgstr "Tastiere"
 
@@ -1562,7 +1561,7 @@ msgstr "Distude"
 msgid "Brightness"
 msgstr "Luminositât"
 
-#: js/ui/status/keyboard.js:805
+#: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
 msgstr "Mostre la disposizion de tastiere"
 
@@ -1766,44 +1765,44 @@ msgstr "conession falide"
 msgid "VPN Settings"
 msgstr "Impostazions VPN"
 
-#: js/ui/status/network.js:1498
+#: js/ui/status/network.js:1507
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1508
+#: js/ui/status/network.js:1517
 msgid "VPN Off"
 msgstr "VPN distudât"
 
-#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1581 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "Impostazions rêt"
 
-#: js/ui/status/network.js:1603
+#: js/ui/status/network.js:1612
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s conession cablade"
 msgstr[1] "%s conessions cabladis"
 
-#: js/ui/status/network.js:1607
+#: js/ui/status/network.js:1616
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s conession cence fîi"
 msgstr[1] "%s conessions cence fîi"
 
-#: js/ui/status/network.js:1611
+#: js/ui/status/network.js:1620
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s conession modem"
 msgstr[1] "%s conessions modem"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1768
 msgid "Connection failed"
 msgstr "Conession falide"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1769
 msgid "Activation of network connection failed"
 msgstr "Ativazion de conession di rêt falide"
 
@@ -2046,19 +2045,19 @@ msgstr "Calendari di Evolution"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:437
 msgid "Print version"
 msgstr "Stampe version"
 
-#: src/main.c:386
+#: src/main.c:443
 msgid "Mode used by GDM for login screen"
 msgstr "Modalitât doprade da GDM pe videade di acès"
 
-#: src/main.c:392
+#: src/main.c:449
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Dopre une modalitât specifiche, par esempli “gdm” pe videade di acès"
 
-#: src/main.c:398
+#: src/main.c:455
 msgid "List possible modes"
 msgstr "Liste modalitâts pussibilis"
 
