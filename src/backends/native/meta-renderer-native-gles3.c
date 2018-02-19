@@ -77,7 +77,8 @@ create_egl_image (MetaEgl       *egl,
   attribs[atti++] = EGL_LINUX_DRM_FOURCC_EXT;
   attribs[atti++] = format;
 
-  has_modifier = (modifiers[0] != DRM_FORMAT_MOD_INVALID);
+  has_modifier = (modifiers[0] != DRM_FORMAT_MOD_INVALID &&
+                  modifiers[0] != DRM_FORMAT_MOD_LINEAR);
 
   if (n_planes > 0)
     {
