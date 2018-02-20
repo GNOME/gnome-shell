@@ -1870,7 +1870,9 @@ var AppIconMenu = new Lang.Class({
                 this._appendSeparator();
                 separatorShown = true;
             }
-            let item = this._appendMenuItem(window.title);
+            let title = window.title ? window.title
+                                     : this._source.app.get_name();
+            let item = this._appendMenuItem(title);
             item.connect('activate', () => {
                 this.emit('activate-window', window);
             });
