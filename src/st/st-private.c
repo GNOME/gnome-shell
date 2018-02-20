@@ -417,11 +417,17 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   ClutterActorBox box;
   float width, height;
 
+  /* Querying the actor's allocation may force an allocation update, which
+   * may cause a style update, which then may invalidate shadow_spec; make
+   * sure the spec is kept alive by taking a temporary reference
+   */
+  st_shadow_spec_ref (shadow_spec);
+
   clutter_actor_get_allocation_box (actor, &box);
   clutter_actor_box_get_size (&box, &width, &height);
 
   if (width == 0 || height == 0)
-    return NULL;
+    goto out;
 
   if (CLUTTER_IS_TEXTURE (actor))
     {
@@ -448,7 +454,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
                                            COGL_PIXEL_FORMAT_ANY);
 
       if (buffer == NULL)
-        return NULL;
+        goto out;
 
       offscreen = cogl_offscreen_new_with_texture (buffer);
       fb = COGL_FRAMEBUFFER (offscreen);
@@ -458,7 +464,7 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
           cogl_error_free (catch_error);
           cogl_object_unref (offscreen);
           cogl_object_unref (buffer);
-          return NULL;
+          goto out;
         }
 
       cogl_color_init_from_4ub (&clear_color, 0, 0, 0, 0);
@@ -487,6 +493,8 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
 
       cogl_object_unref (buffer);
     }
+
+  st_shadow_spec_unref (shadow_spec);
 
   return shadow_pipeline;
 }
