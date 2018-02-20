@@ -447,12 +447,13 @@ var WindowOverlay = new Lang.Class({
         this.border = new St.Bin({ style_class: 'window-clone-border' });
 
         let title = new St.Label({ style_class: 'window-caption',
-                                   text: metaWindow.title });
+                                   text: this._getCaption() });
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
         windowClone.actor.label_actor = title;
 
         this._updateCaptionId = metaWindow.connect('notify::title', w => {
             this.title.text = w.title;
+            this.title.text = this._getCaption();
             this.relayout(false);
         });
 
@@ -563,6 +564,16 @@ var WindowOverlay = new Lang.Class({
             this.border.set_position(borderX, borderY);
             this.border.set_size(borderWidth, borderHeight);
         }
+    },
+
+    _getCaption() {
+        let metaWindow = this._windowClone.metaWindow;
+        if (metaWindow.title)
+            return metaWindow.title;
+
+        let tracker = Shell.WindowTracker.get_default();
+        let app = tracker.get_window_app(metaWindow);
+        return app.get_name();
     },
 
     _animateOverlayActor(actor, x, y, width, height) {
