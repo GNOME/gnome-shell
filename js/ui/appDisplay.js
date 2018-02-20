@@ -2000,6 +2000,8 @@ var AppIconMenu = new Lang.Class({
 
     _appendMenuItem: function(labelText) {
         // FIXME: app-well-menu-item style
+        if (labelText.length > 50)
+            labelText = labelText.substring(0, 50) + "...";
         let item = new PopupMenu.PopupMenuItem(labelText);
         this.addMenuItem(item);
         return item;
