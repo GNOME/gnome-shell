@@ -1,3 +1,51 @@
+3.27.91
+=======
+* Fix handling of trackball settings on wayland [Carlos; #787804]
+* Apply font settings on wayland [Daniel; #645433]
+* Fix keybindings getting mixed up with some layouts [Jonas; #789300]
+* Fix bluetooth mouse cursor disappearing after idle [Benoit; #761067]
+* Support platforms that export EGL_KHR_platform_gbm [memeka; #780668]
+* Add keyboard accessibility support on wayland [Olivier; #788564]
+* Fix missing cursor when using screen magnifier [Carlos; #754806]
+* Fix external monitor shutting off on wayland when lid closes [Jonas; #788915]
+* Add xdg-output support [Olivier; #787363]
+* Add Xwayland grab keyboard support [Olivier; #783342]
+* Allow shortcut inhibition of the super key [Olivier; #790627]
+* Take "panel orientation" drm_connector property into account [Hans; #782294]
+* Fix focus window ending up below other windows on wayland [Olivier; #780820]
+* Fix maximized windows restoring to a tiny size on wayland [Olivier; #783901]
+* Fix tap-and-drag setting on X11 [Jonas; #775755]
+* Fix handling of single-touch devices on wayland [Carlos; #792005]
+* Support tiled/compressed buffers [Daniel; #785779]
+* Port screencast support to pipewire 0.1.8 [Jonas; #792854]
+* Add support for third stylus button on newer tablets [Jason; #790033]
+* Fix background corruption regression on nvidia [Jonas; #739178]
+* Misc. bug fixes [Jonas, Rui, Michael, Marco, Carlos, Olivier, Philip, Piotr,
+  Ting-Wei, Daniel, Jeremy, Hans, Florian, Ray, Jeff, George, Gwan-gyeong;
+  #789153, #788493, #784314, #789227, #789223, #789277, #782344, #789552,
+  #789553, #788695, #789984, #788764, #789386, #784545, #790336, #790358,
+  #791022, #791006, #789070, #772218, #791383, #791809, #776220, #791916,
+  #792281, #790309, #791371, #792527, #792599, #788834, #792765, #792062,
+  #645460, #792853, !2, #792818, #8, #12, #789501, #10, #789961, #13, !15, #1,
+  #26, #28, #35, #36, #38]
+
+Contributors:
+  Jonas Ådahl, Jeremy Bicha, Michael Catanzaro, Piotr Drąg, Olivier Fourdan,
+  Carlos Garnacho, Jason Gerecke, Hans de Goede, Benoit Gschwind,
+  Peter Hutterer, George Kiagiadakis, Ting-Wei Lan, Rui Matos, memeka,
+  Florian Müllner, Gwan-gyeong Mun, Jeremy Nickurak, Marc-Antoine Perennou,
+  Jeff Smith, Daniel Stone, Ray Strode, Marco Trevisan (Treviño),
+  Daniel van Vugt, Philip Withnall
+
+Translators:
+  Khaled Hosny [ar], Kjartan Maraas [nb], Piotr Drąg [pl],
+  Rafael Fontenelle [pt_BR], Christian Kirbach [de], Anders Jonsson [sv],
+  Charles Monzat [fr], Marek Cernocky [cs], Muhammet Kara [tr],
+  Milo Casagrande [it], Pawan Chitrakar [ne], Yosef Or Boczko [he],
+  Kukuh Syafaat [id], Daniel Mustieles [es], Fabio Tomat [fur],
+  Kristjan SCHMIDT [eo], Balázs Úr [hu], Andika Triwidada [id],
+  Fran Dieguez [gl], gogo [hr]
+
 3.27.1
 ======
 * Work with clients that require older linux_dmabuf protocol [Daniel; #788558]
