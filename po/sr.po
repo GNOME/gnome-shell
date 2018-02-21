@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-02-08 16:48+0000\n"
-"PO-Revision-Date: 2018-02-19 18:00+0100\n"
-"Last-Translator: Борисав Живановић <borisavzivanovic@gmail.com>\n"
+"POT-Creation-Date: 2018-02-20 10:01+0000\n"
+"PO-Revision-Date: 2018-02-20 18:23+0100\n"
+"Last-Translator: Марко М. Костић <marko.m.kostic@gmail.com>\n"
 "Language-Team: српски <gnome-sr@googlegroups.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-Bookmarks: -1,167,-1,-1,-1,-1,-1,-1,-1,-1\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -408,7 +408,8 @@ msgstr "Искључи"
 msgid "power off;shutdown;reboot;restart"
 msgstr ""
 "power off;shutdown;искључи;угаси;гашење;isključi;ugasi;gašenje;iskljuci;"
-"gasenje;reboot;restart;ponovo;pokreni;поново;покрени;рестарт"
+"gasenje;reboot;restart;ponovo;pokreni;поново;покрени;рестарт;power off;"
+"shutdown;reboot;restart"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
@@ -430,7 +431,8 @@ msgstr "Одјави ме"
 #. Translators: A list of keywords that match the logout action, separated by semicolons
 #: js/misc/systemActions.js:116
 msgid "logout;sign off"
-msgstr "изађи;одјави се;одлогуј се;izađi;odjavi se;odloguj se;izadji;"
+msgstr ""
+"изађи;одјави се;одлогуј се;izađi;odjavi se;odloguj se;izadji;logout;sign off"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:120
@@ -441,7 +443,9 @@ msgstr "Обустави"
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:123
 msgid "suspend;sleep"
-msgstr "suspend;sleep;обустави;спавај;суспендуј;obustavi;spavaj;suspenduj;"
+msgstr ""
+"suspend;sleep;обустави;спавај;суспендуј;obustavi;spavaj;suspenduj;suspend;"
+"sleep"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
@@ -452,7 +456,7 @@ msgstr "Промени корисника"
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:130
 msgid "switch user"
-msgstr "switch user;промени корисника;promeni korisnika"
+msgstr "switch user;промени корисника;promeni korisnika;switch user"
 
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
@@ -466,7 +470,8 @@ msgid "lock orientation;screen;rotation"
 msgstr ""
 "lock orientation;screen;rotation;закључај окретање екрана;закључај "
 "оријентацију;zaključaj okretanje ekrana;zaključaj orijentaciju;zakljucaj "
-"okretanje ekrana;екран;ekran;окретање;okretanje"
+"okretanje ekrana;екран;ekran;окретање;okretanje;lock orientation;screen;"
+"rotation"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -650,23 +655,23 @@ msgstr "Често"
 msgid "All"
 msgstr "Све"
 
-#: js/ui/appDisplay.js:1918
+#: js/ui/appDisplay.js:1919
 msgid "New Window"
 msgstr "Нови прозор"
 
-#: js/ui/appDisplay.js:1932
+#: js/ui/appDisplay.js:1933
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Покрени са намењеном графичком картицом"
 
-#: js/ui/appDisplay.js:1959 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1960 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Уклони из омиљених"
 
-#: js/ui/appDisplay.js:1965
+#: js/ui/appDisplay.js:1966
 msgid "Add to Favorites"
 msgstr "Додај у омиљене"
 
-#: js/ui/appDisplay.js:1975
+#: js/ui/appDisplay.js:1976
 msgid "Show Details"
 msgstr "Прикажи детаље"
 
@@ -2002,15 +2007,15 @@ msgstr "Тандерболт"
 #. we are done
 #: js/ui/status/thunderbolt.js:330
 msgid "Unknown Thunderbolt device"
-msgstr "Непознат Тандерболд уређај"
+msgstr "Непознат Тандерболт уређај"
 
 #: js/ui/status/thunderbolt.js:331
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
 msgstr ""
-"Нови уређај је пронађен док нисте били ту. Искључите уређај и поново га "
-"повежите да бисте почели да га користите."
+"Нови уређај је уочен док нисте били ту. Поново повежите уређај да бисте "
+"почели да га користите."
 
 #: js/ui/status/thunderbolt.js:336
 msgid "Thunderbolt authorization error"
