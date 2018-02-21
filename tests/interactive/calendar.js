@@ -6,8 +6,6 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
-const Calendar = imports.ui.calendar;
-
 function test() {
     let stage = new Clutter.Stage({ width: 400, height: 400 });
     UI.init(stage);
@@ -18,6 +16,8 @@ function test() {
                                   style: 'padding: 10px; spacing: 10px; font: 15px sans-serif;' });
     stage.add_actor(vbox);
 
+    // Calendar can only be imported after Environment.init()
+    const Calendar = imports.ui.calendar;
     let calendar = new Calendar.Calendar();
     vbox.add(calendar.actor,
              { expand: true,
