@@ -23,6 +23,7 @@ function test() {
              { expand: true,
                x_fill: false, x_align: St.Align.MIDDLE,
                y_fill: false, y_align: St.Align.START });
+    calendar.setEventSource(new Calendar.EmptyEventSource());
 
     UI.main(stage);
 }
