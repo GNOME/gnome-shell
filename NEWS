@@ -1,3 +1,45 @@
+3.27.91
+=======
+* Fix wrong bluetooth state when disabled by HW airplane mode [Mario; #789110]
+* Dump javascript stack on aborts, traps and segfaults [Marco; #789237]
+* Allow Escape to "cancel" top bar focus [Stefano; #671121]
+* Fix leaving the overview erroneously on window hover [Carlos; #784545]
+* Add keyboard accessibility dialog [Olivier; #788564]
+* Port to libnm [Lubomir, Florian; #789811]
+* Don't pop up on-screen-keyboard on touch events [Florian, Carlos; #788188]
+* Improve the on-screen-keyboard [Carlos; !9, #46]
+* Add Thunderbolt support [Christian; !14]
+* Don't lock immediately on login after a wayland session crash [Florian; !17]
+* Respect cursor's hot x/y coordinates when recording [Florian Z.; #792860]
+* Allow closing windows and apps during <alt>Tab [Florian, Mario; #620106]
+* Fix small app folder icons when using HiDPI [Nikita; #792259]
+* Make sassc a mandatory build dependency [Mario; #792822]
+* Misc. bug fixes [Florian, Marco, Alessandro, Gautier, Jeremy, Bastien, Ray,
+  Carlos, Didier, Exalm, Rafal; #789231, #789277, #788542, #789103, #779974,
+  #788931, #776940, #786987, #791007, #791233, #791148, #706191, #791655,
+  #791487, #779413, #787845, #10, #788627, #792354, #792616, #781329, #780957,
+  #33, #740142, !38, !23]
+
+Contributors:
+  Jeremy Bicha, Alessandro Bono, Nikita Churaev, Piotr Drąg, Exalm,
+  Stefano Facchini, Olivier Fourdan, Carlos Garnacho, Christian Kellner,
+  Rafal Luzynski, Iñigo Martínez, Florian Müllner, Bastien Nocera,
+  Gautier Pelloux-Prayer, Mario Sanchez Prada, Lubomir Rintel, Didier Roche,
+  Jakub Steiner, Ray Strode, Marco Trevisan (Treviño), Florian Zwoch
+
+Translators:
+  Mingcong Bai [zh_CN], Hannie Dumoleyn [nl], Khaled Hosny [ar],
+  Kjartan Maraas [nb], Petr Kovar [cs], Marek Cernocky [cs],
+  Aurimas Černius [lt], Yosef Or Boczko [he], Kukuh Syafaat [id],
+  Sveinn í Felli [is], Jordi Mas [ca], Daniel Mustieles [es], Fabio Tomat [fur],
+  Rūdolfs Mazurs [lv], Emin Tufan Çetin [tr], Anders Jonsson [sv],
+  Matej Urbančič [sl], Jiri Grönroos [fi], Tim Sabsch [de], Gil Forcada [ca],
+  Dušan Kazik [sk], Balázs Meskó [hu], Piotr Drąg [pl], Tong Hui [zh_CN],
+  Fran Dieguez [gl], Enrico Nicoletto [pt_BR], gogo [hr],
+  Baurzhan Muftakhidinov [kk], Robert Antoni Buj Gelonch [ca],
+  Bruce Cowan [en_GB], Борисав Живановић [sr], Милош Поповић [sr@latin],
+  Марко Костић [sr]
+
 3.27.1
 ======
 * Fix using icon-name strings with PopupImageMenuItems [Florian; #789018]
