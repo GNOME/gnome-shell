@@ -9,7 +9,7 @@ m4_define([mutter_version],
 
 m4_define([mutter_plugin_api_version], [3])
 
-m4_define([libmutter_api_version], [1])
+m4_define([libmutter_api_version], [2])
 
 AC_INIT([mutter], [mutter_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=mutter])
