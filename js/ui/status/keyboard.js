@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const IBus = imports.gi.IBus;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
@@ -10,7 +11,6 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 const Gettext = imports.gettext;
 
-const IBus = imports.misc.ibusManager.IBus;
 const IBusManager = imports.misc.ibusManager;
 const KeyboardManager = imports.misc.keyboardManager;
 const Main = imports.ui.main;
