@@ -21,7 +21,9 @@ function main() {
     Gtk.init(null);
 
     let win = new Gtk.Window({ title: nextTitle() });
-    win.connect('destroy', Gtk.main_quit);
+    win.connect('destroy', () => {
+        Gtk.main_quit();
+    });
     win.present();
 
     Mainloop.timeout_add(5000, function() {
