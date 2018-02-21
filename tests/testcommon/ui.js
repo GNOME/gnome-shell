@@ -14,6 +14,9 @@ const Environment = imports.ui.environment;
 
 function init(stage) {
     Environment.init();
+    let themeResource = Gio.Resource.load(global.datadir + '/gnome-shell-theme.gresource');
+    themeResource._register();
+
     let context = St.ThemeContext.get_for_stage(stage);
     let stylesheetPath = GLib.getenv("GNOME_SHELL_TESTSDIR") + "/testcommon/test.css";
     let theme = new St.Theme({ application_stylesheet: Gio.File.new_for_path(stylesheetPath) });

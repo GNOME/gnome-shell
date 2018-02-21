@@ -1,4 +1,4 @@
-@import "../../data/theme/gnome-shell.css";
+@import url("resource:///org/gnome/shell/theme/gnome-shell.css");
 
 stage {
     font: 16pt serif;
