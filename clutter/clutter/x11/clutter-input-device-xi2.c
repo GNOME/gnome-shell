@@ -48,6 +48,7 @@ struct _ClutterInputDeviceXI2
 
 #ifdef HAVE_LIBWACOM
   WacomDevice *wacom_device;
+  GArray *group_modes;
 #endif
 };
 
@@ -68,6 +69,15 @@ clutter_input_device_xi2_constructed (GObject *gobject)
 
   if (G_OBJECT_CLASS (clutter_input_device_xi2_parent_class)->constructed)
     G_OBJECT_CLASS (clutter_input_device_xi2_parent_class)->constructed (gobject);
+
+#ifdef HAVE_LIBWACOM
+  if (clutter_input_device_get_device_type (CLUTTER_INPUT_DEVICE (gobject)) == CLUTTER_PAD_DEVICE)
+    {
+      device_xi2->group_modes = g_array_new (FALSE, TRUE, sizeof (guint));
+      g_array_set_size (device_xi2->group_modes,
+                        clutter_input_device_get_n_mode_groups (CLUTTER_INPUT_DEVICE (gobject)));
+    }
+#endif
 }
 
 static gboolean
@@ -99,6 +109,8 @@ clutter_input_device_xi2_finalize (GObject *object)
 
   if (device_xi2->wacom_device)
     libwacom_destroy (device_xi2->wacom_device);
+
+  g_array_unref (device_xi2->group_modes);
 #endif
 
   G_OBJECT_CLASS (clutter_input_device_xi2_parent_class)->finalize (object);
@@ -291,5 +303,54 @@ clutter_input_device_xi2_ensure_wacom_info (ClutterInputDevice  *device,
   node_path = clutter_input_device_get_device_node (device);
   device_xi2->wacom_device = libwacom_new_from_path (wacom_db, node_path,
                                                      WFALLBACK_NONE, NULL);
+}
+
+guint
+clutter_input_device_xi2_get_pad_group_mode (ClutterInputDevice *device,
+                                             guint               group)
+{
+  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
+
+  if (group >= device_xi2->group_modes->len)
+    return 0;
+
+  return g_array_index (device_xi2->group_modes, guint, group);
+}
+
+void
+clutter_input_device_xi2_update_pad_state (ClutterInputDevice *device,
+                                           guint               button,
+                                           guint               state,
+                                           guint              *group,
+                                           guint              *mode)
+{
+  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
+  guint button_group, *group_mode;
+  gboolean is_mode_switch = FALSE;
+
+  button_group = clutter_input_device_xi2_get_button_group (device, button);
+  is_mode_switch = button_group >= 0;
+
+  /* Assign all non-mode-switch buttons to group 0 so far */
+  button_group = MAX (0, button_group);
+
+  if (button_group >= device_xi2->group_modes->len)
+    return;
+
+  group_mode = &g_array_index (device_xi2->group_modes, guint, button_group);
+
+  if (is_mode_switch && state)
+    {
+      guint next, n_modes;
+
+      n_modes = clutter_input_device_get_group_n_modes (device, button_group);
+      next = (*group_mode + 1) % n_modes;
+      *group_mode = next;
+    }
+
+  if (group)
+    *group = button_group;
+  if (mode)
+    *mode = *group_mode;
 }
 #endif

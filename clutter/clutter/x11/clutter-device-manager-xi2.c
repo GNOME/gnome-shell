@@ -1134,7 +1134,7 @@ translate_pad_event (ClutterEvent       *event,
                      ClutterInputDevice *device)
 {
   gdouble value;
-  guint number;
+  guint number, mode = 0;
 
   if (!translate_pad_axis (device, &xev->valuators,
                            &event->any.type,
@@ -1148,15 +1148,21 @@ translate_pad_event (ClutterEvent       *event,
   if (xev->evtype == XI_Motion)
     value = -1;
 
+#ifdef HAVE_LIBWACOM
+  mode = clutter_input_device_xi2_get_pad_group_mode (device, number);
+#endif
+
   if (event->any.type == CLUTTER_PAD_RING)
     {
       event->pad_ring.ring_number = number;
       event->pad_ring.angle = value;
+      event->pad_ring.mode = mode;
     }
   else
     {
       event->pad_strip.strip_number = number;
       event->pad_strip.value = value;
+      event->pad_strip.mode = mode;
     }
 
   event->any.time = xev->time;
@@ -1383,6 +1389,13 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
             /* Pad buttons are 0-indexed */
             event->pad_button.button = xev->detail - 1;
+#ifdef HAVE_LIBWACOM
+            clutter_input_device_xi2_update_pad_state (device,
+                                                       event->pad_button.button,
+                                                       (xi_event->evtype == XI_ButtonPress),
+                                                       &event->pad_button.group,
+                                                       &event->pad_button.mode);
+#endif
             clutter_event_set_device (event, device);
             clutter_event_set_source_device (event, source_device);
 

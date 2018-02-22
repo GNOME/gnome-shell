@@ -53,6 +53,15 @@ ClutterInputDeviceTool * clutter_input_device_xi2_get_current_tool (ClutterInput
 void clutter_input_device_xi2_ensure_wacom_info (ClutterInputDevice  *device,
                                                  WacomDeviceDatabase *wacom_db);
 
+guint clutter_input_device_xi2_get_pad_group_mode (ClutterInputDevice *device,
+                                                   guint               group);
+
+void clutter_input_device_xi2_update_pad_state (ClutterInputDevice *device,
+                                                guint               button,
+                                                guint               state,
+                                                guint              *group,
+                                                guint              *mode);
+
 #endif
 
 G_END_DECLS
