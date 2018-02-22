@@ -495,11 +495,18 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
                          "device-node", node_path,
                          "n-rings", num_rings,
                          "n-strips", num_strips,
+                         "n-mode-groups", MAX (num_rings, num_strips),
                          NULL);
 
   translate_device_classes (backend_x11->xdpy, retval,
                             info->classes,
                             info->num_classes);
+
+#ifdef HAVE_LIBWACOM
+  if (source == CLUTTER_PAD_DEVICE)
+    clutter_input_device_xi2_ensure_wacom_info (retval, manager_xi2->wacom_db);
+#endif
+
   g_free (vendor_id);
   g_free (product_id);
   g_free (node_path);
@@ -2072,4 +2079,8 @@ clutter_device_manager_xi2_init (ClutterDeviceManagerXI2 *self)
                                                (GDestroyNotify) g_object_unref);
   self->tools_by_serial = g_hash_table_new_full (NULL, NULL, NULL,
                                                  (GDestroyNotify) g_object_unref);
+
+#ifdef HAVE_LIBWACOM
+  self->wacom_db = libwacom_database_new ();
+#endif
 }

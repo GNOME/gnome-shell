@@ -121,6 +121,7 @@ m4_define([xcomposite_req_version],     [0.4])
 m4_define([gdk_req_version],            [3.3.18])
 m4_define([libinput_req_version],       [1.4.0])
 m4_define([libudev_req_version],        [136])
+m4_define([libwacom_req_version],       [0.13])
 
 AC_SUBST([GLIB_REQ_VERSION],       [glib_req_version])
 AC_SUBST([COGL_REQ_VERSION],       [cogl_req_version])
@@ -133,6 +134,7 @@ AC_SUBST([XCOMPOSITE_REQ_VERSION], [xcomposite_req_version])
 AC_SUBST([GDK_REQ_VERSION],        [gdk_req_version])
 AC_SUBST([LIBINPUT_REQ_VERSION],   [libinput_req_version])
 AC_SUBST([LIBUDEV_REQ_VERSION],    [libudev_req_version])
+AC_SUBST([LIBWACOM_REQ_VERSION],   [libwacom_req_version])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AM_PATH_GLIB_2_0([glib_req_version],
@@ -508,6 +510,32 @@ X11_EXTS=${X11_EXTS#* }
 
 AC_CACHE_SAVE
 
+dnl === Libwacom support for X11 ===============================================
+AC_ARG_WITH(libwacom,
+  AC_HELP_STRING([--without-libwacom],
+                 [disable the use of libwacom for advanced tablet management]),,
+  with_libwacom=auto)
+
+have_libwacom=no
+AC_MSG_CHECKING([libwacom])
+if test x$with_libwacom = xno ; then
+  AC_MSG_RESULT([disabled])
+else
+  if $PKG_CONFIG --exists libwacom '>=' $LIBWACOM_REQ_VERSION; then
+    have_libwacom=yes
+    AC_MSG_RESULT(yes)
+    PKG_CHECK_MODULES([LIBWACOM], [libwacom])
+    AC_SUBST(LIBWACOM_CFLAGS)
+    AC_SUBST(LIBWACOM_LIBS)
+    AC_DEFINE([HAVE_LIBWACOM], 1, [Building with libwacom for advanced tablet management])
+  else
+    AC_MSG_RESULT(no)
+    if test x$with_libwacom = xyes ; then
+      AC_MSG_ERROR([libwacom forced but not found])
+    fi
+  fi
+fi
+
 dnl === Enable GDK-Pixbuf in tests ============================================
 
 m4_define([pixbuf_default], [yes])
@@ -679,8 +707,8 @@ AS_IF([test "x$CLUTTER_BASE_PC_FILES_PRIVATE" = "x" && test "x$BACKEND_PC_FILES_
 AC_SUBST(CLUTTER_REQUIRES)
 AC_SUBST(CLUTTER_REQUIRES_PRIVATE)
 
-CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_DEPS_PRIVATE_CFLAGS $GLIB_CFLAGS"
-CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_DEPS_PRIVATE_LIBS $GLIB_LIBS"
+CLUTTER_CFLAGS="$FLAVOUR_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_DEPS_PRIVATE_CFLAGS $GLIB_CFLAGS $LIBWACOM_CFLAGS"
+CLUTTER_LIBS="$FLAVOUR_LIBS $CLUTTER_DEPS_LIBS $CLUTTER_DEPS_PRIVATE_LIBS $GLIB_LIBS $LIBWACOM_LIBS"
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 

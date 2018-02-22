@@ -45,6 +45,10 @@ struct _ClutterInputDeviceXI2
 
   gint device_id;
   ClutterInputDeviceTool *current_tool;
+
+#ifdef HAVE_LIBWACOM
+  WacomDevice *wacom_device;
+#endif
 };
 
 #define N_BUTTONS       5
@@ -88,15 +92,94 @@ clutter_input_device_xi2_is_grouped (ClutterInputDevice *device,
 }
 
 static void
+clutter_input_device_xi2_finalize (GObject *object)
+{
+#ifdef HAVE_LIBWACOM
+  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (object);
+
+  if (device_xi2->wacom_device)
+    libwacom_destroy (device_xi2->wacom_device);
+#endif
+
+  G_OBJECT_CLASS (clutter_input_device_xi2_parent_class)->finalize (object);
+}
+
+static gint
+clutter_input_device_xi2_get_group_n_modes (ClutterInputDevice *device,
+                                            gint                group)
+{
+#ifdef HAVE_LIBWACOM
+  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
+
+  if (device_xi2->wacom_device)
+    {
+      if (group == 0)
+        {
+          if (libwacom_has_ring (device_xi2->wacom_device))
+            return libwacom_get_ring_num_modes (device_xi2->wacom_device);
+          else if (libwacom_get_num_strips (device_xi2->wacom_device) >= 1)
+            return libwacom_get_strips_num_modes (device_xi2->wacom_device);
+        }
+      else if (group == 1)
+        {
+          if (libwacom_has_ring2 (device_xi2->wacom_device))
+            return libwacom_get_ring2_num_modes (device_xi2->wacom_device);
+          else if (libwacom_get_num_strips (device_xi2->wacom_device) >= 2)
+            return libwacom_get_strips_num_modes (device_xi2->wacom_device);
+        }
+    }
+#endif
+
+  return -1;
+}
+
+#ifdef HAVE_LIBWACOM
+static int
+clutter_input_device_xi2_get_button_group (ClutterInputDevice *device,
+                                           guint               button)
+{
+  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
+
+  if (device_xi2->wacom_device)
+    {
+      if (button >= libwacom_get_num_buttons (device_xi2->wacom_device))
+        return -1;
+
+      return libwacom_get_button_led_group (device_xi2->wacom_device,
+                                            'A' + button);
+    }
+  else
+    return -1;
+}
+#endif
+
+static gboolean
+clutter_input_device_xi2_is_mode_switch_button (ClutterInputDevice *device,
+                                                guint               group,
+                                                guint               button)
+{
+  int button_group = -1;
+
+#ifdef HAVE_LIBWACOM
+  button_group = clutter_input_device_xi2_get_button_group (device, button);
+#endif
+
+  return button_group == (int) group;
+}
+
+static void
 clutter_input_device_xi2_class_init (ClutterInputDeviceXI2Class *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterInputDeviceClass *device_class = CLUTTER_INPUT_DEVICE_CLASS (klass);
 
   gobject_class->constructed = clutter_input_device_xi2_constructed;
+  gobject_class->finalize = clutter_input_device_xi2_finalize;
 
   device_class->keycode_to_evdev = clutter_input_device_xi2_keycode_to_evdev;
   device_class->is_grouped = clutter_input_device_xi2_is_grouped;
+  device_class->get_group_n_modes = clutter_input_device_xi2_get_group_n_modes;
+  device_class->is_mode_switch_button = clutter_input_device_xi2_is_mode_switch_button;
 }
 
 static void
@@ -196,3 +279,17 @@ clutter_input_device_xi2_get_current_tool (ClutterInputDevice *device)
   ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
   return device_xi2->current_tool;
 }
+
+#ifdef HAVE_LIBWACOM
+void
+clutter_input_device_xi2_ensure_wacom_info (ClutterInputDevice  *device,
+                                            WacomDeviceDatabase *wacom_db)
+{
+  ClutterInputDeviceXI2 *device_xi2 = CLUTTER_INPUT_DEVICE_XI2 (device);
+  const gchar *node_path;
+
+  node_path = clutter_input_device_get_device_node (device);
+  device_xi2->wacom_device = libwacom_new_from_path (wacom_db, node_path,
+                                                     WFALLBACK_NONE, NULL);
+}
+#endif

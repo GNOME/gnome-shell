@@ -26,6 +26,10 @@
 
 #include <clutter/clutter-device-manager.h>
 
+#ifdef HAVE_LIBWACOM
+#include <libwacom/libwacom.h>
+#endif
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_DEVICE_MANAGER_XI2            (_clutter_device_manager_xi2_get_type ())
@@ -51,6 +55,10 @@ struct _ClutterDeviceManagerXI2
   GList *slave_devices;
 
   int opcode;
+
+#ifdef HAVE_LIBWACOM
+  WacomDeviceDatabase *wacom_db;
+#endif
 };
 
 struct _ClutterDeviceManagerXI2Class
