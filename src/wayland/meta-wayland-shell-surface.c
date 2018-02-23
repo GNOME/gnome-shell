@@ -30,9 +30,9 @@
 #include "wayland/meta-wayland-surface.h"
 #include "wayland/meta-window-wayland.h"
 
-G_DEFINE_TYPE (MetaWaylandShellSurface,
-               meta_wayland_shell_surface,
-               META_TYPE_WAYLAND_ACTOR_SURFACE)
+G_DEFINE_ABSTRACT_TYPE (MetaWaylandShellSurface,
+                        meta_wayland_shell_surface,
+                        META_TYPE_WAYLAND_ACTOR_SURFACE)
 
 void
 meta_wayland_shell_surface_calculate_geometry (MetaWaylandShellSurface *shell_surface,

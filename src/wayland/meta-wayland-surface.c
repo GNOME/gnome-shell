@@ -81,9 +81,9 @@ typedef struct _MetaWaylandSurfaceRolePrivate
 
 G_DEFINE_TYPE (MetaWaylandSurface, meta_wayland_surface, G_TYPE_OBJECT);
 
-G_DEFINE_TYPE_WITH_PRIVATE (MetaWaylandSurfaceRole,
-                            meta_wayland_surface_role,
-                            G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (MetaWaylandSurfaceRole,
+                                     meta_wayland_surface_role,
+                                     G_TYPE_OBJECT)
 
 G_DEFINE_TYPE (MetaWaylandPendingState,
                meta_wayland_pending_state,

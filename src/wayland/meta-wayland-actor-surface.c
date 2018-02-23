@@ -30,9 +30,9 @@
 #include "wayland/meta-wayland-surface.h"
 #include "wayland/meta-window-wayland.h"
 
-G_DEFINE_TYPE (MetaWaylandActorSurface,
-               meta_wayland_actor_surface,
-               META_TYPE_WAYLAND_SURFACE_ROLE)
+G_DEFINE_ABSTRACT_TYPE (MetaWaylandActorSurface,
+                        meta_wayland_actor_surface,
+                        META_TYPE_WAYLAND_SURFACE_ROLE)
 
 static void
 meta_wayland_actor_surface_assigned (MetaWaylandSurfaceRole *surface_role)
