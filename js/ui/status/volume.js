@@ -117,6 +117,7 @@ var StreamSlider = new Lang.Class({
 
         let volume = value * this._control.get_vol_max_norm();
         let prevMuted = this._stream.is_muted;
+        let prevVolume = this._stream.volume;
         if (volume < 1) {
             this._stream.volume = 0;
             if (!prevMuted)
@@ -128,7 +129,8 @@ var StreamSlider = new Lang.Class({
         }
         this._stream.push_volume();
 
-        if (!this._notifyVolumeChangeId && !this._inDrag)
+        let volumeChanged = this._stream.volume != prevVolume;
+        if (volumeChanged && !this._notifyVolumeChangeId && !this._inDrag)
             this._notifyVolumeChangeId = Mainloop.timeout_add(30, () => {
                 this._notifyVolumeChange();
                 this._notifyVolumeChangeId = 0;
