@@ -299,6 +299,14 @@ meta_egl_choose_first_config (MetaEgl       *egl,
       return FALSE;
     }
 
+  if (num_matches == 0)
+    {
+      g_free (configs);
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "No matching EGLConfig found");
+      return FALSE;
+    }
+
   /*
    * We don't have any preference specified yet, so lets choose the first one.
    */
