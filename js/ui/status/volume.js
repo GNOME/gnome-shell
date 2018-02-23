@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const Gvc = imports.gi.Gvc;
+const Mainloop = imports.mainloop;
 const St = imports.gi.St;
 const Signals = imports.signals;
 
@@ -35,9 +36,16 @@ var StreamSlider = new Lang.Class({
 
         this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
 
+        this._inDrag = false;
+        this._notifyVolumeChangeId = 0;
+
         this._slider = new Slider.Slider(0);
+        this._slider.connect('drag-begin', () => { this._inDrag = true; });
         this._slider.connect('value-changed', this._sliderChanged.bind(this));
-        this._slider.connect('drag-end', this._notifyVolumeChange.bind(this));
+        this._slider.connect('drag-end', () => {
+            this._inDrag = false;
+            this._notifyVolumeChange();
+        });
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.actor.add(this._icon);
@@ -119,6 +127,13 @@ var StreamSlider = new Lang.Class({
                 this._stream.change_is_muted(false);
         }
         this._stream.push_volume();
+
+        if (!this._notifyVolumeChangeId && !this._inDrag)
+            this._notifyVolumeChangeId = Mainloop.timeout_add(30, () => {
+                this._notifyVolumeChange();
+                this._notifyVolumeChangeId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
     },
 
     _notifyVolumeChange() {
