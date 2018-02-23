@@ -502,6 +502,7 @@ var Message = new Lang.Class({
     _sync() {
         let visible = this.actor.hover && this.canClose();
         this._closeButton.opacity = visible ? 255 : 0;
+        this._closeButton.reactive = visible;
     },
 
     _onClicked() {
