@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
-"POT-Creation-Date: 2018-01-24 21:11+0000\n"
-"PO-Revision-Date: 2018-01-26 21:46+0100\n"
+"POT-Creation-Date: 2018-02-07 18:39+0000\n"
+"PO-Revision-Date: 2018-02-23 23:53+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -523,15 +523,15 @@ msgstr ""
 "WM_CLASS” paranccsal kérhető le. Az értékekben a „*” vagy „?” helyettesítő "
 "karakterek támogatottak. A „!” karakterrel kezdődő értékek feketelistára "
 "kerülnek, és a fehérlista előtt lesznek figyelembe véve, így felülbírálva az "
-"alapértelmezett rendszerlistát. Az alapértelmezett rendszerlistán a következő "
-"alkalmazások szerepelnek: „@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@”. A "
-"felhasználók megszakíthatják a létező megragadásokat a „restore-shortcuts” "
+"alapértelmezett rendszerlistát. Az alapértelmezett rendszerlistán a "
+"következő alkalmazások szerepelnek: „@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@”. "
+"A felhasználók megszakíthatják a létező megragadásokat a „restore-shortcuts” "
 "kulcsban megadott gyorsbillentyűvel."
 
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2259
+#: src/backends/meta-input-settings.c:2260
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Módkapcsoló (%d. csoport)"
@@ -539,11 +539,11 @@ msgstr "Módkapcsoló (%d. csoport)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2282
+#: src/backends/meta-input-settings.c:2283
 msgid "Switch monitor"
 msgstr "Monitorváltás"
 
-#: src/backends/meta-input-settings.c:2284
+#: src/backends/meta-input-settings.c:2285
 msgid "Show on-screen help"
 msgstr "Képernyősúgó megjelenítése"
 
@@ -586,42 +586,46 @@ msgstr "Csengetés esemény"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "Nem sikerült megnyitni a(z) „%s” X Window rendszer képernyőt\n"
 
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "A munkamenet-kezelőhöz való csatlakozás tiltása"
 
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "A futó ablakkezelő helyettesítése"
 
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "A munkamenet-kezelő azonosítójának megadása"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "A használandó X megjelenítő"
 
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "A munkamenet előkészítése a mentési fájlból"
 
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Az X-hívások szinkronná tétele"
 
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "Futtatás wayland betűszedőként"
 
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
 msgstr "Futtatás beágyazott betűszedőként"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
 msgstr ""
 "Futtatás teljes megjelenítő kiszolgálóként az egymásba ágyazott helyett"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "Futtatás X11 háttérprogrammal"
 
 #. Translators: %s is a window title
 #: src/core/meta-close-dialog-default.c:147
@@ -700,7 +704,7 @@ msgstr "A Mutter ablakkezelőt a részletes mód támogatása nélkül fordítot
 msgid "Mode Switch: Mode %d"
 msgstr "Módkapcsoló: %d. mód"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
