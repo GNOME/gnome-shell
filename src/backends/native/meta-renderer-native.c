@@ -935,6 +935,73 @@ meta_renderer_native_add_egl_config_attributes (CoglDisplay           *cogl_disp
 }
 
 static gboolean
+choose_egl_config_from_gbm_format (MetaEgl       *egl,
+                                   EGLDisplay     egl_display,
+                                   const EGLint  *attributes,
+                                   uint32_t       gbm_format,
+                                   EGLConfig     *out_config,
+                                   GError       **error)
+{
+  EGLConfig *egl_configs;
+  EGLint n_configs;
+  EGLint i;
+
+  egl_configs = meta_egl_choose_all_configs (egl, egl_display,
+                                             attributes,
+                                             &n_configs,
+                                             error);
+  if (!egl_configs)
+    return FALSE;
+
+  for (i = 0; i < n_configs; i++)
+    {
+      EGLint visual_id;
+
+      if (!meta_egl_get_config_attrib (egl, egl_display,
+                                       egl_configs[i],
+                                       EGL_NATIVE_VISUAL_ID,
+                                       &visual_id,
+                                       error))
+        {
+          g_free (egl_configs);
+          return FALSE;
+        }
+
+      if ((uint32_t) visual_id == gbm_format)
+        {
+          *out_config = egl_configs[i];
+          g_free (egl_configs);
+          return TRUE;
+        }
+    }
+
+  g_free (egl_configs);
+  g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+               "No EGL config matching supported GBM format found");
+  return FALSE;
+}
+
+static gboolean
+meta_renderer_native_choose_egl_config (CoglDisplay  *cogl_display,
+                                        EGLint       *attributes,
+                                        EGLConfig    *out_config,
+                                        GError      **error)
+{
+  CoglRenderer *cogl_renderer = cogl_display->renderer;
+  CoglRendererEGL *cogl_renderer_egl = cogl_renderer->winsys;
+  MetaBackend *backend = meta_get_backend ();
+  MetaEgl *egl = meta_backend_get_egl (backend);
+  EGLDisplay egl_display = cogl_renderer_egl->edpy;
+
+  return choose_egl_config_from_gbm_format (egl,
+                                            egl_display,
+                                            attributes,
+                                            GBM_FORMAT_XRGB8888,
+                                            out_config,
+                                            error);
+}
+
+static gboolean
 meta_renderer_native_setup_egl_display (CoglDisplay *cogl_display,
                                         GError     **error)
 {
@@ -2408,6 +2475,7 @@ meta_renderer_native_release_onscreen (CoglOnscreen *onscreen)
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable = {
   .add_config_attributes = meta_renderer_native_add_egl_config_attributes,
+  .choose_config = meta_renderer_native_choose_egl_config,
   .display_setup = meta_renderer_native_setup_egl_display,
   .display_destroy = meta_renderer_native_destroy_egl_display,
   .context_created = meta_renderer_native_egl_context_created,
@@ -2846,11 +2914,12 @@ create_secondary_egl_config (MetaEgl   *egl,
     EGL_NONE
   };
 
-  return meta_egl_choose_first_config (egl,
-                                       egl_display,
-                                       attributes,
-                                       egl_config,
-                                       error);
+  return choose_egl_config_from_gbm_format (egl,
+                                            egl_display,
+                                            attributes,
+                                            GBM_FORMAT_XRGB8888,
+                                            egl_config,
+                                            error);
 }
 
 static EGLContext

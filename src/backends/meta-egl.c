@@ -266,6 +266,72 @@ meta_egl_get_proc_address (MetaEgl    *egl,
 }
 
 gboolean
+meta_egl_get_config_attrib (MetaEgl     *egl,
+                            EGLDisplay   display,
+                            EGLConfig    config,
+                            EGLint       attribute,
+                            EGLint      *value,
+                            GError     **error)
+{
+  if (!eglGetConfigAttrib (display,
+                           config,
+                           attribute,
+                           value))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+EGLConfig *
+meta_egl_choose_all_configs (MetaEgl       *egl,
+                             EGLDisplay     display,
+                             const EGLint  *attrib_list,
+                             EGLint        *out_num_configs,
+                             GError       **error)
+{
+  EGLint num_configs;
+  EGLConfig *configs;
+  EGLint num_matches;
+
+  if (!eglGetConfigs (display, NULL, 0, &num_configs))
+    {
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  if (num_configs < 1)
+    {
+      g_set_error (error, G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   "No EGL configurations available");
+      return FALSE;
+    }
+
+  configs = g_new0 (EGLConfig, num_configs);
+
+  if (!eglChooseConfig (display, attrib_list, configs, num_configs, &num_matches))
+    {
+      g_free (configs);
+      set_egl_error (error);
+      return FALSE;
+    }
+
+  if (num_matches == 0)
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                   "No matching EGL configs");
+      g_free (configs);
+      return NULL;
+    }
+
+  *out_num_configs = num_configs;
+  return configs;
+}
+
+gboolean
 meta_egl_choose_first_config (MetaEgl       *egl,
                               EGLDisplay     display,
                               const EGLint  *attrib_list,

@@ -337,6 +337,32 @@ _cogl_winsys_egl_add_config_attributes (CoglDisplay *display,
 }
 
 static CoglBool
+_cogl_winsys_egl_choose_config (CoglDisplay *display,
+                                EGLint *attributes,
+                                EGLConfig *out_config,
+                                CoglError **error)
+{
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  EGLint config_count = 0;
+  EGLBoolean status;
+
+  status = eglChooseConfig (egl_renderer->edpy,
+                            attributes,
+                            out_config, 1,
+                            &config_count);
+  if (status != EGL_TRUE || config_count == 0)
+    {
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                       "No compatible EGL configs found");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
                                 CoglError **error)
 {
@@ -841,6 +867,7 @@ static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
     .add_config_attributes = _cogl_winsys_egl_add_config_attributes,
+    .choose_config = _cogl_winsys_egl_choose_config,
     .display_setup = _cogl_winsys_egl_display_setup,
     .display_destroy = _cogl_winsys_egl_display_destroy,
     .context_created = _cogl_winsys_egl_context_created,

@@ -90,6 +90,11 @@ typedef struct _CoglWinsysEGLVtable
   (* add_config_attributes) (CoglDisplay *display,
                              CoglFramebufferConfig *config,
                              EGLint *attributes);
+  CoglBool
+  (* choose_config) (CoglDisplay *display,
+                     EGLint *attributes,
+                     EGLConfig *out_config,
+                     CoglError **error);
 } CoglWinsysEGLVtable;
 
 typedef enum _CoglEGLWinsysFeature
