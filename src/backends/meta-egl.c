@@ -266,11 +266,11 @@ meta_egl_get_proc_address (MetaEgl    *egl,
 }
 
 gboolean
-meta_egl_choose_config (MetaEgl      *egl,
-                        EGLDisplay    display,
-                        const EGLint *attrib_list,
-                        EGLConfig    *chosen_config,
-                        GError      **error)
+meta_egl_choose_first_config (MetaEgl       *egl,
+                              EGLDisplay     display,
+                              const EGLint  *attrib_list,
+                              EGLConfig     *chosen_config,
+                              GError       **error)
 {
   EGLint num_configs;
   EGLConfig *configs;

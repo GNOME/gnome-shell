@@ -980,8 +980,8 @@ create_dummy_pbuffer_surface (EGLDisplay egl_display,
     EGL_NONE
   };
 
-  if (!meta_egl_choose_config (egl, egl_display, pbuffer_config_attribs,
-                               &pbuffer_config, error))
+  if (!meta_egl_choose_first_config (egl, egl_display, pbuffer_config_attribs,
+                                     &pbuffer_config, error))
     return EGL_NO_SURFACE;
 
   return meta_egl_create_pbuffer_surface (egl, egl_display,
@@ -2846,11 +2846,11 @@ create_secondary_egl_config (MetaEgl   *egl,
     EGL_NONE
   };
 
-  return meta_egl_choose_config (egl,
-                                 egl_display,
-                                 attributes,
-                                 egl_config,
-                                 error);
+  return meta_egl_choose_first_config (egl,
+                                       egl_display,
+                                       attributes,
+                                       egl_config,
+                                       error);
 }
 
 static EGLContext
