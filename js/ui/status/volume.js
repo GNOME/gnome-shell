@@ -1,7 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 /* exported Indicator */
 
-const { Clutter, Gio, GObject, Gvc, St } = imports.gi;
+const { Clutter, Gio, GLib, GObject, Gvc, St } = imports.gi;
 const Signals = imports.signals;
 
 const Main = imports.ui.main;
@@ -30,6 +30,9 @@ var StreamSlider = class {
 
         this.item = new PopupMenu.PopupBaseMenuItem({ activate: false });
 
+        this._inDrag = false;
+        this._notifyVolumeChangeId = 0;
+
         this._slider = new Slider.Slider(0);
 
         this._soundSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.sound' });
@@ -38,7 +41,11 @@ var StreamSlider = class {
 
         this._sliderChangedId = this._slider.connect('notify::value',
                                                      this._sliderChanged.bind(this));
-        this._slider.connect('drag-end', this._notifyVolumeChange.bind(this));
+        this._slider.connect('drag-begin', () => (this._inDrag = true));
+        this._slider.connect('drag-end', () => {
+            this._inDrag = false;
+            this._notifyVolumeChange();
+        });
 
         this._icon = new St.Icon({ style_class: 'popup-menu-icon' });
         this.item.add(this._icon);
@@ -116,6 +123,16 @@ var StreamSlider = class {
                 this._stream.change_is_muted(false);
         }
         this._stream.push_volume();
+
+        if (!this._notifyVolumeChangeId && !this._inDrag) {
+            this._notifyVolumeChangeId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 30, () => {
+                this._notifyVolumeChange();
+                this._notifyVolumeChangeId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+            GLib.Source.set_name_by_id(this._notifyVolumeChangeId,
+                '[gnome-shell] this._notifyVolumeChangeId');
+        }
     }
 
     _notifyVolumeChange() {
