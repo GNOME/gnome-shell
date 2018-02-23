@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
-"POT-Creation-Date: 2018-02-06 04:14+0000\n"
-"PO-Revision-Date: 2018-02-14 23:45+0200\n"
+"POT-Creation-Date: 2018-02-14 22:46+0000\n"
+"PO-Revision-Date: 2018-02-23 01:48+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician\n"
 "Language: gl\n"
@@ -491,7 +491,7 @@ msgstr "Reactivar os atallos"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:64
 msgid "Allow grabs with Xwayland"
-msgstr ""
+msgstr "Permitir capturas con Xwayland"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:65
 msgid ""
@@ -504,7 +504,7 @@ msgstr ""
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:77
 msgid "Xwayland applications allowed to issue keyboard grabs"
-msgstr ""
+msgstr "Aplicaciones de Xwayland que poden capturar o teclado"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:78
 msgid ""
@@ -690,7 +690,7 @@ msgstr "A pantalla %d na visualización «%s» non é válida\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter foi compilado sen compatibilidade para o modo detallado\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:563
+#: src/wayland/meta-wayland-tablet-pad.c:567
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Modo conmutador: Modo %d"
