@@ -7,6 +7,7 @@
 #
 # Updated in mutter:
 # Changwoo Ryu <cwryu@debian.org>, 2011-2017.
+# Gwan-gyeong Mun <elongbug@gmail.com>, 2018.
 #
 #
 # 주의:
@@ -16,11 +17,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-29 16:09+0000\n"
-"PO-Revision-Date: 2017-09-02 12:57+0900\n"
-"Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
+"POT-Creation-Date: 2018-02-06 04:14+0000\n"
+"PO-Revision-Date: 2018-02-24 16:14+0900\n"
+"Last-Translator: Gwan-gyeong Mun <elongbug@gmail.com>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
@@ -53,134 +53,118 @@ msgid "Move window to last workspace"
 msgstr "창을 최근 작업 공간으로 옮기기"
 
 #: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "창을 한칸 왼쪽 작업 공간으로 옮기기"
-
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "창을 한칸 오른쪽 작업 공간으로 옮기기"
-
-#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "창을 한칸 위 작업 공간으로 옮기기"
 
-#: data/50-mutter-navigation.xml:33
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace down"
 msgstr "창을 한칸 아래 작업 공간으로 옮기기"
 
-#: data/50-mutter-navigation.xml:36
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one monitor to the left"
 msgstr "창을 한칸 왼쪽 모니터로 옮기기"
 
-#: data/50-mutter-navigation.xml:39
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one monitor to the right"
 msgstr "창을 한칸 오른쪽 모니터로 옮기기"
 
-#: data/50-mutter-navigation.xml:42
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor up"
 msgstr "창을 한칸 위 모니터로 옮기기"
 
-#: data/50-mutter-navigation.xml:45
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor down"
 msgstr "창을 한칸 아래 모니터로 옮기기"
 
-#: data/50-mutter-navigation.xml:49
+#: data/50-mutter-navigation.xml:43
 msgid "Switch applications"
-msgstr "앱 전환"
+msgstr "프로그램 전환"
 
-#: data/50-mutter-navigation.xml:54
+#: data/50-mutter-navigation.xml:48
 msgid "Switch to previous application"
-msgstr "이전 앱으로 전환"
+msgstr "이전 프로그램으로 전환"
 
-#: data/50-mutter-navigation.xml:58
+#: data/50-mutter-navigation.xml:52
 msgid "Switch windows"
 msgstr "창 전환"
 
-#: data/50-mutter-navigation.xml:63
+#: data/50-mutter-navigation.xml:57
 msgid "Switch to previous window"
 msgstr "이전 창으로 전환"
 
-#: data/50-mutter-navigation.xml:67
+#: data/50-mutter-navigation.xml:61
 msgid "Switch windows of an application"
-msgstr "한 앱의 창 전환"
+msgstr "한 프로그램의 창 전환"
 
-#: data/50-mutter-navigation.xml:72
+#: data/50-mutter-navigation.xml:66
 msgid "Switch to previous window of an application"
-msgstr "한 앱의 이전 창으로 전환"
+msgstr "한 프로그램의 이전 창으로 전환"
 
-#: data/50-mutter-navigation.xml:76
+#: data/50-mutter-navigation.xml:70
 msgid "Switch system controls"
 msgstr "시스템 조작 전환"
 
-#: data/50-mutter-navigation.xml:81
+#: data/50-mutter-navigation.xml:75
 msgid "Switch to previous system control"
 msgstr "이전 시스템 조작으로 전환"
 
-#: data/50-mutter-navigation.xml:85
+#: data/50-mutter-navigation.xml:79
 msgid "Switch windows directly"
 msgstr "직접 창 전환"
 
-#: data/50-mutter-navigation.xml:90
+#: data/50-mutter-navigation.xml:84
 msgid "Switch directly to previous window"
 msgstr "직접 이전 창으로 전환"
 
-#: data/50-mutter-navigation.xml:94
+#: data/50-mutter-navigation.xml:88
 msgid "Switch windows of an app directly"
 msgstr "직접 한 앱의 창 전환"
 
-#: data/50-mutter-navigation.xml:99
+#: data/50-mutter-navigation.xml:93
 msgid "Switch directly to previous window of an app"
 msgstr "직접 한 앱의 이전 창으로 전환"
 
-#: data/50-mutter-navigation.xml:103
+#: data/50-mutter-navigation.xml:97
 msgid "Switch system controls directly"
 msgstr "직접 시스템 조작 전환"
 
-#: data/50-mutter-navigation.xml:108
+#: data/50-mutter-navigation.xml:102
 msgid "Switch directly to previous system control"
 msgstr "직접 이전 시스템 조작으로 전환"
 
-#: data/50-mutter-navigation.xml:111
+#: data/50-mutter-navigation.xml:105
 msgid "Hide all normal windows"
 msgstr "모든 일반 창 감추기"
 
-#: data/50-mutter-navigation.xml:114
+#: data/50-mutter-navigation.xml:108
 msgid "Switch to workspace 1"
 msgstr "작업 공간 1로 이동"
 
-#: data/50-mutter-navigation.xml:117
+#: data/50-mutter-navigation.xml:111
 msgid "Switch to workspace 2"
 msgstr "작업 공간 2로 이동"
 
-#: data/50-mutter-navigation.xml:120
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 3"
 msgstr "작업 공간 3으로 이동"
 
-#: data/50-mutter-navigation.xml:123
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 4"
 msgstr "작업 공간 4로 이동"
 
-#: data/50-mutter-navigation.xml:126
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to last workspace"
 msgstr "최근 작업 공간으로 이동"
 
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "왼쪽 작업 공간으로 옮기기"
-
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "오른쪽 작업 공간으로 옮기기"
-
-#: data/50-mutter-navigation.xml:135
+#: data/50-mutter-navigation.xml:123
 msgid "Move to workspace above"
 msgstr "위 작업 공간으로 옮기기"
 
-#: data/50-mutter-navigation.xml:138
+#: data/50-mutter-navigation.xml:126
 msgid "Move to workspace below"
 msgstr "아래 작업 공간으로 옮기기"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "시스템"
 
@@ -191,6 +175,10 @@ msgstr "실행 명령 프롬프트 보이기"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "현재 활동 보이기"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "키보드 바로 가기 복구"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -217,54 +205,50 @@ msgid "Restore window"
 msgstr "창 복구"
 
 #: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "그림자 상태 토글"
-
-#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "창 닫기"
 
-#: data/50-mutter-windows.xml:22
+#: data/50-mutter-windows.xml:20
 msgid "Hide window"
 msgstr "창 감추기"
 
-#: data/50-mutter-windows.xml:24
+#: data/50-mutter-windows.xml:22
 msgid "Move window"
 msgstr "창 옮기기"
 
-#: data/50-mutter-windows.xml:26
+#: data/50-mutter-windows.xml:24
 msgid "Resize window"
 msgstr "창 크기 조정"
 
-#: data/50-mutter-windows.xml:29
+#: data/50-mutter-windows.xml:27
 msgid "Toggle window on all workspaces or one"
 msgstr "창을 모든/하나의 작업 공간에 두기 토글"
 
-#: data/50-mutter-windows.xml:31
+#: data/50-mutter-windows.xml:29
 msgid "Raise window if covered, otherwise lower it"
 msgstr "창이 가려 있으면 올리고 아니면 내리기"
 
-#: data/50-mutter-windows.xml:33
+#: data/50-mutter-windows.xml:31
 msgid "Raise window above other windows"
 msgstr "창을 다른 창 위로 올리기"
 
-#: data/50-mutter-windows.xml:35
+#: data/50-mutter-windows.xml:33
 msgid "Lower window below other windows"
 msgstr "창을 다른 창 아래로 내리기"
 
-#: data/50-mutter-windows.xml:37
+#: data/50-mutter-windows.xml:35
 msgid "Maximize window vertically"
 msgstr "창을 세로 방향으로 최대화"
 
-#: data/50-mutter-windows.xml:39
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window horizontally"
 msgstr "창을 가로 방향으로 최대화"
 
-#: data/50-mutter-windows.xml:43
+#: data/50-mutter-windows.xml:41
 msgid "View split on left"
 msgstr "왼쪽 나눔창 보기"
 
-#: data/50-mutter-windows.xml:47
+#: data/50-mutter-windows.xml:45
 msgid "View split on right"
 msgstr "오른쪽 나눔창 보기"
 
@@ -493,10 +477,53 @@ msgstr "가상 터미널 12로 이동"
 msgid "Re-enable shortcuts"
 msgstr "바로 가기 다시 사용하기"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:64
+msgid "Allow grabs with Xwayland"
+msgstr "X웨일랜드에서 잡기 허용"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:65
+msgid ""
+"Allow keyboard grabs issued by X11 applications running in Xwayland to be "
+"taken into account. For a X11 grab to be taken into account under Wayland, "
+"the client must also either send a specific X11 ClientMessage to the root "
+"window or be among the applications white-listed in key “xwayland-grab-"
+"access-rules”."
+msgstr ""
+"X웨일랜드 환경에서 실행하는 X11 프로그램의 키보드 잡기 허용을 고려합니다. 웨"
+"일랜드에서 X11 잡기를 고려하려면, 클라이언트는 특정 X11 클라이언트메시지를 루"
+"트 창에 보내거나 \"xwayland-grab-access-rules\"의 허용 목록에 있는 프로그램 "
+"중 하나여야 합니다."
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:77
+msgid "Xwayland applications allowed to issue keyboard grabs"
+msgstr "X웨일랜드 프로그램에서 키보드 잡기 허용"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:78
+msgid ""
+"List the resource names or resource class of X11 windows either allowed or "
+"not allowed to issue X11 keyboard grabs under Xwayland. The resource name or "
+"resource class of a given X11 window can be obtained using the command "
+"“xprop WM_CLASS”. Wildcards “*” and jokers “?” in the values are supported. "
+"Values starting with “!” are blacklisted, which has precedence over the "
+"whitelist, to revoke applications from the default system list. The default "
+"system list includes the following applications: "
+"“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Users can break an existing grab by "
+"using the specific keyboard shortcut defined by the keybinding key “restore-"
+"shortcuts”."
+msgstr ""
+"X웨일랜드에서 X11 키보드 잡기를 허용하거나 허용하지 않는 X11 창의 리소스 이"
+"름 또는 리소스 클래스를 나열하세요. X11 창의 리소스 이름 또는 리소스 클래스"
+"는 “xprop WM_CLASS\" 명령을 사용하여 얻을 수 있습니다. 와일드카드 \"*\"와 \"?"
+"\"를 값에서 사용할 수 있습니다. \"!\"로 시작하는 값은 허용 목록보다 높은 우선"
+"순위로 블랙리스트 처리되어, 프로그램이 기본 시스템 목록에서 빠지게 됩니다. 기"
+"본 시스템 목록에 포함된 프로그램: “@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” 사용"
+"자는 “restore-shortcuts” 키 바인딩에 정의된 특정 키보드 바로 가기를 사용하여 "
+"기존 잡기를 중단할 수 있습니다."
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2260
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "모드 전환 (그룹 %d)"
@@ -504,37 +531,37 @@ msgstr "모드 전환 (그룹 %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2283
 msgid "Switch monitor"
 msgstr "모니터 전환"
 
-#: src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2285
 msgid "Show on-screen help"
 msgstr "화면 도움말 표시"
 
-#: src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "내장 디스플레이"
 
-#: src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "알 수 없는 디스플레이"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:476
+#: src/compositor/compositor.c:481
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -551,41 +578,45 @@ msgstr "삑소리 이벤트"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "X 윈도 시스템 디스플레이 “%s”을(를) 여는데 실패하였습니다\n"
 
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "세션 관리자와 연결 하지 않습니다"
 
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "실행 중인 창 관리자를 바꿉니다"
 
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "세션 관리 ID를 지정합니다"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "사용할 X 디스플레이"
 
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "저장 파일에서 세션을 초기화 합니다"
 
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "동기 X 호출을 합니다"
 
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "웨일랜드 컴포지터로 실행합니다"
 
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
-msgstr "내장 컴포지터로 실행합니다"
+msgstr "중첩 컴포지터로 실행합니다"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
-msgstr "전체 디스플레이 서버로 실행, 내장 프로그램 아님"
+msgstr "전체 디스플레이 서버로 실행, 중첩 컴포지터가 아님"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "X11 백 엔드로 실행 합니다"
 
 #. Translators: %s is a window title
 #: src/core/meta-close-dialog-default.c:147
@@ -639,7 +670,7 @@ msgstr "사용할 머터 플러그인"
 msgid "Workspace %d"
 msgstr "작업 공간 %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -648,7 +679,7 @@ msgstr ""
 "디스플레이  “%s”에 이미 창 관리자가 있습니다. 현재 창 관리자를 바꾸려면 --"
 "replace 옵션을 써보십시오."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "디스플레이 “%2$s”의 화면 %1$d은(는) 잘못되었습니다\n"
@@ -662,7 +693,7 @@ msgstr "머터가 자세한 모드 지원 없이 컴파일 되었습니다\n"
 msgid "Mode Switch: Mode %d"
 msgstr "모드 전환: 모드 %d"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -675,3 +706,18 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s에서)"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "창을 한칸 왼쪽 작업 공간으로 옮기기"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "창을 한칸 오른쪽 작업 공간으로 옮기기"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "왼쪽 작업 공간으로 옮기기"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "오른쪽 작업 공간으로 옮기기"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "그림자 상태 토글"
