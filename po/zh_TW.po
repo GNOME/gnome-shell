@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
-"shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-27 05:39+0000\n"
-"PO-Revision-Date: 2017-10-01 22:25+0800\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
+"POT-Creation-Date: 2018-02-20 23:03+0000\n"
+"PO-Revision-Date: 2018-02-24 21:17+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -311,7 +310,7 @@ msgstr "載入 %s 的偏好設定對話盒時發生錯誤："
 #: js/gdm/authPrompt.js:149 js/ui/audioDeviceSelection.js:71
 #: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
-#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:936
+#: js/ui/shellMountOperation.js:344 js/ui/status/network.js:925
 msgid "Cancel"
 msgstr "取消"
 
@@ -329,20 +328,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "登入"
 
-#: js/gdm/loginDialog.js:308
+#: js/gdm/loginDialog.js:322
 msgid "Choose Session"
 msgstr "選擇工作階段"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:458
+#: js/gdm/loginDialog.js:468
 msgid "Not listed?"
 msgstr "沒有列出來？"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:888
+#: js/gdm/loginDialog.js:898
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(例如： user 或 %s)"
@@ -350,12 +349,12 @@ msgstr "(例如： user 或 %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:893 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:903 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:261
 msgid "Username: "
 msgstr "使用者名稱："
 
-#: js/gdm/loginDialog.js:1236
+#: js/gdm/loginDialog.js:1246
 msgid "Login Window"
 msgstr "登入視窗"
 
@@ -368,26 +367,26 @@ msgstr "核對錯誤"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:478
+#: js/gdm/util.js:483
 msgid "(or swipe finger)"
 msgstr "（或是滑過手指）"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
 msgctxt "search-result"
-msgid "Power off"
+msgid "Power Off"
 msgstr "關閉電源"
 
 #. Translators: A list of keywords that match the power-off action, separated by semicolons
 #: js/misc/systemActions.js:102
-msgid "power off;shutdown"
-msgstr "power off;shutdown;關機;關閉電源"
+msgid "power off;shutdown;reboot;restart"
+msgstr "power off;shutdown;reboot;restart;關機;關閉電源;重新開機;重新啟動"
 
 #. Translators: The name of the lock screen action in search
 #: js/misc/systemActions.js:106
 msgctxt "search-result"
-msgid "Lock screen"
-msgstr "螢幕鎖定"
+msgid "Lock Screen"
+msgstr "鎖定螢幕"
 
 #. Translators: A list of keywords that match the lock screen action, separated by semicolons
 #: js/misc/systemActions.js:109
@@ -397,7 +396,7 @@ msgstr "lock screen;螢幕鎖定"
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
 msgctxt "search-result"
-msgid "Log out"
+msgid "Log Out"
 msgstr "登出"
 
 #. Translators: A list of keywords that match the logout action, separated by semicolons
@@ -419,7 +418,7 @@ msgstr "suspend;sleep;暫停;睡眠"
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
 msgctxt "search-result"
-msgid "Switch user"
+msgid "Switch User"
 msgstr "切換使用者"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
@@ -430,13 +429,13 @@ msgstr "switch user;切換使用者"
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
 msgctxt "search-result"
-msgid "Lock orientation"
-msgstr "方向鎖"
+msgid "Lock Orientation"
+msgstr "鎖定方向"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-msgid "lock orientation"
-msgstr "lock orientation;方向鎖"
+msgid "lock orientation;screen;rotation"
+msgstr "lock orientation;screen;rotation;鎖定方向;方向鎖;螢幕;旋轉"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -602,32 +601,32 @@ msgstr "常用"
 msgid "All"
 msgstr "全部"
 
-#: js/ui/appDisplay.js:1915
+#: js/ui/appDisplay.js:1919
 msgid "New Window"
 msgstr "新視窗"
 
-#: js/ui/appDisplay.js:1929
+#: js/ui/appDisplay.js:1933
 msgid "Launch using Dedicated Graphics Card"
 msgstr "使用獨立顯卡啟動"
 
-#: js/ui/appDisplay.js:1956 js/ui/dash.js:289
+#: js/ui/appDisplay.js:1960 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: js/ui/appDisplay.js:1962
+#: js/ui/appDisplay.js:1966
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
-#: js/ui/appDisplay.js:1972
+#: js/ui/appDisplay.js:1976
 msgid "Show Details"
 msgstr "顯示詳細資訊"
 
-#: js/ui/appFavorites.js:140
+#: js/ui/appFavorites.js:141
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s 已加入您的喜好中。"
 
-#: js/ui/appFavorites.js:174
+#: js/ui/appFavorites.js:175
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s 已經從您的喜好中移除。"
@@ -665,7 +664,7 @@ msgid "Settings"
 msgstr "設定值"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:47
+#: js/ui/calendar.js:44
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -675,92 +674,115 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:73
 msgctxt "grid sunday"
 msgid "S"
 msgstr "日"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:75
 msgctxt "grid monday"
 msgid "M"
 msgstr "一"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:77
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "二"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:79
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "三"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:84
+#: js/ui/calendar.js:81
 msgctxt "grid thursday"
 msgid "T"
 msgstr "四"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:86
+#: js/ui/calendar.js:83
 msgctxt "grid friday"
 msgid "F"
 msgstr "五"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:88
+#: js/ui/calendar.js:85
 msgctxt "grid saturday"
 msgid "S"
 msgstr "六"
 
-#: js/ui/calendar.js:442
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:382
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:392
+msgid "%OB %Y"
+msgstr "%Y年%OB"
+
+#: js/ui/calendar.js:449
 msgid "Previous month"
 msgstr "上個月"
 
-#: js/ui/calendar.js:452
+#: js/ui/calendar.js:459
 msgid "Next month"
 msgstr "下個月"
 
-#: js/ui/calendar.js:605
+#: js/ui/calendar.js:612
 #, no-javascript-format
 msgctxt "date day number format"
 msgid "%d"
 msgstr "%d"
 
-#: js/ui/calendar.js:660
+#: js/ui/calendar.js:667
 msgid "Week %V"
 msgstr "%V 週"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: js/ui/calendar.js:729
+#: js/ui/calendar.js:736
 msgctxt "event list time"
 msgid "All Day"
 msgstr "整天"
 
-#: js/ui/calendar.js:862
+#: js/ui/calendar.js:869
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%b%d日%A"
 
-#: js/ui/calendar.js:866
+#: js/ui/calendar.js:873
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%b%d日%A"
 
-#: js/ui/calendar.js:1086
+#: js/ui/calendar.js:1093
 msgid "No Notifications"
 msgstr "沒有通知"
 
-#: js/ui/calendar.js:1089
+#: js/ui/calendar.js:1096
 msgid "No Events"
 msgstr "沒有行程"
 
-#: js/ui/calendar.js:1117
+#: js/ui/calendar.js:1124
 msgid "Clear All"
 msgstr "全部清除"
 
@@ -792,7 +814,7 @@ msgstr "外部裝置已連接"
 msgid "External drive disconnected"
 msgstr "外部裝置已拔除"
 
-#: js/ui/components/autorunManager.js:354
+#: js/ui/components/autorunManager.js:358
 #, javascript-format
 msgid "Open with %s"
 msgstr "用 %s 開啟"
@@ -805,8 +827,8 @@ msgstr "密碼： "
 msgid "Type again:"
 msgstr "再輸入一次："
 
-#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:261
-#: js/ui/status/network.js:355 js/ui/status/network.js:939
+#: js/ui/components/networkAgent.js:112 js/ui/status/network.js:245
+#: js/ui/status/network.js:338 js/ui/status/network.js:928
 msgid "Connect"
 msgstr "連線"
 
@@ -834,18 +856,18 @@ msgstr "私密金鑰密碼："
 msgid "Service: "
 msgstr "服務："
 
-#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:638
+#: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:659
 msgid "Authentication required by wireless network"
 msgstr "無線網路所需要的核對"
 
-#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:639
+#: js/ui/components/networkAgent.js:293 js/ui/components/networkAgent.js:660
 #, javascript-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "“%s”."
 msgstr "需要密碼或是加密金鑰來存取無線網路「%s」。"
 
-#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:642
+#: js/ui/components/networkAgent.js:297 js/ui/components/networkAgent.js:663
 msgid "Wired 802.1X authentication"
 msgstr "有線網路 802.1X 核對"
 
@@ -853,15 +875,15 @@ msgstr "有線網路 802.1X 核對"
 msgid "Network name: "
 msgstr "網路名稱："
 
-#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:646
+#: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:667
 msgid "DSL authentication"
 msgstr "DSL 核對"
 
-#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:652
+#: js/ui/components/networkAgent.js:311 js/ui/components/networkAgent.js:673
 msgid "PIN code required"
 msgstr "需要 PIN 碼"
 
-#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:653
+#: js/ui/components/networkAgent.js:312 js/ui/components/networkAgent.js:674
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "這個行動寬頻裝置需要 PIN 碼"
 
@@ -869,17 +891,17 @@ msgstr "這個行動寬頻裝置需要 PIN 碼"
 msgid "PIN: "
 msgstr "PIN： "
 
-#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:659
+#: js/ui/components/networkAgent.js:320 js/ui/components/networkAgent.js:680
 msgid "Mobile broadband network password"
 msgstr "行動寬頻網路密碼"
 
-#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:643
-#: js/ui/components/networkAgent.js:647 js/ui/components/networkAgent.js:660
+#: js/ui/components/networkAgent.js:321 js/ui/components/networkAgent.js:664
+#: js/ui/components/networkAgent.js:668 js/ui/components/networkAgent.js:681
 #, javascript-format
 msgid "A password is required to connect to “%s”."
 msgstr "連線至「%s」需要密碼。"
 
-#: js/ui/components/networkAgent.js:627 js/ui/status/network.js:1720
+#: js/ui/components/networkAgent.js:648 js/ui/status/network.js:1699
 msgid "Network Manager"
 msgstr "網路管理員"
 
@@ -914,20 +936,20 @@ msgstr "%s 現在被稱為 %s"
 msgid "Windows"
 msgstr "視窗"
 
-#: js/ui/dash.js:250 js/ui/dash.js:291
+#: js/ui/dash.js:246 js/ui/dash.js:287
 msgid "Show Applications"
 msgstr "顯示應用程式"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: js/ui/dash.js:449
+#: js/ui/dash.js:445
 msgid "Dash"
 msgstr "Dash"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: js/ui/dateMenu.js:75
+#: js/ui/dateMenu.js:76
 msgid "%B %e %Y"
 msgstr "%Y年%b%e日"
 
@@ -935,19 +957,19 @@ msgstr "%Y年%b%e日"
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
 #.
-#: js/ui/dateMenu.js:82
+#: js/ui/dateMenu.js:83
 msgid "%A %B %e %Y"
 msgstr "%Y年%b%e日%A"
 
-#: js/ui/dateMenu.js:144
+#: js/ui/dateMenu.js:148
 msgid "Add world clocks…"
 msgstr "加入世界時鐘…"
 
-#: js/ui/dateMenu.js:145
+#: js/ui/dateMenu.js:149
 msgid "World Clocks"
 msgstr "世界時鐘"
 
-#: js/ui/dateMenu.js:224
+#: js/ui/dateMenu.js:228
 msgid "Weather"
 msgstr "天氣"
 
@@ -955,7 +977,7 @@ msgstr "天氣"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:286
+#: js/ui/dateMenu.js:292
 #, javascript-format
 msgid "%s all day."
 msgstr "全天%s。"
@@ -964,7 +986,7 @@ msgstr "全天%s。"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:292
+#: js/ui/dateMenu.js:298
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s，較晚%s。"
@@ -973,30 +995,30 @@ msgstr "%s，較晚%s。"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:298
+#: js/ui/dateMenu.js:304
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s，然後%s，接著較晚%s。"
 
-#: js/ui/dateMenu.js:309
+#: js/ui/dateMenu.js:315
 msgid "Select a location…"
 msgstr "選擇位置…"
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:318
 msgid "Loading…"
 msgstr "載入中…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:318
+#: js/ui/dateMenu.js:324
 #, javascript-format
 msgid "Feels like %s."
 msgstr "體感溫度 %s。"
 
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:327
 msgid "Go online for weather information"
 msgstr "上線以取得天氣資訊"
 
-#: js/ui/dateMenu.js:323
+#: js/ui/dateMenu.js:329
 msgid "Weather information is currently unavailable"
 msgstr "天氣資訊目前不可使用"
 
@@ -1171,9 +1193,73 @@ msgstr "禁止"
 msgid "Allow"
 msgstr "允許"
 
-#: js/ui/keyboard.js:738 js/ui/status/keyboard.js:782
-msgid "Keyboard"
-msgstr "鍵盤"
+#: js/ui/kbdA11yDialog.js:33
+#, fuzzy
+#| msgid "Slow Keys"
+msgid "Slow Keys Turned On"
+msgstr "遲緩按鍵"
+
+#: js/ui/kbdA11yDialog.js:34
+#, fuzzy
+#| msgid "Slow Keys"
+msgid "Slow Keys Turned Off"
+msgstr "遲緩按鍵"
+
+#: js/ui/kbdA11yDialog.js:35
+msgid ""
+"You just held down the Shift key for 8 seconds. This is the shortcut for the "
+"Slow Keys feature, which affects the way your keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:42
+#, fuzzy
+#| msgid "Sticky Keys"
+msgid "Sticky Keys Turned On"
+msgstr "黏性特殊鍵"
+
+#: js/ui/kbdA11yDialog.js:43
+#, fuzzy
+#| msgid "Sticky Keys"
+msgid "Sticky Keys Turned Off"
+msgstr "黏性特殊鍵"
+
+#: js/ui/kbdA11yDialog.js:45
+msgid ""
+"You just pressed the Shift key 5 times in a row. This is the shortcut for "
+"the Sticky Keys feature, which affects the way your keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:47
+msgid ""
+"You just pressed two keys at once, or pressed the Shift key 5 times in a "
+"row. This turns off the Sticky Keys feature, which affects the way your "
+"keyboard works."
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:59
+msgid "Leave On"
+msgstr ""
+
+#: js/ui/kbdA11yDialog.js:59 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:1287
+msgid "Turn On"
+msgstr "開啟"
+
+#: js/ui/kbdA11yDialog.js:67 js/ui/status/bluetooth.js:143
+#: js/ui/status/network.js:154 js/ui/status/network.js:339
+#: js/ui/status/network.js:1287 js/ui/status/network.js:1402
+#: js/ui/status/nightLight.js:47 js/ui/status/rfkill.js:90
+#: js/ui/status/rfkill.js:117
+msgid "Turn Off"
+msgstr "關閉"
+
+#: js/ui/kbdA11yDialog.js:67
+msgid "Leave Off"
+msgstr ""
+
+#: js/ui/keyboard.js:198
+msgid "Region & Language Settings"
+msgstr "地區和語言設定值"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1223,7 +1309,7 @@ msgstr "檢示來源"
 msgid "Web Page"
 msgstr "網頁"
 
-#: js/ui/messageTray.js:1493
+#: js/ui/messageTray.js:1494
 msgid "System Information"
 msgstr "系統資訊"
 
@@ -1312,7 +1398,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "系統"
 
-#: js/ui/panel.js:812
+#: js/ui/panel.js:814
 msgid "Top Bar"
 msgstr "頂端列"
 
@@ -1374,11 +1460,11 @@ msgstr "GNOME 需要鎖定螢幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1311
 msgid "Unable to lock"
 msgstr "無法鎖定"
 
-#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1312
 msgid "Lock was blocked by an application"
 msgstr "鎖定被應用程式阻擋"
 
@@ -1464,45 +1550,38 @@ msgstr "高反差"
 msgid "Large Text"
 msgstr "大型文字"
 
-#: js/ui/status/bluetooth.js:47
+#: js/ui/status/bluetooth.js:48
 msgid "Bluetooth"
 msgstr "藍牙"
 
-#: js/ui/status/bluetooth.js:56 js/ui/status/network.js:627
+#: js/ui/status/bluetooth.js:57 js/ui/status/network.js:616
 msgid "Bluetooth Settings"
 msgstr "藍牙設定值"
 
 #. Translators: this is the number of connected bluetooth devices
-#: js/ui/status/bluetooth.js:136
+#: js/ui/status/bluetooth.js:137
 #, javascript-format
 msgid "%d Connected"
 msgid_plural "%d Connected"
 msgstr[0] "%d 已連線"
 
-#: js/ui/status/bluetooth.js:138
+#: js/ui/status/bluetooth.js:139
 msgid "Off"
 msgstr "關閉"
 
-#: js/ui/status/bluetooth.js:140
+#: js/ui/status/bluetooth.js:141
 msgid "On"
 msgstr "開啟"
-
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:1299
-msgid "Turn On"
-msgstr "開啟"
-
-#: js/ui/status/bluetooth.js:142 js/ui/status/network.js:170
-#: js/ui/status/network.js:356 js/ui/status/network.js:1299
-#: js/ui/status/network.js:1418 js/ui/status/nightLight.js:47
-#: js/ui/status/rfkill.js:90 js/ui/status/rfkill.js:117
-msgid "Turn Off"
-msgstr "關閉"
 
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "亮度"
 
-#: js/ui/status/keyboard.js:805
+#: js/ui/status/keyboard.js:783
+msgid "Keyboard"
+msgstr "鍵盤"
+
+#: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
 msgstr "顯示鍵盤配置"
 
@@ -1540,18 +1619,18 @@ msgstr "允許 %s 存取您的位置？"
 msgid "Location access can be changed at any time from the privacy settings."
 msgstr "位置存取可以隨時從隱私設定值中更改。"
 
-#: js/ui/status/network.js:104
+#: js/ui/status/network.js:90
 msgid "<unknown>"
 msgstr "<不明>"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:454 js/ui/status/network.js:1328
+#: js/ui/status/network.js:443 js/ui/status/network.js:1316
 #, javascript-format
 msgid "%s Off"
 msgstr "%s 關閉"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:457
+#: js/ui/status/network.js:446
 #, javascript-format
 msgid "%s Connected"
 msgstr "%s 已連線"
@@ -1559,186 +1638,186 @@ msgstr "%s 已連線"
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu);
 #. %s is a network identifier
-#: js/ui/status/network.js:462
+#: js/ui/status/network.js:451
 #, javascript-format
 msgid "%s Unmanaged"
 msgstr "%s 未受管理"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:465
+#: js/ui/status/network.js:454
 #, javascript-format
 msgid "%s Disconnecting"
 msgstr "%s 正在斷線"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:472 js/ui/status/network.js:1320
+#: js/ui/status/network.js:461 js/ui/status/network.js:1308
 #, javascript-format
 msgid "%s Connecting"
 msgstr "正連線到 %s"
 
 #. Translators: this is for network connections that require some kind of key or password; %s is a network identifier
-#: js/ui/status/network.js:475
+#: js/ui/status/network.js:464
 #, javascript-format
 msgid "%s Requires Authentication"
 msgstr "%s 需要核對"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing; %s is a network identifier
-#: js/ui/status/network.js:483
+#: js/ui/status/network.js:472
 #, javascript-format
 msgid "Firmware Missing For %s"
 msgstr "缺少 %s 韌體"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage; %s is a network identifier
-#: js/ui/status/network.js:487
+#: js/ui/status/network.js:476
 #, javascript-format
 msgid "%s Unavailable"
 msgstr "%s 無法使用"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:490
+#: js/ui/status/network.js:479
 #, javascript-format
 msgid "%s Connection Failed"
 msgstr "%s 連線失敗"
 
-#: js/ui/status/network.js:506
+#: js/ui/status/network.js:495
 msgid "Wired Settings"
 msgstr "有線設定值"
 
-#: js/ui/status/network.js:548
+#: js/ui/status/network.js:537
 msgid "Mobile Broadband Settings"
 msgstr "行動寬頻設定值"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:591 js/ui/status/network.js:1325
+#: js/ui/status/network.js:580 js/ui/status/network.js:1313
 #, javascript-format
 msgid "%s Hardware Disabled"
 msgstr "%s 硬體已停用"
 
 #. Translators: this is for a network device that cannot be activated
 #. because it's disabled by rfkill (airplane mode); %s is a network identifier
-#: js/ui/status/network.js:595
+#: js/ui/status/network.js:584
 #, javascript-format
 msgid "%s Disabled"
 msgstr "%s 已停用"
 
-#: js/ui/status/network.js:635
+#: js/ui/status/network.js:624
 msgid "Connect to Internet"
 msgstr "連接至網際網路"
 
-#: js/ui/status/network.js:833
+#: js/ui/status/network.js:822
 msgid "Airplane Mode is On"
 msgstr "飛安模式開啟"
 
-#: js/ui/status/network.js:834
+#: js/ui/status/network.js:823
 msgid "Wi-Fi is disabled when airplane mode is on."
 msgstr "開啟飛安模式時會停用 Wi-Fi 。"
 
-#: js/ui/status/network.js:835
+#: js/ui/status/network.js:824
 msgid "Turn Off Airplane Mode"
 msgstr "關閉飛安模式"
 
-#: js/ui/status/network.js:844
+#: js/ui/status/network.js:833
 msgid "Wi-Fi is Off"
 msgstr "Wi-Fi 關閉"
 
-#: js/ui/status/network.js:845
+#: js/ui/status/network.js:834
 msgid "Wi-Fi needs to be turned on in order to connect to a network."
 msgstr "需要開啟 Wi-Fi 才能連接網路。"
 
-#: js/ui/status/network.js:846
+#: js/ui/status/network.js:835
 msgid "Turn On Wi-Fi"
 msgstr "開啟 Wi-Fi"
 
-#: js/ui/status/network.js:871
+#: js/ui/status/network.js:860
 msgid "Wi-Fi Networks"
 msgstr "Wi-Fi 網路"
 
-#: js/ui/status/network.js:873
+#: js/ui/status/network.js:862
 msgid "Select a network"
 msgstr "選擇一個網路"
 
-#: js/ui/status/network.js:903
+#: js/ui/status/network.js:892
 msgid "No Networks"
 msgstr "沒有網路"
 
-#: js/ui/status/network.js:924 js/ui/status/rfkill.js:115
+#: js/ui/status/network.js:913 js/ui/status/rfkill.js:115
 msgid "Use hardware switch to turn off"
 msgstr "使用硬體開關來關閉"
 
-#: js/ui/status/network.js:1191
+#: js/ui/status/network.js:1179
 msgid "Select Network"
 msgstr "選擇網路"
 
-#: js/ui/status/network.js:1197
+#: js/ui/status/network.js:1185
 msgid "Wi-Fi Settings"
 msgstr "Wi-Fi 設定值"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1316
+#: js/ui/status/network.js:1304
 #, javascript-format
 msgid "%s Hotspot Active"
 msgstr "%s 熱點有效"
 
 #. Translators: %s is a network identifier
-#: js/ui/status/network.js:1331
+#: js/ui/status/network.js:1319
 #, javascript-format
 msgid "%s Not Connected"
 msgstr "%s 未連線"
 
-#: js/ui/status/network.js:1435
+#: js/ui/status/network.js:1419
 msgid "connecting…"
 msgstr "連線中…"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: js/ui/status/network.js:1438
+#: js/ui/status/network.js:1422
 msgid "authentication required"
 msgstr "要求核對"
 
-#: js/ui/status/network.js:1440
+#: js/ui/status/network.js:1424
 msgid "connection failed"
 msgstr "連線失敗"
 
-#: js/ui/status/network.js:1494
+#: js/ui/status/network.js:1478
 msgid "VPN Settings"
 msgstr "VPN 設定值"
 
-#: js/ui/status/network.js:1498
+#: js/ui/status/network.js:1491
 msgid "VPN"
 msgstr "VPN"
 
-#: js/ui/status/network.js:1508
+#: js/ui/status/network.js:1501
 msgid "VPN Off"
 msgstr "VPN 關閉"
 
-#: js/ui/status/network.js:1572 js/ui/status/rfkill.js:93
+#: js/ui/status/network.js:1565 js/ui/status/rfkill.js:93
 msgid "Network Settings"
 msgstr "網路設定值"
 
-#: js/ui/status/network.js:1603
+#: js/ui/status/network.js:1596
 #, javascript-format
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s 個有線網路連線"
 
-#: js/ui/status/network.js:1607
+#: js/ui/status/network.js:1600
 #, javascript-format
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s 個 Wi-Fi 連線"
 
-#: js/ui/status/network.js:1611
+#: js/ui/status/network.js:1604
 #, javascript-format
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s 個數據機連線"
 
-#: js/ui/status/network.js:1759
+#: js/ui/status/network.js:1738
 msgid "Connection failed"
 msgstr "連線失敗"
 
-#: js/ui/status/network.js:1760
+#: js/ui/status/network.js:1739
 msgid "Activation of network connection failed"
 msgstr "啟動網路連線失敗"
 
@@ -1819,6 +1898,30 @@ msgstr "暫停"
 #: js/ui/status/system.js:305
 msgid "Power Off"
 msgstr "關閉電源"
+
+#: js/ui/status/thunderbolt.js:272
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#. we are done
+#: js/ui/status/thunderbolt.js:330
+msgid "Unknown Thunderbolt device"
+msgstr "未知 Thunderbolt 裝置"
+
+#: js/ui/status/thunderbolt.js:331
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr "您離開之後已偵測到新裝置。請先中斷連接，重新連接該裝置後可開始使用。"
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "Thunderbolt 授權錯誤"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the thunderbolt device: %s"
+msgstr "無法授權該 Thunderbolt 裝置：%s"
 
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
@@ -1978,19 +2081,19 @@ msgstr "Evolution 行事曆"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:380
+#: src/main.c:432
 msgid "Print version"
 msgstr "顯示版本"
 
-#: src/main.c:386
+#: src/main.c:438
 msgid "Mode used by GDM for login screen"
 msgstr "GDM 在登入畫面使用的模式"
 
-#: src/main.c:392
+#: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "使用指定的模式，例如「gdm」為登入畫面"
 
-#: src/main.c:398
+#: src/main.c:450
 msgid "List possible modes"
 msgstr "列出可能的模式"
 
@@ -2035,6 +2138,18 @@ msgstr[0] "%u 輸入"
 #: subprojects/gvc/gvc-mixer-control.c:2738
 msgid "System Sounds"
 msgstr "系統音效"
+
+#~ msgctxt "search-result"
+#~ msgid "Power off"
+#~ msgstr "關閉電源"
+
+#~ msgctxt "search-result"
+#~ msgid "Log out"
+#~ msgstr "登出"
+
+#~ msgctxt "search-result"
+#~ msgid "Switch user"
+#~ msgstr "切換使用者"
 
 #~ msgid "Hide tray"
 #~ msgstr "隱藏系統匣"
@@ -2308,9 +2423,6 @@ msgstr "系統音效"
 
 #~ msgid "Open Calendar"
 #~ msgstr "開啟行事曆"
-
-#~ msgid "Date & Time Settings"
-#~ msgstr "日期與時刻設定值"
 
 #~ msgid "Open"
 #~ msgstr "開啟"
