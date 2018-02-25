@@ -1,25 +1,25 @@
 # Hungarian translation for gnome-shell.
-# Copyright 2009-2017 Free Software Foundation, Inc.
+# Copyright 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016.
 # Lukács Bence <lukacs.bence1 at gmail dot com>, 2012.
 # Balázs Meskó <meskobalazs at gmail dot com>, 2014.
-# Balázs Úr <urbalazs at gmail dot com>, 2012, 2014, 2015, 2016, 2017.
+# Balázs Úr <urbalazs at gmail dot com>, 2012, 2014, 2015, 2016, 2017, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-01-27 16:33+0000\n"
-"PO-Revision-Date: 2018-01-28 13:32+0100\n"
-"Last-Translator: Meskó Balázs <mesko.balazs@fsf.hu>\n"
+"POT-Creation-Date: 2018-02-20 23:03+0000\n"
+"PO-Revision-Date: 2018-02-25 20:53+0100\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <openscope at googlegroups dot com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Lokalize 1.2\n"
 
 #: data/50-gnome-shell-system.xml:6
 msgid "System"
@@ -356,20 +356,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Bejelentkezés"
 
-#: js/gdm/loginDialog.js:308
+#: js/gdm/loginDialog.js:322
 msgid "Choose Session"
 msgstr "Válasszon munkamenetet"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:458
+#: js/gdm/loginDialog.js:468
 msgid "Not listed?"
 msgstr "Nincs a listán?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:888
+#: js/gdm/loginDialog.js:898
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(például: felhasználó vagy %s)"
@@ -377,12 +377,12 @@ msgstr "(például: felhasználó vagy %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:893 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:903 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:261
 msgid "Username: "
 msgstr "Felhasználónév: "
 
-#: js/gdm/loginDialog.js:1236
+#: js/gdm/loginDialog.js:1246
 msgid "Login Window"
 msgstr "Bejelentkezési ablak"
 
@@ -395,7 +395,7 @@ msgstr "Hitelesítési hiba"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:478
+#: js/gdm/util.js:483
 msgid "(or swipe finger)"
 msgstr "(vagy húzza le az ujját)"
 
@@ -636,23 +636,23 @@ msgstr "Gyakori"
 msgid "All"
 msgstr "Összes"
 
-#: js/ui/appDisplay.js:1918
+#: js/ui/appDisplay.js:1919
 msgid "New Window"
 msgstr "Új ablak"
 
-#: js/ui/appDisplay.js:1932
+#: js/ui/appDisplay.js:1933
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Futtatás a dedikált videokártyával"
 
-#: js/ui/appDisplay.js:1959 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1960 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Eltávolítás a Kedvencek közül"
 
-#: js/ui/appDisplay.js:1965
+#: js/ui/appDisplay.js:1966
 msgid "Add to Favorites"
 msgstr "Hozzáadás a Kedvencekhez"
 
-#: js/ui/appDisplay.js:1975
+#: js/ui/appDisplay.js:1976
 msgid "Show Details"
 msgstr "Részletek megjelenítése"
 
@@ -699,7 +699,7 @@ msgid "Settings"
 msgstr "Beállítások"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:47
+#: js/ui/calendar.js:44
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -709,46 +709,69 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:73
 msgctxt "grid sunday"
 msgid "S"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:75
 msgctxt "grid monday"
 msgid "M"
 msgstr "H"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:77
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "K"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:79
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Sz"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:84
+#: js/ui/calendar.js:81
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Cs"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:86
+#: js/ui/calendar.js:83
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:88
+#: js/ui/calendar.js:85
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Sz"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:382
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:392
+msgid "%OB %Y"
+msgstr "%Y %OB"
 
 #: js/ui/calendar.js:449
 msgid "Previous month"
@@ -1286,9 +1309,9 @@ msgstr "Kikapcsolás"
 msgid "Leave Off"
 msgstr "Kikapcsolva hagyás"
 
-#: js/ui/keyboard.js:739 js/ui/status/keyboard.js:783
-msgid "Keyboard"
-msgstr "Billentyűzet"
+#: js/ui/keyboard.js:198
+msgid "Region & Language Settings"
+msgstr "Területi és nyelvi beállítások"
 
 #: js/ui/lookingGlass.js:642
 msgid "No extensions installed"
@@ -1427,7 +1450,7 @@ msgctxt "System menu in the top bar"
 msgid "System"
 msgstr "Rendszer"
 
-#: js/ui/panel.js:812
+#: js/ui/panel.js:814
 msgid "Top Bar"
 msgstr "Felső sáv"
 
@@ -1491,11 +1514,11 @@ msgstr "A GNOME-nak zárolnia kell a képernyőt"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1311
 msgid "Unable to lock"
 msgstr "Nem lehet zárolni"
 
-#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1312
 msgid "Lock was blocked by an application"
 msgstr "A zárolást egy alkalmazás blokkolta"
 
@@ -1609,6 +1632,10 @@ msgstr "Be"
 #: js/ui/status/brightness.js:44
 msgid "Brightness"
 msgstr "Fényerő"
+
+#: js/ui/status/keyboard.js:783
+msgid "Keyboard"
+msgstr "Billentyűzet"
 
 #: js/ui/status/keyboard.js:806
 msgid "Show Keyboard Layout"
@@ -1932,6 +1959,32 @@ msgstr "Felfüggesztés"
 msgid "Power Off"
 msgstr "Kikapcsolás"
 
+#: js/ui/status/thunderbolt.js:272
+msgid "Thunderbolt"
+msgstr "Thunderbolt"
+
+#. we are done
+#: js/ui/status/thunderbolt.js:330
+msgid "Unknown Thunderbolt device"
+msgstr "Ismeretlen thunderbolt eszköz"
+
+#: js/ui/status/thunderbolt.js:331
+msgid ""
+"New device has been detected while you were away. Please disconnect and "
+"reconnect the device to start using it."
+msgstr ""
+"Új eszköz lett felismerve, amíg távol volt. Válassza le, és csatlakoztassa "
+"újra az eszközt, hogy megkezdhesse a használatát."
+
+#: js/ui/status/thunderbolt.js:336
+msgid "Thunderbolt authorization error"
+msgstr "Thunderbolt felhatalmazási hiba"
+
+#: js/ui/status/thunderbolt.js:337
+#, javascript-format
+msgid "Could not authorize the thunderbolt device: %s"
+msgstr "Nem sikerült felhatalmazni a thunderbolt eszközt: %s"
+
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
 msgstr "Hangerő megváltozott"
@@ -2091,20 +2144,20 @@ msgstr "Evolution naptár"
 msgid "evolution"
 msgstr "evolution"
 
-#: src/main.c:437
+#: src/main.c:432
 msgid "Print version"
 msgstr "Verzió kiírása"
 
-#: src/main.c:443
+#: src/main.c:438
 msgid "Mode used by GDM for login screen"
 msgstr "A GDM által a bejelentkezési képernyőhöz használt mód"
 
-#: src/main.c:449
+#: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr ""
 "Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
 
-#: src/main.c:455
+#: src/main.c:450
 msgid "List possible modes"
 msgstr "Lehetséges módok listázása"
 
@@ -2152,20 +2205,3 @@ msgstr[1] "%u bemenet"
 msgid "System Sounds"
 msgstr "Rendszerhangok"
 
-#~ msgctxt "search-result"
-#~ msgid "Power off"
-#~ msgstr "Kikapcsolás"
-
-#~ msgctxt "search-result"
-#~ msgid "Log out"
-#~ msgstr "Kijelentkezés"
-
-#~ msgctxt "search-result"
-#~ msgid "Switch user"
-#~ msgstr "Felhasználóváltás"
-
-#~ msgid "Hide tray"
-#~ msgstr "Tálca elrejtése"
-
-#~ msgid "Status Icons"
-#~ msgstr "Állapotikonok"
