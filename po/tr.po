@@ -7,17 +7,17 @@
 # Bayram Güçlü <byrmgcl@yandex.com.tr>, 2014.
 # sabri ünal <yakushabb@gmail.com>, 2014.
 # Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
-# Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
 # Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018.
+# Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-02-06 01:15+0000\n"
-"PO-Revision-Date: 2018-02-07 13:19+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2018-02-20 23:03+0000\n"
+"PO-Revision-Date: 2018-02-24 16:57+0200\n"
+"Last-Translator: Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -365,20 +365,20 @@ msgctxt "button"
 msgid "Sign In"
 msgstr "Giriş"
 
-#: js/gdm/loginDialog.js:308
+#: js/gdm/loginDialog.js:322
 msgid "Choose Session"
 msgstr "Oturum Seç"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: js/gdm/loginDialog.js:458
+#: js/gdm/loginDialog.js:468
 msgid "Not listed?"
 msgstr "Listede yok mu?"
 
 #. Translators: this message is shown below the username entry field
 #. to clue the user in on how to login to the local network realm
-#: js/gdm/loginDialog.js:888
+#: js/gdm/loginDialog.js:898
 #, javascript-format
 msgid "(e.g., user or %s)"
 msgstr "(örneğin, kullanıcı veya %s)"
@@ -386,12 +386,12 @@ msgstr "(örneğin, kullanıcı veya %s)"
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: js/gdm/loginDialog.js:893 js/ui/components/networkAgent.js:243
+#: js/gdm/loginDialog.js:903 js/ui/components/networkAgent.js:243
 #: js/ui/components/networkAgent.js:261
 msgid "Username: "
 msgstr "Kullanıcı Adı: "
 
-#: js/gdm/loginDialog.js:1236
+#: js/gdm/loginDialog.js:1246
 msgid "Login Window"
 msgstr "Oturum Açma Penceresi"
 
@@ -404,7 +404,7 @@ msgstr "Kimlik doğrulama hatası"
 #. as a cue to display our own message.
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: js/gdm/util.js:478
+#: js/gdm/util.js:483
 msgid "(or swipe finger)"
 msgstr "(ya da parmak izi okut)"
 
@@ -639,23 +639,23 @@ msgstr "Sık Sık"
 msgid "All"
 msgstr "Tümü"
 
-#: js/ui/appDisplay.js:1918
+#: js/ui/appDisplay.js:1919
 msgid "New Window"
 msgstr "Yeni Pencere"
 
-#: js/ui/appDisplay.js:1932
+#: js/ui/appDisplay.js:1933
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Adanmış Ekran Kartıyla Başlat"
 
-#: js/ui/appDisplay.js:1959 js/ui/dash.js:285
+#: js/ui/appDisplay.js:1960 js/ui/dash.js:285
 msgid "Remove from Favorites"
 msgstr "Sık Kullanılanlardan Çıkar"
 
-#: js/ui/appDisplay.js:1965
+#: js/ui/appDisplay.js:1966
 msgid "Add to Favorites"
 msgstr "Sık Kullanılanlara Ekle"
 
-#: js/ui/appDisplay.js:1975
+#: js/ui/appDisplay.js:1976
 msgid "Show Details"
 msgstr "Ayrıntıları Göster"
 
@@ -702,7 +702,7 @@ msgid "Settings"
 msgstr "Ayarlar"
 
 #. Translators: Enter 0-6 (Sunday-Saturday) for non-work days. Examples: "0" (Sunday) "6" (Saturday) "06" (Sunday and Saturday).
-#: js/ui/calendar.js:47
+#: js/ui/calendar.js:44
 msgctxt "calendar-no-work"
 msgid "06"
 msgstr "06"
@@ -712,46 +712,69 @@ msgstr "06"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: js/ui/calendar.js:76
+#: js/ui/calendar.js:73
 msgctxt "grid sunday"
 msgid "S"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: js/ui/calendar.js:78
+#: js/ui/calendar.js:75
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: js/ui/calendar.js:80
+#: js/ui/calendar.js:77
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: js/ui/calendar.js:82
+#: js/ui/calendar.js:79
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ç"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: js/ui/calendar.js:84
+#: js/ui/calendar.js:81
 msgctxt "grid thursday"
 msgid "T"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: js/ui/calendar.js:86
+#: js/ui/calendar.js:83
 msgctxt "grid friday"
 msgid "F"
 msgstr "C"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: js/ui/calendar.js:88
+#: js/ui/calendar.js:85
 msgctxt "grid saturday"
 msgid "S"
 msgstr "C"
+
+#. *
+#. * Translators: The header displaying just the month name
+#. * standalone, when this is a month of the current year.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not change it.
+#.
+#: js/ui/calendar.js:382
+msgid "%OB"
+msgstr "%OB"
+
+#. *
+#. * Translators: The header displaying the month name and the year
+#. * number, when this is a month of a different year.  You can
+#. * reorder the format specifiers or add other modifications
+#. * according to the requirements of your language.
+#. * "%OB" is the new format specifier introduced in glibc 2.27,
+#. * in most cases you should not use the old "%B" here unless you
+#. * absolutely know what you are doing.
+#.
+#: js/ui/calendar.js:392
+msgid "%OB %Y"
+msgstr "%OB %Y"
 
 #: js/ui/calendar.js:449
 msgid "Previous month"
@@ -1217,12 +1240,10 @@ msgid "Allow"
 msgstr "İzin ver"
 
 #: js/ui/kbdA11yDialog.js:33
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned On"
 msgstr "Yavaş Tuşlar Açık"
 
 #: js/ui/kbdA11yDialog.js:34
-#| msgid "Slow Keys"
 msgid "Slow Keys Turned Off"
 msgstr "Yavaş Tuşlar Kapalı"
 
@@ -1235,12 +1256,10 @@ msgstr ""
 "etkileyen Yavaş Tuşlar özelliğinin kısayoludur."
 
 #: js/ui/kbdA11yDialog.js:42
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned On"
 msgstr "Yapışkan Tuşlar Açık"
 
 #: js/ui/kbdA11yDialog.js:43
-#| msgid "Sticky Keys"
 msgid "Sticky Keys Turned Off"
 msgstr "Yapışkan Tuşlar Kapalı"
 
@@ -1283,7 +1302,6 @@ msgid "Leave Off"
 msgstr "Kapalı Bırak"
 
 #: js/ui/keyboard.js:198
-#| msgid "Date & Time Settings"
 msgid "Region & Language Settings"
 msgstr "Bölge ve Dil Ayarları"
 
@@ -1486,11 +1504,11 @@ msgstr "GNOME’un ekranı kilitlemesi gerekiyor"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: js/ui/screenShield.js:836 js/ui/screenShield.js:1308
+#: js/ui/screenShield.js:836 js/ui/screenShield.js:1311
 msgid "Unable to lock"
 msgstr "Kilitlenemedi"
 
-#: js/ui/screenShield.js:837 js/ui/screenShield.js:1309
+#: js/ui/screenShield.js:837 js/ui/screenShield.js:1312
 msgid "Lock was blocked by an application"
 msgstr "Kilitleme bir uygulama tarafından engellendi"
 
