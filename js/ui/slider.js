@@ -232,9 +232,7 @@ var Slider = new Lang.Class({
             let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
             this._value = Math.max(0, Math.min(this._value + delta, 1));
             this.actor.queue_repaint();
-            this.emit('drag-begin');
             this.emit('value-changed', this._value);
-            this.emit('drag-end');
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
