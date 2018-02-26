@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-01-27 16:52+0000\n"
-"PO-Revision-Date: 2018-02-26 12:48+0100\n"
+"POT-Creation-Date: 2018-02-26 12:51+0000\n"
+"PO-Revision-Date: 2018-02-26 12:55+0100\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "Language: gd\n"
@@ -46,7 +46,6 @@ msgstr "Fosgail clàr-taice nan aplacaidean"
 
 #: data/gnome-shell-extension-prefs.desktop.in.in:4
 #: js/extensionPrefs/main.js:152
-#| msgid "GNOME Shell Extensions"
 msgid "Shell Extensions"
 msgstr "Leudachain na slige"
 
@@ -90,6 +89,18 @@ msgstr ""
 "luchdadh a bhith air an liosta seo. ’S urrainn dhut an liosta seo "
 "atharrachadh cuideachd leis na modhan D-Bus EnableExtension agus "
 "DisableExtension air org.gnome.Shell."
+
+#: data/org.gnome.shell.gschema.xml.in:26
+msgid "Disable user extensions"
+msgstr "Cuir à comas leudachain a’ chleachdaiche"
+
+#: data/org.gnome.shell.gschema.xml.in:27
+msgid ""
+"Disable all extensions the user has enabled without affecting the “enabled-"
+"extension” setting."
+msgstr ""
+"Cuir à comas gach leudachan a chuir an cleachdaiche an comas gun bhuaidh air "
+"an roghainn “enabled-extension”."
 
 #: data/org.gnome.shell.gschema.xml.in:34
 msgid "Disables the validation of extension version compatibility"
@@ -140,15 +151,11 @@ msgid "History for the looking glass dialog"
 msgstr "Eachdraidh a’ chòmhraidh aig looking glass"
 
 #: data/org.gnome.shell.gschema.xml.in:67
-#| msgid "Always show the 'Log out' menu item in the user menu."
 msgid "Always show the “Log out” menu item in the user menu."
 msgstr ""
 "Seall nì “Clàraich a-mach” air clàr-taice a’ chleachdaiche an-còmhnaidh."
 
 #: data/org.gnome.shell.gschema.xml.in:68
-#| msgid ""
-#| "This key overrides the automatic hiding of the 'Log out' menu item in "
-#| "single-user, single-session situations."
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
@@ -165,11 +172,6 @@ msgstr ""
 "shiostaman-fhaidhlichean crioptaichte no cèine"
 
 #: data/org.gnome.shell.gschema.xml.in:76
-#| msgid ""
-#| "The shell will request a password when an encrypted device or a remote "
-#| "filesystem is mounted. If the password can be saved for future use a "
-#| "'Remember Password' checkbox will be present. This key sets the default "
-#| "state of the checkbox."
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -209,14 +211,10 @@ msgid "Keybinding to open the application menu."
 msgstr "Nasgadh iuchrach gus clàr-taice na h-aplacaid fhosgladh."
 
 #: data/org.gnome.shell.gschema.xml.in:108
-#| msgid "Keybinding to open the \"Show Applications\" view"
 msgid "Keybinding to open the “Show Applications” view"
 msgstr "Nasgadh iuchrach gus an sealladh “Seall aplacaidean” fhosgladh"
 
 #: data/org.gnome.shell.gschema.xml.in:109
-#| msgid ""
-#| "Keybinding to open the \"Show Applications\" view of the Activities "
-#| "Overview."
 msgid ""
 "Keybinding to open the “Show Applications” view of the Activities Overview."
 msgstr ""
@@ -274,36 +272,32 @@ msgid ""
 "If true, only applications that have windows on the current workspace are "
 "shown in the switcher. Otherwise, all applications are included."
 msgstr ""
-"Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na "
-"h-aplacaidean aig a bheil uinneag san rum-obrach làithreach. Mur e, thèid a "
-"h-uile aplacaid a ghabhail a-steach."
+"Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-"
+"aplacaidean aig a bheil uinneag san rum-obrach làithreach. Mur e, thèid a h-"
+"uile aplacaid a ghabhail a-steach."
 
 #: data/org.gnome.shell.gschema.xml.in:176
 msgid "The application icon mode."
 msgstr "Modh ìomhaigheag na h-aplacaid."
 
 #: data/org.gnome.shell.gschema.xml.in:177
-#| msgid ""
-#| "Configures how the windows are shown in the switcher. Valid possibilities "
-#| "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
-#| "only' (shows only the application icon) or 'both'."
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are “thumbnail-only” (shows a thumbnail of the window), “app-icon-"
 "only” (shows only the application icon) or “both”."
 msgstr ""
-"Rèitichidh seo an dòigh sa thèid na h-uinneagan a shealltainn san "
-"t-suidsear. ’S e “thumbnail-only” (seallaidh seo dealbhag na h-uinneige), "
-"“app-icon-only” (seallaidh seo ìomhaigheag na h-aplacaid) no “both” "
-"(seallaidh seo an dà chuid dhiubh) a tha sna luachan dligheach."
+"Rèitichidh seo an dòigh sa thèid na h-uinneagan a shealltainn san t-"
+"suidsear. ’S e “thumbnail-only” (seallaidh seo dealbhag na h-uinneige), “app-"
+"icon-only” (seallaidh seo ìomhaigheag na h-aplacaid) no “both” (seallaidh "
+"seo an dà chuid dhiubh) a tha sna luachan dligheach."
 
 #: data/org.gnome.shell.gschema.xml.in:186
 msgid ""
 "If true, only windows from the current workspace are shown in the switcher. "
 "Otherwise, all windows are included."
 msgstr ""
-"Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na "
-"h-uinneagan a tha san rum-obrach làithreach. Mur e, thèid a h-uile uinneag a "
+"Mas e true a th’ ann, cha dèid a shealltainn san t-suidsear ach na h-"
+"uinneagan a tha san rum-obrach làithreach. Mur e, thèid a h-uile uinneag a "
 "ghabhail a-steach."
 
 #: data/org.gnome.shell.gschema.xml.in:197
@@ -421,7 +415,6 @@ msgstr "(no suath do meur)"
 
 #. Translators: The name of the power-off action in search
 #: js/misc/systemActions.js:99
-#| msgid "Power Off"
 msgctxt "search-result"
 msgid "Power off"
 msgstr "Cuir a’ chumhachd dheth"
@@ -445,7 +438,6 @@ msgstr "sgrìn-ghlasaidh;glais;glas;sgrìn"
 
 #. Translators: The name of the logout action in search
 #: js/misc/systemActions.js:113
-#| msgid "Log Out"
 msgctxt "search-result"
 msgid "Log out"
 msgstr "Clàraich a-mach"
@@ -457,40 +449,34 @@ msgstr "logout;sign off;clàraidh a-mach;clàradh a-mach;logadh a-mach;"
 
 #. Translators: The name of the suspend action in search
 #: js/misc/systemActions.js:120
-#| msgid "Suspend"
 msgctxt "search-result"
 msgid "Suspend"
 msgstr "Cuir ’na dhàil"
 
 #. Translators: A list of keywords that match the suspend action, separated by semicolons
 #: js/misc/systemActions.js:123
-#| msgid "Suspend"
 msgid "suspend;sleep"
 msgstr "suspend;sleep;cuir 'na dhàil;cur 'na dhàil;cuir na dhàil;cur na dhàil;"
 
 #. Translators: The name of the switch user action in search
 #: js/misc/systemActions.js:127
-#| msgid "Switch User"
 msgctxt "search-result"
 msgid "Switch user"
 msgstr "Dèan suids eadar cleachdaichean"
 
 #. Translators: A list of keywords that match the switch user action, separated by semicolons
 #: js/misc/systemActions.js:130
-#| msgid "Switch User"
 msgid "switch user"
 msgstr "switch user;suids;cleachdaiche"
 
 #. Translators: The name of the lock orientation action in search
 #: js/misc/systemActions.js:134
-#| msgid "Orientation Lock"
 msgctxt "search-result"
 msgid "Lock orientation"
 msgstr "Glais a’ chomhair"
 
 #. Translators: A list of keywords that match the lock orientation action, separated by semicolons
 #: js/misc/systemActions.js:137
-#| msgid "Orientation Lock"
 msgid "lock orientation"
 msgstr "lock orientation;glais;comhair;glais a' chomhair;"
 
@@ -532,7 +518,6 @@ msgstr[2] "%d uairean a thìde air ais"
 msgstr[3] "%d uair a thìde air ais"
 
 #: js/misc/util.js:188
-#| msgid "Yesterday, %H∶%M"
 msgid "Yesterday"
 msgstr "An-dè"
 
@@ -644,7 +629,6 @@ msgstr "%d %B %Y, %l∶%M%p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:66
-#| msgid "Network Login"
 msgid "Hotspot Login"
 msgstr "Clàradh a-steach Hotspot"
 
@@ -844,7 +828,6 @@ msgstr "Falamhaich na h-uile"
 #. Translators: %s is an application name
 #: js/ui/closeDialog.js:44
 #, javascript-format
-#| msgid "“%s” is ready"
 msgid "“%s” is not responding."
 msgstr "Chan eil “%s” a’ freagairt."
 
@@ -982,9 +965,9 @@ msgstr "Dearbhaich"
 #. * because of an authentication error (like invalid password),
 #. * for instance.
 #: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:328
-#| msgid "Sorry, that didn't work. Please try again."
 msgid "Sorry, that didn’t work. Please try again."
-msgstr "Tha sinn duilich ach cha do dh’obraich seo. Am feuch thu ris a-rithist?"
+msgstr ""
+"Tha sinn duilich ach cha do dh’obraich seo. Am feuch thu ris a-rithist?"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -1062,12 +1045,10 @@ msgid "%s, then %s, followed by %s later."
 msgstr "%s ’s %s an uairsin ’s %s an uairsin."
 
 #: js/ui/dateMenu.js:315
-#| msgid "Select a network"
 msgid "Select a location…"
 msgstr "Tagh ionad…"
 
 #: js/ui/dateMenu.js:318
-#| msgid "Searching…"
 msgid "Loading…"
 msgstr "’Ga luchdadh…"
 
@@ -1376,7 +1357,6 @@ msgid "New shortcut…"
 msgstr "Ath-ghoirid ùr…"
 
 #: js/ui/padOsd.js:152
-#| msgid "Applications"
 msgid "Application defined"
 msgstr "A-rèir na h-aplacaid"
 
@@ -1385,7 +1365,6 @@ msgid "Show on-screen help"
 msgstr "Seall a’ chobhair air an sgrìn"
 
 #: js/ui/padOsd.js:154
-#| msgid "Switch User"
 msgid "Switch monitor"
 msgstr "Gearr leum gu monatair eile"
 
@@ -1822,7 +1801,6 @@ msgid "%s Not Connected"
 msgstr "Chan eil %s ceangailte"
 
 #: js/ui/status/network.js:1435
-#| msgid "connecting..."
 msgid "connecting…"
 msgstr "’ga cheangal…"
 
@@ -1853,7 +1831,6 @@ msgstr "Roghainnean an lìonraidh"
 
 #: js/ui/status/network.js:1612
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wired Connection"
 msgid_plural "%s Wired Connections"
 msgstr[0] "%s cheangal uèirichte"
@@ -1863,7 +1840,6 @@ msgstr[3] "%s ceangal uèirichte"
 
 #: js/ui/status/network.js:1616
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Wi-Fi Connection"
 msgid_plural "%s Wi-Fi Connections"
 msgstr[0] "%s cheangal WiFi"
@@ -1873,7 +1849,6 @@ msgstr[3] "%s ceangal WiFi"
 
 #: js/ui/status/network.js:1620
 #, javascript-format
-#| msgid "%s Connecting"
 msgid "%s Modem Connection"
 msgid_plural "%s Modem Connections"
 msgstr[0] "%s cheangal mòdaim"
@@ -1979,7 +1954,6 @@ msgstr "Àirde na fuaime"
 #. * Try to keep it under around 15 characters.
 #.
 #: js/ui/switchMonitor.js:21
-#| msgid "Error"
 msgid "Mirror"
 msgstr "Sgàthanaich"
 
@@ -2142,7 +2116,6 @@ msgid "Mode used by GDM for login screen"
 msgstr "Am modh a chleachdas GDM airson na sgrìn clàraidh a-steach"
 
 #: src/main.c:449
-#| msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgid "Use a specific mode, e.g. “gdm” for login screen"
 msgstr "Cleachd modh sònraichte airson na sgrìn clàraidh a-steach, can “gdm”"
 
