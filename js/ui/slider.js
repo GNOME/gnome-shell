@@ -181,9 +181,7 @@ var Slider = GObject.registerClass({
         let key = keyPressEvent.keyval;
         if (key == Clutter.KEY_Right || key == Clutter.KEY_Left) {
             let delta = key == Clutter.KEY_Right ? 0.1 : -0.1;
-            this.emit('drag-begin');
             this.value = Math.max(0, Math.min(this._value + delta, this._maxValue));
-            this.emit('drag-end');
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
