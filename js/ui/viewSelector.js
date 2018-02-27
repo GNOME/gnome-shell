@@ -601,15 +601,6 @@ var ViewSelector = new Lang.Class({
                 // - cancel the search
                 this.reset();
             }
-        } else if (!(global.stage.get_key_focus() instanceof Clutter.Text) &&
-                   (event.type() == Clutter.EventType.KEY_PRESS ||
-                    event.type() == Clutter.EventType.KEY_RELEASE)) {
-            let unichar = event.get_key_unicode();
-
-            if (GLib.unichar_isprint(unichar)) {
-                this._text.grab_key_focus();
-                return this._text.event(event, false);
-            }
         }
 
         return Clutter.EVENT_PROPAGATE;
