@@ -502,6 +502,7 @@ create_device (ClutterDeviceManagerXI2 *manager_xi2,
                             info->num_classes);
   g_free (vendor_id);
   g_free (product_id);
+  g_free (node_path);
 
   CLUTTER_NOTE (BACKEND, "Created device '%s' (id: %d, has-cursor: %s)",
                 info->name,
