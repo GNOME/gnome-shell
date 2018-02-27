@@ -909,6 +909,7 @@ ensure_supported_monitor_scales (MetaMonitorManager *manager)
       for (i = 0; i < n_monitor_scales; i++)
         add_supported_scale (supported_scales, monitor_scales[i]);
       g_array_sort (supported_scales, compare_scales);
+      g_free (monitor_scales);
     }
 
   manager_xrandr->supported_scales = (float *) supported_scales->data;
