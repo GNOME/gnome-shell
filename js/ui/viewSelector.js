@@ -517,7 +517,7 @@ var ViewSelector = new Lang.Class({
 
         let synthEvent = event.copy();
         synthEvent.set_source(this._text);
-        this._text.event(synthEvent, true);
+        this._text.event(synthEvent, false);
     },
 
     // the entry does not show the hint
