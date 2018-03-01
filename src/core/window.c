@@ -446,12 +446,12 @@ meta_window_class_init (MetaWindowClass *klass)
   obj_props[PROP_ICON] =
     g_param_spec_pointer ("icon",
                           "Icon",
-                          "96 pixel sized icon",
+                          "Normal icon, usually 96x96 pixels",
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   obj_props[PROP_MINI_ICON] =
     g_param_spec_pointer ("mini-icon",
                           "Mini Icon",
-                          "16 pixel sized icon",
+                          "Mini icon, usually 16x16 pixels",
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
   obj_props[PROP_DECORATED] =
     g_param_spec_boolean ("decorated",
