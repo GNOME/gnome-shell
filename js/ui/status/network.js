@@ -1164,6 +1164,11 @@ var NMWirelessDialog = new Lang.Class({
             Util.ensureActorVisibleInScrollView(this._scrollView, network.item.actor);
             this._selectNetwork(network);
         });
+        network.item.actor.connect('destroy', () => {
+            let keyFocus = global.stage.key_focus;
+            if (keyFocus && keyFocus.contains(network.item.actor))
+                this._itemBox.grab_key_focus();
+        });
     },
 });
 
