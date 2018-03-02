@@ -100,21 +100,8 @@ var ModalDialog = new Lang.Class({
     setButtons(buttons) {
         this.clearButtons();
 
-        for (let i = 0; i < buttons.length; i++) {
-            let buttonInfo = buttons[i];
-
-            let x_alignment;
-            if (buttons.length == 1)
-                x_alignment = St.Align.END;
-            else if (i == 0)
-                x_alignment = St.Align.START;
-            else if (i == buttons.length - 1)
-                x_alignment = St.Align.END;
-            else
-                x_alignment = St.Align.MIDDLE;
-
+        for (let buttonInfo of buttons)
             this.addButton(buttonInfo);
-        }
     },
 
     addButton(buttonInfo) {
