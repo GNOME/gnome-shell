@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
-"POT-Creation-Date: 2018-02-14 22:46+0000\n"
-"PO-Revision-Date: 2018-02-23 01:48+0200\n"
+"POT-Creation-Date: 2018-03-01 10:47+0000\n"
+"PO-Revision-Date: 2018-03-03 14:18+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician\n"
 "Language: gl\n"
@@ -501,6 +501,11 @@ msgid ""
 "window or be among the applications white-listed in key “xwayland-grab-"
 "access-rules”."
 msgstr ""
+"Permitir que se teña en conta a captura do teclado desde aplicativos X11 "
+"executándose en Xwayland. Para que a captura X11 se teña en conta baixo "
+"Wayland, o cliente debe enviar un ClientMessage de X11 específico á xanela "
+"principal ou estar entre os aplicatios na lista blanca da chave «xwayland-"
+"grab-access-rules»."
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:77
 msgid "Xwayland applications allowed to issue keyboard grabs"
@@ -519,11 +524,21 @@ msgid ""
 "using the specific keyboard shortcut defined by the keybinding key “restore-"
 "shortcuts”."
 msgstr ""
+"Lista de nomes de recursos ou clases de recursos para as xanelas X11 tanto "
+"permitidas como non permitidas para a captura do teclado en X11 baixo "
+"Xwayland. O nome do recurso ou a clase do recurso da xanela X11 dada pode "
+"obterse usando a orde «xprop WM_CLASS». Admítense os comodíns «*» e os "
+"jokers \"?\" nos valores. Os valores comezando con «!» incluiranse na lista "
+"negra, que ten precedencia sobre a lista branca, para revogar aplicativos "
+"desde a lista por omisión do sistema. A lista por omisión do sitema inclúe "
+"os seguintes aplicativos “@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Os usuarios "
+"poden romper unha captura existente usando un atallo de teclado específico "
+"definido na chave de atallo «restore-shortcuts»."
 
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2260
+#: src/backends/meta-input-settings.c:2325
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Modo conmutador (Grupo %d)"
@@ -531,11 +546,11 @@ msgstr "Modo conmutador (Grupo %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2283
+#: src/backends/meta-input-settings.c:2348
 msgid "Switch monitor"
 msgstr "Cambiar monitor"
 
-#: src/backends/meta-input-settings.c:2285
+#: src/backends/meta-input-settings.c:2350
 msgid "Show on-screen help"
 msgstr "Mostrar axuda en pantalla"
 
