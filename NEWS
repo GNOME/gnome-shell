@@ -1,3 +1,22 @@
+3.27.92
+=======
+* Fix use of modifiers with multi-GPU systems [Louis-Francis; #18]
+* Add xdg-shell stable support [Jonas; #791938]
+* Fix scaling of icons in titlebar buttons [Egmont; #23]
+* Implement missing wacom functionality on X11 [Carlos; #48]
+* Force 8-bit RGB config [Jonas; #2]
+* Misc. bug fixes [Jonas, Olivier, Robert; #6, #27, #792203]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, Egmont Koblinger, Robert Mader,
+  Bastien Nocera, Louis-Francis Ratté-Boulianne
+
+Translators:
+  Daniel Mustieles [es], Марко Костић [sr], Милош Поповић [sr@latin],
+  Fran Dieguez [gl], Balázs Úr [hu], Gwan-gyeong Mun [ko], Rūdolfs Mazurs [lv],
+  Milo Casagrande [it], Mario Blättermann [de], GNOME Translation Robot [gd,
+  nl], Claude Paroz [fr], Aurimas Černius [lt]
+
 3.27.91
 =======
 * Fix handling of trackball settings on wayland [Carlos; #787804]
