@@ -17,6 +17,7 @@ const PanelMenu = imports.ui.panelMenu;
 const BoltClientInterface = '<node> \
   <interface name="org.freedesktop.bolt1.Manager"> \
     <property name="Probing" type="b" access="read"></property> \
+    <property name="AuthMode" type="s" access="readwrite"></property> \
     <method name="EnrollDevice"> \
       <arg type="s" name="uid" direction="in"> </arg> \
       <arg type="s" name="policy" direction="in"> </arg> \
@@ -73,6 +74,9 @@ var AuthFlags = {
     NONE: 'none',
 };
 
+var AuthMode = {
+    DISABLED: 'disabled',
+    ENABLED: 'enabled'
 };
 
 const BOLT_DBUS_NAME = 'org.freedesktop.bolt';
@@ -150,6 +154,10 @@ var Client = new Lang.Class({
 					     path);
 	    callback(device, null);
 	});
+    },
+
+    get authMode () {
+        return this._proxy.AuthMode;
     }
 
 });
@@ -183,6 +191,14 @@ var AuthRobot = new Lang.Class({
 	if (dev.Status !== Status.CONNECTED)
 	    return;
 
+        /* check if authorization is enabled in the daemon. if not
+         * we won't even bother authorizing, because we will only
+         * get an error back. The exact contents of AuthMode might 
+         * change in the future, but must contain AuthMode.ENABLED
+         * if it is enabled. */
+        if (!cli.authMode.split('|').includes(AuthMode.ENABLED))
+            return;
+        
 	/* check if we should enroll the device */
 	let res = [false];
 	this.emit('enroll-device', dev, res);
