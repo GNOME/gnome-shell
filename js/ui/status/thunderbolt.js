@@ -19,8 +19,8 @@ const BoltClientInterface = '<node> \
     <property name="Probing" type="b" access="read"></property> \
     <method name="EnrollDevice"> \
       <arg type="s" name="uid" direction="in"> </arg> \
-      <arg type="u" name="policy" direction="in"> </arg> \
-      <arg type="u" name="flags" direction="in"> </arg> \
+      <arg type="s" name="policy" direction="in"> </arg> \
+      <arg type="s" name="flags" direction="in"> </arg> \
       <arg name="device" direction="out" type="o"> </arg> \
     </method> \
     <signal name="DeviceAdded"> \
@@ -34,13 +34,17 @@ const BoltDeviceInterface = '<node> \
     <property name="Uid" type="s" access="read"></property> \
     <property name="Name" type="s" access="read"></property> \
     <property name="Vendor" type="s" access="read"></property> \
-    <property name="Status" type="u" access="read"></property> \
-    <property name="SysfsPath" type="s" access="read"></property> \
-    <property name="Security" type="u" access="read"></property> \
+    <property name="Type" type="s" access="read"></property> \
+    <property name="Status" type="s" access="read"></property> \
     <property name="Parent" type="s" access="read"></property> \
+    <property name="SysfsPath" type="s" access="read"></property> \
     <property name="Stored" type="b" access="read"></property> \
-    <property name="Policy" type="u" access="read"></property> \
-    <property name="Key" type="u" access="read"></property> \
+    <property name="Policy" type="s" access="read"></property> \
+    <property name="Key" type="s" access="read"></property> \
+    <property name="Label" type="s" access="read"></property> \
+    <property name="ConnectTime" type="t" access="read"></property> \
+    <property name="AuthorizeTime" type="t" access="read"></property> \
+    <property name="StoreTime" type="t" access="read"></property> \
   </interface> \
 </node>';
 
@@ -50,23 +54,25 @@ const BoltDeviceProxy = Gio.DBusProxy.makeProxyWrapper(BoltDeviceInterface);
 /*  */
 
 var Status = {
-    DISCONNECTED: 0,
-    CONNECTED: 1,
-    AUTHORIZING: 2,
-    AUTH_ERROR: 3,
-    AUTHORIZED: 4,
-    AUTHORIZED_SECURE: 5,
-    AUTHORIZED_NEWKY: 6
+    DISCONNECTED: 'disconnected',
+    CONNECTED: 'connected',
+    AUTHORIZING: 'authorizing',
+    AUTH_ERROR: 'auth-error',
+    AUTHORIZED: 'authorized',
+    AUTHORIZED_SECURE: 'authorized-secure',
+    AUTHORIZED_NEWKEY: 'authorized-newkey'
 };
 
 var Policy = {
-    DEFAULT: 0,
-    MANUAL: 1,
-    AUTO:2
+    DEFAULT: 'default',
+    MANUAL: 'manual',
+    AUTO: 'auto'
 };
 
 var AuthFlags = {
-    NONE: 0,
+    NONE: 'none',
+};
+
 };
 
 const BOLT_DBUS_NAME = 'org.freedesktop.bolt';
