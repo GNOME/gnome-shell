@@ -47,6 +47,8 @@ var BaseIcon = new Lang.Class({
             styleClass += ' overview-icon-with-label';
 
         this.actor = new St.Bin({ style_class: styleClass,
+                                  x_expand: true,
+                                  y_expand: true,
                                   x_fill: true,
                                   y_fill: true });
         this.actor._delegate = this;
@@ -71,6 +73,8 @@ var BaseIcon = new Lang.Class({
 
         if (params.showLabel) {
             this.label = new St.Label({ text: label });
+            this.label.clutter_text.line_wrap = true;
+            //this.label.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
             box.add_actor(this.label);
         } else {
             this.label = null;
@@ -99,11 +103,13 @@ var BaseIcon = new Lang.Class({
         let childBox = new Clutter.ActorBox();
 
         if (this.label) {
-            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(-1);
+            // BUG: label's mininum height is always more than one line (???).
+            let [,labelMinHeight] = this.label.get_preferred_height(-1);
+            let [,labelNatHeight] = this.label.get_preferred_height(availWidth);
+
             preferredHeight += this._spacing + labelNatHeight;
 
-            let labelHeight = availHeight >= preferredHeight ? labelNatHeight
-                                                             : labelMinHeight;
+            let labelHeight = availHeight >= preferredHeight ? labelNatHeight : labelMinHeight;
             iconSize -= this._spacing + labelHeight;
 
             childBox.x1 = 0;
@@ -121,7 +127,15 @@ var BaseIcon = new Lang.Class({
     },
 
     _getPreferredWidth(actor, forHeight, alloc) {
-        this._getPreferredHeight(actor, -1, alloc);
+        let [iconMinWidth, iconNatWidth] = this._iconBin.get_preferred_width(forHeight);
+        if (this.label) {
+            let [labelMinWidth, labelNatWidth] = this.label.get_preferred_width(forHeight);
+            alloc.min_size = Math.max(iconMinWidth, labelMinWidth);
+            alloc.natural_size = Math.max(iconNatWidth, labelNatWidth);
+        } else {
+            alloc.min_size = iconMinWidth;
+            alloc.natural_size = iconNatWidth;
+        }
     },
 
     _getPreferredHeight(actor, forWidth, alloc) {
@@ -270,6 +284,7 @@ var IconGrid = new Lang.Class({
         this._spacing = 0;
         this._hItemSize = this._vItemSize = ICON_SIZE;
         this._fixedHItemSize = this._fixedVItemSize = undefined;
+        this._fixedHCellSize = this._fixedVCellSize = undefined;
         this._grid = new Shell.GenericContainer();
         this.actor.add(this._grid, { expand: true, y_align: St.Align.START });
         this.actor.connect('style-changed', this._onStyleChanged.bind(this));
@@ -314,8 +329,8 @@ var IconGrid = new Lang.Class({
         // Kind of a lie, but not really an issue right now.  If
         // we wanted to support some sort of hidden/overflow that would
         // need higher level design
-        alloc.min_size = this._getHItemSize() + this.leftPadding + this.rightPadding;
-        alloc.natural_size = nColumns * this._getHItemSize() + totalSpacing + this.leftPadding + this.rightPadding;
+        alloc.min_size = this._getHCellSize() + this.leftPadding + this.rightPadding;
+        alloc.natural_size = nColumns * this._getHCellSize() + totalSpacing + this.leftPadding + this.rightPadding;
     },
 
     _getVisibleChildren() {
@@ -343,7 +358,7 @@ var IconGrid = new Lang.Class({
         if (this._rowLimit)
             nRows = Math.min(nRows, this._rowLimit);
         let totalSpacing = Math.max(0, nRows - 1) * this._getSpacing();
-        let height = nRows * this._getVItemSize() + totalSpacing + this.topPadding + this.bottomPadding;
+        let height = nRows * this._getVCellSize() + totalSpacing + this.topPadding + this.bottomPadding;
         alloc.min_size = height;
         alloc.natural_size = height;
     },
@@ -396,10 +411,10 @@ var IconGrid = new Lang.Class({
             }
 
             if (columnIndex == 0) {
-                y += this._getVItemSize() + spacing;
+                y += this._getVCellSize() + spacing;
                 x = box.x1 + leftEmptySpace + this.leftPadding;
             } else {
-                x += this._getHItemSize() + spacing;
+                x += this._getHCellSize() + spacing;
             }
         }
     },
@@ -588,11 +603,15 @@ var IconGrid = new Lang.Class({
     },
 
     _getAllocatedChildSizeAndSpacing(child) {
-        let [,, natWidth, natHeight] = child.get_preferred_size();
-        let width = Math.min(this._getHItemSize(), natWidth);
-        let xSpacing = Math.max(0, width - natWidth) / 2;
-        let height = Math.min(this._getVItemSize(), natHeight);
-        let ySpacing = Math.max(0, height - natHeight) / 2;
+        let [,natWidth] = child.get_preferred_width(this._getHCellSize());
+        let width = Math.min(Math.max(this._getHItemSize(), natWidth), this._getHCellSize());
+
+        let [,natHeight] = child.get_preferred_height(width);
+        let height = Math.min(Math.max(this._getVItemSize(), natHeight), this._getVCellSize());
+
+        let xSpacing = Math.max(0, this._getHCellSize() - width) / 2;
+        let ySpacing = this._getCellTopPadding();
+
         return [width, height, xSpacing, ySpacing];
     },
 
@@ -628,8 +647,8 @@ var IconGrid = new Lang.Class({
         let spacing = this._getSpacing();
 
         while ((this._colLimit == null || nColumns < this._colLimit) &&
-               (usedWidth + this._getHItemSize() <= forWidth)) {
-            usedWidth += this._getHItemSize() + spacing;
+               (usedWidth + this._getHCellSize() <= forWidth)) {
+            usedWidth += this._getHCellSize() + spacing;
             nColumns += 1;
         }
 
@@ -657,10 +676,14 @@ var IconGrid = new Lang.Class({
     },
 
     rowsForHeight(forHeight) {
-        return Math.floor((forHeight - (this.topPadding + this.bottomPadding) + this._getSpacing()) / (this._getVItemSize() + this._getSpacing()));
+        return Math.floor((forHeight - (this.topPadding + this.bottomPadding) + this._getSpacing()) / (this._getVCellSize() + this._getSpacing()));
     },
 
     usedHeightForNRows(nRows) {
+        return (this._getVCellSize() + this._getSpacing()) * nRows - this._getSpacing() + this.topPadding + this.bottomPadding;
+    },
+
+    minimumHeightForNRows(nRows) {
         return (this._getVItemSize() + this._getSpacing()) * nRows - this._getSpacing() + this.topPadding + this.bottomPadding;
     },
 
@@ -669,6 +692,12 @@ var IconGrid = new Lang.Class({
     },
 
     usedWidthForNColumns(columns) {
+        let usedWidth = columns  * (this._getHCellSize() + this._getSpacing());
+        usedWidth -= this._getSpacing();
+        return usedWidth + this.leftPadding + this.rightPadding;
+    },
+
+    minimumWidthForNColumns(columns) {
         let usedWidth = columns  * (this._getHItemSize() + this._getSpacing());
         usedWidth -= this._getSpacing();
         return usedWidth + this.leftPadding + this.rightPadding;
@@ -723,9 +752,21 @@ var IconGrid = new Lang.Class({
         return this._fixedVItemSize ? this._fixedVItemSize : this._vItemSize;
     },
 
+    _getHCellSize() {
+        return this._fixedHCellSize ? this._fixedHCellSize : this._hItemSize;
+    },
+
+    _getVCellSize() {
+        return this._fixedVCellSize ? this._fixedVCellSize : this._vItemSize;
+    },
+
+    _getCellTopPadding() {
+        return Math.floor((this._getVCellSize() - this._getVItemSize()) / 2 );
+    },
+
     _updateSpacingForSize(availWidth, availHeight) {
-        let maxEmptyVArea = availHeight - this._minRows * this._getVItemSize();
-        let maxEmptyHArea = availWidth - this._minColumns * this._getHItemSize();
+        let maxEmptyVArea = availHeight - this._minRows * this._getVCellSize();
+        let maxEmptyHArea = availWidth - this._minColumns * this._getHCellSize();
         let maxHSpacing, maxVSpacing;
 
         if (this._padWithSpacing) {
@@ -747,7 +788,7 @@ var IconGrid = new Lang.Class({
 
         let maxSpacing = Math.min(maxHSpacing, maxVSpacing);
         // Limit spacing to the item size
-        maxSpacing = Math.min(maxSpacing, Math.min(this._getVItemSize(), this._getHItemSize()));
+        maxSpacing = Math.min(maxSpacing, Math.min(this._getVCellSize(), this._getHCellSize()));
         // The minimum spacing, regardless of whether it satisfies the row/columng minima,
         // is the spacing we get from CSS.
         let spacing = Math.max(this._spacing, maxSpacing);
@@ -763,17 +804,25 @@ var IconGrid = new Lang.Class({
     adaptToSize(availWidth, availHeight) {
         this._fixedHItemSize = this._hItemSize;
         this._fixedVItemSize = this._vItemSize;
+
+        this._fixedHCellSize = this._hItemSize * 1.2;
+        this._fixedVCellSize = this._vItemSize * 1.2;
+
         this._updateSpacingForSize(availWidth, availHeight);
         let spacing = this._getSpacing();
 
         if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
-            let neededWidth = this.usedWidthForNColumns(this._minColumns) - availWidth ;
-            let neededHeight = this.usedHeightForNRows(this._minRows) - availHeight ;
+            let neededWidth = this.minimumWidthForNColumns(this._minColumns) - availWidth;
+            let neededHeight = this.minimumHeightForNRows(this._minRows) - availHeight;
 
             let neededSpacePerItem = (neededWidth > neededHeight) ? Math.ceil(neededWidth / this._minColumns)
                                                                   : Math.ceil(neededHeight / this._minRows);
-            this._fixedHItemSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
-            this._fixedVItemSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
+
+            this._fixedHCellSize = Math.max(this._hItemSize - neededSpacePerItem, MIN_ICON_SIZE);
+            this._fixedVCellSize = Math.max(this._vItemSize - neededSpacePerItem, MIN_ICON_SIZE);
+
+            this._fixedHItemSize = this._fixedHCellSize;
+            this._fixedVItemSize = this._fixedVCellSize;
 
             this._updateSpacingForSize(availWidth, availHeight);
         }
@@ -854,12 +903,12 @@ var PaginatedIconGrid = new Lang.Class({
                 rowIndex++;
             }
             if (columnIndex == 0) {
-                y += this._getVItemSize() + spacing;
+                y += this._getVCellSize() + spacing;
                 if ((i + 1) % this._childrenPerPage == 0)
                     y +=  this._spaceBetweenPages - spacing + this.bottomPadding + this.topPadding;
                 x = box.x1 + leftEmptySpace + this.leftPadding;
             } else
-                x += this._getHItemSize() + spacing;
+                x += this._getHCellSize() + spacing;
         }
     },
 
@@ -980,7 +1029,7 @@ var PaginatedIconGrid = new Lang.Class({
     },
 
     _translateChildren(children, direction, nRows) {
-        let translationY = nRows * (this._getVItemSize() + this._getSpacing());
+        let translationY = nRows * (this._getVCellSize() + this._getSpacing());
         if (translationY == 0)
             return;
 
