@@ -11,21 +11,26 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 var DEFAULT_FADE_FACTOR = 0.4;
-var VIGNETTE_BRIGHTNESS = 0.8;
-var VIGNETTE_SHARPNESS = 0.7;
+var VIGNETTE_BRIGHTNESS = 0.7;
+var VIGNETTE_SHARPNESS = 0.8;
+
+const VIGNETTE_SQRT_2 = '1.4142';
 
 const VIGNETTE_DECLARATIONS = '\
 uniform float brightness;\n\
-uniform float vignette_sharpness;\n';
+uniform float vignette_sharpness;\n\
+uniform float square_diagonal = sqrt(2);\n\
+float rand(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453123); }\n';
 
 const VIGNETTE_CODE = '\
 cogl_color_out.a = cogl_color_in.a;\n\
 cogl_color_out.rgb = vec3(0.0, 0.0, 0.0);\n\
 vec2 position = cogl_tex_coord_in[0].xy - 0.5;\n\
-float t = length(2.0 * position);\n\
+float t = length(' + VIGNETTE_SQRT_2 + ' * position);\n\
 t = clamp(t, 0.0, 1.0);\n\
 float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n\
-cogl_color_out.a = cogl_color_out.a * (1 - pixel_brightness * brightness);';
+cogl_color_out.a = cogl_color_out.a * (1.0 - pixel_brightness * brightness);\n\
+cogl_color_out.a += (rand(position) - 0.5) / 100.0;\n';
 
 var RadialShaderQuad = new Lang.Class({
     Name: 'RadialShaderQuad',
