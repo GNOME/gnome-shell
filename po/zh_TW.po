@@ -8,10 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 3.3.4\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-09-29 14:36+0000\n"
-"PO-Revision-Date: 2017-10-01 22:57+0800\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
+"POT-Creation-Date: 2018-03-01 18:57+0000\n"
+"PO-Revision-Date: 2018-03-03 15:20+0800\n"
 "Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <zh-l10n@lists.linux.org.tw>\n"
 "Language: zh_TW\n"
@@ -19,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -46,134 +45,118 @@ msgid "Move window to last workspace"
 msgstr "將視窗移至上一個工作區"
 
 #: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "將視窗移至左方的工作區"
-
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "將視窗移至右方的工作區"
-
-#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "將視窗移至上方的工作區"
 
-#: data/50-mutter-navigation.xml:33
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace down"
 msgstr "將視窗移至下方的工作區"
 
-#: data/50-mutter-navigation.xml:36
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one monitor to the left"
 msgstr "將視窗移至左方的螢幕"
 
-#: data/50-mutter-navigation.xml:39
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one monitor to the right"
 msgstr "將視窗移至右方的螢幕"
 
-#: data/50-mutter-navigation.xml:42
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor up"
 msgstr "將視窗移至上方的螢幕"
 
-#: data/50-mutter-navigation.xml:45
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor down"
 msgstr "將視窗移至下方的螢幕"
 
-#: data/50-mutter-navigation.xml:49
+#: data/50-mutter-navigation.xml:43
 msgid "Switch applications"
 msgstr "切換程式"
 
-#: data/50-mutter-navigation.xml:54
+#: data/50-mutter-navigation.xml:48
 msgid "Switch to previous application"
 msgstr "切換至上一個應用程式"
 
-#: data/50-mutter-navigation.xml:58
+#: data/50-mutter-navigation.xml:52
 msgid "Switch windows"
 msgstr "切換視窗"
 
-#: data/50-mutter-navigation.xml:63
+#: data/50-mutter-navigation.xml:57
 msgid "Switch to previous window"
 msgstr "切換至上一個視窗"
 
-#: data/50-mutter-navigation.xml:67
+#: data/50-mutter-navigation.xml:61
 msgid "Switch windows of an application"
 msgstr "切換程式的視窗"
 
-#: data/50-mutter-navigation.xml:72
+#: data/50-mutter-navigation.xml:66
 msgid "Switch to previous window of an application"
 msgstr "切換至上一個應用程式的視窗"
 
-#: data/50-mutter-navigation.xml:76
+#: data/50-mutter-navigation.xml:70
 msgid "Switch system controls"
 msgstr "切換系統控制"
 
-#: data/50-mutter-navigation.xml:81
+#: data/50-mutter-navigation.xml:75
 msgid "Switch to previous system control"
 msgstr "切換至上一個系統控制"
 
-#: data/50-mutter-navigation.xml:85
+#: data/50-mutter-navigation.xml:79
 msgid "Switch windows directly"
 msgstr "直接切換視窗"
 
-#: data/50-mutter-navigation.xml:90
+#: data/50-mutter-navigation.xml:84
 msgid "Switch directly to previous window"
 msgstr "直接切換至上一個視窗"
 
-#: data/50-mutter-navigation.xml:94
+#: data/50-mutter-navigation.xml:88
 msgid "Switch windows of an app directly"
 msgstr "直接切換程式的視窗"
 
-#: data/50-mutter-navigation.xml:99
+#: data/50-mutter-navigation.xml:93
 msgid "Switch directly to previous window of an app"
 msgstr "直接切換至上一個程式視窗"
 
-#: data/50-mutter-navigation.xml:103
+#: data/50-mutter-navigation.xml:97
 msgid "Switch system controls directly"
 msgstr "直接切換系統控制"
 
-#: data/50-mutter-navigation.xml:108
+#: data/50-mutter-navigation.xml:102
 msgid "Switch directly to previous system control"
 msgstr "直接切換至上一個系統控制"
 
-#: data/50-mutter-navigation.xml:111
+#: data/50-mutter-navigation.xml:105
 msgid "Hide all normal windows"
 msgstr "隱藏所有一般視窗"
 
-#: data/50-mutter-navigation.xml:114
+#: data/50-mutter-navigation.xml:108
 msgid "Switch to workspace 1"
 msgstr "切換至第 1 個工作區"
 
-#: data/50-mutter-navigation.xml:117
+#: data/50-mutter-navigation.xml:111
 msgid "Switch to workspace 2"
 msgstr "切換至第 2 個工作區"
 
-#: data/50-mutter-navigation.xml:120
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 3"
 msgstr "切換至第 3 個工作區"
 
-#: data/50-mutter-navigation.xml:123
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 4"
 msgstr "切換至第 4 個工作區"
 
-#: data/50-mutter-navigation.xml:126
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to last workspace"
 msgstr "切換至上一個工作區"
 
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "移至左方的工作區"
-
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "移至右方的工作區"
-
-#: data/50-mutter-navigation.xml:135
+#: data/50-mutter-navigation.xml:123
 msgid "Move to workspace above"
 msgstr "移至上方的工作區"
 
-#: data/50-mutter-navigation.xml:138
+#: data/50-mutter-navigation.xml:126
 msgid "Move to workspace below"
 msgstr "移至下方的工作區"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "系統"
 
@@ -184,6 +167,10 @@ msgstr "顯示執行指令提示"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "顯示活動概覽"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "重設鍵盤快捷鍵"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -210,54 +197,50 @@ msgid "Restore window"
 msgstr "還原視窗"
 
 #: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "切換視窗捲起/放下狀態"
-
-#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "關閉視窗"
 
-#: data/50-mutter-windows.xml:22
+#: data/50-mutter-windows.xml:20
 msgid "Hide window"
 msgstr "隱藏視窗"
 
-#: data/50-mutter-windows.xml:24
+#: data/50-mutter-windows.xml:22
 msgid "Move window"
 msgstr "移動視窗"
 
-#: data/50-mutter-windows.xml:26
+#: data/50-mutter-windows.xml:24
 msgid "Resize window"
 msgstr "調整視窗大小"
 
-#: data/50-mutter-windows.xml:29
+#: data/50-mutter-windows.xml:27
 msgid "Toggle window on all workspaces or one"
 msgstr "切換視窗顯示在所有工作區或是只顯示於其中之一"
 
-#: data/50-mutter-windows.xml:31
+#: data/50-mutter-windows.xml:29
 msgid "Raise window if covered, otherwise lower it"
 msgstr "若被其他視窗遮蔽就抬升它，否則將它降下"
 
-#: data/50-mutter-windows.xml:33
+#: data/50-mutter-windows.xml:31
 msgid "Raise window above other windows"
 msgstr "令某個視窗覆蓋其它視窗"
 
-#: data/50-mutter-windows.xml:35
+#: data/50-mutter-windows.xml:33
 msgid "Lower window below other windows"
 msgstr "遮蔽某個視窗"
 
-#: data/50-mutter-windows.xml:37
+#: data/50-mutter-windows.xml:35
 msgid "Maximize window vertically"
 msgstr "將視窗縱向最大化"
 
-#: data/50-mutter-windows.xml:39
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window horizontally"
 msgstr "將視窗橫向最大化"
 
-#: data/50-mutter-windows.xml:43
+#: data/50-mutter-windows.xml:41
 msgid "View split on left"
 msgstr "檢視分割於左側"
 
-#: data/50-mutter-windows.xml:47
+#: data/50-mutter-windows.xml:45
 msgid "View split on right"
 msgstr "檢視分割於右側"
 
@@ -477,10 +460,51 @@ msgstr "切換至 VT 12"
 msgid "Re-enable shortcuts"
 msgstr "重新啟用快捷鍵"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:64
+msgid "Allow grabs with Xwayland"
+msgstr "在 Xwayland 允許抓取"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:65
+msgid ""
+"Allow keyboard grabs issued by X11 applications running in Xwayland to be "
+"taken into account. For a X11 grab to be taken into account under Wayland, "
+"the client must also either send a specific X11 ClientMessage to the root "
+"window or be among the applications white-listed in key “xwayland-grab-"
+"access-rules”."
+msgstr ""
+"考慮到在 Xwayland 中執行的 X11 應用程序發出的鍵盤抓取。對於在 Wayland 下考慮"
+"的 X11 抓取，客戶端也必須送出一個特定的 X11 ClientMessage 到 root 視窗或者在 "
+"xwayland-grab-access-rules 鍵白名單其中的應用程式。"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:77
+msgid "Xwayland applications allowed to issue keyboard grabs"
+msgstr "Xwayland 應用程式允許發出鍵盤抓取"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:78
+msgid ""
+"List the resource names or resource class of X11 windows either allowed or "
+"not allowed to issue X11 keyboard grabs under Xwayland. The resource name or "
+"resource class of a given X11 window can be obtained using the command "
+"“xprop WM_CLASS”. Wildcards “*” and jokers “?” in the values are supported. "
+"Values starting with “!” are blacklisted, which has precedence over the "
+"whitelist, to revoke applications from the default system list. The default "
+"system list includes the following applications: "
+"“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Users can break an existing grab by "
+"using the specific keyboard shortcut defined by the keybinding key “restore-"
+"shortcuts”."
+msgstr ""
+"列出在 X11 視窗中的這些資源名稱或資源 class 允許或不允許在 Xwayland 底下發出 "
+"X11 鍵盤抓取。在已提供的 X11 視窗中的資源名稱或資源 class 可以獲得，只要使用"
+"這個指令 xprop WM_CLASS。在數值內的 Wildcard \"*\" 或 joker \"?\" 是受支援"
+"的。開始於 \"!\" 的數值會被加入黑名單，優先於白名單，去取消授權來自預設系統清"
+"單的應用程式。這個預設的系統清單包含了以下的應用程"
+"序：“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@”，用戶可以取消一個存在的抓取，透過"
+"使用一個具體的鍵盤快捷鍵定義透過這個綁定鍵 restore-shortcuts。"
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2157
+#: src/backends/meta-input-settings.c:2325
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "模式切換( 群組 %d)"
@@ -488,30 +512,30 @@ msgstr "模式切換( 群組 %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2180
+#: src/backends/meta-input-settings.c:2348
 msgid "Switch monitor"
 msgstr "切換螢幕"
 
-#: src/backends/meta-input-settings.c:2182
+#: src/backends/meta-input-settings.c:2350
 msgid "Show on-screen help"
 msgstr "顯示螢幕求助"
 
-#: src/backends/meta-monitor-manager.c:894
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "內建顯示"
 
-#: src/backends/meta-monitor-manager.c:917
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "不明"
 
-#: src/backends/meta-monitor-manager.c:919
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "不明的顯示器"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:927
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
@@ -519,7 +543,7 @@ msgstr "%s %s"
 # FIXME: I'm still unclear about the meaning of XGetSelectionOwner -- Abel
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:476
+#: src/compositor/compositor.c:481
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -534,41 +558,45 @@ msgstr "響鈴事件"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "無法開啟 X Window 系統畫面「%s」\n"
 
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "停用到作業階段管理員的連線"
 
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "取代執行中的視窗管理員"
 
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "指定作業階段管理 ID"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "使用的 X 畫面"
 
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "以 savefile 初始化作業階段"
 
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "使用同步方式調用 X 函式"
 
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "以 wayland 組合器執行"
 
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
 msgstr "以巢狀組合器執行"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
 msgstr "以完全顯示伺服器執行，而非巢狀"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "透過 X11 後端執行"
 
 #. Translators: %s is a window title
 #: src/core/meta-close-dialog-default.c:147
@@ -622,7 +650,7 @@ msgstr "要使用的 Mutter 外掛程式"
 msgid "Workspace %d"
 msgstr "工作區 %d"
 
-#: src/core/screen.c:582
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -631,7 +659,7 @@ msgstr ""
 "畫面「%s」已經有了視窗管理員；請嘗試使用 --replace 選項來替換目前的視窗管理"
 "員。"
 
-#: src/core/screen.c:667
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "畫面「%2$s」中的第 %1$d 個螢幕無效\n"
@@ -640,12 +668,12 @@ msgstr "畫面「%2$s」中的第 %1$d 個螢幕無效\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "編譯 Mutter 時並沒有加入詳細偵錯模式的支援\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:563
+#: src/wayland/meta-wayland-tablet-pad.c:567
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "模式切換：模式 %d"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -655,6 +683,21 @@ msgstr "這些視窗不支援「儲存目前的設定」，必須在下次登入
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s（在 %s）"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "將視窗移至左方的工作區"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "將視窗移至右方的工作區"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "移至左方的工作區"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "移至右方的工作區"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "切換視窗捲起/放下狀態"
 
 #~ msgid "background texture could not be created from file"
 #~ msgstr "背景材質無法從檔案建立"
