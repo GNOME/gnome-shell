@@ -144,10 +144,9 @@ xdg_exporter_export (struct wl_client   *client,
   MetaWaylandXdgExported *exported;
   char *handle;
 
-  if (!surface->role ||
-      !META_IS_WAYLAND_XDG_SURFACE (surface->role) ||
-      !META_IS_WAYLAND_ZXDG_SURFACE_V6 (surface->role) ||
-      !surface->window)
+  if (!surface->role || !surface->window ||
+      !(META_IS_WAYLAND_XDG_SURFACE (surface->role) ||
+        META_IS_WAYLAND_ZXDG_SURFACE_V6 (surface->role)))
     {
       wl_resource_post_error (resource,
                               WL_DISPLAY_ERROR_INVALID_OBJECT,
