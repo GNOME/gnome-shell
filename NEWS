@@ -1,3 +1,14 @@
+3.28.0
+======
+* Fix xdg-foreign regression [Carlos; #63]
+
+Contributors:
+  Carlos Garnacho, Georges Basile Stavracas Neto
+
+Translators:
+  Marek Cernocky [cs], Ask Hjorth Larsen [da], Chao-Hsiung Liao [zh_TW],
+  Anders Jonsson [sv], Mart Raudsepp [et]
+
 3.27.92
 =======
 * Fix use of modifiers with multi-GPU systems [Louis-Francis; #18]
