@@ -7,17 +7,16 @@
 # İlker DAĞLI <ilker@ilkerdagli.info>, 2011.
 # Muhammed EKEN <gnome@m-eken.com>, 2011.
 # Furkan Ahmet Kara <furkanahmetkara.fk@gmail.com>, 2017.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017.
 # Muhammet Kara <muhammetk@gmail.com>, 2011, 2012, 2014, 2015, 2016, 2017.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-11-10 18:18+0000\n"
-"PO-Revision-Date: 2017-11-15 23:49+0300\n"
-"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
+"POT-Creation-Date: 2018-02-06 04:14+0000\n"
+"PO-Revision-Date: 2018-03-13 10:53+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -52,130 +51,114 @@ msgid "Move window to last workspace"
 msgstr "Pencereyi son çalışma alanına taşı"
 
 #: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "Pencereyi soldaki çalışma alanına taşı"
-
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "Pencereyi sağdaki çalışma alanına taşı"
-
-#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Pencereyi üstteki çalışma alanına taşı"
 
-#: data/50-mutter-navigation.xml:33
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace down"
 msgstr "Pencereyi alttaki çalışma alanına taşı"
 
-#: data/50-mutter-navigation.xml:36
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one monitor to the left"
 msgstr "Pencereyi soldaki monitöre taşı"
 
-#: data/50-mutter-navigation.xml:39
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one monitor to the right"
 msgstr "Pencereyi sağdaki monitöre taşı"
 
-#: data/50-mutter-navigation.xml:42
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor up"
 msgstr "Pencereyi üstteki monitöre taşı"
 
-#: data/50-mutter-navigation.xml:45
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor down"
 msgstr "Pencereyi alttaki monitöre taşı"
 
-#: data/50-mutter-navigation.xml:49
+#: data/50-mutter-navigation.xml:43
 msgid "Switch applications"
 msgstr "Uygulamalar arasında geçiş yap"
 
-#: data/50-mutter-navigation.xml:54
+#: data/50-mutter-navigation.xml:48
 msgid "Switch to previous application"
 msgstr "Önceki uygulamaya geç"
 
-#: data/50-mutter-navigation.xml:58
+#: data/50-mutter-navigation.xml:52
 msgid "Switch windows"
 msgstr "Pencereler arasında geçiş yap"
 
-#: data/50-mutter-navigation.xml:63
+#: data/50-mutter-navigation.xml:57
 msgid "Switch to previous window"
 msgstr "Önceki pencereye geç"
 
-#: data/50-mutter-navigation.xml:67
+#: data/50-mutter-navigation.xml:61
 msgid "Switch windows of an application"
 msgstr "Uygulamanın pencereleri arasında geçiş yap"
 
-#: data/50-mutter-navigation.xml:72
+#: data/50-mutter-navigation.xml:66
 msgid "Switch to previous window of an application"
 msgstr "Uygulamanın bir önceki penceresine geç"
 
-#: data/50-mutter-navigation.xml:76
+#: data/50-mutter-navigation.xml:70
 msgid "Switch system controls"
 msgstr "Sistem denetimleri arasında geçiş yap"
 
-#: data/50-mutter-navigation.xml:81
+#: data/50-mutter-navigation.xml:75
 msgid "Switch to previous system control"
 msgstr "Önceki sistem denetimine geç"
 
-#: data/50-mutter-navigation.xml:85
+#: data/50-mutter-navigation.xml:79
 msgid "Switch windows directly"
 msgstr "Pencereler arasında doğrudan geçiş yap"
 
-#: data/50-mutter-navigation.xml:90
+#: data/50-mutter-navigation.xml:84
 msgid "Switch directly to previous window"
 msgstr "Önceki pencereye doğrudan geç"
 
-#: data/50-mutter-navigation.xml:94
+#: data/50-mutter-navigation.xml:88
 msgid "Switch windows of an app directly"
 msgstr "Uygulamanın pencereleri arasında anında geçiş yap"
 
-#: data/50-mutter-navigation.xml:99
+#: data/50-mutter-navigation.xml:93
 msgid "Switch directly to previous window of an app"
 msgstr "Bir uygulamanın önceki penceresine doğrudan geç"
 
-#: data/50-mutter-navigation.xml:103
+#: data/50-mutter-navigation.xml:97
 msgid "Switch system controls directly"
 msgstr "Sistem denetimleri arasında doğrudan geçiş yap"
 
-#: data/50-mutter-navigation.xml:108
+#: data/50-mutter-navigation.xml:102
 msgid "Switch directly to previous system control"
 msgstr "Önceki sistem denetimine doğrudan geç"
 
-#: data/50-mutter-navigation.xml:111
+#: data/50-mutter-navigation.xml:105
 msgid "Hide all normal windows"
 msgstr "Tüm normal pencereleri gizle"
 
-#: data/50-mutter-navigation.xml:114
+#: data/50-mutter-navigation.xml:108
 msgid "Switch to workspace 1"
 msgstr "Çalışma alanı 1’e geç"
 
-#: data/50-mutter-navigation.xml:117
+#: data/50-mutter-navigation.xml:111
 msgid "Switch to workspace 2"
 msgstr "Çalışma alanı 2’ye geç"
 
-#: data/50-mutter-navigation.xml:120
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 3"
 msgstr "Çalışma alanı 3’e geç"
 
-#: data/50-mutter-navigation.xml:123
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 4"
 msgstr "Çalışma alanı 4’e geç"
 
-#: data/50-mutter-navigation.xml:126
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to last workspace"
 msgstr "Son çalışma alanına geç"
 
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "Soldaki çalışma alanına taşı"
-
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "Sağdaki çalışma alanına taşı"
-
-#: data/50-mutter-navigation.xml:135
+#: data/50-mutter-navigation.xml:123
 msgid "Move to workspace above"
 msgstr "Üstteki çalışma alanına taşı"
 
-#: data/50-mutter-navigation.xml:138
+#: data/50-mutter-navigation.xml:126
 msgid "Move to workspace below"
 msgstr "Alttaki çalışma alanına taşı"
 
@@ -220,56 +203,52 @@ msgid "Restore window"
 msgstr "Pencereyi eski haline getir"
 
 #: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "Toplanmış durumu değiştir"
-
-#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Pencereyi kapat"
 
-#: data/50-mutter-windows.xml:22
+#: data/50-mutter-windows.xml:20
 msgid "Hide window"
 msgstr "Pencereyi gizle"
 
-#: data/50-mutter-windows.xml:24
+#: data/50-mutter-windows.xml:22
 msgid "Move window"
 msgstr "Pencere taşı"
 
-#: data/50-mutter-windows.xml:26
+#: data/50-mutter-windows.xml:24
 msgid "Resize window"
 msgstr "Pencereyi yeniden boyutlandır"
 
-#: data/50-mutter-windows.xml:29
+#: data/50-mutter-windows.xml:27
 msgid "Toggle window on all workspaces or one"
 msgstr ""
 "Pencerenin tüm çalışma alanlarında veya yalnızca bir tanesi üzerinde "
 "olmasını seç"
 
-#: data/50-mutter-windows.xml:31
+#: data/50-mutter-windows.xml:29
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Pencere altta kalmışsa yükselt, aksi halde alçalt"
 
-#: data/50-mutter-windows.xml:33
+#: data/50-mutter-windows.xml:31
 msgid "Raise window above other windows"
 msgstr "Pencereyi diğerlerinin üstüne çıkar"
 
-#: data/50-mutter-windows.xml:35
+#: data/50-mutter-windows.xml:33
 msgid "Lower window below other windows"
 msgstr "Pencereyi diğerlerinin altına gönder"
 
-#: data/50-mutter-windows.xml:37
+#: data/50-mutter-windows.xml:35
 msgid "Maximize window vertically"
 msgstr "Pencereyi dikey olarak büyült"
 
-#: data/50-mutter-windows.xml:39
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window horizontally"
 msgstr "Pencereyi yatay olarak büyült"
 
-#: data/50-mutter-windows.xml:43
+#: data/50-mutter-windows.xml:41
 msgid "View split on left"
 msgstr "Solda bölünmüş olarak göster"
 
-#: data/50-mutter-windows.xml:47
+#: data/50-mutter-windows.xml:45
 msgid "View split on right"
 msgstr "Sağda bölünmüş olarak göster"
 
@@ -516,10 +495,56 @@ msgstr "VT 12’ye geç"
 msgid "Re-enable shortcuts"
 msgstr "Kısayolları yeniden etkinleştir"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:64
+msgid "Allow grabs with Xwayland"
+msgstr "Xwayland ile yakalamalara izin ver"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:65
+msgid ""
+"Allow keyboard grabs issued by X11 applications running in Xwayland to be "
+"taken into account. For a X11 grab to be taken into account under Wayland, "
+"the client must also either send a specific X11 ClientMessage to the root "
+"window or be among the applications white-listed in key “xwayland-grab-"
+"access-rules”."
+msgstr ""
+"XWayland’de çalışan X11 uygulamaları tarafından yapılacak klavye "
+"yakalamalarına izin ver. X11 yakalamasının Wayland altında hesaba katılması "
+"için istemci ya kök pencereye özel X11 ClientMessage’ı göndermeli ya da "
+"“xwayland-grab-access-rules” anahtarında beyaz listeye alınmış uygulamalar "
+"içinde yer almalıdır."
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:77
+msgid "Xwayland applications allowed to issue keyboard grabs"
+msgstr "Klavye yakalamaları yapabilen Xwayland uygulamaları"
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:78
+msgid ""
+"List the resource names or resource class of X11 windows either allowed or "
+"not allowed to issue X11 keyboard grabs under Xwayland. The resource name or "
+"resource class of a given X11 window can be obtained using the command "
+"“xprop WM_CLASS”. Wildcards “*” and jokers “?” in the values are supported. "
+"Values starting with “!” are blacklisted, which has precedence over the "
+"whitelist, to revoke applications from the default system list. The default "
+"system list includes the following applications: "
+"“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Users can break an existing grab by "
+"using the specific keyboard shortcut defined by the keybinding key “restore-"
+"shortcuts”."
+msgstr ""
+"Xwayland altında X11 klavye yakalamaları yapmak için izin verilsin veya "
+"verilmesin tüm X11 pencerelerinin kaynak adlarını veya kaynak sınıfını "
+"listele. Verilen bir X11 penceresinin kaynak adı veya kaynak sınıfı “xprop "
+"WM_CLASS” komutuyla elde edilebilir. Değerlerde “*” joker karakteri ve “?” "
+"değiştirilebilir damga kullanımı desteklenmektedir. “!” ile başlayan "
+"değerler, uygulamaları öntanımlı sistem listesinden feshetmek için beyaz "
+"listeden önceliği olan kara listeye alınmıştır. Öntanımlı sistem listesi şu "
+"uygulamaları içerir: “@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Kullanıcılar, "
+"“restore-shortcuts” anahtar bağlama anahtarıyla tanımlanmış özel klavye "
+"kısayolunu kullanarak var olan yakalamayı kırabilir."
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2167
+#: src/backends/meta-input-settings.c:2325
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Kip anahtarı (Group %d)"
@@ -527,37 +552,37 @@ msgstr "Kip anahtarı (Group %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2190
+#: src/backends/meta-input-settings.c:2348
 msgid "Switch monitor"
 msgstr "Monitör değiştir"
 
-#: src/backends/meta-input-settings.c:2192
+#: src/backends/meta-input-settings.c:2350
 msgid "Show on-screen help"
 msgstr "Ekranda yardımı göster"
 
-#: src/backends/meta-monitor-manager.c:908
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "Yerleşik ekran"
 
-#: src/backends/meta-monitor-manager.c:931
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: src/backends/meta-monitor-manager.c:933
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "Bilinmeyen Ekran"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:941
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:476
+#: src/compositor/compositor.c:481
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -574,41 +599,45 @@ msgstr "Etkinlik zili"
 msgid "Failed to open X Window System display “%s”\n"
 msgstr "X Pencere Sistemi “%s” ekranı açılamadı\n"
 
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Ortam yöneticisine olan bağlantıyı kapat"
 
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Çalışan pencere yöneticisinin yerini al"
 
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Ortam yönetim ID’sini belirt"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "Kullanılacak X Ekranı"
 
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Ortamı kayıtlı dosyadan başlat"
 
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "X çağrılarını eşazamanlı yap"
 
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "Bir wayland dizgicisi olarak çalıştır"
 
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
 msgstr "Yuvalanmış dizgici olarak çalıştır"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
 msgstr "İç içe değil tam ekran sunucusu olarak çalıştır"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "X11 arkayüzüyle çalıştır"
 
 #. Translators: %s is a window title
 #: src/core/meta-close-dialog-default.c:147
@@ -683,12 +712,12 @@ msgstr "“%2$s” monitöründeki %1$d ekranı geçersiz\n"
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter, ayrıntılı kip desteği olmadan derlenmiş\n"
 
-#: src/wayland/meta-wayland-tablet-pad.c:563
+#: src/wayland/meta-wayland-tablet-pad.c:567
 #, c-format
 msgid "Mode Switch: Mode %d"
 msgstr "Kip Anahtarı: Kip %d"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -700,6 +729,21 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s üzerinde)"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Pencereyi soldaki çalışma alanına taşı"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Pencereyi sağdaki çalışma alanına taşı"
+
+#~ msgid "Move to workspace left"
+#~ msgstr "Soldaki çalışma alanına taşı"
+
+#~ msgid "Move to workspace right"
+#~ msgstr "Sağdaki çalışma alanına taşı"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "Toplanmış durumu değiştir"
 
 #~ msgid "Failed to scan themes directory: %s\n"
 #~ msgstr "Tema dizini taranırken hata oluştu: %s\n"
