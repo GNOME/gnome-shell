@@ -2830,6 +2830,10 @@ clutter_text_key_focus_in (ClutterActor *actor)
   if (method && priv->editable)
     {
       clutter_input_method_focus_in (method, priv->input_focus);
+      clutter_input_focus_set_content_purpose (priv->input_focus,
+					       priv->input_purpose);
+      clutter_input_focus_set_content_hints (priv->input_focus,
+					     priv->input_hints);
       update_cursor_location (CLUTTER_TEXT (actor));
     }
 
@@ -6523,7 +6527,9 @@ clutter_text_set_input_hints (ClutterText                  *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   self->priv->input_hints = hints;
-  clutter_input_focus_set_content_hints (self->priv->input_focus, hints);
+
+  if (clutter_input_focus_is_focused (self->priv->input_focus))
+    clutter_input_focus_set_content_hints (self->priv->input_focus, hints);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_INPUT_HINTS]);
 }
 
@@ -6542,7 +6548,9 @@ clutter_text_set_input_purpose (ClutterText                *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   self->priv->input_purpose = purpose;
-  clutter_input_focus_set_content_purpose (self->priv->input_focus, purpose);
+
+  if (clutter_input_focus_is_focused (self->priv->input_focus))
+    clutter_input_focus_set_content_purpose (self->priv->input_focus, purpose);
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_INPUT_PURPOSE]);
 }
 
