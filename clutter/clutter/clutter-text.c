@@ -2224,6 +2224,11 @@ clutter_text_key_press (ClutterActor    *actor,
   pool = clutter_binding_pool_find (g_type_name (CLUTTER_TYPE_TEXT));
   g_assert (pool != NULL);
 
+  if (!(event->flags & CLUTTER_EVENT_FLAG_INPUT_METHOD) &&
+      clutter_input_focus_is_focused (priv->input_focus) &&
+      clutter_input_focus_filter_key_event (priv->input_focus, event))
+    return CLUTTER_EVENT_STOP;
+
   /* we allow passing synthetic events that only contain
    * the Unicode value and not the key symbol, unless they
    * contain the input method flag.
@@ -2246,10 +2251,6 @@ clutter_text_key_press (ClutterActor    *actor,
   else if ((event->modifier_state & CLUTTER_CONTROL_MASK) == 0)
     {
       gunichar key_unichar;
-
-      if (clutter_input_focus_is_focused (priv->input_focus) &&
-          clutter_input_focus_filter_key_event (priv->input_focus, event))
-        return CLUTTER_EVENT_STOP;
 
       /* Skip keys when control is pressed */
       key_unichar = clutter_event_get_key_unicode ((ClutterEvent *) event);
