@@ -592,7 +592,7 @@ _cogl_rectangles_validate_layer_cb (CoglPipeline *pipeline,
 
           if (!warning_seen)
             g_warning ("Skipping layer %d of your pipeline consisting of "
-                       "a sliced texture (unsuported for multi texturing)",
+                       "a sliced texture (unsupported for multi texturing)",
                        state->i);
           warning_seen = TRUE;
 

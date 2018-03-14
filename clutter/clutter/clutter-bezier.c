@@ -324,7 +324,7 @@ _clutter_bezier_init (ClutterBezier *b,
    * triggers, we need to change those two functions a bit.
    */
   if (b->ax > 0x1fff || b->bx > 0x1fff || b->cx > 0x1fff)
-    g_warning ("Calculated coefficents will result in multiplication "
+    g_warning ("Calculated coefficients will result in multiplication "
                "overflow in clutter_bezier_t2x and clutter_bezier_t2y.");
 
   /*

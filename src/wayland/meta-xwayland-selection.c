@@ -698,7 +698,7 @@ wayland_data_read_cb (GObject      *object,
           return;
         }
 
-      g_warning ("Error transfering wayland clipboard to X11: %s\n",
+      g_warning ("Error transferring wayland clipboard to X11: %s\n",
                  error->message);
       g_error_free (error);
 
