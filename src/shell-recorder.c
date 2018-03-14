@@ -54,9 +54,6 @@ struct _ShellRecorder {
 
   GdkScreen *gdk_screen;
 
-  int pointer_x;
-  int pointer_y;
-
   GSettings *a11y_settings;
   gboolean draw_cursor;
   MetaCursorTracker *cursor_tracker;
@@ -81,7 +78,6 @@ struct _ShellRecorder {
   guint redraw_timeout;
   guint redraw_idle;
   guint update_memory_used_timeout;
-  guint update_pointer_timeout;
   guint repaint_hook_id;
 };
 
@@ -128,11 +124,6 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * and the size of the recording.
  */
 #define DEFAULT_FRAMES_PER_SECOND 30
-
-/* The time (in milliseconds) between querying the server for the cursor
- * position.
- */
-#define UPDATE_POINTER_TIME 100
 
 /* The time we wait (in milliseconds) before redrawing when the memory used
  * changes.
@@ -355,14 +346,19 @@ recorder_draw_cursor (ShellRecorder *recorder,
   GstMapInfo info;
   cairo_surface_t *surface;
   cairo_t *cr;
+  int pointer_x;
+  int pointer_y;
+
+  meta_cursor_tracker_get_pointer (recorder->cursor_tracker,
+                                   &pointer_x, &pointer_y, NULL);
 
   /* We don't show a cursor unless the hot spot is in the frame; this
    * means that sometimes we aren't going to draw a cursor even when
    * there is a little bit overlapping within the stage */
-  if (recorder->pointer_x < recorder->area.x ||
-      recorder->pointer_y < recorder->area.y ||
-      recorder->pointer_x >= recorder->area.x + recorder->area.width ||
-      recorder->pointer_y >= recorder->area.y + recorder->area.height)
+  if (pointer_x < recorder->area.x ||
+      pointer_y < recorder->area.y ||
+      pointer_x >= recorder->area.x + recorder->area.width ||
+      pointer_y >= recorder->area.y + recorder->area.height)
     return;
 
   if (!recorder->cursor_image)
@@ -381,8 +377,8 @@ recorder_draw_cursor (ShellRecorder *recorder,
   cr = cairo_create (surface);
   cairo_set_source_surface (cr,
                             recorder->cursor_image,
-                            recorder->pointer_x - recorder->cursor_hot_x - recorder->area.x,
-                            recorder->pointer_y - recorder->cursor_hot_y - recorder->area.y);
+                            pointer_x - recorder->cursor_hot_x - recorder->area.x,
+                            pointer_y - recorder->cursor_hot_y - recorder->area.y);
   cairo_paint (cr);
 
   cairo_destroy (cr);
@@ -565,51 +561,6 @@ on_cursor_changed (MetaCursorTracker *tracker,
     }
 
   recorder_queue_redraw (recorder);
-}
-
-static void
-recorder_update_pointer (ShellRecorder *recorder)
-{
-  int pointer_x, pointer_y;
-
-  meta_cursor_tracker_get_pointer (recorder->cursor_tracker, &pointer_x, &pointer_y, NULL);
-
-  if (pointer_x != recorder->pointer_x || pointer_y != recorder->pointer_y)
-    {
-      recorder->pointer_x = pointer_x;
-      recorder->pointer_y = pointer_y;
-      recorder_queue_redraw (recorder);
-    }
-}
-
-static gboolean
-recorder_update_pointer_timeout (gpointer data)
-{
-  recorder_update_pointer (data);
-
-  return TRUE;
-}
-
-static void
-recorder_add_update_pointer_timeout (ShellRecorder *recorder)
-{
-  if (!recorder->update_pointer_timeout)
-    {
-      recorder->update_pointer_timeout = g_timeout_add (UPDATE_POINTER_TIME,
-                                                        recorder_update_pointer_timeout,
-                                                        recorder);
-      g_source_set_name_by_id (recorder->update_pointer_timeout, "[gnome-shell] recorder_update_pointer_timeout");
-    }
-}
-
-static void
-recorder_remove_update_pointer_timeout (ShellRecorder *recorder)
-{
-  if (recorder->update_pointer_timeout)
-    {
-      g_source_remove (recorder->update_pointer_timeout);
-      recorder->update_pointer_timeout = 0;
-    }
 }
 
 static void
@@ -1547,8 +1498,6 @@ shell_recorder_record (ShellRecorder  *recorder,
   recorder->last_frame_time = GST_CLOCK_TIME_NONE;
 
   recorder->state = RECORDER_STATE_RECORDING;
-  recorder_update_pointer (recorder);
-  recorder_add_update_pointer_timeout (recorder);
 
   /* Disable unredirection while we are recoring */
   meta_disable_unredirect_for_screen (shell_global_get_screen (shell_global_get ()));
@@ -1587,7 +1536,6 @@ shell_recorder_close (ShellRecorder *recorder)
    */
   recorder_record_frame (recorder, TRUE);
 
-  recorder_remove_update_pointer_timeout (recorder);
   recorder_close_pipeline (recorder);
 
   /* Queue a redraw to remove the recording indicator */
