@@ -767,6 +767,14 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
 {
   gboolean is_press = event->type == CLUTTER_KEY_PRESS;
 
+  /* Only handle real, non-synthetic, events here. The IM is free to reemit
+   * key events (incl. modifiers), handling those additionally will result
+   * in doubly-pressed keys.
+   */
+  if (event->flags &
+      (CLUTTER_EVENT_FLAG_SYNTHETIC | CLUTTER_EVENT_FLAG_INPUT_METHOD) != 0)
+    return;
+
   /* If we get a key event but still have pending modifier state
    * changes from a previous event that didn't get cleared, we need to
    * send that state right away so that the new key event can be
