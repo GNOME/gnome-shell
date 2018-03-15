@@ -188,8 +188,7 @@ var InputMethod = new Lang.Class({
     vfunc_filter_key_event(event) {
         if (!this._context || !this._enabled)
             return false;
-        if (!this._currentSource ||
-            this._currentSource.type == Keyboard.INPUT_SOURCE_TYPE_XKB)
+        if (!this._currentSource)
             return false;
 
         let state = event.get_state();
