@@ -771,8 +771,8 @@ meta_wayland_keyboard_update (MetaWaylandKeyboard *keyboard,
    * key events (incl. modifiers), handling those additionally will result
    * in doubly-pressed keys.
    */
-  if (event->flags &
-      (CLUTTER_EVENT_FLAG_SYNTHETIC | CLUTTER_EVENT_FLAG_INPUT_METHOD) != 0)
+  if ((event->flags &
+       (CLUTTER_EVENT_FLAG_SYNTHETIC | CLUTTER_EVENT_FLAG_INPUT_METHOD)) != 0)
     return;
 
   /* If we get a key event but still have pending modifier state
