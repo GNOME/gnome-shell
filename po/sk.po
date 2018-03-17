@@ -12,10 +12,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-21 04:46+0000\n"
-"PO-Revision-Date: 2017-08-23 19:50+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
+"POT-Creation-Date: 2018-02-06 04:14+0000\n"
+"PO-Revision-Date: 2018-03-17 21:52+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -23,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -56,167 +55,147 @@ msgstr "Presunúť okno na posledný pracovný priestor"
 
 # description
 #: data/50-mutter-navigation.xml:24
-msgid "Move window one workspace to the left"
-msgstr "Presunúť okno o jeden pracovný priestor vľavo"
-
-# description
-#: data/50-mutter-navigation.xml:27
-msgid "Move window one workspace to the right"
-msgstr "Presunúť okno o jeden pracovný priestor vpravo"
-
-# description
-#: data/50-mutter-navigation.xml:30
 msgid "Move window one workspace up"
 msgstr "Presunúť okno o jeden pracovný priestor hore"
 
 # description
-#: data/50-mutter-navigation.xml:33
+#: data/50-mutter-navigation.xml:27
 msgid "Move window one workspace down"
 msgstr "Presunúť okno o jeden pracovný priestor dolu"
 
 # description
-#: data/50-mutter-navigation.xml:36
+#: data/50-mutter-navigation.xml:30
 msgid "Move window one monitor to the left"
 msgstr "Presunúť okno o jeden monitor vľavo"
 
 # description
-#: data/50-mutter-navigation.xml:39
+#: data/50-mutter-navigation.xml:33
 msgid "Move window one monitor to the right"
 msgstr "Presunúť okno o jeden monitor vpravo"
 
 # description
-#: data/50-mutter-navigation.xml:42
+#: data/50-mutter-navigation.xml:36
 msgid "Move window one monitor up"
 msgstr "Presunúť okno o jeden monitor hore"
 
 # description
-#: data/50-mutter-navigation.xml:45
+#: data/50-mutter-navigation.xml:39
 msgid "Move window one monitor down"
 msgstr "Presunúť okno o jeden monitor dolu"
 
 # description
-#: data/50-mutter-navigation.xml:49
+#: data/50-mutter-navigation.xml:43
 msgid "Switch applications"
 msgstr "Prepnúť aplikácie"
 
 # description
-#: data/50-mutter-navigation.xml:54
+#: data/50-mutter-navigation.xml:48
 msgid "Switch to previous application"
 msgstr "Prepnúť na predchádzajúcu aplikáciu"
 
 # description
-#: data/50-mutter-navigation.xml:58
+#: data/50-mutter-navigation.xml:52
 msgid "Switch windows"
 msgstr "Prepnúť okná"
 
 # description
-#: data/50-mutter-navigation.xml:63
+#: data/50-mutter-navigation.xml:57
 msgid "Switch to previous window"
 msgstr "Prepnúť na predchádzajúce okno"
 
 # description
-#: data/50-mutter-navigation.xml:67
+#: data/50-mutter-navigation.xml:61
 msgid "Switch windows of an application"
 msgstr "Prepnúť okná aplikácie"
 
 # description
-#: data/50-mutter-navigation.xml:72
+#: data/50-mutter-navigation.xml:66
 msgid "Switch to previous window of an application"
 msgstr "Prepnúť na predchádzajúce okno aplikácie"
 
 # PK: predpokladam ze to prepisane medzi tlacidlami
 # description
-#: data/50-mutter-navigation.xml:76
+#: data/50-mutter-navigation.xml:70
 msgid "Switch system controls"
 msgstr "Prepnúť medzi ovládacími prvkami systému"
 
 # PK: predpokladam ze to prepisane medzi tlacidlami
 # description
-#: data/50-mutter-navigation.xml:81
+#: data/50-mutter-navigation.xml:75
 msgid "Switch to previous system control"
 msgstr "Prepnúť na predchádzajúci ovládací prvok systému"
 
 # description
-#: data/50-mutter-navigation.xml:85
+#: data/50-mutter-navigation.xml:79
 msgid "Switch windows directly"
 msgstr "Prepnúť okná priamo"
 
-#: data/50-mutter-navigation.xml:90
+#: data/50-mutter-navigation.xml:84
 msgid "Switch directly to previous window"
 msgstr "Priamo prepnúť na predchádzajúce okno"
 
 # description
-#: data/50-mutter-navigation.xml:94
+#: data/50-mutter-navigation.xml:88
 msgid "Switch windows of an app directly"
 msgstr "Prepnúť okná aplikácie priamo"
 
 # description
-#: data/50-mutter-navigation.xml:99
+#: data/50-mutter-navigation.xml:93
 msgid "Switch directly to previous window of an app"
 msgstr "Priamo prepnúť na predchádzajúce okno aplikácie"
 
 # description
-#: data/50-mutter-navigation.xml:103
+#: data/50-mutter-navigation.xml:97
 msgid "Switch system controls directly"
 msgstr "Prepnúť medzi ovládacími prvkami systému priamo"
 
 # PK: predpokladam ze to prepisane medzi tlacidlami
 # description
-#: data/50-mutter-navigation.xml:108
+#: data/50-mutter-navigation.xml:102
 msgid "Switch directly to previous system control"
 msgstr "Priamo prepnúť na predchádzajúci ovládací prvok systému"
 
 # description
-#: data/50-mutter-navigation.xml:111
+#: data/50-mutter-navigation.xml:105
 msgid "Hide all normal windows"
 msgstr "Skryť všetky normálne okná"
 
 # description
-#: data/50-mutter-navigation.xml:114
+#: data/50-mutter-navigation.xml:108
 msgid "Switch to workspace 1"
 msgstr "Prepnúť na pracovný priestor č. 1"
 
 # description
-#: data/50-mutter-navigation.xml:117
+#: data/50-mutter-navigation.xml:111
 msgid "Switch to workspace 2"
 msgstr "Prepnúť na pracovný priestor č. 2"
 
 # description
-#: data/50-mutter-navigation.xml:120
+#: data/50-mutter-navigation.xml:114
 msgid "Switch to workspace 3"
 msgstr "Prepnúť na pracovný priestor č. 3"
 
 # description
-#: data/50-mutter-navigation.xml:123
+#: data/50-mutter-navigation.xml:117
 msgid "Switch to workspace 4"
 msgstr "Prepnúť na pracovný priestor č. 4"
 
 # description
-#: data/50-mutter-navigation.xml:126
+#: data/50-mutter-navigation.xml:120
 msgid "Switch to last workspace"
 msgstr "Prepnúť na posledný pracovný priestor"
 
 # description
-#: data/50-mutter-navigation.xml:129
-msgid "Move to workspace left"
-msgstr "Presunúť na pracovný priestor vľavo"
-
-# description
-#: data/50-mutter-navigation.xml:132
-msgid "Move to workspace right"
-msgstr "Presunúť na pracovný priestor vpravo"
-
-# description
-#: data/50-mutter-navigation.xml:135
+#: data/50-mutter-navigation.xml:123
 msgid "Move to workspace above"
 msgstr "Presunúť na pracovný priestor hore"
 
 # description
-#: data/50-mutter-navigation.xml:138
+#: data/50-mutter-navigation.xml:126
 msgid "Move to workspace below"
 msgstr "Presunúť na pracovný priestor dole"
 
-#: data/50-mutter-system.xml:6
+#: data/50-mutter-system.xml:6 data/50-mutter-wayland.xml:6
 msgid "System"
 msgstr "Systém"
 
@@ -229,6 +208,10 @@ msgstr "Zobraziť riadok pre spustenie príkazu"
 #: data/50-mutter-system.xml:10
 msgid "Show the activities overview"
 msgstr "Zobraziť prehľad aktivít"
+
+#: data/50-mutter-wayland.xml:8
+msgid "Restore the keyboard shortcuts"
+msgstr "Obnoviť klávesové skratky"
 
 #: data/50-mutter-windows.xml:6
 msgid "Windows"
@@ -261,66 +244,61 @@ msgstr "Obnoviť okno"
 
 # description
 #: data/50-mutter-windows.xml:18
-msgid "Toggle shaded state"
-msgstr "Prepnúť stav zatienenia"
-
-# description
-#: data/50-mutter-windows.xml:20
 msgid "Close window"
 msgstr "Zatvoriť okno"
 
 # description
-#: data/50-mutter-windows.xml:22
+#: data/50-mutter-windows.xml:20
 msgid "Hide window"
 msgstr "Skryť okno"
 
 # description
-#: data/50-mutter-windows.xml:24
+#: data/50-mutter-windows.xml:22
 msgid "Move window"
 msgstr "Presunúť okno"
 
 # description
-#: data/50-mutter-windows.xml:26
+#: data/50-mutter-windows.xml:24
 msgid "Resize window"
 msgstr "Zmeniť veľkosť okna"
 
 # description
-#: data/50-mutter-windows.xml:29
+#: data/50-mutter-windows.xml:27
 msgid "Toggle window on all workspaces or one"
 msgstr "Prepnúť okno na všetky pracovné priestory alebo len na jeden"
 
 # description
-#: data/50-mutter-windows.xml:31
+#: data/50-mutter-windows.xml:29
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Presunúť okno dopredu ak je zakryté, inak presunúť dozadu"
 
 # description
-#: data/50-mutter-windows.xml:33
+#: data/50-mutter-windows.xml:31
 msgid "Raise window above other windows"
 msgstr "Presunúť okno nad ostatné okná"
 
 # description
-#: data/50-mutter-windows.xml:35
+#: data/50-mutter-windows.xml:33
 msgid "Lower window below other windows"
 msgstr "Presunúť okno pod ostatné okná"
 
 # description
-#: data/50-mutter-windows.xml:37
+#: data/50-mutter-windows.xml:35
 msgid "Maximize window vertically"
 msgstr "Maximalizovať okno zvisle"
 
 # description
-#: data/50-mutter-windows.xml:39
+#: data/50-mutter-windows.xml:37
 msgid "Maximize window horizontally"
 msgstr "Maximalizovať okno vodorovne"
 
 # Description
-#: data/50-mutter-windows.xml:43
+#: data/50-mutter-windows.xml:41
 msgid "View split on left"
 msgstr "Zobraziť rozdelenie naľavo"
 
 # Description
-#: data/50-mutter-windows.xml:47
+#: data/50-mutter-windows.xml:45
 msgid "View split on right"
 msgstr "Zobraziť rozdelenie napravo"
 
@@ -490,26 +468,29 @@ msgid ""
 "proof. Currently possible keywords: • “scale-monitor-framebuffer” — makes "
 "mutter default to layout logical monitors in a logical pixel coordinate "
 "space, while scaling monitor framebuffers instead of window content, to "
-"manage HiDPI monitors. Does not require a restart."
+"manage HiDPI monitors. Does not require a restart. • “remote-desktop” — "
+"enables remote desktop support. To support remote desktop with screen "
+"sharing, “screen-cast” must also be enabled. • “screen-cast” — enables "
+"screen cast support."
 msgstr ""
 
 # summary
-#: data/org.gnome.mutter.gschema.xml.in:141
+#: data/org.gnome.mutter.gschema.xml.in:145
 msgid "Select window from tab popup"
 msgstr "Vybrať okno z rozbaľovacej ponuky tabulátora"
 
 # summary
-#: data/org.gnome.mutter.gschema.xml.in:146
+#: data/org.gnome.mutter.gschema.xml.in:150
 msgid "Cancel tab popup"
 msgstr "Zrušit rozbaľovaciu ponuku tabulátora"
 
 # PK: predpokladam ze to prepisane medzi tlacidlami
 # description
-#: data/org.gnome.mutter.gschema.xml.in:151
+#: data/org.gnome.mutter.gschema.xml.in:155
 msgid "Switch monitor configurations"
 msgstr "Prepnúť nastavenia monitorov"
 
-#: data/org.gnome.mutter.gschema.xml.in:156
+#: data/org.gnome.mutter.gschema.xml.in:160
 msgid "Rotates the built-in monitor configuration"
 msgstr "Otočí nastavenie vstavaného monitora"
 
@@ -572,10 +553,41 @@ msgstr "Prepnúť na VT č. 12"
 msgid "Re-enable shortcuts"
 msgstr "Znovu povoliť klávesové skratky"
 
+#: data/org.gnome.mutter.wayland.gschema.xml.in:64
+msgid "Allow grabs with Xwayland"
+msgstr ""
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:65
+msgid ""
+"Allow keyboard grabs issued by X11 applications running in Xwayland to be "
+"taken into account. For a X11 grab to be taken into account under Wayland, "
+"the client must also either send a specific X11 ClientMessage to the root "
+"window or be among the applications white-listed in key “xwayland-grab-"
+"access-rules”."
+msgstr ""
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:77
+msgid "Xwayland applications allowed to issue keyboard grabs"
+msgstr ""
+
+#: data/org.gnome.mutter.wayland.gschema.xml.in:78
+msgid ""
+"List the resource names or resource class of X11 windows either allowed or "
+"not allowed to issue X11 keyboard grabs under Xwayland. The resource name or "
+"resource class of a given X11 window can be obtained using the command "
+"“xprop WM_CLASS”. Wildcards “*” and jokers “?” in the values are supported. "
+"Values starting with “!” are blacklisted, which has precedence over the "
+"whitelist, to revoke applications from the default system list. The default "
+"system list includes the following applications: "
+"“@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@” Users can break an existing grab by "
+"using the specific keyboard shortcut defined by the keybinding key “restore-"
+"shortcuts”."
+msgstr ""
+
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
 #.
-#: src/backends/meta-input-settings.c:2151
+#: src/backends/meta-input-settings.c:2260
 #, c-format
 msgid "Mode Switch (Group %d)"
 msgstr "Prepínač režimu (skupina č. %d)"
@@ -585,37 +597,37 @@ msgstr "Prepínač režimu (skupina č. %d)"
 #. TRANSLATORS: This string refers to an action, cycles drawing tablets'
 #. * mapping through the available outputs.
 #.
-#: src/backends/meta-input-settings.c:2174
+#: src/backends/meta-input-settings.c:2283
 msgid "Switch monitor"
 msgstr "Prepnúť monitor"
 
-#: src/backends/meta-input-settings.c:2176
+#: src/backends/meta-input-settings.c:2285
 msgid "Show on-screen help"
 msgstr "Zobraziť pomocníka na obrazovke"
 
-#: src/backends/meta-monitor-manager.c:903
+#: src/backends/meta-monitor-manager.c:900
 msgid "Built-in display"
 msgstr "Vstavaný displej"
 
-#: src/backends/meta-monitor-manager.c:926
+#: src/backends/meta-monitor-manager.c:923
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: src/backends/meta-monitor-manager.c:928
+#: src/backends/meta-monitor-manager.c:925
 msgid "Unknown Display"
 msgstr "Neznámy displej"
 
 #. TRANSLATORS: this is a monitor vendor name, followed by a
 #. * size in inches, like 'Dell 15"'
 #.
-#: src/backends/meta-monitor-manager.c:936
+#: src/backends/meta-monitor-manager.c:933
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: src/compositor/compositor.c:476
+#: src/compositor/compositor.c:481
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display “%s”."
@@ -633,47 +645,51 @@ msgid "Failed to open X Window System display “%s”\n"
 msgstr "Zlyhalo otvorenie displeja systému na správu okien X „%s“\n"
 
 # cmd desc
-#: src/core/main.c:189
+#: src/core/main.c:190
 msgid "Disable connection to session manager"
 msgstr "Zakáže pripojenia k správcovi relácií"
 
 # cmd desc
-#: src/core/main.c:195
+#: src/core/main.c:196
 msgid "Replace the running window manager"
 msgstr "Nahradí bežiaceho správcu okien"
 
 # cmd desc
-#: src/core/main.c:201
+#: src/core/main.c:202
 msgid "Specify session management ID"
 msgstr "Zadá identifikátor správy relácií"
 
-#: src/core/main.c:206
+#: src/core/main.c:207
 msgid "X Display to use"
 msgstr "X displej, ktorý bude použitý"
 
 # cmd desc
-#: src/core/main.c:212
+#: src/core/main.c:213
 msgid "Initialize session from savefile"
 msgstr "Inicializuje reláciu z uloženého súboru"
 
 # cmd desc
-#: src/core/main.c:218
+#: src/core/main.c:219
 msgid "Make X calls synchronous"
 msgstr "Použije synchrónne volania X"
 
 # cmd desc
-#: src/core/main.c:225
+#: src/core/main.c:226
 msgid "Run as a wayland compositor"
 msgstr "Spustí ako kompozitor protokolu wayland"
 
 # cmd desc
-#: src/core/main.c:231
+#: src/core/main.c:232
 msgid "Run as a nested compositor"
 msgstr "Spustí ako kompozitor s vnoreným režimom"
 
-#: src/core/main.c:239
+#: src/core/main.c:240
 msgid "Run as a full display server, rather than nested"
 msgstr "Spustí ako plnohodnotný zobrazovací server, namiesto vnoreného režimu"
+
+#: src/core/main.c:246
+msgid "Run with X11 backend"
+msgstr "Spustí s obslužným programom X11"
 
 # %s is a window title
 #. Translators: %s is a window title
@@ -731,7 +747,7 @@ msgstr "Použije zásuvný modul Mutter"
 msgid "Workspace %d"
 msgstr "Pracovný priestor č. %d"
 
-#: src/core/screen.c:580
+#: src/core/screen.c:583
 #, c-format
 msgid ""
 "Display “%s” already has a window manager; try using the --replace option to "
@@ -740,7 +756,7 @@ msgstr ""
 "Displej „%s“ už má správcu okien. Skúste použiť prepínač --replace, aby sa "
 "aktuálny správca nahradil."
 
-#: src/core/screen.c:665
+#: src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display “%s” is invalid\n"
 msgstr "Obrazovka č. %d na displeji „%s“ nie je platná\n"
@@ -754,7 +770,7 @@ msgstr "Mutter bol skompilovaný bez výpisu podrobností pri behu\n"
 msgid "Mode Switch: Mode %d"
 msgstr "Prepínač režimu: Režim č. %d"
 
-#: src/x11/session.c:1815
+#: src/x11/session.c:1818
 msgid ""
 "These windows do not support “save current setup” and will have to be "
 "restarted manually next time you log in."
@@ -767,6 +783,26 @@ msgstr ""
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
+
+# description
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "Presunúť okno o jeden pracovný priestor vľavo"
+
+# description
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "Presunúť okno o jeden pracovný priestor vpravo"
+
+# description
+#~ msgid "Move to workspace left"
+#~ msgstr "Presunúť na pracovný priestor vľavo"
+
+# description
+#~ msgid "Move to workspace right"
+#~ msgstr "Presunúť na pracovný priestor vpravo"
+
+# description
+#~ msgid "Toggle shaded state"
+#~ msgstr "Prepnúť stav zatienenia"
 
 #~ msgid "background texture could not be created from file"
 #~ msgstr "nepodarilo sa vytvoriť textúru pozadia zo súboru"
