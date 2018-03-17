@@ -78,5 +78,6 @@ void meta_window_wayland_get_max_size (MetaWindow *window,
                                        int        *width,
                                        int        *height);
 
+gboolean meta_window_wayland_needs_move_resize (MetaWindow *window);
 
 #endif
