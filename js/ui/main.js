@@ -30,6 +30,7 @@ const PadOsd = imports.ui.padOsd;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const ParentalControlsManager = imports.misc.parentalControlsManager;
+const PaygManager = imports.misc.paygManager;
 const RunDialog = imports.ui.runDialog;
 const Layout = imports.ui.layout;
 const LoginManager = imports.misc.loginManager;
@@ -46,6 +47,7 @@ const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
 const KbdA11yDialog = imports.ui.kbdA11yDialog;
+const Util = imports.misc.util;
 const LocatePointer = imports.ui.locatePointer;
 const PointerA11yTimeout = imports.ui.pointerA11yTimeout;
 const WorkspaceMonitor = imports.ui.workspaceMonitor;
@@ -91,6 +93,7 @@ var inputMethod = null;
 var introspectService = null;
 var locatePointer = null;
 var discoveryFeed = null;
+var paygManager = null;
 var workspaceMonitor = null;
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -200,6 +203,10 @@ function _initializeUI() {
     wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();
     locatePointer = new LocatePointer.LocatePointer();
+
+    // The ScreenShield depends on the PaygManager, so this
+    // module needs to be initialized first.
+    paygManager = new PaygManager.PaygManager();
 
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();

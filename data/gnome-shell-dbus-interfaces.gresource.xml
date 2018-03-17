@@ -4,6 +4,7 @@
     <file preprocess="xml-stripblanks">com.endlessm.AppStore.xml</file>
     <file preprocess="xml-stripblanks">com.endlessm.DiscoveryFeed.xml</file>
     <file preprocess="xml-stripblanks">com.endlessm.DownloadManager1.Scheduler.xml</file>
+    <file preprocess="xml-stripblanks">com.endlessm.Payg1.xml</file>
     <file preprocess="xml-stripblanks">com.endlessm.Speedwagon.xml</file>
     <file preprocess="xml-stripblanks">net.hadess.SensorProxy.xml</file>
     <file preprocess="xml-stripblanks">net.hadess.SwitcherooControl.xml</file>

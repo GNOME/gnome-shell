@@ -757,3 +757,27 @@ shell_util_get_translated_folder_name (const char *name)
 {
   return shell_app_cache_translate_folder (shell_app_cache_get_default (), name);
 }
+
+/**
+ * shell_util_get_boottime:
+ *
+ * Like g_get_monotonic_time(), but also includes any time the system is
+ * suspended. Uses `CLOCK_BOOTTIME`, hence the name, but is not guaranteed to be
+ * the time since boot.
+ *
+ * Returns: the time since some unspecified starting point, in microseconds
+ */
+gint64
+shell_util_get_boottime (void)
+{
+  struct timespec ts;
+  gint result;
+
+  result = clock_gettime (CLOCK_BOOTTIME, &ts);
+
+  if (G_UNLIKELY (result != 0))
+    g_error ("clock_gettime (CLOCK_BOOTTIME) failed: %s",
+             g_strerror (errno));
+
+  return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+}
