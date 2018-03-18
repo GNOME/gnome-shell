@@ -683,6 +683,7 @@ meta_monitor_manager_kms_initable_init (GInitable    *initable,
         {
           g_warning ("Failed to open secondary gpu '%s': %s",
                      gpu_path, secondary_error->message);
+          continue;
         }
 
       meta_monitor_manager_add_gpu (META_MONITOR_MANAGER (manager_kms),
