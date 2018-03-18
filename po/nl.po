@@ -14,16 +14,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-02-21 14:13+0000\n"
-"PO-Revision-Date: 2018-02-21 22:05+0100\n"
-"Last-Translator: Justin van Steijn <jvs@fsfe.org>\n"
+"POT-Creation-Date: 2018-03-16 21:34+0000\n"
+"PO-Revision-Date: 2018-03-18 11:32+0100\n"
+"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -283,7 +283,7 @@ msgid ""
 msgstr ""
 "Geeft aan hoe vensters in het overzicht getoond worden. Geldige waarden zijn "
 "‘thumbnail-only’ (alleen een miniatuur tonen), ‘app-icon-only’ (alleen het "
-"pictogram van de toepassing tonen) of “both” (beide tonen)."
+"pictogram van de toepassing tonen) of ‘both’ (beide tonen)."
 
 #: data/org.gnome.shell.gschema.xml.in:186
 msgid ""
@@ -470,7 +470,7 @@ msgstr "Oriëntatievergrendeling"
 msgid "lock orientation;screen;rotation"
 msgstr ""
 "lock orientation;screen;rotation;oriëntatievergrendeling;scherm;draaiing;"
-"rotatie;"
+"rotatie"
 
 #: js/misc/util.js:122
 msgid "Command not found"
@@ -1655,7 +1655,7 @@ msgstr "Locatie ingeschakeld"
 
 #: js/ui/status/location.js:90 js/ui/status/location.js:198
 msgid "Disable"
-msgstr "Uischakelen"
+msgstr "Uitschakelen"
 
 #: js/ui/status/location.js:91
 msgid "Privacy Settings"
@@ -1967,16 +1967,16 @@ msgstr "Pauzestand"
 msgid "Power Off"
 msgstr "Uitschakelen"
 
-#: js/ui/status/thunderbolt.js:272
+#: js/ui/status/thunderbolt.js:294
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
 #. we are done
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:350
 msgid "Unknown Thunderbolt device"
 msgstr "Onbekend Thunderbolt-apparaat"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:351
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -1984,11 +1984,11 @@ msgstr ""
 "Terwijl u weg was is er een nieuw apparaat gedetecteerd. Koppel het apparaat "
 "los en verbind het opnieuw om het te gebruiken."
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:356
 msgid "Thunderbolt authorization error"
 msgstr "Thunderbolt-autorisatiefout"
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:357
 #, javascript-format
 msgid "Could not authorize the thunderbolt device: %s"
 msgstr "Kon het Thunderbolt-apparaat niet autoriseren: %s"
@@ -2162,7 +2162,7 @@ msgstr "De modus die door GDM voor het aanmeldscherm gebruikt wordt"
 
 #: src/main.c:444
 msgid "Use a specific mode, e.g. “gdm” for login screen"
-msgstr "Specifieke modus gebruiken, bijv. “gdm” voor het aanmeldscherm"
+msgstr "Specifieke modus gebruiken, bijv. ‘gdm’ voor het aanmeldscherm"
 
 #: src/main.c:450
 msgid "List possible modes"
@@ -2176,7 +2176,7 @@ msgstr "Onbekend"
 #: src/shell-app.c:511
 #, c-format
 msgid "Failed to launch “%s”"
-msgstr "Kon “%s” niet starten"
+msgstr "Kon ‘%s’ niet starten"
 
 #: src/shell-keyring-prompt.c:730
 msgid "Passwords do not match."
