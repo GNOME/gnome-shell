@@ -674,7 +674,7 @@ meta_monitor_manager_kms_initable_init (GInitable    *initable,
   gpu_paths = get_gpu_paths (manager_kms, GPU_TYPE_SECONDARY, primary_gpu_path);
   for (l = gpu_paths; l; l = l->next)
     {
-      GError *secondary_error = NULL;
+      g_autoptr (GError) secondary_error = NULL;
       char *gpu_path = l->data;
       MetaGpuKms *gpu_kms;
 
@@ -683,7 +683,6 @@ meta_monitor_manager_kms_initable_init (GInitable    *initable,
         {
           g_warning ("Failed to open secondary gpu '%s': %s",
                      gpu_path, secondary_error->message);
-          g_error_free (secondary_error);
         }
 
       meta_monitor_manager_add_gpu (META_MONITOR_MANAGER (manager_kms),
