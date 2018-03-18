@@ -778,7 +778,7 @@ meta_gpu_kms_new (MetaMonitorManagerKms  *monitor_manager_kms,
 
   kms_fd = meta_launcher_open_restricted (launcher, kms_file_path, error);
   if (kms_fd == -1)
-    return FALSE;
+    return NULL;
 
   gpu_kms = g_object_new (META_TYPE_GPU_KMS,
                           "monitor-manager", monitor_manager_kms,
