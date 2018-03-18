@@ -55,11 +55,11 @@ var EntryMenu = new Lang.Class({
 
         if (v) {
             this._makePasswordItem();
-            this._entry.input_purpose = Gtk.InputPurpose.PASSWORD;
+            this._entry.input_purpose = Clutter.InputContentPurpose.PASSWORD;
         } else {
             this._passwordItem.destroy();
             this._passwordItem = null;
-            this._entry.input_purpose = Gtk.InputPurpose.FREE_FORM;
+            this._entry.input_purpose = Clutter.InputContentPurpose.NORMAL;
         }
     },
 

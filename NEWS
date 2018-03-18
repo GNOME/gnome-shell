@@ -1,3 +1,24 @@
+3.28.0
+======
+
+Translators:
+  A S Alam [pa], gogo [hr], Chao-Hsiung Liao [zh_TW], Jordi Mas [ca],
+  Anders Jonsson [sv], Balázs Úr [hu]
+
+3.27.92
+=======
+* Misc. bug fixes [Florian; #64, #66, #72]
+
+Contributors:
+  Jonas Ådahl, Christian Kellner, Florian Müllner
+
+Translators:
+  Daniel Mustieles [es], Wolfgang Stöggl [de], Cheng-Chia Tseng [zh_TW],
+  Dušan Kazik [sk], Changwoo Ryu [ko], Furkan Ahmet Kara [tr], Balázs Úr [hu],
+  Trần Ngọc Quân [vi], Milo Casagrande [it], GNOME Translation Robot [gd, nl],
+  Marek Cernocky [cs], Aurimas Černius [lt], Alain Lojewski [fr],
+  Rūdolfs Mazurs [lv], Stas Solovey [ru], Alan Mortensen [da]
+
 3.27.91
 =======
 * Fix wrong bluetooth state when disabled by HW airplane mode [Mario; #789110]

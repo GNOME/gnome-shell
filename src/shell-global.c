@@ -73,8 +73,8 @@ struct _ShellGlobal {
   ShellWM *wm;
   GSettings *settings;
   const char *datadir;
-  const char *imagedir;
-  const char *userdatadir;
+  char *imagedir;
+  char *userdatadir;
   GFile *userdatadir_path;
   GFile *runtime_state_path;
 
@@ -336,6 +336,10 @@ shell_global_finalize (GObject *object)
 
   g_clear_object (&global->userdatadir_path);
   g_clear_object (&global->runtime_state_path);
+
+  g_free (global->session_mode);
+  g_free (global->imagedir);
+  g_free (global->userdatadir);
 
   G_OBJECT_CLASS(shell_global_parent_class)->finalize (object);
 }
