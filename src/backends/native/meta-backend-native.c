@@ -35,11 +35,11 @@
 #include "clutter/evdev/clutter-evdev.h"
 #include "meta-barrier-native.h"
 #include "meta-border.h"
-#include "meta-idle-monitor-native.h"
 #include "meta-monitor-manager-kms.h"
 #include "meta-cursor-renderer-native.h"
 #include "meta-launcher.h"
 #include "backends/meta-cursor-tracker-private.h"
+#include "backends/meta-idle-monitor-private.h"
 #include "backends/meta-logical-monitor.h"
 #include "backends/meta-monitor-manager-private.h"
 #include "backends/meta-pointer-constraint.h"
@@ -108,7 +108,7 @@ prepare_for_sleep_cb (GDBusConnection *connection,
   g_variant_get (parameters, "(b)", &suspending);
   if (suspending)
     return;
-  meta_idle_monitor_native_reset_idletime (meta_idle_monitor_get_core ());
+  meta_idle_monitor_reset_idletime (meta_idle_monitor_get_core ());
 }
 
 static void
@@ -145,7 +145,7 @@ lid_is_closed_changed_cb (UpClient   *client,
   if (up_client_get_lid_is_closed (client))
     return;
 
-  meta_idle_monitor_native_reset_idletime (meta_idle_monitor_get_core ());
+  meta_idle_monitor_reset_idletime (meta_idle_monitor_get_core ());
 }
 
 static void
@@ -398,15 +398,6 @@ meta_backend_native_post_init (MetaBackend *backend)
                                             meta_backend_get_monitor_manager (backend));
 }
 
-static MetaIdleMonitor *
-meta_backend_native_create_idle_monitor (MetaBackend *backend,
-                                         int          device_id)
-{
-  return g_object_new (META_TYPE_IDLE_MONITOR_NATIVE,
-                       "device-id", device_id,
-                       NULL);
-}
-
 static MetaMonitorManager *
 meta_backend_native_create_monitor_manager (MetaBackend *backend,
                                             GError     **error)
@@ -604,7 +595,6 @@ meta_backend_native_class_init (MetaBackendNativeClass *klass)
 
   backend_class->post_init = meta_backend_native_post_init;
 
-  backend_class->create_idle_monitor = meta_backend_native_create_idle_monitor;
   backend_class->create_monitor_manager = meta_backend_native_create_monitor_manager;
   backend_class->create_cursor_renderer = meta_backend_native_create_cursor_renderer;
   backend_class->create_renderer = meta_backend_native_create_renderer;
@@ -747,5 +737,5 @@ void meta_backend_native_resume (MetaBackendNative *native)
   meta_cursor_renderer_native_force_update (cursor_renderer_native);
 
   idle_monitor = meta_backend_get_idle_monitor (backend, 0);
-  meta_idle_monitor_native_reset_idletime (idle_monitor);
+  meta_idle_monitor_reset_idletime (idle_monitor);
 }

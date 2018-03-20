@@ -152,8 +152,34 @@ meta_idle_monitor_class_init (MetaIdleMonitorClass *klass)
 }
 
 static void
+free_watch (gpointer data)
+{
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) data;
+  MetaIdleMonitor *monitor = watch->monitor;
+
+  g_object_ref (monitor);
+
+  if (watch->idle_source_id)
+    {
+      g_source_remove (watch->idle_source_id);
+      watch->idle_source_id = 0;
+    }
+
+  if (watch->notify != NULL)
+    watch->notify (watch->user_data);
+
+  if (watch->timeout_source != NULL)
+    g_source_destroy (watch->timeout_source);
+
+  g_object_unref (monitor);
+  g_slice_free (MetaIdleMonitorWatch, watch);
+}
+
+static void
 meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
+  monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
+  monitor->last_event_time = g_get_monotonic_time ();
 }
 
 /**
@@ -185,6 +211,36 @@ meta_idle_monitor_get_for_device (int device_id)
   return meta_backend_get_idle_monitor (backend, device_id);
 }
 
+static guint32
+get_next_watch_serial (void)
+{
+  static guint32 serial = 0;
+
+  g_atomic_int_inc (&serial);
+
+  return serial;
+}
+
+static gboolean
+idle_monitor_dispatch_timeout (GSource     *source,
+                               GSourceFunc  callback,
+                               gpointer     user_data)
+{
+  MetaIdleMonitorWatch *watch = (MetaIdleMonitorWatch *) user_data;
+
+  _meta_idle_monitor_watch_fire (watch);
+  g_source_set_ready_time (watch->timeout_source, -1);
+
+  return TRUE;
+}
+
+static GSourceFuncs idle_monitor_source_funcs = {
+  .prepare = NULL,
+  .check = NULL,
+  .dispatch = idle_monitor_dispatch_timeout,
+  .finalize = NULL,
+};
+
 static MetaIdleMonitorWatch *
 make_watch (MetaIdleMonitor           *monitor,
             guint64                    timeout_msec,
@@ -194,11 +250,28 @@ make_watch (MetaIdleMonitor           *monitor,
 {
   MetaIdleMonitorWatch *watch;
 
-  watch = META_IDLE_MONITOR_GET_CLASS (monitor)->make_watch (monitor,
-                                                             timeout_msec,
-                                                             callback,
-                                                             user_data,
-                                                             notify);
+  watch = g_slice_new0 (MetaIdleMonitorWatch);
+
+  watch->monitor = monitor;
+  watch->id = get_next_watch_serial ();
+  watch->callback = callback;
+  watch->user_data = user_data;
+  watch->notify = notify;
+  watch->timeout_msec = timeout_msec;
+
+  if (timeout_msec != 0)
+    {
+      GSource *source = g_source_new (&idle_monitor_source_funcs,
+                                      sizeof (GSource));
+
+      g_source_set_callback (source, NULL, watch, NULL);
+      g_source_set_ready_time (source,
+                               monitor->last_event_time + timeout_msec * 1000);
+      g_source_attach (source, NULL);
+      g_source_unref (source);
+
+      watch->timeout_source = source;
+    }
 
   g_hash_table_insert (monitor->watches,
                        GUINT_TO_POINTER (watch->id),
@@ -314,5 +387,39 @@ meta_idle_monitor_remove_watch (MetaIdleMonitor *monitor,
 gint64
 meta_idle_monitor_get_idletime (MetaIdleMonitor *monitor)
 {
-  return META_IDLE_MONITOR_GET_CLASS (monitor)->get_idletime (monitor);
+  return (g_get_monotonic_time () - monitor->last_event_time) / 1000;
+}
+
+void
+meta_idle_monitor_reset_idletime (MetaIdleMonitor *monitor)
+{
+  GList *node, *watch_ids;
+
+  monitor->last_event_time = g_get_monotonic_time ();
+
+  watch_ids = g_hash_table_get_keys (monitor->watches);
+
+  for (node = watch_ids; node != NULL; node = node->next)
+    {
+      guint watch_id = GPOINTER_TO_UINT (node->data);
+      MetaIdleMonitorWatch *watch;
+
+      watch = g_hash_table_lookup (monitor->watches,
+                                   GUINT_TO_POINTER (watch_id));
+      if (!watch)
+        continue;
+
+      if (watch->timeout_msec == 0)
+        {
+          _meta_idle_monitor_watch_fire ((MetaIdleMonitorWatch *) watch);
+        }
+      else
+        {
+          g_source_set_ready_time (watch->timeout_source,
+                                   monitor->last_event_time +
+                                   watch->timeout_msec * 1000);
+        }
+    }
+
+  g_list_free (watch_ids);
 }

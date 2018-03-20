@@ -37,7 +37,6 @@
 #include <X11/Xlib-xcb.h>
 #include <xkbcommon/xkbcommon-x11.h>
 
-#include "meta-idle-monitor-xsync.h"
 #include "backends/meta-stage.h"
 #include "backends/x11/meta-clutter-backend-x11.h"
 #include "backends/x11/meta-renderer-x11.h"
@@ -82,15 +81,6 @@ G_DEFINE_TYPE_WITH_CODE (MetaBackendX11, meta_backend_x11, META_TYPE_BACKEND,
                          G_ADD_PRIVATE (MetaBackendX11)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
                                                 initable_iface_init));
-
-static void
-handle_alarm_notify (MetaBackend *backend,
-                     XEvent      *event)
-{
-  meta_backend_foreach_device_monitor (backend,
-                                       (GFunc) meta_idle_monitor_xsync_handle_xevent,
-                                       event);
-}
 
 static void
 meta_backend_x11_translate_device_event (MetaBackendX11 *x11,
@@ -273,9 +263,6 @@ handle_host_xevent (MetaBackend *backend,
 
   bypass_clutter = (meta_backend_x11_handle_host_xevent (x11, event) ||
                     bypass_clutter);
-
-  if (event->type == (priv->xsync_event_base + XSyncAlarmNotify))
-    handle_alarm_notify (backend, event);
 
   if (event->type == priv->xkb_event_base)
     {
@@ -462,15 +449,6 @@ static ClutterBackend *
 meta_backend_x11_create_clutter_backend (MetaBackend *backend)
 {
   return g_object_new (META_TYPE_CLUTTER_BACKEND_X11, NULL);
-}
-
-static MetaIdleMonitor *
-meta_backend_x11_create_idle_monitor (MetaBackend *backend,
-                                      int          device_id)
-{
-  return g_object_new (META_TYPE_IDLE_MONITOR_XSYNC,
-                       "device-id", device_id,
-                       NULL);
 }
 
 static gboolean
@@ -686,7 +664,6 @@ meta_backend_x11_class_init (MetaBackendX11Class *klass)
 
   backend_class->create_clutter_backend = meta_backend_x11_create_clutter_backend;
   backend_class->post_init = meta_backend_x11_post_init;
-  backend_class->create_idle_monitor = meta_backend_x11_create_idle_monitor;
   backend_class->grab_device = meta_backend_x11_grab_device;
   backend_class->ungrab_device = meta_backend_x11_ungrab_device;
   backend_class->warp_pointer = meta_backend_x11_warp_pointer;

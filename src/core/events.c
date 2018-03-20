@@ -32,8 +32,9 @@
 
 #ifdef HAVE_NATIVE_BACKEND
 #include "backends/native/meta-backend-native.h"
-#include "backends/native/meta-idle-monitor-native.h"
 #endif
+
+#include "backends/meta-idle-monitor-private.h"
 
 #ifdef HAVE_WAYLAND
 #include "wayland/meta-wayland-private.h"
@@ -92,46 +93,38 @@ get_window_for_event (MetaDisplay        *display,
 static void
 handle_idletime_for_event (const ClutterEvent *event)
 {
-#ifdef HAVE_NATIVE_BACKEND
-  /* This is handled by XSync under X11. */
-  MetaBackend *backend = meta_get_backend ();
+  ClutterInputDevice *device, *source_device;
+  MetaIdleMonitor *core_monitor, *device_monitor;
+  int device_id;
 
-  if (META_IS_BACKEND_NATIVE (backend))
+  device = clutter_event_get_device (event);
+  if (device == NULL)
+    return;
+
+  if (event->any.flags & CLUTTER_EVENT_FLAG_SYNTHETIC ||
+      event->type == CLUTTER_ENTER ||
+      event->type == CLUTTER_LEAVE ||
+      event->type == CLUTTER_STAGE_STATE ||
+      event->type == CLUTTER_DESTROY_NOTIFY ||
+      event->type == CLUTTER_CLIENT_MESSAGE ||
+      event->type == CLUTTER_DELETE)
+    return;
+
+  device_id = clutter_input_device_get_device_id (device);
+
+  core_monitor = meta_idle_monitor_get_core ();
+  device_monitor = meta_idle_monitor_get_for_device (device_id);
+
+  meta_idle_monitor_reset_idletime (core_monitor);
+  meta_idle_monitor_reset_idletime (device_monitor);
+
+  source_device = clutter_event_get_source_device (event);
+  if (source_device != device)
     {
-      ClutterInputDevice *device, *source_device;
-      MetaIdleMonitor *core_monitor, *device_monitor;
-      int device_id;
-
-      device = clutter_event_get_device (event);
-      if (device == NULL)
-        return;
-
-      if (event->any.flags & CLUTTER_EVENT_FLAG_SYNTHETIC ||
-          event->type == CLUTTER_ENTER ||
-          event->type == CLUTTER_LEAVE ||
-          event->type == CLUTTER_STAGE_STATE ||
-          event->type == CLUTTER_DESTROY_NOTIFY ||
-          event->type == CLUTTER_CLIENT_MESSAGE ||
-          event->type == CLUTTER_DELETE)
-        return;
-
       device_id = clutter_input_device_get_device_id (device);
-
-      core_monitor = meta_idle_monitor_get_core ();
       device_monitor = meta_idle_monitor_get_for_device (device_id);
-
-      meta_idle_monitor_native_reset_idletime (core_monitor);
-      meta_idle_monitor_native_reset_idletime (device_monitor);
-
-      source_device = clutter_event_get_source_device (event);
-      if (source_device != device)
-        {
-          device_id = clutter_input_device_get_device_id (device);
-          device_monitor = meta_idle_monitor_get_for_device (device_id);
-          meta_idle_monitor_native_reset_idletime (device_monitor);
-        }
+      meta_idle_monitor_reset_idletime (device_monitor);
     }
-#endif /* HAVE_NATIVE_BACKEND */
 }
 
 static gboolean

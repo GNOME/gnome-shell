@@ -26,9 +26,6 @@
 #include <meta/meta-idle-monitor.h>
 #include "display-private.h"
 
-#include <X11/Xlib.h>
-#include <X11/extensions/sync.h>
-
 typedef struct
 {
   MetaIdleMonitor          *monitor;
@@ -38,6 +35,7 @@ typedef struct
   GDestroyNotify            notify;
   guint64                   timeout_msec;
   int                       idle_source_id;
+  GSource                  *timeout_source;
 } MetaIdleMonitorWatch;
 
 struct _MetaIdleMonitor
@@ -46,20 +44,15 @@ struct _MetaIdleMonitor
 
   GHashTable *watches;
   int device_id;
+  guint64 last_event_time;
 };
 
 struct _MetaIdleMonitorClass
 {
   GObjectClass parent_class;
-
-  gint64 (*get_idletime) (MetaIdleMonitor *monitor);
-  MetaIdleMonitorWatch * (*make_watch) (MetaIdleMonitor           *monitor,
-                                        guint64                    timeout_msec,
-                                        MetaIdleMonitorWatchFunc   callback,
-                                        gpointer                   user_data,
-                                        GDestroyNotify             notify);
 };
 
 void _meta_idle_monitor_watch_fire (MetaIdleMonitorWatch *watch);
+void meta_idle_monitor_reset_idletime (MetaIdleMonitor *monitor);
 
 #endif /* META_IDLE_MONITOR_PRIVATE_H */

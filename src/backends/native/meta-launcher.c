@@ -44,7 +44,6 @@
 #include "backends/meta-backend-private.h"
 #include "backends/native/meta-backend-native.h"
 #include "meta-cursor-renderer-native.h"
-#include "meta-idle-monitor-native.h"
 #include "meta-renderer-native.h"
 
 struct _MetaLauncher

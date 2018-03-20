@@ -183,8 +183,6 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/x11/nested/meta-cursor-renderer-x11-nested.h		\
 	backends/x11/nested/meta-renderer-x11-nested.c	\
 	backends/x11/nested/meta-renderer-x11-nested.h	\
-	backends/x11/meta-idle-monitor-xsync.c		\
-	backends/x11/meta-idle-monitor-xsync.h		\
 	backends/x11/meta-input-settings-x11.c		\
 	backends/x11/meta-input-settings-x11.h		\
 	backends/x11/meta-monitor-manager-xrandr.c	\
@@ -487,8 +485,6 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES +=		\
 	backends/native/meta-default-modes.h		\
 	backends/native/meta-gpu-kms.c			\
 	backends/native/meta-gpu-kms.h			\
-	backends/native/meta-idle-monitor-native.c	\
-	backends/native/meta-idle-monitor-native.h	\
 	backends/native/meta-input-settings-native.c	\
 	backends/native/meta-input-settings-native.h	\
 	backends/native/meta-monitor-manager-kms.c	\

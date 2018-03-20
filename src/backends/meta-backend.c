@@ -222,7 +222,9 @@ static MetaIdleMonitor *
 meta_backend_create_idle_monitor (MetaBackend *backend,
                                   int          device_id)
 {
-  return META_BACKEND_GET_CLASS (backend)->create_idle_monitor (backend, device_id);
+  return g_object_new (META_TYPE_IDLE_MONITOR,
+                       "device-id", device_id,
+                       NULL);
 }
 
 static void
