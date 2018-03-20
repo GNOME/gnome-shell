@@ -36,6 +36,7 @@
 #include <meta/util.h>
 #include <meta/main.h>
 #include <meta/meta-idle-monitor.h>
+#include "gsm-inhibitor-flag.h"
 #include "meta-idle-monitor-private.h"
 #include "meta-idle-monitor-dbus.h"
 #include "meta-backend-private.h"
@@ -87,6 +88,7 @@ meta_idle_monitor_dispose (GObject *object)
   MetaIdleMonitor *monitor = META_IDLE_MONITOR (object);
 
   g_clear_pointer (&monitor->watches, g_hash_table_destroy);
+  g_clear_object (&monitor->session_proxy);
 
   G_OBJECT_CLASS (meta_idle_monitor_parent_class)->dispose (object);
 }
@@ -176,10 +178,92 @@ free_watch (gpointer data)
 }
 
 static void
+update_inhibited_watch (gpointer key,
+                        gpointer value,
+                        gpointer user_data)
+{
+  MetaIdleMonitor *monitor = user_data;
+  MetaIdleMonitorWatch *watch = value;
+
+  if (!watch->timeout_source)
+    return;
+
+  if (monitor->inhibited)
+    {
+      g_source_set_ready_time (watch->timeout_source, -1);
+    }
+  else
+    {
+      g_source_set_ready_time (watch->timeout_source,
+                               monitor->last_event_time +
+                               watch->timeout_msec * 1000);
+    }
+}
+
+static void
+update_inhibited (MetaIdleMonitor *monitor,
+                  gboolean         inhibited)
+{
+  if (inhibited == monitor->inhibited)
+    return;
+
+  g_hash_table_foreach (monitor->watches,
+                        update_inhibited_watch,
+                        monitor);
+}
+
+static void
+meta_idle_monitor_inhibited_actions_changed (GDBusProxy  *session,
+                                             GVariant    *changed,
+                                             char       **invalidated,
+                                             gpointer     user_data)
+{
+  MetaIdleMonitor *monitor = user_data;
+  GVariant *v;
+
+  v = g_variant_lookup_value (changed, "InhibitedActions", G_VARIANT_TYPE_UINT32);
+  if (v)
+    {
+      gboolean inhibited;
+
+      inhibited = g_variant_get_uint32 (v) & GSM_INHIBITOR_FLAG_IDLE;
+      g_variant_unref (v);
+
+      if (!inhibited)
+        monitor->last_event_time = g_get_monotonic_time ();
+      update_inhibited (monitor, inhibited);
+    }
+}
+
+static void
 meta_idle_monitor_init (MetaIdleMonitor *monitor)
 {
+  GVariant *v;
+
   monitor->watches = g_hash_table_new_full (NULL, NULL, NULL, free_watch);
   monitor->last_event_time = g_get_monotonic_time ();
+
+  /* Monitor inhibitors */
+  monitor->session_proxy =
+    g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                   G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
+                                   NULL,
+                                   "org.gnome.SessionManager",
+                                   "/org/gnome/SessionManager",
+                                   "org.gnome.SessionManager",
+                                   NULL,
+                                   NULL);
+  if (!monitor->session_proxy)
+    return;
+
+  g_signal_connect (monitor->session_proxy, "g-properties-changed",
+                    G_CALLBACK (meta_idle_monitor_inhibited_actions_changed),
+                    monitor);
+
+  v = g_dbus_proxy_get_cached_property (monitor->session_proxy,
+                                        "InhibitedActions");
+  monitor->inhibited = g_variant_get_uint32 (v) & GSM_INHIBITOR_FLAG_IDLE;
+  g_variant_unref (v);
 }
 
 /**
@@ -265,8 +349,12 @@ make_watch (MetaIdleMonitor           *monitor,
                                       sizeof (GSource));
 
       g_source_set_callback (source, NULL, watch, NULL);
-      g_source_set_ready_time (source,
-                               monitor->last_event_time + timeout_msec * 1000);
+      if (!monitor->inhibited)
+        {
+          g_source_set_ready_time (source,
+                                   monitor->last_event_time +
+                                   timeout_msec * 1000);
+        }
       g_source_attach (source, NULL);
       g_source_unref (source);
 

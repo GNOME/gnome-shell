@@ -42,6 +42,8 @@ struct _MetaIdleMonitor
 {
   GObject parent_instance;
 
+  GDBusProxy *session_proxy;
+  gboolean inhibited;
   GHashTable *watches;
   int device_id;
   guint64 last_event_time;

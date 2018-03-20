@@ -161,6 +161,7 @@ libmutter_@LIBMUTTER_API_VERSION@_la_SOURCES =	\
 	backends/meta-renderer-view.h		\
 	backends/edid-parse.c			\
 	backends/edid.h				\
+	backends/gsm-inhibitor-flag.h		\
 	backends/x11/meta-backend-x11.c			\
 	backends/x11/meta-backend-x11.h			\
 	backends/x11/meta-barrier-x11.c			\
