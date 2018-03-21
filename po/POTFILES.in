@@ -56,6 +56,7 @@ js/ui/search.js
 js/ui/shellEntry.js
 js/ui/shellMountOperation.js
 js/ui/status/accessibility.js
+js/ui/status/automaticUpdates.js
 js/ui/status/bluetooth.js
 js/ui/status/brightness.js
 js/ui/status/dwellClick.js

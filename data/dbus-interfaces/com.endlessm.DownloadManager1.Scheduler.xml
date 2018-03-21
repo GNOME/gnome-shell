@@ -1,0 +1,6 @@
+<node>
+  <interface name="com.endlessm.DownloadManager1.Scheduler">
+    <property name="ActiveEntryCount" type="u" access="read" />
+    <property name="EntryCount" type="u" access="read" />
+  </interface>
+</node>
