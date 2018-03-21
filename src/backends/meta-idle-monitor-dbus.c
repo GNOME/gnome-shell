@@ -24,6 +24,7 @@
 
 #include "meta-idle-monitor-dbus.h"
 #include <meta/meta-idle-monitor.h>
+#include <backends/meta-idle-monitor-private.h>
 #include "meta-dbus-idle-monitor.h"
 
 #include <clutter/clutter.h>
@@ -39,6 +40,26 @@ handle_get_idletime (MetaDBusIdleMonitor   *skeleton,
 
   idletime = meta_idle_monitor_get_idletime (monitor);
   meta_dbus_idle_monitor_complete_get_idletime (skeleton, invocation, idletime);
+
+  return TRUE;
+}
+
+static gboolean
+handle_reset_idletime (MetaDBusIdleMonitor   *skeleton,
+                       GDBusMethodInvocation *invocation,
+                       MetaIdleMonitor       *monitor)
+{
+  if (!g_getenv ("MUTTER_DEBUG_RESET_IDLETIME"))
+    {
+      g_dbus_method_invocation_return_error_literal (invocation,
+                                                     G_DBUS_ERROR,
+                                                     G_DBUS_ERROR_UNKNOWN_METHOD,
+                                                     "No such method");
+      return FALSE;
+    }
+
+  meta_idle_monitor_reset_idletime (meta_idle_monitor_get_core ());
+  meta_dbus_idle_monitor_complete_reset_idletime (skeleton, invocation);
 
   return TRUE;
 }
@@ -173,6 +194,8 @@ create_monitor_skeleton (GDBusObjectManagerServer *manager,
                            G_CALLBACK (handle_add_user_active_watch), monitor, 0);
   g_signal_connect_object (skeleton, "handle-remove-watch",
                            G_CALLBACK (handle_remove_watch), monitor, 0);
+  g_signal_connect_object (skeleton, "handle-reset-idletime",
+                           G_CALLBACK (handle_reset_idletime), monitor, 0);
   g_signal_connect_object (skeleton, "handle-get-idletime",
                            G_CALLBACK (handle_get_idletime), monitor, 0);
 

@@ -28,6 +28,8 @@
       <arg name="id" direction="in" type="u" />
     </method>
 
+    <method name="ResetIdletime"/>
+
     <signal name="WatchFired">
       <arg name="id" direction="out" type="u" />
     </signal>
