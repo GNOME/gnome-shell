@@ -60,10 +60,6 @@ struct _MetaBackendNativePrivate
 {
   MetaLauncher *launcher;
   MetaBarrierManagerNative *barrier_manager;
-  UpClient *up_client;
-  guint sleep_signal_id;
-  GCancellable *cancellable;
-  GDBusConnection *system_bus;
 };
 typedef struct _MetaBackendNativePrivate MetaBackendNativePrivate;
 
@@ -85,67 +81,7 @@ meta_backend_native_finalize (GObject *object)
 
   meta_launcher_free (priv->launcher);
 
-  g_object_unref (priv->up_client);
-  if (priv->sleep_signal_id)
-    g_dbus_connection_signal_unsubscribe (priv->system_bus, priv->sleep_signal_id);
-  g_cancellable_cancel (priv->cancellable);
-  g_clear_object (&priv->cancellable);
-  g_clear_object (&priv->system_bus);
-
   G_OBJECT_CLASS (meta_backend_native_parent_class)->finalize (object);
-}
-
-static void
-prepare_for_sleep_cb (GDBusConnection *connection,
-                      const gchar     *sender_name,
-                      const gchar     *object_path,
-                      const gchar     *interface_name,
-                      const gchar     *signal_name,
-                      GVariant        *parameters,
-                      gpointer         user_data)
-{
-  gboolean suspending;
-  g_variant_get (parameters, "(b)", &suspending);
-  if (suspending)
-    return;
-  meta_idle_monitor_reset_idletime (meta_idle_monitor_get_core ());
-}
-
-static void
-system_bus_gotten_cb (GObject      *object,
-                      GAsyncResult *res,
-                      gpointer      user_data)
-{
-  MetaBackendNativePrivate *priv;
-  GDBusConnection *bus;
-
-  bus = g_bus_get_finish (res, NULL);
-  if (!bus)
-    return;
-
-  priv = meta_backend_native_get_instance_private (META_BACKEND_NATIVE (user_data));
-  priv->system_bus = bus;
-  priv->sleep_signal_id = g_dbus_connection_signal_subscribe (priv->system_bus,
-                                                              "org.freedesktop.login1",
-                                                              "org.freedesktop.login1.Manager",
-                                                              "PrepareForSleep",
-                                                              "/org/freedesktop/login1",
-                                                              NULL,
-                                                              G_DBUS_SIGNAL_FLAGS_NONE,
-                                                              prepare_for_sleep_cb,
-                                                              NULL,
-                                                              NULL);
-}
-
-static void
-lid_is_closed_changed_cb (UpClient   *client,
-                          GParamSpec *pspec,
-                          gpointer    user_data)
-{
-  if (up_client_get_lid_is_closed (client))
-    return;
-
-  meta_idle_monitor_reset_idletime (meta_idle_monitor_get_core ());
 }
 
 static void
@@ -627,16 +563,6 @@ meta_backend_native_init (MetaBackendNative *native)
     }
 
   priv->barrier_manager = meta_barrier_manager_native_new ();
-
-  priv->up_client = up_client_new ();
-  g_signal_connect (priv->up_client, "notify::lid-is-closed",
-                    G_CALLBACK (lid_is_closed_changed_cb), NULL);
-
-  priv->cancellable = g_cancellable_new ();
-  g_bus_get (G_BUS_TYPE_SYSTEM,
-             priv->cancellable,
-             system_bus_gotten_cb,
-             native);
 }
 
 MetaLauncher *

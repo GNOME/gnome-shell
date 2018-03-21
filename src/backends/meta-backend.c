@@ -110,6 +110,11 @@ struct _MetaBackendPrivate
 
   MetaPointerConstraint *client_pointer_constraint;
   MetaDnd *dnd;
+
+  UpClient *up_client;
+  guint sleep_signal_id;
+  GCancellable *cancellable;
+  GDBusConnection *system_bus;
 };
 typedef struct _MetaBackendPrivate MetaBackendPrivate;
 
@@ -135,6 +140,13 @@ meta_backend_finalize (GObject *object)
   g_clear_object (&priv->screen_cast);
   g_clear_object (&priv->dbus_session_watcher);
 #endif
+
+  g_object_unref (priv->up_client);
+  if (priv->sleep_signal_id)
+    g_dbus_connection_signal_unsubscribe (priv->system_bus, priv->sleep_signal_id);
+  g_cancellable_cancel (priv->cancellable);
+  g_clear_object (&priv->cancellable);
+  g_clear_object (&priv->system_bus);
 
   if (priv->device_update_idle_id)
     g_source_remove (priv->device_update_idle_id);
@@ -592,6 +604,61 @@ meta_backend_create_renderer (MetaBackend *backend,
   return META_BACKEND_GET_CLASS (backend)->create_renderer (backend, error);
 }
 
+static void
+lid_is_closed_changed_cb (UpClient   *client,
+                          GParamSpec *pspec,
+                          gpointer    user_data)
+{
+  if (up_client_get_lid_is_closed (client))
+    return;
+
+  meta_idle_monitor_reset_idletime (meta_idle_monitor_get_core ());
+}
+
+static void
+prepare_for_sleep_cb (GDBusConnection *connection,
+                      const gchar     *sender_name,
+                      const gchar     *object_path,
+                      const gchar     *interface_name,
+                      const gchar     *signal_name,
+                      GVariant        *parameters,
+                      gpointer         user_data)
+{
+  gboolean suspending;
+
+  g_variant_get (parameters, "(b)", &suspending);
+  if (suspending)
+    return;
+  meta_idle_monitor_reset_idletime (meta_idle_monitor_get_core ());
+}
+
+static void
+system_bus_gotten_cb (GObject      *object,
+                      GAsyncResult *res,
+                      gpointer      user_data)
+{
+  MetaBackendPrivate *priv;
+  GDBusConnection *bus;
+
+  bus = g_bus_get_finish (res, NULL);
+  if (!bus)
+    return;
+
+  priv = meta_backend_get_instance_private (user_data);
+  priv->system_bus = bus;
+  priv->sleep_signal_id =
+    g_dbus_connection_signal_subscribe (priv->system_bus,
+                                        "org.freedesktop.login1",
+                                        "org.freedesktop.login1.Manager",
+                                        "PrepareForSleep",
+                                        "/org/freedesktop/login1",
+                                        NULL,
+                                        G_DBUS_SIGNAL_FLAGS_NONE,
+                                        prepare_for_sleep_cb,
+                                        NULL,
+                                        NULL);
+}
+
 static gboolean
 meta_backend_initable_init (GInitable     *initable,
                             GCancellable  *cancellable,
@@ -620,6 +687,16 @@ meta_backend_initable_init (GInitable     *initable,
   priv->cursor_tracker = g_object_new (META_TYPE_CURSOR_TRACKER, NULL);
 
   priv->dnd = g_object_new (META_TYPE_DND, NULL);
+
+  priv->up_client = up_client_new ();
+  g_signal_connect (priv->up_client, "notify::lid-is-closed",
+                    G_CALLBACK (lid_is_closed_changed_cb), NULL);
+
+  priv->cancellable = g_cancellable_new ();
+  g_bus_get (G_BUS_TYPE_SYSTEM,
+             priv->cancellable,
+             system_bus_gotten_cb,
+             backend);
 
   return TRUE;
 }
