@@ -318,8 +318,11 @@ shell_polkit_authentication_agent_unregister (ShellPolkitAuthenticationAgent *ag
   if (agent->current_request != NULL)
     auth_request_dismiss (agent->current_request);
 
-  polkit_agent_listener_unregister (agent->handle);
-  agent->handle = NULL;
+  if (agent->handle)
+    {
+      polkit_agent_listener_unregister (agent->handle);
+      agent->handle = NULL;
+    }
 }
 
 static void maybe_process_next_request (ShellPolkitAuthenticationAgent *agent);
