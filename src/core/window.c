@@ -5268,7 +5268,7 @@ static cairo_surface_t *
 load_default_window_icon (int size)
 {
   GtkIconTheme *theme = gtk_icon_theme_get_default ();
-  GdkPixbuf *pixbuf;
+  g_autoptr (GdkPixbuf) pixbuf = NULL;
   const char *icon_name;
 
   if (gtk_icon_theme_has_icon (theme, META_DEFAULT_ICON_NAME))
