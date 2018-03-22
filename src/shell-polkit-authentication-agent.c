@@ -10,8 +10,6 @@
 
 #include <pwd.h>
 
-#define POLKIT_AGENT_I_KNOW_API_IS_SUBJECT_TO_CHANGE
-#include <polkitagent/polkitagent.h>
 #include "shell-polkit-authentication-agent.h"
 
 #include <glib/gi18n.h>
@@ -48,12 +46,6 @@ print_debug (const gchar *str, ...)
 {
 }
 #endif
-
-
-struct _ShellPolkitAuthenticationAgentClass
-{
-  PolkitAgentListenerClass parent_class;
-};
 
 struct _AuthRequest;
 typedef struct _AuthRequest AuthRequest;

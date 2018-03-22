@@ -6,25 +6,23 @@
  * Author: David Zeuthen <davidz@redhat.com>
  */
 
-#ifndef __SHELL_POLKIT_AUTHENTICATION_AGENT_H__
-#define __SHELL_POLKIT_AUTHENTICATION_AGENT_H__
+#pragma once
 
+#define POLKIT_AGENT_I_KNOW_API_IS_SUBJECT_TO_CHANGE
+#include <polkitagent/polkitagent.h>
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-typedef struct _ShellPolkitAuthenticationAgent      ShellPolkitAuthenticationAgent;
-typedef struct _ShellPolkitAuthenticationAgentClass ShellPolkitAuthenticationAgentClass;
+/* Polkit doesn't have g_autoptr support, thus we have to manually set the autoptr function here */
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (PolkitAgentListener, g_object_unref)
 
-#define SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT              (shell_polkit_authentication_agent_get_type ())
-#define SHELL_POLKIT_AUTHENTICATION_AGENT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT, ShellPolkitAuthenticationAgent))
-#define SHELL_POLKIT_AUTHENTICATION_AGENT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT, ShellPolkitAuthenticationAgentClass))
-#define SHELL_IS_POLKIT_AUTHENTICATION_AGENT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT))
-#define SHELL_IS_POLKIT_AUTHENTICATION_AGENT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT))
-#define SHELL_POLKIT_AUTHENTICATION_AGENT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT, ShellPolkitAuthenticationAgentClass))
+#define SHELL_TYPE_POLKIT_AUTHENTICATION_AGENT (shell_polkit_authentication_agent_get_type())
 
-GType                           shell_polkit_authentication_agent_get_type (void) G_GNUC_CONST;
-ShellPolkitAuthenticationAgent *shell_polkit_authentication_agent_new      (void);
+G_DECLARE_FINAL_TYPE (ShellPolkitAuthenticationAgent, shell_polkit_authentication_agent, SHELL, POLKIT_AUTHENTICATION_AGENT, PolkitAgentListener)
+
+ShellPolkitAuthenticationAgent *shell_polkit_authentication_agent_new (void);
+
 void                            shell_polkit_authentication_agent_complete (ShellPolkitAuthenticationAgent *agent,
                                                                             gboolean                        dismissed);
 void                            shell_polkit_authentication_agent_register (ShellPolkitAuthenticationAgent *agent,
@@ -33,4 +31,3 @@ void                            shell_polkit_authentication_agent_unregister (Sh
 
 G_END_DECLS
 
-#endif /* __SHELL_POLKIT_AUTHENTICATION_AGENT_H__ */
