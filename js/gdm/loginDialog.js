@@ -523,6 +523,10 @@ var LoginDialog = GObject.registerClass({
         // focus later
         this._startupCompleteId = Main.layoutManager.connect('startup-complete',
                                                              this._updateDisableUserList.bind(this));
+
+        // With PAYG machines this class can be created AFTER the startup process.
+        if (!Main.layoutManager.startingUp)
+            this._updateDisableUserList();
     }
 
     _getBannerAllocation(dialogBox) {
