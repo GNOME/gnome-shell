@@ -580,7 +580,7 @@ meta_frame_layout_calc_geometry (MetaFrameLayout        *layout,
       x = rect->visible.x - layout->button_margin.left * scale;
 
       if (i > 0)
-        x -= layout->titlebar_spacing;
+        x -= layout->titlebar_spacing * scale;
 
       --i;
     }
