@@ -195,14 +195,15 @@ cursor_surface_role_is_on_logical_monitor (MetaWaylandSurfaceRole *role,
     META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
   MetaWaylandSurfaceRoleCursorPrivate *priv =
     meta_wayland_surface_role_cursor_get_instance_private (cursor_role);
-  ClutterRect rect;
+  ClutterPoint point;
   ClutterRect logical_monitor_rect;
 
-  rect = meta_cursor_renderer_calculate_rect (priv->cursor_renderer,
-                                              priv->cursor_sprite);
   logical_monitor_rect =
     meta_rectangle_to_clutter_rect (&logical_monitor->rect);
-  return clutter_rect_intersection (&rect, &logical_monitor_rect, NULL);
+
+  point = meta_cursor_renderer_get_position (priv->cursor_renderer);
+
+  return clutter_rect_contains_point (&logical_monitor_rect, &point);
 }
 
 static void

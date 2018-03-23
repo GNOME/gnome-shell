@@ -62,6 +62,7 @@ void meta_cursor_renderer_set_cursor (MetaCursorRenderer *renderer,
 void meta_cursor_renderer_set_position (MetaCursorRenderer *renderer,
                                         float               x,
                                         float               y);
+ClutterPoint meta_cursor_renderer_get_position (MetaCursorRenderer *renderer);
 void meta_cursor_renderer_force_update (MetaCursorRenderer *renderer);
 
 MetaCursorSprite * meta_cursor_renderer_get_cursor (MetaCursorRenderer *renderer);
