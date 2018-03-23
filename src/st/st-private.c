@@ -116,6 +116,7 @@ _st_set_text_from_style (ClutterText *text,
   PangoAttrList *attribs = NULL;
   const PangoFontDescription *font;
   StTextAlign align;
+  gdouble spacing;
 
   st_theme_node_get_foreground_color (theme_node, &color);
   clutter_text_set_color (text, &color);
@@ -123,11 +124,11 @@ _st_set_text_from_style (ClutterText *text,
   font = st_theme_node_get_font (theme_node);
   clutter_text_set_font_description (text, (PangoFontDescription *) font);
 
+  attribs = pango_attr_list_new ();
+
   decoration = st_theme_node_get_text_decoration (theme_node);
   if (decoration)
     {
-      attribs = pango_attr_list_new ();
-
       if (decoration & ST_TEXT_DECORATION_UNDERLINE)
         {
           PangoAttribute *underline = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
@@ -141,6 +142,13 @@ _st_set_text_from_style (ClutterText *text,
       /* Pango doesn't have an equivalent attribute for _OVERLINE, and we deliberately
        * skip BLINK (for now...)
        */
+    }
+
+  spacing = st_theme_node_get_letter_spacing (theme_node);
+  if (spacing)
+    {
+      PangoAttribute *letter_spacing = pango_attr_letter_spacing_new ((int)(.5 + spacing) * PANGO_SCALE);
+      pango_attr_list_insert (attribs, letter_spacing);
     }
 
   clutter_text_set_attributes (text, attribs);
