@@ -8,22 +8,22 @@
 # Wouter Bolsterlee <wbolster@gnome.org>, 2011–2014.
 # Erwin Poeze <donnut@outlook.com>, 2013.
 # Nathan Follens <nthn@unseen.is>, 2015-2018.
-# Hannie Dumoleyn <hannie@ubuntu-nl.org>, 2015, 2017.
+# Hannie Dumoleyn <hannie@ubuntu-nl.org>, 2015, 2017, 2018.
 # Justin van Steijn <jvs@fsfe.org>, 2016, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-16 21:34+0000\n"
-"PO-Revision-Date: 2018-03-18 11:32+0100\n"
-"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
+"POT-Creation-Date: 2018-03-19 21:43+0000\n"
+"PO-Revision-Date: 2018-03-23 10:09+0100\n"
+"Last-Translator: Hannie Dumoleyn <hannie@ubuntu-nl.org>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Lokalize 2.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/50-gnome-shell-system.xml:6
@@ -1232,11 +1232,11 @@ msgstr "‘%s’ downloaden van extensions.gnome.org en daarna installeren?"
 #: js/ui/inhibitShortcutsDialog.js:59
 #, javascript-format
 msgid "%s wants to inhibit shortcuts"
-msgstr "%s wil sneltoetsen inhiberen"
+msgstr "%s wil sneltoetsen blokkeren"
 
 #: js/ui/inhibitShortcutsDialog.js:60
 msgid "Application wants to inhibit shortcuts"
-msgstr "Toepassing wil sneltoetsen inhiberen"
+msgstr "Toepassing wil sneltoetsen blokkeren"
 
 #. Translators: %s is a keyboard shortcut like "Super+x"
 #: js/ui/inhibitShortcutsDialog.js:69
@@ -1823,7 +1823,7 @@ msgstr "Wifi-instellingen"
 #: js/ui/status/network.js:1298
 #, javascript-format
 msgid "%s Hotspot Active"
-msgstr "%s hotspot actief"
+msgstr "%s-hotspot actief"
 
 #. Translators: %s is a network identifier
 #: js/ui/status/network.js:1313
