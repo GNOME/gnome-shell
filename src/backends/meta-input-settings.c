@@ -1088,7 +1088,7 @@ meta_input_settings_changed_cb (GSettings  *settings,
         update_device_natural_scroll (input_settings, NULL);
       else if (strcmp (key, "tap-to-click") == 0)
         update_touchpad_tap_enabled (input_settings, NULL);
-      else if (strcmp (key, "tap-and_drag") == 0)
+      else if (strcmp (key, "tap-and-drag") == 0)
         update_touchpad_tap_and_drag_enabled (input_settings, NULL);
       else if (strcmp(key, "disable-while-typing") == 0)
         update_touchpad_disable_while_typing (input_settings, NULL);
