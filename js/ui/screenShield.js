@@ -162,9 +162,10 @@ var ScreenShield = class {
                 return;
             }
 
+            let paygExpectedMode = this._isGreeter ? 'gdm-unlock-dialog-payg' : 'unlock-dialog-payg';
             if (Main.sessionMode.currentMode === 'unlock-dialog-payg') {
                 // This is the most common case.
-                Main.sessionMode.popMode('unlock-dialog-payg');
+                Main.sessionMode.popMode(paygExpectedMode);
             }
 
             // The machine is unlocked but we still need to unlock the
@@ -357,6 +358,10 @@ var ScreenShield = class {
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
+
+        if (this._isGreeter && Main.paygManager.isLocked)
+            Main.sessionMode.pushMode('gdm-unlock-dialog-payg');
+
         this._ensureUnlockDialog(true);
     }
 
@@ -529,6 +534,8 @@ var ScreenShield = class {
     _continueDeactivate(animate) {
         this._hideLockScreen(animate);
 
+        if (Main.sessionMode.currentMode === 'gdm-unlock-dialog-payg')
+            Main.sessionMode.popMode('gdm-unlock-dialog-payg');
         if (Main.sessionMode.currentMode === 'unlock-dialog-payg')
             Main.sessionMode.popMode('unlock-dialog-payg');
         if (Main.sessionMode.currentMode == 'unlock-dialog')
