@@ -308,9 +308,8 @@ st_entry_style_changed (StWidget *self)
     }
 
   theme_node = st_widget_get_theme_node (self);
- 
-  st_theme_node_get_foreground_color (theme_node, &color);
-  clutter_text_set_color (CLUTTER_TEXT (priv->entry), &color);
+
+  _st_set_text_from_style (CLUTTER_TEXT (priv->entry), theme_node);
 
   if (st_theme_node_lookup_length (theme_node, "caret-size", TRUE, &size))
     clutter_text_set_cursor_size (CLUTTER_TEXT (priv->entry), (int)(.5 + size));
