@@ -276,7 +276,17 @@ function _initializeUI() {
 
     if (sessionMode.isGreeter && screenShield) {
         layoutManager.connect('startup-prepared', () => {
-            screenShield.showDialog();
+            // We can't show the login dialog (which is managed by the
+            // screenshield) until the PaygManager is initializd, since
+            // we need to check whether the machine is PAYG-locked first.
+            if (paygManager.initialized) {
+                screenShield.showDialog();
+            } else {
+                let paygManagerId = paygManager.connect('initialized', () => {
+                    screenShield.showDialog();
+                    paygManager.disconnect(paygManagerId);
+                });
+            }
         });
     }
 
