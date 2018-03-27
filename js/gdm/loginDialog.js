@@ -76,7 +76,7 @@ var UserListItem = new Lang.Class({
             this._setSelected(false);
         });
         this.actor.connect('notify::hover', () => {
-            this._setSelected(this.actor.hover);
+            this._setSelected(true);
         });
 
         this._userWidget = new UserWidget.UserWidget(this.user);
@@ -171,26 +171,6 @@ var UserList = new Lang.Class({
 
         this.actor.add_actor(this._box);
         this._items = {};
-
-        this.actor.connect('key-focus-in', this._moveFocusToItems.bind(this));
-    },
-
-    _moveFocusToItems() {
-        let hasItems = Object.keys(this._items).length > 0;
-
-        if (!hasItems)
-            return;
-
-        if (global.stage.get_key_focus() != this.actor)
-            return;
-
-        let focusSet = this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-        if (!focusSet) {
-            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, () => {
-                this._moveFocusToItems();
-                return false;
-            });
-        }
     },
 
     _onItemActivated(activatedItem) {
@@ -205,9 +185,14 @@ var UserList = new Lang.Class({
         else
             this._box.remove_style_pseudo_class('expanded');
 
+        let firstItem = true;
         for (let userName in this._items) {
             let item = this._items[userName];
             item.actor.sync_hover();
+            if (firstItem) {
+                item.actor.grab_key_focus();
+                firstItem = false;
+            }
         }
     },
 
@@ -274,7 +259,8 @@ var UserList = new Lang.Class({
         // Try to keep the focused item front-and-center
         item.actor.connect('key-focus-in', () => { this.scrollToItem(item); });
 
-        this._moveFocusToItems();
+        if (Object.keys(this._items).length == 1)
+            item.actor.grab_key_focus();
 
         this.emit('item-added', item);
     },
