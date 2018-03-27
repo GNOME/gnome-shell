@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Pango = imports.gi.Pango;
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
@@ -34,23 +35,144 @@ var AnimationDirection = {
 var APPICON_ANIMATION_OUT_SCALE = 3;
 var APPICON_ANIMATION_OUT_TIME = 0.25;
 
-var BaseIcon = new Lang.Class({
-    Name: 'BaseIcon',
+// Icon measurements used to lay down the icon grid.
+class IconMetrics {
+    static createEmpty() {
+        return new IconMetrics({});
+    }
 
-    _init(label, params) {
-        params = Params.parse(params, { createIcon: null,
-                                        setSizeManually: false,
-                                        showLabel: true });
+    constructor(params) {
+        Object.assign(this, Params.parse(params, {
+            // Decorative space (borders + padding) around the content.
+            contentHDeco: 0,
+            contentVDeco: 0,
+            // Decorative space (borders + padding) around the icon.
+            iconHDeco: 0,
+            iconVDeco: 0,
+            // Minimum image size.
+            minImageSize: 0,
+            // Whether the icon has a label.
+            haveLabel: false,
+            // Spacing between the icon and the label.
+            labelSpacing: 0,
+            // Minimum label size.
+            minLabelWidth: 0,
+            minLabelHeight: 0,
+            // Recommended label width.
+            natLabelWidth: 0,
+            // Height per extra line (font height + line spacing).
+            heightPerExtraLine: 0
+        }));
+    }
+
+    print() {
+        print('contentHDeco: ' + this.contentHDeco);
+        print('contentVDeco: ' + this.contentVDeco);
+        print('iconHDeco: ' + this.iconHDeco);
+        print('iconVDeco: ' + this.iconVDeco);
+        print('minImageSize: ' + this.iconHDeco);
+        print('haveLabel: ' + this.haveLabel);
+        print('labelSpacing: ' + this.labelSpacing);
+        print('minLabelWidth: ' + this.minLabelWidth);
+        print('minLabelHeight: ' + this.minLabelHeight);
+        print('natLabelWidth: ' + this.natLabelWidth);
+        print('heightPerExtraLine: ' + this.heightPerExtraLine);
+    }
+
+    extend(other) {
+        this.contentHDeco = Math.max(this.contentHDeco, other.contentHDeco);
+        this.contentVDeco = Math.max(this.contentVDeco, other.contentVDeco);
+        this.iconHDeco = Math.max(this.iconHDeco, other.iconHDeco);
+        this.iconVDeco = Math.max(this.iconVDeco, other.iconVDeco);
+        this.minImageSize = Math.max(this.minImageSize, other.minImageSize);
+        this.haveLabel = this.haveLabel || other.haveLabel;
+        this.minLabelWidth = Math.max(this.minLabelWidth, other.minLabelWidth);
+        this.minLabelHeight = Math.max(this.minLabelHeight, other.minLabelHeight);
+        this.natLabelWidth = Math.max(this.natLabelWidth, other.natLabelWidth);
+        this.heightPerExtraLine = Math.max(this.heightPerExtraLine, other.heightPerExtraLine);
+    }
+
+    // The amount of horizontal space around the image (occupied by the label,
+    // the borders, etc.).
+    imageHSpacing() {
+        return this.contentHDeco + this.iconHDeco;
+    }
+
+    // The amount of vertical space around the image (occupied by the label,
+    // the borders, etc.) when there's only a single line of text.
+    imageVSpacingWithSingleLine() {
+        return this.contentVDeco +
+               this.iconVDeco +
+               this.labelSpacing +
+               this.minLabelHeight;
+    }
+}
+
+// Computes the image and the cell size for the given icon metrics and the given
+// minimum icon width and height.
+function getImageAndCellSize(iconMetrics, minWidth, minHeight) {
+    let imageHSpacing = iconMetrics.imageHSpacing();
+    let imageVSpacing = iconMetrics.imageVSpacingWithSingleLine();
+
+    let minImageSize = iconMetrics.minImageSize;
+    let imageSize = Math.max(minImageSize, minHeight - imageVSpacing);
+
+    let natContentWidth = imageHSpacing + Math.max(imageSize, iconMetrics.natLabelWidth);
+
+    let cellWidth = iconMetrics.contentHDeco + natContentWidth;
+    let cellHeight = imageVSpacing + imageSize + iconMetrics.heightPerExtraLine * 2;
+
+    return [imageSize, cellWidth, cellHeight];
+}
+
+// Gets borders and padding around content.
+function getThemeNodeDeco(node) {
+    let hDeco = 0;
+    hDeco += node.get_horizontal_padding();
+    hDeco += node.get_border_width(St.Side.LEFT);
+    hDeco += node.get_border_width(St.Side.RIGHT);
+
+    let vDeco = 0;
+    vDeco += node.get_vertical_padding();
+    vDeco += node.get_border_width(St.Side.TOP);
+    vDeco += node.get_border_width(St.Side.BOTTOM);
+
+    return [hDeco, vDeco];
+}
+
+// Base class for icons. The subclasses must override the createIcon(size)
+// function, which must create a ClutterActor which displays the icon.
+// Alternatively, this class can be used directly and the createIcon function
+// can be supplied as a constructor parameter.
+//
+// Please note: that the createIcon function is always given the logical,
+// scaling-independent icon size; for example it is given 64x64 for icons of
+// this logical size regardless of whether the HIDPI mode is enabled or not.
+//
+// Constructor paremeters:
+//
+// - `createIcon`: the icon creation function.
+// - `setSizeManually`: whether to set the icon size manually.
+// - `showLabel`: whether to show the label.
+class BaseIcon {
+    constructor(label, params) {
+        params = Params.parse(params, {
+            createIcon: null,
+            setSizeManually: false,
+            showLabel: true
+        });
 
         let styleClass = 'overview-icon';
         if (params.showLabel)
             styleClass += ' overview-icon-with-label';
 
-        this.actor = new St.Bin({ style_class: styleClass,
-                                  x_expand: true,
-                                  y_expand: true,
-                                  x_fill: true,
-                                  y_fill: true });
+        this.actor = new St.Bin({
+            style_class: styleClass,
+            x_expand: true,
+            y_expand: true,
+            x_fill: true,
+            y_fill: true
+        });
         this.actor._delegate = this;
         this.actor.connect('style-changed', this._onStyleChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -65,16 +187,22 @@ var BaseIcon = new Lang.Class({
                     this._getPreferredHeight.bind(this));
         this.actor.set_child(box);
 
-        this.iconSize = ICON_SIZE;
-        this._iconBin = new St.Bin({ x_align: St.Align.MIDDLE,
-                                     y_align: St.Align.MIDDLE });
+        // Size of the icon.
+        this._iconSize = ICON_SIZE;
+        //
+        this._imageSize = null;
 
+        this._iconBin = new St.Bin({
+            x_align: St.Align.MIDDLE,
+            y_align: St.Align.MIDDLE
+        });
         box.add_actor(this._iconBin);
 
         if (params.showLabel) {
             this.label = new St.Label({ text: label });
             this.label.clutter_text.line_wrap = true;
-            //this.label.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+            this.label.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+            this.label.clutter_text.ellipsize = Pango.EllipsizeMode.MIDDLE;
             box.add_actor(this.label);
         } else {
             this.label = null;
@@ -87,8 +215,181 @@ var BaseIcon = new Lang.Class({
         this.icon = null;
 
         let cache = St.TextureCache.get_default();
-        this._iconThemeChangedId = cache.connect('icon-theme-changed', this._onIconThemeChanged.bind(this));
-    },
+        this._iconThemeChangedId = cache.connect(
+            'icon-theme-changed',
+            this._onIconThemeChanged.bind(this));
+    }
+
+    measure() {
+        let contentNode = this.actor.get_theme_node();
+        let [contentHDeco, contentVDeco] = getThemeNodeDeco(contentNode);
+
+        let iconNode = this._iconBin.get_theme_node();
+        let [iconHDeco, iconVDeco] = getThemeNodeDeco(iconNode);
+
+        let haveLabel = false;
+        let minLabelWidth = 0;
+        let minLabelHeight = 0;
+        let natLabelWidth = 0;
+        let heightPerExtraLine = 0;
+
+        if (this.label) {
+            haveLabel = true;
+
+            let layout = this.label.get_clutter_text().get_layout();
+            let layoutContext = layout.get_context();
+
+            let fontDescription = layout.get_font_description();
+            let fontMetrics = layoutContext.get_metrics(fontDescription, null);
+
+            [minLabelWidth,] = this.label.get_preferred_width(-1);
+            [,minLabelHeight] = this.label.get_preferred_height(-1);
+
+            let pangoCharWidth = fontMetrics.get_approximate_char_width();
+            let charWidth = pangoCharWidth / Pango.SCALE;
+
+            natLabelWidth = Math.ceil(charWidth * 22);
+
+            heightPerExtraLine = Math.ceil(
+                fontMetrics.get_ascent() / Pango.SCALE +
+                fontMetrics.get_descent() / Pango.SCALE +
+                layout.get_spacing() / Pango.SCALE);
+        }
+
+        return new IconMetrics({
+            contentHDeco: contentHDeco,
+            contentVDeco: contentVDeco,
+            iconHDeco: iconHDeco,
+            iconVDeco: iconVDeco,
+            minImageSize: 32,
+            haveLabel: haveLabel,
+            labelSpacing: this._spacing,
+            minLabelWidth: minLabelWidth,
+            minLabelHeight: minLabelHeight,
+            natLabelWidth: natLabelWidth,
+            heightPerExtraLine: heightPerExtraLine
+        });
+    }
+
+    // This can be overridden by a subclass, or by the createIcon
+    // parameter to construct().
+    createIcon(size) {
+        throw new Error('no implementation of createIcon in ' + this);
+    }
+
+    // Gets the icon size which is currently used.
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    // Gets the image size which is currently used.
+    get imageSize() {
+        if (this._imageSize != null) {
+            return this._imageSize;
+        } else {
+            let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            return this._iconSize * scale;
+        }
+    }
+
+    setIconSize(size) {
+        this._checkSetSizeManually('setIconSize');
+
+        if (size == this._iconSize)
+            return;
+
+        let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._updateIcon(size, Math.floor(this._iconSize * scale));
+    }
+
+    setImageSize(size) {
+        this._checkSetSizeManually('setImageSize');
+
+        if (size == this._imageSize)
+            return;
+
+        let scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        this._updateIcon(Math.floor(size / scale), size);
+    }
+
+    _checkSetSizeManually(func) {
+        if (!this._setSizeManually)
+            throw new Error('setSizeManually has to be set to use ' + func);
+    }
+
+    _updateIcon(iconSize, imageSize) {
+        if (this.icon)
+            this.icon.destroy();
+
+        this._iconSize = iconSize;
+        this._imageSize = imageSize;
+
+        this.icon = this.createIcon(this._iconSize);
+
+        this._iconBin.child = this.icon;
+    }
+
+    _getIconBinPreferredMetrics(horizontal, forAvailable) {
+        let min, nat;
+        if (horizontal) {
+            [min, nat] = this._iconBin.get_preferred_width(forAvailable);
+        } else {
+            [min, nat] = this._iconBin.get_preferred_height(forAvailable);
+        }
+
+        if (this._imageSize != null) {
+            let deco = 0;
+            let node = this._iconBin.get_theme_node();
+            if (horizontal) {
+                let [deco,] = getThemeNodeDeco(node);
+            } else {
+                let [,deco] = getThemeNodeDeco(node);
+            }
+            return [16, this._imageSize + deco];
+        } else {
+            return [16, nat];
+        }
+    }
+
+    _getIconBinPreferredWidth(forHeight) {
+        return this._getIconBinPreferredMetrics(true, forHeight);
+    }
+
+    _getIconBinPreferredHeight(forWidth) {
+        return this._getIconBinPreferredMetrics(false, forWidth);
+    }
+
+    _getPreferredWidth(actor, forHeight, alloc) {
+        let [iconMinWidth, iconNatWidth] =
+            this._getIconBinPreferredWidth(forHeight);
+
+        if (this.label) {
+            let [labelMinWidth, labelNatWidth] =
+                this.label.get_preferred_width(forHeight);
+
+            alloc.min_size = Math.max(iconMinWidth, labelMinWidth);
+            alloc.natural_size = Math.max(iconNatWidth, labelNatWidth);
+        } else {
+            alloc.min_size = iconMinWidth;
+            alloc.natural_size = iconNatWidth;
+        }
+    }
+
+    _getPreferredHeight(actor, forWidth, alloc) {
+        let [iconMinHeight, iconNatHeight] =
+            this._getIconBinPreferredHeight(forWidth);
+
+        alloc.min_size = iconMinHeight;
+        alloc.natural_size = iconNatHeight;
+
+        if (this.label) {
+            let [,labelMinHeight] = this.label.get_preferred_height(-1);
+            let [,labelNatHeight] = this.label.get_preferred_height(forWidth);
+
+            alloc.min_size += this._spacing + labelMinHeight;
+            alloc.natural_size += this._spacing + labelNatHeight;
+        }
+    }
 
     _allocate(actor, box, flags) {
         let availWidth = box.x2 - box.x1;
@@ -96,8 +397,8 @@ var BaseIcon = new Lang.Class({
 
         let iconSize = availHeight;
 
-        let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(-1);
-        let [iconMinWidth, iconNatWidth] = this._iconBin.get_preferred_width(-1);
+        let [iconMinHeight, iconNatHeight] = this._getIconBinPreferredWidth(-1);
+        let [iconMinWidth, iconNatWidth] = this._getIconBinPreferredHeight(-1);
         let preferredHeight = iconNatHeight;
 
         let childBox = new Clutter.ActorBox();
@@ -124,74 +425,28 @@ var BaseIcon = new Lang.Class({
         childBox.x2 = childBox.x1 + iconNatWidth;
         childBox.y2 = childBox.y1 + iconNatHeight;
         this._iconBin.allocate(childBox, flags);
-    },
-
-    _getPreferredWidth(actor, forHeight, alloc) {
-        let [iconMinWidth, iconNatWidth] = this._iconBin.get_preferred_width(forHeight);
-        if (this.label) {
-            let [labelMinWidth, labelNatWidth] = this.label.get_preferred_width(forHeight);
-            alloc.min_size = Math.max(iconMinWidth, labelMinWidth);
-            alloc.natural_size = Math.max(iconNatWidth, labelNatWidth);
-        } else {
-            alloc.min_size = iconMinWidth;
-            alloc.natural_size = iconNatWidth;
-        }
-    },
-
-    _getPreferredHeight(actor, forWidth, alloc) {
-        let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(forWidth);
-        alloc.min_size = iconMinHeight;
-        alloc.natural_size = iconNatHeight;
-
-        if (this.label) {
-            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(forWidth);
-            alloc.min_size += this._spacing + labelMinHeight;
-            alloc.natural_size += this._spacing + labelNatHeight;
-        }
-    },
-
-    // This can be overridden by a subclass, or by the createIcon
-    // parameter to _init()
-    createIcon(size) {
-        throw new Error('no implementation of createIcon in ' + this);
-    },
-
-    setIconSize(size) {
-        if (!this._setSizeManually)
-            throw new Error('setSizeManually has to be set to use setIconsize');
-
-        if (size == this.iconSize)
-            return;
-
-        this._createIconTexture(size);
-    },
-
-    _createIconTexture(size) {
-        if (this.icon)
-            this.icon.destroy();
-        this.iconSize = size;
-        this.icon = this.createIcon(this.iconSize);
-
-        this._iconBin.child = this.icon;
-    },
+    }
 
     _onStyleChanged() {
         let node = this.actor.get_theme_node();
         this._spacing = node.get_length('spacing');
 
-        let size;
+        let iconSize;
+        let imageSize;
         if (this._setSizeManually) {
-            size = this.iconSize;
+            iconSize = this._iconSize;
+            imageSize = this._imageSize;
         } else {
             let [found, len] = node.lookup_length('icon-size', false);
-            size = found ? len : ICON_SIZE;
+            iconSize = found ? len : ICON_SIZE;
+            imageSize = null;
         }
 
-        if (this.iconSize == size && this._iconBin.child)
+        if (this._iconSize == iconSize && this._iconBin.child)
             return;
 
-        this._createIconTexture(size);
-    },
+        this._updateIcon(iconSize, imageSize);
+    }
 
     _onDestroy() {
         if (this._iconThemeChangedId > 0) {
@@ -199,11 +454,11 @@ var BaseIcon = new Lang.Class({
             cache.disconnect(this._iconThemeChangedId);
             this._iconThemeChangedId = 0;
         }
-    },
+    }
 
     _onIconThemeChanged() {
         this._createIconTexture(this.iconSize);
-    },
+    }
 
     animateZoomOut() {
         // Animate only the child instead of the entire actor, so the
@@ -211,15 +466,14 @@ var BaseIcon = new Lang.Class({
         // animating.
         zoomOutActor(this.actor.child);
     }
-});
+}
 
 function clamp(value, min, max) {
     return Math.max(Math.min(value, max), min);
 };
 
 function zoomOutActor(actor) {
-    let actorClone = new Clutter.Clone({ source: actor,
-                                         reactive: false });
+    let actorClone = new Clutter.Clone({ source: actor, reactive: false });
     let [width, height] = actor.get_transformed_size();
     let [x, y] = actor.get_transformed_position();
     actorClone.set_size(width, height);
@@ -238,18 +492,18 @@ function zoomOutActor(actor) {
     let containedX = clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
     let containedY = clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
 
-    Tweener.addTween(actorClone,
-                     { time: APPICON_ANIMATION_OUT_TIME,
-                       scale_x: APPICON_ANIMATION_OUT_SCALE,
-                       scale_y: APPICON_ANIMATION_OUT_SCALE,
-                       translation_x: containedX - scaledX,
-                       translation_y: containedY - scaledY,
-                       opacity: 0,
-                       transition: 'easeOutQuad',
-                       onComplete() {
-                           actorClone.destroy();
-                       }
-                    });
+    Tweener.addTween(actorClone, {
+        time: APPICON_ANIMATION_OUT_TIME,
+        scale_x: APPICON_ANIMATION_OUT_SCALE,
+        scale_y: APPICON_ANIMATION_OUT_SCALE,
+        translation_x: containedX - scaledX,
+        translation_y: containedY - scaledY,
+        opacity: 0,
+        transition: 'easeOutQuad',
+        onComplete() {
+            actorClone.destroy();
+        }
+    });
 }
 
 var IconGrid = new Lang.Class({
@@ -280,9 +534,11 @@ var IconGrid = new Lang.Class({
                                         vertical: true });
         this._items = [];
         this._clonesAnimating = [];
+
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
         this._hItemSize = this._vItemSize = ICON_SIZE;
+        this._imageSize = null;
         this._fixedHItemSize = this._fixedVItemSize = undefined;
         this._fixedHCellSize = this._fixedVCellSize = undefined;
         this._grid = new Shell.GenericContainer();
@@ -603,7 +859,7 @@ var IconGrid = new Lang.Class({
     },
 
     _getAllocatedChildSizeAndSpacing(child) {
-        let [,natWidth] = child.get_preferred_width(this._getHCellSize());
+        let [,natWidth] = child.get_preferred_width(this._getVCellSize());
         let width = Math.min(Math.max(this._getHItemSize(), natWidth), this._getHCellSize());
 
         let [,natHeight] = child.get_preferred_height(width);
@@ -802,15 +1058,28 @@ var IconGrid = new Lang.Class({
      * to know how much spacing can the grid has
      */
     adaptToSize(availWidth, availHeight) {
+        let iconMetrics = IconMetrics.createEmpty();
+
+        for (let i in this._items) {
+            iconMetrics.extend(this._items[i].icon.measure());
+        }
+
+        iconMetrics.print();
+
         this._fixedHItemSize = this._hItemSize;
         this._fixedVItemSize = this._vItemSize;
 
-        this._fixedHCellSize = this._hItemSize * 1.2;
-        this._fixedVCellSize = this._vItemSize * 1.2;
+        let [imageSize, cellWidth, cellHeight] =
+            getImageAndCellSize(iconMetrics, this._hItemSize, this._vItemSize);
+
+        this._imageSize = imageSize;
+        this._fixedHCellSize = cellWidth;
+        this._fixedVCellSize = cellHeight;
 
         this._updateSpacingForSize(availWidth, availHeight);
         let spacing = this._getSpacing();
 
+        /*
         if (this.columnsForWidth(availWidth) < this._minColumns || this.rowsForHeight(availHeight) < this._minRows) {
             let neededWidth = this.minimumWidthForNColumns(this._minColumns) - availWidth;
             let neededHeight = this.minimumHeightForNRows(this._minRows) - availHeight;
@@ -825,9 +1094,22 @@ var IconGrid = new Lang.Class({
             this._fixedVItemSize = this._fixedVCellSize;
 
             this._updateSpacingForSize(availWidth, availHeight);
+
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
+                           this._updateIconSizes.bind(this));
         }
+        */
+
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW,
-                       this._updateIconSizes.bind(this));
+                       this._updateImageSizes.bind(this));
+    },
+
+    _updateImageSizes(newSizes) {
+        if (this._imageSize != null) {
+            for (let i in this._items) {
+                this._items[i].icon.setImageSize(this._imageSize);
+            }
+        }
     },
 
     // Note that this is ICON_SIZE as used by BaseIcon, not elsewhere in IconGrid; it's a bit messed up
