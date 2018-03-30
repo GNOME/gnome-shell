@@ -937,13 +937,16 @@ var Panel = new Lang.Class({
         let [stageX, stageY] = event.get_coords();
 
         let visibleWindows = this._getVisibleWindows()
-        let dragWindow = global.display.sort_windows_by_stacking(visibleWindows).find(
-            (window) => this._windowIsConnectedAtPosition(window, stageX)
-        );
+        let dragWindow = this._findTopmostWindow(visibleWindows, (window) => {
+            if (!window.maximized_vertically)
+                return false;
 
-        if (!dragWindow) {
+            let rect = window.get_frame_rect();
+            return stageX > rect.x && stageX < rect.x + rect.width;
+        });
+
+        if (!dragWindow)
             return Clutter.EVENT_PROPAGATE;
-        }
 
         global.display.begin_grab_op(global.screen,
                                      dragWindow,
@@ -1193,12 +1196,15 @@ var Panel = new Lang.Class({
         });
     },
 
-    _windowIsConnectedAtPosition: function(window, stageX) {
-        if (!window.maximized_vertically) {
-            return false;
-        } else {
-            let rect = window.get_frame_rect();
-            return stageX > rect.x && stageX < rect.x + rect.width;
+    _findTopmostWindow: function(windows, callback) {
+        let windowsSorted = global.display.sort_windows_by_stacking(windows);
+
+        for (let i = windowsSorted.length; i >= 0; i--) {
+            let window = windowsSorted[i];
+            if (callback(window) === true)
+                return window;
         }
+
+        return undefined;
     }
 });
