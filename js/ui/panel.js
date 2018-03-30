@@ -945,14 +945,16 @@ var Panel = new Lang.Class({
 
         let [stageX, stageY] = event.get_coords();
 
-        let visibleWindows = this._getVisibleWindows()
-        let dragWindow = global.display.sort_windows_by_stacking(visibleWindows).find(
-            (window) => this._windowIsConnectedAtPosition(window, stageX)
-        );
+        let dragWindow = this._findTopmostVisibleWindow(window => {
+            if (!window.maximized_vertically)
+                return false;
 
-        if (!dragWindow) {
+            let rect = window.get_frame_rect();
+            return stageX > rect.x && stageX < rect.x + rect.width;
+        });
+
+        if (!dragWindow)
             return Clutter.EVENT_PROPAGATE;
-        }
 
         global.display.begin_grab_op(global.screen,
                                      dragWindow,
@@ -1192,22 +1194,26 @@ var Panel = new Lang.Class({
             });
     },
 
+    _findTopmostVisibleWindow(callback) {
+        let visibleWindows = this._getVisibleWindows();
+        let sortedWindows = global.display.sort_windows_by_stacking(visibleWindows);
+
+        for (let i = sortedWindows.length - 1; i >= 0; i--) {
+            let window = sortedWindows[i];
+
+            if (callback(window))
+                return window;
+        }
+
+        return undefined;
+    },
+
     _getVisibleWindows() {
-        /* Get all the windows in the active workspace that are in the primary monitor and visible */
         let activeWorkspace = global.screen.get_active_workspace();
         return activeWorkspace.list_windows().filter(metaWindow => {
             return metaWindow.is_on_primary_monitor() &&
                    metaWindow.showing_on_its_workspace() &&
                    metaWindow.get_window_type() != Meta.WindowType.DESKTOP;
         });
-    },
-
-    _windowIsConnectedAtPosition(window, stageX) {
-        if (!window.maximized_vertically) {
-            return false;
-        } else {
-            let rect = window.get_frame_rect();
-            return stageX > rect.x && stageX < rect.x + rect.width;
-        }
     }
 });
