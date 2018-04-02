@@ -1996,7 +1996,7 @@ meta_renderer_native_create_surface_gbm (CoglOnscreen        *onscreen,
   CoglRenderer *cogl_renderer = cogl_display->renderer;
   CoglRendererEGL *cogl_renderer_egl = cogl_renderer->winsys;
   MetaRendererNativeGpuData *renderer_gpu_data = cogl_renderer_egl->platform;
-  struct gbm_surface *new_gbm_surface;
+  struct gbm_surface *new_gbm_surface = NULL;
   EGLNativeWindowType egl_native_window;
   EGLSurface new_egl_surface;
   uint32_t format = GBM_FORMAT_XRGB8888;
@@ -2017,7 +2017,8 @@ meta_renderer_native_create_surface_gbm (CoglOnscreen        *onscreen,
                                            modifiers->len);
       g_array_free (modifiers, TRUE);
     }
-  else
+
+  if (!new_gbm_surface)
     {
       uint32_t flags = GBM_BO_USE_SCANOUT | GBM_BO_USE_RENDERING;
 
