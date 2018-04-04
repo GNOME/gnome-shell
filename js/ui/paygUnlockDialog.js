@@ -266,9 +266,13 @@ var PaygUnlockDialog = GObject.registerClass({
         this._buttonBox = this._createButtonsArea();
         promptBox.add_child(this._buttonBox);
 
+        // Use image-specific instructions if present, or the fallback text otherwise.
+        let instructionsLine1 = Main.customerSupport.paygInstructionsLine1
+            ? Main.customerSupport.paygInstructionsLine1 : _('Don’t have an unlock code? That’s OK!');
+
         let helpLineMain = new St.Label({
             style_class: 'unlock-dialog-payg-help-main',
-            text: _('Don’t have an unlock code? That’s OK!'),
+            text: instructionsLine1,
             x_align: Clutter.ActorAlign.START,
         });
         helpLineMain.clutter_text.line_wrap = true;
@@ -276,9 +280,25 @@ var PaygUnlockDialog = GObject.registerClass({
 
         promptBox.add_child(helpLineMain);
 
+        // Default to the fallback text, before figuring out whether
+        // we can show something more image-specific to the user.
+        let instructionsLine2;
+        if (Main.customerSupport.paygInstructionsLine2) {
+            // Overrides for the entire line take priority over everything else.
+            instructionsLine2 = Main.customerSupport.paygInstructionsLine2;
+        } else if (Main.customerSupport.paygContactName && Main.customerSupport.paygContactNumber) {
+            // The second possible override is to use the template text below
+            // with the contact's name and phone number, if BOTH are present.
+            instructionsLine2 = _('Talk to your sales representative to purchase a new code. Call or text %s at %s')
+                .format(Main.customerSupport.paygContactName, Main.customerSupport.paygContactNumber);
+        } else {
+            // No overrides present, default to fallback text.
+            instructionsLine2 = _('Talk to your sales representative to purchase a new code.');
+        }
+
         let helpLineSub = new St.Label({
             style_class: 'unlock-dialog-payg-help-sub',
-            text: _('Talk to your sales representative to purchase a new code.'),
+            text: instructionsLine2,
             x_align: Clutter.ActorAlign.START,
         });
         helpLineSub.clutter_text.line_wrap = true;
