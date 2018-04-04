@@ -34,6 +34,12 @@ const CUSTOMER_SUPPORT_KEY_EMAIL = 'Email';
 const PASSWORD_RESET_GROUP_NAME = 'Password Reset';
 const PASSWORD_RESET_KEY_SALT = 'Salt';
 
+const PAYG_GROUP_NAME = 'Pay As You Go';
+const PAYG_KEY_CONTACT_NAME = 'ContactName';
+const PAYG_KEY_CONTACT_NUMBER = 'ContactPhoneNumber';
+const PAYG_KEY_INSTRUCTIONS_LINE1 = 'InstructionsLine1';
+const PAYG_KEY_INSTRUCTIONS_LINE2 = 'InstructionsLine2';
+
 var CustomerSupport = GObject.registerClass(
 class CustomerSupport extends GObject.Object {
 
@@ -89,5 +95,41 @@ class CustomerSupport extends GObject.Object {
         }
 
         return this._passwordResetSalt;
+    }
+
+    get paygContactName() {
+        if (this._paygContactName === undefined) {
+            this._paygContactName = this._getLocaleString(PAYG_GROUP_NAME,
+                                                          PAYG_KEY_CONTACT_NAME);
+        }
+
+        return this._paygContactName;
+    }
+
+    get paygContactNumber() {
+        if (this._paygContactNumber === undefined) {
+            this._paygContactNumber = this._getLocaleString(PAYG_GROUP_NAME,
+                                                            PAYG_KEY_CONTACT_NUMBER);
+        }
+
+        return this._paygContactNumber;
+    }
+
+    get paygInstructionsLine1() {
+        if (this._paygInstructionsLine1 === undefined) {
+            this._paygInstructionsLine1 = this._getLocaleString(PAYG_GROUP_NAME,
+                                                                PAYG_KEY_INSTRUCTIONS_LINE1);
+        }
+
+        return this._paygInstructionsLine1;
+    }
+
+    get paygInstructionsLine2() {
+        if (this._paygInstructionsLine2 === undefined) {
+            this._paygInstructionsLine2 = this._getLocaleString(PAYG_GROUP_NAME,
+                                                                PAYG_KEY_INSTRUCTIONS_LINE2);
+        }
+
+        return this._paygInstructionsLine2;
     }
 });
