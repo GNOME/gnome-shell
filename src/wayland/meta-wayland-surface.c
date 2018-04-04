@@ -54,6 +54,7 @@
 
 #include "compositor/region-utils.h"
 #include "compositor/meta-shaped-texture-private.h"
+#include "compositor/meta-window-actor-private.h"
 
 #include "meta-surface-actor.h"
 #include "meta-surface-actor-wayland.h"
@@ -142,6 +143,9 @@ surface_actor_position_notify (MetaSurfaceActorWayland *surface_actor,
 static void
 window_position_changed (MetaWindow         *window,
                          MetaWaylandSurface *surface);
+static void
+window_actor_effects_completed (MetaWindowActor    *window_actor,
+                                MetaWaylandSurface *surface);
 
 static void
 role_assignment_valist_to_properties (GType       role_type,
@@ -1083,6 +1087,9 @@ meta_wayland_surface_set_window (MetaWaylandSurface *surface,
       g_signal_handlers_disconnect_by_func (surface->window,
                                             window_position_changed,
                                             surface);
+      g_signal_handlers_disconnect_by_func (meta_window_actor_from_window (surface->window),
+                                            window_actor_effects_completed,
+                                            surface);
     }
 
   surface->window = window;
@@ -1098,6 +1105,10 @@ meta_wayland_surface_set_window (MetaWaylandSurface *surface,
       g_signal_connect_object (window,
                                "position-changed",
                                G_CALLBACK (window_position_changed),
+                               surface, 0);
+      g_signal_connect_object (meta_window_actor_from_window (window),
+                               "effects-completed",
+                               G_CALLBACK (window_actor_effects_completed),
                                surface, 0);
     }
 }
@@ -1196,6 +1207,13 @@ surface_actor_position_notify (MetaSurfaceActorWayland *surface_actor,
 static void
 window_position_changed (MetaWindow         *window,
                          MetaWaylandSurface *surface)
+{
+  meta_wayland_surface_update_outputs_recursively (surface);
+}
+
+static void
+window_actor_effects_completed (MetaWindowActor    *window_actor,
+                                MetaWaylandSurface *surface)
 {
   meta_wayland_surface_update_outputs_recursively (surface);
 }
