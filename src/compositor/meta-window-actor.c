@@ -142,6 +142,8 @@ struct _FrameData
 enum
 {
   FIRST_FRAME,
+  EFFECTS_COMPLETED,
+
   LAST_SIGNAL
 };
 
@@ -232,6 +234,21 @@ meta_window_actor_class_init (MetaWindowActorClass *klass)
    */
   signals[FIRST_FRAME] =
     g_signal_new ("first-frame",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 0);
+
+  /**
+   * MetaWindowActor::effects-completed:
+   * @actor: the #MetaWindowActor instance
+   *
+   * The ::effects-completed signal will be emitted once all pending compositor
+   * effects are completed.
+   */
+  signals[EFFECTS_COMPLETED] =
+    g_signal_new ("effects-completed",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   0,
@@ -1131,6 +1148,7 @@ meta_window_actor_after_effects (MetaWindowActor *self)
       return;
     }
 
+  g_signal_emit (self, signals[EFFECTS_COMPLETED], 0);
   meta_window_actor_sync_visibility (self);
   meta_window_actor_sync_actor_geometry (self, FALSE);
 }
@@ -2156,4 +2174,10 @@ meta_window_actor_sync_updates_frozen (MetaWindowActor *self)
   MetaWindow *window = priv->window;
 
   meta_window_actor_set_updates_frozen (self, meta_window_updates_are_frozen (window));
+}
+
+MetaWindowActor *
+meta_window_actor_from_window (MetaWindow *window)
+{
+  return META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
 }

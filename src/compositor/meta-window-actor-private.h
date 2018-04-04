@@ -58,5 +58,6 @@ void meta_window_actor_effect_completed (MetaWindowActor  *actor,
 
 MetaSurfaceActor *meta_window_actor_get_surface (MetaWindowActor *self);
 void meta_window_actor_update_surface (MetaWindowActor *self);
+MetaWindowActor *meta_window_actor_from_window (MetaWindow *window);
 
 #endif /* META_WINDOW_ACTOR_PRIVATE_H */
