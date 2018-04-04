@@ -30,6 +30,7 @@ const PadOsd = imports.ui.padOsd;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const ParentalControlsManager = imports.misc.parentalControlsManager;
+const CustomerSupport = imports.misc.customerSupport;
 const PaygManager = imports.misc.paygManager;
 const RunDialog = imports.ui.runDialog;
 const Layout = imports.ui.layout;
@@ -94,6 +95,7 @@ var introspectService = null;
 var locatePointer = null;
 var discoveryFeed = null;
 var paygManager = null;
+var customerSupport = null;
 var workspaceMonitor = null;
 let _startDate;
 let _defaultCssStylesheet = null;
@@ -207,6 +209,9 @@ function _initializeUI() {
     // The ScreenShield depends on the PaygManager, so this
     // module needs to be initialized first.
     paygManager = new PaygManager.PaygManager();
+
+    // Centralized handling of things specific to customer support.
+    customerSupport = new CustomerSupport.CustomerSupport();
 
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();

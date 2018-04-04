@@ -7,9 +7,9 @@ const ByteArray = imports.byteArray;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
-const Config = imports.misc.config;
 const GdmUtil = imports.gdm.util;
 const Util = imports.misc.util;
+const Main = imports.ui.main;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
@@ -21,17 +21,6 @@ var DEFAULT_BUTTON_WELL_ANIMATION_TIME = 300;
 var MESSAGE_FADE_OUT_ANIMATION_TIME = 500;
 
 const _RESET_CODE_LENGTH = 7;
-
-const CUSTOMER_SUPPORT_FILENAME = 'vendor-customer-support.ini';
-const CUSTOMER_SUPPORT_LOCATIONS = [
-    Config.LOCALSTATEDIR + '/lib/eos-image-defaults/' + CUSTOMER_SUPPORT_FILENAME,
-    Config.PKGDATADIR + '/' + CUSTOMER_SUPPORT_FILENAME
-];
-
-const CUSTOMER_SUPPORT_GROUP_NAME = 'Customer Support';
-const CUSTOMER_SUPPORT_KEY_EMAIL = 'Email';
-const PASSWORD_RESET_GROUP_NAME = 'Password Reset';
-const PASSWORD_RESET_KEY_SALT = 'Salt';
 
 var AuthPromptMode = {
     UNLOCK_ONLY: 0,
@@ -174,7 +163,6 @@ var AuthPrompt = GObject.registerClass({
 
         this._displayingPasswordHint = false;
         this._customerSupportKeyFile = null;
-        this._customerSupportEmail = null;
         this._passwordResetCode = null;
     }
 
@@ -629,24 +617,6 @@ var AuthPrompt = GObject.registerClass({
         this.emit('cancelled');
     }
 
-    _ensureCustomerSupportFile() {
-        if (this._customerSupportKeyFile)
-            return this._customerSupportKeyFile;
-
-        this._customerSupportKeyFile = new GLib.KeyFile();
-
-        for (let path of CUSTOMER_SUPPORT_LOCATIONS) {
-            try {
-                this._customerSupportKeyFile.load_from_file(path, GLib.KeyFileFlags.NONE);
-                break;
-            } catch (e) {
-                logError(e, 'Failed to read customer support data from %s'.format(path));
-            }
-        }
-
-        return this._customerSupportKeyFile;
-    }
-
     _getUserLastLoginTime() {
         let userManager = AccountsService.UserManager.get_default();
         let user = userManager.get_user(this._username);
@@ -660,7 +630,7 @@ var AuthPrompt = GObject.registerClass({
 
         // The fist digit is fixed to "1" as version of the hash code (the zeroth
         // version had one less digit in the code).
-        let resetCode = this._getResetCodeSalt() ? '1' : '';
+        let resetCode = Main.customerSupport.passwordResetSalt ? '1' : '';
 
         let machineId = _getMachineId();
         let lastLoginTime = this._getUserLastLoginTime();
@@ -675,12 +645,11 @@ var AuthPrompt = GObject.registerClass({
     }
 
     _computeUnlockCode(resetCode) {
-        let salt = this._getResetCodeSalt();
         let checksum = new GLib.Checksum(GLib.ChecksumType.MD5);
         checksum.update(ByteArray.fromString(resetCode));
 
-        if (salt) {
-            checksum.update(ByteArray.fromString(salt));
+        if (Main.customerSupport.passwordResetSalt) {
+            checksum.update(ByteArray.fromString(Main.customerSupport.passwordResetSalt));
             checksum.update([0]);
         }
 
@@ -695,37 +664,8 @@ var AuthPrompt = GObject.registerClass({
         return unlockCode;
     }
 
-    _getCustomerSupportEmail() {
-        let keyFile = this._ensureCustomerSupportFile();
-
-        try {
-            return keyFile.get_locale_string(
-                CUSTOMER_SUPPORT_GROUP_NAME,
-                CUSTOMER_SUPPORT_KEY_EMAIL,
-                null);
-        } catch (e) {
-            logError(e, 'Failed to read customer support email');
-            return null;
-        }
-    }
-
-    _getResetCodeSalt() {
-        let keyFile = this._ensureCustomerSupportFile();
-
-        try {
-            return keyFile.get_locale_string(
-                PASSWORD_RESET_GROUP_NAME,
-                PASSWORD_RESET_KEY_SALT,
-                null);
-        } catch (e) {
-            logError(e, 'Failed to read password reset salt value');
-            return null;
-        }
-    }
-
     _showPasswordResetPrompt() {
-        let customerSupportEmail = this._getCustomerSupportEmail();
-        if (!customerSupportEmail)
+        if (!Main.customerSupport.customerSupportEmail)
             return;
 
         // Stop the normal gdm conversation so it doesn't interfere.
@@ -742,7 +682,7 @@ var AuthPrompt = GObject.registerClass({
             // Translators: Password reset. The first %s is a verification code and the second is an email.
             _('Please inform customer support of your verification code %s by emailing %s. Customer support will use the verification code to provide you with an unlock code, which you can enter here.').format(
                 this._passwordResetCode,
-                customerSupportEmail));
+                Main.customerSupport.customerSupportEmail));
     }
 
     _maybeShowPasswordResetButton() {
@@ -783,7 +723,7 @@ var AuthPrompt = GObject.registerClass({
             (obj, result) => {
                 try {
                     const permission = Polkit.Permission.new_finish(result);
-                    if (permission.get_allowed() && this._getCustomerSupportEmail())
+                    if (permission.get_allowed() && Main.customerSupport.customerSupportEmail)
                         this._passwordResetButton.show();
                 } catch (e) {
                     logError(e, 'Failed to determine if password reset is allowed');

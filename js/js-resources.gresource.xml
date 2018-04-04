@@ -141,6 +141,7 @@
 
     <!-- Endless-specific files beyond this point -->
 
+    <file>misc/customerSupport.js</file>
     <file>misc/parentalControlsManager.js</file>
     <file>misc/paygManager.js</file>
     <file>ui/appActivation.js</file>
