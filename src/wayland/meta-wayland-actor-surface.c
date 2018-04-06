@@ -30,30 +30,58 @@
 #include "wayland/meta-wayland-surface.h"
 #include "wayland/meta-window-wayland.h"
 
-G_DEFINE_ABSTRACT_TYPE (MetaWaylandActorSurface,
-                        meta_wayland_actor_surface,
-                        META_TYPE_WAYLAND_SURFACE_ROLE)
+typedef struct _MetaWaylandActorSurfacePrivate MetaWaylandActorSurfacePrivate;
+
+struct _MetaWaylandActorSurfacePrivate
+{
+  MetaSurfaceActor *actor;
+};
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (MetaWaylandActorSurface,
+                                     meta_wayland_actor_surface,
+                                     META_TYPE_WAYLAND_SURFACE_ROLE)
+
+static void
+meta_wayland_actor_surface_constructed (GObject *object)
+{
+  G_OBJECT_CLASS (meta_wayland_actor_surface_parent_class)->constructed (object);
+
+  meta_wayland_actor_surface_reset_actor (META_WAYLAND_ACTOR_SURFACE (object));
+}
+
+static void
+meta_wayland_actor_surface_finalize (GObject *object)
+{
+  MetaWaylandActorSurfacePrivate *priv =
+    meta_wayland_actor_surface_get_instance_private (META_WAYLAND_ACTOR_SURFACE (object));
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (META_WAYLAND_SURFACE_ROLE (object));
+
+  g_signal_handlers_disconnect_by_func (priv->actor,
+                                        meta_wayland_surface_notify_geometry_changed,
+                                        surface);
+  g_object_unref (priv->actor);
+
+  G_OBJECT_CLASS (meta_wayland_actor_surface_parent_class)->finalize (object);
+}
 
 static void
 meta_wayland_actor_surface_assigned (MetaWaylandSurfaceRole *surface_role)
 {
+  MetaWaylandActorSurfacePrivate *priv =
+    meta_wayland_actor_surface_get_instance_private (META_WAYLAND_ACTOR_SURFACE (surface_role));
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
-  MetaSurfaceActorWayland *surface_actor =
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
 
-  meta_surface_actor_wayland_add_frame_callbacks (surface_actor,
+  meta_surface_actor_wayland_add_frame_callbacks (META_SURFACE_ACTOR_WAYLAND (priv->actor),
                                                   &surface->pending_frame_callback_list);
   wl_list_init (&surface->pending_frame_callback_list);
 }
 
 static void
-queue_surface_actor_frame_callbacks (MetaWaylandSurface      *surface,
+queue_surface_actor_frame_callbacks (MetaSurfaceActorWayland *surface_actor,
                                      MetaWaylandPendingState *pending)
 {
-  MetaSurfaceActorWayland *surface_actor =
-    META_SURFACE_ACTOR_WAYLAND (surface->surface_actor);
-
   meta_surface_actor_wayland_add_frame_callbacks (surface_actor,
                                                   &pending->frame_callback_list);
   wl_list_init (&pending->frame_callback_list);
@@ -90,6 +118,8 @@ meta_wayland_actor_surface_calculate_scale (MetaWaylandActorSurface *actor_surfa
 static void
 meta_wayland_actor_surface_real_sync_actor_state (MetaWaylandActorSurface *actor_surface)
 {
+  MetaWaylandActorSurfacePrivate *priv =
+    meta_wayland_actor_surface_get_instance_private (actor_surface);
   MetaWaylandSurfaceRole *surface_role =
     META_WAYLAND_SURFACE_ROLE (actor_surface);
   MetaWaylandSurface *surface =
@@ -99,7 +129,7 @@ meta_wayland_actor_surface_real_sync_actor_state (MetaWaylandActorSurface *actor
   double actor_scale;
   GList *l;
 
-  surface_actor = surface->surface_actor;
+  surface_actor = priv->actor;
   stex = meta_surface_actor_get_texture (surface_actor);
 
   actor_scale = meta_wayland_actor_surface_calculate_scale (actor_surface);
@@ -161,13 +191,16 @@ static void
 meta_wayland_actor_surface_commit (MetaWaylandSurfaceRole  *surface_role,
                                    MetaWaylandPendingState *pending)
 {
+  MetaWaylandActorSurfacePrivate *priv =
+    meta_wayland_actor_surface_get_instance_private (META_WAYLAND_ACTOR_SURFACE (surface_role));
   MetaWaylandActorSurface *actor_surface =
     META_WAYLAND_ACTOR_SURFACE (surface_role);
   MetaWaylandSurface *surface =
     meta_wayland_surface_role_get_surface (surface_role);
   MetaWaylandSurface *toplevel_surface;
 
-  queue_surface_actor_frame_callbacks (surface, pending);
+  queue_surface_actor_frame_callbacks (META_SURFACE_ACTOR_WAYLAND (priv->actor),
+                                       pending);
 
   toplevel_surface = meta_wayland_surface_get_toplevel (surface);
   if (!toplevel_surface || !toplevel_surface->window)
@@ -180,9 +213,9 @@ static gboolean
 meta_wayland_actor_surface_is_on_logical_monitor (MetaWaylandSurfaceRole *surface_role,
                                                   MetaLogicalMonitor     *logical_monitor)
 {
-  MetaWaylandSurface *surface =
-    meta_wayland_surface_role_get_surface (surface_role);
-  ClutterActor *actor = CLUTTER_ACTOR (surface->surface_actor);
+  MetaWaylandActorSurfacePrivate *priv =
+    meta_wayland_actor_surface_get_instance_private (META_WAYLAND_ACTOR_SURFACE (surface_role));
+  ClutterActor *actor = CLUTTER_ACTOR (priv->actor);
   float x, y, width, height;
   cairo_rectangle_int_t actor_rect;
   cairo_region_t *region;
@@ -226,6 +259,10 @@ meta_wayland_actor_surface_class_init (MetaWaylandActorSurfaceClass *klass)
 {
   MetaWaylandSurfaceRoleClass *surface_role_class =
     META_WAYLAND_SURFACE_ROLE_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+  object_class->constructed = meta_wayland_actor_surface_constructed;
+  object_class->finalize = meta_wayland_actor_surface_finalize;
 
   surface_role_class->assigned = meta_wayland_actor_surface_assigned;
   surface_role_class->commit = meta_wayland_actor_surface_commit;
@@ -233,4 +270,42 @@ meta_wayland_actor_surface_class_init (MetaWaylandActorSurfaceClass *klass)
     meta_wayland_actor_surface_is_on_logical_monitor;
 
   klass->sync_actor_state = meta_wayland_actor_surface_real_sync_actor_state;
+}
+
+MetaSurfaceActor *
+meta_wayland_actor_surface_get_actor (MetaWaylandActorSurface *actor_surface)
+{
+  MetaWaylandActorSurfacePrivate *priv =
+    meta_wayland_actor_surface_get_instance_private (actor_surface);
+
+  return priv->actor;
+}
+
+void
+meta_wayland_actor_surface_reset_actor (MetaWaylandActorSurface *actor_surface)
+{
+  MetaWaylandActorSurfacePrivate *priv =
+    meta_wayland_actor_surface_get_instance_private (actor_surface);
+  MetaWaylandSurface *surface =
+    meta_wayland_surface_role_get_surface (META_WAYLAND_SURFACE_ROLE (actor_surface));
+
+  if (priv->actor)
+    {
+      g_signal_handlers_disconnect_by_func (priv->actor,
+                                            meta_wayland_surface_notify_geometry_changed,
+                                            surface);
+      g_object_unref (priv->actor);
+    }
+
+  priv->actor = g_object_ref_sink (meta_surface_actor_wayland_new (surface));
+
+  g_signal_connect_swapped (priv->actor, "notify::allocation",
+                            G_CALLBACK (meta_wayland_surface_notify_geometry_changed),
+                            surface);
+  g_signal_connect_swapped (priv->actor, "notify::position",
+                            G_CALLBACK (meta_wayland_surface_notify_geometry_changed),
+                            surface);
+  g_signal_connect_swapped (priv->actor, "notify::mapped",
+                            G_CALLBACK (meta_wayland_surface_notify_geometry_changed),
+                            surface);
 }

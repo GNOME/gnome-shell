@@ -137,7 +137,6 @@ struct _MetaWaylandSurface
   /* Generic stuff */
   struct wl_resource *resource;
   MetaWaylandCompositor *compositor;
-  MetaSurfaceActor *surface_actor;
   MetaWaylandSurfaceRole *role;
   MetaWindow *window;
   cairo_region_t *input_region;
@@ -230,10 +229,6 @@ void                meta_wayland_surface_unref_buffer_use_count (MetaWaylandSurf
 
 void                meta_wayland_surface_set_window (MetaWaylandSurface *surface,
                                                      MetaWindow         *window);
-
-void                meta_wayland_surface_create_surface_actor (MetaWaylandSurface *surface);
-
-void                meta_wayland_surface_clear_surface_actor (MetaWaylandSurface *surface);
 
 void                meta_wayland_surface_configure_notify (MetaWaylandSurface *surface,
                                                            int                 new_x,
