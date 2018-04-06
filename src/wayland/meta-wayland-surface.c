@@ -105,6 +105,7 @@ enum {
   SURFACE_CONFIGURE,
   SURFACE_SHORTCUTS_INHIBITED,
   SURFACE_SHORTCUTS_RESTORED,
+  SURFACE_GEOMETRY_CHANGED,
   N_SURFACE_SIGNALS
 };
 
@@ -1237,7 +1238,7 @@ surface_actor_mapped_notify (MetaSurfaceActorWayland *surface_actor,
                              GParamSpec              *pspec,
                              MetaWaylandSurface      *surface)
 {
-  meta_wayland_surface_update_outputs_recursively (surface);
+  g_signal_emit (surface, surface_signals[SURFACE_GEOMETRY_CHANGED], 0);
 }
 
 static void
@@ -1245,7 +1246,7 @@ surface_actor_allocation_notify (MetaSurfaceActorWayland *surface_actor,
                                  GParamSpec              *pspec,
                                  MetaWaylandSurface      *surface)
 {
-  meta_wayland_surface_update_outputs_recursively (surface);
+  g_signal_emit (surface, surface_signals[SURFACE_GEOMETRY_CHANGED], 0);
 }
 
 static void
@@ -1253,7 +1254,7 @@ surface_actor_position_notify (MetaSurfaceActorWayland *surface_actor,
                                GParamSpec              *pspec,
                                MetaWaylandSurface      *surface)
 {
-  meta_wayland_surface_update_outputs_recursively (surface);
+  g_signal_emit (surface, surface_signals[SURFACE_GEOMETRY_CHANGED], 0);
 }
 
 static void
@@ -1536,6 +1537,10 @@ static void
 meta_wayland_surface_init (MetaWaylandSurface *surface)
 {
   surface->pending = g_object_new (META_TYPE_WAYLAND_PENDING_STATE, NULL);
+
+  g_signal_connect (surface, "geometry-changed",
+                    G_CALLBACK (meta_wayland_surface_update_outputs_recursively),
+                    NULL);
 }
 
 static void
@@ -1577,6 +1582,13 @@ meta_wayland_surface_class_init (MetaWaylandSurfaceClass *klass)
 
   surface_signals[SURFACE_SHORTCUTS_RESTORED] =
     g_signal_new ("shortcuts-restored",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
+  surface_signals[SURFACE_GEOMETRY_CHANGED] =
+    g_signal_new ("geometry-changed",
                   G_TYPE_FROM_CLASS (object_class),
                   G_SIGNAL_RUN_LAST,
                   0, NULL, NULL,
@@ -1794,4 +1806,10 @@ MetaSurfaceActor *
 meta_wayland_surface_get_actor (MetaWaylandSurface *surface)
 {
   return surface->surface_actor;
+}
+
+void
+meta_wayland_surface_notify_geometry_changed (MetaWaylandSurface *surface)
+{
+  g_signal_emit (surface, surface_signals[SURFACE_GEOMETRY_CHANGED], 0);
 }
