@@ -16,6 +16,7 @@ const PolkitAgent = imports.gi.PolkitAgent;
 const Animation = imports.ui.animation;
 const Components = imports.ui.components;
 const Dialog = imports.ui.dialog;
+const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
@@ -348,6 +349,7 @@ var AuthenticationAgent = new Lang.Class({
         this._native = new Shell.PolkitAuthenticationAgent();
         this._native.connect('initiate', this._onInitiate.bind(this));
         this._native.connect('cancel', this._onCancel.bind(this));
+        this._sessionUpdatedId = 0;
     },
 
     enable() {
@@ -367,6 +369,17 @@ var AuthenticationAgent = new Lang.Class({
     },
 
     _onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames) {
+        // Don't pop up a dialog while locked
+        if (Main.sessionMode.isLocked) {
+            this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
+                Main.sessionMode.disconnect(this._sessionUpdatedId);
+                this._sessionUpdatedId = 0;
+
+                this._onInitiate(nativeAgent, actionId, message, iconName, cookie, userNames);
+            });
+            return;
+        }
+
         this._currentDialog = new AuthenticationDialog(actionId, message, cookie, userNames);
 
         // We actually don't want to open the dialog until we know for
@@ -395,6 +408,10 @@ var AuthenticationAgent = new Lang.Class({
         this._currentDialog.close();
         this._currentDialog.destroySession();
         this._currentDialog = null;
+
+        if (this._sessionUpdatedId)
+            Main.sessionMode.disconnect(this._sessionUpdatedId);
+        this._sessionUpdatedId = 0;
 
         this._native.complete(dismissed);
     },
