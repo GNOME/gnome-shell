@@ -46,6 +46,7 @@
 #include "meta-wayland-inhibit-shortcuts.h"
 #include "meta-wayland-inhibit-shortcuts-dialog.h"
 #include "meta-xwayland-grab-keyboard.h"
+#include "meta-xwayland.h"
 
 static MetaWaylandCompositor _meta_wayland_compositor;
 static char *_display_name_override;
@@ -306,6 +307,8 @@ meta_wayland_compositor_init (MetaWaylandCompositor *compositor)
 {
   memset (compositor, 0, sizeof (MetaWaylandCompositor));
   wl_list_init (&compositor->frame_callbacks);
+
+  compositor->scheduled_surface_associations = g_hash_table_new (NULL, NULL);
 }
 
 void
@@ -481,4 +484,63 @@ void
 meta_wayland_compositor_flush_clients (MetaWaylandCompositor *compositor)
 {
   wl_display_flush_clients (compositor->wayland_display);
+}
+
+static void on_scheduled_association_unmanaged (MetaWindow *window,
+                                                gpointer    user_data);
+
+static void
+meta_wayland_compositor_remove_surface_association (MetaWaylandCompositor *compositor,
+                                                    int                    id)
+{
+  MetaWindow *window;
+
+  window = g_hash_table_lookup (compositor->scheduled_surface_associations,
+                                GINT_TO_POINTER (id));
+  if (window)
+    {
+      g_signal_handlers_disconnect_by_func (window,
+                                            on_scheduled_association_unmanaged,
+                                            GINT_TO_POINTER (id));
+      g_hash_table_remove (compositor->scheduled_surface_associations,
+                           GINT_TO_POINTER (id));
+    }
+}
+
+static void
+on_scheduled_association_unmanaged (MetaWindow *window,
+                                    gpointer    user_data)
+{
+  MetaWaylandCompositor *compositor = meta_wayland_compositor_get_default ();
+
+  meta_wayland_compositor_remove_surface_association (compositor,
+                                                      GPOINTER_TO_INT (user_data));
+}
+
+void
+meta_wayland_compositor_schedule_surface_association (MetaWaylandCompositor *compositor,
+                                                      int                    id,
+                                                      MetaWindow            *window)
+{
+  g_signal_connect (window, "unmanaged",
+                    G_CALLBACK (on_scheduled_association_unmanaged),
+                    GINT_TO_POINTER (id));
+  g_hash_table_insert (compositor->scheduled_surface_associations,
+                       GINT_TO_POINTER (id), window);
+}
+
+void
+meta_wayland_compositor_notify_surface_id (MetaWaylandCompositor *compositor,
+                                           int                    id,
+                                           MetaWaylandSurface    *surface)
+{
+  MetaWindow *window;
+
+  window = g_hash_table_lookup (compositor->scheduled_surface_associations,
+                                GINT_TO_POINTER (id));
+  if (window)
+    {
+      meta_xwayland_associate_window_with_surface (window, surface);
+      meta_wayland_compositor_remove_surface_association (compositor, id);
+    }
 }

@@ -72,6 +72,8 @@ struct _MetaWaylandCompositor
 
   MetaWaylandSeat *seat;
   MetaWaylandTabletManager *tablet_manager;
+
+  GHashTable *scheduled_surface_associations;
 };
 
 #endif /* META_WAYLAND_PRIVATE_H */

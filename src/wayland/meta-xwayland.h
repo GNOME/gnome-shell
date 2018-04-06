@@ -41,4 +41,8 @@ void
 meta_xwayland_handle_xwayland_grab (MetaWindow *window,
                                     gboolean    allow);
 
+void
+meta_xwayland_associate_window_with_surface (MetaWindow          *window,
+                                             MetaWaylandSurface  *surface);
+
 #endif /* META_XWAYLAND_H */

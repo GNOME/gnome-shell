@@ -65,5 +65,12 @@ gboolean                meta_wayland_compositor_is_shortcuts_inhibited (MetaWayl
 
 void                    meta_wayland_compositor_flush_clients (MetaWaylandCompositor *compositor);
 
+void                    meta_wayland_compositor_schedule_surface_association (MetaWaylandCompositor *compositor,
+                                                                              int                    id,
+                                                                              MetaWindow            *window);
+void                    meta_wayland_compositor_notify_surface_id (MetaWaylandCompositor *compositor,
+                                                                   int                    id,
+                                                                   MetaWaylandSurface    *surface);
+
 #endif
 

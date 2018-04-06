@@ -1322,6 +1322,8 @@ meta_wayland_surface_create (MetaWaylandCompositor *compositor,
   surface->outputs_to_destroy_notify_id = g_hash_table_new (NULL, NULL);
   surface->shortcut_inhibited_seats = g_hash_table_new (NULL, NULL);
 
+  meta_wayland_compositor_notify_surface_id (compositor, id, surface);
+
   return surface;
 }
 
