@@ -641,7 +641,7 @@ meta_wayland_surface_apply_pending_state (MetaWaylandSurface      *surface,
               goto cleanup;
             }
 
-          if (switched_buffer)
+          if (switched_buffer && meta_wayland_surface_get_actor (surface))
             {
               MetaShapedTexture *stex;
               CoglTexture *texture;
@@ -672,8 +672,9 @@ meta_wayland_surface_apply_pending_state (MetaWaylandSurface      *surface,
   if (pending->scale > 0)
     surface->scale = pending->scale;
 
-  if (!cairo_region_is_empty (pending->surface_damage) ||
-      !cairo_region_is_empty (pending->buffer_damage))
+  if (meta_wayland_surface_get_actor (surface) &&
+      (!cairo_region_is_empty (pending->surface_damage) ||
+       !cairo_region_is_empty (pending->buffer_damage)))
     surface_process_damage (surface,
                             pending->surface_damage,
                             pending->buffer_damage);
