@@ -772,6 +772,7 @@ var Panel = new Lang.Class({
         this.actor = new Shell.GenericContainer({ name: 'panel',
                                                   reactive: true });
         this.actor._delegate = this;
+        this.actor.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
 
         this._sessionStyle = null;
 
