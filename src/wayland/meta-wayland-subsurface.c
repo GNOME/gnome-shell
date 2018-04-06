@@ -54,7 +54,7 @@ G_DEFINE_TYPE (MetaWaylandSubsurface,
 static void
 sync_actor_subsurface_state (MetaWaylandSurface *surface)
 {
-  ClutterActor *actor = CLUTTER_ACTOR (surface->surface_actor);
+  ClutterActor *actor = CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface));
   MetaWindow *toplevel_window;
   int geometry_scale;
   int x, y;
@@ -99,8 +99,8 @@ meta_wayland_subsurface_parent_state_applied (MetaWaylandSubsurface *subsurface)
       GSList *it;
       MetaWaylandSurface *parent = surface->sub.parent;
       ClutterActor *parent_actor =
-        clutter_actor_get_parent (CLUTTER_ACTOR (parent->surface_actor));
-      ClutterActor *surface_actor = CLUTTER_ACTOR (surface->surface_actor);
+        clutter_actor_get_parent (CLUTTER_ACTOR (meta_wayland_surface_get_actor (parent)));
+      ClutterActor *surface_actor = CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface));
 
       for (it = surface->sub.pending_placement_ops; it; it = it->next)
         {
@@ -113,7 +113,7 @@ meta_wayland_subsurface_parent_state_applied (MetaWaylandSubsurface *subsurface)
               continue;
             }
 
-          sibling_actor = CLUTTER_ACTOR (op->sibling->surface_actor);
+          sibling_actor = CLUTTER_ACTOR (meta_wayland_surface_get_actor (op->sibling));
 
           switch (op->placement)
             {
@@ -234,7 +234,7 @@ meta_wayland_subsurface_class_init (MetaWaylandSubsurfaceClass *klass)
 static void
 unparent_actor (MetaWaylandSurface *surface)
 {
-  ClutterActor *actor = CLUTTER_ACTOR (surface->surface_actor);
+  ClutterActor *actor = CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface));
   ClutterActor *parent_actor;
 
   parent_actor = clutter_actor_get_parent (actor);
@@ -471,10 +471,10 @@ wl_subcompositor_get_subsurface (struct wl_client   *client,
                                     &surface->sub.parent_destroy_listener);
   parent->subsurfaces = g_list_append (parent->subsurfaces, surface);
 
-  clutter_actor_add_child (CLUTTER_ACTOR (parent->surface_actor),
-                           CLUTTER_ACTOR (surface->surface_actor));
+  clutter_actor_add_child (CLUTTER_ACTOR (meta_wayland_surface_get_actor (parent)),
+                           CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface)));
 
-  clutter_actor_set_reactive (CLUTTER_ACTOR (surface->surface_actor), TRUE);
+  clutter_actor_set_reactive (CLUTTER_ACTOR (meta_wayland_surface_get_actor (surface)), TRUE);
 }
 
 static const struct wl_subcompositor_interface meta_wayland_subcompositor_interface = {

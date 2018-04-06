@@ -450,7 +450,7 @@ meta_window_actor_update_surface (MetaWindowActor *self)
 
 #ifdef HAVE_WAYLAND
   if (window->surface)
-    surface_actor = window->surface->surface_actor;
+    surface_actor = meta_wayland_surface_get_actor (window->surface);
   else
 #endif
   if (!meta_is_wayland_compositor ())

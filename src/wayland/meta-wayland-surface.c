@@ -1789,3 +1789,9 @@ meta_wayland_surface_is_shortcuts_inhibited (MetaWaylandSurface *surface,
 
   return g_hash_table_contains (surface->shortcut_inhibited_seats, seat);
 }
+
+MetaSurfaceActor *
+meta_wayland_surface_get_actor (MetaWaylandSurface *surface)
+{
+  return surface->surface_actor;
+}

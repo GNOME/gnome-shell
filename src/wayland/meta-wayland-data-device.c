@@ -1083,6 +1083,7 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
   MetaWaylandDragGrab *drag_grab;
   ClutterPoint pos, surface_pos;
   ClutterModifierType modifiers;
+  MetaSurfaceActor *surface_actor;
 
   data_device->current_grab = drag_grab = g_slice_new0 (MetaWaylandDragGrab);
 
@@ -1100,7 +1101,9 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
   wl_resource_add_destroy_listener (surface->resource,
                                     &drag_grab->drag_origin_listener);
 
-  clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
+  surface_actor = meta_wayland_surface_get_actor (surface);
+
+  clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface_actor)),
                                        seat->pointer->grab_x,
                                        seat->pointer->grab_y,
                                        &surface_pos.x, &surface_pos.y);
@@ -1121,19 +1124,22 @@ meta_wayland_data_device_start_drag (MetaWaylandDataDevice                 *data
 
   if (icon_surface)
     {
+      ClutterActor *drag_origin_actor;
+
       drag_grab->drag_surface = icon_surface;
 
       drag_grab->drag_icon_listener.notify = destroy_data_device_icon;
       wl_resource_add_destroy_listener (icon_surface->resource,
                                         &drag_grab->drag_icon_listener);
 
-      drag_grab->feedback_actor = meta_dnd_actor_new (CLUTTER_ACTOR (drag_grab->drag_origin->surface_actor),
+      drag_origin_actor = CLUTTER_ACTOR (meta_wayland_surface_get_actor (drag_grab->drag_origin));
+
+      drag_grab->feedback_actor = meta_dnd_actor_new (drag_origin_actor,
                                                       drag_grab->drag_start_x,
                                                       drag_grab->drag_start_y);
       meta_feedback_actor_set_anchor (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),
                                       0, 0);
-      clutter_actor_add_child (drag_grab->feedback_actor,
-                               CLUTTER_ACTOR (drag_grab->drag_surface->surface_actor));
+      clutter_actor_add_child (drag_grab->feedback_actor, drag_origin_actor);
 
       clutter_input_device_get_coords (seat->pointer->device, NULL, &pos);
       meta_feedback_actor_set_position (META_FEEDBACK_ACTOR (drag_grab->feedback_actor),

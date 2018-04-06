@@ -632,10 +632,13 @@ meta_wayland_tablet_tool_get_relative_coordinates (MetaWaylandTabletTool *tool,
                                                    wl_fixed_t            *sx,
                                                    wl_fixed_t            *sy)
 {
+  MetaSurfaceActor *surface_actor;
   float xf, yf;
 
+  surface_actor = meta_wayland_surface_get_actor (surface);
+
   clutter_event_get_coords (event, &xf, &yf);
-  clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface->surface_actor)),
+  clutter_actor_transform_stage_point (CLUTTER_ACTOR (meta_surface_actor_get_texture (surface_actor)),
                                        xf, yf, &xf, &yf);
 
   *sx = wl_fixed_from_double (xf) / surface->scale;

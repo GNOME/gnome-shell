@@ -303,4 +303,6 @@ void                meta_wayland_surface_restore_shortcuts (MetaWaylandSurface *
 gboolean            meta_wayland_surface_is_shortcuts_inhibited (MetaWaylandSurface *surface,
                                                                  MetaWaylandSeat    *seat);
 
+MetaSurfaceActor *  meta_wayland_surface_get_actor (MetaWaylandSurface *surface);
+
 #endif
