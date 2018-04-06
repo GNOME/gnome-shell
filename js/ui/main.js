@@ -708,3 +708,19 @@ function showRestartMessage(message) {
     let restartMessage = new RestartMessage(message);
     restartMessage.open();
 }
+
+/**
+ * hintActorSeldomChanges:
+ * @actor: A clutter actor
+ *
+ * Flag an actor as known to not need repainting very often. Such actors can
+ * have their painting cached in GPU memory so that future repaints triggered
+ * by other actors don't incur a repaint of @actor. This can provide dramatic
+ * performance benefits if used wisely.
+ *
+ * This hint needs to be provided manually because clutter presently lacks
+ * a good enough heuristic to toggle the optimization automatically.
+ */
+function hintActorSeldomChanges(actor) {
+    actor.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+}

@@ -6,6 +6,7 @@ const GObject = imports.gi.GObject;
 const Pango = imports.gi.Pango;
 const St = imports.gi.St;
 const Lang = imports.lang;
+const Main = imports.ui.main;
 
 var Dialog = new Lang.Class({
     Name: 'Dialog',
@@ -40,6 +41,7 @@ var Dialog = new Lang.Class({
         // mode accordingly so wrapped labels are handled correctly during
         // size requests.
         this._dialog.request_mode = Clutter.RequestMode.HEIGHT_FOR_WIDTH;
+        Main.hintActorSeldomChanges(this._dialog);
 
         this.contentLayout = new St.BoxLayout({ vertical: true,
                                                 style_class: "modal-dialog-content-box" });

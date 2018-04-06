@@ -772,6 +772,7 @@ var Panel = new Lang.Class({
         this.actor = new Shell.GenericContainer({ name: 'panel',
                                                   reactive: true });
         this.actor._delegate = this;
+        Main.hintActorSeldomChanges(this.actor);
 
         this._sessionStyle = null;
 
