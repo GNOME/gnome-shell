@@ -396,6 +396,7 @@ pending_state_init (MetaWaylandPendingState *state)
 {
   state->newly_attached = FALSE;
   state->buffer = NULL;
+  state->buffer_destroy_handler_id = 0;
   state->dx = 0;
   state->dy = 0;
   state->scale = 0;
@@ -425,8 +426,11 @@ pending_state_destroy (MetaWaylandPendingState *state)
   g_clear_pointer (&state->opaque_region, cairo_region_destroy);
 
   if (state->buffer)
-    g_signal_handler_disconnect (state->buffer,
-                                 state->buffer_destroy_handler_id);
+    {
+      g_signal_handler_disconnect (state->buffer,
+                                   state->buffer_destroy_handler_id);
+      state->buffer_destroy_handler_id = 0;
+    }
   wl_list_for_each_safe (cb, next, &state->frame_callback_list, link)
     wl_resource_destroy (cb->resource);
 }
@@ -439,36 +443,85 @@ pending_state_reset (MetaWaylandPendingState *state)
 }
 
 static void
-move_pending_state (MetaWaylandPendingState *from,
-                    MetaWaylandPendingState *to)
+merge_pending_state (MetaWaylandPendingState *from,
+                     MetaWaylandPendingState *to)
 {
-  if (from->buffer)
-    g_signal_handler_disconnect (from->buffer, from->buffer_destroy_handler_id);
+  if (from->newly_attached)
+    {
+      if (to->buffer)
+        {
+          g_signal_handler_disconnect (to->buffer,
+                                       to->buffer_destroy_handler_id);
+          to->buffer_destroy_handler_id = 0;
+        }
 
-  to->newly_attached = from->newly_attached;
-  to->buffer = from->buffer;
-  to->dx = from->dx;
-  to->dy = from->dy;
-  to->scale = from->scale;
-  to->surface_damage = from->surface_damage;
-  to->buffer_damage = from->buffer_damage;
-  to->input_region = from->input_region;
-  to->input_region_set = from->input_region_set;
-  to->opaque_region = from->opaque_region;
-  to->opaque_region_set = from->opaque_region_set;
-  to->new_geometry = from->new_geometry;
-  to->has_new_geometry = from->has_new_geometry;
-  to->has_new_min_size = from->has_new_min_size;
-  to->new_min_width = from->new_min_width;
-  to->new_min_height = from->new_min_height;
-  to->has_new_max_size = from->has_new_max_size;
-  to->new_max_width = from->new_max_width;
-  to->new_max_height = from->new_max_height;
+      if (from->buffer)
+        {
+          g_signal_handler_disconnect (from->buffer,
+                                       from->buffer_destroy_handler_id);
+          from->buffer_destroy_handler_id = 0;
+        }
+
+      to->newly_attached = TRUE;
+      to->buffer = from->buffer;
+      to->dx = from->dx;
+      to->dy = from->dy;
+    }
 
   wl_list_init (&to->frame_callback_list);
   wl_list_insert_list (&to->frame_callback_list, &from->frame_callback_list);
 
-  if (to->buffer)
+  cairo_region_union (to->surface_damage, from->surface_damage);
+  cairo_region_union (to->buffer_damage, from->buffer_damage);
+  cairo_region_destroy (from->surface_damage);
+  cairo_region_destroy (from->buffer_damage);
+
+  if (from->input_region_set)
+    {
+      if (to->input_region)
+        cairo_region_union (to->input_region, from->input_region);
+      else
+        to->input_region = cairo_region_reference (from->input_region);
+
+      to->input_region_set = TRUE;
+      cairo_region_destroy (from->input_region);
+    }
+
+  if (from->opaque_region_set)
+    {
+      if (to->opaque_region)
+        cairo_region_union (to->opaque_region, from->opaque_region);
+      else
+        to->opaque_region = cairo_region_reference (from->opaque_region);
+
+      to->opaque_region_set = TRUE;
+      cairo_region_destroy (from->opaque_region);
+    }
+
+  if (from->has_new_geometry)
+    {
+      to->new_geometry = from->new_geometry;
+      to->has_new_geometry = TRUE;
+    }
+
+  if (from->has_new_min_size)
+    {
+      to->new_min_width = from->new_min_width;
+      to->new_min_height = from->new_min_height;
+      to->has_new_min_size = TRUE;
+    }
+
+  if (from->has_new_max_size)
+    {
+      to->new_max_width = from->new_max_width;
+      to->new_max_height = from->new_max_height;
+      to->has_new_max_size = TRUE;
+    }
+
+  if (from->scale > 0)
+    to->scale = from->scale;
+
+  if (to->buffer && to->buffer_destroy_handler_id == 0)
     {
       to->buffer_destroy_handler_id =
         g_signal_connect (to->buffer, "resource-destroyed",
@@ -716,7 +769,7 @@ meta_wayland_surface_commit (MetaWaylandSurface *surface)
    *     surface is in effective desynchronized mode.
    */
   if (meta_wayland_surface_is_effectively_synchronized (surface))
-    move_pending_state (surface->pending, surface->sub.pending);
+    merge_pending_state (surface->pending, surface->sub.pending);
   else
     meta_wayland_surface_apply_pending_state (surface, surface->pending);
 }
