@@ -85,7 +85,8 @@ var UserListItem = new Lang.Class({
                                              GObject.BindingFlags.SYNC_CREATE);
 
         this._timedLoginIndicator = new St.Bin({ style_class: 'login-dialog-timed-login-indicator',
-                                                 scale_x: 0 });
+                                                 scale_x: 0,
+                                                 visible: false });
         layout.add(this._timedLoginIndicator);
 
         this.actor.connect('clicked', this._onClicked.bind(this));
@@ -125,6 +126,8 @@ var UserListItem = new Lang.Class({
 
         this.hideTimedLoginIndicator();
 
+        this._timedLoginIndicator.visible = true;
+
         let startTime = GLib.get_monotonic_time();
 
         this._timedLoginTimeoutId = GLib.timeout_add (GLib.PRIORITY_DEFAULT, 33,
@@ -151,6 +154,8 @@ var UserListItem = new Lang.Class({
             GLib.source_remove(this._timedLoginTimeoutId);
             this._timedLoginTimeoutId = 0;
         }
+
+        this._timedLoginIndicator.visible = false;
         this._timedLoginIndicator.scale_x = 0.;
     }
 });
