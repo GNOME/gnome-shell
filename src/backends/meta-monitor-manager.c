@@ -1032,7 +1032,7 @@ meta_monitor_manager_handle_get_resources (MetaDBusDisplayConfig *skeleton,
                              NULL /* properties */);
     }
 
-  for (l = combined_outputs; l; l = l->next)
+  for (l = combined_outputs, i = 0; l; l = l->next, i++)
     {
       MetaOutput *output = l->data;
       GVariantBuilder crtcs, modes, clones, properties;
