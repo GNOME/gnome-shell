@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/mutter/issues\n"
-"POT-Creation-Date: 2018-03-05 19:32+0000\n"
-"PO-Revision-Date: 2018-03-06 22:02+0100\n"
+"POT-Creation-Date: 2018-04-03 20:43+0000\n"
+"PO-Revision-Date: 2018-04-09 20:28+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: data/50-mutter-navigation.xml:6
 msgid "Navigation"
@@ -481,7 +481,7 @@ msgstr "Ponovno omogoči tipkovne bližnjice"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:64
 msgid "Allow grabs with Xwayland"
-msgstr ""
+msgstr "Dovoli zajemanje z XWayland"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:65
 msgid ""
@@ -491,10 +491,14 @@ msgid ""
 "window or be among the applications white-listed in key “xwayland-grab-"
 "access-rules”."
 msgstr ""
+"Upošteva zajeme s tipkovnico, ki jih sprožijo programi X11, zagnani v okolju "
+"Xwayland. Če naj se programski zajem upošteva, mora odjemalec ali poslati "
+"specifično sporočilo X11 na korensko okno ali pa mora biti zaveden na "
+"seznamu programov v ključu »xwayland-garb-access-rules«."
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:77
 msgid "Xwayland applications allowed to issue keyboard grabs"
-msgstr ""
+msgstr "Program XWayland ima dovoljenje za zajemanje s tipkovnico"
 
 #: data/org.gnome.mutter.wayland.gschema.xml.in:78
 msgid ""
@@ -509,6 +513,15 @@ msgid ""
 "using the specific keyboard shortcut defined by the keybinding key “restore-"
 "shortcuts”."
 msgstr ""
+"Seznam imen ali razredov virov oken X11, ki lahko sprožijo zajeme v okolju "
+"Xwayland. Ime oziroma razred vira podanega okna X11 je mogoče pridobiti z "
+"ukazom »xprop WM_CLASS«. Uporaba pomožnih znakov » * « in » ? « je podprta. "
+"Vrednosti, ki se začnejo z znakom » ! « so uvrščeni na črni seznam. Ta "
+"seznam je obravnavan prednostno pred belim seznamom in prekliče zajeme na "
+"seznamu sistema. Privzeti seznam vključuje ključ: "
+"»@XWAYLAND_GRAB_DEFAULT_ACCESS_RULES@« Uporabniki lahko prekinejo obstoječi "
+"zajem z uporabo posebne tipkovne bližnjice, določene s tipkovnim ključem "
+"»restore-shortcuts«."
 
 #. TRANSLATORS: This string refers to a button that switches between
 #. * different modes.
