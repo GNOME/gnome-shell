@@ -468,8 +468,8 @@ class NetworkSecretDialog extends ModalDialog.ModalDialog {
         case '802-11-wireless':
             wirelessSetting = this._connection.get_setting_wireless();
             ssid = NM.utils_ssid_to_utf8(wirelessSetting.get_ssid().get_data());
-            content.title = _('Authentication required');
-            content.message = _("Passwords or encryption keys are required to access the wireless network “%s”.").format(ssid);
+            content.title = _('Enter the Wi-Fi password for “%s”').format(ssid);
+            content.message = null;
             this._getWirelessSecrets(content.secrets, wirelessSetting);
             break;
         case '802-3-ethernet':
