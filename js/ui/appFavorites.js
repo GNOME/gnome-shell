@@ -13,6 +13,7 @@ const RENAMED_DESKTOP_IDS = {
     'dconf-editor.desktop': 'ca.desrt.dconf-editor.desktop',
     'empathy.desktop': 'org.gnome.Empathy.desktop',
     'epiphany.desktop': 'org.gnome.Epiphany.desktop',
+    'evolution.desktop': 'org.gnome.Evolution.desktop',
     'file-roller.desktop': 'org.gnome.FileRoller.desktop',
     'gcalctool.desktop': 'org.gnome.Calculator.desktop',
     'geary.desktop': 'org.gnome.Geary.desktop',
