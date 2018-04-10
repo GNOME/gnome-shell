@@ -360,7 +360,7 @@ create_pipewire_stream (MetaScreenCastStreamSrc  *src,
                          PW_DIRECTION_OUTPUT,
                          NULL,
                          PW_STREAM_FLAG_NONE,
-                         params, G_N_ELEMENTS (&params)) != 0)
+                         params, G_N_ELEMENTS (params)) != 0)
     {
       g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
                    "Could not connect");
