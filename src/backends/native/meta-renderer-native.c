@@ -193,6 +193,8 @@ struct _MetaRendererNative
   MetaMonitorManagerKms *monitor_manager_kms;
   MetaGles3 *gles3;
 
+  gboolean use_modifiers;
+
   GHashTable *gpu_datas;
 
   CoglClosure *swap_notify_idle;
@@ -1586,6 +1588,7 @@ gbm_get_next_fb_id (MetaGpuKms         *gpu_kms,
                     struct gbm_bo     **out_next_bo,
                     uint32_t           *out_next_fb_id)
 {
+  MetaRendererNative *renderer_native = meta_renderer_native_from_gpu (gpu_kms);
   struct gbm_bo *next_bo;
   uint32_t next_fb_id;
   int kms_fd;
@@ -1608,7 +1611,8 @@ gbm_get_next_fb_id (MetaGpuKms         *gpu_kms,
 
   kms_fd = meta_gpu_kms_get_fd (gpu_kms);
 
-  if (modifiers[0] != DRM_FORMAT_MOD_INVALID)
+  if (renderer_native->use_modifiers &&
+      modifiers[0] != DRM_FORMAT_MOD_INVALID)
     {
       if (drmModeAddFB2WithModifiers (kms_fd,
                                       gbm_bo_get_width (next_bo),
@@ -2006,7 +2010,10 @@ meta_renderer_native_create_surface_gbm (CoglOnscreen        *onscreen,
     meta_renderer_native_get_gpu_data (renderer_native,
                                        onscreen_native->render_gpu);
 
-  modifiers = get_supported_modifiers (onscreen, format);
+  if (renderer_native->use_modifiers)
+    modifiers = get_supported_modifiers (onscreen, format);
+  else
+    modifiers = NULL;
 
   if (modifiers)
     {
@@ -3391,6 +3398,22 @@ meta_renderer_native_finalize (GObject *object)
 }
 
 static void
+meta_renderer_native_constructed (GObject *object)
+{
+  MetaRendererNative *renderer_native = META_RENDERER_NATIVE (object);
+  MetaMonitorManager *monitor_manager =
+    META_MONITOR_MANAGER (renderer_native->monitor_manager_kms);
+  MetaBackend *backend = meta_monitor_manager_get_backend (monitor_manager);
+  MetaSettings *settings = meta_backend_get_settings (backend);
+
+  if (meta_settings_is_experimental_feature_enabled (
+        settings, META_EXPERIMENTAL_FEATURE_KMS_MODIFIERS))
+    renderer_native->use_modifiers = TRUE;
+
+  G_OBJECT_CLASS (meta_renderer_native_parent_class)->constructed (object);
+}
+
+static void
 meta_renderer_native_init (MetaRendererNative *renderer_native)
 {
   renderer_native->gpu_datas =
@@ -3408,6 +3431,7 @@ meta_renderer_native_class_init (MetaRendererNativeClass *klass)
   object_class->get_property = meta_renderer_native_get_property;
   object_class->set_property = meta_renderer_native_set_property;
   object_class->finalize = meta_renderer_native_finalize;
+  object_class->constructed = meta_renderer_native_constructed;
 
   renderer_class->create_cogl_renderer = meta_renderer_native_create_cogl_renderer;
   renderer_class->create_view = meta_renderer_native_create_view;

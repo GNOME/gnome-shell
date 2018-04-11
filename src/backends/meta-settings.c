@@ -267,6 +267,8 @@ experimental_features_handler (GVariant *features_variant,
         features |= META_EXPERIMENTAL_FEATURE_SCREEN_CAST;
       else if (g_str_equal (feature, "remote-desktop"))
         features |= META_EXPERIMENTAL_FEATURE_REMOTE_DESKTOP;
+      else if (g_str_equal (feature, "kms-modifiers"))
+        features |= META_EXPERIMENTAL_FEATURE_KMS_MODIFIERS;
       else
         g_info ("Unknown experimental feature '%s'\n", feature);
     }
