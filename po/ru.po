@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-10 12:32+0000\n"
-"PO-Revision-Date: 2018-03-14 22:44+0300\n"
+"POT-Creation-Date: 2018-03-26 22:21+0000\n"
+"PO-Revision-Date: 2018-04-12 14:26+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -569,7 +569,7 @@ msgstr "%A, %H∶%M"
 #: js/misc/util.js:246
 #, no-c-format
 msgid "%B %d, %H∶%M"
-msgstr "%e %b., %H∶%M"
+msgstr "%-d %B, %H∶%M"
 
 # fix даты
 #. Translators: this is the month name, day number, year
@@ -578,27 +578,27 @@ msgstr "%e %b., %H∶%M"
 #: js/misc/util.js:252
 #, no-c-format
 msgid "%B %d %Y, %H∶%M"
-msgstr "%e %b. %Y, %H∶%M"
+msgstr "%-d %B %Y, %H∶%M"
 
 # по всей видимости разрабы коммент перепутали c "Translators: Time in 12h format"
 #. Translators: Time in 12h format
 #: js/misc/util.js:257
 msgid "%l∶%M %p"
-msgstr "%l∶%M %p"
+msgstr "%-l∶%M %p"
 
 #. Translators: this is the word "Yesterday" followed by a
 #. time string in 12h format. i.e. "Yesterday, 2:30 pm"
 #: js/misc/util.js:263
 #, no-c-format
 msgid "Yesterday, %l∶%M %p"
-msgstr "Вчера, %l∶%M %p"
+msgstr "Вчера, %-l∶%M %p"
 
 #. Translators: this is the week day name followed by a time
 #. string in 12h format. i.e. "Monday, 2:30 pm"
 #: js/misc/util.js:269
 #, no-c-format
 msgid "%A, %l∶%M %p"
-msgstr "%A, %l∶%M %p"
+msgstr "%A, %-l∶%M %p"
 
 # fix даты
 #. Translators: this is the month name and day number
@@ -607,7 +607,7 @@ msgstr "%A, %l∶%M %p"
 #: js/misc/util.js:275
 #, no-c-format
 msgid "%B %d, %l∶%M %p"
-msgstr "%e %b., %l∶%M %p"
+msgstr "%-d %B, %-l∶%M %p"
 
 # fix даты
 #. Translators: this is the month name, day number, year
@@ -616,7 +616,7 @@ msgstr "%e %b., %l∶%M %p"
 #: js/misc/util.js:281
 #, no-c-format
 msgid "%B %d %Y, %l∶%M %p"
-msgstr "%e %b. %Y, %l∶%M %p"
+msgstr "%-d %B %Y, %-l∶%M %p"
 
 #. TRANSLATORS: this is the title of the wifi captive portal login window
 #: js/portalHelper/main.js:66
@@ -820,13 +820,13 @@ msgstr "Весь день"
 #: js/ui/calendar.js:864
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %e %b."
+msgstr "%A, %-d %B"
 
 # fix для даты в календаре и на экране блокировки
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %e %b. %Y"
+msgstr "%A, %-d %B %Y"
 
 #: js/ui/calendar.js:1086
 msgid "No Notifications"
@@ -1009,7 +1009,7 @@ msgstr "Панель приложений"
 #.
 #: js/ui/dateMenu.js:74
 msgid "%B %e %Y"
-msgstr "%e %b. %Y"
+msgstr "%-d %B %Y"
 
 # fix для даты в календаре и на экране блокировки
 #. Translators: This is the accessible name of the date button shown
@@ -1018,7 +1018,7 @@ msgstr "%e %b. %Y"
 #.
 #: js/ui/dateMenu.js:81
 msgid "%A %B %e %Y"
-msgstr "%A, %e %b. %Y"
+msgstr "%A, %-d %B %Y"
 
 #: js/ui/dateMenu.js:145
 msgid "Add world clocks…"
@@ -1505,12 +1505,11 @@ msgstr "Перезапуск не доступен при использован
 msgid "Restarting…"
 msgstr "Перезапуск…"
 
-# fix для даты в календаре и на экране блокировки
 #. Translators: This is a time format for a date in
 #. long format
 #: js/ui/screenShield.js:88
 msgid "%A, %B %d"
-msgstr "%A, %d %b."
+msgstr "%A, %-d %B"
 
 #: js/ui/screenShield.js:146
 #, javascript-format
