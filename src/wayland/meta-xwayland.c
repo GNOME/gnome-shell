@@ -393,13 +393,12 @@ xserver_died (GObject      *source,
               gpointer      user_data)
 {
   GSubprocess *proc = G_SUBPROCESS (source);
-  GError *error = NULL;
+  g_autoptr (GError) error = NULL;
 
   if (!g_subprocess_wait_finish (proc, result, &error))
     {
       if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
         g_error ("Failed to finish waiting for Xwayland: %s", error->message);
-      g_clear_error (&error);
     }
   else if (!g_subprocess_get_successful (proc))
     g_error ("X Wayland crashed; aborting");
