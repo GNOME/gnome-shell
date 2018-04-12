@@ -40,6 +40,10 @@ var AuthenticationDialog = new Lang.Class({
         this.userNames = userNames;
         this._wasDismissed = false;
 
+        this._sessionUpdatedId = Main.sessionMode.connect('updated', () => {
+            this._group.visible = !Main.sessionMode.isLocked;
+        });
+
         let icon = new Gio.ThemedIcon({ name: 'dialog-password-symbolic' });
         let title = _("Authentication Required");
 
@@ -192,6 +196,12 @@ var AuthenticationDialog = new Lang.Class({
         this._session.connect('show-error', this._onSessionShowError.bind(this));
         this._session.connect('show-info', this._onSessionShowInfo.bind(this));
         this._session.initiate();
+    },
+
+    close(timestamp) {
+        this.parent(timestamp);
+
+        Main.sessionMode.disconnect(this._sessionUpdatedId);
     },
 
     _ensureOpen() {
