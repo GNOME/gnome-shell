@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-26 22:21+0000\n"
-"PO-Revision-Date: 2018-04-12 14:26+0300\n"
+"POT-Creation-Date: 2018-04-12 11:47+0000\n"
+"PO-Revision-Date: 2018-04-12 16:48+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -95,8 +95,9 @@ msgid ""
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
 "У расширений GNOME Shell есть свойство UUID; в этом ключе перечислены "
-"расширения, которые должны быть загружены. Этим список также можно управлять "
-"через методы DBus EnableExtension и DisableExtension сервиса org.gnome.Shell."
+"расширения, которые должны быть загружены. Этим списком также можно "
+"управлять через методы DBus EnableExtension и DisableExtension сервиса org."
+"gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "Disable user extensions"
@@ -343,7 +344,7 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Возникла ошибка загрузки диалогового окна параметров для %s:"
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:149
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -674,12 +675,12 @@ msgstr "Добавить в избранное"
 msgid "Show Details"
 msgstr "Показать подробности"
 
-#: js/ui/appFavorites.js:138
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Приложение %s добавлено в избранное."
 
-#: js/ui/appFavorites.js:172
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Приложение %s удалено из избранного."
@@ -875,7 +876,7 @@ msgstr "Внешний диск отключён"
 msgid "Open with %s"
 msgstr "Открыть с помощью %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:285
 msgid "Password:"
 msgstr "Пароль:"
 
@@ -962,15 +963,15 @@ msgstr "Для подключения к «%s» требуется пароль.
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
-#: js/ui/components/polkitAgent.js:43
+#: js/ui/components/polkitAgent.js:44
 msgid "Authentication Required"
 msgstr "Требуется подтверждение подлинности"
 
-#: js/ui/components/polkitAgent.js:71
+#: js/ui/components/polkitAgent.js:72
 msgid "Administrator"
 msgstr "Администратор"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:152
 msgid "Authenticate"
 msgstr "Подтвердить"
 
@@ -978,7 +979,7 @@ msgstr "Подтвердить"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:271 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Не удалось подтвердить подлинность. Попробуйте снова."
 
