@@ -26,6 +26,8 @@
 #include "meta-xwayland.h"
 #include "meta-xwayland-private.h"
 
+#include <meta/main.h>
+
 #include <glib.h>
 #include <glib-unix.h>
 #include <errno.h>
@@ -397,25 +399,30 @@ xserver_died (GObject      *source,
 
   if (!g_subprocess_wait_finish (proc, result, &error))
     {
-      if (!g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
-        g_error ("Failed to finish waiting for Xwayland: %s", error->message);
+      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+        return;
+
+      g_warning ("Failed to finish waiting for Xwayland: %s", error->message);
     }
   else if (!g_subprocess_get_successful (proc))
-    g_error ("X Wayland crashed; aborting");
+    g_warning ("X Wayland crashed; exiting");
   else
     {
       /* For now we simply abort if we see the server exit.
        *
        * In the future X will only be loaded lazily for legacy X support
        * but for now it's a hard requirement. */
-      g_error ("Spurious exit of X Wayland server");
+      g_warning ("Spurious exit of X Wayland server");
     }
+
+  meta_exit (META_EXIT_ERROR);
 }
 
 static int
 x_io_error (Display *display)
 {
-  g_error ("Connection to xwayland lost");
+  g_warning ("Connection to xwayland lost");
+  meta_exit (META_EXIT_ERROR);
 
   return 0;
 }
