@@ -354,7 +354,7 @@ var Indicator = new Lang.Class({
 
     _onEnrollFailed(obj, device, error) {
 	const title = _('Thunderbolt authorization error');
-	const body = _('Could not authorize the thunderbolt device: %s'.format(error.message));
+	const body = _('Could not authorize the Thunderbolt device: %s'.format(error.message));
 	this._notify(title, body);
     }
 
