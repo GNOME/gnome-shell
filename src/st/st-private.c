@@ -432,6 +432,8 @@ _st_create_shadow_pipeline_from_actor (StShadow     *shadow_spec,
   CoglPipeline *shadow_pipeline = NULL;
   float width, height;
 
+  g_return_val_if_fail (clutter_actor_has_allocation (actor), NULL);
+
   clutter_actor_get_size (actor, &width, &height);
 
   if (width == 0 || height == 0)
