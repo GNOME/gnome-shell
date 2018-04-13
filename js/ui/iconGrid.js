@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gtk = imports.gi.Gtk;
+const Pango = imports.gi.Pango;
 const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
@@ -54,6 +55,8 @@ var BaseIcon = new Lang.Class({
         this.actor.connect('destroy', this._onDestroy.bind(this));
 
         this._spacing = 0;
+        this._fixedWidth = -1;
+        this._maxHeight = -1;
 
         let box = new Shell.GenericContainer();
         box.connect('allocate', this._allocate.bind(this));
@@ -71,6 +74,9 @@ var BaseIcon = new Lang.Class({
 
         if (params.showLabel) {
             this.label = new St.Label({ text: label });
+            this.label.clutter_text.line_wrap = true;
+            this.label.clutter_text.line_wrap_mode = Pango.WrapMode.WORD_CHAR;
+
             box.add_actor(this.label);
         } else {
             this.label = null;
@@ -90,38 +96,56 @@ var BaseIcon = new Lang.Class({
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
-        let iconSize = availHeight;
-
         let [iconMinHeight, iconNatHeight] = this._iconBin.get_preferred_height(-1);
         let [iconMinWidth, iconNatWidth] = this._iconBin.get_preferred_width(-1);
-        let preferredHeight = iconNatHeight;
+
+        let iconAvailHeight = availHeight;
 
         let childBox = new Clutter.ActorBox();
 
         if (this.label) {
-            let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(-1);
-            preferredHeight += this._spacing + labelNatHeight;
+            iconAvailHeight = iconNatHeight;
 
-            let labelHeight = availHeight >= preferredHeight ? labelNatHeight
-                                                             : labelMinHeight;
-            iconSize -= this._spacing + labelHeight;
-
+            // The available height is already adjusted to fit the label perfectly,
+            // no need to calculate the height of the label
             childBox.x1 = 0;
             childBox.x2 = availWidth;
-            childBox.y1 = iconSize + this._spacing;
-            childBox.y2 = childBox.y1 + labelHeight;
+            childBox.y1 = iconAvailHeight + this._spacing;
+            childBox.y2 = availHeight;
             this.label.allocate(childBox, flags);
         }
 
+        // Center the icon horizontally
         childBox.x1 = Math.floor((availWidth - iconNatWidth) / 2);
-        childBox.y1 = Math.floor((iconSize - iconNatHeight) / 2);
+
+        childBox.y1 = 0;
         childBox.x2 = childBox.x1 + iconNatWidth;
         childBox.y2 = childBox.y1 + iconNatHeight;
         this._iconBin.allocate(childBox, flags);
     },
 
+    setFixedWidth(fixedWidth) {
+        this._fixedWidth = this.actor.get_theme_node().adjust_for_width(fixedWidth);
+    },
+
+    setMaxHeight(maxHeight) {
+        this._maxHeight = this.actor.get_theme_node().adjust_for_height(maxHeight);
+    },
+
     _getPreferredWidth(actor, forHeight, alloc) {
-        this._getPreferredHeight(actor, -1, alloc);
+        if (this._fixedWidth > 0)
+            return alloc.min_size = alloc.natural_size = this._fixedWidth;
+
+        let [iconMinWidth, iconNatWidth] = this._iconBin.get_preferred_width(forHeight);
+
+        if (this.label) {
+            let [labelMinWidth, labelNatWidth] = this.label.get_preferred_width(forHeight);
+            alloc.min_size = Math.max(iconMinWidth, labelMinWidth);
+            alloc.natural_size = Math.max(iconNatWidth, labelNatWidth);
+        } else {
+            alloc.min_size = iconMinWidth;
+            alloc.natural_size = iconNatWidth;
+        }
     },
 
     _getPreferredHeight(actor, forWidth, alloc) {
@@ -130,9 +154,30 @@ var BaseIcon = new Lang.Class({
         alloc.natural_size = iconNatHeight;
 
         if (this.label) {
+            let [, labelOneLine] = this.label.get_preferred_height(-1);
             let [labelMinHeight, labelNatHeight] = this.label.get_preferred_height(forWidth);
-            alloc.min_size += this._spacing + labelMinHeight;
-            alloc.natural_size += this._spacing + labelNatHeight;
+            alloc.min_size += this._spacing;
+            alloc.natural_size += this._spacing;
+
+            // We want to strip the label to 3 lines first
+            if (labelNatHeight > labelOneLine * 3)
+                labelNatHeight = labelOneLine * 3;
+
+            // Then if the label is still heigher than maxHeight, first set it to maxHeight,
+            // then read the actual height of the lines and set the label to this height.
+            if (forWidth > 0 && this._maxHeight > 0 &&
+                (alloc.natural_size + labelNatHeight) > this._maxHeight) {
+                let layout = this.label.clutter_text.get_layout();
+
+                layout.set_width(Pango.units_from_double(forWidth));
+                layout.set_height(Pango.units_from_double(this._maxHeight - alloc.natural_size));
+
+                // Read the actual height of the label
+                labelNatHeight = layout.get_pixel_size()[1];
+            }
+
+            alloc.min_size += labelMinHeight;
+            alloc.natural_size += labelNatHeight;
         }
     },
 
@@ -378,9 +423,10 @@ var IconGrid = new Lang.Class({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
         let rowIndex = 0;
+        let numRows = this.nRows(availWidth);
 
         for (let i = 0; i < children.length; i++) {
-            let childBox = this._calculateChildBox(children[i], x, y, box);
+            let childBox = this._calculateChildBox(children[i], (rowIndex + 1) == numRows, x, y, box);
 
             if (this._rowLimit && rowIndex >= this._rowLimit ||
                 this._fillParent && childBox.y2 > availHeight - this.bottomPadding) {
@@ -587,13 +633,30 @@ var IconGrid = new Lang.Class({
     },
 
     _getAllocatedChildSize(child) {
-        let [,, natWidth, natHeight] = child.get_preferred_size();
-        let width = Math.min(this._getHItemSize(), natWidth);
-        let height = Math.min(this._getVItemSize(), natHeight);
-        return [width, height];
+        let [, natWidth] = child.get_preferred_width(-1);
+        let [, natHeight] = child.get_preferred_height(natWidth);
+
+        return [natWidth, natHeight];
     },
 
-    _calculateChildBox(child, x, y, box) {
+    _calculateChildBox(child, lastRow, x, y, box) {
+        let index = this._items.findIndex(item => {
+            return item.actor == child;
+        });
+        if (index === -1)
+            return;
+
+        if(this._padWithSpacing && !lastRow)
+            this._items[index].icon.setMaxHeight(this._getVItemSize() + this._getSpacing());
+        else if (this._padWithSpacing && lastRow)
+            // Don't assign the whole spacing as extra height because in the app grid the
+            // last row is not completely visible.
+            this._items[index].icon.setMaxHeight(this._getVItemSize() + (this._getSpacing() / 2));
+        else if (lastRow)
+            this._items[index].icon.setMaxHeight(this._getVItemSize() + this.bottomPadding);
+
+        this._items[index].icon.setFixedWidth(this._getHItemSize());
+
         let [width, height] = this._getAllocatedChildSize(child);
 
         let childBox = new Clutter.ActorBox();
@@ -605,6 +668,7 @@ var IconGrid = new Lang.Class({
         childBox.y1 = y;
         childBox.x2 = childBox.x1 + width;
         childBox.y2 = childBox.y1 + height;
+
         return childBox;
     },
 
@@ -846,7 +910,11 @@ var PaginatedIconGrid = new Lang.Class({
         let rowIndex = 0;
 
         for (let i = 0; i < children.length; i++) {
-            let childBox = this._calculateChildBox(children[i], x, y, box);
+            let curPage = Math.ceil(i / this._childrenPerPage);
+            let lastRow = i < this._childrenPerPage * curPage &&
+                          i >= this._childrenPerPage * curPage - nColumns;
+            let childBox = this._calculateChildBox(children[i], lastRow, x, y, box);
+
             children[i].allocate(childBox, flags);
             this._grid.set_skip_paint(children[i], false);
 
