@@ -223,6 +223,8 @@ StTextDecoration st_theme_node_get_text_decoration (StThemeNode *node);
 
 StTextAlign st_theme_node_get_text_align (StThemeNode *node);
 
+double st_theme_node_get_letter_spacing (StThemeNode *node);
+
 /* Font rule processing is pretty complicated, so we just hardcode it
  * under the standard font/font-family/font-size/etc names. This means
  * you can't have multiple separate styled fonts for a single item,

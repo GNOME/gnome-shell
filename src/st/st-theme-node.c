@@ -2545,6 +2545,28 @@ st_theme_node_get_text_align(StThemeNode *node)
   return ST_TEXT_ALIGN_LEFT;
 }
 
+/**
+ * st_theme_node_get_letter_spacing:
+ * @node: a #StThemeNode
+ *
+ * Gets the value for the letter-spacing style property, in pixels.
+ *
+ * Return value: the value of the letter-spacing property, if
+ *   found, or zero if such property has not been found.
+ */
+gdouble
+st_theme_node_get_letter_spacing (StThemeNode *node)
+{
+  gdouble spacing = 0.;
+
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), spacing);
+
+  ensure_properties (node);
+
+  st_theme_node_lookup_length (node, "letter-spacing", FALSE, &spacing);
+  return spacing;
+}
+
 static gboolean
 font_family_from_terms (CRTerm *term,
                         char  **family)
