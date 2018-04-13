@@ -144,7 +144,7 @@ var BaseIcon = new Lang.Class({
 
     setIconSize(size) {
         if (!this._setSizeManually)
-            throw new Error('setSizeManually has to be set to use setIconsize');
+            throw new Error('setSizeManually has to be set to use setIconSize');
 
         if (size == this.iconSize)
             return;
@@ -378,6 +378,7 @@ var IconGrid = new Lang.Class({
         let y = box.y1 + this.topPadding;
         let columnIndex = 0;
         let rowIndex = 0;
+
         for (let i = 0; i < children.length; i++) {
             let childBox = this._calculateChildBox(children[i], x, y, box);
 
@@ -393,9 +394,7 @@ var IconGrid = new Lang.Class({
             if (columnIndex == nColumns) {
                 columnIndex = 0;
                 rowIndex++;
-            }
 
-            if (columnIndex == 0) {
                 y += this._getVItemSize() + spacing;
                 x = box.x1 + leftEmptySpace + this.leftPadding;
             } else {
@@ -511,7 +510,7 @@ var IconGrid = new Lang.Class({
             this._clonesAnimating.push(actorClone);
             Main.uiGroup.add_actor(actorClone);
 
-            let [width, height,,] = this._getAllocatedChildSizeAndSpacing(actor);
+            let [width, height] = this._getAllocatedChildSize(actor);
             actorClone.set_size(width, height);
             let scaleX = sourceScaledWidth / width;
             let scaleY = sourceScaledHeight / height;
@@ -587,28 +586,23 @@ var IconGrid = new Lang.Class({
         }
     },
 
-    _getAllocatedChildSizeAndSpacing(child) {
+    _getAllocatedChildSize(child) {
         let [,, natWidth, natHeight] = child.get_preferred_size();
         let width = Math.min(this._getHItemSize(), natWidth);
-        let xSpacing = Math.max(0, width - natWidth) / 2;
         let height = Math.min(this._getVItemSize(), natHeight);
-        let ySpacing = Math.max(0, height - natHeight) / 2;
-        return [width, height, xSpacing, ySpacing];
+        return [width, height];
     },
 
     _calculateChildBox(child, x, y, box) {
-        /* Center the item in its allocation horizontally */
-        let [width, height, childXSpacing, childYSpacing] =
-            this._getAllocatedChildSizeAndSpacing(child);
+        let [width, height] = this._getAllocatedChildSize(child);
 
         let childBox = new Clutter.ActorBox();
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
-            let _x = box.x2 - (x + width);
-            childBox.x1 = Math.floor(_x - childXSpacing);
+            childBox.x1 = box.x2 - (x + width);
         } else {
-            childBox.x1 = Math.floor(x + childXSpacing);
+            childBox.x1 = x;
         }
-        childBox.y1 = Math.floor(y + childYSpacing);
+        childBox.y1 = y;
         childBox.x2 = childBox.x1 + width;
         childBox.y2 = childBox.y1 + height;
         return childBox;
@@ -852,14 +846,15 @@ var PaginatedIconGrid = new Lang.Class({
             if (columnIndex == nColumns) {
                 columnIndex = 0;
                 rowIndex++;
-            }
-            if (columnIndex == 0) {
+
                 y += this._getVItemSize() + spacing;
                 if ((i + 1) % this._childrenPerPage == 0)
                     y +=  this._spaceBetweenPages - spacing + this.bottomPadding + this.topPadding;
+
                 x = box.x1 + leftEmptySpace + this.leftPadding;
-            } else
+            } else {
                 x += this._getHItemSize() + spacing;
+            }
         }
     },
 
