@@ -303,7 +303,8 @@ var IconGrid = new Lang.Class({
         this._padWithSpacing = params.padWithSpacing;
 
         this.topPadding = 0;
-        this.bottomPadding = 0;
+        // Use 20px here to get an additional line for the labels in the search results
+        this.bottomPadding = 20;
         this.rightPadding = 0;
         this.leftPadding = 0;
 
