@@ -1,3 +1,20 @@
+3.28.1
+======
+* Fix compose characters in shell entries [Carlos; #115]
+* Don't show authentication dialogs on lock screen [Florian; #179, #166]
+* Fix handling of UTC timezone in world clock [Florian; #150]
+* Fix keyboard navigation in overview when hovering windows [Florian; #50]
+* Misc. bug fixes [Florian; #127, #788908, #763886, !39]
+
+Contributors:
+  Jeremy Bicha, Carlos Garnacho, Andy Holmes, Florian Müllner, Bastien Nocera
+
+Translators:
+  Stas Solovey [ru], Daniel Șerbănescu [ro], Dušan Kazik [sk],
+  Rafael Fontenelle [pt_BR], Nathan Follens [nl], Dz Chen [zh_CN],
+  Matej Urbančič [sl], Hannie Dumoleyn [nl], Khaled Hosny [ar],
+  Guillaume Bernard [fr]
+
 3.28.0
 ======
 
