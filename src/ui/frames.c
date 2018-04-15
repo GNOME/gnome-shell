@@ -742,16 +742,21 @@ redraw_control (MetaUIFrame *frame,
 }
 
 static gboolean
-meta_frame_titlebar_event (MetaUIFrame *frame,
-                           ClutterButtonEvent *event,
-                           int action)
+meta_frame_titlebar_event (MetaUIFrame        *frame,
+                           const ClutterEvent *event,
+                           int                 action)
 {
   MetaFrameFlags flags;
   Display *display;
+  guint32 evtime;
+  gfloat x, y;
 
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
   flags = meta_frame_get_flags (frame->meta_window->frame);
+
+  evtime = clutter_event_get_time (event);
+  clutter_event_get_coords (event, &x, &y);
 
   switch (action)
     {
@@ -760,9 +765,9 @@ meta_frame_titlebar_event (MetaUIFrame *frame,
         if (flags & META_FRAME_ALLOWS_SHADE)
           {
             if (flags & META_FRAME_SHADED)
-              meta_window_unshade (frame->meta_window, event->time);
+              meta_window_unshade (frame->meta_window, evtime);
             else
-              meta_window_shade (frame->meta_window, event->time);
+              meta_window_shade (frame->meta_window, evtime);
           }
       }
       break;
@@ -808,16 +813,14 @@ meta_frame_titlebar_event (MetaUIFrame *frame,
     case G_DESKTOP_TITLEBAR_ACTION_LOWER:
       meta_core_user_lower_and_unfocus (display,
                                         frame->xwindow,
-                                        event->time);
+                                        evtime);
       break;
 
     case G_DESKTOP_TITLEBAR_ACTION_MENU:
       meta_core_show_window_menu (display,
                                   frame->xwindow,
                                   META_WINDOW_MENU_WM,
-                                  event->x,
-                                  event->y,
-                                  event->time);
+                                  x, y, evtime);
       break;
     }
 
@@ -825,8 +828,8 @@ meta_frame_titlebar_event (MetaUIFrame *frame,
 }
 
 static gboolean
-meta_frame_double_click_event (MetaUIFrame  *frame,
-                               ClutterButtonEvent *event)
+meta_frame_double_click_event (MetaUIFrame        *frame,
+                               const ClutterEvent *event)
 {
   int action = meta_prefs_get_action_double_click_titlebar ();
 
@@ -839,7 +842,8 @@ meta_frame_middle_click_event (MetaUIFrame *frame,
 {
   int action = meta_prefs_get_action_middle_click_titlebar();
 
-  return meta_frame_titlebar_event (frame, event, action);
+  return meta_frame_titlebar_event (frame, (const ClutterEvent *) event,
+                                    action);
 }
 
 static gboolean
@@ -848,7 +852,8 @@ meta_frame_right_click_event (MetaUIFrame *frame,
 {
   int action = meta_prefs_get_action_right_click_titlebar();
 
-  return meta_frame_titlebar_event (frame, event, action);
+  return meta_frame_titlebar_event (frame, (const ClutterEvent *) event,
+                                    action);
 }
 
 static gboolean
@@ -936,11 +941,18 @@ grab_op_from_resize_control (MetaFrameControl control)
 }
 
 static gboolean
-meta_frame_left_click_event (MetaUIFrame *frame,
-                             ClutterButtonEvent *event)
+meta_frame_left_click_event (MetaUIFrame        *frame,
+                             const ClutterEvent *event)
 {
   Display *display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-  MetaFrameControl control = get_control (frame, event->x, event->y);
+  MetaFrameControl control;
+  guint32 evtime, button;
+  gfloat x, y;
+
+  evtime = clutter_event_get_time (event);
+  clutter_event_get_coords (event, &x, &y);
+  button = clutter_event_get_button (event);
+  control = get_control (frame, x, y);
 
   switch (control)
     {
@@ -950,7 +962,7 @@ meta_frame_left_click_event (MetaUIFrame *frame,
     case META_FRAME_CONTROL_DELETE:
     case META_FRAME_CONTROL_MENU:
     case META_FRAME_CONTROL_APPMENU:
-      frame->grab_button = event->button;
+      frame->grab_button = button;
       frame->button_state = META_BUTTON_STATE_PRESSED;
       frame->prelit_control = control;
       redraw_control (frame, control);
@@ -987,13 +999,12 @@ meta_frame_left_click_event (MetaUIFrame *frame,
                                                frame->xwindow,
                                                menu,
                                                &root_rect,
-                                               event->time);
+                                               evtime);
         }
       else
         {
           meta_frames_try_grab_op (frame, META_GRAB_OP_FRAME_BUTTON,
-                                   event->x, event->y,
-                                   event->time);
+                                   x, y, evtime);
         }
 
       return TRUE;
@@ -1007,8 +1018,7 @@ meta_frame_left_click_event (MetaUIFrame *frame,
     case META_FRAME_CONTROL_RESIZE_W:
       meta_frames_try_grab_op (frame,
                                grab_op_from_resize_control (control),
-                               event->x, event->y,
-                               event->time);
+                               x, y, evtime);
 
       return TRUE;
     case META_FRAME_CONTROL_TITLE:
@@ -1019,8 +1029,7 @@ meta_frame_left_click_event (MetaUIFrame *frame,
           {
             meta_frames_try_grab_op (frame,
                                      META_GRAB_OP_MOVING,
-                                     event->x, event->y,
-                                     event->time);
+                                     x, y, evtime);
           }
       }
 
@@ -1036,21 +1045,26 @@ meta_frame_left_click_event (MetaUIFrame *frame,
 }
 
 static gboolean
-handle_button_press_event (MetaUIFrame *frame,
-                           ClutterButtonEvent *event)
+handle_press_event (MetaUIFrame        *frame,
+                    const ClutterEvent *event)
 {
   MetaFrameControl control;
   Display *display;
+  guint evtime, button;
+  gfloat x, y;
 
   display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 
-  control = get_control (frame, event->x, event->y);
+  evtime = clutter_event_get_time (event);
+  clutter_event_get_coords (event, &x, &y);
+  control = get_control (frame, x, y);
+  button = clutter_event_get_button (event);
 
   /* don't do the rest of this if on client area */
   if (control == META_FRAME_CONTROL_CLIENT_AREA)
     return FALSE; /* not on the frame, just passed through from client */
 
-  if (event->button == 1 &&
+  if (button == 1 &&
       !(control == META_FRAME_CONTROL_MINIMIZE ||
         control == META_FRAME_CONTROL_DELETE ||
         control == META_FRAME_CONTROL_MAXIMIZE))
@@ -1058,52 +1072,58 @@ handle_button_press_event (MetaUIFrame *frame,
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing window with frame 0x%lx due to button 1 press\n",
                   frame->xwindow);
-      meta_window_focus (frame->meta_window, event->time);
+      meta_window_focus (frame->meta_window, evtime);
     }
 
   /* We want to shade even if we have a GrabOp, since we'll have a move grab
    * if we double click the titlebar.
    */
   if (control == META_FRAME_CONTROL_TITLE &&
-      event->button == 1 &&
-      event->click_count == 2)
+      button == 1 &&
+      clutter_event_get_click_count (event) == 2)
     {
-      meta_core_end_grab_op (display, event->time);
+      meta_core_end_grab_op (display, evtime);
       return meta_frame_double_click_event (frame, event);
     }
 
   if (meta_core_get_grab_op (display) != META_GRAB_OP_NONE)
     return FALSE; /* already up to something */
 
-  frame->grab_button = event->button;
+  frame->grab_button = button;
 
-  switch (event->button)
+  switch (button)
     {
     case 1:
       return meta_frame_left_click_event (frame, event);
     case 2:
-      return meta_frame_middle_click_event (frame, event);
+      return meta_frame_middle_click_event (frame, (ClutterButtonEvent *) event);
     case 3:
-      return meta_frame_right_click_event (frame, event);
+      return meta_frame_right_click_event (frame, (ClutterButtonEvent *) event);
     default:
       return FALSE;
     }
 }
 
 static gboolean
-handle_button_release_event (MetaUIFrame *frame,
-                             ClutterButtonEvent *event)
+handle_release_event (MetaUIFrame        *frame,
+                      const ClutterEvent *event)
 {
   Display *display = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+  guint32 evtime, button;
+  gfloat x, y;
+
+  evtime = clutter_event_get_time (event);
+  clutter_event_get_coords (event, &x, &y);
+  button = clutter_event_get_button (event);
 
   frame->frames->current_grab_op = META_GRAB_OP_NONE;
-  meta_core_end_grab_op (display, event->time);
+  meta_core_end_grab_op (display, evtime);
 
   /* We only handle the releases we handled the presses for (things
    * involving frame controls). Window ops that don't require a
    * frame are handled in the Xlib part of the code, display.c/window.c
    */
-  if (((int) event->button) == frame->grab_button &&
+  if (((int) button) == frame->grab_button &&
       frame->button_state == META_BUTTON_STATE_PRESSED)
     {
       switch (frame->prelit_control)
@@ -1113,7 +1133,7 @@ handle_button_release_event (MetaUIFrame *frame,
           break;
         case META_FRAME_CONTROL_MAXIMIZE:
           /* Focus the window on the maximize */
-          meta_window_focus (frame->meta_window, event->time);
+          meta_window_focus (frame->meta_window, evtime);
           if (meta_prefs_get_raise_on_click ())
             meta_window_raise (frame->meta_window);
           meta_window_maximize (frame->meta_window, META_MAXIMIZE_BOTH);
@@ -1124,7 +1144,7 @@ handle_button_release_event (MetaUIFrame *frame,
           meta_window_unmaximize (frame->meta_window, META_MAXIMIZE_BOTH);
           break;
         case META_FRAME_CONTROL_DELETE:
-          meta_window_delete (frame->meta_window, event->time);
+          meta_window_delete (frame->meta_window, evtime);
           break;
         default:
           break;
@@ -1135,7 +1155,7 @@ handle_button_release_event (MetaUIFrame *frame,
        * prelit so to let the user know that it can now be pressed.
        * :)
        */
-      MetaFrameControl control = get_control (frame, event->x, event->y);
+      MetaFrameControl control = get_control (frame, x, y);
       meta_ui_frame_update_prelit_control (frame, control);
     }
 
@@ -1236,13 +1256,19 @@ meta_ui_frame_update_prelit_control (MetaUIFrame     *frame,
 }
 
 static gboolean
-handle_motion_notify_event (MetaUIFrame *frame,
-                            ClutterMotionEvent *event)
+handle_motion_event (MetaUIFrame        *frame,
+                     const ClutterEvent *event)
 {
   MetaFrames *frames = frame->frames;
   MetaFrameControl control;
+  ClutterModifierType modifiers;
+  guint32 evtime;
+  gfloat x, y;
 
-  control = get_control (frame, event->x, event->y);
+  modifiers = clutter_event_get_state (event);
+  evtime = clutter_event_get_time (event);
+  clutter_event_get_coords (event, &x, &y);
+  control = get_control (frame, x, y);
 
   if (frame->button_state == META_BUTTON_STATE_PRESSED)
     {
@@ -1260,9 +1286,9 @@ handle_motion_notify_event (MetaUIFrame *frame,
       meta_ui_frame_update_prelit_control (frame, control);
     }
 
-  if ((event->modifier_state & CLUTTER_BUTTON1_MASK) &&
+  if ((modifiers & CLUTTER_BUTTON1_MASK) &&
       frames->current_grab_op != META_GRAB_OP_NONE)
-    meta_frames_retry_grab_op (frames, event->time);
+    meta_frames_retry_grab_op (frames, evtime);
 
   return TRUE;
 }
@@ -1519,11 +1545,11 @@ meta_ui_frame_handle_event (MetaUIFrame *frame,
   switch (event->any.type)
     {
     case CLUTTER_BUTTON_PRESS:
-      return handle_button_press_event (frame, (ClutterButtonEvent *) event);
+      return handle_press_event (frame, event);
     case CLUTTER_BUTTON_RELEASE:
-      return handle_button_release_event (frame, (ClutterButtonEvent *) event);
+      return handle_release_event (frame, event);
     case CLUTTER_MOTION:
-      return handle_motion_notify_event (frame, (ClutterMotionEvent *) event);
+      return handle_motion_event (frame, event);
     case CLUTTER_ENTER:
       return handle_enter_notify_event (frame, (ClutterCrossingEvent *) event);
     case CLUTTER_LEAVE:
