@@ -479,7 +479,18 @@ meta_backend_real_post_init (MetaBackend *backend)
 
   if (!meta_monitor_manager_is_headless (priv->monitor_manager))
     {
-      center_pointer (backend);
+      MetaMonitorManager *monitor_manager = priv->monitor_manager;
+      MetaLogicalMonitor *primary;
+
+      primary =
+        meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
+
+      /* Move the pointer out of the way to avoid hovering over reactive
+       * elements (e.g. users list at login) causing undesired behaviour. */
+      meta_backend_warp_pointer (backend,
+                                 primary->rect.x + primary->rect.width * 0.9,
+                                 primary->rect.y + primary->rect.height * 0.9);
+
       priv->is_pointer_position_initialized = TRUE;
     }
 }
