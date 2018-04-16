@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-02-26 17:00+0000\n"
-"PO-Revision-Date: 2018-03-07 22:46+0100\n"
+"POT-Creation-Date: 2018-04-13 19:54+0000\n"
+"PO-Revision-Date: 2018-04-16 14:30+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -337,7 +337,7 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Dogodila se greška učitavanja dijaloga osobitosti za %s:"
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -663,12 +663,12 @@ msgstr "Dodaj u omiljene"
 msgid "Show Details"
 msgstr "Prikaži pojedinosti"
 
-#: js/ui/appFavorites.js:138
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "%s je dodan u omiljene."
 
-#: js/ui/appFavorites.js:172
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "%s je uklonjen iz omiljenih."
@@ -863,7 +863,7 @@ msgstr "Vanjski uređaj odspojen"
 msgid "Open with %s"
 msgstr "Otvori s(a) %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:295
 msgid "Password:"
 msgstr "Lozinka:"
 
@@ -950,15 +950,15 @@ msgstr "Potrebna je lozinka za povezivanje s “%s”."
 msgid "Network Manager"
 msgstr "Mrežni upravitelj"
 
-#: js/ui/components/polkitAgent.js:43
+#: js/ui/components/polkitAgent.js:48
 msgid "Authentication Required"
 msgstr "Potrebna je ovjera"
 
-#: js/ui/components/polkitAgent.js:71
+#: js/ui/components/polkitAgent.js:76
 msgid "Administrator"
 msgstr "Administrator"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:156
 msgid "Authenticate"
 msgstr "Ovjeri"
 
@@ -966,7 +966,7 @@ msgstr "Ovjeri"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:281 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Nažalost, to ne radi. Pokušajte ponovno."
 
@@ -1014,7 +1014,7 @@ msgstr "Dodaj satove iz svijeta…"
 msgid "World Clocks"
 msgstr "Svjetski satovi"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:227
 msgid "Weather"
 msgstr "Vrijeme"
 
@@ -1022,7 +1022,7 @@ msgstr "Vrijeme"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
 msgstr "%s cijeli dan."
@@ -1031,7 +1031,7 @@ msgstr "%s cijeli dan."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, zatim %s kasnije."
@@ -1040,30 +1040,30 @@ msgstr "%s, zatim %s kasnije."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, zatim %s, praćena s %s kasnije."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:314
 msgid "Select a location…"
 msgstr "Odaberi lokaciju…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:317
 msgid "Loading…"
 msgstr "Pretraživanje…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Kao da je %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
 msgstr "Posjetite za opširnije vremenske informacije"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Weather information is currently unavailable"
 msgstr "Vremenske informacije su trenutno nedostupne"
 
@@ -1977,16 +1977,16 @@ msgstr "Suspendiraj"
 msgid "Power Off"
 msgstr "Isključivanje"
 
-#: js/ui/status/thunderbolt.js:272
+#: js/ui/status/thunderbolt.js:294
 msgid "Thunderbolt"
 msgstr "Thunderbolt"
 
 #. we are done
-#: js/ui/status/thunderbolt.js:328
+#: js/ui/status/thunderbolt.js:350
 msgid "Unknown Thunderbolt device"
 msgstr "Nepoznati Thunderbolt uređaj"
 
-#: js/ui/status/thunderbolt.js:329
+#: js/ui/status/thunderbolt.js:351
 msgid ""
 "New device has been detected while you were away. Please disconnect and "
 "reconnect the device to start using it."
@@ -1994,14 +1994,14 @@ msgstr ""
 "Otkriven je novi uređaj dok ste bili odsutni. Odspojite i ponovno spojite "
 "uređaj kako bi ga mogli koristiti."
 
-#: js/ui/status/thunderbolt.js:334
+#: js/ui/status/thunderbolt.js:356
 msgid "Thunderbolt authorization error"
-msgstr "Greška Thunderbolt ovjere"
+msgstr "Greška Thunderbolt odobravanja"
 
-#: js/ui/status/thunderbolt.js:335
+#: js/ui/status/thunderbolt.js:357
 #, javascript-format
-msgid "Could not authorize the thunderbolt device: %s"
-msgstr "Nemoguća ovjera Thunderbolt uređaja: %s"
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "Nemoguće odobravanje Thunderbolt uređaja: %s"
 
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
