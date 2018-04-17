@@ -1073,18 +1073,13 @@ var LoginDialog = new Lang.Class({
     _onTimedLoginRequested(client, userName, seconds) {
         this._startTimedLogin(userName, seconds);
 
+        // Restart timed login on user interaction
         global.stage.connect('captured-event', (actor, event) => {
            if (this._timedLoginDelay == undefined)
                return Clutter.EVENT_PROPAGATE;
 
            if (event.type() == Clutter.EventType.KEY_PRESS ||
                event.type() == Clutter.EventType.BUTTON_PRESS) {
-               if (this._timedLoginBatch) {
-                   this._timedLoginBatch.cancel();
-                   this._timedLoginBatch = null;
-               }
-           } else if (event.type() == Clutter.EventType.KEY_RELEASE ||
-                      event.type() == Clutter.EventType.BUTTON_RELEASE) {
                this._resetTimedLogin();
            }
 
