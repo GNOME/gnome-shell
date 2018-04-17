@@ -990,11 +990,6 @@ var LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _showTimedLoginAnimation() {
-        this._timedLoginItem.actor.grab_key_focus();
-        return this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime);
-    },
-
     _blockTimedLoginUntilIdle() {
         // This blocks timed login from starting until a few
         // seconds after the user stops interacting with the
@@ -1057,7 +1052,13 @@ var LoginDialog = new Lang.Class({
                          this._userList.scrollToItem(this._timedLoginItem);
                      },
 
-                     this._showTimedLoginAnimation,
+                     () => {
+                         if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD) {
+                             this._timedLoginItem.actor.grab_key_focus();
+                         }
+                     },
+
+                     () => this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime),
 
                      () => {
                          this._timedLoginBatch = null;
