@@ -141,7 +141,7 @@ var UserListItem = new Lang.Class({
                 return GLib.SOURCE_CONTINUE;
             });
 
-        GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginTimeoutId');
+        GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginAnimationTime');
 
         return hold;
     },
@@ -991,25 +991,15 @@ var LoginDialog = new Lang.Class({
     },
 
     _blockTimedLoginUntilIdle() {
-        // This blocks timed login from starting until a few
-        // seconds after the user stops interacting with the
-        // login screen.
-        //
-        // We skip this step if the timed login delay is very
-        // short.
-        if ((this._timedLoginDelay - _TIMED_LOGIN_IDLE_THRESHOLD) <= 0)
-          return null;
-
         let hold = new Batch.Hold();
 
         this._timedLoginIdleTimeOutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _TIMED_LOGIN_IDLE_THRESHOLD,
             () => {
-                this._timedLoginAnimationTime -= _TIMED_LOGIN_IDLE_THRESHOLD;
                 this._timedLoginIdleTimeOutId = 0;
                 hold.release();
                 return GLib.SOURCE_REMOVE;
             });
-        GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginAnimationTime');
+        GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginIdleTimeOutId');
         return hold;
     },
 
@@ -1026,43 +1016,52 @@ var LoginDialog = new Lang.Class({
             this._timedLoginIdleTimeOutId = 0;
         }
 
-        this._timedLoginItem = null;
-        this._timedLoginDelay = delay;
-        this._timedLoginAnimationTime = delay;
+        let loginItem = null;
+        let animationTime;
 
         let tasks = [() => this._waitForItemForUser(userName),
 
                      () => {
-                         this._timedLoginItem = this._userList.getItemFromUserName(userName);
+                         loginItem = this._userList.getItemFromUserName(userName);
 
                          // If there is an animation running on the item, reset it.
-                         this._timedLoginItem.hideTimedLoginIndicator();
+                         loginItem.hideTimedLoginIndicator();
                      },
 
                      () => {
                          // If we're just starting out, start on the right item.
                          if (!this._userManager.is_loaded) {
-                             this._userList.jumpToItem(this._timedLoginItem);
+                             this._userList.jumpToItem(loginItem);
                          }
                      },
 
-                     this._blockTimedLoginUntilIdle,
-
                      () => {
-                         this._userList.scrollToItem(this._timedLoginItem);
+                         // This blocks the timed login animation until a few
+                         // seconds after the user stops interacting with the
+                         // login screen.
+
+                         // We skip this step if the timed login delay is very short.
+                         if (delay > _TIMED_LOGIN_IDLE_THRESHOLD) {
+                             animationTime = delay - _TIMED_LOGIN_IDLE_THRESHOLD;
+                             return this._blockTimedLoginUntilIdle();
+                         } else {
+                             animationTime = delay;
+                         }
                      },
+
+                     () => this._userList.scrollToItem(loginItem),
 
                      () => {
                          // If idle timeout is done, make sure the timed login indicator is shown
-                         if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD) {
+                         if (delay > _TIMED_LOGIN_IDLE_THRESHOLD) {
                              if (!this._userSelectionBox.visible)
                                  this._authPrompt.cancel()
 
-                             this._timedLoginItem.actor.grab_key_focus();
+                             loginItem.actor.grab_key_focus();
                          }
                      },
 
-                     () => this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime),
+                     () => loginItem.showTimedLoginIndicator(animationTime),
 
                      () => {
                          this._timedLoginBatch = null;
