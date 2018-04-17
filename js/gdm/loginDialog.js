@@ -25,7 +25,6 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
-const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
@@ -1008,7 +1007,7 @@ var LoginDialog = new Lang.Class({
 
         let hold = new Batch.Hold();
 
-        this._timedLoginIdleTimeOutId = Mainloop.timeout_add_seconds(_TIMED_LOGIN_IDLE_THRESHOLD,
+        this._timedLoginIdleTimeOutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _TIMED_LOGIN_IDLE_THRESHOLD,
             () => {
                 this._timedLoginAnimationTime -= _TIMED_LOGIN_IDLE_THRESHOLD;
                 hold.release();
