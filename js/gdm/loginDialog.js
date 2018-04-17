@@ -1019,6 +1019,12 @@ var LoginDialog = new Lang.Class({
     },
 
     _startTimedLogin(userName, delay) {
+        // Cancel execution of old batch
+        if (this._timedLoginBatch) {
+            this._timedLoginBatch.cancel();
+            this._timedLoginBatch = null;
+        }
+
         this._timedLoginItem = null;
         this._timedLoginDelay = delay;
         this._timedLoginAnimationTime = delay;
@@ -1027,11 +1033,13 @@ var LoginDialog = new Lang.Class({
 
                      () => {
                          this._timedLoginItem = this._userList.getItemFromUserName(userName);
+
+                         // If there is an animation running on the item, reset it.
+                         this._timedLoginItem.hideTimedLoginIndicator();
                      },
 
                      () => {
-                         // If we're just starting out, start on the right
-                         // item.
+                         // If we're just starting out, start on the right item.
                          if (!this._userManager.is_loaded) {
                              this._userList.jumpToItem(this._timedLoginItem);
                          }
@@ -1055,32 +1063,14 @@ var LoginDialog = new Lang.Class({
         return this._timedLoginBatch.run();
     },
 
-    _resetTimedLogin() {
-        if (this._timedLoginBatch) {
-            this._timedLoginBatch.cancel();
-            this._timedLoginBatch = null;
-        }
-
-        if (this._timedLoginItem)
-            this._timedLoginItem.hideTimedLoginIndicator();
-
-        let userName = this._timedLoginItem.user.get_user_name();
-
-        if (userName)
-            this._startTimedLogin(userName, this._timedLoginDelay);
-    },
-
     _onTimedLoginRequested(client, userName, seconds) {
         this._startTimedLogin(userName, seconds);
 
         // Restart timed login on user interaction
         global.stage.connect('captured-event', (actor, event) => {
-           if (this._timedLoginDelay == undefined)
-               return Clutter.EVENT_PROPAGATE;
-
            if (event.type() == Clutter.EventType.KEY_PRESS ||
                event.type() == Clutter.EventType.BUTTON_PRESS) {
-               this._resetTimedLogin();
+               this._startTimedLogin(userName, seconds);
            }
 
            return Clutter.EVENT_PROPAGATE;
