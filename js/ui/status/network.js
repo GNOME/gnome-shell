@@ -1944,6 +1944,7 @@ var NMApplet = new Lang.Class({
         this.indicators.visible = this._client.nm_running;
         this.menu.actor.visible = this._client.networking_enabled;
 
+        this._updateIcon();
         this._syncConnectivity();
     },
 
