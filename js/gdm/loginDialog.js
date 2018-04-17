@@ -1057,10 +1057,13 @@ var LoginDialog = new Lang.Class({
                      () => this._userList.scrollToItem(loginItem),
 
                      () => {
-                         // Set focus on loginItem only if it doesn't distract the user
-                         if ((delay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) &&
-                             this._userSelectionBox.visible)
+                         // If idle timeout is done, make sure the timed login indicator is shown
+                         if (delay > _TIMED_LOGIN_IDLE_THRESHOLD) {
+                             if (!this._userSelectionBox.visible)
+                                 this._showUserList();
+
                              loginItem.actor.grab_key_focus();
+                         }
                      },
 
                      () => loginItem.showTimedLoginIndicator(animationTime),
