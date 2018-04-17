@@ -141,7 +141,7 @@ var UserListItem = new Lang.Class({
                 return GLib.SOURCE_CONTINUE;
             });
 
-        GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginAnimationTime');
+        GLib.Source.set_name_by_id(this._timedLoginTimeoutId, '[gnome-shell] this._timedLoginTimeoutId');
 
         return hold;
     },
