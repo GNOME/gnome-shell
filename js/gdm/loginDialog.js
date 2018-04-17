@@ -1010,6 +1010,7 @@ var LoginDialog = new Lang.Class({
         this._timedLoginIdleTimeOutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _TIMED_LOGIN_IDLE_THRESHOLD,
             () => {
                 this._timedLoginAnimationTime -= _TIMED_LOGIN_IDLE_THRESHOLD;
+                this._timedLoginIdleTimeOutId = 0;
                 hold.release();
                 return GLib.SOURCE_REMOVE;
             });
@@ -1022,6 +1023,12 @@ var LoginDialog = new Lang.Class({
         if (this._timedLoginBatch) {
             this._timedLoginBatch.cancel();
             this._timedLoginBatch = null;
+        }
+
+        // Reset previous idle-timeout
+        if (this._timedLoginIdleTimeOutId) {
+            GLib.source_remove(this._timedLoginIdleTimeOutId);
+            this._timedLoginIdleTimeOutId = 0;
         }
 
         this._timedLoginItem = null;
