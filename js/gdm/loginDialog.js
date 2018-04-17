@@ -990,11 +990,6 @@ var LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _showTimedLoginAnimation() {
-        this._timedLoginItem.actor.grab_key_focus();
-        return this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime);
-    },
-
     _blockTimedLoginUntilIdle() {
         // This blocks timed login from starting until a few
         // seconds after the user stops interacting with the
@@ -1018,7 +1013,7 @@ var LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _startTimedLogin(userName, delay) {
+    _startTimedLogin(userName, delay, firstRun) {
         // Cancel execution of old batch
         if (this._timedLoginBatch) {
             this._timedLoginBatch.cancel();
@@ -1054,10 +1049,13 @@ var LoginDialog = new Lang.Class({
                      this._blockTimedLoginUntilIdle,
 
                      () => {
-                         this._userList.scrollToItem(this._timedLoginItem);
+                         if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) {
+                             this._userList.scrollToItem(this._timedLoginItem);
+                             this._timedLoginItem.actor.grab_key_focus();
+                         }
                      },
 
-                     this._showTimedLoginAnimation,
+                     () => this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime),
 
                      () => {
                          this._timedLoginBatch = null;
@@ -1070,7 +1068,7 @@ var LoginDialog = new Lang.Class({
     },
 
     _onTimedLoginRequested(client, userName, seconds) {
-        this._startTimedLogin(userName, seconds);
+        this._startTimedLogin(userName, seconds, true);
 
         // Restart timed login on user interaction
         global.stage.connect('captured-event', (actor, event) => {
