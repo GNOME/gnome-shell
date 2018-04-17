@@ -991,20 +991,10 @@ var LoginDialog = new Lang.Class({
     },
 
     _blockTimedLoginUntilIdle() {
-        // This blocks timed login from starting until a few
-        // seconds after the user stops interacting with the
-        // login screen.
-        //
-        // We skip this step if the timed login delay is very
-        // short.
-        if ((this._timedLoginDelay - _TIMED_LOGIN_IDLE_THRESHOLD) <= 0)
-          return null;
-
         let hold = new Batch.Hold();
 
         this._timedLoginIdleTimeOutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, _TIMED_LOGIN_IDLE_THRESHOLD,
             () => {
-                this._timedLoginAnimationTime -= _TIMED_LOGIN_IDLE_THRESHOLD;
                 this._timedLoginIdleTimeOutId = 0;
                 hold.release();
                 return GLib.SOURCE_REMOVE;
@@ -1029,41 +1019,52 @@ var LoginDialog = new Lang.Class({
             this._timedLoginIdleTimeOutId = 0;
         }
 
-        this._timedLoginItem = null;
-        this._timedLoginDelay = delay;
-        this._timedLoginAnimationTime = delay;
+        let loginItem = null;
+        let animationTime;
 
         let tasks = [() => this._waitForItemForUser(userName),
 
                      () => {
-                         this._timedLoginItem = this._userList.getItemFromUserName(userName);
+                         loginItem = this._userList.getItemFromUserName(userName);
 
                          // If there is an animation running on the item, reset it.
-                         this._timedLoginItem.hideTimedLoginIndicator();
+                         loginItem.hideTimedLoginIndicator();
                      },
 
                      () => {
                          // If we're just starting out, start on the right item.
                          if (!this._userManager.is_loaded) {
-                             this._userList.jumpToItem(this._timedLoginItem);
+                             this._userList.jumpToItem(loginItem);
                          }
                      },
 
-                     this._blockTimedLoginUntilIdle,
+                     () => {
+                         // This blocks the timed login animation until a few
+                         // seconds after the user stops interacting with the
+                         // login screen.
+
+                         // We skip this step if the timed login delay is very short.
+                         if (delay > _TIMED_LOGIN_IDLE_THRESHOLD) {
+                             animationTime = delay - _TIMED_LOGIN_IDLE_THRESHOLD;
+                             return this._blockTimedLoginUntilIdle();
+                         } else {
+                             animationTime = delay;
+                         }
+                     },
 
                      () => {
                          // If idle timeout is done, make sure the timed login indicator is shown
-                         if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD &&
+                         if (delay > _TIMED_LOGIN_IDLE_THRESHOLD &&
                              this._authPrompt.actor.visible)
                              this._authPrompt.cancel();
 
-                         if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) {
-                             this._userList.scrollToItem(this._timedLoginItem);
-                             this._timedLoginItem.actor.grab_key_focus();
+                         if (delay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) {
+                             this._userList.scrollToItem(loginItem);
+                             loginItem.actor.grab_key_focus();
                          }
                      },
 
-                     () => this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime),
+                     () => loginItem.showTimedLoginIndicator(animationTime),
 
                      () => {
                          this._timedLoginBatch = null;
