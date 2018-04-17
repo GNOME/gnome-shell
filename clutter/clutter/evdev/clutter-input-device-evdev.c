@@ -1122,6 +1122,10 @@ clutter_input_device_evdev_process_kbd_a11y_event (ClutterEvent               *e
 {
   ClutterInputDeviceEvdev *device_evdev = CLUTTER_INPUT_DEVICE_EVDEV (device);
 
+  /* Ignore key events injected from IM */
+  if (event->key.flags & CLUTTER_EVENT_FLAG_INPUT_METHOD)
+    goto emit_event;
+
   if (!device_evdev->a11y_flags & CLUTTER_A11Y_KEYBOARD_ENABLED)
     goto emit_event;
 
