@@ -999,7 +999,7 @@ var LoginDialog = new Lang.Class({
                 hold.release();
                 return GLib.SOURCE_REMOVE;
             });
-        GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginAnimationTime');
+        GLib.Source.set_name_by_id(this._timedLoginIdleTimeOutId, '[gnome-shell] this._timedLoginIdleTimeOutId');
         return hold;
     },
 
