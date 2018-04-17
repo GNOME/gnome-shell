@@ -1052,6 +1052,12 @@ var LoginDialog = new Lang.Class({
                      this._blockTimedLoginUntilIdle,
 
                      () => {
+                         // If idle timeout is done, make sure the timed login indicator is shown
+                         if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD &&
+                             (this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.VERIFYING ||
+                              this._authPrompt.verificationStatus == AuthPrompt.AuthPromptStatus.VERIFICATION_FAILED))
+                             this._authPrompt.cancel();
+
                          if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) {
                              this._userList.scrollToItem(this._timedLoginItem);
                              this._timedLoginItem.actor.grab_key_focus();
@@ -1071,6 +1077,9 @@ var LoginDialog = new Lang.Class({
     },
 
     _onTimedLoginRequested(client, userName, seconds) {
+        if (this._timedLoginBatch)
+            return;
+
         this._startTimedLogin(userName, seconds);
 
         // Restart timed login on user interaction
