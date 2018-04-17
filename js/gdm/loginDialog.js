@@ -990,11 +990,6 @@ var LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _showTimedLoginAnimation() {
-        this._timedLoginItem.actor.grab_key_focus();
-        return this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime);
-    },
-
     _blockTimedLoginUntilIdle() {
         // This blocks timed login from starting until a few
         // seconds after the user stops interacting with the
@@ -1019,10 +1014,13 @@ var LoginDialog = new Lang.Class({
     },
 
     _startTimedLogin(userName, delay) {
+        let firstRun = true;
+
         // Cancel execution of old batch
         if (this._timedLoginBatch) {
             this._timedLoginBatch.cancel();
             this._timedLoginBatch = null;
+            firstRun = false;
         }
 
         // Reset previous idle-timeout
@@ -1054,10 +1052,13 @@ var LoginDialog = new Lang.Class({
                      this._blockTimedLoginUntilIdle,
 
                      () => {
-                         this._userList.scrollToItem(this._timedLoginItem);
+                         if (this._timedLoginDelay > _TIMED_LOGIN_IDLE_THRESHOLD || firstRun) {
+                             this._userList.scrollToItem(this._timedLoginItem);
+                             this._timedLoginItem.actor.grab_key_focus();
+                         }
                      },
 
-                     this._showTimedLoginAnimation,
+                     () => this._timedLoginItem.showTimedLoginIndicator(this._timedLoginAnimationTime),
 
                      () => {
                          this._timedLoginBatch = null;
