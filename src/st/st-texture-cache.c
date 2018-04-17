@@ -520,6 +520,8 @@ finish_texture_load (AsyncTextureLoadData *data,
     goto out;
 
   texdata = pixbuf_to_cogl_texture (pixbuf);
+  if (!texdata)
+    goto out;
 
   if (data->policy != ST_TEXTURE_CACHE_POLICY_NONE)
     {
@@ -1272,6 +1274,9 @@ st_texture_cache_load_file_sync_to_cogl_texture (StTextureCache *cache,
 
       texdata = pixbuf_to_cogl_texture (pixbuf);
       g_object_unref (pixbuf);
+
+      if (!texdata)
+        goto out;
 
       if (policy == ST_TEXTURE_CACHE_POLICY_FOREVER)
         {
