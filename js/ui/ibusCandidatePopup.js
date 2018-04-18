@@ -166,7 +166,7 @@ var CandidatePopup = new Lang.Class({
             this._panelService.cursor_down();
         });
 
-        this._candidateArea.connect('candidate-clicked', () => {
+        this._candidateArea.connect('candidate-clicked', (area, index, button, state) => {
             this._panelService.candidate_clicked(index, button, state);
         });
 
