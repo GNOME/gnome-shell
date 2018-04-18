@@ -1004,8 +1004,6 @@ var Keyboard = new Lang.Class({
         if (!this._enabled)
             return;
 
-       
-
         this._clearShowIdle();
         this._keyboardRequested = true;
 
@@ -1151,7 +1149,7 @@ var Keyboard = new Lang.Class({
             let windowActor = window.get_compositor_private();
             let delta = 0;
 
-            if (frameRect.y + y + h >= monitor.height - keyboardHeight)
+            if (monitor && frameRect.y + y + h >= monitor.height - keyboardHeight)
                 delta = keyboardHeight;
 
             this._animateWindow(window, true, delta);
