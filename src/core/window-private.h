@@ -81,6 +81,7 @@ typedef enum
   META_MOVE_RESIZE_STATE_CHANGED = 1 << 5,
   META_MOVE_RESIZE_UNMAXIMIZE = 1 << 6,
   META_MOVE_RESIZE_FORCE_MOVE = 1 << 7,
+  META_MOVE_RESIZE_WAYLAND_STATE_CHANGED = 1 << 8,
 } MetaMoveResizeFlags;
 
 typedef enum
@@ -88,6 +89,7 @@ typedef enum
   META_MOVE_RESIZE_RESULT_MOVED               = 1 << 0,
   META_MOVE_RESIZE_RESULT_RESIZED             = 1 << 1,
   META_MOVE_RESIZE_RESULT_FRAME_SHAPE_CHANGED = 1 << 2,
+  META_MOVE_RESIZE_RESULT_STATE_CHANGED       = 1 << 3,
 } MetaMoveResizeResultFlags;
 
 typedef enum

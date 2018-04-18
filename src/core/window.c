@@ -3997,7 +3997,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
   if ((moved_or_resized ||
        did_placement ||
-       (flags & META_MOVE_RESIZE_STATE_CHANGED) != 0) &&
+       (result & META_MOVE_RESIZE_RESULT_STATE_CHANGED) != 0) &&
       window->known_to_compositor)
     {
       meta_compositor_sync_window_geometry (window->display->compositor,

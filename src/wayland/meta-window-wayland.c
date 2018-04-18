@@ -48,6 +48,7 @@ struct _MetaWindowWayland
   int geometry_scale;
 
   MetaWaylandSerial pending_configure_serial;
+  gboolean has_pending_state_change;
   gboolean has_pending_move;
   int pending_move_x;
   int pending_move_y;
@@ -324,6 +325,9 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
           window->buffer_rect.x = new_buffer_x;
           window->buffer_rect.y = new_buffer_y;
         }
+
+      if (flags & META_MOVE_RESIZE_WAYLAND_STATE_CHANGED)
+        *result |= META_MOVE_RESIZE_RESULT_STATE_CHANGED;
     }
   else
     {
@@ -336,6 +340,8 @@ meta_window_wayland_move_resize_internal (MetaWindow                *window,
           wl_window->pending_move_x = new_x;
           wl_window->pending_move_y = new_y;
         }
+
+      wl_window->has_pending_state_change = (flags & META_MOVE_RESIZE_STATE_CHANGED) != 0;
     }
 }
 
@@ -629,12 +635,9 @@ meta_window_wayland_new (MetaDisplay        *display,
 }
 
 static gboolean
-should_do_pending_move (MetaWindowWayland *wl_window,
-                        MetaWaylandSerial *acked_configure_serial)
+is_pending_ack_configure (MetaWindowWayland *wl_window,
+                          MetaWaylandSerial *acked_configure_serial)
 {
-  if (!wl_window->has_pending_move)
-    return FALSE;
-
   if (wl_window->pending_configure_serial.set)
     {
       /* If we're waiting for a configure and this isn't an ACK for
@@ -677,6 +680,7 @@ meta_window_wayland_move_resize (MetaWindow        *window,
   int gravity;
   MetaRectangle rect;
   MetaMoveResizeFlags flags;
+  gboolean pending_ack_configure;
 
   /* new_geom is in the logical pixel coordinate space, but MetaWindow wants its
    * rects to represent what in turn will end up on the stage, i.e. we need to
@@ -700,10 +704,12 @@ meta_window_wayland_move_resize (MetaWindow        *window,
 
   flags = META_MOVE_RESIZE_WAYLAND_RESIZE;
 
+  pending_ack_configure = is_pending_ack_configure (wl_window, acked_configure_serial);
+
   /* x/y are ignored when we're doing interactive resizing */
   if (!meta_grab_op_is_resizing (window->display->grab_op))
     {
-      if (wl_window->has_pending_move && should_do_pending_move (wl_window, acked_configure_serial))
+      if (wl_window->has_pending_move && pending_ack_configure)
         {
           rect.x = wl_window->pending_move_x;
           rect.y = wl_window->pending_move_y;
@@ -722,6 +728,12 @@ meta_window_wayland_move_resize (MetaWindow        *window,
           rect.y += dy;
           flags |= META_MOVE_RESIZE_MOVE_ACTION;
         }
+    }
+
+  if (wl_window->has_pending_state_change && pending_ack_configure)
+    {
+      flags |= META_MOVE_RESIZE_WAYLAND_STATE_CHANGED;
+      wl_window->has_pending_state_change = FALSE;
     }
 
   wl_window->pending_configure_serial.set = FALSE;

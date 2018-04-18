@@ -1282,6 +1282,8 @@ meta_window_x11_move_resize_internal (MetaWindow                *window,
     *result |= META_MOVE_RESIZE_RESULT_MOVED;
   if (need_resize_client || need_resize_frame)
     *result |= META_MOVE_RESIZE_RESULT_RESIZED;
+  if (flags & META_MOVE_RESIZE_STATE_CHANGED)
+    *result |= META_MOVE_RESIZE_RESULT_STATE_CHANGED;
 
   update_gtk_edge_constraints (window);
 }
