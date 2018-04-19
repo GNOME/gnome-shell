@@ -144,6 +144,7 @@ var Client = new Lang.Class({
 	this._proxy.EnrollDeviceRemote(id, policy, AuthFlags.NONE,
                                        (res, error) => {
 	    if (error) {
+		Gio.DBusError.strip_remote_error(error);
 		callback(null, error);
 		return;
 	    }
