@@ -228,7 +228,7 @@ var AuthRobot = new Lang.Class({
 
     _onEnrollDone(device, error) {
 	if (error)
-	    this.emit('enroll-failed', error, device);
+	    this.emit('enroll-failed', device, error);
 
 	/* TODO: scan the list of devices to be authorized for children
 	 *  of this device and remove them (and their children and
