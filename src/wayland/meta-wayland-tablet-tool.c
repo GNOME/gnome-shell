@@ -31,7 +31,7 @@
 #include <wayland-server.h>
 #include "tablet-unstable-v2-server-protocol.h"
 #include "meta-wayland-private.h"
-#include "meta-wayland-surface-role-tablet-cursor.h"
+#include "meta-wayland-tablet-cursor-surface.h"
 #include "meta-surface-actor-wayland.h"
 #include "meta-wayland-tablet.h"
 #include "meta-wayland-tablet-seat.h"
@@ -90,10 +90,10 @@ meta_wayland_tablet_tool_update_cursor_surface (MetaWaylandTabletTool *tool)
       if (tool->cursor_surface &&
           meta_wayland_surface_get_buffer (tool->cursor_surface))
         {
-          MetaWaylandSurfaceRoleCursor *cursor_role =
-            META_WAYLAND_SURFACE_ROLE_CURSOR (tool->cursor_surface->role);
+          MetaWaylandCursorSurface *cursor_surface =
+            META_WAYLAND_CURSOR_SURFACE (tool->cursor_surface->role);
 
-          cursor = meta_wayland_surface_role_cursor_get_sprite (cursor_role);
+          cursor = meta_wayland_cursor_surface_get_sprite (cursor_surface);
         }
       else
         cursor = NULL;
@@ -471,7 +471,7 @@ tool_set_cursor (struct wl_client   *client,
 
   if (surface &&
       !meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_TABLET_CURSOR,
+                                         META_TYPE_WAYLAND_TABLET_CURSOR_SURFACE,
                                          NULL))
     {
       wl_resource_post_error (resource, WL_POINTER_ERROR_ROLE,
@@ -482,13 +482,13 @@ tool_set_cursor (struct wl_client   *client,
 
   if (surface)
     {
-      MetaWaylandSurfaceRoleCursor *cursor_role;
+      MetaWaylandCursorSurface *cursor_surface;
 
-      cursor_role = META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
-      meta_wayland_surface_role_cursor_set_renderer (cursor_role,
-                                                     tool->cursor_renderer);
-      meta_wayland_surface_role_cursor_set_hotspot (cursor_role,
-                                                    hotspot_x, hotspot_y);
+      cursor_surface = META_WAYLAND_CURSOR_SURFACE (surface->role);
+      meta_wayland_cursor_surface_set_renderer (cursor_surface,
+                                                tool->cursor_renderer);
+      meta_wayland_cursor_surface_set_hotspot (cursor_surface,
+                                               hotspot_x, hotspot_y);
     }
 
   meta_wayland_tablet_tool_set_cursor_surface (tool, surface);

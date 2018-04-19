@@ -19,24 +19,15 @@
  * 02111-1307, USA.
  */
 
-#include "config.h"
-#include "meta-wayland-surface-role-tablet-cursor.h"
+#ifndef META_WAYLAND_TABLET_CURSOR_SURFACE_H
+#define META_WAYLAND_TABLET_CURSOR_SURFACE_H
 
-struct _MetaWaylandSurfaceRoleTabletCursor
-{
-  MetaWaylandSurfaceRoleCursor parent;
-};
+#include "meta-wayland-cursor-surface.h"
 
-G_DEFINE_TYPE (MetaWaylandSurfaceRoleTabletCursor,
-               meta_wayland_surface_role_tablet_cursor,
-               META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR)
+#define META_TYPE_WAYLAND_TABLET_CURSOR_SURFACE (meta_wayland_tablet_cursor_surface_get_type ())
+G_DECLARE_FINAL_TYPE (MetaWaylandTabletCursorSurface,
+                      meta_wayland_tablet_cursor_surface,
+                      META, WAYLAND_TABLET_CURSOR_SURFACE,
+                      MetaWaylandCursorSurface)
 
-static void
-meta_wayland_surface_role_tablet_cursor_init (MetaWaylandSurfaceRoleTabletCursor *role)
-{
-}
-
-static void
-meta_wayland_surface_role_tablet_cursor_class_init (MetaWaylandSurfaceRoleTabletCursorClass *klass)
-{
-}
+#endif /* META_WAYLAND_TABLET_CURSOR_SURFACE_H */

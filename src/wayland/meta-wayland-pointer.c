@@ -55,7 +55,7 @@
 #include "meta-wayland-seat.h"
 #include "meta-wayland-surface.h"
 #include "meta-wayland-buffer.h"
-#include "meta-wayland-surface-role-cursor.h"
+#include "meta-wayland-cursor-surface.h"
 #include "meta-xwayland.h"
 #include "meta-cursor.h"
 #include "meta-cursor-tracker-private.h"
@@ -1025,10 +1025,10 @@ meta_wayland_pointer_update_cursor_surface (MetaWaylandPointer *pointer)
 
       if (pointer->cursor_surface)
         {
-          MetaWaylandSurfaceRoleCursor *cursor_role =
-            META_WAYLAND_SURFACE_ROLE_CURSOR (pointer->cursor_surface->role);
+          MetaWaylandCursorSurface *cursor_surface =
+            META_WAYLAND_CURSOR_SURFACE (pointer->cursor_surface->role);
 
-          cursor_sprite = meta_wayland_surface_role_cursor_get_sprite (cursor_role);
+          cursor_sprite = meta_wayland_cursor_surface_get_sprite (cursor_surface);
         }
 
       meta_cursor_tracker_set_window_cursor (cursor_tracker, cursor_sprite);
@@ -1102,7 +1102,7 @@ pointer_set_cursor (struct wl_client *client,
 
   if (surface &&
       !meta_wayland_surface_assign_role (surface,
-                                         META_TYPE_WAYLAND_SURFACE_ROLE_CURSOR,
+                                         META_TYPE_WAYLAND_CURSOR_SURFACE,
                                          NULL))
     {
       wl_resource_post_error (resource, WL_POINTER_ERROR_ROLE,
@@ -1115,13 +1115,13 @@ pointer_set_cursor (struct wl_client *client,
     {
       MetaCursorRenderer *cursor_renderer =
         meta_backend_get_cursor_renderer (meta_get_backend ());
-      MetaWaylandSurfaceRoleCursor *cursor_role;
+      MetaWaylandCursorSurface *cursor_surface;
 
-      cursor_role = META_WAYLAND_SURFACE_ROLE_CURSOR (surface->role);
-      meta_wayland_surface_role_cursor_set_renderer (cursor_role,
-                                                     cursor_renderer);
-      meta_wayland_surface_role_cursor_set_hotspot (cursor_role,
-                                                    hot_x, hot_y);
+      cursor_surface = META_WAYLAND_CURSOR_SURFACE (surface->role);
+      meta_wayland_cursor_surface_set_renderer (cursor_surface,
+                                                cursor_renderer);
+      meta_wayland_cursor_surface_set_hotspot (cursor_surface,
+                                               hot_x, hot_y);
     }
 
   meta_wayland_pointer_set_cursor_surface (pointer, surface);
