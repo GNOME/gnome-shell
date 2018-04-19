@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-04-12 11:47+0000\n"
-"PO-Revision-Date: 2018-04-12 16:48+0300\n"
+"POT-Creation-Date: 2018-04-13 18:31+0000\n"
+"PO-Revision-Date: 2018-04-19 23:31+0300\n"
 "Last-Translator: Stas Solovey <whats_up@tut.by>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -344,7 +344,7 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Возникла ошибка загрузки диалогового окна параметров для %s:"
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:149
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -563,7 +563,6 @@ msgstr "Вчера, %H∶%M"
 msgid "%A, %H∶%M"
 msgstr "%A, %H∶%M"
 
-# fix даты "11 мар., 20:35"
 #. Translators: this is the month name and day number
 #. followed by a time string in 24h format.
 #. i.e. "May 25, 14:30"
@@ -572,7 +571,6 @@ msgstr "%A, %H∶%M"
 msgid "%B %d, %H∶%M"
 msgstr "%-d %B, %H∶%M"
 
-# fix даты
 #. Translators: this is the month name, day number, year
 #. number followed by a time string in 24h format.
 #. i.e. "May 25 2012, 14:30"
@@ -581,7 +579,6 @@ msgstr "%-d %B, %H∶%M"
 msgid "%B %d %Y, %H∶%M"
 msgstr "%-d %B %Y, %H∶%M"
 
-# по всей видимости разрабы коммент перепутали c "Translators: Time in 12h format"
 #. Translators: Time in 12h format
 #: js/misc/util.js:257
 msgid "%l∶%M %p"
@@ -823,7 +820,6 @@ msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %-d %B"
 
-# fix для даты в календаре и на экране блокировки
 #: js/ui/calendar.js:868
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
@@ -876,7 +872,7 @@ msgstr "Внешний диск отключён"
 msgid "Open with %s"
 msgstr "Открыть с помощью %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:285
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:295
 msgid "Password:"
 msgstr "Пароль:"
 
@@ -963,15 +959,15 @@ msgstr "Для подключения к «%s» требуется пароль.
 msgid "Network Manager"
 msgstr "Диспетчер сети"
 
-#: js/ui/components/polkitAgent.js:44
+#: js/ui/components/polkitAgent.js:48
 msgid "Authentication Required"
 msgstr "Требуется подтверждение подлинности"
 
-#: js/ui/components/polkitAgent.js:72
+#: js/ui/components/polkitAgent.js:76
 msgid "Administrator"
 msgstr "Администратор"
 
-#: js/ui/components/polkitAgent.js:152
+#: js/ui/components/polkitAgent.js:156
 msgid "Authenticate"
 msgstr "Подтвердить"
 
@@ -979,7 +975,7 @@ msgstr "Подтвердить"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:271 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:281 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Не удалось подтвердить подлинность. Попробуйте снова."
 
@@ -1004,7 +1000,6 @@ msgstr "Показать приложения"
 msgid "Dash"
 msgstr "Панель приложений"
 
-# fix для даты в календаре и на экране блокировки
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
@@ -1012,7 +1007,6 @@ msgstr "Панель приложений"
 msgid "%B %e %Y"
 msgstr "%-d %B %Y"
 
-# fix для даты в календаре и на экране блокировки
 #. Translators: This is the accessible name of the date button shown
 #. * below the time in the shell; it should combine the weekday and the
 #. * date, e.g. "Tuesday February 17 2015".
@@ -1029,7 +1023,7 @@ msgstr "Добавить мировые часы…"
 msgid "World Clocks"
 msgstr "Мировые часы"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:227
 msgid "Weather"
 msgstr "Погода"
 
@@ -1037,7 +1031,7 @@ msgstr "Погода"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
 msgstr "%s весь день."
@@ -1046,7 +1040,7 @@ msgstr "%s весь день."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, затем позднее %s."
@@ -1055,30 +1049,30 @@ msgstr "%s, затем позднее %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, затем %s, позже %s."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:314
 msgid "Select a location…"
 msgstr "Выберите местоположение…"
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:317
 msgid "Loading…"
 msgstr "Загрузка…"
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Ощущается как %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
 msgstr "Подключите интернет для получения информации о погоде"
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Weather information is currently unavailable"
 msgstr "Информация о погоде сейчас недоступна"
 
