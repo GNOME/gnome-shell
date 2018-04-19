@@ -181,6 +181,9 @@ _cogl_winsys_egl_make_current (CoglDisplay *display,
                                EGLSurface read,
                                EGLContext context);
 
+EGLBoolean
+_cogl_winsys_egl_ensure_current (CoglDisplay *display);
+
 #ifdef EGL_KHR_image_base
 EGLImageKHR
 _cogl_egl_create_image (CoglContext *ctx,

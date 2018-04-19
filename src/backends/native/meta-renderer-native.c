@@ -1911,12 +1911,7 @@ meta_onscreen_native_swap_buffers_with_damage (CoglOnscreen *onscreen,
    * context.
    */
   if (egl_context_changed)
-    {
-      _cogl_winsys_egl_make_current (cogl_display,
-                                     EGL_NO_SURFACE,
-                                     EGL_NO_SURFACE,
-                                     EGL_NO_CONTEXT);
-    }
+    _cogl_winsys_egl_ensure_current (cogl_display);
 }
 
 static gboolean

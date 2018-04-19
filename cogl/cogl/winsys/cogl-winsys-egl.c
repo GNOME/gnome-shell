@@ -309,6 +309,18 @@ _cogl_winsys_egl_make_current (CoglDisplay *display,
   return ret;
 }
 
+EGLBoolean
+_cogl_winsys_egl_ensure_current (CoglDisplay *display)
+{
+  CoglDisplayEGL *egl_display = display->winsys;
+  CoglRendererEGL *egl_renderer = display->renderer->winsys;
+
+  return eglMakeCurrent (egl_renderer->edpy,
+                         egl_display->current_draw_surface,
+                         egl_display->current_read_surface,
+                         egl_display->current_context);
+}
+
 static void
 cleanup_context (CoglDisplay *display)
 {
