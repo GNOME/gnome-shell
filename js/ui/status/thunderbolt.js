@@ -56,12 +56,11 @@ const BoltDeviceProxy = Gio.DBusProxy.makeProxyWrapper(BoltDeviceInterface);
 
 var Status = {
     DISCONNECTED: 'disconnected',
+    CONNECTING: 'connecting',
     CONNECTED: 'connected',
     AUTHORIZING: 'authorizing',
     AUTH_ERROR: 'auth-error',
-    AUTHORIZED: 'authorized',
-    AUTHORIZED_SECURE: 'authorized-secure',
-    AUTHORIZED_NEWKEY: 'authorized-newkey'
+    AUTHORIZED: 'authorized'
 };
 
 var Policy = {
@@ -70,7 +69,7 @@ var Policy = {
     AUTO: 'auto'
 };
 
-var AuthFlags = {
+var AuthCtrl = {
     NONE: 'none',
 };
 
@@ -141,7 +140,7 @@ var Client = new Lang.Class({
     },
 
     enrollDevice(id, policy, callback) {
-	this._proxy.EnrollDeviceRemote(id, policy, AuthFlags.NONE,
+	this._proxy.EnrollDeviceRemote(id, policy, AuthCtrl.NONE,
                                        (res, error) => {
 	    if (error) {
 		Gio.DBusError.strip_remote_error(error);
