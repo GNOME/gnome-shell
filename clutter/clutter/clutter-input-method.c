@@ -353,6 +353,7 @@ clutter_input_method_notify_key_event (ClutterInputMethod *im,
       copy = clutter_event_copy (event);
       clutter_event_set_flags (copy, clutter_event_get_flags (event) |
                                CLUTTER_EVENT_FLAG_INPUT_METHOD);
+      clutter_event_set_source_device (copy, clutter_event_get_device (copy));
       clutter_event_put (copy);
       clutter_event_free (copy);
     }
