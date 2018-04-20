@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gnome-shell/issues\n"
-"POT-Creation-Date: 2018-03-18 10:36+0000\n"
-"PO-Revision-Date: 2018-03-19 21:42+0100\n"
+"POT-Creation-Date: 2018-04-17 15:11+0000\n"
+"PO-Revision-Date: 2018-04-17 18:32+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -66,19 +66,19 @@ msgstr "Upravljanje oken in zaganjanje programov"
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 "Omogoči dostop do orodij razvijalcev in preizkuševalcev programske opreme "
-"preko Alt-F2 vnosnega polja."
+"prek vnosnega polja Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:9
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Dovoli dostop do razhroščevanja in drugih orodij nadzora preko Alt-F2 "
-"vnosnega polja."
+"Dovoli dostop do razhroščevanja in drugih orodij nadzora prek vnosnega polja "
+"Alt-F2."
 
 #: data/org.gnome.shell.gschema.xml.in:16
 msgid "UUIDs of extensions to enable"
-msgstr "Določila UUID razširitev, ki bodo omogočene"
+msgstr "Določila razširitev UUID, ki bodo omogočene"
 
 #: data/org.gnome.shell.gschema.xml.in:17
 msgid ""
@@ -87,10 +87,9 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension D-Bus methods on org.gnome.Shell."
 msgstr ""
-"Razširitve lupine GNOME imajo določila UUID; ključ določa seznam razširitev, "
-"ki bodo naložene. Razširitev, ki se naj naloži, mora biti zavedena na tem "
-"seznamu. Upravljanje seznama je mogoče tudi preko vodila D-BUs na org.gnome."
-"Shell."
+"Razširitve lupine GNOME imajo nastavljeno določilo UUID; ključ določa seznam "
+"razširitev, ki naj bodo naložene ob zagonu. Upravljanje seznama je mogoče "
+"tudi prek vodila D-BUs na org.gnome.Shell."
 
 #: data/org.gnome.shell.gschema.xml.in:26
 msgid "Disable user extensions"
@@ -115,8 +114,8 @@ msgid ""
 "load all extensions regardless of the versions they claim to support."
 msgstr ""
 "Lupina GNOME naloži le razširitve, ki so skladne z nameščeno različico. "
-"Izbrana možnost onemogoči preverjanje skladnosti, zato so lahko naložene "
-"tudi razširitve, katerih skladnost ni potrjena."
+"Izbrana možnost onemogoči preverjanje, zato so lahko naložene tudi "
+"razširitve, katerih skladnost ni potrjena."
 
 #: data/org.gnome.shell.gschema.xml.in:43
 msgid "List of desktop file IDs for favorite applications"
@@ -127,7 +126,7 @@ msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
-"Programi določeni s temi določili bodo prikazani v območju priljubljenih "
+"Programi, ki ustrezajo določilom, bodo prikazani v polju priljubljenih "
 "programov"
 
 #: data/org.gnome.shell.gschema.xml.in:51
@@ -145,18 +144,18 @@ msgstr "Zgodovina pogovornega okna ukazov (Alt-F2)"
 #. Translators: looking glass is a debugger and inspector tool, see https://wiki.gnome.org/Projects/GnomeShell/LookingGlass
 #: data/org.gnome.shell.gschema.xml.in:63
 msgid "History for the looking glass dialog"
-msgstr "Zgodovina za pogovorno okno povečevalnega stekla"
+msgstr "Zgodovina za pogovorno okno povečevala"
 
 #: data/org.gnome.shell.gschema.xml.in:67
 msgid "Always show the “Log out” menu item in the user menu."
-msgstr "Vedno pokaži možnost »Odjava« v uporabniškem meniju."
+msgstr "Vedno pokaži možnost »Odjave« v uporabniškem meniju."
 
 #: data/org.gnome.shell.gschema.xml.in:68
 msgid ""
 "This key overrides the automatic hiding of the “Log out” menu item in single-"
 "user, single-session situations."
 msgstr ""
-"Izbira prepiše možnost samodejnega skrivanja predmeta »Odjava« na sistemskem "
+"Izbira prepiše možnost samodejnega skrivanja gumba za »Odjavo« na sistemskem "
 "meniju pri eno-uporabniškem in eno-sejnem zagonu."
 
 #: data/org.gnome.shell.gschema.xml.in:75
@@ -174,8 +173,8 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 "Za priklop oddaljenega datotečnega sistema ali šifrirane naprave bo po "
-"izbiri možnosti zahtevano geslo. Na pogovornem oknu bo prikazana možnost "
-"»Shrani geslo«. Ta možnost določa privzeto stanje izbirnega polja."
+"izbiri podana zahteva za vnos gesla. Na pogovornem oknu bo prikazana tudi "
+"možnost »Shrani geslo«. Ta možnost določa privzeto stanje izbirnega polja."
 
 #: data/org.gnome.shell.gschema.xml.in:85
 msgid ""
@@ -333,7 +332,7 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Prišlo je do napake med nalaganjem pogovornega okna z možnostmi za %s:"
 
 #: js/gdm/authPrompt.js:147 js/ui/audioDeviceSelection.js:71
-#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:148
+#: js/ui/components/networkAgent.js:117 js/ui/components/polkitAgent.js:153
 #: js/ui/endSessionDialog.js:482 js/ui/extensionDownloader.js:197
 #: js/ui/shellMountOperation.js:343 js/ui/status/network.js:919
 msgid "Cancel"
@@ -664,12 +663,12 @@ msgstr "Dodaj med priljubljene"
 msgid "Show Details"
 msgstr "Pokaži besedilo"
 
-#: js/ui/appFavorites.js:138
+#: js/ui/appFavorites.js:140
 #, javascript-format
 msgid "%s has been added to your favorites."
 msgstr "Program »%s« je dodan med priljubljeno."
 
-#: js/ui/appFavorites.js:172
+#: js/ui/appFavorites.js:174
 #, javascript-format
 msgid "%s has been removed from your favorites."
 msgstr "Program »%s« je odstranjen iz priljubljenih."
@@ -840,7 +839,7 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Lahko še malo počakate, če začne morda program spet delovati, ali pa vsilite "
+"Lahko počakate, če se program morda začne spet odzivati, lahko pa vsilite "
 "končanje delovanja."
 
 #: js/ui/closeDialog.js:61
@@ -864,13 +863,13 @@ msgstr "Zunanji pogon je odklopljen"
 msgid "Open with %s"
 msgstr "Odpri s programom %s"
 
-#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:284
+#: js/ui/components/keyring.js:107 js/ui/components/polkitAgent.js:295
 msgid "Password:"
 msgstr "Geslo:"
 
 #: js/ui/components/keyring.js:140
 msgid "Type again:"
-msgstr "Vpišite znova:"
+msgstr "Ponovni vpis:"
 
 #: js/ui/components/networkAgent.js:112 js/ui/status/network.js:245
 #: js/ui/status/network.js:336 js/ui/status/network.js:922
@@ -887,19 +886,19 @@ msgstr "Geslo:"
 #. static WEP
 #: js/ui/components/networkAgent.js:210
 msgid "Key: "
-msgstr "Ključ:"
+msgstr "Ključ: "
 
 #: js/ui/components/networkAgent.js:249
 msgid "Identity: "
-msgstr "_Istovetnost:"
+msgstr "_Istovetnost: "
 
 #: js/ui/components/networkAgent.js:251
 msgid "Private key password: "
-msgstr "Geslo zasebnega ključa:"
+msgstr "Geslo zasebnega ključa: "
 
 #: js/ui/components/networkAgent.js:263
 msgid "Service: "
-msgstr "Storitev:"
+msgstr "Storitev: "
 
 #: js/ui/components/networkAgent.js:292 js/ui/components/networkAgent.js:659
 msgid "Authentication required by wireless network"
@@ -920,7 +919,7 @@ msgstr "Žična overitev 802.1X"
 
 #: js/ui/components/networkAgent.js:299
 msgid "Network name: "
-msgstr "Naziv omrežja:"
+msgstr "Naziv omrežja: "
 
 #: js/ui/components/networkAgent.js:304 js/ui/components/networkAgent.js:667
 msgid "DSL authentication"
@@ -952,15 +951,15 @@ msgstr "Za povezavo z omrežjem »%s« je zahtevano geslo."
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: js/ui/components/polkitAgent.js:43
+#: js/ui/components/polkitAgent.js:48
 msgid "Authentication Required"
 msgstr "Zahtevana je overitev"
 
-#: js/ui/components/polkitAgent.js:71
+#: js/ui/components/polkitAgent.js:76
 msgid "Administrator"
 msgstr "Skrbnik"
 
-#: js/ui/components/polkitAgent.js:151
+#: js/ui/components/polkitAgent.js:156
 msgid "Authenticate"
 msgstr "Overi"
 
@@ -968,7 +967,7 @@ msgstr "Overi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: js/ui/components/polkitAgent.js:270 js/ui/shellMountOperation.js:327
+#: js/ui/components/polkitAgent.js:281 js/ui/shellMountOperation.js:327
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Overitev je spodletela.. Poskusite znova."
 
@@ -1016,7 +1015,7 @@ msgstr "Dodaj svetovni čas ..."
 msgid "World Clocks"
 msgstr "Svetovni časi"
 
-#: js/ui/dateMenu.js:225
+#: js/ui/dateMenu.js:227
 msgid "Weather"
 msgstr "Vreme"
 
@@ -1024,7 +1023,7 @@ msgstr "Vreme"
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:289
+#: js/ui/dateMenu.js:291
 #, javascript-format
 msgid "%s all day."
 msgstr "%s – ves dan."
@@ -1033,7 +1032,7 @@ msgstr "%s – ves dan."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:295
+#: js/ui/dateMenu.js:297
 #, javascript-format
 msgid "%s, then %s later."
 msgstr "%s, sledi %s."
@@ -1042,30 +1041,30 @@ msgstr "%s, sledi %s."
 #. libgweather for the possible condition strings. If at all
 #. possible, the sentence should match the grammatical case etc. of
 #. the inserted conditions.
-#: js/ui/dateMenu.js:301
+#: js/ui/dateMenu.js:303
 #, javascript-format
 msgid "%s, then %s, followed by %s later."
 msgstr "%s, sledi %s, kasneje tudi %s."
 
-#: js/ui/dateMenu.js:312
+#: js/ui/dateMenu.js:314
 msgid "Select a location…"
 msgstr "Izbor mesta ..."
 
-#: js/ui/dateMenu.js:315
+#: js/ui/dateMenu.js:317
 msgid "Loading…"
 msgstr "Poteka nalaganje ..."
 
 #. Translators: %s is a temperature with unit, e.g. "23℃"
-#: js/ui/dateMenu.js:321
+#: js/ui/dateMenu.js:323
 #, javascript-format
 msgid "Feels like %s."
 msgstr "Občuti se kot %s."
 
-#: js/ui/dateMenu.js:324
+#: js/ui/dateMenu.js:326
 msgid "Go online for weather information"
 msgstr "Preglej splet za podrobnosti o vremenu."
 
-#: js/ui/dateMenu.js:326
+#: js/ui/dateMenu.js:328
 msgid "Weather information is currently unavailable"
 msgstr "Podatki o vremenu trenutno niso na voljo."
 
@@ -2014,8 +2013,8 @@ msgstr "Napaka overitve naprave Thunderbolt"
 
 #: js/ui/status/thunderbolt.js:357
 #, javascript-format
-msgid "Could not authorize the thunderbolt device: %s"
-msgstr "Naprave thunderbolt ni mogoče overiti: %s"
+msgid "Could not authorize the Thunderbolt device: %s"
+msgstr "Naprave Thunderbolt ni mogoče overiti: %s"
 
 #: js/ui/status/volume.js:128
 msgid "Volume changed"
