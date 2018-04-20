@@ -214,6 +214,8 @@ cally_util_simulate_snooper_install (void)
                     G_CALLBACK (cally_util_stage_added_cb), cally_key_snooper);
   g_signal_connect (G_OBJECT (stage_manager), "stage-removed",
                     G_CALLBACK (cally_util_stage_removed_cb), cally_key_snooper);
+
+  g_slist_free (stage_list);
 }
 
 static void
