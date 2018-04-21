@@ -201,7 +201,9 @@ var AuthenticationDialog = new Lang.Class({
     close(timestamp) {
         this.parent(timestamp);
 
-        Main.sessionMode.disconnect(this._sessionUpdatedId);
+        if (this._sessionUpdatedId)
+            Main.sessionMode.disconnect(this._sessionUpdatedId);
+        this._sessionUpdatedId = 0;
     },
 
     _ensureOpen() {
