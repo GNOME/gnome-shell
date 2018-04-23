@@ -130,8 +130,8 @@ static void
 meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *sprite,
                                             XcursorImage     *xc_image)
 {
-  MetaBackend *meta_backend = meta_get_backend ();
-  MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (meta_backend);
+  MetaBackend *backend = meta_get_backend ();
+  MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
   uint width, height, rowstride;
   CoglPixelFormat cogl_format;
   ClutterBackend *clutter_backend;
