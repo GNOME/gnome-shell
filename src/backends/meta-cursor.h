@@ -25,13 +25,16 @@
 #include <meta/common.h>
 #include <meta/boxes.h>
 
-typedef struct _MetaCursorSprite MetaCursorSprite;
+struct _MetaCursorSpriteClass
+{
+  GObjectClass parent_class;
+};
 
 #define META_TYPE_CURSOR_SPRITE (meta_cursor_sprite_get_type ())
-G_DECLARE_FINAL_TYPE (MetaCursorSprite,
-                      meta_cursor_sprite,
-                      META, CURSOR_SPRITE,
-                      GObject);
+G_DECLARE_DERIVABLE_TYPE (MetaCursorSprite,
+                          meta_cursor_sprite,
+                          META, CURSOR_SPRITE,
+                          GObject)
 
 MetaCursorSprite * meta_cursor_sprite_new (void);
 

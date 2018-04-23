@@ -44,7 +44,7 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
-struct _MetaCursorSprite
+typedef struct _MetaCursorSpritePrivate
 {
   GObject parent;
 
@@ -59,9 +59,9 @@ struct _MetaCursorSprite
 
   int theme_scale;
   gboolean theme_dirty;
-};
+} MetaCursorSpritePrivate;
 
-G_DEFINE_TYPE (MetaCursorSprite, meta_cursor_sprite, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_PRIVATE (MetaCursorSprite, meta_cursor_sprite, G_TYPE_OBJECT)
 
 static const char *
 translate_meta_cursor (MetaCursor cursor)
@@ -130,6 +130,8 @@ static void
 meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *sprite,
                                             XcursorImage     *xc_image)
 {
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
   MetaBackend *backend = meta_get_backend ();
   MetaCursorRenderer *renderer = meta_backend_get_cursor_renderer (backend);
   uint width, height, rowstride;
@@ -139,7 +141,7 @@ meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *sprite,
   CoglTexture2D *texture;
   CoglError *error = NULL;
 
-  g_assert (sprite->texture == NULL);
+  g_assert (priv->texture == NULL);
 
   width           = xc_image->width;
   height          = xc_image->height;
@@ -178,42 +180,53 @@ meta_cursor_sprite_load_from_xcursor_image (MetaCursorSprite *sprite,
 static XcursorImage *
 meta_cursor_sprite_get_current_frame_image (MetaCursorSprite *sprite)
 {
-  return sprite->xcursor_images->images[sprite->current_frame];
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  return priv->xcursor_images->images[priv->current_frame];
 }
 
 void
 meta_cursor_sprite_tick_frame (MetaCursorSprite *sprite)
 {
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
   XcursorImage *image;
 
   if (!meta_cursor_sprite_is_animated (sprite))
     return;
 
-  sprite->current_frame++;
+  priv->current_frame++;
 
-  if (sprite->current_frame >= sprite->xcursor_images->nimage)
-    sprite->current_frame = 0;
+  if (priv->current_frame >= priv->xcursor_images->nimage)
+    priv->current_frame = 0;
 
   image = meta_cursor_sprite_get_current_frame_image (sprite);
 
-  g_clear_pointer (&sprite->texture, cogl_object_unref);
+  g_clear_pointer (&priv->texture, cogl_object_unref);
   meta_cursor_sprite_load_from_xcursor_image (sprite, image);
 }
 
 guint
 meta_cursor_sprite_get_current_frame_time (MetaCursorSprite *sprite)
 {
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
   if (!meta_cursor_sprite_is_animated (sprite))
     return 0;
 
-  return sprite->xcursor_images->images[sprite->current_frame]->delay;
+  return priv->xcursor_images->images[priv->current_frame]->delay;
 }
 
 gboolean
 meta_cursor_sprite_is_animated (MetaCursorSprite *sprite)
 {
-  return (sprite->xcursor_images &&
-          sprite->xcursor_images->nimage > 1);
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  return (priv->xcursor_images &&
+          priv->xcursor_images->nimage > 1);
 }
 
 MetaCursorSprite *
@@ -225,23 +238,25 @@ meta_cursor_sprite_new (void)
 static void
 meta_cursor_sprite_load_from_theme (MetaCursorSprite *sprite)
 {
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
   XcursorImage *image;
 
-  g_assert (sprite->cursor != META_CURSOR_NONE);
+  g_assert (priv->cursor != META_CURSOR_NONE);
 
-  sprite->theme_dirty = FALSE;
+  priv->theme_dirty = FALSE;
 
   /* We might be reloading with a different scale. If so clear the old data. */
-  if (sprite->xcursor_images)
+  if (priv->xcursor_images)
     {
-      g_clear_pointer (&sprite->texture, cogl_object_unref);
-      XcursorImagesDestroy (sprite->xcursor_images);
+      g_clear_pointer (&priv->texture, cogl_object_unref);
+      XcursorImagesDestroy (priv->xcursor_images);
     }
 
-  sprite->current_frame = 0;
-  sprite->xcursor_images = load_cursor_on_client (sprite->cursor,
-                                                  sprite->theme_scale);
-  if (!sprite->xcursor_images)
+  priv->current_frame = 0;
+  priv->xcursor_images = load_cursor_on_client (priv->cursor,
+                                                priv->theme_scale);
+  if (!priv->xcursor_images)
     meta_fatal ("Could not find cursor. Perhaps set XCURSOR_PATH?");
 
   image = meta_cursor_sprite_get_current_frame_image (sprite);
@@ -252,11 +267,13 @@ MetaCursorSprite *
 meta_cursor_sprite_from_theme (MetaCursor cursor)
 {
   MetaCursorSprite *sprite;
+  MetaCursorSpritePrivate *priv;
 
   sprite = meta_cursor_sprite_new ();
+  priv = meta_cursor_sprite_get_instance_private (sprite);
 
-  sprite->cursor = cursor;
-  sprite->theme_dirty = TRUE;
+  priv->cursor = cursor;
+  priv->theme_dirty = TRUE;
 
   return sprite;
 }
@@ -267,16 +284,19 @@ meta_cursor_sprite_set_texture (MetaCursorSprite *sprite,
                                 int               hot_x,
                                 int               hot_y)
 {
-  if (sprite->texture == COGL_TEXTURE_2D (texture) &&
-      sprite->hot_x == hot_x &&
-      sprite->hot_y == hot_y)
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  if (priv->texture == COGL_TEXTURE_2D (texture) &&
+      priv->hot_x == hot_x &&
+      priv->hot_y == hot_y)
     return;
 
-  g_clear_pointer (&sprite->texture, cogl_object_unref);
+  g_clear_pointer (&priv->texture, cogl_object_unref);
   if (texture)
-    sprite->texture = cogl_object_ref (texture);
-  sprite->hot_x = hot_x;
-  sprite->hot_y = hot_y;
+    priv->texture = cogl_object_ref (texture);
+  priv->hot_x = hot_x;
+  priv->hot_y = hot_y;
 
   g_signal_emit (sprite, signals[TEXTURE_CHANGED], 0);
 }
@@ -285,28 +305,40 @@ void
 meta_cursor_sprite_set_texture_scale (MetaCursorSprite *sprite,
                                       float             scale)
 {
-  sprite->texture_scale = scale;
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  priv->texture_scale = scale;
 }
 
 void
 meta_cursor_sprite_set_theme_scale (MetaCursorSprite *sprite,
                                     int               theme_scale)
 {
-  if (sprite->theme_scale != theme_scale)
-    sprite->theme_dirty = TRUE;
-  sprite->theme_scale = theme_scale;
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  if (priv->theme_scale != theme_scale)
+    priv->theme_dirty = TRUE;
+  priv->theme_scale = theme_scale;
 }
 
 CoglTexture *
 meta_cursor_sprite_get_cogl_texture (MetaCursorSprite *sprite)
 {
-  return COGL_TEXTURE (sprite->texture);
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  return COGL_TEXTURE (priv->texture);
 }
 
 MetaCursor
 meta_cursor_sprite_get_meta_cursor (MetaCursorSprite *sprite)
 {
-  return sprite->cursor;
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  return priv->cursor;
 }
 
 void
@@ -314,14 +346,20 @@ meta_cursor_sprite_get_hotspot (MetaCursorSprite *sprite,
                                 int              *hot_x,
                                 int              *hot_y)
 {
-  *hot_x = sprite->hot_x;
-  *hot_y = sprite->hot_y;
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  *hot_x = priv->hot_x;
+  *hot_y = priv->hot_y;
 }
 
 float
 meta_cursor_sprite_get_texture_scale (MetaCursorSprite *sprite)
 {
-  return sprite->texture_scale;
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  return priv->texture_scale;
 }
 
 void
@@ -335,25 +373,33 @@ meta_cursor_sprite_prepare_at (MetaCursorSprite *sprite,
 void
 meta_cursor_sprite_realize_texture (MetaCursorSprite *sprite)
 {
-  if (sprite->theme_dirty)
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  if (priv->theme_dirty)
     meta_cursor_sprite_load_from_theme (sprite);
 }
 
 static void
 meta_cursor_sprite_init (MetaCursorSprite *sprite)
 {
-  sprite->texture_scale = 1.0f;
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
+
+  priv->texture_scale = 1.0f;
 }
 
 static void
 meta_cursor_sprite_finalize (GObject *object)
 {
   MetaCursorSprite *sprite = META_CURSOR_SPRITE (object);
+  MetaCursorSpritePrivate *priv =
+    meta_cursor_sprite_get_instance_private (sprite);
 
-  if (sprite->xcursor_images)
-    XcursorImagesDestroy (sprite->xcursor_images);
+  if (priv->xcursor_images)
+    XcursorImagesDestroy (priv->xcursor_images);
 
-  g_clear_pointer (&sprite->texture, cogl_object_unref);
+  g_clear_pointer (&priv->texture, cogl_object_unref);
 
   G_OBJECT_CLASS (meta_cursor_sprite_parent_class)->finalize (object);
 }
