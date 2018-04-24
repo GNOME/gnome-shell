@@ -325,7 +325,8 @@ void
 meta_wayland_seat_update (MetaWaylandSeat    *seat,
                           const ClutterEvent *event)
 {
-  if (!event_from_supported_hardware_device (seat, event) &&
+  if (!(clutter_event_get_flags (event) & CLUTTER_EVENT_FLAG_INPUT_METHOD) &&
+      !event_from_supported_hardware_device (seat, event) &&
       !event_is_synthesized_crossing (event))
     return;
 
@@ -363,7 +364,8 @@ gboolean
 meta_wayland_seat_handle_event (MetaWaylandSeat *seat,
                                 const ClutterEvent *event)
 {
-  if (!event_from_supported_hardware_device (seat, event))
+  if (!(clutter_event_get_flags (event) & CLUTTER_EVENT_FLAG_INPUT_METHOD) &&
+      !event_from_supported_hardware_device (seat, event))
     return FALSE;
 
   switch (event->type)
