@@ -170,7 +170,7 @@ meta_backend_sync_screen_size (MetaBackend *backend)
 }
 
 static void
-center_pointer (MetaBackend *backend)
+reset_pointer_position (MetaBackend *backend)
 {
   MetaBackendPrivate *priv = meta_backend_get_instance_private (backend);
   MetaMonitorManager *monitor_manager = priv->monitor_manager;
@@ -179,9 +179,11 @@ center_pointer (MetaBackend *backend)
   primary =
     meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
 
+  /* Move the pointer out of the way to avoid hovering over reactive
+   * elements (e.g. users list at login) causing undesired behaviour. */
   meta_backend_warp_pointer (backend,
-                             primary->rect.x + primary->rect.width / 2,
-                             primary->rect.y + primary->rect.height / 2);
+                             primary->rect.x + primary->rect.width * 0.9,
+                             primary->rect.y + primary->rect.height * 0.9);
 }
 
 void
@@ -204,7 +206,7 @@ meta_backend_monitors_changed (MetaBackend *backend)
            !priv->is_pointer_position_initialized) &&
           !meta_monitor_manager_is_headless (monitor_manager))
         {
-          center_pointer (backend);
+          reset_pointer_position (backend);
           priv->is_pointer_position_initialized = TRUE;
         }
     }
@@ -479,18 +481,7 @@ meta_backend_real_post_init (MetaBackend *backend)
 
   if (!meta_monitor_manager_is_headless (priv->monitor_manager))
     {
-      MetaMonitorManager *monitor_manager = priv->monitor_manager;
-      MetaLogicalMonitor *primary;
-
-      primary =
-        meta_monitor_manager_get_primary_logical_monitor (monitor_manager);
-
-      /* Move the pointer out of the way to avoid hovering over reactive
-       * elements (e.g. users list at login) causing undesired behaviour. */
-      meta_backend_warp_pointer (backend,
-                                 primary->rect.x + primary->rect.width * 0.9,
-                                 primary->rect.y + primary->rect.height * 0.9);
-
+      reset_pointer_position (backend);
       priv->is_pointer_position_initialized = TRUE;
     }
 }
