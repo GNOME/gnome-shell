@@ -133,7 +133,7 @@ function _callRemote(obj, method, ...args) {
  * because of the normal X asynchronous mapping process, to actually wait
  * until the window has been mapped and exposed, use waitTestWindows().
  */
-function createTestWindow(width, height, params) {
+function createTestWindow(params) {
     params = Params.parse(params, { width: 640,
                                     height: 480,
                                     alpha: false,

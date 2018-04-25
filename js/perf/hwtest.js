@@ -136,8 +136,7 @@ function run() {
     global.frame_finish_timestamp = true;
 
     for (let k = 0; k < 5; k++)
-        yield Scripting.createTestWindow(640, 480,
-                                         { maximized: true });
+        yield Scripting.createTestWindow({ maximized: true });
     yield Scripting.waitTestWindows();
 
     yield Scripting.sleep(1000);
@@ -158,8 +157,7 @@ function run() {
     yield Scripting.destroyTestWindows();
     Main.overview.hide();
 
-    yield Scripting.createTestWindow(640, 480,
-                                     { maximized: true,
+    yield Scripting.createTestWindow({ maximized: true,
                                        redraws: true});
     yield Scripting.waitTestWindows();
 
