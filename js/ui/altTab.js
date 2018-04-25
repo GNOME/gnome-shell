@@ -358,6 +358,8 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
 
     _destroyThumbnails() {
         let thumbnailsActor = this._thumbnails;
+        this._thumbnails = null;
+
         this._thumbnails.ease({
             opacity: 0,
             duration: THUMBNAIL_FADE_TIME,
@@ -367,7 +369,7 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
                 this.thumbnailsVisible = false;
             },
         });
-        this._thumbnails = null;
+
         if (this._switcherList._items[this._selectedIndex])
             this._switcherList._items[this._selectedIndex].remove_accessible_state(Atk.StateType.EXPANDED);
     }
@@ -378,7 +380,6 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
         this._thumbnails.connect('destroy', () => {
-            this._thumbnails = null;
             this._thumbnailsFocused = false;
         });
 
