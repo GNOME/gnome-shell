@@ -833,6 +833,8 @@ var AppSwitcher = new Lang.Class({
             GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
         } else
            this._itemEntered(index);
+
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _enterItem(index) {
