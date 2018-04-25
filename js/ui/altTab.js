@@ -277,9 +277,29 @@ var AppSwitcherPopup = new Lang.Class({
         if (!appIcon)
             return;
 
-        if (appIcon.cachedWindows.length > 0) {
-            let newIndex = Math.min(n, appIcon.cachedWindows.length - 1);
+        // Only select new thumbnail if a thumbnail was selected before
+        if (this._thumbnailsFocused) {
+            // If only one window is left, move the selection to the parent and destroy thumbnails
+            if (appIcon.cachedWindows.length == 1) {
+                this._select(this._selectedIndex);
+                this._destroyThumbnails();
+                return;
+            }
+
+            let newIndex = appIcon.cachedWindows.length - 1;
+
+            if (n < this._currentWindow)
+                newIndex = this._currentWindow - 1;
+            else if (n == this._currentWindow && n != appIcon.cachedWindows.length)
+                newIndex = this._currentWindow;
+            else
+                return; // No need to select something new in this case
+
             this._select(this._selectedIndex, newIndex);
+        } else {
+            if (appIcon.cachedWindows.length == 1) {
+                this._destroyThumbnails();
+            }
         }
     },
 
