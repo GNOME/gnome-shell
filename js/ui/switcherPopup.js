@@ -472,17 +472,17 @@ var SwitcherList = new Lang.Class({
         let [result, posX, posY] = this.actor.transform_stage_point(absItemX, 0);
         let [containerWidth, containerHeight] = this.actor.get_transformed_size();
         if (posX + this._items[index].get_width() > containerWidth)
-            this._scrollToRight();
+            this._scrollToRight(index);
         else if (this._items[index].allocation.x1 - value < 0)
-            this._scrollToLeft();
+            this._scrollToLeft(index);
 
     },
 
-    _scrollToLeft() {
+    _scrollToLeft(index) {
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
 
-        let item = this._items[this._highlighted];
+        let item = this._items[index];
 
         if (item.allocation.x1 < value)
             value = Math.min(0, item.allocation.x1);
@@ -495,18 +495,18 @@ var SwitcherList = new Lang.Class({
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {
-                                if (this._highlighted == 0)
+                                if (index == 0)
                                     this._scrollableLeft = false;
                                 this.actor.queue_relayout();
                            }
                           });
     },
 
-    _scrollToRight() {
+    _scrollToRight(index) {
         let adjustment = this._scrollView.hscroll.adjustment;
         let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
 
-        let item = this._items[this._highlighted];
+        let item = this._items[index];
 
         if (item.allocation.x1 < value)
             value = Math.max(0, item.allocation.x1);
@@ -519,7 +519,7 @@ var SwitcherList = new Lang.Class({
                            time: POPUP_SCROLL_TIME,
                            transition: 'easeOutQuad',
                            onComplete: () => {
-                                if (this._highlighted == this._items.length - 1)
+                                if (index == this._items.length - 1)
                                     this._scrollableRight = false;
                                 this.actor.queue_relayout();
                             }
