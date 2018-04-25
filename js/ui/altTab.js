@@ -743,6 +743,9 @@ var AppSwitcher = new Lang.Class({
     },
 
     _setIconSize() {
+        if (this._iconSize)
+            return;
+
         let j = 0;
         while(this._items.length > 1 && this._items[j].style_class != 'item-box') {
                 j++;
