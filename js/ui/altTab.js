@@ -790,6 +790,10 @@ var AppSwitcher = new Lang.Class({
     // We override SwitcherList's _onItemEnter method to delay
     // activation when the thumbnail list is open
     _onItemEnter(index) {
+        // Avoid reentrancy
+        if (index == this._highlighted)
+            return;
+
         if (this._mouseTimeOutId != 0)
             Mainloop.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
