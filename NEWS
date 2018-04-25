@@ -1,3 +1,17 @@
+3.29.1
+======
+* Support icons in app-menu [Florian; #760985]
+* Misc. bug fixes [Marco, Florian, Lubomir; #792687, #221, !63]
+
+Contributors:
+  Piotr Drąg, Takao Fujiwara, Christian Kellner, Florian Müllner,
+  Mario Sanchez Prada, Lubomir Rintel, Didier Roche, Marco Trevisan (Treviño),
+  verdre
+
+Translators:
+  gogo [hr], Stas Solovey [ru], Matej Urbančič [sl], Daniel Șerbănescu [ro],
+  Fabio Tomat [fur], Marek Cernocky [cs], Daniel Mustieles [es]
+
 3.28.1
 ======
 * Fix compose characters in shell entries [Carlos; #115]
