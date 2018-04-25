@@ -765,7 +765,9 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     }
 
     vfunc_get_preferred_height(forWidth) {
-        this._setIconSize();
+        if (!this._iconSize)
+            this._setIconSize();
+
         return super.vfunc_get_preferred_height(forWidth);
     }
 
