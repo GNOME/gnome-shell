@@ -89,6 +89,9 @@ static gboolean
 meta_monitor_manager_is_config_complete (MetaMonitorManager *manager,
                                          MetaMonitorsConfig *config);
 
+static MetaMonitor *
+meta_monitor_manager_get_active_monitor (MetaMonitorManager *manager);
+
 MetaBackend *
 meta_monitor_manager_get_backend (MetaMonitorManager *manager)
 {
@@ -198,13 +201,17 @@ calculate_monitor_scale (MetaMonitorManager *manager,
 static float
 derive_calculated_global_scale (MetaMonitorManager *manager)
 {
-  MetaMonitor *primary_monitor;
+  MetaMonitor *monitor = NULL;
 
-  primary_monitor = meta_monitor_manager_get_primary_monitor (manager);
-  if (!primary_monitor)
+  monitor = meta_monitor_manager_get_primary_monitor (manager);
+
+  if (!monitor || !meta_monitor_is_active (monitor))
+    monitor = meta_monitor_manager_get_active_monitor (manager);
+
+  if (!monitor)
     return 1.0;
 
-  return calculate_monitor_scale (manager, primary_monitor);
+  return calculate_monitor_scale (manager, monitor);
 }
 
 static float
@@ -2376,6 +2383,12 @@ MetaMonitor *
 meta_monitor_manager_get_laptop_panel (MetaMonitorManager *manager)
 {
   return find_monitor (manager, meta_monitor_is_laptop_panel);
+}
+
+static MetaMonitor *
+meta_monitor_manager_get_active_monitor (MetaMonitorManager *manager)
+{
+  return find_monitor (manager, meta_monitor_is_active);
 }
 
 MetaMonitor *
