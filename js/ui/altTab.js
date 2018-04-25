@@ -784,6 +784,8 @@ var AppSwitcher = new Lang.Class({
             } else
                this._itemEntered(index);
         }
+
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _enterItem(index) {
