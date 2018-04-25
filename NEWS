@@ -1,3 +1,25 @@
+3.29.1
+======
+* Fix various input-method regressions [Carlos, Olivier; #65, #74, #66, #112]
+* Fix wayland build on FreeBSD [Ting-Wei; #792280, #792717]
+* Fix swapped colors in screenshots (again) [Carlos; #72]
+* Allow building with elogind [Rasmus; !46]
+* Consider display rotation for cursor [Olivier; #85]
+* Fall back to non-modifier GBM surfaces [Daniel; #84]
+* Take inhibitors into account for monitoring idle [Bastien; #705942]
+* Misc. bug fixes [handsome-feng, Olivier, Mario, Jonas; !45, #83, #104,
+  gnome-shell#157, #130, #21]
+
+Contributors:
+  Jonas Ådahl, Olivier Fourdan, Carlos Garnacho, handsome-feng, Yussuf Khalil,
+  Ting-Wei Lan, Aleksandr Mezin, Alberts Muktupāvels,
+  Georges Basile Stavracas Neto, Bastien Nocera, Benjamin Otte,
+  Mario Sanchez Prada, Daniel Stone, Ray Strode, Rasmus Thomsen,
+  Marco Trevisan (Treviño), Daniel van Vugt
+
+Translators:
+  Emin Tufan Çetin [tr], Dušan Kazik [sk], Matej Urbančič [sl]
+
 3.28.0
 ======
 * Fix xdg-foreign regression [Carlos; #63]
