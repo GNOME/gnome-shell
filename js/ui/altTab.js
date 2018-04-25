@@ -784,7 +784,9 @@ var AppSwitcher = new Lang.Class({
     },
 
     vfunc_get_preferred_height(forWidth) {
-        this._setIconSize();
+        if (!this._iconSize)
+            this._setIconSize();
+
         return this.parent(forWidth);
     },
 
