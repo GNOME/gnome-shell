@@ -786,6 +786,10 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
     // We override SwitcherList's _onItemEnter method to delay
     // activation when the thumbnail list is open
     _onItemEnter(index) {
+        // Avoid reentrancy
+        if (index == this._highlighted)
+            return Clutter.EVENT_PROPAGATE;
+
         if (this._mouseTimeOutId != 0)
             GLib.source_remove(this._mouseTimeOutId);
         if (this._altTabPopup.thumbnailsVisible) {
