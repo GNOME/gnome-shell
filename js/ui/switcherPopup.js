@@ -250,7 +250,15 @@ var SwitcherPopup = new Lang.Class({
 
     _itemRemovedHandler(n) {
         if (this._items.length > 0) {
-            let newIndex = Math.min(n, this._items.length - 1);
+            let newIndex = this._items.length - 1;
+
+            if (n < this._selectedIndex)
+                newIndex = this._selectedIndex - 1;
+            else if (n == this._selectedIndex && n != this._items.length)
+                newIndex = this._selectedIndex;
+            else if (n > this._selectedIndex)
+                return; // No need to select something new in this case
+
             this._select(newIndex);
         } else {
             this.actor.destroy();
