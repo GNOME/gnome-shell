@@ -674,6 +674,11 @@ var ThumbnailsBox = new Lang.Class({
             this._updateSwitcherVisibility.bind(this));
 
         Main.layoutManager.connect('monitors-changed', this._rebuildThumbnails.bind(this));
+
+        this._switchWorkspaceNotifyId = 0;
+        this._nWorkspacesNotifyId = 0;
+        this._syncStackingId = 0;
+        this._workareasChangedId = 0;
     },
 
     _updateSwitcherVisibility() {
