@@ -396,7 +396,6 @@ var AppSwitcherPopup = new Lang.Class({
                            transition: 'easeOutQuad',
                            onComplete: () => {
                                thumbnailsActor.destroy();
-                               this.thumbnailsVisible = false;
                            }
                          });
 
@@ -411,6 +410,7 @@ var AppSwitcherPopup = new Lang.Class({
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
         this._thumbnails.actor.connect('destroy', () => {
             this._thumbnailsFocused = false;
+            this.thumbnailsVisible = false;
         });
 
         this.actor.add_actor(this._thumbnails.actor);
