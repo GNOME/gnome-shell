@@ -440,10 +440,9 @@ var SwitcherList = GObject.registerClass({
 
     _onItemEnter(index) {
         // Avoid reentrancy
-        if (index != this._currentItemEntered) {
-            this._currentItemEntered = index;
+        if (index !== this._highlighted)
             this._itemEntered(index);
-        }
+
         return Clutter.EVENT_PROPAGATE;
     }
 
