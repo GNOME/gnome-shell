@@ -871,6 +871,7 @@ var AppSwitcher = new Lang.Class({
         if (index === -1)
             return;
 
+        app.disconnect(this.icons[index]._stateChangedId);
         this.icons.splice(index, 1);
         this.removeItem(index);
     },
