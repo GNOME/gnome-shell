@@ -769,18 +769,21 @@ var AppSwitcher = new Lang.Class({
     // We override SwitcherList's _onItemEnter method to delay
     // activation when the thumbnail list is open
     _onItemEnter(index) {
-        if (this._mouseTimeOutId != 0)
-            Mainloop.source_remove(this._mouseTimeOutId);
-        if (this._altTabPopup.thumbnailsVisible) {
-            this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
-                                                        () => {
-                                                            this._enterItem(index);
-                                                            this._mouseTimeOutId = 0;
-                                                            return GLib.SOURCE_REMOVE;
-                                                        });
-            GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
-        } else
-           this._itemEntered(index);
+        // Avoid reentrancy
+        if (index != this._highlighted) {
+            if (this._mouseTimeOutId != 0)
+                Mainloop.source_remove(this._mouseTimeOutId);
+            if (this._altTabPopup.thumbnailsVisible) {
+                this._mouseTimeOutId = Mainloop.timeout_add(APP_ICON_HOVER_TIMEOUT,
+                                                            () => {
+                                                                this._enterItem(index);
+                                                                this._mouseTimeOutId = 0;
+                                                                return GLib.SOURCE_REMOVE;
+                                                            });
+                GLib.Source.set_name_by_id(this._mouseTimeOutId, '[gnome-shell] this._enterItem');
+            } else
+               this._itemEntered(index);
+        }
     },
 
     _enterItem(index) {
