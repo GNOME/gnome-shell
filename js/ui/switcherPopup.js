@@ -487,9 +487,9 @@ var SwitcherList = new Lang.Class({
         let item = this._items[index];
 
         if (item.allocation.x1 < value)
-            value = Math.min(0, item.allocation.x1);
+            value = Math.max(0, item.allocation.x1);
         else if (item.allocation.x2 > value + pageSize)
-            value = Math.max(upper, item.allocation.x2 - pageSize);
+            value = Math.min(upper, item.allocation.x2 - pageSize);
 
         this._scrollableRight = true;
         Tweener.addTween(adjustment,
