@@ -814,6 +814,8 @@ class AppSwitcher extends SwitcherPopup.SwitcherList {
         } else {
             this._itemEntered(index);
         }
+
+        return Clutter.EVENT_PROPAGATE;
     }
 
     _enterItem(index) {
