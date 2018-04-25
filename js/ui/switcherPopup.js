@@ -409,6 +409,12 @@ var SwitcherList = new Lang.Class({
         let childBox = new Clutter.ActorBox();
         let scrollable = this._minSize > box.x2 - box.x1;
 
+        // Reset scrolling to default
+        if (!scrollable) {
+            this._scrollableRight = true;
+            this._scrollableLeft = false;
+        }
+
         box.y1 -= this.actor.get_theme_node().get_padding(St.Side.TOP);
         box.y2 += this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
         this._scrollView.allocate(box, flags);
