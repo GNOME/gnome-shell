@@ -369,6 +369,8 @@ var AppSwitcherPopup = new Lang.Class({
 
     _destroyThumbnails() {
         let thumbnailsActor = this._thumbnails;
+        this._thumbnails = null;
+
         Tweener.addTween(thumbnailsActor,
                          { opacity: 0,
                            time: THUMBNAIL_FADE_TIME,
@@ -378,7 +380,7 @@ var AppSwitcherPopup = new Lang.Class({
                                this.thumbnailsVisible = false;
                            }
                          });
-        this._thumbnails = null;
+
         if  (this._switcherList._items[this._selectedIndex])
             this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
     },
@@ -389,7 +391,6 @@ var AppSwitcherPopup = new Lang.Class({
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
         this._thumbnails.connect('destroy', () => {
-            this._thumbnails = null;
             this._thumbnailsFocused = false;
         });
 
