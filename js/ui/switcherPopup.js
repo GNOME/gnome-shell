@@ -438,6 +438,15 @@ var SwitcherList = new Lang.Class({
         this.emit('item-removed', index);
     },
 
+    addAccessibleState(index, state) {
+        this._items[index].add_accessible_state(state);
+    },
+
+    removeAccessibleState(index, state) {
+        if (this._items[index])
+            this._items[index].remove_accessible_state(state);
+    },
+
     _onItemClicked(index) {
         this._itemActivated(index);
     },
