@@ -263,13 +263,56 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _itemActivatedHandler(n) {
-        // If the user clicks on the selected app, activate the
-        // selected window; otherwise (eg, they click on an app while
-        // !mouseActive) activate the clicked-on app.
+        // If the user clicks on the selected app and a
+        // window is selected, use it
         if (n == this._selectedIndex && this._currentWindow >= 0)
             this._select(n, this._currentWindow);
         else
             this._select(n);
+    },
+
+    _itemAddedHandler(n) {
+        if (n < this._selectedIndex || n == this._selectedIndex) {
+            if (this._thumbnails && this._currentWindow >= 0) {
+                // Destroy thumbnails without animation since we show them right again
+                this._thumbnails.disconnectHandlers();
+                this._thumbnails.actor.destroy();
+                this._thumbnails = null;
+                this._switcherList.removeAccessibleState(this._selectedIndex, Atk.StateType.EXPANDED);
+
+                this._select(this._selectedIndex + 1, this._currentWindow);
+            } else {
+                this._select(this._selectedIndex + 1);
+            }
+        }
+    },
+
+    _itemRemovedHandler(n) {
+        if (this._items.length > 0) {
+            // If the last item is selected and was removed, we fall back to this
+            let newIndex = this._items.length - 1;
+
+            if (n < this._selectedIndex)
+                newIndex = this._selectedIndex - 1;
+            else if (n == this._selectedIndex && n != this._items.length)
+                newIndex = this._selectedIndex;
+            else if (n > this._selectedIndex)
+                return; // No need to select something new in this case
+
+            if (this._thumbnails && this._currentWindow >= 0 && n != this._selectedIndex) {
+                // Destroy thumbnails without animation since we show them right again
+                this._thumbnails.disconnectHandlers();
+                this._thumbnails.actor.destroy();
+                this._thumbnails = null;
+                this._switcherList.removeAccessibleState(this._selectedIndex, Atk.StateType.EXPANDED);
+
+                this._select(newIndex, this._currentWindow);
+            } else {
+                this._select(newIndex);
+            }
+        } else {
+            this.destroy();
+        }
     },
 
     _windowActivated(thumbnailSwitcher, n) {
