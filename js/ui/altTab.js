@@ -244,10 +244,6 @@ class AppSwitcherPopup extends SwitcherPopup.SwitcherPopup {
             this._select(n);
     }
 
-    _itemEnteredHandler(n) {
-        this._select(n);
-    }
-
     _windowActivated(thumbnailList, n) {
         let appIcon = this._items[this._selectedIndex];
         Main.activateWindow(appIcon.cachedWindows[n]);
