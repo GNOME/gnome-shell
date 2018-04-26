@@ -301,8 +301,7 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _windowActivated(thumbnailSwitcher, n) {
-        let appIcon = this._items[this._selectedIndex];
-        Main.activateWindow(appIcon.cachedWindows[n]);
+        Main.activateWindow(thumbnailSwitcher.icon.cachedWindows[n]);
         this.destroy();
     },
 
@@ -320,22 +319,18 @@ var AppSwitcherPopup = new Lang.Class({
     },
 
     _windowRemoved(thumbnailSwitcher, n) {
-        let appIcon = this._items[this._selectedIndex];
-        if (!appIcon)
-            return;
-
         // Only select new thumbnail if a thumbnail was selected before
         if (this._thumbnailsFocused) {
             // If only one window is left, move the selection to the parent,
             // this also destroys the thumbnails
-            if (appIcon.cachedWindows.length == 1) {
+            if (thumbnailSwitcher.icon.cachedWindows.length == 1) {
                 this._select(this._selectedIndex);
             } else {
-                let newIndex = appIcon.cachedWindows.length - 1;
+                let newIndex = thumbnailSwitcher.icon.cachedWindows.length - 1;
 
                 if (n < this._currentWindow)
                     newIndex = this._currentWindow - 1;
-                else if (n == this._currentWindow && n != appIcon.cachedWindows.length)
+                else if (n == this._currentWindow && n != thumbnailSwitcher.icon.cachedWindows.length)
                     newIndex = this._currentWindow;
                 else if (n > this._currentWindow)
                     return; // No need to select something new in this case
@@ -343,7 +338,7 @@ var AppSwitcherPopup = new Lang.Class({
                 this._select(this._selectedIndex, newIndex);
             }
         } else {
-            if (appIcon.cachedWindows.length == 1) {
+            if (thumbnailSwitcher.icon.cachedWindows.length == 1) {
                 this._destroyThumbnails();
             }
         }
