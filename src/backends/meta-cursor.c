@@ -33,7 +33,8 @@
 #include "meta/common.h"
 #include "meta/prefs.h"
 
-enum {
+enum
+{
   PREPARE_AT,
   TEXTURE_CHANGED,
 
