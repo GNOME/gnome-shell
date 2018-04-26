@@ -273,6 +273,24 @@ var AppSwitcherPopup = new Lang.Class({
         this._select(this._selectedIndex, n);
     },
 
+    _windowAdded(thumbnailList, n) {
+        function doSelection() {
+            this._windowAddedTimeoutId = 0;
+            this._select(this._selectedIndex, this._currentWindow + 1);
+            return GLib.SOURCE_REMOVE;
+        }
+
+        // Only select new thumbnail if a thumbnail was selected before
+        if (this._thumbnailsFocused) {
+            if (n < this._currentWindow || n == this._currentWindow) {
+                // We have to wait here since the allocation has to finish before the
+                // measurements in SwitcherList.highlight can be done
+                this._windowAddedTimeoutId = Mainloop.timeout_add(20, doSelection.bind(this));
+                GLib.Source.set_name_by_id(this._windowAddedTimeoutId, '[gnome-shell] doSelection');
+            }
+        }
+    },
+
     _windowRemoved(thumbnailList, n) {
         let appIcon = this._items[this._selectedIndex];
         if (!appIcon)
@@ -406,6 +424,7 @@ var AppSwitcherPopup = new Lang.Class({
         this._thumbnails = new ThumbnailList (this._items[this._selectedIndex].cachedWindows);
         this._thumbnails.connect('item-activated', this._windowActivated.bind(this));
         this._thumbnails.connect('item-entered', this._windowEntered.bind(this));
+        this._thumbnails.connect('item-added', this._windowAdded.bind(this));
         this._thumbnails.connect('item-removed', this._windowRemoved.bind(this));
         this._thumbnails.actor.connect('destroy', () => {
             this._thumbnailsFocused = false;
