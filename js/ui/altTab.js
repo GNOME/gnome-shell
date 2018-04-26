@@ -689,17 +689,18 @@ var AppSwitcher = new Lang.Class({
 
         this._currentWorkspace = currentWorkspace;
 
-        let windowTracker = Shell.WindowTracker.get_default();
-        let allWindows = global.display.get_tab_list(Meta.TabList.NORMAL, this._currentWorkspace);
-
         // Construct the AppIcons, add to the popup
         for (let i = 0; i < apps.length; i++) {
             let appIcon = new AppIcon(apps[i]);
-            // Cache the window list now; we don't handle dynamic changes here,
-            // and we don't want to be continually retrieving it
-            appIcon.cachedWindows = allWindows.filter(
-                w => windowTracker.get_window_app (w) == appIcon.app
-            );
+
+            appIcon.cachedWindows = apps[i].get_windows();
+
+            if (this._currentWorkspace) {
+                appIcon.cachedWindows = appIcon.cachedWindows.filter(
+                    w => w.located_on_workspace(this._currentWorkspace)
+                );
+            }
+
             if (appIcon.cachedWindows.length > 0)
                 this._addIcon(appIcon);
         }
