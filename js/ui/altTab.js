@@ -936,7 +936,12 @@ var AppSwitcher = new Lang.Class({
             return;
 
         app.disconnect(this.icons[index]._stateChangedId);
+
+        let arrow = this._arrows.splice(index, 1);
+        arrow[0].destroy();
+
         this.icons.splice(index, 1);
+
         this.removeItem(index);
     }
 });
