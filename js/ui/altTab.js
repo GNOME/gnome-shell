@@ -868,7 +868,6 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
     _init(windows) {
         super._init(false);
 
-        this._labels = [];
         this._thumbnailBins = [];
         this._clones = [];
         this._windows = windows;
@@ -889,7 +888,7 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
                     // St.Label doesn't support text-align
                     x_align: Clutter.ActorAlign.CENTER,
                 });
-                this._labels.push(name);
+                this._lastLabel = name;
                 box.add_actor(name);
 
                 this.addItem(box, name);
@@ -907,7 +906,7 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
             return;
         let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
         totalPadding += this.get_theme_node().get_horizontal_padding() + this.get_theme_node().get_vertical_padding();
-        let [, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
+        let [, labelNaturalHeight] = this._lastLabel.get_preferred_height(-1);
         let spacing = this._items[0].child.get_theme_node().get_length('spacing');
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let thumbnailSize = THUMBNAIL_DEFAULT_SIZE * scaleFactor;
@@ -942,7 +941,6 @@ class ThumbnailList extends SwitcherPopup.SwitcherList {
 
         this._clones.splice(index, 1);
         this._windows.splice(index, 1);
-        this._labels.splice(index, 1);
         this.removeItem(index);
 
         if (this._clones.length > 0)
