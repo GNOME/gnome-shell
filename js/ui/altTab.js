@@ -1029,9 +1029,6 @@ var ThumbnailSwitcher = new Lang.Class({
         this._clones.splice(index, 1);
         this.icon.cachedWindows.splice(index, 1);
         this.removeItem(index);
-
-        if (this._clones.length == 0)
-            this.actor.destroy();
     },
 
     disconnectHandlers() {
