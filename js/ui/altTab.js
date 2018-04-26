@@ -874,7 +874,6 @@ var ThumbnailList = new Lang.Class({
     _init(windows) {
         this.parent(false);
 
-        this._labels = new Array();
         this._thumbnailBins = new Array();
         this._clones = new Array();
         this._windows = windows;
@@ -893,7 +892,9 @@ var ThumbnailList = new Lang.Class({
                 let name = new St.Label({ text: title });
                 // St.Label doesn't support text-align so use a Bin
                 let bin = new St.Bin({ x_align: St.Align.MIDDLE });
-                this._labels.push(bin);
+
+                this._lastLabel = bin;
+
                 bin.add_actor(name);
                 box.add_actor(bin);
 
@@ -912,7 +913,7 @@ var ThumbnailList = new Lang.Class({
             return;
         let totalPadding = this._items[0].get_theme_node().get_horizontal_padding() + this._items[0].get_theme_node().get_vertical_padding();
         totalPadding += this.actor.get_theme_node().get_horizontal_padding() + this.actor.get_theme_node().get_vertical_padding();
-        let [labelMinHeight, labelNaturalHeight] = this._labels[0].get_preferred_height(-1);
+        let [labelMinHeight, labelNaturalHeight] = this._lastLabel.get_preferred_height(-1);
         let spacing = this._items[0].child.get_theme_node().get_length('spacing');
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let thumbnailSize = THUMBNAIL_DEFAULT_SIZE * scaleFactor;
@@ -947,7 +948,6 @@ var ThumbnailList = new Lang.Class({
 
         this._clones.splice(index, 1);
         this._windows.splice(index, 1);
-        this._labels.splice(index, 1);
         this.removeItem(index);
 
         if (this._clones.length > 0)
