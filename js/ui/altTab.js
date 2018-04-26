@@ -894,20 +894,28 @@ var AppSwitcher = new Lang.Class({
         }
     },
 
-    _addIcon(appIcon) {
-        this.icons.push(appIcon);
-        let item = this.addItem(appIcon.actor, appIcon.label);
+    _addIcon(appIcon, index) {
+        let item = this.addItem(appIcon.actor, appIcon.label, index, index * 2);
 
         appIcon._stateChangedId = appIcon.app.connect('notify::state', app => {
             if (app.state != Shell.AppState.RUNNING)
                 this._removeIcon(app);
         });
 
-        let n = this._arrows.length;
         let arrow = new St.DrawingArea({ style_class: 'switcher-arrow' });
         arrow.connect('repaint', () => SwitcherPopup.drawArrow(arrow, St.Side.BOTTOM));
-        this._list.add_actor(arrow);
-        this._arrows.push(arrow);
+
+        if (index != undefined) {
+            this.icons.splice(index, 0, appIcon);
+            this._arrows.splice(index, 0, arrow);
+
+            this._list.insert_child_at_index(arrow, (index * 2) + 1);
+        } else {
+            this.icons.push(appIcon);
+            this._arrows.push(arrow);
+
+            this._list.add_child(arrow);
+        }
 
         if (appIcon.cachedWindows.length == 1)
             arrow.hide();
