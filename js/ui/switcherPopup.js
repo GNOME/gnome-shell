@@ -131,6 +131,7 @@ var SwitcherPopup = new Lang.Class({
         this.actor.add_actor(this._switcherList.actor);
         this._switcherList.connect('item-activated', this._itemActivated.bind(this));
         this._switcherList.connect('item-entered', this._itemEntered.bind(this));
+        this._switcherList.connect('item-added', this._itemAdded.bind(this));
         this._switcherList.connect('item-removed', this._itemRemoved.bind(this));
 
         // Need to force an allocation so we can figure out whether we
@@ -253,6 +254,15 @@ var SwitcherPopup = new Lang.Class({
             return;
 
         this._itemEnteredHandler(n);
+    },
+
+    _itemAddedHandler(n) {
+        if (n < this._selectedIndex || n == this._selectedIndex)
+            this._select(this._selectedIndex + 1);
+    },
+
+    _itemAdded(switcher, n) {
+        this._itemAddedHandler(n);
     },
 
     _itemRemovedHandler(n) {
@@ -441,12 +451,11 @@ var SwitcherList = new Lang.Class({
         this._rightArrow.opacity = (this._scrollableRight && scrollable) ? 255 : 0;
     },
 
-    addItem(item, label) {
+    addItem(item, label, index, listIndex) {
         let bbox = new St.Button({ style_class: 'item-box',
                                    reactive: true });
 
         bbox.set_child(item);
-        this._list.add_actor(bbox);
 
         let n = this._items.length;
         bbox._clickEventId = bbox.connect('clicked', () => this._onItemClicked(n));
@@ -454,7 +463,19 @@ var SwitcherList = new Lang.Class({
 
         bbox.label_actor = label;
 
-        this._items.push(bbox);
+        if (index != undefined) {
+            this._list.insert_child_at_index(bbox, (listIndex != undefined) ? listIndex : index);
+            this._items.splice(index, 0, bbox);
+
+            // If we don't insert at the end, fix the numbers called in mouse events
+            this._refreshItemEvents();
+
+            // Only emit item-added if items were added with an index
+            this.emit('item-added', index);
+        } else {
+            this._list.add_child(bbox);
+            this._items.push(bbox);
+        }
 
         return bbox;
     },
