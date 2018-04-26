@@ -431,8 +431,8 @@ var SwitcherList = new Lang.Class({
         this._list.add_actor(bbox);
 
         let n = this._items.length;
-        bbox.connect('clicked', () => { this._onItemClicked(n); });
-        bbox.connect('motion-event', () => this._onItemEnter(n));
+        bbox._clickEventId = bbox.connect('clicked', () => this._onItemClicked(n));
+        bbox._motionEventId = bbox.connect('motion-event', () => this._onItemEnter(n));
 
         bbox.label_actor = label;
 
@@ -444,6 +444,9 @@ var SwitcherList = new Lang.Class({
     removeItem(index) {
         let item = this._items.splice(index, 1);
         item[0].destroy();
+
+        this._refreshItemEvents();
+
         this.emit('item-removed', index);
     },
 
@@ -454,6 +457,16 @@ var SwitcherList = new Lang.Class({
     removeAccessibleState(index, state) {
         if (this._items[index])
             this._items[index].remove_accessible_state(state);
+    },
+
+    _refreshItemEvents() {
+        for (let i = 0; i < this._items.length; i++) {
+            this._items[i].disconnect(this._items[i]._clickEventId);
+            this._items[i].disconnect(this._items[i]._motionEventId);
+
+            this._items[i]._clickEventId = this._items[i].connect('clicked', () => this._onItemClicked(i));
+            this._items[i]._motionEventId = this._items[i].connect('motion-event', () => this._onItemEnter(i));
+        }
     },
 
     _onItemClicked(index) {
