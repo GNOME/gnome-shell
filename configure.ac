@@ -270,12 +270,9 @@ fi
 
 PKG_CHECK_MODULES(SYSTEMD, [libsystemd], [have_systemd=yes], [have_systemd=no])
 
-if test x$have_systemd = xyes; then
+if test x$have_systemd = xyes -o -z "$logind_provider"; then
      logind_provider="libsystemd"
 fi
-
-AS_IF([test -z "$logind_provider"],
-  AC_MSG_ERROR([Could not find either systemd or elogind as logind provider])])
 
 MUTTER_NATIVE_BACKEND_MODULES="libdrm $logind_provider libinput >= 1.4 gudev-1.0 gbm >= 10.3"
 
