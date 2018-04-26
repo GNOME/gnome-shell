@@ -394,8 +394,7 @@ var AppSwitcherPopup = new Lang.Class({
                            onComplete: () => thumbnailsActor.destroy()
                          });
 
-        if  (this._switcherList._items[this._selectedIndex])
-            this._switcherList._items[this._selectedIndex].remove_accessible_state (Atk.StateType.EXPANDED);
+        this._switcherList.removeAccessibleState(this._selectedIndex, Atk.StateType.EXPANDED);
     },
 
     _createThumbnails() {
@@ -418,7 +417,7 @@ var AppSwitcherPopup = new Lang.Class({
                          });
 
         this.thumbnailsVisible = true;
-        this._switcherList._items[this._selectedIndex].add_accessible_state (Atk.StateType.EXPANDED);
+        this._switcherList.addAccessibleState(this._selectedIndex, Atk.StateType.EXPANDED);
     }
 });
 
