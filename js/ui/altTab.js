@@ -976,7 +976,11 @@ var AppSwitcher = new Lang.Class({
         if (index === -1)
             return;
 
+        let arrow = this._arrows.splice(index, 1);
+        arrow[0].destroy();
+
         this.icons.splice(index, 1);
+
         this.removeItem(index);
     }
 });
